@@ -574,6 +574,9 @@
     .pe-connexion { margin-top: var(--sp-8); max-width: 440px; }
     .pe-note { margin: 0; font-size: var(--fs-ui); font-weight: var(--fw-semi); color: var(--text-muted); }
     [hidden] { display: none !important; }
+    .pe-code-champ { font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+                     letter-spacing: .22em; text-transform: uppercase;
+                     font-weight: var(--fw-bold); }
   </style>
 </head>
 <body>
@@ -602,11 +605,13 @@
             <div class="stack">
               <div>
                 <div class="pe-titre-section">Connexion</div>
-                <p class="pe-note" style="margin-top:var(--sp-1)">Utilisez le courriel fourni par le centre.</p>
+                <p class="pe-note" style="margin-top:var(--sp-1)">Utilisez le code et le mot de passe remis par votre centre.</p>
               </div>
               <div>
-                <label class="field-label" for="courriel">Courriel</label>
-                <input id="courriel" class="field" type="email" autocomplete="username" placeholder="prenom.nom@centre.qc.ca" required />
+                <label class="field-label" for="code">Code</label>
+                <input id="code" class="field pe-code-champ" type="text" inputmode="latin"
+                       autocomplete="username" autocapitalize="characters" spellcheck="false"
+                       maxlength="6" placeholder="K7M2QP" required />
               </div>
               <div>
                 <label class="field-label" for="motDePasse">Mot de passe</label>
@@ -614,8 +619,46 @@
               </div>
               <div class="fb fb--no" id="erreurConnexion" hidden></div>
               <button type="submit" class="btn btn--pri btn--lg" style="width:100%" id="boutonConnexion">Se connecter</button>
-              <p class="pe-note">Votre session reste ouverte 30 jours sur cet appareil. Mot de passe oublié : demandez à un compte administrateur de le réinitialiser.</p>
+              <p class="pe-note">Votre session reste ouverte 30 jours sur cet appareil. Code ou mot de passe oublié : la direction de votre centre les réinitialise.</p>
               <p class="pe-note" id="noteInstallation" hidden>Aucun compte n'existe encore. <a href="prof.html">Créez le compte administrateur</a>.</p>
+            </div>
+          </form>
+        </div>
+
+        <!-- Première ouverture. Le compte arrive avec un code et un mot de
+             passe temporaires, remis en main propre ; les deux ont circulé,
+             donc les deux se remplacent. L'écran ne s'atteint pas autrement
+             que par une session dont le serveur a dit `doitChanger`. -->
+        <div class="pe-connexion" id="ecranPremiere" hidden>
+          <form class="card" id="formPremiere">
+            <div class="stack">
+              <div>
+                <div class="pe-titre-section">Bienvenue</div>
+                <p class="pe-note" style="margin-top:var(--sp-1)">
+                  Votre compte a été ouvert avec un code et un mot de passe temporaires.
+                  Choisissez maintenant les vôtres : ce sont eux qui serviront désormais.</p>
+              </div>
+              <div>
+                <label class="field-label" for="premCode">Votre code (6 caractères)</label>
+                <input id="premCode" class="field pe-code-champ" type="text" inputmode="latin"
+                       autocapitalize="characters" spellcheck="false" maxlength="6"
+                       placeholder="K7M2QP" required />
+                <p class="field-hint">Lettres et chiffres. C'est ce que vous taperez pour entrer —
+                  choisissez-en un dont vous vous souviendrez.</p>
+              </div>
+              <div>
+                <label class="field-label" for="premMotDePasse">Votre mot de passe</label>
+                <input id="premMotDePasse" class="field" type="password"
+                       autocomplete="new-password" required />
+                <p class="field-hint">Au moins 8 caractères.</p>
+              </div>
+              <div>
+                <label class="field-label" for="premMotDePasse2">Répétez le mot de passe</label>
+                <input id="premMotDePasse2" class="field" type="password"
+                       autocomplete="new-password" required />
+              </div>
+              <div class="fb fb--no" id="erreurPremiere" hidden></div>
+              <button type="submit" class="btn btn--pri btn--lg" style="width:100%" id="boutonPremiere">Enregistrer et continuer</button>
             </div>
           </form>
         </div>

@@ -181,17 +181,17 @@
       </table>
     </div>
 
-    <h2 class="rs-sect">Inviter</h2>
+    <h2 class="rs-sect">Ouvrir des comptes</h2>
     <div class="card">
-      <p style="margin-top:0">Collez des courriels — virgules, points-virgules ou
-      retours de ligne, peu importe. Chaque personne recevra un lien pour
-      <strong>choisir son propre mot de passe</strong> ; aucun mot de passe n'est
-      jamais envoyé. Un lien vaut quatorze jours et ne sert qu'une fois.</p>
+      <p style="margin-top:0">Un nom par ligne. Le serveur tire un <strong>code</strong>
+      et un <strong>mot de passe temporaires</strong> pour chacun ; ils ne paraissent
+      qu'une fois, ici, et se remettent en main propre. La personne choisira
+      elle-même son code et son mot de passe à sa première connexion.</p>
       <div class="rs-form" style="align-items:flex-start">
         <div style="flex:1 1 280px">
-          <label for="rsCourriels">Courriels</label>
-          <textarea class="field" id="rsCourriels" rows="4" style="width:100%"
-                    placeholder="anne@exemple.qc.ca, bruno@exemple.qc.ca"></textarea>
+          <label for="rsNoms">Noms</label>
+          <textarea class="field" id="rsNoms" rows="4" style="width:100%"
+                    placeholder="Anne Bélanger&#10;Bruno Côté"></textarea>
         </div>
         <div>
           <label for="rsRoleInv">Rôle</label>
@@ -206,10 +206,9 @@
           <label for="rsOrgInv">Rattaché à</label>
           <select class="field" id="rsOrgInv"></select>
         </div>
-        <button type="button" class="btn btn--pri btn--sm" data-geste="inviter">Créer les invitations</button>
+        <button type="button" class="btn btn--pri btn--sm" data-geste="ouvrir-comptes">Ouvrir les comptes</button>
       </div>
       <div id="rsInvResultat"></div>
-      <div id="rsInvListe"></div>
     </div>
 
     <h2 class="rs-sect">Le journal</h2>
@@ -222,9 +221,9 @@
       </table>
     </div>
 
-    <p class="rs-fin">Les comptes s'ouvrent toujours depuis
-    <a href="prof.html">l'écran des comptes</a> ; c'est ici qu'on leur donne
-    leur place dans l'arbre. L'invitation par courriel viendra ensuite.</p>
+    <p class="rs-fin">Un compte ouvert ici reçoit du même coup sa place dans
+    l'arbre. <a href="prof.html">L'écran des comptes</a> sert à les relire, à
+    réinitialiser un code et à retirer un accès.</p>
   </main>
 
   <main class="container" id="rsRefus" hidden>
@@ -589,7 +588,7 @@
            de sens sur un centre ne sont pas offerts — le serveur les
            refuserait, et une liste qui les montre ment. */
         var comptes = COMPTES.map(function (t) {
-          return '<option value="' + t.id + '">' + ech(t.nom) + ' — ' + ech(t.courriel) + '</option>';
+          return '<option value="' + t.id + '">' + ech(t.nom) + ' — ' + ech(t.code || '') + '</option>';
         }).join('');
         return formulaire(orgId,
           '<div style="flex:1 1 240px"><label for="rsT">Personne</label>'
@@ -633,25 +632,25 @@
         return void agir('PATCH', '/api/admin/groupes/' + gid + '/centre',
                          { centreId: Number(document.getElementById('rsC' + gid).value) });
       }
-      if (geste === 'inviter') {
+      if (geste === 'ouvrir-comptes') {
         var role = document.getElementById('rsRoleInv').value;
         var org = Number(document.getElementById('rsOrgInv').value);
-        var courriels = document.getElementById('rsCourriels').value;
-        if (!courriels.trim()) { message('Aucun courriel collé.', false); return; }
+        var noms = document.getElementById('rsNoms').value;
+        if (!noms.trim()) { message('Aucun nom saisi.', false); return; }
         b.disabled = true;
         try {
-          var r = await Prof.fetch('/api/admin/invitations', {
+          var r = await Prof.fetch('/api/direction/enseignants', {
             method: 'POST', headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ courriels: courriels, role: role, orgId: org })
+            body: JSON.stringify({ noms: noms, role: role, orgId: org })
           });
           var d = await r.json().catch(function () { return {}; });
-          rendreResultatInvitations(d);
+          rendreComptesOuverts(d);
           if (d.success) {
-            document.getElementById('rsCourriels').value = '';
-            message(d.invitations.length + ' invitation(s) créée(s).', true);
+            document.getElementById('rsNoms').value = '';
+            message(d.comptes.length + ' compte(s) ouvert(s).', true);
             await recharger();
           } else {
-            message(d.error || 'Aucune invitation créée.', false);
+            message(d.error || 'Aucun compte ouvert.', false);
           }
         } catch (e) { message('Échec : ' + e.message, false); }
         b.disabled = false;
@@ -662,10 +661,6 @@
         try { await navigator.clipboard.writeText(lien); message('Lien copié.', true); }
         catch (e) { message('La copie a échoué — sélectionnez le lien à la main.', false); }
         return;
-      }
-      if (geste === 'annuler-invitation') {
-        if (!confirm('Annuler cette invitation ? Son lien cessera de fonctionner.')) return;
-        return void agir('DELETE', '/api/admin/invitations/' + Number(b.dataset.inv));
       }
       if (geste === 'retirer-acces') {
         if (!confirm('Retirer cet accès ? La personne garde son compte et ses '
@@ -683,58 +678,33 @@
       rendre(DONNEES, MOI);
       rendreChoixOrg();
       try {
-        var ri = await Prof.fetch('/api/admin/invitations');
-        if (ri.ok) rendreInvitations(await ri.json());
-      } catch (e) { /* la liste est un confort, pas la page */ }
-      try {
         var ra = await Prof.fetch('/api/admin/audit?limite=40');
         if (ra.ok) rendreAudit(await ra.json());
       } catch (e) { /* le journal est un confort, pas la page */ }
     }
 
-    /* Le lien complet, pas le chemin : le fondateur va le coller dans un
-       courriel, et « /bienvenue.html?jeton=… » n'y mènerait nulle part. */
-    function lienComplet(chemin) { return location.origin + chemin; }
-
-    function rendreResultatInvitations(d) {
+    function rendreComptesOuverts(d) {
       var zone = document.getElementById('rsInvResultat');
       var html = '';
-      (d.invitations || []).forEach(function (i) {
-        var url = lienComplet(i.lien);
-        html += '<div class="rs-lien"><b>' + ech(i.courriel) + '</b>'
-             + '<code>' + ech(url) + '</code>'
+      (d.comptes || []).forEach(function (c) {
+        html += '<div class="rs-lien"><b>' + ech(c.nom) + '</b>'
+             + '<code>code ' + ech(c.code) + ' · mot de passe '
+             + ech(c.motDePasseTemporaire) + '</code>'
              + '<button type="button" class="btn btn--ghost btn--sm" data-geste="copier" '
-             + 'data-lien="' + ech(url) + '">Copier</button></div>';
+             + 'data-lien="' + ech(c.nom + ' — code ' + c.code + ' — mot de passe '
+                                  + c.motDePasseTemporaire) + '">Copier</button></div>';
       });
-      (d.refusees || []).forEach(function (r) {
-        html += '<div class="rs-lien"><b>' + ech(r.courriel) + '</b>'
+      (d.refuses || []).forEach(function (r) {
+        html += '<div class="rs-lien"><b>' + ech(r.nom) + '</b>'
              + '<span class="rs-msg rs-msg--no" style="margin:0">' + ech(r.motif) + '</span></div>';
       });
-      /* Les liens ne repassent jamais : le serveur ne garde que leur
-         empreinte. C'est le seul moment où on peut les copier, et la page
+      /* Le mot de passe ne repasse jamais : le serveur n'en garde que
+         l'empreinte. C'est le seul moment où on peut le copier, et la page
          doit le dire — sinon on ferme l'onglet et on repart à zéro. */
       zone.innerHTML = html
-        ? '<p class="rs-msg" style="color:var(--text-muted)">Copiez ces liens '
-          + 'maintenant : ils ne seront plus affichables. Le serveur n\'en garde '
-          + 'que l\'empreinte, comme un mot de passe.</p>' + html
-        : '';
-    }
-
-    function rendreInvitations(liste) {
-      var maintenant = new Date().toISOString().slice(0, 19);
-      var ouvertes = (liste || []).filter(function (i) {
-        return !i.utiliseLe && i.expire > maintenant;
-      });
-      document.getElementById('rsInvListe').innerHTML = ouvertes.length
-        ? '<h3 style="font-size:var(--fs-ui);margin:var(--sp-5) 0 var(--sp-2)">'
-          + 'Invitations en cours</h3>'
-          + ouvertes.map(function (i) {
-              return '<div class="rs-lien"><b>' + ech(i.courriel) + '</b>'
-                   + '<span style="flex:1 1 200px">' + ech(LIBELLE_ROLE[i.role] || i.role)
-                   + ' · ' + ech(i.organisation) + ' · jusqu\'au ' + jour(i.expire) + '</span>'
-                   + '<button type="button" class="btn btn--ghost btn--sm" '
-                   + 'data-geste="annuler-invitation" data-inv="' + i.id + '">Annuler</button></div>';
-            }).join('')
+        ? '<p class="rs-msg" style="color:var(--text-muted)">Notez ces codes et '
+          + 'ces mots de passe maintenant : ils ne seront plus affichables. Le '
+          + 'serveur n\'en garde que l\'empreinte.</p>' + html
         : '';
     }
 
@@ -760,7 +730,7 @@
     function rendreAudit(lignes) {
       document.getElementById('rsAudit').innerHTML = (lignes || []).map(function (l) {
         var d = l.details || {};
-        var detail = d.nom || d.courriel || d.centre
+        var detail = d.nom || d.code || d.centre
                    || (d.role ? LIBELLE_ROLE[d.role] || d.role : '')
                    || (d.apres && d.apres.nom) || '';
         return '<tr><td>' + jour(l.quand) + '</td>'

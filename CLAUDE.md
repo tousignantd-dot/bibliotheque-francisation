@@ -246,6 +246,79 @@ l'ajouter aux cinq greffes de `build/module.py`.
   refermer les chevrons toutes les cinq secondes.
 - Il ne s'imprime pas : c'est un écran de séance, pas un document.
 
+## Les comptes enseignants : un code, pas un courriel
+
+**Le 28 août 2026, le courriel a disparu des comptes enseignants.** On
+s'authentifie par un **code de six caractères**, comme un élève, et le compte
+s'ouvre exactement comme celui d'un élève : la direction le crée, le serveur
+tire un code et un mot de passe **temporaires**, on les remet en main propre.
+
+- **Le billet ne paraît qu'une fois.** `POST /api/prof/enseignants` et
+  `POST /api/direction/enseignants` rendent `code` et `motDePasseTemporaire`
+  dans leur réponse, et nulle part ailleurs : le mot de passe n'est gardé
+  qu'en empreinte. Les trois écrans le disent en toutes lettres et offrent
+  « Copier » et « Imprimer » — sans cet avertissement, on ferme l'onglet et on
+  recommence.
+- **La première ouverture remplace le code ET le mot de passe**
+  (`POST /api/prof/premiere-connexion`). Les deux ont voyagé sur un billet :
+  un code qui a circulé n'est pas plus secret qu'un mot de passe qui a
+  circulé. Le drapeau est `motDePasseTemporaire` sur la fiche ; la connexion
+  rend `doitChanger`, et le portail bascule sur l'écran « Bienvenue » au lieu
+  d'ouvrir la planification.
+- **Un code est unique chez les enseignants ET chez les élèves.**
+  `code_prof_libre()` regarde les deux listes. Les deux s'entrent sur deux
+  pages différentes, mais quelqu'un finira par se tromper de page : mieux vaut
+  qu'un code n'ouvre jamais qu'une seule porte.
+- **Réinitialiser refait le corridor du début** : `PATCH` avec
+  `{"reinitialiser": true}` tire un nouveau mot de passe temporaire et rearme
+  le drapeau — donc la personne rechoisit **aussi** son code, puisqu'il a
+  circulé avec. Le bouton s'appelle « Réinitialiser l'accès », pas « le mot de
+  passe ».
+- **Un compte s'éteint** (`{"actif": false}`) : il garde son historique de
+  dépense dans les chiffres du centre et ne se connecte plus (403 avec un
+  motif en clair). Le fondateur ne peut pas être éteint — sans ce refus, la
+  console se fermerait à elle-même.
+
+### La sortie de secours, à ne pas retirer
+
+`migrer_codes_enseignants()` tourne au démarrage et donne un code aux comptes
+qui n'en ont pas. **Le piège est qu'on ne lit pas la base de production** : un
+code tiré au hasard y serait invisible, et personne ne pourrait plus entrer.
+D'où `PROF_FONDATEUR_CODE` — la variable d'environnement force le compte
+fondateur à porter ce code-là. On choisit donc son code avant de déployer.
+`PROF_FONDATEUR` (un courriel) et `PROF_COURRIEL` n'existent plus ;
+l'amorce par variables se fait par `PROF_CODE` + `PROF_MOTDEPASSE`.
+
+La migration retire aussi le champ `courriel` des fiches : une donnée
+personnelle que plus aucun écran ne montre est une donnée que personne ne
+pense à effacer.
+
+### Ce qui a été supprimé avec
+
+Le flux d'invitation par jeton est **parti en entier** — cinq routes
+(`/api/admin/invitations` ×3, `/api/invitation` ×2), `/api/direction/invitations`,
+`bienvenue.html`, `data/invitations.json`, `INVITATION_JOURS`,
+`creer_invitation`, `invitation_valide`, `invitation_publique`. Garder les deux
+chemins aurait fait deux façons d'ouvrir un compte, et ce dépôt sait ce que
+« deux sources pour une idée » finit par coûter.
+
+### Vérifié en jouant, pas en relisant
+
+Dix contrôles sur la chaîne complète : ouverture → connexion au billet →
+refus d'un code déjà pris → refus d'un code d'élève → refus d'un mot de passe
+court → refus d'un code trop court → premier choix (accepté en minuscules) →
+refus d'un second passage → l'ancien billet ne vaut plus → le nouveau code
+ouvre. Puis réinitialisation, extinction, refus d'éteindre le fondateur,
+ouverture en lot, et les six routes retirées qui rendent 404. Enfin
+l'installation d'un dépôt neuf dans un bac à sable (`STORAGE_DIR` à part) :
+le premier compte **choisit** son code, il est fondateur, et il ne passe pas
+par la première ouverture — personne ne pourrait lui remettre un billet.
+
+**Un défaut trouvé à l'aperçu, pas à la relecture** : la règle d'impression du
+billet masquait `body > *:not(#billet)`, or le billet est enfoui dans la page —
+la feuille serait sortie vide, en emportant ses propres ancêtres. Elle passe
+par `visibility`, l'idiome qui survit à l'imbrication.
+
 ## L'espace direction (`direction.html`)
 
 **Gérer des comptes et regarder une dépense n'est pas enseigner.** « Les
@@ -330,6 +403,42 @@ fausseraient rétroactivement tout l'historique.
 - **La confirmation posée avant `recharger()` disparaît**, puisque le
   rechargement remet la ligne d'état à vide : le réglage passait et l'écran
   restait muet. Le message vient après.
+
+## Vider l'installation avant la mise en service (`build/menage.py`)
+
+    DATABASE_URL=… python3 build/menage.py --etat     # ce qui partirait
+    DATABASE_URL=… python3 build/menage.py --forcer   # le fait
+
+**Le piège est l'endroit, pas le geste.** Sans `DATABASE_URL`, le script ne
+nettoie que le volume **local** — comme `build/controles/organisations.py` et
+`build/couts_api.py`, qui ne voient déjà que le disque du poste. La production
+est sur Postgres. L'écran le dit en toutes lettres avant d'agir : un ménage
+qu'on croit fait est pire qu'un ménage pas fait.
+
+- **Cascade sur l'arbre.** Les CSS et les centres partent avec leurs groupes,
+  leurs élèves et tout ce que ces élèves ont laissé — progression, journal
+  d'accès, signaux d'aide, vocabulaire, direct de la classe, « Corrige-moi ! »,
+  analyses d'erreurs, productions orales **et leurs fichiers audio**, écrites,
+  fichiers de groupe, planification, relevé quotidien, registre des appels.
+  Effacer la fiche sans effacer l'audio laisserait des enregistrements de
+  personnes réelles sur le volume, sans plus rien pour dire à qui ils sont.
+- **Les comptes s'éteignent** (`actif: false`), ils ne s'effacent pas : c'est
+  la règle que le dépôt tient déjà pour les accès. **Mais leurs sessions se
+  ferment** — un jeton d'essai qui survit au ménage rouvrirait une porte qu'on
+  croit fermée. Vérifié : 19 sessions → 10, toutes celles du fondateur.
+- **Deux choses ne bougent jamais** : le nœud **réseau** et le **compte
+  fondateur** avec son accès. Le script **refuse et sort en 1** si l'un des
+  deux manque — c'est le seul geste que l'interface elle-même ne pourrait pas
+  réparer. Les deux refus ont été joués dans un bac à sable.
+- **Il réemploie les `load_*`/`save_*` de `server.py`**, qui savent déjà écrire
+  en base comme en fichiers. Une seconde implémentation du stockage finirait
+  par diverger de la première — c'est le défaut que ce dépôt paie ailleurs.
+- **Ce qu'il ne touche pas** : le catalogue et le matériel (ils décrivent le
+  code livré), les dépôts de matériel des enseignants (des documents, pas des
+  traces d'élèves), le journal d'audit (append-only, et il porte la trace du
+  ménage lui-même), et les caches de traduction et de voix, qui se regénèrent
+  et ne nomment personne.
+- **Idempotent** : un second passage ne casse rien et ne rend pas d'erreur.
 
 ## Multi-enseignants et multi-groupes
 
@@ -622,54 +731,11 @@ groupe orphelin.
   à « Éteint », elle ne disparaît pas), et le journal qui enregistre les six.
   L'arbre construit ainsi repasse le contrôle sans écart.
 
-### Les invitations (`bienvenue.html`)
+### Ouvrir un compte
 
-Étape 3, quatrième et dernière tranche. **Un compte s'ouvre par jeton : on
-n'envoie jamais un mot de passe**, même quand c'est le fondateur qui crée le
-compte.
+Voir « Les comptes enseignants : un code, pas un courriel », plus haut. Le flux
+d'invitation par jeton et `bienvenue.html` ont été retirés le 28 août 2026.
 
-| Route | Qui | Geste |
-|---|---|---|
-| `POST /api/admin/invitations` | fondateur | inviter une personne **ou une liste collée** |
-| `GET /api/admin/invitations` | fondateur | les invitations, sans jamais un jeton |
-| `DELETE /api/admin/invitations/<id>` | fondateur | annuler — le lien cesse aussitôt |
-| `GET /api/invitation?jeton=` | **public** | ce que la personne invitée voit |
-| `POST /api/invitation` | **public** | crée le compte, pose l'accès, ouvre la session |
-
-- **Le jeton se garde comme un mot de passe, en empreinte.** Il ouvre la
-  création d'un compte ; le lire dans un fichier reviendrait à lire un mot de
-  passe. SHA-256 suffit — un jeton de 256 bits tiré au hasard n'a pas de
-  dictionnaire à lui opposer — et la comparaison passe par
-  `hmac.compare_digest`, parce que `==` laisse fuir le préfixe commun par le
-  temps de réponse. **Vérifié : le jeton en clair n'est nulle part sur le
-  disque.**
-- **Le lien ne s'affiche qu'une fois**, à la création, et la page le dit en
-  toutes lettres. Sans cet avertissement, on ferme l'onglet et on recommence.
-- **Une adresse fautive n'annule pas les autres.** Sur un collage de trente,
-  tout refuser pour une faute de frappe ferait recommencer les vingt-neuf
-  bonnes : le serveur rend deux listes, `invitations` et `refusees`, chacune
-  avec son motif, et l'écran montre les deux.
-- **Les deux routes publiques ne disent rien de plus qu'un « non ».** Un jeton
-  faux ou périmé ne révèle ni le courriel visé, ni le centre, ni s'il a jamais
-  existé.
-- **`valider_acces_sans_compte()` existe parce qu'une invitation vise un
-  courriel sans compte.** On ne peut pas vérifier le compte, mais on doit
-  vérifier que le rôle a un sens sur ce nœud — sinon l'invitation créerait un
-  accès que le contrôle déclarerait en écart le lendemain.
-- **La liste des rattachements suit le rôle choisi**, à l'écran comme au
-  serveur : proposer un centre pour une « gestion CSS » serait offrir un geste
-  qui sera refusé.
-- **Le parcours a été joué en entier dans le navigateur** : lien valide,
-  mots de passe différents, mot de passe trop court, création, atterrissage
-  direct dans `enseignant.html` avec la session déjà ouverte, puis le même
-  jeton refusé la seconde fois. Et côté console : import d'une liste mêlant
-  bonnes et mauvaises adresses, annulation d'une invitation — **suivie de la
-  preuve que son lien ne fonctionne plus**, qui est le seul test qui compte.
-- Une invitation vaut `INVITATION_JOURS` (14 jours) et ne sert qu'une fois.
-  Annuler, c'est faire expirer : la ligne reste, le journal aussi.
-- `data/invitations.json` est du volume, non versionné.
-
-**L'étape 3 est complète.**
 
 ## Le portail des chiffres (étape 4)
 

@@ -54,7 +54,7 @@ _VERROU = threading.Lock()
 # volume, et c'est le comportement sûr.
 DOCUMENTS = {
     "teachers.json", "groups.json", "students.json", "schedule.json",
-    "organisations.json", "acces.json", "invitations.json", "audit.json",
+    "organisations.json", "acces.json", "audit.json",
     "documents.json", "prof_sessions.json", "depots.json", "promotions.json",
     "corrige_moi.json", "oral_submissions.json", "written_submissions.json",
     "signalements.json", "analyses_erreurs.json", "traductions.json",

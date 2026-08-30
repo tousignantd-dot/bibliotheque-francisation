@@ -200,6 +200,10 @@ SIGNALEMENTS_FILE = STORAGE_DIR / "data" / "signalements.json"
 SIGNALEMENTS_MAX = 2000
 # Les événements que /api/student/progress accepte. Les trois premiers font
 # l'avancement dans progress.json ; les cinq suivants font le journal de l'aide.
+# Le code d'un enseignant fait la même longueur que celui d'un élève : il se
+# dicte, s'imprime sur un billet et se recopie sans faute. Un seul endroit le
+# dit, sinon la fabrique et la validation finiraient par diverger.
+CODE_PROF_LONGUEUR = 6
 ALLOWED_EVENTS = {"dialogue_listened", "exercise_completed", "file_opened"}
 SIGNAUX_AIDE = {"aide_proposee", "aide_acceptee", "aide_analysee",
                 "aide_refusee", "plus_open"}
@@ -238,7 +242,6 @@ AUDIT_FILE         = STORAGE_DIR / "data" / "audit.json"
 # Invitations. Un compte s'ouvre par jeton : **on n'envoie jamais un mot de
 # passe**, même quand c'est le fondateur qui crée le compte. Le jeton n'est
 # rendu qu'une fois, à la création ; seule son empreinte est gardée.
-INVITATIONS_FILE   = STORAGE_DIR / "data" / "invitations.json"
 # Relevé quotidien — étape 4. Les tableaux de bord ne lisent **jamais** le
 # journal d'événements : ils lisent ce relevé. C'est ce qui permet à la vue
 # d'un CSS de ne contenir aucun identifiant d'enseignant — l'agrégation se
@@ -265,7 +268,6 @@ MODELE_TRANSCRIPTION = "azure-stt-fr-CA"            # Azure Speech, sens inverse
 # élève qui a réellement travaillé.
 STATS_PAUSE_MIN    = 30
 STATS_EVENEMENT_MIN = 1
-INVITATION_JOURS   = 14
 # Fichiers partagés par l'enseignant à un groupe (notes de cours, grilles,
 # corrigés). Ils ne sont pas des activités : ils ont leur propre période de
 # parution et l'élève ne les voit que pendant celle-ci.
@@ -2078,85 +2080,13 @@ def valider_acces(teacher_id, org_id, role):
     return None
 
 
-def load_invitations():
-    return _load_json_list(INVITATIONS_FILE)
-
-
-def save_invitations(inv):
-    _save_json(INVITATIONS_FILE, inv)
-
-
-def empreinte_jeton(jeton):
-    """Le jeton d'invitation se garde comme un mot de passe : en empreinte.
-
-    Il ouvre la création d'un compte ; le lire dans un fichier reviendrait à
-    lire un mot de passe. Pas de PBKDF2 ici — un jeton de 256 bits tiré au
-    hasard n'a pas de dictionnaire à lui opposer, un SHA-256 suffit.
-    """
-    return hashlib.sha256((jeton or "").encode("utf-8")).hexdigest()
-
-
-def invitation_valide(jeton, invitations=None):
-    """Rend l'invitation ouverte correspondant au jeton, ou None.
-
-    La comparaison passe par `hmac.compare_digest` : comparer deux empreintes
-    avec `==` laisse fuir leur préfixe commun par le temps de réponse.
-    """
-    if not jeton:
-        return None
-    cible = empreinte_jeton(jeton)
-    maintenant = datetime.now().isoformat(timespec="seconds")
-    for inv in (load_invitations() if invitations is None else invitations):
-        if inv.get("utiliseLe"):
-            continue
-        if inv.get("expire", "") <= maintenant:
-            continue
-        if hmac.compare_digest(inv.get("empreinte", ""), cible):
-            return inv
-    return None
-
-
-def creer_invitation(courriel, role, org_id, nom="", par=None, invitations=None):
-    """Prépare une invitation. Rend (invitation, jeton_en_clair) ou (None, motif).
-
-    Le jeton en clair ne repasse jamais : c'est la seule fois qu'on le voit.
-    """
-    courriel = normalize_email(courriel)
-    if not courriel or "@" not in courriel:
-        return None, f"Courriel invalide : {courriel or '(vide)'}"
-    if any(normalize_email(t.get("courriel")) == courriel for t in load_teachers()):
-        return None, f"{courriel} a déjà un compte"
-    motif = valider_acces_sans_compte(org_id, role)
-    if motif:
-        return None, motif
-    invitations = load_invitations() if invitations is None else invitations
-    if any(i.get("courriel") == courriel and not i.get("utiliseLe")
-           and i.get("expire", "") > datetime.now().isoformat(timespec="seconds")
-           for i in invitations):
-        return None, f"{courriel} a déjà une invitation en cours"
-    jeton = uuid.uuid4().hex + uuid.uuid4().hex
-    inv = {
-        "id": max((i.get("id", 0) for i in invitations), default=0) + 1,
-        "courriel": courriel,
-        "nom": (nom or "").strip()[:80],
-        "role": role,
-        "orgId": org_id,
-        "empreinte": empreinte_jeton(jeton),
-        "creeLe": datetime.now().isoformat(timespec="seconds"),
-        "expire": (datetime.now() + timedelta(days=INVITATION_JOURS)).isoformat(timespec="seconds"),
-        "utiliseLe": "",
-        "creePar": par,
-    }
-    return inv, jeton
-
-
 def valider_acces_sans_compte(org_id, role):
     """La moitié de `valider_acces()` qui ne regarde pas le compte.
 
-    Une invitation vise un courriel qui n'a pas encore de compte : on ne peut
-    pas vérifier l'existence du compte, mais on doit vérifier que le rôle a un
-    sens sur ce nœud — sinon l'invitation créerait un accès que le contrôle
-    déclarerait en écart le lendemain.
+    Le rôle se valide parfois avant que le compte existe : on ne peut pas
+    vérifier l'existence du compte, mais on doit vérifier que le rôle a un sens
+    sur ce nœud — sinon on créerait un accès que le contrôle déclarerait en
+    écart le lendemain.
     """
     if role not in ROLES_ACCES:
         return "Rôle inconnu"
@@ -2173,20 +2103,6 @@ def valider_acces_sans_compte(org_id, role):
     return None
 
 
-def invitation_publique(inv):
-    """Ce qu'on montre d'une invitation — jamais l'empreinte."""
-    org = find_org(inv.get("orgId"))
-    return {
-        "id": inv.get("id"), "courriel": inv.get("courriel"),
-        "nom": inv.get("nom", ""), "role": inv.get("role"),
-        "orgId": inv.get("orgId"),
-        "organisation": (org or {}).get("nom", ""),
-        "creeLe": inv.get("creeLe"), "expire": inv.get("expire"),
-        "utiliseLe": inv.get("utiliseLe", ""),
-    }
-
-
-# ── Le relevé quotidien ─────────────────────────────────────────────────────
 
 def load_stats_jour():
     if STATS_JOUR_FILE.exists():
@@ -2513,17 +2429,21 @@ def founder_id(teachers=None):
     chemins lui donnent l'`id` 1 ; on prend malgré tout le plus petit `id`
     présent, pour ne pas dépendre d'un nombre écrit en dur.
 
-    `PROF_FONDATEUR` (un courriel) permet de désigner un autre compte sans
-    toucher au code — utile si le compte du premier démarrage n'est pas celui
-    de la personne qui tient l'installation.
+    `PROF_FONDATEUR_CODE` (un code d'enseignant) permet de désigner un autre
+    compte sans toucher au code — utile si le compte du premier démarrage n'est
+    pas celui de la personne qui tient l'installation. C'est aussi **la sortie
+    de secours** du passage au code : la variable posée dans l'environnement
+    force ce compte à porter ce code au démarrage (voir
+    `migrer_codes_enseignants`), donc on ne peut pas se retrouver dehors d'une
+    installation dont on ne lit pas la base.
     """
     teachers = load_teachers() if teachers is None else teachers
     if not teachers:
         return None
-    voulu = normalize_email(os.environ.get("PROF_FONDATEUR", ""))
+    voulu = normalize_prof_code(os.environ.get("PROF_FONDATEUR_CODE", ""))
     if voulu:
         for t in teachers:
-            if normalize_email(t.get("courriel")) == voulu:
+            if normalize_prof_code(t.get("code")) == voulu:
                 return t["id"]
     return min(t["id"] for t in teachers)
 
@@ -2543,8 +2463,14 @@ def public_teacher(teacher, teachers=None):
     return {
         "id": teacher["id"],
         "nom": teacher.get("nom", ""),
-        "courriel": teacher.get("courriel", ""),
+        # Le code a remplacé le courriel le 28 août 2026 : un enseignant
+        # s'authentifie comme un élève, et rien dans le portail n'a plus besoin
+        # d'une adresse. Voir `doitChanger` juste dessous — un compte neuf
+        # traverse d'abord l'écran de première connexion.
+        "code": teacher.get("code", ""),
         "role": teacher.get("role", "prof"),
+        "actif": teacher.get("actif", True),
+        "doitChanger": bool(teacher.get("motDePasseTemporaire")),
         "createdAt": teacher.get("createdAt", ""),
         "fondateur": is_founder(teacher, teachers),
     }
@@ -2622,13 +2548,13 @@ def migrate_multi_groupes():
     # sinon créé par l'écran d'installation au premier lancement.
     teachers = load_teachers()
     if not teachers:
-        email = normalize_email(os.environ.get("PROF_COURRIEL", ""))
+        code = normalize_prof_code(os.environ.get("PROF_CODE", ""))
         password = os.environ.get("PROF_MOTDEPASSE", "")
-        if email and password:
+        if code and password:
             teachers = [{
                 "id": 1,
                 "nom": os.environ.get("PROF_NOM", "Enseignant"),
-                "courriel": email,
+                "code": code,
                 "motDePasse": hash_password(password),
                 "role": "admin",
                 "createdAt": date.today().isoformat(),
@@ -2650,6 +2576,60 @@ def migrate_multi_groupes():
                 changed = True
         if changed:
             save_groups(groups)
+
+
+def migrer_codes_enseignants():
+    """Donne un code aux comptes qui n'en ont pas, et applique la sortie de secours.
+
+    Le passage du courriel au code (28 août 2026) laisse des comptes sans code.
+    Sans cette migration, plus personne ne se connecte — et **c'est la panne
+    dont on ne se relève pas tout seul**, puisque le code se lit dans une base
+    qu'on n'a pas sous les yeux en production.
+
+    D'où `PROF_FONDATEUR_CODE` : la variable posée dans l'environnement force le
+    compte fondateur à porter ce code-là. On choisit donc son propre code avant
+    de déployer, et on entre. Sans la variable, un code est tiré comme pour un
+    élève ; il se lit alors dans l'écran des comptes, à condition d'être déjà
+    entré — ce qui est précisément le cas qu'on ne veut pas.
+
+    Idempotente : un compte qui a déjà un code n'est pas touché, sauf le
+    fondateur quand la variable le désigne autrement.
+    """
+    teachers = load_teachers()
+    if not teachers:
+        return
+    students = load_students()
+    change = False
+
+    voulu = normalize_prof_code(os.environ.get("PROF_FONDATEUR_CODE", ""))
+    if voulu:
+        fid = min(t["id"] for t in teachers)
+        for t in teachers:
+            if t["id"] == fid and normalize_prof_code(t.get("code")) != voulu:
+                t["code"] = voulu
+                # Le compte qui tient l'installation n'est pas mis en
+                # première connexion : il vient de se donner son propre code.
+                t.pop("motDePasseTemporaire", None)
+                change = True
+                print(f"[init] code du compte fondateur posé depuis "
+                      f"PROF_FONDATEUR_CODE", flush=True)
+
+    for t in teachers:
+        # Le courriel ne sert plus à rien : ni à s'authentifier, ni à joindre
+        # qui que ce soit. Le laisser traîner, c'est garder une donnée
+        # personnelle que plus aucun écran ne montre et que personne ne pense
+        # à effacer.
+        if t.pop("courriel", None) is not None or t.pop("email", None) is not None:
+            change = True
+        if normalize_prof_code(t.get("code")):
+            continue
+        t["code"] = generate_prof_code(teachers, students)
+        change = True
+    if change:
+        save_teachers(teachers)
+        sans = sum(1 for t in teachers if not normalize_prof_code(t.get("code")))
+        print(f"[init] codes enseignants : {len(teachers)} compte(s), "
+              f"{sans} sans code", flush=True)
 
 
 def migrate_organisations():
@@ -3497,7 +3477,7 @@ def _traiter_signalement(entry):
 
     corps = (
         f"Signalement de {entry.get('enseignantNom') or 'un enseignant'}"
-        f" ({entry.get('enseignantCourriel') or 'courriel inconnu'})\n"
+        f" ({entry.get('enseignantCode') or 'code inconnu'})\n"
         f"Reçu le {entry.get('timestamp', '')}\n"
         f"Écran : {entry.get('ecran') or '(non précisé)'}\n"
         f"Adresse : {entry.get('url') or '(inconnue)'}\n"
@@ -3725,6 +3705,53 @@ VOCAB_BANK = [
     {"id": "urgence-09", "activityIds": [36], "mot": "éclabousser", "domaine": "Santé", "definition": "Projeter un liquide en gouttes.", "exemple": "L'huile chaude a éclaboussé son bras."},
     {"id": "urgence-10", "activityIds": [36], "mot": "désinfecter", "domaine": "Santé", "definition": "Nettoyer pour éliminer les microbes.", "exemple": "L'infirmière va désinfecter la plaie."},
 ]
+
+
+def normalize_prof_code(valeur):
+    """Le code d'un enseignant, tel qu'on le compare.
+
+    Il se dicte au téléphone et se recopie d'un billet : la casse et les
+    espaces ne doivent pas décider d'une connexion.
+    """
+    return re.sub(r"\s+", "", (valeur or "").strip().upper())
+
+
+def code_prof_libre(code, teachers=None, students=None):
+    """Ce code est-il disponible ?
+
+    Unique chez les enseignants, **et** distinct des codes d'élèves. Les deux
+    s'entrent sur deux pages différentes, mais quelqu'un finira par se tromper
+    de page : mieux vaut qu'un code n'ouvre jamais qu'une seule porte.
+    """
+    code = normalize_prof_code(code)
+    if not code:
+        return False
+    teachers = load_teachers() if teachers is None else teachers
+    students = load_students() if students is None else students
+    if any(normalize_prof_code(t.get("code")) == code for t in teachers):
+        return False
+    return not any((s.get("code") or "").upper() == code for s in students)
+
+
+def generate_prof_code(teachers=None, students=None):
+    """Un code de six caractères, comme celui d'un élève et par la même
+    fabrique : même alphabet sans O, I, 0 ni 1, qui se confondent à l'oral."""
+    teachers = load_teachers() if teachers is None else teachers
+    students = load_students() if students is None else students
+    pris = {normalize_prof_code(t.get("code")) for t in teachers}
+    pris |= {(s.get("code") or "").upper() for s in students}
+    return generate_code(pris)
+
+
+def generate_prof_motdepasse():
+    """Un mot de passe temporaire, lisible et dictable.
+
+    Il ne vit que jusqu'à la première connexion, où il est obligatoirement
+    remplacé : ce qu'on lui demande, c'est de traverser un corridor sans faute
+    de frappe, pas de résister à une attaque.
+    """
+    chars = [c for c in string.ascii_uppercase + string.digits if c not in "OI01"]
+    return ''.join(random.choices(chars, k=8))
 
 
 def generate_code(existing_codes):
@@ -15689,13 +15716,6 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if path == "/api/admin/audit":
             self._handle_audit_list(params)
             return
-        if path == "/api/admin/invitations":
-            self._handle_invitations_list()
-            return
-        if path == "/api/invitation":
-            # Publique : la personne invitée n'a pas encore de compte.
-            self._handle_invitation_lire(params)
-            return
         if path == "/api/admin/oral-submissions":
             self._handle_oral_submissions_list(params)
             return
@@ -15768,6 +15788,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self._handle_auth()
         elif path == "/api/prof/setup":
             self._handle_prof_setup()
+        elif path == "/api/prof/premiere-connexion":
+            self._handle_prof_premiere_connexion()
         elif path == "/api/prof/login":
             self._handle_prof_login()
         elif path == "/api/prof/logout":
@@ -15780,12 +15802,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self._handle_org_add()
         elif path == "/api/admin/acces":
             self._handle_acces_add()
-        elif path == "/api/admin/invitations":
-            self._handle_invitations_add()
-        elif path == "/api/invitation":
-            self._handle_invitation_accepter()
-        elif path == "/api/direction/invitations":
-            self._handle_direction_inviter()
+        elif path == "/api/direction/enseignants":
+            self._handle_direction_ouvrir_comptes()
         elif path == "/api/prof/enseignants":
             self._handle_teacher_add()
         elif path == "/api/prof/documents":
@@ -15944,9 +15962,6 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 
         if re.match(r"^/api/admin/acces/\d+$", path):
             self._handle_acces_delete(int(path.rsplit("/", 1)[1]))
-            return
-        if re.match(r"^/api/admin/invitations/\d+$", path):
-            self._handle_invitation_delete(int(path.rsplit("/", 1)[1]))
             return
         if re.match(r"^/api/admin/students/\d+$", path):
             try:
@@ -16483,7 +16498,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             jours=body.get("jours", 0),
             plafond=body.get("plafond", SEANCE_PLAFOND_DEFAUT),
         )
-        journal(teacher.get("courriel", teacher.get("email", "")),
+        journal(teacher,
                 "seance.ouvrir", str(seance["id"]),
                 {"groupe": group_id, "module": activity_id})
         json_response(self, {"success": True, "seance": self._seance_publique(seance)})
@@ -16504,7 +16519,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         seance["ouverte"] = False
         seance["fermeeLe"] = datetime.now().isoformat(timespec="seconds")
         save_seances(seances)
-        journal(teacher.get("courriel", teacher.get("email", "")),
+        journal(teacher,
                 "seance.fermer", str(seance["id"]))
         json_response(self, {"success": True, "seance": self._seance_publique(seance)})
 
@@ -16858,19 +16873,28 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             json_response(self, {"error": "L'installation est déjà faite"}, 409)
             return
         body = self._read_json_body()
-        email = normalize_email(body.get("courriel"))
+        code = normalize_prof_code(body.get("code"))
         password = body.get("motDePasse", "")
         nom = (body.get("nom", "") or "").strip()
-        if not email or "@" not in email:
-            json_response(self, {"error": "Courriel invalide"}, 400)
+        if not nom:
+            json_response(self, {"error": "Le nom est requis"}, 400)
+            return
+        # Le tout premier compte **choisit** son code au lieu d'en recevoir un :
+        # personne ne peut le lui remettre, et c'est celui qu'il faudra taper
+        # pour rentrer. Il ne passe donc pas par la première connexion.
+        alphabet = set(string.ascii_uppercase + string.digits)
+        if len(code) != CODE_PROF_LONGUEUR or not set(code) <= alphabet:
+            json_response(self, {
+                "error": "Le code fait %d caractères, lettres et chiffres seulement."
+                         % CODE_PROF_LONGUEUR}, 400)
             return
         if len(password) < 8:
             json_response(self, {"error": "Le mot de passe doit faire au moins 8 caractères"}, 400)
             return
         teacher = {
             "id": 1,
-            "nom": nom or email.split("@")[0],
-            "courriel": email,
+            "nom": nom,
+            "code": code,
             "motDePasse": hash_password(password),
             "role": "admin",
             "createdAt": date.today().isoformat(),
@@ -16890,14 +16914,80 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             "groupes": groupes_avec_niveau(groups_of_teacher(teacher)),
         }, 201)
 
+    @sous_verrou
+    def _handle_prof_premiere_connexion(self):
+        """L'enseignant choisit son code et son mot de passe, une fois.
+
+        Le compte est créé par la direction avec un code et un mot de passe
+        **temporaires**, remis en main propre. Ils traversent un corridor :
+        un billet imprimé, une phrase au téléphone. Les deux se remplacent donc
+        à la première ouverture, et pas seulement le mot de passe — un code qui
+        a circulé n'est pas plus secret qu'un mot de passe qui a circulé.
+
+        Trois refus, tous côté serveur :
+        — le geste n'a de sens que sur un compte encore temporaire ;
+        — le code choisi doit être libre, chez les enseignants comme chez les
+          élèves ;
+        — un mot de passe de moins de huit caractères n'entre pas.
+        """
+        teacher = self._require_teacher()
+        if not teacher:
+            return
+        if not teacher.get("motDePasseTemporaire"):
+            json_response(self, {
+                "error": "Ce compte a déjà choisi son code et son mot de passe."
+            }, 409)
+            return
+        body = self._read_json_body()
+        code = normalize_prof_code(body.get("code"))
+        motdepasse = body.get("motDePasse", "")
+
+        alphabet = set(string.ascii_uppercase + string.digits)
+        if len(code) != CODE_PROF_LONGUEUR or not set(code) <= alphabet:
+            json_response(self, {
+                "error": "Le code fait %d caractères, lettres et chiffres seulement."
+                         % CODE_PROF_LONGUEUR}, 400)
+            return
+        if len(motdepasse) < 8:
+            json_response(self, {
+                "error": "Le mot de passe doit faire au moins 8 caractères"}, 400)
+            return
+
+        teachers = load_teachers()
+        cible = next((t for t in teachers if t["id"] == teacher["id"]), None)
+        if cible is None:
+            json_response(self, {"error": "Compte introuvable"}, 404)
+            return
+        # Garder son propre code est permis : c'est le mot de passe qui compte.
+        if normalize_prof_code(cible.get("code")) != code \
+                and not code_prof_libre(code, teachers):
+            json_response(self, {
+                "error": "Ce code est déjà pris. Choisissez-en un autre."}, 409)
+            return
+
+        cible["code"] = code
+        cible["motDePasse"] = hash_password(motdepasse)
+        cible.pop("motDePasseTemporaire", None)
+        cible["premiereConnexion"] = datetime.now().isoformat(timespec="seconds")
+        save_teachers(teachers)
+        json_response(self, {"success": True, "enseignant": public_teacher(cible)})
+
     def _handle_prof_login(self):
         body = self._read_json_body()
-        email = normalize_email(body.get("courriel"))
+        code = normalize_prof_code(body.get("code"))
         password = body.get("motDePasse", "")
         teacher = next((t for t in load_teachers()
-                        if normalize_email(t.get("courriel")) == email), None)
+                        if code and normalize_prof_code(t.get("code")) == code), None)
         if not teacher or not verify_password(password, teacher.get("motDePasse", "")):
-            json_response(self, {"error": "Courriel ou mot de passe invalide"}, 401)
+            # Un seul message pour les deux cas : dire « ce code n'existe pas »
+            # apprendrait à qui essaie quels codes sont attribués.
+            json_response(self, {"error": "Code ou mot de passe invalide"}, 401)
+            return
+        # Un compte éteint garde son historique mais n'ouvre plus de session.
+        if teacher.get("actif") is False:
+            json_response(self, {
+                "error": "Ce compte a été désactivé. Voyez la direction de votre centre."
+            }, 403)
             return
         token = create_session(teacher["id"])
         # La dernière connexion est la seule mesure honnête de « ce compte
@@ -16913,6 +17003,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             "success": True,
             "token": token,
             "enseignant": public_teacher(teacher),
+            # La page n'a pas à déduire l'état du compte : le serveur le dit.
+            "doitChanger": bool(teacher.get("motDePasseTemporaire")),
             "groupes": groups_of_teacher(teacher),
         })
 
@@ -17164,146 +17256,6 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 {"avant": avant, "apres": centre_id, "centre": centre.get("nom")})
         json_response(self, {"success": True, "groupe": groupe})
 
-    def _handle_invitations_add(self):
-        """Invite une ou plusieurs personnes d'un coup.
-
-        L'import d'une liste n'est pas un confort : le fondateur ouvre **tous**
-        les comptes du réseau, et trente enseignants à inscrire un lundi de
-        rentrée le rendraient goulot. On accepte donc un collage de courriels,
-        séparés par des virgules, des points-virgules ou des retours de ligne.
-        """
-        fondateur = self._require_founder()
-        if not fondateur:
-            return
-        body = self._read_json_body()
-        brut = body.get("courriels")
-        if isinstance(brut, list):
-            adresses = brut
-        else:
-            adresses = re.split(r"[\s,;]+", str(brut or ""))
-        adresses = [a.strip() for a in adresses if a and a.strip()]
-        if not adresses:
-            json_response(self, {"error": "Aucun courriel"}, 400)
-            return
-        if len(adresses) > 200:
-            json_response(self, {"error": "Deux cents adresses au maximum d'un coup"}, 400)
-            return
-        role = body.get("role")
-        try:
-            org_id = int(body.get("orgId"))
-        except (TypeError, ValueError):
-            json_response(self, {"error": "Organisation manquante"}, 400)
-            return
-
-        invitations = load_invitations()
-        faites, refusees = [], []
-        # Une adresse fautive n'annule pas les autres : sur un collage de
-        # trente, tout refuser pour une faute de frappe ferait recommencer les
-        # vingt-neuf bonnes. On rend les deux listes et l'écran les montre.
-        for adresse in adresses:
-            inv, jeton_ou_motif = creer_invitation(
-                adresse, role, org_id, par=fondateur["id"], invitations=invitations)
-            if inv is None:
-                refusees.append({"courriel": adresse, "motif": jeton_ou_motif})
-                continue
-            invitations.append(inv)
-            vue = invitation_publique(inv)
-            vue["lien"] = f"/bienvenue.html?jeton={jeton_ou_motif}"
-            faites.append(vue)
-        if faites:
-            save_invitations(invitations)
-            journal(fondateur, "invitations.creees", org_id,
-                    {"role": role, "nombre": len(faites),
-                     "courriels": [f["courriel"] for f in faites]})
-        # `success` suit ce qui s'est réellement passé : une réponse qui dit
-        # « réussi » avec zéro invitation et trois refus se contredit, et
-        # l'écran s'y fierait.
-        json_response(self, {"success": bool(faites), "invitations": faites,
-                             "refusees": refusees}, 201 if faites else 400)
-
-    def _handle_invitations_list(self):
-        fondateur = self._require_founder()
-        if not fondateur:
-            return
-        json_response(self, [invitation_publique(i) for i in load_invitations()])
-
-    def _handle_invitation_delete(self, inv_id):
-        fondateur = self._require_founder()
-        if not fondateur:
-            return
-        invitations = load_invitations()
-        inv = next((i for i in invitations if i.get("id") == inv_id), None)
-        if inv is None:
-            json_response(self, {"error": "Invitation introuvable"}, 404)
-            return
-        if inv.get("utiliseLe"):
-            json_response(self, {"error": "Cette invitation a déjà servi"}, 409)
-            return
-        # Annuler, c'est faire expirer : la ligne reste, le journal aussi.
-        inv["expire"] = datetime.now().isoformat(timespec="seconds")
-        save_invitations(invitations)
-        journal(fondateur, "invitation.annulee", inv_id,
-                {"courriel": inv.get("courriel")})
-        json_response(self, {"success": True})
-
-    def _handle_invitation_lire(self, params):
-        """Route **publique** : la personne invitée n'a pas encore de compte.
-
-        Elle ne dit rien d'un jeton faux ou périmé qu'un simple « non » — pas
-        le courriel visé, pas le centre, pas si le jeton a existé.
-        """
-        inv = invitation_valide((params.get("jeton") or [""])[0])
-        if inv is None:
-            json_response(self, {"valide": False}, 200)
-            return
-        org = find_org(inv.get("orgId"))
-        json_response(self, {
-            "valide": True,
-            "courriel": inv.get("courriel"),
-            "nom": inv.get("nom", ""),
-            "organisation": (org or {}).get("nom", ""),
-        })
-
-    def _handle_invitation_accepter(self):
-        """Route **publique** : crée le compte et pose son accès, d'un coup."""
-        body = self._read_json_body()
-        invitations = load_invitations()
-        inv = invitation_valide(body.get("jeton"), invitations)
-        if inv is None:
-            json_response(self, {"error": "Cette invitation n'est plus valable."}, 403)
-            return
-        mot = body.get("motDePasse", "")
-        if len(mot) < 8:
-            json_response(self, {"error": "Le mot de passe doit faire au moins 8 caractères"}, 400)
-            return
-        teachers = load_teachers()
-        if any(normalize_email(t.get("courriel")) == inv["courriel"] for t in teachers):
-            json_response(self, {"error": "Ce courriel a déjà un compte."}, 409)
-            return
-        nom = (body.get("nom") or inv.get("nom") or "").strip()
-        teacher = {
-            "id": max((t["id"] for t in teachers), default=0) + 1,
-            "nom": nom or inv["courriel"].split("@")[0],
-            "courriel": inv["courriel"],
-            "motDePasse": hash_password(mot),
-            # Le champ `role` ne porte plus que les pouvoirs ; la portée vient
-            # de la ligne d'accès posée juste en dessous.
-            "role": "admin" if inv.get("role") == "direction" else "prof",
-            "createdAt": date.today().isoformat(),
-        }
-        teachers.append(teacher)
-        save_teachers(teachers)
-        poser_acces(teacher["id"], inv["orgId"], inv["role"], inv.get("creePar"))
-        inv["utiliseLe"] = datetime.now().isoformat(timespec="seconds")
-        save_invitations(invitations)
-        journal({"id": teacher["id"], "nom": teacher["nom"]},
-                "invitation.acceptee", inv.get("id"),
-                {"courriel": inv["courriel"], "role": inv.get("role"),
-                 "orgId": inv.get("orgId")})
-        json_response(self, {"success": True, "jeton": create_session(teacher["id"])}, 201)
-
-    # ── Le portail des chiffres ─────────────────────────────────────────────
-
     def _stats_fenetre(self, jours):
         """Les relevés des N derniers jours, à deux grains."""
         data = relever_stats()
@@ -17470,15 +17422,6 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         eleves = load_students()
         teachers = {t["id"]: t for t in load_teachers()}
         depenses, _ = self._depenses_par_prof(depuis)
-        # Une invitation n'a pas de champ d'état : elle vaut tant qu'elle n'a
-        # pas servi et qu'elle n'est pas périmée. Montrer les autres ferait
-        # une liste de liens morts sur laquelle on cliquerait.
-        maintenant = datetime.now().isoformat(timespec="seconds")
-        invitations = [i for i in load_invitations()
-                       if i.get("orgId") == org_id
-                       and not i.get("utiliseLe")
-                       and (i.get("expire") or "") > maintenant]
-
         lignes, total = [], 0.0
         for teacher_id, role in self._roster_centre(org_id, groupes, acces).items():
             t = teachers.get(teacher_id)
@@ -17493,7 +17436,11 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             autorisee, decideur = ia_pour_enseignant(t, orgs=orgs, acces=acces)
             lignes.append({
                 "teacherId": t["id"], "nom": t.get("nom", ""),
-                "courriel": t.get("courriel", ""),
+                "code": t.get("code", ""),
+                # Un compte qui n'a pas encore ouvert sa session : la direction
+                # doit pouvoir le voir, c'est un billet qui n'est pas arrivé.
+                "doitChanger": bool(t.get("motDePasseTemporaire")),
+                "actif": t.get("actif", True),
                 "role": role, "rattache": bool(role),
                 # La seule mesure honnête de « ce compte a-t-il déjà servi ? ».
                 # La deviner depuis les traces d'élèves se tromperait sur une
@@ -17519,7 +17466,6 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             "fondateur": is_founder(teacher),
             "totalUsd": round(total, 4),
             "enseignants": sorted(lignes, key=lambda l: (l["nom"] or "").lower()),
-            "invitations": [invitation_publique(i) for i in invitations],
         })
 
     def _handle_direction_reseau(self, params):
@@ -17581,7 +17527,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 continue
             directions.append({
                 "teacherId": t["id"], "nom": t.get("nom", ""),
-                "courriel": t.get("courriel", ""), "role": a.get("role"),
+                "code": t.get("code", ""), "role": a.get("role"),
                 "centre": org.get("nom", ""), "centreId": a.get("orgId"),
                 "derniereConnexion": t.get("derniereConnexion", ""),
             })
@@ -17636,10 +17582,10 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                              "iaEffective": bool(autorisee),
                              "iaDecidePar": decideur or {}})
 
-    def _handle_direction_inviter(self):
+    def _handle_direction_ouvrir_comptes(self):
         """Ouvrir un compte depuis son centre, sans passer par le fondateur.
 
-        C'était le goulot : les invitations étaient réservées au fondateur, qui
+        C'était le goulot : ouvrir un compte était réservé au fondateur, qui
         ouvrait donc **tous** les comptes du réseau. Une direction invite
         maintenant ses enseignants, bornée à son centre ; seul le fondateur
         invite une direction, parce qu'ouvrir un pair est un pouvoir, pas une
@@ -17673,35 +17619,49 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             }, 403)
             return
 
-        brut = body.get("courriels")
-        adresses = brut if isinstance(brut, list) else re.split(r"[\s,;]+", str(brut or ""))
-        adresses = [a.strip() for a in adresses if a and a.strip()]
-        if not adresses:
-            json_response(self, {"error": "Aucun courriel"}, 400)
+        # Une liste de noms, collée ou tapée. Ouvrir les comptes d'une équipe
+        # entière est le geste courant d'une rentrée : le faire un par un
+        # ferait recommencer trente fois le même formulaire.
+        brut = body.get("noms")
+        noms = brut if isinstance(brut, list) else re.split(r"[\n;]+", str(brut or ""))
+        noms = [n.strip() for n in noms if n and n.strip()]
+        if not noms:
+            json_response(self, {"error": "Aucun nom"}, 400)
             return
-        if len(adresses) > 200:
-            json_response(self, {"error": "Deux cents adresses au maximum d'un coup"}, 400)
+        if len(noms) > 200:
+            json_response(self, {"error": "Deux cents noms au maximum d'un coup"}, 400)
             return
 
-        invitations = load_invitations()
-        faites, refusees = [], []
-        for adresse in adresses:
-            inv, jeton_ou_motif = creer_invitation(
-                adresse, role, org_id, par=teacher["id"], invitations=invitations)
-            if inv is None:
-                refusees.append({"courriel": adresse, "motif": jeton_ou_motif})
+        teachers = load_teachers()
+        faits, refuses = [], []
+        for nom in noms:
+            if len(nom) > 80:
+                refuses.append({"nom": nom[:80], "motif": "nom trop long"})
                 continue
-            invitations.append(inv)
-            vue = invitation_publique(inv)
-            vue["lien"] = f"/bienvenue.html?jeton={jeton_ou_motif}"
-            faites.append(vue)
-        if faites:
-            save_invitations(invitations)
-            journal(teacher, "invitations.creees", org_id,
-                    {"role": role, "nombre": len(faites),
-                     "courriels": [f["courriel"] for f in faites]})
-        json_response(self, {"success": bool(faites), "invitations": faites,
-                             "refusees": refusees}, 201 if faites else 400)
+            code = generate_prof_code(teachers)
+            motdepasse = generate_prof_motdepasse()
+            compte = {
+                "id": max((t["id"] for t in teachers), default=0) + 1,
+                "nom": nom,
+                "code": code,
+                "motDePasse": hash_password(motdepasse),
+                "motDePasseTemporaire": True,
+                "role": "admin" if role == "direction" else "prof",
+                "createdAt": date.today().isoformat(),
+            }
+            teachers.append(compte)
+            poser_acces(compte["id"], org_id, role, teacher["id"])
+            # Le billet ne paraît qu'ici. Le mot de passe n'est gardé nulle
+            # part en clair — ni au journal, ni sur la fiche.
+            faits.append({"id": compte["id"], "nom": nom, "role": role,
+                          "code": code, "motDePasseTemporaire": motdepasse})
+        if faits:
+            save_teachers(teachers)
+            journal(teacher, "comptes.ouverts", org_id,
+                    {"role": role, "nombre": len(faits),
+                     "codes": [f["code"] for f in faits]})
+        json_response(self, {"success": bool(faits), "comptes": faits,
+                             "refuses": refuses}, 201 if faits else 400)
 
     def _handle_stats_portees(self):
         """Ce que la personne connectée a le droit de regarder.
@@ -18383,19 +18343,16 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if not admin:
             return
         body = self._read_json_body()
-        email = normalize_email(body.get("courriel"))
-        password = body.get("motDePasse", "")
         nom = (body.get("nom", "") or "").strip()
-        if not email or "@" not in email:
-            json_response(self, {"error": "Courriel invalide"}, 400)
+        if not nom:
+            json_response(self, {"error": "Le nom est requis"}, 400)
             return
         teachers = load_teachers()
-        if any(normalize_email(t.get("courriel")) == email for t in teachers):
-            json_response(self, {"error": "Ce courriel est déjà utilisé"}, 409)
-            return
-        if len(password) < 8:
-            json_response(self, {"error": "Le mot de passe doit faire au moins 8 caractères"}, 400)
-            return
+        # Ni code ni mot de passe ne sont demandés : le serveur les tire, comme
+        # pour un élève. Ils sont temporaires et ne paraissent **qu'une fois**,
+        # dans cette réponse — on les imprime ou on les recopie tout de suite.
+        code = generate_prof_code(teachers)
+        password = generate_prof_motdepasse()
         if body.get("role") == "admin" and not is_founder(admin, teachers):
             json_response(self, {
                 "error": "Seul le compte fondateur peut ouvrir un compte "
@@ -18405,9 +18362,10 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             return
         teacher = {
             "id": max((t["id"] for t in teachers), default=0) + 1,
-            "nom": nom or email.split("@")[0],
-            "courriel": email,
+            "nom": nom,
+            "code": code,
             "motDePasse": hash_password(password),
+            "motDePasseTemporaire": True,
             "role": "admin" if body.get("role") == "admin" else "prof",
             "createdAt": date.today().isoformat(),
         }
@@ -18425,10 +18383,18 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         else:
             print(f"[WARN] compte {teacher['id']} créé sans accès : "
                   "aucun centre dans l'arbre", flush=True)
+        # Le journal note le code, jamais le mot de passe : le premier est
+        # l'identité du compte, le second est un secret.
         journal(admin, "compte.ouvert", teacher["id"],
-                {"courriel": email, "role": teacher["role"],
+                {"code": code, "role": teacher["role"],
                  "centreId": centre["id"] if centre else None})
-        json_response(self, {"success": True, "enseignant": public_teacher(teacher)}, 201)
+        json_response(self, {
+            "success": True,
+            "enseignant": public_teacher(teacher),
+            # Rendus une seule fois, et jamais relisibles ensuite.
+            "code": code,
+            "motDePasseTemporaire": password,
+        }, 201)
 
     def _handle_teacher_update(self, teacher_id):
         admin = self._require_teacher(admin=True)
@@ -18465,13 +18431,30 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 json_response(self, {"error": "Il doit rester au moins un administrateur"}, 409)
                 return
             target["role"] = "admin" if body["role"] == "admin" else "prof"
-        if body.get("motDePasse"):
-            if len(body["motDePasse"]) < 8:
-                json_response(self, {"error": "Le mot de passe doit faire au moins 8 caractères"}, 400)
+        # Réinitialiser, c'est refaire le corridor du début : un mot de passe
+        # temporaire tiré par le serveur, remis en main propre, et le compte
+        # repasse par l'écran de première connexion — où il rechoisit **aussi**
+        # son code, puisque celui-ci a circulé avec le mot de passe.
+        nouveau = None
+        if body.get("reinitialiser"):
+            nouveau = generate_prof_motdepasse()
+            target["motDePasse"] = hash_password(nouveau)
+            target["motDePasseTemporaire"] = True
+        # Éteindre un compte plutôt que le supprimer : l'historique de dépense
+        # du centre reste lisible, et la personne ne se connecte plus.
+        if "actif" in body:
+            if is_founder(target, teachers) and not body["actif"]:
+                json_response(self, {
+                    "error": "Le compte fondateur ne peut pas être désactivé."}, 403)
                 return
-            target["motDePasse"] = hash_password(body["motDePasse"])
+            target["actif"] = bool(body["actif"])
         save_teachers(teachers)
-        json_response(self, {"success": True, "enseignant": public_teacher(target)})
+        json_response(self, {
+            "success": True,
+            "enseignant": public_teacher(target),
+            # Rendu une seule fois, comme à l'ouverture du compte.
+            **({"motDePasseTemporaire": nouveau} if nouveau else {}),
+        })
 
     def _handle_teacher_delete(self, teacher_id):
         admin = self._require_teacher(admin=True)
@@ -18501,7 +18484,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         # pouvoir dire dans six mois qui voyait quoi, et depuis quand.
         retirer_acces(teacher_id)
         journal(admin, "compte.supprime", teacher_id,
-                {"courriel": target.get("courriel"), "nom": target.get("nom")})
+                {"code": target.get("code"), "nom": target.get("nom")})
         # Déconnexion immédiate du compte supprimé
         sessions = {tok: s for tok, s in load_sessions().items()
                     if s.get("teacherId") != teacher_id}
@@ -20474,7 +20457,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             "id": uuid.uuid4().hex[:12],
             "timestamp": datetime.now().isoformat(timespec="seconds"),
             "enseignantNom": teacher.get("nom", ""),
-            "enseignantCourriel": teacher.get("courriel", teacher.get("email", "")),
+            "enseignantCode": teacher.get("code", ""),
             "ecran": (body.get("ecran") or "").strip()[:120],
             "url": (body.get("url") or "").strip()[:400],
             "agent": (self.headers.get("User-Agent") or "")[:300],
@@ -20502,11 +20485,11 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         teacher = self._require_teacher()
         if not teacher:
             return
-        courriel = normalize_email(teacher.get("courriel", teacher.get("email", "")))
+        code = normalize_prof_code(teacher.get("code"))
         est_admin = teacher.get("role") == "admin"
         entries = [
             e for e in load_signalements()
-            if est_admin or normalize_email(e.get("enseignantCourriel", "")) == courriel
+            if est_admin or normalize_prof_code(e.get("enseignantCode")) == code
         ]
         json_response(self, sorted(entries, key=lambda e: e.get("timestamp", ""),
                                    reverse=True))
@@ -20906,6 +20889,13 @@ if __name__ == "__main__":
             migrate_organisations()
         except Exception as e:
             print(f"[WARN] migrate_organisations a échoué : {e}", flush=True)
+        # Doit suivre les deux précédentes : elle touche des comptes qu'elles
+        # ont pu créer. Et elle est la condition pour se connecter du tout —
+        # si elle échoue, le journal doit le dire fort.
+        try:
+            migrer_codes_enseignants()
+        except Exception as e:
+            print(f"[WARN] migrer_codes_enseignants a échoué : {e}", flush=True)
 
 
     threading.Thread(target=_init_storage_safe, daemon=True).start()

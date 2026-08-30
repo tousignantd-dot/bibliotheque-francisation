@@ -350,7 +350,7 @@
     const boite = $('erreurConnexion');
     boite.textContent = erreur;
     boite.hidden = !erreur;
-    $('courriel').focus();
+    $('code').focus();
   }
 
   async function ouvrirPortail() {
@@ -1042,7 +1042,7 @@
       <div class="card__row pe-rangee">
         <div class="pe-rangee-txt">
           <div class="pe-rangee-titre" style="font-size:var(--fs-body-sm)">${esc(e.nom)}</div>
-          <div class="pe-rangee-meta">${esc(e.courriel)} · ${pluriel(e.nbGroupes || 0, 'groupe')}</div>
+          <div class="pe-rangee-meta"><span class="pe-code-champ">${esc(e.code || '')}</span> · ${pluriel(e.nbGroupes || 0, 'groupe')}${e.doitChanger ? ' · <b>compte pas encore ouvert</b>' : ''}</div>
         </div>
         <span class="pe-pastille ${e.role === 'admin' ? 'pe-pastille--offerte' : 'pe-pastille--vide'}">${e.role === 'admin' ? 'Administrateur' : 'Enseignant'}</span>
         <button type="button" class="btn btn--ghost btn--sm" data-reinit="${e.id}">Réinitialiser le mot de passe</button>
@@ -1128,6 +1128,45 @@
   /* ══════════ Écoutes ══════════ */
 
   // — Connexion —
+  /* Première ouverture : on remplace le code ET le mot de passe temporaires.
+     La carte de connexion s'efface — on ne peut pas revenir en arrière sans
+     recharger, et recharger sans avoir choisi ramène ici. */
+  function ouvrirPremiereConnexion() {
+    $('formConnexion').closest('.pe-connexion').hidden = true;
+    $('ecranPremiere').hidden = false;
+    $('premCode').focus();
+  }
+
+  document.addEventListener('submit', async (e) => {
+    if (e.target.id !== 'formPremiere') return;
+    e.preventDefault();
+    const boite = $('erreurPremiere');
+    const dire = (m) => { boite.textContent = m; boite.hidden = false; };
+    // Vider le texte en plus de cacher la boîte : une erreur corrigée ne doit
+    // pas ressortir au prochain refus si celui-ci est d'une autre nature.
+    boite.textContent = ''; boite.hidden = true;
+    const code = $('premCode').value.trim().toUpperCase();
+    const mdp = $('premMotDePasse').value;
+    if (mdp !== $('premMotDePasse2').value) return dire('Les deux mots de passe diffèrent.');
+    const bouton = $('boutonPremiere');
+    bouton.disabled = true;
+    try {
+      // `envoyer()` porte le jeton, relève un 401 comme partout ailleurs et
+      // lève sur un refus en remontant le message du serveur tel quel — c'est
+      // lui qui connaît le motif.
+      const data = await envoyer('/api/prof/premiere-connexion',
+                                 { code: code, motDePasse: mdp });
+      etat.enseignant = data.enseignant;
+      $('ecranPremiere').hidden = true;
+      etat.ecran = etat.groupes.length ? 'planif' : 'groupes';
+      await ouvrirPortail();
+    } catch (err) {
+      dire(err.message);
+    } finally {
+      bouton.disabled = false;
+    }
+  });
+
   $('formConnexion').addEventListener('submit', async (e) => {
     e.preventDefault();
     const bouton = $('boutonConnexion');
@@ -1137,7 +1176,7 @@
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          courriel: $('courriel').value.trim(),
+          code: $('code').value.trim().toUpperCase(),
           motDePasse: $('motDePasse').value,
         }),
       });
@@ -1148,6 +1187,11 @@
       poserGroupes(data.groupes);
       $('motDePasse').value = '';
       $('erreurConnexion').hidden = true;
+      // Un compte encore temporaire ne va nulle part avant d'avoir choisi son
+      // code et son mot de passe : le serveur refuserait tout le reste de
+      // toute façon le jour où on l'y obligera, et surtout ce qui a circulé
+      // sur un billet ne doit pas rester la clé du compte.
+      if (data.doitChanger) { ouvrirPremiereConnexion(); return; }
       etat.ecran = etat.groupes.length ? 'planif' : 'groupes';
       await ouvrirPortail();
     } catch (err) {

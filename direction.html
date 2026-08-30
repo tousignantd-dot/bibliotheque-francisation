@@ -127,6 +127,10 @@
 
     .dr-vide { padding: var(--sp-6); text-align: center; color: var(--text-muted);
                font-size: var(--fs-ui-sm); }
+    .dr-code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+               font-weight: var(--fw-black); letter-spacing: .1em;
+               background: var(--accent-soft); color: var(--accent-ink);
+               border-radius: 6px; padding: 1px 7px; }
   </style>
 </head>
 <body>
@@ -299,7 +303,9 @@
         d.enseignants.forEach(function (l) {
           h += '<tr>' +
             '<td><span class="dr-nom">' + ech(l.nom || 'Sans nom') + '</span>' +
-              '<span class="dr-second">' + ech(l.courriel || '') + '</span></td>' +
+              '<span class="dr-second dr-code">' + ech(l.code || '') + '</span>' +
+              (l.doitChanger ? '<span class="dr-second"><b>compte pas encore ouvert</b></span>' : '') +
+              '</td>' +
             '<td>' + ech(LIBELLE_ROLE[l.role] || l.role || '') +
               (l.rattache ? '' : '<span class="dr-second">à rattacher</span>') + '</td>' +
             '<td>' + (l.derniereConnexion
@@ -322,7 +328,6 @@
              '<p class="dr-sous">La personne reçoit un lien et choisit son propre ' +
              'mot de passe : on n\'envoie jamais un mot de passe.</p>' +
              formulaire('prof', d.centre.id, '') +
-             liensInvitations(d.invitations) +
              '</section>';
       }
       return h;
@@ -392,7 +397,9 @@
         d.directions.forEach(function (l) {
           h += '<tr>' +
             '<td><span class="dr-nom">' + ech(l.nom || 'Sans nom') + '</span>' +
-              '<span class="dr-second">' + ech(l.courriel || '') + '</span></td>' +
+              '<span class="dr-second dr-code">' + ech(l.code || '') + '</span>' +
+              (l.doitChanger ? '<span class="dr-second"><b>compte pas encore ouvert</b></span>' : '') +
+              '</td>' +
             '<td>' + ech(LIBELLE_ROLE[l.role] || l.role) + '</td>' +
             '<td>' + ech(l.centre || '—') + '</td>' +
             '<td>' + (l.derniereConnexion
@@ -429,9 +436,9 @@
     function formulaire(role, centreId, centres) {
       var h = '<form class="dr-form" data-role="' + role + '"' +
               (centreId ? ' data-centre="' + centreId + '"' : '') + '>' +
-              '<label for="crl-' + role + '">Courriels</label>' +
-              '<textarea id="crl-' + role + '" name="courriels" required ' +
-              'placeholder="une adresse par ligne, ou séparées par des virgules">' +
+              '<label for="crl-' + role + '">Noms</label>' +
+              '<textarea id="crl-' + role + '" name="noms" required ' +
+              'placeholder="un nom par ligne — Prénom Nom">' +
               '</textarea>';
       if (centres && centres.length) {
         h += '<div class="rangee"><div>' +
@@ -441,30 +448,19 @@
                (c.css ? ' — ' + ech(c.css) : '') + '</option>';
         });
         h += '</select></div><div style="flex:0 0 auto">' +
-             '<button class="btn btn--pri" type="submit">Envoyer l\'invitation</button>' +
+             '<button class="btn btn--pri" type="submit">Ouvrir les comptes</button>' +
              '</div></div>';
       } else {
         h += '<div class="rangee"><div style="flex:0 0 auto">' +
-             '<button class="btn btn--pri" type="submit">Envoyer l\'invitation</button>' +
+             '<button class="btn btn--pri" type="submit">Ouvrir les comptes</button>' +
              '</div></div>';
       }
-      h += '<p class="dr-aide">Une adresse fautive n\'annule pas les autres : ' +
-           'les refus sont listés avec leur motif. Une invitation vaut quatorze ' +
-           'jours et ne sert qu\'une fois.</p></form>' +
+      h += '<p class="dr-aide">Le serveur tire un <b>code</b> et un <b>mot de passe ' +
+           'temporaires</b> par personne. Ils ne paraissent qu\'une fois, ici : ' +
+           'notez-les ou imprimez-les avant de fermer. La personne choisira ' +
+           'elle-même son code et son mot de passe à sa première connexion.</p></form>' +
            '<div class="dr-liens" data-liens="' + role + '"></div>';
       return h;
-    }
-
-    function liensInvitations(liste) {
-      if (!liste || !liste.length) return '';
-      var h = '<p class="dr-note"><b>Invitations en attente.</b> Le lien ne ' +
-              's\'affiche qu\'à la création : celles-ci sont valides, mais leur ' +
-              'lien n\'est plus lisible ici.</p><div class="dr-liens">';
-      liste.forEach(function (i) {
-        h += '<div class="dr-lien"><b>' + ech(i.courriel) + '</b>' +
-             'expire le ' + ech(jour(i.expire)) + '</div>';
-      });
-      return h + '</div>';
     }
 
     /* ── Chargement ──────────────────────────────────────────────────── */
@@ -555,37 +551,39 @@
         f.addEventListener('submit', async function (ev) {
           ev.preventDefault();
           var orgId = f.dataset.centre || (f.querySelector('[name=orgId]') || {}).value;
-          var courriels = f.querySelector('[name=courriels]').value;
+          var noms = f.querySelector('[name=noms]').value;
           try {
-            var res = await Prof.fetch('/api/direction/invitations', {
+            var res = await Prof.fetch('/api/direction/enseignants', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ orgId: Number(orgId), role: f.dataset.role,
-                                     courriels: courriels })
+                                     noms: noms })
             });
             var d = await res.json();
-            if (!res.ok && !d.invitations) { message(d.error || 'Refusé', true); return; }
+            if (!res.ok && !d.comptes) { message(d.error || 'Refusé', true); return; }
             var boite = document.querySelector('[data-liens="' + f.dataset.role + '"]');
             var h = '';
-            (d.invitations || []).forEach(function (i) {
-              /* Le lien ne s'affiche qu'une fois, et la page le dit en toutes
-                 lettres : sans cet avertissement, on ferme l'onglet et on
-                 recommence. */
-              h += '<div class="dr-lien"><b>' + ech(i.courriel) + '</b>' +
-                   location.origin + ech(i.lien) + '</div>';
+            (d.comptes || []).forEach(function (c) {
+              /* Le billet ne paraît qu'ici : le serveur ne garde le mot de
+                 passe nulle part en clair et ne le rendra plus. Sans cet
+                 avertissement, on ferme l'onglet et on recommence. */
+              h += '<div class="dr-lien"><b>' + ech(c.nom) + '</b>' +
+                   'code <span class="dr-code">' + ech(c.code) + '</span> · ' +
+                   'mot de passe temporaire <span class="dr-code">' +
+                   ech(c.motDePasseTemporaire) + '</span></div>';
             });
-            (d.refusees || []).forEach(function (r) {
-              h += '<div class="dr-lien"><b>' + ech(r.courriel) + ' — refusé</b>' +
+            (d.refuses || []).forEach(function (r) {
+              h += '<div class="dr-lien"><b>' + ech(r.nom) + ' — refusé</b>' +
                    ech(r.motif) + '</div>';
             });
             boite.innerHTML = h;
-            var n = (d.invitations || []).length;
-            var nr = (d.refusees || []).length;
+            var n = (d.comptes || []).length;
+            var nr = (d.refuses || []).length;
             message(
-              (n ? n + (n > 1 ? ' invitations créées' : ' invitation créée') +
-                   '. Copiez les liens maintenant : ils ne s\'affichent qu\'une fois.'
-                 : 'Aucune invitation créée.') +
-              (nr ? ' ' + nr + (nr > 1 ? ' adresses refusées' : ' adresse refusée') + '.' : ''),
+              (n ? n + (n > 1 ? ' comptes ouverts' : ' compte ouvert') +
+                   '. Notez les codes et les mots de passe maintenant : ils ne s\'affichent qu\'une fois.'
+                 : 'Aucun compte ouvert.') +
+              (nr ? ' ' + nr + (nr > 1 ? ' noms refusés' : ' nom refusé') + '.' : ''),
               !n);
             f.reset();
           } catch (e) { message(e.message, true); }

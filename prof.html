@@ -120,6 +120,47 @@
       box-shadow: 0 12px 30px rgba(23, 24, 26, .28);
     }
     .pc-message--no { background: var(--no-line); }
+
+    /* Le code d'un compte se lit, se dicte et se recopie : caractères à
+       chasse fixe, espacés, jamais dans le flux d'une phrase. */
+    .pc-code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+               font-weight: var(--fw-black); letter-spacing: .12em;
+               background: var(--accent-soft); color: var(--accent-ink);
+               border-radius: 6px; padding: 1px 7px; }
+    .pc-code-champ { font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+                     letter-spacing: .22em; text-transform: uppercase; font-weight: var(--fw-bold); }
+
+    /* Le billet : ce que la direction remet en main propre. Il ne paraît
+       qu'une fois — le serveur ne rend plus jamais le mot de passe — donc il
+       occupe la place d'un document, pas d'un message qui s'efface. */
+    .pc-billet { border: 2px solid var(--accent); border-radius: var(--r-lg, 18px);
+                 background: var(--surface-card); padding: var(--sp-5);
+                 margin-top: var(--sp-4); }
+    .pc-billet h3 { margin: 0 0 var(--sp-2); font-size: var(--fs-h3);
+                    font-weight: var(--fw-black); color: var(--text-strong); }
+    .pc-billet-paire { display: flex; gap: var(--sp-6); flex-wrap: wrap;
+                       margin: var(--sp-4) 0; }
+    .pc-billet-cle { font-size: var(--fs-label); font-weight: var(--fw-bold);
+                     letter-spacing: .12em; text-transform: uppercase;
+                     color: var(--text-accent); margin: 0 0 var(--sp-1); }
+    .pc-billet-val { font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+                     font-size: 30px; font-weight: var(--fw-black);
+                     letter-spacing: .12em; color: var(--text-strong); }
+    .pc-billet-note { font-size: var(--fs-body-sm); color: var(--warn-ink);
+                      background: var(--warn-bg); border-left: 4px solid var(--warn-line);
+                      border-radius: 8px; padding: 10px var(--sp-3); margin: 0 0 var(--sp-4); }
+    .pc-billet-gestes { display: flex; gap: var(--sp-2); flex-wrap: wrap; }
+    /* Imprimer le billet, et rien d'autre. Par `visibility` et non `display` :
+       le billet est enfoui dans la page, et masquer les enfants directs de
+       `body` l'aurait emporté avec ses ancêtres — la feuille serait sortie
+       vide. Vérifié en regardant l'aperçu, pas en relisant la règle. */
+    @media print {
+      body * { visibility: hidden; }
+      #billet, #billet * { visibility: visible; }
+      #billet { position: absolute; top: 0; left: 0; width: 100%;
+                border-color: #000; box-shadow: none; }
+      .pc-billet-gestes { display: none; }
+    }
   </style>
 </head>
 <body>
@@ -141,22 +182,25 @@
       <div class="container">
         <div class="band__eyebrow">Francisation · Personnel enseignant</div>
         <h1 id="titreAvant">Comptes enseignants</h1>
-        <p class="band__lead" id="chapeauAvant">Les comptes du personnel enseignant du centre : les ouvrir, les retirer, réinitialiser un mot de passe. Vos groupes, vos élèves et votre planification vivent dans le portail enseignant.</p>
+        <p class="band__lead" id="chapeauAvant">Les comptes du personnel enseignant du centre : les ouvrir, les retirer, réinitialiser un accès. Vos groupes, vos élèves et votre planification vivent dans le portail enseignant.</p>
 
         <div class="pc-connexion">
           <form class="card" id="formConnexion" novalidate>
             <div class="stack">
               <div>
                 <div class="pc-titre-section" id="titreCarte">Connexion</div>
-                <p class="pc-note" style="margin-top:var(--sp-1)" id="sousTitreCarte">Utilisez le courriel fourni par le centre.</p>
+                <p class="pc-note" style="margin-top:var(--sp-1)" id="sousTitreCarte">Utilisez le code et le mot de passe remis par votre centre.</p>
               </div>
               <div id="champNom" hidden>
                 <label class="field-label" for="authNom">Votre nom</label>
                 <input id="authNom" class="field" type="text" autocomplete="name" placeholder="Prénom Nom" />
               </div>
               <div>
-                <label class="field-label" for="authCourriel">Courriel</label>
-                <input id="authCourriel" class="field" type="email" autocomplete="username" placeholder="prenom.nom@centre.qc.ca" required />
+                <label class="field-label" for="authCode">Code</label>
+                <input id="authCode" class="field pc-code-champ" type="text" inputmode="latin"
+                       autocomplete="username" autocapitalize="characters" spellcheck="false"
+                       maxlength="6" placeholder="K7M2QP" required />
+                <p class="field-hint" id="indiceCode" hidden>Six caractères, lettres et chiffres.</p>
               </div>
               <div>
                 <label class="field-label" for="authMotDePasse">Mot de passe</label>
@@ -165,7 +209,7 @@
               </div>
               <div class="fb fb--no" id="erreurConnexion" role="alert" hidden></div>
               <button type="submit" class="btn btn--pri btn--lg" style="width:100%" id="boutonConnexion">Se connecter</button>
-              <p class="pc-note">Votre session reste ouverte 30 jours sur cet appareil. Mot de passe oublié : demandez à un compte administrateur de le réinitialiser.</p>
+              <p class="pc-note">Votre session reste ouverte 30 jours sur cet appareil. Code ou mot de passe oublié : la direction de votre centre les réinitialise.</p>
               <p class="pc-note"><a href="enseignant.html">Aller au portail enseignant</a></p>
             </div>
           </form>
@@ -224,7 +268,7 @@
         <div class="pc-entete-section">
           <div>
             <div class="pc-titre-section">Comptes du centre</div>
-            <p class="pc-consigne">Tous les comptes, administrateurs compris. Un compte « administrateur » ouvre des comptes enseignants et réinitialise un mot de passe ; un compte « enseignant » ne fait ni l'un ni l'autre. <strong>Ce que chacun voit ne dépend plus du rôle</strong> mais de son rattachement dans l'arbre du réseau : un administrateur voit son centre, pas ceux des autres. <strong>Ouvrir un compte « administrateur » est réservé au compte fondateur</strong>, celui du premier démarrage.</p>
+            <p class="pc-consigne">Tous les comptes, administrateurs compris. Un compte « administrateur » ouvre des comptes enseignants et réinitialise un accès ; un compte « enseignant » ne fait ni l'un ni l'autre. <strong>Ce que chacun voit ne dépend plus du rôle</strong> mais de son rattachement dans l'arbre du réseau : un administrateur voit son centre, pas ceux des autres. <strong>Ouvrir un compte « administrateur » est réservé au compte fondateur</strong>, celui du premier démarrage.</p>
           </div>
           <div class="pc-compte" id="resumeComptes"></div>
         </div>
@@ -236,14 +280,6 @@
                 <label class="field-label" for="nouvNom">Nom</label>
                 <input id="nouvNom" class="field" type="text" placeholder="Prénom Nom" />
               </div>
-              <div>
-                <label class="field-label" for="nouvCourriel">Courriel</label>
-                <input id="nouvCourriel" class="field" type="email" placeholder="prenom.nom@centre.qc.ca" />
-              </div>
-              <div>
-                <label class="field-label" for="nouvMotDePasse">Mot de passe provisoire</label>
-                <input id="nouvMotDePasse" class="field" type="password" autocomplete="new-password" />
-              </div>
               <div class="pc-court" id="champRole" hidden>
                 <label class="field-label" for="nouvRole">Rôle</label>
                 <select id="nouvRole" class="field pc-select">
@@ -254,6 +290,28 @@
               <button type="submit" class="btn btn--pri">Ouvrir le compte</button>
               <p class="pc-note" id="noteRole" style="flex:1 0 100%" hidden>Le compte ouvert sera un compte « enseignant ». Seul le compte fondateur ouvre des comptes « administrateur ».</p>
             </form>
+            <div class="pc-billet" id="billet" hidden>
+              <h3 id="billetNom">Compte ouvert</h3>
+              <p class="pc-billet-note">Notez-les ou imprimez-les <b>maintenant</b> : le mot de passe
+                n’est gardé nulle part et ne sera plus jamais affiché. Remettez-les en main propre.</p>
+              <div class="pc-billet-paire">
+                <div>
+                  <p class="pc-billet-cle">Code</p>
+                  <div class="pc-billet-val" id="billetCode"></div>
+                </div>
+                <div>
+                  <p class="pc-billet-cle">Mot de passe temporaire</p>
+                  <div class="pc-billet-val" id="billetMotDePasse"></div>
+                </div>
+              </div>
+              <p class="pc-note" style="margin-bottom:var(--sp-4)">À la première connexion, la personne
+                choisira elle-même son code et son mot de passe. Ceux-ci cesseront alors de fonctionner.</p>
+              <div class="pc-billet-gestes">
+                <button type="button" class="btn btn--pri btn--sm" id="billetCopier">Copier</button>
+                <button type="button" class="btn btn--ghost btn--sm" onclick="window.print()">Imprimer</button>
+                <button type="button" class="btn btn--ghost btn--sm" id="billetFermer">J’ai noté</button>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -416,14 +474,20 @@ document.addEventListener('keydown', e => {
     $('chapeauAvant').textContent =
       "Aucun compte n'existe encore. Créez le compte administrateur : il pourra ensuite ouvrir les comptes des autres enseignants.";
     $('titreCarte').textContent = 'Compte administrateur';
-    $('sousTitreCarte').textContent = 'Ce compte ouvre les autres et voit tous les groupes du centre.';
+    $('sousTitreCarte').textContent =
+      'Ce compte ouvre les autres et voit tous les groupes du centre. '
+      + 'Choisissez son code : c’est ce que vous taperez pour entrer, et '
+      + 'personne ne pourra vous le redonner.';
     $('champNom').hidden = false;
+    // Au premier démarrage, le code se choisit — il ne se reçoit pas.
+    $('authCode').setAttribute('autocomplete', 'off');
+    $('indiceCode').hidden = false;
     $('indiceMotDePasse').hidden = false;
     $('authMotDePasse').setAttribute('autocomplete', 'new-password');
     $('boutonConnexion').textContent = 'Créer le compte';
   }
   $('ecranConnexion').hidden = false;
-  $('authCourriel').focus();
+  $('authCode').focus();
 })();
 
 /* ══════════ Connexion / installation ══════════ */
@@ -432,7 +496,7 @@ $('formConnexion').addEventListener('submit', async e => {
   erreurConnexion('');
   const bouton = $('boutonConnexion');
   const payload = {
-    courriel: $('authCourriel').value.trim(),
+    code: $('authCode').value.trim().toUpperCase(),
     motDePasse: $('authMotDePasse').value,
   };
   if (mode === 'setup') payload.nom = $('authNom').value.trim();
@@ -467,7 +531,7 @@ function ouvrirGestion() {
   $('ecranGestion').hidden = false;
   const e = Prof.state.enseignant;
   $('nomEnseignant').textContent = e.nom;
-  $('etatSession').textContent = e.courriel +
+  $('etatSession').textContent = e.code +
     (e.fondateur ? ' · fondateur' : e.role === 'admin' ? ' · administrateur' : ' · enseignant');
   // La liste des comptes n'est servie qu'aux administrateurs (403 sinon) :
   // un compte « enseignant » voit le motif à la place, pas une page vide.
@@ -518,10 +582,10 @@ async function chargerEnseignants() {
           ${t.fondateur ? '<span class="pc-etiquette pc-etiquette--fondateur">Fondateur</span>' : ''}
           ${moi ? '<span class="pc-rangee-moi">votre compte</span>' : ''}
         </div>
-        <div class="pc-rangee-meta">${esc(t.courriel)} · ${t.nbGroupes} groupe${t.nbGroupes > 1 ? 's' : ''}</div>
+        <div class="pc-rangee-meta"><span class="pc-code">${esc(t.code)}</span> · ${t.nbGroupes} groupe${t.nbGroupes > 1 ? 's' : ''}${t.doitChanger ? ' · <b>n’a pas encore ouvert son compte</b>' : ''}</div>
       </div>
       <div class="pc-gestes">
-        ${intouchable ? '' : `<button type="button" class="btn btn--ghost btn--sm" data-reinitialiser="${t.id}" data-nom="${esc(t.nom)}">Réinitialiser le mot de passe</button>`}
+        ${intouchable ? '' : `<button type="button" class="btn btn--ghost btn--sm" data-reinitialiser="${t.id}" data-nom="${esc(t.nom)}">Réinitialiser l’accès</button>`}
         ${moi || t.fondateur ? '' : `<button type="button" class="pc-btn-retrait" data-retirer-enseignant="${t.id}">Supprimer</button>`}
       </div>
     </div>`;
@@ -531,22 +595,19 @@ async function chargerEnseignants() {
 $('listeEnseignants').addEventListener('click', async e => {
   const reinit = e.target.closest('[data-reinitialiser]');
   if (reinit) {
-    const motDePasse = await demander({
-      titre: 'Réinitialiser le mot de passe',
-      sousTitre: `Compte de ${reinit.dataset.nom}. Transmettez-lui le nouveau mot de passe ; il pourra le changer lui-même ensuite.`,
-      etiquette: 'Nouveau mot de passe (8 caractères minimum)',
-      type: 'password',
-      bouton: 'Réinitialiser',
-    });
-    if (!motDePasse) return;
+    if (!confirm(`Réinitialiser le compte de ${reinit.dataset.nom} ?\n\n`
+               + `Le serveur tire un mot de passe temporaire. La personne devra `
+               + `rechoisir son code ET son mot de passe à sa prochaine connexion — `
+               + `son code actuel cessera de fonctionner.`)) return;
     const res = await Prof.fetch(`/api/prof/enseignants/${reinit.dataset.reinitialiser}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ motDePasse }),
+      body: JSON.stringify({ reinitialiser: true }),
     });
     const data = await res.json();
     if (!res.ok) return message(data.error, 'error');
-    message('Mot de passe réinitialisé.');
+    poserBillet(reinit.dataset.nom, data.enseignant.code, data.motDePasseTemporaire);
+    chargerEnseignants();
     return;
   }
   const retirer = e.target.closest('[data-retirer-enseignant]');
@@ -560,12 +621,27 @@ $('listeEnseignants').addEventListener('click', async e => {
   }
 });
 
+/* Le billet ne se referme pas tout seul : c'est un document à recopier, pas
+   une confirmation. Il attend « J'ai noté ». */
+function poserBillet(nom, code, motDePasse) {
+  $('billetNom').textContent = 'Compte de ' + nom;
+  $('billetCode').textContent = code || '—';
+  $('billetMotDePasse').textContent = motDePasse || '—';
+  $('billet').hidden = false;
+  $('billet').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+$('billetFermer').addEventListener('click', () => { $('billet').hidden = true; });
+$('billetCopier').addEventListener('click', async () => {
+  const texte = $('billetNom').textContent + '\nCode : ' + $('billetCode').textContent
+              + '\nMot de passe temporaire : ' + $('billetMotDePasse').textContent;
+  try { await navigator.clipboard.writeText(texte); message('Copié.'); }
+  catch (err) { message('Copie impossible sur cet appareil — recopiez à la main.', 'error'); }
+});
+
 $('formEnseignant').addEventListener('submit', async e => {
   e.preventDefault();
   const payload = {
     nom: $('nouvNom').value.trim(),
-    courriel: $('nouvCourriel').value.trim(),
-    motDePasse: $('nouvMotDePasse').value,
     role: Prof.state.enseignant.fondateur ? $('nouvRole').value : 'prof',
   };
   const res = await Prof.fetch('/api/prof/enseignants', {
@@ -576,7 +652,9 @@ $('formEnseignant').addEventListener('submit', async e => {
   const data = await res.json();
   if (!res.ok) return message(data.error, 'error');
   e.target.reset();
-  message('Compte ouvert.');
+  // Le code et le mot de passe ne paraissent qu'ici : le serveur ne les rendra
+  // plus jamais. On les met sous les yeux au lieu d'un « c'est fait ».
+  poserBillet(payload.nom, data.code, data.motDePasseTemporaire);
   chargerEnseignants();
 });
 
