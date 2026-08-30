@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>L'appel à la clinique — Niveau 5 · Défi 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --sol:#FFFFFF; --papier:#FAFAF8; --encre:#17181A; --texte:#3A3D40; --gris:#6E7175;
+  --filet:#D0CFCA; --filet-fin:#E8E7E2;
+  --acc:#0D7A6F; --acc-doux:#DCF2EF; --acc-fonce:#08463F;
+  --ambre:#B45309; --ambre-pale:#FBEEDC; --ambre-fonce:#7A3806;
+  --mauve:#6B4FBB;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--papier);color:var(--texte);
+  font-family:'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;font-size:16px;line-height:1.55;
+  -webkit-font-smoothing:antialiased;display:flex;flex-direction:column}
+h1,h2,h3,h4{margin:0;font-family:'Nunito','Arial Rounded MT Bold',sans-serif;color:var(--encre);text-wrap:balance}
+p{margin:0}
+b,strong{font-weight:700;color:var(--encre)}
+button{font-family:inherit;font-size:inherit;cursor:pointer}
+button:disabled{cursor:not-allowed}
+:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+
+/* ── barre du haut : marque, jauge, position ─────────────────────── */
+.tete{background:#FFF;border-bottom:1px solid var(--filet);padding:10px 20px;
+  display:flex;align-items:center;gap:16px;flex-wrap:wrap;flex:0 0 auto}
+.fr-nom{font-family:'Nunito',sans-serif;font-weight:900;font-size:21px;letter-spacing:-.035em;
+  line-height:1;position:relative;display:inline-block;color:var(--encre);text-decoration:none}
+.fr-pt{position:absolute;top:1px;left:calc(50% + 1px);width:5px;height:5px;border-radius:50%;background:var(--mauve)}
+.tete__t{font-size:13px;color:var(--gris);border-left:1px solid var(--filet);padding-left:16px}
+.tete__t b{color:var(--encre);font-weight:600}
+.jauge{flex:1 1 160px;height:5px;border-radius:3px;background:var(--filet-fin);position:relative;min-width:100px}
+.jauge i{position:absolute;top:0;left:0;bottom:0;background:var(--acc);border-radius:3px;
+  transition:width .3s ease;width:0}
+.pos{font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--gris);
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+.btn-menu{border:1px solid var(--filet);background:#FFF;border-radius:4px;padding:6px 12px;
+  font-size:12.5px;color:var(--texte)}
+.btn-menu:hover{background:var(--papier)}
+
+/* ── le menu des écrans vus (verrou doux) ────────────────────────── */
+.menu{background:#FFF;border-bottom:1px solid var(--filet);padding:12px 20px;display:none}
+.menu[data-ouvert="1"]{display:block}
+.menu ol{margin:0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:8px}
+.menu button{border:1px solid var(--filet);background:var(--papier);border-radius:4px;
+  padding:7px 12px;font-size:12.5px;text-align:left;max-width:280px;color:var(--texte)}
+.menu button[disabled]{opacity:.4}
+.menu button[aria-current="true"]{border-color:var(--acc);background:var(--acc-doux);
+  color:var(--acc-fonce);font-weight:600}
+.menu .n{font-family:'IBM Plex Mono',monospace;color:var(--gris);margin-right:7px}
+
+/* ── la scène ────────────────────────────────────────────────────── */
+.scene{flex:1 1 auto;display:flex;justify-content:center;padding:34px 20px 20px}
+.ecran{background:#FFF;border:1px solid var(--filet);border-radius:6px;max-width:760px;width:100%;
+  padding:30px 34px 26px;align-self:flex-start}
+.ecran__eye{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--acc)}
+.ecran__t{font-size:27px;font-weight:900;line-height:1.14;margin-top:7px}
+.ecran__p{font-size:16px;margin-top:12px;max-width:62ch}
+.ecran__p + .ecran__p{margin-top:10px}
+
+/* ── un extrait sonore ───────────────────────────────────────────── */
+.son{display:flex;align-items:flex-start;gap:12px;margin-top:16px;padding:12px 14px;
+  background:var(--acc-doux);border-radius:5px}
+.son__go{flex:0 0 auto;width:38px;height:38px;border-radius:50%;border:0;background:var(--acc);
+  position:relative;padding:0}
+.son__go::after{content:"";position:absolute;top:11px;left:14px;border-left:12px solid #FFF;
+  border-top:8px solid transparent;border-bottom:8px solid transparent}
+.son__go[data-joue="1"]::after{top:12px;left:12px;border:0;width:12px;height:14px;
+  background:linear-gradient(to right,#FFF 0 4px,transparent 4px 8px,#FFF 8px 12px)}
+.son__c{flex:1 1 auto;min-width:0}
+.son__qui{font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--acc-fonce)}
+.son__txt{font-size:15px;color:var(--encre);margin-top:3px}
+.son__txt[hidden]{display:none}
+.son__o{display:flex;gap:14px;margin-top:7px;flex-wrap:wrap}
+.son__o button{background:none;border:0;padding:0;font-size:12.5px;color:var(--acc-fonce);
+  text-decoration:underline;text-underline-offset:2px}
+
+/* ── la retenue : ce qu'il faut garder ───────────────────────────── */
+.retenir{border-left:3px solid var(--encre);background:var(--papier);padding:13px 16px;margin-top:18px}
+.retenir .r{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gris)}
+.retenir p{font-size:15.5px;color:var(--encre);margin-top:4px;font-family:'Nunito',sans-serif;font-weight:600}
+
+/* ── la vérification ─────────────────────────────────────────────── */
+.choix{display:flex;flex-direction:column;gap:9px;margin-top:18px}
+.choix button{border:1px solid var(--filet);background:#FFF;border-radius:5px;padding:13px 15px;
+  text-align:left;font-size:15.5px;color:var(--texte);display:flex;gap:11px;align-items:flex-start}
+.choix button:hover:not([disabled]){border-color:var(--encre);background:var(--papier)}
+.choix button .marq{flex:0 0 auto;width:20px;font-weight:800;font-family:'Nunito',sans-serif;color:var(--gris)}
+.choix button[data-etat="juste"]{border-color:var(--acc);background:var(--acc-doux);color:var(--acc-fonce);font-weight:600}
+.choix button[data-etat="juste"] .marq{color:var(--acc)}
+.choix button[data-etat="faux"]{border-color:var(--ambre);background:var(--ambre-pale);color:var(--ambre-fonce)}
+.choix button[data-etat="faux"] .marq{color:var(--ambre)}
+.choix button[data-etat="ecarte"]{opacity:.45}
+
+/* ── le rattrapage : n'existe que sur erreur ─────────────────────── */
+.rattrap{border:1px solid var(--ambre);border-left-width:3px;background:#FFF;border-radius:5px;
+  padding:15px 17px;margin-top:16px}
+.rattrap .r{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ambre-fonce)}
+.rattrap h4{font-size:17px;font-weight:900;margin-top:4px}
+.rattrap p{font-size:15px;margin-top:8px}
+.rattrap .encore{margin-top:13px;border:1px solid var(--encre);background:#FFF;border-radius:4px;
+  padding:8px 15px;font-family:'Nunito',sans-serif;font-weight:800;font-size:13.5px;color:var(--encre)}
+.juste{border:1px solid var(--acc);border-left-width:3px;background:var(--acc-doux);border-radius:5px;
+  padding:15px 17px;margin-top:16px;color:var(--acc-fonce)}
+.juste .r{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+.juste p{font-size:15px;margin-top:6px;color:var(--acc-fonce)}
+.juste p b{color:var(--acc-fonce)}
+
+/* ── le pied de l'écran ──────────────────────────────────────────── */
+.pied{display:flex;justify-content:space-between;align-items:center;gap:14px;
+  margin-top:26px;padding-top:15px;border-top:1px solid var(--filet-fin)}
+.btn{border:1px solid var(--encre);background:var(--encre);color:#FFF;border-radius:5px;
+  padding:11px 22px;font-family:'Nunito',sans-serif;font-weight:800;font-size:14.5px}
+.btn:disabled{background:var(--filet);border-color:var(--filet);color:#FFF}
+.btn-2{border:1px solid var(--filet);background:#FFF;color:var(--texte);border-radius:5px;
+  padding:11px 18px;font-size:14px}
+.btn-2:hover{border-color:var(--encre);color:var(--encre)}
+.btn-2[hidden]{display:none}
+.consigne{font-size:12.5px;color:var(--gris);text-align:right;flex:1 1 auto}
+
+.fin{max-width:760px;margin:0 auto;text-align:center;padding:40px 0}
+.fin h2{font-size:26px;font-weight:900}
+.fin p{margin-top:10px}
+
+@media (max-width:640px){
+  .ecran{padding:22px 18px 20px;border-radius:0;border-left:0;border-right:0}
+  .scene{padding:0}
+  .ecran__t{font-size:22px}
+  .tete__t{display:none}
+  .pied{flex-wrap:wrap}
+  .consigne{order:3;flex-basis:100%;text-align:left}
+}
+</style>
+</head>
+<body>
+
+<header class="tete">
+  <a class="fr-nom" href="../index.html">franc<span class="fr-pt"></span>is</a>
+  <span class="tete__t"><b>L'appel à la clinique</b> · Niveau 5 · Défi 1</span>
+  <span class="jauge" role="progressbar" aria-label="Progression du parcours"
+        aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="jauge"></i></span>
+  <span class="pos" id="pos">1 / 1</span>
+  <button type="button" class="btn-menu" id="btn-menu" aria-expanded="false"
+          aria-controls="menu">Les écrans</button>
+</header>
+
+<nav class="menu" id="menu" data-ouvert="0" aria-label="Les écrans du parcours">
+  <ol id="menu-liste"></ol>
+</nav>
+
+<main class="scene"><div class="ecran" id="ecran" tabindex="-1"></div></main>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════════
+   Le moteur d'un parcours autonome.
+
+   Il ne connaît que des ÉCRANS : une liste de données, un type par écran, une
+   mise en page par type. Le contenu vit dans `build/contenu/<slug>/storyline.js`
+   et n'est jamais écrit ici.
+
+   Trois choix s'y lisent, et ce sont les décisions du 30 août 2026 :
+
+   - **verrou doux** : « Continuer » attend que l'élève ait agi, mais le retour
+     en arrière est toujours ouvert et le menu montre les écrans déjà vus ;
+   - **narration écrite** : aucune voix d'accompagnement, seulement les extraits
+     du module de classe, rejoués par chemin absolu ;
+   - **suivi local** : les événements vont dans le `localStorage` du poste. Rien
+     ne part vers le serveur tant que la forme n'est pas acceptée. Le journal se
+     lit dans la console — `__storyline.journal()`.
+   ═══════════════════════════════════════════════════════════════════════ */
+(function () {
+  'use strict';
+
+  var ECRANS = [
+  {
+    "id": "qui-repond",
+    "type": "notion",
+    "eye": "Ce qu'il faut savoir",
+    "menu": "Qui répond au téléphone",
+    "titre": "Ce n'est pas un médecin qui répond.",
+    "paras": [
+      "Vous appelez une clinique pour votre santé, et la personne au bout du fil ne soigne personne. C'est une <b>agente administrative</b>. Elle ne vous donnera pas de conseil, elle ne dira pas si c'est grave.",
+      "Mais c'est elle qui décide d'une chose, et cette chose compte : <b>combien de temps le médecin aura pour vous</b>. Quinze minutes, ou trente. Elle le décide à partir de ce que vous dites, en une phrase, au début de l'appel.",
+      "Écoutez comment elle pose la question — puis ce qu'elle en fait."
+    ],
+    "sons": [
+      {
+        "fichier": "t1/line_09_manon.mp3",
+        "qui": "Manon, agente administrative",
+        "texte": "C'est noté. Et qu'est-ce qui vous amène ? Je ne demande pas de détails, seulement de quoi choisir la bonne durée."
+      },
+      {
+        "fichier": "t1/line_11_manon.mp3",
+        "qui": "Manon, après la réponse de Rachid",
+        "texte": "D'accord. Trois mois, ce n'est pas rien. Je vous mets une plage de trente minutes plutôt que quinze."
+      }
+    ],
+    "retenir": "Dire <b>depuis quand</b> ça dure, c'est ce qui vous fait gagner du temps avec le médecin. Pas les détails : la durée.",
+    "attente": "Écoutez les deux extraits, puis continuez."
+  },
+  {
+    "id": "choisir-moment",
+    "type": "verif",
+    "eye": "Vérification",
+    "menu": "Choisir le moment",
+    "titre": "Manon vous propose deux moments. Lequel prenez-vous ?",
+    "consigne": "Rachid est préposé à l'entretien dans une école&nbsp;: il <b>finit de travailler à seize heures</b>. Écoutez la proposition, puis choisissez la seule réponse possible.",
+    "sons": [
+      {
+        "fichier": "t1/line_13_manon.mp3",
+        "qui": "Manon",
+        "texte": "J'ai le mardi 17 juin à quatorze heures dix, ou le jeudi 19 en fin de journée, à dix-sept heures."
+      }
+    ],
+    "options": [
+      {
+        "txt": "Mardi 17 juin, quatorze heures dix.",
+        "rat_t": "Quatorze heures dix, c'est deux heures dix de l'après-midi.",
+        "rat": "Rachid travaille encore. Au Québec, les rendez-vous se donnent presque toujours en heures de 0 à 24&nbsp;: <b>quatorze heures</b> = 2 h de l'après-midi, <b>dix-sept heures</b> = 5 h. Refaites le calcul, puis réessayez."
+      },
+      {
+        "txt": "Jeudi 19 juin, dix-sept heures.",
+        "juste": true
+      },
+      {
+        "txt": "Les deux conviennent&nbsp;: il choisira plus tard.",
+        "rat_t": "Un rendez-vous se fixe pendant l'appel, jamais après.",
+        "rat": "L'agente a deux places libres <i>maintenant</i>. Si vous ne tranchez pas, elles seront prises par quelqu'un d'autre — et il faudra rappeler. Une seule des deux convient à quelqu'un qui finit à seize heures."
+      }
+    ],
+    "pourquoi": "« En fin de journée » annonçait déjà l'heure&nbsp;: dix-sept heures, soit cinq heures de l'après-midi. Rachid finit à seize heures — c'est le seul des deux moments où il est libre.",
+    "attente": "Choisissez une réponse pour continuer."
+  }
+];
+  var MEDIA  = '/assets/interactive/module-n5-rendezvous/';           // la base des extraits, en chemin absolu
+  var CLE    = 'francis.parcours.n5-rendezvous-defi1';
+
+  var elEcran = document.getElementById('ecran');
+  var elJauge = document.getElementById('jauge');
+  var elPos   = document.getElementById('pos');
+  var elMenu  = document.getElementById('menu');
+  var elListe = document.getElementById('menu-liste');
+  var btnMenu = document.getElementById('btn-menu');
+
+  /* ── l'état, et sa persistance ─────────────────────────────────── */
+  var VIERGE = { i: 0, vus: [], faits: {}, essais: {}, rattrapages: {}, reponses: {}, journal: [] };
+  var etat = JSON.parse(JSON.stringify(VIERGE));
+  try {
+    var brut = JSON.parse(localStorage.getItem(CLE) || 'null');
+    if (brut && typeof brut === 'object') {
+      for (var k in etat) if (brut[k] !== undefined) etat[k] = brut[k];
+    }
+  } catch (e) { /* un navigateur qui refuse le stockage joue quand même */ }
+
+  function garder() {
+    try { localStorage.setItem(CLE, JSON.stringify(etat)); } catch (e) {}
+  }
+
+  /* ── le suivi : un événement par geste, horodaté ───────────────── */
+  var entre = Date.now();
+  function noter(quoi, plus) {
+    var ev = { t: Date.now(), ecran: ECRANS[etat.i] ? ECRANS[etat.i].id : null, quoi: quoi };
+    if (plus) for (var k in plus) ev[k] = plus[k];
+    etat.journal.push(ev);
+    if (etat.journal.length > 400) etat.journal.splice(0, etat.journal.length - 400);
+    garder();
+  }
+
+  /* ── les extraits sonores ──────────────────────────────────────── */
+  var enCours = null;
+  function bloc_son(s) {
+    var d = document.createElement('div');
+    d.className = 'son';
+
+    var go = document.createElement('button');
+    go.type = 'button';
+    go.className = 'son__go';
+    go.setAttribute('aria-label', 'Écouter');
+
+    var c = document.createElement('div');
+    c.className = 'son__c';
+    if (s.qui) {
+      var q = document.createElement('p');
+      q.className = 'son__qui';
+      q.textContent = s.qui;
+      c.appendChild(q);
+    }
+    var t = document.createElement('p');
+    t.className = 'son__txt';
+    t.textContent = s.texte || '';
+    t.hidden = !s.montrer;
+    c.appendChild(t);
+
+    var o = document.createElement('div');
+    o.className = 'son__o';
+
+    var audio = new Audio(MEDIA + s.fichier);
+    audio.preload = 'none';
+
+    go.addEventListener('click', function () {
+      if (!audio.paused) { audio.pause(); return; }
+      if (enCours && enCours !== audio) { enCours.pause(); enCours.currentTime = 0; }
+      enCours = audio;
+      audio.play().then(function () {
+        noter('ecoute', { fichier: s.fichier, vitesse: audio.playbackRate });
+      }).catch(function () {
+        o.insertAdjacentHTML('beforeend',
+          '<span style="font-size:12.5px;color:#7A3806">Extrait indisponible</span>');
+      });
+    });
+    audio.addEventListener('play',  function () { go.setAttribute('data-joue', '1'); });
+    audio.addEventListener('pause', function () { go.removeAttribute('data-joue'); });
+    audio.addEventListener('ended', function () { go.removeAttribute('data-joue'); });
+
+    var lent = document.createElement('button');
+    lent.type = 'button';
+    lent.textContent = 'Ralentir';
+    lent.addEventListener('click', function () {
+      // Étiré dans le navigateur, jamais re-synthétisé : la décision du projet.
+      var r = audio.playbackRate < 1 ? 1 : 0.75;
+      audio.playbackRate = r;
+      lent.textContent = r < 1 ? 'Vitesse normale' : 'Ralentir';
+      noter('vitesse', { fichier: s.fichier, vitesse: r });
+    });
+    o.appendChild(lent);
+
+    if (s.texte) {
+      var tr = document.createElement('button');
+      tr.type = 'button';
+      tr.textContent = s.montrer ? 'Cacher le texte' : 'Voir le texte';
+      tr.addEventListener('click', function () {
+        t.hidden = !t.hidden;
+        tr.textContent = t.hidden ? 'Voir le texte' : 'Cacher le texte';
+        if (!t.hidden) noter('transcription', { fichier: s.fichier });
+      });
+      o.appendChild(tr);
+    }
+
+    c.appendChild(o);
+    d.appendChild(go);
+    d.appendChild(c);
+    return d;
+  }
+
+  /* ── les mises en page, une par type ───────────────────────────── */
+  var TYPES = {};
+
+  TYPES.notion = function (e, fini) {
+    var f = document.createDocumentFragment();
+    (e.paras || []).forEach(function (p) {
+      var el = document.createElement('p');
+      el.className = 'ecran__p';
+      el.innerHTML = p;
+      f.appendChild(el);
+    });
+    (e.sons || []).forEach(function (s) { f.appendChild(bloc_son(s)); });
+    if (e.retenir) {
+      var r = document.createElement('div');
+      r.className = 'retenir';
+      r.innerHTML = '<p class="r">Ce qu\'il faut retenir</p><p>' + e.retenir + '</p>';
+      f.appendChild(r);
+    }
+    // Une notion est « faite » dès qu'elle est lue : rien à réussir.
+    fini(true);
+    return f;
+  };
+
+  TYPES.verif = function (e, fini) {
+    var f = document.createDocumentFragment();
+    if (e.consigne) {
+      var c = document.createElement('p');
+      c.className = 'ecran__p';
+      c.innerHTML = e.consigne;
+      f.appendChild(c);
+    }
+    (e.sons || []).forEach(function (s) { f.appendChild(bloc_son(s)); });
+
+    var box = document.createElement('div');
+    box.className = 'choix';
+    var zone = document.createElement('div');
+    var lettres = 'ABCDEFGH';
+    var termine = false;
+
+    e.options.forEach(function (o, k) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.innerHTML = '<span class="marq">' + lettres[k] + '</span><span>' + o.txt + '</span>';
+      b.addEventListener('click', function () { repondre(k, b); });
+      box.appendChild(b);
+    });
+
+    function verrouiller(bonneAussi) {
+      termine = true;
+      Array.prototype.forEach.call(box.children, function (b, k) {
+        b.disabled = true;
+        if (e.options[k].juste) { if (bonneAussi) b.setAttribute('data-etat', 'juste'); }
+        else if (b.getAttribute('data-etat') !== 'faux') b.setAttribute('data-etat', 'ecarte');
+      });
+    }
+
+    function repondre(k, b) {
+      if (termine) return;
+      var o = e.options[k];
+      var n = (etat.essais[e.id] || 0) + 1;
+      etat.essais[e.id] = n;
+
+      if (o.juste) {
+        b.setAttribute('data-etat', 'juste');
+        verrouiller(false);
+        zone.innerHTML = '';
+        var j = document.createElement('div');
+        j.className = 'juste';
+        j.innerHTML = '<p class="r">' + (n === 1 ? 'Juste, du premier coup' : 'Juste') + '</p><p>'
+          + (e.pourquoi || '') + '</p>';
+        zone.appendChild(j);
+        etat.reponses[e.id] = k;
+        noter('reponse', { juste: true, essai: n });
+        fini(true);
+        return;
+      }
+
+      b.setAttribute('data-etat', 'faux');
+      b.disabled = true;
+      noter('reponse', { juste: false, essai: n, choix: k });
+
+      // Le rattrapage : il n'existe que sur erreur, et il explique pourquoi la
+      // mauvaise réponse était tentante — jamais « faux, essaie encore ».
+      zone.innerHTML = '';
+      var r = document.createElement('div');
+      r.className = 'rattrap';
+      var dernier = n >= 2;
+      r.innerHTML = '<p class="r">' + (dernier ? 'La réponse, et pourquoi' : 'Pas tout à fait')
+        + '</p><h4>' + (o.rat_t || 'Reprenons.') + '</h4><p>' + (o.rat || '') + '</p>'
+        + (dernier ? '<p><b>La réponse : ' + reponseJuste(e) + '</b> ' + (e.pourquoi || '') + '</p>' : '');
+      if (!dernier) {
+        var encore = document.createElement('button');
+        encore.type = 'button';
+        encore.className = 'encore';
+        encore.textContent = 'Réessayer';
+        encore.addEventListener('click', function () {
+          zone.innerHTML = '';
+          elEcran.querySelector('.choix').focus &&
+            elEcran.querySelector('.choix button:not([disabled])').focus();
+        });
+        r.appendChild(encore);
+      }
+      zone.appendChild(r);
+      etat.rattrapages[e.id] = (etat.rattrapages[e.id] || 0) + 1;
+      noter('rattrapage', { ouvert: o.rat_t || '' });
+
+      if (dernier) { etat.reponses[e.id] = k; verrouiller(true); fini(true); }
+      garder();
+    }
+
+    function reponseJuste(e) {
+      for (var i = 0; i < e.options.length; i++) if (e.options[i].juste) return e.options[i].txt;
+      return '';
+    }
+
+    f.appendChild(box);
+    f.appendChild(zone);
+
+    // La reprise. Un écran déjà répondu ne doit pas se rouvrir vierge avec un
+    // « Continuer » actif : l'élève croirait la question neuve, et le bouton
+    // le contredirait. On remontre donc sa réponse, verrouillée.
+    var deja = etat.reponses[e.id];
+    if (deja !== undefined && e.options[deja]) {
+      termine = true;
+      Array.prototype.forEach.call(box.children, function (b, k) {
+        b.disabled = true;
+        if (k === deja) b.setAttribute('data-etat', e.options[k].juste ? 'juste' : 'faux');
+        else if (e.options[k].juste) b.setAttribute('data-etat', 'juste');
+        else b.setAttribute('data-etat', 'ecarte');
+      });
+      var d = document.createElement('div');
+      d.className = 'juste';
+      d.innerHTML = '<p class="r">Vous avez déjà répondu</p><p>' + (e.pourquoi || '') + '</p>';
+      zone.appendChild(d);
+    }
+
+    fini(!!etat.faits[e.id]);
+    return f;
+  };
+
+  /* ── le rendu d'un écran ───────────────────────────────────────── */
+  function montrer(i, mouvement) {
+    if (i < 0 || i >= ECRANS.length) return;
+    if (mouvement) noter('quitte', { reste: Math.round((Date.now() - entre) / 1000) });
+    etat.i = i;
+    entre = Date.now();
+    if (etat.vus.indexOf(ECRANS[i].id) === -1) etat.vus.push(ECRANS[i].id);
+
+    var e = ECRANS[i];
+    elEcran.innerHTML = '';
+
+    var eye = document.createElement('p');
+    eye.className = 'ecran__eye';
+    eye.textContent = e.eye || '';
+    elEcran.appendChild(eye);
+
+    var t = document.createElement('h1');
+    t.className = 'ecran__t';
+    t.innerHTML = e.titre;
+    elEcran.appendChild(t);
+
+    var pied = document.createElement('div');
+    pied.className = 'pied';
+
+    var prec = document.createElement('button');
+    prec.type = 'button';
+    prec.className = 'btn-2';
+    prec.textContent = '← Précédent';
+    prec.hidden = i === 0;
+    prec.addEventListener('click', function () { montrer(i - 1, true); });
+
+    var consigne = document.createElement('p');
+    consigne.className = 'consigne';
+
+    var suite = document.createElement('button');
+    suite.type = 'button';
+    suite.className = 'btn';
+    suite.textContent = i === ECRANS.length - 1 ? 'Terminer' : 'Continuer';
+    suite.addEventListener('click', function () {
+      if (i === ECRANS.length - 1) { terminer(); return; }
+      montrer(i + 1, true);
+    });
+
+    // Le verrou doux : « Continuer » attend le geste, mais rien d'autre n'attend.
+    function fini(ok) {
+      suite.disabled = !ok;
+      consigne.textContent = ok ? '' : (e.attente || 'Répondez pour continuer.');
+      if (ok && !etat.faits[e.id]) { etat.faits[e.id] = true; garder(); }
+    }
+
+    var rendu = TYPES[e.type];
+    if (!rendu) {
+      var err = document.createElement('p');
+      err.className = 'ecran__p';
+      err.innerHTML = '<b>Type d\'écran inconnu : « ' + e.type + ' ».</b> '
+        + 'Le moteur ne sait pas le dessiner. À corriger dans le contenu, pas ici.';
+      elEcran.appendChild(err);
+      fini(true);
+    } else {
+      elEcran.appendChild(rendu(e, fini));
+    }
+
+    pied.appendChild(prec);
+    pied.appendChild(consigne);
+    pied.appendChild(suite);
+    elEcran.appendChild(pied);
+
+    elJauge.style.width = Math.round(((i + 1) / ECRANS.length) * 100) + '%';
+    elJauge.parentNode.setAttribute('aria-valuenow', Math.round(((i + 1) / ECRANS.length) * 100));
+    elPos.textContent = (i + 1) + ' / ' + ECRANS.length;
+    majMenu();
+    noter('vu', {});
+    elEcran.focus();
+    window.scrollTo(0, 0);
+  }
+
+  function terminer() {
+    noter('termine', {});
+    elEcran.innerHTML = '';
+    var f = document.createElement('div');
+    f.className = 'fin';
+    var seuls = 0, aide = 0;
+    ECRANS.forEach(function (e) {
+      if (e.type !== 'verif') return;
+      if (etat.rattrapages[e.id]) aide++; else if (etat.faits[e.id]) seuls++;
+    });
+    f.innerHTML = '<h2>C\'est fini pour cette fois.</h2>'
+      + '<p class="ecran__p" style="margin-left:auto;margin-right:auto">'
+      + 'Vérifications réussies seul : <b>' + seuls + '</b>'
+      + ' · avec un rattrapage : <b>' + aide + '</b>.</p>'
+      + '<p class="ecran__p" style="margin-left:auto;margin-right:auto;color:#6E7175;font-size:13.5px">'
+      + 'Le suivi est gardé sur ce poste seulement. L\'écran de bilan complet vient avec '
+      + 'les dix-huit écrans.</p>';
+    var r = document.createElement('button');
+    r.className = 'btn-2';
+    r.type = 'button';
+    r.style.marginTop = '18px';
+    r.textContent = 'Recommencer';
+    r.addEventListener('click', function () {
+      etat = JSON.parse(JSON.stringify(VIERGE));
+      garder();
+      montrer(0, false);
+    });
+    f.appendChild(r);
+    elEcran.appendChild(f);
+    elJauge.style.width = '100%';
+  }
+
+  /* ── le menu des écrans vus ────────────────────────────────────── */
+  function majMenu() {
+    elListe.innerHTML = '';
+    ECRANS.forEach(function (e, k) {
+      var li = document.createElement('li');
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.innerHTML = '<span class="n">' + (k + 1) + '</span>' + (e.menu || e.eye || '—');
+      var vu = etat.vus.indexOf(e.id) !== -1;
+      b.disabled = !vu;
+      if (k === etat.i) b.setAttribute('aria-current', 'true');
+      b.addEventListener('click', function () { montrer(k, true); });
+      li.appendChild(b);
+      elListe.appendChild(li);
+    });
+  }
+
+  btnMenu.addEventListener('click', function () {
+    var o = elMenu.getAttribute('data-ouvert') === '1' ? '0' : '1';
+    elMenu.setAttribute('data-ouvert', o);
+    btnMenu.setAttribute('aria-expanded', o === '1' ? 'true' : 'false');
+  });
+
+  /* ── ce que la vérification par programme regarde ──────────────── */
+  window.__storyline = {
+    ecrans: ECRANS,
+    ou: function () { return etat.i; },
+    aller: function (i) { montrer(i, false); },
+    etat: function () { return JSON.parse(JSON.stringify(etat)); },
+    journal: function () { return etat.journal.slice(); },
+    remettre: function () {
+      etat = JSON.parse(JSON.stringify(VIERGE));
+      garder(); montrer(0, false);
+    }
+  };
+
+  // Le point de reprise : on rouvre là où on s'est arrêté.
+  montrer(Math.min(etat.i, ECRANS.length - 1), false);
+})();
+</script>
+</body>
+</html>

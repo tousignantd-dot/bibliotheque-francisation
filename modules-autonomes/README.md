@@ -60,15 +60,39 @@ modules-autonomes/
 ├── index.html              la page de la section
 ├── README.md               ce fichier
 ├── plan-storyline.html     le plan et les six décisions
-└── n5-rendezvous-defi1/    le parcours construit (à venir)
+└── n5-rendezvous-defi1/    le parcours construit — 2 écrans sur 18
 
 build/
-├── gabarit/storyline.html  la coquille : jauge, navigation, 9 mises en page
+├── gabarit/storyline.html  la coquille : jauge, navigation, les mises en page
 ├── storyline.py            le moteur
-└── contenu/module-n5-rendezvous/storyline.js   les 18 écrans, en données
+└── contenu/module-n5-rendezvous/storyline.js   les écrans, en données
 ```
+
+## Construire un parcours
+
+```
+python3 build/storyline.py --tous          # tout reconstruire
+python3 build/storyline.py n5-rendezvous-defi1
+python3 build/storyline.py --tous --verifier   # code 1 si un parcours est à reconstruire
+```
+
+Le contrôle refuse d'écrire quand quelque chose casserait chez l'élève sans
+casser la construction : un type d'écran inconnu, un identifiant en double, une
+vérification sans bonne réponse ou sans rattrapage, un extrait sonore absent du
+disque.
+
+## État
+
+**Deux écrans sur dix-huit**, livrés le 30 août 2026 — une *notion* et une
+*vérification* avec son rattrapage. Le moteur porte déjà la jauge, le menu des
+écrans vus, le lecteur d'extraits (ralenti, transcription), le verrou doux, le
+point de reprise et le journal du suivi.
+
+Vérifié **en le jouant**, par programme : les deux chemins de la vérification
+(juste du premier coup / deux erreurs), l'ouverture du rattrapage, la réponse
+donnée au second essai seulement, la reprise après rechargement, et les
+événements du journal.
 
 ## Prochaine étape
 
-Le **moteur et deux écrans** — une notion, une vérification — à regarder avant
-d'écrire les seize autres.
+Les **seize écrans qui restent**, et les sept types d'écran qu'ils demandent.
