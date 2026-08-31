@@ -211,6 +211,10 @@
                         font-size: var(--fs-ui-sm); font-weight: var(--fw-bold);
                         padding: 0 var(--sp-3); }
     .dr-outils select option { color: var(--text-strong); }
+    /* Le même menu, mais hors de la barre noire : il lui faut ses propres
+       couleurs, sinon du blanc sur du blanc. */
+    .dr-outils--arret { margin-left: 0; margin-top: var(--sp-4); }
+    .dr-outils--arret select { border-color: var(--border); color: var(--text-strong); }
     .dr-btn { min-height: var(--tap-min); padding: 0 var(--sp-4); border-radius: 999px;
               font-family: inherit; font-size: var(--fs-ui-sm); font-weight: var(--fw-bold);
               cursor: pointer; border: 1px solid rgba(255,255,255,.35);
@@ -508,6 +512,10 @@
   let DIRECT_SECTION = null;  // null = pas encore choisie, '' = tout le module
   let DIRECT_HORLOGE = null;
   let DIRECT_QUAND = 0;       // horodatage local du dernier rafraîchissement
+  // Le direct fermé montre quand même la classe. S'il n'a aucune donnée, il en
+  // demande **un** tour — ce drapeau empêche qu'un serveur muet fasse tourner
+  // drRendre → drTirer → drRendre sans fin.
+  let DIRECT_TOUR_ARRET = false;
   let DIRECT_ECRITS = [];     // les textes envoyés, relus à chaque tour
   const DIRECT_PAS_MS = 5000;
 
@@ -938,19 +946,30 @@
       // Deux fermetures, deux vérités. Fermer l'écran laisse les réponses
       // arriver ; fermer la séance coupe le code, et prétendre le contraire
       // ferait croire à l'enseignant qu'il peut revenir en arrière.
-      cible.innerHTML = SEANCE_CLOSE
-        ? `<p class="pg-note" style="padding:var(--sp-8) 0 0">
-            <b>La séance est fermée.</b> Le code ne fait plus entrer personne et
-            les réponses ne rentrent plus. Ce qui a déjà été envoyé reste au
-            tableau. Pour refaire travailler la classe, rouvrez le direct et
-            ouvrez une nouvelle séance — elle aura un nouveau code.
-            <button type="button" class="btn btn--ghost btn--sm" id="drRouvrir"
-                    style="margin-left:var(--sp-3)">Rouvrir le direct</button></p>`
-        : `<p class="pg-note" style="padding:var(--sp-8) 0 0">
-            <b>Le direct est fermé.</b> Plus rien n’est demandé au serveur. Les réponses
-            continuent d’arriver : elles seront toutes là à la réouverture.
-            <button type="button" class="btn btn--ghost btn--sm" id="drRouvrir"
-                    style="margin-left:var(--sp-3)">Rouvrir le direct</button></p>`;
+      const note = SEANCE_CLOSE
+        ? `<b>La séance est fermée.</b> Le code ne fait plus entrer personne et
+           les réponses ne rentrent plus. Ce qui a déjà été envoyé reste au
+           tableau. Pour refaire travailler la classe, rouvrez le direct et
+           ouvrez une nouvelle séance — elle aura un nouveau code.`
+        : `<b>Le direct est fermé.</b> Plus rien n’est demandé au serveur, et les
+           tableaux ci-dessous ne se rafraîchissent plus tout seuls. Les réponses,
+           elles, continuent d’arriver.`;
+      // Les deux tableaux restent. Ils étaient le seul endroit du portail où la
+      // réussite se lit question par question : les faire disparaître avec le
+      // direct obligeait à rouvrir une horloge pour consulter un chiffre.
+      cible.innerHTML = `<div class="dr dr--arret">
+        <p class="pg-note" style="padding:var(--sp-8) 0 0">${note}
+          <button type="button" class="btn btn--ghost btn--sm" id="drActualiser"
+                  style="margin-left:var(--sp-3)">Actualiser</button>
+          <button type="button" class="btn btn--ghost btn--sm" id="drRouvrir"
+                  style="margin-left:var(--sp-2)">Rouvrir le direct</button></p>
+        ${DIRECT ? `<div class="dr-outils dr-outils--arret">${drSelectSection(DIRECT)}</div>
+                    ${drBlocsClasse(DIRECT, false)}` : ''}
+      </div>`;
+      // Rien en main — un premier chargement, ou un tour manqué : on en demande
+      // **un**, jamais deux, sinon un serveur muet ferait tourner
+      // drRendre → drTirer → drRendre sans fin.
+      if (!DIRECT && MODULE && !DIRECT_TOUR_ARRET) { DIRECT_TOUR_ARRET = true; drTirer(); }
       return;
     }
     const d = DIRECT;
@@ -960,32 +979,13 @@
     }
 
     if (DIRECT_SECTION === null) DIRECT_SECTION = drSectionParDefaut(d);
-    const sections = [...new Set((d.exercices || []).map(e => e.section || ''))];
-    const exos = (d.exercices || []).filter(e => !DIRECT_SECTION || e.section === DIRECT_SECTION);
-    const zones = exos.flatMap(ex => (ex.zones || []).map(z => ({ ex, z })));
-
-    const optionsSec = ['<option value="">Tout le module</option>'].concat(
-      sections.filter(Boolean).map(id =>
-        `<option value="${esc(id)}"${id === DIRECT_SECTION ? ' selected' : ''}>${esc(drTitreSection(id))}</option>`)
-    ).join('');
-
-    const secs = sections.length > 1 || sections[0]
-      ? `<select id="drSection" aria-label="Section suivie">${optionsSec}</select>` : '';
+    const secs = drSelectSection(d);
 
     const quoi = titreCourt(moduleDe(MODULE)?.title || '');
     const age = Math.max(0, Math.round((Date.now() - DIRECT_QUAND) / 1000));
     const etat = DIRECT_ON
       ? `${d.enLigne} élève${d.enLigne > 1 ? 's' : ''} sur ${d.elevesTotal} en ligne · mis à jour il y a ${age} s`
       : `Direct en pause · ${d.enLigne} sur ${d.elevesTotal} étaient en ligne`;
-
-    const grille = (d.eleves || []).map((e, i) => {
-      const k = drClasseDe(e.pct, e.repondu);
-      return `<div class="dr-el dr-el--${k.c}">
-        <b>${esc(DIRECT_NOMS ? (e.pseudo || drNomAnonyme(i)) : drNomAnonyme(i))}</b>
-        <div class="dr-ch">${e.pct === null ? '—' : e.pct + '<small>%</small>'}</div>
-        <div class="dr-mo">${esc(k.m)}${e.repondu ? ` · ${e.repondu} rép.` : ''}</div>
-      </div>`;
-    }).join('');
 
     cible.innerHTML = `<div class="dr">
       <div class="dr-barre">
@@ -1008,9 +1008,55 @@
         </div>
       </div>
 
-      ${section('La classe d’un coup d’œil',
-        'Réponses justes du premier coup, sur les questions déjà tentées. Une case pâle veut dire « n’a rien envoyé encore ».',
-        `<div class="dr-classe">${grille}</div>`)}
+      ${drBlocsClasse(d, true)}
+
+      ${drMurTextes()}
+    </div>`;
+  }
+
+  /** Le menu des sections. Il vaut en direct comme à l'arrêt : c'est le même
+      découpage du module qu'on regarde. */
+  function drSelectSection(d) {
+    const sections = [...new Set((d.exercices || []).map(e => e.section || ''))];
+    if (!(sections.length > 1 || sections[0])) return '';
+    const options = ['<option value="">Tout le module</option>'].concat(
+      sections.filter(Boolean).map(id =>
+        `<option value="${esc(id)}"${id === DIRECT_SECTION ? ' selected' : ''}>${esc(drTitreSection(id))}</option>`)
+    ).join('');
+    return `<select id="drSection" aria-label="Section suivie">${options}</select>`;
+  }
+
+  /** « La classe d'un coup d'œil » et « Exercice par exercice ».
+
+      Sortis de `drRendre` le 30 août 2026 : l'enseignant les demandait aussi
+      **une fois le direct fermé**, et ils ne dépendent de rien d'autre que des
+      données déjà en main. C'était le seul endroit du portail où l'on voyait la
+      réussite question par question — la fermer pour parler à la classe la
+      faisait disparaître.
+
+      `vivant` ne change pas les tableaux, seulement ce qu'on en dit : à l'arrêt,
+      l'écran doit avouer qu'il montre un relevé et non l'instant présent. */
+  function drBlocsClasse(d, vivant) {
+    const exos = (d.exercices || []).filter(e => !DIRECT_SECTION || e.section === DIRECT_SECTION);
+    const zones = exos.flatMap(ex => (ex.zones || []).map(z => ({ ex, z })));
+    const grille = (d.eleves || []).map((e, i) => {
+      const k = drClasseDe(e.pct, e.repondu);
+      return `<div class="dr-el dr-el--${k.c}">
+        <b>${esc(DIRECT_NOMS ? (e.pseudo || drNomAnonyme(i)) : drNomAnonyme(i))}</b>
+        <div class="dr-ch">${e.pct === null ? '—' : e.pct + '<small>%</small>'}</div>
+        <div class="dr-mo">${esc(k.m)}${e.repondu ? ` · ${e.repondu} rép.` : ''}</div>
+      </div>`;
+    }).join('');
+
+    const quand = DIRECT_QUAND
+      ? new Date(DIRECT_QUAND).toLocaleTimeString('fr-CA', { hour: '2-digit', minute: '2-digit' })
+      : '';
+    const chapeau = 'Réponses justes du premier coup, sur les questions déjà tentées. '
+      + 'Une case pâle veut dire « n’a rien envoyé encore ».'
+      + (vivant ? '' : ` Relevé à ${quand} : le direct est fermé, ces chiffres ne bougent plus tout seuls.`);
+
+    return `${section('La classe d’un coup d’œil', chapeau,
+      `<div class="dr-classe">${grille}</div>`)}
 
       ${section('Exercice par exercice',
         zones.length
@@ -1020,10 +1066,7 @@
           ? `<div class="dr-exos">${exos.map(ex => drCarteExercice(ex)).join('')}</div>`
           : `<p class="pg-note">Les cartes paraissent dès la première réponse envoyée. Rien ne
              remonte d’un module ouvert hors du portail — sans code d’élève, le module ne
-             rapporte pas.</p>`)}
-
-      ${drMurTextes()}
-    </div>`;
+             rapporte pas.</p>`)}`;
   }
 
   /** Un tour de direct. Deux appels : les zones, et les textes envoyés. */
@@ -1095,6 +1138,12 @@
     }
     if (e.target.closest('#drFermer')) {
       drFermer();
+      return;
+    }
+    if (e.target.closest('#drActualiser')) {
+      // Un tour, à la demande. L'horloge ne repart pas : « fermé » veut dire
+      // que le serveur n'est sollicité que si on le lui demande.
+      drTirer();
       return;
     }
     if (e.target.closest('#drRouvrir')) {
@@ -1174,7 +1223,10 @@
       SEANCE_CLOSE = false;
     }
     DIRECT_FERME = true;
-    DIRECT = null;              // à la réouverture, on repart d'un tour frais
+    // On **garde** le dernier relevé : c'est lui que les deux tableaux montrent
+    // une fois le direct fermé. La fraîcheur à la réouverture est assurée
+    // autrement — `drRouvrir` tire un tour tout de suite.
+    DIRECT_TOUR_ARRET = false;
     drRendre();
     drHorloge();
   }
