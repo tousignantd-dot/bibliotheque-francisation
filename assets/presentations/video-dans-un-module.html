@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Une vidéo dans un module</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600&family=Nunito:ital,wght@0,400;0,600;0,700;0,800&display=swap">
+<style>
+:root{
+  --ground:#F7F7F5; --card:#FFFFFF; --sunken:#FBFBFA;
+  --ink:#17181A; --body:#3A3D40; --muted:#6E7175;
+  --line:#E4E4E0; --line-fort:#D2D2CD;
+  --ok:#0A8F5B; --ok-bg:#E6F5EE;
+  --trou:#C7302B; --trou-bg:#FBEDEC;
+  --part:#C07A08; --part-bg:#FBF2E2;
+  --acier:#1D6B8F;
+  --niv-3:#B45309; --niv-4:#8C6A07; --niv-5:#0D7A6F;
+  --niv-6:#1D6B8F; --niv-7:#3B49A0; --niv-8:#7E3F98;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#151618; --card:#1D1F22; --sunken:#212326;
+    --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+    --line:#2E3135; --line-fort:#3D4146;
+    --ok:#4BC48D; --ok-bg:#12291F;
+    --trou:#EE7A73; --trou-bg:#2E1917;
+    --part:#E0A63F; --part-bg:#2C2213;
+    --acier:#6DAFD2;
+    --niv-3:#E0A63F; --niv-4:#D4BC5C; --niv-5:#5FC3B8;
+    --niv-6:#6DAFD2; --niv-7:#8D97DE; --niv-8:#C089D6;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#151618; --card:#1D1F22; --sunken:#212326;
+  --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+  --line:#2E3135; --line-fort:#3D4146;
+  --ok:#4BC48D; --ok-bg:#12291F;
+  --trou:#EE7A73; --trou-bg:#2E1917;
+  --part:#E0A63F; --part-bg:#2C2213;
+  --acier:#6DAFD2;
+  --niv-3:#E0A63F; --niv-4:#D4BC5C; --niv-5:#5FC3B8;
+  --niv-6:#6DAFD2; --niv-7:#8D97DE; --niv-8:#C089D6;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--body);
+  font-family:Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased}
+.doc{max-width:880px;margin:0 auto;padding:56px 24px 96px}
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--acier);margin:0 0 14px}
+h1{font-family:Newsreader,Georgia,serif;font-size:clamp(38px,6.4vw,58px);line-height:1.04;
+  font-weight:500;letter-spacing:-.02em;color:var(--ink);margin:0 0 20px;text-wrap:balance}
+.chapeau{font-size:19px;line-height:1.6;margin:0;max-width:62ch}
+.chapeau strong{color:var(--ink);font-weight:700}
+h2{font-family:Newsreader,Georgia,serif;font-size:29px;line-height:1.2;font-weight:600;
+  letter-spacing:-.01em;color:var(--ink);margin:0 0 4px;text-wrap:balance}
+p{margin:0;max-width:68ch}
+section{display:flex;flex-direction:column;gap:16px;padding:44px 0 0;margin:44px 0 0;
+  border-top:1px solid var(--line)}
+section.premier{border-top:none;margin-top:0;padding-top:40px}
+code{font-family:var(--mono);font-size:.86em;background:var(--sunken);
+  border:1px solid var(--line);border-radius:4px;padding:1px 5px;color:var(--ink)}
+ul.simple{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px}
+ul.simple li{max-width:66ch} ul.simple li strong{color:var(--ink)}
+.these{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--acier);
+  border-radius:3px;padding:26px 28px;display:flex;flex-direction:column;gap:12px}
+.these p{font-size:18px}
+.these .cle{font-family:Newsreader,Georgia,serif;font-size:23px;line-height:1.3;
+  font-weight:500;color:var(--ink);font-style:italic}
+.chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.ch{background:var(--card);border:1px solid var(--line);border-radius:3px;
+  border-top:3px solid var(--trou);padding:15px 16px}
+.ch.bon{border-top-color:var(--ok)}
+.ch .n{font-family:Newsreader,Georgia,serif;font-size:30px;line-height:1;font-weight:500;
+  color:var(--ink);display:block;font-variant-numeric:tabular-nums}
+.ch .q{font-size:12.5px;font-weight:700;color:var(--muted);line-height:1.35;display:block;
+  margin-top:7px}
+.defile{overflow-x:auto;border:1px solid var(--line);border-radius:3px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:15px;min-width:620px}
+caption{caption-side:top;text-align:left;padding:0 0 10px;font-size:13.5px;color:var(--muted)}
+th,td{padding:11px 15px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{font-size:11.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--muted);background:var(--sunken);white-space:nowrap}
+th.r,td.r{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+tbody tr:last-child td{border-bottom:none}
+td.q{font-weight:700;color:var(--ink)}
+td small{display:block;color:var(--muted);font-size:13px;line-height:1.45;margin-top:2px}
+tbody tr td:first-child{border-left:4px solid transparent}
+tfoot td{font-weight:800;color:var(--ink);background:var(--sunken);
+  border-top:2px solid var(--line-fort)}
+.jauge{display:block;height:7px;border-radius:2px;background:var(--line);margin-top:6px;
+  width:150px;overflow:hidden}
+.jauge i{display:block;height:100%;background:var(--trou)}
+.badge{display:inline-block;font-size:11.5px;font-weight:800;letter-spacing:.05em;
+  text-transform:uppercase;padding:3px 9px;border-radius:2px;white-space:nowrap}
+.b-vide{background:var(--trou-bg);color:var(--trou)}
+.b-part{background:var(--part-bg);color:var(--part)}
+.b-ok{background:var(--ok-bg);color:var(--ok)}
+.reserve{border:1px dashed var(--line-fort);border-radius:3px;padding:20px 24px;
+  font-size:15px;color:var(--muted);display:flex;flex-direction:column;gap:9px}
+.reserve strong{color:var(--body)}
+.pied{margin-top:52px;padding-top:22px;border-top:1px solid var(--line);font-size:13.5px;
+  color:var(--muted);display:flex;flex-direction:column;gap:5px}
+@media (max-width:620px){ .doc{padding:36px 18px 72px} .jauge{width:96px} }
+</style><style>
+.opt{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--acier);
+  border-radius:12px;padding:18px 20px;margin:18px 0 0}
+.opt--reco{border-left-color:var(--ok)}
+.opt h3{font-family:Newsreader,Georgia,serif;font-size:21px;font-weight:600;color:var(--ink);margin:0 0 4px}
+.opt .eti{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--ok)}
+.pour{display:grid;gap:6px;margin:12px 0 0;font-size:15px}
+.pour div::before{content:"· ";color:var(--muted)}
+.cadre-tab{overflow-x:auto;margin:16px 0 0}
+.tab{width:100%;min-width:430px;border-collapse:collapse;font-size:15px}
+.tab th,.tab td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+.tab th{font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:800}
+.tab code{font-family:var(--mono);font-size:12.5px}
+.bloc{margin:52px 0 0}
+.bloc>p{margin:10px 0 0}
+.etapes{counter-reset:e;display:grid;gap:12px;margin:18px 0 0}
+.etape{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:15px 17px 15px 54px;position:relative}
+.etape::before{counter-increment:e;content:counter(e);position:absolute;left:16px;top:15px;
+  width:24px;height:24px;border-radius:50%;background:var(--ok);color:#fff;font-size:13px;
+  font-weight:800;display:flex;align-items:center;justify-content:center}
+.etape h4{margin:0 0 5px;font-size:16px;color:var(--ink);font-weight:800}
+.etape p{margin:0;font-size:14.5px}
+.plan{display:grid;gap:8px;margin:16px 0 0}
+.plan div{background:var(--sunken);border:1px solid var(--line);border-radius:9px;padding:11px 14px;font-size:14.5px}
+.plan b{color:var(--ink)}
+.note{background:var(--part-bg);border-left:3px solid var(--part);border-radius:0 8px 8px 0;
+  padding:14px 16px;margin:18px 0 0;font-size:15px}
+.chiffres{display:flex;gap:26px;flex-wrap:wrap;margin:24px 0 0;padding:18px 20px;
+  background:var(--card);border:1px solid var(--line);border-radius:12px}
+.chiffre b{display:block;font-family:Newsreader,Georgia,serif;font-size:32px;font-weight:500;color:var(--ink);line-height:1}
+.chiffre span{font-size:13px;color:var(--muted)}
+code{font-family:var(--mono);font-size:13px}
+</style>
+</head>
+<body>
+<div class="doc">
+  <p class="eyebrow">Proposition · 31 août 2026</p>
+  <h1>Trente secondes de vidéo dans un module</h1>
+  <p class="chapeau">Une expérimentation, sur un seul module, pour répondre à une question
+  qu'aucun essai n'a encore posée : <strong>qu'est-ce qu'une vidéo apporte qu'un dialogue
+  enregistré ne peut pas ?</strong> La réponse tient en un mot — <b>le non-verbal</b> — et
+  c'est elle qui décide de tout le reste.</p>
+
+  <div class="chiffres">
+    <div class="chiffre"><b>7</b><span>capsules déjà produites</span></div>
+    <div class="chiffre"><b>5,1</b><span>Mo en moyenne</span></div>
+    <div class="chiffre"><b>~2</b><span>Mo pour 30 s</span></div>
+    <div class="chiffre"><b>0</b><span>vidéo dans un module</span></div>
+  </div>
+
+  <div class="bloc">
+    <h2>La bonne nouvelle : rien n'est à inventer</h2>
+    <p>Le dépôt sert déjà sept capsules vidéo — les tutoriels de l'espace enseignant — avec
+    <b>affiche, sous-titres, transcription dépliable et lien de secours</b>. Le balisage est
+    éprouvé, versionné, et il tient sur un téléphone :</p>
+    <div class="cadre-tab"><table class="tab">
+      <tr><th>Ce qui existe</th><th>Ce que ça règle</th></tr>
+      <tr><td><code>poster="…jpg"</code></td><td>Rien ne se télécharge avant le clic : une image fixe tient la place.</td></tr>
+      <tr><td><code>preload="none"</code></td><td>Trente élèves qui ouvrent un module ne tirent pas trente vidéos.</td></tr>
+      <tr><td><code>&lt;track kind="subtitles"&gt;</code> + <code>.vtt</code></td><td>Les sous-titres, <b>indispensables</b> en francisation.</td></tr>
+      <tr><td><code>&lt;details&gt;</code> transcription</td><td>Le texte complet, pour relire à son rythme.</td></tr>
+      <tr><td>Lien de téléchargement</td><td>Le navigateur qui ne sait pas lire ne laisse pas l'élève devant un carré noir.</td></tr>
+    </table></div>
+    <p style="margin-top:14px">Il n'y a donc <b>pas de chantier technique</b> : il y a un
+    scénario à écrire et une place à choisir dans le module.</p>
+  </div>
+
+  <div class="bloc">
+    <h2>Le scénario proposé</h2>
+    <p><b>Module 1 du niveau 5 — « Louer un logement ».</b> Choisi pour trois raisons : c'est le
+    module le plus regardé ces jours-ci, il a déjà <b>quatorze images générées</b> et un
+    dialogue enregistré, et sa situation — une visite d'appartement — est <b>pleine de gestes
+    que le son ne dit pas</b>.</p>
+    <div class="plan">
+      <div><b>0 – 6 s</b> · Nadège sonne. La propriétaire ouvre. <i>Aucune parole.</i> On voit
+        la poignée de main, la distance entre les corps, qui entre le premier.</div>
+      <div><b>6 – 16 s</b> · « Bonjour, je viens pour le quatre et demi. » — « Entrez, je vous
+        en prie. » <i>Deux répliques, pas plus.</i> Le geste qui montre le salon.</div>
+      <div><b>16 – 26 s</b> · Le tour : la cuisine, la fenêtre qu'on ouvre, le placard qu'on
+        montre. <i>Ce que l'élève devra nommer.</i></div>
+      <div><b>26 – 30 s</b> · « Je vous laisse regarder. » Fin sur le salon vide — l'image
+        exacte de l'affiche.</div>
+    </div>
+    <div class="note"><b>Pourquoi si peu de paroles ?</b> Le dialogue enregistré existe déjà et
+    il est bon. Une vidéo qui le redirait ferait double emploi et coûterait trente secondes
+    d'attention pour rien. Ce que la vidéo ajoute, c'est <b>ce qu'on ne peut pas entendre</b> :
+    à quelle distance on se tient, qui parle en premier, ce qu'on fait de ses mains. C'est
+    précisément ce qui manque à un élève qui arrive et qui a peur de mal faire.</div>
+  </div>
+
+  <div class="bloc">
+    <h2>Trois façons de la produire</h2>
+
+    <article class="opt opt--reco">
+      <span class="eti">Recommandée pour un premier essai</span>
+      <h3>A · Le diaporama animé — les images du module et une voix</h3>
+      <p>Les quatorze images du module, un mouvement lent sur chacune, la voix de synthèse
+      déjà utilisée, montés par <code>ffmpeg</code> — la même chaîne que les capsules de
+      tutoriel, moins la capture d'écran.</p>
+      <div class="pour">
+        <div><b>Rien de neuf à acheter ni à apprendre</b> : narration, alignement et montage
+          existent dans <code>build/tutoriels/</code>.</div>
+        <div>Le style reste celui du module — mêmes personnages, même trait.</div>
+        <div>Coût proche de zéro, refaisable à volonté.</div>
+        <div><b>Mais</b> ce n'est pas du mouvement réel : on ne verra pas une poignée de main,
+          seulement deux images l'une après l'autre. La moitié de l'argument tombe.</div>
+      </div>
+    </article>
+
+    <article class="opt">
+      <h3>B · La vidéo générée</h3>
+      <p>Trente secondes produites par un modèle vidéo à partir du plan ci-dessus.</p>
+      <div class="pour">
+        <div>Du vrai mouvement : les gestes, les distances, la porte qui s'ouvre.</div>
+        <div><b>Mais</b> la constance des visages sur quatre plans est le point faible connu de
+          ces modèles — et un personnage qui change de tête au milieu est pire que pas de
+          vidéo du tout.</div>
+        <div>Coût réel par essai, et il en faut plusieurs. À chiffrer avant, pas après.</div>
+      </div>
+    </article>
+
+    <article class="opt">
+      <h3>C · Filmée</h3>
+      <p>Un téléphone, deux personnes, un appartement. Trente secondes.</p>
+      <div class="pour">
+        <div>Le plus juste de loin : de vrais gestes québécois, de vrais lieux.</div>
+        <div><b>Mais</b> il faut des personnes qui consentent à être filmées et diffusées, et
+          ça déborde du code — c'est une décision de personnes, pas de dépôt.</div>
+        <div>Ne se refait pas d'un clic si le scénario change.</div>
+      </div>
+    </article>
+  </div>
+
+  <div class="bloc">
+    <h2>La marche à suivre</h2>
+    <div class="etapes">
+      <div class="etape"><h4>Choisir la place dans le module</h4>
+        <p>Ma proposition : dans « Je découvre », <b>avant</b> le dialogue. On regarde la
+        scène, puis on l'écoute. L'inverse ferait de la vidéo une redite.</p></div>
+      <div class="etape"><h4>Écrire les quatre plans et leur narration</h4>
+        <p>Trente secondes, c'est environ <b>60 mots</b>. Le plan ci-dessus en compte moins :
+        c'est voulu, le silence fait partie de ce qu'on montre.</p></div>
+      <div class="etape"><h4>Produire la vidéo, l'affiche et les sous-titres</h4>
+        <p>Trois fichiers, comme les capsules : <code>.mp4</code>, <code>.jpg</code> et
+        <code>.vtt</code>. Viser <b>2 Mo</b> — les capsules font 5 Mo pour une minute.</p></div>
+      <div class="etape"><h4>Greffer le bloc dans le module</h4>
+        <p>Une greffe, pas le gabarit : dix modules sur quatre-vingt-sept ne se régénèrent
+        pas. Le balisage est copié des tutoriels, sans rien réinventer.</p></div>
+      <div class="etape"><h4>Le jouer sur un téléphone, pas seulement sur l'écran</h4>
+        <p>C'est là que ça se décide : le poids au premier chargement, la lisibilité des
+        sous-titres, et le fait que la vidéo ne parte pas toute seule.</p></div>
+      <div class="etape"><h4>Décider si on continue</h4>
+        <p>Un module, une vidéo, et on regarde. Quatre-vingt-sept vidéos, c'est
+        <b>170 Mo</b> et autant de scénarios à écrire : la question ne se pose qu'après.</p></div>
+    </div>
+  </div>
+
+  <div class="bloc">
+    <h2>Trois choses à décider avant, pas après</h2>
+    <div class="cadre-tab"><table class="tab">
+      <tr><th>Question</th><th>Pourquoi maintenant</th></tr>
+      <tr><td><b>Les sous-titres et le verrou de transcription</b></td>
+        <td>L'enseignant peut fermer la transcription d'un dialogue pour forcer l'écoute. Une
+        vidéo sous-titrée <b>rouvre cette porte</b> sans le dire. Il faut choisir : ou les
+        sous-titres suivent le même verrou, ou la vidéo est déclarée hors de sa portée — mais
+        pas les deux par accident.</td></tr>
+      <tr><td><b>Le poids et la diffusion</b></td>
+        <td>Trente élèves qui ouvrent le module en même temps, sur le réseau d'un centre.
+        <code>preload="none"</code> règle l'essentiel ; à quatre-vingt-sept vidéos, la
+        question du trafic se posera pour de vrai.</td></tr>
+      <tr><td><b>Ce qu'on montre de personnes</b></td>
+        <td>Générées, filmées ou dessinées : des visages paraîtront dans un produit servi à
+        des élèves. Cela se tranche avant de tourner, pas après.</td></tr>
+    </table></div>
+  </div>
+
+  <div class="bloc">
+    <h2>Ce que je ferais si vous dites oui</h2>
+    <p>Un seul module, la <b>route A</b> pour commencer — parce qu'elle ne coûte rien et qu'elle
+    répond déjà à la vraie question : <i>est-ce qu'une vidéo, à cet endroit du module, aide
+    l'élève ?</i> Si la réponse est oui, la route B ou C vaudra son prix pour le refaire en
+    mouvement. Si la réponse est non, on l'aura appris pour le prix de trente secondes de
+    montage.</p>
+  </div>
+</div>
+</body>
+</html>
