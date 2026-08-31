@@ -1157,91 +1157,91 @@ const mentionPortee = p => p === "oral" ? "[à l’oral seulement]" : p === "ecr
    (Helvetica au lieu de Nunito, classes inventées, en-tête différent). Cette
    section porte donc les mêmes valeurs SANS AUCUN CHEMIN : elle doit rester
    lisible par un modèle qui n'a que le texte sous les yeux.
-   Elle ne s'écrit que pour les livrables cochés — décrire l'habillage d'une
-   page qu'on ne demande pas ne ferait qu'allonger la commande.
-   La table des couleurs de niveau est de la donnée de design, pas du
-   programme : elle vient de `tokens/colors.css` et ne se déduit d'aucun
-   `PROGRAMME`. C'est la seule de ce fichier. */
-const COULEUR_NIVEAU = {
-  1: ["#A5335F", "#FCE9F0", "framboise"],
-  2: ["#A83A22", "#FBEAE4", "brique"],
-  3: ["#B45309", "#FBEEDC", "ambre"],
-  4: ["#8C6A07", "#F7F0DA", "or"],
-  5: ["#0D7A6F", "#DCF2EF", "sarcelle"],
-  6: ["#1D6B8F", "#E7F0F6", "acier"],
-  7: ["#3B49A0", "#E8EAFA", "indigo"],
-  8: ["#7E3F98", "#F3E8F7", "pourpre"]
-};
+
+   LES VALEURS NE S'ÉCRIVENT PAS À LA MAIN ICI. `DESIGN` est greffé par
+   `programme/outils/greffe_design.py`, qui les lit dans les feuilles du
+   système — jetons de couleur, échelle typographique, espacement, feuille des
+   imprimés. Recopiées à la main, elles se périmeraient en silence : le prompt
+   continuerait de sortir, juste faux. Le partage est net — les CHIFFRES
+   viennent des CSS, la PROSE reste ici. Une valeur se périme, une raison non
+   (« une photocopieuse efface tout ce qui est plus clair que 15 % de noir »).
+
+   La section ne s'écrit que pour les livrables cochés : décrire l'habillage
+   d'une page qu'on ne demande pas ne ferait qu'allonger la commande. */
+const DESIGN = {"police":"\"Nunito\", system-ui, -apple-system, \"Segoe UI\", sans-serif","ecran":{"fond":"#F7F7F5","carte":"#FFFFFF","champ":"#FBFBFA","filet":"#EAEAE8","encre":"#17181A","encreLong":"#3A3D40","encreSec":"#6E7175","niveaux":{"1":["#A5335F","#FCE9F0","framboise"],"2":["#A83A22","#FBEAE4","brique"],"3":["#B45309","#FBEEDC","ambre"],"4":["#8C6A07","#F7F0DA","or"],"5":["#0D7A6F","#DCF2EF","sarcelle"],"6":["#1D6B8F","#E7F0F6","acier"],"7":["#3B49A0","#E8EAFA","indigo"],"8":["#7E3F98","#F3E8F7","pourpre"]},"ok":["#E6F5EE","#0A8F5B","#07734A"],"no":["#FFF6F5","#DC2626","#B91C1C"],"warn":["#FEF6E7","#D9880B","#8A5206"],"selFond":"#17181A","selEncre":"#FFFFFF","audio":"#DC2626","audioSurvol":"#B91C1C","tailles":[["62px","titre de page · 900"],["30px","titre d'exercice · 900"],["24px","mot vedette, sous-bloc · 900"],["19px","chapeau, énoncé long · 600-700"],["18px","énoncé courant · 600-700"],["17px","consigne, définition · 600"],["15px","libellé de bouton · 700-800"],["14px","bouton secondaire, score · 700-800"],["13px","SUR-TITRE majuscules · 800"]],"plancher":"17px","labelTaille":"13px","labelGraisse":"800","labelLettrage":"0.12em","espaces":[["4px",""],["8px",""],["12px",""],["16px",""],["20px",""],["24px",""],["32px","gouttière de page"],["48px","écart entre deux exercices"]],"rayons":[["10px","contrôles, champs, tuiles"],["14px","jetons, pastille numérotée"],["18px","cartes, cadres, bandeaux"],["999px","boutons, étiquettes, scores"]],"contenu":"1000px","tap":"44px","focusL":"3px","focusD":"2px","duree":"140ms"},"imprime":{"page":"size:8.5in 11in; margin:14mm 15mm","largeur":"215.9mm","marge":"14mm 15mm 16mm","taille":"11.5pt","interligne":"1.5","palette":[["#FFFFFF","papier"],["#F0F0EE","aplat le plus clair encore visible en photocopie"],["#C9C9C6","filet fin"],["#17181A","filet structurant"],["#17181A","titres"],["#2B2E30","texte courant, un cran plus sombre qu'à l'écran"],["#4B4F52","texte secondaire"],["#5E6165","sur-titres, méta"]],"classes":"« .hdr » / « .eyebrow » / « .nomline » (en-tête et lignes Nom-Date), « .chapeau », « .bloc » (ne se casse jamais entre deux pages), « .card », « .lbl », « h2.t », « .consigne », « ol.obj » et « ol.ex », « .billet », « footer », et « table.som » pour le sommaire d'un document qui réunit plusieurs fiches"}};
 
 function sectionDesign(livrables, niv){
+  const E = DESIGN.ecran, I = DESIGN.imprime;
   const ids = livrables.map(o => o.id);
   const interactif = ids.includes("interactif");
   const imprimes = ids.includes("fiche") || ids.includes("corrige");
-  if(!interactif && !imprimes) return [];
+  // Sans greffe, pas de valeurs : la section se tait plutôt que d'écrire des
+  // trous. Le cas ne se présente que sur un fichier neuf — `DESIGN` vit dans
+  // la source et y reste d'une greffe à l'autre.
+  if(!E || !I || (!interactif && !imprimes)) return [];
 
   const L = [];
   const B = s => L.push(plier("- " + s, 92, "  "));
+  // Les commentaires de fin de ligne des jetons disent à quoi sert une valeur ;
+  // ceux qui n'en ont pas se lisent très bien seuls (8px, 12px, 16px…).
+  const liste = t => t.map(([v, n]) => v + (n ? " (" + n + ")" : "")).join(" · ");
+
   L.push("", "SYSTÈME DE DESIGN (officiel — reprends-le tel quel, n’invente pas de feuille de style)");
-  B("Police Nunito partout, chargée par le lien Google Fonts, avec « 'Trebuchet MS', "
-    + "sans-serif » en repli. Graisses utilisées : 400, 600, 700, 800, 900.");
+  B("Police : « " + DESIGN.police + " », chargée par le lien Google Fonts. Formes ouvertes, "
+    + "« a » et « g » à un étage : c’est le critère de choix, la lisibilité pour des adultes "
+    + "qui apprennent à lire en français.");
   B("Aucune information n’est portée par la couleur seule : elle se redit toujours par un "
     + "mot, une forme ou une graisse.");
 
   if(interactif){
     const n = Number(niv && niv.niveau);
-    const c = COULEUR_NIVEAU[n] || COULEUR_NIVEAU[4];
+    const c = E.niveaux[n] || E.niveaux[4];
     L.push("", "La page interactive (écran)");
     B("Un seul fichier HTML, ouvrable par double-clic : le style va dans une balise style, "
       + "jamais dans une feuille liée.");
-    B("Fond de page #F7F7F5, cartes blanches #FFFFFF, fond de champ #FBFBFA, filet neutre #EAEAE8.");
-    B("Encre : #17181A pour les titres et le texte fort, #3A3D40 pour le texte long et les "
-      + "transcriptions, #6E7175 pour le secondaire.");
+    B("Fond de page " + E.fond + ", cartes " + E.carte + ", fond de champ " + E.champ
+      + ", filet neutre " + E.filet + ".");
+    B("Encre : " + E.encre + " pour les titres et le texte fort, " + E.encreLong + " pour le "
+      + "texte long et les transcriptions, " + E.encreSec + " pour le secondaire.");
     B("La couleur d’accent est celle du niveau" + (n ? " " + n : "") + " : filet " + c[0]
       + ", fond clair " + c[1] + " (" + c[2] + "). Elle porte les filets, le focus et les "
-      + "pastilles. Pas d’autre couleur d’accent, et surtout pas de vert par défaut : depuis "
-      + "le 20 août 2026, la couleur d’un document est celle de son niveau.");
-    B("Rétroaction, trois états : réussite fond #E6F5EE, filet #0A8F5B, texte #07734A ; "
-      + "erreur fond #FFF6F5, filet #DC2626, texte #B91C1C — l’erreur n’a jamais d’aplat "
-      + "saturé ; avertissement fond #FEF6E7, filet #D9880B, texte #8A5206.");
-    B("Sélection : plaque encre #17181A, texte blanc. Jamais une teinte de plus.");
-    B("Le bouton audio est le seul aplat rouge de l’interface : #DC2626, survol #B91C1C, "
-      + "rond de 44 px.");
-    B("Corps de texte JAMAIS sous 17 px — le public apprend à lire en français. Échelle : "
-      + "62 px titre de page (900) · 30 px titre d’exercice (900) · 24 px mot vedette (900) · "
-      + "19 px chapeau (600-700) · 18 px énoncé (600-700) · 17 px consigne (600) · 15 et 14 px "
-      + "boutons (700-800) · 13 px sur-titre.");
-    B("Le sur-titre — 13 px, graisse 800, majuscules, interlettrage 0.12em — est le seul "
-      + "endroit de la page où les majuscules sont permises.");
-    B("Espacement : 4 · 8 · 12 · 16 · 20 · 24 · 32 (gouttière de page) · 48 (entre deux "
-      + "exercices). Rayons : 10 px contrôles, 14 px jetons, 18 px cartes, 999 px boutons et "
-      + "étiquettes. Largeur de contenu 1000 px.");
-    B("Toute cible tactile fait au moins 44 px de haut.");
-    B("Focus visible partout : contour plein de 3 px à la couleur d’accent, décalé de 2 px. "
-      + "Ne le supprime jamais.");
+      + "pastilles. Pas d’autre couleur d’accent, et surtout pas de vert par défaut : la "
+      + "couleur d’un document est celle de son niveau.");
+    B("Rétroaction, trois états : réussite fond " + E.ok[0] + ", filet " + E.ok[1] + ", texte "
+      + E.ok[2] + " ; erreur fond " + E.no[0] + ", filet " + E.no[1] + ", texte " + E.no[2]
+      + " — l’erreur n’a jamais d’aplat saturé ; avertissement fond " + E.warn[0] + ", filet "
+      + E.warn[1] + ", texte " + E.warn[2] + ".");
+    B("Sélection : plaque encre " + E.selFond + ", texte " + E.selEncre + ". Jamais une teinte de plus.");
+    B("Le bouton audio est le seul aplat rouge de l’interface : " + E.audio + ", survol "
+      + E.audioSurvol + ", rond de " + E.tap + ".");
+    B("Corps de texte JAMAIS sous " + E.plancher + " — le public apprend à lire en français. "
+      + "Échelle : " + liste(E.tailles) + ".");
+    B("Le sur-titre — " + E.labelTaille + ", graisse " + E.labelGraisse + ", majuscules, "
+      + "interlettrage " + E.labelLettrage + " — est le seul endroit de la page où les "
+      + "majuscules sont permises.");
+    B("Espacement : " + liste(E.espaces) + ". Rayons : " + liste(E.rayons) + ". Largeur de "
+      + "contenu " + E.contenu + ".");
+    B("Toute cible tactile fait au moins " + E.tap + " de haut.");
+    B("Focus visible partout : contour plein de " + E.focusL + " à la couleur d’accent, "
+      + "décalé de " + E.focusD + ". Ne le supprime jamais.");
     B("Un seul bloc inversé (fond encre, texte blanc) par page.");
-    B("Transitions de 140 ms, et aucune animation sous « prefers-reduced-motion ».");
+    B("Transitions de " + E.duree + ", et aucune animation sous « prefers-reduced-motion ».");
   }
 
   if(imprimes){
     const quoi = [ids.includes("fiche") ? "fiche élève" : null,
                   ids.includes("corrige") ? "corrigé" : null].filter(Boolean).join(" et ");
     L.push("", "Les imprimés (" + quoi + ")");
-    B("Format lettre. Une seule règle @page, jamais deux : « @page{size:8.5in 11in; "
-      + "margin:14mm 15mm} ». Le corps porte « width:215.9mm; margin:0 auto; "
-      + "padding:14mm 15mm 16mm ». Le PDF doit mesurer 612 × 792 points.");
+    B("Format lettre. Une seule règle @page, jamais deux : « @page{" + I.page + "} ». Le corps "
+      + "porte « width:" + I.largeur + "; margin:0 auto; padding:" + I.marge + " ». Le PDF "
+      + "doit mesurer 612 × 792 points.");
     B("Noir et blanc, aucune couleur : ces feuilles sont photocopiées. Toute la hiérarchie "
       + "passe par la GRAISSE, les FILETS et les MOTS.");
-    B("Palette : papier #FFFFFF ; aplat le plus clair encore visible en photocopie #F0F0EE ; "
-      + "filet fin #C9C9C6 ; filet structurant #17181A ; titres #17181A ; texte courant "
-      + "#2B2E30 ; texte secondaire #4B4F52 ; méta et sur-titres #5E6165.");
+    B("Palette : " + liste(I.palette) + ".");
     B("Les filets sont volontairement plus sombres qu’à l’écran : une photocopieuse efface "
       + "tout ce qui est plus clair que 15 % de noir.");
-    B("Corps 11.5pt, interligne 1.5. Les titres sont à 22pt (900) dans l’en-tête.");
-    B("Classes de la feuille commune, à reprendre plutôt qu’à réinventer : « .hdr » "
-      + "(en-tête, bord inférieur de 2.5px) avec « .eyebrow » (9.5pt, 800, majuscules) et "
-      + "« .nomline » (les lignes Nom et Date) ; « .chapeau » (12pt, 600) ; « .bloc » ; "
-      + "« .card » (filet 1px, rayon 12px) ; « .lbl » ; « h2.t » ; « .consigne » ; « ol.obj » "
-      + "et « ol.ex » ; « .billet » ; « footer » ; « table.som » pour un sommaire.");
+    B("Corps " + I.taille + ", interligne " + I.interligne + ".");
+    B("Classes de la feuille commune, à reprendre plutôt qu’à réinventer : " + I.classes + ".");
     B("Un exercice ne se casse jamais entre deux feuilles : « break-inside:avoid; "
       + "page-break-inside:avoid » sur chaque « .bloc ».");
     B("Le style va dans la balise style du document, jamais dans une feuille liée : le "
