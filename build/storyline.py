@@ -129,8 +129,27 @@ def lire_bloc(js, nom):
 
 
 def json_du_js(src):
-    """Le sous-ensemble de JavaScript ci-dessus, rendu en objet Python."""
-    out, i, dans, ech, tampon = [], 0, None, False, []
+    """Le sous-ensemble de JavaScript ci-dessus, rendu en objet Python.
+
+    Le texte se range en DEUX TAS : le code (accolades, virgules, clés nues) et
+    les chaînes, déjà rendues en littéraux JSON. Les deux réécritures qui
+    suivent — requoter les clés nues, retirer la virgule finale — ne touchent
+    que le code.
+
+    Les faire sur le texte entier corrompait le contenu, et silencieusement :
+    un titre comme « ce, cet, cette : trois mots » porte une virgule, un mot et
+    un deux-points, donc exactement le motif d'une clé nue. Il ressortait
+    requoté au milieu de la phrase, et `json.loads` mourait sur un titre
+    parfaitement valide — l'erreur montrait le titre, jamais la réécriture.
+    """
+    morceaux, code = [], []
+    i, dans, ech, tampon = 0, None, False, []
+
+    def vider_code():
+        if code:
+            morceaux.append(('code', ''.join(code)))
+            del code[:]
+
     while i < len(src):
         c = src[i]
         if dans:
@@ -148,8 +167,9 @@ def json_du_js(src):
                     dans = suite.group(1)
                     i += 1 + suite.end()
                     continue
-                out.append(json.dumps(''.join(tampon)
-                                      .replace('\\"', '"').replace("\\'", "'")))
+                vider_code()
+                morceaux.append(('chaine', json.dumps(''.join(tampon)
+                                 .replace('\\"', '"').replace("\\'", "'"))))
                 tampon, dans = [], None
             else:
                 tampon.append(c)
@@ -165,12 +185,17 @@ def json_du_js(src):
             dans, tampon = c, []
             i += 1
             continue
-        out.append(c)
+        code.append(c)
         i += 1
+    vider_code()
 
-    txt = ''.join(out)
-    txt = re.sub(r'([{,]\s*)([A-Za-z_][A-Za-z0-9_]*)\s*:', r'\1"\2":', txt)  # clés nues
-    txt = re.sub(r',\s*([}\]])', r'\1', txt)                                 # virgule finale
+    bouts = []
+    for quoi, t in morceaux:
+        if quoi == 'code':
+            t = re.sub(r'([{,]\s*)([A-Za-z_][A-Za-z0-9_]*)\s*:', r'\1"\2":', t)  # clés nues
+            t = re.sub(r',\s*([}\]])', r'\1', t)                                 # virgule finale
+        bouts.append(t)
+    txt = ''.join(bouts)
     try:
         return json.loads(txt)
     except json.JSONDecodeError as e:

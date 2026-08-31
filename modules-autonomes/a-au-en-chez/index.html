@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dire où l'on va : à, au, en, chez — Point express · 10 minutes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --sol:#FFFFFF; --papier:#FAFAF8; --encre:#17181A; --texte:#3A3D40; --gris:#6E7175;
+  --filet:#D0CFCA; --filet-fin:#E8E7E2;
+  --acc:#0D7A6F; --acc-doux:#DCF2EF; --acc-fonce:#08463F;
+  --ambre:#B45309; --ambre-pale:#FBEEDC; --ambre-fonce:#7A3806;
+  --mauve:#6B4FBB;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--papier);color:var(--texte);
+  font-family:'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;font-size:16px;line-height:1.55;
+  -webkit-font-smoothing:antialiased;display:flex;flex-direction:column}
+h1,h2,h3,h4{margin:0;font-family:'Nunito','Arial Rounded MT Bold',sans-serif;color:var(--encre);text-wrap:balance}
+p{margin:0}
+b,strong{font-weight:700;color:var(--encre)}
+button{font-family:inherit;font-size:inherit;cursor:pointer}
+button:disabled{cursor:not-allowed}
+:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+
+/* ── barre du haut : marque, jauge, position ─────────────────────── */
+.tete{background:#FFF;border-bottom:1px solid var(--filet);padding:10px 20px;
+  display:flex;align-items:center;gap:16px;flex-wrap:wrap;flex:0 0 auto;
+  position:sticky;top:0;z-index:5}
+.fr-nom{font-family:'Nunito',sans-serif;font-weight:900;font-size:24px;letter-spacing:-.035em;line-height:1;color:var(--encre);white-space:nowrap;text-decoration:none}
+/* Le « ı » sans point (U+0131) et son disque. Le disque se cale sur CE
+   caractère, jamais sur la largeur du mot : posé à 50% du nom entier, il
+   tombait au-dessus du « n ». `inline-block` et non `inline` — la boîte d'un
+   élément en ligne monte jusqu'à l'ascendante de la police, et le disque se
+   retrouverait au-dessus des lettres. Valeurs de assets/design-system/marque-francis.css. */
+.fr-i{position:relative;display:inline-block}
+.fr-point{position:absolute;left:1px;top:1px;width:6px;height:6px;
+  border-radius:999px;background:var(--mauve)}
+.tete__t{font-size:13px;color:var(--gris);border-left:1px solid var(--filet);padding-left:16px}
+.tete__t b{color:var(--encre);font-weight:600}
+.jauge{flex:1 1 160px;height:5px;border-radius:3px;background:var(--filet-fin);position:relative;min-width:100px}
+.jauge i{position:absolute;top:0;left:0;bottom:0;background:var(--acc);border-radius:3px;
+  transition:width .3s ease;width:0}
+.pos{font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--gris);
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+.btn-menu{border:1px solid var(--filet);background:#FFF;border-radius:4px;padding:6px 12px;
+  font-size:12.5px;color:var(--texte)}
+.btn-menu:hover{background:var(--papier)}
+
+/* La sortie se voit sans crier : même gabarit que « Les écrans », un cran plus
+   discret, et elle ne devient franche qu'au survol. */
+.btn-sortir{border:1px solid var(--filet);background:#FFF;border-radius:4px;
+  padding:6px 12px;font:inherit;font-size:13px;color:var(--gris);cursor:pointer}
+.btn-sortir:hover{background:var(--papier);color:var(--encre);border-color:var(--encre)}
+.btn-sortir__c{display:none}
+
+/* ── le menu des écrans vus (verrou doux) ────────────────────────── */
+.menu{background:#FFF;border-bottom:1px solid var(--filet);padding:12px 20px;display:none}
+.menu[data-ouvert="1"]{display:block}
+.menu ol{margin:0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:8px}
+.menu button{border:1px solid var(--filet);background:var(--papier);border-radius:4px;
+  padding:7px 12px;font-size:12.5px;text-align:left;max-width:280px;color:var(--texte)}
+.menu button[disabled]{opacity:.4}
+.menu button[aria-current="true"]{border-color:var(--acc);background:var(--acc-doux);
+  color:var(--acc-fonce);font-weight:600}
+.menu .n{font-family:'IBM Plex Mono',monospace;color:var(--gris);margin-right:7px}
+
+/* ── la scène ────────────────────────────────────────────────────── */
+.scene{flex:1 1 auto;display:flex;justify-content:center;padding:34px 20px 20px}
+.ecran{background:#FFF;border:1px solid var(--filet);border-radius:6px;max-width:760px;width:100%;
+  padding:30px 34px 26px;align-self:flex-start}
+.ecran__eye{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--acc)}
+.ecran__t{font-size:27px;font-weight:900;line-height:1.14;margin-top:7px}
+.ecran__p{font-size:16px;margin-top:12px;max-width:62ch}
+.ecran__p + .ecran__p{margin-top:10px}
+
+/* ── un extrait sonore ───────────────────────────────────────────── */
+.son{display:flex;align-items:flex-start;gap:12px;margin-top:16px;padding:12px 14px;
+  background:var(--acc-doux);border-radius:5px}
+.son__go{flex:0 0 auto;width:38px;height:38px;border-radius:50%;border:0;background:var(--acc);
+  position:relative;padding:0}
+.son__go::after{content:"";position:absolute;top:11px;left:14px;border-left:12px solid #FFF;
+  border-top:8px solid transparent;border-bottom:8px solid transparent}
+.son__go[data-joue="1"]::after{top:12px;left:12px;border:0;width:12px;height:14px;
+  background:linear-gradient(to right,#FFF 0 4px,transparent 4px 8px,#FFF 8px 12px)}
+.son__c{flex:1 1 auto;min-width:0}
+.son__qui{font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--acc-fonce)}
+.son__txt{font-size:15px;color:var(--encre);margin-top:3px}
+.son__txt[hidden]{display:none}
+.son__o{display:flex;gap:14px;margin-top:7px;flex-wrap:wrap}
+.son__o button{background:none;border:0;padding:0;font-size:12.5px;color:var(--acc-fonce);
+  text-decoration:underline;text-underline-offset:2px}
+
+/* ── la retenue : ce qu'il faut garder ───────────────────────────── */
+.retenir{border-left:3px solid var(--encre);background:var(--papier);padding:13px 16px;margin-top:18px}
+.retenir .r{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gris)}
+.retenir p{font-size:15.5px;color:var(--encre);margin-top:4px;font-family:'Nunito',sans-serif;font-weight:600}
+
+/* ── la vérification ─────────────────────────────────────────────── */
+.choix{display:flex;flex-direction:column;gap:9px;margin-top:18px}
+.choix button{border:1px solid var(--filet);background:#FFF;border-radius:5px;padding:13px 15px;
+  text-align:left;font-size:15.5px;color:var(--texte);display:flex;gap:11px;align-items:flex-start}
+.choix button:hover:not([disabled]){border-color:var(--encre);background:var(--papier)}
+.choix button .marq{flex:0 0 auto;width:20px;font-weight:800;font-family:'Nunito',sans-serif;color:var(--gris)}
+.choix button[data-etat="juste"]{border-color:var(--acc);background:var(--acc-doux);color:var(--acc-fonce);font-weight:600}
+.choix button[data-etat="juste"] .marq{color:var(--acc)}
+.choix button[data-etat="faux"]{border-color:var(--ambre);background:var(--ambre-pale);color:var(--ambre-fonce)}
+.choix button[data-etat="faux"] .marq{color:var(--ambre)}
+.choix button[data-etat="ecarte"]{opacity:.45}
+
+/* ── le tri : trancher des cas AVANT qu'aucune règle ne soit dite ──
+   L'écran qui distingue un parcours d'une mini-leçon. Pas de glisser-déposer :
+   une rangée par cas, un bouton par colonne — un doigt sur un téléphone ne
+   traîne pas une étiquette à travers l'écran. */
+.tri{margin-top:18px;border:1px solid var(--filet);border-radius:5px;overflow:hidden}
+.tri__tete{display:grid;background:var(--papier);border-bottom:1px solid var(--filet)}
+.tri__tete span{padding:9px 14px;font-size:11.5px;font-weight:700;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--gris);text-align:center}
+.tri__tete span:first-child{text-align:left}
+.tri__l{display:grid;align-items:center;border-top:1px solid var(--filet-fin)}
+.tri__l:first-of-type{border-top:0}
+.tri__mot{padding:10px 14px;font-size:15.5px;color:var(--encre)}
+.tri__mot i{font-style:normal;color:var(--gris);font-size:13px;display:block}
+.tri__c{padding:7px 8px;text-align:center}
+.tri__c button{width:100%;border:1px solid var(--filet);background:#FFF;border-radius:4px;
+  padding:9px 6px;font-size:14px;color:var(--texte)}
+.tri__c button:hover:not([disabled]){border-color:var(--encre);background:var(--papier)}
+.tri__c button[data-etat="juste"]{border-color:var(--acc);background:var(--acc-doux);
+  color:var(--acc-fonce);font-weight:700}
+.tri__c button[data-etat="faux"]{border-color:var(--ambre);background:var(--ambre-pale);
+  color:var(--ambre-fonce)}
+.tri__l[data-fait="1"] .tri__mot{color:var(--gris)}
+.tri__note{grid-column:1/-1;padding:0 14px 12px;font-size:13.5px;color:var(--ambre-fonce)}
+.tri__note b{color:var(--ambre-fonce)}
+/* Un cas tranché juste ne se lit pas en ambre : la note devient une
+   confirmation, pas un avertissement. */
+.tri__l[data-fait="1"] .tri__note,
+.tri__l[data-fait="1"] .tri__note b{color:var(--acc-fonce)}
+.compte{font-size:12.5px;color:var(--gris);margin-top:10px}
+
+/* ── le rattrapage : n'existe que sur erreur ─────────────────────── */
+.rattrap{border:1px solid var(--ambre);border-left-width:3px;background:#FFF;border-radius:5px;
+  padding:15px 17px;margin-top:16px}
+.rattrap .r{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ambre-fonce)}
+.rattrap h4{font-size:17px;font-weight:900;margin-top:4px}
+.rattrap p{font-size:15px;margin-top:8px}
+.rattrap .encore{margin-top:13px;border:1px solid var(--encre);background:#FFF;border-radius:4px;
+  padding:8px 15px;font-family:'Nunito',sans-serif;font-weight:800;font-size:13.5px;color:var(--encre)}
+.juste{border:1px solid var(--acc);border-left-width:3px;background:var(--acc-doux);border-radius:5px;
+  padding:15px 17px;margin-top:16px;color:var(--acc-fonce)}
+.juste .r{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+.juste p{font-size:15px;margin-top:6px;color:var(--acc-fonce)}
+.juste p b{color:var(--acc-fonce)}
+
+/* ── le pied de l'écran ──────────────────────────────────────────── */
+.pied{display:flex;justify-content:space-between;align-items:center;gap:14px;
+  margin-top:26px;padding-top:15px;border-top:1px solid var(--filet-fin)}
+.btn{border:1px solid var(--encre);background:var(--encre);color:#FFF;border-radius:5px;
+  padding:11px 22px;font-family:'Nunito',sans-serif;font-weight:800;font-size:14.5px}
+.btn:disabled{background:var(--filet);border-color:var(--filet);color:#FFF}
+.btn-2{border:1px solid var(--filet);background:#FFF;color:var(--texte);border-radius:5px;
+  padding:11px 18px;font-size:14px}
+.btn-2:hover{border-color:var(--encre);color:var(--encre)}
+.btn-2[hidden]{display:none}
+.consigne{font-size:12.5px;color:var(--gris);text-align:right;flex:1 1 auto}
+
+.fin{max-width:760px;margin:0 auto;text-align:center;padding:40px 0}
+.fin h2{font-size:26px;font-weight:900}
+.fin p{margin-top:10px}
+
+/* ── le cadre de la diapositive ───────────────────────────────────
+   Au-dessus de 900 px, l'écran est une diapositive : largeur bornée, hauteur
+   qui suit ce qu'il y a dedans, et c'est le CORPS qui défile — jamais la
+   page. En dessous, on retombe sur la carte au fil du contenu : un téléphone
+   est en 9:19,5, et un cadre 16:9 y deviendrait une bande au milieu de
+   l'écran.
+   ─────────────────────────────────────────────────────────────── */
+@media (min-width:900px){
+  .scene{align-items:center;padding:24px 24px 28px}
+  /* Le 16:9 STRICT est tombé le 31 août 2026 : sur un portable, il rendait
+     664 px de haut là où la fenêtre en offrait 768, et un écran de tri ou un
+     rattrapage ouvert défilait dans une fente pendant qu'un ruban de gris
+     restait vide dessous. Le rapport n'est plus une hauteur imposée, c'est un
+     PLANCHER — en dessous, une accroche de trois lignes redeviendrait une
+     bande.
+
+     La largeur ne se déduit donc plus de la hauteur : elle est posée, et la
+     hauteur va du plancher 16:9 jusqu'au plafond de la fenêtre. Entre les
+     deux, elle suit le contenu. Le plafond n'est pas décoratif : sans lui,
+     un rattrapage qui s'ouvre pousse « Continuer » sous la ligne de
+     flottaison — la faute déjà payée sur téléphone. */
+  .ecran{
+    --l:min(1180px, 100vw - 48px);
+    width:var(--l);
+    height:auto;
+    min-height:min(calc(100vh - 132px), calc(var(--l) * 9 / 16));
+    max-height:calc(100vh - 132px);
+    max-width:100%;
+    overflow:hidden;
+    padding:30px 44px 22px;
+    display:flex;flex-direction:column;align-self:center;
+    box-shadow:0 1px 3px rgba(23,24,26,.06),0 8px 24px rgba(23,24,26,.05);
+  }
+  .ecran__corps{flex:1 1 auto;min-height:0;overflow-y:auto;padding-right:6px}
+  .ecran__corps::-webkit-scrollbar{width:8px}
+  .ecran__corps::-webkit-scrollbar-thumb{background:var(--filet);border-radius:4px}
+  .pied{flex:0 0 auto;margin-top:16px}
+  .ecran__t{font-size:30px}
+  .ecran__p{font-size:16.5px;max-width:66ch}
+}
+
+@media (max-width:640px){
+  /* L'écran occupe la fenêtre : une carte blanche qui s'arrête à mi-hauteur
+     sur du gris se lit comme une page tronquée. */
+  .ecran{padding:22px 18px 0;border-radius:0;border-left:0;border-right:0;
+    border-bottom:0;min-height:calc(100vh - 49px);display:flex;flex-direction:column}
+  .ecran__corps{flex:1 1 auto}
+  .scene{padding:0}
+  .ecran__t{font-size:22px}
+
+  /* La barre tient sur UNE ligne : sur 375 px, le bouton du menu passait
+     dessous et mangeait quarante pixels avant même le premier mot. */
+  .tete{gap:10px;padding:9px 14px;flex-wrap:nowrap}
+  .tete__t{display:none}
+  .fr-nom{font-size:19px}
+  .jauge{flex:1 1 40px;min-width:40px}
+  .pos{font-size:12px}
+  .btn-menu{padding:6px 10px;font-size:12px;white-space:nowrap}
+  /* « Fermer » écrit prendrait la ligne : sur 375 px, la barre n'a plus de
+     place après la jauge et le menu. La croix garde la porte visible sans
+     rien pousser dessous — le nom complet reste dans l'aria-label. */
+  .btn-sortir{padding:6px 9px;font-size:15px;line-height:1}
+  .btn-sortir__l{display:none}
+  .btn-sortir__c{display:inline}
+  .menu button{max-width:none;flex:1 1 100%}
+
+  /* Un tri s'empile. En colonnes, sur 375 px, il reste 73 px pour le mot dès
+     qu'il y a trois colonnes — « En avant-midi » se lit alors à la verticale,
+     une lettre par ligne. Le cas passe donc au-dessus, et les boutons dessous,
+     à égale largeur : ils y gagnent des cibles plus grandes pour le pouce. */
+  .tri__tete{display:none}
+  .tri__l{display:flex;flex-wrap:wrap;padding:4px 10px 0}
+  .tri__mot{flex:1 1 100%;padding:10px 4px 8px}
+  .tri__mot i{display:inline;margin-left:6px}
+  .tri__c{flex:1 1 0;min-width:0;padding:0 3px 10px}
+  .tri__c button{padding:11px 4px}
+  .tri__note{flex:1 1 100%;padding:0 4px 10px}
+
+  /* « Continuer » ne se cherche pas. Sur un téléphone, le pied de l'écran
+     reste au bas de la fenêtre pendant qu'on lit — c'est le seul geste de
+     l'écran, il doit être là où le pouce l'attend. */
+  .pied{position:sticky;bottom:0;background:#FFF;flex-wrap:wrap;
+    margin-top:20px;padding:12px 0 14px;
+    box-shadow:0 -10px 14px -10px rgba(23,24,26,.16)}
+  .consigne{order:3;flex-basis:100%;text-align:left;margin-top:2px}
+  .btn{padding:12px 20px}
+}
+</style>
+</head>
+<body>
+
+<header class="tete">
+  <a class="fr-nom" aria-label="francis" href="../index.html">franc<span class="fr-i" aria-hidden="true">ı<span class="fr-point"></span></span>s</a>
+  <span class="tete__t"><b>Dire où l'on va : à, au, en, chez</b> · Point express · 10 minutes</span>
+  <span class="jauge" role="progressbar" aria-label="Progression du parcours"
+        aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="jauge"></i></span>
+  <span class="pos" id="pos">1 / 1</span>
+  <button type="button" class="btn-menu" id="btn-menu" aria-expanded="false"
+          aria-controls="menu">Les écrans</button>
+  <!-- Sortir doit être une PORTE VISIBLE : un élève coincé sur un écran qu'il
+       ne comprend pas ne doit pas avoir à deviner que le mot-symbole en haut à
+       gauche est la sortie. Rien ne se perd — le point de reprise le ramène
+       exactement ici. -->
+  <button type="button" class="btn-sortir" id="btn-sortir"
+          aria-label="Fermer le point express"
+          title="Fermer — vous pourrez reprendre où vous êtes."><span
+          class="btn-sortir__l">Fermer</span><span class="btn-sortir__c"
+          aria-hidden="true">✕</span></button>
+</header>
+
+<nav class="menu" id="menu" data-ouvert="0" aria-label="Les écrans du parcours">
+  <ol id="menu-liste"></ol>
+</nav>
+
+<main class="scene"><div class="ecran" id="ecran" tabindex="-1"></div></main>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════════
+   Le moteur d'un parcours autonome.
+
+   Il ne connaît que des ÉCRANS : une liste de données, un type par écran, une
+   mise en page par type. Le contenu vit dans `build/contenu/<slug>/storyline.js`
+   et n'est jamais écrit ici.
+
+   Trois choix s'y lisent, et ce sont les décisions du 30 août 2026 :
+
+   - **verrou doux** : « Continuer » attend que l'élève ait agi, mais le retour
+     en arrière est toujours ouvert et le menu montre les écrans déjà vus ;
+   - **narration écrite** : aucune voix d'accompagnement, seulement les extraits
+     du module de classe, rejoués par chemin absolu ;
+   - **suivi local** : les événements vont dans le `localStorage` du poste. Rien
+     ne part vers le serveur tant que la forme n'est pas acceptée. Le journal se
+     lit dans la console — `__storyline.journal()`.
+   ═══════════════════════════════════════════════════════════════════════ */
+(function () {
+  'use strict';
+
+  var ECRANS = [
+  {
+    "id": "depart",
+    "type": "verif",
+    "eye": "Une question, pour commencer",
+    "menu": "Trois versions",
+    "titre": "Une seule de ces phrases s'écrit. Laquelle ?",
+    "consigne": "Répondez avec ce que vous savez déjà — ou au feeling. On expliquera après&nbsp;: c'est fait exprès.",
+    "options": [
+      {
+        "txt": "«&nbsp;Je ne serai pas au travail jeudi&nbsp;: je vais chez le médecin.&nbsp;»",
+        "juste": true
+      },
+      {
+        "txt": "«&nbsp;Je ne serai pas au travail jeudi&nbsp;: je vais au médecin.&nbsp;»",
+        "rat_t": "C'est la version la plus fréquente, et elle ne s'écrit pas.",
+        "rat": "Elle est fréquente pour une bonne raison&nbsp;: on dit «&nbsp;je vais <b>au</b> travail&nbsp;», «&nbsp;<b>au</b> dépanneur&nbsp;», «&nbsp;<b>au</b> bureau&nbsp;» — alors on continue. Mais un médecin n'est pas un endroit&nbsp;: c'est quelqu'un. Et pour aller vers quelqu'un, le français a un mot à lui."
+      },
+      {
+        "txt": "«&nbsp;Je ne serai pas au travail jeudi&nbsp;: je vais à le médecin.&nbsp;»",
+        "rat_t": "« À le » n'existe pas en français.",
+        "rat": "Ces deux mots ne se rencontrent jamais&nbsp;: ils se collent toujours et donnent «&nbsp;au&nbsp;». Vous venez donc d'écrire la phrase précédente, en plus long — et elle ne convient pas non plus."
+      }
+    ],
+    "pourquoi": "«&nbsp;<b>Chez</b> le médecin&nbsp;». Retenez la phrase telle quelle pour l'instant. On va voir qu'il n'y a que <b>trois</b> cas à distinguer, et qu'ils se reconnaissent sans grammaire.",
+    "attente": "Choisissez une réponse pour continuer."
+  },
+  {
+    "id": "trois-natures",
+    "type": "tri",
+    "eye": "À vous de trancher",
+    "menu": "Huit destinations",
+    "titre": "Huit destinations. De quelle sorte est chacune ?",
+    "consigne": "Aucune grammaire ici, et aucune préposition&nbsp;: dites seulement <b>ce que c'est</b>. Vous verrez à l'écran suivant pourquoi on vous le demande.",
+    "colonnes": [
+      {
+        "id": "pers",
+        "t": "Quelqu’un",
+        "b": "Quelqu’un"
+      },
+      {
+        "id": "lieu",
+        "t": "Un endroit, un commerce",
+        "b": "Un endroit"
+      },
+      {
+        "id": "terr",
+        "t": "Une ville, une province, un pays",
+        "b": "Un territoire"
+      }
+    ],
+    "items": [
+      {
+        "txt": "le dentiste",
+        "ok": "pers",
+        "rat": "On dit «&nbsp;le dentiste&nbsp;» comme on dit «&nbsp;la pharmacie&nbsp;», avec un article&nbsp;: c'est ce qui trompe. Mais un dentiste est une personne, pas un bâtiment — et c'est la personne qu'on va voir.",
+        "pourquoi": "Une personne, malgré l'article."
+      },
+      {
+        "txt": "la pharmacie",
+        "ok": "lieu",
+        "rat": "Une pharmacie est un commerce&nbsp;: un endroit avec une porte et des heures d'ouverture. On peut y entrer sans y voir personne en particulier.",
+        "pourquoi": "Un commerce : un endroit."
+      },
+      {
+        "txt": "Montréal",
+        "ok": "terr",
+        "rat": "C'est un nom de ville, écrit avec une majuscule et sans rien devant. Ce n'est pas un commerce où l'on entre&nbsp;: c'est un territoire.",
+        "pourquoi": "Une ville : un territoire."
+      },
+      {
+        "txt": "ma sœur",
+        "ok": "pers",
+        "rat": "Une personne, sans ambiguïté possible. Gardez-la en tête&nbsp;: c'est le cas le plus clair des trois, et il donne la règle des autres.",
+        "pourquoi": "Une personne."
+      },
+      {
+        "txt": "le Québec",
+        "ok": "terr",
+        "rat": "Une province porte un article — «&nbsp;le&nbsp;» Québec — et c'est justement cet article qui va compter tout à l'heure. Mais on n'y entre pas comme dans un commerce&nbsp;: c'est un territoire.",
+        "pourquoi": "Une province : un territoire."
+      },
+      {
+        "txt": "l'épicerie",
+        "ok": "lieu",
+        "rat": "Un commerce, comme la pharmacie. L'apostrophe change la façon de l'écrire, pas sa nature.",
+        "pourquoi": "Un commerce : un endroit."
+      },
+      {
+        "txt": "l'Ontario",
+        "ok": "terr",
+        "rat": "Une province voisine. Elle commence par une voyelle, ce qui aura son importance&nbsp;; pour l'instant, rangez-la avec les territoires.",
+        "pourquoi": "Une province : un territoire."
+      },
+      {
+        "txt": "le dépanneur",
+        "ok": "lieu",
+        "rat": "Attention à celui-là&nbsp;: «&nbsp;dépanneur&nbsp;» peut désigner une personne qui répare, mais au Québec c'est d'abord <b>le commerce du coin</b>. C'est un endroit, et c'est bien ainsi que tout le monde l'entend.",
+        "pourquoi": "Le commerce du coin : un endroit."
+      }
+    ],
+    "attente": "Tranchez les huit destinations pour continuer."
+  },
+  {
+    "id": "trois-piles",
+    "type": "notion",
+    "eye": "Ce que vous venez de faire",
+    "menu": "Le classement",
+    "titre": "Vos trois piles sont exactement trois façons de dire « je vais ».",
+    "paras": [
+      "<b>Quelqu'un</b> → «&nbsp;je vais <b>chez</b> le dentiste&nbsp;», «&nbsp;chez ma sœur&nbsp;». <b>Un endroit</b> → «&nbsp;je vais <b>à la</b> pharmacie&nbsp;», «&nbsp;<b>au</b> dépanneur&nbsp;», «&nbsp;<b>à l'</b>épicerie&nbsp;». <b>Un territoire</b> → «&nbsp;je vais <b>à</b> Montréal&nbsp;», «&nbsp;<b>au</b> Québec&nbsp;», «&nbsp;<b>en</b> Ontario&nbsp;».",
+      "Ces petits mots s'appellent des <b>prépositions</b>. Vous n'avez pas eu besoin du nom pour faire le tri, mais votre enseignant l'emploiera.",
+      "<b>Le test, en deux temps&nbsp;:</b> d'abord, est-ce que je vais vers <b>une personne</b>&nbsp;? Si oui, <i>chez</i>, et c'est réglé. Sinon, je regarde comment je nomme le lieu <b>quand il est tout seul</b>&nbsp;: «&nbsp;la pharmacie&nbsp;» → à la&nbsp;; «&nbsp;le dépanneur&nbsp;» → au&nbsp;; «&nbsp;Montréal&nbsp;», rien devant → à.",
+      "Ce n'est donc pas une liste à apprendre&nbsp;: c'est <b>une question à se poser</b>, et elle marche sur un lieu que vous n'avez jamais nommé."
+    ],
+    "retenir": "Une personne → <b>chez</b>. Sinon, le mot qui accompagne le lieu quand il est seul décide de ce qu'on écrit devant.",
+    "attente": "Lisez, puis continuez."
+  },
+  {
+    "id": "chez-qui",
+    "type": "verif",
+    "eye": "Le cas qui trompe",
+    "menu": "Le métier",
+    "titre": "« Chez » ne se met que devant quelqu'un — et un métier, c'est quelqu'un.",
+    "consigne": "Ana écrit une note à l'école pour l'absence de son fils. Quelle version&nbsp;?",
+    "options": [
+      {
+        "txt": "«&nbsp;Il avait un rendez-vous chez l'orthophoniste.&nbsp;»",
+        "juste": true
+      },
+      {
+        "txt": "«&nbsp;Il avait un rendez-vous à l'orthophoniste.&nbsp;»",
+        "rat_t": "Le mot ressemble à un lieu, et n'en est pas un.",
+        "rat": "«&nbsp;À l'&nbsp;» est juste devant un endroit — «&nbsp;à l'école&nbsp;», «&nbsp;à l'épicerie&nbsp;» — et un nom de métier a l'air pareil à l'écrit. Mais on n'a pas rendez-vous avec un bâtiment&nbsp;: on a rendez-vous avec une <b>personne</b>, donc <i>chez</i>."
+      },
+      {
+        "txt": "«&nbsp;Il avait un rendez-vous à la clinique d'orthophonie.&nbsp;»",
+        "rat_t": "Correcte, mais ce n'est pas la même chose.",
+        "rat": "Cette phrase s'écrit très bien — une clinique est un endroit, donc «&nbsp;à la&nbsp;». Elle ne dit simplement pas ce qu'Ana veut dire&nbsp;: <b>la nature du lieu décide du mot</b>, et changer le mot revient à changer le lieu."
+      }
+    ],
+    "pourquoi": "Tous les métiers fonctionnent ainsi&nbsp;: <b>chez</b> le dentiste, chez le notaire, chez le coiffeur, chez la vétérinaire. Et par extension, <i>chez</i> s'emploie aussi devant le nom d'un commerce qui porte un nom de personne&nbsp;: «&nbsp;je travaille chez Desjardins&nbsp;». Le mot va toujours vers quelqu'un.",
+    "attente": "Choisissez une réponse pour continuer."
+  },
+  {
+    "id": "territoires",
+    "type": "notion",
+    "eye": "La pile des territoires",
+    "menu": "Villes et pays",
+    "titre": "Pour un territoire, regardez le mot qui vient devant son nom.",
+    "paras": [
+      "Une <b>ville</b> n'a rien devant elle&nbsp;: on dit «&nbsp;Montréal&nbsp;», «&nbsp;Laval&nbsp;», «&nbsp;Sherbrooke&nbsp;». Alors on n'écrit rien de plus non plus&nbsp;: <b>à</b> Montréal, <b>à</b> Laval, <b>à</b> Sherbrooke.",
+      "Une <b>province</b> ou un <b>pays</b> porte un article, et c'est lui qui décide. On dit «&nbsp;<i>le</i> Québec&nbsp;» → <b>au</b> Québec, «&nbsp;<i>le</i> Manitoba&nbsp;» → <b>au</b> Manitoba, «&nbsp;<i>le</i> Maroc&nbsp;» → <b>au</b> Maroc. On dit «&nbsp;<i>la</i> Colombie-Britannique&nbsp;» → <b>en</b> Colombie-Britannique, «&nbsp;<i>la</i> France&nbsp;» → <b>en</b> France.",
+      "Deux ajouts, et il n'y en a pas d'autres. Devant une <b>voyelle</b>, c'est toujours <i>en</i>, quel que soit l'article&nbsp;: «&nbsp;<i>l'</i>Ontario&nbsp;» → <b>en</b> Ontario, «&nbsp;<i>l'</i>Alberta&nbsp;» → <b>en</b> Alberta, «&nbsp;<i>l'</i>Ukraine&nbsp;» → <b>en</b> Ukraine. Et devant un nom au pluriel, <i>aux</i>&nbsp;: «&nbsp;<i>les</i> États-Unis&nbsp;» → <b>aux</b> États-Unis.",
+      "Vous n'avez donc <b>aucune liste de pays à apprendre</b>. Vous avez une question à poser au nom du territoire&nbsp;: qu'est-ce qu'on met devant lui quand il est seul&nbsp;?"
+    ],
+    "retenir": "Rien devant le nom → <b>à</b>. «&nbsp;le&nbsp;» → <b>au</b>. «&nbsp;la&nbsp;» ou une voyelle → <b>en</b>. «&nbsp;les&nbsp;» → <b>aux</b>.",
+    "attente": "Lisez, puis continuez."
+  },
+  {
+    "id": "tri-correct",
+    "type": "tri",
+    "eye": "À vous de trancher",
+    "menu": "Six phrases",
+    "titre": "Six phrases prises dans de vrais messages. Lesquelles sont correctes ?",
+    "consigne": "Reprenez le test&nbsp;: une personne&nbsp;? Sinon, qu'est-ce qu'on met devant le lieu quand il est seul&nbsp;?",
+    "colonnes": [
+      {
+        "id": "ok",
+        "t": "Correct",
+        "b": "Correct"
+      },
+      {
+        "id": "faux",
+        "t": "Une faute",
+        "b": "Une faute"
+      }
+    ],
+    "items": [
+      {
+        "txt": "«&nbsp;Je passe à la pharmacie en revenant.&nbsp;»",
+        "sous": "texto",
+        "ok": "ok",
+        "rat": "On dit «&nbsp;<i>la</i> pharmacie&nbsp;»&nbsp;: donc «&nbsp;à la&nbsp;». Le cas le plus fréquent de tous, et il ne demande aucune réflexion.",
+        "pourquoi": "« la pharmacie » : à la. Juste."
+      },
+      {
+        "txt": "«&nbsp;Mon rendez-vous au notaire est reporté.&nbsp;»",
+        "sous": "courriel",
+        "ok": "faux",
+        "rat": "Un notaire a un bureau, une adresse, des heures&nbsp;— on le prend donc pour un endroit. C'est pourtant une personne&nbsp;: «&nbsp;<b>chez</b> le notaire&nbsp;».",
+        "pourquoi": "Une personne : chez le notaire."
+      },
+      {
+        "txt": "«&nbsp;Ma famille habite en Alberta depuis 2019.&nbsp;»",
+        "sous": "formulaire",
+        "ok": "ok",
+        "rat": "«&nbsp;<i>L'</i>Alberta&nbsp;» commence par une voyelle&nbsp;: c'est <i>en</i>, sans avoir à chercher si le nom est masculin ou féminin.",
+        "pourquoi": "Une voyelle : en Alberta. Juste."
+      },
+      {
+        "txt": "«&nbsp;J'ai déménagé en Montréal l'été passé.&nbsp;»",
+        "sous": "message à un ami",
+        "ok": "faux",
+        "rat": "La faute vient d'une bonne habitude&nbsp;: on a retenu «&nbsp;en France&nbsp;», «&nbsp;en Ontario&nbsp;», et on l'étend. Mais Montréal est une <b>ville</b>, et une ville n'a rien devant son nom&nbsp;: «&nbsp;<b>à</b> Montréal&nbsp;».",
+        "pourquoi": "Une ville : à Montréal."
+      },
+      {
+        "txt": "«&nbsp;Les enfants sont chez leur grand-mère cette semaine.&nbsp;»",
+        "sous": "note à l'école",
+        "ok": "ok",
+        "rat": "Une personne&nbsp;: <i>chez</i>, et rien à décider de plus. C'est le cas où le test s'arrête à la première question.",
+        "pourquoi": "Une personne : chez. Juste."
+      },
+      {
+        "txt": "«&nbsp;Je vais à le bureau de poste avant midi.&nbsp;»",
+        "sous": "texto",
+        "ok": "faux",
+        "rat": "Le raisonnement est juste — un endroit, donc «&nbsp;à&nbsp;» plus son article — mais ces deux mots ne se rencontrent jamais&nbsp;: ils se collent en «&nbsp;<b>au</b> bureau de poste&nbsp;».",
+        "pourquoi": "« à le » n'existe pas : au bureau de poste."
+      }
+    ],
+    "attente": "Tranchez les six phrases pour continuer."
+  },
+  {
+    "id": "quebec",
+    "type": "verif",
+    "eye": "Le cas qui trompe",
+    "menu": "Québec, deux fois",
+    "titre": "« À Québec » et « au Québec » ne veulent pas dire la même chose.",
+    "consigne": "Bilal remplit un formulaire d'inscription. Il habite à Longueuil et n'a jamais quitté la province. Que doit-il écrire&nbsp;?",
+    "options": [
+      {
+        "txt": "«&nbsp;J'habite au Québec depuis trois ans.&nbsp;»",
+        "juste": true
+      },
+      {
+        "txt": "«&nbsp;J'habite à Québec depuis trois ans.&nbsp;»",
+        "rat_t": "Cette phrase est correcte, et elle dit autre chose.",
+        "rat": "«&nbsp;<b>À</b> Québec&nbsp;» désigne la <b>ville</b> de Québec — celle du Château Frontenac, à deux heures et demie de Longueuil. Le même nom sert aux deux, et c'est le petit mot qui les distingue&nbsp;: la ville n'a pas d'article, la province a «&nbsp;<i>le</i>&nbsp;»."
+      },
+      {
+        "txt": "«&nbsp;J'habite en Québec depuis trois ans.&nbsp;»",
+        "rat_t": "Bon réflexe de territoire, mauvais article.",
+        "rat": "Vous avez reconnu un territoire, ce qui est l'essentiel. Mais <i>en</i> correspond à «&nbsp;<i>la</i>&nbsp;» ou à une voyelle&nbsp;: on dit «&nbsp;<i>le</i> Québec&nbsp;», donc <b>au</b>. Comparez&nbsp;: «&nbsp;en Ontario&nbsp;», «&nbsp;au Québec&nbsp;»."
+      }
+    ],
+    "pourquoi": "«&nbsp;<b>Au</b> Québec&nbsp;» pour la province, «&nbsp;<b>à</b> Québec&nbsp;» pour la ville. C'est la seule paire de ce genre que vous rencontrerez tous les jours&nbsp;; elle vaut la peine d'être vérifiée sur un formulaire, où la différence est lue.",
+    "attente": "Choisissez une réponse pour continuer."
+  },
+  {
+    "id": "le-cas-ordinaire",
+    "type": "notion",
+    "eye": "Ce qui reste",
+    "menu": "Le cas ordinaire",
+    "titre": "Tout le reste — la grande majorité — n'a rien de particulier.",
+    "paras": [
+      "On a gardé celui-ci pour la fin, et c'est volontaire&nbsp;: c'est le plus fréquent, et c'est le seul où il n'y a <b>rien à décider</b>. Devant un endroit ordinaire, on écrit <i>à</i> suivi de l'article du lieu&nbsp;: à la bibliothèque, à la banque, à l'école, à l'aéroport, au parc, au bureau, au centre commercial.",
+      "Une seule chose à savoir&nbsp;: <b>«&nbsp;à le&nbsp;» n'existe pas</b>. Ces deux mots se collent toujours et donnent <b>au</b>&nbsp;; au pluriel, ils donnent <b>aux</b> (aux toilettes, aux bureaux de la commission). Ce n'est pas une règle de plus, c'est une soudure obligatoire.",
+      "Autrement dit, vous n'avez que <b>deux moments d'attention</b> quand vous écrivez où vous allez&nbsp;: est-ce quelqu'un&nbsp;? est-ce un territoire&nbsp;? Partout ailleurs, écrivez sans y penser."
+    ],
+    "retenir": "Endroit ordinaire → <b>à</b> + son article, et «&nbsp;à le&nbsp;» se soude en <b>au</b>. C'est le cas par défaut, et il ne demande rien.",
+    "attente": "Lisez, puis continuez."
+  },
+  {
+    "id": "trois-dans-une",
+    "type": "verif",
+    "eye": "Vérification",
+    "menu": "Un message entier",
+    "titre": "Trois versions du même message. Une seule tient d'un bout à l'autre.",
+    "consigne": "Nadia prévient son employeur de trois absences. Regardez chaque destination, l'une après l'autre.",
+    "options": [
+      {
+        "txt": "«&nbsp;Lundi je vais chez le dentiste, mardi à la clinique, et en juillet je pars deux semaines au Portugal.&nbsp;»",
+        "juste": true
+      },
+      {
+        "txt": "«&nbsp;Lundi je vais au dentiste, mardi à la clinique, et en juillet je pars deux semaines au Portugal.&nbsp;»",
+        "rat_t": "Le territoire est bon. C'est la personne qui a été traitée comme un lieu.",
+        "rat": "«&nbsp;<i>Le</i> Portugal&nbsp;» → «&nbsp;au Portugal&nbsp;»&nbsp;: parfait, et c'est le cas le plus technique des trois. Mais un dentiste est quelqu'un&nbsp;: «&nbsp;<b>chez</b> le dentiste&nbsp;». La première question du test est celle qu'on saute quand on est pressé."
+      },
+      {
+        "txt": "«&nbsp;Lundi je vais chez le dentiste, mardi à la clinique, et en juillet je pars deux semaines en Portugal.&nbsp;»",
+        "rat_t": "Les deux premières sont justes. Le pays a pris le mauvais article.",
+        "rat": "«&nbsp;Chez le dentiste&nbsp;» et «&nbsp;à la clinique&nbsp;»&nbsp;: la personne et l'endroit sont bien séparés, c'est l'essentiel du point. Reste le pays&nbsp;: on dit «&nbsp;<i>le</i> Portugal&nbsp;», pas «&nbsp;la&nbsp;», et il ne commence pas par une voyelle — donc <b>au</b> Portugal."
+      }
+    ],
+    "pourquoi": "Une personne, un endroit, un territoire&nbsp;: les trois piles de l'écran 2, dans une seule phrase. <b>C'est tout le point express en une ligne.</b>",
+    "attente": "Choisissez une réponse pour continuer."
+  },
+  {
+    "id": "fermeture",
+    "type": "verif",
+    "eye": "La dernière",
+    "menu": "Pour finir",
+    "titre": "On revient au message du début, avec une destination de plus.",
+    "consigne": "Le rendez-vous de jeudi a été déplacé dans un hôpital de la ville de Québec. Quelle version écrivez-vous à votre employeur&nbsp;?",
+    "options": [
+      {
+        "txt": "«&nbsp;Jeudi, je vais chez le médecin&nbsp;; le rendez-vous est à l'hôpital, à Québec.&nbsp;»",
+        "juste": true
+      },
+      {
+        "txt": "«&nbsp;Jeudi, je vais au médecin&nbsp;; le rendez-vous est à l'hôpital, à Québec.&nbsp;»",
+        "rat_t": "C'est la phrase de l'écran 1, restée telle quelle.",
+        "rat": "La ville et l'hôpital sont impeccables&nbsp;: «&nbsp;à l'hôpital&nbsp;» pour l'endroit, «&nbsp;à Québec&nbsp;» pour la ville. Mais le médecin est une personne, et c'est justement la phrase par laquelle ce point express a commencé&nbsp;: «&nbsp;<b>chez</b> le médecin&nbsp;»."
+      },
+      {
+        "txt": "«&nbsp;Jeudi, je vais chez le médecin&nbsp;; le rendez-vous est à l'hôpital, au Québec.&nbsp;»",
+        "rat_t": "Vous avez le plus difficile. C'est la ville qui est devenue une province.",
+        "rat": "«&nbsp;Chez le médecin&nbsp;»&nbsp;: exact, et c'était le but. Mais «&nbsp;<b>au</b> Québec&nbsp;» annonce la province — votre employeur, qui y est déjà, ne comprendra pas ce que vous précisez. Pour la ville&nbsp;: «&nbsp;<b>à</b> Québec&nbsp;»."
+      }
+    ],
+    "pourquoi": "«&nbsp;Chez le médecin&nbsp;», «&nbsp;à l'hôpital&nbsp;», «&nbsp;à Québec&nbsp;». Vous n'avez rien mémorisé&nbsp;: vous avez posé deux fois la même question — <b>est-ce quelqu'un&nbsp;? sinon, qu'est-ce qu'on met devant ce lieu quand il est seul&nbsp;?</b> Elle marchera sur une destination que vous n'avez jamais écrite.",
+    "attente": "Choisissez une réponse pour finir."
+  }
+];
+  var MEDIA  = '/';           // la base des extraits, en chemin absolu
+  var CLE    = 'francis.parcours.a-au-en-chez';
+
+  var elEcran = document.getElementById('ecran');
+  var elJauge = document.getElementById('jauge');
+  var elPos   = document.getElementById('pos');
+  var elMenu  = document.getElementById('menu');
+  var elListe = document.getElementById('menu-liste');
+  var btnMenu = document.getElementById('btn-menu');
+
+  /* ── l'état, et sa persistance ─────────────────────────────────── */
+  var VIERGE = { i: 0, vus: [], faits: {}, essais: {}, rattrapages: {}, reponses: {}, journal: [] };
+  var etat = JSON.parse(JSON.stringify(VIERGE));
+
+  /* ── L'envoi ────────────────────────────────────────────────────────────
+     Quand l'élève ouvre son point express depuis son portail, l'adresse porte
+     son code et le numéro de l'envoi. Le parcours rapporte alors deux choses,
+     et deux seulement : qu'il a commencé, et qu'il a fini — avec le compte des
+     vérifications réussies seul. **Aucune réponse d'élève ne monte.**
+     Sans ces deux paramètres, tout fonctionne pareil : le suivi reste local.
+     Un parcours ouvert hors du portail ne doit rien casser. */
+  var URL_P = new URLSearchParams(location.search);
+  var CODE = URL_P.get('code') || '';
+  var ENVOI = URL_P.get('envoi') || '';
+
+  function rapporter(quoi, resultat) {
+    if (!CODE || !ENVOI) return;
+    try {
+      fetch('/api/student/envois/' + encodeURIComponent(ENVOI), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code: CODE, etat: quoi, resultat: resultat || null })
+      }).catch(function () { /* hors ligne : le parcours continue */ });
+    } catch (e) { /* idem */ }
+  }
+  try {
+    var brut = JSON.parse(localStorage.getItem(CLE) || 'null');
+    if (brut && typeof brut === 'object') {
+      for (var k in etat) if (brut[k] !== undefined) etat[k] = brut[k];
+    }
+  } catch (e) { /* un navigateur qui refuse le stockage joue quand même */ }
+
+  function garder() {
+    try { localStorage.setItem(CLE, JSON.stringify(etat)); } catch (e) {}
+  }
+
+  /* ── le suivi : un événement par geste, horodaté ───────────────── */
+  var entre = Date.now();
+  function noter(quoi, plus) {
+    var ev = { t: Date.now(), ecran: ECRANS[etat.i] ? ECRANS[etat.i].id : null, quoi: quoi };
+    if (plus) for (var k in plus) ev[k] = plus[k];
+    etat.journal.push(ev);
+    if (etat.journal.length > 400) etat.journal.splice(0, etat.journal.length - 400);
+    garder();
+  }
+
+  /* ── les extraits sonores ──────────────────────────────────────── */
+  var enCours = null;
+  function bloc_son(s) {
+    var d = document.createElement('div');
+    d.className = 'son';
+
+    var go = document.createElement('button');
+    go.type = 'button';
+    go.className = 'son__go';
+    go.setAttribute('aria-label', 'Écouter');
+
+    var c = document.createElement('div');
+    c.className = 'son__c';
+    if (s.qui) {
+      var q = document.createElement('p');
+      q.className = 'son__qui';
+      q.textContent = s.qui;
+      c.appendChild(q);
+    }
+    var t = document.createElement('p');
+    t.className = 'son__txt';
+    t.textContent = s.texte || '';
+    t.hidden = !s.montrer;
+    c.appendChild(t);
+
+    var o = document.createElement('div');
+    o.className = 'son__o';
+
+    var audio = new Audio(MEDIA + s.fichier);
+    audio.preload = 'none';
+
+    go.addEventListener('click', function () {
+      if (!audio.paused) { audio.pause(); return; }
+      if (enCours && enCours !== audio) { enCours.pause(); enCours.currentTime = 0; }
+      enCours = audio;
+      audio.play().then(function () {
+        noter('ecoute', { fichier: s.fichier, vitesse: audio.playbackRate });
+      }).catch(function () {
+        o.insertAdjacentHTML('beforeend',
+          '<span style="font-size:12.5px;color:#7A3806">Extrait indisponible</span>');
+      });
+    });
+    audio.addEventListener('play',  function () { go.setAttribute('data-joue', '1'); });
+    audio.addEventListener('pause', function () { go.removeAttribute('data-joue'); });
+    audio.addEventListener('ended', function () { go.removeAttribute('data-joue'); });
+
+    var lent = document.createElement('button');
+    lent.type = 'button';
+    lent.textContent = 'Ralentir';
+    lent.addEventListener('click', function () {
+      // Étiré dans le navigateur, jamais re-synthétisé : la décision du projet.
+      var r = audio.playbackRate < 1 ? 1 : 0.75;
+      audio.playbackRate = r;
+      lent.textContent = r < 1 ? 'Vitesse normale' : 'Ralentir';
+      noter('vitesse', { fichier: s.fichier, vitesse: r });
+    });
+    o.appendChild(lent);
+
+    if (s.texte) {
+      var tr = document.createElement('button');
+      tr.type = 'button';
+      tr.textContent = s.montrer ? 'Cacher le texte' : 'Voir le texte';
+      tr.addEventListener('click', function () {
+        t.hidden = !t.hidden;
+        tr.textContent = t.hidden ? 'Voir le texte' : 'Cacher le texte';
+        if (!t.hidden) noter('transcription', { fichier: s.fichier });
+      });
+      o.appendChild(tr);
+    }
+
+    c.appendChild(o);
+    d.appendChild(go);
+    d.appendChild(c);
+    return d;
+  }
+
+  /* ── les mises en page, une par type ───────────────────────────── */
+  var TYPES = {};
+
+  TYPES.notion = function (e, fini) {
+    var f = document.createDocumentFragment();
+    (e.paras || []).forEach(function (p) {
+      var el = document.createElement('p');
+      el.className = 'ecran__p';
+      el.innerHTML = p;
+      f.appendChild(el);
+    });
+    (e.sons || []).forEach(function (s) { f.appendChild(bloc_son(s)); });
+    if (e.retenir) {
+      var r = document.createElement('div');
+      r.className = 'retenir';
+      r.innerHTML = '<p class="r">Ce qu\'il faut retenir</p><p>' + e.retenir + '</p>';
+      f.appendChild(r);
+    }
+    // Une notion est « faite » dès qu'elle est lue : rien à réussir.
+    fini(true);
+    return f;
+  };
+
+  TYPES.verif = function (e, fini) {
+    var f = document.createDocumentFragment();
+    if (e.consigne) {
+      var c = document.createElement('p');
+      c.className = 'ecran__p';
+      c.innerHTML = e.consigne;
+      f.appendChild(c);
+    }
+    (e.sons || []).forEach(function (s) { f.appendChild(bloc_son(s)); });
+
+    var box = document.createElement('div');
+    box.className = 'choix';
+    var zone = document.createElement('div');
+    var lettres = 'ABCDEFGH';
+    var termine = false;
+
+    e.options.forEach(function (o, k) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.innerHTML = '<span class="marq">' + lettres[k] + '</span><span>' + o.txt + '</span>';
+      b.addEventListener('click', function () { repondre(k, b); });
+      box.appendChild(b);
+    });
+
+    function verrouiller(bonneAussi) {
+      termine = true;
+      Array.prototype.forEach.call(box.children, function (b, k) {
+        b.disabled = true;
+        if (e.options[k].juste) { if (bonneAussi) b.setAttribute('data-etat', 'juste'); }
+        else if (b.getAttribute('data-etat') !== 'faux') b.setAttribute('data-etat', 'ecarte');
+      });
+    }
+
+    function repondre(k, b) {
+      if (termine) return;
+      var o = e.options[k];
+      var n = (etat.essais[e.id] || 0) + 1;
+      etat.essais[e.id] = n;
+
+      if (o.juste) {
+        b.setAttribute('data-etat', 'juste');
+        verrouiller(false);
+        zone.innerHTML = '';
+        var j = document.createElement('div');
+        j.className = 'juste';
+        j.innerHTML = '<p class="r">' + (n === 1 ? 'Juste, du premier coup' : 'Juste') + '</p><p>'
+          + (e.pourquoi || '') + '</p>';
+        zone.appendChild(j);
+        etat.reponses[e.id] = k;
+        noter('reponse', { juste: true, essai: n });
+        fini(true);
+        return;
+      }
+
+      b.setAttribute('data-etat', 'faux');
+      b.disabled = true;
+      noter('reponse', { juste: false, essai: n, choix: k });
+
+      // Le rattrapage : il n'existe que sur erreur, et il explique pourquoi la
+      // mauvaise réponse était tentante — jamais « faux, essaie encore ».
+      zone.innerHTML = '';
+      var r = document.createElement('div');
+      r.className = 'rattrap';
+      var dernier = n >= 2;
+      r.innerHTML = '<p class="r">' + (dernier ? 'La réponse, et pourquoi' : 'Pas tout à fait')
+        + '</p><h4>' + (o.rat_t || 'Reprenons.') + '</h4><p>' + (o.rat || '') + '</p>'
+        + (dernier ? '<p><b>La réponse : ' + reponseJuste(e) + '</b> ' + (e.pourquoi || '') + '</p>' : '');
+      if (!dernier) {
+        var encore = document.createElement('button');
+        encore.type = 'button';
+        encore.className = 'encore';
+        encore.textContent = 'Réessayer';
+        encore.addEventListener('click', function () {
+          zone.innerHTML = '';
+          elEcran.querySelector('.choix').focus &&
+            elEcran.querySelector('.choix button:not([disabled])').focus();
+        });
+        r.appendChild(encore);
+      }
+      zone.appendChild(r);
+      if (r.scrollIntoView) r.scrollIntoView({ block: 'nearest' });
+      etat.rattrapages[e.id] = (etat.rattrapages[e.id] || 0) + 1;
+      noter('rattrapage', { ouvert: o.rat_t || '' });
+
+      if (dernier) { etat.reponses[e.id] = k; verrouiller(true); fini(true); }
+      garder();
+    }
+
+    function reponseJuste(e) {
+      for (var i = 0; i < e.options.length; i++) if (e.options[i].juste) return e.options[i].txt;
+      return '';
+    }
+
+    f.appendChild(box);
+    f.appendChild(zone);
+
+    // La reprise. Un écran déjà répondu ne doit pas se rouvrir vierge avec un
+    // « Continuer » actif : l'élève croirait la question neuve, et le bouton
+    // le contredirait. On remontre donc sa réponse, verrouillée.
+    var deja = etat.reponses[e.id];
+    if (deja !== undefined && e.options[deja]) {
+      termine = true;
+      Array.prototype.forEach.call(box.children, function (b, k) {
+        b.disabled = true;
+        if (k === deja) b.setAttribute('data-etat', e.options[k].juste ? 'juste' : 'faux');
+        else if (e.options[k].juste) b.setAttribute('data-etat', 'juste');
+        else b.setAttribute('data-etat', 'ecarte');
+      });
+      var d = document.createElement('div');
+      d.className = 'juste';
+      d.innerHTML = '<p class="r">Vous avez déjà répondu</p><p>' + (e.pourquoi || '') + '</p>';
+      zone.appendChild(d);
+    }
+
+    fini(!!etat.faits[e.id]);
+    return f;
+  };
+
+  /* Trier des cas. C'est l'écran qui porte le parti pris du parcours : l'élève
+     tranche AVANT qu'aucune règle ne lui soit dite, et chaque erreur explique
+     ce cas-là — jamais la règle entière. Une mini-leçon fait l'inverse. */
+  TYPES.tri = function (e, fini) {
+    var f = document.createDocumentFragment();
+    if (e.consigne) {
+      var c = document.createElement('p');
+      c.className = 'ecran__p';
+      c.innerHTML = e.consigne;
+      f.appendChild(c);
+    }
+    (e.sons || []).forEach(function (s) { f.appendChild(bloc_son(s)); });
+
+    var grille = '1fr ' + e.colonnes.map(function () { return 'minmax(88px,.42fr)'; }).join(' ');
+    var box = document.createElement('div');
+    box.className = 'tri';
+
+    // L'en-tête ne sert que si les boutons portent autre chose que le nom de
+    // leur colonne. Quand ils sont identiques, l'afficher écrit deux fois la
+    // même chose et n'apprend rien.
+    if (e.colonnes.some(function (co) { return co.b && co.b !== co.t; })) {
+      var tete = document.createElement('div');
+      tete.className = 'tri__tete';
+      tete.style.gridTemplateColumns = grille;
+      tete.appendChild(document.createElement('span'));
+      e.colonnes.forEach(function (co) {
+        var s2 = document.createElement('span');
+        s2.innerHTML = co.t;
+        tete.appendChild(s2);
+      });
+      box.appendChild(tete);
+    }
+
+    var restants = e.items.length;
+    var compte = document.createElement('p');
+    compte.className = 'compte';
+
+    function majCompte() {
+      compte.textContent = restants > 0
+        ? restants + (restants > 1 ? ' cas à trancher.' : ' cas à trancher.')
+        : 'Les ' + e.items.length + ' cas sont tranchés.';
+    }
+
+    e.items.forEach(function (it, k) {
+      var l = document.createElement('div');
+      l.className = 'tri__l';
+      l.style.gridTemplateColumns = grille;
+
+      var mot = document.createElement('div');
+      mot.className = 'tri__mot';
+      mot.innerHTML = it.txt + (it.sous ? '<i>' + it.sous + '</i>' : '');
+      l.appendChild(mot);
+
+      var note = document.createElement('p');
+      note.className = 'tri__note';
+      note.hidden = true;
+
+      e.colonnes.forEach(function (co) {
+        var d = document.createElement('div');
+        d.className = 'tri__c';
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.innerHTML = co.b || co.t;
+        b.addEventListener('click', function () {
+          if (l.getAttribute('data-fait') === '1') return;
+          var juste = co.id === it.ok;
+          b.setAttribute('data-etat', juste ? 'juste' : 'faux');
+          noter('tri', { cas: it.txt, juste: juste });
+          if (juste) {
+            l.setAttribute('data-fait', '1');
+            restants--;
+            majCompte();
+            Array.prototype.forEach.call(l.querySelectorAll('button'), function (x) {
+              x.disabled = true;
+            });
+            if (it.pourquoi) { note.innerHTML = it.pourquoi; note.hidden = false; }
+            if (restants === 0) fini(true);
+          } else {
+            b.disabled = true;
+            note.innerHTML = '<b>Pas celle-là.</b> ' + (it.rat || '');
+            note.hidden = false;
+            etat.rattrapages[e.id] = (etat.rattrapages[e.id] || 0) + 1;
+            garder();
+          }
+        });
+        d.appendChild(b);
+        l.appendChild(d);
+      });
+
+      l.appendChild(note);
+      box.appendChild(l);
+    });
+
+    f.appendChild(box);
+    majCompte();
+    f.appendChild(compte);
+
+    if (etat.faits[e.id]) fini(true); else fini(false);
+    return f;
+  };
+
+  /* ── le rendu d'un écran ───────────────────────────────────────── */
+  function montrer(i, mouvement) {
+    if (i < 0 || i >= ECRANS.length) return;
+    if (mouvement) noter('quitte', { reste: Math.round((Date.now() - entre) / 1000) });
+    etat.i = i;
+    entre = Date.now();
+    if (etat.vus.indexOf(ECRANS[i].id) === -1) etat.vus.push(ECRANS[i].id);
+
+    var e = ECRANS[i];
+    elEcran.innerHTML = '';
+
+    // Le corps est un conteneur à part : dans le cadre 16:9, c'est lui qui
+    // défile quand un rattrapage s'ouvre, pendant que le pied et la jauge
+    // restent en place. Sans lui, la diapositive grandirait hors de l'écran.
+    var corps = document.createElement('div');
+    corps.className = 'ecran__corps';
+
+    var eye = document.createElement('p');
+    eye.className = 'ecran__eye';
+    eye.textContent = e.eye || '';
+    corps.appendChild(eye);
+
+    var t = document.createElement('h1');
+    t.className = 'ecran__t';
+    t.innerHTML = e.titre;
+    corps.appendChild(t);
+
+    var pied = document.createElement('div');
+    pied.className = 'pied';
+
+    var prec = document.createElement('button');
+    prec.type = 'button';
+    prec.className = 'btn-2';
+    prec.textContent = '← Précédent';
+    prec.hidden = i === 0;
+    prec.addEventListener('click', function () { montrer(i - 1, true); });
+
+    var consigne = document.createElement('p');
+    consigne.className = 'consigne';
+
+    var suite = document.createElement('button');
+    suite.type = 'button';
+    suite.className = 'btn';
+    suite.textContent = i === ECRANS.length - 1 ? 'Terminer' : 'Continuer';
+    suite.addEventListener('click', function () {
+      if (i === ECRANS.length - 1) { terminer(); return; }
+      montrer(i + 1, true);
+    });
+
+    // Le verrou doux : « Continuer » attend le geste, mais rien d'autre n'attend.
+    function fini(ok) {
+      suite.disabled = !ok;
+      consigne.textContent = ok ? '' : (e.attente || 'Répondez pour continuer.');
+      if (ok && !etat.faits[e.id]) { etat.faits[e.id] = true; garder(); }
+    }
+
+    var rendu = TYPES[e.type];
+    if (!rendu) {
+      var err = document.createElement('p');
+      err.className = 'ecran__p';
+      err.innerHTML = '<b>Type d\'écran inconnu : « ' + e.type + ' ».</b> '
+        + 'Le moteur ne sait pas le dessiner. À corriger dans le contenu, pas ici.';
+      corps.appendChild(err);
+      fini(true);
+    } else {
+      corps.appendChild(rendu(e, fini));
+    }
+
+    elEcran.appendChild(corps);
+    pied.appendChild(prec);
+    pied.appendChild(consigne);
+    pied.appendChild(suite);
+    elEcran.appendChild(pied);
+
+    elJauge.style.width = Math.round(((i + 1) / ECRANS.length) * 100) + '%';
+    elJauge.parentNode.setAttribute('aria-valuenow', Math.round(((i + 1) / ECRANS.length) * 100));
+    elPos.textContent = (i + 1) + ' / ' + ECRANS.length;
+    majMenu();
+    noter('vu', {});
+    if (!etat.rapporteDebut) { etat.rapporteDebut = true; garder(); rapporter('commence'); }
+    elEcran.focus();
+    corps.scrollTop = 0;
+    window.scrollTo(0, 0);
+  }
+
+  function terminer() {
+    noter('termine', {});
+    elEcran.innerHTML = '';
+    var corps = document.createElement('div');
+    corps.className = 'ecran__corps';
+    var f = document.createElement('div');
+    f.className = 'fin';
+    var seuls = 0, aide = 0;
+    ECRANS.forEach(function (e) {
+      if (e.type !== 'verif' && e.type !== 'tri') return;
+      if (etat.rattrapages[e.id]) aide++; else if (etat.faits[e.id]) seuls++;
+    });
+    rapporter('termine', {
+      reussiSeul: seuls, avecRattrapage: aide,
+      rattrapages: Object.keys(etat.rattrapages || {}),
+      minutes: Math.max(1, Math.round(
+        (etat.journal.length ? (etat.journal[etat.journal.length - 1].t
+          - etat.journal[0].t) : 0) / 60000))
+    });
+    f.innerHTML = '<h2>C\'est fini pour cette fois.</h2>'
+      + '<p class="ecran__p" style="margin-left:auto;margin-right:auto">'
+      + 'Écrans réussis seul : <b>' + seuls + '</b>'
+      + ' · avec un rattrapage : <b>' + aide + '</b>.</p>'
+      + '<p class="ecran__p" style="margin-left:auto;margin-right:auto;color:#6E7175;font-size:13.5px">'
+      + (CODE && ENVOI
+          ? 'Votre enseignant verra que vous l\'avez fait, et sur quoi vous avez hésité — '
+            + 'jamais vos réponses.</p>'
+          : 'Le suivi est gardé sur ce poste seulement.</p>');
+    var r = document.createElement('button');
+    r.className = 'btn-2';
+    r.type = 'button';
+    r.style.marginTop = '18px';
+    r.textContent = 'Recommencer';
+    r.addEventListener('click', function () {
+      etat = JSON.parse(JSON.stringify(VIERGE));
+      etat.rapporteDebut = true;      // on ne re-signale pas un début déjà signalé
+      garder();
+      montrer(0, false);
+    });
+    f.appendChild(r);
+    corps.appendChild(f);
+    elEcran.appendChild(corps);
+    elJauge.style.width = '100%';
+  }
+
+  /* ── le menu des écrans vus ────────────────────────────────────── */
+  function majMenu() {
+    elListe.innerHTML = '';
+    ECRANS.forEach(function (e, k) {
+      var li = document.createElement('li');
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.innerHTML = '<span class="n">' + (k + 1) + '</span>' + (e.menu || e.eye || '—');
+      var vu = etat.vus.indexOf(e.id) !== -1;
+      b.disabled = !vu;
+      if (k === etat.i) b.setAttribute('aria-current', 'true');
+      b.addEventListener('click', function () { montrer(k, true); });
+      li.appendChild(b);
+      elListe.appendChild(li);
+    });
+  }
+
+  btnMenu.addEventListener('click', function () {
+    var o = elMenu.getAttribute('data-ouvert') === '1' ? '0' : '1';
+    elMenu.setAttribute('data-ouvert', o);
+    btnMenu.setAttribute('aria-expanded', o === '1' ? 'true' : 'false');
+  });
+
+  /* ── la sortie ─────────────────────────────────────────────────────────
+     Où revient-on ? Un élève venu de son portail y retourne : le portail le
+     reconnaît par `eleve_session`, gardé dans le navigateur, donc l'adresse
+     nue suffit et le code ne se promène pas dans la barre. Hors du portail,
+     on rend la main à la page d'où l'on vient si elle est du même site ;
+     sinon on garde le lien que le gabarit a posé sur le mot-symbole.
+
+     Le lien du mot-symbole prend la même destination : il menait à l'index de
+     `modules-autonomes/` — la page de chantier — ce qui envoyait un élève
+     sorti par la marque au mauvais endroit. */
+  var lienNom = document.querySelector('.fr-nom');
+  function sortie() {
+    if (CODE) return '/eleve.html';
+    try {
+      var r = new URL(document.referrer);
+      if (r.origin === location.origin && r.pathname !== location.pathname) return r.href;
+    } catch (e) { /* pas de référent, ou référent d'un autre site */ }
+    return lienNom ? lienNom.getAttribute('href') : '../index.html';
+  }
+
+  var btnSortir = document.getElementById('btn-sortir');
+  btnSortir.addEventListener('click', function () {
+    // Rien ne se perd : l'état est déjà sur le disque, et le point de reprise
+    // ramènera l'élève sur cet écran-ci.
+    noter('sortie');
+    garder();
+    location.href = sortie();
+  });
+  if (lienNom) lienNom.setAttribute('href', sortie());
+
+  /* ── ce que la vérification par programme regarde ──────────────── */
+  window.__storyline = {
+    ecrans: ECRANS,
+    ou: function () { return etat.i; },
+    aller: function (i) { montrer(i, false); },
+    etat: function () { return JSON.parse(JSON.stringify(etat)); },
+    journal: function () { return etat.journal.slice(); },
+    remettre: function () {
+      etat = JSON.parse(JSON.stringify(VIERGE));
+      garder(); montrer(0, false);
+    }
+  };
+
+  // Le point de reprise : on rouvre là où on s'est arrêté.
+  montrer(Math.min(etat.i, ECRANS.length - 1), false);
+})();
+</script>
+</body>
+</html>
