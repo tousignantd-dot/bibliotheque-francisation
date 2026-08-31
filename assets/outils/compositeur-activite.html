@@ -38,7 +38,7 @@
   --ink-900:#17181A; --ink-600:#3C3F43; --ink-400:#6E7175;
   --green-800:#07734A; --green-600:#0A8F5B; --green-100:#E6F5EE; --green-050:#EDF6F1;
   --acier-600:#1D6B8F; --acier-100:#E7F0F6;
-  --indigo-600:#3B49A0; --indigo-100:#E8EAFA;
+  --violet-600:#6B4FBB; --violet-100:#EFEAFA;
   --ambre-700:#B45309; --ambre-100:#FBEEDC;
   --teal-700:#0D7A6F; --teal-100:#DCF2EF;
   --foret-700:#166534; --foret-100:#E3F1E7;
@@ -68,7 +68,7 @@ h1,h2,h3{margin:0; line-height:1.2}
 .sec-acier{--sec:var(--acier-600); --sec-soft:var(--acier-100)}
 .sec-teal{--sec:var(--teal-700); --sec-soft:var(--teal-100)}
 .sec-ambre{--sec:var(--ambre-700); --sec-soft:var(--ambre-100)}
-.sec-indigo{--sec:var(--indigo-600); --sec-soft:var(--indigo-100)}
+.sec-violet{--sec:var(--violet-600); --sec-soft:var(--violet-100)}
 .sec-foret{--sec:var(--foret-700); --sec-soft:var(--foret-100)}
 
 /* ---------- Bande d'en-tête (claire, jamais foncée) ---------- */
@@ -155,7 +155,7 @@ label.lab{display:block; font-size:15px; font-weight:800; margin:0 0 var(--sp-2)
 .etiq{display:inline-block; margin:var(--sp-1) var(--sp-1) 0 0; padding:1px 10px; border-radius:var(--r-pill);
   background:var(--paper-200); color:var(--ink-600); font-size:13px; font-weight:800}
 .etiq--hors{background:var(--red-50); color:var(--red-700)}
-.etiq--portee{background:var(--indigo-100); color:var(--indigo-600)}
+.etiq--portee{background:var(--violet-100); color:var(--violet-600)}
 .etiq--oral{background:var(--acier-100); color:var(--acier-600)}
 .etiq--ecrit{background:var(--ambre-100); color:var(--ambre-700)}
 .vide{margin:0; padding:var(--sp-4); border:1px dashed var(--line-200); border-radius:var(--r-md);
@@ -293,13 +293,6 @@ textarea#edition:focus-visible{box-shadow:inset 0 0 0 3px var(--green-100)}
   border-radius:999px; font-size:14px; font-weight:800; text-decoration:none}
 .forge__fichiers a:hover{text-decoration:underline}
 .forge__err{margin:var(--sp-3) 0 0; font-size:14px; font-weight:700; color:var(--red-700)}
-/* Une réserve n'est pas une erreur : l'activité est là, il lui manque quelque
-   chose. D'où l'ambre, et le fait qu'on puisse publier quand même. */
-.forge__reserves{margin:var(--sp-3) 0 0; padding:var(--sp-3) var(--sp-4); list-style:none;
-  border-left:3px solid var(--amber-500,#d97706); background:var(--paper-50)}
-.forge__reserves li{font-size:14px; font-weight:700; color:var(--ink-700); margin:0 0 var(--sp-1)}
-.forge__reserves li:last-child{margin:0}
-.forge__reserves li::before{content:"⚠ "; color:var(--amber-500,#d97706)}
 .forge__b{display:flex; flex-wrap:wrap; gap:var(--sp-2); margin-top:var(--sp-3)}
 
 /* ---------- Catalogue ---------- */
@@ -431,7 +424,7 @@ textarea#edition:focus-visible{box-shadow:inset 0 0 0 3px var(--green-100)}
       </div>
     </section>
 
-    <section class="carte etape sec-indigo" aria-labelledby="t4">
+    <section class="carte etape sec-violet" aria-labelledby="t4">
       <div class="pastille" aria-hidden="true">04</div>
       <div>
         <h2 id="t4">Les savoirs</h2>
@@ -529,7 +522,6 @@ textarea#edition:focus-visible{box-shadow:inset 0 0 0 3px var(--green-100)}
         <p class="forge__t">Génération sur ce poste</p>
         <p class="forge__etat" id="forge-etat"></p>
         <pre class="forge__journal" id="forge-journal" hidden></pre>
-        <ul class="forge__reserves" id="forge-reserves" hidden></ul>
         <p class="forge__err" id="forge-err" hidden></p>
         <ul class="forge__fichiers" id="forge-fichiers"></ul>
         <div class="forge__b" id="forge-b"></div>
@@ -1078,7 +1070,7 @@ function ligneSavoir(s, hors){
   lab.append(inp, corps);
   return lab;
 }
-const COULEURS_SECTION = ["sec-acier","sec-ambre","sec-indigo","sec-foret","sec-teal"];
+const COULEURS_SECTION = ["sec-acier","sec-ambre","sec-violet","sec-foret","sec-teal"];
 function rendreSavoirs(){
   const z = $("zone-savoirs"); z.textContent = "";
   if(S.niveau == null){ z.append(el("p","vide","Choisissez un niveau pour voir les savoirs prescrits.")); return; }
@@ -1156,6 +1148,109 @@ function plier(texte, largeur, retrait){
   return lignes.map((l, k) => (k === 0 ? tete : retrait) + l).join("\n");
 }
 const mentionPortee = p => p === "oral" ? "[à l’oral seulement]" : p === "ecrit" ? "[à l’écrit seulement]" : "";
+
+/* ── Le système de design, écrit en clair ─────────────────────────────────
+   Le préambule de la forge envoie le CLI lire `assets/design-system/` : il a
+   les fichiers sous la main. Un enseignant qui copie le prompt dans une
+   conversation ne les a pas, et l'ordre d'aller les lire ne veut alors plus
+   rien dire — d'où une activité juste sur le fond et habillée à l'improviste
+   (Helvetica au lieu de Nunito, classes inventées, en-tête différent). Cette
+   section porte donc les mêmes valeurs SANS AUCUN CHEMIN : elle doit rester
+   lisible par un modèle qui n'a que le texte sous les yeux.
+   Elle ne s'écrit que pour les livrables cochés — décrire l'habillage d'une
+   page qu'on ne demande pas ne ferait qu'allonger la commande.
+   La table des couleurs de niveau est de la donnée de design, pas du
+   programme : elle vient de `tokens/colors.css` et ne se déduit d'aucun
+   `PROGRAMME`. C'est la seule de ce fichier. */
+const COULEUR_NIVEAU = {
+  1: ["#A5335F", "#FCE9F0", "framboise"],
+  2: ["#A83A22", "#FBEAE4", "brique"],
+  3: ["#B45309", "#FBEEDC", "ambre"],
+  4: ["#8C6A07", "#F7F0DA", "or"],
+  5: ["#0D7A6F", "#DCF2EF", "sarcelle"],
+  6: ["#1D6B8F", "#E7F0F6", "acier"],
+  7: ["#3B49A0", "#E8EAFA", "indigo"],
+  8: ["#7E3F98", "#F3E8F7", "pourpre"]
+};
+
+function sectionDesign(livrables, niv){
+  const ids = livrables.map(o => o.id);
+  const interactif = ids.includes("interactif");
+  const imprimes = ids.includes("fiche") || ids.includes("corrige");
+  if(!interactif && !imprimes) return [];
+
+  const L = [];
+  const B = s => L.push(plier("- " + s, 92, "  "));
+  L.push("", "SYSTÈME DE DESIGN (officiel — reprends-le tel quel, n’invente pas de feuille de style)");
+  B("Police Nunito partout, chargée par le lien Google Fonts, avec « 'Trebuchet MS', "
+    + "sans-serif » en repli. Graisses utilisées : 400, 600, 700, 800, 900.");
+  B("Aucune information n’est portée par la couleur seule : elle se redit toujours par un "
+    + "mot, une forme ou une graisse.");
+
+  if(interactif){
+    const n = Number(niv && niv.niveau);
+    const c = COULEUR_NIVEAU[n] || COULEUR_NIVEAU[4];
+    L.push("", "La page interactive (écran)");
+    B("Un seul fichier HTML, ouvrable par double-clic : le style va dans une balise style, "
+      + "jamais dans une feuille liée.");
+    B("Fond de page #F7F7F5, cartes blanches #FFFFFF, fond de champ #FBFBFA, filet neutre #EAEAE8.");
+    B("Encre : #17181A pour les titres et le texte fort, #3A3D40 pour le texte long et les "
+      + "transcriptions, #6E7175 pour le secondaire.");
+    B("La couleur d’accent est celle du niveau" + (n ? " " + n : "") + " : filet " + c[0]
+      + ", fond clair " + c[1] + " (" + c[2] + "). Elle porte les filets, le focus et les "
+      + "pastilles. Pas d’autre couleur d’accent, et surtout pas de vert par défaut : depuis "
+      + "le 20 août 2026, la couleur d’un document est celle de son niveau.");
+    B("Rétroaction, trois états : réussite fond #E6F5EE, filet #0A8F5B, texte #07734A ; "
+      + "erreur fond #FFF6F5, filet #DC2626, texte #B91C1C — l’erreur n’a jamais d’aplat "
+      + "saturé ; avertissement fond #FEF6E7, filet #D9880B, texte #8A5206.");
+    B("Sélection : plaque encre #17181A, texte blanc. Jamais une teinte de plus.");
+    B("Le bouton audio est le seul aplat rouge de l’interface : #DC2626, survol #B91C1C, "
+      + "rond de 44 px.");
+    B("Corps de texte JAMAIS sous 17 px — le public apprend à lire en français. Échelle : "
+      + "62 px titre de page (900) · 30 px titre d’exercice (900) · 24 px mot vedette (900) · "
+      + "19 px chapeau (600-700) · 18 px énoncé (600-700) · 17 px consigne (600) · 15 et 14 px "
+      + "boutons (700-800) · 13 px sur-titre.");
+    B("Le sur-titre — 13 px, graisse 800, majuscules, interlettrage 0.12em — est le seul "
+      + "endroit de la page où les majuscules sont permises.");
+    B("Espacement : 4 · 8 · 12 · 16 · 20 · 24 · 32 (gouttière de page) · 48 (entre deux "
+      + "exercices). Rayons : 10 px contrôles, 14 px jetons, 18 px cartes, 999 px boutons et "
+      + "étiquettes. Largeur de contenu 1000 px.");
+    B("Toute cible tactile fait au moins 44 px de haut.");
+    B("Focus visible partout : contour plein de 3 px à la couleur d’accent, décalé de 2 px. "
+      + "Ne le supprime jamais.");
+    B("Un seul bloc inversé (fond encre, texte blanc) par page.");
+    B("Transitions de 140 ms, et aucune animation sous « prefers-reduced-motion ».");
+  }
+
+  if(imprimes){
+    const quoi = [ids.includes("fiche") ? "fiche élève" : null,
+                  ids.includes("corrige") ? "corrigé" : null].filter(Boolean).join(" et ");
+    L.push("", "Les imprimés (" + quoi + ")");
+    B("Format lettre. Une seule règle @page, jamais deux : « @page{size:8.5in 11in; "
+      + "margin:14mm 15mm} ». Le corps porte « width:215.9mm; margin:0 auto; "
+      + "padding:14mm 15mm 16mm ». Le PDF doit mesurer 612 × 792 points.");
+    B("Noir et blanc, aucune couleur : ces feuilles sont photocopiées. Toute la hiérarchie "
+      + "passe par la GRAISSE, les FILETS et les MOTS.");
+    B("Palette : papier #FFFFFF ; aplat le plus clair encore visible en photocopie #F0F0EE ; "
+      + "filet fin #C9C9C6 ; filet structurant #17181A ; titres #17181A ; texte courant "
+      + "#2B2E30 ; texte secondaire #4B4F52 ; méta et sur-titres #5E6165.");
+    B("Les filets sont volontairement plus sombres qu’à l’écran : une photocopieuse efface "
+      + "tout ce qui est plus clair que 15 % de noir.");
+    B("Corps 11.5pt, interligne 1.5. Les titres sont à 22pt (900) dans l’en-tête.");
+    B("Classes de la feuille commune, à reprendre plutôt qu’à réinventer : « .hdr » "
+      + "(en-tête, bord inférieur de 2.5px) avec « .eyebrow » (9.5pt, 800, majuscules) et "
+      + "« .nomline » (les lignes Nom et Date) ; « .chapeau » (12pt, 600) ; « .bloc » ; "
+      + "« .card » (filet 1px, rayon 12px) ; « .lbl » ; « h2.t » ; « .consigne » ; « ol.obj » "
+      + "et « ol.ex » ; « .billet » ; « footer » ; « table.som » pour un sommaire.");
+    B("Un exercice ne se casse jamais entre deux feuilles : « break-inside:avoid; "
+      + "page-break-inside:avoid » sur chaque « .bloc ».");
+    B("Le style va dans la balise style du document, jamais dans une feuille liée : le "
+      + "fichier doit rester ouvrable par double-clic et survivre à un déplacement.");
+    if(ids.includes("corrige")) B("Le corrigé est un fichier distinct de ce que reçoit "
+      + "l’élève, et porte exactement la même feuille.");
+  }
+  return L;
+}
 
 function construirePrompt(){
   const n = niveauCourant();
@@ -1274,6 +1369,10 @@ function construirePrompt(){
 
   L.push("", "EXIGENCES");
   exig.forEach(e => L.push(plier("- " + e, 92, "  ")));
+
+  // L'habillage se dit ici, pas seulement dans le préambule de la forge : un
+  // prompt copié à la main doit tenir debout tout seul. Voir sectionDesign().
+  sectionDesign(livrables, niv).forEach(l => L.push(l));
 
   if(S.joindreAttentes && (niv.attentesFinDeCours || []).length){
     L.push("", "ATTENTES DE FIN DE COURS (niveau " + niv.niveau + ", texte officiel)");
@@ -1710,15 +1809,9 @@ function suivreForge(){
 function rendreForge(fiche){
   const depuis = fiche.debut ? Math.round((Date.now() - new Date(fiche.debut)) / 1000) : 0;
   const duree = depuis < 90 ? depuis + " s" : Math.floor(depuis / 60) + " min " + (depuis % 60) + " s";
-  /* La dépense se voit monter pendant que ça tourne : c'est le seul moment où
-     on peut encore appuyer sur Annuler. En cours, elle est estimée ; à la fin,
-     le CLI donne le chiffre réel. */
-  const sous = fiche.cout != null ? fiche.cout : fiche.coutEstime;
-  const argent = sous ? " · " + Number(sous).toFixed(2) + " $"
-                      + (fiche.cout == null ? " (estimé)" : "") : "";
   const titres = {
-    en_cours: "<b>Génération en cours…</b> " + esc(fiche.titre) + " · " + duree + argent,
-    fait:     "<b>Activité générée ✓</b> " + esc(fiche.titre) + " · " + duree + argent,
+    en_cours: "<b>Génération en cours…</b> " + esc(fiche.titre) + " · " + duree,
+    fait:     "<b>Activité générée ✓</b> " + esc(fiche.titre) + " · " + duree,
     echec:    "<b>Génération interrompue.</b> " + esc(fiche.titre),
     annulee:  "<b>Génération annulée.</b> " + esc(fiche.titre)
   };
@@ -1731,16 +1824,6 @@ function rendreForge(fiche){
     j.textContent = fiche.journal.join("\n");
     if(enBas) j.scrollTop = j.scrollHeight;   // suivre le fil sans voler le défilement
   }
-
-  const res = $("forge-reserves");
-  res.textContent = "";
-  const reserves = (fiche.reserves || []).concat(
-    (fiche.intrusions || []).length
-      ? ["Des fichiers de la bibliothèque ont été modifiés pendant la commande : "
-         + fiche.intrusions.slice(0, 5).join(", ") + ". À vérifier avec git."]
-      : []);
-  res.hidden = !reserves.length;
-  reserves.forEach(r => { const li = document.createElement("li"); li.textContent = r; res.append(li); });
 
   $("forge-err").hidden = !fiche.erreur;
   if(fiche.erreur) $("forge-err").textContent = fiche.erreur;
