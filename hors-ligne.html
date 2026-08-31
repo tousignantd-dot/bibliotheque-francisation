@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pas de connexion — francis</title>
+<link rel="icon" type="image/svg+xml" href="/assets/design-system/marque-francis-favicon.svg">
+<!-- Page d'attente du hors-ligne. Elle est mise en cache à l'installation du
+     service worker, donc elle ne peut dépendre d'aucun fichier extérieur :
+     tout est écrit ici, y compris la marque. -->
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px;
+    background:#F7F7F5;color:#3A3D40;
+    font-family:Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  /* `width:100%` avec le centrage en grille : sans lui, une boîte plus large
+     que l'écran déborde des deux côtés et le texte se coupe à droite. */
+  .boite{max-width:30rem;width:100%;text-align:center;display:flex;flex-direction:column;
+    align-items:center;gap:18px}
+  .pastille{width:64px;height:64px;border-radius:16px;background:#6B4FBB;
+    display:grid;place-items:center}
+  .pastille i{width:22px;height:22px;border-radius:50%;background:#fff;display:block}
+  h1{font-size:26px;line-height:1.25;font-weight:800;color:#17181A;margin:0}
+  p{margin:0}
+  ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px;
+    font-size:15.5px;color:#6E7175}
+  button{font:inherit;font-weight:800;font-size:15px;background:#6B4FBB;color:#fff;
+    border:0;border-radius:8px;padding:12px 26px;cursor:pointer;margin-top:6px}
+  button:hover{filter:brightness(1.08)}
+  @media (prefers-color-scheme: dark){
+    body{background:#151618;color:#CFD1D3}
+    h1{color:#F2F2F0} ul{color:#94979B}
+  }
+</style>
+</head>
+<body>
+  <div class="boite">
+    <span class="pastille"><i></i></span>
+    <h1>Pas de connexion</h1>
+    <p>Votre téléphone n'est pas connecté à Internet. Le cours vous attend.</p>
+    <ul>
+      <li>Vérifiez le Wi-Fi ou vos données.</li>
+      <li>Les cours déjà ouverts fonctionnent encore.</li>
+      <li>Votre travail est gardé sur l'appareil.</li>
+    </ul>
+    <button type="button" onclick="location.reload()">Réessayer</button>
+  </div>
+</body>
+</html>
