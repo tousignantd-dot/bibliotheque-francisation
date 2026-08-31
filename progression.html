@@ -43,6 +43,19 @@
        couleur du direct — c'est elle qui agit sur la classe. */
     .pg-zone + .pg-zone { margin-top: var(--sp-5); padding-top: var(--sp-5);
                           border-top: 1px solid var(--border-tint); }
+    /* La zone de la classe se distingue par un aplat, pas seulement par un
+       filet. Le ton est `--surface-band`, la bande claire du système — celle
+       de l'en-tête de page. Pourquoi celui-là et pas une teinte de section :
+       les `-100` du système portent déjà un sens (acier pour l'écoute, ambre
+       pour l'écriture, forêt pour le vocabulaire), et les emprunter ici
+       importerait ce sens dans un réglage qui n'a rien à voir. Le violet est
+       réservé à la marque, et la couleur d'un module est celle de son niveau :
+       ni l'un ni l'autre ne peut servir de fond à une zone d'écran. Reste la
+       bande du portail, qui n'appartient à aucune section. */
+    .pg-zone--classe { background: var(--surface-band); border-radius: var(--r-sm, 10px);
+                       padding: var(--sp-4) var(--sp-4) var(--sp-5);
+                       margin-left: calc(var(--sp-4) * -1);
+                       margin-right: calc(var(--sp-4) * -1); }
     .pg-zone-cle { display: block; font-size: var(--fs-label); font-weight: var(--fw-black);
                    letter-spacing: .12em; text-transform: uppercase;
                    color: var(--text-strong); margin-bottom: var(--sp-3); }
@@ -456,7 +469,7 @@
            première ne se verrouille jamais : on doit pouvoir lire le bilan de
            tous les modules pendant que le module 3 tourne en direct. -->
       <div class="pg-filtres">
-        <div class="pg-zone">
+        <div class="pg-zone" id="pgZoneBilan">
           <span class="pg-zone-cle">Le bilan</span>
           <div class="pg-zone-corps">
             <div style="min-width:260px;flex:1">
@@ -476,7 +489,7 @@
         </div>
 
         <div class="pg-zone pg-zone--classe">
-          <span class="pg-zone-cle">Travailler avec la classe</span>
+          <span class="pg-zone-cle">Travailler avec la classe — séance sans compte</span>
           <div class="pg-zone-corps">
             <div style="min-width:260px;flex:1">
               <label class="pg-filtre-cle" for="pgClasse">Le module à faire</label>
@@ -531,6 +544,7 @@
   const AUJ = aujourdhui();
   let ELEVES = [], ACTIVITES = [], MODULES = [], PROGRES = [], ORAUX = [], ECRITS = [];
   let ANALYSES = [], SIGNAUX = [];
+  let MODULES_GROUPE = [];   // ceux que ce groupe suit, hors catalogue élargi
   let MODULE = '';           // le bilan : '' = tous les modules, sinon un id
   /* Le module sur lequel on travaille avec la classe : le direct le suit, et
      c'est sur lui que s'ouvre une séance sans compte. Séparé de `MODULE`
@@ -638,6 +652,10 @@
     CLASSE = id || '';
     document.getElementById('pgClasse').value = CLASSE;
     majAdresse();
+    // Le suivi du groupe se cache pendant une séance : passer d'un module qui
+    // en porte une à un module qui n'en porte pas change donc toute la page,
+    // pas seulement le direct.
+    rendre();
     drRelancer();
   }
 
@@ -716,6 +734,11 @@
                                       && !dejaLa.has(String(a.id))
                                       && auNiveau(a)).sort(ordre);
     MODULES = duGroupe.concat(autres);
+    // Ce que le groupe suit vraiment, à part de ce qu'on peut lui ouvrir en
+    // séance. `MODULES` a doublé quand le menu s'est élargi, et la phrase du
+    // sous-titre a continué de l'appeler « au programme du groupe » : elle
+    // annonçait 177 modules à une classe qui en suit 88.
+    MODULES_GROUPE = duGroupe;
 
     const optionDe = m => {
       const num = numeroDe(m.title);
@@ -756,10 +779,18 @@
 
   const moduleDe = id => MODULES.find(m => String(m.id) === String(id)) || null;
 
-  /** Le module regardé, ou tous ceux du groupe. */
+  /** Le module regardé, ou tous ceux du groupe.
+
+      « Tous » veut dire **ceux du groupe**, pas le catalogue. `MODULES` s'est
+      élargi le 30 août 2026 pour que la zone de la classe puisse ouvrir une
+      séance sur n'importe quelle activité ; la portée du bilan a suivi sans
+      qu'on le veuille, et il agrégeait 177 activités au lieu des 87 du
+      programme — la ligne de portée l'annonçait même en toutes lettres,
+      « Les 177 modules du groupe ». Un menu qui s'élargit ne doit pas élargir
+      ce qu'on compte. */
   function modulesEnJeu() {
     const m = moduleDe(MODULE);
-    return m ? [m] : MODULES;
+    return m ? [m] : MODULES_GROUPE;
   }
 
   /** Une trace compte-t-elle ? « Aujourd'hui » ne garde que la journée en
@@ -1371,6 +1402,7 @@
       if (!r.ok) throw new Error(d.error || 'Séance impossible');
       SEANCES = SEANCES.concat([d.seance]);
       SEANCE_CLOSE = false;
+      rendre();          // le suivi du groupe s'efface derrière la séance
       drRendre();
       window.open(`feuille-seance.html?code=${encodeURIComponent(d.seance.code)}`,
                   '_blank', 'noopener');
@@ -1410,6 +1442,7 @@
         if (!r.ok) throw new Error(d.error || 'Fermeture impossible');
         SEANCES = SEANCES.filter(x => x.id !== s.id);
         SEANCE_CLOSE = true;
+        rendre();        // et il revient, sur le module que le bilan regardait
       } catch (err) {
         alert(err.message);
         return;                 // l'écran reste ouvert : la séance, elle, ne l'est pas
@@ -1445,6 +1478,43 @@
   /* ---------- Rendu ---------- */
 
   function rendre() {
+    /* Pendant une séance sans compte, le suivi du groupe s'efface.
+       ────────────────────────────────────────────────────────────
+       Ces six blocs décrivent le travail **prescrit** au groupe : le bilan,
+       où en est chaque élève, ce qui bloque, l'aide demandée, les envois, les
+       modules du groupe. Pendant qu'une classe répond sans compte, aucun
+       d'eux ne parle d'elle — ils parlent d'un autre travail, fait par
+       d'autres personnes, à un autre moment. Les laisser, c'est répondre à
+       côté de la question qu'on est en train de se poser.
+
+       Restent « La classe d'un coup d'œil » et « Exercice par exercice »,
+       plus bas : eux regardent qui répond maintenant.
+
+       **Le déclencheur est une séance réellement ouverte sur le module
+       travaillé**, pas le simple fait d'en avoir choisi un. Suivre un module
+       en direct avec des élèves inscrits n'est pas une séance et ne doit pas
+       coûter le bilan.
+
+       `MODULE` et la période ne sont pas touchés — on **cache**, on ne vide
+       pas. Fermer la séance ramène le bilan sur le module qu'il regardait. */
+    const seanceOuverte = seanceDuModule();
+    const zoneBilan = document.getElementById('pgZoneBilan');
+    if (zoneBilan) zoneBilan.hidden = !!seanceOuverte;
+    if (seanceOuverte) {
+      document.getElementById('pgSous').textContent =
+        `Séance sans compte en cours · code ${seanceOuverte.code}`;
+      document.getElementById('pgContenu').innerHTML = `
+        <p class="pg-note" style="padding:var(--sp-8) 0">
+          <b>Le suivi du groupe est masqué pendant la séance.</b> Le bilan, les
+          rangées par élève et les envois décrivent le travail prescrit à vos
+          élèves inscrits — pas la classe qui répond en ce moment, sans compte.
+          Ce qui la concerne est juste au-dessus : la classe d'un coup d'œil, et
+          la réussite question par question.<br>
+          Rien n'est perdu : <b>fermez la séance</b> et le suivi revient, sur le
+          module que le bilan regardait.</p>
+        <div class="pg-pied"></div>`;
+      return;
+    }
     if (!ELEVES.length) {
       // Une séance sans compte remplit le direct sans remplir cette table :
       // dire « inscrivez des élèves » à quelqu'un dont la classe répond en ce
@@ -1481,7 +1551,7 @@
     majBoutons();
     document.getElementById('pgPortee').textContent = phrasePortee(mods, progres, envois);
     document.getElementById('pgSous').textContent =
-      `${pluriel(ELEVES.length, 'élève')} · ${pluriel(MODULES.length, 'module')} au programme du groupe`
+      `${pluriel(ELEVES.length, 'élève')} · ${pluriel(MODULES_GROUPE.length, 'module')} au programme du groupe`
       + (MODULE ? ` · module ouvert le ${dateLongue(moduleDe(MODULE)?.datePrevue) || '—'}` : '');
 
     document.getElementById('pgContenu').innerHTML = [
