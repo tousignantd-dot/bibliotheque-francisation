@@ -955,9 +955,20 @@ async function loadList() {
     // Le sous-titre dit ce qui est montré. Sans niveau, il ne l'invente pas :
     // il dit que rien n'est borné, et pourquoi — sinon une liste de 177
     // activités passerait pour le catalogue d'un seul groupe.
-    if (sousTitre) sousTitre.textContent = niv
-      ? `${niv} — les activités de votre groupe`
-      : 'Tous les niveaux — ce groupe n’a pas de niveau enregistré';
+    // La période d'essai borne encore davantage, et **le serveur l'a déjà
+    // fait** : le catalogue reçoit une liste courte sans savoir pourquoi. Il
+    // faut donc le dire, exactement pour la raison qui précède — une liste
+    // bornée qu'on n'explique pas se lit comme une panne, et un centre en
+    // essai croirait le produit vide plutôt que bridé.
+    const essai = Prof.state && Prof.state.essai;
+    const parQui = (Prof.state && Prof.state.essaiDecidePar) || '';
+    if (sousTitre) sousTitre.textContent = essai
+      ? `${niv || 'Tous les niveaux'} · période d’essai — les ${
+          (Prof.state && Prof.state.essaiModules) || 2} premiers modules de chaque niveau, et tous les ateliers${
+          parQui ? ' (' + parQui + ')' : ''}`
+      : niv
+        ? `${niv} — les activités de votre groupe`
+        : 'Tous les niveaux — ce groupe n’a pas de niveau enregistré';
     // Une activité déposée d'ici appartient au niveau du groupe, sauf mention
     // contraire : le champ reste libre.
     const champNiveau = document.getElementById('niveauInput');

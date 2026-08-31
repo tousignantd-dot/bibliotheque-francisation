@@ -1554,10 +1554,19 @@ def a_une_transcription(activite):
 
 
 def activities_for_group(group_id):
-    """Le catalogue commun, avec les dates du groupe superposées."""
+    """Le catalogue commun, avec les dates du groupe superposées.
+
+    **C'est l'entonnoir.** Cette fonction sert le catalogue, la planification,
+    le menu des séances et la liste de l'élève : la période d'essai s'y borne
+    une fois, et les quatre écrans suivent sans savoir qu'elle existe. Poser
+    quatre gardes aurait donné quatre endroits d'où l'essai peut fuir.
+    """
     sched = schedule_for_group(group_id)
+    en_essai, _ = essai_pour_groupe(group_id)
     result = []
     for a in load_activities():
+        if en_essai and not ouverte_en_essai(a):
+            continue
         entry = dict(a)
         dates = sched.get(a["id"], {})
         for key in SCHEDULE_FIELDS:
@@ -1999,6 +2008,69 @@ def seance_effective(org_id, orgs=None):
         if noeud.get("seance") in ("autorisee", "interdite"):
             return noeud["seance"] == "autorisee", noeud
     return True, None
+
+
+# La période d'essai d'un centre. Le défaut est « non » : un centre dont
+# personne n'a rien dit est un centre ordinaire. C'est l'inverse des quatre
+# autres drapeaux, et pour une raison — eux retirent quelque chose et leur
+# défaut est permissif ; celui-ci retire aussi, mais il décrit un contrat
+# commercial, pas une politique. Un centre ne se retrouve pas en essai parce
+# qu'on a oublié de le sortir d'essai.
+ESSAI_ETATS = ("herite", "oui", "non")
+
+# Ce qu'un centre en essai voit : les deux premiers modules de chaque niveau,
+# et tous les ateliers. Le nombre est ici, en un seul endroit, pour qu'une
+# négociation commerciale ne devienne pas une chasse dans le code.
+ESSAI_MODULES = 2
+
+
+def essai_effective(org_id, orgs=None):
+    """Ce nœud est-il en période d'essai ? Rend (en essai, décideur).
+
+    Même remontée que les quatre autres : le PREMIER réglage explicite tranche.
+    Le défaut est « non ».
+    """
+    for noeud in org_chain(org_id, orgs):
+        if noeud.get("essai") in ("oui", "non"):
+            return noeud["essai"] == "oui", noeud
+    return False, None
+
+
+def numero_de_module(activite):
+    """Le rang d'un module dans son niveau, lu dans son titre.
+
+    « Module 3 — Emménager… » → 3. Le numéro n'a pas de champ à lui : il vit
+    dans le titre, et trois sources le portent déjà (titre, fichier, diaporama).
+    En ajouter une quatrième, c'est se donner une vérité de plus à tenir — et
+    celle-ci se tairait le jour d'une renumérotation.
+    """
+    m = re.match(r"\s*Module\s+(\d+)\b", activite.get("title", "") or "")
+    return int(m.group(1)) if m else None
+
+
+def ouverte_en_essai(activite):
+    """Cette activité est-elle offerte pendant une période d'essai ?
+
+    Les **ateliers restent ouverts** : un centre qui n'aurait que deux modules
+    par niveau épuiserait son essai en deux semaines, alors qu'on veut
+    justement qu'il fasse travailler ses classes tous les jours. Ce sont les
+    **cours** qui sont bornés, aux deux premiers de chaque niveau.
+
+    Un cours sans numéro lisible est **fermé** : mieux vaut un module absent
+    qu'un essai qui fuit sans qu'on sache par où.
+    """
+    if activite.get("categorie") != "cours":
+        return True
+    numero = numero_de_module(activite)
+    return numero is not None and numero <= ESSAI_MODULES
+
+
+def essai_pour_groupe(group_id, orgs=None, groups=None):
+    """(en essai, décideur) pour un groupe, par son centre."""
+    for g in (groups if groups is not None else load_groups()):
+        if g.get("id") == group_id:
+            return essai_effective(g.get("centreId"), orgs)
+    return False, None
 
 
 def seance_pour_enseignant(teacher, orgs=None, acces=None):
@@ -2458,6 +2530,9 @@ def arbre_pour_lecture():
              "seanceEffective": ("autorisee" if seance_effective(o["id"], orgs)[0]
                                  else "interdite"),
              "seanceDecidePar": (seance_effective(o["id"], orgs)[1] or {}).get("nom", ""),
+             "essai": o.get("essai", "herite"),
+             "essaiEffectif": ("oui" if essai_effective(o["id"], orgs)[0] else "non"),
+             "essaiDecidePar": (essai_effective(o["id"], orgs)[1] or {}).get("nom", ""),
              "enfants": sorted(x["id"] for x in orgs if x.get("parentId") == o["id"]),
              "groupes": par_centre.get(o["id"], [])}
             for o in orgs
@@ -16873,6 +16948,21 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 "suivable": False,
             }, 400)
             return
+        # La période d'essai ferme la séance comme elle ferme le catalogue. Le
+        # menu ne propose plus ces modules (l'entonnoir les retire) ; la route
+        # le vérifie quand même, pour la même raison que le contrôle voisin :
+        # une liste n'est pas une garde.
+        en_essai, decideur_essai = essai_pour_groupe(group_id)
+        if en_essai and not ouverte_en_essai(activite):
+            json_response(self, {
+                "error": "« %s » n'est pas dans la période d'essai de %s : elle "
+                         "ouvre les deux premiers modules de chaque niveau, et "
+                         "tous les ateliers."
+                         % (activite.get("title", "Cette activité"),
+                            (decideur_essai or {}).get("nom", "votre établissement")),
+                "essai": True,
+            }, 403)
+            return
         # Le niveau du groupe borne la séance comme il borne le catalogue et le
         # dépôt : on n'ouvre pas un module de niveau 7 dans une classe de
         # niveau 4. Le menu ne les propose plus (progression.html) ; la route le
@@ -17431,6 +17521,10 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             })
             return
         autorise, decideur = seance_pour_enseignant(teacher)
+        # L'essai se règle par centre, et un enseignant peut tenir des groupes
+        # de plusieurs centres. On répond pour son centre de rattachement —
+        # celui qui décide de son écran — comme le fait `seance_pour_enseignant`.
+        en_essai, decideur_essai = essai_effective(centre_de_enseignant(teacher))
         json_response(self, {
             "connecte": True,
             "installationRequise": False,
@@ -17441,6 +17535,13 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             # c'est elle qui garde, pas la page.
             "seanceAutorisee": bool(autorise),
             "seanceDecidePar": (decideur or {}).get("nom", ""),
+            # La période d'essai, pour que l'écran puisse **dire** pourquoi son
+            # catalogue est court. Sans ce mot, une liste bornée se lit comme
+            # une panne — la leçon du bornage par niveau, où il a fallu écrire
+            # le niveau dans l'en-tête pour la même raison.
+            "essai": bool(en_essai),
+            "essaiDecidePar": (decideur_essai or {}).get("nom", ""),
+            "essaiModules": ESSAI_MODULES,
         })
 
     def _handle_prof_password(self):
@@ -17528,7 +17629,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                  "ia": org.get("ia", "herite"),
                  "voix": org.get("voix", "herite"),
                  "depot": org.get("depot", "herite"),
-                 "seance": org.get("seance", "herite")}
+                 "seance": org.get("seance", "herite"),
+                 "essai": org.get("essai", "herite")}
         if "nom" in body:
             nom = (body.get("nom") or "").strip()
             if not nom:
@@ -17581,6 +17683,15 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 json_response(self, {"error": "Le réseau tranche : il n'hérite de personne"}, 400)
                 return
             org["seance"] = etat
+        if "essai" in body:
+            etat = (body.get("essai") or "herite").strip()
+            if etat not in ESSAI_ETATS:
+                json_response(self, {"error": "État de période d'essai inconnu"}, 400)
+                return
+            if etat == "herite" and org.get("type") == "reseau":
+                json_response(self, {"error": "Le réseau tranche : il n'hérite de personne"}, 400)
+                return
+            org["essai"] = etat
         save_organisations(orgs)
         journal(fondateur, "organisation.modifiee", org_id,
                 {"avant": avant, "apres": {"nom": org.get("nom"),
@@ -17588,7 +17699,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                                            "ia": org.get("ia", "herite"),
                                            "voix": org.get("voix", "herite"),
                                            "depot": org.get("depot", "herite"),
-                                           "seance": org.get("seance", "herite")}})
+                                           "seance": org.get("seance", "herite"),
+                                           "essai": org.get("essai", "herite")}})
         json_response(self, {"success": True, "organisation": org})
 
     def _handle_acces_add(self):
