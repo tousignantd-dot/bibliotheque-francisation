@@ -1431,6 +1431,33 @@ def construire_archive(fichiers, slug=None):
     return tampon.getvalue()
 
 
+def fichier_active(chemin):
+    """Le fichier qu'un visiteur reçoit vraiment pour ce chemin d'activité.
+
+    **BASE_DIR d'abord, et c'est tout le propos.** `do_GET` envoie
+    `/assets/interactive/**` directement à `super().do_GET()`, donc au code
+    déployé — jamais au volume. Les détecteurs, eux, lisaient
+    `STORAGE_DIR / chemin` en premier : quand une vieille copie survivait sur
+    le volume, ils examinaient un fichier que plus personne ne reçoit.
+
+    C'est exactement ce qui s'est produit le 30 août 2026 : « Module 2 — Un
+    dégât d'eau » servait bien un fichier instrumenté pour le direct, et
+    l'ouverture d'une séance était refusée au motif qu'il ne renvoyait rien.
+    Deux fichiers derrière une adresse, et le refus paraissait absurde parce
+    qu'il portait sur celui qu'on ne voyait pas.
+
+    Le repli sur le volume reste, après : une activité téléversée n'existe que
+    là, et la lire vaut mieux que la déclarer muette."""
+    if not chemin:
+        return None
+    for base in (BASE_DIR, STORAGE_DIR):
+        reel = base / chemin
+        if reel.exists():
+            return reel
+    reel = Path(chemin)
+    return reel if reel.exists() else None
+
+
 # Ce qu'une activité doit contenir pour que le direct de la classe ait
 # quelque chose à montrer. C'est l'événement lui-même, pas un drapeau posé à
 # côté : un drapeau se serait mis à mentir au premier atelier reconstruit.
@@ -1467,9 +1494,9 @@ def rapporte_au_direct(activite):
     chemin = (activite or {}).get("interactive") or ""
     if not chemin:
         return False
-    reel = STORAGE_DIR / chemin
-    if not reel.exists():
-        reel = Path(chemin)
+    reel = fichier_active(chemin)
+    if reel is None:
+        return False
     try:
         st = reel.stat()
     except OSError:
@@ -1504,9 +1531,9 @@ def a_une_transcription(activite):
     chemin = (activite or {}).get("interactive") or ""
     if not chemin:
         return False
-    reel = STORAGE_DIR / chemin
-    if not reel.exists():
-        reel = Path(chemin)
+    reel = fichier_active(chemin)
+    if reel is None:
+        return False
     try:
         st = reel.stat()
     except OSError:
