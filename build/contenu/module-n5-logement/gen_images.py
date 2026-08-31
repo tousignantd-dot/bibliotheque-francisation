@@ -114,8 +114,20 @@ IMAGES = [
   "table, avec un stylo posé en travers, pris de biais. Le cadrage commence au "
   "deuxième tiers de la page : aucun titre, aucun en-tête, aucun bandeau dans le "
   "champ, seulement des lignes de texte réduites à des traits gris."),
- ('avis-modification', 'vocab', P_VOC, DOC + " Une lettre d'une seule page sortie de son "
-  "enveloppe, posée sur une table de cuisine à côté de l'enveloppe ouverte."),
+ # Refait le 31 août 2026. Le prompt disait « une lettre » : le modèle a rendu
+ # une **lettre manuscrite personnelle en anglais**, « Dear… / Sincerely, ».
+ # `DOC` interdisait pourtant tout texte lisible — la garde était là, le modèle
+ # est passé outre. Le coupable est le mot, pas la garde : « lettre » appelle
+ # une lettre. Un avis de modification du bail est un **formulaire imprimé**,
+ # et un élève doit reconnaître celui-là dans sa boîte aux lettres. On nomme
+ # donc l'objet, et on interdit nommément l'écriture à la main.
+ ('avis-modification', 'vocab', P_VOC, DOC + " Un formulaire administratif imprimé "
+  "d'une seule page, posé sur une table de cuisine à côté de son enveloppe ouverte. "
+  "Mise en page officielle : un bandeau d'en-tête, des cases rectangulaires vides, "
+  "des lignes pointillées à remplir, un tableau à deux colonnes dans le bas. "
+  "Texte entièrement illisible, uniquement des traits gris. "
+  "Aucune écriture manuscrite, aucune cursive, aucune signature à la main, "
+  "aucun papier vieilli ou froissé."),
  ('loyer', 'vocab', P_VOC, STYLE + " Une enveloppe blanche non affranchie et quelques "
   "billets de banque canadiens posés sur la table d'une cuisine de logement québécois, "
   "un trousseau de clés à côté. Aucun chiffre, aucune inscription, aucun calendrier "
