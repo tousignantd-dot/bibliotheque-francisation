@@ -1378,7 +1378,9 @@ function vitAppliquer(){
   const b = document.getElementById('btn-vitesse');
   if(b){ b.textContent = VIT_CRANS[vitCran].lbl; b.setAttribute('data-cran', String(vitCran)); }
   if(typeof dlgAudio !== 'undefined' && dlgAudio) vitAudio(dlgAudio);
-  if(typeof jrAudio !== 'undefined' && jrAudio) vitAudio(jrAudio);
+  // `dataset.palier` marque un son déjà ralenti à la synthèse : y ajouter
+  // un playbackRate le ralentirait deux fois.
+  if(typeof jrAudio !== 'undefined' && jrAudio && !jrAudio.dataset.palier) vitAudio(jrAudio);
 }
 document.addEventListener('DOMContentLoaded', ()=>{
   const b = document.getElementById('btn-vitesse');

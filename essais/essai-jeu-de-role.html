@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>La voix du jeu de rôle</title>
+<style>
+ body{background:#fff;color:#101418;margin:0;padding:28px 24px 60px;
+      max-width:900px;font:16px/1.5 -apple-system,"Segoe UI",Roboto,sans-serif}
+ h1{font-size:21px;margin:0 0 6px}
+ h2{font-size:15px;margin:34px 0 10px;text-transform:uppercase;
+    letter-spacing:.04em;color:#5b6672}
+ p{color:#39424c;margin:0 0 16px}
+ table{border-collapse:collapse;width:100%}
+ th,td{padding:9px 10px;border-bottom:1px solid #e4e9ee;text-align:left;
+       vertical-align:top}
+ thead th{font-size:13px;color:#5b6672;text-transform:uppercase;
+          letter-spacing:.04em}
+ tbody th{font-weight:600;width:210px}
+ td.note{color:#5b6672;font-size:14px}
+ audio{height:34px;width:260px}
+ code{background:#f2f5f8;padding:1px 5px;border-radius:4px;font-size:13px}
+ blockquote{margin:0 0 20px;padding:10px 14px;background:#f7f9fb;
+            border-left:3px solid #c9d3dc;color:#39424c;font-size:15px}
+</style></head><body>
+
+<h1>La voix du jeu de rôle — six candidates</h1>
+<p>Le personnage joué par l'assistant sort de la route <code>/api/voix</code>,
+   qui synthétise en direct chez Azure. Aucune voix française d'Azure en
+   <strong>fr-CA</strong> n'accepte de style expressif : les quatre voix
+   québécoises n'ont aucune entrée <code>StyleList</code>. Ce qui reste comme
+   leviers : le modèle de la voix (neural ou HD), le déguisement
+   <code>prosody</code> qui distingue nos deux voix féminines, et l'écriture
+   des répliques.</p>
+
+<h2>Réplique 1</h2>
+<blockquote>Bonjour ! Oui, le trois et demi est encore libre. Le chauffage et
+  l'eau chaude sont inclus, mais pas l'électricité. Vous voulez le visiter
+  jeudi soir ?</blockquote>
+<table><tbody>
+<tr><th>Aujourd'hui</th><td><audio controls preload="none" src="essai-jeu-de-role/r1-actuel.mp3"></audio></td>
+    <td class="note">Sylvie, <code>pitch −7%</code> <code>rate −4%</code>, le tout à <code>+15%</code> — le rôle <code>feminin_2</code>.</td></tr>
+<tr><th>Sylvie sans déguisement</th><td><audio controls preload="none" src="essai-jeu-de-role/r1-sylvie-nue.mp3"></audio></td>
+    <td class="note">La même voix, sans le <code>pitch</code> qui la sépare de l'enseignante. Ce que coûte le déguisement.</td></tr>
+<tr><th>Sylvie HD</th><td><audio controls preload="none" src="essai-jeu-de-role/r1-sylvie-hd.mp3"></audio></td>
+    <td class="note">Même comédienne, modèle <code>DragonHDLatest</code> : la prosodie se calcule sur la phrase entière.</td></tr>
+<tr><th>Sylvie HD, ralentie</th><td><audio controls preload="none" src="essai-jeu-de-role/r1-sylvie-hd-lente.mp3"></audio></td>
+    <td class="note"><code>rate −10%</code> : mesuré, le modèle HD obéit bien à <code>prosody</code> (+16 % de durée).</td></tr>
+<tr><th>Soleil (France)</th><td><audio controls preload="none" src="essai-jeu-de-role/r1-soleil-france.mp3"></audio></td>
+    <td class="note">La seule famille à styles expressifs (<code>happy</code> ici) — mais accent de France. Témoin, pas candidate.</td></tr>
+</tbody></table>
+
+<h2>Le texte, plutôt que la voix</h2>
+<p>La même réplique réécrite pour être <em>dite</em> : phrases courtes, une idée
+   par souffle, une hésitation. Aucune voix ne change ici — seulement ce qu'on
+   demande au modèle d'écrire.</p>
+<blockquote>Bonjour ! Oui, oui, il est encore libre. Alors : chauffage inclus,
+  eau chaude incluse… mais l'électricité, non, c'est à vous. Jeudi soir, ça
+  vous irait, pour la visite ?</blockquote>
+<table><tbody>
+<tr><th>Voix d'aujourd'hui</th><td><audio controls preload="none" src="essai-jeu-de-role/r1-actuel-texte-vivant.mp3"></audio></td>
+    <td class="note">À comparer avec « Aujourd'hui » plus haut.</td></tr>
+<tr><th>Sylvie HD</th><td><audio controls preload="none" src="essai-jeu-de-role/r1-sylvie-hd-texte-vivant.mp3"></audio></td>
+    <td class="note">Les deux leviers ensemble.</td></tr>
+</tbody></table>
+
+<h2>Réplique 2 — pour confirmer</h2>
+<blockquote>Ah, pour le stationnement, il en reste une case, à quarante dollars
+  par mois. Et les animaux, je suis désolée, c'est non : le bail
+  l'interdit.</blockquote>
+<table><tbody>
+<tr><th>Aujourd'hui</th><td><audio controls preload="none" src="essai-jeu-de-role/r2-actuel.mp3"></audio></td><td></td></tr>
+<tr><th>Sylvie sans déguisement</th><td><audio controls preload="none" src="essai-jeu-de-role/r2-sylvie-nue.mp3"></audio></td><td></td></tr>
+<tr><th>Sylvie HD</th><td><audio controls preload="none" src="essai-jeu-de-role/r2-sylvie-hd.mp3"></audio></td><td></td></tr>
+</tbody></table>
+
+
+<h2>Retenu — ce que l'élève entendra</h2>
+<p>Sylvie HD pour la propriétaire, Thierry HD pour le visiteur, sans le taux
+   <code>+15%</code> du cours (calibré pour les voix neurales, il rend la HD
+   pressée). Le ralenti n'est plus un étirement dans le navigateur : le module
+   envoie son palier, Azure applique <code>rate −20%</code> à la synthèse.
+   Mesuré sur cette réplique : 9,00 s → 10,87 s, soit ×1,21 — le bouton en
+   donnait ×1,25 en abîmant le son.</p>
+<table><tbody>
+<tr><th>Propriétaire — débit normal</th><td><audio controls preload="none" src="essai-jeu-de-role/jr-proprietaire-normal.mp3"></audio></td>
+    <td class="note">Rôle <code>jr_feminin</code>.</td></tr>
+<tr><th>Propriétaire — débit lent</th><td><audio controls preload="none" src="essai-jeu-de-role/jr-proprietaire-lent.mp3"></audio></td>
+    <td class="note">Le même, palier <code>lent</code> — le bouton du haut de page.</td></tr>
+<tr><th>Visiteur — débit normal</th><td><audio controls preload="none" src="essai-jeu-de-role/jr-visiteur-normal.mp3"></audio></td>
+    <td class="note">Rôle <code>jr_masculin</code>, Thierry HD : c'est la voix quand l'élève joue le propriétaire. À valider — Antoine (neural) tenait ce rôle jusqu'ici.</td></tr>
+</tbody></table>
+<h2>Ce que chaque choix engage</h2>
+<p><strong>Sylvie HD.</strong> Se pose dans <code>VOIX_JEU_DE_ROLE</code> seul,
+   sans toucher aux MP3 des modules — la route de synthèse en direct est la
+   seule concernée, et le gel des MP3 tient. Le tarif HD est plus élevé que le
+   neural standard, mais c'est la seule dépense de synthèse qui grandit avec le
+   nombre d'élèves, et le cache du serveur en reprend une partie.</p>
+<p><strong>Le texte.</strong> Ne coûte rien : trois phrases de plus dans la
+   consigne du jeu de rôle, côté <code>server.py</code>. À faire dans tous les
+   cas, quelle que soit la voix retenue.</p>
+<p><strong>Le déguisement <code>pitch −7%</code>.</strong> Il existe pour que
+   deux femmes se distinguent dans un dialogue enregistré. Au jeu de rôle il
+   n'y a qu'une voix à l'écran : on peut le lever ici sans rien casser
+   ailleurs.</p>
+</body></html>

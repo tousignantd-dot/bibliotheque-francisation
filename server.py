@@ -3217,7 +3217,7 @@ class _VoixIndisponible(Exception):
         self.http = http
 
 
-def _synthese_azure(role, texte):
+def _synthese_azure(role, texte, palier=None):
     """Un extrait de parole, par Azure Speech. Renvoie du MP3 brut.
 
     Le SSML est bâti par `build/azure_voix.py` et non recopié ici : c'est là
@@ -3225,6 +3225,11 @@ def _synthese_azure(role, texte):
     distingue les deux voix féminines. Deux constructions séparées finiraient
     par diverger, et l'élève entendrait au jeu de rôle une voix qui ne serait
     plus celle de ses dialogues.
+
+    `palier` est celui de la barre de débit de l'élève ("lent"). Il se règle
+    ICI, à la synthèse, et non par un `playbackRate` dans le navigateur :
+    Azure rend un `<prosody rate>` exact, là où l'étirement d'un son déjà
+    produit dégrade la voix — c'est la leçon des MP3 ralentis après coup.
 
     En production, la ressource Azure demande **deux** variables : la clé et
     la région. Une clé juste avec la mauvaise région rend un 401 dont le
@@ -3240,7 +3245,7 @@ def _synthese_azure(role, texte):
 
     req = urllib.request.Request(
         f"https://{region}.tts.speech.microsoft.com/cognitiveservices/v1",
-        data=_ssml(texte, role).encode("utf-8"),
+        data=_ssml(texte, role, palier=palier).encode("utf-8"),
         headers={
             "Ocp-Apim-Subscription-Key": cle,
             "Content-Type": "application/ssml+xml",
@@ -3407,12 +3412,15 @@ def _transcrire_en_arriere_plan(sub_id, audio_bytes, nom, eleve_id, groupe_id,
         print("[WARN] transcription non enregistrée : %s" % e, flush=True)
 
 
-def voix_cache_chemin(voix, texte):
+def voix_cache_chemin(voix, texte, palier=None):
     """Fichier où dort le MP3 d'un texte dit par une voix. La voix entre dans
     la clé : la même réplique lue par la propriétaire et par le visiteur sont
-    deux enregistrements. Espaces normalisés, comme pour outils_key()."""
+    deux enregistrements. Le palier aussi, depuis que le ralenti se fait à la
+    synthèse : servir le normal à qui a demandé le lent serait pire qu'un
+    cache manqué. Espaces normalisés, comme pour outils_key()."""
     empreinte = hashlib.sha1(" ".join(texte.split()).encode("utf-8")).hexdigest()[:20]
-    return VOIX_CACHE_DIR / ("%s-%s.mp3" % (voix, empreinte))
+    suffixe = "-" + palier if palier else ""
+    return VOIX_CACHE_DIR / ("%s%s-%s.mp3" % (voix, suffixe, empreinte))
 
 
 def voix_cache_lire(chemin):
@@ -4613,9 +4621,15 @@ def json_response(handler, data, status=200):
 # le tarif : 220 $ le million de caractères contre 16 $, soit **13,75 fois
 # moins cher**, et c'est la seule dépense de synthèse qui grandisse avec le
 # nombre d'élèves — les MP3 des modules, eux, sont fabriqués une fois.
+# Le 31 août 2026, ces deux rôles passent au modèle DragonHD : la voix neurale
+# rendait un propriétaire monotone, et aucune voix fr-CA d'Azure n'accepte de
+# style expressif (relevé de voices/list : StyleList vide pour les quatre).
+# Ce sont des rôles à part — `jr_feminin`, `jr_masculin` — et non les rôles des
+# dialogues : le jeu de rôle se synthétise en direct, il peut changer de modèle
+# sans qu'un seul MP3 de module ait à être refait.
 VOIX_JEU_DE_ROLE = {
-    "proprietaire": "feminin_2",    # la propriétaire
-    "locataire":    "masculin_1",   # le visiteur
+    "proprietaire": "jr_feminin",    # la propriétaire
+    "locataire":    "jr_masculin",   # le visiteur
 }
 
 # Voix de lecture de la barre d'outils élève (« Lire à voix haute »,
@@ -20029,6 +20043,15 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             json_response(self, {"error": "Texte vide"}, 400)
             return
 
+        # Le palier de la barre de débit. Il est renvoyé dans `X-Palier` : le
+        # module ne doit étirer le son lui-même que si le serveur n'a PAS su
+        # le ralentir — sans quoi un serveur d'avant ce jour rendrait un
+        # « débit lent » qui parle vite, ou un serveur d'après un son ralenti
+        # deux fois.
+        palier = body.get("palier")
+        if palier not in ("lent", "tres-lent"):
+            palier = None
+
         if body.get("voix") == "lecture":
             # La barre d'outils lit un passage du module : aucun rôle en jeu,
             # une voix fixe pour que la lecture ne change pas de timbre.
@@ -20041,7 +20064,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 
         # Le cache passe avant la clé d'API : une classe garde la voix des
         # passages déjà lus même si la clé vient à manquer.
-        chemin = voix_cache_chemin(voix, texte)
+        chemin = voix_cache_chemin(voix, texte, palier)
         audio = voix_cache_lire(chemin)
         if audio is not None:
             print(f"[voix] cache : {len(texte)} caractères", flush=True)
@@ -20050,11 +20073,11 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             # appels payés ne dirait jamais combien il en a épargné.
             journal_api.noter("voix", MODELE_VOIX, eleve_id, groupe_id,
                               caracteres=len(texte), statut="cache")
-            self._envoyer_mp3(audio)
+            self._envoyer_mp3(audio, palier)
             return
 
         try:
-            audio = _synthese_azure(voix, texte)
+            audio = _synthese_azure(voix, texte, palier)
         except _VoixIndisponible as e:
             print(f"[WARN] Azure voix : {e}", flush=True)
             journal_api.noter("voix", MODELE_VOIX, eleve_id, groupe_id,
@@ -20067,14 +20090,18 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                           caracteres=len(texte))
         print(f"[voix] {len(texte)} caractères → {len(audio)} octets", flush=True)
         voix_cache_ecrire(chemin, audio)
-        self._envoyer_mp3(audio)
+        self._envoyer_mp3(audio, palier)
 
-    def _envoyer_mp3(self, audio):
+    def _envoyer_mp3(self, audio, palier=None):
         """Rend du MP3 brut. `no-store` reste : le cache est celui du serveur,
-        partagé par la classe, pas celui du navigateur d'un élève."""
+        partagé par la classe, pas celui du navigateur d'un élève.
+
+        `X-Palier` dit au module ce que la synthèse a déjà fait du débit."""
         self.send_response(200)
         self.send_header("Content-Type", "audio/mpeg")
         self.send_header("Content-Length", str(len(audio)))
+        self.send_header("X-Palier", palier or "normal")
+        self.send_header("Access-Control-Expose-Headers", "X-Palier")
         self.send_header("Cache-Control", "no-store")
         self.end_headers()
         self.wfile.write(audio)

@@ -1835,7 +1835,9 @@ function vitAppliquer(){
   const b = document.getElementById('btn-vitesse');
   if(b){ b.textContent = VIT_CRANS[vitCran].lbl; b.setAttribute('data-cran', String(vitCran)); }
   if(typeof dlgAudio !== 'undefined' && dlgAudio) vitAudio(dlgAudio);
-  if(typeof jrAudio !== 'undefined' && jrAudio) vitAudio(jrAudio);
+  // `dataset.palier` marque un son déjà ralenti à la synthèse : y ajouter
+  // un playbackRate le ralentirait deux fois.
+  if(typeof jrAudio !== 'undefined' && jrAudio && !jrAudio.dataset.palier) vitAudio(jrAudio);
 }
 document.addEventListener('DOMContentLoaded', ()=>{
   const b = document.getElementById('btn-vitesse');
@@ -3591,12 +3593,19 @@ function jrDireNavigateur(texte){
 
 async function jrDire(texte){
   jrTaire();
+  // Cette voix-ci se fabrique en direct : son débit se règle donc à la
+  // SYNTHÈSE, où Azure rend un <prosody rate> exact, et non par un
+  // playbackRate qui étire un son déjà produit. Le serveur répond X-Palier ;
+  // on n'étire ici que s'il n'a pas honoré la demande.
+  const palier = vitCran ? 'lent' : 'normal';
   try{
     const res=await fetch('/api/voix',{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({code:studentCode, texte:texte, role:JR.role})});
+      body:JSON.stringify({code:studentCode, texte:texte, role:JR.role, palier:palier})});
     if(!res.ok) throw new Error('voix serveur indisponible');
     const url=URL.createObjectURL(await res.blob());
-    const a=vitAudio(new Audio(url)); jrAudio=a;
+    const a=new Audio(url);
+    if(res.headers.get('X-Palier')===palier) a.dataset.palier=palier; else vitAudio(a);
+    jrAudio=a;
     a.onended=()=>{ URL.revokeObjectURL(url); if(jrAudio===a) jrAudio=null; };
     await a.play();
   }catch(e){
@@ -3622,17 +3631,20 @@ async function jrParler(){
   if(JR.rec){ return; }
   JR.rec=rec;
   rec.interimResults=true; rec.continuous=true;
-  let acquis='', provisoire='';
+  // L'accumulateur vit sur JR, pas ici : le micro reste ouvert d'un envoi à
+  // l'autre, et c'est jrEnvoyer qui doit pouvoir le vider. En variable locale,
+  // la phrase déjà envoyée revenait en tête de la suivante.
+  JR.dit=''; JR.inter='';
   btn.classList.add('rec'); btn.textContent='⏹';
   lbl.textContent='Je t\'écoute… touche pour arrêter';
   rec.onresult=e=>{
     let inter='';
     for(let i=e.resultIndex;i<e.results.length;i++){
       const r=e.results[i];
-      if(r.isFinal) acquis+=r[0].transcript+' '; else inter=r[0].transcript;
+      if(r.isFinal) JR.dit+=r[0].transcript+' '; else inter=r[0].transcript;
     }
-    provisoire=inter;
-    inp.value=(acquis+inter).trim();
+    JR.inter=inter;
+    inp.value=(JR.dit+inter).trim();
   };
   rec.onerror=e=>{
     if(e.error==='not-allowed') showErr('jrErr',"Micro refusé — autorise l'accès au micro.");
@@ -3644,7 +3656,7 @@ async function jrParler(){
     lbl.textContent='Touche pour parler';
     // Une phrase courte est parfois coupée par la détection de silence avant
     // qu'un résultat final n'arrive : on garde le dernier provisoire.
-    if(!inp.value && provisoire) inp.value=provisoire.trim();
+    if(!inp.value && JR.inter) inp.value=JR.inter.trim();
     inp.focus();
   };
   try{ rec.start(); }catch(e){ JR.rec=null; }
@@ -3686,7 +3698,7 @@ function jrDemarrer(){
 function jrRecommencer(){
   jrTaire();
   if(JR.rec){ try{ JR.rec.stop(); }catch(e){} }
-  JR.hist=[];
+  JR.hist=[]; JR.dit=''; JR.inter='';
   document.getElementById('jrFil').innerHTML='';
   document.getElementById('jrFb').classList.remove('on');
   hideErr('jrErr');
@@ -3724,6 +3736,9 @@ function jrEnvoyer(){
   const txt=inp.value.trim();
   if(!txt || JR.occupe) return;
   inp.value='';
+  // Ce qui vient d'être envoyé ne doit pas reparaître en tête de la réplique
+  // suivante quand le micro est resté ouvert.
+  JR.dit=''; JR.inter='';
   JR.hist.push({role:'user', contenu:txt});
   jrBulle('moi', txt);
   jrTour();

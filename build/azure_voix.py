@@ -59,6 +59,20 @@ VOIX = {
     # Thierry reste libre : c'est la voix de secours pour un personnage
     # masculin de plus dans un même dialogue.
     "masculin_3":  {"azure": "fr-CA-ThierryNeural"},
+
+    # Les deux rôles du JEU DE RÔLE, et eux seuls. Ils se synthétisent en
+    # direct, réplique par réplique : rien à régénérer, donc rien qui touche
+    # au gel des MP3. D'où le modèle DragonHD — même comédienne, mais la
+    # prosodie s'y calcule sur la phrase entière au lieu d'être plate. Écouté
+    # le 31 août 2026 (essais/essai-jeu-de-role.html) : c'est le seul remède,
+    # aucune voix fr-CA d'Azure n'accepte de style expressif.
+    #
+    # `reference: ""` coupe le TAUX_GLOBAL du cours. Le +15% a été calibré sur
+    # les voix neurales pour rattraper le tempo d'ElevenLabs ; sur HD il rend
+    # une parole pressée, et c'est la version SANS lui qui a été retenue à
+    # l'écoute. Le ralenti passe par le palier, donc par la barre de débit.
+    "jr_feminin":  {"azure": "fr-CA-Sylvie:DragonHDLatestNeural", "reference": ""},
+    "jr_masculin": {"azure": "fr-CA-Thierry:DragonHDLatestNeural", "reference": ""},
 }
 
 # Les identifiants ElevenLabs rencontrés dans les 110 générateurs, et le rôle
@@ -408,8 +422,10 @@ def ssml(texte, role, palier=None, epeler=None, pause_lettres="280ms",
     # Ne pas nommer ce paramètre `taux` : c'est déjà le nom du taux **du
     # palier**, quelques lignes plus haut. Le collision l'écrasait, et le
     # palier se serait appliqué deux fois sans que rien ne le dise.
+    # Un rôle peut porter son propre `reference` : les voix HD du jeu de rôle
+    # n'ont pas à subir le taux calibré pour les voix neurales.
     if reference is None:
-        reference = TAUX_GLOBAL
+        reference = v.get("reference", TAUX_GLOBAL)
     if reference:
         corps = '<prosody rate="%s">%s</prosody>' % (reference, corps)
     return '%s<voice name="%s">%s</voice></speak>' % (EN_TETE, v["azure"], corps)
