@@ -191,7 +191,11 @@
     <div class="surtitre">Banque de présentations · Le projet, pas les modules</div>
 
     <h1>Tout ce qui sert à présenter le projet</h1>
-    <p class="chapeau">Cinquante-cinq documents, rangés par public. À qui je la montre décide de
+    <!-- Le nombre est posé au chargement, jamais écrit ici. Celui qui s'y
+         trouvait annonçait cinquante-cinq documents au-dessus d'un compteur
+         qui en affichait soixante-dix : un compteur écrit à la main est faux
+         à la fiche suivante, et c'est déjà la règle des onglets. -->
+    <p class="chapeau"><span id="nDocs">Les</span> documents, rangés par public. À qui je la montre décide de
     la famille ; le sujet et la date sont écrits sur chaque fiche.</p>
   </div>
 </header>
@@ -1828,12 +1832,50 @@
 
   // Compter plutôt qu'annoncer : les nombres des onglets sont lus sur les
   // fiches présentes. Écrits à la main, ils étaient faux de deux.
+  //
+  // Le chapeau suit la même règle, mais **en toutes lettres** : la page écrit
+  // ses nombres ainsi, et un chiffre en tête de phrase jurerait. D'où ce
+  // petit énonciateur — borné à 999, ce que la banque ne dépassera pas, et
+  // qui retombe sur le chiffre au-delà plutôt que de mentir.
+  var UNITES = ['zéro', 'un', 'deux', 'trois', 'quatre', 'cinq', 'six', 'sept',
+                'huit', 'neuf', 'dix', 'onze', 'douze', 'treize', 'quatorze',
+                'quinze', 'seize'];
+  var DIZAINES = { 20: 'vingt', 30: 'trente', 40: 'quarante', 50: 'cinquante',
+                   60: 'soixante', 80: 'quatre-vingt' };
+
+  function enLettres(n) {
+    if (n < 0 || n > 999 || n !== Math.floor(n)) return String(n);
+    if (n <= 16) return UNITES[n];
+    if (n < 20) return 'dix-' + UNITES[n - 10];
+    if (n < 100) {
+      // 70 et 90 se comptent sur soixante et sur quatre-vingt : « soixante et
+      // onze », « quatre-vingt-dix-sept ». C'est là que tout se joue.
+      var base = (n < 70) ? Math.floor(n / 10) * 10
+               : (n < 80) ? 60 : 80;
+      var reste = n - base;
+      var mot = DIZAINES[base];
+      if (reste === 0) return base === 80 ? 'quatre-vingts' : mot;
+      if (reste === 1 && base !== 80) return mot + ' et un';
+      if (reste === 11 && base === 60) return mot + ' et onze';
+      return mot + '-' + enLettres(reste);
+    }
+    var cents = Math.floor(n / 100), reste2 = n % 100;
+    var tete = (cents === 1) ? 'cent'
+             : UNITES[cents] + (reste2 === 0 ? ' cents' : ' cent');
+    return reste2 === 0 ? tete : tete + ' ' + enLettres(reste2);
+  }
   onglets.forEach(function (b) {
     var n = b.dataset.f === 'tout'
       ? fiches.length
       : document.querySelectorAll('.famille[data-fam="' + b.dataset.f + '"] .fiche').length;
     b.querySelector('.n').textContent = n;
   });
+
+  var chapeau = document.getElementById('nDocs');
+  if (chapeau) {
+    var mot = enLettres(fiches.length);
+    chapeau.textContent = mot.charAt(0).toUpperCase() + mot.slice(1);
+  }
 
   function texte(fiche) {
     return ((fiche.dataset.cle || '') + ' ' + fiche.textContent).toLowerCase();
