@@ -598,6 +598,7 @@ body{
 .ph-card{background:var(--ws-card,#fff);border:1px solid var(--ws-line,#EAEAE8);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:12px}
 .ph-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .ph-word{font-size:21px;font-weight:900;color:var(--ws-ink,#17181A)}
+.ph-word.ph-cache,.stxt.ph-cache{font-size:17px;font-weight:700;color:var(--ws-ink-3,#6B6F76);font-style:italic}
 .btn-audio-round{width:44px;height:44px;flex-shrink:0;border-radius:50%;border:none;background:#DC2626;color:#fff;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:background .15s}
 .btn-audio-round:hover{background:#B91C1C}
 .btn-audio-round .icon-svg{width:18px;height:18px;filter:brightness(0) invert(1)!important;opacity:1!important}
@@ -2787,6 +2788,11 @@ function txMotDuSegment(ex, segId){
     if (m) return m[1];
   }
   return segId;
+}
+// Un énoncé masqué garde une étiquette : sans elle, la carte n'est plus
+// qu'un bouton et l'élève ne sait plus laquelle il vient d'écouter.
+function etiquetteEcoute(txt, i){
+  return (/\s/.test(String(txt).trim()) ? 'Phrase ' : 'Mot ') + (i + 1);
 }
 function vfSelect(zid, lbl) {
   S.vfSel[zid] = lbl;
@@ -5592,7 +5598,7 @@ function render(){
     if(ex.type==='vf' && ex.cards){
       // Grille de cartes : bouton audio rond + mot, puis les choix dessous.
       mount.className='ph-grid';
-      ex.rows.forEach(r=>{
+      ex.rows.forEach((r,i)=>{
         const word=r.txt.replace(/<[^>]+>/g,'');
         const card=document.createElement('div');card.className='ph-card';
         const top=document.createElement('div');top.className='ph-top';
@@ -5600,7 +5606,11 @@ function render(){
         sb.type='button'; sb.className='btn-audio-round'; sb.setAttribute('aria-label','Écouter le mot');
         sb.innerHTML=ICON_SPEAK; sb.onclick=()=>playWord(sb, word, ex.id+'_'+r.id);
         top.appendChild(sb);
-        const w=document.createElement('div');w.className='ph-word';w.textContent=word;
+        const w=document.createElement('div');w.className='ph-word';
+        // `masque` : la réponse se lit dans l'énoncé, donc l'énoncé ne se
+        // montre qu'une fois la correction faite. L'audio, lui, ne change pas.
+        if(ex.masque && !S.fb[r.id]){ w.classList.add('ph-cache'); w.textContent=etiquetteEcoute(word,i); }
+        else w.textContent=word;
         top.appendChild(w);
         card.appendChild(top);
         const opts=document.createElement('div');opts.className='ph-opts';
@@ -5618,7 +5628,7 @@ function render(){
       });
     }
     else if(ex.type==='vf'){
-      ex.rows.forEach(r=>{
+      ex.rows.forEach((r,i)=>{
         const row=document.createElement('div');row.className='vf-row';
         if(ex.listen){
           const sb=document.createElement('button');
@@ -5626,7 +5636,9 @@ function render(){
           sb.innerHTML=ICON_SPEAK; sb.onclick=()=>playWord(sb, r.txt.replace(/<[^>]+>/g,''), ex.id+'_'+r.id);
           row.appendChild(sb);
         }
-        const txt=document.createElement('div');txt.className='stxt';txt.innerHTML=r.txt;
+        const txt=document.createElement('div');txt.className='stxt';
+        if(ex.masque && !S.fb[r.id]){ txt.classList.add('ph-cache'); txt.textContent=etiquetteEcoute(r.txt.replace(/<[^>]+>/g,''),i); }
+        else txt.innerHTML=r.txt;
         row.appendChild(txt);
         const opts=document.createElement('div');opts.className='vf-opts';
         ex.tiles.forEach(lbl=>{

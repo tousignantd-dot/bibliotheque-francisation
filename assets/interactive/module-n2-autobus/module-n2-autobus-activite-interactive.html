@@ -598,6 +598,7 @@ body{
 .ph-card{background:var(--ws-card,#fff);border:1px solid var(--ws-line,#EAEAE8);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:12px}
 .ph-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .ph-word{font-size:21px;font-weight:900;color:var(--ws-ink,#17181A)}
+.ph-word.ph-cache,.stxt.ph-cache{font-size:17px;font-weight:700;color:var(--ws-ink-3,#6B6F76);font-style:italic}
 .btn-audio-round{width:44px;height:44px;flex-shrink:0;border-radius:50%;border:none;background:#DC2626;color:#fff;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:background .15s}
 .btn-audio-round:hover{background:#B91C1C}
 .btn-audio-round .icon-svg{width:18px;height:18px;filter:brightness(0) invert(1)!important;opacity:1!important}
@@ -1254,7 +1255,7 @@ const EXOS = [
     {id:'p1d', txt:"C'est à trente minutes à pied.", ok:'FAUX'},
    ]},
 
-  {sec:'prep', id:'prHeure', type:'vf', num:'Exercice 2', tit:"L'heure juste ou l'heure avec des minutes ?", color:'#0D7A6F', accent:'#0D7A6F', cards:true, listen:true,
+  {sec:'prep', id:'prHeure', masque:true, type:'vf', num:'Exercice 2', tit:"L'heure juste ou l'heure avec des minutes ?", color:'#0D7A6F', accent:'#0D7A6F', cards:true, listen:true,
    sub:"Écoute chaque heure. Est-ce une heure juste, ou est-ce qu'on ajoute des minutes ?", tiles:['HEURE JUSTE','AVEC DES MINUTES'],
    rows:[
     {id:'hra', txt:"huit heures dix", ok:'AVEC DES MINUTES'},
@@ -2327,6 +2328,11 @@ function txMotDuSegment(ex, segId){
     if (m) return m[1];
   }
   return segId;
+}
+// Un énoncé masqué garde une étiquette : sans elle, la carte n'est plus
+// qu'un bouton et l'élève ne sait plus laquelle il vient d'écouter.
+function etiquetteEcoute(txt, i){
+  return (/\s/.test(String(txt).trim()) ? 'Phrase ' : 'Mot ') + (i + 1);
 }
 function vfSelect(zid, lbl) {
   S.vfSel[zid] = lbl;
@@ -4429,7 +4435,7 @@ function render(){
     if(ex.type==='vf' && ex.cards){
       // Grille de cartes : bouton audio rond + mot, puis les choix dessous.
       mount.className='ph-grid';
-      ex.rows.forEach(r=>{
+      ex.rows.forEach((r,i)=>{
         const word=r.txt.replace(/<[^>]+>/g,'');
         const card=document.createElement('div');card.className='ph-card';
         const top=document.createElement('div');top.className='ph-top';
@@ -4437,7 +4443,11 @@ function render(){
         sb.type='button'; sb.className='btn-audio-round'; sb.setAttribute('aria-label','Écouter le mot');
         sb.innerHTML=ICON_SPEAK; sb.onclick=()=>playWord(sb, word, ex.id+'_'+r.id);
         top.appendChild(sb);
-        const w=document.createElement('div');w.className='ph-word';w.textContent=word;
+        const w=document.createElement('div');w.className='ph-word';
+        // `masque` : la réponse se lit dans l'énoncé, donc l'énoncé ne se
+        // montre qu'une fois la correction faite. L'audio, lui, ne change pas.
+        if(ex.masque && !S.fb[r.id]){ w.classList.add('ph-cache'); w.textContent=etiquetteEcoute(word,i); }
+        else w.textContent=word;
         top.appendChild(w);
         card.appendChild(top);
         const opts=document.createElement('div');opts.className='ph-opts';
@@ -4455,7 +4465,7 @@ function render(){
       });
     }
     else if(ex.type==='vf'){
-      ex.rows.forEach(r=>{
+      ex.rows.forEach((r,i)=>{
         const row=document.createElement('div');row.className='vf-row';
         if(ex.listen){
           const sb=document.createElement('button');
@@ -4463,7 +4473,9 @@ function render(){
           sb.innerHTML=ICON_SPEAK; sb.onclick=()=>playWord(sb, r.txt.replace(/<[^>]+>/g,''), ex.id+'_'+r.id);
           row.appendChild(sb);
         }
-        const txt=document.createElement('div');txt.className='stxt';txt.innerHTML=r.txt;
+        const txt=document.createElement('div');txt.className='stxt';
+        if(ex.masque && !S.fb[r.id]){ txt.classList.add('ph-cache'); txt.textContent=etiquetteEcoute(r.txt.replace(/<[^>]+>/g,''),i); }
+        else txt.innerHTML=r.txt;
         row.appendChild(txt);
         const opts=document.createElement('div');opts.className='vf-opts';
         ex.tiles.forEach(lbl=>{
@@ -5552,68 +5564,6 @@ body.depot-ferme #poSend { display: none !important; }
 })();
 </script>
 <!-- TRANSCRIPTION:fin -->
-<!-- MASQUE-ECOUTE:début — greffé par build/greffe_masque_ecoute.py -->
-<script>
-(function () {
-  var CIBLES = ['prHeure'];
-
-  var css = document.createElement('style');
-  css.textContent = '.ph-word.masque-ecoute,.stxt.masque-ecoute{font-size:17px;'
-    + 'font-weight:700;font-style:italic;color:var(--ws-ink-3,#6B6F76)}';
-  document.head.appendChild(css);
-
-  /* Une étiquette, et pas rien : sans elle la carte n'est plus qu'un bouton et
-     l'élève ne sait plus laquelle il vient d'écouter. */
-  function etiquette(txt, i) {
-    return (/\s/.test(String(txt).trim()) ? 'Phrase ' : 'Mot ') + (i + 1);
-  }
-
-  /* Les cartes sont créées dans l'ordre de `ex.rows` par le rendu du module :
-     la i-ième carte est la i-ième ligne. On repasse après chaque `render()`
-     parce que le rendu recrée les nœuds à chaque fois. */
-  function masquer() {
-    if (typeof EXOS === 'undefined' || typeof S === 'undefined') return;
-    for (var k = 0; k < CIBLES.length; k++) {
-      var ex = null;
-      for (var e = 0; e < EXOS.length; e++) {
-        if (EXOS[e] && EXOS[e].id === CIBLES[k]) { ex = EXOS[e]; break; }
-      }
-      var mount = document.getElementById('mount-' + CIBLES[k]);
-      if (!ex || !ex.rows || !mount) continue;
-      var textes = mount.querySelectorAll('.ph-card .ph-word, .vf-row .stxt');
-      for (var i = 0; i < textes.length; i++) {
-        var el = textes[i], r = ex.rows[i];
-        if (!r) continue;
-        // Déjà masqué par le gabarit : on ne masque pas un masque.
-        if (el.classList.contains('ph-cache')) continue;
-        // Corrigé : le texte revient, c'est là qu'il sert.
-        if (S.fb && S.fb[r.id]) continue;
-        el.textContent = etiquette(el.textContent, i);
-        el.classList.add('masque-ecoute');
-      }
-    }
-  }
-
-  function poser() {
-    if (typeof render === 'function') {
-      var rendreOrig = render;
-      render = function () {
-        var res = rendreOrig.apply(this, arguments);
-        masquer();
-        return res;
-      };
-    }
-    masquer();
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', poser);
-  } else {
-    poser();
-  }
-})();
-</script>
-<!-- MASQUE-ECOUTE:fin -->
 <!-- ECOUTE-VERROU:début — greffé par build/greffe_ecoute_verrou.py -->
 <script>
 (function () {
