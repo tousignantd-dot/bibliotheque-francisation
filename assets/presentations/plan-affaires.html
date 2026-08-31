@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plan d'affaires</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap">
+<style>
+/* ═══════════════════════════════════════════════════════════
+   PLAN D'AFFAIRES
+   L'actif compté, deux marchés, trois choses qui distinguent,
+   et ce que le plan refuse de chiffrer.
+
+   Vert : ce que le tour de main actuel produit déjà.
+   Ambre : ce qui attend votre décision.
+   Rouge : l'argument de vente qui tient à une obligation légale.
+   L'acier ne fait que la structure.
+   ═══════════════════════════════════════════════════════════ */
+
+:root{
+  --ground:#F7F7F5; --card:#FFFFFF; --sunken:#FBFBFA;
+  --ink:#17181A; --body:#3A3D40; --muted:#6E7175;
+  --line:#E4E4E0; --line-fort:#D2D2CD;
+
+  --fait:#0A8F5B;    --fait-bg:#E6F5EE;
+  --decid:#C07A08;   --decid-bg:#FBF2E2;
+  --loi:#C7302B;     --loi-bg:#FBEDEC;
+  --acier:#1D6B8F;   --acier-bg:#E7F0F6;
+
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#151618; --card:#1D1F22; --sunken:#212326;
+    --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+    --line:#2E3135; --line-fort:#3D4146;
+    --fait:#4BC48D; --fait-bg:#12291F;
+    --decid:#E0A63F; --decid-bg:#2C2213;
+    --loi:#EE7A73; --loi-bg:#2E1917;
+    --acier:#6DAFD2; --acier-bg:#14242C;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#151618; --card:#1D1F22; --sunken:#212326;
+  --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+  --line:#2E3135; --line-fort:#3D4146;
+  --fait:#4BC48D; --fait-bg:#12291F;
+  --decid:#E0A63F; --decid-bg:#2C2213;
+  --loi:#EE7A73; --loi-bg:#2E1917;
+  --acier:#6DAFD2; --acier-bg:#14242C;
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--body);
+  font-family:Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased}
+.doc{max-width:880px;margin:0 auto;padding:56px 24px 96px}
+
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--acier);margin:0 0 14px}
+h1{font-family:Newsreader,Georgia,serif;font-size:clamp(38px,6.4vw,58px);line-height:1.04;
+  font-weight:500;letter-spacing:-.02em;color:var(--ink);margin:0 0 20px;text-wrap:balance}
+.chapeau{font-size:19px;line-height:1.6;color:var(--body);margin:0;max-width:62ch}
+.chapeau strong{color:var(--ink);font-weight:700}
+h2{font-family:Newsreader,Georgia,serif;font-size:29px;line-height:1.2;font-weight:600;
+  letter-spacing:-.01em;color:var(--ink);margin:0 0 4px;text-wrap:balance}
+h3{font-size:15px;font-weight:800;color:var(--ink);margin:0 0 6px}
+p{margin:0;max-width:68ch}
+section{display:flex;flex-direction:column;gap:16px;padding:44px 0 0;margin:44px 0 0;
+  border-top:1px solid var(--line)}
+section.premier{border-top:none;margin-top:0;padding-top:40px}
+code{font-family:var(--mono);font-size:.86em;background:var(--sunken);
+  border:1px solid var(--line);border-radius:4px;padding:1px 5px;color:var(--ink)}
+ul.simple{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px}
+ul.simple li{max-width:66ch} ul.simple li strong{color:var(--ink)}
+em.art{font-style:normal;font-family:var(--mono);font-size:.82em;color:var(--muted);
+  white-space:nowrap}
+
+.these{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--acier);
+  border-radius:3px;padding:26px 28px;display:flex;flex-direction:column;gap:12px}
+.these p{font-size:18px}
+.these .cle{font-family:Newsreader,Georgia,serif;font-size:23px;line-height:1.3;
+  font-weight:500;color:var(--ink);font-style:italic}
+
+/* ── Les décisions ─────────────────────────────────────── */
+.decisions{display:flex;flex-direction:column;gap:2px;counter-reset:d}
+.dec{counter-increment:d;background:var(--card);border:1px solid var(--line);
+  border-left:5px solid var(--decid);border-radius:3px;padding:19px 22px 19px 60px;
+  position:relative;display:flex;flex-direction:column;gap:8px}
+.dec.ok{border-left-color:var(--fait)}
+.dec::before{content:counter(d);position:absolute;left:24px;top:18px;
+  font-family:var(--mono);font-size:14px;color:var(--muted)}
+.dec .ligne{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;
+  justify-content:space-between}
+.dec p{font-size:15.5px}
+.dec .defaut{font-size:13.5px;color:var(--muted);font-style:italic}
+
+.badge{display:inline-block;font-size:11.5px;font-weight:800;letter-spacing:.05em;
+  text-transform:uppercase;padding:3px 9px;border-radius:2px;white-space:nowrap}
+.b-fait{background:var(--fait-bg);color:var(--fait)}
+.b-dec{background:var(--decid-bg);color:var(--decid)}
+.b-loi{background:var(--loi-bg);color:var(--loi)}
+.b-n{background:var(--sunken);color:var(--muted);border:1px solid var(--line)}
+
+/* ── Tableaux ──────────────────────────────────────────── */
+.defile{overflow-x:auto;border:1px solid var(--line);border-radius:3px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:15px;min-width:640px}
+caption{caption-side:top;text-align:left;padding:0 0 10px;font-size:13.5px;color:var(--muted)}
+th,td{padding:12px 15px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{font-size:11.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--muted);background:var(--sunken);white-space:nowrap}
+tbody tr:last-child td{border-bottom:none}
+td.q{font-weight:700;color:var(--ink)}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+td small{display:block;color:var(--muted);font-size:13px;line-height:1.45;margin-top:3px}
+tbody tr td:first-child{border-left:4px solid transparent}
+tr.l td:first-child{border-left-color:var(--loi)}
+tr.d td:first-child{border-left-color:var(--decid)}
+tr.f td:first-child{border-left-color:var(--fait)}
+
+/* ── Chiffres ──────────────────────────────────────────── */
+.chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.ch{background:var(--card);border:1px solid var(--line);border-radius:3px;
+  border-top:3px solid var(--acier);padding:15px 16px}
+.ch .n{font-family:Newsreader,Georgia,serif;font-size:30px;line-height:1;font-weight:500;
+  color:var(--ink);display:block;font-variant-numeric:tabular-nums}
+.ch .q{font-size:12.5px;font-weight:700;color:var(--muted);line-height:1.35;display:block;margin-top:7px}
+
+/* ── Marche à suivre ───────────────────────────────────── */
+ol.actions{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;
+  counter-reset:a}
+ol.actions li{counter-increment:a;background:var(--card);border:1px solid var(--line);
+  border-radius:3px;padding:18px 22px 18px 62px;position:relative;display:flex;
+  flex-direction:column;gap:6px}
+ol.actions li::before{content:counter(a);position:absolute;left:22px;top:17px;
+  font-family:var(--mono);font-size:14px;color:var(--muted)}
+ol.actions li p{font-size:15.5px}
+.qui{font-size:13px;color:var(--muted);font-style:italic}
+
+.reserve{border:1px dashed var(--line-fort);border-radius:3px;padding:20px 24px;
+  font-size:15px;color:var(--muted);display:flex;flex-direction:column;gap:9px}
+.reserve strong{color:var(--body)}
+.avert{background:var(--loi-bg);border:1px solid var(--loi);border-radius:3px;
+  padding:20px 24px;display:flex;flex-direction:column;gap:9px}
+.avert strong{color:var(--ink)}
+.avert p{font-size:15.5px;color:var(--body)}
+.pied{margin-top:52px;padding-top:22px;border-top:1px solid var(--line);font-size:13.5px;
+  color:var(--muted);display:flex;flex-direction:column;gap:5px}
+@media (max-width:620px){ .doc{padding:36px 18px 72px} }
+</style>
+<style>
+  .doc{padding-top:26px}
+  .retour{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;
+    color:var(--muted);text-decoration:none;margin-bottom:34px}
+  .retour:hover{color:var(--acier)}
+  table.cmp{width:100%;border-collapse:collapse;font-size:15px;background:var(--card);
+    border:1px solid var(--line);border-radius:3px;overflow:hidden}
+  table.cmp th,table.cmp td{padding:13px 15px;text-align:left;vertical-align:top;
+    border-bottom:1px solid var(--line)}
+  table.cmp thead th{background:var(--sunken);font-size:12px;font-weight:800;
+    letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+  table.cmp tbody tr:last-child td{border-bottom:0}
+  table.cmp td:first-child{font-weight:700;color:var(--ink)}
+  .roule{overflow-x:auto}
+  .voie{background:var(--card);border:1px solid var(--line);border-radius:3px;
+    padding:24px 26px;display:flex;flex-direction:column;gap:11px}
+  .voie.oui{border-color:var(--fait);border-width:2px;padding:23px 25px}
+  .voie.non{border-left:5px solid var(--loi)}
+  .voie h3{font-size:19px;font-family:Newsreader,Georgia,serif;font-weight:600;margin:0}
+  .voie .cout{font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+  .verdict{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+    padding:3px 10px;border-radius:99px;align-self:flex-start}
+  .v-oui{background:var(--fait-bg);color:var(--fait)}
+  .v-peut{background:var(--decid-bg);color:var(--decid)}
+  .v-non{background:var(--loi-bg);color:var(--loi)}
+  .mes{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:2px;
+    background:var(--line);border:1px solid var(--line);border-radius:3px;overflow:hidden}
+  .mes div{background:var(--card);padding:16px 18px}
+  .mes b{display:block;font-family:Newsreader,Georgia,serif;font-size:27px;font-weight:500;
+    color:var(--ink);line-height:1.1}
+  .mes span{font-size:13px;color:var(--muted)}
+  @media (max-width:640px){ .doc{padding-left:18px;padding-right:18px} }
+</style>
+</head>
+<body>
+<div class="doc">
+
+<a class="retour" href="/presentations.html"><span aria-hidden="true">&#8592;</span> Banque de présentations</a>
+
+<p class="eyebrow">Chantier &mdash; formation en entreprise</p>
+<h1>Plan d'affaires</h1>
+<p class="chapeau">La plupart des gens qui veulent vendre de la formation ont un plan.
+<strong>Vous avez un inventaire.</strong> 177 activités en service, 1 264 séances
+projetables, 21 416 extraits sonores, les huit niveaux du programme couverts &mdash; produits par
+une personne. Ce plan part de là, parce que c'est la seule chose qu'un acheteur peut vérifier
+lui-même.</p>
+
+<section class="premier">
+  <h2>1. L'actif, compté</h2>
+  <p>Aucun de ces nombres n'est écrit à la main&nbsp;: ils sont relevés sur le disque à chaque
+  production de cette page. C'est la seule façon qu'ils soient encore vrais le mois prochain.</p>
+  <div class="mes">
+    <div><b>177</b><span>activités au catalogue &mdash; 87 cours, 90 ateliers</span></div>
+    <div><b>87</b><span>modules interactifs, huit niveaux</span></div>
+    <div><b>1 264</b><span>séances en diaporama, prêtes à projeter</span></div>
+    <div><b>86</b><span>sommaires de fiches élèves imprimables</span></div>
+    <div><b>21 416</b><span>extraits sonores enregistrés</span></div>
+    <div><b>1 505</b><span>images produites pour les exercices</span></div>
+    <div><b>26</b><span>points express de dix minutes</span></div>
+    <div><b>11</b><span>langues de traduction déjà branchées</span></div>
+  </div>
+  <div class="these">
+    <p class="cle">Ce que ces nombres prouvent n'est pas le catalogue. C'est la chaîne
+    qui l'a produit.</p>
+    <p>Un catalogue se copie&nbsp;; une chaîne de production, non. Le moteur d'un module est séparé
+    de son contenu&nbsp;: écrire un module neuf, c'est écrire sept fichiers de texte, et l'audio,
+    les images, les seize séances de diaporama et les fiches à imprimer <strong>se
+    fabriquent</strong>. C'est ce qui rend le sur-mesure abordable &mdash; et le sur-mesure est
+    exactement ce qu'une entreprise demande.</p>
+  </div>
+</section>
+
+<section>
+  <h2>2. Deux marchés, un seul outil</h2>
+  <div class="roule">
+  <table class="cmp">
+    <thead><tr><th></th><th>Les centres de formation</th><th>Les entreprises</th></tr></thead>
+    <tbody>
+      <tr><td>Ce qu'on vend</td><td>le portail entier&nbsp;: 87 modules, la planification, le suivi des groupes</td><td>huit heures sur un métier précis, plus le matériel qui reste</td></tr>
+      <tr><td>Qui décide</td><td>une direction, parfois un service de la commission&nbsp;; plusieurs signatures</td><td>souvent <strong>une personne</strong> &mdash; RH, production, santé et sécurité</td></tr>
+      <tr><td>Le budget</td><td>public, annuel, calé sur l'année scolaire</td><td>existant&nbsp;: formation, SST, intégration des nouveaux employés</td></tr>
+      <tr><td>Le cycle</td><td>long. On entre par un projet pilote, on grandit par le bouche-à-oreille entre centres</td><td>court. Une rencontre, une démonstration, une demi-journée d'analyse</td></tr>
+      <tr><td>Le risque</td><td>dépendance à une décision politique ou budgétaire</td><td>un contrat qui ne se renouvelle pas si rien ne change au plancher</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p><strong>Les deux partagent la totalité de l'outillage</strong> &mdash; le même moteur de module,
+  le même audio, le même portail, la même bascule de langue. C'est la structure qui rend le second
+  marché possible sans rien rebâtir&nbsp;: ce qui change, c'est le scénario et le vocabulaire, pas
+  la machine.</p>
+  <p class="cout">Le marché entreprise est celui qui décide vite et paie avec un budget qui existe
+  déjà. Le marché institutionnel est celui qui, une fois entré, ne repart pas.</p>
+</section>
+
+<section>
+  <h2>3. Trois choses qui distinguent &mdash; et rien d'autre</h2>
+  <p>Une liste de dix avantages ne convainc personne. Voici les trois qu'un concurrent ne peut pas
+  recopier en une saison.</p>
+
+  <div class="voie oui">
+    <span class="verdict v-oui">Le socle</span>
+    <h3>Le diagnostic didactique</h3>
+    <p>On ne livre pas un cours&nbsp;: on livre un cours <strong>corrigé par les réponses réelles
+    des gens qui l'ont suivi</strong>. Un item raté par la moitié du groupe accuse l'énoncé, pas le
+    groupe. Un item réussi par tous occupe une place que rien n'occupe.</p>
+    <p>Le portail enregistre déjà ce qu'il faut pour cette boucle&nbsp;: les réponses item par item,
+    le temps passé, les abandons, et les demandes d'aide <em>avec le titre de l'exercice qui les a
+    provoquées</em>. Ce n'était pas prévu pour ça &mdash; c'était instrumenté pour les enseignants
+    &mdash; et c'est devenu le banc d'essai.</p>
+    <p class="cout">N'importe qui peut écrire huit heures de contenu. Peu de gens peuvent montrer
+    ce que quarante travailleurs ont réellement répondu, et ce qu'ils en ont changé.</p>
+  </div>
+
+  <div class="voie oui">
+    <span class="verdict v-oui">Ce que personne d'autre ne fait proprement</span>
+    <h3>Le multilingue par couches</h3>
+    <p>Trois couches, et tout tient à ne pas les confondre. <strong>Le contenu à apprendre ne
+    bascule jamais</strong> &mdash; le traduire, c'est supprimer le produit. <strong>La langue
+    d'appui bascule</strong>&nbsp;: consignes, explications, rattrapages, boutons, fiche de poche.
+    Et la traduction d'un mot à la demande existe déjà, en 11 langues.</p>
+    <p>L'appui se pose <strong>sous</strong> le français, jamais à sa place. Ajouter une langue est
+    un fichier et une relecture, pas une reprise du cours. Et ce sont des traductions écrites et
+    relues d'avance, jamais produites à la volée&nbsp;: une consigne de sécurité mal traduite dans
+    une usine n'est pas un défaut d'affichage.</p>
+    <p class="cout">C'est la fonction que le marché demande, et celle que les catalogues existants
+    règlent le plus mal &mdash; en traduisant tout, donc en supprimant l'apprentissage.</p>
+  </div>
+
+  <div class="voie oui">
+    <span class="verdict v-oui">Le vrai fossé</span>
+    <h3>La chaîne de production</h3>
+    <p>Le moteur est séparé du contenu. Un module neuf, ce sont sept fichiers de texte&nbsp;; tout
+    le reste se fabrique&nbsp;: l'audio dans quatre voix, les images en format d'exercice, les
+    seize séances de diaporama, les fiches imprimables, le découpage en sections datables.</p>
+    <p>C'est ce qui permet de dire à un employeur «&nbsp;ce sera <em>votre</em> usine, avec vos
+    zones et vos mots&nbsp;» sans que le devis explose. Le sur-mesure est le premier argument de
+    vente en entreprise, et celui qui ruine habituellement la marge.</p>
+  </div>
+</section>
+
+<section>
+  <h2>4. Trois lignes de produits</h2>
+  <ol class="actions">
+    <li><h3>Le portail, pour un centre</h3>
+      <p>Les 87 modules, la planification par groupe, le suivi, les productions des élèves,
+      le mode sans assistance pour une direction qui refuse l'IA, le mode séance sans compte.</p>
+      <p class="qui">Revenu récurrent. C'est ce qui paie le développement.</p></li>
+    <li><h3>La formation en milieu de travail</h3>
+      <p>Huit blocs d'une heure sur les heures payées, précédés d'une demi-journée d'analyse chez le
+      client. Groupes de 8 à 12, trois groupes pour couvrir trois quarts.</p>
+      <p class="qui">Revenu par contrat, cycle court. C'est ce qui fait connaître.</p></li>
+    <li><h3>La production sur mesure</h3>
+      <p>Un module à l'image d'un client &mdash; ses machines, ses procédures, ses personnages.
+      Vendu au livrable, pas à l'heure.</p>
+      <p class="qui">Marge la plus élevée, et la seule ligne qui exploite vraiment la chaîne.</p></li>
+  </ol>
+</section>
+
+<section>
+  <h2>5. Ce qui fait le prix, et ce qui fait le coût</h2>
+  <p>Ce plan ne porte aucun montant &mdash; il se décide, il se négocie, il dépend du nombre de
+  groupes. Mais les leviers, eux, se nomment.</p>
+  <div class="roule">
+  <table class="cmp">
+    <thead><tr><th>Ce qui fait monter le prix</th><th>Ce qui le fait descendre</th></tr></thead>
+    <tbody>
+      <tr><td>du sur-mesure réel &mdash; leurs machines, leurs mots</td><td>un programme repris tel quel</td></tr>
+      <tr><td>plusieurs quarts, donc plusieurs groupes</td><td>un seul groupe, un seul horaire</td></tr>
+      <tr><td>des langues d'appui de plus</td><td>les trois déjà branchées</td></tr>
+      <tr><td>la mesure du niveau 3 &mdash; observations avant et après</td><td>s'arrêter à «&nbsp;ils ont aimé&nbsp;»</td></tr>
+      <tr><td>l'analyse de plancher, si elle est facturée</td><td>l'analyse offerte, comme argument d'entrée</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="avert">
+    <p><strong>Le coût dominant n'est pas la technique.</strong> Les médias d'un module se comptent
+    en dollars, pas en centaines&nbsp;: une image coûte quelques sous, la synthèse vocale d'un
+    corpus entier quelques dizaines de dollars, l'hébergement est marginal. <strong>Le coût, c'est
+    le temps de conception</strong> &mdash; écrire un scénario juste, poser les bonnes questions,
+    trancher un arbitrage pédagogique. C'est une bonne nouvelle pour la marge et une mauvaise pour
+    la capacité&nbsp;: on ne délègue pas ce temps-là facilement.</p>
+  </div>
+</section>
+
+<section>
+  <h2>6. La capacité, et l'endroit où elle casse</h2>
+  <p>Le contenu grandit vite&nbsp;: la chaîne y pourvoit. <strong>Les heures d'enseignement, non.</strong>
+  Huit blocs pour trois groupes, c'est vingt-quatre heures de présence, et il n'y en a qu'une par
+  semaine à vendre.</p>
+  <ul class="simple">
+    <li><b>Former des formateurs.</b> Le matériel est déjà fait pour ça &mdash; les séances sont
+    scénarisées, les fiches existent. C'est la voie la plus naturelle, et la plus lente.</li>
+    <li><b>Vendre le portail sans la prestation.</b> Un centre ou une entreprise anime elle-même.
+    Marge élevée, mais on perd la boucle du diagnostic didactique, qui est l'atout.</li>
+    <li><b>L'autonomie de l'élève.</b> Les points express et la banque d'ateliers se font seuls.
+    C'est ce qui permet d'être utile entre deux blocs sans être présent.</li>
+  </ul>
+  <p class="cout">Ces trois voies ne se choisissent pas maintenant. Elles se nomment maintenant,
+  pour que le premier contrat ne ferme aucune des trois.</p>
+</section>
+
+<section>
+  <h2>7. Les risques, nommés</h2>
+  <div class="decisions">
+    <div class="dec">
+      <div class="ligne"><h3>Une seule personne</h3><span class="badge b-loi">structurel</span></div>
+      <p>Tout tient à une tête&nbsp;: la conception, la production, la vente et la prestation. Le
+      risque n'est pas l'échec, c'est l'arrêt. La parade n'est pas d'embaucher tout de suite&nbsp;;
+      c'est d'écrire ce qui se transmet &mdash; ce que le dépôt fait déjà, méthodiquement.</p>
+    </div>
+    <div class="dec">
+      <div class="ligne"><h3>Le contenu n'est pas le marché</h3><span class="badge b-dec">à surveiller</span></div>
+      <p>177 activités ne valent rien tant que personne n'a signé. C'est le risque le plus
+      probable de tous, et le seul remède est de sortir&nbsp;: des rencontres, pas des modules de
+      plus.</p>
+    </div>
+    <div class="dec">
+      <div class="ligne"><h3>Les données des personnes</h3><span class="badge b-loi">légal</span></div>
+      <p>Des réponses d'élèves, des enregistrements de voix, dans l'entreprise qui les emploie. Le
+      portail travaille déjà sous pseudonyme, ne conserve pas les corrections privées, et offre un
+      mode sans compte&nbsp;; ce qui remonte à un employeur doit rester un constat sur le matériel,
+      jamais sur une personne. À écrire noir sur blanc dans chaque contrat.</p>
+    </div>
+    <div class="dec">
+      <div class="ligne"><h3>La dépendance aux fournisseurs d'IA</h3><span class="badge b-dec">à surveiller</span></div>
+      <p>Voix, images, assistance&nbsp;: trois fournisseurs externes, dont les prix et les
+      conditions bougent. Le dépôt sait déjà changer de route et le note quand il le fait. Et le
+      mode sans assistance prouve que le produit tient debout sans eux.</p>
+    </div>
+    <div class="dec">
+      <div class="ligne"><h3>Le sur-mesure qui mange la marge</h3><span class="badge b-dec">à surveiller</span></div>
+      <p>Chaque client voudra son scénario. La chaîne rend ça possible&nbsp;; l'indiscipline rend ça
+      ruineux. La règle&nbsp;: on personnalise le <strong>décor</strong> &mdash; noms, zones,
+      machines, vocabulaire &mdash; jamais la structure des huit blocs.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>8. Quatre-vingt-dix jours</h2>
+  <ol class="actions">
+    <li><h3>Sortir la démonstration</h3>
+      <p>Le bloc 3 se joue déjà. Il lui manque d'être montré&nbsp;: dix rencontres valent mieux que
+      dix modules de plus.</p>
+      <p class="qui">Le dépliant est prêt&nbsp;; ses coordonnées sont encore des cases à remplir.</p></li>
+    <li><h3>Un premier groupe pilote, annoncé comme tel</h3>
+      <p>Six à huit personnes, une vraie usine, sur les heures payées. Le prix du pilote est
+      secondaire&nbsp;: ce qu'on y gagne, ce sont les réponses réelles &mdash; la matière du
+      diagnostic didactique, et la seule preuve qui se raconte ensuite.</p></li>
+    <li><h3>Écrire les sept autres blocs avec ses mots à lui</h3>
+      <p>Pas avant. C'est ce que la demi-journée d'analyse sert à récolter, et ce qui rend le
+      deuxième client plus rapide que le premier.</p></li>
+    <li><h3>Trancher les trois questions ouvertes</h3>
+      <p>Le prix, l'analyse offerte ou facturée, et l'employeur en direct ou les programmes de
+      subvention. Aucune ne se décide sur papier&nbsp;: les trois se décident après les premières
+      rencontres.</p></li>
+  </ol>
+</section>
+
+<section>
+  <h2>Ce que ce plan refuse de dire</h2>
+  <div class="reserve">
+    <p><strong>Aucun prix.</strong> Un montant écrit ici serait périmé à la première négociation, et
+    il enlèverait la marge de manœuvre là où elle sert le plus.</p>
+    <p><strong>Aucune taille de marché.</strong> On ne la connaît pas. Un nombre inventé dans un
+    plan d'affaires est repéré par la première personne du métier qui le lit &mdash; et il emporte
+    le reste avec lui.</p>
+    <p><strong>Aucun rendement promis.</strong> Sur douze mois, trop de choses bougent dans une
+    usine pour attribuer une baisse d'incidents à huit heures de cours. On mesure une tendance.
+    Le dire avant qu'on le demande est ce qui fait croire le reste.</p>
+  </div>
+</section>
+
+<div class="pied">
+  <p>Plan d'affaires &mdash; chantier « formation en entreprise ». Chiffres relevés sur le dépôt le 31 août 2026.</p>
+  <p>Produit par <code>build/plan_affaires.py</code> &mdash; les nombres se recomptent à chaque exécution.</p>
+  <p>À lire avec&nbsp;: <a href="strategie-communication.html">La stratégie de communication</a>,
+  <a href="programme-belrive.html">Huit heures chez Belrive</a>,
+  <a href="diagnostic-didactique.html">Le diagnostic didactique</a></p>
+</div>
+
+</div>
+</body>
+</html>
