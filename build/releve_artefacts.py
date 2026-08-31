@@ -47,13 +47,37 @@ def annonces():
                            BANQUE.read_text()))
 
 
+def couvert_par_index(chemin, cites):
+    """Un artefact peut être rangé **par un index** plutôt que par sa propre
+    fiche : `docs/` par la page des documents de travail, les modules autonomes
+    par leur propre index. Compter ces fichiers comme « hors banque » ferait
+    croire à un désordre là où le rangement est simplement à deux étages."""
+    for index, prefixe in [
+            (DOSSIER / 'documents-de-travail.html', 'docs/'),
+            (RACINE / 'modules-autonomes' / 'index.html', 'modules-autonomes/')]:
+        rel = str(index.relative_to(RACINE))
+        if rel not in cites or not index.exists():
+            continue
+        if not chemin.startswith(prefixe):
+            continue
+        if pathlib.Path(chemin).stem in index.read_text(errors='replace'):
+            return True
+        if pathlib.Path(chemin).parent.name in index.read_text(errors='replace'):
+            return True
+    return False
+
+
 def hors_banque():
-    """Les artefacts du dépôt qu'aucune fiche ne cite."""
+    """Les artefacts du dépôt qu'aucune fiche ne cite, ni aucun index.
+
+    `essais/` n'y figure pas : ce sont des brouillons régénérables par
+    `build/essai_*.py`, et quatre des six ne sont même pas suivis par git. Un
+    brouillon n'est pas un artefact du projet ; le compter comme tel donnerait
+    un ménage qui ne finit jamais."""
     cites = set(re.findall(r'href="([^"]+)"', BANQUE.read_text()))
     familles = collections.OrderedDict()
     for etiquette, dossier, motifs in [
             ('Documents de travail', 'docs', ('.md',)),
-            ('Pages d\'essai', 'essais', ('.html',)),
             ('Outils autonomes', 'assets/outils', ('.html',)),
             ('Modules autonomes', 'modules-autonomes', ('.html', '.md')),
     ]:
@@ -62,7 +86,8 @@ def hors_banque():
             continue
         tout = sorted(f for f in d.rglob('*') if f.is_file() and f.suffix in motifs)
         manque = [f for f in tout
-                  if str(f.relative_to(RACINE)) not in cites]
+                  if str(f.relative_to(RACINE)) not in cites
+                  and not couvert_par_index(str(f.relative_to(RACINE)), cites)]
         familles[etiquette] = (dossier, len(tout), manque)
     return familles
 

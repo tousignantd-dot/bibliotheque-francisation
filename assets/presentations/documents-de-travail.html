@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Les documents de travail</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600&family=Nunito:ital,wght@0,400;0,600;0,700;0,800&display=swap">
+<style>
+:root{
+  --ground:#F7F7F5; --card:#FFFFFF; --sunken:#FBFBFA;
+  --ink:#17181A; --body:#3A3D40; --muted:#6E7175;
+  --line:#E4E4E0; --line-fort:#D2D2CD;
+  --ok:#0A8F5B; --ok-bg:#E6F5EE;
+  --trou:#C7302B; --trou-bg:#FBEDEC;
+  --part:#C07A08; --part-bg:#FBF2E2;
+  --acier:#1D6B8F;
+  --niv-3:#B45309; --niv-4:#8C6A07; --niv-5:#0D7A6F;
+  --niv-6:#1D6B8F; --niv-7:#3B49A0; --niv-8:#7E3F98;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#151618; --card:#1D1F22; --sunken:#212326;
+    --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+    --line:#2E3135; --line-fort:#3D4146;
+    --ok:#4BC48D; --ok-bg:#12291F;
+    --trou:#EE7A73; --trou-bg:#2E1917;
+    --part:#E0A63F; --part-bg:#2C2213;
+    --acier:#6DAFD2;
+    --niv-3:#E0A63F; --niv-4:#D4BC5C; --niv-5:#5FC3B8;
+    --niv-6:#6DAFD2; --niv-7:#8D97DE; --niv-8:#C089D6;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#151618; --card:#1D1F22; --sunken:#212326;
+  --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+  --line:#2E3135; --line-fort:#3D4146;
+  --ok:#4BC48D; --ok-bg:#12291F;
+  --trou:#EE7A73; --trou-bg:#2E1917;
+  --part:#E0A63F; --part-bg:#2C2213;
+  --acier:#6DAFD2;
+  --niv-3:#E0A63F; --niv-4:#D4BC5C; --niv-5:#5FC3B8;
+  --niv-6:#6DAFD2; --niv-7:#8D97DE; --niv-8:#C089D6;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--body);
+  font-family:Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased}
+.doc{max-width:880px;margin:0 auto;padding:56px 24px 96px}
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--acier);margin:0 0 14px}
+h1{font-family:Newsreader,Georgia,serif;font-size:clamp(38px,6.4vw,58px);line-height:1.04;
+  font-weight:500;letter-spacing:-.02em;color:var(--ink);margin:0 0 20px;text-wrap:balance}
+.chapeau{font-size:19px;line-height:1.6;margin:0;max-width:62ch}
+.chapeau strong{color:var(--ink);font-weight:700}
+h2{font-family:Newsreader,Georgia,serif;font-size:29px;line-height:1.2;font-weight:600;
+  letter-spacing:-.01em;color:var(--ink);margin:0 0 4px;text-wrap:balance}
+p{margin:0;max-width:68ch}
+section{display:flex;flex-direction:column;gap:16px;padding:44px 0 0;margin:44px 0 0;
+  border-top:1px solid var(--line)}
+section.premier{border-top:none;margin-top:0;padding-top:40px}
+code{font-family:var(--mono);font-size:.86em;background:var(--sunken);
+  border:1px solid var(--line);border-radius:4px;padding:1px 5px;color:var(--ink)}
+ul.simple{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px}
+ul.simple li{max-width:66ch} ul.simple li strong{color:var(--ink)}
+.these{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--acier);
+  border-radius:3px;padding:26px 28px;display:flex;flex-direction:column;gap:12px}
+.these p{font-size:18px}
+.these .cle{font-family:Newsreader,Georgia,serif;font-size:23px;line-height:1.3;
+  font-weight:500;color:var(--ink);font-style:italic}
+.chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.ch{background:var(--card);border:1px solid var(--line);border-radius:3px;
+  border-top:3px solid var(--trou);padding:15px 16px}
+.ch.bon{border-top-color:var(--ok)}
+.ch .n{font-family:Newsreader,Georgia,serif;font-size:30px;line-height:1;font-weight:500;
+  color:var(--ink);display:block;font-variant-numeric:tabular-nums}
+.ch .q{font-size:12.5px;font-weight:700;color:var(--muted);line-height:1.35;display:block;
+  margin-top:7px}
+.defile{overflow-x:auto;border:1px solid var(--line);border-radius:3px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:15px;min-width:620px}
+caption{caption-side:top;text-align:left;padding:0 0 10px;font-size:13.5px;color:var(--muted)}
+th,td{padding:11px 15px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{font-size:11.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--muted);background:var(--sunken);white-space:nowrap}
+th.r,td.r{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+tbody tr:last-child td{border-bottom:none}
+td.q{font-weight:700;color:var(--ink)}
+td small{display:block;color:var(--muted);font-size:13px;line-height:1.45;margin-top:2px}
+tbody tr td:first-child{border-left:4px solid transparent}
+tfoot td{font-weight:800;color:var(--ink);background:var(--sunken);
+  border-top:2px solid var(--line-fort)}
+.jauge{display:block;height:7px;border-radius:2px;background:var(--line);margin-top:6px;
+  width:150px;overflow:hidden}
+.jauge i{display:block;height:100%;background:var(--trou)}
+.badge{display:inline-block;font-size:11.5px;font-weight:800;letter-spacing:.05em;
+  text-transform:uppercase;padding:3px 9px;border-radius:2px;white-space:nowrap}
+.b-vide{background:var(--trou-bg);color:var(--trou)}
+.b-part{background:var(--part-bg);color:var(--part)}
+.b-ok{background:var(--ok-bg);color:var(--ok)}
+.reserve{border:1px dashed var(--line-fort);border-radius:3px;padding:20px 24px;
+  font-size:15px;color:var(--muted);display:flex;flex-direction:column;gap:9px}
+.reserve strong{color:var(--body)}
+.pied{margin-top:52px;padding-top:22px;border-top:1px solid var(--line);font-size:13.5px;
+  color:var(--muted);display:flex;flex-direction:column;gap:5px}
+@media (max-width:620px){ .doc{padding:36px 18px 72px} .jauge{width:96px} }
+</style>
+<style>
+.docs{display:grid;gap:10px;margin:16px 0 0}
+.doc-l{background:var(--card);border:1px solid var(--line);border-radius:11px;
+  padding:15px 17px;display:flex;gap:14px;align-items:flex-start}
+.doc-l h3{font-family:Newsreader,Georgia,serif;font-size:19px;font-weight:600;
+  color:var(--ink);margin:0 0 5px}
+.doc-l p{font-size:14.5px;margin:0}
+.doc-m{display:flex;gap:12px;flex-wrap:wrap;margin:9px 0 0;font-size:12px;color:var(--muted)}
+.doc-m code{font-family:var(--mono);font-size:12px}
+.doc-b{margin-left:auto;flex:0 0 auto;align-self:center;font-size:13px;font-weight:800;
+  color:var(--ok);border:1px solid var(--line-fort);border-radius:99px;padding:6px 14px;
+  text-decoration:none;white-space:nowrap}
+.bloc{margin:50px 0 0}
+.bloc>p{margin:8px 0 0}
+.note{background:var(--part-bg);border-left:3px solid var(--part);border-radius:0 8px 8px 0;
+  padding:14px 16px;margin:20px 0 0;font-size:15px}
+</style>
+</head>
+<body>
+<div class="doc">
+  <p class="eyebrow">Index · 31 août 2026</p>
+  <h1>Les documents de travail</h1>
+  <p class="chapeau">Les <strong>18 fichiers de <code>docs/</code></strong> :
+  plans de production, journaux de module, protocole entre sessions. Ce sont des documents
+  <i>sur le projet</i>, donc ils appartiennent à la banque — mais dix-huit fiches noieraient
+  la banque sous du texte qu'on ne lit pas en réunion. Une fiche, un index, et chaque
+  document reste à sa place.</p>
+  <div class="note">Ce sont des <b>documents de travail</b>, pas des présentations : écrits
+  pour qu'une session puisse reprendre où une autre s'est arrêtée. On les ouvre quand on
+  cherche <i>pourquoi</i> quelque chose a été fait ainsi, pas pour les montrer.</div>
+<div class="bloc"><h2>Le protocole entre sessions</h2><p>Plusieurs conversations travaillent dans ce dépôt en même temps. Ces fichiers disent qui tient quoi, et comment reprendre après une interruption.</p><div class="docs"><article class="doc-l"><div><h3>Qui fait quoi, en ce moment</h3><p><b>À lire au démarrage de toute session, et à mettre à jour avant d'écrire le premier fichier.</b> Ce fichier ne dit pas le protocole — il est dans [<code>deux-agents-en-parallele.md</code>](deux-agents-en-parallele.md) — il dit <b>qui tient quoi, maintenant</b>.</p><div class="doc-m"><code>docs/qui-fait-quoi.md</code><span>3 ko</span></div></div><a class="doc-b" href="../../docs/qui-fait-quoi.md" target="_blank" rel="noopener">Lire</a></article><article class="doc-l"><div><h3>Deux agents en parallèle — consignes</h3><p>Ce fichier existe parce que quatre sessions ont travaillé dans ce dépôt le 20 août 2026 et que trois d'entre elles se sont nui sans le vouloir. Il dit ce qu'il faut faire pour que deux agents produisent deux modules en même temps sans se marcher dessus.</p><div class="doc-m"><code>docs/deux-agents-en-parallele.md</code><span>17 ko</span></div></div><a class="doc-b" href="../../docs/deux-agents-en-parallele.md" target="_blank" rel="noopener">Lire</a></article><article class="doc-l"><div><h3>Reprise — 23 août 2026, fin de session sur limite d'utilisation</h3><p>Écrit à chaud, la limite approchant. Une session qui se ferme emporte tout ce qui n'est pas dans <code>docs/</code> : voici l'état exact, et l'ordre des gestes.</p><div class="doc-m"><code>docs/REPRISE-23-aout.md</code><span>5 ko</span></div></div><a class="doc-b" href="../../docs/REPRISE-23-aout.md" target="_blank" rel="noopener">Lire</a></article><article class="doc-l"><div><h3>Où en est le chantier — 21 août 2026, en soirée</h3><p>Écrit avant une compaction de la conversation. Ce qui vit ici n'a pas besoin d'être en mémoire d'agent.</p><div class="doc-m"><code>docs/etat-21-aout-soir.md</code><span>3 ko</span></div></div><a class="doc-b" href="../../docs/etat-21-aout-soir.md" target="_blank" rel="noopener">Lire</a></article></div></div><div class="bloc"><h2>Les plans de production</h2><p>Quoi produire, dans quel ordre, avec quels numéros. Ce sont eux qui ont survécu aux sessions et qui ont permis de reprendre un chantier sans le rejouer.</p><div class="docs"><article class="doc-l"><div><h3>Les vagues suivantes — niveaux 7 et 8, puis les niveaux 5 et 3 au complet</h3><p>Écrit le 20 août 2026, pendant que les modules des niveaux 5 et 6 se terminent. Ce fichier dit <b>quoi produire, dans quel ordre, avec quels numéros réservés</b>. Le *comment* est ailleurs et ne se répète pas ici :</p><div class="doc-m"><code>docs/vagues-suivantes.md</code><span>322 ko</span></div></div><a class="doc-b" href="../../docs/vagues-suivantes.md" target="_blank" rel="noopener">Lire</a></article><article class="doc-l"><div><h3>Un premier module pour chaque niveau</h3><p>Mandat du 20 août 2026. Le niveau 4 compte dix-huit modules ; les sept autres niveaux n'en ont aucun. Ce chantier produit <b>un module par niveau</b> — le premier — pour vérifier que la chaîne de production tient à tous les stades, du débutant qui apprend à se présenter à l'avancé qui suit l'actualité.</p><div class="doc-m"><code>docs/chantier-tous-niveaux.md</code><span>87 ko</span></div></div><a class="doc-b" href="../../docs/chantier-tous-niveaux.md" target="_blank" rel="noopener">Lire</a></article><article class="doc-l"><div><h3>Chantier des modules neufs — niveau 4</h3><p>Journal d'avancement, tenu à jour à chaque étape. <b>Après une interruption, c'est ce fichier qui dit où reprendre.</b></p><div class="doc-m"><code>docs/chantier-modules-neufs.md</code><span>18 ko</span></div></div><a class="doc-b" href="../../docs/chantier-modules-neufs.md" target="_blank" rel="noopener">Lire</a></article><article class="doc-l"><div><h3>Les consignes à coller — les trois vagues</h3><p>Une consigne par module, prête à coller, dans l'ordre de production des tableaux de <code>docs/vagues-suivantes.md</code>. Le plan, les numéros réservés et les slugs arrêtés vivent là-bas ; ici il n'y a que le texte à donner à l'agent.</p><div class="doc-m"><code>docs/consignes-a-coller.md</code><span>104 ko</span></div></div><a class="doc-b" href="../../docs/consignes-a-coller.md" target="_blank" rel="noopener">Lire</a></article><article class="doc-l"><div><h3>Les banques des niveaux 2 à 8 — plan et journal</h3><p>Écrit le 24 août 2026, le jour même où la banque du niveau 1 a été bâtie, et complété le soir avec ce que la réalisation a démenti. L'état vivant se lit avec <code>python3 build/banque.py --etat</code>, ou sur la page de chantier (<code>assets/presentations/chantier-banques.html</code>) — jamais ici : un plan qu'on met à jour à la main ment au premier oubli.</p><div class="doc-m"><code>docs/plan-banques-niveaux-2-8.md</code><span>7 ko</span></div></div><a class="doc-b" href="../../docs/plan-banques-niveaux-2-8.md" target="_blank" rel="noopener">Lire</a></article><article class="doc-l"><div><h3>La banque du niveau 1 — plan de production</h3><p>Écrit le 24 août 2026, juste après la livraison de l'activité 124 (« Même mot, autre police »). Il y a une version à lire, publiée comme artefact ; celle-ci est la trace qui survit à la session.</p><div class="doc-m"><code>docs/plan-exercices-niveau-1.md</code><span>12 ko</span></div></div><a class="doc-b" href="../../docs/plan-exercices-niveau-1.md" target="_blank" rel="noopener">Lire</a></article><article class="doc-l"><div><h3>Les schémas de contenu de la banque du niveau 1</h3><p>Un générateur par famille, un fichier de contenu par atelier. Ce document est le contrat entre les deux : <b>le générateur ne lit rien d'autre que ça</b>, et il s'arrête avec un message clair sur un champ manquant.</p><div class="doc-m"><code>docs/schemas-banque-n1.md</code><span>6 ko</span></div></div><a class="doc-b" href="../../docs/schemas-banque-n1.md" target="_blank" rel="noopener">Lire</a></article></div></div><div class="bloc"><h2>Les journaux de module</h2><p>Un par module produit : le scénario écrit avant le contenu, puis le journal de ce qui a été fait. Le plan est écrit d'abord pour que le scénario survive à la session.</p><div class="docs"><article class="doc-l"><div><h3>Plan — `module-n5-logement` · « Louer un logement » (niveau 5, activité 58)</h3><p>Écrit avant le contenu, pour que le scénario survive à la session (règle 4 de <code>deux-agents-en-parallele.md</code>).</p><div class="doc-m"><code>docs/plan-module-n5-logement.md</code><span>5 ko</span></div></div><a class="doc-b" href="../../docs/plan-module-n5-logement.md" target="_blank" rel="noopener">Lire</a></article><article class="doc-l"><div><h3>Module 62 — « Un dégât d'eau » (niveau 5, `module-n5-degat`)</h3><p>Journal de production, 21 août 2026. Vague 2 de <code>docs/vagues-suivantes.md</code>, deuxième module du niveau 5. Activité <b>62</b>, <code>numero</code> 2, seize séances en trois défis.</p><div class="doc-m"><code>docs/plan-module-n5-degat.md</code><span>9 ko</span></div></div><a class="doc-b" href="../../docs/plan-module-n5-degat.md" target="_blank" rel="noopener">Lire</a></article><article class="doc-l"><div><h3>Module n5 · Emménager dans un nouveau logement — plan et journal</h3><p>Activité <b>63</b>, niveau 5, <code>numero</code> 3, seize séances. Slug et numéro réservés d'avance dans <code>docs/vagues-suivantes.md</code> ; ils n'ont pas été choisis ici.</p><div class="doc-m"><code>docs/plan-module-n5-emmenagement.md</code><span>5 ko</span></div></div><a class="doc-b" href="../../docs/plan-module-n5-emmenagement.md" target="_blank" rel="noopener">Lire</a></article><article class="doc-l"><div><h3>Plan et journal — `module-n5-saisons` (activité 72, niveau 5)</h3><p>Module produit dans le nuage, sans clés d'API : le contenu, le build, les présentations et les fiches sont faits ; les médias sont <b>écrits mais pas lancés</b>. Les commandes exactes et le nombre d'extraits attendus sont en fin de fichier.</p><div class="doc-m"><code>docs/plan-module-n5-saisons.md</code><span>7 ko</span></div></div><a class="doc-b" href="../../docs/plan-module-n5-saisons.md" target="_blank" rel="noopener">Lire</a></article><article class="doc-l"><div><h3>Plan et journal — `module-n3-horaire` (activité 84)</h3><p>Niveau 3 · situation « Emploi » · numéro 11 dans le niveau · 16 séances, 3 défis (<code>GRILLE_3_DEFIS</code>).</p><div class="doc-m"><code>docs/plan-module-n3-horaire.md</code><span>7 ko</span></div></div><a class="doc-b" href="../../docs/plan-module-n3-horaire.md" target="_blank" rel="noopener">Lire</a></article></div></div><div class="bloc"><h2>Les contrats d'écriture et les mesures</h2><p>Ce qui fixe une façon d'écrire, et ce qui la vérifie.</p><div class="docs"><article class="doc-l"><div><h3>Écrire un point express</h3><p>Le contrat d'écriture d'un <b>point express</b> : dix minutes, une seule difficulté, envoyé par l'enseignant à l'élève chez qui il a vu la lacune.</p><div class="doc-m"><code>docs/brief-point-express.md</code><span>9 ko</span></div></div><a class="doc-b" href="../../docs/brief-point-express.md" target="_blank" rel="noopener">Lire</a></article><article class="doc-l"><div><h3>Relevé d'originalité des modules</h3><p>Mesure produite le <b>20 août 2026</b> par <code>~/.claude/skills/module-parite/scripts/verifier_copie.py</code>, qui compare les énoncés visibles par l'élève (<code>EXOS</code>) de la version actuelle au plus ancien état du fichier dans l'historique git — c'est-à-dire au contenu dérivé de la Collection Connexion (SOFAD) d'avant la réécriture.</p><div class="doc-m"><code>docs/verification-originalite.md</code><span>28 ko</span></div></div><a class="doc-b" href="../../docs/verification-originalite.md" target="_blank" rel="noopener">Lire</a></article></div></div>
+  <div class="bloc">
+    <h2>Où ça se fait</h2>
+    <p>Cette page est <b>générée</b> par <b>python3 build/releve_documents.py</b> : les titres
+    et les chapeaux sont lus dans les fichiers eux-mêmes. Un index recopié à la main serait
+    faux au premier document réécrit — c'est exactement le défaut que le ménage du 31 août a
+    trouvé dans les compteurs de la banque.</p>
+  </div>
+</div>
+</body>
+</html>
