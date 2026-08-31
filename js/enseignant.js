@@ -460,12 +460,13 @@
       .join('') || '<option>Aucun groupe</option>';
 
     const nbEleves = etat.eleves.length;
-    // Le libellé était une phrase — « Aucun élève inscrit », « Voir les 12
-    // élèves » — parce que ce lien vivait seul au bout de la ligne. Il est
-    // maintenant la troisième entrée d'un menu : il prend le nom de sa vue,
-    // et le compte le suit sans faire de phrase. Le résumé du bout de ligne
-    // dit déjà l'état complet du groupe.
-    $('lienEleves').textContent = nbEleves ? `Élèves · ${nbEleves}` : 'Élèves';
+    // Le libellé ne se calcule plus. Il a été une phrase — « Voir les 12
+    // élèves » — quand ce lien vivait seul au bout de la ligne, puis « Élèves ·
+    // 12 » quand il est devenu une entrée de menu. Depuis que « Progression »
+    // porte le suivi, celui-ci ne parle plus que d'inscription et de codes :
+    // il s'appelle « Élèves et codes », écrit en clair dans le balisage, et le
+    // compte reste au résumé du bout de ligne, qui dit déjà l'état du groupe.
+    // « Élèves et codes · 12 » aurait été long pour une information en double.
     const datees = etat.activites.filter((a) => a.datePrevue).length;
     $('resumeGroupe').textContent = groupe
       ? `${pluriel(nbEleves, 'élève')} · ${datees} activité${datees > 1 ? 's' : ''} planifiée${datees > 1 ? 's' : ''} sur ${etat.activites.length}`

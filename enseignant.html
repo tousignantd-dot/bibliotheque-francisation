@@ -70,8 +70,19 @@
     }
     /* La section ouverte se dit à la graisse, pas à une couleur de plus. */
     .pe-liens .pe-lien-plat.is-actif { font-weight: var(--fw-black); color: var(--accent); }
-    /* Le filet qui détache le geste sur le groupe des sept outils de classe. */
-    .pe-sep-lien { width: 1px; height: 16px; background: var(--border-tint); flex: none; }
+    /* Trois familles nommées. Le titre est petit et gris : il range, il ne
+       s'annonce pas — ce qu'on vient chercher, c'est le lien, pas l'étiquette
+       au-dessus. Les familles se cassent l'une sous l'autre sur un écran
+       étroit, chacune restant d'un bloc : couper « Ma classe » en deux ferait
+       perdre le seul repère qu'on ajoute ici. */
+    .pe-liens { align-items: flex-start; gap: var(--sp-6); }
+    .pe-famille { display: flex; flex-wrap: wrap; align-items: baseline;
+                  gap: var(--sp-3) var(--sp-4); }
+    .pe-famille-cle { flex-basis: 100%; font-size: var(--fs-label);
+                      font-weight: var(--fw-black); letter-spacing: .1em;
+                      text-transform: uppercase; color: var(--text-muted); }
+    .pe-resume { margin-left: auto; }
+    @media (max-width: 720px) { .pe-famille { flex-basis: 100%; } }
 
     /* — Le premier écran : ouvrir un groupe — ────────────────────────────
        Sans groupe, il n'y a pas de niveau ; sans niveau, ni catalogue à
@@ -743,6 +754,11 @@
           <a class="btn btn--ghost btn--sm" id="lienTeams" target="_blank" rel="noopener" hidden>Rejoindre la rencontre Teams</a>
           <button type="button" class="btn btn--ghost btn--sm" id="boutonTeams">Ajouter le lien Teams</button>
           <button type="button" class="btn btn--ghost btn--sm" id="boutonCopie">Copier une planification</button>
+          <!-- « Nouveau groupe » rejoint les deux autres gestes qui agissent
+               sur le **contenant** et non sur la classe. Il était au bout de la
+               ligne de liens, détaché par un filet ; les trois familles nommées
+               rendent ce filet inutile, et sa place est ici. -->
+          <button type="button" class="btn btn--ghost btn--sm" data-ecran="groupes">Nouveau groupe</button>
         </span>
       </div>
       <!-- Le menu de l'espace enseignant. Il vit **sous le groupe**, et c'est
@@ -751,45 +767,62 @@
            que le niveau du groupe ; « Planifier » et « Élèves » ne s'adressent
            qu'à ses élèves à lui. Les mettre au-dessus, dans une barre de
            sections, laissait croire qu'on pouvait s'en servir sans groupe. -->
+      <!-- Neuf liens de quatre natures différentes, à plat, ne disaient pas
+           lesquels vont ensemble : « pour faire le suivi des élèves, il faut
+           que je clique sur Élèves ». Trois familles nommées, et aucun lien
+           retiré — la confusion ne venait pas de leur nombre.
+
+           Ils vivent toujours **sous le groupe**, et c'est toujours le même
+           motif : aucun n'a de sens sans niveau. Le regroupement ne change pas
+           cette raison, il la précise. -->
       <div class="pe-liens">
-        <a id="lienCatalogue" href="catalogue.html">Catalogue</a>
-        <button type="button" class="pe-lien-plat" data-ecran="planif">Planifier</button>
-        <button type="button" class="pe-lien-plat" id="lienEleves" data-ecran="eleves"></button>
-        <button type="button" class="pe-lien-plat" data-ecran="materiel">Matériel</button>
-        <!-- La séance sans compte a quitté la ligne du haut pour celle-ci :
-             c'est une façon de faire travailler la classe du jour, au même
-             titre que planifier ou ouvrir le catalogue, et non un réglage du
-             groupe. Le bouton se cache tout seul quand la direction a fermé
-             le mode — c'est le serveur qui le dit. -->
-        <button type="button" class="pe-lien-plat" id="boutonSeance">Séance sans compte</button>
-        <!-- Les tutoriels : autonomes comme le compositeur, donc nouvel onglet
-             eux aussi. La page vidéo est la porte d'entrée ; elle renvoie
-             elle-même vers la version en diapositives. -->
-        <a id="lienTutoriels" href="assets/outils/tutoriels-enseignant.html?de=enseignant"
-           target="_blank" rel="noopener">Tutoriels</a>
-        <!-- Le correcteur collaboratif est une application distincte, déployée
-             ailleurs. Il descend ici avec les autres liens qui mènent hors de
-             la page, et garde la teinte ambre du système, celle de l'écriture. -->
-        <!-- « ?r=prof » : la personne vient de cliquer ici, elle n'a pas à
-             redire qu'elle est l'enseignante. Elle arrive sur la création de
-             séance, qui lui rend un code, un carré à projeter et une feuille
-             à imprimer. -->
-        <a class="pe-externe" id="lienCorrecteur"
-           href="https://correcteur-collaboratif-production.up.railway.app/?r=prof"
-           target="_blank" rel="noopener">Correcteur collaboratif</a>
-        <!-- Le compositeur est une page autonome, sans session ni groupe : il
-             assemble un prompt à partir du programme. Nouvel onglet, pour ne
-             pas faire perdre à l'enseignante la planification en cours. Il est
-             au bout de la ligne : on compose une activité quand le catalogue
-             n'a pas ce qu'il faut, donc après l'avoir regardé. -->
-        <a id="lienCompositeur" href="assets/outils/compositeur-activite.html?de=enseignant"
-           target="_blank" rel="noopener">Composer une activité</a>
-        <!-- Le filet, puis « Nouveau groupe » : ce n'est pas un outil de
-             classe mais un geste sur le contenant, et il se lit mieux détaché
-             des sept qui précèdent. -->
-        <span class="pe-sep-lien" aria-hidden="true"></span>
-        <button type="button" class="pe-lien-plat" data-ecran="groupes">Nouveau groupe</button>
-        <span class="pe-resume" id="resumeGroupe" style="margin-left:auto"></span>
+        <div class="pe-famille">
+          <span class="pe-famille-cle">Le cours</span>
+          <a id="lienCatalogue" href="catalogue.html">Catalogue</a>
+          <button type="button" class="pe-lien-plat" data-ecran="planif">Planifier</button>
+          <button type="button" class="pe-lien-plat" data-ecran="materiel">Matériel</button>
+        </div>
+
+        <div class="pe-famille">
+          <span class="pe-famille-cle">Ma classe</span>
+          <!-- « Élèves et codes » : deux noms pour deux gestes, depuis que
+               « Progression » porte l'autre moitié du sens. Le compte d'élèves
+               a quitté ce libellé — « Élèves et codes · 12 » est long, et le
+               résumé au bout de la ligne le dit déjà. -->
+          <button type="button" class="pe-lien-plat" id="lienEleves" data-ecran="eleves">Élèves et codes</button>
+          <!-- Le suivi montait d'un cran : il n'était atteignable que depuis
+               l'écran « Élèves », qui parle d'inscription et de codes. Nouvel
+               onglet : on le garde ouvert à côté pendant qu'on planifie. -->
+          <a id="lienProgression" href="progression.html" target="_blank" rel="noopener">Progression</a>
+          <!-- La séance sans compte est une façon de faire travailler la classe
+               du jour, pas un réglage du groupe. Le bouton se cache tout seul
+               quand la direction a fermé le mode — c'est le serveur qui le dit. -->
+          <button type="button" class="pe-lien-plat" id="boutonSeance">Séance sans compte</button>
+        </div>
+
+        <div class="pe-famille">
+          <span class="pe-famille-cle">Outils</span>
+          <!-- Le compositeur est une page autonome, sans session ni groupe : il
+               assemble un prompt à partir du programme. Nouvel onglet, pour ne
+               pas faire perdre à l'enseignante la planification en cours. -->
+          <a id="lienCompositeur" href="assets/outils/compositeur-activite.html?de=enseignant"
+             target="_blank" rel="noopener">Composer une activité</a>
+          <!-- Le correcteur est une application distincte, déployée ailleurs.
+               Il garde la teinte ambre du système, celle de l'écriture.
+               « ?r=prof » : la personne vient de cliquer ici, elle n'a pas à
+               redire qu'elle est l'enseignante — elle arrive sur la création de
+               séance, qui lui rend un code, un carré et une feuille. -->
+          <a class="pe-externe" id="lienCorrecteur"
+             href="https://correcteur-collaboratif-production.up.railway.app/?r=prof"
+             target="_blank" rel="noopener">Correcteur collaboratif</a>
+          <!-- Les tutoriels : autonomes comme le compositeur, donc nouvel
+               onglet eux aussi. La page vidéo est la porte d'entrée ; elle
+               renvoie elle-même vers la version en diapositives. -->
+          <a id="lienTutoriels" href="assets/outils/tutoriels-enseignant.html?de=enseignant"
+             target="_blank" rel="noopener">Tutoriels</a>
+        </div>
+
+        <span class="pe-resume" id="resumeGroupe"></span>
       </div>
     </div>
   </div>
