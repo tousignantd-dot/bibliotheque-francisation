@@ -2711,6 +2711,20 @@ def migrate_multi_groupes():
         save_schedule(entries)
         print(f"[migration] {len(entries)} activités ouvertes au groupe {default_group_id} "
               "(état d'avant le multi-groupes conservé)", flush=True)
+        # **Ce que cette migration fait au bornage par niveau, et qu'il faut
+        # savoir.** Dater est l'échappatoire de tous les bornages : le
+        # catalogue, le menu des séances et la garde de `/api/prof/seances`
+        # laissent passer ce que le groupe a déjà daté, pour qu'un module en
+        # cours d'usage ne disparaisse pas quand on corrige une étiquette. Or
+        # ici *tout* est daté. **Le groupe historique n'est donc borné par
+        # aucun niveau**, et ça ne se voit pas : c'est le groupe le plus
+        # ancien, celui dont on ne se méfie pas, et son enseignant voit le
+        # catalogue entier sans le savoir. Un groupe créé après cette
+        # migration, lui, est borné normalement.
+        #
+        # Ce n'est pas un défaut de la migration — retirer ses activités à une
+        # classe en cours serait pire — mais ça se mesure : un banc d'essai
+        # bâti sur ce groupe ne prouve **rien** sur le bornage par niveau.
 
     # Élèves sans groupe → groupe historique
     students = load_students()
@@ -16866,6 +16880,11 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         # mêmes qu'à l'écran : « Pratique orale libre » est de tous les niveaux,
         # et ce que ce groupe a déjà daté reste ouvrable — l'enseignant qui a
         # planifié hors niveau l'a fait exprès.
+        #
+        # La seconde échappatoire est plus large qu'elle n'en a l'air : la
+        # migration d'`init_storage` date **toutes** les activités au groupe
+        # historique, qui n'est donc borné par rien. Voir le commentaire de
+        # cette migration ; c'est assumé, pas oublié.
         groupe = next((g for g in load_groups() if g.get("id") == group_id), None)
         niveau = niveau_de_groupe(groupe or {})
         planifie = schedule_for_group(group_id).get(activity_id, {})
