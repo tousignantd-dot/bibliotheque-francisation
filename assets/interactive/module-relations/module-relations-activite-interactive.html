@@ -3451,8 +3451,13 @@ async function jrModeVoix(on){
 }
 
 let jrAudio=null;
+// Numéro de la lecture en cours. Il sert à distinguer un arrêt VOULU — l'élève
+// touche le micro pendant que l'assistant parle — d'une panne de serveur : les
+// deux se présentent au code sous la même forme, une promesse rejetée.
+let jrDireNo=0;
 
 function jrTaire(){
+  jrDireNo++;                 // toute lecture en vol devient caduque
   try{ speechSynthesis.cancel(); }catch(e){}
   if(jrAudio){ try{ jrAudio.pause(); }catch(e){} jrAudio=null; }
 }
@@ -3477,6 +3482,7 @@ function jrDireNavigateur(texte){
 
 async function jrDire(texte){
   jrTaire();
+  const no=jrDireNo;          // posé APRÈS jrTaire, qui vient d'incrémenter
   // Cette voix-ci se fabrique en direct : son débit se règle donc à la
   // SYNTHÈSE, où Azure rend un <prosody rate> exact, et non par un
   // playbackRate qui étire un son déjà produit. Le serveur répond X-Palier ;
@@ -3486,14 +3492,20 @@ async function jrDire(texte){
     const res=await fetch('/api/voix',{method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({code:studentCode, texte:texte, role:JR.role, palier:palier})});
     if(!res.ok) throw new Error('voix serveur indisponible');
-    const url=URL.createObjectURL(await res.blob());
+    const blob=await res.blob();
+    // L'élève a repris la parole pendant que le serveur synthétisait : ne rien
+    // jouer du tout, plutôt que de démarrer une réplique qu'il vient de couper.
+    if(no!==jrDireNo) return;
+    const url=URL.createObjectURL(blob);
     const a=new Audio(url);
     if(res.headers.get('X-Palier')===palier) a.dataset.palier=palier; else vitAudio(a);
     jrAudio=a;
     a.onended=()=>{ URL.revokeObjectURL(url); if(jrAudio===a) jrAudio=null; };
     await a.play();
   }catch(e){
-    jrDireNavigateur(texte);
+    // Le repli n'a de sens que pour une vraie panne. Si un jrTaire() est passé
+    // par là, c'est que l'élève a coupé la parole : on se tait.
+    if(no===jrDireNo) jrDireNavigateur(texte);
   }
 }
 
