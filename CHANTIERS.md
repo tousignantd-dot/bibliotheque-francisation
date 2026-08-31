@@ -32,8 +32,9 @@ le **verrou** : on l'inscrit avant de toucher au code, on le raye en finissant.
 
 ## Couloirs fermés
 
-_(rien encore — y déplacer la ligne quand la branche est fusionnée dans `main`
-et le worktree retiré par `git worktree remove`)_
+| Couloir | Répertoire | Fichiers tenus | État |
+|---|---|---|---|
+| `migration-groupes` | dépôt principal | `server.py` (`migrate_multi_groupes`), `data/activities.json`, `build/controles/migration_groupes.py` | fermé — commité dans `main`, **pas encore poussé** |
 
 ## Ce qui s'est croisé, et comment ça s'est joué
 
@@ -87,3 +88,29 @@ dossier où ils tombent.**
 `100dvh` est passée par `main` avant que `validation` n'ouvre sa branche, qui
 l'a donc reprise sans le savoir. C'est le bon ordre, et c'est celui que la
 règle 3 décrit — on part de `main`, on n'y revient qu'une branche à la fois.
+
+
+**31 août 2026 — un garde qui regarde le mauvais endroit.**
+`migrate_multi_groupes()` décidait de repartir ou non en demandant si
+`data/schedule.json` existait **sur le disque**. En production, ce fichier
+n'existe pas et n'existera jamais : `schedule.json` fait partie de
+`db.DOCUMENTS`, la planification vit dans Postgres, et le fichier est dans
+`.gitignore` — donc absent du dépôt que `init_storage` recopie sur le volume.
+Le garde était ouvert en permanence, et la migration tournait à chaque
+redémarrage : 177 activités datées au premier groupe, et la planification de
+tous les autres remplacée d'un seul `save_schedule()`.
+
+Trois leçons, et la première vaut au-delà de ce fichier :
+
+· **Un garde doit interroger la couche qui détient la donnée**, jamais le
+  support. Le jour où le stockage a changé, tous les `Path.exists()` posés sur
+  des documents gérés par la base ont cessé de vouloir dire quelque chose —
+  sans rien casser bruyamment, ce qui est le pire des cas.
+· **Trois dates oubliées dans un fichier versionné suffisent à tout changer.**
+  `data/activities.json` portait encore `dateVue`/`datePrevue` sur les modules
+  4, 5 et 6 — le résidu de quelqu'un qui s'en était servi. Ces champs
+  appartiennent au volume (`USER_FIELDS`), et il a fallu ces trois-là pour que
+  toute installation neuve se fasse passer pour une installation historique.
+· **Ce qui tourne à chaque démarrage se contrôle**, sinon rien ne le regarde
+  jamais : `build/controles/migration_groupes.py` reprend les trois formes —
+  installation neuve, forme Postgres, installation réellement historique.

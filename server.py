@@ -2770,7 +2770,30 @@ def migrate_multi_groupes():
     # vide). Pour ne rien retirer à la classe en cours, on ouvre explicitement
     # au groupe historique tout ce qui lui était déjà visible : sa date prévue
     # si elle existe, sinon la date où l'activité a été vue, sinon aujourd'hui.
-    if not SCHEDULE_FILE.exists():
+    #
+    # **Le garde interroge la couche de stockage, pas le disque.** Il a lu
+    # `SCHEDULE_FILE.exists()` jusqu'au 31 août 2026, et ce fichier-là ne dit
+    # plus rien : `schedule.json` fait partie de `db.DOCUMENTS`, donc en
+    # production (`stockage: postgres`) la planification vit dans la base
+    # pendant que le fichier reste absent du volume — il est dans `.gitignore`,
+    # donc absent du dépôt que `init_storage` recopie, et Postgres ne l'écrit
+    # jamais. Un garde qui regarde un fichier que rien ne crée est un garde
+    # ouvert : la migration repartait **à chaque redémarrage**.
+    #
+    # Mesuré sur la forme Postgres — planification réelle dans la couche,
+    # aucun fichier : les 177 activités écrasent tout, les entrées de
+    # l'enseignante ne survivent pas, et le groupe 2 passe de 1 entrée à 0.
+    # Ce n'est donc pas seulement le bornage qui sautait, c'est la
+    # planification de **tous** les groupes qui était effacée à chaque déploi.
+    #
+    # **Et la migration ne part que s'il y a quelque chose à migrer.** Même
+    # raison qu'au groupe historique ci-dessus : sans activité portant une
+    # date d'avant le multi-groupes, cette installation n'est pas une
+    # installation d'avant — c'est une installation neuve dont l'enseignante
+    # vient de créer son premier groupe. Lui dater les 177 activités ne
+    # conserverait rien : ça lui ouvrirait les huit niveaux du catalogue.
+    if not load_schedule() and any(a.get("datePrevue") or a.get("dateVue")
+                                   for a in load_activities()):
         today_str = date.today().isoformat()
         entries = []
         for a in load_activities():
@@ -2787,19 +2810,26 @@ def migrate_multi_groupes():
         print(f"[migration] {len(entries)} activités ouvertes au groupe {default_group_id} "
               "(état d'avant le multi-groupes conservé)", flush=True)
         # **Ce que cette migration fait au bornage par niveau, et qu'il faut
-        # savoir.** Dater est l'échappatoire de tous les bornages : le
-        # catalogue, le menu des séances et la garde de `/api/prof/seances`
-        # laissent passer ce que le groupe a déjà daté, pour qu'un module en
-        # cours d'usage ne disparaisse pas quand on corrige une étiquette. Or
-        # ici *tout* est daté. **Le groupe historique n'est donc borné par
-        # aucun niveau**, et ça ne se voit pas : c'est le groupe le plus
-        # ancien, celui dont on ne se méfie pas, et son enseignant voit le
-        # catalogue entier sans le savoir. Un groupe créé après cette
-        # migration, lui, est borné normalement.
+        # savoir.** Dater est l'échappatoire de tous les bornages : le menu des
+        # séances et la garde de `/api/prof/seances` laissent passer ce que le
+        # groupe a déjà daté, pour qu'un module en cours d'usage ne disparaisse
+        # pas quand on corrige une étiquette. Or ici *tout* est daté : sur ce
+        # groupe-là, et sur lui seul, **le bornage par niveau ne borne rien**.
+        # Un groupe créé après cette migration, lui, est borné normalement.
         #
-        # Ce n'est pas un défaut de la migration — retirer ses activités à une
-        # classe en cours serait pire — mais ça se mesure : un banc d'essai
-        # bâti sur ce groupe ne prouve **rien** sur le bornage par niveau.
+        # C'est assumé : retirer ses activités à une classe en cours serait
+        # pire. Mais ça se mesure, et deux conséquences en découlent.
+        #
+        # · Un banc d'essai bâti sur ce groupe ne prouve **rien** sur le
+        #   bornage par niveau. Il faut un groupe créé après.
+        # · Les deux conditions du `if` ci-dessus sont ce qui empêche cet
+        #   effet de tomber sur une installation neuve. Les affaiblir revient
+        #   à ouvrir les huit niveaux à un groupe qui n'a rien d'historique.
+        #
+        # `catalogue.html` ne fait pas partie de la liste : lui filtre sur le
+        # seul niveau, sans échappatoire de date. Le catalogue du groupe
+        # historique était donc borné même au plus fort du défaut — c'est la
+        # planification et le menu des séances qui débordaient, pas lui.
 
     # Élèves sans groupe → groupe historique
     students = load_students()
@@ -16971,10 +17001,13 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         # et ce que ce groupe a déjà daté reste ouvrable — l'enseignant qui a
         # planifié hors niveau l'a fait exprès.
         #
-        # La seconde échappatoire est plus large qu'elle n'en a l'air : la
-        # migration d'`init_storage` date **toutes** les activités au groupe
-        # historique, qui n'est donc borné par rien. Voir le commentaire de
-        # cette migration ; c'est assumé, pas oublié.
+        # La seconde échappatoire est plus large qu'elle n'en a l'air : sur une
+        # installation d'avant le multi-groupes, `migrate_multi_groupes()` date
+        # **toutes** les activités au groupe historique, qui n'est donc borné
+        # par rien. Voir le commentaire de cette migration ; c'est assumé, pas
+        # oublié — et depuis le 31 août 2026 c'est réservé à une installation
+        # réellement historique, alors qu'un garde défaillant l'étendait à
+        # n'importe quelle installation, à chaque redémarrage.
         groupe = next((g for g in load_groups() if g.get("id") == group_id), None)
         niveau = niveau_de_groupe(groupe or {})
         planifie = schedule_for_group(group_id).get(activity_id, {})
