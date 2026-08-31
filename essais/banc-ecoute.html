@@ -1,0 +1,125 @@
+<!doctype html><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--ws-line:#B7DED7;--ws-card:#fff;--ws-ink:#123B32;--ws-bg:#F0FAF7;
+      --sel-bg:#DCEFEB;--sel-ink:#12556B;--ws-accent:#0D7A6F}
+body{background:#EDF6F4;font-family:'Nunito',sans-serif;color:#123B32;padding:24px;max-width:640px;margin:0 auto}
+h1{font-size:18px} p.n{font-size:14px;color:#3C5A55}
+.jr-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin:16px 0 4px}
+.jr-log{border:1px solid var(--ws-line);border-radius:14px;overflow:hidden;background:var(--ws-card)}
+.jr-log-h{background:var(--sec-color,var(--ws-accent));color:#fff;padding:7px 13px;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.1em}
+.jr-log-a{padding:11px 13px;font-size:15px;font-weight:500;line-height:1.5}
+.jr-log-a b{font-weight:900}
+.jr-sub{margin:20px 0 9px;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:var(--ws-sub)}
+.jr-sujets{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:7px 18px}
+.jr-sujet{display:flex;align-items:center;gap:9px;font-size:15px;font-weight:600}
+.jr-box{width:13px;height:13px;border:2px solid var(--sec-color,var(--ws-accent));border-radius:3px;flex-shrink:0}
+.jr-gram{margin-top:18px;padding:13px 16px;border-radius:14px;background:var(--ws-bg);font-size:15px;font-weight:500;line-height:1.55}
+.jr-gram-t{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:var(--ws-sub);margin-bottom:6px}
+.jr-print{margin-top:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.jr-print .btn{text-decoration:none}
+.jr-print-n{font-size:14px;font-weight:500;color:var(--ws-sub);line-height:1.45}
+.jr-sep{height:1px;background:var(--ws-line);margin:24px var(--bleed) 20px}
+.jr-choix-l{font-size:14px;font-weight:700;color:var(--ws-sub);margin:12px 0 7px}
+.jr-opts{display:flex;gap:8px;flex-wrap:wrap}
+.jr-opt{min-height:44px;padding:10px 16px;border-radius:22px;border:1px solid var(--ws-line);background:var(--ws-card);font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;color:var(--ws-ink);cursor:pointer;transition:background .15s,border-color .15s}
+.jr-opt:hover{border-color:var(--sec-color,var(--ws-accent))}
+.jr-opt.on{background:var(--sel-bg);border-color:var(--sel-line);color:var(--sel-ink)}
+.jr-fil{margin:18px 0 12px;display:flex;flex-direction:column;gap:10px;max-height:420px;overflow-y:auto}
+.jr-b{padding:11px 15px;border-radius:16px;font-size:16px;font-weight:500;line-height:1.55;max-width:82%}
+.jr-b-q{display:block;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;opacity:.72;margin-bottom:4px}
+.jr-b-ia{background:var(--ws-bg);border:1px solid var(--ws-line);align-self:flex-start;border-bottom-left-radius:5px}
+.jr-b-moi{background:var(--sel-bg);color:var(--sel-ink);align-self:flex-end;border-bottom-right-radius:5px}
+.jr-sans-texte .jr-b-ia .jr-txt{display:none}
+.jr-sans-texte .jr-b-ia::after{content:'Texte caché — touchez le haut-parleur pour réécouter';
+#jrEcoute{margin-top:10px}
+.jr-saisie{display:flex;gap:9px;align-items:center}
+.jr-saisie input{flex:1;min-height:46px;padding:10px 15px;border-radius:23px;border:1px solid var(--ws-line);background:var(--ws-card);font-family:'Nunito',sans-serif;font-size:16px;font-weight:500;color:var(--ws-ink)}
+.jr-saisie input:focus{outline:none;border-color:var(--sec-color,var(--ws-accent))}
+.jr-fin{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.jr-b-ia{position:relative;padding-right:46px}
+.jr-redire{position:absolute;top:9px;right:9px;width:30px;height:30px;border-radius:50%;border:1px solid var(--ws-line);background:var(--ws-card);cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
+.jr-redire:hover{border-color:var(--sec-color,var(--ws-accent))}
+.jr-redire .icon-svg{width:15px;height:15px}
+.jr-mic{display:flex;align-items:center;gap:13px;margin:0 0 13px}
+.jr-mic-l{font-size:15px;font-weight:600;color:var(--ws-sub)}
+</style>
+<h1>Banc d'essai — « Écouter sans lire »</h1>
+<p class="n">Le CSS et le JS sont découpés du module livré. Touchez le bouton.</p>
+<div class="jr-opts" id="jrModes">
+  <button class="jr-opt on" type="button" data-mode="texte">✍️ Écrire</button>
+  <button class="jr-opt" type="button" data-mode="voix">🎤 Parler</button>
+</div>
+<div id="jrChat"><div class="jr-fil" id="jrFil"></div></div>
+<script>
+const JR={role:'locataire',sansTexte:false};
+const ICON_SPEAK='🔊';
+const esc=x=>String(x).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+function jrDire(){}
+// Le bouton n'est pas dans le HTML des modules : la rangée « Comment ? » est
+// écrite dans le custom.js de chacun, et ils diffèrent tous. Il est posé ici,
+// APRÈS #jrModes et non dedans — jrModeVoix() balaie les .jr-opt de #jrModes
+// et allumerait celui-ci à contretemps.
+function jrSansTexte(on){
+  JR.sansTexte=on;
+  const chat=document.getElementById('jrChat');
+  if(chat) chat.classList.toggle('jr-sans-texte', on);
+  const b=document.getElementById('jrEcouteBtn');
+  if(b){ b.classList.toggle('on', on);
+         b.textContent = on ? '👂 Écoute seule — texte caché' : '👂 Écouter sans lire'; }
+  try{ localStorage.setItem('saaf-jr-sans-texte', on?'1':'0'); }catch(e){}
+}
+document.addEventListener('DOMContentLoaded', ()=>{
+  const modes=document.getElementById('jrModes');
+  if(!modes) return;
+  const row=document.createElement('div');
+  row.className='jr-opts'; row.id='jrEcoute';
+  row.innerHTML='<button class="jr-opt" id="jrEcouteBtn" type="button"'
+    +' data-info="Cache le texte des réponses de l\'assistant : il ne reste que sa voix.'
+    +' Le haut-parleur de chaque bulle la rejoue autant de fois qu\'il faut.">'
+    +'👂 Écouter sans lire</button>';
+  modes.insertAdjacentElement('afterend', row);
+  let garde=false;
+  try{ garde = localStorage.getItem('saaf-jr-sans-texte')==='1'; }catch(e){}
+  document.getElementById('jrEcouteBtn')
+    .addEventListener('click', ()=>jrSansTexte(!JR.sansTexte));
+  jrSansTexte(garde);
+});
+
+function jrChoisir(quoi, val){
+  JR[quoi] = val;
+  const box = document.getElementById(quoi==='log' ? 'jrLogs' : 'jrRoles');
+  box.querySelectorAll('.jr-opt').forEach(b=>{
+    const v = quoi==='log' ? b.dataset.log : b.dataset.role;
+    b.classList.toggle('on', v===val);
+  });
+}
+
+function jrBulle(qui, texte){
+  const fil=document.getElementById('jrFil');
+  const d=document.createElement('div');
+  d.className='jr-b jr-b-'+qui;
+  let h='<span class="jr-b-q">'+(qui==='moi'?'Moi':'Assistant')+'</span>'
+        +'<span class="jr-txt">'+esc(texte)+'</span>';
+  if(qui==='ia') h+='<button class="jr-redire" type="button" title="Réécouter">'+ICON_SPEAK+'</button>';
+  d.innerHTML=h;
+  if(qui==='ia'){
+    // Le texte passe par dataset plutôt que par l'attribut onclick : pas
+    // d'échappement d'apostrophes à gérer dans une réplique française.
+    const b=d.querySelector('.jr-redire');
+    b.dataset.t=texte;
+    b.addEventListener('click',()=>jrDire(b.dataset.t));
+  }
+  fil.appendChild(d);
+  d.scrollIntoView({block:'nearest'});
+}
+
+
+window.addEventListener('load',()=>{
+  jrBulle('ia',"Bonjour ! Oui, le trois et demi est encore libre. Le chauffage est inclus.");
+  jrBulle('moi',"Est-ce qu'il y a une laverie dans le quartier ?");
+  jrBulle('ia',"Il y a une laverie à trois rues d'ici, sur la rue King.");
+  // #on : touche le bouton, pour photographier l'état actif sans main humaine.
+  if(location.hash==='#on') document.getElementById('jrEcouteBtn').click();
+});
+</script>

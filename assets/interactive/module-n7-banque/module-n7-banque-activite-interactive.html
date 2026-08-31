@@ -884,6 +884,13 @@ body{
 .jr-b-q{display:block;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;opacity:.72;margin-bottom:4px}
 .jr-b-ia{background:var(--ws-bg);border:1px solid var(--ws-line);align-self:flex-start;border-bottom-left-radius:5px}
 .jr-b-moi{background:var(--sel-bg);color:var(--sel-ink);align-self:flex-end;border-bottom-right-radius:5px}
+/* « Écouter sans lire » : la bulle de l'assistant garde sa place et son bouton
+   de réécoute, seul son texte s'efface. Ce que l'élève a dit, lui, reste
+   lisible — il doit pouvoir relire sa propre phrase. */
+.jr-sans-texte .jr-b-ia .jr-txt{display:none}
+.jr-sans-texte .jr-b-ia::after{content:'Texte caché — touchez le haut-parleur pour réécouter';
+  display:block;font-size:13px;font-weight:700;font-style:italic;opacity:.6}
+#jrEcoute{margin-top:10px}
 .jr-saisie{display:flex;gap:9px;align-items:center}
 .jr-saisie input{flex:1;min-height:46px;padding:10px 15px;border-radius:23px;border:1px solid var(--ws-line);background:var(--ws-card);font-family:'Nunito',sans-serif;font-size:16px;font-weight:500;color:var(--ws-ink)}
 .jr-saisie input:focus{outline:none;border-color:var(--sec-color,var(--ws-accent))}
@@ -3776,6 +3783,36 @@ async function jrParler(){
   try{ rec.start(); }catch(e){ JR.rec=null; }
 }
 
+// Le bouton n'est pas dans le HTML des modules : la rangée « Comment ? » est
+// écrite dans le custom.js de chacun, et ils diffèrent tous. Il est posé ici,
+// APRÈS #jrModes et non dedans — jrModeVoix() balaie les .jr-opt de #jrModes
+// et allumerait celui-ci à contretemps.
+function jrSansTexte(on){
+  JR.sansTexte=on;
+  const chat=document.getElementById('jrChat');
+  if(chat) chat.classList.toggle('jr-sans-texte', on);
+  const b=document.getElementById('jrEcouteBtn');
+  if(b){ b.classList.toggle('on', on);
+         b.textContent = on ? '👂 Écoute seule — texte caché' : '👂 Écouter sans lire'; }
+  try{ localStorage.setItem('saaf-jr-sans-texte', on?'1':'0'); }catch(e){}
+}
+document.addEventListener('DOMContentLoaded', ()=>{
+  const modes=document.getElementById('jrModes');
+  if(!modes) return;
+  const row=document.createElement('div');
+  row.className='jr-opts'; row.id='jrEcoute';
+  row.innerHTML='<button class="jr-opt" id="jrEcouteBtn" type="button"'
+    +' data-info="Cache le texte des réponses de l\'assistant : il ne reste que sa voix.'
+    +' Le haut-parleur de chaque bulle la rejoue autant de fois qu\'il faut.">'
+    +'👂 Écouter sans lire</button>';
+  modes.insertAdjacentElement('afterend', row);
+  let garde=false;
+  try{ garde = localStorage.getItem('saaf-jr-sans-texte')==='1'; }catch(e){}
+  document.getElementById('jrEcouteBtn')
+    .addEventListener('click', ()=>jrSansTexte(!JR.sansTexte));
+  jrSansTexte(garde);
+});
+
 function jrChoisir(quoi, val){
   JR[quoi] = val;
   const box = document.getElementById(quoi==='log' ? 'jrLogs' : 'jrRoles');
@@ -3789,7 +3826,8 @@ function jrBulle(qui, texte){
   const fil=document.getElementById('jrFil');
   const d=document.createElement('div');
   d.className='jr-b jr-b-'+qui;
-  let h='<span class="jr-b-q">'+(qui==='moi'?'Moi':'Assistant')+'</span>'+esc(texte);
+  let h='<span class="jr-b-q">'+(qui==='moi'?'Moi':'Assistant')+'</span>'
+        +'<span class="jr-txt">'+esc(texte)+'</span>';
   if(qui==='ia') h+='<button class="jr-redire" type="button" title="Réécouter">'+ICON_SPEAK+'</button>';
   d.innerHTML=h;
   if(qui==='ia'){
@@ -3835,7 +3873,7 @@ async function jrTour(){
     if(d.ouverture){ JR.hist.push({role:'user', contenu:d.ouverture}); jrBulle('moi', d.ouverture); }
     JR.hist.push({role:'assistant', contenu:d.reponse});
     jrBulle('ia', d.reponse);
-    if(JR.voix) jrDire(d.reponse);
+    if(JR.voix || JR.sansTexte) jrDire(d.reponse);
   }catch(e){
     showErr('jrErr','Impossible de contacter le serveur. Réessaie.');
   }finally{
