@@ -259,7 +259,13 @@ journal_api.configurer(APPELS_API_FILE)
 # tarife par leur identifiant : un modèle changé dans un payload sans l'être
 # ici serait compté au prix de l'autre, sans que rien ne proteste.
 MODELE_CORRECTION   = "claude-haiku-4-5-20251001"   # les dix routes de correction
-MODELE_CONVERSATION = "claude-opus-5"               # jeu de rôle et assistant
+# Mesuré le 31 août 2026, même consigne et même historique, trois appels :
+# opus-5 rendait sa réplique en 6,25 s, sonnet-5 en 2,49 s. Sur un tour de jeu
+# de rôle qui enchaîne ensuite ~0,9 s de synthèse, c'est la moitié de l'attente
+# de l'élève qui disparaît. Pour deux phrases tenues par un personnage dont la
+# fiche est déjà dans la consigne système, opus n'apportait rien d'audible.
+# (La réflexion adaptative, elle, reste : sans elle opus montait à 9,6 s.)
+MODELE_CONVERSATION = "claude-sonnet-5"             # jeu de rôle et assistant
 MODELE_VOIX         = "azure-fr-CA-neural"          # Azure Speech, fr-CA
 MODELE_TRANSCRIPTION = "azure-stt-fr-CA"            # Azure Speech, sens inverse
 # Une séance d'élève se ferme après trente minutes sans événement. Sans cette

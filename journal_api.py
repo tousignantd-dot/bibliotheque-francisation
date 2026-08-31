@@ -53,6 +53,13 @@ TARIFS = {
         "entree": 5.00, "sortie": 25.00,
         "cache_ecriture": 6.25, "cache_lecture": 0.50,
     },
+    # Le jeu de rôle et l'assistant, depuis le 31 août 2026. Sans cette
+    # entrée, `cout_appel` rend None sur un modèle inconnu et le registre
+    # noterait la dépense à zéro.
+    "claude-sonnet-5": {
+        "entree": 3.00, "sortie": 15.00,
+        "cache_ecriture": 3.75, "cache_lecture": 0.30,
+    },
 }
 
 # La synthèse vocale facture au caractère et ne renvoie aucun montant : c'est
@@ -79,6 +86,7 @@ def tarif_voix(modele):
 FOURNISSEURS = {
     "claude-haiku-4-5-20251001": "anthropic",
     "claude-opus-5": "anthropic",
+    "claude-sonnet-5": "anthropic",
     "eleven_multilingual_v2": "elevenlabs",
     "azure-fr-CA-neural": "azure",
     "azure-stt-fr-CA": "azure",
