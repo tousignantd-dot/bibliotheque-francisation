@@ -261,6 +261,13 @@
     /* La classe d'un coup d'œil */
     .dr-classe { display: grid; grid-template-columns: repeat(auto-fill, minmax(122px, 1fr));
                  gap: var(--sp-3); }
+    /* Les deux populations, quand elles sont là toutes les deux. Un titre et
+       un compte, pas une couleur de plus : la couleur des cases dit déjà où
+       en est chacun. */
+    .dr-groupe + .dr-groupe { margin-top: var(--sp-5); }
+    .dr-groupe-cle { font-size: var(--fs-label); font-weight: var(--fw-black);
+                     letter-spacing: .1em; text-transform: uppercase;
+                     color: var(--text-muted); margin-bottom: var(--sp-3); }
     .dr-el { background: var(--surface-card); border: 1px solid var(--border);
              border-left: 4px solid var(--line-300); border-radius: var(--r-sm, 10px);
              padding: 10px var(--sp-3); box-shadow: var(--sh-card); }
@@ -1058,7 +1065,7 @@
           <button type="button" class="btn btn--ghost btn--sm" id="drActualiser"
                   style="margin-left:var(--sp-3)">Actualiser</button></p>
         ${APERCU && APERCU_ID === String(encours)
-          ? drBlocsClasse(APERCU, false, '')
+          ? drBlocsClasse(APERCU, false, '', encours)   // l'aperçu porte sur le module en cours
           : '<p class="pg-note">Lecture du module en cours…</p>'}
       </div>`;
       drApercu(encours);
@@ -1158,17 +1165,48 @@
 
       `vivant` ne change pas les tableaux, seulement ce qu'on en dit : à l'arrêt,
       l'écran doit avouer qu'il montre un relevé et non l'instant présent. */
-  function drBlocsClasse(d, vivant, filtre = DIRECT_SECTION) {
+  function drBlocsClasse(d, vivant, filtre = DIRECT_SECTION, moduleId = CLASSE) {
     const exos = (d.exercices || []).filter(e => !filtre || e.section === filtre);
     const zones = exos.flatMap(ex => (ex.zones || []).map(z => ({ ex, z })));
-    const grille = (d.eleves || []).map((e, i) => {
+
+    /* Deux populations répondent au même module : les élèves inscrits au
+       groupe, avec leur compte, et les participants d'une séance sans compte.
+       Elles arrivaient mêlées dans la grille, sans rien pour les distinguer —
+       « l'élève qui se connecte s'ajoute aux autres ». Le serveur les sépare
+       déjà : chaque ligne porte `anonyme`, et l'écran le jetait.
+
+       **L'index reste celui de la liste complète.** `drNomAnonyme(i)` fabrique
+       « Élève 1, 2, 3… » à partir du rang, et le serveur a rangé la liste
+       exprès — `participants_du_direct` trie par identifiant décroissant pour
+       rendre « Participant 1, 2, 3 » dans l'ordre d'arrivée. Découper la
+       grille en deux boucles ne doit pas retrier : on garde le rang d'origine
+       en le calculant avant de filtrer. */
+    const cases = (d.eleves || []).map((e, i) => {
       const k = drClasseDe(e.pct, e.repondu);
-      return `<div class="dr-el dr-el--${k.c}">
+      return { anonyme: !!e.anonyme, html: `<div class="dr-el dr-el--${k.c}">
         <b>${esc(DIRECT_NOMS ? (e.pseudo || drNomAnonyme(i)) : drNomAnonyme(i))}</b>
         <div class="dr-ch">${e.pct === null ? '—' : e.pct + '<small>%</small>'}</div>
         <div class="dr-mo">${esc(k.m)}${e.repondu ? ` · ${e.repondu} rép.` : ''}</div>
-      </div>`;
-    }).join('');
+      </div>` };
+    });
+    const inscrits = cases.filter(c => !c.anonyme);
+    const sansCompte = cases.filter(c => c.anonyme);
+    const paquet = liste => `<div class="dr-classe">${liste.map(c => c.html).join('')}</div>`;
+    // Une seule population : pas de titre, pas de coupure. Le cas ordinaire —
+    // une classe d'élèves inscrits — ne doit pas hériter d'un découpage qui ne
+    // lui apprend rien.
+    const seance = SEANCES.find(x => String(x.activityId) === String(moduleId));
+    const grille = (inscrits.length && sansCompte.length)
+      ? `<div class="dr-groupe">
+           <div class="dr-groupe-cle">Vos élèves · ${inscrits.length}</div>
+           ${paquet(inscrits)}
+         </div>
+         <div class="dr-groupe">
+           <div class="dr-groupe-cle">Séance sans compte${
+             seance ? ` · code ${esc(seance.code)}` : ''} · ${sansCompte.length}</div>
+           ${paquet(sansCompte)}
+         </div>`
+      : paquet(cases);
 
     const quand = DIRECT_QUAND
       ? new Date(DIRECT_QUAND).toLocaleTimeString('fr-CA', { hour: '2-digit', minute: '2-digit' })
@@ -1177,8 +1215,7 @@
       + 'Une case pâle veut dire « n’a rien envoyé encore ».'
       + (vivant ? '' : ` Relevé à ${quand} : le direct est fermé, ces chiffres ne bougent plus tout seuls.`);
 
-    return `${section('La classe d’un coup d’œil', chapeau,
-      `<div class="dr-classe">${grille}</div>`)}
+    return `${section('La classe d’un coup d’œil', chapeau, grille)}
 
       ${section('Exercice par exercice',
         zones.length
