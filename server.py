@@ -16832,6 +16832,28 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 "suivable": False,
             }, 400)
             return
+        # Le niveau du groupe borne la séance comme il borne le catalogue et le
+        # dépôt : on n'ouvre pas un module de niveau 7 dans une classe de
+        # niveau 4. Le menu ne les propose plus (progression.html) ; la route le
+        # vérifie, car une liste n'est pas une garde. Deux échappatoires, les
+        # mêmes qu'à l'écran : « Pratique orale libre » est de tous les niveaux,
+        # et ce que ce groupe a déjà daté reste ouvrable — l'enseignant qui a
+        # planifié hors niveau l'a fait exprès.
+        groupe = next((g for g in load_groups() if g.get("id") == group_id), None)
+        niveau = niveau_de_groupe(groupe or {})
+        planifie = schedule_for_group(group_id).get(activity_id, {})
+        libre = re.match(r"pratique orale libre",
+                         activite.get("domaineDeVie", "") or "", re.I)
+        if (activite.get("level") or "Niveau 4") != niveau and not libre \
+                and not (planifie.get("datePrevue") or planifie.get("dateVue")):
+            json_response(self, {
+                "error": "« %s » est du %s : votre groupe suit le %s. Datez-le "
+                         "dans la planification si vous voulez vraiment le "
+                         "travailler avec cette classe."
+                         % (activite.get("title", "Cette activité"),
+                            activite.get("level") or "Niveau 4", niveau),
+            }, 400)
+            return
         seance = creer_seance(
             teacher, group_id, activity_id,
             titre=body.get("activityTitle") or activite.get("title", ""),

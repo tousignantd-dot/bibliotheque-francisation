@@ -618,12 +618,28 @@
     const enSeance = new Set(SEANCES.map(s => String(s.activityId)));
     const ordre = (a, b) => (numeroDe(a.title) || '99').localeCompare(numeroDe(b.title) || '99')
                          || String(a.title || '').localeCompare(String(b.title || ''));
-    const duGroupe = ACTIVITES.filter(a => a.categorie === 'cours'
-                                        || enSeance.has(String(a.id))).sort(ordre);
+
+    // **Le niveau du groupe borne ce menu**, comme il borne le catalogue et le
+    // dépôt de matériel : on n'ouvre pas une séance de niveau 7 dans une classe
+    // de niveau 4, et une liste de cent soixante-dix entrées tous niveaux
+    // confondus n'est pas un choix, c'est un labyrinthe. Même règle qu'à
+    // `catalogue.html` — « Pratique orale libre » passe outre, elle est de tous
+    // les niveaux — avec deux échappatoires : ce que ce groupe a déjà daté et ce
+    // sur quoi une séance est ouverte restent visibles, sinon un module en cours
+    // d'usage disparaîtrait de l'écran qui sert à le suivre.
+    const NIVEAU = Prof.niveauGroupe();
+    const auNiveau = a => (a.level || 'Niveau 4') === NIVEAU
+                       || /^pratique orale libre/i.test(a.domaineDeVie || '')
+                       || a.datePrevue || a.dateVue
+                       || enSeance.has(String(a.id));
+
+    const duGroupe = ACTIVITES.filter(a => (a.categorie === 'cours'
+                                        || enSeance.has(String(a.id))) && auNiveau(a)).sort(ordre);
     const dejaLa = new Set(duGroupe.map(a => String(a.id)));
     // Ouvrable = un fichier à ouvrir. Un module sans fichier n'ouvrirait rien.
     const autres = ACTIVITES.filter(a => (a.parcours || a.interactive)
-                                      && !dejaLa.has(String(a.id))).sort(ordre);
+                                      && !dejaLa.has(String(a.id))
+                                      && auNiveau(a)).sort(ordre);
     MODULES = duGroupe.concat(autres);
 
     const optionDe = m => {
@@ -635,7 +651,7 @@
       + (duGroupe.length
           ? `<optgroup label="Ce que ce groupe suit">${duGroupe.map(optionDe).join('')}</optgroup>` : '')
       + (autres.length
-          ? `<optgroup label="Les autres, ouvrables en séance">${autres.map(optionDe).join('')}</optgroup>` : '');
+          ? `<optgroup label="Les autres du ${esc(NIVEAU)}, ouvrables en séance">${autres.map(optionDe).join('')}</optgroup>` : '');
     // Le module retenu peut n'être dans aucune des deux familles — il a été
     // retiré du catalogue, ou l'adresse porte un identifiant inventé. On
     // retombe alors sur « Tous les modules », comme avant l'élargissement ;
