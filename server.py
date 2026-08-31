@@ -1028,7 +1028,7 @@ def save_schedule(entries):
 
 
 SCHEDULE_FIELDS = ("dateVue", "datePrevue", "dateFin", "lien",
-                   "transcription")
+                   "transcription", "jeuDeRole")
 
 # `transcription` : "" quand la transcription du dialogue reste offerte à
 # l'élève (le défaut, et ce que valent toutes les entrées écrites avant ce
@@ -1036,6 +1036,12 @@ SCHEDULE_FIELDS = ("dateVue", "datePrevue", "dateFin", "lien",
 # chaîne plutôt qu'un booléen : tout le tuyau de la planification passe des
 # chaînes, du formulaire au fichier, et un booléen y serait le seul cas
 # particulier.
+#
+# `jeuDeRole` : "" quand l'élève choisit lui-même de lire ou non les réponses
+# de l'assistant (le défaut), "ecoute" quand l'enseignant ferme le texte pour
+# son groupe. Le module a déjà un bouton « Écouter sans lire » ; ce réglage-ci
+# le met hors de portée de l'élève, comme `transcription` le fait du texte des
+# dialogues. Même forme, même tuyau, et pour la même raison.
 
 
 def _section_id(entry):
@@ -1482,6 +1488,12 @@ _CACHE_DIRECT = {}
 MARQUES_TRANSCRIPTION = ("dial-txt", "toggleScript", "Cacher le dialogue")
 _CACHE_TRANSCRIPTION = {}
 
+# Le jeu de rôle n'existe pas dans les dix ateliers ni dans neuf des modules.
+# Comme pour la transcription, c'est au FICHIER qu'on le demande : un champ
+# dans data/activities.json serait une seconde vérité à tenir.
+MARQUES_JEU_DE_ROLE = ("function jrParler(", "id=\"jrModes\"")
+_CACHE_JEU_DE_ROLE = {}
+
 
 def rapporte_au_direct(activite):
     """Cette activité renvoie-t-elle la réussite question par question ?
@@ -1521,18 +1533,14 @@ def rapporte_au_direct(activite):
     return rapporte
 
 
-def a_une_transcription(activite):
-    """L'activité montre-t-elle le texte d'un dialogue ?
+def _fichier_porte(activite, marques, cache):
+    """Le fichier de l'activité contient-il l'une de ces marques ?
 
     Lu dans le fichier, comme `rapporte_au_direct()` et pour la même raison :
     un champ dans `data/activities.json` serait une seconde vérité à tenir, et
-    elle divergerait au premier atelier reconstruit.
-
-    Sert à décider si l'enseignant voit l'interrupteur « transcription ».
-    L'écran s'en remettait à `categorie === 'cours'` : vrai aujourd'hui — les
-    87 cours en ont une, aucun des 90 ateliers de la banque — mais vrai par
-    habitude, pas par construction, et faux dès qu'on regarde les ateliers de
-    la première époque, dont vingt-sept ont un dialogue sans être des cours.
+    elle divergerait au premier atelier reconstruit. Le résultat est gardé par
+    (mtime, taille) : la page de planification appelle ceci pour chacune des
+    177 activités, à chaque chargement.
     """
     chemin = (activite or {}).get("interactive") or ""
     if not chemin:
@@ -1546,7 +1554,7 @@ def a_une_transcription(activite):
         return False
     cle = str(reel)
     marque = (st.st_mtime, st.st_size)
-    garde = _CACHE_TRANSCRIPTION.get(cle)
+    garde = cache.get(cle)
     if garde and garde[0] == marque:
         return garde[1]
     try:
@@ -1554,10 +1562,30 @@ def a_une_transcription(activite):
             texte = f.read()
     except OSError:
         return False
-    trouve = any(m in texte for m in MARQUES_TRANSCRIPTION)
-    _CACHE_TRANSCRIPTION[cle] = (marque, trouve)
+    trouve = any(m in texte for m in marques)
+    cache[cle] = (marque, trouve)
     return trouve
 
+
+def a_une_transcription(activite):
+    """L'activité montre-t-elle le texte d'un dialogue ?
+
+    Sert à décider si l'enseignant voit l'interrupteur « transcription ».
+    L'écran s'en remettait à `categorie === 'cours'` : vrai aujourd'hui — les
+    87 cours en ont une, aucun des 90 ateliers de la banque — mais vrai par
+    habitude, pas par construction, et faux dès qu'on regarde les ateliers de
+    la première époque, dont vingt-sept ont un dialogue sans être des cours.
+    """
+    return _fichier_porte(activite, MARQUES_TRANSCRIPTION, _CACHE_TRANSCRIPTION)
+
+
+def a_un_jeu_de_role(activite):
+    """L'activité a-t-elle un jeu de rôle avec l'assistant ?
+
+    Sert à décider si l'enseignant voit l'interrupteur « réponses de
+    l'assistant ». Neuf des 87 modules n'en ont pas, et aucun atelier.
+    """
+    return _fichier_porte(activite, MARQUES_JEU_DE_ROLE, _CACHE_JEU_DE_ROLE)
 
 def activities_for_group(group_id):
     """Le catalogue commun, avec les dates du groupe superposées.
@@ -1580,6 +1608,7 @@ def activities_for_group(group_id):
         # Calculé, jamais stocké — voir rapporte_au_direct().
         entry["suivable"] = rapporte_au_direct(a)
         entry["aUneTranscription"] = a_une_transcription(a)
+        entry["aUnJeuDeRole"] = a_un_jeu_de_role(a)
         result.append(entry)
     return result
 
@@ -16731,6 +16760,11 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 "fermee" if str(body["transcription"]).strip().lower()
                 in ("fermee", "fermée", "false", "non", "0") else "")
 
+        if "jeuDeRole" in body:
+            body["jeuDeRole"] = (
+                "ecoute" if str(body["jeuDeRole"]).strip().lower()
+                in ("ecoute", "écoute", "fermee", "fermée") else "")
+
         # Une date peut viser une section du module (« Défi 2 ») plutôt que le
         # module entier. On refuse une section inconnue : une faute de frappe
         # créerait une entrée que plus rien ne lit ni n'efface.
@@ -16819,6 +16853,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             "decoupe": bool(sections),
             "sections": sections,
             "transcription": planif.get("transcription", "") != "fermee",
+            # "" ou "ecoute". Le module s'en sert pour fermer le texte des
+            # réponses du jeu de rôle et retirer le bouton à l'élève.
+            "jeuDeRole": planif.get("jeuDeRole", ""),
         })
 
     @sous_verrou

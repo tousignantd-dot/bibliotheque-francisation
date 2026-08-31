@@ -597,8 +597,9 @@
       // oublie ; « pourquoi mon élève ne voit plus le texte ? » est la
       // question qu'il coûte le plus cher de ne pas pouvoir répondre d'un
       // coup d'œil.
-      const sansTexte = a.transcription === 'fermee'
-        ? ' · <b>transcription fermée</b>' : '';
+      const sansTexte = (a.transcription === 'fermee'
+        ? ' · <b>transcription fermée</b>' : '')
+        + (a.jeuDeRole === 'ecoute' ? ' · <b>jeu de rôle à l\'oreille</b>' : '');
       const metaSec = (secs.length
         ? `${meta} · ${secs.length} sections`
         : meta) + sansTexte;
@@ -1394,6 +1395,10 @@
     const avecDialogue = !sec && a.aUneTranscription;
     $('dTranscriptionBloc').hidden = !avecDialogue;
     $('dTranscription').value = a.transcription === 'fermee' ? 'fermee' : '';
+    // Même règle que la transcription : au fichier de dire s'il y a un jeu de
+    // rôle, et jamais sur une section.
+    $('dJeuDeRoleBloc').hidden = !(!sec && a.aUnJeuDeRole);
+    $('dJeuDeRole').value = a.jeuDeRole === 'ecoute' ? 'ecoute' : '';
     ouvrirModale('modaleDates');
   }
 
@@ -1412,10 +1417,14 @@
       // section poserait un champ que rien ne relit jamais.
       const ferme = !$('dTranscriptionBloc').hidden && $('dTranscription').value === 'fermee';
       if (!$('dTranscriptionBloc').hidden) corps.transcription = ferme ? 'fermee' : '';
+      const ecoute = !$('dJeuDeRoleBloc').hidden && $('dJeuDeRole').value === 'ecoute';
+      if (!$('dJeuDeRoleBloc').hidden) corps.jeuDeRole = ecoute ? 'ecoute' : '';
       await envoyer(`/api/activities/${etat.detail}/dates`, corps);
       fermerModale('modaleDates');
-      dire(ferme
-        ? 'Enregistré. La transcription de ce dialogue est fermée pour ce groupe.'
+      dire(ferme || ecoute
+        ? 'Enregistré. ' + [ferme && 'La transcription de ce dialogue est fermée',
+                            ecoute && 'Les réponses du jeu de rôle sont fermées']
+                           .filter(Boolean).join(' et ') + ' pour ce groupe.'
         : 'Dates enregistrées.');
       await chargerGroupe();
     } catch (err) {
