@@ -37,6 +37,19 @@ et le worktree retiré par `git worktree remove`)_
 
 ## Ce qui s'est croisé, et comment ça s'est joué
 
+**30 août 2026 — mesurer un arbre partagé, c'est mesurer le travail des
+autres.** Une session a lancé le serveur local sur le dépôt principal pour
+vérifier une page, pendant qu'une autre écrivait dedans. Elle a mesuré du
+travail à moitié fini et y a vu un défaut qui n'existait pas. Ce qui l'a
+sauvée est un détail d'adresse — un paramètre qui n'était pas dans son code.
+
+**Le disque n'est pas ce qui est en ligne, et dans cet arbre-ci il n'est même
+pas ce qu'on croit avoir écrit.** Pour vérifier une page : servir une **copie
+de la version commitée**, ou interroger l'adresse de production, jamais
+l'arbre partagé.
+
+
+
 **30 août 2026, 20 h 25 — un couloir a emporté le travail d'un autre.** Le
 commit `9cb85f9b2` (« La classe d'un coup d'œil s'affiche même sans module
 choisi ») a publié, avec le sien, un correctif de `progression.html` qui
