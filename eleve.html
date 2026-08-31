@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>francis — Francisation Niveau 4</title>
+  <title>francis — Francisation</title>
   <!-- Le système de design versionné, pas ds-bundle/ (ignoré par git). -->
   <link rel="stylesheet" href="assets/design-system/styles.css" />
   <link rel="stylesheet" href="assets/design-system/marque-francis.css" />
@@ -154,7 +154,7 @@
 
   <header class="band">
     <div class="container">
-      <p class="band__lead">Niveau 4. Entrez votre code d'accès pour retrouver vos activités et votre bilan.</p>
+      <p class="band__lead">Entrez votre code d'accès pour retrouver vos activités et votre bilan.</p>
       <div class="om-connexion">
         <div class="card">
           <div class="om-connexion-rangee">
@@ -193,7 +193,7 @@
     <div class="container">
       <div class="om-band-haut">
         <div>
-          <div class="band__eyebrow" id="bandSurtitre">Niveau 4</div>
+          <div class="band__eyebrow" id="bandSurtitre"></div>
           <h1 id="bandTitre">Bonjour</h1>
         </div>
       </div>
@@ -295,8 +295,10 @@
       prenom ? `Bonjour ${prenom}` : 'Bonjour';
     // Le nom de la marque est dans le verrouillage juste au-dessus : le
     // sur-titre n'a pas à le répéter.
+    // Pas de niveau : il était écrit « Niveau 4 » en dur, donc faux pour
+    // tout élève d'un autre niveau. Son code lui suffit à se reconnaître.
     document.getElementById('bandSurtitre').textContent =
-      `Niveau 4 · Code ${session.code}`;
+      `Code ${session.code}`;
     charger();
   }
 
