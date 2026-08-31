@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>« Entrez » à l'espagnole</title>
+<style>
+ body{background:#fff;color:#101418;margin:0;padding:28px 24px 60px;
+      max-width:880px;font:16px/1.55 -apple-system,"Segoe UI",Roboto,sans-serif}
+ h1{font-size:21px;margin:0 0 6px}
+ h2{font-size:14px;margin:28px 0 8px;text-transform:uppercase;
+    letter-spacing:.05em;color:#5b6672}
+ p{color:#39424c;margin:0 0 16px}
+ table{border-collapse:collapse;width:100%}
+ th,td{padding:9px 10px;border-bottom:1px solid #e4e9ee;text-align:left;vertical-align:top}
+ thead th{font-size:13px;color:#5b6672;text-transform:uppercase;letter-spacing:.04em}
+ tbody th{font-weight:600;width:210px}
+ td.note{color:#5b6672;font-size:14px}
+ audio{height:34px;width:250px}
+ code{background:#f2f5f8;padding:1px 5px;border-radius:4px;font-size:13px}
+ blockquote{margin:0 0 20px;padding:10px 14px;background:#f7f9fb;
+            border-left:3px solid #c9d3dc;color:#39424c}
+ .ko{color:#8A5206;font-weight:600}
+</style></head><body>
+<h1>« Entrez » lu à l'espagnole — six essais</h1>
+<blockquote>Entrez, entrez ! Vous pouvez enlever vos bottes ici.</blockquote>
+<p>Les voix DragonHD détectent la langue <b>toutes seules</b>, mot à mot. C'est
+   ce qui les rend vivantes, et c'est ce qui fait basculer « entrez » — qui
+   existe aussi en espagnol — malgré le <code>xml:lang="fr-CA"</code> du
+   document. Six parades, la même phrase, la même voix (sauf le témoin).</p>
+
+<table><tbody>
+<tr><th>1 · HD, tel quel</th><td><audio controls preload="none" src="essai-entrez/1-hd-tel-quel.mp3"></audio></td>
+    <td class="note">Ce que l'élève entend aujourd'hui.</td></tr>
+<tr><th>2 · Voix neurale (témoin)</th><td><audio controls preload="none" src="essai-entrez/2-neurale-temoin.mp3"></audio></td>
+    <td class="note">L'ancienne voix, celle d'avant-hier. Si elle dit « entrez » correctement, c'est bien la détection de langue du modèle HD qui est en cause — et non le texte.</td></tr>
+<tr><th>3 · <code>&lt;lang&gt;</code> sur toute la phrase</th><td><audio controls preload="none" src="essai-entrez/3-hd-lang-tout.mp3"></audio></td>
+    <td class="note"><b>La seule des trois balises qui produise un son différent</b> (75 840 octets contre 70 560) : le modèle en a donc tenu compte. C'est la parade générale — elle protégerait tous les mots, pas seulement celui-ci.</td></tr>
+<tr><th>4 · <code>&lt;lang&gt;</code> sur le seul mot</th><td><audio controls preload="none" src="essai-entrez/4-hd-lang-le-mot.mp3"></audio></td>
+    <td class="note ko">Fichier <b>identique</b> à l'essai 1, à l'octet près : la balise est ignorée. Écartée.</td></tr>
+<tr><th>5 · <code>&lt;phoneme&gt;</code> API</th><td><audio controls preload="none" src="essai-entrez/5-hd-phoneme.mp3"></audio></td>
+    <td class="note ko">Également identique à l'essai 1 : les voix HD n'appliquent pas <code>&lt;phoneme&gt;</code>. Écartée.</td></tr>
+<tr><th>6 · <code>&lt;sub alias="antré"&gt;</code></th><td><audio controls preload="none" src="essai-entrez/6-hd-sub-antre.mp3"></audio></td>
+    <td class="note">La machinerie que le dépôt possède déjà (le lexique de <code>prononce()</code>). Le son change, donc elle est appliquée — mais elle ne corrige qu'un mot à la fois, et la règle de sûreté du lexique interdit justement de toucher aux mots du français courant.</td></tr>
+</tbody></table>
+
+<h2>Posé — et une découverte au passage</h2>
+<p>La parade retenue est en place : <code>ssml()</code> enveloppe désormais
+   toute voix HD dans <code>&lt;lang xml:lang="fr-CA"&gt;</code>. Voici ce que
+   le serveur produit maintenant, aux deux paliers de la barre de débit.</p>
+<table><tbody>
+<tr><th>Débit normal</th><td><audio controls preload="none" src="essai-entrez/7-hd-lang-final.mp3"></audio></td>
+    <td class="note">Sortie exacte de <code>ssml(texte, 'jr_feminin')</code>.</td></tr>
+<tr><th>Débit lent</th><td><audio controls preload="none" src="essai-entrez/8-hd-lang-lent.mp3"></audio></td>
+    <td class="note"><code>&lt;prosody rate="-20%"&gt;</code> par-dessus le <code>&lt;lang&gt;</code> : l'API accepte l'imbrication.</td></tr>
+</tbody></table>
+
+<h2 style="color:#8A5206">Le modèle HD n'est pas déterministe</h2>
+<p>Le SSML de l'essai 3 et celui que produit <code>ssml()</code> sont
+   <b>identiques, caractère pour caractère</b> — et pourtant les fichiers ne
+   font pas la même taille. Quatre tirages du même document :</p>
+<table><thead><tr><th>Tirage</th><th>Écoute</th><th>Taille</th></tr></thead><tbody>
+<tr><th>1</th><td><audio controls preload="none" src="essai-entrez/9-tirage-1.mp3"></audio></td><td class="note">70 560 o</td></tr>
+<tr><th>2</th><td><audio controls preload="none" src="essai-entrez/9-tirage-2.mp3"></audio></td><td class="note">70 560 o</td></tr>
+<tr><th>3</th><td><audio controls preload="none" src="essai-entrez/9-tirage-3.mp3"></audio></td><td class="note">62 400 o</td></tr>
+<tr><th>4</th><td><audio controls preload="none" src="essai-entrez/9-tirage-4.mp3"></audio></td><td class="note">67 680 o</td></tr>
+</tbody></table>
+<p>Quatre empreintes différentes, jusqu'à 13 % d'écart de durée. C'est
+   exactement ce que le dépôt reprochait à Gemini et croyait avoir quitté en
+   passant chez Azure — mais cette mesure-là portait sur les voix
+   <b>neurales</b>, qui, elles, restent au millième. La conclusion ne se
+   transporte pas aux voix HD.</p>
+<p>Conséquence pratique : la synthèse en direct du jeu de rôle ne rend pas deux
+   fois le même son, et le <code>&lt;lang&gt;</code> rend la lecture française
+   très probable, non certaine. Écoutez les quatre tirages : si « entrez »
+   tient dans les quatre, on en reste là. S'il glisse une fois sur quatre, il
+   reste la ceinture — une table de prononciation réservée aux voix HD, qui
+   écrirait « antré » à la synthèse sans toucher au texte affiché ni aux
+   87 modules enregistrés.</p>
+
+<h2>Ce que je propose</h2>
+<p>Si l'essai <b>3</b> dit « entrez » en français : on enveloppe toute réplique
+   du jeu de rôle dans <code>&lt;lang xml:lang="fr-CA"&gt;</code>, une fois pour
+   toutes, dans <code>azure_voix.ssml()</code> pour les rôles HD. Aucun mot à
+   lister, et la protection vaut pour « salon », « no », « visita » et tous
+   ceux qu'on n'a pas encore entendus.</p>
+<p>Si l'essai 3 ne suffit pas, il reste l'essai 6 mot à mot — mais alors avec
+   une table réservée aux voix HD, pour ne pas déformer les 87 modules déjà
+   enregistrés.</p>
+</body></html>

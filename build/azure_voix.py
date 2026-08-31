@@ -405,6 +405,24 @@ def ssml(texte, role, palier=None, epeler=None, pause_lettres="280ms",
     else:
         corps = prononce(texte, chemin)
 
+    # Les voix DragonHD (et les Multilingual) détectent la langue **mot à mot**,
+    # toutes seules. C'est ce qui les rend vivantes, et c'est ce qui fait
+    # basculer « entrez » à l'espagnole au milieu d'une phrase française — le
+    # `xml:lang` du document n'y suffit pas. Entendu au jeu de rôle le 31 août
+    # 2026, sur la première et la dernière réplique d'une visite.
+    #
+    # Seule parade qui porte : envelopper TOUT le corps dans <lang>. Mesuré le
+    # même jour — `<lang>` autour du seul mot et `<phoneme>` rendent un fichier
+    # identique à l'octet près au son non balisé, donc les voix HD les ignorent
+    # purement et simplement ; `<lang>` autour de la phrase entière change le
+    # son (essais/essai-entrez.html).
+    #
+    # Le test porte sur le NOM de la voix et non sur un drapeau de la table :
+    # un rôle HD ajouté plus tard hériterait du problème sans que personne y
+    # pense.
+    if "DragonHD" in v["azure"] or "Multilingual" in v["azure"]:
+        corps = '<lang xml:lang="fr-CA">%s</lang>' % corps
+
     # `rate` du palier et `rate` du rôle se cumulent : on les pose sur deux
     # balises imbriquées plutôt que d'additionner des pourcentages, qui ne
     # s'additionnent pas linéairement.

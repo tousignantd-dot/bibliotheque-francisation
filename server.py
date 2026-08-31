@@ -3418,6 +3418,14 @@ def _transcrire_en_arriere_plan(sub_id, audio_bytes, nom, eleve_id, groupe_id,
         print("[WARN] transcription non enregistrée : %s" % e, flush=True)
 
 
+# À incrémenter dès que la façon de FABRIQUER le son change à texte et à voix
+# constants — un SSML retouché, par exemple. Sans ça, le cache continue de
+# servir l'ancien son et la correction reste invisible en classe. Passé à 2 le
+# 31 août 2026, quand les voix HD ont été enveloppées dans <lang> pour cesser
+# de lire « entrez » à l'espagnole.
+VOIX_CACHE_VERSION = 2
+
+
 def voix_cache_chemin(voix, texte, palier=None):
     """Fichier où dort le MP3 d'un texte dit par une voix. La voix entre dans
     la clé : la même réplique lue par la propriétaire et par le visiteur sont
@@ -3426,7 +3434,8 @@ def voix_cache_chemin(voix, texte, palier=None):
     cache manqué. Espaces normalisés, comme pour outils_key()."""
     empreinte = hashlib.sha1(" ".join(texte.split()).encode("utf-8")).hexdigest()[:20]
     suffixe = "-" + palier if palier else ""
-    return VOIX_CACHE_DIR / ("%s%s-%s.mp3" % (voix, suffixe, empreinte))
+    return VOIX_CACHE_DIR / ("%s%s-v%d-%s.mp3"
+                             % (voix, suffixe, VOIX_CACHE_VERSION, empreinte))
 
 
 def voix_cache_lire(chemin):
