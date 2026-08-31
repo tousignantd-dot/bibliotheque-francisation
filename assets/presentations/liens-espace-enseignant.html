@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Les neuf liens sous le groupe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600&family=Nunito:ital,wght@0,400;0,600;0,700;0,800&display=swap">
+<style>
+:root{
+  --ground:#F7F7F5; --card:#FFFFFF; --sunken:#FBFBFA;
+  --ink:#17181A; --body:#3A3D40; --muted:#6E7175;
+  --line:#E4E4E0; --line-fort:#D2D2CD;
+  --ok:#0A8F5B; --ok-bg:#E6F5EE;
+  --trou:#C7302B; --trou-bg:#FBEDEC;
+  --part:#C07A08; --part-bg:#FBF2E2;
+  --acier:#1D6B8F;
+  --niv-3:#B45309; --niv-4:#8C6A07; --niv-5:#0D7A6F;
+  --niv-6:#1D6B8F; --niv-7:#3B49A0; --niv-8:#7E3F98;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#151618; --card:#1D1F22; --sunken:#212326;
+    --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+    --line:#2E3135; --line-fort:#3D4146;
+    --ok:#4BC48D; --ok-bg:#12291F;
+    --trou:#EE7A73; --trou-bg:#2E1917;
+    --part:#E0A63F; --part-bg:#2C2213;
+    --acier:#6DAFD2;
+    --niv-3:#E0A63F; --niv-4:#D4BC5C; --niv-5:#5FC3B8;
+    --niv-6:#6DAFD2; --niv-7:#8D97DE; --niv-8:#C089D6;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#151618; --card:#1D1F22; --sunken:#212326;
+  --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+  --line:#2E3135; --line-fort:#3D4146;
+  --ok:#4BC48D; --ok-bg:#12291F;
+  --trou:#EE7A73; --trou-bg:#2E1917;
+  --part:#E0A63F; --part-bg:#2C2213;
+  --acier:#6DAFD2;
+  --niv-3:#E0A63F; --niv-4:#D4BC5C; --niv-5:#5FC3B8;
+  --niv-6:#6DAFD2; --niv-7:#8D97DE; --niv-8:#C089D6;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--body);
+  font-family:Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased}
+.doc{max-width:880px;margin:0 auto;padding:56px 24px 96px}
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--acier);margin:0 0 14px}
+h1{font-family:Newsreader,Georgia,serif;font-size:clamp(38px,6.4vw,58px);line-height:1.04;
+  font-weight:500;letter-spacing:-.02em;color:var(--ink);margin:0 0 20px;text-wrap:balance}
+.chapeau{font-size:19px;line-height:1.6;margin:0;max-width:62ch}
+.chapeau strong{color:var(--ink);font-weight:700}
+h2{font-family:Newsreader,Georgia,serif;font-size:29px;line-height:1.2;font-weight:600;
+  letter-spacing:-.01em;color:var(--ink);margin:0 0 4px;text-wrap:balance}
+p{margin:0;max-width:68ch}
+section{display:flex;flex-direction:column;gap:16px;padding:44px 0 0;margin:44px 0 0;
+  border-top:1px solid var(--line)}
+section.premier{border-top:none;margin-top:0;padding-top:40px}
+code{font-family:var(--mono);font-size:.86em;background:var(--sunken);
+  border:1px solid var(--line);border-radius:4px;padding:1px 5px;color:var(--ink)}
+ul.simple{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px}
+ul.simple li{max-width:66ch} ul.simple li strong{color:var(--ink)}
+.these{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--acier);
+  border-radius:3px;padding:26px 28px;display:flex;flex-direction:column;gap:12px}
+.these p{font-size:18px}
+.these .cle{font-family:Newsreader,Georgia,serif;font-size:23px;line-height:1.3;
+  font-weight:500;color:var(--ink);font-style:italic}
+.chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.ch{background:var(--card);border:1px solid var(--line);border-radius:3px;
+  border-top:3px solid var(--trou);padding:15px 16px}
+.ch.bon{border-top-color:var(--ok)}
+.ch .n{font-family:Newsreader,Georgia,serif;font-size:30px;line-height:1;font-weight:500;
+  color:var(--ink);display:block;font-variant-numeric:tabular-nums}
+.ch .q{font-size:12.5px;font-weight:700;color:var(--muted);line-height:1.35;display:block;
+  margin-top:7px}
+.defile{overflow-x:auto;border:1px solid var(--line);border-radius:3px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:15px;min-width:620px}
+caption{caption-side:top;text-align:left;padding:0 0 10px;font-size:13.5px;color:var(--muted)}
+th,td{padding:11px 15px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{font-size:11.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--muted);background:var(--sunken);white-space:nowrap}
+th.r,td.r{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+tbody tr:last-child td{border-bottom:none}
+td.q{font-weight:700;color:var(--ink)}
+td small{display:block;color:var(--muted);font-size:13px;line-height:1.45;margin-top:2px}
+tbody tr td:first-child{border-left:4px solid transparent}
+tfoot td{font-weight:800;color:var(--ink);background:var(--sunken);
+  border-top:2px solid var(--line-fort)}
+.jauge{display:block;height:7px;border-radius:2px;background:var(--line);margin-top:6px;
+  width:150px;overflow:hidden}
+.jauge i{display:block;height:100%;background:var(--trou)}
+.badge{display:inline-block;font-size:11.5px;font-weight:800;letter-spacing:.05em;
+  text-transform:uppercase;padding:3px 9px;border-radius:2px;white-space:nowrap}
+.b-vide{background:var(--trou-bg);color:var(--trou)}
+.b-part{background:var(--part-bg);color:var(--part)}
+.b-ok{background:var(--ok-bg);color:var(--ok)}
+.reserve{border:1px dashed var(--line-fort);border-radius:3px;padding:20px 24px;
+  font-size:15px;color:var(--muted);display:flex;flex-direction:column;gap:9px}
+.reserve strong{color:var(--body)}
+.pied{margin-top:52px;padding-top:22px;border-top:1px solid var(--line);font-size:13.5px;
+  color:var(--muted);display:flex;flex-direction:column;gap:5px}
+@media (max-width:620px){ .doc{padding:36px 18px 72px} .jauge{width:96px} }
+</style><style>
+.bar{background:var(--card);border:1px solid var(--line);border-radius:12px;
+  padding:16px 18px;margin:14px 0 0;display:flex;flex-wrap:wrap;gap:10px 18px;align-items:baseline}
+.bar a{color:var(--ok);font-weight:700;font-size:15px;text-decoration:underline;
+  text-underline-offset:3px;cursor:default}
+.bar a.ext{color:var(--part)}
+.bar .sep{width:1px;height:16px;background:var(--line-fort);display:inline-block}
+.grp{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:baseline;
+  padding:8px 12px;border-radius:9px;background:var(--sunken);border:1px solid var(--line)}
+.grp-cle{font-size:11px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--muted);margin-right:2px}
+.bar--groupes{gap:12px}
+.ecart{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 0}
+.opt{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--acier);
+  border-radius:12px;padding:18px 20px;margin:18px 0 0}
+.opt--reco{border-left-color:var(--ok)}
+.opt h3{font-family:Newsreader,Georgia,serif;font-size:22px;font-weight:600;color:var(--ink);margin:0 0 4px}
+.opt .eti{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--ok)}
+.pour{display:grid;gap:6px;margin:12px 0 0;font-size:15px}
+.pour div::before{content:"· ";color:var(--muted)}
+.tab{width:100%;border-collapse:collapse;margin:14px 0 0;font-size:15px}
+.tab th,.tab td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+.tab th{font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:800}
+.tab code{font-family:var(--mono);font-size:13px}
+.bloc{margin:52px 0 0}
+.note{background:var(--part-bg);border-left:3px solid var(--part);border-radius:0 8px 8px 0;
+  padding:14px 16px;margin:16px 0 0;font-size:15px}
+</style>
+</head>
+<body>
+<div class="doc">
+  <p class="eyebrow">Proposition · 31 août 2026</p>
+  <h1>Les neuf liens sous le groupe</h1>
+  <p class="chapeau">L'espace enseignant range neuf liens sur une seule ligne, sans rien qui
+  dise lesquels vont ensemble. <strong>Et le tableau de bord de la classe n'y est pas :</strong>
+  pour voir où en sont les élèves, il faut cliquer « Élèves », puis « Progression des élèves »
+  à l'intérieur. Le chemin le plus fréquent est le seul qui demande deux clics et un détour
+  par un écran qui parle d'autre chose.</p>
+
+  <div class="bloc">
+    <h2>Ce qu'on voit aujourd'hui</h2>
+    <div class="bar">
+      <a>Catalogue</a><a>Planifier</a><a>Élèves · 1</a><a>Matériel</a>
+      <a>Séance sans compte</a><a>Tutoriels</a><a class="ext">Correcteur collaboratif</a>
+      <a>Composer une activité</a><span class="sep"></span><a>Nouveau groupe</a>
+    </div>
+    <p style="margin-top:14px">Neuf entrées de <b>quatre natures différentes</b>, et rien ne
+    les distingue : ce que la classe fait, où elle en est, les outils d'à côté, et un geste
+    d'administration. Le filet devant « Nouveau groupe » est le seul signe de regroupement.</p>
+  </div>
+
+  <div class="bloc">
+    <h2>Les quatre natures</h2>
+    <table class="tab">
+      <tr><th>Nature</th><th>Liens</th><th>La question qu'on se pose</th></tr>
+      <tr><td><b>Ce que la classe fait</b></td><td>Catalogue, Planifier, Matériel</td>
+          <td>« Qu'est-ce que je leur donne, et quand ? »</td></tr>
+      <tr><td><b>Où en est la classe</b></td><td>Élèves, <i>(Progression — absente)</i>, Séance sans compte</td>
+          <td>« Qui sont-ils, et où en sont-ils ? »</td></tr>
+      <tr><td><b>Les outils d'à côté</b></td><td>Composer une activité, Correcteur collaboratif, Tutoriels</td>
+          <td>« J'ai besoin d'autre chose. » <i>Tous s'ouvrent hors de la page.</i></td></tr>
+      <tr><td><b>Le contenant</b></td><td>Nouveau groupe</td>
+          <td>Ce n'est pas un geste de classe. Sa place est à côté du menu « Groupe ».</td></tr>
+    </table>
+  </div>
+
+  <div class="bloc">
+    <h2>Trois façons de s'y prendre</h2>
+
+    <article class="opt opt--reco">
+      <span class="eti">Recommandée</span>
+      <h3>A · Trois familles nommées</h3>
+      <p>Les liens restent tous visibles, mais rangés en trois paquets qui portent leur nom.
+      <b>« Progression » monte au premier niveau</b>, à côté d'« Élèves ».</p>
+      <div class="ecart">
+        <div class="grp"><span class="grp-cle">Le cours</span>
+          <a>Catalogue</a><a>Planifier</a><a>Matériel</a></div>
+        <div class="grp"><span class="grp-cle">Ma classe</span>
+          <a>Élèves · 1</a><a>Progression</a><a>Séance sans compte</a></div>
+        <div class="grp"><span class="grp-cle">Outils</span>
+          <a>Composer</a><a class="ext">Correcteur</a><a>Tutoriels</a></div>
+      </div>
+      <div class="pour">
+        <div>Rien ne disparaît : aucun geste à réapprendre, aucun clic ajouté.</div>
+        <div>Trois paquets de trois se retiennent ; neuf entrées à plat, non.</div>
+        <div>Le suivi des élèves passe de deux clics à un.</div>
+        <div>« Nouveau groupe » remonte à côté du menu « Groupe », avec « Ajouter le lien
+            Teams » et « Copier une planification » — les trois agissent sur le contenant.</div>
+      </div>
+    </article>
+
+    <article class="opt">
+      <h3>B · Deux lignes, les outils repliés</h3>
+      <p>Le cours sur une ligne, la classe sur la suivante. Les trois outils passent derrière
+      un bouton <b>« Outils ▾ »</b>, parce qu'on ne les ouvre pas tous les jours.</p>
+      <div class="ecart" style="flex-direction:column">
+        <div class="grp"><span class="grp-cle">Le cours</span>
+          <a>Catalogue</a><a>Planifier</a><a>Matériel</a></div>
+        <div class="grp"><span class="grp-cle">Ma classe</span>
+          <a>Élèves · 1</a><a>Progression</a><a>Séance sans compte</a>
+          <span class="sep"></span><a>Outils ▾</a></div>
+      </div>
+      <div class="pour">
+        <div>La ligne la plus courte des trois : six liens au lieu de neuf.</div>
+        <div>Mais un menu qui se déplie est un geste de plus, et ce qu'il cache s'oublie —
+            le compositeur d'activité surtout, qui est neuf et qu'on découvre en le voyant.</div>
+      </div>
+    </article>
+
+    <article class="opt">
+      <h3>C · Le même ordre, mieux séparé</h3>
+      <p>Aucun nom de famille, aucun déplacement : seulement l'ordre revu et des filets aux
+      bons endroits. « Progression » s'ajoute quand même.</p>
+      <div class="bar">
+        <a>Catalogue</a><a>Planifier</a><a>Matériel</a><span class="sep"></span>
+        <a>Élèves · 1</a><a>Progression</a><a>Séance sans compte</a><span class="sep"></span>
+        <a>Composer</a><a class="ext">Correcteur</a><a>Tutoriels</a>
+      </div>
+      <div class="pour">
+        <div>Le plus petit changement possible, et il règle déjà le principal.</div>
+        <div>Mais un filet ne dit pas <i>pourquoi</i> il sépare : on devine le groupement au
+            lieu de le lire, et neuf liens restent neuf liens.</div>
+      </div>
+    </article>
+  </div>
+
+  <div class="bloc">
+    <h2>Ce que je propose de faire, dans les trois cas</h2>
+    <div class="pour" style="font-size:16px">
+      <div><b>Ajouter « Progression ».</b> C'est le tableau de bord du groupe, et c'est
+          aujourd'hui le seul écran important qu'on n'atteint pas d'ici.</div>
+      <div><b>Renommer « Élèves » en « Élèves et codes ».</b> Cet écran sert à inscrire et à
+          donner les codes d'accès ; le suivi, c'est l'autre. Deux noms pour deux gestes.</div>
+      <div><b>Sortir « Nouveau groupe » de la ligne.</b> Il agit sur le contenant, pas sur la
+          classe, et sa place est auprès du menu « Groupe ».</div>
+    </div>
+    <div class="note"><b>Ce que je ne propose pas :</b> retirer un lien. Les neuf servent, et
+    la confusion ne vient pas de leur nombre mais de ce que rien ne dit lesquels vont
+    ensemble. Cacher aurait l'air plus propre et coûterait un apprentissage à chaque retour.</div>
+  </div>
+
+  <div class="bloc">
+    <h2>Où ça se fait</h2>
+    <p><b>enseignant.html</b>, la ligne <code>.pe-liens</code> sous le sélecteur de groupe. La
+    page appartient au couloir <code>espace-enseignant</code> : la proposition est écrite ici,
+    la main est là-bas. Le choix des teintes suivra le système de design du dépôt — le violet
+    reste à la marque, la couleur d'un module suit son niveau.</p>
+  </div>
+</div>
+</body>
+</html>
