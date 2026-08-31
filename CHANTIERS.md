@@ -37,6 +37,29 @@ et le worktree retiré par `git worktree remove`)_
 
 ## Ce qui s'est croisé, et comment ça s'est joué
 
+**30 août 2026, 20 h 25 — un couloir a emporté le travail d'un autre.** Le
+commit `9cb85f9b2` (« La classe d'un coup d'œil s'affiche même sans module
+choisi ») a publié, avec le sien, un correctif de `progression.html` qui
+n'était pas encore commité : la tuile « Élèves actifs » qui affichait
+« 2 / 1 ». Rien n'est perdu — le code et son commentaire sont partis entiers,
+et la correction est en service. Ce qui est perdu, c'est **le message** : rien
+dans l'historique ne dit pourquoi cette tuile a changé, et le commit dit autre
+chose que ce qu'il fait.
+
+Deux leçons, et la première n'est pas celle qu'on croit :
+
+· `git add <fichier>` **ne suffit pas** quand deux sessions écrivent dans le
+  même fichier. La règle du dépôt vise `git add -A` ; ici le chemin était
+  explicite, et l'accident a eu lieu quand même, parce que l'index prend le
+  **fichier tel qu'il est sur le disque**, pas le morceau qu'on croit
+  ajouter. Deux sessions dans un même fichier ne se protègent qu'en n'y étant
+  pas en même temps.
+· `progression.html` était déclaré au couloir `espace-enseignant` et a été
+  écrit depuis un autre. Un couloir ne vaut que si on le lit avant d'ouvrir un
+  fichier — c'est tout ce que ce tableau sait faire.
+
+
+
 **30 août 2026 — les ateliers, deux fois.** `seance-sans-compte` a instrumenté
 les **63 ateliers générés** pour le direct de la classe pendant que
 `validation` posait une greffe mobile sur ceux d'avant le système de design.
