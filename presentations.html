@@ -120,7 +120,8 @@
   .eti{display:inline-flex; align-items:center; padding:3px 11px; border-radius:var(--r-pill);
     font-size:var(--fs-meta); font-weight:800; letter-spacing:.05em; text-transform:uppercase}
   .eti-diapo{background:var(--acier-100); color:var(--acier-600)}
-  .eti-page{background:var(--teal-100); color:var(--teal-700)}
+  .eti-public{background:var(--sunken);border-color:var(--line-fort);color:var(--muted)}
+.eti-page{background:var(--teal-100); color:var(--teal-700)}
   .eti-pptx{background:var(--ambre-100); color:var(--ambre-700)}
     /* « Privée » n'est pas un format mais un état : elle sort de la gamme
      des étiquettes de format et reste neutre. Elle était violette ; le
@@ -197,13 +198,14 @@
 
 <nav class="tri" aria-label="Filtrer les présentations">
   <div class="conteneur">
-    <div class="onglets" role="group" aria-label="Filtrer par public">
-      <button type="button" class="onglet" data-f="tout" aria-pressed="true">Tout <span class="n">55</span></button>
-      <button type="button" class="onglet" data-f="trousse" aria-pressed="false">Trousse <span class="n">1</span></button>
-      <button type="button" class="onglet" data-f="direction" aria-pressed="false">Direction <span class="n">9</span></button>
-      <button type="button" class="onglet" data-f="enseignants" aria-pressed="false">Enseignants <span class="n">9</span></button>
-      <button type="button" class="onglet" data-f="chantier" aria-pressed="false">Chantier <span class="n">25</span></button>
-      <button type="button" class="onglet" data-f="reperes" aria-pressed="false">Repères <span class="n">11</span></button>
+    <div class="onglets" role="group" aria-label="Filtrer par usage">
+      <!-- Les nombres sont posés au chargement, jamais écrits ici : un compteur
+           écrit à la main est faux à la fiche suivante, et il l'était. -->
+      <button type="button" class="onglet" data-f="tout" aria-pressed="true">Tout <span class="n"></span></button>
+      <button type="button" class="onglet" data-f="presenter" aria-pressed="false">Présenter <span class="n"></span></button>
+      <button type="button" class="onglet" data-f="decider" aria-pressed="false">Décider <span class="n"></span></button>
+      <button type="button" class="onglet" data-f="suivre" aria-pressed="false">Suivre <span class="n"></span></button>
+      <button type="button" class="onglet" data-f="comprendre" aria-pressed="false">Comprendre <span class="n"></span></button>
     </div>
     <input type="search" class="recherche" id="q" placeholder="Chercher un titre…"
            aria-label="Chercher une présentation par titre ou par sujet">
@@ -213,17 +215,16 @@
 <main>
   <div class="conteneur">
 
-    <!-- ══════════ TROUSSE DE PRÉSENTATION ══════════ -->
-    <section class="famille" data-fam="trousse">
+    <!-- ══════════ PRÉSENTER ══════════ -->
+    <section class="famille" data-fam="presenter">
       <div class="tete">
-        <span class="eyebrow e-teal">Pour moi · Avant une rencontre</span>
-        <h2>La trousse de présentation</h2>
-        <p>Ce qu'on ouvre pendant un pitch, dans l'ordre où on l'ouvre. Une seule page à
-        garder dans un onglet — elle mène à tout le reste.</p>
+        <span class="eyebrow e-teal">Pour montrer</span>
+        <h2>Présenter</h2>
+        <p>Ce qu'on ouvre devant quelqu'un — une direction, une équipe, un collègue. La trousse d'abord, puis les pages qui font adopter ou qui expliquent un parti pris.</p>
       </div>
       <div class="liste">
 
-        <article class="fiche" data-cle="trousse presentation pitch vente rencontre direction deroule chiffres questions objections liasse imprimer aide-memoire">
+<article class="fiche" data-cle="trousse presentation pitch vente rencontre direction deroule chiffres questions objections liasse imprimer aide-memoire">
           <div>
             <h3 class="titre">La trousse de présentation</h3>
             <p class="quoi">Tout ce qui sert pendant une rencontre de vente, à un seul
@@ -237,6 +238,7 @@
             pas promettre</b>, la liste de la veille, <b>comment faire essayer la salle par code QR</b> — mode séance, sans compte, avec l'assistance — les trois diaporamas à projeter, et la liasse à imprimer en couleur. Page générée par <b>build/trousse.py</b> : un chiffre recopié devient
             faux tout seul.</p>
             <div class="meta">
+              <span class="eti eti-public">Direction</span>
               <span class="eti eti-page">Page du site</span>
               <span class="date">30 août 2026</span>
               <span class="ou">assets/presentations/trousse-presentation.html</span>
@@ -247,21 +249,7 @@
             <a class="btn btn-2" href="assets/presentations/trousse-presentation.pdf" target="_blank" rel="noopener">Version papier (PDF, 7 pages)</a>
           </div>
         </article>
-
-      </div>
-    </section>
-
-    <!-- ══════════ DIRECTION ══════════ -->
-    <section class="famille" data-fam="direction">
-      <div class="tete">
-        <span class="eyebrow e-acier">Public · Direction et institution</span>
-        <h2>Convaincre, obtenir, rendre des comptes</h2>
-        <p>Ce qu'on montre à une direction ou à un comité : le problème, ce qui existe
-        déjà, et ce que ça a coûté à produire.</p>
-      </div>
-      <div class="liste">
-
-        <article class="fiche" data-cle="teaser storyboard video film promotionnel marketing scenario plans voix off animation 48 secondes communication">
+<article class="fiche" data-cle="teaser storyboard video film promotionnel marketing scenario plans voix off animation 48 secondes communication">
           <div>
             <h3 class="titre">Teaser — animatique de 48 s et storyboard</h3>
             <p class="quoi">L'<b>animatique montée</b> — 48 secondes, voix off comprise — et,
@@ -276,6 +264,7 @@
             à trancher la voix off contre des cartons muets, et à photographier
             <code>progression.html</code>, qui est derrière la connexion enseignante.</p>
             <div class="meta">
+              <span class="eti eti-public">Direction</span>
               <span class="eti eti-page">Page du site · vidéo</span>
               <span class="date">29 août 2026</span>
               <span class="ou">assets/presentations/storyboard-teaser.html</span>
@@ -285,8 +274,7 @@
             <a class="btn" href="assets/presentations/storyboard-teaser.html" target="_blank" rel="noopener">Ouvrir</a>
           </div>
         </article>
-
-        <article class="fiche" data-cle="infographie pitch affiche usine a cours chiffres catalogue niveaux chaine production une page">
+<article class="fiche" data-cle="infographie pitch affiche usine a cours chiffres catalogue niveaux chaine production une page">
           <div>
             <h3 class="titre">L'usine à cours — infographie</h3>
             <p class="quoi">Le projet entier sur <b>une seule affiche</b>, pour un pitch de
@@ -299,6 +287,7 @@
             <b>Aucun chiffre n'est estimé</b> : ils sont relevés sur le dépôt par
             <b>build/tableau_bord.py</b> et par le catalogue.</p>
             <div class="meta">
+              <span class="eti eti-public">Direction</span>
               <span class="eti eti-page">Page du site</span>
               <span class="date">28 août 2026</span>
               <span class="ou">assets/presentations/infographie-projet.html</span>
@@ -309,8 +298,7 @@
             <a class="btn btn-2" href="https://claude.ai/code/artifact/43ade7e0-893d-4b50-b6e4-7419e6adab62" target="_blank" rel="noopener">Version privée</a>
           </div>
         </article>
-
-        <article class="fiche" data-cle="telephone iphone mobile captures ecrans eleve exercices familles vrai faux association texte a trous images tableau question ouverte barre outils responsive">
+<article class="fiche" data-cle="telephone iphone mobile captures ecrans eleve exercices familles vrai faux association texte a trous images tableau question ouverte barre outils responsive">
           <div>
             <h3 class="titre">Le cours sur un téléphone — dix-huit écrans</h3>
             <p class="quoi">La réponse à « est-ce que ça marche sur leur téléphone ? »,
@@ -323,6 +311,7 @@
             reste sous le pouce, les colonnes qui s'empilent, le glisser-déposer au doigt,
             et le texte qu'on ne rapetisse pas. Aucune application à installer.</p>
             <div class="meta">
+              <span class="eti eti-public">Direction</span>
               <span class="eti eti-page">Page du site</span>
               <span class="date">30 août 2026</span>
               <span class="ou">assets/presentations/captures-telephone.html</span>
@@ -333,8 +322,7 @@
             <a class="btn btn-2" href="assets/presentations/captures-telephone.pdf" target="_blank" rel="noopener">Version papier (PDF, 12 pages)</a>
           </div>
         </article>
-
-        <article class="fiche" data-cle="captures ecrans cas par cas demonstration suivi eleves seance sans compte participant assistant depot voix arbre direction images">
+<article class="fiche" data-cle="captures ecrans cas par cas demonstration suivi eleves seance sans compte participant assistant depot voix arbre direction images">
           <div>
             <h3 class="titre">Les écrans, cas par cas — treize captures</h3>
             <p class="quoi">Ce que le bac à sable décrit, cette page le <b>montre</b> :
@@ -347,6 +335,7 @@
             qu'un centre refuse. Sous chaque image, ce qu'il faut regarder. Les élèves sont
             fictifs ; les écrans ne sont pas des maquettes.</p>
             <div class="meta">
+              <span class="eti eti-public">Direction</span>
               <span class="eti eti-page">Page du site</span>
               <span class="date">30 août 2026</span>
               <span class="ou">assets/presentations/captures-cas-de-figure.html</span>
@@ -357,8 +346,7 @@
             <a class="btn btn-2" href="assets/presentations/captures-cas-de-figure.pdf" target="_blank" rel="noopener">Version papier (PDF, 15 pages)</a>
           </div>
         </article>
-
-        <article class="fiche" data-cle="bac a sable cas de figure demonstration interrupteurs assistant ia micro depot voix seance sans compte suivi eleves confidentialite combinaisons direction enseignants">
+<article class="fiche" data-cle="bac a sable cas de figure demonstration interrupteurs assistant ia micro depot voix seance sans compte suivi eleves confidentialite combinaisons direction enseignants">
           <div>
             <h3 class="titre">Le bac à sable — tous les cas de figure</h3>
             <p class="quoi">La page à projeter quand la question est « et si nous refusons
@@ -371,6 +359,7 @@
             calculé par le même code que les panneaux — il ne peut pas s'en écarter. Se
             termine sur les huit règles qui ne changent dans aucun cas de figure.</p>
             <div class="meta">
+              <span class="eti eti-public">Direction</span>
               <span class="eti eti-page">Page du site</span>
               <span class="date">30 août 2026</span>
               <span class="ou">assets/presentations/bac-a-sable-cas-de-figure.html</span>
@@ -380,8 +369,7 @@
             <a class="btn" href="assets/presentations/bac-a-sable-cas-de-figure.html" target="_blank" rel="noopener">Ouvrir</a>
           </div>
         </article>
-
-        <article class="fiche" data-cle="guide direction juridique loi 25 evaluation facteurs vie privee efvp conservation hors quebec interrupteurs couts mise en service">
+<article class="fiche" data-cle="guide direction juridique loi 25 evaluation facteurs vie privee efvp conservation hors quebec interrupteurs couts mise en service">
           <div>
             <h3 class="titre">Guide pour la direction</h3>
             <p class="quoi">Le document à lire <b>avant</b> une mise en service, pas après.
@@ -398,6 +386,7 @@
             dont aucune ne demande de développement. Se termine par ce que le projet
             <b>n'offre pas</b>.</p>
             <div class="meta">
+              <span class="eti eti-public">Direction</span>
               <span class="eti eti-page">Page du site</span>
               <span class="date">27 août 2026</span>
               <span class="ou">assets/presentations/guide-direction.html</span>
@@ -407,8 +396,7 @@
             <a class="btn" href="assets/presentations/guide-direction.html" target="_blank" rel="noopener">Ouvrir</a>
           </div>
         </article>
-
-        <article class="fiche" data-cle="oser parler mur oral adulte francisation">
+<article class="fiche" data-cle="oser parler mur oral adulte francisation">
           <div>
             <h3 class="titre">Oser parler</h3>
             <p class="quoi">« Ils comprennent. Ils n'osent pas parler. » Le mur de la
@@ -416,6 +404,7 @@
             l'oral sans témoin, n'être entendu qu'une fois prêt. Cinq diapositives,
             c'est la version courte.</p>
             <div class="meta">
+              <span class="eti eti-public">Direction</span>
               <span class="eti eti-diapo">Diaporama</span>
               <span class="date">19 août 2026</span>
               <span class="ou">assets/presentations/oser-parler.html</span>
@@ -426,8 +415,7 @@
             <a class="btn btn-2" href="https://claude.ai/code/artifact/04c85f2c-0b97-4f4a-9cfd-a77f941c0e22" target="_blank" rel="noopener">Version privée</a>
           </div>
         </article>
-
-        <article class="fiche" data-cle="pitch institutionnel atelier chaine production huit niveaux">
+<article class="fiche" data-cle="pitch institutionnel atelier chaine production huit niveaux">
           <div>
             <h3 class="titre">Le secret n'est pas le prompt, c'est l'atelier</h3>
             <p class="quoi">Pitch institutionnel : comment une seule personne a produit
@@ -435,6 +423,7 @@
             sur les huit niveaux. C'est la présentation à faire si la question est
             « est-ce que ça tient sans vous ? ».</p>
             <div class="meta">
+              <span class="eti eti-public">Direction</span>
               <span class="eti eti-diapo">Diaporama</span>
               <span class="date">18 août 2026</span>
               <span class="ou">assets/presentations/pitch-institutionnel.html</span>
@@ -444,14 +433,14 @@
             <a class="btn" href="assets/presentations/pitch-institutionnel.html" target="_blank" rel="noopener">Ouvrir</a>
           </div>
         </article>
-
-        <article class="fiche" data-cle="planifier proposition administration planification groupes">
+<article class="fiche" data-cle="planifier proposition administration planification groupes">
           <div>
             <h3 class="titre">Planifier — proposition pour l'administration</h3>
             <p class="quoi">La proposition faite à l'administration sur la planification :
             comment les activités sont ouvertes à un groupe, et ce que ça change pour
             l'organisation des cours.</p>
             <div class="meta">
+              <span class="eti eti-public">Direction</span>
               <span class="eti eti-privee">Artefact privé</span>
               <span class="date">12 août 2026</span>
             </div>
@@ -460,21 +449,7 @@
             <a class="btn" href="https://claude.ai/code/artifact/4a0c8bdd-b177-4e46-86cc-a12d3585a78b" target="_blank" rel="noopener">Ouvrir</a>
           </div>
         </article>
-
-      </div>
-    </section>
-
-    <!-- ══════════ ENSEIGNANTS ══════════ -->
-    <section class="famille" data-fam="enseignants">
-      <div class="tete">
-        <span class="eyebrow e-teal">Public · Collègues enseignants</span>
-        <h2>Faire adopter, expliquer les partis pris</h2>
-        <p>Ce qu'on présente à l'équipe : ce que le matériel fait, pourquoi il est
-        construit ainsi, et ce que la recherche en dit.</p>
-      </div>
-      <div class="liste">
-
-        <article class="fiche" data-cle="travailler avec claude formation enseignants canevas anime six temps modele de langage consigne outils claude design diaporama web">
+<article class="fiche" data-cle="travailler avec claude formation enseignants canevas anime six temps modele de langage consigne outils claude design diaporama web">
           <div>
             <h3 class="titre">Travailler avec Claude — le canevas animé</h3>
             <p class="quoi">La formation aux enseignants en <b>29 écrans qui se
@@ -488,6 +463,7 @@
             cadre sur fond encre, barre de parcours, échelle typographique de
             projection.</p>
             <div class="meta">
+              <span class="eti eti-public">Enseignants</span>
               <span class="eti eti-page">Page du site</span>
               <span class="date">29 août 2026</span>
               <span class="ou">assets/presentations/travailler-avec-claude.html</span>
@@ -497,8 +473,7 @@
             <a class="btn" href="assets/presentations/travailler-avec-claude.html" target="_blank" rel="noopener">Ouvrir</a>
           </div>
         </article>
-
-        <article class="fiche" data-cle="fiches eleve papier imprimer noir et blanc seances materiel depot manuel relie photocopie quantite banque">
+<article class="fiche" data-cle="fiches eleve papier imprimer noir et blanc seances materiel depot manuel relie photocopie quantite banque">
           <div>
             <h3 class="titre">Les fiches de l'élève — ce qu'il y a sur papier</h3>
             <p class="quoi">La réponse chiffrée à « qu'est-ce que l'enseignant a en main ? » :
@@ -511,6 +486,7 @@
             diaporama projeté ne peuvent pas diverger. Page générée par
             <b>build/materiel_pages.py</b>, qui compte sur le dépôt.</p>
             <div class="meta">
+              <span class="eti eti-public">Enseignants</span>
               <span class="eti eti-page">Page du site</span>
               <span class="date">30 août 2026</span>
               <span class="ou">assets/presentations/fiches-eleve.html</span>
@@ -521,8 +497,7 @@
             <a class="btn btn-2" href="assets/presentations/fiches-eleve.pdf" target="_blank" rel="noopener">Version papier (PDF, 9 pages)</a>
           </div>
         </article>
-
-        <article class="fiche" data-cle="powerpoints diaporamas seances enseignant projeter notes presentateur pptx keynote quantite banque materiel">
+<article class="fiche" data-cle="powerpoints diaporamas seances enseignant projeter notes presentateur pptx keynote quantite banque materiel">
           <div>
             <h3 class="titre">Les diaporamas de séance — ce qu'on projette</h3>
             <p class="quoi"><b>1 264 diaporamas</b>, un par séance, <b>15 154 diapositives</b>,
@@ -534,6 +509,7 @@
             et l'écran où l'enseignant les télécharge. Ce sont des <code>.pptx</code>
             ordinaires : PowerPoint, Keynote ou Google Slides, sans compte ni greffon.</p>
             <div class="meta">
+              <span class="eti eti-public">Enseignants</span>
               <span class="eti eti-page">Page du site</span>
               <span class="date">30 août 2026</span>
               <span class="ou">assets/presentations/powerpoints-enseignant.html</span>
@@ -544,14 +520,14 @@
             <a class="btn btn-2" href="assets/presentations/powerpoints-enseignant.pdf" target="_blank" rel="noopener">Version papier (PDF, 11 pages)</a>
           </div>
         </article>
-
-        <article class="fiche" data-cle="pitch enseignants cours complet materiel retroaction">
+<article class="fiche" data-cle="pitch enseignants cours complet materiel retroaction">
           <div>
             <h3 class="titre">Un cours complet, construit pour faire parler les élèves</h3>
             <p class="quoi">Pitch pour l'équipe : les deux problèmes que tout le monde
             connaît — la moitié du temps passée à fabriquer du matériel, et l'élève qui
             ne parle pas — puis ce que les modules y répondent.</p>
             <div class="meta">
+              <span class="eti eti-public">Enseignants</span>
               <span class="eti eti-diapo">Diaporama</span>
               <span class="date">18 août 2026</span>
               <span class="ou">assets/presentations/pitch-enseignants.html</span>
@@ -561,8 +537,7 @@
             <a class="btn" href="assets/presentations/pitch-enseignants.html" target="_blank" rel="noopener">Ouvrir</a>
           </div>
         </article>
-
-        <article class="fiche" data-cle="fondements pedagogiques knowles gagne mayer merrill andragogie adultes">
+<article class="fiche" data-cle="fondements pedagogiques knowles gagne mayer merrill andragogie adultes">
           <div>
             <h3 class="titre">Concevoir pour des adultes en francisation</h3>
             <p class="quoi">Les fondements pédagogiques, en vingt et une diapositives :
@@ -570,6 +545,7 @@
             trois choses que nous avons refusées, puis nos choix de design relus à
             travers Gagné, Mayer et Merrill.</p>
             <div class="meta">
+              <span class="eti eti-public">Enseignants</span>
               <span class="eti eti-pptx">PowerPoint · 21 diapos</span>
               <span class="date">15 août 2026</span>
               <span class="ou">assets/presentations/fondements-pedagogiques-francisation.pptx</span>
@@ -579,8 +555,7 @@
             <a class="btn" href="assets/presentations/fondements-pedagogiques-francisation.pptx">Télécharger</a>
           </div>
         </article>
-
-        <article class="fiche" data-cle="formation claude ia modele de langage cowork code consigne prompt perfectionnement">
+<article class="fiche" data-cle="formation claude ia modele de langage cowork code consigne prompt perfectionnement">
           <div>
             <h3 class="titre">Travailler avec Claude</h3>
             <p class="quoi">La proposition de formation au personnel enseignant, en
@@ -592,6 +567,7 @@
             <code>build/presentation_formation_claude.js</code> — ne pas retoucher le
             fichier à la main.</p>
             <div class="meta">
+              <span class="eti eti-public">Enseignants</span>
               <span class="eti eti-pptx">PowerPoint · 29 diapos</span>
               <span class="date">29 août 2026</span>
               <span class="ou">assets/presentations/formation-claude-enseignants.pptx</span>
@@ -601,8 +577,7 @@
             <a class="btn" href="assets/presentations/formation-claude-enseignants.pptx">Télécharger</a>
           </div>
         </article>
-
-        <article class="fiche" data-cle="abord situation methode points forts grammaire outil">
+<article class="fiche" data-cle="abord situation methode points forts grammaire outil">
           <div>
             <h3 class="titre">D'abord la situation, la règle ensuite</h3>
             <p class="quoi">Les huit points forts de la méthode, un par diapositive : on
@@ -610,6 +585,7 @@
             toujours les mêmes, l'erreur qui ouvre une porte, sept outils toujours là,
             rien qui part sans un geste de l'élève.</p>
             <div class="meta">
+              <span class="eti eti-public">Enseignants</span>
               <span class="eti eti-privee">Artefact privé</span>
               <span class="date">19 août 2026</span>
             </div>
@@ -618,13 +594,13 @@
             <a class="btn" href="https://claude.ai/code/artifact/e6b13c01-2918-4b00-8d3b-a00acdb74592" target="_blank" rel="noopener">Ouvrir</a>
           </div>
         </article>
-
-        <article class="fiche" data-cle="materiel francisation presentation equipe">
+<article class="fiche" data-cle="materiel francisation presentation equipe">
           <div>
             <h3 class="titre">Le matériel de francisation — présentation à l'équipe</h3>
             <p class="quoi">La première présentation d'ensemble faite à l'équipe : ce
             qui existe, module par module, et comment s'en servir en classe.</p>
             <div class="meta">
+              <span class="eti eti-public">Enseignants</span>
               <span class="eti eti-privee">Artefact privé</span>
               <span class="date">13 août 2026</span>
             </div>
@@ -633,8 +609,7 @@
             <a class="btn" href="https://claude.ai/code/artifact/34b194f1-e866-4124-8a4f-ac26b18d75f8" target="_blank" rel="noopener">Ouvrir</a>
           </div>
         </article>
-
-        <article class="fiche" data-cle="miroir juge reconnaissance vocale prononciation perfectionnement">
+<article class="fiche" data-cle="miroir juge reconnaissance vocale prononciation perfectionnement">
           <div>
             <h3 class="titre">Un miroir, pas un juge</h3>
             <p class="quoi">La reconnaissance vocale en classe de langue : ce qu'elle
@@ -643,6 +618,7 @@
             réel mais modeste — c'est une présentation de perfectionnement, pas une
             promotion d'outil.</p>
             <div class="meta">
+              <span class="eti eti-public">Enseignants</span>
               <span class="eti eti-page">Page du site</span>
               <span class="date">18 août 2026</span>
               <span class="ou">assets/outils/reconnaissance-vocale.html</span>
@@ -653,20 +629,7 @@
             <a class="btn btn-2" href="https://claude.ai/code/artifact/8227a939-f629-4b33-a05c-19a0d1e2c4fb" target="_blank" rel="noopener">Version privée</a>
           </div>
         </article>
-
-      </div>
-    </section>
-
-    <!-- ══════════ CHANTIER ══════════ -->
-    <section class="famille" data-fam="chantier">
-      <div class="tete">
-        <span class="eyebrow e-ambre">Public · Moi, pour décider</span>
-        <h2>Propositions, états d'avancement, choix à faire</h2>
-        <p>Les présentations qui ne servent pas à convaincre quelqu'un d'autre : elles
-        servent à voir clair avant de trancher, et à savoir où on en est.</p>
-      </div>
-      <div class="liste">
-        <article class="fiche" data-cle="point express presentation gamme dix minutes une seule difficulte autobus scroller remediation cycle constater envoyer faire refermer pdf powerpoint ecran">
+<article class="fiche" data-cle="point express presentation gamme dix minutes une seule difficulte autobus scroller remediation cycle constater envoyer faire refermer pdf powerpoint ecran">
           <div>
             <h3 class="titre">Le point express — la présentation</h3>
             <p class="quoi">La gamme expliquée à quelqu'un&nbsp;: <b>dix minutes, une seule
@@ -691,9 +654,19 @@
             <a class="btn btn-2" href="assets/presentations/diaporamas/P4-le-point-express.pptx">Diaporama · 15 diapos</a>
           </div>
         </article>
+      </div>
+    </section>
 
+    <!-- ══════════ DÉCIDER ══════════ -->
+    <section class="famille" data-fam="decider">
+      <div class="tete">
+        <span class="eyebrow e-teal">Pour trancher</span>
+        <h2>Décider</h2>
+        <p>Les pages qui attendent votre jugement : un tri à faire, une proposition à retenir ou à écarter, un plan à valider. Elles se perdaient dans « Chantier » — c'était pourtant la seule famille qui appelle une réponse.</p>
+      </div>
+      <div class="liste">
 
-        <article class="fiche" data-cle="nom branding marque trajet dix minutes coup de pouce en attendant pas de plus autobus scroller temps mort modules autonomes epreuve">
+<article class="fiche" data-cle="nom branding marque trajet dix minutes coup de pouce en attendant pas de plus autobus scroller temps mort modules autonomes epreuve">
           <div>
             <h3 class="titre">Le nom des modules autonomes — deux tours, une épreuve</h3>
             <p class="quoi">Le concept&nbsp;: dans l'autobus, au lieu de faire défiler son
@@ -718,9 +691,7 @@
             <a class="btn" href="modules-autonomes/le-nom.html" target="_blank" rel="noopener">Ouvrir</a>
           </div>
         </article>
-
-
-        <article class="fiche" data-cle="parcours remediation ordonnance savoir lacune envoyer eleve verbes passe compose imparfait pronoms heure date suivi etagere quatorze sujets">
+<article class="fiche" data-cle="parcours remediation ordonnance savoir lacune envoyer eleve verbes passe compose imparfait pronoms heure date suivi etagere quatorze sujets">
           <div>
             <h3 class="titre">Parcours de remédiation — sujets et suivi</h3>
             <p class="quoi">Le module autonome cesse d'être un cours et devient une
@@ -741,32 +712,7 @@
             <a class="btn" href="modules-autonomes/parcours-de-remediation.html" target="_blank" rel="noopener">Ouvrir</a>
           </div>
         </article>
-
-
-        <article class="fiche" data-cle="deux modeles module classe autonome storyline pour contre arbitrage cout 6700 ecrans remplacement deux portes decision">
-          <div>
-            <h3 class="titre">Deux modèles — ce que chacun sait faire</h3>
-            <p class="quoi">La décision restée ouverte au plan storyline : le module de classe
-            ou le module autonome. Le pour et le contre des deux, <b>chiffrés</b> — huit
-            questions et qui l'emporte sur chacune, puis le calcul qui tranche : un module
-            complet ferait <b>~77 écrans</b>, les 87 du catalogue <b>~6 700</b>. Ce n'est pas
-            une conversion mécanique, c'est une réécriture. Trois voies possibles, dont celle
-            que je recommande : <b>deux portes</b>, le storyline réservé à ce que la classe ne
-            peut pas faire — le travail seul, un défi par situation, pas le module entier.</p>
-            <div class="meta">
-              <span class="eti eti-page">Page du site</span>
-              <span class="date">30 août 2026</span>
-              <span class="ou">modules-autonomes/deux-modeles.html</span>
-            </div>
-          </div>
-          <div class="actions">
-            <a class="btn" href="modules-autonomes/deux-modeles.html" target="_blank" rel="noopener">Ouvrir</a>
-          </div>
-        </article>
-
-
-
-        <article class="fiche" data-cle="storyline niveau 5 rendez-vous parcours guide ecrans autonomie suivi demo module n5 telephone clinique plan">
+<article class="fiche" data-cle="storyline niveau 5 rendez-vous parcours guide ecrans autonomie suivi demo module n5 telephone clinique plan">
           <div>
             <h3 class="titre">Le module qui s'explique tout seul — plan d'une démo storyline</h3>
             <p class="quoi">Nos onze modules sont des <b>supports de classe</b> : on défile, et
@@ -787,42 +733,7 @@
             <a class="btn" href="modules-autonomes/plan-storyline.html" target="_blank" rel="noopener">Ouvrir</a>
           </div>
         </article>
-
-        <article class="fiche" data-cle="menage depot proposition worktrees agents branches git gc racine scripts audio manifestes essais manuels pdf intermediaires sauvegardes decisions export">
-          <div>
-            <h3 class="titre">Ménage du dépôt — ce qui a été mesuré, puis fait</h3>
-            <p class="quoi">Le dépôt pesait <b>58 Go</b>, dont <b>51 Go</b> qui n'étaient ni le code ni le matériel : <b>60 copies complètes</b> laissées par les agents ayant produit les modules en parallèle. La page garde les mesures d'avant, le dépouillement qui a rendu la suppression sûre — aucune des 36 images absentes de main n'était appelée par un module, et les 46 fichiers non commités existaient déjà — puis, en vert, <b>ce qui a été fait</b> : 60 worktrees et 74 branches retirés, la racine passée de <b>245 entrées à 39</b> (<code>audio/</code>, <code>manifestes/</code>, <code>essais/</code>), 1,3 Go de rushes sortis, les vieilles sauvegardes archivées. <b>Le dépôt passe de 58 Go à 5,8 Go.</b> Un chantier sur sept n'a pas été fait, et la page dit pourquoi : la question était mal posée. Page <b>générée</b> par <b>build/menage_proposition.py</b>.</p>
-            <div class="meta">
-              <span class="eti eti-page">Page du site</span>
-              <span class="date">30 août 2026</span>
-              <span class="ou">assets/presentations/menage-depot.html</span>
-            </div>
-          </div>
-          <div class="actions">
-            <a class="btn" href="assets/presentations/menage-depot.html" target="_blank" rel="noopener">Ouvrir</a>
-          </div>
-        </article>
-
-        <article class="fiche" data-cle="debit voix vitesse azure elevenlabs taux global niveau 4 trop rapide articulation kim echelle migration">
-          <div>
-            <h3 class="titre">Le débit des voix : ce que la mesure montre</h3>
-            <p class="quoi">Le niveau 4 est trop rapide — et la cause n'est pas le niveau.
-            <b>Azure parle 20 % plus vite qu'ElevenLabs</b> à tous les niveaux, et la moitié du
-            cours n'a jamais migré : la progression apparente 18 → 25 c/s n'est pas une
-            conception pédagogique, c'est la <b>date de production</b>. Les dix plus vieux
-            modules du niveau 4 tournent à la vitesse d'un niveau 8. Deux décisions : quelle
-            échelle de débit viser, et que faire des <b>42 modules encore chez ElevenLabs</b>.</p>
-            <div class="meta">
-              <span class="eti eti-page">Page du site</span>
-              <span class="date">29 août 2026</span>
-              <span class="ou">assets/presentations/debit-des-voix.html</span>
-            </div>
-          </div>
-          <div class="actions">
-            <a class="btn" href="assets/presentations/debit-des-voix.html" target="_blank" rel="noopener">Ouvrir</a>
-          </div>
-        </article>
-        <article class="fiche" data-cle="prononciation decisions lexique nip pelchat epellation i grec adresse quebecoise 3120 azure sub alias audio">
+<article class="fiche" data-cle="prononciation decisions lexique nip pelchat epellation i grec adresse quebecoise 3120 azure sub alias audio">
           <div>
             <h3 class="titre">Prononciation : trois décisions</h3>
             <p class="quoi">L'écoute des niveaux 1 et 2 a rendu <b>69 verdicts</b>. La page trie ce
@@ -842,7 +753,7 @@
             <a class="btn" href="assets/presentations/prononciation-decisions.html" target="_blank" rel="noopener">Ouvrir</a>
           </div>
         </article>
-        <article class="fiche" data-cle="revision dialogues audio mp3 debit trop rapide trop lent glitch pauses verdict ecoute repliques azure">
+<article class="fiche" data-cle="revision dialogues audio mp3 debit trop rapide trop lent glitch pauses verdict ecoute repliques azure">
           <div>
             <h3 class="titre">Révision des dialogues enregistrés</h3>
             <p class="quoi">Les <b>5 962 répliques</b> de dialogue du cours, rangées par
@@ -863,7 +774,7 @@
             <a class="btn" href="assets/presentations/revision-dialogues.html" target="_blank" rel="noopener">Ouvrir</a>
           </div>
         </article>
-        <article class="fiche" data-cle="rangement artefacts banque presentations menage fouille categories onglets classement inventaire">
+<article class="fiche" data-cle="rangement artefacts banque presentations menage fouille categories onglets classement inventaire">
           <div>
             <h3 class="titre">Ranger les artefacts</h3>
             <p class="quoi">La fouille du dépôt confrontée à cette banque-ci. Bonne nouvelle
@@ -886,7 +797,7 @@
             <a class="btn" href="assets/presentations/rangement-artefacts.html" target="_blank" rel="noopener">Ouvrir</a>
           </div>
         </article>
-        <article class="fiche" data-cle="espace enseignant liens navigation menu groupe catalogue planifier eleves progression seance regroupement design proposition">
+<article class="fiche" data-cle="espace enseignant liens navigation menu groupe catalogue planifier eleves progression seance regroupement design proposition">
           <div>
             <h3 class="titre">Les neuf liens sous le groupe</h3>
             <p class="quoi">L'espace enseignant range <b>neuf liens sur une seule ligne</b>, sans
@@ -909,7 +820,7 @@
             <a class="btn" href="assets/presentations/liens-espace-enseignant.html" target="_blank" rel="noopener">Ouvrir</a>
           </div>
         </article>
-        <article class="fiche" data-cle="ecoute exercices enonce masque texte reponse audio phonetique dialogue eleve lecture arbitrage releve">
+<article class="fiche" data-cle="ecoute exercices enonce masque texte reponse audio phonetique dialogue eleve lecture arbitrage releve">
           <div>
             <h3 class="titre">Les exercices d'écoute et leur énoncé</h3>
             <p class="quoi">Dans « Sur, dans ou à ? » — module 1 du niveau 5 — on faisait
@@ -934,7 +845,7 @@
             <a class="btn" href="assets/presentations/exercices-ecoute.html" target="_blank" rel="noopener">Ouvrir</a>
           </div>
         </article>
-        <article class="fiche" data-cle="audit images photos generees tri doute texte lisible visage decor autobus agents verificateur">
+<article class="fiche" data-cle="audit images photos generees tri doute texte lisible visage decor autobus agents verificateur">
           <div>
             <h3 class="titre">Tri des images en doute</h3>
             <p class="quoi">Les <b>1 502 images générées</b> des modules, passées deux fois : un
@@ -956,7 +867,7 @@
             <a class="btn" href="assets/presentations/audit-images.html" target="_blank" rel="noopener">Ouvrir</a>
           </div>
         </article>
-        <article class="fiche" data-cle="audit constats tri jugement bloquants correction agents reprise decisions">
+<article class="fiche" data-cle="audit constats tri jugement bloquants correction agents reprise decisions">
           <div>
             <h3 class="titre">Tri des constats d'audit</h3>
             <p class="quoi">Les <b>338 constats</b> de l'audit de contenu des 86 modules, un par
@@ -976,31 +887,86 @@
             <a class="btn" href="assets/presentations/audit-constats.html" target="_blank" rel="noopener">Ouvrir</a>
           </div>
         </article>
-        <article class="fiche" data-cle="mode seance sans compte eleve code barre qr anonyme photocopie participant jeton groupe enseignant progression">
+<article class="fiche" data-cle="plan serie sante modules planification">
           <div>
-            <h3 class="titre">Le mode séance — sans compte élève</h3>
-            <p class="quoi">Un troisième mode, à côté d'« avec assistance » et « sans assistance » : l'enseignant
-            choisit un module, ouvre une <b>séance</b>, imprime une feuille portant un <b>code QR</b>
-            et un code à six caractères. Les élèves scannent, font le module et envoient leurs
-            réponses <b>sans compte, sans pseudo et sans donnée identifiante</b> ; l'enseignant voit
-            le tableau de sa classe en direct, ligne par ligne, sans savoir qui est qui. Le plan
-            montre pourquoi le chantier est court — l'identité voyage déjà par un seul paramètre,
-            vérifié par une seule fonction, donc <b>aucun des 87 modules n'est retouché</b> — les
-            <b>trois décisions prises</b> (l'oral ne part pas, anonyme mais distinct, la séance
-            appartient à un groupe), les <b>cinq endroits où ça casse</b> dont la garde d'IA qu'un
-            participant pourrait contourner en silence, et les <b>cinq lots</b> dans l'ordre.</p>
+            <h3 class="titre">Plan de la série Santé</h3>
+            <p class="quoi">Le plan de la série de modules sur la santé, dressé avant
+            leur production. C'est la plus ancienne pièce de la banque — elle montre à
+            quoi ressemblait la planification au départ.</p>
             <div class="meta">
-              <span class="eti eti-page">Page du site</span>
-              <span class="date">29 août 2026</span>
-              <span class="ou">assets/presentations/mode-seance-sans-compte.html</span>
+              <span class="eti eti-privee">Artefact privé</span>
+              <span class="date">16 juillet 2026</span>
             </div>
           </div>
           <div class="actions">
-            <a class="btn" href="assets/presentations/mode-seance-sans-compte.html" target="_blank" rel="noopener">Ouvrir</a>
+            <a class="btn" href="https://claude.ai/code/artifact/29f97235-df29-4377-baf0-ca296c6013e3" target="_blank" rel="noopener">Ouvrir</a>
           </div>
         </article>
+<article class="fiche" data-cle="chantier banques exercices ateliers savoirs niveaux avancement suivi generateurs">
+          <div>
+            <h3 class="titre">Le chantier des banques d'exercices</h3>
+            <p class="quoi">Où en sont les ateliers courts, niveau par niveau : combien
+            sont construits, jouables, offerts au catalogue, et quelle part des savoirs
+            du programme ils touchent. Les modules couvrent les 85 situations ; les
+            banques couvrent ce qu'un module ne peut pas drainer — les sons, la graphie,
+            la phrase, le texte. Page générée : les compteurs sont relus sur le disque,
+            l'avancement d'une vague est le nombre d'ateliers réellement présents.</p>
+            <div class="meta">
+              <span class="eti eti-page">Page du site</span>
+              <span class="date">24 août 2026</span>
+              <span class="ou">assets/presentations/chantier-banques.html</span>
+            </div>
+          </div>
+          <div class="actions">
+            <a class="btn" href="assets/presentations/chantier-banques.html" target="_blank" rel="noopener">Ouvrir</a>
+          </div>
+        </article>
+      </div>
+    </section>
 
-        <article class="fiche" data-cle="methode de travail bilan retrospective comment travailler avec claude cycle seance carnets industrialiser prochain projet">
+    <!-- ══════════ SUIVRE ══════════ -->
+    <section class="famille" data-fam="suivre">
+      <div class="tete">
+        <span class="eyebrow e-teal">Pour mesurer</span>
+        <h2>Suivre</h2>
+        <p>L'état du dépôt à un instant : ce qui est produit, ce qui manque, ce que ça coûte. Ces pages sont générées et se relisent, elles ne se décident pas.</p>
+      </div>
+      <div class="liste">
+
+<article class="fiche" data-cle="menage depot proposition worktrees agents branches git gc racine scripts audio manifestes essais manuels pdf intermediaires sauvegardes decisions export">
+          <div>
+            <h3 class="titre">Ménage du dépôt — ce qui a été mesuré, puis fait</h3>
+            <p class="quoi">Le dépôt pesait <b>58 Go</b>, dont <b>51 Go</b> qui n'étaient ni le code ni le matériel : <b>60 copies complètes</b> laissées par les agents ayant produit les modules en parallèle. La page garde les mesures d'avant, le dépouillement qui a rendu la suppression sûre — aucune des 36 images absentes de main n'était appelée par un module, et les 46 fichiers non commités existaient déjà — puis, en vert, <b>ce qui a été fait</b> : 60 worktrees et 74 branches retirés, la racine passée de <b>245 entrées à 39</b> (<code>audio/</code>, <code>manifestes/</code>, <code>essais/</code>), 1,3 Go de rushes sortis, les vieilles sauvegardes archivées. <b>Le dépôt passe de 58 Go à 5,8 Go.</b> Un chantier sur sept n'a pas été fait, et la page dit pourquoi : la question était mal posée. Page <b>générée</b> par <b>build/menage_proposition.py</b>.</p>
+            <div class="meta">
+              <span class="eti eti-page">Page du site</span>
+              <span class="date">30 août 2026</span>
+              <span class="ou">assets/presentations/menage-depot.html</span>
+            </div>
+          </div>
+          <div class="actions">
+            <a class="btn" href="assets/presentations/menage-depot.html" target="_blank" rel="noopener">Ouvrir</a>
+          </div>
+        </article>
+<article class="fiche" data-cle="debit voix vitesse azure elevenlabs taux global niveau 4 trop rapide articulation kim echelle migration">
+          <div>
+            <h3 class="titre">Le débit des voix : ce que la mesure montre</h3>
+            <p class="quoi">Le niveau 4 est trop rapide — et la cause n'est pas le niveau.
+            <b>Azure parle 20 % plus vite qu'ElevenLabs</b> à tous les niveaux, et la moitié du
+            cours n'a jamais migré : la progression apparente 18 → 25 c/s n'est pas une
+            conception pédagogique, c'est la <b>date de production</b>. Les dix plus vieux
+            modules du niveau 4 tournent à la vitesse d'un niveau 8. Deux décisions : quelle
+            échelle de débit viser, et que faire des <b>42 modules encore chez ElevenLabs</b>.</p>
+            <div class="meta">
+              <span class="eti eti-page">Page du site</span>
+              <span class="date">29 août 2026</span>
+              <span class="ou">assets/presentations/debit-des-voix.html</span>
+            </div>
+          </div>
+          <div class="actions">
+            <a class="btn" href="assets/presentations/debit-des-voix.html" target="_blank" rel="noopener">Ouvrir</a>
+          </div>
+        </article>
+<article class="fiche" data-cle="methode de travail bilan retrospective comment travailler avec claude cycle seance carnets industrialiser prochain projet">
           <div>
             <h3 class="titre">Ai-je bien travaillé avec toi ?</h3>
             <p class="quoi">Le bilan de <b>cinquante journées de travail</b> (30 juin – 28 août 2026,
@@ -1023,83 +989,7 @@
             <a class="btn btn-2" href="https://claude.ai/code/artifact/44712356-9e91-4906-9b9f-49c7dded2fb5" target="_blank" rel="noopener">Version privée</a>
           </div>
         </article>
-
-        <article class="fiche" data-cle="infographie machine chaine technique gabarit greffes controles serveur verrou postgres lignes de code derriere les modules">
-          <div>
-            <h3 class="titre">Derrière les modules — la machine</h3>
-            <p class="quoi">L'arrière du décor sur <b>une affiche</b>, <b>chaque pièce numérotée et
-            expliquée en clair</b> : le schéma de la chaîne (le registre en source unique, les
-            quatre entrées, les quatre programmes, les quatre sorties, et la barrière des
-            contrôles qui les ferme), suivi de ses <b>quatorze éléments repris un à un</b>,
-            les <b>seize
-            greffes</b> nommées une à une avec ce qu'elles posent sur les 87 modules, les
-            <b>huit contrôles</b> et ce que chacun refuse de laisser passer, puis l'autre
-            moitié — le serveur : le verrou d'écriture (8/30 → 30/30), Postgres et son repli
-            fichier (7,89 s → 2,63 s), les routes gardées du mode sans assistance, le registre des
-            appels. Se termine par ce que ça pèse en lignes et par les <b>quatre règles</b>
-            qui tiennent l'ensemble.</p>
-            <div class="meta">
-              <span class="eti eti-page">Page du site</span>
-              <span class="date">28 août 2026</span>
-              <span class="ou">assets/presentations/machine-modules.html</span>
-            </div>
-          </div>
-          <div class="actions">
-            <a class="btn" href="assets/presentations/machine-modules.html" target="_blank" rel="noopener">Ouvrir</a>
-            <a class="btn btn-2" href="https://claude.ai/code/artifact/61ae848e-7e6d-4f2b-89f2-cd7cb735b62b" target="_blank" rel="noopener">Version privée</a>
-          </div>
-        </article>
-
-        <article class="fiche" data-cle="loi 25 vie privee donnees personnelles renseignements confidentialite quebec hebergement flux sortants anthropic google azure voix eleves pseudonymisation conservation purge interrupteur desactiver conformite direction css">
-          <div>
-            <h3 class="titre">Ce qui sort du Québec</h3>
-            <p class="quoi">L'état du dossier <strong>Loi 25</strong> : les six flux qui
-            quittent le serveur et ce qu'ils emportent, ce qui reste sur nos disques, et
-            surtout <strong>les quatre choses qui doivent pouvoir être désactivées</strong>
-            par une direction. Le relevé est lu dans le code, pas supposé. La conclusion
-            qui surprend : ce qui sort du Québec, c'est l'appel d'interface, pas le disque
-            dur — <b>déménager l'hébergement ne ferme aucun des six flux</b>. À montrer à
-            une direction qui pose la question, et à garder comme inventaire pour une
-            évaluation des facteurs relatifs à la vie privée.</p>
-            <div class="meta">
-              <span class="eti eti-page">Page du site</span>
-              <span class="date">27 août 2026</span>
-              <span class="ou">assets/presentations/loi-25.html</span>
-            </div>
-          </div>
-          <div class="actions">
-            <a class="btn" href="assets/presentations/loi-25.html" target="_blank" rel="noopener">Ouvrir</a>
-            <a class="btn btn-2" href="https://claude.ai/code/artifact/985b2738-65aa-48ff-ade8-9d21761f0eed" target="_blank" rel="noopener">Version privée</a>
-          </div>
-        </article>
-
-        <article class="fiche" data-cle="direct classe temps reel live tableau bord enseignant progression pourcentage question vrai faux glisser deposer texte anonyme noms bascule projeter telephone eleves">
-          <div>
-            <h3 class="titre">Le direct de la classe</h3>
-            <p class="quoi">La proposition d'un bloc « en direct » en tête de
-            <b>progression.html</b> : l'enseignante ouvre un module, la classe répond sur
-            ses téléphones, et elle voit le <strong>pourcentage de réussite question par
-            question pendant qu'il bouge</strong> — vrai ou faux, glisser-déposer,
-            réponses à écrire, avec les fautes les plus fréquentes regroupées. Les textes
-            longs s'affichent en mur, <strong>anonymes ou nommés d'un interrupteur</strong>,
-            pour qu'un texte se projette sans exposer son auteur. Les dossiers individuels
-            restent en dessous, inchangés. <b>Livré le 27 août 2026</b> : greffe posée sur le
-            gabarit et les 87 modules, journal et route dans <code>server.py</code>, bloc en
-            tête de <code>progression.html</code>. La page garde sa maquette jouable —
-            l'interrupteur et le direct y fonctionnent — et dit ce qui a été branché ainsi
-            que les trois décisions telles qu'elles ont été tranchées.</p>
-            <div class="meta">
-              <span class="eti eti-page">Page du site</span>
-              <span class="date">27 août 2026</span>
-              <span class="ou">assets/presentations/direct-de-la-classe.html</span>
-            </div>
-          </div>
-          <div class="actions">
-            <a class="btn" href="assets/presentations/direct-de-la-classe.html" target="_blank" rel="noopener">Ouvrir</a>
-          </div>
-        </article>
-
-        <article class="fiche" data-cle="tableau de bord etat projet coup oeil modules seances powerpoint mp3 audio catalogue ateliers savoirs situations alertes manque depense commits">
+<article class="fiche" data-cle="tableau de bord etat projet coup oeil modules seances powerpoint mp3 audio catalogue ateliers savoirs situations alertes manque depense commits">
           <div>
             <h3 class="titre">Le tableau de bord du projet</h3>
             <p class="quoi">Tout l'état de la production sur une page : les modules et
@@ -1118,8 +1008,7 @@
             <a class="btn" href="assets/presentations/tableau-de-bord.html" target="_blank" rel="noopener">Ouvrir</a>
           </div>
         </article>
-
-        <article class="fiche" data-cle="prix cout couts api modeles tarifs budget anthropic haiku opus elevenlabs fal.ai facture jetons voix images groupe vingt eleves">
+<article class="fiche" data-cle="prix cout couts api modeles tarifs budget anthropic haiku opus elevenlabs fal.ai facture jetons voix images groupe vingt eleves">
           <div>
             <h3 class="titre">Le prix d'un module</h3>
             <p class="quoi">Ce que la plateforme appelle, à quel tarif, et ce que coûte un
@@ -1145,9 +1034,234 @@
             <a class="btn btn-2" href="https://claude.ai/code/artifact/d4712ae5-1674-442d-9399-adb243e46a1f" target="_blank" rel="noopener">Version privée</a>
           </div>
         </article>
+<article class="fiche" data-cle="audio manquant pistes mp3 dialogues repliques ecouter modules muets releve production voix synthese">
+          <div>
+            <h3 class="titre">Où manque l'audio</h3>
+            <p class="quoi">Le relevé de ce qui n'a pas encore de voix, compté sur le
+            disque et non estimé : <b>51 modules sur 87</b>, 3 497 fichiers, environ
+            403 minutes. Il corrige ce que le tableau de bord laissait croire — celui-ci
+            ne signale que les modules sans <i>aucune</i> piste et ne compte pas les
+            dialogues. Or presque tout ce qui manque est le <b>bouton « Écouter » de Je
+            découvre</b> : 35 modules n'ont pas une seule réplique enregistrée, 16 ont un
+            dialogue commencé puis arrêté. Par niveau, module par module, avec les
+            réserves — onze modules sans relevé de sons, qu'on ne peut pas vérifier.
+            <b>Page produite</b> par <code>python3 build/audio_page.py</code> : la
+            relancer après une production remet les chiffres à jour.</p>
+            <div class="meta">
+              <span class="eti eti-page">Page du site</span>
+              <span class="date">28 août 2026</span>
+              <span class="ou">assets/presentations/audio-manquant.html</span>
+            </div>
+          </div>
+          <div class="actions">
+            <a class="btn" href="assets/presentations/audio-manquant.html" target="_blank" rel="noopener">Ouvrir</a>
+          </div>
+        </article>
+<article class="fiche" data-cle="banque niveau 1 exercices supplementaires quatre familles generateurs graphie phonetique integration">
+          <div>
+            <h3 class="titre">La banque du niveau 1</h3>
+            <p class="quoi">Le niveau 1 n'a que quatre situations au programme et les
+            quatre ont leur module : un cinquième cours referait ce qui existe. Vingt et un
+            ateliers supplémentaires en quatre familles — apparier, discriminer à
+            l'oreille, construire une phrase, écrire et copier — couvrant 31 des 32
+            savoirs. <strong>Bâtis le jour même</strong> : quinze sont au catalogue,
+            six attendent leurs extraits sonores, et le niveau 1 passe de quatre
+            activités à dix-neuf. La page dit aussi ce que la réalisation a démenti
+            dans le plan.</p>
+            <div class="meta">
+              <span class="eti eti-page">Page du site</span>
+              <span class="date">24 août 2026</span>
+              <span class="ou">assets/presentations/banque-niveau-1.html</span>
+            </div>
+          </div>
+          <div class="actions">
+            <a class="btn" href="assets/presentations/banque-niveau-1.html" target="_blank" rel="noopener">Ouvrir</a>
+            <a class="btn btn-2" href="https://claude.ai/code/artifact/c8035064-765d-4bfe-8573-635d4acd905d" target="_blank" rel="noopener">Version privée</a>
+          </div>
+        </article>
+<article class="fiche" data-cle="ce que les modules savent deja diagnostic sept propositions">
+          <div>
+            <h3 class="titre">Ce que les modules savent déjà</h3>
+            <p class="quoi">Sept propositions pour mieux voir où en sont les élèves, sans
+            écrire un seul exercice de plus. Le constat de départ : le module sait ce que
+            l'élève ne comprend pas, l'enseignante reçoit trois chiffres.</p>
+            <div class="meta">
+              <span class="eti eti-page">Page du site</span>
+              <span class="date">18 août 2026</span>
+              <span class="ou">assets/outils/diagnostic-modules.html</span>
+            </div>
+          </div>
+          <div class="actions">
+            <a class="btn" href="assets/outils/diagnostic-modules.html" target="_blank" rel="noopener">Ouvrir</a>
+            <a class="btn btn-2" href="https://claude.ai/code/artifact/0289a809-b1bb-4a2c-a79d-0404572850e3" target="_blank" rel="noopener">Version privée</a>
+          </div>
+        </article>
+      </div>
+    </section>
 
+    <!-- ══════════ COMPRENDRE ══════════ -->
+    <section class="famille" data-fam="comprendre">
+      <div class="tete">
+        <span class="eyebrow e-teal">Pour se repérer</span>
+        <h2>Comprendre</h2>
+        <p>Comment le projet fonctionne : la mécanique, la carte du contenu, les guides d'usage, les index. On y va quand on cherche où quelque chose se trouve, ou pourquoi c'est ainsi.</p>
+      </div>
+      <div class="liste">
 
-        <article class="fiche" data-cle="reseau centres services scolaires hierarchie acces roles portee statistiques tableau de bord multi-etablissements postgres">
+<article class="fiche" data-cle="compositeur activite prompt programme criteres forge enseignant outil generer">
+          <div>
+            <h3 class="titre">Composer une activité</h3>
+            <p class="quoi">L'outil qui <b>assemble un prompt</b> à partir des critères du
+            programme et de la documentation qu'on lui colle : niveau, compétence, temps
+            verbaux, domaine de vie. Il est branché dans l'espace enseignant, au bout de la
+            ligne des liens — on compose quand le catalogue n'a pas ce qu'il faut. Il était
+            <b>absent de cette banque</b> : la fouille du 31 août l'a trouvé.</p>
+            <div class="meta">
+              <span class="eti eti-public">Enseignants</span>
+              <span class="eti eti-page">Outil</span>
+              <span class="date">31 août 2026</span>
+              <span class="ou">assets/outils/compositeur-activite.html</span>
+            </div>
+          </div>
+          <div class="actions">
+            <a class="btn" href="assets/outils/compositeur-activite.html" target="_blank" rel="noopener">Ouvrir</a>
+          </div>
+        </article>
+
+        <article class="fiche" data-cle="diagnostic voix audio prononciation outil essai comparaison synthese">
+          <div>
+            <h3 class="titre">Diagnostic des voix</h3>
+            <p class="quoi">La page d'essai des voix de synthèse : on y compare ce que produit
+            un réglage avant de l'appliquer à un module. Elle a servi aux arbitrages de débit
+            et de prononciation, et elle resservira au prochain changement de fournisseur.
+            <b>Absente de cette banque</b> jusqu'à la fouille du 31 août.</p>
+            <div class="meta">
+              <span class="eti eti-page">Outil</span>
+              <span class="date">31 août 2026</span>
+              <span class="ou">assets/outils/diagnostic-voix.html</span>
+            </div>
+          </div>
+          <div class="actions">
+            <a class="btn" href="assets/outils/diagnostic-voix.html" target="_blank" rel="noopener">Ouvrir</a>
+          </div>
+        </article>
+
+        <article class="fiche" data-cle="deux modeles module classe autonome storyline pour contre arbitrage cout 6700 ecrans remplacement deux portes decision">
+          <div>
+            <h3 class="titre">Deux modèles — ce que chacun sait faire</h3>
+            <p class="quoi">La décision restée ouverte au plan storyline : le module de classe
+            ou le module autonome. Le pour et le contre des deux, <b>chiffrés</b> — huit
+            questions et qui l'emporte sur chacune, puis le calcul qui tranche : un module
+            complet ferait <b>~77 écrans</b>, les 87 du catalogue <b>~6 700</b>. Ce n'est pas
+            une conversion mécanique, c'est une réécriture. Trois voies possibles, dont celle
+            que je recommande : <b>deux portes</b>, le storyline réservé à ce que la classe ne
+            peut pas faire — le travail seul, un défi par situation, pas le module entier.</p>
+            <div class="meta">
+              <span class="eti eti-page">Page du site</span>
+              <span class="date">30 août 2026</span>
+              <span class="ou">modules-autonomes/deux-modeles.html</span>
+            </div>
+          </div>
+          <div class="actions">
+            <a class="btn" href="modules-autonomes/deux-modeles.html" target="_blank" rel="noopener">Ouvrir</a>
+          </div>
+        </article>
+<article class="fiche" data-cle="mode seance sans compte eleve code barre qr anonyme photocopie participant jeton groupe enseignant progression">
+          <div>
+            <h3 class="titre">Le mode séance — sans compte élève</h3>
+            <p class="quoi">Un troisième mode, à côté d'« avec assistance » et « sans assistance » : l'enseignant
+            choisit un module, ouvre une <b>séance</b>, imprime une feuille portant un <b>code QR</b>
+            et un code à six caractères. Les élèves scannent, font le module et envoient leurs
+            réponses <b>sans compte, sans pseudo et sans donnée identifiante</b> ; l'enseignant voit
+            le tableau de sa classe en direct, ligne par ligne, sans savoir qui est qui. Le plan
+            montre pourquoi le chantier est court — l'identité voyage déjà par un seul paramètre,
+            vérifié par une seule fonction, donc <b>aucun des 87 modules n'est retouché</b> — les
+            <b>trois décisions prises</b> (l'oral ne part pas, anonyme mais distinct, la séance
+            appartient à un groupe), les <b>cinq endroits où ça casse</b> dont la garde d'IA qu'un
+            participant pourrait contourner en silence, et les <b>cinq lots</b> dans l'ordre.</p>
+            <div class="meta">
+              <span class="eti eti-page">Page du site</span>
+              <span class="date">29 août 2026</span>
+              <span class="ou">assets/presentations/mode-seance-sans-compte.html</span>
+            </div>
+          </div>
+          <div class="actions">
+            <a class="btn" href="assets/presentations/mode-seance-sans-compte.html" target="_blank" rel="noopener">Ouvrir</a>
+          </div>
+        </article>
+<article class="fiche" data-cle="infographie machine chaine technique gabarit greffes controles serveur verrou postgres lignes de code derriere les modules">
+          <div>
+            <h3 class="titre">Derrière les modules — la machine</h3>
+            <p class="quoi">L'arrière du décor sur <b>une affiche</b>, <b>chaque pièce numérotée et
+            expliquée en clair</b> : le schéma de la chaîne (le registre en source unique, les
+            quatre entrées, les quatre programmes, les quatre sorties, et la barrière des
+            contrôles qui les ferme), suivi de ses <b>quatorze éléments repris un à un</b>,
+            les <b>seize
+            greffes</b> nommées une à une avec ce qu'elles posent sur les 87 modules, les
+            <b>huit contrôles</b> et ce que chacun refuse de laisser passer, puis l'autre
+            moitié — le serveur : le verrou d'écriture (8/30 → 30/30), Postgres et son repli
+            fichier (7,89 s → 2,63 s), les routes gardées du mode sans assistance, le registre des
+            appels. Se termine par ce que ça pèse en lignes et par les <b>quatre règles</b>
+            qui tiennent l'ensemble.</p>
+            <div class="meta">
+              <span class="eti eti-page">Page du site</span>
+              <span class="date">28 août 2026</span>
+              <span class="ou">assets/presentations/machine-modules.html</span>
+            </div>
+          </div>
+          <div class="actions">
+            <a class="btn" href="assets/presentations/machine-modules.html" target="_blank" rel="noopener">Ouvrir</a>
+            <a class="btn btn-2" href="https://claude.ai/code/artifact/61ae848e-7e6d-4f2b-89f2-cd7cb735b62b" target="_blank" rel="noopener">Version privée</a>
+          </div>
+        </article>
+<article class="fiche" data-cle="loi 25 vie privee donnees personnelles renseignements confidentialite quebec hebergement flux sortants anthropic google azure voix eleves pseudonymisation conservation purge interrupteur desactiver conformite direction css">
+          <div>
+            <h3 class="titre">Ce qui sort du Québec</h3>
+            <p class="quoi">L'état du dossier <strong>Loi 25</strong> : les six flux qui
+            quittent le serveur et ce qu'ils emportent, ce qui reste sur nos disques, et
+            surtout <strong>les quatre choses qui doivent pouvoir être désactivées</strong>
+            par une direction. Le relevé est lu dans le code, pas supposé. La conclusion
+            qui surprend : ce qui sort du Québec, c'est l'appel d'interface, pas le disque
+            dur — <b>déménager l'hébergement ne ferme aucun des six flux</b>. À montrer à
+            une direction qui pose la question, et à garder comme inventaire pour une
+            évaluation des facteurs relatifs à la vie privée.</p>
+            <div class="meta">
+              <span class="eti eti-page">Page du site</span>
+              <span class="date">27 août 2026</span>
+              <span class="ou">assets/presentations/loi-25.html</span>
+            </div>
+          </div>
+          <div class="actions">
+            <a class="btn" href="assets/presentations/loi-25.html" target="_blank" rel="noopener">Ouvrir</a>
+            <a class="btn btn-2" href="https://claude.ai/code/artifact/985b2738-65aa-48ff-ade8-9d21761f0eed" target="_blank" rel="noopener">Version privée</a>
+          </div>
+        </article>
+<article class="fiche" data-cle="direct classe temps reel live tableau bord enseignant progression pourcentage question vrai faux glisser deposer texte anonyme noms bascule projeter telephone eleves">
+          <div>
+            <h3 class="titre">Le direct de la classe</h3>
+            <p class="quoi">La proposition d'un bloc « en direct » en tête de
+            <b>progression.html</b> : l'enseignante ouvre un module, la classe répond sur
+            ses téléphones, et elle voit le <strong>pourcentage de réussite question par
+            question pendant qu'il bouge</strong> — vrai ou faux, glisser-déposer,
+            réponses à écrire, avec les fautes les plus fréquentes regroupées. Les textes
+            longs s'affichent en mur, <strong>anonymes ou nommés d'un interrupteur</strong>,
+            pour qu'un texte se projette sans exposer son auteur. Les dossiers individuels
+            restent en dessous, inchangés. <b>Livré le 27 août 2026</b> : greffe posée sur le
+            gabarit et les 87 modules, journal et route dans <code>server.py</code>, bloc en
+            tête de <code>progression.html</code>. La page garde sa maquette jouable —
+            l'interrupteur et le direct y fonctionnent — et dit ce qui a été branché ainsi
+            que les trois décisions telles qu'elles ont été tranchées.</p>
+            <div class="meta">
+              <span class="eti eti-page">Page du site</span>
+              <span class="date">27 août 2026</span>
+              <span class="ou">assets/presentations/direct-de-la-classe.html</span>
+            </div>
+          </div>
+          <div class="actions">
+            <a class="btn" href="assets/presentations/direct-de-la-classe.html" target="_blank" rel="noopener">Ouvrir</a>
+          </div>
+        </article>
+<article class="fiche" data-cle="reseau centres services scolaires hierarchie acces roles portee statistiques tableau de bord multi-etablissements postgres">
           <div>
             <h3 class="titre">Le réseau des centres</h3>
             <p class="quoi">Ce qu'il faut bâtir pour ouvrir francis à plusieurs centres de
@@ -1173,57 +1287,7 @@
             <a class="btn btn-2" href="https://claude.ai/code/artifact/369df2bf-23d8-42b0-8980-c6e630f0b236" target="_blank" rel="noopener">Version privée</a>
           </div>
         </article>
-
-
-        <article class="fiche" data-cle="audio manquant pistes mp3 dialogues repliques ecouter modules muets releve production voix synthese">
-          <div>
-            <h3 class="titre">Où manque l'audio</h3>
-            <p class="quoi">Le relevé de ce qui n'a pas encore de voix, compté sur le
-            disque et non estimé : <b>51 modules sur 87</b>, 3 497 fichiers, environ
-            403 minutes. Il corrige ce que le tableau de bord laissait croire — celui-ci
-            ne signale que les modules sans <i>aucune</i> piste et ne compte pas les
-            dialogues. Or presque tout ce qui manque est le <b>bouton « Écouter » de Je
-            découvre</b> : 35 modules n'ont pas une seule réplique enregistrée, 16 ont un
-            dialogue commencé puis arrêté. Par niveau, module par module, avec les
-            réserves — onze modules sans relevé de sons, qu'on ne peut pas vérifier.
-            <b>Page produite</b> par <code>python3 build/audio_page.py</code> : la
-            relancer après une production remet les chiffres à jour.</p>
-            <div class="meta">
-              <span class="eti eti-page">Page du site</span>
-              <span class="date">28 août 2026</span>
-              <span class="ou">assets/presentations/audio-manquant.html</span>
-            </div>
-          </div>
-          <div class="actions">
-            <a class="btn" href="assets/presentations/audio-manquant.html" target="_blank" rel="noopener">Ouvrir</a>
-          </div>
-        </article>
-
-        <article class="fiche" data-cle="banque niveau 1 exercices supplementaires quatre familles generateurs graphie phonetique integration">
-          <div>
-            <h3 class="titre">La banque du niveau 1</h3>
-            <p class="quoi">Le niveau 1 n'a que quatre situations au programme et les
-            quatre ont leur module : un cinquième cours referait ce qui existe. Vingt et un
-            ateliers supplémentaires en quatre familles — apparier, discriminer à
-            l'oreille, construire une phrase, écrire et copier — couvrant 31 des 32
-            savoirs. <strong>Bâtis le jour même</strong> : quinze sont au catalogue,
-            six attendent leurs extraits sonores, et le niveau 1 passe de quatre
-            activités à dix-neuf. La page dit aussi ce que la réalisation a démenti
-            dans le plan.</p>
-            <div class="meta">
-              <span class="eti eti-page">Page du site</span>
-              <span class="date">24 août 2026</span>
-              <span class="ou">assets/presentations/banque-niveau-1.html</span>
-            </div>
-          </div>
-          <div class="actions">
-            <a class="btn" href="assets/presentations/banque-niveau-1.html" target="_blank" rel="noopener">Ouvrir</a>
-            <a class="btn btn-2" href="https://claude.ai/code/artifact/c8035064-765d-4bfe-8573-635d4acd905d" target="_blank" rel="noopener">Version privée</a>
-          </div>
-        </article>
-
-
-        <article class="fiche" data-cle="chaine production moteurs generateurs gabarit forge serveur">
+<article class="fiche" data-cle="chaine production moteurs generateurs gabarit forge serveur">
           <div>
             <h3 class="titre">La chaîne de production</h3>
             <p class="quoi">Comment le matériel est fabriqué : les trois moteurs, les
@@ -1239,26 +1303,7 @@
             <a class="btn" href="https://claude.ai/code/artifact/e3fabcd5-e405-4446-800d-cdb7a46b761c" target="_blank" rel="noopener">Ouvrir</a>
           </div>
         </article>
-
-        <article class="fiche" data-cle="ce que les modules savent deja diagnostic sept propositions">
-          <div>
-            <h3 class="titre">Ce que les modules savent déjà</h3>
-            <p class="quoi">Sept propositions pour mieux voir où en sont les élèves, sans
-            écrire un seul exercice de plus. Le constat de départ : le module sait ce que
-            l'élève ne comprend pas, l'enseignante reçoit trois chiffres.</p>
-            <div class="meta">
-              <span class="eti eti-page">Page du site</span>
-              <span class="date">18 août 2026</span>
-              <span class="ou">assets/outils/diagnostic-modules.html</span>
-            </div>
-          </div>
-          <div class="actions">
-            <a class="btn" href="assets/outils/diagnostic-modules.html" target="_blank" rel="noopener">Ouvrir</a>
-            <a class="btn btn-2" href="https://claude.ai/code/artifact/0289a809-b1bb-4a2c-a79d-0404572850e3" target="_blank" rel="noopener">Version privée</a>
-          </div>
-        </article>
-
-        <article class="fiche" data-cle="diagnostic branche livre analyses erreurs signaux aide">
+<article class="fiche" data-cle="diagnostic branche livre analyses erreurs signaux aide">
           <div>
             <h3 class="titre">Le diagnostic est branché</h3>
             <p class="quoi">La suite de la précédente : ce qui a été fait des sept
@@ -1276,36 +1321,7 @@
             <a class="btn btn-2" href="https://claude.ai/code/artifact/deca590e-672e-48bd-8af9-a57eb862cba3" target="_blank" rel="noopener">Version privée</a>
           </div>
         </article>
-
-        <article class="fiche" data-cle="plan serie sante modules planification">
-          <div>
-            <h3 class="titre">Plan de la série Santé</h3>
-            <p class="quoi">Le plan de la série de modules sur la santé, dressé avant
-            leur production. C'est la plus ancienne pièce de la banque — elle montre à
-            quoi ressemblait la planification au départ.</p>
-            <div class="meta">
-              <span class="eti eti-privee">Artefact privé</span>
-              <span class="date">16 juillet 2026</span>
-            </div>
-          </div>
-          <div class="actions">
-            <a class="btn" href="https://claude.ai/code/artifact/29f97235-df29-4377-baf0-ca296c6013e3" target="_blank" rel="noopener">Ouvrir</a>
-          </div>
-        </article>
-
-      </div>
-    </section>
-
-    <!-- ══════════ REPÈRES ══════════ -->
-    <section class="famille" data-fam="reperes">
-      <div class="tete">
-        <span class="eyebrow e-foret">Public · Qui doit s'y retrouver</span>
-        <h2>Index, hiérarchie et guides d'usage</h2>
-        <p>Pas des présentations à faire debout devant un groupe : des pages où l'on va
-        chercher un lien, un écran ou une marche à suivre.</p>
-      </div>
-      <div class="liste">
-        <article class="fiche" data-cle="modules autonomes section storyline parcours guide ecran par ecran depot index chantier niveau 5 rendez-vous suivi regles arborescence">
+<article class="fiche" data-cle="modules autonomes section storyline parcours guide ecran par ecran depot index chantier niveau 5 rendez-vous suivi regles arborescence">
           <div>
             <h3 class="titre">Modules autonomes — la section</h3>
             <p class="quoi">La section du dépôt où vit <b>l'autre forme</b> de nos modules : un
@@ -1325,10 +1341,7 @@
             <a class="btn" href="modules-autonomes/index.html" target="_blank" rel="noopener">Ouvrir</a>
           </div>
         </article>
-
-
-
-        <article class="fiche" data-cle="carte contenu schema inventaire modules ateliers niveaux seances audio images catalogue ce qui a ete developpe">
+<article class="fiche" data-cle="carte contenu schema inventaire modules ateliers niveaux seances audio images catalogue ce qui a ete developpe">
           <div>
             <h3 class="titre">La carte du contenu</h3>
             <p class="quoi">Le schéma de <b>tout ce qui a été développé</b> : la chaîne qui va
@@ -1350,8 +1363,7 @@
             <a class="btn" href="assets/presentations/carte-du-contenu.html" target="_blank" rel="noopener">Ouvrir</a>
           </div>
         </article>
-
-        <article class="fiche" data-cle="mecanique schema technique architecture gabarit greffes serveur routes arbre organisations drapeaux flux sortants comment ca marche">
+<article class="fiche" data-cle="mecanique schema technique architecture gabarit greffes serveur routes arbre organisations drapeaux flux sortants comment ca marche">
           <div>
             <h3 class="titre">La mécanique</h3>
             <p class="quoi">Le schéma de <b>ce qui tourne derrière</b>, en quatre étages :
@@ -1374,8 +1386,7 @@
             <a class="btn" href="assets/presentations/la-mecanique.html" target="_blank" rel="noopener">Ouvrir</a>
           </div>
         </article>
-
-        <article class="fiche" data-cle="suivi eleves progression fiche eleve chiffres reseau ou regarder quelle page questions tableau de bord">
+<article class="fiche" data-cle="suivi eleves progression fiche eleve chiffres reseau ou regarder quelle page questions tableau de bord">
           <div>
             <h3 class="titre">Où regarder pour le suivi</h3>
             <p class="quoi">La carte des sept écrans de suivi du portail, faite pour lever la
@@ -1399,8 +1410,7 @@
             <a class="btn btn-2" href="https://claude.ai/code/artifact/4d910cd6-6f70-4b41-b420-e3e0333065f3" target="_blank" rel="noopener">Version privée</a>
           </div>
         </article>
-
-        <article class="fiche" data-cle="manuel eleve niveau 4 pdf cahier fiches seances mini-lecons imprimer pleine page serre">
+<article class="fiche" data-cle="manuel eleve niveau 4 pdf cahier fiches seances mini-lecons imprimer pleine page serre">
           <div>
             <h3 class="titre">Manuel de l'élève — Niveau 4</h3>
             <p class="quoi">Les 289 fiches de séance des 18 modules du niveau 4 reliées en
@@ -1423,8 +1433,7 @@
             <a class="btn btn-2" href="assets/documents/manuel-eleve-niveau-4-serre.pdf" target="_blank" rel="noopener">Serré · 852 p.</a>
           </div>
         </article>
-
-        <article class="fiche" data-cle="tableau programme prescrit savoirs temps de verbes intentions lexique situations modules niveaux">
+<article class="fiche" data-cle="tableau programme prescrit savoirs temps de verbes intentions lexique situations modules niveaux">
           <div>
             <h3 class="titre">Ce que le programme prescrit, module par module</h3>
             <p class="quoi">Le tableau du prescrit : pour chacun des 86 modules, sa
@@ -1443,28 +1452,7 @@
             <a class="btn" href="assets/presentations/tableau-programme.html" target="_blank" rel="noopener">Ouvrir</a>
           </div>
         </article>
-
-        <article class="fiche" data-cle="chantier banques exercices ateliers savoirs niveaux avancement suivi generateurs">
-          <div>
-            <h3 class="titre">Le chantier des banques d'exercices</h3>
-            <p class="quoi">Où en sont les ateliers courts, niveau par niveau : combien
-            sont construits, jouables, offerts au catalogue, et quelle part des savoirs
-            du programme ils touchent. Les modules couvrent les 85 situations ; les
-            banques couvrent ce qu'un module ne peut pas drainer — les sons, la graphie,
-            la phrase, le texte. Page générée : les compteurs sont relus sur le disque,
-            l'avancement d'une vague est le nombre d'ateliers réellement présents.</p>
-            <div class="meta">
-              <span class="eti eti-page">Page du site</span>
-              <span class="date">24 août 2026</span>
-              <span class="ou">assets/presentations/chantier-banques.html</span>
-            </div>
-          </div>
-          <div class="actions">
-            <a class="btn" href="assets/presentations/chantier-banques.html" target="_blank" rel="noopener">Ouvrir</a>
-          </div>
-        </article>
-
-        <article class="fiche" data-cle="acces francisation tous les liens portails modules ateliers index">
+<article class="fiche" data-cle="acces francisation tous les liens portails modules ateliers index">
           <div>
             <h3 class="titre">Tous les accès du projet, en un seul endroit</h3>
             <p class="quoi">L'index des liens en ligne : les cinq portails, les modules
@@ -1480,8 +1468,7 @@
             <a class="btn" href="https://claude.ai/code/artifact/2a25295f-16e1-42c6-aa51-9a2abe8ca68e" target="_blank" rel="noopener">Ouvrir</a>
           </div>
         </article>
-
-        <article class="fiche" data-cle="hierarchie site tableau bord serveur railway local disque">
+<article class="fiche" data-cle="hierarchie site tableau bord serveur railway local disque">
           <div>
             <h3 class="titre">Hiérarchie du site</h3>
             <p class="quoi">Quelle page dépend de quoi, et ce qui marche selon d'où on
@@ -1497,8 +1484,7 @@
             <a class="btn" href="assets/presentations/hierarchie-site-francisation.html" target="_blank" rel="noopener">Ouvrir</a>
           </div>
         </article>
-
-        <article class="fiche" data-cle="guide espace enseignant vingt ecrans portail planifier eleves groupes">
+<article class="fiche" data-cle="guide espace enseignant vingt ecrans portail planifier eleves groupes">
           <div>
             <h3 class="titre">L'espace enseignant, outil par outil</h3>
             <p class="quoi">Vingt écrans pour faire le tour du portail : poser les dates,
@@ -1514,8 +1500,7 @@
             <a class="btn" href="assets/outils/guide-espace-enseignant.html" target="_blank" rel="noopener">Ouvrir</a>
           </div>
         </article>
-
-        <article class="fiche" data-cle="tutoriels espace enseignant pas a pas">
+<article class="fiche" data-cle="tutoriels espace enseignant pas a pas">
           <div>
             <h3 class="titre">Tutoriels de l'espace enseignant</h3>
             <p class="quoi">Les marches à suivre, une par geste, telles qu'elles sont
@@ -1530,9 +1515,9 @@
             <a class="btn" href="assets/outils/tutoriels-enseignant.html" target="_blank" rel="noopener">Ouvrir</a>
           </div>
         </article>
-
       </div>
     </section>
+
 
     <p class="vide" id="vide">Aucune présentation ne correspond à cette recherche.</p>
 
@@ -1566,6 +1551,15 @@
   var q = document.getElementById('q');
   var vide = document.getElementById('vide');
   var filtre = 'tout';
+
+  // Compter plutôt qu'annoncer : les nombres des onglets sont lus sur les
+  // fiches présentes. Écrits à la main, ils étaient faux de deux.
+  onglets.forEach(function (b) {
+    var n = b.dataset.f === 'tout'
+      ? fiches.length
+      : document.querySelectorAll('.famille[data-fam="' + b.dataset.f + '"] .fiche').length;
+    b.querySelector('.n').textContent = n;
+  });
 
   function texte(fiche) {
     return ((fiche.dataset.cle || '') + ' ' + fiche.textContent).toLowerCase();
