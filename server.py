@@ -2856,7 +2856,16 @@ def migrate_multi_groupes():
                 "createdAt": date.today().isoformat(),
             }]
             save_teachers(teachers)
-            print(f"[migration] Compte administrateur créé pour {email}", flush=True)
+            # `{code}`, pas `{email}` : le courriel a quitté les comptes
+            # enseignants le 28 août 2026, et ce `print` est resté seul à le
+            # nommer. Il levait donc un `NameError` **après** `save_teachers()`
+            # — le compte était bien créé, mais la migration mourait là, et
+            # tout ce qui suit (le rattachement du groupe historique à son
+            # enseignant) ne tournait jamais. Le seul signe était un
+            # `[WARN] migrate_multi_groupes a échoué` au démarrage, sur le
+            # chemin d'amorce par variables d'environnement — celui d'une
+            # installation neuve. Trouvé le 31 août 2026 en montant un banc.
+            print(f"[migration] Compte administrateur créé : {code}", flush=True)
         else:
             print("[migration] Aucun enseignant — l'écran d'installation "
                   "(/prof.html) créera le premier compte", flush=True)
