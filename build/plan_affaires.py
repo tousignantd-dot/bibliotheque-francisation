@@ -133,6 +133,15 @@ def page_plan(m):
 projetables, %(mp3)s extraits sonores, les huit niveaux du programme couverts &mdash; produits par
 une personne. Ce plan part de là, parce que c'est la seule chose qu'un acheteur peut vérifier
 lui-même.</p>
+<div class="avert">
+  <p><strong>Révisé le 31 août 2026, après la recherche de marché.</strong> La première version de
+  ce plan visait l'employeur. <a href="analyse-marche.html">Le relevé du marché</a> a montré que
+  depuis le 1<sup>er</sup> juillet 2026, la francisation en milieu de travail est livrée
+  <strong>gratuitement</strong> par 32 partenaires publics mandatés. Le chapitre des marchés a donc
+  été refait&nbsp;: <strong>le client principal n'est pas l'entreprise, c'est le réseau qui la
+  sert.</strong> Le reste du plan &mdash; l'actif, les trois différenciateurs, les risques &mdash;
+  tenait et n'a pas bougé.</p>
+</div>
 
 <section class="premier">
   <h2>1. L'actif, compté</h2>
@@ -160,25 +169,30 @@ lui-même.</p>
 </section>
 
 <section>
-  <h2>2. Deux marchés, un seul outil</h2>
+  <h2>2. Trois clients, et le principal n'est pas celui qu'on croit</h2>
+  <div class="these">
+    <p class="cle">On ne vend pas contre la gratuité. On vend à ceux qui la livrent.</p>
+    <p>Les 32 partenaires mandatés ont le contrat, l'argent et les groupes. Ce qu'ils n'ont pas,
+    c'est le matériel &mdash; et c'est la seule chose que vous ayez en trop.</p>
+  </div>
   <div class="roule">
   <table class="cmp">
-    <thead><tr><th></th><th>Les centres de formation</th><th>Les entreprises</th></tr></thead>
+    <thead><tr><th></th><th>1. Le réseau mandaté <span class="cout">(21 CSS, 11 cégeps)</span></th><th>2. L'entreprise hors programme</th><th>3. L'entreprise servie <em>par</em> un partenaire</th></tr></thead>
     <tbody>
-      <tr><td>Ce qu'on vend</td><td>le portail entier&nbsp;: %(modules)s modules, la planification, le suivi des groupes</td><td>huit heures sur un métier précis, plus le matériel qui reste</td></tr>
-      <tr><td>Qui décide</td><td>une direction, parfois un service de la commission&nbsp;; plusieurs signatures</td><td>souvent <strong>une personne</strong> &mdash; RH, production, santé et sécurité</td></tr>
-      <tr><td>Le budget</td><td>public, annuel, calé sur l'année scolaire</td><td>existant&nbsp;: formation, SST, intégration des nouveaux employés</td></tr>
-      <tr><td>Le cycle</td><td>long. On entre par un projet pilote, on grandit par le bouche-à-oreille entre centres</td><td>court. Une rencontre, une démonstration, une demi-journée d'analyse</td></tr>
-      <tr><td>Le risque</td><td>dépendance à une décision politique ou budgétaire</td><td>un contrat qui ne se renouvelle pas si rien ne change au plancher</td></tr>
+      <tr><td>Ce qu'on vend</td><td>le portail, les %(modules)s modules, la langue d'appui, la production sur mesure</td><td>huit heures sur un métier précis, et le matériel qui reste</td><td>le matériel&nbsp;; c'est le partenaire qui facture la prestation</td></tr>
+      <tr><td>Pourquoi il achète</td><td>il doit livrer un service qu'il n'a pas le temps de fabriquer</td><td>la gratuité ne l'atteint pas&nbsp;: 100 salariés et plus, ou pas 40 h à libérer</td><td>il veut son plancher à lui, pas du français général à distance</td></tr>
+      <tr><td>Le budget</td><td>public, et déjà attribué au programme</td><td>le sien&nbsp;: formation, SST, intégration</td><td>celui du programme, par son partenaire</td></tr>
+      <tr><td>Le cycle</td><td>institutionnel &mdash; mais vous êtes déjà dans ce réseau</td><td>court&nbsp;: une rencontre, une démonstration</td><td>par recommandation du partenaire</td></tr>
+      <tr class="f"><td>Verdict</td><td><strong>le client principal</strong></td><td>réel, mais étroit</td><td>la meilleure porte vers l'entreprise</td></tr>
     </tbody>
   </table>
   </div>
-  <p><strong>Les deux partagent la totalité de l'outillage</strong> &mdash; le même moteur de module,
-  le même audio, le même portail, la même bascule de langue. C'est la structure qui rend le second
-  marché possible sans rien rebâtir&nbsp;: ce qui change, c'est le scénario et le vocabulaire, pas
-  la machine.</p>
-  <p class="cout">Le marché entreprise est celui qui décide vite et paie avec un budget qui existe
-  déjà. Le marché institutionnel est celui qui, une fois entré, ne repart pas.</p>
+  <p><strong>Les trois partagent la totalité de l'outillage</strong> &mdash; le même moteur de
+  module, le même audio, le même portail, la même bascule de langue. Ce qui change d'un client à
+  l'autre, c'est le scénario et le vocabulaire, jamais la machine.</p>
+  <p class="cout">Le renversement tient en une phrase&nbsp;: on ne cherche plus l'employeur qui
+  paierait ce que l'État donne. On cherche l'organisme qui doit le donner et qui manque de quoi
+  le faire.</p>
 </section>
 
 <section>
@@ -230,18 +244,23 @@ lui-même.</p>
 <section>
   <h2>4. Trois lignes de produits</h2>
   <ol class="actions">
-    <li><h3>Le portail, pour un centre</h3>
+    <li><h3>Le portail et son matériel, pour un partenaire du réseau</h3>
       <p>Les %(modules)s modules, la planification par groupe, le suivi, les productions des élèves,
-      le mode sans assistance pour une direction qui refuse l'IA, le mode séance sans compte.</p>
-      <p class="qui">Revenu récurrent. C'est ce qui paie le développement.</p></li>
-    <li><h3>La formation en milieu de travail</h3>
-      <p>Huit blocs d'une heure sur les heures payées, précédés d'une demi-journée d'analyse chez le
-      client. Groupes de 8 à 12, trois groupes pour couvrir trois quarts.</p>
-      <p class="qui">Revenu par contrat, cycle court. C'est ce qui fait connaître.</p></li>
+      le mode sans assistance pour une direction qui refuse l'IA, le mode séance sans compte &mdash;
+      et la langue d'appui, que rien d'autre n'offre.</p>
+      <p class="qui">Revenu récurrent, et le seul qui paie le développement. C'est la ligne
+      principale depuis le 31 août 2026.</p></li>
     <li><h3>La production sur mesure</h3>
       <p>Un module à l'image d'un client &mdash; ses machines, ses procédures, ses personnages.
-      Vendu au livrable, pas à l'heure.</p>
+      Vendu au livrable, pas à l'heure. Le commanditaire peut être un partenaire du réseau autant
+      qu'une entreprise.</p>
       <p class="qui">Marge la plus élevée, et la seule ligne qui exploite vraiment la chaîne.</p></li>
+    <li><h3>La formation en milieu de travail, en direct</h3>
+      <p>Huit blocs d'une heure sur les heures payées, précédés d'une demi-journée d'analyse chez le
+      client. Pour qui la gratuité n'atteint pas&nbsp;: 100 salariés et plus, ou pas quarante heures
+      à libérer.</p>
+      <p class="qui">Cycle court, marché étroit. C'est ce qui fait connaître &mdash; et ce qui
+      alimente le diagnostic didactique en réponses réelles.</p></li>
   </ol>
 </section>
 
@@ -317,6 +336,20 @@ lui-même.</p>
       mode sans assistance prouve que le produit tient debout sans eux.</p>
     </div>
     <div class="dec">
+      <div class="ligne"><h3>Le programme change sous vos pieds</h3><span class="badge b-loi">structurel</span></div>
+      <p>Il vient de le faire&nbsp;: le 1<sup>er</sup> juillet 2026, la livraison est passée aux
+      partenaires publics et deux pages de conditions ont disparu. Un client dont le mandat vient
+      d'une politique peut le perdre par une autre. La parade est de vendre du <strong>matériel
+      qui survit au programme</strong> &mdash; il sert aussi en classe ordinaire &mdash; et de ne
+      jamais bâtir une ligne de revenus sur une seule enveloppe.</p>
+    </div>
+    <div class="dec">
+      <div class="ligne"><h3>Vendre à du public, c'est un autre métier</h3><span class="badge b-dec">à surveiller</span></div>
+      <p>Cycles budgétaires, règles d'acquisition, seuils d'appel d'offres, une signature de plus
+      qu'on ne croyait. Le cycle court de l'entreprise n'existe pas ici. En contrepartie, un
+      partenaire qui adopte le matériel ne le change pas l'année suivante.</p>
+    </div>
+    <div class="dec">
       <div class="ligne"><h3>Le sur-mesure qui mange la marge</h3><span class="badge b-dec">à surveiller</span></div>
       <p>Chaque client voudra son scénario. La chaîne rend ça possible&nbsp;; l'indiscipline rend ça
       ruineux. La règle&nbsp;: on personnalise le <strong>décor</strong> &mdash; noms, zones,
@@ -328,21 +361,24 @@ lui-même.</p>
 <section>
   <h2>8. Quatre-vingt-dix jours</h2>
   <ol class="actions">
-    <li><h3>Sortir la démonstration</h3>
-      <p>Le bloc 3 se joue déjà. Il lui manque d'être montré&nbsp;: dix rencontres valent mieux que
-      dix modules de plus.</p>
-      <p class="qui">Le dépliant est prêt&nbsp;; ses coordonnées sont encore des cases à remplir.</p></li>
-    <li><h3>Un premier groupe pilote, annoncé comme tel</h3>
-      <p>Six à huit personnes, une vraie usine, sur les heures payées. Le prix du pilote est
-      secondaire&nbsp;: ce qu'on y gagne, ce sont les réponses réelles &mdash; la matière du
-      diagnostic didactique, et la seule preuve qui se raconte ensuite.</p></li>
-    <li><h3>Écrire les sept autres blocs avec ses mots à lui</h3>
+    <li><h3>Trois services aux entreprises, pas dix employeurs</h3>
+      <p>Les partenaires mandatés les plus proches. On ne leur vend pas un cours&nbsp;: on leur
+      montre le portail, la bascule de langue et le bloc qui se joue, et on demande ce qui leur
+      manque pour livrer leur mandat.</p>
+      <p class="qui">C'est une conversation entre gens du même réseau, pas un démarchage à froid.
+      C'est votre avantage, et il ne se transfère pas.</p></li>
+    <li><h3>Un groupe pilote, obtenu par l'un d'eux</h3>
+      <p>Six à huit personnes, une vraie usine, sur les heures payées &mdash; dans un cours que le
+      partenaire donne et facture. Le prix du pilote est secondaire&nbsp;: ce qu'on y gagne, ce
+      sont les réponses réelles, la matière du diagnostic didactique et la seule preuve qui se
+      raconte ensuite.</p></li>
+    <li><h3>Écrire les sept autres blocs avec les mots du terrain</h3>
       <p>Pas avant. C'est ce que la demi-journée d'analyse sert à récolter, et ce qui rend le
       deuxième client plus rapide que le premier.</p></li>
-    <li><h3>Trancher les trois questions ouvertes</h3>
-      <p>Le prix, l'analyse offerte ou facturée, et l'employeur en direct ou les programmes de
-      subvention. Aucune ne se décide sur papier&nbsp;: les trois se décident après les premières
-      rencontres.</p></li>
+    <li><h3>Trancher les deux questions qui restent</h3>
+      <p>Le prix, et l'analyse offerte ou facturée. La troisième &mdash; l'employeur en direct ou
+      les programmes &mdash; a trouvé sa réponse dans le relevé de marché&nbsp;: <strong>ni l'un
+      ni l'autre, le réseau mandaté</strong>.</p></li>
   </ol>
 </section>
 
@@ -363,7 +399,9 @@ lui-même.</p>
 <div class="pied">
   <p>Plan d'affaires &mdash; chantier « formation en entreprise ». Chiffres relevés sur le dépôt le %(quand)s.</p>
   <p>Produit par <code>build/plan_affaires.py</code> &mdash; les nombres se recomptent à chaque exécution.</p>
-  <p>À lire avec&nbsp;: <a href="strategie-communication.html">La stratégie de communication</a>,
+  <p>À lire avec&nbsp;: <a href="analyse-marche.html">Le marché, vérifié</a> &mdash; qui est
+  la source de la révision du 31 août &mdash;,
+  <a href="strategie-communication.html">La stratégie de communication</a>,
   <a href="programme-belrive.html">Huit heures chez Belrive</a>,
   <a href="diagnostic-didactique.html">Le diagnostic didactique</a></p>
 </div>
@@ -450,6 +488,15 @@ POSTES = [
      "l'ampleur après avoir montré le soin. Nommer aussi ce qui manque — les savoirs que "
      "les ateliers ne couvrent pas encore — parce qu'un inventaire sans trou n'est pas cru.",
      "Le tableau de bord du projet, une capture."),
+
+    ("Le français général se donne déjà",
+     "Ce qui manque n'est pas un cours de plus",
+     "Au Québec, un travailleur peut suivre un cours de français gratuit sur ses heures payées.\n"
+     "Personne ne lui apprend à dire « attendez, répétez lentement ».",
+     "La publication la plus utile pour parler au réseau public, et la plus délicate : elle ne "
+     "critique pas le service, elle nomme ce qu'il ne peut pas faire — enseigner un poste précis. "
+     "Finir sur l'offre : le matériel du poste, à ceux qui donnent déjà le cours.",
+     "La capture du bloc, avec le sélecteur de langue visible."),
 
     ("Une demande d'aide qui se souvient d'où elle vient",
      "Comment une trace devient un outil de conception",
@@ -549,11 +596,15 @@ en ambre</span> sont les seules choses que vous seul pouvez écrire.</p>
 </section>
 
 <section>
-  <h2>Trois publics, trois premières phrases</h2>
+  <h2>Quatre publics, quatre premières phrases</h2>
+  <p>L'ordre a changé le 31 août 2026&nbsp;: <a href="analyse-marche.html">le relevé du marché</a>
+  a montré que la francisation en milieu de travail est livrée gratuitement par le réseau public.
+  Le premier public n'est donc plus l'employeur &mdash; c'est celui qui le sert.</p>
   <div class="roule">
   <table class="cmp">
     <thead><tr><th>À qui</th><th>La première phrase</th><th>Ce qu'on lui montre ensuite</th></tr></thead>
     <tbody>
+      <tr class="f"><td>Un service aux entreprises <span class="cout">(CSS, cégep)</span></td><td>«&nbsp;Vous avez le mandat et les groupes. Je fais le matériel &mdash; en français, en espagnol et en anglais, avec les traces qui vous disent ce qui a coincé.&nbsp;»</td><td>le portail, la bascule de langue, et le bloc qui se joue en trois minutes</td></tr>
       <tr><td>Un employeur</td><td>«&nbsp;Vos gens comprennent-ils les consignes&nbsp;? Pas
         “parlent-ils français”&nbsp;— comprennent-ils la consigne donnée en quinze secondes, dans
         le bruit&nbsp;?&nbsp;»</td><td>le bloc de démonstration, joué devant lui, en trois minutes</td></tr>
@@ -596,9 +647,10 @@ en ambre</span> sont les seules choses que vous seul pouvez écrire.</p>
     <p><b>Le diagnostic didactique.</b> Je ne livre pas un cours&nbsp;: je livre un cours
     corrigé par les réponses réelles des gens qui l'ont suivi. Un exercice raté par la moitié
     d'un groupe accuse l'énoncé, pas le groupe.</p>
-    <p>Je travaille maintenant à porter cette approche <b>en entreprise</b>&nbsp;: huit
-    heures sur les moments d'une journée de travail où la langue coûte quelque chose &mdash;
-    la consigne du superviseur, le relais de quart, le danger qu'on ne sait pas nommer.</p>
+    <p>Je travaille maintenant à porter cette approche <b>en milieu de travail</b>&nbsp;:
+    des heures courtes sur les moments d'une journée où la langue coûte quelque chose &mdash;
+    la consigne du superviseur, le relais de quart, le danger qu'on ne sait pas nommer. Le
+    français général se donne déjà très bien&nbsp;; ce qui manque, c'est le poste.</p>
     <p><span class="vide">[une ligne sur votre parcours : où vous enseignez, depuis
     combien de temps, votre formation]</span></p>
     <p><span class="vide">[votre courriel]</span></p>
