@@ -51,6 +51,13 @@ button:disabled{cursor:not-allowed}
   font-size:12.5px;color:var(--texte)}
 .btn-menu:hover{background:var(--papier)}
 
+/* La sortie se voit sans crier : même gabarit que « Les écrans », un cran plus
+   discret, et elle ne devient franche qu'au survol. */
+.btn-sortir{border:1px solid var(--filet);background:#FFF;border-radius:4px;
+  padding:6px 12px;font:inherit;font-size:13px;color:var(--gris);cursor:pointer}
+.btn-sortir:hover{background:var(--papier);color:var(--encre);border-color:var(--encre)}
+.btn-sortir__c{display:none}
+
 /* ── le menu des écrans vus (verrou doux) ────────────────────────── */
 .menu{background:#FFF;border-bottom:1px solid var(--filet);padding:12px 20px;display:none}
 .menu[data-ouvert="1"]{display:block}
@@ -223,6 +230,12 @@ button:disabled{cursor:not-allowed}
   .jauge{flex:1 1 40px;min-width:40px}
   .pos{font-size:12px}
   .btn-menu{padding:6px 10px;font-size:12px;white-space:nowrap}
+  /* « Fermer » écrit prendrait la ligne : sur 375 px, la barre n'a plus de
+     place après la jauge et le menu. La croix garde la porte visible sans
+     rien pousser dessous — le nom complet reste dans l'aria-label. */
+  .btn-sortir{padding:6px 9px;font-size:15px;line-height:1}
+  .btn-sortir__l{display:none}
+  .btn-sortir__c{display:inline}
   .menu button{max-width:none;flex:1 1 100%}
 
   /* Un tri s'empile. En colonnes, sur 375 px, il reste 73 px pour le mot dès
@@ -258,6 +271,15 @@ button:disabled{cursor:not-allowed}
   <span class="pos" id="pos">1 / 1</span>
   <button type="button" class="btn-menu" id="btn-menu" aria-expanded="false"
           aria-controls="menu">Les écrans</button>
+  <!-- Sortir doit être une PORTE VISIBLE : un élève coincé sur un écran qu'il
+       ne comprend pas ne doit pas avoir à deviner que le mot-symbole en haut à
+       gauche est la sortie. Rien ne se perd — le point de reprise le ramène
+       exactement ici. -->
+  <button type="button" class="btn-sortir" id="btn-sortir"
+          aria-label="Fermer le point express"
+          title="Fermer — vous pourrez reprendre où vous êtes."><span
+          class="btn-sortir__l">Fermer</span><span class="btn-sortir__c"
+          aria-hidden="true">✕</span></button>
 </header>
 
 <nav class="menu" id="menu" data-ouvert="0" aria-label="Les écrans du parcours">
@@ -1140,6 +1162,36 @@ button:disabled{cursor:not-allowed}
     elMenu.setAttribute('data-ouvert', o);
     btnMenu.setAttribute('aria-expanded', o === '1' ? 'true' : 'false');
   });
+
+  /* ── la sortie ─────────────────────────────────────────────────────────
+     Où revient-on ? Un élève venu de son portail y retourne : le portail le
+     reconnaît par `eleve_session`, gardé dans le navigateur, donc l'adresse
+     nue suffit et le code ne se promène pas dans la barre. Hors du portail,
+     on rend la main à la page d'où l'on vient si elle est du même site ;
+     sinon on garde le lien que le gabarit a posé sur le mot-symbole.
+
+     Le lien du mot-symbole prend la même destination : il menait à l'index de
+     `modules-autonomes/` — la page de chantier — ce qui envoyait un élève
+     sorti par la marque au mauvais endroit. */
+  var lienNom = document.querySelector('.fr-nom');
+  function sortie() {
+    if (CODE) return '/eleve.html';
+    try {
+      var r = new URL(document.referrer);
+      if (r.origin === location.origin && r.pathname !== location.pathname) return r.href;
+    } catch (e) { /* pas de référent, ou référent d'un autre site */ }
+    return lienNom ? lienNom.getAttribute('href') : '../index.html';
+  }
+
+  var btnSortir = document.getElementById('btn-sortir');
+  btnSortir.addEventListener('click', function () {
+    // Rien ne se perd : l'état est déjà sur le disque, et le point de reprise
+    // ramènera l'élève sur cet écran-ci.
+    noter('sortie');
+    garder();
+    location.href = sortie();
+  });
+  if (lienNom) lienNom.setAttribute('href', sortie());
 
   /* ── ce que la vérification par programme regarde ──────────────── */
   window.__storyline = {
