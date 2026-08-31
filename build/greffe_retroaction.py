@@ -66,11 +66,14 @@ PAIRES = [
 /* Le buste signe le bloc, en tête : quelqu'un vient de vous donner des
    conseils, et tout ce qui suit est ce qu'il dit. Une personne se présente
    une fois, pas à chaque phrase. currentColor le met au teal du titre. */
-/* Le titre est une étiquette, pas une parole : il descend au teal sourd du
-   module (celui des lignes d'état) pour que la phrase corrigée, restée au
-   #154F68 plein, soit la voix forte du bloc. Au même teal, les deux se
-   disputaient le premier rang. */
-.fb-t{display:flex;align-items:center;color:#45746C}
+/* Le titre est une étiquette, pas une parole. Il quitte le #154F68 de la
+   phrase corrigée — au même teal, les deux se disputaient le premier rang —
+   pour un gris ardoise qui n'a AUCUN sens dans ce bloc : le teal y dit la
+   correction, l'ambre le conseil, le vert la réussite, et l'étiquette est le
+   seul élément qui gagne à n'avoir pas de couleur à lui. L'accent du niveau
+   avait été essayé et écarté : l'ocre des niveaux 2 et 3 se confond avec
+   l'ambre des conseils (essais/essai-entete-retroaction.html). */
+.fb-t{display:flex;align-items:center;color:#6B7A82}
 .fb-ic{width:17px;height:17px;flex:0 0 17px;fill:currentColor;margin-right:8px}
 """,
     ),
