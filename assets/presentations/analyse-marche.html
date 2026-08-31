@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Le marché, vérifié</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap">
+<style>
+/* ═══════════════════════════════════════════════════════════
+   LE MARCHÉ, VÉRIFIÉ
+   Ce que l'État offre gratuitement, par qui, à quelles conditions —
+   et les cinq endroits où son offre ne va pas.
+
+   Vert : sourcé et vérifié le 31 août 2026. Ambre : ce qu'on ne sait
+   pas et qu'on n'invente pas. Rouge : ce qui contraint.
+
+   Vert : ce que le tour de main actuel produit déjà.
+   Ambre : ce qui attend votre décision.
+   Rouge : l'argument de vente qui tient à une obligation légale.
+   L'acier ne fait que la structure.
+   ═══════════════════════════════════════════════════════════ */
+
+:root{
+  --ground:#F7F7F5; --card:#FFFFFF; --sunken:#FBFBFA;
+  --ink:#17181A; --body:#3A3D40; --muted:#6E7175;
+  --line:#E4E4E0; --line-fort:#D2D2CD;
+
+  --fait:#0A8F5B;    --fait-bg:#E6F5EE;
+  --decid:#C07A08;   --decid-bg:#FBF2E2;
+  --loi:#C7302B;     --loi-bg:#FBEDEC;
+  --acier:#1D6B8F;   --acier-bg:#E7F0F6;
+
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#151618; --card:#1D1F22; --sunken:#212326;
+    --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+    --line:#2E3135; --line-fort:#3D4146;
+    --fait:#4BC48D; --fait-bg:#12291F;
+    --decid:#E0A63F; --decid-bg:#2C2213;
+    --loi:#EE7A73; --loi-bg:#2E1917;
+    --acier:#6DAFD2; --acier-bg:#14242C;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#151618; --card:#1D1F22; --sunken:#212326;
+  --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+  --line:#2E3135; --line-fort:#3D4146;
+  --fait:#4BC48D; --fait-bg:#12291F;
+  --decid:#E0A63F; --decid-bg:#2C2213;
+  --loi:#EE7A73; --loi-bg:#2E1917;
+  --acier:#6DAFD2; --acier-bg:#14242C;
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--body);
+  font-family:Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased}
+.doc{max-width:880px;margin:0 auto;padding:56px 24px 96px}
+
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--acier);margin:0 0 14px}
+h1{font-family:Newsreader,Georgia,serif;font-size:clamp(38px,6.4vw,58px);line-height:1.04;
+  font-weight:500;letter-spacing:-.02em;color:var(--ink);margin:0 0 20px;text-wrap:balance}
+.chapeau{font-size:19px;line-height:1.6;color:var(--body);margin:0;max-width:62ch}
+.chapeau strong{color:var(--ink);font-weight:700}
+h2{font-family:Newsreader,Georgia,serif;font-size:29px;line-height:1.2;font-weight:600;
+  letter-spacing:-.01em;color:var(--ink);margin:0 0 4px;text-wrap:balance}
+h3{font-size:15px;font-weight:800;color:var(--ink);margin:0 0 6px}
+p{margin:0;max-width:68ch}
+section{display:flex;flex-direction:column;gap:16px;padding:44px 0 0;margin:44px 0 0;
+  border-top:1px solid var(--line)}
+section.premier{border-top:none;margin-top:0;padding-top:40px}
+code{font-family:var(--mono);font-size:.86em;background:var(--sunken);
+  border:1px solid var(--line);border-radius:4px;padding:1px 5px;color:var(--ink)}
+ul.simple{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px}
+ul.simple li{max-width:66ch} ul.simple li strong{color:var(--ink)}
+em.art{font-style:normal;font-family:var(--mono);font-size:.82em;color:var(--muted);
+  white-space:nowrap}
+
+.these{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--acier);
+  border-radius:3px;padding:26px 28px;display:flex;flex-direction:column;gap:12px}
+.these p{font-size:18px}
+.these .cle{font-family:Newsreader,Georgia,serif;font-size:23px;line-height:1.3;
+  font-weight:500;color:var(--ink);font-style:italic}
+
+/* ── Les décisions ─────────────────────────────────────── */
+.decisions{display:flex;flex-direction:column;gap:2px;counter-reset:d}
+.dec{counter-increment:d;background:var(--card);border:1px solid var(--line);
+  border-left:5px solid var(--decid);border-radius:3px;padding:19px 22px 19px 60px;
+  position:relative;display:flex;flex-direction:column;gap:8px}
+.dec.ok{border-left-color:var(--fait)}
+.dec::before{content:counter(d);position:absolute;left:24px;top:18px;
+  font-family:var(--mono);font-size:14px;color:var(--muted)}
+.dec .ligne{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;
+  justify-content:space-between}
+.dec p{font-size:15.5px}
+.dec .defaut{font-size:13.5px;color:var(--muted);font-style:italic}
+
+.badge{display:inline-block;font-size:11.5px;font-weight:800;letter-spacing:.05em;
+  text-transform:uppercase;padding:3px 9px;border-radius:2px;white-space:nowrap}
+.b-fait{background:var(--fait-bg);color:var(--fait)}
+.b-dec{background:var(--decid-bg);color:var(--decid)}
+.b-loi{background:var(--loi-bg);color:var(--loi)}
+.b-n{background:var(--sunken);color:var(--muted);border:1px solid var(--line)}
+
+/* ── Tableaux ──────────────────────────────────────────── */
+.defile{overflow-x:auto;border:1px solid var(--line);border-radius:3px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:15px;min-width:640px}
+caption{caption-side:top;text-align:left;padding:0 0 10px;font-size:13.5px;color:var(--muted)}
+th,td{padding:12px 15px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{font-size:11.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--muted);background:var(--sunken);white-space:nowrap}
+tbody tr:last-child td{border-bottom:none}
+td.q{font-weight:700;color:var(--ink)}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+td small{display:block;color:var(--muted);font-size:13px;line-height:1.45;margin-top:3px}
+tbody tr td:first-child{border-left:4px solid transparent}
+tr.l td:first-child{border-left-color:var(--loi)}
+tr.d td:first-child{border-left-color:var(--decid)}
+tr.f td:first-child{border-left-color:var(--fait)}
+
+/* ── Chiffres ──────────────────────────────────────────── */
+.chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.ch{background:var(--card);border:1px solid var(--line);border-radius:3px;
+  border-top:3px solid var(--acier);padding:15px 16px}
+.ch .n{font-family:Newsreader,Georgia,serif;font-size:30px;line-height:1;font-weight:500;
+  color:var(--ink);display:block;font-variant-numeric:tabular-nums}
+.ch .q{font-size:12.5px;font-weight:700;color:var(--muted);line-height:1.35;display:block;margin-top:7px}
+
+/* ── Marche à suivre ───────────────────────────────────── */
+ol.actions{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;
+  counter-reset:a}
+ol.actions li{counter-increment:a;background:var(--card);border:1px solid var(--line);
+  border-radius:3px;padding:18px 22px 18px 62px;position:relative;display:flex;
+  flex-direction:column;gap:6px}
+ol.actions li::before{content:counter(a);position:absolute;left:22px;top:17px;
+  font-family:var(--mono);font-size:14px;color:var(--muted)}
+ol.actions li p{font-size:15.5px}
+.qui{font-size:13px;color:var(--muted);font-style:italic}
+
+.reserve{border:1px dashed var(--line-fort);border-radius:3px;padding:20px 24px;
+  font-size:15px;color:var(--muted);display:flex;flex-direction:column;gap:9px}
+.reserve strong{color:var(--body)}
+.avert{background:var(--loi-bg);border:1px solid var(--loi);border-radius:3px;
+  padding:20px 24px;display:flex;flex-direction:column;gap:9px}
+.avert strong{color:var(--ink)}
+.avert p{font-size:15.5px;color:var(--body)}
+.pied{margin-top:52px;padding-top:22px;border-top:1px solid var(--line);font-size:13.5px;
+  color:var(--muted);display:flex;flex-direction:column;gap:5px}
+@media (max-width:620px){ .doc{padding:36px 18px 72px} }
+</style>
+<style>
+  .doc{padding-top:26px}
+  .retour{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;
+    color:var(--muted);text-decoration:none;margin-bottom:34px}
+  .retour:hover{color:var(--acier)}
+  table.cmp{width:100%;border-collapse:collapse;font-size:15px;background:var(--card);
+    border:1px solid var(--line);border-radius:3px;overflow:hidden}
+  table.cmp th,table.cmp td{padding:13px 15px;text-align:left;vertical-align:top;
+    border-bottom:1px solid var(--line)}
+  table.cmp thead th{background:var(--sunken);font-size:12px;font-weight:800;
+    letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+  table.cmp tbody tr:last-child td{border-bottom:0}
+  table.cmp td:first-child{font-weight:700;color:var(--ink)}
+  .roule{overflow-x:auto}
+  .voie{background:var(--card);border:1px solid var(--line);border-radius:3px;
+    padding:24px 26px;display:flex;flex-direction:column;gap:11px}
+  .voie.oui{border-color:var(--fait);border-width:2px;padding:23px 25px}
+  .voie.non{border-left:5px solid var(--loi)}
+  .voie h3{font-size:19px;font-family:Newsreader,Georgia,serif;font-weight:600;margin:0}
+  .voie .cout{font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+  .verdict{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+    padding:3px 10px;border-radius:99px;align-self:flex-start}
+  .v-oui{background:var(--fait-bg);color:var(--fait)}
+  .v-peut{background:var(--decid-bg);color:var(--decid)}
+  .v-non{background:var(--loi-bg);color:var(--loi)}
+  .mes{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:2px;
+    background:var(--line);border:1px solid var(--line);border-radius:3px;overflow:hidden}
+  .mes div{background:var(--card);padding:16px 18px}
+  .mes b{display:block;font-family:Newsreader,Georgia,serif;font-size:27px;font-weight:500;
+    color:var(--ink);line-height:1.1}
+  .mes span{font-size:13px;color:var(--muted)}
+  @media (max-width:640px){ .doc{padding-left:18px;padding-right:18px} }
+</style>
+<style>
+  .src{font-size:13px;color:var(--muted);margin-top:6px;font-style:italic}
+  .src a{color:var(--acier)}
+  ol.sources{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:9px;
+    font-size:14.5px;line-height:1.55}
+  ol.sources a{color:var(--acier);word-break:break-word}
+  ol.sources b{color:var(--ink)}
+  .faille{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--fait);
+    border-radius:3px;padding:18px 22px;display:flex;flex-direction:column;gap:7px}
+  .faille h3{font-size:17px;font-family:Newsreader,Georgia,serif;font-weight:600;margin:0}
+  .faille .porte{font-size:14px;color:var(--fait);font-weight:800}
+</style>
+</head>
+<body>
+<div class="doc">
+
+<a class="retour" href="/presentations.html"><span aria-hidden="true">&#8592;</span> Banque de présentations</a>
+
+<p class="eyebrow">Chantier &mdash; formation en entreprise</p>
+<h1>Le marché, vérifié</h1>
+<p class="chapeau">Relevé le <strong>31 août 2026</strong>, sur les pages du gouvernement et des
+fournisseurs eux-mêmes. Tout ce qui porte un chiffre porte sa source. Ce que je n'ai pas trouvé est
+écrit comme tel &mdash; <strong>un plan d'affaires ne se répare pas avec un nombre inventé</strong>.
+Et il y a une nouvelle qu'il vaut mieux apprendre ici que dans une salle de réunion.</p>
+
+<section class="premier">
+  <h2>Le fait qui change tout</h2>
+  <div class="avert">
+    <p><strong>Depuis le 1<sup>er</sup> juillet 2026, Francisation Québec livre la francisation en
+    milieu de travail par des «&nbsp;partenaires publics mandatés&nbsp;».</strong> J'ai relevé la
+    liste&nbsp;: <strong>32 organismes, tous publics</strong> &mdash; 21 centres de services
+    scolaires et 11 cégeps. <strong>Aucun fournisseur privé.</strong></p>
+    <p>Autrement dit&nbsp;: le créneau «&nbsp;je vends des cours de français à un employeur&nbsp;»
+    n'est pas un marché ouvert où l'on entre avec un meilleur produit. C'est un service <b>gratuit</b>,
+    financé par l'État, livré par le réseau public. Se présenter chez un manufacturier avec une
+    facture, à côté de ça, c'est arriver deuxième.</p>
+    <p><strong>Ce n'est pas une mauvaise nouvelle&nbsp;: c'est une carte.</strong> Elle dit où ne
+    pas aller, et elle dit où aller. La suite de cette page est là pour ça.</p>
+  </div>
+  <p class="src">Source&nbsp;: <a href="https://www.quebec.ca/entreprises-et-travailleurs-autonomes/accompagnement-services/francisation/liste-partenaires">Liste des partenaires de la francisation en milieu de travail</a>, Québec.ca &mdash; page relevée le 31 août 2026, comptage fait sur la page elle-même.</p>
+</section>
+
+<section>
+  <h2>Ce que l'État offre, exactement</h2>
+  <p>Les conditions comptent plus que le principe. Les voici, telles qu'écrites.</p>
+  <div class="roule">
+  <table class="cmp">
+    <thead><tr><th>Ce qui est offert</th><th>La condition</th></tr></thead>
+    <tbody>
+      <tr><td>Le cours</td><td><strong>Gratuit</strong> pour les entreprises admissibles, en vertu du Programme québécois d'apprentissage du français</td></tr>
+      <tr><td>Le temps</td><td>Pendant les <strong>heures rémunérées</strong>, <strong>4&nbsp;heures par semaine minimum</strong>, sessions de <strong>10&nbsp;semaines</strong> &mdash; soit <strong>40&nbsp;heures libérées</strong></td></tr>
+      <tr><td>Le groupe</td><td>Au moins <strong>6&nbsp;travailleurs évalués au même stade</strong> de compétence</td></tr>
+      <tr><td>Le lieu</td><td>« Généralement » <strong>à distance, en groupes réunissant plusieurs entreprises</strong>&nbsp;; en présentiel seulement dans un rayon de 50&nbsp;km du partenaire</td></tr>
+      <tr><td>Le contenu</td><td><strong>Français général</strong>, niveaux 0 à 7 de l'Échelle québécoise. Rien au-dessus du niveau 8</td></tr>
+      <tr><td>Le classement</td><td>Évaluation orale de <strong>15 à 20 minutes</strong>, obligatoire</td></tr>
+      <tr class="f"><td>L'argent en plus</td><td><strong>Allocation à la persévérance&nbsp;: 1 200&nbsp;$ par travailleur par session</strong>, plafond <strong>20 000&nbsp;$ par année</strong> et par entreprise &mdash; réservée aux entreprises de <strong>moins de 100 salariés</strong>, en activité depuis 12 mois</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="src">Sources&nbsp;: <a href="https://www.quebec.ca/entreprises-et-travailleurs-autonomes/accompagnement-services/francisation/cours-de-francais-en-milieu-de-travail/a-propos">À propos des cours de français en milieu de travail</a> et <a href="https://www.quebec.ca/entreprises-et-travailleurs-autonomes/accompagnement-services/francisation/cours-de-francais-en-milieu-de-travail/aide-financiere">Aide financière</a>, Québec.ca, mises à jour des 2 et 8 juillet 2026.</p>
+  <div class="reserve">
+    <p><strong>Une correction, parce qu'elle circule.</strong> Des pages tierces citent encore une
+    aide de «&nbsp;75 000&nbsp;$&nbsp;» et un remboursement de salaire «&nbsp;jusqu'à 26&nbsp;$
+    l'heure&nbsp;». Les adresses qui portaient ces chiffres <strong>répondent aujourd'hui
+    404</strong>&nbsp;: le programme a été réorganisé le 1<sup>er</sup> juillet 2026. Le seul montant
+    que la page vivante annonce est l'allocation de 1 200&nbsp;$. Ne pas citer les anciens.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Les cinq endroits où cette offre ne va pas</h2>
+  <p>Chacun est une porte. Ce ne sont pas des critiques du service public &mdash; c'est un service
+  généraliste, financé, et il fait ce qu'il annonce. Ce sont les endroits où un employeur reste
+  avec son problème sur les bras.</p>
+  <div class="decisions" style="gap:10px">
+    <div class="faille">
+      <h3>1. Il enseigne le français, pas le poste</h3>
+      <p>L'offre est du <em>français général</em>, mesuré sur l'Échelle québécoise. Elle ne peut
+      pas, par construction, enseigner «&nbsp;la deux est pleine, tu la vides&nbsp;» ni le relais
+      de quart d'une usine précise.</p>
+      <p class="porte">→ Le sur-mesure de poste n'est pas couvert. C'est exactement l'offre du bloc 3.</p>
+    </div>
+    <div class="faille">
+      <h3>2. Quarante heures libérées</h3>
+      <p>Quatre heures par semaine pendant dix semaines, sur les heures payées. Pour une PME de
+      trente personnes, six travailleurs absents quatre heures par semaine pendant deux mois et
+      demi, c'est une décision de production, pas une décision de formation.</p>
+      <p class="porte">→ Un format court, huit heures, se vend à qui ne peut pas en libérer quarante.</p>
+    </div>
+    <div class="faille">
+      <h3>3. Six personnes du même niveau</h3>
+      <p>Une usine a rarement six personnes au même stade. Elle a trois débutants, deux
+      intermédiaires et un qui se débrouille. <strong>Le groupe ne se forme pas.</strong></p>
+      <p class="porte">→ Un matériel à langue d'appui absorbe l'écart de niveau dans un même groupe.</p>
+    </div>
+    <div class="faille">
+      <h3>4. « Généralement à distance », entre entreprises</h3>
+      <p>Le cours réunit des travailleurs de plusieurs employeurs, souvent en visioconférence. Rien
+      n'y parle du plancher de personne.</p>
+      <p class="porte">→ « Ce sera votre usine, vos zones, vos mots » n'a aucun équivalent en face.</p>
+    </div>
+    <div class="faille">
+      <h3>5. Rien au-dessus du niveau 8, rien de technique</h3>
+      <p>Ni la procédure d'une machine, ni le vocabulaire d'un métier, ni l'écrit professionnel
+      avancé.</p>
+      <p class="porte">→ C'est le territoire du procédurier, gardé en réserve depuis le début.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>La taille du marché &mdash; ce qu'on sait, et ce qu'on ignore</h2>
+  <div class="mes">
+    <div><b>14 366</b><span>entreprises inscrites à l'OQLF au 31 mars 2025</span></div>
+    <div><b>11 509</b><span>un an plus tôt &mdash; la plus forte hausse jamais observée</span></div>
+    <div><b>~20 000</b><span>entreprises de 25 à 49 personnes, visées depuis le 1<sup>er</sup> juin 2025</span></div>
+    <div><b>2 M$</b><span>de masse salariale : le seuil de la loi du 1&nbsp;%</span></div>
+  </div>
+  <p>Deux mouvements se rejoignent. <strong>L'obligation d'inscription à l'OQLF s'est étendue aux
+  entreprises de 25 à 49 personnes le 1<sup>er</sup> juin 2025</strong>, ce qui fait entrer d'un coup
+  une cohorte d'environ vingt mille entreprises &mdash; dont <em>Le Devoir</em> écrivait, le
+  <strong>1<sup>er</sup> juin 2024</strong>, qu'environ 3 000 seulement avaient entamé la
+  démarche, soit <strong>15&nbsp;%</strong>. Et la <strong>loi du 1&nbsp;%</strong>
+  &mdash; 1&nbsp;% de la masse salariale en formation, au-delà de 2&nbsp;M$ &mdash; a été
+  <strong>assouplie en avril 2026</strong>&nbsp;: plus de formations admissibles, processus
+  simplifié, reconnaissance de la formation informelle.</p>
+  <div class="avert">
+    <p><strong>Ce que je n'ai pas trouvé, et que je n'invente pas&nbsp;:</strong> combien les
+    entreprises québécoises dépensent réellement en francisation, quelle part va au privé, et
+    combien de travailleurs passent chaque année par les cours en milieu de travail. Aucune donnée
+    publique ne l'établit. <strong>Toute «&nbsp;taille de marché&nbsp;» chiffrée qu'on vous
+    présentera là-dessus est une extrapolation</strong> &mdash; y compris si elle vient de moi.</p>
+  </div>
+  <p class="src">Sources&nbsp;: <a href="https://www.oqlf.gouv.qc.ca/office/communiques/2025/20251009_rapport_annuel_2024_2025.aspx">Rapport annuel 2024-2025 de l'OQLF</a>&nbsp;; <a href="https://www.oqlf.gouv.qc.ca/office/communiques/2024/20240506_entreprises_25_49_personnes.aspx">communiqué de l'OQLF sur les entreprises de 25 à 49 personnes</a>&nbsp;; <a href="https://www.quebec.ca/nouvelles/actualites/details/loi-sur-les-competences-quebec-elargit-les-formations-admissibles-et-simplifie-les-demarches-pour-les-employeurs-69701">Québec.ca &mdash; Loi sur les compétences, avril 2026</a>. <a href="https://www.ledevoir.com/politique/quebec/814083/langue-francaise-peu-petites-entreprises-conformes-loi-96"><em>Le Devoir</em>, 1<sup>er</sup> juin 2024</a> &mdash; le site refuse la lecture automatisée (HTTP 403)&nbsp;; date et chiffres retrouvés par recherche, à confirmer à la lecture.</p>
+</section>
+
+<section>
+  <h2>Ce que ça vaut &mdash; les repères que j'ai pu vérifier</h2>
+  <div class="roule">
+  <table class="cmp">
+    <thead><tr><th>Repère</th><th>Chiffre</th><th>Solidité</th></tr></thead>
+    <tbody>
+      <tr><td>Formateur en entreprise, salarié</td><td>35 000 à 45 000&nbsp;$ en début&nbsp;; 55 000 à 85 000&nbsp;$ expérimenté&nbsp;; 90 000&nbsp;$ et plus en gestion</td><td>Métiers Québec &mdash; année de référence non précisée</td></tr>
+      <tr><td>Consultant ou formateur indépendant</td><td>25 à 100&nbsp;$ l'heure selon la spécialisation</td><td>même source&nbsp;; fourchette large, à traiter comme un ordre de grandeur</td></tr>
+      <tr><td>Cours de langue au Québec</td><td>20 à 80&nbsp;$ l'heure selon le format et la taille du groupe</td><td class="q"><strong>faible</strong> &mdash; comparateur commercial, pas une source officielle</td></tr>
+      <tr class="f"><td>Prix publiés par les écoles privées</td><td><strong>aucun</strong></td><td>vérifié le 31 août 2026 sur quatre fournisseurs&nbsp;: aucun ne publie de tarif</td></tr>
+      <tr><td>Production d'une heure de formation en ligne</td><td>environ <strong>79 heures de développement</strong> par heure livrée (niveau simple)&nbsp;; un module simple 49 à 125&nbsp;h, intermédiaire jusqu'à 267&nbsp;h, complexe jusqu'à 716&nbsp;h</td><td>étude Chapman Alliance, citée par l'industrie&nbsp;; ancienne mais toujours le repère courant</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="these">
+    <p class="cle">Aucune école privée du Québec ne publie son prix. Le vôtre se donnera donc en
+    rencontre, comme les leurs.</p>
+    <p>Ce n'est pas une coquetterie de marché&nbsp;: c'est ce qui permet de facturer un contexte
+    plutôt qu'une heure. Le dépliant a raison de n'en porter aucun.</p>
+  </div>
+  <p>Le dernier repère est le plus utile pour vous, et il joue en votre faveur. À 79 heures de
+  développement par heure de formation livrée, <strong>ce qui est déjà produit représente un
+  investissement qu'un concurrent ne rattrape pas en une saison</strong> &mdash; et la chaîne de
+  production fait descendre ce ratio, ce qui est précisément l'actif à vendre. Je m'arrête là&nbsp;:
+  transformer ce ratio en dollars donnerait un nombre spectaculaire et invérifiable.</p>
+</section>
+
+<section>
+  <h2>Les concurrents, comparés</h2>
+  <div class="roule">
+  <table class="cmp">
+    <thead><tr><th>Qui</th><th>Ce qu'ils font</th><th>Leur force</th><th>Leur faille</th></tr></thead>
+    <tbody>
+      <tr><td>Francisation Québec et ses 32 partenaires publics</td><td>cours de français général en milieu de travail, 4&nbsp;h/semaine sur 10 semaines</td><td><strong>gratuit</strong>, financé, adossé à une obligation légale, présent dans toutes les régions</td><td>générique, à distance, groupes de 6 au même niveau, rien de spécifique à un poste</td></tr>
+      <tr><td>Écoles de langues privées <span class="cout">(CLIC, VivaLang, Charlemagne, PME&nbsp;CDV, Canada College, Sur le bout de la langue…)</span></td><td>cours de langue en entreprise, privés ou semi-privés, en ligne ou sur place</td><td>souplesse d'horaire, prise en charge rapide, plusieurs langues</td><td>français «&nbsp;des affaires&nbsp;» générique&nbsp;; aucun matériel de métier, aucune mesure du transfert au poste</td></tr>
+      <tr><td>Services aux entreprises des CSS et des cégeps</td><td>les mêmes cours, plus de la formation continue&nbsp;; ils <strong>sont</strong> les partenaires mandatés</td><td>le mandat, le financement, la crédibilité institutionnelle</td><td>peu de matériel spécialisé à eux&nbsp;; ils achètent ou fabriquent au cas par cas</td></tr>
+      <tr><td>Fournisseurs de formation en ligne génériques</td><td>catalogues de modules, plateformes</td><td>volume, prix bas par tête</td><td>rien en francisation de plancher, rien en langue d'appui</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="src">Fournisseurs privés relevés par recherche le 31 août 2026&nbsp;; la liste n'est pas exhaustive et ne prétend pas l'être.</p>
+</section>
+
+<section>
+  <h2>Où se placer &mdash; trois portes, dans cet ordre</h2>
+  <ol class="actions">
+    <li><h3>Fournir les 32 partenaires, plutôt que les concurrencer</h3>
+      <p>Ils ont le mandat, le financement et les groupes. <strong>Ce qu'ils n'ont pas, c'est le
+      matériel</strong> &mdash; et vous en avez pour les huit niveaux, avec l'audio, les séances
+      projetables, les fiches et la bascule de langue. C'est la porte la plus large, la plus rapide,
+      et celle où votre inventaire vaut le plus.</p>
+      <p class="qui">Vous connaissez déjà ce réseau de l'intérieur. C'est un avantage qu'aucun
+      fournisseur privé n'a.</p></li>
+    <li><h3>Vendre ce que le programme public ne fait pas</h3>
+      <p>Le sur-mesure de poste, le format court, le procédurier, les niveaux hauts, le groupe à
+      niveaux mêlés. Là, pas de concurrence gratuite&nbsp;: l'employeur reste avec son problème et
+      personne d'autre ne le règle.</p></li>
+    <li><h3>Les entreprises que l'aide n'atteint pas</h3>
+      <p>Celles de 100 salariés et plus n'ont <strong>aucune allocation</strong>. Celles qui ne
+      peuvent pas libérer quarante heures non plus. Et celles qui doivent se conformer à l'OQLF
+      sans savoir par où commencer.</p></li>
+  </ol>
+  <div class="reserve">
+    <p><strong>Ce que cette carte change au plan d'affaires.</strong> La question laissée ouverte
+    &mdash; «&nbsp;l'employeur en direct ou les programmes de subvention&nbsp;?&nbsp;» &mdash;
+    a maintenant une réponse, et ce n'est ni l'une ni l'autre&nbsp;: <strong>le réseau public
+    mandaté</strong>, qui est à la fois le canal financé et le client le plus probable.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Comment lire cette page dans six mois</h2>
+  <div class="avert">
+    <p><strong>Elle ne se met pas à jour toute seule, et c'est délibéré.</strong> Les autres pages
+    de cette banque comptent leurs chiffres sur le dépôt à chaque production&nbsp;; ceux-ci viennent
+    de l'extérieur et sont <strong>datés du 31 août 2026</strong>. Un chiffre venu du dehors qui
+    changerait en silence serait pire qu'un chiffre périmé qu'on sait périmé.</p>
+    <p>Le programme a déjà été réorganisé le 1<sup>er</sup> juillet 2026, et deux adresses citées
+    partout ailleurs répondent maintenant 404. <strong>Revérifier les quatre pages de Québec.ca
+    avant toute rencontre importante</strong> &mdash; c'est vingt minutes, et c'est la différence
+    entre citer le programme et citer l'ancien.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Sources</h2>
+  <ol class="sources">
+    <li><b>Liste des partenaires de la francisation en milieu de travail</b> &mdash; Québec.ca.
+      <a href="https://www.quebec.ca/entreprises-et-travailleurs-autonomes/accompagnement-services/francisation/liste-partenaires">quebec.ca/…/liste-partenaires</a>. Comptage des 32 partenaires fait sur la page, le 31 août 2026.</li>
+    <li><b>À propos des cours de français en milieu de travail</b> &mdash; Québec.ca, mise à jour du 2 juillet 2026.
+      <a href="https://www.quebec.ca/entreprises-et-travailleurs-autonomes/accompagnement-services/francisation/cours-de-francais-en-milieu-de-travail/a-propos">quebec.ca/…/a-propos</a></li>
+    <li><b>Conditions à respecter</b> &mdash; Québec.ca.
+      <a href="https://www.quebec.ca/entreprises-et-travailleurs-autonomes/accompagnement-services/francisation/cours-de-francais-en-milieu-de-travail/conditions">quebec.ca/…/conditions</a></li>
+    <li><b>Aide financière &mdash; allocation à la persévérance</b> &mdash; Québec.ca, mise à jour du 8 juillet 2026.
+      <a href="https://www.quebec.ca/entreprises-et-travailleurs-autonomes/accompagnement-services/francisation/cours-de-francais-en-milieu-de-travail/aide-financiere">quebec.ca/…/aide-financiere</a></li>
+    <li><b>Rapport annuel 2024-2025 de l'OQLF</b> (14 366 entreprises inscrites au 31 mars 2025).
+      <a href="https://www.oqlf.gouv.qc.ca/office/communiques/2025/20251009_rapport_annuel_2024_2025.aspx">oqlf.gouv.qc.ca/…/rapport_annuel_2024_2025</a></li>
+    <li><b>Entreprises de 25 à 49 personnes</b> &mdash; communiqué de l'OQLF (environ 20 000 entreprises visées).
+      <a href="https://www.oqlf.gouv.qc.ca/office/communiques/2024/20240506_entreprises_25_49_personnes.aspx">oqlf.gouv.qc.ca/…/20240506</a></li>
+    <li><b>Loi sur les compétences &mdash; formations admissibles élargies</b>, avril 2026 &mdash; Québec.ca.
+      <a href="https://www.quebec.ca/nouvelles/actualites/details/loi-sur-les-competences-quebec-elargit-les-formations-admissibles-et-simplifie-les-demarches-pour-les-employeurs-69701">quebec.ca/nouvelles/…/69701</a></li>
+    <li><b>Formateur en entreprise au Québec &mdash; salaires</b> &mdash; Métiers Québec.
+      <a href="https://metiersquebec.ca/education-et-services-de-garde/formateur-entreprise/">metiersquebec.ca/…/formateur-entreprise</a></li>
+    <li><b>Ratios de développement e-learning</b> (Chapman Alliance), repris par
+      <a href="https://blogs.articulate.com/les-essentiels-du-elearning/comment-faire-une-analyse-cout-benefice-de-votre-projet-e-learning/">Articulate</a> et
+      <a href="https://vecteursleviers.com/guides/evaluer-le-cout-dune-formation-en-ligne/">Vecteurs et Leviers</a>.</li>
+    <li><b>Fournisseurs privés relevés</b> &mdash;
+      <a href="https://www.clicserviceslinguistiques.com/">CLIC Services Linguistiques</a>,
+      <a href="https://www.vivalang.ca/formation-linguistiques-entreprises">VivaLang</a>,
+      <a href="https://alcmontreal.com/cours-en-entreprise/">Académie Linguistique Charlemagne</a>,
+      <a href="https://pmecdvlangues.ca/cours-de-francais/">PME CDV Langues</a>,
+      <a href="https://surleboutdelalangue.ca/entreprises/">Sur le bout de la langue</a>.
+      Aucun prix publié, vérifié le 31 août 2026.</li>
+    <li><b>« Loi 96 : seulement 15&nbsp;% des petites entreprises inscrites auprès de l'OQLF »</b>
+      &mdash; <em>Le Devoir</em>, <b>1<sup>er</sup> juin 2024</b>.
+      <a href="https://www.ledevoir.com/politique/quebec/814083/langue-francaise-peu-petites-entreprises-conformes-loi-96">ledevoir.com/…/814083</a>.
+      Le site refuse la lecture automatisée (HTTP 403)&nbsp;: la date et les chiffres viennent de la
+      recherche, pas de la page elle-même. <b>Attention à la date en le citant</b> &mdash; l'article
+      est paru <em>un an avant</em> l'échéance du 1<sup>er</sup> juin 2025 : il décrit un retard à
+      la veille de l'obligation, pas le taux de conformité d'aujourd'hui. Le rapport annuel
+      2024-2025 de l'OQLF, lui, fait état d'une forte hausse des inscriptions depuis.</li>
+  </ol>
+</section>
+
+<div class="pied">
+  <p>Analyse de marché &mdash; chantier « formation en entreprise ». Relevé du 31 août 2026.</p>
+  <p>Écrite à la main, <strong>et pas produite par un script</strong>&nbsp;: ses chiffres viennent du
+  dehors et doivent vieillir visiblement.</p>
+  <p>À lire avec&nbsp;: <a href="plan-affaires.html">Le plan d'affaires</a>,
+  <a href="strategie-communication.html">La stratégie de communication</a>,
+  <a href="programme-belrive.html">Huit heures chez Belrive</a></p>
+</div>
+
+</div>
+</body>
+</html>
