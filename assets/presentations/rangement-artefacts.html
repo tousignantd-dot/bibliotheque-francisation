@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ranger les artefacts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600&family=Nunito:ital,wght@0,400;0,600;0,700;0,800&display=swap">
+<style>
+:root{
+  --ground:#F7F7F5; --card:#FFFFFF; --sunken:#FBFBFA;
+  --ink:#17181A; --body:#3A3D40; --muted:#6E7175;
+  --line:#E4E4E0; --line-fort:#D2D2CD;
+  --ok:#0A8F5B; --ok-bg:#E6F5EE;
+  --trou:#C7302B; --trou-bg:#FBEDEC;
+  --part:#C07A08; --part-bg:#FBF2E2;
+  --acier:#1D6B8F;
+  --niv-3:#B45309; --niv-4:#8C6A07; --niv-5:#0D7A6F;
+  --niv-6:#1D6B8F; --niv-7:#3B49A0; --niv-8:#7E3F98;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#151618; --card:#1D1F22; --sunken:#212326;
+    --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+    --line:#2E3135; --line-fort:#3D4146;
+    --ok:#4BC48D; --ok-bg:#12291F;
+    --trou:#EE7A73; --trou-bg:#2E1917;
+    --part:#E0A63F; --part-bg:#2C2213;
+    --acier:#6DAFD2;
+    --niv-3:#E0A63F; --niv-4:#D4BC5C; --niv-5:#5FC3B8;
+    --niv-6:#6DAFD2; --niv-7:#8D97DE; --niv-8:#C089D6;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#151618; --card:#1D1F22; --sunken:#212326;
+  --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+  --line:#2E3135; --line-fort:#3D4146;
+  --ok:#4BC48D; --ok-bg:#12291F;
+  --trou:#EE7A73; --trou-bg:#2E1917;
+  --part:#E0A63F; --part-bg:#2C2213;
+  --acier:#6DAFD2;
+  --niv-3:#E0A63F; --niv-4:#D4BC5C; --niv-5:#5FC3B8;
+  --niv-6:#6DAFD2; --niv-7:#8D97DE; --niv-8:#C089D6;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--body);
+  font-family:Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased}
+.doc{max-width:880px;margin:0 auto;padding:56px 24px 96px}
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--acier);margin:0 0 14px}
+h1{font-family:Newsreader,Georgia,serif;font-size:clamp(38px,6.4vw,58px);line-height:1.04;
+  font-weight:500;letter-spacing:-.02em;color:var(--ink);margin:0 0 20px;text-wrap:balance}
+.chapeau{font-size:19px;line-height:1.6;margin:0;max-width:62ch}
+.chapeau strong{color:var(--ink);font-weight:700}
+h2{font-family:Newsreader,Georgia,serif;font-size:29px;line-height:1.2;font-weight:600;
+  letter-spacing:-.01em;color:var(--ink);margin:0 0 4px;text-wrap:balance}
+p{margin:0;max-width:68ch}
+section{display:flex;flex-direction:column;gap:16px;padding:44px 0 0;margin:44px 0 0;
+  border-top:1px solid var(--line)}
+section.premier{border-top:none;margin-top:0;padding-top:40px}
+code{font-family:var(--mono);font-size:.86em;background:var(--sunken);
+  border:1px solid var(--line);border-radius:4px;padding:1px 5px;color:var(--ink)}
+ul.simple{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px}
+ul.simple li{max-width:66ch} ul.simple li strong{color:var(--ink)}
+.these{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--acier);
+  border-radius:3px;padding:26px 28px;display:flex;flex-direction:column;gap:12px}
+.these p{font-size:18px}
+.these .cle{font-family:Newsreader,Georgia,serif;font-size:23px;line-height:1.3;
+  font-weight:500;color:var(--ink);font-style:italic}
+.chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.ch{background:var(--card);border:1px solid var(--line);border-radius:3px;
+  border-top:3px solid var(--trou);padding:15px 16px}
+.ch.bon{border-top-color:var(--ok)}
+.ch .n{font-family:Newsreader,Georgia,serif;font-size:30px;line-height:1;font-weight:500;
+  color:var(--ink);display:block;font-variant-numeric:tabular-nums}
+.ch .q{font-size:12.5px;font-weight:700;color:var(--muted);line-height:1.35;display:block;
+  margin-top:7px}
+.defile{overflow-x:auto;border:1px solid var(--line);border-radius:3px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:15px;min-width:620px}
+caption{caption-side:top;text-align:left;padding:0 0 10px;font-size:13.5px;color:var(--muted)}
+th,td{padding:11px 15px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{font-size:11.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--muted);background:var(--sunken);white-space:nowrap}
+th.r,td.r{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+tbody tr:last-child td{border-bottom:none}
+td.q{font-weight:700;color:var(--ink)}
+td small{display:block;color:var(--muted);font-size:13px;line-height:1.45;margin-top:2px}
+tbody tr td:first-child{border-left:4px solid transparent}
+tfoot td{font-weight:800;color:var(--ink);background:var(--sunken);
+  border-top:2px solid var(--line-fort)}
+.jauge{display:block;height:7px;border-radius:2px;background:var(--line);margin-top:6px;
+  width:150px;overflow:hidden}
+.jauge i{display:block;height:100%;background:var(--trou)}
+.badge{display:inline-block;font-size:11.5px;font-weight:800;letter-spacing:.05em;
+  text-transform:uppercase;padding:3px 9px;border-radius:2px;white-space:nowrap}
+.b-vide{background:var(--trou-bg);color:var(--trou)}
+.b-part{background:var(--part-bg);color:var(--part)}
+.b-ok{background:var(--ok-bg);color:var(--ok)}
+.reserve{border:1px dashed var(--line-fort);border-radius:3px;padding:20px 24px;
+  font-size:15px;color:var(--muted);display:flex;flex-direction:column;gap:9px}
+.reserve strong{color:var(--body)}
+.pied{margin-top:52px;padding-top:22px;border-top:1px solid var(--line);font-size:13.5px;
+  color:var(--muted);display:flex;flex-direction:column;gap:5px}
+@media (max-width:620px){ .doc{padding:36px 18px 72px} .jauge{width:96px} }
+</style>
+<style>
+/* Un tableau déborde sur un écran étroit : il défile dans son propre cadre
+   plutôt que de pousser la page entière. Mesuré à 609 px : 644 sans ceci. */
+.cadre-tab{overflow-x:auto;margin:16px 0 0}
+.tab{width:100%;min-width:420px;border-collapse:collapse;font-size:15px}
+.tab th,.tab td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+.tab th{font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:800}
+.tab code{font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+.mal{color:var(--trou)}
+.chiffres{display:flex;gap:26px;flex-wrap:wrap;margin:24px 0 0;padding:18px 20px;
+  background:var(--card);border:1px solid var(--line);border-radius:12px}
+.chiffre b{display:block;font-family:Newsreader,Georgia,serif;font-size:32px;font-weight:500;
+  color:var(--ink);line-height:1}
+.chiffre span{font-size:13px;color:var(--muted)}
+.bloc{margin:54px 0 0}
+.bloc>p{margin:10px 0 0}
+.opt{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--acier);
+  border-radius:12px;padding:18px 20px;margin:18px 0 0}
+.opt--reco{border-left-color:var(--ok)}
+.opt h3{font-family:Newsreader,Georgia,serif;font-size:21px;font-weight:600;color:var(--ink);margin:0 0 4px}
+.opt .eti{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--ok)}
+.pour{display:grid;gap:6px;margin:12px 0 0;font-size:15px}
+.pour div::before{content:"· ";color:var(--muted)}
+.onglets{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 0}
+.onglets span{font-size:13px;font-weight:800;background:var(--sunken);border:1px solid var(--line);
+  border-radius:99px;padding:5px 12px;color:var(--body)}
+.onglets span.pri{background:var(--ok-bg);border-color:var(--ok);color:var(--ok)}
+.liste{columns:2;column-gap:28px;font-size:14.5px;margin:12px 0 0}
+@media (max-width:620px){.liste{columns:1}}
+.liste div{break-inside:avoid;padding:2px 0}
+.note{background:var(--part-bg);border-left:3px solid var(--part);border-radius:0 8px 8px 0;
+  padding:14px 16px;margin:18px 0 0;font-size:15px}
+</style>
+</head>
+<body>
+<div class="doc">
+  <p class="eyebrow">Fouille et proposition · 31 août 2026</p>
+  <h1>Ranger les artefacts</h1>
+  <p class="chapeau">Tout ce que le projet produit à côté des cours — présentations, relevés,
+  décisions à trancher, plans — devrait se retrouver au même endroit. La banque de
+  présentations est cet endroit. <strong>Elle est saine à l'intérieur</strong> : aucun fichier
+  oublié, aucun lien mort. Ce qui ne va pas est ailleurs, et c'est plus intéressant.</p>
+
+  <div class="chiffres">
+    <div class="chiffre"><b>57</b><span>fiches à la banque</span></div>
+    <div class="chiffre"><b>47</b><span>fichiers rangés</span></div>
+    <div class="chiffre"><b>1</b><span>orphelins</span></div>
+    <div class="chiffre"><b>42</b><span>artefacts hors banque</span></div>
+    <div class="chiffre"><b>1376</b><span>fiches de cours <i>(hors sujet)</i></span></div>
+  </div>
+
+  <div class="bloc">
+    <h2>La ligne, avant tout le reste</h2>
+    <p>« Tout au même endroit » ne peut pas vouloir dire <i>tout</i>. Le dossier
+    <code>assets/documents/</code> contient <b>1376 fiches et diaporamas de cours</b> : ils
+    sont servis par le catalogue, à des élèves, dans un module. Les verser à la banque la
+    rendrait inutilisable le jour même.</p>
+    <div class="cadre-tab"><table class="tab">
+      <tr><th>Va à la banque</th><th>N'y va pas</th></tr>
+      <tr><td>Un document <b>sur le projet</b> : une présentation, un relevé, une décision à
+      trancher, un plan, un état d'avancement.</td>
+      <td>Le <b>matériel de cours</b> : fiches élèves, diaporamas de séance, plans de cours,
+      images de modules. Le catalogue est leur porte.</td></tr>
+      <tr><td>Ce qu'on ouvre pour <b>montrer, décider ou comprendre</b>.</td>
+      <td>Ce qu'on ouvre pour <b>enseigner</b>.</td></tr>
+    </table></div>
+  </div>
+
+  <div class="bloc">
+    <h2>Ce que la fouille a trouvé</h2>
+
+    <h4 style="margin-top:26px">1 · Les compteurs mentent déjà</h4>
+    <p>Les nombres des onglets sont écrits à la main. Ils sont faux depuis deux fiches.</p>
+    <div class="cadre-tab"><table class="tab">
+      <tr><th>Onglet</th><th>Annoncé</th><th>Réel</th><th></th></tr>
+      <tr><td><b>trousse</b></td><td>1</td><td>1</td><td>—</td></tr><tr><td><b>direction</b></td><td>9</td><td>9</td><td>—</td></tr><tr><td><b>enseignants</b></td><td>9</td><td>9</td><td>—</td></tr><tr><td><b>chantier</b></td><td>25</td><td>27</td><td><b class="mal">écart</b></td></tr><tr><td><b>reperes</b></td><td>11</td><td>11</td><td>—</td></tr>
+      <tr><td><b>Tout</b></td><td>55</td><td>57</td>
+          <td><b class="mal">écart</b></td></tr>
+    </table></div>
+
+    <h4 style="margin-top:30px">2 · Une famille avale la moitié de la banque</h4>
+    <p><b>27 fiches sur 57</b> sont dans « Chantier ». Une famille qui
+    contient tout ne classe rien — et le mot recouvre trois choses différentes : des
+    <b>décisions</b> qui attendent votre jugement, des <b>états</b> mesurés à un instant, et
+    des <b>propositions</b> qui n'ont pas encore été faites.</p>
+    <div class="liste"><div>· Le point express — la présentation</div><div>· Le nom des modules autonomes — deux tours, une épreuve</div><div>· Parcours de remédiation — sujets et suivi</div><div>· Deux modèles — ce que chacun sait faire</div><div>· Le module qui s'explique tout seul — plan d'une démo storyline</div><div>· Ménage du dépôt — ce qui a été mesuré, puis fait</div><div>· Le débit des voix : ce que la mesure montre</div><div>· Prononciation : trois décisions</div><div>· Révision des dialogues enregistrés</div><div>· Les neuf liens sous le groupe</div><div>· Les exercices d'écoute et leur énoncé</div><div>· Tri des images en doute</div><div>· Tri des constats d'audit</div><div>· Le mode séance — sans compte élève</div><div>· Ai-je bien travaillé avec toi ?</div><div>· Derrière les modules — la machine</div><div>· Ce qui sort du Québec</div><div>· Le direct de la classe</div><div>· Le tableau de bord du projet</div><div>· Le prix d'un module</div><div>· Le réseau des centres</div><div>· Où manque l'audio</div><div>· La banque du niveau 1</div><div>· La chaîne de production</div><div>· Ce que les modules savent déjà</div><div>· Le diagnostic est branché</div><div>· Plan de la série Santé</div></div>
+
+    <h4 style="margin-top:30px">3 · Deux classements se disputent la même rangée d'onglets</h4>
+    <p><b>Trousse</b>, <b>Direction</b> et <b>Enseignants</b> disent <i>à qui</i> le document
+    s'adresse. <b>Chantier</b> et <b>Repères</b> disent <i>ce que c'est</i>. Un même document
+    répond aux deux, donc il tombe où il peut — et « Chantier » est le où-il-peut par défaut.
+    <strong>C'est la cause, et les deux constats précédents en sont les effets.</strong></p>
+
+    <h4 style="margin-top:30px">4 · Ce qui existe mais n'est pas rangé</h4>
+    <div class="cadre-tab"><table class="tab">
+      <tr><th>Famille</th><th>Fichiers</th><th>Hors banque</th><th>Exemples</th></tr>
+      <tr><td><b>Documents de travail</b><br><code>docs/</code></td><td>18</td><td>18</td><td><code>REPRISE-23-aout.md</code>, <code>brief-point-express.md</code>, <code>chantier-modules-neufs.md</code> …</td></tr><tr><td><b>Pages d'essai</b><br><code>essais/</code></td><td>6</td><td>6</td><td><code>essai-brin.html</code>, <code>essai-debit.html</code>, <code>essai-estceque.html</code> …</td></tr><tr><td><b>Outils autonomes</b><br><code>assets/outils/</code></td><td>7</td><td>2</td><td><code>compositeur-activite.html</code>, <code>diagnostic-voix.html</code></td></tr><tr><td><b>Modules autonomes</b><br><code>modules-autonomes/</code></td><td>21</td><td>16</td><td><code>README.md</code>, <code>index.html</code>, <code>index.html</code> …</td></tr>
+    </table></div>
+  </div>
+
+  <div class="bloc">
+    <h2>Trois façons de ranger</h2>
+
+    <article class="opt opt--reco">
+      <span class="eti">Recommandée</span>
+      <h3>A · Un seul axe : ce qu'on en fait</h3>
+      <div class="onglets"><span class="pri">Présenter</span><span class="pri">Décider</span>
+        <span class="pri">Suivre</span><span class="pri">Comprendre</span></div>
+      <div class="pour">
+        <div><b>Présenter</b> — la trousse et tout ce qu'on ouvre devant quelqu'un.</div>
+        <div><b>Décider</b> — les pages qui attendent votre jugement : tri des images, tri des
+            constats, les neuf liens, les exercices d'écoute, la révision des dialogues.</div>
+        <div><b>Suivre</b> — ce qui mesure le dépôt à un instant : tableau de bord, où manque
+            l'audio, le prix d'un module, la chaîne de production.</div>
+        <div><b>Comprendre</b> — comment ça marche : les repères d'aujourd'hui.</div>
+        <div>Le public (Direction, Enseignants) devient une <b>étiquette sur la fiche</b>, pas
+            un onglet — un document peut viser deux publics, il ne peut pas être à deux
+            endroits.</div>
+        <div>« Décider » est le gain réel : ces pages se perdent aujourd'hui dans « Chantier »,
+            et ce sont justement celles qui vous attendent.</div>
+      </div>
+    </article>
+
+    <article class="opt">
+      <h3>B · Deux filtres croisés</h3>
+      <div class="onglets"><span>Public ▾</span><span>Nature ▾</span></div>
+      <div class="pour">
+        <div>Comme le catalogue : on croise « pour la direction » et « à décider ».</div>
+        <div>Le plus exact — mais deux menus pour cinquante-sept fiches, c'est un outil de
+            recherche là où il faut une étagère.</div>
+      </div>
+    </article>
+
+    <article class="opt">
+      <h3>C · Couper « Chantier » en trois, sans rien changer d'autre</h3>
+      <div class="onglets"><span>Trousse</span><span>Direction</span><span>Enseignants</span>
+        <span class="pri">Décider</span><span class="pri">Suivre</span><span class="pri">Proposer</span>
+        <span>Repères</span></div>
+      <div class="pour">
+        <div>Le plus petit changement : aucune fiche ne quitte sa famille sauf les 27.</div>
+        <div>Mais les deux axes continuent de se disputer la rangée : sept onglets, et la
+            question « public ou nature ? » se reposera à la fiche suivante.</div>
+      </div>
+    </article>
+  </div>
+
+  <div class="bloc">
+    <h2>Ce que je propose de faire, dans les trois cas</h2>
+    <div class="pour" style="font-size:16px">
+      <div><b>Compter les fiches au lieu de les annoncer.</b> Les nombres des onglets se
+          calculent au chargement. Un compteur écrit à la main est faux à la fiche suivante,
+          et il l'est déjà.</div>
+      <div><b>Ranger les 42 artefacts hors banque</b>, ou
+          décider qu'ils n'en sont pas. Mon avis : les <b>essais</b> sont du brouillon et
+          peuvent disparaître ; les <b>documents de travail</b> (<code>docs/</code>) méritent
+          une fiche chacun ou une fiche d'index ; les <b>modules autonomes</b> ont déjà leur
+          index cité, c'est suffisant ; les <b>deux outils</b> manquants sont de vrais oublis.</div>
+      <div><b>Écrire la ligne dans la page elle-même.</b> Sans elle, la question « est-ce que
+          ça va à la banque ? » se retranchera à chaque nouveau document.</div>
+    </div>
+    <div class="note"><b>Ce que je ne propose pas :</b> déplacer les fichiers sur le disque.
+    <code>assets/presentations/</code> est cohérent — aucun orphelin, aucun lien mort. Le
+    désordre est dans le <b>classement</b>, pas dans le rangement des fichiers.</div>
+  </div>
+
+  <div class="bloc">
+    <h2>Où ça se fait</h2>
+    <p><b>presentations.html</b> — les onglets, les familles, et les fiches à répartir. Cette
+    page-ci se régénère par <b>python3 build/releve_artefacts.py</b> : les chiffres sont lus
+    sur le disque, jamais recopiés.</p>
+  </div>
+</div>
+</body>
+</html>
