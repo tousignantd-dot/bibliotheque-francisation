@@ -379,9 +379,25 @@ textarea:focus{outline:none;border-color:#1D6B8F}
 .fb{background:#F0FAF7;border:2px solid #B7DED7;border-radius:12px;padding:14px 16px;display:none;flex-direction:column;gap:8px;margin-top:12px}
 .fb.on{display:flex}
 .fb-t{font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:#154F68}
-.fb-c{font-size:15px;font-weight:800;color:#154F68;line-height:1.5}
-.fb-e{font-size:13px;font-weight:700;color:var(--warn-ink);line-height:1.5;padding-left:14px;position:relative}
-.fb-e::before{content:"•";position:absolute;left:2px}
+.fb-c{font-size:16px;font-weight:800;color:#154F68;line-height:1.5}
+/* La remarque a la taille de la correction : c'est elle qui enseigne. Elle
+   était à 13 px et en brun d'avertissement, soit la ligne la plus petite et
+   la plus sourde du bloc — la hiérarchie était à l'envers. Sa carte ambre lui
+   garde son statut de remarque, que l'encre neutre lui ferait perdre. */
+.fb-e{font-size:16px;font-weight:700;color:#5F3803;line-height:1.55;
+      background:var(--warn-bg,#FEF6E7);border-left:4px solid var(--warn-line,#D9880B);
+      border-radius:0 10px 10px 0;padding:10px 13px}
+/* Quand tout est déjà juste, c'est la couleur qui le dit — plus d'emoji. */
+.fb-c.fb-bravo{color:var(--ok-ink,#0A6B46)}
+/* Le buste signe le bloc, en tête : quelqu'un vient de vous donner des
+   conseils, et tout ce qui suit est ce qu'il dit. Une personne se présente
+   une fois, pas à chaque phrase. currentColor le met au teal du titre. */
+/* Le titre est une étiquette, pas une parole : il descend au teal sourd du
+   module (celui des lignes d'état) pour que la phrase corrigée, restée au
+   #154F68 plein, soit la voix forte du bloc. Au même teal, les deux se
+   disputaient le premier rang. */
+.fb-t{display:flex;align-items:center;color:#45746C}
+.fb-ic{width:17px;height:17px;flex:0 0 17px;fill:currentColor;margin-right:8px}
 .status{font-size:13px;font-weight:800;color:#5E8A82;text-align:center;display:none;margin-top:8px}
 .status.on{display:block}
 .err{font-size:13px;font-weight:800;color:var(--no-ink);background:var(--no-bg);border:2px solid var(--no-line);border-radius:10px;padding:10px 14px;display:none;margin-top:8px}
@@ -3355,22 +3371,27 @@ async function peCheck(){
     showErr('peErr','Impossible de contacter le serveur.');
   }
 }
+/* Écrit ici et non dans icons/ : un <img> ne peut pas hériter de la couleur
+   du texte, et copier un SVG dans 87 dossiers pour un seul usage coûterait
+   plus qu'il ne rapporte. */
+const ICON_ASSIST = '<svg class="fb-ic" viewBox="0 0 50 50" aria-hidden="true"><path d="M25 7a9 9 0 1 1 0 18 9 9 0 0 1 0-18z"/><path d="M25 28c-8.5 0-15.5 5.2-17 12.4-.3 1.4.8 2.6 2.2 2.6h29.6c1.4 0 2.5-1.2 2.2-2.6C40.5 33.2 33.5 28 25 28z"/></svg>';
 function renderCorr(elId,data,orig){
   const fb=document.getElementById(elId);
   const corr=data.corrige||data.corrected||'';
   const errs=data.erreurs||data.errors||[];
-  let html='<div class="fb-t">Rétroaction privée</div>';
+  let html='<div class="fb-t">'+ICON_ASSIST+'<span>Rétroaction privée</span></div>';
   if(data.corpsCorrige!==undefined){   // réponse de /api/correct-email
     const cmt=(data.commentairePertinence||'').trim();
-    if(cmt) html+='<div class="fb-c">'+(data.pertinent?'✅ ':'⚠️ ')+esc(cmt)+'</div>';
-    else if(data.pertinent) html+='<div class="fb-c">✅ Ton courriel contient tout ce qui était demandé.</div>';
-    html+='<div class="fb-c">✍️ '+esc(data.corpsCorrige)+'</div>';
+    if(cmt) html+= data.pertinent ? '<div class="fb-c fb-bravo">'+esc(cmt)+'</div>'
+                                  : '<div class="fb-e">'+esc(cmt)+'</div>';
+    else if(data.pertinent) html+='<div class="fb-c fb-bravo">Ton courriel contient tout ce qui était demandé.</div>';
+    html+='<div class="fb-c">'+esc(data.corpsCorrige)+'</div>';
     (data.erreurs||[]).forEach(e=>{ html+='<div class="fb-e">'+esc(e.explication||e.explanation||e)+'</div>'; });
     fb.innerHTML=html; fb.classList.add('on'); return;
   }
-  if(data.memePhrase){ html+='<div class="fb-c">✅ Ton texte est déjà correct. Bravo !</div>'; }
+  if(data.memePhrase){ html+='<div class="fb-c fb-bravo">Ton texte est déjà correct. Bravo !</div>'; }
   else{
-    if(corr) html+='<div class="fb-c">✍️ '+esc(corr)+'</div>';
+    if(corr) html+='<div class="fb-c">'+esc(corr)+'</div>';
     errs.forEach(e=>{ html+='<div class="fb-e">'+esc(e.explication||e.explanation||e)+'</div>'; });
   }
   fb.innerHTML=html; fb.classList.add('on');
