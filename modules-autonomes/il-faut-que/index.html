@@ -259,6 +259,18 @@ button:disabled{cursor:not-allowed}
   /* « Fermer » écrit prendrait la ligne : sur 375 px, la barre n'a plus de
      place après la jauge et le menu. La croix garde la porte visible sans
      rien pousser dessous — le nom complet reste dans l'aria-label. */
+  /* La langue d'appui prend sa part de la ligne, pas plus : à 132 px elle
+     poussait la croix de « Fermer » hors de l'écran sur 375 px — la porte de
+     sortie, précisément ce que la règle ci-dessous protège. À 88 px et 12 px
+     de corps, « Français », « Español » et « English » entrent encore en
+     entier : on rétrécit sans jamais tronquer un nom de langue. */
+  .appui-sel{max-width:88px;font-size:12px;padding:3px 2px}
+  /* Et la barre se resserre — seulement là où le sélecteur est posé, pour ne
+     rien changer aux parcours qui n'en ont pas. Trois pixels par intervalle,
+     six intervalles : les dix-huit pixels qui manquaient. À défaut de `:has`,
+     on retombe sur l'ancien écart et la croix mord de quatre pixels : gênant,
+     jamais bloquant. */
+  .tete:has(.appui-sel){gap:7px}
   .btn-sortir{padding:6px 9px;font-size:15px;line-height:1}
   .btn-sortir__l{display:none}
   .btn-sortir__c{display:inline}
