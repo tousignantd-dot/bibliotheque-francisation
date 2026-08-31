@@ -45,6 +45,32 @@ button:disabled{cursor:not-allowed}
 .jauge{flex:1 1 160px;height:5px;border-radius:3px;background:var(--filet-fin);position:relative;min-width:100px}
 .jauge i{position:absolute;top:0;left:0;bottom:0;background:var(--acc);border-radius:3px;
   transition:width .3s ease;width:0}
+/* ── La langue d'appui ────────────────────────────────────────────────
+   Le sélecteur reste discret : ce n'est pas un réglage qu'on cherche, c'est
+   un secours qu'on trouve. Et l'appui `.ap` se pose SOUS le français, en
+   plus petit et en retrait — jamais à sa place. */
+.appui-zone:empty{display:none}
+.appui-sel{font-family:inherit;font-size:12.5px;color:var(--gris);
+  background:transparent;border:1px solid var(--filet);border-radius:6px;
+  padding:3px 6px;cursor:pointer;max-width:132px}
+.appui-sel:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.ap{display:block;margin-top:6px;padding-left:11px;
+  border-left:2px solid var(--filet);
+  font-size:.88em;line-height:1.5;color:var(--gris);font-style:normal}
+.ap:lang(ar),.ap:lang(fa),.ap:lang(ur){direction:rtl;text-align:right;
+  padding-left:0;padding-right:11px;border-left:0;border-right:2px solid var(--filet)}
+/* ── L'image d'un écran ───────────────────────────────────────────────
+   Format 3:2, la largeur du texte, jamais plus. Une image plus large que
+   le paragraphe qu'elle illustre se lit comme une bannière. */
+.fig{margin:16px 0;display:flex;flex-direction:column;gap:8px}
+/* L'image plante le décor, elle ne s'étudie pas : on la borne en hauteur pour
+   qu'elle ne pousse jamais sous la ligne de flottaison ce qui, lui, s'étudie —
+   le premier extrait à écouter. Vu à l'écran, pas en relisant. */
+.fig img{width:100%;height:auto;max-height:300px;object-fit:cover;
+  object-position:center;display:block;border-radius:8px;
+  border:1px solid var(--filet);background:var(--papier)}
+.fig figcaption{font-size:14px;line-height:1.5;color:var(--gris)}
+.fig figcaption b{color:var(--texte)}
 .pos{font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--gris);
   font-variant-numeric:tabular-nums;white-space:nowrap}
 .btn-menu{border:1px solid var(--filet);background:#FFF;border-radius:4px;padding:6px 12px;
@@ -269,6 +295,9 @@ button:disabled{cursor:not-allowed}
   <span class="jauge" role="progressbar" aria-label="Progression du parcours"
         aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="jauge"></i></span>
   <span class="pos" id="pos">1 / 1</span>
+  <!-- La langue d'appui. Vide — et sans aucun poids — quand le parcours n'en
+       déclare aucune : c'est le cas des points express de la gamme scolaire. -->
+  <span class="appui-zone" id="appui-zone"></span>
   <button type="button" class="btn-menu" id="btn-menu" aria-expanded="false"
           aria-controls="menu">Les écrans</button>
   <!-- Sortir doit être une PORTE VISIBLE : un élève coincé sur un écran qu'il
@@ -613,8 +642,89 @@ button:disabled{cursor:not-allowed}
     "attente": "Choisissez une réponse pour finir."
   }
 ];
+  var APPUI  = [];             // les langues d'appui offertes, [] = aucune
   var MEDIA  = '/';           // la base des extraits, en chemin absolu
   var CLE    = 'francis.parcours.qui-ou-que';
+
+  // ═══ LA LANGUE D'APPUI ═══════════════════════════════════════════════
+  // Trois couches, et une seule bascule ici : le contenu à apprendre (les
+  // phrases françaises, les extraits sonores) ne bouge JAMAIS ; seul l'appui
+  // — consignes, explications, rattrapages, boutons — change de langue.
+  // L'appui s'ajoute SOUS le français, il ne le remplace pas : un élève qui
+  // ne verrait plus que sa langue n'aurait plus rien à apprendre.
+  //
+  // Les phrases fixes du moteur vivent ici, écrites d'avance et relues ; on
+  // ne traduit rien à la volée. Une consigne de sécurité mal traduite dans
+  // une usine n'est pas un défaut d'affichage — et le mode sans assistance,
+  // qui retire déjà la traduction du vocabulaire, ne doit pas emporter avec
+  // lui la langue d'appui, qui est précisément ce que l'entreprise a acheté.
+  var LS_LANGUE = 'francisation-langue';   // la même clé que le vocabulaire
+  var MOTS = {
+    es: { continuer:'Continuar', terminer:'Terminar', precedent:'← Anterior',
+          repondez:'Responda para continuar.', reessayer:'Intentar de nuevo',
+          pascelle:'Esa no.', ralentir:'Más lento', recommencer:'Empezar de nuevo',
+          ecrans:'Las pantallas', appui:'Idioma de apoyo', francais:'Francés',
+          voir:'Ver el texto', cacher:'Ocultar el texto' },
+    en: { continuer:'Continue', terminer:'Finish', precedent:'← Back',
+          repondez:'Answer to continue.', reessayer:'Try again',
+          pascelle:'Not that one.', ralentir:'Slower', recommencer:'Start over',
+          ecrans:'The screens', appui:'Support language', francais:'French',
+          voir:'Show the text', cacher:'Hide the text' }
+  };
+  // Les champs dont l'appui se pose SOUS le français. Tout le reste — le texte
+  // des choix, les colonnes d'un tri — reste en français : c'est la matière.
+  var CHAMPS_APPUI = { titre:1, consigne:1, paras:1, pourquoi:1, retenir:1,
+                       rat:1, rat_t:1, leg:1 };
+
+  function langueLue() {
+    if (!APPUI.length) return '';
+    var v = null;
+    try { v = localStorage.getItem(LS_LANGUE); } catch (e) { return ''; }
+    if (v === null) return '';
+    try { v = JSON.parse(v); } catch (e) { /* valeur écrite sans guillemets */ }
+    for (var k = 0; k < APPUI.length; k++) if (APPUI[k].c === v) return v;
+    return '';
+  }
+  function langueEcrite(c) {
+    try { localStorage.setItem(LS_LANGUE, JSON.stringify(c)); } catch (e) {}
+  }
+  // M('continuer', 'Continuer') — la phrase du moteur, dans la langue choisie.
+  function M(cle, fr) {
+    var L = langueLue();
+    return (L && MOTS[L] && MOTS[L][cle]) || fr;
+  }
+  function sous(fr, ap) {
+    if (!ap) return fr;
+    return fr + '<span class="ap" lang="' + langueLue() + '">' + ap + '</span>';
+  }
+  // Renvoie une COPIE de l'écran, l'appui posé sous le français. L'original
+  // n'est jamais touché : rebasculer en français doit tout rendre intact.
+  function enLangue(e) {
+    var L = langueLue();
+    if (!L || !e[L]) return e;
+    var a = e[L], o = {}, k;
+    for (k in e) if (e.hasOwnProperty(k)) o[k] = e[k];
+    for (k in a) {
+      if (!a.hasOwnProperty(k)) continue;
+      if (k === 'paras' && o.paras) {
+        o.paras = o.paras.map(function (p, n) { return sous(p, a.paras[n]); });
+      } else if ((k === 'options' || k === 'items' || k === 'images') && o[k]) {
+        o[k] = o[k].map(function (x, n) {
+          var y = {}, z, s = (a[k] || [])[n] || {};
+          for (z in x) if (x.hasOwnProperty(z)) y[z] = x[z];
+          for (z in s) if (s.hasOwnProperty(z)) {
+            y[z] = CHAMPS_APPUI[z] ? sous(x[z] || '', s[z]) : s[z];
+          }
+          return y;
+        });
+      } else if (CHAMPS_APPUI[k]) {
+        o[k] = sous(o[k] || '', a[k]);
+      } else {
+        o[k] = a[k];
+      }
+    }
+    return o;
+  }
 
   var elEcran = document.getElementById('ecran');
   var elJauge = document.getElementById('jauge');
@@ -717,7 +827,7 @@ button:disabled{cursor:not-allowed}
 
     var lent = document.createElement('button');
     lent.type = 'button';
-    lent.textContent = 'Ralentir';
+    lent.textContent = M('ralentir', 'Ralentir');
     lent.addEventListener('click', function () {
       // Étiré dans le navigateur, jamais re-synthétisé : la décision du projet.
       var r = audio.playbackRate < 1 ? 1 : 0.75;
@@ -730,10 +840,12 @@ button:disabled{cursor:not-allowed}
     if (s.texte) {
       var tr = document.createElement('button');
       tr.type = 'button';
-      tr.textContent = s.montrer ? 'Cacher le texte' : 'Voir le texte';
+      tr.textContent = s.montrer ? M('cacher', 'Cacher le texte')
+                                 : M('voir', 'Voir le texte');
       tr.addEventListener('click', function () {
         t.hidden = !t.hidden;
-        tr.textContent = t.hidden ? 'Voir le texte' : 'Cacher le texte';
+        tr.textContent = t.hidden ? M('voir', 'Voir le texte')
+                                  : M('cacher', 'Cacher le texte');
         if (!t.hidden) noter('transcription', { fichier: s.fichier });
       });
       o.appendChild(tr);
@@ -743,6 +855,29 @@ button:disabled{cursor:not-allowed}
     d.appendChild(go);
     d.appendChild(c);
     return d;
+  }
+
+  // L'image d'un écran. Elle montre ce que dit l'écran — jamais le thème du
+  // parcours : c'est le défaut le plus fréquent des images du dépôt, et le
+  // seul qui ne se voie pas sans mettre l'image et la phrase côte à côte.
+  // Le format est 3:2, comme partout ailleurs ; la légende est facultative et
+  // suit la langue d'appui comme le reste du texte.
+  function bloc_image(im) {
+    var fig = document.createElement('figure');
+    fig.className = 'fig';
+    var img = document.createElement('img');
+    img.src = MEDIA + im.fichier;
+    img.alt = im.alt || '';
+    // Une image qui manque ne doit pas laisser un cadre vide au milieu de
+    // l'écran : on retire la figure entière plutôt que de montrer un trou.
+    img.onerror = function () { if (fig.parentNode) fig.parentNode.removeChild(fig); };
+    fig.appendChild(img);
+    if (im.leg) {
+      var c = document.createElement('figcaption');
+      c.innerHTML = im.leg;
+      fig.appendChild(c);
+    }
+    return fig;
   }
 
   /* ── les mises en page, une par type ───────────────────────────── */
@@ -756,6 +891,7 @@ button:disabled{cursor:not-allowed}
       el.innerHTML = p;
       f.appendChild(el);
     });
+    (e.images || []).forEach(function (im) { f.appendChild(bloc_image(im)); });
     (e.sons || []).forEach(function (s) { f.appendChild(bloc_son(s)); });
     if (e.retenir) {
       var r = document.createElement('div');
@@ -776,6 +912,7 @@ button:disabled{cursor:not-allowed}
       c.innerHTML = e.consigne;
       f.appendChild(c);
     }
+    (e.images || []).forEach(function (im) { f.appendChild(bloc_image(im)); });
     (e.sons || []).forEach(function (s) { f.appendChild(bloc_son(s)); });
 
     var box = document.createElement('div');
@@ -839,7 +976,7 @@ button:disabled{cursor:not-allowed}
         var encore = document.createElement('button');
         encore.type = 'button';
         encore.className = 'encore';
-        encore.textContent = 'Réessayer';
+        encore.textContent = M('reessayer', 'Réessayer');
         encore.addEventListener('click', function () {
           zone.innerHTML = '';
           elEcran.querySelector('.choix').focus &&
@@ -965,7 +1102,7 @@ button:disabled{cursor:not-allowed}
             if (restants === 0) fini(true);
           } else {
             b.disabled = true;
-            note.innerHTML = '<b>Pas celle-là.</b> ' + (it.rat || '');
+            note.innerHTML = '<b>' + M('pascelle', 'Pas celle-là.') + '</b> ' + (it.rat || '');
             note.hidden = false;
             etat.rattrapages[e.id] = (etat.rattrapages[e.id] || 0) + 1;
             garder();
@@ -995,7 +1132,7 @@ button:disabled{cursor:not-allowed}
     entre = Date.now();
     if (etat.vus.indexOf(ECRANS[i].id) === -1) etat.vus.push(ECRANS[i].id);
 
-    var e = ECRANS[i];
+    var e = enLangue(ECRANS[i]);
     elEcran.innerHTML = '';
 
     // Le corps est un conteneur à part : dans le cadre 16:9, c'est lui qui
@@ -1020,7 +1157,7 @@ button:disabled{cursor:not-allowed}
     var prec = document.createElement('button');
     prec.type = 'button';
     prec.className = 'btn-2';
-    prec.textContent = '← Précédent';
+    prec.textContent = M('precedent', '← Précédent');
     prec.hidden = i === 0;
     prec.addEventListener('click', function () { montrer(i - 1, true); });
 
@@ -1030,7 +1167,8 @@ button:disabled{cursor:not-allowed}
     var suite = document.createElement('button');
     suite.type = 'button';
     suite.className = 'btn';
-    suite.textContent = i === ECRANS.length - 1 ? 'Terminer' : 'Continuer';
+    suite.textContent = i === ECRANS.length - 1
+      ? M('terminer', 'Terminer') : M('continuer', 'Continuer');
     suite.addEventListener('click', function () {
       if (i === ECRANS.length - 1) { terminer(); return; }
       montrer(i + 1, true);
@@ -1039,7 +1177,8 @@ button:disabled{cursor:not-allowed}
     // Le verrou doux : « Continuer » attend le geste, mais rien d'autre n'attend.
     function fini(ok) {
       suite.disabled = !ok;
-      consigne.textContent = ok ? '' : (e.attente || 'Répondez pour continuer.');
+      consigne.textContent = ok ? ''
+        : (e.attente || M('repondez', 'Répondez pour continuer.'));
       if (ok && !etat.faits[e.id]) { etat.faits[e.id] = true; garder(); }
     }
 
@@ -1104,7 +1243,7 @@ button:disabled{cursor:not-allowed}
     r.className = 'btn-2';
     r.type = 'button';
     r.style.marginTop = '18px';
-    r.textContent = 'Recommencer';
+    r.textContent = M('recommencer', 'Recommencer');
     r.addEventListener('click', function () {
       etat = JSON.parse(JSON.stringify(VIERGE));
       etat.rapporteDebut = true;      // on ne re-signale pas un début déjà signalé
@@ -1184,6 +1323,34 @@ button:disabled{cursor:not-allowed}
   };
 
   // Le point de reprise : on rouvre là où on s'est arrêté.
+  // Le sélecteur de langue d'appui : construit seulement s'il y a des
+  // langues à offrir, pour que les parcours de la gamme scolaire restent
+  // exactement ce qu'ils étaient.
+  (function () {
+    var zone = document.getElementById('appui-zone');
+    if (!zone || !APPUI.length) return;
+    var sel = document.createElement('select');
+    sel.className = 'appui-sel';
+    sel.id = 'appui-sel';
+    sel.setAttribute('aria-label', M('appui', "Langue d'appui"));
+    var o = document.createElement('option');
+    o.value = ''; o.textContent = 'Français';
+    sel.appendChild(o);
+    APPUI.forEach(function (L) {
+      var x = document.createElement('option');
+      x.value = L.c; x.textContent = L.n;
+      sel.appendChild(x);
+    });
+    sel.value = langueLue();
+    sel.addEventListener('change', function () {
+      langueEcrite(sel.value);
+      sel.setAttribute('aria-label', M('appui', "Langue d'appui"));
+      montrer(etat.i, false);          // le même écran, dans l'autre langue
+      document.getElementById('appui-sel').focus();
+    });
+    zone.appendChild(sel);
+  }());
+
   montrer(Math.min(etat.i, ECRANS.length - 1), false);
 })();
 </script>

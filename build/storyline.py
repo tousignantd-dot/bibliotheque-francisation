@@ -247,6 +247,18 @@ def controler(parcours, ecrans, module):
                     ecarts.append('%s : le cas « %s » n\'a pas de rattrapage'
                                   % (ou, str(it.get('txt'))[:30]))
 
+        for im in e.get('images', []):
+            if not module:
+                ecarts.append('%s : une image, mais le parcours ne dit de quel module '
+                              'il la tire (champ `module`)' % ou)
+                continue
+            f = ROOT / 'assets' / 'interactive' / module / im['fichier']
+            if not f.exists():
+                ecarts.append('%s : image absente du disque — %s' % (ou, im['fichier']))
+            if not im.get('alt'):
+                ecarts.append('%s : image sans texte de remplacement — %s'
+                              % (ou, im['fichier']))
+
         for s in e.get('sons', []):
             if not module:
                 ecarts.append('%s : un extrait sonore, mais le parcours ne dit de quel module '
@@ -289,6 +301,11 @@ def construire(js, verifier=False):
         '%%ACCENT_DOUX%%':   doux,
         '%%ACCENT_FONCE%%':  fonce,
         '%%ECRANS%%':        json.dumps(ecrans, ensure_ascii=False, indent=2),
+        # Les langues d'appui, déclarées par le contenu. Vide par défaut : les
+        # points express de la gamme scolaire n'en offrent aucune, et le
+        # sélecteur ne se construit pas. Le contenu à apprendre ne bascule
+        # jamais — seuls les champs d'appui d'un écran (`es`, `en`, …).
+        '%%APPUI%%':         json.dumps(parcours.get('appui', []), ensure_ascii=False),
     }
     for k, v in jetons.items():
         gab = gab.replace(k, v)
