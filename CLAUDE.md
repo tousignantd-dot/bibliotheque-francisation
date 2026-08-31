@@ -25,8 +25,13 @@ sans rapport. La règle existait (`git commit -- <chemins>`) ; ce qui manquait
 
 ## Déploiement (Railway)
 
-- Push sur `main` → redéploiement automatique sur Railway
-  (https://bibliotheque-francisation-production.up.railway.app)
+- Push sur `main` → redéploiement automatique sur Railway. **L'adresse de
+  service est `https://portail.edufrancis.ca`** depuis le 31 août 2026 ;
+  `edufrancis.ca` et `www.edufrancis.ca` y redirigent, et l'adresse Railway
+  (`bibliotheque-francisation-production.up.railway.app`) répond toujours.
+  **Rien dans le code ne porte le domaine** : la feuille de séance et son code
+  QR se fabriquent à partir de l'en-tête `Host` (`_adresse_du_site`), donc les
+  feuilles déjà distribuées continuent de pointer où elles pointaient.
 - **Python épinglé à 3.12** via `.python-version` — le module `cgi` utilisé par server.py a été supprimé en Python 3.13. Ne pas retirer ce fichier.
 - Builder : Railpack (`railway.toml`) — ne pas remettre Nixpacks (buggé).
 - Healthcheck : `/api/activities`. `init_storage()` tourne en arrière-plan au démarrage pour ne pas bloquer le healthcheck.
