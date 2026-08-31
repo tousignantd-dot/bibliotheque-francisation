@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Le diagnostic didactique</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap">
+<style>
+/* ═══════════════════════════════════════════════════════════
+   LE DIAGNOSTIC DIDACTIQUE
+   La méthode qui est le produit : on ne livre pas un module,
+   on livre un module corrigé par les réponses des élèves.
+
+   Vert : ce que le tour de main actuel produit déjà.
+   Ambre : ce qui attend votre décision.
+   Rouge : l'argument de vente qui tient à une obligation légale.
+   L'acier ne fait que la structure.
+   ═══════════════════════════════════════════════════════════ */
+
+:root{
+  --ground:#F7F7F5; --card:#FFFFFF; --sunken:#FBFBFA;
+  --ink:#17181A; --body:#3A3D40; --muted:#6E7175;
+  --line:#E4E4E0; --line-fort:#D2D2CD;
+
+  --fait:#0A8F5B;    --fait-bg:#E6F5EE;
+  --decid:#C07A08;   --decid-bg:#FBF2E2;
+  --loi:#C7302B;     --loi-bg:#FBEDEC;
+  --acier:#1D6B8F;   --acier-bg:#E7F0F6;
+
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#151618; --card:#1D1F22; --sunken:#212326;
+    --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+    --line:#2E3135; --line-fort:#3D4146;
+    --fait:#4BC48D; --fait-bg:#12291F;
+    --decid:#E0A63F; --decid-bg:#2C2213;
+    --loi:#EE7A73; --loi-bg:#2E1917;
+    --acier:#6DAFD2; --acier-bg:#14242C;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#151618; --card:#1D1F22; --sunken:#212326;
+  --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+  --line:#2E3135; --line-fort:#3D4146;
+  --fait:#4BC48D; --fait-bg:#12291F;
+  --decid:#E0A63F; --decid-bg:#2C2213;
+  --loi:#EE7A73; --loi-bg:#2E1917;
+  --acier:#6DAFD2; --acier-bg:#14242C;
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--body);
+  font-family:Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased}
+.doc{max-width:880px;margin:0 auto;padding:56px 24px 96px}
+
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--acier);margin:0 0 14px}
+h1{font-family:Newsreader,Georgia,serif;font-size:clamp(38px,6.4vw,58px);line-height:1.04;
+  font-weight:500;letter-spacing:-.02em;color:var(--ink);margin:0 0 20px;text-wrap:balance}
+.chapeau{font-size:19px;line-height:1.6;color:var(--body);margin:0;max-width:62ch}
+.chapeau strong{color:var(--ink);font-weight:700}
+h2{font-family:Newsreader,Georgia,serif;font-size:29px;line-height:1.2;font-weight:600;
+  letter-spacing:-.01em;color:var(--ink);margin:0 0 4px;text-wrap:balance}
+h3{font-size:15px;font-weight:800;color:var(--ink);margin:0 0 6px}
+p{margin:0;max-width:68ch}
+section{display:flex;flex-direction:column;gap:16px;padding:44px 0 0;margin:44px 0 0;
+  border-top:1px solid var(--line)}
+section.premier{border-top:none;margin-top:0;padding-top:40px}
+code{font-family:var(--mono);font-size:.86em;background:var(--sunken);
+  border:1px solid var(--line);border-radius:4px;padding:1px 5px;color:var(--ink)}
+ul.simple{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px}
+ul.simple li{max-width:66ch} ul.simple li strong{color:var(--ink)}
+em.art{font-style:normal;font-family:var(--mono);font-size:.82em;color:var(--muted);
+  white-space:nowrap}
+
+.these{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--acier);
+  border-radius:3px;padding:26px 28px;display:flex;flex-direction:column;gap:12px}
+.these p{font-size:18px}
+.these .cle{font-family:Newsreader,Georgia,serif;font-size:23px;line-height:1.3;
+  font-weight:500;color:var(--ink);font-style:italic}
+
+/* ── Les décisions ─────────────────────────────────────── */
+.decisions{display:flex;flex-direction:column;gap:2px;counter-reset:d}
+.dec{counter-increment:d;background:var(--card);border:1px solid var(--line);
+  border-left:5px solid var(--decid);border-radius:3px;padding:19px 22px 19px 60px;
+  position:relative;display:flex;flex-direction:column;gap:8px}
+.dec.ok{border-left-color:var(--fait)}
+.dec::before{content:counter(d);position:absolute;left:24px;top:18px;
+  font-family:var(--mono);font-size:14px;color:var(--muted)}
+.dec .ligne{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;
+  justify-content:space-between}
+.dec p{font-size:15.5px}
+.dec .defaut{font-size:13.5px;color:var(--muted);font-style:italic}
+
+.badge{display:inline-block;font-size:11.5px;font-weight:800;letter-spacing:.05em;
+  text-transform:uppercase;padding:3px 9px;border-radius:2px;white-space:nowrap}
+.b-fait{background:var(--fait-bg);color:var(--fait)}
+.b-dec{background:var(--decid-bg);color:var(--decid)}
+.b-loi{background:var(--loi-bg);color:var(--loi)}
+.b-n{background:var(--sunken);color:var(--muted);border:1px solid var(--line)}
+
+/* ── Tableaux ──────────────────────────────────────────── */
+.defile{overflow-x:auto;border:1px solid var(--line);border-radius:3px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:15px;min-width:640px}
+caption{caption-side:top;text-align:left;padding:0 0 10px;font-size:13.5px;color:var(--muted)}
+th,td{padding:12px 15px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{font-size:11.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--muted);background:var(--sunken);white-space:nowrap}
+tbody tr:last-child td{border-bottom:none}
+td.q{font-weight:700;color:var(--ink)}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+td small{display:block;color:var(--muted);font-size:13px;line-height:1.45;margin-top:3px}
+tbody tr td:first-child{border-left:4px solid transparent}
+tr.l td:first-child{border-left-color:var(--loi)}
+tr.d td:first-child{border-left-color:var(--decid)}
+tr.f td:first-child{border-left-color:var(--fait)}
+
+/* ── Chiffres ──────────────────────────────────────────── */
+.chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.ch{background:var(--card);border:1px solid var(--line);border-radius:3px;
+  border-top:3px solid var(--acier);padding:15px 16px}
+.ch .n{font-family:Newsreader,Georgia,serif;font-size:30px;line-height:1;font-weight:500;
+  color:var(--ink);display:block;font-variant-numeric:tabular-nums}
+.ch .q{font-size:12.5px;font-weight:700;color:var(--muted);line-height:1.35;display:block;margin-top:7px}
+
+/* ── Marche à suivre ───────────────────────────────────── */
+ol.actions{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;
+  counter-reset:a}
+ol.actions li{counter-increment:a;background:var(--card);border:1px solid var(--line);
+  border-radius:3px;padding:18px 22px 18px 62px;position:relative;display:flex;
+  flex-direction:column;gap:6px}
+ol.actions li::before{content:counter(a);position:absolute;left:22px;top:17px;
+  font-family:var(--mono);font-size:14px;color:var(--muted)}
+ol.actions li p{font-size:15.5px}
+.qui{font-size:13px;color:var(--muted);font-style:italic}
+
+.reserve{border:1px dashed var(--line-fort);border-radius:3px;padding:20px 24px;
+  font-size:15px;color:var(--muted);display:flex;flex-direction:column;gap:9px}
+.reserve strong{color:var(--body)}
+.avert{background:var(--loi-bg);border:1px solid var(--loi);border-radius:3px;
+  padding:20px 24px;display:flex;flex-direction:column;gap:9px}
+.avert strong{color:var(--ink)}
+.avert p{font-size:15.5px;color:var(--body)}
+.pied{margin-top:52px;padding-top:22px;border-top:1px solid var(--line);font-size:13.5px;
+  color:var(--muted);display:flex;flex-direction:column;gap:5px}
+@media (max-width:620px){ .doc{padding:36px 18px 72px} }
+</style>
+<style>
+  .doc{padding-top:26px}
+  .retour{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;
+    color:var(--muted);text-decoration:none;margin-bottom:34px}
+  .retour:hover{color:var(--acier)}
+  table.cmp{width:100%;border-collapse:collapse;font-size:15px;background:var(--card);
+    border:1px solid var(--line);border-radius:3px;overflow:hidden}
+  table.cmp th,table.cmp td{padding:13px 15px;text-align:left;vertical-align:top;
+    border-bottom:1px solid var(--line)}
+  table.cmp thead th{background:var(--sunken);font-size:12px;font-weight:800;
+    letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+  table.cmp tbody tr:last-child td{border-bottom:0}
+  table.cmp td:first-child{font-weight:700;color:var(--ink)}
+  .roule{overflow-x:auto}
+  .voie{background:var(--card);border:1px solid var(--line);border-radius:3px;
+    padding:24px 26px;display:flex;flex-direction:column;gap:11px}
+  .voie.oui{border-color:var(--fait);border-width:2px;padding:23px 25px}
+  .voie.non{border-left:5px solid var(--loi)}
+  .voie h3{font-size:19px;font-family:Newsreader,Georgia,serif;font-weight:600;margin:0}
+  .voie .cout{font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+  .verdict{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+    padding:3px 10px;border-radius:99px;align-self:flex-start}
+  .v-oui{background:var(--fait-bg);color:var(--fait)}
+  .v-peut{background:var(--decid-bg);color:var(--decid)}
+  .v-non{background:var(--loi-bg);color:var(--loi)}
+  .mes{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:2px;
+    background:var(--line);border:1px solid var(--line);border-radius:3px;overflow:hidden}
+  .mes div{background:var(--card);padding:16px 18px}
+  .mes b{display:block;font-family:Newsreader,Georgia,serif;font-size:27px;font-weight:500;
+    color:var(--ink);line-height:1.1}
+  .mes span{font-size:13px;color:var(--muted)}
+  @media (max-width:640px){ .doc{padding-left:18px;padding-right:18px} }
+</style>
+</head>
+<body>
+<div class="doc">
+
+<a class="retour" href="/presentations.html"><span aria-hidden="true">&#8592;</span> Banque de présentations</a>
+
+<p class="eyebrow">Méthode &mdash; le socle de l'offre en entreprise</p>
+<h1>Le diagnostic didactique</h1>
+<p class="chapeau">Concevoir des maquettes et des modules, c'est une chose. Mais à la base de tout
+il y a autre chose&nbsp;: <strong>on essaie le matériel avec un petit groupe, et on le modifie
+d'après les réponses obtenues.</strong> Ce n'est pas une étape du projet parmi d'autres. C'est ce
+qu'on vend.</p>
+
+<section class="premier">
+  <h2>La distinction qui fonde tout</h2>
+  <div class="these">
+    <p class="cle">Évaluer l'élève, c'est de l'évaluation. Évaluer le matériel par les réponses de
+    l'élève, c'est du diagnostic didactique.</p>
+    <p>Quand un élève se trompe, on tient une donnée sur deux choses à la fois&nbsp;: sur lui, et
+    sur l'exercice. La pratique courante ne lit que la première. <strong>Tout est là.</strong></p>
+  </div>
+  <p>Un item que la moitié du groupe rate ne dit pas que la moitié du groupe est faible&nbsp;: il
+  dit que l'énoncé est ambigu, que la consigne suppose un mot qu'on n'a pas enseigné, ou que l'audio
+  va trop vite. Un item que tout le monde réussit du premier coup ne prouve rien&nbsp;: il occupe
+  une place que rien n'occupe.</p>
+</section>
+
+<section>
+  <h2>Où ça se place dans la théorie</h2>
+  <p>C'est <strong>SAM plutôt qu'ADDIE</strong>, et c'est la raison de préférer l'un à l'autre. La
+  cascade d'ADDIE fait valider un devis sur papier&nbsp;; SAM fait réagir un prototype sur du monde.
+  Le diagnostic didactique est le moteur de cette boucle&nbsp;: sans lui, «&nbsp;itératif&nbsp;» ne
+  veut dire que «&nbsp;on y reviendra&nbsp;».</p>
+  <p>C'est aussi ce qui donne un contenu réel au <strong>niveau&nbsp;2 de Kirkpatrick</strong>. Mesurer
+  l'apprentissage sert habituellement à noter les gens. Ici, ça sert d'abord à corriger le cours.</p>
+</section>
+
+<section>
+  <h2>La boucle</h2>
+  <ol class="actions">
+    <li><h3>Un petit groupe, annoncé comme tel</h3>
+      <p>Six à huit personnes, sur les vraies heures, dans les vraies conditions &mdash; le bruit, la
+      fatigue de fin de quart, le téléphone dans la poche.</p>
+      <p class="qui">Le groupe sait qu'il essuie les plâtres. On ne le cache pas&nbsp;: ça change la
+      qualité de ce qu'il nous dit.</p></li>
+    <li><h3>Le bloc se joue en entier</h3>
+      <p>Sans intervenir pour sauver un exercice qui coince. Un exercice qu'on rattrape à l'oral est
+      un exercice dont on ne saura jamais s'il tenait debout.</p></li>
+    <li><h3>Le relevé</h3>
+      <p>Ce que le portail enregistre déjà&nbsp;: les réponses item par item, le temps passé, les
+      abandons, les demandes d'aide &mdash; avec le titre de l'exercice qui les a provoquées &mdash;
+      et les productions orales et écrites déposées.</p>
+      <p class="qui">Rien de tout cela n'est à construire. C'était instrumenté pour les enseignants&nbsp;;
+      la même trace sert ici de banc d'essai.</p></li>
+    <li><h3>La lecture didactique</h3>
+      <p>On cherche cinq choses&nbsp;: les items ratés par plus de la moitié (l'énoncé est en cause),
+      ceux réussis par tous (ils ne servent à rien), les mauvaises réponses que personne ne choisit
+      jamais (le choix est mort, l'exercice est plus facile qu'il n'en a l'air), les endroits où le
+      temps explose, et les endroits où l'on demande de l'aide.</p></li>
+    <li><h3>La révision, puis un deuxième passage</h3>
+      <p>On ne révise pas «&nbsp;à la fin&nbsp;»&nbsp;: une révision se place entre le bloc&nbsp;4 et
+      le bloc&nbsp;5, pendant qu'il reste quatre blocs pour en profiter.</p></li>
+  </ol>
+</section>
+
+<section>
+  <h2>Ce que ça change dans l'offre</h2>
+  <ul class="simple">
+    <li><strong>Ce n'est plus un cours livré, c'est un cours ajusté.</strong> La phrase à dire à
+    l'employeur&nbsp;: «&nbsp;le matériel que vos gens auront au bloc&nbsp;8 ne sera pas celui qu'on
+    vous montre aujourd'hui &mdash; il aura été corrigé par leurs propres réponses.&nbsp;»</li>
+    <li><strong>Le premier contrat est un co-développement</strong>, et il vaut mieux le nommer ainsi
+    que de le déguiser en produit fini. C'est plus honnête, et c'est plus vendeur&nbsp;: l'employeur
+    devient partie prenante au lieu d'être client d'un catalogue.</li>
+    <li><strong>C'est le seul argument qu'un concurrent ne peut pas recopier en une saison.</strong>
+    N'importe qui peut écrire huit heures de contenu. Peu de gens peuvent montrer la trace de ce que
+    quarante travailleurs ont réellement répondu, et ce qu'on en a changé.</li>
+    <li><strong>Ça vaut aussi pour les 87 modules déjà bâtis.</strong> La méthode n'a pas été inventée
+    pour l'entreprise&nbsp;; l'entreprise est simplement l'endroit où elle devient un argument de
+    vente.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Les limites, à dire avant qu'on les trouve</h2>
+  <div class="avert">
+    <p><strong>Huit personnes ne prouvent rien&nbsp;; elles révèlent.</strong> Aucune statistique ne
+    sort d'un groupe pilote. On y cherche le trou béant &mdash; l'exercice que personne ne comprend
+    &mdash; pas l'écart fin entre deux formulations. Prétendre le contraire devant un employeur qui
+    sait compter nous coûterait toute la crédibilité du reste.</p>
+    <p><strong>Le groupe pilote se sait observé</strong>, et il travaille mieux qu'il ne travaillera
+    ensuite. Le deuxième groupe est toujours le vrai test.</p>
+    <p><strong>Une trace de réponses n'est pas anodine.</strong> Ce sont les erreurs de salariés
+    identifiables, dans l'entreprise qui les emploie. La règle du pseudo et le refus de conserver les
+    corrections tiennent ici encore plus qu'à l'école&nbsp;: ce qui remonte à l'employeur, ce sont des
+    constats sur le matériel, jamais sur une personne.</p>
+  </div>
+</section>
+
+<div class="pied">
+  <p>Méthode notée le 31 août 2026 &mdash; chantier « formation en entreprise ».</p>
+  <p>S'applique à&nbsp;: <a href="programme-belrive.html">Huit heures chez Belrive</a>,
+  et à tous les modules déjà bâtis.</p>
+</div>
+
+</div>
+</body>
+</html>

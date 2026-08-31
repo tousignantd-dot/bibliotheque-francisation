@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Huit heures chez Belrive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap">
+<style>
+/* ═══════════════════════════════════════════════════════════
+   HUIT HEURES CHEZ BELRIVE
+   Le programme de démonstration : une usine fictive de
+   transformation alimentaire, huit blocs d'une heure.
+
+   Vert : ce que le tour de main actuel produit déjà.
+   Ambre : ce qui attend votre décision.
+   Rouge : l'argument de vente qui tient à une obligation légale.
+   L'acier ne fait que la structure.
+   ═══════════════════════════════════════════════════════════ */
+
+:root{
+  --ground:#F7F7F5; --card:#FFFFFF; --sunken:#FBFBFA;
+  --ink:#17181A; --body:#3A3D40; --muted:#6E7175;
+  --line:#E4E4E0; --line-fort:#D2D2CD;
+
+  --fait:#0A8F5B;    --fait-bg:#E6F5EE;
+  --decid:#C07A08;   --decid-bg:#FBF2E2;
+  --loi:#C7302B;     --loi-bg:#FBEDEC;
+  --acier:#1D6B8F;   --acier-bg:#E7F0F6;
+
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#151618; --card:#1D1F22; --sunken:#212326;
+    --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+    --line:#2E3135; --line-fort:#3D4146;
+    --fait:#4BC48D; --fait-bg:#12291F;
+    --decid:#E0A63F; --decid-bg:#2C2213;
+    --loi:#EE7A73; --loi-bg:#2E1917;
+    --acier:#6DAFD2; --acier-bg:#14242C;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#151618; --card:#1D1F22; --sunken:#212326;
+  --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+  --line:#2E3135; --line-fort:#3D4146;
+  --fait:#4BC48D; --fait-bg:#12291F;
+  --decid:#E0A63F; --decid-bg:#2C2213;
+  --loi:#EE7A73; --loi-bg:#2E1917;
+  --acier:#6DAFD2; --acier-bg:#14242C;
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--body);
+  font-family:Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased}
+.doc{max-width:880px;margin:0 auto;padding:56px 24px 96px}
+
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--acier);margin:0 0 14px}
+h1{font-family:Newsreader,Georgia,serif;font-size:clamp(38px,6.4vw,58px);line-height:1.04;
+  font-weight:500;letter-spacing:-.02em;color:var(--ink);margin:0 0 20px;text-wrap:balance}
+.chapeau{font-size:19px;line-height:1.6;color:var(--body);margin:0;max-width:62ch}
+.chapeau strong{color:var(--ink);font-weight:700}
+h2{font-family:Newsreader,Georgia,serif;font-size:29px;line-height:1.2;font-weight:600;
+  letter-spacing:-.01em;color:var(--ink);margin:0 0 4px;text-wrap:balance}
+h3{font-size:15px;font-weight:800;color:var(--ink);margin:0 0 6px}
+p{margin:0;max-width:68ch}
+section{display:flex;flex-direction:column;gap:16px;padding:44px 0 0;margin:44px 0 0;
+  border-top:1px solid var(--line)}
+section.premier{border-top:none;margin-top:0;padding-top:40px}
+code{font-family:var(--mono);font-size:.86em;background:var(--sunken);
+  border:1px solid var(--line);border-radius:4px;padding:1px 5px;color:var(--ink)}
+ul.simple{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px}
+ul.simple li{max-width:66ch} ul.simple li strong{color:var(--ink)}
+em.art{font-style:normal;font-family:var(--mono);font-size:.82em;color:var(--muted);
+  white-space:nowrap}
+
+.these{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--acier);
+  border-radius:3px;padding:26px 28px;display:flex;flex-direction:column;gap:12px}
+.these p{font-size:18px}
+.these .cle{font-family:Newsreader,Georgia,serif;font-size:23px;line-height:1.3;
+  font-weight:500;color:var(--ink);font-style:italic}
+
+/* ── Les décisions ─────────────────────────────────────── */
+.decisions{display:flex;flex-direction:column;gap:2px;counter-reset:d}
+.dec{counter-increment:d;background:var(--card);border:1px solid var(--line);
+  border-left:5px solid var(--decid);border-radius:3px;padding:19px 22px 19px 60px;
+  position:relative;display:flex;flex-direction:column;gap:8px}
+.dec.ok{border-left-color:var(--fait)}
+.dec::before{content:counter(d);position:absolute;left:24px;top:18px;
+  font-family:var(--mono);font-size:14px;color:var(--muted)}
+.dec .ligne{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;
+  justify-content:space-between}
+.dec p{font-size:15.5px}
+.dec .defaut{font-size:13.5px;color:var(--muted);font-style:italic}
+
+.badge{display:inline-block;font-size:11.5px;font-weight:800;letter-spacing:.05em;
+  text-transform:uppercase;padding:3px 9px;border-radius:2px;white-space:nowrap}
+.b-fait{background:var(--fait-bg);color:var(--fait)}
+.b-dec{background:var(--decid-bg);color:var(--decid)}
+.b-loi{background:var(--loi-bg);color:var(--loi)}
+.b-n{background:var(--sunken);color:var(--muted);border:1px solid var(--line)}
+
+/* ── Tableaux ──────────────────────────────────────────── */
+.defile{overflow-x:auto;border:1px solid var(--line);border-radius:3px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:15px;min-width:640px}
+caption{caption-side:top;text-align:left;padding:0 0 10px;font-size:13.5px;color:var(--muted)}
+th,td{padding:12px 15px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{font-size:11.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--muted);background:var(--sunken);white-space:nowrap}
+tbody tr:last-child td{border-bottom:none}
+td.q{font-weight:700;color:var(--ink)}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+td small{display:block;color:var(--muted);font-size:13px;line-height:1.45;margin-top:3px}
+tbody tr td:first-child{border-left:4px solid transparent}
+tr.l td:first-child{border-left-color:var(--loi)}
+tr.d td:first-child{border-left-color:var(--decid)}
+tr.f td:first-child{border-left-color:var(--fait)}
+
+/* ── Chiffres ──────────────────────────────────────────── */
+.chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.ch{background:var(--card);border:1px solid var(--line);border-radius:3px;
+  border-top:3px solid var(--acier);padding:15px 16px}
+.ch .n{font-family:Newsreader,Georgia,serif;font-size:30px;line-height:1;font-weight:500;
+  color:var(--ink);display:block;font-variant-numeric:tabular-nums}
+.ch .q{font-size:12.5px;font-weight:700;color:var(--muted);line-height:1.35;display:block;margin-top:7px}
+
+/* ── Marche à suivre ───────────────────────────────────── */
+ol.actions{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;
+  counter-reset:a}
+ol.actions li{counter-increment:a;background:var(--card);border:1px solid var(--line);
+  border-radius:3px;padding:18px 22px 18px 62px;position:relative;display:flex;
+  flex-direction:column;gap:6px}
+ol.actions li::before{content:counter(a);position:absolute;left:22px;top:17px;
+  font-family:var(--mono);font-size:14px;color:var(--muted)}
+ol.actions li p{font-size:15.5px}
+.qui{font-size:13px;color:var(--muted);font-style:italic}
+
+.reserve{border:1px dashed var(--line-fort);border-radius:3px;padding:20px 24px;
+  font-size:15px;color:var(--muted);display:flex;flex-direction:column;gap:9px}
+.reserve strong{color:var(--body)}
+.avert{background:var(--loi-bg);border:1px solid var(--loi);border-radius:3px;
+  padding:20px 24px;display:flex;flex-direction:column;gap:9px}
+.avert strong{color:var(--ink)}
+.avert p{font-size:15.5px;color:var(--body)}
+.pied{margin-top:52px;padding-top:22px;border-top:1px solid var(--line);font-size:13.5px;
+  color:var(--muted);display:flex;flex-direction:column;gap:5px}
+@media (max-width:620px){ .doc{padding:36px 18px 72px} }
+</style>
+<style>
+  .doc{padding-top:26px}
+  .retour{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;
+    color:var(--muted);text-decoration:none;margin-bottom:34px}
+  .retour:hover{color:var(--acier)}
+  table.cmp{width:100%;border-collapse:collapse;font-size:15px;background:var(--card);
+    border:1px solid var(--line);border-radius:3px;overflow:hidden}
+  table.cmp th,table.cmp td{padding:13px 15px;text-align:left;vertical-align:top;
+    border-bottom:1px solid var(--line)}
+  table.cmp thead th{background:var(--sunken);font-size:12px;font-weight:800;
+    letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+  table.cmp tbody tr:last-child td{border-bottom:0}
+  table.cmp td:first-child{font-weight:700;color:var(--ink)}
+  .roule{overflow-x:auto}
+  .voie{background:var(--card);border:1px solid var(--line);border-radius:3px;
+    padding:24px 26px;display:flex;flex-direction:column;gap:11px}
+  .voie.oui{border-color:var(--fait);border-width:2px;padding:23px 25px}
+  .voie.non{border-left:5px solid var(--loi)}
+  .voie h3{font-size:19px;font-family:Newsreader,Georgia,serif;font-weight:600;margin:0}
+  .voie .cout{font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+  .verdict{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+    padding:3px 10px;border-radius:99px;align-self:flex-start}
+  .v-oui{background:var(--fait-bg);color:var(--fait)}
+  .v-peut{background:var(--decid-bg);color:var(--decid)}
+  .v-non{background:var(--loi-bg);color:var(--loi)}
+  .mes{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:2px;
+    background:var(--line);border:1px solid var(--line);border-radius:3px;overflow:hidden}
+  .mes div{background:var(--card);padding:16px 18px}
+  .mes b{display:block;font-family:Newsreader,Georgia,serif;font-size:27px;font-weight:500;
+    color:var(--ink);line-height:1.1}
+  .mes span{font-size:13px;color:var(--muted)}
+  @media (max-width:640px){ .doc{padding-left:18px;padding-right:18px} }
+</style>
+</head>
+<body>
+<div class="doc">
+
+<a class="retour" href="/presentations.html"><span aria-hidden="true">&#8592;</span> Banque de présentations</a>
+
+<p class="eyebrow">Chantier &mdash; formation en entreprise</p>
+<h1>Huit heures chez Belrive</h1>
+<p class="chapeau">Le secteur est choisi&nbsp;: <strong>la transformation alimentaire</strong>. Le
+format aussi&nbsp;: <strong>huit blocs d'une heure, un par semaine, sur les heures payées</strong>.
+Voici l'usine qu'on va montrer, les gens qui l'habitent, ce que dure une heure, ce que contiennent
+les huit, et comment on mesure que ça a servi.</p>
+
+<section class="premier">
+  <h2>L'usine</h2>
+  <div class="these">
+    <p class="cle">Aliments Belrive inc. &mdash; conditionnement et surgélation de légumes.</p>
+    <p>Entreprise <strong>entièrement inventée</strong> pour la démonstration. Elle existe pour une
+    seule raison&nbsp;: qu'un employeur qui la regarde pense à la sienne. Toute la démo se passe au
+    même endroit, avec les mêmes personnes &mdash; c'est ce qui distingue une démonstration d'un
+    échantillonnage.</p>
+  </div>
+  <div class="mes">
+    <div><b>140</b><span>employés, dont 90 sur le plancher</span></div>
+    <div><b>3</b><span>quarts&nbsp;: jour, soir, nuit (lavage)</span></div>
+    <div><b>5</b><span>zones&nbsp;: réception, parage, emballage, tunnel, expédition</span></div>
+    <div><b>~60</b><span>travailleurs allophones, surtout niveaux&nbsp;1 à&nbsp;3</span></div>
+  </div>
+  <p>Les dangers du lieu ne sont pas décoratifs, ils fournissent la matière des blocs&nbsp;4 à&nbsp;6&nbsp;:
+  sol mouillé, lames, chariot élévateur, froid, arrêts d'urgence, cadenassage, allergènes.</p>
+</section>
+
+<section>
+  <h2>Les personnages</h2>
+  <p>Six, pas davantage. Un élève doit pouvoir les reconnaître à la voix dès le troisième bloc.</p>
+  <div class="roule">
+  <table class="cmp">
+    <thead><tr><th>Personnage</th><th>Poste</th><th>Niveau</th><th>Son rôle</th></tr></thead>
+    <tbody>
+      <tr><td>Nadia Osei</td><td>parage</td><td>1</td><td>la plus fragile&nbsp;; huit mois d'ancienneté. C'est elle qu'on suit.</td></tr>
+      <tr><td>Rachid Benali</td><td>emballage</td><td>2</td><td>trois ans de métier&nbsp;; comprend bien mieux qu'il ne parle.</td></tr>
+      <tr><td>Vitor Almeida</td><td>entretien</td><td>3</td><td>circule dans toutes les zones&nbsp;; sert de relais entre elles.</td></tr>
+      <tr><td>Marie-Ève Cormier</td><td>chef d'équipe, jour</td><td>&mdash;</td><td>parle clairement, reformule d'instinct. L'alliée.</td></tr>
+      <tr><td>Jean-Guy Tremblay</td><td>superviseur de plancher</td><td>&mdash;</td><td>parle vite et court, sans méchanceté. <strong>C'est lui, la difficulté.</strong></td></tr>
+      <tr><td>Luda Savchuk</td><td>emballage, soir</td><td>2</td><td>l'autre bout du relais de quart.</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<section>
+  <h2>Ce que dure une heure</h2>
+  <p>La même charpente aux huit blocs. Ce n'est pas de la commodité&nbsp;: c'est Gagné et Merrill
+  mis bout à bout, et c'est déjà la forme de nos modules &mdash; seuls les noms changent.</p>
+  <div class="roule">
+  <table class="cmp">
+    <thead><tr><th>Minutes</th><th>Étape</th><th>Ce que ça sert</th></tr></thead>
+    <tbody>
+      <tr><td class="num">5</td><td>Le moment &mdash; l'image du problème, l'objectif de l'heure</td><td>capter l'attention, annoncer l'objectif</td></tr>
+      <tr><td class="num">10</td><td>On écoute &mdash; le dialogue de l'usine, <em>sans le texte</em></td><td>partir d'un problème réel, démontrer</td></tr>
+      <tr><td class="num">15</td><td>Les mots &mdash; vocabulaire imagé, banque d'énoncés</td><td>présenter le contenu</td></tr>
+      <tr><td class="num">20</td><td>On pratique &mdash; exercices, puis micro et jeu de rôle</td><td>pratique guidée et rétroaction</td></tr>
+      <tr><td class="num">10</td><td>On emporte &mdash; fiche de poche, défi de la semaine</td><td>intégrer, transférer au poste</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>Pas de devoirs à la maison. Groupes de 8 à 12, salle près du plancher&nbsp;; trois groupes
+  couvrent les trois quarts.</p>
+</section>
+
+<section>
+  <h2>Les huit blocs</h2>
+  <ol class="actions">
+    <li><h3>L'usine et mon poste</h3>
+      <p>Se présenter, nommer les cinq zones, dire où l'on est et où l'on va.</p>
+      <p class="qui">Assise du reste &mdash; et diagnostic d'entrée, mesuré sans que le groupe le sente.</p></li>
+    <li><h3>La consigne&nbsp;: comprendre et confirmer</h3>
+      <p>Jean-Guy donne une tâche en quinze secondes et repart. La reformuler, confirmer le délai.</p>
+      <p class="qui">Situation 2 de la proposition.</p></li>
+    <li><h3>La consigne&nbsp;: « je n'ai pas compris »</h3>
+      <p>Faire répéter, faire ralentir, demander qu'on montre, annoncer qu'on n'y arrivera pas.</p>
+      <p class="qui">Le cœur du programme. Si un employeur ne devait payer qu'une heure, ce serait celle-là.</p></li>
+    <li><h3>Le danger&nbsp;: nommer et situer</h3>
+      <p>Ce qu'on voit, où c'est exactement, à quel point c'est urgent.</p></li>
+    <li><h3>Le danger&nbsp;: alerter et arrêter</h3>
+      <p>Crier utile, <em>comprendre</em> un ordre crié, l'arrêt d'urgence, le cadenassage.</p>
+      <p class="qui">Compétence d'écoute autant que de parole &mdash; c'est ce qu'on oublie toujours.</p></li>
+    <li><h3>L'incident&nbsp;: raconter ce qui est arrivé</h3>
+      <p>Le passé composé mis au service des premiers soins. Dire où l'on a mal, et quand.</p></li>
+    <li><h3>Le relais de quart</h3>
+      <p>Nadia laisse son poste à Luda. Ce qui est fait, ce qui reste, ce qui a mal tourné.</p></li>
+    <li><h3>Le visiteur et l'autre service</h3>
+      <p>Accueillir, faire répéter sans vexer, aller chercher quelqu'un. Puis bilan et diagnostic de sortie.</p></li>
+  </ol>
+  <div class="reserve">
+    <p><strong>Arbitrage assumé.</strong> Dans une usine, la situation « client » ne vaut qu'un seul
+    bloc sur huit. Dans un commerce ou une résidence, elle en vaudrait trois et la sécurité un seul.
+    <strong>Le programme est un gabarit à pondérer par secteur</strong>, pas une liste figée &mdash; et
+    c'est exactement ce qu'il faut savoir dire au deuxième client.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Le défi de la semaine</h2>
+  <div class="voie oui">
+    <span class="verdict v-oui">La pièce qui fait le niveau 3</span>
+    <h3>Une seule chose à faire au poste, entre deux blocs.</h3>
+    <p>« Cette semaine, tu demandes une fois à Jean-Guy de répéter plus lentement. » Le chef d'équipe
+    la coche sur une fiche d'une page.</p>
+    <p>C'est modeste et c'est le seul dispositif du programme qui produise du <strong>Kirkpatrick
+    niveau&nbsp;3</strong> &mdash; le comportement au poste, celui que l'employeur achète vraiment.
+    Sans lui, on vend huit heures de cours&nbsp;; avec lui, on vend un changement observable.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Comment on mesure</h2>
+  <div class="roule">
+  <table class="cmp">
+    <thead><tr><th>Niveau</th><th>Ce qu'on mesure</th><th>Comment</th><th>Quand</th></tr></thead>
+    <tbody>
+      <tr><td>1 &mdash; Réaction</td><td>ce que le groupe en a pensé</td><td>trois questions</td><td>bloc 8</td></tr>
+      <tr><td>2 &mdash; Apprentissage</td><td>ce qu'ils savent faire</td><td>diagnostic d'entrée et de sortie &mdash; <strong>l'outil le fait déjà</strong></td><td>blocs 1 et 8</td></tr>
+      <tr><td>3 &mdash; Comportement</td><td>ce qu'ils font au poste</td><td>huit observations du chef d'équipe, grille d'une page</td><td>avant, puis 3 mois après</td></tr>
+      <tr><td>4 &mdash; Résultats</td><td>ce que l'entreprise y gagne</td><td>incidents déclarés, reprises de lot, durée de formation d'un nouvel employé, roulement</td><td>12 mois</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="avert">
+    <p><strong>À dire avant qu'on nous le demande.</strong> Au niveau&nbsp;4, on mesure une tendance,
+    on ne prouve pas une cause&nbsp;: trop d'autres choses bougent dans une usine en douze mois.
+    Annoncer cette limite nous-mêmes vaut mieux que promettre un rendement chiffré qu'on ne pourra
+    pas défendre devant un contrôleur. C'est aussi, en pratique, ce qui inspire confiance.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Avant les huit blocs&nbsp;: la demi-journée d'analyse</h2>
+  <p>Tournée de plancher, cinq entrevues courtes (deux travailleurs, deux chefs d'équipe, le
+  responsable de la santé et sécurité), relevé des affiches et des consignes déjà en place.</p>
+  <p>C'est la phase A d'ADDIE, et c'est surtout <strong>ce qui permet de remplacer Belrive par leur
+  vraie usine</strong>&nbsp;: leurs zones, leurs machines, les prénoms de leurs chefs d'équipe. La
+  démo montre la coquille&nbsp;; l'analyse la remplit.</p>
+</section>
+
+<section>
+  <h2>La langue d'appui</h2>
+  <p>En entreprise, l'obstacle n'est pas seulement le français à apprendre&nbsp;: c'est le français
+  <em>de la consigne qui explique l'exercice</em>. Un travailleur de niveau&nbsp;1 ne peut pas lire
+  « Écoute le dialogue, puis coche ce que Nadia doit faire en premier ». On lui demande de comprendre
+  la question avant de pouvoir répondre.</p>
+  <div class="these">
+    <p class="cle">Trois couches, et une seule bascule.</p>
+    <p>Tout ce qui suit tient à ne pas confondre <strong>ce qu'on apprend</strong>,
+    <strong>ce qui aide à l'apprendre</strong>, et <strong>le mot qu'on cherche</strong>.</p>
+  </div>
+  <div class="roule">
+  <table class="cmp">
+    <thead><tr><th>Couche</th><th>Exemples</th><th>Bascule&nbsp;?</th></tr></thead>
+    <tbody>
+      <tr><td>1. Le contenu à apprendre</td><td>les dialogues, l'audio, les énoncés à dire, le vocabulaire visé</td><td><strong>Jamais.</strong> C'est le produit. Le traduire, c'est le supprimer.</td></tr>
+      <tr><td>2. La langue d'appui</td><td>consignes, boutons, titres, explications de la règle, corrections, fiche de poche</td><td><strong>Oui &mdash; c'est la demande.</strong> français &middot; español &middot; English, extensible.</td></tr>
+      <tr><td>3. La traduction ponctuelle</td><td>« ce mot-là veut dire quoi&nbsp;? »</td><td><strong>Existe déjà</strong> &mdash; onze langues, à la demande, en mémoire d'appareil.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3 style="margin-top:8px">Ce qui existe déjà, et ce qui manque</h3>
+  <p>La couche&nbsp;3 est bâtie&nbsp;: <code>build/gabarit/vocab.js</code> porte onze langues
+  (arabe, espagnol, ukrainien, persan, mandarin, portugais, anglais, roumain, ourdou, russe,
+  tigrigna), le choix est fait une fois et vaut pour tous les modules, les traductions sont mises en
+  cache sur l'appareil, et l'écriture de droite à gauche est déjà gérée. <strong>Rien de tout cela
+  n'est à refaire.</strong></p>
+  <p>Ce qui manque, c'est la couche&nbsp;2 &mdash; et c'est elle que l'entreprise réclame.</p>
+
+  <h3>Comment la bâtir&nbsp;: deux routes, et pourquoi je n'en retiens qu'une</h3>
+  <div class="voie non">
+    <span class="verdict v-non">Écartée pour les consignes</span>
+    <h3>Traduire à la volée, comme le vocabulaire</h3>
+    <p>Zéro entretien, toutes les langues d'un coup. Mais&nbsp;: c'est non déterministe, ça coûte à
+    chaque affichage, ça s'effondre hors ligne &mdash; et surtout <strong>une consigne de sécurité
+    mal traduite dans une usine n'est pas un défaut d'affichage.</strong> Aux blocs&nbsp;4 à&nbsp;6,
+    c'est disqualifiant.</p>
+    <p>Deuxième raison, moins évidente&nbsp;: le <em>mode sans assistance</em> retire déjà « Voir dans
+    ma langue ». Un employeur qui refuse l'assistant perdrait du même coup la langue d'appui, alors
+    que c'est précisément ce qu'il a acheté.</p>
+  </div>
+  <div class="voie oui">
+    <span class="verdict v-oui">Retenue</span>
+    <h3>Un fichier de langue, écrit et relu d'avance</h3>
+    <p>Un fichier par langue &mdash; <code>es.json</code>, <code>en.json</code> &mdash; qui porte les
+    chaînes fixes&nbsp;: consignes, boutons, titres de section, explications, messages de correction,
+    fiche de poche. Déterministe, relisible par un humain, gratuit à l'exécution, fonctionne hors
+    ligne et survit au mode sans assistance.</p>
+    <p><strong>Ajouter une langue&nbsp;= un fichier et une relecture</strong>, pas une reprise du
+    module. C'est la phrase qu'on dira au client&nbsp;: « votre équipe est moitié hispanophone,
+    moitié tagalophone&nbsp;? Le tagalog prend deux jours. »</p>
+    <p class="cout">La rédaction initiale se fait par l'assistant, la relecture par un humain. C'est
+    de la traduction relue, pas de la traduction automatique en direct &mdash; la nuance est tout le
+    sujet.</p>
+  </div>
+
+  <h3>Les règles qui vont avec</h3>
+  <ul class="simple">
+    <li><strong>L'audio ne bascule jamais.</strong> On n'enregistre pas les dialogues en espagnol&nbsp;:
+    ce serait traduire le produit. Seul l'écrit autour bascule.</li>
+    <li><strong>Le français reste visible même en mode espagnol.</strong> La consigne s'affiche dans
+    les deux, l'appui sous le français, jamais à sa place &mdash; c'est la même règle que la
+    traduction du vocabulaire, qui est déjà masquée par défaut.</li>
+    <li><strong>Un seul choix pour tout.</strong> On réutilise la clé existante, celle du vocabulaire&nbsp;:
+    l'élève qui a choisi l'espagnol pour ses mots retrouve l'espagnol partout, sans le redemander.</li>
+    <li><strong>L'employeur peut poser une langue par défaut au groupe</strong>, que chacun peut
+    ensuite changer pour lui-même.</li>
+    <li><strong>La fiche de poche devient bilingue</strong> &mdash; français au recto, appui discret.
+    C'est l'objet qui sort de la salle et qui reste dans la poche du sarrau&nbsp;; c'est aussi celui
+    que le patron regarde en premier.</li>
+  </ul>
+
+  <div class="avert">
+    <p><strong>Le test à faire d'abord.</strong> Trois langues sur le bloc de démonstration&nbsp;:
+    <strong>français, espagnol, anglais</strong>. L'espagnol parce que c'est la première demande
+    réelle du secteur&nbsp;; l'anglais parce qu'il sert de langue relais à beaucoup de travailleurs
+    dont ce n'est pas la langue maternelle non plus &mdash; et qu'un employeur, lui, le lira. Si
+    la bascule tient sur ces trois-là, elle tiendra sur les onze autres.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Ce qui reste ouvert</h2>
+  <div class="decisions">
+    <div class="dec">
+      <div class="ligne"><h3>Le prix, et le sort de l'analyse</h3><span class="badge b-dec">à décider</span></div>
+      <p>Huit heures pour un groupe, plus une demi-journée d'analyse. L'analyse est-elle offerte
+      (elle devient un argument de vente) ou facturée à part&nbsp;?</p>
+      <p class="defaut">Aucun chiffre n'est avancé ici&nbsp;: c'est votre décision, pas la mienne.</p>
+    </div>
+    <div class="dec">
+      <div class="ligne"><h3>À qui l'on parle en premier</h3><span class="badge b-dec">sans réponse</span></div>
+      <p>L'employeur directement, ou les programmes qui subventionnent la francisation en milieu de
+      travail. La question de la proposition précédente est restée sans réponse.</p>
+      <p class="defaut">Je poursuis sur l'hypothèse « employeur directement », qui est la version la
+      plus exigeante&nbsp;; l'autre s'en déduit.</p>
+    </div>
+    <div class="dec">
+      <div class="ligne"><h3>L'étendue de la démo</h3><span class="badge b-dec">à décider</span></div>
+      <p>Un bloc complet et jouable de bout en bout, ou deux blocs partiels qui montrent la variété&nbsp;?</p>
+      <p class="defaut">Ma recommandation&nbsp;: <strong>le bloc&nbsp;3</strong>, complet. C'est celui qui
+      fait hocher la tête, et un morceau qui se joue vaut mieux que deux qui s'expliquent.</p>
+    </div>
+  </div>
+</section>
+
+<div class="pied">
+  <p>Chantier « formation en entreprise » &mdash; programme de démonstration, 31 août 2026.</p>
+  <p>Source&nbsp;: <code>entreprise/plan-formation-agroalimentaire.md</code></p>
+  <p>Proposition d'origine&nbsp;: <a href="situations-entreprise.html">Quatre situations de travail</a></p>
+</div>
+
+</div>
+</body>
+</html>

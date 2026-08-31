@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Le procédurier</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap">
+<style>
+/* ═══════════════════════════════════════════════════════════
+   LE PROCÉDURIER
+   Une piste gardée au chaud, pas un chantier ouvert :
+   la marche à suivre d'un logiciel ou d'une machine, en vidéo.
+
+   Vert : ce que le tour de main actuel produit déjà.
+   Ambre : ce qui attend votre décision.
+   Rouge : l'argument de vente qui tient à une obligation légale.
+   L'acier ne fait que la structure.
+   ═══════════════════════════════════════════════════════════ */
+
+:root{
+  --ground:#F7F7F5; --card:#FFFFFF; --sunken:#FBFBFA;
+  --ink:#17181A; --body:#3A3D40; --muted:#6E7175;
+  --line:#E4E4E0; --line-fort:#D2D2CD;
+
+  --fait:#0A8F5B;    --fait-bg:#E6F5EE;
+  --decid:#C07A08;   --decid-bg:#FBF2E2;
+  --loi:#C7302B;     --loi-bg:#FBEDEC;
+  --acier:#1D6B8F;   --acier-bg:#E7F0F6;
+
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#151618; --card:#1D1F22; --sunken:#212326;
+    --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+    --line:#2E3135; --line-fort:#3D4146;
+    --fait:#4BC48D; --fait-bg:#12291F;
+    --decid:#E0A63F; --decid-bg:#2C2213;
+    --loi:#EE7A73; --loi-bg:#2E1917;
+    --acier:#6DAFD2; --acier-bg:#14242C;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#151618; --card:#1D1F22; --sunken:#212326;
+  --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+  --line:#2E3135; --line-fort:#3D4146;
+  --fait:#4BC48D; --fait-bg:#12291F;
+  --decid:#E0A63F; --decid-bg:#2C2213;
+  --loi:#EE7A73; --loi-bg:#2E1917;
+  --acier:#6DAFD2; --acier-bg:#14242C;
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--body);
+  font-family:Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased}
+.doc{max-width:880px;margin:0 auto;padding:56px 24px 96px}
+
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--acier);margin:0 0 14px}
+h1{font-family:Newsreader,Georgia,serif;font-size:clamp(38px,6.4vw,58px);line-height:1.04;
+  font-weight:500;letter-spacing:-.02em;color:var(--ink);margin:0 0 20px;text-wrap:balance}
+.chapeau{font-size:19px;line-height:1.6;color:var(--body);margin:0;max-width:62ch}
+.chapeau strong{color:var(--ink);font-weight:700}
+h2{font-family:Newsreader,Georgia,serif;font-size:29px;line-height:1.2;font-weight:600;
+  letter-spacing:-.01em;color:var(--ink);margin:0 0 4px;text-wrap:balance}
+h3{font-size:15px;font-weight:800;color:var(--ink);margin:0 0 6px}
+p{margin:0;max-width:68ch}
+section{display:flex;flex-direction:column;gap:16px;padding:44px 0 0;margin:44px 0 0;
+  border-top:1px solid var(--line)}
+section.premier{border-top:none;margin-top:0;padding-top:40px}
+code{font-family:var(--mono);font-size:.86em;background:var(--sunken);
+  border:1px solid var(--line);border-radius:4px;padding:1px 5px;color:var(--ink)}
+ul.simple{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px}
+ul.simple li{max-width:66ch} ul.simple li strong{color:var(--ink)}
+em.art{font-style:normal;font-family:var(--mono);font-size:.82em;color:var(--muted);
+  white-space:nowrap}
+
+.these{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--acier);
+  border-radius:3px;padding:26px 28px;display:flex;flex-direction:column;gap:12px}
+.these p{font-size:18px}
+.these .cle{font-family:Newsreader,Georgia,serif;font-size:23px;line-height:1.3;
+  font-weight:500;color:var(--ink);font-style:italic}
+
+/* ── Les décisions ─────────────────────────────────────── */
+.decisions{display:flex;flex-direction:column;gap:2px;counter-reset:d}
+.dec{counter-increment:d;background:var(--card);border:1px solid var(--line);
+  border-left:5px solid var(--decid);border-radius:3px;padding:19px 22px 19px 60px;
+  position:relative;display:flex;flex-direction:column;gap:8px}
+.dec.ok{border-left-color:var(--fait)}
+.dec::before{content:counter(d);position:absolute;left:24px;top:18px;
+  font-family:var(--mono);font-size:14px;color:var(--muted)}
+.dec .ligne{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;
+  justify-content:space-between}
+.dec p{font-size:15.5px}
+.dec .defaut{font-size:13.5px;color:var(--muted);font-style:italic}
+
+.badge{display:inline-block;font-size:11.5px;font-weight:800;letter-spacing:.05em;
+  text-transform:uppercase;padding:3px 9px;border-radius:2px;white-space:nowrap}
+.b-fait{background:var(--fait-bg);color:var(--fait)}
+.b-dec{background:var(--decid-bg);color:var(--decid)}
+.b-loi{background:var(--loi-bg);color:var(--loi)}
+.b-n{background:var(--sunken);color:var(--muted);border:1px solid var(--line)}
+
+/* ── Tableaux ──────────────────────────────────────────── */
+.defile{overflow-x:auto;border:1px solid var(--line);border-radius:3px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:15px;min-width:640px}
+caption{caption-side:top;text-align:left;padding:0 0 10px;font-size:13.5px;color:var(--muted)}
+th,td{padding:12px 15px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{font-size:11.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--muted);background:var(--sunken);white-space:nowrap}
+tbody tr:last-child td{border-bottom:none}
+td.q{font-weight:700;color:var(--ink)}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+td small{display:block;color:var(--muted);font-size:13px;line-height:1.45;margin-top:3px}
+tbody tr td:first-child{border-left:4px solid transparent}
+tr.l td:first-child{border-left-color:var(--loi)}
+tr.d td:first-child{border-left-color:var(--decid)}
+tr.f td:first-child{border-left-color:var(--fait)}
+
+/* ── Chiffres ──────────────────────────────────────────── */
+.chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.ch{background:var(--card);border:1px solid var(--line);border-radius:3px;
+  border-top:3px solid var(--acier);padding:15px 16px}
+.ch .n{font-family:Newsreader,Georgia,serif;font-size:30px;line-height:1;font-weight:500;
+  color:var(--ink);display:block;font-variant-numeric:tabular-nums}
+.ch .q{font-size:12.5px;font-weight:700;color:var(--muted);line-height:1.35;display:block;margin-top:7px}
+
+/* ── Marche à suivre ───────────────────────────────────── */
+ol.actions{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;
+  counter-reset:a}
+ol.actions li{counter-increment:a;background:var(--card);border:1px solid var(--line);
+  border-radius:3px;padding:18px 22px 18px 62px;position:relative;display:flex;
+  flex-direction:column;gap:6px}
+ol.actions li::before{content:counter(a);position:absolute;left:22px;top:17px;
+  font-family:var(--mono);font-size:14px;color:var(--muted)}
+ol.actions li p{font-size:15.5px}
+.qui{font-size:13px;color:var(--muted);font-style:italic}
+
+.reserve{border:1px dashed var(--line-fort);border-radius:3px;padding:20px 24px;
+  font-size:15px;color:var(--muted);display:flex;flex-direction:column;gap:9px}
+.reserve strong{color:var(--body)}
+.avert{background:var(--loi-bg);border:1px solid var(--loi);border-radius:3px;
+  padding:20px 24px;display:flex;flex-direction:column;gap:9px}
+.avert strong{color:var(--ink)}
+.avert p{font-size:15.5px;color:var(--body)}
+.pied{margin-top:52px;padding-top:22px;border-top:1px solid var(--line);font-size:13.5px;
+  color:var(--muted);display:flex;flex-direction:column;gap:5px}
+@media (max-width:620px){ .doc{padding:36px 18px 72px} }
+</style>
+<style>
+  .doc{padding-top:26px}
+  .retour{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;
+    color:var(--muted);text-decoration:none;margin-bottom:34px}
+  .retour:hover{color:var(--acier)}
+  table.cmp{width:100%;border-collapse:collapse;font-size:15px;background:var(--card);
+    border:1px solid var(--line);border-radius:3px;overflow:hidden}
+  table.cmp th,table.cmp td{padding:13px 15px;text-align:left;vertical-align:top;
+    border-bottom:1px solid var(--line)}
+  table.cmp thead th{background:var(--sunken);font-size:12px;font-weight:800;
+    letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+  table.cmp tbody tr:last-child td{border-bottom:0}
+  table.cmp td:first-child{font-weight:700;color:var(--ink)}
+  .roule{overflow-x:auto}
+  .voie{background:var(--card);border:1px solid var(--line);border-radius:3px;
+    padding:24px 26px;display:flex;flex-direction:column;gap:11px}
+  .voie.oui{border-color:var(--fait);border-width:2px;padding:23px 25px}
+  .voie.non{border-left:5px solid var(--loi)}
+  .voie h3{font-size:19px;font-family:Newsreader,Georgia,serif;font-weight:600;margin:0}
+  .voie .cout{font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+  .verdict{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+    padding:3px 10px;border-radius:99px;align-self:flex-start}
+  .v-oui{background:var(--fait-bg);color:var(--fait)}
+  .v-peut{background:var(--decid-bg);color:var(--decid)}
+  .v-non{background:var(--loi-bg);color:var(--loi)}
+  .mes{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:2px;
+    background:var(--line);border:1px solid var(--line);border-radius:3px;overflow:hidden}
+  .mes div{background:var(--card);padding:16px 18px}
+  .mes b{display:block;font-family:Newsreader,Georgia,serif;font-size:27px;font-weight:500;
+    color:var(--ink);line-height:1.1}
+  .mes span{font-size:13px;color:var(--muted)}
+  @media (max-width:640px){ .doc{padding-left:18px;padding-right:18px} }
+</style>
+</head>
+<body>
+<div class="doc">
+
+<a class="retour" href="/presentations.html"><span aria-hidden="true">&#8592;</span> Banque de présentations</a>
+
+<p class="eyebrow">Chantier &mdash; formation en entreprise &middot; piste gardée</p>
+<h1>Le procédurier</h1>
+<p class="chapeau">Idée notée le 31 août 2026, <strong>volontairement pas développée</strong>. Ce
+que les entreprises achètent souvent, ce n'est pas un cours&nbsp;: c'est une marche à suivre.
+Comment on se sert de ce logiciel. Comment on démarre cette machine. Comment on fait cette
+opération-là, montrée en vidéo. Cette page existe pour que la piste ne se perde pas.</p>
+
+<section class="premier">
+  <h2>De quoi il s'agit</h2>
+  <p>Deux familles, très différentes malgré leur air de famille.</p>
+  <div class="roule">
+  <table class="cmp">
+    <thead><tr><th>Famille</th><th>Exemple</th><th>Ce qui la caractérise</th></tr></thead>
+    <tbody>
+      <tr><td>Le procédurier logiciel</td><td>saisir un bon de commande, pointer ses heures,
+        déclarer un lot dans le système</td><td>tout se passe à l'écran&nbsp;: la capture d'écran
+        est la matière première, et elle se refait à chaque mise à jour du logiciel</td></tr>
+      <tr><td>Le procédurier machine</td><td>démarrer la ligne, changer une lame, faire un
+        cadenassage, laver un tunnel</td><td>tout se passe avec les mains&nbsp;: <strong>c'est la
+        vidéo qui porte l'information</strong>, parce que le geste ne s'écrit pas</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<section>
+  <h2>Pourquoi c'est intéressant commercialement</h2>
+  <ul class="simple">
+    <li><strong>C'est le besoin que l'employeur nomme de lui-même.</strong> On n'a pas à le
+    convaincre qu'il a un problème&nbsp;: il sait déjà que former un nouvel employé lui coûte trois
+    semaines de quelqu'un d'autre.</li>
+    <li><strong>C'est la suite naturelle des huit blocs.</strong> Le premier contrat enseigne la
+    langue du plancher&nbsp;; le deuxième outille les procédures qui s'y jouent. Même outil, même
+    portail, même monde &mdash; deux factures.</li>
+    <li><strong>La langue d'appui s'y applique telle quelle.</strong> Un procédurier qui existe en
+    français, en espagnol et en anglais, c'est exactement le même mécanisme que les consignes des
+    blocs. Ici, la valeur saute aux yeux d'un contremaître.</li>
+    <li><strong>Ça se garde.</strong> Une formation se donne et s'oublie&nbsp;; un procédurier reste
+    au mur, se consulte à trois heures du matin, et sert au prochain employé.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Ce que le dépôt sait déjà faire</h2>
+  <p>La piste n'est pas vierge&nbsp;: plusieurs pièces existent et serviraient telles quelles.</p>
+  <ul class="simple">
+    <li>Les <strong>capsules de tutoriel</strong> du portail &mdash; vidéo avec affiche, sous-titres
+    et transcription &mdash; sont déjà en service.</li>
+    <li>Les <strong>fiches imprimables</strong> en noir et blanc, pensées pour sortir de l'écran et
+    aller au mur.</li>
+    <li>La <strong>bascule de langue</strong> décrite dans le programme Belrive.</li>
+    <li>Les <strong>diaporamas générés</strong>, si le client veut aussi une version à projeter.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Les deux réserves, à dire tout de suite</h2>
+  <div class="reserve">
+    <p><strong>Ce n'est plus de la francisation.</strong> Un procédurier de machine, c'est de la
+    formation technique&nbsp;: le contenu appartient au client, sa justesse aussi. Notre valeur y est
+    la mise en forme, la langue et l'accessibilité &mdash; pas le procédé. Il faudra le dire clairement
+    dans l'offre, parce que la responsabilité d'une procédure de sécurité mal décrite ne se partage
+    pas à moitié.</p>
+    <p><strong>La vidéo coûte cher et périt vite.</strong> Filmer sur un plancher de production, c'est
+    de la logistique&nbsp;: arrêt de ligne, sarrau, autorisation, personne qui accepte d'être filmée.
+    Et le jour où la machine change, la vidéo est fausse. À chiffrer avant de promettre quoi que ce
+    soit.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Statut</h2>
+  <div class="voie">
+    <span class="verdict v-peut">Gardée, pas ouverte</span>
+    <h3>Rien n'est décidé, rien n'est commencé.</h3>
+    <p>La priorité reste le bloc de démonstration des huit heures. Cette piste se rouvrira soit quand
+    un employeur la demandera de lui-même &mdash; ce qui est l'hypothèse la plus probable &mdash;
+    soit quand le premier contrat de francisation sera signé et qu'il faudra un deuxième produit à
+    proposer.</p>
+  </div>
+</section>
+
+<div class="pied">
+  <p>Chantier « formation en entreprise » &mdash; piste notée le 31 août 2026, non développée.</p>
+  <p>À lire avec&nbsp;: <a href="programme-belrive.html">Huit heures chez Belrive</a> et
+  <a href="situations-entreprise.html">Quatre situations de travail</a></p>
+</div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,293 @@
+#!/usr/bin/env python3
+"""Le dépliant de démarchage — ce qu'on laisse à un employeur.
+
+    python3 build/depliant_entreprise.py             # la page + le PDF
+    python3 build/depliant_entreprise.py --sans-pdf
+
+Deux pages lettre. La première est l'argument, la seconde le programme et la
+mesure. C'est le document qu'on pose sur le bureau après la rencontre — pas
+celui qu'on lit à voix haute.
+
+Trois règles d'écriture, et elles sont le sujet :
+
+  · **Aucun chiffre inventé.** Pas de « 30 % de reprises en moins », pas de
+    rendement annoncé. Les seuls chiffres du dépliant sont ceux du programme
+    lui-même (huit blocs, une heure, 8 à 12 personnes). Le reste est une
+    colonne vide que l'employeur remplit avec SES chiffres — c'est plus fort,
+    et c'est vrai.
+  · **Le prix n'y est pas.** Il se dit de vive voix, il se négocie, et il
+    dépend du nombre de groupes. Un dépliant qui le porte se périme.
+  · **On écrit ce qu'on ne promet pas.** L'encadré « Ce que ce n'est pas » est
+    la page la plus utile du document : il désamorce les trois objections
+    avant qu'elles soient posées, et c'est ce qui fait qu'on croit le reste.
+
+CONTACT porte des cases à remplir. Les laisser telles quelles ferait imprimer
+« [votre nom] » — le script le dit à l'écran tant qu'elles n'ont pas changé.
+
+Sortie : assets/presentations/depliant-entreprise.html (+ .pdf)
+"""
+import argparse
+import pathlib
+import subprocess
+
+RACINE = pathlib.Path(__file__).resolve().parent.parent
+SORTIE = RACINE / 'assets' / 'presentations' / 'depliant-entreprise.html'
+PDF = SORTIE.with_suffix('.pdf')
+CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+POLICE = '../design-system/fonts/nunito-latin.woff2'
+
+CONTACT = {
+    'nom':       '[votre nom]',
+    'titre':     '[votre titre]',
+    'telephone': '[votre téléphone]',
+    'courriel':  '[votre courriel]',
+}
+
+# Les trois moments, dans l'ordre où un employeur les reconnaît.
+MOMENTS = [
+    ("La consigne de quinze secondes",
+     "Le contremaître donne une tâche et repart. La personne répond « oui, oui ». "
+     "Vingt minutes plus tard, la tâche est faite à moitié, en double, ou ailleurs. "
+     "Personne ne le déclare, et ça recommence demain."),
+    ("Le relais de quart",
+     "Deux minutes, debout, dans le bruit. Ce qui n'est pas dit se refait, se casse "
+     "ou se jette au quart suivant : le lot non identifié, la palette au mauvais quai, "
+     "la machine qu'on redémarre sans savoir qu'elle a calé."),
+    ("Le danger qu'on ne sait pas nommer",
+     "Vous devez former vos travailleurs à la santé et sécurité. Une formation qu'ils "
+     "ne comprennent pas n'est pas une formation — et celui qui ne peut pas dire "
+     "« arrête, il y a de l'huile par terre » ne le dira pas."),
+]
+
+# Les huit blocs, tels qu'ils sont au programme.
+BLOCS = [
+    ("1", "L'usine et mon poste", "les zones, les postes, dire où l'on est"),
+    ("2", "La consigne : comprendre et confirmer", "recevoir une tâche, la reformuler"),
+    ("3", "La consigne : « je n'ai pas compris »", "faire répéter, faire ralentir, faire montrer"),
+    ("4", "Le danger : nommer et situer", "ce qu'on voit, où, à quel point c'est urgent"),
+    ("5", "Le danger : alerter et arrêter", "crier utile, comprendre un ordre crié"),
+    ("6", "L'incident : raconter", "dire ce qui est arrivé, dire où l'on a mal"),
+    ("7", "Le relais de quart", "ce qui est fait, ce qui reste, ce qui a mal tourné"),
+    ("8", "Le visiteur et l'autre service", "accueillir, faire répéter, aller chercher quelqu'un"),
+]
+
+MESURE = [
+    ("Ce qu'ils en pensent", "trois questions au dernier bloc"),
+    ("Ce qu'ils savent faire", "une évaluation au premier bloc, la même au dernier"),
+    ("Ce qu'ils font au poste", "huit observations de votre chef d'équipe, avant et trois mois après"),
+    ("Ce que vous y gagnez", "vos chiffres à vous : incidents déclarés, reprises, temps de formation d'un nouvel employé, roulement"),
+]
+
+CSS = """
+@page { size: letter; margin: 14mm 14mm 12mm; }
+*{box-sizing:border-box}
+@font-face{font-family:'Nunito';src:url('POLICE_WOFF2') format('woff2');
+  font-weight:400 800;font-display:swap}
+html,body{margin:0;padding:0;background:#FFF;color:#000}
+body{font-family:'Nunito',-apple-system,'Segoe UI',sans-serif;font-size:10.2pt;line-height:1.42}
+.f{max-width:186mm;margin:0 auto}
+.page{padding:3mm 0 0}
+.page + .page{break-before:page;padding-top:4mm}
+
+.tete{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;
+  border-bottom:2.4pt solid #000;padding-bottom:7px;margin-bottom:13px}
+.marque{font-weight:800;font-size:15pt;letter-spacing:-.03em;line-height:1}
+.marque span{font-size:8.6pt;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+  display:block;margin-top:4px;letter-spacing:.1em}
+.tete .ou{font-size:8.4pt;font-weight:700;text-transform:uppercase;letter-spacing:.1em;
+  text-align:right;white-space:nowrap;color:#3A3A3A}
+
+h1{font-size:18pt;font-weight:800;letter-spacing:-.015em;line-height:1.08;margin:0 0 8px}
+.chapeau{font-size:10.8pt;margin:0 0 13px;max-width:158mm}
+.chapeau b{font-weight:800}
+h2{font-size:8.6pt;font-weight:800;text-transform:uppercase;letter-spacing:.12em;
+  margin:13px 0 7px;padding-bottom:4px;border-bottom:.6pt solid #B8B8B8}
+
+.mom{break-inside:avoid;margin-bottom:8px}
+.mom h3{font-size:11.4pt;font-weight:800;margin:0 0 1px;line-height:1.2}
+.mom p{margin:0;font-size:9.9pt;color:#242424}
+
+.enc{border:1.6pt solid #000;padding:10px 13px;break-inside:avoid;margin-top:3px}
+.enc h3{font-size:9pt;font-weight:800;text-transform:uppercase;letter-spacing:.11em;margin:0 0 7px}
+.enc ul{margin:0;padding-left:17px}
+.enc li{margin-bottom:4px;font-size:9.8pt}
+.enc li:last-child{margin-bottom:0}
+.enc b{font-weight:800}
+
+ul.pts{margin:0;padding-left:17px}
+ul.pts li{margin-bottom:4px}
+ul.pts b{font-weight:800}
+
+table{width:100%;border-collapse:collapse;font-size:9.8pt}
+th,td{text-align:left;padding:3.4px 9px 3.4px 0;border-bottom:.6pt solid #D4D4D4;vertical-align:top}
+thead th{font-size:8.2pt;font-weight:800;text-transform:uppercase;letter-spacing:.09em;
+  color:#4A4A4A;border-bottom:1.2pt solid #000}
+td.n{width:20px;font-weight:800;padding-right:4px}
+td.t{font-weight:700;width:47%}
+td.q{color:#3A3A3A}
+tbody tr:last-child td{border-bottom:none}
+
+.deux{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.pied{margin-top:13px;border-top:2.4pt solid #000;padding-top:8px;
+  display:flex;justify-content:space-between;gap:14px;align-items:flex-end}
+.pied .qui{font-size:10.6pt;font-weight:800}
+.pied .qui span{display:block;font-size:9.4pt;font-weight:600;color:#3A3A3A;margin-top:2px}
+.pied .co{font-size:9.6pt;text-align:right;line-height:1.6}
+.app{font-size:9.6pt;color:#3A3A3A;margin-top:6px}
+@media screen{ body{background:#EDEDEA;padding:22px 0}
+  .page{background:#FFF;padding:16mm;box-shadow:0 1px 3px rgba(0,0,0,.2);margin-bottom:20px} }
+""".replace('POLICE_WOFF2', POLICE)
+
+
+def tete(ou):
+    return ('  <div class="tete">\n'
+            '    <div class="marque">francis<span>Formation en milieu de travail</span></div>\n'
+            '    <div class="ou">%s</div>\n'
+            '  </div>' % ou)
+
+
+def page():
+    moments = '\n'.join(
+        '    <div class="mom"><h3>%s</h3><p>%s</p></div>' % (t, p) for t, p in MOMENTS)
+    blocs = '\n'.join(
+        '      <tr><td class="n">%s</td><td class="t">%s</td><td class="q">%s</td></tr>'
+        % (n, t, q) for n, t, q in BLOCS)
+    mesure = '\n'.join(
+        '      <tr><td class="t">%s</td><td class="q">%s</td></tr>' % (t, q) for t, q in MESURE)
+    return """<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Formation en milieu de travail — dépliant</title>
+<style>%(css)s</style>
+</head>
+<body>
+<div class="f">
+
+<div class="page">
+%(tete1)s
+
+  <h1>Vos gens comprennent-ils les consignes&nbsp;?</h1>
+  <p class="chapeau">Pas «&nbsp;parlent-ils français&nbsp;». <b>Comprennent-ils la consigne qu'on leur
+  donne en quinze secondes, dans le bruit, en marchant&nbsp;?</b> C'est une autre question, et c'est
+  celle qui vous coûte quelque chose.</p>
+
+  <h2>Trois moments de votre journée</h2>
+%(moments)s
+
+  <div class="enc">
+    <h3>Ce que ça vous coûte — vos chiffres, pas les nôtres</h3>
+    <ul>
+      <li>Des reprises et des rejets que personne ne rattache à un malentendu.</li>
+      <li>Le temps d'un employé d'expérience passé à refaire ou à réexpliquer.</li>
+      <li>Le délai avant qu'un nouvel employé soit autonome à son poste.</li>
+      <li>Des incidents évitables — et une obligation de formation en santé et sécurité
+        qui suppose qu'on ait été compris.</li>
+    </ul>
+    <p class="app"><b>Nous n'avançons aucun pourcentage.</b> Ces quatre lignes, vous êtes
+    le seul à pouvoir les chiffrer&nbsp;; nous vous aidons à les mesurer avant et après.</p>
+  </div>
+
+  <h2>Ce qu'on livre</h2>
+  <ul class="pts">
+    <li><b>Huit blocs d'une heure</b>, un par semaine, sur les heures payées.
+      Groupes de 8 à 12, salle près du plancher. Trois groupes couvrent trois quarts.</li>
+    <li><b>Aucun devoir à la maison.</b> Chaque heure se termine par une seule chose à faire
+      au poste, que votre chef d'équipe coche sur une feuille d'une page.</li>
+    <li><b>Le cours se fait dans votre usine</b> — vos zones, vos machines, vos mots.
+      Pas un manuel adapté&nbsp;: des dialogues écrits à partir de ce qu'on y entend.</li>
+    <li><b>En français, en espagnol, en anglais.</b> Les consignes et les explications
+      basculent d'un clic&nbsp;; ce qu'on apprend à dire reste en français. D'autres langues
+      s'ajoutent sur demande.</li>
+    <li><b>Une fiche de poche par bloc</b>, imprimable en noir et blanc, qui reste
+      dans la poche du sarrau.</li>
+  </ul>
+
+  <div class="pied">
+    <div class="qui">%(nom)s<span>%(titre)s</span></div>
+    <div class="co">%(tel)s<br>%(courriel)s</div>
+  </div>
+</div>
+
+<div class="page">
+%(tete2)s
+
+  <h1>Les huit heures, et ce qu'on mesure</h1>
+  <p class="chapeau">Le programme ci-dessous est celui d'une usine de transformation alimentaire.
+  <b>Il se repondère selon le métier</b>&nbsp;: dans un commerce, l'accueil du client vaudrait
+  trois blocs et la sécurité un seul.</p>
+
+  <table>
+    <thead><tr><th colspan="2">Le bloc</th><th>Ce qu'on y apprend à faire</th></tr></thead>
+    <tbody>
+%(blocs)s
+    </tbody>
+  </table>
+
+  <h2>Avant les huit blocs : une demi-journée chez vous</h2>
+  <p>Une tournée de plancher, cinq entrevues courtes et un relevé de vos affiches et consignes.
+  <b>C'est ce qui remplace nos exemples par les vôtres.</b></p>
+
+  <h2>Ce qu'on mesure</h2>
+  <table>
+    <thead><tr><th colspan="2">Quatre niveaux, du plus facile au plus utile</th></tr></thead>
+    <tbody>
+%(mesure)s
+    </tbody>
+  </table>
+
+  <div class="enc">
+    <h3>Ce que ce n'est pas</h3>
+    <ul>
+      <li><b>Ce n'est pas un cours de français général.</b> On n'enseigne pas la conjugaison&nbsp;:
+        on travaille cinq ou six gestes de parole qui reviennent tous les jours à un poste.</li>
+      <li><b>On ne promet pas un rendement chiffré.</b> Trop de choses bougent en douze mois
+        pour attribuer une baisse d'incidents à huit heures de cours. On mesure une tendance,
+        et on vous le dit avant que vous le demandiez.</li>
+      <li><b>Ce n'est pas magique.</b> Huit heures ne rendent personne bilingue. Elles rendent
+        quelqu'un capable de dire «&nbsp;attendez, répétez lentement&nbsp;» — et c'est
+        précisément ce qui manque aujourd'hui.</li>
+    </ul>
+  </div>
+
+  <div class="pied">
+    <div class="qui">Parlons-en vingt minutes.<span>Sur place, ou au téléphone.</span></div>
+    <div class="co">%(nom)s &middot; %(tel)s<br>%(courriel)s</div>
+  </div>
+</div>
+
+</div>
+</body>
+</html>
+""" % {'css': CSS, 'tete1': tete('Proposition'), 'tete2': tete('Le programme'),
+       'moments': moments, 'blocs': blocs, 'mesure': mesure,
+       'nom': CONTACT['nom'], 'titre': CONTACT['titre'],
+       'tel': CONTACT['telephone'], 'courriel': CONTACT['courriel']}
+
+
+def imprimer():
+    if not pathlib.Path(CHROME).exists():
+        print('  Chrome introuvable — PDF non produit')
+        return
+    subprocess.run([CHROME, '--headless', '--disable-gpu', '--no-pdf-header-footer',
+                    '--print-to-pdf=%s' % PDF, SORTIE.as_uri()],
+                   capture_output=True, timeout=90)
+    if PDF.exists():
+        print('  %-34s %d ko' % (PDF.name, PDF.stat().st_size // 1024))
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument('--sans-pdf', action='store_true')
+    a = ap.parse_args()
+    SORTIE.write_text(page(), encoding='utf-8')
+    print('  %-34s 2 pages' % SORTIE.name)
+    if any(v.startswith('[') for v in CONTACT.values()):
+        print('  À REMPLIR : CONTACT porte encore des cases entre crochets')
+    if not a.sans_pdf:
+        imprimer()
+
+
+if __name__ == '__main__':
+    main()
