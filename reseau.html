@@ -336,7 +336,19 @@
       { cle: 'seance', libelle: 'Classe sans compte élève',
         effectif: 'seanceEffective', source: 'seanceDecidePar', defaut: 'autorisee',
         etats: [['autorisee', 'Séances permises', 'oui'],
-                ['interdite', 'Séances interdites', 'non']] }
+                ['interdite', 'Séances interdites', 'non']] },
+      /* Le cinquième drapeau ne ressemble pas aux quatre autres, et c'est
+         voulu. Eux **retirent** quelque chose — l'assistant, le micro, le
+         dépôt, les séances — et leur défaut est donc permissif : sans
+         décision, la classe garde tout. Celui-ci décrit un **contrat
+         commercial**, pas une politique pédagogique, et son défaut est « non » :
+         un centre ne doit pas se retrouver en essai parce que personne ne l'en
+         a sorti. D'où aussi le ton du badge, qui reste ici celui de l'état et
+         non celui de sa vertu — « en essai » est le cas restreint. */
+      { cle: 'essai', libelle: 'Période d\'essai',
+        effectif: 'essaiEffectif', source: 'essaiDecidePar', defaut: 'non',
+        etats: [['non', 'Catalogue complet', 'oui'],
+                ['oui', 'Essai — premiers modules', 'non']] }
     ];
 
     /* L'état posé sur le nœud (« hérité », « autorisée », « interdite ») et

@@ -20,6 +20,11 @@ const Prof = (() => {
     // Le mode séance est-il ouvert à ce compte ? Décidé par la direction,
     // remonté par `/api/prof/me`. Vrai par défaut : c'est le réglage hérité.
     seanceAutorisee: true,
+    // La période d'essai du centre : faux par défaut, comme côté serveur — un
+    // centre ne se retrouve pas en essai parce qu'on a oublié de l'en sortir.
+    essai: false,
+    essaiDecidePar: '',
+    essaiModules: 0,
   };
 
   const listeners = [];
@@ -133,6 +138,13 @@ const Prof = (() => {
     // cette réponse ; il était jeté, et chaque écran qui en avait besoin
     // redemandait `/api/prof/me`. On le garde ici, une fois.
     state.seanceAutorisee = data.seanceAutorisee !== false;
+    /* La période d'essai, pour que les écrans puissent **dire** pourquoi leur
+       catalogue est court. Le nombre de modules vient du serveur et ne
+       s'écrit pas en dur : c'est une négociation commerciale, elle changera
+       sans que personne pense à venir chercher un « 2 » dans une page. */
+    state.essai = data.essai === true;
+    state.essaiDecidePar = data.essaiDecidePar || '';
+    state.essaiModules = data.essaiModules || 0;
     setGroupes(data.groupes);
     if (!state.groupes.length && redirect) {
       // Un enseignant sans groupe ne peut rien planifier : on l'envoie
