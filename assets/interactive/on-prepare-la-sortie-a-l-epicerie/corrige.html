@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="fr-CA"><head><meta charset="utf-8">
+<title>Corrigé · On prépare la sortie à l'épicerie</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════════════════
+   FICHE IMPRIMÉE — LA FEUILLE COMMUNE
+   ───────────────────────────────────────────────────────────────────────────
+   La mise en page des trois imprimés : fiche élève, corrigé, notes de
+   passation. C'est la feuille que portent déjà, identique octet pour octet,
+   les dix documents `assets/documents/module-*-fiches-eleves.html`. Elle
+   n'existait jusqu'ici que recopiée dans chacun d'eux ; elle est extraite ici
+   pour que la forge puisse la reprendre au lieu d'en réinventer une à chaque
+   commande.
+
+   ON LA RECOPIE, ON N'Y LIE PAS. Une fiche produite par la forge naît dans le
+   dossier de sa commande puis part vers `assets/interactive/` : un `<link>`
+   relatif casserait au déménagement, et le HTML ne s'ouvrirait plus par
+   double-clic. Le contenu de ce fichier se colle donc tel quel dans le
+   `<style>` du document, avant les quelques règles propres à l'activité.
+
+   Corollaire à connaître : corriger ce fichier ne rattrape pas les fiches déjà
+   produites. Une retouche du gabarit demande de repasser sur les documents qui
+   la portent.
+
+   Le `@page` en bas donne 612 × 792 points, ce que `programme/outils/fiche_pdf.py`
+   exige et vérifie après conversion. Ne le retirez pas et n'en ajoutez pas un
+   second.
+
+   Les classes disponibles : `.hdr` / `.eyebrow` / `.nomline` (en-tête et lignes
+   Nom-Date), `.chapeau`, `.bloc` (ne se casse jamais entre deux pages), `.card`,
+   `.lbl`, `h2.t`, `.consigne`, `ol.obj` et `ol.ex`, `.billet`, `footer`, et
+   `table.som` pour le sommaire d'un document qui réunit plusieurs fiches.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+
+table.som{width:100%;border-collapse:collapse}
+table.som td{padding:7px 8px 7px 0;border-top:1px solid var(--line);font-weight:600}
+table.som tr.grp td{border-top:0;padding-top:16px;font-size:9.5pt;font-weight:800;
+  text-transform:uppercase;letter-spacing:.12em;color:var(--ink)}
+table.som td.c{width:16mm;font-weight:800;color:var(--ink)}
+table.som td.d{width:24mm;text-align:right;color:var(--muted)}
+table.som a{color:var(--ink);text-decoration:none}
+table.som a:hover{text-decoration:underline}
+
+
+/* — propre à cet atelier — */
+.photos{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.photo{break-inside:avoid;page-break-inside:avoid;border:1px solid var(--line);
+       border-radius:12px;padding:9px 10px 10px}
+.photo img{display:block;width:100%;height:34mm;object-fit:cover;border-radius:8px;
+           filter:grayscale(1) contrast(1.05);border:1px solid var(--line)}
+.photo .n{font-size:9.5pt;font-weight:800;text-transform:uppercase;
+          letter-spacing:.1em;color:var(--muted);margin:6px 0 3px}
+.opts{font-size:11pt;font-weight:700;color:var(--ink)}
+.opts span{white-space:nowrap}
+.opts span+span::before{content:" · ";color:var(--muted);font-weight:600}
+.vf{white-space:nowrap;font-weight:800;font-size:10.5pt}
+.vf .case{display:inline-block;width:5mm;height:5mm;border:1.5px solid var(--rule);
+          border-radius:3px;vertical-align:-1mm;margin:0 3px 0 8px}
+.banq{border:2.5px solid var(--rule);border-radius:12px;padding:9px 12px;
+      font-size:12pt;font-weight:900;color:var(--ink)}
+.trou{display:inline-block;border-bottom:1.5px solid var(--rule);width:38mm;height:5.5mm;
+      vertical-align:bottom;margin:0 3px}
+.rep-bon{font-weight:900;color:var(--ink)}
+.just{font-weight:600;color:var(--soft);font-size:10.5pt;display:block;margin-top:2px}
+.aide{font-weight:600;color:var(--soft);font-size:10.5pt}
+table.fiche td{height:9mm}
+table.fiche td.vide{border-bottom:1px solid var(--rule)}
+
+</style></head><body>
+<div class="hdr"><div class="hdr-l"><p class="eyebrow">Niveau 2 · LAN-2029-4 · Des mots de tous les jours</p><h1>Corrigé · On prépare la sortie à l'épicerie</h1></div></div>
+<p class="chapeau">Document réservé à l'enseignant. Les réponses suivent l'ordre exact de la fiche élève, numéro par numéro, avec le passage qui les justifie.</p>
+<section class="bloc"><p class="lbl">Corrigé · 6 points</p><h2 class="t">Exercice 1 · J'écoute et j'entoure le bon mot</h2><p class="consigne">Six mots entendus. 6 points.</p><div class="card"><ol class="ex"><li><span class="rep-bon">un panier</span><span class="just">Mot entendu : « un panier ».</span></li><li><span class="rep-bon">une allée</span><span class="just">Mot entendu : « une allée ».</span></li><li><span class="rep-bon">la caisse</span><span class="just">Mot entendu : « la caisse ».</span></li><li><span class="rep-bon">le savon à vaisselle</span><span class="just">Mot entendu : « le savon à vaisselle ».</span></li><li><span class="rep-bon">des fruits</span><span class="just">Mot entendu : « des fruits ».</span></li><li><span class="rep-bon">le prix</span><span class="just">Mot entendu : « le prix ».</span></li></ol></div></section><section class="bloc"><p class="lbl">Corrigé · 6 points</p><h2 class="t">Exercice 2 · L'image et le mot</h2><p class="consigne">Six photos. 6 points.</p><div class="card"><ol class="ex"><li><span class="rep-bon">un panier</span><span class="just">Photo : Un panier à provisions rouge, vide, à l’entrée d’une épicerie</span></li><li><span class="rep-bon">une allée</span><span class="just">Photo : Un couloir de supermarché entre deux rangées de tablettes remplies de produits</span></li><li><span class="rep-bon">la caisse</span><span class="just">Photo : Un comptoir de supermarché avec son tapis roulant et son terminal de paiement</span></li><li><span class="rep-bon">le savon à vaisselle</span><span class="just">Photo : Une bouteille verte de savon posée au bord d’un évier, à côté d’une éponge</span></li><li><span class="rep-bon">un sac réutilisable</span><span class="just">Photo : Un sac d’épicerie en tissu beige, vide, sur un comptoir de cuisine</span></li><li><span class="rep-bon">des fruits</span><span class="just">Photo : Des caisses de pommes, de bananes et d’oranges dans une épicerie</span></li></ol></div></section><section class="bloc"><p class="lbl">Corrigé · 6 points</p><h2 class="t">Exercice 3 · Sylvie explique la sortie de jeudi</h2><p class="consigne">Vrai ou faux. 6 points.</p><div class="card"><ol class="ex"><li><span class="rep-bon">VRAI</span><span class="just">La sortie est jeudi. — Sylvie dit : « Jeudi, la classe va à l’épicerie du quartier. »</span></li><li><span class="rep-bon">FAUX</span><span class="just">La classe part de l’école à onze heures. — Sylvie dit : « On part de l’école à neuf heures. On revient à onze heures. »</span></li><li><span class="rep-bon">FAUX</span><span class="just">Les élèves travaillent seuls. — Sylvie dit : « Vous travaillez en équipe de deux. »</span></li><li><span class="rep-bon">VRAI</span><span class="just">Chaque équipe reçoit une liste d’épicerie. — Sylvie dit : « Chaque équipe reçoit une liste d’épicerie. »</span></li><li><span class="rep-bon">FAUX</span><span class="just">Les élèves paient les produits. — Sylvie dit : « Attention : on ne paie rien aujourd’hui. »</span></li><li><span class="rep-bon">VRAI</span><span class="just">Il faut apporter un crayon. — Sylvie dit : « Apportez un crayon et un sac réutilisable. »</span></li></ol></div></section><section class="bloc"><p class="lbl">Corrigé · 6 points</p><h2 class="t">Exercice 4 · J'écoute la consigne et j'entoure l'action</h2><p class="consigne">Six consignes. 6 points.</p><div class="card"><ol class="ex"><li><span class="rep-bon">Je prends un panier.</span><span class="just">Consigne entendue : « Prenez un panier à l'entrée du magasin. »</span></li><li><span class="rep-bon">J’écris le prix sur ma feuille.</span><span class="just">Consigne entendue : « Écrivez le prix sur votre feuille. »</span></li><li><span class="rep-bon">Je ne paie rien.</span><span class="just">Consigne entendue : « Ne payez rien aujourd'hui. »</span></li><li><span class="rep-bon">Je pose une question au commis.</span><span class="just">Consigne entendue : « Demandez au commis où sont les produits d'entretien. »</span></li><li><span class="rep-bon">Je reste avec mon partenaire.</span><span class="just">Consigne entendue : « Restez avec votre partenaire. »</span></li><li><span class="rep-bon">Je vais à la caisse à dix heures et demie.</span><span class="just">Consigne entendue : « Rendez-vous à la caisse à dix heures et demie. »</span></li></ol></div></section><section class="bloc"><p class="lbl">Corrigé · 5 points</p><h2 class="t">Exercice 5 · Amina parle au commis de l'épicerie</h2><p class="consigne">Cinq questions. 5 points.</p><div class="card"><ol class="ex"><li><span class="rep-bon">du savon à vaisselle</span><span class="just">Qu’est-ce qu’Amina cherche ? — Réplique : « Bonjour. Je cherche le savon à vaisselle. C'est dans quelle allée ? »</span></li><li><span class="rep-bon">dans l’allée six</span><span class="just">Où sont les produits d’entretien ? — Réplique : « Les produits d'entretien sont dans l'allée six, au fond du magasin. »</span></li><li><span class="rep-bon">à l’entrée, à droite</span><span class="just">Où sont les fruits ? — Réplique : « Les fruits sont à l'entrée, à votre droite. »</span></li><li><span class="rep-bon">deux dollars</span><span class="just">Combien coûte le petit format de savon à vaisselle ? — Réplique : « Le grand format coûte quatre dollars et cinquante. Le petit format coûte deux dollars. »</span></li><li><span class="rep-bon">Elle visite l’épicerie avec sa classe de français.</span><span class="just">Pourquoi Amina ne paie pas aujourd’hui ? — Réplique : « Je suis dans une classe de français. On visite l'épicerie avec notre enseignante. »</span></li></ol></div></section><section class="bloc"><p class="lbl">Corrigé · 6 points</p><h2 class="t">Exercice 6 · Je complète avec le bon mot</h2><p class="consigne">Six phrases, six mots de la banque. Chaque mot sert une seule fois. 6 points.</p><div class="card"><ol class="ex"><li>À l’entrée du magasin, je prends un<span class="rep-bon">panier</span>pour mettre mes achats.<span class="just">« un » exige un masculin : seuls « panier » et « prix » le sont, et on ne prend pas un prix.</span></li><li>Avant de partir, je lis ma<span class="rep-bon">liste</span>d’épicerie.<span class="just">« ma » exige un féminin qui ne commence pas par une voyelle : « caisse » et « liste » restent, et on ne lit pas une caisse.</span></li><li>Le savon à vaisselle est dans l’<span class="rep-bon">allée</span>six, au fond du magasin.<span class="just">« l’ » exige une voyelle initiale : « allée » et « épicerie » restent, et une épicerie ne porte pas de numéro.</span></li><li>J’écris le<span class="rep-bon">prix</span>de chaque produit sur ma feuille.<span class="just">« le » exige un masculin : « panier » et « prix » restent, et « panier » est déjà placé à la phrase 1.</span></li><li>Pour payer, on va à la<span class="rep-bon">caisse</span>.<span class="just">« à la » exige un féminin qui ne commence pas par une voyelle : « caisse » et « liste » restent, et « liste » est déjà placée à la phrase 2.</span></li><li>Le jeudi, ma classe va à l’<span class="rep-bon">épicerie</span>du quartier.<span class="just">« l’ » exige une voyelle initiale : « allée » et « épicerie » restent, et « allée » est déjà placée à la phrase 3.</span></li></ol></div></section><section class="bloc"><p class="lbl">Production orale · pas de points</p><h2 class="t">Exercice 7 · Je joue la scène à l'épicerie</h2><p class="consigne">Production orale en équipe de deux. Cet exercice ne donne pas de points.</p><div class="card"><p>Il n'y a pas de corrigé : les élèves inventent leur scène. On observe quatre choses.</p><table style="margin-top:8px"><tr><th>Ce qu'on observe</th><th>Ce qui est attendu</th></tr><tr><td class="cle">La salutation</td><td>Le client dit « Bonjour » avant sa question.</td></tr><tr><td class="cle">La question</td><td>Au moins trois questions, dont une avec « C'est dans quelle allée ? » ou « … coûte combien ? ».</td></tr><tr><td class="cle">Le vocabulaire</td><td>Les mots « allée » et « prix » sont employés au moins une fois chacun.</td></tr><tr><td class="cle">Le formulaire</td><td>Au moins trois lignes remplies : produit, allée, prix.</td></tr></table><p class="note">Les deux élèves jouent les deux rôles. Un élève qui n'a joué que le commis n'a pas produit les questions attendues.</p></div></section><section class="bloc"><div class="regle"><p class="lbl">Total</p><p class="r">6 + 6 + 6 + 6 + 5 + 6 = 35 points</p><p class="pr">L'exercice 7 se note à l'observation, pas en points.</p></div></section>
+<footer><span>Consommation et environnement · Achat d'aliments ou de produits d'entretien</span><span>Corrigé · 35 points</span></footer>
+</body></html>

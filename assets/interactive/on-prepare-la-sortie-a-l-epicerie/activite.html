@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="fr-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>On prépare la sortie à l'épicerie — Des mots de tous les jours</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;0,800;0,900;1,600;1,700&display=swap");
+:root{
+  --font-sans:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --paper-50:#FBFBFA;--paper-100:#F7F7F5;--paper-200:#F0F0EE;--white:#FFFFFF;
+  --line-100:#EAEAE8;--line-200:#D8E8DF;--line-300:#D6D6D2;
+  --ink-900:#17181A;--ink-700:#3A3D40;--ink-500:#4B4F52;--ink-400:#6E7175;
+  --green-800:#07734A;--green-600:#0A8F5B;--green-100:#E6F5EE;--green-050:#EDF6F1;
+  --acier-600:#1D6B8F;--acier-100:#E7F0F6;
+  --niv-2-line:#A83A22;--niv-2-bg:#FBEAE4;   /* brique — la couleur du niveau 2 */
+  --ambre-700:#B45309;--ambre-100:#FBEEDC;
+  --teal-700:#0D7A6F;--teal-100:#DCF2EF;
+  --foret-700:#166534;--foret-100:#E3F1E7;
+  --audio:#DC2626;--audio-hover:#B91C1C;
+  --ok-bg:#E6F5EE;--ok-line:#0A8F5B;--ok-ink:#07734A;
+  --no-bg:#FFF6F5;--no-line:#DC2626;--no-ink:#B91C1C;
+  --warn-bg:#FEF6E7;--warn-line:#D9880B;--warn-ink:#8A5206;
+  --sel-bg:#17181A;--sel-line:#17181A;--sel-ink:#FFFFFF;
+  --drop-bg:#FBFBFA;--drop-line:#D6D6D2;
+  --surface-page:var(--paper-100);--surface-card:var(--white);--surface-sunken:var(--paper-50);
+  --surface-band:var(--niv-2-bg);--surface-inverse:var(--ink-900);
+  --text-strong:var(--ink-900);--text-body:var(--ink-700);--text-muted:var(--ink-400);
+  --text-inverse:var(--white);--text-accent:var(--niv-2-line);
+  --border:var(--line-100);--border-tint:var(--line-200);
+  --accent:var(--niv-2-line);--accent-soft:var(--niv-2-bg);--accent-ink:var(--niv-2-line);
+  --focus-ring:var(--niv-2-line);--link:var(--niv-2-line);--link-hover:var(--niv-2-line);
+  --fs-hero:clamp(40px,6vw,62px);--fs-h2:30px;--fs-h3:24px;--fs-lead:19px;--fs-body:18px;
+  --fs-body-sm:17px;--fs-ui:15px;--fs-ui-sm:14px;--fs-label:13px;--fs-meta:12px;
+  --lh-hero:1.02;--lh-title:1.2;--lh-body:1.5;--lh-loose:1.6;
+  --ls-hero:-0.02em;--ls-title:-0.015em;--ls-label:0.12em;
+  --fw-regular:400;--fw-medium:600;--fw-semi:700;--fw-bold:800;--fw-black:900;
+  --sp-1:4px;--sp-2:8px;--sp-3:12px;--sp-4:16px;--sp-5:20px;--sp-6:24px;--sp-8:32px;--sp-12:48px;
+  --r-sm:10px;--r-md:14px;--r-lg:18px;--r-pill:999px;
+  --content-max:1000px;--gutter:var(--sp-8);
+  --tap-min:44px;--tap-comfort:48px;--tap-large:52px;
+  --sh-card:0 1px 2px rgba(20,20,20,.04);--sh-raise:0 4px 20px rgba(20,20,20,.06);
+  --dur-fast:120ms;--dur:140ms;--ease:cubic-bezier(.2,.7,.3,1);
+  --focus-width:3px;--focus-offset:2px;
+}
+@media (prefers-reduced-motion:reduce){:root{--dur-fast:0ms;--dur:0ms}}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--surface-page);color:var(--text-strong);font-family:var(--font-sans);
+  font-size:var(--fs-body);font-weight:var(--fw-medium);line-height:var(--lh-body);
+  -webkit-font-smoothing:antialiased;text-wrap:pretty}
+h1,h2,h3{margin:0;letter-spacing:var(--ls-title);line-height:var(--lh-title)}
+h1{font-size:var(--fs-hero);font-weight:var(--fw-black);line-height:var(--lh-hero);letter-spacing:var(--ls-hero)}
+h2{font-size:var(--fs-h2);font-weight:var(--fw-black)}
+h3{font-size:var(--fs-h3);font-weight:var(--fw-black)}
+p{margin:0}
+a{color:var(--link);text-decoration:underline;text-underline-offset:3px}
+a:hover{color:var(--link-hover)}
+:focus-visible{outline:var(--focus-width) solid var(--focus-ring);outline-offset:var(--focus-offset);border-radius:var(--r-sm)}
+.u-visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.page{background:var(--surface-page);color:var(--text-strong)}
+.container{max-width:var(--content-max);margin:0 auto;padding:0 var(--gutter)}
+.band{background:var(--surface-band);border-bottom:1px solid var(--border-tint);padding:var(--sp-8) 0 var(--sp-12)}
+.band__eyebrow{display:flex;align-items:center;gap:var(--sp-2);font-size:var(--fs-label);
+  font-weight:var(--fw-bold);letter-spacing:var(--ls-label);text-transform:uppercase;color:var(--text-accent)}
+.band__eyebrow::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--accent);flex-shrink:0}
+.band__eyebrow+h1{margin-top:var(--sp-3)}
+.band__lead{max-width:56ch;margin-top:var(--sp-4);font-size:var(--fs-lead);font-weight:var(--fw-medium);color:var(--ink-500)}
+.steps{position:sticky;top:0;z-index:5;background:rgba(247,247,245,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--border)}
+.steps__inner{max-width:var(--content-max);margin:0 auto;padding:var(--sp-3) var(--gutter);
+  display:flex;flex-wrap:wrap;gap:var(--sp-2);align-items:center}
+.step{display:inline-flex;align-items:center;gap:var(--sp-2);min-height:var(--tap-min);padding:0 var(--sp-4);
+  border:1px solid var(--border);border-radius:var(--r-pill);background:var(--surface-card);color:var(--text-body);
+  font-size:var(--fs-ui-sm);font-weight:var(--fw-bold);text-decoration:none;white-space:nowrap;
+  transition:background var(--dur) var(--ease),border-color var(--dur) var(--ease)}
+.step__dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;background:currentColor}
+.step:hover{background:var(--paper-50);color:var(--text-body)}
+.step.is-done{background:var(--sec-soft);border-color:var(--sec);color:var(--sec)}
+.exo{--sec:var(--accent);--sec-soft:var(--accent-soft);scroll-margin-top:80px}
+.exo--orale{--sec:var(--acier-600);--sec-soft:var(--acier-100)}
+.exo--phonie{--sec:var(--violet-600);--sec-soft:var(--violet-100)}
+.exo--ecriture{--sec:var(--ambre-700);--sec-soft:var(--ambre-100)}
+.exo--ecoute{--sec:var(--teal-700);--sec-soft:var(--teal-100)}
+.exo--vocab{--sec:var(--green-600);--sec-soft:var(--green-100)}
+.exo__head{display:flex;align-items:center;gap:var(--sp-4);margin-bottom:var(--sp-1)}
+.exo__num{flex-shrink:0;width:44px;height:44px;border-radius:var(--r-md);display:flex;align-items:center;
+  justify-content:center;background:var(--sec-soft);color:var(--sec);font-size:19px;font-weight:var(--fw-black)}
+.exo__eyebrow{font-size:var(--fs-label);font-weight:var(--fw-black);letter-spacing:var(--ls-label);
+  text-transform:uppercase;color:var(--sec)}
+.exo__rule{flex:1;height:1px;background:var(--border)}
+.exo__score{background:var(--sec-soft);color:var(--sec);padding:6px var(--sp-3);border-radius:var(--r-pill);
+  font-size:var(--fs-ui-sm);font-weight:var(--fw-bold);white-space:nowrap}
+.exo__title{font-size:var(--fs-h2);font-weight:var(--fw-black);margin:0 0 var(--sp-1)}
+.exo__sub{font-size:var(--fs-body-sm);font-weight:var(--fw-medium);color:var(--text-muted);margin:0 0 var(--sp-5)}
+.stack{display:flex;flex-direction:column;gap:var(--sp-3)}
+.stack-l{display:flex;flex-direction:column;gap:var(--sp-12)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--sp-2);min-height:var(--tap-comfort);
+  padding:0 var(--sp-5);border:1px solid transparent;border-radius:var(--r-pill);font-family:var(--font-sans);
+  font-size:var(--fs-ui);font-weight:var(--fw-bold);line-height:1;white-space:nowrap;flex-shrink:0;cursor:pointer;
+  transition:background var(--dur) var(--ease),color var(--dur) var(--ease),border-color var(--dur) var(--ease)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn--pri{background:var(--ink-900);color:var(--white)}
+.btn--pri:hover{background:var(--accent)}
+.btn--ghost{background:var(--surface-card);color:var(--text-strong);border-color:var(--border)}
+.btn--ghost:hover{background:var(--paper-100)}
+.btn--audio{background:var(--audio);color:var(--white)}
+.btn--audio:hover{background:var(--audio-hover)}
+.btn--sm{min-height:var(--tap-min);padding:0 var(--sp-4);font-size:var(--fs-ui-sm);font-weight:var(--fw-semi)}
+.btn .icon,.btn svg{width:17px;height:17px;flex-shrink:0}
+.btn-audio-round{flex-shrink:0;width:var(--tap-min);height:var(--tap-min);display:inline-flex;align-items:center;
+  justify-content:center;border:none;border-radius:50%;background:var(--audio);color:var(--white);cursor:pointer;
+  transition:background var(--dur) var(--ease)}
+.btn-audio-round:hover{background:var(--audio-hover)}
+.btn-audio-round svg{width:18px;height:18px}
+.card{background:var(--surface-card);border:1px solid var(--border);border-radius:var(--r-lg);
+  box-shadow:var(--sh-card);padding:var(--sp-5) var(--sp-6)}
+.card--flush{padding:0;overflow:hidden}
+.card--marked{border-left:4px solid var(--sec,var(--accent))}
+.card--tinted{background:var(--surface-band);border-color:var(--border-tint)}
+.card__row{padding:var(--sp-4) var(--sp-6);border-bottom:1px solid var(--paper-200)}
+.card__row:last-child{border-bottom:none}
+.card__foot{display:flex;flex-wrap:wrap;gap:var(--sp-3);padding:var(--sp-5) var(--sp-6);background:var(--surface-sunken)}
+.savoir{background:var(--surface-card);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--sh-card)}
+.savoir__row{display:grid;grid-template-columns:minmax(160px,220px) minmax(0,1fr);gap:var(--sp-5);align-items:baseline;
+  padding:var(--sp-4) var(--sp-6);border-bottom:1px solid var(--paper-200)}
+.savoir__row:last-child{border-bottom:none}
+.savoir__key{font-size:var(--fs-lead);font-weight:var(--fw-black);color:var(--text-strong)}
+.savoir__val{font-size:var(--fs-body-sm);font-weight:var(--fw-medium);line-height:var(--lh-loose);color:var(--text-body)}
+@media (max-width:640px){.savoir__row{grid-template-columns:1fr;gap:var(--sp-1)}}
+.dialogue__line{display:grid;grid-template-columns:88px minmax(0,1fr);gap:var(--sp-4);align-items:baseline;
+  padding:var(--sp-4) 0;border-bottom:1px solid var(--border)}
+.dialogue__who{font-size:var(--fs-label);font-weight:var(--fw-black);letter-spacing:.06em;color:var(--accent)}
+.dialogue__txt{font-size:var(--fs-body-sm);font-weight:var(--fw-medium);line-height:1.55;color:var(--text-body)}
+.choice{min-width:82px;min-height:46px;padding:0 var(--sp-4);border:1px solid var(--border);border-radius:var(--r-sm);
+  background:var(--surface-card);color:var(--text-body);font-family:var(--font-sans);font-size:var(--fs-ui);
+  font-weight:var(--fw-bold);cursor:pointer;
+  transition:background var(--dur) var(--ease),color var(--dur) var(--ease),border-color var(--dur) var(--ease)}
+.choice:hover{background:var(--paper-100)}
+.choice.is-selected{background:var(--sel-bg);border-color:var(--sel-line);color:var(--sel-ink)}
+.choice.is-ok{background:var(--ok-bg);border-color:var(--ok-line);color:var(--ok-ink)}
+.choice.is-no{background:var(--no-bg);border-color:var(--no-line);color:var(--no-ink)}
+.choice.is-answer{background:var(--surface-card);border:1px dashed var(--ok-line);color:var(--ok-line)}
+.exo-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:var(--sp-5);align-items:center;
+  padding:var(--sp-4) var(--sp-6);border-bottom:1px solid var(--paper-200)}
+.exo-row:last-of-type{border-bottom:none}
+.exo-row__txt{font-size:var(--fs-body);font-weight:var(--fw-semi);line-height:1.45}
+.exo-row__opts{display:flex;gap:var(--sp-2);flex-wrap:wrap}
+@media (max-width:560px){.exo-row{grid-template-columns:1fr;gap:var(--sp-3)}}
+.chip{text-align:left;min-height:var(--tap-comfort);padding:var(--sp-3) var(--sp-4);border:1px solid var(--border);
+  border-radius:var(--r-md);background:var(--surface-card);color:var(--text-strong);font-family:var(--font-sans);
+  font-size:var(--fs-body-sm);font-weight:var(--fw-bold);line-height:1.45;cursor:pointer;
+  transition:background var(--dur) var(--ease),border-color var(--dur) var(--ease),color var(--dur) var(--ease)}
+.chip:hover{background:var(--paper-100)}
+.chip.is-active{background:var(--sel-bg);border-color:var(--sel-line);color:var(--sel-ink)}
+.chip.is-used{opacity:.4;cursor:not-allowed}
+.blank{display:inline-block;min-width:150px;margin:0 3px;padding:4px var(--sp-3);border:2px dashed var(--drop-line);
+  border-radius:8px;background:var(--drop-bg);color:var(--text-muted);font-size:var(--fs-lead);
+  font-weight:var(--fw-bold);text-align:center;vertical-align:middle;cursor:pointer;font-family:var(--font-sans)}
+.blank.is-filled{border-style:solid;border-color:var(--sel-line);background:var(--sel-bg);color:var(--sel-ink)}
+.blank.is-ok{border-style:solid;border-color:var(--ok-line);background:var(--ok-bg);color:var(--ok-ink)}
+.blank.is-no{border-style:solid;border-color:var(--no-line);background:var(--no-bg);color:var(--no-ink)}
+.gap-sentence{font-size:var(--fs-lead);font-weight:var(--fw-bold);line-height:var(--lh-loose);letter-spacing:.01em}
+.fb{font-size:var(--fs-ui-sm);font-weight:var(--fw-bold);line-height:var(--lh-body);display:block;margin-top:var(--sp-2)}
+.fb--ok{color:var(--ok-ink)}
+.fb--no{color:var(--no-ink)}
+.fb--warn{color:var(--warn-ink)}
+.fb--ok::before{content:"✓ ";font-weight:var(--fw-black)}
+.fb--no::before{content:"✕ ";font-weight:var(--fw-black)}
+.fb--warn::before{content:"! ";font-weight:var(--fw-black)}
+.fb-box{border:1px solid var(--ok-line);border-radius:var(--r-sm);background:var(--ok-bg);color:var(--ok-ink);
+  padding:var(--sp-4);display:flex;flex-direction:column;gap:var(--sp-2)}
+.fb-box__title{font-size:var(--fs-meta);font-weight:var(--fw-black);letter-spacing:.06em;text-transform:uppercase}
+.score{display:inline-flex;align-items:center;padding:6px var(--sp-3);border-radius:var(--r-pill);
+  background:var(--sec-soft,var(--accent-soft));color:var(--sec,var(--accent-ink));font-size:var(--fs-ui-sm);
+  font-weight:var(--fw-bold);white-space:nowrap}
+/* — compléments locaux, dans l'esprit du système — */
+main{padding:var(--sp-12) 0 var(--sp-12)}
+.mots{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:0}
+.mot{display:grid;grid-template-columns:auto minmax(0,1fr);gap:var(--sp-4);align-items:center;
+  padding:var(--sp-4) var(--sp-6);border-bottom:1px solid var(--paper-200)}
+.mot__mot{font-size:var(--fs-lead);font-weight:var(--fw-black)}
+.mot__def{font-size:var(--fs-body-sm);font-weight:var(--fw-medium);color:var(--text-muted)}
+.ecoute-row{display:grid;grid-template-columns:auto minmax(0,1fr);gap:var(--sp-4);align-items:center;
+  padding:var(--sp-4) var(--sp-6);border-bottom:1px solid var(--paper-200)}
+.ecoute-row:last-of-type{border-bottom:none}
+.ecoute-row__num{font-size:var(--fs-ui-sm);font-weight:var(--fw-black);color:var(--text-muted)}
+.qcm{padding:var(--sp-4) var(--sp-6);border-bottom:1px solid var(--paper-200)}
+.qcm:last-of-type{border-bottom:none}
+.qcm__q{font-size:var(--fs-body);font-weight:var(--fw-semi);margin-bottom:var(--sp-3)}
+.qcm__opts{display:flex;flex-wrap:wrap;gap:var(--sp-2)}
+.banque{display:flex;flex-wrap:wrap;gap:var(--sp-2)}
+.trou-row{padding:var(--sp-4) var(--sp-6);border-bottom:1px solid var(--paper-200)}
+.trou-row:last-of-type{border-bottom:none}
+.roles{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:var(--sp-4)}
+.check{display:flex;align-items:flex-start;gap:var(--sp-3);padding:var(--sp-3) 0;border-bottom:1px solid var(--paper-200);
+  font-size:var(--fs-body-sm);font-weight:var(--fw-semi);cursor:pointer}
+.check:last-child{border-bottom:none}
+.check input{width:24px;height:24px;flex-shrink:0;accent-color:var(--accent);margin:0}
+.audio-line{display:flex;align-items:center;gap:var(--sp-3);flex-wrap:wrap}
+details{border-top:1px solid var(--border);padding-top:var(--sp-4);margin-top:var(--sp-4)}
+summary{font-size:var(--fs-ui);font-weight:var(--fw-bold);color:var(--text-accent);cursor:pointer;min-height:var(--tap-min);
+  display:flex;align-items:center}
+.bilan{background:var(--surface-inverse);color:var(--text-inverse);border-radius:var(--r-lg);padding:var(--sp-8)}
+.bilan h2{color:var(--text-inverse)}
+.bilan p{color:#D9DBDD;margin-top:var(--sp-3);font-size:var(--fs-body-sm)}
+.bilan__score{margin-top:var(--sp-5);font-size:var(--fs-h3);font-weight:var(--fw-black);color:var(--white)}
+</style><style>
+/* — compléments propres à cet atelier, dans l'esprit du système — */
+.vignettes{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:0}
+.vignette{padding:var(--sp-5) var(--sp-6);border-bottom:1px solid var(--paper-200)}
+.vignette img{display:block;width:100%;height:170px;object-fit:cover;border-radius:var(--r-sm);
+  border:1px solid var(--border);background:var(--paper-100)}
+.vignette__num{margin-top:var(--sp-3);font-size:var(--fs-ui-sm);font-weight:var(--fw-black);color:var(--text-muted)}
+.vignette__opts{display:flex;flex-direction:column;gap:var(--sp-2);margin-top:var(--sp-2)}
+.formulaire{width:100%;border-collapse:collapse}
+.formulaire th{text-align:left;font-size:var(--fs-label);font-weight:var(--fw-black);letter-spacing:var(--ls-label);
+  text-transform:uppercase;color:var(--text-muted);padding:0 var(--sp-3) var(--sp-2) 0;border-bottom:1px solid var(--border)}
+.formulaire td{padding:var(--sp-2) var(--sp-3) var(--sp-2) 0;border-bottom:1px solid var(--paper-200)}
+.formulaire input{width:100%;min-height:var(--tap-min);padding:0 var(--sp-3);border:1px solid var(--border);
+  border-radius:var(--r-sm);background:var(--surface-card);font-family:var(--font-sans);
+  font-size:var(--fs-body-sm);font-weight:var(--fw-semi);color:var(--text-strong)}
+.formulaire input:focus-visible{border-color:var(--accent)}
+.role{border:1px solid var(--border);border-radius:var(--r-lg);background:var(--surface-card);
+  box-shadow:var(--sh-card);padding:var(--sp-5) var(--sp-6);border-left:4px solid var(--sec,var(--accent))}
+.role h3{font-size:var(--fs-h3);margin-bottom:var(--sp-2)}
+.role ul{margin:var(--sp-3) 0 0;padding-left:var(--sp-5)}
+.role li{font-size:var(--fs-body-sm);font-weight:var(--fw-medium);margin-bottom:var(--sp-2);line-height:1.5}
+.repliques{list-style:none;padding:0;margin:var(--sp-3) 0 0}
+.repliques li{font-size:var(--fs-body-sm);font-weight:var(--fw-semi);padding:var(--sp-2) 0;
+  border-bottom:1px solid var(--paper-200)}
+.repliques li:last-child{border-bottom:none}
+</style>
+</head>
+<body>
+<audio id="lecteur" preload="none"></audio>
+
+<div class="page">
+
+<header class="band">
+  <div class="container">
+    <p class="band__eyebrow">Niveau 2 · Des mots de tous les jours</p>
+    <h1>On prépare la sortie à l'épicerie</h1>
+    <p class="band__lead">Sylvie explique la sortie de jeudi. Vous écoutez, vous suivez les consignes, puis vous jouez la scène avec votre partenaire. Atelier de 2 heures, en équipe de deux.</p>
+  </div>
+</header>
+
+<nav class="steps" aria-label="Parcours de l'atelier">
+  <div class="steps__inner">
+    <a class="step exo--vocab" href="#s0"><span class="step__dot"></span>Les mots</a>
+    <a class="step exo--ecoute" href="#s1" id="dot-1"><span class="step__dot"></span>1 · Le bon mot</a>
+    <a class="step exo--vocab" href="#s2" id="dot-2"><span class="step__dot"></span>2 · L'image et le mot</a>
+    <a class="step exo--orale" href="#s3" id="dot-3"><span class="step__dot"></span>3 · Sylvie explique</a>
+    <a class="step exo--ecoute" href="#s4" id="dot-4"><span class="step__dot"></span>4 · Les consignes</a>
+    <a class="step exo--orale" href="#s5" id="dot-5"><span class="step__dot"></span>5 · À l'épicerie</a>
+    <a class="step exo--vocab" href="#s6" id="dot-6"><span class="step__dot"></span>6 · Les phrases</a>
+    <a class="step exo--ecriture" href="#s7"><span class="step__dot"></span>7 · Je joue la scène</a>
+  </div>
+</nav>
+
+<main class="container">
+<div class="stack-l">
+
+<!-- ══════════ 0 · VOCABULAIRE ══════════ -->
+<section class="exo exo--vocab" id="s0">
+  <div class="exo__head">
+    <span class="exo__num" aria-hidden="true">0</span>
+    <span class="exo__eyebrow">Vocabulaire · 10 mots</span>
+    <span class="exo__rule"></span>
+  </div>
+  <h2 class="exo__title">Les mots de l'épicerie</h2>
+  <p class="exo__sub">Écoutez chaque mot. Répétez le mot à voix haute avec votre partenaire.</p>
+
+  <div class="card card--flush card--marked">
+    <div class="mots" id="banc"></div>
+  </div>
+</section>
+
+<!-- ══════════ 1 · LE BON MOT ══════════ -->
+<section class="exo exo--ecoute" id="s1">
+  <div class="exo__head">
+    <span class="exo__num" aria-hidden="true">1</span>
+    <span class="exo__eyebrow">Compréhension orale</span>
+    <span class="exo__rule"></span>
+    <span class="exo__score" id="sc-1">0 / 6</span>
+  </div>
+  <h2 class="exo__title">J'écoute et je choisis le bon mot</h2>
+  <p class="exo__sub">Cliquez sur le bouton rouge. Écoutez le mot. Choisissez le mot que vous entendez.</p>
+  <div class="card card--flush card--marked" id="ex1"></div>
+</section>
+
+<!-- ══════════ 2 · L'IMAGE ET LE MOT ══════════ -->
+<section class="exo exo--vocab" id="s2">
+  <div class="exo__head">
+    <span class="exo__num" aria-hidden="true">2</span>
+    <span class="exo__eyebrow">Vocabulaire · 6 images</span>
+    <span class="exo__rule"></span>
+    <span class="exo__score" id="sc-2">0 / 6</span>
+  </div>
+  <h2 class="exo__title">L'image et le mot</h2>
+  <p class="exo__sub">Regardez la photo. Choisissez le mot qui nomme ce que vous voyez.</p>
+  <div class="card card--flush card--marked" id="ex2"></div>
+</section>
+
+<!-- ══════════ 3 · SYLVIE EXPLIQUE ══════════ -->
+<section class="exo exo--orale" id="s3">
+  <div class="exo__head">
+    <span class="exo__num" aria-hidden="true">3</span>
+    <span class="exo__eyebrow">Compréhension orale · la classe</span>
+    <span class="exo__rule"></span>
+    <span class="exo__score" id="sc-3">0 / 6</span>
+  </div>
+  <h2 class="exo__title">Sylvie explique la sortie de jeudi</h2>
+  <p class="exo__sub">Écoutez Sylvie deux fois. Ensuite, répondez : vrai ou faux ?</p>
+
+  <div class="card card--marked" style="margin-bottom:var(--sp-4)">
+    <div class="audio-line">
+      <button class="btn btn--audio" data-son="explication.mp3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M16 9a5 5 0 0 1 0 6"/></svg>Écouter Sylvie</button>
+      <span class="mot__def">Le fonctionnement de la sortie : l'heure, les équipes, le matériel.</span>
+    </div>
+  </div>
+
+  <div class="card card--flush card--marked" id="ex3"></div>
+
+  <details>
+    <summary>Lire le texte de Sylvie</summary>
+    <p class="dialogue__txt" style="padding-top:var(--sp-3)">Bonjour tout le monde. Aujourd'hui, je vous explique la sortie de jeudi. Jeudi, la classe va à l'épicerie du quartier. On part de l'école à neuf heures. On revient à onze heures. Vous travaillez en équipe de deux. Chaque équipe reçoit une liste d'épicerie. Sur la liste, il y a trois aliments et un produit d'entretien. Vous cherchez les produits dans les allées. Vous écrivez le prix de chaque produit sur votre feuille. Attention : on ne paie rien aujourd'hui. On regarde, on écrit, on parle en français. Apportez un crayon et un sac réutilisable. La sortie est gratuite.</p>
+  </details>
+</section>
+
+<!-- ══════════ 4 · LES CONSIGNES ══════════ -->
+<section class="exo exo--ecoute" id="s4">
+  <div class="exo__head">
+    <span class="exo__num" aria-hidden="true">4</span>
+    <span class="exo__eyebrow">Compréhension orale · consignes</span>
+    <span class="exo__rule"></span>
+    <span class="exo__score" id="sc-4">0 / 6</span>
+  </div>
+  <h2 class="exo__title">J'écoute la consigne et je choisis l'action</h2>
+  <p class="exo__sub">Sylvie donne six consignes pour la sortie. Écoutez chaque consigne. Choisissez ce que vous faites.</p>
+  <div class="card card--flush card--marked" id="ex4"></div>
+</section>
+
+<!-- ══════════ 5 · À L'ÉPICERIE ══════════ -->
+<section class="exo exo--orale" id="s5">
+  <div class="exo__head">
+    <span class="exo__num" aria-hidden="true">5</span>
+    <span class="exo__eyebrow">Compréhension orale · dialogue</span>
+    <span class="exo__rule"></span>
+    <span class="exo__score" id="sc-5">0 / 5</span>
+  </div>
+  <h2 class="exo__title">Amina parle au commis de l'épicerie</h2>
+  <p class="exo__sub">Écoutez le dialogue. Ensuite, choisissez la bonne réponse.</p>
+
+  <div class="card card--marked" style="margin-bottom:var(--sp-4)">
+    <div class="audio-line">
+      <button class="btn btn--audio" data-son="dialogue.mp3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M16 9a5 5 0 0 1 0 6"/></svg>Écouter le dialogue</button>
+      <span class="mot__def">Amina, élève, et Thierry, commis, un jeudi matin.</span>
+    </div>
+  </div>
+
+  <div class="card card--flush card--marked" id="ex5"></div>
+
+  <details>
+    <summary>Lire le dialogue et réécouter chaque phrase</summary>
+    <div id="transcript"></div>
+  </details>
+</section>
+
+<!-- ══════════ 6 · LES PHRASES ══════════ -->
+<section class="exo exo--vocab" id="s6">
+  <div class="exo__head">
+    <span class="exo__num" aria-hidden="true">6</span>
+    <span class="exo__eyebrow">Vocabulaire · 6 phrases</span>
+    <span class="exo__rule"></span>
+    <span class="exo__score" id="sc-6">0 / 6</span>
+  </div>
+  <h2 class="exo__title">Je complète avec le bon mot</h2>
+  <p class="exo__sub">Cliquez sur un mot, puis cliquez sur la case. Chaque mot sert une seule fois.</p>
+
+  <div class="card card--tinted" style="margin-bottom:var(--sp-4)">
+    <p class="exo__eyebrow" style="color:var(--text-accent);margin-bottom:var(--sp-3)">Banque de mots</p>
+    <div class="banque" id="banque"></div>
+  </div>
+
+  <div class="card card--flush card--marked" id="ex6"></div>
+
+  <div class="card__foot" style="border:1px solid var(--border);border-top:none;border-radius:0 0 var(--r-lg) var(--r-lg)">
+    <button class="btn btn--pri btn--sm" id="btn-verif6">Vérifier mes six phrases</button>
+    <button class="btn btn--ghost btn--sm" id="btn-reset6">Tout effacer</button>
+    <span class="fb" id="fb6" aria-live="polite" style="width:100%"></span>
+  </div>
+</section>
+
+<!-- ══════════ 7 · JEU DE RÔLE ══════════ -->
+<section class="exo exo--ecriture" id="s7">
+  <div class="exo__head">
+    <span class="exo__num" aria-hidden="true">7</span>
+    <span class="exo__eyebrow">Production orale · en équipe de deux</span>
+    <span class="exo__rule"></span>
+  </div>
+  <h2 class="exo__title">Je joue la scène à l'épicerie</h2>
+  <p class="exo__sub">Un élève est le client. L'autre élève est le commis. Vous jouez la scène, puis vous changez de rôle.</p>
+
+  <div class="roles" style="margin-bottom:var(--sp-4)">
+    <div class="role">
+      <h3>Rôle A · le client</h3>
+      <p class="mot__def">Vous cherchez trois produits. Vous ne payez rien.</p>
+      <ul class="repliques">
+        <li>« Bonjour. Je cherche… C'est dans quelle allée ? »</li>
+        <li>« Et…, c'est où ? »</li>
+        <li>« … coûte combien ? »</li>
+        <li>« J'écris le prix sur ma feuille. Merci beaucoup ! »</li>
+      </ul>
+    </div>
+    <div class="role">
+      <h3>Rôle B · le commis</h3>
+      <p class="mot__def">Vous répondez au client. Vous donnez l'allée et le prix.</p>
+      <ul class="repliques">
+        <li>« Bonjour. … est dans l'allée… »</li>
+        <li>« … sont à l'entrée, à votre droite. »</li>
+        <li>« Le grand format coûte… Le petit format coûte… »</li>
+        <li>« Avez-vous un sac réutilisable ? »</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card card--marked" style="margin-bottom:var(--sp-4)">
+    <p class="exo__eyebrow" style="color:var(--sec)">Formulaire · ma fiche d'achat</p>
+    <p class="mot__def" style="margin:var(--sp-2) 0 var(--sp-4)">Pendant le jeu de rôle, le client remplit la fiche. Il écrit le nom du produit, le numéro de l'allée et le prix.</p>
+    <table class="formulaire">
+      <thead><tr><th scope="col">Produit</th><th scope="col">Allée</th><th scope="col">Prix</th></tr></thead>
+      <tbody id="fiche"></tbody>
+    </table>
+    <p class="mot__def" style="margin-top:var(--sp-4)">Cette fiche ne se corrige pas à l'écran. Montrez-la à votre enseignante à la fin de l'atelier.</p>
+  </div>
+
+  <div class="card card--marked">
+    <p class="exo__eyebrow" style="color:var(--sec)">Je me vérifie</p>
+    <label class="check"><input type="checkbox"> J'ai dit « Bonjour » avant ma question.</label>
+    <label class="check"><input type="checkbox"> J'ai posé au moins trois questions.</label>
+    <label class="check"><input type="checkbox"> J'ai employé le mot « allée » et le mot « prix ».</label>
+    <label class="check"><input type="checkbox"> J'ai écrit trois lignes sur ma fiche d'achat.</label>
+    <label class="check"><input type="checkbox"> J'ai dit « Merci » à la fin.</label>
+    <label class="check"><input type="checkbox"> J'ai joué les deux rôles : le client et le commis.</label>
+  </div>
+</section>
+
+<!-- ══════════ BILAN ══════════ -->
+<section class="bilan">
+  <h2>Mon résultat</h2>
+  <p>Les exercices 1 à 6 se corrigent à l'écran. L'exercice 7 se fait à l'oral, en équipe de deux : il ne donne pas de points.</p>
+  <p class="bilan__score" id="bilan-score">0 / 35</p>
+  <p>Notez votre résultat avant de fermer la page. Rien n'est enregistré.</p>
+</section>
+
+</div>
+</main>
+</div>
+<script>
+(function(){
+"use strict";
+
+/* Le haut-parleur : la seule icône de la page, en SVG inline monochrome,
+   comme le veut le système de design (jamais d'émoji). */
+var HP='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M16 9a5 5 0 0 1 0 6"/></svg>';
+
+var lecteur=document.getElementById('lecteur');
+function jouer(f){ lecteur.pause(); lecteur.src=f; lecteur.currentTime=0; lecteur.play().catch(function(){}); }
+document.addEventListener('click',function(e){
+  var b=e.target.closest('[data-son]');
+  if(b){ jouer(b.getAttribute('data-son')); }
+});
+
+/* ═══════════ 0 · Le banc de vocabulaire ═══════════ */
+var MOTS=[
+ ['mot-epicerie.mp3','une épicerie','le magasin où on achète les aliments'],
+ ['mot-panier.mp3','un panier','on met les achats dedans'],
+ ['mot-allee.mp3','une allée','le chemin entre deux rangées de tablettes'],
+ ['mot-caisse.mp3','la caisse','l’endroit où on paie'],
+ ['mot-liste.mp3','une liste d’épicerie','le papier avec les produits à acheter'],
+ ['mot-fruits.mp3','des fruits','des aliments : pommes, bananes, oranges'],
+ ['mot-entretien.mp3','un produit d’entretien','un produit qui sert à nettoyer'],
+ ['mot-savon.mp3','le savon à vaisselle','le liquide pour laver les assiettes'],
+ ['mot-sac.mp3','un sac réutilisable','un sac en tissu qui sert plusieurs fois'],
+ ['mot-prix.mp3','le prix','combien coûte un produit']
+];
+var h='';
+MOTS.forEach(function(m){
+  h+='<div class="mot"><button class="btn-audio-round" data-son="'+m[0]+'" aria-label="Écouter : '+m[1]+'">'+HP+'</button>'
+   +'<div><p class="mot__mot">'+m[1]+'</p><p class="mot__def">'+m[2]+'</p></div></div>';
+});
+document.getElementById('banc').innerHTML=h;
+
+/* ═══════════ Les cinq exercices à choix ═══════════
+   Chaque item porte son `aide` : le message affiché après une PREMIÈRE erreur.
+   Il rappelle la règle ou la stratégie d'écoute, et ne donne jamais la réponse.
+   La bonne réponse n'apparaît qu'à la deuxième erreur.                        */
+
+var EX1=[
+ {son:'mot-panier.mp3',   opts:['une allée','un panier','la caisse'], bon:1,
+  aide:'Réécoutez le début du mot. Vous entendez le son [p], comme dans « papa ».'},
+ {son:'mot-allee.mp3',    opts:['un aliment','une épicerie','une allée'], bon:2,
+  aide:'Les trois mots commencent par une voyelle. Écoutez la fin : le mot entendu se termine par le son [e], comme dans « été ».'},
+ {son:'mot-caisse.mp3',   opts:['la caisse','le prix','la liste'], bon:0,
+  aide:'Réécoutez le début du mot. Vous entendez le son [k], comme dans « quatre ».'},
+ {son:'mot-savon.mp3',    opts:['un sac réutilisable','un produit d’entretien','le savon à vaisselle'], bon:2,
+  aide:'Écoutez le premier mot du groupe. Est-ce « le » ou « un » ? L’article n’est pas le même dans les trois réponses.'},
+ {son:'mot-fruits.mp3',   opts:['un aliment','des fruits','une épicerie'], bon:1,
+  aide:'Écoutez le premier mot du groupe : « un », « des » ou « une » ? L’article dit s’il y a un objet ou plusieurs.'},
+ {son:'mot-prix.mp3',     opts:['le prix','la caisse','une allée'], bon:0,
+  aide:'Écoutez l’article : « le » annonce un mot masculin, « la » et « une » annoncent un mot féminin.'}
+];
+
+var EX2=[
+ {img:'images/panier.jpg', alt:'Un panier à provisions rouge, vide, à l’entrée d’une épicerie',
+  opts:['un sac réutilisable','un panier','la caisse'], bon:1,
+  aide:'Regardez la matière. Cet objet est en plastique dur. Ce n’est pas du tissu, et ce n’est pas un comptoir.'},
+ {img:'images/allee.jpg', alt:'Un couloir de supermarché entre deux rangées de tablettes remplies de produits',
+  opts:['la caisse','une épicerie','une allée'], bon:2,
+  aide:'Le mot cherché ne nomme pas tout le magasin. Il nomme seulement le chemin entre deux rangées.'},
+ {img:'images/caisse.jpg', alt:'Un comptoir de supermarché avec son tapis roulant et son terminal de paiement',
+  opts:['la caisse','une allée','un panier'], bon:0,
+  aide:'Cherchez l’endroit où on paie. Le terminal de paiement est sur la photo.'},
+ {img:'images/savon.jpg', alt:'Une bouteille verte de savon posée au bord d’un évier, à côté d’une éponge',
+  opts:['des fruits','le savon à vaisselle','une liste d’épicerie'], bon:1,
+  aide:'Cet objet sert à nettoyer. Ce n’est donc pas un aliment, et ce n’est pas du papier.'},
+ {img:'images/sac.jpg', alt:'Un sac d’épicerie en tissu beige, vide, sur un comptoir de cuisine',
+  opts:['un panier','un produit d’entretien','un sac réutilisable'], bon:2,
+  aide:'Regardez la matière : c’est du tissu. On peut le plier et s’en servir plusieurs fois.'},
+ {img:'images/fruits.jpg', alt:'Des caisses de pommes, de bananes et d’oranges dans une épicerie',
+  opts:['des fruits','un produit d’entretien','le savon à vaisselle'], bon:0,
+  aide:'Ces produits se mangent. On les appelle des aliments.'}
+];
+
+var EX3=[
+ {t:'La sortie est jeudi.', bon:'V',
+  aide:'Réécoutez le début du texte. Sylvie nomme le jour tout de suite.'},
+ {t:'La classe part de l’école à onze heures.', bon:'F',
+  aide:'Sylvie donne deux heures : une pour le départ, une pour le retour. Réécoutez laquelle va avec « on part ».'},
+ {t:'Les élèves travaillent seuls.', bon:'F',
+  aide:'Réécoutez la phrase où Sylvie dit le mot « équipe ». Elle dit combien de personnes travaillent ensemble.'},
+ {t:'Chaque équipe reçoit une liste d’épicerie.', bon:'V',
+  aide:'Réécoutez la phrase avec le verbe « recevoir ». Elle dit ce que chaque équipe obtient.'},
+ {t:'Les élèves paient les produits.', bon:'F',
+  aide:'Sylvie dit « Attention » juste avant cette information. Réécoutez cette phrase-là.'},
+ {t:'Il faut apporter un crayon.', bon:'V',
+  aide:'Réécoutez la fin du texte. Sylvie nomme deux objets à apporter.'}
+];
+
+var EX4=[
+ {son:'consigne-1.mp3',
+  opts:['Je prends un panier.','Je prends un crayon.','Je prends un sac réutilisable.'], bon:0,
+  aide:'Réécoutez le mot qui vient après le verbe : c’est le nom de l’objet à prendre.'},
+ {son:'consigne-2.mp3',
+  opts:['Je paie le prix à la caisse.','Je lis la liste d’épicerie.','J’écris le prix sur ma feuille.'], bon:2,
+  aide:'Réécoutez le verbe du début. « Écrire », « lire » et « payer » ne sont pas la même action.'},
+ {son:'consigne-3.mp3',
+  opts:['Je paie avec ma carte.','Je ne paie rien.','Je paie en argent comptant.'], bon:1,
+  aide:'La consigne est à la forme négative. Cherchez « ne… rien ». Une consigne négative dit ce qu’il ne faut pas faire.'},
+ {son:'consigne-4.mp3',
+  opts:['Je pose une question au commis.','Je cherche seul dans toutes les allées.','Je sors du magasin.'], bon:0,
+  aide:'Réécoutez le verbe « demander ». Demander, c’est parler à quelqu’un pour obtenir une information.'},
+ {son:'consigne-5.mp3',
+  opts:['Je marche seul dans le magasin.','Je reste avec mon partenaire.','Je reste à l’entrée du magasin.'], bon:1,
+  aide:'Réécoutez le verbe « rester ». Rester, c’est ne pas partir. Écoutez ensuite avec qui.'},
+ {son:'consigne-6.mp3',
+  opts:['Je vais à la caisse à neuf heures.','Je sors du magasin à dix heures.','Je vais à la caisse à dix heures et demie.'], bon:2,
+  aide:'Réécoutez l’heure jusqu’au bout. Après le nombre, Sylvie ajoute deux mots.'}
+];
+
+var EX5=[
+ {q:'Qu’est-ce qu’Amina cherche ?',
+  opts:['du savon à vaisselle','du pain','un panier'], bon:0,
+  aide:'Amina pose sa question dès la première phrase. Réécoutez le début du dialogue.'},
+ {q:'Où sont les produits d’entretien ?',
+  opts:['à l’entrée du magasin','à la caisse','dans l’allée six'], bon:2,
+  aide:'Thierry répond avec le mot « allée » et un numéro. Réécoutez sa première réponse.'},
+ {q:'Où sont les fruits ?',
+  opts:['au fond du magasin','à l’entrée, à droite','dans l’allée six'], bon:1,
+  aide:'Thierry nomme deux endroits différents : un au fond, un à l’entrée. Réécoutez lequel va avec les fruits.'},
+ {q:'Combien coûte le petit format de savon à vaisselle ?',
+  opts:['deux dollars','quatre dollars et cinquante','six dollars'], bon:0,
+  aide:'Thierry donne deux prix : un pour le grand format, un pour le petit. Réécoutez celui du petit.'},
+ {q:'Pourquoi Amina ne paie pas aujourd’hui ?',
+  opts:['Elle n’a pas d’argent.','Elle visite l’épicerie avec sa classe de français.','Le magasin est fermé.'], bon:1,
+  aide:'Amina donne sa raison vers la fin du dialogue. Réécoutez ce qu’elle dit sur sa classe.'}
+];
+
+/* ═══════════ Rendu des exercices ═══════════ */
+h='';
+EX1.forEach(function(it,i){
+  h+='<div class="ecoute-row"><button class="btn-audio-round" data-son="'+it.son+'" aria-label="Écouter le mot '+(i+1)+'">'+HP+'</button>'
+   +'<div><p class="ecoute-row__num">Mot '+(i+1)+'</p><div class="exo-row__opts" role="group" aria-label="Mot '+(i+1)+'">';
+  it.opts.forEach(function(o,j){ h+='<button class="choice" data-ex="1" data-i="'+i+'" data-j="'+j+'">'+o+'</button>'; });
+  h+='</div><span class="fb" id="fb1-'+i+'" aria-live="polite"></span></div></div>';
+});
+document.getElementById('ex1').innerHTML=h;
+
+h='';
+EX2.forEach(function(it,i){
+  h+='<div class="vignette"><img src="'+it.img+'" alt="'+it.alt+'">'
+   +'<p class="vignette__num">Photo '+(i+1)+'</p>'
+   +'<div class="vignette__opts" role="group" aria-label="Photo '+(i+1)+'">';
+  it.opts.forEach(function(o,j){ h+='<button class="chip" data-ex="2" data-i="'+i+'" data-j="'+j+'">'+o+'</button>'; });
+  h+='</div><span class="fb" id="fb2-'+i+'" aria-live="polite"></span></div>';
+});
+document.getElementById('ex2').innerHTML=h;
+
+h='';
+EX3.forEach(function(it,i){
+  h+='<div class="exo-row"><div><p class="exo-row__txt">'+(i+1)+'. '+it.t+'</p><span class="fb" id="fb3-'+i+'" aria-live="polite"></span></div>'
+   +'<div class="exo-row__opts" role="group" aria-label="Phrase '+(i+1)+'">'
+   +'<button class="choice" data-ex="3" data-i="'+i+'" data-v="V">Vrai</button>'
+   +'<button class="choice" data-ex="3" data-i="'+i+'" data-v="F">Faux</button></div></div>';
+});
+document.getElementById('ex3').innerHTML=h;
+
+h='';
+EX4.forEach(function(it,i){
+  h+='<div class="qcm"><div class="audio-line" style="margin-bottom:var(--sp-3)">'
+   +'<button class="btn-audio-round" data-son="'+it.son+'" aria-label="Écouter la consigne '+(i+1)+'">'+HP+'</button>'
+   +'<span class="qcm__q" style="margin:0">Consigne '+(i+1)+'</span></div>'
+   +'<div class="vignette__opts" role="group" aria-label="Consigne '+(i+1)+'">';
+  it.opts.forEach(function(o,j){ h+='<button class="chip" data-ex="4" data-i="'+i+'" data-j="'+j+'">'+o+'</button>'; });
+  h+='</div><span class="fb" id="fb4-'+i+'" aria-live="polite"></span></div>';
+});
+document.getElementById('ex4').innerHTML=h;
+
+h='';
+EX5.forEach(function(it,i){
+  h+='<div class="qcm"><p class="qcm__q">'+(i+1)+'. '+it.q+'</p><div class="qcm__opts" role="group" aria-label="Question '+(i+1)+'">';
+  it.opts.forEach(function(o,j){ h+='<button class="choice" data-ex="5" data-i="'+i+'" data-j="'+j+'">'+o+'</button>'; });
+  h+='</div><span class="fb" id="fb5-'+i+'" aria-live="polite"></span></div>';
+});
+document.getElementById('ex5').innerHTML=h;
+
+/* ═══════════ Transcription du dialogue ═══════════ */
+var DIAL=[
+ ['Amina','Bonjour. Je cherche le savon à vaisselle. C’est dans quelle allée ?','dialogue-01-amina.mp3'],
+ ['Thierry','Les produits d’entretien sont dans l’allée six, au fond du magasin.','dialogue-02-thierry.mp3'],
+ ['Amina','Merci. Et les fruits, c’est où ?','dialogue-03-amina.mp3'],
+ ['Thierry','Les fruits sont à l’entrée, à votre droite.','dialogue-04-thierry.mp3'],
+ ['Amina','Parfait. Le savon à vaisselle coûte combien ?','dialogue-05-amina.mp3'],
+ ['Thierry','Le grand format coûte quatre dollars et cinquante. Le petit format coûte deux dollars.','dialogue-06-thierry.mp3'],
+ ['Amina','J’écris le prix sur ma feuille. Je ne paie pas aujourd’hui.','dialogue-07-amina.mp3'],
+ ['Thierry','Ah bon ? Pourquoi ?','dialogue-08-thierry.mp3'],
+ ['Amina','Je suis dans une classe de français. On visite l’épicerie avec notre enseignante.','dialogue-09-amina.mp3'],
+ ['Thierry','C’est une bonne idée. Avez-vous un sac réutilisable ?','dialogue-10-thierry.mp3'],
+ ['Amina','Oui, mon sac est dans mon sac à dos. Merci beaucoup !','dialogue-11-amina.mp3']
+];
+h='';
+DIAL.forEach(function(l){
+  h+='<div class="dialogue__line"><span class="dialogue__who">'+l[0]+'</span>'
+   +'<div class="audio-line"><button class="btn-audio-round" data-son="'+l[2]+'" aria-label="Écouter cette phrase">'+HP+'</button>'
+   +'<span class="dialogue__txt">'+l[1]+'</span></div></div>';
+});
+document.getElementById('transcript').innerHTML=h;
+
+/* ═══════════ Le formulaire du jeu de rôle ═══════════ */
+h='';
+for(var r=1;r<=4;r++){
+  h+='<tr><td><input type="text" aria-label="Produit, ligne '+r+'"></td>'
+   +'<td><input type="text" inputmode="numeric" aria-label="Allée, ligne '+r+'"></td>'
+   +'<td><input type="text" inputmode="decimal" aria-label="Prix, ligne '+r+'"></td></tr>';
+}
+document.getElementById('fiche').innerHTML=h;
+
+/* ═══════════ Correction : deux essais, l'aide d'abord ═══════════ */
+var DATA={1:EX1,2:EX2,3:EX3,4:EX4,5:EX5};
+var TOT={1:6,2:6,3:6,4:6,5:5,6:6};
+var S={1:{},2:{},3:{},4:{},5:{},6:0};   /* 1 = trouvé, -1 = manqué */
+var essais={1:{},2:{},3:{},4:{},5:{}};
+
+function texteBon(ex,i){
+  var d=DATA[ex][i];
+  return ex===3 ? (d.bon==='V'?'Vrai':'Faux') : d.opts[d.bon];
+}
+
+document.addEventListener('click',function(e){
+  var b=e.target.closest('.choice,.chip'); if(!b) return;
+  var ex=+b.getAttribute('data-ex'); if(!ex||ex===6) return;
+  var i=+b.getAttribute('data-i');
+  if(S[ex][i]) return;                                  /* item réglé : on verrouille */
+  var d=DATA[ex][i], grp=b.parentNode, fb=document.getElementById('fb'+ex+'-'+i);
+  var juste = ex===3 ? b.getAttribute('data-v')===d.bon
+                     : +b.getAttribute('data-j')===d.bon;
+
+  if(juste){
+    b.classList.add('is-ok');
+    fb.className='fb fb--ok';
+    fb.textContent = essais[ex][i] ? 'Juste. Vous avez trouvé au deuxième essai.' : 'Juste.';
+    S[ex][i]=1;
+    majScore(ex);
+    return;
+  }
+
+  b.classList.add('is-no'); b.disabled=true;
+  essais[ex][i]=(essais[ex][i]||0)+1;
+
+  if(essais[ex][i]===1){
+    /* Première erreur : on rappelle la règle, on ne donne pas la réponse. */
+    fb.className='fb fb--warn';
+    fb.textContent=d.aide+' Essayez encore.';
+    return;
+  }
+
+  /* Deuxième erreur : on donne la réponse et on ferme l'item. */
+  Array.prototype.forEach.call(grp.children,function(c){
+    var estBon = ex===3 ? c.getAttribute('data-v')===d.bon
+                        : +c.getAttribute('data-j')===d.bon;
+    if(estBon) c.classList.add('is-answer');
+  });
+  fb.className='fb fb--no';
+  fb.textContent='La bonne réponse est : '+texteBon(ex,i)+'.';
+  S[ex][i]=-1;
+  majScore(ex);
+});
+
+function nb(ex){ var n=0,k; for(k in S[ex]) if(S[ex][k]===1) n++; return n; }
+function rep(ex){ var n=0,k; for(k in S[ex]) n++; return n; }
+function total(){ return nb(1)+nb(2)+nb(3)+nb(4)+nb(5)+S[6]; }
+function majScore(ex){
+  document.getElementById('sc-'+ex).textContent=nb(ex)+' / '+TOT[ex];
+  var d=document.getElementById('dot-'+ex);
+  if(d && rep(ex)===TOT[ex]) d.classList.add('is-done');
+  document.getElementById('bilan-score').textContent=total()+' / 35';
+}
+
+/* ═══════════ 6 · Texte à trous ═══════════
+   Chaque trou n'accepte qu'un seul mot de la banque : l'article, le genre et
+   l'élision en écartent toujours les cinq autres. */
+var BANQUE=['allée','caisse','épicerie','liste','panier','prix'];
+var EX6=[
+ ['À l’entrée du magasin, je prends un ',' pour mettre mes achats.','panier',
+  'L’article « un » vous dit que le mot est masculin. C’est l’objet qu’on tient dans la main.'],
+ ['Avant de partir, je lis ma ',' d’épicerie.','liste',
+  'L’article « ma » vous dit que le mot est féminin. C’est le papier où les produits sont écrits.'],
+ ['Le savon à vaisselle est dans l’',' six, au fond du magasin.','allée',
+  'Après « dans l’ », le mot commence par une voyelle. Un numéro suit le mot : c’est donc une partie du magasin, pas le magasin entier.'],
+ ['J’écris le ',' de chaque produit sur ma feuille.','prix',
+  'L’article « le » vous dit que le mot est masculin. C’est ce qu’on cherche quand on veut savoir combien coûte un produit.'],
+ ['Pour payer, on va à la ','.','caisse',
+  'Après « à la », le mot est féminin et ne commence pas par une voyelle.'],
+ ['Le jeudi, ma classe va à l’',' du quartier.','épicerie',
+  'Après « à l’ », le mot commence par une voyelle. Ici, c’est le magasin en entier, pas une partie du magasin.']
+];
+h=''; BANQUE.forEach(function(m,i){ h+='<button class="chip" data-mot="'+m+'" id="chip-'+i+'">'+m+'</button>'; });
+document.getElementById('banque').innerHTML=h;
+h=''; EX6.forEach(function(p,i){
+  h+='<div class="trou-row"><p class="gap-sentence">'+(i+1)+'. '+p[0]
+   +'<button class="blank" data-trou="'+i+'" id="trou-'+i+'">………</button>'+p[1]+'</p>'
+   +'<span class="fb" id="fb6-'+i+'" aria-live="polite"></span></div>';
+});
+document.getElementById('ex6').innerHTML=h;
+
+var motActif=null, place={}, verifs=0;
+document.getElementById('banque').addEventListener('click',function(e){
+  var c=e.target.closest('.chip'); if(!c||c.classList.contains('is-used')) return;
+  Array.prototype.forEach.call(this.children,function(x){ x.classList.remove('is-active'); });
+  if(motActif===c.getAttribute('data-mot')){ motActif=null; return; }
+  c.classList.add('is-active'); motActif=c.getAttribute('data-mot');
+});
+document.getElementById('ex6').addEventListener('click',function(e){
+  var t=e.target.closest('.blank'); if(!t) return;
+  var i=+t.getAttribute('data-trou');
+  if(place[i]){ libere(place[i]); delete place[i]; t.textContent='………'; t.className='blank'; if(!motActif) return; }
+  if(!motActif) return;
+  var k; for(k in place){ if(place[k]===motActif){ var vieux=document.getElementById('trou-'+k); vieux.textContent='………'; vieux.className='blank'; delete place[k]; } }
+  place[i]=motActif; t.textContent=motActif; t.className='blank is-filled';
+  var ch=document.querySelector('.chip[data-mot="'+motActif+'"]');
+  ch.classList.remove('is-active'); ch.classList.add('is-used');
+  motActif=null;
+});
+function libere(mot){
+  var ch=document.querySelector('.chip[data-mot="'+mot+'"]');
+  if(ch) ch.classList.remove('is-used','is-active');
+}
+document.getElementById('btn-verif6').addEventListener('click',function(){
+  verifs++;
+  var n=0, manque=0;
+  EX6.forEach(function(p,i){
+    var t=document.getElementById('trou-'+i), fb=document.getElementById('fb6-'+i);
+    if(!place[i]){
+      t.className='blank'; fb.className='fb fb--warn'; fb.textContent='Il manque un mot.'; manque++; return;
+    }
+    if(place[i]===p[2]){
+      t.className='blank is-ok'; fb.className='fb fb--ok'; fb.textContent='Juste.'; n++; return;
+    }
+    if(verifs===1){
+      /* Première vérification : on rappelle la règle, on ne donne pas le mot. */
+      t.className='blank is-no'; fb.className='fb fb--warn';
+      fb.textContent=p[3]+' Changez ce mot, puis vérifiez de nouveau.';
+    }else{
+      t.className='blank is-no'; fb.className='fb fb--no';
+      fb.textContent='La bonne réponse est : '+p[2]+'.';
+    }
+  });
+  S[6]=n;
+  document.getElementById('sc-6').textContent=n+' / 6';
+  var g=document.getElementById('fb6');
+  g.className='fb '+(n===6?'fb--ok':'fb--warn');
+  if(n===6){ g.textContent='Les six phrases sont justes.'; document.getElementById('dot-6').classList.add('is-done'); }
+  else if(manque){ g.textContent='Vous avez '+n+' phrase(s) juste(s) sur 6. Il reste '+manque+' case(s) vide(s).'; }
+  else { g.textContent='Vous avez '+n+' phrase(s) juste(s) sur 6. Lisez l’aide sous chaque phrase, puis vérifiez de nouveau.'; }
+  document.getElementById('bilan-score').textContent=total()+' / 35';
+});
+document.getElementById('btn-reset6').addEventListener('click',function(){
+  place={}; motActif=null; S[6]=0; verifs=0;
+  EX6.forEach(function(p,i){
+    var t=document.getElementById('trou-'+i); t.textContent='………'; t.className='blank';
+    var fb=document.getElementById('fb6-'+i); fb.className='fb'; fb.textContent='';
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('#banque .chip'),function(c){ c.classList.remove('is-used','is-active'); });
+  document.getElementById('sc-6').textContent='0 / 6';
+  document.getElementById('fb6').className='fb'; document.getElementById('fb6').textContent='';
+  document.getElementById('dot-6').classList.remove('is-done');
+  document.getElementById('bilan-score').textContent=total()+' / 35';
+});
+})();
+</script>
+</body>
+</html>
