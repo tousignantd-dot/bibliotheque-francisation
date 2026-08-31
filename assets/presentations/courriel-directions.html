@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Le courriel aux directions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap">
+<style>
+/* ═══════════════════════════════════════════════════════════
+   LE COURRIEL AUX DIRECTIONS
+   Page de décision. Même langue visuelle que guide-direction.html,
+   dont ce courriel n'est que la porte d'entrée.
+   Vert = ce que je recommande. Ambre = ce qui vous revient.
+   ═══════════════════════════════════════════════════════════ */
+:root{
+  --ground:#F7F7F5; --card:#FFFFFF; --sunken:#FBFBFA;
+  --ink:#17181A; --body:#3A3D40; --muted:#6E7175;
+  --line:#E4E4E0; --line-fort:#D2D2CD;
+  --fait:#0A8F5B; --fait-bg:#E6F5EE;
+  --decid:#C07A08; --decid-bg:#FBF2E2;
+  --acier:#1D6B8F; --acier-bg:#E7F0F6;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#151618; --card:#1D1F22; --sunken:#212326;
+    --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+    --line:#2E3135; --line-fort:#3D4146;
+    --fait:#4BC48D; --fait-bg:#12291F;
+    --decid:#E0A63F; --decid-bg:#2C2213;
+    --acier:#6DAFD2; --acier-bg:#14242C;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#151618; --card:#1D1F22; --sunken:#212326;
+  --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+  --line:#2E3135; --line-fort:#3D4146;
+  --fait:#4BC48D; --fait-bg:#12291F;
+  --decid:#E0A63F; --decid-bg:#2C2213;
+  --acier:#6DAFD2; --acier-bg:#14242C;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--body);
+  font-family:Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased}
+.doc{max-width:880px;margin:0 auto;padding:26px 24px 96px}
+.retour{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;
+  color:var(--muted);text-decoration:none;margin-bottom:34px}
+.retour:hover{color:var(--acier)}
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--acier);margin:0 0 14px}
+h1{font-family:Newsreader,Georgia,serif;font-size:clamp(38px,6.4vw,58px);line-height:1.04;
+  font-weight:500;letter-spacing:-.02em;color:var(--ink);margin:0 0 20px;text-wrap:balance}
+.chapeau{font-size:19px;line-height:1.6;color:var(--body);margin:0;max-width:62ch}
+.chapeau strong{color:var(--ink);font-weight:700}
+h2{font-family:Newsreader,Georgia,serif;font-size:29px;line-height:1.2;font-weight:600;
+  letter-spacing:-.01em;color:var(--ink);margin:0 0 4px;text-wrap:balance}
+h3{font-size:15px;font-weight:800;color:var(--ink);margin:0 0 6px}
+p{margin:0;max-width:68ch}
+section{display:flex;flex-direction:column;gap:16px;padding:44px 0 0;margin:44px 0 0;
+  border-top:1px solid var(--line)}
+section.premier{border-top:none;margin-top:0;padding-top:34px}
+.these{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--acier);
+  border-radius:3px;padding:26px 28px;display:flex;flex-direction:column;gap:12px}
+.these p{font-size:18px}
+.these .cle{font-family:Newsreader,Georgia,serif;font-size:23px;line-height:1.3;
+  font-weight:500;color:var(--ink);font-style:italic}
+/* ── les choix ─────────────────────────────────────────── */
+.choix{display:flex;flex-direction:column;gap:2px;counter-reset:c}
+.ch{background:var(--card);border:1px solid var(--line);padding:22px 24px;
+  display:grid;grid-template-columns:44px 1fr;gap:18px;align-items:start}
+.ch:first-child{border-radius:3px 3px 0 0}
+.ch:last-child{border-radius:0 0 3px 3px}
+.ch .n{font-family:Newsreader,Georgia,serif;font-size:30px;line-height:1;font-weight:500;
+  color:var(--line-fort);counter-increment:c}
+.ch .n::before{content:counter(c)}
+.ch .t{display:flex;flex-direction:column;gap:7px}
+.ch h3{margin:0}
+.ch p{font-size:15.5px;line-height:1.58}
+.eti{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.06em;
+  text-transform:uppercase;padding:2px 8px;border-radius:99px;vertical-align:2px;margin-left:8px}
+.eti-oui{background:var(--fait-bg);color:var(--fait)}
+.eti-non{background:var(--decid-bg);color:var(--decid)}
+/* ── le courriel ───────────────────────────────────────── */
+.mail{background:var(--card);border:1px solid var(--line-fort);border-radius:4px;
+  overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.mail .barre{background:var(--sunken);border-bottom:1px solid var(--line);
+  padding:12px 20px;display:flex;justify-content:space-between;align-items:center;gap:14px;
+  flex-wrap:wrap}
+.mail .objet{font-size:14px;color:var(--muted)}
+.mail .objet b{color:var(--ink);font-weight:700}
+.copier{font:inherit;font-size:12.5px;font-weight:800;letter-spacing:.03em;
+  background:var(--acier);color:#fff;border:0;border-radius:3px;padding:6px 14px;cursor:pointer}
+.copier:hover{filter:brightness(1.08)}
+.copier.fait{background:var(--fait)}
+.mail .corps{padding:24px 26px;font-size:16px;line-height:1.66;
+  display:flex;flex-direction:column;gap:14px}
+.mail .corps p{max-width:none}
+.mail a.lien{color:var(--acier);font-weight:700;word-break:break-all}
+.mail .sig{color:var(--muted);font-size:14.5px;border-top:1px solid var(--line);
+  padding-top:14px;margin-top:4px}
+.trou{background:var(--decid-bg);color:var(--decid);font-weight:700;
+  padding:0 5px;border-radius:3px}
+.compte{font-size:13px;color:var(--muted);font-family:var(--mono)}
+/* ── images ────────────────────────────────────────────── */
+.deux{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.vig{background:var(--card);border:1px solid var(--line);border-radius:4px;
+  padding:18px;display:flex;flex-direction:column;gap:12px}
+.vig.retenue{border-color:var(--fait);border-width:2px;padding:17px}
+.vig img{width:100%;max-width:230px;margin:0 auto;display:block;border-radius:6px;
+  border:1px solid var(--line)}
+.vig .l{font-size:14.5px;line-height:1.55}
+.vig .l strong{color:var(--ink)}
+@media (max-width:680px){
+  .deux{grid-template-columns:1fr}
+  .ch{grid-template-columns:1fr;gap:8px}
+  .ch .n{font-size:22px}
+  .doc{padding:20px 18px 72px}
+}
+ul.simple{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:9px}
+ul.simple li{max-width:66ch}
+ul.simple li strong{color:var(--ink)}
+.fin{background:var(--decid-bg);border:1px solid var(--decid);border-radius:3px;
+  padding:22px 24px;display:flex;flex-direction:column;gap:12px}
+.fin h3{color:var(--decid)}
+</style>
+</head>
+<body>
+<div class="doc">
+
+<a class="retour" href="/presentations.html"><span aria-hidden="true">&#8592;</span> Banque de présentations</a>
+
+<p class="eyebrow">Bibliothèque de francisation · 31 août 2026</p>
+<h1>Le courriel aux directions</h1>
+<p class="chapeau">Deux versions prêtes à envoyer, l'image que je retiens, et les quatre
+choix que j'ai faits en les écrivant. <strong>Le courriel n'a pas à convaincre</strong> — il
+a à faire cliquer. Ce qui convainc est déjà écrit dans le guide pour la direction.</p>
+
+<section class="premier">
+  <div class="these">
+    <p class="cle">Une direction lit ses courriels sur son téléphone, entre deux réunions,
+    en vingt secondes.</p>
+    <p>Tout ce qui est écrit pour être lu à tête reposée sera reporté à « plus tard »,
+    c'est-à-dire jamais. Le courriel doit donc tenir en quatre paragraphes, offrir
+    <strong>une chose à essayer tout de suite</strong>, et demander quelque chose de si petit
+    que refuser coûterait plus cher qu'accepter. Vingt minutes.</p>
+  </div>
+</section>
+
+<section>
+  <p class="eyebrow">La forme</p>
+  <h2>Quatre choix, et pourquoi</h2>
+  <div class="choix">
+
+    <div class="ch"><div class="n"></div><div class="t">
+      <h3>Aucune pièce jointe <span class="eti eti-non">écarté</span></h3>
+      <p>Un PDF ne s'ouvre pas d'une main dans un corridor. Il déplace la lecture vers un
+      moment qui ne vient pas, et dans plusieurs centres de services il ajoute un avertissement
+      de sécurité au-dessus du message. Deux liens font le même travail, tout de suite —
+      et le guide est déjà une page web.</p>
+    </div></div>
+
+    <div class="ch"><div class="n"></div><div class="t">
+      <h3>Une seule image, pas six <span class="eti eti-oui">retenu</span></h3>
+      <p>Outlook bloque les images distantes par défaut : six vignettes deviennent six
+      rectangles vides. Et six vignettes, même affichées, font une infolettre — or une
+      infolettre se classe, elle ne se lit pas. Une image, avec un texte de remplacement
+      qui dit la même chose si elle ne s'affiche pas.</p>
+    </div></div>
+
+    <div class="ch"><div class="n"></div><div class="t">
+      <h3>On ne commence pas par l'assistance automatisée <span class="eti eti-oui">retenu</span></h3>
+      <p>Nommer l'intelligence artificielle dans les deux premières lignes déclenche le
+      réflexe Loi 25 avant que la direction ait vu la moindre valeur. On la nomme quand même,
+      au troisième paragraphe, et d'une façon qui la retourne : <strong>c'est un interrupteur
+      qui lui appartient</strong>. Une inquiétude devient une prise.</p>
+    </div></div>
+
+    <div class="ch"><div class="n"></div><div class="t">
+      <h3>On ne demande pas une décision <span class="eti eti-oui">retenu</span></h3>
+      <p>Ni un projet-pilote, ni un budget, ni une réunion d'équipe. Vingt minutes d'écran
+      partagé. C'est la seule demande à laquelle une direction peut dire oui sans consulter
+      personne — et la démonstration fait le reste.</p>
+    </div></div>
+
+  </div>
+</section>
+
+<section>
+  <p class="eyebrow">L'image</p>
+  <h2>Celle que je retiens</h2>
+  <p>Les deux candidates sérieuses. La première dit la thèse du projet en un coup d'œil ;
+  la seconde dit la conformité sans la revendiquer.</p>
+  <div class="deux">
+
+    <div class="vig retenue">
+      <img src="captures-courriel/production-orale.jpg"
+           alt="Le panneau d'enregistrement d'une production orale : « Je m'enregistre », « Je m'écoute et je corrige », « J'envoie à mon enseignant », puis le bouton rouge et « Parle environ 30 secondes. Tu pourras recommencer autant de fois que tu veux. »">
+      <p class="l"><strong>Production orale — à retenir.</strong> Les trois lignes disent
+      tout : <em>je m'enregistre · je m'écoute et je corrige · j'envoie à mon enseignant</em>.
+      Et la phrase sous le bouton — <em>tu pourras recommencer autant de fois que tu
+      veux</em> — prouve le deuxième paragraphe du courriel au lieu de le promettre. Capture
+      cadrée exprès sur le panneau, à 375&nbsp;px : la page entière ne sert à rien ici.</p>
+    </div>
+
+    <div class="vig">
+      <img src="captures-telephone/01-portail.jpg"
+           alt="Le portail de l'élève : « Bonjour Étoile », niveau 4, code ETOI06, et son bilan.">
+      <p class="l"><strong>Le portail — pour la version formelle.</strong> « Bonjour Étoile ·
+      code ETOI06 » : la règle du pseudonyme se voit, au lieu d'être promise. Utile si le
+      destinataire est un centre de services plutôt qu'une direction d'école — mais elle
+      montre un tableau de bord, pas un élève qui apprend.</p>
+    </div>
+
+  </div>
+  <div class="these">
+    <p class="cle">La contrainte n'est pas la largeur de l'image. C'est sa hauteur.</p>
+    <p>Une capture de téléphone entière fait <strong>620&nbsp;px de haut</strong> une fois
+    posée dans un courriel de 640&nbsp;px de large. Elle avale le message et pousse les deux
+    liens — la seule chose que le courriel doit obtenir — sous la ligne de flottaison.
+    L'image tue alors le clic qu'elle devait provoquer.</p>
+    <p>La règle : <strong>300&nbsp;px de large et 360&nbsp;px de haut au maximum</strong>.
+    Ce qui veut dire qu'on ne montre jamais un écran entier, mais <strong>la seule zone qui
+    porte l'argument</strong> — ici le panneau d'enregistrement, cadré à la prise de vue
+    plutôt que rogné après coup.</p>
+    <p>On la place <strong>après le deuxième paragraphe</strong>, jamais en tête : une image
+    en ouverture est la signature visuelle d'un envoi de masse. Et toujours avec son texte de
+    remplacement, puisqu'Outlook ne l'affichera pas d'emblée.</p>
+  </div>
+</section>
+
+<section>
+  <p class="eyebrow">Version A</p>
+  <h2>À votre direction</h2>
+  <p>Celle du centre où vous enseignez. Le lien de confiance existe déjà : le courriel peut
+  être direct et court.</p>
+
+  <div class="mail" id="mail-a">
+    <div class="barre">
+      <span class="objet">Objet&nbsp;: <b>Un outil de francisation que j'aimerais vous montrer — 20 minutes</b></span>
+      <button class="copier" data-cible="corps-a">Copier</button>
+    </div>
+    <div class="corps" id="corps-a">
+      <p>Bonjour <span class="trou">[prénom]</span>,</p>
+      <p>J'ai construit une bibliothèque de cours de francisation pour adultes, alignée sur
+      le programme d'études du Ministère. Elle couvre les huit niveaux : 86 modules, les
+      85 situations de vie du programme, et les fiches papier de chaque séance.</p>
+      <p>Ce qu'elle règle, c'est le mur de nos classes — l'élève qui n'ose pas parler.
+      Il s'exerce à l'oral sans témoin, autant de fois qu'il veut, et n'envoie son
+      enregistrement que lorsqu'il le décide.</p>
+      <p><em>[image : production orale]</em></p>
+      <p>Vous pouvez l'essayer maintenant, sans compte, comme un élève. Dix minutes :<br>
+      <a class="lien" href="https://portail.edufrancis.ca/modules-autonomes/le-on-quebecois/">portail.edufrancis.ca/modules-autonomes/le-on-quebecois/</a></p>
+      <p>Deux choses vous appartiendraient avant toute mise en service : la durée de
+      conservation des travaux, et l'ouverture — ou non — de l'assistance automatisée.
+      Les deux se règlent dans un écran. J'ai écrit ce que ça implique ici :<br>
+      <a class="lien" href="https://portail.edufrancis.ca/assets/presentations/guide-direction.html">portail.edufrancis.ca/assets/presentations/guide-direction.html</a></p>
+      <p>Auriez-vous vingt minutes dans les prochaines semaines ? Je vous montre le reste
+      en direct.</p>
+      <p class="sig"><span class="trou">[Prénom Nom]</span><br>
+      <span class="trou">[titre]</span>, <span class="trou">[centre]</span></p>
+    </div>
+  </div>
+  <p class="compte">152 mots · 2 liens · 1 image</p>
+</section>
+
+<section>
+  <p class="eyebrow">Version B</p>
+  <h2>À une direction que vous ne connaissez pas</h2>
+  <p>Un autre centre, ou un centre de services. Il faut établir en une phrase d'où vous
+  parlez, et donner les chiffres qui font qu'on ne classe pas le message.</p>
+
+  <div class="mail" id="mail-b">
+    <div class="barre">
+      <span class="objet">Objet&nbsp;: <b>Bibliothèque de francisation, huit niveaux — en service</b></span>
+      <button class="copier" data-cible="corps-b">Copier</button>
+    </div>
+    <div class="corps" id="corps-b">
+      <p>Madame, Monsieur,</p>
+      <p>J'enseigne la francisation à <span class="trou">[centre]</span>. J'ai développé,
+      et mis en service, une bibliothèque de cours couvrant les huit niveaux du programme
+      d'études ministériel : 86 modules de 64 heures, 90 ateliers, les 85 situations de vie
+      du programme, et le matériel papier de chaque séance.</p>
+      <p>Le contenu est entièrement original — aucun manuel n'est reproduit, ni en texte ni
+      en structure d'exercices. Le coût d'exploitation est de 0,08 $ par élève et par module.</p>
+      <p><em>[image : production orale]</em></p>
+      <p>Un cours s'ouvre sans compte, comme le verrait un élève :<br>
+      <a class="lien" href="https://portail.edufrancis.ca/modules-autonomes/le-on-quebecois/">portail.edufrancis.ca/modules-autonomes/le-on-quebecois/</a></p>
+      <p>Le document écrit pour les directions — ce qui reste à décider, le cadre de la
+      Loi 25, le coût réel — est ici :<br>
+      <a class="lien" href="https://portail.edufrancis.ca/assets/presentations/guide-direction.html">portail.edufrancis.ca/assets/presentations/guide-direction.html</a></p>
+      <p>Si le sujet vous intéresse, je peux vous présenter la plateforme en vingt minutes,
+      ou en discuter avec la personne que vous désignerez.</p>
+      <p class="sig">Veuillez agréer, Madame, Monsieur, mes salutations distinguées.<br><br>
+      <span class="trou">[Prénom Nom]</span><br>
+      <span class="trou">[titre]</span>, <span class="trou">[centre]</span><br>
+      <span class="trou">[téléphone]</span></p>
+    </div>
+  </div>
+  <p class="compte">153 mots · 2 liens · 1 image</p>
+</section>
+
+<section>
+  <p class="eyebrow">L'objet</p>
+  <h2>Ce qui décide de l'ouverture</h2>
+  <ul class="simple">
+    <li><strong>« Un outil de francisation que j'aimerais vous montrer — 20 minutes »</strong>
+    — version A. Le chiffre dans l'objet est une promesse de brièveté ; il fait ouvrir.</li>
+    <li><strong>« Bibliothèque de francisation, huit niveaux — en service »</strong>
+    — version B. « En service » est le mot qui compte : ce n'est pas un projet qu'on
+    vous demande de financer.</li>
+    <li><strong>« Francisation : les 85 situations de vie du programme, en ligne »</strong>
+    — de rechange, si le destinataire connaît le programme par cœur. Le chiffre lui parle
+    immédiatement.</li>
+    <li>À éviter : tout objet contenant <em>innovation</em>, <em>intelligence
+    artificielle</em>, <em>projet</em> ou <em>plateforme numérique</em>. Les quatre sont
+    lus comme « ceci demandera du temps et de l'argent ».</li>
+  </ul>
+</section>
+
+<section>
+  <p class="eyebrow">Avant d'envoyer</p>
+  <h2>Ce qui reste à trancher</h2>
+  <div class="fin">
+    <h3>Trois choses que je ne peux pas décider à votre place</h3>
+    <ul class="simple">
+      <li><strong>Le « je ».</strong> Les deux versions disent « j'ai construit ». C'est
+      votre force — un enseignant de la maison, pas un fournisseur — mais c'est aussi ce qui
+      vous engage personnellement. Si vous préférez présenter la chose comme un travail
+      d'équipe ou de centre, dites-le-moi et je réécris les deux.</li>
+      <li><strong>Ce que vous demandez vraiment.</strong> J'ai écrit « vingt minutes ».
+      Si l'objectif est un groupe-pilote dès l'automne, le courriel doit le dire — un
+      pilote ne se propose pas à la deuxième rencontre sans avoir été annoncé.</li>
+      <li><strong>Le lien d'essai.</strong> J'ai mis un point express, parce qu'il s'ouvre
+      sans compte et se termine en dix minutes. Un module complet serait plus impressionnant,
+      mais il demande un compte — donc un envoi préalable, donc un délai.</li>
+    </ul>
+  </div>
+</section>
+
+</div>
+<script>
+document.querySelectorAll('.copier').forEach(function (b) {
+  b.addEventListener('click', function () {
+    var src = document.getElementById(b.dataset.cible);
+    var t = src.innerText.replace(/\n{3,}/g, '\n\n').trim();
+    navigator.clipboard.writeText(t).then(function () {
+      b.textContent = 'Copié'; b.classList.add('fait');
+      setTimeout(function () { b.textContent = 'Copier'; b.classList.remove('fait'); }, 1800);
+    });
+  });
+});
+</script>
+</body>
+</html>
