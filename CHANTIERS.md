@@ -27,7 +27,7 @@ le **verrou** : on l'inscrit avant de toucher au code, on le raye en finissant.
 | Couloir | Répertoire | Fichiers tenus | État |
 |---|---|---|---|
 | `seance-sans-compte` | dépôt principal | `seance.html`, `feuille-seance.html`, `progression.html`, `qr.py`, `viewer.html`, `server.py`, `build/direct_atelier.py` + les 6 générateurs de la banque et les **63 ateliers générés** | fusionné dans `main` |
-| `espace-enseignant` | dépôt principal | `enseignant.html`, `js/enseignant.js`, `direction.html`, `progression.html`, `js/prof.js` | en cours |
+| `espace-enseignant` | dépôt principal | `enseignant.html`, `js/enseignant.js`, `direction.html`, `progression.html`, `js/prof.js`, `catalogue.html` | en cours |
 | `validation` | `~/Claude/wt-validation` | `viewer.html`, `assets/design-system/ateliers-mobile.css`, `build/greffe_ateliers.py`, `build/greffe_transcription.py`, `build/module.py`, `server.py`, les 27 ateliers d'avant le système de design, les 87 `module-*` | fusionné dans `main` — le verrou de transcription attend son interrupteur dans `js/enseignant.js` (couloir `espace-enseignant`) |
 
 ## Couloirs fermés
