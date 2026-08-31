@@ -38,6 +38,17 @@
     .pg-sous { font-size: var(--fs-lead); color: var(--text-body); margin: 0; }
 
     /* — Filtres : le module, puis la période — */
+    /* Deux zones dans le même cadre, séparées par un filet : elles se lisent
+       comme deux réglages, pas comme deux pages. La seconde porte le trait de
+       couleur du direct — c'est elle qui agit sur la classe. */
+    .pg-zone + .pg-zone { margin-top: var(--sp-5); padding-top: var(--sp-5);
+                          border-top: 1px solid var(--border-tint); }
+    .pg-zone-cle { display: block; font-size: var(--fs-label); font-weight: var(--fw-black);
+                   letter-spacing: .12em; text-transform: uppercase;
+                   color: var(--text-strong); margin-bottom: var(--sp-3); }
+    .pg-zone--classe .pg-zone-cle { padding-left: var(--sp-3);
+                                    border-left: 3px solid var(--accent); }
+    .pg-zone-corps { display: flex; flex-wrap: wrap; align-items: flex-end; gap: var(--sp-5); }
     .pg-filtres { background: var(--surface-card); border: 1px solid var(--border);
                   border-radius: 10px; box-shadow: var(--sh-card);
                   padding: var(--sp-5); display: flex; gap: var(--sp-6);
@@ -57,7 +68,7 @@
                          border: 2px solid currentColor; border-bottom: 0; }
     .pg-verrou:focus-visible { outline: var(--focus-width, 3px) solid var(--accent);
                                outline-offset: 3px; border-radius: 4px; }
-    select#pgModule:disabled { opacity: 1; color: var(--text-muted);
+    select#pgClasse:disabled { opacity: 1; color: var(--text-muted);
                                background: var(--paper-100, #F2F2F0); cursor: not-allowed; }
 
     /* Les trois périodes sont un choix unique : des boutons collés, l'actif
@@ -425,22 +436,51 @@
 
   <div class="container">
     <div style="padding:var(--sp-8) 0 0">
+      <!-- Deux zones, et c'est tout le propos. Un seul menu « Module regardé »
+           faisait trois métiers : borner le bilan et les tables, choisir le
+           module suivi en direct, et désigner celui sur lequel s'ouvre une
+           séance. Le verrou du direct, né du deuxième, bloquait le premier —
+           pendant que la classe travaillait, l'enseignant ne pouvait plus
+           regarder l'ensemble de son groupe. La question qu'il posait, « est-ce
+           le module du bilan ou celui de la séance ? », n'avait pas de réponse
+           parce que c'était les deux.
+
+           « Le bilan » regarde ; « Travailler avec la classe » agit. La
+           première ne se verrouille jamais : on doit pouvoir lire le bilan de
+           tous les modules pendant que le module 3 tourne en direct. -->
       <div class="pg-filtres">
-        <div style="min-width:280px;flex:1">
-          <label class="pg-filtre-cle" for="pgModule">Module regardé</label>
-          <select id="pgModule" class="field" style="width:100%"></select>
-          <span class="pg-verrou" id="pgVerrou" hidden tabindex="0"
-                data-info="Le direct suit un seul module à la fois. En changer ici l’arrêterait et effacerait ce qui est à l’écran, pendant que la classe répond. Fermez le direct, dans la barre noire plus bas, pour en choisir un autre.">Verrouillé pendant le direct</span>
+        <div class="pg-zone">
+          <span class="pg-zone-cle">Le bilan</span>
+          <div class="pg-zone-corps">
+            <div style="min-width:260px;flex:1">
+              <label class="pg-filtre-cle" for="pgModule">Module regardé</label>
+              <select id="pgModule" class="field" style="width:100%"></select>
+            </div>
+            <div>
+              <span class="pg-filtre-cle">Période</span>
+              <div class="pg-choix" id="pgPeriode">
+                <button type="button" class="btn btn--ghost btn--sm" data-periode="jour">Aujourd’hui</button>
+                <button type="button" class="btn btn--ghost btn--sm" data-periode="module">Depuis l’ouverture du module</button>
+                <button type="button" class="btn btn--ghost btn--sm" data-periode="tout">Depuis toujours</button>
+              </div>
+            </div>
+          </div>
+          <p class="pg-note" id="pgPortee" style="margin-top:var(--sp-3)"></p>
         </div>
-        <div>
-          <span class="pg-filtre-cle">Période</span>
-          <div class="pg-choix" id="pgPeriode">
-            <button type="button" class="btn btn--ghost btn--sm" data-periode="jour">Aujourd’hui</button>
-            <button type="button" class="btn btn--ghost btn--sm" data-periode="module">Depuis l’ouverture du module</button>
-            <button type="button" class="btn btn--ghost btn--sm" data-periode="tout">Depuis toujours</button>
+
+        <div class="pg-zone pg-zone--classe">
+          <span class="pg-zone-cle">Travailler avec la classe</span>
+          <div class="pg-zone-corps">
+            <div style="min-width:260px;flex:1">
+              <label class="pg-filtre-cle" for="pgClasse">Le module à faire</label>
+              <select id="pgClasse" class="field" style="width:100%"></select>
+              <span class="pg-verrou" id="pgVerrou" hidden tabindex="0"
+                    data-info="Le direct suit un seul module à la fois. En changer ici l’arrêterait et effacerait ce qui est à l’écran, pendant que la classe répond. Fermez le direct, dans la barre noire plus bas, pour en choisir un autre. Le bilan, lui, reste libre.">Verrouillé pendant le direct</span>
+            </div>
+            <p class="pg-note" style="flex:1;min-width:240px;margin:0">Le direct et la séance
+              sans compte portent sur ce module-là. Le bilan, au-dessus, ne bouge pas.</p>
           </div>
         </div>
-        <p class="pg-note" id="pgPortee" style="flex-basis:100%"></p>
       </div>
     </div>
     <div id="pgDirect"></div>
@@ -484,7 +524,12 @@
   const AUJ = aujourdhui();
   let ELEVES = [], ACTIVITES = [], MODULES = [], PROGRES = [], ORAUX = [], ECRITS = [];
   let ANALYSES = [], SIGNAUX = [];
-  let MODULE = '';           // '' = tous les modules, sinon l'id de l'activité
+  let MODULE = '';           // le bilan : '' = tous les modules, sinon un id
+  /* Le module sur lequel on travaille avec la classe : le direct le suit, et
+     c'est sur lui que s'ouvre une séance sans compte. Séparé de `MODULE`
+     depuis le 30 août 2026 — un seul état servait les deux portées, et le
+     verrou du direct bloquait le bilan par ricochet. */
+  let CLASSE = '';
   let PERIODE = 'jour';      // 'jour' | 'module' | 'tout'
   const DEPLIES = new Set(); // les élèves dont on a ouvert les envois
 
@@ -561,7 +606,13 @@
       document.getElementById('pgContenu').scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
 
-    MODULE = new URLSearchParams(location.search).get('module') || '';
+    // `?module=<id>` désigne la classe qu'on vient regarder travailler : c'est
+    // le sens qu'avait le lien « Le direct », et c'est celui qu'on garde. Le
+    // bilan reste sur tous les modules, sauf `?bilan=<id>` — sa raison d'être
+    // est justement la vue d'ensemble.
+    const params = new URLSearchParams(location.search);
+    CLASSE = params.get('module') || '';
+    MODULE = params.get('bilan') || '';
     charger();
   })();
 
@@ -570,11 +621,24 @@
   function choisirModule(id) {
     MODULE = id || '';
     document.getElementById('pgModule').value = MODULE;
-    const url = new URL(location.href);
-    MODULE ? url.searchParams.set('module', MODULE) : url.searchParams.delete('module');
-    history.replaceState(null, '', url);
+    majAdresse();
     rendre();
+  }
+
+  /** Le module sur lequel on travaille avec la classe. Ne touche pas au
+      bilan : c'est tout l'objet de la séparation. */
+  function choisirClasse(id) {
+    CLASSE = id || '';
+    document.getElementById('pgClasse').value = CLASSE;
+    majAdresse();
     drRelancer();
+  }
+
+  function majAdresse() {
+    const url = new URL(location.href);
+    CLASSE ? url.searchParams.set('module', CLASSE) : url.searchParams.delete('module');
+    MODULE ? url.searchParams.set('bilan', MODULE) : url.searchParams.delete('bilan');
+    history.replaceState(null, '', url);
   }
 
   async function charger() {
@@ -650,18 +714,30 @@
       const num = numeroDe(m.title);
       return `<option value="${m.id}">${num ? num + ' · ' : ''}${esc(titreCourt(m.title))}</option>`;
     };
-    const sel = document.getElementById('pgModule');
-    sel.innerHTML = '<option value="">Tous les modules</option>'
+    // Le menu du bilan : la même liste, mais « Tous les modules » y est le
+    // choix normal, et c'est là que se lit la vue d'ensemble.
+    const selBilan = document.getElementById('pgModule');
+    selBilan.innerHTML = '<option value="">Tous les modules</option>'
+      + (duGroupe.length
+          ? `<optgroup label="Ce que ce groupe suit">${duGroupe.map(optionDe).join('')}</optgroup>` : '')
+      + (autres.length
+          ? `<optgroup label="Les autres">${autres.map(optionDe).join('')}</optgroup>` : '');
+    if (!MODULES.some(m => String(m.id) === String(MODULE))) MODULE = '';
+    selBilan.value = MODULE;
+
+    const sel = document.getElementById('pgClasse');
+    sel.innerHTML = '<option value="">Aucun — la classe ne travaille pas ici</option>'
       + (duGroupe.length
           ? `<optgroup label="Ce que ce groupe suit">${duGroupe.map(optionDe).join('')}</optgroup>` : '')
       + (autres.length
           ? `<optgroup label="Les autres du ${esc(NIVEAU)}, ouvrables en séance">${autres.map(optionDe).join('')}</optgroup>` : '');
     // Le module retenu peut n'être dans aucune des deux familles — il a été
     // retiré du catalogue, ou l'adresse porte un identifiant inventé. On
-    // retombe alors sur « Tous les modules », comme avant l'élargissement ;
-    // ce qui change, c'est qu'un atelier ne tombe plus dans ce cas.
-    if (!MODULES.some(m => String(m.id) === String(MODULE))) MODULE = '';
-    sel.value = MODULE;
+    // retombe alors sur aucun module, comme avant l'élargissement ; ce qui
+    // change, c'est qu'un atelier ne tombe plus dans ce cas.
+    if (!MODULES.some(m => String(m.id) === String(CLASSE))) CLASSE = '';
+    sel.value = CLASSE;
+    majAdresse();
 
     document.getElementById('pgBande').textContent =
       `Espace enseignant · ${Prof.groupeActif()?.nom || ''}`;
@@ -733,7 +809,7 @@
   /** Le titre d'une section, lu dans le découpage produit par
       `build/sections.py` — jamais une table écrite ici. */
   function drTitreSection(id) {
-    const secs = SECTIONS[String(MODULE)]?.sections || [];
+    const secs = SECTIONS[String(CLASSE)]?.sections || [];
     const s = secs.find(x => x.id === id);
     return s ? s.titre : (id || 'Tout le module');
   }
@@ -868,7 +944,7 @@
   function drMurTextes() {
     const envois = (DIRECT_ECRITS.length ? DIRECT_ECRITS : ECRITS)
       .map(e => ({ ...e, activite: activiteDEnvoi(e) }))
-      .filter(e => String(e.activite?.id) === String(MODULE))
+      .filter(e => String(e.activite?.id) === String(CLASSE))
       .sort((a, b) => String(b.createdAt || '').localeCompare(String(a.createdAt || '')));
     if (!envois.length) return '';
     const rang = new Map((DIRECT?.eleves || []).map((e, i) => [e.studentId, i]));
@@ -908,7 +984,7 @@
       `SEANCES` ne garde d'ailleurs que les séances ouvertes. */
   /** La séance ouverte sur le module regardé, s'il y en a une. */
   const seanceDuModule = () =>
-    SEANCES.find(x => String(x.activityId) === String(MODULE)) || null;
+    SEANCES.find(x => String(x.activityId) === String(CLASSE)) || null;
 
   /** Ouvrir une séance, ou retrouver sa feuille — au même endroit.
 
@@ -945,10 +1021,13 @@
       Le direct a maintenant un bouton « Fermer » : il y a une sortie, donc on
       peut fermer la porte. */
   function majVerrouModule() {
-    const sel = document.getElementById('pgModule');
+    // Le menu du bilan n'est jamais verrouillé : c'est ce qui a motivé la
+    // séparation. Seul celui de la classe l'est, parce qu'en changer arrête le
+    // direct et efface l'écran que la classe remplit.
+    const sel = document.getElementById('pgClasse');
     const note = document.getElementById('pgVerrou');
     if (!sel || !note) return;
-    const verrouille = Boolean(MODULE) && !DIRECT_FERME;
+    const verrouille = Boolean(CLASSE) && !DIRECT_FERME;
     sel.disabled = verrouille;
     note.hidden = !verrouille;
   }
@@ -956,7 +1035,7 @@
   function drRendre() {
     majVerrouModule();
     const cible = document.getElementById('pgDirect');
-    if (!MODULE) {
+    if (!CLASSE) {
       // Aucun module choisi : la page garde sa vue d'ensemble — le bilan, la
       // liste des élèves et ce qui bloque restent sur tous les modules — mais
       // « La classe d'un coup d'œil » s'affiche quand même, sur celui que le
@@ -966,15 +1045,16 @@
       const nom = encours ? titreCourt(moduleDe(encours)?.title || '') : '';
       if (!encours) {
         cible.innerHTML = `<p class="pg-note" style="padding:var(--sp-8) 0 0">
-          <b>Le direct suit un module à la fois.</b> Choisissez-en un ci-dessus pour voir la
-          réussite question par question pendant que la classe répond.</p>`;
+          <b>Le direct suit un module à la fois.</b> Choisissez-en un dans
+          « Travailler avec la classe » pour voir la réussite question par question
+          pendant que la classe répond.</p>`;
         return;
       }
       cible.innerHTML = `<div class="dr dr--arret">
         <p class="pg-note" style="padding:var(--sp-8) 0 0">
           <b>Aperçu de « ${esc(nom)} »</b>, le module que ce groupe travaille. Le reste de
-          la page couvre tous les modules. Choisissez-en un ci-dessus pour suivre la classe
-          en direct, question par question.
+          la page couvre tous les modules. Choisissez-en un dans « Travailler avec la
+          classe » pour le suivre en direct, question par question.
           <button type="button" class="btn btn--ghost btn--sm" id="drActualiser"
                   style="margin-left:var(--sp-3)">Actualiser</button></p>
         ${APERCU && APERCU_ID === String(encours)
@@ -1011,7 +1091,7 @@
       // Rien en main — un premier chargement, ou un tour manqué : on en demande
       // **un**, jamais deux, sinon un serveur muet ferait tourner
       // drRendre → drTirer → drRendre sans fin.
-      if (!DIRECT && MODULE && !DIRECT_TOUR_ARRET) { DIRECT_TOUR_ARRET = true; drTirer(); }
+      if (!DIRECT && CLASSE && !DIRECT_TOUR_ARRET) { DIRECT_TOUR_ARRET = true; drTirer(); }
       return;
     }
     const d = DIRECT;
@@ -1023,7 +1103,7 @@
     if (DIRECT_SECTION === null) DIRECT_SECTION = drSectionParDefaut(d);
     const secs = drSelectSection(d);
 
-    const quoi = titreCourt(moduleDe(MODULE)?.title || '');
+    const quoi = titreCourt(moduleDe(CLASSE)?.title || '');
     const age = Math.max(0, Math.round((Date.now() - DIRECT_QUAND) / 1000));
     const etat = DIRECT_ON
       ? `${d.enLigne} élève${d.enLigne > 1 ? 's' : ''} sur ${d.elevesTotal} en ligne · mis à jour il y a ${age} s`
@@ -1147,10 +1227,10 @@
 
   /** Un tour de direct. Deux appels : les zones, et les textes envoyés. */
   async function drTirer() {
-    if (!MODULE) { drRendre(); return; }
+    if (!CLASSE) { drRendre(); return; }
     try {
       const url = new URL('/api/direct', location.origin);
-      url.searchParams.set('activityId', MODULE);
+      url.searchParams.set('activityId', CLASSE);
       const [d, ecrits] = await Promise.all([
         Prof.fetch(Prof.withGroup(url.pathname + url.search)).then(r => r.ok ? r.json() : null),
         Prof.fetch(Prof.withGroup('/api/admin/written-submissions'))
@@ -1169,7 +1249,7 @@
   function drHorloge() {
     clearInterval(DIRECT_HORLOGE);
     DIRECT_HORLOGE = null;
-    if (!DIRECT_ON || DIRECT_FERME || document.hidden || !MODULE) return;
+    if (!DIRECT_ON || DIRECT_FERME || document.hidden || !CLASSE) return;
     DIRECT_HORLOGE = setInterval(drTirer, DIRECT_PAS_MS);
   }
 
@@ -1186,13 +1266,13 @@
     DR_OUVERTS.clear();
     DR_VUS.clear();
     drRendre();
-    if (MODULE && !DIRECT_FERME) drTirer();
+    if (CLASSE && !DIRECT_FERME) drTirer();
     drHorloge();
   }
 
   document.addEventListener('visibilitychange', () => {
     drHorloge();
-    if (!document.hidden && DIRECT_ON && !DIRECT_FERME && MODULE) drTirer();
+    if (!document.hidden && DIRECT_ON && !DIRECT_FERME && CLASSE) drTirer();
   });
 
   document.addEventListener('click', e => {
@@ -1220,7 +1300,7 @@
       // Un tour, à la demande. L'horloge ne repart pas : « fermé » veut dire
       // que le serveur n'est sollicité que si on le lui demande. Le même bouton
       // sert l'aperçu, qui n'a pas d'horloge non plus.
-      if (MODULE) { drTirer(); }
+      if (CLASSE) { drTirer(); }
       else { APERCU_DEMANDE = ''; drApercu(moduleEnCours()); }
       return;
     }
@@ -1242,13 +1322,13 @@
       le carré à projeter. */
   async function drOuvrirSeance() {
     const bouton = document.getElementById('drSeance');
-    if (!MODULE || (bouton && bouton.disabled)) return;
+    if (!CLASSE || (bouton && bouton.disabled)) return;
     if (bouton) { bouton.disabled = true; bouton.textContent = 'Ouverture…'; }
     try {
       const r = await Prof.fetch('/api/prof/seances', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: Prof.body({ activityId: Number(MODULE) }),   // ajoute groupId
+        body: Prof.body({ activityId: Number(CLASSE) }),   // ajoute groupId
       });
       const d = await r.json();
       if (!r.ok) throw new Error(d.error || 'Séance impossible');
@@ -1319,6 +1399,7 @@
   }, true);
 
   document.addEventListener('change', e => {
+    if (e.target.id === 'pgClasse') { choisirClasse(e.target.value); return; }
     if (e.target.id !== 'drSection') return;
     DIRECT_SECTION = e.target.value;
     drRendre();
