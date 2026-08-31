@@ -165,22 +165,33 @@ button:disabled{cursor:not-allowed}
 .fin h2{font-size:26px;font-weight:900}
 .fin p{margin-top:10px}
 
-/* ── le cadre 16:9 ────────────────────────────────────────────────
-   Au-dessus de 900 px, l'écran est une diapositive : rapport fixe, hauteur
-   bornée par la fenêtre, et c'est le CORPS qui défile — jamais la page. En
-   dessous, on retombe sur la carte au fil du contenu : un téléphone est en
-   9:19,5, et un cadre 16:9 y deviendrait une bande au milieu de l'écran.
+/* ── le cadre de la diapositive ───────────────────────────────────
+   Au-dessus de 900 px, l'écran est une diapositive : largeur bornée, hauteur
+   qui suit ce qu'il y a dedans, et c'est le CORPS qui défile — jamais la
+   page. En dessous, on retombe sur la carte au fil du contenu : un téléphone
+   est en 9:19,5, et un cadre 16:9 y deviendrait une bande au milieu de
+   l'écran.
    ─────────────────────────────────────────────────────────────── */
 @media (min-width:900px){
   .scene{align-items:center;padding:24px 24px 28px}
-  /* La hauteur est CALCULÉE, pas déduite d'un `aspect-ratio` : avec le
-     rapport seul, un rattrapage qui s'ouvre fait grandir le cadre — mesuré à
-     1,63 au lieu de 1,78. On prend donc le plus petit des deux budgets, la
-     fenêtre et la largeur, et la largeur suit la hauteur. */
+  /* Le 16:9 STRICT est tombé le 31 août 2026 : sur un portable, il rendait
+     664 px de haut là où la fenêtre en offrait 768, et un écran de tri ou un
+     rattrapage ouvert défilait dans une fente pendant qu'un ruban de gris
+     restait vide dessous. Le rapport n'est plus une hauteur imposée, c'est un
+     PLANCHER — en dessous, une accroche de trois lignes redeviendrait une
+     bande.
+
+     La largeur ne se déduit donc plus de la hauteur : elle est posée, et la
+     hauteur va du plancher 16:9 jusqu'au plafond de la fenêtre. Entre les
+     deux, elle suit le contenu. Le plafond n'est pas décoratif : sans lui,
+     un rattrapage qui s'ouvre pousse « Continuer » sous la ligne de
+     flottaison — la faute déjà payée sur téléphone. */
   .ecran{
-    --h:min(calc(100vh - 132px), calc(min(1180px, 100vw - 48px) * 9 / 16));
-    height:var(--h);
-    width:calc(var(--h) * 16 / 9);
+    --l:min(1180px, 100vw - 48px);
+    width:var(--l);
+    height:auto;
+    min-height:min(calc(100vh - 132px), calc(var(--l) * 9 / 16));
+    max-height:calc(100vh - 132px);
     max-width:100%;
     overflow:hidden;
     padding:30px 44px 22px;
