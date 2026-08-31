@@ -30,57 +30,52 @@
    <div class="card custom" id="jeu-de-role">
      <div class="c-hdr"><span class="tag" style="background:#7E3F98">Jeu de rôle</span><span class="ctit" style="color:#7E3F98">Expliquer ce que la radio vient de dire</span></div>
      <p class="lead">L'assistant joue Amine Haddad, votre collègue de covoiturage. Il conduit, il est pressé, et il n'a rien entendu : si vous dites seulement « ça bloque », il vous demandera où — et il redemandera. Il ne proposera jamais le détour à votre place. Essayez ensuite l'autre situation : la responsable de l'atelier, au téléphone, qui veut trois choses et une heure.</p>
-     <div class="jr-grid">
-       ${ROLE_CAS.map(c=>`
-       <div class="jr-log">
-         <div class="jr-log-h">${esc(c.titre)}</div>
-         <div class="jr-log-a">${c.txt}</div>
-       </div>`).join('')}
+     <p class="lead">Choisissez votre situation et qui vous avez en face</p>
+     <div class="jr-annonces" id="jrLogs">
+       ${ROLE_CAS.map((c,i)=>`<button class="jr-opt jr-tuile${i===0?' on':''}" type="button" data-log="${c.id}" onclick="jrChoisir('log','${c.id}')">
+         <span class="jr-band"><span class="jr-band-off">Choix ${i+1}</span><span class="jr-band-on"><svg viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5l4 4 8-9"></path></svg> Votre choix</span></span>
+         <span class="jr-tuile-c"><span class="jr-tuile-t">${esc(c.titre)}</span><span class="jr-tuile-d">${c.txt}</span></span>
+       </button>`).join('')}
      </div>
-     <div class="jr-sub">Les huit choses à dire avant que l'auto démarre</div>
-     <div class="jr-sujets">
-       ${ROLE_SUJETS.map(s=>`<div class="jr-sujet"><span class="jr-box"></span>${esc(s)}</div>`).join('')}
-     </div>
-     <div class="jr-gram">
-       <div class="jr-gram-t">Réutilisez ce que vous venez d'apprendre</div>
-       Donnez l'endroit avec deux repères, jamais un seul :
-       <span class='savoir-ex'>C'est <b>sur</b> la 40, <b>à la hauteur de</b> la sortie Côte-de-Liesse, <b>en direction</b> ouest.</span>
-       Dites le temps de deux façons :
-       <span class='savoir-ex'>C'est bloqué <b>depuis</b> sept heures. · <b>Ça fait</b> presque une heure <b>que</b> ça ne bouge plus. · Le pont est fermé <b>jusqu'à</b> neuf heures.</span>
-       Collez deux idées avec un relatif :
-       <span class='savoir-ex'>La bretelle <b>qui</b> mène à la 40 ouest est fermée. · La voie de droite est la seule <b>qui</b> reste ouverte.</span>
-       Dites le moyen avec le gérondif :
-       <span class='savoir-ex'><b>En sortant</b> à Marcel-Laurin et <b>en prenant</b> le boulevard, on évite tout le secteur.</span>
-       Annoncez l'heure avec un futur :
-       <span class='savoir-ex'>On <b>va être</b> en retard d'un quart d'heure. J'<b>arriverai</b> vers huit heures quinze.</span>
-       Reprenez la directive du bulletin telle quelle :
-       <span class='savoir-ex'>Ils disent d'<b>emprunter</b> le pont Victoria. · <b>On demande aux automobilistes de</b> réduire leur vitesse.</span>
-     </div>
-
-     <div class="jr-sep"></div>
-     <div class="jr-sub">Choisissez votre situation et qui vous avez en face</div>
-     <div class="jr-choix">
-       <div class="jr-choix-l">Quelle situation ?</div>
-       <div class="jr-opts" id="jrLogs">
-         ${ROLE_CAS.map((c,i)=>`<button class="jr-opt${i===0?' on':''}" type="button" data-log="${c.id}" onclick="jrChoisir('log','${c.id}')">${esc(c.titre)}</button>`).join('')}
-       </div>
-       <div class="jr-choix-l">L'assistant joue qui ?</div>
-       <div class="jr-opts" id="jrRoles">
+     <div class="jr-reglages">
+       <div class="jr-carte">
+         <div class="jr-champ-l">L'assistant joue qui ?</div>
+         <div class="jr-tuiles" id="jrRoles">
          <button class="jr-opt on" type="button" data-role="collegue" onclick="jrChoisir('role','collegue')">Votre collègue, au volant</button>
          <button class="jr-opt" type="button" data-role="responsable" onclick="jrChoisir('role','responsable')">Votre responsable, au téléphone</button>
        </div>
-       <div class="jr-choix-l">Comment ?</div>
-       <div class="jr-opts" id="jrModes">
-         <button class="jr-opt on" type="button" data-mode="texte" onclick="jrModeVoix(false)">✍️ Écrire</button>
-         <button class="jr-opt" type="button" data-mode="voix" onclick="jrModeVoix(true)">🎤 Parler</button>
        </div>
-       <button class="btn btn-pri" id="jrStart" type="button" onclick="jrDemarrer()" style="margin-top:14px">Monter dans l'auto</button>
+       <div class="jr-carte">
+         <div class="jr-champ-l">Comment ?</div>
+         <div class="jr-tuiles" id="jrModes">
+         <button class="jr-opt on" type="button" data-mode="texte" onclick="jrModeVoix(false)"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4l10-10-4-4L4 16v4z"></path><path d="M14 6l4 4"></path></svg><span>J'écris</span></button>
+         <button class="jr-opt" type="button" data-mode="voix" onclick="jrModeVoix(true)"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"></rect><path d="M5.5 11.5a6.5 6.5 0 0013 0M12 18v3"></path></svg><span>Je parle</span></button>
+       </div>
+       </div>
+     </div>
+     <div class="jr-bande">
+       <div>
+         <div class="jr-bande-t">Les huit choses à dire avant que l'auto démarre</div>
+         <p class="jr-bande-p">${ROLE_SUJETS.map((s,i)=>i?s.charAt(0).toLowerCase()+s.slice(1):s).join(', ')}.</p>
+       </div>
+       <button class="btn btn-pri" id="jrStart" type="button" onclick="jrDemarrer()">Monter dans l'auto</button>
+     </div>
+     <div class="jr-rappel">
+       <div class="jr-rappel-t">Réutilisez ce que vous venez d'apprendre</div>
+       <div class="jr-rappel-g">
+         <div><div class="jr-rappel-l">Donnez l'endroit avec deux repères, jamais un seul</div><div class="jr-rappel-x">C'est <b>sur</b> la 40, <b>à la hauteur de</b> la sortie Côte-de-Liesse, <b>en direction</b> ouest.</div></div>
+         <div><div class="jr-rappel-l">Dites le temps de deux façons</div><div class="jr-rappel-x">C'est bloqué <b>depuis</b> sept heures. · <b>Ça fait</b> presque une heure <b>que</b> ça ne bouge plus. · Le pont est fermé <b>jusqu'à</b> neuf heures.</div></div>
+         <div><div class="jr-rappel-l">Collez deux idées avec un relatif</div><div class="jr-rappel-x">La bretelle <b>qui</b> mène à la 40 ouest est fermée. · La voie de droite est la seule <b>qui</b> reste ouverte.</div></div>
+         <div><div class="jr-rappel-l">Dites le moyen avec le gérondif</div><div class="jr-rappel-x"><b>En sortant</b> à Marcel-Laurin et <b>en prenant</b> le boulevard, on évite tout le secteur.</div></div>
+         <div><div class="jr-rappel-l">Annoncez l'heure avec un futur</div><div class="jr-rappel-x">On <b>va être</b> en retard d'un quart d'heure. J'<b>arriverai</b> vers huit heures quinze.</div></div>
+         <div><div class="jr-rappel-l">Reprenez la directive du bulletin telle quelle</div><div class="jr-rappel-x">Ils disent d'<b>emprunter</b> le pont Victoria. · <b>On demande aux automobilistes de</b> réduire leur vitesse.</div></div>
+       </div>
      </div>
 
      <div id="jrChat" class="hidden">
        <div class="jr-fil" id="jrFil" aria-live="polite"></div>
        <div class="jr-mic hidden" id="jrMicZone">
-         <button id="jrMic" type="button" onclick="jrParler()" aria-label="Parler">🎤</button>
+         <button id="jrMic" type="button" onclick="jrParler()" aria-label="Parler"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"></rect><path d="M5.5 11.5a6.5 6.5 0 0013 0M12 18v3"></path></svg></button>
          <span class="jr-mic-l" id="jrMicLbl">Touchez pour parler</span>
        </div>
        <div class="jr-saisie">

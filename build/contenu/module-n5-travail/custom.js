@@ -29,57 +29,52 @@
    <div class="card custom" id="jeu-de-role">
      <div class="c-hdr"><span class="tag" style="background:#7E3F98">Jeu de rôle</span><span class="ctit" style="color:#7E3F98">Demander un congé à son chef d'équipe</span></div>
      <p class="lead">L'assistant joue Ghislain Marcoux, votre chef d'équipe. Il est cordial, mais il ne facilite rien : il ne donne aucun renseignement avant qu'on le lui demande, il veut les deux dates, il veut savoir qui vous remplace, et il n'accorde jamais un congé de vive voix. Essayez les deux rôles — au niveau 5, il faut savoir <b>demander</b> et savoir <b>répondre</b>.</p>
-     <div class="jr-grid">
-       ${ROLE_CAS.map(c=>`
-       <div class="jr-log">
-         <div class="jr-log-h">${esc(c.titre)}</div>
-         <div class="jr-log-a">${c.txt}</div>
-       </div>`).join('')}
+     <p class="lead">Choisissez votre situation et votre rôle</p>
+     <div class="jr-annonces" id="jrLogs">
+       ${ROLE_CAS.map((c,i)=>`<button class="jr-opt jr-tuile${i===0?' on':''}" type="button" data-log="${c.id}" onclick="jrChoisir('log','${c.id}')">
+         <span class="jr-band"><span class="jr-band-off">Choix ${i+1}</span><span class="jr-band-on"><svg viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5l4 4 8-9"></path></svg> Votre choix</span></span>
+         <span class="jr-tuile-c"><span class="jr-tuile-t">${esc(c.titre)}</span><span class="jr-tuile-d">${c.txt}</span></span>
+       </button>`).join('')}
      </div>
-     <div class="jr-sub">Les sept choses à obtenir avant de sortir du bureau</div>
-     <div class="jr-sujets">
-       ${ROLE_SUJETS.map(s=>`<div class="jr-sujet"><span class="jr-box"></span>${esc(s)}</div>`).join('')}
-     </div>
-     <div class="jr-gram">
-       <div class="jr-gram-t">Réutilisez ce que vous venez d'apprendre</div>
-       Annoncez en une phrase, avec les deux dates :
-       <span class='savoir-ex'>Je voudrais prendre congé <b>du lundi 19 au vendredi 23 août</b>, et revenir le lundi 26.</span>
-       Posez vos questions à l'intérieur d'une phrase :
-       <span class='savoir-ex'>Je voudrais savoir <b>combien de jours il me reste</b>. · Pourriez-vous me dire <b>quand je recevrai la réponse</b>.</span>
-       Demandez ce qui est payé :
-       <span class='savoir-ex'>J'aimerais savoir <b>si</b> cette journée-là est payée.</span>
-       Annoncez la suite au futur simple :
-       <span class='savoir-ex'>Kevin <b>prendra</b> les appels de l'avant-midi et Amel <b>répondra</b> l'après-midi.</span>
-       Rapportez ce qu'on vous a dit :
-       <span class='savoir-ex'>Sylvie <b>dit que</b> le formulaire doit être signé. · Elle <b>demande si</b> j'ai vérifié au registre.</span>
-       Réclamez la trace écrite :
-       <span class='savoir-ex'>Est-ce que je recevrai une <b>confirmation par courriel</b> ? Dans combien de temps ?</span>
-     </div>
-
-     <div class="jr-sep"></div>
-     <div class="jr-sub">Choisissez votre situation et votre rôle</div>
-     <div class="jr-choix">
-       <div class="jr-choix-l">Quelle demande ?</div>
-       <div class="jr-opts" id="jrLogs">
-         ${ROLE_CAS.map((c,i)=>`<button class="jr-opt${i===0?' on':''}" type="button" data-log="${c.id}" onclick="jrChoisir('log','${c.id}')">${esc(c.titre)}</button>`).join('')}
-       </div>
-       <div class="jr-choix-l">Vous jouez qui ?</div>
-       <div class="jr-opts" id="jrRoles">
+     <div class="jr-reglages">
+       <div class="jr-carte">
+         <div class="jr-champ-l">Vous jouez qui ?</div>
+         <div class="jr-tuiles" id="jrRoles">
          <button class="jr-opt on" type="button" data-role="employe" onclick="jrChoisir('role','employe')">L'employé qui demande</button>
          <button class="jr-opt" type="button" data-role="chef" onclick="jrChoisir('role','chef')">Le chef d'équipe</button>
        </div>
-       <div class="jr-choix-l">Comment ?</div>
-       <div class="jr-opts" id="jrModes">
-         <button class="jr-opt on" type="button" data-mode="texte" onclick="jrModeVoix(false)">✍️ Écrire</button>
-         <button class="jr-opt" type="button" data-mode="voix" onclick="jrModeVoix(true)">🎤 Parler</button>
        </div>
-       <button class="btn btn-pri" id="jrStart" type="button" onclick="jrDemarrer()" style="margin-top:14px">Entrer dans le bureau</button>
+       <div class="jr-carte">
+         <div class="jr-champ-l">Comment ?</div>
+         <div class="jr-tuiles" id="jrModes">
+         <button class="jr-opt on" type="button" data-mode="texte" onclick="jrModeVoix(false)"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4l10-10-4-4L4 16v4z"></path><path d="M14 6l4 4"></path></svg><span>J'écris</span></button>
+         <button class="jr-opt" type="button" data-mode="voix" onclick="jrModeVoix(true)"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"></rect><path d="M5.5 11.5a6.5 6.5 0 0013 0M12 18v3"></path></svg><span>Je parle</span></button>
+       </div>
+       </div>
+     </div>
+     <div class="jr-bande">
+       <div>
+         <div class="jr-bande-t">Les sept choses à obtenir avant de sortir du bureau</div>
+         <p class="jr-bande-p">${ROLE_SUJETS.map((s,i)=>i?s.charAt(0).toLowerCase()+s.slice(1):s).join(', ')}.</p>
+       </div>
+       <button class="btn btn-pri" id="jrStart" type="button" onclick="jrDemarrer()">Entrer dans le bureau</button>
+     </div>
+     <div class="jr-rappel">
+       <div class="jr-rappel-t">Réutilisez ce que vous venez d'apprendre</div>
+       <div class="jr-rappel-g">
+         <div><div class="jr-rappel-l">Annoncez en une phrase, avec les deux dates</div><div class="jr-rappel-x">Je voudrais prendre congé <b>du lundi 19 au vendredi 23 août</b>, et revenir le lundi 26.</div></div>
+         <div><div class="jr-rappel-l">Posez vos questions à l'intérieur d'une phrase</div><div class="jr-rappel-x">Je voudrais savoir <b>combien de jours il me reste</b>. · Pourriez-vous me dire <b>quand je recevrai la réponse</b>.</div></div>
+         <div><div class="jr-rappel-l">Demandez ce qui est payé</div><div class="jr-rappel-x">J'aimerais savoir <b>si</b> cette journée-là est payée.</div></div>
+         <div><div class="jr-rappel-l">Annoncez la suite au futur simple</div><div class="jr-rappel-x">Kevin <b>prendra</b> les appels de l'avant-midi et Amel <b>répondra</b> l'après-midi.</div></div>
+         <div><div class="jr-rappel-l">Rapportez ce qu'on vous a dit</div><div class="jr-rappel-x">Sylvie <b>dit que</b> le formulaire doit être signé. · Elle <b>demande si</b> j'ai vérifié au registre.</div></div>
+         <div><div class="jr-rappel-l">Réclamez la trace écrite</div><div class="jr-rappel-x">Est-ce que je recevrai une <b>confirmation par courriel</b> ? Dans combien de temps ?</div></div>
+       </div>
      </div>
 
      <div id="jrChat" class="hidden">
        <div class="jr-fil" id="jrFil" aria-live="polite"></div>
        <div class="jr-mic hidden" id="jrMicZone">
-         <button id="jrMic" type="button" onclick="jrParler()" aria-label="Parler">🎤</button>
+         <button id="jrMic" type="button" onclick="jrParler()" aria-label="Parler"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"></rect><path d="M5.5 11.5a6.5 6.5 0 0013 0M12 18v3"></path></svg></button>
          <span class="jr-mic-l" id="jrMicLbl">Touchez pour parler</span>
        </div>
        <div class="jr-saisie">

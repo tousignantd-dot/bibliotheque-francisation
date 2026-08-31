@@ -874,6 +874,68 @@ body{
 .jr-opt{min-height:44px;padding:10px 16px;border-radius:22px;border:1px solid var(--ws-line);background:var(--ws-card);font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;color:var(--ws-ink);cursor:pointer;transition:background .15s,border-color .15s}
 .jr-opt:hover{border-color:var(--sec-color,var(--ws-accent))}
 .jr-opt.on{background:var(--sel-bg);border-color:var(--sel-line);color:var(--sel-ink)}
+/* JR-DESIGN-4A */
+/* ── Jeu de rôle · écran de départ (remise design_handoff_jeu_de_role, 4a) ──
+   Les tuiles gardent `.jr-opt` — c'est ce que balaient jrChoisir() et
+   jrModeVoix(). Ce bloc vient APRÈS `.jr-opt.on` dans la feuille : à
+   spécificité égale, c'est lui qui gagne, et l'annonce choisie échappe donc à
+   la plaque encre pour prendre le filet vert que demande la remise. */
+.jr-annonces{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin:16px 0 0}
+.jr-tuile{display:block;padding:0;min-height:0;border-radius:18px;overflow:hidden;text-align:left;
+  border:1px solid var(--ws-line);background:var(--ws-card);font-weight:600;transition:border-color .14s}
+.jr-tuile.on{background:var(--ws-card);color:var(--ws-ink);
+  border:2px solid var(--sec-color,var(--ws-accent))}
+.jr-tuile:hover{border-color:var(--sec-color,var(--ws-accent))}
+.jr-band{display:flex;align-items:center;gap:8px;padding:12px 20px;font-size:13px;font-weight:900;
+  letter-spacing:.14em;text-transform:uppercase;background:var(--surface-sunken,#FBFBFA);
+  border-bottom:1px solid var(--ws-line);color:var(--ws-sub)}
+.jr-tuile.on .jr-band{background:var(--sec-color,var(--ws-accent));color:#fff;border-bottom-color:transparent}
+.jr-tuile .jr-band-on{display:none}
+.jr-tuile.on .jr-band-on{display:flex;align-items:center;gap:8px}
+.jr-tuile.on .jr-band-off{display:none}
+.jr-tuile-c{display:flex;flex-direction:column;gap:8px;padding:20px}
+.jr-tuile-t{font-size:24px;font-weight:900;color:var(--ws-ink);line-height:1.2}
+.jr-tuile-d{font-size:17px;font-weight:600;color:var(--ws-sub);line-height:1.5}
+.jr-tuile-d b{font-weight:900;color:var(--ws-ink)}
+.jr-tuile.on .jr-tuile-d b{color:var(--sec-color,var(--ws-accent))}
+
+.jr-reglages{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+.jr-carte{border:1px solid var(--ws-line);border-radius:18px;background:var(--ws-card);padding:20px}
+.jr-champ-l{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;
+  color:var(--ws-sub);margin-bottom:12px}
+.jr-tuiles{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.jr-tuiles .jr-opt{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:8px;padding:16px;min-height:96px;border-radius:10px;text-align:center;font-size:17px;font-weight:700}
+.jr-tuiles .jr-opt svg{flex-shrink:0}
+/* La rangée « Écouter sans lire » est posée par greffe_ecouter_sans_lire.py
+   juste après #jrModes : elle tombe donc dans la carte, sous les deux tuiles. */
+.jr-carte #jrEcoute{margin-top:12px}
+.jr-carte #jrEcoute .jr-opt{width:100%;min-height:44px;font-size:15px}
+#jrMic svg{width:26px;height:26px}
+
+.jr-bande{margin-top:16px;display:flex;align-items:center;justify-content:space-between;gap:24px;
+  flex-wrap:wrap;padding:20px;border-radius:18px;background:var(--surface-band,#EDF6F1);
+  border:1px solid var(--border-tint,var(--ws-line))}
+.jr-bande-t{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;
+  color:var(--accent-ink,var(--ws-accent));margin-bottom:4px}
+.jr-bande-p{font-size:17px;font-weight:600;color:var(--ws-ink);max-width:56ch;line-height:1.5}
+.jr-bande .btn{flex-shrink:0;white-space:nowrap;min-height:52px;padding:0 24px;font-size:16px;font-weight:800}
+
+.jr-rappel{margin-top:32px}
+.jr-rappel-t{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;
+  color:var(--ws-sub);margin-bottom:12px}
+.jr-rappel-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(45%,1fr));gap:20px 24px;padding:20px;border-radius:18px;
+  background:var(--surface-band,#EDF6F1);border:1px solid var(--border-tint,var(--ws-line))}
+.jr-rappel-l{font-size:17px;font-weight:600;color:var(--ws-sub)}
+.jr-rappel-x{font-size:17px;font-weight:700;color:var(--ws-ink);margin-top:2px;line-height:1.45}
+/* La structure visée était en gras ; la remise la veut en teinte acier. Le gras
+   reste dans le contenu des modules — c'est la couleur qui porte le repérage. */
+.jr-rappel-x b{font-weight:700;font-style:normal;color:var(--acier-600,#1D6B8F)}
+@media(max-width:900px){
+  .jr-annonces{grid-template-columns:1fr}
+  .jr-reglages,.jr-rappel-g{grid-template-columns:1fr}
+}
+
 /* Le bouton qui lance la conversation prend la couleur de la tâche au lieu de
    l'encre commune : c'est l'action à repérer dans un bloc qui contient déjà
    trois autres boutons noirs. `!important` parce que .btn-pri impose l'encre

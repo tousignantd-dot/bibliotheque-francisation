@@ -32,57 +32,52 @@
    <div class="card custom" id="jeu-de-role">
      <div class="c-hdr"><span class="tag" style="background:#7E3F98">Jeu de rôle</span><span class="ctit" style="color:#7E3F98">Régler votre affaire au comptoir</span></div>
      <p class="lead">L'assistant joue madame Jocelyne Paradis, au secrétariat du Centre d'éducation des adultes des Trois-Ponts. Elle est aimable et pressée : elle a du monde derrière vous. Elle ne devine rien — si vous commencez par une explication, elle vous demandera d'abord votre nom et votre groupe. Elle ne décide pas non plus de tout : ce qui touche à votre horaire ou à votre parcours, elle vous renverra à monsieur Gauthier. Essayez ensuite l'autre interlocuteur : monsieur Rémi Gauthier, le conseiller en formation, qui reçoit à son bureau et qui exige une demande écrite avant de bouger quoi que ce soit.</p>
-     <div class="jr-grid">
-       ${ROLE_CAS.map(c=>`
-       <div class="jr-log">
-         <div class="jr-log-h">${esc(c.titre)}</div>
-         <div class="jr-log-a">${c.txt}</div>
-       </div>`).join('')}
+     <p class="lead">Choisissez votre affaire et qui vous avez en face</p>
+     <div class="jr-annonces" id="jrLogs">
+       ${ROLE_CAS.map((c,i)=>`<button class="jr-opt jr-tuile${i===0?' on':''}" type="button" data-log="${c.id}" onclick="jrChoisir('log','${c.id}')">
+         <span class="jr-band"><span class="jr-band-off">Choix ${i+1}</span><span class="jr-band-on"><svg viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5l4 4 8-9"></path></svg> Votre choix</span></span>
+         <span class="jr-tuile-c"><span class="jr-tuile-t">${esc(c.titre)}</span><span class="jr-tuile-d">${c.txt}</span></span>
+       </button>`).join('')}
      </div>
-     <div class="jr-sub">Les neuf choses à faire avant de quitter le comptoir</div>
-     <div class="jr-sujets">
-       ${ROLE_SUJETS.map(s=>`<div class="jr-sujet"><span class="jr-box"></span>${esc(s)}</div>`).join('')}
-     </div>
-     <div class="jr-gram">
-       <div class="jr-gram-t">Réutilisez ce que vous venez d'apprendre</div>
-       Glissez vos questions dans une phrase :
-       <span class='savoir-ex'>Je voudrais savoir <b>si</b> je garde ma place. · Pourriez-vous me dire <b>quand</b> je dois remettre le formulaire. · Je ne sais pas <b>ce qu'</b>il faut écrire dans la case du motif.</span>
-       Placez vos dates avec le bon petit mot :
-       <span class='savoir-ex'>Je serai absente <b>à partir du</b> 9 mars, <b>jusqu'au</b> 27 <b>inclusivement</b>. · Le formulaire doit être remis <b>d'ici le</b> 6.</span>
-       Promettez au futur simple :
-       <span class='savoir-ex'>Je <b>reviendrai</b> le 30 mars. Je vous <b>apporterai</b> la pièce justificative. Je <b>m'inscrirai</b> au rattrapage.</span>
-       Expliquez sans vous plaindre, avec le subjonctif :
-       <span class='savoir-ex'><b>Il faut que</b> je travaille le matin. · <b>Pour que</b> le transfert <b>se fasse</b>, que dois-je remplir ?</span>
-       Mettez devant ce qui compte, une seule fois :
-       <span class='savoir-ex'><b>Ce qui me bloque, c'est</b> l'horaire, pas le cours. · <b>Ce que je demande, c'est</b> un transfert au groupe du soir.</span>
-       Enchaînez vos raisons :
-       <span class='savoir-ex'><b>Comme</b> j'ai commencé un emploi, mon horaire a changé ; <b>c'est pourquoi</b> je vous demande un changement de groupe. <b>Par contre</b>, je ne pourrai pas commencer avant le 20.</span>
-     </div>
-
-     <div class="jr-sep"></div>
-     <div class="jr-sub">Choisissez votre affaire et qui vous avez en face</div>
-     <div class="jr-choix">
-       <div class="jr-choix-l">Quelle affaire ?</div>
-       <div class="jr-opts" id="jrLogs">
-         ${ROLE_CAS.map((c,i)=>`<button class="jr-opt${i===0?' on':''}" type="button" data-log="${c.id}" onclick="jrChoisir('log','${c.id}')">${esc(c.titre)}</button>`).join('')}
-       </div>
-       <div class="jr-choix-l">L'assistant joue qui ?</div>
-       <div class="jr-opts" id="jrRoles">
+     <div class="jr-reglages">
+       <div class="jr-carte">
+         <div class="jr-champ-l">L'assistant joue qui ?</div>
+         <div class="jr-tuiles" id="jrRoles">
          <button class="jr-opt on" type="button" data-role="jocelyne" onclick="jrChoisir('role','jocelyne')">Madame Paradis, au comptoir</button>
          <button class="jr-opt" type="button" data-role="remi" onclick="jrChoisir('role','remi')">Monsieur Gauthier, à son bureau</button>
        </div>
-       <div class="jr-choix-l">Comment ?</div>
-       <div class="jr-opts" id="jrModes">
-         <button class="jr-opt on" type="button" data-mode="texte" onclick="jrModeVoix(false)">✍️ Écrire</button>
-         <button class="jr-opt" type="button" data-mode="voix" onclick="jrModeVoix(true)">🎤 Parler</button>
        </div>
-       <button class="btn btn-pri" id="jrStart" type="button" onclick="jrDemarrer()" style="margin-top:14px">Me présenter au comptoir</button>
+       <div class="jr-carte">
+         <div class="jr-champ-l">Comment ?</div>
+         <div class="jr-tuiles" id="jrModes">
+         <button class="jr-opt on" type="button" data-mode="texte" onclick="jrModeVoix(false)"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4l10-10-4-4L4 16v4z"></path><path d="M14 6l4 4"></path></svg><span>J'écris</span></button>
+         <button class="jr-opt" type="button" data-mode="voix" onclick="jrModeVoix(true)"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"></rect><path d="M5.5 11.5a6.5 6.5 0 0013 0M12 18v3"></path></svg><span>Je parle</span></button>
+       </div>
+       </div>
+     </div>
+     <div class="jr-bande">
+       <div>
+         <div class="jr-bande-t">Les neuf choses à faire avant de quitter le comptoir</div>
+         <p class="jr-bande-p">${ROLE_SUJETS.map((s,i)=>i?s.charAt(0).toLowerCase()+s.slice(1):s).join(', ')}.</p>
+       </div>
+       <button class="btn btn-pri" id="jrStart" type="button" onclick="jrDemarrer()">Me présenter au comptoir</button>
+     </div>
+     <div class="jr-rappel">
+       <div class="jr-rappel-t">Réutilisez ce que vous venez d'apprendre</div>
+       <div class="jr-rappel-g">
+         <div><div class="jr-rappel-l">Glissez vos questions dans une phrase</div><div class="jr-rappel-x">Je voudrais savoir <b>si</b> je garde ma place. · Pourriez-vous me dire <b>quand</b> je dois remettre le formulaire. · Je ne sais pas <b>ce qu'</b>il faut écrire dans la case du motif.</div></div>
+         <div><div class="jr-rappel-l">Placez vos dates avec le bon petit mot</div><div class="jr-rappel-x">Je serai absente <b>à partir du</b> 9 mars, <b>jusqu'au</b> 27 <b>inclusivement</b>. · Le formulaire doit être remis <b>d'ici le</b> 6.</div></div>
+         <div><div class="jr-rappel-l">Promettez au futur simple</div><div class="jr-rappel-x">Je <b>reviendrai</b> le 30 mars. Je vous <b>apporterai</b> la pièce justificative. Je <b>m'inscrirai</b> au rattrapage.</div></div>
+         <div><div class="jr-rappel-l">Expliquez sans vous plaindre, avec le subjonctif</div><div class="jr-rappel-x"><b>Il faut que</b> je travaille le matin. · <b>Pour que</b> le transfert <b>se fasse</b>, que dois-je remplir ?</div></div>
+         <div><div class="jr-rappel-l">Mettez devant ce qui compte, une seule fois</div><div class="jr-rappel-x"><b>Ce qui me bloque, c'est</b> l'horaire, pas le cours. · <b>Ce que je demande, c'est</b> un transfert au groupe du soir.</div></div>
+         <div><div class="jr-rappel-l">Enchaînez vos raisons</div><div class="jr-rappel-x"><b>Comme</b> j'ai commencé un emploi, mon horaire a changé ; <b>c'est pourquoi</b> je vous demande un changement de groupe. <b>Par contre</b>, je ne pourrai pas commencer avant le 20.</div></div>
+       </div>
      </div>
 
      <div id="jrChat" class="hidden">
        <div class="jr-fil" id="jrFil" aria-live="polite"></div>
        <div class="jr-mic hidden" id="jrMicZone">
-         <button id="jrMic" type="button" onclick="jrParler()" aria-label="Parler">🎤</button>
+         <button id="jrMic" type="button" onclick="jrParler()" aria-label="Parler"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"></rect><path d="M5.5 11.5a6.5 6.5 0 0013 0M12 18v3"></path></svg></button>
          <span class="jr-mic-l" id="jrMicLbl">Touchez pour parler</span>
        </div>
        <div class="jr-saisie">

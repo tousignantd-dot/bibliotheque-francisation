@@ -34,57 +34,52 @@
    <div class="card custom" id="jeu-de-role">
      <div class="c-hdr"><span class="tag" style="background:#7E3F98">Jeu de rôle</span><span class="ctit" style="color:#7E3F98">Préparer son voyage de vive voix</span></div>
      <p class="lead">L'assistant joue Serge Ouellet, préposé au comptoir des autocars. Il connaît son horaire par cœur, il est aimable et il est pressé : si vous ne dites pas où, quand et combien de personnes, il vous le demandera — trois fois. Essayez ensuite l'autre rôle : Rose-Aimée Bélanger, qui tient un gîte au bord du fleuve et qui connaît sa région mieux que n'importe quel site Internet.</p>
-     <div class="jr-grid">
-       ${ROLE_CAS.map(c=>`
-       <div class="jr-log">
-         <div class="jr-log-h">${esc(c.titre)}</div>
-         <div class="jr-log-a">${c.txt}</div>
-       </div>`).join('')}
+     <p class="lead">Choisissez votre situation et qui vous avez en face</p>
+     <div class="jr-annonces" id="jrLogs">
+       ${ROLE_CAS.map((c,i)=>`<button class="jr-opt jr-tuile${i===0?' on':''}" type="button" data-log="${c.id}" onclick="jrChoisir('log','${c.id}')">
+         <span class="jr-band"><span class="jr-band-off">Choix ${i+1}</span><span class="jr-band-on"><svg viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5l4 4 8-9"></path></svg> Votre choix</span></span>
+         <span class="jr-tuile-c"><span class="jr-tuile-t">${esc(c.titre)}</span><span class="jr-tuile-d">${c.txt}</span></span>
+       </button>`).join('')}
      </div>
-     <div class="jr-sub">Les huit choses à dire avant de repartir du comptoir</div>
-     <div class="jr-sujets">
-       ${ROLE_SUJETS.map(s=>`<div class="jr-sujet"><span class="jr-box"></span>${esc(s)}</div>`).join('')}
-     </div>
-     <div class="jr-gram">
-       <div class="jr-gram-t">Réutilisez ce que vous venez d'apprendre</div>
-       Dites le lieu avec la bonne préposition :
-       <span class='savoir-ex'>Je vais <b>à</b> Rimouski, <b>au</b> Bas-Saint-Laurent. · Ma sœur habite <b>en</b> Gaspésie. · On skie <b>dans les</b> Laurentides.</span>
-       Posez vos questions poliment :
-       <span class='savoir-ex'><b>Pourriez-vous me dire</b> combien de temps ça prend ? · <b>Je voudrais savoir s'</b>il faut changer d'autocar.</span>
-       Dites le temps avec le mot juste :
-       <span class='savoir-ex'>On fait le trajet <b>en</b> huit heures. Je pars <b>pour</b> une semaine. Le départ est <b>à</b> sept heures, on arrive <b>vers</b> trois heures.</span>
-       Collez deux idées avec un relatif :
-       <span class='savoir-ex'>L'autocar <b>qui</b> part à sept heures est direct. · Le gîte <b>dont</b> on m'a parlé n'a que quatre chambres.</span>
-       Comparez, puis concluez :
-       <span class='savoir-ex'>Le train est <b>plus</b> confortable <b>que</b> l'autocar, mais il passe <b>moins</b> souvent : je prends l'autocar.</span>
-       Dites le moyen avec le gérondif :
-       <span class='savoir-ex'><b>En réservant</b> après le quinze septembre, je paie le tarif de basse saison.</span>
-     </div>
-
-     <div class="jr-sep"></div>
-     <div class="jr-sub">Choisissez votre situation et qui vous avez en face</div>
-     <div class="jr-choix">
-       <div class="jr-choix-l">Quelle situation ?</div>
-       <div class="jr-opts" id="jrLogs">
-         ${ROLE_CAS.map((c,i)=>`<button class="jr-opt${i===0?' on':''}" type="button" data-log="${c.id}" onclick="jrChoisir('log','${c.id}')">${esc(c.titre)}</button>`).join('')}
-       </div>
-       <div class="jr-choix-l">L'assistant joue qui ?</div>
-       <div class="jr-opts" id="jrRoles">
+     <div class="jr-reglages">
+       <div class="jr-carte">
+         <div class="jr-champ-l">L'assistant joue qui ?</div>
+         <div class="jr-tuiles" id="jrRoles">
          <button class="jr-opt on" type="button" data-role="prepose" onclick="jrChoisir('role','prepose')">Le préposé, au comptoir</button>
          <button class="jr-opt" type="button" data-role="habitante" onclick="jrChoisir('role','habitante')">L'hôtesse du gîte, en région</button>
        </div>
-       <div class="jr-choix-l">Comment ?</div>
-       <div class="jr-opts" id="jrModes">
-         <button class="jr-opt on" type="button" data-mode="texte" onclick="jrModeVoix(false)">✍️ Écrire</button>
-         <button class="jr-opt" type="button" data-mode="voix" onclick="jrModeVoix(true)">🎤 Parler</button>
        </div>
-       <button class="btn btn-pri" id="jrStart" type="button" onclick="jrDemarrer()" style="margin-top:14px">Prendre son tour au comptoir</button>
+       <div class="jr-carte">
+         <div class="jr-champ-l">Comment ?</div>
+         <div class="jr-tuiles" id="jrModes">
+         <button class="jr-opt on" type="button" data-mode="texte" onclick="jrModeVoix(false)"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4l10-10-4-4L4 16v4z"></path><path d="M14 6l4 4"></path></svg><span>J'écris</span></button>
+         <button class="jr-opt" type="button" data-mode="voix" onclick="jrModeVoix(true)"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"></rect><path d="M5.5 11.5a6.5 6.5 0 0013 0M12 18v3"></path></svg><span>Je parle</span></button>
+       </div>
+       </div>
+     </div>
+     <div class="jr-bande">
+       <div>
+         <div class="jr-bande-t">Les huit choses à dire avant de repartir du comptoir</div>
+         <p class="jr-bande-p">${ROLE_SUJETS.map((s,i)=>i?s.charAt(0).toLowerCase()+s.slice(1):s).join(', ')}.</p>
+       </div>
+       <button class="btn btn-pri" id="jrStart" type="button" onclick="jrDemarrer()">Prendre son tour au comptoir</button>
+     </div>
+     <div class="jr-rappel">
+       <div class="jr-rappel-t">Réutilisez ce que vous venez d'apprendre</div>
+       <div class="jr-rappel-g">
+         <div><div class="jr-rappel-l">Dites le lieu avec la bonne préposition</div><div class="jr-rappel-x">Je vais <b>à</b> Rimouski, <b>au</b> Bas-Saint-Laurent. · Ma sœur habite <b>en</b> Gaspésie. · On skie <b>dans les</b> Laurentides.</div></div>
+         <div><div class="jr-rappel-l">Posez vos questions poliment</div><div class="jr-rappel-x"><b>Pourriez-vous me dire</b> combien de temps ça prend ? · <b>Je voudrais savoir s'</b>il faut changer d'autocar.</div></div>
+         <div><div class="jr-rappel-l">Dites le temps avec le mot juste</div><div class="jr-rappel-x">On fait le trajet <b>en</b> huit heures. Je pars <b>pour</b> une semaine. Le départ est <b>à</b> sept heures, on arrive <b>vers</b> trois heures.</div></div>
+         <div><div class="jr-rappel-l">Collez deux idées avec un relatif</div><div class="jr-rappel-x">L'autocar <b>qui</b> part à sept heures est direct. · Le gîte <b>dont</b> on m'a parlé n'a que quatre chambres.</div></div>
+         <div><div class="jr-rappel-l">Comparez, puis concluez</div><div class="jr-rappel-x">Le train est <b>plus</b> confortable <b>que</b> l'autocar, mais il passe <b>moins</b> souvent : je prends l'autocar.</div></div>
+         <div><div class="jr-rappel-l">Dites le moyen avec le gérondif</div><div class="jr-rappel-x"><b>En réservant</b> après le quinze septembre, je paie le tarif de basse saison.</div></div>
+       </div>
      </div>
 
      <div id="jrChat" class="hidden">
        <div class="jr-fil" id="jrFil" aria-live="polite"></div>
        <div class="jr-mic hidden" id="jrMicZone">
-         <button id="jrMic" type="button" onclick="jrParler()" aria-label="Parler">🎤</button>
+         <button id="jrMic" type="button" onclick="jrParler()" aria-label="Parler"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"></rect><path d="M5.5 11.5a6.5 6.5 0 0013 0M12 18v3"></path></svg></button>
          <span class="jr-mic-l" id="jrMicLbl">Touchez pour parler</span>
        </div>
        <div class="jr-saisie">

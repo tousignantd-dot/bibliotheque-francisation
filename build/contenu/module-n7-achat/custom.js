@@ -33,55 +33,51 @@
    <div class="card custom" id="jeu-de-role">
      <div class="c-hdr"><span class="tag" style="background:#7E3F98">Jeu de rôle</span><span class="ctit" style="color:#7E3F98">Réclamez auprès du commerçant</span></div>
      <p class="lead">L'assistant joue <b>la personne au comptoir du service à la clientèle</b>. Elle n'est pas votre ennemie : elle applique ce qu'on lui a appris, et « c'est de l'usure normale » est la première phrase qu'elle a apprise. Elle cède devant un fait daté, jamais devant un ton. À vous de donner les dates, les chiffres et le nom de la garantie. Vouvoyez-la du début à la fin.</p>
-     <div class="jr-grid">
-       ${ROLE_CAS.map(c=>`
-       <div class="jr-log">
-         <div class="jr-log-h">${esc(c.titre)}</div>
-         <div class="jr-log-a">${c.txt}</div>
-       </div>`).join('')}
+     <p class="lead">Choisissez votre situation et votre rôle</p>
+     <div class="jr-annonces" id="jrLogs">
+       ${ROLE_CAS.map((c,i)=>`<button class="jr-opt jr-tuile${i===0?' on':''}" type="button" data-log="${c.id}" onclick="jrChoisir('log','${c.id}')">
+         <span class="jr-band"><span class="jr-band-off">Choix ${i+1}</span><span class="jr-band-on"><svg viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5l4 4 8-9"></path></svg> Votre choix</span></span>
+         <span class="jr-tuile-c"><span class="jr-tuile-t">${esc(c.titre)}</span><span class="jr-tuile-d">${c.txt}</span></span>
+       </button>`).join('')}
      </div>
-     <div class="jr-sub">Les huit sujets à couvrir</div>
-     <div class="jr-sujets">
-       ${ROLE_SUJETS.map(s=>`<div class="jr-sujet"><span class="jr-box"></span>${esc(s)}</div>`).join('')}
-     </div>
-     <div class="jr-gram">
-       <div class="jr-gram-t">Réutilisez ce que vous venez d'apprendre</div>
-       Décrivez avec les trois coordonnées :
-       <span class='savoir-ex'>Un <b>cognement</b>, <b>à froid</b>, <b>systématiquement</b> au passage des rapports.</span>
-       Rangez les deux passés dans l'ordre :
-       <span class='savoir-ex'>Quand j'ai vu la flaque, le bruit <b>avait</b> déjà <b>commencé</b>.</span>
-       Mettez en avant ce qui compte :
-       <span class='savoir-ex'><b>Ce que</b> je demande, <b>c'est</b> la réparation. · <b>C'est</b> la garantie légale <b>qui</b> s'applique.</span>
-       Demandez au conditionnel :
-       <span class='savoir-ex'><b>Accepteriez-vous</b> de faire réparer sans frais ? · Me <b>passeriez</b>-vous une autre voiture en attendant ?</span>
-       Annoncez la suite au futur, jamais en menace :
-       <span class='savoir-ex'>Sans réponse d'ici vendredi, je vous <b>écrirai</b>.</span>
-     </div>
-
-     <div class="jr-sep"></div>
-     <div class="jr-sub">Choisissez votre situation et votre rôle</div>
-     <div class="jr-choix">
-       <div class="jr-choix-l">Quel dossier ?</div>
-       <div class="jr-opts" id="jrLogs">
-         ${ROLE_CAS.map((c,i)=>`<button class="jr-opt${i===0?' on':''}" type="button" data-log="${c.id}" onclick="jrChoisir('log','${c.id}')">${esc(c.titre)}</button>`).join('')}
-       </div>
-       <div class="jr-choix-l">Vous jouez qui ?</div>
-       <div class="jr-opts" id="jrRoles">
+     <div class="jr-reglages">
+       <div class="jr-carte">
+         <div class="jr-champ-l">Vous jouez qui ?</div>
+         <div class="jr-tuiles" id="jrRoles">
          <button class="jr-opt on" type="button" data-role="ernestine" onclick="jrChoisir('role','ernestine')">Le client qui réclame</button>
          <button class="jr-opt" type="button" data-role="commercant" onclick="jrChoisir('role','commercant')">La personne au comptoir</button>
        </div>
-       <div class="jr-choix-l">Comment ?</div>
-       <div class="jr-opts" id="jrModes">
-         <button class="jr-opt on" type="button" data-mode="texte" onclick="jrModeVoix(false)">✍️ Écrire</button>
-         <button class="jr-opt" type="button" data-mode="voix" onclick="jrModeVoix(true)">🎤 Parler</button>
        </div>
-       <button class="btn btn-pri" id="jrStart" type="button" onclick="jrDemarrer()" style="margin-top:14px">Commencer la discussion</button>
+       <div class="jr-carte">
+         <div class="jr-champ-l">Comment ?</div>
+         <div class="jr-tuiles" id="jrModes">
+         <button class="jr-opt on" type="button" data-mode="texte" onclick="jrModeVoix(false)"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4l10-10-4-4L4 16v4z"></path><path d="M14 6l4 4"></path></svg><span>J'écris</span></button>
+         <button class="jr-opt" type="button" data-mode="voix" onclick="jrModeVoix(true)"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"></rect><path d="M5.5 11.5a6.5 6.5 0 0013 0M12 18v3"></path></svg><span>Je parle</span></button>
+       </div>
+       </div>
+     </div>
+     <div class="jr-bande">
+       <div>
+         <div class="jr-bande-t">Les huit sujets à couvrir</div>
+         <p class="jr-bande-p">${ROLE_SUJETS.map((s,i)=>i?s.charAt(0).toLowerCase()+s.slice(1):s).join(', ')}.</p>
+       </div>
+       <button class="btn btn-pri" id="jrStart" type="button" onclick="jrDemarrer()">Commencer la discussion</button>
+     </div>
+     <div class="jr-rappel">
+       <div class="jr-rappel-t">Réutilisez ce que vous venez d'apprendre</div>
+       <div class="jr-rappel-g">
+         <div><div class="jr-rappel-l">Décrivez avec les trois coordonnées</div><div class="jr-rappel-x">Un <b>cognement</b>, <b>à froid</b>, <b>systématiquement</b> au passage des rapports.</div></div>
+         <div><div class="jr-rappel-l">Rangez les deux passés dans l'ordre</div><div class="jr-rappel-x">Quand j'ai vu la flaque, le bruit <b>avait</b> déjà <b>commencé</b>.</div></div>
+         <div><div class="jr-rappel-l">Mettez en avant ce qui compte</div><div class="jr-rappel-x"><b>Ce que</b> je demande, <b>c'est</b> la réparation. · <b>C'est</b> la garantie légale <b>qui</b> s'applique.</div></div>
+         <div><div class="jr-rappel-l">Demandez au conditionnel</div><div class="jr-rappel-x"><b>Accepteriez-vous</b> de faire réparer sans frais ? · Me <b>passeriez</b>-vous une autre voiture en attendant ?</div></div>
+         <div><div class="jr-rappel-l">Annoncez la suite au futur, jamais en menace</div><div class="jr-rappel-x">Sans réponse d'ici vendredi, je vous <b>écrirai</b>.</div></div>
+       </div>
      </div>
 
      <div id="jrChat" class="hidden">
        <div class="jr-fil" id="jrFil" aria-live="polite"></div>
        <div class="jr-mic hidden" id="jrMicZone">
-         <button id="jrMic" type="button" onclick="jrParler()" aria-label="Parler">🎤</button>
+         <button id="jrMic" type="button" onclick="jrParler()" aria-label="Parler"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"></rect><path d="M5.5 11.5a6.5 6.5 0 0013 0M12 18v3"></path></svg></button>
          <span class="jr-mic-l" id="jrMicLbl">Touchez pour parler</span>
        </div>
        <div class="jr-saisie">

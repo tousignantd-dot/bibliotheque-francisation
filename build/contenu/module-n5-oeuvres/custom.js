@@ -33,59 +33,53 @@
    <div class="card custom" id="jeu-de-role">
      <div class="c-hdr"><span class="tag" style="background:#7E3F98">Jeu de rôle</span><span class="ctit" style="color:#7E3F98">Parler d'une œuvre à quelqu'un qui ne la connaît pas</span></div>
      <p class="lead">L'assistant joue la personne en face de vous : Karim Belkacem sur le trottoir devant le cinéma, Nadia Ferland au comptoir de la bibliothèque, ou Gilberte Sanschagrin qui anime le club du jeudi. Aucun des trois ne connaît votre œuvre, aucun ne devine, et aucun ne se contentera d'un « c'était bon » : on vous demandera une fois pourquoi. Vous pouvez aussi renverser les rôles et tenir vous-même le comptoir, pendant que l'assistant joue un membre du club qui s'exprime mal.</p>
-     <div class="jr-grid">
-       ${ROLE_CAS.map(c=>`
-       <div class="jr-log">
-         <div class="jr-log-h">${esc(c.titre)}</div>
-         <div class="jr-log-a">${c.txt}</div>
-       </div>`).join('')}
+     <p class="lead">Choisissez la situation et qui vous avez en face</p>
+     <div class="jr-annonces" id="jrLogs">
+       ${ROLE_CAS.map((c,i)=>`<button class="jr-opt jr-tuile${c.id==='club'?' on':''}" type="button" data-log="${c.id}" onclick="jrChoisir('log','${c.id}')">
+         <span class="jr-band"><span class="jr-band-off">Choix ${i+1}</span><span class="jr-band-on"><svg viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5l4 4 8-9"></path></svg> Votre choix</span></span>
+         <span class="jr-tuile-c"><span class="jr-tuile-t">${esc(c.titre)}</span><span class="jr-tuile-d">${c.txt}</span></span>
+       </button>`).join('')}
      </div>
-     <div class="jr-sub">Les onze choses à faire avant la fin de la rencontre</div>
-     <div class="jr-sujets">
-       ${ROLE_SUJETS.map(s=>`<div class="jr-sujet"><span class="jr-box"></span>${esc(s)}</div>`).join('')}
-     </div>
-     <div class="jr-gram">
-       <div class="jr-gram-t">Réutilisez ce que vous venez d'apprendre</div>
-       Racontez l'histoire au présent, un moment après l'autre :
-       <span class='savoir-ex'>Elle <b>arrive</b> au village. Elle <b>ouvre</b> la maison de sa mère. Elle <b>trouve</b> une boîte de lettres.</span>
-       Recollez vos phrases avec qui, que, où :
-       <span class='savoir-ex'>C'est une femme <b>qui</b> revient dans le village <b>qu'</b>elle a quitté il y a vingt ans. · Le jour <b>où</b> elle ouvre la boîte, tout change.</span>
-       Reprenez l'œuvre sans vous répéter :
-       <span class='savoir-ex'>C'est un album de bande dessinée. <b>Ce livre</b> compte cinquante planches. <b>Cette œuvre</b> m'a pris deux soirées.</span>
-       Désignez sans nommer chaque fois :
-       <span class='savoir-ex'>J'ai lu deux albums ; <b>celui que</b> je préfère est le deuxième. · <b>Celle qui</b> a la couverture bleue.</span>
-       Mettez votre avis en avant, et donnez la raison :
-       <span class='savoir-ex'><b>Moi, ce qui m'a touchée, c'est</b> le silence entre les deux sœurs, <b>parce que</b> le temps du livre est le temps du village.</span>
-       Accordez d'abord, tournez ensuite :
-       <span class='savoir-ex'><b>C'est vrai que</b> c'est lent. <b>Par contre</b>, c'est justement ce que j'ai aimé.</span>
-       Et posez la limite, avec le sourire :
-       <span class='savoir-ex'><b>Je m'arrête ici</b> : je ne vous dis pas ce qu'elle choisit. <b>Lisez-le</b>, vous verrez.</span>
-     </div>
-
-     <div class="jr-sep"></div>
-     <div class="jr-sub">Choisissez la situation et qui vous avez en face</div>
-     <div class="jr-choix">
-       <div class="jr-choix-l">Quelle situation ?</div>
-       <div class="jr-opts" id="jrLogs">
-         ${ROLE_CAS.map((c,i)=>`<button class="jr-opt${c.id==='club'?' on':''}" type="button" data-log="${c.id}" onclick="jrChoisir('log','${c.id}')">${esc(c.titre)}</button>`).join('')}
-       </div>
-       <div class="jr-choix-l">L'assistant joue qui ?</div>
-       <div class="jr-opts" id="jrRoles">
+     <div class="jr-reglages">
+       <div class="jr-carte">
+         <div class="jr-champ-l">L'assistant joue qui ?</div>
+         <div class="jr-tuiles" id="jrRoles">
          <button class="jr-opt on" type="button" data-role="interlocuteur" onclick="jrChoisir('role','interlocuteur')">La personne en face</button>
          <button class="jr-opt" type="button" data-role="membre" onclick="jrChoisir('role','membre')">Un membre du club (c'est vous qui animez)</button>
        </div>
-       <div class="jr-choix-l">Comment ?</div>
-       <div class="jr-opts" id="jrModes">
-         <button class="jr-opt on" type="button" data-mode="texte" onclick="jrModeVoix(false)">✍️ Écrire</button>
-         <button class="jr-opt" type="button" data-mode="voix" onclick="jrModeVoix(true)">🎤 Parler</button>
        </div>
-       <button class="btn btn-pri" id="jrStart" type="button" onclick="jrDemarrer()" style="margin-top:14px">Commencer la rencontre</button>
+       <div class="jr-carte">
+         <div class="jr-champ-l">Comment ?</div>
+         <div class="jr-tuiles" id="jrModes">
+         <button class="jr-opt on" type="button" data-mode="texte" onclick="jrModeVoix(false)"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4l10-10-4-4L4 16v4z"></path><path d="M14 6l4 4"></path></svg><span>J'écris</span></button>
+         <button class="jr-opt" type="button" data-mode="voix" onclick="jrModeVoix(true)"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"></rect><path d="M5.5 11.5a6.5 6.5 0 0013 0M12 18v3"></path></svg><span>Je parle</span></button>
+       </div>
+       </div>
+     </div>
+     <div class="jr-bande">
+       <div>
+         <div class="jr-bande-t">Les onze choses à faire avant la fin de la rencontre</div>
+         <p class="jr-bande-p">${ROLE_SUJETS.map((s,i)=>i?s.charAt(0).toLowerCase()+s.slice(1):s).join(', ')}.</p>
+       </div>
+       <button class="btn btn-pri" id="jrStart" type="button" onclick="jrDemarrer()">Commencer la rencontre</button>
+     </div>
+     <div class="jr-rappel">
+       <div class="jr-rappel-t">Réutilisez ce que vous venez d'apprendre</div>
+       <div class="jr-rappel-g">
+         <div><div class="jr-rappel-l">Racontez l'histoire au présent, un moment après l'autre</div><div class="jr-rappel-x">Elle <b>arrive</b> au village. Elle <b>ouvre</b> la maison de sa mère. Elle <b>trouve</b> une boîte de lettres.</div></div>
+         <div><div class="jr-rappel-l">Recollez vos phrases avec qui, que, où</div><div class="jr-rappel-x">C'est une femme <b>qui</b> revient dans le village <b>qu'</b>elle a quitté il y a vingt ans. · Le jour <b>où</b> elle ouvre la boîte, tout change.</div></div>
+         <div><div class="jr-rappel-l">Reprenez l'œuvre sans vous répéter</div><div class="jr-rappel-x">C'est un album de bande dessinée. <b>Ce livre</b> compte cinquante planches. <b>Cette œuvre</b> m'a pris deux soirées.</div></div>
+         <div><div class="jr-rappel-l">Désignez sans nommer chaque fois</div><div class="jr-rappel-x">J'ai lu deux albums ; <b>celui que</b> je préfère est le deuxième. · <b>Celle qui</b> a la couverture bleue.</div></div>
+         <div><div class="jr-rappel-l">Mettez votre avis en avant, et donnez la raison</div><div class="jr-rappel-x"><b>Moi, ce qui m'a touchée, c'est</b> le silence entre les deux sœurs, <b>parce que</b> le temps du livre est le temps du village.</div></div>
+         <div><div class="jr-rappel-l">Accordez d'abord, tournez ensuite</div><div class="jr-rappel-x"><b>C'est vrai que</b> c'est lent. <b>Par contre</b>, c'est justement ce que j'ai aimé.</div></div>
+         <div><div class="jr-rappel-l">Et posez la limite, avec le sourire</div><div class="jr-rappel-x"><b>Je m'arrête ici</b> : je ne vous dis pas ce qu'elle choisit. <b>Lisez-le</b>, vous verrez.</div></div>
+       </div>
      </div>
 
      <div id="jrChat" class="hidden">
        <div class="jr-fil" id="jrFil" aria-live="polite"></div>
        <div class="jr-mic hidden" id="jrMicZone">
-         <button id="jrMic" type="button" onclick="jrParler()" aria-label="Parler">🎤</button>
+         <button id="jrMic" type="button" onclick="jrParler()" aria-label="Parler"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"></rect><path d="M5.5 11.5a6.5 6.5 0 0013 0M12 18v3"></path></svg></button>
          <span class="jr-mic-l" id="jrMicLbl">Touchez pour parler</span>
        </div>
        <div class="jr-saisie">

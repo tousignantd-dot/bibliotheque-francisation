@@ -32,55 +32,51 @@
    <div class="card custom" id="jeu-de-role">
      <div class="c-hdr"><span class="tag" style="background:#7E3F98">Jeu de rôle</span><span class="ctit" style="color:#7E3F98">Animez la rencontre</span></div>
      <p class="lead">L'assistant joue <b>votre coéquipier</b>. Il a ses raisons, il ne les donne pas toutes du premier coup, et il n'aime pas beaucoup se faire dire qu'il a tort. Il répond bien aux questions précises et aux reformulations — beaucoup moins aux reproches.</p>
-     <div class="jr-grid">
-       ${ROLE_CAS.map(c=>`
-       <div class="jr-log">
-         <div class="jr-log-h">${esc(c.titre)}</div>
-         <div class="jr-log-a">${c.txt}</div>
-       </div>`).join('')}
+     <p class="lead">Choisissez votre situation et votre rôle</p>
+     <div class="jr-annonces" id="jrLogs">
+       ${ROLE_CAS.map((c,i)=>`<button class="jr-opt jr-tuile${i===0?' on':''}" type="button" data-log="${c.id}" onclick="jrChoisir('log','${c.id}')">
+         <span class="jr-band"><span class="jr-band-off">Choix ${i+1}</span><span class="jr-band-on"><svg viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5l4 4 8-9"></path></svg> Votre choix</span></span>
+         <span class="jr-tuile-c"><span class="jr-tuile-t">${esc(c.titre)}</span><span class="jr-tuile-d">${c.txt}</span></span>
+       </button>`).join('')}
      </div>
-     <div class="jr-sub">Les sept sujets à couvrir</div>
-     <div class="jr-sujets">
-       ${ROLE_SUJETS.map(s=>`<div class="jr-sujet"><span class="jr-box"></span>${esc(s)}</div>`).join('')}
-     </div>
-     <div class="jr-gram">
-       <div class="jr-gram-t">Réutilisez ce que vous venez d'apprendre</div>
-       Demandez poliment :
-       <span class='savoir-ex'><b>Pourrais-tu</b> préciser ce que tu comptes, exactement ?</span>
-       Reformulez pour faire confirmer :
-       <span class='savoir-ex'><b>Autrement dit</b>, tu préfères une donnée à nous plutôt qu'un chiffre repris ailleurs.</span>
-       Accordez, puis maintenez :
-       <span class='savoir-ex'><b>Bien que</b> ta méthode <b>soit</b> plus rapide, elle ne mesure pas ce qu'on cherche.</span>
-       Mettez en relief :
-       <span class='savoir-ex'><b>Ce qu'</b>on cherche, <b>c'est</b> une différence entre deux rues.</span>
-       Changez de point :
-       <span class='savoir-ex'><b>Quant au</b> partage des rues, on décidera samedi matin.</span>
-     </div>
-
-     <div class="jr-sep"></div>
-     <div class="jr-sub">Choisissez votre situation et votre rôle</div>
-     <div class="jr-choix">
-       <div class="jr-choix-l">Quelle situation ?</div>
-       <div class="jr-opts" id="jrLogs">
-         ${ROLE_CAS.map((c,i)=>`<button class="jr-opt${i===0?' on':''}" type="button" data-log="${c.id}" onclick="jrChoisir('log','${c.id}')">${esc(c.titre)}</button>`).join('')}
-       </div>
-       <div class="jr-choix-l">Vous jouez qui ?</div>
-       <div class="jr-opts" id="jrRoles">
+     <div class="jr-reglages">
+       <div class="jr-carte">
+         <div class="jr-champ-l">Vous jouez qui ?</div>
+         <div class="jr-tuiles" id="jrRoles">
          <button class="jr-opt on" type="button" data-role="animateur" onclick="jrChoisir('role','animateur')">La personne qui anime</button>
          <button class="jr-opt" type="button" data-role="coequipier" onclick="jrChoisir('role','coequipier')">Le coéquipier</button>
        </div>
-       <div class="jr-choix-l">Comment ?</div>
-       <div class="jr-opts" id="jrModes">
-         <button class="jr-opt on" type="button" data-mode="texte" onclick="jrModeVoix(false)">✍️ Écrire</button>
-         <button class="jr-opt" type="button" data-mode="voix" onclick="jrModeVoix(true)">🎤 Parler</button>
        </div>
-       <button class="btn btn-pri" id="jrStart" type="button" onclick="jrDemarrer()" style="margin-top:14px">Commencer la rencontre</button>
+       <div class="jr-carte">
+         <div class="jr-champ-l">Comment ?</div>
+         <div class="jr-tuiles" id="jrModes">
+         <button class="jr-opt on" type="button" data-mode="texte" onclick="jrModeVoix(false)"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4l10-10-4-4L4 16v4z"></path><path d="M14 6l4 4"></path></svg><span>J'écris</span></button>
+         <button class="jr-opt" type="button" data-mode="voix" onclick="jrModeVoix(true)"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"></rect><path d="M5.5 11.5a6.5 6.5 0 0013 0M12 18v3"></path></svg><span>Je parle</span></button>
+       </div>
+       </div>
+     </div>
+     <div class="jr-bande">
+       <div>
+         <div class="jr-bande-t">Les sept sujets à couvrir</div>
+         <p class="jr-bande-p">${ROLE_SUJETS.map((s,i)=>i?s.charAt(0).toLowerCase()+s.slice(1):s).join(', ')}.</p>
+       </div>
+       <button class="btn btn-pri" id="jrStart" type="button" onclick="jrDemarrer()">Commencer la rencontre</button>
+     </div>
+     <div class="jr-rappel">
+       <div class="jr-rappel-t">Réutilisez ce que vous venez d'apprendre</div>
+       <div class="jr-rappel-g">
+         <div><div class="jr-rappel-l">Demandez poliment</div><div class="jr-rappel-x"><b>Pourrais-tu</b> préciser ce que tu comptes, exactement ?</div></div>
+         <div><div class="jr-rappel-l">Reformulez pour faire confirmer</div><div class="jr-rappel-x"><b>Autrement dit</b>, tu préfères une donnée à nous plutôt qu'un chiffre repris ailleurs.</div></div>
+         <div><div class="jr-rappel-l">Accordez, puis maintenez</div><div class="jr-rappel-x"><b>Bien que</b> ta méthode <b>soit</b> plus rapide, elle ne mesure pas ce qu'on cherche.</div></div>
+         <div><div class="jr-rappel-l">Mettez en relief</div><div class="jr-rappel-x"><b>Ce qu'</b>on cherche, <b>c'est</b> une différence entre deux rues.</div></div>
+         <div><div class="jr-rappel-l">Changez de point</div><div class="jr-rappel-x"><b>Quant au</b> partage des rues, on décidera samedi matin.</div></div>
+       </div>
      </div>
 
      <div id="jrChat" class="hidden">
        <div class="jr-fil" id="jrFil" aria-live="polite"></div>
        <div class="jr-mic hidden" id="jrMicZone">
-         <button id="jrMic" type="button" onclick="jrParler()" aria-label="Parler">🎤</button>
+         <button id="jrMic" type="button" onclick="jrParler()" aria-label="Parler"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"></rect><path d="M5.5 11.5a6.5 6.5 0 0013 0M12 18v3"></path></svg></button>
          <span class="jr-mic-l" id="jrMicLbl">Touchez pour parler</span>
        </div>
        <div class="jr-saisie">

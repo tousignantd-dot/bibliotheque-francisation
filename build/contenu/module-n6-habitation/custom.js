@@ -34,55 +34,51 @@
    <div class="card custom" id="jeu-de-role">
      <div class="c-hdr"><span class="tag" style="background:#7E3F98">Jeu de rôle</span><span class="ctit" style="color:#7E3F98">Pose tes questions à l'entrepreneur</span></div>
      <p class="lead">L'assistant joue <b>un entrepreneur général pressé et honnête</b>. Il ne ment pas, mais il va vite, il emploie ses mots de métier sans les expliquer, et il répond « ça dépend » à toute question vague. À toi de redire ce que tu as compris, de demander ce qui manque, et d'obtenir des chiffres.</p>
-     <div class="jr-grid">
-       ${ROLE_CAS.map(c=>`
-       <div class="jr-log">
-         <div class="jr-log-h">${esc(c.titre)}</div>
-         <div class="jr-log-a">${c.txt}</div>
-       </div>`).join('')}
+     <p class="lead">Choisis ta situation et ton rôle</p>
+     <div class="jr-annonces" id="jrLogs">
+       ${ROLE_CAS.map((c,i)=>`<button class="jr-opt jr-tuile${i===0?' on':''}" type="button" data-log="${c.id}" onclick="jrChoisir('log','${c.id}')">
+         <span class="jr-band"><span class="jr-band-off">Choix ${i+1}</span><span class="jr-band-on"><svg viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5l4 4 8-9"></path></svg> Votre choix</span></span>
+         <span class="jr-tuile-c"><span class="jr-tuile-t">${esc(c.titre)}</span><span class="jr-tuile-d">${c.txt}</span></span>
+       </button>`).join('')}
      </div>
-     <div class="jr-sub">Les huit sujets à couvrir</div>
-     <div class="jr-sujets">
-       ${ROLE_SUJETS.map(s=>`<div class="jr-sujet"><span class="jr-box"></span>${esc(s)}</div>`).join('')}
-     </div>
-     <div class="jr-gram">
-       <div class="jr-gram-t">Réutilise ce que tu viens d'apprendre</div>
-       Ne répète pas le mot, reprends-le :
-       <span class='savoir-ex'>La fissure ? Je ne veux pas qu'on <b>la</b> répare avant d'avoir réglé la gouttière.</span>
-       Dis qui fait quoi :
-       <span class='savoir-ex'>Vous <b>faites injecter</b> la fissure <b>par</b> un spécialiste, c'est bien ça ?</span>
-       Demande précisément :
-       <span class='savoir-ex'><b>Quel</b> délai en jours ouvrables entre l'injection et le gypse ?</span>
-       Pose une condition :
-       <span class='savoir-ex'><b>Si</b> le permis <b>sort</b> dans dix jours, est-ce que ce sera prêt le 12 ?</span>
-       Demande que ce soit écrit :
-       <span class='savoir-ex'>J'aimerais <b>que</b> vous m'<b>écriviez</b> ça dans la soumission.</span>
-     </div>
-
-     <div class="jr-sep"></div>
-     <div class="jr-sub">Choisis ta situation et ton rôle</div>
-     <div class="jr-choix">
-       <div class="jr-choix-l">Quel sujet ?</div>
-       <div class="jr-opts" id="jrLogs">
-         ${ROLE_CAS.map((c,i)=>`<button class="jr-opt${i===0?' on':''}" type="button" data-log="${c.id}" onclick="jrChoisir('log','${c.id}')">${esc(c.titre)}</button>`).join('')}
-       </div>
-       <div class="jr-choix-l">Tu joues qui ?</div>
-       <div class="jr-opts" id="jrRoles">
+     <div class="jr-reglages">
+       <div class="jr-carte">
+         <div class="jr-champ-l">Tu joues qui ?</div>
+         <div class="jr-tuiles" id="jrRoles">
          <button class="jr-opt on" type="button" data-role="doina" onclick="jrChoisir('role','doina')">Celle qui fait faire</button>
          <button class="jr-opt" type="button" data-role="entrepreneur" onclick="jrChoisir('role','entrepreneur')">L'entrepreneur</button>
        </div>
-       <div class="jr-choix-l">Comment ?</div>
-       <div class="jr-opts" id="jrModes">
-         <button class="jr-opt on" type="button" data-mode="texte" onclick="jrModeVoix(false)">✍️ Écrire</button>
-         <button class="jr-opt" type="button" data-mode="voix" onclick="jrModeVoix(true)">🎤 Parler</button>
        </div>
-       <button class="btn btn-pri" id="jrStart" type="button" onclick="jrDemarrer()" style="margin-top:14px">Commencer la discussion</button>
+       <div class="jr-carte">
+         <div class="jr-champ-l">Comment ?</div>
+         <div class="jr-tuiles" id="jrModes">
+         <button class="jr-opt on" type="button" data-mode="texte" onclick="jrModeVoix(false)"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4l10-10-4-4L4 16v4z"></path><path d="M14 6l4 4"></path></svg><span>J'écris</span></button>
+         <button class="jr-opt" type="button" data-mode="voix" onclick="jrModeVoix(true)"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"></rect><path d="M5.5 11.5a6.5 6.5 0 0013 0M12 18v3"></path></svg><span>Je parle</span></button>
+       </div>
+       </div>
+     </div>
+     <div class="jr-bande">
+       <div>
+         <div class="jr-bande-t">Les huit sujets à couvrir</div>
+         <p class="jr-bande-p">${ROLE_SUJETS.map((s,i)=>i?s.charAt(0).toLowerCase()+s.slice(1):s).join(', ')}.</p>
+       </div>
+       <button class="btn btn-pri" id="jrStart" type="button" onclick="jrDemarrer()">Commencer la discussion</button>
+     </div>
+     <div class="jr-rappel">
+       <div class="jr-rappel-t">Réutilise ce que tu viens d'apprendre</div>
+       <div class="jr-rappel-g">
+         <div><div class="jr-rappel-l">Ne répète pas le mot, reprends-le</div><div class="jr-rappel-x">La fissure ? Je ne veux pas qu'on <b>la</b> répare avant d'avoir réglé la gouttière.</div></div>
+         <div><div class="jr-rappel-l">Dis qui fait quoi</div><div class="jr-rappel-x">Vous <b>faites injecter</b> la fissure <b>par</b> un spécialiste, c'est bien ça ?</div></div>
+         <div><div class="jr-rappel-l">Demande précisément</div><div class="jr-rappel-x"><b>Quel</b> délai en jours ouvrables entre l'injection et le gypse ?</div></div>
+         <div><div class="jr-rappel-l">Pose une condition</div><div class="jr-rappel-x"><b>Si</b> le permis <b>sort</b> dans dix jours, est-ce que ce sera prêt le 12 ?</div></div>
+         <div><div class="jr-rappel-l">Demande que ce soit écrit</div><div class="jr-rappel-x">J'aimerais <b>que</b> vous m'<b>écriviez</b> ça dans la soumission.</div></div>
+       </div>
      </div>
 
      <div id="jrChat" class="hidden">
        <div class="jr-fil" id="jrFil" aria-live="polite"></div>
        <div class="jr-mic hidden" id="jrMicZone">
-         <button id="jrMic" type="button" onclick="jrParler()" aria-label="Parler">🎤</button>
+         <button id="jrMic" type="button" onclick="jrParler()" aria-label="Parler"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"></rect><path d="M5.5 11.5a6.5 6.5 0 0013 0M12 18v3"></path></svg></button>
          <span class="jr-mic-l" id="jrMicLbl">Touche pour parler</span>
        </div>
        <div class="jr-saisie">

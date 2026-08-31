@@ -874,6 +874,68 @@ body{
 .jr-opt{min-height:44px;padding:10px 16px;border-radius:22px;border:1px solid var(--ws-line);background:var(--ws-card);font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;color:var(--ws-ink);cursor:pointer;transition:background .15s,border-color .15s}
 .jr-opt:hover{border-color:var(--sec-color,var(--ws-accent))}
 .jr-opt.on{background:var(--sel-bg);border-color:var(--sel-line);color:var(--sel-ink)}
+/* JR-DESIGN-4A */
+/* ── Jeu de rôle · écran de départ (remise design_handoff_jeu_de_role, 4a) ──
+   Les tuiles gardent `.jr-opt` — c'est ce que balaient jrChoisir() et
+   jrModeVoix(). Ce bloc vient APRÈS `.jr-opt.on` dans la feuille : à
+   spécificité égale, c'est lui qui gagne, et l'annonce choisie échappe donc à
+   la plaque encre pour prendre le filet vert que demande la remise. */
+.jr-annonces{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin:16px 0 0}
+.jr-tuile{display:block;padding:0;min-height:0;border-radius:18px;overflow:hidden;text-align:left;
+  border:1px solid var(--ws-line);background:var(--ws-card);font-weight:600;transition:border-color .14s}
+.jr-tuile.on{background:var(--ws-card);color:var(--ws-ink);
+  border:2px solid var(--sec-color,var(--ws-accent))}
+.jr-tuile:hover{border-color:var(--sec-color,var(--ws-accent))}
+.jr-band{display:flex;align-items:center;gap:8px;padding:12px 20px;font-size:13px;font-weight:900;
+  letter-spacing:.14em;text-transform:uppercase;background:var(--surface-sunken,#FBFBFA);
+  border-bottom:1px solid var(--ws-line);color:var(--ws-sub)}
+.jr-tuile.on .jr-band{background:var(--sec-color,var(--ws-accent));color:#fff;border-bottom-color:transparent}
+.jr-tuile .jr-band-on{display:none}
+.jr-tuile.on .jr-band-on{display:flex;align-items:center;gap:8px}
+.jr-tuile.on .jr-band-off{display:none}
+.jr-tuile-c{display:flex;flex-direction:column;gap:8px;padding:20px}
+.jr-tuile-t{font-size:24px;font-weight:900;color:var(--ws-ink);line-height:1.2}
+.jr-tuile-d{font-size:17px;font-weight:600;color:var(--ws-sub);line-height:1.5}
+.jr-tuile-d b{font-weight:900;color:var(--ws-ink)}
+.jr-tuile.on .jr-tuile-d b{color:var(--sec-color,var(--ws-accent))}
+
+.jr-reglages{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+.jr-carte{border:1px solid var(--ws-line);border-radius:18px;background:var(--ws-card);padding:20px}
+.jr-champ-l{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;
+  color:var(--ws-sub);margin-bottom:12px}
+.jr-tuiles{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.jr-tuiles .jr-opt{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:8px;padding:16px;min-height:96px;border-radius:10px;text-align:center;font-size:17px;font-weight:700}
+.jr-tuiles .jr-opt svg{flex-shrink:0}
+/* La rangée « Écouter sans lire » est posée par greffe_ecouter_sans_lire.py
+   juste après #jrModes : elle tombe donc dans la carte, sous les deux tuiles. */
+.jr-carte #jrEcoute{margin-top:12px}
+.jr-carte #jrEcoute .jr-opt{width:100%;min-height:44px;font-size:15px}
+#jrMic svg{width:26px;height:26px}
+
+.jr-bande{margin-top:16px;display:flex;align-items:center;justify-content:space-between;gap:24px;
+  flex-wrap:wrap;padding:20px;border-radius:18px;background:var(--surface-band,#EDF6F1);
+  border:1px solid var(--border-tint,var(--ws-line))}
+.jr-bande-t{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;
+  color:var(--accent-ink,var(--ws-accent));margin-bottom:4px}
+.jr-bande-p{font-size:17px;font-weight:600;color:var(--ws-ink);max-width:56ch;line-height:1.5}
+.jr-bande .btn{flex-shrink:0;white-space:nowrap;min-height:52px;padding:0 24px;font-size:16px;font-weight:800}
+
+.jr-rappel{margin-top:32px}
+.jr-rappel-t{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;
+  color:var(--ws-sub);margin-bottom:12px}
+.jr-rappel-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(45%,1fr));gap:20px 24px;padding:20px;border-radius:18px;
+  background:var(--surface-band,#EDF6F1);border:1px solid var(--border-tint,var(--ws-line))}
+.jr-rappel-l{font-size:17px;font-weight:600;color:var(--ws-sub)}
+.jr-rappel-x{font-size:17px;font-weight:700;color:var(--ws-ink);margin-top:2px;line-height:1.45}
+/* La structure visée était en gras ; la remise la veut en teinte acier. Le gras
+   reste dans le contenu des modules — c'est la couleur qui porte le repérage. */
+.jr-rappel-x b{font-weight:700;font-style:normal;color:var(--acier-600,#1D6B8F)}
+@media(max-width:900px){
+  .jr-annonces{grid-template-columns:1fr}
+  .jr-reglages,.jr-rappel-g{grid-template-columns:1fr}
+}
+
 /* Le bouton qui lance la conversation prend la couleur de la tâche au lieu de
    l'encre commune : c'est l'action à repérer dans un bloc qui contient déjà
    trois autres boutons noirs. `!important` parce que .btn-pri impose l'encre
@@ -2989,55 +3051,51 @@ function injectCustom(){
    <div class="card custom" id="jeu-de-role">
      <div class="c-hdr"><span class="tag" style="background:#7E3F98">Jeu de rôle</span><span class="ctit" style="color:#7E3F98">Le signalement du dégât</span></div>
      <p class="lead">Vous avez tous les deux la même situation sous les yeux — rien de plus. L'assistant joue l'autre personne et ne donne jamais un renseignement avant qu'on le lui demande. Essayez les deux rôles : au niveau 5, il faut savoir <b>exposer</b> et savoir <b>questionner</b>.</p>
-     <div class="jr-grid">
-       ${ROLE_CAS.map(c=>`
-       <div class="jr-log">
-         <div class="jr-log-h">${esc(c.titre)}</div>
-         <div class="jr-log-a">${c.txt}</div>
-       </div>`).join('')}
+     <p class="lead">Choisissez votre situation et votre rôle</p>
+     <div class="jr-annonces" id="jrLogs">
+       ${ROLE_CAS.map((c,i)=>`<button class="jr-opt jr-tuile${i===0?' on':''}" type="button" data-log="${c.id}" onclick="jrChoisir('log','${c.id}')">
+         <span class="jr-band"><span class="jr-band-off">Choix ${i+1}</span><span class="jr-band-on"><svg viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5l4 4 8-9"></path></svg> Votre choix</span></span>
+         <span class="jr-tuile-c"><span class="jr-tuile-t">${esc(c.titre)}</span><span class="jr-tuile-d">${c.txt}</span></span>
+       </button>`).join('')}
      </div>
-     <div class="jr-sub">Les sept sujets à couvrir</div>
-     <div class="jr-sujets">
-       ${ROLE_SUJETS.map(s=>`<div class="jr-sujet"><span class="jr-box"></span>${esc(s)}</div>`).join('')}
-     </div>
-     <div class="jr-gram">
-       <div class="jr-gram-t">Réutilisez ce que vous venez d'apprendre</div>
-       Plantez le décor à l'imparfait :
-       <span class='savoir-ex'>Il <b>faisait</b> encore noir et l'eau <b>coulait</b> déjà.</span>
-       Racontez l'événement au passé composé :
-       <span class='savoir-ex'>Je <b>me suis levée</b> à six heures et j'<b>ai mis</b> une chaudière.</span>
-       Dites la simultanéité avec un gérondif :
-       <span class='savoir-ex'><b>En rentrant</b> du travail, j'ai vu que la tache avait doublé.</span>
-       Mettez en avant l'essentiel :
-       <span class='savoir-ex'><b>Ce qui</b> m'inquiète, <b>c'est</b> l'humidité dans le matelas.</span>
-       Terminez par une demande justifiée :
-       <span class='savoir-ex'>Trois nuits sans chambre : <b>par conséquent</b>, je demande une réduction de loyer.</span>
-     </div>
-
-     <div class="jr-sep"></div>
-     <div class="jr-sub">Choisissez votre situation et votre rôle</div>
-     <div class="jr-choix">
-       <div class="jr-choix-l">Quel dégât ?</div>
-       <div class="jr-opts" id="jrLogs">
-         ${ROLE_CAS.map((c,i)=>`<button class="jr-opt${i===0?' on':''}" type="button" data-log="${c.id}" onclick="jrChoisir('log','${c.id}')">${esc(c.titre)}</button>`).join('')}
-       </div>
-       <div class="jr-choix-l">Vous jouez qui ?</div>
-       <div class="jr-opts" id="jrRoles">
+     <div class="jr-reglages">
+       <div class="jr-carte">
+         <div class="jr-champ-l">Vous jouez qui ?</div>
+         <div class="jr-tuiles" id="jrRoles">
          <button class="jr-opt on" type="button" data-role="locataire" onclick="jrChoisir('role','locataire')">La personne qui a le dégât</button>
          <button class="jr-opt" type="button" data-role="proprietaire" onclick="jrChoisir('role','proprietaire')">Le ou la propriétaire</button>
        </div>
-       <div class="jr-choix-l">Comment ?</div>
-       <div class="jr-opts" id="jrModes">
-         <button class="jr-opt on" type="button" data-mode="texte" onclick="jrModeVoix(false)">✍️ Écrire</button>
-         <button class="jr-opt" type="button" data-mode="voix" onclick="jrModeVoix(true)">🎤 Parler</button>
        </div>
-       <button class="btn btn-pri" id="jrStart" type="button" onclick="jrDemarrer()" style="margin-top:14px">Commencer l'appel</button>
+       <div class="jr-carte">
+         <div class="jr-champ-l">Comment ?</div>
+         <div class="jr-tuiles" id="jrModes">
+         <button class="jr-opt on" type="button" data-mode="texte" onclick="jrModeVoix(false)"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4l10-10-4-4L4 16v4z"></path><path d="M14 6l4 4"></path></svg><span>J'écris</span></button>
+         <button class="jr-opt" type="button" data-mode="voix" onclick="jrModeVoix(true)"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"></rect><path d="M5.5 11.5a6.5 6.5 0 0013 0M12 18v3"></path></svg><span>Je parle</span></button>
+       </div>
+       </div>
+     </div>
+     <div class="jr-bande">
+       <div>
+         <div class="jr-bande-t">Les sept sujets à couvrir</div>
+         <p class="jr-bande-p">${ROLE_SUJETS.map((s,i)=>i?s.charAt(0).toLowerCase()+s.slice(1):s).join(', ')}.</p>
+       </div>
+       <button class="btn btn-pri" id="jrStart" type="button" onclick="jrDemarrer()">Commencer l'appel</button>
+     </div>
+     <div class="jr-rappel">
+       <div class="jr-rappel-t">Réutilisez ce que vous venez d'apprendre</div>
+       <div class="jr-rappel-g">
+         <div><div class="jr-rappel-l">Plantez le décor à l'imparfait</div><div class="jr-rappel-x">Il <b>faisait</b> encore noir et l'eau <b>coulait</b> déjà.</div></div>
+         <div><div class="jr-rappel-l">Racontez l'événement au passé composé</div><div class="jr-rappel-x">Je <b>me suis levée</b> à six heures et j'<b>ai mis</b> une chaudière.</div></div>
+         <div><div class="jr-rappel-l">Dites la simultanéité avec un gérondif</div><div class="jr-rappel-x"><b>En rentrant</b> du travail, j'ai vu que la tache avait doublé.</div></div>
+         <div><div class="jr-rappel-l">Mettez en avant l'essentiel</div><div class="jr-rappel-x"><b>Ce qui</b> m'inquiète, <b>c'est</b> l'humidité dans le matelas.</div></div>
+         <div><div class="jr-rappel-l">Terminez par une demande justifiée</div><div class="jr-rappel-x">Trois nuits sans chambre : <b>par conséquent</b>, je demande une réduction de loyer.</div></div>
+       </div>
      </div>
 
      <div id="jrChat" class="hidden">
        <div class="jr-fil" id="jrFil" aria-live="polite"></div>
        <div class="jr-mic hidden" id="jrMicZone">
-         <button id="jrMic" type="button" onclick="jrParler()" aria-label="Parler">🎤</button>
+         <button id="jrMic" type="button" onclick="jrParler()" aria-label="Parler"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"></rect><path d="M5.5 11.5a6.5 6.5 0 0013 0M12 18v3"></path></svg></button>
          <span class="jr-mic-l" id="jrMicLbl">Touchez pour parler</span>
        </div>
        <div class="jr-saisie">
@@ -3405,6 +3463,7 @@ function hideErr(id){ const e=document.getElementById(id); if(e)e.classList.remo
 // Le client ne connaît que la partie publique des annonces. Ce que sait le
 // personnage joué par l'assistant vit dans server.py — sinon un coup d'œil au
 // code source de la page suffirait à vider l'exercice de son sens.
+const JR_MICRO = '<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"></rect><path d="M5.5 11.5a6.5 6.5 0 0013 0M12 18v3"></path></svg>';
 const JR = {log:'plafond', role:'locataire', hist:[], occupe:false, voix:false, rec:null};
 
 
@@ -3525,7 +3584,7 @@ async function jrParler(){
   };
   rec.onend=()=>{
     JR.rec=null;
-    btn.classList.remove('rec'); btn.textContent='🎤';
+    btn.classList.remove('rec'); btn.innerHTML=JR_MICRO;
     lbl.textContent='Touche pour parler';
     // Une phrase courte est parfois coupée par la détection de silence avant
     // qu'un résultat final n'arrive : on garde le dernier provisoire.
@@ -3545,7 +3604,7 @@ function jrSansTexte(on){
   if(chat) chat.classList.toggle('jr-sans-texte', on);
   const b=document.getElementById('jrEcouteBtn');
   if(b){ b.classList.toggle('on', on);
-         b.textContent = on ? '👂 Écoute seule — texte caché' : '👂 Écouter sans lire'; }
+         b.textContent = on ? 'Écoute seule — texte caché' : 'Écouter sans lire'; }
   try{ localStorage.setItem('saaf-jr-sans-texte', on?'1':'0'); }catch(e){}
 }
 document.addEventListener('DOMContentLoaded', ()=>{
@@ -3556,7 +3615,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
   row.innerHTML='<button class="jr-opt" id="jrEcouteBtn" type="button"'
     +' data-info="Cache le texte des réponses de l\'assistant : il ne reste que sa voix.'
     +' Le haut-parleur de chaque bulle la rejoue autant de fois qu\'il faut.">'
-    +'👂 Écouter sans lire</button>';
+    +'Écouter sans lire</button>';
   modes.insertAdjacentElement('afterend', row);
   let garde=false;
   try{ garde = localStorage.getItem('saaf-jr-sans-texte')==='1'; }catch(e){}
