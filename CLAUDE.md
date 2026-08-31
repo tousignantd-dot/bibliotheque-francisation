@@ -139,12 +139,18 @@ Le tableau de bord du **groupe**, module par module : `enseignant.html` sert à
 planifier, `fiche-eleve.html` répond à « qu'a fait cette personne ? », et cette
 page-ci à « où en est la classe dans ce module, et qu'est-ce qui m'est arrivé ce
 soir ? ». On y entre par le bouton « Progression des élèves » de l'écran
-« Élèves » du portail, ou par `progression.html?module=<id>` — le module choisi
-reste dans l'adresse, donc une vue se partage par son lien.
+« Élèves » du portail, ou par `progression.html?module=<id>` — **qui désigne la
+classe qu'on vient regarder travailler**, pas la portée du bilan. Celle-ci a son
+propre `?bilan=<id>`, et les deux se partagent par le lien.
 
-- **Deux filtres, et tout en découle** : le module regardé (ou tous) et la
-  période — *aujourd'hui* (la soirée même), *depuis l'ouverture du module*
-  (la `datePrevue` du module **pour ce groupe**), *depuis toujours*.
+- **Deux zones, et elles ne se commandent pas.** « Le bilan » — le module
+  regardé (ou tous) et la période : *aujourd'hui* (la soirée même), *depuis
+  l'ouverture du module* (la `datePrevue` du module **pour ce groupe**),
+  *depuis toujours*. « Travailler avec la classe » — le module à faire, le
+  direct, la séance sans compte. Seule la seconde se verrouille pendant le
+  direct : on doit pouvoir lire le bilan de tout le groupe pendant que la
+  classe répond. Un seul menu faisait les trois métiers jusqu'au 30 août 2026,
+  et son verrou bloquait le bilan par ricochet.
 - Quatre blocs : le bilan en tuiles, une rangée par élève (avancement, taux du
   premier coup, enregistrements, textes, dernière trace, lien vers le dossier),
   les envois de la période lisibles et écoutables sur place, puis la liste des
