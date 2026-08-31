@@ -516,6 +516,10 @@
   // demande **un** tour — ce drapeau empêche qu'un serveur muet fasse tourner
   // drRendre → drTirer → drRendre sans fin.
   let DIRECT_TOUR_ARRET = false;
+  // Sans module choisi, la page montre quand même la classe — sur celui que le
+  // groupe travaille en ce moment. C'est un aperçu, pas le direct : son état
+  // vit à part pour qu'aucun des deux ne lise les chiffres de l'autre.
+  let APERCU = null, APERCU_ID = '', APERCU_DEMANDE = '';
   let DIRECT_ECRITS = [];     // les textes envoyés, relus à chaque tour
   const DIRECT_PAS_MS = 5000;
 
@@ -953,9 +957,31 @@
     majVerrouModule();
     const cible = document.getElementById('pgDirect');
     if (!MODULE) {
-      cible.innerHTML = `<p class="pg-note" style="padding:var(--sp-8) 0 0">
-        <b>Le direct suit un module à la fois.</b> Choisissez-en un ci-dessus pour voir la
-        réussite question par question pendant que la classe répond.</p>`;
+      // Aucun module choisi : la page garde sa vue d'ensemble — le bilan, la
+      // liste des élèves et ce qui bloque restent sur tous les modules — mais
+      // « La classe d'un coup d'œil » s'affiche quand même, sur celui que le
+      // groupe travaille. Sans cela, l'enseignant qui arrive ici et n'ouvre pas
+      // le direct n'a nulle part où lire la réussite question par question.
+      const encours = moduleEnCours();
+      const nom = encours ? titreCourt(moduleDe(encours)?.title || '') : '';
+      if (!encours) {
+        cible.innerHTML = `<p class="pg-note" style="padding:var(--sp-8) 0 0">
+          <b>Le direct suit un module à la fois.</b> Choisissez-en un ci-dessus pour voir la
+          réussite question par question pendant que la classe répond.</p>`;
+        return;
+      }
+      cible.innerHTML = `<div class="dr dr--arret">
+        <p class="pg-note" style="padding:var(--sp-8) 0 0">
+          <b>Aperçu de « ${esc(nom)} »</b>, le module que ce groupe travaille. Le reste de
+          la page couvre tous les modules. Choisissez-en un ci-dessus pour suivre la classe
+          en direct, question par question.
+          <button type="button" class="btn btn--ghost btn--sm" id="drActualiser"
+                  style="margin-left:var(--sp-3)">Actualiser</button></p>
+        ${APERCU && APERCU_ID === String(encours)
+          ? drBlocsClasse(APERCU, false, '')
+          : '<p class="pg-note">Lecture du module en cours…</p>'}
+      </div>`;
+      drApercu(encours);
       return;
     }
     if (DIRECT_FERME) {
@@ -1052,8 +1078,8 @@
 
       `vivant` ne change pas les tableaux, seulement ce qu'on en dit : à l'arrêt,
       l'écran doit avouer qu'il montre un relevé et non l'instant présent. */
-  function drBlocsClasse(d, vivant) {
-    const exos = (d.exercices || []).filter(e => !DIRECT_SECTION || e.section === DIRECT_SECTION);
+  function drBlocsClasse(d, vivant, filtre = DIRECT_SECTION) {
+    const exos = (d.exercices || []).filter(e => !filtre || e.section === filtre);
     const zones = exos.flatMap(ex => (ex.zones || []).map(z => ({ ex, z })));
     const grille = (d.eleves || []).map((e, i) => {
       const k = drClasseDe(e.pct, e.repondu);
@@ -1076,13 +1102,47 @@
 
       ${section('Exercice par exercice',
         zones.length
-          ? `${pluriel(exos.length, 'exercice')} · ${pluriel(zones.length, 'question')} ${DIRECT_SECTION ? 'dans cette section' : 'dans ce module'}. Dépliez un exercice pour voir ses questions ; celui qui passe sous 50 % s’ouvre de lui-même.`
+          ? `${pluriel(exos.length, 'exercice')} · ${pluriel(zones.length, 'question')} ${filtre ? 'dans cette section' : 'dans ce module'}. Dépliez un exercice pour voir ses questions ; celui qui passe sous 50 % s’ouvre de lui-même.`
           : 'Rien encore : personne n’a répondu à une question de cette section.',
         zones.length
           ? `<div class="dr-exos">${exos.map(ex => drCarteExercice(ex)).join('')}</div>`
           : `<p class="pg-note">Les cartes paraissent dès la première réponse envoyée. Rien ne
              remonte d’un module ouvert hors du portail — sans code d’élève, le module ne
              rapporte pas.</p>`)}`;
+  }
+
+  /** Le module que ce groupe travaille en ce moment.
+
+      Trois pistes, dans cet ordre : une séance ouverte (c'est le module de
+      l'heure qui court, sans discussion), sinon le dernier module daté qui
+      n'est pas dans l'avenir, sinon le premier de ce que le groupe suit. */
+  function moduleEnCours() {
+    const ouverte = SEANCES.find(x => MODULES.some(m => String(m.id) === String(x.activityId)));
+    if (ouverte) return String(ouverte.activityId);
+    const dates = MODULES
+      .map(m => ({ id: String(m.id), jour: m.dateVue || m.datePrevue || '' }))
+      .filter(x => x.jour && x.jour <= AUJ)
+      .sort((a, b) => b.jour.localeCompare(a.jour));
+    if (dates.length) return dates[0].id;
+    return MODULES.length ? String(MODULES[0].id) : '';
+  }
+
+  /** Un tour pour l'aperçu — celui qu'on montre sans module choisi.
+
+      Un seul appel, jamais d'horloge : c'est un coup d'œil en arrivant, pas une
+      surveillance. `APERCU_DEMANDE` retient le module déjà demandé, sinon un
+      serveur muet ferait tourner drRendre → drApercu → drRendre sans fin. */
+  async function drApercu(id) {
+    if (!id || APERCU_DEMANDE === String(id)) return;
+    APERCU_DEMANDE = String(id);
+    try {
+      const url = new URL('/api/direct', location.origin);
+      url.searchParams.set('activityId', id);
+      const d = await Prof.fetch(Prof.withGroup(url.pathname + url.search))
+        .then(r => r.ok ? r.json() : null);
+      if (d && !d.error) { APERCU = d; APERCU_ID = String(id); }
+    } catch (e) { /* pas d'aperçu : la page vaut sans lui */ }
+    drRendre();
   }
 
   /** Un tour de direct. Deux appels : les zones, et les textes envoyés. */
@@ -1158,8 +1218,10 @@
     }
     if (e.target.closest('#drActualiser')) {
       // Un tour, à la demande. L'horloge ne repart pas : « fermé » veut dire
-      // que le serveur n'est sollicité que si on le lui demande.
-      drTirer();
+      // que le serveur n'est sollicité que si on le lui demande. Le même bouton
+      // sert l'aperçu, qui n'a pas d'horloge non plus.
+      if (MODULE) { drTirer(); }
+      else { APERCU_DEMANDE = ''; drApercu(moduleEnCours()); }
       return;
     }
     if (e.target.closest('#drRouvrir')) {
@@ -1347,7 +1409,21 @@
   </div>`;
 
   function blocTuiles(mods, progres, envois) {
+    // Deux populations laissent des traces dans les mêmes journaux : les
+    // élèves inscrits au groupe, et les **participants d'une séance sans
+    // compte**, qui portent un identifiant négatif (voir
+    // `_prochain_id_participant` dans server.py). Le compteur les additionnait
+    // au numérateur et n'avait que les inscrits au dénominateur : une classe
+    // de deux participants sur un groupe d'un élève affichait « 2 / 1 ».
+    //
+    // Un participant n'existe que parce qu'il a travaillé — il est donc des
+    // deux côtés de la barre, et le rapport ne peut plus dépasser un. Ce que
+    // le pied de la tuile doit dire, c'est qu'ils sont là : « 3 / 4 » sans un
+    // mot laisserait chercher un quatrième élève sur la liste d'appel.
     const actifs = new Set([...progres.map(p => p.studentId), ...envois.map(e => e.studentId)]);
+    const inscrits = new Set(ELEVES.map(e => e.id));
+    const sansCompte = [...actifs].filter(id => !inscrits.has(id)).length;
+    const total = ELEVES.length + sansCompte;
     const finis = progres.filter(p => p.event === 'exercise_completed'
       && p.zones && p.zonesDone >= p.zones).length;
     const oraux = envois.filter(e => e.genre === 'oral').length;
@@ -1357,7 +1433,9 @@
 
     return section('Le bilan', 'Ce que la période retenue a laissé comme traces.',
       `<div class="pg-tuiles">
-        ${tuile('Élèves actifs', `${actifs.size} / ${ELEVES.length}`, `ont travaillé ${quand}`)}
+        ${tuile('Élèves actifs', `${actifs.size} / ${total}`,
+          `ont travaillé ${quand}`
+          + (sansCompte ? ` · dont ${sansCompte} sans compte` : ''))}
         ${tuile(MODULE ? 'Élèves au bout' : 'Modules terminés', String(finis),
                 MODULE ? 'ont fini ce module' : 'couples élève-module achevés')}
         ${tuile('Enregistrements', String(oraux), `déposés ${quand}`)}
