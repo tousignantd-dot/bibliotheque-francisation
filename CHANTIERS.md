@@ -34,7 +34,7 @@ le **verrou** : on l'inscrit avant de toucher au code, on le raye en finissant.
 
 | Couloir | Répertoire | Fichiers tenus | État |
 |---|---|---|---|
-| `migration-groupes` | dépôt principal | `server.py` (`migrate_multi_groupes`), `data/activities.json`, `build/controles/migration_groupes.py` | fermé — commité dans `main`, **pas encore poussé** |
+| `migration-groupes` | dépôt principal | `server.py` (`migrate_multi_groupes`), `data/activities.json`, `build/controles/migration_groupes.py` | fermé — poussé dans `main` le 31 août 2026 (`d130fcdf7`) |
 
 ## Ce qui s'est croisé, et comment ça s'est joué
 
