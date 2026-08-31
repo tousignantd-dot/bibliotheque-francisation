@@ -298,6 +298,22 @@ button:disabled{cursor:not-allowed}
   .btn{padding:12px 20px}
 }
 </style>
+<!-- INSTALLABLE:début — au gabarit, car les points express se régénèrent tous
+     par build/storyline.py --tous ; une greffe sur le HTML produit serait
+     effacée à la reconstruction suivante. Les modules interactifs, eux,
+     passent par build/greffe_installable.py. -->
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="#6B4FBB">
+<link rel="apple-touch-icon" href="/assets/design-system/icones/icone-180.png">
+<meta name="apple-mobile-web-app-title" content="francis">
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('/sw.js').catch(function () {});
+    });
+  }
+</script>
+<!-- INSTALLABLE:fin -->
 </head>
 <body>
 

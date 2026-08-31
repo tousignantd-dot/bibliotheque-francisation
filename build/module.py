@@ -203,6 +203,7 @@ def construire(slug, verbeux=True, gabarit=None):
     from greffe_reprise import greffe as greffe_reprise
     from greffe_marque import greffe as greffe_marque
     from greffe_transcription import greffe as greffe_transcription
+    from greffe_installable import greffe as greffe_installable
 
     ids = activites_par_slug()
     if slug not in ids:
@@ -215,7 +216,8 @@ def construire(slug, verbeux=True, gabarit=None):
             ('verrou des sections', greffe_sections,    ids[slug]),
             ('reprise de séance',   greffe_reprise,     slug),
             ('identité de marque',  greffe_marque,      slug),
-            ('verrou de transcription', greffe_transcription, ids[slug])]:
+            ('verrou de transcription', greffe_transcription, ids[slug]),
+            ('site installable',    greffe_installable, None)]:
         try:
             html = fonction(html, argument)
         except ValueError as e:
