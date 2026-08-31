@@ -1,0 +1,1371 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Répéter une parole ancienne sans en fausser la date — Point express · 10 minutes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --sol:#FFFFFF; --papier:#FAFAF8; --encre:#17181A; --texte:#3A3D40; --gris:#6E7175;
+  --filet:#D0CFCA; --filet-fin:#E8E7E2;
+  --acc:#17181A; --acc-doux:#EEEEEC; --acc-fonce:#000000;
+  --ambre:#B45309; --ambre-pale:#FBEEDC; --ambre-fonce:#7A3806;
+  --mauve:#6B4FBB;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--papier);color:var(--texte);
+  font-family:'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;font-size:16px;line-height:1.55;
+  -webkit-font-smoothing:antialiased;display:flex;flex-direction:column}
+h1,h2,h3,h4{margin:0;font-family:'Nunito','Arial Rounded MT Bold',sans-serif;color:var(--encre);text-wrap:balance}
+p{margin:0}
+b,strong{font-weight:700;color:var(--encre)}
+button{font-family:inherit;font-size:inherit;cursor:pointer}
+button:disabled{cursor:not-allowed}
+:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+
+/* ── barre du haut : marque, jauge, position ─────────────────────── */
+.tete{background:#FFF;border-bottom:1px solid var(--filet);padding:10px 20px;
+  display:flex;align-items:center;gap:16px;flex-wrap:wrap;flex:0 0 auto;
+  position:sticky;top:0;z-index:5}
+.fr-nom{font-family:'Nunito',sans-serif;font-weight:900;font-size:24px;letter-spacing:-.035em;line-height:1;color:var(--encre);white-space:nowrap;text-decoration:none}
+/* Le « ı » sans point (U+0131) et son disque. Le disque se cale sur CE
+   caractère, jamais sur la largeur du mot : posé à 50% du nom entier, il
+   tombait au-dessus du « n ». `inline-block` et non `inline` — la boîte d'un
+   élément en ligne monte jusqu'à l'ascendante de la police, et le disque se
+   retrouverait au-dessus des lettres. Valeurs de assets/design-system/marque-francis.css. */
+.fr-i{position:relative;display:inline-block}
+.fr-point{position:absolute;left:1px;top:1px;width:6px;height:6px;
+  border-radius:999px;background:var(--mauve)}
+.tete__t{font-size:13px;color:var(--gris);border-left:1px solid var(--filet);padding-left:16px}
+.tete__t b{color:var(--encre);font-weight:600}
+.jauge{flex:1 1 160px;height:5px;border-radius:3px;background:var(--filet-fin);position:relative;min-width:100px}
+.jauge i{position:absolute;top:0;left:0;bottom:0;background:var(--acc);border-radius:3px;
+  transition:width .3s ease;width:0}
+/* ── La langue d'appui ────────────────────────────────────────────────
+   Le sélecteur reste discret : ce n'est pas un réglage qu'on cherche, c'est
+   un secours qu'on trouve. Et l'appui `.ap` se pose SOUS le français, en
+   plus petit et en retrait — jamais à sa place. */
+.appui-zone:empty{display:none}
+.appui-sel{font-family:inherit;font-size:12.5px;color:var(--gris);
+  background:transparent;border:1px solid var(--filet);border-radius:6px;
+  padding:3px 6px;cursor:pointer;max-width:132px}
+.appui-sel:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.ap{display:block;margin-top:6px;padding-left:11px;
+  border-left:2px solid var(--filet);
+  font-size:.88em;line-height:1.5;color:var(--gris);font-style:normal}
+.ap:lang(ar),.ap:lang(fa),.ap:lang(ur){direction:rtl;text-align:right;
+  padding-left:0;padding-right:11px;border-left:0;border-right:2px solid var(--filet)}
+/* ── L'image d'un écran ───────────────────────────────────────────────
+   Format 3:2, la largeur du texte, jamais plus. Une image plus large que
+   le paragraphe qu'elle illustre se lit comme une bannière. */
+.fig{margin:16px 0;display:flex;flex-direction:column;gap:8px}
+/* L'image plante le décor, elle ne s'étudie pas : on la borne en hauteur pour
+   qu'elle ne pousse jamais sous la ligne de flottaison ce qui, lui, s'étudie —
+   le premier extrait à écouter. Vu à l'écran, pas en relisant. */
+.fig img{width:100%;height:auto;max-height:300px;object-fit:cover;
+  object-position:center;display:block;border-radius:8px;
+  border:1px solid var(--filet);background:var(--papier)}
+.fig figcaption{font-size:14px;line-height:1.5;color:var(--gris)}
+.fig figcaption b{color:var(--texte)}
+.pos{font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--gris);
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+.btn-menu{border:1px solid var(--filet);background:#FFF;border-radius:4px;padding:6px 12px;
+  font-size:12.5px;color:var(--texte)}
+.btn-menu:hover{background:var(--papier)}
+
+/* La sortie se voit sans crier : même gabarit que « Les écrans », un cran plus
+   discret, et elle ne devient franche qu'au survol. */
+.btn-sortir{border:1px solid var(--filet);background:#FFF;border-radius:4px;
+  padding:6px 12px;font:inherit;font-size:13px;color:var(--gris);cursor:pointer}
+.btn-sortir:hover{background:var(--papier);color:var(--encre);border-color:var(--encre)}
+.btn-sortir__c{display:none}
+
+/* ── le menu des écrans vus (verrou doux) ────────────────────────── */
+.menu{background:#FFF;border-bottom:1px solid var(--filet);padding:12px 20px;display:none}
+.menu[data-ouvert="1"]{display:block}
+.menu ol{margin:0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:8px}
+.menu button{border:1px solid var(--filet);background:var(--papier);border-radius:4px;
+  padding:7px 12px;font-size:12.5px;text-align:left;max-width:280px;color:var(--texte)}
+.menu button[disabled]{opacity:.4}
+.menu button[aria-current="true"]{border-color:var(--acc);background:var(--acc-doux);
+  color:var(--acc-fonce);font-weight:600}
+.menu .n{font-family:'IBM Plex Mono',monospace;color:var(--gris);margin-right:7px}
+
+/* ── la scène ────────────────────────────────────────────────────── */
+.scene{flex:1 1 auto;display:flex;justify-content:center;padding:34px 20px 20px}
+.ecran{background:#FFF;border:1px solid var(--filet);border-radius:6px;max-width:760px;width:100%;
+  padding:30px 34px 26px;align-self:flex-start}
+.ecran__eye{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--acc)}
+.ecran__t{font-size:27px;font-weight:900;line-height:1.14;margin-top:7px}
+.ecran__p{font-size:16px;margin-top:12px;max-width:62ch}
+.ecran__p + .ecran__p{margin-top:10px}
+
+/* ── un extrait sonore ───────────────────────────────────────────── */
+.son{display:flex;align-items:flex-start;gap:12px;margin-top:16px;padding:12px 14px;
+  background:var(--acc-doux);border-radius:5px}
+.son__go{flex:0 0 auto;width:38px;height:38px;border-radius:50%;border:0;background:var(--acc);
+  position:relative;padding:0}
+.son__go::after{content:"";position:absolute;top:11px;left:14px;border-left:12px solid #FFF;
+  border-top:8px solid transparent;border-bottom:8px solid transparent}
+.son__go[data-joue="1"]::after{top:12px;left:12px;border:0;width:12px;height:14px;
+  background:linear-gradient(to right,#FFF 0 4px,transparent 4px 8px,#FFF 8px 12px)}
+.son__c{flex:1 1 auto;min-width:0}
+.son__qui{font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--acc-fonce)}
+.son__txt{font-size:15px;color:var(--encre);margin-top:3px}
+.son__txt[hidden]{display:none}
+.son__o{display:flex;gap:14px;margin-top:7px;flex-wrap:wrap}
+.son__o button{background:none;border:0;padding:0;font-size:12.5px;color:var(--acc-fonce);
+  text-decoration:underline;text-underline-offset:2px}
+
+/* ── la retenue : ce qu'il faut garder ───────────────────────────── */
+.retenir{border-left:3px solid var(--encre);background:var(--papier);padding:13px 16px;margin-top:18px}
+.retenir .r{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gris)}
+.retenir p{font-size:15.5px;color:var(--encre);margin-top:4px;font-family:'Nunito',sans-serif;font-weight:600}
+
+/* ── la vérification ─────────────────────────────────────────────── */
+.choix{display:flex;flex-direction:column;gap:9px;margin-top:18px}
+.choix button{border:1px solid var(--filet);background:#FFF;border-radius:5px;padding:13px 15px;
+  text-align:left;font-size:15.5px;color:var(--texte);display:flex;gap:11px;align-items:flex-start}
+.choix button:hover:not([disabled]){border-color:var(--encre);background:var(--papier)}
+.choix button .marq{flex:0 0 auto;width:20px;font-weight:800;font-family:'Nunito',sans-serif;color:var(--gris)}
+.choix button[data-etat="juste"]{border-color:var(--acc);background:var(--acc-doux);color:var(--acc-fonce);font-weight:600}
+.choix button[data-etat="juste"] .marq{color:var(--acc)}
+.choix button[data-etat="faux"]{border-color:var(--ambre);background:var(--ambre-pale);color:var(--ambre-fonce)}
+.choix button[data-etat="faux"] .marq{color:var(--ambre)}
+.choix button[data-etat="ecarte"]{opacity:.45}
+
+/* ── le tri : trancher des cas AVANT qu'aucune règle ne soit dite ──
+   L'écran qui distingue un parcours d'une mini-leçon. Pas de glisser-déposer :
+   une rangée par cas, un bouton par colonne — un doigt sur un téléphone ne
+   traîne pas une étiquette à travers l'écran. */
+.tri{margin-top:18px;border:1px solid var(--filet);border-radius:5px;overflow:hidden}
+.tri__tete{display:grid;background:var(--papier);border-bottom:1px solid var(--filet)}
+.tri__tete span{padding:9px 14px;font-size:11.5px;font-weight:700;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--gris);text-align:center}
+.tri__tete span:first-child{text-align:left}
+.tri__l{display:grid;align-items:center;border-top:1px solid var(--filet-fin)}
+.tri__l:first-of-type{border-top:0}
+.tri__mot{padding:10px 14px;font-size:15.5px;color:var(--encre)}
+.tri__mot i{font-style:normal;color:var(--gris);font-size:13px;display:block}
+.tri__c{padding:7px 8px;text-align:center}
+.tri__c button{width:100%;border:1px solid var(--filet);background:#FFF;border-radius:4px;
+  padding:9px 6px;font-size:14px;color:var(--texte)}
+.tri__c button:hover:not([disabled]){border-color:var(--encre);background:var(--papier)}
+.tri__c button[data-etat="juste"]{border-color:var(--acc);background:var(--acc-doux);
+  color:var(--acc-fonce);font-weight:700}
+.tri__c button[data-etat="faux"]{border-color:var(--ambre);background:var(--ambre-pale);
+  color:var(--ambre-fonce)}
+.tri__l[data-fait="1"] .tri__mot{color:var(--gris)}
+.tri__note{grid-column:1/-1;padding:0 14px 12px;font-size:13.5px;color:var(--ambre-fonce)}
+.tri__note b{color:var(--ambre-fonce)}
+/* Un cas tranché juste ne se lit pas en ambre : la note devient une
+   confirmation, pas un avertissement. */
+.tri__l[data-fait="1"] .tri__note,
+.tri__l[data-fait="1"] .tri__note b{color:var(--acc-fonce)}
+.compte{font-size:12.5px;color:var(--gris);margin-top:10px}
+
+/* ── le rattrapage : n'existe que sur erreur ─────────────────────── */
+.rattrap{border:1px solid var(--ambre);border-left-width:3px;background:#FFF;border-radius:5px;
+  padding:15px 17px;margin-top:16px}
+.rattrap .r{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ambre-fonce)}
+.rattrap h4{font-size:17px;font-weight:900;margin-top:4px}
+.rattrap p{font-size:15px;margin-top:8px}
+.rattrap .encore{margin-top:13px;border:1px solid var(--encre);background:#FFF;border-radius:4px;
+  padding:8px 15px;font-family:'Nunito',sans-serif;font-weight:800;font-size:13.5px;color:var(--encre)}
+.juste{border:1px solid var(--acc);border-left-width:3px;background:var(--acc-doux);border-radius:5px;
+  padding:15px 17px;margin-top:16px;color:var(--acc-fonce)}
+.juste .r{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+.juste p{font-size:15px;margin-top:6px;color:var(--acc-fonce)}
+.juste p b{color:var(--acc-fonce)}
+
+/* ── le pied de l'écran ──────────────────────────────────────────── */
+.pied{display:flex;justify-content:space-between;align-items:center;gap:14px;
+  margin-top:26px;padding-top:15px;border-top:1px solid var(--filet-fin)}
+.btn{border:1px solid var(--encre);background:var(--encre);color:#FFF;border-radius:5px;
+  padding:11px 22px;font-family:'Nunito',sans-serif;font-weight:800;font-size:14.5px}
+.btn:disabled{background:var(--filet);border-color:var(--filet);color:#FFF}
+.btn-2{border:1px solid var(--filet);background:#FFF;color:var(--texte);border-radius:5px;
+  padding:11px 18px;font-size:14px}
+.btn-2:hover{border-color:var(--encre);color:var(--encre)}
+.btn-2[hidden]{display:none}
+.consigne{font-size:12.5px;color:var(--gris);text-align:right;flex:1 1 auto}
+
+.fin{max-width:760px;margin:0 auto;text-align:center;padding:40px 0}
+.fin h2{font-size:26px;font-weight:900}
+.fin p{margin-top:10px}
+
+/* ── le cadre de la diapositive ───────────────────────────────────
+   Au-dessus de 900 px, l'écran est une diapositive : largeur bornée, hauteur
+   qui suit ce qu'il y a dedans, et c'est le CORPS qui défile — jamais la
+   page. En dessous, on retombe sur la carte au fil du contenu : un téléphone
+   est en 9:19,5, et un cadre 16:9 y deviendrait une bande au milieu de
+   l'écran.
+   ─────────────────────────────────────────────────────────────── */
+@media (min-width:900px){
+  .scene{align-items:center;padding:24px 24px 28px}
+  /* Le 16:9 STRICT est tombé le 31 août 2026 : sur un portable, il rendait
+     664 px de haut là où la fenêtre en offrait 768, et un écran de tri ou un
+     rattrapage ouvert défilait dans une fente pendant qu'un ruban de gris
+     restait vide dessous. Le rapport n'est plus une hauteur imposée, c'est un
+     PLANCHER — en dessous, une accroche de trois lignes redeviendrait une
+     bande.
+
+     La largeur ne se déduit donc plus de la hauteur : elle est posée, et la
+     hauteur va du plancher 16:9 jusqu'au plafond de la fenêtre. Entre les
+     deux, elle suit le contenu. Le plafond n'est pas décoratif : sans lui,
+     un rattrapage qui s'ouvre pousse « Continuer » sous la ligne de
+     flottaison — la faute déjà payée sur téléphone. */
+  .ecran{
+    --l:min(1180px, 100vw - 48px);
+    width:var(--l);
+    height:auto;
+    min-height:min(calc(100vh - 132px), calc(var(--l) * 9 / 16));
+    max-height:calc(100vh - 132px);
+    max-width:100%;
+    overflow:hidden;
+    padding:30px 44px 22px;
+    display:flex;flex-direction:column;align-self:center;
+    box-shadow:0 1px 3px rgba(23,24,26,.06),0 8px 24px rgba(23,24,26,.05);
+  }
+  .ecran__corps{flex:1 1 auto;min-height:0;overflow-y:auto;padding-right:6px}
+  .ecran__corps::-webkit-scrollbar{width:8px}
+  .ecran__corps::-webkit-scrollbar-thumb{background:var(--filet);border-radius:4px}
+  .pied{flex:0 0 auto;margin-top:16px}
+  .ecran__t{font-size:30px}
+  .ecran__p{font-size:16.5px;max-width:66ch}
+}
+
+@media (max-width:640px){
+  /* L'écran occupe la fenêtre : une carte blanche qui s'arrête à mi-hauteur
+     sur du gris se lit comme une page tronquée. */
+  .ecran{padding:22px 18px 0;border-radius:0;border-left:0;border-right:0;
+    border-bottom:0;min-height:calc(100vh - 49px);display:flex;flex-direction:column}
+  .ecran__corps{flex:1 1 auto}
+  .scene{padding:0}
+  .ecran__t{font-size:22px}
+
+  /* La barre tient sur UNE ligne : sur 375 px, le bouton du menu passait
+     dessous et mangeait quarante pixels avant même le premier mot. */
+  .tete{gap:10px;padding:9px 14px;flex-wrap:nowrap}
+  .tete__t{display:none}
+  .fr-nom{font-size:19px}
+  .jauge{flex:1 1 40px;min-width:40px}
+  .pos{font-size:12px}
+  .btn-menu{padding:6px 10px;font-size:12px;white-space:nowrap}
+  /* « Fermer » écrit prendrait la ligne : sur 375 px, la barre n'a plus de
+     place après la jauge et le menu. La croix garde la porte visible sans
+     rien pousser dessous — le nom complet reste dans l'aria-label. */
+  /* La langue d'appui prend sa part de la ligne, pas plus : à 132 px elle
+     poussait la croix de « Fermer » hors de l'écran sur 375 px — la porte de
+     sortie, précisément ce que la règle ci-dessous protège. À 88 px et 12 px
+     de corps, « Français », « Español » et « English » entrent encore en
+     entier : on rétrécit sans jamais tronquer un nom de langue. */
+  .appui-sel{max-width:88px;font-size:12px;padding:3px 2px}
+  /* Et la barre se resserre — seulement là où le sélecteur est posé, pour ne
+     rien changer aux parcours qui n'en ont pas. Trois pixels par intervalle,
+     six intervalles : les dix-huit pixels qui manquaient. À défaut de `:has`,
+     on retombe sur l'ancien écart et la croix mord de quatre pixels : gênant,
+     jamais bloquant. */
+  .tete:has(.appui-sel){gap:7px}
+  .btn-sortir{padding:6px 9px;font-size:15px;line-height:1}
+  .btn-sortir__l{display:none}
+  .btn-sortir__c{display:inline}
+  .menu button{max-width:none;flex:1 1 100%}
+
+  /* Un tri s'empile. En colonnes, sur 375 px, il reste 73 px pour le mot dès
+     qu'il y a trois colonnes — « En avant-midi » se lit alors à la verticale,
+     une lettre par ligne. Le cas passe donc au-dessus, et les boutons dessous,
+     à égale largeur : ils y gagnent des cibles plus grandes pour le pouce. */
+  .tri__tete{display:none}
+  .tri__l{display:flex;flex-wrap:wrap;padding:4px 10px 0}
+  .tri__mot{flex:1 1 100%;padding:10px 4px 8px}
+  .tri__mot i{display:inline;margin-left:6px}
+  .tri__c{flex:1 1 0;min-width:0;padding:0 3px 10px}
+  .tri__c button{padding:11px 4px}
+  .tri__note{flex:1 1 100%;padding:0 4px 10px}
+
+  /* « Continuer » ne se cherche pas. Sur un téléphone, le pied de l'écran
+     reste au bas de la fenêtre pendant qu'on lit — c'est le seul geste de
+     l'écran, il doit être là où le pouce l'attend. */
+  .pied{position:sticky;bottom:0;background:#FFF;flex-wrap:wrap;
+    margin-top:20px;padding:12px 0 14px;
+    box-shadow:0 -10px 14px -10px rgba(23,24,26,.16)}
+  .consigne{order:3;flex-basis:100%;text-align:left;margin-top:2px}
+  .btn{padding:12px 20px}
+}
+</style>
+</head>
+<body>
+
+<header class="tete">
+  <a class="fr-nom" aria-label="francis" href="../index.html">franc<span class="fr-i" aria-hidden="true">ı<span class="fr-point"></span></span>s</a>
+  <span class="tete__t"><b>Répéter une parole ancienne sans en fausser la date</b> · Point express · 10 minutes</span>
+  <span class="jauge" role="progressbar" aria-label="Progression du parcours"
+        aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="jauge"></i></span>
+  <span class="pos" id="pos">1 / 1</span>
+  <!-- La langue d'appui. Vide — et sans aucun poids — quand le parcours n'en
+       déclare aucune : c'est le cas des points express de la gamme scolaire. -->
+  <span class="appui-zone" id="appui-zone"></span>
+  <button type="button" class="btn-menu" id="btn-menu" aria-expanded="false"
+          aria-controls="menu">Les écrans</button>
+  <!-- Sortir doit être une PORTE VISIBLE : un élève coincé sur un écran qu'il
+       ne comprend pas ne doit pas avoir à deviner que le mot-symbole en haut à
+       gauche est la sortie. Rien ne se perd — le point de reprise le ramène
+       exactement ici. -->
+  <button type="button" class="btn-sortir" id="btn-sortir"
+          aria-label="Fermer le point express"
+          title="Fermer — vous pourrez reprendre où vous êtes."><span
+          class="btn-sortir__l">Fermer</span><span class="btn-sortir__c"
+          aria-hidden="true">✕</span></button>
+</header>
+
+<nav class="menu" id="menu" data-ouvert="0" aria-label="Les écrans du parcours">
+  <ol id="menu-liste"></ol>
+</nav>
+
+<main class="scene"><div class="ecran" id="ecran" tabindex="-1"></div></main>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════════
+   Le moteur d'un parcours autonome.
+
+   Il ne connaît que des ÉCRANS : une liste de données, un type par écran, une
+   mise en page par type. Le contenu vit dans `build/contenu/<slug>/storyline.js`
+   et n'est jamais écrit ici.
+
+   Trois choix s'y lisent, et ce sont les décisions du 30 août 2026 :
+
+   - **verrou doux** : « Continuer » attend que l'élève ait agi, mais le retour
+     en arrière est toujours ouvert et le menu montre les écrans déjà vus ;
+   - **narration écrite** : aucune voix d'accompagnement, seulement les extraits
+     du module de classe, rejoués par chemin absolu ;
+   - **suivi local** : les événements vont dans le `localStorage` du poste. Rien
+     ne part vers le serveur tant que la forme n'est pas acceptée. Le journal se
+     lit dans la console — `__storyline.journal()`.
+   ═══════════════════════════════════════════════════════════════════════ */
+(function () {
+  'use strict';
+
+  var ECRANS = [
+  {
+    "id": "depart",
+    "type": "verif",
+    "eye": "Une question, pour commencer",
+    "menu": "Trois semaines plus tard",
+    "titre": "Lundi le 3, un fournisseur vous dit : « Je vous rappelle demain. »",
+    "consigne": "Nous sommes le 24. Vous écrivez à votre gestionnaire pour expliquer que l'appel n'est jamais venu. Quelle phrase écrivez-vous&nbsp;? Répondez avec ce que vous savez déjà — c'est fait exprès.",
+    "options": [
+      {
+        "txt": "Il m'a dit qu'il me rappellerait le lendemain.",
+        "juste": true
+      },
+      {
+        "txt": "Il m'a dit qu'il me rappellerait demain.",
+        "rat_t": "Le verbe est juste. C'est le mot «&nbsp;demain&nbsp;» qui a été oublié en route.",
+        "rat": "Vous avez bien reculé le verbe. Mais «&nbsp;demain&nbsp;», pour la personne qui vous lit aujourd'hui, veut dire <b>le 25</b>. Votre gestionnaire comprend qu'on attend encore un appel, alors que celui-ci était promis pour le 4."
+      },
+      {
+        "txt": "Il m'a dit qu'il me rappelle demain.",
+        "rat_t": "Celle-là garde la parole telle quelle, comme si elle venait d'être dite.",
+        "rat": "C'est la phrase qu'on écrit quand on rapporte quelque chose entendu il y a dix minutes, et elle est parfaite dans ce cas-là. Trois semaines plus tard, elle donne à la promesse une date qui n'a jamais existé."
+      }
+    ],
+    "pourquoi": "Gardez cette phrase en tête&nbsp;: on y revient au dernier écran, dans une autre situation.",
+    "attente": "Choisissez une réponse pour continuer."
+  },
+  {
+    "id": "tri-reperes",
+    "type": "tri",
+    "eye": "À vous de trancher",
+    "menu": "Six repères",
+    "titre": "Six paroles à rapporter longtemps après. Quel mot peut rester tel quel ?",
+    "consigne": "Chaque phrase a été dite il y a des semaines et vous la rapportez aujourd'hui. Regardez le mot souligné&nbsp;: pour la personne qui vous lira, veut-il encore dire la même chose&nbsp;?",
+    "colonnes": [
+      {
+        "id": "garder",
+        "t": "Il reste tel quel",
+        "b": "Il reste tel quel"
+      },
+      {
+        "id": "deplacer",
+        "t": "Il doit changer",
+        "b": "Il doit changer"
+      }
+    ],
+    "items": [
+      {
+        "txt": "«&nbsp;Je vous envoie le contrat <b>demain</b>.&nbsp;»",
+        "sous": "dit il y a trois semaines",
+        "ok": "deplacer",
+        "rat": "«&nbsp;Demain&nbsp;» se compte à partir du jour où l'on parle. Trois semaines après, il désigne un jour qui n'a rien à voir avec la promesse&nbsp;: il faut écrire <b>le lendemain</b>, ou donner la date.",
+        "pourquoi": "Il devient « le lendemain ». Le jour a bougé."
+      },
+      {
+        "txt": "«&nbsp;Le bureau ferme à <b>16&nbsp;h</b>.&nbsp;»",
+        "sous": "dit le mois dernier, au téléphone",
+        "ok": "garder",
+        "rat": "Une heure d'horloge ne dépend pas du jour où on la dit. Seize heures, c'était seize heures, et ce le sera encore quand on vous relira.",
+        "pourquoi": "Une heure d'horloge ne bouge jamais."
+      },
+      {
+        "txt": "«&nbsp;Je te rappelle <b>ce soir</b>.&nbsp;»",
+        "sous": "dit un lundi, rapporté le jeudi",
+        "ok": "deplacer",
+        "rat": "«&nbsp;Ce soir&nbsp;», jeudi, veut dire jeudi soir. La promesse portait sur le lundi&nbsp;: on écrit <b>le soir même</b>, ou on nomme le jour.",
+        "pourquoi": "Il devient « le soir même »."
+      },
+      {
+        "txt": "«&nbsp;J'ai commencé en <b>2019</b>.&nbsp;»",
+        "sous": "dit à une entrevue, rapporté dans un rapport",
+        "ok": "garder",
+        "rat": "Une année est une date absolue&nbsp;: elle ne se compte pas à partir du moment où l'on parle. Tout ce qui porte un chiffre de calendrier — 2019, le 14 mars, juin — se recopie sans y toucher.",
+        "pourquoi": "Une date de calendrier se recopie telle quelle."
+      },
+      {
+        "txt": "«&nbsp;La réunion est <b>mardi prochain</b>.&nbsp;»",
+        "sous": "dit il y a un mois",
+        "ok": "deplacer",
+        "rat": "«&nbsp;Prochain&nbsp;» veut dire «&nbsp;le premier à venir <i>à partir d'aujourd'hui</i>&nbsp;». Un mois après, ce n'est plus le même mardi&nbsp;: <b>le mardi suivant</b>, ou la date.",
+        "pourquoi": "Il devient « le mardi suivant »."
+      },
+      {
+        "txt": "«&nbsp;Le cours dure <b>deux heures</b>.&nbsp;»",
+        "sous": "dit à l'inscription, rapporté en classe",
+        "ok": "garder",
+        "rat": "C'est une durée, pas un moment. Deux heures restent deux heures, peu importe quand on le dit ou quand on le répète.",
+        "pourquoi": "Une durée n'a pas de point de départ à déplacer."
+      }
+    ],
+    "attente": "Tranchez les six cas pour continuer."
+  },
+  {
+    "id": "deux-calendriers",
+    "type": "notion",
+    "eye": "Ce que vous venez de faire",
+    "menu": "Deux calendriers",
+    "titre": "Vous avez séparé ce qui se compte à partir d'aujourd'hui du reste.",
+    "paras": [
+      "Regardez votre colonne «&nbsp;il reste tel quel&nbsp;»&nbsp;: une heure, une année, une durée. Aucun de ces mots n'a besoin de savoir quel jour on est. Dans l'autre colonne, chaque mot compte les jours <b>à partir de celui qui parle</b> — et celui qui parle n'est plus vous.",
+      "Quand vous rapportez une parole ancienne, il y a donc <b>deux calendriers</b> dans la phrase&nbsp;: celui de la personne, le jour où elle a parlé, et celui de votre lecteur, aujourd'hui. Tout le travail consiste à traduire les repères du premier dans le second.",
+      "<b>Le plus sûr, dans un document de travail, est de donner la date.</b> «&nbsp;Il m'a dit qu'il rappellerait <b>le 4 mars</b>&nbsp;» ne laisse aucun doute, se relit dans six mois, et se vérifie. «&nbsp;Le lendemain&nbsp;» est correct, mais il oblige votre lecteur à retrouver de quel jour on part."
+    ],
+    "retenir": "Demain, ce soir, la semaine prochaine se comptent depuis celui qui parle. Une heure, une date, une durée ne se comptent depuis personne&nbsp;: elles ne bougent pas.",
+    "attente": "Lisez, puis continuez."
+  },
+  {
+    "id": "tri-verbes",
+    "type": "tri",
+    "eye": "À vous de trancher",
+    "menu": "Six verbes",
+    "titre": "Mêmes paroles, autre question : au moment où elle a parlé, était-ce fait ?",
+    "consigne": "Ne pensez pas encore aux temps de verbe. Replacez-vous simplement <b>au moment où la personne a parlé</b>, et demandez-vous ce qu'elle avait devant elle.",
+    "colonnes": [
+      {
+        "id": "venir",
+        "t": "C'était encore à venir",
+        "b": "Encore à venir"
+      },
+      {
+        "id": "fait",
+        "t": "C'était déjà fait",
+        "b": "Déjà fait"
+      }
+    ],
+    "items": [
+      {
+        "txt": "«&nbsp;Je vous rappellerai jeudi.&nbsp;»",
+        "sous": "un fournisseur, au téléphone",
+        "ok": "venir",
+        "rat": "Jeudi n'était pas encore arrivé quand elle a dit cette phrase&nbsp;: l'appel était devant elle. C'est une promesse, et une promesse est toujours à venir.",
+        "pourquoi": "Devant elle : « il a dit qu'il rappellerait »."
+      },
+      {
+        "txt": "«&nbsp;J'ai déposé la demande la semaine passée.&nbsp;»",
+        "sous": "une collègue, en réunion",
+        "ok": "fait",
+        "rat": "Elle raconte ce qu'elle a fait avant de parler. Le dépôt est derrière elle, et il l'est doublement pour vous qui le rapportez aujourd'hui.",
+        "pourquoi": "Derrière elle : « elle a dit qu'elle avait déposé »."
+      },
+      {
+        "txt": "«&nbsp;Je pars à six heures demain matin.&nbsp;»",
+        "sous": "un chauffeur, la veille d'une livraison",
+        "ok": "venir",
+        "rat": "Le verbe est au présent, et c'est ce qui trompe&nbsp;: le présent sert souvent à parler de tout de suite après. Le départ n'avait pas eu lieu quand il l'a annoncé.",
+        "pourquoi": "Devant lui, malgré le présent : « il a dit qu'il partirait »."
+      },
+      {
+        "txt": "«&nbsp;Le colis est parti mardi.&nbsp;»",
+        "sous": "le service à la clientèle, un vendredi",
+        "ok": "fait",
+        "rat": "Mardi précédait le vendredi où la phrase a été dite. Ce qui était déjà passé pour la personne l'est encore plus pour votre lecteur.",
+        "pourquoi": "Derrière : « on m'a dit que le colis était parti »."
+      },
+      {
+        "txt": "«&nbsp;Je vais vous écrire une lettre.&nbsp;»",
+        "sous": "une conseillère, à la fin d'un rendez-vous",
+        "ok": "venir",
+        "rat": "«&nbsp;Je vais&nbsp;» annonce ce qui vient. Rien n'était écrit au moment où elle l'a dit&nbsp;: c'est une intention, donc du devant.",
+        "pourquoi": "Devant elle : « elle a dit qu'elle allait écrire »."
+      },
+      {
+        "txt": "«&nbsp;Je n'ai jamais reçu votre courriel.&nbsp;»",
+        "sous": "un employeur, deux mois avant votre plainte",
+        "ok": "fait",
+        "rat": "Elle parle de tout ce qui s'est passé jusqu'au moment où elle parle. Une absence de réception constatée est un fait déjà accompli, même si le verbe est à la forme négative.",
+        "pourquoi": "Derrière : « il a dit qu'il n'avait jamais reçu »."
+      }
+    ],
+    "attente": "Tranchez les six cas pour continuer."
+  },
+  {
+    "id": "le-test",
+    "type": "notion",
+    "eye": "Ce que vous venez de faire",
+    "menu": "Le test",
+    "titre": "Vous n'avez conjugué aucun verbe. Vous avez seulement regardé où la personne était.",
+    "paras": [
+      "<b>Le test, sur n'importe quelle parole à rapporter&nbsp;:</b> replacez-vous au moment où elle a été dite, et posez une seule question — <i>pour cette personne, à cet instant-là, est-ce que c'était encore à venir, ou déjà fait&nbsp;?</i>",
+      "Encore à venir&nbsp;: le verbe prend la terminaison en <b>-rait</b>. «&nbsp;Il a dit qu'il <b>rappellerait</b>&nbsp;», «&nbsp;elle a dit qu'elle <b>allait</b> écrire&nbsp;». Déjà fait&nbsp;: le verbe prend <b>avait</b> ou <b>était</b> plus le participe. «&nbsp;Elle a dit qu'elle <b>avait déposé</b>&nbsp;», «&nbsp;on m'a dit que le colis <b>était parti</b>&nbsp;».",
+      "Ce que vous venez d'employer porte des noms&nbsp;: la forme en -rait est le <b>conditionnel</b>, et <i>avait</i> + participe le <b>plus-que-parfait</b>. Vous n'avez pas eu besoin de ces noms pour trancher les six cas, mais votre enseignant les emploiera et un correcteur les écrira dans la marge.",
+      "Et le reste — ce qui se passait autour, sans début ni fin nette — reste à l'imparfait, comme dans un récit&nbsp;: «&nbsp;il a dit qu'il <b>était</b> en congé cette semaine-là&nbsp;»."
+    ],
+    "retenir": "Une seule question&nbsp;: à venir pour elle, ou déjà fait&nbsp;? À venir → <b>-rait</b>. Déjà fait → <b>avait</b> ou <b>était</b> + participe.",
+    "attente": "Lisez, puis continuez."
+  },
+  {
+    "id": "ce-quon-ne-sait-pas",
+    "type": "verif",
+    "eye": "Le piège",
+    "menu": "Ce qu'on ne sait pas",
+    "titre": "« Le 2 février, il a dit qu'il était en arrêt de travail. » Il l'est encore ?",
+    "consigne": "Vous lisez cette phrase dans un dossier, aujourd'hui. Que pouvez-vous en conclure&nbsp;?",
+    "options": [
+      {
+        "txt": "Rien sur aujourd'hui&nbsp;: la phrase ne parle que du 2 février.",
+        "juste": true
+      },
+      {
+        "txt": "Qu'il est encore en arrêt de travail.",
+        "rat_t": "C'est la lecture la plus naturelle, et c'est pour ça qu'elle est dangereuse.",
+        "rat": "La phrase rapporte l'état des choses <b>au moment où il a parlé</b>, et rien d'autre. Ce qui s'est passé depuis n'y est pas. Dans un dossier d'assurance ou de ressources humaines, c'est exactement la conclusion qu'il ne faut pas tirer."
+      },
+      {
+        "txt": "Qu'il ne l'est plus, sinon on aurait écrit «&nbsp;est&nbsp;».",
+        "rat_t": "Vous lisez une information là où il n'y en a pas.",
+        "rat": "L'imparfait dit seulement que l'on rapporte&nbsp;: il ne dit ni que ça continue, ni que ça s'est arrêté. Pour savoir où il en est aujourd'hui, il faut une source d'aujourd'hui — un appel, un document daté."
+      }
+    ],
+    "pourquoi": "<b>Une parole rapportée est datée.</b> Elle vous dit ce qui était vrai ce jour-là&nbsp;; elle ne dit jamais ce qui est vrai maintenant. C'est ce qui la rend utile dans un dossier — et ce qui la rend trompeuse quand on l'oublie.",
+    "attente": "Choisissez une réponse pour continuer."
+  },
+  {
+    "id": "la-reclamation",
+    "type": "verif",
+    "eye": "Vérification",
+    "menu": "La réclamation",
+    "titre": "Vous écrivez à l'assureur, six semaines après l'appel. Quelle phrase ?",
+    "consigne": "Le 12 janvier, une agente vous a dit&nbsp;: «&nbsp;Nous avons reçu votre formulaire et vous serez remboursé dans dix jours.&nbsp;» Rien n'est arrivé.",
+    "options": [
+      {
+        "txt": "Le 12 janvier, une agente m'a confirmé que vous aviez reçu mon formulaire et que je serais remboursé dans les dix jours.",
+        "juste": true
+      },
+      {
+        "txt": "Le 12 janvier, une agente m'a confirmé que vous avez reçu mon formulaire et que je serai remboursé dans dix jours.",
+        "rat_t": "Les deux verbes sont restés au moment de l'appel.",
+        "rat": "Écrit ainsi, le délai de dix jours semble courir <b>à partir d'aujourd'hui</b>, et votre lettre perd son argument&nbsp;: c'est justement parce que ces dix jours sont écoulés depuis longtemps que vous écrivez. «&nbsp;Aviez reçu&nbsp;», «&nbsp;serais remboursé&nbsp;»."
+      },
+      {
+        "txt": "Le 12 janvier, une agente m'a confirmé&nbsp;: «&nbsp;Nous avons reçu votre formulaire et vous serez remboursé dans dix jours.&nbsp;»",
+        "rat_t": "Elle n'est pas fautive — mais elle ne fait pas le travail que vous attendez.",
+        "rat": "Citer entre guillemets est permis, et parfois utile. Mais vous n'avez pas l'enregistrement de l'appel&nbsp;: présenter de mémoire une citation mot pour mot vous expose à ce qu'on la conteste. Le rapporter en vos mots, avec la date, est plus solide."
+      }
+    ],
+    "pourquoi": "Une lettre de réclamation vaut par ses dates. La date de l'appel, écrite en tête, et les verbes reculés qui montrent que le délai promis <b>est déjà passé</b>.",
+    "attente": "Choisissez une réponse pour continuer."
+  },
+  {
+    "id": "quand-rien-ne-recule",
+    "type": "notion",
+    "eye": "Ce qui reste",
+    "menu": "Quand rien ne recule",
+    "titre": "Il y a un cas où l'on ne recule rien du tout, et il est fréquent.",
+    "paras": [
+      "On l'a gardé pour la fin exprès&nbsp;: le nommer d'entrée aurait fait croire à deux règles à retenir. Quand vous rapportez une parole <b>qui vaut encore</b>, ou que vous rapportez tout de suite, rien ne bouge&nbsp;: «&nbsp;<i>La secrétaire dit que le bureau ferme à midi.</i>&nbsp;» Elle le dit, c'est vrai maintenant, on n'a rien à reculer.",
+      "Le déclencheur est le verbe qui introduit&nbsp;: <i>elle <b>dit</b> que</i> laisse tout en place, <i>elle <b>a dit</b> que</i> ouvre le calendrier de l'autre. C'est votre premier mot qui décide de toute la suite de la phrase.",
+      "Et même après «&nbsp;a dit&nbsp;», on garde le présent pour ce qui ne dépend d'aucune date&nbsp;: «&nbsp;<i>Le conseiller m'a expliqué que la formation <b>dure</b> huit mois.</i>&nbsp;» La durée d'un programme n'appartient pas au 12 janvier. Reculer ce verbe-là laisserait entendre qu'elle a changé depuis."
+    ],
+    "retenir": "Regardez d'abord votre verbe d'introduction. <b>Au présent, rien ne bouge&nbsp;;</b> au passé, tout se traduit — sauf ce qui reste vrai aujourd'hui.",
+    "attente": "Lisez, puis continuez."
+  },
+  {
+    "id": "le-compte-rendu",
+    "type": "verif",
+    "eye": "Vérification",
+    "menu": "Le compte rendu",
+    "titre": "Le compte rendu de la réunion du 5 mai, écrit le 30. Quelle version tient ?",
+    "consigne": "En réunion, la directrice a dit&nbsp;: «&nbsp;J'ai rencontré le comité hier. Je vous donne ma réponse la semaine prochaine.&nbsp;» Trois versions&nbsp;: une seule est juste d'un bout à l'autre.",
+    "options": [
+      {
+        "txt": "La directrice a indiqué qu'elle avait rencontré le comité la veille et qu'elle donnerait sa réponse la semaine suivante.",
+        "juste": true
+      },
+      {
+        "txt": "La directrice a indiqué qu'elle avait rencontré le comité hier et qu'elle donnerait sa réponse la semaine prochaine.",
+        "rat_t": "Les deux verbes sont bons. Ce sont les deux repères de temps qui sont restés au 5 mai.",
+        "rat": "Vous avez le plus difficile&nbsp;: <i>avait rencontré</i> et <i>donnerait</i> sont exacts. Mais «&nbsp;hier&nbsp;» et «&nbsp;la semaine prochaine&nbsp;» se comptent depuis le lecteur, qui lit le 30&nbsp;: <b>la veille</b>, <b>la semaine suivante</b>."
+      },
+      {
+        "txt": "La directrice a indiqué qu'elle a rencontré le comité la veille et qu'elle donne sa réponse la semaine suivante.",
+        "rat_t": "Les repères sont bons. Ce sont les verbes qui sont restés au 5 mai.",
+        "rat": "C'est l'inverse de l'autre piège, et il est plus visible&nbsp;: «&nbsp;elle donne sa réponse la semaine suivante&nbsp;» n'a pas de sens en français. Une fois «&nbsp;a indiqué&nbsp;» posé, les deux verbes suivent&nbsp;: <b>avait rencontré</b>, <b>donnerait</b>."
+      }
+    ],
+    "pourquoi": "Les deux moitiés se règlent ensemble&nbsp;: <b>les verbes</b> par la question «&nbsp;à venir ou déjà fait&nbsp;?&nbsp;», <b>les repères</b> par la question «&nbsp;depuis quel jour se comptent-ils&nbsp;?&nbsp;».",
+    "attente": "Choisissez une réponse pour continuer."
+  },
+  {
+    "id": "fermeture",
+    "type": "verif",
+    "eye": "La dernière",
+    "menu": "Pour finir",
+    "titre": "On revient au fournisseur du 3 : « Je vous rappelle demain. »",
+    "consigne": "Cette fois, vous n'écrivez pas trois semaines après&nbsp;: vous envoyez un message à votre collègue <b>le 3, en sortant de l'appel</b>, pour qu'il ne le relance pas en double. Que choisissez-vous&nbsp;?",
+    "options": [
+      {
+        "txt": "Il dit qu'il nous rappelle demain — n'écris rien avant jeudi.",
+        "juste": true
+      },
+      {
+        "txt": "Il a dit qu'il nous rappellerait le lendemain — n'écris rien avant jeudi.",
+        "rat_t": "C'est la bonne réponse de l'écran 1 — et elle n'est pas fautive ici non plus.",
+        "rat": "Elle est simplement plus lourde que la situation ne le demande. Vous et votre collègue êtes le 3 tous les deux&nbsp;: «&nbsp;demain&nbsp;» veut dire la même chose pour vous deux, il n'y a aucun calendrier à traduire. Le recul sert à franchir une distance&nbsp;; ici, il n'y en a pas."
+      },
+      {
+        "txt": "Il dit qu'il nous rappellerait le lendemain — n'écris rien avant jeudi.",
+        "rat_t": "Les deux moitiés viennent de deux situations différentes.",
+        "rat": "«&nbsp;Il dit&nbsp;» annonce qu'on ne recule rien, puis «&nbsp;rappellerait&nbsp;» et «&nbsp;le lendemain&nbsp;» reculent quand même. C'est le verbe d'introduction qui commande&nbsp;: une fois qu'il est posé, la phrase entière le suit."
+      }
+    ],
+    "pourquoi": "Vous avez fait les trois choses&nbsp;: regarder le verbe d'introduction, demander «&nbsp;à venir ou déjà fait&nbsp;?&nbsp;» pour chaque verbe, et traduire les repères de temps — <b>ou constater qu'il n'y avait rien à traduire</b>.",
+    "attente": "Choisissez une réponse pour finir."
+  }
+];
+  var APPUI  = [];             // les langues d'appui offertes, [] = aucune
+  var MEDIA  = '/';           // la base des extraits, en chemin absolu
+  var CLE    = 'francis.parcours.il-a-dit-qu-il-etait';
+
+  // ═══ LA LANGUE D'APPUI ═══════════════════════════════════════════════
+  // Trois couches, et une seule bascule ici : le contenu à apprendre (les
+  // phrases françaises, les extraits sonores) ne bouge JAMAIS ; seul l'appui
+  // — consignes, explications, rattrapages, boutons — change de langue.
+  // L'appui s'ajoute SOUS le français, il ne le remplace pas : un élève qui
+  // ne verrait plus que sa langue n'aurait plus rien à apprendre.
+  //
+  // Les phrases fixes du moteur vivent ici, écrites d'avance et relues ; on
+  // ne traduit rien à la volée. Une consigne de sécurité mal traduite dans
+  // une usine n'est pas un défaut d'affichage — et le mode sans assistance,
+  // qui retire déjà la traduction du vocabulaire, ne doit pas emporter avec
+  // lui la langue d'appui, qui est précisément ce que l'entreprise a acheté.
+  var LS_LANGUE = 'francisation-langue';   // la même clé que le vocabulaire
+  var MOTS = {
+    es: { continuer:'Continuar', terminer:'Terminar', precedent:'← Anterior',
+          repondez:'Responda para continuar.', reessayer:'Intentar de nuevo',
+          pascelle:'Esa no.', ralentir:'Más lento', recommencer:'Empezar de nuevo',
+          ecrans:'Las pantallas', appui:'Idioma de apoyo', francais:'Francés',
+          voir:'Ver el texto', cacher:'Ocultar el texto' },
+    en: { continuer:'Continue', terminer:'Finish', precedent:'← Back',
+          repondez:'Answer to continue.', reessayer:'Try again',
+          pascelle:'Not that one.', ralentir:'Slower', recommencer:'Start over',
+          ecrans:'The screens', appui:'Support language', francais:'French',
+          voir:'Show the text', cacher:'Hide the text' }
+  };
+  // Les champs dont l'appui se pose SOUS le français. Tout le reste — le texte
+  // des choix, les colonnes d'un tri — reste en français : c'est la matière.
+  var CHAMPS_APPUI = { titre:1, consigne:1, paras:1, pourquoi:1, retenir:1,
+                       rat:1, rat_t:1, leg:1 };
+
+  function langueLue() {
+    if (!APPUI.length) return '';
+    var v = null;
+    try { v = localStorage.getItem(LS_LANGUE); } catch (e) { return ''; }
+    if (v === null) return '';
+    try { v = JSON.parse(v); } catch (e) { /* valeur écrite sans guillemets */ }
+    for (var k = 0; k < APPUI.length; k++) if (APPUI[k].c === v) return v;
+    return '';
+  }
+  function langueEcrite(c) {
+    try { localStorage.setItem(LS_LANGUE, JSON.stringify(c)); } catch (e) {}
+  }
+  // M('continuer', 'Continuer') — la phrase du moteur, dans la langue choisie.
+  function M(cle, fr) {
+    var L = langueLue();
+    return (L && MOTS[L] && MOTS[L][cle]) || fr;
+  }
+  function sous(fr, ap) {
+    if (!ap) return fr;
+    return fr + '<span class="ap" lang="' + langueLue() + '">' + ap + '</span>';
+  }
+  // Renvoie une COPIE de l'écran, l'appui posé sous le français. L'original
+  // n'est jamais touché : rebasculer en français doit tout rendre intact.
+  function enLangue(e) {
+    var L = langueLue();
+    if (!L || !e[L]) return e;
+    var a = e[L], o = {}, k;
+    for (k in e) if (e.hasOwnProperty(k)) o[k] = e[k];
+    for (k in a) {
+      if (!a.hasOwnProperty(k)) continue;
+      if (k === 'paras' && o.paras) {
+        o.paras = o.paras.map(function (p, n) { return sous(p, a.paras[n]); });
+      } else if ((k === 'options' || k === 'items' || k === 'images') && o[k]) {
+        o[k] = o[k].map(function (x, n) {
+          var y = {}, z, s = (a[k] || [])[n] || {};
+          for (z in x) if (x.hasOwnProperty(z)) y[z] = x[z];
+          for (z in s) if (s.hasOwnProperty(z)) {
+            y[z] = CHAMPS_APPUI[z] ? sous(x[z] || '', s[z]) : s[z];
+          }
+          return y;
+        });
+      } else if (CHAMPS_APPUI[k]) {
+        o[k] = sous(o[k] || '', a[k]);
+      } else {
+        o[k] = a[k];
+      }
+    }
+    return o;
+  }
+
+  var elEcran = document.getElementById('ecran');
+  var elJauge = document.getElementById('jauge');
+  var elPos   = document.getElementById('pos');
+  var elMenu  = document.getElementById('menu');
+  var elListe = document.getElementById('menu-liste');
+  var btnMenu = document.getElementById('btn-menu');
+
+  /* ── l'état, et sa persistance ─────────────────────────────────── */
+  var VIERGE = { i: 0, vus: [], faits: {}, essais: {}, rattrapages: {}, reponses: {}, journal: [] };
+  var etat = JSON.parse(JSON.stringify(VIERGE));
+
+  /* ── L'envoi ────────────────────────────────────────────────────────────
+     Quand l'élève ouvre son point express depuis son portail, l'adresse porte
+     son code et le numéro de l'envoi. Le parcours rapporte alors deux choses,
+     et deux seulement : qu'il a commencé, et qu'il a fini — avec le compte des
+     vérifications réussies seul. **Aucune réponse d'élève ne monte.**
+     Sans ces deux paramètres, tout fonctionne pareil : le suivi reste local.
+     Un parcours ouvert hors du portail ne doit rien casser. */
+  var URL_P = new URLSearchParams(location.search);
+  var CODE = URL_P.get('code') || '';
+  var ENVOI = URL_P.get('envoi') || '';
+
+  function rapporter(quoi, resultat) {
+    if (!CODE || !ENVOI) return;
+    try {
+      fetch('/api/student/envois/' + encodeURIComponent(ENVOI), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code: CODE, etat: quoi, resultat: resultat || null })
+      }).catch(function () { /* hors ligne : le parcours continue */ });
+    } catch (e) { /* idem */ }
+  }
+  try {
+    var brut = JSON.parse(localStorage.getItem(CLE) || 'null');
+    if (brut && typeof brut === 'object') {
+      for (var k in etat) if (brut[k] !== undefined) etat[k] = brut[k];
+    }
+  } catch (e) { /* un navigateur qui refuse le stockage joue quand même */ }
+
+  function garder() {
+    try { localStorage.setItem(CLE, JSON.stringify(etat)); } catch (e) {}
+  }
+
+  /* ── le suivi : un événement par geste, horodaté ───────────────── */
+  var entre = Date.now();
+  function noter(quoi, plus) {
+    var ev = { t: Date.now(), ecran: ECRANS[etat.i] ? ECRANS[etat.i].id : null, quoi: quoi };
+    if (plus) for (var k in plus) ev[k] = plus[k];
+    etat.journal.push(ev);
+    if (etat.journal.length > 400) etat.journal.splice(0, etat.journal.length - 400);
+    garder();
+  }
+
+  /* ── les extraits sonores ──────────────────────────────────────── */
+  var enCours = null;
+  function bloc_son(s) {
+    var d = document.createElement('div');
+    d.className = 'son';
+
+    var go = document.createElement('button');
+    go.type = 'button';
+    go.className = 'son__go';
+    go.setAttribute('aria-label', 'Écouter');
+
+    var c = document.createElement('div');
+    c.className = 'son__c';
+    if (s.qui) {
+      var q = document.createElement('p');
+      q.className = 'son__qui';
+      q.textContent = s.qui;
+      c.appendChild(q);
+    }
+    var t = document.createElement('p');
+    t.className = 'son__txt';
+    t.textContent = s.texte || '';
+    t.hidden = !s.montrer;
+    c.appendChild(t);
+
+    var o = document.createElement('div');
+    o.className = 'son__o';
+
+    var audio = new Audio(MEDIA + s.fichier);
+    audio.preload = 'none';
+
+    go.addEventListener('click', function () {
+      if (!audio.paused) { audio.pause(); return; }
+      if (enCours && enCours !== audio) { enCours.pause(); enCours.currentTime = 0; }
+      enCours = audio;
+      audio.play().then(function () {
+        noter('ecoute', { fichier: s.fichier, vitesse: audio.playbackRate });
+      }).catch(function () {
+        o.insertAdjacentHTML('beforeend',
+          '<span style="font-size:12.5px;color:#7A3806">Extrait indisponible</span>');
+      });
+    });
+    audio.addEventListener('play',  function () { go.setAttribute('data-joue', '1'); });
+    audio.addEventListener('pause', function () { go.removeAttribute('data-joue'); });
+    audio.addEventListener('ended', function () { go.removeAttribute('data-joue'); });
+
+    var lent = document.createElement('button');
+    lent.type = 'button';
+    lent.textContent = M('ralentir', 'Ralentir');
+    lent.addEventListener('click', function () {
+      // Étiré dans le navigateur, jamais re-synthétisé : la décision du projet.
+      var r = audio.playbackRate < 1 ? 1 : 0.75;
+      audio.playbackRate = r;
+      lent.textContent = r < 1 ? 'Vitesse normale' : 'Ralentir';
+      noter('vitesse', { fichier: s.fichier, vitesse: r });
+    });
+    o.appendChild(lent);
+
+    if (s.texte) {
+      var tr = document.createElement('button');
+      tr.type = 'button';
+      tr.textContent = s.montrer ? M('cacher', 'Cacher le texte')
+                                 : M('voir', 'Voir le texte');
+      tr.addEventListener('click', function () {
+        t.hidden = !t.hidden;
+        tr.textContent = t.hidden ? M('voir', 'Voir le texte')
+                                  : M('cacher', 'Cacher le texte');
+        if (!t.hidden) noter('transcription', { fichier: s.fichier });
+      });
+      o.appendChild(tr);
+    }
+
+    c.appendChild(o);
+    d.appendChild(go);
+    d.appendChild(c);
+    return d;
+  }
+
+  // L'image d'un écran. Elle montre ce que dit l'écran — jamais le thème du
+  // parcours : c'est le défaut le plus fréquent des images du dépôt, et le
+  // seul qui ne se voie pas sans mettre l'image et la phrase côte à côte.
+  // Le format est 3:2, comme partout ailleurs ; la légende est facultative et
+  // suit la langue d'appui comme le reste du texte.
+  function bloc_image(im) {
+    var fig = document.createElement('figure');
+    fig.className = 'fig';
+    var img = document.createElement('img');
+    img.src = MEDIA + im.fichier;
+    img.alt = im.alt || '';
+    // Une image qui manque ne doit pas laisser un cadre vide au milieu de
+    // l'écran : on retire la figure entière plutôt que de montrer un trou.
+    img.onerror = function () { if (fig.parentNode) fig.parentNode.removeChild(fig); };
+    fig.appendChild(img);
+    if (im.leg) {
+      var c = document.createElement('figcaption');
+      c.innerHTML = im.leg;
+      fig.appendChild(c);
+    }
+    return fig;
+  }
+
+  /* ── les mises en page, une par type ───────────────────────────── */
+  var TYPES = {};
+
+  TYPES.notion = function (e, fini) {
+    var f = document.createDocumentFragment();
+    (e.paras || []).forEach(function (p) {
+      var el = document.createElement('p');
+      el.className = 'ecran__p';
+      el.innerHTML = p;
+      f.appendChild(el);
+    });
+    (e.images || []).forEach(function (im) { f.appendChild(bloc_image(im)); });
+    (e.sons || []).forEach(function (s) { f.appendChild(bloc_son(s)); });
+    if (e.retenir) {
+      var r = document.createElement('div');
+      r.className = 'retenir';
+      r.innerHTML = '<p class="r">Ce qu\'il faut retenir</p><p>' + e.retenir + '</p>';
+      f.appendChild(r);
+    }
+    // Une notion est « faite » dès qu'elle est lue : rien à réussir.
+    fini(true);
+    return f;
+  };
+
+  TYPES.verif = function (e, fini) {
+    var f = document.createDocumentFragment();
+    if (e.consigne) {
+      var c = document.createElement('p');
+      c.className = 'ecran__p';
+      c.innerHTML = e.consigne;
+      f.appendChild(c);
+    }
+    (e.images || []).forEach(function (im) { f.appendChild(bloc_image(im)); });
+    (e.sons || []).forEach(function (s) { f.appendChild(bloc_son(s)); });
+
+    var box = document.createElement('div');
+    box.className = 'choix';
+    var zone = document.createElement('div');
+    var lettres = 'ABCDEFGH';
+    var termine = false;
+
+    e.options.forEach(function (o, k) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.innerHTML = '<span class="marq">' + lettres[k] + '</span><span>' + o.txt + '</span>';
+      b.addEventListener('click', function () { repondre(k, b); });
+      box.appendChild(b);
+    });
+
+    function verrouiller(bonneAussi) {
+      termine = true;
+      Array.prototype.forEach.call(box.children, function (b, k) {
+        b.disabled = true;
+        if (e.options[k].juste) { if (bonneAussi) b.setAttribute('data-etat', 'juste'); }
+        else if (b.getAttribute('data-etat') !== 'faux') b.setAttribute('data-etat', 'ecarte');
+      });
+    }
+
+    function repondre(k, b) {
+      if (termine) return;
+      var o = e.options[k];
+      var n = (etat.essais[e.id] || 0) + 1;
+      etat.essais[e.id] = n;
+
+      if (o.juste) {
+        b.setAttribute('data-etat', 'juste');
+        verrouiller(false);
+        zone.innerHTML = '';
+        var j = document.createElement('div');
+        j.className = 'juste';
+        j.innerHTML = '<p class="r">' + (n === 1 ? 'Juste, du premier coup' : 'Juste') + '</p><p>'
+          + (e.pourquoi || '') + '</p>';
+        zone.appendChild(j);
+        etat.reponses[e.id] = k;
+        noter('reponse', { juste: true, essai: n });
+        fini(true);
+        return;
+      }
+
+      b.setAttribute('data-etat', 'faux');
+      b.disabled = true;
+      noter('reponse', { juste: false, essai: n, choix: k });
+
+      // Le rattrapage : il n'existe que sur erreur, et il explique pourquoi la
+      // mauvaise réponse était tentante — jamais « faux, essaie encore ».
+      zone.innerHTML = '';
+      var r = document.createElement('div');
+      r.className = 'rattrap';
+      var dernier = n >= 2;
+      r.innerHTML = '<p class="r">' + (dernier ? 'La réponse, et pourquoi' : 'Pas tout à fait')
+        + '</p><h4>' + (o.rat_t || 'Reprenons.') + '</h4><p>' + (o.rat || '') + '</p>'
+        + (dernier ? '<p><b>La réponse : ' + reponseJuste(e) + '</b> ' + (e.pourquoi || '') + '</p>' : '');
+      if (!dernier) {
+        var encore = document.createElement('button');
+        encore.type = 'button';
+        encore.className = 'encore';
+        encore.textContent = M('reessayer', 'Réessayer');
+        encore.addEventListener('click', function () {
+          zone.innerHTML = '';
+          elEcran.querySelector('.choix').focus &&
+            elEcran.querySelector('.choix button:not([disabled])').focus();
+        });
+        r.appendChild(encore);
+      }
+      zone.appendChild(r);
+      if (r.scrollIntoView) r.scrollIntoView({ block: 'nearest' });
+      etat.rattrapages[e.id] = (etat.rattrapages[e.id] || 0) + 1;
+      noter('rattrapage', { ouvert: o.rat_t || '' });
+
+      if (dernier) { etat.reponses[e.id] = k; verrouiller(true); fini(true); }
+      garder();
+    }
+
+    function reponseJuste(e) {
+      for (var i = 0; i < e.options.length; i++) if (e.options[i].juste) return e.options[i].txt;
+      return '';
+    }
+
+    f.appendChild(box);
+    f.appendChild(zone);
+
+    // La reprise. Un écran déjà répondu ne doit pas se rouvrir vierge avec un
+    // « Continuer » actif : l'élève croirait la question neuve, et le bouton
+    // le contredirait. On remontre donc sa réponse, verrouillée.
+    var deja = etat.reponses[e.id];
+    if (deja !== undefined && e.options[deja]) {
+      termine = true;
+      Array.prototype.forEach.call(box.children, function (b, k) {
+        b.disabled = true;
+        if (k === deja) b.setAttribute('data-etat', e.options[k].juste ? 'juste' : 'faux');
+        else if (e.options[k].juste) b.setAttribute('data-etat', 'juste');
+        else b.setAttribute('data-etat', 'ecarte');
+      });
+      var d = document.createElement('div');
+      d.className = 'juste';
+      d.innerHTML = '<p class="r">Vous avez déjà répondu</p><p>' + (e.pourquoi || '') + '</p>';
+      zone.appendChild(d);
+    }
+
+    fini(!!etat.faits[e.id]);
+    return f;
+  };
+
+  /* Trier des cas. C'est l'écran qui porte le parti pris du parcours : l'élève
+     tranche AVANT qu'aucune règle ne lui soit dite, et chaque erreur explique
+     ce cas-là — jamais la règle entière. Une mini-leçon fait l'inverse. */
+  TYPES.tri = function (e, fini) {
+    var f = document.createDocumentFragment();
+    if (e.consigne) {
+      var c = document.createElement('p');
+      c.className = 'ecran__p';
+      c.innerHTML = e.consigne;
+      f.appendChild(c);
+    }
+    (e.sons || []).forEach(function (s) { f.appendChild(bloc_son(s)); });
+
+    var grille = '1fr ' + e.colonnes.map(function () { return 'minmax(88px,.42fr)'; }).join(' ');
+    var box = document.createElement('div');
+    box.className = 'tri';
+
+    // L'en-tête ne sert que si les boutons portent autre chose que le nom de
+    // leur colonne. Quand ils sont identiques, l'afficher écrit deux fois la
+    // même chose et n'apprend rien.
+    if (e.colonnes.some(function (co) { return co.b && co.b !== co.t; })) {
+      var tete = document.createElement('div');
+      tete.className = 'tri__tete';
+      tete.style.gridTemplateColumns = grille;
+      tete.appendChild(document.createElement('span'));
+      e.colonnes.forEach(function (co) {
+        var s2 = document.createElement('span');
+        s2.innerHTML = co.t;
+        tete.appendChild(s2);
+      });
+      box.appendChild(tete);
+    }
+
+    var restants = e.items.length;
+    var compte = document.createElement('p');
+    compte.className = 'compte';
+
+    function majCompte() {
+      compte.textContent = restants > 0
+        ? restants + (restants > 1 ? ' cas à trancher.' : ' cas à trancher.')
+        : 'Les ' + e.items.length + ' cas sont tranchés.';
+    }
+
+    e.items.forEach(function (it, k) {
+      var l = document.createElement('div');
+      l.className = 'tri__l';
+      l.style.gridTemplateColumns = grille;
+
+      var mot = document.createElement('div');
+      mot.className = 'tri__mot';
+      mot.innerHTML = it.txt + (it.sous ? '<i>' + it.sous + '</i>' : '');
+      l.appendChild(mot);
+
+      var note = document.createElement('p');
+      note.className = 'tri__note';
+      note.hidden = true;
+
+      e.colonnes.forEach(function (co) {
+        var d = document.createElement('div');
+        d.className = 'tri__c';
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.innerHTML = co.b || co.t;
+        b.addEventListener('click', function () {
+          if (l.getAttribute('data-fait') === '1') return;
+          var juste = co.id === it.ok;
+          b.setAttribute('data-etat', juste ? 'juste' : 'faux');
+          noter('tri', { cas: it.txt, juste: juste });
+          if (juste) {
+            l.setAttribute('data-fait', '1');
+            restants--;
+            majCompte();
+            Array.prototype.forEach.call(l.querySelectorAll('button'), function (x) {
+              x.disabled = true;
+            });
+            if (it.pourquoi) { note.innerHTML = it.pourquoi; note.hidden = false; }
+            if (restants === 0) fini(true);
+          } else {
+            b.disabled = true;
+            note.innerHTML = '<b>' + M('pascelle', 'Pas celle-là.') + '</b> ' + (it.rat || '');
+            note.hidden = false;
+            etat.rattrapages[e.id] = (etat.rattrapages[e.id] || 0) + 1;
+            garder();
+          }
+        });
+        d.appendChild(b);
+        l.appendChild(d);
+      });
+
+      l.appendChild(note);
+      box.appendChild(l);
+    });
+
+    f.appendChild(box);
+    majCompte();
+    f.appendChild(compte);
+
+    if (etat.faits[e.id]) fini(true); else fini(false);
+    return f;
+  };
+
+  /* ── le rendu d'un écran ───────────────────────────────────────── */
+  function montrer(i, mouvement) {
+    if (i < 0 || i >= ECRANS.length) return;
+    if (mouvement) noter('quitte', { reste: Math.round((Date.now() - entre) / 1000) });
+    etat.i = i;
+    entre = Date.now();
+    if (etat.vus.indexOf(ECRANS[i].id) === -1) etat.vus.push(ECRANS[i].id);
+
+    var e = enLangue(ECRANS[i]);
+    elEcran.innerHTML = '';
+
+    // Le corps est un conteneur à part : dans le cadre 16:9, c'est lui qui
+    // défile quand un rattrapage s'ouvre, pendant que le pied et la jauge
+    // restent en place. Sans lui, la diapositive grandirait hors de l'écran.
+    var corps = document.createElement('div');
+    corps.className = 'ecran__corps';
+
+    var eye = document.createElement('p');
+    eye.className = 'ecran__eye';
+    eye.textContent = e.eye || '';
+    corps.appendChild(eye);
+
+    var t = document.createElement('h1');
+    t.className = 'ecran__t';
+    t.innerHTML = e.titre;
+    corps.appendChild(t);
+
+    var pied = document.createElement('div');
+    pied.className = 'pied';
+
+    var prec = document.createElement('button');
+    prec.type = 'button';
+    prec.className = 'btn-2';
+    prec.textContent = M('precedent', '← Précédent');
+    prec.hidden = i === 0;
+    prec.addEventListener('click', function () { montrer(i - 1, true); });
+
+    var consigne = document.createElement('p');
+    consigne.className = 'consigne';
+
+    var suite = document.createElement('button');
+    suite.type = 'button';
+    suite.className = 'btn';
+    suite.textContent = i === ECRANS.length - 1
+      ? M('terminer', 'Terminer') : M('continuer', 'Continuer');
+    suite.addEventListener('click', function () {
+      if (i === ECRANS.length - 1) { terminer(); return; }
+      montrer(i + 1, true);
+    });
+
+    // Le verrou doux : « Continuer » attend le geste, mais rien d'autre n'attend.
+    function fini(ok) {
+      suite.disabled = !ok;
+      consigne.textContent = ok ? ''
+        : (e.attente || M('repondez', 'Répondez pour continuer.'));
+      if (ok && !etat.faits[e.id]) { etat.faits[e.id] = true; garder(); }
+    }
+
+    var rendu = TYPES[e.type];
+    if (!rendu) {
+      var err = document.createElement('p');
+      err.className = 'ecran__p';
+      err.innerHTML = '<b>Type d\'écran inconnu : « ' + e.type + ' ».</b> '
+        + 'Le moteur ne sait pas le dessiner. À corriger dans le contenu, pas ici.';
+      corps.appendChild(err);
+      fini(true);
+    } else {
+      corps.appendChild(rendu(e, fini));
+    }
+
+    elEcran.appendChild(corps);
+    pied.appendChild(prec);
+    pied.appendChild(consigne);
+    pied.appendChild(suite);
+    elEcran.appendChild(pied);
+
+    elJauge.style.width = Math.round(((i + 1) / ECRANS.length) * 100) + '%';
+    elJauge.parentNode.setAttribute('aria-valuenow', Math.round(((i + 1) / ECRANS.length) * 100));
+    elPos.textContent = (i + 1) + ' / ' + ECRANS.length;
+    majMenu();
+    noter('vu', {});
+    if (!etat.rapporteDebut) { etat.rapporteDebut = true; garder(); rapporter('commence'); }
+    elEcran.focus();
+    corps.scrollTop = 0;
+    window.scrollTo(0, 0);
+  }
+
+  function terminer() {
+    noter('termine', {});
+    elEcran.innerHTML = '';
+    var corps = document.createElement('div');
+    corps.className = 'ecran__corps';
+    var f = document.createElement('div');
+    f.className = 'fin';
+    var seuls = 0, aide = 0;
+    ECRANS.forEach(function (e) {
+      if (e.type !== 'verif' && e.type !== 'tri') return;
+      if (etat.rattrapages[e.id]) aide++; else if (etat.faits[e.id]) seuls++;
+    });
+    rapporter('termine', {
+      reussiSeul: seuls, avecRattrapage: aide,
+      rattrapages: Object.keys(etat.rattrapages || {}),
+      minutes: Math.max(1, Math.round(
+        (etat.journal.length ? (etat.journal[etat.journal.length - 1].t
+          - etat.journal[0].t) : 0) / 60000))
+    });
+    f.innerHTML = '<h2>C\'est fini pour cette fois.</h2>'
+      + '<p class="ecran__p" style="margin-left:auto;margin-right:auto">'
+      + 'Écrans réussis seul : <b>' + seuls + '</b>'
+      + ' · avec un rattrapage : <b>' + aide + '</b>.</p>'
+      + '<p class="ecran__p" style="margin-left:auto;margin-right:auto;color:#6E7175;font-size:13.5px">'
+      + (CODE && ENVOI
+          ? 'Votre enseignant verra que vous l\'avez fait, et sur quoi vous avez hésité — '
+            + 'jamais vos réponses.</p>'
+          : 'Le suivi est gardé sur ce poste seulement.</p>');
+    var r = document.createElement('button');
+    r.className = 'btn-2';
+    r.type = 'button';
+    r.style.marginTop = '18px';
+    r.textContent = M('recommencer', 'Recommencer');
+    r.addEventListener('click', function () {
+      etat = JSON.parse(JSON.stringify(VIERGE));
+      etat.rapporteDebut = true;      // on ne re-signale pas un début déjà signalé
+      garder();
+      montrer(0, false);
+    });
+    f.appendChild(r);
+    corps.appendChild(f);
+    elEcran.appendChild(corps);
+    elJauge.style.width = '100%';
+  }
+
+  /* ── le menu des écrans vus ────────────────────────────────────── */
+  function majMenu() {
+    elListe.innerHTML = '';
+    ECRANS.forEach(function (e, k) {
+      var li = document.createElement('li');
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.innerHTML = '<span class="n">' + (k + 1) + '</span>' + (e.menu || e.eye || '—');
+      var vu = etat.vus.indexOf(e.id) !== -1;
+      b.disabled = !vu;
+      if (k === etat.i) b.setAttribute('aria-current', 'true');
+      b.addEventListener('click', function () { montrer(k, true); });
+      li.appendChild(b);
+      elListe.appendChild(li);
+    });
+  }
+
+  btnMenu.addEventListener('click', function () {
+    var o = elMenu.getAttribute('data-ouvert') === '1' ? '0' : '1';
+    elMenu.setAttribute('data-ouvert', o);
+    btnMenu.setAttribute('aria-expanded', o === '1' ? 'true' : 'false');
+  });
+
+  /* ── la sortie ─────────────────────────────────────────────────────────
+     Où revient-on ? Un élève venu de son portail y retourne : le portail le
+     reconnaît par `eleve_session`, gardé dans le navigateur, donc l'adresse
+     nue suffit et le code ne se promène pas dans la barre. Hors du portail,
+     on rend la main à la page d'où l'on vient si elle est du même site ;
+     sinon on garde le lien que le gabarit a posé sur le mot-symbole.
+
+     Le lien du mot-symbole prend la même destination : il menait à l'index de
+     `modules-autonomes/` — la page de chantier — ce qui envoyait un élève
+     sorti par la marque au mauvais endroit. */
+  var lienNom = document.querySelector('.fr-nom');
+  function sortie() {
+    if (CODE) return '/eleve.html';
+    try {
+      var r = new URL(document.referrer);
+      if (r.origin === location.origin && r.pathname !== location.pathname) return r.href;
+    } catch (e) { /* pas de référent, ou référent d'un autre site */ }
+    return lienNom ? lienNom.getAttribute('href') : '../index.html';
+  }
+
+  var btnSortir = document.getElementById('btn-sortir');
+  btnSortir.addEventListener('click', function () {
+    // Rien ne se perd : l'état est déjà sur le disque, et le point de reprise
+    // ramènera l'élève sur cet écran-ci.
+    noter('sortie');
+    garder();
+    location.href = sortie();
+  });
+  if (lienNom) lienNom.setAttribute('href', sortie());
+
+  /* ── ce que la vérification par programme regarde ──────────────── */
+  window.__storyline = {
+    ecrans: ECRANS,
+    ou: function () { return etat.i; },
+    aller: function (i) { montrer(i, false); },
+    etat: function () { return JSON.parse(JSON.stringify(etat)); },
+    journal: function () { return etat.journal.slice(); },
+    remettre: function () {
+      etat = JSON.parse(JSON.stringify(VIERGE));
+      garder(); montrer(0, false);
+    }
+  };
+
+  // Le point de reprise : on rouvre là où on s'est arrêté.
+  // Le sélecteur de langue d'appui : construit seulement s'il y a des
+  // langues à offrir, pour que les parcours de la gamme scolaire restent
+  // exactement ce qu'ils étaient.
+  (function () {
+    var zone = document.getElementById('appui-zone');
+    if (!zone || !APPUI.length) return;
+    var sel = document.createElement('select');
+    sel.className = 'appui-sel';
+    sel.id = 'appui-sel';
+    sel.setAttribute('aria-label', M('appui', "Langue d'appui"));
+    var o = document.createElement('option');
+    o.value = ''; o.textContent = 'Français';
+    sel.appendChild(o);
+    APPUI.forEach(function (L) {
+      var x = document.createElement('option');
+      x.value = L.c; x.textContent = L.n;
+      sel.appendChild(x);
+    });
+    sel.value = langueLue();
+    sel.addEventListener('change', function () {
+      langueEcrite(sel.value);
+      sel.setAttribute('aria-label', M('appui', "Langue d'appui"));
+      montrer(etat.i, false);          // le même écran, dans l'autre langue
+      document.getElementById('appui-sel').focus();
+    });
+    zone.appendChild(sel);
+  }());
+
+  montrer(Math.min(etat.i, ECRANS.length - 1), false);
+})();
+</script>
+</body>
+</html>
