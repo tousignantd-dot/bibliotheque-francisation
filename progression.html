@@ -432,10 +432,13 @@
   <div class="container">
     <div class="pg-marque">
       <b>Progression des élèves</b>
-      <!-- Le niveau est celui du groupe actif, jamais une constante : il était
-           écrit « Niveau 4 » en dur et mentait sur tout autre groupe. Rempli au
-           chargement, comme le nom du groupe juste à côté. -->
-      <span id="pgNiveau">Francisation</span>
+      <!-- Le niveau ne s'écrit plus ici. Il y était en dur — « Niveau 4 » — et
+           mentait sur tout autre groupe. Le rendre dynamique ne suffisait pas :
+           `Prof.niveauGroupe()` retombe lui aussi sur « Niveau 4 » quand le
+           groupe n'a pas de niveau enregistré, donc la page aurait continué de
+           l'afficher au mauvais endroit. Le groupe actif est nommé à droite, et
+           c'est lui qui porte son niveau. -->
+      <span>Francisation</span>
     </div>
     <div class="pg-outils">
       <span class="pg-champ">
@@ -772,7 +775,6 @@
     sel.value = CLASSE;
     majAdresse();
 
-    document.getElementById('pgNiveau').textContent = `Francisation · ${NIVEAU}`;
     document.getElementById('pgBande').textContent =
       `Espace enseignant · ${Prof.groupeActif()?.nom || ''}`;
     rendre();
@@ -1115,9 +1117,9 @@
            les réponses ne rentrent plus. Ce qui a déjà été envoyé reste au
            tableau. Pour refaire travailler la classe, rouvrez le direct et
            ouvrez une nouvelle séance — elle aura un nouveau code.`
-        : `<b>Le direct est fermé.</b> Plus rien n’est demandé au serveur, et les
-           tableaux ci-dessous ne se rafraîchissent plus tout seuls. Les réponses,
-           elles, continuent d’arriver.`;
+        : `<b>Le direct est fermé.</b> Plus rien n’est demandé au serveur, et rien
+           ne se rafraîchit plus tout seul. Les réponses, elles, continuent
+           d’arriver.`;
       // Les deux tableaux restent. Ils étaient le seul endroit du portail où la
       // réussite se lit question par question : les faire disparaître avec le
       // direct obligeait à rouvrir une horloge pour consulter un chiffre.
