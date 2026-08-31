@@ -432,7 +432,10 @@
   <div class="container">
     <div class="pg-marque">
       <b>Progression des élèves</b>
-      <span>Francisation · Niveau 4</span>
+      <!-- Le niveau est celui du groupe actif, jamais une constante : il était
+           écrit « Niveau 4 » en dur et mentait sur tout autre groupe. Rempli au
+           chargement, comme le nom du groupe juste à côté. -->
+      <span id="pgNiveau">Francisation</span>
     </div>
     <div class="pg-outils">
       <span class="pg-champ">
@@ -769,6 +772,7 @@
     sel.value = CLASSE;
     majAdresse();
 
+    document.getElementById('pgNiveau').textContent = `Francisation · ${NIVEAU}`;
     document.getElementById('pgBande').textContent =
       `Espace enseignant · ${Prof.groupeActif()?.nom || ''}`;
     rendre();
@@ -1117,8 +1121,17 @@
       // Les deux tableaux restent. Ils étaient le seul endroit du portail où la
       // réussite se lit question par question : les faire disparaître avec le
       // direct obligeait à rouvrir une horloge pour consulter un chiffre.
+      /* Le nom du module, qui manquait. La barre noire le portait — « Un dégât
+         d'eau · tout le module » — et elle disparaît avec le direct : l'état
+         fermé était le seul endroit où les deux tableaux parlaient d'un module
+         sans le nommer. Un enseignant qui ferme le direct, ouvre une séance
+         ailleurs puis la ferme voyait « Élève 1 · Rien envoyé » et concluait à
+         une perte de données, alors que le tableau disait vrai — sur un autre
+         module que celui qu'il croyait regarder. */
+      const nomModule = titreCourt(moduleDe(CLASSE)?.title || '');
       cible.innerHTML = `<div class="dr dr--arret">
-        <p class="pg-note" style="padding:var(--sp-8) 0 0">${note}
+        <p class="pg-note" style="padding:var(--sp-8) 0 0">${
+          nomModule ? `<span class="dr-quoi-arret">${esc(nomModule)}</span> · ` : ''}${note}
           <button type="button" class="btn btn--ghost btn--sm" id="drActualiser"
                   style="margin-left:var(--sp-3)">Actualiser</button>
           <button type="button" class="btn btn--ghost btn--sm" id="drRouvrir"
@@ -1220,6 +1233,13 @@
         <div class="dr-mo">${esc(k.m)}${e.repondu ? ` · ${e.repondu} rép.` : ''}</div>
       </div>` };
     });
+    /* Personne n'a rien envoyé sur ce module : on le **dit**, au lieu de
+       montrer une grille de cases pâles. Une case pâle veut dire « celui-là
+       n'a pas commencé » — c'est une information quand les autres ont
+       commencé, et une fausse alerte quand personne ne l'a fait. Le cas est
+       devenu fréquent depuis qu'on peut regarder un module que le groupe n'a
+       jamais travaillé. */
+    const personneNAJamaisRepondu = cases.length && (d.eleves || []).every(e => !e.repondu);
     const inscrits = cases.filter(c => !c.anonyme);
     const sansCompte = cases.filter(c => c.anonyme);
     const paquet = liste => `<div class="dr-classe">${liste.map(c => c.html).join('')}</div>`;
@@ -1227,7 +1247,10 @@
     // une classe d'élèves inscrits — ne doit pas hériter d'un découpage qui ne
     // lui apprend rien.
     const seance = SEANCES.find(x => String(x.activityId) === String(moduleId));
-    const grille = (inscrits.length && sansCompte.length)
+    const grille = personneNAJamaisRepondu
+      ? `<p class="pg-note">Personne n’a encore répondu sur ce module. Les cases
+         paraissent à la première réponse envoyée.</p>`
+      : (inscrits.length && sansCompte.length)
       ? `<div class="dr-groupe">
            <div class="dr-groupe-cle">Vos élèves · ${inscrits.length}</div>
            ${paquet(inscrits)}
@@ -1455,6 +1478,22 @@
     // une fois le direct fermé. La fraîcheur à la réouverture est assurée
     // autrement — `drRouvrir` tire un tour tout de suite.
     DIRECT_TOUR_ARRET = false;
+    if (SEANCE_CLOSE) {
+      /* La séance finie, la zone de la classe retourne à « Aucun ». La question
+         naturelle après une séance est « où en est ma classe », pas « où en
+         était la séance que je viens de fermer » — et l'aperçu reprend alors la
+         main sur le module que le groupe travaille, qu'il nomme.
+
+         **Seulement quand une séance a été fermée.** `drFermer` sert deux
+         gestes ; fermer le direct sans séance est le geste « je parle à ma
+         classe », et lui retirer son module lui retirerait son tableau —
+         exactement ce qu'on a corrigé en gardant les deux tableaux à l'arrêt.
+
+         La conséquence de la fermeture a été dite avant, dans la confirmation :
+         c'est là qu'elle se joue, pas dans une note qu'on ne lira plus. */
+      choisirClasse('');
+      return;
+    }
     drRendre();
     drHorloge();
   }
