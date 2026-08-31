@@ -939,12 +939,25 @@ async function loadList() {
     // Le catalogue appartient au groupe : il ne montre que le niveau que la
     // classe suit. Seul « Corrige-moi ! » passe outre (voir estOuvertATous).
     const tout = await res.json();
+    // Sans niveau connu, on ne borne pas : `Prof.niveauGroupe()` rend une
+    // chaîne vide plutôt que d'inventer « Niveau 4 ». C'était le pire des
+    // trois écrans qui bornent — les deux autres laissent passer ce qui est
+    // déjà daté, celui-ci ne laissait rien passer du tout : un groupe sans
+    // niveau enregistré ne voyait que le niveau 4, et le sous-titre le lui
+    // affirmait. Montrer tout est la bonne façon d'échouer ici.
     const niv = niveauGroupe();
-    allActivities = tout.filter(a => estOuvertATous(a) || niveauDe(a) === niv);
+    allActivities = niv
+      ? tout.filter(a => estOuvertATous(a) || niveauDe(a) === niv)
+      : tout;
     // Le niveau se lit dans l'en-tête : sans cela, une liste courte passerait
     // pour un catalogue vide plutôt que pour un catalogue borné.
     const sousTitre = document.getElementById('headerSub');
-    if (sousTitre) sousTitre.textContent = `${niv} — les activités de votre groupe`;
+    // Le sous-titre dit ce qui est montré. Sans niveau, il ne l'invente pas :
+    // il dit que rien n'est borné, et pourquoi — sinon une liste de 177
+    // activités passerait pour le catalogue d'un seul groupe.
+    if (sousTitre) sousTitre.textContent = niv
+      ? `${niv} — les activités de votre groupe`
+      : 'Tous les niveaux — ce groupe n’a pas de niveau enregistré';
     // Une activité déposée d'ici appartient au niveau du groupe, sauf mention
     // contraire : le champ reste libre.
     const champNiveau = document.getElementById('niveauInput');

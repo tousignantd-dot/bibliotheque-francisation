@@ -726,8 +726,12 @@
     // les niveaux — avec deux échappatoires : ce que ce groupe a déjà daté et ce
     // sur quoi une séance est ouverte restent visibles, sinon un module en cours
     // d'usage disparaîtrait de l'écran qui sert à le suivre.
+    // Sans niveau connu, on ne borne pas : `niveauGroupe()` rend une chaîne
+    // vide plutôt que d'inventer, et comparer à du vide viderait les deux
+    // menus au lieu de les ouvrir.
     const NIVEAU = Prof.niveauGroupe();
-    const auNiveau = a => (a.level || 'Niveau 4') === NIVEAU
+    const auNiveau = a => !NIVEAU
+                       || (a.level || '') === NIVEAU
                        || /^pratique orale libre/i.test(a.domaineDeVie || '')
                        || a.datePrevue || a.dateVue
                        || enSeance.has(String(a.id));
@@ -766,7 +770,7 @@
       + (duGroupe.length
           ? `<optgroup label="Ce que ce groupe suit">${duGroupe.map(optionDe).join('')}</optgroup>` : '')
       + (autres.length
-          ? `<optgroup label="Les autres du ${esc(NIVEAU)}, ouvrables en séance">${autres.map(optionDe).join('')}</optgroup>` : '');
+          ? `<optgroup label="${NIVEAU ? `Les autres du ${esc(NIVEAU)}, ouvrables` : 'Les autres, ouvrables'} en séance">${autres.map(optionDe).join('')}</optgroup>` : '');
     // Le module retenu peut n'être dans aucune des deux familles — il a été
     // retiré du catalogue, ou l'adresse porte un identifiant inventé. On
     // retombe alors sur aucun module, comme avant l'élargissement ; ce qui

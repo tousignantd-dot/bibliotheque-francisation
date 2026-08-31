@@ -59,7 +59,20 @@ const Prof = (() => {
     const pose = ((groupe || {}).niveau || '').trim();
     if (/^Niveau [1-8]$/.test(pose)) return pose;
     const trouve = /niveau\s*([1-8])/i.exec((groupe || {}).nom || '');
-    return trouve ? `Niveau ${trouve[1]}` : 'Niveau 4';
+    // Vide quand on ne sait pas, jamais « Niveau 4 ».
+    //
+    // Le repli inventait un niveau, et ce niveau **bornait** : le catalogue,
+    // le dépôt de matériel, les menus de modules. Un groupe sans niveau
+    // enregistré et dont le nom n'en porte pas — `testN5`, par exemple — se
+    // voyait offrir le niveau 4 en silence, et le catalogue lui affirmait
+    // « Niveau 4 — les activités de votre groupe ». Le portail énonçait comme
+    // un fait ce qu'il venait de deviner.
+    //
+    // Chaque écran qui borne doit donc traiter la chaîne vide comme « ne
+    // borne pas » : on montre tout. C'est la bonne façon d'échouer — un
+    // enseignant qui voit trop le remarque et corrige son groupe ; un
+    // enseignant qui voit trop peu croit que le catalogue est pauvre.
+    return trouve ? `Niveau ${trouve[1]}` : '';
   }
 
   function groupeActif() {
