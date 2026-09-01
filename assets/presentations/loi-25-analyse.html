@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Le dispositif devant la Loi 25 — analyse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap">
+
+<style>
+/* ═══════════════════════════════════════════════════════════
+   LE DISPOSITIF DEVANT LA LOI 25 — document de travail
+   destiné au conseil juridique du centre.
+
+   Parti pris de mise en forme : le rouge ne dit pas « faute »,
+   il dit « point à trancher par un juriste ». L'ambre dit
+   « décision du centre, pas du code ». Le vert dit « déjà en
+   place et vérifiable ». Rien d'autre n'est coloré, pour que
+   la couleur garde son sens sur seize pages.
+   ═══════════════════════════════════════════════════════════ */
+:root{
+  --ground:#F7F7F5; --card:#FFFFFF; --sunken:#FBFBFA;
+  --ink:#17181A; --body:#3A3D40; --muted:#6E7175;
+  --line:#E4E4E0; --line-fort:#D2D2CD;
+  --ok:#0A8F5B;    --ok-bg:#E9F5EF;
+  --dec:#C07A08;   --dec-bg:#FBF2E2;
+  --risq:#C7302B;  --risq-bg:#FBEDEC;
+  --acier:#1D6B8F;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#151618; --card:#1D1F22; --sunken:#212326;
+    --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+    --line:#2E3135; --line-fort:#3D4146;
+    --ok:#4BC48D; --ok-bg:#12291F;
+    --dec:#E0A63F; --dec-bg:#2C2213;
+    --risq:#EE7A73; --risq-bg:#2E1917;
+    --acier:#6DAFD2;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#151618; --card:#1D1F22; --sunken:#212326;
+  --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+  --line:#2E3135; --line-fort:#3D4146;
+  --ok:#4BC48D; --ok-bg:#12291F;
+  --dec:#E0A63F; --dec-bg:#2C2213;
+  --risq:#EE7A73; --risq-bg:#2E1917;
+  --acier:#6DAFD2;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--body);
+  font-family:Nunito,system-ui,sans-serif;font-size:16px;line-height:1.62}
+.page{max-width:53rem;margin:0 auto;padding:1.5rem 1.25rem 5rem}
+a{color:var(--acier)}
+.retour{display:inline-block;margin-bottom:1.75rem;font-size:.82rem;
+  font-weight:700;color:var(--muted);text-decoration:none}
+.retour:hover{color:var(--ink)}
+.retour .ou{font-weight:400}
+h1{font-family:Newsreader,Georgia,serif;font-weight:600;font-size:2.35rem;
+  line-height:1.14;color:var(--ink);margin:.2rem 0 .6rem;letter-spacing:-.01em}
+h2{font-family:Newsreader,Georgia,serif;font-weight:600;font-size:1.5rem;
+  color:var(--ink);margin:3rem 0 .3rem;letter-spacing:-.005em}
+h3{font-size:1rem;font-weight:800;color:var(--ink);margin:1.8rem 0 .35rem}
+.eyebrow{display:block;font-size:.72rem;font-weight:800;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--muted);margin-bottom:.5rem}
+.chapeau{font-size:1.08rem;color:var(--body);margin:.4rem 0 0}
+.sous{color:var(--muted);font-size:.9rem;margin:.15rem 0 1.2rem}
+p{margin:.75rem 0}
+b,strong{color:var(--ink);font-weight:800}
+code{font-family:var(--mono);font-size:.86em;background:var(--sunken);
+  border:1px solid var(--line);border-radius:4px;padding:.05em .3em}
+.carte{background:var(--card);border:1px solid var(--line);
+  border-radius:12px;padding:1.05rem 1.15rem;margin:1rem 0}
+.carte > :first-child{margin-top:0}
+.carte > :last-child{margin-bottom:0}
+.avert{background:var(--dec-bg);border:1px solid var(--dec);border-left-width:4px}
+.grave{background:var(--risq-bg);border:1px solid var(--risq);border-left-width:4px}
+.bon{background:var(--ok-bg);border:1px solid var(--ok);border-left-width:4px}
+.tab{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.9rem}
+.tab th,.tab td{text-align:left;vertical-align:top;padding:.5rem .6rem;
+  border-bottom:1px solid var(--line)}
+.tab th{font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;
+  color:var(--muted);font-weight:800;border-bottom:1px solid var(--line-fort)}
+.tab tr:last-child td{border-bottom:none}
+.enveloppe{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.puce{display:inline-block;font-size:.68rem;font-weight:800;letter-spacing:.06em;
+  text-transform:uppercase;padding:.12em .5em;border-radius:99px;white-space:nowrap}
+.p-ok{background:var(--ok-bg);color:var(--ok);border:1px solid var(--ok)}
+.p-dec{background:var(--dec-bg);color:var(--dec);border:1px solid var(--dec)}
+.p-risq{background:var(--risq-bg);color:var(--risq);border:1px solid var(--risq)}
+ul,ol{margin:.6rem 0;padding-left:1.3rem}
+li{margin:.32rem 0}
+.risque{border:1px solid var(--line);border-left:4px solid var(--risq);
+  border-radius:10px;background:var(--card);padding:1rem 1.1rem;margin:1rem 0}
+.risque .num{font-size:.72rem;font-weight:800;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--risq)}
+.risque h3{margin:.15rem 0 .4rem}
+.risque .quoi{margin:.4rem 0 0}
+.risque .parade{margin:.6rem 0 0;padding-top:.6rem;border-top:1px dashed var(--line-fort);
+  font-size:.92rem;color:var(--muted)}
+.risque .parade b{color:var(--ink)}
+.moyen{border-left-color:var(--dec)}
+.moyen .num{color:var(--dec)}
+.note{font-size:.88rem;color:var(--muted)}
+hr{border:none;border-top:1px solid var(--line);margin:2.5rem 0}
+.pied{margin-top:3.5rem;padding-top:1.2rem;border-top:1px solid var(--line);
+  font-size:.85rem;color:var(--muted)}
+@media print{
+  body{background:#fff;font-size:11pt}
+  .retour{display:none}
+  .carte,.risque,.tab{break-inside:avoid}
+  h2{break-after:avoid}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<a class="retour" href="/presentations.html"><span aria-hidden="true">&#8592;</span>
+  Le classeur <span class="ou">· toutes les pages du projet</span></a>
+
+<span class="eyebrow">Dossier Loi 25 · document de travail</span>
+<h1>Le dispositif devant la Loi&nbsp;25</h1>
+<p class="chapeau">Ce que la plateforme de francisation recueille, ce qu'elle conserve,
+ce qu'elle envoie hors du Québec — et, sans rien adoucir, les points sur lesquels elle
+est exposée.</p>
+<p class="sous">Préparé pour le conseil juridique du centre · 1<sup>er</sup> septembre 2026</p>
+
+<div class="carte avert">
+  <p><b>Ce document n'est pas un avis juridique et ne prétend pas en tenir lieu.</b>
+  Il a été rédigé par la personne qui a construit la plateforme, en lisant le code et
+  les données réelles, pour qu'une avocate n'ait pas à reconstituer le dispositif
+  elle-même. Les faits techniques peuvent être vérifiés dans le dépôt ; les
+  qualifications juridiques, elles, restent à poser.</p>
+  <p><b>Les renvois d'articles sont indicatifs.</b> Ils situent le sujet, ils ne
+  tranchent rien : le régime applicable dépend d'abord de la nature de l'organisme qui
+  exploite la plateforme, question traitée à la section 2 et qui commande tout le reste.</p>
+</div>
+
+<h2>1 · Le dispositif en dix lignes</h2>
+
+<p>Une plateforme web de francisation pour <b>adultes immigrants</b>, couvrant les huit
+niveaux du programme. Un élève ouvre un module dans son navigateur, écoute des dialogues,
+fait des exercices, parle dans un micro, écrit de courts textes. Un enseignant planifie
+les séances de son groupe et suit l'avancement. Une direction voit l'adoption dans son
+centre.</p>
+
+<p>Trois fonctions font appel à un service d'intelligence artificielle&nbsp;: la
+<b>correction</b> d'une phrase ou d'un texte, le <b>jeu de rôle</b> conversationnel, et
+quelques <b>outils d'appui</b> (traduire un mot, simplifier une consigne). Deux autres
+font appel à des services vocaux&nbsp;: la <b>lecture</b> des textes par une voix de
+synthèse, et la <b>reconnaissance</b> de ce que l'élève dit.</p>
+
+<p>L'ensemble est hébergé sur <b>Railway</b>, avec une base PostgreSQL et un volume de
+fichiers. Le domaine est <code>portail.edufrancis.ca</code>.</p>
+
+<h2>2 · Qui répond de quoi</h2>
+
+<p>C'est la première question à trancher, parce qu'elle décide du reste&nbsp;:
+<b>quel régime s'applique</b>.</p>
+
+<div class="enveloppe">
+<table class="tab">
+  <thead><tr><th>Acteur</th><th>Rôle probable</th><th>À confirmer</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><b>Le centre / le CSS</b></td>
+      <td>Organisme public au sens de la Loi sur l'accès. C'est lui qui a la
+          responsabilité des renseignements de ses élèves.</td>
+      <td>Si la plateforme est utilisée par un CSS, c'est le régime du secteur public
+          qui s'applique, pas celui du secteur privé.</td>
+    </tr>
+    <tr>
+      <td><b>La plateforme</b></td>
+      <td>Fournisseur de service, agissant pour le compte du centre.</td>
+      <td>Une <b>entente écrite</b> entre le centre et le fournisseur est très
+          probablement requise, et elle n'existe pas aujourd'hui.</td>
+    </tr>
+    <tr>
+      <td><b>Anthropic, Microsoft, Railway</b></td>
+      <td>Sous-traitants de second rang, liés par leurs conditions de service.</td>
+      <td>Aucune entente négociée&nbsp;: seules les conditions publiques s'appliquent.</td>
+    </tr>
+    <tr>
+      <td><b>Google, Apple</b></td>
+      <td>Aucun lien contractuel. Leur moteur de reconnaissance vocale est celui du
+          navigateur de l'élève.</td>
+      <td>Voir le risque&nbsp;1 — c'est le point le plus difficile du dossier.</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<h2>3 · Ce qui est réellement recueilli</h2>
+
+<p>Le tableau ci-dessous est relevé dans les fichiers de données eux-mêmes, un à un, et
+non d'après ce que la plateforme est censée faire.</p>
+
+<div class="enveloppe">
+<table class="tab">
+  <thead><tr><th>Catégorie</th><th>Contenu exact</th><th>Identifiant&nbsp;?</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><b>Élève</b></td>
+      <td>Un identifiant numérique, un <b>code d'accès</b> de six caractères, un
+          <b>pseudonyme</b> (« Épinette », « Lilas », ou « Élève 108 »), le groupe,
+          la date de création.</td>
+      <td><span class="puce p-dec">indirect</span></td>
+    </tr>
+    <tr>
+      <td><b>Enseignant</b></td>
+      <td>Le <b>nom</b>, un code, un mot de passe <b>haché</b> (PBKDF2-SHA256), le rôle,
+          la date de dernière visite.</td>
+      <td><span class="puce p-risq">direct</span></td>
+    </tr>
+    <tr>
+      <td><b>Traces d'apprentissage</b></td>
+      <td>Chaque ouverture de module, chaque exercice terminé, le score, le nombre de
+          réussites au premier coup, l'horodatage.</td>
+      <td><span class="puce p-dec">indirect</span></td>
+    </tr>
+    <tr>
+      <td><b>Productions écrites</b></td>
+      <td>Le texte rédigé par l'élève <b>et la rétroaction reçue</b>, conservés.</td>
+      <td><span class="puce p-risq">contenu libre</span></td>
+    </tr>
+    <tr>
+      <td><b>Productions orales</b></td>
+      <td>Le fichier audio de la <b>voix de l'élève</b>, sa transcription, la
+          rétroaction.</td>
+      <td><span class="puce p-risq">voix</span></td>
+    </tr>
+    <tr>
+      <td><b>Analyses d'erreurs</b></td>
+      <td>Les notions ratées, les patrons d'erreur, les conseils, par élève.</td>
+      <td><span class="puce p-dec">indirect</span></td>
+    </tr>
+    <tr>
+      <td><b>Journal d'administration</b></td>
+      <td>Qui a modifié quoi, quand, avec l'état avant et après — <b>avec le nom</b> de
+          la personne.</td>
+      <td><span class="puce p-risq">direct</span></td>
+    </tr>
+    <tr>
+      <td><b>Registre des appels</b></td>
+      <td>Route, modèle, jetons, coût, identifiant d'élève et de groupe.
+          <b>Aucun contenu.</b></td>
+      <td><span class="puce p-dec">indirect</span></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="carte bon">
+  <p><b>Ce qui n'existe nulle part dans le système, et qui a été vérifié fichier par
+  fichier&nbsp;:</b></p>
+  <ul>
+    <li><b>Aucune adresse de courriel</b> — ni d'élève, ni d'enseignant, ni de
+        direction. Aucun champ n'en prévoit.</li>
+    <li><b>Aucun numéro de téléphone, aucune adresse postale, aucune date de
+        naissance</b>, aucun numéro d'assurance sociale, aucun statut migratoire,
+        aucun numéro de dossier scolaire.</li>
+    <li><b>Aucun vrai nom d'élève.</b> Le champ s'appelle « pseudo » dans l'interface,
+        et c'est une règle du projet, pas un usage.</li>
+    <li><b>Aucun mot de passe en clair</b>&nbsp;: les enseignants sont hachés, les
+        élèves entrent par un code à usage de classe.</li>
+    <li><b>Aucun traceur publicitaire, aucun outil de mesure d'audience tiers</b>,
+        aucun cookie de suivi.</li>
+  </ul>
+  <p class="note">La connexion se fait par code, ce qui explique l'absence de courriel&nbsp;:
+  il n'y a pas de réinitialisation de mot de passe à envoyer, donc pas d'adresse à
+  demander.</p>
+</div>
+
+<h2>4 · Le pseudonymat : ce qu'il fait, ce qu'il ne fait pas</h2>
+
+<p>C'est le point où un dossier de ce genre se gagne ou se perd, et il vaut mieux
+l'écrire soi-même que se le faire dire.</p>
+
+<div class="carte">
+  <p><b>Ce que le pseudonymat apporte, réellement.</b> Une personne qui obtiendrait
+  l'intégralité de la base n'y trouverait aucun nom d'élève, aucun moyen de joindre
+  qui que ce soit, aucun renseignement d'état civil. La gravité d'une fuite en est
+  très diminuée&nbsp;: il n'y a rien à revendre et personne à contacter.</p>
+  <p><b>Ce qu'il n'apporte pas.</b> Ce n'est <b>pas de l'anonymisation</b>. L'enseignant
+  refait le lien entre « Épinette » et une personne — c'est même indispensable, sans
+  quoi l'outil ne servirait à rien. Le lien existe hors du système, dans la tête et les
+  listes de l'enseignant, mais il existe. Les données restent donc des <b>renseignements
+  personnels</b> au sens de la loi, et tout le régime s'applique.</p>
+  <p>Deux réserves supplémentaires, qu'il faut poser franchement&nbsp;:</p>
+  <ul>
+    <li>Un <b>enregistrement de voix</b> identifie une personne par nature. Le
+        pseudonyme ne protège pas ce qui est, en soi, un identifiant.</li>
+    <li>Un <b>texte libre</b> peut contenir tout ce que l'élève y met — y compris son
+        propre nom. Un exercice qui demande d'écrire un courriel appelle même
+        littéralement une signature.</li>
+  </ul>
+</div>
+
+<h2>5 · Ce qui franchit la frontière</h2>
+
+<p>Le débat porte sur la <b>communication hors Québec</b>, pas sur l'existence des
+données. Déménager les serveurs ne fermerait aucun des flux ci-dessous&nbsp;: ce qui
+sort, c'est l'appel de service, pas le disque dur.</p>
+
+<div class="enveloppe">
+<table class="tab">
+  <thead><tr><th>Flux</th><th>Ce qui part</th><th>Où</th><th>Coupable&nbsp;?</th></tr></thead>
+  <tbody>
+    <tr><td>Correction, jeu de rôle, analyse d'erreurs, outils d'appui</td>
+        <td><b>Textes et réponses d'élèves</b></td>
+        <td>Anthropic · États-Unis</td>
+        <td><span class="puce p-ok">oui, par centre</span></td></tr>
+    <tr><td>Reconnaissance vocale dans le navigateur</td>
+        <td><b>La voix de l'élève, en continu</b></td>
+        <td>Google ou Apple, selon le navigateur</td>
+        <td><span class="puce p-ok">oui, par centre</span></td></tr>
+    <tr><td>Transcription d'un dépôt oral</td>
+        <td>Le fichier audio</td>
+        <td>Microsoft Azure · Toronto</td>
+        <td><span class="puce p-ok">oui, par centre</span></td></tr>
+    <tr><td>Synthèse vocale (lecture des textes)</td>
+        <td>Texte du module — <b>aucune donnée d'élève</b></td>
+        <td>Microsoft Azure · Toronto</td>
+        <td>sans objet</td></tr>
+    <tr><td>Hébergement</td>
+        <td>Toute la base et les fichiers</td>
+        <td>Railway — <b>région à confirmer</b></td>
+        <td><span class="puce p-dec">déménagement</span></td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="carte bon">
+  <p><b>Trois interrupteurs existent déjà, réglables par centre et hérités le long de
+  l'arbre réseau → CSS → centre.</b> Ils ne sont pas des promesses&nbsp;: ils sont
+  appliqués côté serveur, et les 87 modules s'y plient.</p>
+  <ul>
+    <li><b>Mode avec ou sans assistance</b> — coupe les onze routes qui appellent un
+        modèle. Le module continue de fonctionner sans elles.</li>
+    <li><b>Confinement vocal</b> — empêche la reconnaissance vocale du navigateur.</li>
+    <li><b>Dépôt des productions</b> — trois états&nbsp;: complet, transcription seule
+        (le fichier audio <b>n'est jamais écrit sur le disque</b>), ou fermé.</li>
+  </ul>
+  <p class="note">Une direction qui refuse tout peut donc utiliser la plateforme sans
+  qu'aucune donnée d'élève ne quitte le serveur. C'est l'argument le plus solide du
+  dossier, et il est vérifiable.</p>
+</div>
+
+<h2>6 · Les risques, sans les adoucir</h2>
+
+<p>Classés par gravité décroissante. Chacun dit ce qui est en place et ce qui ne l'est
+pas.</p>
+
+<div class="risque">
+  <span class="num">Risque 1 · le plus difficile</span>
+  <h3>La reconnaissance vocale échappe entièrement à notre contrôle</h3>
+  <p class="quoi">Quand un élève parle dans un exercice de prononciation ou dans le jeu
+  de rôle, ce n'est pas notre serveur qui écoute&nbsp;: c'est le navigateur. Chrome
+  expédie l'audio capté à Google, Safari à Apple. <b>Ce flux ne passe ni par notre
+  serveur, ni par nos clés, ni par nos contrats.</b> Aucun choix d'hébergeur ne le
+  touche, et nous ne pouvons produire aucune entente écrite à son sujet — il n'y en a
+  pas. La voix, de surcroît, identifie une personne par nature.</p>
+  <p class="parade"><b>Ce qui existe&nbsp;:</b> l'interrupteur de confinement vocal, par
+  centre, qui supprime le flux. <b>Ce qui manque&nbsp;:</b> un moteur de reconnaissance
+  sous notre maîtrise. Il en existe (Azure au Canada, ou une exécution sur l'appareil),
+  mais l'un rouvre la question hors Québec et l'autre est un chantier.</p>
+</div>
+
+<div class="risque">
+  <span class="num">Risque 2</span>
+  <h3>La saisie libre peut contenir n'importe quoi, et elle part aux États-Unis</h3>
+  <p class="quoi">Un élève écrit un texte, il est envoyé à Anthropic pour correction.
+  Rien n'empêche ce texte de contenir son nom, son adresse, sa situation familiale, un
+  problème de santé ou son statut d'immigration. <b>Le pseudonymat de la base ne
+  protège pas le contenu que l'élève écrit lui-même.</b></p>
+  <p class="quoi">Le dispositif <b>aggrave</b> même la probabilité, et il faut le dire&nbsp;:
+  plusieurs modules portent sur la santé, l'urgence au travail, le logement, un problème
+  à régler. Ce sont les situations de vie du programme de francisation — on ne peut pas
+  les enlever sans vider le cours de son objet — mais elles invitent structurellement
+  l'élève à parler de ce que la loi traite comme sensible.</p>
+  <p class="parade"><b>Ce qui existe&nbsp;:</b> le mode sans assistance, par centre&nbsp;;
+  aucune donnée n'est utilisée pour entraîner les modèles, selon les conditions
+  commerciales du fournisseur. <b>Ce qui manque&nbsp;:</b> une consigne explicite aux
+  élèves de ne pas écrire de renseignements personnels, et un filtre côté serveur qui
+  écarterait les formes évidentes (numéros longs, courriels, adresses).</p>
+</div>
+
+<div class="risque">
+  <span class="num">Risque 3</span>
+  <h3>Rien n'est effacé aujourd'hui</h3>
+  <p class="quoi">Le mécanisme de purge est écrit, il fonctionne, et il tourne
+  <b>en observation</b>&nbsp;: il compte ce qu'il effacerait, sans rien effacer. La
+  variable qui fixe la durée de conservation n'est pas posée. Aujourd'hui, la
+  plateforme <b>conserve tout, sans limite</b> — traces, textes, enregistrements de
+  voix.</p>
+  <p class="parade"><b>Pourquoi ce n'est pas un oubli&nbsp;:</b> la durée de conservation
+  n'appartient pas au fournisseur, elle appartient au centre, et un seuil inventé aurait
+  été un mauvais service à rendre. <b>Ce qui manque&nbsp;:</b> que le centre fixe la
+  durée. Une valeur, et l'effacement démarre le jour même.</p>
+</div>
+
+<div class="risque">
+  <span class="num">Risque 4</span>
+  <h3>Aucune entente écrite avec le centre, et aucune évaluation de facteurs</h3>
+  <p class="quoi">Il n'existe aujourd'hui ni entente écrite entre le centre et la
+  plateforme, ni évaluation des facteurs relatifs à la vie privée, ni registre des
+  incidents de confidentialité, ni procédure documentée en cas de fuite.</p>
+  <p class="parade"><b>À noter&nbsp;:</b> une évaluation des facteurs est une obligation
+  de l'<b>organisme</b>, pas du fournisseur — et elle ne se remplace pas par un
+  consentement signé de l'élève. Le présent document est conçu pour en constituer la
+  matière technique, pas pour en tenir lieu.</p>
+</div>
+
+<div class="risque">
+  <span class="num">Risque 5</span>
+  <h3>Aucune information n'est donnée aux élèves</h3>
+  <p class="quoi">Le portail ne comporte <b>aucune politique de confidentialité</b>,
+  aucun avis expliquant ce qui est recueilli, pourquoi, pour combien de temps, ni ce
+  qui est envoyé à l'extérieur. Un élève ne peut donc ni comprendre ni exercer ses
+  droits.</p>
+  <p class="parade"><b>La difficulté propre à ce public&nbsp;:</b> un avis de
+  confidentialité rédigé en français administratif est illisible pour un élève de
+  niveau&nbsp;4. Il faudra une version en langue simple, et probablement traduite —
+  le dispositif sait déjà afficher ses consignes en trois langues.</p>
+</div>
+
+<div class="risque moyen">
+  <span class="num">Risque 6 · moyen</span>
+  <h3>Aucun moyen d'exercer les droits d'accès, de rectification ou d'effacement</h3>
+  <p class="quoi">Aucun écran ne permet à un élève de demander ce que la plateforme sait
+  de lui, de le corriger, de l'effacer ou de l'emporter. Techniquement, tout est
+  faisable — chaque enregistrement porte l'identifiant de l'élève — mais rien n'est
+  offert.</p>
+  <p class="parade"><b>Ce qui existe&nbsp;:</b> la fiche de l'élève, côté enseignant,
+  rassemble déjà tout ce qui le concerne. C'est la base d'un export.</p>
+</div>
+
+<div class="risque moyen">
+  <span class="num">Risque 7 · moyen</span>
+  <h3>La voix est conservée telle quelle</h3>
+  <p class="quoi">En mode « dépôt complet », le fichier audio de la production orale est
+  écrit sur le volume et conservé. Un enregistrement de voix est une donnée qui
+  identifie, et il peut révéler bien plus que le français de l'élève — un accent, un
+  âge, un état émotif.</p>
+  <p class="parade"><b>Ce qui existe&nbsp;:</b> l'état « transcription seule », où les
+  octets restent en mémoire le temps de l'appel et ne sont jamais écrits — une
+  distinction voulue, parce qu'« écrire puis effacer » aurait été faux à dire, une
+  sauvegarde prise entre les deux gardant la voix.</p>
+</div>
+
+<div class="risque moyen">
+  <span class="num">Risque 8 · moyen</span>
+  <h3>L'hébergement est hors Québec, et sa région exacte n'est pas documentée</h3>
+  <p class="quoi">La base et les fichiers vivent chez Railway, dont la région de
+  déploiement doit être confirmée dans la console. <b>Il n'y a pas d'obligation légale
+  d'héberger au Québec</b> — la loi pose une condition à la sortie, pas une frontière —
+  mais cette obligation peut naître d'un contrat du centre ou du Ministère.</p>
+  <p class="parade"><b>À vérifier avec le centre&nbsp;:</b> ses propres règles
+  d'approvisionnement, qui sont souvent plus strictes que la loi.</p>
+</div>
+
+<div class="risque moyen">
+  <span class="num">Risque 9 · moyen</span>
+  <h3>Les accès des enseignants ne sont pas journalisés</h3>
+  <p class="quoi">Les gestes d'administration — modifier une organisation, changer un
+  drapeau — sont journalisés avec leur auteur. Les <b>consultations</b> ne le sont pas&nbsp;:
+  rien n'enregistre qu'un enseignant a ouvert la fiche d'un élève ou écouté sa
+  production orale.</p>
+  <p class="parade"><b>Ce qui limite la portée&nbsp;:</b> un enseignant ne voit que les
+  groupes dont il est titulaire, une direction ne voit que son centre, et un
+  gestionnaire de CSS ne voit jamais le détail par enseignant — cette dernière coupure
+  est tenue par la donnée elle-même, pas par un filtre d'affichage.</p>
+</div>
+
+<h2>7 · Ce qui joue en faveur du dispositif</h2>
+
+<div class="carte bon">
+  <ul>
+    <li><b>Le public est adulte.</b> La francisation s'adresse à des adultes, ce qui
+        écarte le régime particulier des mineurs — à confirmer par le centre pour les
+        cas limites.</li>
+    <li><b>La minimisation est réelle, pas déclarative.</b> Aucun courriel, aucun nom
+        d'élève, aucune donnée d'état civil&nbsp;: la plateforme ne les demande pas
+        parce qu'elle n'en a pas besoin pour fonctionner.</li>
+    <li><b>Le refus est possible sans perdre le cours.</b> Les trois interrupteurs
+        permettent à un centre de tout couper et de continuer à enseigner. C'est ce qui
+        rend un consentement « libre » concevable, si l'on devait s'appuyer dessus.</li>
+    <li><b>La séparation des rôles est tenue par la structure des données</b>, et non
+        par la discipline de l'interface.</li>
+    <li><b>Aucune décision automatisée</b> ne produit d'effet sur l'élève&nbsp;: la
+        plateforme corrige et conseille, elle ne classe pas, ne note pas
+        officiellement, ne décide d'aucun parcours. Le diagnostic reste à l'enseignant —
+        c'est un choix, pas une étape transitoire.</li>
+    <li><b>Aucune donnée n'est utilisée pour entraîner des modèles</b>, selon les
+        conditions commerciales des fournisseurs&nbsp;; à faire confirmer par écrit.</li>
+  </ul>
+</div>
+
+<h2>8 · Ce qui appartient au centre, et non au code</h2>
+
+<div class="carte avert">
+  <ol>
+    <li><b>Fixer la durée de conservation</b> — une valeur, et la purge s'active.</li>
+    <li><b>Décider du niveau d'assistance</b> par centre&nbsp;: avec, sans, ou
+        intermédiaire.</li>
+    <li><b>Décider du sort de la voix</b>&nbsp;: dépôt complet, transcription seule, ou
+        rien.</li>
+    <li><b>Rédiger et publier l'avis aux élèves</b>, en langue simple.</li>
+    <li><b>Signer une entente</b> avec le fournisseur de la plateforme.</li>
+    <li><b>Mener l'évaluation des facteurs</b> relatifs à la vie privée.</li>
+  </ol>
+</div>
+
+<h2>9 · Questions à poser à l'avocate</h2>
+
+<div class="carte">
+  <ol>
+    <li>Quel régime s'applique&nbsp;: secteur public ou secteur privé&nbsp;? La réponse
+        commande la forme de l'évaluation des facteurs et les conditions de la
+        communication hors Québec.</li>
+    <li>La reconnaissance vocale du navigateur constitue-t-elle une communication hors
+        Québec <b>par le centre</b>, alors qu'elle ne transite ni par nos serveurs ni
+        par nos clés&nbsp;? Et si oui, la coupure par défaut est-elle la seule position
+        tenable&nbsp;?</li>
+    <li>Le pseudonymat change-t-il quelque chose au régime, ou seulement à la gravité
+        d'un incident&nbsp;?</li>
+    <li>Un texte libre d'élève envoyé à un correcteur automatique doit-il être traité
+        comme un renseignement sensible du seul fait qu'il <b>peut</b> en contenir&nbsp;?</li>
+    <li>Le consentement de l'élève a-t-il un rôle utile ici, ou faut-il s'appuyer
+        uniquement sur la mission de l'organisme&nbsp;?</li>
+    <li>Quelle durée de conservation est défendable pour des traces d'apprentissage,
+        pour des productions écrites, pour des enregistrements de voix&nbsp;? Ces trois
+        durées doivent-elles différer&nbsp;?</li>
+    <li>Les conditions publiques d'Anthropic, de Microsoft et de Railway suffisent-elles
+        à tenir lieu d'entente écrite, ou faut-il des addenda négociés&nbsp;?</li>
+  </ol>
+</div>
+
+<hr>
+
+<p class="note"><b>Comment vérifier ce document.</b> Tous les faits techniques sont lus
+dans le dépôt. L'inventaire détaillé des flux sortants, avec les routes concernées, se
+trouve sur la page « Ce qui sort du Québec ». L'état des interrupteurs de chaque centre
+se lit dans la console du réseau. Le registre des appels aux services externes se lit
+par <code>python3 build/couts_api.py --par-route</code>.</p>
+
+<p class="pied">Document de travail · préparé le 1<sup>er</sup> septembre 2026 ·
+à relire après toute modification du dispositif. Ce document sera périmé le jour où un
+flux sortant sera ajouté&nbsp;: c'est la première chose à revérifier avant de le
+transmettre.</p>
+
+</div>
+</body>
+</html>
