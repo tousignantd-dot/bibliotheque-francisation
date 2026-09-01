@@ -40,7 +40,10 @@ sys.path.insert(0, str(BASE / "build"))
 import fournisseur as F
 from azure_voix import parle
 
-CIBLE = {3: 20, 6: 22, 7: 24, 8: 24}
+# Le 8 est passé de 24 à 22 le 31 août 2026, à l'écoute : « très bons,
+# mais un peu rapides ». La progression 18/20/22/24 s'aplatit — une
+# progression théorique ne vaut pas une oreille.
+CIBLE = {3: 20, 6: 22, 7: 22, 8: 22}
 NIVEAUX = set(CIBLE)
 # Le 7 reste en neurale. Le 8 vise la même cible de 24 c/s et l'essai du
 # 31 août y avait fait sortir la voix HD à 27,8 avec 17 c/s d'étendue — mais
@@ -48,7 +51,7 @@ NIVEAUX = set(CIBLE)
 # des prises. Avec l'étalonnage par comparaison et rattrape_tirages.py, le 8
 # est retenté ; si la dispersion reste mauvaise, ses dialogues repasseront en
 # neurale, et le 7 servira de témoin de ce à quoi ils doivent ressembler.
-HD_NIVEAUX = {3, 6, 8}
+HD_NIVEAUX = {3, 6, 7, 8}
 GENRE = {"enseignante": "F", "feminin_2": "F",
          "masculin_1": "M", "narrateur": "M", "masculin_3": "M"}
 HD_ROLE = {"F": "hd_feminin", "M": "hd_masculin"}
