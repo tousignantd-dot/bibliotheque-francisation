@@ -330,6 +330,16 @@ SESSION_DAYS = 30
 
 PORT = int(os.environ.get('PORT', 5173))
 
+# Le nom sous lequel le site doit se présenter. Vide par défaut : sans cette
+# variable, rien ne change et rien ne casse. Posée, elle renvoie en 301 tout ce
+# qui arrive par un autre hôte — l'adresse Railway au premier chef.
+#
+# Ce n'est pas une coquetterie d'URL. `_adresse_du_site` lit l'en-tête `Host`
+# pour fabriquer les adresses imprimées : entrer par l'ancienne adresse suffit
+# à faire sortir une feuille de séance et son code QR en `.up.railway.app`,
+# sur du papier distribué à une classe. La redirection ferme cette porte.
+SITE_CANONIQUE = os.environ.get('SITE_CANONIQUE', '').strip().lower()
+
 
 # ── Initialisation du stockage ──────────────────────────────────────────────
 
@@ -16159,7 +16169,33 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         self.send_header("Access-Control-Allow-Headers", "Content-Type, X-Prof-Token")
         self.end_headers()
 
+    def _rediriger_vers_canonique(self):
+        """Renvoie l'ancienne adresse vers le nom de domaine, s'il est posé.
+
+        Trois refus délibérés : rien sans `SITE_CANONIQUE`, rien en local (on
+        développe sur `localhost`), et **rien sur autre chose qu'un GET ou un
+        HEAD** — un 301 sur un POST ferait rejouer la requête sans son corps
+        chez certains clients, ce qui perdrait silencieusement un envoi
+        d'élève.
+        """
+        if not SITE_CANONIQUE or self.command not in ("GET", "HEAD"):
+            return False
+        hote = (self.headers.get("X-Forwarded-Host")
+                or self.headers.get("Host") or "")
+        hote = hote.split(",")[0].strip().lower().split(":")[0]
+        if not hote or hote == SITE_CANONIQUE:
+            return False
+        if hote in ("localhost", "127.0.0.1", "::1"):
+            return False
+        self.send_response(301)
+        self.send_header("Location", "https://%s%s" % (SITE_CANONIQUE, self.path))
+        self.send_header("Content-Length", "0")
+        self.end_headers()
+        return True
+
     def do_GET(self):
+        if self._rediriger_vers_canonique():
+            return
         parsed = urllib.parse.urlparse(self.path)
         path = parsed.path
         # Le chemin, pour la couture des séances : la liste blanche des routes
