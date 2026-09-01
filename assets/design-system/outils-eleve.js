@@ -480,7 +480,22 @@
   }
 
   // ══ Audio (ElevenLabs, repli sur la voix du navigateur) ═══════
+  // « Arrêter » ne peut pas arrêter ce qui n'a pas encore commencé. Entre le
+  // moment où l'élève touche « Écouter » et le premier son, il se passe deux
+  // attentes : l'appel au serveur, puis les 120 ms que réclame Chrome avant
+  // de parler. Touché pendant l'une ou l'autre, le bouton mettait en pause un
+  // lecteur inexistant, annulait un énoncé pas encore soumis — et le son
+  // partait juste après. De l'extérieur : « le bouton Arrêter ne marche pas ».
+  //
+  // Le numéro de lecture règle les deux : chaque « Écouter » prend le sien,
+  // « Arrêter » l'incrémente, et tout rappel qui revient avec un numéro périmé
+  // se tait. Même parade que pour la voix du jeu de rôle et le micro.
+  var lectureNo = 0;
+  var enVol = null;              // l'appel au serveur, pour le couper aussi
+
   function stopAudio() {
+    lectureNo++;
+    if (enVol) { try { enVol.abort(); } catch (e) {} enVol = null; }
     if (audioEnCours) { audioEnCours.pause(); audioEnCours = null; }
     if (global.speechSynthesis) global.speechSynthesis.cancel();
   }
@@ -491,6 +506,7 @@
 
   function dis(texte, vitesse, etat) {
     stopAudio();
+    var no = lectureNo;           // pris APRÈS stopAudio, qui vient d'incrémenter
     // `etat` reçoit un mot sur ce qui a lu — ou sur ce qui n'a pas lu. Sans
     // lui, un refus du serveur suivi d'un navigateur sans voix française ne
     // laissait aucune trace : l'élève touchait « Écouter » et il ne se
@@ -505,6 +521,7 @@
     // avale l'énoncé quand cancel() vient de passer (stopAudio ci-dessus).
     // preservesPitch évite la voix de dessin animé au ralentissement.
     var joue = function (blob) {
+      if (no !== lectureNo) return;      // l'élève a coupé pendant l'attente
       var a = new Audio(URL.createObjectURL(blob));
       a.playbackRate = vitesse || 1;
       a.preservesPitch = true;
@@ -516,10 +533,16 @@
 
     if (cacheSons[t]) { dire(''); return joue(cacheSons[t]); }
 
+    // AbortController n'est là que pour cesser d'attendre : le numéro de
+    // lecture suffirait à faire taire le son, mais laisser courir un appel
+    // qu'on ne veut plus, c'est payer des caractères pour rien.
+    var ctrl = global.AbortController ? new AbortController() : null;
+    enVol = ctrl;
     return fetch('/api/voix', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ code: cfg.code, texte: t, voix: 'lecture' })
+      body: JSON.stringify({ code: cfg.code, texte: t, voix: 'lecture' }),
+      signal: ctrl ? ctrl.signal : undefined
     }).then(function (r) {
       // Le 401 n'est pas une panne : c'est une page ouverte sans code d'élève,
       // et le remède n'est pas le même. On distingue donc les deux ici.
@@ -530,6 +553,10 @@
       dire('');
       return joue(blob);
     }).catch(function (e) {
+      // Une coupure voulue n'est pas une panne : sans ce filtre, « Arrêter »
+      // affichait « La voix du cours n'a pas répondu » et basculait sur la
+      // voix de l'appareil — exactement ce qu'on venait d'interrompre.
+      if (no !== lectureNo || (e && e.name === 'AbortError')) return;
       var cause = (e && e.message === 'code')
         ? 'La voix du cours a besoin de votre code : ouvrez le module depuis votre portail.'
         : 'La voix du cours n\'a pas répondu.';
@@ -550,7 +577,9 @@
     return new Promise(function (res) {
       if (!global.speechSynthesis || !global.SpeechSynthesisUtterance) return res(false);
       global.speechSynthesis.cancel();
+      var mien = lectureNo;
       setTimeout(function () {
+        if (mien !== lectureNo) return res(false);   // coupé pendant les 120 ms
         var parti = false;
         var u = new SpeechSynthesisUtterance(t);
         u.lang = 'fr-CA';
