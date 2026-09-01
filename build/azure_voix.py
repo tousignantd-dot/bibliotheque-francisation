@@ -71,6 +71,14 @@ VOIX = {
     # les voix neurales pour rattraper le tempo d'ElevenLabs ; sur HD il rend
     # une parole pressée, et c'est la version SANS lui qui a été retenue à
     # l'écoute. Le ralenti passe par le palier, donc par la barre de débit.
+    # Les mêmes voix HD, pour les DIALOGUES des modules. Nommées à part des
+    # rôles du jeu de rôle : ce n'est pas le même usage, et un jour l'un des
+    # deux changera sans l'autre. Réservées aux dialogues où un seul
+    # personnage de chaque genre parle — le français canadien n'a que ces
+    # deux voix HD, et deux personnages du même genre s'y confondraient.
+    "hd_feminin":  {"azure": "fr-CA-Sylvie:DragonHDLatestNeural", "reference": ""},
+    "hd_masculin": {"azure": "fr-CA-Thierry:DragonHDLatestNeural", "reference": ""},
+
     "jr_feminin":  {"azure": "fr-CA-Sylvie:DragonHDLatestNeural", "reference": ""},
     "jr_masculin": {"azure": "fr-CA-Thierry:DragonHDLatestNeural", "reference": ""},
 }
