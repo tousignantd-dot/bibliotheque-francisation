@@ -357,8 +357,19 @@ Lance, depuis ton dossier de travail :
     python3 {biblio}/forge.py --controles . --niveau <le niveau de la commande>
 
 Il relit ta page et signale ce qui cloche : couleur de repérage, jetons périmés,
-bonnes réponses alignées du même côté, émojis dans l'interface. **Corrige tout
-ce qu'il nomme, puis relance-le, et ne termine que lorsqu'il se tait.** Si un
+bonnes réponses alignées du même côté, émojis dans l'interface.
+
+Puis celui-ci, qui relit tes QUATRE fichiers ensemble et les confronte à la
+commande — corrigé plus court que l'exercice, banque de mots qui ne tombe pas
+juste, minutages qui ne totalisent pas la durée, nom propre absent de la
+documentation :
+
+    python3 {outils}/verifie_activite.py --commande . --silencieux
+
+L'option `--commande` est indispensable : sans elle il lit un fichier isolé,
+réclame un corrigé dans la fiche de l'élève et cherche les scripts audio dans
+la page interactive. **Corrige tout ce que les deux nomment, puis relance-les,
+et ne termine que lorsqu'ils se taisent.** Si un
 contrôle dit « non fait », c'est qu'il n'a pas su lire ta page : donne-lui la
 forme qu'il attend plutôt que de passer outre. Ce contrôle est repassé après ta
 livraison, et ce qu'il trouve alors est écrit sur la commande — autant qu'il n'y
@@ -650,6 +661,24 @@ def _verifier_livraison(cid):
             elif nom != "fiche-eleve.pdf":
                 reserves.append(f"{nom} n'a pas de source HTML : impossible de vérifier "
                                 "sa mise en page.")
+
+    # Le vérificateur, lancé par la forge et non par l'agent : le préambule le
+    # lui demande, mais un préambule est une consigne et un contrôle est un
+    # fait. Ce qu'il appelle ERREUR devient une réserve ; ses doutes restent
+    # à lui — ils sont trop souvent des « je n'ai pas su lire » pour figurer
+    # sur la commande d'une enseignante.
+    verificateur = OUTILS / "verifie_activite.py"
+    if verificateur.exists():
+        try:
+            issue = subprocess.run(
+                ["python3", str(verificateur), "--commande", str(d), "--silencieux"],
+                capture_output=True, text=True, timeout=120)
+            for ligne in issue.stdout.splitlines():
+                m = re.search(r"ERREUR\s+\[([^\]]+)\]\s+(.*)", ligne)
+                if m:
+                    reserves.append("%s : %s" % (m.group(1), m.group(2).strip()))
+        except (OSError, subprocess.SubprocessError) as e:
+            reserves.append("Le vérificateur d'activité n'a pas pu s'exécuter (%s)." % e)
 
     # La page interactive est le livrable que personne ne relisait.
     if ESSENTIEL in presents:
