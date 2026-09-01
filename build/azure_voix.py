@@ -154,6 +154,39 @@ ECHELLE_NIVEAU = {1: "-18%", 2: "-18%", 3: "-9%", 4: "-9%",
                   5: "",     6: "",     7: "+10%", 8: "+10%"}
 
 
+# L'outil « Lire » de la barre d'élève lisait à TAUX_GLOBAL, c'est-à-dire au
+# réglage d'avant le chantier des débits : au niveau 3, il parlait 22 % plus
+# vite que les dialogues du module qu'il lisait. Un élève qui ne suit pas un
+# dialogue touche « Lire » — et tombe sur plus rapide encore.
+#
+# Les valeurs viennent de ce qui a RÉELLEMENT été produit : le facteur final de
+# `feminin_2`, la voix de lecture, à chaque niveau (build/.facteurs_debit.json
+# et sa passe corrective). Les niveaux 1, 2 et 4 n'ont pas de facteur — les deux
+# premiers sont restés chez ElevenLabs, le quatrième était déjà dans sa cible —
+# et sont interpolés sur la pente des autres, environ 7 % de taux par c/s.
+DEBIT_LECTURE = {1: "-13%", 2: "-13%", 3: "-6%", 4: "+1%",
+                 5: "+6%", 6: "+8%", 7: "+14%", 8: "+19%"}
+
+
+def taux_lecture(niv):
+    """Le taux de l'outil « Lire » au niveau donné, ou None si on l'ignore."""
+    try:
+        return DEBIT_LECTURE.get(int(niv))
+    except (TypeError, ValueError):
+        return None
+
+
+def niveau_du_slug(slug):
+    """Le niveau que porte un nom de module : « module-n3-poste » → 3.
+
+    Les modules de niveau 4 n'ont pas de « n4 » dans leur nom — ils sont les
+    plus anciens, nommés avant que le dispositif ait des niveaux. D'où le repli.
+    """
+    import re as _re
+    m = _re.match(r"module-n(\d)-", str(slug or ""))
+    return int(m.group(1)) if m else (4 if str(slug or "").startswith("module-") else None)
+
+
 def niveau(chemin):
     """Le niveau du module auquel appartient ce fichier, ou None.
 

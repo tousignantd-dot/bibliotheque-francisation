@@ -3360,7 +3360,7 @@ class _VoixIndisponible(Exception):
         self.http = http
 
 
-def _synthese_azure(role, texte, palier=None):
+def _synthese_azure(role, texte, palier=None, reference=None):
     """Un extrait de parole, par Azure Speech. Renvoie du MP3 brut.
 
     Le SSML est bâti par `build/azure_voix.py` et non recopié ici : c'est là
@@ -3388,7 +3388,7 @@ def _synthese_azure(role, texte, palier=None):
 
     req = urllib.request.Request(
         f"https://{region}.tts.speech.microsoft.com/cognitiveservices/v1",
-        data=_ssml(texte, role, palier=palier).encode("utf-8"),
+        data=_ssml(texte, role, palier=palier, reference=reference).encode("utf-8"),
         headers={
             "Ocp-Apim-Subscription-Key": cle,
             "Content-Type": "application/ssml+xml",
@@ -3563,14 +3563,15 @@ def _transcrire_en_arriere_plan(sub_id, audio_bytes, nom, eleve_id, groupe_id,
 VOIX_CACHE_VERSION = 2
 
 
-def voix_cache_chemin(voix, texte, palier=None):
+def voix_cache_chemin(voix, texte, palier=None, reference=None):
     """Fichier où dort le MP3 d'un texte dit par une voix. La voix entre dans
     la clé : la même réplique lue par la propriétaire et par le visiteur sont
     deux enregistrements. Le palier aussi, depuis que le ralenti se fait à la
     synthèse : servir le normal à qui a demandé le lent serait pire qu'un
     cache manqué. Espaces normalisés, comme pour outils_key()."""
     empreinte = hashlib.sha1(" ".join(texte.split()).encode("utf-8")).hexdigest()[:20]
-    suffixe = "-" + palier if palier else ""
+    suffixe = ("-" + palier if palier else "") + (
+        "-" + reference.replace("%", "").replace("+", "p") if reference else "")
     return VOIX_CACHE_DIR / ("%s%s-v%d-%s.mp3"
                              % (voix, suffixe, VOIX_CACHE_VERSION, empreinte))
 
@@ -20212,10 +20213,17 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if palier not in ("lent", "tres-lent"):
             palier = None
 
+        reference = None
         if body.get("voix") == "lecture":
             # La barre d'outils lit un passage du module : aucun rôle en jeu,
             # une voix fixe pour que la lecture ne change pas de timbre.
             voix = VOIX_LECTURE
+            # Mais le DÉBIT suit le niveau du module, comme ses dialogues. Sans
+            # cela l'outil lisait à +15 % — le réglage d'avant le chantier des
+            # débits — et parlait au niveau 3 plus vite que le dialogue que
+            # l'élève venait de ne pas comprendre.
+            from build.azure_voix import taux_lecture, niveau_du_slug
+            reference = taux_lecture(niveau_du_slug(body.get("module")))
         else:
             # L'assistant joue l'autre rôle : propriétaire si l'élève est locataire.
             voix = (VOIX_JEU_DE_ROLE["proprietaire"]
@@ -20224,7 +20232,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 
         # Le cache passe avant la clé d'API : une classe garde la voix des
         # passages déjà lus même si la clé vient à manquer.
-        chemin = voix_cache_chemin(voix, texte, palier)
+        chemin = voix_cache_chemin(voix, texte, palier, reference)
         audio = voix_cache_lire(chemin)
         if audio is not None:
             print(f"[voix] cache : {len(texte)} caractères", flush=True)
@@ -20237,7 +20245,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             return
 
         try:
-            audio = _synthese_azure(voix, texte, palier)
+            audio = _synthese_azure(voix, texte, palier, reference=reference)
         except _VoixIndisponible as e:
             print(f"[WARN] Azure voix : {e}", flush=True)
             journal_api.noter("voix", _modele_voix(voix), eleve_id, groupe_id,

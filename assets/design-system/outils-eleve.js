@@ -541,7 +541,12 @@
     return fetch('/api/voix', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ code: cfg.code, texte: t, voix: 'lecture' }),
+      // Le module part avec la demande : c'est de LUI que le serveur tire le
+      // niveau, donc le débit de lecture. Sans ce champ, l'outil lisait à
+      // +15 % partout — au niveau 3, plus vite que le dialogue que l'élève
+      // venait justement de ne pas comprendre.
+      body: JSON.stringify({ code: cfg.code, texte: t, voix: 'lecture',
+                             module: cfg.module }),
       signal: ctrl ? ctrl.signal : undefined
     }).then(function (r) {
       // Le 401 n'est pas une panne : c'est une page ouverte sans code d'élève,
