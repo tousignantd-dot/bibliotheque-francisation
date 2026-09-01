@@ -459,10 +459,18 @@
     function formulaire(role, centreId, centres) {
       var h = '<form class="dr-form" data-role="' + role + '"' +
               (centreId ? ' data-centre="' + centreId + '"' : '') + '>' +
-              '<label for="crl-' + role + '">Noms</label>' +
+              '<label for="crl-' + role + '">Noms ou pseudonymes</label>' +
               '<textarea id="crl-' + role + '" name="noms" required ' +
-              'placeholder="un nom par ligne — Prénom Nom">' +
-              '</textarea>';
+              'placeholder="un par ligne — Anne Bélanger, ou Érable">' +
+              '</textarea>' +
+              // Le pseudonyme est offert, jamais imposé : c'est la direction
+              // qui doit pouvoir dire à qui parler, et si elle choisit des
+              // pseudonymes, la correspondance vit dans sa tête plutôt que
+              // dans le système. Le dire ici évite de le découvrir après coup.
+              '<p class="dr-aide">Un pseudonyme fonctionne aussi bien qu\'un nom. ' +
+              'Retenez que <b>c\'est ce que vous verrez partout</b> — dans vos ' +
+              'tableaux comme dans le journal des modifications — et que la ' +
+              'correspondance sera alors à tenir de votre côté.</p>';
       if (centres && centres.length) {
         h += '<div class="rangee"><div>' +
              '<label for="ctr-' + role + '">Centre</label><select id="ctr-' + role + '" name="orgId">';

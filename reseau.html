@@ -28,6 +28,9 @@
 
     .rs-titre { margin: var(--sp-2) 0 var(--sp-2); }
     .rs-sous { color: var(--text-muted); margin: 0; }
+    /* L'aide sous un champ : elle dit une conséquence, pas ce qu'est le champ. */
+    .rs-aide { font-size: var(--fs-ui-sm); color: var(--text-muted);
+      margin: var(--sp-1) 0 0; line-height: 1.5; }
 
     .rs-tuiles { display: grid; gap: var(--sp-3);
                  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -197,15 +200,25 @@
 
     <h2 class="rs-sect">Ouvrir des comptes</h2>
     <div class="card">
-      <p style="margin-top:0">Un nom par ligne. Le serveur tire un <strong>code</strong>
+      <p style="margin-top:0">Un par ligne — un nom ou un <strong>pseudonyme</strong>,
+      au choix. Le serveur tire un <strong>code</strong>
       et un <strong>mot de passe temporaires</strong> pour chacun ; ils ne paraissent
       qu'une fois, ici, et se remettent en main propre. La personne choisira
       elle-même son code et son mot de passe à sa première connexion.</p>
       <div class="rs-form" style="align-items:flex-start">
         <div style="flex:1 1 280px">
-          <label for="rsNoms">Noms</label>
+          <label for="rsNoms">Noms ou pseudonymes</label>
           <textarea class="field" id="rsNoms" rows="4" style="width:100%"
-                    placeholder="Anne Bélanger&#10;Bruno Côté"></textarea>
+                    placeholder="Anne Bélanger&#10;Érable"></textarea>
+          <!-- Le pseudonyme est offert, jamais imposé. Ce qui compte est de dire
+               sa conséquence avant la saisie : c'est ce libellé qu'on lira dans
+               tous les tableaux et dans le journal des modifications, et la
+               correspondance avec la personne réelle vivra alors hors du
+               système. -->
+          <p class="rs-aide">C'est ce qui paraîtra
+          <strong>partout</strong> — tableaux de suivi et journal des
+          modifications. Avec un pseudonyme, la correspondance est à tenir de
+          votre côté.</p>
         </div>
         <div>
           <label for="rsRoleInv">Rôle</label>
