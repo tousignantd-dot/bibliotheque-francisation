@@ -2768,6 +2768,99 @@ def normalize_lien(value):
 
 # ── Migration vers le multi-groupes ─────────────────────────────────────────
 
+# ── Les activités de la forge, du dépôt vers le volume ───────────────────────
+
+FORGE_VUES_FILE = STORAGE_DIR / "data" / "forge_reconciliees.json"
+
+
+def reconcilier_activites_forge():
+    """Fait entrer au catalogue en ligne les activités publiées par la forge.
+
+    La forge ne tourne que sur le poste de travail. Publier y écrit deux
+    choses : les fichiers dans `assets/interactive/<slug>/`, et l'entrée de
+    catalogue dans `data/activities.json`. Le premier voyage par git — en
+    ligne, `assets/interactive/` est servi depuis le dépôt. Le second, non :
+    `DATA_FILE` pointe sur le VOLUME, et la copie versionnée ne sert que de
+    secours quand le fichier du volume manque. Aucune fusion.
+
+    Conséquence, constatée le 31 août 2026 : une activité générée et poussée
+    arrivait en ligne avec tous ses fichiers et **restait invisible**, faute
+    d'entrée au catalogue. Il fallait la ressaisir à la main dans le portail.
+
+    Cette fonction ne recopie pas le catalogue du dépôt — ce serait ressusciter
+    tout ce qu'une enseignante a pu supprimer en ligne. Elle ne regarde que les
+    activités qui portent `origine.forge`, c'est-à-dire celles que la forge a
+    publiées, et elle tient un registre de celles qu'elle a déjà vues passer.
+
+    **Le registre est ce qui rend une suppression définitive.** Sans lui, une
+    activité effacée du catalogue en ligne reviendrait au redémarrage suivant,
+    et l'enseignante ne pourrait plus s'en débarrasser — un défaut bien pire
+    que celui qu'on corrige ici.
+    """
+    secours = BASE_DIR / "data" / "activities.json"
+    if DATA_FILE == secours:
+        return 0          # en local, les deux fichiers n'en font qu'un
+    if not secours.exists():
+        return 0
+
+    try:
+        with open(secours, "r", encoding="utf-8") as f:
+            depot = json.load(f)
+    except (OSError, json.JSONDecodeError) as e:
+        print("[WARN] reconcilier_activites_forge : copie du dépôt illisible (%s)" % e,
+              flush=True)
+        return 0
+
+    vues = set()
+    if FORGE_VUES_FILE.exists():
+        try:
+            with open(FORGE_VUES_FILE, "r", encoding="utf-8") as f:
+                vues = set(json.load(f))
+        except (OSError, json.JSONDecodeError):
+            # Registre illisible : on repart à vide plutôt que de refuser
+            # d'avancer. Le pire cas est qu'une activité supprimée revienne une
+            # fois — pas qu'une activité neuve n'arrive jamais.
+            print("[WARN] registre des activités de la forge illisible, remis à zéro",
+                  flush=True)
+
+    activites = load_activities()
+    connues = {(a.get("origine") or {}).get("forge") for a in activites}
+    ajoutees = []
+    for a in depot:
+        cid = (a.get("origine") or {}).get("forge")
+        if not cid or cid in vues or cid in connues:
+            continue
+        # Une entrée sans ses fichiers ferait une carte qui mène à une page
+        # blanche : on n'ajoute que ce qui est réellement arrivé par git.
+        page = a.get("interactive") or a.get("studentDoc") or ""
+        if not page or not (BASE_DIR / page).exists():
+            print("[WARN] activité de la forge %s ignorée : %s absent du dépôt"
+                  % (cid, page or "aucun fichier"), flush=True)
+            continue
+        neuve = dict(a)
+        neuve["id"] = next_id(activites)   # les identifiants du volume sont les siens
+        activites.append(neuve)
+        ajoutees.append(neuve)
+        vues.add(cid)
+
+    # Tout ce qui a été VU est inscrit, pas seulement ce qui a été ajouté :
+    # une activité déjà présente ne doit pas revenir si on la supprime demain.
+    vues |= {cid for cid in connues if cid}
+    FORGE_VUES_FILE.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        with open(FORGE_VUES_FILE, "w", encoding="utf-8") as f:
+            json.dump(sorted(v for v in vues if v), f, ensure_ascii=False, indent=2)
+    except OSError as e:
+        print("[WARN] registre des activités de la forge non écrit (%s)" % e, flush=True)
+
+    if ajoutees:
+        save_activities(activites)
+        for a in ajoutees:
+            print("[forge] « %s » entre au catalogue (id %s, %s)"
+                  % (a.get("title"), a["id"], a.get("level")), flush=True)
+    return len(ajoutees)
+
+
 def migrate_multi_groupes():
     """Fait passer une installation mono-groupe au modèle enseignants/groupes.
 
@@ -21744,6 +21837,13 @@ if __name__ == "__main__":
             migrer_codes_enseignants()
         except Exception as e:
             print(f"[WARN] migrer_codes_enseignants a échoué : {e}", flush=True)
+        # Doit suivre init_storage() : elle écrit dans le catalogue du volume.
+        # Placée en dernier parce qu'elle ne conditionne rien — un échec ici
+        # laisse le portail entier debout, une activité en moins.
+        try:
+            reconcilier_activites_forge()
+        except Exception as e:
+            print(f"[WARN] reconcilier_activites_forge a échoué : {e}", flush=True)
 
 
     threading.Thread(target=_init_storage_safe, daemon=True).start()
