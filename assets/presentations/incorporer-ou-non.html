@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>S'incorporer ou non</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap">
+
+<style>
+/* ═══════════════════════════════════════════════════════════
+   S'INCORPORER OU NON
+   Aide à la décision, pas conseil fiscal.
+
+   Le vert marque ce qui plaide pour rester tel quel, l'acier
+   ce qui plaide pour la société, l'ambre ce qui doit être
+   vérifié auprès d'un professionnel. Le rouge est réservé au
+   seul risque qui pourrait tout arrêter.
+   ═══════════════════════════════════════════════════════════ */
+:root{
+  --ground:#F7F7F5; --card:#FFFFFF; --sunken:#FBFBFA;
+  --ink:#17181A; --body:#33363A; --muted:#6E7175;
+  --line:#E4E4E0; --line-fort:#D2D2CD;
+  --rester:#0A8F5B;  --rester-bg:#E9F5EF;
+  --societe:#1D6B8F; --societe-bg:#E7F1F6;
+  --verif:#C07A08;   --verif-bg:#FBF2E2;
+  --stop:#C7302B;    --stop-bg:#FBEDEC;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#151618; --card:#1D1F22; --sunken:#212326;
+    --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+    --line:#2E3135; --line-fort:#3D4146;
+    --rester:#4BC48D; --rester-bg:#12291F;
+    --societe:#6DAFD2; --societe-bg:#13242C;
+    --verif:#E0A63F; --verif-bg:#2C2213;
+    --stop:#EE7A73; --stop-bg:#2E1917;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#151618; --card:#1D1F22; --sunken:#212326;
+  --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+  --line:#2E3135; --line-fort:#3D4146;
+  --rester:#4BC48D; --rester-bg:#12291F;
+  --societe:#6DAFD2; --societe-bg:#13242C;
+  --verif:#E0A63F; --verif-bg:#2C2213;
+  --stop:#EE7A73; --stop-bg:#2E1917;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--body);
+  font-family:Nunito,system-ui,sans-serif;font-size:16px;line-height:1.62}
+.page{max-width:52rem;margin:0 auto;padding:1.5rem 1.25rem 5rem}
+a{color:var(--societe)}
+.retour{display:inline-block;margin-bottom:1.75rem;font-size:.82rem;
+  font-weight:700;color:var(--muted);text-decoration:none}
+.retour:hover{color:var(--ink)}
+.retour .ou{font-weight:400}
+h1{font-family:Newsreader,Georgia,serif;font-weight:600;font-size:2.3rem;
+  line-height:1.14;color:var(--ink);margin:.2rem 0 .6rem;letter-spacing:-.01em}
+h2{font-family:Newsreader,Georgia,serif;font-weight:600;font-size:1.48rem;
+  color:var(--ink);margin:3rem 0 .3rem}
+h3{font-size:1rem;font-weight:800;color:var(--ink);margin:1.7rem 0 .35rem}
+.eyebrow{display:block;font-size:.72rem;font-weight:800;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--muted);margin-bottom:.5rem}
+.chapeau{font-size:1.08rem;margin:.4rem 0 1.3rem}
+p{margin:.72rem 0}
+b,strong{color:var(--ink);font-weight:800}
+code{font-family:var(--mono);font-size:.86em;background:var(--sunken);
+  border:1px solid var(--line);border-radius:4px;padding:.05em .3em}
+.carte{background:var(--card);border:1px solid var(--line);
+  border-radius:12px;padding:1.05rem 1.15rem;margin:1rem 0}
+.carte > :first-child{margin-top:0}
+.carte > :last-child{margin-bottom:0}
+.c-rester{background:var(--rester-bg);border:1px solid var(--rester);border-left-width:4px}
+.c-societe{background:var(--societe-bg);border:1px solid var(--societe);border-left-width:4px}
+.c-verif{background:var(--verif-bg);border:1px solid var(--verif);border-left-width:4px}
+.c-stop{background:var(--stop-bg);border:1px solid var(--stop);border-left-width:4px}
+.tab{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.9rem}
+.tab th,.tab td{text-align:left;vertical-align:top;padding:.5rem .6rem;
+  border-bottom:1px solid var(--line)}
+.tab th{font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;
+  color:var(--muted);font-weight:800;border-bottom:1px solid var(--line-fort)}
+.tab tr:last-child td{border-bottom:none}
+.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.enveloppe{overflow-x:auto}
+ul,ol{margin:.6rem 0;padding-left:1.3rem}
+li{margin:.3rem 0}
+.gros{font-family:Newsreader,Georgia,serif;font-size:1.25rem;color:var(--ink);
+  line-height:1.35;margin:.5rem 0}
+.declencheur{display:flex;gap:.9rem;align-items:flex-start;
+  border:1px solid var(--line);border-left:4px solid var(--societe);
+  border-radius:10px;background:var(--card);padding:.9rem 1rem;margin:.7rem 0}
+.declencheur .marq{font-family:var(--mono);font-size:1.1rem;font-weight:800;
+  color:var(--societe);flex:0 0 auto;line-height:1.4}
+.declencheur p{margin:0}
+.note{font-size:.88rem;color:var(--muted)}
+.src{font-size:.85rem;color:var(--muted)}
+.src li{margin:.2rem 0}
+hr{border:none;border-top:1px solid var(--line);margin:2.5rem 0}
+.pied{margin-top:3rem;padding-top:1.1rem;border-top:1px solid var(--line);
+  font-size:.85rem;color:var(--muted)}
+@media print{
+  body{background:#fff;font-size:11pt}
+  .retour{display:none}
+  .carte,.tab,.declencheur{break-inside:avoid}
+  h2{break-after:avoid}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<a class="retour" href="/presentations.html"><span aria-hidden="true">&#8592;</span>
+  Le classeur <span class="ou">· toutes les pages du projet</span></a>
+
+<span class="eyebrow">Décider · structure juridique</span>
+<h1>S'incorporer, ou continuer en son nom&nbsp;?</h1>
+<p class="chapeau">À la veille d'une première entente avec un centre de services scolaire,
+avec un avenir qui peut prendre beaucoup d'ampleur — ou pas du tout.</p>
+
+<div class="carte c-verif">
+  <p><b>Je ne suis ni comptable ni avocat, et cette page ne remplace ni l'un ni l'autre.</b>
+  Elle rassemble ce qui est vérifiable, écarte deux idées reçues coûteuses, et propose
+  des <b>seuils de déclenchement</b> — de quoi arriver chez un professionnel avec des
+  questions précises plutôt qu'avec « devrais-je m'incorporer&nbsp;? ». Les chiffres
+  fiscaux sont ceux de 2026 et changent d'un budget à l'autre.</p>
+</div>
+
+<h2>La question n'est pas d'abord fiscale</h2>
+
+<p>C'est le premier réflexe, et c'est le mauvais. Dans votre situation, quatre enjeux se
+présentent, et la fiscalité est <b>le moins pressant des quatre</b>.</p>
+
+<div class="enveloppe">
+<table class="tab">
+  <thead><tr><th>Enjeu</th><th>Urgence</th><th>Tranché par</th></tr></thead>
+  <tbody>
+    <tr><td><b>Propriété intellectuelle</b> — à qui appartient ce qui a été construit</td>
+        <td>Immédiate</td><td>Une avocate, avant toute signature</td></tr>
+    <tr><td><b>Conflit d'intérêts</b> — vendre au réseau qui vous emploie</td>
+        <td>Immédiate</td><td>Votre employeur, par écrit</td></tr>
+    <tr><td><b>Responsabilité</b> — ce qui arrive si les données fuient</td>
+        <td>À la signature</td><td>Assurance d'abord, structure ensuite</td></tr>
+    <tr><td><b>Fiscalité</b></td><td>Quand il y aura des profits</td>
+        <td>Un comptable, avec vos chiffres</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="carte c-stop">
+  <p><b>Le point qui pourrait tout arrêter, et qu'il faut regarder en premier.</b>
+  Vous enseignez la francisation dans le réseau public, et vous vous apprêtez à vendre à
+  ce même réseau un outil de francisation. Deux questions doivent être réglées <b>avant</b>
+  la structure juridique, parce qu'aucune société ne les résoudra&nbsp;:</p>
+  <ul>
+    <li><b>À qui appartient la plateforme&nbsp;?</b> Si une partie a été conçue pendant
+        des heures rémunérées, avec du matériel de l'employeur, ou dans le prolongement
+        direct de vos fonctions, l'employeur pourrait revendiquer des droits. La réponse
+        dépend de votre convention collective, de votre contrat et des faits. Une société
+        constituée aujourd'hui n'efface pas ce qui s'est passé avant elle.</li>
+    <li><b>Avez-vous le droit de vendre à votre employeur ou à ses pairs&nbsp;?</b>
+        Les organismes publics ont des règles d'éthique sur les intérêts d'un employé
+        dans un contrat public. Ce n'est pas nécessairement interdit — c'est à divulguer
+        et à faire autoriser, par écrit.</li>
+  </ul>
+  <p><b>Une divulgation écrite et une réponse écrite valent plus que n'importe quelle
+  structure juridique.</b> Faites-les d'abord.</p>
+</div>
+
+<h2>L'idée reçue qui coûte cher : « je paierai 12&nbsp;%&nbsp;»</h2>
+
+<p>C'est l'argument qu'on entend partout, et <b>il ne s'applique pas à une société d'une
+seule personne au Québec</b>.</p>
+
+<p>La déduction pour petite entreprise abaisse le taux québécois à 2,2&nbsp;% — mais elle
+exige que la société totalise <b>5&nbsp;500 heures rémunérées par année</b>, soit environ
+2,6 personnes à temps plein. Les heures du dirigeant comptent, plafonnées à 40 heures par
+semaine&nbsp;: <b>seul, on ne peut pas y arriver</b>, quel que soit le nombre d'heures
+travaillées.</p>
+
+<div class="enveloppe">
+<table class="tab">
+  <thead><tr><th>Situation</th><th class="n">Fédéral</th><th class="n">Québec</th><th class="n">Combiné</th></tr></thead>
+  <tbody>
+    <tr><td>Société admissible à la DPE (≥ 5 500 h)</td>
+        <td class="n">9 %</td><td class="n">2,2 %</td><td class="n"><b>11,2 %</b></td></tr>
+    <tr><td><b>Société d'une seule personne</b> — votre cas</td>
+        <td class="n">9 %</td><td class="n">11,5 %</td><td class="n"><b>20,5 %</b></td></tr>
+    <tr><td>Société sans DPE fédérale ni québécoise</td>
+        <td class="n">15 %</td><td class="n">11,5 %</td><td class="n">26,5 %</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p class="note">Taux 2026, après la baisse québécoise annoncée en avril. À confirmer avec
+un comptable pour votre exercice.</p>
+
+<h3>Ce que l'incorporation apporte vraiment, côté impôt</h3>
+
+<p>Pas une économie : un <b>report</b>. L'argent laissé dans la société est imposé à
+20,5&nbsp;% au lieu de votre taux marginal personnel — lequel est élevé, puisque les
+revenus de la plateforme <b>s'ajoutent à votre salaire d'enseignant</b>. Vous paierez la
+différence le jour où vous sortirez l'argent.</p>
+
+<div class="carte c-rester">
+  <p><b>La règle simple, et elle est sévère&nbsp;:</b> si vous dépensez personnellement
+  tout ce que la plateforme rapporte, <b>l'avantage fiscal est à peu près nul</b>. Le
+  système d'intégration est fait pour ça. Ne restent alors que les frais.</p>
+  <p><b>L'ordre de grandeur.</b> Tenir une société coûte, bon an mal an, de
+  <b>1&nbsp;500 à 3&nbsp;000&nbsp;$</b> par année en comptabilité, déclarations et frais
+  d'immatriculation. Pour que le report couvre cette dépense, il faut laisser dans la
+  société de l'ordre de <b>10&nbsp;000&nbsp;$ par an</b> dont vous n'avez pas besoin
+  pour vivre. En dessous, l'incorporation vous coûte de l'argent.</p>
+</div>
+
+<h2>La responsabilité : ce qu'une société protège, et ce qu'elle ne protège pas</h2>
+
+<p>C'est l'argument le plus solide en faveur de l'incorporation dans votre cas — mais il
+est plus étroit qu'on ne le croit.</p>
+
+<div class="carte c-societe">
+  <p><b>Ce qu'elle protège.</b> Les dettes et les engagements <b>contractuels</b> de
+  l'entreprise. Si une entente tourne mal, si un centre réclame des dommages pour une
+  interruption de service, c'est le patrimoine de la société qui répond — pas votre
+  maison.</p>
+  <p><b>Ce qu'elle ne protège pas, et il faut le savoir.</b> Vos propres fautes. Si le
+  préjudice vient d'un geste que vous avez personnellement posé — une négligence dans la
+  protection des données, par exemple — le voile corporatif ne vous met pas à l'abri.
+  Une société n'est pas une assurance.</p>
+</div>
+
+<div class="carte c-verif">
+  <p><b>D'où l'ordre à respecter&nbsp;: l'assurance avant la structure.</b> Une
+  responsabilité civile professionnelle et une garantie cyberrisque coûtent quelques
+  centaines de dollars par année et couvrent précisément ce qu'une société ne couvre
+  pas. Dans un dossier qui touche des renseignements personnels d'élèves, c'est la
+  dépense la plus rentable des deux — et plusieurs organismes publics l'exigent de toute
+  façon.</p>
+</div>
+
+<h2>Ce que le réseau scolaire exige, en pratique</h2>
+
+<p>Les centres de services scolaires sont assujettis à la <b>Loi sur les contrats des
+organismes publics</b>. Trois conséquences concrètes&nbsp;:</p>
+
+<ul>
+  <li><b>Sous le seuil d'appel d'offres public</b> — de l'ordre de 139&nbsp;000&nbsp;$
+      pour les services — un centre peut contracter de gré à gré ou par sollicitation
+      restreinte. <b>Une première entente de quelques milliers de dollars ne demande donc
+      aucune structure particulière.</b></li>
+  <li><b>Au-delà</b>, l'appel d'offres public passe par le SEAO, et l'on y répond comme
+      fournisseur. Une société y est plus habituelle qu'une personne physique — sans être
+      formellement requise.</li>
+  <li><b>L'assurance et les attestations</b> sont demandées dans les deux cas&nbsp;:
+      attestation de Revenu Québec, preuve d'assurance, parfois inscription à un registre.
+      Une personne physique peut les fournir.</li>
+</ul>
+
+<div class="carte c-rester">
+  <p><b>Rien ne vous empêche donc de signer une première entente en votre nom.</b> Ce que
+  la structure change, à ce stade, tient plus à la <b>perception</b> — un service de
+  l'approvisionnement traite plus volontiers avec une entité qu'avec une personne — qu'à
+  une obligation légale.</p>
+</div>
+
+<h2>Les deux avenirs, et ce qu'ils commandent</h2>
+
+<h3>Si ça reste modeste</h3>
+<p>Un ou deux centres, quelques milliers de dollars par année, un travail que vous menez
+seul en marge de votre emploi.</p>
+<div class="carte c-rester">
+  <p><b>Restez en votre nom.</b> Immatriculez au besoin un nom d'entreprise individuelle
+  — quelques dizaines de dollars — pour facturer sous une raison sociale plutôt que sous
+  votre nom propre. Prenez l'assurance. Signez l'entente. Une société vous coûterait
+  chaque année davantage qu'elle ne vous rapporterait, et vous pourrez toujours la créer
+  plus tard, en lui transférant les activités.</p>
+</div>
+
+<h3>Si ça prend de l'ampleur</h3>
+<p>Plusieurs centres, des revenus qui dépassent vos besoins, un contrat pluriannuel, une
+personne à rémunérer, ou un partenaire qui veut investir.</p>
+<div class="carte c-societe">
+  <p><b>Incorporez-vous, et pas seulement pour l'impôt.</b> Une société sépare le
+  patrimoine, encaisse les engagements pluriannuels, permet de rémunérer quelqu'un,
+  d'accueillir un associé, et — le jour où cela se pose — <b>de vendre l'entreprise
+  plutôt que de vendre des actifs</b>, ce qui n'est pas la même chose du tout, ni
+  fiscalement, ni juridiquement.</p>
+</div>
+
+<h2>Cinq déclencheurs : incorporez-vous quand l'un survient</h2>
+
+<p>Plutôt que de trancher aujourd'hui pour un avenir inconnu, posez les seuils
+maintenant, et n'y pensez plus jusqu'à ce que l'un d'eux se présente.</p>
+
+<div class="declencheur"><span class="marq">1</span>
+  <p><b>Un deuxième client.</b> Un centre, c'est un contrat. Deux, c'est une activité
+  commerciale — et le regard du fisc comme celui de votre employeur change.</p></div>
+
+<div class="declencheur"><span class="marq">2</span>
+  <p><b>Plus de 10&nbsp;000&nbsp;$ par an que vous ne dépensez pas.</b> C'est à peu près
+  le seuil où le report d'impôt couvre les frais de la société.</p></div>
+
+<div class="declencheur"><span class="marq">3</span>
+  <p><b>Un engagement de responsabilité que vous ne pouvez pas assumer
+  personnellement</b> — une clause d'indemnisation sans plafond, un contrat pluriannuel,
+  un centre qui exige une garantie.</p></div>
+
+<div class="declencheur"><span class="marq">4</span>
+  <p><b>Quelqu'un à payer.</b> Un contractuel pour des voix, des images, du
+  développement&nbsp;: la société devient le bon véhicule.</p></div>
+
+<div class="declencheur"><span class="marq">5</span>
+  <p><b>Quelqu'un veut entrer, ou racheter.</b> On ne vend pas une personne physique, et
+  on n'investit pas dedans.</p></div>
+
+<h2>Ce que je ferais, à votre place</h2>
+
+<p class="gros">Ne pas s'incorporer maintenant. Régler d'abord la propriété
+intellectuelle et le conflit d'intérêts, prendre l'assurance, signer la première entente
+en son nom — et garder les cinq déclencheurs sous la main.</p>
+
+<p>Les raisons, dans l'ordre&nbsp;: l'avantage fiscal <b>n'existe pas</b> à votre échelle
+actuelle&nbsp;; la protection de responsabilité s'obtient mieux, plus vite et moins cher
+par une assurance&nbsp;; aucune règle ne vous empêche de contracter en votre nom sous le
+seuil d'appel d'offres&nbsp;; et une société créée trop tôt est une dépense annuelle
+certaine contre un bénéfice hypothétique.</p>
+
+<p><b>La seule chose qui renverserait ce raisonnement</b> serait une exigence explicite du
+centre — service de l'approvisionnement qui refuse de contracter avec une personne
+physique, ou clause de responsabilité que vous ne voulez pas porter personnellement.
+<b>Posez la question au centre avant de dépenser quoi que ce soit</b>&nbsp;: la réponse
+tranche en une phrase ce que cette page discute en trois pages.</p>
+
+<h2>À apporter chez le comptable et chez l'avocate</h2>
+
+<div class="carte">
+  <p><b>Au comptable&nbsp;:</b></p>
+  <ol>
+    <li>Mes revenus de plateforme s'ajoutent à mon salaire&nbsp;: quel est mon taux
+        marginal réel sur le prochain dollar&nbsp;?</li>
+    <li>Confirmez-vous que la DPE québécoise m'est inaccessible seul, faute des
+        5&nbsp;500 heures&nbsp;?</li>
+    <li>À partir de quel montant <b>non consommé</b> l'incorporation devient-elle
+        rentable, frais compris&nbsp;?</li>
+    <li>Puis-je déduire mes dépenses actuelles — hébergement, services externes — comme
+        travailleur autonome&nbsp;?</li>
+    <li>Si je m'incorpore plus tard, le transfert des actifs se fait-il sans coût
+        fiscal&nbsp;?</li>
+  </ol>
+  <p><b>À l'avocate&nbsp;:</b></p>
+  <ol>
+    <li>Mon employeur peut-il revendiquer des droits sur la plateforme&nbsp;? Que faut-il
+        pour clore la question&nbsp;?</li>
+    <li>Puis-je vendre au réseau qui m'emploie, et sous quelles conditions de
+        divulgation&nbsp;?</li>
+    <li>Quelle limite de responsabilité accepter dans l'entente, et quelle assurance
+        exiger de moi-même&nbsp;?</li>
+    <li>En cas d'incident de confidentialité, qu'est-ce qui reste sur moi personnellement,
+        société ou pas&nbsp;?</li>
+  </ol>
+</div>
+
+<hr>
+
+<p class="note"><b>Sur la fiabilité de cette page.</b> Les taux, seuils et coûts ci-dessus
+proviennent de sources publiques de 2026, listées ci-dessous. Ils bougent — un budget
+provincial suffit. Ce qui bouge peu, en revanche, c'est l'ordre des priorités&nbsp;:
+propriété intellectuelle, conflit d'intérêts, assurance, puis structure.</p>
+
+<ul class="src">
+  <li>Règle des 5 500 heures et taux québécois — <a href="https://t2inc.ca/en/blog/better-understand-5500-hour-rule-sbd" target="_blank" rel="noopener">t2inc</a>,
+      <a href="https://cffp.recherche.usherbrooke.ca/wp-content/uploads/2024/11/r_2024-14_dpe.pdf" target="_blank" rel="noopener">Chaire en fiscalité, Université de Sherbrooke</a></li>
+  <li>Taux 2026 et baisse québécoise — <a href="https://www.revenuquebec.ca/fr/salle-de-presse/nouvelles-fiscales/details/2026-05-04/hausse-du-taux-de-la-deduction-pour-petite-entreprise/" target="_blank" rel="noopener">Revenu Québec</a>,
+      <a href="https://www.bdo.ca/fr-ca/insights/corporate-income-tax-facts" target="_blank" rel="noopener">BDO</a></li>
+  <li>Coûts d'immatriculation et d'incorporation — <a href="https://2727coworking.com/articles/fr/cout-incorporation-quebec-2026-frais" target="_blank" rel="noopener">relevé 2026</a></li>
+  <li>Contrats des organismes publics et SEAO — <a href="https://www.cssdm.gouv.qc.ca/citoyens/appels-offres-contrats/" target="_blank" rel="noopener">CSSDM</a></li>
+  <li>Report d'impôt et seuil de rentabilité — <a href="https://lexstart.ca/blogue/travailleur-autonome-ou-incorporation" target="_blank" rel="noopener">LexStart</a></li>
+</ul>
+
+<p class="pied">Analyse du 1<sup>er</sup> septembre 2026 · aide à la décision, ni conseil
+fiscal ni avis juridique · à relire si un centre exige une structure, ou au premier des
+cinq déclencheurs.</p>
+
+</div>
+</body>
+</html>
