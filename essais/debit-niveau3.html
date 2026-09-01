@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="fr"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Le débit du niveau 3 — trois versions à comparer</title>
+<link rel="stylesheet" href="/assets/design-system/styles.css">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* Niveau 3 : ambre. La couleur d'un document est celle de son niveau. */
+:root{--niv:#B45309; --niv-bg:#FBEEDC}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--surface-page,#F7F7F5);font-family:'Nunito',sans-serif;
+  color:var(--text-strong,#17181A);font-size:17px;font-weight:600;line-height:1.5}
+.wrap{max-width:1000px;margin:0 auto;padding:32px 24px 48px}
+.eyebrow{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:var(--niv)}
+h1{font-size:30px;font-weight:900;margin:6px 0 12px;letter-spacing:-.015em}
+.chapeau{font-size:19px;font-weight:600;color:var(--text-body,#3A3D40);max-width:66ch;margin-bottom:20px}
+.faits{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin:20px 0 28px}
+.fait{background:#fff;border:1px solid var(--border,#EAEAE8);border-radius:14px;padding:14px 16px}
+.fait b{display:block;font-size:24px;font-weight:900;color:var(--niv);line-height:1.1}
+.fait span{font-size:15px;font-weight:600;color:var(--text-muted,#6E7175)}
+.avert{background:var(--niv-bg);border-left:4px solid var(--niv);border-radius:10px;
+  padding:16px 18px;margin-bottom:28px;font-size:17px;font-weight:600}
+.avert b{font-weight:900}
+.rep{background:#fff;border:1px solid var(--border,#EAEAE8);border-radius:18px;padding:18px 20px;margin-bottom:14px}
+.txt{font-size:19px;font-weight:700;margin-bottom:14px}
+.trois{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.v{display:flex;flex-direction:column;gap:6px;padding:12px;border-radius:12px;
+  background:var(--surface-sunken,#FBFBFA);border:1px solid var(--border,#EAEAE8)}
+.v--reco{border:2px solid var(--niv);background:var(--niv-bg)}
+.k{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--text-muted,#6E7175)}
+.v--reco .k{color:var(--niv)}
+audio{width:100%;height:36px}
+.cs{font-size:14px;font-weight:700;color:var(--text-muted,#6E7175)}
+h2{font-size:24px;font-weight:900;margin:32px 0 10px}
+p.n{max-width:70ch;margin-bottom:10px}
+table{border-collapse:collapse;width:100%;margin-top:10px;font-size:16px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--border,#EAEAE8)}
+th{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--text-muted,#6E7175)}
+td.n{font-variant-numeric:tabular-nums;font-weight:800}
+</style></head><body>
+<div class="wrap">
+  <p class="eyebrow">Niveau 3 · Module 7 · Le colis de Yassine</p>
+  <h1>Le débit : trois versions à comparer</h1>
+  <p class="chapeau">Les huit répliques de Yassine, le personnage le plus rapide des
+  5 674 répliques du dispositif. Rien n'a été remplacé : ce qui est en ligne reste en ligne.
+  Écoutez, puis tranchez.</p>
+
+  <div class="faits">
+    <div class="fait"><b>25,6</b><span>c/s aujourd'hui</span></div>
+    <div class="fait"><b>20</b><span>c/s visés au niveau 3</span></div>
+    <div class="fait"><b>+28 %</b><span>d'écart à la cible</span></div>
+    <div class="fait"><b>28,9</b><span>c/s : sa médiane, record du corpus</span></div>
+  </div>
+
+  <div class="avert">
+    <b>Sur les voix HD.</b> Elles sonnent mieux, et à leur débit naturel elles tombent
+    sur la cible sans qu'on y touche. Mais elles ne sont pas reproductibles : quatre
+    synthèses du même texte ont donné 2,27 · 2,08 · 1,87 · 2,33 seconde — <b>24,6 %
+    d'écart</b>. La voix neurale, elle, rend 2,65 s les quatre fois, au centième.
+    Corriger une faute dans une réplique et la refaire seule donnerait, en HD, une
+    réplique qui ne va plus avec ses voisines.
+  </div>
+
+  <div class="rep">
+    <p class="txt">Denise, il y a un bureau de poste près d'ici ?</p>
+    <div class="trois">
+      <div class="v"><span class="k">Aujourd'hui</span><audio controls preload="none" src="debit-n3/actuel/line_01.mp3"></audio><span class="cs">25,6 c/s</span></div>
+      <div class="v v--reco"><span class="k">Voix neurale ralentie</span><audio controls preload="none" src="debit-n3/neural/line_01.mp3"></audio><span class="cs">20,2 c/s</span></div>
+      <div class="v"><span class="k">Voix HD, débit naturel</span><audio controls preload="none" src="debit-n3/hd/line_01.mp3"></audio><span class="cs">20,3 c/s</span></div>
+    </div>
+  </div>
+  <div class="rep">
+    <p class="txt">Je veux envoyer une boîte à mon frère, à Calgary.</p>
+    <div class="trois">
+      <div class="v"><span class="k">Aujourd'hui</span><audio controls preload="none" src="debit-n3/actuel/line_03.mp3"></audio><span class="cs">25,6 c/s</span></div>
+      <div class="v v--reco"><span class="k">Voix neurale ralentie</span><audio controls preload="none" src="debit-n3/neural/line_03.mp3"></audio><span class="cs">20,2 c/s</span></div>
+      <div class="v"><span class="k">Voix HD, débit naturel</span><audio controls preload="none" src="debit-n3/hd/line_03.mp3"></audio><span class="cs">20,3 c/s</span></div>
+    </div>
+  </div>
+  <div class="rep">
+    <p class="txt">Et les timbres, on les achète où ?</p>
+    <div class="trois">
+      <div class="v"><span class="k">Aujourd'hui</span><audio controls preload="none" src="debit-n3/actuel/line_05.mp3"></audio><span class="cs">25,6 c/s</span></div>
+      <div class="v v--reco"><span class="k">Voix neurale ralentie</span><audio controls preload="none" src="debit-n3/neural/line_05.mp3"></audio><span class="cs">20,2 c/s</span></div>
+      <div class="v"><span class="k">Voix HD, débit naturel</span><audio controls preload="none" src="debit-n3/hd/line_05.mp3"></audio><span class="cs">20,3 c/s</span></div>
+    </div>
+  </div>
+  <div class="rep">
+    <p class="txt">Est-ce qu'on peut faire autre chose là-bas ?</p>
+    <div class="trois">
+      <div class="v"><span class="k">Aujourd'hui</span><audio controls preload="none" src="debit-n3/actuel/line_07.mp3"></audio><span class="cs">25,6 c/s</span></div>
+      <div class="v v--reco"><span class="k">Voix neurale ralentie</span><audio controls preload="none" src="debit-n3/neural/line_07.mp3"></audio><span class="cs">20,2 c/s</span></div>
+      <div class="v"><span class="k">Voix HD, débit naturel</span><audio controls preload="none" src="debit-n3/hd/line_07.mp3"></audio><span class="cs">20,3 c/s</span></div>
+    </div>
+  </div>
+  <div class="rep">
+    <p class="txt">Un mandat-poste, c'est quoi ?</p>
+    <div class="trois">
+      <div class="v"><span class="k">Aujourd'hui</span><audio controls preload="none" src="debit-n3/actuel/line_09.mp3"></audio><span class="cs">25,6 c/s</span></div>
+      <div class="v v--reco"><span class="k">Voix neurale ralentie</span><audio controls preload="none" src="debit-n3/neural/line_09.mp3"></audio><span class="cs">20,2 c/s</span></div>
+      <div class="v"><span class="k">Voix HD, débit naturel</span><audio controls preload="none" src="debit-n3/hd/line_09.mp3"></audio><span class="cs">20,3 c/s</span></div>
+    </div>
+  </div>
+  <div class="rep">
+    <p class="txt">Et la boîte rouge, dans la rue ?</p>
+    <div class="trois">
+      <div class="v"><span class="k">Aujourd'hui</span><audio controls preload="none" src="debit-n3/actuel/line_11.mp3"></audio><span class="cs">25,6 c/s</span></div>
+      <div class="v v--reco"><span class="k">Voix neurale ralentie</span><audio controls preload="none" src="debit-n3/neural/line_11.mp3"></audio><span class="cs">20,2 c/s</span></div>
+      <div class="v"><span class="k">Voix HD, débit naturel</span><audio controls preload="none" src="debit-n3/hd/line_11.mp3"></audio><span class="cs">20,3 c/s</span></div>
+    </div>
+  </div>
+  <div class="rep">
+    <p class="txt">Est-ce que la préposée parle vite ?</p>
+    <div class="trois">
+      <div class="v"><span class="k">Aujourd'hui</span><audio controls preload="none" src="debit-n3/actuel/line_13.mp3"></audio><span class="cs">25,6 c/s</span></div>
+      <div class="v v--reco"><span class="k">Voix neurale ralentie</span><audio controls preload="none" src="debit-n3/neural/line_13.mp3"></audio><span class="cs">20,2 c/s</span></div>
+      <div class="v"><span class="k">Voix HD, débit naturel</span><audio controls preload="none" src="debit-n3/hd/line_13.mp3"></audio><span class="cs">20,3 c/s</span></div>
+    </div>
+  </div>
+  <div class="rep">
+    <p class="txt">Ça ouvre à quelle heure, le jeudi ?</p>
+    <div class="trois">
+      <div class="v"><span class="k">Aujourd'hui</span><audio controls preload="none" src="debit-n3/actuel/line_15.mp3"></audio><span class="cs">25,6 c/s</span></div>
+      <div class="v v--reco"><span class="k">Voix neurale ralentie</span><audio controls preload="none" src="debit-n3/neural/line_15.mp3"></audio><span class="cs">20,2 c/s</span></div>
+      <div class="v"><span class="k">Voix HD, débit naturel</span><audio controls preload="none" src="debit-n3/hd/line_15.mp3"></audio><span class="cs">20,3 c/s</span></div>
+    </div>
+  </div>
+
+  <h2>Ce qui est mesuré</h2>
+  <p class="n">Débit d'articulation : caractères divisés par la durée <b>parlée</b>,
+  silences retirés. Un débit brut ne veut rien dire — le silence de bord pèse lourd
+  sur « Merci. » et presque rien sur une longue phrase.</p>
+  <table>
+    <tr><th>Niveau</th><th>Mesuré</th><th>Cible</th><th>Écart</th><th></th></tr>
+    <tr><td>1</td><td class="n">17,9</td><td class="n">18</td><td class="n">−0 %</td><td>conforme</td></tr>
+    <tr><td>2</td><td class="n">18,1</td><td class="n">18</td><td class="n">+1 %</td><td>conforme</td></tr>
+    <tr><td><b>3</b></td><td class="n">22,0</td><td class="n">20</td><td class="n">+10 %</td><td>trop vite</td></tr>
+    <tr><td>4</td><td class="n">19,7</td><td class="n">20</td><td class="n">−2 %</td><td>conforme</td></tr>
+    <tr><td>5</td><td class="n">21,3</td><td class="n">22</td><td class="n">−3 %</td><td>conforme</td></tr>
+    <tr><td><b>6</b></td><td class="n">25,7</td><td class="n">22</td><td class="n">+17 %</td><td>trop vite — le pire</td></tr>
+    <tr><td><b>7</b></td><td class="n">25,7</td><td class="n">24</td><td class="n">+7 %</td><td>trop vite</td></tr>
+    <tr><td>8</td><td class="n">25,1</td><td class="n">24</td><td class="n">+5 %</td><td>à la limite</td></tr>
+  </table>
+
+  <h2>Le coupable traverse les niveaux</h2>
+  <p class="n">Sur les vingt personnages les plus rapides du corpus, dix-sept portent
+  la voix <b>masculin_1</b> (Antoine) ou <b>enseignante</b> (Sylvie). Ce n'est pas une
+  affaire de niveau : ces deux voix articulent plus dense que les autres au même
+  réglage, et aucune correction propre ne les rattrape — seule <b>feminin_2</b> en
+  porte une. Le facteur de ralentissement doit donc se calculer <b>par voix</b>, sinon
+  on corrige Antoine en rendant les autres trop lentes.</p>
+  <table>
+    <tr><th>masculin_1, par niveau</th><th>Médiane</th></tr>
+    <tr><td>Niveaux 1-2 (restés chez ElevenLabs)</td><td class="n">18,1</td></tr>
+    <tr><td>Niveaux 3-5</td><td class="n">21 à 23</td></tr>
+    <tr><td>Niveaux 6-8</td><td class="n">27,2 à 27,5</td></tr>
+  </table>
+</div>
+</body></html>
