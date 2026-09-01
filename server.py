@@ -16180,6 +16180,15 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         """
         if not SITE_CANONIQUE or self.command not in ("GET", "HEAD"):
             return False
+        # Jamais sur les routes d'API. Le point de contrôle de santé de
+        # l'hébergeur est appelé avec un hôte INTERNE : lui répondre 301 le fait
+        # conclure que l'application ne répond pas, et le déploiement échoue —
+        # ce qui est arrivé le 1er septembre 2026, site en panne. Les autres
+        # routes d'API sont exemptées par la même occasion : une requête de page
+        # redirigée change d'origine, ce qu'un appel en arrière-plan ne
+        # supporte pas.
+        if self.path.startswith("/api/"):
+            return False
         hote = (self.headers.get("X-Forwarded-Host")
                 or self.headers.get("Host") or "")
         hote = hote.split(",")[0].strip().lower().split(":")[0]
