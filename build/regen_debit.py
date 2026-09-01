@@ -43,7 +43,14 @@ from azure_voix import parle
 # Le 8 est passé de 24 à 22 le 31 août 2026, à l'écoute : « très bons,
 # mais un peu rapides ». La progression 18/20/22/24 s'aplatit — une
 # progression théorique ne vaut pas une oreille.
-CIBLE = {3: 20, 6: 22, 7: 22, 8: 22}
+# Le 3 descend de 20 à 19 le 1er septembre 2026 : il sortait à 20,6 c/s,
+# soit PLUS VITE que le niveau 4 (19,7). La cible de 20 mettait un niveau
+# plus bas au-dessus du suivant — une échelle déduite d'un calcul peut
+# faire ça sans que personne ne le voie.
+# L'échelle refaite à l'oreille le 1er septembre 2026, après que trois
+# paliers ont été jugés trop rapides. Elle est désormais MONOTONE — le
+# niveau 3 sortait plus vite que le 4, ce qu'aucune relecture n'avait vu.
+CIBLE = {3: 19, 5: 20.5, 6: 21, 7: 22, 8: 22}
 NIVEAUX = set(CIBLE)
 # Le 7 reste en neurale. Le 8 vise la même cible de 24 c/s et l'essai du
 # 31 août y avait fait sortir la voix HD à 27,8 avec 17 c/s d'étendue — mais
