@@ -44,7 +44,7 @@ BLOC = """%s
 </style>
 <div class="retour-banque">
   <a href="/presentations.html"><span class="fl" aria-hidden="true">&#8592;</span>
-  Banque de présentations <span class="où">· toutes les pages du projet</span></a>
+  Le classeur <span class="où">· toutes les pages du projet</span></a>
 </div>
 %s
 """ % (DEBUT, FIN)

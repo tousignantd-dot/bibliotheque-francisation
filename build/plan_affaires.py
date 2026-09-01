@@ -124,7 +124,7 @@ def page_plan(m):
                   "qui distinguent,\n   et ce que le plan refuse de chiffrer.") + """<body>
 <div class="doc">
 
-<a class="retour" href="/presentations.html"><span aria-hidden="true">&#8592;</span> Banque de présentations</a>
+<a class="retour" href="/presentations.html"><span aria-hidden="true">&#8592;</span> Le classeur</a>
 
 <p class="eyebrow">Chantier &mdash; formation en entreprise</p>
 <h1>Plan d'affaires</h1>
@@ -555,7 +555,7 @@ def page_com(m):
   ol.actions li h3 .cout{font-weight:600}
 </style>
 
-<a class="retour" href="/presentations.html"><span aria-hidden="true">&#8592;</span> Banque de présentations</a>
+<a class="retour" href="/presentations.html"><span aria-hidden="true">&#8592;</span> Le classeur</a>
 
 <p class="eyebrow">Chantier &mdash; formation en entreprise</p>
 <h1>Stratégie de communication</h1>

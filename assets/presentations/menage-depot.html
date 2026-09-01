@@ -128,7 +128,7 @@
 </style>
 <div class="retour-banque">
   <a href="/presentations.html"><span class="fl" aria-hidden="true">&#8592;</span>
-  Banque de présentations <span class="où">· toutes les pages du projet</span></a>
+  Le classeur <span class="où">· toutes les pages du projet</span></a>
 </div>
 <!-- RETOUR-BANQUE:fin -->
 <div class="barre">
@@ -219,11 +219,11 @@ git mv essai-* essais/</pre></div>
   </article>
   <article class="lot lot--suspens" data-lot="manuels">
     <div class="tete"><h2>Les deux manuels de l&#x27;élève (40 Mo chacun)</h2><span class="gain">Libère 80 Mo dans le dépôt, et davantage dans l&#x27;historique</span></div>
-    <div class="bloc"><p class="t">Ce que j'ai mesuré</p><p><code>assets/documents/manuel-eleve-niveau-4.pdf</code> (1 753 pages) et sa version serrée pèsent <b>80 Mo</b> à eux deux — les deux plus gros fichiers suivis, loin devant. Ils ne sont liés que depuis la banque de présentations.</p></div>
+    <div class="bloc"><p class="t">Ce que j'ai mesuré</p><p><code>assets/documents/manuel-eleve-niveau-4.pdf</code> (1 753 pages) et sa version serrée pèsent <b>80 Mo</b> à eux deux — les deux plus gros fichiers suivis, loin devant. Ils ne sont liés que depuis le classeur.</p></div>
     <div class="bloc"><p class="t">Ce que j'ai vérifié avant de proposer</p><p>Ce sont des documents dont nous ne sommes pas l'auteur. La règle du projet est claire sur le contenu — le manuel est un <b>modèle de structure</b>, jamais une source à reproduire — mais le fichier, lui, voyage avec le dépôt et se retrouve sur l'hébergeur.</p></div>
     <div class="bloc"><p class="t">Ce que je propose</p><p>Décision à prendre, pas un geste technique : soit les sortir du dépôt et les garder hors ligne, soit assumer leur présence. Les retirer de l'<b>historique</b> est une opération à part, plus lourde (réécriture) — à ne faire que si la réponse est « ils ne doivent pas être là ».</p></div>
     <div class="bloc"><p class="t">Le risque</p>
-      <p><span class="risque r-trancher">à trancher</span>Le lien de la banque de présentations tomberait : il faudrait dire où le manuel se trouve désormais.</p></div>
+      <p><span class="risque r-trancher">à trancher</span>Le lien du classeur tomberait : il faudrait dire où le manuel se trouve désormais.</p></div>
     <div class="bloc"><p class="t">Les gestes</p><pre>git rm --cached assets/documents/manuel-eleve-niveau-4*.pdf
 <span class="cm"># puis retirer les deux boutons de presentations.html</span></pre></div>
     <div class="resultat pas-fait"><p class="t">Ce qui a été fait</p><p><b>Je ne l'ai pas fait, et c'est moi qui avais mal posé la question.</b> Ces deux PDF ne sont pas un document tiers : ils sont <b>produits par notre propre chaîne</b> (<code>build/manuel_eleve.py</code>) à partir des 289 fiches de nos modules. L'argument des droits tombe. Restait le poids — mais <code>git rm --cached</code> ne libère <b>rien</b> : les objets restent dans l'historique. On perdrait un téléchargement qui marche pour un gain nul. À rouvrir seulement si l'on décide de réécrire l'historique, et alors pour tout le matériel, pas pour ces deux fichiers.</p></div>

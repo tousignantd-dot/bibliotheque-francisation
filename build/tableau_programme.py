@@ -699,7 +699,7 @@ GABARIT = """<!DOCTYPE html>
     <span class="fr-lockup fr-lockup--courriel"><span class="fr-nom" role="img" aria-label="francis">franc<span class="fr-i" aria-hidden="true">ı<span class="fr-point"></span></span>s</span></span>
     <p>Page générée par <code>build/tableau_programme.py</code> · %(date)s ·
     <a href="../../catalogue.html">Catalogue des activités</a> ·
-    <a href="../../presentations.html">Banque de présentations</a></p>
+    <a href="../../presentations.html">Le classeur</a></p>
   </div>
 </footer>
 
