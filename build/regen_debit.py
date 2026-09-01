@@ -40,9 +40,15 @@ sys.path.insert(0, str(BASE / "build"))
 import fournisseur as F
 from azure_voix import parle
 
-CIBLE = {3: 20, 6: 22, 7: 24}
+CIBLE = {3: 20, 6: 22, 7: 24, 8: 24}
 NIVEAUX = set(CIBLE)
-HD_NIVEAUX = {3, 6}          # le 7 reste en neurale : voir la docstring
+# Le 7 reste en neurale. Le 8 vise la même cible de 24 c/s et l'essai du
+# 31 août y avait fait sortir la voix HD à 27,8 avec 17 c/s d'étendue — mais
+# cet essai employait un facteur grossier (+38 %) et n'avait pas le rattrapage
+# des prises. Avec l'étalonnage par comparaison et rattrape_tirages.py, le 8
+# est retenté ; si la dispersion reste mauvaise, ses dialogues repasseront en
+# neurale, et le 7 servira de témoin de ce à quoi ils doivent ressembler.
+HD_NIVEAUX = {3, 6, 8}
 GENRE = {"enseignante": "F", "feminin_2": "F",
          "masculin_1": "M", "narrateur": "M", "masculin_3": "M"}
 HD_ROLE = {"F": "hd_feminin", "M": "hd_masculin"}
@@ -159,9 +165,13 @@ def main():
     ap.add_argument("--etalonner", action="store_true")
     ap.add_argument("--plan", action="store_true")
     ap.add_argument("--produire", action="store_true")
+    ap.add_argument("--niveaux", help="ne traiter que ces niveaux, ex. « 8 »")
     a = ap.parse_args()
 
     reps = repliques()
+    if a.niveaux:
+        garde = {int(x) for x in a.niveaux.split(",")}
+        reps = [r for r in reps if r["niveau"] in garde]
     dlg = dialogues(reps)
     travail = []          # (replique, role_a_employer, niveau)
     protege = ignore = 0
@@ -191,7 +201,12 @@ def main():
             print("\nfacteurs relus dans %s" % FACTEURS.name)
         else:
             print("\n── étalonnage ──")
-            facteurs = etalonner(reps, combos)
+            # Le fichier se COMPLÈTE, il ne se réécrit pas : un étalonnage
+            # restreint à un niveau (--niveaux 8) effaçait sans un mot les
+            # facteurs des trois autres, dont rattrape_tirages.py a besoin.
+            deja = json.loads(FACTEURS.read_text(encoding="utf-8")) if FACTEURS.exists() else {}
+            deja.update(etalonner(reps, combos))
+            facteurs = deja
             FACTEURS.write_text(json.dumps(facteurs, ensure_ascii=False, indent=1),
                                 encoding="utf-8")
         if not a.produire:

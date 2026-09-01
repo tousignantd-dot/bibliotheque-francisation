@@ -2312,11 +2312,12 @@ async function peCheck(){
   document.getElementById('peStatus').classList.add('on');
   document.getElementById('peBtn').disabled=true;
   try{
-    const res=await fetch('/api/correct-email',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:studentCode,text,scenario:peScenario(),subject:peSubject(),typeTexte:peTypeTexte()})});
+    const res=await fetch('/api/correct-email',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:studentCode,text,scenario:peScenario(),subject:peSubject(),typeTexte:peTypeTexte(),essai:PE.essai+1})});
     const data=await res.json();
     document.getElementById('peStatus').classList.remove('on');
     document.getElementById('peBtn').disabled=false;
     if(!res.ok){ showErr('peErr',data.error||'Une erreur est survenue.'); return; }
+    PE.essai++; if(PE.essai>=2) PE.montre=true;
     renderCorr('peFb',data,text);
   }catch(e){
     document.getElementById('peStatus').classList.remove('on');
@@ -2328,6 +2329,16 @@ async function peCheck(){
    du texte, et copier un SVG dans 87 dossiers pour un seul usage coûterait
    plus qu'il ne rapporte. */
 const ICON_ASSIST = '<svg class="fb-ic" viewBox="0 0 50 50" aria-hidden="true"><path d="M25 7a9 9 0 1 1 0 18 9 9 0 0 1 0-18z"/><path d="M25 28c-8.5 0-15.5 5.2-17 12.4-.3 1.4.8 2.6 2.2 2.6h29.6c1.4 0 2.5-1.2 2.2-2.6C40.5 33.2 33.5 28 25 28z"/></svg>';
+/* Le courriel corrigé ne se donne plus au premier envoi : voir
+   build/greffe_courriel_indices.py. `montre` s'ouvre au deuxième envoi ou par
+   le bouton, et ne se referme plus — relire une correction qu'on a déjà vue
+   n'apprend rien de plus, mais la cacher de nouveau serait une brimade. */
+const PE = {essai:0, montre:false, data:null};
+function peDevoiler(){
+  if(!PE.data) return;
+  PE.montre = true;
+  renderCorr('peFb', PE.data, '');
+}
 function renderCorr(elId,data,orig){
   const fb=document.getElementById(elId);
   const corr=data.corrige||data.corrected||'';
@@ -2338,8 +2349,13 @@ function renderCorr(elId,data,orig){
     if(cmt) html+= data.pertinent ? '<div class="fb-c fb-bravo">'+esc(cmt)+'</div>'
                                   : '<div class="fb-e">'+esc(cmt)+'</div>';
     else if(data.pertinent) html+='<div class="fb-c fb-bravo">Ton courriel contient tout ce qui était demandé.</div>';
-    html+='<div class="fb-c">'+esc(data.corpsCorrige)+'</div>';
+    // La version corrigée attend le deuxième envoi — ou le bouton. Un élève
+    // à qui on montre son texte réécrit le recopie ; il n'a rien réparé.
+    if(PE.montre) html+='<div class="fb-c">'+esc(data.corpsCorrige)+'</div>';
     (data.erreurs||[]).forEach(e=>{ html+='<div class="fb-e">'+esc(e.explication||e.explanation||e)+'</div>'; });
+    if(!PE.montre){ PE.data=data;
+      html+='<button type="button" class="btn btn-ghost" style="margin-top:10px;padding:7px 12px;font-size:12px"'
+         +' onclick="peDevoiler()">Montrez-moi la version corrigée</button>'; }
     fb.innerHTML=html; fb.classList.add('on'); return;
   }
   if(data.memePhrase){ html+='<div class="fb-c fb-bravo">Ton texte est déjà correct. Bravo !</div>'; }

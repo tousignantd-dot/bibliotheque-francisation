@@ -20854,6 +20854,12 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             registre = "dans un registre adapté à ce type de texte. "
             conjugaison = "conjugaison"
 
+        # Le module envoie son numéro d'envoi ; un corps ancien n'en a pas,
+        # et vaut alors 2 : mieux montrer la correction que la retenir à un
+        # élève dont le module n'a pas été greffé.
+        try: essai = int(body.get("essai") or 2)
+        except (TypeError, ValueError): essai = 2
+
         system_prompt = (
             "Tu es un tuteur de francisation pour des élèves adultes de Niveau 4 "
             "au Québec (niveau intermédiaire). " + amorce +
@@ -20889,6 +20895,23 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             "aucune, \"erreurs\" est un tableau vide. Jamais de remarque "
             "positive ni de félicitations dans \"erreurs\"."
         )
+
+        # PREMIER ENVOI : l'élève ne verra pas `corpsCorrige` — le module le
+        # garde de côté. Mais cacher le corps ne suffit pas : rien n'empêchait
+        # le modèle d'écrire la phrase attendue dans une explication, et la
+        # réponse passait par cette porte-là. Les deux moitiés sont
+        # nécessaires, l'une sans l'autre ne protège rien.
+        if essai < 2:
+            system_prompt += (
+                " ATTENTION, PREMIER ESSAI DE L'ÉLÈVE : dans \"erreurs\", "
+                "SITUE chaque faute sans jamais écrire la forme correcte. "
+                "Nomme le mot fautif et rappelle la règle « Le verbe après "
+                "« je » se termine par -e », « Ce mot est féminin » — mais "
+                "n'écris ni la phrase corrigée ni le mot corrigé. L'élève doit "
+                "pouvoir réparer lui-même. Cela ne concerne que \"erreurs\" : "
+                "\"corpsCorrige\" reste complet et correct, il n'est pas "
+                "montré à ce stade."
+            )
 
         # Un bulletin ou une affiche n'a pas d'objet : la ligne vide ferait
         # inventer un objet à corriger.
