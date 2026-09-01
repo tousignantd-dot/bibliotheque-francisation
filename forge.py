@@ -296,6 +296,13 @@ même façon de couper les pages. Deux nuances seulement :
   exercice ne doit pas se casser en deux entre deux feuilles.
 
 SYSTÈME DE DESIGN
+La couleur de repérage de la page est celle de son NIVEAU, jamais le vert
+générique : `--accent`, `--accent-soft` et `--accent-ink` prennent
+`--niv-<N>-line` et `--niv-<N>-bg` du niveau de la commande. Le vert reste où il
+a un sens : la réussite. Et ne recopie pas une liste de jetons de mémoire — lis
+`tokens/colors.css` : des jetons en ont été retirés (`--violet-600` en août), et
+une feuille recopiée de tête est périmée le jour où tu l'écris.
+
 Pour une page interactive, lis d'abord {biblio}/assets/design-system/ et suis-le :
 c'est le système officiel des modules, pas une suggestion. Reprends ses variables,
 ses composants et ses classes plutôt que d'inventer une feuille de style. Pour les
@@ -334,6 +341,28 @@ distante, pas d'émoji ni de SVG bricolé à la place d'une illustration demand�
   dossier de travail et référence-le en lien relatif depuis `activite.html`.
 - Brouillon d'abord sur le modèle bon marché, comme le dit la compétence. Une
   vidéo se demande à l'enseignante avant d'être payée : ne lance rien de vidéo.
+
+EXERCICES À CHOIX
+Écris chaque item sous la forme `{{opts:['…','…','…'], bon:n}}` : c'est la forme
+que le contrôle sait relire. **Fais varier la position de la bonne réponse.**
+Une activité livrée le 31 août 2026 avait cinq bonnes réponses sur six en
+première position : un élève qui cliquait toujours à gauche avait 5 sur 6 sans
+écouter un seul mot. Si tu permutes des choix, relis l'aide de l'item : celles
+qui énumèrent les articles (« des », « un » ou « une ») suivent l'ordre des
+choix et deviennent fausses.
+
+CONTRÔLE OBLIGATOIRE AVANT DE FINIR
+Lance, depuis ton dossier de travail :
+
+    python3 {biblio}/forge.py --controles . --niveau <le niveau de la commande>
+
+Il relit ta page et signale ce qui cloche : couleur de repérage, jetons périmés,
+bonnes réponses alignées du même côté, émojis dans l'interface. **Corrige tout
+ce qu'il nomme, puis relance-le, et ne termine que lorsqu'il se tait.** Si un
+contrôle dit « non fait », c'est qu'il n'a pas su lire ta page : donne-lui la
+forme qu'il attend plutôt que de passer outre. Ce contrôle est repassé après ta
+livraison, et ce qu'il trouve alors est écrit sur la commande — autant qu'il n'y
+trouve rien.
 
 RÈGLES
 - Contenu entièrement original. Aucun extrait de manuel existant.
@@ -460,6 +489,143 @@ def _format_pdf(fichier):
     return round(x1 - x0), round(y1 - y0)
 
 
+# ── Contrôles de la page interactive ─────────────────────────────────────────
+# Le contrôle de livraison ne regardait que les imprimés : format lettre et
+# feuille commune. La page interactive, elle, sortait sans que personne ne la
+# lise — et la première commande publiée portait trois défauts qu'un contrôle
+# aurait tous vus. Ils sont ajoutés ici, chacun né d'un défaut observé.
+#
+# Le principe : ce qui se mesure se mesure, et **ce qui ne se mesure pas se
+# dit**. Un contrôle qui n'a pas pu s'exécuter le déclare au lieu de se taire ;
+# sinon une livraison sans réserve voudrait dire deux choses à la fois — « rien
+# à signaler » et « je n'ai pas su regarder ».
+
+TOKENS_COULEUR = BASE_DIR / "assets" / "design-system" / "tokens" / "colors.css"
+# Les émojis que le système bannit de l'interface. On vise les plages, pas une
+# liste : une activité neuve en inventerait toujours un que la liste ignore.
+# Les émojis que le système bannit de l'interface. Deux règles seulement, et
+# elles sont étroites à dessein : le bloc des pictogrammes (🎤, 👂), et TOUT
+# caractère suivi du sélecteur de présentation émoji U+FE0F — c'est lui qui
+# transforme ✍ en ✍️. Le premier essai visait la plage 2600-27BF entière et
+# accusait « ✓ Juste » : la coche et la croix des rétroactions sont de la
+# typographie, pas des émojis, et un contrôle qui crie au loup se désapprend.
+BLOC_PICTOGRAMMES = (0x1F300, 0x1FAFF)
+SELECTEUR_EMOJI = "\ufe0f"
+
+
+def _emojis(page):
+    vus = {page[m.start() - 1] + SELECTEUR_EMOJI
+           for m in re.finditer(SELECTEUR_EMOJI, page) if m.start()}
+    vus |= {c for c in page if BLOC_PICTOGRAMMES[0] <= ord(c) <= BLOC_PICTOGRAMMES[1]}
+    return sorted(vus)
+
+
+def _jetons_systeme():
+    """Les noms de jetons de couleur que le système reconnaît AUJOURD'HUI."""
+    try:
+        css = TOKENS_COULEUR.read_text(encoding="utf-8")
+    except OSError:
+        return None
+    return set(re.findall(r"(--[\w-]+)\s*:", css))
+
+
+def _couleur_niveau(niveau):
+    """(filet, fond clair) du niveau, lus dans la feuille des jetons."""
+    css = TOKENS_COULEUR.read_text(encoding="utf-8") if TOKENS_COULEUR.exists() else ""
+    filet = re.search(r"--niv-%s-line\s*:\s*([^;]+);" % niveau, css)
+    fond = re.search(r"--niv-%s-bg\s*:\s*([^;]+);" % niveau, css)
+    return (filet.group(1).strip() if filet else None,
+            fond.group(1).strip() if fond else None)
+
+
+def _positions_justes(page):
+    """{nom de l'exercice: [position juste, …]}, ou None si rien n'est lisible.
+
+    Le relevé est fait **par exercice**, et c'est tout le sujet : la première
+    version faisait la moyenne sur la page entière. L'exercice fautif — cinq
+    bonnes réponses sur six à gauche — s'y noyait dans les vingt-trois items
+    des autres, et le contrôle passait. Une moyenne honnête sur un ensemble
+    hétérogène ne dit rien de chacun de ses membres.
+    """
+    blocs = re.findall(r"(?:var|const|let)\s+(\w+)\s*=\s*\[(.*?)\n\s*\];", page, re.S)
+    if not blocs:
+        return None
+    sortie = {}
+    for nom, corps in blocs:
+        justes = [int(b) for b in re.findall(r"bon\s*:\s*(\d+)", corps)]
+        if len(justes) >= 4:
+            sortie[nom] = justes
+    return sortie or None
+
+
+def _verifier_page(d, criteres):
+    """Les réserves qui portent sur `activite.html`. Vide = rien à signaler."""
+    page = (d / "activite.html").read_text(encoding="utf-8", errors="replace")
+    reserves = []
+
+    # 1 · La couleur de repérage est celle du NIVEAU, pas le vert générique.
+    #     Défaut observé le 31 août 2026 : une activité de niveau 2 s'annonçait
+    #     en vert. La règle date du 20 août, la page ne la connaissait pas.
+    niveau = (criteres or {}).get("niveau")
+    if niveau:
+        filet, _ = _couleur_niveau(niveau)
+        accent = re.search(r"--accent\s*:\s*([^;]+);", page)
+        if filet and accent:
+            valeur = accent.group(1).strip()
+            attendu = ("--niv-%s-line" % niveau, filet)
+            if not any(a in valeur for a in attendu):
+                reserves.append(
+                    "La page s'identifie en %s alors que le niveau %s est %s : la couleur "
+                    "d'un document est celle de son niveau." % (valeur, niveau, filet))
+        elif not filet:
+            reserves.append("Contrôle non fait : aucune couleur définie pour le niveau %s "
+                            "dans tokens/colors.css." % niveau)
+    else:
+        reserves.append("Contrôle non fait : la commande ne dit pas son niveau, "
+                        "la couleur de repérage n'a pas pu être vérifiée.")
+
+    # 2 · Aucun jeton mort. Défaut observé : `--violet-600`, retiré du système
+    #     le 26 août, recopié dans la page depuis une feuille périmée.
+    connus = _jetons_systeme()
+    if connus is None:
+        reserves.append("Contrôle non fait : tokens/colors.css est illisible, "
+                        "les jetons de la page n'ont pas pu être comparés.")
+    else:
+        declares = set(re.findall(r"(--[\w-]+)\s*:\s*#[0-9A-Fa-f]{3,8}\s*;", page))
+        morts = sorted(n for n in declares if n not in connus and not n.startswith("--niv-"))
+        if morts:
+            reserves.append("Jetons qui n'existent plus dans le système : %s. La feuille "
+                            "recopiée est périmée." % ", ".join(morts))
+
+    # 3 · Les bonnes réponses ne s'alignent pas toutes du même côté. Défaut
+    #     observé : cinq sur six en première position — 5/6 en cliquant à
+    #     gauche, sans écouter un seul mot.
+    positions = _positions_justes(page)
+    if positions is None:
+        reserves.append("Contrôle non fait : aucun exercice à choix de la forme "
+                        "« opts:[…], bon:n » repéré, les positions des bonnes réponses "
+                        "n'ont pas pu être relevées.")
+    else:
+        for nom, justes in positions.items():
+            compte = {}
+            for pos in justes:
+                compte[pos] = compte.get(pos, 0) + 1
+            pos, n = max(compte.items(), key=lambda kv: kv[1])
+            if n / len(justes) > 0.6:
+                reserves.append(
+                    "%s : %d bonnes réponses sur %d sont en position %d. Un élève qui "
+                    "répond toujours au même endroit réussit sans lire."
+                    % (nom, n, len(justes), pos + 1))
+
+    # 4 · Pas d'émoji dans l'interface. Le système les remplace par des SVG.
+    vus = _emojis(page)
+    if vus:
+        reserves.append("Émojis dans l'interface (%s) : le système ne les admet pas, "
+                        "une icône se dessine en SVG." % " ".join(vus))
+
+    return reserves
+
+
 def _verifier_livraison(cid):
     """La liste des réserves sur ce qui a été livré. Vide = rien à signaler."""
     d = _dossier(cid)
@@ -484,6 +650,16 @@ def _verifier_livraison(cid):
             elif nom != "fiche-eleve.pdf":
                 reserves.append(f"{nom} n'a pas de source HTML : impossible de vérifier "
                                 "sa mise en page.")
+
+    # La page interactive est le livrable que personne ne relisait.
+    if ESSENTIEL in presents:
+        try:
+            reserves += _verifier_page(d, (lire(cid) or {}).get("criteres"))
+        except Exception as e:                       # noqa: BLE001
+            # Un contrôle qui casse ne doit pas faire passer une livraison pour
+            # irréprochable : son échec est lui-même une réserve.
+            reserves.append("Les contrôles de la page interactive n'ont pas pu "
+                            "s'exécuter (%s)." % e)
     return reserves
 
 
@@ -817,3 +993,44 @@ def _terminer(cid, etat, erreur, tours=0, cout=None, reserves=None, intrusions=N
                  fin=datetime.now().isoformat(timespec="seconds"))
     _ecrire_fiche(cid, fiche)
     _noter(cid, {"fait": "Terminé ✓", "annulee": "Annulée"}.get(etat, "Échec : " + str(erreur)))
+
+
+# ── Les contrôles, en ligne de commande ──────────────────────────────────────
+# Le contrôle de livraison tombe APRÈS coup : il constate, il ne répare pas, et
+# la commande est finie quand il parle. Les mêmes contrôles sont donc offerts à
+# l'agent PENDANT son travail — c'est la « deuxième passe » sans seconde
+# facture, puisqu'elle tient dans la même exécution. Le préambule lui impose de
+# les lancer et de ne s'arrêter que lorsqu'ils se taisent.
+#
+#     python3 forge.py --controles . --niveau 2
+#
+# Sortie 1 s'il reste une réserve : de quoi enchaîner dans un script.
+
+def _main_controles(dossier, niveau):
+    d = Path(dossier).resolve()
+    page = d / ESSENTIEL
+    if not page.exists():
+        print("Aucun %s dans %s" % (ESSENTIEL, d))
+        return 1
+    reserves = _verifier_page(d, {"niveau": niveau} if niveau else None)
+    if not reserves:
+        print("Contrôles de la page interactive : rien à signaler.")
+        return 0
+    print("Contrôles de la page interactive — %d réserve(s) :" % len(reserves))
+    for r in reserves:
+        print("  - " + r)
+    return 1
+
+
+if __name__ == "__main__":
+    import sys
+    if "--controles" in sys.argv:
+        i = sys.argv.index("--controles")
+        cible = sys.argv[i + 1] if len(sys.argv) > i + 1 else "."
+        niv = None
+        if "--niveau" in sys.argv:
+            j = sys.argv.index("--niveau")
+            niv = sys.argv[j + 1] if len(sys.argv) > j + 1 else None
+        sys.exit(_main_controles(cible, niv))
+    sys.exit(__doc__ or "forge.py : module de la bibliothèque. "
+                        "Usage direct : --controles <dossier> [--niveau N]")

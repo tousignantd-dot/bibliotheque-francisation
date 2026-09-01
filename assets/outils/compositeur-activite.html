@@ -293,6 +293,14 @@ textarea#edition:focus-visible{box-shadow:inset 0 0 0 3px var(--green-100)}
   border-radius:999px; font-size:14px; font-weight:800; text-decoration:none}
 .forge__fichiers a:hover{text-decoration:underline}
 .forge__err{margin:var(--sp-3) 0 0; font-size:14px; font-weight:700; color:var(--red-700)}
+/* Ambre, comme partout où le dispositif signale sans bloquer : une réserve
+   n'empêche pas de publier, elle dit ce qu'on s'apprête à publier. */
+.forge__reserves{margin:var(--sp-3) 0 0; padding:var(--sp-4); border-radius:var(--r-sm);
+  border-left:4px solid var(--warn-line); background:var(--warn-bg); color:var(--warn-ink);
+  font-size:15px; font-weight:600}
+.forge__reserves b{display:block; margin-bottom:var(--sp-2); font-weight:900}
+.forge__reserves ul{margin:0; padding-left:var(--sp-5)}
+.forge__reserves li{margin-top:var(--sp-1)}
 .forge__b{display:flex; flex-wrap:wrap; gap:var(--sp-2); margin-top:var(--sp-3)}
 
 /* ---------- Catalogue ---------- */
@@ -521,6 +529,11 @@ textarea#edition:focus-visible{box-shadow:inset 0 0 0 3px var(--green-100)}
       <section class="forge" id="forge" aria-live="polite" hidden>
         <p class="forge__t">Génération sur ce poste</p>
         <p class="forge__etat" id="forge-etat"></p>
+        <!-- Les réserves du contrôle de livraison. Elles existaient — format des
+             PDF, feuille commune — mais n'étaient écrites que dans commande.json
+             et le journal : personne ne les voyait, et une activité fautive se
+             publiait sans un mot. -->
+        <div class="forge__reserves" id="forge-reserves" hidden></div>
         <pre class="forge__journal" id="forge-journal" hidden></pre>
         <p class="forge__err" id="forge-err" hidden></p>
         <ul class="forge__fichiers" id="forge-fichiers"></ul>
@@ -1827,6 +1840,18 @@ function rendreForge(fiche){
 
   $("forge-err").hidden = !fiche.erreur;
   if(fiche.erreur) $("forge-err").textContent = fiche.erreur;
+
+  /* Le contrôle de livraison relit ce qui a été produit. Ce qu'il trouve doit
+     se lire AVANT le bouton « Publier », pas au fond d'un journal : une
+     réserve écrite nulle part vaut un contrôle qu'on n'aurait pas fait. */
+  const res = fiche.reserves || [];
+  $("forge-reserves").hidden = !res.length;
+  if(res.length){
+    $("forge-reserves").innerHTML =
+      "<b>" + res.length + (res.length > 1 ? " réserves sur ce qui a été produit"
+                                           : " réserve sur ce qui a été produit") + "</b><ul>"
+      + res.map(r => "<li>" + esc(r) + "</li>").join("") + "</ul>";
+  }
 
   const ul = $("forge-fichiers");
   ul.textContent = "";
