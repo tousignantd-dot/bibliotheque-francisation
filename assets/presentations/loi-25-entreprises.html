@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>La Loi 25 côté entreprises</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap">
+<style>
+/* ═══════════════════════════════════════════════════════════
+   LA LOI 25 CÔTÉ ENTREPRISES
+   Le pendant privé de « Le dispositif devant la Loi 25 ».
+   Même code de couleur que lui, pour qu'on puisse lire les
+   deux à la suite : rouge = à trancher par un juriste,
+   ambre = décision du client, vert = déjà en place.
+   ═══════════════════════════════════════════════════════════ */
+:root{
+  --ground:#F7F7F5; --card:#FFFFFF; --sunken:#FBFBFA;
+  --ink:#17181A; --body:#33363A; --muted:#6E7175;
+  --line:#E4E4E0; --line-fort:#D2D2CD;
+  --ok:#0A8F5B;    --ok-bg:#E9F5EF;
+  --dec:#C07A08;   --dec-bg:#FBF2E2;
+  --risq:#C7302B;  --risq-bg:#FBEDEC;
+  --acier:#1D6B8F;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#151618; --card:#1D1F22; --sunken:#212326;
+    --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+    --line:#2E3135; --line-fort:#3D4146;
+    --ok:#4BC48D; --ok-bg:#12291F;
+    --dec:#E0A63F; --dec-bg:#2C2213;
+    --risq:#EE7A73; --risq-bg:#2E1917;
+    --acier:#6DAFD2;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#151618; --card:#1D1F22; --sunken:#212326;
+  --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+  --line:#2E3135; --line-fort:#3D4146;
+  --ok:#4BC48D; --ok-bg:#12291F;
+  --dec:#E0A63F; --dec-bg:#2C2213;
+  --risq:#EE7A73; --risq-bg:#2E1917;
+  --acier:#6DAFD2;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--body);
+  font-family:Nunito,system-ui,sans-serif;font-size:16px;line-height:1.62}
+.page{max-width:53rem;margin:0 auto;padding:1.5rem 1.25rem 5rem}
+a{color:var(--acier)}
+.retour{display:inline-block;margin-bottom:1.75rem;font-size:.82rem;
+  font-weight:700;color:var(--muted);text-decoration:none}
+.retour:hover{color:var(--ink)}
+.retour .ou{font-weight:400}
+h1{font-family:Newsreader,Georgia,serif;font-weight:600;font-size:2.3rem;
+  line-height:1.14;color:var(--ink);margin:.2rem 0 .6rem;letter-spacing:-.01em}
+h2{font-family:Newsreader,Georgia,serif;font-weight:600;font-size:1.48rem;
+  color:var(--ink);margin:3rem 0 .3rem}
+h3{font-size:1rem;font-weight:800;color:var(--ink);margin:1.7rem 0 .35rem}
+.eyebrow{display:block;font-size:.72rem;font-weight:800;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--muted);margin-bottom:.5rem}
+.chapeau{font-size:1.08rem;margin:.4rem 0 0}
+.sous{color:var(--muted);font-size:.9rem;margin:.15rem 0 1.2rem}
+p{margin:.72rem 0}
+b,strong{color:var(--ink);font-weight:800}
+code{font-family:var(--mono);font-size:.86em;background:var(--sunken);
+  border:1px solid var(--line);border-radius:4px;padding:.05em .3em}
+.carte{background:var(--card);border:1px solid var(--line);
+  border-radius:12px;padding:1.05rem 1.15rem;margin:1rem 0}
+.carte > :first-child{margin-top:0}
+.carte > :last-child{margin-bottom:0}
+.avert{background:var(--dec-bg);border:1px solid var(--dec);border-left-width:4px}
+.bon{background:var(--ok-bg);border:1px solid var(--ok);border-left-width:4px}
+.tab{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.9rem}
+.tab th,.tab td{text-align:left;vertical-align:top;padding:.5rem .6rem;
+  border-bottom:1px solid var(--line)}
+.tab th{font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;
+  color:var(--muted);font-weight:800;border-bottom:1px solid var(--line-fort)}
+.tab tr:last-child td{border-bottom:none}
+.enveloppe{overflow-x:auto}
+ul,ol{margin:.6rem 0;padding-left:1.3rem}
+li{margin:.3rem 0}
+.risque{border:1px solid var(--line);border-left:4px solid var(--risq);
+  border-radius:10px;background:var(--card);padding:1rem 1.1rem;margin:1rem 0}
+.risque .num{font-size:.72rem;font-weight:800;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--risq)}
+.risque h3{margin:.15rem 0 .4rem}
+.risque .parade{margin:.6rem 0 0;padding-top:.6rem;border-top:1px dashed var(--line-fort);
+  font-size:.92rem;color:var(--muted)}
+.risque .parade b{color:var(--ink)}
+.moyen{border-left-color:var(--dec)}
+.moyen .num{color:var(--dec)}
+.gros{font-family:Newsreader,Georgia,serif;font-size:1.22rem;color:var(--ink);
+  line-height:1.35;margin:.5rem 0}
+.note{font-size:.88rem;color:var(--muted)}
+.src{font-size:.85rem;color:var(--muted)}
+hr{border:none;border-top:1px solid var(--line);margin:2.5rem 0}
+.pied{margin-top:3rem;padding-top:1.1rem;border-top:1px solid var(--line);
+  font-size:.85rem;color:var(--muted)}
+@media print{
+  body{background:#fff;font-size:11pt}
+  .retour{display:none}
+  .carte,.risque,.tab{break-inside:avoid}
+  h2{break-after:avoid}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<a class="retour" href="/presentations.html"><span aria-hidden="true">&#8592;</span>
+  Le classeur <span class="ou">· toutes les pages du projet</span></a>
+
+<span class="eyebrow">Dossier Loi 25 · marché privé</span>
+<h1>La Loi&nbsp;25 côté entreprises</h1>
+<p class="chapeau">Vendre de la formation à un employeur n'est pas vendre à un centre de
+services scolaire. Autre loi, autre responsable, et un risque qui n'existe pas à
+l'école.</p>
+<p class="sous">Document de travail · 1<sup>er</sup> septembre 2026</p>
+
+<div class="carte avert">
+  <p><b>À lire après « Le dispositif devant la Loi 25 »</b>, qui décrit ce que la
+  plateforme recueille et envoie. Cette page-ci ne répète pas l'inventaire&nbsp;: elle
+  dit ce que <b>change</b> le passage au marché privé. Comme l'autre, elle n'est pas un
+  avis juridique.</p>
+</div>
+
+<h2>1 · Ce n'est pas la même loi</h2>
+
+<p>« Loi&nbsp;25 » est le nom courant d'une loi qui en a modifié plusieurs. Selon le
+client, ce n'est pas le même texte qui s'applique — et les obligations ne se recouvrent
+pas exactement.</p>
+
+<div class="enveloppe">
+<table class="tab">
+  <thead><tr><th>&nbsp;</th><th>Centre de services scolaire</th><th>Entreprise privée</th></tr></thead>
+  <tbody>
+    <tr><td><b>Loi applicable</b></td><td>Loi sur l'accès (secteur public)</td>
+        <td>Loi sur la protection des renseignements personnels dans le secteur privé</td></tr>
+    <tr><td><b>Le responsable</b></td><td>Le centre</td><td><b>L'employeur</b></td></tr>
+    <tr><td><b>Les personnes visées</b></td><td>Des élèves</td>
+        <td><b>Des employés</b> — lien de subordination</td></tr>
+    <tr><td><b>Base du traitement</b></td><td>La mission de l'organisme</td>
+        <td>Souvent le consentement — <b>et c'est là que ça se complique</b></td></tr>
+    <tr><td><b>Sanctions</b></td><td>Régime public</td>
+        <td>Jusqu'à 25&nbsp;M$ ou 4&nbsp;% du chiffre d'affaires mondial</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2>2 · Ce que vous devez faire pour vous-même</h2>
+
+<p>Point souvent manqué, et qui ne dépend d'aucun client&nbsp;: dès que vous exploitez
+une entreprise au Québec et que vous recueillez des renseignements personnels — <b>y
+compris ceux de vos prospects et de vos contacts commerciaux</b> — vous avez vos propres
+obligations. Elles sont toutes en vigueur depuis septembre 2024.</p>
+
+<div class="carte avert">
+  <ol>
+    <li><b>Désigner un responsable de la protection des renseignements personnels</b>, et
+        <b>publier son titre et ses coordonnées sur votre site</b>. À défaut de
+        désignation, c'est la personne qui dirige l'entreprise — donc vous.</li>
+    <li><b>Publier une politique de confidentialité</b> en termes simples et clairs,
+        facilement accessible.</li>
+    <li><b>Tenir un registre des incidents</b> de confidentialité, et savoir aviser la
+        Commission d'accès à l'information et les personnes touchées.</li>
+    <li><b>Être transparent sur les décisions automatisées</b> et le profilage.</li>
+    <li><b>Mener une évaluation des facteurs</b> relatifs à la vie privée pour les
+        projets qui le demandent — dont l'acquisition ou la refonte d'un système
+        d'information.</li>
+    <li><b>Former les personnes</b> qui manipulent les renseignements. Seul, cela veut
+        dire savoir soi-même ce qu'on fait.</li>
+  </ol>
+  <p class="note">Les deux premières sont visibles depuis l'extérieur&nbsp;: un client
+  entreprise un peu sérieux regardera votre site avant de signer. <b>Aujourd'hui, il n'y
+  trouverait ni l'une ni l'autre.</b></p>
+</div>
+
+<h2>3 · Le risque qui n'existe pas à l'école</h2>
+
+<div class="risque">
+  <span class="num">Risque 1 · propre au marché privé</span>
+  <h3>Vos traces d'apprentissage deviennent des données de gestion du personnel</h3>
+  <p>À l'école, savoir qu'un élève a raté quinze exercices sert à l'aider. En entreprise,
+  <b>la même donnée dit à un employeur qui apprend vite et qui apprend mal</b> — et elle
+  arrive dans une organisation qui décide des promotions, des affectations et des fins
+  d'emploi.</p>
+  <p>La plateforme mesure déjà, par personne&nbsp;: le taux de réussite au premier coup,
+  les minutes de travail, les modules abandonnés, les erreurs récurrentes. <b>Ce n'est
+  pas un défaut&nbsp;: c'est exactement ce qu'on a construit</b>, et c'est utile à un
+  formateur. Versé à un service des ressources humaines, c'est autre chose.</p>
+  <p class="parade"><b>Trois parades, à discuter avec l'employeur avant de vendre&nbsp;:</b>
+  ne rendre que des données <b>agrégées</b> au groupe et jamais par personne&nbsp;;
+  écrire dans le contrat que les traces <b>ne peuvent pas servir à une décision
+  d'emploi</b>&nbsp;; ou vendre en mode <b>séance sans compte</b>, où rien n'est rattaché
+  à personne. La troisième est la seule qui rende la promesse vérifiable.</p>
+</div>
+
+<div class="risque">
+  <span class="num">Risque 2</span>
+  <h3>Le consentement d'un employé n'est pas plus libre que celui d'un élève</h3>
+  <p>Dans le privé, la base habituelle du traitement est le consentement. Mais entre un
+  employeur et son employé, il y a un <b>lien de subordination</b>&nbsp;: un employé à
+  qui l'on demande d'accepter que sa voix soit enregistrée et corrigée par un service
+  américain refuse difficilement.</p>
+  <p>Et la population visée aggrave la chose&nbsp;: des personnes immigrantes, parfois
+  récentes, dont le statut peut dépendre de l'emploi. <b>C'est le public le moins bien
+  placé pour dire non.</b></p>
+  <p class="parade"><b>Ce qui existe déjà&nbsp;:</b> les trois interrupteurs. Un
+  employeur qui coupe l'assistance et la reconnaissance vocale n'a plus rien à faire
+  consentir. <b>Ce que ça implique&nbsp;:</b> le refus doit être un <b>réglage du
+  contrat</b>, pas une case que chaque employé coche seul devant son patron.</p>
+</div>
+
+<div class="risque">
+  <span class="num">Risque 3</span>
+  <h3>Le contenu que produit un employé parle de son travail</h3>
+  <p>Un élève rédige un courriel fictif à un propriétaire. Un employé formé au service à
+  la clientèle rédige, lui, des phrases tirées de <b>son vrai travail</b> — le nom d'un
+  client mécontent, un incident, un reproche à un collègue, les conditions de son
+  emploi.</p>
+  <p>Ce texte part au correcteur automatique aux États-Unis, exactement comme celui d'un
+  élève. La différence est qu'il peut contenir des renseignements sur des <b>tiers</b>
+  qui n'ont jamais rien accepté&nbsp;: les clients de l'employeur.</p>
+  <p class="parade"><b>À prévoir&nbsp;:</b> des consignes de rédaction explicites dans
+  les exercices (« invente un nom, ne rapporte pas un cas réel »), et la question posée
+  franchement à l'employeur — accepte-t-il que les productions de ses employés
+  transitent&nbsp;? Le mode sans assistance ferme la question.</p>
+</div>
+
+<div class="risque moyen">
+  <span class="num">Risque 4 · moyen</span>
+  <h3>Un score qui alimente une décision devient une décision automatisée</h3>
+  <p>Tant que la plateforme corrige et conseille, elle ne décide rien — et le document
+  du secteur public le dit déjà. Mais si un employeur se sert d'un résultat pour
+  <b>trancher</b> — accès à un poste, fin de probation — la personne doit en être
+  informée et pouvoir présenter ses observations.</p>
+  <p class="parade"><b>Ce n'est pas votre décision, mais c'est votre affaire&nbsp;:</b>
+  l'usage que le client fera des chiffres se prévoit au contrat, pas après.</p>
+</div>
+
+<div class="risque moyen">
+  <span class="num">Risque 5 · moyen</span>
+  <h3>Le démarchage par courriel obéit à une autre loi encore</h3>
+  <p>Écrire à des employeurs pour offrir vos services relève de la <b>Loi canadienne
+  anti-pourriel</b>, distincte de la Loi&nbsp;25&nbsp;: consentement ou exception
+  applicable, identification de l'expéditeur, mécanisme de désabonnement dans chaque
+  message. Les sanctions y sont lourdes et elles visent aussi les très petites
+  entreprises.</p>
+  <p class="parade"><b>À régler avant la première campagne</b>, pas après. C'est le
+  genre d'obligation qu'on découvre en recevant une plainte.</p>
+</div>
+
+<h2>4 · Ce qui vous sert, et qu'il faut savoir dire</h2>
+
+<div class="carte bon">
+  <p>Le dispositif est <b>mieux préparé au marché privé qu'il n'y paraît</b>, et ce sont
+  des arguments de vente autant que de conformité&nbsp;:</p>
+  <ul>
+    <li><b>Aucun courriel, aucun nom réel, aucune donnée d'état civil.</b> Un employeur
+        n'a rien à vous transmettre de sensible pour démarrer — <b>ni même la liste de
+        ses employés</b>.</li>
+    <li><b>Le mode séance sans compte</b> permet de former un groupe entier sans
+        recueillir un seul renseignement personnel. Pour une entreprise, c'est
+        souvent la vente la plus facile à faire approuver.</li>
+    <li><b>Les trois interrupteurs sont contractuels et vérifiables</b> : l'employeur
+        choisit, c'est appliqué côté serveur, et la formation continue de fonctionner
+        au réglage le plus restrictif.</li>
+    <li><b>La plateforme ne classe personne et ne décide de rien</b> par elle-même.</li>
+  </ul>
+</div>
+
+<h2>5 · Ce qu'il faut faire avant le premier client entreprise</h2>
+
+<div class="carte avert">
+  <ol>
+    <li><b>Publier une politique de confidentialité et désigner un responsable</b> sur le
+        site du produit. Deux obligations qui ne dépendent d'aucun client, visibles de
+        l'extérieur, et absentes aujourd'hui.</li>
+    <li><b>Écrire la clause « pas de décision d'emploi »</b> dans le contrat type, et
+        décider ce que l'employeur voit — agrégé ou nominatif.</li>
+    <li><b>Adapter l'entente de service</b> : le projet du classeur est écrit pour un
+        centre. Les articles 2, 5, 8 et 9 changent de régime.</li>
+    <li><b>Trancher le mode par défaut</b> pour ce marché. Mon avis : <b>séance sans
+        compte, sans assistance</b> comme point de départ, et l'on ouvre à la
+        demande.</li>
+    <li><b>Régler la question du démarchage</b> avant la première campagne.</li>
+  </ol>
+</div>
+
+<p class="gros">La bonne nouvelle est que le marché privé ne demande pas un autre
+produit — il demande d'autres réglages par défaut, et deux pages sur un site.</p>
+
+<hr>
+
+<ul class="src">
+  <li>Obligations du secteur privé, en vigueur depuis septembre 2024 —
+      <a href="https://www.blg.com/fr/insights/2026/02/quebecs-private-sector-act-compliance-guide-for-organizations" target="_blank" rel="noopener">BLG, guide de conformité</a>,
+      <a href="https://www.mccarthy.ca/fr/references/blogues/techlex/reforme-du-regime-de-protection-de-la-vie-privee-entre-en-vigueur-au-quebec" target="_blank" rel="noopener">McCarthy Tétrault</a></li>
+  <li>Responsable, politique, registre, décisions automatisées —
+      <a href="https://loi25simple.ca/loi-25/obligations-entreprises" target="_blank" rel="noopener">synthèse des obligations</a></li>
+</ul>
+
+<p class="pied">Document de travail · à relire avec « Le dispositif devant la Loi 25 » et
+avec le projet d'entente de service, qui devra être décliné pour le marché privé.</p>
+
+</div>
+</body>
+</html>

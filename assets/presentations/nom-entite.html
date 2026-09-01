@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Le nom de l'entité</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap">
+<style>
+:root{
+  --ground:#F7F7F5; --card:#FFFFFF; --sunken:#FBFBFA;
+  --ink:#17181A; --body:#33363A; --muted:#6E7175;
+  --line:#E4E4E0; --line-fort:#D2D2CD;
+  --oui:#0A8F5B; --oui-bg:#E9F5EF;
+  --non:#C7302B; --non-bg:#FBEDEC;
+  --note:#C07A08; --note-bg:#FBF2E2;
+  --acier:#1D6B8F;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#151618; --card:#1D1F22; --sunken:#212326;
+    --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+    --line:#2E3135; --line-fort:#3D4146;
+    --oui:#4BC48D; --oui-bg:#12291F;
+    --non:#EE7A73; --non-bg:#2E1917;
+    --note:#E0A63F; --note-bg:#2C2213;
+    --acier:#6DAFD2;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#151618; --card:#1D1F22; --sunken:#212326;
+  --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+  --line:#2E3135; --line-fort:#3D4146;
+  --oui:#4BC48D; --oui-bg:#12291F;
+  --non:#EE7A73; --non-bg:#2E1917;
+  --note:#E0A63F; --note-bg:#2C2213;
+  --acier:#6DAFD2;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--body);
+  font-family:Nunito,system-ui,sans-serif;font-size:16px;line-height:1.62}
+.page{max-width:52rem;margin:0 auto;padding:1.5rem 1.25rem 5rem}
+a{color:var(--acier)}
+.retour{display:inline-block;margin-bottom:1.75rem;font-size:.82rem;
+  font-weight:700;color:var(--muted);text-decoration:none}
+.retour:hover{color:var(--ink)}
+.retour .ou{font-weight:400}
+h1{font-family:Newsreader,Georgia,serif;font-weight:600;font-size:2.3rem;
+  line-height:1.14;color:var(--ink);margin:.2rem 0 .6rem}
+h2{font-family:Newsreader,Georgia,serif;font-weight:600;font-size:1.45rem;
+  color:var(--ink);margin:2.8rem 0 .3rem}
+.eyebrow{display:block;font-size:.72rem;font-weight:800;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--muted);margin-bottom:.5rem}
+.chapeau{font-size:1.08rem;margin:.4rem 0 1.3rem}
+p{margin:.7rem 0}
+b,strong{color:var(--ink);font-weight:800}
+.carte{background:var(--card);border:1px solid var(--line);
+  border-radius:12px;padding:1rem 1.1rem;margin:1rem 0}
+.carte > :first-child{margin-top:0}
+.carte > :last-child{margin-bottom:0}
+.c-note{background:var(--note-bg);border:1px solid var(--note);border-left-width:4px}
+.nom{border:1px solid var(--line);border-radius:12px;background:var(--card);
+  padding:1rem 1.15rem;margin:.85rem 0}
+.nom.tete{border-left:4px solid var(--oui)}
+.nom h3{margin:0 0 .1rem;font-size:1.35rem;font-family:Newsreader,Georgia,serif;
+  font-weight:600;color:var(--ink);letter-spacing:-.01em}
+.nom .sens{font-size:.88rem;color:var(--muted);margin:0 0 .5rem}
+.nom p{margin:.45rem 0 0}
+.puces{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.7rem}
+.p{display:inline-block;font-size:.68rem;font-weight:800;letter-spacing:.05em;
+  text-transform:uppercase;padding:.14em .55em;border-radius:99px;
+  border:1px solid var(--line-fort);color:var(--muted)}
+.p-oui{background:var(--oui-bg);color:var(--oui);border-color:var(--oui)}
+.p-non{background:var(--non-bg);color:var(--non);border-color:var(--non)}
+.tab{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.9rem}
+.tab th,.tab td{text-align:left;vertical-align:top;padding:.45rem .55rem;
+  border-bottom:1px solid var(--line)}
+.tab th{font-size:.7rem;text-transform:uppercase;letter-spacing:.07em;
+  color:var(--muted);font-weight:800;border-bottom:1px solid var(--line-fort)}
+.enveloppe{overflow-x:auto}
+ul,ol{margin:.5rem 0;padding-left:1.3rem}
+li{margin:.28rem 0}
+.note{font-size:.87rem;color:var(--muted)}
+.pied{margin-top:3rem;padding-top:1.1rem;border-top:1px solid var(--line);
+  font-size:.85rem;color:var(--muted)}
+@media print{ body{background:#fff} .retour{display:none} .nom,.carte{break-inside:avoid} }
+</style>
+</head>
+<body>
+<div class="page">
+
+<a class="retour" href="/presentations.html"><span aria-hidden="true">&#8592;</span>
+  Le classeur <span class="ou">· toutes les pages du projet</span></a>
+
+<span class="eyebrow">Décider · l'entité</span>
+<h1>Le nom de la maison</h1>
+<p class="chapeau">Celui qui portera francis, la formation en entreprise, et ce qui
+viendra ensuite — donc celui qui ne doit ressembler à aucun des trois.</p>
+
+<div class="carte c-note">
+  <p><b>Cinq critères, dans cet ordre.</b> Un nom d'entité se change mal — il vit sur les
+  contrats, les factures, les comptes et les attestations fiscales.</p>
+  <ol>
+    <li><b>Il ne dit pas le produit.</b> Ni « français », ni « langue », ni
+        « formation » : le prochain produit ne parlera peut-être ni de l'un ni de
+        l'autre.</li>
+    <li><b>Il se prononce en trois langues.</b> Vos marchés sont francophone,
+        hispanophone et anglophone. Un nom qu'un client ne peut pas dire au téléphone
+        ne circule pas.</li>
+    <li><b>Il s'épelle sans hésiter.</b> Pas d'accent, pas de double consonne
+        discutable, pas d'homophone.</li>
+    <li><b>Il est court.</b> Deux syllabes, idéalement.</li>
+    <li><b>Il ne promet rien.</b> Un nom d'entité sobre vieillit mieux qu'un nom
+        enthousiaste.</li>
+  </ol>
+</div>
+
+<h2>Les trois que je retiens</h2>
+
+<div class="nom tete">
+  <h3>Trame</h3>
+  <p class="sens">La structure invisible sous le tissu — ce qui tient tout le reste.</p>
+  <p><b>C'est exactement ce qu'est votre entité&nbsp;: le moteur commun.</b> Le mot dit
+  la chose sans nommer aucun produit. Deux syllabes, aucun accent, aucune ambiguïté
+  d'épellation. Et il traverse les trois langues sans se déformer — <i>trama</i> en
+  espagnol porte le même sens, <i>frame</i> en est le cousin anglais.</p>
+  <p class="note">Réserve honnête&nbsp;: « trame » a un sens courant en imprimerie et en
+  vidéo. Aucun conflit avec votre domaine, mais une recherche sur le mot seul rendra
+  autre chose.</p>
+  <div class="puces">
+    <span class="p p-oui">trame.ca libre</span>
+    <span class="p">2 syllabes</span>
+    <span class="p">fr · es · en</span>
+  </div>
+</div>
+
+<div class="nom tete">
+  <h3>Cordée</h3>
+  <p class="sens">Les grimpeurs encordés qui montent ensemble — chacun assuré par
+  l'autre.</p>
+  <p>La plus belle métaphore des trois pour ce que vous faites&nbsp;: on ne monte pas à
+  la place de quelqu'un, on l'assure pendant qu'il monte. Elle parle immédiatement à un
+  centre comme à un employeur.</p>
+  <p class="note">Réserve honnête&nbsp;: l'accent aigu. Le domaine s'écrit
+  <i>cordee</i>, le registre écrira <i>Cordée</i>, et un client anglophone dira
+  « cordy ». Ce sont trois formes d'un même nom — supportable, mais réel.</p>
+  <div class="puces">
+    <span class="p p-oui">cordee.ca libre</span>
+    <span class="p">2 syllabes</span>
+    <span class="p p-non">accent</span>
+  </div>
+</div>
+
+<div class="nom tete">
+  <h3>Tuilage</h3>
+  <p class="sens">Le recouvrement de deux périodes — celui qui part et celui qui arrive
+  travaillent ensemble un temps.</p>
+  <p>Le seul des trois qui soit déjà un <b>terme du métier</b> : en gestion des
+  ressources humaines, le tuilage est la période où l'on transmet un poste. Un
+  employeur le reconnaît, et il dit la transmission sans dire la langue.</p>
+  <p class="note">Réserve honnête&nbsp;: hors du milieu RH, personne ne le connaît — il
+  faudra l'expliquer chaque fois. C'est le prix d'un nom précis.</p>
+  <div class="puces">
+    <span class="p p-oui">tuilage.ca libre</span>
+    <span class="p">3 syllabes</span>
+    <span class="p p-non">peu connu</span>
+  </div>
+</div>
+
+<h2>Les autres, écartés et pourquoi</h2>
+
+<div class="enveloppe">
+<table class="tab">
+  <thead><tr><th>Nom</th><th>Sens</th><th>Pourquoi il ne passe pas</th></tr></thead>
+  <tbody>
+    <tr><td><b>Portage</b></td><td>Porter le canot entre deux eaux — très québécois,
+        identique en anglais</td>
+        <td>Le meilleur sens de tous, mais <b>.ca est pris</b> et le mot est très employé
+            (transport, finance)</td></tr>
+    <tr><td><b>Cairn</b></td><td>L'empilement de pierres qui marque le chemin</td>
+        <td>Court et international, mais <b>.ca pris</b> ; et le mot est déjà très
+            utilisé en édition et en finance</td></tr>
+    <tr><td><b>Jalon</b></td><td>Le repère planté sur un parcours</td>
+        <td><b>.ca pris</b> ; se prononce mal en anglais</td></tr>
+    <tr><td><b>Palier</b></td><td>Le niveau atteint avant le suivant</td>
+        <td><b>.ca pris</b> ; trop proche du vocabulaire des niveaux — donc du
+            produit</td></tr>
+    <tr><td><b>Passerelle</b></td><td>Ce qui fait traverser</td>
+        <td>Juste, mais long, très employé en formation, et intraduisible court</td></tr>
+    <tr><td><b>Méridien · Boussole</b></td><td>L'orientation</td>
+        <td>Beaux, mais la métaphore du guide promet une direction — un nom d'entité ne
+            promet rien</td></tr>
+    <tr><td><b>Établi · Gabarit · Forge</b></td><td>L'atelier, l'outil qui sert à
+        fabriquer</td>
+        <td>Justes pour le moteur, mais « forge » est déjà le nom d'un outil interne :
+            deux sens pour un mot dans le même projet</td></tr>
+    <tr><td><b>Norda · Aluma · Kaleo</b></td><td>Inventés, neutres</td>
+        <td>Ne veulent rien dire — donc rien à raconter en rencontre, et tous
+            <b>.ca pris</b></td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2>Ce qu'il reste à vérifier avant de choisir</h2>
+
+<div class="carte">
+  <p><b>La disponibilité du domaine n'est pas la disponibilité du nom.</b> Les trois
+  « libres » ci-dessus ont été vérifiés au registre des domaines <code>.ca</code>, rien
+  de plus. Trois contrôles restent à faire, dans cet ordre&nbsp;:</p>
+  <ol>
+    <li><b>Le registre des entreprises du Québec</b> — un nom trop proche d'un nom déjà
+        inscrit peut être refusé. La recherche est gratuite et prend deux minutes.</li>
+    <li><b>La base des marques de commerce canadiennes</b> — un nom libre au registre
+        peut être une marque déposée dans votre domaine d'activité. C'est le contrôle
+        qui compte le plus si vous vendez à des entreprises.</li>
+    <li><b>Le <code>.com</code></b>, si un marché hors Québec est envisagé. Il sera
+        probablement pris pour les trois&nbsp;; ce n'est pas rédhibitoire pour une
+        entité, qui n'a pas besoin de site.</li>
+  </ol>
+  <p class="note"><b>L'entité n'a pas besoin d'un domaine.</b> Ce sont les produits qui
+  en ont un — <code>edufrancis.ca</code> aujourd'hui, un autre demain. Le nom de la
+  maison n'apparaît que sur les contrats et les factures. Ne laissez pas la
+  disponibilité d'un <code>.com</code> décider d'un nom que vous porterez dix ans.</p>
+</div>
+
+<p class="pied">Analyse du 1<sup>er</sup> septembre 2026 · à lire avec « S'incorporer, ou
+continuer en son nom ? », qui explique pourquoi ce nom se choisit maintenant et pourquoi
+l'entité, elle, peut attendre.</p>
+
+</div>
+</body>
+</html>
