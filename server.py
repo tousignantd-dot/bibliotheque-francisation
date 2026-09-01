@@ -267,6 +267,21 @@ MODELE_CORRECTION   = "claude-haiku-4-5-20251001"   # les dix routes de correcti
 # (La réflexion adaptative, elle, reste : sans elle opus montait à 9,6 s.)
 MODELE_CONVERSATION = "claude-sonnet-5"             # jeu de rôle et assistant
 MODELE_VOIX         = "azure-fr-CA-neural"          # Azure Speech, fr-CA
+MODELE_VOIX_HD      = "azure-fr-CA-hd"              # DragonHD, 37 % plus cher
+
+
+def _modele_voix(role):
+    """Le tarif suit la voix, pas la route.
+
+    Toute la synthèse était notée au prix neuronal, jeu de rôle compris —
+    or celui-ci tourne en DragonHD depuis le 31 août 2026, facturé 22 $ le
+    million contre 16. Le registre sous-estimait donc la dépense de 37 % sur
+    les répliques les plus nombreuses, et rien ne le signalait : un chiffre
+    faux ressemble à un chiffre.
+    """
+    from build.azure_voix import VOIX
+    return (MODELE_VOIX_HD if "DragonHD" in VOIX.get(role, {}).get("azure", "")
+            else MODELE_VOIX)
 MODELE_TRANSCRIPTION = "azure-stt-fr-CA"            # Azure Speech, sens inverse
 # Une séance d'élève se ferme après trente minutes sans événement. Sans cette
 # borne, un onglet resté ouvert la nuit gonflerait les minutes de tout un
@@ -20216,7 +20231,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             # Noté à zéro dollar, et noté quand même : le cache est justement
             # la mesure qui intéresse ici. Un registre qui ne verrait que les
             # appels payés ne dirait jamais combien il en a épargné.
-            journal_api.noter("voix", MODELE_VOIX, eleve_id, groupe_id,
+            journal_api.noter("voix", _modele_voix(voix), eleve_id, groupe_id,
                               caracteres=len(texte), statut="cache")
             self._envoyer_mp3(audio, palier)
             return
@@ -20225,13 +20240,13 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             audio = _synthese_azure(voix, texte, palier)
         except _VoixIndisponible as e:
             print(f"[WARN] Azure voix : {e}", flush=True)
-            journal_api.noter("voix", MODELE_VOIX, eleve_id, groupe_id,
+            journal_api.noter("voix", _modele_voix(voix), eleve_id, groupe_id,
                               caracteres=len(texte), statut="echec",
                               http=getattr(e, "http", None))
             json_response(self, {"error": "La voix est momentanément indisponible"}, 502)
             return
 
-        journal_api.noter("voix", MODELE_VOIX, eleve_id, groupe_id,
+        journal_api.noter("voix", _modele_voix(voix), eleve_id, groupe_id,
                           caracteres=len(texte))
         print(f"[voix] {len(texte)} caractères → {len(audio)} octets", flush=True)
         voix_cache_ecrire(chemin, audio)

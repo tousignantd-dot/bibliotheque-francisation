@@ -70,9 +70,18 @@ TARIFS = {
 #   ElevenLabs : 220 $ le million de caractères (déduit du chantier du 24 août,
 #                un ordre de grandeur, pas un relevé de facture)
 #   Azure      : 16 $ le million, tarif publié pour les voix neuronales
+#   Azure HD   : 22 $ le million (relevé le 31 août 2026 sur la page de prix
+#                Microsoft, régions East US et West Europe). ATTENTION : le
+#                tarif HD n'est PAS publié pour canadacentral, la région du
+#                compte — la page y affiche « N/A ». Les appels y passent
+#                pourtant. Ce 22 $ est donc le meilleur chiffre disponible,
+#                pas un tarif confirmé pour cette région ; seule la facture
+#                tranchera. Jusqu'ici la synthèse HD était comptée au prix
+#                neuronal, ce qui sous-estimait la dépense de 37 %.
 TARIF_VOIX = {
     "eleven_multilingual_v2": 0.00022,
     "azure-fr-CA-neural":     0.000016,
+    "azure-fr-CA-hd":         0.000022,
 }
 
 # Conservé : d'anciennes lignes du registre n'ont pas de modèle reconnu, et
@@ -89,6 +98,7 @@ FOURNISSEURS = {
     "claude-sonnet-5": "anthropic",
     "eleven_multilingual_v2": "elevenlabs",
     "azure-fr-CA-neural": "azure",
+    "azure-fr-CA-hd": "azure",
     "azure-stt-fr-CA": "azure",
 }
 
