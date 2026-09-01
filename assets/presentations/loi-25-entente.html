@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Entente de service — projet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap">
+
+<style>
+/* ═══════════════════════════════════════════════════════════
+   ENTENTE DE SERVICE — PROJET
+   Première version, destinée à être révisée par un juriste.
+
+   Mise en forme d'un contrat, pas d'une présentation : la
+   numérotation porte le document, la couleur ne sert qu'à
+   distinguer ce qui reste à remplir (ambre) de ce qui est un
+   avertissement (rouge). Aucun autre ornement.
+   ═══════════════════════════════════════════════════════════ */
+:root{
+  --ground:#F7F7F5; --card:#FFFFFF; --sunken:#FBFBFA;
+  --ink:#17181A; --body:#33363A; --muted:#6E7175;
+  --line:#E4E4E0; --line-fort:#D2D2CD;
+  --remplir:#C07A08; --remplir-bg:#FBF2E2;
+  --alerte:#C7302B; --alerte-bg:#FBEDEC;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#151618; --card:#1D1F22; --sunken:#212326;
+    --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+    --line:#2E3135; --line-fort:#3D4146;
+    --remplir:#E0A63F; --remplir-bg:#2C2213;
+    --alerte:#EE7A73; --alerte-bg:#2E1917;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#151618; --card:#1D1F22; --sunken:#212326;
+  --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+  --line:#2E3135; --line-fort:#3D4146;
+  --remplir:#E0A63F; --remplir-bg:#2C2213;
+  --alerte:#EE7A73; --alerte-bg:#2E1917;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--body);
+  font-family:Nunito,system-ui,sans-serif;font-size:15.5px;line-height:1.6}
+.page{max-width:50rem;margin:0 auto;padding:1.5rem 1.25rem 5rem}
+a{color:#1D6B8F}
+.retour{display:inline-block;margin-bottom:1.75rem;font-size:.82rem;
+  font-weight:700;color:var(--muted);text-decoration:none}
+.retour:hover{color:var(--ink)}
+.retour .ou{font-weight:400}
+h1{font-family:Newsreader,Georgia,serif;font-weight:600;font-size:2.1rem;
+  line-height:1.15;color:var(--ink);margin:.2rem 0 .5rem}
+h2{font-family:Newsreader,Georgia,serif;font-weight:600;font-size:1.32rem;
+  color:var(--ink);margin:2.6rem 0 .2rem}
+h3{font-size:.95rem;font-weight:800;color:var(--ink);margin:1.5rem 0 .3rem}
+.eyebrow{display:block;font-size:.72rem;font-weight:800;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--muted);margin-bottom:.5rem}
+.chapeau{font-size:1.03rem;margin:.4rem 0 1.2rem}
+p{margin:.6rem 0}
+b,strong{color:var(--ink);font-weight:800}
+.art{counter-reset:al}
+.al{margin:.55rem 0 .55rem 0;padding-left:2.6rem;position:relative}
+.al::before{counter-increment:al;content:attr(data-n);position:absolute;left:0;
+  top:0;font-family:var(--mono);font-size:.82rem;color:var(--muted);
+  font-weight:700}
+.carte{background:var(--card);border:1px solid var(--line);
+  border-radius:10px;padding:1rem 1.1rem;margin:1rem 0}
+.carte > :first-child{margin-top:0}
+.carte > :last-child{margin-bottom:0}
+.avert{background:var(--alerte-bg);border:1px solid var(--alerte);border-left-width:4px}
+.aremplir{background:var(--remplir-bg);border:1px solid var(--remplir);border-left-width:4px}
+.tr{color:var(--remplir);font-weight:800;background:var(--remplir-bg);
+  border-bottom:1px solid var(--remplir);padding:0 .25em;white-space:nowrap}
+.tab{width:100%;border-collapse:collapse;margin:.9rem 0;font-size:.88rem}
+.tab th,.tab td{text-align:left;vertical-align:top;padding:.45rem .55rem;
+  border-bottom:1px solid var(--line)}
+.tab th{font-size:.7rem;text-transform:uppercase;letter-spacing:.07em;
+  color:var(--muted);font-weight:800;border-bottom:1px solid var(--line-fort)}
+.enveloppe{overflow-x:auto}
+ul,ol{margin:.5rem 0;padding-left:1.3rem}
+li{margin:.28rem 0}
+.case{font-family:var(--mono);color:var(--remplir);font-weight:700}
+.sign{display:flex;flex-wrap:wrap;gap:2rem;margin-top:1.5rem}
+.sign > div{flex:1 1 15rem}
+.ligne{border-bottom:1px solid var(--line-fort);height:2.2rem;margin-bottom:.3rem}
+.note{font-size:.86rem;color:var(--muted)}
+.pied{margin-top:3rem;padding-top:1.1rem;border-top:1px solid var(--line);
+  font-size:.84rem;color:var(--muted)}
+@media print{
+  body{background:#fff;font-size:10.5pt}
+  .retour{display:none}
+  .carte,.tab,.sign{break-inside:avoid}
+  h2{break-after:avoid}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<a class="retour" href="/presentations.html"><span aria-hidden="true">&#8592;</span>
+  Le classeur <span class="ou">· toutes les pages du projet</span></a>
+
+<span class="eyebrow">Dossier Loi 25 · projet de contrat</span>
+<h1>Entente de service et de protection des renseignements personnels</h1>
+<p class="chapeau">Première version, à faire réviser. Entre un centre d'éducation des
+adultes et le fournisseur de la plateforme de francisation.</p>
+
+<div class="carte avert">
+  <p><b>Ce texte n'est pas un contrat, c'est un point de départ.</b> Il a été rédigé
+  par le fournisseur, sans révision juridique. Il sert à donner à une avocate une base
+  concrète à corriger plutôt qu'une page blanche, et à montrer au centre l'étendue de ce
+  qui doit être convenu.</p>
+  <p><b>Trois sections demandent une attention particulière d'un juriste</b>&nbsp;: la
+  responsabilité et les assurances (art.&nbsp;13), la propriété intellectuelle du
+  matériel pédagogique (art.&nbsp;12), et les délais de notification d'incident
+  (art.&nbsp;8). Les montants, les durées et les délais laissés
+  <span class="tr">en surbrillance</span> sont des propositions, pas des usages établis.</p>
+</div>
+
+<h2>Les parties</h2>
+
+<div class="carte aremplir">
+  <p><b>Le Centre</b> — <span class="tr">nom légal du centre ou du centre de services
+  scolaire</span>, ayant son siège au <span class="tr">adresse</span>, représenté par
+  <span class="tr">nom et titre</span>, ci-après « le Centre ».</p>
+  <p><b>Le Fournisseur</b> — <span class="tr">nom légal ou raison sociale</span>,
+  <span class="tr">adresse</span>, représenté par <span class="tr">nom et titre</span>,
+  ci-après « le Fournisseur ».</p>
+  <p class="note">Si le Fournisseur est une personne physique et non une société, il faut
+  le dire ici et en tirer les conséquences aux articles 13 et 14.</p>
+</div>
+
+<h2>1 · Objet</h2>
+<div class="art">
+  <p class="al" data-n="1.1">Le Fournisseur donne au Centre accès à une plateforme
+  numérique d'apprentissage du français pour personnes adultes immigrantes, ci-après
+  « la Plateforme », et en assure l'exploitation, l'hébergement et l'entretien.</p>
+  <p class="al" data-n="1.2">La Plateforme comprend des modules d'apprentissage, des
+  outils de suivi pour le personnel enseignant, un espace de direction, et des fonctions
+  d'assistance automatisée décrites à l'annexe&nbsp;A.</p>
+  <p class="al" data-n="1.3">La présente entente vaut également <b>entente écrite au sens
+  des dispositions applicables à la communication de renseignements personnels à un tiers
+  et hors du Québec</b>. Les annexes en font partie intégrante.</p>
+</div>
+
+<h2>2 · Rôles des parties</h2>
+<div class="art">
+  <p class="al" data-n="2.1">Le Centre demeure <b>responsable</b> des renseignements
+  personnels de ses élèves et de son personnel. Il décide des finalités et détermine la
+  configuration retenue à l'annexe&nbsp;D.</p>
+  <p class="al" data-n="2.2">Le Fournisseur agit <b>pour le compte du Centre</b>. Il ne
+  traite les renseignements personnels que pour exécuter la présente entente et suivant
+  les instructions du Centre.</p>
+  <p class="al" data-n="2.3">Le Fournisseur <b>ne peut en aucun cas</b>&nbsp;: utiliser
+  les renseignements à ses propres fins, les vendre, les louer, les communiquer à des
+  fins de publicité ou de démarchage, ni s'en servir pour entraîner ou améliorer un
+  modèle d'intelligence artificielle.</p>
+  <p class="al" data-n="2.4">Le Fournisseur peut utiliser des <b>données agrégées et
+  dépersonnalisées</b> — comptages d'usage, taux de réussite par module — pour améliorer
+  la Plateforme, à condition qu'aucune personne ni aucun groupe ne puisse en être
+  identifié.</p>
+</div>
+
+<h2>3 · Renseignements personnels traités</h2>
+<div class="art">
+  <p class="al" data-n="3.1">La nature des renseignements traités, leur finalité et leur
+  origine sont décrites à l'<b>annexe&nbsp;B</b>. Toute modification de cette annexe
+  requiert l'accord écrit du Centre.</p>
+  <p class="al" data-n="3.2">La Plateforme est conçue de manière à ne recueillir <b>ni
+  nom réel d'élève, ni adresse de courriel, ni numéro de téléphone, ni adresse postale,
+  ni date de naissance, ni renseignement relatif au statut migratoire</b>. Les élèves y
+  sont désignés par un pseudonyme choisi par le Centre.</p>
+  <p class="al" data-n="3.3">Le Fournisseur informe sans délai le Centre s'il constate
+  qu'un champ de saisie libre a fait entrer dans la Plateforme des renseignements
+  manifestement excédentaires, et convient avec lui des mesures à prendre.</p>
+</div>
+
+<h2>4 · Configuration et interrupteurs</h2>
+<div class="art">
+  <p class="al" data-n="4.1">La Plateforme permet au Centre de régler, pour l'ensemble
+  de ses groupes, trois paramètres décrits à l'annexe&nbsp;D&nbsp;: l'<b>assistance
+  automatisée</b>, la <b>reconnaissance vocale</b>, et le <b>dépôt des productions
+  orales</b>.</p>
+  <p class="al" data-n="4.2">Ces réglages sont appliqués <b>côté serveur</b>. Le
+  Fournisseur garantit qu'un réglage restrictif ne peut être contourné par le poste de
+  l'élève.</p>
+  <p class="al" data-n="4.3">La Plateforme demeure <b>utilisable pour l'enseignement</b>
+  lorsque les trois paramètres sont au réglage le plus restrictif. Le Centre peut donc
+  refuser toute assistance automatisée sans perdre l'usage du service.</p>
+  <p class="al" data-n="4.4">Le Fournisseur ne modifie pas la configuration du Centre
+  sans son accord écrit, sauf pour la rendre plus restrictive en cas d'incident.</p>
+</div>
+
+<h2>5 · Communication hors du Québec</h2>
+<div class="art">
+  <p class="al" data-n="5.1">L'exécution du service suppose la communication de certains
+  renseignements à des fournisseurs situés hors du Québec. Ces communications, leur
+  destination et leur contenu sont énumérés à l'<b>annexe&nbsp;C</b>.</p>
+  <p class="al" data-n="5.2">Le Fournisseur ne peut ajouter de destinataire hors du
+  Québec, ni modifier la nature de ce qui est communiqué, <b>sans l'accord écrit
+  préalable du Centre</b> et sans mise à jour de l'annexe&nbsp;C.</p>
+  <p class="al" data-n="5.3">Le Fournisseur fournit au Centre, sur demande, la
+  documentation nécessaire à son <b>évaluation des facteurs relatifs à la vie privée</b>,
+  y compris les conditions contractuelles de ses propres fournisseurs.</p>
+  <p class="al" data-n="5.4">Les parties reconnaissent que la <b>reconnaissance vocale
+  intégrée au navigateur</b> de l'élève, lorsqu'elle est activée, transmet la voix
+  captée à l'éditeur du navigateur, <b>sans transiter par les serveurs du
+  Fournisseur</b> et hors de tout lien contractuel entre les parties. Le Centre en est
+  informé et dispose de l'interrupteur prévu à l'article&nbsp;4 pour l'empêcher.</p>
+</div>
+
+<h2>6 · Sécurité</h2>
+<div class="art">
+  <p class="al" data-n="6.1">Le Fournisseur met en œuvre les mesures décrites à
+  l'<b>annexe&nbsp;E</b>, dont&nbsp;: chiffrement des communications, mots de passe
+  irréversiblement hachés, accès cloisonnés par rôle, journalisation des gestes
+  d'administration, et sauvegardes.</p>
+  <p class="al" data-n="6.2">L'accès aux renseignements est limité aux personnes qui en
+  ont besoin. Le personnel enseignant n'accède qu'à ses propres groupes&nbsp;; une
+  direction n'accède qu'à son centre&nbsp;; un gestionnaire de centre de services
+  scolaire n'accède <b>pas</b> au détail par membre du personnel.</p>
+  <p class="al" data-n="6.3">Le Fournisseur tient à jour la liste des personnes ayant un
+  accès administrateur et la communique au Centre sur demande.</p>
+</div>
+
+<h2>7 · Conservation et destruction</h2>
+<div class="art">
+  <p class="al" data-n="7.1">Le Centre fixe la durée de conservation à l'annexe&nbsp;D.
+  À l'échéance, les renseignements visés sont <b>détruits automatiquement</b>.</p>
+  <p class="al" data-n="7.2">À la fin de l'entente, le Fournisseur remet au Centre, dans
+  un format lisible et exploitable, l'ensemble des renseignements qui le concernent,
+  puis les détruit dans un délai de <span class="tr">30 jours</span>, sauvegardes
+  comprises, et en atteste par écrit.</p>
+  <p class="al" data-n="7.3">Aucune copie n'est conservée après cette attestation, sauf
+  obligation légale contraire, auquel cas le Fournisseur en informe le Centre.</p>
+</div>
+
+<h2>8 · Incident de confidentialité</h2>
+<div class="art">
+  <p class="al" data-n="8.1">Le Fournisseur avise le Centre <b>sans délai et au plus tard
+  dans les <span class="tr">24 heures</span></b> suivant le moment où il a des motifs de
+  croire qu'un incident de confidentialité est survenu.</p>
+  <p class="al" data-n="8.2">L'avis précise la nature de l'incident, les renseignements
+  visés, le nombre de personnes concernées, les mesures prises et celles recommandées.</p>
+  <p class="al" data-n="8.3">Le Fournisseur prête assistance au Centre pour l'évaluation
+  du risque de préjudice sérieux, pour la tenue du registre des incidents et, s'il y a
+  lieu, pour les avis aux personnes concernées et à la Commission d'accès à
+  l'information. <b>C'est le Centre qui décide</b> des avis à donner.</p>
+  <p class="al" data-n="8.4">Le Fournisseur ne communique publiquement au sujet d'un
+  incident touchant le Centre qu'avec l'accord écrit de celui-ci.</p>
+</div>
+
+<h2>9 · Droits des personnes concernées</h2>
+<div class="art">
+  <p class="al" data-n="9.1">Le Fournisseur assiste le Centre dans le traitement des
+  demandes d'accès, de rectification, de retrait et de portabilité, et lui fournit les
+  extractions nécessaires dans un délai de <span class="tr">10 jours ouvrables</span>.</p>
+  <p class="al" data-n="9.2">Le Fournisseur ne répond pas directement à une personne
+  concernée&nbsp;; il redirige toute demande vers le responsable désigné par le Centre.</p>
+  <p class="al" data-n="9.3">Le Centre fournit aux élèves et à son personnel
+  l'information requise sur la collecte et l'usage de leurs renseignements. Le
+  Fournisseur lui remet, pour l'y aider, une description à jour et rédigée en langue
+  simple de ce que fait la Plateforme.</p>
+</div>
+
+<h2>10 · Sous-traitance</h2>
+<div class="art">
+  <p class="al" data-n="10.1">Les sous-traitants du Fournisseur sont nommés à
+  l'annexe&nbsp;C. Le Fournisseur demeure responsable de leurs actes envers le Centre.</p>
+  <p class="al" data-n="10.2">Tout nouveau sous-traitant ayant accès à des renseignements
+  personnels est soumis à l'accord écrit préalable du Centre.</p>
+</div>
+
+<h2>11 · Vérification</h2>
+<div class="art">
+  <p class="al" data-n="11.1">Le Centre peut, une fois l'an et sur préavis raisonnable,
+  demander au Fournisseur de démontrer le respect de la présente entente&nbsp;: état de
+  la configuration, mesures de sécurité, journal des accès administrateurs, registre des
+  communications hors Québec.</p>
+  <p class="al" data-n="11.2">Le Fournisseur donne au Centre, en tout temps, accès aux
+  écrans de la Plateforme qui rendent compte de cette configuration.</p>
+</div>
+
+<h2>12 · Propriété intellectuelle</h2>
+<div class="art">
+  <p class="al" data-n="12.1">Le Fournisseur demeure titulaire de la Plateforme, de son
+  code et du matériel pédagogique qu'il a produit. Le Centre reçoit un droit d'usage
+  <b>non exclusif et non transférable</b> pour la durée de l'entente.</p>
+  <p class="al" data-n="12.2">Les <b>productions des élèves</b> et les traces
+  d'apprentissage appartiennent au Centre et à ses élèves, jamais au Fournisseur.</p>
+  <p class="al" data-n="12.3"><span class="tr">À discuter</span>&nbsp;: le sort du
+  matériel produit sur mesure à la demande du Centre, et le droit du Centre de continuer
+  à utiliser les documents imprimés après la fin de l'entente.</p>
+</div>
+
+<h2>13 · Responsabilité et assurances</h2>
+<div class="carte aremplir">
+  <p><b>Section à rédiger avec un juriste.</b> Les points à trancher&nbsp;: plafond de
+  responsabilité, exclusion des dommages indirects, garantie de disponibilité et
+  pénalités éventuelles, assurance responsabilité civile et cyberrisque exigée du
+  Fournisseur, et indemnisation en cas de réclamation d'un tiers.</p>
+  <p class="note">Un contrat de ce type comporte habituellement une limite de
+  responsabilité rattachée aux sommes versées. Proposer un chiffre sans avis juridique
+  serait imprudent&nbsp;: la clause est laissée ouverte volontairement.</p>
+</div>
+
+<h2>14 · Durée, prix et fin</h2>
+<div class="art">
+  <p class="al" data-n="14.1">L'entente prend effet le <span class="tr">date</span> pour
+  une durée de <span class="tr">12 mois</span>, renouvelable par accord écrit.</p>
+  <p class="al" data-n="14.2">Le prix est de <span class="tr">montant et unité —
+  par élève, par groupe ou forfaitaire</span>, payable <span class="tr">modalités</span>.</p>
+  <p class="al" data-n="14.3">Chaque partie peut mettre fin à l'entente sur préavis écrit
+  de <span class="tr">60 jours</span>. Le Centre peut y mettre fin <b>sans préavis</b> en
+  cas de manquement grave aux obligations de protection des renseignements personnels.</p>
+  <p class="al" data-n="14.4">Les articles 2, 3, 7, 8, 9 et 12 survivent à la fin de
+  l'entente.</p>
+</div>
+
+<h2>15 · Dispositions générales</h2>
+<div class="art">
+  <p class="al" data-n="15.1">L'entente est régie par les lois applicables au Québec. Les
+  tribunaux du district de <span class="tr">district judiciaire</span> ont compétence
+  exclusive.</p>
+  <p class="al" data-n="15.2">Toute modification doit être écrite et signée par les deux
+  parties.</p>
+  <p class="al" data-n="15.3">En cas de contradiction entre le corps de l'entente et une
+  annexe, <b>le corps de l'entente prévaut</b>, sauf pour l'annexe&nbsp;D qui exprime la
+  volonté du Centre sur sa configuration.</p>
+</div>
+
+<div class="sign">
+  <div><div class="ligne"></div><p class="note">Pour le Centre — nom, titre, date</p></div>
+  <div><div class="ligne"></div><p class="note">Pour le Fournisseur — nom, titre, date</p></div>
+</div>
+
+<h2>Annexe A · Le service</h2>
+<p>Modules d'apprentissage du français pour adultes couvrant les huit niveaux du
+programme&nbsp;; fiches et diaporamas de séance&nbsp;; planification et suivi par
+groupe&nbsp;; espace de direction&nbsp;; fonctions d'assistance automatisée&nbsp;:
+correction d'une phrase ou d'un texte, jeu de rôle conversationnel, outils d'appui
+(traduction d'un mot, simplification d'une consigne), lecture des textes par voix de
+synthèse.</p>
+
+<h2>Annexe B · Renseignements traités</h2>
+<div class="enveloppe">
+<table class="tab">
+  <thead><tr><th>Catégorie</th><th>Contenu</th><th>Finalité</th></tr></thead>
+  <tbody>
+    <tr><td>Élève</td><td>Identifiant, code d'accès, pseudonyme, groupe</td>
+        <td>Rattacher le travail à un élève</td></tr>
+    <tr><td>Personnel</td><td>Nom ou pseudonyme, code, mot de passe haché, rôle</td>
+        <td>Accès et administration</td></tr>
+    <tr><td>Traces</td><td>Modules ouverts, exercices terminés, scores, horodatage</td>
+        <td>Suivi pédagogique</td></tr>
+    <tr><td>Productions écrites</td><td>Texte de l'élève et rétroaction</td>
+        <td>Correction et progression</td></tr>
+    <tr><td>Productions orales</td><td>Enregistrement, transcription, rétroaction</td>
+        <td>Évaluation de l'oral — selon annexe D</td></tr>
+    <tr><td>Journal</td><td>Gestes d'administration, avec auteur et horodatage</td>
+        <td>Imputabilité</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2>Annexe C · Communications hors du Québec</h2>
+<div class="enveloppe">
+<table class="tab">
+  <thead><tr><th>Destinataire</th><th>Lieu</th><th>Ce qui est communiqué</th><th>Quand</th></tr></thead>
+  <tbody>
+    <tr><td>Anthropic</td><td>États-Unis</td>
+        <td>Textes et réponses d'élèves</td>
+        <td>Si l'assistance est activée (annexe D)</td></tr>
+    <tr><td>Microsoft Azure</td><td>Toronto (Canada)</td>
+        <td>Texte des modules&nbsp;; audio d'une production orale à transcrire</td>
+        <td>Lecture vocale&nbsp;; transcription selon annexe D</td></tr>
+    <tr><td>Éditeur du navigateur<br>(Google, Apple)</td><td>Hors Québec</td>
+        <td>Voix captée par le micro de l'élève</td>
+        <td>Si la reconnaissance vocale est activée</td></tr>
+    <tr><td>Hébergeur</td><td><span class="tr">région à confirmer</span></td>
+        <td>L'ensemble des données et fichiers</td><td>En permanence</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2>Annexe D · Configuration retenue par le Centre</h2>
+<div class="carte aremplir">
+  <p><b>C'est la seule annexe que le Centre remplit lui-même, et elle a des effets
+  immédiats sur la Plateforme.</b></p>
+
+  <h3>Assistance automatisée</h3>
+  <p><span class="case">[ ]</span> Activée &nbsp;·&nbsp;
+     <span class="case">[ ]</span> Désactivée — aucun texte d'élève ne quitte le serveur</p>
+
+  <h3>Reconnaissance vocale par le navigateur</h3>
+  <p><span class="case">[ ]</span> Autorisée &nbsp;·&nbsp;
+     <span class="case">[ ]</span> Confinée — les exercices de production orale se font
+     sans micro</p>
+
+  <h3>Dépôt des productions orales</h3>
+  <p><span class="case">[ ]</span> Complet — l'enregistrement est conservé<br>
+     <span class="case">[ ]</span> Transcription seule — l'enregistrement n'est jamais
+     écrit sur le disque<br>
+     <span class="case">[ ]</span> Fermé — aucun dépôt oral</p>
+
+  <h3>Durée de conservation</h3>
+  <p>Traces d'apprentissage&nbsp;: <span class="tr">___ jours</span> &nbsp;·&nbsp;
+     Productions écrites&nbsp;: <span class="tr">___ jours</span> &nbsp;·&nbsp;
+     Productions orales&nbsp;: <span class="tr">___ jours</span></p>
+  <p class="note">Une seule durée peut aussi être retenue pour l'ensemble. Le minimum
+  accepté par la Plateforme est de 30 jours.</p>
+
+  <h3>Responsable de la protection des renseignements personnels au Centre</h3>
+  <p><span class="tr">nom, titre, coordonnées</span></p>
+</div>
+
+<h2>Annexe E · Mesures de sécurité</h2>
+<ul>
+  <li>Communications chiffrées (HTTPS) sur l'ensemble du service.</li>
+  <li>Mots de passe du personnel hachés de façon irréversible (PBKDF2-SHA256)&nbsp;;
+      aucun mot de passe en clair.</li>
+  <li>Accès des élèves par code, sans compte nominatif ni courriel.</li>
+  <li>Cloisonnement par rôle appliqué côté serveur, y compris dans la structure des
+      données de suivi.</li>
+  <li>Journalisation des gestes d'administration avec auteur, horodatage, état avant et
+      après.</li>
+  <li>Sauvegardes régulières de la base de données.</li>
+  <li>Aucun traceur publicitaire, aucun outil de mesure d'audience tiers.</li>
+</ul>
+
+<p class="pied">Projet du 1<sup>er</sup> septembre 2026 · rédigé par le Fournisseur, non
+révisé par un juriste · à lire avec le document « Le dispositif devant la Loi 25 », qui
+en donne la matière technique et les risques connus.</p>
+
+</div>
+</body>
+</html>
