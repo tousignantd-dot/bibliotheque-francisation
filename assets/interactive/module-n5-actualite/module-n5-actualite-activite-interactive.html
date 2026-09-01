@@ -3588,6 +3588,7 @@ let jrDireNo=0;
 
 function jrTaire(){
   jrDireNo++;                 // toute lecture en vol devient caduque
+  JR.sourd=false;             // l'assistant se tait : le micro réentend
   try{ speechSynthesis.cancel(); }catch(e){}
   if(jrAudio){ try{ jrAudio.pause(); }catch(e){} jrAudio=null; }
 }
@@ -3630,7 +3631,12 @@ async function jrDire(texte){
     const a=new Audio(url);
     if(res.headers.get('X-Palier')===palier) a.dataset.palier=palier; else vitAudio(a);
     jrAudio=a;
-    a.onended=()=>{ URL.revokeObjectURL(url); if(jrAudio===a) jrAudio=null; };
+    // Sans écouteurs, le micro entend le haut-parleur. Tant que l'assistant
+    // parle, ce que la reconnaissance rend est jeté : c'est la voix de
+    // l'assistant, pas celle de l'élève.
+    JR.sourd=true;
+    a.onended=()=>{ URL.revokeObjectURL(url); if(jrAudio===a) jrAudio=null;
+                    JR.sourd=false; };
     await a.play();
   }catch(e){
     // Le repli n'a de sens que pour une vraie panne. Si un jrTaire() est passé
@@ -3670,6 +3676,9 @@ async function jrParler(){
     // avant a déjà été envoyé, y compris un provisoire promu en final, qui
     // garde son index et resterait donc sous la ligne.
     JR.vus=e.results.length;
+    // La ligne de coupe avance : ces résultats-là ne devront pas reparaître
+    // quand l'élève reprendra la parole.
+    if(JR.sourd){ JR.coupe=e.results.length; return; }
     let dit='', inter='';
     for(let i=(JR.coupe||0);i<e.results.length;i++){
       const r=e.results[i];
