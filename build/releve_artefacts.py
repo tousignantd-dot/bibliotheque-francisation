@@ -3,7 +3,7 @@
 
     python3 build/releve_artefacts.py
 
-La banque de présentations est la porte d'entrée des artefacts du projet
+le classeur est la porte d'entrée des artefacts du projet
 (`presentations.html`). Ce relevé la confronte au disque : ce qui est rangé,
 ce qui ne l'est pas, et ce qui n'a rien à y faire.
 

@@ -4,7 +4,7 @@
     python3 build/releve_documents.py
 
 Ces dix-huit fichiers sont des documents **sur le projet** : ils vont donc à
-la banque de présentations. Mais dix-huit fiches pour dix-huit `.md` noieraient
+le classeur. Mais dix-huit fiches pour dix-huit `.md` noieraient
 la banque sous du texte qu'on ne lit pas en réunion. Une fiche, un index, et
 chaque document reste à sa place — c'est le compromis retenu au ménage du
 31 août 2026.

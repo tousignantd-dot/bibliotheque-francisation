@@ -313,7 +313,7 @@ def chantiers(m):
             "constat": (
                 "<code>assets/documents/manuel-eleve-niveau-4.pdf</code> (1 753 pages) et sa "
                 "version serrée pèsent <b>80 Mo</b> à eux deux — les deux plus gros fichiers "
-                "suivis, loin devant. Ils ne sont liés que depuis la banque de présentations."),
+                "suivis, loin devant. Ils ne sont liés que depuis le classeur."),
             "verifie": (
                 "Ce sont des documents dont nous ne sommes pas l'auteur. La règle du projet "
                 "est claire sur le contenu — le manuel est un <b>modèle de structure</b>, jamais "
@@ -326,7 +326,7 @@ def chantiers(m):
                 "faire que si la réponse est « ils ne doivent pas être là »."),
             "risque": "à trancher",
             "risque_mot": (
-                "Le lien de la banque de présentations tomberait : il faudrait dire où le "
+                "Le lien du classeur tomberait : il faudrait dire où le "
                 "manuel se trouve désormais."),
             "etat": "pas fait",
             "resultat": (
