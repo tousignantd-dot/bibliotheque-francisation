@@ -36,6 +36,7 @@ Deux réserves, écrites plutôt que masquées :
 """
 import argparse
 import datetime
+import hashlib
 import html
 import json
 import pathlib
@@ -158,6 +159,33 @@ def git():
     }
 
 
+def memoire():
+    """La sauvegarde des fiches de mémoire : est-elle à jour, et poussée ?"""
+    src = pathlib.Path.home() / '.claude' / 'projects' / \
+        '-Users-danieltousignant-Claude' / 'memory'
+    depot = pathlib.Path.home() / 'Claude'
+    copie = depot / 'memoire'
+    if not src.is_dir():
+        return None
+    def empreintes(d):
+        return {f.name: hashlib.sha1(f.read_bytes()).hexdigest()
+                for f in sorted(d.glob('*.md'))} if d.is_dir() else {}
+    a, b = empreintes(src), empreintes(copie)
+    ecart = sorted(k for k in set(a) | set(b) if a.get(k) != b.get(k))
+    def cmd(*x):
+        try:
+            return subprocess.run(x, cwd=depot, capture_output=True,
+                                  text=True, timeout=10).stdout.strip()
+        except (OSError, subprocess.SubprocessError):
+            return ''
+    devant = cmd('git', 'rev-list', '--count', '@{u}..HEAD')
+    return {
+        'fiches': len(a), 'sauvees': len(b), 'ecart': ecart,
+        'distant': bool(cmd('git', 'remote')),
+        'devant': int(devant) if devant.isdigit() else 0,
+    }
+
+
 def releve():
     """Tout l'état, en un seul objet."""
     from chantier import releve as banques
@@ -185,6 +213,7 @@ def releve():
         'niveaux': niveaux, 'mods': mods, 'activites': acts,
         'categories': par_categorie, 'casses': casses, 'situations': situations,
         'hors': hors, 'depense': depense(), 'git': git(),
+        'memoire': memoire(),
     }
 
 
@@ -239,6 +268,22 @@ def alertes(e):
     if e['git']['devant']:
         a.append(('tiede', '%d commit(s) non poussés' % e['git']['devant'],
                   'Railway déploie sur push : ce travail n’est pas en ligne'))
+    m = e['memoire']
+    if m is None:
+        a.append(('tiede', 'la mémoire de travail est introuvable sur ce poste',
+                  'aucun dossier ~/.claude/…/memory : rien à sauvegarder, '
+                  'ou le chemin a changé'))
+    elif not m['distant']:
+        a.append(('grave', 'la mémoire n’a aucune sauvegarde hors du disque',
+                  '%d fiches ; le dépôt ~/Claude n’a pas de distant' % m['fiches']))
+    elif m['ecart']:
+        a.append(('tiede', '%d fiche(s) de mémoire non sauvegardées'
+                  % len(m['ecart']),
+                  _extrait(m['ecart'], lambda f: f[:-3], 6)
+                  + ' — rafraîchir : programme/outils/sauve_memoire.sh'))
+    elif m['devant']:
+        a.append(('tiede', 'la sauvegarde de la mémoire n’est pas poussée',
+                  '%d commit(s) en attente dans ~/Claude' % m['devant']))
     return a
 
 
@@ -291,6 +336,11 @@ def page(e):
         ('%d / %d' % (sit_f, sit_d), 'situations du programme couvertes',
          '%d %%' % round(100 * sit_f / sit_d) if sit_d else '—'),
     ]
+    mem = e['memoire']
+    if mem:
+        tuiles.append((nb(mem['fiches']), 'fiches de mémoire',
+                       'sauvegarde à jour' if not mem['ecart']
+                       else '%d non sauvegardée(s)' % len(mem['ecart'])))
     html_tuiles = ''.join(
         '<div class="tuile"><b>%s</b><span>%s</span><i>%s</i></div>'
         % (html.escape(v), html.escape(t), html.escape(d)) for v, t, d in tuiles)
