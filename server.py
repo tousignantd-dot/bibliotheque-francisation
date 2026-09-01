@@ -2393,6 +2393,12 @@ def valider_acces_sans_compte(org_id, role):
 
 
 
+# Le relevé garde sa structure en clair : quand elle change, les jours déjà
+# calculés n'ont pas les nouvelles tables et ne seront jamais recalculés
+# (« les jours passés ne bougent plus »). Le numéro force le refait complet.
+STATS_VERSION = 2
+
+
 def load_stats_jour():
     if STATS_JOUR_FILE.exists():
         try:
@@ -2400,7 +2406,12 @@ def load_stats_jour():
                 return json.load(f)
         except json.JSONDecodeError:
             print("[WARN] stats_jour.json illisible, relevé refait", flush=True)
-    return {"jours": {}, "parEnseignant": {}}
+    return _stats_vide()
+
+
+def _stats_vide():
+    return {"version": STATS_VERSION, "jours": {}, "parEnseignant": {},
+            "parModule": {}, "parModuleEnseignant": {}}
 
 
 def save_stats_jour(data):
@@ -2436,20 +2447,23 @@ def _horodatage(iso):
 
 
 def calculer_jour(jour, progres, eleve_vers_centre, eleve_vers_prof):
-    """Le relevé d'une journée, à deux grains.
+    """Le relevé d'une journée, à quatre grains.
 
-    Deux dictionnaires, et c'est **la** décision de l'étape 4 : `centres` ne
-    porte aucun identifiant d'enseignant, `enseignants` en porte. La vue d'un
-    CSS ne lit que le premier. Les mélanger remettrait le filtrage à
-    l'affichage, où il s'oublie.
+    `centres` ne porte aucun identifiant d'enseignant, `enseignants` en porte :
+    c'était **la** décision de l'étape 4, et la vue d'un CSS ne lit que le
+    premier. Les deux grains « module » suivent la même coupure — `modules`
+    reste lisible par un CSS, `mod_prof` ne l'est que par la direction du
+    centre. Les mélanger remettrait le filtrage à l'affichage, où il s'oublie.
     """
-    centres, enseignants = {}, {}
-    seances = {}   # (clé, studentId) -> [horodatages]
+    centres, enseignants, modules, mod_prof = {}, {}, {}, {}
+    tables = {"c": centres, "t": enseignants, "m": modules, "mt": mod_prof}
+    seances = {}   # (table, clé, studentId) -> [horodatages]
 
     def sac(table, cle):
         return table.setdefault(cle, {
             "eleves": set(), "evenements": 0, "activitesTerminees": 0,
             "premierCoupOk": 0, "premierCoupTotal": 0, "minutes": 0,
+            "ouvertures": 0, "ecoutes": 0,
         })
 
     for e in progres:
@@ -2460,31 +2474,44 @@ def calculer_jour(jour, progres, eleve_vers_centre, eleve_vers_prof):
         if centre is None:
             continue
         prof = eleve_vers_prof.get(sid)
-        cles = [("c", centre)] + ([("t", centre, prof)] if prof else [])
-        for cle in cles:
-            table = centres if cle[0] == "c" else enseignants
-            k = str(centre) if cle[0] == "c" else f"{centre}:{prof}"
-            d = sac(table, k)
+        act = e.get("activityId")
+        cles = [("c", str(centre))]
+        if prof:
+            cles.append(("t", f"{centre}:{prof}"))
+        if act is not None:
+            cles.append(("m", f"{centre}:{act}"))
+            if prof:
+                cles.append(("mt", f"{centre}:{prof}:{act}"))
+        for nom, k in cles:
+            d = sac(tables[nom], k)
             d["eleves"].add(sid)
             d["evenements"] += 1
-            if e.get("event") == "exercise_completed":
+            ev = e.get("event")
+            if ev == "exercise_completed":
                 d["activitesTerminees"] += 1
+            elif ev == "file_opened":
+                d["ouvertures"] += 1
+            elif ev == "dialogue_listened":
+                d["ecoutes"] += 1
             ft, zones = e.get("firstTry"), e.get("zones")
             if isinstance(ft, int) and isinstance(zones, int) and zones > 0:
                 d["premierCoupOk"] += ft
                 d["premierCoupTotal"] += zones
             ts = _horodatage(e.get("timestamp"))
             if ts is not None:
-                seances.setdefault((k, sid), []).append(ts)
+                seances.setdefault((nom, k, sid), []).append(ts)
 
-    for (k, _sid), marques in seances.items():
-        table = enseignants if ":" in k else centres
-        table[k]["minutes"] += _minutes_de_seance(marques)
+    # La clé de séance porte **le nom de la table**. La version à deux grains
+    # la devinait au nombre de « : » dans la clé ; un troisième grain rend
+    # cette devinette fausse, et silencieusement — les minutes d'un module
+    # seraient allées au sac d'un enseignant.
+    for (nom, k, _sid), marques in seances.items():
+        tables[nom][k]["minutes"] += _minutes_de_seance(marques)
 
-    for table in (centres, enseignants):
+    for table in tables.values():
         for d in table.values():
             d["elevesActifs"] = len(d.pop("eleves"))
-    return centres, enseignants
+    return centres, enseignants, modules, mod_prof
 
 
 def relever_stats(force=False):
@@ -2496,8 +2523,8 @@ def relever_stats(force=False):
     lignes, et c'est aussi pourquoi il n'a besoin d'aucune tâche de nuit.
     """
     data = load_stats_jour()
-    if force:
-        data = {"jours": {}, "parEnseignant": {}}
+    if force or data.get("version") != STATS_VERSION:
+        data = _stats_vide()
     progres = load_progress()
     groupes = {g["id"]: g for g in load_groups()}
     eleve_vers_centre, eleve_vers_prof = {}, {}
@@ -2510,14 +2537,24 @@ def relever_stats(force=False):
             eleve_vers_prof[el["id"]] = g.get("teacherId")
 
     aujourdhui = date.today().isoformat()
-    jours = {str(e.get("timestamp", ""))[:10] for e in progres}
-    jours = {j for j in jours if len(j) == 10}
-    a_faire = [j for j in jours if j not in data["jours"] or j == aujourdhui]
+    # Les événements se rangent par jour **une fois**. La version d'avant
+    # passait le journal entier à chaque journée à calculer : refaire tout
+    # l'historique coûtait alors le carré du journal, dans une requête HTTP —
+    # invisible sur les traces d'une classe, une minute de blocage sur celles
+    # d'un réseau. C'est exactement ce que fait un changement de STATS_VERSION.
+    evenements = {}
+    for e in progres:
+        j = str(e.get("timestamp", ""))[:10]
+        if len(j) == 10:
+            evenements.setdefault(j, []).append(e)
+    a_faire = [j for j in evenements if j not in data["jours"] or j == aujourdhui]
     for j in sorted(a_faire):
-        centres, enseignants = calculer_jour(j, progres, eleve_vers_centre,
-                                             eleve_vers_prof)
+        centres, enseignants, modules, mod_prof = calculer_jour(
+            j, evenements[j], eleve_vers_centre, eleve_vers_prof)
         data["jours"][j] = centres
         data["parEnseignant"][j] = enseignants
+        data["parModule"][j] = modules
+        data["parModuleEnseignant"][j] = mod_prof
     if a_faire:
         data["calculeLe"] = datetime.now().isoformat(timespec="seconds")
         save_stats_jour(data)
@@ -16337,6 +16374,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if path == "/api/stats/css":
             self._handle_stats_css(params)
             return
+        if path == "/api/stats/modules":
+            self._handle_stats_modules(params)
+            return
         if path == "/api/stats/centre":
             self._handle_stats_centre(params)
             return
@@ -18002,6 +18042,16 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             {j: v for j, v in data.get("parEnseignant", {}).items() if j >= depuis},
         )
 
+    def _stats_fenetre_modules(self, jours):
+        """Les relevés « module » des N derniers jours, à deux grains."""
+        data = relever_stats()
+        depuis = (date.today() - timedelta(days=jours - 1)).isoformat()
+        return (
+            {j: v for j, v in data.get("parModule", {}).items() if j >= depuis},
+            {j: v for j, v in data.get("parModuleEnseignant", {}).items()
+             if j >= depuis},
+        )
+
     @staticmethod
     def _cumuler(releves, cle_de):
         """Additionne des relevés journaliers. Les élèves actifs se comptent en
@@ -18017,10 +18067,12 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                     continue
                 t = total.setdefault(cle, {
                     "evenements": 0, "activitesTerminees": 0, "minutes": 0,
+                    "ouvertures": 0, "ecoutes": 0,
                     "premierCoupOk": 0, "premierCoupTotal": 0,
                     "elevesActifsPointe": 0, "jours": set(),
                 })
                 for champ in ("evenements", "activitesTerminees", "minutes",
+                              "ouvertures", "ecoutes",
                               "premierCoupOk", "premierCoupTotal"):
                     t[champ] += d.get(champ, 0)
                 t["elevesActifsPointe"] = max(t["elevesActifsPointe"],
@@ -18661,6 +18713,171 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             "fenetreJours": jours, "centre": org.get("nom"),
             "enseignants": sorted(lignes, key=lambda l: (l["nom"] or "").lower()),
         })
+
+    def _handle_stats_modules(self, params):
+        """Ce que les élèves ouvrent vraiment, module par module.
+
+        Les trois autres vues répondent à « qui travaille » ; celle-ci répond à
+        « sur quoi ». C'est la seule qui parle à la production : un module que
+        personne n'ouvre est du travail à réorienter, et jusqu'ici seule la
+        **planification** était regardée — un module planifié et jamais ouvert
+        y passait pour vivant.
+
+        Trois portées, la même coupure que partout : le réseau et un CSS lisent
+        `parModule`, qui ne porte aucun identifiant d'enseignant ; le détail par
+        enseignant sort de `parModuleEnseignant` et n'est servi qu'à la
+        direction **du centre lui-même**.
+        """
+        teacher = self._require_teacher()
+        if not teacher:
+            return
+        brut = (params.get("orgId") or [""])[0]
+        orgs = load_organisations()
+        if brut:
+            try:
+                org_id = int(brut)
+            except (TypeError, ValueError):
+                json_response(self, {"error": "Organisation illisible"}, 400)
+                return
+            org = find_org(org_id)
+            if org is None or org.get("type") not in ("css", "centre"):
+                json_response(self, {"error": "Ce n'est pas un centre ni un CSS"}, 400)
+                return
+        else:
+            org = None
+            if not is_founder(teacher):
+                json_response(self, {"error": "La vue du réseau est réservée au "
+                                              "fondateur."}, 403)
+                return
+
+        detail_prof = False
+        if org is None:
+            portee, nom = "reseau", "Tout le réseau"
+            centres_vus = {o["id"] for o in orgs if o.get("type") == "centre"}
+        elif org["type"] == "css":
+            if not a_role_sur(teacher, org["id"], ("gestion_css", "conseiller")):
+                json_response(self, {"error": "Ce CSS n'est pas dans votre "
+                                              "portée."}, 403)
+                return
+            portee, nom = "css", org.get("nom", "")
+            centres_vus = {o["id"] for o in orgs if o.get("type") == "centre"
+                           and org["id"] in {p["id"] for p in org_chain(o["id"], orgs)}}
+        else:
+            if not a_role_sur(teacher, org["id"], ("direction", "conseiller"),
+                              exact=True):
+                json_response(self, {"error": "Cet écran est réservé à la "
+                                              "direction du centre."}, 403)
+                return
+            portee, nom = "centre", org.get("nom", "")
+            centres_vus = {org["id"]}
+            detail_prof = True
+
+        jours = 30
+        par_module, par_mod_prof = self._stats_fenetre_modules(jours)
+
+        def dans_portee(cle, rang):
+            """La clé est « centre:activité » ou « centre:prof:activité »."""
+            bouts = cle.split(":")
+            if len(bouts) != rang:
+                return None
+            try:
+                centre, act = int(bouts[0]), int(bouts[-1])
+            except (TypeError, ValueError):
+                return None
+            return (centre, act) if centre in centres_vus else None
+
+        def dans_portee_prof(cle):
+            """« centre:prof:activité » → (prof, activité), dans la portée."""
+            bouts = cle.split(":")
+            if len(bouts) != 3:
+                return None
+            try:
+                centre, prof, act = (int(b) for b in bouts)
+            except (TypeError, ValueError):
+                return None
+            return (prof, act) if centre in centres_vus else None
+
+        cumul = self._cumuler(par_module, lambda k: dans_portee(k, 2))
+        activites = {a["id"]: a for a in load_activities()}
+
+        def nommer(act):
+            a = activites.get(act) or {}
+            return a.get("titre") or a.get("title") or "activité %d" % act
+
+        def categorie(act):
+            """Cours ou atelier : le tableau mêle les deux, et le compte de
+            couverture ne porte que sur les cours. Sans cette colonne, « 9
+            activités ouvertes » et « 3 modules sur 87 » se contrediraient à
+            l'œil."""
+            return (activites.get(act) or {}).get("categorie", "")
+
+        # Un même module compte une fois par centre : les cumuler donnerait un
+        # module par centre. On regroupe donc sur l'activité, en gardant le
+        # nombre de centres — c'est ce que le réseau veut savoir.
+        par_activite = {}
+        for (centre, act), t in cumul.items():
+            d = par_activite.setdefault(act, {
+                "activityId": act, "titre": nommer(act),
+                "categorie": categorie(act), "centres": set(),
+                "ouvertures": 0, "terminees": 0, "ecoutes": 0, "minutes": 0,
+                "elevesActifsPointe": 0, "premierCoupOk": 0, "premierCoupTotal": 0,
+                "joursActifs": 0,
+            })
+            d["centres"].add(centre)
+            d["ouvertures"] += t.get("ouvertures", 0)
+            d["terminees"] += t.get("activitesTerminees", 0)
+            d["ecoutes"] += t.get("ecoutes", 0)
+            d["minutes"] += t.get("minutes", 0)
+            d["premierCoupOk"] += t.get("premierCoupOk", 0)
+            d["premierCoupTotal"] += t.get("premierCoupTotal", 0)
+            d["joursActifs"] = max(d["joursActifs"], t.get("joursActifs", 0))
+            d["elevesActifsPointe"] = max(d["elevesActifsPointe"],
+                                          t.get("elevesActifsPointe", 0))
+
+        lignes = []
+        for d in par_activite.values():
+            d["centres"] = len(d["centres"])
+            d["premierCoupPct"] = (round(100 * d["premierCoupOk"] / d["premierCoupTotal"])
+                                   if d["premierCoupTotal"] else None)
+            lignes.append(d)
+        lignes.sort(key=lambda l: (-l["ouvertures"], -l["terminees"], l["titre"]))
+
+        # Le catalogue moins ce qui a été ouvert. Sans cette liste, l'écran ne
+        # montrerait que ce qui vit et laisserait croire que tout vit.
+        vus = set(par_activite)
+        modules_cat = [a for a in load_activities() if a.get("categorie") == "cours"]
+        jamais = sorted(nommer(a["id"]) for a in modules_cat if a["id"] not in vus)
+
+        sortie = {
+            "fenetreJours": jours, "portee": portee, "nom": nom,
+            "modules": lignes,
+            "modulesDuCatalogue": len(modules_cat),
+            "modulesOuverts": sum(1 for a in modules_cat if a["id"] in vus),
+            "jamaisOuverts": jamais[:60],
+            "jamaisOuvertsTotal": len(jamais),
+        }
+
+        if detail_prof:
+            teachers = {t["id"]: t for t in load_teachers()}
+            cumul_p = self._cumuler(par_mod_prof, lambda k: dans_portee_prof(k))
+            par_prof = {}
+            for (prof, act), t in cumul_p.items():
+                nom_prof = (teachers.get(prof) or {}).get("nom", "")
+                d = par_prof.setdefault(prof, {"teacherId": prof, "nom": nom_prof,
+                                               "modules": []})
+                d["modules"].append({
+                    "activityId": act, "titre": nommer(act),
+                    "ouvertures": t.get("ouvertures", 0),
+                    "terminees": t.get("activitesTerminees", 0),
+                    "elevesActifsPointe": t.get("elevesActifsPointe", 0),
+                    "minutes": t.get("minutes", 0),
+                })
+            for d in par_prof.values():
+                d["modules"].sort(key=lambda m: (-m["ouvertures"], m["titre"]))
+            sortie["enseignants"] = sorted(par_prof.values(),
+                                           key=lambda d: (d["nom"] or "").lower())
+
+        json_response(self, sortie)
 
     def _handle_audit_list(self, params):
         fondateur = self._require_founder()

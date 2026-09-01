@@ -35,6 +35,12 @@
                  border: 1px solid var(--line-300); background: var(--surface-card);
                  color: var(--text-body); cursor: pointer; }
     .ch-onglet:hover { background: var(--paper-200); }
+    /* Le détail par enseignant : replié par défaut. Douze enseignants
+       dépliés d'office feraient une page qu'on ne lit plus. */
+    .ch-prof { border: 1px solid var(--paper-300); border-radius: var(--r-md);
+      padding: var(--sp-2) var(--sp-3); margin-bottom: var(--sp-2); }
+    .ch-prof > summary { cursor: pointer; font-weight: var(--fw-bold); }
+    .ch-prof[open] > summary { margin-bottom: var(--sp-2); }
     .ch-onglet[aria-pressed="true"] { background: var(--ink-900); color: var(--white);
                                       border-color: var(--ink-900); }
 
@@ -270,6 +276,87 @@
         + NOTE_MINUTES;
     }
 
+    // ── Les modules ────────────────────────────────────────────────────
+    //
+    // Les trois vues au-dessus répondent à « qui travaille ». Celle-ci répond
+    // à « sur quoi », et c'est la seule qui parle à la production : jusqu'ici,
+    // un module planifié mais jamais ouvert passait pour vivant.
+
+    function vueModules(d) {
+      var html = '<div class="ch-tuiles">'
+        + tuile(d.modulesOuverts + ' / ' + d.modulesDuCatalogue, 'modules ouverts')
+        + tuile(d.modules.length, 'activités vues')
+        + tuile(d.jamaisOuvertsTotal, 'modules jamais ouverts')
+        + '</div>';
+
+      if (!d.modules.length) {
+        return html + '<p class="ch-note">Aucune trace sur cette période. Le '
+          + 'tableau se remplit quand des élèves ouvrent une activité.</p>';
+      }
+
+      var entetes = [{t:'Activité'},{t:'Type'},{t:'Ouvertures',n:1},
+                     {t:'Exercices terminés',n:1},{t:'Écoutes',n:1},
+                     {t:'Pointe active',n:1},{t:'Minutes',n:1},{t:'1er coup',n:1}];
+      if (d.portee !== 'centre') entetes.splice(2, 0, {t:'Centres',n:1});
+
+      html += '<h2 class="ch-sect">Ce que les élèves ouvrent</h2>' + tableau(
+        entetes,
+        d.modules.map(function (m) {
+          return '<tr><td>' + ech(m.titre) + '</td>'
+            + '<td class="ch-muet">' + ech(m.categorie || '—') + '</td>'
+            + (d.portee !== 'centre' ? '<td class="n">' + m.centres + '</td>' : '')
+            + '<td class="n">' + m.ouvertures + '</td>'
+            + '<td class="n">' + m.terminees + '</td>'
+            + '<td class="n">' + m.ecoutes + '</td>'
+            + '<td class="n">' + m.elevesActifsPointe + '</td>'
+            + '<td class="n">' + m.minutes + '</td>'
+            + '<td class="n">' + pct(m.premierCoupPct) + '</td></tr>';
+        }))
+        + '<p class="ch-note"><strong>Ouvertures et exercices terminés comptent '
+        + 'des gestes, pas des élèves.</strong> Un module beaucoup ouvert et peu '
+        + 'terminé est un module où l\'on entre et d\'où l\'on ressort — c\'est le '
+        + 'signal le plus utile de ce tableau, mais il ne dit pas pourquoi. '
+        + 'Le classement va du plus ouvert au moins ouvert.</p>'
+        + '<p class="ch-note">Le tableau mêle <strong>cours et ateliers</strong> ; '
+        + 'le compte « modules ouverts sur le catalogue » ne porte, lui, que sur '
+        + 'les cours. Les deux chiffres sont justes et ne se recoupent pas.</p>'
+        + NOTE_MINUTES;
+
+      if (d.enseignants && d.enseignants.length) {
+        html += '<h2 class="ch-sect">Par enseignant</h2>'
+          + '<p class="ch-note">Ce croisement n\'existe qu\'ici : un CSS voit ses '
+          + 'centres, jamais le détail de leurs enseignants.</p>'
+          + d.enseignants.map(function (e) {
+            return '<details class="ch-prof"><summary>' + ech(e.nom || '—')
+              + ' <span class="ch-muet">· ' + e.modules.length + ' activité'
+              + (e.modules.length > 1 ? 's' : '') + '</span></summary>'
+              + tableau([{t:'Activité'},{t:'Ouvertures',n:1},{t:'Terminés',n:1},
+                         {t:'Pointe active',n:1},{t:'Minutes',n:1}],
+                e.modules.map(function (m) {
+                  return '<tr><td>' + ech(m.titre) + '</td>'
+                    + '<td class="n">' + m.ouvertures + '</td>'
+                    + '<td class="n">' + m.terminees + '</td>'
+                    + '<td class="n">' + m.elevesActifsPointe + '</td>'
+                    + '<td class="n">' + m.minutes + '</td></tr>';
+                })) + '</details>';
+          }).join('');
+      }
+
+      if (d.jamaisOuverts.length) {
+        html += '<h2 class="ch-sect">Jamais ouverts</h2>'
+          + '<p class="ch-note">Des modules du catalogue que personne n\'a ouverts '
+          + 'sur cette période. À reprendre, à mieux faire connaître, ou à retirer.</p>'
+          + '<ul class="ch-liste">'
+          + d.jamaisOuverts.map(function (m) { return '<li>' + ech(m) + '</li>'; }).join('')
+          + '</ul>';
+        if (d.jamaisOuvertsTotal > d.jamaisOuverts.length) {
+          html += '<p class="ch-note">… et ' + (d.jamaisOuvertsTotal
+            - d.jamaisOuverts.length) + ' autres, non listés ici.</p>';
+        }
+      }
+      return html;
+    }
+
     async function afficher(vue) {
       VUE = vue;
       Array.prototype.forEach.call(document.querySelectorAll('.ch-onglet'), function (b) {
@@ -301,15 +388,25 @@
       catch (e) { PORTEES = { reseau: false, css: [], centres: [] }; }
 
       var vues = [];
-      if (PORTEES.reseau) vues.push({ cle: 'reseau', nom: 'Réseau',
-        url: '/api/stats/reseau', rendu: vueReseau });
+      // Chaque portée a deux onglets : les personnes, puis les modules. Un
+      // onglet « Modules » unique aurait dû choisir sa portée tout seul.
+      if (PORTEES.reseau) {
+        vues.push({ cle: 'reseau', nom: 'Réseau',
+                    url: '/api/stats/reseau', rendu: vueReseau });
+        vues.push({ cle: 'modreseau', nom: 'Réseau · modules',
+                    url: '/api/stats/modules', rendu: vueModules });
+      }
       PORTEES.css.forEach(function (o) {
         vues.push({ cle: 'css' + o.id, nom: o.nom,
                     url: '/api/stats/css?orgId=' + o.id, rendu: vueCss });
+        vues.push({ cle: 'modcss' + o.id, nom: o.nom + ' · modules',
+                    url: '/api/stats/modules?orgId=' + o.id, rendu: vueModules });
       });
       PORTEES.centres.forEach(function (o) {
         vues.push({ cle: 'centre' + o.id, nom: o.nom,
                     url: '/api/stats/centre?orgId=' + o.id, rendu: vueCentre });
+        vues.push({ cle: 'modcentre' + o.id, nom: o.nom + ' · modules',
+                    url: '/api/stats/modules?orgId=' + o.id, rendu: vueModules });
       });
 
       if (!vues.length) {
