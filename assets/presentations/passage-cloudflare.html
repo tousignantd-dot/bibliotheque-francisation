@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Passer le DNS chez Cloudflare</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap">
+<style>
+/* ═══════════════════════════════════════════════════════════
+   PASSER LE DNS CHEZ CLOUDFLARE
+   Une procédure, pas une analyse. Elle se suit à l'écran, dans
+   l'autre fenêtre, en cochant.
+
+   L'acier numérote les gestes, l'ambre marque les trois pièges,
+   le vert marque ce qui se vérifie tout seul.
+   ═══════════════════════════════════════════════════════════ */
+:root{
+  --ground:#F7F7F5; --card:#FFFFFF; --sunken:#FBFBFA;
+  --ink:#17181A; --body:#33363A; --muted:#6E7175;
+  --line:#E4E4E0; --line-fort:#D2D2CD;
+  --faire:#1D6B8F;  --faire-bg:#E7F1F6;
+  --piege:#C07A08;  --piege-bg:#FBF2E2;
+  --ok:#0A8F5B;     --ok-bg:#E9F5EF;
+  --stop:#C7302B;   --stop-bg:#FBEDEC;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#151618; --card:#1D1F22; --sunken:#212326;
+    --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+    --line:#2E3135; --line-fort:#3D4146;
+    --faire:#6DAFD2; --faire-bg:#13242C;
+    --piege:#E0A63F; --piege-bg:#2C2213;
+    --ok:#4BC48D;    --ok-bg:#12291F;
+    --stop:#EE7A73;  --stop-bg:#2E1917;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#151618; --card:#1D1F22; --sunken:#212326;
+  --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+  --line:#2E3135; --line-fort:#3D4146;
+  --faire:#6DAFD2; --faire-bg:#13242C;
+  --piege:#E0A63F; --piege-bg:#2C2213;
+  --ok:#4BC48D;    --ok-bg:#12291F;
+  --stop:#EE7A73;  --stop-bg:#2E1917;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--body);
+  font-family:Nunito,system-ui,sans-serif;font-size:16px;line-height:1.62}
+.page{max-width:54rem;margin:0 auto;padding:1.5rem 1.25rem 5rem}
+a{color:var(--faire)}
+.retour{display:inline-block;margin-bottom:1.75rem;font-size:.82rem;
+  font-weight:700;color:var(--muted);text-decoration:none}
+.retour:hover{color:var(--ink)}
+h1{font-family:Newsreader,Georgia,serif;font-weight:600;font-size:2.3rem;
+  line-height:1.14;color:var(--ink);margin:.2rem 0 .6rem;letter-spacing:-.01em}
+h2{font-family:Newsreader,Georgia,serif;font-weight:600;font-size:1.48rem;
+  color:var(--ink);margin:3rem 0 .3rem}
+h3{font-size:1rem;font-weight:800;color:var(--ink);margin:1.7rem 0 .35rem}
+.eyebrow{display:block;font-size:.72rem;font-weight:800;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--muted);margin-bottom:.5rem}
+.chapeau{font-size:1.08rem;margin:.4rem 0 1.3rem}
+p{margin:.72rem 0}
+b,strong{color:var(--ink);font-weight:800}
+code{font-family:var(--mono);font-size:.86em;background:var(--sunken);
+  border:1px solid var(--line);border-radius:4px;padding:.06em .34em}
+pre{font-family:var(--mono);font-size:.82rem;line-height:1.55;background:var(--sunken);
+  border:1px solid var(--line);border-radius:8px;padding:.85rem 1rem;overflow-x:auto;
+  margin:.9rem 0}
+pre code{background:none;border:0;padding:0}
+.carte{background:var(--card);border:1px solid var(--line);border-radius:10px;
+  padding:1.05rem 1.2rem;margin:1rem 0}
+.c-piege{background:var(--piege-bg);border-color:var(--piege)}
+.c-ok{background:var(--ok-bg);border-color:var(--ok)}
+.marq{display:inline-block;font-size:.7rem;font-weight:800;letter-spacing:.09em;
+  text-transform:uppercase;padding:.14em .5em;border-radius:4px;margin-bottom:.45rem}
+.m-piege{background:var(--piege);color:#fff}
+.m-ok{background:var(--ok);color:#fff}
+ol.gestes{list-style:none;counter-reset:g;padding:0;margin:1.2rem 0}
+ol.gestes>li{counter-increment:g;position:relative;padding:0 0 0 3rem;margin:0 0 1.5rem}
+ol.gestes>li::before{content:counter(g);position:absolute;left:0;top:-.1rem;
+  width:2rem;height:2rem;border-radius:50%;background:var(--faire-bg);
+  border:1px solid var(--faire);color:var(--faire);font-weight:800;font-size:.95rem;
+  display:flex;align-items:center;justify-content:center}
+ol.gestes>li>b:first-child{display:block;color:var(--ink);font-size:1.02rem;margin-bottom:.15rem}
+table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.86rem}
+th,td{text-align:left;padding:.5rem .6rem;border-bottom:1px solid var(--line);
+  vertical-align:top}
+th{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);
+  border-bottom:1px solid var(--line-fort)}
+td.v{font-family:var(--mono);font-size:.79rem;word-break:break-all}
+.nuage{font-weight:800;white-space:nowrap}
+.orange{color:var(--piege)}
+.gris{color:var(--muted)}
+.enveloppe{overflow-x:auto}
+.note{font-size:.9rem;color:var(--muted);margin:.5rem 0}
+.pied{margin-top:3.5rem;padding-top:1.1rem;border-top:1px solid var(--line);
+  font-size:.8rem;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="page">
+<a class="retour" href="../../presentations.html">← Le classeur</a>
+
+<span class="eyebrow">Procédure · à suivre en cochant</span>
+<h1>Passer le DNS chez Cloudflare</h1>
+<p class="chapeau">Le domaine reste enregistré chez WHC. Seule la <b>gestion de
+la zone</b> déménage. L'opération dure une vingtaine de minutes de gestes, puis
+quelques heures d'attente pendant lesquelles <b>le site continue de servir</b> :
+c'est un basculement, pas une coupure.</p>
+
+<h2>Ce que ça règle, et ce que ça ne règle pas</h2>
+<p><b>Ça règle deux choses.</b> D'abord l'éditeur de zone de WHC, qui affiche le
+brouillon sans le distinguer du publié — le piège qui a coûté une soirée sur
+<code>_railway-verify</code>. Ensuite la facture de sortie : Railway compte
+<b>0,05 $ US par gigaoctet sortant, sans franchise</b>, et c'est le seul poste
+qui grandit avec le nombre de centres. Cloudflare ne compte pas la bande
+passante, sur aucun forfait.</p>
+<p><b>Ça ne règle rien d'autre.</b> Le calcul reste chez Railway et reste
+facturé. Les élèves ne verront aucune différence, sinon des sons qui partent
+plus vite.</p>
+
+<div class="carte c-piege">
+  <span class="marq m-piege">Le piège qui vide l'opération de son sens</span>
+  <p style="margin-top:.2rem"><b>Cloudflare ne met pas les <code>.mp3</code> en
+  cache par défaut.</b> Sa liste d'extensions couvre les images, le CSS, les
+  scripts, les polices — pas l'audio. Or <b>les deux tiers des 1,68 Go
+  d'<code>assets</code> sont des MP3</b>. En s'arrêtant au déménagement du DNS,
+  on aurait donc bougé la zone <b>sans toucher un sou de la facture</b>, et rien
+  à l'écran ne l'aurait dit. C'est le geste 6 qui répare ça, et le contrôle
+  <code>--cache</code> qui le prouve.</p>
+</div>
+
+<h2>Ce qui doit être transporté</h2>
+<p>Onze enregistrements servent aujourd'hui. Cloudflare en importe la plupart
+tout seul, mais <b>il faut les relire un à un</b> : un oubli ne se voit pas — le
+site continue de servir, et c'est le courriel qui meurt en silence trois jours
+plus tard.</p>
+
+<div class="enveloppe">
+<table>
+<tr><th>Nom</th><th>Type</th><th>Valeur</th><th>Nuage</th><th>À quoi ça sert</th></tr>
+<tr><td class="v">@</td><td class="v">A</td><td class="v">149.56.225.6</td>
+    <td class="nuage gris">gris</td>
+    <td>le renvoi 301 de la racine vers le portail, servi par Caddy chez WHC</td></tr>
+<tr><td class="v">www</td><td class="v">CNAME</td><td class="v">edufrancis.ca</td>
+    <td class="nuage gris">gris</td><td>www suit la racine</td></tr>
+<tr><td class="v">portail</td><td class="v">CNAME</td><td class="v">mt2s2zez.up.railway.app</td>
+    <td class="nuage orange">ORANGE</td>
+    <td><b>le seul nom qui doit être derrière le proxy</b> — c'est par lui que
+    passe tout le trafic des élèves, donc toute l'économie</td></tr>
+<tr><td class="v">emailfwd</td><td class="v">A</td><td class="v">149.56.225.6</td>
+    <td class="nuage gris">gris</td>
+    <td>le relais de courriel de WHC, cible du MX</td></tr>
+<tr><td class="v">send</td><td class="v">CNAME</td><td class="v">send.forge.rmta.net</td>
+    <td class="nuage gris">gris</td><td>envoi Resend</td></tr>
+<tr><td class="v">rsend</td><td class="v">CNAME</td><td class="v">rsend.forge.rmta.net</td>
+    <td class="nuage gris">gris</td><td>envoi Resend, second nom</td></tr>
+<tr><td class="v">@</td><td class="v">MX</td><td class="v">1 emailfwd.edufrancis.ca</td>
+    <td class="nuage gris">—</td>
+    <td>la réception : sans lui, <code>confidentialite@</code>,
+    <code>admin@</code> et <code>support@</code> cessent d'arriver</td></tr>
+<tr><td class="v">@</td><td class="v">TXT</td><td class="v">v=spf1 a mx include:emailfwd.whc.ca ~all</td>
+    <td class="nuage gris">—</td><td>SPF</td></tr>
+<tr><td class="v">_dmarc</td><td class="v">TXT</td><td class="v">v=DMARC1; p=none; rua=mailto:admin@edufrancis.ca</td>
+    <td class="nuage gris">—</td><td>DMARC — ce qui a sorti le domaine des indésirables</td></tr>
+<tr><td class="v">resend._domainkey</td><td class="v">TXT</td><td class="v">p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDQJMdOf/I5k7MBXifuWkWIQZ8Frj0/0cG1RZx25BYQ9i05ZjbHxU7fF/FI0E893S88wRpaI27DDndDW4AmHTptKF2ino98QEHX1ZUD7N98/QK7qYnSRfj0RcdSMmhzv5Xhj8xE3YoCWWdV2eH2MqJKaFKBcDVjXav0njUxn4gBrwIDAQAB</td>
+    <td class="nuage gris">—</td>
+    <td>DKIM — unique à votre compte Resend : personne ne peut le redeviner,
+    et une faute de copie ne se voit qu'à l'envoi suivant</td></tr>
+<tr><td class="v">_railway-verify.portail</td><td class="v">TXT</td>
+    <td class="v">railway-verify=4d9e58cad862fe1ed9a3bb3b814d83302a1c5ce5e8aaa813549f16753d21fb54</td>
+    <td class="nuage gris">—</td><td>la preuve de propriété exigée par Railway</td></tr>
+</table>
+</div>
+
+<div class="carte c-piege">
+  <span class="marq m-piege">Le nuage orange sur un nom de courriel</span>
+  <p style="margin-top:.2rem">Cloudflare met le nuage <b>orange par défaut</b> sur
+  les enregistrements A et CNAME qu'il importe. Or <b>le proxy ne parle que
+  HTTP</b> : laisser <code>send</code>, <code>rsend</code> ou
+  <code>emailfwd</code> derrière lui casse l'envoi et la réception d'un seul
+  clic. Un seul nom doit rester orange : <b><code>portail</code></b>. Tous les
+  autres passent au gris — « DNS only ».</p>
+</div>
+
+<h2>Les gestes</h2>
+<ol class="gestes">
+<li><b>Ouvrir un compte Cloudflare et y ajouter le domaine</b>
+<p>Forfait <b>Free</b>. « Add a site » → <code>edufrancis.ca</code>. Cloudflare
+lit la zone actuelle et propose une liste d'enregistrements importés.</p></li>
+
+<li><b>Relire la liste importée, ligne à ligne, contre le tableau ci-dessus</b>
+<p>Cloudflare ne peut pas énumérer une zone à distance : il devine à partir des
+noms courants et <b>en manque toujours</b>. Ajouter à la main ce qui manque, en
+copiant les valeurs du tableau — surtout le DKIM, qui est long et dont une
+faute de copie ne se voit qu'à l'envoi suivant.</p></li>
+
+<li><b>Régler le nuage</b>
+<p>Orange sur <code>portail</code> seulement. Gris partout ailleurs.</p></li>
+
+<li><b>SSL/TLS → mode <span style="color:var(--piege)">Full</span></b>
+<p>Pas « Full (strict) ». Voir le piège ci-dessous — c'est celui qui met le site
+en panne.</p></li>
+
+<li><b>Changer les serveurs de noms chez WHC</b>
+<p>Dans le tableau de bord WHC, remplacer <code>parking1.whc.ca</code> et
+<code>parking2.whc.ca</code> par les deux serveurs que Cloudflare affiche
+(ils sont nominatifs, de la forme <code>xxx.ns.cloudflare.com</code>). C'est
+le seul geste irréversible de la liste, et il se défait en remettant les
+anciens. La bascule prend de quelques minutes à quelques heures ; pendant ce
+temps <b>les deux zones servent la même chose</b>, donc rien ne tombe.</p></li>
+
+<li><b>Créer la règle de cache</b>
+<p>C'est ce geste qui fait l'économie. <b>Caching → Cache Rules → Create rule</b> :</p>
+<pre><code>Nom      : Assets du portail
+Si       : (http.request.uri.path contains "/assets/"
+            and not http.request.uri.path.extension in {"html"})
+Alors    : Cache eligibility ......... Eligible for cache
+           Edge TTL ................. Ignore cache-control, 1 month
+           Browser TTL .............. 1 month</code></pre>
+<p class="note">Pourquoi on peut ignorer <code>cache-control</code> sans
+danger : les adresses de sons portent déjà <code>?v=AUDIO_V</code>, et la clé
+de cache de Cloudflare <b>inclut la chaîne de requête</b>. Incrémenter
+<code>AUDIO_V</code> après une régénération vide donc le cache tout seul, à
+l'échelle du monde entier — exactement comme cela vide déjà celui du
+navigateur. L'exclusion des <code>.html</code> est nécessaire : les modules
+sont des pages, et elles changent à chaque déploiement.</p></li>
+
+<li><b>Vérifier</b>
+<pre><code>python3 build/controles/cloudflare.py --cache</code></pre>
+<p>Le contrôle relit les onze enregistrements, dit lequel est derrière le proxy
+et lequel ne devrait pas l'être, puis <b>appelle deux fois un MP3</b> pour lire
+<code>cf-cache-status</code>. Tant qu'il affiche <code>FROID</code> sur le MP3,
+la facture n'a pas bougé.</p></li>
+</ol>
+
+<div class="carte c-piege">
+  <span class="marq m-piege">Le piège qui met le site en panne</span>
+  <p style="margin-top:.2rem"><b>Le mode SSL doit être « Full », pas « Full
+  (strict) ».</b> C'est contre-intuitif — « strict » sonne comme le réglage
+  prudent — mais Railway ne présente pas de certificat d'origine Cloudflare :
+  en mode strict, la poignée de main échoue et le site rend <b>525</b>. En mode
+  « Full », le trafic est chiffré de bout en bout et Cloudflare tolère les états
+  transitoires du certificat pendant que Railway le renouvelle.</p>
+  <p class="note" style="color:inherit"><b>Le remède si ça tombe quand même</b> :
+  repasser <code>portail</code> au nuage gris. Le site sert alors directement
+  par Railway, comme avant, en quelques secondes — et on répare tranquillement.</p>
+</div>
+
+<div class="carte c-ok">
+  <span class="marq m-ok">Ce qui ne bouge pas</span>
+  <p style="margin-top:.2rem">Aucune ligne de code n'est touchée. Aucun nom de
+  domaine n'est écrit dans le dépôt : <code>_adresse_du_site</code> lit
+  l'en-tête <code>Host</code>, que le proxy transmet inchangé. Les feuilles de
+  séance, leurs codes QR et la redirection <code>SITE_CANONIQUE</code>
+  continuent donc de sortir à la bonne adresse. Le contrôle de santé de
+  Railway, lui, n'est jamais concerné : il passe par le réseau interne.</p>
+</div>
+
+<h2>Ce qui reste ouvert après</h2>
+<p><b>La borne d'entrée en séance n'a plus de sens, et n'en avait déjà plus.</b>
+<code>_debit_entree_ok</code> plafonne les entrées à <b>vingt par adresse et par
+minute</b>. Mais le serveur lit l'adresse de la <em>connexion</em>, et derrière
+Railway comme derrière Cloudflare, cette adresse est celle du proxy — jamais
+celle de l'élève. Autrement dit : la borne est déjà globale aujourd'hui, et deux
+classes qui scannent le code QR en même temps peuvent s'en trouver bloquées.
+Cloudflare est justement ce qui permettrait de la réparer, puisqu'il pose
+<code>CF-Connecting-IP</code>, que le client ne peut pas contrefaire. Le
+correctif tient en une quinzaine de lignes — et devra soigneusement <b>laisser
+la forge sur l'adresse de connexion brute</b>, sous peine d'ouvrir à distance
+quelque chose qui ne doit répondre qu'en local.</p>
+<p><b>Le stockage R2 reste une option, pas une nécessité.</b> L'ancienne clause
+qui interdisait de servir une proportion disproportionnée de contenu non-HTML a
+été retirée en 2023, et les MP3 du projet font 63 Ko en moyenne. En cas de
+doute, R2 (10 Go gratuits, sortie gratuite) accueillerait les 2,1 Go d'assets et
+rendrait la question sans objet.</p>
+
+<div class="pied">
+  Écrit le 2 septembre 2026 · procédure vérifiée contre l'état réel de la zone
+  · contrôle : <code>build/controles/cloudflare.py</code>
+</div>
+</div>
+</body>
+</html>
