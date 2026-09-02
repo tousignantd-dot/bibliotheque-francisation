@@ -77,22 +77,49 @@ module.exports = String.raw`
     });
   }
 
+  /* — La cible visible — le premier élément **visible** qui réponde au sélecteur.
+
+       document.querySelector rend le premier du document, visible ou non, et
+       le portail porte plusieurs fois les mêmes classes : « .fr-barre » paraît
+       deux fois — une sur l'écran de connexion, masquée une fois la session
+       ouverte, et une sur le portail. Le surlignage de la capsule 1 tombait
+       donc sur la barre cachée, dont le rectangle est vide : le trou du voile
+       se réduisait à un liseré en haut de l'écran et **toute la page passait
+       sous l'encre**. Vu au visionnement, le 2 septembre 2026.
+
+       Un élément masqué n'a ni boîte ni offsetParent ; les deux tests ensemble
+       écartent aussi bien display:none que l'élément replié.
+
+       Aucun accent grave dans ce fichier : tout le corps est exporté en
+       String.raw, et le moindre accent grave fermerait le gabarit.
+
+       Nommée « visible » et non « cible » : defiler() a déjà une variable
+       locale de ce nom, et la fonction s'y trouvait masquée — « Cannot access
+       'cible' before initialization », en plein tournage. */
+  function visible(sel) {
+    for (const el of document.querySelectorAll(sel)) {
+      const r = el.getBoundingClientRect();
+      if (r.width > 0 && r.height > 0 && el.offsetParent !== null) return el;
+    }
+    return document.querySelector(sel);   // rien de visible : l'appelant tranche
+  }
+
   /* Un élément hors de l'écran doit d'abord y être amené : le pointeur ne
      peut pas cliquer ce qu'on ne voit pas, et le spectateur non plus. */
   async function versElement(sel) {
-    const el = document.querySelector(sel);
+    const el = visible(sel);
     if (!el) throw new Error('cible absente : ' + sel);
     const r = el.getBoundingClientRect();
     if (r.top < 90 || r.bottom > innerHeight - 40) {
       await defiler(sel);
     }
-    const c = centre(document.querySelector(sel));
+    const c = centre(visible(sel));
     await versPoint(c.x, c.y);
-    return document.querySelector(sel);
+    return visible(sel);
   }
 
   async function defiler(sel, bloc) {
-    const el = typeof sel === 'string' ? document.querySelector(sel) : sel;
+    const el = typeof sel === 'string' ? visible(sel) : sel;
     if (!el) throw new Error('cible absente : ' + sel);
     const r = el.getBoundingClientRect();
     const vise = scrollY + r.top + r.height / 2 - innerHeight / 2;
@@ -118,7 +145,7 @@ module.exports = String.raw`
        la capsule ressemblait à une suite de projecteurs. */
   function surligner(sel) {
     effacer();
-    const el = document.querySelector(sel);
+    const el = visible(sel);
     if (!el) return;
     const r = el.getBoundingClientRect();
     const m = 8;
@@ -162,7 +189,7 @@ module.exports = String.raw`
      phrase, pas sur un minutage fixe. */
   async function parcourir(cibles, pause) {
     for (const sel of cibles) {
-      const el = document.querySelector(sel);
+      const el = visible(sel);
       if (!el) continue;
       const c = centre(el);
       await versPoint(c.x, c.y);
