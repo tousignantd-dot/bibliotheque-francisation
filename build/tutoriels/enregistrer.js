@@ -42,8 +42,15 @@ const dodo = (ms) => new Promise((r) => setTimeout(r, ms));
 function identifiants() {
   const bac = process.env.STORAGE_DIR
     || path.join(os.tmpdir(), 'francisation-demo-tutoriels');
+  /* Le compte de tournage d'abord : c'est un enseignant ordinaire, ouvert par
+     `peupler_demo.py`. Le compte de `identifiants-demo.json` est le fondateur
+     de l'arbre, et le portail lui montre « Espace direction » — un bouton que
+     le public des capsules n'a pas. On ne le filme plus. */
+  for (const nom of ['identifiants-tournage.json', 'identifiants-demo.json']) {
+    const fichier = path.join(bac, nom);
+    if (fs.existsSync(fichier)) return JSON.parse(fs.readFileSync(fichier, 'utf8'));
+  }
   const fichier = path.join(bac, 'identifiants-demo.json');
-  if (fs.existsSync(fichier)) return JSON.parse(fs.readFileSync(fichier, 'utf8'));
   if (process.env.PROF_CODE && process.env.PROF_MOTDEPASSE) {
     return { code: process.env.PROF_CODE, motDePasse: process.env.PROF_MOTDEPASSE };
   }

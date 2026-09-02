@@ -149,9 +149,18 @@ def carton_logo(chemin):
 
 
 def police(taille, gras=True):
-    """Nunito est la police du système de design ; on retombe sur la police
-    du système si elle n'est pas installée — un carton illisible vaut mieux
-    qu'un montage qui s'arrête."""
+    """Nunito est la police du système de design.
+
+    Elle vient du dépôt (`nunito()`), et non plus d'une installation dans le
+    système : les cartons de titre sortaient en Helvetica sur un poste où
+    Nunito n'est pas installée — donc partout — pendant que le carton de
+    marque, lui, la tirait du dépôt. Deux polices dans le même film.
+    On retombe sur la police du système en dernier recours : un carton
+    illisible vaut mieux qu'un montage qui s'arrête.
+    """
+    f = nunito(taille, 900 if gras else 700)
+    if f is not None:
+        return f
     for nom in (("Nunito-Black.ttf", "Nunito-Bold.ttf") if gras
                 else ("Nunito-SemiBold.ttf", "Nunito-Regular.ttf")):
         for base in (Path.home() / "Library/Fonts", Path("/Library/Fonts")):
@@ -275,8 +284,11 @@ def monter(capsule, decalage_titre):
     logo_png = TRAVAIL / "logo.png"
     titre_png, fin_png = TRAVAIL / f"{capsule['id']}-t.png", TRAVAIL / "fin.png"
     carton_logo(logo_png)
+    # Pas de pied de carton : « Francisation · Niveau 4 » datait les capsules
+    # d'un niveau alors qu'elles montrent le portail, le même à tous les
+    # niveaux. Retiré après visionnement, le 2 septembre 2026.
     carton(titre_png, f"Espace enseignant · capsule {decalage_titre}",
-           capsule["titre"], "Francisation · Niveau 4")
+           capsule["titre"])
     carton(fin_png, "Pour aller plus loin",
            "Le guide complet\nest dans le portail",
            "Bouton « Tutoriels », barre de groupe", inverse=True)

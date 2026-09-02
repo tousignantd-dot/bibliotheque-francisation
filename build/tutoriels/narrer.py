@@ -24,6 +24,13 @@ l'échelle par niveau n'ont rien à faire ici.
     python3 build/tutoriels/narrer.py            # tous les plans
     python3 build/tutoriels/narrer.py 01         # une capsule
 
+Un plan peut porter un `texte_voix` à côté de son `texte` : c'est alors
+celui-là qui part chez Azure, et `texte` ne sert plus qu'aux sous-titres. Il
+n'y a pas d'autre moyen de faire dire « francisse » à une voix qui lit
+« francis » sans le s final — les balises `<phoneme>` sont **ignorées** par
+les voix DragonHD (mesuré : fichier identique à l'octet près), et le lexique
+de `azure_voix.py` vaut pour tout le cours, où ce nom ne se dit jamais.
+
 Sortie, par plan : `voix/<capsule>_<plan>.mp3`, `.txt` (le texte dit) et
 `.json` (les mots et leur instant). Relançable : un plan dont le texte n'a pas
 bougé n'est pas resynthétisé. Effacer son MP3 suffit à le refaire.
@@ -90,6 +97,7 @@ def main():
             continue
         for plan in capsule["plans"]:
             base = "%s_%s" % (capsule["id"], plan["id"])
+            dit = plan.get("texte_voix", plan["texte"])
             mp3 = SORTIE / (base + ".mp3")
             trace = SORTIE / (base + ".txt")
             releve = SORTIE / (base + ".json")
@@ -99,11 +107,11 @@ def main():
             # narration, et l'erreur ne s'entend qu'au visionnement final.
             inchange = (mp3.exists() and mp3.stat().st_size > 1000
                         and releve.exists() and trace.exists()
-                        and trace.read_text(encoding="utf-8") == plan["texte"])
+                        and trace.read_text(encoding="utf-8") == dit)
             if inchange:
                 continue
-            mots = dire(speechsdk, config, plan["texte"], mp3)
-            trace.write_text(plan["texte"], encoding="utf-8")
+            mots = dire(speechsdk, config, dit, mp3)
+            trace.write_text(dit, encoding="utf-8")
             # `{"mots": [...]}` et non une liste nue : c'est la forme que
             # `enregistrer.js` lit (`JSON.parse(...).mots`).
             releve.write_text(json.dumps({"mots": mots}, ensure_ascii=False,

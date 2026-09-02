@@ -9,6 +9,8 @@ pastilles paraissent toutes à l'écran.
 """
 import json
 import os
+import secrets
+import stat
 import sys
 import tempfile
 import urllib.request
@@ -55,6 +57,55 @@ def appel(chemin, corps=None, methode=None, jeton=None):
 # ── Session ──
 jeton = appel("/api/prof/login", identifiants())["token"]
 print("session ouverte")
+
+# ── Le compte que la caméra voit ──
+#
+# Le compte semé par `lancer_demo.sh` est le **fondateur** de l'arbre : le
+# portail lui montre « Espace direction », que les enseignantes à qui les
+# capsules s'adressent n'ont pas. Filmer avec lui montrerait une porte qui
+# n'existe pas pour elles — relevé au visionnement de la capsule 1, le
+# 2 septembre 2026.
+#
+# On ne peut pas le rétrograder : le fondateur est le plus petit `id` de la
+# table, ce n'est pas un rôle qu'on retire. On ouvre donc un **second**
+# compte, ordinaire, sous le centre — et tout ce qui suit (groupes, élèves,
+# planification, dépôts) se fait en son nom, parce que les groupes portent
+# leur titulaire. Le fondateur reste hors champ.
+def compte_de_tournage():
+    bac = Path(os.environ.get(
+        "STORAGE_DIR", Path(tempfile.gettempdir()) / "francisation-demo-tutoriels"))
+    fichier = bac / "identifiants-tournage.json"
+    if fichier.exists():
+        return json.loads(fichier.read_text())
+    centre = next(o["id"] for o in appel("/api/direction/portees", jeton=jeton)
+                  ["centres"])
+    compte = appel("/api/direction/enseignants",
+                   {"orgId": centre, "role": "prof",
+                    "noms": [os.environ.get("TOURNAGE_NOM", "Sophie Tremblay")]},
+                   jeton=jeton)["comptes"][0]
+    # Le compte sort avec un code et un mot de passe **temporaires**, et le
+    # portail ouvrirait l'écran de première connexion — en plein tournage. On
+    # la traverse tout de suite, comme le ferait la personne à qui on remet le
+    # billet. C'est `/api/prof/premiere-connexion` qui vaut ici, et pas
+    # `/api/prof/motdepasse` : celle-ci change le mot de passe mais laisse le
+    # compte marqué temporaire, et l'écran revient à chaque ouverture.
+    provisoire = compte["motDePasseTemporaire"]
+    definitif = secrets.token_urlsafe(18)
+    session = appel("/api/prof/login",
+                    {"code": compte["code"], "motDePasse": provisoire})["token"]
+    appel("/api/prof/premiere-connexion",
+          {"code": compte["code"], "motDePasse": definitif}, jeton=session)
+    billet = {"code": compte["code"], "motDePasse": definitif,
+              "nom": compte["nom"]}
+    fichier.write_text(json.dumps(billet, ensure_ascii=False))
+    os.chmod(fichier, stat.S_IRUSR | stat.S_IWUSR)   # lisible par vous seul
+    return billet
+
+
+tournage = compte_de_tournage()
+jeton = appel("/api/prof/login", tournage)["token"]
+print(f"tournage sous « {tournage['nom']} » ({tournage['code']}) — "
+      "pas d'« Espace direction » à l'écran")
 
 # ── Groupes ──
 #

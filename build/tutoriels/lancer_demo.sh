@@ -23,7 +23,12 @@ IDENTIFIANTS="$STORAGE_DIR/identifiants-demo.json"
 # courriel a quitté ces comptes, et `PROF_COURRIEL` ne sème plus rien. Six
 # caractères de l'alphabet sans O, I, 0 ni 1.
 export PROF_CODE="${PROF_CODE:-DEMO47}"
-export PROF_NOM="${PROF_NOM:-Sophie Tremblay}"
+# Le compte semé au premier démarrage devient **fondateur** de l'arbre, et le
+# portail lui montre « Espace direction » — un bouton que les enseignantes à
+# qui les capsules s'adressent n'ont pas. Il ne passe donc pas devant la
+# caméra : `peupler_demo.py` ouvre un second compte, ordinaire, et c'est
+# celui-là qu'on filme. Celui-ci tient la direction et reste hors champ.
+export PROF_NOM="${PROF_NOM:-Direction du centre}"
 if [ -z "$PROF_MOTDEPASSE" ]; then
   PROF_MOTDEPASSE=$(python3 - "$IDENTIFIANTS" <<'PY'
 import json, secrets, sys
