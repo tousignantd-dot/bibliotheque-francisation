@@ -28,13 +28,21 @@ import sys
 DOMAINE = "edufrancis.ca"
 
 # nom relatif, type, ce qu'on doit y trouver, à quoi ça sert
+#
+# ATTENTION — ces trois-là sont ceux que Resend demande AUJOURD'HUI, relevés
+# sur son écran « Fill in your DNS Records » le 2 septembre 2026. Le premier
+# jet de ce script cherchait un MX et un TXT SPF sur `send`, l'ancienne
+# méthode : il annonçait « MANQUE » sur deux enregistrements que Resend ne
+# demande plus, devant une zone parfaitement correcte. **Un contrôle qui a tort
+# coûte plus cher que pas de contrôle** — on cherche une panne qui n'existe
+# pas. Si Resend change encore, c'est ici qu'on recopie son écran.
 ATTENDUS = [
-    ("send", "MX", "amazonses.com",
-     "le retour des messages (rebonds, plaintes)"),
-    ("send", "TXT", "include:amazonses.com",
-     "SPF : dit que ce service a le droit d'envoyer pour vous"),
     ("resend._domainkey", "TXT", "p=",
      "DKIM : la signature qui prouve que le message vient bien de vous"),
+    ("send", "CNAME", "mta.net",
+     "envoi : délégué au service d'acheminement de Resend"),
+    ("rsend", "CNAME", "mta.net",
+     "envoi : le second nom, demandé avec le premier"),
 ]
 
 # Facultatif mais fortement recommandé une fois le reste en place.
