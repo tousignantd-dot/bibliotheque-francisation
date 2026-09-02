@@ -73,6 +73,11 @@
       }
      ],
      "texte": "Au bout de la ligne, un résumé dit où vous en êtes : combien d'élèves, combien d'activités déjà planifiées. Et dessous, le programme du jour — ce qui est ouvert, ce qui ferme bientôt. C'est le coup d'œil du matin, avant d'entrer en classe."
+    },
+    {
+     "id": "fin",
+     "gestes": [],
+     "texte": "Voilà, c'est terminé pour cette capsule. Vous connaissez maintenant les grandes pièces du portail : le groupe, les neuf boutons, et le programme du jour."
     }
    ]
   },
@@ -114,8 +119,24 @@
      "id": "d",
      "gestes": [
       {
-       "do": "defiler",
-       "sel": "#listeActivites"
+       "do": "pointer",
+       "sel": ".pe-pastille--vide",
+       "apres": "sans date"
+      },
+      {
+       "do": "pointer",
+       "sel": ".pe-pastille--avenir",
+       "apres": "a venir"
+      },
+      {
+       "do": "pointer",
+       "sel": ".pe-pastille--offerte",
+       "apres": "ouverte"
+      },
+      {
+       "do": "pointer",
+       "sel": ".pe-pastille--fermee",
+       "apres": "fermee"
       }
      ],
      "texte": "Quatre états, et c'est tout. Tiret, sans date : l'élève ne la voit pas. Flèche, à venir : la date est posée, elle arrive. Crochet, ouverte : l'élève peut y répondre. Croix, fermée : il peut relire, mais plus répondre."
@@ -152,7 +173,7 @@
       }
      ],
      "surligne": "#rythmes",
-     "texte": "Vous donnez une date d'ouverture, une date de fermeture si vous en voulez une, puis vous choisissez un rythme. Toutes à la même date, une par semaine, une aux deux semaines, ou une par jour. Et par défaut, le portail saute les samedis et les dimanches."
+     "texte": "Vous donnez une date d'ouverture, une date de fermeture si vous en voulez une, puis vous choisissez un rythme. « Aucun », si elles ouvrent toutes le même jour ; « une par semaine », « une aux deux semaines », ou « une par jour ». Et par défaut, le portail saute les samedis et les dimanches."
     },
     {
      "id": "g",
@@ -161,10 +182,15 @@
        "do": "defiler",
        "sel": "#apercuPlan",
        "apres": "a droite l apercu"
+      },
+      {
+       "do": "pointer",
+       "sel": "#boutonPlanifier",
+       "apres": "cliqué sur"
       }
      ],
      "surligne": "#apercuPlan",
-     "texte": "À droite, l'aperçu vous montre, avant de valider, quelle activité tombe quel jour. Rien n'est enregistré tant que vous n'avez pas cliqué sur « Poser les dates ». Et si vous vous trompez, « Retirer les dates » ramène tout à zéro."
+     "texte": "À droite, l'aperçu vous montre, avant de valider, quelle activité tombe quel jour. Rien n'est posé tant que vous n'avez pas cliqué sur « Enregistrer », en bas de la barre. Et si vous vous trompez, « Retirer les dates » ramène tout à zéro."
     },
     {
      "id": "h",
@@ -185,6 +211,11 @@
      ],
      "surligne": ".pe-apercu-carte",
      "texte": "Dernier réflexe avant de quitter la page : le bouton « Ce que l'élève voit ». Il ouvre exactement ce que votre classe a sous les yeux aujourd'hui. C'est le meilleur moyen de vérifier votre travail."
+    },
+    {
+     "id": "fin",
+     "gestes": [],
+     "texte": "Voilà, c'est terminé pour cette capsule. Vous savez cocher des activités, leur donner une date, choisir un rythme, enregistrer, et vérifier ce que votre classe voit."
     }
    ]
   },
@@ -195,22 +226,6 @@
     {
      "id": "a",
      "gestes": [
-      {
-       "do": "js",
-       "code": "document.querySelector('[data-fermer=\"modaleApercu\"]')?.click()"
-      },
-      {
-       "do": "js",
-       "code": "document.getElementById('boutonDecocher')?.click()"
-      },
-      {
-       "do": "js",
-       "code": "document.querySelector('.choice[data-filtre=\"cours\"]')?.click()"
-      },
-      {
-       "do": "attendre",
-       "ms": 700
-      },
       {
        "do": "defiler",
        "sel": "#listeActivites",
@@ -264,10 +279,33 @@
      ],
      "surligne": ".pe-infos",
      "texte": "Sous les sections, le même chevron vous donne la fiche pédagogique du module : les savoirs, les actes de parole, les compétences visées et le vocabulaire. De quoi préparer votre cours sans même ouvrir l'activité."
+    },
+    {
+     "id": "fin",
+     "gestes": [],
+     "texte": "Voilà, c'est terminé pour cette capsule. Un module peut s'ouvrir section par section, et vous ne datez que ce que vous voulez retenir."
     }
    ],
    "crf": 30,
-   "commentaire_crf": "Cette capsule défile presque sans arrêt : chaque image change en entier, ce qui coûte cher. À CRF 30 elle passe de 13,8 à 6,8 Mo et le texte de 15 px reste net (vérifié à l'image)."
+   "commentaire_crf": "Cette capsule défile presque sans arrêt : chaque image change en entier, ce qui coûte cher. À CRF 30 elle passe de 13,8 à 6,8 Mo et le texte de 15 px reste net (vérifié à l'image).",
+   "prepare": [
+    {
+     "do": "js",
+     "code": "document.querySelector('[data-fermer=\"modaleApercu\"]')?.click()"
+    },
+    {
+     "do": "js",
+     "code": "document.getElementById('boutonDecocher')?.click()"
+    },
+    {
+     "do": "js",
+     "code": "document.querySelector('.choice[data-filtre=\"cours\"]')?.click()"
+    },
+    {
+     "do": "attendre",
+     "ms": 700
+    }
+   ]
   },
   {
    "id": "04-eleves",
@@ -305,11 +343,11 @@
       {
        "do": "defiler",
        "sel": "#formEleve",
-       "apres": "son prenom et son nom"
+       "apres": "un pseudo"
       }
      ],
      "surligne": "#formEleve",
-     "texte": "Pour ajouter quelqu'un : son prénom et son nom, puis « Générer le code ». Et si vous préparez une rentrée, laissez le nom vide et demandez-en plusieurs d'un coup : ils s'appelleront « Élève un, deux, trois », et vous les nommerez à l'arrivée des personnes."
+     "texte": "Pour ajouter quelqu'un : un pseudo, et pas le vrai nom. Le champ le dit lui-même — Colibri, Érable, Cardinal font très bien l'affaire. C'est ce pseudo qui s'affichera partout dans le portail. Puis « Générer le code ». Et si vous préparez une rentrée, laissez le champ vide et demandez plusieurs codes d'un coup : ils s'appelleront « Élève un, deux, trois », et vous poserez les pseudos à l'arrivée des personnes."
     },
     {
      "id": "d",
@@ -321,30 +359,12 @@
       }
      ],
      "surligne": "#boutonImprimerCodes",
-     "texte": "« Imprimer les codes » sort un billet par élève, en noir et blanc : le groupe, le nom, le code, et l'adresse du portail. Vous découpez, vous distribuez, et la classe est en ligne."
+     "texte": "« Imprimer les codes » sort un billet par élève, en noir et blanc : le groupe, le pseudo, le code, et l'adresse du portail. Vous découpez, vous distribuez, et la classe est en ligne."
     },
     {
-     "id": "e",
-     "gestes": [
-      {
-       "do": "defiler",
-       "sel": "#listeEleves",
-       "apres": "chaque rangee"
-      }
-     ],
-     "texte": "Chaque rangée vous dit aussi ce que la personne a ouvert et réussi. Attention : cette progression ne compte que les activités déjà offertes à ce groupe. Personne n'est jamais en retard sur quelque chose que vous n'avez pas ouvert."
-    },
-    {
-     "id": "f",
-     "gestes": [
-      {
-       "do": "defiler",
-       "sel": "#listeCorrigeMoi",
-       "apres": "une carte a part"
-      }
-     ],
-     "surligne": "#listeCorrigeMoi",
-     "texte": "Enfin, une carte à part pour « Corrige-moi », l'assistant de pratique orale. Elle vous dit, par élève et par thème, combien de réponses ont été données et lesquelles étaient bonnes du premier coup. C'est une pratique libre : ça ne bloque jamais l'élève, et ça ne remplace pas une évaluation."
+     "id": "fin",
+     "gestes": [],
+     "texte": "Voilà, c'est terminé pour cette capsule. Chaque élève a son pseudo et son code, et vous savez comment les imprimer. Le suivi d'un élève, lui, a sa propre capsule."
     }
    ]
   },
@@ -408,6 +428,11 @@
      "gestes": [],
      "surligne": "#formCopie",
      "texte": "Deux précautions. Cette copie remplace les dates du groupe où vous êtes, elle ne s'y ajoute pas. Et la date « vue en classe » n'est pas copiée : celle-là reste votre trace personnelle, que l'élève ne voit jamais."
+    },
+    {
+     "id": "fin",
+     "gestes": [],
+     "texte": "Voilà, c'est terminé pour cette capsule. Vous pouvez ouvrir un nouveau groupe et lui reprendre la planification d'un autre."
     }
    ]
   },
@@ -418,10 +443,6 @@
     {
      "id": "a",
      "gestes": [
-      {
-       "do": "js",
-       "code": "document.querySelector('[data-fermer=\"modaleCopie\"]')?.click()"
-      },
       {
        "do": "onglet",
        "valeur": "materiel"
@@ -528,6 +549,17 @@
      ],
      "surligne": ".mat-aside",
      "texte": "Cochez enfin plusieurs séances, et la sélection s'accumule en bas du panneau : vous descendez d'un coup toutes les présentations, ou toutes les fiches, ou vous les envoyez à l'imprimante en un seul dialogue, une fiche par page. Voilà, vous avez fait le tour. Le seul réflexe à garder : une activité qu'on n'a pas datée n'existe pas pour la classe."
+    },
+    {
+     "id": "fin",
+     "gestes": [],
+     "texte": "Voilà, c'est terminé pour cette capsule. Le matériel de la semaine est à portée de main, et vos versions retravaillées se rangent à côté des fiches officielles."
+    }
+   ],
+   "prepare": [
+    {
+     "do": "js",
+     "code": "document.querySelector('[data-fermer=\"modaleCopie\"]')?.click()"
     }
    ]
   },
@@ -763,6 +795,11 @@
      ],
      "surligne": "#barre",
      "texte": "Il ne reste qu'à le prendre. « Copier le prompt » pour le coller dans Claude, « Modifier le prompt » si vous voulez ajuster une phrase, « Télécharger en point m d » pour le garder. Et « Tout réinitialiser » pour recommencer une autre activité."
+    },
+    {
+     "id": "fin",
+     "gestes": [],
+     "texte": "Voilà, c'est terminé pour cette capsule. Le compositeur vous rend un prompt écrit dans les termes du programme, prêt à coller."
     }
    ],
    "crf": 30,

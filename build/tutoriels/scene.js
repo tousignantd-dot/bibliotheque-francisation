@@ -127,9 +127,13 @@ module.exports = String.raw`
       document.documentElement.scrollHeight - innerHeight));
     const depart = scrollY;
     if (Math.abs(cible - depart) < 4) return;
-    await anime(Math.min(1400, 420 + Math.abs(cible - depart) * 0.55),
+    /* Le défilement a été ralenti d'un tiers le 2 septembre 2026 : à
+       l'ancienne vitesse, la page filait sous la voix et on ne lisait rien de
+       ce qu'elle nommait. Le temps de repos qui suit est doublé, pour la même
+       raison — l'œil arrive après le mouvement. */
+    await anime(Math.min(2200, 600 + Math.abs(cible - depart) * 0.8),
       (t) => scrollTo(0, depart + (cible - depart) * t));
-    await dodo(120);
+    await dodo(260);
   }
 
   async function clic(sel) {

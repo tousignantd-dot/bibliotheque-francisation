@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Le mode sans assistance</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap">
+<style>
+/* ═══════════════════════════════════════════════════════════
+   LE MODE SANS ASSISTANCE
+   Relevé du 2 septembre 2026, par comparaison de deux relevés du
+   portail — assistance autorisée, puis interdite au centre.
+
+   Rouge : ce qui reste ouvert alors que la direction a dit non.
+   Ambre : ce qui demande une décision.
+   Vert : ce qui est déjà juste.
+   L'acier ne fait que la structure.
+   ═══════════════════════════════════════════════════════════ */
+:root{
+  --ground:#F7F7F5; --card:#FFFFFF; --sunken:#FBFBFA;
+  --ink:#17181A; --body:#3A3D40; --muted:#6E7175;
+  --line:#E4E4E0; --line-fort:#D2D2CD;
+  --faux:#C7302B;   --faux-bg:#FBEDEC;
+  --court:#C07A08;  --court-bg:#FBF2E2;
+  --tient:#0A8F5B;  --tient-bg:#E6F5EE;
+  --acier:#1D6B8F;  --acier-bg:#E7F0F6;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#151618; --card:#1D1F22; --sunken:#212326;
+    --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+    --line:#2E3135; --line-fort:#3D4146;
+    --faux:#EE7A73; --faux-bg:#2E1917;
+    --court:#E0A63F; --court-bg:#2C2213;
+    --tient:#4BC48D; --tient-bg:#12291F;
+    --acier:#6DAFD2; --acier-bg:#14242C;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#151618; --card:#1D1F22; --sunken:#212326;
+  --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+  --line:#2E3135; --line-fort:#3D4146;
+  --faux:#EE7A73; --faux-bg:#2E1917;
+  --court:#E0A63F; --court-bg:#2C2213;
+  --tient:#4BC48D; --tient-bg:#12291F;
+  --acier:#6DAFD2; --acier-bg:#14242C;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--body);
+  font-family:'Nunito','Helvetica Neue',Arial,sans-serif;font-size:16px;line-height:1.55}
+.wrap{max-width:940px;margin:0 auto;padding:48px 24px 96px}
+h1{font-family:'Newsreader',Georgia,serif;font-weight:600;font-size:38px;line-height:1.15;
+   color:var(--ink);margin:0 0 10px;letter-spacing:-.01em}
+.chapeau{font-size:18px;color:var(--body);margin:0 0 8px;max-width:66ch}
+.date{font-size:13px;color:var(--muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin:0 0 36px}
+h2{font-family:'Newsreader',Georgia,serif;font-weight:600;font-size:26px;color:var(--ink);
+   margin:44px 0 6px;letter-spacing:-.01em}
+h2 + p{margin-top:0}
+p{max-width:68ch}
+b{color:var(--ink)}
+.carte{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px 22px;margin:16px 0}
+.cap{display:flex;gap:14px;align-items:baseline;flex-wrap:wrap;margin:0 0 10px}
+.cap h3{margin:0;font-size:17px;font-weight:800;color:var(--ink)}
+.cap .num{font-family:var(--mono);font-size:13px;color:var(--muted)}
+.verdict{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+  padding:3px 9px;border-radius:999px}
+.v-faux{background:var(--faux-bg);color:var(--faux)}
+.v-court{background:var(--court-bg);color:var(--court)}
+.v-tient{background:var(--tient-bg);color:var(--tient)}
+ul{margin:8px 0 0;padding-left:20px}
+li{margin:6px 0;max-width:66ch}
+li b{color:var(--ink)}
+.dit{font-style:italic;color:var(--muted)}
+.encadre{background:var(--sunken);border:1px solid var(--line);border-left:4px solid var(--acier);
+  border-radius:10px;padding:18px 20px;margin:20px 0}
+.encadre.decision{border-left-color:var(--court)}
+.encadre h3{margin:0 0 8px;font-size:16px;font-weight:800;color:var(--ink)}
+.mono{font-family:var(--mono);font-size:13.5px}
+.piste{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;margin-top:12px}
+.piste dt{font-weight:800;color:var(--ink);white-space:nowrap}
+.piste dd{margin:0}
+footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);
+  font-size:13.5px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Le mode sans assistance ne change rien à l'écran</h1>
+<p class="chapeau">On a posé la question à la machine plutôt qu'au code : le portail enseignant a été
+relevé deux fois, une fois l'assistance autorisée, une fois <b>interdite au centre</b>. Les deux
+relevés sont <b>identiques ligne pour ligne</b> — 1&nbsp;632 lignes, aucune différence. Le refus
+d'une direction ne se voit nulle part dans l'espace enseignant.</p>
+<p class="date">Relevé du 2 septembre 2026</p>
+
+<h2>Comment c'est mesuré</h2>
+<p>Un script ouvre le portail de démonstration avec le compte d'enseignante, parcourt les cinq
+écrans — accueil, planifier, matériel, élèves, groupes — puis la page du compositeur, et note à
+chaque fois <b>le texte visible et toutes les commandes visibles</b> : boutons, liens, listes
+déroulantes, cases. Le centre est ensuite passé à <span class="mono">ia : interdite</span> et le
+même relevé est repris. La comparaison ne rend rien.</p>
+<div class="encadre">
+  <h3>Le drapeau était bien posé</h3>
+  <p style="margin:0">Pour écarter l'idée d'un réglage sans effet, la même installation a été
+  interrogée du côté élève pendant que le relevé tournait :
+  <span class="mono">/api/student/ia</span> répondait
+  <span class="mono">{"ia": false, "decidePar": "Centre de francisation"}</span>. Le refus était
+  donc actif, et il ne se voyait quand même pas.</p>
+</div>
+
+<h2>Ce que le mode change vraiment</h2>
+<p>Tout se joue <b>du côté de l'élève</b>. Le module pose la question une fois au chargement et se
+replie : la correction de l'assistant, la vérification du vocabulaire et le jeu de rôle
+disparaissent, et les routes refusent de toute façon côté serveur — une page se modifie avec deux
+touches, une direction qui a dit non a dit non. Un réglage voyage d'ailleurs avec celui-là sans être
+nommé : la même réponse porte <span class="mono">voixStricte : true</span>.</p>
+
+<h2>Ce qui reste ouvert à l'enseignante</h2>
+<p>Trois surfaces d'assistance restent visibles et cliquables dans un centre qui a refusé
+l'assistance. Ce n'est pas une question de tutoriel : c'est le portail qui n'a jamais consulté le
+réglage — <span class="mono">js/enseignant.js</span> ne le demande nulle part.</p>
+
+<div class="carte">
+  <div class="cap"><span class="num">1</span><h3>Le bouton « Correcteur collaboratif »</h3>
+    <span class="verdict v-faux">reste ouvert</span></div>
+  <ul>
+    <li>Présent dans la famille « Outils », donc <b>sur tous les écrans</b>, dans les deux modes.</li>
+    <li>C'est une application déployée à part ; le relevé ne dit pas si elle refuse le travail une
+    fois ouverte. À vérifier avant de trancher.</li>
+  </ul>
+</div>
+
+<div class="carte">
+  <div class="cap"><span class="num">2</span><h3>La carte « Corrige-moi ! — assistant oral »</h3>
+    <span class="verdict v-faux">reste ouvert</span></div>
+  <ul>
+    <li>Sur l'écran des élèves, avec ses chiffres par élève et par thème.</li>
+    <li>Dans un centre sans assistance, elle ne se remplira jamais : l'élève n'a pas l'outil. La
+    carte annonce donc un suivi qui restera vide, sans dire pourquoi.</li>
+  </ul>
+</div>
+
+<div class="carte">
+  <div class="cap"><span class="num">3</span><h3>Le compositeur d'activité</h3>
+    <span class="verdict v-faux">reste ouvert</span></div>
+  <ul>
+    <li>La page entière : les critères, le prompt qui s'écrit, le compteur de jetons, « Copier le
+    prompt pour le coller dans Claude ».</li>
+    <li>C'est un outil de préparation, pour l'enseignante et non pour la classe. Il se défend
+    peut-être dans un centre sans assistance — mais c'est une décision, pas un oubli à corriger
+    d'office.</li>
+  </ul>
+</div>
+
+<h2>Ce que ça coûte du côté des tutoriels</h2>
+<p>Beaucoup moins qu'annoncé. Les sept capsules ont été relues : <b>une seule phrase et une seule
+capsule</b> parlent d'assistance.</p>
+<div class="carte">
+  <div class="cap"><h3>La deuxième série</h3><span class="verdict v-tient">une capsule à retourner</span></div>
+  <ul>
+    <li><b>Capsules 1, 2, 3, 5 et 6 : rien à faire.</b> Elles montrent des écrans rigoureusement
+    identiques dans les deux modes, et leur narration ne nomme jamais l'assistance.</li>
+    <li><b>Capsule 4 — un plan à retirer.</b> Le plan <span class="mono">f</span> est consacré à la
+    carte « Corrige-moi ». Sans assistance, la capsule s'arrête au plan <span class="mono">e</span>.
+    C'est le seul retournage.</li>
+    <li><b>Capsule 7 — à ne pas offrir.</b> Elle est entièrement le compositeur. Elle ne se retouche
+    pas : elle se retire de la liste.</li>
+  </ul>
+</div>
+<p>Autrement dit : la série « sans assistance » n'est pas un second tournage de sept capsules, mais
+<b>six capsules dont cinq sont les mêmes fichiers</b>, plus une version courte de la quatrième.</p>
+
+<h2>Les trois décisions</h2>
+
+<div class="encadre decision">
+  <h3>1 · Le portail doit-il honorer le refus ?</h3>
+  <p style="margin:0">Filtrer les tutoriels sans toucher au portail revient à <b>cacher le mode
+  d'emploi en laissant la porte ouverte</b>. Le plus net serait que la famille « Outils » perde le
+  correcteur, et l'écran des élèves sa carte « Corrige-moi », quand le centre a dit non. Reste à
+  décider du compositeur, qui n'engage que l'enseignante.</p>
+</div>
+
+<div class="encadre decision">
+  <h3>2 · Que voit une enseignante qui cherche un tutoriel absent ?</h3>
+  <p style="margin:0">Retirer la capsule 7 de la liste sans un mot laisse croire à une panne. Une
+  ligne suffit — <span class="dit">« Votre centre n'a pas activé l'assistance »</span> — mais elle
+  doit être écrite, et elle nomme une décision de la direction devant l'enseignante.</p>
+</div>
+
+<div class="encadre decision">
+  <h3>3 · Une liste par mode, ou une liste qui se filtre ?</h3>
+  <p style="margin:0">La page des tutoriels peut demander le mode au serveur et masquer ce qui ne
+  s'applique pas — une seule page, un seul jeu de fichiers. L'autre voie, deux listes figées,
+  double le travail d'entretien pour un écart d'une capsule et demie. La première paraît la
+  bonne.</p>
+</div>
+
+<footer>Relevé produit par <span class="mono">build/tutoriels/releve-modes.js</span>, qui rejoue la
+comparaison à la demande. Les deux relevés bruts ne sont pas versionnés : ils se refont en deux
+minutes sur l'instance de démonstration.</footer>
+
+</div>
+</body>
+</html>

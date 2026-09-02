@@ -165,19 +165,27 @@ async function jouer(page, geste) {
       await page.evaluate(geste.code);
       await dodo(250);
       break;
+    /* Un seul module, ouvert une seule fois.
+
+       La version d'avant cherchait le bon module **à l'écran** : elle cliquait
+       chaque chevron, regardait s'il avait déplié des sections, et le repliait
+       sinon. Douze dossiers s'ouvraient et se refermaient à toute vitesse
+       pendant que la voix expliquait le geste — signalé au visionnement, le
+       2 septembre 2026. La rangée se reconnaît pourtant sans rien ouvrir : son
+       résumé annonce le nombre de sections. On la trouve, on y va, on ouvre. */
     case 'deplier-module':
       await scene(() => document.querySelector('.choice[data-filtre="cours"]')?.click());
       await dodo(700);
       await scene(async () => {
-        const chevrons = Array.from(document.querySelectorAll('.pe-chevron[data-deploi]'));
-        for (const c of chevrons) {
-          await window.__scene.clic(`.pe-chevron[data-deploi="${c.dataset.deploi}"]`);
-          const rangee = c.closest('.pe-rangee');
-          if (rangee?.parentElement?.querySelector('.pe-sections')) return;
-          c.click();                        // repli discret, ce n'était pas le bon
-        }
+        const rangee = Array.from(document.querySelectorAll('.pe-rangee'))
+          .find((r) => /\d+\s+sections/.test(r.textContent));
+        const chevron = rangee && rangee.querySelector('.pe-chevron[data-deploi]');
+        if (!chevron) throw new Error('aucun module à sections dans la liste');
+        await window.__scene.defiler(rangee);
+        await window.__scene.dodo(400);
+        await window.__scene.clic(`.pe-chevron[data-deploi="${chevron.dataset.deploi}"]`);
       });
-      await dodo(500);
+      await dodo(800);
       await scene(() => window.__scene.defiler('.pe-sections'));
       break;
     case 'ouvrir-module':
@@ -217,19 +225,14 @@ async function jouer(page, geste) {
   }
 }
 
-(async () => {
-  fs.mkdirSync(SORTIE, { recursive: true });
-  const navigateur = await puppeteer.launch({
-    executablePath: CHROME,
-    headless: 'new',
-    args: ['--force-device-scale-factor=1', '--hide-scrollbars',
-           '--disable-features=CalculateNativeWinOcclusion'],
-  });
-  const page = await navigateur.newPage();
-  await page.setViewport({ width: LARGEUR, height: HAUTEUR, deviceScaleFactor: ECHELLE });
+/* — Ouvrir le portail, session faite et scène injectée —
 
+   Sortie de la boucle principale pour que le générateur du guide
+   (`guide_captures.js`) rejoue exactement la même mise en place : un guide
+   qui montrerait un autre écran que le tournage ne servirait à rien. */
+async function ouvrirSession(page, port) {
   const compte = identifiants();
-  await page.goto(`http://localhost:${PORT}/enseignant.html`, { waitUntil: 'networkidle2' });
+  await page.goto(`http://localhost:${port}/enseignant.html`, { waitUntil: 'networkidle2' });
   await page.evaluate((c) => {
     const poser = (el, v) => {
       const set = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
@@ -248,6 +251,19 @@ async function jouer(page, geste) {
      document, donc la scène s'injecte une seule fois. */
   await page.evaluate(SCENE);
   console.log('session ouverte, scène injectée');
+}
+
+async function main() {
+  fs.mkdirSync(SORTIE, { recursive: true });
+  const navigateur = await puppeteer.launch({
+    executablePath: CHROME,
+    headless: 'new',
+    args: ['--force-device-scale-factor=1', '--hide-scrollbars',
+           '--disable-features=CalculateNativeWinOcclusion'],
+  });
+  const page = await navigateur.newPage();
+  await page.setViewport({ width: LARGEUR, height: HAUTEUR, deviceScaleFactor: ECHELLE });
+  await ouvrirSession(page, PORT);
 
   const cdp = await page.createCDPSession();
 
@@ -269,6 +285,17 @@ async function jouer(page, geste) {
       }
       cdp.send('Page.screencastFrameAck', { sessionId: trame.sessionId }).catch(() => {});
     };
+
+    /* La mise en place, **avant** que la caméra tourne.
+
+       Une capsule hérite de l'écran que la précédente a laissé : la capsule 3
+       s'ouvrait sur l'aperçu élève resté déplié par la capsule 2, visible une
+       bonne seconde avant d'être refermé. Ces gestes-là ne racontent rien —
+       ils rangent. Ils se jouent donc hors champ. */
+    for (const geste of (capsule.prepare || [])) {
+      await jouer(page, geste);
+    }
+    await dodo(400);
 
     if (garder) {
       cdp.on('Page.screencastFrame', surImage);
@@ -343,4 +370,13 @@ async function jouer(page, geste) {
   }
 
   await navigateur.close();
-})().catch((e) => { console.error('ÉCHEC :', e.message); process.exit(1); });
+}
+
+module.exports = { jouer, ouvrirSession, chercheRepere, dodo,
+                   LARGEUR, HAUTEUR, ECHELLE, CHROME, VOIX, ICI };
+
+/* Lancé directement, il tourne ; requis comme module, il ne fait rien —
+   `guide_captures.js` n'a besoin que de ses gestes. */
+if (require.main === module) {
+  main().catch((e) => { console.error('ÉCHEC :', e.message); process.exit(1); });
+}
