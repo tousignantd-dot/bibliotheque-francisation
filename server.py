@@ -498,10 +498,26 @@ def init_storage():
             data_dst.mkdir(parents=True)
 
     # Première exécution : copier assets/ depuis BASE_DIR (sauf interactive/)
+    #
+    # `symlinks=True` et `node_modules` écarté — corrigé le 2 septembre 2026.
+    # `assets/design-system-react/node_modules/francisation-design` est un lien
+    # vers son propre paquet : en le suivant, `copytree` descendait dans une
+    # récursion sans fin (`.../node_modules/francisation-design/node_modules/
+    # francisation-design/...` vingt-huit fois) et finissait par échouer, en
+    # laissant un volume à moitié rempli. Le portail démarrait quand même, sans
+    # `data/activities.json` : catalogue servi depuis le code, aucun compte semé
+    # — donc aucune connexion possible. Rien de tout cela n'apparaît en
+    # production, où le clone git ne recrée pas ce lien ; seules les instances
+    # locales (démonstration, tournage des tutoriels) étaient touchées, et le
+    # message d'erreur ne nommait que le dernier fichier de la chaîne.
+    #
+    # Écarter `node_modules` est juste par ailleurs : rien n'y est servi, et
+    # c'était plusieurs centaines de mégaoctets recopiés dans le volume.
     if not assets_dst.exists():
         src = BASE_DIR / "assets"
         if src.exists():
-            shutil.copytree(str(src), str(assets_dst))
+            shutil.copytree(str(src), str(assets_dst), symlinks=True,
+                            ignore=shutil.ignore_patterns("node_modules"))
         else:
             assets_dst.mkdir(parents=True)
 
@@ -686,7 +702,11 @@ def niveau_de_groupe(group):
     le niveau 4 : le cours pour lequel tout a été écrit.
     """
     group = group or {}
-    pose = (group.get("niveau") or "").strip()
+    # `str()` : le champ arrive du portail sous forme de chaîne (« Niveau 4 »),
+    # mais un client qui envoie un nombre JSON — un script de peuplement, un
+    # essai — faisait tomber la requête sur un AttributeError, connexion coupée
+    # sans réponse. Un niveau mal typé doit être ignoré, pas fatal.
+    pose = str(group.get("niveau") or "").strip()
     if pose in NIVEAUX:
         return pose
     trouve = re.search(r"niveau\s*([1-8])", group.get("nom", "") or "", re.I)
@@ -2923,6 +2943,51 @@ def reconcilier_activites_forge():
     return len(ajoutees)
 
 
+def semer_admin_env():
+    """Crée le premier compte enseignant depuis `PROF_CODE` / `PROF_MOTDEPASSE`.
+
+    **Sorti de `migrate_multi_groupes()` le 2 septembre 2026, où il ne
+    s'exécutait plus.** Cette migration retourne tôt sur une installation
+    neuve — pas d'élève orphelin, rien à ranger — et le semis, écrit plus bas
+    dans la même fonction, n'était jamais atteint. Le journal ne disait rien du
+    tout : ni « compte créé », ni « aucun enseignant ». Une installation neuve
+    semée par variables d'environnement démarrait donc **sans compte et sans
+    porte**, et il fallait passer par l'écran d'installation — ce que les
+    lanceurs automatiques (tournage des tutoriels, bancs d'essai) ne font pas.
+
+    Idempotent, et sans effet là où des comptes existent déjà : sur Railway,
+    `load_teachers()` n'est pas vide, la fonction sort au premier test.
+    """
+    teachers = load_teachers()
+    if teachers:
+        return
+    code = normalize_prof_code(os.environ.get("PROF_CODE", ""))
+    password = os.environ.get("PROF_MOTDEPASSE", "")
+    if code and password:
+        teachers = [{
+            "id": 1,
+            "nom": os.environ.get("PROF_NOM", "Enseignant"),
+            "code": code,
+            "motDePasse": hash_password(password),
+            "role": "admin",
+            "createdAt": date.today().isoformat(),
+        }]
+        save_teachers(teachers)
+        # `{code}`, pas `{email}` : le courriel a quitté les comptes
+        # enseignants le 28 août 2026, et ce `print` est resté seul à le
+        # nommer. Il levait donc un `NameError` **après** `save_teachers()`
+        # — le compte était bien créé, mais la migration mourait là, et
+        # tout ce qui suit (le rattachement du groupe historique à son
+        # enseignant) ne tournait jamais. Le seul signe était un
+        # `[WARN] migrate_multi_groupes a échoué` au démarrage, sur le
+        # chemin d'amorce par variables d'environnement — celui d'une
+        # installation neuve. Trouvé le 31 août 2026 en montant un banc.
+        print(f"[migration] Compte administrateur créé : {code}", flush=True)
+    else:
+        print("[migration] Aucun enseignant — l'écran d'installation "
+              "(/prof.html) créera le premier compte", flush=True)
+
+
 def migrate_multi_groupes():
     """Fait passer une installation mono-groupe au modèle enseignants/groupes.
 
@@ -3029,36 +3094,6 @@ def migrate_multi_groupes():
             s["groupId"] = default_group_id
         save_students(students)
         print(f"[migration] {len(orphans)} élèves rattachés au groupe {default_group_id}", flush=True)
-
-    # Premier administrateur : semé par variables d'environnement si fournies,
-    # sinon créé par l'écran d'installation au premier lancement.
-    teachers = load_teachers()
-    if not teachers:
-        code = normalize_prof_code(os.environ.get("PROF_CODE", ""))
-        password = os.environ.get("PROF_MOTDEPASSE", "")
-        if code and password:
-            teachers = [{
-                "id": 1,
-                "nom": os.environ.get("PROF_NOM", "Enseignant"),
-                "code": code,
-                "motDePasse": hash_password(password),
-                "role": "admin",
-                "createdAt": date.today().isoformat(),
-            }]
-            save_teachers(teachers)
-            # `{code}`, pas `{email}` : le courriel a quitté les comptes
-            # enseignants le 28 août 2026, et ce `print` est resté seul à le
-            # nommer. Il levait donc un `NameError` **après** `save_teachers()`
-            # — le compte était bien créé, mais la migration mourait là, et
-            # tout ce qui suit (le rattachement du groupe historique à son
-            # enseignant) ne tournait jamais. Le seul signe était un
-            # `[WARN] migrate_multi_groupes a échoué` au démarrage, sur le
-            # chemin d'amorce par variables d'environnement — celui d'une
-            # installation neuve. Trouvé le 31 août 2026 en montant un banc.
-            print(f"[migration] Compte administrateur créé : {code}", flush=True)
-        else:
-            print("[migration] Aucun enseignant — l'écran d'installation "
-                  "(/prof.html) créera le premier compte", flush=True)
 
     # Le groupe historique appartient au premier enseignant connu
     teachers = load_teachers()
@@ -22126,6 +22161,13 @@ if __name__ == "__main__":
             print("[init] Stockage initialisé", flush=True)
         except Exception as e:
             print(f"[WARN] init_storage a échoué : {e}", flush=True)
+        # Le premier compte, s'il est semé par l'environnement. Avant les
+        # migrations : elles rattachent le groupe historique à l'enseignant
+        # qu'elles trouvent, et il faut donc qu'il existe déjà.
+        try:
+            semer_admin_env()
+        except Exception as e:
+            print(f"[WARN] semer_admin_env a échoué : {e}", flush=True)
         # Doit suivre init_storage() : la migration lit les activités et les
         # élèves déjà présents dans le volume.
         try:
