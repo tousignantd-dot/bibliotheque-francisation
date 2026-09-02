@@ -136,6 +136,11 @@
     color:var(--ink-900);line-height:1.2}
   .pe-mot{font-size:13px;color:var(--ink-700,#3A3D40)}
   .pe-duree{font-size:12px;color:var(--ink-500)}
+  /* Le pied de page légal : présent partout, discret partout. */
+  .cf-lien { padding: var(--sp-6) 0 var(--sp-8); text-align: center; }
+  .cf-lien a { color: var(--text-muted); font-size: var(--fs-ui-sm);
+    text-decoration: none; border-bottom: 1px solid var(--border); }
+  .cf-lien a:hover { color: var(--text); }
 </style>
 <!-- INSTALLABLE:début — greffé par build/greffe_installable.py -->
 <link rel="manifest" href="/manifest.webmanifest">
@@ -698,5 +703,14 @@
       .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   }
 </script>
+
+<!-- Obligation de transparence (Loi 25) : la politique doit être «
+     facilement accessible ». Un lien en pied de page est le seul endroit
+     qui ne dépend d'aucun écran ni d'aucun état de connexion. -->
+<footer class="cf-lien">
+  <div class="container">
+    <a href="confidentialite.html">Protection des renseignements personnels</a>
+  </div>
+</footer>
 </body>
 </html>
