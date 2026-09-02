@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Les tutoriels ont vieilli</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap">
+<style>
+/* ═══════════════════════════════════════════════════════════
+   LES TUTORIELS ONT VIEILLI
+   Relevé du 2 septembre 2026. Les sept capsules ont été tournées
+   les 16 et 17 août ; l'espace enseignant a reçu soixante-dix
+   commits depuis.
+
+   Rouge : le plan dit quelque chose de faux.
+   Ambre : le plan est vrai mais incomplet.
+   Vert : le plan tient tel quel.
+   L'acier ne fait que la structure.
+   ═══════════════════════════════════════════════════════════ */
+:root{
+  --ground:#F7F7F5; --card:#FFFFFF; --sunken:#FBFBFA;
+  --ink:#17181A; --body:#3A3D40; --muted:#6E7175;
+  --line:#E4E4E0; --line-fort:#D2D2CD;
+  --faux:#C7302B;   --faux-bg:#FBEDEC;
+  --court:#C07A08;  --court-bg:#FBF2E2;
+  --tient:#0A8F5B;  --tient-bg:#E6F5EE;
+  --acier:#1D6B8F;  --acier-bg:#E7F0F6;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#151618; --card:#1D1F22; --sunken:#212326;
+    --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+    --line:#2E3135; --line-fort:#3D4146;
+    --faux:#EE7A73; --faux-bg:#2E1917;
+    --court:#E0A63F; --court-bg:#2C2213;
+    --tient:#4BC48D; --tient-bg:#12291F;
+    --acier:#6DAFD2; --acier-bg:#14242C;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#151618; --card:#1D1F22; --sunken:#212326;
+  --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+  --line:#2E3135; --line-fort:#3D4146;
+  --faux:#EE7A73; --faux-bg:#2E1917;
+  --court:#E0A63F; --court-bg:#2C2213;
+  --tient:#4BC48D; --tient-bg:#12291F;
+  --acier:#6DAFD2; --acier-bg:#14242C;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--body);
+  font-family:'Nunito','Helvetica Neue',Arial,sans-serif;font-size:16px;line-height:1.55}
+.wrap{max-width:940px;margin:0 auto;padding:48px 24px 96px}
+h1{font-family:'Newsreader',Georgia,serif;font-weight:600;font-size:38px;line-height:1.15;
+   color:var(--ink);margin:0 0 10px;letter-spacing:-.01em}
+.chapeau{font-size:18px;color:var(--body);margin:0 0 8px;max-width:66ch}
+.date{font-size:13px;color:var(--muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin:0 0 36px}
+h2{font-family:'Newsreader',Georgia,serif;font-weight:600;font-size:26px;color:var(--ink);
+   margin:44px 0 6px;letter-spacing:-.01em}
+h2 + p{margin-top:0}
+p{max-width:68ch}
+b{color:var(--ink)}
+.carte{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px 22px;margin:16px 0}
+.cap{display:flex;gap:14px;align-items:baseline;flex-wrap:wrap;margin:0 0 10px}
+.cap h3{margin:0;font-size:17px;font-weight:800;color:var(--ink)}
+.cap .num{font-family:var(--mono);font-size:13px;color:var(--muted)}
+.verdict{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+  padding:3px 9px;border-radius:999px}
+.v-faux{background:var(--faux-bg);color:var(--faux)}
+.v-court{background:var(--court-bg);color:var(--court)}
+.v-tient{background:var(--tient-bg);color:var(--tient)}
+ul{margin:8px 0 0;padding-left:20px}
+li{margin:6px 0;max-width:66ch}
+li b{color:var(--ink)}
+.dit{font-style:italic;color:var(--muted)}
+.encadre{background:var(--sunken);border:1px solid var(--line);border-left:4px solid var(--acier);
+  border-radius:10px;padding:18px 20px;margin:20px 0}
+.encadre.decision{border-left-color:var(--court)}
+.encadre h3{margin:0 0 8px;font-size:16px;font-weight:800;color:var(--ink)}
+.mono{font-family:var(--mono);font-size:13.5px}
+.piste{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;margin-top:12px}
+.piste dt{font-weight:800;color:var(--ink);white-space:nowrap}
+.piste dd{margin:0}
+footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);
+  font-size:13.5px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Les tutoriels ont vieilli</h1>
+<p class="chapeau">Les sept capsules de l'espace enseignant ont été tournées les 16 et 17 août 2026.
+La page qu'elles décrivent a reçu <b>soixante-dix commits</b> depuis. Voici, plan par plan, ce qui
+est devenu faux — et la seule décision à prendre avant de retourner quoi que ce soit.</p>
+<p class="date">Relevé du 2 septembre 2026</p>
+
+<h2>Ce que le relevé dit en trois lignes</h2>
+<p><b>Deux capsules sur sept décrivent une page qui n'existe plus</b> — celle des quatre onglets.
+Deux autres racontent juste, mais il leur manque la moitié de ce que l'enseignant fait aujourd'hui.
+Et <b>une capsule fait dire à la voix une consigne contraire à la règle du portail</b> : elle
+demande le prénom et le nom de l'élève, alors que le champ réclame un pseudo.</p>
+
+<h2>Capsule par capsule</h2>
+
+<div class="carte">
+  <div class="cap"><span class="num">01</span><h3>Le portail en un coup d'œil</h3>
+    <span class="verdict v-faux">à refaire</span></div>
+  <ul>
+    <li><b>Les quatre onglets n'existent plus.</b> La voix dit : <span class="dit">« En haut, quatre
+    onglets : Planifier, Élèves, Groupes et comptes, et Matériel. »</span> Il n'y a plus de barre de
+    sections. Les vues s'ouvrent depuis <b>neuf boutons rangés en trois familles</b> — Le cours,
+    Ma classe, Outils — posés sous le groupe.</li>
+    <li><b>« Groupes et comptes » n'est plus là du tout</b> : les comptes ont quitté le portail
+    enseignant pour l'espace direction, et « Nouveau groupe » est devenu un bouton de la ligne du
+    groupe.</li>
+    <li><b>La page ne s'ouvre plus sur le groupe actif.</b> Sans groupe, elle ne montre qu'une
+    carte : « Ouvrez votre premier groupe ». Tout le reste attend qu'un groupe existe, parce que
+    c'est son <b>niveau</b> qui borne le catalogue et le matériel.</li>
+    <li><b>L'en-tête a changé de forme</b> : le logotype a pris sa bande blanche au-dessus du
+    bandeau. Aucun plan de cette capsule ne montre l'en-tête d'aujourd'hui.</li>
+  </ul>
+</div>
+
+<div class="carte">
+  <div class="cap"><span class="num">02</span><h3>Planifier : donner une date</h3>
+    <span class="verdict v-court">à compléter</span></div>
+  <ul>
+    <li>Le cœur tient : la règle (« une activité sans date n'existe pas pour l'élève »), les
+    pastilles à quatre états, la barre qui apparaît à la première case, l'aperçu avant de valider,
+    et le bouton « Ce que l'élève voit » sont tous encore là, sous ces mots-là.</li>
+    <li><b>Il manque les deux interrupteurs</b> posés depuis dans la planification : fermer la
+    <b>transcription d'un dialogue</b> (écouter sans lire) et fermer les <b>réponses du jeu de
+    rôle</b>. Ce sont deux gestes pédagogiques, pas des réglages techniques : ils méritent d'être
+    dits.</li>
+    <li>Le premier plan montre l'ancien en-tête, comme toute la série.</li>
+  </ul>
+</div>
+
+<div class="carte">
+  <div class="cap"><span class="num">03</span><h3>Ouvrir un module par sections</h3>
+    <span class="verdict v-tient">tient</span></div>
+  <ul>
+    <li>Le chevron, les six sections et la fiche pédagogique fonctionnent toujours ainsi, et la
+    nomenclature dite par la voix — « Je découvre », les défis, « Je me lance », « Je retiens des
+    mots » — est encore celle des modules.</li>
+    <li>Seul l'en-tête du décor a changé. C'est la capsule la moins chère à remettre à neuf.</li>
+  </ul>
+</div>
+
+<div class="carte">
+  <div class="cap"><span class="num">04</span><h3>Les élèves et leurs codes</h3>
+    <span class="verdict v-faux">à refaire</span></div>
+  <ul>
+    <li><b>La voix demande le vrai nom de l'élève.</b> <span class="dit">« Pour ajouter quelqu'un :
+    son prénom et son nom, puis Générer le code. »</span> Le champ dit aujourd'hui
+    « Pseudo (ex. Colibri) », et sa consigne dit en toutes lettres : <b>« Donnez un pseudo, pas le
+    vrai nom »</b>. C'est le défaut le plus grave de la série : un tutoriel officiel qui enseigne
+    le geste que le portail refuse.</li>
+    <li>Le plan sur l'impression des billets répète la même chose — le billet porte le pseudo, pas
+    le nom.</li>
+    <li><b>« Deuxième onglet »</b> : le bouton s'appelle « Élèves et codes ».</li>
+    <li><b>La progression a quitté cet écran.</b> Elle a sa propre page, ouverte par le bouton
+    « Progression », dans un nouvel onglet. Le plan qui la décrit ici décrit un écran disparu.</li>
+  </ul>
+</div>
+
+<div class="carte">
+  <div class="cap"><span class="num">05</span><h3>Vos groupes</h3>
+    <span class="verdict v-faux">à refaire</span></div>
+  <ul>
+    <li><b>« Troisième onglet »</b> — voir la capsule 01.</li>
+    <li><b>Un groupe a maintenant un niveau</b>, et c'est le changement le plus structurant depuis
+    le tournage : il se choisit à la création, et il borne ensuite le catalogue, le matériel et la
+    séance sans compte. La capsule n'en dit pas un mot, alors que c'est devenu la première décision
+    qu'on prend en créant une classe.</li>
+    <li>« Copier une planification » et ses deux précautions restent exactes.</li>
+  </ul>
+</div>
+
+<div class="carte">
+  <div class="cap"><span class="num">06</span><h3>Le dépôt de matériel</h3>
+    <span class="verdict v-court">à compléter</span></div>
+  <ul>
+    <li><b>« Dernier onglet »</b> — voir la capsule 01. « Ma semaine » et « Le catalogue » sont
+    toujours les deux vues, sous ces noms.</li>
+    <li>Le découpage en seize séances et le panneau de droite n'ont pas bougé.</li>
+    <li><b>À confirmer à l'écran</b> : les deux plans sur « Dépôts de l'équipe ». Ce libellé ne se
+    trouve plus dans la page ; il faut vérifier s'il a été renommé ou déplacé avant de réécrire
+    ces deux plans.</li>
+  </ul>
+</div>
+
+<div class="carte">
+  <div class="cap"><span class="num">07</span><h3>Composer une activité</h3>
+    <span class="verdict v-court">à compléter</span></div>
+  <ul>
+    <li>Le compositeur assemble toujours un prompt à partir des critères du programme, et on le
+    copie toujours pour le coller ailleurs : les onze plans restent justes sur le fond.</li>
+    <li><b>« Dernier outil de la barre de groupe »</b> : il est maintenant dans la famille
+    « Outils », avec deux voisins que la capsule ne mentionne pas.</li>
+    <li>La page a gagné des contrôles depuis : à revoir plan par plan, mais c'est la capsule la
+    moins atteinte.</li>
+  </ul>
+</div>
+
+<h2>Ce qu'aucune capsule ne montre</h2>
+<p>Sept fonctions ont été livrées depuis le tournage. Un enseignant qui regarde les sept capsules
+ne saura pas qu'elles existent :</p>
+<div class="carte">
+  <ul>
+    <li><b>La séance sans compte</b> — un code affiché, une feuille imprimable et son carré, des
+    participants anonymes le temps d'une période.</li>
+    <li><b>Le direct de la classe</b> — la réussite question par question pendant que la classe
+    travaille.</li>
+    <li><b>La page Progression</b> — le tableau de bord du groupe, module par module.</li>
+    <li><b>Le correcteur collaboratif</b> — le seul bouton qui mène à une autre application.</li>
+    <li><b>Les tutoriels eux-mêmes</b> — la page existe, et rien n'y renvoie dans les capsules.</li>
+    <li><b>L'espace direction</b> — les comptes du centre, sortis du portail enseignant.</li>
+    <li><b>Les trois interrupteurs pédagogiques</b> — mode avec assistance, transcription des
+    dialogues, réponses du jeu de rôle.</li>
+  </ul>
+</div>
+
+<h2>La décision à prendre avant de tourner</h2>
+<div class="encadre decision">
+  <h3>Quelle voix pour la narration ?</h3>
+  <p>La chaîne fabrique la voix off avec <b>ElevenLabs</b> (<span class="mono">build/tutoriels/narrer.py</span>,
+  voix « narrateur »). Or la bibliothèque a changé de fournisseur depuis : les voix se font
+  <b>chez Azure</b>, et les MP3 existants sont <b>gelés</b>. Retourner une capsule oblige donc à
+  trancher, et les trois voies ne coûtent pas la même chose :</p>
+  <dl class="piste">
+    <dt>Repayer ElevenLabs</dt>
+    <dd>Seules les capsules réécrites sont refacturées, la voix reste identique d'une capsule à
+    l'autre, rien d'autre ne bouge. C'est la voie la plus courte — au prix d'une exception assumée
+    au choix Azure, pour ces sept fichiers-là.</dd>
+    <dt>Migrer vers Azure</dt>
+    <dd>Cohérent avec le reste, et reproductible. Mais la voix change : il faudra <b>refaire les
+    sept capsules</b>, y compris celles qui tiennent, sinon l'enseignant change de narrateur en
+    passant de la 3 à la 4. Et l'alignement mot à mot, qui cale les gestes sur la voix, passe
+    aujourd'hui par l'alignement forcé d'ElevenLabs : il faudra lui trouver un équivalent.</dd>
+    <dt>Ne pas tourner</dt>
+    <dd>Corriger d'abord le <b>guide en diapositives</b>, qui dit la même chose en version lisible
+    et imprimable, et laisser les films pour plus tard. Le défaut du pseudo, lui, ne peut pas
+    attendre : il se corrige dans le guide en une phrase.</dd>
+  </dl>
+</div>
+
+<h2>L'ordre que je propose</h2>
+<div class="carte">
+  <ul>
+    <li><b>Un.</b> Corriger le guide en diapositives — le pseudo d'abord, puis les onglets. Aucun
+    coût, et c'est la version que l'on imprime.</li>
+    <li><b>Deux.</b> Réécrire le manifeste : c'est lui la source unique du texte, des gestes et des
+    sous-titres. Rien ne se tourne avant qu'il soit juste.</li>
+    <li><b>Trois.</b> Trancher la voix, ci-dessus.</li>
+    <li><b>Quatre.</b> Retourner. La chaîne se relance en entier ; compter environ une minute de
+    tournage par minute de capsule, et vérifier la durée d'une capsule après déploiement, pas son
+    seul code 200.</li>
+  </ul>
+</div>
+
+<footer>
+Sources : <span class="mono">build/tutoriels/manifeste.json</span> (le scénario dit),
+<span class="mono">enseignant.html</span> et son journal git depuis le 17 août 2026 (ce que la page
+fait). Les points marqués « à confirmer à l'écran » demandent un portail de démonstration ouvert —
+ils ne se tranchent pas en lisant le code.
+</footer>
+
+</div>
+</body>
+</html>
