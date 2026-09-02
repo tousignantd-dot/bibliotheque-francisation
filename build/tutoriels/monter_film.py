@@ -26,12 +26,15 @@ TRAVAIL, SORTIE = ICI / "travail", ICI / "capsules"
 L, H, IPS = 1920, 1080, 30
 CRF = 23          # défaut ; une capsule peut le relever dans le manifeste
 RESPIRATION = 0.7
-TITRE_S, FIN_S = 2.6, 2.2
+LOGO_S, TITRE_S, FIN_S = 1.8, 2.6, 2.2
 
 ENCRE = (23, 24, 26)
 PAPIER = (247, 247, 245)
+BLANC = (255, 255, 255)
 VERT = (10, 143, 91)
 GRIS = (110, 113, 117)
+MARQUE = (107, 79, 187)        # --marque-600
+TRAIT = (240, 240, 238)        # --marque-trait
 
 
 def duree(f):
@@ -39,6 +42,110 @@ def duree(f):
         ["ffprobe", "-v", "error", "-show_entries", "format=duration",
          "-of", "default=nw=1:nk=1", str(f)],
         capture_output=True, text=True, check=True).stdout.strip())
+
+
+NUNITO = None
+
+
+def nunito(taille, poids=900):
+    """Nunito à la taille et au poids demandés, tirée du dépôt.
+
+    Le logotype ne se dessine PAS dans une police de repli : sans Nunito, le
+    « ı » sans point change de chasse et la marque se lit de travers — c'est
+    exactement le défaut signalé le 2 septembre. Le dépôt versionne la police
+    en `.woff2` (variable, 400→900) ; Pillow ne lit pas le woff2, alors on la
+    déflate une fois dans `travail/`. Renvoie None si la conversion échoue,
+    et l'appelant retombe alors sur `police()`.
+    """
+    global NUNITO
+    if NUNITO is None:
+        ttf = TRAVAIL / "nunito-variable.ttf"
+        try:
+            if not ttf.exists():
+                from fontTools.ttLib import TTFont
+                f = TTFont(ICI.parent.parent
+                           / "assets/design-system/fonts/nunito-latin.woff2")
+                f.flavor = None
+                TRAVAIL.mkdir(exist_ok=True)
+                f.save(str(ttf))
+            NUNITO = ttf
+        except Exception as e:                     # fontTools ou brotli absent
+            print("  (Nunito indisponible : %s)" % e)
+            NUNITO = False
+    if not NUNITO:
+        return None
+    f = ImageFont.truetype(str(NUNITO), taille)
+    f.set_variation_by_axes([poids])
+    return f
+
+
+def logotype(d, centre_x, ligne_base, nom_px, avec_descripteur=True):
+    """Dessine le logotype francis : le nom, le trait, le descripteur.
+
+    Il n'existe aucune image de la marque, et c'est voulu — elle se compose,
+    elle ne se colle pas. Le seul signe est **le point du « i »** : le nom est
+    écrit avec « ı » (U+0131) et le disque mauve est posé par-dessus, centré
+    sur la chasse du glyphe et calé sur le haut de sa hampe. Les proportions
+    sont celles de `marque-francis.css`, ramenées à des fractions du corps :
+    disque 1/4, gouttière 4/7, trait 5/6 de haut.
+
+    Renvoie la largeur dessinée.
+    """
+    fn = nunito(nom_px, 900)
+    fd = nunito(round(nom_px * 20 / 36), 900)
+    if fn is None:
+        return 0
+    nom, desc = "francıs", "Aide à l'apprentissage du français"
+    # `letter-spacing` négatif : Pillow ne l'a pas, on avance lettre à lettre.
+    sn, sd = -0.035 * nom_px, -0.015 * fd.size
+
+    def largeur(f, texte, serrage):
+        return sum(f.getlength(c) + serrage for c in texte) - serrage
+
+    l_nom = largeur(fn, nom, sn)
+    gouttiere = round(nom_px * 16 / 28)
+    h_trait = round(nom_px * 30 / 36)
+    e_trait = max(2, round(nom_px / 18))
+    l_desc = largeur(fd, desc, sd) if avec_descripteur else 0
+    total = l_nom + (gouttiere * 2 + e_trait + l_desc if avec_descripteur else 0)
+
+    x = centre_x - total / 2
+    depart = x
+    pos_i = None
+    for c in nom:
+        if c == "ı":
+            pos_i = (x, fn.getlength(c))
+        d.text((x, ligne_base), c, font=fn, fill=ENCRE, anchor="ls")
+        x += fn.getlength(c) + sn
+    # Le disque : diamètre au quart du corps, centré sur la chasse du « ı »,
+    # posé juste au-dessus de la hampe — dont le haut est relevé dans la
+    # police, jamais estimé.
+    if pos_i:
+        xi, li = pos_i
+        _, haut, _, bas = fn.getbbox("ı")     # relevé dans la police même
+        stem = ligne_base - (bas - haut)       # haut de la hampe
+        r = nom_px * 0.25 / 2
+        cy = stem - nom_px * 0.015 - r
+        d.ellipse([xi + li / 2 - r, cy - r, xi + li / 2 + r, cy + r],
+                  fill=MARQUE)
+    if avec_descripteur:
+        x += gouttiere
+        d.rectangle([x, ligne_base - h_trait * 0.72,
+                     x + e_trait, ligne_base + h_trait * 0.28], fill=TRAIT)
+        x += e_trait + gouttiere
+        for c in desc:
+            d.text((x, ligne_base), c, font=fd, fill=MARQUE, anchor="ls")
+            x += fd.getlength(c) + sd
+    return x - depart
+
+
+def carton_logo(chemin):
+    """Le premier écran de chaque capsule : la marque, seule, sur du blanc."""
+    img = Image.new("RGB", (L, H), BLANC)
+    d = ImageDraw.Draw(img)
+    d.rectangle([0, 0, L, 10], fill=VERT)
+    logotype(d, L / 2, H / 2 + 26, 88)
+    img.save(chemin)
 
 
 def police(taille, gras=True):
@@ -165,18 +272,22 @@ def monter(capsule, decalage_titre):
         str(avec_voix),
     ], check=True)
 
+    logo_png = TRAVAIL / "logo.png"
     titre_png, fin_png = TRAVAIL / f"{capsule['id']}-t.png", TRAVAIL / "fin.png"
+    carton_logo(logo_png)
     carton(titre_png, f"Espace enseignant · capsule {decalage_titre}",
            capsule["titre"], "Francisation · Niveau 4")
     carton(fin_png, "Pour aller plus loin",
            "Le guide complet\nest dans le portail",
            "Bouton « Tutoriels », barre de groupe", inverse=True)
     t_mp4, f_mp4 = TRAVAIL / f"{capsule['id']}-t.mp4", TRAVAIL / f"{capsule['id']}-f.mp4"
+    l_mp4 = TRAVAIL / "logo.mp4"
+    segment_fixe(logo_png, LOGO_S, l_mp4)
     segment_fixe(titre_png, TITRE_S, t_mp4)
     segment_fixe(fin_png, FIN_S, f_mp4)
 
     liste2 = TRAVAIL / f"{capsule['id']}-tout.txt"
-    liste2.write_text("".join(f"file '{p.name}'\n" for p in (t_mp4, avec_voix, f_mp4)))
+    liste2.write_text("".join(f"file '{p.name}'\n" for p in (l_mp4, t_mp4, avec_voix, f_mp4)))
     film = SORTIE / f"{capsule['id']}.mp4"
     subprocess.run([
         "ffmpeg", "-y", "-loglevel", "error", "-f", "concat", "-safe", "0",
@@ -187,8 +298,8 @@ def monter(capsule, decalage_titre):
     # Public en apprentissage du français — lire pendant qu'on écoute aide.
     vtt = ["WEBVTT", ""]
     for repere, plan in zip(reperes, capsule["plans"]):
-        d = repere["debut"] / 1000.0 - t0 + TITRE_S
-        f = repere["fin"] / 1000.0 - t0 + TITRE_S
+        d = repere["debut"] / 1000.0 - t0 + LOGO_S + TITRE_S
+        f = repere["fin"] / 1000.0 - t0 + LOGO_S + TITRE_S
         vtt += [f"{horodatage(d)} --> {horodatage(f)}", plan["texte"], ""]
     (SORTIE / f"{capsule['id']}.vtt").write_text("\n".join(vtt))
 
