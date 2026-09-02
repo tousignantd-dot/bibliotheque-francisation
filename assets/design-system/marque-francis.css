@@ -44,7 +44,7 @@
    variables : une seule règle par taille, jamais de valeur en double. */
 .fr-lockup{
   --fr-nom:28px; --fr-desc:16px;                 /* barre d'application */
-  --fr-pt:7px; --fr-pt-l:1px; --fr-pt-t:2px;
+  --fr-pt:7px; --fr-pt-t:2px;
   --fr-trait:24px;
   /* Calage sur le bas : le nom et le descripteur s'assoient sur la même ligne
      de base. « francis » n'a aucune descendante — le bas de ses lettres EST sa
@@ -69,9 +69,21 @@
    ligne fait exactement la hauteur de l'interligne — c'est sur elle que les
    quatre mesures de la remise sont calées. */
 .fr-i{position:relative;display:inline-block}
+/* Le disque se **centre sur la lettre**, il ne se pose plus à un nombre de
+   pixels de son bord gauche. Les deux calages donnent le même rendu en Nunito
+   — un demi-pixel d'écart, mesuré — mais ils ne se valent pas quand la police
+   manque : sans Nunito, « Arial Rounded MT Bold » dessine le « ı » sur 25,5 px
+   au lieu de 8,9, et un disque calé à 1 px du bord se retrouvait au-dessus du
+   « c » voisin. Le nom se lisait alors n'importe comment — signalé depuis
+   l'espace enseignant le 2 septembre 2026. Le centrage suit la chasse du
+   glyphe, quelle qu'elle soit ; c'est la seule mesure du logotype qui ne
+   dépend plus d'une police. La cause première est traitée ailleurs : Nunito
+   est désormais servie par le dépôt (`tokens/fonts.css`). Ceci est la
+   ceinture, cela la bretelle. */
 .fr-point{
   position:absolute;
-  left:var(--fr-pt-l,1px);top:var(--fr-pt-t,2px);
+  left:50%;transform:translateX(-50%);
+  top:var(--fr-pt-t,2px);
   width:var(--fr-pt,7px);height:var(--fr-pt,7px);
   border-radius:999px;background:var(--marque-600);
 }
@@ -101,16 +113,16 @@
 /* ── Échelle — trois tailles, et rien entre les deux ──────────────── */
 .fr-lockup--grand{                                /* en-tête de page */
   --fr-nom:36px; --fr-desc:20px;
-  --fr-pt:8px; --fr-pt-l:1px; --fr-pt-t:2px;
+  --fr-pt:8px; --fr-pt-t:2px;
   --fr-trait:30px;
 }
 .fr-lockup--etroit{                               /* barre étroite */
   --fr-nom:24px; --fr-desc:14px;
-  --fr-pt:6px; --fr-pt-l:1px; --fr-pt-t:1px;
+  --fr-pt:6px; --fr-pt-t:1px;
   --fr-trait:20px;
 }
 .fr-lockup--courriel{                             /* nom seul, en-tête de courriel */
-  --fr-nom:20px; --fr-pt:5px; --fr-pt-l:1px; --fr-pt-t:1px;
+  --fr-nom:20px; --fr-pt:5px; --fr-pt-t:1px;
 }
 .fr-lockup--courriel .fr-trait,
 .fr-lockup--courriel .fr-desc{display:none}
@@ -121,14 +133,14 @@
 @media (max-width:640px){
   .fr-lockup--grand{
     --fr-nom:28px; --fr-desc:16px;
-    --fr-pt:7px; --fr-pt-l:1px; --fr-pt-t:2px;
+    --fr-pt:7px; --fr-pt-t:2px;
     --fr-trait:24px;
   }
 }
 
 /* Sous 480 px, le descripteur et le trait disparaissent : le nom reste seul. */
 @media (max-width:480px){
-  .fr-lockup{--fr-nom:20px; --fr-pt:5px; --fr-pt-l:1px; --fr-pt-t:1px}
+  .fr-lockup{--fr-nom:20px; --fr-pt:5px; --fr-pt-t:1px}
   .fr-lockup .fr-trait,.fr-lockup .fr-desc{display:none}
 }
 
@@ -136,7 +148,7 @@
    Le nom pâlit : le point doit se détacher **des lettres**, pas seulement
    du fond. Nom blanc + point blanc = 1.07:1 entre les deux, donc aucun
    signe visible. Ne jamais mettre le nom en blanc pur ici. */
-.fr-lockup--mauve{--fr-pt:11px; --fr-pt-l:0; --fr-pt-t:1px}
+.fr-lockup--mauve{--fr-pt:11px; --fr-pt-t:1px}
 .fr-lockup--mauve .fr-nom{color:var(--marque-100)}
 .fr-lockup--mauve .fr-point{background:#FFFFFF}
 .fr-lockup--mauve .fr-trait{background:rgba(255,255,255,.42)}

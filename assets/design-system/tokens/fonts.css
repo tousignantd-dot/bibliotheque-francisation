@@ -7,6 +7,42 @@
    ============================================================ */
 @import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;0,800;0,900;1,600;1,700&display=swap");
 
+/* ── Nunito, servie par le dépôt ──────────────────────────────────────
+   Le portail ne dépend plus de Google pour sa police. Les deux fichiers sont
+   déjà versionnés (`build/police_nunito.py`, 54 Ko) : Nunito est **variable**,
+   un seul `.woff2` par face couvre 400 à 900.
+
+   L'`@import` ci-dessus reste, en second : ces deux faces ne portent que le
+   sous-ensemble `latin`, et un caractère hors plage (cyrillique, vietnamien)
+   continue de venir de Google. Déclarées après lui, les faces locales gagnent
+   sur tout ce qu'elles couvrent.
+
+   **Pourquoi c'était un défaut visible.** Quand la requête vers Google ne
+   passe pas — bloqueur de traqueurs, réseau du centre — la page retombe sur
+   « Arial Rounded MT Bold », où le « ı » (U+0131) du logotype mesure 25,5 px
+   au lieu de 8,9 : le point mauve, calé sur la chasse de Nunito, se détache de
+   sa lettre et le nom devient illisible. Signalé le 2 septembre 2026 depuis
+   l'espace enseignant. Voir la garde de centrage dans `marque-francis.css`.
+
+   La plage est tenue à côté des fichiers (`fonts/nunito-latin.plage.txt`) :
+   la recopier ici la ferait vieillir sans que personne ne le voie. */
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 400 900;
+  font-display: swap;
+  src: url("../fonts/nunito-latin.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Nunito';
+  font-style: italic;
+  font-weight: 400 900;
+  font-display: swap;
+  src: url("../fonts/nunito-latin-italique.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
 :root {
   --font-sans: "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
 }
