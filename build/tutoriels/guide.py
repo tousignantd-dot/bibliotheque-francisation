@@ -2,7 +2,8 @@
 """Le guide de validation — et le procédurier papier, dans le même fichier.
 
     node build/tutoriels/guide_captures.js 5321   # les copies d'écran
-    python3 build/tutoriels/guide.py              # la page
+    python3 build/tutoriels/guide.py              # les sept capsules
+    python3 build/tutoriels/guide.py 01-tour-du-portail   # une seule, + son PDF
 
 Décidé le 2 septembre 2026, après quatre séries de corrections trouvées au
 visionnement — un bouton renommé, quatre états décrits dont un seul à l'écran,
@@ -29,10 +30,12 @@ serait de toute façon pas celle de demain.
 import html
 import json
 import pathlib
+import sys
 
 ICI = pathlib.Path(__file__).resolve().parent
 RACINE = ICI.parent.parent
-SORTIE = RACINE / "assets" / "presentations" / "guide-tutoriels-enseignant.html"
+PRESENTATIONS = RACINE / "assets" / "presentations"
+sys.path.insert(0, str(RACINE / "build"))
 
 QUAND = {"debut": "au début", "milieu": "en cours", "fin": "à la fin"}
 
@@ -42,12 +45,19 @@ def secondes(v):
     return f"{m} min {s:02d}" if m else f"{int(round(v))} s"
 
 
-def page():
+def page(seule=None):
+    """La page du guide. `seule` la réduit à une capsule — c'est la forme qui
+    part à l'impression : un procédurier de sept capsules ne se relit pas, et
+    on n'en tourne qu'une à la fois."""
     manifeste = json.loads((ICI / "manifeste.json").read_text(encoding="utf-8"))
     captures = json.loads((ICI / "guide" / "captures.json").read_text(encoding="utf-8"))
     total = 0
     corps = []
+    titre = None
     for n, capsule in enumerate(manifeste["capsules"], 1):
+        if seule and capsule["id"] != seule:
+            continue
+        titre = "%d · %s" % (n, capsule["titre"])
         releve = {p["plan"]: p for p in captures.get(capsule["id"], [])}
         duree = sum(p["secondes"] for p in releve.values())
         total += duree
@@ -81,8 +91,16 @@ def page():
                secondes(duree), "".join(lignes)))
     # `str.replace` et non l'opérateur `%` : la feuille de style est pleine de
     # pourcentages, et le formatage les prendrait pour des marqueurs.
+    if seule and not corps:
+        raise SystemExit("capsule inconnue : %s" % seule)
+    nombre = 1 if seule else len(manifeste["capsules"])
     tete = (TETE.replace("{{total}}", secondes(total))
-                .replace("{{capsules}}", str(len(manifeste["capsules"]))))
+                .replace("{{capsules}}", str(nombre))
+                .replace("{{titre}}", html.escape(titre) if seule
+                         else "les sept capsules")
+                .replace("{{sujet}}", "Capsule %s" % html.escape(titre) if seule
+                         else "%d capsules" % nombre)
+                .replace("{{corps}}", "une" if seule else ""))
     return tete + "".join(corps) + PIED
 
 
@@ -91,7 +109,7 @@ TETE = """<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Guide des tutoriels — espace enseignant</title>
+<title>Guide des tutoriels — {{titre}}</title>
 <link rel="stylesheet" href="../design-system/tokens/fonts.css">
 <style>
 :root{
@@ -134,6 +152,10 @@ figure img{width:100%;border:1px solid var(--line);border-radius:6px;display:blo
 figcaption{font-size:11px;color:var(--muted);margin-top:3px;letter-spacing:.04em;
   text-transform:uppercase;font-weight:800}
 .rien{color:var(--muted);font-style:italic;margin:0}
+/* Sur un guide d'une seule capsule, le titre du bloc redit celui de la
+   page : deux fois le meme titre a trois centimetres d'ecart. */
+body.une .capsule h2{display:none}
+body.une .capsule .resume{margin-top:0}
 .duree{width:80px;text-align:right;font-family:var(--mono);font-size:13px;color:var(--ink)}
 .avert{background:#FBF2E2;border:1px solid #E8D3A0;border-left:4px solid #C07A08;
   border-radius:10px;padding:16px 18px;margin:0 0 28px;color:#5A4409}
@@ -143,15 +165,14 @@ figcaption{font-size:11px;color:var(--muted);margin-top:3px;letter-spacing:.04em
   .wrap{max-width:none;padding:0}
   .capsule{border:0;padding:0;margin:0 0 18pt;break-inside:auto}
   .capsule + .capsule{break-before:page}
-  .avert{break-after:page}
   figure{margin-bottom:8pt}
 }
 </style>
 </head>
-<body>
+<body class="{{corps}}">
 <div class="wrap">
-<h1>Guide des tutoriels — espace enseignant</h1>
-<p class="chapeau">{{capsules}} capsules, environ {{total}}. Une ligne par plan :
+<h1>Guide des tutoriels — {{titre}}</h1>
+<p class="chapeau">{{sujet}}, environ {{total}}. Une ligne par plan :
 le texte exact que dira la voix, les copies d'écran de ce qu'on verra pendant
 qu'elle le dit, et la durée. À relire et à corriger <b>avant</b> qu'on
 synthétise et qu'on enregistre.</p>
@@ -178,5 +199,15 @@ PIED = """
 
 
 if __name__ == "__main__":
-    SORTIE.write_text(page(), encoding="utf-8")
-    print("écrit :", SORTIE.relative_to(RACINE))
+    seule = sys.argv[1] if len(sys.argv) > 1 else None
+    nom = "guide-tutoriels-%s" % (seule or "enseignant")
+    fichier = PRESENTATIONS / (nom + ".html")
+    fichier.write_text(page(seule), encoding="utf-8")
+    print("écrit :", fichier.relative_to(RACINE))
+    # Le PDF se dépose à côté de la page, comme partout dans le dépôt : c'est
+    # ce qu'on imprime et ce qu'on relit hors de l'écran.
+    from imprimer import imprimer
+    pdf = fichier.with_suffix(".pdf")
+    pages = imprimer(fichier, pdf)
+    print("imprimé :", pdf.relative_to(RACINE),
+          "(%s pages)" % pages if pages else "")
