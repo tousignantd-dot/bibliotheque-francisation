@@ -219,6 +219,15 @@ figcaption{font-size:11px;color:var(--muted);margin-top:3px;letter-spacing:.05em
 .depot:hover,.depot.survol{border-color:var(--accent);color:var(--accent)}
 label.retirer{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;
   color:var(--muted);cursor:pointer}
+.micro{display:inline-flex;align-items:center;gap:7px;font:inherit;font-size:12.5px;
+  font-weight:800;color:var(--accent);background:#fff;border:1px solid var(--accent);
+  border-radius:999px;padding:4px 12px;cursor:pointer}
+.micro .pastille{width:8px;height:8px;border-radius:999px;background:var(--accent)}
+.micro.ecoute{color:#B4090C;border-color:#B4090C;background:#FBECEC}
+.micro.ecoute .pastille{background:#B4090C;animation:pouls 1.1s ease-in-out infinite}
+@keyframes pouls{0%,100%{opacity:1}50%{opacity:.25}}
+.micro:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.dictee{color:var(--muted);font-style:italic}
 .gestes{font-family:var(--mono);font-size:11.5px;color:var(--muted);margin-top:8px;
   word-break:break-word}
 </style>
@@ -230,6 +239,10 @@ label.retirer{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;
 se recalcule à mesure. La remarque et le croquis, eux, restent à côté : ils disent ce qu'il
 faudrait montrer, et le tournage le refera proprement. <b>Rien n'est synthétisé ni enregistré
 tant que vous n'en donnez pas le signal.</b></p>
+<p class="chapeau dictee">« Dicter » écrit à la fin du champ. La reconnaissance de Chrome passe
+par Google — ce sont des textes de tutoriel, jamais des données d'élèves — et elle ne pose
+presque pas de ponctuation : dictez, puis relisez. La dictée du système (deux fois la touche
+Fn) reste disponible dans n'importe quel champ et, elle, ne sort pas du Mac.</p>
 <div id="tout"></div>
 </div>
 <script>
@@ -237,6 +250,69 @@ const $ = (s, r) => (r || document).querySelector(s);
 const el = (t, c, x) => { const n = document.createElement(t); if (c) n.className = c;
   if (x !== undefined) n.textContent = x; return n; };
 const LEGENDE = { debut: 'au début', milieu: 'en cours', fin: 'à la fin' };
+
+/* — La dictée —
+
+   `webkitSpeechRecognition` : Chrome et Safari le portent, et la page est
+   servie depuis localhost, ce qui suffit à l'autorisation du micro. Deux
+   choses à savoir, et elles sont dites dans le chapeau plutôt que cachées
+   ici : la reconnaissance de Chrome **passe par Google** — ce sont des textes
+   de tutoriel, pas des données d'élèves, mais ça se sait avant de parler — et
+   elle ne pose presque aucune ponctuation. On dicte, on relit, on ponctue.
+
+   Le texte dicté s'ajoute **à la fin** du champ, jamais au curseur : la
+   reconnaissance rend des morceaux à retardement, et viser une position qui a
+   bougé entre-temps produisait des phrases emboîtées. */
+const Reconnaissance = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+function micro(zone, auChangement) {
+  if (!Reconnaissance) return null;
+  const bouton = el('button', 'micro');
+  bouton.type = 'button';
+  bouton.appendChild(el('span', 'pastille'));
+  const mot = el('span', null, 'Dicter');
+  bouton.appendChild(mot);
+
+  let reco = null, base = '', dit = '', voulu = false;
+  const poser = (encours) => {
+    zone.value = (base ? base.replace(/\s+$/, '') + ' ' : '') + dit + encours;
+    auChangement();
+  };
+
+  bouton.addEventListener('click', () => {
+    if (voulu) { voulu = false; if (reco) reco.stop(); return; }
+    voulu = true;
+    base = zone.value; dit = '';
+    bouton.classList.add('ecoute'); mot.textContent = 'J’écoute — cliquer pour arrêter';
+    reco = new Reconnaissance();
+    reco.lang = 'fr-CA';
+    reco.continuous = true;
+    reco.interimResults = true;
+    reco.onresult = (e) => {
+      let encours = '';
+      for (let i = e.resultIndex; i < e.results.length; i += 1) {
+        const t = e.results[i][0].transcript;
+        if (e.results[i].isFinal) dit += (dit ? ' ' : '') + t.trim();
+        else encours += t;
+      }
+      poser(encours ? (dit ? ' ' : '') + encours : '');
+    };
+    /* Chrome coupe tout seul après un silence. Tant que le bouton dit
+       « j'écoute », on repart — sinon la dictée s'arrête au milieu d'une
+       phrase sans que rien ne le signale. */
+    reco.onend = () => {
+      if (voulu) { try { reco.start(); } catch (e) { /* déjà repartie */ } }
+      else { bouton.classList.remove('ecoute'); mot.textContent = 'Dicter'; poser(''); }
+    };
+    reco.onerror = (e) => {
+      voulu = false;
+      bouton.classList.remove('ecoute');
+      mot.textContent = e.error === 'not-allowed' ? 'Micro refusé' : 'Dicter';
+    };
+    reco.start();
+  });
+  return bouton;
+}
 
 const poster = (route, corps) => fetch('/api/' + route, {
   method: 'POST', headers: { 'Content-Type': 'application/json' },
@@ -275,20 +351,31 @@ function ligne(capsule, plan) {
   gauche.appendChild(remarque);
 
   let minuteur;
-  zone.addEventListener('input', () => {
+  const enregistrerTexte = () => {
     clearTimeout(minuteur);
     minuteur = setTimeout(async () => {
       const r = await poster('texte', { capsule: capsule.id, plan: plan.id, texte: zone.value });
       duree.textContent = r.secondes + ' s';
       vu.classList.add('vu'); setTimeout(() => vu.classList.remove('vu'), 1200);
     }, 500);
-  });
+  };
+  zone.addEventListener('input', enregistrerTexte);
   let m2;
-  remarque.addEventListener('input', () => {
+  const enregistrerNote = () => {
     clearTimeout(m2);
     m2 = setTimeout(() => poster('note', { capsule: capsule.id, plan: plan.id,
       note: remarque.value }), 500);
-  });
+  };
+  remarque.addEventListener('input', enregistrerNote);
+
+  const microTexte = micro(zone, enregistrerTexte);
+  if (microTexte) sous.insertBefore(microTexte, retirer);
+  const microNote = micro(remarque, enregistrerNote);
+  if (microNote) {
+    const barre = el('div', 'sous');
+    barre.appendChild(microNote);
+    gauche.appendChild(barre);
+  }
   case_.addEventListener('change', () => {
     rang.classList.toggle('retire', case_.checked);
     poster('note', { capsule: capsule.id, plan: plan.id, retirer: case_.checked });
