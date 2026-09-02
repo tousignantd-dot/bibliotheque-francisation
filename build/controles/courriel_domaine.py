@@ -1,0 +1,114 @@
+#!/usr/bin/env python3
+"""Le domaine peut-il envoyer du courriel ? — contrôle DNS, rien n'est écrit.
+
+    python3 build/controles/courriel_domaine.py
+    python3 build/controles/courriel_domaine.py --domaine autre.ca
+
+Tant que le domaine n'est pas vérifié chez Resend, la plateforme envoie depuis
+l'adresse de bac à sable `onboarding@resend.dev`, **qui n'écrit qu'au
+propriétaire du compte**. Impossible, donc, de router les signalements vers
+`support@edufrancis.ca` : ils se perdraient en silence.
+
+Trois enregistrements sont à poser, et Resend les donne quand on ajoute le
+domaine à son tableau de bord (la clé d'API en service est restreinte à
+l'envoi : elle ne peut pas les demander). Ce script ne les invente pas — il
+**vérifie qu'ils sont publiés**.
+
+**Le piège qu'il existe pour attraper** : l'éditeur de zone de WHC affiche le
+brouillon, pas ce qui est réellement servi. On a déjà perdu une soirée dessus
+avec `_railway-verify`. Le script interroge donc les **serveurs autoritatifs**
+du domaine, jamais le résolveur du poste, et compare les deux quand ils
+divergent — c'est la seule mesure qui dise la vérité.
+"""
+
+import argparse
+import subprocess
+import sys
+
+DOMAINE = "edufrancis.ca"
+
+# nom relatif, type, ce qu'on doit y trouver, à quoi ça sert
+ATTENDUS = [
+    ("send", "MX", "amazonses.com",
+     "le retour des messages (rebonds, plaintes)"),
+    ("send", "TXT", "include:amazonses.com",
+     "SPF : dit que ce service a le droit d'envoyer pour vous"),
+    ("resend._domainkey", "TXT", "p=",
+     "DKIM : la signature qui prouve que le message vient bien de vous"),
+]
+
+# Facultatif mais fortement recommandé une fois le reste en place.
+CONSEILLE = [
+    ("_dmarc", "TXT", "v=DMARC1",
+     "DMARC : dit aux boîtes de réception quoi faire d'un message non signé"),
+]
+
+
+def dig(nom, type_, serveur=None):
+    cmd = ["dig", "+short"]
+    if serveur:
+        cmd.append("@" + serveur)
+    cmd += [nom, type_]
+    try:
+        sortie = subprocess.run(cmd, capture_output=True, text=True,
+                                timeout=15).stdout
+    except (OSError, subprocess.SubprocessError):
+        return []
+    return [l.strip() for l in sortie.splitlines() if l.strip()]
+
+
+def autoritatifs(domaine):
+    return [n.rstrip(".") for n in dig(domaine, "NS")] or [None]
+
+
+def controler(domaine):
+    serveurs = autoritatifs(domaine)
+    print("Domaine : %s" % domaine)
+    print("Serveurs autoritatifs : %s\n" % ", ".join(s or "(résolveur local)"
+                                                     for s in serveurs))
+    manque = 0
+    for groupe, titre, obligatoire in ((ATTENDUS, "Requis par Resend", True),
+                                       (CONSEILLE, "Recommandé", False)):
+        print("── %s ──" % titre)
+        for relatif, type_, marque, role in groupe:
+            nom = "%s.%s" % (relatif, domaine) if relatif else domaine
+            publie = dig(nom, type_, serveurs[0])
+            local = dig(nom, type_)
+            trouve = any(marque.lower() in v.lower() for v in publie)
+            etat = "✓" if trouve else ("·" if not obligatoire else "MANQUE")
+            print("  %-8s %-28s %s" % (etat, "%s %s" % (relatif or "@", type_), role))
+            if not trouve and obligatoire:
+                manque += 1
+            # Le piège WHC : brouillon d'un côté, zone servie de l'autre.
+            if bool(publie) != bool(local):
+                print("     ⚠ le résolveur local et le serveur autoritatif ne "
+                      "disent pas la même chose —")
+                print("       la zone n'est peut-être pas publiée, ou la "
+                      "propagation est en cours.")
+        print()
+
+    if manque:
+        print("%d enregistrement(s) requis manquant(s).\n" % manque)
+        print("À faire, dans cet ordre :")
+        print("  1. resend.com → Domains → Add Domain → %s" % domaine)
+        print("     Resend affiche alors les trois valeurs exactes (le DKIM est")
+        print("     unique à votre compte : personne ne peut le deviner).")
+        print("  2. Les poser dans la zone WHC, puis PUBLIER — l'éditeur montre")
+        print("     le brouillon tant qu'on ne publie pas.")
+        print("  3. Relancer ce contrôle.")
+        print("  4. Une fois tout au vert : poser RESEND_EXPEDITEUR et faire")
+        print("     pointer SIGNALEMENT_DESTINATAIRE vers support@%s" % domaine)
+        return 1
+
+    print("Tout est en place. La plateforme peut envoyer depuis ce domaine.")
+    return 0
+
+
+def main():
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("--domaine", default=DOMAINE)
+    return controler(ap.parse_args().domaine)
+
+
+if __name__ == "__main__":
+    sys.exit(main())
