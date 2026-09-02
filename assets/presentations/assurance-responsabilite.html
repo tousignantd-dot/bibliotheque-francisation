@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>L'assurance responsabilité</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap">
+<style>
+/* ═══════════════════════════════════════════════════════════
+   L'ASSURANCE RESPONSABILITÉ
+   Suite de « S'incorporer ou non », qui laissait la question
+   ouverte. Aide à la préparation d'une rencontre avec un
+   courtier — pas un avis d'assurance.
+
+   L'acier porte ce qu'il faut acheter, l'ambre les pièges de
+   police, le rouge ce qu'aucune assurance ne couvrira jamais,
+   le vert ce qui est déjà en place et qui protège plus que
+   toute police.
+   ═══════════════════════════════════════════════════════════ */
+:root{
+  --ground:#F7F7F5; --card:#FFFFFF; --sunken:#FBFBFA;
+  --ink:#17181A; --body:#33363A; --muted:#6E7175;
+  --line:#E4E4E0; --line-fort:#D2D2CD;
+  --acheter:#1D6B8F; --acheter-bg:#E7F1F6;
+  --piege:#C07A08;   --piege-bg:#FBF2E2;
+  --jamais:#C7302B;  --jamais-bg:#FBEDEC;
+  --deja:#0A8F5B;    --deja-bg:#E9F5EF;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#151618; --card:#1D1F22; --sunken:#212326;
+    --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+    --line:#2E3135; --line-fort:#3D4146;
+    --acheter:#6DAFD2; --acheter-bg:#13242C;
+    --piege:#E0A63F;   --piege-bg:#2C2213;
+    --jamais:#EE7A73;  --jamais-bg:#2E1917;
+    --deja:#4BC48D;    --deja-bg:#12291F;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#151618; --card:#1D1F22; --sunken:#212326;
+  --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+  --line:#2E3135; --line-fort:#3D4146;
+  --acheter:#6DAFD2; --acheter-bg:#13242C;
+  --piege:#E0A63F;   --piege-bg:#2C2213;
+  --jamais:#EE7A73;  --jamais-bg:#2E1917;
+  --deja:#4BC48D;    --deja-bg:#12291F;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--body);
+  font-family:Nunito,system-ui,sans-serif;font-size:16px;line-height:1.62}
+.page{max-width:53rem;margin:0 auto;padding:1.5rem 1.25rem 5rem}
+a{color:var(--acheter)}
+.retour{display:inline-block;margin-bottom:1.75rem;font-size:.82rem;
+  font-weight:700;color:var(--muted);text-decoration:none}
+.retour:hover{color:var(--ink)}
+h1{font-family:Newsreader,Georgia,serif;font-weight:600;font-size:2.3rem;
+  line-height:1.14;color:var(--ink);margin:.2rem 0 .6rem;letter-spacing:-.01em}
+h2{font-family:Newsreader,Georgia,serif;font-weight:600;font-size:1.48rem;
+  color:var(--ink);margin:3rem 0 .3rem}
+h3{font-size:1rem;font-weight:800;color:var(--ink);margin:1.7rem 0 .35rem}
+.eyebrow{display:block;font-size:.72rem;font-weight:800;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--muted);margin-bottom:.5rem}
+.chapeau{font-size:1.08rem;margin:.4rem 0 1.3rem}
+p{margin:.72rem 0}
+b,strong{color:var(--ink);font-weight:800}
+code{font-family:var(--mono);font-size:.86em;background:var(--sunken);
+  border:1px solid var(--line);border-radius:4px;padding:.06em .34em}
+pre{font-family:var(--mono);font-size:.8rem;line-height:1.6;background:var(--sunken);
+  border:1px solid var(--line);border-radius:8px;padding:.9rem 1rem;overflow-x:auto;
+  margin:.9rem 0;white-space:pre-wrap}
+.carte{background:var(--card);border:1px solid var(--line);border-radius:10px;
+  padding:1.05rem 1.2rem;margin:1.1rem 0}
+.c-acheter{background:var(--acheter-bg);border-color:var(--acheter)}
+.c-piege{background:var(--piege-bg);border-color:var(--piege)}
+.c-jamais{background:var(--jamais-bg);border-color:var(--jamais)}
+.c-deja{background:var(--deja-bg);border-color:var(--deja)}
+.marq{display:inline-block;font-size:.7rem;font-weight:800;letter-spacing:.09em;
+  text-transform:uppercase;padding:.14em .5em;border-radius:4px;margin-bottom:.5rem}
+.m-acheter{background:var(--acheter);color:#fff}
+.m-piege{background:var(--piege);color:#fff}
+.m-jamais{background:var(--jamais);color:#fff}
+.m-deja{background:var(--deja);color:#fff}
+.prix{float:right;font-weight:800;color:var(--ink);font-size:.92rem;
+  background:var(--card);border:1px solid var(--line-fort);border-radius:6px;
+  padding:.1rem .5rem;margin-left:.8rem}
+table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.87rem}
+th,td{text-align:left;padding:.55rem .6rem;border-bottom:1px solid var(--line);
+  vertical-align:top}
+th{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);
+  border-bottom:1px solid var(--line-fort)}
+td.oui{color:var(--deja);font-weight:800;white-space:nowrap}
+td.non{color:var(--jamais);font-weight:800;white-space:nowrap}
+.enveloppe{overflow-x:auto}
+ol.gestes{list-style:none;counter-reset:g;padding:0;margin:1.2rem 0}
+ol.gestes>li{counter-increment:g;position:relative;padding:0 0 0 3rem;margin:0 0 1.3rem}
+ol.gestes>li::before{content:counter(g);position:absolute;left:0;top:-.1rem;
+  width:2rem;height:2rem;border-radius:50%;background:var(--acheter-bg);
+  border:1px solid var(--acheter);color:var(--acheter);font-weight:800;font-size:.95rem;
+  display:flex;align-items:center;justify-content:center}
+ol.gestes>li>b:first-child{display:block;color:var(--ink);font-size:1.02rem;margin-bottom:.15rem}
+ul.q{padding-left:1.1rem}
+ul.q li{margin:.42rem 0}
+.note{font-size:.9rem;color:var(--muted)}
+.src{font-size:.8rem;color:var(--muted)}
+.src a{color:var(--muted)}
+.pied{margin-top:3.5rem;padding-top:1.1rem;border-top:1px solid var(--line);
+  font-size:.8rem;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="page">
+<a class="retour" href="../../presentations.html">← Le classeur</a>
+
+<span class="eyebrow">Pour décider · suite de « S'incorporer ou non »</span>
+<h1>L'assurance responsabilité</h1>
+<p class="chapeau">La page sur l'incorporation concluait <b>« l'assurance avant
+la structure »</b> et laissait la question ouverte. La voici refermée : quelles
+polices, quelles limites, ce qu'elles ne couvriront jamais, et les cinq pièges
+de contrat qui font qu'une police payée ne paie pas. <b>Ceci prépare une
+rencontre avec un courtier ; ce n'est pas un avis d'assurance.</b></p>
+
+<div class="carte c-piege">
+  <span class="marq m-piege">Correction à la page précédente</span>
+  <p style="margin-top:.2rem">Elle disait « quelques centaines de dollars par
+  année ». <b>C'est trop bas.</b> La responsabilité civile générale coûte
+  effectivement quelques centaines de dollars, mais la garantie cyberrisque —
+  celle qui couvre le vrai risque de ce dispositif — se situe seule entre
+  <b>800 et 3 500 $</b>. L'enveloppe réaliste des trois polices est de
+  <b>2 000 à 4 000 $ par année</b>. Cela reste inférieur aux frais d'une
+  société, et l'ordre des priorités ne change pas ; mais le chiffre annoncé
+  était faux et il vaut mieux le savoir avant d'appeler.</p>
+</div>
+
+<h2>Pourquoi trois polices, et pas une</h2>
+<p>Les assureurs découpent le risque en trois, et les trois découpes
+correspondent à trois moments différents de votre activité. Prendre les deux
+premières sans la troisième est l'erreur courante, parce que les deux premières
+sont celles qu'on vous demandera, et la troisième celle dont vous auriez
+besoin.</p>
+
+<div class="carte c-acheter">
+  <span class="prix">400 – 800 $/an</span>
+  <span class="marq m-acheter">1 · Responsabilité civile générale</span>
+  <p style="margin-top:.2rem"><b>Limite courante : 2 000 000 $.</b> Elle couvre
+  les dommages corporels et matériels causés à autrui — quelqu'un trébuche sur
+  votre matériel pendant une formation, vous renversez un café sur le portable
+  d'une direction. <b>Votre risque réel ici est proche de zéro</b>, et vous
+  l'achèterez quand même : c'est la case que coche un service de
+  l'approvisionnement, et le montant de 2 M$ avec le client nommé comme
+  <b>assuré additionnel</b> est le standard des contrats publics canadiens.</p>
+</div>
+
+<div class="carte c-acheter">
+  <span class="prix">700 – 2 000 $/an</span>
+  <span class="marq m-acheter">2 · Responsabilité professionnelle (erreurs et omissions)</span>
+  <p style="margin-top:.2rem"><b>Limite à viser : 1 à 2 M$.</b> Elle couvre la
+  faute dans le travail lui-même : un diagnostic qui classe mal des élèves, une
+  correction automatisée qui induit une décision de placement erronée, une
+  fonctionnalité promise qui ne livre pas, un retard qui fait rater une session.
+  <b>C'est la police qui correspond à ce que vous vendez réellement</b> — non
+  pas un logiciel, mais un jugement pédagogique outillé.</p>
+</div>
+
+<div class="carte c-acheter">
+  <span class="prix">800 – 3 500 $/an</span>
+  <span class="marq m-acheter">3 · Cyberrisque</span>
+  <p style="margin-top:.2rem"><b>Limite à viser : 1 à 2 M$.</b> Elle couvre
+  l'incident de confidentialité : intrusion, rançongiciel, envoi au mauvais
+  destinataire, fuite d'un journal. Et elle ne couvre pas seulement le dommage —
+  elle paie <b>la réponse</b>, qui est l'essentiel de la facture réelle :
+  expertise judiciaire pour établir ce qui est sorti, avocats, notification à la
+  Commission d'accès à l'information et à chaque personne touchée, ligne
+  d'assistance, surveillance de crédit, communications, interruption d'activité.
+  <b>C'est la seule des trois qui correspond au risque dominant de ce
+  dispositif.</b></p>
+</div>
+
+<div class="carte c-piege">
+  <span class="marq m-piege">Le point technique qui vaut le plus cher</span>
+  <p style="margin-top:.2rem"><b>Prenez la professionnelle et la cyber chez le
+  même assureur, dans un même produit</b> — le marché les vend ensemble sous le
+  nom de <i>technologie E&amp;O</i>. Autrement, une fuite causée par <b>une
+  faute de programmation</b> tombe dans l'intervalle : l'assureur cyber la
+  qualifie d'erreur professionnelle, l'assureur professionnel la qualifie
+  d'incident informatique, et chacun renvoie à l'autre pendant que la facture
+  d'avocats court. Un seul contrat, un seul assureur, un seul interlocuteur le
+  jour où ça arrive.</p>
+</div>
+
+<h2>Le sinistre réaliste, et non le sinistre spectaculaire</h2>
+<p>On lit partout que la Loi 25 permet des sanctions de <b>10 M$ ou 2 % du
+chiffre d'affaires mondial</b>, et des amendes pénales jusqu'à 25 M$ ou 4 %. Ces
+plafonds sont écrits pour les grandes entreprises ; ils ne décrivent pas votre
+exposition. <b>Votre exposition réelle a deux composantes</b>, et une seule est
+assurable.</p>
+
+<div class="enveloppe">
+<table>
+<tr><th>Si les données fuient</th><th>Ordre de grandeur</th><th>Assurable ?</th></tr>
+<tr><td>Expertise judiciaire, avocats, notification à la CAI et aux personnes,
+    surveillance, communications, interruption</td>
+    <td>20 000 – 150 000 $</td><td class="oui">OUI — c'est le cœur de la cyber</td></tr>
+<tr><td>Recours civil ou action collective des personnes touchées</td>
+    <td>selon le nombre</td><td class="oui">OUI, en général</td></tr>
+<tr><td><b>Dommages punitifs de la Loi 25 — minimum 1 000 $ par personne</b>
+    en cas d'atteinte intentionnelle ou de faute lourde</td>
+    <td>1 000 $ × le nombre de dossiers</td>
+    <td class="non">DOUTEUX — à faire confirmer par écrit</td></tr>
+<tr><td>Sanction administrative pécuniaire ou amende pénale</td>
+    <td>—</td><td class="non">NON</td></tr>
+<tr><td>Faute intentionnelle de l'assuré</td><td>—</td>
+    <td class="non">NON — art. 2464 C.c.Q.</td></tr>
+</table>
+</div>
+
+<div class="carte c-jamais">
+  <span class="marq m-jamais">Ce qu'aucune police ne paiera</span>
+  <p style="margin-top:.2rem"><b>Les amendes et les sanctions administratives ne
+  s'assurent pas</b>, et l'assureur n'est jamais tenu de réparer le préjudice
+  résultant de la faute intentionnelle de l'assuré (art. 2464 du Code civil).
+  <b>Les dommages punitifs sont une zone grise</b> au Québec : beaucoup de
+  polices les excluent, d'autres les couvrent « là où la loi le permet ». Comme
+  la Loi 25 en fixe un <b>plancher de 1 000 $ par personne</b>, c'est la ligne à
+  faire préciser noir sur blanc avant de signer — pas après.</p>
+</div>
+
+<div class="carte c-deja">
+  <span class="marq m-deja">Votre première assurance est déjà en place, et elle est gratuite</span>
+  <p style="margin-top:.2rem">Chaque personne dont vous ne détenez pas le
+  dossier est <b>1 000 $ de punitifs en moins</b> et un avis de notification en
+  moins. Or le dispositif fait déjà, par conception, ce qu'un assureur
+  recommanderait : <b>aucun courriel</b> de direction, d'enseignant ou d'élève ;
+  <b>des pseudonymes</b> et non des noms ; <b>purge à 30 jours</b> des
+  productions orales et écrites ; <b>aucune conservation des corrections</b> ;
+  un <b>mode sans assistance</b> où aucun texte d'élève ne quitte le serveur ;
+  et un <b>mode séance sans compte</b> où il n'existe même pas de dossier. <b>Ce
+  n'est pas un argument de vente, c'est une réduction de prime</b> : dites-le au
+  courtier, il tarifie sur la quantité de dossiers détenus et sur leur
+  sensibilité.</p>
+</div>
+
+<h2>Les cinq pièges de police</h2>
+
+<div class="carte c-piege">
+  <span class="marq m-piege">1 · La date de rétroactivité — le piège qui vous vise</span>
+  <p style="margin-top:.2rem">Les polices professionnelles et cyber sont en base
+  <b>« réclamations présentées »</b> : ce qui compte n'est pas la date de la
+  faute, mais celle de la réclamation — <b>et la faute doit être postérieure à
+  la date de rétroactivité</b>. Une police achetée aujourd'hui porte par défaut
+  la date d'aujourd'hui. <b>Or votre plateforme tourne depuis des mois</b>, avec
+  des données de démonstration, des essais en classe et un domaine en service.
+  Tout ce travail serait <b>hors couverture</b>. Exigez une date de
+  rétroactivité correspondant au début réel de l'activité, ou faites-vous dire
+  par écrit ce qui reste découvert.</p>
+</div>
+
+<div class="carte c-piege">
+  <span class="marq m-piege">2 · La garantie subséquente</span>
+  <p style="margin-top:.2rem">Même logique, à l'autre bout : si vous cessez de
+  payer la police, une réclamation qui arrive l'année suivante <b>pour un
+  travail couvert à l'époque</b> n'est pas couverte. Il faut maintenir la police
+  des années après le dernier contrat, ou acheter une <b>garantie subséquente</b>
+  (souvent 12 à 60 mois). À demander dès la souscription, pas le jour où vous
+  arrêtez.</p>
+</div>
+
+<div class="carte c-piege">
+  <span class="marq m-piege">3 · L'assuré additionnel qu'on vous refusera</span>
+  <p style="margin-top:.2rem">Le centre demandera d'être nommé assuré
+  additionnel. <b>C'est routinier en responsabilité générale, et couramment
+  refusé en professionnelle</b> — il serait absurde d'assurer le client contre
+  les fautes du fournisseur. Ne prenez pas ce refus pour un problème : la
+  contrepartie usuelle est une <b>renonciation à la subrogation</b> et un avis
+  de résiliation de 30 jours. Sachez-le d'avance, sinon vous négocierez
+  l'impossible pendant trois semaines.</p>
+</div>
+
+<div class="carte c-piege">
+  <span class="marq m-piege">4 · La limite du contrat doit être arrimée à celle de la police</span>
+  <p style="margin-top:.2rem">Une entente qui vous fait indemniser le centre
+  <b>sans plafond</b> transforme la police en franchise : au-delà de la limite,
+  tout retombe sur vous, société ou pas. La formulation à viser plafonne votre
+  responsabilité au <b>plus élevé de la valeur du contrat ou de la limite
+  d'assurance</b>. Attendez-vous à ce que le centre veuille exclure de ce
+  plafond le manquement à la confidentialité — <b>c'est précisément là que se
+  joue la négociation</b>, et c'est la question à poser à l'avocate.</p>
+</div>
+
+<div class="carte c-piege">
+  <span class="marq m-piege">5 · Votre assurance habitation ne vous couvre pas</span>
+  <p style="margin-top:.2rem">Les polices habitation excluent en général
+  l'activité d'affaires exercée à domicile. Le matériel professionnel, la perte
+  d'exploitation et la responsabilité liée au travail n'y sont pas — et
+  déclarer l'activité est <b>obligatoire de bonne foi</b>. Un avenant coûte peu.
+  Ne pas déclarer peut coûter la police entière, y compris pour un sinistre
+  domestique sans rapport.</p>
+</div>
+
+<h2>Ce que le centre demandera, mot pour mot</h2>
+<p>Vous pouvez le préparer avant même qu'on vous le demande — remettre le
+certificat sans qu'on le réclame produit un effet considérable sur un service de
+l'approvisionnement.</p>
+<ul class="q">
+<li>Un <b>certificat d'assurance</b> émis par l'assureur, pas une attestation de vous.</li>
+<li>Le centre <b>nommé assuré additionnel</b> sur la responsabilité générale.</li>
+<li>Une limite <b>d'au moins 2 M$</b> par sinistre en responsabilité générale.</li>
+<li>Un <b>préavis de résiliation</b> (30 jours) au bénéfice du centre.</li>
+<li>Le maintien des polices <b>pendant toute la durée du contrat</b>, et souvent
+    un ou deux ans après.</li>
+<li>Selon le centre : une <b>attestation de Revenu Québec</b> et votre numéro
+    d'entreprise du Québec.</li>
+</ul>
+
+<h2>L'ordre des gestes</h2>
+<ol class="gestes">
+<li><b>Demander le projet d'entente au centre avant d'appeler le courtier</b>
+<p>Le courtier tarifie sur les obligations réelles. Sans le contrat, il devine —
+et il devine toujours vers le haut. Vous avez déjà un projet d'entente rédigé
+dans la section Loi 25 : il fait très bien l'affaire pour cette conversation.</p></li>
+
+<li><b>Prendre un courtier, pas un assureur direct</b>
+<p>Le risque « technologie » est spécialisé et peu d'assureurs le souscrivent au
+Québec. Un courtier indépendant met en concurrence ; un assureur direct vend ce
+qu'il a. Demandez explicitement quelqu'un qui <b>place déjà du technologie
+E&amp;O avec extension cyber</b>, et non de la RC générale de commerce.</p></li>
+
+<li><b>Faire chiffrer trois scénarios, pas un</b>
+<p>1 M$ / 2 M$ / 5 M$. L'écart de prime est souvent bien plus faible que
+l'intuition ne le dit, et la réponse à « quelle limite accepter dans le
+contrat » se lit dans ce tableau plutôt que dans une discussion.</p></li>
+
+<li><b>Obtenir un devis avant la signature, lier la police à la signature</b>
+<p>Le centre exige la preuve au moment de signer ; l'assureur, lui, veut savoir
+ce que vous signez. On sort de cette boucle avec un devis ferme obtenu sur le
+projet d'entente, puis une mise en vigueur le jour de la signature.</p></li>
+
+<li><b>Déclarer l'activité à votre assureur habitation</b>
+<p>Le même appel, cinq minutes, et l'avenant coûte quelques dizaines de
+dollars.</p></li>
+</ol>
+
+<h2>Le courriel au courtier, prêt à envoyer</h2>
+<pre>Objet : Demande de cotation — technologie E&amp;O et cyber, travailleur autonome
+
+Bonjour,
+
+Je développe et exploite une plateforme web d'apprentissage du français
+destinée à des centres d'éducation des adultes. Je suis seul, sans
+employé, et je m'apprête à signer une première entente avec un centre de
+services scolaire.
+
+Ce que je cherche :
+  · responsabilité civile générale, 2 M$, avec possibilité de nommer le
+    client comme assuré additionnel ;
+  · responsabilité professionnelle (E&amp;O technologie) et garantie
+    cyberrisque, de préférence dans un même contrat chez un même
+    assureur, cotées à 1 M$, 2 M$ et 5 M$.
+
+Nature des données détenues, qui devrait aider à la tarification :
+  · aucun courriel d'élève, d'enseignant ou de direction ;
+  · les personnes sont désignées par pseudonyme, jamais par leur nom ;
+  · les productions orales et écrites sont effacées après 30 jours ;
+  · les corrections automatisées ne sont jamais conservées ;
+  · deux modes d'exploitation permettent au client de désactiver
+    entièrement le traitement externe, et un troisième ne crée aucun
+    dossier nominatif.
+
+Trois questions précises :
+  1. Quelle date de rétroactivité pouvez-vous offrir ? L'activité de
+     développement a commencé en 2026 et la plateforme est déjà en
+     service.
+  2. Les dommages punitifs prévus par la Loi 25 (plancher de 1 000 $ par
+     personne) sont-ils couverts, exclus, ou sous-limités ?
+  3. Quelle garantie subséquente est disponible, et à quel coût ?
+
+Je peux vous transmettre le projet d'entente et une description technique
+du dispositif.</pre>
+
+<h2>Les trois questions à l'avocate, précisées</h2>
+<p>La page sur l'incorporation en posait une, restée trop large. La voici en
+trois :</p>
+<ul class="q">
+<li><b>Quel plafond de responsabilité accepter</b>, et faut-il refuser
+l'exclusion du plafond pour le manquement à la confidentialité — ou l'accepter
+en la bornant au montant de la garantie cyber ?</li>
+<li><b>Qui notifie en cas d'incident</b>, dans quel délai, et qui paie la
+notification : le centre est responsable au sens de la loi, mais l'incident
+peut se produire entièrement chez le fournisseur.</li>
+<li><b>Ce qui reste sur moi personnellement</b> après la police et après une
+éventuelle société : la réponse structure tout le reste, et l'incorporation ne
+la change pas.</li>
+</ul>
+
+<div class="carte c-deja">
+  <span class="marq m-deja">Ce que ça ne change pas</span>
+  <p style="margin-top:.2rem"><b>La conclusion de la page précédente tient.</b>
+  L'assurance se prend maintenant, la société attend son déclencheur — le
+  deuxième produit ou le premier client privé. À 2 000–4 000 $ par année, les
+  trois polices restent moins chères que les frais récurrents d'une société, et
+  elles couvrent ce qu'une société ne couvre pas : votre propre faute.</p>
+</div>
+
+<h2>Sur la fiabilité de cette page</h2>
+<p class="src">Les fourchettes de prime proviennent de comparateurs québécois
+publics de 2026 et sont des ordres de grandeur, pas des cotations : seul un
+courtier chiffre un risque réel. L'exigence de 2 M$ avec assuré additionnel est
+celle des contrats de services professionnels du gouvernement du Canada, très
+largement reprise par les organismes publics québécois ; le centre peut exiger
+autre chose. Les plafonds de sanction et le plancher de 1 000 $ de dommages
+punitifs viennent de la Loi 25 elle-même. La non-assurabilité de la faute
+intentionnelle est l'art. 2464 du Code civil du Québec. <b>L'assurabilité des
+dommages punitifs est réellement incertaine</b> — c'est pourquoi la page dit de
+la faire confirmer par écrit plutôt que de trancher à sa place.</p>
+<p class="src">Sources :
+<a href="https://www.tpsgc-pwgsc.gc.ca/app-acq/spc-cps/ocannexc-soannexc-fra.html" target="_blank" rel="noopener">Exigences en matière d'assurances, Services professionnels (SPAC)</a> ·
+<a href="https://www.cai.gouv.qc.ca/espace-evolutif-modernisation-lois/thematiques/sanctions-administratives-pecuniaires/" target="_blank" rel="noopener">Sanctions administratives pécuniaires (CAI)</a> ·
+<a href="https://www.assur360.ca/entreprise/assurance-responsabilite-professionnelle/" target="_blank" rel="noopener">Fourchettes de prime, responsabilité professionnelle (2026)</a> ·
+<a href="https://telioassure.com/prix-assurance-entreprise/" target="_blank" rel="noopener">Prix de l'assurance entreprise au Québec (2026)</a>
+</p>
+
+<div class="pied">
+  Écrit le 2 septembre 2026 · suite de
+  <a href="incorporer-ou-non.html">S'incorporer ou non</a> · aide à la
+  préparation d'une rencontre avec un courtier, et non un avis d'assurance
+</div>
+</div>
+</body>
+</html>
