@@ -1,781 +1,771 @@
 {
-  "commentaire": "Scénario des capsules. Chaque plan porte les gestes à jouer dans le portail, ce qu'il faut surligner, et le texte que dit la voix off. Une seule source pour la capture, la narration et le montage : un texte qui parle d'un bouton que le plan ne montre pas serait invisible à la relecture.",
-  "capsules": [
+ "commentaire": "Scénario des capsules. Chaque plan porte les gestes à jouer dans le portail, ce qu'il faut surligner, et le texte que dit la voix off. Une seule source pour la capture, la narration et le montage : un texte qui parle d'un bouton que le plan ne montre pas serait invisible à la relecture.",
+ "capsules": [
+  {
+   "id": "01-tour-du-portail",
+   "titre": "Le portail en un coup d'œil",
+   "plans": [
     {
-      "id": "01-tour-du-portail",
-      "titre": "Le portail en un coup d'œil",
-      "plans": [
-        {
-          "id": "a",
-          "gestes": [
-            {
-              "do": "survol",
-              "bas": 460
-            }
-          ],
-          "texte": "Bienvenue dans l'espace enseignant de la bibliothèque de francisation. En quelques capsules, nous allons faire le tour de vos outils : donner des dates à vos activités, gérer vos élèves et leurs codes, et sortir le matériel de la semaine."
-        },
-        {
-          "id": "b",
-          "gestes": [
-            {
-              "do": "parcourir",
-              "cibles": [
-                ".pe-onglet[data-ecran=\"planif\"]",
-                ".pe-onglet[data-ecran=\"eleves\"]",
-                ".pe-onglet[data-ecran=\"groupes\"]",
-                ".pe-onglet[data-ecran=\"materiel\"]",
-                ".pe-qui"
-              ],
-              "pause": 700,
-              "apres": "quatre onglets"
-            }
-          ],
-          "surligne": ".pe-bande1 .pe-nav",
-          "texte": "Tout tient dans une seule page. En haut, quatre onglets : Planifier, Élèves, Groupes et comptes, et Matériel. Votre nom est à droite, et votre session reste ouverte trente jours sur cet appareil."
-        },
-        {
-          "id": "c",
-          "gestes": [
-            {
-              "do": "pointer",
-              "sel": "#selectGroupe",
-              "apres": "votre groupe actif"
-            }
-          ],
-          "surligne": ".pe-bande2",
-          "texte": "Juste en dessous, la bande verte : c'est votre groupe actif. Tout ce que montrent les quatre onglets dépend du groupe choisi ici. Changez de groupe, et vous changez de classe."
-        },
-        {
-          "id": "d",
-          "gestes": [
-            {
-              "do": "parcourir",
-              "cibles": [
-                "#lienEleves",
-                "#resumeGroupe"
-              ],
-              "pause": 900,
-              "apres": "combien d eleves"
-            }
-          ],
-          "surligne": "#resumeGroupe",
-          "texte": "À côté du sélecteur, un résumé vous dit tout de suite où vous en êtes : combien d'élèves dans ce groupe, et combien d'activités vous leur avez déjà planifiées sur l'ensemble du catalogue."
-        },
-        {
-          "id": "e",
-          "gestes": [
-            {
-              "do": "defiler",
-              "sel": ".pe-jour",
-              "apres": "le programme du jour"
-            },
-            {
-              "do": "parcourir",
-              "cibles": [
-                "#dateJour",
-                "#programme"
-              ],
-              "pause": 800,
-              "apres": "la date"
-            }
-          ],
-          "surligne": ".pe-jour",
-          "texte": "Et dès l'ouverture, le programme du jour. La date, ce qui est ouvert, ce qui ferme bientôt. C'est le coup d'œil du matin, avant d'entrer en classe."
-        }
-      ]
+     "id": "a",
+     "gestes": [
+      {
+       "do": "survol",
+       "bas": 460
+      }
+     ],
+     "texte": "Bienvenue dans l'espace enseignant de la bibliothèque de francisation. En quelques minutes, nous allons faire le tour de vos outils : ouvrir un groupe, donner des dates à vos activités, suivre vos élèves et sortir le matériel de la semaine."
     },
     {
-      "id": "02-planifier",
-      "titre": "Planifier : donner une date",
-      "plans": [
-        {
-          "id": "a",
-          "gestes": [],
-          "surligne": ".pe-jour",
-          "texte": "Voici la règle la plus importante du portail, et la seule qu'il faut vraiment retenir. Une activité sans date n'existe pas pour l'élève. Un groupe neuf part complètement vide : tant que vous n'avez pas donné de date d'ouverture, la classe ne voit rien."
-        },
-        {
-          "id": "b",
-          "gestes": [
-            {
-              "do": "defiler",
-              "sel": "#recherche",
-              "apres": "un champ de recherche"
-            }
-          ],
-          "surligne": ".pe-filtres",
-          "texte": "Pour trouver une activité, un champ de recherche, et trois filtres. Cours, ce sont les modules de quatre heures du matin. Ateliers, les activités de deux heures de l'après-midi. La recherche cherche large : le titre, le domaine, même un temps de verbe."
-        },
-        {
-          "id": "c",
-          "gestes": [
-            {
-              "do": "defiler",
-              "sel": "#listeActivites",
-              "apres": "en dessous la liste"
-            }
-          ],
-          "surligne": "#listeActivites",
-          "texte": "En dessous, la liste. Chaque rangée porte une pastille d'état, à droite. Elle a toujours une couleur, un symbole et un mot : vous n'avez jamais à deviner d'après la couleur seule."
-        },
-        {
-          "id": "d",
-          "gestes": [
-            {
-              "do": "defiler",
-              "sel": "#listeActivites"
-            }
-          ],
-          "texte": "Quatre états, et c'est tout. Tiret, sans date : l'élève ne la voit pas. Flèche, à venir : la date est posée, elle arrive. Crochet, ouverte : l'élève peut y répondre. Croix, fermée : il peut relire, mais plus répondre."
-        },
-        {
-          "id": "e",
-          "gestes": [
-            {
-              "do": "cocher",
-              "n": 1,
-              "apres": "cochez maintenant"
-            },
-            {
-              "do": "defiler",
-              "sel": "#barreAction",
-              "apres": "une barre apparait"
-            },
-            {
-              "do": "cocher",
-              "n": 3,
-              "apres": "et vous suit"
-            }
-          ],
-          "surligne": "#barreAction",
-          "texte": "Cochez maintenant les activités de la semaine. Dès la première case, une barre apparaît en bas de l'écran et vous suit. C'est là que tout se décide."
-        },
-        {
-          "id": "f",
-          "gestes": [
-            {
-              "do": "defiler",
-              "sel": "#barreAction",
-              "apres": "vous donnez une date"
-            }
-          ],
-          "surligne": "#rythmes",
-          "texte": "Vous donnez une date d'ouverture, une date de fermeture si vous en voulez une, puis vous choisissez un rythme. Toutes à la même date, une par semaine, une aux deux semaines, ou une par jour. Et par défaut, le portail saute les samedis et les dimanches."
-        },
-        {
-          "id": "g",
-          "gestes": [
-            {
-              "do": "defiler",
-              "sel": "#apercuPlan",
-              "apres": "a droite l apercu"
-            }
-          ],
-          "surligne": "#apercuPlan",
-          "texte": "À droite, l'aperçu vous montre, avant de valider, quelle activité tombe quel jour. Rien n'est enregistré tant que vous n'avez pas cliqué sur « Poser les dates ». Et si vous vous trompez, « Retirer les dates » ramène tout à zéro."
-        },
-        {
-          "id": "h",
-          "gestes": [
-            {
-              "do": "defiler",
-              "sel": "#boutonApercu"
-            },
-            {
-              "do": "clic",
-              "sel": "#boutonApercu",
-              "apres": "ce que l eleve voit"
-            },
-            {
-              "do": "attendre",
-              "ms": 700
-            }
-          ],
-          "surligne": ".pe-apercu-carte",
-          "texte": "Dernier réflexe avant de quitter la page : le bouton « Ce que l'élève voit ». Il ouvre exactement ce que votre classe a sous les yeux aujourd'hui. C'est le meilleur moyen de vérifier votre travail."
-        }
-      ]
+     "id": "b",
+     "surligne": ".fr-barre",
+     "gestes": [
+      {
+       "do": "pointer",
+       "sel": ".pe-session",
+       "apres": "votre session"
+      }
+     ],
+     "texte": "Tout tient dans une seule page. En haut, une bande blanche : le nom de la plateforme, et à droite votre session, qui reste ouverte trente jours sur cet appareil."
     },
     {
-      "id": "03-sections",
-      "titre": "Ouvrir un module par sections",
-      "plans": [
-        {
-          "id": "a",
-          "gestes": [
-            {
-              "do": "js",
-              "code": "document.querySelector('[data-fermer=\"modaleApercu\"]')?.click()"
-            },
-            {
-              "do": "js",
-              "code": "document.getElementById('boutonDecocher')?.click()"
-            },
-            {
-              "do": "js",
-              "code": "document.querySelector('.choice[data-filtre=\"cours\"]')?.click()"
-            },
-            {
-              "do": "attendre",
-              "ms": 700
-            },
-            {
-              "do": "defiler",
-              "sel": "#listeActivites",
-              "apres": "le petit chevron"
-            }
-          ],
-          "surligne": ".pe-chevron",
-          "texte": "Un module de cours ne s'ouvre pas forcément d'un seul bloc. Regardez le petit chevron, à gauche de chaque rangée."
-        },
-        {
-          "id": "b",
-          "gestes": [
-            {
-              "do": "deplier-module",
-              "apres": "il deplie les sections"
-            }
-          ],
-          "surligne": ".pe-sections",
-          "texte": "Il déplie les sections du module : « Je découvre », les défis, « Je me lance », « Je retiens des mots ». Chacune a sa propre case et sa propre pastille."
-        },
-        {
-          "id": "c",
-          "gestes": [
-            {
-              "do": "defiler",
-              "sel": ".pe-sections"
-            }
-          ],
-          "surligne": ".pe-sections",
-          "texte": "Vous pouvez donc donner une date au « Défi 2 » comme vous en donnez une au module entier. Ce qui n'est pas encore ouvert reste grisé chez l'élève, avec sa date d'ouverture affichée."
-        },
-        {
-          "id": "d",
-          "gestes": [
-            {
-              "do": "defiler",
-              "sel": ".pe-sections"
-            }
-          ],
-          "surligne": ".pe-sections",
-          "texte": "Et vous n'êtes jamais obligé de dater les six. Une section sans date propre suit simplement son module. Datez seulement ce que vous voulez retenir ; le reste s'ouvre avec le module."
-        },
-        {
-          "id": "e",
-          "gestes": [
-            {
-              "do": "defiler",
-              "sel": ".pe-infos",
-              "apres": "sous les sections"
-            }
-          ],
-          "surligne": ".pe-infos",
-          "texte": "Sous les sections, le même chevron vous donne la fiche pédagogique du module : les savoirs, les actes de parole, les compétences visées et le vocabulaire. De quoi préparer votre cours sans même ouvrir l'activité."
-        }
-      ],
-      "crf": 30,
-      "commentaire_crf": "Cette capsule défile presque sans arrêt : chaque image change en entier, ce qui coûte cher. À CRF 30 elle passe de 13,8 à 6,8 Mo et le texte de 15 px reste net (vérifié à l'image)."
+     "id": "c",
+     "surligne": ".pe-contexte .card",
+     "gestes": [
+      {
+       "do": "pointer",
+       "sel": "#selectGroupe",
+       "apres": "votre groupe"
+      }
+     ],
+     "texte": "Juste en dessous, votre groupe. C'est la première chose à choisir, et tout le reste en découle : le niveau du groupe décide de ce que vous verrez du catalogue et du matériel. Changez de groupe, et vous changez de classe."
     },
     {
-      "id": "04-eleves",
-      "titre": "Les élèves et leurs codes",
-      "plans": [
-        {
-          "id": "a",
-          "gestes": [
-            {
-              "do": "onglet",
-              "valeur": "eleves"
-            },
-            {
-              "do": "attendre",
-              "ms": 700
-            }
-          ],
-          "surligne": "#listeEleves",
-          "texte": "Deuxième onglet : les élèves. Et ici, une chose à savoir tout de suite. Un élève ne s'inscrit jamais lui-même. C'est vous qui l'ajoutez au groupe, et le portail fabrique son code."
-        },
-        {
-          "id": "b",
-          "gestes": [
-            {
-              "do": "defiler",
-              "sel": "#listeEleves",
-              "apres": "ce code de six caracteres"
-            }
-          ],
-          "texte": "Ce code de six caractères est sa seule clé d'entrée. Pas de courriel, pas de mot de passe à retenir, pas de compte à créer. Il l'entre dans le portail élève, et il retrouve son travail."
-        },
-        {
-          "id": "c",
-          "gestes": [
-            {
-              "do": "defiler",
-              "sel": "#formEleve",
-              "apres": "son prenom et son nom"
-            }
-          ],
-          "surligne": "#formEleve",
-          "texte": "Pour ajouter quelqu'un : son prénom et son nom, puis « Générer le code ». Et si vous préparez une rentrée, laissez le nom vide et demandez-en plusieurs d'un coup : ils s'appelleront « Élève un, deux, trois », et vous les nommerez à l'arrivée des personnes."
-        },
-        {
-          "id": "d",
-          "gestes": [
-            {
-              "do": "defiler",
-              "sel": "#boutonImprimerCodes",
-              "apres": "imprimer les codes"
-            }
-          ],
-          "surligne": "#boutonImprimerCodes",
-          "texte": "« Imprimer les codes » sort un billet par élève, en noir et blanc : le groupe, le nom, le code, et l'adresse du portail. Vous découpez, vous distribuez, et la classe est en ligne."
-        },
-        {
-          "id": "e",
-          "gestes": [
-            {
-              "do": "defiler",
-              "sel": "#listeEleves",
-              "apres": "chaque rangee"
-            }
-          ],
-          "texte": "Chaque rangée vous dit aussi ce que la personne a ouvert et réussi. Attention : cette progression ne compte que les activités déjà offertes à ce groupe. Personne n'est jamais en retard sur quelque chose que vous n'avez pas ouvert."
-        },
-        {
-          "id": "f",
-          "gestes": [
-            {
-              "do": "defiler",
-              "sel": "#listeCorrigeMoi",
-              "apres": "une carte a part"
-            }
-          ],
-          "surligne": "#listeCorrigeMoi",
-          "texte": "Enfin, une carte à part pour « Corrige-moi », l'assistant de pratique orale. Elle vous dit, par élève et par thème, combien de réponses ont été données et lesquelles étaient bonnes du premier coup. C'est une pratique libre : ça ne bloque jamais l'élève, et ça ne remplace pas une évaluation."
-        }
-      ]
+     "id": "d",
+     "surligne": ".pe-liens",
+     "gestes": [
+      {
+       "do": "parcourir",
+       "cibles": [
+        ".pe-famille:nth-of-type(1) .pe-famille-cle",
+        ".pe-famille:nth-of-type(2) .pe-famille-cle",
+        ".pe-famille:nth-of-type(3) .pe-famille-cle"
+       ],
+       "pause": 900,
+       "apres": "trois familles"
+      }
+     ],
+     "texte": "Sous le groupe, neuf boutons rangés en trois familles. Le cours : le catalogue, la planification, le matériel. Ma classe : les élèves et leurs codes, la progression, la séance sans compte. Et les outils, qui s'ouvrent chacun dans un nouvel onglet."
     },
     {
-      "id": "05-groupes",
-      "titre": "Vos groupes",
-      "plans": [
-        {
-          "id": "a",
-          "gestes": [
-            {
-              "do": "onglet",
-              "valeur": "groupes"
-            },
-            {
-              "do": "attendre",
-              "ms": 700
-            }
-          ],
-          "surligne": "#listeGroupes",
-          "texte": "Troisième onglet : vos groupes. Créez-en un par classe. Chaque groupe a ses élèves, ses dates et sa progression, complètement séparés des autres."
-        },
-        {
-          "id": "b",
-          "gestes": [
-            {
-              "do": "defiler",
-              "sel": "#formGroupe",
-              "apres": "le catalogue d activites"
-            }
-          ],
-          "surligne": "#formGroupe",
-          "texte": "Le catalogue d'activités, lui, est commun à toute l'équipe. Personne ne recrée le contenu. Ce qui vous appartient, ce sont les dates que vous posez dessus."
-        },
-        {
-          "id": "c",
-          "gestes": [
-            {
-              "do": "onglet",
-              "valeur": "planif"
-            },
-            {
-              "do": "attendre",
-              "ms": 600
-            },
-            {
-              "do": "clic",
-              "sel": "#boutonCopie",
-              "apres": "copier une planification"
-            },
-            {
-              "do": "attendre",
-              "ms": 600
-            }
-          ],
-          "surligne": "#formCopie",
-          "texte": "Et voici le geste qui démarre un groupe neuf en une minute : « Copier une planification ». Vous reprenez le calendrier d'un autre de vos groupes, décalé du nombre de jours voulu."
-        },
-        {
-          "id": "d",
-          "gestes": [],
-          "surligne": "#formCopie",
-          "texte": "Deux précautions. Cette copie remplace les dates du groupe où vous êtes, elle ne s'y ajoute pas. Et la date « vue en classe » n'est pas copiée : celle-là reste votre trace personnelle, que l'élève ne voit jamais."
-        }
-      ]
-    },
-    {
-      "id": "06-materiel",
-      "titre": "Le dépôt de matériel",
-      "plans": [
-        {
-          "id": "a",
-          "gestes": [
-            {
-              "do": "js",
-              "code": "document.querySelector('[data-fermer=\"modaleCopie\"]')?.click()"
-            },
-            {
-              "do": "onglet",
-              "valeur": "materiel"
-            },
-            {
-              "do": "attendre",
-              "ms": 1800
-            }
-          ],
-          "surligne": ".mat-vues",
-          "texte": "Dernier onglet : le dépôt de matériel. C'est ici que vivent les présentations de séance et les fiches à imprimer produites par l'équipe. Deux vues du même écran : « Ma semaine » et « Le catalogue »."
-        },
-        {
-          "id": "b",
-          "gestes": [
-            {
-              "do": "defiler",
-              "sel": "#matColonne",
-              "apres": "ma semaine"
-            }
-          ],
-          "surligne": "#matColonne",
-          "texte": "« Ma semaine » part de votre planification et vous montre, jour par jour, ce que vous avez au programme. Pour chaque plage, l'activité prévue et ses séances offertes en pastilles."
-        },
-        {
-          "id": "c",
-          "gestes": [
-            {
-              "do": "clic",
-              "sel": "[data-vue=\"catalogue\"]",
-              "apres": "le catalogue lui"
-            },
-            {
-              "do": "attendre",
-              "ms": 1400
-            },
-            {
-              "do": "ouvrir-module"
-            },
-            {
-              "do": "defiler",
-              "sel": ".mat-seance"
-            }
-          ],
-          "surligne": "#matColonne",
-          "texte": "Le catalogue, lui, range tout par module. Chaque module de cours est découpé en seize séances, codées de A un à E deux. Le code dit le bloc d'enseignement, et la barre du haut vous dit combien sont déjà produites."
-        },
-        {
-          "id": "d",
-          "gestes": [
-            {
-              "do": "defiler",
-              "sel": ".mat-seance"
-            }
-          ],
-          "texte": "Un mot sur les seize séances, parce que ça surprend. Vos dates de planification suivent le découpage du module en six sections. Les présentations, elles, suivent une grille de seize séances de cours. Les deux grilles ne se correspondent pas : le portail vous les offre toutes, et c'est vous qui choisissez."
-        },
-        {
-          "id": "e",
-          "gestes": [
-            {
-              "do": "ouvrir-seance",
-              "code": "A3",
-              "apres": "cliquez sur le titre"
-            },
-            {
-              "do": "attendre",
-              "ms": 1000
-            }
-          ],
-          "surligne": ".mat-aside",
-          "texte": "Cliquez sur le titre d'une séance : le panneau de droite vous montre la présentation, son aperçu, le nombre de diapositives, et la fiche élève qui l'accompagne. Vous téléchargez, vous ouvrez, ou vous imprimez directement."
-        },
-        {
-          "id": "f",
-          "gestes": [
-            {
-              "do": "defiler",
-              "sel": "#matColonne section:last-of-type",
-              "apres": "descendez maintenant"
-            }
-          ],
-          "surligne": "#matColonne section:last-of-type",
-          "texte": "Descendez maintenant au bas du catalogue : « Dépôts de l'équipe ». Voici deux versions retravaillées par une collègue. Sur la séance A3, des diapositives allégées — deux exemples de moins, plus de temps de parole. Sur la A4, un exercice de plus pour ceux qui finissent avant les autres."
-        },
-        {
-          "id": "g",
-          "gestes": [
-            {
-              "do": "defiler",
-              "sel": "#matColonne section:last-of-type"
-            }
-          ],
-          "texte": "C'est ça, déposer sa propre version. Votre fichier se range à côté de l'officiel, jamais à sa place : l'original reste téléchargeable, et la prochaine production automatique ne l'écrasera pas. Un compte administrateur peut aller plus loin et faire servir un dépôt à la place de l'officiel — là encore sans rien effacer, et ça se défait d'un clic."
-        },
-        {
-          "id": "h",
-          "gestes": [
-            {
-              "do": "defiler",
-              "sel": ".mat-seance",
-              "apres": "cochez enfin"
-            }
-          ],
-          "surligne": ".mat-aside",
-          "texte": "Cochez enfin plusieurs séances, et la sélection s'accumule en bas du panneau : vous descendez d'un coup toutes les présentations, ou toutes les fiches, ou vous les envoyez à l'imprimante en un seul dialogue, une fiche par page. Voilà, vous avez fait le tour. Le seul réflexe à garder : une activité qu'on n'a pas datée n'existe pas pour la classe."
-        }
-      ]
-    },
-    {
-      "id": "07-composer",
-      "titre": "Composer une activité",
-      "plans": [
-        {
-          "id": "a",
-          "gestes": [
-            {
-              "do": "onglet",
-              "valeur": "planif"
-            },
-            {
-              "do": "attendre",
-              "ms": 150
-            },
-            {
-              "do": "pointer",
-              "sel": ".pe-actions-groupe a[href*='compositeur']",
-              "apres": "composer une activite"
-            }
-          ],
-          "surligne": ".pe-actions-groupe a[href*='compositeur']",
-          "texte": "Dernier outil de la barre de groupe : « Composer une activité ». Il s'ouvre dans un nouvel onglet, donc votre planification en cours n'est jamais perdue."
-        },
-        {
-          "id": "b",
-          "gestes": [
-            {
-              "do": "naviguer",
-              "vers": "/assets/outils/compositeur-activite.html"
-            },
-            {
-              "do": "survol",
-              "bas": 380
-            }
-          ],
-          "texte": "Le compositeur ne fabrique pas l'activité lui-même. Il assemble une commande — un prompt — à partir des critères du programme officiel de francisation. Vous choisissez, il écrit."
-        },
-        {
-          "id": "c",
-          "gestes": [
-            {
-              "do": "defiler",
-              "sel": "#zone-niveaux"
-            },
-            {
-              "do": "clic-index",
-              "sel": "#zone-niveaux .niv",
-              "n": 3,
-              "apres": "ici niveau 4"
-            },
-            {
-              "do": "attendre",
-              "ms": 700
-            }
-          ],
-          "surligne": "#zone-niveaux",
-          "texte": "Première étape, le cadre. Et d'abord le niveau, parce qu'il commande tout le reste : les domaines, les situations, les intentions et les savoirs qui vous seront proposés en dépendent. Ici, niveau 4."
-        },
-        {
-          "id": "d",
-          "gestes": [
-            {
-              "do": "defiler",
-              "sel": "#zone-competences"
-            },
-            {
-              "do": "clic-index",
-              "sel": "#zone-competences .opt",
-              "n": 1,
-              "apres": "une production orale"
-            },
-            {
-              "do": "clic-index",
-              "sel": "#zone-duree .opt",
-              "n": 2,
-              "apres": "en deux heures"
-            },
-            {
-              "do": "clic-index",
-              "sel": "#zone-modalite .opt",
-              "n": 1,
-              "apres": "en dyade"
-            }
-          ],
-          "texte": "Puis la compétence travaillée, la durée de l'activité et la modalité de travail. Trois clics qui disent au modèle ce qu'il doit préparer : ici une production orale, en deux heures, en dyade."
-        },
-        {
-          "id": "e",
-          "gestes": [
-            {
-              "do": "defiler",
-              "sel": "#sel-domaine"
-            },
-            {
-              "do": "choisir",
-              "sel": "#sel-domaine",
-              "texte": "Habitation",
-              "apres": "le domaine de vie"
-            },
-            {
-              "do": "attendre",
-              "ms": 250
-            },
-            {
-              "do": "choisir",
-              "sel": "#sel-situation",
-              "texte": "Location",
-              "apres": "puis la situation"
-            }
-          ],
-          "surligne": "#zone-thematique, #sel-situation",
-          "texte": "Deuxième étape, la thématique. Le domaine de vie, puis la situation de communication. Ces listes ne sont pas inventées : ce sont celles que le programme prescrit pour le niveau que vous venez de choisir."
-        },
-        {
-          "id": "f",
-          "gestes": [
-            {
-              "do": "defiler",
-              "sel": "#zone-intentions"
-            },
-            {
-              "do": "clic-index",
-              "sel": "#zone-intentions label",
-              "n": 0,
-              "apres": "s informer sur les conditions"
-            },
-            {
-              "do": "clic-index",
-              "sel": "#zone-intentions label",
-              "n": 1,
-              "apres": "exprimer ses besoins"
-            }
-          ],
-          "surligne": "#zone-intentions",
-          "texte": "Troisième étape, les intentions de communication. Le programme en prescrit une liste pour cette situation, et une seule : ici, s'informer sur les conditions de location, et exprimer ses besoins ou ses préférences. Cochez celles que votre activité doit faire travailler."
-        },
-        {
-          "id": "g",
-          "gestes": [
-            {
-              "do": "defiler",
-              "sel": "#q-savoirs"
-            },
-            {
-              "do": "taper",
-              "sel": "#q-savoirs",
-              "texte": "logement",
-              "apres": "tapez un mot"
-            },
-            {
-              "do": "attendre",
-              "ms": 600
-            },
-            {
-              "do": "clic-index",
-              "sel": "#zone-savoirs label",
-              "n": 0,
-              "apres": "cochez la grammaire"
-            }
-          ],
-          "surligne": "#zone-savoirs",
-          "texte": "Quatrième étape, les savoirs. Il y en a plus de deux cents au niveau 4 : le champ de recherche les resserre. Tapez un mot, et vous ne voyez plus que ce qui s'y rapporte. Cochez la grammaire et le vocabulaire visés."
-        },
-        {
-          "id": "h",
-          "gestes": [
-            {
-              "do": "defiler",
-              "sel": "#b-doc"
-            },
-            {
-              "do": "pointer",
-              "sel": "#b-doc",
-              "apres": "ajouter un document"
-            }
-          ],
-          "surligne": "#b-doc",
-          "texte": "Vous pouvez aussi joindre votre propre documentation : un texte de départ, une annonce trouvée en ligne, une situation vécue en classe. « Ajouter un document » la verse dans la commande, et l'activité se construira autour."
-        },
-        {
-          "id": "i",
-          "gestes": [
-            {
-              "do": "defiler",
-              "sel": "#barre"
-            },
-            {
-              "do": "parcourir",
-              "cibles": [
-                "#j-entree",
-                "#j-sortie",
-                "#j-total"
-              ],
-              "pause": 750,
-              "apres": "ce que le prompt enverra"
-            }
-          ],
-          "surligne": "#barre",
-          "texte": "Pendant que vous cochez, le compteur en haut suit le coût en jetons : ce que le prompt enverra, ce que l'activité produira, et le total. Vous savez ce que vous engagez avant de lancer quoi que ce soit."
-        },
-        {
-          "id": "j",
-          "gestes": [
-            {
-              "do": "defiler",
-              "sel": "#sortie"
-            }
-          ],
-          "surligne": "#sortie",
-          "texte": "Et le prompt s'écrit à mesure, en bas. Il reprend le niveau, le sigle du cours, la situation, les intentions et les savoirs que vous avez cochés, dans les termes exacts du programme."
-        },
-        {
-          "id": "k",
-          "gestes": [
-            {
-              "do": "defiler",
-              "sel": "#b-copier"
-            },
-            {
-              "do": "parcourir",
-              "cibles": [
-                "#b-copier",
-                "#b-editer",
-                "#b-md"
-              ],
-              "pause": 800,
-              "apres": "copier le prompt"
-            }
-          ],
-          "surligne": "#barre",
-          "texte": "Il ne reste qu'à le prendre. « Copier le prompt » pour le coller dans Claude, « Modifier le prompt » si vous voulez ajuster une phrase, « Télécharger en point m d » pour le garder. Et « Tout réinitialiser » pour recommencer une autre activité."
-        }
-      ],
-      "crf": 30,
-      "commentaire_crf": "Onze plans qui défilent d'un bout à l'autre d'une longue page : à CRF 23 la capsule pesait 13,2 Mo. Même réglage que 03-sections."
+     "id": "e",
+     "surligne": ".pe-jour, #programme",
+     "gestes": [
+      {
+       "do": "pointer",
+       "sel": "#resumeGroupe",
+       "apres": "un resume"
+      },
+      {
+       "do": "defiler",
+       "sel": "#programme",
+       "apres": "le programme du jour"
+      }
+     ],
+     "texte": "Au bout de la ligne, un résumé dit où vous en êtes : combien d'élèves, combien d'activités déjà planifiées. Et dessous, le programme du jour — ce qui est ouvert, ce qui ferme bientôt. C'est le coup d'œil du matin, avant d'entrer en classe."
     }
-  ]
+   ]
+  },
+  {
+   "id": "02-planifier",
+   "titre": "Planifier : donner une date",
+   "plans": [
+    {
+     "id": "a",
+     "gestes": [],
+     "surligne": ".pe-jour",
+     "texte": "Voici la règle la plus importante du portail, et la seule qu'il faut vraiment retenir. Une activité sans date n'existe pas pour l'élève. Un groupe neuf part complètement vide : tant que vous n'avez pas donné de date d'ouverture, la classe ne voit rien."
+    },
+    {
+     "id": "b",
+     "gestes": [
+      {
+       "do": "defiler",
+       "sel": "#recherche",
+       "apres": "un champ de recherche"
+      }
+     ],
+     "surligne": ".pe-filtres",
+     "texte": "Pour trouver une activité, un champ de recherche, et trois filtres. Cours, ce sont les modules de quatre heures du matin. Ateliers, les activités de deux heures de l'après-midi. La recherche cherche large : le titre, le domaine, même un temps de verbe."
+    },
+    {
+     "id": "c",
+     "gestes": [
+      {
+       "do": "defiler",
+       "sel": "#listeActivites",
+       "apres": "en dessous la liste"
+      }
+     ],
+     "surligne": "#listeActivites",
+     "texte": "En dessous, la liste. Chaque rangée porte une pastille d'état, à droite. Elle a toujours une couleur, un symbole et un mot : vous n'avez jamais à deviner d'après la couleur seule."
+    },
+    {
+     "id": "d",
+     "gestes": [
+      {
+       "do": "defiler",
+       "sel": "#listeActivites"
+      }
+     ],
+     "texte": "Quatre états, et c'est tout. Tiret, sans date : l'élève ne la voit pas. Flèche, à venir : la date est posée, elle arrive. Crochet, ouverte : l'élève peut y répondre. Croix, fermée : il peut relire, mais plus répondre."
+    },
+    {
+     "id": "e",
+     "gestes": [
+      {
+       "do": "cocher",
+       "n": 1,
+       "apres": "cochez maintenant"
+      },
+      {
+       "do": "defiler",
+       "sel": "#barreAction",
+       "apres": "une barre apparait"
+      },
+      {
+       "do": "cocher",
+       "n": 3,
+       "apres": "et vous suit"
+      }
+     ],
+     "surligne": "#barreAction",
+     "texte": "Cochez maintenant les activités de la semaine. Dès la première case, une barre apparaît en bas de l'écran et vous suit. C'est là que tout se décide."
+    },
+    {
+     "id": "f",
+     "gestes": [
+      {
+       "do": "defiler",
+       "sel": "#barreAction",
+       "apres": "vous donnez une date"
+      }
+     ],
+     "surligne": "#rythmes",
+     "texte": "Vous donnez une date d'ouverture, une date de fermeture si vous en voulez une, puis vous choisissez un rythme. Toutes à la même date, une par semaine, une aux deux semaines, ou une par jour. Et par défaut, le portail saute les samedis et les dimanches."
+    },
+    {
+     "id": "g",
+     "gestes": [
+      {
+       "do": "defiler",
+       "sel": "#apercuPlan",
+       "apres": "a droite l apercu"
+      }
+     ],
+     "surligne": "#apercuPlan",
+     "texte": "À droite, l'aperçu vous montre, avant de valider, quelle activité tombe quel jour. Rien n'est enregistré tant que vous n'avez pas cliqué sur « Poser les dates ». Et si vous vous trompez, « Retirer les dates » ramène tout à zéro."
+    },
+    {
+     "id": "h",
+     "gestes": [
+      {
+       "do": "defiler",
+       "sel": "#boutonApercu"
+      },
+      {
+       "do": "clic",
+       "sel": "#boutonApercu",
+       "apres": "ce que l eleve voit"
+      },
+      {
+       "do": "attendre",
+       "ms": 700
+      }
+     ],
+     "surligne": ".pe-apercu-carte",
+     "texte": "Dernier réflexe avant de quitter la page : le bouton « Ce que l'élève voit ». Il ouvre exactement ce que votre classe a sous les yeux aujourd'hui. C'est le meilleur moyen de vérifier votre travail."
+    }
+   ]
+  },
+  {
+   "id": "03-sections",
+   "titre": "Ouvrir un module par sections",
+   "plans": [
+    {
+     "id": "a",
+     "gestes": [
+      {
+       "do": "js",
+       "code": "document.querySelector('[data-fermer=\"modaleApercu\"]')?.click()"
+      },
+      {
+       "do": "js",
+       "code": "document.getElementById('boutonDecocher')?.click()"
+      },
+      {
+       "do": "js",
+       "code": "document.querySelector('.choice[data-filtre=\"cours\"]')?.click()"
+      },
+      {
+       "do": "attendre",
+       "ms": 700
+      },
+      {
+       "do": "defiler",
+       "sel": "#listeActivites",
+       "apres": "le petit chevron"
+      }
+     ],
+     "surligne": ".pe-chevron",
+     "texte": "Un module de cours ne s'ouvre pas forcément d'un seul bloc. Regardez le petit chevron, à gauche de chaque rangée."
+    },
+    {
+     "id": "b",
+     "gestes": [
+      {
+       "do": "deplier-module",
+       "apres": "il deplie les sections"
+      }
+     ],
+     "surligne": ".pe-sections",
+     "texte": "Il déplie les sections du module : « Je découvre », les défis, « Je me lance », « Je retiens des mots ». Chacune a sa propre case et sa propre pastille."
+    },
+    {
+     "id": "c",
+     "gestes": [
+      {
+       "do": "defiler",
+       "sel": ".pe-sections"
+      }
+     ],
+     "surligne": ".pe-sections",
+     "texte": "Vous pouvez donc donner une date au « Défi 2 » comme vous en donnez une au module entier. Ce qui n'est pas encore ouvert reste grisé chez l'élève, avec sa date d'ouverture affichée."
+    },
+    {
+     "id": "d",
+     "gestes": [
+      {
+       "do": "defiler",
+       "sel": ".pe-sections"
+      }
+     ],
+     "surligne": ".pe-sections",
+     "texte": "Et vous n'êtes jamais obligé de dater les six. Une section sans date propre suit simplement son module. Datez seulement ce que vous voulez retenir ; le reste s'ouvre avec le module."
+    },
+    {
+     "id": "e",
+     "gestes": [
+      {
+       "do": "defiler",
+       "sel": ".pe-infos",
+       "apres": "sous les sections"
+      }
+     ],
+     "surligne": ".pe-infos",
+     "texte": "Sous les sections, le même chevron vous donne la fiche pédagogique du module : les savoirs, les actes de parole, les compétences visées et le vocabulaire. De quoi préparer votre cours sans même ouvrir l'activité."
+    }
+   ],
+   "crf": 30,
+   "commentaire_crf": "Cette capsule défile presque sans arrêt : chaque image change en entier, ce qui coûte cher. À CRF 30 elle passe de 13,8 à 6,8 Mo et le texte de 15 px reste net (vérifié à l'image)."
+  },
+  {
+   "id": "04-eleves",
+   "titre": "Les élèves et leurs codes",
+   "plans": [
+    {
+     "id": "a",
+     "gestes": [
+      {
+       "do": "onglet",
+       "valeur": "eleves"
+      },
+      {
+       "do": "attendre",
+       "ms": 700
+      }
+     ],
+     "surligne": "#listeEleves",
+     "texte": "Deuxième onglet : les élèves. Et ici, une chose à savoir tout de suite. Un élève ne s'inscrit jamais lui-même. C'est vous qui l'ajoutez au groupe, et le portail fabrique son code."
+    },
+    {
+     "id": "b",
+     "gestes": [
+      {
+       "do": "defiler",
+       "sel": "#listeEleves",
+       "apres": "ce code de six caracteres"
+      }
+     ],
+     "texte": "Ce code de six caractères est sa seule clé d'entrée. Pas de courriel, pas de mot de passe à retenir, pas de compte à créer. Il l'entre dans le portail élève, et il retrouve son travail."
+    },
+    {
+     "id": "c",
+     "gestes": [
+      {
+       "do": "defiler",
+       "sel": "#formEleve",
+       "apres": "son prenom et son nom"
+      }
+     ],
+     "surligne": "#formEleve",
+     "texte": "Pour ajouter quelqu'un : son prénom et son nom, puis « Générer le code ». Et si vous préparez une rentrée, laissez le nom vide et demandez-en plusieurs d'un coup : ils s'appelleront « Élève un, deux, trois », et vous les nommerez à l'arrivée des personnes."
+    },
+    {
+     "id": "d",
+     "gestes": [
+      {
+       "do": "defiler",
+       "sel": "#boutonImprimerCodes",
+       "apres": "imprimer les codes"
+      }
+     ],
+     "surligne": "#boutonImprimerCodes",
+     "texte": "« Imprimer les codes » sort un billet par élève, en noir et blanc : le groupe, le nom, le code, et l'adresse du portail. Vous découpez, vous distribuez, et la classe est en ligne."
+    },
+    {
+     "id": "e",
+     "gestes": [
+      {
+       "do": "defiler",
+       "sel": "#listeEleves",
+       "apres": "chaque rangee"
+      }
+     ],
+     "texte": "Chaque rangée vous dit aussi ce que la personne a ouvert et réussi. Attention : cette progression ne compte que les activités déjà offertes à ce groupe. Personne n'est jamais en retard sur quelque chose que vous n'avez pas ouvert."
+    },
+    {
+     "id": "f",
+     "gestes": [
+      {
+       "do": "defiler",
+       "sel": "#listeCorrigeMoi",
+       "apres": "une carte a part"
+      }
+     ],
+     "surligne": "#listeCorrigeMoi",
+     "texte": "Enfin, une carte à part pour « Corrige-moi », l'assistant de pratique orale. Elle vous dit, par élève et par thème, combien de réponses ont été données et lesquelles étaient bonnes du premier coup. C'est une pratique libre : ça ne bloque jamais l'élève, et ça ne remplace pas une évaluation."
+    }
+   ]
+  },
+  {
+   "id": "05-groupes",
+   "titre": "Vos groupes",
+   "plans": [
+    {
+     "id": "a",
+     "gestes": [
+      {
+       "do": "onglet",
+       "valeur": "groupes"
+      },
+      {
+       "do": "attendre",
+       "ms": 700
+      }
+     ],
+     "surligne": "#listeGroupes",
+     "texte": "Troisième onglet : vos groupes. Créez-en un par classe. Chaque groupe a ses élèves, ses dates et sa progression, complètement séparés des autres."
+    },
+    {
+     "id": "b",
+     "gestes": [
+      {
+       "do": "defiler",
+       "sel": "#formGroupe",
+       "apres": "le catalogue d activites"
+      }
+     ],
+     "surligne": "#formGroupe",
+     "texte": "Le catalogue d'activités, lui, est commun à toute l'équipe. Personne ne recrée le contenu. Ce qui vous appartient, ce sont les dates que vous posez dessus."
+    },
+    {
+     "id": "c",
+     "gestes": [
+      {
+       "do": "onglet",
+       "valeur": "planif"
+      },
+      {
+       "do": "attendre",
+       "ms": 600
+      },
+      {
+       "do": "clic",
+       "sel": "#boutonCopie",
+       "apres": "copier une planification"
+      },
+      {
+       "do": "attendre",
+       "ms": 600
+      }
+     ],
+     "surligne": "#formCopie",
+     "texte": "Et voici le geste qui démarre un groupe neuf en une minute : « Copier une planification ». Vous reprenez le calendrier d'un autre de vos groupes, décalé du nombre de jours voulu."
+    },
+    {
+     "id": "d",
+     "gestes": [],
+     "surligne": "#formCopie",
+     "texte": "Deux précautions. Cette copie remplace les dates du groupe où vous êtes, elle ne s'y ajoute pas. Et la date « vue en classe » n'est pas copiée : celle-là reste votre trace personnelle, que l'élève ne voit jamais."
+    }
+   ]
+  },
+  {
+   "id": "06-materiel",
+   "titre": "Le dépôt de matériel",
+   "plans": [
+    {
+     "id": "a",
+     "gestes": [
+      {
+       "do": "js",
+       "code": "document.querySelector('[data-fermer=\"modaleCopie\"]')?.click()"
+      },
+      {
+       "do": "onglet",
+       "valeur": "materiel"
+      },
+      {
+       "do": "attendre",
+       "ms": 1800
+      }
+     ],
+     "surligne": ".mat-vues",
+     "texte": "Dernier onglet : le dépôt de matériel. C'est ici que vivent les présentations de séance et les fiches à imprimer produites par l'équipe. Deux vues du même écran : « Ma semaine » et « Le catalogue »."
+    },
+    {
+     "id": "b",
+     "gestes": [
+      {
+       "do": "defiler",
+       "sel": "#matColonne",
+       "apres": "ma semaine"
+      }
+     ],
+     "surligne": "#matColonne",
+     "texte": "« Ma semaine » part de votre planification et vous montre, jour par jour, ce que vous avez au programme. Pour chaque plage, l'activité prévue et ses séances offertes en pastilles."
+    },
+    {
+     "id": "c",
+     "gestes": [
+      {
+       "do": "clic",
+       "sel": "[data-vue=\"catalogue\"]",
+       "apres": "le catalogue lui"
+      },
+      {
+       "do": "attendre",
+       "ms": 1400
+      },
+      {
+       "do": "ouvrir-module"
+      },
+      {
+       "do": "defiler",
+       "sel": ".mat-seance"
+      }
+     ],
+     "surligne": "#matColonne",
+     "texte": "Le catalogue, lui, range tout par module. Chaque module de cours est découpé en seize séances, codées de A un à E deux. Le code dit le bloc d'enseignement, et la barre du haut vous dit combien sont déjà produites."
+    },
+    {
+     "id": "d",
+     "gestes": [
+      {
+       "do": "defiler",
+       "sel": ".mat-seance"
+      }
+     ],
+     "texte": "Un mot sur les seize séances, parce que ça surprend. Vos dates de planification suivent le découpage du module en six sections. Les présentations, elles, suivent une grille de seize séances de cours. Les deux grilles ne se correspondent pas : le portail vous les offre toutes, et c'est vous qui choisissez."
+    },
+    {
+     "id": "e",
+     "gestes": [
+      {
+       "do": "ouvrir-seance",
+       "code": "A3",
+       "apres": "cliquez sur le titre"
+      },
+      {
+       "do": "attendre",
+       "ms": 1000
+      }
+     ],
+     "surligne": ".mat-aside",
+     "texte": "Cliquez sur le titre d'une séance : le panneau de droite vous montre la présentation, son aperçu, le nombre de diapositives, et la fiche élève qui l'accompagne. Vous téléchargez, vous ouvrez, ou vous imprimez directement."
+    },
+    {
+     "id": "f",
+     "gestes": [
+      {
+       "do": "defiler",
+       "sel": "#matColonne section:last-of-type",
+       "apres": "descendez maintenant"
+      }
+     ],
+     "surligne": "#matColonne section:last-of-type",
+     "texte": "Descendez maintenant au bas du catalogue : « Dépôts de l'équipe ». Voici deux versions retravaillées par une collègue. Sur la séance A3, des diapositives allégées — deux exemples de moins, plus de temps de parole. Sur la A4, un exercice de plus pour ceux qui finissent avant les autres."
+    },
+    {
+     "id": "g",
+     "gestes": [
+      {
+       "do": "defiler",
+       "sel": "#matColonne section:last-of-type"
+      }
+     ],
+     "texte": "C'est ça, déposer sa propre version. Votre fichier se range à côté de l'officiel, jamais à sa place : l'original reste téléchargeable, et la prochaine production automatique ne l'écrasera pas. Un compte administrateur peut aller plus loin et faire servir un dépôt à la place de l'officiel — là encore sans rien effacer, et ça se défait d'un clic."
+    },
+    {
+     "id": "h",
+     "gestes": [
+      {
+       "do": "defiler",
+       "sel": ".mat-seance",
+       "apres": "cochez enfin"
+      }
+     ],
+     "surligne": ".mat-aside",
+     "texte": "Cochez enfin plusieurs séances, et la sélection s'accumule en bas du panneau : vous descendez d'un coup toutes les présentations, ou toutes les fiches, ou vous les envoyez à l'imprimante en un seul dialogue, une fiche par page. Voilà, vous avez fait le tour. Le seul réflexe à garder : une activité qu'on n'a pas datée n'existe pas pour la classe."
+    }
+   ]
+  },
+  {
+   "id": "07-composer",
+   "titre": "Composer une activité",
+   "plans": [
+    {
+     "id": "a",
+     "gestes": [
+      {
+       "do": "onglet",
+       "valeur": "planif"
+      },
+      {
+       "do": "attendre",
+       "ms": 150
+      },
+      {
+       "do": "pointer",
+       "sel": ".pe-actions-groupe a[href*='compositeur']",
+       "apres": "composer une activite"
+      }
+     ],
+     "surligne": ".pe-actions-groupe a[href*='compositeur']",
+     "texte": "Dernier outil de la barre de groupe : « Composer une activité ». Il s'ouvre dans un nouvel onglet, donc votre planification en cours n'est jamais perdue."
+    },
+    {
+     "id": "b",
+     "gestes": [
+      {
+       "do": "naviguer",
+       "vers": "/assets/outils/compositeur-activite.html"
+      },
+      {
+       "do": "survol",
+       "bas": 380
+      }
+     ],
+     "texte": "Le compositeur ne fabrique pas l'activité lui-même. Il assemble une commande — un prompt — à partir des critères du programme officiel de francisation. Vous choisissez, il écrit."
+    },
+    {
+     "id": "c",
+     "gestes": [
+      {
+       "do": "defiler",
+       "sel": "#zone-niveaux"
+      },
+      {
+       "do": "clic-index",
+       "sel": "#zone-niveaux .niv",
+       "n": 3,
+       "apres": "ici niveau 4"
+      },
+      {
+       "do": "attendre",
+       "ms": 700
+      }
+     ],
+     "surligne": "#zone-niveaux",
+     "texte": "Première étape, le cadre. Et d'abord le niveau, parce qu'il commande tout le reste : les domaines, les situations, les intentions et les savoirs qui vous seront proposés en dépendent. Ici, niveau 4."
+    },
+    {
+     "id": "d",
+     "gestes": [
+      {
+       "do": "defiler",
+       "sel": "#zone-competences"
+      },
+      {
+       "do": "clic-index",
+       "sel": "#zone-competences .opt",
+       "n": 1,
+       "apres": "une production orale"
+      },
+      {
+       "do": "clic-index",
+       "sel": "#zone-duree .opt",
+       "n": 2,
+       "apres": "en deux heures"
+      },
+      {
+       "do": "clic-index",
+       "sel": "#zone-modalite .opt",
+       "n": 1,
+       "apres": "en dyade"
+      }
+     ],
+     "texte": "Puis la compétence travaillée, la durée de l'activité et la modalité de travail. Trois clics qui disent au modèle ce qu'il doit préparer : ici une production orale, en deux heures, en dyade."
+    },
+    {
+     "id": "e",
+     "gestes": [
+      {
+       "do": "defiler",
+       "sel": "#sel-domaine"
+      },
+      {
+       "do": "choisir",
+       "sel": "#sel-domaine",
+       "texte": "Habitation",
+       "apres": "le domaine de vie"
+      },
+      {
+       "do": "attendre",
+       "ms": 250
+      },
+      {
+       "do": "choisir",
+       "sel": "#sel-situation",
+       "texte": "Location",
+       "apres": "puis la situation"
+      }
+     ],
+     "surligne": "#zone-thematique, #sel-situation",
+     "texte": "Deuxième étape, la thématique. Le domaine de vie, puis la situation de communication. Ces listes ne sont pas inventées : ce sont celles que le programme prescrit pour le niveau que vous venez de choisir."
+    },
+    {
+     "id": "f",
+     "gestes": [
+      {
+       "do": "defiler",
+       "sel": "#zone-intentions"
+      },
+      {
+       "do": "clic-index",
+       "sel": "#zone-intentions label",
+       "n": 0,
+       "apres": "s informer sur les conditions"
+      },
+      {
+       "do": "clic-index",
+       "sel": "#zone-intentions label",
+       "n": 1,
+       "apres": "exprimer ses besoins"
+      }
+     ],
+     "surligne": "#zone-intentions",
+     "texte": "Troisième étape, les intentions de communication. Le programme en prescrit une liste pour cette situation, et une seule : ici, s'informer sur les conditions de location, et exprimer ses besoins ou ses préférences. Cochez celles que votre activité doit faire travailler."
+    },
+    {
+     "id": "g",
+     "gestes": [
+      {
+       "do": "defiler",
+       "sel": "#q-savoirs"
+      },
+      {
+       "do": "taper",
+       "sel": "#q-savoirs",
+       "texte": "logement",
+       "apres": "tapez un mot"
+      },
+      {
+       "do": "attendre",
+       "ms": 600
+      },
+      {
+       "do": "clic-index",
+       "sel": "#zone-savoirs label",
+       "n": 0,
+       "apres": "cochez la grammaire"
+      }
+     ],
+     "surligne": "#zone-savoirs",
+     "texte": "Quatrième étape, les savoirs. Il y en a plus de deux cents au niveau 4 : le champ de recherche les resserre. Tapez un mot, et vous ne voyez plus que ce qui s'y rapporte. Cochez la grammaire et le vocabulaire visés."
+    },
+    {
+     "id": "h",
+     "gestes": [
+      {
+       "do": "defiler",
+       "sel": "#b-doc"
+      },
+      {
+       "do": "pointer",
+       "sel": "#b-doc",
+       "apres": "ajouter un document"
+      }
+     ],
+     "surligne": "#b-doc",
+     "texte": "Vous pouvez aussi joindre votre propre documentation : un texte de départ, une annonce trouvée en ligne, une situation vécue en classe. « Ajouter un document » la verse dans la commande, et l'activité se construira autour."
+    },
+    {
+     "id": "i",
+     "gestes": [
+      {
+       "do": "defiler",
+       "sel": "#barre"
+      },
+      {
+       "do": "parcourir",
+       "cibles": [
+        "#j-entree",
+        "#j-sortie",
+        "#j-total"
+       ],
+       "pause": 750,
+       "apres": "ce que le prompt enverra"
+      }
+     ],
+     "surligne": "#barre",
+     "texte": "Pendant que vous cochez, le compteur en haut suit le coût en jetons : ce que le prompt enverra, ce que l'activité produira, et le total. Vous savez ce que vous engagez avant de lancer quoi que ce soit."
+    },
+    {
+     "id": "j",
+     "gestes": [
+      {
+       "do": "defiler",
+       "sel": "#sortie"
+      }
+     ],
+     "surligne": "#sortie",
+     "texte": "Et le prompt s'écrit à mesure, en bas. Il reprend le niveau, le sigle du cours, la situation, les intentions et les savoirs que vous avez cochés, dans les termes exacts du programme."
+    },
+    {
+     "id": "k",
+     "gestes": [
+      {
+       "do": "defiler",
+       "sel": "#b-copier"
+      },
+      {
+       "do": "parcourir",
+       "cibles": [
+        "#b-copier",
+        "#b-editer",
+        "#b-md"
+       ],
+       "pause": 800,
+       "apres": "copier le prompt"
+      }
+     ],
+     "surligne": "#barre",
+     "texte": "Il ne reste qu'à le prendre. « Copier le prompt » pour le coller dans Claude, « Modifier le prompt » si vous voulez ajuster une phrase, « Télécharger en point m d » pour le garder. Et « Tout réinitialiser » pour recommencer une autre activité."
+    }
+   ],
+   "crf": 30,
+   "commentaire_crf": "Onze plans qui défilent d'un bout à l'autre d'une longue page : à CRF 23 la capsule pesait 13,2 Mo. Même réglage que 03-sections."
+  }
+ ]
 }
