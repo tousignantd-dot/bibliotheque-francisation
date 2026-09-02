@@ -142,8 +142,13 @@ async function jouer(page, geste) {
     case 'clic':
       await scene((s) => window.__scene.clic(s), geste.sel);
       break;
+    /* La barre d'onglets a disparu de l'espace enseignant : on y va
+       maintenant par les boutons de la carte du groupe, qui portent le même
+       `data-ecran`. Le sélecteur ne nomme donc plus de classe — plusieurs
+       éléments répondent (« Planifier » sous le groupe et « Planifier ce
+       groupe » plus bas), et `visible()` prend celui qui est à l'écran. */
     case 'onglet':
-      await scene((v) => window.__scene.clic(`.pe-onglet[data-ecran="${v}"]`), geste.valeur);
+      await scene((v) => window.__scene.clic(`[data-ecran="${v}"]`), geste.valeur);
       break;
     /* Cocher se voit case par case : trois cases qui s'allument d'un coup
        ne raconteraient pas le geste dont parle la voix. */
