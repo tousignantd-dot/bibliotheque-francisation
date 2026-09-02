@@ -19,7 +19,10 @@ export STORAGE_DIR="${STORAGE_DIR:-${TMPDIR:-/tmp}/francisation-demo-tutoriels}"
 mkdir -p "$STORAGE_DIR"
 
 IDENTIFIANTS="$STORAGE_DIR/identifiants-demo.json"
-export PROF_COURRIEL="${PROF_COURRIEL:-s.tremblay@centre.qc.ca}"
+# Le compte enseignant s'ouvre par un CODE depuis le 28 août 2026 : le
+# courriel a quitté ces comptes, et `PROF_COURRIEL` ne sème plus rien. Six
+# caractères de l'alphabet sans O, I, 0 ni 1.
+export PROF_CODE="${PROF_CODE:-DEMO47}"
 export PROF_NOM="${PROF_NOM:-Sophie Tremblay}"
 if [ -z "$PROF_MOTDEPASSE" ]; then
   PROF_MOTDEPASSE=$(python3 - "$IDENTIFIANTS" <<'PY'
@@ -34,12 +37,12 @@ PY
 )
   export PROF_MOTDEPASSE
 fi
-python3 - "$IDENTIFIANTS" "$PROF_COURRIEL" "$PROF_MOTDEPASSE" <<'PY'
+python3 - "$IDENTIFIANTS" "$PROF_CODE" "$PROF_MOTDEPASSE" <<'PY'
 import json, os, sys, stat
 from pathlib import Path
 fichier = Path(sys.argv[1])
 fichier.write_text(json.dumps(
-    {"courriel": sys.argv[2], "motDePasse": sys.argv[3]}, ensure_ascii=False))
+    {"code": sys.argv[2], "motDePasse": sys.argv[3]}, ensure_ascii=False))
 os.chmod(fichier, stat.S_IRUSR | stat.S_IWUSR)   # lisible par vous seul
 PY
 

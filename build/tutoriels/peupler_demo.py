@@ -32,8 +32,8 @@ def identifiants():
     fichier = bac / "identifiants-demo.json"
     if fichier.exists():
         return json.loads(fichier.read_text())
-    if os.environ.get("PROF_COURRIEL") and os.environ.get("PROF_MOTDEPASSE"):
-        return {"courriel": os.environ["PROF_COURRIEL"],
+    if os.environ.get("PROF_CODE") and os.environ.get("PROF_MOTDEPASSE"):
+        return {"code": os.environ["PROF_CODE"],
                 "motDePasse": os.environ["PROF_MOTDEPASSE"]}
     sys.exit(f"Identifiants introuvables ({fichier}). Lancez d'abord "
              "./build/tutoriels/lancer_demo.sh")
@@ -57,19 +57,33 @@ jeton = appel("/api/prof/login", identifiants())["token"]
 print("session ouverte")
 
 # ── Groupes ──
-reponse = appel("/api/prof/groupes", jeton=jeton)
-groupes = reponse["groupes"] if isinstance(reponse, dict) else reponse
-g1 = groupes[0]["id"]
-appel(f"/api/prof/groupes/{g1}", {"nom": "Niveau 4 — avant-midi"},
-      methode="PATCH", jeton=jeton)
-soir = [g for g in groupes if g["nom"] == "Niveau 4 — soir"]
-g2 = soir[0]["id"] if soir else appel("/api/prof/groupes", {"nom": "Niveau 4 — soir"}, jeton=jeton)["groupe"]["id"]
+#
+# Une installation neuve n'a **aucun groupe** : le groupe historique ne se crée
+# plus tout seul (il ne se créait que pour ranger des élèves d'avant le
+# multi-groupes, et en fabriquer un vide laissait un orphelin sans centre). Ce
+# script partait de `groupes[0]` et tombait sur une liste vide. Il les crée
+# donc lui-même — et il leur donne un **niveau**, devenu obligatoire : c'est
+# lui qui borne le catalogue, le matériel et la séance sans compte.
+def groupe(nom, niveau):
+    reponse = appel("/api/prof/groupes", jeton=jeton)
+    existants = reponse["groupes"] if isinstance(reponse, dict) else reponse
+    deja = [g for g in existants if g["nom"] == nom]
+    if deja:
+        return deja[0]["id"]
+    return appel("/api/prof/groupes", {"nom": nom, "niveau": niveau},
+                 jeton=jeton)["groupe"]["id"]
+
+g1 = groupe("Niveau 4 — avant-midi", "Niveau 4")
+g2 = groupe("Niveau 4 — soir", "Niveau 4")
 print(f"groupes : {g1} (historique), {g2} (soir)")
 
 # ── Élèves du groupe 1 ──
-NOMS = ["Oksana Bondarenko", "Ibrahim Diallo", "Josée Mercier", "Solange Nkusi",
-        "Lina Haddad", "Wei Chen", "Marta Silva", "Ahmed Benali",
-        "Yuliia Kovalenko", "Rosa Delgado"]
+# Des PSEUDONYMES, et c'est le sujet même de la capsule des élèves : le champ
+# demande « un pseudo, pas le vrai nom ». Peupler la démonstration de vrais
+# noms faisait filmer, dans le tutoriel officiel, le geste que le portail
+# refuse. Corrigé le 2 septembre 2026.
+NOMS = ["Colibri", "Érable", "Cardinal", "Bouleau", "Harfang", "Lynx",
+        "Épervier", "Baleine", "Renard", "Caribou"]
 deja = appel(f"/api/admin/students?groupId={g1}", jeton=jeton)
 deja = deja["students"] if isinstance(deja, dict) else deja
 if not deja:

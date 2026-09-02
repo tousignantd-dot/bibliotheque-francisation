@@ -44,8 +44,8 @@ function identifiants() {
     || path.join(os.tmpdir(), 'francisation-demo-tutoriels');
   const fichier = path.join(bac, 'identifiants-demo.json');
   if (fs.existsSync(fichier)) return JSON.parse(fs.readFileSync(fichier, 'utf8'));
-  if (process.env.PROF_COURRIEL && process.env.PROF_MOTDEPASSE) {
-    return { courriel: process.env.PROF_COURRIEL, motDePasse: process.env.PROF_MOTDEPASSE };
+  if (process.env.PROF_CODE && process.env.PROF_MOTDEPASSE) {
+    return { code: process.env.PROF_CODE, motDePasse: process.env.PROF_MOTDEPASSE };
   }
   throw new Error(`Identifiants introuvables (${fichier}). `
     + "Lancez d'abord ./build/tutoriels/lancer_demo.sh");
@@ -224,7 +224,9 @@ async function jouer(page, geste) {
       set.call(el, v);
       el.dispatchEvent(new Event('input', { bubbles: true }));
     };
-    poser(document.getElementById('courriel'), c.courriel);
+    // Le compte s'ouvre par un CODE depuis le 28 août 2026 : le champ
+    // « courriel » n'existe plus, et `poser()` mourait sur un null.
+    poser(document.getElementById('code'), c.code);
     poser(document.getElementById('motDePasse'), c.motDePasse);
     document.getElementById('formConnexion').requestSubmit();
   }, compte);
