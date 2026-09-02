@@ -45,11 +45,19 @@ ATTENDUS = [
      "envoi : le second nom, demandé avec le premier"),
 ]
 
-# Facultatif mais fortement recommandé une fois le reste en place.
+# Facultatif pour Resend, **nécessaire en pratique** : sans lui, le premier
+# essai d'envoi est arrivé dans les indésirables le 2 septembre 2026, alors que
+# DKIM et SPF étaient parfaitement en place. Gmail et Outlook s'en servent pour
+# décider s'ils font confiance à un domaine qu'ils ne connaissent pas encore.
 CONSEILLE = [
     ("_dmarc", "TXT", "v=DMARC1",
      "DMARC : dit aux boîtes de réception quoi faire d'un message non signé"),
 ]
+
+# `p=none` surveille sans rien bloquer : une politique stricte posée d'emblée
+# sur un domaine neuf ferait rejeter ses propres courriels au premier réglage
+# de travers. On durcit plus tard, une fois les rapports lus.
+DMARC_SUGGERE = "v=DMARC1; p=none; rua=mailto:admin@%s"
 
 
 def dig(nom, type_, serveur=None):
@@ -109,6 +117,13 @@ def controler(domaine):
         return 1
 
     print("Tout est en place. La plateforme peut envoyer depuis ce domaine.")
+    if not any(marque.lower() in v.lower()
+               for relatif, type_, marque, _ in CONSEILLE
+               for v in dig("%s.%s" % (relatif, domaine), type_, serveurs[0])):
+        print()
+        print("Il manque le DMARC, et il ne s'agit pas d'un détail : sans lui,")
+        print("un domaine neuf part souvent dans les indésirables. À poser :")
+        print("  TXT  _dmarc  %s" % (DMARC_SUGGERE % domaine))
     return 0
 
 
