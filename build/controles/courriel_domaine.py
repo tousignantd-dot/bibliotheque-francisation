@@ -77,30 +77,47 @@ def autoritatifs(domaine):
     return [n.rstrip(".") for n in dig(domaine, "NS")] or [None]
 
 
+def serie(domaine, serveur):
+    """Le numéro de série de la zone servie — il dit qui est à jour."""
+    for ligne in dig(domaine, "SOA", serveur):
+        bouts = ligne.split()
+        if len(bouts) > 2:
+            return bouts[2]
+    return "?"
+
+
 def controler(domaine):
     serveurs = autoritatifs(domaine)
     print("Domaine : %s" % domaine)
-    print("Serveurs autoritatifs : %s\n" % ", ".join(s or "(résolveur local)"
-                                                     for s in serveurs))
+    # **Tous** les serveurs, jamais le premier venu. `dig NS` rend la liste dans
+    # un ordre qui change à chaque appel : n'en interroger qu'un rendait le
+    # contrôle NON REPRODUCTIBLE — il a annoncé « MANQUE » sur deux CNAME
+    # parfaitement posés, le 2 septembre 2026, simplement parce que le second
+    # serveur de WHC avait trois versions de retard. Un contrôle qui a tort
+    # coûte plus cher que pas de contrôle.
+    for s in serveurs:
+        print("  %-22s zone n° %s" % (s or "(résolveur local)", serie(domaine, s)))
+    print()
     manque = 0
     for groupe, titre, obligatoire in ((ATTENDUS, "Requis par Resend", True),
                                        (CONSEILLE, "Recommandé", False)):
         print("── %s ──" % titre)
         for relatif, type_, marque, role in groupe:
             nom = "%s.%s" % (relatif, domaine) if relatif else domaine
-            publie = dig(nom, type_, serveurs[0])
-            local = dig(nom, type_)
-            trouve = any(marque.lower() in v.lower() for v in publie)
+            porteurs = [s for s in serveurs
+                        if any(marque.lower() in v.lower()
+                               for v in dig(nom, type_, s))]
+            trouve = bool(porteurs)
             etat = "✓" if trouve else ("·" if not obligatoire else "MANQUE")
             print("  %-8s %-28s %s" % (etat, "%s %s" % (relatif or "@", type_), role))
             if not trouve and obligatoire:
                 manque += 1
-            # Le piège WHC : brouillon d'un côté, zone servie de l'autre.
-            if bool(publie) != bool(local):
-                print("     ⚠ le résolveur local et le serveur autoritatif ne "
-                      "disent pas la même chose —")
-                print("       la zone n'est peut-être pas publiée, ou la "
-                      "propagation est en cours.")
+            # Posé quelque part mais pas partout : la zone est bonne, la
+            # réplication est en cours. Ce n'est pas un manquement — le dire
+            # comme tel enverrait reposer un enregistrement déjà là.
+            elif trouve and len(porteurs) < len(serveurs):
+                print("     ⚠ présent sur %d serveur(s) sur %d — réplication en "
+                      "cours, rien à refaire." % (len(porteurs), len(serveurs)))
         print()
 
     if manque:
@@ -117,9 +134,11 @@ def controler(domaine):
         return 1
 
     print("Tout est en place. La plateforme peut envoyer depuis ce domaine.")
+    # Même règle que plus haut : tous les serveurs, pas le premier venu.
     if not any(marque.lower() in v.lower()
                for relatif, type_, marque, _ in CONSEILLE
-               for v in dig("%s.%s" % (relatif, domaine), type_, serveurs[0])):
+               for srv in serveurs
+               for v in dig("%s.%s" % (relatif, domaine), type_, srv)):
         print()
         print("Il manque le DMARC, et il ne s'agit pas d'un détail : sans lui,")
         print("un domaine neuf part souvent dans les indésirables. À poser :")
