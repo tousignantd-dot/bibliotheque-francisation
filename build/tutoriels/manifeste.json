@@ -87,6 +87,125 @@
    ]
   },
   {
+   "id": "05-groupes",
+   "titre": "Ouvrir un groupe",
+   "plans": [
+    {
+     "id": "a",
+     "surligne": "#listeGroupes",
+     "gestes": [
+      {
+       "do": "onglet",
+       "valeur": "groupes"
+      },
+      {
+       "do": "attendre",
+       "ms": 700
+      }
+     ],
+     "texte": "Avant tout le reste, il faut un groupe. Sans lui, le portail ne montre presque rien : ni catalogue, ni matériel, ni élèves. C'est la première chose à faire en arrivant, et c'est le sujet de cette capsule."
+    },
+    {
+     "id": "b",
+     "surligne": "#listeGroupes",
+     "gestes": [
+      {
+       "do": "defiler",
+       "sel": "#listeGroupes",
+       "apres": "un groupe par classe"
+      }
+     ],
+     "texte": "Créez un groupe par classe. Chacun a ses élèves, ses dates et sa progression, complètement séparés des autres. Vous passez de l'un à l'autre par la liste, en haut de la page."
+    },
+    {
+     "id": "c",
+     "surligne": "#formGroupe",
+     "gestes": [
+      {
+       "do": "defiler",
+       "sel": "#formGroupe",
+       "apres": "deux choses"
+      },
+      {
+       "do": "pointer",
+       "sel": "#nouveauGroupe",
+       "apres": "un nom"
+      }
+     ],
+     "texte": "Le formulaire demande deux choses. D'abord un nom : celui qui vous parle à vous, pas un code. « Avant-midi — Marie », par exemple."
+    },
+    {
+     "id": "d",
+     "surligne": "#formGroupe",
+     "gestes": [
+      {
+       "do": "pointer",
+       "sel": "#nouveauNiveau",
+       "apres": "le niveau"
+      },
+      {
+       "do": "pointer",
+       "sel": "#formGroupe button[type=submit]",
+       "apres": "creer le groupe"
+      }
+     ],
+     "texte": "Ensuite le niveau, et c'est le réglage le plus important du portail. C'est lui qui décide de ce que le groupe voit : le catalogue, le matériel, la séance sans compte. Un groupe de niveau quatre ne verra jamais les activités du niveau six. Choisissez-le bien, puis « Créer le groupe »."
+    },
+    {
+     "id": "e",
+     "surligne": "#listeGroupes",
+     "gestes": [
+      {
+       "do": "defiler",
+       "sel": "#listeGroupes"
+      }
+     ],
+     "texte": "Le catalogue d'activités, lui, est commun à toute l'équipe. Personne ne recrée le contenu. Ce qui vous appartient, ce sont les dates que vous posez dessus."
+    },
+    {
+     "id": "f",
+     "surligne": "#formCopie",
+     "gestes": [
+      {
+       "do": "onglet",
+       "valeur": "planif"
+      },
+      {
+       "do": "attendre",
+       "ms": 600
+      },
+      {
+       "do": "clic",
+       "sel": "#boutonCopie",
+       "apres": "copier une planification"
+      },
+      {
+       "do": "attendre",
+       "ms": 600
+      }
+     ],
+     "texte": "Et voici le geste qui démarre un groupe neuf en une minute : « Copier une planification ». Le cas est simple. Vous avez donné le niveau quatre à la session d'automne, et vous le redonnez cet hiver. Plutôt que de redater cinquante-sept activités, vous reprenez le calendrier du groupe d'automne et vous le décalez du nombre de jours qui sépare les deux sessions."
+    },
+    {
+     "id": "g",
+     "surligne": "#formCopie",
+     "gestes": [],
+     "texte": "Deux précautions. Cette copie remplace les dates du groupe où vous êtes, elle ne s'y ajoute pas. Et la date « vue en classe » n'est pas copiée : celle-là reste votre trace personnelle, que l'élève ne voit jamais."
+    },
+    {
+     "id": "fin",
+     "gestes": [],
+     "texte": "Voilà, c'est terminé pour cette capsule. Vous savez ouvrir un groupe, lui donner son niveau, et lui reprendre la planification d'un autre. La prochaine capsule montre comment poser des dates sur les activités."
+    }
+   ],
+   "prepare": [
+    {
+     "do": "js",
+     "code": "document.querySelector('[data-fermer=\"modaleCopie\"]')?.click()"
+    }
+   ]
+  },
+  {
    "id": "02-planifier",
    "titre": "Planifier : donner une date",
    "plans": [
@@ -221,6 +340,12 @@
      "id": "fin",
      "gestes": [],
      "texte": "Voilà, c'est terminé pour cette capsule. Vous savez cocher des activités, leur donner une date, choisir un rythme, enregistrer, et vérifier ce que votre classe voit."
+    }
+   ],
+   "prepare": [
+    {
+     "do": "js",
+     "code": "document.querySelector('[data-fermer=\"modaleCopie\"]')?.click()"
     }
    ]
   },
@@ -370,74 +495,6 @@
      "id": "fin",
      "gestes": [],
      "texte": "Voilà, c'est terminé pour cette capsule. Chaque élève a son pseudo et son code, et vous savez comment les imprimer. Le suivi d'un élève, lui, a sa propre capsule."
-    }
-   ]
-  },
-  {
-   "id": "05-groupes",
-   "titre": "Vos groupes",
-   "plans": [
-    {
-     "id": "a",
-     "gestes": [
-      {
-       "do": "onglet",
-       "valeur": "groupes"
-      },
-      {
-       "do": "attendre",
-       "ms": 700
-      }
-     ],
-     "surligne": "#listeGroupes",
-     "texte": "Troisième onglet : vos groupes. Créez-en un par classe. Chaque groupe a ses élèves, ses dates et sa progression, complètement séparés des autres."
-    },
-    {
-     "id": "b",
-     "gestes": [
-      {
-       "do": "defiler",
-       "sel": "#formGroupe",
-       "apres": "le catalogue d activites"
-      }
-     ],
-     "surligne": "#formGroupe",
-     "texte": "Le catalogue d'activités, lui, est commun à toute l'équipe. Personne ne recrée le contenu. Ce qui vous appartient, ce sont les dates que vous posez dessus."
-    },
-    {
-     "id": "c",
-     "gestes": [
-      {
-       "do": "onglet",
-       "valeur": "planif"
-      },
-      {
-       "do": "attendre",
-       "ms": 600
-      },
-      {
-       "do": "clic",
-       "sel": "#boutonCopie",
-       "apres": "copier une planification"
-      },
-      {
-       "do": "attendre",
-       "ms": 600
-      }
-     ],
-     "surligne": "#formCopie",
-     "texte": "Et voici le geste qui démarre un groupe neuf en une minute : « Copier une planification ». Vous reprenez le calendrier d'un autre de vos groupes, décalé du nombre de jours voulu."
-    },
-    {
-     "id": "d",
-     "gestes": [],
-     "surligne": "#formCopie",
-     "texte": "Deux précautions. Cette copie remplace les dates du groupe où vous êtes, elle ne s'y ajoute pas. Et la date « vue en classe » n'est pas copiée : celle-là reste votre trace personnelle, que l'élève ne voit jamais."
-    },
-    {
-     "id": "fin",
-     "gestes": [],
-     "texte": "Voilà, c'est terminé pour cette capsule. Vous pouvez ouvrir un nouveau groupe et lui reprendre la planification d'un autre."
     }
    ]
   },
