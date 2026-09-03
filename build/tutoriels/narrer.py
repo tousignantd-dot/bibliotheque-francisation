@@ -37,6 +37,8 @@ bougé n'est pas resynthétisé. Effacer son MP3 suffit à le refaire.
 """
 import json
 import pathlib
+import struct
+import subprocess
 import sys
 
 ICI = pathlib.Path(__file__).resolve().parent
@@ -115,6 +117,65 @@ def dire(speechsdk, config, texte, mp3):
     return mots
 
 
+# Un clic de synthèse : un échantillon qui saute d'un coup à pleine échelle,
+# là où la parole vit entre 5 000 et 15 000. Entendu le 3 septembre 2026 à la
+# 58e seconde de la capsule 1 — pic à 31 035 sur 32 767, saut de 16 086 en un
+# échantillon, juste après une pause et avant « Ma classe ».
+PIC_SUSPECT = 29000
+SAUT_SUSPECT = 12000
+ESSAIS = 3
+
+
+def clic(mp3):
+    """Le pire pic et le pire saut du fichier. (0, 0) si on ne peut pas lire.
+
+    Le contrôle est nécessaire parce que **la synthèse HD n'est pas
+    déterministe** : le même texte rend un fichier propre à un tirage et un
+    fichier claqué au suivant. Sans ce contrôle, le défaut ne se trouve qu'au
+    visionnement, une fois la capsule montée.
+    """
+    try:
+        brut = subprocess.run(
+            ["ffmpeg", "-v", "error", "-i", str(mp3), "-ac", "1", "-ar", "24000",
+             "-f", "s16le", "-"], capture_output=True, check=True).stdout
+    except (OSError, subprocess.CalledProcessError):
+        return 0, 0
+    n = len(brut) // 2
+    if n < 2:
+        return 0, 0
+    v = struct.unpack("<%dh" % n, brut[:n * 2])
+    pic = max(abs(x) for x in v)
+    saut = max(abs(v[i + 1] - v[i]) for i in range(n - 1))
+    return pic, saut
+
+
+def dire_proprement(speechsdk, config, texte, mp3):
+    """Synthétise, et recommence si le tirage sort un clic.
+
+    Trois essais : au-delà, on garde le moins mauvais et on le dit. Boucler
+    sans fin sur un texte qui claquerait à tous les coups coûterait des appels
+    pour rien.
+    """
+    meilleur = None
+    for essai in range(1, ESSAIS + 1):
+        mots = dire(speechsdk, config, texte, mp3)
+        pic, saut = clic(mp3)
+        if not (pic >= PIC_SUSPECT and saut >= SAUT_SUSPECT):
+            return mots
+        garde = mp3.with_suffix(".essai%d.mp3" % essai)
+        mp3.replace(garde)
+        if meilleur is None or saut < meilleur[2]:
+            meilleur = (garde, mots, saut)
+        print("    clic au tirage %d (pic %d, saut %d) — on recommence"
+              % (essai, pic, saut))
+    meilleur[0].replace(mp3)
+    for reste in mp3.parent.glob(mp3.stem + ".essai*.mp3"):
+        reste.unlink()
+    print("    %s : %d tirages, tous claqués — on garde le moins mauvais"
+          % (mp3.name, ESSAIS))
+    return meilleur[1]
+
+
 def main():
     filtre = sys.argv[1] if len(sys.argv) > 1 else None
     SORTIE.mkdir(exist_ok=True)
@@ -139,7 +200,7 @@ def main():
                         and trace.read_text(encoding="utf-8") == dit)
             if inchange:
                 continue
-            mots = dire(speechsdk, config, dit, mp3)
+            mots = dire_proprement(speechsdk, config, dit, mp3)
             trace.write_text(dit, encoding="utf-8")
             # `{"mots": [...]}` et non une liste nue : c'est la forme que
             # `enregistrer.js` lit (`JSON.parse(...).mots`).
