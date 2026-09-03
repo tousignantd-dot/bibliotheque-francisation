@@ -35,6 +35,7 @@ import json
 import os
 import pathlib
 import re
+import shutil
 import socket
 import socketserver
 import subprocess
@@ -151,6 +152,114 @@ def lever_demo(journal):
     return False
 
 
+CONSIGNE = """Tu retouches le storyboard d'une capsule vidéo qui montre l'espace
+enseignant de « francis », un portail de francisation au Québec. La voix off
+s'adresse à une enseignante, au vouvoiement, en français du Québec, sans jargon.
+
+On te donne les plans de la capsule et, pour certains, ce que l'utilisateur
+demande d'y changer. Deux sortes de demandes :
+· « commentaire » — ce qui manque et qu'il faut écrire dans le texte dit ;
+· « image » — ce qui cloche dans ce qu'on montre ; cela se règle en changeant
+  les gestes ou le surlignage, jamais en le racontant dans le texte.
+
+Règles :
+· Ne touche QUE les plans qui portent une demande. Les autres sortent inchangés.
+· N'invente aucune fonction du portail. Si une demande suppose un écran ou un
+  bouton dont rien ne prouve l'existence, laisse le plan tel quel et dis-le
+  dans le résumé.
+· Garde le ton et la longueur : un plan fait de 8 à 20 secondes de parole,
+  soit 20 à 55 mots. Une phrase courte vaut mieux qu'une subordonnée.
+· Les gestes gardent la forme qu'ils ont déjà. Un repère « apres » doit citer
+  des mots réellement présents dans le nouveau texte du plan.
+
+Réponds UNIQUEMENT par un objet JSON, sans texte avant ni après :
+{"plans": [{"id": "...", "texte": "...", "gestes": [...]}],
+ "resume": "une phrase disant ce que tu as changé"}
+Omets « gestes » quand ils ne changent pas."""
+
+
+def traiter_commentaires(capsule, journal):
+    """Fait écrire les corrections demandées, et les pose dans le manifeste.
+
+    C'est ce que le bouton « Mettre à jour » ne pouvait pas faire jusqu'ici :
+    les commentaires sont des demandes d'écriture, et l'écriture se délègue au
+    CLI de Claude Code — le même que la forge d'activités emploie déjà sur ce
+    poste. Un appel par clic, sans outil ni écriture par le modèle : il rend du
+    JSON, et c'est **ce script** qui valide et qui écrit. Un modèle qui
+    éditerait le manifeste directement pourrait le casser en silence.
+    """
+    cli = os.environ.get("CLAUDE_CLI") or shutil.which("claude")
+    if not cli:
+        journal.append("Claude Code n'est pas installé : les commentaires "
+                       "restent en attente (npm i -g @anthropic-ai/claude-code)")
+        return None
+    doc = charger()
+    bloc = next((c for c in doc["capsules"] if c["id"] == capsule), None)
+    if bloc is None:
+        return None
+    n = notes()
+    demandes = []
+    for plan in bloc["plans"]:
+        fiche = n.get("%s/%s" % (capsule, plan["id"]), {})
+        if fiche.get("regle") or not (fiche.get("commentaire") or fiche.get("note")):
+            continue
+        demandes.append({"id": plan["id"],
+                         "commentaire": fiche.get("commentaire", ""),
+                         "image": fiche.get("note", "")})
+    if not demandes:
+        journal.append("aucun commentaire en attente : le texte ne bouge pas")
+        return None
+
+    entree = json.dumps({
+        "titre": bloc["titre"],
+        "plans": [{"id": p["id"], "texte": p["texte"],
+                   "gestes": p.get("gestes", []),
+                   "surligne": p.get("surligne", "")} for p in bloc["plans"]],
+        "demandes": demandes,
+    }, ensure_ascii=False, indent=1)
+    journal.append("%d commentaire(s) confiés à Claude…" % len(demandes))
+    r = subprocess.run([cli, "-p", "--output-format", "text"],
+                       input=CONSIGNE + "\n\n" + entree,
+                       capture_output=True, text=True, timeout=600)
+    brut = (r.stdout or "").strip()
+    debut, fin = brut.find("{"), brut.rfind("}")
+    if r.returncode or debut < 0:
+        journal.append("Claude n'a rien rendu d'exploitable : "
+                       + ((r.stderr or brut)[-200:] or "sortie vide"))
+        return None
+    try:
+        reponse = json.loads(brut[debut:fin + 1])
+    except json.JSONDecodeError as e:
+        journal.append("réponse illisible (%s) — le texte n'a pas été touché" % e)
+        return None
+
+    # Sauvegarde avant d'écrire : le manifeste est le scénario de sept films.
+    shutil.copy2(MANIFESTE, MANIFESTE.with_suffix(".json.avant"))
+    # Seuls les plans qui portaient une demande sont écrits. Le modèle rend la
+    # capsule entière, et un plan qu'on ne lui a rien demandé de changer
+    # revenait avec un retour à la ligne en plus — un diff pour rien dans le
+    # scénario de sept films.
+    vises = {d["id"] for d in demandes}
+    touches = []
+    for neuf in reponse.get("plans", []):
+        plan = next((p for p in bloc["plans"] if p["id"] == neuf.get("id")), None)
+        if plan is None or not neuf.get("texte") or neuf["id"] not in vises:
+            continue
+        neuf["texte"] = neuf["texte"].strip()
+        if neuf["texte"] != plan["texte"] or neuf.get("gestes") is not None:
+            if neuf["texte"] != plan["texte"]:
+                plan["texte"] = neuf["texte"]
+            if isinstance(neuf.get("gestes"), list):
+                plan["gestes"] = neuf["gestes"]
+            touches.append(plan["id"])
+    if not touches:
+        journal.append("Claude n'a rien trouvé à changer")
+        return None
+    ecrire(doc)
+    journal.append("plans réécrits : " + ", ".join(touches))
+    return reponse.get("resume") or ("plans " + ", ".join(touches) + " réécrits")
+
+
 def mettre_a_jour(capsule):
     """Refait les copies d'écran du guide, et note que la passe est remise.
 
@@ -160,6 +269,9 @@ def mettre_a_jour(capsule):
     `guide/demande.json`, et c'est de là qu'ils se traitent.
     """
     journal = []
+    # L'écriture d'abord : les gestes peuvent changer, et il faut alors
+    # photographier le nouvel écran, pas l'ancien.
+    resume = traiter_commentaires(capsule, journal) if capsule else None
     if not lever_demo(journal):
         return {"ok": False, "journal": journal}
     journal.append("captures : les gestes se rejouent…")
@@ -183,10 +295,12 @@ def mettre_a_jour(capsule):
          "enAttente": attente}, ensure_ascii=False, indent=1), encoding="utf-8")
     journal.append("%d remarque(s) en attente, notées dans guide/demande.json"
                    % len(attente))
-    # Rang **mineur** : les images ont bougé, le texte non. Compter cela comme
-    # une nouvelle version à relire ferait mentir le repère.
-    fiche = versions.poser(capsule or "toutes", "copies d'écran refaites",
-                           majeure=False)
+    # Rang **majeur** dès que le texte a bougé : c'est une version à relire.
+    # Mineur quand seules les images ont été reprises — le compter comme une
+    # version à relire ferait mentir le repère.
+    fiche = versions.poser(capsule or "toutes",
+                           resume or "copies d'écran refaites",
+                           majeure=bool(resume))
     journal.append("storyboard %s · %s" % (fiche["version"], fiche["quand"]))
     return {"ok": True, "journal": journal, "enAttente": len(attente)}
 
@@ -366,7 +480,7 @@ presque pas de ponctuation : dictez, puis relisez. La dictée du système (deux 
 Fn) reste disponible dans n'importe quel champ et, elle, ne sort pas du Mac.</p>
 <div id="tout"></div>
 <div class="pied">
-  <button class="majour" id="majour" type="button">Mettre à jour le guide</button>
+  <button class="majour" id="majour" type="button">Mettre à jour le storyboard</button>
   <span class="compte" id="compte"></span>
   <pre class="journal" id="journal"></pre>
 </div>
@@ -615,7 +729,7 @@ $('#majour').addEventListener('click', async () => {
   } catch (e) {
     j.textContent = 'échec : ' + e.message;
   }
-  b.disabled = false; b.textContent = 'Mettre à jour le guide';
+  b.disabled = false; b.textContent = 'Mettre à jour le storyboard';
 });
 
 fetch('/api/etat').then((r) => r.json()).then((etat) => {
