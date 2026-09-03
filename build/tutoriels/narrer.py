@@ -58,6 +58,7 @@ l'unité.
 """
 import json
 import pathlib
+import re
 import struct
 import subprocess
 import sys
@@ -162,6 +163,19 @@ def lettres(texte):
     return "".join(c for c in texte.lower() if c.isalnum())
 
 
+def attendus(textes):
+    """Le nombre de lettres que chaque plan fera dire.
+
+    `prononce()` rend du SSML : on retire ses balises et on **déséchappe** ses
+    entités. Sans le déséchappement, chaque apostrophe compte trois lettres de
+    plus (`&#x27;` → « x27 ») et le suivi glisse d'un mot.
+    """
+    import html as _html
+    import re as _re
+    return [len(lettres(_html.unescape(
+        _re.sub(r"<[^>]+>", "", azure_voix.prononce(t))))) for t in textes]
+
+
 def coupes(textes, mots):
     """Les instants où couper le son, un par frontière de plans.
 
@@ -175,13 +189,7 @@ def coupes(textes, mots):
     # On compte les lettres **telles que la voix les recevra** : `prononce()`
     # réécrit certains passages (les lettres nues, le lexique), et compter sur
     # le texte source décalerait le suivi d'autant.
-    # `prononce()` rend du SSML : on retire ses balises et on **déséchappe**
-    # ses entités. Sans le déséchappement, chaque apostrophe compte trois
-    # lettres de plus (`&#x27;` → « x27 ») et le suivi glisse d'un mot.
-    import html as _html
-    import re as _re
-    attendu = [len(lettres(_html.unescape(
-        _re.sub(r"<[^>]+>", "", azure_voix.prononce(t))))) for t in textes]
+    attendu = attendus(textes)
     bornes, plan, compte = [], 0, 0
     for i, m in enumerate(mots):
         compte += len(lettres(m["mot"]))
@@ -240,6 +248,23 @@ PIC_SUSPECT = 29000
 SAUT_SUSPECT = 12000
 ESSAIS = 3
 
+# Une synthèse **tronquée** : Azure rend un son qui s'arrête en pleine phrase,
+# sans erreur ni avertissement. Entendu le 3 septembre 2026 à la fin de la
+# capsule 6 — le dernier plan disait 8 mots sur 28, et le film s'arrêtait net.
+# Le contrôle du clic ne voyait rien : le son restait propre, il manquait
+# seulement la moitié. On compare donc les lettres **dites** à celles
+# **envoyées** ; sous ce seuil, on refait le tirage.
+COUVERTURE_MIN = 0.97
+
+# Un plan **débité trop vite ou trop lentement**. La cadence des voix HD, sur
+# les capsules déjà produites, est de 2,7 mots à la seconde. Le hasard du HD
+# sort parfois un plan à près du double : la fin de la capsule 6 disait ses
+# 28 mots en 5,6 s, soit 5 mots à la seconde — tout le texte y était, donc le
+# contrôle de troncature ne voyait rien, et ça s'entend comme un bafouillage.
+# La bande est large : on vise les accidents, pas les écarts de style.
+MOTS_PAR_SECONDE = 2.71
+BANDE = (0.62, 1.55)     # fois la cadence de référence
+
 
 def clic(echantillons):
     """Le pire pic et le pire saut d'une suite d'échantillons.
@@ -275,6 +300,24 @@ def encoder(v, debut, fin, mp3):
         input=brut, check=True, stdout=subprocess.DEVNULL)
 
 
+def debit_hors_bande(textes, mots, echantillons_total):
+    """Le premier plan dont la cadence sort de la bande, en clair. Sinon None."""
+    try:
+        frontieres = [0.0] + coupes(textes, mots) + [echantillons_total / TAUX]
+    except RuntimeError:
+        return "le relevé des mots ne recouvre pas le texte envoyé"
+    for i, texte in enumerate(textes):
+        secondes = frontieres[i + 1] - frontieres[i]
+        n = len(re.findall(r"[\w\u00C0-\u017F'’-]+", texte))
+        if secondes <= 0 or not n:
+            continue
+        rapport = (n / secondes) / MOTS_PAR_SECONDE
+        if not BANDE[0] <= rapport <= BANDE[1]:
+            return ("plan %d à %.1f mots/s (%.0f %% de la cadence)"
+                    % (i + 1, n / secondes, rapport * 100))
+    return None
+
+
 def dire_proprement(speechsdk, config, textes, wav):
     """Synthétise la capsule, et recommence si le tirage sort un clic.
 
@@ -282,10 +325,20 @@ def dire_proprement(speechsdk, config, textes, wav):
     sans fin sur un texte qui claquerait à tous les coups coûterait des appels
     pour rien.
     """
+    attendu = sum(attendus(textes))
     meilleur = None
     for essai in range(1, ESSAIS + 1):
         mots = dire(speechsdk, config, textes, wav)
         v = echantillons(wav)
+        dites = sum(len(lettres(m["mot"])) for m in mots)
+        if dites < attendu * COUVERTURE_MIN:
+            print("    tirage %d tronqué : %d lettres dites sur %d — on recommence"
+                  % (essai, dites, attendu))
+            continue
+        emballe = debit_hors_bande(textes, mots, len(v))
+        if emballe:
+            print("    tirage %d : %s — on recommence" % (essai, emballe))
+            continue
         pic, saut = clic(v)
         if not (pic >= PIC_SUSPECT and saut >= SAUT_SUSPECT):
             return mots, v
@@ -293,6 +346,9 @@ def dire_proprement(speechsdk, config, textes, wav):
             meilleur = (saut, mots, v)
         print("    clic au tirage %d (pic %d, saut %d) — on recommence"
               % (essai, pic, saut))
+    if meilleur is None:
+        raise RuntimeError("%d tirages tronqués de suite — Azure ne rend pas la "
+                           "capsule entière" % ESSAIS)
     print("    %d tirages, tous claqués — on garde le moins mauvais" % ESSAIS)
     return meilleur[1], meilleur[2]
 

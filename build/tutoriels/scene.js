@@ -154,19 +154,12 @@ module.exports = String.raw`
     const r = el.getBoundingClientRect();
     const m = 8;
     const b = { x: r.left - m, y: r.top - m, w: r.width + m * 2, h: r.height + m * 2 };
-    const voile = (x, y, w, h) => {
-      const d = document.createElement('div');
-      d.className = 'sc-voile';
-      d.style.cssText = 'position:absolute;left:' + x + 'px;top:' + y + 'px;width:'
-        + Math.max(0, w) + 'px;height:' + Math.max(0, h) + 'px;'
-        + 'background:rgba(23,24,26,.38);opacity:0;transition:opacity .45s';
-      RACINE.appendChild(d);
-      requestAnimationFrame(() => { d.style.opacity = '1'; });
-    };
-    voile(0, 0, innerWidth, b.y);
-    voile(0, b.y + b.h, innerWidth, innerHeight - b.y - b.h);
-    voile(0, Math.max(0, b.y), b.x, Math.min(b.h, innerHeight));
-    voile(b.x + b.w, Math.max(0, b.y), innerWidth - b.x - b.w, Math.min(b.h, innerHeight));
+    /* Pas de voile. Il assombrissait tout ce qui n'était pas surligné, et sur
+       un plan immobile l'écran restait sombre dix ou quinze secondes — « ça
+       devient beaucoup plus foncé, il n'y a pas d'intérêt », 3 septembre 2026.
+       L'écran du portail ne doit jamais changer de couleur pendant qu'on
+       l'explique : ce qu'on montre est un logiciel, pas une mise en scène. Le
+       cadre seul désigne l'élément, et il suffit. */
 
     const cadre = document.createElement('div');
     cadre.className = 'sc-cadre';

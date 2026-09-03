@@ -64,20 +64,32 @@
     },
     {
      "id": "e",
-     "surligne": ".pe-jour, #programme",
+     "surligne": "#resumeGroupe",
+     "texte": "Au bout de la ligne, un résumé dit où vous en êtes : combien d'élèves, et combien d'activités déjà planifiées sur l'ensemble du catalogue.",
      "gestes": [
       {
        "do": "pointer",
        "sel": "#resumeGroupe",
-       "apres": "combien d'eleves"
-      },
+       "apres": "un resume dit ou vous en etes"
+      }
+     ]
+    },
+    {
+     "id": "f",
+     "surligne": "#programme",
+     "texte": "Dessous, le programme du jour : ce qui ouvre et ce qui ferme aujourd'hui. S'il est vide, c'est que rien ne bouge — vos activités déjà ouvertes, elles, restent accessibles.",
+     "gestes": [
       {
        "do": "defiler",
        "sel": "#programme",
        "apres": "le programme du jour"
+      },
+      {
+       "do": "pointer",
+       "sel": "#resumeJour",
+       "apres": "s il est vide"
       }
-     ],
-     "texte": "Au bout de la ligne, un résumé dit où vous en êtes : combien d'élèves, combien d'activités déjà planifiées. Dessous, le programme du jour. S'il est vide, c'est que rien n'ouvre ni ne ferme aujourd'hui — vos activités déjà ouvertes, elles, restent accessibles."
+     ]
     },
     {
      "id": "fin",
@@ -492,20 +504,30 @@
      "id": "a",
      "gestes": [
       {
-       "do": "defiler",
-       "sel": "#listeActivites",
+       "do": "pointer",
+       "sel": "#cap-chevron",
        "apres": "le petit chevron"
       }
      ],
-     "surligne": ".pe-chevron",
+     "surligne": "#cap-chevron",
      "texte": "Un module de cours ne s'ouvre pas forcément d'un seul bloc. Regardez le petit chevron, à gauche de chaque rangée : c'est lui qui donne accès aux sections."
     },
     {
      "id": "b",
      "gestes": [
       {
-       "do": "deplier-module",
+       "do": "clic",
+       "sel": "#cap-chevron",
        "apres": "il deplie les sections"
+      },
+      {
+       "do": "attendre",
+       "ms": 700
+      },
+      {
+       "do": "defiler",
+       "sel": ".pe-sections",
+       "apres": "je decouvre"
       }
      ],
      "surligne": ".pe-sections",
@@ -597,12 +619,24 @@
      "code": "document.getElementById('boutonDecocher')?.click()"
     },
     {
+     "do": "attendre",
+     "ms": 700
+    },
+    {
      "do": "js",
      "code": "document.querySelector('.choice[data-filtre=\"cours\"]')?.click()"
     },
     {
      "do": "attendre",
      "ms": 700
+    },
+    {
+     "do": "js",
+     "code": "(()=>{const r=[...document.querySelectorAll('.pe-rangee')].find(x=>/\\d+\\s+sections/.test(x.textContent));const ch=r&&r.querySelector('.pe-chevron[data-deploi]');if(!ch)throw new Error('aucun module a sections');ch.id='cap-chevron';r.scrollIntoView({block:'center'});})()"
+    },
+    {
+     "do": "attendre",
+     "ms": 400
     }
    ]
   },
@@ -614,15 +648,24 @@
      "id": "a",
      "gestes": [
       {
-       "do": "onglet",
-       "valeur": "eleves"
+       "do": "clic",
+       "sel": "[data-ecran=\"eleves\"]"
       },
       {
        "do": "attendre",
        "ms": 700
+      },
+      {
+       "do": "defiler",
+       "sel": "#listeEleves"
+      },
+      {
+       "do": "pointer",
+       "sel": "#listeEleves",
+       "apres": "fabrique son code"
       }
      ],
-     "surligne": "#listeEleves",
+     "surligne": null,
      "texte": "Deuxième onglet : les élèves. Et ici, une chose à savoir tout de suite. Un élève ne s'inscrit jamais lui-même. C'est vous qui l'ajoutez au groupe, et le portail fabrique son code."
     },
     {
@@ -686,15 +729,33 @@
       },
       {
        "do": "attendre",
-       "ms": 800
+       "ms": 600
+      },
+      {
+       "do": "js",
+       "code": "(()=>{const c=document.getElementById('matImpression');c.style.cssText='position:fixed;left:50%;top:52%;transform:translate(-50%,-50%);width:900px;height:620px;border:1px solid #C9C9C6;border-radius:8px;background:#fff;box-shadow:0 24px 60px rgba(0,0,0,.28);visibility:visible;z-index:60';})()",
+       "apres": "la voici"
+      },
+      {
+       "do": "attendre",
+       "ms": 1200
       }
      ],
-     "surligne": "#boutonImprimerCodes",
-     "texte": "Si vous préparez une rentrée, laissez le champ vide et demandez plusieurs codes d'un coup : ils s'appelleront « Élève un, deux, trois », et vous poserez les pseudos à l'arrivée des personnes. Enfin, « Imprimer les codes » sort un billet par élève, en noir et blanc : le groupe, le pseudo, le code, et l'adresse du portail."
+     "surligne": null,
+     "texte": "Si vous préparez une rentrée, laissez le champ vide et demandez plusieurs codes d'un coup : ils s'appelleront « Élève un, deux, trois », et vous poserez les pseudos à l'arrivée des personnes. Enfin, « Imprimer les codes » sort un billet par élève, en noir et blanc. La voici : le groupe, le pseudo, le code et l'adresse du portail. Vous découpez, vous distribuez, et la classe est en ligne."
     },
     {
      "id": "fin",
-     "gestes": [],
+     "gestes": [
+      {
+       "do": "js",
+       "code": "(()=>{const c=document.getElementById('matImpression');c.style.cssText='position:absolute;width:0;height:0;border:0;visibility:hidden';})()"
+      },
+      {
+       "do": "attendre",
+       "ms": 300
+      }
+     ],
      "texte": "Chaque élève a son pseudo et son code, et vous savez comment les imprimer. Le suivi d'un élève a sa propre capsule. Voilà pour celle-ci. À la prochaine."
     }
    ],
