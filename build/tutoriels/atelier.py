@@ -14,9 +14,13 @@ corrections du 2 septembre 2026 se sont perdues.
 Trois choses se posent par plan :
 
 · **le texte dit**, qui est aussi le texte du procédurier papier ;
-· **une remarque** — « il manque une capture ici », « on ne voit pas le
-  bouton » — gardée à côté du manifeste, jamais dedans : le manifeste décrit
-  le film, pas la conversation qu'on a eue dessus ;
+· **une remarque sur l'image** — « il manque une capture ici », « on ne voit
+  pas le bouton » — gardée à côté du manifeste, jamais dedans : le manifeste
+  décrit le film, pas la conversation qu'on a eue dessus ;
+· **un commentaire** — ce qui manque au plan et qu'il faut ajouter. Il ne se
+  corrige pas soi-même comme le texte : il est adressé à quelqu'un, on repasse
+  ensuite voir si c'est fait. D'où la case « réglé », qui garde la trace d'une
+  passe à l'autre plutôt que de laisser deviner ce qui a été traité ;
 · **une image de référence**, collée ou déposée. Ce n'est pas la capture
   finale : c'est le croquis qui dit ce qu'il faudrait montrer, et le tournage
   la refera proprement.
@@ -94,6 +98,8 @@ def etat(seule=None):
                 "legendes": [im["quand"] for im in r["images"]],
                 "secondes": secondes(plan["texte"]),
                 "note": n.get(cle, {}).get("note", ""),
+                "commentaire": n.get(cle, {}).get("commentaire", ""),
+                "regle": n.get(cle, {}).get("regle", False),
                 "retirer": n.get(cle, {}).get("retirer", False),
                 "croquis": n.get(cle, {}).get("croquis", []),
             })
@@ -145,7 +151,7 @@ class Poste(http.server.BaseHTTPRequestHandler):
             n = notes()
             cle = "%s/%s" % (corps["capsule"], corps["plan"])
             fiche = n.setdefault(cle, {})
-            for champ in ("note", "retirer"):
+            for champ in ("note", "retirer", "commentaire", "regle"):
                 if champ in corps:
                     fiche[champ] = corps[champ]
             NOTES.write_text(json.dumps(n, ensure_ascii=False, indent=1),
@@ -203,6 +209,12 @@ textarea{width:100%;min-height:120px;resize:vertical;font:inherit;color:var(--in
   background:#FCFCFB;border:1px solid var(--line);border-radius:9px;padding:11px 12px}
 textarea:focus{outline:2px solid var(--accent);outline-offset:1px;background:#fff}
 .note{min-height:60px;background:var(--ambre-fond);border-color:#E8D3A0;color:#4A3706}
+/* Deux cases, deux couleurs : l'ambre parle de l'image, l'acier me parle à
+   moi. Mêlées, on ne sait plus laquelle attend une action de qui. */
+.commentaire{min-height:60px;background:#E7F0F6;border-color:#BBD3E2;color:#173B4F}
+.regle{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;
+  color:var(--muted);cursor:pointer}
+.plan.fait .commentaire{opacity:.5}
 .sous{display:flex;align-items:center;gap:14px;margin-top:8px;font-size:12.5px;color:var(--muted)}
 .duree{font-family:var(--mono);font-weight:700;color:var(--ink)}
 .etiq{font-size:11px;letter-spacing:.07em;text-transform:uppercase;font-weight:800;
@@ -350,6 +362,12 @@ function ligne(capsule, plan) {
   remarque.value = plan.note;
   gauche.appendChild(remarque);
 
+  gauche.appendChild(el('div', 'etiq', 'Commentaire — ce qu\'il faut ajouter'));
+  const commentaire = el('textarea', 'commentaire');
+  commentaire.placeholder = 'ex. il manque de dire que le groupe se choisit avant tout le reste';
+  commentaire.value = plan.commentaire;
+  gauche.appendChild(commentaire);
+
   let minuteur;
   const enregistrerTexte = () => {
     clearTimeout(minuteur);
@@ -367,6 +385,13 @@ function ligne(capsule, plan) {
       note: remarque.value }), 500);
   };
   remarque.addEventListener('input', enregistrerNote);
+  let m3;
+  const enregistrerCommentaire = () => {
+    clearTimeout(m3);
+    m3 = setTimeout(() => poster('note', { capsule: capsule.id, plan: plan.id,
+      commentaire: commentaire.value }), 500);
+  };
+  commentaire.addEventListener('input', enregistrerCommentaire);
 
   const microTexte = micro(zone, enregistrerTexte);
   if (microTexte) sous.insertBefore(microTexte, retirer);
@@ -374,8 +399,23 @@ function ligne(capsule, plan) {
   if (microNote) {
     const barre = el('div', 'sous');
     barre.appendChild(microNote);
-    gauche.appendChild(barre);
+    gauche.insertBefore(barre, commentaire.previousSibling);
   }
+  const barreBas = el('div', 'sous');
+  const microCom = micro(commentaire, enregistrerCommentaire);
+  if (microCom) barreBas.appendChild(microCom);
+  const regle = el('label', 'regle');
+  const caseRegle = el('input');
+  caseRegle.type = 'checkbox'; caseRegle.checked = plan.regle;
+  regle.appendChild(caseRegle);
+  regle.appendChild(el('span', null, 'réglé'));
+  caseRegle.addEventListener('change', () => {
+    rang.classList.toggle('fait', caseRegle.checked);
+    poster('note', { capsule: capsule.id, plan: plan.id, regle: caseRegle.checked });
+  });
+  barreBas.appendChild(regle);
+  gauche.appendChild(barreBas);
+  if (plan.regle) rang.classList.add('fait');
   case_.addEventListener('change', () => {
     rang.classList.toggle('retire', case_.checked);
     poster('note', { capsule: capsule.id, plan: plan.id, retirer: case_.checked });
