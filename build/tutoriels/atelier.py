@@ -43,6 +43,8 @@ import time
 import webbrowser
 
 ICI = pathlib.Path(__file__).resolve().parent
+sys.path.insert(0, str(ICI))
+import versions  # noqa: E402
 GUIDE = ICI / "guide"
 MANIFESTE = ICI / "manifeste.json"
 NOTES = GUIDE / "notes.json"
@@ -110,7 +112,8 @@ def etat(seule=None):
                 "croquis": n.get(cle, {}).get("croquis", []),
             })
         capsules.append({"id": capsule["id"], "rang": rang,
-                         "titre": capsule["titre"], "plans": plans})
+                         "titre": capsule["titre"], "plans": plans,
+                         "version": versions.etat(capsule["id"])})
     return {"capsules": capsules}
 
 
@@ -180,6 +183,11 @@ def mettre_a_jour(capsule):
          "enAttente": attente}, ensure_ascii=False, indent=1), encoding="utf-8")
     journal.append("%d remarque(s) en attente, notées dans guide/demande.json"
                    % len(attente))
+    # Rang **mineur** : les images ont bougé, le texte non. Compter cela comme
+    # une nouvelle version à relire ferait mentir le repère.
+    fiche = versions.poser(capsule or "toutes", "copies d'écran refaites",
+                           majeure=False)
+    journal.append("storyboard %s · %s" % (fiche["version"], fiche["quand"]))
     return {"ok": True, "journal": journal, "enAttente": len(attente)}
 
 
@@ -276,8 +284,18 @@ h1{font-size:30px;color:var(--ink);margin:0 0 6px;letter-spacing:-.02em}
 h2{font-size:20px;color:var(--ink);margin:0 0 2px;display:flex;align-items:center;gap:11px}
 .num{display:inline-grid;place-items:center;width:29px;height:29px;border-radius:999px;
   background:var(--accent);color:#fff;font-size:15px}
-.resume{margin:0 0 18px;color:var(--muted);font-size:13px;font-weight:800;
+.resume{margin:0 0 4px;color:var(--muted);font-size:13px;font-weight:800;
   letter-spacing:.05em;text-transform:uppercase}
+/* Le repère de version : « est-ce que tu as mis à jour le storyboard ? » ne
+   doit pas être une question qu'on pose, mais une ligne qu'on lit. */
+.version{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;
+  margin:0 0 18px;padding:9px 13px;border-radius:9px;background:#E7F0F6;
+  border:1px solid #BBD3E2;color:#173B4F;font-size:13px}
+.version .rang{font-weight:900;font-size:15px}
+.version .quoi{color:#3B6B87}
+.version details{width:100%;margin-top:6px}
+.version summary{cursor:pointer;color:#3B6B87;font-size:12.5px}
+.version ol{margin:8px 0 0;padding-left:20px;font-size:12.5px;color:#3B6B87}
 .plan{display:grid;grid-template-columns:44px minmax(0,1fr) minmax(0,1fr);gap:18px;
   padding:18px 0;border-top:1px solid var(--line)}
 .plan.retire{opacity:.42}
@@ -612,6 +630,21 @@ fetch('/api/etat').then((r) => r.json()).then((etat) => {
     const total = capsule.plans.reduce((s, p) => s + p.secondes, 0);
     bloc.appendChild(el('p', 'resume',
       capsule.plans.length + ' plans · environ ' + Math.round(total) + ' s'));
+    const v = capsule.version || {};
+    const bandeau = el('div', 'version');
+    bandeau.appendChild(el('span', 'rang', 'Storyboard ' + (v.version || 'v1.0')));
+    bandeau.appendChild(el('span', null, v.quand || 'jamais mis à jour'));
+    if (v.quoi) bandeau.appendChild(el('span', 'quoi', '— ' + v.quoi));
+    if ((v.historique || []).length > 1) {
+      const d = document.createElement('details');
+      d.appendChild(el('summary', null, 'les versions précédentes'));
+      const ol = document.createElement('ol');
+      v.historique.slice(1).forEach((h) => ol.appendChild(
+        el('li', null, h.version + ' · ' + h.quand + ' — ' + h.quoi)));
+      d.appendChild(ol);
+      bandeau.appendChild(d);
+    }
+    bloc.appendChild(bandeau);
     capsule.plans.forEach((p) => bloc.appendChild(ligne(capsule, p)));
     tout.appendChild(bloc);
   }

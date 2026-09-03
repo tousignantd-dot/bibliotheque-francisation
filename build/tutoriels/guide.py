@@ -36,6 +36,8 @@ ICI = pathlib.Path(__file__).resolve().parent
 RACINE = ICI.parent.parent
 PRESENTATIONS = RACINE / "assets" / "presentations"
 sys.path.insert(0, str(RACINE / "build"))
+sys.path.insert(0, str(ICI))
+import versions  # noqa: E402
 
 QUAND = {"debut": "au début", "milieu": "en cours", "fin": "à la fin"}
 
@@ -80,15 +82,18 @@ def page(seule=None):
                 '<td class="duree">%s</td></tr>'
                 % (html.escape(plan["id"]), html.escape(plan["texte"]), note,
                    vignettes, secondes(r["secondes"])))
+        v = versions.etat(capsule["id"])
         corps.append(
             '<section class="capsule">'
             '<h2><span class="num">%d</span>%s</h2>'
-            '<p class="resume">%d plans · environ %s</p>'
+            '<p class="resume">%d plans · environ %s · <b>storyboard %s</b>%s</p>'
             '<table><thead><tr><th>Plan</th><th>Ce que la voix dit</th>'
             '<th>Ce qu\'on voit</th><th>Durée</th></tr></thead>'
             '<tbody>%s</tbody></table></section>'
             % (n, html.escape(capsule["titre"]), len(capsule["plans"]),
-               secondes(duree), "".join(lignes)))
+               secondes(duree), v["version"],
+               " · " + v["quand"] if v.get("quand") else "",
+               "".join(lignes)))
     # `str.replace` et non l'opérateur `%` : la feuille de style est pleine de
     # pourcentages, et le formatage les prendrait pour des marqueurs.
     if seule and not corps:
