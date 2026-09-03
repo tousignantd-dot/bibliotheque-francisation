@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Le film de 90 secondes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap">
+<style>
+/* ═══════════════════════════════════════════════════════════
+   LE FILM DE 90 SECONDES
+   Second film, à côté du teaser de 48 s — il ne le remplace
+   pas. Charpente empruntée au teaser de Speexx Talk, argument
+   entièrement nôtre.
+   ═══════════════════════════════════════════════════════════ */
+:root{
+  --ground:#F7F7F5; --card:#FFFFFF; --sunken:#FBFBFA;
+  --ink:#17181A; --body:#33363A; --muted:#6E7175;
+  --line:#E4E4E0; --line-fort:#D2D2CD;
+  --acier:#1D6B8F; --acier-bg:#E7F1F6;
+  --ambre:#C07A08;  --ambre-bg:#FBF2E2;
+  --vert:#0A8F5B;   --vert-bg:#E9F5EF;
+  --pourpre:#6B46C1;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#151618; --card:#1D1F22; --sunken:#212326;
+    --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+    --line:#2E3135; --line-fort:#3D4146;
+    --acier:#6DAFD2; --acier-bg:#13242C;
+    --ambre:#E0A63F; --ambre-bg:#2C2213;
+    --vert:#4BC48D;  --vert-bg:#12291F;
+    --pourpre:#A78BFA;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#151618; --card:#1D1F22; --sunken:#212326;
+  --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+  --line:#2E3135; --line-fort:#3D4146;
+  --acier:#6DAFD2; --acier-bg:#13242C;
+  --ambre:#E0A63F; --ambre-bg:#2C2213;
+  --vert:#4BC48D;  --vert-bg:#12291F;
+  --pourpre:#A78BFA;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--body);
+  font-family:Nunito,system-ui,sans-serif;font-size:16px;line-height:1.62}
+.page{max-width:54rem;margin:0 auto;padding:1.5rem 1.25rem 5rem}
+a{color:var(--acier)}
+.retour{display:inline-block;margin-bottom:1.75rem;font-size:.82rem;
+  font-weight:700;color:var(--muted);text-decoration:none}
+.retour:hover{color:var(--ink)}
+h1{font-family:Newsreader,Georgia,serif;font-weight:600;font-size:2.3rem;
+  line-height:1.14;color:var(--ink);margin:.2rem 0 .6rem;letter-spacing:-.01em}
+h2{font-family:Newsreader,Georgia,serif;font-weight:600;font-size:1.45rem;
+  color:var(--ink);margin:2.6rem 0 .3rem}
+h3{font-size:1.02rem;font-weight:800;color:var(--ink);margin:.1rem 0 .5rem}
+.eyebrow{display:block;font-size:.72rem;font-weight:800;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--muted);margin-bottom:.5rem}
+.e-acier{color:var(--acier)} .e-ambre{color:var(--ambre)} .e-vert{color:var(--vert)}
+.chapeau{font-size:1.08rem;margin:.4rem 0 1.3rem}
+p{margin:.7rem 0}
+b,strong{color:var(--ink);font-weight:800}
+code{font-family:var(--mono);font-size:.86em;background:var(--sunken);
+  border:1px solid var(--line);border-radius:4px;padding:.06em .34em}
+.plan{background:var(--card);border:1px solid var(--line);border-radius:10px;
+  padding:1rem 1.15rem;margin:.85rem 0}
+.plan.reelle{border-left:3px solid var(--acier)}
+.tete{display:flex;align-items:baseline;gap:.7rem;margin-bottom:.35rem}
+.num{font-family:var(--mono);font-size:.78rem;font-weight:800;color:#fff;
+  background:var(--ink);border-radius:4px;padding:.1em .45em}
+.temps{font-family:var(--mono);font-size:.78rem;color:var(--muted);font-weight:700}
+.badge{margin-left:auto;font-size:.68rem;font-weight:800;letter-spacing:.07em;
+  text-transform:uppercase;color:var(--acier);background:var(--acier-bg);
+  border:1px solid var(--acier);border-radius:4px;padding:.1em .45em}
+.lab{display:inline-block;min-width:5.4rem;font-size:.7rem;font-weight:800;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--muted);
+  vertical-align:top}
+.vo{background:var(--sunken);border-left:2px solid var(--line-fort);
+  padding:.5rem .75rem;margin:.6rem 0;border-radius:0 6px 6px 0}
+.vo b{font-weight:800}
+.note{font-size:.9rem;color:var(--muted);margin:.5rem 0 0}
+.bande{background:var(--sunken);border:1px solid var(--line);border-radius:10px;
+  padding:.9rem 1.1rem;margin:1.1rem 0;font-size:.92rem}
+.carte-a{background:var(--ambre-bg);border:1px solid var(--ambre);border-radius:10px;
+  padding:1rem 1.2rem;margin:1.1rem 0}
+.carte-v{background:var(--vert-bg);border:1px solid var(--vert);border-radius:10px;
+  padding:1rem 1.2rem;margin:1.1rem 0}
+.marq{display:inline-block;font-size:.7rem;font-weight:800;letter-spacing:.09em;
+  text-transform:uppercase;padding:.14em .5em;border-radius:4px;margin-bottom:.45rem}
+.m-a{background:var(--ambre);color:#fff} .m-v{background:var(--vert);color:#fff}
+table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.87rem}
+th,td{text-align:left;padding:.5rem .6rem;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);
+  border-bottom:1px solid var(--line-fort)}
+td.t{font-family:var(--mono);font-size:.8rem;white-space:nowrap;color:var(--muted)}
+.enveloppe{overflow-x:auto}
+ul.q{padding-left:1.1rem} ul.q li{margin:.4rem 0}
+.pied{margin-top:3.2rem;padding-top:1.1rem;border-top:1px solid var(--line);
+  font-size:.8rem;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="page">
+<a class="retour" href="../../presentations.html">← Le classeur</a>
+
+<span class="eyebrow">Pour présenter · quatorze plans, quatre-vingt-dix secondes</span>
+<h1>Le film de 90 secondes</h1>
+<p class="chapeau">Un <b>second</b> film, à côté du teaser de 48 secondes — il ne
+le remplace pas. Le teaser s'ouvre sur l'enseignante ensevelie sous ses
+photocopies et parle aux directions ; celui-ci s'ouvre sur <b>la peur de
+l'élève</b> et parle à quiconque n'a jamais vu le produit. La charpente est
+empruntée au teaser de Speexx Talk ; l'argument, lui, est le contraire du
+leur.</p>
+
+<div class="bande">
+  <b>Ce qu'on emprunte à Speexx, et pourquoi.</b> Leur film de 95 s consacre
+  <b>dix-neuf secondes — un cinquième — à la protection des données</b>. Ce
+  n'est pas de la prudence, c'est la réponse à l'objection qui tue la vente.
+  Notre teaser de 48 s n'en dit pas un mot ; au Québec, sous la Loi 25, devant
+  un centre de services scolaire, c'est un gâchis. Ce film-ci rend le même
+  cinquième au même sujet — bloc 6, dix-sept secondes sur quatre-vingt-dix.
+  <br><br>
+  <b>Ce qu'on ne leur emprunte pas.</b> Leur film ne mentionne jamais un
+  enseignant : l'IA remplace le formateur. Le nôtre lui donne douze secondes en
+  plein milieu — c'est le seul plan qu'ils ne peuvent pas tourner.
+</div>
+
+<h2>Le découpage</h2>
+<div class="enveloppe">
+<table>
+<tr><th>Temps</th><th>Bloc</th><th>Ce qu'on veut obtenir</th></tr>
+<tr><td class="t">0:00 – 0:15</td><td><b>La peur</b></td><td>Nommer le moment où l'on décide de ne rien dire</td></tr>
+<tr><td class="t">0:15 – 0:22</td><td><b>Le lieu où rater ne coûte rien</b></td><td>Le renversement, en un seul plan</td></tr>
+<tr><td class="t">0:22 – 0:42</td><td><b>Le mécanisme</b></td><td>Le jeu de rôle, et le fait qu'il est écrit ici</td></tr>
+<tr><td class="t">0:42 – 0:55</td><td><b>La rétroaction</b></td><td>Elle est à l'élève, et elle ne se garde pas</td></tr>
+<tr><td class="t">0:55 – 1:07</td><td><b>L'enseignante</b></td><td>Ce n'est pas la machine qui décide de la suite</td></tr>
+<tr><td class="t">1:07 – 1:24</td><td><b>Les données</b></td><td>Un centre n'a pas à nous croire : il coche</td></tr>
+<tr><td class="t">1:24 – 1:30</td><td><b>La clôture</b></td><td>Retour à la première scène — la phrase sort</td></tr>
+</table>
+</div>
+
+<hr style="border:0;border-top:1px solid var(--line);margin:2rem 0">
+
+<span class="eyebrow e-ambre">0:00 → 0:15</span>
+<h2>La peur</h2>
+
+<div class="plan">
+  <p class="tete"><span class="num">01</span><span class="temps">0:00 – 0:05</span></p>
+  <h3>Le point qui ne sort pas</h3>
+  <p><span class="lab">Image</span>Noir. Un seul point lumineux au centre —
+  le point du « i ». Il gonfle une fois, comme quelqu'un qui prend son
+  souffle pour parler. Puis il retombe et s'éteint à moitié.</p>
+  <p class="vo"><span class="lab">Voix off</span><b>« Il y a un moment où l'on
+  décide de ne rien dire. »</b></p>
+  <p><span class="lab">Son</span>Une inspiration. Pas d'expiration.</p>
+  <p class="note">Seul plan noir du film, comme dans le teaser de 48 s — mais
+  là-bas le point <em>écoutait</em>, ici il <em>renonce</em>. Même signe, deux
+  films, deux sens.</p>
+</div>
+
+<div class="plan">
+  <p class="tete"><span class="num">02</span><span class="temps">0:05 – 0:10</span></p>
+  <h3>Le comptoir</h3>
+  <p><span class="lab">Image</span>Crème. Un comptoir vu de trois quarts, en
+  silhouettes sans visage. Une personne devant, un employé derrière qui
+  attend. Au-dessus de la personne, une bulle de dialogue <b>vide</b>.</p>
+  <p class="vo"><span class="lab">Voix off</span><b>« Au comptoir. Au
+  téléphone. Devant un propriétaire. »</b></p>
+  <p><span class="lab">Son</span>Rumeur de lieu public, très basse.</p>
+</div>
+
+<div class="plan">
+  <p class="tete"><span class="num">03</span><span class="temps">0:10 – 0:15</span></p>
+  <h3>Trois fois rien</h3>
+  <p><span class="lab">Image</span>Trois vignettes qui se relaient en une
+  seconde chacune : une pharmacie, un téléphone tenu à l'oreille, une porte
+  d'appartement. À chaque fois, la même bulle vide.</p>
+  <p class="vo"><span class="lab">Voix off</span><b>« On comprend. On connaît
+  les mots. Mais on ne se lance pas. »</b></p>
+  <p class="note">Les trois décors sortent de modules réels — pharmacie,
+  rendez-vous, logement. Le film ne promet rien qui n'existe pas.</p>
+</div>
+
+<span class="eyebrow e-acier">0:15 → 0:22</span>
+<h2>Le lieu où rater ne coûte rien</h2>
+
+<div class="plan">
+  <p class="tete"><span class="num">04</span><span class="temps">0:15 – 0:22</span></p>
+  <h3>Le comptoir se replie</h3>
+  <p><span class="lab">Image</span>Le décor du comptoir se plie sur lui-même
+  et devient un écran de téléphone, posé à plat sur une table de cuisine.
+  La même scène, en petit. Personne autour.</p>
+  <p class="vo"><span class="lab">Voix off</span><b>« francis met cette
+  conversation-là dans un endroit où se tromper ne coûte rien. »</b></p>
+  <p><span class="lab">Son</span>La rumeur publique s'éteint d'un coup. Une
+  cuisine, un frigo qui ronronne.</p>
+  <p class="note">Le seul plan « concept » du film. Tout ce qui suit est une
+  capture réelle ou une scène concrète.</p>
+</div>
+
+<span class="eyebrow e-acier">0:22 → 0:42</span>
+<h2>Le mécanisme</h2>
+
+<div class="plan reelle">
+  <p class="tete"><span class="num">05</span><span class="temps">0:22 – 0:28</span>
+     <span class="badge">capture réelle</span></p>
+  <h3>Il choisit, et il parle</h3>
+  <p><span class="lab">Image</span>Capture du jeu de rôle : les cartes de
+  scénario, puis le gros bouton micro noir. Le doigt le touche, il passe au
+  rouge et pulse.</p>
+  <p class="vo"><span class="lab">Voix off</span><b>« L'élève choisit une
+  situation. Et il parle. »</b></p>
+</div>
+
+<div class="plan reelle">
+  <p class="tete"><span class="num">06</span><span class="temps">0:28 – 0:35</span>
+     <span class="badge">capture réelle</span></p>
+  <h3>Quelqu'un répond</h3>
+  <p><span class="lab">Image</span>Une bulle d'élève s'inscrit, puis la bulle
+  de l'assistant arrive et un petit haut-parleur s'anime.</p>
+  <p class="vo"><span class="lab">Voix off</span><b>« En face, quelqu'un répond —
+  et s'ajuste à ce qu'il vient de dire. »</b></p>
+  <p class="note">On entend deux secondes de la <b>vraie</b> voix du dispositif
+  sous ce plan. C'est la meilleure preuve du film et elle ne coûte rien.</p>
+</div>
+
+<div class="plan">
+  <p class="tete"><span class="num">07</span><span class="temps">0:35 – 0:42</span></p>
+  <h3>Écrit ici</h3>
+  <p><span class="lab">Image</span>La bulle s'éloigne et devient une rangée
+  de vignettes qui défilent : une clinique, un bail, un autobus, un comptoir
+  de bureau de poste, une salle d'attente.</p>
+  <p class="vo"><span class="lab">Voix off</span><b>« Les situations ne sont
+  pas génériques. Elles ont été écrites ici, pour ce qui se passe ici. »</b></p>
+  <p class="note">C'est <b>la</b> phrase qui nous sépare d'un produit mondial,
+  et elle vaut d'être dite lentement.</p>
+</div>
+
+<span class="eyebrow e-ambre">0:42 → 0:55</span>
+<h2>La rétroaction</h2>
+
+<div class="plan reelle">
+  <p class="tete"><span class="num">08</span><span class="temps">0:42 – 0:49</span>
+     <span class="badge">capture réelle</span></p>
+  <h3>Ce qu'il a dit, et comment</h3>
+  <p><span class="lab">Image</span>Capture de la carte ambre de rétroaction
+  privée, qui monte doucement dans le cadre.</p>
+  <p class="vo"><span class="lab">Voix off</span><b>« À la fin, une rétroaction sur
+  sa grammaire et sur la clarté de ce qu'il a dit. »</b></p>
+</div>
+
+<div class="plan">
+  <p class="tete"><span class="num">09</span><span class="temps">0:49 – 0:55</span></p>
+  <h3>Et elle s'efface</h3>
+  <p><span class="lab">Image</span>La carte ambre se dissout par le haut,
+  ligne à ligne, et ne laisse rien derrière elle.</p>
+  <p class="vo"><span class="lab">Voix off</span><b>« Elle est à lui. Elle ne
+  se conserve pas, et personne d'autre ne la lit. »</b></p>
+  <p class="note">Ce plan de cinq secondes est le premier versement du bloc
+  « données » — il l'ouvre bien avant qu'on en fasse un sujet.</p>
+</div>
+
+<span class="eyebrow e-vert">0:55 → 1:07</span>
+<h2>L'enseignante</h2>
+
+<div class="plan">
+  <p class="tete"><span class="num">10</span><span class="temps">0:55 – 1:01</span></p>
+  <h3>Quinze pupitres</h3>
+  <p><span class="lab">Image</span>Recul en vue isométrique : une classe,
+  quinze pupitres, une silhouette debout devant. Au-dessus de chaque pupitre,
+  une petite barre de progression d'une couleur différente.</p>
+  <p class="vo"><span class="lab">Voix off</span><b>« Et pendant ce temps,
+  l'enseignante voit son groupe. »</b></p>
+</div>
+
+<div class="plan reelle">
+  <p class="tete"><span class="num">11</span><span class="temps">1:01 – 1:07</span>
+     <span class="badge">capture réelle</span></p>
+  <h3>C'est elle qui décide</h3>
+  <p><span class="lab">Image</span>Capture de la page de progression du
+  groupe. La caméra glisse le long d'une ligne, s'arrête sur une case en
+  retard.</p>
+  <p class="vo"><span class="lab">Voix off</span><b>« Ce n'est pas la machine
+  qui décide de la suite. C'est elle. »</b></p>
+  <p class="note">Le plan que le concurrent ne peut pas tourner : son film ne
+  mentionne aucun enseignant du début à la fin. La capture demande une session
+  enseignante ouverte — c'est le même plan qui manque au teaser de 48 s, et il
+  se prend une seule fois pour les deux films.</p>
+</div>
+
+<span class="eyebrow e-vert">1:07 → 1:24</span>
+<h2>Les données — dix-sept secondes</h2>
+
+<div class="plan">
+  <p class="tete"><span class="num">12</span><span class="temps">1:07 – 1:14</span></p>
+  <h3>Quatre interrupteurs</h3>
+  <p><span class="lab">Image</span>Fond crème, plein cadre : quatre gros
+  interrupteurs alignés. Une main les bascule un par un, sans se presser.</p>
+  <p class="vo"><span class="lab">Voix off</span><b>« Un centre n'a pas à nous
+  faire confiance. Il coche. »</b></p>
+  <p class="note">Sept mots. C'est la phrase la plus importante du film et
+  elle doit tenir seule, sur un plan qui ne montre rien d'autre.</p>
+</div>
+
+<div class="plan">
+  <p class="tete"><span class="num">13</span><span class="temps">1:14 – 1:24</span></p>
+  <h3>Ce qui ne sort plus</h3>
+  <p><span class="lab">Image</span>Autour du cadre, quatre flèches sortaient
+  vers l'extérieur. À chaque interrupteur éteint, une flèche disparaît. À la
+  dernière, plus rien ne quitte le cadre — qui se referme.</p>
+  <p class="vo"><span class="lab">Voix off</span><b>« Aucun vrai nom. Aucun
+  courriel. Les productions s'effacent après trente jours. Et si la direction
+  refuse l'assistance, plus rien ne quitte le serveur. »</b></p>
+  <p class="note">Quatre affirmations vérifiables, aucune promesse. Le
+  concurrent dit « nos serveurs sont en Europe » — nous disons « vous pouvez
+  l'éteindre », et pour un organisme public c'est une meilleure réponse : elle
+  ne demande pas de confiance.</p>
+</div>
+
+<span class="eyebrow e-ambre">1:24 → 1:30</span>
+<h2>La clôture</h2>
+
+<div class="plan">
+  <p class="tete"><span class="num">14</span><span class="temps">1:24 – 1:30</span></p>
+  <h3>La phrase sort</h3>
+  <p><span class="lab">Image</span>Retour au comptoir du plan 02, cadre
+  identique. Cette fois la bulle se remplit — de traits, jamais de mots
+  lisibles. L'employé hoche la tête. Tout se contracte vers un point unique,
+  qui vient se poser sur le « i » du mot <b>francis</b> qui s'écrit.</p>
+  <p class="vo"><span class="lab">Voix off</span><b>« Et un jour, au comptoir,
+  la phrase sort. »</b></p>
+  <p><span class="lab">Son</span>La rumeur du lieu public revient, puis se
+  coupe net sur le logotype.</p>
+  <p class="note">Le point ouvre et ferme le film : c'est toute la marque,
+  aucun logotype ajouté ailleurs.</p>
+</div>
+
+<h2>Les règles qui ne se négocient pas</h2>
+<ul class="q">
+<li><b>Le point du « i » ouvre et ferme.</b> Plan 01, plan 14. Rien d'autre ne
+porte la marque.</li>
+<li><b>Aucun texte lisible avant la signature</b> — le public de ce film n'est
+pas toujours à l'aise en français. Exception assumée : les captures réelles
+des plans 05, 06, 08 et 11, où le produit se montre tel qu'il est.</li>
+<li><b>Aucun visage, aucun vrai nom.</b> Des silhouettes. C'est aussi ce que
+dit le film au bloc 6 : autant que le dispositif s'y tienne.</li>
+<li><b>Pas de vert dominant, pas de violet ailleurs qu'à la marque.</b> Chaque
+niveau garde sa couleur.</li>
+<li><b>Les captures montrent le produit d'aujourd'hui</b>, pas une maquette.
+Le film vieillit avec lui — c'est voulu.</li>
+</ul>
+
+<div class="carte-v">
+  <span class="marq m-v">Ce que le film ne dit pas, exprès</span>
+  <p style="margin-top:.2rem">Ni le prix, ni le nombre de modules, ni les
+  niveaux couverts, ni le mot « intelligence artificielle ». Les trois
+  premiers appartiennent à la conversation qui suit ; le quatrième a quitté
+  l'interface et n'a pas à revenir par le film. On dit
+  <b>« l'assistance automatisée »</b>, comme partout ailleurs.</p>
+</div>
+
+<div class="carte-a">
+  <span class="marq m-a">Ce qu'il reste à faire pour le tourner</span>
+  <p style="margin-top:.2rem"><b>Quatre captures réelles</b> (plans 05, 06, 08,
+  11) — celle de la progression demande une session enseignante ouverte, et
+  elle sert aussi au plan 11 du teaser de 48 s, qui l'attend depuis le 29 août.
+  <b>Neuf images à produire</b> pour les plans 01 à 04, 07, 09, 10, 12 et 13.
+  <b>La voix off</b>, sur la même chaîne que l'animatique existante — Azure
+  <code>fr-CA-SylvieNeural</code>, images fixes et <code>zoompan</code>,
+  1920 × 1080.</p>
+  <p><b>Le piège de montage déjà payé une fois :</b> <code>xfade</code>
+  raccourcit la sortie de la durée du fondu. Chaque segment doit être allongé
+  d'autant, et le décalage de chaque fondu vaut la somme des durées
+  <em>voulues</em> — sinon la voix off dérive par rapport à l'image, et ça ne
+  se voit qu'à la fin.</p>
+</div>
+
+<div class="pied">
+  Écrit le 3 septembre 2026 · second film, à côté du
+  <a href="storyboard-teaser.html">teaser de 48 secondes</a> · charpente
+  d'après le teaser Speexx Talk (95 s, juin 2025), argument entièrement nôtre
+</div>
+</div>
+</body>
+</html>
