@@ -79,9 +79,16 @@ SORTIE = ICI / "voix"
 # hachait, et la pause posée après un deux-points s'entendait comme une
 # coupure : « une phrase, puis tout à coup une coupure, la phrase reprend
 # après ». Corrigé à l'écoute de la capsule 2, le 3 septembre 2026.
-PAUSE_PHRASE = "500ms"     # après un point, un point d'exclamation, un point d'interrogation
-PAUSE_SOUFFLE = None       # à l'intérieur d'une phrase : aucune
-PAUSE_PLAN = "700ms"       # entre deux plans — elle appartient au plan qui finit
+# **Plus aucune pause insérée.** Verdict du 3 septembre 2026, à la troisième
+# écoute : même à 500 ms, un `<break>` rendu par la voix HD s'entend comme une
+# coupure de montage — un silence absolu au milieu d'une parole vivante — et
+# non comme une respiration. « Ça ne va pas avec les coupures, on va essayer
+# sans. » La voix ponctue donc elle-même, sur les points du texte. Les
+# constantes restent : elles disent où remettre une pause si on change d'avis,
+# et `respirer()`/`document()` savent encore les poser.
+PAUSE_PHRASE = None        # après un point : rien
+PAUSE_SOUFFLE = None       # à l'intérieur d'une phrase : rien
+PAUSE_PLAN = None          # entre deux plans : rien — la coupe suit le silence naturel
 
 # `ssml()` échappe le texte : on ne peut pas y glisser une balise directement.
 # On pose donc des caractères de contrôle, qui traversent `html.escape` sans
@@ -94,8 +101,9 @@ ENTETE_WAV = 44     # l'en-tête RIFF que le SDK écrit devant les échantillons
 
 def respirer(texte):
     """Le texte, marqué là où la voix doit reprendre son souffle."""
-    for signe in (". ", "! ", "? "):
-        texte = texte.replace(signe, signe[0] + MARQUE_PHRASE + " ")
+    if PAUSE_PHRASE:
+        for signe in (". ", "! ", "? "):
+            texte = texte.replace(signe, signe[0] + MARQUE_PHRASE + " ")
     if PAUSE_SOUFFLE:
         for signe in (" : ", " ; "):
             texte = texte.replace(signe, signe[:-1] + MARQUE_SOUFFLE + " ")
@@ -111,11 +119,13 @@ def document(textes):
     """
     corps = "".join(MARQUE_PLAN + respirer(t).strip() + " " for t in textes)
     doc = azure_voix.ssml(corps, ROLE)
-    doc = doc.replace(MARQUE_PHRASE, '<break time="%s"/>' % PAUSE_PHRASE)
+    if PAUSE_PHRASE:
+        doc = doc.replace(MARQUE_PHRASE, '<break time="%s"/>' % PAUSE_PHRASE)
     if PAUSE_SOUFFLE:
         doc = doc.replace(MARQUE_SOUFFLE, '<break time="%s"/>' % PAUSE_SOUFFLE)
     doc = doc.replace(MARQUE_PLAN, "", 1)     # rien devant le premier plan
-    return doc.replace(MARQUE_PLAN, '<break time="%s"/>' % PAUSE_PLAN)
+    return doc.replace(MARQUE_PLAN,
+                       ('<break time="%s"/>' % PAUSE_PLAN) if PAUSE_PLAN else "")
 
 
 def synthese():
