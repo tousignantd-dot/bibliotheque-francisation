@@ -120,6 +120,19 @@ async function jrDire(texte){
     speechSynthesis.speak(u);
   }catch(e){ jrMicroRouvrir(); }"""),
 
+    # 6 · Un bouton qui ne ment pas. `start()` qui échoue laissait le bouton
+    #     ROUGE et l'étiquette « Je t'écoute… » alors que plus rien n'écoutait.
+    #     Chrome refuse un start() trop proche du stop() précédent : le cas
+    #     était rare tant que le micro s'ouvrait une fois par exercice, il ne
+    #     l'est plus depuis qu'il se referme à chaque réplique.
+    ("""  try{ rec.start(); }catch(e){ JR.rec=null; }""",
+     """  try{ rec.start(); }
+  catch(e){
+    JR.rec=null;
+    btn.classList.remove('rec'); btn.textContent='🎤';
+    lbl.textContent='Touche pour parler';
+  }"""),
+
     # 5 · Et le cas où l'on ne parle pas du tout : élève qui a coupé la parole
     #     (le micro est déjà à lui), ou panne avant toute lecture.
     ("""    if(no===jrDireNo) jrDireNavigateur(texte);

@@ -3539,7 +3539,12 @@ async function jrParler(){
     if(!inp.value && JR.inter) inp.value=JR.inter.trim();
     inp.focus();
   };
-  try{ rec.start(); }catch(e){ JR.rec=null; }
+  try{ rec.start(); }
+  catch(e){
+    JR.rec=null;
+    btn.classList.remove('rec'); btn.textContent='🎤';
+    lbl.textContent='Touche pour parler';
+  }
 }
 
 // Le bouton n'est pas dans le HTML des modules : la rangée « Comment ? » est
