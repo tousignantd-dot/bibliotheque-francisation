@@ -125,6 +125,11 @@ async function prendre(page, fichier, sel) {
       });
       if (garder) process.stdout.write(`  ${capsule.id}_${plan.id} · ${images.length} image(s)\n`);
     }
+    /* On s'arrête à la capsule demandée. Les précédentes ont dû être jouées —
+       chacune hérite de l'écran que la précédente a laissé — mais celles
+       d'après ne servent à rien, et elles coûtent une minute chacune au bouton
+       « Mettre à jour ». */
+    if (SEULE && capsule.id === SEULE) break;
   }
   fs.writeFileSync(path.join(SORTIE, 'captures.json'), JSON.stringify(releve, null, 1));
   await navigateur.close();

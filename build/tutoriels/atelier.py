@@ -32,17 +32,23 @@ mauvaise idée même sur un poste de travail.
 import base64
 import http.server
 import json
+import os
 import pathlib
 import re
+import socket
 import socketserver
+import subprocess
 import sys
+import time
 import webbrowser
 
 ICI = pathlib.Path(__file__).resolve().parent
 GUIDE = ICI / "guide"
 MANIFESTE = ICI / "manifeste.json"
 NOTES = GUIDE / "notes.json"
+DEMANDE = GUIDE / "demande.json"
 PORT = 5322
+PORT_DEMO = 5321
 
 # La cadence des voix HD d'Azure, relevée sur les 54 narrations produites :
 # 1 888 mots en 695,8 s. Elle sert à donner une durée sans rien synthétiser.
@@ -108,6 +114,75 @@ def etat(seule=None):
     return {"capsules": capsules}
 
 
+def demo_repond():
+    try:
+        with socket.create_connection(("127.0.0.1", PORT_DEMO), 1):
+            return True
+    except OSError:
+        return False
+
+
+def lever_demo(journal):
+    """Lance le portail de démonstration s'il ne répond pas.
+
+    Les captures sortent de ce portail-là, jamais des données réelles. Le
+    bouton serait inutilisable sans ça : il faudrait ouvrir un terminal entre
+    deux corrections, et c'est exactement le va-et-vient qu'on essaie de
+    supprimer.
+    """
+    if demo_repond():
+        journal.append("portail de démonstration : déjà en écoute")
+        return True
+    journal.append("portail de démonstration : démarrage…")
+    subprocess.Popen(["/bin/zsh", str(ICI / "lancer_demo.sh")],
+                     cwd=str(ICI.parent.parent),
+                     env={**os.environ, "PORT": str(PORT_DEMO)},
+                     stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    for _ in range(60):
+        time.sleep(1)
+        if demo_repond():
+            journal.append("portail de démonstration : prêt")
+            return True
+    journal.append("le portail de démonstration n'a pas démarré — "
+                   "lancez-le à la main : PORT=5321 ./build/tutoriels/lancer_demo.sh")
+    return False
+
+
+def mettre_a_jour(capsule):
+    """Refait les copies d'écran du guide, et note que la passe est remise.
+
+    Ce que ce bouton fait : rejouer les gestes et reprendre les images. Ce
+    qu'il ne fait pas, et ne peut pas faire : écrire le texte qui manque. Les
+    commentaires sont adressés à quelqu'un — ils sont rassemblés dans
+    `guide/demande.json`, et c'est de là qu'ils se traitent.
+    """
+    journal = []
+    if not lever_demo(journal):
+        return {"ok": False, "journal": journal}
+    journal.append("captures : les gestes se rejouent…")
+    cmd = ["node", str(ICI / "guide_captures.js"), str(PORT_DEMO)]
+    if capsule:
+        cmd.append(capsule)
+    r = subprocess.run(cmd, cwd=str(ICI.parent.parent),
+                       capture_output=True, text=True, timeout=900)
+    for ligne in (r.stdout or "").strip().splitlines()[-40:]:
+        journal.append(ligne.strip())
+    if r.returncode:
+        journal.append((r.stderr or "").strip()[-300:] or "les captures ont échoué")
+        return {"ok": False, "journal": journal}
+
+    n = notes()
+    attente = [{"plan": cle, **fiche} for cle, fiche in n.items()
+               if (fiche.get("commentaire") or fiche.get("note"))
+               and not fiche.get("regle")]
+    DEMANDE.write_text(json.dumps(
+        {"remise": time.strftime("%Y-%m-%d %H:%M"), "capsule": capsule,
+         "enAttente": attente}, ensure_ascii=False, indent=1), encoding="utf-8")
+    journal.append("%d remarque(s) en attente, notées dans guide/demande.json"
+                   % len(attente))
+    return {"ok": True, "journal": journal, "enAttente": len(attente)}
+
+
 class Poste(http.server.BaseHTTPRequestHandler):
     def _rendre(self, corps, type_="application/json", code=200):
         if isinstance(corps, (dict, list)):
@@ -157,6 +232,8 @@ class Poste(http.server.BaseHTTPRequestHandler):
             NOTES.write_text(json.dumps(n, ensure_ascii=False, indent=1),
                              encoding="utf-8")
             self._rendre({"ok": True})
+        elif self.path == "/api/majour":
+            self._rendre(mettre_a_jour(SEULE))
         elif self.path == "/api/croquis":
             # Le croquis est collé dans la page : il arrive en base64 et se pose
             # à côté des captures, sous un nom qui dit d'où il vient.
@@ -240,6 +317,20 @@ label.retirer{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;
 @keyframes pouls{0%,100%{opacity:1}50%{opacity:.25}}
 .micro:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .dictee{color:var(--muted);font-style:italic}
+/* La barre de pied colle en bas : le bouton se cherchait au fond d'un
+   document de six écrans de haut. */
+.pied{position:sticky;bottom:0;background:rgba(247,247,245,.96);
+  backdrop-filter:blur(6px);border-top:1px solid var(--line);
+  margin:0 -24px;padding:14px 24px;display:flex;align-items:center;gap:16px;
+  flex-wrap:wrap}
+.compte{font-size:13px;color:var(--muted);font-weight:700}
+.compte b{color:var(--ink)}
+.majour{font:inherit;font-weight:800;font-size:14px;color:#fff;background:var(--accent);
+  border:0;border-radius:999px;padding:10px 20px;cursor:pointer}
+.majour:disabled{opacity:.5;cursor:progress}
+.majour:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.journal{width:100%;font-family:var(--mono);font-size:12px;color:var(--muted);
+  white-space:pre-wrap;margin:0;max-height:150px;overflow:auto}
 .gestes{font-family:var(--mono);font-size:11.5px;color:var(--muted);margin-top:8px;
   word-break:break-word}
 </style>
@@ -256,6 +347,11 @@ par Google — ce sont des textes de tutoriel, jamais des données d'élèves �
 presque pas de ponctuation : dictez, puis relisez. La dictée du système (deux fois la touche
 Fn) reste disponible dans n'importe quel champ et, elle, ne sort pas du Mac.</p>
 <div id="tout"></div>
+<div class="pied">
+  <button class="majour" id="majour" type="button">Mettre à jour le guide</button>
+  <span class="compte" id="compte"></span>
+  <pre class="journal" id="journal"></pre>
+</div>
 </div>
 <script>
 const $ = (s, r) => (r || document).querySelector(s);
@@ -467,7 +563,45 @@ function ligne(capsule, plan) {
   return rang;
 }
 
+function compter(etat) {
+  let com = 0, rem = 0, croquis = 0, retires = 0;
+  for (const c of etat.capsules) for (const p of c.plans) {
+    if (p.commentaire && !p.regle) com += 1;
+    if (p.note && !p.regle) rem += 1;
+    croquis += (p.croquis || []).length;
+    if (p.retirer) retires += 1;
+  }
+  const bouts = [];
+  if (com) bouts.push('<b>' + com + '</b> commentaire' + (com > 1 ? 's' : ''));
+  if (rem) bouts.push('<b>' + rem + '</b> remarque' + (rem > 1 ? 's' : '') + ' sur l’image');
+  if (croquis) bouts.push('<b>' + croquis + '</b> croquis');
+  if (retires) bouts.push('<b>' + retires + '</b> plan' + (retires > 1 ? 's' : '') + ' à retirer');
+  $('#compte').innerHTML = bouts.length
+    ? bouts.join(' · ') + ' en attente'
+    : 'rien en attente';
+}
+
+$('#majour').addEventListener('click', async () => {
+  const b = $('#majour'), j = $('#journal');
+  b.disabled = true; b.textContent = 'Mise à jour…';
+  j.textContent = 'Le portail de démonstration se lève, les gestes se rejouent.\n'
+    + 'Une à deux minutes. Rien n’est synthétisé ni enregistré.';
+  try {
+    const r = await poster('majour', {});
+    j.textContent = r.journal.join('\n');
+    if (r.ok) {
+      j.textContent += '\n\nNouvelle version prête — la page se recharge.';
+      setTimeout(() => location.reload(), 1400);
+      return;
+    }
+  } catch (e) {
+    j.textContent = 'échec : ' + e.message;
+  }
+  b.disabled = false; b.textContent = 'Mettre à jour le guide';
+});
+
 fetch('/api/etat').then((r) => r.json()).then((etat) => {
+  compter(etat);
   const tout = $('#tout');
   for (const capsule of etat.capsules) {
     const bloc = el('div', 'capsule');
