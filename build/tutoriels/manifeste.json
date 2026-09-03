@@ -498,7 +498,7 @@
       }
      ],
      "surligne": ".pe-chevron",
-     "texte": "Un module de cours ne s'ouvre pas forcément d'un seul bloc. Regardez le petit chevron, à gauche de chaque rangée."
+     "texte": "Un module de cours ne s'ouvre pas forcément d'un seul bloc. Regardez le petit chevron, à gauche de chaque rangée : c'est lui qui donne accès aux sections."
     },
     {
      "id": "b",
@@ -517,21 +517,55 @@
       {
        "do": "defiler",
        "sel": ".pe-sections"
+      },
+      {
+       "do": "clic-index",
+       "sel": ".pe-sec button[data-section]",
+       "n": 1,
+       "apres": "au defi 2"
+      },
+      {
+       "do": "attendre",
+       "ms": 900
       }
      ],
-     "surligne": ".pe-sections",
-     "texte": "Vous pouvez donc donner une date au « Défi 2 » comme vous en donnez une au module entier. Ce qui n'est pas encore ouvert reste grisé chez l'élève, avec sa date d'ouverture affichée."
+     "surligne": "#modaleDates .card",
+     "texte": "Chaque section a sa propre case et son propre bouton « Dates ». Vous pouvez donc donner une date au « Défi 2 » comme vous en donnez une au module entier. Ce qui n'est pas encore ouvert reste grisé chez l'élève, avec sa date d'ouverture affichée."
     },
     {
      "id": "d",
      "gestes": [
+      {
+       "do": "pointer",
+       "sel": "#dOuverture",
+       "apres": "la date d ouverture"
+      },
+      {
+       "do": "pointer",
+       "sel": "#dFermeture",
+       "apres": "celle de fermeture"
+      },
+      {
+       "do": "pointer",
+       "sel": "#dVue",
+       "apres": "vue en classe"
+      },
+      {
+       "do": "clic",
+       "sel": "#modaleDates [data-fermer]",
+       "apres": "jamais oblige"
+      },
+      {
+       "do": "attendre",
+       "ms": 400
+      },
       {
        "do": "defiler",
        "sel": ".pe-sections"
       }
      ],
      "surligne": ".pe-sections",
-     "texte": "Et vous n'êtes jamais obligé de dater les six. Une section sans date propre suit simplement son module. Datez seulement ce que vous voulez retenir ; le reste s'ouvre avec le module."
+     "texte": "La fenêtre demande la date d'ouverture, celle de fermeture, et la date où vous l'avez vue en classe. Et vous n'êtes jamais obligé de dater les six sections : une section sans date propre suit simplement son module. Datez ce que vous voulez retenir ; le reste s'ouvre avec le module."
     },
     {
      "id": "e",
@@ -607,29 +641,71 @@
      "gestes": [
       {
        "do": "defiler",
-       "sel": "#formEleve",
+       "sel": "#formEleve"
+      },
+      {
+       "do": "taper",
+       "sel": "#nouvelEleve",
+       "texte": "Colibri",
        "apres": "un pseudo"
+      },
+      {
+       "do": "clic",
+       "sel": "#formEleve button[type=submit]",
+       "apres": "generer le code"
+      },
+      {
+       "do": "attendre",
+       "ms": 900
+      },
+      {
+       "do": "defiler",
+       "sel": "#listeEleves",
+       "apres": "apparait dans la liste"
       }
      ],
-     "surligne": "#formEleve",
-     "texte": "Pour ajouter quelqu'un : un pseudo, et pas le vrai nom. Le champ le dit lui-même — Colibri, Érable, Cardinal font très bien l'affaire. C'est ce pseudo qui s'affichera partout dans le portail. Puis « Générer le code ». Et si vous préparez une rentrée, laissez le champ vide et demandez plusieurs codes d'un coup : ils s'appelleront « Élève un, deux, trois », et vous poserez les pseudos à l'arrivée des personnes."
+     "surligne": "#listeEleves",
+     "texte": "Pour ajouter quelqu'un : un pseudo, et pas le vrai nom. Le champ le dit lui-même — Colibri, Érable, Cardinal font très bien l'affaire. C'est ce pseudo qui s'affichera partout dans le portail. Puis « Générer le code », et l'élève apparaît dans la liste avec le sien."
     },
     {
      "id": "d",
      "gestes": [
       {
+       "do": "pointer",
+       "sel": "#nombreEleves",
+       "apres": "plusieurs codes"
+      },
+      {
        "do": "defiler",
+       "sel": "#boutonImprimerCodes"
+      },
+      {
+       "do": "clic",
        "sel": "#boutonImprimerCodes",
        "apres": "imprimer les codes"
+      },
+      {
+       "do": "attendre",
+       "ms": 800
       }
      ],
      "surligne": "#boutonImprimerCodes",
-     "texte": "« Imprimer les codes » sort un billet par élève, en noir et blanc : le groupe, le pseudo, le code, et l'adresse du portail. Vous découpez, vous distribuez, et la classe est en ligne."
+     "texte": "Si vous préparez une rentrée, laissez le champ vide et demandez plusieurs codes d'un coup : ils s'appelleront « Élève un, deux, trois », et vous poserez les pseudos à l'arrivée des personnes. Enfin, « Imprimer les codes » sort un billet par élève, en noir et blanc : le groupe, le pseudo, le code, et l'adresse du portail."
     },
     {
      "id": "fin",
      "gestes": [],
      "texte": "Chaque élève a son pseudo et son code, et vous savez comment les imprimer. Le suivi d'un élève a sa propre capsule. Voilà pour celle-ci. À la prochaine."
+    }
+   ],
+   "prepare": [
+    {
+     "do": "js",
+     "code": "(async()=>{const h={'X-Prof-Token':localStorage.getItem('prof_token'),'Content-Type':'application/json'};const g=localStorage.getItem('prof_groupe_actif');const r=await fetch('/api/admin/students?groupId='+g,{headers:h});const els=await r.json();for(const e of (els.students||els)){if(e.label==='Colibri')await fetch('/api/admin/students/'+e.id,{method:'DELETE',headers:h});}})()"
+    },
+    {
+     "do": "js",
+     "code": "document.getElementById('matImpression').contentWindow.print=function(){};"
     }
    ]
   },
@@ -656,9 +732,18 @@
      "id": "b",
      "gestes": [
       {
+       "do": "clic",
+       "sel": "[data-vue=\"semaine\"]",
+       "apres": "ma semaine"
+      },
+      {
+       "do": "attendre",
+       "ms": 900
+      },
+      {
        "do": "defiler",
        "sel": "#matColonne",
-       "apres": "ma semaine"
+       "apres": "jour par jour"
       }
      ],
      "surligne": "#matColonne",
@@ -742,6 +827,26 @@
        "do": "defiler",
        "sel": ".mat-seance",
        "apres": "cochez enfin"
+      },
+      {
+       "do": "clic-index",
+       "sel": "[data-action=\"cocher\"]",
+       "n": 0
+      },
+      {
+       "do": "clic-index",
+       "sel": "[data-action=\"cocher\"]",
+       "n": 1
+      },
+      {
+       "do": "clic-index",
+       "sel": "[data-action=\"cocher\"]",
+       "n": 2
+      },
+      {
+       "do": "defiler",
+       "sel": ".mat-aside",
+       "apres": "toutes les presentations"
       }
      ],
      "surligne": ".mat-aside",
@@ -778,7 +883,7 @@
       {
        "do": "pointer",
        "sel": "#lienCompositeur",
-       "apres": "composer une activite"
+       "apres": "un nouvel onglet"
       }
      ],
      "surligne": "#lienCompositeur",
@@ -932,13 +1037,24 @@
        "sel": "#b-doc"
       },
       {
-       "do": "pointer",
+       "do": "clic",
        "sel": "#b-doc",
        "apres": "ajouter un document"
+      },
+      {
+       "do": "attendre",
+       "ms": 500
+      },
+      {
+       "do": "taper",
+       "sel": "#zone-docs textarea",
+       "texte": "Annonce : 4 ½ à louer, chauffé, libre le 1er juillet.",
+       "cadence": 45,
+       "apres": "ou vous la collez"
       }
      ],
-     "surligne": "#b-doc",
-     "texte": "Vous pouvez aussi joindre votre propre documentation : un texte de départ, une annonce trouvée en ligne, une situation vécue en classe. « Ajouter un document » la verse dans la commande, et l'activité se construira autour."
+     "surligne": "#zone-docs",
+     "texte": "Vous pouvez aussi joindre votre propre documentation : un texte de départ, une annonce trouvée en ligne, une situation vécue en classe. « Ajouter un document » ouvre un champ où vous la collez, et l'activité se construira autour."
     },
     {
      "id": "i",
@@ -980,18 +1096,27 @@
        "sel": "#b-copier"
       },
       {
+       "do": "clic",
+       "sel": "#b-copier",
+       "apres": "copier le prompt"
+      },
+      {
+       "do": "attendre",
+       "ms": 600
+      },
+      {
        "do": "parcourir",
        "cibles": [
-        "#b-copier",
         "#b-editer",
-        "#b-md"
+        "#b-md",
+        "#b-reset"
        ],
        "pause": 800,
-       "apres": "copier le prompt"
+       "apres": "modifier le prompt"
       }
      ],
      "surligne": "#barre",
-     "texte": "Il ne reste qu'à le prendre. « Copier le prompt » pour le coller dans Claude, « Modifier le prompt » si vous voulez ajuster une phrase, « Télécharger en point m d » pour le garder. Et « Tout réinitialiser » pour recommencer une autre activité."
+     "texte": "Il ne reste qu'à le prendre. « Copier le prompt » pour le coller dans Claude. « Modifier le prompt » si vous voulez ajuster une phrase, « Télécharger en point m d » pour le garder, et « Tout réinitialiser » pour recommencer une autre activité."
     },
     {
      "id": "fin",
