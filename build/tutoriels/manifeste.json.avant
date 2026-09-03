@@ -101,11 +101,6 @@
       {
        "do": "attendre",
        "ms": 700
-      },
-      {
-       "do": "pointer",
-       "sel": "#selectGroupe",
-       "apres": "il faut un groupe"
       }
      ],
      "texte": "Avant tout le reste, il faut un groupe. Sans lui, le portail ne montre presque rien : ni catalogue, ni matériel, ni élèves. C'est la première chose à faire en arrivant, et c'est le sujet de cette capsule."
@@ -118,16 +113,6 @@
        "do": "defiler",
        "sel": "#listeGroupes",
        "apres": "un groupe par classe"
-      },
-      {
-       "do": "pointer",
-       "sel": "#listeGroupes",
-       "apres": "ses eleves"
-      },
-      {
-       "do": "pointer",
-       "sel": "#selectGroupe",
-       "apres": "par la liste"
       }
      ],
      "texte": "Créez un groupe par classe. Chacun a ses élèves, ses dates et sa progression, complètement séparés des autres. Vous passez de l'un à l'autre par la liste, en haut de la page."
@@ -145,12 +130,6 @@
        "do": "pointer",
        "sel": "#nouveauGroupe",
        "apres": "un nom"
-      },
-      {
-       "do": "taper",
-       "sel": "#nouveauGroupe",
-       "texte": "Avant-midi — Marie",
-       "apres": "par exemple"
       }
      ],
      "texte": "Le formulaire demande deux choses. D'abord un nom : celui qui vous parle à vous, pas un code. « Avant-midi — Marie », par exemple."
@@ -162,27 +141,7 @@
       {
        "do": "pointer",
        "sel": "#nouveauNiveau",
-       "apres": "ensuite le niveau"
-      },
-      {
-       "do": "deplier-liste",
-       "sel": "#nouveauNiveau",
-       "tenir": 1200,
-       "apres": "ce que le groupe voit"
-      },
-      {
-       "do": "pointer",
-       "sel": "#nouveauNiveau option[value='Niveau 4']",
-       "apres": "niveau quatre"
-      },
-      {
-       "do": "replier-liste",
-       "sel": "#nouveauNiveau"
-      },
-      {
-       "do": "choisir",
-       "sel": "#nouveauNiveau",
-       "texte": "Niveau 4"
+       "apres": "le niveau"
       },
       {
        "do": "pointer",
@@ -190,11 +149,22 @@
        "apres": "creer le groupe"
       }
      ],
-     "texte": "Ensuite le niveau. C'est le réglage le plus important du portail : c'est lui qui décide de ce que le groupe voit. Le catalogue, le matériel, la séance sans compte. Un groupe de niveau quatre ne verra jamais les activités du niveau six. Choisissez-le bien, puis « Créer le groupe »."
+     "texte": "Ensuite le niveau, et c'est le réglage le plus important du portail. C'est lui qui décide de ce que le groupe voit : le catalogue, le matériel, la séance sans compte. Un groupe de niveau quatre ne verra jamais les activités du niveau six. Choisissez-le bien, puis « Créer le groupe »."
     },
     {
      "id": "e",
-     "surligne": "#listeActivites",
+     "surligne": "#listeGroupes",
+     "gestes": [
+      {
+       "do": "defiler",
+       "sel": "#listeGroupes"
+      }
+     ],
+     "texte": "Le catalogue d'activités, lui, est commun à toute l'équipe. Personne ne recrée le contenu. Ce qui vous appartient, ce sont les dates que vous posez dessus."
+    },
+    {
+     "id": "f",
+     "surligne": "#formCopie",
      "gestes": [
       {
        "do": "onglet",
@@ -202,34 +172,30 @@
       },
       {
        "do": "attendre",
-       "ms": 500
+       "ms": 600
       },
       {
-       "do": "defiler",
-       "sel": "#listeActivites",
-       "apres": "commun a toute l equipe"
-      },
-      {
-       "do": "pointer",
-       "sel": "#listeActivites",
-       "apres": "les dates que vous posez"
-      }
-     ],
-     "texte": "Le catalogue d'activités, lui, est commun à toute l'équipe. Personne ne recrée le contenu. Ce qui vous appartient, ce sont les dates que vous posez dessus."
-    },
-    {
-     "id": "fin",
-     "gestes": [
-      {
-       "do": "onglet",
-       "valeur": "groupes"
+       "do": "clic",
+       "sel": "#boutonCopie",
+       "apres": "copier une planification"
       },
       {
        "do": "attendre",
-       "ms": 400
+       "ms": 600
       }
      ],
-     "texte": "Voilà, c'est terminé pour cette capsule. Vous savez ouvrir un groupe et lui donner son niveau. La prochaine montre comment poser des dates sur les activités de ce groupe."
+     "texte": "Et voici le geste qui démarre un groupe neuf en une minute : « Copier une planification ». Le cas est simple. Vous avez donné le niveau quatre à la session d'automne, et vous le redonnez cet hiver. Plutôt que de redater cinquante-sept activités, vous reprenez le calendrier du groupe d'automne et vous le décalez du nombre de jours qui sépare les deux sessions."
+    },
+    {
+     "id": "g",
+     "surligne": "#formCopie",
+     "gestes": [],
+     "texte": "Deux précautions. Cette copie remplace les dates du groupe où vous êtes, elle ne s'y ajoute pas. Et la date « vue en classe » n'est pas copiée : celle-là reste votre trace personnelle, que l'élève ne voit jamais."
+    },
+    {
+     "id": "fin",
+     "gestes": [],
+     "texte": "Voilà, c'est terminé pour cette capsule. Vous savez ouvrir un groupe, lui donner son niveau, et lui reprendre la planification d'un autre. La prochaine capsule montre comment poser des dates sur les activités."
     }
    ],
    "prepare": [
@@ -371,39 +337,9 @@
      "texte": "Dernier réflexe avant de quitter la page : le bouton « Ce que l'élève voit ». Il ouvre exactement ce que votre classe a sous les yeux aujourd'hui. C'est le meilleur moyen de vérifier votre travail."
     },
     {
-     "id": "i",
-     "surligne": "#formCopie",
-     "gestes": [
-      {
-       "do": "onglet",
-       "valeur": "planif"
-      },
-      {
-       "do": "attendre",
-       "ms": 600
-      },
-      {
-       "do": "clic",
-       "sel": "#boutonCopie",
-       "apres": "copier une planification"
-      },
-      {
-       "do": "attendre",
-       "ms": 600
-      }
-     ],
-     "texte": "Un dernier geste, pour plus tard. Quand vous redonnerez le même niveau à une autre session, vous n'aurez pas à redater cinquante-sept activités. « Copier une planification » reprend le calendrier d'un de vos groupes et le décale du nombre de jours qui sépare les deux sessions."
-    },
-    {
-     "id": "j",
-     "surligne": "#formCopie",
-     "gestes": [],
-     "texte": "Deux précautions. Cette copie remplace les dates du groupe où vous êtes, elle ne s'y ajoute pas. Et la date « vue en classe » n'est pas copiée. Celle-là reste votre trace personnelle, que l'élève ne voit jamais."
-    },
-    {
      "id": "fin",
      "gestes": [],
-     "texte": "Voilà, c'est terminé pour cette capsule. Vous savez cocher des activités, leur donner une date, choisir un rythme, enregistrer, vérifier ce que votre classe voit, et reprendre une planification d'une session à l'autre."
+     "texte": "Voilà, c'est terminé pour cette capsule. Vous savez cocher des activités, leur donner une date, choisir un rythme, enregistrer, et vérifier ce que votre classe voit."
     }
    ],
    "prepare": [

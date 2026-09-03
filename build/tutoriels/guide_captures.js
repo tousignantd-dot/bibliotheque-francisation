@@ -89,6 +89,9 @@ async function prendre(page, fichier, sel) {
       fs.rmSync(dossier, { recursive: true, force: true });
       fs.mkdirSync(dossier, { recursive: true });
     }
+    /* Même règle qu'au tournage : aucune fenêtre héritée à l'image. */
+    await page.evaluate(() => document.querySelectorAll('[data-fermer]')
+      .forEach((b) => { if (b.offsetParent !== null) b.click(); }));
     for (const geste of (capsule.prepare || [])) await jouer(page, geste);
     await dodo(400);
 
@@ -113,13 +116,18 @@ async function prendre(page, fichier, sel) {
         await page.evaluate((s) => window.__scene.surligner(s), plan.surligne);
         await dodo(500);
       }
+      /* Une image APRÈS CHAQUE GESTE, et non plus début-milieu-fin.
+         « Il y a comme pas assez de copies d'écran » — relevé au visionnement
+         de la capsule 2, le 3 septembre 2026 : la voix nommait la liste des
+         niveaux et le storyboard n'en montrait aucune. Les images identiques
+         sont écartées, donc un plan où l'écran ne bouge pas n'en donne qu'une,
+         et un plan qui montre six choses en donne six. */
       await clic(0, 'debut');
-      const moitie = Math.ceil(gestes.length / 2);
       for (const [i, geste] of gestes.entries()) {
         await jouer(page, geste);
-        if (i + 1 === moitie && gestes.length > 1) await clic(i, 'milieu');
+        await dodo(200);
+        await clic(i, i + 1 === gestes.length ? 'fin' : 'geste' + (i + 1));
       }
-      if (gestes.length) { await dodo(300); await clic(0, 'fin'); }
       releve[capsule.id].push({
         plan: plan.id, secondes: duree(plan.texte_voix || plan.texte), images,
       });

@@ -251,7 +251,7 @@ module.exports = String.raw`
     await dodo(420);
   }
 
-  window.__scene = { versPoint, versElement, defiler, clic, surligner, effacer, dodo,
+  window.__scene = { versPoint, versElement, defiler, clic, surligner, effacer, dodo, visible,
                      parcourir, survol, taper, choisir, pointeur: POINTEUR };
 })();
 `;

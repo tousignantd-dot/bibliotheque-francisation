@@ -39,7 +39,15 @@ sys.path.insert(0, str(RACINE / "build"))
 sys.path.insert(0, str(ICI))
 import versions  # noqa: E402
 
-QUAND = {"debut": "au début", "milieu": "en cours", "fin": "à la fin"}
+QUAND = {"debut": "au début", "milieu": "en cours",
+         "fin": "à la fin"}
+
+
+def legende(cle):
+    """« geste 3 » se lit tel quel ; le reste passe par la table."""
+    if cle.startswith("geste"):
+        return "après le geste " + cle[5:]
+    return QUAND.get(cle, cle)
 
 
 def secondes(v):
@@ -70,7 +78,7 @@ def page(seule=None):
                 '<figure><a href="../../build/tutoriels/%s" target="_blank" rel="noopener">'
                 '<img src="../../build/tutoriels/%s" alt="" loading="lazy"></a>'
                 '<figcaption>%s</figcaption></figure>'
-                % (im["fichier"], im["fichier"], QUAND.get(im["quand"], im["quand"]))
+                % (im["fichier"], im["fichier"], legende(im["quand"]))
                 for im in r["images"]) or '<p class="rien">aucune capture</p>'
             dit = plan.get("texte_voix")
             note = ('<p class="note">Dit à la voix : « %s »</p>' % html.escape(dit)

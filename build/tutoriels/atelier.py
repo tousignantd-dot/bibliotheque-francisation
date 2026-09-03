@@ -489,7 +489,11 @@ Fn) reste disponible dans n'importe quel champ et, elle, ne sort pas du Mac.</p>
 const $ = (s, r) => (r || document).querySelector(s);
 const el = (t, c, x) => { const n = document.createElement(t); if (c) n.className = c;
   if (x !== undefined) n.textContent = x; return n; };
-const LEGENDE = { debut: 'au début', milieu: 'en cours', fin: 'à la fin' };
+const LEGENDE = { debut: 'au début', fin: 'à la fin' };
+/* « après le geste 3 » : le storyboard prend une image après chaque geste, et
+   leur nombre change d'un plan à l'autre — pas de table possible. */
+const legende = (c) => (c.startsWith('geste') ? 'après le geste ' + c.slice(5)
+  : (LEGENDE[c] || c));
 
 /* — La dictée —
 
@@ -654,7 +658,7 @@ function ligne(capsule, plan) {
     const f = el('figure');
     const img = el('img'); img.src = src; img.loading = 'lazy';
     f.appendChild(img);
-    f.appendChild(el('figcaption', null, LEGENDE[plan.legendes[i]] || plan.legendes[i]));
+    f.appendChild(el('figcaption', null, legende(plan.legendes[i])));
     droite.appendChild(f);
   });
   const croquis = el('div');

@@ -150,6 +150,29 @@ async function jouer(page, geste) {
        `data-ecran`. Le sélecteur ne nomme donc plus de classe — plusieurs
        éléments répondent (« Planifier » sous le groupe et « Planifier ce
        groupe » plus bas), et `visible()` prend celui qui est à l'écran. */
+    /* — Déplier une liste déroulante —
+
+       Le menu d'un <select> est dessiné par le système, **hors de la page** :
+       il n'apparaît sur aucune capture et sur aucune image du film. Une voix
+       qui dit « choisissez le niveau » devant une liste fermée ne montre donc
+       rien. On donne au select une hauteur (`size`), ce qui le déploie DANS la
+       page — les vraies options, à leur vraie place, et cette fois filmables. */
+    case 'deplier-liste':
+      await scene(async (s) => {
+        const el = window.__scene.visible(s);
+        if (!el) throw new Error('liste absente : ' + s);
+        await window.__scene.defiler(el);
+        el.dataset.tailleAvant = el.size;
+        el.size = Math.min(el.options.length, 9);
+      }, geste.sel);
+      await dodo(geste.tenir ?? 900);
+      break;
+    case 'replier-liste':
+      await scene((s) => {
+        const el = window.__scene.visible(s);
+        if (el) el.size = Number(el.dataset.tailleAvant || 0);
+      }, geste.sel);
+      break;
     case 'onglet':
       await scene((v) => window.__scene.clic(`[data-ecran="${v}"]`), geste.valeur);
       break;
@@ -295,6 +318,13 @@ async function main() {
        s'ouvrait sur l'aperçu élève resté déplié par la capsule 2, visible une
        bonne seconde avant d'être refermé. Ces gestes-là ne racontent rien —
        ils rangent. Ils se jouent donc hors champ. */
+    /* Toute fenêtre laissée ouverte par la capsule précédente se referme
+       ici, avant la caméra. La règle vaut mieux qu'un `prepare` par capsule :
+       elle a été écrite trois fois pour trois modales, et il a suffi de
+       changer l'ordre des capsules pour qu'une quatrième passe entre les
+       mailles. */
+    await page.evaluate(() => document.querySelectorAll('[data-fermer]')
+      .forEach((b) => { if (b.offsetParent !== null) b.click(); }));
     for (const geste of (capsule.prepare || [])) {
       await jouer(page, geste);
     }

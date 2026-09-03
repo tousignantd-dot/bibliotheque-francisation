@@ -54,8 +54,12 @@ SORTIE = ICI / "voix"
 # Mesuré : deux `<break time="700ms"/>` allongent un plan de 1,8 s, donc les
 # voix HD les honorent — contrairement à `<phoneme>` et à `<lang>` autour d'un
 # mot, qu'elles ignorent.
-PAUSE_PHRASE = "800ms"     # après un point, un point d'exclamation, un point d'interrogation
-PAUSE_SOUFFLE = "350ms"    # après un deux-points ou un point-virgule
+# 500 ms, et **rien à l'intérieur d'une phrase**. À 800 ms le propos se
+# hachait, et la pause posée après un deux-points s'entendait comme une
+# coupure : « une phrase, puis tout à coup une coupure, la phrase reprend
+# après ». Corrigé à l'écoute de la capsule 2, le 3 septembre 2026.
+PAUSE_PHRASE = "500ms"     # après un point, un point d'exclamation, un point d'interrogation
+PAUSE_SOUFFLE = None       # à l'intérieur d'une phrase : aucune
 
 # `ssml()` échappe le texte : on ne peut pas y glisser une balise directement.
 # On pose donc des caractères de contrôle, qui traversent `html.escape` sans
@@ -67,16 +71,19 @@ def respirer(texte):
     """Le texte, marqué là où la voix doit reprendre son souffle."""
     for signe in (". ", "! ", "? "):
         texte = texte.replace(signe, signe[0] + MARQUE_PHRASE + " ")
-    for signe in (" : ", " ; "):
-        texte = texte.replace(signe, signe[:-1] + MARQUE_SOUFFLE + " ")
+    if PAUSE_SOUFFLE:
+        for signe in (" : ", " ; "):
+            texte = texte.replace(signe, signe[:-1] + MARQUE_SOUFFLE + " ")
     return texte
 
 
 def document(texte):
     """Le SSML d'un plan, pauses comprises."""
     doc = azure_voix.ssml(respirer(texte), ROLE)
-    return (doc.replace(MARQUE_PHRASE, '<break time="%s"/>' % PAUSE_PHRASE)
-               .replace(MARQUE_SOUFFLE, '<break time="%s"/>' % PAUSE_SOUFFLE))
+    doc = doc.replace(MARQUE_PHRASE, '<break time="%s"/>' % PAUSE_PHRASE)
+    if PAUSE_SOUFFLE:
+        doc = doc.replace(MARQUE_SOUFFLE, '<break time="%s"/>' % PAUSE_SOUFFLE)
+    return doc
 
 
 def synthese():
