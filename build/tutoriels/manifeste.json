@@ -92,23 +92,20 @@
    "plans": [
     {
      "id": "a",
-     "surligne": "#listeGroupes",
+     "surligne": "#selectGroupe",
      "gestes": [
-      {
-       "do": "onglet",
-       "valeur": "groupes"
-      },
-      {
-       "do": "attendre",
-       "ms": 700
-      },
       {
        "do": "pointer",
        "sel": "#selectGroupe",
-       "apres": "la premiere chose a faire"
+       "apres": "il faut un groupe"
+      },
+      {
+       "do": "clic",
+       "sel": "[data-ecran=\"groupes\"]",
+       "apres": "nouveau groupe"
       }
      ],
-     "texte": "Avant tout le reste, il faut un groupe. Sans lui, le portail ne montre presque rien : ni catalogue, ni matériel, ni élèves. C'est la première chose à faire en arrivant, et c'est le sujet de cette capsule."
+     "texte": "Avant tout le reste, il faut un groupe. Sans lui, le portail ne montre presque rien : ni catalogue, ni matériel, ni élèves. Pour en ouvrir un, cliquez sur « Nouveau groupe », dans la carte du groupe, en haut de la page."
     },
     {
      "id": "b",
@@ -116,31 +113,25 @@
      "gestes": [
       {
        "do": "defiler",
-       "sel": "#listeGroupes",
-       "apres": "un groupe par classe"
+       "sel": "#listeGroupes"
       },
       {
        "do": "pointer",
        "sel": "#listeGroupes",
-       "apres": "ses eleves"
+       "apres": "un par classe"
       },
       {
        "do": "pointer",
-       "sel": "#selectGroupe",
-       "apres": "par la liste"
+       "sel": "#formGroupe",
+       "apres": "juste en dessous"
       }
      ],
-     "texte": "Créez un groupe par classe. Chacun a ses élèves, ses dates et sa progression, complètement séparés des autres. Vous passez de l'un à l'autre par la liste, en haut de la page."
+     "texte": "Vous arrivez sur la liste de vos groupes. Créez-en un par classe : chacun a ses élèves, ses dates et sa progression, complètement séparés des autres. Le formulaire pour en ajouter un est juste en dessous."
     },
     {
      "id": "c",
      "surligne": "#formGroupe",
      "gestes": [
-      {
-       "do": "defiler",
-       "sel": "#formGroupe",
-       "apres": "deux choses"
-      },
       {
        "do": "pointer",
        "sel": "#nouveauGroupe",
@@ -150,10 +141,10 @@
        "do": "taper",
        "sel": "#nouveauGroupe",
        "texte": "Avant-midi — Marie",
-       "apres": "par exemple"
+       "apres": "celui qui vous parle"
       }
      ],
-     "texte": "Le formulaire demande deux choses. D'abord un nom : celui qui vous parle à vous, pas un code. « Avant-midi — Marie », par exemple."
+     "texte": "Il demande deux choses. D'abord un nom : celui qui vous parle à vous, pas un code. « Avant-midi — Marie », par exemple."
     },
     {
      "id": "d",
@@ -167,7 +158,7 @@
       {
        "do": "deplier-liste",
        "sel": "#nouveauNiveau",
-       "tenir": 1200,
+       "tenir": 600,
        "apres": "ce que le groupe voit"
       },
       {
@@ -177,7 +168,8 @@
       },
       {
        "do": "replier-liste",
-       "sel": "#nouveauNiveau"
+       "sel": "#nouveauNiveau",
+       "apres": "choisissez le"
       },
       {
        "do": "choisir",
@@ -185,29 +177,26 @@
        "texte": "Niveau 4"
       },
       {
-       "do": "pointer",
+       "do": "clic",
        "sel": "#formGroupe button[type=submit]",
        "apres": "creer le groupe"
       }
      ],
-     "texte": "Ensuite le niveau. C'est le réglage le plus important du portail : c'est lui qui décide de ce que le groupe voit. Le catalogue, le matériel, la séance sans compte. Un groupe de niveau quatre ne verra jamais les activités du niveau six. Choisissez-le bien, puis « Créer le groupe »."
+     "texte": "Ensuite le niveau. C'est le réglage le plus important du portail : il décide de ce que le groupe voit. Le catalogue, le matériel, la séance sans compte. Un groupe de niveau quatre ne verra jamais les activités du niveau six. Choisissez-le, puis cliquez sur « Créer le groupe »."
     },
     {
      "id": "e",
      "surligne": "#listeActivites",
      "gestes": [
       {
-       "do": "onglet",
-       "valeur": "planif"
-      },
-      {
-       "do": "attendre",
-       "ms": 500
+       "do": "pointer",
+       "sel": "#selectGroupe",
+       "apres": "en tete de page"
       },
       {
        "do": "defiler",
        "sel": "#listeActivites",
-       "apres": "Personne ne recree le contenu"
+       "apres": "commun a toute l equipe"
       },
       {
        "do": "pointer",
@@ -215,27 +204,26 @@
        "apres": "les dates que vous posez"
       }
      ],
-     "texte": "Le catalogue d'activités, lui, est commun à toute l'équipe. Personne ne recrée le contenu. Ce qui vous appartient, ce sont les dates que vous posez dessus."
+     "texte": "Le groupe est créé, et le portail vous ramène à la planification, avec ce groupe en tête de page. Il part vide. Le catalogue d'activités, lui, est commun à toute l'équipe : personne ne recrée le contenu. Ce qui vous appartient, ce sont les dates que vous posez dessus."
     },
     {
      "id": "fin",
-     "gestes": [
-      {
-       "do": "onglet",
-       "valeur": "groupes"
-      },
-      {
-       "do": "attendre",
-       "ms": 400
-      }
-     ],
+     "gestes": [],
      "texte": "Voilà, c'est terminé pour cette capsule. Vous savez ouvrir un groupe et lui donner son niveau. La prochaine montre comment poser des dates sur les activités de ce groupe."
     }
    ],
    "prepare": [
     {
      "do": "js",
-     "code": "document.querySelector('[data-fermer=\"modaleCopie\"]')?.click()"
+     "code": "(async()=>{const j=localStorage.getItem('prof_token');const h={'X-Prof-Token':j};const gs=await (await fetch('/api/prof/groupes',{headers:h})).json();for(const g of gs){if(g.nom==='Avant-midi — Marie'){await fetch('/api/prof/groupes/'+g.id,{method:'DELETE',headers:h});}}const reste=gs.filter(g=>g.nom!=='Avant-midi — Marie');if(reste.length)localStorage.setItem('prof_groupe_actif',String(reste[0].id));})()"
+    },
+    {
+     "do": "naviguer",
+     "vers": "/enseignant.html"
+    },
+    {
+     "do": "attendre",
+     "ms": 600
     }
    ]
   },
@@ -407,6 +395,18 @@
     }
    ],
    "prepare": [
+    {
+     "do": "js",
+     "code": "(async()=>{const j=localStorage.getItem('prof_token');const h={'X-Prof-Token':j};const gs=await (await fetch('/api/prof/groupes',{headers:h})).json();for(const g of gs){if(g.nom==='Avant-midi — Marie'){await fetch('/api/prof/groupes/'+g.id,{method:'DELETE',headers:h});}}const reste=gs.filter(g=>g.nom!=='Avant-midi — Marie');if(reste.length)localStorage.setItem('prof_groupe_actif',String(reste[0].id));})()"
+    },
+    {
+     "do": "naviguer",
+     "vers": "/enseignant.html"
+    },
+    {
+     "do": "attendre",
+     "ms": 600
+    },
     {
      "do": "js",
      "code": "document.querySelector('[data-fermer=\"modaleCopie\"]')?.click()"
