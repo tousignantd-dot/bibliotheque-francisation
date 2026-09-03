@@ -46,6 +46,36 @@ import azure_voix                             # noqa: E402
 ROLE = "hd_masculin"
 SORTIE = ICI / "voix"
 
+# Le souffle entre les phrases. Sans lui, Azure enchaîne les phrases d'une
+# capsule comme une liste qu'on récite — signalé au visionnement, le
+# 3 septembre 2026 : « il n'y a pas beaucoup de pauses après les points ».
+# Mesuré : deux `<break time="700ms"/>` allongent un plan de 1,8 s, donc les
+# voix HD les honorent — contrairement à `<phoneme>` et à `<lang>` autour d'un
+# mot, qu'elles ignorent.
+PAUSE_PHRASE = "800ms"     # après un point, un point d'exclamation, un point d'interrogation
+PAUSE_SOUFFLE = "350ms"    # après un deux-points ou un point-virgule
+
+# `ssml()` échappe le texte : on ne peut pas y glisser une balise directement.
+# On pose donc des caractères de contrôle, qui traversent `html.escape` sans
+# être touchés, et on les remplace dans le document produit.
+MARQUE_PHRASE, MARQUE_SOUFFLE = chr(1), chr(2)
+
+
+def respirer(texte):
+    """Le texte, marqué là où la voix doit reprendre son souffle."""
+    for signe in (". ", "! ", "? "):
+        texte = texte.replace(signe, signe[0] + MARQUE_PHRASE + " ")
+    for signe in (" : ", " ; "):
+        texte = texte.replace(signe, signe[:-1] + MARQUE_SOUFFLE + " ")
+    return texte
+
+
+def document(texte):
+    """Le SSML d'un plan, pauses comprises."""
+    doc = azure_voix.ssml(respirer(texte), ROLE)
+    return (doc.replace(MARQUE_PHRASE, '<break time="%s"/>' % PAUSE_PHRASE)
+               .replace(MARQUE_SOUFFLE, '<break time="%s"/>' % PAUSE_SOUFFLE))
+
 
 def synthese():
     """Le synthétiseur et le flux d'événements, prêts à l'emploi."""
@@ -77,8 +107,7 @@ def dire(speechsdk, config, texte, mp3):
     synthetiseur.synthesis_word_boundary.connect(
         lambda e: mots.append({"mot": e.text,
                                "debut": round(e.audio_offset / 10_000_000, 3)}))
-    doc = azure_voix.ssml(texte, ROLE)
-    resultat = synthetiseur.speak_ssml_async(doc).get()
+    resultat = synthetiseur.speak_ssml_async(document(texte)).get()
     if resultat.reason != speechsdk.ResultReason.SynthesizingAudioCompleted:
         detail = getattr(resultat, "cancellation_details", None)
         raise RuntimeError("Azure a refusé : %s" % (detail.error_details
