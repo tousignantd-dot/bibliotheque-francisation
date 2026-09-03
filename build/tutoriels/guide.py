@@ -203,11 +203,127 @@ PIED = """
 """
 
 
+
+# ═══════════════════════════════════════════════════════════════════
+#  LE TUTORIEL PAPIER
+#
+#  Même source, autre lecteur. Le guide est une pièce de validation :
+#  il porte les durées, le texte « dit à la voix », les gestes, et
+#  l'avertissement sur la synthèse. Rien de tout cela ne regarde une
+#  enseignante à qui l'on remet un tutoriel au lieu d'une vidéo.
+#
+#  Ce qu'on garde : les étapes numérotées, ce qu'elle doit savoir, et
+#  les copies d'écran. Ce qu'on retire : les secondes, la voix, les
+#  sélecteurs. Le plan « fin » devient une note de bas de page plutôt
+#  qu'une étape — on ne numérote pas un au revoir.
+#
+#  Le logotype est composé par le système de design, jamais redessiné
+#  à la main : « francıs » en U+0131 et le point posé par le CSS.
+# ═══════════════════════════════════════════════════════════════════
+
+PAPIER = """<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{titre}} — tutoriel</title>
+<link rel="stylesheet" href="../design-system/tokens/fonts.css">
+<link rel="stylesheet" href="../design-system/marque-francis.css">
+<style>
+:root{--ground:#fff;--ink:#17181A;--body:#33363A;--muted:#6E7175;
+  --line:#E4E4E0;--accent:#0A8F5B;--accent-pale:#E6F5EE}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--body);
+  font-family:'Nunito','Helvetica Neue',Arial,sans-serif;font-size:15.5px;line-height:1.55}
+.feuille{max-width:820px;margin:0 auto;padding:40px 34px 70px}
+.entete{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;
+  border-bottom:2px solid var(--accent);padding-bottom:14px;margin-bottom:26px}
+.sur{font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--accent);font-weight:900;margin:0 0 4px}
+h1{font-size:30px;color:var(--ink);margin:0;letter-spacing:-.02em;line-height:1.15}
+.etape{display:grid;grid-template-columns:38px 1fr;gap:16px;margin:0 0 26px;
+  break-inside:avoid}
+.rang{display:grid;place-items:center;width:32px;height:32px;border-radius:999px;
+  background:var(--accent-pale);color:var(--accent);font-weight:900;font-size:15px}
+.etape p{margin:4px 0 12px;color:var(--ink)}
+.etape figure{margin:0 0 12px}
+.etape img{width:100%;border:1px solid var(--line);border-radius:8px;display:block}
+.fin{background:var(--accent-pale);border-radius:11px;padding:16px 20px;
+  color:#08573A;margin:30px 0 0;break-inside:avoid}
+.fin p{margin:0}
+footer{margin-top:34px;padding-top:12px;border-top:1px solid var(--line);
+  font-size:11.5px;color:var(--muted);display:flex;justify-content:space-between;gap:16px}
+@page{size:letter;margin:14mm 13mm}
+@media print{ .feuille{max-width:none;padding:0} body{font-size:10.5pt} }
+</style>
+</head>
+<body>
+<div class="feuille">
+<div class="entete">
+  <div>
+    <p class="sur">Espace enseignant · tutoriel {{rang}}</p>
+    <h1>{{titre}}</h1>
+  </div>
+  <span class="fr-lockup fr-lockup--etroit">
+    <span class="fr-nom" role="img" aria-label="francis">franc<span class="fr-i" aria-hidden="true">ı<span class="fr-point"></span></span>s</span>
+    <span class="fr-trait" aria-hidden="true"></span>
+    <span class="fr-desc">Aide à l'apprentissage du français</span>
+  </span>
+</div>
+{{corps}}
+<footer><span>{{version}} · {{quand}}</span><span>francis · espace enseignant</span></footer>
+</div>
+</body>
+</html>
+"""
+
+
+def papier(seule):
+    """Le tutoriel d'une capsule, écrit pour être remis sur papier."""
+    manifeste = json.loads((ICI / "manifeste.json").read_text(encoding="utf-8"))
+    captures = json.loads((ICI / "guide" / "captures.json").read_text(encoding="utf-8"))
+    for rang, capsule in enumerate(manifeste["capsules"], 1):
+        if capsule["id"] != seule:
+            continue
+        releve = {p["plan"]: p for p in captures.get(capsule["id"], [])}
+        etapes, cloture, n = [], "", 0
+        for plan in capsule["plans"]:
+            images = releve.get(plan["id"], {}).get("images", [])
+            # Une seule image par étape sur papier : la dernière, celle qui
+            # montre l'écran une fois le geste fait. La suite début-milieu-fin
+            # sert à valider un film, pas à guider quelqu'un qui lit.
+            vignette = ('<figure><img src="../../build/tutoriels/%s" alt=""></figure>'
+                        % images[-1]["fichier"]) if images else ""
+            if plan["id"] == "fin":
+                cloture = ('<div class="fin"><p>%s</p></div>'
+                           % html.escape(plan["texte"]))
+                continue
+            n += 1
+            etapes.append('<div class="etape"><div class="rang">%d</div><div>'
+                          '<p>%s</p>%s</div></div>'
+                          % (n, html.escape(plan["texte"]), vignette))
+        v = versions.etat(capsule["id"])
+        return (PAPIER.replace("{{titre}}", html.escape(capsule["titre"]))
+                      .replace("{{rang}}", str(rang))
+                      .replace("{{corps}}", "".join(etapes) + cloture)
+                      .replace("{{version}}", v["version"])
+                      .replace("{{quand}}", v.get("quand", "")))
+    raise SystemExit("capsule inconnue : %s" % seule)
+
+
 if __name__ == "__main__":
-    seule = sys.argv[1] if len(sys.argv) > 1 else None
-    nom = "guide-tutoriels-%s" % (seule or "enseignant")
+    args = [a for a in sys.argv[1:] if not a.startswith("--")]
+    seule = args[0] if args else None
+    # `--papier` rend le tutoriel qu'on remet à l'enseignante : les étapes et
+    # les écrans, sans les secondes ni la voix. Sans lui, c'est le guide de
+    # validation qui sort.
+    tutoriel = "--papier" in sys.argv
+    if tutoriel and not seule:
+        raise SystemExit("--papier demande une capsule")
+    nom = ("tutoriel-%s" % seule if tutoriel
+           else "guide-tutoriels-%s" % (seule or "enseignant"))
     fichier = PRESENTATIONS / (nom + ".html")
-    fichier.write_text(page(seule), encoding="utf-8")
+    fichier.write_text(papier(seule) if tutoriel else page(seule), encoding="utf-8")
     print("écrit :", fichier.relative_to(RACINE))
     # Le PDF se dépose à côté de la page, comme partout dans le dépôt : c'est
     # ce qu'on imprime et ce qu'on relit hors de l'écran.
