@@ -77,7 +77,11 @@
     /* Le seul bloc foncé de la page. */
     .om-encre { background: var(--ink-900); color: var(--white); border-radius: var(--r-lg); padding: var(--sp-8); }
     .om-encre-rangee { display: flex; align-items: center; gap: var(--sp-8); flex-wrap: wrap; }
-    .om-encre-txt { flex: 1; min-width: 320px; }
+    /* `min-width: 320px` faisait déborder la page de 10 px à 375 px —
+       défaut antérieur à la langue d'appui, vérifié avec zéro appui
+       posé. `min()` garde l'intention (ne pas casser la ligne trop
+       tôt sur un écran large) sans jamais dépasser le sien. */
+    .om-encre-txt { flex: 1; min-width: min(320px, 100%); }
     .om-encre-sur { font-size: var(--fs-label); font-weight: var(--fw-bold); letter-spacing: .1em; text-transform: uppercase; opacity: .72; margin-bottom: var(--sp-2); }
     .om-encre-titre { font-size: var(--fs-h3); font-weight: var(--fw-black); margin-bottom: var(--sp-3); }
     .om-encre-meta { font-size: var(--fs-body-sm); font-weight: var(--fw-medium); opacity: .82; }
@@ -144,6 +148,52 @@
   .cf-lien a { color: var(--text-muted); font-size: var(--fs-ui-sm);
     text-decoration: none; border-bottom: 1px solid var(--border); }
   .cf-lien a:hover { color: var(--text); }
+    /* ---- Langue d'appui ----------------------------------------------
+       L'appui se pose SOUS le français, en plus petit et en retrait —
+       jamais à sa place. Un élève qui n'a pas encore assez de français
+       garde ainsi la phrase française sous les yeux pendant qu'il lit la
+       sienne : on apprend la langue, on ne la remplace pas.
+       Voir js/appui.js et langues/portail/. */
+    .ap { display: block; margin-top: 3px; padding-left: 9px;
+          border-left: 2px solid var(--line-100);
+          font-size: .84em; line-height: 1.45; font-weight: var(--fw-medium);
+          color: var(--ink-500); font-style: normal; }
+    .ap:lang(ar), .ap:lang(fa), .ap:lang(ur) {
+          direction: rtl; text-align: right; padding-left: 0; padding-right: 9px;
+          border-left: 0; border-right: 2px solid var(--line-100); }
+    /* L'appui garde sa casse propre : les libellés du portail sont en
+       capitales par le style, et « SU CÓDIGO DE ACCESO » se lit moins bien
+       que « Su código de acceso » — sans parler des alphabets où la
+       capitale n'existe pas. */
+    .ap { text-transform: none; letter-spacing: normal; }
+    /* Dans un bouton ou une pastille d'état, le filet n'a pas la place :
+       l'appui s'aligne simplement sous le mot. Et le bouton doit passer en
+       colonne, sinon l'appui se range À CÔTÉ du mot — vu au premier essai :
+       un `display:block` dans un conteneur flex reste un élément de rangée. */
+    .btn .ap, .om-etat .ap { padding: 0; border: 0; margin-top: 1px;
+          font-size: .82em; opacity: .85; }
+    .btn:has(.ap) { flex-direction: column; align-items: center; gap: 0;
+          line-height: 1.25; }
+    .om-etat:has(.ap) { flex-direction: column; align-items: flex-start; gap: 0; }
+    /* Sur fond d'encre, l'appui doit changer de couleur : gris sur noir ne
+       se lit pas. Vu au premier essai — « Su próximo paso » était là et
+       illisible, ce qui est pire qu'absent. */
+    .om-encre .ap { color: var(--white); opacity: .72;
+          border-left-color: rgba(255,255,255,.32); }
+    .om-encre .ap:lang(ar), .om-encre .ap:lang(fa), .om-encre .ap:lang(ur) {
+          border-right-color: rgba(255,255,255,.32); }
+    .om-barre-droite { display: flex; align-items: center; gap: var(--sp-2, 8px); }
+    .appui-sel { font-family: inherit; font-size: var(--fs-ui-sm);
+          color: var(--ink-500); background: transparent;
+          border: 1px solid var(--line-100); border-radius: 6px;
+          padding: 3px 6px; cursor: pointer; max-width: 132px; }
+    .appui-sel:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+    @media (max-width: 640px) {
+      /* La leçon déjà payée sur le gabarit des points express : une barre
+         tenue au pixel près ne supporte pas un élément de plus sans qu'on
+         la remesure. On rétrécit sans tronquer les noms de langue. */
+      .appui-sel { max-width: 96px; font-size: 12px; padding: 3px 2px; }
+    }
 </style>
 <!-- INSTALLABLE:début — greffé par build/greffe_installable.py -->
 <link rel="manifest" href="/manifest.webmanifest">
@@ -174,6 +224,7 @@
         <span class="fr-trait" aria-hidden="true"></span>
         <span class="fr-desc">Aide à l'apprentissage du français</span>
       </h1>
+      <span class="appui-hote"></span>
     </div>
   </div>
 
@@ -210,7 +261,10 @@
         <span class="fr-trait" aria-hidden="true"></span>
         <span class="fr-desc">Aide à l'apprentissage du français</span>
       </span>
-      <button class="btn btn--ghost btn--sm" id="logoutBtn">Se déconnecter</button>
+      <span class="om-barre-droite">
+        <span class="appui-hote"></span>
+        <button class="btn btn--ghost btn--sm" id="logoutBtn">Se déconnecter</button>
+      </span>
     </div>
   </div>
 
@@ -237,6 +291,7 @@
   </div>
 </div>
 
+<script src="js/appui.js"></script>
 <script>
   const API = '';
   let session = null;
@@ -457,6 +512,10 @@
     if (docs) blocs.push(docs);
 
     document.getElementById('contenu').innerHTML = blocs.join('');
+    // La page vient d'être réécrite en entier : l'appui se repose dessus.
+    // `poser` retire d'abord les anciens, donc l'appeler deux fois est sans
+    // effet — on peut le mettre partout où le contenu change.
+    if (window.Appui) Appui.poser(document.body);
 
     // Le lien de rencontre appartient au groupe : rien à afficher sans lui.
     const teams = bilan.teams || '';
@@ -699,6 +758,19 @@
     } else {
       window.open(url, '_blank');
     }
+  }
+
+  /* ---- Langue d'appui ----
+     Elle se lit dans `francisation-langue`, LA MÊME clé que le vocabulaire :
+     un élève qui a choisi l'espagnol pour ses mots le retrouve ici sans
+     avoir à le redemander. Un fichier de langue absent ou illisible laisse
+     le portail en français — c'est le repli voulu. */
+  if (window.Appui) {
+    Appui.demarrer().then(function () {
+      var hotes = document.querySelectorAll('.appui-hote');
+      for (var i = 0; i < hotes.length; i++) Appui.selecteur(hotes[i]);
+      Appui.poser(document.body);
+    });
   }
 
   function escHtml(s) {
