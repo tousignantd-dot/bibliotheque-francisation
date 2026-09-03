@@ -2164,8 +2164,20 @@ async function toggleRec(){
   if(isRec){ stopRec(); return; }
   hideErr('poErr');
   let stream;
-  try{ stream=await navigator.mediaDevices.getUserMedia({audio:true}); }
-  catch(e){ showErr('poErr',"Impossible d'accéder au micro. Vérifie les autorisations."); return; }
+  // On enregistre un apprenant pour faire évaluer sa prononciation : la
+  // réduction de bruit taille dans les fricatives et les attaques de
+  // consonnes, et le gain automatique change les silences en souffle. Les
+  // contraintes par défaut de getUserMedia activent les deux. On demande donc
+  // le signal le moins retouché possible.
+  const MICRO_BRUT={echoCancellation:false, noiseSuppression:false, autoGainControl:false};
+  try{ stream=await navigator.mediaDevices.getUserMedia({audio:MICRO_BRUT}); }
+  catch(e){
+    // Des appareils refusent ces contraintes — casques Bluetooth, micros de
+    // téléphone. Mieux vaut un son traité que pas de son : un élève qui ne
+    // peut pas s'enregistrer ne fait pas l'activité.
+    try{ stream=await navigator.mediaDevices.getUserMedia({audio:true}); }
+    catch(e2){ showErr('poErr',"Impossible d'accéder au micro. Vérifie les autorisations."); return; }
+  }
   audioChunks=[];
   const mime = MediaRecorder.isTypeSupported('audio/webm')?'audio/webm':(MediaRecorder.isTypeSupported('audio/mp4')?'audio/mp4':'');
   mediaRecorder = mime?new MediaRecorder(stream,{mimeType:mime}):new MediaRecorder(stream);

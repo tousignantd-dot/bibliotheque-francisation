@@ -3215,8 +3215,20 @@ async function toggleRec(){
   if(isRec){ stopRec(); return; }
   hideErr('poErr');
   let stream;
-  try{ stream=await navigator.mediaDevices.getUserMedia({audio:true}); }
-  catch(e){ showErr('poErr',"Impossible d'accéder au micro. Vérifie les autorisations."); return; }
+  // On enregistre un apprenant pour faire évaluer sa prononciation : la
+  // réduction de bruit taille dans les fricatives et les attaques de
+  // consonnes, et le gain automatique change les silences en souffle. Les
+  // contraintes par défaut de getUserMedia activent les deux. On demande donc
+  // le signal le moins retouché possible.
+  const MICRO_BRUT={echoCancellation:false, noiseSuppression:false, autoGainControl:false};
+  try{ stream=await navigator.mediaDevices.getUserMedia({audio:MICRO_BRUT}); }
+  catch(e){
+    // Des appareils refusent ces contraintes — casques Bluetooth, micros de
+    // téléphone. Mieux vaut un son traité que pas de son : un élève qui ne
+    // peut pas s'enregistrer ne fait pas l'activité.
+    try{ stream=await navigator.mediaDevices.getUserMedia({audio:true}); }
+    catch(e2){ showErr('poErr',"Impossible d'accéder au micro. Vérifie les autorisations."); return; }
+  }
   audioChunks=[];
   const mime = MediaRecorder.isTypeSupported('audio/webm')?'audio/webm':(MediaRecorder.isTypeSupported('audio/mp4')?'audio/mp4':'');
   mediaRecorder = mime?new MediaRecorder(stream,{mimeType:mime}):new MediaRecorder(stream);
@@ -3463,6 +3475,7 @@ let jrDireNo=0;
 function jrTaire(){
   jrDireNo++;                 // toute lecture en vol devient caduque
   JR.sourd=false;             // l'assistant se tait : le micro réentend
+  JR.reprise=false;           // et la reprise de micro en attente est annulée
   try{ speechSynthesis.cancel(); }catch(e){}
   if(jrAudio){ try{ jrAudio.pause(); }catch(e){} jrAudio=null; }
 }
@@ -3481,12 +3494,43 @@ function jrDireNavigateur(texte){
     const u=new SpeechSynthesisUtterance(texte);
     u.lang='fr-CA'; u.rate=vitTaux(0.95);
     const v=jrVoixFr(); if(v) u.voice=v;
+    u.onend=jrMicroRouvrir; u.onerror=jrMicroRouvrir;
     speechSynthesis.speak(u);
-  }catch(e){}
+  }catch(e){ jrMicroRouvrir(); }
+}
+
+// Le micro et la voix ne peuvent pas être ouverts en même temps. Dès qu'un
+// micro est ouvert, Chrome fait passer la SORTIE audio par sa chaîne
+// d'annulation d'écho, et la voix de l'assistant en ressort mince et filtrée —
+// mesuré le 3 septembre 2026 : sur le MÊME fichier, le son change à l'instant
+// précis où le bouton passe au rouge. `SpeechRecognition` n'accepte aucune
+// contrainte audio, donc on ne peut pas désactiver ce traitement : on peut
+// seulement éviter d'avoir le micro ouvert pendant qu'il parle.
+function jrMicroFermer(){
+  if(!JR.rec) return false;
+  JR.reprise=true;
+  try{ JR.rec.stop(); }catch(e){}
+  return true;
+}
+
+function jrMicroRouvrir(){
+  if(!JR.reprise) return;
+  JR.reprise=false;
+  // L'élève a écrit pendant qu'il écoutait : jrParler() vide le champ, et
+  // rouvrir lui effacerait sa phrase. On lui laisse la main.
+  const inp=document.getElementById('jrInput');
+  if(inp && inp.value.trim()) return;
+  // Chrome refuse un start() trop proche du stop() précédent, et `onend` doit
+  // avoir rendu la main avant qu'on reparte.
+  setTimeout(()=>{ if(!JR.rec && !jrAudio) jrParler(); }, 250);
 }
 
 async function jrDire(texte){
   jrTaire();
+  // Avant la requête, pas après : quel que soit le chemin pris ensuite — voix
+  // du serveur, repli du navigateur, panne — le micro doit être fermé avant
+  // qu'un son sorte.
+  jrMicroFermer();
   const no=jrDireNo;          // posé APRÈS jrTaire, qui vient d'incrémenter
   // Cette voix-ci se fabrique en direct : son débit se règle donc à la
   // SYNTHÈSE, où Azure rend un <prosody rate> exact, et non par un
@@ -3510,12 +3554,12 @@ async function jrDire(texte){
     // l'assistant, pas celle de l'élève.
     JR.sourd=true;
     a.onended=()=>{ URL.revokeObjectURL(url); if(jrAudio===a) jrAudio=null;
-                    JR.sourd=false; };
+                    JR.sourd=false; jrMicroRouvrir(); };
     await a.play();
   }catch(e){
     // Le repli n'a de sens que pour une vraie panne. Si un jrTaire() est passé
     // par là, c'est que l'élève a coupé la parole : on se tait.
-    if(no===jrDireNo) jrDireNavigateur(texte);
+    if(no===jrDireNo) jrDireNavigateur(texte); else jrMicroRouvrir();
   }
 }
 
