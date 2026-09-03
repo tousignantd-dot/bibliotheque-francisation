@@ -187,7 +187,12 @@ def coupes(textes, mots):
         compte += len(lettres(m["mot"]))
         if plan < len(attendu) - 1 and compte >= attendu[plan]:
             suivant = mots[i + 1]["debut"] if i + 1 < len(mots) else m["fin"]
-            bornes.append((m["fin"] + suivant) / 2)
+            # La durée qu'Azure donne au dernier mot d'une phrase déborde
+            # parfois jusqu'au mot suivant : la coupe tombait alors APRÈS le
+            # premier mot du plan d'après, qui se retrouvait dans le mauvais
+            # fichier (« Cochez » attribué au plan d, 3 septembre 2026). On
+            # borne donc la fin du mot au début du suivant.
+            bornes.append((min(m["fin"], suivant) + suivant) / 2)
             plan += 1
             compte = 0
     if len(bornes) != len(textes) - 1:

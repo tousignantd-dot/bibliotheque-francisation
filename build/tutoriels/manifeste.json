@@ -228,9 +228,30 @@
      "id": "b",
      "gestes": [
       {
-       "do": "defiler",
+       "do": "pointer",
        "sel": "#recherche",
        "apres": "un champ de recherche"
+      },
+      {
+       "do": "clic",
+       "sel": "[data-filtre=\"cours\"]",
+       "apres": "cours ce sont"
+      },
+      {
+       "do": "clic",
+       "sel": "[data-filtre=\"atelier\"]",
+       "apres": "ateliers les activites"
+      },
+      {
+       "do": "clic",
+       "sel": "[data-filtre=\"tous\"]",
+       "apres": "la recherche cherche large"
+      },
+      {
+       "do": "taper",
+       "sel": "#recherche",
+       "texte": "passé",
+       "apres": "un temps de verbe"
       }
      ],
      "surligne": ".pe-filtres",
@@ -240,9 +261,17 @@
      "id": "c",
      "gestes": [
       {
+       "do": "js",
+       "code": "const r=document.querySelector('#recherche'); r.value=''; r.dispatchEvent(new Event('input',{bubbles:true}))"
+      },
+      {
        "do": "defiler",
-       "sel": "#listeActivites",
-       "apres": "en dessous la liste"
+       "sel": "#listeActivites"
+      },
+      {
+       "do": "pointer",
+       "sel": ".pe-pastille",
+       "apres": "une pastille d etat"
       }
      ],
      "surligne": "#listeActivites",
@@ -301,8 +330,44 @@
      "gestes": [
       {
        "do": "defiler",
-       "sel": "#barreAction",
-       "apres": "vous donnez une date"
+       "sel": "#barreAction"
+      },
+      {
+       "do": "poser",
+       "sel": "#dateDebut",
+       "valeur": "2026-09-07"
+      },
+      {
+       "do": "poser",
+       "sel": "#dateFin",
+       "valeur": "2026-10-02",
+       "apres": "une date de fermeture",
+       "avance": 1250
+      },
+      {
+       "do": "clic",
+       "sel": "[data-rythme=\"meme\"]",
+       "apres": "aucun si elles"
+      },
+      {
+       "do": "clic",
+       "sel": "[data-rythme=\"semaine\"]",
+       "apres": "une par semaine"
+      },
+      {
+       "do": "clic",
+       "sel": "[data-rythme=\"quinzaine\"]",
+       "apres": "une aux deux semaines"
+      },
+      {
+       "do": "clic",
+       "sel": "[data-rythme=\"jour\"]",
+       "apres": "ou une par jour"
+      },
+      {
+       "do": "pointer",
+       "sel": "#eviterFinDeSemaine",
+       "apres": "saute les samedis"
       }
      ],
      "surligne": "#rythmes",
@@ -318,12 +383,31 @@
       },
       {
        "do": "pointer",
+       "sel": "#boutonRetirerDates",
+       "apres": "retirer les dates"
+      },
+      {
+       "do": "clic",
        "sel": "#boutonPlanifier",
-       "apres": "cliqué sur"
+       "apres": "cliquez sur"
+      },
+      {
+       "do": "attendre",
+       "ms": 500
+      },
+      {
+       "do": "defiler",
+       "sel": "#listeActivites",
+       "apres": "les pastilles passent"
+      },
+      {
+       "do": "pointer",
+       "sel": ".pe-pastille--avenir",
+       "apres": "a venir"
       }
      ],
-     "surligne": "#apercuPlan",
-     "texte": "À droite, l'aperçu vous montre, avant de valider, quelle activité tombe quel jour. Rien n'est posé tant que vous n'avez pas cliqué sur « Enregistrer », en bas de la barre. Et si vous vous trompez, « Retirer les dates » ramène tout à zéro."
+     "surligne": "#listeActivites",
+     "texte": "À droite, l'aperçu vous montre, avant de valider, quelle activité tombe quel jour. Si vous vous êtes trompé, « Retirer les dates » ramène tout à zéro. Sinon, cliquez sur « Enregistrer », en bas de la barre : rien n'est posé avant ce clic. Les pastilles passent aussitôt à « à venir »."
     },
     {
      "id": "h",
@@ -350,12 +434,12 @@
      "surligne": "#formCopie",
      "gestes": [
       {
-       "do": "onglet",
-       "valeur": "planif"
+       "do": "js",
+       "code": "document.querySelector('[data-fermer=\"modaleApercu\"]')?.click()"
       },
       {
        "do": "attendre",
-       "ms": 600
+       "ms": 500
       },
       {
        "do": "clic",

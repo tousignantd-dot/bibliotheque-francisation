@@ -118,6 +118,9 @@ async function jouer(page, geste) {
     case 'taper':
       await scene((g) => window.__scene.taper(g.sel, g.texte, g.cadence), geste);
       break;
+    case 'poser':
+      await scene((g) => window.__scene.poser(g.sel, g.valeur), geste);
+      break;
     case 'choisir':
       await scene((g) => window.__scene.choisir(g.sel, g.texte), geste);
       break;

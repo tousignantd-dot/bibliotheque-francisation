@@ -251,7 +251,21 @@ module.exports = String.raw`
     await dodo(420);
   }
 
+  /* Poser une valeur d'un coup, avec le même clic visible que « taper ».
+     Un champ de type date refuse une saisie lettre à lettre : sa valeur ne
+     s'accepte qu'entière, au format AAAA-MM-JJ. */
+  async function poser(sel, valeur) {
+    const el = await versElement(sel);
+    onde(px, py);
+    await dodo(220);
+    el.focus();
+    el.value = valeur;
+    el.dispatchEvent(new Event('input', { bubbles: true }));
+    el.dispatchEvent(new Event('change', { bubbles: true }));
+    await dodo(380);
+  }
+
   window.__scene = { versPoint, versElement, defiler, clic, surligner, effacer, dodo, visible,
-                     parcourir, survol, taper, choisir, pointeur: POINTEUR };
+                     parcourir, survol, taper, choisir, poser, pointeur: POINTEUR };
 })();
 `;
