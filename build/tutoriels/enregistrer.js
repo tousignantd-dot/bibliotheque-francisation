@@ -26,7 +26,10 @@ const SCENE = require('./scene.js');
 
 const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 const PORT = process.argv[2];
-const SEULE = process.argv[3] || null;
+/* Plusieurs capsules d'un coup, séparées par des virgules : les gestes de
+   toutes se jouent de toute façon à chaque lancement, et tourner deux
+   capsules en deux passes coûtait deux fois la promenade complète. */
+const SEULE = process.argv[3] ? process.argv[3].split(',') : null;
 const ICI = __dirname;
 const SORTIE = path.join(ICI, 'films');
 const VOIX = path.join(ICI, 'voix');
@@ -268,7 +271,7 @@ async function main() {
   const cdp = await page.createCDPSession();
 
   for (const capsule of manifeste.capsules) {
-    const garder = !SEULE || capsule.id === SEULE;
+    const garder = !SEULE || SEULE.includes(capsule.id);
     const dossier = path.join(SORTIE, capsule.id);
     if (garder) {
       fs.rmSync(dossier, { recursive: true, force: true });
