@@ -46,28 +46,69 @@ const duree = (texte) => {
 
 async function cadre(page, sel) {
   if (!sel) return null;
-  return page.evaluate((s, m) => {
+  /* L'élément est d'abord AMENÉ à l'écran, d'un coup, puis mesuré. La première
+     version mesurait sans bouger et bornait le rectangle à la fenêtre : un
+     formulaire sous le bord bas donnait une bande de 40 pixels (donc la pleine
+     page, par repli), et un formulaire au-dessus donnait une bande prise en
+     haut de l'écran — le titre « Vos groupes » à la place du formulaire.
+     Quarante-huit étapes, la moitié fausses, sans une erreur. Vu en mettant
+     les captures de l'utilisateur à côté des miennes, le 4 septembre 2026. */
+  return page.evaluate(async (s, m) => {
     const vu = [...document.querySelectorAll(s)].find((e) => {
       const r = e.getBoundingClientRect();
       return r.width > 0 && r.height > 0 && e.offsetParent !== null;
     });
     if (!vu) return null;
-    const r = vu.getBoundingClientRect();
-    const x = Math.max(0, r.left - m);
-    const y = Math.max(0, r.top - m);
+    let r = vu.getBoundingClientRect();
+    /* Plus haut que l'écran — une liste de 4 700 px, la colonne du matériel —
+       on ne cadre pas : on garde la fenêtre telle que les gestes l'ont laissée,
+       c'est-à-dire ce que le film montre au même instant. Le centrer donnait
+       le milieu d'une liste, des rangées prises au hasard. */
+    if (r.height > innerHeight - m * 2) return null;
+    if (r.top < m || r.bottom > innerHeight - m) {
+      const vise = scrollY + r.top + r.height / 2 - innerHeight / 2;
+      scrollTo({ top: Math.max(0, vise), behavior: 'instant' });
+      await new Promise((ok) => setTimeout(ok, 250));
+      r = vu.getBoundingClientRect();
+    }
+    /* Un bouton de 44 px cadré seul ne dit pas où il est : le cadre a une
+       taille plancher, centrée sur l'élément, pour qu'on lise ce qui l'entoure. */
+    const MIN_L = 720, MIN_H = 240;
+    const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+    const l = Math.max(r.width + m * 2, MIN_L), h = Math.max(r.height + m * 2, MIN_H);
+    const x = Math.max(0, Math.min(cx - l / 2, innerWidth - l));
+    const y = Math.max(0, Math.min(cy - h / 2, innerHeight - h));
+    /* Le rectangle que Puppeteer 25 attend est en coordonnées de
+       **document**, pas de fenêtre : sur une page défilée de 1 200 px, un
+       cadre mesuré dans la fenêtre tombait 1 200 px trop haut — la carte du
+       groupe à la place de la barre de rythmes, huit images sur quarante-huit.
+       D'où le décalage de `scrollX` / `scrollY`. Entiers, parce que Chrome
+       refuse un demi-pixel au bord (« 0 height »). */
     return {
-      x, y,
-      width: Math.min(innerWidth - x, r.width + m * 2),
-      height: Math.min(innerHeight - y, r.height + m * 2),
+      x: Math.floor(x + scrollX), y: Math.floor(y + scrollY),
+      width: Math.floor(Math.min(innerWidth - x, l)),
+      height: Math.floor(Math.min(innerHeight - 1 - y, h)),
+      mesure: { top: Math.round(r.top), h: Math.round(r.height), scrollY: Math.round(scrollY),
+                n: document.querySelectorAll(s).length, tag: vu.tagName + (vu.id ? '#' + vu.id : '') },
     };
   }, sel, MARGE);
 }
 
 async function prendre(page, fichier, sel) {
   const clip = await cadre(page, sel);
-  await page.screenshot({ path: fichier, type: 'jpeg', quality: 88,
-                          ...(clip && clip.width > 60 && clip.height > 60 ? { clip } : {}) });
-  return crypto.createHash('md5').update(fs.readFileSync(fichier)).digest('hex');
+  const mesure = clip ? clip.mesure : null;
+  if (clip) delete clip.mesure;
+  const cadrer = clip && clip.width > 60 && clip.height > 60;
+  try {
+    await page.screenshot({ path: fichier, type: 'jpeg', quality: 88, ...(cadrer ? { clip } : {}) });
+  } catch (e) {
+    /* Un cadre que Chrome refuse (« 0 height ») : on garde la fenêtre entière
+       et on le dit, plutôt que d'arrêter quarante-huit captures pour une. */
+    process.stdout.write('  ⚠ cadre refusé ' + JSON.stringify(clip) + ' : ' + e.message + '\n');
+    await page.screenshot({ path: fichier, type: 'jpeg', quality: 88 });
+  }
+  return { empreinte: crypto.createHash('md5').update(fs.readFileSync(fichier)).digest('hex'),
+           mesure, clip };
 }
 
 (async () => {
@@ -104,10 +145,11 @@ async function prendre(page, fichier, sel) {
       const clic = async (n, quand) => {
         if (!garder) return;
         const f = path.join(dossier, `${plan.id}-${quand}.jpg`);
-        const empreinte = await prendre(page, f, plan.surligne);
+        const { empreinte, mesure, clip } = await prendre(page, f, (plan.papier && plan.papier.cadre) || plan.surligne);
         if (vus.has(empreinte)) { fs.unlinkSync(f); return; }
         vus.add(empreinte);
-        images.push({ quand, fichier: path.relative(ICI, f) });
+        /* `geste` compte les gestes joués : 0 au début du plan, k après le k-ième. */
+        images.push({ quand, geste: n, fichier: path.relative(ICI, f), mesure, clip });
       };
 
       /* Le surlignage d'abord : c'est ce que le spectateur voit pendant tout
@@ -126,7 +168,7 @@ async function prendre(page, fichier, sel) {
       for (const [i, geste] of gestes.entries()) {
         await jouer(page, geste);
         await dodo(200);
-        await clic(i, i + 1 === gestes.length ? 'fin' : 'geste' + (i + 1));
+        await clic(i + 1, i + 1 === gestes.length ? 'fin' : 'geste' + (i + 1));
       }
       releve[capsule.id].push({
         plan: plan.id, secondes: duree(plan.texte_voix || plan.texte), images,

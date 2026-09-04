@@ -83,27 +83,41 @@ def phrases(texte):
     return m.group(1), m.group(3)
 
 
-def images(capsule, plan, captures):
-    """Les copies d'écran d'un plan, chemins relatifs à la page produite.
+def images(capsule, plan, captures, fiche_plan=None):
+    """La copie d'écran d'une étape, chemin relatif à la page produite.
 
-    Une entrée de `captures.json` est un objet — `{quand, fichier}` — et son
-    `fichier` porte déjà le préfixe `guide/`. Le prendre pour une chaîne
-    produisait un chemin fait du dictionnaire imprimé, donc sept images
-    absentes par chapitre, sans erreur : une balise `<img>` cassée se rend en
-    cadre vide, et le PDF sortait tout de même.
+    Trois sources, dans l'ordre :
+
+    1. **Une image déposée à la main** — `guide/deposees/<capsule>_<plan>.*`,
+       arrivée par la case de dépôt du storyboard. Quand l'utilisateur a
+       montré ce qu'il voulait voir, c'est ça qu'on imprime, et rien d'autre.
+    2. **L'image après le geste demandé** — `papier.apres_geste` du plan, pour
+       montrer le bouton *avant* qu'on le clique quand le texte dit de le
+       cliquer : une fois cliqué, il a disparu avec son écran.
+    3. **L'image de la fin du plan** — l'écran une fois le geste fait, donc ce
+       que le lecteur doit reconnaître.
+
+    Une entrée de `captures.json` est un objet — `{quand, geste, fichier}` —
+    et son `fichier` porte déjà le préfixe `guide/`.
     """
+    deposee = next(iter(sorted((ICI / "guide" / "deposees").glob(
+        "%s_%s.*" % (capsule, plan)))), None)
+    if deposee:
+        return ["../../build/tutoriels/%s" % deposee.relative_to(ICI).as_posix()]
+    voulu = (fiche_plan or {}).get("papier", {}).get("apres_geste")
     for fiche in captures.get(capsule, []):
         if fiche["plan"] != plan:
             continue
         vues = fiche.get("images", [])
         if not vues:
             return []
-        # **Une seule image par étape**, celle de la fin : c'est l'écran une
-        # fois le geste fait, donc ce que le lecteur doit reconnaître. Garder
-        # les trois vues du guide de validation — début, milieu, fin — donnait
-        # 77 pages là où le même contenu en tient 24 ; le guide sert à relire
-        # avant de tourner, le document à faire.
-        choisie = next((i for i in vues if i.get("quand") == "fin"), vues[-1])
+        if voulu is not None:
+            # la dernière image prise au plus tard au geste demandé — les
+            # images identiques ayant été retirées, le geste exact peut manquer
+            candidates = [i for i in vues if i.get("geste", 0) <= voulu]
+            choisie = candidates[-1] if candidates else vues[0]
+        else:
+            choisie = next((i for i in vues if i.get("quand") == "fin"), vues[-1])
         return ["../../build/tutoriels/%s" % choisie["fichier"]]
     return []
 
@@ -213,7 +227,7 @@ def main():
     captures = json.loads(fichier.read_text(encoding="utf-8")) if fichier.exists() else {}
     capsules = manifeste["capsules"]
     sans = [c["id"] for c in capsules
-            if not any(images(c["id"], p["id"], captures) for p in c["plans"])]
+            if not any(images(c["id"], p["id"], captures, p) for p in c["plans"])]
 
     quand = date.today()
     aujourdhui = "%d %s %d" % (quand.day, MOIS[quand.month - 1], quand.year)
@@ -239,7 +253,7 @@ def main():
             n += 1
             titre, suite = phrases(plan["texte"])
             vues = "".join('<img src="%s" alt="">' % html.escape(u)
-                           for u in images(c["id"], plan["id"], captures))
+                           for u in images(c["id"], plan["id"], captures, plan))
             etapes.append(
                 '<div class="etape" data-n="%d">'
                 '<h3>%s</h3>%s%s</div>'

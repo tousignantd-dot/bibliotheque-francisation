@@ -42,6 +42,11 @@ sys.path.insert(0, str(ICI))
 import papier                                     # noqa: E402  (PROMESSES, phrases)
 
 
+# Le micro du rail « Mes outils » : grille 24, trait 2,2, bouts ronds.
+MICRO = ('<svg viewBox="0 0 24 24" aria-hidden="true">'
+         '<rect x="9" y="3" width="6" height="11" rx="3"></rect>'
+         '<path d="M5 11a7 7 0 0 0 14 0"></path><path d="M12 18v3"></path></svg>')
+
 PAGE = """<!doctype html>
 <html lang="fr"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -83,6 +88,20 @@ h2 .n{color:var(--muted);font-size:13px;display:block;font-weight:800;letter-spa
 textarea{width:100%;margin-top:8px;font:inherit;font-size:13.5px;padding:8px 10px;
          border:1px solid var(--rule);border-radius:6px;resize:vertical;min-height:38px;
          background:#fff;color:var(--ink)}
+.note{position:relative;margin-top:8px}
+.note textarea{margin-top:0;padding-right:46px}
+.micro{position:absolute;right:8px;bottom:9px;width:30px;height:30px;padding:0;cursor:pointer;
+       border:1px solid var(--rule);border-radius:50%;background:#fff;
+       display:flex;align-items:center;justify-content:center}
+.micro svg{width:15px;height:15px;fill:none;stroke:var(--soft);stroke-width:2;stroke-linecap:round}
+.micro[aria-pressed="true"]{background:var(--reprendre);border-color:var(--reprendre)}
+.micro[aria-pressed="true"] svg{stroke:#fff}
+.depot{margin-top:10px;padding:12px;text-align:center;cursor:pointer;background:var(--sunken);
+       border:1px dashed var(--rule);border-radius:8px;color:var(--muted);font-size:13px}
+.depot:hover,.depot.sur{border-color:var(--ink);color:var(--ink)}
+.depot img{display:block;width:100%;margin-bottom:8px;border:1px solid var(--rule);border-radius:6px}
+.depot .nom{display:block;font-weight:800;color:var(--ok);font-size:12.5px}
+.depot input{display:none}
 .barre{position:sticky;bottom:0;background:rgba(250,250,248,.96);border-top:1px solid var(--rule);
        padding:12px 22px;margin:0 -22px -90px;display:flex;gap:16px;align-items:center;
        backdrop-filter:blur(6px)}
@@ -151,14 +170,116 @@ copier.addEventListener('click', () => {
   const lignes = [];
   document.querySelectorAll('.etape').forEach((e) => {
     const f = etat[e.dataset.cle] || {};
-    if (!f.verdict && !f.note) return;
+    if (!f.verdict && !f.note && !f.capture) return;
     lignes.push('- ' + e.dataset.cle + ' — ' + (f.verdict || 'sans verdict')
-      + (f.note ? ' : ' + f.note : ''));
+      + (f.note ? ' : ' + f.note : '')
+      + (f.capture ? ' [capture déposée : ' + f.capture + ']' : ''));
   });
   const t = lignes.length ? lignes.join('\\n') : 'Aucun verdict posé.';
   navigator.clipboard.writeText(t).then(() => { copier.textContent = 'Copié';
     setTimeout(() => { copier.textContent = 'Copier les verdicts'; }, 1600); });
 });
+
+/* ── La dictée ─────────────────────────────────────────────────────────────
+   Le champ « Ce qu'il faudrait voir à la place » se dicte : décrire un cadrage
+   à la voix va plus vite qu'à deux doigts, et c'est là qu'on écrit le plus. */
+const Reco = window.SpeechRecognition || window.webkitSpeechRecognition;
+let reco = null, dictee = null;
+function poserNote(ta){
+  const cle = ta.closest('.etape').dataset.cle;
+  (etat[cle] || (etat[cle] = {})).note = ta.value;
+  localStorage.setItem(CLE, JSON.stringify(etat));
+}
+document.addEventListener('click', (ev) => {
+  const b = ev.target.closest('.micro');
+  if (!b) return;
+  const ta = b.parentNode.querySelector('textarea');
+  if (!Reco){ b.title = "La dictée demande Chrome ou Safari"; ta.focus(); return; }
+  if (reco){ const meme = dictee === ta; reco.onend = null; reco.stop(); arreter(); if (meme) return; }
+  dictee = ta;
+  reco = new Reco();
+  reco.lang = 'fr-CA'; reco.continuous = true; reco.interimResults = false;
+  reco.onresult = (e) => {
+    for (let i = e.resultIndex; i < e.results.length; i++){
+      if (!e.results[i].isFinal) continue;
+      const dit = e.results[i][0].transcript.trim();
+      if (!dit) continue;
+      ta.value = (ta.value ? ta.value.replace(/\s*$/, ' ') : '') + dit;
+    }
+    poserNote(ta);
+  };
+  reco.onerror = arreter;
+  reco.onend = arreter;
+  b.setAttribute('aria-pressed', 'true');
+  ta.focus();
+  reco.start();
+});
+function arreter(){
+  document.querySelectorAll('.micro[aria-pressed="true"]')
+    .forEach((b) => b.setAttribute('aria-pressed', 'false'));
+  reco = null; dictee = null;
+}
+
+/* ── La bonne capture, déposée à la main ───────────────────────────────────
+   Quand le cadrage ne se décrit pas, on montre. L'image déposée est **tout de
+   suite téléchargée** sous le nom de son étape (`06-materiel_c.png`) : c'est
+   par ce fichier-là qu'elle me parvient. La vignette, elle, reste dans le
+   navigateur (IndexedDB, jamais localStorage — 48 images crèveraient le quota)
+   pour qu'on voie au retour ce qu'on a déjà donné. */
+let bd = null;
+const ouvrirBd = () => new Promise((ok, non) => {
+  if (bd) return ok(bd);
+  const d = indexedDB.open('storyboard-captures', 1);
+  d.onupgradeneeded = () => d.result.createObjectStore('vues');
+  d.onsuccess = () => ok(bd = d.result);
+  d.onerror = non;
+});
+const enBd = (mode, faire) => ouvrirBd().then((b) => new Promise((ok, non) => {
+  const t = b.transaction('vues', mode), r = faire(t.objectStore('vues'));
+  r.onsuccess = () => ok(r.result); r.onerror = non;
+})).catch(() => null);
+
+function montrer(zone, url, nom){
+  zone.innerHTML = '<img src="' + url + '" alt=""><span class="nom">' + nom
+    + '</span>Déposer une autre image';
+}
+function recevoir(zone, fichier){
+  if (!fichier || !/^image\//.test(fichier.type)) return;
+  const etape = zone.closest('.etape');
+  const nom = etape.dataset.capsule + '_' + etape.dataset.plan
+    + (fichier.name.match(/\.[a-z0-9]+$/i) || ['.png'])[0];
+  const lire = new FileReader();
+  lire.onload = () => {
+    const url = lire.result;
+    montrer(zone, url, nom);
+    enBd('readwrite', (s) => s.put({url: url, nom: nom}, etape.dataset.cle));
+    const cle = etape.dataset.cle;
+    (etat[cle] || (etat[cle] = {})).capture = nom;
+    localStorage.setItem(CLE, JSON.stringify(etat));
+    const a = document.createElement('a');
+    a.href = url; a.download = nom;
+    document.body.appendChild(a); a.click(); a.remove();
+  };
+  lire.readAsDataURL(fichier);
+}
+document.querySelectorAll('.depot').forEach((zone) => {
+  const champ = zone.querySelector('input');
+  zone.addEventListener('click', () => champ.click());
+  champ.addEventListener('change', () => recevoir(zone, champ.files[0]));
+  zone.addEventListener('dragover', (e) => { e.preventDefault(); zone.classList.add('sur'); });
+  zone.addEventListener('dragleave', () => zone.classList.remove('sur'));
+  zone.addEventListener('drop', (e) => {
+    e.preventDefault(); zone.classList.remove('sur');
+    recevoir(zone, e.dataTransfer.files[0]);
+  });
+  zone.closest('.etape').addEventListener('paste', (e) => {
+    const it = [...(e.clipboardData || {}).items || []].find((x) => /^image\//.test(x.type));
+    if (it) recevoir(zone, it.getAsFile());
+  });
+  enBd('readonly', (s) => s.get(zone.closest('.etape').dataset.cle))
+    .then((v) => { if (v) montrer(zone, v.url, v.nom); });
+});
+
 peindre();
 </script></body></html>
 """
@@ -179,13 +300,18 @@ def main():
                 continue
             n += 1
             titre, suite = papier.phrases(plan["texte"])
-            vues = papier.images(c["id"], plan["id"], captures)
+            vues = papier.images(c["id"], plan["id"], captures, plan)
             vue = ('<img src="%s" alt="">' % html.escape(
                        vues[0].replace("../../", "../../"))
                    if vues else '<div class="absent">aucune capture pour cette étape</div>')
-            cadre = plan.get("surligne") or "la fenêtre entière"
+            pap = plan.get("papier", {})
+            cadre = pap.get("cadre") or plan.get("surligne") or "la fenêtre entière"
+            if vues and "/deposees/" in vues[0]:
+                cadre = "votre capture déposée (%s)" % pathlib.Path(vues[0]).name
+            elif pap.get("apres_geste") is not None:
+                cadre = "%s — après le geste %d" % (cadre, pap["apres_geste"])
             corps.append(
-                '<div class="etape" data-cle="%s %d">'
+                '<div class="etape" data-cle="%s %d" data-capsule="%s" data-plan="%s">'
                 '<div><div class="num">Étape %d</div>'
                 '<p class="tit">%s</p>%s'
                 '<div class="cadre-info">Ce qui est cadré : <code>%s</code></div>'
@@ -193,17 +319,23 @@ def main():
                 '<button data-v="bonne">Bonne</button>'
                 '<button data-v="cadrer">À recadrer</button>'
                 '<button data-v="reprendre">À reprendre</button></div>'
+                '<div class="note">'
                 '<textarea placeholder="Ce qu\'il faudrait voir à la place…"></textarea>'
-                '</div><div class="vue">%s</div></div>'
-                % (html.escape(c["titre"]), n, n, html.escape(titre),
+                '<button class="micro" type="button" aria-pressed="false" '
+                'aria-label="Dicter la note" title="Dicter la note">%s</button></div>'
+                '</div><div class="vue">%s'
+                '<div class="depot">Déposer ici la bonne capture'
+                '<input type="file" accept="image/*"></div>'
+                '</div></div>'
+                % (html.escape(c["titre"]), n, c["id"], plan["id"], n, html.escape(titre),
                    '<p class="txt">%s</p>' % html.escape(suite) if suite else "",
-                   html.escape(str(cadre)), vue))
+                   html.escape(str(cadre)), MICRO, vue))
 
     SORTIE.write_text(PAGE.replace("{{CORPS}}", "".join(corps)), encoding="utf-8")
     etapes = sum(1 for c in manifeste["capsules"]
                  for p in c["plans"] if p["id"] != "fin")
     manquantes = sum(1 for c in manifeste["capsules"] for p in c["plans"]
-                     if p["id"] != "fin" and not papier.images(c["id"], p["id"], captures))
+                     if p["id"] != "fin" and not papier.images(c["id"], p["id"], captures, p))
     print("%d étapes → %s" % (etapes, SORTIE.relative_to(RACINE)))
     if manquantes:
         print("  ⚠ %d étape(s) sans capture — node build/tutoriels/guide_captures.js 5321"
