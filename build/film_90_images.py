@@ -48,11 +48,15 @@ STYLE = (" Illustration vectorielle plate, sans contour épais, fond crème uni 
          "beaucoup d'air autour du sujet. Format paysage 16:9.")
 
 PLANS = {
+    # La voix off dit « elle » du premier au dernier plan : la silhouette du
+    # comptoir doit se lire comme une femme, sinon le film dit une chose et en
+    # montre une autre dès la deuxième seconde.
     "02": ("Un comptoir de service public vu de trois quarts, dans un édifice "
-           "québécois ordinaire. Devant le comptoir, une personne debout vue "
-           "de dos. Derrière, une employée qui attend, penchée en avant. "
-           "Au-dessus de la personne de dos, une grande bulle de dialogue "
-           "entièrement VIDE, contour fin, intérieur blanc." + STYLE),
+           "québécois ordinaire. Devant le comptoir, une FEMME debout vue de "
+           "dos, cheveux attachés, sac à l'épaule. Derrière le comptoir, un "
+           "employé qui attend, penché en avant. Au-dessus de la femme de dos, "
+           "une grande bulle de dialogue entièrement VIDE, contour fin, "
+           "intérieur blanc." + STYLE),
     "03": ("Au premier plan, une grande bulle de dialogue entièrement VIDE, "
            "contour fin, intérieur blanc, qui occupe le tiers du cadre. "
            "Derrière elle, très adoucie et en retrait, une petite file "

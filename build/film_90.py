@@ -30,13 +30,17 @@ RACINE = pathlib.Path(__file__).resolve().parent.parent
 SORTIE = RACINE / "assets" / "presentations" / "film-90-secondes"
 sys.path.insert(0, str(RACINE))
 
-# Le débit de la voix off. Au débit par défaut d'Azure, les quatorze
-# répliques ne font que 52,8 s dans un film de 90 : 41 % de silence, ce qui
-# n'est plus de la respiration mais du vide. Mesuré sur la réplique la plus
-# longue : défaut 9,33 s · -6 % 11,41 s · -12 % 12,19 s · -18 % 13,07 s. On
-# retient -8 %, qui pose la voix sans la traîner et laisse environ 1,7 s de
-# souffle par plan.
-REFERENCE = "-8%"
+# Le débit. Sur la voix ordinaire, `<prosody rate>` agit franchement. **Sur
+# DragonHD, presque pas** — mesuré sur la réplique la plus longue : défaut
+# 9,38 s, -8 % 9,36 s (soit rien, dans le bruit de la synthèse), -15 % 9,92 s,
+# c'est-à-dire 6 % de plus pour 15 % demandés. La prosodie HD se calcule sur la
+# phrase entière et ne se laisse pas étirer. On garde -15 %, le maximum utile,
+# et ce sont les DURÉES DE PLAN qui s'ajustent à la voix, jamais l'inverse.
+# La voix : Sylvie en DragonHD — la même comédienne que la version
+# précédente, mais la prosodie se calcule sur la phrase entière au lieu
+# d'être plate. C'est celle du jeu de rôle.
+ROLE = "hd_feminin"
+REFERENCE = "-15%"
 FONDU = 0.5          # durée d'un fondu enchaîné
 LARGEUR, HAUTEUR, IPS = 1920, 1080, 25
 
@@ -44,38 +48,41 @@ LARGEUR, HAUTEUR, IPS = 1920, 1080, 25
 #   "creee"   → image à générer (build/film_90_images.py)
 #   "capture" → capture réelle de l'application
 PLANS = [
-    ("01", 0, 5,  "Le point qui ne sort pas",
-     "Il y a un moment où l'on décide de ne rien dire.", "creee"),
-    ("02", 5, 12, "Le comptoir",
-     "Au comptoir. Au téléphone. Devant un propriétaire.", "creee"),
-    ("03", 12, 18, "Trois fois rien",
-     "On comprend. On connaît les mots. Mais on ne se lance pas.", "creee"),
-    ("04", 18, 24, "Le comptoir se replie",
-     "francis met cette conversation-là dans un endroit où se tromper ne coûte rien.",
-     "creee"),
-    ("05", 24, 29, "Il choisit, et il parle",
-     "L'élève choisit une situation. Et il parle.", "capture"),
-    ("06", 29, 34, "Quelqu'un répond",
-     "En face, quelqu'un répond — et s'ajuste à ce qu'il vient de dire.", "capture"),
-    ("07", 34, 42, "Écrit ici",
-     "Les situations ne sont pas génériques. Elles ont été écrites ici, pour ce qui se passe ici.",
-     "creee"),
-    ("08", 42, 48, "Ce qu'il a dit, et comment",
-     "À la fin, une rétroaction sur sa grammaire et sur la clarté de ce qu'il a dit.",
-     "capture"),
-    ("09", 48, 55, "Et elle s'efface",
-     "Elle est à lui. Elle ne se conserve pas, et personne d'autre ne la lit.", "creee"),
-    ("10", 55, 59, "Quinze pupitres",
-     "Et pendant ce temps, l'enseignante voit son groupe.", "creee"),
-    ("11", 59, 65, "C'est elle qui décide",
-     "Ce n'est pas la machine qui décide de la suite. C'est elle.", "capture"),
-    ("12", 65, 71, "Quatre interrupteurs",
-     "Un centre n'a pas à nous faire confiance. Il coche.", "creee"),
-    ("13", 71, 84, "Ce qui ne sort plus",
-     "Aucun vrai nom. Aucun courriel. Les productions s'effacent après trente jours. "
-     "Et si la direction refuse l'assistance, plus rien ne quitte le serveur.", "creee"),
-    ("14", 84, 90, "La phrase sort",
-     "Et un jour, au comptoir, la phrase sort.", "creee"),
+    ("01", 0, 5.0,  "Le point qui ne sort pas",
+     "Elle sait quoi dire. Elle ne le dit pas.", "creee"),
+    ("02", 5.0, 12.0, "Le comptoir",
+     "Elle est au comptoir. L'employée attend. Elle a préparé sa phrase, "
+     "mais elle ne sort pas.", "creee"),
+    ("03", 12.0, 17.5, "Trois fois rien",
+     "Ça arrive au téléphone. À la pharmacie. Devant un propriétaire.", "creee"),
+    ("04", 17.5, 25.5, "Le comptoir se replie",
+     "Le soir, chez elle, elle recommence la scène. Sur francis, se tromper "
+     "ne coûte rien.", "creee"),
+    ("05", 25.5, 31.5, "Elle choisit, et elle parle",
+     "Elle choisit une situation. Elle touche le micro. Elle parle.", "capture"),
+    ("06", 31.5, 37.0, "Quelqu'un répond",
+     "Quelqu'un répond. Et la réponse dépend de ce qu'elle vient de dire.", "capture"),
+    ("07", 37.0, 45.5, "Écrit ici",
+     "La clinique, le bail, l'autobus, le bureau de poste. Ces situations-là, "
+     "on les a écrites ici.", "creee"),
+    ("08", 45.5, 51.0, "Ce qu'elle a dit, et comment",
+     "À la fin, elle voit ce qu'elle a dit, et ce qui se dit autrement.", "capture"),
+    ("09", 51.0, 57.5, "Et elle s'efface",
+     "La correction est pour elle seule. Son enseignante ne la lit pas. "
+     "Rien n'en reste.", "creee"),
+    ("10", 57.5, 61.5, "Quinze pupitres",
+     "Ce que son enseignante voit, c'est la classe.", "creee"),
+    ("11", 61.5, 68.0, "C'est elle qui décide",
+     "Qui avance, qui bloque, qui n'a pas ouvert. La suite, ce n'est pas "
+     "la machine.", "capture"),
+    ("12", 68.0, 73.0, "Quatre interrupteurs",
+     "Un centre n'a pas à nous croire sur parole. Il coche.", "creee"),
+    ("13", 73.0, 85.0, "Ce qui ne sort plus",
+     "Pas de vrai nom. Pas de courriel. Ce qu'elle écrit s'efface après "
+     "trente jours. Et si la direction ne veut pas de l'assistance, plus rien "
+     "ne sort du serveur.", "creee"),
+    ("14", 85.0, 90.0, "La phrase sort",
+     "Et puis un matin, au comptoir, la phrase sort.", "creee"),
 ]
 
 
@@ -111,7 +118,7 @@ def faire_voix():
     print(" plan  voulu  réel   marge   verdict")
     for num, d, f, titre, texte, _ in PLANS:
         dest = vo(num)
-        azure_voix.parle(texte, "enseignante", dest, reference=REFERENCE)
+        azure_voix.parle(texte, ROLE, dest, reference=REFERENCE)
         azure_voix.rogner_silences(dest, marge=0.12)
         reel = duree(dest)
         voulu = f - d

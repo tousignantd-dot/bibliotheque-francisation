@@ -35,10 +35,13 @@ FONDU = 0.5
 LARGEUR, HAUTEUR, IPS = 1920, 1080, 25
 SOUFFLE = 0.35        # le silence avant chaque réplique : on n'attaque pas sur la coupe
 
-# (numéro, durée en secondes)
-PLANS = [("01", 5), ("02", 7), ("03", 6), ("04", 6), ("05", 5), ("06", 5),
-         ("07", 8), ("08", 6), ("09", 7), ("10", 4), ("11", 6), ("12", 6),
-         ("13", 13), ("14", 6)]
+# Les plans viennent de `film_90.py` — SA liste est la seule. En tenir une
+# seconde ici, c'est se garantir qu'elles divergeront au premier recalage de
+# durée, et que la voix off dérivera sans que rien ne le dise.
+sys.path.insert(0, str(RACINE / "build"))
+from film_90 import PLANS as _PLANS          # noqa: E402
+
+PLANS = [(num, fin - debut) for num, debut, fin, _t, _v, _s in _PLANS]
 
 
 def image(num):
