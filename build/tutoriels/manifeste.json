@@ -240,8 +240,19 @@
    "plans": [
     {
      "id": "a",
-     "gestes": [],
-     "surligne": ".pe-jour",
+     "gestes": [
+      {
+       "do": "defiler",
+       "sel": "#listeActivites",
+       "apres": "une activite sans date"
+      },
+      {
+       "do": "pointer",
+       "sel": ".pe-pastille--vide",
+       "apres": "la classe ne voit rien"
+      }
+     ],
+     "surligne": "#listeActivites",
      "texte": "Voici la règle la plus importante du portail, et la seule qu'il faut vraiment retenir. Une activité sans date n'existe pas pour l'élève. Un groupe neuf part complètement vide : tant que vous n'avez pas donné de date d'ouverture, la classe ne voit rien."
     },
     {
@@ -404,12 +415,14 @@
       {
        "do": "pointer",
        "sel": "#boutonRetirerDates",
-       "apres": "retirer les dates"
+       "apres": "retirer les dates",
+       "libelle": "Retirer les dates"
       },
       {
        "do": "clic",
        "sel": "#boutonPlanifier",
-       "apres": "cliquez sur"
+       "apres": "cliquez sur",
+       "libelle": "Enregistrer"
       },
       {
        "do": "attendre",
@@ -476,7 +489,24 @@
     {
      "id": "j",
      "surligne": "#formCopie",
-     "gestes": [],
+     "gestes": [
+      {
+       "do": "pointer",
+       "sel": "#copieTexte",
+       "apres": "elle ne s y ajoute pas"
+      },
+      {
+       "do": "pointer",
+       "sel": "#decalage",
+       "apres": "n est pas copiee"
+      },
+      {
+       "do": "clic",
+       "sel": "[data-fermer=\"modaleCopie\"]",
+       "libelle": "Annuler",
+       "apres": "que l eleve ne voit jamais"
+      }
+     ],
      "texte": "Deux précautions. Cette copie remplace les dates du groupe où vous êtes, elle ne s'y ajoute pas. Et la date « vue en classe » n'est pas copiée. Celle-là reste votre trace personnelle, que l'élève ne voit jamais."
     },
     {
@@ -1209,6 +1239,442 @@
    ],
    "crf": 30,
    "commentaire_crf": "Onze plans qui défilent d'un bout à l'autre d'une longue page : à CRF 23 la capsule pesait 13,2 Mo. Même réglage que 03-sections."
+  },
+  {
+   "id": "08-seance",
+   "titre": "La séance sans compte",
+   "papier_seulement": true,
+   "prepare": [
+    {
+     "do": "js",
+     "code": "(async () => {const t = localStorage.getItem('prof_token');const g = localStorage.getItem('prof_groupe_actif');const r = await fetch('/api/prof/seances?groupId=' + g, {headers: {'X-Prof-Token': t}});const d = await r.json();for (const s of (d.seances || [])) { if (!s.ouverte) continue;await fetch('/api/prof/seances/fermer', {method: 'POST', headers: {'X-Prof-Token': t, 'Content-Type': 'application/json'}, body: JSON.stringify({id: s.id})}); } })()"
+    },
+    {
+     "do": "naviguer",
+     "vers": "/progression.html"
+    },
+    {
+     "do": "attendre",
+     "ms": 900
+    }
+   ],
+   "plans": [
+    {
+     "id": "a",
+     "surligne": ".pg-zone--classe",
+     "texte": "Il arrive qu'une classe doive travailler sans compte : des élèves de passage, un groupe qui commence, des téléphones prêtés. Le mode séance sert à ça. Vous ouvrez une séance sur un module, vous imprimez une feuille, et la classe entre avec un code — sans nom, sans mot de passe, sans rien à retenir.",
+     "gestes": [
+      {
+       "do": "defiler",
+       "sel": ".pg-zone--classe"
+      },
+      {
+       "do": "pointer",
+       "sel": ".pg-zone--classe .pg-zone-cle"
+      }
+     ]
+    },
+    {
+     "id": "b",
+     "surligne": ".pg-zone--classe",
+     "texte": "Tout part d'ici, dans « Travailler avec la classe ». Choisissez d'abord le module à faire : c'est lui que la séance ouvrira, et rien d'autre. Un code de séance donne accès à un seul module, jamais à tout le catalogue du groupe.",
+     "gestes": [
+      {
+       "do": "pointer",
+       "sel": "#pgClasse"
+      },
+      {
+       "do": "deplier-liste",
+       "sel": "#pgClasse"
+      },
+      {
+       "do": "replier-liste",
+       "sel": "#pgClasse"
+      },
+      {
+       "do": "choisir",
+       "sel": "#pgClasse",
+       "texte": "Absent ou en retard"
+      },
+      {
+       "do": "attendre",
+       "ms": 1200
+      }
+     ]
+    },
+    {
+     "id": "c",
+     "surligne": "#pgDirect",
+     "texte": "Puis, dans la barre noire, cliquez sur « Ouvrir la séance ». Le portail tire un code de six caractères et la porte est ouverte. Personne n'a eu à créer de compte.",
+     "gestes": [
+      {
+       "do": "defiler",
+       "sel": "#pgDirect"
+      },
+      {
+       "do": "clic",
+       "sel": "#drSeance",
+       "libelle": "Ouvrir la séance"
+      },
+      {
+       "do": "attendre",
+       "ms": 900
+      }
+     ],
+     "papier": {
+      "cadre": "#pgDirect",
+      "apres_geste": 1
+     }
+    },
+    {
+     "id": "d",
+     "surligne": "#pgDirect",
+     "texte": "Le bouton « La feuille » remplace alors celui d'ouverture. Elle porte le code en gros, un carré à faire scanner, et l'adresse à taper pour ceux qui n'ont pas d'appareil photo. Elle s'imprime en noir et blanc : c'est la photocopieuse de l'école qui la tire.",
+     "gestes": [
+      {
+       "do": "pointer",
+       "sel": "#pgDirect a[href^='feuille-seance']",
+       "libelle": "La feuille"
+      }
+     ]
+    },
+    {
+     "id": "e",
+     "surligne": ".code",
+     "papier": {
+      "cadre": ".feuille"
+     },
+     "texte": "Voici la feuille. L'élève scanne le carré ou tape l'adresse, entre le code, et le module s'ouvre. Aucun nom ne lui est demandé, et il n'a rien à installer.",
+     "gestes": [
+      {
+       "do": "naviguer",
+       "versJs": "(() => { const a = document.querySelector(\"#pgDirect a[href^='feuille-seance']\"); return a ? new URL(a.href).pathname + new URL(a.href).search : '/feuille-seance.html'; })()"
+      },
+      {
+       "do": "attendre",
+       "ms": 900
+      },
+      {
+       "do": "defiler",
+       "sel": ".code"
+      },
+      {
+       "do": "pointer",
+       "sel": ".carre"
+      }
+     ]
+    },
+    {
+     "id": "f",
+     "surligne": "#pgDirect",
+     "texte": "Ce que les appareils répondent remonte dans le tableau du direct, exactement comme les réponses des élèves inscrits. Ils y paraissent sous « Participant » suivi d'un numéro — c'est tout ce que le portail sait d'eux.",
+     "gestes": [
+      {
+       "do": "naviguer",
+       "vers": "/progression.html"
+      },
+      {
+       "do": "attendre",
+       "ms": 900
+      },
+      {
+       "do": "defiler",
+       "sel": "#pgDirect"
+      }
+     ]
+    },
+    {
+     "id": "fin",
+     "surligne": null,
+     "texte": "Trois choses à retenir. Une séance porte sur un seul module. Rien de ce qu'un participant fait n'est rattaché à une personne : il n'y a pas de dossier au bout, et l'enregistrement d'une production orale y est refusé. Et fermer la séance ferme vraiment la porte, y compris pour les appareils déjà entrés. Voilà pour cette capsule. À la prochaine.",
+     "gestes": []
+    }
+   ]
+  },
+  {
+   "id": "09-suivre",
+   "titre": "Suivre la classe",
+   "papier_seulement": true,
+   "prepare": [
+    {
+     "do": "naviguer",
+     "vers": "/progression.html"
+    },
+    {
+     "do": "attendre",
+     "ms": 900
+    }
+   ],
+   "plans": [
+    {
+     "id": "a",
+     "surligne": ".pg-haut",
+     "texte": "« Progression des élèves » répond à une seule question : où en est la classe. C'est la page qu'on ouvre le soir, après le cours, ou pendant qu'on circule entre les rangées.",
+     "gestes": [
+      {
+       "do": "pointer",
+       "sel": ".pg-titre"
+      }
+     ],
+     "papier": {
+      "cadre": ".pg-titre"
+     }
+    },
+    {
+     "id": "b",
+     "surligne": "#pgZoneBilan",
+     "texte": "En haut, « Le bilan » : le module regardé et la période. Trois périodes, et elles ne disent pas la même chose. « Aujourd'hui », c'est la soirée même. « Depuis l'ouverture du module », c'est depuis la date que vous avez posée pour ce groupe. « Depuis toujours », c'est tout.",
+     "gestes": [
+      {
+       "do": "pointer",
+       "sel": "#pgModule"
+      },
+      {
+       "do": "clic",
+       "sel": "[data-periode='tout']",
+       "libelle": "Depuis toujours"
+      },
+      {
+       "do": "attendre",
+       "ms": 700
+      },
+      {
+       "do": "clic",
+       "sel": "[data-periode='jour']",
+       "libelle": "Aujourd’hui"
+      },
+      {
+       "do": "attendre",
+       "ms": 700
+      }
+     ]
+    },
+    {
+     "id": "c",
+     "surligne": ".pg-tuiles",
+     "texte": "Le bilan tient en quelques chiffres : combien d'élèves sont entrés, combien ont terminé, le taux de bonnes réponses du premier coup, ce qui a été envoyé. Le taux du premier coup est le plus parlant des quatre : il dit si la classe comprend, pas seulement si elle avance.",
+     "gestes": [
+      {
+       "do": "defiler",
+       "sel": ".pg-tuiles"
+      },
+      {
+       "do": "pointer",
+       "sel": ".pg-tuile"
+      }
+     ]
+    },
+    {
+     "id": "d",
+     "surligne": ".pg-table",
+     "texte": "Dessous, une rangée par élève : l'avancement, le taux du premier coup, ce qu'il a envoyé, sa dernière trace. Un élève qui n'est jamais venu le dit en toutes lettres — c'est souvent l'information la plus utile de la page.",
+     "gestes": [
+      {
+       "do": "defiler",
+       "sel": ".pg-table"
+      },
+      {
+       "do": "pointer",
+       "sel": ".pg-table tbody tr"
+      }
+     ]
+    },
+    {
+     "id": "e",
+     "surligne": ".pg-table",
+     "texte": "Le chevron au bout d'une rangée déplie ce que cet élève a envoyé pendant la période : ses textes, ses enregistrements. Quand il n'y a rien, il n'y a pas de chevron — la page ne promet jamais du vide.",
+     "gestes": [
+      {
+       "do": "clic-index",
+       "sel": ".pg-chevron",
+       "n": 0
+      },
+      {
+       "do": "attendre",
+       "ms": 700
+      },
+      {
+       "do": "defiler",
+       "sel": ".pg-detail"
+      }
+     ]
+    },
+    {
+     "id": "f",
+     "surligne": "#pgDirect",
+     "texte": "Et pendant que la classe répond, la barre noire du direct montre la réussite question par question. Les questions en alerte sont celles que la moitié du groupe rate : c'est là qu'il faut revenir, tout de suite, au tableau.",
+     "gestes": [
+      {
+       "do": "choisir",
+       "sel": "#pgClasse",
+       "texte": "Absent ou en retard"
+      },
+      {
+       "do": "attendre",
+       "ms": 1500
+      },
+      {
+       "do": "defiler",
+       "sel": "#pgDirect"
+      },
+      {
+       "do": "pointer",
+       "sel": ".dr-q--alerte, .dr-q"
+      }
+     ]
+    },
+    {
+     "id": "g",
+     "surligne": "#pgDirect",
+     "texte": "Deux réglages valent d'être connus. « Anonyme » remplace les noms par des numéros : c'est fait pour projeter un texte au tableau sans exposer son auteur. Et « Mettre en pause » arrête le rafraîchissement, pour qu'un onglet oublié ne compte pas des élèves partis comme des élèves en ligne.",
+     "gestes": [
+      {
+       "do": "clic",
+       "sel": "#drNoms",
+       "libelle": "Anonyme"
+      },
+      {
+       "do": "attendre",
+       "ms": 700
+      },
+      {
+       "do": "pointer",
+       "sel": "#drPause",
+       "libelle": "Mettre en pause"
+      }
+     ]
+    },
+    {
+     "id": "fin",
+     "surligne": null,
+     "texte": "Retenez la division : le bilan regarde, la barre du direct suit ce qui se passe maintenant. Le premier ne se verrouille jamais, pour que vous puissiez lire l'ensemble du groupe pendant que la classe travaille. Voilà pour cette capsule. À la prochaine.",
+     "gestes": []
+    }
+   ]
+  },
+  {
+   "id": "10-dossier",
+   "titre": "Le dossier d'un élève",
+   "papier_seulement": true,
+   "prepare": [
+    {
+     "do": "naviguer",
+     "vers": "/progression.html"
+    },
+    {
+     "do": "attendre",
+     "ms": 900
+    }
+   ],
+   "plans": [
+    {
+     "id": "a",
+     "surligne": ".pg-table",
+     "texte": "La page précédente répond à « où en est la classe ». Celle-ci répond à « qu'a fait cette personne ». On y entre par le nom de l'élève, ou par le bouton « Dossier » au bout de sa rangée.",
+     "gestes": [
+      {
+       "do": "defiler",
+       "sel": ".pg-table"
+      },
+      {
+       "do": "pointer",
+       "sel": ".pg-table tbody tr:has(.pg-chevron) .btn",
+       "libelle": "Dossier"
+      }
+     ]
+    },
+    {
+     "id": "b",
+     "surligne": ".fe-tuiles",
+     "texte": "Le dossier s'ouvre sur un coup d'œil : les modules commencés, les activités terminées, le taux du premier coup, ce qui a été envoyé. C'est le même élève que dans le tableau du groupe, vu de près.",
+     "gestes": [
+      {
+       "do": "clic-index",
+       "sel": ".pg-table tbody tr:has(.pg-chevron) .btn",
+       "n": 0,
+       "libelle": "Dossier"
+      },
+      {
+       "do": "attendre",
+       "ms": 1200
+      },
+      {
+       "do": "defiler",
+       "sel": ".fe-tuiles"
+      }
+     ]
+    },
+    {
+     "id": "c",
+     "surligne": ".fe-table",
+     "texte": "Puis, activité par activité : les zones faites, le taux du premier coup, les erreurs. Une activité ouverte mais pas terminée se voit ; une activité jamais ouverte aussi.",
+     "gestes": [
+      {
+       "do": "defiler",
+       "sel": ".fe-table"
+      },
+      {
+       "do": "pointer",
+       "sel": ".fe-table tbody tr"
+      }
+     ]
+    },
+    {
+     "id": "d",
+     "surligne": ".fe-table",
+     "texte": "Le chevron d'une rangée ouvre ce que l'élève a remis dans cette activité : son texte, son enregistrement, et la rétroaction qu'il a reçue. Rien n'est reconstitué : ce sont les fichiers qu'il a envoyés lui-même.",
+     "gestes": [
+      {
+       "do": "clic-index",
+       "sel": ".fe-chevron",
+       "n": 0
+      },
+      {
+       "do": "attendre",
+       "ms": 700
+      },
+      {
+       "do": "defiler",
+       "sel": ".fe-detail"
+      }
+     ]
+    },
+    {
+     "id": "e",
+     "surligne": ".fe-modale",
+     "texte": "En tête du dossier, un bouton : « Envoyer un point express ». C'est l'endroit prévu pour ça — vous venez de voir la difficulté, vous envoyez à cet élève un exercice de dix minutes sur ce seul point. Le portail ne le suggère jamais tout seul : le diagnostic reste le vôtre.",
+     "gestes": [
+      {
+       "do": "defiler",
+       "sel": ".fe-haut"
+      },
+      {
+       "do": "clic",
+       "sel": "#fePeOuvrir",
+       "libelle": "Envoyer un point express"
+      },
+      {
+       "do": "attendre",
+       "ms": 900
+      },
+      {
+       "do": "clic",
+       "sel": "#fePeAnnuler",
+       "libelle": "Annuler"
+      }
+     ],
+     "papier": {
+      "cadre": ".fe-modale",
+      "apres_geste": 3
+     }
+    },
+    {
+     "id": "fin",
+     "surligne": null,
+     "texte": "Une dernière chose, et elle compte. Ce que vous lisez ici, ce sont les traces que l'élève a laissées et les productions qu'il a choisi d'envoyer. Les corrections qu'il demande à l'assistant pendant qu'il travaille ne remontent jamais : elles lui appartiennent. Voilà pour cette capsule. À la prochaine.",
+     "gestes": []
+    }
+   ]
   }
  ]
 }

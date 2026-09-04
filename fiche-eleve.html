@@ -316,7 +316,7 @@
     // session enseignante. Les quatre journaux couvrent le groupe entier : on
     // ne garde que les lignes de l'élève regardé.
     const [bilan, activites, progres, oraux, ecrits, corrige, journal,
-           analyses, signaux, etagere, envois] = await Promise.all([
+           analyses, signaux, etagere, envois, catalogueGroupe] = await Promise.all([
       fetch(`/api/student/dashboard?code=${encodeURIComponent(code)}`).then(r => r.json()),
       fetch(`/api/student/activities?code=${encodeURIComponent(code)}`).then(r => r.json()),
       Prof.fetch(Prof.withGroup('/api/admin/progress')).then(r => r.json()),
@@ -328,6 +328,13 @@
       Prof.fetch(Prof.withGroup('/api/admin/signaux-aide')).then(r => r.json()),
       Prof.fetch('/api/prof/points-express').then(r => r.ok ? r.json() : []).catch(() => []),
       Prof.fetch(Prof.withGroup('/api/prof/envois')).then(r => r.ok ? r.json() : []).catch(() => []),
+      // Le catalogue **du groupe**, et non celui de l'élève. Les deux diffèrent
+      // sur un point qui compte ici : `/api/student/activities` ne rend que ce
+      // qui lui est **offert aujourd'hui**, donc un module fermé en sort. Le
+      // rattachement d'une production à son activité s'y perdait dès la
+      // fermeture du module — c'est-à-dire précisément quand on relit la fiche.
+      Prof.fetch(Prof.withGroup('/api/activities')).then(r => r.ok ? r.json() : [])
+        .catch(() => []),
     ]);
 
     const mien = liste => liste.filter(e => e.studentId === ELEVE.id);
@@ -352,7 +359,7 @@
     document.getElementById('feContenu').innerHTML = [
       blocPointsExpress(),
       blocBilan(bilan, activites),
-      blocActivites(mesProgres, activites, [...mesOraux, ...mesEcrits]),
+      blocActivites(mesProgres, activites, [...mesOraux, ...mesEcrits], catalogueGroupe),
       blocDiagnostic(mesAnalyses, mesSignaux),
       blocOraux(mesOraux),
       blocEcrits(mesEcrits),
@@ -513,10 +520,15 @@
     </div>`);
   }
 
-  function blocActivites(progres, activites, envois) {
+  function blocActivites(progres, activites, envois, catalogueGroupe) {
     // Un enregistrement par (activité, événement) : on replie sur l'activité.
     const catalogue = {};
     (Array.isArray(activites) ? activites : []).forEach(a => { catalogue[a.id] = a; });
+    // Le catalogue du groupe complète celui de l'élève : il porte aussi les
+    // modules fermés, sur lesquels l'élève a pourtant remis des productions.
+    (Array.isArray(catalogueGroupe) ? catalogueGroupe : []).forEach(a => {
+      catalogue[a.id] = catalogue[a.id] || a;
+    });
 
     // Les productions remises sous la rangée de leur activité : un envoi porte
     // son `taskId` (« module-travail-po »), dont le préfixe est le dossier du
@@ -524,8 +536,18 @@
     const parModule = {};
     (envois || []).forEach(e => {
       const slug = String(e.taskId || '').replace(/-(po|pe)$/, '');
+      // `GET /api/activities?groupId=` rend les chemins **à plat**
+      // (`a.interactive`) ; le `files` groupé n'existe que dans la réponse du
+      // catalogue. Lire `a.files.interactive` seul ne trouvait donc jamais
+      // rien : `parModule` restait vide et **aucun chevron ne s'ouvrait**, sur
+      // aucune fiche. Rien ne le signalait — le chevron ne « promet jamais du
+      // vide », donc son absence se lit comme un élève qui n'a rien remis.
+      // `progression.html` fait le même rattachement et lit `a.interactive` :
+      // c'était deux formulations d'une même règle, dont une fausse.
+      // Trouvé le 4 septembre 2026 en écrivant le chapitre du guide papier.
       const cible = slug && Object.values(catalogue)
-        .find(a => String(a.files?.interactive || '').includes(`/${slug}/`));
+        .find(a => String(a.files?.interactive || a.interactive || '')
+          .includes(`/${slug}/`));
       if (cible) (parModule[cible.id] ||= []).push(e);
     });
 

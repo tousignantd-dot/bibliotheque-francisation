@@ -68,6 +68,9 @@ PROMESSES = {
     "04-eleves": "Inscrire les élèves, générer et imprimer leurs codes.",
     "06-materiel": "Retrouver les présentations et les fiches, et déposer les vôtres.",
     "07-composer": "Composer la commande d'une activité neuve, aux termes du programme.",
+    "08-seance": "Faire travailler une classe sans compte, avec un code imprimé.",
+    "09-suivre": "Lire où en est le groupe, et ce qui se passe pendant le cours.",
+    "10-dossier": "Ouvrir le dossier d'une personne, et lui envoyer un point express.",
 }
 
 

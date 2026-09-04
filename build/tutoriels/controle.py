@@ -70,6 +70,8 @@ PAS_DES_COMMANDES = {
     "Élève un, deux, trois", "à venir", "vue en classe", "Aucun",
     "une par semaine", "une aux deux semaines", "une par jour",
     "Avant-midi — Marie", "Colibri", "Élève N",
+    "Dépôts de l'équipe", "Le bilan", "Participant",
+    "où en est la classe", "qu'a fait cette personne",
 }
 
 # Les libellés qu'on nomme sans les cliquer, et pourquoi. Toute autre paire de
@@ -81,18 +83,34 @@ NOMMES_SANS_CLIC = {
     "Télécharger en point m d": "déclencherait un téléchargement pendant la prise",
     "Tout réinitialiser": "effacerait la commande que la capsule vient de composer",
     "Ajouter le lien Teams": "hors du propos de la capsule",
+    "Composer une activité": "un lien target=_blank : le clic ouvrirait un onglet "
+                             "que la caméra ne suit pas, et le plan suivant y va par « naviguer »",
+    "La feuille": "même chose : un lien target=_blank, et le plan suivant ouvre la "
+                  "feuille par « naviguer », adresse tirée du lien lui-même",
+    "Progression des élèves": "le bouton du portail, mais la capsule s'ouvre déjà sur "
+                              "la page qu'il mène — le cliquer reviendrait à y arriver deux fois",
+    "Mettre en pause": "l'arrêter arrêterait le direct que la capsule vient de montrer",
 }
 
 
-# Ce qui décide du film : tout le manifeste d'une capsule **sauf** `papier`,
-# qui ne sert qu'aux copies d'écran du guide papier. L'empreinte est écrite
-# dans `films/<id>/images.json` au tournage ; un film sans empreinte est
-# d'avant cette règle et se juge alors sur sa date, comme avant.
+# Ce qui décide du film : tout le manifeste d'une capsule **sauf les clés que
+# le tournage ne lit pas** — `papier`, qui cadre les copies d'écran du guide,
+# et `libelle`, qui dit à ce contrôle-ci quel bouton un geste vise. Les y
+# laisser enverrait une capsule au retournage pour une annotation. L'empreinte
+# est écrite dans `films/<id>/images.json` au tournage ; un film sans
+# empreinte est d'avant cette règle, ou fraîchement cloné (les rushes ne sont
+# pas versionnés), et se juge alors sur sa date, comme avant.
+HORS_FILM = ("papier", "libelle")
+
+
 def empreinte(capsule):
+    def sans(d):
+        return {k: (sans(v) if isinstance(v, dict) else
+                    [sans(x) if isinstance(x, dict) else x for x in v] if isinstance(v, list) else v)
+                for k, v in d.items() if k not in HORS_FILM}
     canon = {"id": capsule["id"], "titre": capsule.get("titre"),
              "prepare": capsule.get("prepare"),
-             "plans": [{k: v for k, v in plan.items() if k != "papier"}
-                       for plan in capsule["plans"]]}
+             "plans": [sans(plan) for plan in capsule["plans"]]}
     brut = json.dumps(canon, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
     return hashlib.sha1(brut.encode("utf-8")).hexdigest()[:12]
 
@@ -122,14 +140,25 @@ def vises(capsule):
 
 
 def controler(capsule, ecarts):
+    """Les six contrôles sur une capsule.
+
+    Une capsule marquée `papier_seulement` n'a **ni voix ni film** : son
+    chapitre est né dans le guide papier, et le tournage viendra après. Les
+    contrôles qui portent sur le son et sur le film sont alors sans objet —
+    les réclamer ferait sortir le contrôle en écart sur un état parfaitement
+    voulu, et c'est ainsi qu'on apprend à ne plus le lire.
+    """
     cid = capsule["id"]
+    papier_seul = bool(capsule.get("papier_seulement"))
     cliques = vises(capsule)
     film = CAPSULES / ("%s.mp4" % cid)
     releve = FILMS / cid / "images.json"
     r = json.loads(releve.read_text(encoding="utf-8")) if releve.exists() else {}
     dures = {x["plan"]: (x["fin"] - x["debut"]) / 1000 for x in r.get("reperes", [])}
 
-    if not film.exists():
+    if papier_seul:
+        pass
+    elif not film.exists():
         ecarts.append("%s : aucun film monté" % cid)
     elif r.get("empreinte") and r["empreinte"] != empreinte(capsule):
         ecarts.append("%s : le film a été tourné sur un autre manifeste — à retourner" % cid)
@@ -142,7 +171,9 @@ def controler(capsule, ecarts):
         dit = plan.get("texte_voix", plan["texte"])
         mots = []
         fichier = VOIX / (nom + ".json")
-        if not fichier.exists():
+        if papier_seul and not fichier.exists():
+            pass
+        elif not fichier.exists():
             ecarts.append("%s : pas de narration" % nom)
         else:
             mots = json.loads(fichier.read_text(encoding="utf-8"))["mots"]

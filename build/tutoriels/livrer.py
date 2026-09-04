@@ -32,7 +32,12 @@ manifeste = json.loads((ICI / "manifeste.json").read_text())
 VIDEOS.mkdir(parents=True, exist_ok=True)
 
 cartes, sommaire = [], []
-for i, capsule in enumerate(manifeste["capsules"], 1):
+# Les chapitres nés sur le papier n'ont pas encore de film : la page de
+# visionnement ne les annonce donc pas. Les y mettre promettrait une vidéo qui
+# n'existe pas — et `livrer.py` mourait sur leur `.mp4` introuvable.
+filmees = [c for c in manifeste["capsules"] if not c.get("papier_seulement")]
+
+for i, capsule in enumerate(filmees, 1):
     source = ICI / "capsules" / f"{capsule['id']}.mp4"
     shutil.copy2(source, VIDEOS / source.name)
 
@@ -58,7 +63,7 @@ for i, capsule in enumerate(manifeste["capsules"], 1):
         f"<p>{escape(p['texte'])}</p>" for p in capsule["plans"])
     cartes.append(f"""
     <section class="tu-capsule" id="c{i}">
-      <div class="tu-num">Capsule {i} sur {len(manifeste['capsules'])} · {d}</div>
+      <div class="tu-num">Capsule {i} sur {len(filmees)} · {d}</div>
       <h2>{titre}</h2>
       <video controls preload="none" playsinline crossorigin="anonymous"
              poster="../tutoriels/{capsule['id']}.jpg">
@@ -181,5 +186,5 @@ PAGE.write_text(f"""<!DOCTYPE html>
 """)
 
 poids = sum(f.stat().st_size for f in VIDEOS.iterdir()) / 1e6
-print(f"{len(manifeste['capsules'])} capsules livrées dans assets/tutoriels/ ({poids:.1f} Mo)")
+print(f"{len(filmees)} capsules livrées dans assets/tutoriels/ ({poids:.1f} Mo)")
 print(f"page : {PAGE.relative_to(DEPOT)}")

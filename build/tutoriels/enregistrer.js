@@ -100,6 +100,35 @@ function chercheRepere(mots, fragment) {
   return null;
 }
 
+/* Une fenêtre ouverte par la page arrête le film, et rien ne le dit.
+
+   `drOuvrirSeance()` de progression.html fait `window.open` sur la feuille :
+   l'onglet neuf passe devant, la page filmée part en arrière-plan, et
+   `requestAnimationFrame` **cesse d'y être appelé**. Le pointeur, qui s'anime
+   avec lui, ne finit alors jamais son déplacement — le geste suivant tombe en
+   « Runtime.callFunctionOn timed out » cent quatre-vingts secondes plus tard,
+   sans un mot sur la cause. On referme donc toute fenêtre surgissante et on
+   ramène la page filmée au premier plan.
+
+   Les boîtes de dialogue natives (`alert`, `confirm`) gèlent de la même façon,
+   en pire : elles bloquent le fil de la page. On les écarte, et on les écrit
+   dans le journal — une alerte pendant un tournage est un défaut à voir. */
+function surveillerFenetres(navigateur, page) {
+  navigateur.on('targetcreated', async (cible) => {
+    try {
+      const autre = await cible.page();
+      if (!autre || autre === page) return;
+      console.log('  ⚠ fenêtre surgissante refermée :', cible.url());
+      await autre.close();
+      await page.bringToFront();
+    } catch { /* la fenêtre a pu se fermer seule */ }
+  });
+  page.on('dialog', async (d) => {
+    console.log('  ⚠ dialogue « %s » : %s', d.type(), d.message());
+    try { await d.dismiss(); } catch { /* déjà refermé */ }
+  });
+}
+
 /* Le même calcul qu'en Python, dans `controle.py` : JSON canonique — clés
    triées, aucune espace — puis SHA-1 tronqué. Les deux doivent rendre la même
    chaîne, sans quoi chaque capsule se dirait périmée. */
@@ -110,21 +139,51 @@ function canonique(v) {
     .map((k) => JSON.stringify(k) + ':' + canonique(v[k])).join(',') + '}';
 }
 
+/* Les clés que le tournage ne lit pas, et qui n'ont donc rien à faire dans
+   l'empreinte : `papier` cadre les copies d'écran du guide, `libelle` dit à
+   controle.py quel bouton un geste vise. Même liste des deux côtés. */
+const HORS_FILM = ['papier', 'libelle'];
+
+function sansHorsFilm(v) {
+  if (Array.isArray(v)) return v.map(sansHorsFilm);
+  if (v === null || typeof v !== 'object') return v;
+  return Object.fromEntries(Object.entries(v)
+    .filter(([k]) => !HORS_FILM.includes(k))
+    .map(([k, x]) => [k, sansHorsFilm(x)]));
+}
+
 function empreinte(capsule) {
   const canon = {
     id: capsule.id,
     titre: capsule.titre ?? null,
     prepare: capsule.prepare ?? null,
-    plans: capsule.plans.map((p) => {
-      const { papier, ...reste } = p;      // eslint-disable-line no-unused-vars
-      return reste;
-    }),
+    plans: capsule.plans.map(sansHorsFilm),
   };
   return crypto.createHash('sha1').update(canonique(canon), 'utf8')
     .digest('hex').slice(0, 12);
 }
 
 /* — Les gestes, joués *dans* la page pour qu'ils se voient — */
+
+/* Un clic sur un lien interne emporte la page sous le geste : `el.click()`
+   navigue, et le `dodo` qui suit meurt en « Execution context was destroyed ».
+   C'est le cas du bouton « Dossier » d'une rangée d'élève. On laisse donc le
+   clic se voir — l'utilisateur veut voir la flèche cliquer — puis on attend la
+   page neuve et on y réinjecte la scène, comme le fait `naviguer`. */
+async function cliqueEtSuit(page, corps, arg) {
+  try {
+    await page.evaluate(corps, arg);
+  } catch (e) {
+    if (!/context was destroyed|Target closed|detached/i.test(e.message)) throw e;
+    await page.waitForNavigation({ waitUntil: 'networkidle2', timeout: 15000 })
+      .catch(() => {});
+    await dodo(600);
+    await page.evaluate(SCENE);
+    await dodo(200);
+    console.log('  · la page a changé sous le clic, scène réinjectée');
+  }
+}
+
 async function jouer(page, geste) {
   const scene = (corps, arg) => page.evaluate(corps, arg);
   switch (geste.do) {
@@ -152,15 +211,22 @@ async function jouer(page, geste) {
     /* Une capsule peut sortir du portail : le compositeur est une page
        autonome. La scène vit dans le document, donc elle est perdue au
        changement de page et doit être réinjectée. */
-    case 'naviguer':
-      await page.goto(`http://localhost:${PORT}${geste.vers}`,
+    case 'naviguer': {
+      /* `versJs` plutôt que `vers` quand l'adresse ne se connaît qu'à
+         l'écran : le code d'une séance est tiré au hasard à son ouverture,
+         donc la feuille ne peut pas être écrite en dur dans le manifeste. */
+      const chemin = geste.versJs
+        ? await page.evaluate(geste.versJs)
+        : geste.vers;
+      await page.goto(`http://localhost:${PORT}${chemin}`,
                       { waitUntil: 'networkidle2' });
       await dodo(600);
       await page.evaluate(SCENE);
       await dodo(200);
       break;
+    }
     case 'clic-index':
-      await scene((g) => {
+      await cliqueEtSuit(page, (g) => {
         const el = document.querySelectorAll(g.sel)[g.n];
         if (!el) throw new Error('cible absente : ' + g.sel + '[' + g.n + ']');
         el.id = el.id || ('cap-' + Math.random().toString(36).slice(2, 8));
@@ -171,7 +237,7 @@ async function jouer(page, geste) {
       await scene((b) => window.__scene.survol(b), geste.bas || null);
       break;
     case 'clic':
-      await scene((s) => window.__scene.clic(s), geste.sel);
+      await cliqueEtSuit(page, (s) => window.__scene.clic(s), geste.sel);
       break;
     /* La barre d'onglets a disparu de l'espace enseignant : on y va
        maintenant par les boutons de la carte du groupe, qui portent le même
@@ -317,6 +383,7 @@ async function main() {
   });
   const page = await navigateur.newPage();
   await page.setViewport({ width: LARGEUR, height: HAUTEUR, deviceScaleFactor: ECHELLE });
+  surveillerFenetres(navigateur, page);
   await ouvrirSession(page, PORT);
 
   const cdp = await page.createCDPSession();
@@ -438,7 +505,7 @@ async function main() {
   await navigateur.close();
 }
 
-module.exports = { jouer, ouvrirSession, chercheRepere, dodo,
+module.exports = { jouer, ouvrirSession, chercheRepere, dodo, surveillerFenetres,
                    LARGEUR, HAUTEUR, ECHELLE, CHROME, VOIX, ICI };
 
 /* Lancé directement, il tourne ; requis comme module, il ne fait rien —

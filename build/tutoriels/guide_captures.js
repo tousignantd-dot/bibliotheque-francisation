@@ -24,8 +24,8 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const puppeteer = require('puppeteer-core');
-const { jouer, ouvrirSession, dodo, LARGEUR, HAUTEUR, CHROME, ICI } =
-  require('./enregistrer.js');
+const { jouer, ouvrirSession, dodo, surveillerFenetres,
+        LARGEUR, HAUTEUR, CHROME, ICI } = require('./enregistrer.js');
 
 const PORT = process.argv[2];
 const SEULE = process.argv[3] || null;
@@ -120,6 +120,7 @@ async function prendre(page, fichier, sel) {
   });
   const page = await navigateur.newPage();
   await page.setViewport({ width: LARGEUR, height: HAUTEUR, deviceScaleFactor: 2 });
+  surveillerFenetres(navigateur, page);
   await ouvrirSession(page, PORT);
 
   const releve = {};
