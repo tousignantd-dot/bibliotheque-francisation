@@ -290,6 +290,19 @@ async function jouer(page, geste) {
       await page.evaluate(geste.code);
       await dodo(250);
       break;
+    /* Reposer les réponses du direct, à l'heure qu'il est.
+
+       Le compte « en ligne » du portail ne retient que dix minutes et se lit
+       sur ces réponses-là. Le bac à sable est peuplé avant le tournage, et la
+       promenade des capsules précédentes suffit à l'épuiser : « Suivre la
+       classe » parlait d'une classe au travail devant « 0 élève en ligne ».
+       Le hasard de `traces_demo.py` est semé et le serveur ne garde qu'un
+       enregistrement par (élève, activité, zone) : la même boucle rejouée
+       réécrit les mêmes lignes, et seule leur heure change. */
+    case 'rafraichir-direct':
+      execFileSync('python3', [path.join(ICI, 'traces_demo.py'), PORT, '--rafraichir'],
+        { stdio: 'inherit' });
+      break;
     /* Un seul module, ouvert une seule fois.
 
        La version d'avant cherchait le bon module **à l'écran** : elle cliquait

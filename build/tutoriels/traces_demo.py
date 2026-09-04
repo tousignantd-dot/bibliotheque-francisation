@@ -3,6 +3,7 @@
 
     python3 build/tutoriels/traces_demo.py <port>
     python3 build/tutoriels/traces_demo.py <port> --etat     # ce qu'il y a
+    python3 build/tutoriels/traces_demo.py <port> --rafraichir  # rien que le direct
 
 `peupler_demo.py` fabrique des groupes, des élèves et des dates : de quoi
 filmer la planification. Mais **personne n'a jamais rien fait** — chaque élève
@@ -38,6 +39,14 @@ PORT = sys.argv[1] if len(sys.argv) > 1 else "5321"
 BASE = "http://localhost:%s" % PORT
 ETAT = "--etat" in sys.argv
 REPARTIR = "--repartir" in sys.argv
+# Reposer les seules réponses du direct, à l'identique. Le compte « en ligne »
+# du portail ne retient que dix minutes (`DIRECT_EN_LIGNE_MIN`) et se lit sur
+# ces réponses-là, pas sur les accès : un bac à sable peuplé avant le tournage
+# affiche « 0 élève en ligne » dès la douzième minute, et la capsule qui parle
+# de la classe au travail montrait une classe vide. Le hasard étant semé et le
+# serveur ne gardant qu'un enregistrement par (élève, activité, zone), rejouer
+# la même boucle réécrit les mêmes lignes : seule leur heure change.
+RAFRAICHIR = "--rafraichir" in sys.argv
 
 # Le hasard est **semé** : deux passages donnent la même classe. Sans cela, la
 # copie d'écran du guide changerait à chaque relance et on ne saurait jamais
@@ -164,6 +173,35 @@ ECRITS = [
 ]
 
 
+def direct(eleves):
+    """Les réponses de la classe, question par question.
+
+    Sortie en fonction pour être rejouable seule (`--rafraichir`). Elle doit
+    tirer le hasard **dans le même ordre** qu'un passage complet, sans quoi la
+    classe changerait de visage : rien avant elle ne consomme `DE`, et rien ne
+    doit s'y glisser.
+    """
+    lignes = 0
+    for eleve, part in zip(eleves, PARCOURS):
+        for z in ZONES:
+            # Ceux qui n'ont pas fini n'ont pas atteint les dernières zones.
+            if DE.random() > part["avance"]:
+                continue
+            rate = z["zone"] == ZONE_RATEE
+            ok = DE.random() < (0.25 if rate else part["premier"])
+            appel("/api/student/progress", {
+                "code": eleve["code"], "activityId": MODULE,
+                "activityTitle": MODULE_TITRE, "event": "zone_repondue",
+                "section": "prep", "exo": z["zone"][:3], "exoNum": "Exercice 1",
+                "exoTitre": "Vrai ou Faux — Un départ précipité",
+                "type": z["type"], "zone": z["zone"], "enonce": z["enonce"],
+                "bonne": z["bonne"],
+                "reponse": z["bonne"] if ok else "(autre réponse)",
+                "ok": ok, "essais": 1 if ok else DE.choice([2, 2, 3])})
+            lignes += 1
+    return lignes
+
+
 def main():
     racine = Path(__file__).resolve().parent.parent.parent
     jeton = appel("/api/prof/login", identifiants())["token"]
@@ -186,6 +224,10 @@ def main():
                 print("  %-8s %s" % (nom, json.dumps(r, ensure_ascii=False)[:120]))
             except SystemExit as e:
                 print("  %-8s %s" % (nom, e))
+        return
+
+    if RAFRAICHIR:
+        print("  %d réponses au direct reposées" % direct(eleves))
         return
 
     if REPARTIR:
@@ -219,25 +261,7 @@ def main():
           % (pose, len(eleves) - pose))
 
     # ── Le direct : la classe répond, question par question ──
-    lignes = 0
-    for eleve, part in zip(eleves, PARCOURS):
-        for z in ZONES:
-            # Ceux qui n'ont pas fini n'ont pas atteint les dernières zones.
-            if DE.random() > part["avance"]:
-                continue
-            rate = z["zone"] == ZONE_RATEE
-            ok = DE.random() < (0.25 if rate else part["premier"])
-            appel("/api/student/progress", {
-                "code": eleve["code"], "activityId": MODULE,
-                "activityTitle": MODULE_TITRE, "event": "zone_repondue",
-                "section": "prep", "exo": z["zone"][:3], "exoNum": "Exercice 1",
-                "exoTitre": "Vrai ou Faux — Un départ précipité",
-                "type": z["type"], "zone": z["zone"], "enonce": z["enonce"],
-                "bonne": z["bonne"],
-                "reponse": z["bonne"] if ok else "(autre réponse)",
-                "ok": ok, "essais": 1 if ok else DE.choice([2, 2, 3])})
-            lignes += 1
-    print("  %d réponses au direct" % lignes)
+    print("  %d réponses au direct" % direct(eleves))
 
     # ── Deux textes envoyés ──
     envois = 0

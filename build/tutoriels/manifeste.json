@@ -1245,6 +1245,9 @@
    "titre": "La séance sans compte",
    "prepare": [
     {
+     "do": "rafraichir-direct"
+    },
+    {
      "do": "js",
      "code": "(async () => {const t = localStorage.getItem('prof_token');const g = localStorage.getItem('prof_groupe_actif');const r = await fetch('/api/prof/seances?groupId=' + g, {headers: {'X-Prof-Token': t}});const d = await r.json();for (const s of (d.seances || [])) { if (!s.ouverte) continue;await fetch('/api/prof/seances/fermer', {method: 'POST', headers: {'X-Prof-Token': t, 'Content-Type': 'application/json'}, body: JSON.stringify({id: s.id})}); } })()"
     },
@@ -1411,20 +1414,15 @@
    "titre": "Suivre la classe",
    "prepare": [
     {
+     "do": "rafraichir-direct"
+    },
+    {
      "do": "naviguer",
      "vers": "/progression.html"
     },
     {
      "do": "attendre",
      "ms": 1400
-    },
-    {
-     "do": "js",
-     "code": "(async () => {const sel = document.querySelector('#pgClasse');const opt = [...sel.options].find((o) => /Absent ou en retard/.test(o.textContent));const id = Number(opt && opt.value);const codes = [...document.querySelectorAll('.pg-table tbody tr')].filter((tr) => !/Rien/.test(tr.textContent)).map((tr) => tr.querySelector('.pg-code')).filter(Boolean).map((e) => e.textContent.trim());for (const code of codes) {await fetch('/api/student/access', {method: 'POST',headers: {'Content-Type': 'application/json'},body: JSON.stringify({code: code, activityId: id,activityTitle: opt ? opt.textContent.trim() : ''})});}})()"
-    },
-    {
-     "do": "attendre",
-     "ms": 1200
     }
    ],
    "plans": [
