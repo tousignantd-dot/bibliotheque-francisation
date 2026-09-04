@@ -30,9 +30,13 @@ Les six contrôles, chacun né d'un défaut réel :
 5. **Repère introuvable ou en retard.** Un `apres` qui ne cite pas les mots
    dits arrête le tournage ; un geste qui arrive plus d'une seconde après ses
    mots se voit.
-6. **Film absent ou plus vieux que son manifeste** — le défaut le plus bête :
-   relire une capsule qu'on croit refaite.
+6. **Film absent, ou tourné sur un autre manifeste** — le défaut le plus
+   bête : relire une capsule qu'on croit refaite. Il se juge sur une
+   **empreinte de ce qui se filme**, pas sur une date : le champ `papier`
+   d'un plan ne décrit que le cadrage des copies d'écran du guide, et le
+   changer envoyait quatre capsules au retournage pour rien.
 """
+import hashlib
 import json
 import pathlib
 import re
@@ -80,6 +84,19 @@ NOMMES_SANS_CLIC = {
 }
 
 
+# Ce qui décide du film : tout le manifeste d'une capsule **sauf** `papier`,
+# qui ne sert qu'aux copies d'écran du guide papier. L'empreinte est écrite
+# dans `films/<id>/images.json` au tournage ; un film sans empreinte est
+# d'avant cette règle et se juge alors sur sa date, comme avant.
+def empreinte(capsule):
+    canon = {"id": capsule["id"], "titre": capsule.get("titre"),
+             "prepare": capsule.get("prepare"),
+             "plans": [{k: v for k, v in plan.items() if k != "papier"}
+                       for plan in capsule["plans"]]}
+    brut = json.dumps(canon, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+    return hashlib.sha1(brut.encode("utf-8")).hexdigest()[:12]
+
+
 def net(s):
     s = unicodedata.normalize("NFD", s.lower())
     s = "".join(c for c in s if not unicodedata.combining(c))
@@ -107,18 +124,17 @@ def vises(capsule):
 def controler(capsule, ecarts):
     cid = capsule["id"]
     cliques = vises(capsule)
-    manifeste = ICI / "manifeste.json"
     film = CAPSULES / ("%s.mp4" % cid)
+    releve = FILMS / cid / "images.json"
+    r = json.loads(releve.read_text(encoding="utf-8")) if releve.exists() else {}
+    dures = {x["plan"]: (x["fin"] - x["debut"]) / 1000 for x in r.get("reperes", [])}
+
     if not film.exists():
         ecarts.append("%s : aucun film monté" % cid)
-    elif film.stat().st_mtime < manifeste.stat().st_mtime:
-        ecarts.append("%s : le film est plus vieux que le manifeste — à retourner" % cid)
-
-    releve = FILMS / cid / "images.json"
-    dures = {}
-    if releve.exists():
-        r = json.loads(releve.read_text(encoding="utf-8"))
-        dures = {x["plan"]: (x["fin"] - x["debut"]) / 1000 for x in r["reperes"]}
+    elif r.get("empreinte") and r["empreinte"] != empreinte(capsule):
+        ecarts.append("%s : le film a été tourné sur un autre manifeste — à retourner" % cid)
+    elif not r.get("empreinte") and film.stat().st_mtime < (ICI / "manifeste.json").stat().st_mtime:
+        ecarts.append("%s : film sans empreinte et plus vieux que le manifeste — à retourner" % cid)
 
     for plan in capsule["plans"]:
         pid = plan["id"]

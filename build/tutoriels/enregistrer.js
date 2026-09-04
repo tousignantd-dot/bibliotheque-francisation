@@ -20,6 +20,7 @@
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
+const crypto = require('crypto');
 const { execFileSync } = require('child_process');
 const puppeteer = require('puppeteer-core');
 const SCENE = require('./scene.js');
@@ -97,6 +98,30 @@ function chercheRepere(mots, fragment) {
   if (i < 0) return null;
   for (let k = i; k < depuis.length; k += 1) if (depuis[k] != null) return depuis[k];
   return null;
+}
+
+/* Le même calcul qu'en Python, dans `controle.py` : JSON canonique — clés
+   triées, aucune espace — puis SHA-1 tronqué. Les deux doivent rendre la même
+   chaîne, sans quoi chaque capsule se dirait périmée. */
+function canonique(v) {
+  if (v === null || typeof v !== 'object') return JSON.stringify(v ?? null);
+  if (Array.isArray(v)) return '[' + v.map(canonique).join(',') + ']';
+  return '{' + Object.keys(v).sort()
+    .map((k) => JSON.stringify(k) + ':' + canonique(v[k])).join(',') + '}';
+}
+
+function empreinte(capsule) {
+  const canon = {
+    id: capsule.id,
+    titre: capsule.titre ?? null,
+    prepare: capsule.prepare ?? null,
+    plans: capsule.plans.map((p) => {
+      const { papier, ...reste } = p;      // eslint-disable-line no-unused-vars
+      return reste;
+    }),
+  };
+  return crypto.createHash('sha1').update(canonique(canon), 'utf8')
+    .digest('hex').slice(0, 12);
 }
 
 /* — Les gestes, joués *dans* la page pour qu'ils se voient — */
@@ -399,8 +424,13 @@ async function main() {
       await dodo(400);
       await cdp.send('Page.stopScreencast');
       cdp.off('Page.screencastFrame', surImage);
+      /* L'empreinte de ce qui vient d'être filmé — tout le manifeste de la
+         capsule sauf `papier`, qui ne décrit que le cadrage des copies
+         d'écran du guide. C'est elle que `controle.py` compare, plutôt que
+         des dates de fichier : retoucher un cadrage papier n'envoie plus
+         quatre capsules au retournage. */
       fs.writeFileSync(path.join(dossier, 'images.json'),
-        JSON.stringify({ images, reperes }, null, 1));
+        JSON.stringify({ empreinte: empreinte(capsule), images, reperes }, null, 1));
       console.log(`✓ ${capsule.id} — ${images.length} images`);
     }
   }
