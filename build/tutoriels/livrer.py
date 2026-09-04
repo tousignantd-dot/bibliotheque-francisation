@@ -31,6 +31,16 @@ def mmss(s):
 manifeste = json.loads((ICI / "manifeste.json").read_text())
 VIDEOS.mkdir(parents=True, exist_ok=True)
 
+# Le nombre de capsules s'écrit en toutes lettres dans le chapô, et il se
+# compte : « Six capsules » est resté au-dessus de dix pendant une livraison.
+MOTS = ("zéro une deux trois quatre cinq six sept huit neuf dix onze douze "
+        "treize quatorze quinze seize").split()
+
+
+def combien(n):
+    return MOTS[n].capitalize() if n < len(MOTS) else str(n)
+
+
 cartes, sommaire = [], []
 # Les chapitres nés sur le papier n'ont pas encore de film : la page de
 # visionnement ne les annonce donc pas. Les y mettre promettrait une vidéo qui
@@ -79,6 +89,7 @@ for i, capsule in enumerate(filmees, 1):
       </details>
     </section>""")
 
+combien = combien(len(filmees))
 PAGE.write_text(f"""<!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -141,7 +152,7 @@ PAGE.write_text(f"""<!DOCTYPE html>
       <a class="btn btn--ghost btn--sm tu-retour" href="../../enseignant.html"><span aria-hidden="true">←</span> Retour à l’espace enseignant</a>
       <div class="band__eyebrow">Espace enseignant · Francisation Niveau 4</div>
       <h1 style="margin:var(--sp-3) 0 0;font-size:var(--fs-h2);font-weight:var(--fw-black)">Tutoriels en vidéo</h1>
-      <p class="band__lead">Six capsules courtes, filmées dans le portail, avec narration
+      <p class="band__lead">{combien} capsules courtes, filmées dans le portail, avec narration
          et sous-titres. Regardez celle dont vous avez besoin — elles ne se suivent
          pas obligatoirement.</p>
     </div>

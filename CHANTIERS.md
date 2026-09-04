@@ -28,7 +28,7 @@ le **verrou** : on l'inscrit avant de toucher au code, on le raye en finissant.
 |---|---|---|---|
 | `seance-sans-compte` | dépôt principal | `seance.html`, `feuille-seance.html`, `progression.html`, `qr.py`, `viewer.html`, `server.py`, `build/direct_atelier.py` + les 6 générateurs de la banque et les **63 ateliers générés** | fusionné dans `main` |
 | `espace-enseignant` | dépôt principal | `enseignant.html`, `js/enseignant.js`, `direction.html`, `progression.html`, `js/prof.js`, `catalogue.html`, `reseau.html` | fusionné dans `main` |
-| `tutoriels-remise-a-jour` | dépôt principal | `assets/outils/guide-espace-enseignant.html`, `build/tutoriels/`, `assets/presentations/guide-tutoriels-*`, `assets/presentations/mode-sans-assistance.html`, `presentations.html` | **en pause — 2 septembre 2026, à reprendre.** Les sept capsules sont tournées et montées avec la voix Azure HD, le logotype en ouverture et un compte d'enseignante. La méthode a changé en cours de route : plus rien ne se tourne sans passer par **l'atelier du guide** (`python3 build/tutoriels/atelier.py <capsule>`, port 5322), qui écrit dans le manifeste. Le manifeste porte déjà des corrections **non tournées** — voir plus bas. |
+| `tutoriels-remise-a-jour` | dépôt principal | `assets/outils/guide-espace-enseignant.html`, `build/tutoriels/`, `assets/presentations/guide-tutoriels-*`, `assets/presentations/mode-sans-assistance.html`, `presentations.html` | **fait — 4 septembre 2026.** Les dix capsules sont tournées et montées avec la voix Azure HD, le logotype en ouverture et un compte d'enseignante. La méthode a changé en cours de route : plus rien ne se tourne sans passer par **l'atelier du guide** (`python3 build/tutoriels/atelier.py <capsule>`, port 5322), qui écrit dans le manifeste. Le guide papier se refait avec elles. |
 | `boutons-tutoriels-logo` | dépôt principal | `enseignant.html`, `assets/design-system/tokens/fonts.css`, `assets/design-system/marque-francis.css`, `presentations.html`, `assets/presentations/tutoriels-a-refaire.html`, `assets/outils/tutoriels-enseignant.html`, `assets/outils/guide-espace-enseignant.html`, `build/tutoriels/` | fusionné dans `main` — 2 septembre 2026. Les neuf boutons au fond blanc ; Nunito servie par le dépôt et le point du logotype centré sur sa lettre ; relevé de ce qui a vieilli dans les tutoriels (`assets/presentations/tutoriels-a-refaire.html`). Le tournage des capsules attend une décision sur la voix — `assets/design-system/` est rendu. |
 | `jeu-de-role-design` | dépôt principal | `build/greffe_jeu_de_role.py`, `build/gabarit/module.html`, les 78 `module-*` à jeu de rôle et leurs `build/contenu/*/custom.js` | fusionné dans `main` |
 | `validation` | `~/Claude/wt-validation` | `viewer.html`, `assets/design-system/ateliers-mobile.css`, `build/greffe_ateliers.py`, `build/greffe_transcription.py`, `build/module.py`, `server.py`, les 27 ateliers d'avant le système de design, les 87 `module-*` | fusionné dans `main` — le verrou de transcription attend son interrupteur dans `js/enseignant.js` (couloir `espace-enseignant`) |
@@ -39,28 +39,38 @@ le **verrou** : on l'inscrit avant de toucher au code, on le raye en finissant.
 |---|---|---|---|
 | `migration-groupes` | dépôt principal | `server.py` (`migrate_multi_groupes`), `data/activities.json`, `build/controles/migration_groupes.py` | fermé — poussé dans `main` le 31 août 2026 (`d130fcdf7`) |
 
-## Ce qui reste à faire aux tutoriels, au 2 septembre 2026
+## Les tutoriels, au 4 septembre 2026 — fait
 
-Le manifeste porte des corrections écrites mais **pas encore tournées** : les
-quatre états montrés pendant que la voix les nomme, « Enregistrer » nommé et
-pointé, le pseudo au lieu du nom, le suivi d'un élève sorti de la capsule 4,
-un seul module déplié au lieu de douze, le défilement ralenti d'un tiers, une
-phrase de fin sur les sept capsules, et les gestes de rangement joués hors
-champ. Rien de tout cela n'est à l'image : les films en ligne montrent encore
-l'état d'avant.
+**Dix capsules, vingt minutes, tournées et livrées.** Les sept premières ont
+été refaites avec la voix Azure HD ; trois s'y sont ajoutées le 4 septembre :
+`08-seance` (la séance sans compte), `09-suivre` (suivre la classe) et
+`10-dossier` (le dossier d'un élève). Le guide papier les suit —
+`assets/presentations/tutoriel-espace-enseignant.pdf`, quarante pages, dix
+chapitres, le même texte que les films.
 
-Deux remarques attendent dans `build/tutoriels/guide/notes.json` :
+Les deux questions restées ouvertes sont tranchées : l'ordre des capsules suit
+l'ordre des gestes de l'enseignante (« Ouvrir un groupe » est passée devant
+« Planifier »), et le suivi d'un élève a bien eu sa capsule à lui — deux, même,
+le groupe puis l'élève.
 
-· capsule 1, plan d — zoomer sur chaque famille de boutons au moment où elle
-  est décrite ;
-· capsule 1, plan e — la capture ne correspond pas à ce que la voix décrit ;
-  un croquis est joint (`e-croquis-1.png`).
+Trois choses valent d'être sues avant de retoucher la chaîne, et chacune a
+coûté une prise :
 
-Deux questions posées et sans réponse : l'ordre des capsules (« Vos groupes »
-en deuxième, puisque créer un groupe est le premier geste d'une enseignante) et
-le sort du suivi d'un élève, sorti de la capsule 4 — huitième capsule ou pas.
+· **Une fenêtre surgissante vole la fenêtre du tournage.** Refermer un
+  `target=_blank` laissait la page filmée en 756 × 469 : les plans suivants
+  sortaient cadrés de travers, sans une erreur nulle part. `surveillerFenetres`
+  repose la fenêtre, et `guide_captures.js` en profite aussi.
+· **Un repère `apres` posé derrière une navigation est déjà passé.** Ces
+  gestes-là n'en portent aucun : ils se jouent au plus tôt, ce qui est le bon
+  moment.
+· **Le compte « en ligne » du direct ne retient que dix minutes** et se lit sur
+  les réponses, pas sur les accès. Le geste `rafraichir-direct`, dans le
+  `prepare` des capsules 8 et 9, rejoue la boucle semée de `traces_demo.py` —
+  mêmes lignes, réécrites, seule l'heure change.
 
-Et huit commits sont **sur `main` sans être poussés** : pousser déploie.
+Ce qui reste : les verdicts sur `assets/presentations/storyboard-tutoriels.html`
+(66 étapes, avec sa case de dépôt et son micro), et **rien n'est poussé** —
+pousser déploie.
 
 ## Ce qui s'est croisé, et comment ça s'est joué
 
