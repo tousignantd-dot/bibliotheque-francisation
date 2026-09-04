@@ -146,17 +146,25 @@ async function prendre(page, fichier, sel) {
       const clic = async (n, quand) => {
         if (!garder) return;
         const f = path.join(dossier, `${plan.id}-${quand}.jpg`);
-        const { empreinte, mesure, clip } = await prendre(page, f, (plan.papier && plan.papier.cadre) || plan.surligne);
+        const { empreinte, mesure, clip } = await prendre(page, f, vise);
         if (vus.has(empreinte)) { fs.unlinkSync(f); return; }
         vus.add(empreinte);
         /* `geste` compte les gestes joués : 0 au début du plan, k après le k-ième. */
         images.push({ quand, geste: n, fichier: path.relative(ICI, f), mesure, clip });
       };
 
-      /* Le surlignage d'abord : c'est ce que le spectateur voit pendant tout
-         le plan, donc ce que le guide doit montrer. */
-      if (plan.surligne) {
-        await page.evaluate((s) => window.__scene.surligner(s), plan.surligne);
+      /* Le surlignage suit **le cadrage du papier**, pas celui du film.
+
+         Les deux diffèrent quand `papier.cadre` est posé : à la capsule 7, le
+         film encadre la jauge de jetons (`#barre`, dix pixels de haut) pendant
+         que le guide cadre les boutons qui la suivent. Surligner le premier et
+         cadrer le second donnait un rectangle vert flottant au-dessus du
+         texte, décalé de sa cible — relevé à la page 29 du guide, le
+         4 septembre 2026. Le cadre vert doit entourer ce que l'image montre,
+         sans quoi il désigne quelque chose qui n'est pas là. */
+      const vise = (plan.papier && plan.papier.cadre) || plan.surligne;
+      if (vise) {
+        await page.evaluate((s) => window.__scene.surligner(s), vise);
         await dodo(500);
       }
       /* Une image APRÈS CHAQUE GESTE, et non plus début-milieu-fin.
