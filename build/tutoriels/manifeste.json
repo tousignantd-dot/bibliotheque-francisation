@@ -1243,7 +1243,6 @@
   {
    "id": "08-seance",
    "titre": "La séance sans compte",
-   "papier_seulement": true,
    "prepare": [
     {
      "do": "js",
@@ -1266,11 +1265,13 @@
      "gestes": [
       {
        "do": "defiler",
-       "sel": ".pg-zone--classe"
+       "sel": ".pg-zone--classe",
+       "apres": "le mode séance sert"
       },
       {
        "do": "pointer",
-       "sel": ".pg-zone--classe .pg-zone-cle"
+       "sel": ".pg-zone--classe .pg-zone-cle",
+       "apres": "vous ouvrez une séance"
       }
      ]
     },
@@ -1281,11 +1282,13 @@
      "gestes": [
       {
        "do": "pointer",
-       "sel": "#pgClasse"
+       "sel": "#pgClasse",
+       "apres": "tout part d'ici"
       },
       {
        "do": "deplier-liste",
-       "sel": "#pgClasse"
+       "sel": "#pgClasse",
+       "apres": "choisissez d'abord le module"
       },
       {
        "do": "replier-liste",
@@ -1294,7 +1297,8 @@
       {
        "do": "choisir",
        "sel": "#pgClasse",
-       "texte": "Absent ou en retard"
+       "texte": "Absent ou en retard",
+       "apres": "c'est lui que la séance ouvrira"
       },
       {
        "do": "attendre",
@@ -1309,12 +1313,14 @@
      "gestes": [
       {
        "do": "defiler",
-       "sel": "#pgDirect"
+       "sel": "#pgDirect",
+       "apres": "dans la barre noire"
       },
       {
        "do": "clic",
        "sel": "#drSeance",
-       "libelle": "Ouvrir la séance"
+       "libelle": "Ouvrir la séance",
+       "apres": "ouvrir la séance"
       },
       {
        "do": "attendre",
@@ -1367,7 +1373,8 @@
       },
       {
        "do": "pointer",
-       "sel": ".carre"
+       "sel": ".carre",
+       "apres": "ou tape l'adresse"
       }
      ]
     },
@@ -1386,7 +1393,8 @@
       },
       {
        "do": "defiler",
-       "sel": "#pgDirect"
+       "sel": "#pgDirect",
+       "apres": "exactement comme les réponses"
       }
      ]
     },
@@ -1401,7 +1409,6 @@
   {
    "id": "09-suivre",
    "titre": "Suivre la classe",
-   "papier_seulement": true,
    "prepare": [
     {
      "do": "naviguer",
@@ -1409,7 +1416,15 @@
     },
     {
      "do": "attendre",
-     "ms": 900
+     "ms": 1400
+    },
+    {
+     "do": "js",
+     "code": "(async () => {const sel = document.querySelector('#pgClasse');const opt = [...sel.options].find((o) => /Absent ou en retard/.test(o.textContent));const id = Number(opt && opt.value);const codes = [...document.querySelectorAll('.pg-table tbody tr')].filter((tr) => !/Rien/.test(tr.textContent)).map((tr) => tr.querySelector('.pg-code')).filter(Boolean).map((e) => e.textContent.trim());for (const code of codes) {await fetch('/api/student/access', {method: 'POST',headers: {'Content-Type': 'application/json'},body: JSON.stringify({code: code, activityId: id,activityTitle: opt ? opt.textContent.trim() : ''})});}})()"
+    },
+    {
+     "do": "attendre",
+     "ms": 1200
     }
    ],
    "plans": [
@@ -1420,7 +1435,8 @@
      "gestes": [
       {
        "do": "pointer",
-       "sel": ".pg-titre"
+       "sel": ".pg-titre",
+       "apres": "répond à une seule question"
       }
      ],
      "papier": {
@@ -1434,12 +1450,14 @@
      "gestes": [
       {
        "do": "pointer",
-       "sel": "#pgModule"
+       "sel": "#pgModule",
+       "apres": "le module regardé"
       },
       {
        "do": "clic",
-       "sel": "[data-periode='tout']",
-       "libelle": "Depuis toujours"
+       "sel": "[data-periode='jour']",
+       "libelle": "Aujourd’hui",
+       "apres": "aujourd'hui c'est la soirée"
       },
       {
        "do": "attendre",
@@ -1447,8 +1465,9 @@
       },
       {
        "do": "clic",
-       "sel": "[data-periode='jour']",
-       "libelle": "Aujourd’hui"
+       "sel": "[data-periode='tout']",
+       "libelle": "Depuis toujours",
+       "apres": "depuis toujours c'est tout"
       },
       {
        "do": "attendre",
@@ -1459,30 +1478,34 @@
     {
      "id": "c",
      "surligne": ".pg-tuiles",
-     "texte": "Le bilan tient en quelques chiffres : combien d'élèves sont entrés, combien ont terminé, le taux de bonnes réponses du premier coup, ce qui a été envoyé. Le taux du premier coup est le plus parlant des quatre : il dit si la classe comprend, pas seulement si elle avance.",
+     "texte": "Le bilan tient en quatre chiffres : combien d'élèves ont travaillé, combien de couples élève-module sont achevés, et ce qui a été déposé — les enregistrements d'un côté, les textes de l'autre. Quatre nombres lus en trois secondes, avant même de regarder qui que ce soit.",
      "gestes": [
       {
        "do": "defiler",
-       "sel": ".pg-tuiles"
+       "sel": ".pg-tuiles",
+       "apres": "tient en quatre chiffres"
       },
       {
        "do": "pointer",
-       "sel": ".pg-tuile"
+       "sel": ".pg-tuile",
+       "apres": "ce qui a été déposé"
       }
      ]
     },
     {
      "id": "d",
      "surligne": ".pg-table",
-     "texte": "Dessous, une rangée par élève : l'avancement, le taux du premier coup, ce qu'il a envoyé, sa dernière trace. Un élève qui n'est jamais venu le dit en toutes lettres — c'est souvent l'information la plus utile de la page.",
+     "texte": "Dessous, une rangée par élève : l'avancement, l'état, la part de zones réussies du premier coup, les enregistrements, les textes, la dernière trace. Un élève qui n'est jamais venu se lit tout de suite — sa rangée est vide de bout en bout, et c'est souvent l'information la plus utile de la page.",
      "gestes": [
       {
        "do": "defiler",
-       "sel": ".pg-table"
+       "sel": ".pg-table",
+       "apres": "une rangée par élève"
       },
       {
        "do": "pointer",
-       "sel": ".pg-table tbody tr"
+       "sel": ".pg-table tbody tr",
+       "apres": "la dernière trace"
       }
      ]
     },
@@ -1494,7 +1517,8 @@
       {
        "do": "clic-index",
        "sel": ".pg-chevron",
-       "n": 0
+       "n": 0,
+       "apres": "le chevron au bout"
       },
       {
        "do": "attendre",
@@ -1502,7 +1526,8 @@
       },
       {
        "do": "defiler",
-       "sel": ".pg-detail"
+       "sel": ".pg-detail",
+       "apres": "ses textes"
       }
      ]
     },
@@ -1526,19 +1551,21 @@
       },
       {
        "do": "pointer",
-       "sel": ".dr-q--alerte, .dr-q"
+       "sel": ".dr-q--alerte, .dr-q",
+       "apres": "les questions en alerte"
       }
      ]
     },
     {
      "id": "g",
      "surligne": "#pgDirect",
-     "texte": "Deux réglages valent d'être connus. « Anonyme » remplace les noms par des numéros : c'est fait pour projeter un texte au tableau sans exposer son auteur. Et « Mettre en pause » arrête le rafraîchissement, pour qu'un onglet oublié ne compte pas des élèves partis comme des élèves en ligne.",
+     "texte": "Deux réglages valent d'être connus. La bascule dit l'état des noms : par défaut le direct est anonyme, pour que la barre puisse être projetée au tableau ; un clic affiche les noms quand vous êtes seul devant l'écran. Et « Mettre en pause » arrête le rafraîchissement, pour qu'un onglet oublié ne compte pas des élèves partis comme des élèves en ligne.",
      "gestes": [
       {
        "do": "clic",
        "sel": "#drNoms",
-       "libelle": "Anonyme"
+       "libelle": "Anonyme",
+       "apres": "un clic affiche les noms"
       },
       {
        "do": "attendre",
@@ -1547,7 +1574,8 @@
       {
        "do": "pointer",
        "sel": "#drPause",
-       "libelle": "Mettre en pause"
+       "libelle": "Mettre en pause",
+       "apres": "mettre en pause"
       }
      ]
     },
@@ -1562,7 +1590,6 @@
   {
    "id": "10-dossier",
    "titre": "Le dossier d'un élève",
-   "papier_seulement": true,
    "prepare": [
     {
      "do": "naviguer",
@@ -1581,19 +1608,21 @@
      "gestes": [
       {
        "do": "defiler",
-       "sel": ".pg-table"
+       "sel": ".pg-table",
+       "apres": "on y entre par le nom"
       },
       {
        "do": "pointer",
        "sel": ".pg-table tbody tr:has(.pg-chevron) .btn",
-       "libelle": "Dossier"
+       "libelle": "Dossier",
+       "apres": "ou par le bouton"
       }
      ]
     },
     {
      "id": "b",
      "surligne": ".fe-tuiles",
-     "texte": "Le dossier s'ouvre sur un coup d'œil : les modules commencés, les activités terminées, le taux du premier coup, ce qui a été envoyé. C'est le même élève que dans le tableau du groupe, vu de près.",
+     "texte": "Le dossier s'ouvre sur le bilan, et c'est exactement ce que l'élève voit sur son propre portail : les modules terminés, les mots de vocabulaire maîtrisés, les jours de pratique de la semaine. Rien de plus que ce qu'il sait déjà de lui-même.",
      "gestes": [
       {
        "do": "clic-index",
@@ -1607,22 +1636,25 @@
       },
       {
        "do": "defiler",
-       "sel": ".fe-tuiles"
+       "sel": ".fe-tuiles",
+       "apres": "les mots de vocabulaire"
       }
      ]
     },
     {
      "id": "c",
      "surligne": ".fe-table",
-     "texte": "Puis, activité par activité : les zones faites, le taux du premier coup, les erreurs. Une activité ouverte mais pas terminée se voit ; une activité jamais ouverte aussi.",
+     "texte": "Puis, activité par activité : l'état, le dialogue écouté ou non, la part de zones réussies du premier coup, le nombre d'erreurs, la dernière trace. Une activité ouverte mais pas terminée se voit ; une activité jamais ouverte n'y est pas du tout.",
      "gestes": [
       {
        "do": "defiler",
-       "sel": ".fe-table"
+       "sel": ".fe-table",
+       "apres": "activité par activité"
       },
       {
        "do": "pointer",
-       "sel": ".fe-table tbody tr"
+       "sel": ".fe-table tbody tr",
+       "apres": "une activité ouverte"
       }
      ]
     },
@@ -1634,7 +1666,8 @@
       {
        "do": "clic-index",
        "sel": ".fe-chevron",
-       "n": 0
+       "n": 0,
+       "apres": "le chevron d'une rangée"
       },
       {
        "do": "attendre",
@@ -1642,7 +1675,8 @@
       },
       {
        "do": "defiler",
-       "sel": ".fe-detail"
+       "sel": ".fe-detail",
+       "apres": "son texte son enregistrement"
       }
      ]
     },
@@ -1653,12 +1687,14 @@
      "gestes": [
       {
        "do": "defiler",
-       "sel": ".fe-haut"
+       "sel": ".fe-haut",
+       "apres": "en tête du dossier"
       },
       {
        "do": "clic",
        "sel": "#fePeOuvrir",
-       "libelle": "Envoyer un point express"
+       "libelle": "Envoyer un point express",
+       "apres": "envoyer un point express"
       },
       {
        "do": "attendre",
@@ -1667,7 +1703,8 @@
       {
        "do": "clic",
        "sel": "#fePeAnnuler",
-       "libelle": "Annuler"
+       "libelle": "Annuler",
+       "apres": "le portail ne le suggère jamais"
       }
      ],
      "papier": {

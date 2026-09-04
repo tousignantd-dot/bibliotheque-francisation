@@ -121,6 +121,11 @@ function surveillerFenetres(navigateur, page) {
       console.log('  ⚠ fenêtre surgissante refermée :', cible.url());
       await autre.close();
       await page.bringToFront();
+      /* Refermer la fenêtre laisse la page filmée avec la fenêtre de l'autre :
+         mesuré le 4 septembre 2026, les images passaient de 1600 × 900 à
+         756 × 469 et les deux plans suivants sortaient cadrés de travers,
+         sans une erreur nulle part. On repose la fenêtre du tournage. */
+      await page.setViewport({ width: LARGEUR, height: HAUTEUR, deviceScaleFactor: ECHELLE });
     } catch { /* la fenêtre a pu se fermer seule */ }
   });
   page.on('dialog', async (d) => {
