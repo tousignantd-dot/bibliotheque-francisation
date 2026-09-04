@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<title>Plans composés du film de 90 s</title>
+<link rel="stylesheet" href="/assets/design-system/styles.css">
+<link rel="stylesheet" href="/assets/design-system/marque-francis.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap">
+<style>
+/* ═══════════════════════════════════════════════════════════
+   Les quatre plans que le film ne fait PAS générer.
+   Le point du « i », les interrupteurs, les flèches et la
+   signature portent tous soit la marque, soit une forme
+   exacte : un modèle d'image y écrirait du charabia, et
+   recopier la marque à la main est interdit dans ce dépôt.
+   On les compose, et Chrome les photographie.
+   ═══════════════════════════════════════════════════════════ */
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:#F7F7F5;font-family:Nunito,system-ui,sans-serif;overflow:hidden}
+.plan{display:none;width:100vw;height:100vh;align-items:center;justify-content:center}
+.plan.on{display:flex}
+
+/* 01 — le point qui ne sort pas */
+#p01{background:#0B0B0C}
+.point{width:104px;height:104px;border-radius:50%;background:#6B4FBB;
+  box-shadow:0 0 90px 26px rgba(107,79,187,.42)}
+
+/* 12 — quatre interrupteurs */
+.inters{display:flex;gap:74px}
+.inter{width:188px;height:98px;border-radius:49px;position:relative;
+  border:3px solid #D2D2CD;background:#FFFFFF;transition:none}
+.inter i{position:absolute;top:9px;left:9px;width:74px;height:74px;
+  border-radius:50%;background:#D2D2CD}
+.inter.on{background:#17181A;border-color:#17181A}
+.inter.on i{left:auto;right:9px;background:#FFFFFF}
+
+/* 13 — ce qui ne sort plus du cadre */
+.scene{position:relative;width:760px;height:470px}
+.cadre{position:absolute;inset:0;border:4px solid #17181A;border-radius:22px;
+  background:#FFFFFF}
+.fleche{position:absolute;height:4px;background:#C7302B;border-radius:2px}
+.fleche::after{content:'';position:absolute;right:-2px;top:-8px;
+  border-left:19px solid #C7302B;border-top:10px solid transparent;
+  border-bottom:10px solid transparent}
+.fleche.morte{background:#E4E4E0}
+.fleche.morte::after{border-left-color:#E4E4E0}
+.f1{width:150px;top:88px;left:100%}
+.f2{width:150px;top:216px;left:100%}
+.f3{width:150px;top:344px;left:100%}
+.f4{width:150px;top:152px;left:100%}
+
+/* 14 — la signature */
+/* La signature doit remplir le cadre : le verrouillage fait 36 px,
+   soit une ligne minuscule dans une image de 2400 px de large. On
+   l'agrandit par transformation — jamais en redessinant la marque. */
+#p14{flex-direction:column;gap:26px}
+#p14 .fr-lockup{transform:scale(2.6);transform-origin:center}
+</style>
+</head>
+<body>
+
+<div class="plan" id="p01"><div class="point"></div></div>
+
+<div class="plan" id="p12">
+  <div class="inters">
+    <div class="inter on"><i></i></div>
+    <div class="inter on"><i></i></div>
+    <div class="inter"><i></i></div>
+    <div class="inter"><i></i></div>
+  </div>
+</div>
+
+<div class="plan" id="p13">
+  <div class="scene">
+    <div class="cadre"></div>
+    <div class="fleche morte f1"></div>
+    <div class="fleche morte f2"></div>
+    <div class="fleche morte f3"></div>
+    <div class="fleche morte f4"></div>
+  </div>
+</div>
+
+<div class="plan" id="p14">
+  <!-- La marque ne se redessine jamais : c'est le verrouillage du système. -->
+  <span class="fr-lockup fr-lockup--grand">
+    <span class="fr-nom" role="img" aria-label="francis">franc<span class="fr-i" aria-hidden="true">ı<span class="fr-point"></span></span>s</span>
+    <span class="fr-trait" aria-hidden="true"></span>
+    <span class="fr-desc">Aide à l'apprentissage du français</span>
+  </span>
+</div>
+
+<script>
+  var n = new URLSearchParams(location.search).get('plan') || '01';
+  var el = document.getElementById('p' + n);
+  if (el) el.classList.add('on');
+</script>
+</body>
+</html>
