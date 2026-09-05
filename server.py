@@ -5,6 +5,7 @@ Gère les fichiers statiques + les opérations d'administration (ajout, modifica
 
 import http.server
 import functools
+import base64
 import hashlib
 import importlib
 import sys
@@ -339,6 +340,27 @@ PORT = int(os.environ.get('PORT', 5173))
 # à faire sortir une feuille de séance et son code QR en `.up.railway.app`,
 # sur du papier distribué à une classe. La redirection ferme cette porte.
 SITE_CANONIQUE = os.environ.get('SITE_CANONIQUE', '').strip().lower()
+
+
+# ── Verrou du classeur ──────────────────────────────────────────────────────
+#
+# `presentations.html` et tout ce qu'il ouvre — argumentaires de vente, chiffres
+# de production, courriels de démarchage, pièces de portfolio — sont des
+# documents de travail. Ils n'ont rien à faire en accès libre sur un domaine
+# public que n'importe qui peut deviner.
+#
+# Le verrou est une authentification HTTP « Basic » : le navigateur demande un
+# identifiant, le serveur le vérifie, et **rien du contenu ne part avant**.
+# Un mot de passe posé dans la page en JavaScript ne vaudrait rien : le
+# document serait déjà arrivé chez le visiteur avant qu'on le lui demande.
+#
+# Deux refus délibérés :
+#   — en local (127.0.0.1), aucune demande : on développe sans se battre ;
+#   — en ligne **sans** `CLASSEUR_MOTDEPASSE`, on refuse tout plutôt que
+#     d'ouvrir. Une variable oubliée doit se voir tout de suite, pas laisser le
+#     classeur au grand jour en croyant l'avoir fermé.
+CLASSEUR_UTILISATEUR = os.environ.get('CLASSEUR_UTILISATEUR', '').strip() or 'francis'
+CLASSEUR_MOTDEPASSE = os.environ.get('CLASSEUR_MOTDEPASSE', '').strip()
 
 
 # ── Initialisation du stockage ──────────────────────────────────────────────
@@ -16197,6 +16219,71 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self.send_header("Cache-Control", "no-cache")
         super().end_headers()
 
+    # ── Le verrou du classeur ───────────────────────────────────────────
+    def _classeur_protege(self, path):
+        return path == "/presentations.html" or path.startswith("/assets/presentations/")
+
+    def _refus_classeur(self, code, titre, texte, defi=False):
+        corps = ("<!doctype html><meta charset=\"utf-8\">"
+                 "<title>%s</title>"
+                 "<style>body{margin:0;display:grid;place-items:center;min-height:100vh;"
+                 "background:#E4E7E9;color:#14181B;font:16px/1.6 Georgia,serif}"
+                 "div{max-width:32rem;padding:2rem}h1{font-size:1.4rem;margin:0 0 .8rem}"
+                 "p{margin:0;color:#5A646C}"
+                 "@media(prefers-color-scheme:dark){body{background:#12161A;color:#DDE3E6}"
+                 "p{color:#93A0A8}}</style>"
+                 "<div><h1>%s</h1><p>%s</p></div>") % (titre, titre, texte)
+        corps = corps.encode("utf-8")
+        self.send_response(code)
+        if defi:
+            self.send_header("WWW-Authenticate",
+                             'Basic realm="Le classeur", charset="UTF-8"')
+        self.send_header("Content-Type", "text/html; charset=utf-8")
+        self.send_header("Content-Length", str(len(corps)))
+        self.send_header("Cache-Control", "no-store")
+        self.end_headers()
+        if self.command != "HEAD":
+            self.wfile.write(corps)
+
+    def _garde_classeur(self, path):
+        """Renvoie True quand la requête a été refusée et déjà répondue."""
+        if not self._classeur_protege(path):
+            return False
+        if self.client_address and self.client_address[0] in ("127.0.0.1", "::1"):
+            return False
+        if not CLASSEUR_MOTDEPASSE:
+            self._refus_classeur(
+                503, "Classeur fermé",
+                "Le verrou n'est pas configuré sur ce serveur. Tant que la variable "
+                "d'environnement <code>CLASSEUR_MOTDEPASSE</code> n'est pas posée, "
+                "le classeur reste fermé plutôt que de s'ouvrir à tout le monde.")
+            return True
+        entete = self.headers.get("Authorization", "")
+        if entete.startswith("Basic "):
+            try:
+                brut = base64.b64decode(entete[6:].strip()).decode("utf-8")
+            except Exception:
+                brut = ""
+            nom, _, mdp = brut.partition(":")
+            # `compare_digest` plutôt que `==` : la comparaison ordinaire
+            # s'arrête au premier caractère faux, ce qui laisse deviner le mot
+            # de passe lettre par lettre en chronométrant les réponses.
+            if (hmac.compare_digest(nom, CLASSEUR_UTILISATEUR)
+                    and hmac.compare_digest(mdp, CLASSEUR_MOTDEPASSE)):
+                return False
+        self._refus_classeur(
+            401, "Le classeur est privé",
+            "Cette page demande un identifiant. Si vous devriez y avoir accès et "
+            "que vous ne l'avez pas, demandez-le à la personne qui vous a envoyé "
+            "le lien.", defi=True)
+        return True
+
+    def do_HEAD(self):
+        path = urllib.parse.urlparse(self.path).path
+        if self._garde_classeur(path):
+            return
+        super().do_HEAD()
+
     def do_OPTIONS(self):
         self.send_response(204)
         self.send_header("Access-Control-Allow-Origin", "*")
@@ -16242,6 +16329,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             return
         parsed = urllib.parse.urlparse(self.path)
         path = parsed.path
+        if self._garde_classeur(path):
+            return
         # Le chemin, pour la couture des séances : la liste blanche des routes
         # ouvertes à un participant se lit là. Posé ici et non dans chaque route —
         # une route neuve doit être fermée au mode séance par défaut.
