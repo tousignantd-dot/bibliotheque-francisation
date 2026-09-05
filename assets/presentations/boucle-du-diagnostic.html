@@ -299,8 +299,28 @@ em{font-style:italic}
 @media (max-width:1240px){#rail{display:none}}
 
 /* ═══════════════ interrupteur des traces ═══════════════ */
-#tampon{
+.commandes{
   position:fixed; right:20px; bottom:20px; z-index:50;
+  display:flex; align-items:center; gap:.5rem;
+}
+#theme{
+  display:flex; align-items:center; gap:.45rem;
+  background:var(--pan); color:var(--encre-2);
+  border:1px solid var(--bord-fort); border-radius:var(--r-plein);
+  padding:9px 13px 9px 11px; cursor:pointer; box-shadow:var(--o-3);
+  font-family:var(--police); font-size:var(--t-petit); font-weight:var(--g-moyen);
+  transition:color var(--transition), border-color var(--transition);
+}
+#theme:hover{color:var(--encre); border-color:var(--encre-3)}
+/* Un seul glyphe visible à la fois : celui de l'état où l'on va. */
+#theme .soleil{display:none}
+:root[data-theme="dark"] #theme .lune{display:none}
+:root[data-theme="dark"] #theme .soleil{display:inline}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) #theme .lune{display:none}
+  :root:not([data-theme="light"]) #theme .soleil{display:inline}
+}
+#tampon{
   display:flex; align-items:center; gap:10px;
   background:var(--pan); color:var(--enc);
   border:1px solid var(--regle2); border-radius:var(--r-1);
@@ -319,7 +339,9 @@ em{font-style:italic}
 }
 body.traces #tampon{background:var(--signal);border-color:var(--signal);color:var(--signal-encre)}
 body.traces #tampon .voyant{background:var(--signal-encre);border-color:var(--signal-encre)}
-@media (max-width:560px){#tampon{right:12px;bottom:12px;padding:8px 11px;font-size:10px}}
+@media (max-width:560px){.commandes{right:12px;bottom:12px;gap:.4rem}
+  #tampon,#theme{padding:8px 11px}
+  #theme span{display:none}}
 
 /* ═══════════════ apparat : les traces ═══════════════ */
 .trace{
@@ -604,7 +626,7 @@ ol.biblio li:target::before{background:var(--action);color:var(--action-encre);p
   .duo .choix,#rep-maquette+.releve+.banc-pied{display:none!important}
   .releve li{opacity:1!important}
   .zone{display:none}
-  #rail,#tampon,.banc-pied,.filtres,.compteur{display:none!important}
+  #rail,.commandes,.banc-pied,.filtres,.compteur{display:none!important}
   .grille{grid-template-columns:minmax(0,1fr);padding-inline:0}
   .grille>*{grid-column:1}
   section{padding-block:1.2rem;break-inside:avoid-page}
@@ -804,10 +826,22 @@ textarea.champ:focus{outline:2px solid var(--str);outline-offset:2px}
   <a href="#colophon"><i class="tick"></i><span class="lab">Colophon</span></a>
 </nav>
 
-<button id="tampon" type="button" aria-pressed="false">
-  <span class="voyant" aria-hidden="true"></span>
-  <span id="tampon-txt">Traces du terrain</span>
-</button>
+<div class="commandes">
+  <button id="theme" type="button" aria-label="Passer au thème sombre">
+    <svg class="glyphe" viewBox="0 0 20 20" aria-hidden="true" width="15" height="15">
+      <path class="lune" d="M16 12.4A7 7 0 0 1 7.6 4a7.2 7.2 0 1 0 8.4 8.4Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path>
+      <g class="soleil" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+        <circle cx="10" cy="10" r="3.4"></circle>
+        <path d="M10 2.2v1.6M10 16.2v1.6M2.2 10h1.6M16.2 10h1.6M4.5 4.5l1.1 1.1M14.4 14.4l1.1 1.1M15.5 4.5l-1.1 1.1M5.6 14.4l-1.1 1.1"></path>
+      </g>
+    </svg>
+    <span id="theme-txt">Sombre</span>
+  </button>
+  <button id="tampon" type="button" aria-pressed="false">
+    <span class="voyant" aria-hidden="true"></span>
+    <span id="tampon-txt">Traces du terrain</span>
+  </button>
+</div>
 
 <header id="ouverture" class="grille">
   <div class="pleine cote-haut">
@@ -821,7 +855,7 @@ textarea.champ:focus{outline:2px solid var(--str);outline-offset:2px}
   <h1>La boucle du&nbsp;<span class="braise">diagnostic</span><span class="fin">ou : pourquoi la théorie ne suffit jamais seule</span></h1>
   <p class="chapeau"><span class="lettrine">U</span>n concepteur pédagogique n'applique pas des théories. Il formule des paris sur ce qui va se produire dans la tête de quelqu'un d'autre, puis il va voir. Ce qui sépare un matériel correct d'un matériel excellent n'est pas la quantité de recherche invoquée : c'est le nombre de fois où le pari a été confronté au public réel, et la finesse avec laquelle on a lu ce qui n'a pas fonctionné.</p>
   <p class="sous-chapeau">Ce dossier expose une méthode complète. Il commence par ce que la recherche met entre les mains du concepteur, montre pourquoi ces acquis ne se composent pas d'eux-mêmes, puis consacre l'essentiel de son volume à l'instrument qui tranche à leur place : le <strong>diagnostic pédagogique</strong>, c'est-à-dire l'aller-retour continu avec le public cible pendant la conception, et non après.</p>
-  <p class="sous-chapeau" style="margin-top:1rem">En bas à droite, un interrupteur allume les <span style="color:var(--sig)">traces du terrain</span> : les annotations d'essai qui ont modifié ce document même. La démonstration passe par là.</p>
+  <p class="sous-chapeau" style="margin-top:1rem">En bas à droite, deux commandes : l'une fait passer le fond du clair au sombre, l'autre allume les <span style="color:var(--sig)">traces du terrain</span> — les annotations d'essai qui ont modifié ce document même. La démonstration passe par là.</p>
 </header>
 
 <section id="s1" class="grille">
@@ -1966,6 +2000,30 @@ const SPECIMENS = [
   });
 
   /* ─── Traces ─── */
+  /* ── Le fond : clair ou sombre, au choix du lecteur ──────────────────
+     La page suit le thème du système tant qu'on ne lui dit rien. Dès qu'on
+     touche au bouton, le choix est écrit sur la racine — ce qui l'emporte sur
+     la préférence du système, dans les deux sens — et retenu pour la prochaine
+     visite. Une préférence de lecture ; rien d'autre n'est conservé. */
+  const btnTheme=$("#theme"), txtTheme=$("#theme-txt");
+  const sombreSysteme = () => window.matchMedia
+    && matchMedia("(prefers-color-scheme:dark)").matches;
+  function poseTheme(mode, retenir){
+    document.documentElement.setAttribute("data-theme", mode);
+    const sombre = mode === "dark";
+    txtTheme.textContent = sombre ? "Clair" : "Sombre";
+    btnTheme.setAttribute("aria-label", sombre ? "Passer au thème clair" : "Passer au thème sombre");
+    if(retenir){ try{ localStorage.setItem("boucle-theme", mode); }catch(e){} }
+    /* Le canevas est peint, pas mis en forme : il ne suit pas une variable
+       CSS. On le prévient. */
+    dispatchEvent(new CustomEvent("theme-change"));
+  }
+  let choisi=null;
+  try{ choisi = localStorage.getItem("boucle-theme"); }catch(e){}
+  poseTheme(choisi || (sombreSysteme() ? "dark" : "light"), false);
+  btnTheme.addEventListener("click", () =>
+    poseTheme(document.documentElement.getAttribute("data-theme")==="dark" ? "light" : "dark", true));
+
   const tampon=$("#tampon"), txt=$("#tampon-txt");
   tampon.addEventListener("click",()=>{
     const on=document.body.classList.toggle("traces");
@@ -2302,6 +2360,7 @@ const SPECIMENS = [
     sp.addEventListener("input",dessine); sn.addEventListener("input",dessine);
     addEventListener("resize",dessine);
     if(window.matchMedia) matchMedia("(prefers-color-scheme:dark)").addEventListener("change",dessine);
+    addEventListener("theme-change",dessine);
     dessine();
   })();
 
