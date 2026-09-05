@@ -59,7 +59,8 @@ body{
   background-size:64px 64px, 64px 64px;
 }
 ::selection{background:var(--sel)}
-h1,h2,h3,h4,.disp{font-family:"Archivo","Helvetica Neue",Arial,sans-serif;font-weight:800;text-wrap:balance}
+h1,h2,.disp{font-family:"Archivo","Helvetica Neue",Arial,sans-serif;font-weight:800;text-wrap:balance}
+h3,h4{font-family:"Libre Franklin","Helvetica Neue",Arial,sans-serif;font-weight:600;text-wrap:balance}
 .mono,code,.cote,.etiq{font-family:"Roboto Mono",ui-monospace,Menlo,Consolas,monospace;font-variant-numeric:tabular-nums}
 a{color:inherit;text-decoration-color:var(--str);text-underline-offset:.18em}
 a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--str);outline-offset:3px}
@@ -249,7 +250,7 @@ figcaption b{color:var(--str);font-weight:600;letter-spacing:.1em;text-transform
 .fiche{background:var(--pan);padding:1.15rem 1.25rem;display:grid;gap:.55rem}
 .fiche.off{display:none}
 .fiche-tete{display:flex;align-items:baseline;justify-content:space-between;gap:1rem}
-.fiche-nom{font-family:"Archivo",sans-serif;font-weight:600;font-size:1.06rem;letter-spacing:-.012em;line-height:1.18}
+.fiche-nom{font-family:"Libre Franklin",sans-serif;font-weight:600;font-size:1.06rem;letter-spacing:-.012em;line-height:1.18}
 .fiche-src{font-family:"Roboto Mono",monospace;font-size:10px;color:var(--enc3);white-space:nowrap;letter-spacing:.03em}
 .fiche dl{margin:0;display:grid;grid-template-columns:5.6rem 1fr;gap:.3rem .9rem;font-size:.92rem;line-height:1.5}
 .fiche dt{font-family:"Roboto Mono",monospace;font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--enc3);padding-top:.42em}
@@ -261,7 +262,7 @@ figcaption b{color:var(--str);font-weight:600;letter-spacing:.1em;text-transform
 /* ═══════════════ pupitre des tensions ═══════════════ */
 .tension{border-top:1px solid var(--regle);padding:1.5rem 0 1.7rem}
 .tension:last-child{border-bottom:1px solid var(--regle)}
-.tension-tete{display:flex;justify-content:space-between;gap:1rem;font-family:"Archivo",sans-serif;font-weight:600;font-size:.99rem;letter-spacing:-.01em}
+.tension-tete{display:flex;justify-content:space-between;gap:1rem;font-family:"Libre Franklin",sans-serif;font-weight:600;font-size:.99rem;letter-spacing:-.01em}
 .tension-tete span:last-child{text-align:right}
 .rail-boite{position:relative;margin:.9rem 0 1rem}
 .rail-graduations{position:absolute;inset:0;display:flex;justify-content:space-between;align-items:center;pointer-events:none}
@@ -332,7 +333,7 @@ input[type=range].rail::-moz-range-thumb{width:14px;height:22px;background:var(-
 .planche{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1px;background:var(--regle);border:1px solid var(--regle)}
 .specimen{background:var(--pan);padding:1.1rem 1.15rem 1.2rem;display:grid;gap:.5rem;align-content:start}
 .specimen svg{width:100%;height:64px;display:block;overflow:visible}
-.specimen .nom{font-family:"Archivo",sans-serif;font-weight:600;font-size:.98rem;line-height:1.18;letter-spacing:-.012em}
+.specimen .nom{font-family:"Libre Franklin",sans-serif;font-weight:600;font-size:.98rem;line-height:1.18;letter-spacing:-.012em}
 .specimen .lat{font-family:"Roboto Mono",monospace;font-size:9.5px;letter-spacing:.06em;color:var(--enc3);font-style:normal}
 .specimen p{font-size:.87rem;line-height:1.45;color:var(--enc2);margin:0}
 .specimen .signe{font-size:.85rem;color:var(--sig);border-top:1px dashed var(--regle2);padding-top:.5rem;margin-top:.2rem}
@@ -1246,7 +1247,7 @@ textarea.champ:focus{outline:2px solid var(--str);outline-offset:2px}
   <div class="colo-grille">
     <div><b>Objet</b>Dossier de méthode en conception pédagogique. Pièce de portfolio.</div>
     <div><b>Révision</b>4 — 4 septembre 2026</div>
-    <div><b>Composition</b>Archivo, Libre Franklin, Roboto Mono</div>
+    <div><b>Composition</b>Archivo aux grands titres, Libre Franklin au texte et aux intertitres, Roboto Mono aux cotes</div>
     <div><b>Fabrication</b>Page autonome, sans cadre applicatif ni bibliothèque externe. Figures dessinées à la main, calculées dans le navigateur.</div>
     <div><b>Images</b>Les deux photographies de la section 08 sont des images de synthèse, produites pour les besoins de la démonstration.</div>
     <div><b>Auteur</b>Daniel Tousignant</div>
@@ -1718,7 +1719,7 @@ const SPECIMENS = [
     L.forEach(([n,t,d])=>{
       box.appendChild(el("div",null,
         '<div style="font-family:Roboto Mono,monospace;font-size:9.5px;letter-spacing:.12em;color:var(--sig);margin-bottom:.25rem">'+n+'</div>'+
-        '<div style="font-family:Archivo,sans-serif;font-weight:600;font-size:.92rem;margin-bottom:.2rem">'+t+'</div>'+
+        '<div style="font-family:Libre Franklin,sans-serif;font-weight:600;font-size:.92rem;margin-bottom:.2rem">'+t+'</div>'+
         '<div style="font-size:.82rem;line-height:1.42;color:var(--enc2)">'+d+'</div>'));
     });
     fig.parentNode.insertBefore(box, fig.nextSibling);
@@ -1800,7 +1801,7 @@ const SPECIMENS = [
         const li=el("li",null,
           '<span class="poignee" aria-hidden="true">⣿</span>'+
           '<span class="rang">'+(pos+1)+'</span>'+
-          '<span><b style="font-family:Archivo,sans-serif;font-weight:600">'+n.t+'</b> — <span style="color:var(--enc2)">'+n.d+'</span></span>'+
+          '<span><b style="font-family:Libre Franklin,sans-serif;font-weight:600">'+n.t+'</b> — <span style="color:var(--enc2)">'+n.d+'</span></span>'+
           '<span class="fleches"><button type="button" data-m="-1" aria-label="Monter">▲</button><button type="button" data-m="1" aria-label="Descendre">▼</button></span>');
         li.draggable=true; li.dataset.pos=pos;
         li.addEventListener("dragstart",e=>{e.dataTransfer.setData("text/plain",pos); li.classList.add("porte");});
