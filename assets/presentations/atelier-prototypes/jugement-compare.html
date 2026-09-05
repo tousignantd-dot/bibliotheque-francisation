@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Prototype de conception pédagogique : dix comparaisons par paires de copies d'élèves, puis le portrait de ce qui a réellement gouverné vos jugements.">
+<title>Le jugement comparé</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,400&family=Martian+Mono:wght@400;600&display=swap">
+<style>
+/* ═══ L'atelier des prototypes — jetons communs ═══
+   Ancrage visuel : le tracé à deux plumes sur papier d'avoine.
+   Plume BLEUE = ce que la machine calcule.  Plume VERMILLON = ce que l'humain décide.
+   Aucune autre couleur n'a le droit de signifier quoi que ce soit. */
+:root{
+  --pap:#EDE7DC; --pan:#F8F4EC; --pan2:#E3DBCC; --pan3:#D9D0BE;
+  --enc:#1B1A17; --enc2:#6B665C; --enc3:#948D80;
+  --regle:#D6CDBD; --regle2:#BFB4A0;
+  --bleu:#1F4B99; --bleu2:#5C7EBF; --bleu-pale:#DCE3F1; --bleu-voile:rgba(31,75,153,.09);
+  --verm:#BE4220; --verm2:#D9744F; --verm-pale:#F3DDD3; --verm-voile:rgba(190,66,32,.09);
+  --grille:rgba(27,26,23,.05);
+  --om:0 1px 0 rgba(27,26,23,.09);
+  --om2:0 2px 14px rgba(27,26,23,.10);
+}
+:root:not([data-theme="light"]){ color-scheme:light dark; }
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --pap:#15140F; --pan:#1D1C16; --pan2:#282621; --pan3:#33302A;
+  --enc:#EAE4D8; --enc2:#A29B8D; --enc3:#7B7467;
+  --regle:#33302A; --regle2:#474238;
+  --bleu:#8FB2F0; --bleu2:#6E8FCB; --bleu-pale:#1A2438; --bleu-voile:rgba(143,178,240,.12);
+  --verm:#EE8A66; --verm2:#C0684A; --verm-pale:#33201A; --verm-voile:rgba(238,138,102,.12);
+  --grille:rgba(234,228,216,.045);
+  --om:0 1px 0 rgba(0,0,0,.45); --om2:0 2px 16px rgba(0,0,0,.5);
+}}
+:root[data-theme="dark"]{ color-scheme:dark;
+  --pap:#15140F; --pan:#1D1C16; --pan2:#282621; --pan3:#33302A;
+  --enc:#EAE4D8; --enc2:#A29B8D; --enc3:#7B7467;
+  --regle:#33302A; --regle2:#474238;
+  --bleu:#8FB2F0; --bleu2:#6E8FCB; --bleu-pale:#1A2438; --bleu-voile:rgba(143,178,240,.12);
+  --verm:#EE8A66; --verm2:#C0684A; --verm-pale:#33201A; --verm-voile:rgba(238,138,102,.12);
+  --grille:rgba(234,228,216,.045);
+  --om:0 1px 0 rgba(0,0,0,.45); --om2:0 2px 16px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pap);color:var(--enc);font-family:"Newsreader",Georgia,serif;font-size:17px;line-height:1.58;
+ -webkit-font-smoothing:antialiased;
+ background-image:linear-gradient(var(--grille) 1px,transparent 1px),linear-gradient(90deg,var(--grille) 1px,transparent 1px);background-size:72px 72px,72px 72px}
+h1,h2,h3,h4,.gr{font-family:"Familjen Grotesk","Helvetica Neue",Arial,sans-serif;font-weight:600;text-wrap:balance;letter-spacing:-.01em}
+.mo{font-family:"Martian Mono",ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;letter-spacing:-.04em}
+p{margin:0 0 .9em}button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--verm);outline-offset:3px}
+[hidden]{display:none!important}
+.tete{max-width:72rem;margin:0 auto;padding:2.6rem 1.5rem 1.2rem}
+.fil{display:flex;flex-wrap:wrap;gap:.9rem;align-items:baseline;font-size:.66rem;text-transform:uppercase;letter-spacing:.16em;color:var(--enc3);font-family:"Familjen Grotesk",sans-serif}
+.fil .no{color:var(--verm)}
+h1{font-size:clamp(2.1rem,5vw,3.3rem);line-height:1.02;margin:.5rem 0 .7rem;font-weight:700}
+.chapeau{max-width:38rem;font-size:1.04rem;color:var(--enc2)}
+.chapeau em{color:var(--enc);font-style:italic}
+.commandes{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;border-top:1px solid var(--regle);padding-top:1rem;margin-top:1.2rem}
+.cmd{background:none;border:1px solid var(--regle2);border-radius:2px;padding:.42rem .8rem;font-family:"Familjen Grotesk",sans-serif;font-size:.8rem;cursor:pointer;color:var(--enc2)}
+.cmd:hover{border-color:var(--enc2);color:var(--enc)}
+.cmd[aria-pressed="true"]{background:var(--bleu);border-color:var(--bleu);color:var(--pap)}
+main{max-width:72rem;margin:0 auto;padding:0 1.5rem 5rem}
+
+/* ── consigne de la tâche ── */
+.consigne{background:var(--pan);border:1px solid var(--regle);border-left:3px solid var(--bleu);padding:1.1rem 1.3rem;margin-bottom:1.8rem;font-size:.98rem}
+.consigne h2{font-size:.66rem;text-transform:uppercase;letter-spacing:.14em;color:var(--bleu);margin:0 0 .5rem}
+.consigne p{margin:0}
+.consigne .tache{font-style:italic;color:var(--enc2);margin-top:.5rem;display:block}
+
+/* ── avancement ── */
+.avance{display:flex;align-items:center;gap:1rem;margin-bottom:1.2rem}
+.avance .barre{flex:1;height:3px;background:var(--pan2);position:relative}
+.avance .barre i{position:absolute;left:0;top:0;bottom:0;background:var(--verm);transition:width .3s}
+.avance .n{font-family:"Martian Mono",monospace;font-size:.68rem;color:var(--enc3);white-space:nowrap}
+.enonce{font-family:"Familjen Grotesk",sans-serif;font-size:1.15rem;text-align:center;margin:0 0 1.2rem;font-weight:600}
+.enonce span{display:block;font-family:"Newsreader",serif;font-weight:400;font-size:.92rem;color:var(--enc3);margin-top:.2rem;font-style:italic}
+
+/* ── les deux copies ── */
+.paire{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;align-items:start}
+@media(max-width:820px){.paire{grid-template-columns:1fr}}
+.copie{background:var(--pan);border:1px solid var(--regle);box-shadow:var(--om);display:flex;flex-direction:column}
+.copie .ent{border-bottom:1px solid var(--regle);padding:.7rem .9rem;font-family:"Martian Mono",monospace;font-size:.62rem;color:var(--enc3);
+ display:flex;justify-content:space-between;letter-spacing:-.03em}
+.copie .corps{padding:1.1rem 1.3rem;white-space:pre-line;font-size:.98rem;line-height:1.55;flex:1}
+.copie .pied{padding:.8rem;border-top:1px solid var(--regle)}
+.choisir{width:100%;background:none;border:1px solid var(--verm);color:var(--verm);padding:.6rem;cursor:pointer;
+ font-family:"Familjen Grotesk",sans-serif;font-weight:600;font-size:.9rem;border-radius:2px}
+.choisir:hover{background:var(--verm);color:var(--pap)}
+.aide{text-align:center;color:var(--enc3);font-size:.82rem;font-family:"Familjen Grotesk",sans-serif;margin-top:1rem}
+
+/* ── résultats ── */
+.res{margin-top:1rem}
+.res h2{font-size:clamp(1.5rem,3.4vw,2.2rem);margin:0 0 .9rem;font-weight:700}
+.bloc{background:var(--pan);border:1px solid var(--regle);padding:1.5rem 1.7rem;margin-bottom:1.3rem;box-shadow:var(--om)}
+.bloc.fort{border-left:3px solid var(--verm)}
+.bloc h3{margin:0 0 .6rem;font-size:1.2rem}
+.deux{display:grid;grid-template-columns:1fr 1fr;gap:1.3rem}
+@media(max-width:820px){.deux{grid-template-columns:1fr}}
+.classement{list-style:none;padding:0;margin:.6rem 0 0;counter-reset:r}
+.classement li{counter-increment:r;display:grid;grid-template-columns:1.6rem 1fr auto;gap:.6rem;align-items:baseline;
+ padding:.45rem 0;border-bottom:1px solid var(--regle)}
+.classement li::before{content:counter(r);font-family:"Martian Mono",monospace;font-size:.7rem;color:var(--enc3)}
+.classement li b{font-weight:500}
+.classement .ecart{font-family:"Martian Mono",monospace;font-size:.66rem;color:var(--verm)}
+.classement .ecart.nul{color:var(--enc3)}
+.profil{margin-top:.8rem}
+.pr{display:grid;grid-template-columns:11rem 1fr 3rem;gap:.6rem;align-items:center;margin-bottom:.4rem;font-family:"Familjen Grotesk",sans-serif;font-size:.82rem}
+@media(max-width:560px){.pr{grid-template-columns:8rem 1fr 2.6rem;font-size:.76rem}}
+.pr .b{height:8px;background:var(--pan2);position:relative}
+.pr .b i{position:absolute;top:0;bottom:0;left:50%;background:var(--bleu)}
+.pr .b::before{content:"";position:absolute;left:50%;top:-2px;bottom:-2px;width:1px;background:var(--regle2)}
+.pr .v{font-family:"Martian Mono",monospace;font-size:.68rem;color:var(--bleu);text-align:right}
+.pr.haut .b i{background:var(--verm)}.pr.haut .v{color:var(--verm)}
+.experts{width:100%;border-collapse:collapse;font-size:.9rem;margin-top:.6rem}
+.experts th{font-family:"Familjen Grotesk";font-size:.6rem;text-transform:uppercase;letter-spacing:.09em;color:var(--enc3);text-align:left;padding:.35rem .4rem;border-bottom:1px solid var(--regle2)}
+.experts td{padding:.4rem;border-bottom:1px solid var(--regle);font-family:"Martian Mono",monospace;font-size:.74rem}
+.experts td.q{font-family:"Newsreader",serif;font-size:.9rem;color:var(--enc2)}
+.cycle{border:1px solid var(--verm);border-left-width:3px;background:var(--verm-voile);padding:1rem 1.2rem;margin:1rem 0}
+.cycle .tri{font-family:"Martian Mono",monospace;font-size:.85rem;color:var(--verm);margin:.4rem 0}
+.note{font-size:.9rem;color:var(--enc2);border-left:2px solid var(--bleu);padding-left:.9rem;margin:1rem 0;display:none}
+body.conception .note{display:block}
+.note b{font-family:"Familjen Grotesk";color:var(--enc)}
+.pied{max-width:72rem;margin:0 auto;padding:2.5rem 1.5rem;border-top:1px solid var(--regle);color:var(--enc3);font-size:.84rem;font-family:"Familjen Grotesk",sans-serif}
+</style>
+</head>
+<body>
+<header class="tete">
+ <p class="fil"><span class="no">Prototype 03</span><a href="index.html" style="color:var(--enc3)">L'atelier des prototypes</a><span>Évaluation · formation des correcteurs</span></p>
+ <h1>Le jugement comparé</h1>
+ <p class="chapeau">Dix fois de suite, deux copies&nbsp;: laquelle est le meilleur travail&nbsp;? Aucun critère ne vous est donné — c'est le dispositif entier. À la fin, il ne vous dit pas si vous avez bien corrigé&nbsp;: il vous dit <em>ce qui a gouverné vos jugements à votre insu</em>, il attrape vos incohérences, et il vous montre où quatre experts se contredisent entre eux.</p>
+ <div class="commandes">
+  <button class="cmd" id="btnConception" aria-pressed="false">Vue conception</button>
+  <button class="cmd" id="btnTheme">Thème</button>
+  <button class="cmd" id="btnReprise">Recommencer</button>
+  <span class="mo" style="font-size:.62rem;color:var(--enc3)">10 comparaisons · 5 min</span>
+ </div>
+</header>
+<main>
+ <div class="consigne">
+  <h2>La tâche que les élèves ont eue</h2>
+  <p>Francisation, niveau 4 (intermédiaire). Cinq personnes, même classe, même heure, quarante minutes, dictionnaire permis.</p>
+  <span class="tache">« Vous n'avez plus d'eau chaude dans votre logement depuis plusieurs jours. Écrivez un courriel à votre propriétaire pour qu'il fasse réparer. »</span>
+ </div>
+ <div id="scene"></div>
+ <section class="res" id="res" hidden></section>
+</main>
+<footer class="pied"><p>Prototype de portfolio — conception, écriture et réalisation&nbsp;: Daniel Tousignant. Les cinq copies sont écrites pour ce prototype&nbsp;: aucune ne provient d'une personne réelle, et les erreurs y ont été composées pour faire tenir ensemble un profil linguistique plausible. Le panel d'experts est fictif&nbsp;; ses désaccords, non.</p></footer>
+
+<script>
+"use strict";
+/* ═══════════════════════════════════════════════════════════════════
+   « Le jugement comparé ».
+   Méthode : comparaison par paires (comparative judgement). On ne demande
+   jamais une note — seulement, dix fois, « lequel des deux ». Le classement
+   se reconstruit ensuite tout seul, et l'écart entre ce classement et les
+   critères cachés dit ce qui a réellement pesé.
+   ═══════════════════════════════════════════════════════════════════ */
+
+const COPIES = [
+ {id:"K", nom:"Copie 1", mots:118,
+  txt:`Bonjour monsieur Tremblay,
+
+Je suis Karla Mendoza, l'apartament 4, 2140 rue Sainte-Catherine. Depuis lundi le 3 mars il y a pas d'eau chaude dans mon logment. J'ai atendu quatre jours pour ecrire parce que je pensais que sa va revenir tout seul. Mes enfants prend la douche à l'eau froide le matin.
+
+Le voisin de l'apartament 5 dit que lui ossi il a pas d'eau chaude. Je pense que le probleme est le chauffe-eau du sous-sol.
+
+Est-ce que vous pouvez envoyer un plombier avant vendredi ? Je suis à la maison apres 15 h tout les jours. Mon numero est le 514 555-0148.
+
+Merci beaucoup,
+Karla Mendoza`,
+  sc:{ortho:1,syntaxe:2,but:5,registre:4,info:5,longueur:4}},
+
+ {id:"D", nom:"Copie 2", mots:71,
+  txt:`Bonjour Monsieur,
+
+J'espère que vous allez bien. Je vous écris aujourd'hui au sujet d'un petit problème dans mon appartement. Ce n'est pas très grave, mais cela me dérange un peu depuis quelque temps.
+
+Je vous remercie à l'avance de votre compréhension et de votre gentillesse. Je sais que vous êtes une personne très occupée.
+
+Veuillez agréer, Monsieur, l'expression de mes salutations distinguées.
+
+Dinh Pham`,
+  sc:{ortho:5,syntaxe:5,but:1,registre:5,info:1,longueur:2}},
+
+ {id:"A", nom:"Copie 3", mots:64,
+  txt:`Bonjour,
+
+Je m'appelle Amina Sow, appartement 7. J'écris pour un problème d'eau chaude. Il n'y a plus d'eau chaude depuis quelques jours dans la salle de bain et dans la cuisine. C'est un problème pour toute la famille.
+
+Est-ce que vous pouvez regarder s'il vous plaît ?
+
+Merci
+Amina`,
+  sc:{ortho:4,syntaxe:4,but:3,registre:4,info:3,longueur:2}},
+
+ {id:"Y", nom:"Copie 4", mots:82,
+  txt:`Monsieur,
+
+Ça fait cinq jours qu'on a pas d'eau chaude au 2140 Sainte-Catherine, appartement 9. J'ai appelé trois fois au numéro de la porte, personne répond, personne rappelle. C'est pas normal. Nous on paye le loyer le 1er de chaque mois, jamais en retard.
+
+Je veux un plombier lundi matin. Sinon je vais faire une demande au Tribunal administratif du logement.
+
+Youssef Belkacem
+438 555-0192`,
+  sc:{ortho:3,syntaxe:3,but:5,registre:1,info:5,longueur:3}},
+
+ {id:"O", nom:"Copie 5", mots:141,
+  txt:`Bonjour Monsieur Tremblay,
+
+Comment allez-vous ? Ici tout va bien, sauf la température qui change beaucoup cette semaine, on ne sait jamais comment s'habiller le matin.
+
+J'aime beaucoup mon appartement et le quartier. Il y a un beau parc juste à côté et ma fille va à l'école Saint-Joseph, elle est très contente de sa nouvelle enseignante.
+
+J'ai remarqué que l'eau n'est pas comme avant quand je fais la vaisselle, et aussi pour la douche le matin. Mon mari dit que c'est peut-être normal en hiver, mais moi je trouve que non.
+
+Je vous souhaite une bonne fin de semaine et au plaisir de vous rencontrer bientôt.
+
+Olga Kovalenko`,
+  sc:{ortho:4,syntaxe:4,but:2,registre:5,info:2,longueur:5}}
+];
+const CRIT = [
+ {id:"but",     nom:"Tâche accomplie",       expl:"le courriel obtient-il la réparation : problème nommé, demande explicite, échéance"},
+ {id:"info",    nom:"Précision des faits",   expl:"adresse, date, durée, portée du problème, moyen de rappel"},
+ {id:"ortho",   nom:"Orthographe",           expl:"graphie, accords, accents"},
+ {id:"syntaxe", nom:"Syntaxe",               expl:"construction des phrases, négation, prépositions"},
+ {id:"registre",nom:"Registre et politesse", expl:"ton adressé à un propriétaire qu'on veut faire agir"},
+ {id:"longueur",nom:"Longueur du texte",     expl:"nombre de mots — ce n'est pas un critère, c'est un biais connu"}
+];
+const PANEL = {
+ consensus:["K","Y","A","O","D"],
+ experts:[
+  {nom:"Didacticienne du FLS", ordre:["K","Y","A","O","D"], mot:"La consigne dit « pour qu'il fasse réparer ». C'est une tâche, pas une dictée. Karla obtient le plombier ; Dinh n'obtient rien du tout."},
+  {nom:"Enseignante de la classe", ordre:["K","A","Y","O","D"], mot:"Je descends Youssef. Pas parce que c'est mal écrit — parce que j'aurais à lui expliquer que ce ton-là, au Québec, lui ferme des portes qu'il ne verra jamais se fermer."},
+  {nom:"Évaluateur ministériel", ordre:["Y","K","A","D","O"], mot:"Youssef d'abord : c'est le seul qui date, chiffre et fixe une échéance. Et je remonte Dinh au-dessus d'Olga : la maîtrise formelle est un acquis transférable, le bavardage aimable n'est rien."},
+  {nom:"Conseillère en entreprise", ordre:["K","Y","A","O","D"], mot:"Je les lis comme un employeur les lirait. Deux d'entre eux obtiennent une action. Trois n'obtiennent rien, et le mieux écrit des trois est celui qui n'obtient rien du tout."}
+ ]
+};
+
+/* toutes les paires, dans un ordre mêlé */
+function paires(){
+ const p=[];for(let i=0;i<COPIES.length;i++)for(let j=i+1;j<COPIES.length;j++)p.push([COPIES[i].id,COPIES[j].id]);
+ for(let i=p.length-1;i>0;i--){const k=Math.floor(Math.random()*(i+1));[p[i],p[k]]=[p[k],p[i]];
+   if(Math.random()<.5)p[i].reverse();}
+ return p;
+}
+let E={};
+function neuf(){E={p:paires(),i:0,vict:{},t0:0,jug:[],tour:2};COPIES.forEach(c=>E.vict[c.id]=[]);
+ document.getElementById("res").hidden=true;document.getElementById("res").innerHTML="";scene();}
+
+const $=s=>document.querySelector(s);
+const cop=id=>COPIES.find(c=>c.id===id);
+
+function scene(){
+ if(E.i>=E.p.length) return resultats();
+ const [a,b]=E.p[E.i];E.t0=performance.now();
+ $("#scene").innerHTML=
+  '<div class="avance"><span class="n">comparaison '+(E.i+1)+' / '+E.p.length+'</span>'
+  +'<span class="barre"><i style="width:'+(E.i/E.p.length*100)+'%"></i></span></div>'
+  +'<p class="enonce">Laquelle des deux est le meilleur travail&nbsp;?<span>Aucun critère ne vous est fourni. Tranchez vite, comme dans une pile de copies un jeudi soir.</span></p>'
+  +'<div class="paire">'+[a,b].map(id=>{const c=cop(id);
+    return '<article class="copie"><div class="ent"><span>'+c.nom+'</span><span>'+c.mots+' mots</span></div>'
+      +'<div class="corps">'+c.txt+'</div>'
+      +'<div class="pied"><button class="choisir" data-id="'+id+'">Celle-ci</button></div></article>'}).join("")
+  +'</div><p class="aide">Il n\'y a pas d\'égalité possible. C\'est le prix de la méthode&nbsp;: un jugement forcé est plus fiable qu\'une note qu\'on hésite à poser.</p>';
+ $("#scene").querySelectorAll(".choisir").forEach(btn=>btn.onclick=()=>{
+   const g=btn.dataset.id, p=(g===a?b:a);
+   E.vict[g].push(p);
+   E.jug.push({gagne:g,perd:p,ms:Math.round(performance.now()-E.t0)});
+   E.i++;scene();window.scrollTo({top:0,behavior:"instant"});
+ });
+}
+
+/* ─── analyse ─── */
+const wins=id=>E.vict[id].length;
+function classement(){
+ return COPIES.map(c=>c.id).sort((x,y)=>{
+   if(wins(y)!==wins(x))return wins(y)-wins(x);
+   if(E.vict[x].includes(y))return -1;      /* départage par le face-à-face */
+   if(E.vict[y].includes(x))return 1;
+   return 0;});
+}
+function cycles(){
+ const out=[],bat=(x,y)=>E.vict[x].includes(y),ids=COPIES.map(c=>c.id);
+ for(let i=0;i<5;i++)for(let j=0;j<5;j++)for(let k=j+1;k<5;k++){
+  const a=ids[i],b=ids[j],c=ids[k];if(a===b||a===c)continue;
+  if(bat(a,b)&&bat(b,c)&&bat(c,a)&&!out.some(o=>o.slice().sort().join()===[a,b,c].sort().join())) out.push([a,b,c]);
+ }
+ return out;
+}
+function correl(v1,v2){
+ const m=a=>a.reduce((s,x)=>s+x,0)/a.length,m1=m(v1),m2=m(v2);
+ let n=0,d1=0,d2=0;
+ for(let i=0;i<v1.length;i++){n+=(v1[i]-m1)*(v2[i]-m2);d1+=(v1[i]-m1)**2;d2+=(v2[i]-m2)**2}
+ return (d1&&d2)?n/Math.sqrt(d1*d2):0;
+}
+function profil(){
+ const mesW=COPIES.map(c=>wins(c.id));
+ return CRIT.map(k=>({k:k,r:correl(mesW,COPIES.map(c=>c.sc[k.id]))})).sort((a,b)=>b.r-a.r);
+}
+function rangCons(id){return PANEL.consensus.indexOf(id)}
+function divergentes(){ /* les paires où mon choix contredit le panel */
+ return E.jug.filter(j=>rangCons(j.gagne)>rangCons(j.perd));
+}
+
+function resultats(){
+ const cl=classement(), pf=profil(), cy=cycles(), dv=divergentes();
+ const accord=E.jug.length-dv.length;
+ const tps=E.jug.map(j=>j.ms).sort((a,b)=>a-b), med=tps[Math.floor(tps.length/2)];
+ const dom=pf[0], negl=pf[pf.length-1];
+
+ const monCl='<ol class="classement">'+cl.map(id=>{
+   const e=cl.indexOf(id)-rangCons(id);
+   return '<li><b>'+cop(id).nom+'</b> <span class="ecart'+(e?"":" nul")+'">'+(e===0?"au même rang que le panel":(e>0?"+":"")+e+" rang"+(Math.abs(e)>1?"s":"")+" d'écart")+'</span></li>'}).join("")+'</ol>';
+ const consCl='<ol class="classement">'+PANEL.consensus.map(id=>'<li><b>'+cop(id).nom+'</b></li>').join("")+'</ol>';
+
+ const profilHtml='<div class="profil">'+pf.map((p,i)=>
+   '<div class="pr'+(i===0?" haut":"")+'"><span>'+p.k.nom+'</span>'
+   +'<span class="b"><i style="'+(p.r>=0?"left:50%;width:"+(p.r*50).toFixed(1)+"%":"right:50%;left:auto;width:"+(-p.r*50).toFixed(1)+"%")+'"></i></span>'
+   +'<span class="v">'+(p.r>=0?"+":"")+p.r.toFixed(2)+'</span></div>').join("")+'</div>';
+
+ const expHtml='<table class="experts"><tr><th>Membre du panel</th><th>Son classement</th><th>Ce qu\'il en dit</th></tr>'
+  +PANEL.experts.map(x=>'<tr><td class="q">'+x.nom+'</td><td>'+x.ordre.map(i=>cop(i).nom.replace("Copie ","")).join(" › ")+'</td><td class="q">'+x.mot+'</td></tr>').join("")+'</table>';
+
+ let cyHtml="";
+ if(cy.length){cyHtml='<div class="cycle"><h3 style="margin:0 0 .4rem">Vos jugements ne sont pas transitifs</h3>'
+  +cy.map(t=>'<p class="tri">'+cop(t[0]).nom+' &gt; '+cop(t[1]).nom+' &gt; '+cop(t[2]).nom+' &gt; '+cop(t[0]).nom+'</p>').join("")
+  +'<p style="margin:.4rem 0 0">Ce n\'est pas une étourderie&nbsp;: c\'est la signature d\'un jugement qui change de critère d\'une paire à l\'autre. Sur une paire vous avez pesé la langue, sur la suivante l\'efficacité, et les deux se sont refermées l\'une sur l\'autre. Une grille de correction ne supprime pas ce phénomène — elle le rend visible, ce qui est déjà beaucoup.</p></div>'}
+ else{cyHtml='<div class="cycle"><h3 style="margin:0 0 .4rem">Vos jugements sont parfaitement transitifs</h3><p style="margin:0">Aucun triangle contradictoire dans vos dix comparaisons. Vous avez appliqué le même critère d\'un bout à l\'autre — reste à savoir lequel, et vous ne l\'aviez pas formulé avant de commencer.</p></div>'}
+
+ $("#res").hidden=false;
+ $("#res").innerHTML=
+  '<h2>Ce que vous venez de faire</h2>'
+  +'<div class="bloc fort"><h3>Ce qui a gouverné vos choix</h3>'
+  +'<p>Personne ne vous a donné de critère. Vous en avez employé un quand même — tout le monde le fait. En croisant vos dix décisions avec six caractéristiques mesurées à l\'avance sur les cinq copies, voici ce que vos choix ont réellement suivi&nbsp;:</p>'
+  +profilHtml
+  +'<p style="margin-top:1rem">Le plus fort&nbsp;: <b>'+dom.k.nom.toLowerCase()+'</b> ('+dom.r.toFixed(2)+') — '+dom.k.expl+'. Le plus faible&nbsp;: '+negl.k.nom.toLowerCase()+' ('+negl.r.toFixed(2)+').</p>'
+  +(pf.find(p=>p.k.id==="longueur").r>0.5?'<p><b>Attention à la longueur.</b> Elle corrèle à '+pf.find(p=>p.k.id==="longueur").r.toFixed(2)+' avec vos choix. Ce n\'est un critère dans aucun programme, et c\'est le biais le mieux documenté de la correction humaine.</p>':'')
+  +(pf.find(p=>p.k.id==="ortho").r>0.6?'<p><b>Le poids de l\'orthographe.</b> Elle explique vos choix mieux que l\'accomplissement de la tâche. C\'est défendable — à condition que ce soit décidé, et écrit dans la grille avant la correction, pas découvert après.</p>':'')
+  +'<p class="note"><b>Comment c\'est calculé.</b> Corrélation entre le nombre de victoires de chaque copie chez vous et le score caché de chaque copie sur chaque caractéristique. Cinq points seulement&nbsp;: le chiffre est une orientation, pas une mesure. Le dispositif le dit plutôt que de fabriquer une fausse précision à trois décimales.</p></div>'
+
+  +'<div class="deux"><div class="bloc"><h3>Votre classement</h3><p style="color:var(--enc2);font-size:.94rem">Reconstruit à partir de vos dix comparaisons — vous ne l\'avez jamais posé vous-même.</p>'+monCl+'</div>'
+  +'<div class="bloc"><h3>Le consensus du panel</h3><p style="color:var(--enc2);font-size:.94rem">Quatre correcteurs, quatre métiers différents.</p>'+consCl
+  +'<p style="margin-top:.8rem;font-family:\'Familjen Grotesk\';font-size:.86rem">Accord avec le panel&nbsp;: <b>'+accord+' comparaisons sur '+E.jug.length+'</b>.</p></div></div>'
+
+  +cyHtml
+
+  +'<div class="bloc"><h3>Le panel n\'est pas d\'accord avec lui-même</h3>'
+  +'<p>C\'est la partie du dispositif qui compte le plus, et c\'est celle qu\'on retire habituellement pour ne pas troubler l\'apprenant. Deux désaccords, et ils ne portent pas sur la langue&nbsp;:</p>'
+  +expHtml
+  +'<p style="margin-top:1rem"><b>Premier désaccord — copie 1 contre copie 4.</b> Faut-il préférer le texte qui obtient l\'action avec un ton qui froissera, ou celui qui l\'obtient sans froisser mais avec trente fautes&nbsp;? Il n\'y a pas de réponse dans le programme. Il y en a une dans ce que vous croyez être en train d\'enseigner.</p>'
+  +'<p><b>Second désaccord — copie 2 contre copie 5.</b> Entre deux textes qui n\'obtiennent rien, lequel est le moins loin du but&nbsp;: le formellement irréprochable, ou celui qui a au moins nommé le problème&nbsp;? Deux membres du panel répondent l\'inverse l\'un de l\'autre.</p>'
+  +'<p class="note"><b>Pourquoi montrer la dispute.</b> Un dispositif qui donne « le bon classement » enseigne qu\'il existe. Ce qui existe, c\'est un accord large sur le milieu du paquet et un désaccord irréductible sur les extrêmes — et c\'est exactement là que les décisions de passage se jouent. Le corrigé cache le seul endroit intéressant.</p></div>'
+
+  +'<div class="bloc"><h3>Votre vitesse</h3><p>Temps médian par comparaison&nbsp;: <b>'+(med/1000).toFixed(1)+' seconde'+(med>=2000?'s':'')+'</b>. '
+  +(med<3000?'C\'est rapide — et c\'est le régime réel de la correction en pile. Le dispositif est bâti pour ce régime-là, pas contre lui.':'Vous avez pris le temps. En situation réelle, une pile de trente copies vous donnerait environ le tiers de ça, et vos jugements se déplaceraient — c\'est mesurable, et c\'est un argument pour comparer par paires plutôt que noter.')+'</p></div>'
+
+  +(dv.length?'<div class="bloc fort"><h3>Deuxième tour</h3>'
+    +'<p>Vous avez tranché <b>'+dv.length+' comparaison'+(dv.length>1?'s':'')+'</b> à l\'inverse du panel. Cette fois, le critère du programme est écrit devant vous. Refaites ces paires-là.</p>'
+    +'<p style="border-left:2px solid var(--bleu);padding-left:.9rem;font-style:italic;color:var(--enc2)">Critère de la tâche&nbsp;: le courriel obtient-il la réparation&nbsp;? Le destinataire sait-il quoi réparer, où, depuis quand, et pour quand&nbsp;?</p>'
+    +'<button class="cmd" id="btnTour2" style="border-color:var(--verm);color:var(--verm)">Refaire ces '+dv.length+' comparaison'+(dv.length>1?'s':'')+'</button></div>'
+   :'<div class="bloc fort"><h3>Pas de deuxième tour</h3><p>Aucune de vos comparaisons ne contredit le consensus du panel. C\'est rare, et ce n\'est pas forcément bon signe&nbsp;: il reste à savoir si vous avez appliqué le critère de la tâche, ou si vous êtes tombé dessus.</p></div>')
+
+  +'<div class="bloc"><h3>Note de conception</h3>'
+  +'<p>Trois décisions font tout le dispositif. <b>Un&nbsp;:</b> ne jamais demander de note. On demande dix fois un jugement binaire, et le classement se reconstruit — c\'est la comparaison par paires, et elle est plus fiable que la notation parce qu\'elle n\'exige pas qu\'on tienne une échelle en tête. <b>Deux&nbsp;:</b> ne pas donner le critère au premier tour. Sans ce silence, il n\'y a pas de profil à révéler — le dispositif mesure ce que l\'apprenant fait quand on ne lui dit rien, ce qui est la situation réelle. <b>Trois&nbsp;:</b> montrer le désaccord des experts au lieu d\'un corrigé.</p>'
+  +'<p>Les cinq copies ne sont pas des échantillons&nbsp;: ce sont des instruments. Chacune isole un conflit entre deux critères, et la copie 1 — trente fautes, tâche pleinement accomplie — a été écrite pour qu\'aucun correcteur ne puisse la classer sans avoir décidé, au moins une fois, ce qu\'il évalue.</p>'
+  +'<p><button class="cmd" onclick="neuf();window.scrollTo({top:0,behavior:\'smooth\'})">Recommencer</button></p></div>';
+
+ if($("#btnTour2")) $("#btnTour2").onclick=()=>tour2(dv);
+ $("#res").scrollIntoView({block:"start",behavior:"smooth"});
+}
+
+/* ─── deuxième tour, critère explicite ─── */
+function tour2(dv){
+ let k=0,bouges=0;
+ const suite=()=>{
+  if(k>=dv.length){
+   $("#scene").innerHTML='<div class="bloc fort"><h3>Ce que le critère a déplacé</h3>'
+    +'<p>Vous avez changé <b>'+bouges+'</b> jugement'+(bouges>1?'s':'')+' sur '+dv.length+'.</p>'
+    +'<p>'+(bouges===dv.length?"Toutes vos divergences venaient du critère manquant, pas d'un désaccord de fond. C'est la meilleure nouvelle possible pour une équipe : ce qui vous séparait du panel s'écrit sur une feuille et se transmet en réunion.":
+        bouges===0?"Vous n'avez rien changé. Ce n'est pas de l'entêtement : c'est un désaccord de fond avec le critère du programme, et il mérite d'être porté à la table plutôt que corrigé en silence. Deux des quatre experts sont d'ailleurs plus près de vous que du consensus.":
+        "Une partie de vos divergences tombe dès que le critère est écrit ; l'autre reste. Ce qui reste est votre vrai désaccord, et c'est la seule partie qui vaut une discussion d'équipe.")+'</p>'
+    +'<p class="note"><b>Ce que ce deuxième tour mesure.</b> Il sépare deux choses qu\'on confond toujours dans la formation des correcteurs&nbsp;: <em>ne pas connaître le critère</em> et <em>ne pas être d\'accord avec lui</em>. La première se règle par un document, la seconde par une conversation. Les traiter pareil est la raison pour laquelle les séances d\'harmonisation ne tiennent pas.</p>'
+    +'<p><button class="cmd" onclick="neuf();window.scrollTo({top:0,behavior:\'smooth\'})">Recommencer depuis le début</button></p></div>';
+   $("#scene").scrollIntoView({block:"start",behavior:"smooth"});return;
+  }
+  const j=dv[k], a=j.gagne, b=j.perd;
+  $("#scene").innerHTML=
+   '<div class="avance"><span class="n">deuxième tour · '+(k+1)+' / '+dv.length+'</span><span class="barre"><i style="width:'+(k/dv.length*100)+'%"></i></span></div>'
+   +'<p class="enonce">Laquelle des deux accomplit mieux la tâche&nbsp;?<span>Le courriel obtient-il la réparation ? Le destinataire sait-il quoi réparer, où, depuis quand, et pour quand ?</span></p>'
+   +'<div class="paire">'+[a,b].sort(()=>Math.random()-.5).map(id=>{const c=cop(id);
+     return '<article class="copie"><div class="ent"><span>'+c.nom+'</span><span>'+c.mots+' mots</span></div>'
+      +'<div class="corps">'+c.txt+'</div><div class="pied"><button class="choisir" data-id="'+id+'">Celle-ci</button></div></article>'}).join("")
+   +'</div>';
+  $("#scene").querySelectorAll(".choisir").forEach(btn=>btn.onclick=()=>{
+    if(btn.dataset.id!==a) bouges++;
+    k++;suite();window.scrollTo({top:0,behavior:"instant"});});
+ };
+ $("#res").hidden=true;suite();
+ $("#scene").scrollIntoView({block:"start",behavior:"smooth"});
+}
+
+$("#btnConception").onclick=e=>{const on=document.body.classList.toggle("conception");e.currentTarget.setAttribute("aria-pressed",on)};
+$("#btnTheme").onclick=()=>{const r=document.documentElement;
+ const a=r.getAttribute("data-theme")||(matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light");
+ r.setAttribute("data-theme",a==="dark"?"light":"dark")};
+$("#btnReprise").onclick=()=>{neuf();window.scrollTo({top:0,behavior:"smooth"})};
+neuf();
+</script>
+</body>
+</html>

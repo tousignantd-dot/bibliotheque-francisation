@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Dix pièces possibles pour un portfolio de concepteur pédagogique, trois d'entre elles construites et jouables — et la grille qui sert à choisir les suivantes.">
+<title>L'atelier des prototypes</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,400&family=Martian+Mono:wght@400;600&display=swap">
+<style>
+/* ═══ L'atelier des prototypes — jetons communs ═══
+   Ancrage visuel : le tracé à deux plumes sur papier d'avoine.
+   Plume BLEUE = ce que la machine calcule.  Plume VERMILLON = ce que l'humain décide.
+   Aucune autre couleur n'a le droit de signifier quoi que ce soit. */
+:root{
+  --pap:#EDE7DC; --pan:#F8F4EC; --pan2:#E3DBCC; --pan3:#D9D0BE;
+  --enc:#1B1A17; --enc2:#6B665C; --enc3:#948D80;
+  --regle:#D6CDBD; --regle2:#BFB4A0;
+  --bleu:#1F4B99; --bleu2:#5C7EBF; --bleu-pale:#DCE3F1; --bleu-voile:rgba(31,75,153,.09);
+  --verm:#BE4220; --verm2:#D9744F; --verm-pale:#F3DDD3; --verm-voile:rgba(190,66,32,.09);
+  --grille:rgba(27,26,23,.05);
+  --om:0 1px 0 rgba(27,26,23,.09);
+  --om2:0 2px 14px rgba(27,26,23,.10);
+}
+:root:not([data-theme="light"]){ color-scheme:light dark; }
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --pap:#15140F; --pan:#1D1C16; --pan2:#282621; --pan3:#33302A;
+  --enc:#EAE4D8; --enc2:#A29B8D; --enc3:#7B7467;
+  --regle:#33302A; --regle2:#474238;
+  --bleu:#8FB2F0; --bleu2:#6E8FCB; --bleu-pale:#1A2438; --bleu-voile:rgba(143,178,240,.12);
+  --verm:#EE8A66; --verm2:#C0684A; --verm-pale:#33201A; --verm-voile:rgba(238,138,102,.12);
+  --grille:rgba(234,228,216,.045);
+  --om:0 1px 0 rgba(0,0,0,.45); --om2:0 2px 16px rgba(0,0,0,.5);
+}}
+:root[data-theme="dark"]{ color-scheme:dark;
+  --pap:#15140F; --pan:#1D1C16; --pan2:#282621; --pan3:#33302A;
+  --enc:#EAE4D8; --enc2:#A29B8D; --enc3:#7B7467;
+  --regle:#33302A; --regle2:#474238;
+  --bleu:#8FB2F0; --bleu2:#6E8FCB; --bleu-pale:#1A2438; --bleu-voile:rgba(143,178,240,.12);
+  --verm:#EE8A66; --verm2:#C0684A; --verm-pale:#33201A; --verm-voile:rgba(238,138,102,.12);
+  --grille:rgba(234,228,216,.045);
+  --om:0 1px 0 rgba(0,0,0,.45); --om2:0 2px 16px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pap);color:var(--enc);font-family:"Newsreader",Georgia,serif;font-size:18px;line-height:1.62;
+ -webkit-font-smoothing:antialiased;
+ background-image:linear-gradient(var(--grille) 1px,transparent 1px),linear-gradient(90deg,var(--grille) 1px,transparent 1px);background-size:72px 72px,72px 72px}
+h1,h2,h3,h4,.gr{font-family:"Familjen Grotesk","Helvetica Neue",Arial,sans-serif;font-weight:600;text-wrap:balance;letter-spacing:-.012em}
+.mo{font-family:"Martian Mono",ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;letter-spacing:-.04em}
+p{margin:0 0 1.05em}
+a{color:inherit;text-decoration-color:var(--verm);text-underline-offset:.18em}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--verm);outline-offset:3px}
+[hidden]{display:none!important}
+.large,.tete,main,.pied{max-width:64rem;margin:0 auto;padding-left:1.6rem;padding-right:1.6rem}
+.col{max-width:39rem}
+
+/* ── tête ── */
+.tete{padding-top:3.4rem;padding-bottom:1.4rem}
+.fil{display:flex;flex-wrap:wrap;gap:.9rem;align-items:baseline;font-size:.66rem;text-transform:uppercase;letter-spacing:.16em;color:var(--enc3);font-family:"Familjen Grotesk",sans-serif}
+.fil .no{color:var(--verm)}
+h1{font-size:clamp(2.4rem,6.4vw,4.4rem);line-height:.98;margin:.6rem 0 .9rem;font-weight:700}
+.chapeau{max-width:38rem;font-size:1.16rem}
+.chapeau em{font-style:italic}
+.commandes{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;border-top:1px solid var(--regle);padding-top:1rem;margin-top:1.6rem}
+.cmd{background:none;border:1px solid var(--regle2);border-radius:2px;padding:.42rem .8rem;font-family:"Familjen Grotesk",sans-serif;font-size:.8rem;cursor:pointer;color:var(--enc2)}
+.cmd:hover{border-color:var(--enc2);color:var(--enc)}
+
+/* ── sections ── */
+section{padding:2.6rem 0;border-top:1px solid var(--regle)}
+.numero{font-family:"Martian Mono",monospace;font-size:.66rem;color:var(--verm);display:block;margin-bottom:.5rem}
+h2{font-size:clamp(1.7rem,3.8vw,2.5rem);margin:0 0 1rem;font-weight:700;line-height:1.06}
+h3{font-size:1.22rem;margin:1.8rem 0 .5rem}
+.sous{color:var(--enc2);max-width:38rem;font-size:1.04rem}
+
+/* ── tableau du diagnostic ── */
+table.diag{width:100%;border-collapse:collapse;margin:1.4rem 0;font-size:.95rem}
+table.diag th{text-align:left;font-family:"Familjen Grotesk";font-size:.62rem;text-transform:uppercase;letter-spacing:.1em;
+ color:var(--enc3);border-bottom:1px solid var(--regle2);padding:.5rem .6rem;font-weight:600;vertical-align:bottom}
+table.diag td{border-bottom:1px solid var(--regle);padding:.75rem .6rem;vertical-align:top}
+table.diag td.piece{font-family:"Familjen Grotesk";font-weight:600;width:22%}
+table.diag td.manque{color:var(--verm)}
+@media(max-width:720px){table.diag,table.diag tbody,table.diag tr,table.diag td{display:block;width:auto}
+ table.diag thead{display:none}table.diag tr{border-bottom:1px solid var(--regle2);padding:.6rem 0}
+ table.diag td{border:none;padding:.15rem 0}table.diag td.piece{font-size:1.05rem}
+ table.diag td::before{content:attr(data-t) " · ";font-family:"Familjen Grotesk";font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:var(--enc3)}
+ table.diag td.piece::before{content:none}}
+
+/* ── épreuves ── */
+.epreuves{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:1.1rem;margin-top:1.4rem}
+.ep{border-left:2px solid var(--bleu);padding-left:1rem}
+.ep h4{margin:0 0 .3rem;font-size:1rem}
+.ep p{font-size:.94rem;color:var(--enc2);margin:0}
+
+/* ── pièces livrées ── */
+.livrees{display:grid;grid-template-columns:repeat(auto-fit,minmax(17rem,1fr));gap:1.2rem;margin-top:1.6rem}
+.carte{background:var(--pan);border:1px solid var(--regle);box-shadow:var(--om);display:flex;flex-direction:column;
+ text-decoration:none;color:inherit;transition:box-shadow .15s,transform .15s}
+.carte:hover{box-shadow:var(--om2);transform:translateY(-2px)}
+.carte .vig{border-bottom:1px solid var(--regle);background:var(--pap);padding:.6rem}
+.carte .vig svg{display:block;width:100%;height:auto}
+.carte .txt{padding:1.1rem 1.2rem 1.3rem;flex:1;display:flex;flex-direction:column}
+.carte .no{font-family:"Martian Mono",monospace;font-size:.6rem;color:var(--verm);letter-spacing:-.03em}
+.carte h3{margin:.3rem 0 .5rem;font-size:1.25rem}
+.carte p{font-size:.94rem;color:var(--enc2);margin:0 0 .8rem}
+.carte .meca{font-family:"Familjen Grotesk";font-size:.74rem;color:var(--bleu);border-top:1px solid var(--regle);padding-top:.6rem;margin-top:auto}
+.carte .meca b{display:block;font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:var(--enc3);margin-bottom:.2rem}
+
+/* ── grille d'arbitrage ── */
+.arbitre{background:var(--pan);border:1px solid var(--regle);padding:1.5rem 1.7rem;margin-top:1.4rem}
+@media(max-width:600px){.arbitre{padding:1.1rem}}
+.curseurs{display:grid;grid-template-columns:repeat(auto-fit,minmax(13rem,1fr));gap:1rem 1.6rem;margin-bottom:1.4rem}
+.cur label{display:block;font-family:"Familjen Grotesk";font-size:.78rem;margin-bottom:.2rem}
+.cur label b{color:var(--verm);font-family:"Martian Mono";font-size:.7rem;font-weight:400}
+.cur input{width:100%;accent-color:var(--verm)}
+.cur .ex{font-size:.76rem;color:var(--enc3);font-family:"Familjen Grotesk"}
+.rang{list-style:none;padding:0;margin:0}
+.rang li{display:grid;grid-template-columns:1.8rem 1fr 8rem 3rem;gap:.7rem;align-items:center;padding:.6rem .2rem;border-bottom:1px solid var(--regle);
+ font-family:"Familjen Grotesk";font-size:.92rem;transition:background .2s}
+@media(max-width:640px){.rang li{grid-template-columns:1.6rem 1fr 3rem}.rang li .jauge{display:none}}
+.rang li .r{font-family:"Martian Mono";font-size:.72rem;color:var(--enc3)}
+.rang li.faite{color:var(--enc2)}
+.rang li.faite .t::after{content:" · construit";font-size:.62rem;text-transform:uppercase;letter-spacing:.1em;color:var(--verm)}
+.jauge{height:6px;background:var(--pan2);position:relative}
+.jauge i{position:absolute;left:0;top:0;bottom:0;background:var(--bleu);transition:width .35s}
+.rang li.faite .jauge i{background:var(--verm)}
+.sc{font-family:"Martian Mono";font-size:.72rem;color:var(--bleu);text-align:right}
+
+/* ── fiches des pistes ── */
+.piste{border-top:1px solid var(--regle);padding:1.8rem 0;display:grid;grid-template-columns:3.2rem minmax(0,1fr);gap:1.4rem}
+@media(max-width:640px){.piste{grid-template-columns:1fr;gap:.4rem}}
+.piste .rn{font-family:"Martian Mono";font-size:1.6rem;color:var(--regle2);line-height:1}
+.piste h3{margin:0 0 .2rem;font-size:1.5rem}
+.piste .sstitre{font-family:"Familjen Grotesk";font-size:.72rem;text-transform:uppercase;letter-spacing:.11em;color:var(--verm);margin-bottom:.7rem}
+.piste .corps{max-width:38rem}
+.fiche{display:grid;grid-template-columns:8.5rem 1fr;gap:.3rem .9rem;margin-top:1rem;font-size:.92rem;border-top:1px solid var(--regle);padding-top:.9rem}
+@media(max-width:520px){.fiche{grid-template-columns:1fr;gap:.1rem}}
+.fiche dt{font-family:"Familjen Grotesk";font-size:.64rem;text-transform:uppercase;letter-spacing:.09em;color:var(--enc3);padding-top:.3rem}
+.fiche dd{margin:0 0 .4rem;color:var(--enc2)}
+.fiche dd.meca{color:var(--bleu)}
+.cotes{font-family:"Martian Mono";font-size:.66rem;color:var(--enc3);margin-top:.6rem;letter-spacing:-.03em}
+
+/* ── refus ── */
+.refus{background:var(--verm-voile);border:1px solid var(--verm);border-left-width:3px;padding:1.4rem 1.6rem;margin-top:1.4rem}
+.refus ul{margin:.6rem 0 0;padding-left:1.1rem}
+.refus li{margin-bottom:.5rem;font-size:.97rem}
+.refus li b{font-family:"Familjen Grotesk"}
+.enc{border-left:2px solid var(--bleu);padding-left:1rem;color:var(--enc2);font-size:.97rem;margin:1.4rem 0}
+.pied{padding:3rem 1.6rem;border-top:1px solid var(--regle);color:var(--enc3);font-size:.85rem;font-family:"Familjen Grotesk",sans-serif}
+</style>
+</head>
+<body>
+<header class="tete">
+ <p class="fil"><span class="no">Portfolio · conception pédagogique</span><span>Dossier de travail</span><span>4 septembre 2026</span></p>
+ <h1>L'atelier des prototypes</h1>
+ <p class="chapeau">Dix pièces possibles pour montrer ce que je sais faire — et pourquoi neuf idées sur dix ne méritent pas d'être construites. Trois sont ici, <em>jouables tout de suite</em>. Les sept autres sont décrites assez précisément pour être décidées, et la grille au milieu de la page sert à les classer selon ce qu'on cherche à prouver.</p>
+ <div class="commandes">
+  <button class="cmd" id="btnTheme">Thème</button>
+  <span class="mo" style="font-size:.62rem;color:var(--enc3)">3 prototypes livrés · 7 pistes documentées</span>
+ </div>
+</header>
+<main>
+<section>
+<span class="numero">§ 1</span>
+<h2>Ce que le portfolio prouve déjà, et ce qu'il ne prouve pas</h2>
+<p class="sous col">Avant de chercher des idées, il faut savoir ce qui manque. Trois pièces existent, et elles couvrent moins de terrain qu'il n'y paraît&nbsp;: elles démontrent toutes les trois la <em>production</em> et l'<em>argumentation</em>, aucune ne démontre la <em>mécanique d'apprentissage</em>.</p>
+<table class="diag">
+ <thead><tr><th>Pièce</th><th>Ce qu'elle prouve, sans discussion possible</th><th>Ce qu'elle ne prouve pas</th></tr></thead>
+ <tbody>
+ <tr><td class="piece">La bibliothèque de francisation<br><span class="mo" style="font-size:.6rem;color:var(--enc3)">87 modules, 1 264 fiches, 5 962 répliques</span></td>
+     <td data-t="prouve">La capacité à produire à l'échelle industrielle&nbsp;: alignement au programme ministériel, chaîne de fabrication, médias, portail enseignant, tenue dans le temps. C'est un argument que presque personne ne peut opposer.</td>
+     <td class="manque" data-t="ne prouve pas">Que je sais concevoir une <b>situation d'apprentissage difficile</b>. Le volume impressionne&nbsp;; il n'oblige personne à croire que le vingtième module est plus intelligent que le premier.</td></tr>
+ <tr><td class="piece">Le simulateur de défibrillateur</td>
+     <td data-t="prouve">La simulation d'appareil&nbsp;: modèle d'états, geste critique, contrainte de temps, fidélité au protocole. Une pièce que peu de concepteurs pédagogiques peuvent montrer.</td>
+     <td class="manque" data-t="ne prouve pas">Le <b>jugement</b>. On y apprend une procédure — et une procédure a une bonne réponse. Rien n'y demande d'arbitrer entre deux biens.</td></tr>
+ <tr><td class="piece">La boucle du diagnostic</td>
+     <td data-t="prouve">La maîtrise théorique et la méthode&nbsp;: ce que la recherche permet, où elle se contredit, comment on tranche. C'est le dossier qui fait dire « cette personne sait de quoi elle parle ».</td>
+     <td class="manque" data-t="ne prouve pas">Que la méthode <b>produit quelque chose</b>. Un dossier de méthode sans pièce jouée à côté reste un texte sur le travail plutôt qu'un travail.</td></tr>
+ </tbody>
+</table>
+<p class="col">Le trou est net&nbsp;: il manque des pièces <b>courtes, jouables en trois minutes, dont la mécanique elle-même est l'argument</b>. Pas des modules — des démonstrations de mécanique. C'est ce que les trois prototypes de cette page essaient d'être.</p>
+</section>
+
+<section>
+<span class="numero">§ 2</span>
+<h2>Les quatre épreuves qu'une idée doit passer</h2>
+<p class="sous col">La plupart des idées de portfolio meurent à la première. Je les ai posées d'abord parce qu'elles servent aussi à refuser&nbsp;: sans elles, on construit la douzième « capsule interactive » du marché.</p>
+<div class="epreuves">
+ <div class="ep"><h4>1. L'épreuve du « ça existe déjà »</h4><p>Si un acheteur peut obtenir la même chose avec un gabarit Rise ou Genially en une journée, la pièce ne démontre rien sur moi. Elle démontre que je connais l'outil.</p></div>
+ <div class="ep"><h4>2. L'épreuve de la mécanique</h4><p>La pièce doit reposer sur <em>un</em> principe qu'on peut nommer en une phrase et qui gouverne tout le reste. Si on ne peut pas le nommer, il n'y a pas de conception&nbsp;: il y a de la mise en forme.</p></div>
+ <div class="ep"><h4>3. L'épreuve de l'acheteur</h4><p>Quelqu'un doit pouvoir dire « il m'en faudrait un comme ça, pour tel poste, tel problème ». Une pièce admirable sans acheteur imaginable est un exercice de style.</p></div>
+ <div class="ep"><h4>4. L'épreuve du deuxième exemplaire</h4><p>Une pièce dont le contenu se change sans reprogrammer est un produit. Une pièce dont chaque rétroaction est écrite à la main est une maquette. Ce n'est pas la même vente.</p></div>
+</div>
+<p class="enc col">Une cinquième contrainte, non négociable&nbsp;: <b>trois minutes</b>. Un jury, un employeur ou une direction accorde trois minutes à une pièce, et il faut que la mécanique se soit révélée avant la fin. Toutes les pièces ci-dessous sont dimensionnées pour ça.</p>
+</section>
+
+<section>
+<span class="numero">§ 3</span>
+<h2>Trois prototypes construits</h2>
+<p class="sous col">Ils tournent. Ils se jouent au complet, ils fonctionnent hors ligne, ils n'envoient rien nulle part, et chacun porte un interrupteur <b>« vue conception »</b> qui ouvre le capot&nbsp;: les variables cachées, les probabilités, le calcul de la rétroaction. Un employeur voit la pièce&nbsp;; un pair voit la machine.</p>
+<div class="livrees">
+
+ <a class="carte" href="consequence.html">
+  <div class="vig"><svg viewBox="0 0 200 90" aria-hidden="true">
+   <line x1="14" y1="62" x2="186" y2="62" stroke="var(--bleu)" stroke-width="1.2"/>
+   <g stroke="var(--bleu)" stroke-width="1.2">
+    <line x1="20" y1="56" x2="20" y2="68"/><line x1="52" y1="56" x2="52" y2="68"/><line x1="84" y1="56" x2="84" y2="68"/>
+    <line x1="116" y1="56" x2="116" y2="68"/><line x1="148" y1="56" x2="148" y2="68"/><line x1="180" y1="56" x2="180" y2="68"/></g>
+   <path d="M20 54 Q68 8 116 54" fill="none" stroke="var(--verm)" stroke-width="1.4"/>
+   <path d="M52 54 Q116 2 180 54" fill="none" stroke="var(--verm)" stroke-width="1.4"/>
+   <circle cx="20" cy="62" r="3.4" fill="var(--verm)"/><circle cx="52" cy="62" r="3.4" fill="var(--verm)"/>
+   <circle cx="116" cy="62" r="3.4" fill="var(--pap)" stroke="var(--verm)" stroke-width="1.4"/>
+   <circle cx="180" cy="62" r="3.4" fill="var(--pap)" stroke="var(--verm)" stroke-width="1.4"/>
+   <text x="14" y="82" font-family="Martian Mono, monospace" font-size="6.5" fill="var(--enc3)">jour 1</text>
+   <text x="158" y="82" font-family="Martian Mono, monospace" font-size="6.5" fill="var(--enc3)">sem. 12</text>
+  </svg></div>
+  <div class="txt"><span class="no">Prototype 01 · décision, entreprise</span>
+   <h3>La conséquence différée</h3>
+   <p>Vous encadrez un nouvel employé qui parle peu français. Six décisions, aucune corrigée sur le coup&nbsp;; elles reviennent des semaines plus tard dans des scènes que vous ne rattachez pas d'emblée à ce que vous aviez choisi. Puis le tracé fait le raccord — et vous laisse rejouer en ne changeant qu'une seule décision.</p>
+   <span class="meca"><b>Mécanique</b>Aucune rétroaction immédiate&nbsp;: la conséquence arrive quand elle arriverait.</span></div>
+ </a>
+
+ <a class="carte" href="banc-de-panne.html">
+  <div class="vig"><svg viewBox="0 0 200 90" aria-hidden="true">
+   <g stroke="var(--bleu)" stroke-width="1.2" fill="none">
+    <rect x="16" y="10" width="11" height="11"/><rect x="48" y="10" width="11" height="11"/><rect x="80" y="10" width="11" height="11"/>
+    <rect x="112" y="10" width="11" height="11"/><rect x="144" y="10" width="11" height="11"/>
+    <path d="M21 21 L60 42 M53 21 L60 42 M85 21 L118 42 M117 21 L118 42 M149 21 L160 42"/>
+    <path d="M60 42 L60 52 M118 42 L118 52 M160 42 L160 52"/>
+    <path d="M60 52 L44 72 M60 52 L76 72"/>
+   </g>
+   <circle cx="44" cy="76" r="4" fill="var(--verm)"/>
+   <g stroke="var(--enc3)" stroke-width="1" fill="none"><circle cx="76" cy="76" r="4"/><circle cx="118" cy="56" r="4"/><circle cx="160" cy="56" r="4"/></g>
+   <text x="14" y="88" font-family="Martian Mono, monospace" font-size="6.5" fill="var(--enc3)">5 pannes → 1</text>
+  </svg></div>
+  <div class="txt"><span class="no">Prototype 02 · dépannage, métier</span>
+   <h3>Le banc de panne</h3>
+   <p>Une machine à espresso, cinq pannes possibles, neuf vérifications qui coûtent chacune des minutes que vous n'avez pas. Le dispositif n'évalue pas la réponse trouvée&nbsp;: il évalue l'information achetée pour la trouver, et il vous dit lesquels de vos gestes ne pouvaient rien vous apprendre.</p>
+   <span class="meca"><b>Mécanique</b>La distinction entre <em>avoir eu raison</em> et <em>avoir su</em>, calculée, pas rédigée.</span></div>
+ </a>
+
+ <a class="carte" href="jugement-compare.html">
+  <div class="vig"><svg viewBox="0 0 200 90" aria-hidden="true">
+   <g stroke="var(--bleu)" stroke-width="1" fill="none" opacity=".85">
+    <polyline points="24,44 80,30 136,44 184,44"/>
+    <polyline points="24,58 80,58 136,72 184,58"/>
+    <polyline points="24,72 80,72 136,58 184,72"/>
+   </g>
+   <g stroke="var(--verm)" stroke-width="1.6" fill="none">
+    <polyline points="24,16 80,16 136,30 184,16"/>
+    <polyline points="24,30 80,44 136,16 184,30"/>
+   </g>
+   <g fill="var(--pap)" stroke="var(--enc3)" stroke-width=".8">
+    <circle cx="24" cy="16" r="2.6"/><circle cx="80" cy="16" r="2.6"/><circle cx="136" cy="16" r="2.6"/><circle cx="184" cy="16" r="2.6"/>
+   </g>
+   <text x="14" y="88" font-family="Martian Mono, monospace" font-size="6.5" fill="var(--enc3)">4 experts · 5 copies · 2 désaccords</text>
+  </svg></div>
+  <div class="txt"><span class="no">Prototype 03 · évaluation, formation</span>
+   <h3>Le jugement comparé</h3>
+   <p>Dix fois deux copies&nbsp;: laquelle est le meilleur travail&nbsp;? Aucun critère n'est fourni — c'est le dispositif entier. À la fin, il vous dit ce qui a gouverné vos jugements à votre insu, attrape vos incohérences, et vous montre où quatre experts se contredisent entre eux.</p>
+   <span class="meca"><b>Mécanique</b>Le corrigé est remplacé par le désaccord documenté des experts.</span></div>
+ </a>
+</div>
+<p class="col" style="margin-top:1.6rem">Les trois partagent la même règle&nbsp;: <b>aucune rétroaction n'est écrite pour une trajectoire particulière</b>. Elles sont toutes dérivées de l'état d'un modèle — trois variables cachées, une table de vérité, une corrélation. C'est ce qui les rend duplicables pour un autre métier sans reprogrammation, et c'est le seul argument commercial qui compte.</p>
+</section>
+<section>
+<span class="numero">§ 4</span>
+<h2>La grille d'arbitrage</h2>
+<p class="sous col">Dix pièces, quatre critères. Déplacez les curseurs selon ce que la prochaine pièce doit servir — décrocher un poste, ouvrir un marché, impressionner des pairs, ou coûter peu — et le classement se refait. Il n'y a pas de bon réglage&nbsp;: il y a un réglage qui correspond à ce qu'on cherche, et il vaut mieux le régler exprès.</p>
+<div class="arbitre">
+ <div class="curseurs" id="curseurs"></div>
+ <label style="display:flex;gap:.5rem;align-items:center;font-family:'Familjen Grotesk';font-size:.8rem;color:var(--enc2);margin-bottom:.8rem;cursor:pointer">
+  <input type="checkbox" id="reste" style="accent-color:var(--verm)"> masquer les trois pièces déjà construites</label>
+ <ul class="rang" id="rang"></ul>
+ <p style="font-size:.84rem;color:var(--enc3);font-family:'Familjen Grotesk';margin:1rem 0 0">Les cotes sont les miennes, sur cinq, et elles sont discutables — c'est pour ça qu'elles sont écrites plutôt que sous-entendues. L'effort est compté en jours de travail réels, et il entre dans le calcul à l'envers&nbsp;: moins c'est cher, mieux c'est coté.</p>
+</div>
+</section>
+
+<section>
+<span class="numero">§ 5</span>
+<h2>Les sept pistes qui restent</h2>
+<p class="sous col">Décrites au niveau où une décision est possible&nbsp;: la scène, l'interaction, et le moment précis où la mécanique se révèle. Une idée de pièce qui ne peut pas nommer ce moment-là n'est pas encore une idée.</p>
+
+<article class="piste"><div class="rn">04</div><div class="corps">
+ <h3>Ce qui a changé</h3><p class="sstitre">Santé et sécurité au travail · repérage sous contrainte</p>
+ <p>Un atelier, vingt secondes pour le regarder. L'image revient&nbsp;: huit choses ont bougé, trois seulement sont des risques. Vous pointez ce que vous voyez, et chaque faux positif coûte — parce que sur un vrai plancher, celui qui signale tout ne fait plus signaler personne.</p>
+ <p>La deuxième manche est la vraie&nbsp;: on ne vous prévient pas qu'il y aura un changement. Le taux de détection s'effondre, chez tout le monde, et c'est le seul chiffre de l'exercice qui ressemble au travail réel — parce que dans un atelier, personne ne vous annonce que quelque chose a bougé.</p>
+ <dl class="fiche">
+  <dt>Démontre</dt><dd>La conception d'exercices perceptifs — un objet rare, très loin du questionnaire — et la discipline du faux positif.</dd>
+  <dt>Se vend à</dt><dd>Mutuelles de prévention, manufacturiers, CNESST, formation d'accueil en usine.</dd>
+  <dt>Mécanique</dt><dd class="meca">La cécité au changement, instrumentée&nbsp;: l'apprenant échoue sous ses propres yeux, et la mesure lui est rendue.</dd>
+  <dt>Le risque</dt><dd>Tout tient à deux images rigoureusement identiques sauf aux endroits voulus. C'est le seul vrai coût de la pièce, et il est en images, pas en code.</dd>
+ </dl>
+ <p class="cotes">démonstration 3 · marché 4 · rareté 4 · effort 4 j</p>
+</div></article>
+
+<article class="piste"><div class="rn">05</div><div class="corps">
+ <h3>Le document piégé</h3><p class="sstitre">Littératie administrative · francisation avancée · entreprise</p>
+ <p>Un bail. Un talon de paie. Un avis d'augmentation de loyer. Le document a la forme exacte du vrai et un contenu entièrement inventé. En face, quelqu'un répond à vos questions&nbsp;: le représentant du propriétaire. Il n'est pas menteur. Il est <em>exact</em> — il répond précisément à ce qu'on lui demande, jamais à ce qu'on aurait dû lui demander.</p>
+ <p>La pièce ne mesure pas la compréhension du document. Elle mesure <b>combien de questions il vous a fallu pour faire sortir la clause qui coûte</b>, et combien de vos questions ont reçu une réponse vraie et inutile. C'est la compétence réelle&nbsp;: face à une administration, on ne manque pas d'information, on manque de la question.</p>
+ <dl class="fiche">
+  <dt>Démontre</dt><dd>L'écriture d'un personnage non coopératif, la conduite d'un dialogue génératif bridé, et une conception où l'assistant sert un rôle au lieu de servir un corrigé.</dd>
+  <dt>Se vend à</dt><dd>Francisation avancée, éducation des adultes, organismes d'accueil, syndicats, employeurs. C'est la pièce la plus vendeuse des sept.</dd>
+  <dt>Mécanique</dt><dd class="meca">L'interlocuteur répond exactement à la question posée — ni plus, ni moins, jamais.</dd>
+  <dt>Appui existant</dt><dd>Réutilise le jeu de rôle déjà en service dans les modules&nbsp;: micro, voix, accumulateur, garde-fous. L'essentiel du coût est déjà payé.</dd>
+ </dl>
+ <p class="cotes">démonstration 5 · marché 5 · rareté 4 · effort 3 j</p>
+</div></article>
+
+<article class="piste"><div class="rn">06</div><div class="corps">
+ <h3>La classe simulée</h3><p class="sstitre">Formation des enseignants · modèle d'apprenant</p>
+ <p>Vous montez une séquence de vingt minutes en assemblant des gestes d'enseignement&nbsp;: mise en situation, modelage, essai guidé, correction, tâche. Puis quatre élèves la traversent. Ils ne sont pas des avatars&nbsp;: ce sont quatre modèles, avec un niveau, une charge cognitive, une tolérance à l'ambiguïté et une histoire.</p>
+ <p>Ce qu'on regarde, ce n'est pas si la séquence est « conforme ». C'est où elle casse&nbsp;: celui qui décroche à la sixième minute parce que la consigne tient sur trois propositions&nbsp;; celle qui avait compris avant le modelage et qui attend depuis huit minutes&nbsp;; celui qui réussit l'exercice sans avoir compris la règle, et que rien dans votre séquence ne peut détecter.</p>
+ <dl class="fiche">
+  <dt>Démontre</dt><dd>Le morceau de bravoure&nbsp;: modéliser des apprenants plutôt que prescrire des pratiques. Personne au Québec ne montre ça dans un portfolio.</dd>
+  <dt>Se vend à</dt><dd>Universités, centres de services, formation initiale et mentorat. Marché lent, prestige élevé.</dd>
+  <dt>Mécanique</dt><dd class="meca">Le simulateur ne modélise pas la bonne pratique&nbsp;; il modélise les élèves, et laisse la pratique s'y casser.</dd>
+  <dt>Le risque</dt><dd>Le plus ambitieux des sept, et le seul qui peut dériver en jeu de gestion. À ne lancer que si quelqu'un le paye, ou si le temps est vraiment là.</dd>
+ </dl>
+ <p class="cotes">démonstration 5 · marché 3 · rareté 5 · effort 5 j</p>
+</div></article>
+
+<article class="piste"><div class="rn">07</div><div class="corps">
+ <h3>L'entrevue, vue d'en face</h3><p class="sstitre">Employabilité · francisation en entreprise · oral</p>
+ <p>Vous passez une entrevue d'embauche, au micro, pour un poste réel du secteur. À droite de l'écran, ce n'est pas votre transcription. C'est <b>la fiche que le recruteur est en train de remplir</b>&nbsp;: elle se remplit pendant que vous parlez, elle reste vide là où il n'a rien retenu, et elle porte une rature là où il a décroché.</p>
+ <p>On ne corrige ni votre accent ni votre grammaire — le dispositif l'annonce, et c'est un parti pris défendable devant n'importe quel comité. On vous montre l'effet&nbsp;: ce qui est passé, ce qui s'est perdu, et à quel moment exactement. Un apprenant qui voit sa réponse de quarante secondes produire une ligne et demie chez l'autre comprend en une fois ce que trois cours sur la concision n'obtiennent pas.</p>
+ <dl class="fiche">
+  <dt>Démontre</dt><dd>La rétroaction sur l'effet plutôt que sur la forme — et la maîtrise technique de l'oral&nbsp;: micro, synthèse vocale, modèle.</dd>
+  <dt>Se vend à</dt><dd>Employeurs, organismes d'employabilité, francisation en entreprise. Démonstration commerciale immédiate.</dd>
+  <dt>Mécanique</dt><dd class="meca">Le miroir n'est pas votre production&nbsp;: c'est la trace qu'elle laisse chez l'autre.</dd>
+  <dt>Le risque</dt><dd>La reconnaissance vocale en langue seconde. Il faut assumer publiquement que l'outil ne juge pas l'accent, et le construire pour que ce soit vrai.</dd>
+ </dl>
+ <p class="cotes">démonstration 4 · marché 5 · rareté 4 · effort 3 j</p>
+</div></article>
+
+<article class="piste"><div class="rn">08</div><div class="corps">
+ <h3>La procédure à trous</h3><p class="sstitre">Procédurier industriel · geste professionnel</p>
+ <p>Une vidéo filmée du point de vue de l'opérateur. Elle s'arrête — mais pas pour vérifier que vous suiviez. Elle s'arrête pour demander <b>ce qui n'a pas été fait</b>. L'omission est dans la vidéo, pas dans la question. Trois passages du même geste&nbsp;: la version juste, une version où une étape manque, une version où l'ordre est inversé — et vous ne savez jamais laquelle vous regardez.</p>
+ <p>C'est la pièce qui prolonge naturellement le simulateur de défibrillateur, et c'est le format du deuxième produit&nbsp;: former à une machine ou à un logiciel en vidéo, sans faire venir personne.</p>
+ <dl class="fiche">
+  <dt>Démontre</dt><dd>Le découpage du geste, la production vidéo pédagogique, l'évaluation par l'omission plutôt que par la question.</dd>
+  <dt>Se vend à</dt><dd>Manufacturiers, ateliers, formation de tâche. Le marché le plus concret des sept.</dd>
+  <dt>Mécanique</dt><dd class="meca">C'est la vidéo qu'on interroge, pas l'apprenant.</dd>
+  <dt>Le risque</dt><dd>Le coût des médias. Trois versions d'un même geste, cohérentes entre elles&nbsp;: c'est du tournage, pas de la génération.</dd>
+ </dl>
+ <p class="cotes">démonstration 3 · marché 5 · rareté 3 · effort 4 j</p>
+</div></article>
+
+<article class="piste"><div class="rn">09</div><div class="corps">
+ <h3>Soixante élèves, quatre anomalies</h3><p class="sstitre">Ingénierie pédagogique · lecture de données</p>
+ <p>Ici, le visiteur n'est pas l'apprenant. Il est le concepteur. On lui remet les traces d'une cohorte fictive de soixante personnes sur un module&nbsp;: réussites par exercice, temps, abandons, choix de distracteurs. Quatre anomalies y sont plantées — un exercice que tout le monde réussit, un que personne ne termine, une question dont le mauvais choix est plus attirant que le bon, un décrochage massif à la neuvième minute.</p>
+ <p>Il doit décider quoi corriger, et dans quel ordre, avec un budget de trois corrections. Puis on lui montre ce que chaque anomalie cachait&nbsp;: celle qui était un défaut de conception, celle qui était un défaut de mesure, et celle qu'il ne fallait surtout pas corriger.</p>
+ <dl class="fiche">
+  <dt>Démontre</dt><dd>La lecture de données d'apprentissage et la priorisation. Surtout&nbsp;: c'est la pièce qui met <em>La boucle du diagnostic</em> en acte, et qui empêche le dossier de méthode de rester un texte.</dd>
+  <dt>Se vend à</dt><dd>Directions, éditeurs, équipes produit. C'est la pièce qu'on montre à quelqu'un qui décide d'un budget.</dd>
+  <dt>Mécanique</dt><dd class="meca">Le visiteur occupe le rôle de l'acheteur, jamais celui de l'élève.</dd>
+  <dt>Le risque</dt><dd>Peu de risque, et c'est justement le sien&nbsp;: la pièce est confortable. Elle ne vaut que si les quatre anomalies sont vraiment difficiles à départager.</dd>
+ </dl>
+ <p class="cotes">démonstration 4 · marché 4 · rareté 4 · effort 2 j</p>
+</div></article>
+
+<article class="piste"><div class="rn">10</div><div class="corps">
+ <h3>Le même module, trois corps</h3><p class="sstitre">Accessibilité · conception universelle</p>
+ <p>Une seule activité, trois conditions. Debout dans l'autobus, sur un téléphone, avec quatre minutes et une main. Avec une lecture lente et quatre cents mots de vocabulaire. À l'oreille seule, sans jamais regarder l'écran. Le visiteur essaie les trois, dans l'ordre qu'il veut.</p>
+ <p>Il échouera dans au moins une, et c'est prévu&nbsp;: c'est la démonstration. Une pièce sur l'accessibilité qui se contente d'énoncer des principes ne prouve rien&nbsp;; celle-ci les fait éprouver à quelqu'un qui n'en a jamais eu besoin.</p>
+ <dl class="fiche">
+  <dt>Démontre</dt><dd>Accessibilité, différenciation, conception universelle — et une forme d'honnêteté que les portfolios évitent&nbsp;: montrer une pièce en train de mal fonctionner.</dd>
+  <dt>Se vend à</dt><dd>Institutions et appels d'offres publics, où l'accessibilité est un critère noté. Faible valeur commerciale directe.</dd>
+  <dt>Mécanique</dt><dd class="meca">La pièce fait échouer son visiteur pour établir son point.</dd>
+  <dt>Le risque</dt><dd>Passer pour une leçon de morale. À écrire sans aucune indignation, sur le ton du relevé.</dd>
+ </dl>
+ <p class="cotes">démonstration 5 · marché 2 · rareté 5 · effort 3 j</p>
+</div></article>
+</section>
+<section>
+<span class="numero">§ 6</span>
+<h2>Ce qu'il faut refuser</h2>
+<p class="sous col">Les cinq idées qui viennent en premier, et qui doivent être écartées les premières. Elles ne sont pas mauvaises&nbsp;: elles sont indistinctes, ce qui est pire pour un portfolio.</p>
+<div class="refus">
+ <ul>
+  <li><b>Le module linéaire avec quiz à la fin.</b> Quel que soit le soin apporté, il démontre la maîtrise d'un gabarit. Un acheteur n'y voit pas un concepteur&nbsp;; il y voit un opérateur d'outil.</li>
+  <li><b>Les points, les badges, le classement.</b> Ils déplacent l'attention de la tâche vers la récompense, et n'importe quel comité un peu informé le sait maintenant. Une seule de ces pièces suffit à faire baisser tout le dossier.</li>
+  <li><b>La scène 3D et l'avatar qui parle.</b> Cher, impressionnant trois secondes, et il ne reste rien à dire sur la conception une fois l'effet passé. La fidélité visuelle n'est pas une mécanique.</li>
+  <li><b>Le « parcours adaptatif » sans modèle.</b> Une branche par mauvaise réponse n'est pas de l'adaptation&nbsp;: c'est un aiguillage. Si on ne peut pas montrer ce qui est estimé et avec quelle incertitude, il vaut mieux ne pas employer le mot.</li>
+  <li><b>Le chatbot pédagogique généraliste.</b> Tout le monde en a un depuis deux ans. La seule version qui démontre encore quelque chose est celle où le modèle joue un rôle <em>contraint</em> et parfois <em>hostile</em> — la piste 05, pas l'assistant serviable.</li>
+ </ul>
+</div>
+</section>
+
+<section>
+<span class="numero">§ 7</span>
+<h2>Ce que je ferais, dans cet ordre</h2>
+<div class="col">
+<p><b>D'abord la pièce 09, « Soixante élèves, quatre anomalies ».</b> Deux jours. Elle est bon marché, elle parle à ceux qui décident d'un budget, et elle rattache le dossier de méthode à quelque chose qui se joue&nbsp;: c'est la seule pièce qui améliore rétroactivement une pièce déjà livrée.</p>
+<p class="enc">La grille du §&nbsp;4, au réglage par défaut, la place troisième. Je la place première quand même — et l'écart mérite d'être dit plutôt que masqué. Aucun des quatre critères ne sait mesurer «&nbsp;cette pièce en répare une autre&nbsp;»&nbsp;: une grille arbitre entre des choses comparables, elle ne remplace pas la décision. C'est exactement ce que le prototype 03 démontre sur la correction de copies, et ce serait malhonnête de ne pas l'appliquer ici.</p>
+<p><b>Ensuite la 05, « Le document piégé ».</b> Trois jours parce que le jeu de rôle est déjà construit et éprouvé sur quatre-vingts modules. C'est la plus vendeuse des sept, et la seule qui montre un assistant conversationnel employé à autre chose qu'à être aimable.</p>
+<p><b>Puis la 07, « L'entrevue, vue d'en face »</b>, qui partage sa plomberie avec la 05 et vise le même marché. Deux pièces à trois jours qui se répondent valent mieux qu'une pièce à six.</p>
+<p>La 04 et la 08 dépendent d'un budget d'images ou de tournage&nbsp;: à ouvrir seulement quand il y a une raison de dépenser. La <b>06, « La classe simulée », est le morceau de bravoure&nbsp;</b>: à garder pour un moment où quelqu'un la paye, ou pour une candidature qui la justifie à elle seule. La 10 ne se fait que si un appel d'offres l'exige.</p>
+<h3>Et pour les montrer</h3>
+<p>Devant un employeur ou un jury, l'ordre est&nbsp;: <b>le banc de panne d'abord</b> — la mécanique se voit en trois minutes et le débriefing fait le travail tout seul. <b>La conséquence différée ensuite</b>, parce qu'elle est celle dont on se souvient le lendemain. <b>Le jugement comparé</b> se garde pour un public d'évaluateurs, de conseillers pédagogiques ou de direction&nbsp;: il retourne la démonstration contre le spectateur, ce qui est superbe devant les bonnes personnes et déplacé devant les autres.</p>
+<p>Dans les trois cas, le geste qui vend n'est pas la pièce&nbsp;: c'est <b>l'interrupteur « vue conception »</b>. Le montrer, c'est dire en une seconde qu'il n'y a pas de magie derrière, mais un modèle — et que le modèle peut être rempli avec le métier de la personne en face.</p>
+</div>
+</section>
+</main>
+<footer class="pied">
+ <p>Dossier de travail — conception, écriture et réalisation&nbsp;: Daniel Tousignant, 4 septembre 2026. Les trois prototypes fonctionnent hors ligne et ne transmettent rien. Situations, entreprises, copies d'élèves et panels d'experts sont inventés pour la démonstration.</p>
+</footer>
+
+<script>
+"use strict";
+const PIECES=[
+ {t:"La conséquence différée",faite:true,d:5,v:4,r:5,e:2},
+ {t:"Le banc de panne",faite:true,d:5,v:5,r:5,e:2},
+ {t:"Le jugement comparé",faite:true,d:5,v:3,r:5,e:2},
+ {t:"Ce qui a changé",d:3,v:4,r:4,e:4},
+ {t:"Le document piégé",d:5,v:5,r:4,e:3},
+ {t:"La classe simulée",d:5,v:3,r:5,e:5},
+ {t:"L'entrevue, vue d'en face",d:4,v:5,r:4,e:3},
+ {t:"La procédure à trous",d:3,v:5,r:3,e:4},
+ {t:"Soixante élèves, quatre anomalies",d:4,v:4,r:4,e:2},
+ {t:"Le même module, trois corps",d:5,v:2,r:5,e:3}
+];
+const CRITERES=[
+ {c:"d",nom:"Ce que ça démontre",ex:"la compétence rendue visible",v:3},
+ {c:"v",nom:"Le marché",ex:"quelqu'un veut l'acheter",v:3},
+ {c:"r",nom:"La rareté",ex:"personne d'autre ne le montre",v:3},
+ {c:"e",nom:"Le peu d'effort",ex:"livrable rapidement",v:2}
+];
+const $=s=>document.querySelector(s);
+$("#curseurs").innerHTML=CRITERES.map(k=>
+ '<div class="cur"><label for="c_'+k.c+'">'+k.nom+' <b id="v_'+k.c+'">'+k.v+'</b></label>'
+ +'<input id="c_'+k.c+'" type="range" min="0" max="5" value="'+k.v+'" data-c="'+k.c+'">'
+ +'<span class="ex">'+k.ex+'</span></div>').join("");
+function calcule(){
+ const p={};CRITERES.forEach(k=>p[k.c]=+document.getElementById("c_"+k.c).value);
+ const note=x=>p.d*x.d+p.v*x.v+p.r*x.r+p.e*(6-x.e);
+ const max=Math.max(...PIECES.map(note))||1;
+ const seulement=document.getElementById("reste").checked;
+ const ordre=PIECES.filter(x=>!(seulement&&x.faite)).map(x=>({x:x,n:note(x)})).sort((a,b)=>b.n-a.n);
+ $("#rang").innerHTML=ordre.map((o,i)=>
+  '<li class="'+(o.x.faite?"faite":"")+'"><span class="r">'+(i+1)+'</span><span class="t">'+o.x.t+'</span>'
+  +'<span class="jauge"><i style="width:'+(o.n/max*100).toFixed(1)+'%"></i></span>'
+  +'<span class="sc">'+o.n+'</span></li>').join("");
+ CRITERES.forEach(k=>document.getElementById("v_"+k.c).textContent=p[k.c]);
+}
+document.querySelectorAll("#curseurs input").forEach(i=>i.oninput=calcule);
+document.getElementById("reste").onchange=calcule;
+calcule();
+$("#btnTheme").onclick=()=>{const r=document.documentElement;
+ const a=r.getAttribute("data-theme")||(matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light");
+ r.setAttribute("data-theme",a==="dark"?"light":"dark")};
+</script>
+</body>
+</html>
