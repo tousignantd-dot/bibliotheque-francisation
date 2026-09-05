@@ -5,61 +5,77 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="Prototype de conception pédagogique : un simulateur de dépannage qui n'évalue pas la réponse trouvée, mais la stratégie de recherche — l'information achetée, minute par minute.">
 <title>Le banc de panne</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,400&family=Martian+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
 <style>
 /* ═══ L'atelier des prototypes — jetons communs ═══
-   Ancrage visuel : le tracé à deux plumes sur papier d'avoine.
-   Plume BLEUE = ce que la machine calcule.  Plume VERMILLON = ce que l'humain décide.
-   Aucune autre couleur n'a le droit de signifier quoi que ce soit. */
+   Depuis le 5 septembre 2026, l'atelier est habillé avec BRAISE
+   (~/Claude/systemes-design/braise). Les noms de rôle des prototypes sont
+   conservés — ils portent un sens propre à ces pièces — et chacun est branché
+   sur un jeton de Braise :
+
+     --pap --pan --pan2 --pan3   les surfaces        (fond, fond-2, fond-3)
+     --enc --enc2 --enc3         les encres          (encre, encre-2, encre-3)
+     --regle --regle2            les séparations     (bord, bord-fort)
+     --verm  ce qu'une personne décide                (signal)
+     --bleu  ce qu'une machine calcule                (mesure)
+
+   Les deux plumes du tracé d'origine deviennent les deux rôles de Braise :
+   le signal orange pour la décision humaine, le bleu de mesure pour le
+   calcul. Le fond quadrillé disparaît — Braise ne pose que des aplats. */
 :root{
-  --pap:#EDE7DC; --pan:#F8F4EC; --pan2:#E3DBCC; --pan3:#D9D0BE;
-  --enc:#1B1A17; --enc2:#6B665C; --enc3:#948D80;
-  --regle:#D6CDBD; --regle2:#BFB4A0;
-  --bleu:#1F4B99; --bleu2:#5C7EBF; --bleu-pale:#DCE3F1; --bleu-voile:rgba(31,75,153,.09);
-  --verm:#BE4220; --verm2:#D9744F; --verm-pale:#F3DDD3; --verm-voile:rgba(190,66,32,.09);
-  --grille:rgba(27,26,23,.05);
-  --om:0 1px 0 rgba(27,26,23,.09);
-  --om2:0 2px 14px rgba(27,26,23,.10);
+  --police: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --police-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --pap:#FFFFFF; --pan:#FAFAFA; --pan2:#F4F4F5; --pan3:#E4E4E7;
+  --enc:#09090B; --enc2:#52525B; --enc3:#71717A;
+  --regle:#E4E4E7; --regle2:#D4D4D8;
+  --bleu:#2B4E9B; --bleu2:#5C7EBF; --bleu-pale:#EAEFFA; --bleu-voile:rgba(43,78,155,.07);
+  --verm:#F5652E; --verm2:#D9541F; --verm-pale:#FEF1EA; --verm-voile:rgba(245,101,46,.09);
+  --grille:transparent;
+  --om:0 1px 2px rgba(9,9,11,.06);
+  --om2:0 4px 12px rgba(9,9,11,.08);
 }
 :root:not([data-theme="light"]){ color-scheme:light dark; }
 @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
-  --pap:#15140F; --pan:#1D1C16; --pan2:#282621; --pan3:#33302A;
-  --enc:#EAE4D8; --enc2:#A29B8D; --enc3:#7B7467;
-  --regle:#33302A; --regle2:#474238;
-  --bleu:#8FB2F0; --bleu2:#6E8FCB; --bleu-pale:#1A2438; --bleu-voile:rgba(143,178,240,.12);
-  --verm:#EE8A66; --verm2:#C0684A; --verm-pale:#33201A; --verm-voile:rgba(238,138,102,.12);
-  --grille:rgba(234,228,216,.045);
-  --om:0 1px 0 rgba(0,0,0,.45); --om2:0 2px 16px rgba(0,0,0,.5);
+  --pap:#09090B; --pan:#0F0F11; --pan2:#18181B; --pan3:#27272A;
+  --enc:#FAFAFA; --enc2:#D4D4D8; --enc3:#A1A1AA;
+  --regle:#27272A; --regle2:#3F3F46;
+  --bleu:#8FB2F0; --bleu2:#6E8FCB; --bleu-pale:#18213A; --bleu-voile:rgba(143,178,240,.13);
+  --verm:#FF7A45; --verm2:#E0673A; --verm-pale:#2A1610; --verm-voile:rgba(255,122,69,.14);
+  --grille:transparent;
+  --om:0 1px 2px rgba(0,0,0,.5);
+  --om2:0 4px 16px rgba(0,0,0,.55);
 }}
 :root[data-theme="dark"]{ color-scheme:dark;
-  --pap:#15140F; --pan:#1D1C16; --pan2:#282621; --pan3:#33302A;
-  --enc:#EAE4D8; --enc2:#A29B8D; --enc3:#7B7467;
-  --regle:#33302A; --regle2:#474238;
-  --bleu:#8FB2F0; --bleu2:#6E8FCB; --bleu-pale:#1A2438; --bleu-voile:rgba(143,178,240,.12);
-  --verm:#EE8A66; --verm2:#C0684A; --verm-pale:#33201A; --verm-voile:rgba(238,138,102,.12);
-  --grille:rgba(234,228,216,.045);
-  --om:0 1px 0 rgba(0,0,0,.45); --om2:0 2px 16px rgba(0,0,0,.5);
+  --pap:#09090B; --pan:#0F0F11; --pan2:#18181B; --pan3:#27272A;
+  --enc:#FAFAFA; --enc2:#D4D4D8; --enc3:#A1A1AA;
+  --regle:#27272A; --regle2:#3F3F46;
+  --bleu:#8FB2F0; --bleu2:#6E8FCB; --bleu-pale:#18213A; --bleu-voile:rgba(143,178,240,.13);
+  --verm:#FF7A45; --verm2:#E0673A; --verm-pale:#2A1610; --verm-voile:rgba(255,122,69,.14);
+  --grille:transparent;
+  --om:0 1px 2px rgba(0,0,0,.5);
+  --om2:0 4px 16px rgba(0,0,0,.55);
 }
 *{box-sizing:border-box}
-body{margin:0;background:var(--pap);color:var(--enc);font-family:"Newsreader",Georgia,serif;font-size:17px;line-height:1.58;
+body{margin:0;background:var(--pap);color:var(--enc);font-family:var(--police);font-size:17px;line-height:1.58;
  -webkit-font-smoothing:antialiased;
  background-image:linear-gradient(var(--grille) 1px,transparent 1px),linear-gradient(90deg,var(--grille) 1px,transparent 1px);
  background-size:72px 72px,72px 72px}
-h1,h2,h3,h4,.gr{font-family:"Familjen Grotesk","Helvetica Neue",Arial,sans-serif;font-weight:600;text-wrap:balance;letter-spacing:-.01em}
-.mo{font-family:"Martian Mono",ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;letter-spacing:-.04em}
+h1,h2,h3,h4,.gr{font-family:var(--police);font-weight:600;text-wrap:balance;letter-spacing:-.01em}
+.mo{font-family:var(--police-mono);font-variant-numeric:tabular-nums;letter-spacing:-.04em}
 p{margin:0 0 .9em}
 button{font:inherit;color:inherit}
 :focus-visible{outline:2px solid var(--verm);outline-offset:3px}
 [hidden]{display:none!important}
 
 .tete{max-width:78rem;margin:0 auto;padding:2.6rem 1.5rem 1.4rem}
-.fil{display:flex;flex-wrap:wrap;gap:.9rem;align-items:baseline;font-size:.66rem;text-transform:uppercase;letter-spacing:.16em;color:var(--enc3);font-family:"Familjen Grotesk",sans-serif}
+.fil{display:flex;flex-wrap:wrap;gap:.9rem;align-items:baseline;font-size:.66rem;text-transform:uppercase;letter-spacing:.16em;color:var(--enc3);font-family:var(--police)}
 .fil .no{color:var(--verm)}
-h1{font-size:clamp(2.1rem,5vw,3.3rem);line-height:1.02;margin:.5rem 0 .7rem;font-weight:700}
+h1{font-size:clamp(2.1rem,5vw,3.3rem);line-height:1.02;margin:.5rem 0 .7rem;font-weight:800;letter-spacing:-.035em}
 .chapeau{max-width:38rem;font-size:1.04rem;color:var(--enc2)}
 .chapeau em{color:var(--enc);font-style:italic}
 .commandes{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;border-top:1px solid var(--regle);padding-top:1rem;margin-top:1.2rem}
-.cmd{background:none;border:1px solid var(--regle2);border-radius:2px;padding:.42rem .8rem;font-family:"Familjen Grotesk",sans-serif;font-size:.8rem;cursor:pointer;color:var(--enc2)}
+.cmd{background:none;border:1px solid var(--regle2);border-radius:2px;padding:.42rem .8rem;font-family:var(--police);font-size:.8rem;cursor:pointer;color:var(--enc2)}
 .cmd:hover{border-color:var(--enc2);color:var(--enc)}
 .cmd[aria-pressed="true"]{background:var(--bleu);border-color:var(--bleu);color:var(--pap)}
 
@@ -78,40 +94,40 @@ h1{font-size:clamp(2.1rem,5vw,3.3rem);line-height:1.02;margin:.5rem 0 .7rem;font
 .zone{cursor:pointer}
 .zone rect,.zone circle{fill:transparent;stroke:transparent;stroke-width:1.4}
 .zone:hover rect,.zone:hover circle,.zone.vive rect,.zone.vive circle{stroke:var(--verm);fill:var(--verm-voile)}
-.etiq{font-family:"Martian Mono",monospace;font-size:8.5px;fill:var(--enc3);letter-spacing:-.04em}
+.etiq{font-family:var(--police-mono);font-size:8.5px;fill:var(--enc3);letter-spacing:-.04em}
 .zone:hover .etiq,.zone.vive .etiq{fill:var(--verm)}
 .aiguille{stroke:var(--verm);stroke-width:2;transform-origin:140px 112px;transition:transform .8s cubic-bezier(.2,1.4,.4,1)}
 .horloge{display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid var(--regle);margin-top:.6rem;padding-top:.6rem;
- font-family:"Martian Mono",monospace;font-size:.68rem;color:var(--enc2)}
+ font-family:var(--police-mono);font-size:.68rem;color:var(--enc2)}
 .horloge b{font-size:1.5rem;color:var(--verm);font-weight:400}
 .file{font-size:.66rem;color:var(--enc3)}
 
 /* ── plainte ── */
 .plainte{background:var(--pan);border:1px solid var(--regle);border-left:3px solid var(--verm);padding:1.2rem 1.4rem;margin-bottom:1.4rem}
 .plainte .dit{font-style:italic;color:var(--enc2);margin:0}
-.plainte .qui{font-family:"Familjen Grotesk";font-size:.66rem;text-transform:uppercase;letter-spacing:.12em;color:var(--enc3);display:block;margin-top:.5rem}
+.plainte .qui{font-family:var(--police);font-size:.66rem;text-transform:uppercase;letter-spacing:.12em;color:var(--enc3);display:block;margin-top:.5rem}
 
 /* ── gestes ── */
 .gestes h2,.carnet h2,.verdict h2{font-size:.68rem;text-transform:uppercase;letter-spacing:.14em;color:var(--enc3);margin:0 0 .8rem;font-weight:600}
 .grp{margin-bottom:1.1rem}
-.grp>h3{font-family:"Martian Mono",monospace;font-size:.64rem;color:var(--bleu);margin:0 0 .35rem;font-weight:400;letter-spacing:-.03em}
+.grp>h3{font-family:var(--police-mono);font-size:.64rem;color:var(--bleu);margin:0 0 .35rem;font-weight:400;letter-spacing:-.03em}
 .geste{display:block;width:100%;text-align:left;background:var(--pan);border:1px solid var(--regle2);border-radius:2px;
- padding:.6rem .8rem;margin-bottom:.3rem;cursor:pointer;font-family:"Newsreader",serif;font-size:.98rem;line-height:1.35;
+ padding:.6rem .8rem;margin-bottom:.3rem;cursor:pointer;font-family:var(--police);font-size:.98rem;line-height:1.35;
  display:grid;grid-template-columns:1fr auto;gap:.6rem;align-items:baseline}
 .geste:hover{border-color:var(--verm);background:var(--verm-voile)}
-.geste .cout{font-family:"Martian Mono",monospace;font-size:.62rem;color:var(--enc3);white-space:nowrap}
+.geste .cout{font-family:var(--police-mono);font-size:.62rem;color:var(--enc3);white-space:nowrap}
 .geste:disabled{opacity:.4;cursor:default;background:none}
-.geste .gain{display:none;font-family:"Martian Mono",monospace;font-size:.6rem;color:var(--bleu);grid-column:1/-1;margin-top:.2rem}
+.geste .gain{display:none;font-family:var(--police-mono);font-size:.6rem;color:var(--bleu);grid-column:1/-1;margin-top:.2rem}
 body.conception .geste .gain{display:block}
 
 /* ── carnet ── */
 .carnet{margin-top:1.8rem}
 .ligne{border-left:2px solid var(--regle2);padding:.1rem 0 .9rem 1rem;margin-left:.3rem;position:relative}
 .ligne::before{content:"";position:absolute;left:-.36rem;top:.45rem;width:.5rem;height:.5rem;border-radius:50%;background:var(--verm)}
-.ligne .quoi{font-family:"Familjen Grotesk";font-size:.78rem;color:var(--enc3);display:block}
+.ligne .quoi{font-family:var(--police);font-size:.78rem;color:var(--enc3);display:block}
 .ligne .obs{font-size:1rem}
 .ligne .obs b{font-weight:500;color:var(--enc)}
-.ligne .bits{font-family:"Martian Mono",monospace;font-size:.6rem;color:var(--bleu);display:none}
+.ligne .bits{font-family:var(--police-mono);font-size:.6rem;color:var(--bleu);display:none}
 body.conception .ligne .bits{display:block}
 .vide{color:var(--enc3);font-style:italic}
 
@@ -119,7 +135,7 @@ body.conception .ligne .bits{display:block}
 .post{border:1px solid var(--bleu);border-left-width:3px;background:var(--bleu-voile);padding:.9rem 1rem;margin-bottom:1.2rem;display:none}
 body.conception .post{display:block}
 .post h3{font-size:.66rem;text-transform:uppercase;letter-spacing:.14em;color:var(--bleu);margin:0 0 .6rem}
-.pl{display:grid;grid-template-columns:1fr 3.2rem;gap:.5rem;align-items:center;font-family:"Familjen Grotesk";font-size:.78rem;margin-bottom:.25rem}
+.pl{display:grid;grid-template-columns:1fr 3.2rem;gap:.5rem;align-items:center;font-family:var(--police);font-size:.78rem;margin-bottom:.25rem}
 .pb{height:5px;background:var(--pan2);position:relative}
 .pb i{position:absolute;inset:0 auto 0 0;background:var(--bleu)}
 .pl.out{opacity:.3;text-decoration:line-through}
@@ -127,10 +143,10 @@ body.conception .post{display:block}
 /* ── verdict ── */
 .verdict{margin-top:1.8rem;border-top:1px solid var(--regle);padding-top:1.2rem}
 .choixp{display:grid;gap:.35rem;margin-bottom:1rem}
-.pc{display:block;width:100%;text-align:left;background:none;border:1px solid var(--regle2);padding:.55rem .8rem;cursor:pointer;border-radius:2px;font-family:"Newsreader",serif;font-size:.96rem}
+.pc{display:block;width:100%;text-align:left;background:none;border:1px solid var(--regle2);padding:.55rem .8rem;cursor:pointer;border-radius:2px;font-family:var(--police);font-size:.96rem}
 .pc:hover{border-color:var(--verm);background:var(--verm-voile)}
 .pc[aria-pressed="true"]{border-color:var(--verm);background:var(--verm-voile);font-weight:500}
-.valider{background:var(--verm);color:var(--pap);border:none;padding:.6rem 1.3rem;font-family:"Familjen Grotesk";font-weight:600;font-size:.92rem;cursor:pointer;border-radius:2px}
+.valider{background:var(--verm);color:var(--pap);border:none;padding:.6rem 1.3rem;font-family:var(--police);font-weight:600;font-size:.92rem;cursor:pointer;border-radius:2px}
 .valider:disabled{background:var(--pan2);color:var(--enc3);cursor:default}
 
 /* ── débriefing ── */
@@ -142,16 +158,16 @@ body.conception .post{display:block}
 .deux{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
 @media(max-width:760px){.deux{grid-template-columns:1fr}}
 .chiffres{display:flex;flex-wrap:wrap;gap:2rem;margin:1rem 0}
-.ch{font-family:"Martian Mono",monospace}
+.ch{font-family:var(--police-mono)}
 .ch b{display:block;font-size:2rem;color:var(--verm);font-weight:400;line-height:1}
-.ch span{font-size:.62rem;color:var(--enc3);text-transform:uppercase;letter-spacing:.08em;font-family:"Familjen Grotesk"}
+.ch span{font-size:.62rem;color:var(--enc3);text-transform:uppercase;letter-spacing:.08em;font-family:var(--police)}
 table.piste{width:100%;border-collapse:collapse;font-size:.92rem;margin:1rem 0}
-table.piste th{text-align:left;font-family:"Familjen Grotesk";font-size:.62rem;text-transform:uppercase;letter-spacing:.1em;color:var(--enc3);border-bottom:1px solid var(--regle2);padding:.4rem .5rem}
+table.piste th{text-align:left;font-family:var(--police);font-size:.62rem;text-transform:uppercase;letter-spacing:.1em;color:var(--enc3);border-bottom:1px solid var(--regle2);padding:.4rem .5rem}
 table.piste td{border-bottom:1px solid var(--regle);padding:.5rem .5rem;vertical-align:top}
-table.piste td.n{font-family:"Martian Mono",monospace;font-size:.76rem;white-space:nowrap}
+table.piste td.n{font-family:var(--police-mono);font-size:.76rem;white-space:nowrap}
 tr.sterile td{color:var(--enc3)}
 tr.sterile td.n{color:var(--verm)}
-.pied{max-width:78rem;margin:0 auto;padding:2.5rem 1.5rem;border-top:1px solid var(--regle);color:var(--enc3);font-size:.84rem;font-family:"Familjen Grotesk",sans-serif}
+.pied{max-width:78rem;margin:0 auto;padding:2.5rem 1.5rem;border-top:1px solid var(--regle);color:var(--enc3);font-size:.84rem;font-family:var(--police)}
 </style>
 </head>
 <body>
@@ -161,7 +177,7 @@ tr.sterile td.n{color:var(--verm)}
  <p class="chapeau">La machine est en panne, le café ouvre dans un quart d'heure, et chaque vérification coûte des minutes que vous n'avez pas. Ce prototype n'évalue pas la réponse que vous trouvez&nbsp;: il évalue <em>l'information que vous achetez pour la trouver</em>. À la fin, il vous dit lesquels de vos gestes ne pouvaient rien vous apprendre — et si vous avez eu raison, ou si vous avez su.</p>
  <div class="commandes">
   <button class="cmd" id="btnConception" aria-pressed="false">Vue conception</button>
-  <button class="cmd" id="btnTheme">Thème</button>
+  <button class="cmd" id="btnTheme">Sombre</button>
   <button class="cmd" id="btnReprise">Nouvelle panne</button>
   <span class="mo" style="font-size:.62rem;color:var(--enc3)">5 pannes possibles · 9 gestes · 3 min</span>
  </div>
@@ -407,14 +423,14 @@ function rendu(){
  $("#post").innerHTML='<h3>Ce que le modèle sait, à cet instant</h3>'+PANNES.map(p=>{
    const dedans=E.C.includes(p.id), pr=dedans?100/E.C.length:0;
    return '<div class="pl'+(dedans?"":" out")+'"><span>'+p.nom+'</span><span class="pb"><i style="width:'+pr+'%"></i></span></div>';
- }).join("")+'<p style="font-size:.74rem;color:var(--enc2);margin:.7rem 0 0;font-family:\'Familjen Grotesk\'">Les probabilités sont plates entre les pannes encore compatibles&nbsp;: le dispositif n\'a aucune raison d\'en préférer une, et n\'en invente pas.</p>';
+ }).join("")+'<p style="font-size:.74rem;color:var(--enc2);margin:.7rem 0 0;font-family:var(--police)">Les probabilités sont plates entre les pannes encore compatibles&nbsp;: le dispositif n\'a aucune raison d\'en préférer une, et n\'en invente pas.</p>';
 
  /* verdict */
  $("#verdict").innerHTML = E.fini ? "" :
   '<h2>Poser le diagnostic</h2><div class="choixp">'+PANNES.map(p=>
     '<button class="pc" data-p="'+p.id+'" aria-pressed="'+(E.choix===p.id)+'">'+p.nom+'</button>').join("")+'</div>'
   +'<button class="valider" id="btnValider"'+(E.choix?"":" disabled")+'>Je m\'engage'+(E.choix?"":"")+'</button>'
-  +'<p style="font-size:.8rem;color:var(--enc3);margin-top:.6rem;font-family:\'Familjen Grotesk\'">Vous pouvez vous engager à n\'importe quel moment, y compris tout de suite. Le dispositif le note.</p>';
+  +'<p style="font-size:.8rem;color:var(--enc3);margin-top:.6rem;font-family:var(--police)">Vous pouvez vous engager à n\'importe quel moment, y compris tout de suite. Le dispositif le note.</p>';
  $("#verdict").querySelectorAll(".pc").forEach(b=>b.onclick=()=>{E.choix=b.dataset.p;rendu()});
  if($("#btnValider")) $("#btnValider").onclick=engager;
 }
@@ -508,9 +524,21 @@ function incompat(choix){
 }
 
 $("#btnConception").onclick=e=>{const on=document.body.classList.toggle("conception");e.currentTarget.setAttribute("aria-pressed",on)};
-$("#btnTheme").onclick=()=>{const r=document.documentElement;
- const a=r.getAttribute("data-theme")||(matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light");
- r.setAttribute("data-theme",a==="dark"?"light":"dark")};
+/* Le bouton dit l'état où il mène, jamais celui où l'on est : « Sombre »
+   sur fond clair. L'inverse se lit à contresens une fois sur deux. */
+function etatTheme(){
+ return document.documentElement.getAttribute("data-theme")
+   || (matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light");
+}
+function nommerTheme(){
+ const b=document.getElementById("btnTheme");
+ if(b) b.textContent = etatTheme()==="dark" ? "Clair" : "Sombre";
+}
+$("#btnTheme").onclick=()=>{
+ document.documentElement.setAttribute("data-theme", etatTheme()==="dark"?"light":"dark");
+ nommerTheme();
+};
+nommerTheme();
 $("#btnReprise").onclick=()=>{neuf();window.scrollTo({top:0,behavior:"smooth"})};
 neuf();
 </script>

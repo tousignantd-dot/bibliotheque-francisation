@@ -5,60 +5,76 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="Prototype de conception pédagogique : les traces d'une cohorte de soixante élèves, quatre anomalies plantées, trois corrections seulement — et une qu'il ne faut surtout pas faire.">
 <title>Soixante élèves, quatre anomalies</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,400&family=Martian+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
 <style>
 /* ═══ L'atelier des prototypes — jetons communs ═══
-   Ancrage visuel : le tracé à deux plumes sur papier d'avoine.
-   Plume BLEUE = ce que la machine calcule.  Plume VERMILLON = ce que l'humain décide.
-   Aucune autre couleur n'a le droit de signifier quoi que ce soit. */
+   Depuis le 5 septembre 2026, l'atelier est habillé avec BRAISE
+   (~/Claude/systemes-design/braise). Les noms de rôle des prototypes sont
+   conservés — ils portent un sens propre à ces pièces — et chacun est branché
+   sur un jeton de Braise :
+
+     --pap --pan --pan2 --pan3   les surfaces        (fond, fond-2, fond-3)
+     --enc --enc2 --enc3         les encres          (encre, encre-2, encre-3)
+     --regle --regle2            les séparations     (bord, bord-fort)
+     --verm  ce qu'une personne décide                (signal)
+     --bleu  ce qu'une machine calcule                (mesure)
+
+   Les deux plumes du tracé d'origine deviennent les deux rôles de Braise :
+   le signal orange pour la décision humaine, le bleu de mesure pour le
+   calcul. Le fond quadrillé disparaît — Braise ne pose que des aplats. */
 :root{
-  --pap:#EDE7DC; --pan:#F8F4EC; --pan2:#E3DBCC; --pan3:#D9D0BE;
-  --enc:#1B1A17; --enc2:#6B665C; --enc3:#948D80;
-  --regle:#D6CDBD; --regle2:#BFB4A0;
-  --bleu:#1F4B99; --bleu2:#5C7EBF; --bleu-pale:#DCE3F1; --bleu-voile:rgba(31,75,153,.09);
-  --verm:#BE4220; --verm2:#D9744F; --verm-pale:#F3DDD3; --verm-voile:rgba(190,66,32,.09);
-  --grille:rgba(27,26,23,.05);
-  --om:0 1px 0 rgba(27,26,23,.09);
-  --om2:0 2px 14px rgba(27,26,23,.10);
+  --police: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --police-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --pap:#FFFFFF; --pan:#FAFAFA; --pan2:#F4F4F5; --pan3:#E4E4E7;
+  --enc:#09090B; --enc2:#52525B; --enc3:#71717A;
+  --regle:#E4E4E7; --regle2:#D4D4D8;
+  --bleu:#2B4E9B; --bleu2:#5C7EBF; --bleu-pale:#EAEFFA; --bleu-voile:rgba(43,78,155,.07);
+  --verm:#F5652E; --verm2:#D9541F; --verm-pale:#FEF1EA; --verm-voile:rgba(245,101,46,.09);
+  --grille:transparent;
+  --om:0 1px 2px rgba(9,9,11,.06);
+  --om2:0 4px 12px rgba(9,9,11,.08);
 }
 :root:not([data-theme="light"]){ color-scheme:light dark; }
 @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
-  --pap:#15140F; --pan:#1D1C16; --pan2:#282621; --pan3:#33302A;
-  --enc:#EAE4D8; --enc2:#A29B8D; --enc3:#7B7467;
-  --regle:#33302A; --regle2:#474238;
-  --bleu:#8FB2F0; --bleu2:#6E8FCB; --bleu-pale:#1A2438; --bleu-voile:rgba(143,178,240,.12);
-  --verm:#EE8A66; --verm2:#C0684A; --verm-pale:#33201A; --verm-voile:rgba(238,138,102,.12);
-  --grille:rgba(234,228,216,.045);
-  --om:0 1px 0 rgba(0,0,0,.45); --om2:0 2px 16px rgba(0,0,0,.5);
+  --pap:#09090B; --pan:#0F0F11; --pan2:#18181B; --pan3:#27272A;
+  --enc:#FAFAFA; --enc2:#D4D4D8; --enc3:#A1A1AA;
+  --regle:#27272A; --regle2:#3F3F46;
+  --bleu:#8FB2F0; --bleu2:#6E8FCB; --bleu-pale:#18213A; --bleu-voile:rgba(143,178,240,.13);
+  --verm:#FF7A45; --verm2:#E0673A; --verm-pale:#2A1610; --verm-voile:rgba(255,122,69,.14);
+  --grille:transparent;
+  --om:0 1px 2px rgba(0,0,0,.5);
+  --om2:0 4px 16px rgba(0,0,0,.55);
 }}
 :root[data-theme="dark"]{ color-scheme:dark;
-  --pap:#15140F; --pan:#1D1C16; --pan2:#282621; --pan3:#33302A;
-  --enc:#EAE4D8; --enc2:#A29B8D; --enc3:#7B7467;
-  --regle:#33302A; --regle2:#474238;
-  --bleu:#8FB2F0; --bleu2:#6E8FCB; --bleu-pale:#1A2438; --bleu-voile:rgba(143,178,240,.12);
-  --verm:#EE8A66; --verm2:#C0684A; --verm-pale:#33201A; --verm-voile:rgba(238,138,102,.12);
-  --grille:rgba(234,228,216,.045);
-  --om:0 1px 0 rgba(0,0,0,.45); --om2:0 2px 16px rgba(0,0,0,.5);
+  --pap:#09090B; --pan:#0F0F11; --pan2:#18181B; --pan3:#27272A;
+  --enc:#FAFAFA; --enc2:#D4D4D8; --enc3:#A1A1AA;
+  --regle:#27272A; --regle2:#3F3F46;
+  --bleu:#8FB2F0; --bleu2:#6E8FCB; --bleu-pale:#18213A; --bleu-voile:rgba(143,178,240,.13);
+  --verm:#FF7A45; --verm2:#E0673A; --verm-pale:#2A1610; --verm-voile:rgba(255,122,69,.14);
+  --grille:transparent;
+  --om:0 1px 2px rgba(0,0,0,.5);
+  --om2:0 4px 16px rgba(0,0,0,.55);
 }
 *{box-sizing:border-box}
-body{margin:0;background:var(--pap);color:var(--enc);font-family:"Newsreader",Georgia,serif;font-size:17px;line-height:1.58;
+body{margin:0;background:var(--pap);color:var(--enc);font-family:var(--police);font-size:17px;line-height:1.58;
  -webkit-font-smoothing:antialiased;
  background-image:linear-gradient(var(--grille) 1px,transparent 1px),linear-gradient(90deg,var(--grille) 1px,transparent 1px);background-size:72px 72px,72px 72px}
-h1,h2,h3,h4,.gr{font-family:"Familjen Grotesk","Helvetica Neue",Arial,sans-serif;font-weight:600;text-wrap:balance;letter-spacing:-.012em}
-.mo{font-family:"Martian Mono",ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;letter-spacing:-.04em}
+h1,h2,h3,h4,.gr{font-family:var(--police);font-weight:600;text-wrap:balance;letter-spacing:-.012em}
+.mo{font-family:var(--police-mono);font-variant-numeric:tabular-nums;letter-spacing:-.04em}
 p{margin:0 0 .9em}button{font:inherit;color:inherit}
 a{color:inherit}
 :focus-visible{outline:2px solid var(--verm);outline-offset:3px}
 [hidden]{display:none!important}
 .tete,main,.pied{max-width:70rem;margin:0 auto;padding-left:1.5rem;padding-right:1.5rem}
 .tete{padding-top:2.6rem;padding-bottom:1.2rem}
-.fil{display:flex;flex-wrap:wrap;gap:.9rem;align-items:baseline;font-size:.66rem;text-transform:uppercase;letter-spacing:.16em;color:var(--enc3);font-family:"Familjen Grotesk",sans-serif}
+.fil{display:flex;flex-wrap:wrap;gap:.9rem;align-items:baseline;font-size:.66rem;text-transform:uppercase;letter-spacing:.16em;color:var(--enc3);font-family:var(--police)}
 .fil .no{color:var(--verm)}
-h1{font-size:clamp(2rem,4.8vw,3.2rem);line-height:1.02;margin:.5rem 0 .7rem;font-weight:700}
+h1{font-size:clamp(2rem,4.8vw,3.2rem);line-height:1.02;margin:.5rem 0 .7rem;font-weight:800;letter-spacing:-.035em}
 .chapeau{max-width:38rem;font-size:1.04rem;color:var(--enc2)}
 .chapeau em{color:var(--enc);font-style:italic}
 .commandes{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;border-top:1px solid var(--regle);padding-top:1rem;margin-top:1.2rem}
-.cmd{background:none;border:1px solid var(--regle2);border-radius:2px;padding:.42rem .8rem;font-family:"Familjen Grotesk",sans-serif;font-size:.8rem;cursor:pointer;color:var(--enc2)}
+.cmd{background:none;border:1px solid var(--regle2);border-radius:2px;padding:.42rem .8rem;font-family:var(--police);font-size:.8rem;cursor:pointer;color:var(--enc2)}
 .cmd:hover{border-color:var(--enc2);color:var(--enc)}
 .cmd[aria-pressed="true"]{background:var(--bleu);border-color:var(--bleu);color:var(--pap)}
 
@@ -73,28 +89,28 @@ h2.sec{font-size:1.5rem;margin:0 0 .3rem}
 
 /* tableau des exercices */
 table.tab{width:100%;border-collapse:collapse;font-size:.9rem;background:var(--pan);border:1px solid var(--regle)}
-table.tab th{text-align:right;font-family:"Familjen Grotesk";font-size:.6rem;text-transform:uppercase;letter-spacing:.08em;color:var(--enc3);
+table.tab th{text-align:right;font-family:var(--police);font-size:.6rem;text-transform:uppercase;letter-spacing:.08em;color:var(--enc3);
  padding:.55rem .5rem;border-bottom:1px solid var(--regle2);font-weight:600;white-space:nowrap;vertical-align:bottom}
 table.tab th:nth-child(1),table.tab th:nth-child(2){text-align:left}
-table.tab td{padding:.5rem;border-bottom:1px solid var(--regle);text-align:right;font-family:"Martian Mono",monospace;font-size:.76rem;letter-spacing:-.04em}
+table.tab td{padding:.5rem;border-bottom:1px solid var(--regle);text-align:right;font-family:var(--police-mono);font-size:.76rem;letter-spacing:-.04em}
 table.tab td:nth-child(1){color:var(--enc3);font-size:.7rem}
-table.tab td:nth-child(2){text-align:left;font-family:"Newsreader",serif;font-size:.94rem}
+table.tab td:nth-child(2){text-align:left;font-family:var(--police);font-size:.94rem}
 table.tab tr{cursor:pointer}
 table.tab tbody tr:hover{background:var(--verm-voile)}
 table.tab tr.ouvert{background:var(--verm-voile)}
 table.tab td.al{color:var(--verm)}
-body.conception table.tab tr.piege td:nth-child(2)::after{content:" ⟵ appât";color:var(--bleu);font-family:"Martian Mono";font-size:.6rem}
-body.conception table.tab tr.anom td:nth-child(2)::after{content:" ⟵ anomalie";color:var(--verm);font-family:"Martian Mono";font-size:.6rem}
+body.conception table.tab tr.piege td:nth-child(2)::after{content:" ⟵ appât";color:var(--bleu);font-family:var(--police-mono);font-size:.6rem}
+body.conception table.tab tr.anom td:nth-child(2)::after{content:" ⟵ anomalie";color:var(--verm);font-family:var(--police-mono);font-size:.6rem}
 .detail{background:var(--pan2);border:1px solid var(--regle2);padding:1rem 1.2rem;margin:0 0 1rem;font-size:.94rem}
 .detail h4{margin:0 0 .4rem;font-size:1rem}
 .detail .item{border-left:2px solid var(--bleu);padding-left:.9rem;font-style:italic;color:var(--enc2);margin:.5rem 0;white-space:pre-line}
 .reps{display:grid;gap:.25rem;margin-top:.6rem}
-.rep{display:grid;grid-template-columns:1fr 7rem 3rem;gap:.5rem;align-items:center;font-size:.86rem;font-family:"Familjen Grotesk"}
+.rep{display:grid;grid-template-columns:1fr 7rem 3rem;gap:.5rem;align-items:center;font-size:.86rem;font-family:var(--police)}
 .rep .b{height:7px;background:var(--pap);position:relative}
 .rep .b i{position:absolute;left:0;top:0;bottom:0;background:var(--enc3)}
 .rep.bon .b i{background:var(--bleu)}.rep.pris .b i{background:var(--verm)}
-.rep .v{font-family:"Martian Mono";font-size:.68rem;text-align:right;color:var(--enc2)}
-.legende{font-size:.78rem;color:var(--enc3);font-family:"Familjen Grotesk";margin-top:.6rem}
+.rep .v{font-family:var(--police-mono);font-size:.68rem;text-align:right;color:var(--enc2)}
+.legende{font-size:.78rem;color:var(--enc3);font-family:var(--police);margin-top:.6rem}
 
 /* courbe */
 .courbe{background:var(--pan);border:1px solid var(--regle);padding:1rem;margin-bottom:1.4rem}
@@ -104,14 +120,14 @@ body.conception table.tab tr.anom td:nth-child(2)::after{content:" ⟵ anomalie"
 .panier{position:sticky;top:1.2rem;background:var(--pan);border:1px solid var(--regle);padding:1.2rem 1.3rem}
 @media(max-width:960px){.panier{position:static}}
 .panier h3{margin:0 0 .2rem;font-size:1.1rem}
-.panier .bud{font-family:"Martian Mono";font-size:.68rem;color:var(--verm);margin-bottom:.8rem}
+.panier .bud{font-family:var(--police-mono);font-size:.68rem;color:var(--verm);margin-bottom:.8rem}
 .act{display:block;width:100%;text-align:left;background:var(--pap);border:1px solid var(--regle2);padding:.55rem .7rem;margin-bottom:.35rem;
- cursor:pointer;font-size:.9rem;line-height:1.35;border-radius:2px;font-family:"Newsreader",serif}
+ cursor:pointer;font-size:.9rem;line-height:1.35;border-radius:2px;font-family:var(--police)}
 .act:hover{border-color:var(--verm)}
 .act[aria-pressed="true"]{border-color:var(--verm);background:var(--verm-voile);font-weight:500}
 .act:disabled{opacity:.4;cursor:default}
 .valider{width:100%;background:var(--verm);color:var(--pap);border:none;padding:.6rem;margin-top:.7rem;
- font-family:"Familjen Grotesk";font-weight:600;font-size:.92rem;cursor:pointer;border-radius:2px}
+ font-family:var(--police);font-weight:600;font-size:.92rem;cursor:pointer;border-radius:2px}
 .valider:disabled{background:var(--pan2);color:var(--enc3);cursor:default}
 
 /* débriefing */
@@ -120,21 +136,21 @@ body.conception table.tab tr.anom td:nth-child(2)::after{content:" ⟵ anomalie"
 .bloc{background:var(--pan);border:1px solid var(--regle);padding:1.4rem 1.6rem;margin-bottom:1.2rem;box-shadow:var(--om)}
 .bloc.fort{border-left:3px solid var(--verm)}
 .bloc h3{margin:0 0 .5rem;font-size:1.18rem}
-.ind{display:grid;grid-template-columns:12rem 1fr 5.5rem;gap:.7rem;align-items:center;margin-bottom:.5rem;font-family:"Familjen Grotesk";font-size:.86rem}
+.ind{display:grid;grid-template-columns:12rem 1fr 5.5rem;gap:.7rem;align-items:center;margin-bottom:.5rem;font-family:var(--police);font-size:.86rem}
 @media(max-width:600px){.ind{grid-template-columns:8rem 1fr 4.5rem;font-size:.78rem}}
 .ind .b{height:10px;background:var(--pan2);position:relative}
 .ind .b .av{position:absolute;left:0;top:0;bottom:0;background:var(--enc3);opacity:.45}
 .ind .b .ap{position:absolute;left:0;top:0;bottom:0;background:var(--bleu)}
 .ind .b .ap.mal{background:var(--verm)}
-.ind .v{font-family:"Martian Mono";font-size:.72rem;text-align:right}
+.ind .v{font-family:var(--police-mono);font-size:.72rem;text-align:right}
 .verd{border-left:2px solid var(--regle2);padding-left:.9rem;margin-bottom:1rem}
 .verd.ok{border-color:var(--bleu)}.verd.non{border-color:var(--verm)}
 .verd h4{margin:0 0 .2rem;font-size:.98rem}
 .verd p{margin:0;font-size:.94rem;color:var(--enc2)}
 .note{font-size:.9rem;color:var(--enc2);border-left:2px solid var(--bleu);padding-left:.9rem;margin:1rem 0;display:none}
 body.conception .note{display:block}
-.note b{font-family:"Familjen Grotesk";color:var(--enc)}
-.pied{padding:2.5rem 1.5rem;border-top:1px solid var(--regle);color:var(--enc3);font-size:.84rem;font-family:"Familjen Grotesk",sans-serif}
+.note b{font-family:var(--police);color:var(--enc)}
+.pied{padding:2.5rem 1.5rem;border-top:1px solid var(--regle);color:var(--enc3);font-size:.84rem;font-family:var(--police)}
 </style>
 </head>
 <body>
@@ -144,7 +160,7 @@ body.conception .note{display:block}
  <p class="chapeau">Ici, vous n'êtes pas l'apprenant&nbsp;: vous êtes le concepteur. Voici les traces d'une cohorte sur un module de douze exercices. Quatre choses ne tournent pas rond, <em>et deux d'entre elles ne sont pas ce qu'elles ont l'air d'être</em>. Vous avez un budget de trois corrections. Il y a aussi, dans ce tableau, un chiffre alarmant qu'il ne faut surtout pas corriger.</p>
  <div class="commandes">
   <button class="cmd" id="btnConception" aria-pressed="false">Vue conception</button>
-  <button class="cmd" id="btnTheme">Thème</button>
+  <button class="cmd" id="btnTheme">Sombre</button>
   <button class="cmd" id="btnReprise">Recommencer</button>
   <span class="mo" style="font-size:.62rem;color:var(--enc3)">12 exercices · 3 corrections · 5 min</span>
  </div>
@@ -280,15 +296,15 @@ function courbe(){
  const x=i=>mx+i*(W-mx-14)/n, y=v=>my+(60-v)*(H-my-26)/60;
  const d=RESTES.map((v,i)=>(i?"L":"M")+x(i).toFixed(1)+" "+y(v).toFixed(1)).join(" ");
  const gr=[0,15,30,45,60].map(v=>'<line x1="'+mx+'" y1="'+y(v)+'" x2="'+(W-14)+'" y2="'+y(v)+'" stroke="var(--regle)" stroke-width="1"/>'
-   +'<text x="'+(mx-6)+'" y="'+(y(v)+3)+'" text-anchor="end" font-family="Martian Mono,monospace" font-size="8" fill="var(--enc3)">'+v+'</text>').join("");
- const tk=[0,10,20,30,40].map(m=>'<text x="'+x(m)+'" y="'+(H-6)+'" text-anchor="middle" font-family="Martian Mono,monospace" font-size="8" fill="var(--enc3)">'+m+' min</text>').join("");
+   +'<text x="'+(mx-6)+'" y="'+(y(v)+3)+'" text-anchor="end" font-family="ui-monospace, monospace" font-size="8" fill="var(--enc3)">'+v+'</text>').join("");
+ const tk=[0,10,20,30,40].map(m=>'<text x="'+x(m)+'" y="'+(H-6)+'" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8" fill="var(--enc3)">'+m+' min</text>').join("");
  $("#courbe").innerHTML='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Courbe des personnes encore présentes, minute par minute : 60 au départ, 34 à la fin, une chute de 14 personnes à la neuvième minute">'
   +gr+tk
   +'<path d="'+d+'" fill="none" stroke="var(--bleu)" stroke-width="2" stroke-linejoin="round"/>'
   +'<line x1="'+x(9)+'" y1="'+my+'" x2="'+x(9)+'" y2="'+(H-22)+'" stroke="var(--verm)" stroke-width="1" stroke-dasharray="3 3"/>'
   +'<circle cx="'+x(9)+'" cy="'+y(43)+'" r="4" fill="none" stroke="var(--verm)" stroke-width="2"/>'
-  +'<text x="'+(x(9)+8)+'" y="'+(y(43)-6)+'" font-family="Martian Mono,monospace" font-size="8.5" fill="var(--verm)">−14 en 40 secondes</text>'
-  +'<text x="'+mx+'" y="'+(my-4)+'" font-family="Familjen Grotesk,sans-serif" font-size="9" fill="var(--enc3)">PERSONNES ENCORE DANS LE MODULE · 60 AU DÉPART, 34 À LA FIN</text>'
+  +'<text x="'+(x(9)+8)+'" y="'+(y(43)-6)+'" font-family="ui-monospace, monospace" font-size="8.5" fill="var(--verm)">−14 en 40 secondes</text>'
+  +'<text x="'+mx+'" y="'+(my-4)+'" font-family="Inter,sans-serif" font-size="9" fill="var(--enc3)">PERSONNES ENCORE DANS LE MODULE · 60 AU DÉPART, 34 À LA FIN</text>'
   +'</svg>';
 }
 
@@ -306,7 +322,7 @@ function rendu(){
     +'<td class="'+(e.r<.1?"al":"")+'">.'+String(Math.round(e.r*100)).padStart(2,"0")+'</td></tr>'
     +(E.ouvert===e.n?'<tr><td colspan="6" style="padding:0"><div class="detail"><h4>'+e.nom+' — '+e.type+'</h4>'
       +'<div class="item">'+e.item+'</div><p style="margin:.5rem 0 0">'+e.obs+'</p>'
-      +(e.extra?'<p style="margin:.4rem 0 0;color:var(--verm);font-family:\'Martian Mono\';font-size:.72rem">'+e.extra+'</p>':'')
+      +(e.extra?'<p style="margin:.4rem 0 0;color:var(--verm);font-family:var(--police-mono);font-size:.72rem">'+e.extra+'</p>':'')
       +(e.reps?'<div class="reps">'+e.reps.map(r=>'<div class="rep '+r[2]+'"><span>'+r[0]+'</span><span class="b"><i style="width:'+r[1]+'%"></i></span><span class="v">'+r[1]+' %</span></div>').join("")
         +'</div><p class="legende">Bleu&nbsp;: la réponse attendue. Rouge&nbsp;: la réponse la plus choisie.</p>':'')
       +'</div></td></tr>':'');
@@ -320,7 +336,7 @@ function rendu(){
   +ACTIONS.map(a=>{const pris=E.choix.includes(a.id);
    return '<button class="act" data-a="'+a.id+'" aria-pressed="'+pris+'"'+((!pris&&E.choix.length>=3)||E.fini?" disabled":"")+'>'+a.t+'</button>'}).join("")
   +'<button class="valider" id="btnValider"'+(E.choix.length===3&&!E.fini?"":" disabled")+'>Rendre les corrections</button>'
-  +'<p style="font-size:.76rem;color:var(--enc3);font-family:\'Familjen Grotesk\';margin:.6rem 0 0">Trois exactement. Un budget qui permettrait tout ne ferait rien apprendre.</p>';
+  +'<p style="font-size:.76rem;color:var(--enc3);font-family:var(--police);margin:.6rem 0 0">Trois exactement. Un budget qui permettrait tout ne ferait rien apprendre.</p>';
  $("#panier").querySelectorAll(".act").forEach(b=>b.onclick=()=>{
    const id=b.dataset.a;
    E.choix=E.choix.includes(id)?E.choix.filter(x=>x!==id):E.choix.concat(id);rendu()});
@@ -365,7 +381,7 @@ function rendre(){
   +ind("Validité de la mesure",BASE.val,ap.val,ap.val<BASE.val)
   +ind("Taux d'achèvement",BASE.ach,ap.ach,ap.ach<BASE.ach)
   +ind("Durée du module",BASE.tps,ap.tps,ap.tps>BASE.tps,"min")
-  +'<p style="font-size:.86rem;color:var(--enc3);font-family:\'Familjen Grotesk\';margin-top:.8rem">La barre pâle est l\'état d\'avant. La validité de la mesure est le seul des trois indicateurs qu\'aucune direction ne demande jamais — et le seul dont dépendent les deux autres.</p></div>'
+  +'<p style="font-size:.86rem;color:var(--enc3);font-family:var(--police);margin-top:.8rem">La barre pâle est l\'état d\'avant. La validité de la mesure est le seul des trois indicateurs qu\'aucune direction ne demande jamais — et le seul dont dépendent les deux autres.</p></div>'
   +'<div class="bloc"><h3>Vos trois décisions, une par une</h3>'+verdicts+'</div>'
   +'<div class="bloc"><h3>Les quatre anomalies, et ce qu\'elles cachaient</h3>'
    +'<p style="color:var(--enc2)">Trois d\'entre elles ne se voyaient pas dans la colonne qu\'on regarde en premier. C\'est le fond de l\'exercice&nbsp;: <b>un taux de réussite ne se lit jamais seul</b> — il se lit avec le temps, avec le délai avant le premier geste, et avec la corrélation au reste.</p>'
@@ -385,9 +401,21 @@ function rendre(){
 }
 
 $("#btnConception").onclick=e=>{const on=document.body.classList.toggle("conception");e.currentTarget.setAttribute("aria-pressed",on)};
-$("#btnTheme").onclick=()=>{const r=document.documentElement;
- const a=r.getAttribute("data-theme")||(matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light");
- r.setAttribute("data-theme",a==="dark"?"light":"dark")};
+/* Le bouton dit l'état où il mène, jamais celui où l'on est : « Sombre »
+   sur fond clair. L'inverse se lit à contresens une fois sur deux. */
+function etatTheme(){
+ return document.documentElement.getAttribute("data-theme")
+   || (matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light");
+}
+function nommerTheme(){
+ const b=document.getElementById("btnTheme");
+ if(b) b.textContent = etatTheme()==="dark" ? "Clair" : "Sombre";
+}
+$("#btnTheme").onclick=()=>{
+ document.documentElement.setAttribute("data-theme", etatTheme()==="dark"?"light":"dark");
+ nommerTheme();
+};
+nommerTheme();
 $("#btnReprise").onclick=()=>{neuf();window.scrollTo({top:0,behavior:"smooth"})};
 neuf();
 </script>

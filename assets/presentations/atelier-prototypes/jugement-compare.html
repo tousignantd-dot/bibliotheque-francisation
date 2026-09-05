@@ -5,58 +5,74 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="Prototype de conception pédagogique : dix comparaisons par paires de copies d'élèves, puis le portrait de ce qui a réellement gouverné vos jugements.">
 <title>Le jugement comparé</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,400&family=Martian+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
 <style>
 /* ═══ L'atelier des prototypes — jetons communs ═══
-   Ancrage visuel : le tracé à deux plumes sur papier d'avoine.
-   Plume BLEUE = ce que la machine calcule.  Plume VERMILLON = ce que l'humain décide.
-   Aucune autre couleur n'a le droit de signifier quoi que ce soit. */
+   Depuis le 5 septembre 2026, l'atelier est habillé avec BRAISE
+   (~/Claude/systemes-design/braise). Les noms de rôle des prototypes sont
+   conservés — ils portent un sens propre à ces pièces — et chacun est branché
+   sur un jeton de Braise :
+
+     --pap --pan --pan2 --pan3   les surfaces        (fond, fond-2, fond-3)
+     --enc --enc2 --enc3         les encres          (encre, encre-2, encre-3)
+     --regle --regle2            les séparations     (bord, bord-fort)
+     --verm  ce qu'une personne décide                (signal)
+     --bleu  ce qu'une machine calcule                (mesure)
+
+   Les deux plumes du tracé d'origine deviennent les deux rôles de Braise :
+   le signal orange pour la décision humaine, le bleu de mesure pour le
+   calcul. Le fond quadrillé disparaît — Braise ne pose que des aplats. */
 :root{
-  --pap:#EDE7DC; --pan:#F8F4EC; --pan2:#E3DBCC; --pan3:#D9D0BE;
-  --enc:#1B1A17; --enc2:#6B665C; --enc3:#948D80;
-  --regle:#D6CDBD; --regle2:#BFB4A0;
-  --bleu:#1F4B99; --bleu2:#5C7EBF; --bleu-pale:#DCE3F1; --bleu-voile:rgba(31,75,153,.09);
-  --verm:#BE4220; --verm2:#D9744F; --verm-pale:#F3DDD3; --verm-voile:rgba(190,66,32,.09);
-  --grille:rgba(27,26,23,.05);
-  --om:0 1px 0 rgba(27,26,23,.09);
-  --om2:0 2px 14px rgba(27,26,23,.10);
+  --police: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --police-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --pap:#FFFFFF; --pan:#FAFAFA; --pan2:#F4F4F5; --pan3:#E4E4E7;
+  --enc:#09090B; --enc2:#52525B; --enc3:#71717A;
+  --regle:#E4E4E7; --regle2:#D4D4D8;
+  --bleu:#2B4E9B; --bleu2:#5C7EBF; --bleu-pale:#EAEFFA; --bleu-voile:rgba(43,78,155,.07);
+  --verm:#F5652E; --verm2:#D9541F; --verm-pale:#FEF1EA; --verm-voile:rgba(245,101,46,.09);
+  --grille:transparent;
+  --om:0 1px 2px rgba(9,9,11,.06);
+  --om2:0 4px 12px rgba(9,9,11,.08);
 }
 :root:not([data-theme="light"]){ color-scheme:light dark; }
 @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
-  --pap:#15140F; --pan:#1D1C16; --pan2:#282621; --pan3:#33302A;
-  --enc:#EAE4D8; --enc2:#A29B8D; --enc3:#7B7467;
-  --regle:#33302A; --regle2:#474238;
-  --bleu:#8FB2F0; --bleu2:#6E8FCB; --bleu-pale:#1A2438; --bleu-voile:rgba(143,178,240,.12);
-  --verm:#EE8A66; --verm2:#C0684A; --verm-pale:#33201A; --verm-voile:rgba(238,138,102,.12);
-  --grille:rgba(234,228,216,.045);
-  --om:0 1px 0 rgba(0,0,0,.45); --om2:0 2px 16px rgba(0,0,0,.5);
+  --pap:#09090B; --pan:#0F0F11; --pan2:#18181B; --pan3:#27272A;
+  --enc:#FAFAFA; --enc2:#D4D4D8; --enc3:#A1A1AA;
+  --regle:#27272A; --regle2:#3F3F46;
+  --bleu:#8FB2F0; --bleu2:#6E8FCB; --bleu-pale:#18213A; --bleu-voile:rgba(143,178,240,.13);
+  --verm:#FF7A45; --verm2:#E0673A; --verm-pale:#2A1610; --verm-voile:rgba(255,122,69,.14);
+  --grille:transparent;
+  --om:0 1px 2px rgba(0,0,0,.5);
+  --om2:0 4px 16px rgba(0,0,0,.55);
 }}
 :root[data-theme="dark"]{ color-scheme:dark;
-  --pap:#15140F; --pan:#1D1C16; --pan2:#282621; --pan3:#33302A;
-  --enc:#EAE4D8; --enc2:#A29B8D; --enc3:#7B7467;
-  --regle:#33302A; --regle2:#474238;
-  --bleu:#8FB2F0; --bleu2:#6E8FCB; --bleu-pale:#1A2438; --bleu-voile:rgba(143,178,240,.12);
-  --verm:#EE8A66; --verm2:#C0684A; --verm-pale:#33201A; --verm-voile:rgba(238,138,102,.12);
-  --grille:rgba(234,228,216,.045);
-  --om:0 1px 0 rgba(0,0,0,.45); --om2:0 2px 16px rgba(0,0,0,.5);
+  --pap:#09090B; --pan:#0F0F11; --pan2:#18181B; --pan3:#27272A;
+  --enc:#FAFAFA; --enc2:#D4D4D8; --enc3:#A1A1AA;
+  --regle:#27272A; --regle2:#3F3F46;
+  --bleu:#8FB2F0; --bleu2:#6E8FCB; --bleu-pale:#18213A; --bleu-voile:rgba(143,178,240,.13);
+  --verm:#FF7A45; --verm2:#E0673A; --verm-pale:#2A1610; --verm-voile:rgba(255,122,69,.14);
+  --grille:transparent;
+  --om:0 1px 2px rgba(0,0,0,.5);
+  --om2:0 4px 16px rgba(0,0,0,.55);
 }
 *{box-sizing:border-box}
-body{margin:0;background:var(--pap);color:var(--enc);font-family:"Newsreader",Georgia,serif;font-size:17px;line-height:1.58;
+body{margin:0;background:var(--pap);color:var(--enc);font-family:var(--police);font-size:17px;line-height:1.58;
  -webkit-font-smoothing:antialiased;
  background-image:linear-gradient(var(--grille) 1px,transparent 1px),linear-gradient(90deg,var(--grille) 1px,transparent 1px);background-size:72px 72px,72px 72px}
-h1,h2,h3,h4,.gr{font-family:"Familjen Grotesk","Helvetica Neue",Arial,sans-serif;font-weight:600;text-wrap:balance;letter-spacing:-.01em}
-.mo{font-family:"Martian Mono",ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;letter-spacing:-.04em}
+h1,h2,h3,h4,.gr{font-family:var(--police);font-weight:600;text-wrap:balance;letter-spacing:-.01em}
+.mo{font-family:var(--police-mono);font-variant-numeric:tabular-nums;letter-spacing:-.04em}
 p{margin:0 0 .9em}button{font:inherit;color:inherit}
 :focus-visible{outline:2px solid var(--verm);outline-offset:3px}
 [hidden]{display:none!important}
 .tete{max-width:72rem;margin:0 auto;padding:2.6rem 1.5rem 1.2rem}
-.fil{display:flex;flex-wrap:wrap;gap:.9rem;align-items:baseline;font-size:.66rem;text-transform:uppercase;letter-spacing:.16em;color:var(--enc3);font-family:"Familjen Grotesk",sans-serif}
+.fil{display:flex;flex-wrap:wrap;gap:.9rem;align-items:baseline;font-size:.66rem;text-transform:uppercase;letter-spacing:.16em;color:var(--enc3);font-family:var(--police)}
 .fil .no{color:var(--verm)}
-h1{font-size:clamp(2.1rem,5vw,3.3rem);line-height:1.02;margin:.5rem 0 .7rem;font-weight:700}
+h1{font-size:clamp(2.1rem,5vw,3.3rem);line-height:1.02;margin:.5rem 0 .7rem;font-weight:800;letter-spacing:-.035em}
 .chapeau{max-width:38rem;font-size:1.04rem;color:var(--enc2)}
 .chapeau em{color:var(--enc);font-style:italic}
 .commandes{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;border-top:1px solid var(--regle);padding-top:1rem;margin-top:1.2rem}
-.cmd{background:none;border:1px solid var(--regle2);border-radius:2px;padding:.42rem .8rem;font-family:"Familjen Grotesk",sans-serif;font-size:.8rem;cursor:pointer;color:var(--enc2)}
+.cmd{background:none;border:1px solid var(--regle2);border-radius:2px;padding:.42rem .8rem;font-family:var(--police);font-size:.8rem;cursor:pointer;color:var(--enc2)}
 .cmd:hover{border-color:var(--enc2);color:var(--enc)}
 .cmd[aria-pressed="true"]{background:var(--bleu);border-color:var(--bleu);color:var(--pap)}
 main{max-width:72rem;margin:0 auto;padding:0 1.5rem 5rem}
@@ -71,22 +87,22 @@ main{max-width:72rem;margin:0 auto;padding:0 1.5rem 5rem}
 .avance{display:flex;align-items:center;gap:1rem;margin-bottom:1.2rem}
 .avance .barre{flex:1;height:3px;background:var(--pan2);position:relative}
 .avance .barre i{position:absolute;left:0;top:0;bottom:0;background:var(--verm);transition:width .3s}
-.avance .n{font-family:"Martian Mono",monospace;font-size:.68rem;color:var(--enc3);white-space:nowrap}
-.enonce{font-family:"Familjen Grotesk",sans-serif;font-size:1.15rem;text-align:center;margin:0 0 1.2rem;font-weight:600}
-.enonce span{display:block;font-family:"Newsreader",serif;font-weight:400;font-size:.92rem;color:var(--enc3);margin-top:.2rem;font-style:italic}
+.avance .n{font-family:var(--police-mono);font-size:.68rem;color:var(--enc3);white-space:nowrap}
+.enonce{font-family:var(--police);font-size:1.15rem;text-align:center;margin:0 0 1.2rem;font-weight:600}
+.enonce span{display:block;font-family:var(--police);font-weight:400;font-size:.92rem;color:var(--enc3);margin-top:.2rem;font-style:italic}
 
 /* ── les deux copies ── */
 .paire{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;align-items:start}
 @media(max-width:820px){.paire{grid-template-columns:1fr}}
 .copie{background:var(--pan);border:1px solid var(--regle);box-shadow:var(--om);display:flex;flex-direction:column}
-.copie .ent{border-bottom:1px solid var(--regle);padding:.7rem .9rem;font-family:"Martian Mono",monospace;font-size:.62rem;color:var(--enc3);
+.copie .ent{border-bottom:1px solid var(--regle);padding:.7rem .9rem;font-family:var(--police-mono);font-size:.62rem;color:var(--enc3);
  display:flex;justify-content:space-between;letter-spacing:-.03em}
 .copie .corps{padding:1.1rem 1.3rem;white-space:pre-line;font-size:.98rem;line-height:1.55;flex:1}
 .copie .pied{padding:.8rem;border-top:1px solid var(--regle)}
 .choisir{width:100%;background:none;border:1px solid var(--verm);color:var(--verm);padding:.6rem;cursor:pointer;
- font-family:"Familjen Grotesk",sans-serif;font-weight:600;font-size:.9rem;border-radius:2px}
+ font-family:var(--police);font-weight:600;font-size:.9rem;border-radius:2px}
 .choisir:hover{background:var(--verm);color:var(--pap)}
-.aide{text-align:center;color:var(--enc3);font-size:.82rem;font-family:"Familjen Grotesk",sans-serif;margin-top:1rem}
+.aide{text-align:center;color:var(--enc3);font-size:.82rem;font-family:var(--police);margin-top:1rem}
 
 /* ── résultats ── */
 .res{margin-top:1rem}
@@ -99,28 +115,28 @@ main{max-width:72rem;margin:0 auto;padding:0 1.5rem 5rem}
 .classement{list-style:none;padding:0;margin:.6rem 0 0;counter-reset:r}
 .classement li{counter-increment:r;display:grid;grid-template-columns:1.6rem 1fr auto;gap:.6rem;align-items:baseline;
  padding:.45rem 0;border-bottom:1px solid var(--regle)}
-.classement li::before{content:counter(r);font-family:"Martian Mono",monospace;font-size:.7rem;color:var(--enc3)}
+.classement li::before{content:counter(r);font-family:var(--police-mono);font-size:.7rem;color:var(--enc3)}
 .classement li b{font-weight:500}
-.classement .ecart{font-family:"Martian Mono",monospace;font-size:.66rem;color:var(--verm)}
+.classement .ecart{font-family:var(--police-mono);font-size:.66rem;color:var(--verm)}
 .classement .ecart.nul{color:var(--enc3)}
 .profil{margin-top:.8rem}
-.pr{display:grid;grid-template-columns:11rem 1fr 3rem;gap:.6rem;align-items:center;margin-bottom:.4rem;font-family:"Familjen Grotesk",sans-serif;font-size:.82rem}
+.pr{display:grid;grid-template-columns:11rem 1fr 3rem;gap:.6rem;align-items:center;margin-bottom:.4rem;font-family:var(--police);font-size:.82rem}
 @media(max-width:560px){.pr{grid-template-columns:8rem 1fr 2.6rem;font-size:.76rem}}
 .pr .b{height:8px;background:var(--pan2);position:relative}
 .pr .b i{position:absolute;top:0;bottom:0;left:50%;background:var(--bleu)}
 .pr .b::before{content:"";position:absolute;left:50%;top:-2px;bottom:-2px;width:1px;background:var(--regle2)}
-.pr .v{font-family:"Martian Mono",monospace;font-size:.68rem;color:var(--bleu);text-align:right}
+.pr .v{font-family:var(--police-mono);font-size:.68rem;color:var(--bleu);text-align:right}
 .pr.haut .b i{background:var(--verm)}.pr.haut .v{color:var(--verm)}
 .experts{width:100%;border-collapse:collapse;font-size:.9rem;margin-top:.6rem}
-.experts th{font-family:"Familjen Grotesk";font-size:.6rem;text-transform:uppercase;letter-spacing:.09em;color:var(--enc3);text-align:left;padding:.35rem .4rem;border-bottom:1px solid var(--regle2)}
-.experts td{padding:.4rem;border-bottom:1px solid var(--regle);font-family:"Martian Mono",monospace;font-size:.74rem}
-.experts td.q{font-family:"Newsreader",serif;font-size:.9rem;color:var(--enc2)}
+.experts th{font-family:var(--police);font-size:.6rem;text-transform:uppercase;letter-spacing:.09em;color:var(--enc3);text-align:left;padding:.35rem .4rem;border-bottom:1px solid var(--regle2)}
+.experts td{padding:.4rem;border-bottom:1px solid var(--regle);font-family:var(--police-mono);font-size:.74rem}
+.experts td.q{font-family:var(--police);font-size:.9rem;color:var(--enc2)}
 .cycle{border:1px solid var(--verm);border-left-width:3px;background:var(--verm-voile);padding:1rem 1.2rem;margin:1rem 0}
-.cycle .tri{font-family:"Martian Mono",monospace;font-size:.85rem;color:var(--verm);margin:.4rem 0}
+.cycle .tri{font-family:var(--police-mono);font-size:.85rem;color:var(--verm);margin:.4rem 0}
 .note{font-size:.9rem;color:var(--enc2);border-left:2px solid var(--bleu);padding-left:.9rem;margin:1rem 0;display:none}
 body.conception .note{display:block}
-.note b{font-family:"Familjen Grotesk";color:var(--enc)}
-.pied{max-width:72rem;margin:0 auto;padding:2.5rem 1.5rem;border-top:1px solid var(--regle);color:var(--enc3);font-size:.84rem;font-family:"Familjen Grotesk",sans-serif}
+.note b{font-family:var(--police);color:var(--enc)}
+.pied{max-width:72rem;margin:0 auto;padding:2.5rem 1.5rem;border-top:1px solid var(--regle);color:var(--enc3);font-size:.84rem;font-family:var(--police)}
 </style>
 </head>
 <body>
@@ -130,7 +146,7 @@ body.conception .note{display:block}
  <p class="chapeau">Dix fois de suite, deux copies&nbsp;: laquelle est le meilleur travail&nbsp;? Aucun critère ne vous est donné — c'est le dispositif entier. À la fin, il ne vous dit pas si vous avez bien corrigé&nbsp;: il vous dit <em>ce qui a gouverné vos jugements à votre insu</em>, il attrape vos incohérences, et il vous montre où quatre experts se contredisent entre eux.</p>
  <div class="commandes">
   <button class="cmd" id="btnConception" aria-pressed="false">Vue conception</button>
-  <button class="cmd" id="btnTheme">Thème</button>
+  <button class="cmd" id="btnTheme">Sombre</button>
   <button class="cmd" id="btnReprise">Recommencer</button>
   <span class="mo" style="font-size:.62rem;color:var(--enc3)">10 comparaisons · 5 min</span>
  </div>
@@ -303,6 +319,10 @@ function divergentes(){ /* les paires où mon choix contredit le panel */
 }
 
 function resultats(){
+ // La dernière paire doit disparaître : laissée en place sous les résultats,
+ // elle restait cliquable et chaque clic ajoutait un jugement de plus, ce qui
+ // déformait le profil sans que rien ne le signale.
+ $("#scene").innerHTML="";
  const cl=classement(), pf=profil(), cy=cycles(), dv=divergentes();
  const accord=E.jug.length-dv.length;
  const tps=E.jug.map(j=>j.ms).sort((a,b)=>a-b), med=tps[Math.floor(tps.length/2)];
@@ -340,7 +360,7 @@ function resultats(){
 
   +'<div class="deux"><div class="bloc"><h3>Votre classement</h3><p style="color:var(--enc2);font-size:.94rem">Reconstruit à partir de vos dix comparaisons — vous ne l\'avez jamais posé vous-même.</p>'+monCl+'</div>'
   +'<div class="bloc"><h3>Le consensus du panel</h3><p style="color:var(--enc2);font-size:.94rem">Quatre correcteurs, quatre métiers différents.</p>'+consCl
-  +'<p style="margin-top:.8rem;font-family:\'Familjen Grotesk\';font-size:.86rem">Accord avec le panel&nbsp;: <b>'+accord+' comparaisons sur '+E.jug.length+'</b>.</p></div></div>'
+  +'<p style="margin-top:.8rem;font-family:var(--police);font-size:.86rem">Accord avec le panel&nbsp;: <b>'+accord+' comparaisons sur '+E.jug.length+'</b>.</p></div></div>'
 
   +cyHtml
 
@@ -400,9 +420,21 @@ function tour2(dv){
 }
 
 $("#btnConception").onclick=e=>{const on=document.body.classList.toggle("conception");e.currentTarget.setAttribute("aria-pressed",on)};
-$("#btnTheme").onclick=()=>{const r=document.documentElement;
- const a=r.getAttribute("data-theme")||(matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light");
- r.setAttribute("data-theme",a==="dark"?"light":"dark")};
+/* Le bouton dit l'état où il mène, jamais celui où l'on est : « Sombre »
+   sur fond clair. L'inverse se lit à contresens une fois sur deux. */
+function etatTheme(){
+ return document.documentElement.getAttribute("data-theme")
+   || (matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light");
+}
+function nommerTheme(){
+ const b=document.getElementById("btnTheme");
+ if(b) b.textContent = etatTheme()==="dark" ? "Clair" : "Sombre";
+}
+$("#btnTheme").onclick=()=>{
+ document.documentElement.setAttribute("data-theme", etatTheme()==="dark"?"light":"dark");
+ nommerTheme();
+};
+nommerTheme();
 $("#btnReprise").onclick=()=>{neuf();window.scrollTo({top:0,behavior:"smooth"})};
 neuf();
 </script>

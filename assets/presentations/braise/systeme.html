@@ -39,6 +39,16 @@
   --signal-encre:    #FFFFFF;
   --signal-voile:    #FEF1EA;
 
+  /* ── Mesure — le bleu de ce que la machine calcule ─────────────────
+     Ajouté le 5 septembre 2026, quand les prototypes de l'atelier ont
+     demandé un rôle que le système n'avait pas : distinguer ce qu'une
+     personne décide de ce qu'un modèle mesure. Sans lui, il fallait
+     détourner un arrêt du dégradé, ce que la règle du § 5 interdit.
+     Jamais pour du texte courant, jamais pour une action. ── */
+  --mesure:          #2B4E9B;
+  --mesure-2:        #5C7EBF;
+  --mesure-voile:    #EAEFFA;
+
   /* ── Action — le noir est la couleur du bouton principal ── */
   --action:          #18181B;
   --action-survol:   #27272A;
@@ -116,6 +126,7 @@
   --bord:#27272A; --bord-fort:#3F3F46;
   --marque-rose:#FF4FB0; --marque-corail:#FF6A50;
   --signal:#FF7A45; --signal-encre:#1A0C05; --signal-voile:#2A1610;
+  --mesure:#8FB2F0; --mesure-2:#6E8FCB; --mesure-voile:#18213A;
   --action:#FAFAFA; --action-survol:#E4E4E7; --action-encre:#18181B;
   --o-1:0 1px 2px rgba(0,0,0,.5);
   --o-2:0 1px 3px rgba(0,0,0,.6), 0 1px 2px rgba(0,0,0,.4);
@@ -385,6 +396,7 @@ footer{padding:var(--e-7) 0;color:var(--encre-4);font-size:.8125rem}
   <div class="regle"><b>La chasse se resserre quand le corps grandit</b><p>−0,035 em à 84 px, −0,02 em aux titres, zéro au texte courant. Un grand titre à chasse normale a l'air d'une valeur par défaut, et c'en est une.</p></div>
   <div class="regle"><b>Le texte d'accroche ne dépasse pas 42 rem</b><p>Centré, il doit rester manifestement plus étroit que le titre. C'est le rapport entre les deux largeurs qui fait tenir le bloc, pas la taille des caractères.</p></div>
   <div class="regle"><b>Bordure ou ombre, rarement les deux</b><p>La bordure sépare, l'ombre soulève. Une carte qui fait les deux fortement paraît collée sur la page au lieu d'en faire partie.</p></div>
+  <div class="regle"><b>Le bleu ne décide de rien</b><p>Il n'appartient qu'à ce qu'une machine a calculé — probabilité, gain d'information, corrélation. Jamais un bouton, jamais du texte courant. C'est ce qui permet de lire une page et de savoir d'un coup d'œil ce qui vient d'un jugement humain et ce qui vient d'un modèle.</p></div>
   <div class="regle"><b>Aucune couleur hors des jetons</b><p>Pas de hex dans une feuille de composant. C'est la seule règle qui rend le thème sombre gratuit — et c'est aussi la seule qu'on enfreint toujours en premier, pour un cas particulier qui ne l'est jamais.</p></div>
  </div>
 
@@ -427,6 +439,9 @@ const COULEURS=[
  {t:"Signal",d:"L'orange de la pastille. Il annonce du neuf, et il ne fait que ça.",l:[
   {n:"--signal",r:"pastille, étiquette « nouveau »",c:"--signal-encre",u:"gros"},
   {n:"--signal-voile",r:"fond de rappel très léger",c:"--encre",u:"texte"}]},
+ {t:"Mesure",d:"Le bleu de ce que la machine calcule — une probabilité, un gain d\'information, une corrélation. Ajouté quand les prototypes de l\'atelier ont demandé de distinguer ce qu\'une personne décide de ce qu\'un modèle mesure.",l:[
+  {n:"--mesure",r:"chiffres calculés, panneaux de modèle",c:"--fond",u:"gros"},
+  {n:"--mesure-voile",r:"fond des panneaux de mesure",c:"--encre",u:"texte"}]},
  {t:"Action",d:"Le bouton principal. Séparé des neutres bien qu'il en ait la couleur : c'est un rôle, et il se retourne en thème sombre.",l:[
   {n:"--action",r:"bouton principal",c:"--action-encre",u:"gros"},
   {n:"--action-survol",r:"bouton principal au survol",c:"--action-encre",u:"gros"}]}
