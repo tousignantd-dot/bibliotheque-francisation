@@ -89,6 +89,72 @@
   }
   .recherche::placeholder{color:var(--ink-400); font-weight:600}
 
+  /* ---------- la bascule et la vue tableau ---------- */
+  .bascule{
+    appearance:none; font:inherit; font-size:var(--fs-ui-sm); font-weight:800;
+    min-height:var(--tap-min); padding:0 var(--sp-4); border-radius:var(--r-pill);
+    border:1px solid var(--border-firm); background:var(--surface-card); color:var(--ink-700);
+    cursor:pointer; transition:background var(--dur) var(--ease), color var(--dur) var(--ease),
+      border-color var(--dur) var(--ease);
+  }
+  .bascule:hover{background:var(--paper-200)}
+  .bascule[aria-pressed="true"]{background:var(--accent); border-color:var(--accent); color:#FFFFFF}
+  .vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+  #vueTableau{padding:var(--sp-8) 0 0}
+  table.index{width:100%; border-collapse:collapse; background:var(--surface-card);
+    border:1px solid var(--border); border-radius:var(--r-md); overflow:hidden}
+  table.index th{
+    text-align:left; font-size:var(--fs-label); font-weight:800; letter-spacing:var(--ls-label);
+    text-transform:uppercase; color:var(--ink-400); padding:var(--sp-3) var(--sp-4);
+    border-bottom:1px solid var(--border-firm); background:var(--surface-sunken); white-space:nowrap;
+  }
+  table.index th.tri-col{cursor:pointer; user-select:none}
+  table.index th.tri-col:hover{color:var(--ink-700)}
+  table.index th.tri-col::after{content:"↕"; margin-left:var(--sp-2); opacity:.35; font-size:11px}
+  table.index th[aria-sort="ascending"]::after{content:"↑"; opacity:1; color:var(--accent-ink)}
+  table.index th[aria-sort="descending"]::after{content:"↓"; opacity:1; color:var(--accent-ink)}
+  table.index td{padding:var(--sp-3) var(--sp-4); border-bottom:1px solid var(--border);
+    font-size:var(--fs-ui); vertical-align:baseline}
+  table.index tr:last-child td{border-bottom:none}
+  table.index tbody tr:hover{background:var(--surface-sunken)}
+  table.index .t-titre{font-weight:800; color:var(--ink-900); text-decoration:none;
+    display:block; line-height:1.35}
+  table.index .t-titre:hover{color:var(--accent-ink)}
+  /* Le chemin sert au repérage, pas à la lecture : une seule ligne, coupée
+     au besoin, et le chemin entier dans l'infobulle. Sur deux lignes, il
+     doublait la hauteur du tableau pour une information secondaire. */
+  table.index .t-ou{display:block; font-size:var(--fs-meta); color:var(--ink-400);
+    font-weight:600; margin-top:2px; white-space:nowrap; overflow:hidden;
+    text-overflow:ellipsis; max-width:34rem}
+  table.index .c-fam{width:9.5rem}
+  table.index .c-type{width:11rem}
+  table.index .c-date{width:8.5rem}
+  table.index .c-lien{width:7.5rem; text-align:right}
+  table.index td.c-date{font-size:var(--fs-ui-sm); color:var(--ink-500);
+    font-variant-numeric:tabular-nums; white-space:nowrap}
+  .t-fam{display:inline-block; font-size:var(--fs-meta); font-weight:800; color:var(--ink-500);
+    background:var(--paper-200); border-radius:var(--r-pill); padding:2px var(--sp-3)}
+  .t-liens{display:flex; gap:var(--sp-2); justify-content:flex-end; flex-wrap:wrap}
+  .t-lien{font-size:var(--fs-ui-sm); font-weight:800; color:var(--accent-ink);
+    text-decoration:none; white-space:nowrap; border-bottom:1px solid transparent}
+  .t-lien:hover{border-bottom-color:var(--accent)}
+  .t-lien.secondaire{color:var(--ink-400); font-weight:700}
+  .index-pied{font-size:var(--fs-meta); color:var(--ink-400); font-weight:600;
+    margin:var(--sp-3) 0 0; text-align:right}
+  body.vue-tableau .famille{display:none !important}
+
+  @media (max-width:820px){
+    table.index thead{display:none}
+    table.index, table.index tbody, table.index tr, table.index td{display:block; width:auto}
+    table.index tr{border-bottom:1px solid var(--border); padding:var(--sp-3) 0}
+    table.index tr:last-child{border-bottom:none}
+    table.index td{border:none; padding:2px var(--sp-4)}
+    table.index td.c-lien{text-align:left; padding-top:var(--sp-2)}
+    .t-liens{justify-content:flex-start}
+    table.index td.c-fam, table.index td.c-type{display:inline-block; padding-right:0}
+  }
+
   /* ---------- familles ---------- */
   main{padding-bottom:var(--sp-12)}
   .famille{padding:var(--sp-8) 0 0}
@@ -217,11 +283,32 @@
     </div>
     <input type="search" class="recherche" id="q" placeholder="Chercher un titre…"
            aria-label="Chercher un document par titre ou par sujet">
+    <button type="button" class="bascule" id="bascule" aria-pressed="false"
+            title="Passer de la vue en fiches à la vue en tableau">Tableau</button>
   </div>
 </nav>
 
 <main>
   <div class="conteneur">
+
+    <!-- La vue tableau : une ligne par fiche, engendrée au chargement à partir
+         des fiches elles-mêmes. Rien n'y est écrit à la main — un index tenu
+         à part serait faux au document suivant, comme l'étaient les compteurs
+         des onglets. Elle obéit aux mêmes filtres que les fiches, parce que
+         c'est la MÊME décision de visibilité qui pilote les deux. -->
+    <section id="vueTableau" hidden aria-label="Tout le classeur en tableau">
+      <table class="index">
+        <thead><tr>
+          <th class="tri-col" data-tri="titre" aria-sort="none">Document</th>
+          <th class="tri-col c-fam" data-tri="fam" aria-sort="none">Onglet</th>
+          <th class="tri-col c-type" data-tri="type" aria-sort="none">Type</th>
+          <th class="tri-col c-date" data-tri="date" aria-sort="none">Date</th>
+          <th class="c-lien"><span class="vh">Lien</span></th>
+        </tr></thead>
+        <tbody id="corpsIndex"></tbody>
+      </table>
+      <p class="index-pied" id="indexPied"></p>
+    </section>
 
     <!-- ══════════ PRÉSENTER ══════════ -->
     <section class="famille" data-fam="presenter">
@@ -2533,6 +2620,122 @@
   var vide = document.getElementById('vide');
   var filtre = 'tout';
 
+  // ── La vue tableau ────────────────────────────────────────────────
+  // Une ligne par fiche, engendrée ICI à partir des fiches : un index
+  // tenu à part serait faux au document suivant. Chaque ligne garde un
+  // lien vers sa fiche d'origine, et c'est la fiche qui décide de sa
+  // visibilité — les deux vues ne peuvent donc pas diverger.
+  var corps = document.getElementById('corpsIndex');
+  var vueTableau = document.getElementById('vueTableau');
+  var bascule = document.getElementById('bascule');
+  var indexPied = document.getElementById('indexPied');
+  var lignes = [];
+
+  function texteDe(f, sel) {
+    var e = f.querySelector(sel);
+    return e ? e.textContent.trim() : '';
+  }
+
+  function bâtirIndex() {
+    familles.forEach(function (fam) {
+      var nomFam = texteDe(fam, '.tete h2');
+      Array.prototype.slice.call(fam.querySelectorAll('.fiche')).forEach(function (fiche) {
+        var tr = document.createElement('tr');
+        var liens = Array.prototype.slice.call(fiche.querySelectorAll('.actions a'));
+        var premier = liens[0];
+        var titre = texteDe(fiche, '.titre');
+        var ou = texteDe(fiche, '.ou');
+
+        var tdT = document.createElement('td');
+        if (premier) {
+          var a = document.createElement('a');
+          a.className = 't-titre';
+          a.href = premier.getAttribute('href');
+          if (premier.hasAttribute('target')) { a.target = '_blank'; a.rel = 'noopener'; }
+          a.textContent = titre;
+          tdT.appendChild(a);
+        } else {
+          var s = document.createElement('span');
+          s.className = 't-titre';
+          s.textContent = titre;
+          tdT.appendChild(s);
+        }
+        if (ou) {
+          var o = document.createElement('span');
+          o.className = 't-ou';
+          o.textContent = ou;
+          o.title = ou;
+          tdT.appendChild(o);
+        }
+
+        var tdF = document.createElement('td');
+        tdF.className = 'c-fam';
+        var pf = document.createElement('span');
+        pf.className = 't-fam';
+        pf.textContent = nomFam;
+        tdF.appendChild(pf);
+
+        var tdY = document.createElement('td');
+        tdY.className = 'c-type';
+        tdY.textContent = texteDe(fiche, '.eti');
+
+        var tdD = document.createElement('td');
+        tdD.className = 'c-date';
+        tdD.textContent = texteDe(fiche, '.date');
+
+        var tdL = document.createElement('td');
+        tdL.className = 'c-lien';
+        var boite = document.createElement('span');
+        boite.className = 't-liens';
+        liens.forEach(function (l, i) {
+          var c = document.createElement('a');
+          c.className = 't-lien' + (i ? ' secondaire' : '');
+          c.href = l.getAttribute('href');
+          if (l.hasAttribute('target')) { c.target = '_blank'; c.rel = 'noopener'; }
+          c.textContent = l.textContent.trim();
+          boite.appendChild(c);
+        });
+        tdL.appendChild(boite);
+
+        tr.appendChild(tdT); tr.appendChild(tdF); tr.appendChild(tdY);
+        tr.appendChild(tdD); tr.appendChild(tdL);
+        tr.dataset.titre = titre.toLowerCase();
+        tr.dataset.fam = nomFam.toLowerCase();
+        tr.dataset.type = tdY.textContent.toLowerCase();
+        tr.dataset.date = String(cleDate(tdD.textContent) || 0);
+        tr.dataset.rang = String(lignes.length);
+        fiche._ligne = tr;
+        lignes.push(tr);
+        corps.appendChild(tr);
+      });
+    });
+  }
+
+  // Le tri : sur la clé entière pour les dates (jamais `new Date`, voir plus
+  // bas), sur la chaîne pour le reste, et un second clic renverse l'ordre.
+  var triCourant = '', triSens = 1;
+  function trier(cle) {
+    if (triCourant === cle) { triSens = -triSens; } else { triCourant = cle; triSens = 1; }
+    var copie = lignes.slice();
+    copie.sort(function (a, b) {
+      if (cle === 'date') {
+        var d = (+b.dataset.date) - (+a.dataset.date);   // le plus récent d'abord
+        return (d || ((+a.dataset.rang) - (+b.dataset.rang))) * triSens;
+      }
+      // localeCompare et non `<` : sans lui, « École » se range après « Zone »
+      // et le tri d'une page française paraît cassé sans qu'on voie pourquoi.
+      var x = a.dataset[cle], y = b.dataset[cle];
+      var c = x.localeCompare(y, 'fr');
+      if (!c) return (+a.dataset.rang) - (+b.dataset.rang);
+      return c * triSens;
+    });
+    copie.forEach(function (tr) { corps.appendChild(tr); });
+    Array.prototype.slice.call(document.querySelectorAll('th.tri-col')).forEach(function (th) {
+      th.setAttribute('aria-sort', th.dataset.tri !== cle ? 'none'
+        : (triSens > 0 ? 'ascending' : 'descending'));
+    });
+  }
+
   // Compter plutôt qu'annoncer : les nombres des onglets sont lus sur les
   // fiches présentes. Écrits à la main, ils étaient faux de deux.
   //
@@ -2624,6 +2827,7 @@
       Array.prototype.slice.call(fam.querySelectorAll('.fiche')).forEach(function (f) {
         var ok = famVisible && (!mot || texte(f).indexOf(mot) !== -1);
         f.hidden = !ok;
+        if (f._ligne) { f._ligne.hidden = !ok; }
         if (ok) { restants++; vus++; }
       });
 
@@ -2631,6 +2835,10 @@
     });
 
     vide.dataset.on = vus ? 'non' : 'oui';
+    if (indexPied) {
+      indexPied.textContent = vus + (vus > 1 ? ' documents affichés' : ' document affiché')
+        + (vus === fiches.length ? ' — tout le classeur.' : ' sur ' + fiches.length + '.');
+    }
   }
 
   onglets.forEach(function (b) {
@@ -2644,6 +2852,33 @@
   });
 
   q.addEventListener('input', appliquer);
+
+  // ── La bascule fiches / tableau ────────────────────────────────────
+  // `cleDate` est déclarée plus bas : une déclaration de fonction est
+  // hissée, donc bâtirIndex peut l'appeler ici sans que l'ordre compte.
+  bâtirIndex();
+
+  Array.prototype.slice.call(document.querySelectorAll('th.tri-col')).forEach(function (th) {
+    th.addEventListener('click', function () { trier(th.dataset.tri); });
+  });
+
+  function poserVue(tableau) {
+    document.body.classList.toggle('vue-tableau', tableau);
+    vueTableau.hidden = !tableau;
+    bascule.setAttribute('aria-pressed', tableau ? 'true' : 'false');
+    bascule.textContent = tableau ? 'Fiches' : 'Tableau';
+    try { localStorage.setItem('classeur-vue', tableau ? 'tableau' : 'fiches'); } catch (e) {}
+  }
+  bascule.addEventListener('click', function () {
+    poserVue(bascule.getAttribute('aria-pressed') !== 'true');
+  });
+  // La vue choisie tient d'une visite à l'autre : celui qui vient chercher
+  // vite y revient toujours. Un navigateur qui refuse le stockage retombe
+  // sur les fiches, ce qui est la vue par défaut de toute façon.
+  var vueGardee = 'fiches';
+  try { vueGardee = localStorage.getItem('classeur-vue') || 'fiches'; } catch (e) {}
+  poserVue(vueGardee === 'tableau');
+
   appliquer();
 })();
 </script>
