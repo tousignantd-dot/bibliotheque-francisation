@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Prototype de conception pédagogique : un avis d'augmentation de loyer, et en face une gestionnaire qui répond exactement à ce qu'on lui demande — jamais à ce qu'on aurait dû lui demander.">
+<title>Le document piégé</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,400&family=Martian+Mono:wght@400;600&display=swap">
+<style>
+/* ═══ L'atelier des prototypes — jetons communs ═══
+   Ancrage visuel : le tracé à deux plumes sur papier d'avoine.
+   Plume BLEUE = ce que la machine calcule.  Plume VERMILLON = ce que l'humain décide.
+   Aucune autre couleur n'a le droit de signifier quoi que ce soit. */
+:root{
+  --pap:#EDE7DC; --pan:#F8F4EC; --pan2:#E3DBCC; --pan3:#D9D0BE;
+  --enc:#1B1A17; --enc2:#6B665C; --enc3:#948D80;
+  --regle:#D6CDBD; --regle2:#BFB4A0;
+  --bleu:#1F4B99; --bleu2:#5C7EBF; --bleu-pale:#DCE3F1; --bleu-voile:rgba(31,75,153,.09);
+  --verm:#BE4220; --verm2:#D9744F; --verm-pale:#F3DDD3; --verm-voile:rgba(190,66,32,.09);
+  --grille:rgba(27,26,23,.05);
+  --om:0 1px 0 rgba(27,26,23,.09);
+  --om2:0 2px 14px rgba(27,26,23,.10);
+}
+:root:not([data-theme="light"]){ color-scheme:light dark; }
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --pap:#15140F; --pan:#1D1C16; --pan2:#282621; --pan3:#33302A;
+  --enc:#EAE4D8; --enc2:#A29B8D; --enc3:#7B7467;
+  --regle:#33302A; --regle2:#474238;
+  --bleu:#8FB2F0; --bleu2:#6E8FCB; --bleu-pale:#1A2438; --bleu-voile:rgba(143,178,240,.12);
+  --verm:#EE8A66; --verm2:#C0684A; --verm-pale:#33201A; --verm-voile:rgba(238,138,102,.12);
+  --grille:rgba(234,228,216,.045);
+  --om:0 1px 0 rgba(0,0,0,.45); --om2:0 2px 16px rgba(0,0,0,.5);
+}}
+:root[data-theme="dark"]{ color-scheme:dark;
+  --pap:#15140F; --pan:#1D1C16; --pan2:#282621; --pan3:#33302A;
+  --enc:#EAE4D8; --enc2:#A29B8D; --enc3:#7B7467;
+  --regle:#33302A; --regle2:#474238;
+  --bleu:#8FB2F0; --bleu2:#6E8FCB; --bleu-pale:#1A2438; --bleu-voile:rgba(143,178,240,.12);
+  --verm:#EE8A66; --verm2:#C0684A; --verm-pale:#33201A; --verm-voile:rgba(238,138,102,.12);
+  --grille:rgba(234,228,216,.045);
+  --om:0 1px 0 rgba(0,0,0,.45); --om2:0 2px 16px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pap);color:var(--enc);font-family:"Newsreader",Georgia,serif;font-size:17px;line-height:1.58;
+ -webkit-font-smoothing:antialiased;
+ background-image:linear-gradient(var(--grille) 1px,transparent 1px),linear-gradient(90deg,var(--grille) 1px,transparent 1px);background-size:72px 72px,72px 72px}
+h1,h2,h3,h4,.gr{font-family:"Familjen Grotesk","Helvetica Neue",Arial,sans-serif;font-weight:600;text-wrap:balance;letter-spacing:-.012em}
+.mo{font-family:"Martian Mono",ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;letter-spacing:-.04em}
+p{margin:0 0 .9em}button{font:inherit;color:inherit}a{color:inherit}
+:focus-visible{outline:2px solid var(--verm);outline-offset:3px}
+[hidden]{display:none!important}
+.tete,main,.pied{max-width:74rem;margin:0 auto;padding-left:1.5rem;padding-right:1.5rem}
+.tete{padding-top:2.6rem;padding-bottom:1.2rem}
+.fil{display:flex;flex-wrap:wrap;gap:.9rem;align-items:baseline;font-size:.66rem;text-transform:uppercase;letter-spacing:.16em;color:var(--enc3);font-family:"Familjen Grotesk",sans-serif}
+.fil .no{color:var(--verm)}
+h1{font-size:clamp(2rem,4.8vw,3.2rem);line-height:1.02;margin:.5rem 0 .7rem;font-weight:700}
+.chapeau{max-width:38rem;font-size:1.04rem;color:var(--enc2)}
+.chapeau em{color:var(--enc);font-style:italic}
+.commandes{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;border-top:1px solid var(--regle);padding-top:1rem;margin-top:1.2rem}
+.cmd{background:none;border:1px solid var(--regle2);border-radius:2px;padding:.42rem .8rem;font-family:"Familjen Grotesk",sans-serif;font-size:.8rem;cursor:pointer;color:var(--enc2)}
+.cmd:hover{border-color:var(--enc2);color:var(--enc)}
+.cmd[aria-pressed="true"]{background:var(--bleu);border-color:var(--bleu);color:var(--pap)}
+
+.grille2{display:grid;grid-template-columns:minmax(0,26rem) minmax(0,1fr);gap:2.2rem;align-items:start}
+@media(max-width:980px){.grille2{grid-template-columns:1fr}}
+
+/* ── le document ── */
+.doc{position:sticky;top:1.2rem}
+@media(max-width:980px){.doc{position:static}}
+.avis{background:#fbfaf7;color:#1a1a17;border:1px solid var(--regle2);box-shadow:var(--om2);
+ font-family:"Helvetica Neue",Arial,sans-serif;font-size:12.5px;line-height:1.42;padding:1.4rem 1.5rem}
+:root[data-theme="dark"] .avis{background:#e9e6de}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .avis{background:#e9e6de}}
+.avis .ent{border-bottom:2px solid #1a1a17;padding-bottom:.5rem;margin-bottom:.9rem}
+.avis .ent b{font-size:14px;letter-spacing:.02em;display:block}
+.avis .ent span{font-size:10.5px;color:#55524c}
+.avis h2{font-family:"Helvetica Neue",Arial,sans-serif;font-size:13px;text-transform:uppercase;letter-spacing:.06em;
+ text-align:center;margin:1rem 0 .9rem;font-weight:700;color:#1a1a17}
+.avis .lig{display:flex;justify-content:space-between;gap:1rem;font-size:11.5px;margin-bottom:.2rem}
+.avis .lig span:last-child{font-variant-numeric:tabular-nums}
+.avis table{width:100%;border-collapse:collapse;margin:.7rem 0;font-size:11.5px}
+.avis table td{padding:.28rem .1rem;border-bottom:1px solid #d8d4cb;font-variant-numeric:tabular-nums}
+.avis table td:last-child{text-align:right;white-space:nowrap}
+.avis table tr.tot td{border-top:1.5px solid #1a1a17;border-bottom:none;font-weight:700;padding-top:.4rem}
+.avis .autres{margin:.8rem 0 .6rem;font-size:11.5px}
+.avis .autres li{margin-bottom:.28rem}
+.avis .petit{font-size:9.5px;color:#3d3a35;border-top:1px solid #d8d4cb;padding-top:.5rem;margin-top:.9rem;line-height:1.36}
+.avis .sig{margin-top:.9rem;font-size:11.5px}
+.avis .sig i{display:block;font-family:"Newsreader",serif;font-style:italic;font-size:15px;margin-bottom:.1rem}
+.tampon{font-family:"Martian Mono",monospace;font-size:.62rem;color:var(--enc3);margin-top:.6rem;text-align:right}
+
+/* ── la conversation ── */
+.face{display:flex;align-items:center;gap:.8rem;border-bottom:1px solid var(--regle);padding-bottom:.8rem;margin-bottom:1rem}
+.face svg{flex:none}
+.face b{display:block;font-family:"Familjen Grotesk";font-size:1.02rem}
+.face span{font-size:.84rem;color:var(--enc2)}
+.patience{margin-left:auto;text-align:right;font-family:"Martian Mono";font-size:.64rem;color:var(--enc3);white-space:nowrap}
+.patience i{display:block;font-style:normal;font-size:1.3rem;color:var(--verm);line-height:1.1}
+.fil-conv{min-height:6rem;margin-bottom:1rem}
+.tour{margin-bottom:1.1rem}
+.moi{text-align:right}
+.moi p{display:inline-block;background:var(--verm-voile);border:1px solid var(--verm-pale);border-radius:2px;padding:.5rem .8rem;margin:0;
+ max-width:34rem;text-align:left;font-size:.98rem}
+.elle p{background:var(--pan);border:1px solid var(--regle);border-left:3px solid var(--bleu);padding:.7rem .9rem;margin:0;font-size:1.02rem;max-width:36rem}
+.elle .quoi{font-family:"Martian Mono";font-size:.6rem;color:var(--bleu);display:none;margin-top:.35rem}
+body.conception .elle .quoi{display:block}
+.elle .quoi.cle{color:var(--verm)}
+.saisie{display:grid;grid-template-columns:1fr auto;gap:.5rem;border-top:1px solid var(--regle);padding-top:1rem}
+.saisie input{font:inherit;font-size:1rem;font-family:"Newsreader",serif;padding:.65rem .8rem;background:var(--pan);
+ border:1px solid var(--regle2);color:var(--enc);border-radius:2px;min-width:0}
+.saisie button{background:var(--verm);color:var(--pap);border:none;padding:.65rem 1.2rem;font-family:"Familjen Grotesk";font-weight:600;cursor:pointer;border-radius:2px}
+.saisie button:disabled{background:var(--pan2);color:var(--enc3);cursor:default}
+.indic{font-size:.8rem;color:var(--enc3);font-family:"Familjen Grotesk";margin-top:.5rem}
+
+/* ── la décision ── */
+.decision{margin-top:1.6rem;border-top:1px solid var(--regle);padding-top:1.2rem}
+.decision h3{margin:0 0 .2rem;font-size:1.15rem}
+.decision .sous{color:var(--enc2);font-size:.94rem;margin-bottom:.8rem}
+.dec{display:block;width:100%;text-align:left;background:var(--pan);border:1px solid var(--regle2);padding:.6rem .8rem;
+ margin-bottom:.35rem;cursor:pointer;font-size:.97rem;border-radius:2px;font-family:"Newsreader",serif}
+.dec:hover{border-color:var(--verm);background:var(--verm-voile)}
+.dec[aria-pressed="true"]{border-color:var(--verm);background:var(--verm-voile);font-weight:500}
+.valider{background:var(--verm);color:var(--pap);border:none;padding:.6rem 1.3rem;margin-top:.6rem;
+ font-family:"Familjen Grotesk";font-weight:600;font-size:.92rem;cursor:pointer;border-radius:2px}
+.valider:disabled{background:var(--pan2);color:var(--enc3);cursor:default}
+
+/* ── débriefing ── */
+.debrief{margin-top:2.6rem;border-top:3px solid var(--verm);padding-top:1.4rem}
+.debrief h2{font-size:clamp(1.5rem,3.4vw,2.2rem);margin:0 0 .8rem;font-weight:700}
+.bloc{background:var(--pan);border:1px solid var(--regle);padding:1.5rem 1.7rem;margin-bottom:1.2rem;box-shadow:var(--om)}
+.bloc.fort{border-left:3px solid var(--verm)}
+.bloc h3{margin:0 0 .5rem;font-size:1.2rem}
+@media(max-width:560px){.bloc{padding:1.1rem 1.2rem}}
+.chiffres{display:flex;flex-wrap:wrap;gap:2rem;margin:1rem 0}
+.ch b{display:block;font-family:"Martian Mono";font-size:2rem;color:var(--verm);font-weight:400;line-height:1}
+.ch span{font-size:.62rem;color:var(--enc3);text-transform:uppercase;letter-spacing:.08em;font-family:"Familjen Grotesk"}
+.q{border-left:2px solid var(--regle2);padding-left:.9rem;margin-bottom:.9rem}
+.q.cle{border-color:var(--verm)}.q.inut{border-color:var(--enc3);opacity:.85}.q.hs{border-color:var(--enc3)}
+.q h4{margin:0 0 .2rem;font-size:.96rem;font-family:"Familjen Grotesk"}
+.q p{margin:0;font-size:.93rem;color:var(--enc2)}
+.q .et{font-family:"Martian Mono";font-size:.6rem;text-transform:uppercase;letter-spacing:.06em;color:var(--enc3);display:block;margin-bottom:.15rem}
+.q.cle .et{color:var(--verm)}
+.jamais{border:1px solid var(--verm);border-left-width:3px;background:var(--verm-voile);padding:1.3rem 1.5rem;margin-bottom:1.2rem}
+.jamais h3{margin:0 0 .5rem;font-size:1.2rem}
+.jamais .item{border-left:2px solid var(--verm);padding-left:.9rem;margin-bottom:.9rem}
+.jamais .item b{font-family:"Familjen Grotesk";font-size:.95rem;display:block}
+.jamais .item p{margin:.2rem 0 0;font-size:.93rem;color:var(--enc2)}
+.note{font-size:.9rem;color:var(--enc2);border-left:2px solid var(--bleu);padding-left:.9rem;margin:1rem 0;display:none}
+body.conception .note{display:block}
+.note b{font-family:"Familjen Grotesk";color:var(--enc)}
+.pied{padding:2.5rem 1.5rem;border-top:1px solid var(--regle);color:var(--enc3);font-size:.82rem;font-family:"Familjen Grotesk",sans-serif}
+.pied b{color:var(--enc2)}
+</style>
+</head>
+<body>
+<header class="tete">
+ <p class="fil"><span class="no">Prototype 05</span><a href="index.html" style="color:var(--enc3)">L'atelier des prototypes</a><span>Littératie administrative · francisation avancée</span></p>
+ <h1>Le document piégé</h1>
+ <p class="chapeau">Un avis d'augmentation de loyer, et au bout du fil la gestionnaire de l'immeuble. Elle ne ment jamais. Elle répond <em>exactement</em> à ce qu'on lui demande — jamais à ce qu'on aurait dû lui demander. Vous avez six questions avant qu'elle raccroche, puis une décision à prendre. Le dispositif ne mesure pas votre compréhension du document&nbsp;: il mesure <em>combien de questions il vous a fallu pour faire sortir ce qui coûte</em>.</p>
+ <div class="commandes">
+  <button class="cmd" id="btnConception" aria-pressed="false">Vue conception</button>
+  <button class="cmd" id="btnTheme">Thème</button>
+  <button class="cmd" id="btnReprise">Recommencer</button>
+  <span class="mo" style="font-size:.62rem;color:var(--enc3)">6 questions · 5 min</span>
+ </div>
+</header>
+<main>
+<div class="grille2">
+ <div class="doc" id="doc"></div>
+ <div>
+  <div id="conv"></div>
+  <section class="decision" id="decision"></section>
+ </div>
+</div>
+<section class="debrief" id="debrief" hidden></section>
+</main>
+<footer class="pied">
+ <p>Prototype de portfolio — conception, écriture et réalisation&nbsp;: Daniel Tousignant. <b>Fiction.</b> Gestion Tremblay &amp; fils, l'immeuble, l'avis et la gestionnaire sont inventés pour la démonstration. La pièce s'appuie sur des règles qui existent au Québec — le délai d'un mois, la réponse écrite, l'acceptation présumée en cas de silence — mais <b>ce n'est pas un avis juridique</b> : une personne devant un vrai avis doit s'adresser au Tribunal administratif du logement ou à un comité logement.</p>
+</footer>
+
+<script>
+"use strict";
+/* ═══════════════════════════════════════════════════════════════════
+   « Le document piégé ».
+   Le personnage n'est ni menteur ni serviable : il est EXACT. Chaque
+   réponse est vraie, et aucune ne déborde de la question posée. Ce que
+   la pièce mesure n'est pas la compréhension du document — c'est la
+   capacité à formuler la question qui fait sortir ce qui coûte.
+   ═══════════════════════════════════════════════════════════════════ */
+
+const AVIS = `
+<div class="avis">
+ <div class="ent"><b>GESTION TREMBLAY &amp; FILS INC.</b>
+  <span>4120, rue Ontario Est, bureau 12, Montréal (Québec)&nbsp;· 514 555-0170</span></div>
+ <h2>Avis de modification des conditions du bail</h2>
+ <div class="lig"><span>Locataire</span><span>Logement 4 — 2140, rue Sainte-Catherine Est</span></div>
+ <div class="lig"><span>Bail en cours</span><span>1<sup>er</sup> juillet 2026 au 30 juin 2027</span></div>
+ <div class="lig"><span>Avis expédié le</span><span>14 janvier 2027</span></div>
+ <div class="lig"><span>Loyer actuel</span><span>1 050,00 $ / mois</span></div>
+ <table>
+  <tr><td>Loyer de base proposé</td><td>1 105,00 $</td></tr>
+  <tr><td>Ajustement — travaux majeurs (toiture, 2026)</td><td>40,00 $</td></tr>
+  <tr><td>Frais de service — stationnement</td><td>30,00 $</td></tr>
+  <tr class="tot"><td>Nouveau loyer mensuel</td><td>1 175,00 $</td></tr>
+ </table>
+ <div class="autres"><b>Autres modifications proposées</b>
+  <ul style="margin:.3rem 0 0;padding-left:1.1rem">
+   <li>Durée du bail portée de 12 à <b>24 mois</b>, soit du 1<sup>er</sup> juillet 2027 au 30 juin 2029.</li>
+   <li>Le locataire devra souscrire une assurance responsabilité civile de 1 000 000 $ et en fournir la preuve à la signature.</li>
+  </ul></div>
+ <div class="petit">Le locataire dispose d'un délai d'un mois à compter de la réception du présent avis pour aviser le locateur de son refus. <b>À défaut de réponse dans ce délai, les nouvelles conditions sont réputées acceptées</b> et le bail est reconduit aux conditions indiquées ci-dessus.</div>
+ <div class="sig"><i>Sylvie Grenier</i>Sylvie Grenier, gestionnaire<br><span style="color:#55524c">Gestion Tremblay &amp; fils inc.</span></div>
+</div>
+<p class="tampon">reçu à votre porte le 16 janvier · vous appelez le 19</p>`;
+
+const BUSTE = '<svg width="42" height="42" viewBox="0 0 42 42" aria-hidden="true">'
+ +'<circle cx="21" cy="14" r="8" fill="none" stroke="var(--bleu)" stroke-width="1.6"/>'
+ +'<path d="M6 40 q15 -18 30 0" fill="none" stroke="var(--bleu)" stroke-width="1.6"/>'
+ +'<path d="M13 9 q8 -6 16 0" fill="none" stroke="var(--bleu)" stroke-width="1.2"/></svg>';
+
+/* ─── ce à quoi elle répond, dans l'ordre où on l'essaie ─── */
+const INTENTS = [
+ {id:"silence", cle:true, nom:"Ce qui arrive si on ne répond pas",
+  re:/(repond\w* rien|rien faire|si je (ne )?repond\w* pas|pas repondre|ne pas repondre|si je (ne )?fais rien|aucune reponse|si j.ignore|ignore l.avis|jette|pas de reponse|oublie|si je laisse faire)/,
+  rep:"« Si vous ne répondez pas dans le mois, les nouvelles conditions s'appliquent au 1<sup>er</sup> juillet. C'est réputé accepté. C'est écrit en bas de l'avis. »",
+  nonDit:"Elle n'a pas ajouté que c'est la seule façon d'accepter une augmentation sans jamais avoir dit oui — ni que la moitié des gens qui la subissent l'ont subie comme ça."},
+ {id:"duree_refus", cle:true, nom:"Refuser une seule des conditions",
+  re:/(seulement la duree|juste la duree|refuser la duree|accepter.*(mais|sans).*(duree|24|deux ans)|une seule (condition|modification)|partiellement|en partie|refuser une partie|separement|juste une)/,
+  rep:"« Oui. Vous pouvez refuser une modification et accepter les autres. Il faut l'écrire, en nommant laquelle. »",
+  nonDit:"Elle n'a pas dit que la durée de 24 mois est, financièrement, la modification la plus lourde de l'avis : elle multiplie l'augmentation par deux ans au lieu d'un."},
+ {id:"eviction", nom:"Le risque de perdre le logement",
+  re:/(dehors|evinc|eviction|perdre (mon|le) logement|a la porte|expuls|deloge|obliger de partir|garder mon logement|me sortir|mettre fin au bail)/,
+  rep:"« Non. Un refus ne met pas fin au bail. Personne ne va vous demander de partir pour ça. »",
+  nonDit:"Réponse vraie et rassurante — et c'est la peur qu'elle dissipe qui fait signer la plupart des avis de ce genre."},
+ {id:"refus", cle:true, nom:"Ce qui arrive si on refuse",
+  re:/(si je refuse|je peux refuser|puis-je refuser|refuser l.augmentation|je refuse|dire non|contester|pas d.accord|s.opposer)/,
+  rep:"« Vous refusez par écrit dans le mois. Après, c'est nous qui devons faire une demande au Tribunal administratif du logement si on veut maintenir l'augmentation. Si on ne la fait pas, le bail se renouvelle aux anciennes conditions. »",
+  nonDit:"Elle n'a pas dit que ce renversement est tout le sujet : après un refus, la charge de faire une démarche passe du locataire au propriétaire."},
+ {id:"assurance_cout", cle:true, nom:"Ce que coûte l'assurance exigée",
+  re:/(assurance.{0,24}(coute|cout|prix|combien|cher)|combien.{0,24}assurance|prix de l.assurance)/,
+  rep:"« Ça dépend de vous, je ne peux pas le dire à votre place. Les gens paient entre 20 et 30 $ par mois. »",
+  nonDit:"Elle n'a pas dit — et n'avait pas à le dire — que cette dépense ne figure nulle part dans le total de l'avis. L'augmentation réelle n'est donc pas de 125 $, mais d'environ 150 $."},
+ {id:"stationnement", cle:true, nom:"Le stationnement, avant et après",
+  re:/(stationnement|parking|station|voiture|auto|case)/,
+  rep:"« Avant, il était compris dans le loyer. À partir de juillet, il est facturé à part. Si vous n'en voulez pas, vous pouvez le libérer. »",
+  nonDit:"Elle n'a pas dit que c'est ce qui transforme un « nouveau frais de service » en augmentation déguisée : le service ne change pas, seulement sa ligne dans le tableau."},
+ {id:"travaux", cle:true, nom:"La durée de l'ajustement pour travaux",
+  re:/(travaux|toiture|toit|ajustement|renovation|renove|majeur|40)/,
+  rep:"« C'est pour la toiture qu'on a refaite l'an passé. Il est intégré au loyer de base. Il ne s'enlève pas l'année prochaine. »",
+  nonDit:"Elle n'a pas dit que ce mot — « intégré » — est le seul qui compte dans sa phrase : l'ajustement devient permanent et servira de base à la prochaine augmentation."},
+ {id:"assurance", nom:"L'assurance exigée",
+  re:/(assurance|assurer|responsabilite civile|million|1 000 000)/,
+  rep:"« C'est une des conditions proposées dans l'avis, comme les autres. »",
+  nonDit:"Vraie et parfaitement close. « Comme les autres » contenait pourtant la réponse à la question suivante — une condition se refuse comme les autres — et elle s'est arrêtée avant."},
+ {id:"legal", nom:"La légalité de l'avis",
+  re:/(legal|le droit|a t il le droit|permis|autorise|conforme|la loi)/,
+  rep:"« Oui. Un propriétaire a le droit de proposer une modification des conditions. Proposer, c'est pas imposer. »",
+  nonDit:"Les trois derniers mots étaient la réponse à une question que vous n'aviez pas posée. Elle les a dits, et elle s'est arrêtée là : c'est à vous d'entendre qu'il y a une suite."},
+ {id:"delai", nom:"Le délai pour répondre",
+  re:/(combien de temps|delai|jusqu.a quand|date limite|avant quand|dernier delai|quand.{0,20}(repondre|reponse)|un mois)/,
+  rep:"« Un mois à partir de la réception. Vous l'avez reçu le 16, donc jusqu'au 16 février. C'est écrit en bas de l'avis. »",
+  nonDit:"Vraie, et déjà écrite noir sur blanc dans le document que vous avez sous les yeux. Une question dépensée pour une information qu'on avait déjà."},
+ {id:"ecrit", nom:"La forme de la réponse",
+  re:/(comment.{0,20}(repondre|reponse)|par courriel|par ecrit|par telephone|lettre|recommand|ou (est-ce que )?je (dois )?(repond|envoi)|preuve d.envoi)/,
+  rep:"« Par écrit. Un courriel, ça va. Gardez une preuve d'envoi, c'est mieux pour tout le monde. »",
+  nonDit:"Utile, et souvent décisive dans les faits : une réponse verbale ne laisse aucune trace, et c'est la trace qui compte au moment de la contestation."},
+ {id:"duree", nom:"La durée de 24 mois",
+  re:/(24 mois|deux ans|2 ans|duree|plus long|pourquoi.{0,16}mois|bail de deux)/,
+  rep:"« C'est ce qu'on propose cette année. Ça évite de refaire les avis à tout le monde tous les ans. »",
+  nonDit:"Vraie, et parfaitement creuse. Elle explique l'intérêt du propriétaire, ce qui n'est pas la question qu'on croyait poser."},
+ {id:"negocier", nom:"La possibilité de négocier",
+  re:/(negoci|discuter|entente|proposer|arrang|baisser|moins cher|diminu|rabais|compromis)/,
+  rep:"« Vous pouvez proposer autre chose par écrit. Je le transmets à M. Tremblay, je ne décide pas moi-même. »",
+  nonDit:"Vraie et modérément utile : elle ouvre une porte, mais ne dit pas qu'une contre-proposition sans refus écrit ne suspend rien du délai."},
+ {id:"total", nom:"Le montant de l'augmentation",
+  re:/(combien|nouveau loyer|le total|montant|ca fait|pourcentage|%|de plus par mois|augmentation de)/,
+  rep:"« 1 175 $ à partir du 1<sup>er</sup> juillet. C'est la ligne du bas, dans le tableau. »",
+  nonDit:"Vraie, et déjà dans le document. Elle répond au chiffre demandé sans mentionner l'assurance, qui n'est pas dans le tableau — parce qu'on ne le lui a pas demandé."},
+ {id:"pourquoi", nom:"La raison de l'augmentation",
+  re:/(pourquoi|raison|justifi|explique|comment ca se fait|d.ou vient)/,
+  rep:"« Les taxes municipales ont monté, l'assurance de l'immeuble aussi, et il y a eu la toiture. »",
+  nonDit:"Vraie, invérifiable, et sans effet sur ce que vous ferez ensuite. C'est la question qu'on pose en premier quand on est en colère plutôt qu'en train de décider."},
+ {id:"signature", nom:"Où signer",
+  re:/(signer|signature|formulaire|ou je signe|renvoyer le papier)/,
+  rep:"« Il n'y a rien à signer. Vous répondez par écrit si vous refusez, c'est tout. »",
+  nonDit:"Vraie, et elle contient à moitié la réponse à une autre question — celle du silence — sans jamais la donner tout à fait."},
+ {id:"voisins", nom:"Les autres locataires",
+  re:/(voisin|autres locataires|tout le monde|les autres|appartement \d|logement \d)/,
+  rep:"« Je ne peux pas parler des autres baux, vous comprenez. »",
+  nonDit:"Refus légitime. Une question dépensée pour rien — et il n'y avait aucun moyen de le savoir avant de la poser."},
+ {id:"hors", nom:"Un autre dossier",
+  re:/(eau chaude|chauffe-eau|fenetre|reparation|plombier|bruit|concierge|degat|moisissure|chauffage|serrure)/,
+  rep:"« Ça, c'est un autre dossier. Envoyez une demande au bureau, on va regarder ça. »",
+  nonDit:"Hors sujet. La question était peut-être la plus urgente de votre vie de locataire ; elle n'était pas celle de cet appel."}
+];
+const CLES = INTENTS.filter(i=>i.cle).map(i=>i.id);
+
+const DECISIONS = [
+ {id:"d", t:"Répondre par écrit avant le 16 février : je refuse l'augmentation et je refuse la durée de 24 mois.",
+  cout:0, rang:1,
+  verdict:"C'est la réponse la plus fine des cinq. Vous refusez les deux modifications qui coûtent, séparément et par écrit, dans le délai. À partir de là, c'est au propriétaire de s'adresser au Tribunal s'il veut maintenir son avis — et s'il ne le fait pas, le bail se renouvelle douze mois aux anciennes conditions. Vous n'avez rien risqué et vous n'avez rien payé."},
+ {id:"c", t:"Répondre par écrit avant le 16 février : je refuse l'augmentation.",
+  cout:0, rang:2,
+  verdict:"Juste, et suffisant dans les faits. La seule chose qui manque est la durée : en ne nommant que l'augmentation, vous laissez la modification de 12 à 24 mois sans réponse explicite. C'est la nuance que faisait sortir une seule question de l'appel — celle qui demandait si on pouvait refuser une condition et pas les autres."},
+ {id:"a", t:"Accepter : 1 175 $, c'est encore correct pour le quartier, et je ne veux pas de trouble.",
+  cout:3600, rang:4,
+  verdict:"Décision prise en connaissance de cause si vous aviez posé les bonnes questions, et à l'aveugle sinon. Ce n'est pas déraisonnable — c'est cher : 150 $ de plus par mois en comptant l'assurance, sur vingt-quatre mois plutôt que douze, parce que la durée était dans le même avis."},
+ {id:"b", t:"Ne rien faire pour l'instant. On verra bien ce qui arrive au 1<sup>er</sup> juillet.",
+  cout:3600, rang:5,
+  verdict:"C'est exactement la même facture que d'accepter — au dollar près — sauf que vous ne l'avez pas choisie. Le silence est la seule façon de dire oui sans jamais l'avoir dit, et c'est la raison d'être de la phrase en petits caractères au bas de l'avis. Toute la pièce est construite autour de cette ligne-là."},
+ {id:"e", t:"M'adresser tout de suite au Tribunal administratif du logement pour faire annuler l'avis.",
+  cout:1800, rang:3,
+  verdict:"Le geste est courageux et il vise à côté. À cette étape, ce n'est pas au locataire de saisir le Tribunal : il lui suffit de refuser par écrit, et la démarche revient au propriétaire. En vous précipitant, vous prenez sur vous une procédure que la loi mettait sur ses épaules — et si vous n'avez pas envoyé de refus écrit dans le mois, le délai court toujours."}
+];
+
+let E={};
+const $=s=>document.querySelector(s);
+function neuf(){E={tours:[],reste:6,decision:null,fini:false};$("#debrief").hidden=true;$("#debrief").innerHTML="";rendu();}
+const norm=s=>s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+function reconnait(q){const n=norm(q);return INTENTS.find(i=>i.re.test(n))||null;}
+
+/* ─── rendu ─── */
+function rendu(){
+ $("#doc").innerHTML=AVIS;
+ const tours=E.tours.map(t=>{
+   const i=t.intent;
+   return '<div class="tour moi"><p>'+t.q+'</p></div>'
+    +'<div class="tour elle"><p>'+(i?i.rep:"« Je ne suis pas sûre de comprendre. Vous voulez savoir quoi, exactement&nbsp;? »")+'</p>'
+    +'<span class="quoi'+(i&&i.cle?" cle":"")+'">'+(i?("intention reconnue : "+i.id+(i.cle?" · RÉVÉLATION":" · vraie, non décisive")):"aucune intention reconnue · ne coûte pas de question")+'</span></div>';
+ }).join("");
+ const fini=E.reste<=0;
+ $("#conv").innerHTML=
+  '<div class="face">'+BUSTE+'<span><b>Sylvie Grenier</b><span>gestionnaire, Gestion Tremblay &amp; fils — au téléphone</span></span>'
+  +'<span class="patience"><i>'+E.reste+'</i>questions avant<br>qu\'elle raccroche</span></div>'
+  +'<div class="fil-conv">'+(tours||'<p style="color:var(--enc3);font-style:italic">Vous avez l\'avis devant vous et elle au bout du fil. Posez votre première question.</p>')
+  +(fini?'<div class="tour elle"><p>« Écoutez, j\'ai un autre appel qui rentre. Vous avez jusqu\'au 16 février, là. Bonne journée. »</p></div>':'')+'</div>'
+  +(fini?'':'<form class="saisie" id="frm"><input id="q" type="text" autocomplete="off" placeholder="Écrivez votre question…" aria-label="Votre question"><button type="submit">Demander</button></form>'
+    +'<p class="indic">Écrivez comme vous parleriez. Elle répond à ce qu\'on lui demande — une question mal comprise ne vous coûte rien.</p>');
+ if($("#frm")) $("#frm").onsubmit=e=>{e.preventDefault();demander($("#q").value.trim())};
+
+ $("#decision").innerHTML = E.fini ? "" :
+  '<h3>Votre décision</h3><p class="sous">Vous pouvez la prendre quand vous voulez, y compris avant d\'avoir posé vos six questions.</p>'
+  +DECISIONS.map(d=>'<button class="dec" data-d="'+d.id+'" aria-pressed="'+(E.decision===d.id)+'">'+d.t+'</button>').join("")
+  +'<button class="valider" id="btnDec"'+(E.decision?"":" disabled")+'>Arrêter mon choix</button>';
+ $("#decision").querySelectorAll(".dec").forEach(b=>b.onclick=()=>{E.decision=b.dataset.d;rendu()});
+ if($("#btnDec")) $("#btnDec").onclick=conclure;
+}
+function demander(q){
+ if(!q||E.reste<=0)return;
+ const i=reconnait(q);
+ E.tours.push({q:q,intent:i});
+ if(i) E.reste--;
+ rendu();
+ const f=document.querySelector(".fil-conv");if(f)f.scrollIntoView({block:"end",behavior:"smooth"});
+ if($("#q"))$("#q").focus();
+}
+
+/* ─── débriefing ─── */
+function conclure(){
+ E.fini=true;
+ const dec=DECISIONS.find(d=>d.id===E.decision);
+ const poses=E.tours.filter(t=>t.intent);
+ const trouves=CLES.filter(c=>poses.some(t=>t.intent.id===c));
+ const manques=CLES.filter(c=>!trouves.includes(c));
+ const perdues=poses.filter(t=>["delai","total","signature"].includes(t.intent.id)).length;
+ const horsSujet=poses.filter(t=>["hors","voisins"].includes(t.intent.id)).length;
+ const premCle=poses.findIndex(t=>t.intent.cle);
+ const savaitSilence=trouves.includes("silence");
+
+ let titre,intro;
+ if(dec.rang<=2 && savaitSilence){titre="Vous saviez, et vous avez décidé.";
+  intro="<p>Vous avez fait sortir la phrase qui décide de tout — celle qui dit que le silence vaut acceptation — et vous avez pris la décision qui en découle. C'est le seul état dans lequel une personne peut expliquer son choix à quelqu'un d'autre, et le refaire l'année prochaine.</p>";}
+ else if(dec.rang<=2){titre="Bonne décision, prise sans l'information qui la fonde.";
+  intro="<p>Vous avez choisi une des deux bonnes réponses sans avoir jamais fait dire à Sylvie ce qui arrive quand on ne répond pas. Ça marche cette fois. Ça ne se transmet pas : quelqu'un qui vous demanderait pourquoi, vous ne pourriez pas le lui dire.</p>";}
+ else if(dec.id==="b"){titre="Vous avez accepté sans le dire.";
+  intro="<p>Ne rien faire n'est pas une décision reportée : c'est la décision d'accepter, prise par une ligne en petits caractères au bas d'un document. C'est le mécanisme le plus coûteux de toute la littératie administrative, et il ne se voit jamais au moment où il agit.</p>";}
+ else {titre="Décision prise. Voyons ce qu'elle vous coûte.";
+  intro="<p>Rien de ce que vous avez fait n'est absurde. Ce que la pièce va montrer, c'est l'écart entre ce que vous saviez au moment de choisir et ce qui était disponible.</p>";}
+
+ const qs = E.tours.map((t,n)=>{
+  const i=t.intent;
+  if(!i) return '<div class="q hs"><span class="et">question '+(n+1)+' · non comprise · gratuite</span>'
+    +'<h4>« '+t.q+' »</h4><p>Le dispositif n\'a pas reconnu d\'intention. Elle ne vous a rien coûté — mais dans la vraie vie, une question que l\'interlocuteur ne comprend pas coûte le même temps que les autres.</p></div>';
+  const cls=i.cle?"cle":(["hors","voisins"].includes(i.id)?"hs":"inut");
+  const et=i.cle?"révélation":(["hors","voisins"].includes(i.id)?"hors sujet":(["delai","total","signature"].includes(i.id)?"vraie — et déjà dans le document":"vraie, non décisive"));
+  return '<div class="q '+cls+'"><span class="et">question '+(n+1)+' · '+et+'</span>'
+   +'<h4>« '+t.q+' »</h4><p><b>Ce qu\'elle n\'a pas dit.</b> '+i.nonDit+'</p></div>';
+ }).join("");
+
+ const jamais = manques.map(id=>{const i=INTENTS.find(x=>x.id===id);
+  return '<div class="item"><b>'+i.nom+'</b><p>Elle aurait répondu&nbsp;: '+i.rep+'</p></div>'}).join("");
+
+ const d=$("#debrief");d.hidden=false;
+ d.innerHTML='<h2>Ce que cet appel vous a coûté</h2>'
+  +'<div class="bloc fort"><h3>'+titre+'</h3>'+intro
+  +'<div class="chiffres">'
+  +'<span class="ch"><b>'+trouves.length+'/'+CLES.length+'</b><span>révélations obtenues</span></span>'
+  +'<span class="ch"><b>'+(premCle>=0?premCle+1:"—")+'</b><span>questions avant la première</span></span>'
+  +'<span class="ch"><b>'+(dec.cout?dec.cout.toLocaleString("fr-CA")+" $":"0 $")+'</b><span>sur vingt-quatre mois</span></span>'
+  +'<span class="ch"><b>'+(6-E.reste)+'</b><span>questions dépensées</span></span></div>'
+  +'<p style="font-size:.88rem;color:var(--enc3);font-family:\'Familjen Grotesk\'">Six questions pour six révélations&nbsp;: le budget ne permet la totale que si aucune question ne se perd. Personne n\'y arrive du premier coup, et ce n\'est pas le but.</p></div>'
+
+  +'<div class="bloc"><h3>Votre décision</h3><p style="font-style:italic;color:var(--enc2)">'+dec.t+'</p><p>'+dec.verdict+'</p></div>'
+
+  +'<div class="bloc"><h3>Vos questions, une par une</h3>'
+  +'<p style="color:var(--enc2)">Relisez ses réponses&nbsp;: <b>aucune n\'est fausse.</b> Pas une seule fois elle n\'a menti, éludé une question directe ou inventé quoi que ce soit. Tout ce qui vous manque, elle vous l\'aurait dit — on ne le lui a pas demandé.</p>'
+  +(qs||'<p>Vous n\'avez posé aucune question.</p>')
+  +(perdues?'<p style="margin-top:.9rem"><b>'+perdues+' question'+(perdues>1?'s':'')+' pour une information déjà écrite dans l\'avis.</b> C\'est le réflexe le plus courant devant un document administratif&nbsp;: demander à voix haute ce qu\'on n\'ose pas croire avoir lu. Il coûte, ici, un sixième de l\'appel.</p>':'')
+  +(horsSujet?'<p style="margin-top:.6rem"><b>'+horsSujet+' question hors du sujet de l\'appel.</b> Légitime, humaine, et facturée au même prix que les autres.</p>':'')
+  +'</div>'
+
+  +(manques.length?'<div class="jamais"><h3>Ce que vous ne lui avez jamais demandé</h3>'
+   +'<p>Elle était prête à répondre à tout ceci, exactement, sans se faire prier.</p>'+jamais
+   +'<p style="margin-top:.6rem;font-size:.9rem;color:var(--enc2)">C\'est ici que la pièce fait son travail. Devant une administration, on manque rarement d\'information&nbsp;: on manque de la question. Et personne, en face, n\'a l\'obligation de vous la souffler.</p></div>'
+   :'<div class="jamais"><h3>Vous les avez toutes eues</h3><p>Six questions, six révélations, aucune perdue. C\'est le tir parfait, et il vaut la peine de remarquer ce qu\'il a exigé&nbsp;: aucune question posée par réflexe, aucune posée en colère, aucune posée pour se faire confirmer ce qui était déjà écrit.</p></div>')
+
+  +'<div class="bloc"><h3>Le vrai chiffre de l\'avis</h3>'
+  +'<table style="width:100%;border-collapse:collapse;font-size:.94rem">'
+  +'<tr><td style="padding:.4rem 0;border-bottom:1px solid var(--regle)">Augmentation annoncée dans le tableau</td><td class="mo" style="text-align:right;border-bottom:1px solid var(--regle)">+125 $</td></tr>'
+  +'<tr><td style="padding:.4rem 0;border-bottom:1px solid var(--regle)">Stationnement, auparavant compris dans le loyer</td><td class="mo" style="text-align:right;border-bottom:1px solid var(--regle)">déjà dans les 125 $</td></tr>'
+  +'<tr><td style="padding:.4rem 0;border-bottom:1px solid var(--regle)">Assurance exigée, absente du tableau</td><td class="mo" style="text-align:right;border-bottom:1px solid var(--regle)">+25 $</td></tr>'
+  +'<tr><td style="padding:.4rem 0;font-weight:600">Augmentation réelle, par mois</td><td class="mo" style="text-align:right;color:var(--verm)">+150 $</td></tr>'
+  +'<tr><td style="padding:.4rem 0;font-weight:600">Sur vingt-quatre mois plutôt que douze</td><td class="mo" style="text-align:right;color:var(--verm)">3 600 $</td></tr></table>'
+  +'<p style="margin-top:.8rem">Aucun de ces chiffres n\'est caché. Le premier est écrit, le deuxième se déduit d\'une question, le troisième d\'une autre, et le quatrième est dans la liste des « autres modifications ». Un document piégé n\'est presque jamais un document qui ment&nbsp;: c\'est un document qui range mal.</p></div>'
+
+  +'<div class="bloc"><h3>Note de conception</h3>'
+  +'<p>Le personnage n\'est pas un modèle de langue&nbsp;: c\'est un jeu de seize intentions et de seize réponses écrites à la main, reconnues par motif. Ce choix est <em>délibéré</em>, et il tient à trois choses. La pièce fonctionne hors ligne, sur le portable de n\'importe qui, sans compte et sans facture. Elle donne exactement la même chose à deux personnes qui posent la même question — un modèle génératif, non. Et surtout&nbsp;: l\'objet d\'apprentissage ici n\'est pas la conversation, c\'est <b>la question</b>. Un interlocuteur qui reformule, encourage et complète détruirait la mécanique en trois répliques.</p>'
+  +'<p>La règle d\'écriture des seize réponses tient en une ligne, et c\'est elle qui a demandé le plus de travail&nbsp;: <b>vraie, exacte, et strictement bornée à ce qui est demandé</b>. Aucune n\'est un piège. Le piège est dans la distance entre la question qu\'on pose et celle qu\'il fallait poser.</p>'
+  +'<p class="note"><b>Ce qui se transpose.</b> Le document, les seize intentions, les cinq décisions et leur coût sont des données. La même mécanique se remplit avec un talon de paie et un service des ressources humaines, un contrat de téléphonie et un conseiller, un avis de la SAAQ et un préposé — sans toucher au moteur.</p>'
+  +'<p class="note"><b>Sur la langue.</b> Écrite pour la francisation avancée&nbsp;: phrases courtes chez Sylvie, vocabulaire administratif introduit une fois puis réutilisé (<em>avis, délai, réputé accepté, reconduit, modification</em>), et un registre oral québécois pour elle contre un registre écrit formel pour le document — l\'écart entre les deux fait partie de ce qu\'il y a à apprendre.</p>'
+  +'<p><button class="cmd" onclick="neuf();window.scrollTo({top:0,behavior:\'smooth\'})">Recommencer</button> <a class="cmd" href="index.html" style="text-decoration:none;display:inline-block">Retour à l\'atelier</a></p></div>';
+ rendu();
+ d.scrollIntoView({block:"start",behavior:"smooth"});
+}
+
+$("#btnConception").onclick=e=>{const on=document.body.classList.toggle("conception");e.currentTarget.setAttribute("aria-pressed",on)};
+$("#btnTheme").onclick=()=>{const r=document.documentElement;
+ const a=r.getAttribute("data-theme")||(matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light");
+ r.setAttribute("data-theme",a==="dark"?"light":"dark")};
+$("#btnReprise").onclick=()=>{neuf();window.scrollTo({top:0,behavior:"smooth"})};
+neuf();
+</script>
+</body>
+</html>
