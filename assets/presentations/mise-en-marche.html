@@ -1,0 +1,595 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Stratégie de mise en marché d'une pratique indépendante en ingénierie de formation : positionnement, LinkedIn, offre, cibles et quatre-vingt-dix jours.">
+<title>Se mettre en marché — stratégie</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<style id="jetons">/* ═══════════════════════════════════════════════════════════════════
+   SYSTÈME « BRAISE » — jetons de conception
+   Relevés sur la page d'accueil de référence, puis régularisés :
+   les valeurs lues au pixel ont été ramenées sur une échelle, parce
+   qu'un système se transmet et qu'un relevé ne se transmet pas.
+
+   Le nom vient de ce qui rend l'ensemble reconnaissable en une seconde :
+   presque tout est noir, blanc et gris froid, et il reste un seul point
+   de chaleur — le mot en dégradé, et la pastille orange. Tout le reste
+   du système consiste à ne pas l'éteindre en le répétant.
+   ═══════════════════════════════════════════════════════════════════ */
+:root{
+  /* ── Neutres — l'ossature. Zinc légèrement froid, jamais de gris pur ── */
+  --fond:            #FFFFFF;
+  --fond-2:          #FAFAFA;   /* sections alternées */
+  --fond-3:          #F4F4F5;   /* surfaces enfoncées, code */
+  --encre:           #09090B;   /* titres et texte fort */
+  --encre-2:         #52525B;   /* texte courant sur fond clair */
+  --encre-3:         #71717A;   /* sous-titre, légendes */
+  --encre-4:         #A1A1AA;   /* désactivé, filigrane */
+  --bord:            #E4E4E7;
+  --bord-fort:       #D4D4D8;
+
+  /* ── Marque — la bichromie. Deux arrêts, un seul usage ── */
+  --marque-rose:     #F0359F;
+  --marque-corail:   #F5533D;
+  --marque-degrade:  linear-gradient(100deg, var(--marque-rose) 0%, var(--marque-corail) 100%);
+
+  /* ── Signal — l'orange de la pastille. Ni marque, ni neutre ── */
+  --signal:          #F5652E;
+  --signal-encre:    #FFFFFF;
+  --signal-voile:    #FEF1EA;
+
+  /* ── Mesure — le bleu de ce que la machine calcule ─────────────────
+     Ajouté le 5 septembre 2026, quand les prototypes de l'atelier ont
+     demandé un rôle que le système n'avait pas : distinguer ce qu'une
+     personne décide de ce qu'un modèle mesure. Sans lui, il fallait
+     détourner un arrêt du dégradé, ce que la règle du § 5 interdit.
+     Jamais pour du texte courant, jamais pour une action. ── */
+  --mesure:          #2B4E9B;
+  --mesure-2:        #5C7EBF;
+  --mesure-voile:    #EAEFFA;
+
+  /* ── Action — le noir est la couleur du bouton principal ── */
+  --action:          #18181B;
+  --action-survol:   #27272A;
+  --action-encre:    #FAFAFA;
+
+  /* ── Typographie ── */
+  --police: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --police-mono: ui-monospace, "SF Mono", "Menlo", "Consolas", monospace;
+
+  --t-affiche:  clamp(2.75rem, 8.2vw, 5.25rem);  /* 44 → 84 px, le titre du héros */
+  --t-titre-1:  clamp(2rem, 4.4vw, 3rem);        /* 32 → 48 */
+  --t-titre-2:  clamp(1.5rem, 2.6vw, 1.875rem);  /* 24 → 30 */
+  --t-titre-3:  1.25rem;                          /* 20 */
+  --t-avant:    1.25rem;                          /* 20 — le sous-titre du héros */
+  --t-corps:    1rem;                             /* 16 */
+  --t-petit:    0.875rem;                         /* 14 — la pastille */
+  --t-menu:     0.8125rem;                        /* 13 */
+
+  --g-normal: 400;
+  --g-moyen:  500;
+  --g-fort:   600;
+  --g-noir:   800;   /* réservé au titre d'affiche */
+
+  --i-serre:  0.95;  /* interligne du titre d'affiche */
+  --i-titre:  1.15;
+  --i-corps:  1.6;
+
+  --l-serre:  -0.035em;  /* chasse du titre d'affiche */
+  --l-titre:  -0.02em;
+  --l-corps:  0em;
+  --l-large:  0.02em;
+
+  /* ── Espacement — base 4, sauts francs ── */
+  --e-1:  0.25rem;  --e-2:  0.5rem;   --e-3:  0.75rem;  --e-4:  1rem;
+  --e-5:  1.5rem;   --e-6:  2rem;     --e-7:  3rem;     --e-8:  4rem;
+  --e-9:  6rem;     --e-10: 8rem;
+
+  --mesure:      42rem;    /* largeur de lecture du sous-titre */
+  --contenu:     72rem;    /* largeur maximale d'une section */
+
+  /* ── Rayons ── */
+  --r-1: 0.375rem; --r-2: 0.5rem; --r-3: 0.75rem; --r-4: 1rem; --r-plein: 9999px;
+
+  /* ── Ombres — discrètes, portées courtes, jamais colorées ── */
+  --o-1: 0 1px 2px rgba(9,9,11,.06);
+  --o-2: 0 1px 3px rgba(9,9,11,.08), 0 1px 2px rgba(9,9,11,.04);
+  --o-3: 0 4px 12px rgba(9,9,11,.08);
+  --o-anneau: 0 0 0 3px rgba(9,9,11,.12);
+
+  --transition: 140ms cubic-bezier(.4,0,.2,1);
+}
+
+/* ── Variante de surface : fond blanc ──────────────────────────────
+   Les fonds alternés disparaissent et la séparation passe entièrement
+   aux bordures. Pour une page imprimée, projetée, ou posée dans un site
+   déjà clair où deux blancs différents se verraient comme une erreur.
+   Ne touche ni aux encres, ni à la marque, ni au signal : c'est une
+   variante de SURFACE, pas un second thème. ── */
+:root[data-fond="blanc"]{
+  --fond:   #FFFFFF;
+  --fond-2: #FFFFFF;   /* sections alternées : plus d'alternance */
+  --fond-3: #F7F7F8;   /* conservé, mais affaibli : le code et le survol
+                          ont encore besoin d'exister */
+  --bord:      #E7E7EA;
+  --bord-fort: #D1D1D6;
+  --o-1: none;
+  --o-2: 0 1px 2px rgba(9,9,11,.05);
+  --o-3: 0 4px 10px rgba(9,9,11,.07);
+}
+
+/* ── Le même système, retourné. Les rôles ne bougent pas, les valeurs oui ── */
+:root[data-theme="sombre"]{
+  --fond:#09090B; --fond-2:#0F0F11; --fond-3:#18181B;
+  --encre:#FAFAFA; --encre-2:#D4D4D8; --encre-3:#A1A1AA; --encre-4:#52525B;
+  --bord:#27272A; --bord-fort:#3F3F46;
+  --marque-rose:#FF4FB0; --marque-corail:#FF6A50;
+  --signal:#FF7A45; --signal-encre:#1A0C05; --signal-voile:#2A1610;
+  --mesure:#8FB2F0; --mesure-2:#6E8FCB; --mesure-voile:#18213A;
+  --action:#FAFAFA; --action-survol:#E4E4E7; --action-encre:#18181B;
+  --o-1:0 1px 2px rgba(0,0,0,.5);
+  --o-2:0 1px 3px rgba(0,0,0,.6), 0 1px 2px rgba(0,0,0,.4);
+  --o-3:0 4px 14px rgba(0,0,0,.6);
+  --o-anneau:0 0 0 3px rgba(250,250,250,.18);
+}
+
+/* ── Les deux ensemble ────────────────────────────────────────────
+   « Fond blanc » veut dire SURFACES UNIES, pas blanc à tout prix : en
+   thème sombre, la même intention supprime l'alternance sur le noir.
+   Un fond blanc sous des encres claires ne serait pas une variante,
+   ce serait une panne. ── */
+:root[data-theme="sombre"][data-fond="blanc"]{
+  --fond:#09090B; --fond-2:#09090B; --fond-3:#141417;
+  --bord:#2A2A2E; --bord-fort:#404046;
+}</style>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:var(--fond);color:var(--encre-2);font-family:var(--police);
+ font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased;font-feature-settings:"cv11"}
+h1,h2,h3,h4{color:var(--encre);margin:0;letter-spacing:var(--l-titre);line-height:var(--i-titre);font-weight:var(--g-fort)}
+p{margin:0 0 1em}
+strong,b{color:var(--encre);font-weight:var(--g-fort)}
+em{font-style:italic}
+code{font-family:var(--police-mono);font-size:.8em;background:var(--fond-3);padding:.12em .4em;border-radius:var(--r-1);color:var(--encre)}
+button{font:inherit;color:inherit}
+:focus-visible{outline:none;box-shadow:var(--o-anneau);border-radius:var(--r-1)}
+[hidden]{display:none!important}
+.enrobe{max-width:62rem;margin:0 auto;padding:0 var(--e-5)}
+.col{max-width:40rem}
+
+.tete{padding:var(--e-9) 0 var(--e-6)}
+.fil{display:flex;flex-wrap:wrap;gap:var(--e-4);align-items:baseline;font-size:.68rem;
+ text-transform:uppercase;letter-spacing:.14em;color:var(--encre-4);font-weight:var(--g-moyen)}
+.fil .no{color:var(--signal)}
+h1{font-size:var(--t-affiche);font-weight:var(--g-noir);line-height:var(--i-serre);
+ letter-spacing:var(--l-serre);margin:var(--e-4) 0 var(--e-5);text-wrap:balance}
+h1 .deg{background:var(--marque-degrade);-webkit-background-clip:text;background-clip:text;color:transparent}
+.chapeau{font-size:var(--t-avant);color:var(--encre-3);max-width:var(--mesure)}
+.commandes{display:flex;flex-wrap:wrap;gap:var(--e-3);align-items:center;
+ border-top:1px solid var(--bord);padding-top:var(--e-4);margin-top:var(--e-6)}
+.cmd{background:none;border:1px solid var(--bord-fort);border-radius:var(--r-2);
+ padding:.45rem .85rem;font-size:.82rem;font-weight:var(--g-moyen);cursor:pointer;color:var(--encre-2)}
+.cmd:hover{border-color:var(--encre-3);color:var(--encre)}
+
+section{padding:var(--e-8) 0;border-top:1px solid var(--bord)}
+.cote{font-family:var(--police-mono);font-size:.7rem;color:var(--signal);letter-spacing:-.03em;
+ display:block;margin-bottom:var(--e-2)}
+h2{font-size:var(--t-titre-1);margin-bottom:var(--e-4);font-weight:var(--g-noir);letter-spacing:-.025em}
+h3{font-size:var(--t-titre-2);margin:var(--e-7) 0 var(--e-3)}
+h4{font-size:var(--t-titre-3);margin:var(--e-5) 0 var(--e-2)}
+.sous{color:var(--encre-3);font-size:1.06rem;max-width:var(--mesure);margin-bottom:var(--e-5)}
+
+.these{background:var(--fond-2);border:1px solid var(--bord);border-left:3px solid var(--signal);
+ padding:var(--e-6) var(--e-6);margin:var(--e-5) 0}
+.these p:last-child{margin:0}
+.these .gros{font-size:1.4rem;font-weight:var(--g-fort);color:var(--encre);line-height:1.3;
+ letter-spacing:var(--l-titre);text-wrap:balance}
+
+.deux{display:grid;grid-template-columns:1fr 1fr;gap:var(--e-6)}
+@media(max-width:800px){.deux{grid-template-columns:1fr;gap:var(--e-5)}}
+.garder,.retirer{border-top:2px solid var(--bord-fort);padding-top:var(--e-4)}
+.garder{border-color:var(--mesure)}
+.retirer{border-color:var(--signal)}
+.garder h4,.retirer h4{margin-top:0;font-size:.72rem;text-transform:uppercase;letter-spacing:.12em}
+.garder h4{color:var(--mesure)}
+.retirer h4{color:var(--signal)}
+.garder li,.retirer li{margin-bottom:var(--e-4);font-size:.98rem}
+.garder ul,.retirer ul{margin:0;padding-left:1.1rem}
+.garder li b,.retirer li b{display:block}
+
+.bloc{background:var(--fond-2);border:1px solid var(--bord);border-radius:var(--r-3);
+ padding:var(--e-6);margin:var(--e-5) 0}
+.bloc h4:first-child{margin-top:0}
+
+.copiable{position:relative;background:var(--fond);border:1px solid var(--bord-fort);
+ border-radius:var(--r-2);padding:var(--e-5) var(--e-5) var(--e-5);margin:var(--e-3) 0 var(--e-5)}
+.copiable .txt{white-space:pre-line;font-size:.98rem;color:var(--encre)}
+.copiable .btc{position:absolute;top:var(--e-3);right:var(--e-3);background:var(--action);
+ color:var(--action-encre);border:none;border-radius:var(--r-1);padding:.25rem .6rem;
+ font-size:.68rem;font-weight:var(--g-fort);cursor:pointer;opacity:0;transition:opacity var(--transition)}
+.copiable:hover .btc,.copiable:focus-within .btc{opacity:1}
+.copiable .quoi{font-family:var(--police-mono);font-size:.64rem;color:var(--encre-4);
+ display:block;margin-bottom:var(--e-3);letter-spacing:-.03em}
+.verdict{font-size:.92rem;color:var(--encre-3);margin:0 0 var(--e-5);padding-left:var(--e-4);
+ border-left:2px solid var(--bord-fort)}
+.verdict.oui{border-color:var(--mesure)}
+.verdict.non{border-color:var(--signal)}
+
+table.grille{width:100%;border-collapse:collapse;margin:var(--e-5) 0;font-size:.95rem}
+table.grille th{text-align:left;font-size:.66rem;text-transform:uppercase;letter-spacing:.1em;
+ color:var(--encre-4);border-bottom:1px solid var(--bord-fort);padding:var(--e-2) var(--e-3);font-weight:var(--g-fort)}
+table.grille td{border-bottom:1px solid var(--bord);padding:var(--e-3);vertical-align:top}
+table.grille td.n{font-family:var(--police-mono);font-size:.82rem;white-space:nowrap;color:var(--mesure)}
+table.grille td b{display:block}
+@media(max-width:740px){
+ table.grille,table.grille tbody,table.grille tr,table.grille td{display:block;width:auto}
+ table.grille thead{display:none}
+ table.grille tr{border-bottom:1px solid var(--bord-fort);padding:var(--e-3) 0}
+ table.grille td{border:none;padding:2px 0}}
+
+.sujets{display:grid;grid-template-columns:repeat(auto-fill,minmax(17rem,1fr));gap:var(--e-5);margin-top:var(--e-5)}
+.sujet{border-left:2px solid var(--mesure);padding-left:var(--e-4)}
+.sujet b{display:block;color:var(--encre);font-weight:var(--g-fort);margin-bottom:var(--e-1)}
+.sujet p{margin:0;font-size:.93rem;color:var(--encre-3)}
+.sujet .pre{font-family:var(--police-mono);font-size:.62rem;color:var(--encre-4);display:block;margin-top:var(--e-2)}
+
+.plan{list-style:none;padding:0;margin:var(--e-5) 0 0}
+.plan li{display:grid;grid-template-columns:1.6rem 1fr;gap:var(--e-3);align-items:start;
+ padding:var(--e-3) 0;border-bottom:1px solid var(--bord)}
+.plan input{width:1.05rem;height:1.05rem;margin-top:.32rem;accent-color:var(--signal);cursor:pointer}
+.plan label{cursor:pointer}
+.plan .quand{font-family:var(--police-mono);font-size:.64rem;color:var(--signal);display:block;letter-spacing:-.03em}
+.plan .quoi{color:var(--encre);font-weight:var(--g-moyen)}
+.plan .note{display:block;font-size:.9rem;color:var(--encre-3);margin-top:2px}
+.plan li.faite .quoi{text-decoration:line-through;color:var(--encre-4)}
+.plan li.faite .note{color:var(--encre-4)}
+.avancement{font-family:var(--police-mono);font-size:.72rem;color:var(--mesure);margin-top:var(--e-4)}
+
+.objection{border-top:1px solid var(--bord);padding:var(--e-5) 0}
+.objection:first-of-type{border-top:none}
+.objection .dit{font-size:1.12rem;color:var(--encre);font-weight:var(--g-fort);
+ letter-spacing:var(--l-titre);margin-bottom:var(--e-2)}
+.objection .dit::before{content:"« ";color:var(--encre-4)}
+.objection .dit::after{content:" »";color:var(--encre-4)}
+.objection p{margin:0;max-width:var(--mesure)}
+
+.refus{background:var(--signal-voile);border:1px solid var(--signal);border-left-width:3px;
+ border-radius:var(--r-3);padding:var(--e-6);margin-top:var(--e-5)}
+.refus ul{margin:var(--e-3) 0 0;padding-left:1.1rem}
+.refus li{margin-bottom:var(--e-3);font-size:.98rem}
+footer{padding:var(--e-8) 0;color:var(--encre-4);font-size:.86rem;border-top:1px solid var(--bord)}
+.mouche{position:fixed;left:50%;bottom:var(--e-5);transform:translateX(-50%) translateY(1rem);
+ opacity:0;pointer-events:none;background:var(--action);color:var(--action-encre);
+ padding:var(--e-2) var(--e-4);border-radius:var(--r-plein);font-size:.82rem;
+ font-weight:var(--g-moyen);box-shadow:var(--o-3);transition:opacity var(--transition),transform var(--transition)}
+.mouche.vu{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+<header class="tete"><div class="enrobe">
+ <p class="fil"><span class="no">Stratégie</span><span>Mise en marché d'une pratique indépendante</span><span>5 septembre 2026</span></p>
+ <h1>Vendre un <span class="deg">jugement</span>, pas des heures</h1>
+ <p class="chapeau">Ce que trente ans d'éducation des adultes valent sur le marché des mandats, ce qu'il faut mettre en avant, ce qu'il faut retirer, et les quatre-vingt-dix jours qui suivent. Objectif retenu&nbsp;: <strong>des mandats à mon compte</strong> — pas un poste, pas la vente d'un produit.</p>
+ <div class="commandes">
+  <button class="cmd" id="btnTheme">Sombre</button>
+  <span style="font-size:.72rem;color:var(--encre-4);font-family:var(--police-mono)">les textes encadrés se copient d'un clic</span>
+ </div>
+</div></header>
+<main>
+<section><div class="enrobe">
+ <span class="cote">§ 1</span>
+ <h2>Ce que le CV dit, et ce qu'il ne dit pas</h2>
+ <p class="sous">Le document actuel est une lettre de candidature à un concours. Il est bon pour ça. Il est mauvais pour vendre un mandat, et il faut savoir pourquoi avant de le refaire.</p>
+ <div class="col">
+ <p><strong>Ce qu'il établit sans discussion&nbsp;:</strong> une maîtrise en didactique, un DESS en administration scolaire, un bac en géologie, un brevet. Sept ans d'enseignement en sciences, mathématique et informatique. Neuf ans de conseil pédagogique auprès d'adultes. Treize ans de direction — adjoint, intérim, puis directeur d'un centre. Une vice-présidence de l'AQUOPS et quatre colloques, dont un sur la formation à distance <em>en 2010</em>.</p>
+ <p><strong>Ce qu'il ne dit nulle part&nbsp;:</strong> que vous avez produit, seul, en quelques mois, quatre-vingt-sept modules de francisation alignés sur un programme ministériel, deux portails, un simulateur d'appareil, une chaîne de production de voix de près de six mille répliques, un système de design documenté et cinq prototypes d'apprentissage dont la mécanique n'existe nulle part ailleurs.</p>
+ <p>C'est l'inversion qu'il faut opérer. <strong>Le CV raconte une carrière ; le marché achète une capacité.</strong> Et votre capacité actuelle n'est pas dans le CV, parce qu'elle date d'après.</p>
+ </div>
+</div></section>
+
+<section><div class="enrobe">
+ <span class="cote">§ 2</span>
+ <h2>La thèse</h2>
+ <p class="sous">Un positionnement tient en une phrase. S'il en faut deux, c'est qu'il n'est pas trouvé.</p>
+ <div class="these">
+  <p class="gros">Je livre en quelques semaines, seul, ce qu'une équipe livre en quelques trimestres — et je peux le montrer avant que vous ayez signé quoi que ce soit.</p>
+ </div>
+ <div class="col">
+ <p>Tout le reste en découle. Ce n'est pas une promesse de vitesse&nbsp;: c'est une promesse de <strong>risque déplacé</strong>. Un acheteur de formation vit avec une peur précise — payer six mois pour recevoir quelque chose que personne n'utilisera. Vous pouvez lui montrer des dispositifs finis, jouables, avant la signature. Presque aucun concurrent ne peut en faire autant.</p>
+ <p>Le deuxième étage de la thèse, celui qu'on ne dit pas dans le titre mais qui justifie le prix&nbsp;: <strong>vous avez été de l'autre côté de la table.</strong> Vous avez signé des budgets de formation, arbitré entre deux projets, expliqué à un conseil pourquoi l'un des deux n'aurait pas lieu. Un concepteur qui a dirigé un centre ne vend pas des livrables&nbsp;: il vend des décisions défendables.</p>
+ <p>Et ce qui empêche l'ensemble d'être de l'artisanat&nbsp;: <strong>une maîtrise de recherche en didactique</strong>. Elle ne se voit pas dans un livrable, et c'est précisément pour ça qu'il faut la dire. Dans ce métier, la majorité des praticiens détiennent un baccalauréat ou un certificat&nbsp;; un diplôme de deuxième cycle <em>en didactique</em> — pas en gestion de projet, pas en technologie — signifie qu'un choix de conception se défend autrement que par l'habitude ou par le goût. C'est la réponse à la seule question qu'un acheteur sérieux vous posera vraiment&nbsp;: <em>pourquoi devrais-je faire confiance à votre jugement plutôt qu'au mien&nbsp;?</em> Avec le D.E.S.S. en administration scolaire, cela fait deux diplômes de deuxième cycle, l'un sur l'apprendre et l'autre sur le décider.</p>
+ <p>La culture scientifique est le troisième étage, et elle est plus vendeuse qu'elle n'en a l'air. Un bac en géologie, sept ans à enseigner les sciences et neuf ans de conseil en mathématique et informatique&nbsp;: vous pouvez <strong>tenir une conversation d'égal à égal avec un expert de contenu technique</strong> — un ingénieur, un chimiste, un formateur en santé et sécurité — sans lui faire répéter trois fois. La plupart des concepteurs pédagogiques ne le peuvent pas, et ces mandats-là sont les mieux payés.</p>
+ </div>
+</div></section>
+
+<section><div class="enrobe">
+ <span class="cote">§ 3</span>
+ <h2>Ce qu'on met en avant, ce qu'on retire</h2>
+ <p class="sous">Un profil n'est pas un inventaire. Chaque élément qu'on ajoute affaiblit les autres, et c'est la raison pour laquelle la colonne de droite compte autant que celle de gauche.</p>
+ <div class="deux">
+  <div class="garder"><h4>En avant</h4><ul>
+   <li><b>La maîtrise en didactique</b>Un deuxième cycle de recherche sur l'apprentissage lui-même, rare chez les praticiens du métier. C'est ce qui autorise à dire « voici pourquoi ce dispositif est construit ainsi » — et à le défendre devant quelqu'un qui n'est pas d'accord.</li>
+   <li><b>La trajectoire complète</b>Enseignant → conseiller pédagogique → direction de centre. Trente ans dans le même écosystème, vus des trois étages. Très peu de gens l'ont, et c'est invérifiable à imiter.</li>
+   <li><b>La capacité de production actuelle</b>Ce que vous avez bâti depuis deux ans. C'est ce qui vous distingue d'un excellent concepteur de 2015 — et ça se montre, ça ne se déclare pas.</li>
+   <li><b>La culture scientifique</b>Géologie, sciences, mathématique, informatique. Formulée comme une capacité : parler aux experts de contenu techniques sans intermédiaire.</li>
+   <li><b>L'éducation des adultes</b>C'est votre terrain, il est mal desservi, et les acheteurs y sont nombreux : centres de services, cégeps, employabilité, entreprises, ordres professionnels.</li>
+   <li><b>Vingt ans d'avance sur la formation à distance</b>Le colloque de 2010 sur la FADA n'est pas une ligne de CV : c'est la preuve que vous ne suivez pas une mode.</li>
+  </ul></div>
+  <div class="retirer"><h4>À retirer, ou à taire</h4><ul>
+   <li><b>« Culture générale importante »</b>Ne se vérifie pas, ne s'achète pas, et affaiblit tout ce qui l'entoure. Ce que vous voulez dire — j'apprends vite n'importe quel domaine — se démontre par un exemple, jamais par l'adjectif.</li>
+   <li><b>Les cours de courtier immobilier et hypothécaire</b>Sur un profil de consultant en formation, ils ne lisent pas « polyvalence » mais « n'a pas choisi ». À garder pour une conversation, si le mandat touche l'immobilier.</li>
+   <li><b>Le mineur en études italiennes</b>Charmant, hors sujet. Il reste dans le CV officiel, il ne monte pas dans le profil.</li>
+   <li><b>« Passionné », « rigoureux », « à l'aise en équipe »</b>Tout le monde l'écrit, donc plus personne ne le lit. Chacun de ces mots occupe une ligne qu'une preuve pourrait occuper.</li>
+   <li><b>La liste d'outils</b>Articulate, Camtasia, Premiere, Photoshop : à déplacer tout en bas. En 2026, personne n'achète un logiciel maîtrisé ; on achète ce qui en sort.</li>
+  </ul></div>
+ </div>
+ <div class="bloc">
+  <h4>Le cas particulier de l'intelligence artificielle</h4>
+  <p>Écrire « je maîtrise l'IA générative » en 2026 vous range avec tout le monde&nbsp;; c'est devenu une case cochée, pas un argument. Ce qui reste un argument, c'est <strong>ce que vous en avez tiré, chiffré</strong> : quatre-vingt-sept modules, mille deux cent soixante-quatre fiches, une correction assistée dont le coût réel par session a été mesuré. Ne dites jamais que vous utilisez l'IA. Dites ce que vous avez livré, et laissez l'interlocuteur demander comment.</p>
+ </div>
+</div></section>
+<section><div class="enrobe">
+ <span class="cote">§ 4</span>
+ <h2>LinkedIn</h2>
+ <p class="sous">C'est la vitrine, pas l'atelier. Son seul travail est de faire écrire un message à quelqu'un qui a un problème de formation. Tout ce qui ne sert pas ça peut partir.</p>
+
+ <h3>Le titre</h3>
+ <p class="col">Deux cent vingt caractères, et c'est la seule chose que la moitié des gens liront. Il doit contenir <strong>ce que vous faites</strong> et <strong>pourquoi vous</strong> — jamais un adjectif.</p>
+ <div class="copiable"><span class="quoi">retenu · 146 caractères sur les 220 permis</span><span class="txt" id="t1">Ingénierie de formation pour adultes — je conçois et je livre. 30 ans : enseignement, conseil pédagogique, direction de centre. M. Sc. didactique.</span><button class="btc" data-copie="t1">Copier</button></div>
+ <p class="verdict oui">La maîtrise se met <strong>en fin de titre</strong>, jamais au début&nbsp;: un titre qui commence par un diplôme se lit comme un CV, et un titre qui finit par un diplôme se lit comme une garantie. Le tiret du milieu, lui, fait tout le travail&nbsp;: « je conçois <em>et je livre</em> » écarte d'un coup les consultants qui remettent un devis et disparaissent. La suite est vérifiable ligne par ligne, ce qu'un titre en adjectifs n'est jamais.</p>
+ <div class="copiable"><span class="quoi">variante · si vous visez surtout les entreprises</span><span class="txt" id="t2">Je conçois des formations que vos employés terminent. Ingénierie pédagogique, production complète, livraison en semaines. Ex-directeur de centre d'éducation des adultes.</span><button class="btc" data-copie="t2">Copier</button></div>
+ <p class="verdict">« Que vos employés terminent » nomme la douleur réelle d'un employeur — le taux d'abandon — plutôt que la compétence du fournisseur. Plus agressif, moins institutionnel&nbsp;: à réserver au marché privé.</p>
+ <div class="copiable"><span class="quoi">à ne pas écrire</span><span class="txt" id="t3">Concepteur pédagogique | Passionné d'innovation pédagogique et de technologies éducatives | Ouvert aux opportunités</span><button class="btc" data-copie="t3">Copier</button></div>
+ <p class="verdict non">Trois affirmations invérifiables et un aveu de disponibilité. C'est le titre par défaut de quelques milliers de profils, et il ne fait venir personne.</p>
+
+ <h3>La section « Infos »</h3>
+ <p class="col">Les trois premières lignes sont visibles avant le « voir plus »&nbsp;: elles doivent tenir seules. Le reste sert à celui qui a déjà décidé de vous lire.</p>
+ <div class="copiable"><span class="quoi">à copier tel quel, puis à ajuster</span><span class="txt" id="t4">Je conçois des dispositifs de formation pour adultes, et je les livre.
+
+Trente ans dans le même écosystème, vus des trois étages : sept ans à enseigner les sciences et la mathématique, neuf ans comme conseiller pédagogique en mathématique, sciences et informatique, treize ans à diriger un centre d'éducation des adultes. J'ai été celui qui conçoit, celui qui accompagne, et celui qui signe le budget.
+
+Une maîtrise de recherche en didactique est derrière tout ça : mes choix de conception se défendent autrement que par l'habitude.
+
+Ce que je fais à mon compte :
+
+• L'analyse de besoin et le devis pédagogique, quand personne ne sait encore ce qu'il faut construire.
+• La production complète d'un dispositif — scénarisation, contenu, médias, plateforme — livrée fonctionnelle, pas en maquette.
+• Le diagnostic d'un matériel existant : ce qui ne marche pas, pourquoi, et les trois corrections qui valent le budget.
+
+Ma dernière réalisation : un programme de francisation complet pour l'éducation des adultes — 87 modules alignés sur le programme ministériel, deux portails, une correction assistée, près de six mille répliques audio. Seul, en quelques mois.
+
+Je peux vous montrer des dispositifs finis et jouables avant que vous ayez signé quoi que ce soit. C'est la seule façon honnête de vendre de la conception.
+
+M. Sc. en didactique (UQAM) · D.E.S.S. en administration scolaire (Université de Montréal) · B. Sc. en géologie (Université Laval).
+
+Écrivez-moi : tousignantd@gmail.com</span><button class="btc" data-copie="t4">Copier</button></div>
+ <p class="verdict oui">Aucun adjectif sur vous-même, du début à la fin. La phrase qui vend est « celui qui signe le budget »&nbsp;: elle dit en six mots que vous connaissez le coût de ce que vous proposez.</p>
+
+ <h3>L'expérience</h3>
+ <p class="col">Les postes doivent être réécrits pour un acheteur, pas pour un comité de sélection. Un acheteur ne lit pas « responsabilités »&nbsp;: il cherche à savoir si vous avez déjà porté quelque chose de la taille de son problème.</p>
+ <div class="copiable"><span class="quoi">poste de direction · les crochets sont à remplir par vous — jamais à inventer</span><span class="txt" id="t5">Directeur — Centre d'éducation des adultes Tétreaultville, CSDM (2013-2021)
+
+Direction complète d'un centre d'éducation des adultes : offre de formation, équipe [n] personnes, budget annuel de [montant], partenariats avec les organismes du quartier et les entreprises du secteur.
+
+Ce que ça vaut aujourd'hui pour un client : j'ai arbitré pendant huit ans entre des projets de formation qui se valaient sur le papier, avec un budget qui n'en permettait qu'un. Je sais reconnaître un dispositif qui ne sera pas utilisé avant qu'il soit produit — et je sais le dire au moment où ça coûte encore peu cher.</span><button class="btc" data-copie="t5">Copier</button></div>
+ <p class="verdict">Le second paragraphe est celui qui compte, et il manque dans quatre-vingt-dix-neuf profils sur cent&nbsp;: il traduit un poste en <strong>service rendu</strong>. Écrivez-en un pour chacun des trois grands postes.</p>
+
+ <h3>La section « En vedette » — la seule qui décide</h3>
+ <p class="col">Un titre se lit en trois secondes, un profil en trente. Ce qui transforme un lecteur en client, c'est de <strong>cliquer sur quelque chose de fini</strong>. Vous avez cette section&nbsp;; presque personne ne l'a garnie.</p>
+ <div class="bloc">
+  <h4>Dans cet ordre, quatre éléments et pas un de plus</h4>
+  <p><strong>1. Le banc de panne.</strong> Trois minutes, la mécanique se voit toute seule, et le débriefing fait le travail à votre place. C'est la pièce qui fait dire « qui a fait ça&nbsp;? ».<br>
+  <strong>2. Le simulateur de défibrillateur.</strong> Un objet que tout le monde comprend en une image, et qui prouve la simulation d'appareil.<br>
+  <strong>3. La bibliothèque de francisation.</strong> L'échelle. Une capture du portail enseignant vaut mieux qu'un paragraphe.<br>
+  <strong>4. Le dossier de méthode.</strong> Pour le lecteur qui doute qu'il y ait de la pensée derrière la production. Il n'y en aura pas dix, mais ce sont ceux qui signent.</p>
+  <p style="margin-bottom:0">Chaque élément porte une légende d'une phrase qui dit <em>ce que la pièce démontre</em>, pas ce qu'elle contient.</p>
+ </div>
+
+ <h3>Trois réglages, dix minutes</h3>
+ <div class="col">
+ <p><strong>Activez « Proposer des services »</strong> plutôt que « Ouvert au travail ». La différence n'est pas cosmétique&nbsp;: la page de services vous fait apparaître dans les recherches de LinkedIn quand un acheteur cherche un prestataire, et elle affiche un bandeau qui dit « je vends », pas « je cherche ». Les deux bandeaux ne s'adressent pas au même monde.</p>
+ <p><strong>Changez l'URL du profil</strong> pour votre nom seul, et mettez-la dans votre signature de courriel.</p>
+ <p><strong>Refaites la photo de couverture.</strong> C'est le seul espace publicitaire gratuit d'un profil, et il est vide chez presque tout le monde&nbsp;: une capture d'un de vos dispositifs, avec une phrase. Le portrait, lui, se garde tel quel s'il est net et récent.</p>
+ </div>
+</div></section>
+<section><div class="enrobe">
+ <span class="cote">§ 5</span>
+ <h2>Ce qu'on publie, et à quel rythme</h2>
+ <p class="sous">Une règle unique, et elle explique pourquoi presque tout le contenu professionnel ne rapporte rien&nbsp;: <strong>on montre une chose faite, on ne commente jamais l'actualité du métier</strong>. Un avis sur l'IA en éducation vous met en concurrence avec dix mille personnes. Un dispositif qu'on peut ouvrir ne vous met en concurrence avec personne.</p>
+ <div class="col">
+ <p>Rythme tenable et suffisant&nbsp;: <strong>une publication toutes les deux semaines</strong>, vingt-six par an. Mieux vaut vingt-six pièces qui montrent quelque chose que cent qui commentent. Format constant&nbsp;: une image ou une courte vidéo de la chose, trois à cinq paragraphes courts, une question réelle à la fin — pas « qu'en pensez-vous&nbsp;? » mais une question dont vous voulez vraiment la réponse.</p>
+ <p>Vous avez déjà dix sujets en magasin. Aucun ne demande de travail neuf&nbsp;: ils demandent une capture et vingt minutes d'écriture.</p>
+ </div>
+ <div class="sujets">
+  <div class="sujet"><b>Avoir raison ou avoir su</b><p>Le banc de panne distingue le dépanneur qui a deviné juste de celui qui a éliminé. Presque aucune formation ne fait cette différence, et elle explique pourquoi les gens ne progressent pas.</p><span class="pre">preuve : le prototype 02, jouable</span></div>
+  <div class="sujet"><b>La correction n'est pas ce qu'on croit</b><p>Dix comparaisons de copies suffisent à révéler ce qui gouverne un correcteur à son insu. Sujet explosif en douceur pour tout le milieu scolaire.</p><span class="pre">preuve : le prototype 03</span></div>
+  <div class="sujet"><b>Le décrochage qui était une permission de micro</b><p>Quatorze personnes quittent un module au même écran. On accuse la difficulté&nbsp;; c'était une fenêtre du navigateur. Une leçon sur la lecture des données.</p><span class="pre">preuve : le prototype 04</span></div>
+  <div class="sujet"><b>Ce qu'une consigne mal écrite coûte</b><p>Un taux de réussite à 22 % qui n'est pas un problème de difficulté mais un délai de 48 secondes avant le premier clic. Le chiffre qu'on ne regarde jamais.</p><span class="pre">preuve : le prototype 04</span></div>
+  <div class="sujet"><b>La rétroaction immédiate n'apprend pas à décider</b><p>Pourquoi une simulation qui corrige tout de suite forme des gens excellents en exercices et démunis en situation.</p><span class="pre">preuve : le prototype 01</span></div>
+  <div class="sujet"><b>Un système de design en une soirée</b><p>D'une capture d'écran à des jetons documentés qui calculent leurs propres contrastes. Sujet qui parle aux gens de produit autant qu'aux pédagogues.</p><span class="pre">preuve : Braise</span></div>
+  <div class="sujet"><b>Ce que coûte vraiment une session avec un assistant</b><p>Sept virgule huit cents, mesuré, pas estimé. Personne ne publie de chiffres réels&nbsp;; c'est exactement pour ça qu'il faut le faire.</p><span class="pre">preuve : le registre d'appels</span></div>
+  <div class="sujet"><b>Six mille répliques et un défaut à la fin</b><p>La production audio à l'échelle, et le glitch de fin de fichier découvert sur cent trente et un enregistrements. Montrer un défaut trouvé inspire plus confiance qu'un succès annoncé.</p><span class="pre">preuve : la chaîne de voix</span></div>
+  <div class="sujet"><b>Le défibrillateur qu'on ne peut pas rater deux fois</b><p>Un simulateur d'appareil, du geste critique au temps qui court. Compréhensible par tout le monde, y compris hors du milieu.</p><span class="pre">preuve : SimDEA</span></div>
+  <div class="sujet"><b>Vingt ans que je parle de formation à distance</b><p>Le colloque de 2010 sur la FADA, et ce que cette idée est devenue. Le seul sujet biographique de la liste, et il n'a le droit d'exister qu'une fois.</p><span class="pre">preuve : le programme du colloque</span></div>
+ </div>
+</div></section>
+
+<section><div class="enrobe">
+ <span class="cote">§ 6</span>
+ <h2>Un site&nbsp;? Oui, minuscule</h2>
+ <div class="col">
+ <p>La tentation est de construire un beau site de dix pages. Ne le faites pas&nbsp;: c'est trois semaines qui ne produisent aucun mandat, et un site de consultant se lit à peu près autant qu'un dépliant dans une salle d'attente.</p>
+ <p>Ce qu'il faut est plus petit et plus utile&nbsp;: <strong>une seule page</strong>, à votre nom, qui répond à quatre questions dans cet ordre — ce que je fais, pour qui, ce que j'ai livré, comment me joindre. Les pièces du portfolio existent déjà et sont en ligne&nbsp;: la page ne fait que pointer dessus. Une journée de travail, pas trois semaines.</p>
+ <p>Sa vraie fonction n'est pas d'attirer du monde&nbsp;— c'est LinkedIn qui le fait — mais de <strong>tenir debout quand quelqu'un vérifie</strong>. Après une rencontre, un acheteur cherche votre nom. Il doit trouver une page sobre à votre nom, pas un profil et rien d'autre.</p>
+ <p>Sur le domaine&nbsp;: gardez <code>edufrancis.ca</code> pour le produit et prenez un domaine à votre nom pour la pratique. Mélanger les deux brouille les deux&nbsp;: un employeur qui découvre un produit à vendre se demande si vous serez disponible, et un acheteur du produit se demande s'il achète un logiciel ou une personne.</p>
+ </div>
+</div></section>
+
+<section><div class="enrobe">
+ <span class="cote">§ 7</span>
+ <h2>L'offre</h2>
+ <p class="sous">Trois mandats types, nommés et bornés. Un consultant qui répond « ça dépend » à la question du prix perd le contrat au profit de celui qui répond un chiffre.</p>
+ <table class="grille">
+  <thead><tr><th>Le mandat</th><th>Ce qu'on remet</th><th>Ordre de grandeur</th></tr></thead>
+  <tbody>
+  <tr><td><b>Le diagnostic</b>De 2 à 4 jours</td>
+      <td>L'examen d'un dispositif existant à partir des traces d'usage et du matériel&nbsp;: ce qui ne fonctionne pas, pourquoi, et les trois corrections qui valent le budget. Un rapport court et une rencontre.</td>
+      <td class="n">2 500 – 5 000 $</td></tr>
+  <tr><td><b>Le devis</b>De 5 à 10 jours</td>
+      <td>Analyse de besoin, public, contraintes, et le devis pédagogique complet d'un dispositif à produire — assez précis pour qu'un tiers puisse le construire. Sortie possible sans engagement de production.</td>
+      <td class="n">6 000 – 12 000 $</td></tr>
+  <tr><td><b>La production</b>Au forfait, jamais à l'heure</td>
+      <td>Le dispositif complet&nbsp;: scénarisation, contenus, médias, mise en ligne, et la documentation qui permet à l'organisation de le reprendre sans vous. Livré fonctionnel.</td>
+      <td class="n">à partir de 15 000 $</td></tr>
+  </tbody>
+ </table>
+ <div class="col">
+ <p><strong>Les chiffres sont des ordres de grandeur à valider</strong>, pas un barème&nbsp;: ils correspondent à un tarif de consultant senior d'environ 900 à 1 200 $ par jour au Québec en 2026, ce qui est la fourchette d'un profil ayant votre parcours. Vérifiez-les sur deux ou trois appels d'offres publics avant de les afficher.</p>
+ <p><strong>Le forfait plutôt que le taux horaire</strong>, et ce n'est pas un détail de facturation&nbsp;: c'est votre thèse. Vous vendez de la vitesse et du jugement. Facturé à l'heure, votre principal avantage — livrer en trois semaines ce qui en prendrait douze — devient une baisse de revenu. Au forfait, il devient une marge.</p>
+ <p><strong>Le premier mandat se vend à perte, une fois.</strong> Un diagnostic à prix réduit chez un acheteur crédible, en échange du droit d'en parler publiquement. Ce n'est pas du rabais&nbsp;: c'est l'achat d'une référence, et la référence est ce qui manque à une pratique qui commence.</p>
+ </div>
+</div></section>
+
+<section><div class="enrobe">
+ <span class="cote">§ 8</span>
+ <h2>À qui, dans quel ordre</h2>
+ <p class="sous">Cinq marchés, classés par la distance entre eux et vous. On commence toujours par le plus proche, parce que la première vente vient presque toujours de quelqu'un qui vous connaît déjà.</p>
+ <table class="grille">
+  <thead><tr><th>Marché</th><th>Ce qu'ils achètent</th><th>Distance</th></tr></thead>
+  <tbody>
+  <tr><td><b>Les centres de services scolaires</b>Éducation des adultes, services aux entreprises</td><td>Du matériel qu'ils n'ont pas le temps de produire, et de l'accompagnement d'équipe. Vous connaissez leurs contraintes budgétaires de l'intérieur, et vous connaissez les gens.</td><td class="n">très proche</td></tr>
+  <tr><td><b>Les cégeps et la formation continue</b>Services d'ingénierie pédagogique</td><td>De la conception à contrat, souvent en surcharge. Le concours auquel vous avez postulé dit exactement ce qu'ils cherchent&nbsp;; ils achètent aussi à l'externe.</td><td class="n">proche</td></tr>
+  <tr><td><b>Les organismes d'employabilité et d'accueil</b></td><td>De la francisation et de la préparation à l'emploi. Financement public, cycles lents, mais votre produit existant y est directement pertinent.</td><td class="n">proche</td></tr>
+  <tr><td><b>Les mutuelles de prévention et la SST</b></td><td>De la formation obligatoire que personne ne veut suivre. Budgets réels, exigences de traçabilité, et un besoin criant de dispositifs qui ne soient pas des diaporamas.</td><td class="n">à ouvrir</td></tr>
+  <tr><td><b>Les employeurs manufacturiers et agroalimentaires</b></td><td>L'intégration et la formation de tâche, souvent auprès de personnes qui parlent peu français. C'est le croisement exact de votre produit et de votre pratique.</td><td class="n">à ouvrir</td></tr>
+  </tbody>
+ </table>
+ <p class="col"><strong>Les ordres professionnels</strong> forment un sixième marché, plus lent à ouvrir mais très bien payé&nbsp;: formation continue obligatoire, contenu technique, experts de contenu exigeants. C'est là que votre culture scientifique cesse d'être une ligne de CV pour devenir la raison de vous choisir.</p>
+</div></section>
+<section><div class="enrobe">
+ <span class="cote">§ 9</span>
+ <h2>Les objections qu'on vous fera</h2>
+ <p class="sous">Elles viendront toutes, et il vaut mieux avoir la réponse avant d'être devant la personne. Aucune ne se répond en niant.</p>
+ <div class="objection">
+  <p class="dit">Un ancien directeur de centre qui vient concevoir des modules&nbsp;? Vous allez vous ennuyer.</p>
+  <p>Réponse&nbsp;: c'est l'inverse. J'ai passé treize ans à décider quels dispositifs seraient produits, sans jamais avoir le temps d'en produire un moi-même. Je fais aujourd'hui la seule partie du métier que la gestion m'avait enlevée — et je la fais avec ce que la gestion m'a appris&nbsp;: ce qu'un dispositif coûte, et à quelle condition il sera utilisé.</p>
+ </div>
+ <div class="objection">
+  <p class="dit">Vous produisez tout ça avec l'IA. Nous aussi, on a des licences.</p>
+  <p>Réponse&nbsp;: les licences ne produisent rien toutes seules, et vous le savez déjà, sinon vous n'auriez pas ce problème à régler. Ce qui fait la différence n'est pas l'outil&nbsp;: c'est de savoir quoi lui demander, dans quel ordre, et de reconnaître ce qu'il faut jeter. Ouvrez n'importe laquelle des pièces&nbsp;: aucune n'est ce qu'un outil produit par défaut.</p>
+ </div>
+ <div class="objection">
+  <p class="dit">Vous êtes seul. Si vous tombez malade, notre projet meurt.</p>
+  <p>Réponse&nbsp;: c'est une objection juste, et je la traite dans le contrat plutôt que dans la conversation. Tout ce que je livre est documenté et reprenable&nbsp;— le devis, la chaîne de production, le système de design&nbsp;— et les sources vous appartiennent au fur et à mesure, pas à la fin. Une équipe de trois personnes chez un fournisseur ne vous protège pas davantage&nbsp;: elle vous rend seulement le risque invisible.</p>
+ </div>
+ <div class="objection">
+  <p class="dit">Vous n'avez pas encore de clients dans ce domaine.</p>
+  <p>Réponse&nbsp;: non, j'ai des livrables. Vous pouvez les ouvrir maintenant et juger sur pièce, ce qu'aucune liste de références ne permet vraiment de faire. Et pour lever le doute, le premier mandat est un diagnostic court&nbsp;: vous voyez comment je travaille avant d'engager un budget de production.</p>
+ </div>
+ <div class="objection">
+  <p class="dit">Une maîtrise de 1994. C'est vieux, non&nbsp;?</p>
+  <p>Réponse&nbsp;: ce qu'on apprend dans une maîtrise en didactique n'est pas un état de la technologie, c'est une façon de poser une question de recherche et de reconnaître une conclusion mal fondée. Ça ne périme pas — c'est même ce qui permet de trier ce qui s'écrit aujourd'hui sur l'apprentissage, où il se publie beaucoup et se vérifie peu. Le reste, je l'ai tenu à jour tout seul, et ça se voit dans ce que je livre.</p>
+ </div>
+ <div class="objection">
+  <p class="dit">Combien de temps allez-vous rester disponible&nbsp;?</p>
+  <p>Réponse&nbsp;: la question porte rarement sur le calendrier — elle porte sur l'âge, et il vaut mieux l'entendre ainsi et y répondre franchement. Trente ans de métier, c'est précisément ce que vous achetez&nbsp;: je n'apprends pas votre problème à vos frais. Et ce que je livre est fait pour continuer sans moi, ce qui est vrai de peu de fournisseurs.</p>
+ </div>
+</div></section>
+
+<section><div class="enrobe">
+ <span class="cote">§ 10</span>
+ <h2>Quatre-vingt-dix jours</h2>
+ <p class="sous">Rien ici ne demande d'attendre quoi que ce soit. Cochez au fur et à mesure&nbsp;: la page se souvient.</p>
+ <ul class="plan" id="plan">
+  <li data-id="p1"><input type="checkbox" id="c-p1"><label for="c-p1"><span class="quand">semaine 1</span><span class="quoi">Refaire le titre et la section « Infos »</span><span class="note">Les deux textes sont écrits plus haut. Vingt minutes, et c'est le geste au meilleur rendement de toute la liste.</span></label></li>
+  <li data-id="p2"><input type="checkbox" id="c-p2"><label for="c-p2"><span class="quand">semaine 1</span><span class="quoi">Garnir « En vedette » avec les quatre pièces</span><span class="note">Elles sont déjà en ligne. Une légende d'une phrase chacune, qui dit ce que la pièce démontre.</span></label></li>
+  <li data-id="p3"><input type="checkbox" id="c-p3"><label for="c-p3"><span class="quand">semaine 1</span><span class="quoi">Activer « Proposer des services », changer l'URL, refaire la bannière</span><span class="note">Dix minutes. La page de services vous fait exister dans les recherches d'acheteurs.</span></label></li>
+  <li data-id="p4"><input type="checkbox" id="c-p4"><label for="c-p4"><span class="quand">semaine 2</span><span class="quoi">Réécrire les trois postes principaux</span><span class="note">Avec le second paragraphe qui traduit le poste en service rendu. Remplir les crochets avec vos vrais chiffres.</span></label></li>
+  <li data-id="p5"><input type="checkbox" id="c-p5"><label for="c-p5"><span class="quand">semaine 2</span><span class="quoi">Publier la première pièce : « Avoir raison ou avoir su »</span><span class="note">Une capture du banc de panne, quatre paragraphes, le lien. Rien à produire.</span></label></li>
+  <li data-id="p6"><input type="checkbox" id="c-p6"><label for="c-p6"><span class="quand">semaines 3-4</span><span class="quoi">Écrire à dix personnes que vous connaissez déjà</span><span class="note">Pas une offre : une nouvelle. « Je me suis mis à mon compte, voici ce que je fais, voici une chose que j'ai construite. » C'est de là que vient la première vente.</span></label></li>
+  <li data-id="p7"><input type="checkbox" id="c-p7"><label for="c-p7"><span class="quand">semaine 4</span><span class="quoi">Monter la page d'une seule page, à votre nom</span><span class="note">Une journée, pas trois semaines. Elle sert à tenir debout quand on vérifie.</span></label></li>
+  <li data-id="p8"><input type="checkbox" id="c-p8"><label for="c-p8"><span class="quand">semaines 5-6</span><span class="quoi">Offrir un diagnostic à prix réduit à un acheteur crédible</span><span class="note">Contre le droit d'en parler publiquement. Une fois, pas deux.</span></label></li>
+  <li data-id="p9"><input type="checkbox" id="c-p9"><label for="c-p9"><span class="quand">semaine 6</span><span class="quoi">Fixer les trois prix et les afficher</span><span class="note">Après vérification sur deux ou trois appels d'offres publics. Un prix affiché écarte les mauvais clients avant le premier appel.</span></label></li>
+  <li data-id="p10"><input type="checkbox" id="c-p10"><label for="c-p10"><span class="quand">semaines 7-12</span><span class="quoi">Une publication toutes les deux semaines</span><span class="note">Les dix sujets sont en magasin. Aucun ne demande de travail neuf.</span></label></li>
+  <li data-id="p11"><input type="checkbox" id="c-p11"><label for="c-p11"><span class="quand">semaine 8</span><span class="quoi">Ouvrir le marché des mutuelles de prévention</span><span class="note">Trois appels, avec le simulateur de défibrillateur comme pièce d'entrée : c'est leur langage.</span></label></li>
+  <li data-id="p12"><input type="checkbox" id="c-p12"><label for="c-p12"><span class="quand">semaine 12</span><span class="quoi">Faire le compte : qui a répondu, à quoi</span><span class="note">Si rien n'a bougé en trois mois, ce n'est pas le rythme qu'il faut augmenter — c'est le positionnement qu'il faut reprendre.</span></label></li>
+ </ul>
+ <p class="avancement" id="avancement"></p>
+</div></section>
+
+<section><div class="enrobe">
+ <span class="cote">§ 11</span>
+ <h2>Ce qu'il faut refuser</h2>
+ <div class="refus">
+  <ul>
+   <li><b>Le taux horaire.</b> Il transforme votre plus grand avantage — la vitesse — en pénalité financière. Forfait, ou rien.</li>
+   <li><b>Les mandats de « formateur ».</b> Donner la formation vous-même paie une journée à la fois et ne construit aucun actif. Vous vendez la conception&nbsp;; on vous demandera l'animation.</li>
+   <li><b>Le grand site, la marque, le logo, la vidéo de présentation.</b> Trois semaines qui ne produisent aucun mandat, et qui donnent le sentiment d'avancer.</li>
+   <li><b>Les publications d'opinion sur l'IA en éducation.</b> Dix mille personnes les écrivent déjà. Montrez ce que vous avez construit avec, et laissez l'opinion aux autres.</li>
+   <li><b>Le premier client qui veut tout, tout de suite, pour pas cher.</b> Il existe dans chaque pratique qui commence, il occupe six mois, et il ne donne jamais de référence utilisable.</li>
+   <li><b>Postuler et démarcher en même temps, avec le même profil.</b> Un profil qui dit « ouvert au travail » et « je vends mes services » ne convainc ni l'employeur ni l'acheteur. Si un poste vous tente vraiment, postulez — mais avec un dossier séparé, pas en modifiant la vitrine.</li>
+  </ul>
+ </div>
+</div></section>
+</main>
+<footer><div class="enrobe">
+ <p>Stratégie établie le 5 septembre 2026 à partir du curriculum vitæ et des réalisations existantes. Les fourchettes de prix sont des ordres de grandeur à valider avant d'être affichées&nbsp;; ce document n'est ni un avis fiscal, ni un avis juridique. Habillage&nbsp;: <b>Braise</b>.</p>
+</div></footer>
+<div class="mouche" id="mouche">Copié</div>
+
+<script>
+"use strict";
+/* Les textes se copient d'un clic : une stratégie qu'il faut retaper à la main
+   n'est pas appliquée, elle est relue. */
+let minuteur;
+function annoncer(m){
+ const e=document.getElementById("mouche");
+ e.textContent=m;e.classList.add("vu");
+ clearTimeout(minuteur);minuteur=setTimeout(()=>e.classList.remove("vu"),1500);
+}
+document.querySelectorAll(".btc").forEach(b=>b.onclick=()=>{
+ const t=document.getElementById(b.dataset.copie).textContent;
+ if(navigator.clipboard) navigator.clipboard.writeText(t);
+ annoncer("Copié — "+t.length+" caractères");
+});
+
+/* Le plan se souvient. Un navigateur qui refuse le stockage ne casse rien :
+   les cases repartent vides, ce qui est l'état de départ de toute façon. */
+const PLAN="strategie-90j";
+function lire(){ try{ return JSON.parse(localStorage.getItem(PLAN)||"{}"); }catch(e){ return {}; } }
+function ecrire(o){ try{ localStorage.setItem(PLAN, JSON.stringify(o)); }catch(e){} }
+const etat=lire();
+const cases=[...document.querySelectorAll("#plan li")];
+function compter(){
+ const n=cases.filter(li=>li.classList.contains("faite")).length;
+ document.getElementById("avancement").textContent=
+   n===0 ? "" : n+" sur "+cases.length+(n===cases.length?" — les quatre-vingt-dix jours sont faits."
+     : " · reste "+(cases.length-n));
+}
+cases.forEach(li=>{
+ const b=li.querySelector("input"), id=li.dataset.id;
+ b.checked=!!etat[id];
+ li.classList.toggle("faite", b.checked);
+ b.addEventListener("change",()=>{
+   const e=lire(); e[id]=b.checked; ecrire(e);
+   li.classList.toggle("faite", b.checked); compter();
+ });
+});
+compter();
+
+function etatTheme(){
+ return document.documentElement.getAttribute("data-theme")
+   || (matchMedia("(prefers-color-scheme:dark)").matches?"sombre":"clair");
+}
+function nommerTheme(){
+ document.getElementById("btnTheme").textContent = etatTheme()==="sombre" ? "Clair" : "Sombre";
+}
+document.getElementById("btnTheme").onclick=()=>{
+ document.documentElement.setAttribute("data-theme", etatTheme()==="sombre"?"clair":"sombre");
+ nommerTheme();
+};
+nommerTheme();
+</script>
+</body>
+</html>
