@@ -89,6 +89,47 @@ for i, capsule in enumerate(filmees, 1):
       </details>
     </section>""")
 
+# ── Le film de présentation ───────────────────────────────────────────────
+# Ce n'est pas une capsule : les capsules apprennent à se servir du portail,
+# celui-ci présente le produit. Il a donc son bloc, au-dessus du sommaire, et
+# il ne compte pas dans « N capsules » — sans quoi la page annoncerait une
+# leçon de plus qu'elle n'en donne.
+#
+# Il n'est pas filmé par la chaîne (`enregistrer.js`) et ne vit donc pas dans
+# `capsules/` : il est livré directement dans `assets/tutoriels/`. `livrer.py`
+# ne le copie pas, il vérifie qu'il est là — un bloc qui promet une vidéo
+# absente est pire que pas de bloc.
+presentation = ""
+pres = manifeste.get("presentation")
+if pres:
+    film = VIDEOS / f"{pres['id']}.mp4"
+    if not film.exists():
+        print(f"[!] {film.name} est déclaré au manifeste mais absent — bloc omis")
+    else:
+        affiche_p = VIDEOS / f"{pres['id']}.jpg"
+        if not affiche_p.exists():
+            subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-ss", "20",
+                            "-i", str(film), "-frames:v", "1",
+                            "-vf", "scale=640:-2", "-q:v", "4", str(affiche_p)],
+                           check=True)
+        # La page existe parce que ce public lit en apprenant : taire l'absence
+        # de sous-titres serait le seul endroit du dépôt où on la cacherait.
+        note = ("<p class=\"tu-sansst\">Ce film n'a pas de sous-titres, "
+                "contrairement aux capsules.</p>" if pres.get("sans_sous_titres") else "")
+        presentation = f"""
+      <section class="tu-capsule tu-presentation" id="film">
+        <div class="tu-num">Film de présentation · {mmss(duree(film))}</div>
+        <h2>{escape(pres['titre'])}</h2>
+        <p class="tu-chapeau">{escape(pres.get('chapeau', ''))}</p>
+        <video controls preload="none" playsinline
+               poster="../tutoriels/{pres['id']}.jpg">
+          <source src="../tutoriels/{pres['id']}.mp4" type="video/mp4" />
+          Votre navigateur ne peut pas lire cette vidéo.
+          <a href="../tutoriels/{pres['id']}.mp4">Téléchargez-la</a>.
+        </video>
+        {note}
+      </section>"""
+
 combien = combien(len(filmees))
 PAGE.write_text(f"""<!DOCTYPE html>
 <html lang="fr">
@@ -142,6 +183,10 @@ PAGE.write_text(f"""<!DOCTYPE html>
   .tu-autre b {{ color: var(--text-strong); }}
   /* Retour vers l'espace enseignant : la pilule fantôme du système, juste
      décollée du surtitre. */
+  .tu-presentation {{ padding: var(--sp-5); border-radius: var(--r-lg);
+    background: var(--acier-100); }}
+  .tu-chapeau {{ margin: 0; color: var(--ink-500); font-size: var(--fs-body-sm); }}
+  .tu-sansst {{ margin: 0; color: var(--ink-500); font-size: var(--fs-ui-sm); }}
   .tu-retour {{ margin: 0 0 var(--sp-4); }}
 </style>
 </head>
@@ -159,6 +204,7 @@ PAGE.write_text(f"""<!DOCTYPE html>
   </header>
   <div class="container">
     <div class="tu-pile">
+      {presentation}
       <ul class="tu-sommaire">{''.join(sommaire)}</ul>
       {''.join(cartes)}
       <div class="tu-autre">
