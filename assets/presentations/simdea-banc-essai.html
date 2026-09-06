@@ -284,6 +284,14 @@ section{padding:var(--e-7) 0 0}
 .propo .tete{display:flex;align-items:baseline;gap:var(--e-3);flex-wrap:nowrap}
 .propo .tete .ref{flex:0 0 auto}
 .propo .ref{font-family:var(--police-mono);font-size:var(--t-menu);color:var(--signal)}
+.fait{font-family:var(--police-mono);font-size:10.5px;letter-spacing:.04em;text-transform:uppercase;
+  color:var(--mesure);border:1px solid currentColor;border-radius:var(--r-1);padding:1px 6px;
+  white-space:nowrap;line-height:1.7;margin-left:auto}
+.propo.regle{border-color:var(--mesure)}
+.propo.regle .tete h3{text-decoration:line-through;text-decoration-color:var(--encre-4);text-decoration-thickness:1.5px}
+.suite{border-top:1px dashed var(--bord-fort);padding-top:var(--e-3);font-size:var(--t-petit);line-height:1.55}
+.suite b{display:block;font-family:var(--police-mono);font-size:11px;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--mesure);font-weight:var(--g-moyen);margin-bottom:var(--e-1)}
 .propo p{font-size:var(--t-petit);line-height:1.55}
 .jauges{display:flex;flex-wrap:wrap;gap:var(--e-2) var(--e-4);font-family:var(--police-mono);font-size:11px;color:var(--encre-3)}
 .jauges b{color:var(--encre);font-weight:var(--g-moyen)}
@@ -428,12 +436,13 @@ ol.marche b{color:var(--encre);font-weight:var(--g-fort)}
       <span class="etiq">La proposition qui change la nature du projet</span>
       <h2>Instrumenter le simulateur pour qu'il produise ses propres traces</h2>
     </div>
-    <div class="propo phare">
-      <div class="tete"><span class="ref">P0</span><h3>Le journal de passage</h3></div>
+    <div class="propo phare regle">
+      <div class="tete"><span class="ref">P0</span><h3>Le journal de passage</h3><span class="fait">Fait · 6 sept.</span></div>
       <p>À chaque partie, la page enregistre localement&nbsp;: le délai avant la première action à chaque état, la position exacte des électrodes déposées, la cadence de compression, chaque faute commise, chaque abandon, la durée par état. Un fichier anonyme par passage, exportable. Rien ne sort du navigateur sans un geste explicite.</p>
       <p><strong>Pourquoi c'est la plus rentable des sept.</strong> Elle ne change rien à ce que l'apprenant voit, et elle change tout à ce que vous pouvez démontrer. Aujourd'hui, votre dossier <em>affirme</em> que vous travaillez par diagnostic itératif. Avec cela, vous montrez un journal de décisions réel&nbsp;: « neuf personnes sur douze ont posé l'électrode gauche trop haut&nbsp;; la planche a été refaite&nbsp;; on est passé à deux sur douze ». Un client ne discute pas ce genre de phrase — et c'est la seule qu'aucun concurrent ne peut improviser.</p>
       <div class="jauges"><span>Valeur <b>très haute</b></span><span>Coût <b>faible</b></span><span>Visible par l'apprenant <b>non</b></span></div>
       <div class="epreuve"><b>Contre-épreuve</b>Faire dix passages vous-même, puis lire le journal sans regarder l'écran. Si vous ne pouvez pas reconstituer ce qui s'est passé, l'instrumentation ne capte pas les bonnes choses — et c'est le moment de le découvrir, pas après les essais.</div>
+      <div class="suite"><b>Ce qu'elle a donné</b>Menée sur deux passages, le 6 septembre. Elle a trouvé trois défauts, dont deux dans l'instrument lui-même&nbsp;: les durées d'état mélangeaient deux repères de temps et étaient toutes fausses&nbsp;; la « première action » de la phase de RCP valait 120&nbsp;s, parce qu'une compression n'était pas comptée comme un geste&nbsp;; et la pause la plus longue se calculait sur des intervalles déjà filtrés, si bien qu'aucune interruption de plus de cinq secondes ne pouvait apparaître — précisément ce qu'on voulait voir. Corrigés, puis revérifiés contre des écarts injectés exprès&nbsp;: pause de 7&nbsp;s détectée, délai de 8&nbsp;s avant la première compression, cadence médiane à 110/min, durée d'analyse mesurée à 4497&nbsp;ms pour une animation réglée à 4500. <strong>Un instrument non éprouvé aurait produit des chiffres faux avec l'autorité des chiffres.</strong></div>
     </div>
   </section>
 
@@ -459,11 +468,12 @@ ol.marche b{color:var(--encre);font-weight:var(--g-fort)}
         <div class="epreuve"><b>Contre-épreuve</b>Demander à cinq personnes de placer les deux électrodes sans aucune indication, et relever les positions. La dispersion dit à elle seule s'il faut enseigner le placement ou seulement le rappeler.</div>
       </div>
 
-      <div class="propo">
-        <div class="tete"><span class="ref">P3</span><h3>Un bilan qui ne ment pas</h3></div>
+      <div class="propo regle">
+        <div class="tete"><span class="ref">P3</span><h3>Un bilan qui ne ment pas</h3><span class="fait">Fait · 6 sept.</span></div>
         <p>Supprimer les quatre contrôles codés en dur. N'afficher que ce qui a été mesuré, et nommer explicitement le reste&nbsp;: « non évalué dans cette simulation ». Un bilan honnête est moins flatteur et beaucoup plus utile — et il devient indispensable dès que le mode sans filet existe.</p>
         <div class="jauges"><span>Valeur <b>haute</b></span><span>Coût <b>très faible</b></span></div>
         <div class="epreuve"><b>Contre-épreuve</b>Montrer le bilan actuel à trois personnes et demander « qu'est-ce que tu as réussi&nbsp;? ». Le nombre de réponses fausses mesure le dommage exact de la version actuelle.</div>
+        <div class="suite"><b>Ce qui a été fait</b>Deux listes désormais&nbsp;: ce qui a été mesuré, et ce que la simulation n'évalue pas, nommé point par point. Deux mesures sont devenues réelles au passage — l'absence de choc sur rythme non choquable, et le nombre de compressions. La barre d'étapes a perdu sa coche verte au profit d'un point plein.</div>
       </div>
 
       <div class="propo">
@@ -513,6 +523,7 @@ ol.marche b{color:var(--encre);font-weight:var(--g-fort)}
 
   <div class="pied">
     Analyse conduite sur le dépôt au 5 septembre 2026, à partir de <span class="renvoi">src/</span> et de <span class="renvoi">contenu/fr.json</span>. Elle applique la grille du dossier « La boucle du diagnostic ». Aucun de ces constats n'a été vérifié auprès d'un apprenant&nbsp;: ce sont des hypothèses de conception, hiérarchisées, chacune assortie de l'observation qui la confirmerait ou l'écarterait. C'est le premier tour de boucle, pas le dernier.
+    <br><br><strong>Mise à jour du 6 septembre.</strong> Deux propositions sont passées à l'acte&nbsp;: le bilan (P3) et l'instrumentation (P0). La seconde a trouvé trois défauts en deux passages, dont deux dans l'instrument lui-même. Les six autres attendent l'essai à un apprenant, qui reste le prochain geste — et qui réordonnera probablement cette liste.
   </div>
 </div>
 
