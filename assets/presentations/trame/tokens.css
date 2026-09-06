@@ -1,0 +1,133 @@
+/* ═══════════════════════════════════════════════════════════════════
+   SYSTÈME « TRAME » — jetons de conception
+   Le système de la maison : Trame conçoit des formations pour les
+   entreprises. Tout part du logo dessiné le 6 septembre 2026 — un
+   tissage de quatre barres et un mot en Manrope — et de ce qu'il
+   affirme : de la structure, pas de l'ornement.
+
+   Le vocabulaire est celui du métier à tisser. La CHAÎNE est le fil
+   tendu qui porte tout (l'indigo : liens, structure, ce qui guide) ;
+   la TRAME est le fil qui passe et fait le motif (l'ocre : la marque,
+   le point de chaleur). Le reste est l'écru du tissu et l'encre.
+   ═══════════════════════════════════════════════════════════════════ */
+:root{
+  /* ── Écru — la toile. Neutres chauds, jamais de gris pur ── */
+  --fond:            #F4EEE1;   /* l'écru du logo : la page */
+  --fond-2:          #FBF8F1;   /* la carte, posée sur l'écru */
+  --fond-3:          #EAE2D0;   /* surfaces enfoncées, code, survol */
+  --encre:           #14161F;   /* l'encre du logo : titres, texte fort */
+  --encre-2:         #3B3D46;   /* texte courant */
+  --encre-3:         #6A6B6E;   /* légendes, sous-titres */
+  --encre-4:         #A6A296;   /* filigrane, désactivé — jamais à lire */
+  --bord:            #DDD4C2;
+  --bord-fort:       #C4B99F;
+
+  /* ── Trame — l'ocre. Le champ de la marque, une fois par écran ── */
+  --trame:           #E9A63B;   /* le fond du logo, les bandeaux */
+  --trame-encre:     #14161F;   /* ce qui s'écrit sur l'ocre */
+  --trame-texte:     #8A5A0A;   /* le même ocre, assez sombre pour être lu sur l'écru */
+  --trame-voile:     #F6E6C8;   /* rappel très léger : fond d'une note */
+
+  /* ── Chaîne — l'indigo. Ce qui porte : liens, focus, repères ── */
+  --chaine:          #1E2A78;
+  --chaine-survol:   #141C5A;
+  --chaine-encre:    #F4EEE1;   /* ce qui s'écrit sur l'indigo */
+  --chaine-voile:    #E4E6F3;
+
+  /* ── Action — le bouton principal est en encre, pas en couleur ── */
+  --action:          #14161F;
+  --action-survol:   #2A2D3A;
+  --action-encre:    #F4EEE1;
+
+  /* ── Verdict — deux couleurs pour ce qu'une réponse vaut.
+     Le diagnostic est le cœur du métier : elles n'ont pas d'autre usage ── */
+  --juste:           #1F6E4A;
+  --juste-voile:     #DFEDE4;
+  --faux:            #A83A2E;
+  --faux-voile:      #F5E1DC;
+
+  /* ── Typographie — deux familles, pas trois ──
+     Manrope, la police du mot-symbole, pour tout ce qui titre et
+     commande. Source Serif pour ce qui se lit longtemps : un cabinet
+     de conception écrit des documents, et un document se lit en serif. */
+  --police:        "Manrope", ui-sans-serif, system-ui, "Helvetica Neue", Arial, sans-serif;
+  --police-lecture:"Source Serif 4", "Source Serif Pro", Georgia, "Times New Roman", serif;
+  --police-mono:   ui-monospace, "SF Mono", "Menlo", "Consolas", monospace;
+
+  --t-affiche:  clamp(2.5rem, 6.5vw, 4.5rem);    /* 40 → 72 : le titre d'une page */
+  --t-titre-1:  clamp(1.875rem, 3.6vw, 2.5rem);  /* 30 → 40 */
+  --t-titre-2:  clamp(1.375rem, 2.2vw, 1.625rem);/* 22 → 26 */
+  --t-titre-3:  1.125rem;                         /* 18 */
+  --t-avant:    1.1875rem;                        /* 19 : le chapeau */
+  --t-lecture:  1.0625rem;                        /* 17 : le corps en serif */
+  --t-corps:    1rem;                             /* 16 : le corps en sans, l'interface */
+  --t-petit:    0.875rem;                         /* 14 */
+  --t-menu:     0.8125rem;                        /* 13 : étiquettes, sur-titres */
+
+  --g-normal: 400;
+  --g-moyen:  500;
+  --g-fort:   700;
+  --g-noir:   800;   /* réservé au mot-symbole et au titre d'affiche */
+
+  --i-serre:  1.0;    /* titre d'affiche */
+  --i-titre:  1.18;
+  --i-corps:  1.55;
+  --i-lecture:1.65;
+
+  --l-serre:  -0.045em; /* la chasse du mot-symbole */
+  --l-titre:  -0.02em;
+  --l-corps:  0em;
+  --l-large:  0.08em;   /* sur-titres en capitales */
+
+  /* ── Espacement — base 4, sauts francs ── */
+  --e-1:  0.25rem;  --e-2:  0.5rem;   --e-3:  0.75rem;  --e-4:  1rem;
+  --e-5:  1.5rem;   --e-6:  2rem;     --e-7:  3rem;     --e-8:  4rem;
+  --e-9:  6rem;     --e-10: 8rem;
+
+  --mesure:      40rem;    /* largeur de lecture */
+  --contenu:     68rem;    /* largeur maximale d'une section */
+
+  /* ── Formes — le logo est à angles droits ; le système aussi ──
+     Trois rayons, et aucun n'arrondit vraiment : on casse l'angle,
+     on ne le dessine pas rond. La pastille pleine est l'exception,
+     réservée aux étiquettes. */
+  --r-0: 0;
+  --r-1: 2px;
+  --r-2: 4px;
+  --r-3: 6px;
+  --r-plein: 9999px;
+
+  /* ── Ombres — il n'y en a pas. Un tissu est plat ──
+     Les surfaces se séparent par le fond et la bordure. Une seule
+     ombre existe, pour ce qui flotte (menu, dialogue), et l'anneau
+     de focus, qui n'est pas une ombre mais une bordure de plus. */
+  --o-flottant: 0 8px 24px rgba(20,22,31,.14), 0 1px 2px rgba(20,22,31,.08);
+  --o-anneau:   0 0 0 3px rgba(30,42,120,.28);
+
+  /* ── Motif — la trame elle-même, en fond ──
+     Un quadrillage de fils, très léger, pour les surfaces de marque
+     seulement (bandeau, couverture). Jamais sous du texte courant. */
+  --motif-fil:   rgba(20,22,31,.10);
+  --motif-pas:   16px;
+  --motif-trame: repeating-linear-gradient(0deg, var(--motif-fil) 0 1px, transparent 1px var(--motif-pas)),
+                 repeating-linear-gradient(90deg, var(--motif-fil) 0 1px, transparent 1px var(--motif-pas));
+
+  --transition: 140ms cubic-bezier(.4,0,.2,1);
+}
+
+/* ── Le même système, retourné. L'ocre ne bouge pas ──────────────
+   Sur l'encre, l'ocre du logo contraste déjà à plus de 9:1 : c'est
+   la seule couleur qui traverse les deux thèmes sans changer. Les
+   encres deviennent écrues, l'indigo s'éclaircit pour rester lisible. */
+:root[data-theme="sombre"]{
+  --fond:#14161F; --fond-2:#1C1F2B; --fond-3:#262A38;
+  --encre:#F4EEE1; --encre-2:#D6D0C3; --encre-3:#A39F94; --encre-4:#5E6070;
+  --bord:#2E3242; --bord-fort:#444A5E;
+  --trame:#E9A63B; --trame-encre:#14161F; --trame-texte:#F0B95C; --trame-voile:#3A2E15;
+  --chaine:#9AA6F0; --chaine-survol:#B8C1F6; --chaine-encre:#14161F; --chaine-voile:#222747;
+  --action:#F4EEE1; --action-survol:#E4DCCB; --action-encre:#14161F;
+  --juste:#5FC48F; --juste-voile:#14301F; --faux:#F08A7B; --faux-voile:#3A1A15;
+  --motif-fil:rgba(244,238,225,.08);
+  --o-flottant:0 8px 24px rgba(0,0,0,.55), 0 1px 2px rgba(0,0,0,.4);
+  --o-anneau:0 0 0 3px rgba(154,166,240,.35);
+}
