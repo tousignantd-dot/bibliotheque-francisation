@@ -1,0 +1,518 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Système de design relevé sur une page d'accueil : jetons de couleur, échelle typographique, espacement, composants et règles d'usage.">
+<title>Braise — système de design</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap">
+<style id="jetons">/* ═══════════════════════════════════════════════════════════════════
+   SYSTÈME « BRAISE » — jetons de conception
+   Relevés sur la page d'accueil de référence, puis régularisés :
+   les valeurs lues au pixel ont été ramenées sur une échelle, parce
+   qu'un système se transmet et qu'un relevé ne se transmet pas.
+
+   Le nom vient de ce qui rend l'ensemble reconnaissable en une seconde :
+   presque tout est noir, blanc et gris froid, et il reste un seul point
+   de chaleur — le mot en dégradé, et la pastille orange. Tout le reste
+   du système consiste à ne pas l'éteindre en le répétant.
+   ═══════════════════════════════════════════════════════════════════ */
+:root{
+  /* ── Neutres — l'ossature. Zinc légèrement froid, jamais de gris pur ── */
+  --fond:            #FFFFFF;
+  --fond-2:          #FAFAFA;   /* sections alternées */
+  --fond-3:          #F4F4F5;   /* surfaces enfoncées, code */
+  --encre:           #09090B;   /* titres et texte fort */
+  --encre-2:         #52525B;   /* texte courant sur fond clair */
+  --encre-3:         #71717A;   /* sous-titre, légendes */
+  --encre-4:         #A1A1AA;   /* désactivé, filigrane */
+  --bord:            #E4E4E7;
+  --bord-fort:       #D4D4D8;
+
+  /* ── Marque — la bichromie. Deux arrêts, un seul usage ── */
+  --marque-rose:     #F0359F;
+  --marque-corail:   #F5533D;
+  --marque-degrade:  linear-gradient(100deg, var(--marque-rose) 0%, var(--marque-corail) 100%);
+
+  /* ── Signal — l'orange de la pastille. Ni marque, ni neutre ── */
+  --signal:          #F5652E;
+  --signal-encre:    #FFFFFF;
+  --signal-voile:    #FEF1EA;
+
+  /* ── Mesure — le bleu de ce que la machine calcule ─────────────────
+     Ajouté le 5 septembre 2026, quand les prototypes de l'atelier ont
+     demandé un rôle que le système n'avait pas : distinguer ce qu'une
+     personne décide de ce qu'un modèle mesure. Sans lui, il fallait
+     détourner un arrêt du dégradé, ce que la règle du § 5 interdit.
+     Jamais pour du texte courant, jamais pour une action. ── */
+  --mesure:          #2B4E9B;
+  --mesure-2:        #5C7EBF;
+  --mesure-voile:    #EAEFFA;
+
+  /* ── Action — le noir est la couleur du bouton principal ── */
+  --action:          #18181B;
+  --action-survol:   #27272A;
+  --action-encre:    #FAFAFA;
+
+  /* ── Typographie ── */
+  --police: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --police-mono: ui-monospace, "SF Mono", "Menlo", "Consolas", monospace;
+
+  --t-affiche:  clamp(2.75rem, 8.2vw, 5.25rem);  /* 44 → 84 px, le titre du héros */
+  --t-titre-1:  clamp(2rem, 4.4vw, 3rem);        /* 32 → 48 */
+  --t-titre-2:  clamp(1.5rem, 2.6vw, 1.875rem);  /* 24 → 30 */
+  --t-titre-3:  1.25rem;                          /* 20 */
+  --t-avant:    1.25rem;                          /* 20 — le sous-titre du héros */
+  --t-corps:    1rem;                             /* 16 */
+  --t-petit:    0.875rem;                         /* 14 — la pastille */
+  --t-menu:     0.8125rem;                        /* 13 */
+
+  --g-normal: 400;
+  --g-moyen:  500;
+  --g-fort:   600;
+  --g-noir:   800;   /* réservé au titre d'affiche */
+
+  --i-serre:  0.95;  /* interligne du titre d'affiche */
+  --i-titre:  1.15;
+  --i-corps:  1.6;
+
+  --l-serre:  -0.035em;  /* chasse du titre d'affiche */
+  --l-titre:  -0.02em;
+  --l-corps:  0em;
+  --l-large:  0.02em;
+
+  /* ── Espacement — base 4, sauts francs ── */
+  --e-1:  0.25rem;  --e-2:  0.5rem;   --e-3:  0.75rem;  --e-4:  1rem;
+  --e-5:  1.5rem;   --e-6:  2rem;     --e-7:  3rem;     --e-8:  4rem;
+  --e-9:  6rem;     --e-10: 8rem;
+
+  --mesure:      42rem;    /* largeur de lecture du sous-titre */
+  --contenu:     72rem;    /* largeur maximale d'une section */
+
+  /* ── Rayons ── */
+  --r-1: 0.375rem; --r-2: 0.5rem; --r-3: 0.75rem; --r-4: 1rem; --r-plein: 9999px;
+
+  /* ── Ombres — discrètes, portées courtes, jamais colorées ── */
+  --o-1: 0 1px 2px rgba(9,9,11,.06);
+  --o-2: 0 1px 3px rgba(9,9,11,.08), 0 1px 2px rgba(9,9,11,.04);
+  --o-3: 0 4px 12px rgba(9,9,11,.08);
+  --o-anneau: 0 0 0 3px rgba(9,9,11,.12);
+
+  --transition: 140ms cubic-bezier(.4,0,.2,1);
+}
+
+/* ── Variante de surface : fond blanc ──────────────────────────────
+   Les fonds alternés disparaissent et la séparation passe entièrement
+   aux bordures. Pour une page imprimée, projetée, ou posée dans un site
+   déjà clair où deux blancs différents se verraient comme une erreur.
+   Ne touche ni aux encres, ni à la marque, ni au signal : c'est une
+   variante de SURFACE, pas un second thème. ── */
+:root[data-fond="blanc"]{
+  --fond:   #FFFFFF;
+  --fond-2: #FFFFFF;   /* sections alternées : plus d'alternance */
+  --fond-3: #F7F7F8;   /* conservé, mais affaibli : le code et le survol
+                          ont encore besoin d'exister */
+  --bord:      #E7E7EA;
+  --bord-fort: #D1D1D6;
+  --o-1: none;
+  --o-2: 0 1px 2px rgba(9,9,11,.05);
+  --o-3: 0 4px 10px rgba(9,9,11,.07);
+}
+
+/* ── Le même système, retourné. Les rôles ne bougent pas, les valeurs oui ── */
+:root[data-theme="sombre"]{
+  --fond:#09090B; --fond-2:#0F0F11; --fond-3:#18181B;
+  --encre:#FAFAFA; --encre-2:#D4D4D8; --encre-3:#A1A1AA; --encre-4:#52525B;
+  --bord:#27272A; --bord-fort:#3F3F46;
+  --marque-rose:#FF4FB0; --marque-corail:#FF6A50;
+  --signal:#FF7A45; --signal-encre:#1A0C05; --signal-voile:#2A1610;
+  --mesure:#8FB2F0; --mesure-2:#6E8FCB; --mesure-voile:#18213A;
+  --action:#FAFAFA; --action-survol:#E4E4E7; --action-encre:#18181B;
+  --o-1:0 1px 2px rgba(0,0,0,.5);
+  --o-2:0 1px 3px rgba(0,0,0,.6), 0 1px 2px rgba(0,0,0,.4);
+  --o-3:0 4px 14px rgba(0,0,0,.6);
+  --o-anneau:0 0 0 3px rgba(250,250,250,.18);
+}
+
+/* ── Les deux ensemble ────────────────────────────────────────────
+   « Fond blanc » veut dire SURFACES UNIES, pas blanc à tout prix : en
+   thème sombre, la même intention supprime l'alternance sur le noir.
+   Un fond blanc sous des encres claires ne serait pas une variante,
+   ce serait une panne. ── */
+:root[data-theme="sombre"][data-fond="blanc"]{
+  --fond:#09090B; --fond-2:#09090B; --fond-3:#141417;
+  --bord:#2A2A2E; --bord-fort:#404046;
+}</style>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:var(--fond);color:var(--encre-2);font-family:var(--police);
+ font-size:var(--t-corps);line-height:var(--i-corps);-webkit-font-smoothing:antialiased;
+ font-feature-settings:"cv11","ss01";transition:background var(--transition),color var(--transition)}
+h1,h2,h3{color:var(--encre);margin:0;letter-spacing:var(--l-titre);line-height:var(--i-titre);font-weight:var(--g-fort)}
+p{margin:0 0 var(--e-4)}
+code{font-family:var(--police-mono);font-size:.8125em;background:var(--fond-3);padding:.15em .4em;border-radius:var(--r-1);color:var(--encre)}
+button{font:inherit;color:inherit}
+:focus-visible{outline:none;box-shadow:var(--o-anneau);border-radius:var(--r-1)}
+.enrobe{max-width:var(--contenu);margin:0 auto;padding:0 var(--e-5)}
+
+/* ── barre ── */
+.barre{position:sticky;top:0;z-index:9;background:color-mix(in srgb,var(--fond) 88%,transparent);
+ backdrop-filter:blur(8px);border-bottom:1px solid var(--bord)}
+.barre .enrobe{display:flex;align-items:center;gap:var(--e-4);height:3.5rem}
+.marque{font-weight:var(--g-fort);color:var(--encre);letter-spacing:var(--l-titre)}
+.marque i{font-style:normal;background:var(--marque-degrade);-webkit-background-clip:text;background-clip:text;color:transparent}
+.barre nav{margin-left:auto;display:flex;gap:var(--e-4);font-size:var(--t-menu);flex-wrap:wrap}
+.barre nav a{color:var(--encre-3);text-decoration:none}
+.barre nav a:hover{color:var(--encre)}
+
+/* ── héros reconstruit ── */
+.heros{text-align:center;padding:var(--e-9) 0 var(--e-8);border-bottom:1px solid var(--bord)}
+.affiche{font-size:var(--t-affiche);font-weight:var(--g-noir);line-height:var(--i-serre);
+ letter-spacing:var(--l-serre);color:var(--encre);text-wrap:balance;margin:var(--e-5) 0 0}
+.degrade{background:var(--marque-degrade);-webkit-background-clip:text;background-clip:text;color:transparent}
+.avant{font-size:var(--t-avant);color:var(--encre-3);max-width:var(--mesure);margin:var(--e-5) auto 0;text-wrap:pretty}
+.actions{display:flex;gap:var(--e-3);justify-content:center;margin-top:var(--e-6);flex-wrap:wrap}
+
+/* ── pastille ── */
+.pastille{display:inline-flex;align-items:center;gap:var(--e-2);background:var(--fond);
+ border:1px solid var(--bord);border-radius:var(--r-plein);padding:var(--e-1) var(--e-4) var(--e-1) var(--e-1);
+ box-shadow:var(--o-2);font-size:var(--t-petit);font-weight:var(--g-fort);color:var(--encre)}
+.pastille b{background:var(--signal);color:var(--signal-encre);border-radius:var(--r-plein);
+ padding:.15rem .6rem;font-weight:var(--g-fort)}
+
+/* ── boutons ── */
+.bt{display:inline-flex;align-items:center;justify-content:center;gap:var(--e-2);height:2.75rem;padding:0 var(--e-5);
+ border-radius:var(--r-2);font-size:var(--t-petit);font-weight:var(--g-moyen);cursor:pointer;
+ border:1px solid transparent;text-decoration:none;transition:background var(--transition),border-color var(--transition),color var(--transition)}
+.bt-1{background:var(--action);color:var(--action-encre)}
+.bt-1:hover{background:var(--action-survol)}
+.bt-2{background:var(--fond);color:var(--encre);border-color:var(--bord-fort)}
+.bt-2:hover{background:var(--fond-3)}
+.bt-3{background:transparent;color:var(--encre-2)}
+.bt-3:hover{background:var(--fond-3);color:var(--encre)}
+.bt:disabled{opacity:.45;cursor:not-allowed}
+.bt-sm{height:2.25rem;padding:0 var(--e-4)}
+.bt-lg{height:3rem;padding:0 var(--e-6);font-size:var(--t-corps)}
+
+/* ── sections de la documentation ── */
+section{padding:var(--e-8) 0;border-bottom:1px solid var(--bord)}
+.cote{font-family:var(--police-mono);font-size:var(--t-menu);color:var(--encre-4);letter-spacing:var(--l-large);
+ text-transform:uppercase;display:block;margin-bottom:var(--e-2)}
+section>.enrobe>h2{font-size:var(--t-titre-1);letter-spacing:var(--l-titre);margin-bottom:var(--e-3)}
+.intro{max-width:var(--mesure);color:var(--encre-3);font-size:1.0625rem}
+
+/* ── nuancier ── */
+.grappe{margin-top:var(--e-6)}
+.grappe h3{font-size:var(--t-titre-3);margin-bottom:var(--e-1)}
+.grappe>p{color:var(--encre-3);font-size:.9375rem;max-width:var(--mesure)}
+.nuances{display:grid;grid-template-columns:repeat(auto-fill,minmax(11rem,1fr));gap:var(--e-3);margin-top:var(--e-4)}
+.nu{border:1px solid var(--bord);border-radius:var(--r-3);overflow:hidden;background:var(--fond);cursor:copy;
+ transition:box-shadow var(--transition),transform var(--transition);text-align:left;width:100%;padding:0}
+.nu:hover{box-shadow:var(--o-3);transform:translateY(-1px)}
+.nu .ech{height:4.5rem;border-bottom:1px solid var(--bord)}
+.nu .txt{padding:var(--e-3)}
+.nu .nom{font-family:var(--police-mono);font-size:.75rem;color:var(--encre);display:block}
+.nu .val{font-family:var(--police-mono);font-size:.75rem;color:var(--encre-4);display:block;text-transform:uppercase}
+.nu .rol{font-size:.8125rem;color:var(--encre-3);display:block;margin-top:var(--e-1)}
+.nu .ct{font-family:var(--police-mono);font-size:.6875rem;margin-top:var(--e-1);display:block}
+.ct.ok{color:#16A34A}.ct.faible{color:var(--signal)}
+
+/* ── typographie ── */
+.specimen{border-top:1px solid var(--bord);padding:var(--e-5) 0;display:grid;grid-template-columns:12rem 1fr;gap:var(--e-5)}
+@media(max-width:760px){.specimen{grid-template-columns:1fr;gap:var(--e-2)}}
+.specimen dt{font-family:var(--police-mono);font-size:.75rem;color:var(--encre-4);line-height:1.7}
+.specimen dt b{display:block;color:var(--encre-2);font-weight:var(--g-normal)}
+.specimen dd{margin:0;color:var(--encre);min-width:0;overflow:hidden}
+.ex-affiche{font-size:var(--t-affiche);font-weight:var(--g-noir);line-height:var(--i-serre);letter-spacing:var(--l-serre)}
+.ex-t1{font-size:var(--t-titre-1);font-weight:var(--g-fort);letter-spacing:var(--l-titre)}
+.ex-t2{font-size:var(--t-titre-2);font-weight:var(--g-fort);letter-spacing:var(--l-titre)}
+.ex-t3{font-size:var(--t-titre-3);font-weight:var(--g-fort)}
+.ex-avant{font-size:var(--t-avant);color:var(--encre-3)}
+.ex-corps{font-size:var(--t-corps);color:var(--encre-2)}
+.ex-petit{font-size:var(--t-petit);font-weight:var(--g-moyen)}
+.ex-menu{font-size:var(--t-menu);color:var(--encre-3)}
+
+/* ── échelles ── */
+.echelle{display:grid;gap:var(--e-2);margin-top:var(--e-5)}
+.pas{display:grid;grid-template-columns:5rem 5rem 1fr;gap:var(--e-3);align-items:center;font-family:var(--police-mono);font-size:.75rem;color:var(--encre-4)}
+.pas i{display:block;height:1.25rem;background:var(--signal-voile);border-left:2px solid var(--signal);border-radius:0 var(--r-1) var(--r-1) 0}
+.rayons{display:flex;gap:var(--e-4);flex-wrap:wrap;margin-top:var(--e-5)}
+.ray{width:5.5rem;height:5.5rem;background:var(--fond-3);border:1px solid var(--bord);display:flex;align-items:flex-end;justify-content:center;
+ font-family:var(--police-mono);font-size:.6875rem;color:var(--encre-3);padding-bottom:var(--e-2)}
+.ombres{display:grid;grid-template-columns:repeat(auto-fill,minmax(12rem,1fr));gap:var(--e-5);margin-top:var(--e-5)}
+.omb{background:var(--fond);border:1px solid var(--bord);border-radius:var(--r-3);height:6rem;display:flex;align-items:center;justify-content:center;
+ font-family:var(--police-mono);font-size:.6875rem;color:var(--encre-3)}
+
+/* ── composants ── */
+.vitrine{display:grid;grid-template-columns:repeat(auto-fill,minmax(19rem,1fr));gap:var(--e-5);margin-top:var(--e-6)}
+.piece{border:1px solid var(--bord);border-radius:var(--r-3);overflow:hidden;background:var(--fond)}
+.piece .scene{padding:var(--e-6) var(--e-5);display:flex;flex-wrap:wrap;gap:var(--e-3);align-items:center;justify-content:center;
+ background:var(--fond-2);min-height:8rem}
+.piece .leg{padding:var(--e-3) var(--e-4);border-top:1px solid var(--bord);font-size:.8125rem;color:var(--encre-3)}
+.piece .leg b{display:block;color:var(--encre);font-weight:var(--g-moyen);font-size:.875rem}
+.carte-ex{border:1px solid var(--bord);border-radius:var(--r-3);padding:var(--e-5);background:var(--fond);box-shadow:var(--o-2);max-width:18rem;text-align:left}
+.carte-ex h4{margin:0 0 var(--e-2);font-size:var(--t-titre-3);color:var(--encre);letter-spacing:var(--l-titre)}
+.carte-ex p{margin:0;font-size:.875rem;color:var(--encre-3)}
+.champ{display:flex;flex-direction:column;gap:var(--e-2);text-align:left;width:100%;max-width:16rem}
+.champ label{font-size:var(--t-petit);font-weight:var(--g-moyen);color:var(--encre)}
+.champ input{height:2.75rem;padding:0 var(--e-3);border:1px solid var(--bord-fort);border-radius:var(--r-2);
+ background:var(--fond);color:var(--encre);font:inherit;font-size:var(--t-petit)}
+.champ input::placeholder{color:var(--encre-4)}
+.lien{color:var(--encre);text-decoration:none;border-bottom:1px solid var(--bord-fort);padding-bottom:1px;font-weight:var(--g-moyen)}
+.lien:hover{border-color:var(--encre)}
+
+/* ── règles ── */
+.regles{display:grid;grid-template-columns:repeat(auto-fill,minmax(17rem,1fr));gap:var(--e-5);margin-top:var(--e-6)}
+.regle{border-left:2px solid var(--signal);padding-left:var(--e-4)}
+.regle b{display:block;color:var(--encre);font-weight:var(--g-fort);margin-bottom:var(--e-1)}
+.regle p{margin:0;font-size:.9375rem;color:var(--encre-3)}
+.aveu{background:var(--fond-2);border:1px solid var(--bord);border-radius:var(--r-3);padding:var(--e-6);margin-top:var(--e-5)}
+.aveu ul{margin:var(--e-3) 0 0;padding-left:var(--e-4)}
+.aveu li{margin-bottom:var(--e-3);color:var(--encre-3);font-size:.9375rem}
+.aveu li b{color:var(--encre);font-weight:var(--g-moyen)}
+footer{padding:var(--e-7) 0;color:var(--encre-4);font-size:.8125rem}
+.copie{position:fixed;left:50%;bottom:var(--e-5);transform:translateX(-50%) translateY(1rem);opacity:0;pointer-events:none;
+ background:var(--action);color:var(--action-encre);padding:var(--e-2) var(--e-4);border-radius:var(--r-plein);
+ font-size:var(--t-petit);font-weight:var(--g-moyen);box-shadow:var(--o-3);transition:opacity var(--transition),transform var(--transition)}
+.copie.vu{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+
+<div class="barre"><div class="enrobe">
+ <span class="marque">Système <i>Braise</i></span>
+ <nav>
+  <a href="#couleur">Couleur</a><a href="#typo">Typographie</a><a href="#espace">Espacement</a>
+  <a href="#composants">Composants</a><a href="#regles">Règles</a>
+ </nav>
+ <button class="bt bt-3 bt-sm" id="fond">Fond blanc</button>
+ <button class="bt bt-2 bt-sm" id="theme">Sombre</button>
+ <button class="bt bt-1 bt-sm" id="copieTout">Copier les jetons</button>
+</div></div>
+
+<header class="heros"><div class="enrobe">
+ <span class="pastille"><b>New</b> Design is out now!</span>
+ <h1 class="affiche">Experience<br>the <span class="degrade">Shadcn</span> landing page</h1>
+ <p class="avant">We're more than just a tool, we're a community of passionate creators. Get access to exclusive resources, tutorials, and support.</p>
+ <div class="actions">
+  <a class="bt bt-1 bt-lg" href="#couleur">Commencer</a>
+  <a class="bt bt-2 bt-lg" href="#regles">Lire les règles</a>
+ </div>
+ <p style="margin-top:var(--e-6);font-size:var(--t-menu);color:var(--encre-4)">
+  Le bloc ci-dessus est reconstruit <b style="color:var(--encre-3);font-weight:500">uniquement à partir des jetons</b> — aucune valeur en dur. Basculez le thème&nbsp;: rien n'est repeint à la main.</p>
+</div></header>
+
+<section id="couleur"><div class="enrobe">
+ <span class="cote">§ 1</span>
+ <h2>Couleur</h2>
+ <p class="intro">Quatre familles, et une seule règle pour les tenir&nbsp;: <b>une couleur = un rôle</b>. Le noir n'est pas « la couleur du texte », c'est la couleur de ce qui se lit et de ce qui s'actionne. L'orange n'est pas décoratif, il annonce du neuf. Le dégradé ne fait rien d'autre que porter un mot.</p>
+ <div id="nuancier"></div>
+ <div class="grappe"><h3>Variante de surface — fond blanc</h3>
+  <p>Le système distingue le <b>fond de page</b> des <b>surfaces</b> qui s'y posent, et la version courante les sépare par deux blancs très proches (<code>#FFFFFF</code> et <code>#FAFAFA</code>). C'est juste à l'écran et faux ailleurs&nbsp;: à l'impression, en projection, ou dans un site déjà clair, deux blancs à un pour cent d'écart ne se lisent pas comme une intention — ils se lisent comme une erreur.</p>
+  <p style="margin-top:var(--e-3)">D'où une variante, <code>data-fond="blanc"</code>, qui ramène toutes les surfaces au blanc pur et fait porter la séparation aux seules bordures. Elle ne touche ni aux encres, ni à la marque, ni au signal&nbsp;: <b>c'est une variante de surface, pas un second thème</b>. Elle se combine avec le thème sombre, où elle veut dire la même chose et non la même couleur&nbsp;: l'alternance disparaît, sur le noir cette fois. Un fond blanc sous des encres claires ne serait pas une variante, ce serait une panne — et c'est exactement ce que la première version faisait, faute d'ordre dans la cascade. Le bouton « Fond blanc » de la barre l'applique à cette page.</p>
+  <p style="margin-top:var(--e-3);font-family:var(--police-mono);font-size:.75rem;color:var(--encre-4)">&lt;html data-fond="blanc"&gt; — trois jetons de fond, deux de bordure, trois d'ombre.</p>
+ </div>
+</div></section>
+
+<section id="typo"><div class="enrobe">
+ <span class="cote">§ 2</span>
+ <h2>Typographie</h2>
+ <p class="intro">Une seule famille — Inter — et sept rôles. La règle qui donne son caractère à l'ensemble&nbsp;: <b>la chasse se resserre à mesure que le corps grandit</b>, jusqu'à −0,035 em sur le titre d'affiche, avec un interligne inférieur à 1. C'est ce qui produit le bloc compact du héros ; sans ce resserrement, le même texte au même corps paraît mou.</p>
+ <dl style="margin:var(--e-6) 0 0">
+  <div class="specimen"><dt>--t-affiche<b>44 → 84 px · 800</b><b>interligne 0.95</b><b>chasse −0.035em</b></dt><dd class="ex-affiche">Experience the landing page</dd></div>
+  <div class="specimen"><dt>--t-titre-1<b>32 → 48 px · 600</b><b>chasse −0.02em</b></dt><dd class="ex-t1">Titre de section</dd></div>
+  <div class="specimen"><dt>--t-titre-2<b>24 → 30 px · 600</b></dt><dd class="ex-t2">Titre de sous-section</dd></div>
+  <div class="specimen"><dt>--t-titre-3<b>20 px · 600</b></dt><dd class="ex-t3">Titre de carte</dd></div>
+  <div class="specimen"><dt>--t-avant<b>20 px · 400</b><b>encre-3, mesure 42rem</b></dt><dd class="ex-avant">Le paragraphe d'accroche sous le titre. Il ne dépasse jamais quarante-deux rem, parce qu'au-delà l'œil perd la ligne suivante.</dd></div>
+  <div class="specimen"><dt>--t-corps<b>16 px · 400</b><b>interligne 1.6</b></dt><dd class="ex-corps">Le texte courant. C'est le seul rôle dont l'interligne est généreux&nbsp;: tout le reste est serré.</dd></div>
+  <div class="specimen"><dt>--t-petit<b>14 px · 500 ou 600</b></dt><dd class="ex-petit">Pastille, boutons, étiquettes de champ</dd></div>
+  <div class="specimen"><dt>--t-menu<b>13 px · 400</b></dt><dd class="ex-menu">Navigation, mentions, légendes</dd></div>
+ </dl>
+</div></section>
+
+<section id="espace"><div class="enrobe">
+ <span class="cote">§ 3</span>
+ <h2>Espacement, mesure et formes</h2>
+ <p class="intro">Base de 4 px, mais l'échelle <b>saute</b> au lieu de progresser régulièrement&nbsp;: 4, 8, 12, 16, 24, 32, 48, 64, 96, 128. Les grands intervalles sont ce qui donne l'air respiré de la page de départ — le héros vaut 96 px en haut et 64 en bas, et rien entre les deux.</p>
+ <div class="echelle" id="echelle"></div>
+ <h3 style="margin-top:var(--e-7);font-size:var(--t-titre-2)">Rayons</h3>
+ <div class="rayons">
+  <div class="ray" style="border-radius:var(--r-1)">--r-1 · 6</div>
+  <div class="ray" style="border-radius:var(--r-2)">--r-2 · 8</div>
+  <div class="ray" style="border-radius:var(--r-3)">--r-3 · 12</div>
+  <div class="ray" style="border-radius:var(--r-4)">--r-4 · 16</div>
+  <div class="ray" style="border-radius:var(--r-plein)">--r-plein</div>
+ </div>
+ <p style="margin-top:var(--e-4);color:var(--encre-3);font-size:.9375rem;max-width:var(--mesure)">Le rayon plein est <b>réservé aux pastilles</b>. Un bouton entièrement arrondi et une pastille entièrement arrondie dans la même vue, et on ne sait plus lequel des deux est cliquable.</p>
+ <h3 style="margin-top:var(--e-7);font-size:var(--t-titre-2)">Ombres</h3>
+ <div class="ombres">
+  <div class="omb" style="box-shadow:var(--o-1)">--o-1 · séparation</div>
+  <div class="omb" style="box-shadow:var(--o-2)">--o-2 · pastille, carte</div>
+  <div class="omb" style="box-shadow:var(--o-3)">--o-3 · survol, flottant</div>
+  <div class="omb" style="box-shadow:var(--o-anneau)">--o-anneau · focus</div>
+ </div>
+ <p style="margin-top:var(--e-4);color:var(--encre-3);font-size:.9375rem;max-width:var(--mesure)">Portées courtes, opacités faibles, et <b>jamais d'ombre teintée</b>. Une ombre colorée fait basculer l'ensemble du côté « joli », qui est exactement le côté où ce système ne va pas.</p>
+</div></section>
+
+<section id="composants"><div class="enrobe">
+ <span class="cote">§ 4</span>
+ <h2>Composants</h2>
+ <p class="intro">Le strict nécessaire pour rebâtir la page relevée, et rien de plus. Un système qui livre quarante composants au premier jour en livre trente-cinq que personne n'a demandés.</p>
+ <div class="vitrine">
+  <div class="piece"><div class="scene"><span class="pastille"><b>New</b> Design is out now!</span></div>
+   <div class="leg"><b>Pastille d'annonce</b><code>.pastille</code> + <code>b</code> pour le mot en orange. Un seul par écran, en tête de héros.</div></div>
+  <div class="piece"><div class="scene">
+    <button class="bt bt-1">Principal</button><button class="bt bt-2">Secondaire</button><button class="bt bt-3">Discret</button></div>
+   <div class="leg"><b>Boutons</b><code>.bt-1</code> noir, <code>.bt-2</code> contour, <code>.bt-3</code> fantôme. Un seul noir par bloc.</div></div>
+  <div class="piece"><div class="scene">
+    <button class="bt bt-1 bt-sm">Petit</button><button class="bt bt-1">Normal</button><button class="bt bt-1 bt-lg">Grand</button></div>
+   <div class="leg"><b>Trois hauteurs</b>36, 44 et 48 px. Le grand est réservé au héros.</div></div>
+  <div class="piece"><div class="scene">
+    <button class="bt bt-1" disabled>Indisponible</button><button class="bt bt-2" disabled>Indisponible</button></div>
+   <div class="leg"><b>État désactivé</b>Opacité 45 %, curseur barré. La couleur ne change pas&nbsp;: c'est le contraste qui porte l'information.</div></div>
+  <div class="piece"><div class="scene"><div class="carte-ex"><h4>Communauté</h4><p>Accès aux ressources, aux tutoriels et au soutien.</p></div></div>
+   <div class="leg"><b>Carte</b>Bordure, rayon 12, ombre 2. Jamais de bordure <em>et</em> d'ombre forte.</div></div>
+  <div class="piece"><div class="scene"><label class="champ"><span>Courriel</span><input type="email" placeholder="vous@exemple.ca"></label></div>
+   <div class="leg"><b>Champ</b>Même hauteur que le bouton normal, pour qu'ils s'alignent côte à côte.</div></div>
+  <div class="piece"><div class="scene" style="display:block;text-align:center">
+    <p style="margin:0;color:var(--encre-2)">Un texte courant avec un <a href="#regles" class="lien">lien souligné</a> dedans.</p></div>
+   <div class="leg"><b>Lien en ligne</b>Soulignement par une bordure grise qui noircit au survol. Jamais de bleu&nbsp;: la palette n'en a pas.</div></div>
+  <div class="piece"><div class="scene" style="display:block;text-align:center">
+    <span class="cote">§ 5</span><h3 style="font-size:var(--t-titre-2)">Titre de section</h3>
+    <p style="margin:var(--e-2) 0 0;font-size:.9375rem;color:var(--encre-3)">Et son chapeau.</p></div>
+   <div class="leg"><b>En-tête de section</b>Cote monospace en majuscules, titre, chapeau à la mesure de lecture.</div></div>
+ </div>
+</div></section>
+
+<section id="regles"><div class="enrobe">
+ <span class="cote">§ 5</span>
+ <h2>Les règles</h2>
+ <p class="intro">Un nuancier n'est pas un système. Ce qui suit est la partie qui se transmet&nbsp;: sans elle, deux personnes qui utilisent les mêmes jetons produisent deux pages qui ne se ressemblent pas.</p>
+ <div class="regles">
+  <div class="regle"><b>Le dégradé ne porte qu'un mot</b><p>Un seul par page, sur le nom de la chose. Étendu à une phrase, il devient un fond&nbsp;; étendu à deux endroits, il cesse d'être un accent et redevient une couleur de marque ordinaire.</p></div>
+  <div class="regle"><b>Le noir est la couleur de l'action</b><p>Un seul bouton noir par bloc. Deux boutons noirs côte à côte, et le lecteur doit choisir sans indice — ce qui est exactement ce qu'un bouton principal doit lui épargner.</p></div>
+  <div class="regle"><b>L'orange annonce, il ne décore pas</b><p>Réservé à ce qui est nouveau ou daté&nbsp;: pastille, étiquette « nouveau », point de notification. Un bouton orange rendrait la hiérarchie illisible en une seule vue.</p></div>
+  <div class="regle"><b>Le poids 800 appartient au titre d'affiche</b><p>Nulle part ailleurs. Les titres de section sont en 600. Le gras extrême employé deux fois dans une page annule ce qu'il produisait la première.</p></div>
+  <div class="regle"><b>La chasse se resserre quand le corps grandit</b><p>−0,035 em à 84 px, −0,02 em aux titres, zéro au texte courant. Un grand titre à chasse normale a l'air d'une valeur par défaut, et c'en est une.</p></div>
+  <div class="regle"><b>Le texte d'accroche ne dépasse pas 42 rem</b><p>Centré, il doit rester manifestement plus étroit que le titre. C'est le rapport entre les deux largeurs qui fait tenir le bloc, pas la taille des caractères.</p></div>
+  <div class="regle"><b>Bordure ou ombre, rarement les deux</b><p>La bordure sépare, l'ombre soulève. Une carte qui fait les deux fortement paraît collée sur la page au lieu d'en faire partie.</p></div>
+  <div class="regle"><b>Le bleu ne décide de rien</b><p>Il n'appartient qu'à ce qu'une machine a calculé — probabilité, gain d'information, corrélation. Jamais un bouton, jamais du texte courant. C'est ce qui permet de lire une page et de savoir d'un coup d'œil ce qui vient d'un jugement humain et ce qui vient d'un modèle.</p></div>
+  <div class="regle"><b>Aucune couleur hors des jetons</b><p>Pas de hex dans une feuille de composant. C'est la seule règle qui rend le thème sombre gratuit — et c'est aussi la seule qu'on enfreint toujours en premier, pour un cas particulier qui ne l'est jamais.</p></div>
+ </div>
+
+ <div class="aveu">
+  <h3 style="font-size:var(--t-titre-2)">Ce que la capture ne disait pas</h3>
+  <p style="margin-top:var(--e-2);color:var(--encre-3)">Une image donne un état, jamais un système. Voici ce qu'il a fallu décider, et qui n'était visible nulle part&nbsp;:</p>
+  <ul>
+   <li><b>Les états.</b> Survol, focus, désactivé, actif&nbsp;: rien de tout cela n'apparaît sur une capture immobile. Le focus a été traité par un anneau plutôt que par un contour, parce qu'un contour se heurte aux rayons.</li>
+   <li><b>Le thème sombre.</b> Absent de l'image. Il a été construit en gardant les <em>rôles</em> et en changeant les <em>valeurs</em> — et en éclaircissant les deux couleurs de marque, qui perdent leur lisibilité sur fond noir à leur luminosité d'origine.</li>
+   <li><b>La rampe des neutres.</b> L'image montre trois gris. Il en faut sept pour tenir une interface complète&nbsp;: quatre encres, deux fonds, deux bordures. Les quatre manquants ont été interpolés sur une teinte légèrement froide, jamais du gris pur.</li>
+   <li><b>Les composants hors du héros.</b> Champ, carte, lien, bouton secondaire, bouton discret&nbsp;: rien de tout cela n'était à l'écran. Ils ont été déduits des mêmes règles, ce qui est le seul moyen honnête de les ajouter.</li>
+   <li><b>Le contraste.</b> Mesuré, pas supposé — les rapports affichés au § 1 sont calculés en direct sur les valeurs des jetons, et ils changent quand vous basculez le thème. <span id="compteFaible">Une couleur</span> de la palette ne passe pas le seuil de son usage&nbsp;: l'encre&nbsp;4, qui n'est là que pour le filigrane et le désactivé. La page le dit au lieu de l'ignorer, et les bordures sont exclues du calcul parce qu'aucun seuil ne s'applique à une séparation.</li>
+  </ul>
+ </div>
+</div></section>
+
+<footer><div class="enrobe">
+ <p>Système relevé sur une capture, puis régularisé. Les jetons vivent dans <code>tokens.css</code>&nbsp;; cette page les documente en s'en servant, ce qui est aussi la façon la moins coûteuse de la garder à jour. Le bouton « Copier les jetons » rend le fichier complet.</p>
+</div></footer>
+<div class="copie" id="copie">Copié</div>
+
+<script>
+"use strict";
+/* ═══ Le nuancier se peint tout seul à partir des jetons, et mesure ses
+       propres contrastes : une valeur changée dans tokens.css se voit ici. ═══ */
+const COULEURS=[
+ {t:"Neutres",d:"L'ossature. Une teinte légèrement froide, jamais du gris pur — c'est ce qui empêche la page de paraître sale à côté du noir.",l:[
+  {n:"--fond",r:"fond de page",c:"--encre",u:"texte"},
+  {n:"--fond-2",r:"section alternée, scène de composant",c:"--encre",u:"texte"},
+  {n:"--fond-3",r:"surface enfoncée, code, survol discret",c:"--encre",u:"texte"},
+  {n:"--encre",r:"titres, texte fort",c:"--fond",u:"texte"},
+  {n:"--encre-2",r:"texte courant",c:"--fond",u:"texte"},
+  {n:"--encre-3",r:"sous-titre, légende",c:"--fond",u:"texte"},
+  {n:"--encre-4",r:"filigrane et désactivé — jamais du texte à lire",c:"--fond",u:"gros"},
+  {n:"--bord",r:"séparations",c:"--fond",u:"decor"},
+  {n:"--bord-fort",r:"contour de champ et de bouton",c:"--fond",u:"decor"}]},
+ {t:"Marque",d:"Deux arrêts, un seul usage : le dégradé d'un mot. Pris isolément, aucun des deux ne sert de couleur de texte.",l:[
+  {n:"--marque-rose",r:"arrêt gauche du dégradé",c:"--fond",u:"gros"},
+  {n:"--marque-corail",r:"arrêt droit du dégradé",c:"--fond",u:"gros"}]},
+ {t:"Signal",d:"L'orange de la pastille. Il annonce du neuf, et il ne fait que ça.",l:[
+  {n:"--signal",r:"pastille, étiquette « nouveau »",c:"--signal-encre",u:"gros"},
+  {n:"--signal-voile",r:"fond de rappel très léger",c:"--encre",u:"texte"}]},
+ {t:"Mesure",d:"Le bleu de ce que la machine calcule — une probabilité, un gain d\'information, une corrélation. Ajouté quand les prototypes de l\'atelier ont demandé de distinguer ce qu\'une personne décide de ce qu\'un modèle mesure.",l:[
+  {n:"--mesure",r:"chiffres calculés, panneaux de modèle",c:"--fond",u:"gros"},
+  {n:"--mesure-voile",r:"fond des panneaux de mesure",c:"--encre",u:"texte"}]},
+ {t:"Action",d:"Le bouton principal. Séparé des neutres bien qu'il en ait la couleur : c'est un rôle, et il se retourne en thème sombre.",l:[
+  {n:"--action",r:"bouton principal",c:"--action-encre",u:"gros"},
+  {n:"--action-survol",r:"bouton principal au survol",c:"--action-encre",u:"gros"}]}
+];
+const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+function rgb(h){h=h.replace("#","");if(h.length===3)h=h.split("").map(c=>c+c).join("");
+ return [0,2,4].map(i=>parseInt(h.substr(i,2),16));}
+function lum(c){const a=c.map(v=>{v/=255;return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4)});
+ return .2126*a[0]+.7152*a[1]+.0722*a[2];}
+function ratio(a,b){const l1=lum(rgb(a)),l2=lum(rgb(b));
+ return (Math.max(l1,l2)+.05)/(Math.min(l1,l2)+.05);}
+const SEUIL={texte:4.5,gros:3,objet:3,decor:0};
+let faibles=0;
+function nuancier(){
+ faibles=0;
+ document.getElementById("nuancier").innerHTML=COULEURS.map(g=>
+  '<div class="grappe"><h3>'+g.t+'</h3><p>'+g.d+'</p><div class="nuances">'+g.l.map(c=>{
+   let ct="";
+   try{const r=ratio(css(c.n),css(c.c));const ok=r>=SEUIL[c.u];
+     if(c.u==="decor")
+       ct='<span class="ct" style="color:var(--encre-4)">'+r.toFixed(2)+':1 sur '+c.c.replace("--","")+' · séparation, aucun seuil applicable</span>';
+     else{
+       if(!ok) faibles++;
+       ct='<span class="ct '+(ok?"ok":"faible")+'">'+r.toFixed(2)+':1 sur '+c.c.replace("--","")
+         +' · '+(ok?"conforme":"insuffisant pour "+(c.u==="texte"?"du texte courant":"du texte, et c'est voulu"))+'</span>';
+     }
+   }catch(e){}
+   return '<button class="nu" data-c="'+c.n+'"><span class="ech" style="background:'+(c.n==="--fond"?"var(--fond)":"var("+c.n+")")+'"></span>'
+    +'<span class="txt"><span class="nom">'+c.n+'</span><span class="val">'+css(c.n)+'</span>'
+    +'<span class="rol">'+c.r+'</span>'+ct+'</span></button>';
+  }).join("")+'</div></div>').join("")
+ +'<div class="grappe"><h3>Le dégradé</h3><p>Un seul objet, pas deux couleurs qu\'on recombine à la main : <code>--marque-degrade</code>. L\'angle fait partie du jeton.</p>'
+ +'<div style="margin-top:var(--e-4);height:5rem;border-radius:var(--r-3);background:var(--marque-degrade)"></div>'
+ +'<p style="margin-top:var(--e-3);font-family:var(--police-mono);font-size:.75rem;color:var(--encre-4)">linear-gradient(100deg, '+css("--marque-rose")+' 0%, '+css("--marque-corail")+' 100%)</p></div>';
+ document.querySelectorAll(".nu").forEach(b=>b.onclick=()=>copier(b.dataset.c+": "+css(b.dataset.c)+";"));
+ const cf=document.getElementById("compteFaible");
+ if(cf) cf.textContent = faibles===0?"Aucune couleur":(faibles===1?"Une couleur":faibles+" couleurs");
+}
+/* échelle d'espacement */
+const PAS=[["--e-1","4 px"],["--e-2","8 px"],["--e-3","12 px"],["--e-4","16 px"],["--e-5","24 px"],
+ ["--e-6","32 px"],["--e-7","48 px"],["--e-8","64 px"],["--e-9","96 px"],["--e-10","128 px"]];
+document.getElementById("echelle").innerHTML=PAS.map(p=>
+ '<div class="pas"><span>'+p[0]+'</span><span>'+p[1]+'</span><i style="width:var('+p[0]+')"></i></div>').join("");
+
+/* copier */
+let minuteur;
+function copier(txt){
+ navigator.clipboard&&navigator.clipboard.writeText(txt);
+ const c=document.getElementById("copie");
+ c.textContent=txt.length>60?"Jetons copiés":"Copié · "+txt;
+ c.classList.add("vu");clearTimeout(minuteur);minuteur=setTimeout(()=>c.classList.remove("vu"),1600);
+}
+document.getElementById("copieTout").onclick=()=>copier(document.getElementById("jetons").textContent.trim());
+
+/* thème */
+const bt=document.getElementById("theme");
+bt.onclick=()=>{
+ const sombre=document.documentElement.getAttribute("data-theme")==="sombre";
+ document.documentElement.setAttribute("data-theme",sombre?"clair":"sombre");
+ bt.textContent=sombre?"Sombre":"Clair";
+ nuancier();
+};
+const bf=document.getElementById("fond");
+bf.onclick=()=>{
+ const blanc=document.documentElement.getAttribute("data-fond")==="blanc";
+ if(blanc) document.documentElement.removeAttribute("data-fond");
+ else document.documentElement.setAttribute("data-fond","blanc");
+ bf.textContent=blanc?"Fond blanc":"Fonds alternés";
+ nuancier();
+};
+nuancier();
+</script>
+</body>
+</html>

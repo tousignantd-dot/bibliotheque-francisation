@@ -1,0 +1,624 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Prototype de conception pédagogique : une simulation de décision où aucun choix n'est corrigé sur le coup, et où la conséquence remonte huit semaines plus tard.">
+<title>La conséquence différée</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<style>
+/* ═══ Daniel Tousignant — jetons communs ═══
+   Depuis le 5 septembre 2026, l'atelier est habillé avec BRAISE
+   (~/Claude/systemes-design/braise). Les noms de rôle des prototypes sont
+   conservés — ils portent un sens propre à ces pièces — et chacun est branché
+   sur un jeton de Braise :
+
+     --pap --pan --pan2 --pan3   les surfaces        (fond, fond-2, fond-3)
+     --enc --enc2 --enc3         les encres          (encre, encre-2, encre-3)
+     --regle --regle2            les séparations     (bord, bord-fort)
+     --verm  ce qu'une personne décide                (signal)
+     --bleu  ce qu'une machine calcule                (mesure)
+
+   Les deux plumes du tracé d'origine deviennent les deux rôles de Braise :
+   le signal orange pour la décision humaine, le bleu de mesure pour le
+   calcul. Le fond quadrillé disparaît — Braise ne pose que des aplats. */
+:root{
+  --police: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --police-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --pap:#FFFFFF; --pan:#FAFAFA; --pan2:#F4F4F5; --pan3:#E4E4E7;
+  --enc:#09090B; --enc2:#52525B; --enc3:#71717A;
+  --regle:#E4E4E7; --regle2:#D4D4D8;
+  --bleu:#2B4E9B; --bleu2:#5C7EBF; --bleu-pale:#EAEFFA; --bleu-voile:rgba(43,78,155,.07);
+  --verm:#F5652E; --verm2:#D9541F; --verm-pale:#FEF1EA; --verm-voile:rgba(245,101,46,.09);
+  --grille:transparent;
+  --om:0 1px 2px rgba(9,9,11,.06);
+  --om2:0 4px 12px rgba(9,9,11,.08);
+}
+:root:not([data-theme="light"]){ color-scheme:light dark; }
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --pap:#09090B; --pan:#0F0F11; --pan2:#18181B; --pan3:#27272A;
+  --enc:#FAFAFA; --enc2:#D4D4D8; --enc3:#A1A1AA;
+  --regle:#27272A; --regle2:#3F3F46;
+  --bleu:#8FB2F0; --bleu2:#6E8FCB; --bleu-pale:#18213A; --bleu-voile:rgba(143,178,240,.13);
+  --verm:#FF7A45; --verm2:#E0673A; --verm-pale:#2A1610; --verm-voile:rgba(255,122,69,.14);
+  --grille:transparent;
+  --om:0 1px 2px rgba(0,0,0,.5);
+  --om2:0 4px 16px rgba(0,0,0,.55);
+}}
+:root[data-theme="dark"]{ color-scheme:dark;
+  --pap:#09090B; --pan:#0F0F11; --pan2:#18181B; --pan3:#27272A;
+  --enc:#FAFAFA; --enc2:#D4D4D8; --enc3:#A1A1AA;
+  --regle:#27272A; --regle2:#3F3F46;
+  --bleu:#8FB2F0; --bleu2:#6E8FCB; --bleu-pale:#18213A; --bleu-voile:rgba(143,178,240,.13);
+  --verm:#FF7A45; --verm2:#E0673A; --verm-pale:#2A1610; --verm-voile:rgba(255,122,69,.14);
+  --grille:transparent;
+  --om:0 1px 2px rgba(0,0,0,.5);
+  --om2:0 4px 16px rgba(0,0,0,.55);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--pap);color:var(--enc);
+  font-family:var(--police);font-size:18px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  background-image:linear-gradient(var(--grille) 1px,transparent 1px),linear-gradient(90deg,var(--grille) 1px,transparent 1px);
+  background-size:72px 72px,72px 72px;
+}
+h1,h2,h3,.gr{font-family:var(--police);font-weight:600;text-wrap:balance;letter-spacing:-.01em}
+.mo,.cote,.jauge b,.chiffre{font-family:var(--police-mono);font-variant-numeric:tabular-nums;letter-spacing:-.04em}
+p{margin:0 0 1em}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--verm);outline-offset:3px}
+
+/* ── ossature ── */
+.enveloppe{max-width:74rem;margin:0 auto;padding:0 1.5rem 6rem;
+  display:grid;grid-template-columns:minmax(0,41rem) minmax(0,17rem);gap:3rem;justify-content:center;align-items:start}
+body:not(.conception) .rail{display:none}
+body:not(.conception) .enveloppe{grid-template-columns:minmax(0,41rem)}
+@media(max-width:1080px){.enveloppe,body:not(.conception) .enveloppe{grid-template-columns:minmax(0,41rem)}}
+
+/* ── tête ── */
+.tete{max-width:74rem;margin:0 auto;padding:2.6rem 1.5rem 1.6rem}
+.fil{display:flex;gap:.9rem;align-items:baseline;font-size:.66rem;text-transform:uppercase;letter-spacing:.16em;color:var(--enc3)}
+.fil .no{color:var(--verm)}
+h1{font-size:clamp(2.1rem,5.2vw,3.4rem);line-height:1.02;margin:.5rem 0 .7rem;font-weight:800;letter-spacing:-.035em}
+.chapeau{max-width:36rem;font-size:1.06rem;color:var(--enc2);margin-bottom:1.4rem}
+.chapeau em{color:var(--enc);font-style:italic}
+.commandes{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;border-top:1px solid var(--regle);padding-top:1rem}
+.cmd{background:none;border:1px solid var(--regle2);border-radius:2px;padding:.42rem .8rem;
+  font-family:var(--police);font-size:.8rem;cursor:pointer;color:var(--enc2)}
+.cmd:hover{border-color:var(--enc2);color:var(--enc)}
+.cmd[aria-pressed="true"]{background:var(--bleu);border-color:var(--bleu);color:var(--pan)}
+
+/* ── réglette du temps ── */
+.reglette{display:flex;gap:0;margin:0 0 2.2rem;border-bottom:1px solid var(--regle);padding-bottom:.5rem}
+.tick{flex:1;font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;color:var(--enc3);
+  border-left:1px solid var(--regle);padding:1.1rem .4rem .1rem;position:relative;font-family:var(--police)}
+.tick:last-child{border-right:1px solid var(--regle)}
+.tick::before{content:"";position:absolute;left:-1px;top:0;width:1px;height:.7rem;background:var(--regle2)}
+.tick.faite{color:var(--enc2)}
+.tick.faite::after{content:"";position:absolute;left:0;right:0;bottom:-.5rem;height:2px;background:var(--verm)}
+.tick.ici{color:var(--verm);font-weight:600}
+
+/* ── scène ── */
+.scene{background:var(--pan);border:1px solid var(--regle);box-shadow:var(--om);padding:2rem 2.1rem 1.6rem;margin-bottom:1.2rem}
+@media(max-width:560px){.scene{padding:1.4rem 1.2rem}}
+.cote{font-size:.66rem;letter-spacing:.02em;color:var(--verm);text-transform:uppercase;margin:0 0 .55rem}
+.scene h2{font-size:1.42rem;margin:0 0 .9rem;line-height:1.18}
+.recit p{font-size:1.05rem}
+.recit .dit{padding-left:1rem;border-left:2px solid var(--regle2);font-style:italic;color:var(--enc2)}
+.recit .differe{position:relative}
+body.tracee .recit .differe{background:var(--verm-voile);box-shadow:-.35rem 0 0 var(--verm-voile),.35rem 0 0 var(--verm-voile)}
+.question{font-family:var(--police);font-weight:600;font-size:.98rem;margin:1.5rem 0 .8rem;
+  padding-top:1rem;border-top:1px solid var(--regle);color:var(--enc)}
+
+/* ── choix ── */
+.choix{display:grid;gap:.55rem}
+.opt{display:block;width:100%;text-align:left;background:var(--pap);border:1px solid var(--regle2);border-radius:2px;
+  padding:.85rem 1rem;cursor:pointer;font-family:var(--police);font-size:1rem;line-height:1.45;
+  transition:border-color .12s,background .12s;position:relative}
+.opt:hover{border-color:var(--verm);background:var(--verm-voile)}
+.opt .lettre{font-family:var(--police-mono);font-size:.7rem;color:var(--enc3);margin-right:.55rem}
+.opt:hover .lettre{color:var(--verm)}
+.opt .poids{display:none;margin-top:.5rem;font-family:var(--police-mono);font-size:.62rem;color:var(--bleu);letter-spacing:-.03em}
+body.conception .opt .poids{display:block}
+
+/* ── suite d'une scène ── */
+.suite{border:1px solid var(--regle);border-top:none;background:var(--pan);padding:1.4rem 2.1rem 1.6rem;margin:-1.2rem 0 1.2rem;box-shadow:var(--om)}
+@media(max-width:560px){.suite{padding:1.2rem}}
+.retour{font-size:1.02rem}
+.retour .choisi{font-family:var(--police);font-size:.72rem;text-transform:uppercase;letter-spacing:.12em;color:var(--enc3);display:block;margin-bottom:.5rem}
+.consigne{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--police-mono);font-size:.62rem;
+  color:var(--enc3);border:1px dashed var(--regle2);padding:.28rem .55rem;margin:.4rem 0 1rem}
+.consigne::before{content:"";width:.4rem;height:.4rem;background:var(--verm);border-radius:50%}
+.suivant{background:var(--verm);color:var(--pan);border:none;border-radius:2px;padding:.6rem 1.3rem;
+  font-family:var(--police);font-weight:600;font-size:.92rem;cursor:pointer}
+.suivant:hover{background:var(--verm2)}
+
+/* ── rail de conception ── */
+.rail{position:sticky;top:1.5rem;font-family:var(--police);font-size:.82rem;color:var(--enc2)}
+.rail h3{font-size:.68rem;text-transform:uppercase;letter-spacing:.14em;color:var(--bleu);margin:0 0 .8rem;font-weight:600}
+.rail .bloc{border:1px solid var(--bleu);border-left-width:3px;background:var(--bleu-voile);padding:.9rem 1rem;margin-bottom:1rem}
+.jauge{margin-bottom:.85rem}
+.jauge .lig{display:flex;justify-content:space-between;font-size:.74rem;margin-bottom:.25rem}
+.jauge b{color:var(--bleu);font-size:.72rem;font-weight:400}
+.barre{height:6px;background:var(--pan2);position:relative;overflow:hidden}
+.barre i{position:absolute;top:0;bottom:0;left:50%;background:var(--bleu);transition:width .5s,left .5s}
+.barre::before{content:"";position:absolute;left:50%;top:0;bottom:0;width:1px;background:var(--regle2)}
+.note{font-size:.8rem;line-height:1.45;color:var(--enc2);border-left:2px solid var(--verm);padding-left:.8rem;margin-bottom:1rem}
+.note b{font-family:var(--police);color:var(--enc);font-weight:600}
+
+/* ── bilan ── */
+.bilan{margin-top:2.5rem}
+.bilan h2{font-size:clamp(1.6rem,3.6vw,2.3rem);margin:0 0 1rem;font-weight:700}
+.epilogue{background:var(--pan);border:1px solid var(--regle);border-top:3px solid var(--verm);padding:2rem 2.1rem;box-shadow:var(--om2);margin-bottom:2.5rem}
+.epilogue h3{font-size:1.15rem;margin:1.6rem 0 .6rem}
+.epilogue h3:first-child{margin-top:0}
+@media(max-width:560px){.epilogue{padding:1.4rem 1.2rem}}
+
+/* ── traceur ── */
+.traceur{border:1px solid var(--regle);background:var(--pan);padding:1.8rem 2.1rem;margin-bottom:2.5rem}
+@media(max-width:560px){.traceur{padding:1.3rem 1.1rem}}
+.chaine{margin:1.4rem 0 2rem;position:relative;padding-left:1.6rem}
+.chaine::before{content:"";position:absolute;left:.35rem;top:.5rem;bottom:.5rem;width:1px;background:var(--regle2)}
+.maillon{position:relative;margin-bottom:1.1rem;font-size:.98rem}
+.maillon::before{content:"";position:absolute;left:-1.6rem;top:.55rem;width:.55rem;height:.55rem;border-radius:50%;
+  background:var(--pan);border:2px solid var(--verm)}
+.maillon .quand{font-family:var(--police-mono);font-size:.62rem;color:var(--enc3);display:block}
+.maillon .eff{font-family:var(--police-mono);font-size:.64rem;color:var(--bleu)}
+.maillon .fruit{display:block;margin-top:.35rem;padding-left:.9rem;border-left:2px solid var(--verm-pale);color:var(--enc2);font-style:italic;font-size:.95rem}
+.tabvar{width:100%;border-collapse:collapse;font-family:var(--police);font-size:.86rem;margin:1rem 0 1.6rem}
+.tabvar th{text-align:left;font-size:.64rem;text-transform:uppercase;letter-spacing:.1em;color:var(--enc3);
+  border-bottom:1px solid var(--regle2);padding:.4rem .5rem;font-weight:600}
+.tabvar td{border-bottom:1px solid var(--regle);padding:.55rem .5rem;vertical-align:top}
+.tabvar td.n{font-family:var(--police-mono);font-size:.78rem;color:var(--bleu);white-space:nowrap}
+
+/* ── contrefactuel ── */
+.contre{border:1px solid var(--verm);border-left-width:3px;background:var(--verm-voile);padding:1.6rem 1.8rem}
+@media(max-width:560px){.contre{padding:1.2rem 1rem}}
+.contre h3{margin:0 0 .5rem;font-size:1.2rem}
+.picker{display:grid;gap:.4rem;margin:1rem 0}
+.picker select{font:inherit;font-family:var(--police);font-size:.9rem;padding:.5rem;background:var(--pan);
+  border:1px solid var(--regle2);color:var(--enc);border-radius:2px;max-width:100%}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--regle2);margin-top:1.2rem;border:1px solid var(--regle2)}
+@media(max-width:620px){.compare{grid-template-columns:1fr}}
+.compare>div{background:var(--pan);padding:1rem 1.1rem;font-size:.95rem}
+.compare h4{font-family:var(--police);font-size:.66rem;text-transform:uppercase;letter-spacing:.12em;margin:0 0 .6rem;color:var(--enc3)}
+.compare .delta{font-family:var(--police-mono);font-size:.72rem;color:var(--bleu);margin-bottom:.6rem}
+.pied{max-width:74rem;margin:0 auto;padding:3rem 1.5rem;border-top:1px solid var(--regle);color:var(--enc3);font-size:.85rem;font-family:var(--police)}
+.pied a{color:var(--verm)}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<header class="tete">
+  <p class="fil"><span class="no">Prototype 01</span><a href="/daniel-tousignant.html" style="color:var(--enc3)">Daniel Tousignant</a><span>Décision · entreprise</span></p>
+  <h1>La conséquence différée</h1>
+  <p class="chapeau">Une simulation de décision où <em>rien n'est corrigé sur le coup</em>. Vous encadrez un nouvel employé qui parle peu français. Chaque décision est consignée sans commentaire ; elle revient trois à huit semaines plus tard, dans une scène que vous ne rattacherez pas d'emblée à ce que vous aviez choisi. Le tracé final fait le raccord — et vous laisse rejouer en ne changeant qu'une seule décision.</p>
+  <div class="commandes">
+    <button class="cmd" id="btnConception" aria-pressed="false">Vue conception</button>
+    <button class="cmd" id="btnTheme">Sombre</button>
+    <button class="cmd" id="btnReprise">Recommencer</button>
+    <span class="mo" style="font-size:.62rem;color:var(--enc3)">6 décisions · 4 min</span>
+  </div>
+</header>
+
+<div class="enveloppe">
+  <main>
+    <div class="reglette" id="reglette"></div>
+    <div id="jeu"></div>
+    <section class="bilan" id="bilan" hidden></section>
+  </main>
+  <aside class="rail" id="rail" aria-label="Vue conception"></aside>
+</div>
+
+<footer class="pied">
+  <p>Prototype de portfolio — conception, écriture et réalisation&nbsp;: Daniel Tousignant. Situation, personnages et dialogues inventés&nbsp;; toute ressemblance avec une entreprise réelle serait fortuite. Aucune donnée n'est transmise&nbsp;: la simulation tourne entièrement dans votre navigateur.</p>
+</footer>
+
+<script>
+"use strict";
+/* ═══════════════════════════════════════════════════════════════════
+   « La conséquence différée » — moteur de simulation.
+   Trois variables cachées, jamais montrées au joueur pendant la partie :
+     s — ce que Marlon a réellement compris des consignes (sécurité)
+     c — sa confiance : sa disposition à dire qu'il n'a pas compris
+     g — la charge que l'encadrement fait porter au reste de l'équipe
+   Aucun choix n'est « bon ». Chacun achète quelque chose et en vend un autre.
+   ═══════════════════════════════════════════════════════════════════ */
+
+const S = { s:0, c:0, g:0, picks:{}, i:0 };
+const a = (S,n)=>S.picks[n];            // le choix fait à la scène n
+const eut = (S,n,k)=>S.picks[n]===k;    // raccourci de lecture
+
+/* ─── les six scènes ─────────────────────────────────────────────── */
+const SCENES = [
+{
+ n:1, quand:"Jour 1", cote:"Jour 1 · 6 h 10 · four nº 2",
+ titre:"Ce que vous montrez le premier matin",
+ recit:()=>[
+  {t:"Boulangerie Sainte-Anne, quarante-deux employés, trois quarts de travail. Vous êtes chef d'équipe à la cuisson. Ce matin, Marlon Restrepo commence : trente-quatre ans, quatorze ans de métier en Colombie, six mois au Québec, un français d'environ quatre cents mots."},
+  {t:"Il est arrivé vingt minutes d'avance. Il a mis sa jaquette à l'envers, il s'en est aperçu tout seul, il l'a retournée sans rien dire. La production commence dans huit minutes et vous avez quatre-vingt-douze plaques à sortir avant neuf heures."},
+  {t:"Sa première tâche : dresser les plaques de pains aux œufs, seize pièces, trois rangées décalées, et les monter sur le chariot dans l'ordre des étages."}
+ ],
+ question:"Comment lui montrez-vous ?",
+ opts:[
+  {k:"a", t:"Vous faites la plaque devant lui en nommant chaque geste, puis vous lui passez la deuxième et vous restez à côté pendant qu'il la fait.",
+   eff:{s:2,c:2,g:1},
+   motif:"Le geste et le mot arrivent ensemble, et l'essai se fait sous les yeux de celui qui sait. Coûte quatre minutes de votre production.",
+   reac:"Vous perdez quatre minutes. À la troisième plaque, il dit « plaque, chariot, étage » avant de bouger — il s'est fabriqué une petite formule pour tenir la séquence."},
+  {k:"b", t:"Vous prenez votre téléphone et vous lui expliquez tout en espagnol avec le traducteur. C'est plus rapide et il comprend du premier coup.",
+   eff:{s:1,c:2,g:0}, tag:"esp",
+   motif:"L'information passe, la langue de travail ne s'installe pas. C'est le choix le plus efficace ce matin-là — et il se paye à la scène 3.",
+   reac:"Quarante secondes. Il hoche la tête, il commence, c'est propre. Vous retournez au four."},
+  {k:"c", t:"Vous le confiez à Chantal, votre plus ancienne, et vous retournez au four.",
+   eff:{s:0,c:0,g:2}, tag:"delegue",
+   motif:"Décision la moins coûteuse pour vous, la plus coûteuse pour l'équipe. Elle transfère aussi la responsabilité de la consigne à quelqu'un qui n'a pas été formé à montrer.",
+   reac:"Chantal accepte d'un haussement d'épaules. À neuf heures, les plaques sont sorties. Vous n'avez pas vu Marlon travailler une seule fois."}
+ ]
+},
+{
+ n:2, quand:"Jour 3", cote:"Jour 3 · 7 h 25 · devant le four",
+ titre:"Dix-huit pains perdus",
+ recit:(S)=>[
+  eut(S,1,"c")
+   ? {t:"Chantal vient vous chercher. Marlon a enfourné le chariot à l'envers : les plaques du haut ont cuit deux minutes de trop. Dix-huit pains à jeter.", d:"delegue"}
+   : {t:"Marlon a enfourné le chariot à l'envers : les plaques du haut ont cuit deux minutes de trop. Dix-huit pains à jeter."},
+  {t:"Il est debout devant le bac de rebut, les bras le long du corps. Deux autres employés ont arrêté ce qu'ils faisaient et regardent.", },
+  {t:"— Je m'excuse. Je m'excuse. Je paye.", cl:"dit"}
+ ],
+ question:"Vous faites quoi, là, maintenant ?",
+ opts:[
+  {k:"a", t:"Vous réglez ça en deux phrases nettes, devant tout le monde : le sens du chariot, l'étage, on n'en reparle plus.",
+   eff:{s:1,c:-3,g:0}, tag:"public",
+   motif:"La consigne est juste et l'information est exacte. Ce qui se perd n'est pas dans la consigne : c'est le droit de dire « je n'ai pas compris » devant témoins.",
+   reac:"Il dit « oui, oui, oui ». C'est réglé en quarante secondes. De la journée, il ne repose pas une seule question."},
+  {k:"b", t:"Vous refaites le chargement avec lui, à l'écart, et vous lui demandez de vous redire les étapes dans ses mots avant de repartir.",
+   eff:{s:2,c:1,g:1}, tag:"redit",
+   motif:"L'erreur devient la matière de la reprise. Le rappel à voix haute par l'apprenant vaut trois fois la répétition par le formateur — et il vous montre exactement où le mot manque.",
+   reac:"Il bute sur « la grille du bas » — il dit « le petit fer d'en bas ». Vous lui donnez le mot, il le redit deux fois, il l'écrit sur le dos de sa main."},
+  {k:"c", t:"Vous le mettez sur le dressage des boîtes pour la semaine. Pas de four, pas de perte.",
+   eff:{s:-1,c:-1,g:-1}, tag:"evite",
+   motif:"La perte s'arrête aujourd'hui. Ce qui s'arrête aussi, c'est l'apprentissage de la seule tâche qui compte pour son poste.",
+   reac:"Soulagement visible sur son visage. Il fait des boîtes toute la semaine, vite et bien. Personne ne rejette rien."}
+ ]
+},
+{
+ n:3, quand:"Semaine 2", cote:"Semaine 2 · lundi · fin de quart",
+ titre:"Le cadenas",
+ recit:(S)=>{
+  const p=[{t:"Nouvelle procédure imposée par la CNESST après un accident dans une autre usine du groupe : avant tout nettoyage de la vis d'alimentation, on coupe au panneau et on pose son cadenas personnel. Le cadenas, c'est la preuve que la machine ne peut pas repartir pendant que quelqu'un a les mains dedans."}];
+  if(eut(S,1,"b")) p.push({t:"Vous lui tendez le cadenas et son étiquette. Il le prend, le retourne, cherche un mot, ne le trouve pas. Depuis deux semaines, tout ce qu'il sait de cette machine, il l'a appris en espagnol : il connaît le geste, il ne connaît aucun des mots écrits sur la fiche.", d:"esp"});
+  if(eut(S,2,"a")) p.push({t:"Vous lui demandez si c'est clair. Il répond oui. Il répond oui à tout depuis mardi.", d:"public"});
+  if(eut(S,2,"c")) p.push({t:"C'est la première fois depuis six jours qu'il se retrouve devant la machine. Il regarde le panneau comme s'il ne l'avait jamais vu — et il ne l'a, de fait, jamais vraiment vu.", d:"evite"});
+  p.push({t:"Il vous reste onze minutes avant la fin du quart, et quatre autres personnes à faire signer."});
+  return p;
+ },
+ question:"Comment vous assurez-vous qu'il a la consigne ?",
+ opts:[
+  {k:"a", t:"Vous lui faites lire la fiche et signer au bas. C'est la procédure, et la signature est ce que l'entreprise doit produire en cas d'inspection.",
+   eff:{s:0,c:0,g:0}, tag:"signe",
+   motif:"La signature protège l'employeur, pas l'employé. Elle produit une trace de formation sans produire de formation. C'est le choix le plus fréquent dans la vraie vie, et c'est pour cela qu'il est offert ici sans ironie.",
+   reac:"Il signe. Vous classez la fiche. Le registre de formation est à jour."},
+  {k:"b", t:"Vous coupez au panneau devant lui, vous posez votre cadenas, puis vous lui demandez de vous redire la consigne dans ses mots et de refaire le geste pendant que vous regardez.",
+   eff:{s:3,c:1,g:1}, tag:"geste",
+   motif:"Trois minutes de plus que la signature. C'est le seul des trois choix qui produit une observation : à la fin, vous savez, et pas seulement l'entreprise.",
+   reac:"Il dit : « Je ferme. Je mets mon cadenas. La clé, dans ma poche — pas dans la machine. » Il tapote sa poche. Puis il ajoute, en montrant le panneau : « Et si le cadenas d'un autre est là ? » Vous n'aviez pas prévu la question. Vous y répondez."},
+  {k:"c", t:"Vous demandez à Chantal de lui traduire la fiche pendant que vous faites signer les autres.",
+   eff:{s:1,c:0,g:2}, tag:"trad",
+   motif:"L'information passe par un tiers qui n'est pas responsable de la consigne. En cas d'incident, personne ne peut dire qui a formé qui.",
+   reac:"Chantal parle un peu espagnol. Elle lui explique. Vous ne saurez jamais ce qu'elle a dit exactement, ni ce qu'il a compris."}
+ ]
+},
+{
+ n:4, quand:"Semaine 3", cote:"Semaine 3 · jeudi · 14 h",
+ titre:"Chantal",
+ recit:(S)=>{
+  const p=[];
+  if(S.g>=3) p.push({t:"Chantal vous attend à la sortie du vestiaire. Depuis trois semaines, c'est elle qui montre, elle qui traduit, elle qui rattrape — sans que personne le lui ait jamais demandé formellement, et sans que ça paraisse nulle part.", d:"charge"});
+  else p.push({t:"Chantal vous attend à la sortie du vestiaire."});
+  p.push({t:"— Je veux rien dire contre lui, là. Il est fin, il travaille bien. Mais je peux pas être à deux places. Hier j'ai fini mes bacs à trois heures moins quart.", cl:"dit"});
+  p.push({t:"Elle a raison sur les faits. Vous avez vérifié : sa production a baissé de onze pour cent depuis l'arrivée de Marlon."});
+  return p;
+ },
+ question:"Vous répondez quoi ?",
+ opts:[
+  {k:"a", t:"Vous retirez le jumelage. Marlon est autonome maintenant, Chantal retourne à sa production.",
+   eff:{s:-1,c:-2,g:-2}, tag:"seul",
+   motif:"Le problème de Chantal disparaît immédiatement. Celui de Marlon devient invisible — ce qui n'est pas la même chose que résolu.",
+   reac:"Chantal vous remercie. Marlon ne dit rien. Le lendemain, il mange seul."},
+  {k:"b", t:"Vous cadrez : quinze minutes par jour, en début de quart, payées comme du temps de formation — et vous montrez à Chantal comment montrer, parce que personne ne le lui a jamais appris.",
+   eff:{s:1,c:2,g:-1}, tag:"cadre",
+   motif:"Le seul choix qui traite l'encadrement comme une tâche de travail plutôt que comme une bonne volonté. Il coûte du temps déclaré, ce qui est précisément pourquoi il est rarement pris.",
+   reac:"Chantal : « Ah. OK. » Un temps. « Ça, c'est correct. » Elle demande si elle peut le faire à sept heures plutôt qu'à six."},
+  {k:"c", t:"Vous la remerciez pour sa patience et vous lui dites que ça va se placer tout seul dans quelques semaines.",
+   eff:{s:0,c:-1,g:2}, tag:"rien",
+   motif:"Aucune décision n'est prise, mais le sentiment d'en avoir pris une, oui. La charge reste exactement où elle était, et devient permanente.",
+   reac:"Elle hoche la tête et retourne à ses bacs. Elle ne revient pas vous en parler."}
+ ]
+},
+{
+ n:5, quand:"Semaine 5", cote:"Semaine 5 · mardi · réunion d'équipe",
+ titre:"Vingt minutes debout",
+ recit:(S)=>{
+  const p=[{t:"Réunion de quart, vingt minutes debout dans le corridor. Deux choses : l'horaire d'été change à partir du 15, et il y a une nouvelle procédure allergènes — les plaques qui ont touché au sésame ne retournent plus dans le lavage commun."}];
+  p.push({t:"Vous parlez vite, il y a du bruit de convoyeur, et vous employez sans y penser « à partir de la semaine des vacances de la construction »."});
+  if(eut(S,2,"a")||eut(S,4,"a")) p.push({t:"Marlon est au fond, un peu en retrait. Il regarde les autres pour savoir quand hocher la tête.", d:"retrait"});
+  else if(S.c>=4) p.push({t:"Marlon est au premier rang. À un moment il lève la main pour demander ce que veut dire « les vacances de la construction ». Trois personnes rient — pas méchamment — et quelqu'un lui explique.", d:"confiance"});
+  else p.push({t:"Marlon écoute. Impossible de savoir ce qu'il retient."});
+  return p;
+ },
+ question:"À la fin de la réunion, vous faites quoi ?",
+ opts:[
+  {k:"a", t:"Vous affichez un résumé écrit en phrases courtes près de la pointeuse, avec les dates en chiffres.",
+   eff:{s:2,c:1,g:0}, tag:"affiche",
+   motif:"Passe à l'écrit ce qui a été dit vite. Sert à Marlon, et aussi aux trois autres qui n'écoutaient pas. C'est un aménagement qui ne désigne personne.",
+   reac:"Le lendemain, vous voyez deux personnes s'arrêter devant la feuille. L'une d'elles n'est pas Marlon."},
+  {k:"b", t:"Vous le retenez trente secondes et vous lui demandez de vous dire ce qu'il a retenu. Vous complétez ce qui manque.",
+   eff:{s:3,c:2,g:1}, tag:"verifie",
+   motif:"C'est la vérification la moins chère qui existe et la plus rarement faite. Elle a un coût social : elle le désigne devant les autres comme celui qu'on vérifie. À faire dans le corridor, pas devant l'équipe — le prototype le fait dire au personnage.",
+   reac:"Il a retenu l'horaire. Il n'a rien retenu du sésame — il croyait que vous parliez d'un savon. Vous reprenez, avec la plaque dans les mains. Il dit : « Ah. Ça, c'est important. Pourquoi tu l'as pas dit avant ? » Il a raison."},
+  {k:"c", t:"Rien de particulier. Chantal lui redira, elle est à côté de lui toute la journée.",
+   eff:{s:-2,c:0,g:1}, tag:"delegue2",
+   motif:"L'information critique circule par un canal informel dont personne ne vérifie l'état. Ce n'est pas une négligence visible : c'est une négligence sans auteur.",
+   reac:"Vous n'y repensez pas."}
+ ]
+},
+{
+ n:6, quand:"Semaine 7", cote:"Semaine 7 · lundi · 5 h 55",
+ titre:"Dany",
+ recit:(S)=>{
+  const p=[{t:"Dany arrive : dix-neuf ans, premier emploi, français parfait, aucune idée de ce qu'est un four à chariots. Il faut lui montrer le dressage des plaques."}];
+  if(S.c>=5) p.push({t:"Depuis deux semaines, Marlon corrige lui-même ses plaques avant que vous ayez à le dire. Vendredi, il vous a signalé qu'un joint de porte fuyait.", d:"confiance2"});
+  if(S.c<=0) p.push({t:"Marlon fait son travail correctement et ne parle à personne avant la pause. Vous ne sauriez pas dire s'il va bien.", d:"retrait2"});
+  return p;
+ },
+ question:"Qui montre à Dany ?",
+ opts:[
+  {k:"a", t:"Marlon. Il fait ce geste-là quarante fois par jour depuis sept semaines.",
+   eff:{s:1,c:3,g:-1}, tag:"montre",
+   motif:"Le pari de la scène finale : faire passer l'apprenant du côté de celui qui montre. C'est le geste qui transforme le plus vite le statut d'une personne dans une équipe — et le seul, ici, dont l'effet dépend de tout ce que vous avez fait avant.",
+   reacDyn:(S)=> S.c>=4
+     ? "Il prend la plaque, il ralentit son geste — ce que personne ne lui a appris à faire — et il dit à Dany : « Regarde. Un, deux, trois. Après, toi. » C'est mot pour mot ce que vous avez fait le premier matin."
+     : "Il recule d'un demi-pas. « Non, non. Moi, je parle pas bien. » Il retourne à sa plaque. Vous montrez à Dany vous-même, et vous ne reposerez plus la question."},
+  {k:"b", t:"Vous. C'est votre rôle, et vous voulez que ce soit fait correctement dès le départ.",
+   eff:{s:0,c:0,g:0}, tag:"moi",
+   motif:"Rien ne se dégrade, rien ne se construit. C'est la ligne de base à laquelle les deux autres options se comparent.",
+   reac:"Vous montrez à Dany. Ça prend douze minutes. C'est bien fait."},
+  {k:"c", t:"Chantal, comme d'habitude.",
+   eff:{s:0,c:-1,g:2}, tag:"chantal2",
+   motif:"La solution qui a toujours marché est aussi celle qui ne fabrique jamais de deuxième personne capable de montrer.",
+   reac:"Chantal soupire, prend Dany, et fait la job. Elle la fait bien. Elle la fera encore la prochaine fois."}
+ ]
+}
+];
+
+/* ─── ce que chaque décision aura produit, de loin ──────────────── */
+const FRUITS = {
+ esp:"Trois semaines plus tard, devant le panneau de cadenassage, il connaissait le geste et aucun des mots écrits sur la fiche.",
+ delegue:"Le troisième jour, personne ne pouvait dire ce qu'il avait été montré, ni par qui.",
+ public:"Il a cessé de poser des questions. La scène 3 et la scène 5 en portent la trace : il répond oui.",
+ redit:"Le mot « grille du bas » est entré dans son vocabulaire de travail ce jour-là. Il s'en est servi en semaine 5.",
+ evite:"Six jours sans toucher au four : en semaine 2, il découvrait la machine au moment où il fallait la verrouiller.",
+ signe:"Le registre de formation était en règle. C'est la seule chose que cette décision a produite.",
+ geste:"La question qu'il a posée — « et si le cadenas d'un autre est là ? » — n'était dans aucune fiche. Elle est maintenant dans votre procédure.",
+ trad:"La consigne est passée par un canal que personne n'a vérifié. En cas d'incident, la chaîne de formation s'arrête à quelqu'un qui n'était pas chargé de former.",
+ seul:"L'autonomie décrétée en semaine 3 a d'abord ressemblé à de l'isolement, et le repas du midi l'a montré avant les indicateurs.",
+ cadre:"Quinze minutes déclarées ont fait plus pour la production de Chantal que trois semaines de bonne volonté.",
+ rien:"La charge est restée entière et a cessé d'être discutable, faute d'avoir été nommée une deuxième fois.",
+ affiche:"L'affichage a servi à deux personnes que vous n'aviez pas en tête en l'écrivant.",
+ verifie:"Trente secondes ont révélé qu'il avait compris « sésame » comme un savon. C'est la seule décision de la partie qui a produit une information dont vous ne disposiez pas.",
+ delegue2:"La procédure allergènes a circulé par un canal informel. Vous n'avez jamais su dans quel état elle est arrivée.",
+ montre:"Le geste de faire montrer par l'apprenant a produit ce qu'il produit toujours : soit un formateur de plus, soit une humiliation — selon l'état de la confiance, sept semaines plus tôt.",
+ moi:"Rien à signaler. C'était le but.",
+ chantal2:"L'équipe compte toujours exactement une personne capable de former, et elle est fatiguée."
+};
+
+/* ─── l'épilogue, composé de trois verdicts indépendants ────────── */
+function bandes(S){
+ const b={};
+ b.sec = S.s>=8 ? 2 : (S.s>=4 ? 1 : 0);
+ b.conf= S.c>=6 ? 2 : (S.c>=1 ? 1 : 0);
+ b.chg = S.g<=1 ? 2 : (S.g<=4 ? 1 : 0);
+ return b;
+}
+const VERDICTS = {
+ sec:[
+  {titre:"Le 12 août, à 5 h 40",
+   t:"Marlon nettoie la vis d'alimentation. Il a coupé au panneau — il l'a toujours fait — mais il n'a pas posé son cadenas : personne ne lui a jamais fait faire le geste, seulement lu ou traduit. À 5 h 42, un employé du quart de nuit remet le panneau en marche pour finir un lot. La vis part sur un quart de tour et s'arrête sur l'arrêt d'urgence, frappé par Chantal. Personne n'est blessé. L'enquête interne durera onze jours et produira une phrase que vous relirez longtemps&nbsp;: <em>la formation avait été donnée et consignée</em>."},
+  {titre:"Le 12 août, à 5 h 40",
+   t:"Marlon nettoie la vis d'alimentation. Il a coupé au panneau, il a posé son cadenas — il le fait toujours quand quelqu'un peut le voir. Ce matin-là, il est seul et il le pose quand même. Rien ne se passe. Rien ne se passera : c'est exactement ce qu'on demande à une consigne de sécurité, et c'est pour cela qu'on ne saura jamais qu'elle a servi."},
+  {titre:"Le 12 août, à 5 h 40",
+   t:"Marlon nettoie la vis d'alimentation, son cadenas posé. Il remarque qu'un deuxième cadenas est resté sur le panneau depuis la veille — celui du quart de nuit, oublié. Il ne touche à rien et vient vous voir. La question qu'il vous avait posée en semaine 2, vous êtes en train d'en recevoir la réponse."}],
+ conf:[
+  {titre:"Ce que Marlon dit quand il ne comprend pas",
+   t:"Rien. À l'évaluation de probation, il obtient « satisfaisant » partout. Il quittera l'entreprise en novembre pour un entrepôt où il n'aura à parler à personne, et sur le formulaire de départ il écrira « raisons personnelles ». Ce sera vrai."},
+  {titre:"Ce que Marlon dit quand il ne comprend pas",
+   t:"Il demande — à Chantal surtout, à vous quand il n'a pas le choix. C'est fonctionnel. Personne dans l'usine ne saurait dire que quelque chose manque, et pourtant l'information sur ce qu'il n'a pas compris met en moyenne deux jours à vous parvenir."},
+  {titre:"Ce que Marlon dit quand il ne comprend pas",
+   t:"Il le dit tout de suite, à voix haute, y compris en réunion. En octobre, c'est lui qui signalera que la nouvelle étiqueteuse imprime les allergènes à l'envers un lot sur trente — trois personnes l'avaient vu avant lui et avaient supposé que quelqu'un s'en occupait."}],
+ chg:[
+  {titre:"L'équipe",
+   t:"Chantal a porté l'intégration pendant huit semaines sans que ce soit écrit nulle part. Sa production ne remontera pas au niveau de mai. En décembre, quand on lui proposera d'encadrer la prochaine embauche, elle dira non, et elle dira non aux suivantes."},
+  {titre:"L'équipe",
+   t:"La charge a été absorbée. Elle n'a pas été répartie, mais elle a été absorbée, et Chantal n'a pas eu à le redemander deux fois."},
+  {titre:"L'équipe",
+   t:"L'équipe compte maintenant deux personnes capables de montrer, et l'une d'elles a appris à le faire il y a sept semaines. Le prochain employé coûtera à l'entreprise environ le tiers de ce qu'a coûté celui-ci."}]
+};
+
+/* ─── rendu ──────────────────────────────────────────────────────── */
+const $ = s=>document.querySelector(s);
+const jeu=$("#jeu"), bilan=$("#bilan"), rail=$("#rail"), reglette=$("#reglette");
+const esc = t=>t;
+
+function dessineReglette(){
+ reglette.innerHTML = SCENES.map((sc,i)=>
+   '<div class="tick '+(i<S.i?"faite":"")+(i===S.i?" ici":"")+'">'+sc.quand+'</div>').join("")
+   + '<div class="tick'+(S.i>=SCENES.length?" ici":"")+'">Semaine 12</div>';
+}
+
+function dessineRail(){
+ if(!document.body.classList.contains("conception")){rail.innerHTML="";return;}
+ const j=(nom,cle,val,min,max,lgd)=>{
+   const p=Math.max(0,Math.min(1,(val-min)/(max-min)));
+   const zero=Math.max(0,Math.min(1,(0-min)/(max-min)));
+   const g=Math.min(p,zero), w=Math.abs(p-zero);
+   return '<div class="jauge"><div class="lig"><span>'+nom+'</span><b>'+(val>0?"+":"")+val+'</b></div>'
+    +'<div class="barre"><i style="left:'+(g*100).toFixed(1)+'%;width:'+(w*100).toFixed(1)+'%"></i></div>'
+    +'<div style="font-size:.68rem;color:var(--enc3);margin-top:.2rem">'+lgd+'</div></div>';
+ };
+ rail.innerHTML =
+  '<h3>Vue conception</h3>'
+  +'<div class="bloc">'
+  + j("Consignes comprises","s",S.s,-4,12,"ce qu'il ferait sans témoin")
+  + j("Confiance","c",S.c,-7,11,"sa disposition à dire « je n\'ai pas compris »")
+  + j("Charge sur l'équipe","g",S.g,-4,9,"plus haut = plus lourd pour Chantal")
+  +'</div>'
+  +'<p class="note"><b>Pourquoi c\'est caché.</b> Montrer ces jauges pendant la partie transformerait la simulation en jeu d\'optimisation : on jouerait la barre, pas la situation. Elles ne sont ici que parce que vous regardez le prototype en concepteur.</p>'
+  +'<p class="note"><b>Pourquoi aucun choix n\'est corrigé.</b> Une rétroaction immédiate apprend à reconnaître la bonne réponse d\'un exercice. Elle n\'apprend pas à reconnaître, dans une situation réelle, qu\'on est en train de faire le mauvais choix — parce que la réalité, elle, ne répond pas tout de suite.</p>'
+  +'<p class="note"><b>Ce qui est mesuré.</b> Rien du joueur : tout de la situation. La partie ne produit pas une note, elle produit un enchaînement — et c\'est l\'enchaînement qui est l\'objet d\'apprentissage.</p>';
+}
+
+function scene(){
+ const sc=SCENES[S.i];
+ if(!sc){ return finale(); }
+ dessineReglette();
+ const rec = (typeof sc.recit==="function"?sc.recit(S):sc.recit)
+   .map(p=>'<p class="'+(p.cl||"")+(p.d?" differe":"")+'"'+(p.d?' data-de="'+p.d+'"':'')+'>'+p.t+'</p>').join("");
+ const art=document.createElement("article");
+ art.className="scene";
+ art.innerHTML ='<p class="cote">'+sc.cote+'</p><h2>'+sc.titre+'</h2>'
+  +'<div class="recit">'+rec+'</div>'
+  +'<p class="question">'+sc.question+'</p>'
+  +'<div class="choix">'+sc.opts.map(o=>
+     '<button class="opt" data-k="'+o.k+'"><span class="lettre">'+o.k.toUpperCase()+'</span>'+o.t
+     +'<span class="poids">effets · consignes '+sig(o.eff.s)+' · confiance '+sig(o.eff.c)+' · charge '+sig(o.eff.g)+'<br>'+o.motif+'</span></button>').join("")
+  +'</div>';
+ jeu.appendChild(art);
+ art.querySelectorAll(".opt").forEach(b=>b.onclick=()=>choisir(sc,b.dataset.k));
+ dessineRail();
+ if(S.i>0) art.scrollIntoView({block:"start"});
+}
+const sig=n=>(n>0?"+":"")+n;
+
+function choisir(sc,k){
+ const o=sc.opts.find(x=>x.k===k);
+ S.s+=o.eff.s; S.c+=o.eff.c; S.g+=o.eff.g;
+ S.picks[sc.n]=k;
+ jeu.querySelectorAll(".opt").forEach(b=>{b.disabled=true;b.style.opacity=b.dataset.k===k?"1":".38";
+   if(b.dataset.k===k){b.style.borderColor="var(--verm)";b.style.background="var(--verm-voile)"}});
+ const reac = o.reacDyn ? o.reacDyn(S) : o.reac;
+ const d=document.createElement("div");
+ d.className="suite";
+ d.innerHTML='<div class="retour"><span class="choisi">Ce qui se passe</span><p>'+reac+'</p></div>'
+   +'<p class="consigne">décision consignée · aucun commentaire</p><br>'
+   +'<button class="suivant">'+(S.i>=SCENES.length-1?"Voir ce que ça a donné":"Continuer")+'</button>';
+ jeu.appendChild(d);
+ d.querySelector(".suivant").onclick=()=>{S.i++;scene()};
+ dessineRail();
+ d.scrollIntoView({block:"nearest",behavior:"smooth"});
+}
+
+/* ─── épilogue, tracé, contre-épreuve ───────────────────────────── */
+function totaux(picks){
+ let s=0,c=0,g=0;
+ SCENES.forEach(sc=>{const o=sc.opts.find(x=>x.k===picks[sc.n]); if(o){s+=o.eff.s;c+=o.eff.c;g+=o.eff.g}});
+ return {s,c,g};
+}
+function finale(){
+ dessineReglette();
+ const b=bandes(S);
+ const ep = ['sec','conf','chg'].map(k=>{
+   const v=VERDICTS[k][b[k]];
+   return '<h3>'+v.titre+'</h3><p>'+v.t+'</p>';
+ }).join("");
+
+ const maillons = SCENES.map(sc=>{
+   const o=sc.opts.find(x=>x.k===S.picks[sc.n]);
+   const fruit = o.tag && FRUITS[o.tag] ? '<span class="fruit">'+FRUITS[o.tag]+'</span>' : '';
+   return '<div class="maillon"><span class="quand">'+sc.cote+'</span>'
+     +'<b style="font-weight:500">'+o.t+'</b> '
+     +'<span class="eff">['+sig(o.eff.s)+' '+sig(o.eff.c)+' '+sig(o.eff.g)+']</span>'
+     +fruit+'</div>';
+ }).join("");
+
+ const opts = SCENES.flatMap(sc=>sc.opts.filter(o=>o.k!==S.picks[sc.n])
+   .map(o=>'<option value="'+sc.n+':'+o.k+'">'+sc.quand+' — '+o.t.slice(0,72)+(o.t.length>72?"…":"")+'</option>')).join("");
+
+ bilan.hidden=false;
+ bilan.innerHTML =
+  '<h2>Douze semaines plus tard</h2>'
+  +'<div class="epilogue">'+ep+'</div>'
+
+  +'<div class="traceur"><h2 style="font-size:1.45rem">Le tracé</h2>'
+  +'<p style="color:var(--enc2)">Voici les six décisions que vous avez prises, dans l\'ordre, et ce que chacune était en train de produire pendant que vous pensiez à autre chose. Les passages de la partie qui venaient d\'une de vos décisions antérieures sont maintenant surlignés dans les scènes — c\'est ce que le mode <em>tracé</em> montre.</p>'
+  +'<div class="chaine">'+maillons+'</div>'
+  +'<table class="tabvar"><tr><th>Variable</th><th>Total</th><th>Ce que ça voulait dire</th></tr>'
+  +'<tr><td>Consignes réellement comprises</td><td class="n">'+sig(S.s)+'</td><td>Ce que Marlon ferait seul, sans témoin, un matin de juillet.</td></tr>'
+  +'<tr><td>Confiance</td><td class="n">'+sig(S.c)+'</td><td>Sa disposition à dire « je n\'ai pas compris » — la seule variable qui protège toutes les autres.</td></tr>'
+  +'<tr><td>Charge sur l\'équipe</td><td class="n">'+sig(S.g)+'</td><td>Ce que l\'intégration a coûté à quelqu\'un dont ce n\'était pas la tâche.</td></tr></table>'
+  +'<p style="color:var(--enc2);font-size:.95rem">Aucune note n\'est calculée et aucune n\'est possible&nbsp;: une partie peut être excellente sur la sécurité et désastreuse sur l\'équipe. C\'est le cas dans la vraie vie, et un dispositif de formation qui le nierait apprendrait quelque chose de faux.</p></div>'
+
+  +'<div class="contre"><h3>La contre-épreuve</h3>'
+  +'<p>Ne changez qu\'une seule décision. Tout le reste est tenu constant. C\'est le geste que la vraie vie ne permet jamais de faire, et c\'est la raison d\'être de la simulation.</p>'
+  +'<div class="picker"><label class="gr" style="font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--enc3)">Si, à la place, vous aviez fait ceci&nbsp;:</label>'
+  +'<select id="cf"><option value="">— choisir une décision à remplacer —</option>'+opts+'</select></div>'
+  +'<div id="cfres"></div></div>';
+
+ document.body.classList.add("tracee");
+ $("#cf").onchange=e=>contrepreuve(e.target.value);
+ dessineRail();
+ bilan.scrollIntoView({block:"start"});
+}
+
+function contrepreuve(v){
+ const box=$("#cfres");
+ if(!v){box.innerHTML="";return}
+ const [n,k]=v.split(":");
+ const p2=Object.assign({},S.picks); p2[n]=k;
+ const t=totaux(p2), b0=bandes(S), b1=bandes({s:t.s,c:t.c,g:t.g});
+ const sc=SCENES.find(x=>x.n==n), o=sc.opts.find(x=>x.k===k);
+ const lignes=['sec','conf','chg'].map(cle=>{
+   const chg=b1[cle]!==b0[cle];
+   return '<div style="margin-bottom:.9rem"><h4>'+VERDICTS[cle][b1[cle]].titre+(chg?' · <span style="color:var(--verm)">change</span>':' · inchangé')+'</h4>'
+     +(chg?'<p style="margin:0">'+VERDICTS[cle][b1[cle]].t+'</p>':'<p style="margin:0;color:var(--enc3);font-size:.9rem">Le même dénouement. Cette décision-là ne portait pas sur ce fil.</p>')+'</div>';
+ }).join("");
+ box.innerHTML='<div class="compare">'
+  +'<div><h4>Votre partie</h4><div class="delta">consignes '+sig(S.s)+' · confiance '+sig(S.c)+' · charge '+sig(S.g)+'</div>'
+  +'<p style="margin:0;font-size:.92rem;color:var(--enc2)">'+(SCENES.find(x=>x.n==n).opts.find(x=>x.k===S.picks[n]).t)+'</p></div>'
+  +'<div><h4>La variante</h4><div class="delta">consignes '+sig(t.s)+' · confiance '+sig(t.c)+' · charge '+sig(t.g)+'</div>'
+  +'<p style="margin:0;font-size:.92rem;color:var(--enc2)">'+o.t+'</p></div></div>'
+  +'<div style="margin-top:1.2rem">'+lignes+'</div>'
+  +(o.tag&&FRUITS[o.tag]?'<p style="font-style:italic;color:var(--enc2);border-left:2px solid var(--verm);padding-left:.8rem;margin-top:1rem">'+FRUITS[o.tag]+'</p>':'');
+}
+
+/* ─── commandes ─────────────────────────────────────────────────── */
+$("#btnConception").onclick=e=>{
+ const on=document.body.classList.toggle("conception");
+ e.currentTarget.setAttribute("aria-pressed",on);
+ dessineRail();
+};
+/* Le bouton dit l'état où il mène, jamais celui où l'on est : « Sombre »
+   sur fond clair. L'inverse se lit à contresens une fois sur deux. */
+function etatTheme(){
+ return document.documentElement.getAttribute("data-theme")
+   || (matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light");
+}
+function nommerTheme(){
+ const b=document.getElementById("btnTheme");
+ if(b) b.textContent = etatTheme()==="dark" ? "Clair" : "Sombre";
+}
+$("#btnTheme").onclick=()=>{
+ document.documentElement.setAttribute("data-theme", etatTheme()==="dark"?"light":"dark");
+ nommerTheme();
+};
+nommerTheme();
+$("#btnReprise").onclick=()=>{
+ S.s=S.c=S.g=0;S.picks={};S.i=0;bilan.hidden=true;bilan.innerHTML="";jeu.innerHTML="";
+ document.body.classList.remove("tracee");scene();window.scrollTo({top:0,behavior:"smooth"});
+};
+scene();
+</script>
+</body>
+</html>

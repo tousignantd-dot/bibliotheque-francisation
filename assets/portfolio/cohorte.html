@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Prototype de conception pédagogique : les traces d'une cohorte de soixante élèves, quatre anomalies plantées, trois corrections seulement — et une qu'il ne faut surtout pas faire.">
+<title>Soixante élèves, quatre anomalies</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<style>
+/* ═══ Daniel Tousignant — jetons communs ═══
+   Depuis le 5 septembre 2026, l'atelier est habillé avec BRAISE
+   (~/Claude/systemes-design/braise). Les noms de rôle des prototypes sont
+   conservés — ils portent un sens propre à ces pièces — et chacun est branché
+   sur un jeton de Braise :
+
+     --pap --pan --pan2 --pan3   les surfaces        (fond, fond-2, fond-3)
+     --enc --enc2 --enc3         les encres          (encre, encre-2, encre-3)
+     --regle --regle2            les séparations     (bord, bord-fort)
+     --verm  ce qu'une personne décide                (signal)
+     --bleu  ce qu'une machine calcule                (mesure)
+
+   Les deux plumes du tracé d'origine deviennent les deux rôles de Braise :
+   le signal orange pour la décision humaine, le bleu de mesure pour le
+   calcul. Le fond quadrillé disparaît — Braise ne pose que des aplats. */
+:root{
+  --police: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --police-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --pap:#FFFFFF; --pan:#FAFAFA; --pan2:#F4F4F5; --pan3:#E4E4E7;
+  --enc:#09090B; --enc2:#52525B; --enc3:#71717A;
+  --regle:#E4E4E7; --regle2:#D4D4D8;
+  --bleu:#2B4E9B; --bleu2:#5C7EBF; --bleu-pale:#EAEFFA; --bleu-voile:rgba(43,78,155,.07);
+  --verm:#F5652E; --verm2:#D9541F; --verm-pale:#FEF1EA; --verm-voile:rgba(245,101,46,.09);
+  --grille:transparent;
+  --om:0 1px 2px rgba(9,9,11,.06);
+  --om2:0 4px 12px rgba(9,9,11,.08);
+}
+:root:not([data-theme="light"]){ color-scheme:light dark; }
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --pap:#09090B; --pan:#0F0F11; --pan2:#18181B; --pan3:#27272A;
+  --enc:#FAFAFA; --enc2:#D4D4D8; --enc3:#A1A1AA;
+  --regle:#27272A; --regle2:#3F3F46;
+  --bleu:#8FB2F0; --bleu2:#6E8FCB; --bleu-pale:#18213A; --bleu-voile:rgba(143,178,240,.13);
+  --verm:#FF7A45; --verm2:#E0673A; --verm-pale:#2A1610; --verm-voile:rgba(255,122,69,.14);
+  --grille:transparent;
+  --om:0 1px 2px rgba(0,0,0,.5);
+  --om2:0 4px 16px rgba(0,0,0,.55);
+}}
+:root[data-theme="dark"]{ color-scheme:dark;
+  --pap:#09090B; --pan:#0F0F11; --pan2:#18181B; --pan3:#27272A;
+  --enc:#FAFAFA; --enc2:#D4D4D8; --enc3:#A1A1AA;
+  --regle:#27272A; --regle2:#3F3F46;
+  --bleu:#8FB2F0; --bleu2:#6E8FCB; --bleu-pale:#18213A; --bleu-voile:rgba(143,178,240,.13);
+  --verm:#FF7A45; --verm2:#E0673A; --verm-pale:#2A1610; --verm-voile:rgba(255,122,69,.14);
+  --grille:transparent;
+  --om:0 1px 2px rgba(0,0,0,.5);
+  --om2:0 4px 16px rgba(0,0,0,.55);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pap);color:var(--enc);font-family:var(--police);font-size:17px;line-height:1.58;
+ -webkit-font-smoothing:antialiased;
+ background-image:linear-gradient(var(--grille) 1px,transparent 1px),linear-gradient(90deg,var(--grille) 1px,transparent 1px);background-size:72px 72px,72px 72px}
+h1,h2,h3,h4,.gr{font-family:var(--police);font-weight:600;text-wrap:balance;letter-spacing:-.012em}
+.mo{font-family:var(--police-mono);font-variant-numeric:tabular-nums;letter-spacing:-.04em}
+p{margin:0 0 .9em}button{font:inherit;color:inherit}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--verm);outline-offset:3px}
+[hidden]{display:none!important}
+.tete,main,.pied{max-width:70rem;margin:0 auto;padding-left:1.5rem;padding-right:1.5rem}
+.tete{padding-top:2.6rem;padding-bottom:1.2rem}
+.fil{display:flex;flex-wrap:wrap;gap:.9rem;align-items:baseline;font-size:.66rem;text-transform:uppercase;letter-spacing:.16em;color:var(--enc3);font-family:var(--police)}
+.fil .no{color:var(--verm)}
+h1{font-size:clamp(2rem,4.8vw,3.2rem);line-height:1.02;margin:.5rem 0 .7rem;font-weight:800;letter-spacing:-.035em}
+.chapeau{max-width:38rem;font-size:1.04rem;color:var(--enc2)}
+.chapeau em{color:var(--enc);font-style:italic}
+.commandes{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;border-top:1px solid var(--regle);padding-top:1rem;margin-top:1.2rem}
+.cmd{background:none;border:1px solid var(--regle2);border-radius:2px;padding:.42rem .8rem;font-family:var(--police);font-size:.8rem;cursor:pointer;color:var(--enc2)}
+.cmd:hover{border-color:var(--enc2);color:var(--enc)}
+.cmd[aria-pressed="true"]{background:var(--bleu);border-color:var(--bleu);color:var(--pap)}
+
+.mandat{background:var(--pan);border:1px solid var(--regle);border-left:3px solid var(--verm);padding:1.2rem 1.4rem;margin-bottom:1.6rem}
+.mandat h2{font-size:.66rem;text-transform:uppercase;letter-spacing:.14em;color:var(--verm);margin:0 0 .5rem}
+.mandat p:last-child{margin:0}
+
+.grille2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,20rem);gap:2rem;align-items:start}
+@media(max-width:960px){.grille2{grid-template-columns:1fr}}
+h2.sec{font-size:1.5rem;margin:0 0 .3rem}
+.sous{color:var(--enc2);font-size:.95rem;margin-bottom:.9rem}
+
+/* tableau des exercices */
+table.tab{width:100%;border-collapse:collapse;font-size:.9rem;background:var(--pan);border:1px solid var(--regle)}
+table.tab th{text-align:right;font-family:var(--police);font-size:.6rem;text-transform:uppercase;letter-spacing:.08em;color:var(--enc3);
+ padding:.55rem .5rem;border-bottom:1px solid var(--regle2);font-weight:600;white-space:nowrap;vertical-align:bottom}
+table.tab th:nth-child(1),table.tab th:nth-child(2){text-align:left}
+table.tab td{padding:.5rem;border-bottom:1px solid var(--regle);text-align:right;font-family:var(--police-mono);font-size:.76rem;letter-spacing:-.04em}
+table.tab td:nth-child(1){color:var(--enc3);font-size:.7rem}
+table.tab td:nth-child(2){text-align:left;font-family:var(--police);font-size:.94rem}
+table.tab tr{cursor:pointer}
+table.tab tbody tr:hover{background:var(--verm-voile)}
+table.tab tr.ouvert{background:var(--verm-voile)}
+table.tab td.al{color:var(--verm)}
+body.conception table.tab tr.piege td:nth-child(2)::after{content:" ⟵ appât";color:var(--bleu);font-family:var(--police-mono);font-size:.6rem}
+body.conception table.tab tr.anom td:nth-child(2)::after{content:" ⟵ anomalie";color:var(--verm);font-family:var(--police-mono);font-size:.6rem}
+.detail{background:var(--pan2);border:1px solid var(--regle2);padding:1rem 1.2rem;margin:0 0 1rem;font-size:.94rem}
+.detail h4{margin:0 0 .4rem;font-size:1rem}
+.detail .item{border-left:2px solid var(--bleu);padding-left:.9rem;font-style:italic;color:var(--enc2);margin:.5rem 0;white-space:pre-line}
+.reps{display:grid;gap:.25rem;margin-top:.6rem}
+.rep{display:grid;grid-template-columns:1fr 7rem 3rem;gap:.5rem;align-items:center;font-size:.86rem;font-family:var(--police)}
+.rep .b{height:7px;background:var(--pap);position:relative}
+.rep .b i{position:absolute;left:0;top:0;bottom:0;background:var(--enc3)}
+.rep.bon .b i{background:var(--bleu)}.rep.pris .b i{background:var(--verm)}
+.rep .v{font-family:var(--police-mono);font-size:.68rem;text-align:right;color:var(--enc2)}
+.legende{font-size:.78rem;color:var(--enc3);font-family:var(--police);margin-top:.6rem}
+
+/* courbe */
+.courbe{background:var(--pan);border:1px solid var(--regle);padding:1rem;margin-bottom:1.4rem}
+.courbe svg{display:block;width:100%;height:auto}
+
+/* corrections */
+.panier{position:sticky;top:1.2rem;background:var(--pan);border:1px solid var(--regle);padding:1.2rem 1.3rem}
+@media(max-width:960px){.panier{position:static}}
+.panier h3{margin:0 0 .2rem;font-size:1.1rem}
+.panier .bud{font-family:var(--police-mono);font-size:.68rem;color:var(--verm);margin-bottom:.8rem}
+.act{display:block;width:100%;text-align:left;background:var(--pap);border:1px solid var(--regle2);padding:.55rem .7rem;margin-bottom:.35rem;
+ cursor:pointer;font-size:.9rem;line-height:1.35;border-radius:2px;font-family:var(--police)}
+.act:hover{border-color:var(--verm)}
+.act[aria-pressed="true"]{border-color:var(--verm);background:var(--verm-voile);font-weight:500}
+.act:disabled{opacity:.4;cursor:default}
+.valider{width:100%;background:var(--verm);color:var(--pap);border:none;padding:.6rem;margin-top:.7rem;
+ font-family:var(--police);font-weight:600;font-size:.92rem;cursor:pointer;border-radius:2px}
+.valider:disabled{background:var(--pan2);color:var(--enc3);cursor:default}
+
+/* débriefing */
+.debrief{margin-top:2.4rem;border-top:3px solid var(--verm);padding-top:1.4rem}
+.debrief h2{font-size:clamp(1.5rem,3.4vw,2.2rem);margin:0 0 .8rem;font-weight:700}
+.bloc{background:var(--pan);border:1px solid var(--regle);padding:1.4rem 1.6rem;margin-bottom:1.2rem;box-shadow:var(--om)}
+.bloc.fort{border-left:3px solid var(--verm)}
+.bloc h3{margin:0 0 .5rem;font-size:1.18rem}
+.ind{display:grid;grid-template-columns:12rem 1fr 5.5rem;gap:.7rem;align-items:center;margin-bottom:.5rem;font-family:var(--police);font-size:.86rem}
+@media(max-width:600px){.ind{grid-template-columns:8rem 1fr 4.5rem;font-size:.78rem}}
+.ind .b{height:10px;background:var(--pan2);position:relative}
+.ind .b .av{position:absolute;left:0;top:0;bottom:0;background:var(--enc3);opacity:.45}
+.ind .b .ap{position:absolute;left:0;top:0;bottom:0;background:var(--bleu)}
+.ind .b .ap.mal{background:var(--verm)}
+.ind .v{font-family:var(--police-mono);font-size:.72rem;text-align:right}
+.verd{border-left:2px solid var(--regle2);padding-left:.9rem;margin-bottom:1rem}
+.verd.ok{border-color:var(--bleu)}.verd.non{border-color:var(--verm)}
+.verd h4{margin:0 0 .2rem;font-size:.98rem}
+.verd p{margin:0;font-size:.94rem;color:var(--enc2)}
+.note{font-size:.9rem;color:var(--enc2);border-left:2px solid var(--bleu);padding-left:.9rem;margin:1rem 0;display:none}
+body.conception .note{display:block}
+.note b{font-family:var(--police);color:var(--enc)}
+.pied{padding:2.5rem 1.5rem;border-top:1px solid var(--regle);color:var(--enc3);font-size:.84rem;font-family:var(--police)}
+</style>
+</head>
+<body>
+<header class="tete">
+ <p class="fil"><span class="no">Prototype 04</span><a href="/daniel-tousignant.html" style="color:var(--enc3)">Daniel Tousignant</a><span>Ingénierie pédagogique · données</span></p>
+ <h1>Soixante élèves, quatre anomalies</h1>
+ <p class="chapeau">Ici, vous n'êtes pas l'apprenant&nbsp;: vous êtes le concepteur. Voici les traces d'une cohorte sur un module de douze exercices. Quatre choses ne tournent pas rond, <em>et deux d'entre elles ne sont pas ce qu'elles ont l'air d'être</em>. Vous avez un budget de trois corrections. Il y a aussi, dans ce tableau, un chiffre alarmant qu'il ne faut surtout pas corriger.</p>
+ <div class="commandes">
+  <button class="cmd" id="btnConception" aria-pressed="false">Vue conception</button>
+  <button class="cmd" id="btnTheme">Sombre</button>
+  <button class="cmd" id="btnReprise">Recommencer</button>
+  <span class="mo" style="font-size:.62rem;color:var(--enc3)">12 exercices · 3 corrections · 5 min</span>
+ </div>
+</header>
+<main>
+ <div class="mandat">
+  <h2>Le mandat</h2>
+  <p>Module « Signaler un problème dans son logement », francisation niveau 4. Première cohorte&nbsp;: <b>60 personnes</b>, quatre groupes, trois enseignantes. La direction vous donne deux jours et vous demande de rendre le module meilleur avant la prochaine session.</p>
+  <p>Deux jours, ça veut dire <b>trois corrections</b>. Pas quatre.</p>
+ </div>
+ <div class="courbe" id="courbe"></div>
+ <div class="grille2">
+  <div>
+   <h2 class="sec">Les douze exercices</h2>
+   <p class="sous">Cliquez une ligne pour voir l'exercice lui-même et la distribution des réponses. <b>r</b> est la corrélation entre réussir cet exercice et réussir le reste du module&nbsp;: un exercice à <b>r</b> bas ne mesure pas la même chose que les autres — ce qui est parfois un défaut, et parfois normal.</p>
+   <div id="tableau"></div>
+  </div>
+  <aside>
+   <div class="panier" id="panier"></div>
+  </aside>
+ </div>
+ <section class="debrief" id="debrief" hidden></section>
+</main>
+<footer class="pied"><p>Prototype de portfolio — conception, écriture et réalisation&nbsp;: Daniel Tousignant. Cohorte, module et données entièrement inventés&nbsp;; les quatre anomalies ont été plantées à la main pour être trouvables, et les deux appâts pour ne pas l'être. Aucune donnée réelle d'élève n'a servi.</p></footer>
+
+<script>
+"use strict";
+/* ═══════════════════════════════════════════════════════════════════
+   « Soixante élèves, quatre anomalies ».
+   Les données sont écrites à la main, pas tirées au sort : chaque ligne
+   du tableau doit être défendable devant quelqu'un qui connaît le métier,
+   et les quatre anomalies doivent être trouvables sans être évidentes.
+   Deux appâts (11 et 12) ont l'air d'anomalies et n'en sont pas.
+   ═══════════════════════════════════════════════════════════════════ */
+
+const EX = [
+ {n:1,nom:"Écoute — le message du concierge",type:"Vrai ou faux, 5 énoncés",r:.31,re:91,t:38,q:0,
+  item:"« Bonjour, ici Marc du 2140. Le plombier passe jeudi entre 8 h et midi. Faut que quelqu'un soit là. »\n\nÉnoncé 3 : « Le plombier passe le matin. » — vrai ou faux ?",
+  obs:"Rien à signaler. Un exercice d'entrée qui fait ce qu'il annonce."},
+ {n:2,nom:"Écriture courte — décrire le problème",type:"Trois phrases",r:.44,re:78,t:130,q:1,
+  item:"« En trois phrases, décrivez le problème d'eau chaude à quelqu'un qui ne l'a pas vu. »",
+  obs:"Deux minutes dix de médiane : c'est long, et c'est normal — c'est une tâche d'écriture, pas un clic. Un temps long n'est un symptôme que sur un exercice court."},
+ {n:3,nom:"Vocabulaire — associer six mots",type:"Association mot-image",r:.02,re:98,t:6,q:0,anom:"mesure",
+  item:"chauffe-eau · robinet · fuite · moisissure · plinthe · thermostat\n(six images à faire correspondre)",
+  obs:"98 % de réussite en six secondes médianes, et une corrélation de .02 avec le reste du module.",
+  reps:[["Six sur six du premier coup",98,"bon"],["Cinq sur six",2,""],["Moins de cinq",0,""]]},
+ {n:4,nom:"Dialogue — choisir la réplique",type:"Choix parmi 3, 4 tours",r:.51,re:72,t:45,q:1,
+  item:"— « Ça fait combien de temps ? »\n→ a) « Depuis lundi. »  b) « Oui. »  c) « Je pense que oui, peut-être. »",
+  obs:"Rien à signaler. Bonne discrimination, temps cohérent."},
+ {n:5,nom:"QCM — la clause du bail",type:"Choix parmi 4",r:.09,re:31,t:62,q:1,anom:"deux",
+  item:"« Le locateur doit maintenir le logement en bon état d'habitabilité. »\nQue devez-vous faire EN PREMIER si l'eau chaude ne fonctionne plus ?",
+  obs:"31 % de réussite — et le distracteur B est choisi par plus de la moitié du groupe.",
+  reps:[["a) Appeler le Tribunal administratif du logement",8,""],
+        ["b) Écrire au propriétaire et garder une copie",54,"pris"],
+        ["c) Aviser le propriétaire par téléphone d'abord",31,"bon"],
+        ["d) Faire réparer et déduire du loyer",7,""]]},
+ {n:6,nom:"Écoute — noter le numéro et la date",type:"Saisie",r:.48,re:66,t:55,q:1,
+  item:"« Rappelez-moi au 514 555-0148 avant vendredi le 14. »",
+  obs:"Rien à signaler."},
+ {n:7,nom:"Prononciation au micro",type:"Enregistrement",r:.18,re:51,t:90,q:14,anom:"micro",
+  item:"« Répétez : Je vous écris au sujet du chauffe-eau. »",
+  obs:"Quatorze personnes quittent le module ici — plus du double de n'importe quel autre exercice. Celles qui restent réussissent à 51 %.",
+  extra:"Sur les 14 départs, 12 se produisent dans les 20 secondes qui suivent l'affichage de l'écran, avant tout enregistrement."},
+ {n:8,nom:"Texte à trous — la lettre",type:"Douze trous",r:.38,re:22,t:210,q:6,anom:"consigne",
+  item:"« Complétez la lettre avec les mots de la liste. Attention aux accords. Vous pouvez utiliser un mot plus d'une fois, et certains mots de la liste ne servent pas. »",
+  obs:"22 % de réussite. Mais le chiffre à regarder est ailleurs : le premier clic arrive après 48 secondes médianes, contre 6 à 11 secondes partout ailleurs.",
+  extra:"Temps médian avant le premier clic : 48 s. Les gens ne cherchent pas la réponse : ils relisent la consigne."},
+ {n:9,nom:"Association image-mot",type:"Six paires",r:.29,re:88,t:25,q:0,
+  item:"(six pièces du logement à nommer)",
+  obs:"Rien à signaler. Facile, rapide, et il ne prétend pas mesurer autre chose."},
+ {n:10,nom:"Jeu de rôle — appeler le propriétaire",type:"Oral guidé",r:.55,re:69,t:180,q:1,
+  item:"« Vous appelez. Il répond qu'il est occupé. Obtenez une date. »",
+  obs:"Rien à signaler. Le meilleur rapport entre le temps demandé et l'information obtenue."},
+ {n:11,nom:"Écriture longue — le courriel complet",type:"Production écrite",r:.72,re:44,t:300,q:1,piege:"discriminant",
+  item:"« Écrivez le courriel au complet. Il doit obtenir la réparation. »",
+  obs:"44 % de réussite : le chiffre le plus bas du module après l'exercice 8. Et une corrélation de .72 avec le reste — de loin la plus élevée."},
+ {n:12,nom:"Bilan — ce que je sais faire",type:"Auto-évaluation",r:.05,re:96,t:20,q:0,piege:"pasunemesure",
+  item:"« Cochez ce que vous êtes capable de faire maintenant. »",
+  obs:"96 % de « réussite » et une corrélation de .05. Les mêmes chiffres que l'exercice 3 — et pas du tout le même problème."}
+];
+
+const ACTIONS = [
+ {id:"a", t:"Refaire l'exercice 3 : des distracteurs qui obligent à connaître le mot.",
+  bon:true, eff:{val:12,ach:0,tps:0},
+  verdict:"Juste. Un exercice réussi à 98 % en six secondes ne mesure rien — et pire, il donne à l'élève et à l'enseignante la même fausse nouvelle : que le vocabulaire est acquis. Le refaire ne rend pas le module plus difficile ; il le rend informatif."},
+ {id:"b", t:"Réécrire la consigne de l'exercice 8, et la faire relire par quelqu'un qui ne connaît pas le module.",
+  bon:true, eff:{val:4,ach:7,tps:-2},
+  verdict:"Juste, et c'est la correction que les données désignent le plus clairement. Le 22 % de réussite n'était pas le symptôme : le premier clic à 48 secondes l'était. Trois conditions dans une seule consigne, et l'exercice mesure la lecture de la consigne au lieu de la langue."},
+ {id:"c", t:"Corriger l'exercice 5 : le distracteur B est défendable, la question a deux bonnes réponses.",
+  bon:true, eff:{val:15,ach:0,tps:0},
+  verdict:"Juste, et c'est la plus discrète des quatre. Un distracteur choisi par 54 % contre 31 % à la bonne réponse n'est pas un piège efficace : c'est une question cassée. Écrire au propriétaire en gardant une copie est un excellent conseil — l'énoncé demandait « en premier », et rien dans le module n'a jamais établi cet ordre."},
+ {id:"d", t:"Demander la permission du micro à l'entrée du module, avec une explication, et prévoir une voie sans micro.",
+  bon:true, eff:{val:0,ach:20,tps:1},
+  verdict:"Juste. Quatorze départs au même écran, dont douze dans les vingt secondes et avant tout enregistrement : ce n'est pas un décrochage pédagogique, c'est une boîte de dialogue de navigateur. La donnée disait « exercice trop difficile » ; le module disait « permission refusée »."},
+ {id:"e", t:"Baisser la difficulté de l'exercice 11, le plus échoué du module après le 8.",
+  bon:false, eff:{val:-24,ach:4,tps:-3},
+  verdict:"C'est l'erreur que le tableau était fait pour provoquer. L'exercice 11 a une corrélation de .72 : c'est le seul du module qui sépare vraiment ceux qui savent faire la tâche de ceux qui ne savent pas. En le rendant plus facile, on améliore un chiffre et on détruit l'instrument. Un module dont tous les exercices sont réussis ne mesure plus rien — et ne le signale nulle part."},
+ {id:"f", t:"Ajouter deux exercices de vocabulaire, le lexique semble fragile.",
+  bon:false, eff:{val:0,ach:-3,tps:6},
+  verdict:"Rien dans les données ne le demande. Le lexique n'a pas l'air fragile : l'exercice 3 était trop facile, ce qui est le contraire. Six minutes de plus dans un module que 43 % des gens ne terminent pas déjà."},
+ {id:"g", t:"Retirer l'exercice 12 : 96 % de réussite et une corrélation de .05, il ne discrimine pas.",
+  bon:false, eff:{val:-5,ach:-2,tps:-1},
+  verdict:"Le piège de second ordre, et le plus intéressant. Les chiffres de l'exercice 12 sont les mêmes que ceux de l'exercice 3 — mais l'exercice 12 est une auto-évaluation. Il n'a jamais eu pour fonction de mesurer, donc son r ne veut rien dire. Appliquer un critère statistique à un objet qui n'est pas un item de mesure, c'est la façon la plus courante de faire du tort avec des données justes."},
+ {id:"h", t:"Raccourcir l'exercice 2 : deux minutes dix pour trois phrases, c'est trop long.",
+  bon:false, eff:{val:-6,ach:1,tps:-2},
+  verdict:"Non. Deux minutes dix pour produire trois phrases en langue seconde, c'est le temps que ça prend. Un temps long ne devient un symptôme que sur un exercice qui devrait être court — c'était le cas du 8, pas du 2."}
+];
+
+const BASE={val:52,ach:57,tps:38};
+const ANOM={
+ mesure:{ex:3,titre:"L'exercice qui ne mesurait rien",
+  t:"Chaque mot n'avait qu'une seule image plausible. On pouvait réussir les six sans connaître un seul mot, par élimination visuelle, en six secondes. L'exercice ne mesurait pas le vocabulaire : il mesurait la capacité à écarter cinq images non pertinentes, ce que tout le monde sait faire.",
+  action:"a"},
+ deux:{ex:5,titre:"La question à deux bonnes réponses",
+  t:"Un distracteur plus choisi que la réponse n'est presque jamais le signe d'une classe faible. C'est le signe d'un énoncé qui n'a pas tranché ce qu'il demandait. Ici, « en premier » supposait un ordre — écrire, puis téléphoner, ou l'inverse — que le module n'avait jamais enseigné.",
+  action:"c"},
+ micro:{ex:7,titre:"Le décrochage qui n'en était pas un",
+  t:"Quatorze départs au même écran, dont douze dans les vingt premières secondes, avant tout enregistrement. Ce n'est pas de l'ennui ni de la difficulté : c'est la fenêtre de permission du micro, arrivée sans prévenir, au milieu d'un module, sur des appareils partagés. La donnée pédagogique disait « exercice trop dur ». La cause était technique, et elle coûtait un quart de la cohorte.",
+  action:"d"},
+ consigne:{ex:8,titre:"L'exercice dont le problème était la consigne",
+  t:"Le taux de réussite disait « trop difficile ». Le délai avant le premier clic — 48 secondes contre 6 à 11 ailleurs — disait autre chose : ils ne cherchaient pas, ils relisaient. Trois conditions empilées dans une consigne, et l'exercice s'est mis à mesurer la lecture de consigne. C'est la plus fréquente des quatre anomalies dans la vraie vie, et la moins souvent vue, parce qu'on ne regarde presque jamais le délai avant le premier geste.",
+  action:"b"}
+};
+
+let E={choix:[],ouvert:null,fini:false};
+const $=s=>document.querySelector(s);
+function neuf(){E={choix:[],ouvert:null,fini:false};$("#debrief").hidden=true;$("#debrief").innerHTML="";rendu()}
+
+/* ─── la courbe d'attrition, tracée à la plume ─── */
+const RESTES=[60,60,60,59,59,59,58,58,57,43,42,42,41,41,40,40,39,39,38,38,37,37,36,36,36,35,35,35,35,35,34,34,34,34,34,34,34,34,34,34,34];
+function courbe(){
+ const W=760,H=170,mx=42,my=18,n=RESTES.length-1;
+ const x=i=>mx+i*(W-mx-14)/n, y=v=>my+(60-v)*(H-my-26)/60;
+ const d=RESTES.map((v,i)=>(i?"L":"M")+x(i).toFixed(1)+" "+y(v).toFixed(1)).join(" ");
+ const gr=[0,15,30,45,60].map(v=>'<line x1="'+mx+'" y1="'+y(v)+'" x2="'+(W-14)+'" y2="'+y(v)+'" stroke="var(--regle)" stroke-width="1"/>'
+   +'<text x="'+(mx-6)+'" y="'+(y(v)+3)+'" text-anchor="end" font-family="ui-monospace, monospace" font-size="8" fill="var(--enc3)">'+v+'</text>').join("");
+ const tk=[0,10,20,30,40].map(m=>'<text x="'+x(m)+'" y="'+(H-6)+'" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8" fill="var(--enc3)">'+m+' min</text>').join("");
+ $("#courbe").innerHTML='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Courbe des personnes encore présentes, minute par minute : 60 au départ, 34 à la fin, une chute de 14 personnes à la neuvième minute">'
+  +gr+tk
+  +'<path d="'+d+'" fill="none" stroke="var(--bleu)" stroke-width="2" stroke-linejoin="round"/>'
+  +'<line x1="'+x(9)+'" y1="'+my+'" x2="'+x(9)+'" y2="'+(H-22)+'" stroke="var(--verm)" stroke-width="1" stroke-dasharray="3 3"/>'
+  +'<circle cx="'+x(9)+'" cy="'+y(43)+'" r="4" fill="none" stroke="var(--verm)" stroke-width="2"/>'
+  +'<text x="'+(x(9)+8)+'" y="'+(y(43)-6)+'" font-family="ui-monospace, monospace" font-size="8.5" fill="var(--verm)">−14 en 40 secondes</text>'
+  +'<text x="'+mx+'" y="'+(my-4)+'" font-family="Inter,sans-serif" font-size="9" fill="var(--enc3)">PERSONNES ENCORE DANS LE MODULE · 60 AU DÉPART, 34 À LA FIN</text>'
+  +'</svg>';
+}
+
+/* ─── tableau ─── */
+function rendu(){
+ courbe();
+ $("#tableau").innerHTML='<table class="tab"><thead><tr><th>nº</th><th>Exercice</th><th>Réussite</th><th>Temps méd.</th><th>Quittent</th><th>r</th></tr></thead><tbody>'
+  +EX.map(e=>{
+   const cl=[e.anom?"anom":"",e.piege?"piege":"",E.ouvert===e.n?"ouvert":""].join(" ");
+   const al=v=>v?" al":"";
+   return '<tr class="'+cl+'" data-n="'+e.n+'" tabindex="0"><td>'+e.n+'</td><td>'+e.nom+'</td>'
+    +'<td class="'+(e.re>=95||e.re<=35?"al":"")+'">'+e.re+' %</td>'
+    +'<td class="'+(e.t>=200||e.t<=8?"al":"")+'">'+(e.t>=60?Math.floor(e.t/60)+" min "+(e.t%60?(e.t%60)+" s":""):e.t+" s")+'</td>'
+    +'<td class="'+(e.q>=6?"al":"")+'">'+(e.q||"—")+'</td>'
+    +'<td class="'+(e.r<.1?"al":"")+'">.'+String(Math.round(e.r*100)).padStart(2,"0")+'</td></tr>'
+    +(E.ouvert===e.n?'<tr><td colspan="6" style="padding:0"><div class="detail"><h4>'+e.nom+' — '+e.type+'</h4>'
+      +'<div class="item">'+e.item+'</div><p style="margin:.5rem 0 0">'+e.obs+'</p>'
+      +(e.extra?'<p style="margin:.4rem 0 0;color:var(--verm);font-family:var(--police-mono);font-size:.72rem">'+e.extra+'</p>':'')
+      +(e.reps?'<div class="reps">'+e.reps.map(r=>'<div class="rep '+r[2]+'"><span>'+r[0]+'</span><span class="b"><i style="width:'+r[1]+'%"></i></span><span class="v">'+r[1]+' %</span></div>').join("")
+        +'</div><p class="legende">Bleu&nbsp;: la réponse attendue. Rouge&nbsp;: la réponse la plus choisie.</p>':'')
+      +'</div></td></tr>':'');
+  }).join("")+'</tbody></table>';
+ $("#tableau").querySelectorAll("tr[data-n]").forEach(tr=>{
+   const f=()=>{E.ouvert=(E.ouvert==tr.dataset.n?null:+tr.dataset.n);rendu()};
+   tr.onclick=f;tr.onkeydown=ev=>{if(ev.key==="Enter"||ev.key===" "){ev.preventDefault();f()}};
+ });
+
+ $("#panier").innerHTML='<h3>Vos corrections</h3><p class="bud">'+E.choix.length+' / 3 · budget de deux jours</p>'
+  +ACTIONS.map(a=>{const pris=E.choix.includes(a.id);
+   return '<button class="act" data-a="'+a.id+'" aria-pressed="'+pris+'"'+((!pris&&E.choix.length>=3)||E.fini?" disabled":"")+'>'+a.t+'</button>'}).join("")
+  +'<button class="valider" id="btnValider"'+(E.choix.length===3&&!E.fini?"":" disabled")+'>Rendre les corrections</button>'
+  +'<p style="font-size:.76rem;color:var(--enc3);font-family:var(--police);margin:.6rem 0 0">Trois exactement. Un budget qui permettrait tout ne ferait rien apprendre.</p>';
+ $("#panier").querySelectorAll(".act").forEach(b=>b.onclick=()=>{
+   const id=b.dataset.a;
+   E.choix=E.choix.includes(id)?E.choix.filter(x=>x!==id):E.choix.concat(id);rendu()});
+ if($("#btnValider")) $("#btnValider").onclick=rendre;
+}
+
+/* ─── débriefing ─── */
+function rendre(){
+ E.fini=true;
+ const ap={val:BASE.val,ach:BASE.ach,tps:BASE.tps};
+ E.choix.forEach(id=>{const a=ACTIONS.find(x=>x.id===id);ap.val+=a.eff.val;ap.ach+=a.eff.ach;ap.tps+=a.eff.tps});
+ ap.val=Math.max(0,Math.min(100,ap.val));ap.ach=Math.max(0,Math.min(100,ap.ach));
+
+ const bons=E.choix.filter(id=>ACTIONS.find(a=>a.id===id).bon).length;
+ const rates=Object.keys(ANOM).filter(k=>!E.choix.includes(ANOM[k].action));
+ const pieges=E.choix.filter(id=>["e","g"].includes(id));
+
+ let titre,intro;
+ if(bons===3) {titre="Trois corrections, trois anomalies réelles.";
+  intro="<p>Vous avez trouvé trois des quatre, et vous n'avez touché à aucun des deux appâts. La quatrième reste — c'est la conséquence d'un budget, pas d'une erreur, et c'est exactement la situation dans laquelle un concepteur travaille tout le temps.</p>";}
+ else if(pieges.length) {titre="Une de vos corrections a abîmé le module.";
+  intro="<p>Deux chiffres de ce tableau ressemblaient à des anomalies sans en être. En corriger un ne laisse aucune trace visible — le module a l'air mieux, et il mesure moins bien. C'est le seul type d'erreur qu'un tableau de bord ne signale jamais, parce que l'indicateur qu'elle dégrade n'est pas dans le tableau de bord.</p>";}
+ else {titre="Corrections rendues. Une partie du budget n'a rien acheté.";
+  intro="<p>Aucune de vos corrections n'a fait de tort. Une au moins ne répondait à rien dans les données — ce qui, sur un budget de trois, coûte une anomalie réelle laissée en place.</p>";}
+
+ const ind=(nom,av,apv,mal,unite,inv)=>{
+  const mx=(unite==="min")?60:100;
+  return '<div class="ind"><span>'+nom+'</span><span class="b"><span class="av" style="width:'+(av/mx*100)+'%"></span>'
+   +'<span class="ap'+(mal?" mal":"")+'" style="width:'+(apv/mx*100)+'%"></span></span>'
+   +'<span class="v">'+av+(unite==="min"?"":" %")+' → <b>'+apv+(unite==="min"?" min":" %")+'</b></span></div>';
+ };
+
+ const verdicts=E.choix.map(id=>{const a=ACTIONS.find(x=>x.id===id);
+  return '<div class="verd '+(a.bon?"ok":"non")+'"><h4>'+(a.bon?"✓ ":"✗ ")+a.t+'</h4><p>'+a.verdict+'</p></div>'}).join("");
+
+ const anoms=Object.keys(ANOM).map(k=>{const A=ANOM[k],pris=E.choix.includes(A.action);
+  return '<div class="verd '+(pris?"ok":"")+'"><h4>Exercice '+A.ex+' — '+A.titre+(pris?"":" <span style=\'color:var(--verm);font-weight:400;font-size:.8rem\'>· laissée en place</span>")+'</h4><p>'+A.t+'</p></div>'}).join("");
+
+ const d=$("#debrief");d.hidden=false;
+ d.innerHTML='<h2>Ce que vos trois corrections ont acheté</h2>'
+  +'<div class="bloc fort"><h3>'+titre+'</h3>'+intro
+  +ind("Validité de la mesure",BASE.val,ap.val,ap.val<BASE.val)
+  +ind("Taux d'achèvement",BASE.ach,ap.ach,ap.ach<BASE.ach)
+  +ind("Durée du module",BASE.tps,ap.tps,ap.tps>BASE.tps,"min")
+  +'<p style="font-size:.86rem;color:var(--enc3);font-family:var(--police);margin-top:.8rem">La barre pâle est l\'état d\'avant. La validité de la mesure est le seul des trois indicateurs qu\'aucune direction ne demande jamais — et le seul dont dépendent les deux autres.</p></div>'
+  +'<div class="bloc"><h3>Vos trois décisions, une par une</h3>'+verdicts+'</div>'
+  +'<div class="bloc"><h3>Les quatre anomalies, et ce qu\'elles cachaient</h3>'
+   +'<p style="color:var(--enc2)">Trois d\'entre elles ne se voyaient pas dans la colonne qu\'on regarde en premier. C\'est le fond de l\'exercice&nbsp;: <b>un taux de réussite ne se lit jamais seul</b> — il se lit avec le temps, avec le délai avant le premier geste, et avec la corrélation au reste.</p>'
+   +anoms
+   +(rates.length?'<p style="margin-top:.8rem"><b>'+rates.length+' anomalie'+(rates.length>1?'s':'')+' reste'+(rates.length>1?'nt':'')+' en place.</b> Ce n\'est pas nécessairement un échec&nbsp;: avec trois corrections, il en reste forcément une. La question n\'est pas « laquelle ai-je manquée » mais « ai-je gardé la moins coûteuse pour la fin ».</p>':'')
+   +'</div>'
+  +'<div class="bloc"><h3>Les deux chiffres qu\'il ne fallait pas corriger</h3>'
+   +'<div class="verd '+(E.choix.includes("e")?"non":"ok")+'"><h4>Exercice 11 — 44 % de réussite, et r = .72</h4><p>Le plus échoué après le 8, et le seul instrument réellement discriminant du module. Le rendre plus facile améliore le tableau de bord et supprime la seule chose qui permettait de savoir qui sait faire la tâche. '+(E.choix.includes("e")?"<b>Vous l\'avez fait.</b>":"Vous ne l\'avez pas touché.")+'</p></div>'
+   +'<div class="verd '+(E.choix.includes("g")?"non":"ok")+'"><h4>Exercice 12 — 96 % et r = .05, comme l\'exercice 3</h4><p>Chiffres identiques, diagnostic opposé&nbsp;: le 12 est une auto-évaluation, il n\'a jamais eu pour fonction de mesurer, et lui appliquer un critère de discrimination n\'a aucun sens. '+(E.choix.includes("g")?"<b>Vous l\'avez retiré.</b> C\'est la faute la plus élégante du jeu — une statistique juste, appliquée à un objet qui n\'est pas de sa juridiction.":"Vous l\'avez laissé, et c\'était juste.")+'</p></div></div>'
+  +'<div class="bloc"><h3>Note de conception</h3>'
+   +'<p>Cette pièce est le pendant d\'un dossier de méthode&nbsp;: elle met en acte ce qu\'un texte sur le diagnostic pédagogique ne peut qu\'énoncer. Quatre anomalies plantées pour être <em>trouvables</em>, deux appâts plantés pour ne pas l\'être, et un budget qui force à renoncer — c\'est le renoncement qui produit l\'apprentissage, pas la trouvaille.</p>'
+   +'<p>Les données sont écrites à la main, ligne par ligne, et non tirées au sort. Un jeu de données aléatoire produit des anomalies invraisemblables et rate les seules qui comptent&nbsp;: celles où le chiffre alarmant et la cause réelle ne sont pas dans la même colonne.</p>'
+   +'<p class="note"><b>Ce qui se change sans reprogrammer.</b> Le module, les douze lignes, les quatre anomalies et les huit actions sont des données. Transposer la pièce à un autre métier — un parcours de formation en entreprise, un tutoriel logiciel — demande de réécrire ces tableaux, pas le moteur. C\'est la même règle que dans les trois autres prototypes&nbsp;: aucune rétroaction n\'est écrite pour une trajectoire particulière.</p>'
+   +'<p><button class="cmd" onclick="neuf();window.scrollTo({top:0,behavior:\'smooth\'})">Recommencer</button> <a class="cmd" href="/daniel-tousignant.html" style="text-decoration:none;display:inline-block">Retour à l\'atelier</a></p></div>';
+ rendu();
+ d.scrollIntoView({block:"start",behavior:"smooth"});
+}
+
+$("#btnConception").onclick=e=>{const on=document.body.classList.toggle("conception");e.currentTarget.setAttribute("aria-pressed",on)};
+/* Le bouton dit l'état où il mène, jamais celui où l'on est : « Sombre »
+   sur fond clair. L'inverse se lit à contresens une fois sur deux. */
+function etatTheme(){
+ return document.documentElement.getAttribute("data-theme")
+   || (matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light");
+}
+function nommerTheme(){
+ const b=document.getElementById("btnTheme");
+ if(b) b.textContent = etatTheme()==="dark" ? "Clair" : "Sombre";
+}
+$("#btnTheme").onclick=()=>{
+ document.documentElement.setAttribute("data-theme", etatTheme()==="dark"?"light":"dark");
+ nommerTheme();
+};
+nommerTheme();
+$("#btnReprise").onclick=()=>{neuf();window.scrollTo({top:0,behavior:"smooth"})};
+neuf();
+</script>
+</body>
+</html>

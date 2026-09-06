@@ -1,0 +1,546 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Prototype de conception pédagogique : un simulateur de dépannage qui n'évalue pas la réponse trouvée, mais la stratégie de recherche — l'information achetée, minute par minute.">
+<title>Le banc de panne</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<style>
+/* ═══ Daniel Tousignant — jetons communs ═══
+   Depuis le 5 septembre 2026, l'atelier est habillé avec BRAISE
+   (~/Claude/systemes-design/braise). Les noms de rôle des prototypes sont
+   conservés — ils portent un sens propre à ces pièces — et chacun est branché
+   sur un jeton de Braise :
+
+     --pap --pan --pan2 --pan3   les surfaces        (fond, fond-2, fond-3)
+     --enc --enc2 --enc3         les encres          (encre, encre-2, encre-3)
+     --regle --regle2            les séparations     (bord, bord-fort)
+     --verm  ce qu'une personne décide                (signal)
+     --bleu  ce qu'une machine calcule                (mesure)
+
+   Les deux plumes du tracé d'origine deviennent les deux rôles de Braise :
+   le signal orange pour la décision humaine, le bleu de mesure pour le
+   calcul. Le fond quadrillé disparaît — Braise ne pose que des aplats. */
+:root{
+  --police: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --police-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --pap:#FFFFFF; --pan:#FAFAFA; --pan2:#F4F4F5; --pan3:#E4E4E7;
+  --enc:#09090B; --enc2:#52525B; --enc3:#71717A;
+  --regle:#E4E4E7; --regle2:#D4D4D8;
+  --bleu:#2B4E9B; --bleu2:#5C7EBF; --bleu-pale:#EAEFFA; --bleu-voile:rgba(43,78,155,.07);
+  --verm:#F5652E; --verm2:#D9541F; --verm-pale:#FEF1EA; --verm-voile:rgba(245,101,46,.09);
+  --grille:transparent;
+  --om:0 1px 2px rgba(9,9,11,.06);
+  --om2:0 4px 12px rgba(9,9,11,.08);
+}
+:root:not([data-theme="light"]){ color-scheme:light dark; }
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --pap:#09090B; --pan:#0F0F11; --pan2:#18181B; --pan3:#27272A;
+  --enc:#FAFAFA; --enc2:#D4D4D8; --enc3:#A1A1AA;
+  --regle:#27272A; --regle2:#3F3F46;
+  --bleu:#8FB2F0; --bleu2:#6E8FCB; --bleu-pale:#18213A; --bleu-voile:rgba(143,178,240,.13);
+  --verm:#FF7A45; --verm2:#E0673A; --verm-pale:#2A1610; --verm-voile:rgba(255,122,69,.14);
+  --grille:transparent;
+  --om:0 1px 2px rgba(0,0,0,.5);
+  --om2:0 4px 16px rgba(0,0,0,.55);
+}}
+:root[data-theme="dark"]{ color-scheme:dark;
+  --pap:#09090B; --pan:#0F0F11; --pan2:#18181B; --pan3:#27272A;
+  --enc:#FAFAFA; --enc2:#D4D4D8; --enc3:#A1A1AA;
+  --regle:#27272A; --regle2:#3F3F46;
+  --bleu:#8FB2F0; --bleu2:#6E8FCB; --bleu-pale:#18213A; --bleu-voile:rgba(143,178,240,.13);
+  --verm:#FF7A45; --verm2:#E0673A; --verm-pale:#2A1610; --verm-voile:rgba(255,122,69,.14);
+  --grille:transparent;
+  --om:0 1px 2px rgba(0,0,0,.5);
+  --om2:0 4px 16px rgba(0,0,0,.55);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pap);color:var(--enc);font-family:var(--police);font-size:17px;line-height:1.58;
+ -webkit-font-smoothing:antialiased;
+ background-image:linear-gradient(var(--grille) 1px,transparent 1px),linear-gradient(90deg,var(--grille) 1px,transparent 1px);
+ background-size:72px 72px,72px 72px}
+h1,h2,h3,h4,.gr{font-family:var(--police);font-weight:600;text-wrap:balance;letter-spacing:-.01em}
+.mo{font-family:var(--police-mono);font-variant-numeric:tabular-nums;letter-spacing:-.04em}
+p{margin:0 0 .9em}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--verm);outline-offset:3px}
+[hidden]{display:none!important}
+
+.tete{max-width:78rem;margin:0 auto;padding:2.6rem 1.5rem 1.4rem}
+.fil{display:flex;flex-wrap:wrap;gap:.9rem;align-items:baseline;font-size:.66rem;text-transform:uppercase;letter-spacing:.16em;color:var(--enc3);font-family:var(--police)}
+.fil .no{color:var(--verm)}
+h1{font-size:clamp(2.1rem,5vw,3.3rem);line-height:1.02;margin:.5rem 0 .7rem;font-weight:800;letter-spacing:-.035em}
+.chapeau{max-width:38rem;font-size:1.04rem;color:var(--enc2)}
+.chapeau em{color:var(--enc);font-style:italic}
+.commandes{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;border-top:1px solid var(--regle);padding-top:1rem;margin-top:1.2rem}
+.cmd{background:none;border:1px solid var(--regle2);border-radius:2px;padding:.42rem .8rem;font-family:var(--police);font-size:.8rem;cursor:pointer;color:var(--enc2)}
+.cmd:hover{border-color:var(--enc2);color:var(--enc)}
+.cmd[aria-pressed="true"]{background:var(--bleu);border-color:var(--bleu);color:var(--pap)}
+
+.enveloppe{max-width:78rem;margin:0 auto;padding:0 1.5rem 5rem;display:grid;gap:2.4rem;
+ grid-template-columns:minmax(0,26rem) minmax(0,1fr)}
+@media(max-width:900px){.enveloppe{grid-template-columns:minmax(0,1fr)}}
+
+/* ── la machine ── */
+.machine{position:sticky;top:1.2rem}
+@media(max-width:900px){.machine{position:static}}
+.plan{background:var(--pan);border:1px solid var(--regle);box-shadow:var(--om);padding:.8rem}
+.plan svg{display:block;width:100%;height:auto}
+.trait{fill:none;stroke:var(--bleu);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.trait.fin{stroke-width:1;opacity:.6}
+.plein{fill:var(--bleu);opacity:.09;stroke:none}
+.zone{cursor:pointer}
+.zone rect,.zone circle{fill:transparent;stroke:transparent;stroke-width:1.4}
+.zone:hover rect,.zone:hover circle,.zone.vive rect,.zone.vive circle{stroke:var(--verm);fill:var(--verm-voile)}
+.etiq{font-family:var(--police-mono);font-size:8.5px;fill:var(--enc3);letter-spacing:-.04em}
+.zone:hover .etiq,.zone.vive .etiq{fill:var(--verm)}
+.aiguille{stroke:var(--verm);stroke-width:2;transform-origin:140px 112px;transition:transform .8s cubic-bezier(.2,1.4,.4,1)}
+.horloge{display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid var(--regle);margin-top:.6rem;padding-top:.6rem;
+ font-family:var(--police-mono);font-size:.68rem;color:var(--enc2)}
+.horloge b{font-size:1.5rem;color:var(--verm);font-weight:400}
+.file{font-size:.66rem;color:var(--enc3)}
+
+/* ── plainte ── */
+.plainte{background:var(--pan);border:1px solid var(--regle);border-left:3px solid var(--verm);padding:1.2rem 1.4rem;margin-bottom:1.4rem}
+.plainte .dit{font-style:italic;color:var(--enc2);margin:0}
+.plainte .qui{font-family:var(--police);font-size:.66rem;text-transform:uppercase;letter-spacing:.12em;color:var(--enc3);display:block;margin-top:.5rem}
+
+/* ── gestes ── */
+.gestes h2,.carnet h2,.verdict h2{font-size:.68rem;text-transform:uppercase;letter-spacing:.14em;color:var(--enc3);margin:0 0 .8rem;font-weight:600}
+.grp{margin-bottom:1.1rem}
+.grp>h3{font-family:var(--police-mono);font-size:.64rem;color:var(--bleu);margin:0 0 .35rem;font-weight:400;letter-spacing:-.03em}
+.geste{display:block;width:100%;text-align:left;background:var(--pan);border:1px solid var(--regle2);border-radius:2px;
+ padding:.6rem .8rem;margin-bottom:.3rem;cursor:pointer;font-family:var(--police);font-size:.98rem;line-height:1.35;
+ display:grid;grid-template-columns:1fr auto;gap:.6rem;align-items:baseline}
+.geste:hover{border-color:var(--verm);background:var(--verm-voile)}
+.geste .cout{font-family:var(--police-mono);font-size:.62rem;color:var(--enc3);white-space:nowrap}
+.geste:disabled{opacity:.4;cursor:default;background:none}
+.geste .gain{display:none;font-family:var(--police-mono);font-size:.6rem;color:var(--bleu);grid-column:1/-1;margin-top:.2rem}
+body.conception .geste .gain{display:block}
+
+/* ── carnet ── */
+.carnet{margin-top:1.8rem}
+.ligne{border-left:2px solid var(--regle2);padding:.1rem 0 .9rem 1rem;margin-left:.3rem;position:relative}
+.ligne::before{content:"";position:absolute;left:-.36rem;top:.45rem;width:.5rem;height:.5rem;border-radius:50%;background:var(--verm)}
+.ligne .quoi{font-family:var(--police);font-size:.78rem;color:var(--enc3);display:block}
+.ligne .obs{font-size:1rem}
+.ligne .obs b{font-weight:500;color:var(--enc)}
+.ligne .bits{font-family:var(--police-mono);font-size:.6rem;color:var(--bleu);display:none}
+body.conception .ligne .bits{display:block}
+.vide{color:var(--enc3);font-style:italic}
+
+/* ── posterior ── */
+.post{border:1px solid var(--bleu);border-left-width:3px;background:var(--bleu-voile);padding:.9rem 1rem;margin-bottom:1.2rem;display:none}
+body.conception .post{display:block}
+.post h3{font-size:.66rem;text-transform:uppercase;letter-spacing:.14em;color:var(--bleu);margin:0 0 .6rem}
+.pl{display:grid;grid-template-columns:1fr 3.2rem;gap:.5rem;align-items:center;font-family:var(--police);font-size:.78rem;margin-bottom:.25rem}
+.pb{height:5px;background:var(--pan2);position:relative}
+.pb i{position:absolute;inset:0 auto 0 0;background:var(--bleu)}
+.pl.out{opacity:.3;text-decoration:line-through}
+
+/* ── verdict ── */
+.verdict{margin-top:1.8rem;border-top:1px solid var(--regle);padding-top:1.2rem}
+.choixp{display:grid;gap:.35rem;margin-bottom:1rem}
+.pc{display:block;width:100%;text-align:left;background:none;border:1px solid var(--regle2);padding:.55rem .8rem;cursor:pointer;border-radius:2px;font-family:var(--police);font-size:.96rem}
+.pc:hover{border-color:var(--verm);background:var(--verm-voile)}
+.pc[aria-pressed="true"]{border-color:var(--verm);background:var(--verm-voile);font-weight:500}
+.valider{background:var(--verm);color:var(--pap);border:none;padding:.6rem 1.3rem;font-family:var(--police);font-weight:600;font-size:.92rem;cursor:pointer;border-radius:2px}
+.valider:disabled{background:var(--pan2);color:var(--enc3);cursor:default}
+
+/* ── débriefing ── */
+.debrief{grid-column:1/-1;margin-top:2.6rem;border-top:3px solid var(--verm);padding-top:1.6rem}
+.debrief h2{font-size:clamp(1.5rem,3.4vw,2.2rem);margin:0 0 .8rem;font-weight:700}
+.constat{background:var(--pan);border:1px solid var(--regle);padding:1.5rem 1.7rem;margin-bottom:1.4rem;box-shadow:var(--om)}
+.constat.fort{border-left:3px solid var(--verm)}
+.constat h3{margin:0 0 .5rem;font-size:1.2rem}
+.deux{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+@media(max-width:760px){.deux{grid-template-columns:1fr}}
+.chiffres{display:flex;flex-wrap:wrap;gap:2rem;margin:1rem 0}
+.ch{font-family:var(--police-mono)}
+.ch b{display:block;font-size:2rem;color:var(--verm);font-weight:400;line-height:1}
+.ch span{font-size:.62rem;color:var(--enc3);text-transform:uppercase;letter-spacing:.08em;font-family:var(--police)}
+table.piste{width:100%;border-collapse:collapse;font-size:.92rem;margin:1rem 0}
+table.piste th{text-align:left;font-family:var(--police);font-size:.62rem;text-transform:uppercase;letter-spacing:.1em;color:var(--enc3);border-bottom:1px solid var(--regle2);padding:.4rem .5rem}
+table.piste td{border-bottom:1px solid var(--regle);padding:.5rem .5rem;vertical-align:top}
+table.piste td.n{font-family:var(--police-mono);font-size:.76rem;white-space:nowrap}
+tr.sterile td{color:var(--enc3)}
+tr.sterile td.n{color:var(--verm)}
+.pied{max-width:78rem;margin:0 auto;padding:2.5rem 1.5rem;border-top:1px solid var(--regle);color:var(--enc3);font-size:.84rem;font-family:var(--police)}
+</style>
+</head>
+<body>
+<header class="tete">
+ <p class="fil"><span class="no">Prototype 02</span><a href="/daniel-tousignant.html" style="color:var(--enc3)">Daniel Tousignant</a><span>Dépannage · métier</span></p>
+ <h1>Le banc de panne</h1>
+ <p class="chapeau">La machine est en panne, le café ouvre dans un quart d'heure, et chaque vérification coûte des minutes que vous n'avez pas. Ce prototype n'évalue pas la réponse que vous trouvez&nbsp;: il évalue <em>l'information que vous achetez pour la trouver</em>. À la fin, il vous dit lesquels de vos gestes ne pouvaient rien vous apprendre — et si vous avez eu raison, ou si vous avez su.</p>
+ <div class="commandes">
+  <button class="cmd" id="btnConception" aria-pressed="false">Vue conception</button>
+  <button class="cmd" id="btnTheme">Sombre</button>
+  <button class="cmd" id="btnReprise">Nouvelle panne</button>
+  <span class="mo" style="font-size:.62rem;color:var(--enc3)">5 pannes possibles · 9 gestes · 3 min</span>
+ </div>
+</header>
+
+<div class="enveloppe">
+ <div class="machine">
+  <div class="plan" id="plan"></div>
+  <div class="horloge"><span>Temps écoulé</span><b id="chrono">0 min</b></div>
+  <p class="file" id="file">Ouverture dans 15 minutes.</p>
+ </div>
+
+ <div class="pilote">
+  <div class="plainte">
+   <p class="dit">— Ça marche pas. Les shots sont dégueulasses depuis à matin. J'en ai jeté six. Faut que ça marche pour l'ouverture.</p>
+   <span class="qui">Kim, barista — 7 h 45</span>
+  </div>
+  <div class="post" id="post"></div>
+  <section class="gestes"><h2>Les gestes possibles</h2><div id="gestes"></div></section>
+  <section class="carnet"><h2>Carnet</h2><div id="carnet"><p class="vide">Aucun geste posé.</p></div></section>
+  <section class="verdict" id="verdict"></section>
+ </div>
+ <section class="debrief" id="debrief" hidden></section>
+</div>
+<footer class="pied"><p>Prototype de portfolio — conception, écriture et réalisation&nbsp;: Daniel Tousignant. Machine, panne et personnages inventés. Tout tourne dans le navigateur&nbsp;; rien n'est transmis.</p></footer>
+
+<script>
+"use strict";
+/* ═══════════════════════════════════════════════════════════════════
+   « Le banc de panne » — moteur de diagnostic.
+   Le modèle est une table de vérité : 5 pannes × 9 gestes, chaque case
+   portant une CLASSE d'observation (ce qui discrimine) et un TEXTE
+   (ce que la personne voit). L'ensemble des pannes encore compatibles
+   avec ce qui a été observé est la seule « note » du dispositif.
+   ═══════════════════════════════════════════════════════════════════ */
+
+const PANNES = [
+ {id:"mouture", nom:"La mouture est trop fine",
+  repar:"Ouvrir le moulin de deux crans, purger la première dose, refaire un shot témoin.",
+  cause:"Le sac ouvert hier soir. Grain plus frais, humidité différente : au même cran, le moulin ne donne plus la même mouture. Rien n'est brisé — c'est un réglage qui a cessé d'être bon sans que personne le touche.",
+  lecon:"La panne la plus fréquente en café n'est pas une panne de machine."},
+ {id:"douchette", nom:"La douchette et le panier sont encrassés",
+  repar:"Rétrolavage au détergent, brosser la douchette, changer le panier.",
+  cause:"Onze jours sans rétrolavage. L'entretien préventif n'était pas oublié : il n'était assigné à personne en particulier.",
+  lecon:"Une panne d'entretien est presque toujours une panne d'organisation."},
+ {id:"pompe", nom:"La pompe faiblit",
+  repar:"Il n'y a pas de réparation à 7 h 50. On ouvre en servant des allongés et on fait venir le technicien.",
+  cause:"L'usure. La dégradation était en cours depuis des jours : personne ne chronomètre une extraction quand elle est encore acceptable.",
+  lecon:"Une panne progressive n'a pas de moment d'apparition ; elle a un moment de détection."},
+ {id:"chaudiere", nom:"L'eau est trop froide",
+  repar:"Rallumer et attendre. Vingt minutes de chauffe, il n'y a rien d'autre à faire — et il faut le dire à Kim tout de suite.",
+  cause:"L'équipe de ménage a coupé la machine complètement cette nuit. Ce n'est pas dans leur procédure ; ce n'est pas non plus interdit, parce que personne n'y a pensé.",
+  lecon:"Beaucoup de pannes sont des décisions prises par quelqu'un d'autre, huit heures plus tôt."},
+ {id:"joint", nom:"Le joint de groupe est usé",
+  repar:"Changer le joint. Dix minutes, et il y en a un dans le tiroir du bas.",
+  cause:"Dix-huit mois. Un joint tient environ un an.",
+  lecon:"La pièce d'usure prévisible est celle dont on n'a jamais la date."}
+];
+const IDS = PANNES.map(p=>p.id);
+
+/* table de vérité : [classe, observation] */
+const T = (o)=>o;
+const GESTES = [
+ {id:"avide", zone:"groupe", cout:1, nom:"Faire couler le groupe à vide, sans porte-filtre", res:{
+   mouture:["franc","Débit franc et régulier."],
+   douchette:["faible-a","Le débit est faible et tout part d'un seul côté de la douchette."],
+   pompe:["faible-r","Le débit est faible, mais parfaitement symétrique."],
+   chaudiere:["franc","Débit franc. L'eau fume peut-être moins que d'habitude, mais « peut-être » n'est pas une observation."],
+   joint:["franc","Débit franc."]}},
+ {id:"mano", zone:"mano", cout:1, nom:"Lire le manomètre pendant une extraction", res:{
+   mouture:["9","9 bar, l'aiguille est calée.",9],
+   douchette:["9","9 bar, l'aiguille tremble un peu.",9],
+   pompe:["5","5,5 bar. Elle ne monte pas plus haut.",5.5],
+   chaudiere:["9","9 bar.",9],
+   joint:["7","7 bar, et ça retombe pendant l'extraction.",7]}},
+ {id:"chrono", zone:"pf", cout:2, nom:"Chronométrer une extraction (25 g pour 36 g)", res:{
+   mouture:["lent","52 secondes. Un filet mince et sombre, presque pas de crème."],
+   douchette:["lent","49 secondes. L'écoulement part de travers et crachote."],
+   pompe:["mou","38 secondes. Le filet est régulier, mais il n'a pas de nerf."],
+   chaudiere:["court","26 secondes. À l'œil, c'est un espresso normal. Au goût, c'est blond et acide."],
+   joint:["court","23 secondes, et une partie de l'eau n'arrive jamais dans la tasse."]}},
+ {id:"pourtour", zone:"pf", cout:1, nom:"Regarder le pourtour du porte-filtre pendant l'extraction", res:{
+   joint:["fuite","Un jet mince s'échappe sur le côté gauche, avec un sifflement."],
+   mouture:["sec","Rien. Le pourtour est sec."],douchette:["sec","Rien. Le pourtour est sec."],
+   pompe:["sec","Rien. Le pourtour est sec."],chaudiere:["sec","Rien. Le pourtour est sec."]}},
+ {id:"mouture_t", zone:"moulin", cout:1, nom:"Prendre la mouture entre les doigts et vérifier le cran du moulin", res:{
+   mouture:["fine","Ça colle aux doigts, c'est de la farine. Et le moulin est exactement au cran d'hier."],
+   douchette:["ok","Mouture normale, elle s'effrite bien. Cran inchangé."],pompe:["ok","Mouture normale, elle s'effrite bien. Cran inchangé."],
+   chaudiere:["ok","Mouture normale, elle s'effrite bien. Cran inchangé."],joint:["ok","Mouture normale, elle s'effrite bien. Cran inchangé."]}},
+ {id:"bruit", zone:"corps", cout:1, nom:"Écouter la pompe pendant une extraction", res:{
+   pompe:["force","Elle force. Le ton monte et redescend, comme si elle cherchait sa pression."],
+   mouture:["normal","Le ronronnement habituel."],douchette:["normal","Le ronronnement habituel."],
+   chaudiere:["normal","Le ronronnement habituel."],joint:["normal","Le ronronnement habituel."]}},
+ {id:"barista", zone:"barista", cout:1, nom:"Demander à Kim ce qui a changé depuis hier", res:{
+   mouture:["meme","« Ben… on a ouvert un sac neuf hier soir. Pis le ménage l'a fermée complètement cette nuit, ça c'est pas normal. Ah, pis ça fait un boutte qu'on n'a pas fait le rétrolavage. Sinon, rien. »"],
+   douchette:["meme","« Ben… on a ouvert un sac neuf hier soir. Pis le ménage l'a fermée complètement cette nuit, ça c'est pas normal. Ah, pis ça fait un boutte qu'on n'a pas fait le rétrolavage. Sinon, rien. »"],
+   pompe:["meme","« Ben… on a ouvert un sac neuf hier soir. Pis le ménage l'a fermée complètement cette nuit, ça c'est pas normal. Ah, pis ça fait un boutte qu'on n'a pas fait le rétrolavage. Sinon, rien. »"],
+   chaudiere:["meme","« Ben… on a ouvert un sac neuf hier soir. Pis le ménage l'a fermée complètement cette nuit, ça c'est pas normal. Ah, pis ça fait un boutte qu'on n'a pas fait le rétrolavage. Sinon, rien. »"],
+   joint:["meme","« Ben… on a ouvert un sac neuf hier soir. Pis le ménage l'a fermée complètement cette nuit, ça c'est pas normal. Ah, pis ça fait un boutte qu'on n'a pas fait le rétrolavage. Sinon, rien. »"]}},
+ {id:"thermo", zone:"groupe", cout:3, nom:"Sortir le thermomètre et mesurer l'eau au groupe", res:{
+   chaudiere:["froid","78 °C. Il en manque quatorze."],
+   mouture:["ok","92 °C. Normal."],douchette:["ok","92 °C. Normal."],pompe:["ok","92 °C. Normal."],joint:["ok","92 °C. Normal."]}},
+ {id:"douche", zone:"groupe", cout:4, nom:"Démonter la douchette et inspecter le panier", res:{
+   douchette:["sale","Un tiers des trous sont bouchés et le panier est gras au toucher."],
+   joint:["joint","Douchette propre. Par contre le joint est dur, fendillé sur tout le pourtour."],
+   mouture:["propre","Douchette propre, panier correct. Quatre minutes pour un démontage qui ne dit rien."],
+   pompe:["propre","Douchette propre, panier correct. Quatre minutes pour un démontage qui ne dit rien."],
+   chaudiere:["propre","Douchette propre, panier correct. Quatre minutes pour un démontage qui ne dit rien."]}}
+];
+const ZONES = {mano:"le manomètre",groupe:"le groupe",pf:"le porte-filtre et la tasse",corps:"la carrosserie",moulin:"le moulin",barista:"Kim"};
+
+/* ─── information ─── */
+const lg2=x=>Math.log(x)/Math.LN2;
+function partition(C,g){const m={};C.forEach(p=>{const c=g.res[p][0];(m[c]=m[c]||[]).push(p)});return m}
+function gain(C,g){
+ if(C.length<2)return 0;
+ const m=partition(C,g);let e=0;
+ for(const k in m) e += (m[k].length/C.length)*lg2(m[k].length);
+ return lg2(C.length)-e;
+}
+/* meilleur enchaînement possible : minimax sur le temps */
+const memo={};
+function best(C){
+ if(C.length<2) return {cout:0,suite:[]};
+ const cle=C.join("|"); if(memo[cle])return memo[cle];
+ let mieux={cout:1e9,suite:[]};
+ GESTES.forEach(g=>{
+   const m=partition(C,g), parts=Object.values(m);
+   if(parts.length<2) return;
+   let pire=0,det={};
+   parts.forEach(pt=>{const r=best(pt); det[pt.join("|")]=r; pire=Math.max(pire,r.cout)});
+   const c=g.cout+pire;
+   if(c<mieux.cout) mieux={cout:c,geste:g.id,det:det};
+ });
+ memo[cle]=mieux; return mieux;
+}
+function chemin(C,verite){ /* l'enchaînement optimal pour CETTE panne-là */
+ const out=[];let cur=C.slice();
+ while(cur.length>1){
+  const b=best(cur); const g=GESTES.find(x=>x.id===b.geste);
+  out.push({g:g,obs:g.res[verite][1]});
+  cur=partition(cur,g)[g.res[verite][0]];
+ }
+ return out;
+}
+
+/* ─── état ─── */
+let E={};
+function neuf(){
+ E={verite:IDS[Math.floor(Math.random()*IDS.length)],faits:[],temps:0,C:IDS.slice(),fini:false,choix:null};
+ document.getElementById("debrief").hidden=true;
+ document.getElementById("debrief").innerHTML="";
+ rendu();
+}
+
+/* ─── le plan de la machine (tracé à la plume, deux couleurs) ─── */
+const PLAN = `
+<svg viewBox="0 0 520 340" role="img" aria-label="Plan de la machine à espresso et du moulin">
+ <!-- machine -->
+ <rect class="trait" x="90" y="52" width="250" height="16" rx="3"/>
+ <rect class="trait" x="90" y="68" width="250" height="150" rx="5"/>
+ <rect class="plein" x="90" y="68" width="250" height="150" rx="5"/>
+ <line class="trait fin" x1="90" y1="186" x2="340" y2="186"/>
+ <circle class="trait" cx="140" cy="112" r="26"/><circle class="trait fin" cx="140" cy="112" r="21"/>
+ <line class="trait fin" x1="140" y1="91" x2="140" y2="96"/><line class="trait fin" x1="121" y1="112" x2="126" y2="112"/>
+ <line class="trait fin" x1="159" y1="112" x2="154" y2="112"/><line class="trait fin" x1="126" y1="98" x2="130" y2="102"/>
+ <line class="trait fin" x1="154" y1="98" x2="150" y2="102"/>
+ <line class="aiguille" id="aiguille" x1="140" y1="112" x2="140" y2="94"/>
+ <circle class="trait" cx="140" cy="112" r="2.5"/>
+ <circle class="trait fin" cx="245" cy="100" r="8"/><circle class="trait fin" cx="245" cy="126" r="8"/><circle class="trait fin" cx="245" cy="152" r="8"/>
+ <rect class="trait fin" x="290" y="94" width="26" height="14" rx="2"/>
+ <!-- groupe et porte-filtre -->
+ <rect class="trait" x="196" y="218" width="78" height="22" rx="2"/>
+ <line class="trait fin" x1="202" y1="240" x2="268" y2="240" stroke-dasharray="3 3"/>
+ <path class="trait" d="M206 240 L206 252 Q206 259 214 259 L256 259 Q264 259 264 252 L264 240"/>
+ <rect class="trait" x="264" y="244" width="58" height="9" rx="4"/>
+ <line class="trait" x1="222" y1="259" x2="222" y2="271"/><line class="trait" x1="248" y1="259" x2="248" y2="271"/>
+ <path class="trait" d="M214 273 L219 301 L251 301 L256 273 Z"/>
+ <path class="trait fin" d="M256 279 q13 1 13 11 t-14 10"/>
+ <rect class="trait" x="160" y="303" width="200" height="10" rx="2"/>
+ <line class="trait fin" x1="180" y1="303" x2="180" y2="313"/><line class="trait fin" x1="300" y1="303" x2="300" y2="313"/><line class="trait fin" x1="330" y1="303" x2="330" y2="313"/>
+ <rect class="trait fin" x="100" y="218" width="16" height="7" rx="2"/><rect class="trait fin" x="314" y="218" width="16" height="7" rx="2"/>
+ <path class="trait" d="M336 176 L354 176 L354 246"/><circle class="trait fin" cx="354" cy="250" r="4"/>
+ <!-- moulin -->
+ <path class="trait" d="M400 44 L482 44 L470 96 L412 96 Z"/>
+ <rect class="trait" x="412" y="96" width="58" height="122" rx="3"/>
+ <rect class="plein" x="412" y="96" width="58" height="122" rx="3"/>
+ <circle class="trait" cx="441" cy="132" r="15"/><line class="trait fin" x1="441" y1="132" x2="450" y2="122"/>
+ <rect class="trait fin" x="426" y="218" width="30" height="9" rx="2"/>
+ <!-- Kim -->
+ <circle class="trait" cx="46" cy="150" r="12"/>
+ <path class="trait" d="M26 200 q20 -34 40 0"/>
+ <path class="trait fin" d="M30 186 q-8 14 -4 26"/><path class="trait fin" d="M62 186 q8 14 4 26"/>
+ <!-- zones sensibles -->
+ <g class="zone" data-zone="mano" tabindex="0"><circle cx="140" cy="112" r="31"/><text class="etiq" x="112" y="158">manomètre</text></g>
+ <g class="zone" data-zone="groupe" tabindex="0"><rect x="192" y="212" width="88" height="32" rx="3"/><text class="etiq" x="196" y="208">groupe · douchette</text></g>
+ <g class="zone" data-zone="pf" tabindex="0"><rect x="200" y="240" width="128" height="34" rx="3"/><text class="etiq" x="270" y="292">porte-filtre</text></g>
+ <g class="zone" data-zone="corps" tabindex="0"><rect x="96" y="74" width="238" height="106" rx="4"/><text class="etiq" x="180" y="90">carrosserie · pompe</text></g>
+ <g class="zone" data-zone="moulin" tabindex="0"><rect x="398" y="40" width="88" height="190" rx="4"/><text class="etiq" x="418" y="248">moulin</text></g>
+ <g class="zone" data-zone="barista" tabindex="0"><rect x="18" y="130" width="58" height="82" rx="4"/><text class="etiq" x="34" y="228">Kim</text></g>
+</svg>`;
+
+/* ─── rendu ─── */
+const $=s=>document.querySelector(s);
+function rendu(){
+ $("#plan").innerHTML=PLAN;
+ $("#plan").querySelectorAll(".zone").forEach(z=>{
+   const f=()=>{document.querySelectorAll('.grp[data-zone="'+z.dataset.zone+'"]').forEach(g=>{
+     g.classList.add("vive");g.scrollIntoView({block:"nearest",behavior:"smooth"});
+     setTimeout(()=>g.classList.remove("vive"),1400)})};
+   z.onclick=f; z.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();f()}};
+ });
+ majAiguille();
+ $("#chrono").textContent=E.temps+" min";
+ const reste=15-E.temps;
+ $("#file").textContent = E.fini ? "Diagnostic posé." :
+   (reste>6?"Ouverture dans "+reste+" minutes.":(reste>0?"Ouverture dans "+reste+" minutes. Kim regarde l'horloge.":"L'heure d'ouverture est passée. Kim a mis une affiche sur la porte."));
+
+ /* gestes, groupés par zone */
+ const parZone={};
+ GESTES.forEach(g=>{(parZone[g.zone]=parZone[g.zone]||[]).push(g)});
+ $("#gestes").innerHTML=Object.keys(ZONES).map(z=>{
+   if(!parZone[z])return"";
+   return '<div class="grp" data-zone="'+z+'"><h3>sur '+ZONES[z]+'</h3>'+parZone[z].map(g=>{
+     const fait=E.faits.some(f=>f.id===g.id);
+     const gn=gain(E.C,g);
+     return '<button class="geste" data-g="'+g.id+'"'+(fait||E.fini?" disabled":"")+'>'
+      +'<span>'+g.nom+'</span><span class="cout">'+g.cout+' min</span>'
+      +'<span class="gain">gain attendu '+gn.toFixed(2)+' bit'+(gn>=2?"s":"")+(gn<0.01?" — stérile en l\'état":"")+'</span></button>';
+   }).join("")+'</div>';
+ }).join("");
+ $("#gestes").querySelectorAll(".geste").forEach(b=>b.onclick=()=>poser(b.dataset.g));
+
+ /* carnet */
+ $("#carnet").innerHTML = E.faits.length?E.faits.map((f,i)=>{
+   const g=GESTES.find(x=>x.id===f.id);
+   return '<div class="ligne"><span class="quoi">'+(i+1)+'. '+g.nom+' · '+g.cout+' min</span>'
+     +'<span class="obs"><b>'+g.res[E.verite][1]+'</b></span>'
+     +'<span class="bits">attendu '+f.attendu.toFixed(2)+' bit · obtenu '+f.obtenu.toFixed(2)+' bit · restait '+f.avant+' panne(s), reste '+f.apres+'</span></div>';
+ }).join(""):'<p class="vide">Aucun geste posé.</p>';
+
+ /* posterior (vue conception) */
+ $("#post").innerHTML='<h3>Ce que le modèle sait, à cet instant</h3>'+PANNES.map(p=>{
+   const dedans=E.C.includes(p.id), pr=dedans?100/E.C.length:0;
+   return '<div class="pl'+(dedans?"":" out")+'"><span>'+p.nom+'</span><span class="pb"><i style="width:'+pr+'%"></i></span></div>';
+ }).join("")+'<p style="font-size:.74rem;color:var(--enc2);margin:.7rem 0 0;font-family:var(--police)">Les probabilités sont plates entre les pannes encore compatibles&nbsp;: le dispositif n\'a aucune raison d\'en préférer une, et n\'en invente pas.</p>';
+
+ /* verdict */
+ $("#verdict").innerHTML = E.fini ? "" :
+  '<h2>Poser le diagnostic</h2><div class="choixp">'+PANNES.map(p=>
+    '<button class="pc" data-p="'+p.id+'" aria-pressed="'+(E.choix===p.id)+'">'+p.nom+'</button>').join("")+'</div>'
+  +'<button class="valider" id="btnValider"'+(E.choix?"":" disabled")+'>Je m\'engage'+(E.choix?"":"")+'</button>'
+  +'<p style="font-size:.8rem;color:var(--enc3);margin-top:.6rem;font-family:var(--police)">Vous pouvez vous engager à n\'importe quel moment, y compris tout de suite. Le dispositif le note.</p>';
+ $("#verdict").querySelectorAll(".pc").forEach(b=>b.onclick=()=>{E.choix=b.dataset.p;rendu()});
+ if($("#btnValider")) $("#btnValider").onclick=engager;
+}
+function majAiguille(){
+ const a=document.getElementById("aiguille");if(!a)return;
+ const f=E.faits.find(x=>x.id==="mano");
+ const bar=f?GESTES.find(g=>g.id==="mano").res[E.verite][2]:0;
+ a.style.transform="rotate("+(-120+(bar/12)*240)+"deg)";
+}
+function poser(id){
+ if(E.fini)return;
+ const g=GESTES.find(x=>x.id===id);
+ const avant=E.C.slice(), att=gain(avant,g);
+ E.C=partition(E.C,g)[g.res[E.verite][0]];
+ E.temps+=g.cout;
+ E.faits.push({id:id,attendu:att,obtenu:lg2(avant.length)-lg2(E.C.length),avant:avant.length,apres:E.C.length});
+ rendu();
+}
+
+/* ─── engagement et débriefing ─── */
+function engager(){
+ E.fini=true;
+ const v=PANNES.find(p=>p.id===E.verite), c=PANNES.find(p=>p.id===E.choix);
+ const juste=E.choix===E.verite, su=E.C.length===1;
+ const exclu=!E.C.includes(E.choix);
+ const opt=best(IDS.slice()).cout;
+ const ch=chemin(IDS.slice(),E.verite);
+ const optCette=ch.reduce((s,x)=>s+x.g.cout,0);
+ const fixeA=E.faits.findIndex(f=>f.apres===1);
+ const apresFixe=fixeA>=0?E.faits.slice(fixeA+1):[];
+ const perdu=apresFixe.reduce((s,f)=>s+GESTES.find(g=>g.id===f.id).cout,0);
+ const steriles=E.faits.filter(f=>f.attendu<0.01);
+
+ let titre,corps;
+ if(juste&&su){titre="Vous avez su.";
+  corps="<p>Au moment où vous vous êtes engagé, une seule panne restait compatible avec vos observations. Ce n'est pas la même chose qu'avoir raison&nbsp;: c'est avoir éliminé. C'est le seul état dans lequel un dépanneur peut expliquer sa décision à quelqu'un d'autre.</p>";}
+ else if(juste){titre="Vous avez eu raison. Vous n'avez pas su.";
+  corps="<p>Au moment de votre engagement, <b>"+E.C.length+" pannes</b> restaient compatibles avec ce que vous aviez observé. Vous avez pris la bonne — une chance sur "+E.C.length+". Le café rouvre, personne ne verra la différence, et c'est exactement pour ça que cette distinction ne s'apprend jamais toute seule sur le plancher.</p><p>Un dispositif qui vous aurait félicité ici vous aurait appris à deviner.</p>";}
+ else if(exclu){titre="Ce n'était pas ça — et vous aviez déjà de quoi le savoir.";
+  corps="<p>La panne était&nbsp;: <b>"+v.nom.toLowerCase()+"</b>. Votre réponse était <em>déjà exclue</em> par une de vos propres observations : "+incompat(E.choix)+"</p><p>C'est l'erreur la plus coûteuse du métier, et la plus banale&nbsp;: l'information était sur la table, l'hypothèse de départ a été plus forte qu'elle.</p>";}
+ else {titre="Ce n'était pas ça — et rien de ce que vous aviez ne permettait de trancher.";
+  corps="<p>La panne était&nbsp;: <b>"+v.nom.toLowerCase()+"</b>. Au moment de votre engagement, "+E.C.length+" pannes restaient compatibles, dont la vôtre. Vous n'avez pas mal raisonné&nbsp;: vous avez conclu trop tôt. La différence a un coût, et il est mesurable — "+(optCette-E.temps>0?"il vous restait des gestes à "+(optCette-E.temps)+" minute(s) de là.":"vous étiez à un geste de la réponse.")+"</p>";}
+
+ const tabl = E.faits.length? '<table class="piste"><tr><th>Geste</th><th>Coût</th><th>Gain attendu</th><th>Gain obtenu</th><th>Verdict</th></tr>'
+  +E.faits.map(f=>{const g=GESTES.find(x=>x.id===f.id);const st=f.attendu<0.01;
+    return '<tr class="'+(st?"sterile":"")+'"><td>'+g.nom+'</td><td class="n">'+g.cout+' min</td>'
+     +'<td class="n">'+f.attendu.toFixed(2)+'</td><td class="n">'+f.obtenu.toFixed(2)+'</td>'
+     +'<td>'+(st?"Ne pouvait rien apprendre : toutes les pannes encore possibles y répondent pareil.":
+        (f.obtenu<f.attendu-0.3?"Moins que prévu — le hasard des observations, pas une faute.":"Utile."))+'</td></tr>'}).join("")
+  +'</table>' : '<p>Vous n\'avez posé aucun geste.</p>';
+
+ const meilleur='<ol style="padding-left:1.2rem">'+ch.map(x=>'<li><b>'+x.g.nom+'</b> <span class="mo" style="font-size:.7rem;color:var(--enc3)">'+x.g.cout+' min</span><br><span style="color:var(--enc2)">'+x.obs+'</span></li>').join("")+'</ol>';
+
+ const d=$("#debrief");d.hidden=false;
+ d.innerHTML =
+  '<h2>Débriefing</h2>'
+  +'<div class="constat fort"><h3>'+titre+'</h3>'+corps+'</div>'
+  +'<div class="chiffres">'
+  +'<span class="ch"><b>'+E.temps+'</b><span>minutes dépensées</span></span>'
+  +'<span class="ch"><b>'+optCette+'</b><span>minutes suffisaient ici</span></span>'
+  +'<span class="ch"><b>'+opt+'</b><span>au pire, sans savoir la panne</span></span>'
+  +'<span class="ch"><b>'+E.faits.length+'</b><span>gestes posés</span></span>'
+  +'</div>'
+  +'<div class="deux"><div class="constat"><h3>Ce que chaque geste a acheté</h3>'
+   +'<p style="color:var(--enc2);font-size:.95rem">Un <em>bit</em>, c'+"'"+'est une question fermée dont la réponse coupe le champ en deux. Cinq pannes, c\'est 2,32 bits à payer. Le prix se paye en minutes, et certains gestes coûtent des minutes sans rien acheter.</p>'
+   +tabl
+   +(steriles.length?'<p><b>'+steriles.length+' geste'+(steriles.length>1?'s stériles':' stérile')+'.</b> Pas une erreur de raisonnement : une vérification faite après que la question qu\'elle posait ait déjà été réglée.</p>':'<p>Aucun geste stérile. Chacun de vos gestes portait sur une question encore ouverte.</p>')
+   +(fixeA>=0&&apresFixe.length?'<p><b>Vous étiez fixé après le geste '+(fixeA+1)+'.</b> Les '+apresFixe.length+' suivants ont coûté '+perdu+' minutes de plus et n\'ont fait que confirmer ce que vous saviez déjà. Se rassurer est un besoin réel — mais c\'est un besoin, pas une méthode.</p>':'')
+   +'</div>'
+  +'<div class="constat"><h3>Le meilleur enchaînement possible</h3>'
+   +'<p style="color:var(--enc2);font-size:.95rem">Pour cette panne-ci, en '+optCette+' minute'+(optCette>1?'s':'')+'. Ce n\'est pas « la bonne réponse »&nbsp;: c\'est le chemin le plus court <em>que le modèle peut démontrer</em>.</p>'
+   +meilleur
+   +'<p style="margin-top:1rem"><b>Le geste le plus rentable du jeu</b> coûte une minute&nbsp;: faire couler le groupe à vide. Il sépare d\'un coup ce qui vient de la machine de ce qui vient du café. Les quatre minutes du démontage de la douchette, elles, ne se justifient qu\'après.</p>'
+   +'</div></div>'
+  +'<div class="constat"><h3>Et derrière la panne</h3>'
+   +'<p><b>'+v.nom+'.</b> '+v.repar+'</p><p><b>La cause.</b> '+v.cause+'</p>'
+   +'<p style="border-left:2px solid var(--verm);padding-left:.9rem;font-style:italic">'+v.lecon+'</p>'
+   +'<p style="font-size:.9rem;color:var(--enc2)">Réparer, c\'est ce matin. La cause, c\'est la semaine prochaine — et c\'est la seule des deux qui empêche la panne de revenir. Un simulateur qui s\'arrête à la réparation forme des gens qui réparent la même chose douze fois.</p></div>'
+  +'<div class="constat"><h3>Note de conception</h3>'
+   +'<p>Le modèle tient dans une table de cinq pannes sur neuf gestes. Tout le reste — les probabilités, le gain d\'information, le chemin optimal, le verdict « eu raison / avoir su » — en est <em>calculé</em>, jamais écrit à la main. Ajouter une dixième vérification, c\'est ajouter une ligne&nbsp;; le débriefing la tient compte le jour même.</p>'
+   +'<p>C\'est ce qui distingue un simulateur d\'un questionnaire déguisé en simulateur&nbsp;: ici, aucune rétroaction n\'a été rédigée pour une trajectoire particulière. Elles le sont toutes, pour toutes les trajectoires, parce qu\'elles sont dérivées de l\'état du modèle.</p>'
+   +'<p><button class="cmd" onclick="neuf();window.scrollTo({top:0,behavior:\'smooth\'})">Une autre panne</button></p></div>';
+ rendu();
+ d.scrollIntoView({block:"start",behavior:"smooth"});
+}
+function incompat(choix){
+ for(const f of E.faits){const g=GESTES.find(x=>x.id===f.id);
+   if(g.res[choix][0]!==g.res[E.verite][0])
+     return "« "+g.nom.toLowerCase()+" » aurait donné « "+g.res[choix][1]+" » si ç'avait été ça. Vous aviez observé autre chose.";}
+ return "";
+}
+
+$("#btnConception").onclick=e=>{const on=document.body.classList.toggle("conception");e.currentTarget.setAttribute("aria-pressed",on)};
+/* Le bouton dit l'état où il mène, jamais celui où l'on est : « Sombre »
+   sur fond clair. L'inverse se lit à contresens une fois sur deux. */
+function etatTheme(){
+ return document.documentElement.getAttribute("data-theme")
+   || (matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light");
+}
+function nommerTheme(){
+ const b=document.getElementById("btnTheme");
+ if(b) b.textContent = etatTheme()==="dark" ? "Clair" : "Sombre";
+}
+$("#btnTheme").onclick=()=>{
+ document.documentElement.setAttribute("data-theme", etatTheme()==="dark"?"light":"dark");
+ nommerTheme();
+};
+nommerTheme();
+$("#btnReprise").onclick=()=>{neuf();window.scrollTo({top:0,behavior:"smooth"})};
+neuf();
+</script>
+</body>
+</html>

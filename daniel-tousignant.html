@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Daniel Tousignant — ingénierie de formation pour adultes. Conception de dispositifs, diagnostic de matériel existant, production complète. Trente ans en éducation des adultes.">
+<meta name="author" content="Daniel Tousignant">
+<meta property="og:title" content="Daniel Tousignant — ingénierie de formation pour adultes">
+<meta property="og:description" content="Je conçois des dispositifs de formation pour adultes, et je les livre. Trente ans : enseignement, conseil pédagogique, direction de centre.">
+<meta property="og:type" content="profile">
+<title>Daniel Tousignant — ingénierie de formation</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<style id="jetons">/* ═══════════════════════════════════════════════════════════════════
+   SYSTÈME « BRAISE » — jetons de conception
+   Relevés sur la page d'accueil de référence, puis régularisés :
+   les valeurs lues au pixel ont été ramenées sur une échelle, parce
+   qu'un système se transmet et qu'un relevé ne se transmet pas.
+
+   Le nom vient de ce qui rend l'ensemble reconnaissable en une seconde :
+   presque tout est noir, blanc et gris froid, et il reste un seul point
+   de chaleur — le mot en dégradé, et la pastille orange. Tout le reste
+   du système consiste à ne pas l'éteindre en le répétant.
+   ═══════════════════════════════════════════════════════════════════ */
+:root{
+  /* ── Neutres — l'ossature. Zinc légèrement froid, jamais de gris pur ── */
+  --fond:            #FFFFFF;
+  --fond-2:          #FAFAFA;   /* sections alternées */
+  --fond-3:          #F4F4F5;   /* surfaces enfoncées, code */
+  --encre:           #09090B;   /* titres et texte fort */
+  --encre-2:         #52525B;   /* texte courant sur fond clair */
+  --encre-3:         #71717A;   /* sous-titre, légendes */
+  --encre-4:         #A1A1AA;   /* désactivé, filigrane */
+  --bord:            #E4E4E7;
+  --bord-fort:       #D4D4D8;
+
+  /* ── Marque — la bichromie. Deux arrêts, un seul usage ── */
+  --marque-rose:     #F0359F;
+  --marque-corail:   #F5533D;
+  --marque-degrade:  linear-gradient(100deg, var(--marque-rose) 0%, var(--marque-corail) 100%);
+
+  /* ── Signal — l'orange de la pastille. Ni marque, ni neutre ── */
+  --signal:          #F5652E;
+  --signal-encre:    #FFFFFF;
+  --signal-voile:    #FEF1EA;
+
+  /* ── Mesure — le bleu de ce que la machine calcule ─────────────────
+     Ajouté le 5 septembre 2026, quand les prototypes de l'atelier ont
+     demandé un rôle que le système n'avait pas : distinguer ce qu'une
+     personne décide de ce qu'un modèle mesure. Sans lui, il fallait
+     détourner un arrêt du dégradé, ce que la règle du § 5 interdit.
+     Jamais pour du texte courant, jamais pour une action. ── */
+  --mesure:          #2B4E9B;
+  --mesure-2:        #5C7EBF;
+  --mesure-voile:    #EAEFFA;
+
+  /* ── Action — le noir est la couleur du bouton principal ── */
+  --action:          #18181B;
+  --action-survol:   #27272A;
+  --action-encre:    #FAFAFA;
+
+  /* ── Typographie ── */
+  --police: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --police-mono: ui-monospace, "SF Mono", "Menlo", "Consolas", monospace;
+
+  --t-affiche:  clamp(2.75rem, 8.2vw, 5.25rem);  /* 44 → 84 px, le titre du héros */
+  --t-titre-1:  clamp(2rem, 4.4vw, 3rem);        /* 32 → 48 */
+  --t-titre-2:  clamp(1.5rem, 2.6vw, 1.875rem);  /* 24 → 30 */
+  --t-titre-3:  1.25rem;                          /* 20 */
+  --t-avant:    1.25rem;                          /* 20 — le sous-titre du héros */
+  --t-corps:    1rem;                             /* 16 */
+  --t-petit:    0.875rem;                         /* 14 — la pastille */
+  --t-menu:     0.8125rem;                        /* 13 */
+
+  --g-normal: 400;
+  --g-moyen:  500;
+  --g-fort:   600;
+  --g-noir:   800;   /* réservé au titre d'affiche */
+
+  --i-serre:  0.95;  /* interligne du titre d'affiche */
+  --i-titre:  1.15;
+  --i-corps:  1.6;
+
+  --l-serre:  -0.035em;  /* chasse du titre d'affiche */
+  --l-titre:  -0.02em;
+  --l-corps:  0em;
+  --l-large:  0.02em;
+
+  /* ── Espacement — base 4, sauts francs ── */
+  --e-1:  0.25rem;  --e-2:  0.5rem;   --e-3:  0.75rem;  --e-4:  1rem;
+  --e-5:  1.5rem;   --e-6:  2rem;     --e-7:  3rem;     --e-8:  4rem;
+  --e-9:  6rem;     --e-10: 8rem;
+
+  --mesure:      42rem;    /* largeur de lecture du sous-titre */
+  --contenu:     72rem;    /* largeur maximale d'une section */
+
+  /* ── Rayons ── */
+  --r-1: 0.375rem; --r-2: 0.5rem; --r-3: 0.75rem; --r-4: 1rem; --r-plein: 9999px;
+
+  /* ── Ombres — discrètes, portées courtes, jamais colorées ── */
+  --o-1: 0 1px 2px rgba(9,9,11,.06);
+  --o-2: 0 1px 3px rgba(9,9,11,.08), 0 1px 2px rgba(9,9,11,.04);
+  --o-3: 0 4px 12px rgba(9,9,11,.08);
+  --o-anneau: 0 0 0 3px rgba(9,9,11,.12);
+
+  --transition: 140ms cubic-bezier(.4,0,.2,1);
+}
+
+/* ── Variante de surface : fond blanc ──────────────────────────────
+   Les fonds alternés disparaissent et la séparation passe entièrement
+   aux bordures. Pour une page imprimée, projetée, ou posée dans un site
+   déjà clair où deux blancs différents se verraient comme une erreur.
+   Ne touche ni aux encres, ni à la marque, ni au signal : c'est une
+   variante de SURFACE, pas un second thème. ── */
+:root[data-fond="blanc"]{
+  --fond:   #FFFFFF;
+  --fond-2: #FFFFFF;   /* sections alternées : plus d'alternance */
+  --fond-3: #F7F7F8;   /* conservé, mais affaibli : le code et le survol
+                          ont encore besoin d'exister */
+  --bord:      #E7E7EA;
+  --bord-fort: #D1D1D6;
+  --o-1: none;
+  --o-2: 0 1px 2px rgba(9,9,11,.05);
+  --o-3: 0 4px 10px rgba(9,9,11,.07);
+}
+
+/* ── Le même système, retourné. Les rôles ne bougent pas, les valeurs oui ── */
+:root[data-theme="sombre"]{
+  --fond:#09090B; --fond-2:#0F0F11; --fond-3:#18181B;
+  --encre:#FAFAFA; --encre-2:#D4D4D8; --encre-3:#A1A1AA; --encre-4:#52525B;
+  --bord:#27272A; --bord-fort:#3F3F46;
+  --marque-rose:#FF4FB0; --marque-corail:#FF6A50;
+  --signal:#FF7A45; --signal-encre:#1A0C05; --signal-voile:#2A1610;
+  --mesure:#8FB2F0; --mesure-2:#6E8FCB; --mesure-voile:#18213A;
+  --action:#FAFAFA; --action-survol:#E4E4E7; --action-encre:#18181B;
+  --o-1:0 1px 2px rgba(0,0,0,.5);
+  --o-2:0 1px 3px rgba(0,0,0,.6), 0 1px 2px rgba(0,0,0,.4);
+  --o-3:0 4px 14px rgba(0,0,0,.6);
+  --o-anneau:0 0 0 3px rgba(250,250,250,.18);
+}
+
+/* ── Les deux ensemble ────────────────────────────────────────────
+   « Fond blanc » veut dire SURFACES UNIES, pas blanc à tout prix : en
+   thème sombre, la même intention supprime l'alternance sur le noir.
+   Un fond blanc sous des encres claires ne serait pas une variante,
+   ce serait une panne. ── */
+:root[data-theme="sombre"][data-fond="blanc"]{
+  --fond:#09090B; --fond-2:#09090B; --fond-3:#141417;
+  --bord:#2A2A2E; --bord-fort:#404046;
+}</style>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:var(--fond);color:var(--encre-2);font-family:var(--police);
+ font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased;font-feature-settings:"cv11"}
+h1,h2,h3{color:var(--encre);margin:0;letter-spacing:var(--l-titre);line-height:var(--i-titre);font-weight:var(--g-fort)}
+p{margin:0 0 1em}
+strong,b{color:var(--encre);font-weight:var(--g-fort)}
+a{color:var(--encre);text-decoration:none;border-bottom:1px solid var(--bord-fort);
+ transition:border-color var(--transition),color var(--transition)}
+a:hover{border-color:var(--encre)}
+button{font:inherit;color:inherit}
+:focus-visible{outline:none;box-shadow:var(--o-anneau);border-radius:var(--r-1)}
+.enrobe{max-width:54rem;margin:0 auto;padding:0 var(--e-5)}
+.col{max-width:var(--mesure)}
+
+/* ── barre ── */
+.barre{border-bottom:1px solid var(--bord)}
+.barre .enrobe{display:flex;align-items:center;gap:var(--e-4);height:3.5rem}
+.nom{font-weight:var(--g-fort);color:var(--encre);letter-spacing:.04em;font-size:.8rem;text-transform:uppercase}
+.barre nav{margin-left:auto;display:flex;gap:var(--e-4);font-size:.82rem;flex-wrap:wrap}
+.barre nav a{color:var(--encre-3);border:none}
+.barre nav a:hover{color:var(--encre)}
+.bt-theme{background:none;border:1px solid var(--bord-fort);border-radius:var(--r-2);
+ padding:.3rem .7rem;font-size:.74rem;font-weight:var(--g-moyen);cursor:pointer;color:var(--encre-3)}
+.bt-theme:hover{border-color:var(--encre-3);color:var(--encre)}
+
+/* ── entrée ── */
+.entree{padding:var(--e-9) 0 var(--e-8)}
+h1{font-size:clamp(2.25rem,6vw,4rem);font-weight:var(--g-noir);line-height:var(--i-serre);
+ letter-spacing:var(--l-serre);margin-bottom:var(--e-5);text-wrap:balance}
+h1 .deg{background:var(--marque-degrade);-webkit-background-clip:text;background-clip:text;color:transparent}
+.chapeau{font-size:var(--t-avant);color:var(--encre-3);max-width:var(--mesure)}
+.appels{display:flex;flex-wrap:wrap;gap:var(--e-3);margin-top:var(--e-6)}
+.bt{display:inline-flex;align-items:center;justify-content:center;height:2.9rem;padding:0 var(--e-5);
+ border-radius:var(--r-2);font-size:.92rem;font-weight:var(--g-moyen);cursor:pointer;
+ border:1px solid transparent;text-decoration:none}
+.bt-1{background:var(--action);color:var(--action-encre);border:none}
+.bt-1:hover{background:var(--action-survol)}
+.bt-2{background:var(--fond);color:var(--encre);border-color:var(--bord-fort)}
+.bt-2:hover{background:var(--fond-3);border-color:var(--bord-fort)}
+
+section{padding:var(--e-8) 0;border-top:1px solid var(--bord)}
+.cote{font-family:var(--police-mono);font-size:.68rem;color:var(--encre-4);letter-spacing:.06em;
+ text-transform:uppercase;display:block;margin-bottom:var(--e-3)}
+h2{font-size:var(--t-titre-1);font-weight:var(--g-noir);letter-spacing:-.025em;margin-bottom:var(--e-4)}
+h3{font-size:1.1rem;margin-bottom:var(--e-2)}
+
+/* ── mandats ── */
+.mandats{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:var(--e-6);margin-top:var(--e-6)}
+.mandat{border-top:2px solid var(--signal);padding-top:var(--e-4)}
+.mandat .duree{font-family:var(--police-mono);font-size:.68rem;color:var(--encre-4);display:block;margin-bottom:var(--e-2)}
+.mandat p{font-size:.96rem;color:var(--encre-3);margin:0}
+
+/* ── pour qui ── */
+.pourqui{margin:var(--e-5) 0 0;padding:0;list-style:none;max-width:var(--mesure)}
+.pourqui li{padding:var(--e-3) 0;border-bottom:1px solid var(--bord);font-size:1rem}
+.pourqui li b{display:inline}
+.pourqui li span{color:var(--encre-3)}
+
+/* ── preuves ── */
+.preuves{display:grid;gap:var(--e-5);margin-top:var(--e-6)}
+.preuve{border:1px solid var(--bord);border-radius:var(--r-3);padding:var(--e-6);background:var(--fond-2)}
+.preuve h3{margin-bottom:var(--e-2)}
+.preuve p{font-size:.98rem;color:var(--encre-3);margin-bottom:var(--e-4);max-width:44rem}
+.preuve p:last-child{margin-bottom:0}
+.chiffres{display:flex;flex-wrap:wrap;gap:var(--e-6);margin:var(--e-4) 0 var(--e-2)}
+.ch b{display:block;font-family:var(--police-mono);font-size:1.6rem;color:var(--encre);font-weight:var(--g-normal);line-height:1.1}
+.ch span{font-size:.7rem;color:var(--encre-4);text-transform:uppercase;letter-spacing:.08em}
+.liens{display:flex;flex-wrap:wrap;gap:var(--e-3) var(--e-5);margin-top:var(--e-4)}
+.liens a{font-size:.92rem;font-weight:var(--g-moyen);color:var(--encre);border-bottom:1px solid var(--signal)}
+.liens a:hover{border-bottom-width:2px}
+.liens a .quoi{display:block;font-size:.78rem;color:var(--encre-4);font-weight:var(--g-normal);border:none}
+
+/* ── parcours ── */
+.parcours{list-style:none;padding:0;margin:var(--e-5) 0 0;max-width:var(--mesure)}
+.parcours li{display:grid;grid-template-columns:7rem 1fr;gap:var(--e-4);padding:var(--e-3) 0;
+ border-bottom:1px solid var(--bord);align-items:baseline}
+@media(max-width:560px){.parcours li{grid-template-columns:1fr;gap:0}}
+.parcours .quand{font-family:var(--police-mono);font-size:.76rem;color:var(--encre-4);white-space:nowrap}
+.parcours .quoi b{display:block}
+.parcours .quoi span{color:var(--encre-3);font-size:.94rem}
+.diplomes{margin-top:var(--e-5);font-size:.96rem;color:var(--encre-3);max-width:var(--mesure)}
+.diplomes b{color:var(--encre)}
+
+/* ── joindre ── */
+.joindre{background:var(--fond-2);border:1px solid var(--bord);border-radius:var(--r-3);
+ padding:var(--e-7);margin-top:var(--e-5)}
+.joindre .courriel{font-size:clamp(1.2rem,3.4vw,1.7rem);font-weight:var(--g-fort);color:var(--encre);
+ letter-spacing:var(--l-titre);border-bottom:2px solid var(--signal)}
+.joindre p{max-width:var(--mesure)}
+footer{padding:var(--e-7) 0;border-top:1px solid var(--bord);color:var(--encre-4);font-size:.84rem}
+footer .enrobe{display:flex;flex-wrap:wrap;gap:var(--e-4);justify-content:space-between}
+</style>
+</head>
+<body>
+
+<div class="barre"><div class="enrobe">
+ <span class="nom">Daniel Tousignant</span>
+ <nav>
+  <a href="#faire">Ce que je fais</a>
+  <a href="#livre">Ce que j'ai livré</a>
+  <a href="#parcours">Parcours</a>
+  <a href="#joindre">Me joindre</a>
+ </nav>
+ <button class="bt-theme" id="btnTheme">Sombre</button>
+</div></div>
+
+<header class="entree"><div class="enrobe">
+ <h1>Je conçois des dispositifs de formation pour adultes, et je les <span class="deg">livre</span>.</h1>
+ <p class="chapeau">Trente ans en éducation des adultes, vus des trois étages&nbsp;: l'enseignement, le conseil pédagogique, la direction de centre. Aujourd'hui à mon compte, en conception et en ingénierie de formation.</p>
+ <div class="appels">
+  <a class="bt bt-1" href="mailto:tousignantd@gmail.com?subject=Projet%20de%20formation">Écrivez-moi</a>
+  <a class="bt bt-2" href="#livre">Voir ce que j'ai livré</a>
+ </div>
+</div></header>
+
+<main>
+<section id="faire"><div class="enrobe">
+ <span class="cote">Ce que je fais</span>
+ <h2>Trois façons de travailler ensemble</h2>
+ <p class="col">Chacune peut s'arrêter à la fin&nbsp;: vous n'êtes jamais tenu de passer à la suivante. C'est délibéré — un devis qui n'engage pas la production est un devis qu'on peut écrire honnêtement.</p>
+ <div class="mandats">
+  <div class="mandat"><span class="duree">2 à 4 jours</span><h3>Le diagnostic</h3>
+   <p>Votre formation existe déjà et quelque chose ne fonctionne pas. J'examine le matériel et les traces d'usage, et je vous remets ce qui cloche, pourquoi, et les trois corrections qui valent le budget. Souvent, deux des trois ne sont pas celles qu'on attendait.</p></div>
+  <div class="mandat"><span class="duree">5 à 10 jours</span><h3>Le devis</h3>
+   <p>Personne ne sait encore ce qu'il faut construire. Analyse de besoin, public réel, contraintes, et le devis pédagogique complet — assez précis pour qu'un autre que moi puisse le produire.</p></div>
+  <div class="mandat"><span class="duree">au forfait</span><h3>La production</h3>
+   <p>Le dispositif au complet&nbsp;: scénarisation, contenus, médias, mise en ligne. Livré fonctionnel, pas en maquette, avec la documentation qui permet à votre équipe de le reprendre sans moi.</p></div>
+ </div>
+</div></section>
+
+<section id="pourqui"><div class="enrobe">
+ <span class="cote">Pour qui</span>
+ <h2>Là où je connais déjà le terrain</h2>
+ <ul class="pourqui">
+  <li><b>Centres de services scolaires</b> <span>— éducation des adultes, services aux entreprises, francisation.</span></li>
+  <li><b>Cégeps et formation continue</b> <span>— conception à contrat, formation à distance.</span></li>
+  <li><b>Organismes d'employabilité et d'accueil</b> <span>— francisation, préparation à l'emploi.</span></li>
+  <li><b>Mutuelles de prévention et santé-sécurité</b> <span>— formation obligatoire, traçabilité.</span></li>
+  <li><b>Employeurs</b> <span>— intégration, formation de tâche, personnel qui parle peu français.</span></li>
+ </ul>
+ <p class="col" style="margin-top:var(--e-5)">J'ai aussi enseigné les sciences et la mathématique, et conseillé en mathématique, sciences et informatique pendant neuf ans. Concrètement&nbsp;: je peux travailler avec votre expert de contenu technique sans qu'il ait à m'expliquer son métier trois fois.</p>
+</div></section>
+
+<section id="livre"><div class="enrobe">
+ <span class="cote">Ce que j'ai livré</span>
+ <h2>Ouvrez, plutôt que de me croire</h2>
+ <p class="col">Un fournisseur de formation se juge normalement sur une liste de clients. C'est peu de chose&nbsp;: on ne peut pas ouvrir une référence. Voici des dispositifs finis, qui se jouent dans votre navigateur, maintenant.</p>
+
+ <div class="preuves">
+  <div class="preuve">
+   <h3>Un programme de francisation complet</h3>
+   <p>Conçu et produit seul, en quelques mois&nbsp;: modules alignés sur le programme ministériel, portail enseignant, portail élève, correction assistée, jeu de rôle oral, banque d'ateliers et de matériel imprimable.</p>
+   <div class="chiffres">
+    <span class="ch"><b>87</b><span>modules</span></span>
+    <span class="ch"><b>1 264</b><span>fiches et diaporamas</span></span>
+    <span class="ch"><b>5 962</b><span>répliques audio</span></span>
+    <span class="ch"><b>8</b><span>niveaux couverts</span></span>
+   </div>
+   <p>Le portail est privé — il contient des données d'élèves. Démonstration sur demande, en direct, en vingt minutes.</p>
+  </div>
+
+  <div class="preuve">
+   <h3>Cinq prototypes d'apprentissage</h3>
+   <p>Des pièces courtes, jouables en trois minutes, chacune bâtie sur une mécanique qu'on ne trouve pas ailleurs. Chacune porte un interrupteur «&nbsp;vue conception&nbsp;» qui ouvre le capot&nbsp;: les variables, le calcul, la façon dont la rétroaction est produite.</p>
+   <div class="liens">
+    <a href="/assets/portfolio/banc-de-panne.html">Le banc de panne<span class="quoi">évalue l'information achetée, pas la réponse trouvée</span></a>
+    <a href="/assets/portfolio/consequence.html">La conséquence différée<span class="quoi">aucune décision n'est corrigée sur le coup</span></a>
+    <a href="/assets/portfolio/jugement-compare.html">Le jugement comparé<span class="quoi">ce qui gouverne un correcteur à son insu</span></a>
+    <a href="/assets/portfolio/cohorte.html">Soixante élèves, quatre anomalies<span class="quoi">lire des données d'apprentissage et décider</span></a>
+    <a href="/assets/portfolio/document-piege.html">Le document piégé<span class="quoi">trouver la question, pas la réponse</span></a>
+   </div>
+  </div>
+
+  <div class="preuve">
+   <h3>Un simulateur de défibrillateur</h3>
+   <p>La simulation d'un appareil réel&nbsp;: allumage, pose des électrodes, analyse du rythme, choc, puis la réanimation au rythme imposé. Geste critique, temps qui court, et un appareil qui se comporte comme le vrai.</p>
+   <div class="liens"><a href="/assets/portfolio/simulateur-dea.html">Ouvrir le simulateur<span class="quoi">grand public, multilingue</span></a></div>
+  </div>
+
+  <div class="preuve">
+   <h3>La méthode, et de quoi la vérifier</h3>
+   <p>Un dossier sur ce que la recherche met entre les mains d'un concepteur, où ses résultats se contredisent, et comment on tranche. Et un système de design documenté, monté à partir d'une seule capture d'écran, dont les couleurs mesurent elles-mêmes leurs contrastes.</p>
+   <div class="liens">
+    <a href="/assets/portfolio/boucle-du-diagnostic.html">La boucle du diagnostic<span class="quoi">dossier de méthode</span></a>
+    <a href="/assets/portfolio/braise/systeme.html">Braise<span class="quoi">système de design</span></a>
+   </div>
+  </div>
+ </div>
+</div></section>
+
+<section id="parcours"><div class="enrobe">
+ <span class="cote">Parcours</span>
+ <h2>Les trois étages</h2>
+ <p class="col">La même chose vue de la classe, du bureau du conseiller, puis de la direction. C'est ce qui fait que je reconnais un dispositif qui ne sera pas utilisé avant qu'il soit produit — et que je sais le dire au moment où ça coûte encore peu cher.</p>
+ <ul class="parcours">
+  <li><span class="quand">2013–2021</span><span class="quoi"><b>Directeur</b><span>Centre d'éducation des adultes Tétreaultville, CSDM</span></span></li>
+  <li><span class="quand">2012–2013</span><span class="quoi"><b>Directeur par intérim</b><span>Centre Pauline-Julien, CSDM</span></span></li>
+  <li><span class="quand">2008–2012</span><span class="quoi"><b>Directeur adjoint</b><span>Centre Yves-Thériault, CSDM</span></span></li>
+  <li><span class="quand">1999–2008</span><span class="quoi"><b>Conseiller pédagogique</b><span>Mathématique, sciences et informatique — Réseau éducation des adultes, CSDM</span></span></li>
+  <li><span class="quand">1992–1999</span><span class="quoi"><b>Enseignant</b><span>Sciences, mathématique et informatique, CSDM</span></span></li>
+ </ul>
+ <p class="diplomes"><b>M. Sc. en didactique</b>, UQAM — un deuxième cycle de recherche sur l'apprentissage lui-même, ce qui permet de défendre un choix de conception autrement que par l'habitude. <b>D.E.S.S. en administration scolaire</b>, Université de Montréal. <b>B. Sc. en géologie</b>, Université Laval. Brevet d'enseignement.</p>
+ <p class="diplomes">Vice-président de l'<b>AQUOPS</b> (2003–2006). Conférencier aux colloques AQUOPS et TREACQ&nbsp;: vidéoformations et capsules d'apprentissage, formation à distance assistée (2010), TIC en francisation (2011), suivi informatisé des élèves (2014).</p>
+</div></section>
+
+<section id="joindre"><div class="enrobe">
+ <span class="cote">Me joindre</span>
+ <h2>Un courriel suffit</h2>
+ <div class="joindre">
+  <p>Dites-moi ce que vous devez faire apprendre, à qui, et pour quand. Je réponds en vous disant franchement si c'est un mandat pour moi — et si ça ne l'est pas, ce que je ferais à votre place.</p>
+  <p style="margin-bottom:0"><a class="courriel" href="mailto:tousignantd@gmail.com?subject=Projet%20de%20formation">tousignantd@gmail.com</a></p>
+ </div>
+</div></section>
+</main>
+
+<footer><div class="enrobe">
+ <span>Daniel Tousignant — ingénierie de formation pour adultes. Montréal.</span>
+ <span>Une seule page, volontairement.</span>
+</div></footer>
+
+<script>
+"use strict";
+/* Le bouton annonce l'état où il mène, jamais celui où l'on est. */
+function etatTheme(){
+ return document.documentElement.getAttribute("data-theme")
+   || (matchMedia("(prefers-color-scheme:dark)").matches ? "sombre" : "clair");
+}
+function nommerTheme(){
+ document.getElementById("btnTheme").textContent = etatTheme()==="sombre" ? "Clair" : "Sombre";
+}
+document.getElementById("btnTheme").onclick=()=>{
+ document.documentElement.setAttribute("data-theme", etatTheme()==="sombre" ? "clair" : "sombre");
+ nommerTheme();
+};
+nommerTheme();
+</script>
+</body>
+</html>
