@@ -54,6 +54,18 @@
   --faux:            #A83A2E;
   --faux-voile:      #F5E1DC;
 
+  /* ── Le logo : quatre tailles d'usage ──────────────────────────────
+     Le verrou est dimensionné par sa taille de police — le signe suit à
+     62 %, l'écart à 28 %. Ces quatre valeurs ont été ajoutées le
+     6 septembre 2026 parce que la page du système en improvisait cinq
+     différentes : un composant dont la taille se réinvente à chaque
+     emploi n'est pas un composant. Au-delà de l'affiche, on ne monte pas :
+     on met le logo sur un champ. */
+  --logo-menu:    1.25rem;   /* barre de navigation, pied de page */
+  --logo-carte:   1.5rem;    /* vignette, ligne de bandeau, exemple */
+  --logo-page:    2rem;      /* la taille par défaut du composant */
+  --logo-affiche: clamp(3rem, 9vw, 6.5rem);  /* couverture, champ de marque */
+
   /* ── Typographie — deux familles, pas trois ──
      Manrope, la police du mot-symbole, pour tout ce qui titre et
      commande. Source Serif pour ce qui se lit longtemps : un cabinet
@@ -155,7 +167,7 @@ button{font:inherit;color:inherit}
 .lecture{font-family:var(--police-lecture);font-size:var(--t-lecture);line-height:var(--i-lecture)}
 
 /* ── logo ── */
-.logo{display:inline-flex;align-items:center;gap:.28em;color:var(--encre);font-size:2rem;line-height:1}
+.logo{display:inline-flex;align-items:center;gap:.28em;color:var(--encre);font-size:var(--logo-page);line-height:1}
 .logo .signe{width:.62em;height:.62em;flex-shrink:0}
 .logo .mot{font-family:var(--police);font-weight:var(--g-noir);letter-spacing:var(--l-serre);line-height:1}
 
@@ -163,7 +175,7 @@ button{font:inherit;color:inherit}
 .barre{position:sticky;top:0;z-index:9;background:color-mix(in srgb,var(--fond) 90%,transparent);
  backdrop-filter:blur(8px);border-bottom:1px solid var(--bord)}
 .barre .enrobe{display:flex;align-items:center;gap:var(--e-4);height:3.5rem}
-.barre .logo{font-size:1.25rem}
+.barre .logo{font-size:var(--logo-menu)}
 .barre nav{margin-left:auto;display:flex;gap:var(--e-4);font-size:var(--t-menu);flex-wrap:wrap;font-weight:var(--g-moyen)}
 .barre nav a{color:var(--encre-3);text-decoration:none}
 .barre nav a:hover{color:var(--encre)}
@@ -171,7 +183,7 @@ button{font:inherit;color:inherit}
 /* ── bandeau de marque ── */
 .bandeau{background:var(--trame);color:var(--trame-encre);background-image:var(--motif-trame);
  padding:var(--e-9) 0 var(--e-8)}
-.bandeau .logo{color:var(--trame-encre);font-size:clamp(3rem,9vw,6.5rem)}
+.bandeau .logo{color:var(--trame-encre);font-size:var(--logo-affiche)}
 .bandeau .affiche{font-size:var(--t-titre-1);font-weight:var(--g-fort);letter-spacing:var(--l-titre);line-height:var(--i-titre);
  color:var(--trame-encre);margin:var(--e-7) 0 0;max-width:var(--mesure);text-wrap:balance}
 .bandeau .avant{font-family:var(--police-lecture);font-size:var(--t-avant);line-height:var(--i-lecture);max-width:var(--mesure);margin:var(--e-3) 0 0;color:var(--trame-encre);opacity:.86;text-wrap:pretty}
@@ -190,7 +202,7 @@ button{font:inherit;color:inherit}
 .bt:disabled{opacity:.45;cursor:not-allowed}
 .bt-sm{height:2.25rem;padding:0 var(--e-4)}
 .bandeau .bt-2{border-color:var(--trame-encre);color:var(--trame-encre)}
-.bandeau .bt-2:hover{background:rgba(20,22,31,.08)}
+.bandeau .bt-2:hover{background:color-mix(in srgb, var(--trame-encre) 8%, transparent)}
 
 /* ── sections ── */
 section{padding:var(--e-8) 0;border-bottom:1px solid var(--bord)}
@@ -200,7 +212,7 @@ section>.enrobe>h2{font-size:var(--t-titre-1);margin-bottom:var(--e-3)}
 .intro{max-width:var(--mesure);color:var(--encre-3)}
 .grappe{margin-top:var(--e-6)}
 .grappe h3{font-size:var(--t-titre-3);margin-bottom:var(--e-1)}
-.grappe>p{color:var(--encre-3);font-size:.9375rem;max-width:var(--mesure)}
+.grappe>p{color:var(--encre-3);font-size:var(--t-petit);max-width:var(--mesure)}
 
 /* ── marque ── */
 .planches{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:var(--e-3);margin-top:var(--e-4)}
@@ -209,14 +221,14 @@ section>.enrobe>h2{font-size:var(--t-titre-1);margin-bottom:var(--e-3)}
 .construction{display:grid;grid-template-columns:minmax(12rem,18rem) 1fr;gap:var(--e-6);align-items:start;margin-top:var(--e-4)}
 @media(max-width:700px){.construction{grid-template-columns:1fr}}
 .construction svg{width:100%;height:auto;display:block}
-.protection{position:relative;display:inline-block;padding:1.24em;border:1px dashed var(--bord-fort);font-size:2.6rem}
+.protection{position:relative;display:inline-block;padding:1.24em;border:1px dashed var(--bord-fort);font-size:var(--logo-page)}
 .protection::after{content:"x = la largeur d’une barre du signe · marge = 2x";position:absolute;left:0;bottom:-1.6rem;font-size:var(--t-menu);color:var(--encre-3);white-space:nowrap;letter-spacing:0}
 .tailles{display:flex;align-items:flex-end;gap:var(--e-6);flex-wrap:wrap;margin-top:var(--e-4)}
 .tailles .logo{color:var(--encre)}
-.tailles span.leg{display:block;font-family:var(--police-mono);font-size:.7rem;color:var(--encre-4);margin-top:var(--e-2)}
+.tailles span.leg{display:block;font-family:var(--police-mono);font-size:var(--t-menu);color:var(--encre-4);margin-top:var(--e-2)}
 .interdits{display:grid;grid-template-columns:repeat(auto-fit,minmax(12rem,1fr));gap:var(--e-3);margin-top:var(--e-4)}
 .interdit{border:1px solid var(--bord);border-radius:var(--r-3);padding:var(--e-4);position:relative}
-.interdit .logo{font-size:1.5rem;display:inline-flex}
+.interdit .logo{font-size:var(--logo-carte);display:inline-flex}
 .interdit p{margin:var(--e-3) 0 0;font-size:var(--t-menu);color:var(--encre-3)}
 .interdit::before{content:"";position:absolute;inset:var(--e-3) auto auto var(--e-3);width:.5rem;height:.5rem;background:var(--faux);border-radius:var(--r-plein)}
 .interdit>*:first-child{margin-left:1rem}
@@ -228,10 +240,10 @@ section>.enrobe>h2{font-size:var(--t-titre-1);margin-bottom:var(--e-3)}
 .nu:hover{border-color:var(--bord-fort)}
 .nu .ech{height:4.5rem;border-bottom:1px solid var(--bord)}
 .nu .txt{padding:var(--e-3)}
-.nu .nom{font-family:var(--police-mono);font-size:.75rem;color:var(--encre);display:block}
-.nu .val{font-family:var(--police-mono);font-size:.75rem;color:var(--encre-4);display:block;text-transform:uppercase}
-.nu .rol{font-size:.8125rem;color:var(--encre-3);display:block;margin-top:var(--e-1)}
-.nu .ct{font-family:var(--police-mono);font-size:.6875rem;margin-top:var(--e-1);display:block}
+.nu .nom{font-family:var(--police-mono);font-size:var(--t-menu);color:var(--encre);display:block}
+.nu .val{font-family:var(--police-mono);font-size:var(--t-menu);color:var(--encre-4);display:block;text-transform:uppercase}
+.nu .rol{font-size:var(--t-petit);color:var(--encre-3);display:block;margin-top:var(--e-1)}
+.nu .ct{font-family:var(--police-mono);font-size:var(--t-menu);margin-top:var(--e-1);display:block}
 .ct.ok{color:var(--juste)}.ct.faible{color:var(--faux)}
 .motif-demo{margin-top:var(--e-4);height:7rem;border-radius:var(--r-3);background:var(--trame);background-image:var(--motif-trame);
  display:flex;align-items:center;padding:0 var(--e-5);color:var(--trame-encre);font-weight:var(--g-fort)}
@@ -239,7 +251,7 @@ section>.enrobe>h2{font-size:var(--t-titre-1);margin-bottom:var(--e-3)}
 /* ── typographie ── */
 .specimen{border-top:1px solid var(--bord);padding:var(--e-5) 0;display:grid;grid-template-columns:12rem 1fr;gap:var(--e-5)}
 @media(max-width:760px){.specimen{grid-template-columns:1fr;gap:var(--e-2)}}
-.specimen dt{font-family:var(--police-mono);font-size:.75rem;color:var(--encre-4);line-height:1.7}
+.specimen dt{font-family:var(--police-mono);font-size:var(--t-menu);color:var(--encre-4);line-height:1.7}
 .specimen dt b{display:block;color:var(--encre-2);font-weight:var(--g-normal)}
 .specimen dd{margin:0;color:var(--encre);min-width:0;overflow:hidden}
 .ex-affiche{font-size:var(--t-affiche);font-weight:var(--g-noir);line-height:var(--i-serre);letter-spacing:var(--l-serre)}
@@ -254,10 +266,10 @@ section>.enrobe>h2{font-size:var(--t-titre-1);margin-bottom:var(--e-3)}
 
 /* ── échelles ── */
 .echelle{display:grid;gap:var(--e-2);margin-top:var(--e-5)}
-.pas{display:grid;grid-template-columns:5rem 5rem 1fr;gap:var(--e-3);align-items:center;font-family:var(--police-mono);font-size:.75rem;color:var(--encre-4)}
+.pas{display:grid;grid-template-columns:5rem 5rem 1fr;gap:var(--e-3);align-items:center;font-family:var(--police-mono);font-size:var(--t-menu);color:var(--encre-4)}
 .pas i{display:block;height:1.25rem;background:var(--trame-voile);border-left:2px solid var(--trame)}
 .rayons{display:flex;gap:var(--e-4);flex-wrap:wrap;margin-top:var(--e-5)}
-.rayon{width:6rem;height:4rem;border:1px solid var(--bord-fort);background:var(--fond-2);display:flex;align-items:flex-end;padding:var(--e-2);font-family:var(--police-mono);font-size:.7rem;color:var(--encre-4)}
+.rayon{width:6rem;height:4rem;border:1px solid var(--bord-fort);background:var(--fond-2);display:flex;align-items:flex-end;padding:var(--e-2);font-family:var(--police-mono);font-size:var(--t-menu);color:var(--encre-4)}
 
 /* ── composants ── */
 .vitrine{display:grid;grid-template-columns:repeat(auto-fit,minmax(18rem,1fr));gap:var(--e-4);margin-top:var(--e-5)}
@@ -291,7 +303,7 @@ section>.enrobe>h2{font-size:var(--t-titre-1);margin-bottom:var(--e-3)}
 .tab td:first-child{color:var(--encre);font-weight:var(--g-fort)}
 .surtitre{display:block;font-size:var(--t-menu);color:var(--trame-texte);letter-spacing:var(--l-large);text-transform:uppercase;font-weight:var(--g-fort);margin-bottom:var(--e-1)}
 .mini-bandeau{background:var(--trame);background-image:var(--motif-trame);color:var(--trame-encre);padding:var(--e-5);border-radius:var(--r-3);display:flex;justify-content:space-between;align-items:center;gap:var(--e-4);flex-wrap:wrap}
-.mini-bandeau .logo{color:var(--trame-encre);font-size:1.6rem}
+.mini-bandeau .logo{color:var(--trame-encre);font-size:var(--logo-carte)}
 .mini-bandeau span.ligne{font-family:var(--police-lecture);font-size:var(--t-lecture);font-style:italic}
 .menu-flottant{display:inline-block;background:var(--fond-2);border:1px solid var(--bord);border-radius:var(--r-3);box-shadow:var(--o-flottant);padding:var(--e-2);min-width:12rem}
 .menu-flottant a{display:block;padding:var(--e-2) var(--e-3);text-decoration:none;color:var(--encre-2);border-radius:var(--r-2);font-size:var(--t-petit)}
@@ -359,6 +371,9 @@ section>.enrobe>h2{font-size:var(--t-titre-1);margin-bottom:var(--e-3)}
 
   <div class="grappe"><h3>Tailles minimales</h3>
    <p>Le dessus-dessous se lit à partir de 24 px de côté. En dessous, le signe reste une grille reconnaissable, mais il perd l’idée : on l’accepte pour un favicon, pas pour un document.</p>
+   <p>Le verrou se dimensionne par sa <b>taille de police</b> — le signe suit à 62 %, l’écart à 28 % — et quatre valeurs suffisent :
+   <code>--logo-menu</code> pour une barre, <code>--logo-carte</code> pour une vignette ou une ligne de bandeau,
+   <code>--logo-page</code> par défaut, <code>--logo-affiche</code> pour une couverture. Au-delà, on ne monte pas : on pose le logo sur un champ.</p>
    <div class="tailles">
     <div><span class="logo" style="font-size:.9rem"><svg class="signe" style="width:16px;height:16px" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g fill="currentColor"><rect x="4" y="10" width="3.5" height="8"/><rect x="20.5" y="10" width="19.5" height="8"/><rect x="4" y="26" width="19.5" height="8"/><rect x="36.5" y="26" width="3.5" height="8"/><rect x="10" y="4" width="8" height="19.5"/><rect x="10" y="36.5" width="8" height="3.5"/><rect x="26" y="4" width="8" height="3.5"/><rect x="26" y="20.5" width="8" height="19.5"/></g></svg></span><span class="leg">16 · favicon, toléré</span></div>
     <div><span class="logo" style="font-size:1.35rem"><svg class="signe" style="width:24px;height:24px" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g fill="currentColor"><rect x="4" y="10" width="3.5" height="8"/><rect x="20.5" y="10" width="19.5" height="8"/><rect x="4" y="26" width="19.5" height="8"/><rect x="36.5" y="26" width="3.5" height="8"/><rect x="10" y="4" width="8" height="19.5"/><rect x="10" y="36.5" width="8" height="3.5"/><rect x="26" y="4" width="8" height="3.5"/><rect x="26" y="20.5" width="8" height="19.5"/></g></svg></span><span class="leg">24 · minimum du signe seul</span></div>
@@ -369,6 +384,9 @@ section>.enrobe>h2{font-size:var(--t-titre-1);margin-bottom:var(--e-3)}
 
   <div class="grappe"><h3>Déclinaisons</h3>
    <p>Quatre couples, et pas d’autre. L’ocre est un fond, jamais une encre de logo sur l’écru.</p>
+   <p class="note" style="max-width:var(--mesure)">Ces quatre planches sont le seul endroit de la page où les couleurs sont
+   <b>écrites en clair</b> plutôt qu’en jetons : un couple de marque ne doit pas se retourner avec le thème de la page qui le
+   documente. Partout ailleurs, une valeur en dur serait une faute.</p>
    <div class="planches">
     <div class="planche" style="background:var(--trame)"><span class="logo " style="color:#14161F"><svg class="signe" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g fill="currentColor"><rect x="4" y="10" width="3.5" height="8"/><rect x="20.5" y="10" width="19.5" height="8"/><rect x="4" y="26" width="19.5" height="8"/><rect x="36.5" y="26" width="3.5" height="8"/><rect x="10" y="4" width="8" height="19.5"/><rect x="10" y="36.5" width="8" height="3.5"/><rect x="26" y="4" width="8" height="3.5"/><rect x="26" y="20.5" width="8" height="19.5"/></g></svg><span class="mot">Trame</span></span></div>
     <div class="planche" style="background:#F4EEE1;border-color:#DDD4C2"><span class="logo " style="color:#14161F"><svg class="signe" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g fill="currentColor"><rect x="4" y="10" width="3.5" height="8"/><rect x="20.5" y="10" width="19.5" height="8"/><rect x="4" y="26" width="19.5" height="8"/><rect x="36.5" y="26" width="3.5" height="8"/><rect x="10" y="4" width="8" height="19.5"/><rect x="10" y="36.5" width="8" height="3.5"/><rect x="26" y="4" width="8" height="3.5"/><rect x="26" y="20.5" width="8" height="19.5"/></g></svg><span class="mot">Trame</span></span></div>
@@ -484,6 +502,7 @@ section>.enrobe>h2{font-size:var(--t-titre-1);margin-bottom:var(--e-3)}
      <li>Les verdicts, vert et rouge, parce que le diagnostic est le cœur du métier.</li>
      <li>Le motif de fond, l’échelle d’espacement, les rayons, les composants.</li>
      <li>Le rôle de l’indigo : les variantes du logo ne disaient pas qu’il porterait les liens.</li>
+     <li>Les quatre tailles d’usage du logo, ajoutées le jour où cette page s’est relue : elle en improvisait cinq.</li>
    </ul><p style="font-size:var(--t-petit);color:var(--encre-3);margin-top:var(--e-3)">Un logo donne une identité, pas un système. Le dire est ce qui distingue une charte d’un ensemble de goûts. Le système grandit quand un usage réel le demande, pas avant — et la règle s’écrit ici en même temps que le jeton.</p></div>
   </div>
 </div></section>
