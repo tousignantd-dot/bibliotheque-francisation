@@ -124,6 +124,13 @@
   /* Le chemin sert au repérage, pas à la lecture : une seule ligne, coupée
      au besoin, et le chemin entier dans l'infobulle. Sur deux lignes, il
      doublait la hauteur du tableau pour une information secondaire. */
+  /* Le sujet : la phrase d'attaque de la fiche, sur une seule ligne. C'est
+     elle qui fait retrouver un document — un titre seul ne dit pas de quoi
+     « Le point express » ou « Oser parler » parle. Coupée au besoin, et
+     entière dans l'infobulle. */
+  table.index .t-quoi{display:block; font-size:var(--fs-ui-sm); color:var(--ink-500);
+    font-weight:600; margin-top:3px; line-height:1.4; white-space:nowrap;
+    overflow:hidden; text-overflow:ellipsis; max-width:44rem}
   table.index .t-ou{display:block; font-size:var(--fs-meta); color:var(--ink-400);
     font-weight:600; margin-top:2px; white-space:nowrap; overflow:hidden;
     text-overflow:ellipsis; max-width:34rem}
@@ -153,6 +160,10 @@
     table.index td.c-lien{text-align:left; padding-top:var(--sp-2)}
     .t-liens{justify-content:flex-start}
     table.index td.c-fam, table.index td.c-type{display:inline-block; padding-right:0}
+    /* Sur un écran étroit, mieux vaut deux lignes de sujet qu'une phrase
+       coupée au troisième mot. */
+    table.index .t-quoi{white-space:normal; display:-webkit-box; -webkit-line-clamp:2;
+      -webkit-box-orient:vertical}
   }
 
   /* ---------- familles ---------- */
@@ -281,7 +292,7 @@
       <button type="button" class="onglet" data-f="defibrillateur" aria-pressed="false">Défibrillateur <span class="n"></span></button>
       <button type="button" class="onglet" data-f="portfolio" aria-pressed="false">Portfolio <span class="n"></span></button>
     </div>
-    <input type="search" class="recherche" id="q" placeholder="Chercher un titre…"
+    <input type="search" class="recherche" id="q" placeholder="Chercher un titre, un sujet…"
            aria-label="Chercher un document par titre ou par sujet">
     <button type="button" class="bascule" id="bascule" aria-pressed="false"
             title="Passer de la vue en fiches à la vue en tableau">Tableau</button>
@@ -2765,6 +2776,29 @@
           s.textContent = titre;
           tdT.appendChild(s);
         }
+        // Le sujet : la phrase en gras qui ouvre la fiche, sinon la première
+        // phrase du résumé. Lue sur la fiche elle-même, jamais recopiée — un
+        // sujet tenu à part serait faux à la prochaine réécriture.
+        // On prend le DÉBUT du résumé, pas son premier gras : sur plusieurs
+        // fiches le gras arrive au milieu de la phrase et donnait des sujets
+        // sans queue ni tête (« animatique montée »). La première phrase si
+        // elle tient, sinon une coupe au mot.
+        var quoi = texteDe(fiche, '.quoi').replace(/\s+/g, ' ').trim();
+        var pt = quoi.search(/[.:]\s/);
+        if (pt > 40 && pt < 150) {
+          quoi = quoi.slice(0, pt + 1);
+          // Une phrase coupée sur un deux-points reste en suspens : on ferme.
+          if (quoi.slice(-1) === ':') { quoi = quoi.slice(0, -1).trim() + '…'; }
+        }
+        else if (quoi.length > 160) { quoi = quoi.slice(0, 159).replace(/\s\S*$/, '') + '…'; }
+        if (quoi) {
+          var w = document.createElement('span');
+          w.className = 't-quoi';
+          w.textContent = quoi;
+          w.title = quoi;
+          tdT.appendChild(w);
+        }
+
         if (ou) {
           var o = document.createElement('span');
           o.className = 't-ou';
