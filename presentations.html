@@ -102,8 +102,16 @@
   .vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
   #vueTableau{padding:var(--sp-8) 0 0}
-  table.index{width:100%; border-collapse:collapse; background:var(--surface-card);
-    border:1px solid var(--border); border-radius:var(--r-md); overflow:hidden}
+  /* Le tableau ne prend pas toute la largeur du classeur : au-delà d'environ
+     58 rem, l'œil perd la ligne entre le titre et sa date, et le sujet
+     s'étire en une phrase qu'on ne balaye plus. Il se centre. */
+  .index-cadre{max-width:58rem; margin:0 auto}
+  /* `table-layout:fixed` : sans lui, les cellules qui ne se coupent pas — les
+     dates, les liens — imposaient leur largeur et le tableau débordait de la
+     page de cent pixels malgré les largeurs déclarées. */
+  table.index{width:100%; table-layout:fixed; border-collapse:collapse;
+    background:var(--surface-card); border:1px solid var(--border);
+    border-radius:var(--r-md); overflow:hidden}
   table.index th{
     text-align:left; font-size:var(--fs-label); font-weight:800; letter-spacing:var(--ls-label);
     text-transform:uppercase; color:var(--ink-400); padding:var(--sp-3) var(--sp-4);
@@ -130,19 +138,21 @@
      entière dans l'infobulle. */
   table.index .t-quoi{display:block; font-size:var(--fs-ui-sm); color:var(--ink-500);
     font-weight:600; margin-top:3px; line-height:1.4; white-space:nowrap;
-    overflow:hidden; text-overflow:ellipsis; max-width:44rem}
+    overflow:hidden; text-overflow:ellipsis; max-width:100%}
   table.index .t-ou{display:block; font-size:var(--fs-meta); color:var(--ink-400);
     font-weight:600; margin-top:2px; white-space:nowrap; overflow:hidden;
-    text-overflow:ellipsis; max-width:34rem}
-  table.index .c-fam{width:9.5rem}
-  table.index .c-type{width:11rem}
-  table.index .c-date{width:8.5rem}
-  table.index .c-lien{width:7.5rem; text-align:right}
+    text-overflow:ellipsis; max-width:100%}
+  table.index .c-fam{width:7.5rem}
+  table.index .c-type{width:8rem}
+  table.index .c-date{width:7.5rem}
+  table.index .c-lien{width:6.5rem; text-align:right}
   table.index td.c-date{font-size:var(--fs-ui-sm); color:var(--ink-500);
     font-variant-numeric:tabular-nums; white-space:nowrap}
   .t-fam{display:inline-block; font-size:var(--fs-meta); font-weight:800; color:var(--ink-500);
     background:var(--paper-200); border-radius:var(--r-pill); padding:2px var(--sp-3)}
   .t-liens{display:flex; gap:var(--sp-2); justify-content:flex-end; flex-wrap:wrap}
+  /* Un lien trop long se coupe plutôt que d'élargir sa colonne. */
+  .t-lien{max-width:100%; overflow:hidden; text-overflow:ellipsis}
   .t-lien{font-size:var(--fs-ui-sm); font-weight:800; color:var(--accent-ink);
     text-decoration:none; white-space:nowrap; border-bottom:1px solid transparent}
   .t-lien:hover{border-bottom-color:var(--accent)}
@@ -308,6 +318,7 @@
          des onglets. Elle obéit aux mêmes filtres que les fiches, parce que
          c'est la MÊME décision de visibilité qui pilote les deux. -->
     <section id="vueTableau" hidden aria-label="Tout le classeur en tableau">
+      <div class="index-cadre">
       <table class="index">
         <thead><tr>
           <th class="tri-col" data-tri="titre" aria-sort="none">Document</th>
@@ -319,6 +330,7 @@
         <tbody id="corpsIndex"></tbody>
       </table>
       <p class="index-pied" id="indexPied"></p>
+      </div>
     </section>
 
     <!-- ══════════ PRÉSENTER ══════════ -->
