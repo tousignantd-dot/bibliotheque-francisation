@@ -46,7 +46,6 @@
     .pe-session { display: flex; align-items: center; gap: var(--sp-3); }
     .pe-session > div { text-align: right; }
     .pe-nom { white-space: nowrap; font-size: var(--fs-body-sm); font-weight: var(--fw-semi); color: var(--text-strong); }
-    .pe-session-etat { font-size: var(--fs-ui); font-weight: var(--fw-medium); color: var(--text-muted); }
 
     /* La barre de parcours garde le comportement collant du système : sur une
        longue liste d'activités, les quatre sections restent atteignables. */
@@ -742,10 +741,11 @@
         <span class="fr-desc">Aide à l'apprentissage du français</span>
       </span>
       <div class="pe-session">
-        <div>
-          <div class="pe-nom" id="nomEnseignant"></div>
-          <div class="pe-session-etat">Session ouverte</div>
-        </div>
+        <!-- Le nom seul. « Session ouverte » disait ce que le bouton
+             « Déconnexion » dit déjà en donnant le moyen d'en sortir : un
+             bouton pour fermer une session est la preuve qu'elle est
+             ouverte. -->
+        <div class="pe-nom" id="nomEnseignant"></div>
         <!-- L'espace direction n'est pas un outil de classe : il a quitté la
              ligne du groupe pour l'en-tête, à côté de la session, avec les
              comptes du centre qu'il porte désormais seul. Il ne paraît qu'à
