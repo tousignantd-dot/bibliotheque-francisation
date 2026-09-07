@@ -3,12 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Le classeur — francis</title>
+<title>Le classeur — Trame</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap">
-<link rel="stylesheet" href="assets/design-system/marque-francis.css">
-<link rel="icon" type="image/svg+xml" href="assets/design-system/marque-francis-favicon.svg">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<link rel="icon" type="image/svg+xml" href="assets/presentations/trame/favicon.svg">
 <style>
   /* ---------------------------------------------------------------
      Le classeur — système de design Francisation / francis.
@@ -16,31 +15,46 @@
      ni d'état ; le vert porte l'action.
      Thème clair unique : l'en-tête n'est jamais foncé.
      --------------------------------------------------------------- */
+  /* ═══ ESSAI : le classeur au système de design « Trame » ═══
+     Les noms de jetons du classeur ne changent pas — ce sont les VALEURS
+     qui viennent de systemes-design/trame/tokens.css. Tout le reste de la
+     feuille continue de fonctionner, et le retour en arrière tient dans
+     ce seul bloc. Ce qu'aucun jeton ne peut dire (les polices de lecture,
+     les angles, l'absence d'ombre) est écrit dans la surcouche, plus bas.
+     ══════════════════════════════════════════════════════════════════ */
   :root{
-    --accent:#0A8F5B;      --accent-soft:#E6F5EE;  --accent-ink:#07734A;
-    --surface-band:#EDF6F1;
-    --ink-900:#17181A; --ink-700:#3A3D40; --ink-500:#4B4F52; --ink-400:#6E7175;
-    --surface-page:#F7F7F5; --surface-card:#FFFFFF; --surface-sunken:#FBFBFA;
-    --paper-200:#F0F0EE;
-    --border:#EAEAE8; --border-firm:#D6D6D2; --border-tint:#D8E8DF;
-    --acier-600:#1D6B8F; --acier-100:#E7F0F6;
-    --ambre-700:#B45309; --ambre-100:#FBEEDC;
-    --teal-700:#0D7A6F;  --teal-100:#E3F2F0;
-    --foret-700:#166534;
-    --font-sans:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;
+    /* Action : en Trame, le bouton principal est en encre, jamais en couleur.
+       L'indigo — la « chaîne » — porte les liens et le focus. */
+    --accent:#14161F;      --accent-soft:#E4E6F3;  --accent-ink:#1E2A78;
+    /* Le champ de marque : le bandeau de tête, une seule fois par écran. */
+    --surface-band:#E9A63B;
+    --ink-900:#14161F; --ink-700:#3B3D46; --ink-500:#4A4C55; --ink-400:#6A6B6E;
+    --surface-page:#F4EEE1; --surface-card:#FBF8F1; --surface-sunken:#F1EADB;
+    --paper-200:#EAE2D0;
+    --border:#DDD4C2; --border-firm:#C4B99F; --border-tint:rgba(20,22,31,.16);
+    /* Trame n'a pas cinq couleurs de section : le sur-titre est en ocre-texte,
+       la seule forme d'ocre qui se lise, et les formats redeviennent neutres. */
+    --acier-600:#6A6B6E; --acier-100:#EAE2D0;
+    --ambre-700:#8A5A0A; --ambre-100:#F6E6C8;
+    --teal-700:#6A6B6E;  --teal-100:#EAE2D0;
+    --foret-700:#8A5A0A;
+    --font-sans:"Manrope",ui-sans-serif,system-ui,"Helvetica Neue",Arial,sans-serif;
+    --font-lecture:"Source Serif 4",Georgia,"Times New Roman",serif;
     --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:20px;
     --sp-6:24px; --sp-8:32px; --sp-12:48px;
     --content-max:1000px; --gutter:32px;
     --fs-hero:clamp(38px,6vw,58px); --fs-h2:30px; --fs-h3:24px; --fs-lead:19px;
-    --fs-body:18px; --fs-body-sm:17px; --fs-ui:15px; --fs-ui-sm:14px;
+    --fs-body:17px; --fs-body-sm:16px; --fs-ui:15px; --fs-ui-sm:14px;
     --fs-label:13px; --fs-meta:12px;
-    --lh-title:1.2; --ls-hero:-0.02em; --ls-title:-0.015em; --ls-label:0.12em;
-    --r-sm:10px; --r-md:14px; --r-lg:18px; --r-pill:999px;
-    --sh-card:0 1px 2px rgba(20,20,20,.04);
-    --sh-raise:0 4px 20px rgba(20,20,20,.06);
-    --dur:140ms; --ease:cubic-bezier(.2,.7,.3,1);
+    --lh-title:1.18; --ls-hero:-0.03em; --ls-title:-0.02em; --ls-label:0.08em;
+    /* Les angles restent des angles : six pixels au plus. */
+    --r-sm:2px; --r-md:6px; --r-lg:6px; --r-pill:2px;
+    /* Le tissu est plat : aucune ombre, sauf ce qui flotte. */
+    --sh-card:none;
+    --sh-raise:none;
+    --dur:140ms; --ease:cubic-bezier(.4,0,.2,1);
     --tap-min:44px; --tap-comfort:48px;
-    --focus-ring:#0A8F5B;
+    --focus-ring:#1E2A78;
   }
   *{box-sizing:border-box}
   body{
@@ -259,17 +273,65 @@
     .onglets{margin-right:0}
   }
   @media (prefers-reduced-motion:reduce){*{transition-duration:0ms!important}}
+
+  /* ═══ Surcouche « Trame » ═══════════════════════════════════════════
+     Trois choses qu'un jeton ne peut pas porter : la police de lecture,
+     la graisse maximale de Manrope (800, et non 900), et la barre de
+     marque, qui n'est plus celle de francis. ═══════════════════════ */
+  body{font-weight:500}
+  h1,h2,.fiche .titre,.note b{font-weight:800}
+  .eyebrow,.surtitre,.btn,.onglet,.eti,.date,.ou{font-weight:700}
+  /* Ce qui se lit longtemps se lit en serif. */
+  .chapeau,.tete p,.fiche .quoi,.note p,.vide{
+    font-family:var(--font-lecture); font-weight:400; line-height:1.6}
+  .fiche .quoi b,.note p b,.chapeau b{font-weight:600; color:var(--ink-900)}
+  /* Le sur-titre est en ocre-texte, la seule forme d'ocre qui se lise. */
+  .eyebrow{color:var(--ambre-700)}
+  /* Le format d'un document n'est pas un signal : les étiquettes
+     redeviennent neutres, avec un filet plutôt qu'un aplat. */
+  .eti{background:transparent; border:1px solid var(--border-firm);
+    color:var(--ink-500); text-transform:none; letter-spacing:0}
+  /* Le bandeau de tête est le champ de marque : il porte le motif de fils.
+     Le pied de page, lui, redescend sur l'écru enfoncé — un seul champ
+     ocre par écran, c'est la règle. */
+  .bande{background-image:
+    repeating-linear-gradient(0deg, rgba(20,22,31,.10) 0 1px, transparent 1px 16px),
+    repeating-linear-gradient(90deg, rgba(20,22,31,.10) 0 1px, transparent 1px 16px)}
+  .bande .surtitre{color:var(--ink-900); opacity:.75}
+  .bande .chapeau{color:var(--ink-900)}
+  footer{background:var(--paper-200)}
+  /* La barre de marque de Trame : le verrou, un filet, la destination. */
+  .tr-barre{background:var(--surface-card); border-bottom:1px solid var(--border)}
+  .tr-barre__in{max-width:var(--content-max); margin:0 auto; padding:14px var(--gutter);
+    display:flex; align-items:center; gap:var(--sp-3)}
+  .tr-logo{display:inline-flex; align-items:center; gap:.28em; color:var(--ink-900);
+    font-size:1.25rem; line-height:1}
+  .tr-logo svg{width:.62em; height:.62em; flex-shrink:0; display:block}
+  .tr-logo .mot{font-weight:800; letter-spacing:-.045em}
+  .tr-trait{width:1px; height:1.1rem; background:var(--border-firm)}
+  .tr-desc{font-family:var(--font-lecture); font-size:var(--fs-ui); color:var(--ink-400)}
+  @media (max-width:520px){.tr-trait,.tr-desc{display:none}}
+  /* Manrope est plus large que Nunito : « 3 septembre 2026 » ne tenait plus
+     dans sa colonne et venait buter sur les liens. */
+  table.index .c-date{width:8.75rem}
+  table.index .c-fam{width:7rem}
+  table.index .c-type{width:7.5rem}
+  table.index td.c-date{font-size:var(--fs-label)}
+  table.index .t-lien{font-size:var(--fs-label)}
+  table.index .c-date{width:8.75rem}
+  table.index .c-fam{width:7rem}
+  table.index .c-type{width:7.5rem}
+  table.index td.c-date{font-size:var(--fs-label)}
+  table.index .t-lien{font-size:var(--fs-label)}
 </style>
 </head>
 <body>
 
-<div class="fr-barre">
-  <div class="fr-barre__in">
-    <div class="fr-lockup fr-lockup--grand">
-      <span class="fr-nom" role="img" aria-label="francis">franc<span class="fr-i" aria-hidden="true">ı<span class="fr-point"></span></span>s</span>
-      <span class="fr-trait" aria-hidden="true"></span>
-      <span class="fr-desc">Aide à l'apprentissage du français</span>
-    </div>
+<div class="tr-barre">
+  <div class="tr-barre__in">
+    <span class="tr-logo" role="img" aria-label="Trame"><svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g fill="currentColor"><rect x="4" y="10" width="3.5" height="8"/><rect x="20.5" y="10" width="19.5" height="8"/><rect x="4" y="26" width="19.5" height="8"/><rect x="36.5" y="26" width="3.5" height="8"/><rect x="10" y="4" width="8" height="19.5"/><rect x="10" y="36.5" width="8" height="3.5"/><rect x="26" y="4" width="8" height="3.5"/><rect x="26" y="20.5" width="8" height="19.5"/></g></svg><span class="mot">Trame</span></span>
+    <span class="tr-trait" aria-hidden="true"></span>
+    <span class="tr-desc">Le classeur du projet francis</span>
   </div>
 </div>
 
@@ -888,32 +950,6 @@
         <p>Les pages qui attendent votre jugement : un tri à faire, une proposition à retenir ou à écarter, un plan à valider. Elles se perdaient dans « Chantier » — c'était pourtant la seule famille qui appelle une réponse.</p>
       </div>
       <div class="liste">
-
-<article class="fiche" data-cle="acces borne niveau enseignant portee catalogue groupe acces.json ligne d'acces essai entonnoir niveau 6 restriction compte partenaire">
-          <div>
-            <h3 class="titre">Borner un enseignant à un niveau</h3>
-            <p class="quoi"><b>Donner à quelqu'un un accès qui ne porte que sur le niveau 6 —
-            mais tout le niveau 6.</b> La moitié du chemin est faite : le portail sait déjà
-            borner un catalogue par niveau. Ce qu'il ne sait pas, c'est <b>empêcher</b> — le
-            niveau appartient au groupe, le groupe appartient à l'enseignante, et elle en change
-            quand elle veut. La page nomme les <b>trois trous</b> par lesquels on sort du niveau
-            aujourd'hui, dont un qui existe déjà sans bornage : le catalogue reçoit du serveur
-            les 177 activités des huit niveaux et en cache sept dans le navigateur. Puis trois
-            façons de poser le bornage — sur le compte (rejeté : ça rouvre la confusion que
-            l'étape 2 du réseau a fermée), sur le centre (le bon outil, mais pour la vente par
-            niveau), sur la <b>ligne d'accès</b> (recommandé). Six questions attendent votre
-            réponse, dont : que voit-elle des autres niveaux, et que fait-on des groupes déjà
-            ouverts. <b>Rien n'est implémenté.</b></p>
-            <div class="meta">
-              <span class="eti eti-page">Page du site</span>
-              <span class="date">7 septembre 2026</span>
-              <span class="ou">assets/presentations/acces-borne-par-niveau.html</span>
-            </div>
-          </div>
-          <div class="actions">
-            <a class="btn" href="assets/presentations/acces-borne-par-niveau.html" target="_blank" rel="noopener">La proposition</a>
-          </div>
-        </article>
 
 <article class="fiche" data-cle="assurance responsabilite civile professionnelle erreurs omissions E&O cyberrisque prime courtier certificat assure additionnel 2 millions date retroactivite garantie subsequente loi 25 dommages punitifs 1000 amendes non assurables habitation avenant courriel courtier">
           <div>
@@ -2808,7 +2844,7 @@
 
 <footer>
   <div class="conteneur">
-    <span class="fr-nom" role="img" aria-label="francis">franc<span class="fr-i" aria-hidden="true">ı<span class="fr-point"></span></span>s</span>
+    <span class="tr-logo" style="font-size:1.05rem" role="img" aria-label="Trame"><svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g fill="currentColor"><rect x="4" y="10" width="3.5" height="8"/><rect x="20.5" y="10" width="19.5" height="8"/><rect x="4" y="26" width="19.5" height="8"/><rect x="36.5" y="26" width="3.5" height="8"/><rect x="10" y="4" width="8" height="19.5"/><rect x="10" y="36.5" width="8" height="3.5"/><rect x="26" y="4" width="8" height="3.5"/><rect x="26" y="20.5" width="8" height="19.5"/></g></svg><span class="mot">Trame</span></span>
     <!-- La date est posée au chargement, jamais écrite ici : elle annonçait
          le 20 août sous des fiches datées du 31. Même maladie que le compte
          du chapeau, même remède — on lit ce qui est là. -->
