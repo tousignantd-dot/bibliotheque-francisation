@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B2 · Demander poliment, sans avoir l'air de commander — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance B2 · Module 10 · 75 minutes</div>
+    <h1>Demander poliment, sans avoir l'air de commander</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">« Le trajet dure combien de temps ? » n'est pas impoli, mais c'est sec. « Pourriez-vous me dire combien de temps dure le trajet ? » ouvre la même porte plus largement — et la question change de forme en passant.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>employer « je voudrais » et « pourriez-vous » à la place de l'impératif ;</li><li>transformer une question directe en question indirecte ;</li><li>remettre le sujet avant le verbe dans la question indirecte ;</li><li>poser trois questions polies de suite sans répéter la même formule.</li></ol></section><section class="bloc regle"><div class="lbl">La question indirecte remet la phrase à l'endroit</div><p class="r">« Est-ce que je pourrais… », « Je voudrais savoir si… », « Pourriez-vous me dire… » — puis sujet, puis verbe.</p><p class="pr">On ne dit pas « Pourriez-vous me dire combien coûte-t-il ». Après la formule, la question redevient une phrase ordinaire.</p></section><section class="bloc card"><div class="lbl">Deux formes</div><h2 class="t">La même question, deux façons</h2><table><thead><tr><th>Question directe</th><th>Question indirecte</th></tr></thead><tbody><tr><td>Combien ça coûte ?</td><td class="cle">Pourriez-vous me dire combien ça coûte ?</td></tr><tr><td>Où est le quai ?</td><td class="cle">Je voudrais savoir où est le quai.</td></tr><tr><td>Est-ce que c'est direct ?</td><td class="cle">Je voudrais savoir si c'est direct.</td></tr><tr><td>Quand partez-vous ?</td><td class="cle">Pourriez-vous me dire quand vous partez ?</td></tr></tbody></table></section><section class="bloc"><div class="lbl">Trois formules, trois usages</div><h2 class="t">Elles ne sont pas interchangeables</h2><div class="grid"><div class="card"><h3>Je voudrais…</h3><p>Pour dire ce qu'on veut : « Je voudrais un aller-retour. »</p></div><div class="card"><h3>Je voudrais savoir si…</h3><p>Pour une question à laquelle on répond oui ou non.</p></div><div class="card"><h3>Pourriez-vous me dire…</h3><p>Pour une question ouverte : combien, quand, où, comment.</p></div><div class="card"><h3>Est-ce que je pourrais…</h3><p>Pour demander une permission : changer la date, payer plus tard.</p></div></div></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Garder l'inversion après la formule polie</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">Pourriez-vous me dire à quelle heure part-il ?</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">Pourriez-vous me dire à quelle heure il part ?</p></div></div><div class="note">La formule polie contient déjà sa question. Ce qui suit est une phrase ordinaire : sujet, puis verbe. Deux questions dans la même phrase, c'est une de trop.</div></section><section class="bloc card"><div class="lbl">Transformation</div><h2 class="t">Rendez la question polie</h2><p class="consigne">À l'oral d'abord, puis à l'écrit.</p><ol class="ex"><li><span class="q">Le trajet dure combien de temps ?</span><span class="ligne"></span></li><li><span class="q">Il faut changer d'autocar ?</span><span class="ligne"></span></li><li><span class="q">Je peux apporter une grosse valise ?</span><span class="ligne"></span></li><li><span class="q">Le quai est où ?</span><span class="ligne"></span></li><li><span class="q">Vous partez à quelle heure ?</span><span class="ligne"></span></li><li><span class="q">Je peux changer la date ?</span><span class="ligne"></span></li></ol></section><section class="bloc card"><div class="lbl">Le ton compte aussi</div><h2 class="t">Ce qui se remarque au comptoir</h2><table><thead><tr><th>Ce qui aide</th><th>Ce qui nuit</th></tr></thead><tbody><tr><td>Saluer avant de demander</td><td class="cle">Commencer par sa question</td></tr><tr><td>Une information par phrase</td><td class="cle">Tout dire d'un souffle</td></tr><tr><td>Laisser finir la réponse</td><td class="cle">Poser la suivante trop vite</td></tr><tr><td>Remercier à la fin</td><td class="cle">Partir sans rien dire</td></tr></tbody></table></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez trois questions polies que vous poseriez pour votre propre voyage.</p><ul><li>Trois formules différentes : ne répétez pas « pourriez-vous » trois fois.</li><li>Relisez-les : le sujet est-il bien avant le verbe ?</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Demander poliment : la question indirecte</h2><section class="bloc card ml"><h3>La même question, et une tout autre impression</h3><p class="mp">« Ça prend combien de temps ? » et « Pourriez-vous me dire combien de temps ça prend ? » demandent exactement la même chose. La première est correcte, personne ne vous reprendra, et pourtant elle sonne sèche à un comptoir. La seconde prend une seconde de plus et change complètement le ton de l'échange. Ce n'est pas de la décoration : au Québec, la politesse passe beaucoup par ces formules d'ouverture, et pas du tout par le vocabulaire savant. Quelqu'un qui dit « pourriez-vous » avec un vocabulaire de trois cents mots sera toujours mieux reçu que quelqu'un qui exige avec un vocabulaire de trois mille.</p><div class="note">Ces formules s'apprennent comme des blocs, une fois pour toutes. Elles vous serviront au comptoir, au téléphone, à la banque, au CLSC, à l'école de vos enfants.</div></section><section class="bloc card ml"><h3>Les quatre débuts à savoir par cœur</h3><p class="mp">Ce sont eux qui font tout le travail. Le reste de la phrase ne change presque pas.</p><table class="ana"><tr><td>Pour demander un renseignement</td><td class="">Pourriez-vous me dire… · Savez-vous… · Est-ce que vous savez…</td></tr><tr><td>Pour dire ce qu'on veut</td><td class="cle">Je voudrais savoir… · J'aimerais savoir… · Je me demandais…</td></tr><tr><td>Pour demander une permission</td><td class="">Est-ce que je pourrais… · Est-ce qu'il serait possible de…</td></tr></table><p class="dit"><span class="k">On dit</span> Pourriez-vous me dire combien de temps ça prend ? Je voudrais savoir s'il y a une correspondance.</p><div class="note">« Je me demandais si… » est la plus douce des quatre. Elle s'emploie quand on demande une faveur plutôt qu'un renseignement.</div></section><section class="bloc card ml"><h3>Le mot de question ne bouge pas</h3><p class="mp">Combien, quand, où, comment, pourquoi, à quelle heure : il reste exactement où il était dans la question directe. On ajoute seulement le début.</p><table class="ana"><tr><td>Directe puis polie</td><td class="">Ça prend combien de temps ? → Pourriez-vous me dire combien de temps ça prend ?</td></tr><tr><td>Avec « à quelle heure »</td><td class="cle">Il part à quelle heure ? → Je voudrais savoir à quelle heure il part.</td></tr><tr><td>Avec « où »</td><td class="">Le quai est où ? → Pourriez-vous me dire où est le quai ?</td></tr></table><p class="dit"><span class="k">On dit</span> Je voudrais savoir à quelle heure il part. Pourriez-vous me dire où est le quai ?</p><div class="note">L'ordre des mots se remet à l'endroit : « où est le quai » plutôt que « où le quai est-il ». La question polie n'est plus une question, c'est une phrase ordinaire.</div></section><section class="bloc card ml"><h3>« Est-ce que » devient « si »</h3><p class="mp">C'est le seul vrai changement, et c'est l'erreur la plus fréquente. Une question qui commence par « est-ce que » se transforme avec « si ».</p><table class="ana"><tr><td>La transformation</td><td class="">Est-ce qu'il faut changer ? → Je voudrais savoir s'il faut changer.</td></tr><tr><td>Devant « il », « si » devient « s' »</td><td class="cle">s'il faut · s'il y a · s'il est ouvert</td></tr><tr><td>Devant les autres, il reste entier</td><td class="">si vous avez · si c'est possible · si le déjeuner est compris</td></tr></table><p class="dit"><span class="k">On dit</span> Je voudrais savoir s'il faut changer d'autocar. Savez-vous si le déjeuner est compris ?</p><div class="note">« Je voudrais savoir est-ce qu'il faut changer » est la phrase à ne jamais dire. Le « est-ce que » et le « si » ne cohabitent pas.</div></section><section class="bloc card ml"><h3>La question directe, puis la question polie</h3><p class="mp">Choisissez une question et écoutez les deux versions à la file.</p><table class="labo"><thead><tr><th>Quelle question ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">La durée du trajet</td><td>Ça prend combien de temps ? Pourriez-vous me dire combien de temps ça prend, selon l'horaire ?<span class="tags">un horaire</span></td><td>le mot de question reste en place</td></tr><tr><td class="cle">La correspondance</td><td>Est-ce qu'il y a <b>une correspondance</b> ? Je voudrais savoir s'il y a une correspondance.</td><td>est-ce que devient si</td></tr><tr><td class="cle">Les bagages</td><td>Je peux apporter deux valises ? Est-ce que je pourrais apporter deux valises dans <b>la soute</b> ?</td><td>une permission : est-ce que je pourrais</td></tr><tr><td class="cle">Le prix en basse saison</td><td>C'est combien après le quinze septembre ? Savez-vous si le tarif de basse saison s'applique après le quinze septembre ?<span class="tags">la basse saison</span></td><td>savez-vous si, pour un renseignement</td></tr><tr><td class="cle">Les quatre à la suite</td><td>Pourriez-vous me dire combien de temps ça prend ? Je voudrais savoir s'il y a une correspondance. Est-ce que je pourrais apporter deux valises ? Savez-vous si le gîte est ouvert ?<span class="tags">un horaire · une correspondance</span></td><td>les quatre formules, à la file</td></tr></tbody></table><div class="note">Écoutez la version directe puis la version polie : c'est le contraste qui fait entendre ce que la formule ajoute.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six questions polies du module.</p><table class="ex2"><tr><td>Pourriez-vous me dire combien de temps ça prend ?</td><td>le mot de question ne bouge pas</td></tr><tr><td>Je voudrais savoir s'il faut changer d'autocar.</td><td>est-ce que devient si</td></tr><tr><td>Est-ce que je pourrais changer la date du retour ?</td><td>une permission</td></tr><tr><td>Savez-vous si le phare est encore ouvert à la fin septembre ?</td><td>si, devant une phrase complète</td></tr><tr><td>J'aimerais savoir à quelle heure le premier autocar part.</td><td>à quelle heure, sans inversion</td></tr><tr><td>Je me demandais s'il resterait de la place mercredi.</td><td>la formule la plus douce</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges de la question polie</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">garder « est-ce que » après « je voudrais savoir »</p><div class="k">Ce qui arrive</div><p class="ph">« Je voudrais savoir est-ce qu'il faut changer »</p><p class="px">« Est-ce que » devient <b>si</b>, sans exception. C'est la faute la plus fréquente et la plus facile à corriger : dès que la phrase commence par « je voudrais savoir » ou « savez-vous », cherchez le « si ».</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">mettre un point d'interrogation partout</p><div class="k">Ce qui arrive</div><p class="ph">« Je voudrais savoir à quelle heure il part ? »</p><p class="px">Si la phrase commence par « je », c'est une affirmation : point final. Le point d'interrogation ne revient que si la phrase commence par un verbe — « Pourriez-vous me dire… ? »</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">inverser le sujet après le mot de question</p><div class="k">Ce qui arrive</div><p class="ph">« Pourriez-vous me dire où est-il, le quai ? »</p><p class="px">Après la formule polie, l'ordre redevient normal : sujet, puis verbe. « Pourriez-vous me dire où est le quai ? » ou « où le quai se trouve ». Pas d'inversion.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">« Est-ce qu'il faut réserver ? » devient : « Je voudrais savoir… »</span><ul class="opts"><li>s'il faut réserver</li><li>est-ce qu'il faut réserver</li></ul></li><li><span class="q">« Je voudrais savoir à quelle heure il part » se termine par…</span><ul class="opts"><li>un point</li><li>un point d'interrogation</li></ul></li><li><span class="q">Pour demander une permission, on dit plutôt…</span><ul class="opts"><li>Est-ce que je pourrais…</li><li>Savez-vous si…</li></ul></li><li><span class="q">Le conditionnel « je voudrais » remplace…</span><ul class="opts"><li>« je veux »</li><li>« je peux »</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> s'il faut réserver — « S'il faut réserver ». Le « est-ce que » devient « si ». · <b>2.</b> un point — Un point. La phrase commence par « je » : c'est une affirmation. · <b>3.</b> Est-ce que je pourrais… — « Est-ce que je pourrais… ». « Savez-vous si » sert à demander un renseignement. · <b>4.</b> « je veux » — « Je veux ». C'est ce seul changement de temps qui adoucit toute la demande.</div></section></section></div>
+<footer><span>B2 · Une semaine au Bic</span><span>Fiche élève</span></footer>
+</body>
+</html>

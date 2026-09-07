@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A3 · Trois dommages et une clause — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance A3 · Module 3 · 75 minutes</div>
+    <h1>Trois dommages et une clause</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Amira appelle l'entreprise de déménagement le soir même. Elle a trois points ; le patron a un contrat et une réponse toute prête.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>suivre un appel de vingt-trois répliques et en tirer trois griefs ;</li><li>repérer sur quoi chacun des deux s'appuie ;</li><li>reconnaître le moment où Amira concède un point ;</li><li>expliquer pourquoi elle concède, et ce que ça lui rapporte.</li></ol></section><section class="bloc card"><div class="lbl">Écoute</div><h2 class="t">Le camion est reparti à onze heures</h2><p class="consigne">Six répliques sur vingt-trois. Les trois en couleur sont celles qui décident de la suite.</p><div class="rep"><div class="qui">AMIRA</div><div>Il y en a trois. Je préfère vous les dire au téléphone avant de vous écrire quoi que ce soit.</div></div><div class="rep rep--key"><div class="qui">AMIRA</div><div>Le coin de la remorque l'a accrochée en reculant, vers neuf heures et quart.</div></div><div class="rep"><div class="qui">DENIS</div><div>Elle était déjà croche, cette rampe-là. C'est un triplex des années trente.</div></div><div class="rep rep--key"><div class="qui">AMIRA</div><div>Elle était droite hier. J'ai des photos datées de la veille.</div></div><div class="rep rep--key"><div class="qui">AMIRA</div><div>Ça, je vous l'accorde : personne ne surveillait le balcon, et j'aurais dû y penser.</div></div><div class="rep"><div class="qui">DENIS</div><div>Notre responsabilité est limitée à soixante cents par livre par article.</div></div></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Ce que chacun met sur la table</h2><table><thead><tr><th>Amira apporte</th><th>Denis oppose</th></tr></thead><tbody><tr><td class="cle">des photos datées de la veille</td><td>« la rampe était déjà croche »</td></tr><tr><td class="cle">l'inventaire signé à huit heures</td><td>« un meuble ancien, ça travaille »</td></tr><tr><td class="cle">une concession sur les boîtes</td><td>« ça, c'est votre affaire »</td></tr><tr><td class="cle">l'annonce d'une lettre écrite</td><td>la limite au poids : soixante cents la livre</td></tr></tbody></table><div class="note">Chaque fois : un fait daté d'un côté, une opinion de l'autre.</div></section><section class="bloc regle"><div class="lbl">Concéder n'est pas perdre</div><p class="r">Amira reconnaît tout de suite que personne ne surveillait le balcon — et c'est ce qui la rend crédible sur les deux autres points.</p><p class="pr">Celui qui conteste tout en bloc se fait lire la clause et raccrocher. Celui qui lâche le point faible obtient qu'on écoute les points forts.</p></section><section class="bloc card"><div class="lbl">Pratique</div><h2 class="t">Vrai ou faux</h2><p class="consigne">Écoutez de nouveau, puis répondez.</p><ol class="ex"><li><span class="q">Amira téléphone avant d'envoyer quoi que ce soit par écrit.</span><span class="ligne ligne--court"></span></li><li><span class="q">Denis reconnaît que la rampe était droite avant l'arrivée du camion.</span><span class="ligne ligne--court"></span></li><li><span class="q">Amira reconnaît elle-même que personne ne surveillait les boîtes.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le chauffeur a signé l'inventaire sans y noter de dommage.</span><span class="ligne ligne--court"></span></li><li><span class="q">Amira avait lu le connaissement avant de le signer.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le déménageur lui conseille de réclamer à son assurance.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Dans un désaccord que tu as déjà eu, quel point aurais-tu pu concéder tout de suite ?</p><ul><li>Deux phrases : le désaccord, puis le point.</li><li>Termine par « je vous l'accorde, mais… ».</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Ce qui se décide dans les premières heures</h2><section class="bloc card ml"><h3>Une réclamation se gagne ou se perd le jour même</h3><p class="mp">Tout ce que vous ferez pendant les six semaines qui suivent dépendra de trois gestes posés dans les heures qui suivent le dommage : réclamer une copie signée de l'inventaire, photographier avec une date visible, et ne rien accepter par téléphone. Aucun de ces gestes ne coûte d'argent, aucun ne demande de connaître le droit, et ils décident pourtant du sort du dossier.</p><div class="note">Ce n'est pas une question de méfiance. Personne ne ment ; simplement, six semaines plus tard, plus personne ne se souvient de rien.</div></section><section class="bloc card ml"><h3>Ce qui n'est pas noté n'a pas eu lieu</h3><p class="mp">L'inventaire signé au départ est la seule photographie de l'état de vos meubles avant qu'ils entrent dans le camion. Un dommage qui n'y figure pas est réputé ne pas avoir existé à ce moment-là — et c'est précisément ce qui vous sert, si l'inventaire ne note rien et que le meuble arrive fendu. La feuille joue donc dans les deux sens : elle protège le transporteur des dommages anciens, et elle vous protège des dommages nouveaux.</p><div class="note">Réclamez la copie signée avant que le camion parte. Après, elle devient une faveur.</div></section><section class="bloc card ml"><h3>Trois gestes, trois raisons</h3><p class="mp">À gauche, ce qu'on fait. À droite, ce que ça règle six semaines plus tard.</p><table class="ex2"><tr><td>Réclamer la copie signée de l'inventaire</td><td>Prouver l'état des biens avant le transport</td></tr><tr><td>Photographier avec l'horodatage activé</td><td>Situer le dommage dans le temps, à la minute</td></tr><tr><td>Noter l'heure d'arrivée et de départ du camion</td><td>Délimiter la période où quelqu'un d'autre avait la garde</td></tr><tr><td>Écrire le nom du chauffeur</td><td>Pouvoir citer un témoin, plus tard, sans le chercher</td></tr><tr><td>Ne rien signer d'autre sur place</td><td>Éviter une décharge de responsabilité déguisée en accusé de réception</td></tr><tr><td>Ne pas jeter le bien abîmé</td><td>Un bien jeté avant l'examen de l'expert n'est plus indemnisable</td></tr></table></section><section class="bloc card ml"><h3>Trois réflexes qui coûtent cher le premier jour</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">dire « on verra ça plus tard, je suis épuisée »</p><div class="k">Ce qui arrive</div><p class="ph">poser les trois gestes avant de défaire une boîte</p><p class="px">Le jour du déménagement est le pire moment pour faire de la paperasse, et c'est le seul où elle vaut quelque chose. Vingt minutes ce soir-là valent six semaines de courriels.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">nettoyer, réparer ou jeter tout de suite</p><div class="k">Ce qui arrive</div><p class="ph">laisser en l'état et photographier</p><p class="px">Le réflexe d'ordre est le pire ennemi d'une réclamation. L'assureur indemnise ce que son expert peut constater ; ce que vous avez déjà réparé n'a jamais existé pour lui.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">accepter au téléphone « on va s'arranger »</p><div class="k">Ce qui arrive</div><p class="ph">demander la proposition par écrit</p><p class="px">Une entente verbale ne se prouve pas, et elle peut fermer le dossier chez votre assureur sans que vous l'ayez voulu. Remerciez, demandez un courriel, ne dites pas oui.</p></div></div></section><section class="bloc card ml"><h3>Quatre décisions du premier soir</h3><p class="mp">Quatre questions, vite fait.</p><ol class="check"><li><span class="q">Le vaisselier est fendu. Vous le faites réparer tout de suite ?</span><ul class="opts"><li>Oui, avant que ça empire</li><li>Non, on photographie et on attend l'expert</li></ul></li><li><span class="q">Le déménageur propose au téléphone « cent vingt piastres et on n'en parle plus ».</span><ul class="opts"><li>On accepte, c'est réglé</li><li>On demande la proposition par écrit</li></ul></li><li><span class="q">Vous n'avez pas de facture pour les livres abîmés.</span><ul class="opts"><li>La réclamation est perdue</li><li>Une photo datée ou un relevé peut servir de preuve</li></ul></li><li><span class="q">Personne ne surveillait le balcon pendant l'averse. Vous le dites ?</span><ul class="opts"><li>Non, ça affaiblirait le dossier</li><li>Oui, et ça rend crédible le reste</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> Non, on photographie et on attend l'expert — Un bien réparé ou jeté avant l'examen n'est plus indemnisable. On photographie, on garde, on attend. · <b>2.</b> On demande la proposition par écrit — Un montant encaissé peut fermer votre dossier d'assurance tout seul. Rien ne se refuse, rien ne s'accepte : on demande par écrit. · <b>3.</b> Une photo datée ou un relevé peut servir de preuve — Une preuve n'est pas forcément une facture. Photo datée, relevé de carte, courriel de confirmation : tout se plaide. · <b>4.</b> Oui, et ça rend crédible le reste — Concéder le point faible achète l'attention sur les points forts. C'est un calcul, pas une politesse.</div></section></section></div>
+<footer><span>A3 · Ce qui est couvert, et ce qui se défend</span><span>Fiche élève</span></footer>
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C3 · Mettre en avant ce qui compte — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance C3 · Module 11 · 75 minutes</div>
+    <h1>Mettre en avant ce qui compte</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">À l'écrit on souligne ; à l'oral on encadre. Sans mise en relief, une réponse de vingt mots arrive plate, et c'est le dernier mot qui reste.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>encadrer le sujet avec « c'est… qui » ;</li><li>encadrer le reste avec « c'est… que » ;</li><li>annoncer sa réponse avec « ce que… c'est » ;</li><li>accorder le verbe après « qui » à la bonne personne.</li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Trois façons de souligner à l'oral</h2><table><thead><tr><th>La forme</th><th>Ce qu'elle encadre</th></tr></thead><tbody><tr><td class="cle">c'est… qui</td><td>le sujet : c'est mon horaire qui a décidé</td></tr><tr><td class="cle">c'est… que</td><td>le reste : c'est à l'unité prothétique que je travaille</td></tr><tr><td class="cle">ce que… c'est</td><td>la réponse : ce que je veux, c'est finir</td></tr><tr><td class="cle">ce qui… c'est</td><td>le sujet annoncé : ce qui me manque, c'est un préalable</td></tr></tbody></table><div class="note">Deux emplois par entrevue portent ; dix deviennent un tic de langage.</div></section><section class="bloc regle"><div class="lbl">Après « qui », le verbe prend la personne encadrée</div><p class="r">C'est moi qui suis allée la voir. C'est vous qui avez mon dossier.</p><p class="pr">« Qui » reprend ce qu'on encadre, et le verbe s'accorde avec lui. « C'est moi qui est » est la faute la plus audible du niveau, et la première personne est celle qu'on rate le plus.</p></section><section class="bloc card"><div class="lbl">Grammaire</div><h2 class="t">Complétez la mise en relief</h2><p class="consigne">Un seul mot ou groupe de mots par trou.</p><ol class="ex"><li><span class="q">Mon horaire a décidé de tout. On encadre : C'est mon horaire ___ a décidé de tout.</span><span class="ligne ligne--court"></span></li><li><span class="q">C'est moi qui (être) ___ allée voir ma coordonnatrice la première.</span><span class="ligne ligne--court"></span></li><li><span class="q">C'est en travaillant de nuit ___ j'ai appris à observer.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ je veux, c'est être celle qu'on va chercher.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ me manque, c'est un préalable de mathématiques.</span><span class="ligne ligne--court"></span></li><li><span class="q">C'est vous ___ avez mon dossier devant vous, pas moi.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc"><div class="lbl">Emploi</div><h2 class="t">Quatre phrases prêtes pour l'entrevue</h2><div class="grid"><div class="card"><h3>Dire ce qu'on veut</h3><p>Ce que je veux, c'est être celle qu'on va chercher plutôt que celle qui va chercher.</p></div><div class="card"><h3>Dire ce qui manque</h3><p>Ce qui me manque, c'est un préalable de mathématiques, et je suis déjà inscrite.</p></div><div class="card"><h3>Dire d'où vient une compétence</h3><p>C'est en travaillant de nuit que j'ai appris à observer.</p></div><div class="card"><h3>Dire qui a fait le geste</h3><p>C'est moi qui suis allée voir ma coordonnatrice, avant de déposer.</p></div></div></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Piège</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">C'est moi qui est allée la voir.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">C'est moi qui suis allée la voir.</p></div></div><div class="note">Le pronom « qui » prend la personne de ce qu'il reprend. À la première personne, le verbe est « suis » — et l'erreur s'entend à trois mètres.</div></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écris deux phrases sur toi, l'une avec « c'est… que », l'autre avec « ce que… c'est ».</p><ul><li>C'est en gardant mes trois enfants que j'ai appris à m'organiser.</li><li>Ce que je veux, c'est travailler dans mon domaine ici.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Mettre en avant ce qui compte</h2><section class="bloc card ml"><h3>À l'écrit on souligne, à l'oral on encadre</h3><p class="mp">Une réponse de vingt mots arrive plate devant un comité, et c'est le dernier mot qui reste — rarement le bon. La mise en relief est ce qui remplace le surligneur : elle prend un élément de la phrase et le met dans un cadre, « c'est… qui », « c'est… que », « ce que… c'est ». Le contenu est identique ; ce qu'on entend ne l'est pas.</p><div class="note">Le programme du niveau 7 les appelle les phrases emphatiques, et il en donne quatre modèles : le clivage du sujet, le clivage des autres éléments, le pseudo-clivage du groupe du nom, et le pseudo-clivage avec « ce que… c'est ».</div></section><section class="bloc card ml"><h3>C'est… qui — pour le sujet</h3><p class="mp">On encadre celui ou ce qui fait l'action.</p><table class="ana"><tr><td>Avant</td><td class="">Mon horaire a décidé de tout.</td></tr><tr><td>Après</td><td class="cle">C'est mon horaire qui a décidé de tout.</td></tr><tr><td>L'accord</td><td class="">C'est moi qui suis allée la voir — jamais « qui est »</td></tr></table><p class="dit"><span class="k">On dit</span> C'est mon horaire qui a décidé de tout.</p><div class="note">Après « qui », le verbe prend la personne de ce qu'on encadre. « C'est moi qui suis », « c'est vous qui avez » : c'est la 1re personne qu'on rate le plus.</div></section><section class="bloc card ml"><h3>C'est… que — le lieu, le temps, la manière</h3><p class="mp">Le complément, le lieu, le temps, la manière : tout ce qui n'est pas le sujet s'encadre avec « que ».</p><table class="ana"><tr><td>Le lieu</td><td class="">C'est à l'unité prothétique que je travaille.</td></tr><tr><td>La manière</td><td class="cle">C'est en travaillant de nuit que j'ai appris à observer.</td></tr><tr><td>Le temps</td><td class="">C'est depuis janvier que je suis un cours du soir.</td></tr></table><p class="dit"><span class="k">On dit</span> C'est en travaillant de nuit que j'ai appris à observer.</p><div class="note">C'est la forme qui répond le mieux à une question ouverte : elle place la réponse au début de la phrase, au lieu de la faire attendre.</div></section><section class="bloc card ml"><h3>Ce que… c'est — pour annoncer que le cœur arrive</h3><p class="mp">La plus utile des trois en entrevue. Elle prévient l'interlocuteur qu'il doit écouter la fin de la phrase.</p><table class="ana"><tr><td>Avec un complément</td><td class="">Ce que je veux, c'est être celle qu'on va chercher.</td></tr><tr><td>Avec un sujet</td><td class="cle">Ce qui me manque, c'est un préalable de mathématiques.</td></tr><tr><td>Le choix</td><td class="">« ce que » quand il y a un complément, « ce qui » quand c'est le sujet</td></tr></table><p class="dit"><span class="k">On dit</span> Ce que je veux, c'est être celle qu'on va chercher.</p><div class="note">Employée deux fois dans une entrevue, elle porte. Employée à chaque réponse, elle devient un tic — et elle s'entend comme tel.</div></section><section class="bloc card ml"><h3>La même phrase, trois mises en relief</h3><p class="mp">Choisissez ce que vous voulez mettre en avant.</p><table class="labo"><thead><tr><th>Phrase de départ · Vous mettez en avant…</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">J'ai appris à observer en travaillant de nuit + le sujet</td><td>C'est moi qui ai appris à observer, personne ne me l'a montré.</td><td>clivage du sujet — attention à l'accord : qui ai, pas qui a</td></tr><tr><td class="cle">J'ai appris à observer en travaillant de nuit + le complément</td><td>C'est en travaillant de nuit que j'ai appris à observer.</td><td>clivage du complément — la forme la plus utile en entrevue</td></tr><tr><td class="cle">J'ai appris à observer en travaillant de nuit + le cœur de la réponse</td><td>Ce que la nuit m'a appris, c'est à observer.</td><td>pseudo-clivage — la réponse arrive à la fin, et on l'attend</td></tr><tr><td class="cle">Il me manque un préalable + le sujet</td><td>C'est un préalable qui me manque, rien d'autre.</td><td>clivage du sujet — « un préalable » est ce qui manque</td></tr><tr><td class="cle">Il me manque un préalable + le complément</td><td>C'est en mathématiques que le préalable me manque.</td><td>clivage du complément — on précise la matière</td></tr><tr><td class="cle">Il me manque un préalable + le cœur de la réponse</td><td>Ce qui me manque, c'est un préalable de mathématiques.</td><td>pseudo-clivage — « ce qui », parce que c'est le sujet</td></tr></tbody></table><div class="note">Trois façons de dire la même chose, trois choses différentes entendues. C'est tout l'intérêt de la mise en relief.</div></section><section class="bloc card ml"><h3>Quatre accords et deux choix</h3><p class="mp">Une seule forme est juste.</p><ol class="check"><li><span class="q">« C'est moi qui ___ allée la voir. »</span><ul class="opts"><li>est</li><li>suis</li></ul></li><li><span class="q">« C'est vous qui ___ mon dossier. »</span><ul class="opts"><li>a</li><li>avez</li></ul></li><li><span class="q">« ___ me manque, c'est un préalable. »</span><ul class="opts"><li>Ce que</li><li>Ce qui</li></ul></li><li><span class="q">« ___ je veux, c'est finir la formation. »</span><ul class="opts"><li>Ce que</li><li>Ce qui</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> suis — « Qui » reprend « moi » : première personne. · <b>2.</b> avez — « Qui » reprend « vous » : deuxième personne du pluriel. · <b>3.</b> Ce qui — Le préalable est le sujet de « manque » : « ce qui ». · <b>4.</b> Ce que — « Je veux quelque chose » : complément, donc « ce que ».</div></section><section class="bloc card ml"><h3>Trois emplois qui se retournent</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">« c'est moi qui est »</p><div class="k">Ce qui arrive</div><p class="ph">c'est moi qui suis</p><p class="px">L'accord à la première personne est celui qu'on rate le plus, et il est très audible.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">mettre en relief à chaque phrase</p><div class="k">Ce qui arrive</div><p class="ph">deux fois dans une entrevue, pas dix</p><p class="px">La mise en relief attire l'attention. Utilisée partout, elle n'attire plus rien et devient un tic de langage.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">encadrer ce qui n'est pas important</p><div class="k">Ce qui arrive</div><p class="ph">choisir l'élément qui répond à la question posée</p><p class="px">« C'est à huit heures que je me lève » quand on demande pourquoi vous voulez le diplôme : la forme est juste, le choix est raté.</p></div></div></section></section></div>
+<footer><span>C3 · Entrer dans le programme</span><span>Fiche élève</span></footer>
+</body>
+</html>

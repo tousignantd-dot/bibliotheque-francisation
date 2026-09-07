@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>D2 · Ce carton-là, cet avis, cette boîte — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance D2 · Module 7 · 75 minutes</div>
+    <h1>Ce carton-là, cet avis, cette boîte</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Quand on montre une chose qu'on a dans la main, on a besoin d'un petit mot devant. Quatre formes, et un « -là » qui s'ajoute partout au Québec.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>employer « ce », « cet », « cette » et « ces » ;</li><li>ajouter « -là » pour montrer un objet ;</li><li>savoir ce qui suit et ce qui ne suit pas lors d'un déménagement ;</li><li>demander cinq services différents au comptoir.</li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Quatre formes, une seule idée : je montre</h2><table><thead><tr><th>La forme</th><th>Devant quoi</th><th>Exemples</th></tr></thead><tbody><tr><td class="cle">ce</td><td>un mot masculin</td><td>ce carton, ce colis, ce reçu</td></tr><tr><td class="cle">cet</td><td>un mot masculin qui commence par une voyelle</td><td>cet avis, cet envoi</td></tr><tr><td class="cle">cette</td><td>un mot féminin</td><td>cette boîte, cette enveloppe, cette lettre</td></tr><tr><td class="cle">ces</td><td>un pluriel, masculin ou féminin</td><td>ces timbres, ces enveloppes</td></tr></tbody></table><div class="note">« Cet » existe parce que « ce avis » est trop dur à prononcer : deux voyelles collées.</div></section><section class="bloc regle"><div class="lbl">Le « -là » du Québec</div><p class="r">ce carton-là  ·  cette boîte-là</p><p class="pr">Au comptoir, on ajoute très souvent « -là » pour bien montrer l'objet qu'on tient. Avec un trait d'union. Ce n'est pas obligatoire, mais c'est ce que vous entendrez, et ça rend la phrase plus claire quand on montre du doigt.</p></section><section class="bloc card"><div class="lbl">Écriture</div><h2 class="t">Complétez avec « ce », « cet », « cette » ou « ces »</h2><p class="consigne">Regardez le mot qui suit.</p><ol class="ex"><li><span class="q">J'ai trouvé ___ carton-là dans ma boîte aux lettres.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ avis dit que mon colis est arrivé.</span><span class="ligne"></span></li><li><span class="q">___ boîte-là est trop grosse pour la boîte rouge.</span><span class="ligne ligne--court"></span></li><li><span class="q">Est-ce que ___ timbres sont encore bons ?</span><span class="ligne ligne--court"></span></li><li><span class="q">Je voudrais envoyer ___ colis-là par Xpresspost.</span><span class="ligne ligne--court"></span></li><li><span class="q">Combien coûtent ___ enveloppes-là ?</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Devant une voyelle</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">ce avis, ce envoi</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">cet avis, cet envoi</p></div></div><div class="note">Deux voyelles collées ne se prononcent pas : le français ajoute un t pour les séparer. C'est le même réflexe que « mon amie » plutôt que « ma amie ». Il n'y a rien à comprendre, seulement à entendre.</div></section><section class="bloc regle"><div class="lbl">Quand on déménage</div><p class="r">les lettres suivent, les colis ne suivent pas</p><p class="pr">Le service de réacheminement fait suivre votre courrier à la nouvelle adresse, jusqu'à douze mois. Il porte sur les lettres, le courrier recommandé et les magazines. Les colis et les grosses enveloppes prépayées, eux, restent à l'ancienne adresse.</p></section><section class="bloc card"><div class="lbl">Compréhension</div><h2 class="t">Est-ce que ça suit ?</h2><p class="consigne">Vous déménagez. Qu'est-ce qui arrive à la nouvelle adresse ?</p><ol class="ex"><li><span class="q">Une lettre de votre banque</span><span class="ligne ligne--court"></span></li><li><span class="q">Un colis commandé sur Internet</span><span class="ligne ligne--court"></span></li><li><span class="q">Un envoi en courrier recommandé</span><span class="ligne ligne--court"></span></li><li><span class="q">Le magazine auquel vous êtes abonné</span><span class="ligne ligne--court"></span></li><li><span class="q">Une grosse enveloppe prépayée</span><span class="ligne ligne--court"></span></li><li><span class="q">Une carte d'anniversaire de votre famille</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">À l'oral</div><h2 class="t">Un service, une phrase</h2><p class="consigne">Quelle phrase dit-on au comptoir ?</p><ol class="ex"><li><span class="q">Vous avez trouvé un carton dans votre boîte aux lettres.</span><span class="ligne"></span></li><li><span class="q">Vous envoyez un papier important et vous voulez une preuve.</span><span class="ligne"></span></li><li><span class="q">Vous devez envoyer deux cents dollars à quelqu'un.</span><span class="ligne"></span></li><li><span class="q">Vous déménagez le mois prochain.</span><span class="ligne"></span></li><li><span class="q">Vous ne comprenez pas ce qu'on vient de vous dire.</span><span class="ligne"></span></li><li><span class="q">Vous voulez garder la preuve de ce que vous avez payé.</span><span class="ligne"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez la phrase que vous direz pour faire suivre votre courrier.</p><ul><li>Employez « est-ce que je pourrais ».</li><li>Ajoutez la date de votre déménagement.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Ce carton-là — montrer ce qu'on a devant soi</h2><section class="bloc card ml"><h3>Le mot qui remplace le doigt</h3><p class="mp">Au comptoir, tu poses une boîte et tu dis « ce colis-là ». Tu montres un carton et tu dis « ce carton-là ». Ces petits mots — <b>ce</b>, <b>cet</b>, <b>cette</b>, <b>ces</b> — servent à désigner une chose qu'on a devant soi. Le programme de niveau 3 les nomme : les déterminants démonstratifs.</p><div class="note">Sans eux, il faut décrire l'objet en entier. Avec eux, un mot suffit : la personne regarde ce que tu montres.</div></section><section class="bloc card ml"><h3>Ce — devant un mot masculin</h3><p class="mp">On l'emploie quand on dirait « un colis », « un carton », « un reçu ».</p><table class="ana"><tr><td>On dit</td><td class=""><b>ce</b> colis</td></tr><tr><td>Aussi</td><td class="cle"><b>ce</b> carton, <b>ce</b> reçu</td></tr><tr><td>Et</td><td class=""><b>ce</b> timbre-là</td></tr></table><p class="dit"><span class="k">On dit</span> Ce colis. Ce carton. Ce reçu.</p><div class="note">C'est le plus court des quatre, et le plus fréquent au comptoir.</div></section><section class="bloc card ml"><h3>Cet — devant une voyelle</h3><p class="mp">Le mot reste masculin, mais on ajoute un t pour que ça se prononce.</p><table class="ana"><tr><td>On dit</td><td class=""><b>cet</b> avis</td></tr><tr><td>Aussi</td><td class="cle"><b>cet</b> envoi</td></tr><tr><td>On ne dit pas</td><td class="">« ce avis »</td></tr></table><p class="dit"><span class="k">On dit</span> Cet avis. Cet envoi.</p><div class="note">« Ce avis » est impossible à prononcer : deux voyelles collées. Le t se glisse au milieu pour aider la bouche.</div></section><section class="bloc card ml"><h3>Cette — devant un mot féminin</h3><p class="mp">On l'emploie quand on dirait « une boîte », « une lettre », « une enveloppe ».</p><table class="ana"><tr><td>On dit</td><td class=""><b>cette</b> boîte</td></tr><tr><td>Aussi</td><td class="cle"><b>cette</b> enveloppe, <b>cette</b> lettre</td></tr><tr><td>Et</td><td class=""><b>cette</b> adresse-là</td></tr></table><p class="dit"><span class="k">On dit</span> Cette boîte. Cette enveloppe. Cette lettre.</p><div class="note">« Cet » et « cette » se prononcent presque pareil. À l'écrit, c'est le genre du mot qui décide.</div></section><section class="bloc card ml"><h3>Ces — devant un pluriel</h3><p class="mp">Une seule forme, masculin comme féminin.</p><table class="ana"><tr><td>On dit</td><td class=""><b>ces</b> timbres</td></tr><tr><td>Aussi</td><td class="cle"><b>ces</b> enveloppes</td></tr><tr><td>Et</td><td class=""><b>ces</b> boîtes-là</td></tr></table><p class="dit"><span class="k">On dit</span> Ces timbres. Ces enveloppes.</p><div class="note">Ne pas confondre avec <b>ses</b>, qui veut dire « à lui » ou « à elle ». Ça se prononce pareil et ça ne s'écrit pas pareil.</div></section><section class="bloc card ml"><h3>Le « -là » qu'on ajoute au Québec</h3><p class="mp">Il se colle au nom, avec un trait d'union, et il insiste.</p><table class="ana"><tr><td>On dit</td><td class=""><b>ce carton-là</b></td></tr><tr><td>Aussi</td><td class="cle"><b>cette boîte-là</b>, <b>ces timbres-là</b></td></tr><tr><td>Ce que ça ajoute</td><td class="">celui-là et pas un autre</td></tr></table><p class="dit"><span class="k">On dit</span> Ce carton-là. Cette boîte-là. Ces timbres-là.</p><div class="note">On l'entend partout au Québec, à l'oral comme à l'écrit familier. Il est correct et il rend la phrase plus claire.</div></section><section class="bloc card ml"><h3>Montre ce que tu tiens</h3><p class="mp">Choisis l'objet et ce que tu veux en dire.</p><table class="labo"><thead><tr><th>Quel objet ? · Tu veux…</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">un carton + en parler</td><td>J'ai trouvé ce carton-là dans ma boîte aux lettres.</td><td>masculin : ce</td></tr><tr><td class="cle">un carton + poser une question</td><td>Qu'est-ce que ce carton-là veut dire ?</td><td>la question de départ du défi</td></tr><tr><td class="cle">un avis + en parler</td><td>Cet avis dit que mon colis est arrivé.</td><td>voyelle : cet</td></tr><tr><td class="cle">un avis + poser une question</td><td>Est-ce que cet avis est encore bon ?</td><td>à cause des quinze jours</td></tr><tr><td class="cle">une boîte + en parler</td><td>Je voudrais envoyer cette boîte-là.</td><td>féminin : cette</td></tr><tr><td class="cle">une boîte + poser une question</td><td>Combien coûte cette boîte-là ?</td><td>on montre en parlant</td></tr><tr><td class="cle">des timbres + en parler</td><td>Je vais prendre ces timbres-là.</td><td>pluriel : ces</td></tr><tr><td class="cle">des timbres + poser une question</td><td>Est-ce que ces timbres-là sont encore bons ?</td><td>une vraie question de comptoir</td></tr></tbody></table><div class="note">Huit phrases, toutes dites en montrant quelque chose. Le geste et le mot vont ensemble.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six phrases pour montrer et demander.</p><table class="ex2"><tr><td>J'ai trouvé ce carton-là dans ma boîte aux lettres.</td><td>masculin</td></tr><tr><td>Cet avis dit que mon colis est arrivé.</td><td>devant une voyelle</td></tr><tr><td>Je voudrais envoyer cette boîte-là.</td><td>féminin</td></tr><tr><td>Est-ce que ces timbres-là sont encore bons ?</td><td>pluriel</td></tr><tr><td>Combien coûte cette enveloppe-là ?</td><td>une question de prix</td></tr><tr><td>Ce colis-là part aujourd'hui ?</td><td>vérifier un départ</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges à connaître</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">dire « ce avis »</p><div class="k">Ce qui arrive</div><p class="ph">oublier le t devant une voyelle</p><p class="px">Impossible à prononcer. C'est <b>cet</b> avis, <b>cet</b> envoi, <b>cet</b> appartement.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">confondre « ces » et « ses »</p><div class="k">Ce qui arrive</div><p class="ph">écrire « ses timbres » pour « ces timbres »</p><p class="px"><b>Ces</b> montre ce qu'on a devant soi. <b>Ses</b> dit à qui c'est. Ça se prononce pareil, mais ça ne veut pas dire la même chose.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">oublier le trait d'union du -là</p><div class="k">Ce qui arrive</div><p class="ph">écrire « ce carton là »</p><p class="px">Le <b>-là</b> se colle au nom avec un trait d'union : ce carton<b>-là</b>, cette boîte<b>-là</b>.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">Devant « avis », on dit…</span><ul class="opts"><li>ce avis</li><li>cet avis</li></ul></li><li><span class="q">Devant « boîte », on dit…</span><ul class="opts"><li>ce boîte</li><li>cette boîte</li></ul></li><li><span class="q">« Ces timbres » veut dire…</span><ul class="opts"><li>les timbres que je montre</li><li>les timbres qui sont à lui</li></ul></li><li><span class="q">Le « -là » du Québec s'écrit…</span><ul class="opts"><li>ce carton là</li><li>ce carton-là</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> cet avis — Deux voyelles collées : le t s'ajoute. · <b>2.</b> cette boîte — Une boîte est féminine. · <b>3.</b> les timbres que je montre — « À lui », ce serait « ses timbres ». · <b>4.</b> ce carton-là — Avec un trait d'union, collé au nom.</div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Déménager sans perdre son courrier</h2><section class="bloc card ml"><h3>Le courrier ne suit pas tout seul</h3><p class="mp">Quand tu déménages, personne ne prévient la poste à ta place. Les lettres continuent d'arriver à l'ancienne adresse, et la personne qui habite là maintenant n'a aucune raison de te les apporter. Il existe un service qui règle ça : on fait <b>suivre</b> son courrier à la nouvelle adresse, pendant un temps donné.</p><div class="note">Ça se demande au comptoir ou sur Internet, et ça se paie. Ce n'est pas gratuit, mais ça coûte moins cher qu'un chèque perdu.</div></section><section class="bloc card ml"><h3>Ce que le service fait</h3><p class="mp">Il prend ton courrier à l'ancienne adresse et le réexpédie à la nouvelle.</p><table class="ana"><tr><td>Ça suit</td><td class="">les <b>lettres</b> ordinaires</td></tr><tr><td>Ça suit</td><td class="cle">le <b>courrier recommandé</b></td></tr><tr><td>Ça suit</td><td class="">les <b>magazines</b> auxquels tu es abonné</td></tr></table><p class="dit"><span class="k">On dit</span> Les lettres, le courrier recommandé et les magazines.</p><div class="note">C'est déjà l'essentiel : la banque, l'école, l'employeur et le gouvernement écrivent par lettre ordinaire.</div></section><section class="bloc card ml"><h3>Ce que le service ne fait pas</h3><p class="mp">Deux exceptions importantes, à connaître avant de compter dessus.</p><table class="ana"><tr><td>Ça ne suit pas</td><td class="">les <b>colis</b></td></tr><tr><td>Ça ne suit pas</td><td class="cle">les <b>enveloppes prépayées</b></td></tr><tr><td>Donc</td><td class="">pour tes commandes, change l'adresse toi-même</td></tr></table><p class="dit"><span class="k">On dit</span> Les colis ne suivent pas. Les enveloppes prépayées non plus.</p><div class="note">C'est le point que tout le monde découvre trop tard : une commande envoyée à l'ancienne adresse y reste.</div></section><section class="bloc card ml"><h3>Combien de temps, et quand le demander</h3><p class="mp">Le service a une durée maximale, et un bon moment pour être demandé.</p><table class="ana"><tr><td>Durée maximale</td><td class=""><b>douze mois</b></td></tr><tr><td>Quand le demander</td><td class="cle"><b>avant</b> le déménagement, pas après</td></tr><tr><td>Combien de temps avant</td><td class="">quelques <b>jours</b> suffisent</td></tr></table><p class="dit"><span class="k">On dit</span> Jusqu'à douze mois. Avant le déménagement, pas après.</p><div class="note">Demandé après coup, le service ne rattrape pas ce qui est déjà parti à l'ancienne adresse.</div></section><section class="bloc card ml"><h3>Ce que la poste ne fait pas à ta place</h3><p class="mp">Faire suivre son courrier n'est pas un changement d'adresse officiel.</p><table class="ana"><tr><td>À prévenir toi-même</td><td class="">ta <b>banque</b>, ton <b>employeur</b></td></tr><tr><td>Aussi</td><td class="cle">l'<b>école</b> des enfants, le <b>gouvernement</b></td></tr><tr><td>Le service</td><td class="">te donne le <b>temps</b> de le faire</td></tr></table><p class="dit"><span class="k">On dit</span> La banque, l'employeur, l'école, le gouvernement.</p><div class="note">Le service fait suivre pendant douze mois : c'est une année pour prévenir tout le monde, pas une solution définitive.</div></section><section class="bloc card ml"><h3>Demande le service au comptoir</h3><p class="mp">Choisis ta question.</p><table class="labo"><thead><tr><th>Tu veux savoir… · Ton ton</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">comment le demander + direct</td><td>Je déménage le premier juillet. Comment est-ce que je fais suivre mon courrier ?</td><td>la question de départ</td></tr><tr><td class="cle">comment le demander + très poli</td><td>Est-ce que je pourrais faire suivre mon courrier à ma nouvelle adresse ?</td><td>plus doux</td></tr><tr><td class="cle">combien de temps + direct</td><td>Pendant combien de temps est-ce que ça dure ?</td><td>la réponse est douze mois</td></tr><tr><td class="cle">combien de temps + très poli</td><td>Est-ce que je pourrais savoir combien de temps ça dure ?</td><td>la même question, en plus long</td></tr><tr><td class="cle">ce qui suit + direct</td><td>Est-ce que les colis suivent aussi ?</td><td>la question qui sauve une commande</td></tr><tr><td class="cle">ce qui suit + très poli</td><td>Est-ce que vous pouvez m'expliquer ce qui suit et ce qui ne suit pas ?</td><td>la plus complète des six</td></tr></tbody></table><div class="note">Six phrases. La question sur les colis est celle qu'on oublie et qu'il faut poser.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six phrases pour un déménagement.</p><table class="ex2"><tr><td>Je déménage le premier juillet.</td><td>annoncer</td></tr><tr><td>Est-ce que je pourrais faire suivre mon courrier ?</td><td>demander le service</td></tr><tr><td>Pendant combien de temps est-ce que ça dure ?</td><td>la durée</td></tr><tr><td>Est-ce que les colis suivent aussi ?</td><td>la question importante</td></tr><tr><td>Voici mon ancienne adresse et ma nouvelle adresse.</td><td>donner les deux</td></tr><tr><td>Qu'est-ce qu'il faut apporter pour faire la demande ?</td><td>se préparer</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges à connaître</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">croire que les colis suivent</p><div class="k">Ce qui arrive</div><p class="ph">commander quelque chose à l'ancienne adresse</p><p class="px">Ils ne suivent pas. Change l'adresse toi-même sur tous les sites où tu commandes, avant de déménager.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">demander le service après le déménagement</p><div class="k">Ce qui arrive</div><p class="ph">« Je le ferai quand je serai installé. »</p><p class="px">Ce qui est déjà parti à l'ancienne adresse n'est pas rattrapé. Demande-le quelques jours <b>avant</b>.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">croire que c'est un changement d'adresse officiel</p><div class="k">Ce qui arrive</div><p class="ph">ne prévenir personne d'autre</p><p class="px">La poste fait suivre, elle ne prévient pas ta banque ni ton employeur. Ces douze mois servent à le faire toi-même.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">Le service fait suivre…</span><ul class="opts"><li>les lettres, mais pas les colis</li><li>tout, y compris les colis</li></ul></li><li><span class="q">La durée maximale est de…</span><ul class="opts"><li>douze mois</li><li>trois mois</li></ul></li><li><span class="q">Le meilleur moment pour le demander…</span><ul class="opts"><li>avant le déménagement</li><li>le mois suivant</li></ul></li><li><span class="q">Ta banque est prévenue…</span><ul class="opts"><li>par la poste</li><li>par toi</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> les lettres, mais pas les colis — Les colis ne suivent jamais. · <b>2.</b> douze mois — Une année complète, au maximum. · <b>3.</b> avant le déménagement — Après, ce qui est parti est parti. · <b>4.</b> par toi — Le service fait suivre, il ne prévient personne.</div></section></section></div>
+<footer><span>D2 · Le colis de Yassine</span><span>Fiche élève</span></footer>
+</body>
+</html>

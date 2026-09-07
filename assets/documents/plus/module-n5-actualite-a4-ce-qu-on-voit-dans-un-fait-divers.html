@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A4 · Ce qu'on voit dans un fait divers — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance A4 · Module 11 · 75 minutes</div>
+    <h1>Ce qu'on voit dans un fait divers</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Un fait divers arrive rarement seul : il y a une photo, et sous la photo une légende d'une ligne. La photo montre l'après — les fenêtres noircies, l'eau dans le sous-sol, la porte du cabanon restée ouverte.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>décrire en une phrase ce qu'une photo de fait divers montre ;</li><li>distinguer ce qui est visible sur la photo de ce qu'on suppose ;</li><li>repérer qui parle dans un fait divers, et au nom de qui ;</li><li>employer les mots du module pour décrire une scène.</li></ol></section><section class="bloc"><div class="lbl">Six photos, six phrases</div><h2 class="t">Ce que montre chaque image de l'activité</h2><div class="grid"><div class="card"><h3>Le journal sur la table</h3><p>Un journal de quartier ouvert sur une table de cafétéria.</p></div><div class="card"><h3>L'immeuble le lendemain</h3><p>Un immeuble aux fenêtres noircies, le lendemain d'un feu.</p></div><div class="card"><h3>Le sous-sol</h3><p>Un sous-sol où l'eau monte au-dessus des boîtes rangées.</p></div><div class="card"><h3>Le cabanon</h3><p>Une petite bâtisse de cour, la porte grande ouverte.</p></div><div class="card"><h3>Les pompiers</h3><p>Deux pompiers qui tiennent un boyau devant une façade.</p></div><div class="card"><h3>La porte-parole</h3><p>Une femme qui parle devant plusieurs micros tendus.</p></div></div></section><section class="bloc regle"><div class="lbl">Une photo montre l'après, jamais l'évènement</div><p class="r">Le photographe arrive après les pompiers. Ce qu'on voit, c'est ce qui reste.</p><p class="pr">Des fenêtres noircies, de l'eau dans un sous-sol, une porte ouverte. La photo prouve qu'il y a eu quelque chose ; elle ne dit ni quand, ni comment, ni pourquoi. Ces trois renseignements-là ne sont que dans le texte.</p></section><section class="bloc card"><div class="lbl">Sur la photo</div><h2 class="t">Ce qui se voit, ce qui se lit</h2><table><thead><tr><th>On le voit</th><th>On le lit seulement</th></tr></thead><tbody><tr><td>Des fenêtres noircies</td><td class="cle">Le feu a éclaté vers quatre heures</td></tr><tr><td>De l'eau dans un sous-sol</td><td class="cle">La rivière montait depuis trois jours</td></tr><tr><td>Une porte de cabanon ouverte</td><td class="cle">Une trentaine de vélos ont disparu</td></tr><tr><td>Des pompiers avec un boyau</td><td class="cle">Ils sont arrivés huit minutes après</td></tr><tr><td>Une femme devant des micros</td><td class="cle">Elle parle au nom de la Ville</td></tr></tbody></table></section><section class="bloc card"><div class="lbl">Description</div><h2 class="t">Décrivez la scène en une phrase</h2><p class="consigne">Employez les mots du module, et rien que ce que vous voyez.</p><ol class="ex"><li><span class="q">La photo de l'immeuble</span><span class="ligne"></span></li><li><span class="q">La photo du sous-sol</span><span class="ligne"></span></li><li><span class="q">La photo du cabanon</span><span class="ligne"></span></li><li><span class="q">La photo des pompiers</span><span class="ligne"></span></li><li><span class="q">La photo de la femme</span><span class="ligne"></span></li><li><span class="q">La photo du journal</span><span class="ligne"></span></li></ol></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Raconter ce que la photo laisse croire</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">On voit que le feu est parti de la cuisine.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">On voit les fenêtres noircies du deuxième étage.</p></div></div><div class="note">Une photo ne dit jamais la cause. Quand vous racontez, séparez ce que vous avez vu de ce que vous avez lu, et ce que vous avez lu de ce que vous supposez.</div></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Décrivez en deux phrases une photo de journal que vous avez vue récemment.</p><ul><li>Première phrase : ce qu'on voit. Deuxième phrase : ce que vous en avez conclu.</li><li>Soulignez la deuxième : c'est la partie qui n'est pas dans la photo.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Le sinistre, le délit, et ce qui vient après</h2><section class="bloc card ml"><h3>Deux familles, et on ne les mélange pas</h3><p class="mp">Tous les faits divers du monde se rangent dans deux boîtes. Dans la première, ce qui arrive sans que personne l'ait voulu : un incendie, une inondation, une tempête, un accident. Dans la seconde, ce que quelqu'un a fait : un vol, une entrée par effraction, un méfait. Le vocabulaire n'est pas le même, les gens qui parlent ne sont pas les mêmes, et la fin de l'article n'est pas la même non plus.</p><div class="note">Savoir dans quelle boîte on est vous donne d'avance la moitié des mots de l'article : si c'est un sinistre, on parlera de sinistrés et de Croix-Rouge ; si c'est un délit, on parlera de suspect et de plainte.</div></section><section class="bloc card ml"><h3>La famille du sinistre</h3><p class="mp">Personne n'est responsable, ou pas encore. Les gens touchés ne sont pas des victimes d'un crime : ce sont des sinistrés. On les héberge, on les habille, on les reloge.</p><table class="ana"><tr><td>Ce qui arrive</td><td class="">un incendie · une inondation · une tempête</td></tr><tr><td>Les gens touchés</td><td class="cle">un sinistré · un résident · un locataire</td></tr><tr><td>Ceux qui viennent</td><td class="">les pompiers · la Croix-Rouge · la Ville</td></tr></table><p class="dit"><span class="k">On dit</span> Un incendie. Une inondation. Un sinistré.</p><div class="note">Au Québec, c'est la Croix-Rouge canadienne qui héberge et qui habille les sinistrés, à la demande de la municipalité. C'est pourquoi son nom revient à la fin de presque tous les articles d'incendie.</div></section><section class="bloc card ml"><h3>La famille du délit</h3><p class="mp">Quelqu'un a agi. La police cherche, et le journal fait attention à ses mots : tant qu'un tribunal n'a rien dit, on écrit « présumé ».</p><table class="ana"><tr><td>Ce qui est fait</td><td class="">un vol · une entrée par effraction · un méfait</td></tr><tr><td>Qui on cherche</td><td class="cle">un suspect · un voleur présumé</td></tr><tr><td>Ce qu'on fait</td><td class="">porter plainte · signaler · noter le numéro</td></tr></table><p class="dit"><span class="k">On dit</span> Un vol. Un suspect. La prévention.</p><div class="note">Un suspect n'est pas un coupable, et un journal sérieux ne les confond jamais. Quand vous racontez la nouvelle, gardez la même prudence : « la police cherche un suspect », pas « ils ont trouvé le voleur ».</div></section><section class="bloc card ml"><h3>Ce qui vient après, dans les deux cas</h3><p class="mp">Une enquête commence toujours : après un feu, pour trouver d'où il est parti ; après un vol, pour trouver qui est entré. Elle prend du temps, et l'article se termine presque toujours par la même phrase.</p><table class="ana"><tr><td>Le travail</td><td class="cle">une enquête · un enquêteur · une cause</td></tr><tr><td>Ceux qui parlent</td><td class="">un témoin · un porte-parole · une déclaration</td></tr><tr><td>Ce qui prévient</td><td class="">un avertissement · la prévention</td></tr></table><p class="dit"><span class="k">On dit</span> Une enquête. Un enquêteur. Une déclaration.</p><div class="note">« L'enquête se poursuit » veut dire qu'on ne sait pas encore. Ce n'est pas une formule vide : c'est la façon polie de dire que tout ce qui a été raconté avant reste à confirmer.</div></section><section class="bloc card ml"><h3>Un mot, sa phrase, et la famille où il vit</h3><p class="mp">Choisissez un mot et écoutez-le dans une phrase du journal.</p><table class="labo"><thead><tr><th>Quel mot ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">un fait divers</td><td>Elle lit les faits divers avant tout le reste du journal.<span class="tags">un fait divers</span></td><td>le genre d'article, pas son contenu</td></tr><tr><td class="cle">le chapeau</td><td>Lis <b>le chapeau</b> : tu sauras la nouvelle en deux lignes.</td><td>les lignes en gras sous le titre</td></tr><tr><td class="cle">un sinistré</td><td>Onze sinistrés ont été hébergés par la Croix-Rouge.<span class="tags">un sinistré</span></td><td>la famille du sinistre</td></tr><tr><td class="cle">une enquête</td><td>L'enquête dira si le feu est parti de la cuisine.<span class="tags">une enquête · un enquêteur</span></td><td>ce qui vient après, dans les deux familles</td></tr><tr><td class="cle">un avertissement</td><td>Un avertissement de pluie abondante avait été émis la veille.<span class="tags">un avertissement</span></td><td>ce qui prévient, avant que ça arrive</td></tr></tbody></table><div class="note">Écoutez chaque mot deux fois : une fois seul, une fois dans sa phrase. C'est la phrase qui fixe le mot dans la mémoire, pas le mot tout seul.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six phrases, trois de chaque famille.</p><table class="ex2"><tr><td>Un incendie a détruit quatre logements de la rue Alexandre.</td><td>le sinistre, en une phrase</td></tr><tr><td>Onze sinistrés ont été hébergés par la Croix-Rouge.</td><td>ce qui reste, à la fin</td></tr><tr><td>Un avertissement de pluie abondante avait été émis la veille.</td><td>ce qui prévenait, avant</td></tr><tr><td>Une trentaine de vélos ont été volés dans le quartier.</td><td>le délit, en chiffres</td></tr><tr><td>Aucun suspect n'a été arrêté pour l'instant.</td><td>la prudence du journal</td></tr><tr><td>L'enquête se poursuit et rien n'est confirmé.</td><td>la phrase de la fin</td></tr></table></section><section class="bloc card ml"><h3>Trois confusions de mots à éviter</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">dire « victime » pour un sinistré</p><div class="k">Ce qui arrive</div><p class="ph">« les victimes de l'incendie ont été hébergées »</p><p class="px">On parle de victimes quand quelqu'un a fait du tort à quelqu'un. Dans un incendie accidentel, ce sont des sinistrés. Le mot « victime » ajoute un coupable qui n'existe peut-être pas.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">dire « voleur » avant le tribunal</p><div class="k">Ce qui arrive</div><p class="ph">« la police a arrêté le voleur »</p><p class="px">Tant que rien n'est jugé, c'est un suspect, ou un voleur présumé. Un journal qui écrit autrement se fait poursuivre. Reprenez la même prudence quand vous racontez.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">confondre enquête et jugement</p><div class="k">Ce qui arrive</div><p class="ph">« l'enquête a décidé que c'était la friteuse »</p><p class="px">Une enquête cherche ; elle ne décide pas. Elle conclut, elle établit une cause probable. C'est pourquoi le journal écrit « le feu serait parti de la cuisine » — au conditionnel, tant que ce n'est pas certain.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">Les gens qui perdent leur logement dans un feu sont…</span><ul class="opts"><li>des sinistrés</li><li>des victimes</li></ul></li><li><span class="q">Tant que rien n'est prouvé, la police cherche…</span><ul class="opts"><li>un voleur</li><li>un suspect</li></ul></li><li><span class="q">« L'enquête se poursuit » veut dire…</span><ul class="opts"><li>qu'on ne sait pas encore</li><li>que le dossier est fermé</li></ul></li><li><span class="q">Un avertissement d'Environnement Canada arrive…</span><ul class="opts"><li>après l'évènement</li><li>avant l'évènement</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> des sinistrés — Des sinistrés. « Victime » suppose que quelqu'un leur a fait du tort. · <b>2.</b> un suspect — Un suspect. Le journal écrit même « un voleur présumé ». · <b>3.</b> qu'on ne sait pas encore — Qu'on ne sait pas encore. C'est la phrase qui termine presque tous les faits divers. · <b>4.</b> avant l'évènement — Avant. C'est ce qui le distingue du reste de l'article.</div></section></section></div>
+<footer><span>A4 · Raconter une nouvelle</span><span>Fiche élève</span></footer>
+</body>
+</html>

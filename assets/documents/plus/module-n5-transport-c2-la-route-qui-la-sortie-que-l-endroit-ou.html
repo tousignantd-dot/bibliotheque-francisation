@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C2 · La route qui, la sortie que, l'endroit où — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance C2 · Module 9 · 75 minutes</div>
+    <h1>La route qui, la sortie que, l'endroit où</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Le bulletin ne dit pas : « La bretelle est fermée. Elle mène à la 40. » Il dit : « La bretelle qui mène à la 40 est fermée. » Une phrase au lieu de deux — et c'est cela que le niveau 5 appelle un discours organisé.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>employer « qui » quand un verbe suit tout de suite ;</li><li>employer « que » quand un sujet suit ;</li><li>employer « où » pour un lieu et pour un moment ;</li><li>employer « dont » quand la phrase de départ contient « de ».</li></ol></section><section class="bloc regle"><div class="lbl">Regardez le mot juste après</div><p class="r">Un verbe suit : c'est « qui ». Un sujet suit : c'est « que ».</p><p class="pr">Le test tient en une seconde : si l'on peut mettre « il », « nous » ou « vous » juste après, c'est « que ».</p></section><section class="bloc card"><div class="lbl">Quatre pronoms</div><h2 class="t">Ce que chacun remplace</h2><table><thead><tr><th>Le pronom</th><th>Ce qu'il remplace</th></tr></thead><tbody><tr><td>qui</td><td class="cle">le sujet du verbe qui suit</td></tr><tr><td>que</td><td class="cle">le complément direct</td></tr><tr><td>où</td><td class="cle">un lieu, ou un moment</td></tr><tr><td>dont</td><td class="cle">un complément avec « de »</td></tr></tbody></table></section><section class="bloc"><div class="lbl">Quatre phrases du bulletin</div><h2 class="t">Repérez le mot qui suit</h2><div class="grid"><div class="card"><h3>La bretelle qui mène à la 40</h3><p>Un verbe suit : « mène ».</p></div><div class="card"><h3>Le chemin que nous prenons</h3><p>Un sujet suit : « nous ».</p></div><div class="card"><h3>L'endroit où l'accident s'est produit</h3><p>Un lieu : « où ».</p></div><div class="card"><h3>La sortie dont je vous parlais</h3><p>On parle « de » la sortie : « dont ».</p></div></div></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Raccourcir « qui » devant une voyelle</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">Le camion qu'est arrêté sur l'accotement.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">Le camion qui est arrêté sur l'accotement.</p></div></div><div class="note">« Qui » ne s'élide jamais. Seul « que » devient « qu' » : le chemin qu'on prend, l'entrave qu'il annonce.</div></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Dire « le jour que »</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">Le jour que je suis arrivée au Québec.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">Le jour où je suis arrivée au Québec.</p></div></div><div class="note">Pour un moment comme pour un lieu, c'est « où ». « Le jour que » s'entend beaucoup, mais ce n'est pas ce qui s'écrit — et le module travaille aussi l'écrit.</div></section><section class="bloc card"><div class="lbl">Grammaire</div><h2 class="t">Complétez avec qui, que, où ou dont</h2><p class="consigne">Une seule réponse par phrase.</p><ol class="ex"><li><span class="q">La bretelle ___ mène à la 40 ouest est fermée.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le chemin ___ nous prenons passe par le boulevard.</span><span class="ligne ligne--court"></span></li><li><span class="q">C'est l'endroit ___ l'accident s'est produit.</span><span class="ligne ligne--court"></span></li><li><span class="q">La voie de droite est la seule ___ reste ouverte.</span><span class="ligne ligne--court"></span></li><li><span class="q">La sortie ___ je vous parlais est après le pont.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le matin ___ le pont était fermé, nous étions en retard.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez deux phrases sur votre trajet, une avec « qui » et une avec « que ».</p><ul><li>L'autobus qui passe devant chez moi part à six heures trente.</li><li>La ligne que je prends s'arrête au métro.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Qui, que, où, dont : coller deux phrases en une</h2><section class="bloc card ml"><h3>Pourquoi le bulletin en est plein</h3><p class="mp">Un bulletin ne dit pas : « La bretelle est fermée. Elle mène à la quarante ouest. » Il dit : « La bretelle <b>qui</b> mène à la quarante ouest est fermée. » Une phrase au lieu de deux, et l'information de <i>laquelle</i> bretelle il s'agit est donnée au passage, sans ralentir. C'est exactement ce que le niveau 5 appelle un discours organisé : les idées ne se suivent pas, elles s'emboîtent.</p><div class="note">Ces quatre petits mots sont ce qui sépare un français scolaire d'un français adulte. Ils ne s'apprennent pas par cœur : ils s'attrapent en écoutant, puis en essayant.</div></section><section class="bloc card ml"><h3>Qui — le sujet du verbe qui suit</h3><p class="mp">Après « qui », il y a tout de suite un verbe, et c'est la chose nommée avant qui fait l'action.</p><table class="ana"><tr><td>Sur la route</td><td class="">la voie qui reste ouverte · le camion qui bloque la sortie</td></tr><tr><td>Dans le bulletin</td><td class="cle">la bretelle qui mène à la quarante · la remorqueuse qui vient d'arriver</td></tr><tr><td>Pour les personnes</td><td class="">le collègue qui conduit · la responsable qui décroche</td></tr></table><p class="dit"><span class="k">On dit</span> La voie de droite est la seule qui reste ouverte.</p><div class="note">« Qui » ne se raccourcit jamais devant une voyelle : on dit « le camion qui est arrêté », jamais « qu'est arrêté ». C'est « que » qui devient « qu' », pas « qui ».</div></section><section class="bloc card ml"><h3>Que — le complément direct</h3><p class="mp">Après « que », il y a un sujet, puis un verbe. Le truc qui ne trompe pas : si vous pouvez mettre « il », « nous » ou « vous » juste après, c'est « que ».</p><table class="ana"><tr><td>Le chemin</td><td class="">le chemin que nous prenons · la sortie que vous cherchez</td></tr><tr><td>L'information</td><td class="cle">l'entrave qu'ils annoncent · l'heure qu'elle a donnée</td></tr><tr><td>La forme raccourcie</td><td class="">qu'il · qu'elle · qu'on · qu'ils</td></tr></table><p class="dit"><span class="k">On dit</span> Le chemin que nous prenons ce matin passe par le boulevard.</p><div class="note">Devant une voyelle, « que » devient « qu' » et se colle au mot suivant : l'entrave qu'on annonce, la sortie qu'il a manquée.</div></section><section class="bloc card ml"><h3>Où — le lieu, et aussi le moment</h3><p class="mp">« Où » remplace un lieu, mais aussi un moment. C'est une des rares fois où le français emploie le même mot pour l'espace et pour le temps.</p><table class="ana"><tr><td>Un lieu</td><td class="">l'endroit où l'accident s'est produit · la sortie où il faut tourner</td></tr><tr><td>Un moment</td><td class="cle">le matin où le pont était fermé · le jour où j'ai commencé</td></tr><tr><td>Ce qu'on évite</td><td class="">le jour que je suis arrivée</td></tr></table><p class="dit"><span class="k">On dit</span> C'est l'endroit où l'accident s'est produit.</p><div class="note">« Le jour que » s'entend beaucoup dans la langue parlée. Ce n'est pas ce qui s'écrit : on dit et on écrit « le jour où ».</div></section><section class="bloc card ml"><h3>Dont — quand la suite commence par « de »</h3><p class="mp">On dit parler <b>de</b> quelque chose, annoncer la fin <b>de</b> quelque chose, avoir besoin <b>de</b> quelque chose. Ce « de » devient « dont ».</p><table class="ana"><tr><td>Avec parler</td><td class="">la sortie dont je vous parlais · les travaux dont on a parlé</td></tr><tr><td>Avec un nom</td><td class="cle">les travaux dont on annonce la fin · la route dont la chaussée est refaite</td></tr><tr><td>Avec avoir besoin</td><td class="">le détour dont nous avons besoin</td></tr></table><p class="dit"><span class="k">On dit</span> La sortie dont je vous parlais est juste après le pont.</p><div class="note">Le test est simple : si la deuxième phrase, dite seule, contient « de », c'est « dont ». « Je vous parlais de cette sortie » → la sortie <b>dont</b> je vous parlais.</div></section><section class="bloc card ml"><h3>Deux phrases, puis une seule</h3><p class="mp">Choisissez un couple de phrases et écoutez comment elles n'en font plus qu'une.</p><table class="labo"><thead><tr><th>Quel couple ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">La bretelle · elle mène à la 40</td><td>La bretelle qui mène de la quinze nord à la quarante ouest est fermée.<span class="tags">une bretelle</span></td><td>qui : la bretelle fait l'action de mener</td></tr><tr><td class="cle">Le chemin · nous le prenons</td><td>Le chemin que nous prenons ce matin passe par le boulevard.<span class="tags">un détour</span></td><td>que : « nous » suit tout de suite</td></tr><tr><td class="cle">L'endroit · l'accident s'y est produit</td><td>C'est l'endroit où l'accident s'est produit.<span class="tags">la chaussée</span></td><td>où : un lieu</td></tr><tr><td class="cle">La sortie · je vous en parlais</td><td>La sortie dont je vous parlais est juste après le pont.<span class="tags">un détour</span></td><td>dont : on parle « de » la sortie</td></tr><tr><td class="cle">La voie · elle reste ouverte</td><td>La voie de droite est la seule qui reste ouverte.<span class="tags">une voie</span></td><td>qui : la voie fait l'action de rester</td></tr></tbody></table><div class="note">Faites l'exercice à l'envers aussi : prenez une phrase du bulletin avec un relatif et coupez-la en deux. C'est ce qui montre d'où vient le pronom.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six phrases du module, une par emploi.</p><table class="ex2"><tr><td>La bretelle qui mène à la quarante ouest est fermée.</td><td>qui : sujet</td></tr><tr><td>La voie de droite est la seule qui reste ouverte.</td><td>qui : sujet</td></tr><tr><td>Le chemin que nous prenons passe par le boulevard.</td><td>que : complément direct</td></tr><tr><td>C'est l'endroit où l'accident s'est produit.</td><td>où : lieu</td></tr><tr><td>Le matin où le pont était fermé, nous sommes arrivés à neuf heures.</td><td>où : moment</td></tr><tr><td>La sortie dont je vous parlais est après le pont.</td><td>dont : avec « de »</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges des pronoms relatifs</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">mettre « qui » là où il faut « que »</p><div class="k">Ce qui arrive</div><p class="ph">« le chemin qui nous prenons »</p><p class="px">Après « qui », il y a un verbe tout de suite. Ici, « nous » suit — donc c'est « que » : le chemin <b>que</b> nous prenons. Le test tient en une seconde : regardez le mot juste après.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">raccourcir « qui » devant une voyelle</p><div class="k">Ce qui arrive</div><p class="ph">« le camion qu'est arrêté »</p><p class="px">« Qui » ne s'élide jamais : le camion <b>qui</b> est arrêté. Seul « que » devient « qu' ». C'est une des rares règles du français qui n'a aucune exception.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">dire « le jour que »</p><div class="k">Ce qui arrive</div><p class="ph">« le jour que je suis arrivée au Québec »</p><p class="px">Pour un moment comme pour un lieu, c'est <b>où</b> : le jour où je suis arrivée. Très courant à l'oral, mais ce n'est pas ce qui s'écrit — et le module travaille aussi l'écrit.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">« La bretelle ___ mène à la 40 » demande…</span><ul class="opts"><li>qui</li><li>que</li></ul></li><li><span class="q">« Le chemin ___ nous prenons » demande…</span><ul class="opts"><li>qui</li><li>que</li></ul></li><li><span class="q">Pour « le jour ___ je suis arrivée », on écrit…</span><ul class="opts"><li>que</li><li>où</li></ul></li><li><span class="q">« La sortie ___ je vous parlais » demande…</span><ul class="opts"><li>dont</li><li>que</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> qui — « Qui » : un verbe suit tout de suite, et c'est la bretelle qui mène. · <b>2.</b> que — « Que » : « nous » suit, donc ce n'est pas un sujet. · <b>3.</b> où — « Où ». Il sert pour le moment comme pour le lieu. · <b>4.</b> dont — « Dont » : on parle <b>de</b> quelque chose.</div></section></section></div>
+<footer><span>C2 · Ça bloque ce matin</span><span>Fiche élève</span></footer>
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C2 · Un texte écrit pour rassurer — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance C2 · Module 2 · 75 minutes</div>
+    <h1>Un texte écrit pour rassurer</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Une page « À propos » n'est pas un document d'information : c'est un document de présentation, relu par quelqu'un dont le métier est d'éviter les ennuis.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>prélever un fait récent, un chiffre et une difficulté avouée ;</li><li>reconnaître une phrase passive et dire ce qu'elle n'apprend pas ;</li><li>distinguer une valeur affichée d'une pratique mesurée ;</li><li>tirer trois questions d'un texte qui n'en pose aucune.</li></ol></section><section class="bloc regle"><div class="lbl">Les faits datés sont les seuls solides</div><p class="r">Une année, un effectif, un pourcentage, un montant : ce sont les seuls éléments qu'on ne peut pas arranger sans mentir. Prélevez-les et laissez le reste.</p><p class="pr">Réal Bourbonnais l'annonce lui-même dans le module : « à l'entrevue individuelle, je pose toujours une question tirée du profil de l'entreprise ». Ce n'est pas une menace, c'est un mode d'emploi.</p></section><section class="bloc"><div class="lbl">Analyse</div><h2 class="t">Quatre choses à repérer dans un profil</h2><div class="grid"><div class="card"><h3>Le fait daté</h3><p>Fondée en 1985. Deux cent dix personnes, dont cent trente-quatre à la production. Le carnet a doublé en dix-huit mois. On les note, on les replace, et cela prouve qu'on a lu.</p></div><div class="card"><h3>La phrase sans sujet</h3><p>L'entreprise a été acquise. Une réorganisation a été menée. Ces tournures ne disent pas qui a décidé, et c'est souvent exactement le renseignement qui manque. Chaque passif est une question.</p></div><div class="card"><h3>La valeur affichée</h3><p>Le respect, l'excellence, l'esprit d'équipe : dans neuf profils sur dix. Ce qui vaut quelque chose est une pratique nommée, avec un chiffre à côté.</p></div><div class="card"><h3>La difficulté avouée</h3><p>La supervision du soir s'exerce sans soutien sur place. Quand un profil reconnaît une contrainte, il vous dit ce qui inquiète l'employeur. C'est le meilleur renseignement du document.</p></div></div></section><section class="bloc card"><div class="lbl">Pratique 1 de 2</div><h2 class="t">Où est-ce écrit ?</h2><p class="consigne">Retrouvez dans le profil le passage qui répond.</p><ol class="ex"><li><span class="q">En quelle année l'entreprise a-t-elle été fondée, et par qui ?</span><span class="ligne"></span></li><li><span class="q">Combien de personnes y travaillent, et combien à la production ?</span><span class="ligne"></span></li><li><span class="q">Qui a racheté l'entreprise, et d'où vient ce groupe ?</span><span class="ligne"></span></li><li><span class="q">À quel taux les chaînes du soir tournent-elles, et que comprend ce taux ?</span><span class="ligne"></span></li><li><span class="q">Quelle difficulté du poste le profil reconnaît-il ?</span><span class="ligne"></span></li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Le passif, et la question qu'il donne</h2><table><thead><tr><th>Ce qui est écrit</th><th>Ce qui manque</th></tr></thead><tbody><tr><td class="cle">L'entreprise a été acquise en janvier.</td><td>par qui, et à l'initiative de qui</td></tr><tr><td class="cle">La production a été réorganisée en trois quarts.</td><td>qui l'a décidé, et sur quel avis</td></tr><tr><td class="cle">Le poste a été créé.</td><td>à la demande de qui, et pour combien de temps</td></tr></tbody></table><div class="note">Notez chaque passif que vous rencontrez : la liste que vous en tirez est votre liste de questions.</div></section><section class="bloc card"><div class="lbl">Pratique 2 de 2</div><h2 class="t">Dit ou ne dit rien ?</h2><p class="consigne">Pour chaque phrase, décidez si elle renseigne.</p><ol class="ex"><li><span class="q">Une entreprise à échelle humaine.</span><span class="ligne ligne--court"></span></li><li><span class="q">Un taux de roulement de onze pour cent.</span><span class="ligne ligne--court"></span></li><li><span class="q">Nous plaçons l'humain au centre.</span><span class="ligne ligne--court"></span></li><li><span class="q">Sept personnes en poste sur les seize prévues.</span><span class="ligne ligne--court"></span></li><li><span class="q">Une équipe passionnée et dynamique.</span><span class="ligne ligne--court"></span></li><li><span class="q">Aucun produit n'est vendu au grand public.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Reprenez la page « À propos » de votre devoir et écrivez trois questions qu'elle vous laisse.</p><ul><li>Une tirée d'un passif.</li><li>Une tirée d'un chiffre dont vous ne savez pas ce qu'il recouvre.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Lire un profil d'entreprise sans se faire endormir</h2><section class="bloc card ml"><h3>Un texte écrit pour rassurer</h3><p class="mp">Une page « À propos » ou un profil d'entreprise n'est pas un document d'information : c'est un document de présentation, relu par quelqu'un dont le métier consiste à éviter les ennuis. Tout ce qui s'y trouve est vrai ; ce qui a été retiré ne se voit pas. Le lire utilement, c'est donc lire deux textes à la fois — celui qui est là, et celui qui manque. Le second se devine à trois signes : les phrases sans sujet, les valeurs sans exemple, et les chiffres sans période.</p><div class="note">Le but n'est pas de se méfier : c'est de savoir quelles questions poser en entrevue, et il en sort toujours trois ou quatre.</div></section><section class="bloc card ml"><h3>Ce qu'on y prélève, et ce qu'on laisse</h3><p class="mp">Trois éléments valent la peine d'être notés : un <b>fait récent</b> (un rachat, un agrandissement, un contrat), un <b>chiffre</b> (l'effectif, un pourcentage, un montant), et une <b>difficulté avouée</b> (l'isolement du quart de soir, un taux à améliorer). Ces trois-là se replacent naturellement dans une réponse d'entrevue et prouvent en une phrase que vous avez lu. Tout le reste — l'année de fondation seule, les valeurs, le vocabulaire d'ambiance — ne prouve rien, parce que tout le monde peut le citer.</p><div class="note">Réal Bourbonnais l'annonce dans le module : « à l'entrevue individuelle, je pose toujours une question tirée du profil ». Ce n'est pas une menace, c'est un mode d'emploi.</div></section><section class="bloc card ml"><h3>Les faits datés sont les seuls solides</h3><p class="mp">Une année, un effectif, un pourcentage, un montant : ce sont les seuls éléments qu'on ne peut pas arranger sans mentir. Prélevez-les et laissez le reste de côté.</p><table class="ana"><tr><td>Ce qu'on note</td><td class="">deux cent dix personnes, dont cent trente-quatre à la production</td></tr><tr><td>Ce qu'on laisse</td><td class="cle">« une entreprise à échelle humaine »</td></tr><tr><td>Le test</td><td class="">est-ce que ça se vérifie ?</td></tr></table><p class="dit"><span class="k">On dit</span> Deux cent dix personnes, dont cent trente-quatre à la production.</p><div class="note">Un chiffre retenu et replacé au bon moment vaut dix minutes de préparation générale.</div></section><section class="bloc card ml"><h3>Les phrases sans sujet — le passif qui cache</h3><p class="mp">« L'entreprise a été acquise », « une réorganisation a été menée » : ces tournures ne disent pas <b>qui</b> a décidé. C'est souvent exactement le renseignement qui vous manquerait.</p><table class="ana"><tr><td>Ce qui est écrit</td><td class="">L'entreprise a été acquise en janvier.</td></tr><tr><td>Ce qui manque</td><td class="cle">par qui, et à l'initiative de qui</td></tr><tr><td>Ce que ça donne</td><td class="">une question toute prête</td></tr></table><p class="dit"><span class="k">On dit</span> L'entreprise a été acquise en janvier. Par qui, et à quelle initiative ?</p><div class="note">Notez chaque passif que vous rencontrez : la liste que vous en tirez est votre liste de questions.</div></section><section class="bloc card ml"><h3>Une valeur affichée n'est pas une information</h3><p class="mp">« Le respect », « l'excellence », « l'esprit d'équipe » figurent dans neuf profils sur dix et ne distinguent rien. Ce qui vaut quelque chose est une <b>pratique nommée</b>.</p><table class="ana"><tr><td>Sans valeur</td><td class="">Nous plaçons l'humain au centre.</td></tr><tr><td>Avec valeur</td><td class="cle">Un taux de roulement de onze pour cent.</td></tr><tr><td>Le test</td><td class="">est-ce que ça pourrait être faux ?</td></tr></table><p class="dit"><span class="k">On dit</span> Un taux de roulement de onze pour cent, inférieur à la moyenne du secteur.</p><div class="note">La règle est courte : si la phrase inverse serait absurde à écrire, la phrase ne dit rien. Aucune entreprise n'écrit « nous méprisons l'humain ».</div></section><section class="bloc card ml"><h3>La difficulté avouée est un cadeau</h3><p class="mp">Quand un profil reconnaît une contrainte, il vous dit ce qui inquiète l'employeur. Reprendre cette contrainte en entrevue, et y répondre, est ce qui distingue le plus vite un candidat.</p><table class="ana"><tr><td>Ce qui est écrit</td><td class="">La supervision du soir s'exerce sans soutien sur place.</td></tr><tr><td>Ce que ça dit</td><td class="cle">ils ont déjà perdu quelqu'un là-dessus</td></tr><tr><td>Ce qu'on en fait</td><td class="">on y répond avant qu'on le demande</td></tr></table><p class="dit"><span class="k">On dit</span> La supervision du soir s'exerce sans soutien sur place à partir de dix-huit heures.</p><div class="note">Le profil de Boréalis présente cette autonomie « comme une exigence plutôt que comme une contrainte » : la formulation elle-même est un aveu.</div></section><section class="bloc card ml"><h3>La phrase du profil, et la question qu'elle donne</h3><p class="mp">Choisissez un type de phrase et un exemple.</p><table class="labo"><thead><tr><th>Quel type ? · Quel exemple ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">fait daté + le premier</td><td>Deux cent dix personnes, dont cent trente-quatre à la production.<span class="tags">deux cent dix personnes</span></td><td>à noter et à replacer</td></tr><tr><td class="cle">fait daté + le second</td><td>Les chaînes du soir tournent à <b>quatre-vingt-deux pour cent</b>.</td><td>demander ce que le taux comprend</td></tr><tr><td class="cle">passif sans sujet + le premier</td><td>L'entreprise <b>a été acquise</b> par le Groupe Landron.</td><td>qui a décidé, et pourquoi ?</td></tr><tr><td class="cle">passif sans sujet + le second</td><td>La production <b>a été réorganisée</b> en trois quarts.</td><td>à l'initiative de qui ?</td></tr><tr><td class="cle">valeur creuse + le premier</td><td>Une entreprise <b>à échelle humaine</b>.</td><td>la phrase inverse serait absurde : elle ne dit rien</td></tr><tr><td class="cle">valeur creuse + le second</td><td>Nous plaçons l'humain au centre de nos décisions.<span class="tags">nous plaçons l'humain au centre</span></td><td>aucune entreprise n'écrit le contraire</td></tr><tr><td class="cle">difficulté avouée + le premier</td><td>La supervision du soir s'exerce <b>sans soutien sur place</b>.</td><td>ils ont déjà eu un problème là</td></tr><tr><td class="cle">difficulté avouée + le second</td><td>L'entreprise présente cette autonomie comme <b>une exigence du poste</b>.</td><td>la formulation avoue plus que le fait</td></tr></tbody></table><div class="note">Faites cet exercice sur le profil d'une vraie entreprise avant votre prochaine entrevue : vingt minutes, trois questions.</div></section><section class="bloc card ml"><h3>Huit lignes d'un profil, et ce qu'elles valent</h3><p class="mp">À gauche ce qui est écrit, à droite ce qu'il faut en faire.</p><table class="ex2"><tr><td>Fondée en 1985</td><td>à noter, mais tout le monde peut le citer</td></tr><tr><td>Deux cent dix personnes</td><td>un chiffre solide, à replacer</td></tr><tr><td>Aucun produit vendu au grand public</td><td>comprendre le vrai métier de l'entreprise</td></tr><tr><td>Acquise en janvier par un groupe ontarien</td><td>le fait récent : le plus utile des trois</td></tr><tr><td>Le carnet a doublé en dix-huit mois</td><td>explique pourquoi le poste existe</td></tr><tr><td>Quatre-vingt-deux pour cent de capacité</td><td>demander ce que le taux comprend</td></tr><tr><td>Un taux de roulement de onze pour cent</td><td>une pratique mesurée, pas une valeur</td></tr><tr><td>Sans soutien sur place après dix-huit heures</td><td>la difficulté avouée : y répondre d'avance</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges de la lecture d'un profil</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">citer l'année de fondation en entrevue</p><div class="k">Ce qui arrive</div><p class="ph">citer le fait récent</p><p class="px">« Je sais que vous existez depuis 1985 » prouve qu'on a lu la première ligne. « Je sais que le carnet a doublé et que le troisième quart en découle » prouve qu'on a lu et compris.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">retenir les valeurs affichées</p><div class="k">Ce qui arrive</div><p class="ph">retenir les chiffres</p><p class="px">Personne ne vous demandera de réciter les valeurs, et si on le fait, la question ne sert à rien. Les chiffres, eux, permettent de poser une vraie question.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">lire en cherchant à être rassuré</p><div class="k">Ce qui arrive</div><p class="ph">lire en cherchant les trous</p><p class="px">Un profil est fait pour plaire. Le lire pour se convaincre qu'on veut y travailler ne sert à rien : ce qui sert, c'est d'en sortir trois questions.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">Que faut-il prélever d'un profil d'entreprise ?</span><ul class="opts"><li>les valeurs affichées</li><li>un fait récent, un chiffre, une difficulté</li></ul></li><li><span class="q">« L'entreprise a été acquise en janvier » ne dit pas…</span><ul class="opts"><li>quand</li><li>par qui, et à quelle initiative</li></ul></li><li><span class="q">Comment reconnaître une phrase qui ne dit rien ?</span><ul class="opts"><li>elle est courte</li><li>sa version inverse serait absurde</li></ul></li><li><span class="q">Une difficulté avouée dans un profil est…</span><ul class="opts"><li>un signal d'alarme</li><li>une occasion d'y répondre d'avance</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> un fait récent, un chiffre, une difficulté — Ces trois-là se replacent dans une réponse. Les valeurs, non. · <b>2.</b> par qui, et à quelle initiative — Le passif efface celui qui agit. C'est une question toute prête. · <b>3.</b> sa version inverse serait absurde — Aucune entreprise n'écrit « nous méprisons l'humain » : donc la phrase ne distingue rien. · <b>4.</b> une occasion d'y répondre d'avance — Elle vous dit ce qui inquiète l'employeur. C'est le meilleur renseignement du document.</div></section></section></div>
+<footer><span>C2 · Passer au travers du processus</span><span>Fiche élève</span></footer>
+</body>
+</html>

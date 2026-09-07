@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>D1 · La note de service — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance D1 · Module 2 · 75 minutes</div>
+    <h1>La note de service</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Le plus court des écrits de travail, et le plus lu. Elle circule à l'intérieur de l'entreprise, entre des gens qui se connaissent. Elle ne fait pas de phrases : elle informe, elle demande, elle date.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>nommer les six parties d'une note de service ;</li><li>écrire un objet sans verbe conjugué ;</li><li>distinguer ce qui appartient à la note et ce qui appartient à la lettre ;</li><li>respecter la ponctuation et la mise en page des écrits de travail.</li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Les six parties d'une note de service</h2><table><thead><tr><th>La partie</th><th>Ce qu'elle contient</th></tr></thead><tbody><tr><td class="cle">L'en-tête</td><td>DESTINATAIRE, EXPÉDITEUR, DATE, OBJET</td></tr><tr><td class="cle">L'objet</td><td>six à dix mots, sans verbe conjugué</td></tr><tr><td class="cle">Le contexte</td><td>une ou deux phrases : pourquoi cette note existe</td></tr><tr><td class="cle">Le message</td><td>ce qui change, avec les dates et les personnes</td></tr><tr><td class="cle">La demande</td><td>ce que le lecteur doit faire, et avant quand</td></tr></tbody></table><div class="note">Puis la signature : prénom, nom, fonction. Une note ne se termine JAMAIS par une formule de politesse.</div></section><section class="bloc regle"><div class="lbl">Une note qui ne demande rien n'a pas besoin d'exister</div><p class="r">Ce que le lecteur doit faire, avant quand, auprès de qui.</p><p class="pr">C'est le test le plus simple d'une note de service : si le lecteur peut la lire et refermer sans avoir rien à faire ni rien à retenir de daté, elle encombre le babillard. Même une note purement informative demande quelque chose : prendre note d'une date, adresser ses questions à quelqu'un.</p></section><section class="bloc card"><div class="lbl">Le document</div><h2 class="t">La note de service d'Aïcha</h2><div class="doc-in"><p class="ent">MEUBLES RIVE-DU-NORD — NOTE DE SERVICE</p><p>DESTINATAIRES : le personnel du poste 4 et les chefs d'équipe de l'expédition. EXPÉDITRICE : Aïcha Traoré, coordonnatrice adjointe à l'expédition. DATE : le 16 septembre. OBJET : rotation des tâches au poste 4, à l'essai.</p><p>À la réunion de production du 15 septembre, le nombre de flexions exigées au poste d'emballage a été présenté au comité. Trois personnes du poste ont consulté pour le dos depuis le mois de mars.</p><p>À compter du lundi 22 septembre, et pour une période d'essai de quatre semaines, les cinq personnes affectées au poste 4 alterneront : quatre heures d'emballage, puis quatre heures à la préparation des commandes. L'alternance se fera à 11 h 30.</p><p>Il vous est demandé de noter, sur la feuille affichée au poste, l'heure de chaque changement et toute difficulté rencontrée. Ces notes seront relevées le vendredi 17 octobre.</p><p>Aucune modification n'est apportée aux quotas de production pendant l'essai. Toute question peut m'être adressée directement ou par l'entremise de votre chef d'équipe.</p><p>Aïcha Traoré, coordonnatrice adjointe à l'expédition. c. c. R. Cormier, chef de production ; T. Lapointe, représentante en santé et en sécurité.</p></div></section><section class="bloc card"><div class="lbl">Compréhension</div><h2 class="t">Ce que la note demande</h2><p class="consigne">Répondez d'après la note de service ci-dessus.</p><ol class="ex"><li><span class="q">À qui la note s'adresse-t-elle ?</span><span class="ligne"></span></li><li><span class="q">Quel est l'objet ?</span><span class="ligne"></span></li><li><span class="q">Qu'est-ce qui change, et à partir de quand ?</span><span class="ligne"></span></li><li><span class="q">Combien de temps dure l'essai ?</span><span class="ligne ligne--court"></span></li><li><span class="q">Qu'est-ce qu'on demande au lecteur de faire ?</span><span class="ligne"></span></li><li><span class="q">Qu'est-ce qui ne change pas pendant l'essai ?</span><span class="ligne"></span></li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Note de service ou lettre d'affaires ?</h2><table><thead><tr><th>L'élément</th><th>Où il va</th></tr></thead><tbody><tr><td class="cle">DESTINATAIRE et EXPÉDITEUR</td><td>la note de service</td></tr><tr><td class="cle">L'adresse du destinataire</td><td>la lettre d'affaires</td></tr><tr><td class="cle">« Monsieur, » seul sur sa ligne</td><td>la lettre d'affaires</td></tr><tr><td class="cle">« Veuillez agréer... »</td><td>la lettre d'affaires</td></tr><tr><td class="cle">Elle finit sur la fonction</td><td>la note de service</td></tr></tbody></table><div class="note">La note reste dans l'entreprise et n'engage que l'équipe. La lettre en sort, et ce qui y est écrit peut être invoqué plus tard.</div></section><section class="bloc card"><div class="lbl">Pratique</div><h2 class="t">Corrigez l'objet</h2><p class="consigne">Un objet n'a pas de verbe conjugué. Réécrivez-le.</p><ol class="ex"><li><span class="q">Objet : nous changeons l'horaire du poste 4</span><span class="ligne"></span></li><li><span class="q">Objet : il faut ranger la cafétéria</span><span class="ligne"></span></li><li><span class="q">Objet : on va fermer l'entrepôt le 3 juillet</span><span class="ligne"></span></li><li><span class="q">Objet : je demande une soumission</span><span class="ligne"></span></li><li><span class="q">Objet : la formation aura lieu jeudi</span><span class="ligne"></span></li></ol></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Ponctuation</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">« Terrebonne, 17/09/26 »</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">« Terrebonne, le 17 septembre 2026 »</p></div></div><div class="note">Le mois s'écrit en toutes lettres dans un écrit de travail. Une date en chiffres ne se lit pas de la même façon partout - le 09/03 est le 9 mars ici et le 3 septembre ailleurs - et un document se relit parfois deux ans plus tard. Même règle pour les abréviations : « M. » et non « Mr », qui est anglais.</div></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez l'en-tête et l'objet de votre note de service.</p><ul><li>Quatre lignes : destinataires, expéditeur, date, objet.</li><li>L'objet en six à dix mots, sans verbe conjugué.</li><li>La date en toutes lettres.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Écrire une note de service</h2><section class="bloc card ml"><h3>Le plus court des écrits de travail, et le plus lu</h3><p class="mp">Une note de service tient sur une page, souvent sur une demi-page. Elle circule <b>à l'intérieur</b> de l'entreprise, entre des gens qui se connaissent. Elle ne fait pas de phrases : elle informe, elle demande, elle date. Et parce qu'elle est courte, chacun de ses six morceaux se voit — un morceau manquant se remarque tout de suite.</p><div class="note">C'est l'une des deux intentions de production écrite du programme, à cette situation : « écrire une note de service ».</div></section><section class="bloc card ml"><h3>Les six parties</h3><p class="mp">À gauche la partie, à droite ce qu'elle contient.</p><table class="ex2"><tr><td>L'en-tête</td><td>Le nom de l'entreprise, puis DESTINATAIRE, EXPÉDITEUR, DATE, OBJET. Toujours cet ordre, toujours alignés.</td></tr><tr><td>L'objet</td><td>Six à dix mots, sans verbe conjugué : « rotation des tâches au poste 4, à l'essai ». C'est souvent la seule ligne lue.</td></tr><tr><td>Le contexte</td><td>Une ou deux phrases : pourquoi cette note existe. Aucun reproche, aucune histoire.</td></tr><tr><td>Le message</td><td>Ce qui change, avec les dates, les personnes visées, les heures. La partie qui compte.</td></tr><tr><td>La demande</td><td>Ce que le lecteur doit faire, avant quand, auprès de qui. Une note qui ne demande rien n'a pas besoin d'exister.</td></tr><tr><td>La signature</td><td>Prénom, nom, fonction. Puis « c. c. » s'il y a des copies conformes.</td></tr></table></section><section class="bloc card ml"><h3>Ce qu'une note de service n'a pas</h3><p class="mp">Pas de vedette avec l'adresse : les gens sont dans le même bâtiment. Pas d'appel — on n'écrit pas « Monsieur, ». Pas de salutation finale — on ne finit pas par « veuillez agréer ». Ces trois absences sont ce qui distingue une note d'une lettre, et les ajouter ne rend pas la note plus polie : ça la rend étrange.</p><div class="note">En revanche, elle dit « vous » et elle peut être chaleureuse. « Toute question peut m'être adressée directement » n'est pas une formule creuse.</div></section><section class="bloc card ml"><h3>Les tournures qui font une note</h3><p class="mp">Elles sont peu nombreuses et elles reviennent toutes.</p><table class="ana"><tr><td>Annoncer</td><td class="">À compter du lundi 22 septembre… · Veuillez prendre note que…</td></tr><tr><td>Demander</td><td class="cle">Il vous est demandé de… · Nous vous prions de…</td></tr><tr><td>Rassurer</td><td class="">Aucune modification n'est apportée à…</td></tr><tr><td>Ouvrir</td><td class="">Toute question peut m'être adressée directement.</td></tr></table><p class="dit"><span class="k">On dit</span> À compter du lundi vingt-deux septembre. Il vous est demandé de noter l'heure de chaque changement.</p><div class="note">« Il vous est demandé de » est une passive : la note demande, pas la personne. C'est ce qui la rend impersonnelle sans la rendre froide.</div></section><section class="bloc card ml"><h3>Trois erreurs qui se voient de loin</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">un objet avec un verbe conjugué</p><div class="k">Ce qui arrive</div><p class="ph">un groupe du nom</p><p class="px">« Objet : nous changeons l'horaire du poste 4 » se corrige en « Objet : modification de l'horaire du poste 4 ».</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">une note sans date de fin</p><div class="k">Ce qui arrive</div><p class="ph">une échéance écrite</p><p class="px">« Pendant quelque temps » n'engage personne. « Pour une période d'essai de quatre semaines » se vérifie.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">terminer par une formule de lettre</p><div class="k">Ce qui arrive</div><p class="ph">terminer par sa fonction</p><p class="px">« Veuillez agréer » dans une note de service fait sourire l'équipe. Prénom, nom, fonction, et c'est tout.</p></div></div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>La lettre d'affaires courantes</h2><section class="bloc card ml"><h3>Elle sort de l'entreprise, et elle l'engage</h3><p class="mp">C'est la différence de fond avec la note de service. Une note circule entre gens qui se connaissent et n'engage personne au-delà de l'équipe. Une lettre d'affaires part chez un tiers — un fournisseur, un client, un organisme — et ce qui y est écrit peut être invoqué plus tard. D'où sa longueur, ses formules, et le soin qu'on met à ne pas écrire « nous voulons acheter » quand on veut dire « nous demandons un prix ».</p><div class="note">C'est la seconde intention de production écrite du programme : « rédiger une lettre d'affaires courantes ».</div></section><section class="bloc card ml"><h3>Les sept parties, de haut en bas</h3><p class="mp">À gauche la partie, à droite ce qu'elle contient.</p><table class="ex2"><tr><td>Le lieu et la date</td><td>En haut à droite. « Terrebonne, le 17 septembre 2026 ». Le mois ne s'abrège pas.</td></tr><tr><td>La vedette</td><td>À gauche : nom, fonction, entreprise, adresse du destinataire. C'est ce qui manque le plus souvent.</td></tr><tr><td>L'objet</td><td>« Objet : demande de soumission — table élévatrice à ciseaux ». Sans verbe conjugué.</td></tr><tr><td>L'appel</td><td>« Monsieur, » ou « Madame, » seul sur sa ligne, suivi d'une virgule.</td></tr><tr><td>Le corps</td><td>Trois paragraphes : pourquoi j'écris, ce que je demande, ce que j'attends comme suite.</td></tr><tr><td>La salutation</td><td>Elle reprend l'appel mot pour mot : « Veuillez agréer, Monsieur, mes salutations distinguées. »</td></tr><tr><td>La signature</td><td>Signature manuscrite, nom dactylographié, fonction. Puis « p. j. » et « c. c. » s'il y a lieu.</td></tr></table></section><section class="bloc card ml"><h3>Trois paragraphes, trois travaux</h3><p class="mp">Le corps d'une lettre courante ne devrait presque jamais en compter davantage.</p><table class="ana"><tr><td>Paragraphe 1</td><td class="">Pourquoi j'écris. Nous vous écrivons afin d'obtenir une soumission pour…</td></tr><tr><td>Paragraphe 2</td><td class="cle">Ce que je demande, en détail : les données, les options, les questions.</td></tr><tr><td>Paragraphe 3</td><td class="">La suite : la date de réponse souhaitée, et ce qui se passera ensuite.</td></tr></table><p class="dit"><span class="k">On dit</span> Nous vous écrivons afin d'obtenir une soumission pour une table élévatrice à ciseaux.</p><div class="note">Un paragraphe, une idée. Un bloc de douze lignes ne se lit pas, quelle que soit sa qualité.</div></section><section class="bloc card ml"><h3>Ne pas engager l'entreprise sans le vouloir</h3><p class="mp">La leçon que monsieur Cormier donne à Aïcha en une phrase.</p><table class="ana"><tr><td>On écrit</td><td class="">Nous demandons une soumission. · Le projet est à l'étude.</td></tr><tr><td>On n'écrit pas</td><td class="cle">Nous voulons acheter. · Nous commandons.</td></tr><tr><td>La formule qui protège</td><td class="">Sous réserve de l'approbation du budget…</td></tr></table><p class="dit"><span class="k">On dit</span> Nous demandons une soumission. Sous réserve de l'approbation du budget.</p><div class="note">Dire où l'on en est — « la décision se prend en octobre » — est plus utile au fournisseur qu'un enthousiasme qui n'engage rien.</div></section><section class="bloc card ml"><h3>Quatre questions</h3><ol class="check"><li><span class="q">La salutation finale doit…</span><ul class="opts"><li>reprendre l'appel du début</li><li>varier pour éviter la répétition</li></ul></li><li><span class="q">« p. j. » signifie…</span><ul class="opts"><li>pièce jointe</li><li>pour information</li></ul></li><li><span class="q">Une note de service a-t-elle un appel ?</span><ul class="opts"><li>oui</li><li>non</li></ul></li><li><span class="q">Combien de paragraphes dans le corps d'une lettre courante ?</span><ul class="opts"><li>trois</li><li>sept</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> reprendre l'appel du début — Si l'appel dit « Madame », la salutation dit « Madame ». · <b>2.</b> pièce jointe — « c. c. » est la copie conforme. · <b>3.</b> non — Ni appel, ni salutation : c'est ce qui la distingue de la lettre. · <b>4.</b> trois — Pourquoi j'écris, ce que je demande, ce que j'attends.</div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>La mise en page fait partie du message</h2><section class="bloc card ml"><h3>Ce n'est pas de la coquetterie</h3><p class="mp">Le programme du niveau 7 range la <b>présentation matérielle</b> parmi les savoirs de grammaire du texte, au même titre que les connecteurs. La raison est simple : dans un écrit de travail, la mise en page porte de l'information. Un objet en gras dit « lisez ceci d'abord ». Trois paragraphes disent « il y a trois idées ». Un bloc de douze lignes dit « je n'ai pas trié ».</p><div class="note">Un texte impeccable et mal présenté est lu de travers. Un texte moyen et bien présenté est lu.</div></section><section class="bloc card ml"><h3>Les règles qui reviennent</h3><p class="mp">À gauche la règle, à droite l'exemple.</p><table class="ex2"><tr><td>La date ne s'abrège pas</td><td>« Terrebonne, le 17 septembre 2026 » — jamais « 17/09/26 ».</td></tr><tr><td>L'objet n'a pas de verbe conjugué</td><td>« Objet : demande de soumission — table élévatrice ».</td></tr><tr><td>L'appel prend une virgule</td><td>« Monsieur, » — ni point, ni deux-points, ni point d'exclamation.</td></tr><tr><td>Une seule paire de deux-points</td><td>« Trois données sont requises : la charge, les dimensions et la hauteur. »</td></tr><tr><td>Espace avant les signes doubles</td><td>Une espace avant ? ! ; : et avant le guillemet fermant.</td></tr><tr><td>Les abréviations d'usage</td><td>M. · Mme · p. j. · c. c. · 2e — « Mr » est anglais.</td></tr><tr><td>Un paragraphe, une idée</td><td>Trois paragraphes de quatre lignes valent mieux qu'un bloc de douze.</td></tr></table></section><section class="bloc card ml"><h3>Les abréviations que vous emploierez</h3><p class="mp">Peu nombreuses, et toujours les mêmes.</p><table class="ana"><tr><td>Les personnes</td><td class="">M. · Mme · Mmes · MM.</td></tr><tr><td>Les documents</td><td class="cle">p. j. (pièce jointe) · c. c. (copie conforme) · N/Réf. (notre référence)</td></tr><tr><td>Les nombres</td><td class="">1er · 2e · 3e — jamais « 1ère » ni « 2ème »</td></tr></table><p class="dit"><span class="k">On dit</span> Monsieur. Madame. Pièce jointe. Copie conforme. Premier. Deuxième.</p><div class="note">« Mr » est l'abréviation anglaise. En français, c'est « M. » — un M majuscule et un point.</div></section><section class="bloc card ml"><h3>Ce que la mise en page dit avant qu'on lise</h3><p class="mp">Une personne pressée regarde d'abord la forme : y a-t-il un objet ? des paragraphes ? une date ? une signature ? Si oui, elle lit. Sinon, elle remet à plus tard, et « plus tard » veut souvent dire jamais. Soigner la forme n'est pas un raffinement : c'est ce qui décide si votre texte est lu le jour où il compte.</p><div class="note">Le test que vous pouvez faire seul : regardez votre lettre à un mètre de distance, sans la lire. Si vous ne voyez pas où sont l'objet, les paragraphes et la signature, personne ne les verra.</div></section><section class="bloc card ml"><h3>Quatre questions</h3><ol class="check"><li><span class="q">« Terrebonne, 17/09/26 » dans une lettre :</span><ul class="opts"><li>correct</li><li>à corriger</li></ul></li><li><span class="q">Après l'appel « Monsieur », on met…</span><ul class="opts"><li>une virgule</li><li>deux-points</li></ul></li><li><span class="q">L'abréviation française de « Monsieur » est…</span><ul class="opts"><li>M.</li><li>Mr</li></ul></li><li><span class="q">« 2ème » s'écrit…</span><ul class="opts"><li>2e</li><li>2ème</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> à corriger — Le mois s'écrit en toutes lettres : « le 17 septembre 2026 ». · <b>2.</b> une virgule — « Monsieur, » seul sur sa ligne. · <b>3.</b> M. — « Mr » est anglais. · <b>4.</b> 2e — Deuxième s'abrège « 2e », avec le e en exposant.</div></section></section></div>
+<footer><span>D1 · Présenter un projet au travail</span><span>Fiche élève</span></footer>
+</body>
+</html>

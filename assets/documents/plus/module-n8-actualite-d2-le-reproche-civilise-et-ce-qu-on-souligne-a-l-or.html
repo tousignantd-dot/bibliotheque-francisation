@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>D2 · Le reproche civilisé, et ce qu'on souligne à l'oral — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance D2 · Module 5 · 75 minutes</div>
+    <h1>Le reproche civilisé, et ce qu'on souligne à l'oral</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Deux tournures font presque tout le travail d'une prise de position : celle qui parle du monde qui n'a pas eu lieu, et celle qui dit à l'auditoire ce qu'il doit retenir.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>employer l'hypothèse irréelle du passé : si plus plus-que-parfait, conditionnel passé ;</li><li>reconnaître le « si » qui n'est pas une hypothèse ;</li><li>mettre en relief avec c'est... qui, ce que... c'est, et le détachement ;</li><li>choisir dont, auquel, pour lesquelles selon la préposition du verbe.</li></ol></section><section class="bloc regle"><div class="lbl">Si plus plus-que-parfait, puis conditionnel passé</div><p class="r">Si la Ville avait publié l'évaluation, personne n'aurait demandé de référendum. Jamais de conditionnel après « si » : c'est la faute la plus connue du français.</p><p class="pr">Plus-que-parfait dans la moitié « si » : avoir ou être à l'imparfait, plus le participe. Conditionnel passé dans l'autre : avoir ou être au conditionnel, plus le même participe. Les deux moitiés peuvent s'échanger ; quand « si » passe en second, la virgule disparaît.</p></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Ce que cette forme sert à dire</h2><table><thead><tr><th>Ce qu'on veut faire</th><th>Ce qu'on dit</th></tr></thead><tbody><tr><td class="cle">Reprocher sans accuser</td><td>Si l'évaluation avait été publiée, cette discussion n'aurait pas lieu d'être.</td></tr><tr><td class="cle">Regretter</td><td>Si j'avais parlé à l'assemblée, j'aurais eu ma réponse.</td></tr><tr><td class="cle">Tirer une leçon</td><td>Si le conseil avait attendu deux semaines, le vote aurait été mieux compris.</td></tr><tr><td class="cle">Dire que l'effet dure encore</td><td>S'ils avaient mieux consulté, nous n'en serions pas là aujourd'hui.</td></tr></tbody></table><div class="note">La dernière ligne mêle les deux temps : passé dans la condition, présent dans la conséquence.</div></section><section class="bloc card"><div class="lbl">Pratique 1 de 3</div><h2 class="t">Ce qui aurait pu se passer autrement</h2><p class="consigne">Écrivez seulement le groupe verbal demandé.</p><ol class="ex"><li><span class="q">Si la Ville avait publié l'évaluation, le comité ___ (ne pas ouvrir) de registre.</span><span class="ligne ligne--court"></span></li><li><span class="q">Si le conseil ___ (attendre) deux semaines, le vote aurait été mieux compris.</span><span class="ligne ligne--court"></span></li><li><span class="q">Si j'avais eu ces documents la semaine dernière, je ___ (ne pas appeler) ce matin.</span><span class="ligne ligne--court"></span></li><li><span class="q">Nous ___ (venir) plus nombreux si la séance n'avait pas duré jusqu'à vingt-trois heures.</span><span class="ligne ligne--court"></span></li><li><span class="q">S'ils avaient mieux consulté, nous n'en ___ (être) pas là aujourd'hui.</span><span class="ligne"></span></li><li><span class="q">Je me demande si la Ville ___ (publier) enfin l'évaluation avant mardi.</span><span class="ligne"></span></li></ol></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Piège</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">« si » veut toujours dire hypothèse</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">« si » introduit aussi une question indirecte</p></div></div><div class="note">« Je me demande si la Ville publiera l'évaluation » n'est pas une hypothèse : c'est une question rapportée, et le futur y est correct. La règle « jamais de conditionnel après si » ne vaut que pour l'hypothèse. Le test : peut-on remplacer « si » par « oui ou non » dans la phrase ?</div></section><section class="bloc regle"><div class="lbl">Ce que je demande, c'est...</div><p class="r">À l'écrit on souligne ; à l'oral, on ne peut pas. Le français a des tournures qui font le même travail : elles déplacent un groupe de mots et le mettent en évidence.</p><p class="pr">Quatre outils. C'est... qui quand le groupe extrait est le sujet, c'est... que dans tous les autres cas. Ce que... c'est pour annoncer qu'un point important arrive. Le détachement avec reprise par un pronom, à l'oral. Quant à, à l'écrit soutenu.</p></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">La même idée, cinq mises en relief</h2><table><thead><tr><th>La phrase</th><th>Ce qu'elle produit</th></tr></thead><tbody><tr><td class="cle">La procédure me dérange.</td><td>phrase neutre - rien ne ressort</td></tr><tr><td class="cle">C'est la procédure qui me dérange.</td><td>on écarte tout le reste : ce n'est pas le projet</td></tr><tr><td class="cle">Ce qui me dérange, c'est la procédure.</td><td>on annonce, puis on livre : l'auditoire attend</td></tr><tr><td class="cle">La procédure, elle me dérange.</td><td>détachement parlé, très direct, bon à la radio</td></tr><tr><td class="cle">Quant à la procédure, elle me dérange.</td><td>registre soutenu, bon en tête de paragraphe</td></tr></tbody></table></section><section class="bloc card"><div class="lbl">Pratique 2 de 3</div><h2 class="t">Mettre en avant ce qui compte</h2><p class="consigne">Récrivez avec la tournure indiquée.</p><ol class="ex"><li><span class="q">La procédure me dérange, pas le projet. (c'est... qui)</span><span class="ligne"></span></li><li><span class="q">Je demande la publication de l'évaluation. (ce que... c'est)</span><span class="ligne"></span></li><li><span class="q">Une étude du terrain de l'aréna manque. (ce qui... c'est)</span><span class="ligne"></span></li><li><span class="q">On a voté à vingt-deux heures cinquante. (c'est... que)</span><span class="ligne"></span></li><li><span class="q">Je veux ce document avant mardi. (détachement et pronom)</span><span class="ligne"></span></li><li><span class="q">L'évaluation n'a toujours pas été publiée. (quant à)</span><span class="ligne"></span></li></ol></section><section class="bloc regle"><div class="lbl">Les relatives qui portent une préposition</div><p class="r">Cherchez la préposition que demande le verbe de la relative, puis le genre et le nombre de ce qu'elle reprend. Le pronom s'en déduit tout seul.</p><p class="pr">De donne dont : un dossier dont tout le monde parle. À donne auquel, à laquelle, auxquelles - ou « à qui » pour des personnes. Les autres prépositions donnent lequel accordé : sur lequel, pour lesquelles. Le lieu et le temps donnent où, qui allège la phrase.</p></section><section class="bloc card"><div class="lbl">Pratique 3 de 3</div><h2 class="t">Quel pronom relatif ?</h2><p class="consigne">Complétez.</p><ol class="ex"><li><span class="q">C'est un projet ___ je m'oppose pour des raisons de procédure.</span><span class="ligne ligne--court"></span></li><li><span class="q">L'assemblée ___ j'ai assisté jeudi a duré deux heures.</span><span class="ligne"></span></li><li><span class="q">Voici les deux raisons ___ j'ai décidé de signer.</span><span class="ligne ligne--court"></span></li><li><span class="q">C'est un dossier ___ tout le monde parle depuis lundi.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le comité ___ le porte-parole est madame Sauvé compte trente membres.</span><span class="ligne"></span></li><li><span class="q">Je n'oublierai pas le soir ___ le vote a été pris.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez trois phrases sur le dossier du boisé, une par tournure.</p><ul><li>Une hypothèse irréelle : si la Ville avait..., je n'aurais pas...</li><li>Une mise en relief : ce que je demande, c'est...</li><li>Une relative à préposition : les raisons pour lesquelles...</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Ce qui aurait pu se passer autrement</h2><section class="bloc card ml"><h3>La forme du reproche civilisé</h3><p class="mp">« Si la Ville avait publié l'évaluation, personne n'aurait demandé de référendum. » Cette phrase reproche quelque chose à quelqu'un sans accuser personne : elle parle d'un monde qui n'a pas eu lieu. C'est l'outil le plus utile pour critiquer une décision en restant écoutable — et c'est exactement ce que le niveau 8 attend de vous.</p><div class="note">Elle sert aussi au regret et à la leçon : « si j'avais parlé à l'assemblée, j'aurais eu ma réponse ».</div></section><section class="bloc card ml"><h3>La forme, une fois pour toutes</h3><p class="mp">Deux moitiés, deux temps, et jamais l'inverse. Après « si », le plus-que-parfait. Dans l'autre moitié, le conditionnel passé.</p><table class="ana"><tr><td>La condition</td><td class="">Si la Ville avait publié l'évaluation,</td></tr><tr><td>La conséquence</td><td class="cle">personne n'aurait demandé de référendum.</td></tr><tr><td>Interdit</td><td class="">jamais de conditionnel après « si »</td></tr></table><p class="dit"><span class="k">On dit</span> Si la Ville avait publié l'évaluation, personne n'aurait demandé de référendum.</p><div class="note">« Si j'aurais su » est la faute la plus connue du français. Elle se corrige en se rappelant que « si » et « -rais » ne se rencontrent jamais.</div></section><section class="bloc card ml"><h3>Les deux moitiés peuvent s'échanger</h3><p class="mp">L'ordre ne change pas le sens ; il change ce qu'on met en avant. Quand « si » passe en second, la virgule disparaît.</p><table class="ana"><tr><td>Ordre 1</td><td class="">Si le conseil avait attendu, le vote serait passé sans bruit.</td></tr><tr><td>Ordre 2</td><td class="cle">Le vote serait passé sans bruit si le conseil avait attendu.</td></tr><tr><td>L'effet</td><td class="">le premier élément est celui qu'on souligne</td></tr></table><p class="dit"><span class="k">On dit</span> Si le conseil avait attendu, le vote serait passé sans bruit.</p><div class="note">À l'oral, commencez par « si » : votre interlocuteur sait tout de suite que vous parlez d'un monde qui n'a pas eu lieu.</div></section><section class="bloc card ml"><h3>Le mélange des temps — hier et aujourd'hui</h3><p class="mp">Quand ce qui s'est mal fait hier produit encore ses effets, on met le passé dans la condition et le présent dans la conséquence.</p><table class="ana"><tr><td>On dit</td><td class="">S'ils avaient mieux consulté, nous n'en serions pas là aujourd'hui.</td></tr><tr><td>Le sens</td><td class="cle">la cause est passée, l'effet dure</td></tr><tr><td>Autre</td><td class="">Si j'étais arrivée plus tôt, je pourrais vous répondre.</td></tr></table><p class="dit"><span class="k">On dit</span> S'ils avaient mieux consulté, nous n'en serions pas là aujourd'hui.</p><div class="note">C'est la forme la plus fréquente dans un débat public, et celle qu'on entend le moins chez ceux qui apprennent la langue.</div></section><section class="bloc card ml"><h3>L'accord du participe au conditionnel passé</h3><p class="mp">Avec être, le participe s'accorde avec le sujet ; avec avoir, il ne s'accorde pas avec le sujet.</p><table class="ana"><tr><td>Avec être</td><td class="">Nous serions venus plus nombreux.</td></tr><tr><td>Avec avoir</td><td class="cle">Elle aurait posé la question.</td></tr><tr><td>Piège</td><td class="">Ils seraient partis · elles seraient restées</td></tr></table><p class="dit"><span class="k">On dit</span> Nous serions venus plus nombreux. Elle aurait posé la question.</p><div class="note">À l'oral, l'accord ne s'entend presque jamais. À l'écrit, dans une lettre au journal, il se voit.</div></section><section class="bloc card ml"><h3>Le monde qui n'a pas eu lieu</h3><p class="mp">Choisissez une cause et une conséquence.</p><table class="labo"><thead><tr><th>Quelle cause ? · Quelle conséquence ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">si l'évaluation avait été publiée + dans le passé</td><td>Si l'évaluation avait été publiée, le comité n'aurait pas ouvert de registre.</td><td>plus-que-parfait, puis conditionnel passé</td></tr><tr><td class="cle">si l'évaluation avait été publiée + encore aujourd'hui</td><td>Si l'évaluation avait été publiée, nous ne serions pas en train d'en débattre.</td><td>la cause est passée, l'effet dure encore</td></tr><tr><td class="cle">si le vote avait eu lieu à vingt heures + dans le passé</td><td>Si le vote avait eu lieu à vingt heures, la salle aurait été pleine.</td><td>conséquence entièrement passée</td></tr><tr><td class="cle">si le vote avait eu lieu à vingt heures + encore aujourd'hui</td><td>Si le vote avait eu lieu à vingt heures, personne ne contesterait la procédure.</td><td>conditionnel présent : c'est encore vrai maintenant</td></tr><tr><td class="cle">si le terrain de l'aréna avait été étudié + dans le passé</td><td>Si le terrain de l'aréna avait été étudié, la Ville aurait eu une réponse à donner.</td><td>conditionnel passé</td></tr><tr><td class="cle">si le terrain de l'aréna avait été étudié + encore aujourd'hui</td><td>Si le terrain de l'aréna avait été étudié, la discussion serait différente.</td><td>l'effet se poursuit</td></tr></tbody></table><div class="note">Répétez chaque phrase à voix haute : cette construction est longue, et elle ne devient naturelle qu'en la disant.</div></section><section class="bloc card ml"><h3>Six phrases utiles dans un débat</h3><p class="mp">À gauche la phrase, à droite ce qu'elle fait.</p><table class="ex2"><tr><td>Si nous avions su, nous serions venus.</td><td>un regret, sans accuser personne</td></tr><tr><td>Si la Ville avait publié l'évaluation, je n'aurais pas signé.</td><td>un reproche adressé à une institution</td></tr><tr><td>Si j'avais eu ces documents, je n'aurais pas eu besoin d'appeler.</td><td>une critique qui reste polie</td></tr><tr><td>Si le projet avait été présenté en juin, il serait déjà en chantier.</td><td>montrer que le retard vient d'ailleurs</td></tr><tr><td>Si vous aviez posé la question, on vous aurait répondu.</td><td>renvoyer la responsabilité</td></tr><tr><td>Si nous n'avions rien dit, rien n'aurait changé.</td><td>justifier son action</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">« si j'aurais su »</p><div class="k">Ce qui arrive</div><p class="ph">« si j'avais su »</p><p class="px">Jamais de conditionnel après « si » quand il s'agit d'une hypothèse. C'est la faute la plus repérée du français, et elle se corrige une fois pour toutes.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">« si » d'hypothèse et « si » de question indirecte</p><div class="k">Ce qui arrive</div><p class="ph">les distinguer</p><p class="px">« Je me demande si la Ville publiera » n'est pas une hypothèse : c'est une question rapportée, et le futur y est permis. La règle ne vaut que pour l'hypothèse.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">employer cette forme trois fois de suite</p><div class="k">Ce qui arrive</div><p class="ph">une ou deux fois, aux bons endroits</p><p class="px">Un texte entièrement au conditionnel passé donne l'impression de quelqu'un qui refait le passé au lieu de demander quelque chose. Terminez toujours sur une demande au présent.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">Après « si » d'hypothèse, on emploie…</span><ul class="opts"><li>le plus-que-parfait</li><li>le conditionnel passé</li></ul></li><li><span class="q">« Nous ___ venus plus nombreux » se complète par…</span><ul class="opts"><li>aurions</li><li>serions</li></ul></li><li><span class="q">« S'ils avaient consulté, nous n'en serions pas là » mélange…</span><ul class="opts"><li>deux passés</li><li>un passé et un présent</li></ul></li><li><span class="q">« Je me demande si la Ville publiera » est…</span><ul class="opts"><li>une hypothèse</li><li>une question indirecte</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> le plus-que-parfait — Le conditionnel va dans l'autre moitié de la phrase. · <b>2.</b> serions — Venir se conjugue avec être : nous serions venus. · <b>3.</b> un passé et un présent — La cause est passée, l'effet dure encore aujourd'hui. · <b>4.</b> une question indirecte — Le futur y est permis : ce n'est pas le « si » de l'hypothèse.</div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Mettre en avant ce qui compte</h2><section class="bloc card ml"><h3>À l'écrit on souligne, à l'oral on construit</h3><p class="mp">Quand tout est dit sur le même ton, rien ne ressort. Le français a des tournures faites pour souligner : elles déplacent un groupe de mots et le mettent en évidence. Dans un débat, elles font la différence entre quelqu'un qu'on suit et quelqu'un qu'on écoute poliment.</p><div class="note">Elles ne sont pas décoratives : elles disent à l'auditoire ce qu'il doit retenir de votre intervention.</div></section><section class="bloc card ml"><h3>C'est… qui · c'est… que</h3><p class="mp">On extrait le groupe à souligner et on l'encadre. « Qui » si le groupe extrait est le sujet du verbe ; « que » dans tous les autres cas.</p><table class="ana"><tr><td>Sujet extrait</td><td class="">C'est la procédure qui me dérange.</td></tr><tr><td>Autre groupe</td><td class="cle">C'est à vingt-deux heures cinquante qu'on a voté.</td></tr><tr><td>Le test</td><td class="">le mot juste après « c'est… » est-il le sujet ?</td></tr></table><p class="dit"><span class="k">On dit</span> C'est la procédure qui me dérange. C'est à vingt-deux heures cinquante qu'on a voté.</p><div class="note">Attention à l'accord du verbe : « c'est moi qui <b>ai</b> posé la question », jamais « qui a ».</div></section><section class="bloc card ml"><h3>Ce que… c'est · ce qui… c'est</h3><p class="mp">La forme la plus employée dans une intervention publique. Elle annonce qu'un point important arrive, et donne à l'auditoire une seconde pour s'y préparer.</p><table class="ana"><tr><td>Complément</td><td class="">Ce que je demande, c'est la publication de l'évaluation.</td></tr><tr><td>Sujet</td><td class="cle">Ce qui manque, c'est une étude du terrain de l'aréna.</td></tr><tr><td>Le repère</td><td class="">« ce que » pour un complément, « ce qui » pour un sujet</td></tr></table><p class="dit"><span class="k">On dit</span> Ce que je demande, c'est la publication de l'évaluation.</p><div class="note">C'est aussi la meilleure façon de commencer la dernière phrase d'une intervention : elle annonce la conclusion sans dire « en conclusion ».</div></section><section class="bloc card ml"><h3>Le détachement, avec reprise par un pronom</h3><p class="mp">On sort le groupe en tête ou en fin de phrase, et on le reprend par un pronom. C'est du français parlé correct, très courant au Québec, et parfaitement acceptable à une tribune.</p><table class="ana"><tr><td>En tête</td><td class="">Ce document-là, je le veux avant mardi.</td></tr><tr><td>En fin</td><td class="cle">Il a raison sur un point, le comité.</td></tr><tr><td>La reprise</td><td class="">le, la, les, en, y — accordés au groupe détaché</td></tr></table><p class="dit"><span class="k">On dit</span> Ce document-là, je le veux avant mardi. Il a raison sur un point, le comité.</p><div class="note">À l'écrit soutenu — votre lettre au journal —, employez plutôt « c'est… que » ou « quant à » : le détachement y paraît familier.</div></section><section class="bloc card ml"><h3>Quant à · pour ce qui est de</h3><p class="mp">Plus soutenu, et pratique pour changer de sujet sans perdre le fil. Il annonce : je passe à autre chose, et voici de quoi je parle maintenant.</p><table class="ana"><tr><td>On écrit</td><td class="">Quant à l'évaluation, elle n'a toujours pas été publiée.</td></tr><tr><td>Variante</td><td class="cle">Pour ce qui est du délai, il vient du promoteur.</td></tr><tr><td>Le service rendu</td><td class="">passer d'un point à l'autre proprement</td></tr></table><p class="dit"><span class="k">On dit</span> Quant à l'évaluation, elle n'a toujours pas été publiée.</p><div class="note">Excellent dans une lettre de trois paragraphes : un « quant à » au début du troisième, et la structure se voit toute seule.</div></section><section class="bloc card ml"><h3>La même idée, cinq mises en relief</h3><p class="mp">À gauche la tournure, à droite l'effet.</p><table class="ex2"><tr><td>La procédure me dérange.</td><td>phrase neutre — rien ne ressort</td></tr><tr><td>C'est la procédure qui me dérange.</td><td>on écarte tout le reste : ce n'est pas le projet</td></tr><tr><td>Ce qui me dérange, c'est la procédure.</td><td>on annonce, puis on livre : l'auditoire attend</td></tr><tr><td>La procédure, elle me dérange.</td><td>détachement parlé, très direct</td></tr><tr><td>Quant à la procédure, elle me dérange.</td><td>registre soutenu, bon en tête de paragraphe</td></tr><tr><td>Ce n'est pas le projet qui me dérange, c'est la procédure.</td><td>la forme la plus forte : on écarte et on désigne</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">« c'est moi qui a »</p><div class="k">Ce qui arrive</div><p class="ph">« c'est moi qui ai »</p><p class="px">Le verbe s'accorde avec le mot repris par « qui ». C'est moi qui ai, c'est nous qui avons, c'est vous qui avez.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">deux mises en relief dans la même phrase</p><div class="k">Ce qui arrive</div><p class="ph">une seule</p><p class="px">« Ce que je veux, c'est que ce soit l'évaluation qui soit publiée » est illisible. Une par phrase, trois au plus dans une intervention.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">le détachement dans une lettre officielle</p><div class="k">Ce qui arrive</div><p class="ph">« c'est… que » ou « quant à »</p><p class="px">« Le comité, il a raison » se dit très bien à la radio et se lit mal dans un journal. Le registre change, les outils changent.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Trois questions rapides.</p><ol class="check"><li><span class="q">« C'est la procédure ___ me dérange » se complète par…</span><ul class="opts"><li>qui</li><li>que</li></ul></li><li><span class="q">Pour annoncer sa demande à la fin d'une intervention, la meilleure tournure est…</span><ul class="opts"><li>ce que je demande, c'est…</li><li>je demande…</li></ul></li><li><span class="q">Dans une lettre au journal, on évite plutôt…</span><ul class="opts"><li>quant à…</li><li>le comité, il a raison</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> qui — « La procédure » est sujet de « me dérange » : c'est « qui ». · <b>2.</b> ce que je demande, c'est… — Elle prévient l'auditoire qu'un point important arrive. · <b>3.</b> le comité, il a raison — Le détachement parlé détonne dans un texte publié.</div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Les relatives qui portent une préposition</h2><section class="bloc card ml"><h3>Pourquoi c'est un savoir de lecture avant d'être un savoir d'écriture</h3><p class="mp">Dans un texte d'opinion, l'essentiel voyage dans les relatives : ce qui suit « dont », « auquel » ou « pour lesquelles » est presque toujours l'argument. Le problème n'est pas de les écrire — c'est de savoir, en lisant, à quoi le pronom renvoie, parfois trois lignes plus haut. Une phrase de six lignes se comprend dès qu'on a trouvé ça.</p><div class="note">C'est aussi ce qui vous permettra d'écrire des phrases longues sans qu'elles s'écroulent.</div></section><section class="bloc card ml"><h3>La méthode, en deux temps</h3><p class="mp">Cherchez d'abord la préposition que demande le verbe de la relative, puis le genre et le nombre de ce qu'elle reprend. Le pronom s'en déduit.</p><table class="ana"><tr><td>Le verbe et sa préposition</td><td class="">s'opposer à quelque chose</td></tr><tr><td>Ce qu'on reprend</td><td class="cle">un projet — masculin singulier</td></tr><tr><td>Le résultat</td><td class="">le projet auquel je m'oppose</td></tr></table><p class="dit"><span class="k">On dit</span> Le projet auquel je m'oppose. L'assemblée à laquelle j'ai assisté.</p><div class="note">Toute la difficulté vient de la préposition, jamais du pronom. Trouvez la préposition, le reste suit.</div></section><section class="bloc card ml"><h3>Dont — le pronom de « de »</h3><p class="mp">Il remplace un groupe introduit par « de », quel que soit le genre et le nombre. C'est le plus fréquent et le plus utile.</p><table class="ana"><tr><td>Verbe en « de »</td><td class="">un dossier dont tout le monde parle</td></tr><tr><td>Complément du nom</td><td class="cle">une décision dont les conséquences sont lourdes</td></tr><tr><td>Interdit</td><td class="">jamais « dont… son » : le comité dont le porte-parole</td></tr></table><p class="dit"><span class="k">On dit</span> Un dossier dont tout le monde parle. Une décision dont les conséquences sont lourdes.</p><div class="note">« Le comité dont son porte-parole est madame Sauvé » est fautif : « dont » contient déjà le possessif.</div></section><section class="bloc card ml"><h3>Auquel, à laquelle, auxquels, auxquelles</h3><p class="mp">Pour la préposition « à ». Ils s'accordent avec ce qu'ils reprennent, et « auquel » est la contraction de « à lequel ».</p><table class="ana"><tr><td>Masculin</td><td class="">le projet auquel je m'oppose</td></tr><tr><td>Féminin</td><td class="cle">l'assemblée à laquelle j'ai assisté</td></tr><tr><td>Pluriel</td><td class="">les personnes auxquelles il s'adresse</td></tr></table><p class="dit"><span class="k">On dit</span> Le projet auquel je m'oppose. L'assemblée à laquelle j'ai assisté. Les personnes auxquelles il s'adresse.</p><div class="note">Pour des personnes, « à qui » est toujours possible et souvent plus léger : les personnes à qui il s'adresse.</div></section><section class="bloc card ml"><h3>Lequel après les autres prépositions</h3><p class="mp">Avec sur, sous, pour, par, avec, sans, dans, autour de : la forme complète, accordée en genre et en nombre.</p><table class="ana"><tr><td>Masculin singulier</td><td class="">le terrain sur lequel on veut bâtir</td></tr><tr><td>Féminin pluriel</td><td class="cle">les raisons pour lesquelles j'ai signé</td></tr><tr><td>Avec « de »</td><td class="">la table autour de laquelle ils discutaient</td></tr></table><p class="dit"><span class="k">On dit</span> Le terrain sur lequel on veut bâtir. Les raisons pour lesquelles j'ai signé.</p><div class="note">« Les raisons pour lesquelles » est une des tournures les plus utiles à l'écrit argumentatif : apprenez-la telle quelle.</div></section><section class="bloc card ml"><h3>Où, pour le lieu et pour le temps</h3><p class="mp">Il remplace souvent « dans lequel » et « pendant lequel », et allège considérablement la phrase.</p><table class="ana"><tr><td>Lieu</td><td class="">la salle où se tiendra l'assemblée</td></tr><tr><td>Temps</td><td class="cle">le soir où le vote a été pris</td></tr><tr><td>Comparez</td><td class="">le soir pendant lequel le vote a été pris</td></tr></table><p class="dit"><span class="k">On dit</span> La salle où se tiendra l'assemblée. Le soir où le vote a été pris.</p><div class="note">Quand « où » est possible, prenez-le : votre phrase sera plus courte et se lira mieux.</div></section><section class="bloc card ml"><h3>Sept verbes, sept relatives</h3><p class="mp">À gauche le verbe et sa préposition, à droite la relative.</p><table class="ex2"><tr><td>s'opposer à</td><td>le projet auquel je m'oppose</td></tr><tr><td>assister à</td><td>l'assemblée à laquelle j'ai assisté</td></tr><tr><td>parler de</td><td>le dossier dont je parle</td></tr><tr><td>avoir besoin de</td><td>les documents dont j'ai besoin</td></tr><tr><td>bâtir sur</td><td>le terrain sur lequel on veut bâtir</td></tr><tr><td>voter pour</td><td>le règlement pour lequel ils ont voté</td></tr><tr><td>se souvenir de</td><td>la soirée dont je me souviens</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">« dont » avec un possessif</p><div class="k">Ce qui arrive</div><p class="ph">« dont » seul</p><p class="px">Le comité &lt;s&gt;dont son&lt;/s&gt; porte-parole → le comité <b>dont le</b> porte-parole. « Dont » contient déjà le « de », donc déjà la possession.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">oublier l'accord de « lequel »</p><div class="k">Ce qui arrive</div><p class="ph">accorder avec ce qu'on reprend</p><p class="px">Les raisons pour <b>lesquelles</b>, les documents <b>auxquels</b>, la table autour de <b>laquelle</b>. C'est le seul pronom relatif qui s'accorde.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">fabriquer une relative de six lignes</p><div class="k">Ce qui arrive</div><p class="ph">couper en deux phrases</p><p class="px">Le but n'est pas d'écrire long. Si vous perdez le fil en vous relisant, votre lecteur l'a perdu avant vous.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">« C'est un projet ___ je m'oppose » se complète par…</span><ul class="opts"><li>dont</li><li>auquel</li></ul></li><li><span class="q">« Les raisons ___ j'ai signé » se complète par…</span><ul class="opts"><li>pour lesquelles</li><li>dont</li></ul></li><li><span class="q">« Le comité dont son porte-parole… » est…</span><ul class="opts"><li>correct</li><li>fautif</li></ul></li><li><span class="q">Quand « où » est possible, il vaut mieux…</span><ul class="opts"><li>l'employer</li><li>préférer « dans lequel »</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> auquel — S'opposer <b>à</b> quelque chose : auquel. · <b>2.</b> pour lesquelles — « Pour » demande « lesquelles », accordé au féminin pluriel. · <b>3.</b> fautif — « Dont » contient déjà le possessif : le comité dont <b>le</b> porte-parole. · <b>4.</b> l'employer — Il allège la phrase sans rien lui enlever.</div></section></section></div>
+<footer><span>D2 · Deux versions, et la mienne</span><span>Fiche élève</span></footer>
+</body>
+</html>

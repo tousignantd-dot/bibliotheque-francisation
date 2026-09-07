@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A4 · Retard, absence, abandon : trois mots, trois cases — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance A4 · Module 17 · 75 minutes</div>
+    <h1>Retard, absence, abandon : trois mots, trois cases</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Quand vous téléphonez, la personne du secrétariat ouvre votre dossier et doit cocher quelque chose. Le système ne connaît que trois situations, et « je ne peux pas venir » n'en est aucune.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>choisir le mot juste entre retard, absence et abandon ;</li><li>employer « empêchement » quand la raison est privée ;</li><li>dire une date exacte plutôt que « aujourd'hui » ;</li><li>donner un motif en une seule phrase.</li></ol></section><section class="bloc regle"><div class="lbl">Nommez la case, pas votre embarras</div><p class="r">Un retard : vous venez plus tard. Une absence : vous ne venez pas. Un abandon : vous ne revenez plus.</p><p class="pr">« Je ne peux pas venir » ne dit ni la durée, ni la nature : la personne devra vous rappeler.</p></section><section class="bloc card"><div class="lbl">Les trois cases</div><h2 class="t">Ce que chacune déclenche</h2><table><thead><tr><th>Le mot</th><th>Ce qui suit</th></tr></thead><tbody><tr><td>Un retard</td><td>Rien à fournir. L'enseignant garde vos feuilles.</td></tr><tr><td>Une absence</td><td>Une note écrite et signée, remise au comptoir.</td></tr><tr><td>Un abandon</td><td>Un écrit, avant la date limite, sinon un échec.</td></tr></tbody></table><div class="note">Trois mots, trois suites différentes. C'est pour cela qu'on les distingue.</div></section><section class="bloc"><div class="lbl">Le mot poli pour tout le reste</div><h2 class="t">Quand la raison est privée</h2><div class="grid"><div class="card"><h3>Un empêchement</h3><p>Ce qui survient et vous empêche de venir, sans que ce soit votre choix.</p></div><div class="card"><h3>Un empêchement familial</h3><p>Précisé, mais toujours sans détail. Personne ne demande la suite.</p></div><div class="card"><h3>Ce que ça permet</h3><p>Rester exact sans rien raconter de sa vie privée.</p></div><div class="card"><h3>Ce que ça ne remplace pas</h3><p>Le mot de la case : dites aussi si c'est un retard ou une absence.</p></div></div></section><section class="bloc regle"><div class="lbl">La date, jamais « aujourd'hui »</div><p class="r">Dites le jour et le quantième : lundi le 14 septembre.</p><p class="pr">Votre message est écouté deux heures plus tard, parfois le lendemain.</p></section><section class="bloc card"><div class="lbl">Le bon mot</div><h2 class="t">Complétez la phrase</h2><p class="consigne">Retard, absence, abandon ou empêchement ?</p><ol class="ex"><li><span class="q">L'autobus n'est pas passé : j'aurai vingt minutes de ___.</span><span class="ligne ligne--court"></span></li><li><span class="q">Je serai ___ toute la journée de lundi.</span><span class="ligne ligne--court"></span></li><li><span class="q">Je vous écris pour vous annoncer mon ___ du cours du soir.</span><span class="ligne ligne--court"></span></li><li><span class="q">J'ai un ___ familial ce matin.</span><span class="ligne ligne--court"></span></li><li><span class="q">Je devrai quitter à onze heures : ce n'est pas une ___ complète.</span><span class="ligne ligne--court"></span></li><li><span class="q">Un ___ annoncé par écrit n'est pas un échec.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">La phrase complète</div><h2 class="t">Une situation, une phrase</h2><p class="consigne">Dites la phrase que vous laisseriez.</p><ol class="ex"><li><span class="q">Votre enfant est malade et vous allez à la clinique.</span><span class="ligne"></span></li><li><span class="q">L'autobus n'est pas passé.</span><span class="ligne"></span></li><li><span class="q">Vous arrêtez le cours du soir.</span><span class="ligne"></span></li><li><span class="q">La raison est privée.</span><span class="ligne"></span></li><li><span class="q">Vous partez avant la fin du cours.</span><span class="ligne"></span></li><li><span class="q">Vous rapportez le papier d'hier.</span><span class="ligne"></span></li></ol></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Raconter le détail</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">Il a commencé à pleurer vers deux heures, après il a vomi, et là j'ai appelé Info-Santé...</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">Mon fils est malade et j'ai un rendez-vous à la clinique.</p></div></div><div class="note">La boîte vocale coupe, la personne qui écoute a quarante messages, et l'essentiel se perd dans le milieu. Une phrase, une seule. Personne ne vérifie et personne ne juge.</div></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez une phrase complète pour une absence que vous avez eue cette année, avec la date et le motif.</p><ul><li>Une seule phrase, avec la date exacte.</li><li>Le motif en une phrase, avec « parce que » ou « à cause de ».</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Retard, absence, abandon : trois mots, trois cases</h2><section class="bloc card ml"><h3>Le centre ne choisit pas à votre place</h3><p class="mp">Quand vous téléphonez, la personne du secrétariat ouvre votre dossier et doit cocher quelque chose. Le système ne connaît que trois situations : vous venez plus tard, vous ne venez pas, vous ne revenez plus. Chacune porte un nom précis, et chacune déclenche des suites différentes — un rattrapage, une note à fournir, un formulaire de retrait. Dire « je ne peux pas venir » ne dit rien de tout cela, et oblige la personne à vous rappeler pour vous poser la question.</p><div class="note">Ces trois mots sont exactement ceux que le programme d'études nomme : justifier un retard, une absence ou un abandon. Ce ne sont pas trois synonymes, ce sont trois démarches.</div></section><section class="bloc card ml"><h3>Le retard : vous venez, mais après l'heure</h3><p class="mp">On parle de retard quand on finit par assister au cours. Dix minutes ou une heure et demie, c'est la même case ; ce qui change, c'est ce que vous aurez manqué.</p><table class="ana"><tr><td>Ce qu'on dit au téléphone</td><td class="">Je serai en retard d'environ une demi-heure.</td></tr><tr><td>Ce qu'on dit en entrant</td><td class="cle">Excusez-moi pour le retard, l'autobus n'est pas passé.</td></tr><tr><td>Ce qu'on ne dit pas</td><td class="">Je vais peut-être être un peu en retard, on verra.</td></tr></table><p class="dit"><span class="k">On dit</span> Un retard de dix minutes se signale aussi.</p><div class="note">Un retard annoncé d'avance ne se traite pas comme un retard découvert à la porte : dans le premier cas, l'enseignant garde vos feuilles ; dans le second, il a déjà fait la liste.</div></section><section class="bloc card ml"><h3>L'absence : vous ne venez pas du tout</h3><p class="mp">L'absence porte sur une journée entière ou sur plusieurs. Le centre veut la date — pas « aujourd'hui », mais « lundi le 14 » — et un motif en une phrase.</p><table class="ana"><tr><td>Une journée</td><td class="">Je serai absente aujourd'hui, lundi le 14.</td></tr><tr><td>Plusieurs jours</td><td class="cle">Je serai absente du 14 au 16 inclusivement.</td></tr><tr><td>Une absence déjà passée</td><td class="">Je vous remets le papier qui justifie mon absence d'hier.</td></tr></table><p class="dit"><span class="k">On dit</span> Son absence de lundi est inscrite au dossier.</p><div class="note">Dites la date même si vous appelez le matin même : le message est écouté deux heures plus tard, et « aujourd'hui » n'a plus de sens pour la personne qui l'entend.</div></section><section class="bloc card ml"><h3>L'abandon : vous arrêtez le cours</h3><p class="mp">C'est le seul des trois qui doive toujours passer par écrit, et le seul qui change quelque chose à votre relevé. Un abandon annoncé n'est pas un échec ; un cours qu'on cesse simplement de fréquenter, si.</p><table class="ana"><tr><td>La phrase à écrire</td><td class="">Je vous écris pour abandonner le cours d'informatique du soir.</td></tr><tr><td>La date d'effet</td><td class="cle">À partir du 1er octobre.</td></tr><tr><td>Ce qui garde la porte ouverte</td><td class="">Je souhaiterais me réinscrire à la prochaine session.</td></tr></table><p class="dit"><span class="k">On dit</span> Un abandon annoncé par écrit n'est pas un échec.</p><div class="note">Le mot fait peur et beaucoup d'élèves l'évitent. C'est pourtant lui qu'il faut employer : c'est le nom de la case, et le personnel l'entend dix fois par semaine sans y mettre aucun jugement.</div></section><section class="bloc card ml"><h3>L'empêchement : le mot poli pour tout le reste</h3><p class="mp">Quand la raison est privée, longue à expliquer, ou simplement qu'elle ne regarde personne, un seul mot suffit et personne ne demande la suite.</p><table class="ana"><tr><td>Seul</td><td class="">J'ai un empêchement ce matin.</td></tr><tr><td>Précisé sans être expliqué</td><td class="cle">J'ai un empêchement familial.</td></tr><tr><td>Ce qu'il permet</td><td class="">de rester exact sans rien raconter</td></tr></table><p class="dit"><span class="k">On dit</span> Elle a téléphoné dès qu'elle a su qu'elle avait un empêchement.</p><div class="note">« Empêchement » n'est pas un mot vague : il dit qu'une chose extérieure vous empêche de venir. C'est reçu partout, au centre comme au travail.</div></section><section class="bloc card ml"><h3>Une situation, le mot juste, la phrase</h3><p class="mp">Choisissez une situation et écoutez comment elle se dit en une phrase.</p><table class="labo"><thead><tr><th>Quelle situation ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">l'autobus n'est pas passé</td><td>J'aurai environ une heure de retard à cause de l'autobus.<span class="tags">un retard</span></td><td>un retard : vous venez quand même</td></tr><tr><td class="cle">votre enfant est malade</td><td>Je serai absente aujourd'hui parce que mon fils est malade.<span class="tags">une absence · un motif</span></td><td>une absence : la date, puis le motif</td></tr><tr><td class="cle">vous arrêtez le cours du soir</td><td>Je vous écris pour abandonner le cours d'informatique du soir.<span class="tags">un abandon</span></td><td>un abandon : toujours par écrit</td></tr><tr><td class="cle">la raison est privée</td><td>J'ai <b>un empêchement</b> familial ce matin.</td><td>un empêchement : exact, et rien de plus</td></tr><tr><td class="cle">vous partez avant la fin</td><td>Je devrai quitter à onze heures pour un rendez-vous.<span class="tags">un retard</span></td><td>un départ avant la fin, annoncé d'avance</td></tr></tbody></table><div class="note">Écoutez chaque phrase deux fois, puis redites-la sans regarder. Ce sont cinq phrases toutes faites : elles vous serviront telles quelles.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six phrases à dire au téléphone sans hésiter.</p><table class="ex2"><tr><td>Je serai absente aujourd'hui, lundi le 14.</td><td>la date après le mot</td></tr><tr><td>J'aurai une heure de retard à cause de la tempête.</td><td>un nom après « à cause de »</td></tr><tr><td>J'ai un empêchement familial ce matin.</td><td>court, et personne ne demande la suite</td></tr><tr><td>Je vous écris pour abandonner le cours du soir.</td><td>le mot exact, à l'écrit</td></tr><tr><td>Je devrai quitter le cours à onze heures.</td><td>un départ annoncé d'avance</td></tr><tr><td>Je vous remets le papier qui justifie mon absence.</td><td>le papier arrive après l'absence</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges des motifs</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">dire « je ne peux pas venir »</p><div class="k">Ce qui arrive</div><p class="ph">le secrétariat ne sait pas quoi cocher</p><p class="px">Ni la durée, ni la nature. La personne devra vous rappeler, et vous n'aurez rien gagné. Nommez la case : retard, absence, abandon.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">raconter le détail</p><div class="k">Ce qui arrive</div><p class="ph">trois minutes de message pour une otite</p><p class="px">La boîte vocale coupe, la personne qui écoute a quarante messages, et l'essentiel se perd dans le milieu. Une phrase, une seule, et on passe à la suite.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">éviter le mot « abandon »</p><div class="k">Ce qui arrive</div><p class="ph">« je pense que je ne continuerai pas »</p><p class="px">Ce n'est pas une annonce, c'est une hésitation, et rien ne sera inscrit. Tant que le mot n'est pas écrit, le cours continue de vous compter absente chaque soir.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">Vous arriverez à neuf heures au lieu de huit. C'est…</span><ul class="opts"><li>un retard</li><li>une absence</li></ul></li><li><span class="q">Lequel des trois doit toujours passer par écrit ?</span><ul class="opts"><li>le retard</li><li>l'abandon</li></ul></li><li><span class="q">« J'ai un empêchement » veut dire…</span><ul class="opts"><li>je ne veux pas venir</li><li>quelque chose m'empêche de venir</li></ul></li><li><span class="q">Dans un message laissé le matin, il faut dire…</span><ul class="opts"><li>« aujourd'hui » suffit</li><li>la date exacte</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> un retard — Un retard : vous assistez au cours, mais après l'heure. · <b>2.</b> l'abandon — L'abandon. Sans écrit, il s'inscrit comme un échec. · <b>3.</b> quelque chose m'empêche de venir — Quelque chose vous en empêche. C'est exact et poli, et personne ne demande quoi. · <b>4.</b> la date exacte — La date exacte : le message est écouté deux heures plus tard.</div></section></section></div>
+<footer><span>A4 · Prévenir le centre</span><span>Fiche élève</span></footer>
+</body>
+</html>

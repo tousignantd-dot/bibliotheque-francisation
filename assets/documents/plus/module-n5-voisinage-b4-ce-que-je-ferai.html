@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B4 · « Ce que je ferai » — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance B4 · Module 8 · 75 minutes</div>
+    <h1>« Ce que je ferai »</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Accepter une invitation, c'est promettre quelque chose : d'être là, d'apporter un plat, de répondre avant jeudi. Le futur simple est le temps de ces promesses, et c'est celui de l'écrit.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>former le futur simple des verbes réguliers ;</li><li>employer les huit irréguliers des invitations ;</li><li>garder le futur après « quand » et « dès que » ;</li><li>écrire un refus poli en cinq lignes.</li></ol></section><section class="bloc regle"><div class="lbl">L'infinitif, plus six terminaisons</div><p class="r">Le futur simple est le temps le plus régulier du français : l'infinitif entier, puis -ai, -as, -a, -ons, -ez, -ont.</p><p class="pr">apporter donne j'apporterai · finir donne je finirai · répondre perd son e et donne je répondrai. Un repère à l'oreille : on entend toujours le r avant la terminaison. Sans ce r, ce n'est pas du futur.</p></section><section class="bloc"><div class="lbl">Les huit irréguliers</div><h2 class="t">Ceux dont on a besoin pour répondre à une invitation</h2><div class="grid"><div class="card"><h3>être, avoir</h3><p>je serai, j'aurai</p></div><div class="card"><h3>aller, faire</h3><p>j'irai, je ferai</p></div><div class="card"><h3>venir, pouvoir</h3><p>je viendrai, je pourrai</p></div><div class="card"><h3>vouloir, devoir</h3><p>je voudrai, je devrai</p></div></div></section><section class="bloc regle"><div class="lbl">Après « quand », le futur reste au futur</div><p class="r">Je vous préviendrai quand je saurai mon horaire.</p><p class="pr">Et de même après « dès que » : dès qu'il fera beau, on sortira les tables. Beaucoup de langues mettent le présent à cet endroit ; le français, non.</p></section><section class="bloc card"><div class="lbl">Grammaire</div><h2 class="t">Mettez au futur simple</h2><p class="consigne">Chaque phrase est une promesse.</p><ol class="ex"><li><span class="q">J' ___ (apporter) un plat pour six personnes.</span><span class="ligne ligne--court"></span></li><li><span class="q">Je ___ (être) là vers midi et demi.</span><span class="ligne ligne--court"></span></li><li><span class="q">Nous ___ (sortir) les tables à onze heures.</span><span class="ligne ligne--court"></span></li><li><span class="q">Il ___ (faire) le tour des portes le matin même.</span><span class="ligne ligne--court"></span></li><li><span class="q">Elle ___ (venir) le dimanche si la fête est reportée.</span><span class="ligne ligne--court"></span></li><li><span class="q">Je vous ___ (répondre) d'ici jeudi, sans faute.</span><span class="ligne ligne--court"></span></li><li><span class="q">Dès qu'il ___ (faire) beau, on installera tout dehors.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">Le refus écrit</div><h2 class="t">Cinq lignes, pas une de plus</h2><table><thead><tr><th>La ligne</th><th>Ce qu'elle contient</th></tr></thead><tbody><tr><td>Bonjour monsieur Deslauriers,</td><td class="cle">Le nom, une virgule</td></tr><tr><td>Merci pour votre invitation.</td><td class="cle">Le remerciement, avant tout</td></tr><tr><td>Je ne pourrai pas être là.</td><td class="cle">Le refus, au futur</td></tr><tr><td>Je travaille ce jour-là.</td><td class="cle">La raison, une phrase</td></tr><tr><td>Bonne journée, Ndeye Faye, logement 3</td><td class="cle">La signature et le logement</td></tr></tbody></table></section><section class="bloc card"><div class="lbl">Écriture</div><h2 class="t">Le refus de madame Faye</h2><p class="consigne">Complétez son message, ligne par ligne.</p><ol class="ex"><li><span class="q">Bonjour ___ Deslauriers,</span><span class="ligne ligne--court"></span></li><li><span class="q">___ beaucoup pour votre invitation à la fête de la ruelle.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ , je ne pourrai pas être là le 7 juin.</span><span class="ligne ligne--court"></span></li><li><span class="q">Si la fête est ___ au dimanche, je serai libre.</span><span class="ligne ligne--court"></span></li><li><span class="q">Au ___ de vous voir dans la ruelle cet été.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Oublier le r du futur</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">je répondai, je viendai</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">je répondrai, je viendrai</p></div></div><div class="note">Le r est la marque du futur, à toutes les personnes. Sans lui, la forme n'existe pas. Dire lentement : ré-pon-d-r-ai.</div></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez trois promesses au futur simple, pour une invitation que vous acceptez.</p><ul><li>Une promesse sur l'heure, une sur ce que vous apportez, une sur la suite.</li><li>Vérifiez le r dans chacune avant de remettre.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Le futur simple : la promesse qu’on tient</h2><section class="bloc card ml"><h3>Pourquoi le futur, dans un module sur les invitations</h3><p class="mp">Accepter une invitation, c’est promettre quelque chose : d’être là, d’apporter un plat, de répondre avant jeudi. Le futur simple est le temps de ces promesses. Il ne remplace pas le futur proche — « je vais apporter un dessert » est parfaitement correct — mais il est plus net, et il est le temps normal de l’écrit : un courriel de réponse à une invitation s’écrit au futur simple.</p><div class="note">C’est aussi le temps du message téléphonique du défi 2 : « je vous rappellerai », « je passerai vers midi ». Un répondeur ne discute pas : ce qu’on y dit doit être une promesse claire.</div></section><section class="bloc card ml"><h3>La formation : l’infinitif, plus six terminaisons</h3><p class="mp">Le futur simple est le temps le plus régulier du français. On part de l’infinitif entier, on ajoute les terminaisons — qui sont celles du verbe <b>avoir</b> au présent.</p><table class="ana"><tr><td>Verbes en -er et -ir</td><td class="">apporter → j’apporterai · finir → je finirai · sortir → je sortirai</td></tr><tr><td>Verbes en -re : le e tombe</td><td class="cle">répondre → je répondrai · prendre → je prendrai · écrire → j’écrirai</td></tr><tr><td>Les six terminaisons</td><td class="">-ai · -as · -a · -ons · -ez · -ont</td></tr></table><p class="dit"><span class="k">On dit</span> J’apporterai un plat, je finirai vers quatre heures et je vous répondrai jeudi.</p><div class="note">Un repère utile : à toutes les personnes, on entend le <b>r</b> avant la terminaison. Si vous n’entendez pas ce r, vous n’êtes pas au futur.</div></section><section class="bloc card ml"><h3>Les huit irréguliers des invitations</h3><p class="mp">Huit verbes changent de radical, et ce sont précisément les huit dont on a besoin pour répondre à une invitation.</p><table class="ana"><tr><td>Être, avoir, aller, faire</td><td class="">je serai · j’aurai · j’irai · je ferai</td></tr><tr><td>Venir, pouvoir, vouloir, devoir</td><td class="cle">je viendrai · je pourrai · je voudrai · je devrai</td></tr><tr><td>Dans une phrase</td><td class="">Je serai là vers midi ; je pourrai rester jusqu’à trois heures.</td></tr></table><p class="dit"><span class="k">On dit</span> Je serai là vers midi, j’apporterai un plat et je pourrai rester jusqu’à trois heures.</p><div class="note">Les terminaisons, elles, ne changent jamais : seul le radical est irrégulier. Apprenez les huit radicaux une fois, et le reste suit.</div></section><section class="bloc card ml"><h3>Après « quand » et « dès que », le futur reste au futur</h3><p class="mp">C’est le point qui surprend le plus, parce que beaucoup de langues mettent le présent à cet endroit.</p><table class="ana"><tr><td>Avec quand</td><td class="">Je vous préviendrai quand je saurai mon horaire.</td></tr><tr><td>Avec dès que</td><td class="cle">Dès qu’il fera beau, on sortira les tables.</td></tr><tr><td>Ce qu’on ne dit pas</td><td class="">Je vous préviendrai quand je sais mon horaire. ✗</td></tr></table><p class="dit"><span class="k">On dit</span> Je vous préviendrai quand je saurai mon horaire.</p><div class="note">Retenez la phrase entière plutôt que la règle : « quand je saurai », « dès qu’il fera beau », « quand vous arriverez ». Trois modèles suffisent.</div></section><section class="bloc card ml"><h3>La même promesse, deux temps</h3><p class="mp">Choisissez ce que vous promettez, et comparez le futur proche et le futur simple.</p><table class="labo"><thead><tr><th>Que promettez-vous ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">Apporter un plat</td><td>Je vais apporter un plat. J’apporterai un plat pour six personnes.<span class="tags">un plat à partager</span></td><td>le second est plus net, et c’est celui qui s’écrit</td></tr><tr><td class="cle">Être là à midi</td><td>Je vais être là vers midi. Je serai là vers midi.<span class="tags">une invitation</span></td><td>être → je serai : le premier irrégulier à retenir</td></tr><tr><td class="cle">Répondre jeudi</td><td>Je vais vous répondre jeudi. Je vous répondrai jeudi.<span class="tags">une invitation</span></td><td>répondre perd son e : je répondrai</td></tr><tr><td class="cle">Prévenir quand vous saurez</td><td>Je vous préviendrai quand je saurai mon horaire.<span class="tags">prévenir</span></td><td>après « quand », le futur reste au futur</td></tr></tbody></table><div class="note">Les deux formes sont correctes à l’oral. À l’écrit, et dans un message qu’on laisse, préférez le futur simple.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six promesses tirées du module.</p><table class="ex2"><tr><td>J’apporterai un plat pour six personnes.</td><td>le verbe le plus utile de la fête</td></tr><tr><td>Je serai là vers midi et demi.</td><td>être : je serai</td></tr><tr><td>Nous sortirons les tables à onze heures.</td><td>nous : -ons, après le r</td></tr><tr><td>Il fera le tour des portes le matin même.</td><td>faire : il fera</td></tr><tr><td>Je vous répondrai d’ici jeudi, sans faute.</td><td>répondre perd son e</td></tr><tr><td>Dès qu’il fera beau, on installera tout dehors.</td><td>après « dès que », le futur reste</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges du futur simple</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">oublier le r</p><div class="k">Ce qui arrive</div><p class="ph">« je répondai » au lieu de « je répondrai »</p><p class="px">Le r est la marque du futur, à toutes les personnes. Sans lui, on entend un passé simple ou rien du tout. Dites lentement : ré-pon-<b>d-r</b>-ai.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">mettre le présent après « quand »</p><div class="k">Ce qui arrive</div><p class="ph">« quand je sais mon horaire »</p><p class="px">En français, si l’action est à venir, « quand » est suivi du futur : « quand je saurai mon horaire ». Beaucoup de langues font l’inverse, d’où l’erreur.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">confondre j’aurai et j’irai</p><div class="k">Ce qui arrive</div><p class="ph">« j’aurai à la fête » pour « j’irai à la fête »</p><p class="px">avoir → j’aurai ; aller → j’irai. Deux radicaux très proches à l’oreille, deux verbes très différents. On <b>ira</b> à la fête ; on <b>aura</b> du plaisir.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c’est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">Le futur simple se forme sur…</span><ul class="opts"><li>l’infinitif</li><li>le participe passé</li></ul></li><li><span class="q">« venir » au futur donne…</span><ul class="opts"><li>je venirai</li><li>je viendrai</li></ul></li><li><span class="q">Après « quand », pour une action à venir, on met…</span><ul class="opts"><li>le présent</li><li>le futur</li></ul></li><li><span class="q">Dans un courriel de réponse à une invitation, on emploie plutôt…</span><ul class="opts"><li>le futur proche</li><li>le futur simple</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> l’infinitif — Sur l’infinitif entier, plus les terminaisons -ai, -as, -a, -ons, -ez, -ont. · <b>2.</b> je viendrai — Je viendrai. C’est l’un des huit irréguliers à savoir par cœur. · <b>3.</b> le futur — Le futur : « quand je saurai », « quand vous arriverez ». · <b>4.</b> le futur simple — Le futur simple : c’est le temps de l’écrit et des engagements.</div></section></section></div>
+<footer><span>B4 · La ruelle en fête</span><span>Fiche élève</span></footer>
+</body>
+</html>

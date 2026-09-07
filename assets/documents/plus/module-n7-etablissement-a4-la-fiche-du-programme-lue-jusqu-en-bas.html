@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A4 · La fiche du programme, lue jusqu'en bas — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance A4 · Module 11 · 90 minutes</div>
+    <h1>La fiche du programme, lue jusqu'en bas</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Le haut d'une fiche donne envie ; le bas engage. Les conditions d'admission et ce qui vient après le diplôme sont toujours écrits, jamais mis en avant.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>trouver dans une fiche les conditions d'admission ;</li><li>distinguer les trois portes de l'admission à un diplôme ;</li><li>vérifier si un diplôme suffit pour exercer un métier ;</li><li>repérer le nombre de places et le nombre de demandes.</li></ol></section><section class="bloc regle"><div class="lbl">Trois questions pour n'importe quelle fiche</div><p class="r">Qu'est-ce qu'il faut avoir avant ? Combien de temps, à quel rythme ? Le diplôme suffit-il pour travailler ?</p><p class="pr">Les trois réponses sont toujours écrites, jamais mises en avant. Elles décident si l'on peut s'inscrire, quand, et ce qu'il restera à faire une fois le diplôme obtenu.</p></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Les trois portes de l'admission</h2><table><thead><tr><th>La porte</th><th>Ce qu'elle demande</th></tr></thead><tbody><tr><td class="cle">le diplôme</td><td>le diplôme d'études secondaires, ou un équivalent reconnu</td></tr><tr><td class="cle">les unités</td><td>16 ans au 30 septembre et les unités demandées du secondaire</td></tr><tr><td class="cle">les préalables</td><td>18 ans et la réussite du test de développement général</td></tr></tbody></table><div class="note">La troisième porte existe précisément pour les personnes qui n'ont pas fait leur secondaire ici.</div></section><section class="bloc regle"><div class="lbl">Le diplôme n'est pas toujours le dernier papier</div><p class="r">Pour plusieurs métiers, un ordre professionnel délivre le permis, et il ajoute ses propres conditions.</p><p class="pr">En santé, assistance et soins infirmiers, le diplôme compte 1 800 heures ; le permis, lui, vient de l'Ordre des infirmières et infirmiers auxiliaires du Québec, et il faut réussir son examen professionnel.</p></section><section class="bloc card"><div class="lbl">Lecture</div><h2 class="t">Qu'est-ce que la fiche répond ?</h2><p class="consigne">Retrouvez dans le document le passage qui répond à chaque question.</p><ol class="ex"><li><span class="q">Combien d'heures dure la formation ?</span><span class="ligne"></span></li><li><span class="q">À quel métier mène ce diplôme ?</span><span class="ligne"></span></li><li><span class="q">Qui délivre le droit d'exercer ?</span><span class="ligne"></span></li><li><span class="q">Que peut faire une personne de 18 ans sans les unités ?</span><span class="ligne"></span></li><li><span class="q">Combien de places, pour combien de demandes ?</span><span class="ligne"></span></li><li><span class="q">Qu'arrive-t-il aux personnes retenues sans place ?</span><span class="ligne"></span></li></ol></section><section class="bloc card"><div class="lbl">Vocabulaire</div><h2 class="t">Quatre mots de la fiche</h2><table class="voc"><tbody><tr><td class="mot">le contingentement</td><td class="def">Le fait de limiter le nombre de places offertes dans un programme.</td></tr><tr><td class="mot">les préalables fonctionnels</td><td class="def">La voie d'admission ouverte à 18 ans, avec le test de développement général.</td></tr><tr><td class="mot">un ordre professionnel</td><td class="def">L'organisme qui délivre le permis d'exercer un métier réglementé.</td></tr><tr><td class="mot">un stage</td><td class="def">La période de la formation qui se passe en milieu de travail.</td></tr></tbody></table></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écris les deux étapes qu'il faut franchir avant de travailler comme infirmière auxiliaire.</p><ul><li>Réussir le diplôme de 1 800 heures.</li><li>Réussir l'examen de l'Ordre pour obtenir le permis.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Lire une fiche de programme jusqu'au bas de la page</h2><section class="bloc card ml"><h3>Le haut d'une fiche donne envie, le bas engage</h3><p class="mp">Une fiche de programme est écrite pour deux lectures. La première prend deux minutes : le métier, la durée, la photo. La seconde prend dix minutes et se fait un crayon à la main : les conditions d'admission, les préalables, ce qu'il faut faire après le diplôme. Presque personne ne fait la seconde, et c'est pourtant elle qui décide si vous pouvez vous inscrire — et quand.</p><div class="note">Une fiche ne cache rien. Elle range simplement l'important là où l'œil ne va pas : au bas, en petits caractères, sous des titres administratifs.</div></section><section class="bloc card ml"><h3>Ce qu'il faut avoir AVANT</h3><p class="mp">Les conditions d'admission d'un diplôme d'études professionnelles ont trois portes, et la troisième existe pour les personnes qui n'ont pas fait leur secondaire ici.</p><table class="ana"><tr><td>Première porte</td><td class="">le diplôme d'études secondaires, ou un diplôme reconnu équivalent</td></tr><tr><td>Deuxième porte</td><td class="cle">16 ans au 30 septembre, et les unités demandées du secondaire</td></tr><tr><td>Troisième porte</td><td class="">18 ans et les préalables fonctionnels, avec le test de développement général</td></tr></table><p class="dit"><span class="k">On dit</span> Les conditions d'admission ont trois portes, et la troisième est celle du test de développement général.</p><div class="note">Le test de développement général ne doit être précédé d'aucun exercice préparatoire ni d'aucun prétest : c'est une règle du ministère, et elle explique pourquoi personne ne vous vendra jamais un cours de préparation.</div></section><section class="bloc card ml"><h3>Ce qui vient APRÈS le diplôme</h3><p class="mp">Pour plusieurs métiers, le diplôme n'est pas le dernier papier. Un ordre professionnel délivre le droit d'exercer, et il ajoute ses propres conditions.</p><table class="ana"><tr><td>Le diplôme</td><td class="">il atteste que la formation est réussie</td></tr><tr><td>Le permis</td><td class="cle">il est délivré par l'ordre professionnel, pas par l'école</td></tr><tr><td>Ce qu'il faut de plus</td><td class="">réussir l'examen professionnel de l'ordre</td></tr></table><p class="dit"><span class="k">On dit</span> Le diplôme atteste la formation ; c'est l'ordre professionnel qui délivre le permis.</p><div class="note">Le savoir d'avance change le plan de carrière qu'on présente en entrevue : on annonce deux étapes au lieu d'une, et le comité entend quelqu'un qui a lu jusqu'au bout.</div></section><section class="bloc card ml"><h3>Combien de places, et pour combien de demandes</h3><p class="mp">Un programme contingenté classe les dossiers. Le nombre de places et le nombre de demandes de l'année précédente sont presque toujours écrits quelque part, et ils changent la façon de préparer sa candidature.</p><table class="ana"><tr><td>Ce que ça veut dire</td><td class="">on n'est pas comparé à une note de passage, on est comparé aux autres</td></tr><tr><td>Ce que ça change</td><td class="cle">tout ce qui distingue compte, y compris ce qui n'est pas scolaire</td></tr><tr><td>Ce que ça ne veut pas dire</td><td class="">être refusé ne veut pas dire être insuffisant</td></tr></table><p class="dit"><span class="k">On dit</span> Un programme contingenté ne compare pas à une note de passage : il compare les dossiers entre eux.</p><div class="note">C'est la phrase qui fait la différence entre se décourager et recommencer l'an prochain avec une case de plus.</div></section><section class="bloc card ml"><h3>Sept lignes de fiche, et ce qu'elles veulent dire</h3><p class="mp">À gauche, ce qui est écrit. À droite, ce qu'il faut en faire.</p><table class="ex2"><tr><td>« 1 800 heures, temps plein, jour »</td><td>On ne peut pas garder cinq quarts de travail : l'horaire se règle avant, pas après.</td></tr><tr><td>« Mène au métier d'infirmière auxiliaire »</td><td>Vérifier tout de suite s'il y a un ordre professionnel.</td></tr><tr><td>« Examen professionnel de l'Ordre »</td><td>Une étape de plus après le diplôme : à nommer dans son plan de carrière.</td></tr><tr><td>« DES ou diplôme reconnu équivalent »</td><td>Première porte : la plus simple, quand on l'a.</td></tr><tr><td>« 16 ans au 30 septembre + unités »</td><td>Deuxième porte : ce sont les unités du secondaire d'ici qui comptent.</td></tr><tr><td>« Préalables fonctionnels, TDG »</td><td>Troisième porte : celle qui s'ouvre à 18 ans sans diplôme d'ici.</td></tr><tr><td>« 24 places, 68 demandes »</td><td>Programme contingenté : la lettre et l'entrevue décideront.</td></tr></table></section><section class="bloc card ml"><h3>Quatre questions sur la fiche du Ruisseau-Vert</h3><p class="mp">Répondez sans relire le document.</p><ol class="check"><li><span class="q">Le diplôme suffit-il pour exercer le métier ?</span><ul class="opts"><li>oui</li><li>non, il faut aussi le permis de l'Ordre</li></ul></li><li><span class="q">Une personne de 19 ans sans unités du secondaire d'ici…</span><ul class="opts"><li>ne peut pas s'inscrire</li><li>peut passer par les préalables fonctionnels</li></ul></li><li><span class="q">Peut-on se préparer au test de développement général ?</span><ul class="opts"><li>oui, avec un prétest</li><li>non, aucun exercice préparatoire ne doit le précéder</li></ul></li><li><span class="q">« Contingenté » veut dire…</span><ul class="opts"><li>difficile</li><li>plus de demandes que de places</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> non, il faut aussi le permis de l'Ordre — Le permis est délivré par l'Ordre, et il exige de réussir son examen professionnel. · <b>2.</b> peut passer par les préalables fonctionnels — C'est la troisième porte : le test de développement général, à partir de 18 ans. · <b>3.</b> non, aucun exercice préparatoire ne doit le précéder — La règle est claire, et elle vaut pour tout le Québec. · <b>4.</b> plus de demandes que de places — Le classement, pas la difficulté. On peut être bon et rester quatrième.</div></section><section class="bloc card ml"><h3>Trois lignes qu'on lit trop vite</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">lire « mène au métier de… » et s'arrêter là</p><div class="k">Ce qui arrive</div><p class="ph">chercher le mot « ordre », « permis » ou « examen » plus bas</p><p class="px">Une année entière de formation peut se terminer sur la découverte qu'il reste un examen à passer.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">croire qu'une expérience de travail remplace un préalable</p><div class="k">Ce qui arrive</div><p class="ph">vérifier la case, puis demander comment la remplir</p><p class="px">L'expérience compte pour le comité, jamais pour la condition d'admission. Ce sont deux guichets différents.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">ne pas noter le nombre de places</p><div class="k">Ce qui arrive</div><p class="ph">le chercher, et lire le nombre de demandes de l'an dernier</p><p class="px">Deux chiffres changent complètement la façon d'écrire sa lettre : vingt-quatre places pour soixante-huit demandes, ce n'est pas un formulaire, c'est une candidature.</p></div></div></section></section></div>
+<footer><span>A4 · Entrer dans le programme</span><span>Fiche élève</span></footer>
+</body>
+</html>

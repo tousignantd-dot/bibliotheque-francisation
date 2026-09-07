@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>D2 · La carte postale et la carte de vœux — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance D2 · Module 11 · 90 minutes</div>
+    <h1>La carte postale et la carte de vœux</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Deux cartes, quelques lignes chacune, et deux buts opposés : l'une raconte où vous êtes, l'autre parle de la personne à qui vous écrivez. Se tromper de genre se remarque.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>distinguer une carte postale d'une carte de vœux ;</li><li>écrire les quatre parties d'une carte postale ;</li><li>employer la formule figée qui convient à l'occasion ;</li><li>dire la cause avec grâce à ou à cause de, selon le résultat.</li></ol></section><section class="bloc card"><div class="lbl">Dialogue</div><h2 class="t">Une carte pour Chantal</h2><p class="consigne">Écoutez, puis repérez la réponse à la question de Mariama.</p><div class="rep rep--key"><div class="qui">MARIAMA</div><div>Chez nous, on écrit toujours une carte quand un enfant naît. Est-ce que ça se fait ici ?</div></div><div class="rep rep--key"><div class="qui">CHANTAL</div><div>Oui, ça se fait beaucoup. Les gens en envoient pour les naissances, les mariages, le Nouvel An.</div></div><div class="rep"><div class="qui">MARIAMA</div><div>Et qu'est-ce qu'on écrit ? Je ne veux pas me tromper.</div></div><div class="rep rep--key"><div class="qui">CHANTAL</div><div>Pas grand-chose. Trois lignes suffisent : tu félicites, tu souhaites quelque chose, tu signes.</div></div></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Deux cartes, deux buts</h2><table><thead><tr><th></th><th>Carte postale</th><th>Carte de vœux</th></tr></thead><tbody><tr><td>Le but</td><td class="cle">raconter où je suis</td><td>féliciter ou souhaiter</td></tr><tr><td>De qui on parle</td><td class="cle">de soi</td><td>de l'autre</td></tr><tr><td>Longueur</td><td class="cle">quatre à six phrases</td><td>trois lignes</td></tr><tr><td>Temps des verbes</td><td class="cle">présent et passé composé</td><td>présent</td></tr></tbody></table><div class="note">La deuxième ligne est le vrai test : parle-t-on de soi, ou de l'autre ?</div></section><section class="bloc"><div class="lbl">La carte postale</div><h2 class="t">Ses quatre parties, dans l'ordre</h2><div class="grid"><div class="card"><h3>1 · La salutation</h3><p>« Bonjour Fatou, » ou « Chère Fatou, ». Une virgule, et on va à la ligne.</p></div><div class="card"><h3>2 · Où je suis</h3><p>« Je t'écris de Québec, il neige depuis hier. » Au présent : c'est maintenant.</p></div><div class="card"><h3>3 · Ce que j'ai fait</h3><p>« Hier, on a visité le Vieux-Port. » Au passé composé : les évènements du voyage.</p></div><div class="card"><h3>4 · La fin</h3><p>« Tu me manques. Je t'embrasse. Mariama. » On signe de son prénom, sans formule longue.</p></div></div></section><section class="bloc card"><div class="lbl">Les formules figées</div><h2 class="t">Une occasion, une formule</h2><table><thead><tr><th>Occasion</th><th>Ce qu'on écrit</th></tr></thead><tbody><tr><td class="cle">Une naissance</td><td>Bienvenue au petit ! Toutes nos félicitations.</td></tr><tr><td class="cle">Un mariage</td><td>Beaucoup de bonheur à vous deux.</td></tr><tr><td class="cle">Le Nouvel An</td><td>Meilleurs vœux pour la nouvelle année.</td></tr><tr><td class="cle">Un décès</td><td>Mes sincères condoléances.</td></tr></tbody></table><div class="note">Ces formules ne s'inventent pas : on les réutilise telles quelles. Il y en a une dizaine à connaître, pas plus.</div></section><section class="bloc regle"><div class="lbl">grâce à ou à cause de</div><p class="r">grâce à annonce un résultat heureux, à cause de un résultat ennuyeux.</p><p class="pr">« Grâce à cette voisine, j'ai aimé l'hiver. » · « On est partis à cause du bruit. » Les deux répondent à « pourquoi ? », mais ils ne sont pas neutres. Le test : remplacez par heureusement ou malheureusement.</p></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Oublier la fusion</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">à cause de le bruit · grâce à le covoiturage</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">à cause du bruit · grâce au covoiturage</p></div></div><div class="note">de + le donne du, de + les donne des ; à + le donne au, à + les donne aux. La fusion est obligatoire en français : « de le » et « à le » n'existent jamais. C'est mécanique, et ça se corrige en une séance.</div></section><section class="bloc card"><div class="lbl">Pratique · 1 de 2</div><h2 class="t">grâce à ou à cause de ?</h2><p class="consigne">Complétez. Attention aux fusions.</p><ol class="ex"><li><span class="q">___ cette voisine, Mariama a aimé l'hiver.</span><span class="ligne ligne--court"></span></li><li><span class="q">Ils sont partis ___ bruit du bar.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ covoiturage, elle n'attend plus l'autobus.</span><span class="ligne ligne--court"></span></li><li><span class="q">Elle a manqué deux entraînements ___ son horaire.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le déménagement a été long ___ pluie.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ ses coéquipières, elle s'est fait des amies.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">Pratique · 2 de 2</div><h2 class="t">Postale ou vœux ?</h2><p class="consigne">Dites de quelle carte vient chaque phrase.</p><ol class="ex"><li><span class="q">Nous sommes à Québec depuis deux jours et il neige sans arrêt.</span><span class="ligne ligne--court"></span></li><li><span class="q">Félicitations à vous deux pour cette belle nouvelle !</span><span class="ligne ligne--court"></span></li><li><span class="q">Hier, on a marché dans le Vieux-Port toute la journée.</span><span class="ligne ligne--court"></span></li><li><span class="q">Je vous souhaite beaucoup de bonheur avec le petit.</span><span class="ligne ligne--court"></span></li><li><span class="q">Il fait moins quinze, mais le soleil est magnifique.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Parler de soi sur une carte de vœux</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">Félicitations ! Moi, cette année, j'ai déménagé et j'ai changé d'emploi.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">Félicitations ! Je vous souhaite beaucoup de bonheur avec le petit.</p></div></div><div class="note">La carte de vœux est tournée vers l'autre. Raconter sa propre année à l'occasion d'une naissance déplace l'attention au mauvais endroit. Gardez vos nouvelles pour une lettre ou un courriel.</div></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez une carte : postale ou de vœux, à votre choix. Cinq à huit phrases.</p><ul><li>Carte postale : les quatre parties, dans l'ordre.</li><li>Carte de vœux : la formule de l'occasion, un souhait, votre prénom.</li><li>Employez au moins une fois qui, que ou où, et un verbe au passé composé.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>La carte postale et la carte de vœux</h2><section class="bloc card ml"><h3>Deux cartes, deux buts</h3><p class="mp">Les deux tiennent en quelques lignes, mais elles ne servent pas à la même chose. La <b>carte postale</b> raconte <b>où vous êtes</b> et ce que vous y faites. La <b>carte de vœux</b> <b>félicite</b> ou <b>souhaite</b> quelque chose à quelqu'un, à l'occasion d'un évènement.</p><div class="note">Se tromper de genre se remarque tout de suite : raconter son voyage sur une carte de naissance met l'attention au mauvais endroit.</div></section><section class="bloc card ml"><h3>La carte postale — quatre parties</h3><p class="mp">On la lit en dix secondes. Elle suit presque toujours le même ordre.</p><table class="ana"><tr><td>1</td><td class="">Bonjour Fatou,</td></tr><tr><td>2</td><td class="cle">Je t'écris de <b>Québec</b></td></tr><tr><td>3</td><td class="">Hier, on a visité le Vieux-Port</td></tr><tr><td>4</td><td class="">Tu me manques. Je t'embrasse.</td></tr></table><p class="dit"><span class="k">On dit</span> Je t'écris de Québec, il neige depuis hier.</p><div class="note">Les verbes y sont au <b>présent</b> (où je suis, ce que je vois) et au <b>passé composé</b> (ce que j'ai fait hier).</div></section><section class="bloc card ml"><h3>La carte de vœux — trois lignes</h3><p class="mp">Encore plus court. On félicite, on souhaite, on signe.</p><table class="ana"><tr><td>1</td><td class="">Félicitations à vous deux !</td></tr><tr><td>2</td><td class="cle">Je vous souhaite <b>beaucoup de bonheur</b></td></tr><tr><td>3</td><td class="">Mariama</td></tr></table><p class="dit"><span class="k">On dit</span> Félicitations à vous deux ! Je vous souhaite beaucoup de bonheur.</p><div class="note">On ne raconte pas sa propre vie sur une carte de vœux. Elle parle de l'autre, pas de soi.</div></section><section class="bloc card ml"><h3>Les formules qui vont avec l'occasion</h3><p class="mp">Chaque évènement a ses mots. <b>Naissance</b> : « Bienvenue au petit ! Toutes nos félicitations. » · <b>Mariage</b> : « Beaucoup de bonheur à vous deux. » · <b>Nouvel An</b> : « Meilleurs vœux pour la nouvelle année. » · <b>Décès</b> : « Mes sincères condoléances. »</p><div class="note">Ces formules sont figées : on ne les invente pas, on les réutilise telles quelles. C'est une bonne nouvelle — il y en a une dizaine à connaître, pas plus.</div></section><section class="bloc card ml"><h3>Quelle carte, quelle phrase ?</h3><p class="mp">Choisissez une occasion et voyez ce qu'on écrit.</p><table class="labo"><thead><tr><th>Quelle occasion ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">un voyage à Québec</td><td>Je t'écris de Québec, il neige depuis hier.</td><td>carte postale — où je suis, ce que je fais</td></tr><tr><td class="cle">une naissance</td><td>Bienvenue à la petite Aminata ! Toutes nos félicitations.<span class="tags">Bienvenue à la petite <b>Aminata</b> !</span></td><td>carte de vœux — on félicite</td></tr><tr><td class="cle">un mariage</td><td>Beaucoup de bonheur à vous deux.</td><td>carte de vœux — on souhaite</td></tr><tr><td class="cle">le Nouvel An</td><td>Meilleurs vœux pour la nouvelle année.</td><td>carte de vœux — formule figée</td></tr><tr><td class="cle">un déménagement</td><td>Bonne installation dans votre nouveau chez-vous !</td><td>carte de vœux — on souhaite</td></tr></tbody></table><div class="note">Une seule des cinq est une carte postale. Toutes les autres félicitent ou souhaitent.</div></section><section class="bloc card ml"><h3>Des phrases de vraies cartes</h3><p class="mp">Écoutez et devinez de quelle carte chacune vient.</p><table class="ex2"><tr><td>Je t'écris de la terrasse d'un café, en face du fleuve.</td><td>carte postale</td></tr><tr><td>Félicitations à vous deux pour cette belle nouvelle !</td><td>carte de vœux</td></tr><tr><td>Hier, on a marché dans le Vieux-Port toute la journée.</td><td>carte postale</td></tr><tr><td>Je vous souhaite beaucoup de bonheur avec le petit.</td><td>carte de vœux</td></tr><tr><td>Il fait moins quinze, mais le soleil est magnifique.</td><td>carte postale</td></tr><tr><td>Meilleurs vœux pour la nouvelle année, à toi et à ta famille.</td><td>carte de vœux</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges à connaître</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">écrire une lettre au lieu d'une carte</p><div class="k">Ce qui arrive</div><p class="ph">trois à six phrases suffisent</p><p class="px">Une carte n'est pas une lettre. Si vous avez besoin de dix phrases, écrivez un courriel.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">parler de soi sur une carte de vœux</p><div class="k">Ce qui arrive</div><p class="ph">« je vous souhaite » et non « moi, cette année… »</p><p class="px">La carte de vœux est tournée vers l'autre. On peut signer, mais on ne raconte pas sa propre vie.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">oublier de signer</p><div class="k">Ce qui arrive</div><p class="ph">le nom, seul, à la fin</p><p class="px">Sur une carte, on signe simplement de son prénom. Pas de « cordialement », pas de formule longue.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">« Hier, on a visité le Vieux-Port » vient…</span><ul class="opts"><li>d'une carte postale</li><li>d'une carte de vœux</li></ul></li><li><span class="q">Sur une carte de vœux, on parle surtout…</span><ul class="opts"><li>de soi</li><li>de la personne à qui on écrit</li></ul></li><li><span class="q">Pour une naissance, on écrit…</span><ul class="opts"><li>Meilleurs vœux pour la nouvelle année</li><li>Bienvenue au petit ! Toutes nos félicitations</li></ul></li><li><span class="q">La bonne longueur d'une carte, c'est…</span><ul class="opts"><li>trois à six phrases</li><li>une page complète</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> d'une carte postale — On raconte où on est et ce qu'on y fait : c'est une <b>carte postale</b>. · <b>2.</b> de la personne à qui on écrit — On félicite ou on souhaite : la carte est tournée vers l'autre. · <b>3.</b> Bienvenue au petit ! Toutes nos félicitations — Chaque occasion a sa formule figée. · <b>4.</b> trois à six phrases — Une carte se lit en dix secondes. Au-delà, écrivez un courriel.</div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>grâce à ou à cause de</h2><section class="bloc card ml"><h3>La même question, deux réponses</h3><p class="mp">Les deux répondent à « pourquoi ? ». Mais ils ne sont pas neutres : <b>grâce à</b> annonce que le résultat est <b>heureux</b>, <b>à cause de</b> qu'il est <b>malheureux</b> ou au moins ennuyeux.</p><div class="note">Choisir le mauvais change le sens de la phrase. « À cause de ma voisine, j'ai aimé l'hiver » laisse entendre que c'est un problème.</div></section><section class="bloc card ml"><h3>grâce à — le bon résultat</h3><p class="mp">On remercie, on reconnaît une aide. Souvent une personne, parfois une chose.</p><table class="ana"><tr><td>Ce que ça annonce</td><td class="">un résultat heureux</td></tr><tr><td>Suivi de</td><td class="cle">un nom ou un pronom</td></tr><tr><td>Comme dans</td><td class=""><b>grâce à</b> cette voisine</td></tr></table><p class="dit"><span class="k">On dit</span> Grâce à cette voisine, j'ai compris qu'on pouvait aimer l'hiver.</p><div class="note">Autres exemples : <b>grâce au</b> covoiturage · <b>grâce à</b> ses coéquipières · <b>grâce à</b> toi.</div></section><section class="bloc card ml"><h3>à cause de — le résultat ennuyeux</h3><p class="mp">On explique un problème, un empêchement, un départ.</p><table class="ana"><tr><td>Ce que ça annonce</td><td class="">un résultat ennuyeux</td></tr><tr><td>Suivi de</td><td class="cle">un nom ou un pronom</td></tr><tr><td>Comme dans</td><td class=""><b>à cause du</b> bruit</td></tr></table><p class="dit"><span class="k">On dit</span> On est partis à cause du bruit.</p><div class="note">Autres exemples : <b>à cause de</b> la pluie · <b>à cause de</b> son horaire · <b>à cause des</b> voisins.</div></section><section class="bloc card ml"><h3>La fusion avec le et les</h3><p class="mp">Les deux se fusionnent avec le déterminant qui suit. C'est là que les fautes arrivent.</p><table class="ana"><tr><td>à cause de + le</td><td class="">à cause <b>du</b></td></tr><tr><td>à cause de + les</td><td class="cle">à cause <b>des</b></td></tr><tr><td>grâce à + le</td><td class="">grâce <b>au</b></td></tr></table><p class="dit"><span class="k">On dit</span> Grâce au covoiturage, elle n'attend plus l'autobus.</p><div class="note">On n'écrit jamais « à cause de le bruit » ni « grâce à le covoiturage ». La fusion est obligatoire.</div></section><section class="bloc card ml"><h3>Et si je veux enchaîner sur un verbe ?</h3><p class="mp"><b>grâce à</b> et <b>à cause de</b> sont toujours suivis d'un <b>nom</b> ou d'un <b>pronom</b>, jamais d'un verbe conjugué. Pour un verbe, prenez <b>parce que</b>.</p><div class="note">« Je suis restée <b>parce qu'</b>il faisait froid » — et non « à cause de il faisait froid ».</div></section><section class="bloc card ml"><h3>Heureux ou ennuyeux ?</h3><p class="mp">Choisissez une phrase et voyez lequel s'impose.</p><table class="labo"><thead><tr><th>Quelle phrase ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">la voisine qui l'a emmenée glisser</td><td>Grâce à cette voisine, j'ai aimé l'hiver.<span class="tags"><b>Grâce à</b> cette voisine</span></td><td>résultat heureux → grâce à</td></tr><tr><td class="cle">le bruit du bar en bas</td><td>On est partis à cause du bruit.<span class="tags"><b>à cause du</b> bruit</span></td><td>résultat ennuyeux → à cause de + du</td></tr><tr><td class="cle">le covoiturage du jeudi</td><td>Grâce au covoiturage, elle n'attend plus l'autobus.<span class="tags"><b>Grâce au</b> covoiturage</span></td><td>résultat heureux → grâce à + au</td></tr><tr><td class="cle">la pluie du premier juillet</td><td>Le déménagement a été long à cause de la pluie.<span class="tags"><b>à cause de la</b> pluie</span></td><td>résultat ennuyeux → à cause de + la</td></tr><tr><td class="cle">la collègue qui lui a parlé du centre</td><td>Grâce à sa collègue, elle a découvert le centre.<span class="tags"><b>Grâce à</b> sa collègue</span></td><td>résultat heureux → grâce à</td></tr></tbody></table><div class="note">Le test le plus rapide : remplacez par « heureusement » ou « malheureusement » et écoutez lequel sonne juste.</div></section><section class="bloc card ml"><h3>Les phrases du module</h3><p class="mp">Écoutez chacune et repérez la cause.</p><table class="ex2"><tr><td>Grâce à cette voisine, j'ai aimé l'hiver.</td><td>résultat heureux</td></tr><tr><td>On est partis à cause du bruit.</td><td>résultat ennuyeux</td></tr><tr><td>Grâce au covoiturage, elle n'attend plus l'autobus.</td><td>résultat heureux</td></tr><tr><td>Elle a manqué deux entraînements à cause de son horaire.</td><td>résultat ennuyeux</td></tr><tr><td>Grâce à ses coéquipières, elle s'est fait des amies.</td><td>résultat heureux</td></tr><tr><td>Le déménagement a été long à cause de la pluie.</td><td>résultat ennuyeux</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges à connaître</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">oublier la fusion</p><div class="k">Ce qui arrive</div><p class="ph">« à cause du bruit », jamais « à cause de le bruit »</p><p class="px">de + le = <b>du</b>, de + les = <b>des</b>, à + le = <b>au</b>, à + les = <b>aux</b>. La fusion est obligatoire en français.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">mettre un verbe après</p><div class="k">Ce qui arrive</div><p class="ph">« parce qu'il faisait froid »</p><p class="px"><b>grâce à</b> et <b>à cause de</b> ne prennent qu'un nom ou un pronom. Pour un verbe conjugué, c'est <b>parce que</b>.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">employer « à cause de » pour une bonne nouvelle</p><div class="k">Ce qui arrive</div><p class="ph">« grâce à mes amies » et non « à cause de mes amies »</p><p class="px">Dire « à cause de mes amies, je me suis fait des amies » fait entendre un reproche. Le choix n'est jamais neutre.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">« ___ cette voisine, j'ai aimé l'hiver » demande…</span><ul class="opts"><li>Grâce à</li><li>À cause de</li></ul></li><li><span class="q">« Ils sont partis ___ bruit » demande…</span><ul class="opts"><li>à cause du</li><li>à cause de le</li></ul></li><li><span class="q">Après grâce à, on peut mettre…</span><ul class="opts"><li>un verbe conjugué</li><li>un nom ou un pronom</li></ul></li><li><span class="q">« Grâce à » et « à cause de » sont…</span><ul class="opts"><li>interchangeables</li><li>porteurs d'un jugement différent</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> Grâce à — Le résultat est heureux : <b>grâce à</b>. · <b>2.</b> à cause du — de + le = <b>du</b>. La fusion est obligatoire. · <b>3.</b> un nom ou un pronom — Pour un verbe, il faut <b>parce que</b>. · <b>4.</b> porteurs d'un jugement différent — L'un annonce du bon, l'autre du mauvais. Ce n'est jamais neutre.</div></section></section></div>
+<footer><span>D2 · Des nouvelles à donner</span><span>Fiche élève</span></footer>
+</body>
+</html>

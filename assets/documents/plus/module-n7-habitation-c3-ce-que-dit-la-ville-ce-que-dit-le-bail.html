@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C3 · Ce que dit la ville, ce que dit le bail — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance C3 · Module 5 · 75 minutes</div>
+    <h1>Ce que dit la ville, ce que dit le bail</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Deux textes, deux autorités, et presque tout le monde les confond. La ville donne une amende ; le bail règle ce qui se passe entre vous, le voisin et la propriétaire.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>distinguer ce qui relève de la ville et ce qui relève du bail ;</li><li>trouver dans un règlement l'heure et la définition qui servent ;</li><li>distinguer le locateur du locataire ;</li><li>dire pourquoi la propriétaire est concernée par un bruit qu'elle ne fait pas.</li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Deux voies, jamais dans la même lettre</h2><table><thead><tr><th>La ville</th><th>Le bail</th></tr></thead><tbody><tr><td>Une amende de 2 000 $ à 10 000 $</td><td class="cle">Une diminution de loyer</td></tr><tr><td>Un bruit excessif ou insolite</td><td class="cle">Un trouble à la jouissance paisible</td></tr><tr><td>La plainte se porte au 311</td><td class="cle">La demande se porte au Tribunal</td></tr><tr><td>Le jour, le soir, la nuit</td><td class="cle">La durée du bail</td></tr><tr><td>Personne ne vous rembourse</td><td class="cle">Des dommages-intérêts sont possibles</td></tr></tbody></table></section><section class="bloc regle"><div class="lbl">Les trois périodes du règlement</div><p class="r">Le jour de 7 h à 19 h, le soir de 19 h à 23 h, la nuit de 23 h à 7 h.</p><p class="pr">C'est la vraie utilité du règlement de la ville : il fournit un vocabulaire précis que personne ne peut discuter. Écrire « à 5 h 45, c'est-à-dire pendant la période de nuit au sens du règlement » vaut mieux que « très tôt le matin ». Un bruit excessif ou insolite qui trouble la paix constitue une nuisance.</p></section><section class="bloc regle"><div class="lbl">Locateur et locataire</div><p class="r">Le locateur loue son logement à quelqu'un ; le locataire l'habite.</p><p class="pr">Les deux mots se ressemblent et disent le contraire, et les documents officiels n'emploient que le premier. Le moyen de ne plus se tromper : locateur, comme donateur — celui qui donne à louer.</p></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Quatre obligations, et à qui elles s'appliquent</h2><table><thead><tr><th>Qui</th><th>Ce qu'il doit</th></tr></thead><tbody><tr><td class="cle">Le locateur</td><td>procurer la jouissance paisible pendant tout le bail</td></tr><tr><td class="cle">Le locateur</td><td>répondre du trouble si le tiers est son locataire</td></tr><tr><td class="cle">Le locataire</td><td>ne pas troubler la jouissance normale des autres</td></tr><tr><td class="cle">Le locataire troublé</td><td>aviser d'abord, demander ensuite</td></tr></tbody></table><div class="note">Si le voisin bruyant habitait la maison d'à côté, la propriétaire n'y pourrait rien. C'est parce qu'il habite son immeuble qu'elle est dans le dossier.</div></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Méthode</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">Appeler la ville en premier</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">Parler au voisin en premier</p></div></div><div class="note">Un constat de la ville arrive après le fait, il ne fait rien déplacer, et il transforme le voisin en adversaire pour des années. Il se garde pour quand le reste a échoué. La première démarche reste celle du bloc B : monter, frapper, et dire bonjour.</div></section><section class="bloc card"><div class="lbl">Compréhension</div><h2 class="t">Trouvez dans les textes</h2><p class="consigne">Répondez d'après le règlement et la fiche de renseignements.</p><ol class="ex"><li><span class="q">À quelle heure commence la nuit, selon le règlement ?</span><span class="ligne"></span></li><li><span class="q">Qui peut être tenu responsable du bruit d'un appareil ?</span><span class="ligne"></span></li><li><span class="q">Combien coûte une première infraction ?</span><span class="ligne ligne--court"></span></li><li><span class="q">À quoi la propriétaire s'est-elle engagée en signant le bail ?</span><span class="ligne"></span></li><li><span class="q">Dans quel cas répond-elle du bruit d'un autre ?</span><span class="ligne"></span></li><li><span class="q">Que peut demander la locataire si rien n'est fait après l'avis ?</span><span class="ligne"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">À qui écrirais-tu, et pourquoi à cette personne-là ?</p><ul><li>Une phrase suffit.</li><li>Pense à ce que chacune peut faire, et à ce qu'elle ne peut pas.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Deux textes, deux autorités : la ville et le bail</h2><section class="bloc card ml"><h3>Deux systèmes qu'il ne faut pas mélanger dans la même lettre</h3><p class="mp">Devant un bruit de voisinage, il existe deux voies parallèles, et presque tout le monde les confond. La ville sanctionne un bruit sur son territoire : elle donne une amende, et elle ne touche ni à votre loyer ni à votre bail. Le Code civil et le bail, eux, règlent ce qui se passe entre vous, votre voisin et votre propriétaire. Les deux voies peuvent servir le même mois — mais jamais dans la même lettre, et pas auprès des mêmes personnes.</p><div class="note">Savoir de quelle voie on parle est ce qui distingue une démarche qui avance d'une démarche qui tourne en rond. Un appel au 311 ne fera pas déplacer un tapis roulant ; une mise en demeure à la propriétaire ne donnera aucune amende.</div></section><section class="bloc card ml"><h3>Ce que le règlement de la ville vous donne vraiment</h3><p class="mp">Pas une solution : un vocabulaire. Et ce vocabulaire vaut beaucoup, parce que personne ne peut le discuter.</p><table class="ana"><tr><td>Les trois périodes</td><td class="">le jour de 7 h à 19 h, le soir de 19 h à 23 h, la nuit de 23 h à 7 h</td></tr><tr><td>La définition</td><td class="cle">un bruit excessif ou insolite qui trouble la paix et la tranquillité constitue une nuisance</td></tr><tr><td>Qui est responsable</td><td class="">celui qui émet le bruit, celui qui possède l'appareil, et celui qui le tolère chez lui</td></tr></table><p class="dit"><span class="k">On dit</span> Le jour va de sept heures à dix-neuf heures, le soir de dix-neuf à vingt-trois heures, et la nuit de vingt-trois heures à sept heures.</p><div class="note">Écrire « à 5 h 45, c'est-à-dire pendant la période de nuit au sens du règlement » vaut mieux que « très tôt le matin ». Les deux disent la même chose ; une seule est incontestable.</div></section><section class="bloc card ml"><h3>Le mot qui décide : <b>locateur</b></h3><p class="mp">Les documents officiels n'emploient que ce mot-là, et il se confond sans arrêt avec son contraire.</p><table class="ana"><tr><td>Le locateur</td><td class="">celui qui loue son logement à quelqu'un — le propriétaire</td></tr><tr><td>Le locataire</td><td class="cle">celui qui l'habite et qui paie le loyer</td></tr><tr><td>Le moyen de ne plus se tromper</td><td class="">locateur, comme donateur : celui qui donne à louer</td></tr></table><p class="dit"><span class="k">On dit</span> Le locateur loue le logement ; le locataire l'habite.</p><div class="note">Cette confusion est la plus fréquente de tout le domaine du logement, et elle rend un texte officiel incompréhensible dès la première ligne.</div></section><section class="bloc card ml"><h3>Pourquoi votre propriétaire est concernée par un bruit qu'elle ne fait pas</h3><p class="mp">Parce que le bail lui fait une promesse, et parce que celui qui dérange est lui aussi son locataire. Ces deux conditions ensemble suffisent.</p><table class="ana"><tr><td>La promesse du bail</td><td class="">le locateur doit procurer au locataire la jouissance paisible du bien pendant toute la durée du bail</td></tr><tr><td>La limite</td><td class="cle">il ne répond pas du trouble causé par n'importe qui ; il peut en répondre quand ce tiers est son locataire dans le même immeuble</td></tr><tr><td>La promesse du voisin</td><td class="">le locataire doit se conduire de manière à ne pas troubler la jouissance normale des autres locataires</td></tr><tr><td>Ce qui s'ouvre alors</td><td class="">le locataire troublé qui a avisé son locateur, et à qui rien n'est fait, peut demander une diminution de loyer ou des dommages-intérêts</td></tr></table><p class="dit"><span class="k">On dit</span> Le locateur doit procurer au locataire la jouissance paisible du bien pendant toute la durée du bail.</p><div class="note">Si le voisin bruyant habitait la maison d'à côté, la propriétaire n'y pourrait rien. C'est le fait qu'il habite son immeuble qui la met dans le dossier — et cela vaut la peine de l'écrire dans la lettre.</div></section><section class="bloc card ml"><h3>Le mot « avisé », et pourquoi il commande tout</h3><p class="mp">Le droit ne demande pas à la propriétaire de deviner. Il lui demande d'agir une fois qu'elle sait — donc à partir du jour où vous le lui avez dit, et pouvez le prouver.</p><table class="ana"><tr><td>Avant l'avis</td><td class="">la propriétaire ne doit rien : elle ignore le problème</td></tr><tr><td>Après l'avis</td><td class="cle">elle a quelque chose à faire, et son silence commence à compter</td></tr><tr><td>D'où le geste utile</td><td class="">un appel noté, puis une lettre datée : c'est l'avis qui met la montre en marche</td></tr></table><p class="dit"><span class="k">On dit</span> C'est l'avis qui met la montre en marche.</p><div class="note">C'est pour cela que Ruslana appelle sa propriétaire dès le 20 février, alors qu'elle ne lui demande encore rien. L'appel ne sert pas à obtenir : il sert à dater.</div></section><section class="bloc card ml"><h3>Six phrases, deux voies</h3><p class="mp">À gauche ce qui relève de la ville, à droite ce qui relève du bail.</p><table class="ex2"><tr><td>Une amende de 2 000 $ à 10 000 $</td><td>Une diminution de loyer</td></tr><tr><td>Un bruit excessif ou insolite</td><td>Un trouble à la jouissance paisible</td></tr><tr><td>La plainte se porte au 311</td><td>La demande se porte au Tribunal du logement</td></tr><tr><td>Le jour, le soir, la nuit</td><td>La durée du bail</td></tr><tr><td>Le territoire de la ville</td><td>L'immeuble et ses locataires</td></tr><tr><td>Personne ne vous rembourse</td><td>Vous pouvez demander des dommages-intérêts</td></tr></table></section><section class="bloc card ml"><h3>Quatre questions, carnet fermé</h3><p class="mp">Répondez sans remonter dans la page.</p><ol class="check"><li><span class="q">Le règlement municipal peut faire…</span><ul class="opts"><li>déplacer un appareil</li><li>donner une amende</li></ul></li><li><span class="q">Le locateur, c'est…</span><ul class="opts"><li>celui qui loue son logement à quelqu'un</li><li>celui qui l'habite</li></ul></li><li><span class="q">La propriétaire est concernée parce que…</span><ul class="opts"><li>c'est elle qui fait le bruit</li><li>celui qui dérange est aussi son locataire</li></ul></li><li><span class="q">À partir de quel moment son silence compte-t-il ?</span><ul class="opts"><li>à partir du jour où elle a été avisée</li><li>dès le début du bruit</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> donner une amende — Il sanctionne un bruit sur le territoire. Il ne touche ni au bail ni au loyer. · <b>2.</b> celui qui loue son logement à quelqu'un — Celui qui l'habite est le locataire. Les deux mots se ressemblent et disent le contraire. · <b>3.</b> celui qui dérange est aussi son locataire — Le bail promet la jouissance paisible, et le tiers est ici son propre locataire. · <b>4.</b> à partir du jour où elle a été avisée — C'est l'avis qui met la montre en marche. D'où l'appel daté.</div></section><section class="bloc card ml"><h3>Trois faux pas, et comment s'en sortir</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">citer le règlement de la ville dans la mise en demeure</p><div class="k">Ce qui arrive</div><p class="ph">citer les heures, pas les articles</p><p class="px">Le règlement n'a rien à faire dans une lettre au propriétaire, sauf pour situer une heure. Y mêler des numéros d'articles fait perdre le fil sans rien ajouter.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">appeler la ville en premier</p><div class="k">Ce qui arrive</div><p class="ph">parler au voisin en premier</p><p class="px">Un constat de la ville arrive après le fait, et il transforme le voisin en adversaire pour des années. Il se garde pour quand le reste a échoué.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">confondre locateur et locataire</p><div class="k">Ce qui arrive</div><p class="ph">penser à « donateur, celui qui donne »</p><p class="px">Une phrase qui inverse les deux mots dans une lettre officielle fait douter de tout ce qui suit.</p></div></div></section></section></div>
+<footer><span>C3 · Le bruit d'en haut</span><span>Fiche élève</span></footer>
+</body>
+</html>

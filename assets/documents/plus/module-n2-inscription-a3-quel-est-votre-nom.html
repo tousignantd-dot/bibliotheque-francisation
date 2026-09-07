@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A3 · Quel est votre nom ? — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance A3 · Module 6 · 75 minutes</div>
+    <h1>Quel est votre nom ?</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Reconnaitre les six questions du comptoir et y répondre en trois mots.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>reconnaitre les six questions de l'inscription ;</li><li>répondre en trois ou quatre mots ;</li><li>employer quel devant un mot masculin, quelle devant un féminin ;</li><li>demander de répéter au lieu de rester muet.</li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Six questions, six réponses courtes</h2><table><thead><tr><th>On vous demande</th><th>Vous répondez</th></tr></thead><tbody><tr><td>Quel est votre nom de famille ?</td><td class="cle">Haddad.</td></tr><tr><td>Quel est votre prénom ?</td><td class="cle">Yara.</td></tr><tr><td>Quelle est votre date de naissance ?</td><td class="cle">Le 7 mars 1994.</td></tr><tr><td>Quelle est votre adresse ?</td><td class="cle">3420, rue Papineau.</td></tr></tbody></table><div class="note">Trois ou quatre mots suffisent. Une phrase entière n'est pas plus juste.</div></section><section class="bloc regle"><div class="lbl">Quel ou quelle : la différence ne s'entend pas</div><p class="r">Les deux se disent « kèl ». Seule l'écriture change.</p><p class="pr">On écrit &lt;b&gt;quel&lt;/b&gt; devant un mot masculin — nom, prénom, courriel, numéro — et &lt;b&gt;quelle&lt;/b&gt; devant un mot féminin — adresse, date, ville, scolarité. À l'oral, il n'y a rien à choisir : c'est un savoir d'écriture, pas d'oreille.</p></section><section class="bloc"><div class="lbl">Les mots du formulaire</div><h2 class="t">Masculin d'un côté, féminin de l'autre</h2><div class="grid"><div class="card"><h3>Masculin — quel</h3><p>le nom · le prénom · le courriel · le numéro · le cours</p></div><div class="card"><h3>Féminin — quelle</h3><p>l'adresse · la date · la ville · la scolarité · la signature</p></div></div></section><section class="bloc card"><div class="lbl">Pratique</div><h2 class="t">Quel ou quelle ?</h2><p class="consigne">Complétez chaque question.</p><ol class="ex"><li><span class="q">___ est votre nom de famille ?</span><span class="ligne ligne--court"></span></li><li><span class="q">___ est votre adresse ?</span><span class="ligne ligne--court"></span></li><li><span class="q">___ est votre prénom ?</span><span class="ligne ligne--court"></span></li><li><span class="q">___ est votre date de naissance ?</span><span class="ligne ligne--court"></span></li><li><span class="q">___ est votre numéro de téléphone ?</span><span class="ligne ligne--court"></span></li><li><span class="q">___ est votre scolarité ?</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc regle"><div class="lbl">« Pouvez-vous répéter, s'il vous plaît ? »</div><p class="r">La phrase qui débloque tout le reste.</p><p class="pr">Une question mal entendue ne se devine pas. La faire répéter prend deux secondes ; la personne au comptoir répète toute la journée. Rester muet, au contraire, arrête la démarche.</p></section><section class="bloc card"><div class="lbl">Pratique · au comptoir</div><h2 class="t">Six questions, deux par deux</h2><p class="consigne">Vingt minutes. On échange les rôles à mi-chemin.</p><ol class="ex"><li><span class="q">Étape 1</span><span class="ligne"></span></li><li><span class="q">Étape 2</span><span class="ligne"></span></li><li><span class="q">Étape 3</span><span class="ligne"></span></li><li><span class="q">Étape 4</span><span class="ligne"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez les six questions de l'inscription, et votre réponse à chacune.</p><ul><li>Quel est votre nom de famille ? — …</li><li>Quelle est votre adresse ? — …</li><li>Quelle est votre date de naissance ? — …</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Les questions qu'on te pose au comptoir</h2><section class="bloc card ml"><h3>Six questions, toujours les mêmes</h3><p class="mp">Une inscription, c'est six questions courtes. Elles reviennent au secrétariat, à la clinique, à la banque : <b>quel est votre nom ?</b>, <b>quelle est votre adresse ?</b>, et ainsi de suite. Quand on les reconnaît, on n'a plus besoin de tout comprendre pour répondre.</p><div class="note">Faire écouter les six questions avant toute explication de grammaire. La reconnaissance vient d'abord ; l'accord vient après.</div></section><section class="bloc card ml"><h3>Devant un mot masculin : quel</h3><p class="mp">On écrit « quel » quand le mot qui suit est masculin.</p><table class="ana"><tr><td>On dit</td><td class=""><b>Quel</b> est votre nom ?</td></tr><tr><td>Aussi</td><td class=""><b>Quel</b> est votre prénom ?</td></tr><tr><td>Aussi</td><td class=""><b>Quel</b> est votre courriel ?</td></tr><tr><td>On ne dit pas</td><td class="cle">« Quelle est votre nom ? »</td></tr></table><p class="dit"><span class="k">On dit</span> Quel est votre nom ? Quel est votre prénom ?</p><div class="note">Le masculin : nom, prénom, courriel, numéro, téléphone, cours, local.</div></section><section class="bloc card ml"><h3>Devant un mot féminin : quelle</h3><p class="mp">On écrit « quelle » quand le mot qui suit est féminin.</p><table class="ana"><tr><td>On dit</td><td class=""><b>Quelle</b> est votre adresse ?</td></tr><tr><td>Aussi</td><td class=""><b>Quelle</b> est votre date de naissance ?</td></tr><tr><td>Aussi</td><td class=""><b>Quelle</b> est votre scolarité ?</td></tr><tr><td>Attention</td><td class="">à l'oreille, quel et quelle se disent pareil</td></tr></table><p class="dit"><span class="k">On dit</span> Quelle est votre adresse ? Quelle est votre date de naissance ?</p><div class="note">Le féminin : adresse, date, ville, rue, heure, scolarité, signature. Faire apprendre les deux listes comme des blocs.</div></section><section class="bloc card ml"><h3>La version courte, celle qu'on entend vraiment</h3><p class="mp">Au comptoir, la question tombe souvent sans « quel ».</p><table class="ana"><tr><td>On dit</td><td class=""><b>Votre nom</b>, s'il vous plaît.</td></tr><tr><td>Aussi</td><td class=""><b>Votre adresse</b> ?</td></tr><tr><td>Aussi</td><td class=""><b>Vous habitez où</b> ?</td></tr><tr><td>Réponse possible</td><td class="">Trois ou quatre mots suffisent</td></tr></table><p class="dit"><span class="k">On dit</span> Votre nom, s'il vous plaît. Votre adresse ?</p><div class="note">C'est la forme la plus fréquente. La reconnaître évite de rester muet devant une question qu'on croyait connaître.</div></section><section class="bloc card ml"><h3>Pose la question</h3><p class="mp">Choisis un renseignement et une façon de demander.</p><table class="labo"><thead><tr><th>Quel renseignement ? · Comment ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">le nom + la question complète</td><td>Quel est votre nom ?</td><td>nom est masculin : quel</td></tr><tr><td class="cle">le nom + la version courte</td><td>Votre nom, s'il vous plaît.</td><td>la forme du comptoir</td></tr><tr><td class="cle">le nom + la réponse</td><td>Haddad. H, A, deux D, A, D.</td><td>on répond, puis on épelle</td></tr><tr><td class="cle">l'adresse + la question complète</td><td>Quelle est votre adresse ?</td><td>adresse est féminin : quelle</td></tr><tr><td class="cle">l'adresse + la version courte</td><td>Votre adresse ?</td><td>deux mots suffisent</td></tr><tr><td class="cle">l'adresse + la réponse</td><td>3420, rue Papineau, à Montréal.</td><td>le numéro, la rue, la ville</td></tr><tr><td class="cle">la date de naissance + la question complète</td><td>Quelle est votre date de naissance ?</td><td>date est féminin : quelle</td></tr><tr><td class="cle">la date de naissance + la version courte</td><td>Vous êtes né quand ?</td><td>très courant à l’oral</td></tr><tr><td class="cle">la date de naissance + la réponse</td><td>Le 7 mars 1994.</td><td>le jour, le mois, l’année</td></tr><tr><td class="cle">le téléphone + la question complète</td><td>Quel est votre numéro de téléphone ?</td><td>numéro est masculin : quel</td></tr><tr><td class="cle">le téléphone + la version courte</td><td>Votre téléphone ?</td><td>la forme la plus courte</td></tr><tr><td class="cle">le téléphone + la réponse</td><td>5 1 4. 5 5 5. 0 1 8 2.</td><td>dix chiffres, dits par petits groupes</td></tr></tbody></table><div class="note">Douze extraits. Faire jouer la paire question-réponse debout, deux par deux.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Les six questions de l'inscription.</p><table class="ex2"><tr><td>Quel est votre nom de famille ?</td><td>la première case</td></tr><tr><td>Quel est votre prénom ?</td><td>la deuxième</td></tr><tr><td>Quelle est votre date de naissance ?</td><td>année, mois, jour</td></tr><tr><td>Quelle est votre adresse ?</td><td>numéro, rue, ville</td></tr><tr><td>Quel est votre numéro de téléphone ?</td><td>dix chiffres</td></tr><tr><td>Quelle est votre scolarité ?</td><td>le nombre d'années d'école</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges à connaître</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">chercher la différence à l'oreille</p><div class="k">Ce qui arrive</div><p class="ph">il n'y en a pas</p><p class="px">« Quel » et « quelle » se disent exactement pareil. La différence ne se voit qu'à l'écrit. Inutile de tendre l'oreille : il faut connaître le mot qui suit.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">répondre par une phrase entière</p><div class="k">Ce qui arrive</div><p class="ph">trois mots suffisent</p><p class="px">« Quel est votre prénom ? » — « Yara. » C'est une réponse complète et polie. Une phrase entière n'est pas plus juste, elle est seulement plus longue.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">ne rien dire quand on n'a pas compris</p><div class="k">Ce qui arrive</div><p class="ph">dis-le</p><p class="px">« Pouvez-vous répéter, s'il vous plaît ? » fait partie du français, pas de l'échec. La personne au comptoir répète tous les jours.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">« ___ est votre adresse ? »</span><ul class="opts"><li>Quelle</li><li>Quel</li></ul></li><li><span class="q">« ___ est votre prénom ? »</span><ul class="opts"><li>Quel</li><li>Quelle</li></ul></li><li><span class="q">Quel et quelle se prononcent…</span><ul class="opts"><li>de la même façon</li><li>de deux façons</li></ul></li><li><span class="q">Une bonne réponse au comptoir fait…</span><ul class="opts"><li>trois ou quatre mots</li><li>une phrase complète</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> Quelle — Adresse est un mot féminin : quelle. · <b>2.</b> Quel — Prénom est un mot masculin : quel. · <b>3.</b> de la même façon — Les deux se disent « kèl ». Seule l'écriture change. · <b>4.</b> trois ou quatre mots — Court et clair. C'est ce que fait Yara : « Haddad. »</div></section></section></div>
+<footer><span>A3 · Je m'inscris au cours de français</span><span>Fiche élève</span></footer>
+</body>
+</html>

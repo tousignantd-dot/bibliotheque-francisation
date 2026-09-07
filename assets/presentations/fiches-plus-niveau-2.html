@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fiches élèves du niveau 2 — la série « (+) »</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Nunito:wght@400;600;700;800&display=swap">
+<style>
+:root{
+  --ground:#F7F7F5; --card:#FFFFFF; --sunken:#FBFBFA;
+  --ink:#17181A; --body:#3A3D40; --muted:#6E7175;
+  --line:#E4E4E0; --line-fort:#D2D2CD;
+  --acier:#1D6B8F; --acier-bg:#E7F0F6;
+  --fait:#0A8F5B; --fait-bg:#E6F5EE;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#151618; --card:#1D1F22; --sunken:#212326;
+  --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+  --line:#2E3135; --line-fort:#3D4146;
+  --acier:#6DAFD2; --acier-bg:#14242C;
+  --fait:#4BC48D; --fait-bg:#12291F;
+}}
+:root[data-theme="dark"]{
+  --ground:#151618; --card:#1D1F22; --sunken:#212326;
+  --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+  --line:#2E3135; --line-fort:#3D4146;
+  --acier:#6DAFD2; --acier-bg:#14242C;
+  --fait:#4BC48D; --fait-bg:#12291F;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--body);
+  font-family:Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.doc{max-width:1280px;margin:0 auto;padding:26px 22px 60px}
+.retour{display:inline-flex;gap:8px;font-size:13px;font-weight:700;color:var(--muted);
+  text-decoration:none;margin-bottom:22px}
+.retour:hover{color:var(--acier)}
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--acier);margin:0 0 10px}
+h1{font-family:Newsreader,Georgia,serif;font-size:clamp(30px,4.6vw,44px);line-height:1.06;
+  font-weight:500;letter-spacing:-.02em;color:var(--ink);margin:0 0 14px;text-wrap:balance}
+.chapeau{font-size:17px;margin:0 0 8px;max-width:70ch}
+.chapeau strong{color:var(--ink);font-weight:700}
+.note{font-size:14px;color:var(--muted);margin:0 0 24px;max-width:74ch}
+.note code{font-family:var(--mono);font-size:.88em;background:var(--sunken);
+  border:1px solid var(--line);border-radius:4px;padding:1px 5px}
+
+.plan{display:grid;grid-template-columns:270px 1fr;gap:18px;align-items:start}
+@media (max-width:880px){.plan{grid-template-columns:1fr}}
+
+.rail{background:var(--card);border:1px solid var(--line);border-radius:4px;
+  overflow:hidden;position:sticky;top:14px}
+@media (max-width:880px){.rail{position:static}}
+.rail h2{font-size:11.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--muted);margin:0;padding:12px 15px 8px;background:var(--sunken);
+  border-bottom:1px solid var(--line)}
+select.mod{width:100%;border:0;border-bottom:1px solid var(--line);background:var(--card);
+  color:var(--ink);font:inherit;font-weight:700;padding:11px 14px;cursor:pointer}
+select.mod:focus{outline:2px solid var(--acier);outline-offset:-2px}
+ul.seances{list-style:none;margin:0;padding:0;max-height:62vh;overflow-y:auto}
+ul.seances li{border-bottom:1px solid var(--line)}
+ul.seances li:last-child{border-bottom:0}
+ul.seances button{display:flex;gap:9px;align-items:baseline;width:100%;text-align:left;
+  border:0;background:transparent;font:inherit;color:var(--body);padding:9px 14px;
+  cursor:pointer;border-left:3px solid transparent}
+ul.seances button:hover{background:var(--sunken)}
+ul.seances button[aria-current="true"]{background:var(--acier-bg);color:var(--ink);
+  font-weight:700;border-left-color:var(--acier)}
+.code{font-family:var(--mono);font-size:11.5px;font-weight:700;color:var(--muted);
+  min-width:20px}
+ul.seances button[aria-current="true"] .code{color:var(--acier)}
+.tt{flex:1;font-size:14px;line-height:1.35}
+.pastille{width:7px;height:7px;border-radius:50%;background:var(--fait);flex:none;
+  align-self:center}
+.pastille.non{background:transparent;border:1px solid var(--line-fort)}
+
+.vue{background:var(--card);border:1px solid var(--line);border-radius:4px;overflow:hidden}
+.onglets{display:flex;gap:2px;padding:10px 12px 0;background:var(--sunken);
+  border-bottom:1px solid var(--line);flex-wrap:wrap;align-items:flex-end}
+.onglets button{border:1px solid var(--line);border-bottom:0;background:var(--sunken);
+  color:var(--muted);font:inherit;font-weight:700;font-size:14px;padding:9px 16px;
+  border-radius:4px 4px 0 0;cursor:pointer;position:relative;top:1px}
+.onglets button[aria-selected="true"]{background:var(--card);color:var(--ink);
+  border-color:var(--line)}
+.onglets .droite{margin-left:auto;padding:0 2px 9px;font-size:13px}
+.onglets .droite a{color:var(--acier);font-weight:700;text-decoration:none}
+.onglets .droite a:hover{text-decoration:underline}
+.barre{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;
+  padding:10px 15px;border-bottom:1px solid var(--line);font-size:13.5px;color:var(--muted)}
+.barre b{color:var(--ink);font-size:15px;font-weight:700}
+.badge{font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;
+  padding:3px 9px;border-radius:2px;background:var(--fait-bg);color:var(--fait)}
+.badge.non{background:var(--sunken);color:var(--muted);border:1px solid var(--line)}
+iframe{display:block;width:100%;height:78vh;border:0;background:#fff}
+.niveaux{margin:14px 0 0;font-size:14px;color:var(--muted)}
+.niveaux a{color:var(--acier);font-weight:700;text-decoration:none}
+.niveaux a:hover{text-decoration:underline}
+.pied{margin-top:30px;padding-top:18px;border-top:1px solid var(--line);
+  font-size:13px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="doc">
+<a class="retour" href="/presentations.html"><span aria-hidden="true">&#8592;</span> Le classeur</a>
+<p class="eyebrow">Bibliothèque de francisation · niveau 2</p>
+<h1>La théorie descend-elle dans la fiche&nbsp;?</h1>
+<p class="chapeau">Les <strong>80 fiches du niveau 2</strong>, en deux
+versions&nbsp;: celle d'aujourd'hui, et la <strong>fiche (+)</strong>, où la mini-leçon — le
+« En apprendre plus » qui ne vit qu'à l'écran — est imprimée <strong>dans la fiche de sa
+séance</strong>. Changez d'onglet&nbsp;: la séance ne bouge pas, seule la version change.</p>
+<p class="niveaux">Les autres niveaux&nbsp;: <a href="fiches-plus-niveau-1.html">niveau 1</a> · <b>niveau 2</b> · <a href="fiches-plus-niveau-3.html">niveau 3</a> · <a href="fiches-plus-niveau-4.html">niveau 4</a> · <a href="fiches-plus-niveau-5.html">niveau 5</a> · <a href="fiches-plus-niveau-6.html">niveau 6</a> · <a href="fiches-plus-niveau-7.html">niveau 7</a> · <a href="fiches-plus-niveau-8.html">niveau 8</a></p>
+<p class="note">58 fiches sur 80 portent une mini-leçon&nbsp;; les
+22 autres sont identiques dans les deux onglets — ce sont les séances de production
+et d'application, qui n'en ont pas. Le point vert dans la liste dit lesquelles changent. Le rattachement d'une
+mini-leçon à une séance est lu dans le deck de la séance, pas deviné.
+<strong>La série d'origine n'a pas été touchée</strong>&nbsp;: l'essai vit dans
+<code>assets/documents/plus/</code>.</p>
+
+<div class="plan">
+  <nav class="rail">
+    <h2>10 modules</h2>
+    <select class="mod" id="mod"></select>
+    <ul class="seances" id="seances"></ul>
+  </nav>
+  <main class="vue">
+    <div class="onglets" role="tablist">
+      <button role="tab" id="ong-avant" aria-selected="true">Fiche élève</button>
+      <button role="tab" id="ong-apres" aria-selected="false">Fiche élève (+)</button>
+      <span class="droite"><a id="ouvrir" href="#" target="_blank" rel="noopener">Ouvrir seule&nbsp;↗</a></span>
+    </div>
+    <div class="barre"><b id="tt">—</b><span id="etat"></span></div>
+    <iframe id="vue" title="La fiche"></iframe>
+  </main>
+</div>
+
+<div class="pied">
+  <p>Produit par <code>python3 build/fiches_plus.py</code>. Le rendu papier des mini-leçons
+  est celui du manuel de l'élève, réemployé tel quel — une seule mise en page pour une
+  seule chose.</p>
+</div>
+</div>
+
+<script>
+var DONNEES = [{"slug": "module-n2-autobus", "titre": "Prendre l'autobus", "seances": [{"code": "A1", "titre": "A1 · Excusez-moi, je cherche…", "f": "module-n2-autobus-a1-excusez-moi-je-cherche.html", "plus": true}, {"code": "A2", "titre": "A2 · Entendre l'heure", "f": "module-n2-autobus-a2-entendre-l-heure.html", "plus": true}, {"code": "A3", "titre": "A3 · Les mots de la rue", "f": "module-n2-autobus-a3-les-mots-de-la-rue.html", "plus": true}, {"code": "B1", "titre": "B1 · Tout droit, à droite, à gauche", "f": "module-n2-autobus-b1-tout-droit-a-droite-a-gauche.html", "plus": true}, {"code": "B2", "titre": "B2 · Répéter pour être sûr", "f": "module-n2-autobus-b2-repeter-pour-etre-sur.html", "plus": true}, {"code": "C1", "titre": "C1 · À l'arrêt d'autobus", "f": "module-n2-autobus-c1-a-l-arret-d-autobus.html", "plus": true}, {"code": "C2", "titre": "C2 · Lire un horaire, lire un avis", "f": "module-n2-autobus-c2-lire-un-horaire-lire-un-avis.html", "plus": true}, {"code": "E1", "titre": "E1 · Je me lance", "f": "module-n2-autobus-e1-je-me-lance.html", "plus": false}]}, {"slug": "module-n2-panier", "titre": "Remplir mon panier", "seances": [{"code": "A1", "titre": "A1 · La circulaire du mardi", "f": "module-n2-panier-a1-la-circulaire-du-mardi.html", "plus": false}, {"code": "A2", "titre": "A2 · Le son [s] et le son [z]", "f": "module-n2-panier-a2-le-son-s-et-le-son-z.html", "plus": true}, {"code": "A3", "titre": "A3 · Où est ce produit ?", "f": "module-n2-panier-a3-ou-est-ce-produit.html", "plus": false}, {"code": "B1", "titre": "B1 · Lire un prix, et le dire", "f": "module-n2-panier-b1-lire-un-prix-et-le-dire.html", "plus": true}, {"code": "B2", "titre": "B2 · Ma liste : un, une, des", "f": "module-n2-panier-b2-ma-liste-un-une-des.html", "plus": true}, {"code": "C1", "titre": "C1 · La question courte", "f": "module-n2-panier-c1-la-question-courte.html", "plus": true}, {"code": "C2", "titre": "C2 · L'étiquette et l'affichette", "f": "module-n2-panier-c2-l-etiquette-et-l-affichette.html", "plus": true}, {"code": "E1", "titre": "E1 · Je me lance", "f": "module-n2-panier-e1-je-me-lance.html", "plus": false}]}, {"slug": "module-n2-bonjour", "titre": "Bonjour, ça va ?", "seances": [{"code": "A1", "titre": "A1 · Bonjour, madame Roy", "f": "module-n2-bonjour-a1-bonjour-madame-roy.html", "plus": false}, {"code": "A2", "titre": "A2 · La voix monte, la voix descend", "f": "module-n2-bonjour-a2-la-voix-monte-la-voix-descend.html", "plus": true}, {"code": "A3", "titre": "A3 · Bonjour, bonsoir, bonne journée", "f": "module-n2-bonjour-a3-bonjour-bonsoir-bonne-journee.html", "plus": true}, {"code": "B1", "titre": "B1 · Tu ou vous ?", "f": "module-n2-bonjour-b1-tu-ou-vous.html", "plus": true}, {"code": "B2", "titre": "B2 · Ma journée, au présent", "f": "module-n2-bonjour-b2-ma-journee-au-present.html", "plus": true}, {"code": "C1", "titre": "C1 · Pouvez-vous m'aider ?", "f": "module-n2-bonjour-c1-pouvez-vous-m-aider.html", "plus": true}, {"code": "C2", "titre": "C2 · Merci et bonne fête", "f": "module-n2-bonjour-c2-merci-et-bonne-fete.html", "plus": true}, {"code": "E1", "titre": "E1 · Je me lance", "f": "module-n2-bonjour-e1-je-me-lance.html", "plus": false}]}, {"slug": "module-n2-classe", "titre": "Ouvrez votre cahier", "seances": [{"code": "A1", "titre": "A1 · Ouvrez votre cahier", "f": "module-n2-classe-a1-ouvrez-votre-cahier.html", "plus": false}, {"code": "A2", "titre": "A2 · La fin des mots : le son « é »", "f": "module-n2-classe-a2-la-fin-des-mots-le-son-e.html", "plus": true}, {"code": "A3", "titre": "A3 · De quelle couleur ?", "f": "module-n2-classe-a3-de-quelle-couleur.html", "plus": true}, {"code": "B1", "titre": "B1 · La consigne, et « je n'ai pas compris »", "f": "module-n2-classe-b1-la-consigne-et-je-n-ai-pas-compris.html", "plus": true}, {"code": "B2", "titre": "B2 · Un crayon rouge, une feuille blanche", "f": "module-n2-classe-b2-un-crayon-rouge-une-feuille-blanche.html", "plus": true}, {"code": "C1", "titre": "C1 · Est-ce que je peux… ?", "f": "module-n2-classe-c1-est-ce-que-je-peux.html", "plus": true}, {"code": "C2", "titre": "C2 · L'avis, le retard, l'absence", "f": "module-n2-classe-c2-l-avis-le-retard-l-absence.html", "plus": true}, {"code": "E1", "titre": "E1 · Je me lance", "f": "module-n2-classe-e1-je-me-lance.html", "plus": false}]}, {"slug": "module-n2-couloirs", "titre": "Où est le local 214 ?", "seances": [{"code": "A1", "titre": "A1 · Où est le local 214 ?", "f": "module-n2-couloirs-a1-ou-est-le-local-214.html", "plus": false}, {"code": "A2", "titre": "A2 · Quatorze ou quarante ?", "f": "module-n2-couloirs-a2-quatorze-ou-quarante.html", "plus": true}, {"code": "A3", "titre": "A3 · Où est… ? Où sont… ?", "f": "module-n2-couloirs-a3-ou-est-ou-sont.html", "plus": true}, {"code": "B1", "titre": "B1 · Le plan du centre", "f": "module-n2-couloirs-b1-le-plan-du-centre.html", "plus": false}, {"code": "B2", "titre": "B2 · Le premier chiffre dit l'étage", "f": "module-n2-couloirs-b2-le-premier-chiffre-dit-l-etage.html", "plus": true}, {"code": "C1", "titre": "C1 · À gauche ou à droite ?", "f": "module-n2-couloirs-c1-a-gauche-ou-a-droite.html", "plus": true}, {"code": "C2", "titre": "C2 · Indiquer le chemin", "f": "module-n2-couloirs-c2-indiquer-le-chemin.html", "plus": true}, {"code": "E1", "titre": "E1 · Je me lance", "f": "module-n2-couloirs-e1-je-me-lance.html", "plus": false}]}, {"slug": "module-n2-inscription", "titre": "Je m'inscris au cours de français", "seances": [{"code": "A1", "titre": "A1 · Je voudrais m'inscrire", "f": "module-n2-inscription-a1-je-voudrais-m-inscrire.html", "plus": false}, {"code": "A2", "titre": "A2 · Comment ça s'écrit ?", "f": "module-n2-inscription-a2-comment-ca-s-ecrit.html", "plus": true}, {"code": "A3", "titre": "A3 · Quel est votre nom ?", "f": "module-n2-inscription-a3-quel-est-votre-nom.html", "plus": true}, {"code": "B1", "titre": "B1 · L'annonce sur le babillard", "f": "module-n2-inscription-b1-l-annonce-sur-le-babillard.html", "plus": true}, {"code": "B2", "titre": "B2 · Le 7 septembre, pas le 9 juillet", "f": "module-n2-inscription-b2-le-7-septembre-pas-le-9-juillet.html", "plus": true}, {"code": "C1", "titre": "C1 · Case par case", "f": "module-n2-inscription-c1-case-par-case.html", "plus": true}, {"code": "C2", "titre": "C2 · Mon nom, votre nom", "f": "module-n2-inscription-c2-mon-nom-votre-nom.html", "plus": true}, {"code": "E1", "titre": "E1 · Je me lance", "f": "module-n2-inscription-e1-je-me-lance.html", "plus": false}]}, {"slug": "module-n2-neige", "titre": "Il fait froid, je m'habille", "seances": [{"code": "A1", "titre": "A1 · Il neige !", "f": "module-n2-neige-a1-il-neige.html", "plus": false}, {"code": "A2", "titre": "A2 · An ou on ?", "f": "module-n2-neige-a2-an-ou-on.html", "plus": true}, {"code": "A3", "titre": "A3 · Il neige, il pleut, il fait froid", "f": "module-n2-neige-a3-il-neige-il-pleut-il-fait-froid.html", "plus": true}, {"code": "B1", "titre": "B1 · Le bulletin de sept heures", "f": "module-n2-neige-b1-le-bulletin-de-sept-heures.html", "plus": false}, {"code": "B2", "titre": "B2 · Moins huit, plus quatre", "f": "module-n2-neige-b2-moins-huit-plus-quatre.html", "plus": true}, {"code": "C1", "titre": "C1 · Qu'est-ce que je mets ?", "f": "module-n2-neige-c1-qu-est-ce-que-je-mets.html", "plus": true}, {"code": "C2", "titre": "C2 · Quel temps fait-il ?", "f": "module-n2-neige-c2-quel-temps-fait-il.html", "plus": true}, {"code": "E1", "titre": "E1 · Je me lance", "f": "module-n2-neige-e1-je-me-lance.html", "plus": false}]}, {"slug": "module-n2-guichet", "titre": "Je retire de l'argent", "seances": [{"code": "A1", "titre": "A1 · C'est ma première fois", "f": "module-n2-guichet-a1-c-est-ma-premiere-fois.html", "plus": false}, {"code": "A2", "titre": "A2 · Treize ou trente ?", "f": "module-n2-guichet-a2-treize-ou-trente.html", "plus": true}, {"code": "A3", "titre": "A3 · Quarante dollars et cinquante cents", "f": "module-n2-guichet-a3-quarante-dollars-et-cinquante-cents.html", "plus": true}, {"code": "B1", "titre": "B1 · L'écran parle, on répond", "f": "module-n2-guichet-b1-l-ecran-parle-on-repond.html", "plus": true}, {"code": "B2", "titre": "B2 · Je peux, je dois, et ce que ça coûte", "f": "module-n2-guichet-b2-je-peux-je-dois-et-ce-que-ca-coute.html", "plus": true}, {"code": "C1", "titre": "C1 · Les cinq parties du chèque", "f": "module-n2-guichet-c1-les-cinq-parties-du-cheque.html", "plus": true}, {"code": "C2", "titre": "C2 · Quarante-cinq dollars, en lettres", "f": "module-n2-guichet-c2-quarante-cinq-dollars-en-lettres.html", "plus": true}, {"code": "E1", "titre": "E1 · Je me lance", "f": "module-n2-guichet-e1-je-me-lance.html", "plus": false}]}, {"slug": "module-n2-colis", "titre": "J'envoie une lettre et un colis", "seances": [{"code": "A1", "titre": "A1 · Un timbre, s'il vous plaît", "f": "module-n2-colis-a1-un-timbre-s-il-vous-plait.html", "plus": false}, {"code": "A2", "titre": "A2 · Le son de « timbre », le son de « enveloppe »", "f": "module-n2-colis-a2-le-son-de-timbre-le-son-de-enveloppe.html", "plus": true}, {"code": "A3", "titre": "A3 · Combien ça coûte ?", "f": "module-n2-colis-a3-combien-ca-coute.html", "plus": true}, {"code": "B1", "titre": "B1 · Les cinq lignes de l'adresse", "f": "module-n2-colis-b1-les-cinq-lignes-de-l-adresse.html", "plus": true}, {"code": "B2", "titre": "B2 · Le code postal, et qui écrit à qui", "f": "module-n2-colis-b2-le-code-postal-et-qui-ecrit-a-qui.html", "plus": true}, {"code": "C1", "titre": "C1 · Le formulaire du colis", "f": "module-n2-colis-c1-le-formulaire-du-colis.html", "plus": true}, {"code": "C2", "titre": "C2 · Écrivez, signez, gardez", "f": "module-n2-colis-c2-ecrivez-signez-gardez.html", "plus": true}, {"code": "E1", "titre": "E1 · Je me lance", "f": "module-n2-colis-e1-je-me-lance.html", "plus": false}]}, {"slug": "module-n2-secretaire", "titre": "Je vais au secrétariat", "seances": [{"code": "A1", "titre": "A1 · Qui travaille ici ?", "f": "module-n2-secretaire-a1-qui-travaille-ici.html", "plus": false}, {"code": "A2", "titre": "A2 · Ou ou u ?", "f": "module-n2-secretaire-a2-ou-ou-u.html", "plus": true}, {"code": "A3", "titre": "A3 · Au, dans, à côté de", "f": "module-n2-secretaire-a3-au-dans-a-cote-de.html", "plus": true}, {"code": "B1", "titre": "B1 · Au comptoir du secrétariat", "f": "module-n2-secretaire-b1-au-comptoir-du-secretariat.html", "plus": true}, {"code": "B2", "titre": "B2 · Les étages et l'horaire", "f": "module-n2-secretaire-b2-les-etages-et-l-horaire.html", "plus": true}, {"code": "C1", "titre": "C1 · Demain, je ne viens pas", "f": "module-n2-secretaire-c1-demain-je-ne-viens-pas.html", "plus": true}, {"code": "C2", "titre": "C2 · Lire l'avis sur la porte", "f": "module-n2-secretaire-c2-lire-l-avis-sur-la-porte.html", "plus": true}, {"code": "E1", "titre": "E1 · Je me lance", "f": "module-n2-secretaire-e1-je-me-lance.html", "plus": false}]}];
+var mod = 0, sea = 0, apres = false;
+/* On ouvre sur la première séance qui porte une mini-leçon : atterrir sur une
+   séance où les deux onglets sont identiques ferait croire que la page ne
+   marche pas. */
+function premiereAvecPlus(m) {
+  for (var i = 0; i < m.seances.length; i++) if (m.seances[i].plus) return i;
+  return 0;
+}
+var $ = function (id) { return document.getElementById(id); };
+
+function chemin() {
+  var s = DONNEES[mod].seances[sea];
+  return '../documents/' + (apres ? 'plus/' : '') + s.f;
+}
+
+function rendre() {
+  var m = DONNEES[mod], s = m.seances[sea];
+  $('vue').src = chemin();
+  $('ouvrir').href = chemin();
+  $('tt').textContent = s.titre;
+  /* Dire quand les deux onglets montrent la même chose. Sans ce mot, une
+     séance sans mini-leçon passerait pour un onglet cassé. */
+  $('etat').innerHTML = s.plus
+    ? '<span class="badge">porte une mini-leçon</span>'
+    : '<span class="badge non">aucune mini-leçon — les deux onglets sont identiques</span>';
+  $('ong-avant').setAttribute('aria-selected', String(!apres));
+  $('ong-apres').setAttribute('aria-selected', String(apres));
+  Array.prototype.forEach.call($('seances').children, function (li, i) {
+    li.firstChild.setAttribute('aria-current', String(i === sea));
+  });
+}
+
+function rendreSeances() {
+  $('seances').innerHTML = DONNEES[mod].seances.map(function (s, i) {
+    return '<li><button type="button" data-i="' + i + '">'
+      + '<span class="code">' + s.code + '</span>'
+      + '<span class="tt">' + s.titre.replace(/^[A-E]\d+\s*·\s*/, '') + '</span>'
+      + '<span class="pastille' + (s.plus ? '' : ' non') + '" title="'
+      + (s.plus ? 'porte une mini-leçon' : 'aucune mini-leçon') + '"></span>'
+      + '</button></li>';
+  }).join('');
+}
+
+$('mod').innerHTML = DONNEES.map(function (m, i) {
+  return '<option value="' + i + '">' + m.titre + '</option>';
+}).join('');
+$('mod').addEventListener('change', function () {
+  mod = Number(this.value); sea = premiereAvecPlus(DONNEES[mod]);
+  rendreSeances(); rendre();
+});
+$('seances').addEventListener('click', function (e) {
+  var b = e.target.closest('button[data-i]');
+  /* On garde l'onglet en changeant de séance : c'est tout l'intérêt de la
+     page — comparer la même chose, pas retrouver son onglet à chaque clic. */
+  if (b) { sea = Number(b.dataset.i); rendre(); }
+});
+$('ong-avant').addEventListener('click', function () { apres = false; rendre(); });
+$('ong-apres').addEventListener('click', function () { apres = true; rendre(); });
+sea = premiereAvecPlus(DONNEES[0]);
+rendreSeances(); rendre();
+</script>
+</body>
+</html>

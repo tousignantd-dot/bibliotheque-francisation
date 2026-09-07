@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B3 · Trois hauteurs pour une même question — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance B3 · Module 2 · 75 minutes</div>
+    <h1>Trois hauteurs pour une même question</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">« L'équipe existe déjà ? » « Est-ce que l'équipe existe déjà ? » « L'équipe existe-t-elle déjà ? » Les trois sont correctes. Ce qui les sépare est la distance.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>poser une question aux trois hauteurs de langue ;</li><li>laisser le nom sujet devant et le reprendre par un pronom ;</li><li>placer le « t » de liaison entre deux traits d'union ;</li><li>choisir la forme selon l'interlocuteur, pas selon la difficulté.</li></ol></section><section class="bloc regle"><div class="lbl">Le nom sujet reste devant</div><p class="r">Quand le sujet est un nom, on ne le déplace pas : on le laisse en tête et on le reprend derrière le verbe par un pronom de la troisième personne.</p><p class="pr">Le poste comporte-t-il une part de recrutement ? L'échelle est-elle communiquée ? On ne dit jamais « comporte le poste ». Le pronom s'accorde avec le nom : le poste donne il, l'échelle donne elle, les documents donnent ils.</p></section><section class="bloc"><div class="lbl">Analyse</div><h2 class="t">Trois choses à ne pas rater</h2><div class="grid"><div class="card"><h3>Le « t » de liaison</h3><p>Si le verbe finit par une voyelle, on insère un -t- entre deux traits d'union : existe-t-elle, décidera-t-il, a-t-elle. Deux traits d'union, jamais un seul, et aucune apostrophe.</p></div><div class="card"><h3>Aux temps composés</h3><p>L'inversion porte sur l'auxiliaire, jamais sur le participe. L'usine a-t-elle été rachetée ? Les postes ont-ils été affichés ? Le participe reste après le pronom, à sa place.</p></div><div class="card"><h3>Avec un mot interrogatif</h3><p>Il passe devant tout, et l'inversion suit. Combien de personnes l'équipe compte-t-elle ? Pourquoi ce poste a-t-il été créé ?</p></div></div></section><section class="bloc card"><div class="lbl">Pratique 1 de 2</div><h2 class="t">Passez à l'inversion</h2><p class="consigne">Réécrivez la question sans « est-ce que ».</p><ol class="ex"><li><span class="q">Est-ce que l'équipe existe déjà ?</span><span class="ligne"></span></li><li><span class="q">Est-ce que le poste comporte du recrutement ?</span><span class="ligne"></span></li><li><span class="q">Est-ce que l'échelle est communiquée ?</span><span class="ligne"></span></li><li><span class="q">Est-ce que l'usine a été rachetée en janvier ?</span><span class="ligne"></span></li><li><span class="q">Est-ce que le comité décidera cette semaine ?</span><span class="ligne"></span></li><li><span class="q">Pourquoi est-ce que ce poste a été créé ?</span><span class="ligne"></span></li></ol></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Piège</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">« Est-ce que le poste comporte-t-il... »</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">choisir une seule des deux formes</p></div></div><div class="note">Cumuler « est-ce que » et l'inversion double la question. C'est la faute qui trahit le plus sûrement quelqu'un qui vise la forme soutenue sans la maîtriser — et elle se produit précisément quand on veut bien faire. Une forme, pas deux.</div></section><section class="bloc card"><div class="lbl">Application</div><h2 class="t">Huit questions prêtes pour un appel</h2><table><thead><tr><th>La question</th><th>Ce qu'elle vous apprend</th></tr></thead><tbody><tr><td class="cle">L'équipe existe-t-elle, ou faut-il la constituer ?</td><td>poste neuf ou remplacement</td></tr><tr><td class="cle">Pourquoi ce poste a-t-il été créé ?</td><td>celle qui rapporte le plus</td></tr><tr><td class="cle">À qui la personne rendra-t-elle compte ?</td><td>le supérieur immédiat</td></tr><tr><td class="cle">Le processus comporte-t-il d'autres étapes ?</td><td>de quoi se préparer</td></tr><tr><td class="cle">Quand la décision sera-t-elle prise ?</td><td>quand relancer, sans harceler</td></tr></tbody></table></section><section class="bloc card"><div class="lbl">Pratique 2 de 2</div><h2 class="t">Vos questions, à la troisième hauteur</h2><p class="consigne">Reprenez vos trois questions de B2 et posez-les à l'inversion.</p><ol class="ex"><li><span class="q">Question 1</span><span class="ligne"></span></li><li><span class="q">Question 2</span><span class="ligne"></span></li><li><span class="q">Question 3</span><span class="ligne"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Trouvez une vraie offre d'emploi et écrivez trois questions à l'inversion.</p><ul><li>Une sur ce que l'annonce ne dit pas.</li><li>Une avec un mot interrogatif en tête.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Poser une question à trois hauteurs</h2><section class="bloc card ml"><h3>Trois formes, trois registres, aucune faute</h3><p class="mp">« L'équipe existe déjà ? » « Est-ce que l'équipe existe déjà ? » « L'équipe existe-t-elle déjà ? » Les trois questions sont correctes et disent la même chose. Ce qui les sépare est la <b>variété de langue</b> : familière, standard, soutenue. Le programme du niveau 8 demande précisément de reconnaître ces variétés et d'en tenir compte. Un candidat qui pose ses questions à la troisième hauteur, au téléphone, se place autrement qu'un candidat qui les pose à la première — sans avoir dit un mot de plus.</p><div class="note">Ce n'est pas une question de correction : c'est une question de distance. On choisit la distance qui convient à la personne.</div></section><section class="bloc card ml"><h3>Quand employer laquelle</h3><p class="mp">La forme familière convient sur le plancher, entre collègues, et le module vous le montre : chez Boréalis, on se tutoie à l'usine. La forme standard convient partout et ne vous trahira jamais. La forme soutenue convient au téléphone avec un employeur, à l'écrit, et en entrevue — et elle a un avantage précis : elle vous fait entendre comme quelqu'un qui écrit. Le défaut à éviter est de la choisir <i>parce qu'elle est difficile</i> et de l'employer ensuite avec un contremaître, où elle sonne raide.</p><div class="note">La règle pratique : soutenue à l'écrit et au téléphone avec la direction, standard partout ailleurs.</div></section><section class="bloc card ml"><h3>La règle centrale : le nom reste devant</h3><p class="mp">Quand le sujet est un nom, on ne le déplace pas. On le laisse en tête et on le <b>reprend</b> derrière le verbe par un pronom de la troisième personne.</p><table class="ana"><tr><td>On écrit</td><td class="">Le poste comporte-t-il une part de recrutement ?</td></tr><tr><td>On n'écrit pas</td><td class="cle">« Comporte le poste… ? »</td></tr><tr><td>Le repère</td><td class="">nom + verbe + trait d'union + pronom</td></tr></table><p class="dit"><span class="k">On dit</span> Le poste comporte-t-il une part de recrutement ?</p><div class="note">Le pronom s'accorde avec le nom : le poste → il · l'échelle → elle · les documents → ils · les conditions → elles.</div></section><section class="bloc card ml"><h3>Le « t » de liaison, et ses deux traits d'union</h3><p class="mp">Si le verbe finit par une voyelle et que le pronom commence par une voyelle, on insère un <b>-t-</b> pour éviter le choc des deux sons.</p><table class="ana"><tr><td>Avec -t-</td><td class="">existe-t-elle · décidera-t-il · a-t-elle · participera-t-elle</td></tr><tr><td>Sans -t-</td><td class="cle">est-elle · sont-ils · comporte-t-il… non : comporte finit par « e »</td></tr><tr><td>La règle sûre</td><td class="">verbe en -e, -a ou -c terminal muet → on met le -t-</td></tr></table><p class="dit"><span class="k">On dit</span> L'équipe existe-t-elle ? Le comité décidera-t-il ?</p><div class="note">Deux traits d'union dans ce cas, jamais un seul : <b>existe-t-elle</b>, et non « existe t-elle » ni « existe-t elle ».</div></section><section class="bloc card ml"><h3>Aux temps composés, on inverse l'auxiliaire</h3><p class="mp">Le participe passé ne bouge pas : il reste après le pronom, à sa place normale.</p><table class="ana"><tr><td>On écrit</td><td class="">L'usine a-t-elle été rachetée en janvier ?</td></tr><tr><td>On n'écrit pas</td><td class="cle">« L'usine a été-t-elle rachetée ? »</td></tr><tr><td>Le repère</td><td class="">l'inversion porte sur avoir ou être</td></tr></table><p class="dit"><span class="k">On dit</span> L'usine a-t-elle été rachetée en janvier ?</p><div class="note">Même chose au passif et au futur antérieur : « les postes auront-ils été pourvus avant février ? ».</div></section><section class="bloc card ml"><h3>Avec un mot interrogatif, il passe devant tout</h3><p class="mp">Combien, quand, pourquoi, comment, où : ils se placent en tête, et l'inversion suit derrière.</p><table class="ana"><tr><td>On écrit</td><td class="">Combien de personnes l'équipe compte-t-elle ?</td></tr><tr><td>Aussi</td><td class="cle">Pourquoi ce poste a-t-il été créé ?</td></tr><tr><td>Le piège</td><td class="">ne pas ajouter « est-ce que » en plus</td></tr></table><p class="dit"><span class="k">On dit</span> Combien de personnes l'équipe compte-t-elle ? Pourquoi ce poste a-t-il été créé ?</p><div class="note">« Pourquoi est-ce que ce poste a-t-il été créé ? » mélange les deux formes. On choisit l'une ou l'autre.</div></section><section class="bloc card ml"><h3>La même question, trois hauteurs</h3><p class="mp">Choisissez une question et un registre.</p><table class="labo"><thead><tr><th>Quelle question ? · Quel registre ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">sur l'équipe + familier</td><td>L'équipe existe déjà ?</td><td>entre collègues, sur le plancher</td></tr><tr><td class="cle">sur l'équipe + standard</td><td>Est-ce que l'équipe existe déjà ?</td><td>partout, sans risque</td></tr><tr><td class="cle">sur l'équipe + soutenu</td><td>L'équipe existe-t-elle déjà ?</td><td>au téléphone avec la direction, à l'écrit</td></tr><tr><td class="cle">sur l'échelle + familier</td><td>L'échelle est communiquée ?</td><td>familier</td></tr><tr><td class="cle">sur l'échelle + standard</td><td>Est-ce que l'échelle est communiquée ?</td><td>standard</td></tr><tr><td class="cle">sur l'échelle + soutenu</td><td>L'échelle est-elle communiquée ?</td><td>soutenu, sans -t- : « est » finit par une consonne</td></tr><tr><td class="cle">sur la formation + familier</td><td>La formation est payée ?</td><td>familier</td></tr><tr><td class="cle">sur la formation + standard</td><td>Est-ce que la formation est payée ?</td><td>standard</td></tr><tr><td class="cle">sur la formation + soutenu</td><td>La formation est-elle payée ?</td><td>soutenu</td></tr></tbody></table><div class="note">Dites les trois à voix haute d'affilée : c'est la mélodie, autant que les mots, qui change de hauteur.</div></section><section class="bloc card ml"><h3>Huit questions prêtes pour un appel de présélection</h3><p class="mp">À gauche la forme soutenue, à droite ce qu'elle vous apprend.</p><table class="ex2"><tr><td>L'équipe existe-t-elle déjà, ou faut-il la constituer ?</td><td>poste neuf ou remplacement</td></tr><tr><td>Le poste comporte-t-il des responsabilités absentes de l'annonce ?</td><td>le travail réel</td></tr><tr><td>Pourquoi ce poste a-t-il été créé ?</td><td>la question qui rapporte le plus</td></tr><tr><td>Combien de personnes l'équipe compte-t-elle ?</td><td>l'ampleur de la charge</td></tr><tr><td>À qui la personne rendra-t-elle compte ?</td><td>le supérieur immédiat</td></tr><tr><td>Le processus comporte-t-il d'autres étapes ?</td><td>de quoi se préparer</td></tr><tr><td>L'échelle salariale est-elle communiquée avant l'entrevue ?</td><td>la marge de négociation</td></tr><tr><td>Quand la décision sera-t-elle prise ?</td><td>quand relancer, sans harceler</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges de l'inversion</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">déplacer le nom derrière le verbe</p><div class="k">Ce qui arrive</div><p class="ph">laisser le nom devant et le reprendre</p><p class="px">« Comporte le poste une part de recrutement ? » existe en poésie, pas dans un appel téléphonique. Le nom reste devant : « le poste comporte-t-il ».</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">oublier le « t » de liaison</p><div class="k">Ce qui arrive</div><p class="ph">l'ajouter entre deux traits d'union</p><p class="px">« Existe-elle ? » est impossible à prononcer, et « existe t'elle » n'existe pas. C'est <b>existe-t-elle</b>, avec deux traits d'union et aucune apostrophe.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">cumuler « est-ce que » et l'inversion</p><div class="k">Ce qui arrive</div><p class="ph">choisir une seule des deux formes</p><p class="px">« Est-ce que le poste comporte-t-il… » double la question. C'est la faute qui trahit le plus sûrement quelqu'un qui vise la forme soutenue sans la maîtriser.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">Quand le sujet est un nom, où le place-t-on ?</span><ul class="opts"><li>devant, avec reprise par un pronom</li><li>derrière le verbe</li></ul></li><li><span class="q">« L'équipe existe___elle ? »</span><ul class="opts"><li>-t-</li><li>-</li></ul></li><li><span class="q">Au passé composé, l'inversion porte sur…</span><ul class="opts"><li>le participe passé</li><li>l'auxiliaire</li></ul></li><li><span class="q">« Pourquoi est-ce que ce poste a-t-il été créé ? »</span><ul class="opts"><li>est correct</li><li>mélange deux formes</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> devant, avec reprise par un pronom — Le nom reste devant, et un pronom le reprend après le verbe. · <b>2.</b> -t- — « Existe » finit par une voyelle : il faut le -t- entre deux traits d'union. · <b>3.</b> l'auxiliaire — L'usine a-t-elle été rachetée : c'est « a » qui bouge. · <b>4.</b> mélange deux formes — On choisit « est-ce que » ou l'inversion, jamais les deux.</div></section></section></div>
+<footer><span>B3 · Passer au travers du processus</span><span>Fiche élève</span></footer>
+</body>
+</html>

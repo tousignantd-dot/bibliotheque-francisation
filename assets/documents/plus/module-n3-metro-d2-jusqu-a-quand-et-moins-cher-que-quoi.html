@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>D2 · Jusqu'à quand, et moins cher que quoi — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance D2 · Module 6 · 75 minutes</div>
+    <h1>Jusqu'à quand, et moins cher que quoi</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Chaque ligne de la grille dit un prix et une durée. Se tromper sur cinq petits mots, c'est acheter le mauvais titre.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>lire une durée : de… à…, du… au…, jusqu'à, à partir de, pendant ;</li><li>comparer deux prix avec « plus cher que » et « moins cher que » ;</li><li>lire une borne d'âge : 11 ans et moins, 65 ans et plus ;</li><li>savoir qui a droit aux places réservées.</li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Les cinq mots qui disent une durée</h2><table><thead><tr><th>Le mot</th><th>Ce qu'il dit</th></tr></thead><tbody><tr><td class="cle">de… à…</td><td>un début et une fin, avec des heures</td></tr><tr><td class="cle">du… au…</td><td>un début et une fin, avec des jours</td></tr><tr><td class="cle">jusqu'à</td><td>seulement la fin</td></tr><tr><td class="cle">à partir de</td><td>seulement le début</td></tr><tr><td class="cle">pendant</td><td>une longueur de temps qui se compte</td></tr></tbody></table><div class="note">Devant un jour, « de » devient « du » et « à » devient « au ».</div></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Les cinq titres et leur durée</h2><table><thead><tr><th>Le titre</th><th>Comment c'est écrit</th></tr></thead><tbody><tr><td>Soirée illimitée</td><td class="cle">valide de 18 h à 5 h</td></tr><tr><td>Hebdo</td><td class="cle">du lundi au dimanche</td></tr><tr><td>Week-end illimité</td><td class="cle">du vendredi 16 h au lundi 5 h</td></tr><tr><td>Mensuel</td><td class="cle">bon jusqu'à la fin du mois</td></tr><tr><td>Correspondance</td><td class="cle">pendant 120 minutes</td></tr></tbody></table><div class="note">Le titre 24 h commence à partir de la validation, pas de l'achat.</div></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Lecture</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">acheter un mensuel le 28 du mois</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">acheter un mensuel en début de mois</p></div></div><div class="note">Un mensuel finit le dernier jour du mois, pas trente jours après l'achat. Acheté le 28, il ne sert que trois ou quatre jours pour cent dix dollars. C'est le piège de lecture le plus coûteux de la grille.</div></section><section class="bloc card"><div class="lbl">Lecture</div><h2 class="t">Le petit mot qui manque</h2><p class="consigne">Complétez chaque ligne de la grille.</p><ol class="ex"><li><span class="q">Soirée illimitée : valide ___ 18 h à 5 h.</span><span class="ligne ligne--court"></span></li><li><span class="q">Hebdo : valide du lundi ___ dimanche.</span><span class="ligne ligne--court"></span></li><li><span class="q">Week-end illimité : ___ vendredi 16 h au lundi 5 h.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le mensuel est bon ___ la fin du mois.</span><span class="ligne ligne--court"></span></li><li><span class="q">La correspondance dure ___ cent vingt minutes.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le titre 24 h est bon ___ partir de la validation.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Comparer deux prix</h2><table><thead><tr><th>La forme</th><th>Exemple</th></tr></thead><tbody><tr><td class="cle">moins cher que</td><td>l'hebdo est moins cher que le dix passages</td></tr><tr><td class="cle">plus cher que</td><td>le mensuel est plus cher que l'hebdo</td></tr><tr><td class="cle">aussi cher que</td><td>le dix passages est presque aussi cher que l'hebdo</td></tr><tr><td class="cle">plus de / moins de</td><td>moins de douze ans · plus de cinq enfants</td></tr></tbody></table><div class="note">On compare avec « que ». Devant un nombre, c'est « de ».</div></section><section class="bloc card"><div class="lbl">Comparaison</div><h2 class="t">Plus cher, moins cher, plus de, moins de</h2><p class="consigne">Complétez chaque phrase.</p><ol class="ex"><li><span class="q">L'hebdo à 33,25 $ est ___ le dix passages à 35 $.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le mensuel à 110 $ est ___ l'hebdo à 33,25 $.</span><span class="ligne ligne--court"></span></li><li><span class="q">Les enfants de ___ douze ans voyagent gratuitement.</span><span class="ligne ligne--court"></span></li><li><span class="q">Une personne ne peut pas accompagner ___ cinq enfants.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le tarif réduit à 66 $ est ___ le tarif ordinaire à 110 $.</span><span class="ligne ligne--court"></span></li><li><span class="q">Aller à Laval coûte ___ rester à Montréal.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc"><div class="lbl">Deux choses différentes, souvent confondues</div><h2 class="t">Les places et le service</h2><div class="grid"><div class="card"><h3>Les places réservées</h3><p>Les premières rangées de l'autobus ordinaire, juste après le chauffeur, signalées par un petit dessin. Pour les personnes à mobilité réduite, les femmes enceintes et les personnes âgées. On peut s'y asseoir, mais on se lève dès qu'une de ces personnes monte, sans attendre qu'elle demande.</p></div><div class="card"><h3>Le transport adapté</h3><p>Un service à part, avec ses propres véhicules, pour les personnes qui ne peuvent pas prendre l'autobus ordinaire. Il faut s'inscrire une fois, avec un document médical, puis réserver chaque déplacement d'avance.</p></div></div></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez jusqu'à quand votre titre est bon, avec le bon petit mot.</p><ul><li>Mon titre est bon ___ la fin du mois.</li><li>L'hebdo va ___ lundi ___ dimanche.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>De, à, du, au, jusqu'à, pendant — lire une durée</h2><section class="bloc card ml"><h3>Une grille de tarifs est faite de durées</h3><p class="mp">Sur la grille affichée, chaque ligne dit deux choses : un prix et une <b>durée</b>. Et la durée tient toujours dans un ou deux petits mots. « Valide <b>de</b> 18 h <b>à</b> 5 h », « <b>du</b> lundi <b>au</b> dimanche », « bon <b>jusqu'à</b> la fin du mois ». Se tromper sur ces mots-là, c'est acheter le mauvais titre.</p><div class="note">Le programme de niveau 3 nomme les prépositions parmi ses savoirs. Ici, elles ne sont pas une leçon de grammaire : elles sont ce qui permet de lire le tableau.</div></section><section class="bloc card ml"><h3>De… à… — un début et une fin, avec des heures</h3><p class="mp">Le premier mot dit quand ça commence, le second quand ça finit.</p><table class="ana"><tr><td>Sur la grille</td><td class=""><b>valide de dix-huit heures à cinq heures</b></td></tr><tr><td>Aussi</td><td class="cle">de neuf heures à cinq heures</td></tr><tr><td>Ce que ça dit</td><td class="">le début, puis la fin</td></tr></table><p class="dit"><span class="k">On dit</span> Valide de dix-huit heures à cinq heures.</p><div class="note">« De 18 h à 5 h » traverse la nuit : ça commence le soir et ça finit le lendemain matin. La Soirée illimitée fonctionne ainsi.</div></section><section class="bloc card ml"><h3>Du… au… — un début et une fin, avec des jours</h3><p class="mp">Devant un jour de la semaine, « de » devient <b>du</b> et « à » devient <b>au</b>.</p><table class="ana"><tr><td>Sur la grille</td><td class=""><b>du lundi au dimanche</b></td></tr><tr><td>Aussi</td><td class="cle">du vendredi au lundi</td></tr><tr><td>Jamais</td><td class="">« de lundi à dimanche »</td></tr></table><p class="dit"><span class="k">On dit</span> L'hebdo est bon du lundi au dimanche.</p><div class="note">C'est une des rares règles sans exception : devant un jour ou un mois, c'est toujours <b>du… au…</b></div></section><section class="bloc card ml"><h3>Jusqu'à — seulement la fin</h3><p class="mp">On dit quand ça s'arrête, sans dire quand ça a commencé.</p><table class="ana"><tr><td>Sur la grille</td><td class=""><b>bon jusqu'à la fin du mois</b></td></tr><tr><td>Aussi</td><td class="cle">jusqu'à cinq heures du matin</td></tr><tr><td>Ce que ça dit</td><td class="">la fin, rien d’autre</td></tr></table><p class="dit"><span class="k">On dit</span> Ton titre est bon jusqu'à la fin du mois.</p><div class="note">Le mensuel se dit toujours ainsi : il finit le dernier jour du mois, peu importe le jour où tu l'as acheté.</div></section><section class="bloc card ml"><h3>À partir de — seulement le début</h3><p class="mp">C'est l'inverse de « jusqu'à ». On dit quand ça commence, et avant, ça ne marche pas.</p><table class="ana"><tr><td>Sur la grille</td><td class=""><b>à partir de seize heures</b></td></tr><tr><td>Aussi</td><td class="cle">à partir de la validation</td></tr><tr><td>Ce que ça dit</td><td class="">le début, rien d’autre</td></tr></table><p class="dit"><span class="k">On dit</span> Le Week-end illimité est valide à partir de seize heures.</p><div class="note">Le titre 24 h commence <b>à partir de la validation</b>, c'est-à-dire au moment où tu passes ta carte — pas au moment où tu l'achètes.</div></section><section class="bloc card ml"><h3>Pendant — une longueur de temps</h3><p class="mp">Ce n'est ni une heure ni un jour : c'est combien de temps ça dure.</p><table class="ana"><tr><td>Sur la grille</td><td class=""><b>pendant cent vingt minutes</b></td></tr><tr><td>Aussi</td><td class="cle">pendant trois jours</td></tr><tr><td>La question</td><td class="">combien de temps ?</td></tr></table><p class="dit"><span class="k">On dit</span> La correspondance dure pendant cent vingt minutes.</p><div class="note">Les cent vingt minutes de la correspondance commencent au moment de la validation, et elles ne permettent pas de refaire le même parcours en sens inverse.</div></section><section class="bloc card ml"><h3>Les cinq lignes de la grille</h3><p class="mp">Choisis un titre et vois comment sa durée est écrite.</p><table class="labo"><thead><tr><th>Quel titre ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">Soirée illimitée</td><td>Valide de dix-huit heures à cinq heures.</td><td>de… à…, avec des heures</td></tr><tr><td class="cle">Hebdo</td><td>Du lundi au dimanche.</td><td>du… au…, avec des jours</td></tr><tr><td class="cle">Week-end illimité</td><td>À partir de seize heures, le vendredi.</td><td>seulement le début</td></tr><tr><td class="cle">Mensuel</td><td>Bon jusqu'à la fin du mois.</td><td>seulement la fin</td></tr><tr><td class="cle">Correspondance</td><td>Pendant cent vingt minutes.</td><td>une longueur de temps</td></tr></tbody></table><div class="note">Cinq titres, cinq façons différentes d'écrire une durée. Ce sont exactement celles de la grille affichée.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six lignes lues telles qu'elles sont écrites.</p><table class="ex2"><tr><td>Soirée illimitée, valide de 18 h à 5 h.</td><td>de… à…</td></tr><tr><td>Hebdo, du lundi au dimanche.</td><td>du… au…</td></tr><tr><td>Week-end illimité, du vendredi 16 h au lundi 5 h.</td><td>du… au…</td></tr><tr><td>Mensuel, bon jusqu'à la fin du mois.</td><td>jusqu'à</td></tr><tr><td>Titre 24 h, à partir de la validation.</td><td>à partir de</td></tr><tr><td>Correspondance : pendant 120 minutes.</td><td>pendant</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges à connaître</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">dire « de lundi à dimanche »</p><div class="k">Ce qui arrive</div><p class="ph">oublier que « de » devient « du » devant un jour</p><p class="px">Devant un jour de la semaine, c'est toujours <b>du… au…</b> : du lundi au dimanche, du vendredi au lundi.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">croire qu'un titre commence à l'achat</p><div class="k">Ce qui arrive</div><p class="ph">penser que le 24 h commence quand on le paie</p><p class="px">Non : il commence <b>à partir de la validation</b>, quand tu passes ta carte pour la première fois. Tu peux l'acheter le matin et le commencer le soir.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">confondre « pendant » et « jusqu'à »</p><div class="k">Ce qui arrive</div><p class="ph">« pendant la fin du mois »</p><p class="px">« Pendant » se dit devant une durée qui se compte : pendant 120 minutes, pendant trois jours. « Jusqu'à » se dit devant un moment : jusqu'à la fin du mois.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">Devant un jour de la semaine, on écrit…</span><ul class="opts"><li>de lundi à dimanche</li><li>du lundi au dimanche</li></ul></li><li><span class="q">« Valide de 18 h à 5 h » veut dire…</span><ul class="opts"><li>du soir au matin suivant</li><li>seulement entre 5 h et 18 h</li></ul></li><li><span class="q">Le titre 24 h commence…</span><ul class="opts"><li>au moment de l'achat</li><li>à partir de la validation</li></ul></li><li><span class="q">« Pendant 120 minutes » dit…</span><ul class="opts"><li>combien de temps ça dure</li><li>à quelle heure ça finit</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> du lundi au dimanche — « de » devient « du », « à » devient « au ». · <b>2.</b> du soir au matin suivant — Le titre traverse la nuit. · <b>3.</b> à partir de la validation — Quand tu passes ta carte pour la première fois. · <b>4.</b> combien de temps ça dure — C'est une longueur de temps.</div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Comparer deux prix, lire une borne d'âge</h2><section class="bloc card ml"><h3>Choisir un titre, c'est comparer</h3><p class="mp">Rosario payait environ cent quarante dollars par mois sans le savoir, parce qu'elle n'avait jamais comparé. Comparer deux prix demande deux choses en français : le mot <b>plus</b> ou <b>moins</b>, et surtout le petit mot <b>que</b>, qu'on oublie souvent.</p><div class="note">Et pour lire les catégories d'âge de la grille, il faut savoir lire « 11 ans et moins », « 65 ans et plus », « de 6 à 17 ans » — trois façons d'écrire une borne.</div></section><section class="bloc card ml"><h3>Comparer deux prix : plus cher, moins cher</h3><p class="mp">On met « plus » ou « moins » devant l'adjectif, et « que » devant l'autre chose.</p><table class="ana"><tr><td>Moins</td><td class=""><b>moins cher que</b> le dix passages</td></tr><tr><td>Plus</td><td class="cle"><b>plus cher que</b> l’hebdo</td></tr><tr><td>Pareil</td><td class=""><b>aussi cher que</b> l’hebdo</td></tr></table><p class="dit"><span class="k">On dit</span> L'hebdo est moins cher que le dix passages.</p><div class="note">L'ordre ne change jamais : <b>plus / moins</b> + adjectif + <b>que</b> + la chose comparée.</div></section><section class="bloc card ml"><h3>Le « que » qu'on oublie</h3><p class="mp">C'est la faute la plus fréquente à ce niveau, et elle s'entend tout de suite.</p><table class="ana"><tr><td>On dit</td><td class=""><b>moins cher que l'hebdo</b></td></tr><tr><td>On ne dit pas</td><td class="cle">« moins cher de l’hebdo »</td></tr><tr><td>On ne dit pas</td><td class="">« moins cher comme l’hebdo »</td></tr></table><p class="dit"><span class="k">On dit</span> Le mensuel est moins cher que quatre hebdos.</p><div class="note">Devant une voyelle, « que » devient « qu' » : moins cher <b>qu'</b>un mensuel.</div></section><section class="bloc card ml"><h3>Compter des choses : plus de, moins de</h3><p class="mp">Devant un nombre, on n'emploie pas « que » mais <b>de</b>.</p><table class="ana"><tr><td>Un âge</td><td class=""><b>moins de douze ans</b></td></tr><tr><td>Un nombre</td><td class="cle"><b>plus de cinq enfants</b></td></tr><tr><td>La différence</td><td class="">de devant un nombre, que devant une chose</td></tr></table><p class="dit"><span class="k">On dit</span> Moins de douze ans. Plus de cinq enfants.</p><div class="note">« Moins cher <b>que</b> l'hebdo » compare deux titres. « Moins <b>de</b> douze ans » compte des années. Deux petits mots différents.</div></section><section class="bloc card ml"><h3>Les trois façons d'écrire une borne d'âge</h3><p class="mp">La grille les emploie toutes les trois, parfois dans le même tableau.</p><table class="ana"><tr><td>Une limite en bas</td><td class=""><b>onze ans et moins</b> — gratuit</td></tr><tr><td>Une limite en haut</td><td class="cle"><b>soixante-cinq ans et plus</b> — tarif réduit</td></tr><tr><td>Un intervalle</td><td class="">de 6 à 17 ans — tarif réduit</td></tr></table><p class="dit"><span class="k">On dit</span> Onze ans et moins. Soixante-cinq ans et plus. De six à dix-sept ans.</p><div class="note">« 11 ans et moins » comprend les enfants de onze ans. « 65 ans et plus » comprend les personnes de soixante-cinq ans. La borne est toujours incluse.</div></section><section class="bloc card ml"><h3>Comparer les titres de la grille</h3><p class="mp">Choisis deux titres et vois lequel coûte le moins cher.</p><table class="labo"><thead><tr><th>Quelle comparaison ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">hebdo 33,25 $ / dix passages 35 $</td><td>L'hebdo est moins cher que le dix passages.</td><td>un dollar soixante-quinze de moins</td></tr><tr><td class="cle">mensuel 110 $ / hebdo 33,25 $</td><td>Le mensuel est plus cher que l'hebdo.</td><td>mais moins cher que quatre hebdos</td></tr><tr><td class="cle">réduit 66 $ / ordinaire 110 $</td><td>Le tarif réduit est moins cher que le tarif ordinaire.<span class="tags">le tarif réduit est <b>moins cher que</b> l’ordinaire</span></td><td>quarante-quatre dollars de moins</td></tr><tr><td class="cle">zone A 3,75 $ / zone AB 5,00 $</td><td>Aller à Laval coûte plus cher que rester à Montréal.</td><td>la zone change le prix</td></tr><tr><td class="cle">les âges de la grille</td><td>Onze ans et moins. De six à dix-sept ans. Soixante-cinq ans et plus.<span class="tags"><b>onze ans et moins</b> · de 6 à 17 ans · <b>soixante-cinq ans et plus</b></span></td><td>les trois bornes de la grille</td></tr></tbody></table><div class="note">Compare toujours sur un mois complet : c'est là que la différence se voit.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six comparaisons tirées de la grille.</p><table class="ex2"><tr><td>L'hebdo est moins cher que le dix passages.</td><td>33,25 $ contre 35 $</td></tr><tr><td>Le mensuel est plus cher que l'hebdo.</td><td>110 $ contre 33,25 $</td></tr><tr><td>Le tarif réduit est moins cher que le tarif ordinaire.</td><td>66 $ contre 110 $</td></tr><tr><td>Les enfants de moins de douze ans voyagent gratuitement.</td><td>une borne d'âge</td></tr><tr><td>Une personne ne peut pas accompagner plus de cinq enfants.</td><td>un nombre</td></tr><tr><td>Soixante-cinq ans et plus, c'est le tarif réduit.</td><td>une borne d'âge</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges à connaître</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">oublier le « que »</p><div class="k">Ce qui arrive</div><p class="ph">« moins cher de l'hebdo »</p><p class="px">C'est <b>que</b> qui introduit la chose comparée, jamais « de » ni « comme ». Moins cher <b>que</b> l'hebdo.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">dire « plus que douze ans »</p><div class="k">Ce qui arrive</div><p class="ph">confondre « plus de » et « plus que » devant un nombre</p><p class="px">Devant un nombre, c'est <b>de</b> : plus <b>de</b> douze ans, moins <b>de</b> cinq enfants.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">croire que la borne est exclue</p><div class="k">Ce qui arrive</div><p class="ph">penser que « 65 ans et plus » commence à 66 ans</p><p class="px">Non : la borne est incluse. Une personne de soixante-cinq ans exactement a droit au tarif réduit.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">On compare deux titres avec…</span><ul class="opts"><li>moins cher que</li><li>moins cher de</li></ul></li><li><span class="q">Devant un nombre, on emploie…</span><ul class="opts"><li>plus que</li><li>plus de</li></ul></li><li><span class="q">« 65 ans et plus » comprend…</span><ul class="opts"><li>une personne de 65 ans</li><li>seulement à partir de 66 ans</li></ul></li><li><span class="q">L'hebdo à 33,25 $ et le dix passages à 35 $ :</span><ul class="opts"><li>l'hebdo est moins cher</li><li>le dix passages est moins cher</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> moins cher que — « que » introduit la chose comparée. · <b>2.</b> plus de — Plus de cinq enfants, moins de douze ans. · <b>3.</b> une personne de 65 ans — La borne est toujours incluse. · <b>4.</b> l'hebdo est moins cher — Et en plus, l'hebdo est illimité.</div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Les places réservées et le transport adapté</h2><section class="bloc card ml"><h3>Deux choses différentes, souvent confondues</h3><p class="mp">Le programme nomme le <b>transport adapté</b> et les <b>places réservées</b> dans la même ligne de son lexique, et beaucoup de gens les mélangent. Ce sont pourtant deux choses très différentes : les places réservées sont des sièges dans l'autobus ordinaire ; le transport adapté est un <b>service à part</b>, avec ses propres véhicules et une inscription à faire d'avance.</p><div class="note">Savoir les distinguer sert à deux choses : céder sa place au bon moment, et orienter une personne qui ne peut pas prendre l'autobus ordinaire.</div></section><section class="bloc card ml"><h3>Où sont les places réservées</h3><p class="mp">Toujours au même endroit, dans tous les autobus : les premières rangées, juste après le chauffeur.</p><table class="ana"><tr><td>L’endroit</td><td class="">les premières rangées, en avant</td></tr><tr><td>Le repère</td><td class="cle">un petit dessin au-dessus du siège</td></tr><tr><td>Le nom</td><td class=""><b>une place réservée</b></td></tr></table><p class="dit"><span class="k">On dit</span> Les places réservées sont en avant de l'autobus.</p><div class="note">On peut s'y asseoir quand elles sont libres. Ce n'est pas interdit : c'est une place qu'on prête.</div></section><section class="bloc card ml"><h3>Pour qui elles sont gardées</h3><p class="mp">Trois groupes de personnes, nommés tels quels dans le programme.</p><table class="ana"><tr><td>Les personnes</td><td class=""><b>une personne à mobilité réduite</b></td></tr><tr><td>Les femmes</td><td class="cle"><b>une femme enceinte</b></td></tr><tr><td>Les aînés</td><td class="">les personnes âgées</td></tr></table><p class="dit"><span class="k">On dit</span> Pour les personnes à mobilité réduite, les femmes enceintes et les personnes âgées.</p><div class="note">« À mobilité réduite » veut dire : qui se déplace difficilement. Une canne, un fauteuil, une jambe plâtrée, un grand âge.</div></section><section class="bloc card ml"><h3>Ce qu'on fait quand quelqu'un monte</h3><p class="mp">On se lève <b>sans attendre qu'on le demande</b>. C'est ce qui se fait ici, et c'est apprécié.</p><table class="ana"><tr><td>Le geste</td><td class=""><b>laisser sa place</b> tout de suite</td></tr><tr><td>La phrase</td><td class="cle">« Prenez ma place, madame. »</td></tr><tr><td>La réponse</td><td class="">« Merci, c’est gentil. »</td></tr></table><p class="dit"><span class="k">On dit</span> Prenez ma place, madame. Merci, c'est gentil.</p><div class="note">Deux phrases courtes suffisent. On ne discute pas, on ne demande pas l'âge de la personne : on se lève.</div></section><section class="bloc card ml"><h3>Le transport adapté, un service à part</h3><p class="mp">Pour les personnes qui ne peuvent pas prendre l'autobus ordinaire, même avec une place réservée.</p><table class="ana"><tr><td>Ce que c’est</td><td class=""><b>le transport adapté</b></td></tr><tr><td>Comment ça marche</td><td class="cle">on réserve son déplacement d’avance</td></tr><tr><td>Avant tout</td><td class="">il faut s’inscrire au service</td></tr></table><p class="dit"><span class="k">On dit</span> Ma voisine se déplace avec le transport adapté.</p><div class="note">L'inscription se fait une fois, sur demande, avec un document médical. Ensuite, chaque déplacement se réserve à l'avance par téléphone ou en ligne.</div></section><section class="bloc card ml"><h3>Trois verbes du programme</h3><p class="mp">Le programme rattache ces trois verbes à la situation « Déplacement dans une ville ».</p><table class="ana"><tr><td>Aller d’un endroit à un autre</td><td class=""><b>se déplacer</b></td></tr><tr><td>Savoir où on est</td><td class="cle"><b>se repérer</b></td></tr><tr><td>Aller chercher l’information</td><td class=""><b>se renseigner</b></td></tr></table><p class="dit"><span class="k">On dit</span> Se déplacer. Se repérer. Se renseigner.</p><div class="note">Et son contraire, celui qu'on veut éviter : <b>se perdre</b>. « Je me suis perdue » se dit très souvent quand on arrive dans une ville nouvelle.</div></section><section class="bloc card ml"><h3>Qui a droit à quoi</h3><p class="mp">Choisis une personne et vois ce qui la concerne.</p><table class="labo"><thead><tr><th>Quelle personne ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">une femme enceinte</td><td>Une femme enceinte a droit à une place réservée.<span class="tags"><b>une femme enceinte</b> — place réservée</span></td><td>en avant de l’autobus</td></tr><tr><td class="cle">un homme de 80 ans avec une canne</td><td>Une personne âgée a droit à une place réservée.<span class="tags">personne âgée — place réservée</span></td><td>et au tarif réduit, à partir de 65 ans</td></tr><tr><td class="cle">une personne en fauteuil roulant</td><td>Une personne à mobilité réduite a droit à une place réservée, et parfois au transport adapté.<span class="tags"><b>une personne à mobilité réduite</b> — place réservée, parfois <b>le transport adapté</b></span></td><td>selon ce qu’elle peut faire</td></tr><tr><td class="cle">un étudiant de 20 ans</td><td>Un étudiant n'a pas de place réservée, mais il a le tarif réduit.<span class="tags">aucune place réservée — tarif réduit étudiant</span></td><td>deux choses différentes</td></tr><tr><td class="cle">les trois groupes ensemble</td><td>Les personnes à mobilité réduite, les femmes enceintes et les personnes âgées.<span class="tags">personnes à mobilité réduite · femmes enceintes · personnes âgées</span></td><td>les trois groupes du programme</td></tr></tbody></table><div class="note">Le tarif réduit et la place réservée sont deux choses séparées : un étudiant paie moins cher mais n'a pas de place gardée.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six phrases utiles dans l'autobus.</p><table class="ex2"><tr><td>Les places réservées sont en avant.</td><td>où elles sont</td></tr><tr><td>Prenez ma place, madame.</td><td>céder sa place</td></tr><tr><td>Merci, c'est gentil.</td><td>la réponse</td></tr><tr><td>Ma voisine se déplace avec le transport adapté.</td><td>le service à part</td></tr><tr><td>Il faut s'inscrire avant d'utiliser le service.</td><td>l'inscription</td></tr><tr><td>Excusez-moi, je me suis perdue.</td><td>quand on ne se repère plus</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges à connaître</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">confondre les deux</p><div class="k">Ce qui arrive</div><p class="ph">croire que « transport adapté » veut dire « places réservées »</p><p class="px">Les places réservées sont des sièges dans l'autobus ordinaire. Le transport adapté est un autre service, avec d'autres véhicules et une inscription à faire.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">attendre qu'on demande</p><div class="k">Ce qui arrive</div><p class="ph">rester assis tant que personne ne dit rien</p><p class="px">Ici, on se lève de soi-même dès qu'une personne concernée monte. Attendre qu'elle demande la met mal à l'aise.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">croire que le tarif réduit donne une place</p><div class="k">Ce qui arrive</div><p class="ph">penser qu'un étudiant a droit aux sièges d'en avant</p><p class="px">Non. Le tarif réduit concerne le <b>prix</b>. La place réservée concerne le <b>siège</b>. Un étudiant a l'un sans avoir l'autre.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">Les places réservées sont…</span><ul class="opts"><li>en avant de l'autobus</li><li>au fond, près des portes arrière</li></ul></li><li><span class="q">Quand une personne âgée monte…</span><ul class="opts"><li>on attend qu'elle demande</li><li>on se lève tout de suite</li></ul></li><li><span class="q">Le transport adapté…</span><ul class="opts"><li>est le même service que l'autobus</li><li>est un service à part, avec inscription</li></ul></li><li><span class="q">Un étudiant de 20 ans a droit…</span><ul class="opts"><li>au tarif réduit</li><li>à une place réservée</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> en avant de l'autobus — Les premières rangées, après le chauffeur. · <b>2.</b> on se lève tout de suite — C'est ce qui se fait ici. · <b>3.</b> est un service à part, avec inscription — D'autres véhicules, une réservation d'avance. · <b>4.</b> au tarif réduit — Le prix, oui ; le siège, non.</div></section></section></div>
+<footer><span>D2 · Le bon titre de transport</span><span>Fiche élève</span></footer>
+</body>
+</html>

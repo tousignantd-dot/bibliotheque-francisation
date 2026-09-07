@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>D2 · Raconter la journée, répondre à l'invitation — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance D2 · Module 3 · 75 minutes</div>
+    <h1>Raconter la journée, répondre à l'invitation</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Un récit sans imparfait est une liste ; un récit sans passé composé ne bouge pas.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>employer le passé composé pour ce qui avance ;</li><li>employer l'imparfait pour ce qui dure autour ;</li><li>accorder le participe avec « être » ;</li><li>accepter ou refuser une invitation avec une raison.</li></ol></section><section class="bloc card"><div class="lbl">Deux temps, deux rôles</div><h2 class="t">Ce n'est pas deux façons de dire la même chose</h2><table><thead><tr><th>Le temps</th><th>Son rôle</th><th>Exemple</th></tr></thead><tbody><tr><td class="cle">passé composé</td><td>ce qui arrive, une fois — ça avance</td><td>Le camion est arrivé à neuf heures.</td></tr><tr><td class="cle">imparfait</td><td>ce qui durait autour — le décor</td><td>Il pleuvait depuis le matin.</td></tr><tr><td class="cle">imparfait</td><td>l'habitude d'autrefois</td><td>Avant, on déménageait avec les amis.</td></tr><tr><td class="cle">les deux ensemble</td><td>ce qui durait, coupé par ce qui arrive</td><td>Je portais la boîte quand elle est sortie.</td></tr></tbody></table><div class="note">Si vous pouvez demander « et ensuite ? », c'est du passé composé.</div></section><section class="bloc regle"><div class="lbl">Une quinzaine de verbes prennent « être »</div><p class="r">aller · venir · arriver · partir · monter · descendre · entrer · sortir · rester · tomber</p><p class="pr">Avec « être », le participe s'accorde avec le sujet : elle est descendue, ils sont montés. Avec « avoir », pas d'accord dans ces phrases.</p></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Monter et descendre avec le mauvais auxiliaire</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">Ils sont montés le divan.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">Ils ont monté le divan.</p></div></div><div class="note">Avec un complément direct, ces deux verbes prennent « avoir » : ils ont monté le divan, elle a descendu les boîtes. Sans complément, ils prennent « être » : ils sont montés au deuxième, elle est descendue au sous-sol.</div></section><section class="bloc card"><div class="lbl">Conjugaison</div><h2 class="t">Passé composé ou imparfait ?</h2><p class="consigne">L'enseignante lit la phrase ; le groupe donne le verbe au bon temps.</p><ol class="ex"><li><span class="q">Le camion ___ (arriver) avec deux heures de retard.</span><span class="ligne ligne--court"></span></li><li><span class="q">Quand ils ont commencé, il ___ (pleuvoir) depuis le matin.</span><span class="ligne ligne--court"></span></li><li><span class="q">Mon garçon ___ (dormir) dans l'auto.</span><span class="ligne ligne--court"></span></li><li><span class="q">Les hommes ___ (monter) le divan en dix minutes.</span><span class="ligne"></span></li><li><span class="q">Nous ___ (finir) à neuf heures et demie.</span><span class="ligne ligne--court"></span></li><li><span class="q">Je ___ (porter) la dernière boîte quand la voisine est sortie.</span><span class="ligne ligne--court"></span></li><li><span class="q">En 1998, son mari ___ (échapper) la laveuse.</span><span class="ligne ligne--court"></span></li><li><span class="q">La laveuse ___ (descendre) toute seule jusqu'en bas.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">Dialogue</div><h2 class="t">Un café dimanche</h2><p class="consigne">Écoutez, puis repérez les trois morceaux de la réponse d'Amadou.</p><div class="rep rep--key"><div class="qui">THÉRÈSE</div><div>Je fais du café dimanche après-midi, avec la voisine du 1. Vous viendriez ?</div></div><div class="rep rep--key"><div class="qui">AMADOU</div><div>C'est gentil de me le proposer. Dimanche après-midi, par exemple, je travaille : je suis à l'hôpital jusqu'à sept heures.</div></div><div class="rep rep--key"><div class="qui">AMADOU</div><div>Une fin de semaine sur deux. Mais dimanche prochain, je suis libre, et là, j'accepterais avec plaisir.</div></div><div class="rep rep--key"><div class="qui">THÉRÈSE</div><div>Parfait, on dit dimanche prochain. Deux heures ? Vous amènerez votre garçon si vous voulez.</div></div></section><section class="bloc regle"><div class="lbl">Un refus sans raison n'est pas un refus de l'invitation</div><p class="r">C'est perçu comme un refus de la personne.</p><p class="pr">Trois morceaux suffisent : « C'est gentil » · « malheureusement, je travaille » · « par contre, dimanche prochain, je serais libre ». Trente secondes, et la porte reste ouverte.</p></section><section class="bloc"><div class="lbl">Les mots qui relient</div><h2 class="t">Trois connecteurs suffisent</h2><div class="grid"><div class="card"><h3>parce que</h3><p>donne la cause : parce que je travaille ce dimanche-là</p></div><div class="card"><h3>par contre</h3><p>oppose, et ouvre l'autre date : dimanche prochain, par contre…</p></div><div class="card"><h3>malheureusement</h3><p>annonce le non avant de l'expliquer</p></div><div class="card"><h3>La phrase complète</h3><p>C'est gentil, mais malheureusement je travaille. Par contre, dimanche prochain, je serais libre.</p></div></div></section><section class="bloc card"><div class="lbl">Production</div><h2 class="t">Répondez à l'invitation</h2><p class="consigne">Par deux : l'un invite, l'autre répond en trois morceaux.</p><ol class="ex"><li><span class="q">Vous êtes libre et content d'y aller</span><span class="ligne"></span></li><li><span class="q">Vous travaillez ce jour-là</span><span class="ligne"></span></li><li><span class="q">Vous avez déjà un rendez-vous</span><span class="ligne"></span></li><li><span class="q">Vous voulez venir avec votre enfant</span><span class="ligne"></span></li><li><span class="q">Vous ne savez pas encore</span><span class="ligne"></span></li><li><span class="q">Vous demandez quoi apporter</span><span class="ligne"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Racontez votre dernier déménagement en cinq phrases.</p><ul><li>Trois au passé composé — ce qui est arrivé.</li><li>Deux à l'imparfait — le temps qu'il faisait, ce que faisaient les autres.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Raconter : passé composé et imparfait</h2><section class="bloc card ml"><h3>Deux temps, deux rôles</h3><p class="mp">Ce ne sont pas deux façons de dire la même chose. Le <b>passé composé</b> fait avancer l'histoire : le camion est arrivé, ils ont monté le divan, j'ai signé. L'<b>imparfait</b> plante le décor autour : il pleuvait, mon garçon dormait, les boîtes étaient encore dans le camion. Un récit sans imparfait est une liste ; un récit sans passé composé ne bouge pas.</p><div class="note">Racontez votre journée à quelqu'un, dans votre langue : vous employez les deux, en alternance, sans y penser. Le français fait pareil, avec des règles plus visibles.</div></section><section class="bloc card ml"><h3>Le passé composé : ce qui arrive, une fois</h3><p class="mp">Chaque phrase pousse l'histoire d'un cran. On peut les compter.</p><table class="ana"><tr><td>Le camion est arrivé à neuf heures.</td><td class="">1</td></tr><tr><td>Les hommes ont monté le divan.</td><td class="cle">2</td></tr><tr><td>Nous avons fini à neuf heures et demie.</td><td class="">3</td></tr></table><p class="dit"><span class="k">On dit</span> Le camion est arrivé, les hommes ont monté le divan, et nous avons fini tard.</p><div class="note">Si vous pouvez demander « et ensuite ? », c'est du passé composé.</div></section><section class="bloc card ml"><h3>L'imparfait : ce qui durait autour</h3><p class="mp">Rien n'avance : on décrit ce qui était là pendant que le reste se passait.</p><table class="ana"><tr><td>Il pleuvait.</td><td class="">le temps qu'il faisait</td></tr><tr><td>Mon garçon dormait dans l'auto.</td><td class="cle">ce qui se passait en même temps</td></tr><tr><td>Les boîtes étaient encore dans le camion.</td><td class="">l'état des choses</td></tr></table><p class="dit"><span class="k">On dit</span> Il pleuvait, et mon garçon dormait dans l'auto.</p><div class="note">L'imparfait répond à « c'était comment ? », jamais à « et ensuite ? ».</div></section><section class="bloc card ml"><h3>L'imparfait dit aussi l'habitude</h3><p class="mp">Ce qu'on faisait souvent, dans ce temps-là.</p><table class="ana"><tr><td>Avant, on déménageait avec les amis.</td><td class="">habitude</td></tr><tr><td>Chaque premier juillet, tout le monde bougeait.</td><td class="cle">répétition</td></tr><tr><td>Les mots qui l'appellent</td><td class="">avant · souvent · chaque année · dans ce temps-là</td></tr></table><p class="dit"><span class="k">On dit</span> Dans ce temps-là, on déménageait tout seuls, avec les amis.</p><div class="note">C'est le temps des souvenirs. Thérèse l'emploie sans arrêt quand elle parle de 1998.</div></section><section class="bloc card ml"><h3>Les deux dans la même phrase</h3><p class="mp">C'est là que le français se joue vraiment.</p><table class="ana"><tr><td>Je portais la dernière boîte</td><td class="">ce qui durait — imparfait</td></tr><tr><td>quand la voisine est sortie.</td><td class="cle">ce qui coupe — passé composé</td></tr><tr><td>Le mot qui marque la coupure</td><td class="">quand</td></tr></table><p class="dit"><span class="k">On dit</span> Je portais la dernière boîte quand la voisine est sortie.</p><div class="note">Inversez les deux temps et le sens change : « je portais » devient l'action longue, « est sortie » l'événement bref. C'est le contraire qui serait bizarre.</div></section><section class="bloc card ml"><h3>Être ou avoir, et l'accord</h3><p class="mp">La plupart des verbes prennent avoir. Une quinzaine prennent être.</p><table class="ana"><tr><td>avec avoir</td><td class="">Ils ont monté le divan. (pas d'accord ici)</td></tr><tr><td>avec être</td><td class="cle">Elle est descendue toute seule. (accord avec le sujet)</td></tr><tr><td>Les verbes en être</td><td class="">aller · venir · arriver · partir · monter · descendre · entrer · sortir · rester · tomber</td></tr></table><p class="dit"><span class="k">On dit</span> La laveuse est descendue toute seule jusqu'en bas.</p><div class="note">Le piège de ce module : <b>monter</b> et <b>descendre</b> prennent <b>avoir</b> quand un complément suit — « ils ont monté le divan » — et <b>être</b> quand il n'y en a pas — « ils sont montés au deuxième ».</div></section><section class="bloc card ml"><h3>Quel temps ?</h3><p class="mp">Choisissez ce que vous voulez dire.</p><table class="labo"><thead><tr><th>Ce que vous racontez</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">Le camion arrive — un événement</td><td>Le camion est arrivé avec deux heures de retard.</td><td>passé composé : ça avance</td></tr><tr><td class="cle">Le temps qu'il faisait ce jour-là</td><td>Il pleuvait depuis le matin.</td><td>imparfait : le décor</td></tr><tr><td class="cle">Ce que faisait votre garçon pendant ce temps</td><td>Mon garçon dormait dans l'auto.</td><td>imparfait : en même temps</td></tr><tr><td class="cle">Les hommes montent le divan — un événement</td><td>Les hommes ont monté le divan en dix minutes.</td><td>avoir : il y a un complément</td></tr><tr><td class="cle">Ce qui coupe une action en cours</td><td>Je portais la boîte quand elle est sortie.</td><td>les deux temps dans une phrase</td></tr><tr><td class="cle">Ce qu'on faisait souvent, autrefois</td><td>Avant, on déménageait avec les amis.</td><td>imparfait d'habitude</td></tr></tbody></table><div class="note">Une seule question : est-ce que ça avance, ou est-ce que ça décrit ?</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six phrases du récit d'Amadou.</p><table class="ex2"><tr><td>Le camion est arrivé avec deux heures de retard.</td><td>passé composé</td></tr><tr><td>Il pleuvait depuis le matin.</td><td>imparfait</td></tr><tr><td>Mon garçon dormait dans l'auto pendant qu'on montait.</td><td>imparfait ×2</td></tr><tr><td>Nous avons fini à neuf heures et demie.</td><td>passé composé</td></tr><tr><td>Je portais la dernière boîte quand elle est sortie.</td><td>les deux</td></tr><tr><td>La laveuse est descendue toute seule jusqu'en bas.</td><td>être + accord</td></tr></table></section><section class="bloc card ml"><h3>Quatre pièges à connaître</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">tout mettre au passé composé</p><div class="k">Ce qui arrive</div><p class="ph">« Il a plu, mon garçon a dormi, nous avons fini. »</p><p class="px">Ce n'est pas faux, mais ça donne une liste sans décor. « Il pleuvait » et « mon garçon dormait » placent la scène.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">oublier l'accord avec être</p><div class="k">Ce qui arrive</div><p class="ph">« Elle est descendu. »</p><p class="px">Avec être, le participe s'accorde avec le sujet : elle est descendu<b>e</b>, ils sont mont<b>és</b>.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">monter avec être quand il y a un complément</p><div class="k">Ce qui arrive</div><p class="ph">« Ils sont montés le divan. »</p><p class="px">Avec un complément direct, c'est avoir : « ils <b>ont</b> monté le divan ». Sans complément : « ils <b>sont</b> montés ».</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">mettre l'imparfait après « quand » qui coupe</p><div class="k">Ce qui arrive</div><p class="ph">« Je portais la boîte quand elle sortait. »</p><p class="px">Ce qui coupe est au passé composé : « quand elle est sortie ». L'imparfait ferait deux actions longues côte à côte.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Cinq questions rapides.</p><ol class="check"><li><span class="q">« Il ___ depuis le matin » (pleuvoir) :</span><ul class="opts"><li>a plu</li><li>pleuvait</li></ul></li><li><span class="q">« Les hommes ___ le divan » (monter) :</span><ul class="opts"><li>ont monté</li><li>sont montés</li></ul></li><li><span class="q">« Je portais la boîte quand elle ___ » (sortir) :</span><ul class="opts"><li>sortait</li><li>est sortie</li></ul></li><li><span class="q">« Elle est descendu___ » s'écrit…</span><ul class="opts"><li>descendue</li><li>descendu</li></ul></li><li><span class="q">« Avant, on ___ avec les amis » (déménager) :</span><ul class="opts"><li>a déménagé</li><li>déménageait</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> pleuvait — C'est le décor : imparfait. · <b>2.</b> ont monté — Il y a un complément direct : avoir. · <b>3.</b> est sortie — Ce qui coupe est au passé composé. · <b>4.</b> descendue — Avec être, le participe s'accorde avec le sujet. · <b>5.</b> déménageait — « Avant » annonce une habitude : imparfait.</div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Accepter, refuser, proposer autre chose</h2><section class="bloc card ml"><h3>Ce qui se joue vraiment dans un refus</h3><p class="mp">Une voisine vous invite à prendre un café. Vous ne pouvez pas. En français d'ici, un « non merci » sec ne se lit pas comme un refus de l'invitation : il se lit comme un refus de la personne. Ce qui sauve tout tient en trois morceaux — un remerciement, une raison courte, et une autre date. Trente secondes, et vous êtes du monde de l'immeuble plutôt que le nouveau du 4.</p><div class="note">C'est une compétence de niveau intermédiaire : il ne s'agit plus de dire oui ou non, mais de tenir un petit échange organisé.</div></section><section class="bloc card ml"><h3>Remercier d'abord — dans les deux cas</h3><p class="mp">La même phrase, que la réponse soit oui ou non.</p><table class="ana"><tr><td>C'est gentil de me le proposer.</td><td class="">la plus courante</td></tr><tr><td>Merci d'y avoir pensé.</td><td class="cle">un peu plus chaleureuse</td></tr><tr><td>Ce que ça fait</td><td class="">ça achète trois secondes pour réfléchir</td></tr></table><p class="dit"><span class="k">On dit</span> C'est gentil de me le proposer.</p><div class="note">Elle dit que l'invitation a fait plaisir, avant même qu'on sache si vous venez. C'est le morceau qu'on saute le plus, et celui qui manque le plus.</div></section><section class="bloc card ml"><h3>Accepter : le plaisir se dit</h3><p class="mp">Puis on confirme le détail, tout de suite.</p><table class="ana"><tr><td>Avec plaisir.</td><td class="">court et parfait</td></tr><tr><td>Ça me ferait vraiment plaisir.</td><td class="cle">plus chaleureux</td></tr><tr><td>Puis on confirme</td><td class="">Deux heures, chez vous, au 3 ?</td></tr></table><p class="dit"><span class="k">On dit</span> Avec plaisir. Deux heures, chez vous, au 3 ?</p><div class="note">Répéter l'heure et l'endroit n'est pas de la méfiance : c'est ce qui fait qu'on ne se manque pas.</div></section><section class="bloc card ml"><h3>Refuser : une raison, courte et vraie</h3><p class="mp">Une phrase suffit. Une longue explication met l'autre mal à l'aise.</p><table class="ana"><tr><td>Je travaille ce dimanche-là.</td><td class="">une raison en cinq mots</td></tr><tr><td>Malheureusement, je ne serai pas là.</td><td class="cle">le non annoncé avant la raison</td></tr><tr><td>Ce qu'il ne faut pas</td><td class="">« Non merci. » tout seul</td></tr></table><p class="dit"><span class="k">On dit</span> Malheureusement, je travaille ce dimanche-là.</p><div class="note">La raison n'a pas à être impressionnante : le travail, la famille, un rendez-vous. Elle a seulement à exister.</div></section><section class="bloc card ml"><h3>Proposer autre chose : refuser sans blesser</h3><p class="mp">On ferme une date et on en ouvre une autre dans la même phrase.</p><table class="ana"><tr><td>Dimanche prochain, par contre, je serais libre.</td><td class="">la formule complète</td></tr><tr><td>Est-ce qu'une autre fois serait possible ?</td><td class="cle">plus prudent</td></tr><tr><td>Le conditionnel</td><td class="">« je serais » adoucit la proposition</td></tr></table><p class="dit"><span class="k">On dit</span> Dimanche prochain, par contre, je serais libre.</p><div class="note">C'est ce morceau-là qui transforme un refus en rendez-vous. Sans lui, l'autre n'osera pas réinviter.</div></section><section class="bloc card ml"><h3>Les mots qui relient</h3><p class="mp">Trois connecteurs suffisent à organiser toute la réponse.</p><table class="ana"><tr><td>parce que</td><td class="">donne la cause : parce que je travaille</td></tr><tr><td>par contre</td><td class="cle">oppose : dimanche prochain, par contre…</td></tr><tr><td>malheureusement</td><td class="">annonce le non avant de l'expliquer</td></tr></table><p class="dit"><span class="k">On dit</span> C'est gentil, mais malheureusement je travaille. Par contre, dimanche prochain, je serais libre.</p><div class="note">Cette phrase-là contient les trois morceaux et les trois connecteurs. Apprenez-la, et changez seulement la raison.</div></section><section class="bloc card ml"><h3>Composer une réponse</h3><p class="mp">Choisissez votre situation.</p><table class="labo"><thead><tr><th>Votre situation</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">Vous êtes libre et content d'y aller</td><td>C'est gentil. Avec plaisir : deux heures, chez vous ?</td><td>remercier · accepter · confirmer</td></tr><tr><td class="cle">Vous travaillez ce jour-là</td><td>C'est gentil, mais malheureusement je travaille. Par contre, dimanche prochain, je serais libre.</td><td>les trois morceaux</td></tr><tr><td class="cle">Vous avez déjà un rendez-vous</td><td>Merci d'y avoir pensé. J'ai déjà un rendez-vous ce jour-là. Une autre fois, avec plaisir.</td><td>refus + porte ouverte</td></tr><tr><td class="cle">Vous ne voulez pas, mais vous restez aimable</td><td>C'est gentil de me le proposer. Je ne pourrai pas cette fois-ci, mais on se reprendra.</td><td>aimable sans mentir</td></tr><tr><td class="cle">Vous voulez venir avec votre enfant</td><td>Avec plaisir. Est-ce que je peux venir avec mon garçon ?</td><td>accepter en demandant</td></tr><tr><td class="cle">Vous ne savez pas encore</td><td>C'est gentil. Je dois vérifier mon horaire : je vous le confirme demain.</td><td>ni oui ni non, mais une date de réponse</td></tr></tbody></table><div class="note">Dans tous les cas, la réponse commence par un remerciement et finit par une date.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six réponses à une invitation.</p><table class="ex2"><tr><td>C'est gentil de me le proposer.</td><td>le remerciement</td></tr><tr><td>Avec plaisir. Deux heures, chez vous ?</td><td>accepter et confirmer</td></tr><tr><td>Malheureusement, je travaille ce dimanche-là.</td><td>refuser avec une raison</td></tr><tr><td>Dimanche prochain, par contre, je serais libre.</td><td>proposer autre chose</td></tr><tr><td>Est-ce que j'apporte quelque chose ?</td><td>la question qu'on pose toujours</td></tr><tr><td>Je dois vérifier mon horaire, je vous le confirme demain.</td><td>ne pas répondre tout de suite</td></tr></table></section><section class="bloc card ml"><h3>Quatre pièges à connaître</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">refuser sans raison</p><div class="k">Ce qui arrive</div><p class="ph">« Non merci. »</p><p class="px">Au Québec, un refus sans raison est perçu comme un refus de la personne. Cinq mots suffisent : « je travaille ce jour-là ».</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">s'expliquer trop longtemps</p><div class="k">Ce qui arrive</div><p class="ph">Trois phrases pour justifier un café manqué.</p><p class="px">Une longue explication met l'autre mal à l'aise et sonne faux. Une phrase, puis une autre date.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">oublier de proposer une autre fois</p><div class="k">Ce qui arrive</div><p class="ph">« Je ne peux pas, désolé. »</p><p class="px">Sans porte ouverte, l'autre ne réinvitera pas. « Une autre fois, avec plaisir » coûte quatre mots.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">accepter sans confirmer l'heure</p><div class="k">Ce qui arrive</div><p class="ph">« Oui, oui, je vais y aller. »</p><p class="px">Répétez l'heure et l'endroit : « deux heures, chez vous, au 3 ». C'est ce qui évite de se manquer.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Cinq questions rapides.</p><ol class="check"><li><span class="q">Par quoi commence une bonne réponse à une invitation ?</span><ul class="opts"><li>Par oui ou par non</li><li>Par un remerciement</li></ul></li><li><span class="q">Un refus doit contenir…</span><ul class="opts"><li>une raison courte</li><li>des excuses répétées</li></ul></li><li><span class="q">« Dimanche prochain, ___ , je serais libre. »</span><ul class="opts"><li>par contre</li><li>parce que</li></ul></li><li><span class="q">Après avoir accepté, on…</span><ul class="opts"><li>raccroche</li><li>confirme l'heure et l'endroit</li></ul></li><li><span class="q">« Est-ce que j'apporte quelque chose ? » est…</span><ul class="opts"><li>une question qu'on pose presque toujours</li><li>une question déplacée</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> Par un remerciement — « C'est gentil de me le proposer » s'emploie dans les deux cas. · <b>2.</b> une raison courte — Une phrase suffit, et elle doit être vraie. · <b>3.</b> par contre — « Par contre » oppose : c'est le mot de la contre-proposition. · <b>4.</b> confirme l'heure et l'endroit — « Deux heures, chez vous, au 3 ? » · <b>5.</b> une question qu'on pose presque toujours — La réponse est presque toujours non, et on la pose quand même.</div></section></section></div>
+<footer><span>D2 · Emménager dans un nouveau logement</span><span>Fiche élève</span></footer>
+</body>
+</html>

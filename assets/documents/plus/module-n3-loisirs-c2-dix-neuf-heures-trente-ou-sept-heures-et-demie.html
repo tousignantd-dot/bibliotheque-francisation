@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C2 · Dix-neuf heures trente, ou sept heures et demie ? — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance C2 · Module 12 · 75 minutes</div>
+    <h1>Dix-neuf heures trente, ou sept heures et demie ?</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Le feuillet écrit 19 h 30. La préposée dit « sept heures et demie ». Ce n'est pas une contradiction : l'un est l'heure des papiers, l'autre celle qu'on parle. Il faut savoir passer de l'une à l'autre, dans les deux sens.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>lire l'heure officielle, de 0 h à 24 h ;</li><li>la dire dans l'heure de tous les jours, de 1 à 12 ;</li><li>employer « et demie », « et quart » et « moins quart » ;</li><li>dire le début et la fin d'une activité avec « de… à… ».</li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Les deux systèmes, côte à côte</h2><table><thead><tr><th>Sur le papier</th><th>En parlant</th><th>Le calcul</th></tr></thead><tbody><tr><td>10 h</td><td class="cle">dix heures du matin</td><td>avant midi : rien à changer</td></tr><tr><td>13 h 15</td><td class="cle">une heure et quart</td><td>13 moins 12 = 1</td></tr><tr><td>19 h</td><td class="cle">sept heures du soir</td><td>19 moins 12 = 7</td></tr><tr><td>19 h 30</td><td class="cle">sept heures et demie</td><td>19 moins 12 = 7, et 30 = demie</td></tr><tr><td>20 h 45</td><td class="cle">neuf heures moins quart</td><td>on compte sur l'heure suivante</td></tr></tbody></table><div class="note">Après midi, on enlève 12. Avant midi, les deux se disent pareil.</div></section><section class="bloc regle"><div class="lbl">Les trois expressions à retenir</div><p class="r">et demie · et quart · moins quart</p><p class="pr">30 minutes se dit « et demie ». 15 minutes, « et quart ». 45 minutes, « moins quart », en comptant sur l'heure suivante. Avec ces trois-là, on dit les trois quarts des heures qu'on rencontre dans un horaire.</p></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Le piège</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">huit heures moins quart pour 20 h 45</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">neuf heures moins quart</p></div></div><div class="note">« Moins quart » veut dire : il manque quinze minutes avant l'heure suivante. À 20 h 45, l'heure suivante est 21 h, c'est-à-dire neuf heures. On dit donc « neuf heures moins quart », jamais huit.</div></section><section class="bloc"><div class="lbl">Deux précisions à ne pas oublier</div><h2 class="t">Elles évitent les malentendus</h2><div class="grid"><div class="card"><h3>du matin · du soir</h3><p>« On se voit à sept heures » est ambigu : matin ou soir ? Douze heures d'écart. On ajoute « du matin » ou « du soir » dès qu'il y a le moindre doute. Personne ne trouve ça lourd.</p></div><div class="card"><h3>de… à…</h3><p>Une activité a un début et une fin : « de dix-neuf heures à vingt et une heures ». Sans les deux petits mots, la phrase ne tient pas. C'est ce qui distingue un horaire d'un rendez-vous.</p></div></div></section><section class="bloc card"><div class="lbl">Écriture · 1 de 2</div><h2 class="t">De l'heure officielle à l'heure parlée</h2><p class="consigne">Écrivez l'heure de tous les jours qui correspond.</p><ol class="ex"><li><span class="q">Le ciné-club commence à 19 h, c'est-à-dire à ___ heures du soir.</span><span class="ligne ligne--court"></span></li><li><span class="q">La séance du 17 octobre est à 19 h 30, c'est-à-dire à sept heures ___ .</span><span class="ligne ligne--court"></span></li><li><span class="q">Le badminton finit à 21 h, c'est-à-dire à ___ heures du soir.</span><span class="ligne ligne--court"></span></li><li><span class="q">L'heure des familles est à 10 h, c'est-à-dire à ___ heures du matin.</span><span class="ligne ligne--court"></span></li><li><span class="q">La cuisine collective commence à 13 h 15, c'est-à-dire à une heure ___ .</span><span class="ligne ligne--court"></span></li><li><span class="q">Le centre ferme à 20 h 45, c'est-à-dire à neuf heures ___ .</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">Écriture · 2 de 2</div><h2 class="t">Écrivez la ligne complète</h2><p class="consigne">Pour chaque activité, écrivez une phrase avec « de… à… ».</p><ol class="ex"><li><span class="q">badminton, mardi, 19 h à 21 h</span><span class="ligne"></span></li><li><span class="q">danse en ligne, jeudi, 19 h à 20 h 30</span><span class="ligne"></span></li><li><span class="q">heure des familles, samedi, 10 h à 11 h</span><span class="ligne"></span></li><li><span class="q">cuisine collective, mercredi, 13 h à 16 h</span><span class="ligne"></span></li><li><span class="q">ciné-club, vendredi, 19 h 30</span><span class="ligne"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez trois heures de votre semaine, des deux façons.</p><ul><li>L'heure officielle d'abord, l'heure parlée ensuite.</li><li>Exemple : 18 h 30 — six heures et demie du soir.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Dix-neuf heures trente, ou sept heures et demie ?</h2><section class="bloc card ml"><h3>Deux systèmes, et il faut les deux</h3><p class="mp">Un feuillet de loisirs écrit <b>19 h 30</b>. La préposée, au téléphone, dit « <b>sept heures et demie</b> ». Ce n'est pas une contradiction : le premier est l'heure officielle, celle des papiers et des horaires ; le second est l'heure de tous les jours, celle qu'on parle. Il faut savoir passer de l'une à l'autre, dans les deux sens.</p><div class="note">Au Québec, on écrit « 19 h 30 » avec un h minuscule et des espaces autour. Pas de « h » majuscule, pas de deux-points comme en anglais.</div></section><section class="bloc card ml"><h3>L'heure officielle — de 0 h à 24 h</h3><p class="mp">Celle du feuillet, du billet et de l'horaire affiché.</p><table class="ana"><tr><td>On écrit</td><td class="">19 h 30</td></tr><tr><td>On dit</td><td class="cle"><b>dix-neuf heures trente</b></td></tr><tr><td>Avantage</td><td class="">aucun doute : c'est le soir</td></tr></table><p class="dit"><span class="k">On dit</span> Dix-neuf heures trente.</p><div class="note">Après midi, les heures continuent : 13, 14, 15… jusqu'à 23. Minuit, c'est 0 h ou 24 h selon les papiers.</div></section><section class="bloc card ml"><h3>L'heure de tous les jours — de 1 à 12</h3><p class="mp">Celle qu'on entend dans un dialogue.</p><table class="ana"><tr><td>On dit</td><td class=""><b>sept heures et demie</b> <b>du soir</b></td></tr><tr><td>Calcul</td><td class="cle">19 − 12 = 7</td></tr><tr><td>Avant midi</td><td class="">9 h se dit <b>neuf heures</b>, sans calcul</td></tr></table><p class="dit"><span class="k">On dit</span> Sept heures et demie du soir. Neuf heures du matin.</p><div class="note">Ajoute <b>du matin</b> ou <b>du soir</b> quand ce n'est pas évident. « On se voit à sept heures » sans précision peut mener à un malentendu de douze heures.</div></section><section class="bloc card ml"><h3>Les demies et les quarts</h3><p class="mp">Trois expressions, et presque tout est couvert.</p><table class="ana"><tr><td>30 minutes</td><td class="">sept heures <b>et demie</b></td></tr><tr><td>15 minutes</td><td class="cle">une heure <b>et quart</b></td></tr><tr><td>45 minutes</td><td class="">neuf heures <b>moins quart</b></td></tr></table><p class="dit"><span class="k">On dit</span> Sept heures et demie. Une heure et quart. Neuf heures moins quart.</p><div class="note">« Moins quart » se calcule sur l'heure <b>suivante</b> : 20 h 45, c'est neuf heures moins quart, pas huit heures moins quart.</div></section><section class="bloc card ml"><h3>Le début et la fin : de… à…</h3><p class="mp">Une activité a toujours deux heures, pas une.</p><table class="ana"><tr><td>Sur le feuillet</td><td class="">19 h à 21 h</td></tr><tr><td>On dit</td><td class="cle"><b>de sept heures à neuf heures</b></td></tr><tr><td>Ou encore</td><td class="">ça dure deux heures</td></tr></table><p class="dit"><span class="k">On dit</span> De sept heures à neuf heures.</p><div class="note">Sans les deux petits mots <b>de</b> et <b>à</b>, la phrase ne tient pas. C'est ce qui distingue un horaire d'un rendez-vous.</div></section><section class="bloc card ml"><h3>Passer d'une heure à l'autre</h3><p class="mp">Choisis une heure officielle et vois comment elle se dit.</p><table class="labo"><thead><tr><th>Quelle heure ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">10 h</td><td>Dix heures du matin.<span class="tags">10 h → <b>dix heures du matin</b></span></td><td>avant midi, rien à calculer</td></tr><tr><td class="cle">13 h 15</td><td>Une heure et quart.<span class="tags">13 h 15 → <b>une heure et quart</b></span></td><td>13 − 12 = 1</td></tr><tr><td class="cle">19 h</td><td>Sept heures du soir.<span class="tags">19 h → <b>sept heures du soir</b></span></td><td>19 − 12 = 7</td></tr><tr><td class="cle">19 h 30</td><td>Sept heures et demie.<span class="tags">19 h 30 → <b>sept heures et demie</b></span></td><td>la séance du ciné-club</td></tr><tr><td class="cle">20 h 45</td><td>Neuf heures moins quart.<span class="tags">20 h 45 → <b>neuf heures moins quart</b></span></td><td>on compte sur l'heure suivante</td></tr></tbody></table><div class="note">Cinq heures du feuillet, cinq façons de les dire. Ce sont exactement celles du centre communautaire.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six phrases d'horaire.</p><table class="ex2"><tr><td>Le badminton, c'est de sept heures à neuf heures.</td><td>de… à…</td></tr><tr><td>La séance commence à sept heures et demie.</td><td>la demie</td></tr><tr><td>L'heure des familles est à dix heures du matin.</td><td>avant midi</td></tr><tr><td>La cuisine collective commence à une heure et quart.</td><td>le quart</td></tr><tr><td>Le centre ferme à neuf heures moins quart.</td><td>moins quart</td></tr><tr><td>Le film du 24 octobre est à deux heures de l'après-midi.</td><td>14 h</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges à connaître</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">oublier « du matin » ou « du soir »</p><div class="k">Ce qui arrive</div><p class="ph">« On se voit à sept heures »</p><p class="px">Douze heures d'écart. Précise dès qu'il y a le moindre doute.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">calculer « moins quart » sur la mauvaise heure</p><div class="k">Ce qui arrive</div><p class="ph">dire « huit heures moins quart » pour 20 h 45</p><p class="px">« Moins quart » veut dire : il manque quinze minutes avant l'heure suivante. 20 h 45 → neuf heures moins quart.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">écrire 7:30 PM</p><div class="k">Ce qui arrive</div><p class="ph">la forme anglaise</p><p class="px">En français, on écrit <b>19 h 30</b> ou <b>7 h 30 du soir</b>. Le « PM » ne se lit pas ici.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">19 h se dit, en parlant…</span><ul class="opts"><li>sept heures du soir</li><li>neuf heures du soir</li></ul></li><li><span class="q">20 h 45 se dit…</span><ul class="opts"><li>huit heures moins quart</li><li>neuf heures moins quart</li></ul></li><li><span class="q">13 h 15 se dit…</span><ul class="opts"><li>une heure et quart</li><li>trois heures et quart</li></ul></li><li><span class="q">Pour dire le début et la fin, on emploie…</span><ul class="opts"><li>de… à…</li><li>entre… et…</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> sept heures du soir — 19 − 12 = 7. · <b>2.</b> neuf heures moins quart — On compte sur l'heure suivante. · <b>3.</b> une heure et quart — 13 − 12 = 1. · <b>4.</b> de… à… — De sept heures à neuf heures.</div></section></section></div>
+<footer><span>C2 · Choisir une activité au centre</span><span>Fiche élève</span></footer>
+</body>
+</html>

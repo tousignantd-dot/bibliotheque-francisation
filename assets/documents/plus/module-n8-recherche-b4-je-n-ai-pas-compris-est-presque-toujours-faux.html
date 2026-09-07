@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B4 · « Je n'ai pas compris » est presque toujours faux — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance B4 · Module 2 · 75 minutes</div>
+    <h1>« Je n'ai pas compris » est presque toujours faux</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Vous avez compris quinze mots sur seize. Dire que vous n'avez rien compris oblige l'autre à tout reprendre, et vous fait passer pour plus loin du compte que vous ne l'êtes.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>faire préciser un mot, un seul, sans faire reprendre la phrase ;</li><li>dire où le fil s'est rompu plutôt que de dire qu'on est perdu ;</li><li>vérifier ce qu'on a compris en changeant les mots ;</li><li>résumer avant de conclure une conversation.</li></ol></section><section class="bloc"><div class="lbl">Analyse</div><h2 class="t">Quatre gestes, quatre formules</h2><div class="grid"><div class="card"><h3>Faire préciser un mot</h3><p>Excusez-moi, le mot « vérifiable », vous l'entendez comment ? Qu'est-ce que vous mettez exactement sous « polyvalence » ? On demande le sens dans cette phrase-ci, pas une définition.</p></div><div class="card"><h3>Faire répéter une partie</h3><p>Je vous suis jusqu'à « après dix-huit heures » ; après, je perds le fil. Vous avez dit trois dates ; j'ai la première et la troisième. On montre où, on ne dit pas que.</p></div><div class="card"><h3>Vérifier qu'on a compris</h3><p>Si je comprends bien, l'équipe reste à constituer ? Autrement dit, c'est le raisonnement que vous regardez. On reformule avec ses propres mots : répéter ceux de l'autre ne prouve rien.</p></div><div class="card"><h3>Résumer avant de conclure</h3><p>En somme, trois étapes réparties sur deux semaines. Pour résumer, vous cherchez quelqu'un qui bâtira l'équipe. On se souvient toujours de la dernière phrase.</p></div></div></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Ce qu'on dit, ce que l'autre entend</h2><table><thead><tr><th>La formule</th><th>L'effet réel</th></tr></thead><tbody><tr><td class="cle">« Je n'ai pas compris. »</td><td>il faut tout reprendre : trois minutes perdues</td></tr><tr><td class="cle">« Le mot vérifiable, vous l'entendez comment ? »</td><td>une seule chose à préciser : dix secondes</td></tr><tr><td class="cle">« Oui, oui. »</td><td>l'autre continue, et vous répondrez à côté</td></tr><tr><td class="cle">« Si je comprends bien, l'équipe reste à constituer ? »</td><td>l'autre confirme ou corrige tout de suite</td></tr><tr><td class="cle">« En somme, trois étapes sur deux semaines. »</td><td>vous laissez l'impression d'avoir tout suivi</td></tr></tbody></table></section><section class="bloc card"><div class="lbl">Pratique 1 de 2</div><h2 class="t">Quelle formule employer ?</h2><p class="consigne">Choisissez le geste qui convient.</p><ol class="ex"><li><span class="q">Un mot que vous connaissez, mais dont vous doutez du sens ici.</span><span class="ligne ligne--court"></span></li><li><span class="q">Vous avez suivi le début, puis vous avez décroché à un endroit précis.</span><span class="ligne"></span></li><li><span class="q">Vous croyez avoir compris et vous voulez en être sûre.</span><span class="ligne"></span></li><li><span class="q">Vous fermez la conversation en rassemblant ce qui a été dit.</span><span class="ligne ligne--court"></span></li><li><span class="q">Trois chiffres ont été donnés, vous n'en avez retenu que deux.</span><span class="ligne"></span></li></ol></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Piège</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">hocher la tête au téléphone</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">dire un mot</p></div></div><div class="note">Votre interlocuteur n'entend rien de vos gestes. Le silence se lit comme une absence, et l'autre finit par demander « vous êtes toujours là ? ». Un « d'accord » ou un « je note » toutes les deux ou trois phrases suffit à tenir la ligne vivante.</div></section><section class="bloc regle"><div class="lbl">Trois étapes, trois choses observées</div><p class="r">L'examen écrit regarde comment vous raisonnez. L'entrevue de groupe regarde comment vous êtes avec les autres. L'entrevue individuelle regarde qui vous êtes et ce que vous voulez.</p><p class="pr">Rien ne s'efface entre les étapes : ce qu'on écrit sur vous à la première est relu avant la troisième. Et c'est à la deuxième que la majorité des candidats sont écartés, parce qu'ils croient qu'il faut briller alors qu'on observe s'ils écoutent.</p></section><section class="bloc card"><div class="lbl">Pratique 2 de 2</div><h2 class="t">À quelle étape ?</h2><p class="consigne">Dites de quelle étape il s'agit.</p><ol class="ex"><li><span class="q">On vous donne quatre-vingt-dix minutes et une ligne arrêtée.</span><span class="ligne ligne--court"></span></li><li><span class="q">Vous êtes quatre autour d'une table et l'on observe qui écoute.</span><span class="ligne ligne--court"></span></li><li><span class="q">On vous demande pourquoi vous êtes restée cinq ans au même poste.</span><span class="ligne"></span></li><li><span class="q">C'est le seul moment où l'on parle d'argent.</span><span class="ligne"></span></li><li><span class="q">C'est l'étape où la majorité des candidats sont écartés.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Deux par deux, jouez un appel de trois minutes. Celui qui écoute doit employer deux des quatre formules.</p><ul><li>L'autre parle vite et donne trois chiffres d'affilée.</li><li>On change de rôle après trois minutes.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Dire précisément ce qu'on n'a pas compris</h2><section class="bloc card ml"><h3>Le savoir que le programme nomme, et qu'on lit mal</h3><p class="mp">Parmi les points de lexique du niveau 8 figure celui-ci : « phrases clés pour faire clarifier les points équivoques » et « expressions pour reprendre une partie d'un discours ». Le mot qui compte est <b>partie</b>. On n'apprend pas ici à dire « je n'ai pas compris » : à votre niveau, c'est presque toujours faux. Vous avez compris quinze mots sur seize. Ce qu'il faut apprendre, c'est à dire <i>lequel</i> des seize a manqué — et cela change complètement la façon dont on vous répond.</p><div class="note">Dire qu'on n'a rien compris oblige l'autre à tout reprendre depuis le début, et vous fait passer pour beaucoup plus loin du compte que vous ne l'êtes.</div></section><section class="bloc card ml"><h3>Ce que ça produit chez l'autre</h3><p class="mp">Une demande précise se répare en dix secondes, et elle se lit comme de la rigueur : quelqu'un qui isole un mot montre qu'il a suivi tout le reste. Une demande vague coûte trois minutes à votre interlocuteur, et elle laisse une impression de fatigue. C'est particulièrement vrai au téléphone, où il n'y a ni visage ni geste pour rattraper. Vous n'avez pas besoin d'être parfait : vous avez besoin d'être précis.</p><div class="note">Une seule demande de clarification par conversation passe très bien. Trois de suite fatiguent, quel que soit leur niveau de précision.</div></section><section class="bloc card ml"><h3>Faire préciser un mot — un seul</h3><p class="mp">On ne demande pas une définition de dictionnaire : on demande ce que l'autre met dans le mot, ici, dans cette phrase-ci.</p><table class="ana"><tr><td>On dit</td><td class="">Excusez-moi, le mot « vérifiable », vous l'entendez comment ?</td></tr><tr><td>Autre forme</td><td class="cle">Qu'est-ce que vous mettez exactement sous « polyvalence » ?</td></tr><tr><td>Ce qu'on évite</td><td class="">« je ne connais pas ce mot »</td></tr></table><p class="dit"><span class="k">On dit</span> Excusez-moi, le mot vérifiable, vous l'entendez comment ?</p><div class="note">Cette formulation a un second avantage : beaucoup de mots d'entreprise sont flous, et votre question fait travailler l'autre. On l'a vu dans l'appel : « je la note ».</div></section><section class="bloc card ml"><h3>Faire répéter une partie seulement</h3><p class="mp">On dit jusqu'où on a suivi, et où le fil s'est rompu. L'autre reprend à cet endroit-là, pas au début.</p><table class="ana"><tr><td>On dit</td><td class="">Je vous suis jusqu'à « après dix-huit heures » ; après, je perds le fil.</td></tr><tr><td>Autre forme</td><td class="cle">Vous avez dit trois dates ; j'ai la première et la troisième.</td></tr><tr><td>Le principe</td><td class="">montrer où, pas dire que</td></tr></table><p class="dit"><span class="k">On dit</span> Je vous suis jusqu'à après dix-huit heures ; après, je perds le fil.</p><div class="note">Citer les mots exacts où ça a cassé est ce qui rend la réparation instantanée.</div></section><section class="bloc card ml"><h3>Vérifier qu'on a bien compris</h3><p class="mp">On reformule avec ses <b>propres</b> mots. Répéter les mots de l'autre ne prouve rien : on peut répéter sans comprendre.</p><table class="ana"><tr><td>On dit</td><td class="">Si je comprends bien, l'équipe reste à constituer ?</td></tr><tr><td>Autre forme</td><td class="cle">Autrement dit, c'est le raisonnement que vous regardez.</td></tr><tr><td>Le test</td><td class="">ai-je changé les mots ?</td></tr></table><p class="dit"><span class="k">On dit</span> Si je comprends bien, l'équipe reste à constituer ?</p><div class="note">C'est le geste qui a le plus d'effet dans un appel : il montre que vous avez traité l'information, pas seulement reçu.</div></section><section class="bloc card ml"><h3>Résumer avant de conclure</h3><p class="mp">En fin d'échange, on rassemble en une phrase ce qui a été convenu. Cela ferme proprement et laisse une trace commune.</p><table class="ana"><tr><td>On dit</td><td class="">En somme, trois étapes réparties sur deux semaines.</td></tr><tr><td>Autre forme</td><td class="cle">Pour résumer, vous cherchez quelqu'un qui bâtira l'équipe.</td></tr><tr><td>L'effet</td><td class="">on se souvient de la dernière phrase</td></tr></table><p class="dit"><span class="k">On dit</span> En somme, trois étapes réparties sur deux semaines.</p><div class="note">Le résumé final est aussi une vérification : si vous vous êtes trompée, l'autre corrige tout de suite, et non trois jours plus tard.</div></section><section class="bloc card ml"><h3>Quatre gestes, deux formulations chacun</h3><p class="mp">Choisissez un geste et une formulation.</p><table class="labo"><thead><tr><th>Quel geste ? · Quelle formulation ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">préciser un mot + la première</td><td>Le mot vérifiable, <b>vous l'entendez comment ?</b></td><td>on demande le sens dans cette phrase-ci</td></tr><tr><td class="cle">préciser un mot + la seconde</td><td>Qu'est-ce que vous mettez exactement sous polyvalence ?<span class="tags">qu'est-ce que vous mettez sous ce mot ?</span></td><td>utile quand le mot est flou pour tout le monde</td></tr><tr><td class="cle">faire répéter une partie + la première</td><td>Je vous suis jusqu'à dix-huit heures ; après, je perds le fil.<span class="tags">je vous suis jusqu'à…</span></td><td>on montre l'endroit exact</td></tr><tr><td class="cle">faire répéter une partie + la seconde</td><td>Vous avez dit trois dates ; <b>j'ai la première et la troisième</b>.</td><td>on dit ce qu'on a, pas ce qui manque</td></tr><tr><td class="cle">vérifier + la première</td><td>Si je comprends bien, l'équipe reste à constituer ?<span class="tags">si je comprends bien</span></td><td>on reformule avec ses propres mots</td></tr><tr><td class="cle">vérifier + la seconde</td><td>Autrement dit, c'est le raisonnement que vous regardez.<span class="tags">autrement dit</span></td><td>on traduit, on n'ajoute rien</td></tr><tr><td class="cle">résumer + la première</td><td>En somme, trois étapes réparties sur deux semaines.<span class="tags">en somme</span></td><td>on ferme en rassemblant</td></tr><tr><td class="cle">résumer + la seconde</td><td>Pour résumer, vous cherchez quelqu'un qui bâtira l'équipe.<span class="tags">pour résumer</span></td><td>on redit l'essentiel du besoin</td></tr></tbody></table><div class="note">Choisissez-en deux et apprenez-les par cœur : au téléphone, on n'a pas le temps de composer une phrase.</div></section><section class="bloc card ml"><h3>Ce qu'on dit, et ce que l'autre entend</h3><p class="mp">À gauche la formule, à droite l'effet réel.</p><table class="ex2"><tr><td>Je n'ai pas compris.</td><td>il faut tout reprendre — trois minutes perdues</td></tr><tr><td>Le mot « vérifiable », vous l'entendez comment ?</td><td>une seule chose à préciser — dix secondes</td></tr><tr><td>Pardon ?</td><td>l'autre répète la phrase entière, souvent identique</td></tr><tr><td>Vous avez bien dit quatre-vingt-dix, et non quarante ?</td><td>le chiffre se confirme d'un mot</td></tr><tr><td>Oui, oui.</td><td>l'autre continue, et vous répondrez à côté</td></tr><tr><td>Si je comprends bien, l'équipe reste à constituer ?</td><td>l'autre confirme ou corrige immédiatement</td></tr><tr><td>C'est-à-dire ?</td><td>utile une fois, agaçant deux</td></tr><tr><td>En somme, trois étapes sur deux semaines.</td><td>vous laissez l'impression d'avoir tout suivi</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges au téléphone</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">hocher la tête</p><div class="k">Ce qui arrive</div><p class="ph">dire un mot</p><p class="px">Au téléphone, votre interlocuteur n'entend rien de vos gestes. Le silence se lit comme une absence, et l'autre finit par demander « vous êtes toujours là ? ».</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">répondre « oui oui » à ce qu'on n'a pas saisi</p><div class="k">Ce qui arrive</div><p class="ph">poser la question tout de suite</p><p class="px">Le « oui oui » coûte dix minutes : on vous croit d'accord, on continue, et vous répondez à côté à la question suivante. Personne ne pardonne mal une demande de précision ; tout le monde remarque une réponse hors sujet.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">s'excuser trois fois avant de demander</p><div class="k">Ce qui arrive</div><p class="ph">demander une fois, simplement</p><p class="px">« Excusez-moi, je suis désolée, je ne suis pas sûre, pardon… » occupe plus de place que la question elle-même et déplace l'attention sur votre gêne.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">« Je n'ai pas compris » est le plus souvent…</span><ul class="opts"><li>exact</li><li>faux et coûteux</li></ul></li><li><span class="q">Reformuler avec les mots de l'autre…</span><ul class="opts"><li>prouve qu'on a compris</li><li>ne prouve rien</li></ul></li><li><span class="q">« Je vous suis jusqu'à dix-huit heures » sert à…</span><ul class="opts"><li>faire répéter une partie</li><li>résumer</li></ul></li><li><span class="q">Combien de demandes de clarification passent bien dans un appel ?</span><ul class="opts"><li>une, éventuellement deux</li><li>autant qu'il en faut</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> faux et coûteux — Vous avez compris presque tout. Nommez ce qui manque : un mot. · <b>2.</b> ne prouve rien — On peut répéter sans comprendre. Il faut changer les mots. · <b>3.</b> faire répéter une partie — On montre l'endroit exact où le fil s'est rompu. · <b>4.</b> une, éventuellement deux — Une passe très bien. Trois fatiguent, même bien formulées.</div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Trois étapes, et ce que chacune regarde</h2><section class="bloc card ml"><h3>Pourquoi un processus, et pas une entrevue</h3><p class="mp">Au-dessus d'un certain niveau de responsabilité, presque aucun employeur ne décide sur une seule rencontre. Il y a une raison simple à cela : une entrevue mesure surtout la capacité à passer une entrevue. En ajoutant un écrit et une mise en groupe, l'employeur observe trois choses différentes — comment vous raisonnez seul, comment vous êtes avec d'autres, et qui vous êtes. Chacune est éliminatoire, et rien ne s'efface entre elles : ce qu'on note à l'étape 1 est relu avant l'étape 3.</p><div class="note">C'est aussi ce qui rend le processus long : deux semaines entre le premier appel et la décision est un délai normal, pas un mauvais signe.</div></section><section class="bloc card ml"><h3>L'étape qu'on prépare, et celle qui élimine</h3><p class="mp">Tout le monde prépare l'entrevue individuelle : c'est celle qu'on imagine, celle des films, celle dont les proches parlent. Or c'est presque toujours à la <b>deuxième</b> qu'on tombe. La raison est contre-intuitive : en entrevue de groupe, les candidats croient qu'il faut briller, et ils écrasent les trois autres. L'observateur, lui, cherche exactement le contraire — quelqu'un qui écoute, qui reprend l'idée d'un autre en la nommant, et qui laisse la parole.</p><div class="note">Consacrez à la deuxième étape au moins autant de préparation qu'à la troisième. C'est le conseil le plus rentable de ce module.</div></section><section class="bloc card ml"><h3>L'examen écrit — comment vous raisonnez</h3><p class="mp">Une mise en situation impossible : plusieurs problèmes en même temps, et il faut choisir un ordre. On ne cherche pas la bonne réponse, on cherche la raison que vous donnez.</p><table class="ana"><tr><td>Ce qu'on donne</td><td class="">une ligne arrêtée, trois problèmes, quatre-vingt-dix minutes</td></tr><tr><td>Ce qu'on regarde</td><td class="cle">l'ordre et sa justification</td></tr><tr><td>Ce qui échoue</td><td class="">un ordre sans raison, même le bon</td></tr></table><p class="dit"><span class="k">On dit</span> On regarde l'ordre de vos décisions, et la raison que vous en donnez.</p><div class="note">Écrivez court, en phrases entières, et donnez toujours le « parce que ». Un tableau sans phrase ne se défend pas.</div></section><section class="bloc card ml"><h3>L'entrevue de groupe — comment vous êtes avec les autres</h3><p class="mp">Quatre candidats, une tâche commune, et des gens qui observent sans parler. On note qui écoute, qui construit sur l'idée d'un autre, qui coupe la parole.</p><table class="ana"><tr><td>Ce qui sert</td><td class="">« Je reprends ce que monsieur Guillemette a dit… »</td></tr><tr><td>Ce qui nuit</td><td class="cle">parler le plus longtemps</td></tr><tr><td>Ce qui tue</td><td class="">ne rien dire du tout</td></tr></table><p class="dit"><span class="k">On dit</span> Je reprends ce que monsieur Guillemette a dit, et j'ajouterais une chose.</p><div class="note">Deux ou trois interventions bien placées valent mieux que huit. Mais zéro intervention se lit comme une absence.</div></section><section class="bloc card ml"><h3>L'entrevue individuelle — qui vous êtes, et ce que vous voulez</h3><p class="mp">Là seulement, on parle de votre parcours, de vos exemples, de vos conditions. C'est aussi le seul moment où l'on négocie.</p><table class="ana"><tr><td>Ce qu'on demande</td><td class="">un exemple daté, une erreur, une projection</td></tr><tr><td>Ce qu'on négocie</td><td class="cle">l'échelon, l'horaire, la formation</td></tr><tr><td>La faute</td><td class="">négocier avant cette étape-là</td></tr></table><p class="dit"><span class="k">On dit</span> C'est le seul moment du processus où l'on parle d'argent.</p><div class="note">Demander l'échelon à l'entrevue de groupe, devant trois autres candidats, met tout le monde mal à l'aise et vous écarte.</div></section><section class="bloc card ml"><h3>Une phrase, une étape</h3><p class="mp">Choisissez une étape et un aspect.</p><table class="labo"><thead><tr><th>Quelle étape ? · Quel aspect ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">examen écrit + ce qu'on observe</td><td>On observe l'ordre de vos décisions et la raison que vous en donnez.<span class="tags">l'ordre et la justification</span></td><td>la bonne réponse n'existe pas</td></tr><tr><td class="cle">examen écrit + ce qui fait tomber</td><td>Un ordre donné sans justification ne se défend pas, même s'il est juste.<span class="tags">un ordre sans raison</span></td><td>écrivez toujours le « parce que »</td></tr><tr><td class="cle">entrevue de groupe + ce qu'on observe</td><td>On observe si vous écoutez et si vous reprenez l'idée d'un autre.<span class="tags">l'écoute et la reprise</span></td><td>nommer la personne compte beaucoup</td></tr><tr><td class="cle">entrevue de groupe + ce qui fait tomber</td><td>Écraser les trois autres candidats vous écarte immédiatement.<span class="tags">vouloir briller</span></td><td>c'est l'étape où l'on tombe le plus</td></tr><tr><td class="cle">entrevue individuelle + ce qu'on observe</td><td>On demande un exemple daté, une erreur, et ce que vous en avez tiré.<span class="tags">les exemples datés</span></td><td>préparez-en trois, pas un</td></tr><tr><td class="cle">entrevue individuelle + ce qui fait tomber</td><td>Une réponse sans date et sans chiffre ne laisse aucune trace.<span class="tags">répondre en généralités</span></td><td>« je suis rigoureuse » ne prouve rien</td></tr></tbody></table><div class="note">Chaque étape a son geste principal. Apprenez lequel avant d'y entrer.</div></section><section class="bloc card ml"><h3>Ce qu'on vous dira, et ce que ça veut dire</h3><p class="mp">À gauche la phrase entendue, à droite ce qu'elle annonce.</p><table class="ex2"><tr><td>« Un appel d'une vingtaine de minutes, sans piège. »</td><td>présélection : disponibilité et vérification</td></tr><tr><td>« Une mise en situation, quatre-vingt-dix minutes. »</td><td>examen écrit : on regarde le raisonnement</td></tr><tr><td>« Vous serez quatre autour de la table. »</td><td>entrevue de groupe : on observe l'écoute</td></tr><tr><td>« Nous avons quarante-cinq minutes. »</td><td>entrevue individuelle : exemples et conditions</td></tr><tr><td>« Je vous envoie la convocation aujourd'hui. »</td><td>vous passez à l'étape suivante</td></tr><tr><td>« Nous vous rappellerons vendredi. »</td><td>une date : notez-la, et relancez le lundi</td></tr><tr><td>« Nous vous situerions au deuxième échelon. »</td><td>la négociation est ouverte</td></tr><tr><td>« Nous gardons votre dossier. »</td><td>c'est un refus poli, dans neuf cas sur dix</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges du processus</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">préparer seulement la dernière étape</p><div class="k">Ce qui arrive</div><p class="ph">préparer surtout la deuxième</p><p class="px">C'est à l'entrevue de groupe que la majorité des candidats sont écartés, et c'est celle que personne ne travaille. Le calcul est vite fait.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">croire que les étapes sont indépendantes</p><div class="k">Ce qui arrive</div><p class="ph">se rappeler que tout est relu</p><p class="px">Ce que vous avez écrit à l'examen est sur la table à l'entrevue finale. Une contradiction entre l'écrit et l'oral se voit immédiatement — et c'est arrivé dans ce module : on a demandé à Shirin d'expliquer son classement.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">négocier trop tôt</p><div class="k">Ce qui arrive</div><p class="ph">attendre l'entrevue individuelle</p><p class="px">Une question d'argent posée à la présélection ou devant d'autres candidats vous fait passer pour quelqu'un qui n'a pas compris où il est.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">À quelle étape la majorité des candidats sont-ils écartés ?</span><ul class="opts"><li>l'entrevue de groupe</li><li>l'entrevue individuelle</li></ul></li><li><span class="q">À l'examen écrit, ce qui compte est…</span><ul class="opts"><li>la bonne réponse</li><li>l'ordre et sa justification</li></ul></li><li><span class="q">Ce qu'on écrit sur vous à l'étape 1…</span><ul class="opts"><li>s'efface entre les étapes</li><li>est relu avant l'étape 3</li></ul></li><li><span class="q">On négocie l'échelon…</span><ul class="opts"><li>dès l'appel de présélection</li><li>à l'entrevue individuelle</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> l'entrevue de groupe — C'est la deuxième, et c'est celle que presque personne ne prépare. · <b>2.</b> l'ordre et sa justification — Il n'y a pas de bonne réponse : il y a des choix justifiés. · <b>3.</b> est relu avant l'étape 3 — Rien ne s'efface. Le dossier se relit avant la rencontre finale. · <b>4.</b> à l'entrevue individuelle — C'est le seul moment prévu pour ça.</div></section></section></div>
+<footer><span>B4 · Passer au travers du processus</span><span>Fiche élève</span></footer>
+</body>
+</html>

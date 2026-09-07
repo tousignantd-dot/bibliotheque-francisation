@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A4 · Chaleureux, et vouvoyé — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance A4 · Module 8 · 75 minutes</div>
+    <h1>Chaleureux, et vouvoyé</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Marisol et Réjean se croisent depuis trois ans. Ils s'entraident, ils mangeront à la même table au mois de juin, et ils se vouvoient. Entre voisins d'un même immeuble, le « vous » est la règle par défaut.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>savoir à qui l'on dit « vous » dans un immeuble, et pourquoi ;</li><li>reconnaître comment le tutoiement s'installe entre voisins ;</li><li>distinguer ce qui se demande à un voisin de ce qui ne se demande pas ;</li><li>nommer quelqu'un correctement : monsieur, madame, et le nom de famille.</li></ol></section><section class="bloc regle"><div class="lbl">Le vous ne vexe jamais, le tu peut mettre mal à l'aise</div><p class="r">Entre voisins d'un même immeuble, on se vouvoie tant que personne n'a proposé autre chose.</p><p class="pr">Le tutoiement s'installe quand quelqu'un le propose à voix haute : « on peut se tutoyer, hein ? ». Tant que la phrase n'a pas été dite, le vous reste — et il n'a rien de froid.</p></section><section class="bloc card"><div class="lbl">Deux colonnes</div><h2 class="t">Ce qui se demande, ce qui ne se demande pas</h2><table><thead><tr><th>Ça se dit à un voisin</th><th>C'est trop personnel</th></tr></thead><tbody><tr><td>Il y a longtemps que vous habitez ici ?</td><td class="cle">Vous payez combien de loyer ?</td></tr><tr><td>Vous plantez quelque chose cette année ?</td><td class="cle">Vous avez reçu vos papiers ?</td></tr><tr><td>Je peux vous aider à monter vos sacs ?</td><td class="cle">Vous gagnez combien ?</td></tr><tr><td>Quand ramassent-ils le bac brun ?</td><td class="cle">Vous êtes malade ?</td></tr><tr><td>Vous avez changé d'horaire ?</td><td class="cle">Pourquoi votre mari est parti ?</td></tr></tbody></table></section><section class="bloc"><div class="lbl">Nommer quelqu'un</div><h2 class="t">Quatre façons, et une à éviter</h2><div class="grid"><div class="card"><h3>Monsieur ou madame, plus le nom</h3><p>Bonjour monsieur Deslauriers. La forme normale, pendant des années.</p></div><div class="card"><h3>Quand on ne sait pas le nom</h3><p>Bonjour ! Excusez-moi... Vous êtes du deuxième, je pense ?</p></div><div class="card"><h3>Pour proposer le tutoiement</h3><p>On peut se tutoyer, si vous voulez. Une phrase, dite une fois.</p></div><div class="card"><h3>Ce qu'on évite</h3><p>Hé, la madame ! Un appel crié dans la cour ferme la porte.</p></div></div></section><section class="bloc card"><div class="lbl">Jugement</div><h2 class="t">Ça se dit, ou c'est trop personnel ?</h2><p class="consigne">Pour chaque phrase, choisissez.</p><ol class="ex"><li><span class="q">Il y a longtemps que vous habitez ici ?</span><span class="ligne ligne--court"></span></li><li><span class="q">Vous payez combien de loyer, vous ?</span><span class="ligne ligne--court"></span></li><li><span class="q">Vous plantez quelque chose cette année ?</span><span class="ligne ligne--court"></span></li><li><span class="q">Vous avez reçu vos papiers d'immigration ?</span><span class="ligne ligne--court"></span></li><li><span class="q">Je peux vous aider à monter vos sacs ?</span><span class="ligne ligne--court"></span></li><li><span class="q">Vous gagnez combien à votre nouvel emploi ?</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Poser une question personnelle en croyant s'intéresser</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">Vous avez eu vos papiers ? (dit avec bienveillance)</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">Il y a longtemps que vous habitez ici ?</p></div></div><div class="note">L'intention est bonne, l'effet est mauvais : la personne doit soit mentir, soit raconter une chose difficile devant les boîtes aux lettres. Parlez de l'immeuble ; le reste viendra si elle le veut.</div></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Se justifier deux fois en refusant</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">Je travaille, et puis mon fils est malade, et j'ai aussi...</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">Je travaille ce jour-là. On se reprend ?</p></div></div><div class="note">Une raison suffit. Accumuler les raisons donne l'impression qu'aucune n'est vraie.</div></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez la phrase que vous direz demain à quelqu'un de votre immeuble.</p><ul><li>Une seule phrase, et une question à laquelle on répond en dix mots.</li><li>Notez à qui vous la direz : le nom, ou l'étage si vous ignorez le nom.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>La bonne distance avec un voisin</h2><section class="bloc card ml"><h3>Chaleureux et vouvoyé, ce n’est pas contradictoire</h3><p class="mp">Marisol et Réjean se croisent depuis trois ans. Ils se parlent avec chaleur, ils s’entraident, ils vont manger à la même table au mois de juin — et ils se vouvoient. Entre voisins d’un même immeuble, le <b>vous</b> est la règle par défaut, et il ne dit rien de froid : il dit seulement qu’on ne se connaît pas encore assez pour avoir décidé le contraire.</p><div class="note">Le tutoiement s’installe quand quelqu’un le propose, presque toujours à voix haute : « on peut se tutoyer, hein ? ». Tant que personne ne l’a proposé, restez au vous — c’est le choix qui ne vexe jamais.</div></section><section class="bloc card ml"><h3>Ce qui se demande sans risque</h3><p class="mp">Tous ces sujets sont partagés : ils concernent l’immeuble ou la vie de quartier, pas l’intimité de la personne.</p><table class="ana"><tr><td>L’immeuble et la ruelle</td><td class="">Vous savez quand ils ramassent le bac brun ? · Il y a longtemps que vous habitez ici ?</td></tr><tr><td>Le temps, les travaux, le stationnement</td><td class="cle">Ils ont fini de creuser la rue ? · Vous avez eu de l’eau au sous-sol, vous aussi ?</td></tr><tr><td>Le travail, en général</td><td class="">Vous avez changé d’horaire ? · Vous travaillez de nuit, je pense ?</td></tr></table><p class="dit"><span class="k">On dit</span> Il y a longtemps que vous habitez ici ? Vous avez changé d’horaire ?</p><div class="note">Une bonne question de voisinage porte sur quelque chose que vous partagez tous les deux. C’est ce qui la rend facile à poser et facile à recevoir.</div></section><section class="bloc card ml"><h3>Ce qui ne se demande pas</h3><p class="mp">Ces questions ne sont interdites par aucune règle. Elles ferment simplement la porte que vous veniez d’ouvrir.</p><table class="ana"><tr><td>L’argent</td><td class="">Vous payez combien de loyer ? · Vous gagnez combien ?</td></tr><tr><td>Les papiers, la santé, l’âge</td><td class="cle">Vous avez vos papiers ? · Vous êtes malade ? · Vous avez quel âge ?</td></tr><tr><td>La vie privée</td><td class="">Pourquoi votre mari n’habite plus ici ? · Vous êtes séparée ?</td></tr></table><p class="dit"><span class="k">On dit</span> Vous payez combien de loyer ? Vous avez vos papiers ?</p><div class="note">Si la personne veut vous en parler, elle en parlera d’elle-même. Le rôle du voisin est d’être disponible, pas curieux.</div></section><section class="bloc card ml"><h3>Monsieur, madame, et le nom de famille</h3><p class="mp">Dans beaucoup d’immeubles, les voisins s’appellent par leur nom de famille pendant des années.</p><table class="ana"><tr><td>La forme normale</td><td class="">Bonjour monsieur Deslauriers. · Madame Faye, vous avez une minute ?</td></tr><tr><td>Quand on ne sait pas le nom</td><td class="cle">Bonjour ! · Excusez-moi… · Vous êtes du deuxième, je pense ?</td></tr><tr><td>Ce qu’on évite</td><td class="">Hé, la madame ! · Monsieur ! (crié dans la cour)</td></tr></table><p class="dit"><span class="k">On dit</span> Bonjour monsieur Deslauriers. Madame Faye, vous avez une minute ?</p><div class="note">Employer le nom de famille avec « monsieur » ou « madame » n’est pas distant : c’est la façon normale de nommer quelqu’un qu’on respecte et qu’on ne fréquente pas encore.</div></section><section class="bloc card ml"><h3>La même intention, deux façons</h3><p class="mp">Choisissez ce que vous voulez faire, et écoutez la version qui passe.</p><table class="labo"><thead><tr><th>Que voulez-vous faire ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">Engager la conversation</td><td>Il y a longtemps que vous habitez ici ? Moi, ça fait trois ans.<span class="tags">le voisinage</span></td><td>une question partagée, et une information donnée en retour</td></tr><tr><td class="cle">Offrir de l’aide</td><td>Je peux vous aider à monter vos sacs, si vous voulez.<span class="tags">une corvée</span></td><td>une offre précise, facile à refuser</td></tr><tr><td class="cle">Refuser une invitation</td><td>Merci beaucoup, mais je travaille ce jour-là. On se reprend ?<span class="tags">un empêchement</span></td><td>merci, refus, raison, contre-proposition</td></tr><tr><td class="cle">Demander un service</td><td>Est-ce que je peux vous demander un service ? Ce n’est pas urgent.<span class="tags">arroser</span></td><td>on annonce le service avant de le demander</td></tr></tbody></table><div class="note">Dans les quatre cas, la phrase laisse à l’autre une porte de sortie. C’est ce qui distingue une demande de voisin d’une demande d’ami.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six phrases qui ouvrent une conversation d’escalier.</p><table class="ex2"><tr><td>Bonjour monsieur Deslauriers, vous arrivez du travail ?</td><td>le nom, puis une question partagée</td></tr><tr><td>Vous savez quand ils ramassent le bac brun ?</td><td>la question la plus utile des premiers mois</td></tr><tr><td>Je peux vous aider à monter vos sacs ?</td><td>une offre précise, sans insistance</td></tr><tr><td>Excusez-moi, vous êtes du deuxième, je pense ?</td><td>quand on ne connaît pas encore le nom</td></tr><tr><td>On peut se tutoyer, si vous voulez.</td><td>la seule façon d’installer le tutoiement</td></tr><tr><td>Si vous avez besoin de quelque chose, je suis au 2.</td><td>on donne son étage, pas son numéro de téléphone</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges de la conversation de voisinage</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">tutoyer d’emblée parce qu’on est du même âge</p><div class="k">Ce qui arrive</div><p class="ph">« Tu habites ici depuis longtemps ? » au premier bonjour</p><p class="px">Rien de grave, mais ça peut surprendre et forcer l’autre à vous suivre. Le vous ne vexe jamais ; le tu peut mettre mal à l’aise. Attendez qu’on vous le propose, ou proposez-le franchement.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">poser une question personnelle en croyant s’intéresser</p><div class="k">Ce qui arrive</div><p class="ph">« Vous avez eu vos papiers ? » dit avec bienveillance</p><p class="px">L’intention est bonne, l’effet est mauvais : la personne doit soit mentir, soit raconter une chose difficile devant les boîtes aux lettres. Parlez de l’immeuble ; le reste viendra si elle le veut.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">se justifier deux fois en refusant</p><div class="k">Ce qui arrive</div><p class="ph">« Je travaille, et puis mon fils est malade, et j’ai aussi… »</p><p class="px">Une raison suffit. Accumuler les raisons donne l’impression qu’aucune n’est vraie. Une phrase, puis une contre-proposition, puis on passe à autre chose.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c’est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">Entre voisins d’un même immeuble, on se…</span><ul class="opts"><li>tutoie d’emblée</li><li>vouvoie tant que personne n’a proposé autre chose</li></ul></li><li><span class="q">« Vous payez combien de loyer ? » est une question…</span><ul class="opts"><li>normale entre voisins</li><li>trop personnelle</li></ul></li><li><span class="q">Appeler quelqu’un « madame Faye » est…</span><ul class="opts"><li>distant</li><li>la façon normale de nommer une voisine</li></ul></li><li><span class="q">Pour refuser une invitation, combien de raisons faut-il donner ?</span><ul class="opts"><li>une</li><li>le plus possible</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> vouvoie tant que personne n’a proposé autre chose — On se vouvoie. Le tutoiement s’installe quand quelqu’un le propose à voix haute. · <b>2.</b> trop personnelle — Trop personnelle. L’argent, les papiers, la santé et la vie privée ne se demandent pas. · <b>3.</b> la façon normale de nommer une voisine — C’est la façon normale. Le nom de famille avec madame ou monsieur marque le respect, pas la distance. · <b>4.</b> une — Une seule, en une phrase. Plusieurs raisons donnent l’impression qu’aucune n’est vraie.</div></section></section></div>
+<footer><span>A4 · La ruelle en fête</span><span>Fiche élève</span></footer>
+</body>
+</html>

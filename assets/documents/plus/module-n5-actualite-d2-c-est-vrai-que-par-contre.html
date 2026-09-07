@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>D2 · « C'est vrai que… Par contre… » — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance D2 · Module 11 · 75 minutes</div>
+    <h1>« C'est vrai que… Par contre… »</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Quand l'autre n'est pas d'accord, ne le contredisez pas d'un bloc. Donnez-lui ce qu'il a de juste, puis tournez. C'est plus poli, c'est plus efficace, et la conversation continue au lieu de bloquer.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>construire une phrase de mise en relief : moi, ce qui me…, c'est… ;</li><li>employer une phrase impersonnelle pour ne montrer personne du doigt ;</li><li>accorder à l'autre ce qu'il a de juste, puis objecter ;</li><li>justifier son avis avec « parce que ».</li></ol></section><section class="bloc regle"><div class="lbl">Deux moules, à apprendre tels quels</div><p class="r">Ce qui me + verbe, c'est + un nom. · Ce que je + verbe, c'est + un nom.</p><p class="pr">On emploie « ce qui » quand le morceau est le sujet du verbe : ce qui me surprend. On emploie « ce que » quand il en est le complément : ce que je trouve inquiétant. Et quand la suite est une phrase entière, c'est « c'est que ».</p></section><section class="bloc card"><div class="lbl">La mise en relief</div><h2 class="t">Un nom, ou une phrase ?</h2><table><thead><tr><th>La suite</th><th>Ce qu'on emploie</th></tr></thead><tbody><tr><td>un nom</td><td class="cle">Ce qui me surprend, c'est le nombre.</td></tr><tr><td>une phrase</td><td class="cle">Ce qui me dérange, c'est que les cabanons restent ouverts.</td></tr><tr><td>sujet du verbe</td><td class="cle">Ce qui me choque… (ce qui = sujet de choquer)</td></tr><tr><td>complément du verbe</td><td class="cle">Ce que je trouve inquiétant… (ce que = complément)</td></tr><tr><td>le « moi » du début</td><td class="cle">Il dit : voici mon point de vue, il n'engage que moi.</td></tr></tbody></table></section><section class="bloc"><div class="lbl">Cinq entrées, une même fonction</div><h2 class="t">Prévenir que c'est vous qui parlez</h2><div class="grid"><div class="card"><h3>À mon avis…</h3><p>La plus neutre, et celle qui passe partout, à l'oral comme à l'écrit.</p></div><div class="card"><h3>Personnellement…</h3><p>Un peu plus appuyée : elle annonce que vous savez qu'on peut penser autrement.</p></div><div class="card"><h3>Je trouve que…</h3><p>La plus courante à l'oral, et la plus facile à enchaîner avec « parce que ».</p></div><div class="card"><h3>Il me semble que…</h3><p>La plus prudente : elle laisse la place au doute et à l'autre.</p></div></div></section><section class="bloc card"><div class="lbl">Écriture</div><h2 class="t">Moi, ce qui me…, c'est…</h2><p class="consigne">Complétez avec : moi, ce qui, c'est, c'est que, par contre.</p><ol class="ex"><li><span class="q">___, ce qui me surprend, c'est le nombre de vélos volés.</span><span class="ligne ligne--court"></span></li><li><span class="q">Ce ___ me dérange, c'est qu'on laisse les cabanons ouverts.</span><span class="ligne ligne--court"></span></li><li><span class="q">Ce que je trouve inquiétant, ___ le retour des mêmes vols.</span><span class="ligne ligne--court"></span></li><li><span class="q">Ce qui me rassure, ___ la police a demandé de signaler chaque vol.</span><span class="ligne ligne--court"></span></li><li><span class="q">C'est vrai que ça aide de barrer sa porte. ___, ça n'excuse pas le voleur.</span><span class="ligne ligne--court"></span></li><li><span class="q">___, ce qui me choque, c'est qu'on n'ait rien dit aux voisins.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc regle"><div class="lbl">Un « il » qui ne désigne personne</div><p class="r">Il faut noter son numéro de série. Il vaut mieux barrer son cabanon, même pour une heure.</p><p class="pr">« Tu devrais barrer ton cabanon » vise quelqu'un. « Il vaut mieux barrer son cabanon » ne vise personne, dit la même chose, et n'a pas besoin d'être adoucie. Six tournures servent tous les jours : il faut, il faudrait, il est important de, il vaut mieux, il arrive que, il y a.</p></section><section class="bloc card"><div class="lbl">Écriture</div><h2 class="t">Sans montrer personne du doigt</h2><p class="consigne">Complétez avec la tournure impersonnelle qui convient.</p><ol class="ex"><li><span class="q">___ noter le numéro de série de son vélo : la police le demande.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ que des vélos soient retrouvés sans qu'on sache à qui les rendre.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ barrer son cabanon, même pour une heure.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ eu une trentaine de vols dans le quartier en un mois.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ refaire le fossé avant l'automne, à mon avis.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ signaler chaque vol, même petit.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc regle"><div class="lbl">Accorder d'abord, objecter ensuite</div><p class="r">C'est vrai que ça aide de barrer sa porte. Par contre, ça n'excuse pas celui qui entre.</p><p class="pr">Quatre mots pour tourner : par contre, cependant, quand même, n'empêche que. Et une opinion se justifie toujours : ajoutez la raison avec « parce que ». Un avis sans raison est un avis qu'on ne peut pas discuter.</p></section><section class="bloc card"><div class="lbl">Écriture</div><h2 class="t">Répondre à quelqu'un qui pense autrement</h2><p class="consigne">Deux phrases : accordez d'abord, objectez ensuite.</p><ol class="ex"><li><span class="q">« Ça, c'est de la négligence, pas du vol. »</span><span class="ligne"></span></li><li><span class="q">« Noter un numéro de série, ça n'a jamais ramené un vélo. »</span><span class="ligne"></span></li><li><span class="q">« Le monde qui achète au bord de l'eau savait ce qui l'attendait. »</span><span class="ligne"></span></li><li><span class="q">« De toute façon, les journaux en rajoutent toujours. »</span><span class="ligne"></span></li></ol></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Présenter son opinion comme un fait</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">Laisser son cabanon ouvert, c'est de la négligence.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">Moi, ce qui me dérange, c'est qu'on laisse les cabanons ouverts.</p></div></div><div class="note">Sans annonce, votre jugement se range avec les chiffres de la police, et la personne en face le répétera comme une information. D'abord les faits, avec leur source ; ensuite votre avis, annoncé comme tel.</div></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Répondez en deux phrases à quelqu'un qui n'est pas d'accord avec vous.</p><ul><li>Première phrase : ce que vous lui accordez. Deuxième : votre objection.</li><li>Terminez par « parce que » et donnez votre raison.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Le fait, l'opinion, et la ligne entre les deux</h2><section class="bloc card ml"><h3>Une seule question suffit</h3><p class="mp">« Est-ce qu'on peut aller vérifier ? » Trente vélos volés en un mois : on compte, on vérifie, c'est un fait. « C'est de la négligence » : rien à vérifier, quelqu'un juge, c'est une opinion. La question marche sur toutes les phrases du journal, et elle marche aussi sur les vôtres. Elle prend une seconde et elle règle tout.</p><div class="note">Un fait peut être faux — « cinquante vélos ont été volés » est vérifiable, donc c'est un fait, simplement inexact. Une opinion, elle, n'est ni vraie ni fausse : elle est partagée ou non.</div></section><section class="bloc card ml"><h3>Les mots qui trahissent l'opinion</h3><p class="mp">Dès qu'un de ces mots paraît, quelqu'un juge. Vous avez le droit de demander qui, et la personne en face a le droit de vous le demander.</p><table class="ana"><tr><td>Les quantités jugées</td><td class="">trop · pas assez · beaucoup trop</td></tr><tr><td>Les jugements</td><td class="cle">inacceptable · scandaleux · normal</td></tr><tr><td>Les recommandations</td><td class="">il faudrait · on devrait · ils n'ont qu'à</td></tr></table><p class="dit"><span class="k">On dit</span> C'est inacceptable. Il faudrait installer des caméras. Ils n'ont qu'à barrer leur porte.</p><div class="note">« Il faudrait » est le plus discret des trois : il a l'air d'un constat, mais il propose une action, donc il juge que la situation actuelle ne convient pas.</div></section><section class="bloc card ml"><h3>Les mots qui marquent le fait</h3><p class="mp">Des chiffres, des dates, des lieux, des noms de services. Rien de tout cela ne se discute : on l'accepte ou on va vérifier.</p><table class="ana"><tr><td>Les chiffres</td><td class="cle">une trentaine · quatre logements · onze personnes</td></tr><tr><td>Le temps et le lieu</td><td class="">vers quatre heures · rue Alexandre · en un mois</td></tr><tr><td>Les sources</td><td class="">le Service de police recommande · la Croix-Rouge a hébergé</td></tr></table><p class="dit"><span class="k">On dit</span> Une trentaine de vélos ont été volés en un mois. La Croix-Rouge a hébergé onze personnes.</p><div class="note">Un fait divers bien fait tient dans ces mots-là. C'est pourquoi il est court : les chiffres, les lieux et les noms prennent peu de place.</div></section><section class="bloc card ml"><h3>La façon de faire, en deux phrases</h3><p class="mp">D'abord les faits, avec leur source. Ensuite votre avis, annoncé comme tel. Jamais les deux mêlés dans la même phrase.</p><table class="ana"><tr><td>La phrase de fait</td><td class="cle">la police dit qu'une trentaine de vélos ont disparu</td></tr><tr><td>La phrase d'avis</td><td class="">moi, ce qui me surprend, c'est le nombre</td></tr><tr><td>Ce qu'il ne faut pas</td><td class="">la police dit qu'il y a eu trente vols et c'est scandaleux</td></tr></table><p class="dit"><span class="k">On dit</span> La police dit qu'une trentaine de vélos ont disparu. Moi, ce qui me surprend, c'est le nombre.</p><div class="note">Quand vous mêlez les deux, la personne en face répétera le tout comme si c'était écrit dans le journal. C'est exactement ainsi qu'une opinion devient une information.</div></section><section class="bloc card ml"><h3>Le fait, puis l'opinion qu'on en tire</h3><p class="mp">Choisissez une nouvelle et écoutez le fait, puis l'avis qu'on peut en tirer.</p><table class="labo"><thead><tr><th>Quelle nouvelle ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">l'incendie</td><td>Onze personnes ont perdu leur logement. Moi, ce qui me frappe, c'est qu'un seul locataire a réveillé tout l'immeuble.<span class="tags">un incendie · un sinistré</span></td><td>un fait vérifiable, puis un avis annoncé</td></tr><tr><td class="cle">l'inondation</td><td>Un avertissement de pluie abondante avait été émis la veille. Moi, ce qui me dérange, c'est qu'on n'ait pas prévenu la rue.<span class="tags">une inondation · un avertissement</span></td><td>un fait daté, puis un jugement</td></tr><tr><td class="cle">les vols de vélos</td><td>Une trentaine de vélos ont été volés en un mois. Moi, ce qui me surprend, c'est le nombre.<span class="tags">un vol · la prévention</span></td><td>un chiffre, puis une réaction</td></tr><tr><td class="cle">les trois à la suite</td><td>Onze personnes ont perdu leur logement. Un avertissement avait été émis la veille. Une trentaine de vélos ont disparu en un mois.<span class="tags">un fait divers</span></td><td>trois faits seuls, sans aucun avis</td></tr></tbody></table><div class="note">La dernière option ne donne que des faits. Écoutez-la : c'est plat, et c'est normal. Un fait divers est plat ; c'est vous qui ajoutez le relief, et vous dites que c'est vous.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six phrases, trois faits et trois opinions.</p><table class="ex2"><tr><td>Une trentaine de vélos ont été volés en un mois.</td><td>un chiffre · un fait</td></tr><tr><td>Laisser son cabanon ouvert, c'est de la négligence.</td><td>un jugement · une opinion</td></tr><tr><td>Le Service de police recommande de noter le numéro de série.</td><td>une source · un fait</td></tr><tr><td>Il faudrait installer des caméras dans les ruelles.</td><td>« il faudrait » · une opinion</td></tr><tr><td>L'incendie a détruit quatre logements de la rue Alexandre.</td><td>un lieu, un chiffre · un fait</td></tr><tr><td>Moi, ce qui me dérange, c'est qu'on n'ait rien fait avant.</td><td>annoncé comme un avis</td></tr></table></section><section class="bloc card ml"><h3>Trois façons de faire passer un avis pour un fait</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">le glisser dans une phrase de fait</p><div class="k">Ce qui arrive</div><p class="ph">« la police dit qu'il y a eu trente vols, ce qui est scandaleux »</p><p class="px">Le « ce qui est scandaleux » a l'air de faire partie de ce que la police a dit. Coupez : deux phrases, et la deuxième commence par « moi ».</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">employer un chiffre vague pour appuyer un jugement</p><div class="k">Ce qui arrive</div><p class="ph">« il y en a eu des centaines »</p><p class="px">Un chiffre exagéré reste un fait — un fait faux. Si vous ne savez pas, dites « une trentaine, d'après le journal ». Un chiffre inventé décrédibilise tout le reste de votre récit.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">dire « c'est normal » ou « tout le monde sait »</p><div class="k">Ce qui arrive</div><p class="ph">« tout le monde sait que ce quartier-là est mal surveillé »</p><p class="px">« Tout le monde sait » n'est pas une source : c'est un jugement qui se déguise en évidence. Demandez-vous qui, exactement, sait cela — et dites-le, ou renoncez à la phrase.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">La question qui sépare les deux est…</span><ul class="opts"><li>est-ce que c'est vrai ?</li><li>est-ce qu'on peut vérifier ?</li></ul></li><li><span class="q">« Il faudrait installer des caméras » est…</span><ul class="opts"><li>un fait</li><li>une opinion</li></ul></li><li><span class="q">Les faits et l'avis se disent…</span><ul class="opts"><li>dans deux phrases séparées</li><li>dans la même phrase</li></ul></li><li><span class="q">« Cinquante vélos ont été volés », si c'est inexact, est…</span><ul class="opts"><li>une opinion</li><li>un fait faux</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> est-ce qu'on peut vérifier ? — Est-ce qu'on peut vérifier. Un fait peut être faux et rester un fait. · <b>2.</b> une opinion — Une opinion : ça propose une action, donc ça juge la situation. · <b>3.</b> dans deux phrases séparées — Dans deux phrases. Mêlés, on ne sait plus ce qui vient du journal. · <b>4.</b> un fait faux — Un fait faux : c'est vérifiable, donc c'est un fait, simplement erroné.</div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Moi, ce qui me…, c'est…</h2><section class="bloc card ml"><h3>Le français annonce avant de dire</h3><p class="mp">« Le nombre me surprend » est une phrase correcte que personne ne dit. On dit « moi, ce qui me surprend, c'est le nombre ». C'est plus long, et c'est pourtant partout : à la radio, à table, au travail. La phrase prévient d'abord — attention, je vais donner mon avis, et voici ce que je ressens — puis elle livre l'information. À l'oral, ça donne à l'autre le temps de vous suivre.</p><div class="note">Cette construction s'appelle la mise en relief. Elle est un des marqueurs les plus nets d'un français aisé : celui qui l'emploie n'a plus l'air de traduire depuis sa langue.</div></section><section class="bloc card ml"><h3>Deux moules, à apprendre tels quels</h3><p class="mp">Ce qui me + verbe, c'est + un nom. Ce que je + verbe, c'est + un nom. On emploie « ce qui » quand le morceau mis en relief est le sujet du verbe, « ce que » quand il en est le complément.</p><table class="ana"><tr><td>Avec ce qui</td><td class="cle">ce qui me surprend · ce qui me dérange · ce qui me rassure</td></tr><tr><td>Avec ce que</td><td class="">ce que je trouve inquiétant · ce que je ne comprends pas</td></tr><tr><td>La suite</td><td class="">c'est le nombre · c'est la vitesse · c'est le silence de la Ville</td></tr></table><p class="dit"><span class="k">On dit</span> Moi, ce qui me surprend, c'est le nombre. Ce que je ne comprends pas, c'est le silence de la Ville.</p><div class="note">Le test : mettez le verbe seul. « Le nombre me surprend » — « le nombre » est sujet, donc « ce qui ». « Je trouve ça inquiétant » — « ça » est complément, donc « ce que ».</div></section><section class="bloc card ml"><h3>Un nom, ou une phrase entière</h3><p class="mp">Si la suite est un nom, c'est « c'est ». Si la suite est une phrase avec un verbe, c'est « c'est que ». Une syllabe de différence, et c'est celle qu'on oublie.</p><table class="ana"><tr><td>Un nom → c'est</td><td class="">ce qui me surprend, c'est le nombre</td></tr><tr><td>Une phrase → c'est que</td><td class="cle">ce qui me dérange, c'est que les gens laissent tout ouvert</td></tr><tr><td>Les deux dans un souffle</td><td class="">ce qui me frappe, c'est le nombre, et c'est qu'on n'en parle pas</td></tr></table><p class="dit"><span class="k">On dit</span> Ce qui me surprend, c'est le nombre. Ce qui me dérange, c'est que les gens laissent tout ouvert.</p><div class="note">Écoutez la deuxième : « c'est que » suivi d'une phrase complète, avec son sujet et son verbe. C'est la forme la plus utile des deux, et la plus oubliée.</div></section><section class="bloc card ml"><h3>Le « moi » du début, et les mots pour tourner</h3><p class="mp">Le pronom détaché en tête dit « voici mon point de vue, il n'engage que moi ». Il est presque obligatoire quand on répond à quelqu'un qui vient de donner le sien. Et quand on n'est pas d'accord, on accorde d'abord, on tourne ensuite.</p><table class="ana"><tr><td>Annoncer que c'est soi</td><td class="cle">moi, · personnellement, · à mon avis,</td></tr><tr><td>Accorder</td><td class="">c'est vrai que · je comprends que · il y a du vrai là-dedans</td></tr><tr><td>Tourner</td><td class="">par contre · cependant · n'empêche que</td></tr></table><p class="dit"><span class="k">On dit</span> C'est vrai que ça aide de barrer sa porte. Par contre, ça n'excuse pas celui qui entre.</p><div class="note">Accorder puis tourner n'est pas seulement plus poli : c'est plus efficace. La personne en face vous écoute encore, parce que vous venez de lui donner raison sur un point.</div></section><section class="bloc card ml"><h3>L'avis plat, puis l'avis mis en relief</h3><p class="mp">Choisissez un avis et écoutez-le deux fois : à plat, puis avec la mise en relief.</p><table class="labo"><thead><tr><th>Quel avis ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">le nombre de vols</td><td>Le nombre me surprend. Moi, ce qui me surprend, c'est le nombre.<span class="tags">un vol</span></td><td>un nom · c'est</td></tr><tr><td class="cle">les cabanons ouverts</td><td>Ça me dérange que les gens laissent tout ouvert. Ce qui me dérange, c'est que les gens laissent tout ouvert.<span class="tags">un cabanon</span></td><td>une phrase · c'est que</td></tr><tr><td class="cle">le silence de la Ville</td><td>Je ne comprends pas le silence de la Ville. Ce que je ne comprends pas, c'est le silence de la Ville.<span class="tags">une déclaration</span></td><td>complément · ce que</td></tr><tr><td class="cle">la réponse à Sylvain</td><td>C'est vrai que ça aide de barrer sa porte. Par contre, ça n'excuse pas celui qui entre.<span class="tags">la prévention</span></td><td>accorder, puis tourner</td></tr><tr><td class="cle">les quatre à la suite</td><td>Moi, ce qui me surprend, c'est le nombre. Ce qui me dérange, c'est que les gens laissent tout ouvert. Ce que je ne comprends pas, c'est le silence de la Ville. Par contre, ça n'excuse pas celui qui entre.<span class="tags">un vol · un cabanon · la prévention</span></td><td>quatre avis, quatre formes</td></tr></tbody></table><div class="note">Comparez la version plate et la version en relief : la première est correcte, la seconde est celle qu'on entend. La différence tient en cinq mots.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six phrases d'opinion, prises dans la discussion du défi 3.</p><table class="ex2"><tr><td>Moi, ce qui me surprend, c'est le nombre.</td><td>moi + ce qui + c'est</td></tr><tr><td>Ce qui me dérange, c'est que les gens laissent tout ouvert.</td><td>c'est que + une phrase</td></tr><tr><td>Ce que je trouve inquiétant, c'est le retour des mêmes vols.</td><td>ce que + complément</td></tr><tr><td>Ce qui me rassure, c'est qu'on demande de signaler chaque vol.</td><td>c'est que + une phrase</td></tr><tr><td>C'est vrai que ça aide. Par contre, ça n'excuse rien.</td><td>accorder, puis tourner</td></tr><tr><td>Personnellement, je trouve ça inquiétant, parce que trente en un mois, ce n'est plus du hasard.</td><td>l'avis, puis sa raison</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges de la mise en relief</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">oublier le « que » devant une phrase</p><div class="k">Ce qui arrive</div><p class="ph">« ce qui me dérange, c'est les gens laissent tout ouvert »</p><p class="px">Quand la suite a un verbe conjugué, il faut « c'est que ». Sans lui, deux phrases se collent l'une à l'autre sans lien, et l'oreille française bute dessus immédiatement.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">confondre ce qui et ce que</p><div class="k">Ce qui arrive</div><p class="ph">« ce que me surprend, c'est le nombre »</p><p class="px">« Le nombre me surprend » : le nombre est sujet, donc « ce qui ». Le test consiste à remettre la phrase à plat et à regarder si le morceau mis en relief fait le verbe ou le subit.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">donner un avis sans le justifier</p><div class="k">Ce qui arrive</div><p class="ph">« moi, je trouve ça inacceptable. » et rien d'autre</p><p class="px">Un avis sans raison ne se discute pas : la personne en face ne peut ni vous suivre ni vous répondre. Ajoutez « parce que », ou un deux-points suivi de la raison. Une phrase de plus, et votre avis devient une position.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">« Ce qui me dérange, c'est ___ les gens laissent tout ouvert. »</span><ul class="opts"><li>c'est</li><li>c'est que</li></ul></li><li><span class="q">« Le nombre me surprend » se met en relief avec…</span><ul class="opts"><li>ce qui</li><li>ce que</li></ul></li><li><span class="q">Le « moi » en tête de phrase sert à…</span><ul class="opts"><li>annoncer que c'est votre avis</li><li>insister lourdement</li></ul></li><li><span class="q">Après « c'est vrai que… », on tourne avec…</span><ul class="opts"><li>par contre</li><li>donc</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> c'est que — C'est que : la suite est une phrase avec un verbe conjugué. · <b>2.</b> ce qui — Ce qui : « le nombre » est le sujet de « surprend ». · <b>3.</b> annoncer que c'est votre avis — Annoncer que c'est votre avis. C'est poli, pas insistant. · <b>4.</b> par contre — Par contre, cependant, n'empêche que. On accorde d'abord, on tourne ensuite.</div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Les phrases impersonnelles, ou dire sans viser personne</h2><section class="bloc card ml"><h3>Un « il » qui ne remplace personne</h3><p class="mp">« Il faut noter son numéro de série. » Qui est ce « il » ? Personne. Il n'est là que parce qu'un verbe français a besoin d'un sujet, et il ne désigne rien du tout. C'est ce vide qui rend la phrase utile : elle énonce une règle générale, valable pour tout le monde, sans montrer personne du doigt. Le français en est plein — pour la météo, pour l'heure, pour les conseils, pour l'existence des choses.</p><div class="note">Comparez « tu devrais barrer ton cabanon » et « il vaut mieux barrer son cabanon ». Même conseil, mais le second ne vise personne : on peut le dire à quelqu'un qui vient justement de se faire voler.</div></section><section class="bloc card ml"><h3>Les six qui servent tous les jours</h3><p class="mp">Toutes se poursuivent par un infinitif, sauf « il arrive que » et « il y a ». Le degré d'obligation change de l'une à l'autre : il faut est ferme, il faudrait est adouci, il vaut mieux est un conseil.</p><table class="ana"><tr><td>L'obligation</td><td class="cle">il faut · il faudrait · il est important de</td></tr><tr><td>Le conseil</td><td class="">il vaut mieux · il est préférable de</td></tr><tr><td>Le reste</td><td class="">il arrive que · il y a · il manque · il reste</td></tr></table><p class="dit"><span class="k">On dit</span> Il faut noter son numéro de série. Il vaut mieux barrer son cabanon. Il arrive que des vélos restent à la police.</p><div class="note">« Il faudrait » est celui qui passe le mieux dans une discussion : il propose sans commander, et il laisse à l'autre la place de répondre.</div></section><section class="bloc card ml"><h3>Le verbe reste au singulier, toujours</h3><p class="mp">Le sujet est « il », pas ce qui suit. Cela vaut aussi pour « il y a », « il manque », « il reste », « il s'agit de ».</p><table class="ana"><tr><td>Il y a</td><td class="cle">il y a eu trente vols · il y a onze sinistrés</td></tr><tr><td>Il manque, il reste</td><td class="">il manque deux vélos · il reste quatre logements</td></tr><tr><td>Il s'agit de</td><td class="">il s'agit de trois cabanons ouverts</td></tr></table><p class="dit"><span class="k">On dit</span> Il y a eu une trentaine de vols. Il manque encore deux vélos.</p><div class="note">« Il y ont eu » n'existe pas, et pourtant on l'entend souvent chez les personnes qui apprennent : le pluriel qui suit tire l'oreille vers un accord qui ne vient jamais.</div></section><section class="bloc card ml"><h3>La météo et l'heure y passent aussi</h3><p class="mp">Vous les employez déjà : ce sont exactement les phrases qui plantaient le décor au défi 1. Un même « il » vide, un même verbe au singulier.</p><table class="ana"><tr><td>Le temps qu'il fait</td><td class="">il pleuvait depuis trois jours · il ventait fort</td></tr><tr><td>L'heure</td><td class="cle">il était quatre heures du matin</td></tr><tr><td>L'existence</td><td class="">il y avait quatre logements dans l'immeuble</td></tr></table><p class="dit"><span class="k">On dit</span> Il pleuvait depuis trois jours. Il était quatre heures du matin.</p><div class="note">C'est un bon rappel : le décor du défi 1 et les conseils du défi 3 se construisent pareil. Une même mécanique sert deux fois dans le module.</div></section><section class="bloc card ml"><h3>Le conseil qui vise, et celui qui ne vise personne</h3><p class="mp">Choisissez un conseil et écoutez-le des deux façons.</p><table class="labo"><thead><tr><th>Quel conseil ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">le numéro de série</td><td>Tu devrais noter ton numéro de série. Il est important de noter son numéro de série.<span class="tags">la prévention · un vol</span></td><td>le conseil qui vise, puis celui qui ne vise personne</td></tr><tr><td class="cle">le cabanon barré</td><td>Barre donc ton cabanon. Il vaut mieux barrer son cabanon, même pour une heure.<span class="tags">un cabanon</span></td><td>l'ordre, puis le conseil général</td></tr><tr><td class="cle">le fossé à refaire</td><td>La Ville doit refaire le fossé. Il faudrait refaire le fossé avant l'automne.<span class="tags">une inondation</span></td><td>l'accusation, puis la proposition</td></tr><tr><td class="cle">signaler chaque vol</td><td>Vous devez signaler chaque vol. Il faut signaler chaque vol, même petit.<span class="tags">un vol · un suspect</span></td><td>la consigne, puis la règle</td></tr><tr><td class="cle">les quatre à la suite</td><td>Il est important de noter son numéro de série. Il vaut mieux barrer son cabanon. Il faudrait refaire le fossé avant l'automne. Il faut signaler chaque vol, même petit.<span class="tags">la prévention · un cabanon</span></td><td>quatre règles, aucun doigt pointé</td></tr></tbody></table><div class="note">Écoutez la dernière option en entier. Aucune de ces quatre phrases ne vise quelqu'un, et elles disent pourtant tout ce qu'il y a à dire.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six phrases impersonnelles du module.</p><table class="ex2"><tr><td>Il faut noter le numéro de série de son vélo.</td><td>obligation ferme</td></tr><tr><td>Il faudrait refaire le fossé avant l'automne.</td><td>obligation adoucie</td></tr><tr><td>Il vaut mieux barrer son cabanon, même pour une heure.</td><td>conseil</td></tr><tr><td>Il arrive que des vélos restent à la police.</td><td>fréquence</td></tr><tr><td>Il y a eu une trentaine de vols en un mois.</td><td>existence · verbe au singulier</td></tr><tr><td>Il est important de signaler chaque vol, même petit.</td><td>règle générale</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges des phrases impersonnelles</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">accorder le verbe avec ce qui suit</p><div class="k">Ce qui arrive</div><p class="ph">« il y ont eu trente vols »</p><p class="px">Le sujet est « il », qui est toujours singulier. « Il y a eu trente vols », « il manque deux vélos », « il reste quatre logements ». Le pluriel qui suit ne compte pas.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">oublier le « de » après « il est important »</p><div class="k">Ce qui arrive</div><p class="ph">« il est important noter son numéro »</p><p class="px">« Il est important de », « il est préférable de », « il est nécessaire de » : la préposition fait partie de la tournure. « Il faut » et « il vaut mieux » sont les deux seules qui s'en passent.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">employer « il faut » quand on veut discuter</p><div class="k">Ce qui arrive</div><p class="ph">« il faut refaire le fossé » dit à quelqu'un qui n'est pas d'accord</p><p class="px">« Il faut » ferme la discussion : c'est une obligation, il n'y a rien à répondre. Si vous voulez que l'autre réagisse, dites « il faudrait » ou « il vaudrait mieux ». Une syllabe, et la conversation reste ouverte.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">Dans « il faut noter son numéro », le « il » désigne…</span><ul class="opts"><li>personne</li><li>la police</li></ul></li><li><span class="q">« Il ___ eu trente vols » se complète par…</span><ul class="opts"><li>y a</li><li>y ont</li></ul></li><li><span class="q">Pour laisser la discussion ouverte, on dit…</span><ul class="opts"><li>il faut</li><li>il faudrait</li></ul></li><li><span class="q">« Il est important ___ signaler chaque vol. »</span><ul class="opts"><li>de</li><li>—</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> personne — Personne. C'est un sujet vide, exigé par la grammaire. · <b>2.</b> y a — Y a. Le sujet est « il », toujours singulier. · <b>3.</b> il faudrait — Il faudrait : ça propose au lieu de commander. · <b>4.</b> de — De. La préposition fait partie de la tournure.</div></section></section></div>
+<footer><span>D2 · Raconter une nouvelle</span><span>Fiche élève</span></footer>
+</body>
+</html>

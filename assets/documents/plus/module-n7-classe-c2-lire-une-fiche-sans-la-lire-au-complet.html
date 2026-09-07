@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C2 · Lire une fiche sans la lire au complet — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance C2 · Module 10 · 75 minutes</div>
+    <h1>Lire une fiche sans la lire au complet</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Une fiche d'information est faite de sections titrées. On lit les titres, on choisit la section qui touche sa question, et on ne lit que celle-là. Lire du début à la fin, c'est se donner du travail que la mise en page voulait éviter.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>entrer dans une fiche par ses titres de section ;</li><li>repérer un chiffre et l'année qui va avec ;</li><li>reconnaître les mots par lesquels une source se montre prudente ;</li><li>savoir ce qu'une fiche ne dit pas, et pourquoi.</li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Quatre gestes de lecture</h2><table><thead><tr><th>Le geste</th><th>Ce qu'il donne</th></tr></thead><tbody><tr><td class="cle">Lire les titres</td><td>la carte de la page, en dix secondes</td></tr><tr><td class="cle">Chercher les chiffres</td><td>les seuls endroits où l'organisme s'engage</td></tr><tr><td class="cle">Chercher l'année</td><td>ce qui rend le chiffre citable dans un travail</td></tr><tr><td class="cle">Chercher les mots prudents</td><td>environ, de l'ordre de, on estime que, pourrait</td></tr></tbody></table><div class="note">Un chiffre sans son année ne vaut rien dans un travail.</div></section><section class="bloc card"><div class="lbl">Lecture</div><h2 class="t">Retrouvez le passage qui répond</h2><p class="consigne">Une question, un passage de la fiche. Réponse en montrant la ligne.</p><ol class="ex"><li><span class="q">Pourquoi un secteur devient-il un îlot de chaleur ?</span><span class="ligne"></span></li><li><span class="q">Quels secteurs sont les plus touchés ?</span><span class="ligne"></span></li><li><span class="q">Quel chiffre peut-on citer, avec son année ?</span><span class="ligne"></span></li><li><span class="q">Où la ville se montre-t-elle prudente ?</span><span class="ligne"></span></li><li><span class="q">Quelles sont les deux façons dont un arbre rafraîchit ?</span><span class="ligne"></span></li><li><span class="q">Que demande-t-on aux résidents ?</span><span class="ligne"></span></li></ol></section><section class="bloc regle"><div class="lbl">Une fiche est un point de départ</div><p class="r">Elle est écrite par quelqu'un qui a un intérêt dans le sujet. Ce qu'elle dit est vrai ; ce qu'elle choisit de ne pas dire est un choix, lui aussi.</p><p class="pr">Ici, la ville qui plante les arbres est la ville qui écrit la fiche. C'est une bonne source, et ce n'est pas une preuve. Un travail sérieux en consulte une deuxième.</p></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Dans le résumé, ou dehors ?</h2><table><thead><tr><th>La décision</th><th>Le renseignement</th></tr></thead><tbody><tr><td class="cle">On garde</td><td>les surfaces sombres absorbent la chaleur du jour</td></tr><tr><td class="cle">On garde</td><td>17 % de canopée, relevé de l'an dernier</td></tr><tr><td class="cle">On garde</td><td>un arbre de deux ans rafraîchit très peu</td></tr><tr><td class="cle">On garde</td><td>la ville avertit que la comparaison est délicate</td></tr><tr><td class="cle">On enlève</td><td>le programme est financé par les travaux publics</td></tr><tr><td class="cle">On enlève</td><td>à qui téléphoner pour signaler un arbre</td></tr></tbody></table></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Lecture</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">« C'est intéressant, je le garde. »</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">« Est-ce que ça répond à ma question ? »</p></div></div><div class="note">Le budget est un gros chiffre, l'histoire de l'organisme est une jolie page. Ces phrases-là ne mentent pas : elles occupent la place de celles qui répondaient. Un résumé de dix lignes n'a pas de place à donner.</div></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Trouvez dans votre source une phrase prudente, et recopiez-la.</p><ul><li>Une phrase avec environ, on estime, ou un conditionnel.</li><li>Dites ce que cette prudence vous apprend.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Ce qu'un résumé garde, et pourquoi le reste sort</h2><section class="bloc card ml"><h3>Résumer, ce n'est pas raccourcir</h3><p class="mp">Raccourcir, c'est enlever une phrase sur deux : on obtient un texte plus court qui ne répond toujours pas à la question. Résumer, c'est partir de <b>sa</b> question et n'aller chercher dans le texte que ce qui y répond. Deux équipes qui résument la même fiche avec deux questions différentes doivent produire deux résumés différents. Si elles produisent le même, aucune des deux n'a résumé.</p><div class="note">D'où la règle : on écrit sa question de départ en haut de sa feuille, et on ne l'efface pas.</div></section><section class="bloc card ml"><h3>La question à poser devant chaque phrase</h3><p class="mp">Une seule, et elle ne se négocie pas : <b>est-ce que ceci aide à répondre à ma question ?</b></p><table class="ana"><tr><td>Si oui</td><td class="">la phrase reste, reformulée avec vos mots</td></tr><tr><td>Si non</td><td class="">elle sort, même si elle est vraie et intéressante</td></tr><tr><td>Si vous hésitez</td><td class="cle">elle sort : l'hésitation est déjà une réponse</td></tr></table><p class="dit"><span class="k">On dit</span> Est-ce que ceci aide à répondre à ma question de départ ?</p><div class="note">C'est la seule question. Toutes les autres — est-ce important ? est-ce beau ? l'ai-je cherché longtemps ? — mènent à un résumé qui déborde.</div></section><section class="bloc card ml"><h3>Ce qui reste presque toujours</h3><p class="mp">Quatre sortes de renseignements survivent au tri, dans à peu près tous les sujets.</p><table class="ana"><tr><td>La définition</td><td class="">ce dont on parle, dit une fois, en clair</td></tr><tr><td>La cause</td><td class="">pourquoi la chose se produit</td></tr><tr><td>Les chiffres datés</td><td class="">du territoire ou du cas étudié, avec leur année</td></tr><tr><td>Les réserves de la source</td><td class="cle">ce que la source elle-même présente comme incertain</td></tr></table><p class="dit"><span class="k">On dit</span> La définition, la cause, les chiffres datés, et les réserves de la source.</p><div class="note">La quatrième est celle qu'on oublie le plus. Reprendre la prudence d'une source, c'est ce qui distingue un travail honnête d'un travail rapide.</div></section><section class="bloc card ml"><h3>Ce qui sort presque toujours</h3><p class="mp">Ce qui décrit la source au lieu de décrire le sujet.</p><table class="ana"><tr><td>Les coordonnées</td><td class="">téléphone, adresse, à qui s'adresser</td></tr><tr><td>Le financement</td><td class="">budgets, subventions, partenaires</td></tr><tr><td>L'histoire de l'organisme</td><td class="">sa fondation, ses prix, sa mission</td></tr><tr><td>Les dates de publication</td><td class="cle">sauf celle du chiffre que vous citez</td></tr></table><p class="dit"><span class="k">On dit</span> Les coordonnées, le financement, l'histoire de l'organisme.</p><div class="note">Ces renseignements ne sont pas inutiles : ils sont utiles à autre chose. Gardez-les dans vos notes, hors du résumé.</div></section><section class="bloc card ml"><h3>Deux questions, deux résumés</h3><p class="mp">Choisissez un renseignement de la fiche, puis la question de départ.</p><table class="labo"><thead><tr><th>Quel renseignement ? · Quelle question ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">le budget du programme + pourquoi certaines rues chauffent</td><td>On enlève : le budget ne dit pas pourquoi une rue chauffe.<span class="tags">On enlève.</span></td><td>vrai, chiffré, et hors sujet</td></tr><tr><td class="cle">le budget du programme + comment la ville s'y prend</td><td>On garde : le budget fait partie des moyens de la ville.<span class="tags">On garde.</span></td><td>la même phrase change de statut avec la question</td></tr><tr><td class="cle">les surfaces sombres + pourquoi certaines rues chauffent</td><td>On garde : c'est la cause même du phénomène.<span class="tags">On garde.</span></td><td>le cœur de la réponse</td></tr><tr><td class="cle">les surfaces sombres + comment la ville s'y prend</td><td>On enlève : ceci explique le problème, pas la méthode.<span class="tags">On enlève.</span></td><td>intéressant, mais à côté de la question posée</td></tr><tr><td class="cle">l'arrosage sur trois ans + pourquoi certaines rues chauffent</td><td>On enlève : l'arrosage concerne l'entretien, pas la chaleur.<span class="tags">On enlève, ou presque.</span></td><td>sauf si l'on explique pourquoi les jeunes arbres rafraîchissent peu</td></tr><tr><td class="cle">l'arrosage sur trois ans + comment la ville s'y prend</td><td>On garde : c'est la partie la plus difficile du programme.<span class="tags">On garde.</span></td><td>central pour une question sur la méthode</td></tr></tbody></table><div class="note">Le même texte, deux questions, deux tris opposés. C'est la démonstration que le tri ne vient pas du texte : il vient de vous.</div></section><section class="bloc card ml"><h3>Six renseignements, une même question</h3><p class="mp">Question de départ : pourquoi certaines rues de Rivière-Noire sont-elles plus chaudes ?</p><table class="ex2"><tr><td>les surfaces sombres absorbent le rayonnement</td><td>on garde — c'est la cause</td></tr><tr><td>17 % de canopée, relevé de l'an dernier</td><td>on garde — chiffré et daté</td></tr><tr><td>un arbre de deux ans rafraîchit très peu</td><td>on garde — explique l'écart entre deux rues</td></tr><tr><td>le programme est financé par les travaux publics</td><td>on enlève — décrit la ville, pas la chaleur</td></tr><tr><td>appeler les travaux publics pour signaler un arbre</td><td>on enlève — ce sont des coordonnées</td></tr><tr><td>la ville avertit que la comparaison est délicate</td><td>on garde — c'est la réserve de la source</td></tr></table></section><section class="bloc card ml"><h3>Pourquoi on garde ce qui ne répond pas</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">garder parce que c'est intéressant</p><div class="k">Ce qui arrive</div><p class="ph">garder parce que ça répond</p><p class="px">Le budget est un gros chiffre, la fondation de l'organisme est une jolie histoire. Ces phrases-là ne mentent pas : elles occupent la place de celles qui répondaient.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">garder parce que ça a coûté du temps à trouver</p><div class="k">Ce qui arrive</div><p class="ph">accepter de jeter</p><p class="px">Deux heures de recherche pour un renseignement hors sujet, c'est deux heures. Les garder dans le résumé, c'est en plus abîmer le travail.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">résumer avant d'avoir écrit sa question</p><div class="k">Ce qui arrive</div><p class="ph">écrire la question en haut de la feuille</p><p class="px">Sans question devant les yeux, on résume le texte au lieu de résumer ce qui sert. C'est le défaut que Ghislaine a repéré en trois secondes.</p></div></div></section><section class="bloc card ml"><h3>Quatre décisions de tri</h3><p class="mp">Quatre décisions, avec la question : pourquoi certaines rues chauffent-elles ?</p><ol class="check"><li><span class="q">« La fiche a été mise à jour au mois de mai. »</span><ul class="opts"><li>on garde</li><li>on enlève</li></ul></li><li><span class="q">« Dans les secteurs touchés, la surface minéralisée dépasse les trois quarts. »</span><ul class="opts"><li>on garde</li><li>on enlève</li></ul></li><li><span class="q">« La ville avertit que les comparaisons entre villes sont délicates. »</span><ul class="opts"><li>on garde</li><li>on enlève</li></ul></li><li><span class="q">Deux équipes résument la même fiche avec deux questions différentes. Elles doivent obtenir…</span><ul class="opts"><li>deux résumés différents</li><li>le même résumé</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> on enlève — C'est la date de la fiche, pas celle d'un chiffre cité : hors résumé. · <b>2.</b> on garde — Chiffré, sur le territoire étudié, et directement lié à la cause. · <b>3.</b> on garde — Une réserve de la source se reprend : c'est ce qui rend le travail honnête. · <b>4.</b> deux résumés différents — Sinon, aucune des deux n'a résumé : elles ont raccourci.</div></section></section></div>
+<footer><span>C2 · Faire parler l'équipe</span><span>Fiche élève</span></footer>
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>D1 · Deux lettres, et ce qui les distingue — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance D1 · Module 5 · 75 minutes</div>
+    <h1>Deux lettres, et ce qui les distingue</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">La première va au voisin : elle est courte, elle est aimable, elle n'a pas de délai. La seconde va à la propriétaire et porte un nom : une mise en demeure.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>distinguer la lettre au voisin de la mise en demeure ;</li><li>nommer les trois parties d'une mise en demeure ;</li><li>repérer dans une lettre l'objet, les dates, la demande et le délai ;</li><li>employer quatre mots de l'écrit.</li></ol></section><section class="bloc card"><div class="lbl">Dialogue · 1 de 3</div><h2 class="t">Deux sur trois</h2><p class="consigne">Écouter d'abord, sans lire le texte.</p><div class="rep rep--key"><div class="qui">HUBERT</div><div>Deux semaines de plus, et où en êtes-vous ?</div></div><div class="rep rep--key"><div class="qui">RUSLANA</div><div>Le caoutchouc a été posé le 26 février. Ça a diminué le bruit, mais ça ne l'a pas fait disparaître. Le tapis n'a pas été déplacé.</div></div><div class="rep rep--key"><div class="qui">RUSLANA</div><div>Je me réveille encore. Moins fort, et pas tous les matins. Neuf matins sur les quatorze derniers.</div></div><div class="rep rep--key"><div class="qui">HUBERT</div><div>Vous l'avez noté ? Gardez ça précieusement. Maintenant, écrivez.</div></div></section><section class="bloc card"><div class="lbl">Dialogue · 2 de 3</div><h2 class="t">Aux deux, mais pas la même lettre</h2><div class="rep rep--key"><div class="qui">RUSLANA</div><div>À monsieur Rondeau ou à la propriétaire ?</div></div><div class="rep rep--key"><div class="qui">HUBERT</div><div>Aux deux, mais pas la même lettre et pas le même jour. Ce sont deux gestes différents.</div></div><div class="rep rep--key"><div class="qui">HUBERT</div><div>La première est une lettre à votre voisin. Elle sert à mettre par écrit ce que vous vous êtes dit sur le palier. Ce n'est pas une menace : c'est une mémoire commune.</div></div><div class="rep rep--key"><div class="qui">HUBERT</div><div>La deuxième a un nom : une mise en demeure. Voici le problème, voici ce que je vous demande, voici le délai que je vous donne.</div></div></section><section class="bloc card"><div class="lbl">Dialogue · 3 de 3</div><h2 class="t">Écrivez la conséquence, pas l'émotion</h2><div class="rep rep--key"><div class="qui">RUSLANA</div><div>Pourquoi elle, et pas lui ? Ce n'est pas elle qui court sur le tapis.</div></div><div class="rep rep--key"><div class="qui">HUBERT</div><div>Votre propriétaire s'est engagée, en signant votre bail, à vous procurer la jouissance paisible de votre logement. Et celui qui dérange est lui aussi son locataire.</div></div><div class="rep rep--key"><div class="qui">RUSLANA</div><div>Est-ce que je dois écrire que je suis fatiguée ?</div></div><div class="rep rep--key"><div class="qui">HUBERT</div><div>Écrivez la conséquence, pas l'émotion. Un fait ne se discute pas ; « je suis épuisée et personne ne m'écoute » se discute, et vous perdrez.</div></div></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Deux lettres, six différences</h2><table><thead><tr><th>Lettre au voisin</th><th>Mise en demeure</th></tr></thead><tbody><tr><td>Ton cordial</td><td class="cle">Ton neutre</td></tr><tr><td>Garder une trace de l'entente</td><td class="cle">Mettre une obligation en marche</td></tr><tr><td>Pas d'objet</td><td class="cle">Un objet avant l'appel</td></tr><tr><td>Aucun délai</td><td class="cle">Un délai précis, en jours</td></tr><tr><td>Demande au conditionnel</td><td class="cle">Je vous demande de…</td></tr><tr><td>Remise en main propre</td><td class="cle">Envoyée par courrier recommandé</td></tr></tbody></table></section><section class="bloc regle"><div class="lbl">La mise en demeure : trois choses, dans cet ordre</div><p class="r">Le problème, la demande, le délai. Rien d'autre.</p><p class="pr">Le problème : les faits, les dates, la conséquence — dix lignes au plus. La demande : ce que vous voulez exactement, en une phrase qui se répond par oui ou par non. Le délai : un nombre de jours précis à compter de la réception, dix jours en général. « La présente » désigne la lettre elle-même.</p></section><section class="bloc card"><div class="lbl">Vocabulaire</div><h2 class="t">Quatre mots de l'écrit</h2><table class="voc"><tbody><tr><td class="mot">une mise en demeure</td><td class="def">Une lettre qui expose un problème, demande précisément quelque chose et donne un délai.</td></tr><tr><td class="mot">un délai raisonnable</td><td class="def">Le temps qu'on laisse pour agir : dix jours, le plus souvent.</td></tr><tr><td class="mot">un courrier recommandé</td><td class="def">Un envoi postal dont on garde la preuve, parce que la personne doit signer.</td></tr><tr><td class="mot">une diminution de loyer</td><td class="def">La baisse du montant mensuel, accordée quand le logement n'a pas donné ce qu'il devait.</td></tr></tbody></table></section><section class="bloc card"><div class="lbl">Compréhension</div><h2 class="t">Vrai ou faux ?</h2><p class="consigne">Répondez d'après la rencontre avec le médiateur et les deux lettres.</p><ol class="ex"><li><span class="q">Deux des trois engagements du voisin ont été tenus.</span><span class="ligne ligne--court"></span></li><li><span class="q">Il faut écrire la même lettre au voisin et à la propriétaire.</span><span class="ligne"></span></li><li><span class="q">La lettre au voisin sert à mettre par écrit ce qui a été convenu.</span><span class="ligne ligne--court"></span></li><li><span class="q">Une mise en demeure doit contenir un délai précis.</span><span class="ligne ligne--court"></span></li><li><span class="q">Il vaut mieux une citation approximative qu'un résumé honnête.</span><span class="ligne ligne--court"></span></li><li><span class="q">Ruslana écrit à sa propriétaire parce que c'est elle qui fait le bruit.</span><span class="ligne"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écris l'objet de la mise en demeure de Ruslana, en huit à douze mots.</p><ul><li>Un groupe de mots, jamais une phrase complète.</li><li>Ni plainte, ni explication : de quoi il s'agit, et ce qu'on demande.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Deux lettres, et ce qui les distingue</h2><section class="bloc card ml"><h3>Écrire au voisin et écrire au propriétaire ne sont pas le même geste</h3><p class="mp">C'est l'erreur la plus coûteuse de tout le dossier : envoyer la même lettre aux deux, ou envoyer au voisin une lettre écrite pour la propriétaire. La première a pour but d'entretenir un accord entre deux personnes qui se croiseront demain dans l'escalier. La seconde a pour but de mettre une obligation en marche, avec un délai. Le ton, la longueur, la structure et même le mode d'envoi diffèrent — parce que le but diffère.</p><div class="note">Le programme du niveau 7 demande de « rédiger une lettre pour régler un problème » et, dans les attentes de fin de cours, « une lettre en vue de régler un problème de voisinage ». Les deux lettres de ce défi répondent chacune à une moitié de la demande.</div></section><section class="bloc card ml"><h3>La lettre au voisin : une mémoire commune, pas une menace</h3><p class="mp">Courte, aimable, et surtout : elle rappelle ce qui a été convenu au lieu de réclamer. Elle sert à ce que, dans six mois, personne n'ait à se fier à sa mémoire.</p><table class="ana"><tr><td>Ce qu'elle contient</td><td class="">ce dont nous avons convenu · ce que vous avez fait · ce qui reste · une demande au conditionnel</td></tr><tr><td>Ce qu'elle ne contient pas</td><td class="cle">aucun article de loi, aucun délai, aucune menace</td></tr><tr><td>Comment elle s'envoie</td><td class="">en main propre, ou glissée dans la porte : jamais recommandée</td></tr></table><p class="dit"><span class="k">On dit</span> Je vous écris à la suite de notre conversation, afin de mettre par écrit ce dont nous avons convenu.</p><div class="note">Le remerciement pour ce qui a déjà été fait n'est pas de la politesse décorative : il dit au voisin que vous avez remarqué, et c'est ce qui donne envie de faire la suite.</div></section><section class="bloc card ml"><h3>La mise en demeure : trois choses, dans cet ordre</h3><p class="mp">Une lettre qui porte ce nom-là ne raconte rien. Elle expose, elle demande, elle donne un délai. Tout le reste s'enlève.</p><table class="ana"><tr><td>1. Le problème</td><td class="">les faits, les dates, la conséquence — dix lignes au plus</td></tr><tr><td>2. La demande</td><td class="cle">ce que vous voulez exactement, en une phrase qui se répond par oui ou par non</td></tr><tr><td>3. Le délai</td><td class="">un nombre de jours précis, à compter de la réception : dix jours en général</td></tr><tr><td>La suite annoncée</td><td class="">ce que vous ferez à défaut de réponse — dit une fois, sans dramatiser</td></tr></table><p class="dit"><span class="k">On dit</span> Je vous demande d'intervenir dans un délai de dix jours à compter de la réception de la présente.</p><div class="note">« La présente » désigne la lettre elle-même. C'est une formule figée du français administratif, et elle évite « cette lettre-ci », qui sonne hésitant.</div></section><section class="bloc card ml"><h3>L'objet : un groupe de mots, jamais une phrase</h3><p class="mp">C'est la première chose lue et souvent la seule relue six mois plus tard. Il doit dire de quoi il s'agit sans rien plaider.</p><table class="ana"><tr><td>Un bon objet</td><td class="">Bruit répété en provenance du logement 6 — demande d'intervention</td></tr><tr><td>Un objet trop long</td><td class="cle">Je vous écris parce que mon voisin fait du bruit tous les matins et que rien ne change</td></tr><tr><td>Un objet trop vague</td><td class="">Problème dans l'immeuble</td></tr><tr><td>La règle</td><td class="">un groupe du nom, un tiret, la demande : huit à douze mots</td></tr></table><p class="dit"><span class="k">On dit</span> Objet : bruit répété en provenance du logement 6, demande d'intervention.</p><div class="note">Un objet qui plaide ferme le lecteur avant la première ligne. Un objet qui classe l'ouvre : il lui dit dans quel dossier ranger la lettre.</div></section><section class="bloc card ml"><h3>Les dates portent la lettre, les adjectifs la coulent</h3><p class="mp">Chaque affirmation gagne une date, et chaque adjectif se supprime. C'est la dernière relecture, et c'est celle qui change tout.</p><table class="ana"><tr><td>Avec des dates</td><td class="">Depuis le 4 février · le 19 février · le 26 février · au 12 mars</td></tr><tr><td>Avec des adjectifs</td><td class="cle">un bruit épouvantable · une situation intenable · un voisin insouciant</td></tr><tr><td>Le conseil du médiateur</td><td class="">relisez trois fois, et enlevez un adjectif à chaque fois</td></tr></table><p class="dit"><span class="k">On dit</span> Depuis le quatre février, je suis réveillée neuf matins sur quatorze.</p><div class="note">Quatre dates valent mieux que quatre adjectifs : les dates ne se discutent pas, et elles montrent que quelqu'un a tenu un registre — ce qui est déjà la moitié du message.</div></section><section class="bloc card ml"><h3>Deux lettres, six différences</h3><p class="mp">À gauche la lettre au voisin, à droite la mise en demeure.</p><table class="ex2"><tr><td>Ton : cordial, on se reverra demain</td><td>Ton : neutre, on ne se connaît pas</td></tr><tr><td>But : garder une trace de l'entente</td><td>But : mettre une obligation en marche</td></tr><tr><td>Pas d'objet, on commence par « Monsieur »</td><td>Un objet, avant la formule d'appel</td></tr><tr><td>Aucun délai</td><td>Un délai précis, en jours</td></tr><tr><td>Une demande au conditionnel</td><td>Une demande à l'indicatif : je vous demande de</td></tr><tr><td>Remise en main propre</td><td>Envoyée par courrier recommandé</td></tr></table></section><section class="bloc card ml"><h3>Quatre questions, carnet fermé</h3><p class="mp">Répondez sans remonter dans la page.</p><ol class="check"><li><span class="q">La lettre au voisin sert surtout à…</span><ul class="opts"><li>menacer poliment</li><li>garder une trace de ce qui a été convenu</li></ul></li><li><span class="q">Une mise en demeure contient obligatoirement…</span><ul class="opts"><li>un délai précis</li><li>un article de loi</li></ul></li><li><span class="q">Un objet doit être…</span><ul class="opts"><li>une phrase complète</li><li>un groupe de mots</li></ul></li><li><span class="q">À la relecture, on enlève…</span><ul class="opts"><li>les dates</li><li>les adjectifs</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> garder une trace de ce qui a été convenu — C'est une mémoire commune, pas une étape juridique. · <b>2.</b> un délai précis — Le problème, la demande, le délai. Rien d'autre n'est obligatoire. · <b>3.</b> un groupe de mots — Huit à douze mots, un tiret, la demande. Jamais un plaidoyer. · <b>4.</b> les adjectifs — Trois relectures, un adjectif de moins à chaque fois.</div></section><section class="bloc card ml"><h3>Trois faux pas, et comment s'en sortir</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">envoyer la même lettre aux deux</p><div class="k">Ce qui arrive</div><p class="ph">écrire les deux à deux jours d'intervalle</p><p class="px">Une mise en demeure reçue par le voisin transforme un arrangement en conflit. Une lettre cordiale envoyée à la propriétaire ne met aucune montre en marche.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">raconter toute l'histoire dans la mise en demeure</p><div class="k">Ce qui arrive</div><p class="ph">dix lignes de faits, pas davantage</p><p class="px">Ce qui n'est pas une date, une heure ou une conséquence s'enlève. Le récit complet appartient à votre registre, pas à la lettre.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">finir par une menace</p><div class="k">Ce qui arrive</div><p class="ph">finir par ce qu'on veut vraiment</p><p class="px">« Je souhaite dormir et garder de bons rapports avec mon voisin » se retient. « Sinon je vous poursuivrai » se range dans un autre dossier, et pas le bon.</p></div></div></section></section></div>
+<footer><span>D1 · Le bruit d'en haut</span><span>Fiche élève</span></footer>
+</body>
+</html>

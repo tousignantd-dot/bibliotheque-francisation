@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A4 · Dire ce qu'on n'a pas compris — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance A4 · Module 7 · 90 minutes</div>
+    <h1>Dire ce qu'on n'a pas compris</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Faire oui de la tête met fin à l'explication, et le document se signe sur un malentendu. Trois phrases, apprises par coeur, changent tout.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>reprendre le mot exact qu'on n'a pas compris ;</li><li>reformuler avec ses propres mots pour vérifier ;</li><li>demander un exemple chiffré appliqué à son cas ;</li><li>interrompre poliment au moment où le mot échappe.</li></ol></section><section class="bloc regle"><div class="lbl">« Quoi ? » ne dit rien à personne</div><p class="r">Votre interlocuteur ne sait pas ce qui vous a échappé : il recommence à l'identique.</p><p class="pr">Le mot, le chiffre, ou toute la phrase ? Tant qu'il l'ignore, il répète la même chose de la même façon, et vous ne comprenez pas davantage la deuxième fois. Reprendre le mot exact lui dit précisément où vous avez décroché.</p></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Trois phrases, trois effets</h2><table><thead><tr><th>Ce que je dis</th><th>Ce que j'obtiens</th></tr></thead><tbody><tr><td class="cle">Quand vous dites x</td><td>une définition du mot exact</td></tr><tr><td class="cle">Donc si je comprends bien</td><td>une confirmation ou une correction</td></tr><tr><td class="cle">Sur mille dollars</td><td>un chiffre appliqué à mon cas</td></tr><tr><td class="cle">Quoi ?</td><td>la même phrase, redite pareil</td></tr></tbody></table><div class="note">Les trois premières sont à apprendre par coeur.</div></section><section class="bloc"><div class="lbl">Modèles</div><h2 class="t">Les phrases à emporter</h2><div class="grid"><div class="card"><h3>Faire répéter</h3><p>Quand vous dites « capitalisé », ça veut dire quoi exactement ?</p></div><div class="card"><h3>Faire répéter</h3><p>Je vous suis jusqu'au taux, mais j'ai perdu la suite.</p></div><div class="card"><h3>Vérifier</h3><p>Donc si je comprends bien, je ne paie que sur ce que je prends ?</p></div><div class="card"><h3>Vérifier</h3><p>Ce que vous appelez « le minimum », c'est le montant en bas ?</p></div><div class="card"><h3>Demander un exemple</h3><p>Sur mille dollars, ça donnerait combien exactement ?</p></div><div class="card"><h3>Demander un exemple</h3><p>Ça ressemblerait à quoi, dans mon cas à moi ?</p></div></div></section><section class="bloc card"><div class="lbl">Application</div><h2 class="t">À quoi sert chaque phrase ?</h2><p class="consigne">Dites : je fais répéter, je vérifie, ou je demande un exemple.</p><ol class="ex"><li><span class="q">Excusez-moi, vous pouvez répéter le dernier chiffre ?</span><span class="ligne ligne--court"></span></li><li><span class="q">Donc si je comprends bien, le taux peut monter ?</span><span class="ligne ligne--court"></span></li><li><span class="q">Sur mille dollars, ça donnerait combien ?</span><span class="ligne ligne--court"></span></li><li><span class="q">Quand vous dites « variable », ça veut dire quoi ?</span><span class="ligne ligne--court"></span></li><li><span class="q">Autrement dit, la date de fin est au contrat ?</span><span class="ligne ligne--court"></span></li><li><span class="q">Vous auriez un cas concret à me donner ?</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Le piège</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">attendre la fin pour poser sa question</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">interrompre au mot qui manque</p></div></div><div class="note">Après trois minutes d'explication, le mot est loin et vous ne savez plus lequel c'était. Couper tout de suite, poliment, avec « excusez-moi, un mot » : personne n'en prend ombrage, et l'explication reprend au bon endroit.</div></section><section class="bloc card"><div class="lbl">Jeu de rôle</div><h2 class="t">Deux par deux, trois minutes chacun</h2><p class="consigne">A explique un produit avec des mots difficiles ; B ne fait jamais oui de la tête.</p><ol class="ex"><li><span class="q">A dit : « les intérêts sont capitalisés mensuellement »</span><span class="ligne ligne--court"></span></li><li><span class="q">A dit : « le taux est variable »</span><span class="ligne"></span></li><li><span class="q">A dit : « c'est déductible »</span><span class="ligne"></span></li><li><span class="q">A donne un pourcentage</span><span class="ligne"></span></li><li><span class="q">A parle trop vite</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écris la phrase que tu emploieras la prochaine fois que tu ne comprendras pas un mot.</p><ul><li>Quand vous dites « capitalisé », ça veut dire quoi exactement ?</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Dire qu'on n'a pas compris — sans dire « quoi ? »</h2><section class="bloc card ml"><h3>Le hochement de tête est la faute la plus coûteuse de ce module</h3><p class="mp">On comprend huit mots sur dix. Les deux qui manquent sont souvent ceux qui décident : capitalisé, variable, à compter de, déductible. Faire oui de la tête met fin à l'explication, et le document se signe sur un malentendu. Le remède n'est pas de mieux comprendre : c'est d'avoir trois phrases prêtes à dire.</p><div class="note">Le programme du niveau 7 nomme ce savoir dans la situation elle-même : « expressions pour reprendre une partie d'un discours et exprimer une incompréhension partielle ». Le mot qui compte est <b>partielle</b> — on n'a pas tout perdu, on a perdu un morceau, et il faut dire lequel.</div></section><section class="bloc card ml"><h3>Faire répéter : reprenez le mot exact</h3><p class="mp">« Quoi ? » oblige l'autre à tout recommencer à l'identique. Reprendre le mot lui dit précisément où vous avez décroché.</p><table class="ana"><tr><td>On dit</td><td class="">Quand vous dites « capitalisé », ça veut dire quoi exactement ?</td></tr><tr><td>Autre forme</td><td class="cle">Je vous suis jusqu'au taux, mais j'ai perdu la suite.</td></tr><tr><td>Ce que ça donne</td><td class="">une explication du mot, pas une répétition de la phrase</td></tr></table><p class="dit"><span class="k">On dit</span> Quand vous dites « capitalisé », ça veut dire quoi exactement ?</p><div class="note">Répéter le mot entre guillemets, avec la voix qui monte dessus, est ce qui fonctionne le mieux : l'autre entend tout de suite quel morceau vous rendez.</div></section><section class="bloc card ml"><h3>Vérifier : reformulez avec vos mots à vous</h3><p class="mp">C'est la phrase la plus utile des quatre. Elle oblige l'autre à confirmer ou à corriger, et elle rattrape les malentendus que personne n'avait vus.</p><table class="ana"><tr><td>On dit</td><td class="">Donc si je comprends bien, je ne paie de l'intérêt que sur ce que je prends ?</td></tr><tr><td>Autres formes</td><td class="cle">Autrement dit… · Ce que vous appelez « le minimum », c'est bien… ?</td></tr><tr><td>Ce que ça donne</td><td class="">un oui, un non, ou une correction — les trois sont utiles</td></tr></table><p class="dit"><span class="k">On dit</span> Donc si je comprends bien, je ne paie de l'intérêt que sur ce que je prends ?</p><div class="note">Employez vos propres mots, pas les siens. Répéter sa phrase mot pour mot ne prouve rien : c'est la traduction qui montre que vous avez compris.</div></section><section class="bloc card ml"><h3>Demander un exemple : ramenez le chiffre à votre cas</h3><p class="mp">Un pourcentage reste abstrait tant qu'il n'est pas appliqué à votre montant. Le demander n'est pas une faveur : c'est le travail du conseiller.</p><table class="ana"><tr><td>On dit</td><td class="">Sur mille dollars, ça donnerait combien exactement ?</td></tr><tr><td>Autre forme</td><td class="cle">Ça ressemblerait à quoi, dans mon cas à moi ?</td></tr><tr><td>Ce que ça donne</td><td class="">un chiffre que vous pourrez comparer à un autre chiffre</td></tr></table><p class="dit"><span class="k">On dit</span> Sur mille dollars, ça donnerait combien exactement ?</p><div class="note">C'est aussi la question qui révèle les frais dont personne n'avait parlé, parce qu'il faut bien les inclure dans le calcul.</div></section><section class="bloc card ml"><h3>Choisissez le mot perdu et la façon de le récupérer</h3><p class="mp">Trois mots difficiles, trois façons de réagir.</p><table class="labo"><thead><tr><th>Quel mot vous échappe ? · Vous faites quoi ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">capitalisé + je fais répéter</td><td>Quand vous dites « capitalisé », ça veut dire quoi exactement ?</td><td>on reprend le mot, on ne dit pas « quoi ? »</td></tr><tr><td class="cle">capitalisé + je vérifie</td><td>Donc si je comprends bien, l'intérêt s'ajoute au capital et produit lui-même de l'intérêt ?</td><td>la reformulation fait confirmer ou corriger</td></tr><tr><td class="cle">capitalisé + je demande un exemple</td><td>Sur mille dollars pendant un an, ça donnerait combien de plus ?</td><td>le mot devient clair dès qu'il est chiffré</td></tr><tr><td class="cle">je vérifie + je fais répéter</td><td>Vous avez dit « variable » — variable comment ?</td><td>on renvoie le mot avec une question ouverte</td></tr><tr><td class="cle">je vérifie + je vérifie</td><td>Autrement dit, le taux peut monter pendant que je rembourse ?</td><td>la conséquence, pas la définition : c'est ce qui compte</td></tr><tr><td class="cle">je vérifie + je demande un exemple</td><td>S'il montait de deux points, mon paiement passerait à combien ?</td><td>l'exemple chiffré transforme un risque en montant</td></tr><tr><td class="cle">déductible + je fais répéter</td><td>« Déductible », je ne suis pas sûre de bien comprendre le mot.</td><td>admettre franchement vaut mieux que deviner</td></tr><tr><td class="cle">déductible + je vérifie</td><td>Ce que vous appelez déductible, c'est que ça baisse mon revenu imposable, c'est ça ?</td><td>on propose sa compréhension et on la fait valider</td></tr><tr><td class="cle">déductible + je demande un exemple</td><td>Avec mon salaire à moi, ça me ferait combien de moins d'impôt ?</td><td>la question qui rend une règle fiscale utilisable</td></tr></tbody></table><div class="note">Ces neuf phrases-là sont à apprendre par cœur. Elles servent partout : chez le médecin, à l'école, au garage.</div></section><section class="bloc card ml"><h3>Ce qu'on dit, et ce que l'autre entend</h3><p class="mp">Neuf façons de réagir, de la pire à la meilleure.</p><table class="ex2"><tr><td>(hocher la tête)</td><td>« Elle a compris. » — et l'explication s'arrête</td></tr><tr><td>« Quoi ? »</td><td>la même phrase, redite à l'identique</td></tr><tr><td>« Pardon ? »</td><td>poli, mais toujours aussi vague</td></tr><tr><td>« Vous pouvez répéter le dernier chiffre ? »</td><td>le chiffre, redit lentement</td></tr><tr><td>« Quand vous dites « capitalisé »… »</td><td>une définition du mot exact qui manque</td></tr><tr><td>« J'ai perdu la suite après le taux. »</td><td>la reprise repart au bon endroit</td></tr><tr><td>« Donc si je comprends bien… »</td><td>une confirmation ou une correction</td></tr><tr><td>« Autrement dit, le taux peut monter ? »</td><td>la conséquence, dite dans vos mots</td></tr><tr><td>« Sur mille dollars, ça ferait combien ? »</td><td>un chiffre à comparer</td></tr></table></section><section class="bloc card ml"><h3>Quatre situations, une phrase chacune</h3><p class="mp">Répondez de mémoire, sans remonter plus haut.</p><ol class="check"><li><span class="q">« Quoi ? » obtient…</span><ul class="opts"><li>une explication</li><li>la même phrase</li></ul></li><li><span class="q">Reformuler avec ses propres mots sert à…</span><ul class="opts"><li>montrer qu'on est poli</li><li>faire confirmer ou corriger</li></ul></li><li><span class="q">Demander un exemple chiffré, c'est…</span><ul class="opts"><li>abuser du temps du conseiller</li><li>son travail</li></ul></li><li><span class="q">Le mot du programme est « incompréhension… »</span><ul class="opts"><li>totale</li><li>partielle</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> la même phrase — L'autre ne sait pas ce qui vous a échappé : il recommence à l'identique. · <b>2.</b> faire confirmer ou corriger — C'est la phrase qui rattrape le plus de malentendus. · <b>3.</b> son travail — Un pourcentage non appliqué ne veut rien dire pour personne. · <b>4.</b> partielle — Partielle : il faut dire quel morceau manque, pas qu'on n'a rien compris.</div></section><section class="bloc card ml"><h3>Trois façons de rester dans le flou</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">faire oui de la tête pour ne pas déranger</p><div class="k">Ce qui arrive</div><p class="ph">préparer trois phrases d'avance</p><p class="px">Vous n'avez pas à les inventer sur le moment : « quand vous dites », « donc si je comprends bien », « sur mille dollars ».</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">attendre la fin de l'explication pour poser sa question</p><div class="k">Ce qui arrive</div><p class="ph">interrompre au mot qui manque</p><p class="px">Après trois minutes, le mot est loin et vous ne savez plus lequel c'était. Coupez tout de suite, poliment.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">croire qu'un conseiller s'impatiente</p><div class="k">Ce qui arrive</div><p class="ph">observer le contraire</p><p class="px">Un client qui pose des questions est un client qui ne reviendra pas se plaindre. C'est le client silencieux qui inquiète.</p></div></div></section></section></div>
+<footer><span>A4 · Emprunter, épargner, se protéger</span><span>Fiche élève</span></footer>
+</body>
+</html>

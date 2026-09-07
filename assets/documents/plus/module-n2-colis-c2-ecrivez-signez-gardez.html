@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C2 · Écrivez, signez, gardez — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance C2 · Module 9 · 75 minutes</div>
+    <h1>Écrivez, signez, gardez</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Comprendre les consignes du comptoir, dire « mon » et « votre » au bon moment, et lire un avis de livraison.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>comprendre une consigne à l'impératif ;</li><li>employer mon, ma, mes, votre et vos ;</li><li>reconnaître un avis de livraison ;</li><li>savoir ce qu'on apporte pour reprendre un colis.</li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Le verbe qui donne une consigne</h2><table><thead><tr><th>Ce que dit Luc</th><th>Ce que ça veut dire</th></tr></thead><tbody><tr><td>Écrivez votre nom.</td><td>vous devez écrire votre nom</td></tr><tr><td>Signez ici.</td><td>vous devez signer ici</td></tr><tr><td>Remplissez le formulaire.</td><td>vous devez remplir le formulaire</td></tr><tr><td>Gardez votre reçu.</td><td>vous devez garder votre reçu</td></tr></tbody></table><div class="note">Le verbe finit par -ez, et il n'y a pas de « vous » devant. C'est la forme la plus courte du français.</div></section><section class="bloc"><div class="lbl">Les six verbes de la poste</div><h2 class="t">Toujours à la même forme</h2><div class="grid"><div class="card"><h3>écrivez</h3><p>Écrivez votre nom dans la case.</p></div><div class="card"><h3>remplissez</h3><p>Remplissez ce formulaire, s'il vous plaît.</p></div><div class="card"><h3>signez</h3><p>Signez en bas, à droite.</p></div><div class="card"><h3>posez</h3><p>Posez la boîte sur la balance.</p></div><div class="card"><h3>gardez</h3><p>Gardez votre reçu.</p></div><div class="card"><h3>apportez</h3><p>Apportez le carton et une carte avec votre photo.</p></div></div></section><section class="bloc regle"><div class="lbl">Mon nom, votre nom</div><p class="r">Quand je parle de moi : mon, ma, mes. Quand on me parle : votre, vos.</p><p class="pr">&lt;b&gt;mon&lt;/b&gt; devant un mot masculin, &lt;b&gt;ma&lt;/b&gt; devant un mot féminin, &lt;b&gt;mes&lt;/b&gt; quand il y en a plusieurs. On dit &lt;b&gt;mon&lt;/b&gt; adresse et non « ma adresse » : le mot commence par une voyelle. Pour « votre » et « vos », le masculin et le féminin ne changent rien — seul le nombre compte.</p></section><section class="bloc card"><div class="lbl">Dialogue</div><h2 class="t">Un carton dans la boîte aux lettres</h2><p class="consigne">Écoutez, puis dites ce qu'Amara doit apporter.</p><div class="rep rep--key"><div class="qui">AMARA</div><div>Karim, regarde. C'est quoi, ce carton ?</div></div><div class="rep rep--key"><div class="qui">KARIM</div><div>C'est un avis de livraison.</div></div><div class="rep rep--key"><div class="qui">AMARA</div><div>Alors il est où, mon colis ?</div></div><div class="rep rep--key"><div class="qui">KARIM</div><div>Au comptoir postal. Tu vas le chercher.</div></div><div class="rep rep--key"><div class="qui">AMARA</div><div>J'apporte quoi ?</div></div><div class="rep rep--key"><div class="qui">KARIM</div><div>Le carton et une carte avec ta photo.</div></div><div class="rep rep--key"><div class="qui">AMARA</div><div>Et je signe ?</div></div><div class="rep rep--key"><div class="qui">KARIM</div><div>Oui. Tu signes, et tu prends ton colis.</div></div></section><section class="bloc card"><div class="lbl">Écriture</div><h2 class="t">Écrivez, signez, remplissez</h2><p class="consigne">Complétez chaque consigne avec le bon verbe.</p><ol class="ex"><li><span class="q">___ la boîte sur la balance.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ ce formulaire, s'il vous plaît.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ votre nom dans la case.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ en bas, à droite.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ votre reçu à la maison.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ le carton et une carte avec votre photo.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">Écriture</div><h2 class="t">Mon nom, votre nom</h2><p class="consigne">Complétez avec mon, ma, mes, votre ou vos.</p><ol class="ex"><li><span class="q">Voici ___ nom : Diallo.</span><span class="ligne ligne--court"></span></li><li><span class="q">J'habite dans ___ rue Bélanger.</span><span class="ligne ligne--court"></span></li><li><span class="q">Écrivez ___ adresse ici.</span><span class="ligne ligne--court"></span></li><li><span class="q">Apportez ___ papiers au comptoir.</span><span class="ligne ligne--court"></span></li><li><span class="q">Je cherche ___ colis.</span><span class="ligne ligne--court"></span></li><li><span class="q">Gardez ___ reçu.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">Pratique · à deux</div><h2 class="t">Je viens chercher mon colis</h2><p class="consigne">Deux par deux. L'un tient le comptoir, l'autre arrive avec le carton.</p><ol class="ex"><li><span class="q">Étape 1</span><span class="ligne"></span></li><li><span class="q">Étape 2</span><span class="ligne"></span></li><li><span class="q">Étape 3</span><span class="ligne"></span></li><li><span class="q">Étape 4</span><span class="ligne"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez trois consignes que le préposé pourrait vous dire.</p><ul><li>Remplissez ce formulaire.</li><li>Signez en bas, à droite.</li><li>Gardez votre reçu.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Écrivez, signez, remplissez</h2><section class="bloc card ml"><h3>Le verbe qui donne une consigne</h3><p class="mp">Au comptoir, on ne vous dit pas « vous écrivez votre nom ». On vous dit <b>écrivez votre nom</b>. Le mot « vous » disparaît, et il ne reste que le verbe. C'est la forme des consignes : celle des préposés, celle des formulaires, celle des affiches.</p><div class="note">C'est un savoir du programme au niveau 2 : l'impératif présent. Ne pas nommer la forme d'abord ; la faire reconnaître, puis la nommer.</div></section><section class="bloc card ml"><h3>Les six verbes de la poste</h3><p class="mp">Ils reviennent à chaque visite.</p><table class="ana"><tr><td>On dit</td><td class=""><b>Posez</b> la boîte ici.</td></tr><tr><td>Aussi</td><td class=""><b>Remplissez</b> le formulaire.</td></tr><tr><td>Aussi</td><td class=""><b>Écrivez</b> votre nom.</td></tr><tr><td>Aussi</td><td class=""><b>Signez</b> en bas.</td></tr><tr><td>Aussi</td><td class=""><b>Gardez</b> votre reçu. · <b>Apportez</b> une carte.</td></tr><tr><td>On ne dit pas</td><td class="cle">« Vous posez la boîte » pour donner une consigne</td></tr></table><p class="dit"><span class="k">On dit</span> Posez la boîte ici. Remplissez le formulaire. Écrivez votre nom. Signez en bas.</p><div class="note">Six verbes, et le comptoir est couvert. Les faire mimer : poser, remplir, écrire, signer, garder, apporter.</div></section><section class="bloc card ml"><h3>La forme est facile : le verbe finit par -ez</h3><p class="mp">On prend la forme de « vous », et on enlève le mot « vous ».</p><table class="ana"><tr><td>Vous signez</td><td class="">→ <b>Signez</b> !</td></tr><tr><td>Vous écrivez</td><td class="">→ <b>Écrivez</b> !</td></tr><tr><td>Vous remplissez</td><td class="">→ <b>Remplissez</b> !</td></tr><tr><td>Vous apportez</td><td class="">→ <b>Apportez</b> !</td></tr><tr><td>On ne dit pas</td><td class="cle">« Vous signez ici » quand on donne un ordre poli</td></tr></table><p class="dit"><span class="k">On dit</span> Vous signez. Signez. Vous écrivez. Écrivez.</p><div class="note">La règle tient en un geste : on efface le « vous » avec la main. Le faire vraiment, au tableau.</div></section><section class="bloc card ml"><h3>Et quand on dit « tu »</h3><p class="mp">Un ami, un enfant, un camarade de classe.</p><table class="ana"><tr><td>On dit</td><td class=""><b>Signe</b> ici.</td></tr><tr><td>Aussi</td><td class=""><b>Écris</b> ton nom.</td></tr><tr><td>Aussi</td><td class=""><b>Remplis</b> le formulaire.</td></tr><tr><td>Attention</td><td class=""><b>signe</b> s'écrit sans s, mais <b>écris</b> et <b>remplis</b> gardent le leur</td></tr><tr><td>On ne dit pas</td><td class="cle">« Tu signes ici » pour demander à quelqu'un de signer</td></tr></table><p class="dit"><span class="k">On dit</span> Signe ici. Écris ton nom. Remplis le formulaire.</p><div class="note">Le préposé vouvoie toujours. Karim tutoie Amara : c'est là qu'on entend la forme en « tu » dans le module.</div></section><section class="bloc card ml"><h3>La même consigne, deux façons</h3><p class="mp">Choisis un verbe et à qui tu parles.</p><table class="labo"><thead><tr><th>Quel verbe ? · Tu parles à qui ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">signer + au comptoir (vous)</td><td>Signez en bas, à droite.</td><td>la phrase du préposé</td></tr><tr><td class="cle">signer + à un ami (tu)</td><td>Signe ici.</td><td>deux mots, entre amis</td></tr><tr><td class="cle">signer + je demande où</td><td>Je signe où ?</td><td>la question qui règle tout</td></tr><tr><td class="cle">écrire + au comptoir (vous)</td><td>Écrivez votre nom dans la case.</td><td>« votre » va avec « écrivez »</td></tr><tr><td class="cle">écrire + à un ami (tu)</td><td>Écris ton nom ici.</td><td>« ton » va avec « écris »</td></tr><tr><td class="cle">écrire + je demande où</td><td>J'écris mon nom où ?</td><td>on montre la feuille en le disant</td></tr><tr><td class="cle">remplir + au comptoir (vous)</td><td>Remplissez ce formulaire, s'il vous plaît.</td><td>le « s'il vous plaît » adoucit l'ordre</td></tr><tr><td class="cle">remplir + à un ami (tu)</td><td>Remplis le formulaire.</td><td>sans -ez, mais le s reste</td></tr><tr><td class="cle">remplir + je demande où</td><td>Je remplis quelle case ?</td><td>plus précis que « je fais quoi ? »</td></tr></tbody></table><div class="note">Neuf extraits. Faire jouer le comptoir : un élève donne les six consignes, l'autre les exécute vraiment sur une feuille.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Les six consignes du comptoir.</p><table class="ex2"><tr><td>Posez la boîte ici.</td><td>poser</td></tr><tr><td>Remplissez le formulaire.</td><td>remplir</td></tr><tr><td>Écrivez votre nom.</td><td>écrire</td></tr><tr><td>Signez en bas.</td><td>signer</td></tr><tr><td>Gardez votre reçu.</td><td>garder</td></tr><tr><td>Apportez une carte avec votre photo.</td><td>apporter</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges à connaître</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">dire « vous signez » pour demander de signer</p><div class="k">Ce qui arrive</div><p class="ph">le « vous » reste</p><p class="px">Pour donner une consigne, on enlève le « vous » : Signez ici. Avec le « vous », la phrase raconte ce que vous faites, elle ne demande rien.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">mettre un s à « écris » quand on tutoie</p><div class="k">Ce qui arrive</div><p class="ph">Écris ton nom, pas « écrits »</p><p class="px">À l'ordre, la forme en « tu » perd son s pour les verbes en -er : signe, écoute, apporte. Écris et remplis gardent le leur parce qu'ils sont d'un autre groupe.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">croire que la consigne est impolie</p><div class="k">Ce qui arrive</div><p class="ph">« Signez ici » n'est pas sec</p><p class="px">C'est la forme normale au comptoir. Le « s'il vous plaît » l'adoucit, mais elle est déjà polie sans lui.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">Le préposé dit…</span><ul class="opts"><li>Signez ici.</li><li>Vous signez ici.</li></ul></li><li><span class="q">À un ami, on dit…</span><ul class="opts"><li>Signe ici.</li><li>Signez ici.</li></ul></li><li><span class="q">« Gardez votre reçu » veut dire…</span><ul class="opts"><li>ne le jetez pas</li><li>donnez-le-moi</li></ul></li><li><span class="q">Le verbe de la consigne finit par…</span><ul class="opts"><li>-ez</li><li>-ent</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> Signez ici. — On enlève le « vous » pour donner une consigne. · <b>2.</b> Signe ici. — La forme en « tu », sans -ez. · <b>3.</b> ne le jetez pas — Le reçu prouve que vous avez payé. On le garde. · <b>4.</b> -ez — -ez, comme la forme de « vous ».</div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Mon nom, votre nom</h2><section class="bloc card ml"><h3>Le petit mot qui dit à qui c'est</h3><p class="mp">Devant un nom, un petit mot dit à qui appartient la chose. Quand je parle de moi : <b>mon</b>, <b>ma</b>, <b>mes</b>. Quand le préposé me parle : <b>votre</b>, <b>vos</b>. Ce sont les deux seules séries dont on a besoin au comptoir, et elles reviennent dans chaque phrase.</p><div class="note">C'est un savoir du programme au niveau 2 : les déterminants possessifs. Se limiter à ces deux séries — « son », « leur » et le reste viendront plus tard.</div></section><section class="bloc card ml"><h3>Quand je parle de moi</h3><p class="mp">Trois formes, et c'est le nom qui décide.</p><table class="ana"><tr><td>Devant un mot masculin</td><td class=""><b>mon</b> nom · <b>mon</b> colis · <b>mon</b> reçu</td></tr><tr><td>Devant un mot féminin</td><td class=""><b>ma</b> rue · <b>ma</b> signature · <b>ma</b> lettre</td></tr><tr><td>Devant plusieurs choses</td><td class=""><b>mes</b> papiers · <b>mes</b> timbres</td></tr><tr><td>Attention</td><td class=""><b>mon</b> adresse, jamais « ma adresse »</td></tr><tr><td>On ne dit pas</td><td class="cle">« ma nom » ni « mon rue »</td></tr></table><p class="dit"><span class="k">On dit</span> Mon nom. Ma rue. Mes papiers. Mon adresse.</p><div class="note">La règle du « mon adresse » se retient par l'oreille : « ma adresse » fait deux voyelles collées, et la bouche refuse.</div></section><section class="bloc card ml"><h3>Quand le préposé me parle</h3><p class="mp">Deux formes seulement, et c'est plus facile.</p><table class="ana"><tr><td>Une seule chose</td><td class=""><b>votre</b> nom · <b>votre</b> adresse · <b>votre</b> signature</td></tr><tr><td>Plusieurs choses</td><td class=""><b>vos</b> papiers · <b>vos</b> timbres</td></tr><tr><td>Le genre</td><td class="">ne change rien : <b>votre</b> nom, <b>votre</b> rue</td></tr><tr><td>Au comptoir</td><td class="">on entend « votre » dix fois par visite</td></tr><tr><td>On ne dit pas</td><td class="cle">« ton nom » à un préposé</td></tr></table><p class="dit"><span class="k">On dit</span> Votre nom. Votre adresse. Vos papiers.</p><div class="note">Insister : le masculin et le féminin ne changent rien à « votre ». C'est plus simple que « mon / ma », et ça rassure.</div></section><section class="bloc card ml"><h3>Les deux dans la même phrase</h3><p class="mp">C'est ainsi qu'on les entend vraiment.</p><table class="ana"><tr><td>Le préposé dit</td><td class="">Écrivez <b>votre</b> nom ici.</td></tr><tr><td>Je réponds</td><td class=""><b>Mon</b> nom, c'est Diallo.</td></tr><tr><td>Le préposé dit</td><td class=""><b>Vos</b> papiers, s'il vous plaît.</td></tr><tr><td>Je réponds</td><td class="">Voici <b>mes</b> papiers.</td></tr><tr><td>On ne dit pas</td><td class="cle">« Voici votre papiers » quand on parle de soi</td></tr></table><p class="dit"><span class="k">On dit</span> Écrivez votre nom ici. Mon nom, c'est Diallo. Vos papiers, s'il vous plaît. Voici mes papiers.</p><div class="note">Faire jouer ce court échange debout, deux par deux. C'est exactement la scène du Défi 2.</div></section><section class="bloc card ml"><h3>Mon ou votre ?</h3><p class="mp">Choisis un mot et qui parle.</p><table class="labo"><thead><tr><th>Quel mot ? · Qui parle ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">le nom + moi</td><td>Mon nom, c'est Diallo.</td><td>nom est masculin : mon</td></tr><tr><td class="cle">le nom + le préposé</td><td>Écrivez votre nom.</td><td>le préposé dit toujours « votre »</td></tr><tr><td class="cle">le nom + la règle</td><td>Mon nom. Votre nom.<span class="tags">mon (masculin) · votre (les deux)</span></td><td>une forme change, l'autre non</td></tr><tr><td class="cle">la rue + moi</td><td>Ma rue, c'est la rue Bélanger.</td><td>rue est féminin : ma</td></tr><tr><td class="cle">la rue + le préposé</td><td>Quelle est votre rue ?</td><td>« votre » ne change pas au féminin</td></tr><tr><td class="cle">la rue + la règle</td><td>Ma rue. Votre rue.<span class="tags">ma (féminin) · votre (les deux)</span></td><td>le féminin n'existe que du côté de « ma »</td></tr><tr><td class="cle">les papiers + moi</td><td>Voici mes papiers.</td><td>plusieurs choses : mes</td></tr><tr><td class="cle">les papiers + le préposé</td><td>Vos papiers, s'il vous plaît.</td><td>plusieurs choses : vos</td></tr><tr><td class="cle">les papiers + la règle</td><td>Mes papiers. Vos papiers.<span class="tags">mes · vos — quand il y en a plusieurs</span></td><td>les deux prennent un s</td></tr></tbody></table><div class="note">Neuf extraits. Faire le tour de la classe : chacun dit « mon nom, c'est… » et « ma rue, c'est… ».</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six phrases du comptoir.</p><table class="ex2"><tr><td>Mon nom, c'est Diallo.</td><td>masculin : mon</td></tr><tr><td>Ma rue, c'est la rue Bélanger.</td><td>féminin : ma</td></tr><tr><td>Mon adresse est à Montréal.</td><td>voyelle : mon</td></tr><tr><td>Voici mes papiers.</td><td>plusieurs : mes</td></tr><tr><td>Écrivez votre adresse.</td><td>le préposé : votre</td></tr><tr><td>Vos papiers, s'il vous plaît.</td><td>plusieurs : vos</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges à connaître</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">dire « ma adresse »</p><div class="k">Ce qui arrive</div><p class="ph">le mot commence par une voyelle</p><p class="px">On dit mon adresse, mon enveloppe, mon appartement — même si le mot est féminin. Deux voyelles collées ne se disent pas.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">dire « ton nom » au préposé</p><div class="k">Ce qui arrive</div><p class="ph">c'est le tutoiement</p><p class="px">Au comptoir, on vouvoie : votre nom, votre adresse. « Ton » est pour un ami ou un enfant.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">dire « mes » pour une seule chose</p><div class="k">Ce qui arrive</div><p class="ph">« mes reçu »</p><p class="px">« mes » s'emploie seulement quand il y en a plusieurs : mes papiers, mes timbres. Pour un seul : mon reçu.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">On dit…</span><ul class="opts"><li>mon adresse</li><li>ma adresse</li></ul></li><li><span class="q">« rue » est féminin, alors on dit…</span><ul class="opts"><li>ma rue</li><li>mon rue</li></ul></li><li><span class="q">Le préposé dit…</span><ul class="opts"><li>votre nom</li><li>ton nom</li></ul></li><li><span class="q">Pour plusieurs papiers, je dis…</span><ul class="opts"><li>mes papiers</li><li>mon papiers</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> mon adresse — Le mot commence par une voyelle : mon. · <b>2.</b> ma rue — Ma rue. Mais « votre rue » ne change pas. · <b>3.</b> votre nom — Au comptoir, on vouvoie toujours. · <b>4.</b> mes papiers — Mes, avec un s, comme le nom.</div></section></section></div>
+<footer><span>C2 · J'envoie une lettre et un colis</span><span>Fiche élève</span></footer>
+</body>
+</html>

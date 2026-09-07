@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A3 · De quelle couleur ? — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance A3 · Module 4 · 75 minutes</div>
+    <h1>De quelle couleur ?</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Six couleurs suffisent pour demander n'importe quel objet d'une salle de classe.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>nommer six couleurs ;</li><li>désigner un objet par sa couleur ;</li><li>reconnaître les lieux et les objets de la classe sur une photo ;</li><li>demander un objet précis à l'enseignante.</li></ol></section><section class="bloc card"><div class="lbl">Vocabulaire</div><h2 class="t">Les six couleurs de la classe</h2><table class="voc"><tbody><tr><td class="mot">rouge</td><td class="def">La couleur d'une tomate.</td></tr><tr><td class="mot">bleu</td><td class="def">La couleur du ciel.</td></tr><tr><td class="mot">jaune</td><td class="def">La couleur du soleil.</td></tr><tr><td class="mot">vert</td><td class="def">La couleur de l'herbe.</td></tr><tr><td class="mot">noir</td><td class="def">La couleur de la nuit.</td></tr><tr><td class="mot">blanc</td><td class="def">La couleur de la neige.</td></tr></tbody></table></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">L'objet, puis la couleur</h2><table><thead><tr><th>On dit</th><th>On ne dit pas</th></tr></thead><tbody><tr><td>un crayon rouge</td><td class="cle">un rouge crayon</td></tr><tr><td>une feuille blanche</td><td class="cle">une blanche feuille</td></tr><tr><td>le tableau noir</td><td class="cle">le noir tableau</td></tr><tr><td>un sac vert</td><td class="cle">un vert sac</td></tr></tbody></table><div class="note">En français, la couleur vient toujours après l'objet.</div></section><section class="bloc regle"><div class="lbl">Désigner un objet par sa couleur</div><p class="r">Quand on ne connaît pas le nom, la couleur suffit.</p><p class="pr">« Le &lt;b&gt;rouge&lt;/b&gt;, s'il vous plaît. » « Le grand &lt;b&gt;bleu&lt;/b&gt;, là. » On montre du doigt et on dit la couleur : l'enseignante comprend, et donne le nom de l'objet en même temps.</p></section><section class="bloc card"><div class="lbl">Vocabulaire</div><h2 class="t">Quelle couleur ?</h2><p class="consigne">Associez chaque objet à sa couleur.</p><ol class="ex"><li><span class="q">Le crayon de Myriam, comme une tomate.</span><span class="ligne ligne--court"></span></li><li><span class="q">Les cinq mots au tableau, comme le ciel.</span><span class="ligne ligne--court"></span></li><li><span class="q">La feuille neuve, comme la neige.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le tableau du fond, comme la nuit.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le sac de Tariq, comme l'herbe du parc.</span><span class="ligne ligne--court"></span></li><li><span class="q">La gomme à effacer, comme le soleil.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">Pratique · en groupe</div><h2 class="t">Donnez-moi le rouge</h2><p class="consigne">Debout, autour d'une table où tout est mélangé.</p><ol class="ex"><li><span class="q">Étape 1</span><span class="ligne"></span></li><li><span class="q">Étape 2</span><span class="ligne"></span></li><li><span class="q">Étape 3</span><span class="ligne"></span></li><li><span class="q">Étape 4</span><span class="ligne"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez la couleur de quatre choses qui sont dans votre classe.</p><ul><li>Mon cahier est bleu.</li><li>La porte est brune.</li><li>Le tableau est blanc.</li><li>Ma chaise est noire.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Les couleurs de la classe</h2><section class="bloc card ml"><h3>Cinq couleurs suffisent pour commencer</h3><p class="mp">En classe, on désigne un objet par sa couleur : « le crayon <b>rouge</b> », « les mots <b>bleus</b> », « la feuille <b>blanche</b> ». Cinq couleurs reviennent tout le temps : <b>rouge, bleu, jaune, vert, noir</b>. Avec <b>blanc</b>, ça fait six.</p><div class="note">Nommer une couleur, c'est pouvoir demander un objet précis sans connaître son nom : « le grand rouge, là ».</div></section><section class="bloc card ml"><h3>Les six couleurs de base</h3><p class="mp">À dire lentement, une par une.</p><table class="ana"><tr><td>Comme une tomate</td><td class=""><b>rouge</b></td></tr><tr><td>Comme le ciel</td><td class=""><b>bleu</b></td></tr><tr><td>Comme le soleil</td><td class=""><b>jaune</b></td></tr><tr><td>Comme l'herbe</td><td class=""><b>vert</b></td></tr><tr><td>Comme la nuit</td><td class=""><b>noir</b></td></tr><tr><td>Comme la neige</td><td class=""><b>blanc</b></td></tr></table><p class="dit"><span class="k">On dit</span> Rouge. Bleu. Jaune. Vert. Noir. Blanc.</p><div class="note">Ces six-là couvrent presque tout le matériel d'une salle de classe.</div></section><section class="bloc card ml"><h3>La couleur se dit après l'objet</h3><p class="mp">C'est l'inverse de beaucoup de langues.</p><table class="ana"><tr><td>On dit</td><td class="">un crayon <b>rouge</b></td></tr><tr><td>Aussi</td><td class="">une feuille <b>blanche</b></td></tr><tr><td>Aussi</td><td class="">le tableau <b>noir</b></td></tr><tr><td>On ne dit pas</td><td class="cle">« un rouge crayon »</td></tr></table><p class="dit"><span class="k">On dit</span> Un crayon rouge. Une feuille blanche. Le tableau noir.</p><div class="note">D'abord l'objet, ensuite la couleur. Toujours, sans exception, pour les couleurs.</div></section><section class="bloc card ml"><h3>Avec un mot féminin, la couleur change parfois</h3><p class="mp">On ajoute un -e, et le son change parfois.</p><table class="ana"><tr><td>Vert devient verte</td><td class="">un cahier <b>vert</b> · une gomme <b>verte</b></td></tr><tr><td>Noir devient noire</td><td class="">un sac <b>noir</b> · une chaise <b>noire</b></td></tr><tr><td>Blanc devient blanche</td><td class="">un mur <b>blanc</b> · une feuille <b>blanche</b></td></tr><tr><td>Rouge et jaune ne changent pas</td><td class="">un crayon <b>rouge</b> · une gomme <b>rouge</b></td></tr></table><p class="dit"><span class="k">On dit</span> Un cahier vert. Une gomme verte. Une feuille blanche.</p><div class="note">Vert et verte ne se disent pas pareil : on entend le t de « verte ».</div></section><section class="bloc card ml"><h3>L'objet et sa couleur</h3><p class="mp">Choisis un objet et une couleur.</p><table class="labo"><thead><tr><th>Quel objet ? · Quelle couleur ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">a1.</td><td>un crayon rouge</td><td>rouge ne change jamais</td></tr><tr><td class="cle">a2.</td><td>un crayon vert</td><td>masculin : on n'entend pas le t</td></tr><tr><td class="cle">a3.</td><td>un crayon blanc</td><td>masculin : « blanc »</td></tr><tr><td class="cle">a4.</td><td>un crayon noir</td><td>masculin : « noir »</td></tr><tr><td class="cle">b1.</td><td>une feuille rouge</td><td>rouge reste rouge</td></tr><tr><td class="cle">une feuille + vert</td><td>une feuille verte</td><td>féminin : on entend le t</td></tr><tr><td class="cle">une feuille + blanc</td><td>une feuille blanche</td><td>blanc devient blanche</td></tr><tr><td class="cle">une feuille + noir</td><td>une feuille noire</td><td>noire, avec un e qui ne s'entend pas</td></tr><tr><td class="cle">c1.</td><td>un cahier rouge</td><td>le plus courant en classe</td></tr><tr><td class="cle">c2.</td><td>un cahier vert</td><td>masculin, pas de t</td></tr><tr><td class="cle">c3.</td><td>un cahier blanc</td><td>masculin</td></tr><tr><td class="cle">c4.</td><td>un cahier noir</td><td>masculin</td></tr><tr><td class="cle">d1.</td><td>une gomme rouge</td><td>aucune marque de féminin</td></tr><tr><td class="cle">une gomme + vert</td><td>une gomme verte</td><td>le t s'entend</td></tr><tr><td class="cle">une gomme + blanc</td><td>une gomme blanche</td><td>blanche, féminin</td></tr><tr><td class="cle">une gomme + noir</td><td>une gomme noire</td><td>noire, féminin</td></tr><tr><td class="cle">e1.</td><td>une chaise rouge</td><td>invariable</td></tr><tr><td class="cle">une chaise + vert</td><td>une chaise verte</td><td>féminin</td></tr><tr><td class="cle">une chaise + blanc</td><td>une chaise blanche</td><td>féminin</td></tr><tr><td class="cle">une chaise + noir</td><td>une chaise noire</td><td>féminin</td></tr></tbody></table><div class="note">Vingt réponses. Dis-les à voix haute : c'est le t de « verte » qu'il faut entendre.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six objets de la classe, avec leur couleur.</p><table class="ex2"><tr><td>un crayon rouge</td><td>la couleur après l'objet</td></tr><tr><td>une feuille blanche</td><td>blanc devient blanche</td></tr><tr><td>deux crayons bleus</td><td>plusieurs objets : un -s</td></tr><tr><td>le tableau noir</td><td>masculin, pas de e</td></tr><tr><td>une gomme verte</td><td>le t s'entend</td></tr><tr><td>trois feuilles jaunes</td><td>jaune ne change pas, mais prend le -s</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges à connaître</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">dire « un rouge crayon »</p><div class="k">Ce qui arrive</div><p class="ph">la couleur vient après</p><p class="px">En français, l'objet passe en premier : <b>un crayon rouge</b>. Beaucoup de langues font l'inverse, et l'erreur est très courante au début.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">oublier le -e du féminin</p><div class="k">Ce qui arrive</div><p class="ph">une feuille <b>blanche</b></p><p class="px">Vert, noir, blanc changent devant un mot féminin : verte, noire, blanche. Rouge et jaune, non : ils finissent déjà par un e.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">oublier le -s au pluriel</p><div class="k">Ce qui arrive</div><p class="ph">deux crayons <b>bleus</b></p><p class="px">Plusieurs objets, plusieurs -s : les objets et la couleur en prennent un chacun.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">On dit…</span><ul class="opts"><li>un crayon rouge</li><li>un rouge crayon</li></ul></li><li><span class="q">Une feuille de la couleur de la neige, c'est une feuille…</span><ul class="opts"><li>blanc</li><li>blanche</li></ul></li><li><span class="q">Deux crayons de la couleur du ciel, ce sont deux crayons…</span><ul class="opts"><li>bleu</li><li>bleus</li></ul></li><li><span class="q">Une gomme rouge, au féminin, s'écrit…</span><ul class="opts"><li>rouge</li><li>rouje</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> un crayon rouge — L'objet d'abord, la couleur après. · <b>2.</b> blanche — Feuille est féminin : blanche. · <b>3.</b> bleus — Deux objets : un -s à la couleur aussi. · <b>4.</b> rouge — Rouge ne change jamais : il finit déjà par un e.</div></section></section></div>
+<footer><span>A3 · Ouvrez votre cahier</span><span>Fiche élève</span></footer>
+</body>
+</html>

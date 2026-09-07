@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B2 · C'est la cafétéria — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance B2 · Module 3 · 60 minutes</div>
+    <h1>C'est la cafétéria</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Deux petits mots font tout le travail : celui qui se met devant le nom, et « c'est », qui sert à nommer n'importe quoi.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>employer le, la, les, l' devant le nom d'un lieu ;</li><li>nommer un endroit avec « c'est » ;</li><li>dire que non avec « ce n'est pas » ;</li><li>poser la question « c'est ici ? ».</li></ol></section><section class="bloc regle"><div class="lbl">Le petit mot fait partie du nom</div><p class="r">On l'apprend avec lui, jamais après.</p><p class="pr">&lt;b&gt;la&lt;/b&gt; cafétéria · &lt;b&gt;le&lt;/b&gt; vestiaire · &lt;b&gt;les&lt;/b&gt; toilettes · &lt;b&gt;l'&lt;/b&gt;accueil. Il ne se devine pas. « Cafétéria » tout seul ne s'apprend pas ; « la cafétéria », oui.</p></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Quand met-on lequel ?</h2><table><thead><tr><th>Le petit mot</th><th>Devant quoi</th></tr></thead><tbody><tr><td class="cle">la</td><td>un nom féminin : la sortie</td></tr><tr><td class="cle">le</td><td>un nom masculin : le vestiaire</td></tr><tr><td class="cle">les</td><td>un nom au pluriel : les toilettes</td></tr><tr><td class="cle">l'</td><td>un nom qui commence par une voyelle : l'accueil</td></tr></tbody></table><div class="note">« Les toilettes » est toujours au pluriel, même pour une seule salle.</div></section><section class="bloc card"><div class="lbl">Pratique</div><h2 class="t">Le, la, les ou l' ?</h2><p class="consigne">Complétez avec le bon petit mot.</p><ol class="ex"><li><span class="q">___ cafétéria est au premier étage.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ toilettes sont au bout du corridor.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ vestiaire est à côté de l'entrée.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ sortie est à droite.</span><span class="ligne ligne--court"></span></li><li><span class="q">Je vais à ___ accueil.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ service de garde est au rez-de-chaussée.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc regle"><div class="lbl">C'est · Ce n'est pas · C'est ici ?</div><p class="r">Trois phrases devant une porte.</p><p class="pr">On &lt;b&gt;nomme&lt;/b&gt; : « C'est la cafétéria. » On &lt;b&gt;corrige&lt;/b&gt; : « Ce n'est pas la cafétéria. » On &lt;b&gt;demande&lt;/b&gt; : « C'est ici ? » — les mêmes mots, la voix qui monte à la fin.</p></section><section class="bloc card"><div class="lbl">Pratique</div><h2 class="t">C'est, ou ce n'est pas ?</h2><p class="consigne">Regardez le panneau, puis complétez.</p><ol class="ex"><li><span class="q">Le panneau dit CAFÉTÉRIA. ___ la cafétéria.</span><span class="ligne ligne--court"></span></li><li><span class="q">Vous cherchez les toilettes, le panneau dit ACCUEIL.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le panneau dit SORTIE. ___ la sortie.</span><span class="ligne ligne--court"></span></li><li><span class="q">Vous demandez : le service de garde, ___ ici ?</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Oublier le petit mot après « c'est »</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">« C'est cafétéria. »</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">« C'est la cafétéria. »</p></div></div><div class="note">Le petit mot ne disparaît jamais, même après « c'est ». C'est l'erreur la plus fréquente du module, et elle vient de ce que le panneau, lui, écrit le mot tout seul : CAFÉTÉRIA. Le panneau est un titre, pas une phrase.</div></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez trois phrases avec « c'est ».</p><ul><li>Une pour la cafétéria, une pour les toilettes, une pour la sortie.</li><li>N'oubliez pas le petit mot.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Le, la, les, l' — devant le nom d'un lieu</h2><section class="bloc card ml"><h3>Un petit mot devant chaque nom</h3><p class="mp">En français, un nom ne vient presque jamais tout seul : il y a un petit mot devant. <b>le</b> vestiaire, <b>la</b> cafétéria, <b>les</b> toilettes, <b>l'</b>accueil. Ce petit mot ne veut rien dire à lui seul — mais on l'entend, et on l'attend.</p><div class="note">Beaucoup de langues n'ont pas ce petit mot. Si le français est votre deuxième langue, c'est peut-être la chose la plus étrange du début.</div></section><section class="bloc card ml"><h3>le et la</h3><p class="mp">Selon le nom, pas selon la personne.</p><table class="ana"><tr><td>Masculin</td><td class=""><b>le</b> vestiaire · <b>le</b> panneau</td></tr><tr><td>Féminin</td><td class=""><b>la</b> cafétéria · <b>la</b> sortie</td></tr><tr><td>On ne devine pas</td><td class="cle">on apprend le petit mot avec le nom</td></tr></table><p class="dit"><span class="k">On dit</span> Le vestiaire. La cafétéria.</p><div class="note">Le nom d'un lieu n'a rien d'un homme ni d'une femme : « masculin » et « féminin » sont ici deux étiquettes, rien de plus.</div></section><section class="bloc card ml"><h3>les, quand il y en a plusieurs</h3><p class="mp">Ou quand le mot est toujours au pluriel.</p><table class="ana"><tr><td>Plusieurs</td><td class=""><b>les</b> panneaux · <b>les</b> portes</td></tr><tr><td>Toujours pluriel</td><td class=""><b>les</b> toilettes</td></tr><tr><td>On entend un [e]</td><td class="cle">« lé »</td></tr></table><p class="dit"><span class="k">On dit</span> Les panneaux. Les toilettes.</p><div class="note">« Les toilettes » est toujours au pluriel en français, même s'il n'y a qu'une seule petite salle. C'est ainsi.</div></section><section class="bloc card ml"><h3>l' devant une voyelle</h3><p class="mp">Le petit mot se colle au nom.</p><table class="ana"><tr><td>On dit</td><td class=""><b>l'</b>accueil · <b>l'</b>entrée</td></tr><tr><td>On ne dit pas</td><td class="">le accueil · la entrée</td></tr><tr><td>On entend un seul mot</td><td class="cle">« laccueil »</td></tr></table><p class="dit"><span class="k">On dit</span> L'accueil. L'entrée.</p><div class="note">C'est pour éviter deux voyelles collées. Le français n'aime pas cela, et il le montre souvent.</div></section><section class="bloc card ml"><h3>Choisissez un lieu</h3><p class="mp">Écoutez le nom avec son petit mot.</p><table class="labo"><thead><tr><th>Quel lieu ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">cafétéria</td><td>La cafétéria.</td><td>féminin</td></tr><tr><td class="cle">vestiaire</td><td>Le vestiaire.</td><td>masculin</td></tr><tr><td class="cle">toilettes</td><td>Les toilettes.</td><td>toujours au pluriel</td></tr><tr><td class="cle">accueil</td><td>L'accueil.</td><td>l' devant une voyelle</td></tr><tr><td class="cle">sortie</td><td>La sortie.</td><td>féminin</td></tr><tr><td class="cle">service de garde</td><td>Le service de garde.</td><td>masculin, et trois mots ensemble</td></tr></tbody></table><div class="note">Apprenez toujours le petit mot avec le nom. « Cafétéria » seul ne s'apprend pas ; « la cafétéria », oui.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six lieux du centre.</p><table class="ex2"><tr><td>la cafétéria</td><td>on y mange</td></tr><tr><td>les toilettes</td><td>toujours au pluriel</td></tr><tr><td>le vestiaire</td><td>on y laisse son manteau</td></tr><tr><td>l'accueil</td><td>le comptoir du début</td></tr><tr><td>l'entrée</td><td>la porte par où on arrive</td></tr><tr><td>le service de garde</td><td>pour les petits enfants</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges à connaître</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">dire le nom tout seul</p><div class="k">Ce qui arrive</div><p class="ph">« cafétéria, s'il vous plaît »</p><p class="px">On comprendra, mais on entend tout de suite qu'il manque quelque chose. Dites « la cafétéria ».</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">chercher une logique</p><div class="k">Ce qui arrive</div><p class="ph">pourquoi « le » vestiaire et « la » sortie ?</p><p class="px">Il n'y en a pas. Le petit mot s'apprend avec le nom, comme une seule pièce.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">dire « le toilettes »</p><div class="k">Ce qui arrive</div><p class="ph">le mot est toujours au pluriel</p><p class="px">On dit <b>les</b> toilettes, même pour une seule salle.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">___ toilettes sont au fond.</span><ul class="opts"><li>Le</li><li>Les</li></ul></li><li><span class="q">Je vais à ___ accueil.</span><ul class="opts"><li>l'</li><li>le</li></ul></li><li><span class="q">___ cafétéria est ouverte.</span><ul class="opts"><li>Le</li><li>La</li></ul></li><li><span class="q">On apprend le petit mot…</span><ul class="opts"><li>avec le nom</li><li>plus tard</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> Les — Toujours au pluriel. · <b>2.</b> l' — Devant une voyelle, le petit mot se colle. · <b>3.</b> La — Cafétéria est féminin. · <b>4.</b> avec le nom — Les deux ensemble, comme une seule pièce.</div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>C'est · Ce n'est pas · C'est ici ?</h2><section class="bloc card ml"><h3>Trois phrases suffisent devant une porte</h3><p class="mp">Devant un panneau, on ne fait que trois choses : on <b>nomme</b> — « C'est la cafétéria » ; on <b>corrige</b> — « Ce n'est pas la cafétéria » ; on <b>demande</b> — « C'est ici ? ». Trois phrases, et tout le module tient dedans.</p><div class="note">« C'est » est la phrase la plus courte du français et l'une des plus utiles. Elle sert à nommer n'importe quoi.</div></section><section class="bloc card ml"><h3>C'est — pour nommer</h3><p class="mp">On met le nom juste après, avec son petit mot.</p><table class="ana"><tr><td>On dit</td><td class=""><b>C'est</b> la cafétéria.</td></tr><tr><td>Aussi</td><td class=""><b>C'est</b> le vestiaire.</td></tr><tr><td>On ne dit pas</td><td class="cle">c'est cafétéria</td></tr></table><p class="dit"><span class="k">On dit</span> C'est la cafétéria. C'est le vestiaire.</p><div class="note">Le petit mot — le, la, les — reste toujours là, même après « c'est ».</div></section><section class="bloc card ml"><h3>Ce n'est pas — pour dire que non</h3><p class="mp">Deux petits mots autour du verbe : ne… pas.</p><table class="ana"><tr><td>On dit</td><td class=""><b>Ce n'est pas</b> l'accueil.</td></tr><tr><td>À l'oral, souvent</td><td class=""><b>C'est pas</b> l'accueil.</td></tr><tr><td>Les deux sont bons</td><td class="cle">le second est simplement plus rapide</td></tr></table><p class="dit"><span class="k">On dit</span> Ce n'est pas l'accueil. C'est pas l'accueil.</p><div class="note">Au Québec, on entend « c'est pas » tout le temps, dans toutes les situations. Écrivez « ce n'est pas » ; dites ce que vous voulez.</div></section><section class="bloc card ml"><h3>C'est ici ? — pour demander</h3><p class="mp">Les mêmes mots, la voix qui monte.</p><table class="ana"><tr><td>On affirme</td><td class="">C'est ici. ↓</td></tr><tr><td>On demande</td><td class="">C'est ici ? ↑</td></tr><tr><td>Rien ne change</td><td class="cle">sauf la voix, à la fin</td></tr></table><p class="dit"><span class="k">On dit</span> C'est ici. C'est ici ?</p><div class="note">C'est la façon la plus simple de poser une question en français : garder la phrase et monter la voix. Elle marche partout.</div></section><section class="bloc card ml"><h3>Devant quel panneau ?</h3><p class="mp">Choisissez un panneau et une phrase.</p><table class="labo"><thead><tr><th>Quel panneau ? · Quelle phrase ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">CAFÉTÉRIA + je nomme</td><td>C'est la cafétéria.</td><td>on nomme ce qu'on voit</td></tr><tr><td class="cle">CAFÉTÉRIA + je dis que non</td><td>Ce n'est pas la cafétéria.</td><td>ne… pas autour du verbe</td></tr><tr><td class="cle">CAFÉTÉRIA + je demande</td><td>La cafétéria, c'est ici ?</td><td>la voix monte à la fin</td></tr><tr><td class="cle">ACCUEIL + je nomme</td><td>C'est l'accueil.</td><td>l' devant une voyelle</td></tr><tr><td class="cle">ACCUEIL + je dis que non</td><td>Ce n'est pas l'accueil.</td><td>à l'oral : « c'est pas »</td></tr><tr><td class="cle">ACCUEIL + je demande</td><td>L'accueil, c'est ici ?</td><td>on nomme, puis on demande</td></tr><tr><td class="cle">SORTIE + je nomme</td><td>C'est la sortie.</td><td>féminin : la sortie</td></tr><tr><td class="cle">SORTIE + je dis que non</td><td>Ce n'est pas la sortie.</td><td>utile devant une porte fermée</td></tr><tr><td class="cle">SORTIE + je demande</td><td>La sortie, c'est ici ?</td><td>la question la plus courte</td></tr></tbody></table><div class="note">Neuf phrases. Choisissez-en trois et dites-les à voix haute devant une vraie porte.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six phrases devant une porte.</p><table class="ex2"><tr><td>C'est la cafétéria.</td><td>je nomme</td></tr><tr><td>C'est le vestiaire.</td><td>je nomme</td></tr><tr><td>Ce n'est pas ici.</td><td>je dis que non</td></tr><tr><td>C'est pas ici.</td><td>à l'oral</td></tr><tr><td>Les toilettes, c'est ici ?</td><td>je demande</td></tr><tr><td>Merci, madame.</td><td>je remercie</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges à connaître</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">oublier le petit mot</p><div class="k">Ce qui arrive</div><p class="ph">« c'est cafétéria »</p><p class="px">Après « c'est », le nom garde toujours son petit mot : « c'est <b>la</b> cafétéria ».</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">croire que « c'est pas » est une faute</p><div class="k">Ce qui arrive</div><p class="ph">tout le monde le dit</p><p class="px">À l'oral, le « ne » tombe presque toujours. Ce n'est pas familier au point de déranger : c'est le français parlé ordinaire. À l'écrit, on garde « ce n'est pas ».</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">ne pas oser demander</p><div class="k">Ce qui arrive</div><p class="ph">tourner en rond dans le corridor</p><p class="px">« C'est ici ? » fait trois mots et on vous répondra toujours. C'est la phrase à sortir dès qu'un doute se présente.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">Pour nommer un lieu, on dit…</span><ul class="opts"><li>c'est</li><li>il y a</li></ul></li><li><span class="q">Après « c'est », le nom garde…</span><ul class="opts"><li>son petit mot</li><li>rien</li></ul></li><li><span class="q">Pour demander, on change…</span><ul class="opts"><li>les mots</li><li>la voix</li></ul></li><li><span class="q">« C'est pas ici » est…</span><ul class="opts"><li>une faute</li><li>du français parlé ordinaire</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> c'est — C'est la cafétéria. · <b>2.</b> son petit mot — C'est <b>la</b> cafétéria. · <b>3.</b> la voix — La voix monte à la fin. · <b>4.</b> du français parlé ordinaire — À l'écrit, on écrit « ce n'est pas ».</div></section></section></div>
+<footer><span>B2 · Je lis les panneaux du centre</span><span>Fiche élève</span></footer>
+</body>
+</html>

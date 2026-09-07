@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A2 · Quatre mélodies, et ce qu'elles disent à votre place — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance A2 · Module 2 · 60 minutes</div>
+    <h1>Quatre mélodies, et ce qu'elles disent à votre place</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Le programme du niveau 8 ne demande plus qu'une chose à l'oreille : produire l'intonation expressive. Pas un son nouveau — une mélodie.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>reconnaître à l'oreille la surprise, l'incompréhension, la volonté et la déception ;</li><li>produire chacune des quatre sur une phrase courte ;</li><li>comprendre pourquoi une voix plate se lit comme de l'indifférence ;</li><li>choisir trois phrases d'entrevue et décider de leur mélodie.</li></ol></section><section class="bloc regle"><div class="lbl">Quatre mélodies, quatre intentions</div><p class="r">La surprise monte d'un coup à la fin. L'incompréhension freine et laisse un silence. La volonté descend et appuie. La déception tombe dès la première syllabe.</p><p class="pr">Aucune de ces quatre ne s'écrit : elles ne vivent que dans la voix. C'est pour cela qu'un texte bien construit peut être dit d'une façon qui le contredit, et que l'interlocuteur croira toujours la voix plutôt que les mots.</p></section><section class="bloc"><div class="lbl">Analyse</div><h2 class="t">Comment chacune se fabrique</h2><div class="grid"><div class="card"><h3>La surprise</h3><p>La phrase part normalement puis grimpe brusquement sur les deux ou trois dernières syllabes. Souvent une question, souvent courte.</p></div><div class="card"><h3>L'incompréhension</h3><p>On ne monte pas : on freine. Le débit se casse à l'endroit précis où le fil s'est rompu, avec un petit silence avant le mot en cause.</p></div><div class="card"><h3>La volonté</h3><p>La mélodie descend, le débit ralentit, les syllabes se détachent. C'est la voix de l'engagement, celle de la négociation.</p></div><div class="card"><h3>La déception</h3><p>La mélodie descend dès la première syllabe et ne remonte jamais. Souvent un « ah » ou un « bon » en tête.</p></div></div></section><section class="bloc card"><div class="lbl">Pratique</div><h2 class="t">Quelle intention entendez-vous ?</h2><p class="consigne">Écoutez chaque réplique, puis dites : surprise, incompréhension ou volonté.</p><ol class="ex"><li><span class="q">Trois étapes pour un poste de superviseure ?</span><span class="ligne ligne--court"></span></li><li><span class="q">Attendez, je ne suis pas certaine de vous suivre.</span><span class="ligne ligne--court"></span></li><li><span class="q">Je vais y arriver, et je vais y arriver cette fois-ci.</span><span class="ligne ligne--court"></span></li><li><span class="q">Comment ça, l'équipe n'existe pas encore ?</span><span class="ligne ligne--court"></span></li><li><span class="q">Là, honnêtement, je perds le fil de votre explication.</span><span class="ligne ligne--court"></span></li><li><span class="q">Ce poste-là, je le veux, et je vous dis pourquoi.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Piège</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">monter la voix à chaque phrase</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">descendre quand on affirme</p></div></div><div class="note">C'est le défaut le plus fréquent, et il vient de la prudence : on n'ose pas conclure. Une mélodie qui monte partout transforme chaque affirmation en question, et chaque question en demande d'autorisation. Devant un comité de sélection, l'effet est immédiat : la personne paraît attendre la permission de parler.</div></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Piège</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">parler d'une voix parfaitement égale</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">varier sur les trois phrases importantes</p></div></div><div class="note">Une voix plate se lit comme de l'indifférence, jamais comme du calme. Il ne s'agit pas de jouer la comédie : trois phrases sur quarante-cinq minutes suffisent. Choisissez-les d'avance — ce que vous apportez, ce que vous demandez, et la réponse à la question difficile.</div></section><section class="bloc card"><div class="lbl">Production</div><h2 class="t">Dites-le avec la bonne mélodie</h2><p class="consigne">Chacun choisit une phrase et la dit deux fois : d'abord à plat, puis avec l'intention demandée. Le groupe dit s'il l'entend.</p><ol class="ex"><li><span class="q">Ce poste-là, je le veux. (volonté)</span><span class="ligne"></span></li><li><span class="q">Vous avez bien dit quatre-vingt-dix minutes ? (surprise)</span><span class="ligne"></span></li><li><span class="q">Excusez-moi, le mot « vérifiable ». (incompréhension)</span><span class="ligne"></span></li><li><span class="q">Je tiens à ce que ce soit écrit. (volonté)</span><span class="ligne"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Enregistrez-vous en disant une phrase d'entrevue, puis réécoutez-vous.</p><ul><li>« Ce que j'apporte, c'est... »</li><li>Est-ce que votre voix monte ou descend à la fin ?</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Ce que la voix dit et que les mots ne disent pas</h2><section class="bloc card ml"><h3>Le seul savoir de phonétique du niveau 8</h3><p class="mp">Le programme du niveau 8 ne demande plus qu'une chose à l'oreille et à la voix : produire l'<b>intonation expressive</b>. Pas un son nouveau, pas une liaison de plus — une mélodie. À ce stade, vous prononcez déjà assez bien pour être compris ; ce qui vous reste à gagner, c'est ce que la voix ajoute par-dessus les mots. Une même phrase de six mots peut dire la surprise, l'incompréhension ou la détermination, et c'est la seule chose que votre interlocuteur retiendra.</p><div class="note">C'est aussi ce qui s'entend le plus vite chez quelqu'un qui apprend une langue : une intonation plate se lit comme de l'indifférence, alors qu'elle n'est souvent que de la prudence.</div></section><section class="bloc card ml"><h3>Pourquoi ça compte précisément dans une entrevue</h3><p class="mp">Un comité de sélection prend une décision sur quarante-cinq minutes de conversation. Il ne se souviendra ni de vos dates ni de vos chiffres : il se souviendra d'une impression. Or l'impression se fabrique presque entièrement avec la mélodie. Dire « ce poste m'intéresse » d'une voix plate est pire que de ne rien dire, parce que la phrase promet quelque chose que la voix dément. Ce qui est en jeu ici n'est donc pas la politesse : c'est la crédibilité de ce que vous affirmez.</p><div class="note">Deux personnes disent la même phrase ; l'une est engagée, l'autre récite. La différence tient à trois notes.</div></section><section class="bloc card ml"><h3>La surprise — la voix monte d'un coup, à la fin</h3><p class="mp">La phrase part normalement puis grimpe brusquement sur les deux ou trois dernières syllabes. Souvent une question, souvent courte, souvent introduite par « comment ça » ou par la répétition du mot qui étonne.</p><table class="ana"><tr><td>On dit</td><td class="">Trois étapes pour un poste de superviseure ?</td></tr><tr><td>La mélodie</td><td class="cle">plate, puis très haute à la fin</td></tr><tr><td>Le repère</td><td class="">on répète le mot qui surprend</td></tr></table><p class="dit"><span class="k">On dit</span> Trois étapes pour un poste de superviseure ?</p><div class="note">Attention : la surprise n'est pas le reproche. Si la voix monte trop tôt, la phrase devient un « vous vous moquez de moi ».</div></section><section class="bloc card ml"><h3>L'incompréhension — la voix ralentit et hésite au milieu</h3><p class="mp">On ne monte pas : on freine. Le débit se casse à l'endroit précis où le fil s'est rompu, souvent avec un petit silence avant le mot en cause.</p><table class="ana"><tr><td>On dit</td><td class="">Excusez-moi, le mot « vérifiable »… vous l'entendez comment ?</td></tr><tr><td>La mélodie</td><td class="cle">un creux et un silence avant le mot</td></tr><tr><td>Le repère</td><td class="">on isole le mot avec la voix</td></tr></table><p class="dit"><span class="k">On dit</span> Excusez-moi, le mot vérifiable, vous l'entendez comment ?</p><div class="note">C'est la mélodie qui dit « une seule chose m'échappe ». Sans elle, la même phrase se comprend comme « je n'ai rien suivi ».</div></section><section class="bloc card ml"><h3>La volonté — la voix descend, et chaque mot pèse</h3><p class="mp">À l'inverse de la surprise : la mélodie descend, le débit ralentit, et les syllabes sont détachées. C'est la voix de l'engagement, celle qui convient à une négociation.</p><table class="ana"><tr><td>On dit</td><td class="">Ce poste-là, je le veux, et je vais vous dire pourquoi.</td></tr><tr><td>La mélodie</td><td class="cle">descendante, appuyée sur « veux »</td></tr><tr><td>Le repère</td><td class="">on ne sourit pas en le disant</td></tr></table><p class="dit"><span class="k">On dit</span> Ce poste-là, je le veux, et je vais vous dire pourquoi.</p><div class="note">Le bouton fait entendre la phrase <b>deux fois</b> : ordinaire, puis avec l'accent. Écoutez ce qui change — c'est la comparaison qui rend l'accent audible, jamais l'accent tout seul. Une phrase de volonté dite avec une intonation montante devient une demande de permission. C'est exactement l'inverse de ce qu'on voulait.</div></section><section class="bloc card ml"><h3>La déception — la voix tombe dès le début</h3><p class="mp">La quatrième, plus rare en entrevue mais utile à reconnaître chez l'autre : la mélodie descend tout de suite et ne remonte jamais. Le débit est régulier, presque lent.</p><table class="ana"><tr><td>On dit</td><td class="">Ah. Je pensais que l'échelle était communiquée.</td></tr><tr><td>La mélodie</td><td class="cle">descendante dès la première syllabe</td></tr><tr><td>Le repère</td><td class="">un « ah » ou un « bon » en tête</td></tr></table><p class="dit"><span class="k">On dit</span> Ah. Je pensais que l'échelle était communiquée.</p><div class="note">Chez votre interlocuteur, c'est le signal qu'une réponse ne lui a pas plu. Il ne le dira pas ; la mélodie l'a déjà dit.</div></section><section class="bloc card ml"><h3>Écoutez les quatre intentions</h3><p class="mp">Choisissez une intention et un exemple.</p><table class="labo"><thead><tr><th>Quelle intention ? · Quel exemple ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">surprise + le premier</td><td>Trois étapes ?</td><td>la voix monte d'un coup sur « étapes »</td></tr><tr><td class="cle">surprise + le second</td><td>Comment ça, l'équipe n'existe pas ?</td><td>« comment ça » annonce la surprise</td></tr><tr><td class="cle">incompréhension + le premier</td><td>Je perds le fil.</td><td>débit qui freine, mélodie creusée</td></tr><tr><td class="cle">incompréhension + le second</td><td>Vous avez bien dit quatre-vingt-dix ?</td><td>on isole le chiffre qu'on n'est pas sûr d'avoir saisi</td></tr><tr><td class="cle">volonté + le premier</td><td>Je le veux, ce poste-là.</td><td>mélodie descendante, syllabes détachées</td></tr><tr><td class="cle">volonté + le second</td><td>Je tiens à ce que ce soit écrit.</td><td>la voix pèse sur « tiens » et sur « écrit »</td></tr><tr><td class="cle">déception + le premier</td><td>Ah. Bon.</td><td>deux syllabes qui tombent : la déception se passe de phrase</td></tr><tr><td class="cle">déception + le second</td><td>Je pensais que c'était décidé.</td><td>descendante du début à la fin</td></tr></tbody></table><div class="note">Écoutez, puis répétez à voix haute en exagérant : l'exagération est ce qui fait entrer une mélodie dans l'oreille.</div></section><section class="bloc card ml"><h3>La même idée, trois intentions</h3><p class="mp">À gauche, ce qui est dit. À droite, ce que la voix ajoute.</p><table class="ex2"><tr><td>L'équipe n'existe pas encore ?</td><td>surprise — la voix monte sur « encore »</td></tr><tr><td>L'équipe n'existe pas encore.</td><td>constat — la voix reste plate</td></tr><tr><td>L'équipe n'existe pas encore…</td><td>incompréhension — la voix freine et laisse ouvert</td></tr><tr><td>Je veux ce poste.</td><td>volonté — la voix descend, les mots pèsent</td></tr><tr><td>Je veux ce poste ?</td><td>surprise ou doute — la même phrase se retourne</td></tr><tr><td>Bon. Je veux ce poste.</td><td>résignation — le « bon » tombe avant le reste</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges de l'intonation, en entrevue</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">monter la voix à chaque phrase</p><div class="k">Ce qui arrive</div><p class="ph">descendre quand on affirme</p><p class="px">Une mélodie qui monte partout transforme chaque affirmation en question, et chaque question en demande d'autorisation. C'est le défaut le plus fréquent, et il vient de la prudence : on n'ose pas conclure.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">parler d'une voix parfaitement égale</p><div class="k">Ce qui arrive</div><p class="ph">varier au moins sur les trois phrases importantes</p><p class="px">Une voix plate se lit comme de l'indifférence, jamais comme du calme. Vous n'avez pas besoin de jouer la comédie : trois phrases sur quarante-cinq minutes suffisent.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">s'excuser avec la voix</p><div class="k">Ce qui arrive</div><p class="ph">garder la même mélodie qu'aux autres phrases</p><p class="px">Beaucoup de gens baissent la voix au moment de demander quelque chose — un échelon, une précision. La demande devient inaudible et l'autre croit qu'elle est négociable à zéro.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">« Trois étapes pour un poste de superviseure ? » exprime…</span><ul class="opts"><li>la surprise</li><li>la volonté</li></ul></li><li><span class="q">Pour exprimer la volonté, la mélodie…</span><ul class="opts"><li>monte à la fin</li><li>descend et appuie</li></ul></li><li><span class="q">Dire « je perds le fil » en freinant au milieu exprime…</span><ul class="opts"><li>l'incompréhension</li><li>la déception</li></ul></li><li><span class="q">Une voix parfaitement égale pendant toute l'entrevue se lit comme…</span><ul class="opts"><li>du calme</li><li>de l'indifférence</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> la surprise — La voix monte brusquement à la fin : c'est la marque de la surprise. · <b>2.</b> descend et appuie — Elle descend. Une volonté dite en montant devient une demande de permission. · <b>3.</b> l'incompréhension — Le freinage et le silence isolent l'endroit où ça a rompu. · <b>4.</b> de l'indifférence — Elle se lit comme de l'indifférence, même quand elle n'est que de la prudence.</div></section></section></div>
+<footer><span>A2 · Passer au travers du processus</span><span>Fiche élève</span></footer>
+</body>
+</html>

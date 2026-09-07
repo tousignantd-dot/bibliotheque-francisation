@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A2 · La voix qui dit « ce n'est pas fini » — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance A2 · Module 1 · 75 minutes</div>
+    <h1>La voix qui dit « ce n'est pas fini »</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">À ce niveau, les sons sont acquis. Ce qui trahit encore, c'est la mélodie : où la voix monte, où elle descend, et où l'on respire dans une phrase de vingt-cinq mots.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>découper une phrase longue en groupes de souffle ;</li><li>faire monter la voix quand la phrase continue ;</li><li>la faire descendre franchement quand elle finit ;</li><li>placer l'accent sur la dernière syllabe du groupe, jamais sur chaque mot.</li></ol></section><section class="bloc regle"><div class="lbl">La règle, en une ligne</div><p class="r">La voix monte tant que la phrase n'est pas finie ; elle descend au dernier groupe.</p><p class="pr">C'est tout. Un groupe qui finit en haut annonce une suite ; un groupe qui finit en bas ferme la porte et rend la parole. Une énumération monte, monte, monte, puis descend au dernier élément : « les décisions, la personne, la date ».</p></section><section class="bloc"><div class="lbl">Le groupe de souffle</div><h2 class="t">Le français découpe par le sens</h2><div class="grid"><div class="card"><h3>Ce que c'est</h3><p>Un groupe de mots qui va ensemble et se dit d'un seul souffle. Le sens décide du découpage, pas le nombre de mots.</p></div><div class="card"><h3>Où l'on respire</h3><p>Entre les groupes, jamais au milieu de l'un d'eux. Respirer après « le premier » et avant « bloc » rend la phrase incompréhensible.</p></div><div class="card"><h3>Où tombe l'accent</h3><p>Sur la dernière syllabe du groupe. Une seule par groupe — accentuer chaque mot revient à n'accentuer nulle part.</p></div><div class="card"><h3>Pourquoi ça compte ici</h3><p>Une réunion dure une heure. Un collègue qui doit travailler pour vous écouter finira par ne plus écouter.</p></div></div></section><section class="bloc card"><div class="lbl">Analyse · 1 de 2</div><h2 class="t">Trois phrases du module, découpées</h2><table><thead><tr><th>La phrase, barres aux souffles</th><th>La mélodie</th></tr></thead><tbody><tr><td>Le premier bloc / c'est la réception des commandes / avant midi.</td><td>monte, monte, descend</td></tr><tr><td>Si l'écart est en bas de vingt-cinq dollars / tu approuves.</td><td>monte, descend</td></tr><tr><td>Tu appelles le transporteur / le mardi et le jeudi / et tu notes les retards.</td><td>monte, monte, descend</td></tr></tbody></table><div class="note">Le dernier groupe descend toujours.</div></section><section class="bloc card"><div class="lbl">Analyse · 2 de 2</div><h2 class="t">Trois phrases plus longues</h2><table><thead><tr><th>La phrase, barres aux souffles</th><th>La mélodie</th></tr></thead><tbody><tr><td>On veut les décisions / qui les applique / et pour quand.</td><td>monte, monte, descend</td></tr><tr><td>Ce que je vois / c'est que j'ai travaillé quatre heures / au-delà de quarante.</td><td>monte, monte, descend</td></tr><tr><td>Je vous saurais gré / de me confirmer la correction / avant le vingt-sept août.</td><td>monte, monte, descend</td></tr></tbody></table><div class="note">Une énumération monte à chaque élément, puis descend au dernier.</div></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Monter à la fin d'une affirmation</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">La majoration n'a pas été appliquée ?  (la voix monte)</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">La majoration n'a pas été appliquée.  (la voix descend)</p></div></div><div class="note">Une affirmation qui monte se lit comme une question ou comme une hésitation. Au téléphone, où l'interlocuteur n'a pas votre visage, il répondra « oui ? » au lieu d'agir — et le dossier n'avance pas. La descente franche dit : j'ai fini, à vous.</div></section><section class="bloc card"><div class="lbl">Écoute</div><h2 class="t">Ça continue, ou ça finit ?</h2><p class="consigne">Écoutez le groupe de mots. La voix monte-t-elle, ou descend-elle ?</p><ol class="ex"><li><span class="q">Le premier bloc, c'est la réception des commandes</span><span class="ligne ligne--court"></span></li><li><span class="q">et c'est moi qui tranche.</span><span class="ligne ligne--court"></span></li><li><span class="q">Si l'écart est en bas de vingt-cinq dollars</span><span class="ligne ligne--court"></span></li><li><span class="q">Envoie-le au groupe avant jeudi.</span><span class="ligne ligne--court"></span></li><li><span class="q">Quand un bon arrive à deux heures de l'après-midi</span><span class="ligne ligne--court"></span></li><li><span class="q">la production planifie sa journée à partir de ça.</span><span class="ligne ligne--court"></span></li><li><span class="q">C'est noté.</span><span class="ligne ligne--court"></span></li><li><span class="q">Les décisions, la personne</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">Production</div><h2 class="t">Lisez à voix haute</h2><p class="consigne">Respectez les barres. Une respiration par barre, pas une de plus.</p><ol class="ex"><li><span class="q">Madame, / je donne suite / à notre conversation téléphonique du 19 août.</span><span class="ligne ligne--court"></span></li><li><span class="q">Les 10 et 11 août, / j'ai travaillé quatre heures / au-delà de quarante.</span><span class="ligne ligne--court"></span></li><li><span class="q">Si je résume ce que vous venez de dire, / l'écart de prix est réel.</span><span class="ligne ligne--court"></span></li><li><span class="q">Je proposerais un partage : / les pièces courantes chez l'un, / l'urgent chez l'autre.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Enregistrez-vous en lisant les quatre phrases de la dernière diapositive.</p><ul><li>Réécoutez-vous : est-ce que le dernier groupe descend ?</li><li>Refaites-en une jusqu'à ce que la descente soit franche.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>La voix qui dit « ce n'est pas fini »</h2><section class="bloc card ml"><h3>Le problème n'est plus la prononciation</h3><p class="mp">À ce niveau-ci, vous prononcez les sons du français. Ce qui vous trahit encore, c'est la <b>mélodie</b> : où la voix monte, où elle descend, et où l'on respire. Une phrase de vingt-cinq mots dite sur une seule note oblige l'auditeur à travailler, et en réunion, personne ne travaille pour écouter.</p><div class="note">On appelle ça la <b>prosodie</b> : le rythme et la mélodie de la phrase, indépendamment des mots.</div></section><section class="bloc card ml"><h3>Le groupe de souffle</h3><p class="mp">Le français ne découpe pas la phrase mot par mot : il la découpe en <b>groupes de sens</b>, et chaque groupe se dit d'un seul souffle.</p><table class="ana"><tr><td>Un groupe</td><td class=""><b>Le premier bloc</b></td></tr><tr><td>Un autre</td><td class=""><b>c'est la réception des commandes</b></td></tr><tr><td>Un dernier</td><td class=""><b>avant midi</b></td></tr></table><p class="dit"><span class="k">On dit</span> Le premier bloc, c'est la réception des commandes, avant midi.</p><div class="note">Trois groupes, trois souffles. Entre les deux premiers, la voix reste en haut : la phrase continue.</div></section><section class="bloc card ml"><h3>La règle en une ligne</h3><p class="mp"><b>La voix monte tant que la phrase n'est pas finie ; elle descend au dernier groupe.</b> C'est tout. Un groupe qui finit en haut annonce une suite ; un groupe qui finit en bas ferme la porte.</p><div class="note">C'est pour ça qu'une énumération monte, monte, monte, puis descend au dernier élément : <i>les décisions ↗, la personne ↗, la date ↘</i>.</div></section><section class="bloc card ml"><h3>La montée : ça continue</h3><p class="mp">Après une subordonnée placée devant, après un groupe complément, au milieu d'une énumération.</p><table class="ana"><tr><td>Après « si »</td><td class=""><b>Si l'écart est en bas de vingt-cinq dollars</b> ↗</td></tr><tr><td>Après un groupe</td><td class=""><b>Tu compares les factures</b> ↗</td></tr><tr><td>Dans une liste</td><td class=""><b>les décisions</b> ↗ <b>qui les applique</b> ↗</td></tr></table><p class="dit"><span class="k">On dit</span> Si l'écart est en bas de vingt-cinq dollars, tu approuves.</p><div class="note">La montée est petite. On ne chante pas : la voix se pose une note plus haut et reste là.</div></section><section class="bloc card ml"><h3>La descente : c'est fini</h3><p class="mp">Au dernier groupe d'une phrase déclarative, et sur un ordre.</p><table class="ana"><tr><td>Fin de phrase</td><td class=""><b>et c'est moi qui tranche.</b> ↘</td></tr><tr><td>Un ordre</td><td class=""><b>Envoie-le avant jeudi.</b> ↘</td></tr><tr><td>Une confirmation</td><td class=""><b>C'est noté.</b> ↘</td></tr></table><p class="dit"><span class="k">On dit</span> Envoie-le au groupe avant jeudi.</p><div class="note">Une descente franche vaut mieux qu'une descente molle : elle dit que vous avez fini, et l'autre peut parler.</div></section><section class="bloc card ml"><h3>Écoutez la même phrase, ouverte puis fermée</h3><p class="mp">Choisissez un groupe et la mélodie que vous voulez entendre.</p><table class="labo"><thead><tr><th>Quel groupe ? · Quelle mélodie ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">la description de tâches + ↗ ça continue</td><td>Le premier bloc, c'est la réception des commandes</td><td>la voix reste en haut : une suite s'en vient</td></tr><tr><td class="cle">la description de tâches + ↘ ça finit</td><td>et c'est moi qui tranche.</td><td>la voix descend : la phrase est close</td></tr><tr><td class="cle">la réunion + ↗ ça continue</td><td>Si je résume ce que vous venez de dire</td><td>après « si », on monte toujours</td></tr><tr><td class="cle">la réunion + ↘ ça finit</td><td>On tranche à la réunion du seize.</td><td>une décision se dit en descendant</td></tr><tr><td class="cle">la paie + ↗ ça continue</td><td>Les dix et onze août, j'ai fait quarante-quatre heures</td><td>le complément de temps est un groupe à lui seul</td></tr><tr><td class="cle">la paie + ↘ ça finit</td><td>La majoration n'a pas été appliquée.</td><td>le fait se pose, sans monter — ce n'est pas une question</td></tr></tbody></table><div class="note">Écoutez, puis répétez en exagérant la montée. À l'usage, elle s'atténuera d'elle-même.</div></section><section class="bloc card ml"><h3>Six phrases longues, découpées</h3><p class="mp">Les barres marquent les souffles. Lisez à voix haute en respectant les groupes.</p><table class="ex2"><tr><td>Le premier bloc / c'est la réception des commandes / avant midi.</td><td>3 groupes, descente sur le dernier</td></tr><tr><td>Si l'écart est en bas de vingt-cinq dollars / tu approuves.</td><td>montée, puis descente</td></tr><tr><td>Tu appelles le transporteur / le mardi et le jeudi / et tu notes les retards.</td><td>2 montées, 1 descente</td></tr><tr><td>On veut les décisions / qui les applique / et pour quand.</td><td>énumération : 2 montées, 1 descente</td></tr><tr><td>Ce que je vois / c'est que j'ai travaillé quatre heures / au-delà de quarante.</td><td>le sujet long monte</td></tr><tr><td>Je vous saurais gré / de me confirmer la correction / avant le vingt-sept août.</td><td>formule d'affaires en 3 souffles</td></tr></table></section><section class="bloc card ml"><h3>Trois défauts de mélodie qui s'entendent tout de suite</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">monter à la fin d'une affirmation</p><div class="k">Ce qui arrive</div><p class="ph">descendre franchement</p><p class="px">Une affirmation qui monte se lit comme une question ou comme une hésitation. Au téléphone, votre interlocuteur répondra « oui ? » au lieu d'agir.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">parler sans respirer</p><div class="k">Ce qui arrive</div><p class="ph">découper en groupes de sens</p><p class="px">Une phrase de trente mots sans pause épuise l'auditeur, qui décroche au milieu et vous fait tout répéter.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">accentuer chaque mot</p><div class="k">Ce qui arrive</div><p class="ph">accentuer la fin du groupe</p><p class="px">En français, l'accent tombe sur la <b>dernière syllabe du groupe</b>, jamais sur chaque mot. Accentuer partout, c'est n'accentuer nulle part.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">« Si l'écart est en bas de vingt-cinq dollars… » : la voix…</span><ul class="opts"><li>monte</li><li>descend</li></ul></li><li><span class="q">En français, l'accent tombe…</span><ul class="opts"><li>sur chaque mot</li><li>sur la dernière syllabe du groupe</li></ul></li><li><span class="q">Dans une énumération de trois éléments, le troisième…</span><ul class="opts"><li>monte comme les autres</li><li>descend</li></ul></li><li><span class="q">Un groupe de souffle, c'est…</span><ul class="opts"><li>un groupe de sens dit d'un trait</li><li>un nombre fixe de mots</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> monte — La phrase n'est pas finie : elle monte. · <b>2.</b> sur la dernière syllabe du groupe — C'est ce qui donne au français son rythme régulier. · <b>3.</b> descend — La descente signale que la liste est terminée. · <b>4.</b> un groupe de sens dit d'un trait — Le sens décide du découpage, pas le nombre de mots.</div></section></section></div>
+<footer><span>A2 · Tenir son bout au travail</span><span>Fiche élève</span></footer>
+</body>
+</html>

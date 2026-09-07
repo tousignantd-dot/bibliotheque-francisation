@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A3 · Trois choses qu'on ne classe pas ensemble — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance A3 · Module 5 · 75 minutes</div>
+    <h1>Trois choses qu'on ne classe pas ensemble</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">On vous a déjà appris à séparer le fait de l'opinion. C'est utile, et c'est insuffisant : la plus grande partie de ce que vous lisez n'est ni l'un ni l'autre.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>distinguer un fait, une opinion et un propos rapporté ;</li><li>repérer les marques de chacun : un nombre, un adjectif de jugement, « selon » ;</li><li>reconnaître le conditionnel journalistique et savoir ce qu'il vaut ;</li><li>séparer les trois dans son propre texte : ce que je sais, ce qu'on m'a dit, ce que j'en pense.</li></ol></section><section class="bloc regle"><div class="lbl">Trois catégories, et non deux</div><p class="r">Un fait se vérifie ailleurs. Une opinion s'argumente sans jamais se prouver. Un propos rapporté n'engage que celui qui l'a dit.</p><p class="pr">« Selon le promoteur, quatre-vingt-dix arbres seront abattus » n'est pas l'information « quatre-vingt-dix arbres seront abattus ». C'est l'information « le promoteur dit quatre-vingt-dix ». Confondre les deux est l'erreur la plus fréquente, et la plus utilisée.</p></section><section class="bloc"><div class="lbl">Analyse</div><h2 class="t">Comment reconnaître chacun</h2><div class="grid"><div class="card"><h3>Le fait</h3><p>Quelqu'un d'autre, avec le même document, arriverait au même résultat : un procès-verbal, un cadastre, une date. Le signe : un nombre, un lieu, un verbe au passé composé.</p></div><div class="card"><h3>L'opinion</h3><p>Elle porte une évaluation : trop, insuffisant, indécent, prioritaire. Le signe : un adjectif de jugement, « devrait », « il faut ». Deux personnes raisonnables peuvent ne pas s'accorder.</p></div><div class="card"><h3>Le propos rapporté</h3><p>Le journaliste ne dit pas que c'est vrai : il dit que quelqu'un l'a dit. Le signe : selon, d'après, affirme, soutient, déclare. Ça vaut exactement ce que vaut la source nommée.</p></div><div class="card"><h3>Le conditionnel journalistique</h3><p>« Le terrain aurait été évalué à deux millions. » Ni doute, ni politesse : on nous l'a dit, nous ne l'avons pas vérifié. C'est un propos rapporté sans source nommée, le plus fragile de tous.</p></div></div></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">La même information, quatre statuts</h2><table><thead><tr><th>La phrase</th><th>Ce qu'elle vaut</th></tr></thead><tbody><tr><td class="cle">Quatre-vingt-dix arbres seront abattus.</td><td>donné comme un fait, et il ne l'est pas</td></tr><tr><td class="cle">Selon le promoteur, quatre-vingt-dix arbres...</td><td>propos rapporté, source nommée : correct</td></tr><tr><td class="cle">Quatre-vingt-dix arbres seraient abattus.</td><td>conditionnel : source non nommée</td></tr><tr><td class="cle">Abattre quatre-vingt-dix arbres est excessif.</td><td>opinion, assumée comme telle</td></tr></tbody></table></section><section class="bloc card"><div class="lbl">Pratique 1 de 2</div><h2 class="t">Fait, opinion ou propos rapporté ?</h2><p class="consigne">Classez chaque phrase dans l'une des trois catégories.</p><ol class="ex"><li><span class="q">Le règlement 1204 a été adopté lundi à vingt-deux heures cinquante.</span><span class="ligne ligne--court"></span></li><li><span class="q">Céder un terrain public pour un dollar est indécent.</span><span class="ligne ligne--court"></span></li><li><span class="q">Selon le service de l'urbanisme, le rezonage prendrait vingt et un mois.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le boisé couvre onze hectares appartenant à la Ville.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le comité affirme avoir compté trois cent quarante-deux arbres.</span><span class="ligne ligne--court"></span></li><li><span class="q">Quarante-cinq logements, c'est nettement insuffisant pour cette ville.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le terrain aurait été évalué à un peu plus de deux millions.</span><span class="ligne"></span></li><li><span class="q">On devrait toujours publier une évaluation avant un vote.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc regle"><div class="lbl">Un fait peut être faux</div><p class="r">C'est alors un fait erroné, pas une opinion. Ce qui en fait un fait, c'est qu'il soit vérifiable — pas qu'il soit vrai.</p><p class="pr">Le comité compte trois cent quarante-deux arbres, le promoteur en compte quatre-vingt-dix. Les deux comptages sont des faits. L'un des deux est peut-être erroné, et il se peut aussi que les deux soient exacts : ils ne comptent pas la même chose. À partir de quel diamètre un jeune arbre est-il un arbre ?</p></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Piège</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">écrire « le comité prétend avoir compté »</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">écrire « le comité dit avoir compté »</p></div></div><div class="note">Ces verbes rapportent tous les deux, mais « prétendre » suppose un mensonge, comme « admettre » suppose une faute et « reconnaître » suppose qu'on résistait. Une rédaction rigoureuse s'en tient aux neutres : dit, affirme, déclare. Dans votre lettre, un seul de ces verbes suffit à vous faire écarter.</div></section><section class="bloc card"><div class="lbl">Pratique 2 de 2</div><h2 class="t">Réécrire honnêtement</h2><p class="consigne">Chaque phrase présente une opinion ou une rumeur comme un fait. Réécrivez-la correctement.</p><ol class="ex"><li><span class="q">Le terrain vaut deux millions.</span><span class="ligne"></span></li><li><span class="q">Le projet est mauvais.</span><span class="ligne"></span></li><li><span class="q">Tout le monde sait que la Ville a caché l'évaluation.</span><span class="ligne"></span></li><li><span class="q">Le rezonage prend vingt et un mois.</span><span class="ligne"></span></li><li><span class="q">Le comité prétend avoir compté 342 arbres.</span><span class="ligne"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez trois phrases sur le dossier du boisé : une de chaque catégorie.</p><ul><li>Un fait avec son chiffre, une opinion annoncée comme telle, un propos rapporté avec sa source.</li><li>Aucune des trois ne doit dépasser une ligne.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Fait, opinion, propos rapporté</h2><section class="bloc card ml"><h3>Pourquoi trois catégories, et non deux</h3><p class="mp">On vous a sans doute déjà appris à séparer le fait de l'opinion. C'est utile, et c'est insuffisant : la plus grande partie de ce que vous lisez dans un journal n'est ni l'un ni l'autre. C'est du <b>propos rapporté</b> — quelqu'un a dit quelque chose, et le journal le rapporte sans le vérifier. Confondre un propos rapporté avec un fait est l'erreur la plus fréquente, et la plus utilisée.</p><div class="note">« Selon le promoteur, quatre-vingt-dix arbres seront abattus » n'est pas l'information « quatre-vingt-dix arbres seront abattus ». C'est l'information « le promoteur dit quatre-vingt-dix ».</div></section><section class="bloc card ml"><h3>Le fait — quelqu'un d'autre arriverait au même résultat</h3><p class="mp">Un fait se vérifie ailleurs, avec un document : un procès-verbal, un cadastre, un relevé, une date. Il n'a pas besoin de vous pour être vrai.</p><table class="ana"><tr><td>On écrit</td><td class="">Le règlement a été adopté par quatre voix contre trois.</td></tr><tr><td>On vérifie où</td><td class="cle">au procès-verbal de la séance</td></tr><tr><td>Le signe</td><td class="">un nombre, une date, un lieu, un verbe au passé</td></tr></table><p class="dit"><span class="k">On dit</span> Le règlement a été adopté par quatre voix contre trois.</p><div class="note">Un fait peut être faux : c'est alors un fait erroné, pas une opinion. Ce qui en fait un fait, c'est qu'il soit vérifiable, pas qu'il soit vrai.</div></section><section class="bloc card ml"><h3>L'opinion — elle s'appuie, elle ne se prouve pas</h3><p class="mp">Elle porte une évaluation : trop, insuffisant, indécent, prioritaire, nécessaire. Deux personnes raisonnables peuvent ne pas être d'accord sans qu'aucune des deux se trompe.</p><table class="ana"><tr><td>On écrit</td><td class="">Céder un bien public en quatre jours est indéfendable.</td></tr><tr><td>Le signe</td><td class="cle">un adjectif de jugement, « devrait », « il faut »</td></tr><tr><td>La bonne façon</td><td class="">annoncer que c'est une opinion : « je pense que… »</td></tr></table><p class="dit"><span class="k">On dit</span> Céder un bien public en quatre jours est indéfendable.</p><div class="note">Personne ne vous reprochera d'avoir une opinion. On vous reprochera de la présenter comme un fait — et c'est ce qui fera écarter votre lettre.</div></section><section class="bloc card ml"><h3>Le propos rapporté — il n'engage que sa source</h3><p class="mp">Le journaliste ne dit pas que c'est vrai : il dit que quelqu'un l'a dit. Les marques sont peu nombreuses et faciles à repérer.</p><table class="ana"><tr><td>On écrit</td><td class="">Selon le service de l'urbanisme, le rezonage prendrait vingt et un mois.</td></tr><tr><td>Les marques</td><td class="cle">selon, d'après, affirme, soutient, déclare</td></tr><tr><td>Ce que ça vaut</td><td class="">exactement ce que vaut la source nommée</td></tr></table><p class="dit"><span class="k">On dit</span> Selon le service de l'urbanisme, le rezonage prendrait vingt et un mois.</p><div class="note">Une source nommée se vérifie ; « des experts », « certains », « on » ne se vérifient pas. Une information sans auteur est une information dont personne n'aura à répondre.</div></section><section class="bloc card ml"><h3>Le conditionnel journalistique — le plus fragile de tous</h3><p class="mp">Un conditionnel qui n'exprime ni la politesse ni l'hypothèse, mais la prudence de la rédaction : nous le rapportons, nous ne l'avons pas vérifié.</p><table class="ana"><tr><td>On écrit</td><td class="">Le terrain aurait été évalué à un peu plus de deux millions.</td></tr><tr><td>Ce que ça dit</td><td class="cle">on nous l'a dit, nous n'avons pas vu le document</td></tr><tr><td>Votre réflexe</td><td class="">chercher qui l'a dit, et si personne : ne pas s'en servir</td></tr></table><p class="dit"><span class="k">On dit</span> Le terrain aurait été évalué à un peu plus de deux millions.</p><div class="note">Ne reprenez jamais un conditionnel journalistique dans votre propre lettre : vous porteriez seul une information que personne n'assume.</div></section><section class="bloc card ml"><h3>La même information, trois statuts</h3><p class="mp">À gauche la phrase, à droite ce qu'elle vaut.</p><table class="ex2"><tr><td>Quatre-vingt-dix arbres seront abattus.</td><td>présenté comme un fait — et il ne l'est pas</td></tr><tr><td>Selon le promoteur, quatre-vingt-dix arbres seront abattus.</td><td>propos rapporté, source nommée : correct</td></tr><tr><td>Quatre-vingt-dix arbres seraient abattus.</td><td>conditionnel journalistique : source non nommée</td></tr><tr><td>Abattre quatre-vingt-dix arbres est excessif.</td><td>opinion, assumée comme telle</td></tr><tr><td>Le comité a déposé ses feuilles de comptage le 3 octobre.</td><td>fait vérifiable</td></tr><tr><td>Le comité prétend avoir compté trois cent quarante-deux arbres.</td><td>propos rapporté — mais « prétend » ajoute un jugement</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges dans les textes que vous lirez</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">« prétend », « admet », « reconnaît »</p><div class="k">Ce qui arrive</div><p class="ph">« dit », « affirme », « déclare »</p><p class="px">Ces verbes rapportent tous, mais les trois premiers jugent en passant : « admettre » suppose une faute, « prétendre » suppose un mensonge. Une rédaction rigoureuse s'en tient aux neutres.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">un chiffre sans son unité de comparaison</p><div class="k">Ce qui arrive</div><p class="ph">le même chiffre avec ce à quoi il se compare</p><p class="px">« Onze mille dollars d'entretien » ne veut rien dire seul : c'est beaucoup pour un parc de quartier, c'est peu pour un budget municipal de quarante millions. Le chiffre isolé sert celui qui le donne.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">« tout le monde sait que… »</p><div class="k">Ce qui arrive</div><p class="ph">une source, ou rien</p><p class="px">Cette formule remplace l'argument qui manque. Dès que vous la lisez, cherchez ce qu'elle recouvre : neuf fois sur dix, il n'y a rien derrière.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">« D'après la Ville, le terrain coûtait onze mille dollars par an » est…</span><ul class="opts"><li>un fait</li><li>un propos rapporté</li></ul></li><li><span class="q">« Le boisé couvre onze hectares » est…</span><ul class="opts"><li>un fait</li><li>une opinion</li></ul></li><li><span class="q">« Le terrain aurait été évalué à deux millions » veut dire…</span><ul class="opts"><li>que c'est probable</li><li>qu'on nous l'a dit sans le vérifier</li></ul></li><li><span class="q">Dans votre lettre, la meilleure façon de donner votre avis est…</span><ul class="opts"><li>de l'écrire comme un fait</li><li>de l'annoncer comme un avis</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> un propos rapporté — « D'après » nomme une source : le journal rapporte, il ne vérifie pas. · <b>2.</b> un fait — Cela se vérifie au cadastre : c'est un fait. · <b>3.</b> qu'on nous l'a dit sans le vérifier — C'est le conditionnel journalistique : information rapportée, source non nommée. · <b>4.</b> de l'annoncer comme un avis — Une opinion annoncée est inattaquable ; une opinion déguisée en fait se démolit en une ligne.</div></section></section></div>
+<footer><span>A3 · Deux versions, et la mienne</span><span>Fiche élève</span></footer>
+</body>
+</html>

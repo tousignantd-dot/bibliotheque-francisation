@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B2 · Ma liste : un, une, des — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance B2 · Module 2 · 75 minutes</div>
+    <h1>Ma liste : un, une, des</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Trois petits mots devant le produit — et un quatrième, quand on n'a plus rien.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>employer « un », « une », « des » ;</li><li>employer « pas de » et « pas d' » ;</li><li>écrire une courte liste d'épicerie ;</li><li>dire ce qu'on n'a plus à la maison.</li></ol></section><section class="bloc card"><div class="lbl">Dialogue</div><h2 class="t">Ma liste</h2><p class="consigne">Écoutez, puis comptez les petits mots : un, une, des, de.</p><div class="rep rep--key"><div class="qui">AMINATA</div><div>J'écris ma liste. Un litre de lait, une douzaine d'œufs…</div></div><div class="rep rep--key"><div class="qui">ROSE</div><div>Et du riz ? Tu as encore du riz ?</div></div><div class="rep rep--key"><div class="qui">AMINATA</div><div>Non, je n'ai pas de riz. J'écris « un kilo de riz ».</div></div><div class="rep rep--key"><div class="qui">ROSE</div><div>Prends aussi des oranges. Elles sont en spécial.</div></div><div class="rep rep--key"><div class="qui">AMINATA</div><div>Des oranges, oui. Un sac de deux kilos.</div></div><div class="rep rep--key"><div class="qui">ROSE</div><div>Parfait. Ta liste est courte et claire.</div></div></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Les petits mots de la liste</h2><table><thead><tr><th>Le petit mot</th><th>Quand ?</th></tr></thead><tbody><tr><td>&lt;b&gt;un&lt;/b&gt;</td><td>un seul, masculin : un litre, un kilo, un sac</td></tr><tr><td>&lt;b&gt;une&lt;/b&gt;</td><td>une seule, féminin : une douzaine, une boîte</td></tr><tr><td>&lt;b&gt;des&lt;/b&gt;</td><td>plusieurs : des pommes, des œufs</td></tr><tr><td>&lt;b&gt;de&lt;/b&gt; / &lt;b&gt;d'&lt;/b&gt;</td><td>après « pas » : pas de riz, pas d'œufs</td></tr></tbody></table><div class="note">En français, un nom ne reste presque jamais seul. Il y a toujours un petit mot devant.</div></section><section class="bloc regle"><div class="lbl">À la forme négative, tout devient « de »</div><p class="r">Un, une, des, du, de la disparaissent après « pas ».</p><p class="pr">« J'ai &lt;b&gt;du&lt;/b&gt; riz » devient « je n'ai &lt;b&gt;pas de&lt;/b&gt; riz ». « J'ai &lt;b&gt;des&lt;/b&gt; œufs » devient « je n'ai &lt;b&gt;pas d'&lt;/b&gt;œufs ». Devant une voyelle, « de » perd son e et devient &lt;b&gt;d'&lt;/b&gt;.</p></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Le piège</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">je n'ai pas du riz</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">je n'ai pas de riz</p></div></div><div class="note">C'est la faute la plus fréquente du niveau, et elle vient de ce que la phrase affirmative dit bien « j'ai &lt;b&gt;du&lt;/b&gt; riz ». Après « pas », il ne reste que &lt;b&gt;de&lt;/b&gt; : ni du, ni de la, ni des.</div></section><section class="bloc card"><div class="lbl">Grammaire</div><h2 class="t">Complétez la liste d'Aminata</h2><p class="consigne">Écrivez un, une, des, de ou d'.</p><ol class="ex"><li><span class="q">Je prends ___ litre de lait.</span><span class="ligne ligne--court"></span></li><li><span class="q">Je prends ___ douzaine d'œufs.</span><span class="ligne ligne--court"></span></li><li><span class="q">Je prends ___ oranges.</span><span class="ligne ligne--court"></span></li><li><span class="q">Je n'ai pas ___ riz.</span><span class="ligne ligne--court"></span></li><li><span class="q">Il n'y a pas ___ œufs dans le frigo.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">Pratique · à deux</div><h2 class="t">Ce que j'ai, ce que je n'ai plus</h2><p class="consigne">Deux par deux, chacun son tour.</p><ol class="ex"><li><span class="q">Étape 1</span><span class="ligne"></span></li><li><span class="q">Étape 2</span><span class="ligne"></span></li><li><span class="q">Étape 3</span><span class="ligne"></span></li><li><span class="q">Étape 4</span><span class="ligne"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez votre liste d'épicerie de la semaine, cinq lignes.</p><ul><li>Je prends un litre de lait.</li><li>Je prends une douzaine d'œufs.</li><li>Je n'ai pas de riz : je prends un kilo de riz.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>un, une, des — et « pas de »</h2><section class="bloc card ml"><h3>Trois petits mots avant le produit</h3><p class="mp">En français, on ne dit pas « je prends litre de lait ». Il faut un petit mot devant : <b>un</b>, <b>une</b> ou <b>des</b>. Ces trois mots-là servent à dire une chose qu'on n'a pas encore nommée — c'est exactement le cas d'une liste d'épicerie.</p><div class="note">Ce petit mot ne se traduit pas toujours dans votre langue. En français, il ne se saute jamais.</div></section><section class="bloc card ml"><h3>un — un seul, masculin</h3><p class="mp">Un litre, un kilo, un sac, un panier.</p><table class="ana"><tr><td>On dit</td><td class="">Je prends <b>un</b> litre de lait.</td></tr><tr><td>Aussi</td><td class="">Je prends <b>un</b> kilo de riz.</td></tr><tr><td>On ne dit pas</td><td class="cle">je prends litre de lait</td></tr></table><p class="dit"><span class="k">On dit</span> Je prends un litre de lait. Je prends un kilo de riz.</p><div class="note">Si vous ne savez pas si un mot est masculin ou féminin, écoutez comment les autres le disent, et répétez.</div></section><section class="bloc card ml"><h3>une — une seule, féminin</h3><p class="mp">Une douzaine, une boîte, une bouteille, une liste.</p><table class="ana"><tr><td>On dit</td><td class="">Je prends <b>une</b> douzaine d'œufs.</td></tr><tr><td>Aussi</td><td class="">Je prends <b>une</b> boîte de riz.</td></tr><tr><td>Se rappeler</td><td class="cle">une bouteille, une tablette, une allée</td></tr></table><p class="dit"><span class="k">On dit</span> Je prends une douzaine d'œufs. Je prends une boîte de riz.</p><div class="note">Les mots qui finissent par -e sont souvent féminins — souvent, mais pas toujours.</div></section><section class="bloc card ml"><h3>des — plusieurs</h3><p class="mp">Des pommes, des œufs, des oranges.</p><table class="ana"><tr><td>On dit</td><td class="">Je prends <b>des</b> pommes.</td></tr><tr><td>Aussi</td><td class="">Je prends <b>des</b> oranges.</td></tr><tr><td>La liaison</td><td class="cle">des_oranges se dit « dé-z-oranges »</td></tr></table><p class="dit"><span class="k">On dit</span> Je prends des pommes. Je prends des oranges.</p><div class="note">« Des » est le pluriel de « un » et de « une » : un fruit, des fruits.</div></section><section class="bloc card ml"><h3>À la forme négative, tout devient « de »</h3><p class="mp">Un, une, des disparaissent après « pas ».</p><table class="ana"><tr><td>On dit</td><td class="">Je n'ai pas <b>de</b> riz.</td></tr><tr><td>Aussi</td><td class="">Il n'y a pas <b>d'</b>œufs.</td></tr><tr><td>On ne dit pas</td><td class="cle">je n'ai pas du riz</td></tr></table><p class="dit"><span class="k">On dit</span> Je n'ai pas de riz. Il n'y a pas d'œufs.</p><div class="note">Devant une voyelle, « de » devient « d' » : pas <b>d'</b>œufs, pas <b>d'</b>oranges, pas <b>d'</b>eau.</div></section><section class="bloc card ml"><h3>Écrivez votre liste</h3><p class="mp">Choisissez un produit et une phrase.</p><table class="labo"><thead><tr><th>Quel produit ? · Quelle phrase ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">litre de lait + je prends</td><td>Je prends un litre de lait.</td><td>masculin : un</td></tr><tr><td class="cle">litre de lait + il me faut</td><td>Il me faut un litre de lait.</td><td>pour dire un besoin</td></tr><tr><td class="cle">litre de lait + je n'ai pas</td><td>Je n'ai pas de lait.</td><td>à la négative : de</td></tr><tr><td class="cle">douzaine d'œufs + je prends</td><td>Je prends une douzaine d'œufs.</td><td>féminin : une</td></tr><tr><td class="cle">douzaine d'œufs + il me faut</td><td>Il me faut une douzaine d'œufs.</td><td>le format habituel</td></tr><tr><td class="cle">douzaine d'œufs + je n'ai pas</td><td>Je n'ai pas d'œufs.</td><td>devant une voyelle : d'</td></tr><tr><td class="cle">oranges + je prends</td><td>Je prends des oranges.</td><td>pluriel : des</td></tr><tr><td class="cle">oranges + il me faut</td><td>Il me faut des oranges.</td><td>dé-z-oranges</td></tr><tr><td class="cle">oranges + je n'ai pas</td><td>Je n'ai pas d'oranges.</td><td>d' devant la voyelle</td></tr><tr><td class="cle">kilo de riz + je prends</td><td>Je prends un kilo de riz.</td><td>masculin : un</td></tr><tr><td class="cle">kilo de riz + il me faut</td><td>Il me faut un kilo de riz.</td><td>la mesure, puis de</td></tr><tr><td class="cle">kilo de riz + je n'ai pas</td><td>Je n'ai pas de riz.</td><td>à la négative : de</td></tr><tr><td class="cle">boîte de céréales + je prends</td><td>Je prends une boîte de céréales.</td><td>féminin : une boîte</td></tr><tr><td class="cle">boîte de céréales + il me faut</td><td>Il me faut une boîte de céréales.</td><td>le contenant, puis de</td></tr><tr><td class="cle">boîte de céréales + je n'ai pas</td><td>Je n'ai pas de céréales.</td><td>à la négative : de</td></tr></tbody></table><div class="note">Quinze phrases de liste. Gardez celles des produits que vous achetez vraiment.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six phrases pour faire sa liste.</p><table class="ex2"><tr><td>Je prends un litre de lait.</td><td>un — masculin</td></tr><tr><td>Je prends une douzaine d'œufs.</td><td>une — féminin</td></tr><tr><td>Je prends des pommes.</td><td>des — plusieurs</td></tr><tr><td>Je n'ai pas de riz.</td><td>pas de</td></tr><tr><td>Il n'y a pas d'œufs.</td><td>pas d' devant une voyelle</td></tr><tr><td>Il me faut un sac d'oranges.</td><td>pour dire un besoin</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges à connaître</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">« je n'ai pas du riz »</p><div class="k">Ce qui arrive</div><p class="ph">je n'ai pas de riz</p><p class="px">Après « pas », il ne reste que <b>de</b>. Ni du, ni de la, ni des : ils disparaissent tous.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">oublier le petit mot</p><div class="k">Ce qui arrive</div><p class="ph">« je prends litre de lait »</p><p class="px">En français, un nom ne reste presque jamais seul. Devant, il y a <b>un</b>, <b>une</b>, <b>des</b>, <b>le</b>, <b>la</b> ou <b>les</b>.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">« pas de œufs »</p><div class="k">Ce qui arrive</div><p class="ph">pas d'œufs</p><p class="px">Devant une voyelle — a, e, i, o, u — et devant un h muet, « de » perd son e et devient <b>d'</b>.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">Je prends ___ douzaine d'œufs.</span><ul class="opts"><li>un</li><li>une</li></ul></li><li><span class="q">Je prends ___ pommes.</span><ul class="opts"><li>un</li><li>des</li></ul></li><li><span class="q">Je n'ai pas ___ riz.</span><ul class="opts"><li>du</li><li>de</li></ul></li><li><span class="q">Il n'y a pas ___ œufs.</span><ul class="opts"><li>de</li><li>d'</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> une — Une douzaine : c'est féminin. · <b>2.</b> des — Plusieurs pommes : c'est « des ». · <b>3.</b> de — Après « pas », il ne reste que « de ». · <b>4.</b> d' — Devant une voyelle, « de » devient « d' ».</div></section></section></div>
+<footer><span>B2 · Remplir mon panier</span><span>Fiche élève</span></footer>
+</body>
+</html>

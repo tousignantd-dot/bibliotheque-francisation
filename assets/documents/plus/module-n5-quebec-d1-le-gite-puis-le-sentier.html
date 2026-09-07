@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>D1 · Le gîte, puis le sentier — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance D1 · Module 10 · 75 minutes</div>
+    <h1>Le gîte, puis le sentier</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Thuy est arrivée. Il y a Rose-Aimée, qui tient le gîte et lui parle de la marée et du temps qu'il fera ; il y a Denis, un vacancier sur le sentier, qui lui demande d'où elle vient. Ces conversations-là ne se préparent pas.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>saluer et répondre à une salutation d'usage ;</li><li>tenir le vouvoiement avec des inconnus de la région ;</li><li>engager une conversation spontanée sur les vacances ;</li><li>répondre à « d'où venez-vous ? » sans réciter sa biographie.</li></ol></section><section class="bloc card"><div class="lbl">Dialogue · 1 de 3</div><h2 class="t">Vous avez fait bon voyage ?</h2><p class="consigne">Écoutez d'abord, sans lire le texte.</p><div class="rep rep--key"><div class="qui">ROSE-AIMÉE</div><div>Bienvenue ! Vous avez fait bon voyage ?</div></div><div class="rep rep--key"><div class="qui">THUY</div><div>Bonjour madame. Oui, très bon. Huit heures, mais je n'ai pas vu le temps passer : je regardais dehors tout le long.</div></div><div class="rep rep--key"><div class="qui">ROSE-AIMÉE</div><div>C'est la première fois que vous descendez par ici ?</div></div></section><section class="bloc card"><div class="lbl">Dialogue · 2 de 3</div><h2 class="t">La marée descend vers dix heures</h2><div class="rep rep--key"><div class="qui">ROSE-AIMÉE</div><div>Le déjeuner est servi de sept heures à neuf heures, en bas. Demain il va faire beau et frais, quatorze degrés. La marée descend vers dix heures : c'est le bon moment pour aller voir les phoques.</div></div><div class="rep rep--key"><div class="qui">THUY</div><div>Je peux y aller à pied depuis ici ?</div></div><div class="rep rep--key"><div class="qui">ROSE-AIMÉE</div><div>En marchant, comptez quarante minutes. En passant par le petit chemin derrière l'église, vous coupez dix minutes.</div></div></section><section class="bloc card"><div class="lbl">Dialogue · 3 de 3</div><h2 class="t">Vous n'êtes pas du coin, vous non plus ?</h2><div class="rep rep--key"><div class="qui">DENIS</div><div>Vous n'êtes pas du coin, vous non plus ? Moi je viens de Sherbrooke. On monte ici tous les automnes, ma femme et moi.</div></div><div class="rep rep--key"><div class="qui">THUY</div><div>J'arrive de Montréal. C'est ma première fois dans la région.</div></div><div class="rep"><div class="qui">DENIS</div><div>Et vous êtes montée jusqu'au belvédère ? C'est là-haut, à vingt minutes.</div></div></section><section class="bloc regle"><div class="lbl">On vouvoie, et on relance</div><p class="r">Vouvoiement avec les inconnus, du début à la fin. Et jamais un « oui » tout seul : on ajoute une phrase.</p><p class="pr">Personne ne propose le tutoiement à Thuy en six jours. Ce n'est pas de la froideur : c'est l'usage avec quelqu'un qu'on rencontre.</p></section><section class="bloc card"><div class="lbl">Tu ou vous ?</div><h2 class="t">Quatre personnes du module</h2><table><thead><tr><th>La personne</th><th>On dit</th></tr></thead><tbody><tr><td>Camille, collègue de travail</td><td class="cle">tu</td></tr><tr><td>Serge, au comptoir</td><td class="cle">vous</td></tr><tr><td>Rose-Aimée, au gîte</td><td class="cle">vous</td></tr><tr><td>Denis, sur le sentier</td><td class="cle">vous</td></tr></tbody></table></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Répondre « oui » à une salutation d'usage</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">« Belle journée, hein ? » — « Oui. »</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">« Oui, magnifique. Je n'avais jamais vu le fleuve comme ça. »</p></div></div><div class="note">« Belle journée » n'est pas une question sur la météo : c'est une porte ouverte. Un « oui » seul la referme, et la personne s'éloigne en pensant qu'on ne voulait pas parler.</div></section><section class="bloc card"><div class="lbl">Compréhension</div><h2 class="t">Vrai ou faux ?</h2><p class="consigne">Répondez d'après le dialogue.</p><ol class="ex"><li><span class="q">Thuy reste six nuits au gîte.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le déjeuner est servi jusqu'à dix heures.</span><span class="ligne"></span></li><li><span class="q">La marée descend vers dix heures.</span><span class="ligne ligne--court"></span></li><li><span class="q">Denis habite la région.</span><span class="ligne"></span></li><li><span class="q">Thuy est déjà montée au belvédère.</span><span class="ligne ligne--court"></span></li><li><span class="q">Rose-Aimée tutoie Thuy.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez votre réponse à « D'où venez-vous ? », en deux phrases, pas plus.</p><ul><li>Deux phrases : d'où vous arrivez, et une chose sur vous.</li><li>Gardez le reste pour si l'on vous en redemande.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Tu, vous et les salutations d'usage</h2><section class="bloc card ml"><h3>Ce qui se joue dans les dix premières secondes</h3><p class="mp">Vous arrivez dans un village où personne ne vous connaît. L'hôtesse du gîte vous parle de la pluie comme à une amie, l'homme sur le sentier vous dit bonjour sans vous avoir jamais vu, et le préposé du parc vous appelle par votre prénom. Le Québec est chaleureux et il est direct, et cela crée un malentendu très courant : la chaleur n'est pas une invitation à tutoyer. On reste au « vous » avec les inconnus, les gens de service et les personnes plus âgées, aussi longtemps qu'on ne vous a pas proposé autre chose — et c'est la personne d'ici, ou la plus âgée, qui le propose.</p><div class="note">Se tromper de ce côté-là ne se corrige jamais à voix haute : personne ne vous dira « vous m'avez tutoyé ». On le sent seulement à la conversation qui raccourcit.</div></section><section class="bloc card ml"><h3>Qui l'on vouvoie, et jusqu'à quand</h3><p class="mp">La règle est simple à énoncer, et elle ne connaît que peu d'exceptions en voyage.</p><table class="ana"><tr><td>On vouvoie</td><td class="">un inconnu · une personne de service · quelqu'un de plus âgé · quelqu'un qui vous vouvoie</td></tr><tr><td>On tutoie</td><td class="cle">un collègue de son âge · un ami · un enfant · quelqu'un qui vous a proposé le tu</td></tr><tr><td>On attend</td><td class="">« On peut se tutoyer, si vous voulez. » — c'est l'autre qui l'offre</td></tr></table><p class="dit"><span class="k">On dit</span> Bonjour madame. Oui, très bon voyage, merci.</p><div class="note">Une exception qui surprend : dans beaucoup de commerces et de restaurants, le personnel jeune tutoie spontanément les clients. Cela ne vous oblige à rien — vous pouvez rester au « vous » sans que ce soit froid.</div></section><section class="bloc card ml"><h3>Les formules d'arrivée, à retenir en bloc</h3><p class="mp">Elles ne se construisent pas mot à mot. On les apprend telles quelles et on les emploie telles quelles.</p><table class="ana"><tr><td>À l'arrivée</td><td class="">Bienvenue ! · Vous avez fait bon voyage ? · Vous venez de loin ?</td></tr><tr><td>Pour ouvrir une conversation</td><td class="cle">Belle journée, hein ? · Il fait beau aujourd'hui ! · C'est votre première fois par ici ?</td></tr><tr><td>Pour répondre et relancer</td><td class="">Oui, très bon, merci. Et vous, vous êtes de la région ?</td></tr></table><p class="dit"><span class="k">On dit</span> Belle journée, hein ? C'est votre première fois par ici ?</p><div class="note">Le « hein ? » à la fin d'une phrase n'est pas une faute : c'est la façon la plus courante d'inviter l'autre à répondre. « Belle journée, hein ? » attend un « oui, magnifique », pas un silence.</div></section><section class="bloc card ml"><h3>Les formules de départ, tout aussi obligatoires</h3><p class="mp">Ne pas les rendre laisse une impression de froideur que l'on ne voulait pas donner. Elles coûtent trois secondes.</p><table class="ana"><tr><td>Quand on part en voyage</td><td class="">Bon voyage ! · Bonne route ! · Faites attention à vous !</td></tr><tr><td>Quand on quitte quelqu'un sur place</td><td class="cle">Bon séjour ! · Bonne fin de journée ! · Bonne continuation !</td></tr><tr><td>Quand on reçoit</td><td class="">Bienvenue chez nous ! · Revenez nous voir !</td></tr></table><p class="dit"><span class="k">On dit</span> Bon séjour, madame. Et bienvenue chez nous.</p><div class="note">« Bienvenue » a deux sens au Québec : c'est l'accueil, mais c'est aussi la réponse à « merci ». « Merci beaucoup. — Bienvenue ! » veut dire « de rien ».</div></section><section class="bloc card ml"><h3>Jaser : le mot qui dit ce qu'on fait vraiment</h3><p class="mp">Au Québec, on ne bavarde pas et on ne discute pas : on jase. Jaser, c'est parler pour le plaisir, sans but, avec quelqu'un qu'on ne reverra peut-être jamais.</p><table class="ana"><tr><td>Comment ça s'emploie</td><td class="">On a jasé une demi-heure. · Viens jaser deux minutes. · On jasait de la pluie.</td></tr><tr><td>Ce que ça n'est pas</td><td class="cle">ce n'est pas commérer · ce n'est pas se plaindre · ce n'est pas discuter d'affaires</td></tr><tr><td>Ce que ça ouvre</td><td class="">un conseil sur un sentier · une histoire du village · une invitation à revenir</td></tr></table><p class="dit"><span class="k">On dit</span> Ils ont jasé une demi-heure sur le quai, sans se connaître.</p><div class="note">Employez-le. C'est un mot parfaitement correct, chaleureux, et il vous fera passer tout de suite pour quelqu'un qui écoute la langue d'ici plutôt que celle des manuels.</div></section><section class="bloc card ml"><h3>La même rencontre, du début à la fin</h3><p class="mp">Choisissez un moment de la rencontre et écoutez ce qui se dit.</p><table class="labo"><thead><tr><th>Quel moment ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">L'arrivée au gîte</td><td>Bienvenue ! Vous avez fait bon voyage ? — Bonjour madame. Oui, très bon : huit heures, mais je n'ai pas vu le temps passer. Le gîte est encore plus joli que sur les photos.<span class="tags">un gîte</span></td><td>on répond, puis on ajoute quelque chose</td></tr><tr><td class="cle">La rencontre sur le sentier</td><td>Bonjour ! Belle journée, hein ? — Oui, magnifique. Je n'avais jamais vu le fleuve comme ça. On a jasé dix minutes.<span class="tags">jaser</span></td><td>une phrase sur le temps ouvre tout</td></tr><tr><td class="cle">La question qu'on vous pose</td><td>Vous n'êtes pas du coin, vous non plus ? — J'arrive de Montréal, c'est ma première fois dans la région. Et vous ? — Nous, on est des vacanciers de Sherbrooke.<span class="tags">un vacancier</span></td><td>on répond et on retourne la question</td></tr><tr><td class="cle">Le conseil qu'on vous donne</td><td>Montez au belvédère avant de repartir. C'est ce qu'on vient chercher ici. — J'y vais cet après-midi. Merci du conseil !<span class="tags">un belvédère · un attrait</span></td><td>un conseil se prend au sérieux et se remercie</td></tr><tr><td class="cle">Le départ</td><td>Bon séjour, madame ! Et bienvenue chez nous. — Merci beaucoup. J'irai voir le phare demain, comme vous avez dit.<span class="tags">un phare</span></td><td>la formule d'usage se rend toujours</td></tr></tbody></table><div class="note">Écoutez la rencontre entière une fois, puis reprenez chaque réplique de l'élève à voix haute. Ce sont cinq phrases, et elles ouvrent une région.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six phrases de la rencontre.</p><table class="ex2"><tr><td>Bonjour madame. Oui, très bon voyage, merci.</td><td>on répond vraiment à la question</td></tr><tr><td>Belle journée, hein ? On a été chanceux avec le temps.</td><td>la phrase qui ouvre</td></tr><tr><td>C'est ma première fois dans la région. Et vous ?</td><td>on retourne la question</td></tr><tr><td>Merci du conseil ! J'y vais cet après-midi.</td><td>on prend le conseil au sérieux</td></tr><tr><td>Bon séjour, madame. Bienvenue chez nous.</td><td>les deux formules de départ</td></tr><tr><td>Merci beaucoup. — Bienvenue !</td><td>bienvenue veut aussi dire de rien</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges de la conversation en région</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">tutoyer parce que l'autre est chaleureux</p><div class="k">Ce qui arrive</div><p class="ph">« Salut ! Tu me donnes ma clé ? » à l'hôtesse du gîte</p><p class="px">La chaleur n'est pas une permission. On reste au « vous » avec les gens de service et les inconnus jusqu'à ce qu'on vous propose autre chose. Accepter est alors très simple : « Avec plaisir. »</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">comparer en défaveur de l'endroit</p><div class="k">Ce qui arrive</div><p class="ph">« C'est bien petit, votre village, comparé à Montréal. »</p><p class="px">C'est ressenti comme un jugement, même dit gentiment. Retournez la phrase : « C'est tellement tranquille ici, ça change de Montréal. » Même observation, tout autre effet.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">répondre « oui » à une question ouverte</p><div class="k">Ce qui arrive</div><p class="ph">« Vous avez fait bon voyage ? — Oui. »</p><p class="px">Ces questions-là attendent trois ou quatre mots de plus : la durée, le moyen de transport, une chose remarquée. Un « oui » sec ferme la conversation, et c'est presque toujours involontaire.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">L'hôtesse du gîte vous parle très chaleureusement. Vous…</span><ul class="opts"><li>passez au tu</li><li>restez au vous</li></ul></li><li><span class="q">« Merci beaucoup. — Bienvenue ! » veut dire…</span><ul class="opts"><li>de rien</li><li>entrez</li></ul></li><li><span class="q">« Jaser » veut dire…</span><ul class="opts"><li>se plaindre</li><li>parler pour le plaisir</li></ul></li><li><span class="q">À « Vous avez fait bon voyage ? », on répond…</span><ul class="opts"><li>oui</li><li>oui, plus deux ou trois mots</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> restez au vous — Vous restez au « vous ». C'est elle qui proposera le tutoiement, si elle le veut. · <b>2.</b> de rien — De rien. « Bienvenue » a les deux sens au Québec. · <b>3.</b> parler pour le plaisir — Parler pour le plaisir, sans but précis. C'est un mot chaleureux. · <b>4.</b> oui, plus deux ou trois mots — Oui, plus quelque chose : la durée, le moyen, une chose remarquée.</div></section></section></div>
+<footer><span>D1 · Une semaine au Bic</span><span>Fiche élève</span></footer>
+</body>
+</html>

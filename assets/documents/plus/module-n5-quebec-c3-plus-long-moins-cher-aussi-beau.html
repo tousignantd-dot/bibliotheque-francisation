@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C3 · Plus long, moins cher, aussi beau — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance C3 · Module 10 · 75 minutes</div>
+    <h1>Plus long, moins cher, aussi beau</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">L'autocar ou le train ? Le gîte ou le camping ? Le sentier du bord de l'eau ou celui de la montagne ? Comparer n'est pas énumérer : il faut dire lequel on choisit, et donner la raison qui a fait pencher.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>comparer deux choses avec plus, moins et aussi ;</li><li>employer « meilleur » et « mieux » à la bonne place ;</li><li>dire lequel on choisit et pourquoi, en une phrase ;</li><li>accepter un inconvénient en le nommant, avec « même si ».</li></ol></section><section class="bloc regle"><div class="lbl">Trois degrés, une seule construction</div><p class="r">plus … que · moins … que · aussi … que.</p><p class="pr">L'adjectif s'accorde avec ce dont on parle : la route est plus longue, le trajet est plus long.</p></section><section class="bloc card"><div class="lbl">Deux moyens</div><h2 class="t">L'autocar ou le train, pour Rimouski</h2><table><thead><tr><th>L'autocar</th><th>Le train</th></tr></thead><tbody><tr><td>Tous les jours</td><td class="cle">Trois jours par semaine</td></tr><tr><td>Départ le matin</td><td class="cle">Départ à 18 h 30</td></tr><tr><td>Arrivée à 15 h 10</td><td class="cle">Arrivée en pleine nuit</td></tr><tr><td>Moins confortable</td><td class="cle">Plus confortable</td></tr></tbody></table></section><section class="bloc"><div class="lbl">Deux mots qu'on confond</div><h2 class="t">« Meilleur » et « mieux »</h2><div class="grid"><div class="card"><h3>meilleur</h3><p>Adjectif : il accompagne un nom. « Un meilleur prix. »</p></div><div class="card"><h3>mieux</h3><p>Adverbe : il accompagne un verbe. « On dort mieux. »</p></div><div class="card"><h3>C'est un meilleur choix</h3><p>Choix est un nom, donc « meilleur ».</p></div><div class="card"><h3>C'est mieux de partir tôt</h3><p>Il n'y a pas de nom, donc « mieux ».</p></div></div></section><section class="bloc card"><div class="lbl">Comparaison</div><h2 class="t">Complétez avec plus, moins, aussi, meilleur ou mieux</h2><p class="consigne">À l'oral, puis à l'écrit.</p><ol class="ex"><li><span class="q">Le gîte est … cher que le camping.</span><span class="ligne ligne--court"></span></li><li><span class="q">L'autocar est … pratique que le train.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le sentier du bord de l'eau est … long que celui de la montagne.</span><span class="ligne ligne--court"></span></li><li><span class="q">En basse saison, on obtient un … prix.</span><span class="ligne ligne--court"></span></li><li><span class="q">On dort … dans un gîte chauffé qu'en tente à cinq degrés.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le train est … confortable, mais il arrive la nuit.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc regle"><div class="lbl">Comparer, puis choisir</div><p class="r">« X est plus … que Y, mais je prends Y parce que … »</p><p class="pr">Une comparaison qui ne débouche sur aucun choix ne sert à rien. Le « parce que » est la moitié du travail.</p></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Énumérer sans conclure</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">Le train est confortable. L'autocar est pratique. Le gîte est cher.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">Je prends l'autocar : il part le matin et j'arrive de jour.</p></div></div><div class="note">Trois phrases côte à côte ne font pas une comparaison. Ce qu'on attend, c'est une décision et sa raison — et c'est aussi ce qu'un employeur, un propriétaire ou un médecin attendent.</div></section><section class="bloc card"><div class="lbl">Production</div><h2 class="t">Choisissez, et dites pourquoi</h2><p class="consigne">Une phrase complète, à l'oral, chacun son tour.</p><ol class="ex"><li><span class="q">Le gîte ou le camping ?</span><span class="ligne"></span></li><li><span class="q">L'autocar ou le train ?</span><span class="ligne"></span></li><li><span class="q">Le sentier du bord de l'eau ou celui de la montagne ?</span><span class="ligne ligne--court"></span></li><li><span class="q">Le tarif ferme ou le tarif qui se change ?</span><span class="ligne"></span></li><li><span class="q">Partir six nuits ou trois nuits ?</span><span class="ligne"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Comparez deux façons de faire votre propre voyage, et dites laquelle vous choisissez.</p><ul><li>Deux phrases : la comparaison, puis le choix et sa raison.</li><li>Nommez aussi l'inconvénient que vous acceptez.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Comparer, puis choisir</h2><section class="bloc card ml"><h3>Une comparaison sert à décider, sinon elle ne sert à rien</h3><p class="mp">Préparer un voyage, c'est comparer sans arrêt : l'autocar ou le train, le gîte ou le camping, le départ du matin ou celui de midi, la haute ou la basse saison. Le français a pour cela une mécanique très simple — trois mots devant l'adjectif, « que » derrière — et deux ou trois formes irrégulières qu'on entend tous les jours. Mais la mécanique n'est que la moitié du travail. Une comparaison qui n'aboutit à aucune décision laisse l'interlocuteur en plan : au niveau 5, on compare, puis on conclut, dans la même réplique.</p><div class="note">C'est cette conclusion qui fait la différence entre quelqu'un qui récite des phrases et quelqu'un qui tient une conversation.</div></section><section class="bloc card ml"><h3>Les trois degrés, devant un adjectif</h3><p class="mp">Plus, moins, aussi devant l'adjectif ; « que » derrière. C'est toute la construction.</p><table class="ana"><tr><td>Plus … que</td><td class="">L'autocar est plus pratique que le train.</td></tr><tr><td>Moins … que</td><td class="cle">Le camping est moins cher que le gîte.</td></tr><tr><td>Aussi … que</td><td class="">Le sentier de la montagne est aussi beau que celui du bord de l'eau.</td></tr></table><p class="dit"><span class="k">On dit</span> L'autocar est plus pratique que le train. Le camping est moins cher que le gîte.</p><div class="note">Le « que » ne se supprime jamais. « C'est plus cher » tout seul se dit, mais alors on ne compare plus rien : on constate.</div></section><section class="bloc card ml"><h3>Devant un nom, on ajoute « de »</h3><p class="mp">C'est le seul changement à retenir. Devant un adjectif : plus, moins, aussi. Devant un nom : plus de, moins de, autant de.</p><table class="ana"><tr><td>Avec un nom</td><td class="">Il y a plus de vacanciers en juillet qu'en septembre.</td></tr><tr><td>Autant de … que</td><td class="cle">Le gîte a autant de chambres que l'auberge.</td></tr><tr><td>Ne pas mélanger</td><td class="">aussi + adjectif · autant de + nom</td></tr></table><p class="dit"><span class="k">On dit</span> Il y a plus de vacanciers en juillet qu'en septembre.</p><div class="note">« Aussi de » n'existe pas, et « autant beau » non plus. C'est la seule vraie difficulté de la leçon : la forme dépend de ce qui suit.</div></section><section class="bloc card ml"><h3>Meilleur et mieux : les deux irréguliers</h3><p class="mp">« Bon » devient « meilleur ». « Bien » devient « mieux ». On ne dit jamais « plus bon » ni « plus bien ».</p><table class="ana"><tr><td>Meilleur, avec un nom derrière</td><td class="">Le déjeuner du gîte est meilleur que celui de l'hôtel.</td></tr><tr><td>Mieux, avec un verbe devant</td><td class="cle">On dort mieux au gîte qu'en tente.</td></tr><tr><td>Le test</td><td class="">bon décrit une chose ; bien décrit une action</td></tr></table><p class="dit"><span class="k">On dit</span> Le déjeuner du gîte est meilleur que celui de l'hôtel, et on y dort mieux.</p><div class="note">« Pire » existe aussi, pour « plus mauvais ». Mais « plus mauvais » se dit très bien, alors que « plus bon » ne se dit pas du tout.</div></section><section class="bloc card ml"><h3>Le superlatif : le plus, la plus, les plus</h3><p class="mp">On ajoute l'article devant. C'est ce qui distingue « plus beau » de « le plus beau ».</p><table class="ana"><tr><td>Avec un adjectif</td><td class="">C'est le plus beau moment de l'année. · La plus longue étape est celle du matin.</td></tr><tr><td>Avec un nom</td><td class="cle">C'est la région qui a le plus de parcs nationaux.</td></tr><tr><td>L'irrégulier</td><td class="">le meilleur, jamais le plus bon</td></tr></table><p class="dit"><span class="k">On dit</span> Fin septembre, c'est le plus beau moment de l'année dans la région.</p><div class="note">Quand l'adjectif se place après le nom, l'article se répète : « le sentier le plus long », et non « le plus long sentier », qui se dit aussi mais sonne moins naturel ici.</div></section><section class="bloc card ml"><h3>Deux possibilités, une décision</h3><p class="mp">Choisissez une comparaison du module et écoutez-la en entier, conclusion comprise.</p><table class="labo"><thead><tr><th>Comparer quoi ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">L'autocar ou le train</td><td>Le train est plus confortable que l'autocar, mais il passe trois fois par semaine et il arrive en pleine nuit. L'horaire décide : je prends l'autocar.<span class="tags">un horaire</span></td><td>deux différences, une conclusion</td></tr><tr><td class="cle">Le gîte ou le camping</td><td>Le prêt-à-camper est moins cher que le gîte, mais il n'est pas chauffé et il fait cinq degrés la nuit. Je prends le gîte.<span class="tags">un gîte · le prêt-à-camper</span></td><td>le prix n'est pas le seul argument</td></tr><tr><td class="cle">La haute ou la basse saison</td><td>En basse saison, il y a moins de vacanciers et le gîte coûte vingt dollars de moins par nuit. Je pars après le quinze septembre.<span class="tags">la basse saison · un vacancier</span></td><td>moins de + nom</td></tr><tr><td class="cle">Le départ du matin ou celui de midi</td><td>Le départ de midi trente est moins matinal, mais il a <b>une correspondance</b> et il arrive une heure plus tard. Je prends celui du matin.</td><td>plus tard, moins matinal</td></tr><tr><td class="cle">Les quatre à la suite</td><td>Le train est plus confortable. Le camping est moins cher. La basse saison a moins de monde. Le départ du matin est plus direct.<span class="tags">un gîte · la basse saison</span></td><td>les quatre comparaisons, sans les conclusions</td></tr></tbody></table><div class="note">Écoutez surtout la dernière phrase de chaque cas : c'est la décision, et c'est ce qui manque le plus souvent dans les productions d'élèves.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six phrases du module.</p><table class="ex2"><tr><td>L'autocar est plus pratique que le train.</td><td>plus + adjectif</td></tr><tr><td>Le camping est moins cher que le gîte.</td><td>moins + adjectif</td></tr><tr><td>Le sentier de la montagne est aussi beau que l'autre.</td><td>aussi + adjectif</td></tr><tr><td>Il y a plus de vacanciers en juillet qu'en septembre.</td><td>plus de + nom</td></tr><tr><td>Le déjeuner du gîte est meilleur que celui de l'hôtel.</td><td>l'irrégulier de bon</td></tr><tr><td>C'est le plus beau moment de l'année.</td><td>le superlatif</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges de la comparaison</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">dire « plus bon »</p><div class="k">Ce qui arrive</div><p class="ph">« le déjeuner est plus bon qu'à l'hôtel »</p><p class="px">« Bon » n'a pas de comparatif régulier : il devient <b>meilleur</b>. Et « bien » devient <b>mieux</b>. Ce sont les deux seuls irréguliers à retenir, et ce sont ceux qu'on emploie le plus souvent.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">oublier le « de » devant un nom</p><div class="k">Ce qui arrive</div><p class="ph">« il y a plus vacanciers en juillet »</p><p class="px">Devant un nom, il faut <b>plus de</b>, <b>moins de</b>, <b>autant de</b>. Devant un adjectif, pas de « de ». Regardez ce qui suit avant de choisir la forme.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">comparer sans conclure</p><div class="k">Ce qui arrive</div><p class="ph">« Le train est plus confortable, l'autocar est moins cher. » Et alors ?</p><p class="px">Une comparaison sans décision oblige l'autre à demander « donc tu prends quoi ? ». Ajoutez la conclusion dans la même réplique : « … donc je prends l'autocar ». C'est ce que le niveau 5 attend.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">« Il y a ___ vacanciers en juillet. »</span><ul class="opts"><li>plus de</li><li>plus</li></ul></li><li><span class="q">Le comparatif de « bon » est…</span><ul class="opts"><li>plus bon</li><li>meilleur</li></ul></li><li><span class="q">« Le sentier est ___ beau que l'autre. » (égalité)</span><ul class="opts"><li>aussi</li><li>autant</li></ul></li><li><span class="q">Une comparaison, au niveau 5, se termine par…</span><ul class="opts"><li>une décision</li><li>une autre comparaison</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> plus de — Plus de : « vacanciers » est un nom. · <b>2.</b> meilleur — Meilleur. Et celui de « bien » est « mieux ». · <b>3.</b> aussi — Aussi : devant un adjectif. « Autant de » se met devant un nom. · <b>4.</b> une décision — Une décision. Sinon l'autre doit vous demander ce que vous choisissez.</div></section></section></div>
+<footer><span>C3 · Une semaine au Bic</span><span>Fiche élève</span></footer>
+</body>
+</html>

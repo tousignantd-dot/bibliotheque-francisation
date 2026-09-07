@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>D2 · Mettre en avant, et s'exclamer — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance D2 · Module 13 · 75 minutes</div>
+    <h1>Mettre en avant, et s'exclamer</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">« Le silence entre les deux sœurs m'a touchée » est correct. « Moi, ce qui m'a touchée, c'est le silence entre les deux sœurs » se retient. Deux tournures, et une présentation change de niveau.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>employer « moi, ce qui…, c'est… » pour mettre son avis en avant ;</li><li>choisir entre « ce qui » et « ce que » ;</li><li>accorder quel, quelle, quels, quelles avec le nom qui suit ;</li><li>écrire un avis en cinq phrases, réserve comprise.</li></ol></section><section class="bloc regle"><div class="lbl">Moi, ce qui m'a touchée, c'est…</div><p class="r">La tournure déplace vers la fin le mot qui compte, et prévient qu'il s'en vient.</p><p class="pr">Comparez : « Le silence entre les deux sœurs m'a touchée » et « Moi, ce qui m'a touchée, c'est le silence entre les deux sœurs ». La seconde annonce clairement que ce qui suit est un avis, et elle vous donne une seconde pour penser à la suite — ce qui, devant un groupe, n'est pas rien.</p></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Ce qui, ou ce que ?</h2><table><thead><tr><th>La phrase</th><th>Pourquoi</th></tr></thead><tbody><tr><td>Ce qui m'a plu, c'est le dessin.</td><td class="cle">le dessin plaît : il fait l'action</td></tr><tr><td>Ce que j'ai aimé, c'est la fin.</td><td class="cle">c'est moi qui aime : un sujet suit</td></tr><tr><td>Ce qui me dérange, c'est que…</td><td class="cle">suite = phrase complète, d'où le que</td></tr><tr><td>Ce que les gens remarquent, c'est…</td><td class="cle">les gens remarquent : sujet</td></tr></tbody></table><div class="note">Même test que pour les relatives du Défi 1 : après « que », il y a toujours un sujet.</div></section><section class="bloc card"><div class="lbl">Grammaire</div><h2 class="t">Ce qui, ce que, c'est</h2><p class="consigne">Complétez chaque phrase.</p><ol class="ex"><li><span class="q">Moi, ___ m'a touchée, c'est le silence entre les deux sœurs.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ j'ai le moins aimé, c'est la longueur des trois derniers chapitres.</span><span class="ligne ligne--court"></span></li><li><span class="q">Ce qui m'a surprise, ___ la lenteur du début.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ me dérange, c'est que la fin arrive trop vite.</span><span class="ligne ligne--court"></span></li><li><span class="q">Ce que les gens remarquent d'abord, ___ le dessin.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ fait la force de cet album, c'est le silence des cases.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc regle"><div class="lbl">Quel s'accorde avec le nom qui suit</div><p class="r">Quel personnage ! Quelle histoire ! Quels dessins ! Quelles couleurs !</p><p class="pr">Les quatre se prononcent exactement pareil : l'accord ne s'entend pas, il s'écrit. Et si un adjectif se glisse au milieu — quelle belle planche —, c'est toujours le nom, à la fin, qui commande tout le groupe.</p></section><section class="bloc"><div class="lbl">Deux emplois des mêmes mots</div><h2 class="t">Ce qui les distingue</h2><div class="grid"><div class="card"><h3>La question</h3><p>Quelle est votre œuvre préférée ? La voix monte à la fin, et la phrase attend une réponse.</p></div><div class="card"><h3>L'exclamation</h3><p>Quelle œuvre ! La voix tombe, et la phrase n'attend rien : elle dit le degré.</p></div></div></section><section class="bloc card"><div class="lbl">Grammaire</div><h2 class="t">S'exclamer : quel, quelle, quels, quelles</h2><p class="consigne">Complétez chaque exclamation.</p><ol class="ex"><li><span class="q">___ belle façon de le dire !</span><span class="ligne ligne--court"></span></li><li><span class="q">___ personnage ! Je ne l'oublierai pas de sitôt.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ couleurs dans le dernier tome de la série !</span><span class="ligne ligne--court"></span></li><li><span class="q">___ beaux dessins il y a dans cet album !</span><span class="ligne ligne--court"></span></li><li><span class="q">___ histoire ! Je l'ai lue en deux soirées.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ dénouement ! Je ne vous en dis pas un mot.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">Écriture</div><h2 class="t">Donnez votre avis, et tenez-le</h2><p class="consigne">Cinq phrases, sur l'œuvre du Défi 1. Interdiction d'écrire « c'est bon ».</p><ol class="ex"><li><span class="q">1 — Ce que vous avez aimé, avec un adjectif précis.</span><span class="ligne"></span></li><li><span class="q">2 — La raison qui vient derrière.</span><span class="ligne"></span></li><li><span class="q">3 — Une chose moins aimée, dite sans démolir l'œuvre.</span><span class="ligne"></span></li><li><span class="q">4 — Quelqu'un trouve ça trop lent : accordez, puis tournez.</span><span class="ligne"></span></li><li><span class="q">5 — À qui vous le recommandez, et pourquoi à cette personne-là.</span><span class="ligne"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Réécrivez votre avis de D1 avec « moi, ce qui…, c'est… » et une exclamation.</p><ul><li>Une seule exclamation, bien placée.</li><li>Relisez-vous : est-ce qu'on sait ce qui est bon, et pour qui ?</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Moi, ce qui m'a touché, c'est…</h2><section class="bloc card ml"><h3>La tournure qui met en avant ce qui compte</h3><p class="mp">Comparez deux phrases. « Le silence entre les deux sœurs m'a touchée. » Correcte, complète, et déjà oubliée. « Moi, ce qui m'a touchée, c'est le silence entre les deux sœurs. » La même information, mais le mot important arrive à la fin, après une petite attente, et l'auditeur a eu le temps de se préparer à le recevoir. Le français appelle ça une phrase emphatique par dislocation. Au club, c'est simplement la façon dont les gens parlent de ce qu'ils ont aimé.</p><div class="note">Elle a un deuxième mérite, moins avouable et très utile : elle vous donne deux secondes pour trouver la suite. Devant un groupe, en français, ces deux secondes-là valent cher.</div></section><section class="bloc card ml"><h3>ce qui — quand la chose fait l'action</h3><p class="mp">Employez ce qui quand ce que vous mettez en avant est le sujet du verbe. Le verbe suit tout de suite, sans sujet entre les deux.</p><table class="ana"><tr><td>Ce qui plaît</td><td class="">ce qui m'a plu, c'est le dessin</td></tr><tr><td>Ce qui surprend</td><td class="cle">ce qui m'a surprise, c'est la lenteur</td></tr><tr><td>Ce qui dérange</td><td class="">ce qui me dérange, c'est la fin trop rapide</td></tr></table><p class="dit"><span class="k">On dit</span> Moi, ce qui m'a touchée, c'est le silence entre les deux sœurs.</p><div class="note">Le test est le même qu'au Défi 1 : après « qui », un verbe tout seul. « Ce qui m'a plu » — « m' » est un complément, pas un sujet ; le sujet, c'est ce dont on parle.</div></section><section class="bloc card ml"><h3>ce que — quand c'est moi qui agis</h3><p class="mp">Employez ce que quand c'est vous, ou quelqu'un d'autre, qui faites l'action. Après que, il y a toujours un sujet.</p><table class="ana"><tr><td>Ce que j'ai aimé</td><td class="">ce que j'ai aimé, c'est la fin ouverte</td></tr><tr><td>Ce que j'ai moins aimé</td><td class="cle">ce que j'ai le moins aimé, c'est la longueur</td></tr><tr><td>Ce que les autres remarquent</td><td class="">ce que les gens remarquent, c'est le dessin</td></tr></table><p class="dit"><span class="k">On dit</span> Ce que j'ai le moins aimé, c'est la longueur des trois derniers chapitres.</p><div class="note">« Ce que j'ai le moins aimé » est la formule la plus utile du club : elle permet de dire une réserve sans démolir l'œuvre, et Gilberte la demande à tout le monde.</div></section><section class="bloc card ml"><h3>c'est, et le que qu'on oublie</h3><p class="mp">Quand ce qui suit « c'est » est un groupe de mots, on s'arrête là. Quand c'est une phrase complète avec un verbe, il faut ajouter que.</p><table class="ana"><tr><td>Un groupe de mots</td><td class="">c'est le silence · c'est la lenteur du début</td></tr><tr><td>Une phrase complète</td><td class="cle">c'est que la fin arrive trop vite</td></tr><tr><td>La faute à éviter</td><td class="">ce qui me dérange, c'est la fin arrive trop vite</td></tr></table><p class="dit"><span class="k">On dit</span> Ce qui me dérange, c'est que la fin arrive trop vite.</p><div class="note">Le petit « que » ne s'entend presque pas à l'oral rapide, et c'est justement pour ça qu'il disparaît à l'écrit. Relisez-vous : s'il y a un verbe conjugué après « c'est », il faut un « que ».</div></section><section class="bloc card ml"><h3>Cinq façons d'annoncer un avis</h3><p class="mp">Choisissez ce que vous voulez mettre en avant, et écoutez la phrase complète.</p><table class="labo"><thead><tr><th>Vous mettez en avant quoi ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">ce qui vous a touché</td><td>Moi, ce qui m'a touchée, c'est le silence entre les deux sœurs.<span class="tags">émouvant</span></td><td>ce qui + verbe, puis c'est + groupe</td></tr><tr><td class="cle">ce que vous avez aimé</td><td>Ce que j'ai aimé, c'est la fin ouverte : elle laisse de la place au lecteur.<span class="tags">un avis</span></td><td>ce que + sujet, puis la raison</td></tr><tr><td class="cle">ce que vous avez moins aimé</td><td>Ce que j'ai le moins aimé, c'est la longueur des trois derniers chapitres.<span class="tags">un avis</span></td><td>la réserve, dite sans démolir</td></tr><tr><td class="cle">ce qui vous dérange, avec une phrase derrière</td><td>Ce qui me dérange, c'est que la fin arrive trop vite.<span class="tags">le dénouement</span></td><td>une phrase complète : il faut le que</td></tr><tr><td class="cle">les quatre à la suite</td><td>Ce qui m'a touchée, c'est le silence. Ce que j'ai aimé, c'est la fin ouverte. Ce que j'ai le moins aimé, c'est la longueur. Ce qui me dérange, c'est que la fin arrive trop vite.<span class="tags">émouvant · un avis</span></td><td>les quatre moules de la présentation</td></tr></tbody></table><div class="note">Ces quatre phrases couvrent presque tout ce qu'on dit d'une œuvre. Apprenez-les comme des moules et changez seulement la fin.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six phrases du Défi 3.</p><table class="ex2"><tr><td>Moi, ce qui m'a touchée, c'est le silence entre les deux sœurs.</td><td>ce qui + c'est + groupe</td></tr><tr><td>Ce que j'ai le moins aimé, c'est la longueur des derniers chapitres.</td><td>ce que + c'est + groupe</td></tr><tr><td>Ce qui m'a surprise, c'est la lenteur du début.</td><td>le sujet mis en avant</td></tr><tr><td>Ce qui me dérange, c'est que la fin arrive trop vite.</td><td>une phrase complète, donc que</td></tr><tr><td>Ce que les gens remarquent d'abord, c'est le dessin.</td><td>le sujet n'est pas moi</td></tr><tr><td>Ce qui fait la force de cet album, c'est le silence des cases.</td><td>sur une œuvre, pas sur soi</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges de la dislocation</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">choisir « ce que » à la place de « ce qui »</p><div class="k">Ce qui arrive</div><p class="ph">« ce que m'a touché » au lieu de « ce qui m'a touché »</p><p class="px">Après « que », il faut un sujet. Dans « ce qui m'a touché », le « m' » est un complément : personne ne fait l'action après lui, donc c'est « qui ». Faites le test du Défi 1, il vaut ici aussi.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">oublier le « que » après « c'est »</p><div class="k">Ce qui arrive</div><p class="ph">« ce qui me dérange, c'est la fin arrive trop vite »</p><p class="px">Il y a un verbe conjugué derrière — arrive —, donc c'est une phrase complète, donc il faut « c'est que ». Sans lui, deux phrases sont collées l'une à l'autre sans rien pour les tenir.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">accumuler les dislocations</p><div class="k">Ce qui arrive</div><p class="ph">quatre « ce qui, c'est » dans deux minutes</p><p class="px">La tournure attire l'attention ; répétée, elle la perd. Deux par présentation, pas plus : une pour ce que vous avez aimé, une pour votre réserve.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">« ___ m'a touchée, c'est le silence. »</span><ul class="opts"><li>Ce qui</li><li>Ce que</li></ul></li><li><span class="q">« ___ j'ai aimé, c'est la fin ouverte. »</span><ul class="opts"><li>Ce qui</li><li>Ce que</li></ul></li><li><span class="q">« Ce qui me dérange, c'est ___ la fin arrive trop vite. »</span><ul class="opts"><li>que</li><li>rien</li></ul></li><li><span class="q">Combien de dislocations dans une présentation de deux minutes ?</span><ul class="opts"><li>deux</li><li>autant qu'on veut</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> Ce qui — Ce qui : après « qui », le verbe suit sans sujet. · <b>2.</b> Ce que — Ce que : après « que », il y a un sujet — j'. · <b>3.</b> que — Que : il y a un verbe conjugué derrière. · <b>4.</b> deux — Deux : une pour ce qu'on a aimé, une pour la réserve.</div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Quel, quelle, quels, quelles</h2><section class="bloc card ml"><h3>Ce que l'exclamation ajoute à un avis</h3><p class="mp">Un adjectif dit ce que vous pensez ; une exclamation dit à quel point. « C'est une belle façon de le dire » informe. « Quelle belle façon de le dire ! » emporte. Dans une présentation de deux minutes, une seule exclamation bien placée fait plus qu'un paragraphe d'adjectifs — et elle fait aussi quelque chose que rien d'autre ne fait : elle montre que vous avez été touché, pas seulement que vous avez jugé.</p><div class="note">Le déterminant exclamatif est un savoir du niveau 5, et l'accord en genre et en nombre est explicitement au programme. C'est une des rares règles où l'écrit demande plus que l'oral.</div></section><section class="bloc card ml"><h3>Quatre formes, un seul son</h3><p class="mp">Quel s'accorde avec le nom qui suit, et les quatre formes se prononcent exactement pareil. L'accord ne s'entend pas : il s'écrit.</p><table class="ana"><tr><td>Masculin singulier</td><td class="">quel personnage ! · quel dénouement !</td></tr><tr><td>Féminin singulier</td><td class="cle">quelle histoire ! · quelle planche !</td></tr><tr><td>Pluriel</td><td class="">quels dessins ! · quelles couleurs !</td></tr></table><p class="dit"><span class="k">On dit</span> Quel personnage ! Quelle histoire ! Quels dessins ! Quelles couleurs !</p><div class="note">Quatre orthographes, une prononciation. C'est exactement pour ce genre de cas que le module fait écrire l'exercice au lieu de le faire seulement écouter.</div></section><section class="bloc card ml"><h3>Avec un adjectif au milieu</h3><p class="mp">L'adjectif se glisse entre le déterminant et le nom, et l'accord ne change pas de règle : c'est toujours le nom, à la fin, qui commande tout le groupe.</p><table class="ana"><tr><td>Au masculin</td><td class="">quel beau personnage ! · quel bon album !</td></tr><tr><td>Au féminin</td><td class="cle">quelle belle planche ! · quelle bonne façon de le dire !</td></tr><tr><td>Au pluriel</td><td class="">quelles belles couleurs ! · quels beaux dessins !</td></tr></table><p class="dit"><span class="k">On dit</span> Quelle belle planche ! Quel beau personnage !</p><div class="note">L'adjectif s'accorde aussi, évidemment, et pour la même raison : beau, belle, beaux, belles suivent le nom qui vient derrière eux.</div></section><section class="bloc card ml"><h3>Exclamative ou interrogative ?</h3><p class="mp">Les mêmes mots servent aux deux. Ce qui les distingue, c'est la ponctuation à l'écrit, et la voix à l'oral : elle monte à la question, elle tombe à l'exclamation.</p><table class="ana"><tr><td>Une question</td><td class="">quelle est votre œuvre préférée ?</td></tr><tr><td>Une exclamation</td><td class="cle">quelle œuvre !</td></tr><tr><td>La différence à l'oral</td><td class="">la voix monte · la voix tombe</td></tr></table><p class="dit"><span class="k">On dit</span> Quelle est votre œuvre préférée ? Quelle œuvre !</p><div class="note">Dites les deux à la suite en exagérant la voix. C'est le seul moyen de sentir la différence, et elle se transporte ensuite dans toutes les exclamations du français.</div></section><section class="bloc card ml"><h3>Quatre exclamations du club</h3><p class="mp">Choisissez ce qui vous a frappé, et écoutez l'exclamation accordée.</p><table class="labo"><thead><tr><th>Vous vous exclamez sur quoi ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">un personnage</td><td>Quel personnage ! Je ne l'oublierai pas de sitôt.<span class="tags">un personnage</span></td><td>masculin singulier → quel</td></tr><tr><td class="cle">une histoire</td><td>Quelle histoire ! Je l'ai lue en deux soirées.<span class="tags">l'intrigue</span></td><td>féminin singulier → quelle</td></tr><tr><td class="cle">des dessins</td><td>Quels beaux dessins il y a dans cet album !<span class="tags">un album</span></td><td>masculin pluriel → quels</td></tr><tr><td class="cle">des couleurs</td><td>Quelles couleurs dans le dernier tome de la série !<span class="tags">une série</span></td><td>féminin pluriel → quelles</td></tr><tr><td class="cle">les quatre à la suite</td><td>Quel personnage ! Quelle histoire ! Quels beaux dessins ! Quelles couleurs !<span class="tags">un personnage · un album</span></td><td>les quatre formes, un seul son</td></tr></tbody></table><div class="note">Écoutez bien : les quatre se disent exactement pareil. Fermez les yeux, vous ne saurez jamais laquelle est écrite — c'est le nom qui suit qui vous le dira.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six exclamations, avec le nom qui commande.</p><table class="ex2"><tr><td>Quelle belle façon de le dire !</td><td>façon, féminin singulier</td></tr><tr><td>Quel personnage ! Je ne l'oublierai pas de sitôt.</td><td>personnage, masculin singulier</td></tr><tr><td>Quelles couleurs dans le dernier tome !</td><td>couleurs, féminin pluriel</td></tr><tr><td>Quels beaux dessins il y a dans cet album !</td><td>dessins, masculin pluriel</td></tr><tr><td>Quelle histoire ! Je l'ai lue en deux soirées.</td><td>histoire, féminin singulier</td></tr><tr><td>Quel dénouement ! Je ne vous en dis pas un mot.</td><td>dénouement, masculin singulier</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges du déterminant exclamatif</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">accorder avec l'adjectif</p><div class="k">Ce qui arrive</div><p class="ph">« quelles beaux dessins »</p><p class="px">L'adjectif ne commande rien : c'est le nom, à la fin du groupe, qui décide de tout. Dessins est masculin pluriel, donc quels beaux dessins. Cherchez le nom d'abord, toujours.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">écrire « quel » pour un nom féminin</p><div class="k">Ce qui arrive</div><p class="ph">« quel histoire ! »</p><p class="px">Comme les quatre formes se prononcent pareil, rien ne prévient à l'oral. Le seul remède est de se demander le genre du nom avant d'écrire : une histoire, donc quelle histoire.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">mettre un point d'interrogation</p><div class="k">Ce qui arrive</div><p class="ph">« Quelle histoire ? » quand on veut s'exclamer</p><p class="px">Le point change complètement le sens : avec un point d'interrogation, vous demandez laquelle. Avec un point d'exclamation, vous dites qu'elle vous a saisi. Un seul signe, deux phrases différentes.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">« ___ couleurs ! » (couleurs, féminin pluriel)</span><ul class="opts"><li>Quels</li><li>Quelles</li></ul></li><li><span class="q">Les quatre formes se prononcent…</span><ul class="opts"><li>différemment</li><li>exactement pareil</li></ul></li><li><span class="q">Dans « quel beau personnage ! », l'accord suit…</span><ul class="opts"><li>l'adjectif beau</li><li>le nom personnage</li></ul></li><li><span class="q">« Quelle est votre œuvre préférée ? » est…</span><ul class="opts"><li>une exclamation</li><li>une question</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> Quelles — Quelles : le nom est féminin pluriel. · <b>2.</b> exactement pareil — Exactement pareil. L'accord s'écrit, il ne s'entend pas. · <b>3.</b> le nom personnage — Le nom, toujours : c'est lui qui commande le groupe. · <b>4.</b> une question — Une question : le point le dit, et la voix monte.</div></section></section></div>
+<footer><span>D2 · Le club du jeudi</span><span>Fiche élève</span></footer>
+</body>
+</html>

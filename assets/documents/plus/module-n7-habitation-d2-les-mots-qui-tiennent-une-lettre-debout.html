@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>D2 · Les mots qui tiennent une lettre debout — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance D2 · Module 5 · 75 minutes</div>
+    <h1>Les mots qui tiennent une lettre debout</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Trois paragraphes posés l'un après l'autre ne font pas une lettre : ils font un empilement. Les connecteurs, la ponctuation et la mise en relief font le reste.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>annoncer un sujet avec quant à, en ce qui concerne ;</li><li>refermer une explication avec autrement dit, en somme ;</li><li>citer exactement, avec deux-points et guillemets ;</li><li>mettre en relief avec c'est… qui, c'est… que, ce que… c'est.</li></ol></section><section class="bloc"><div class="lbl">Analyse</div><h2 class="t">Trois familles de connecteurs</h2><div class="grid"><div class="card"><h3>Annoncer le sujet</h3><p>Quant à… · En ce qui concerne… · À propos de… Ces mots ouvrent un paragraphe.</p></div><div class="card"><h3>Redire plus court</h3><p>Autrement dit… · En somme… On referme une explication longue en dix mots.</p></div><div class="card"><h3>Tirer la suite</h3><p>Par conséquent… à l'écrit formel · Donc… à l'oral. Jamais les deux dans la même lettre.</p></div></div></section><section class="bloc regle"><div class="lbl">Les deux-points suivis de guillemets</div><p class="r">Ils annoncent les mots exacts de quelqu'un.</p><p class="pr">« Vous m'aviez dit : “ Revenez me le dire si ça ne suffit pas. ” » C'est la partie la plus solide d'une lettre, à une condition : ce qui est entre guillemets doit être exact. Si vous n'êtes pas sûr des mots, écrivez « vous m'aviez dit que… » sans guillemets. Un résumé honnête vaut mieux qu'une citation approximative.</p></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Trois signes, trois emplois</h2><table><thead><tr><th>Le signe</th><th>Ce qu'il fait</th></tr></thead><tbody><tr><td class="cle">Deux-points et guillemets</td><td>annoncent des mots exacts</td></tr><tr><td class="cle">Point-virgule</td><td>relie deux idées qu'un point séparerait trop</td></tr><tr><td class="cle">Tiret</td><td>ouvre chaque terme d'une liste verticale</td></tr><tr><td class="cle">Après un point-virgule</td><td>une minuscule, jamais une majuscule</td></tr><tr><td class="cle">Dans une liste à tirets</td><td>un point-virgule par ligne, un point à la fin</td></tr></tbody></table></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Mettre en relief : la phrase choisit à la place du lecteur</h2><table><thead><tr><th>Phrase ordinaire</th><th>Phrase mise en relief</th></tr></thead><tbody><tr><td>L'appareil me réveille.</td><td class="cle">C'est l'appareil qui me réveille.</td></tr><tr><td>Je me plains du matin.</td><td class="cle">C'est du matin que je me plains.</td></tr><tr><td>La répétition me dérange.</td><td class="cle">Ce qui me dérange, c'est la répétition.</td></tr><tr><td>Je veux dormir.</td><td class="cle">Ce que je veux, c'est dormir.</td></tr><tr><td>Le bruit de l'escalier a cessé.</td><td class="cle">Le bruit de l'escalier, lui, a cessé.</td></tr></tbody></table></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Grammaire</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">C'est moi qui a écrit la lettre</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">C'est moi qui ai écrit la lettre</p></div></div><div class="note">Le pronom relatif « qui » reprend l'élément encadré : le verbe s'accorde avec lui, pas avec « c'est ». C'est moi qui ai, c'est vous qui avez, ce sont eux qui ont. Autre test utile : si l'élément encadré est le sujet, c'est « qui » ; sinon, c'est « que ».</div></section><section class="bloc card"><div class="lbl">Pratique</div><h2 class="t">Complétez la lettre</h2><p class="consigne">Connecteur, ponctuation ou mise en relief, selon la phrase.</p><ol class="ex"><li><span class="q">___ à une diminution de loyer, ce n'est pas ce que je recherche.</span><span class="ligne ligne--court"></span></li><li><span class="q">En ce qui ___ le déplacement de l'appareil, rien n'a bougé.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ dit, deux des trois mesures convenues ont été prises.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le bruit persiste ; ___ conséquent, je m'adresse à vous.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le caoutchouc a été posé ___ l'appareil, lui, n'a pas bougé.</span><span class="ligne ligne--court"></span></li><li><span class="q">Vous m'aviez dit ___ Revenez me le dire. ___</span><span class="ligne"></span></li><li><span class="q">La répétition me dérange. — rapporté : ___ me dérange, c'est la répétition.</span><span class="ligne ligne--court"></span></li><li><span class="q">C'est moi ___ ai écrit la lettre.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écris la phrase de ta lettre qui dit ce qui compte vraiment pour toi.</p><ul><li>Emploie « Ce qui… , c'est » ou « Ce que… , c'est ».</li><li>Une seule phrase, et pas un adjectif de trop.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Les mots qui tiennent une lettre debout</h2><section class="bloc card ml"><h3>Sans connecteurs, une lettre est une liste de reproches</h3><p class="mp">Trois paragraphes posés l'un après l'autre ne font pas une lettre : ils font un empilement, et le lecteur doit deviner lui-même comment ils se répondent. Les connecteurs font ce travail à sa place. Ils disent : voici de quoi je vais parler maintenant, voici la même chose dite plus court, voici ce que j'en tire. Trois familles suffisent, et trois ou quatre connecteurs par page suffisent aussi.</p><div class="note">Le programme du niveau 7 en nomme trois séries : les connecteurs de topicalisation (quant à, à l'égard de, à propos de, en ce qui concerne), ceux de reformulation (autrement dit, en somme), et l'expression de la conséquence (donc, par conséquent).</div></section><section class="bloc card ml"><h3>La topicalisation : annoncer le sujet du paragraphe</h3><p class="mp">Ces mots ouvrent un paragraphe et préviennent le lecteur : on change de sujet, voici lequel. Ils valent un titre, sans en avoir l'air.</p><table class="ana"><tr><td>On dit</td><td class="">Quant à une éventuelle diminution de loyer, ce n'est pas ce que je recherche.</td></tr><tr><td>On dit aussi</td><td class="cle">En ce qui concerne l'escalier, le problème est réglé depuis le 20 février.</td></tr><tr><td>Les autres</td><td class="">à propos de · à l'égard de · pour ce qui est de</td></tr></table><p class="dit"><span class="k">On dit</span> Quant à une éventuelle diminution de loyer, ce n'est pas ce que je recherche.</p><div class="note">« Quant à » se construit avec un nom ou un pronom, jamais avec un verbe. « Quant à ce qui concerne » est une faute fréquente : les deux disent la même chose.</div></section><section class="bloc card ml"><h3>La reformulation : refermer une explication en une phrase</h3><p class="mp">Après un passage long ou technique, on redonne l'essentiel en dix mots. C'est ce que le lecteur retiendra, et c'est vous qui l'aurez choisi.</p><table class="ana"><tr><td>On dit</td><td class="">Autrement dit, deux des trois mesures convenues ont été prises.</td></tr><tr><td>On dit aussi</td><td class="cle">En somme, la situation s'est améliorée sans se régler.</td></tr><tr><td>Les autres</td><td class="">en d'autres termes · bref (à l'oral) · c'est-à-dire (pour préciser un mot)</td></tr></table><p class="dit"><span class="k">On dit</span> En somme, la situation s'est améliorée sans se régler.</p><div class="note">Une reformulation par lettre, pas plus. Deux « autrement dit » à la suite donnent l'impression que la première explication était ratée.</div></section><section class="bloc card ml"><h3>La conséquence : tirer la suite</h3><p class="mp">C'est le connecteur du dernier paragraphe : il relie ce qui précède à ce que vous demandez. Choisissez selon le registre.</p><table class="ana"><tr><td>À l'écrit formel</td><td class="">Le bruit persiste ; par conséquent, je m'adresse à vous.</td></tr><tr><td>À l'oral et à l'écrit courant</td><td class="cle">Je n'ai pas eu de réponse, donc j'écris une seconde fois.</td></tr><tr><td>Les autres</td><td class="">c'est pourquoi · de ce fait · aussi (en tête de phrase, avec inversion)</td></tr></table><p class="dit"><span class="k">On dit</span> Le bruit persiste ; par conséquent, je m'adresse à vous.</p><div class="note">Ne mettez pas « donc » et « par conséquent » dans la même lettre : le mélange des registres se remarque plus que l'un ou l'autre séparément.</div></section><section class="bloc card ml"><h3>Deux autres dont on ne peut pas se passer</h3><p class="mp">L'opposition et la répartition. La première évite de se fâcher, la seconde évite qu'on ne réponde qu'à la moitié de votre demande.</p><table class="ana"><tr><td>Opposer</td><td class="">Le bruit de l'escalier a cessé. En revanche, celui du matin est le même.</td></tr><tr><td>Opposer plus doucement</td><td class="cle">Le caoutchouc a aidé ; cependant, l'appareil n'a pas bougé.</td></tr><tr><td>Répartir</td><td class="">D'une part, je demande le déplacement de l'appareil ; d'autre part, je demande une réponse écrite.</td></tr></table><p class="dit"><span class="k">On dit</span> D'une part, je demande le déplacement de l'appareil ; d'autre part, une réponse écrite.</p><div class="note">« D'une part… d'autre part » oblige le destinataire à répondre aux deux. C'est la tournure la plus utile de la dernière ligne d'une mise en demeure.</div></section><section class="bloc card ml"><h3>Six connecteurs, six emplois</h3><p class="mp">À gauche le connecteur, à droite ce qu'il fait.</p><table class="ex2"><tr><td>Quant à…</td><td>j'annonce le sujet du paragraphe qui vient</td></tr><tr><td>En ce qui concerne…</td><td>la même chose, un peu plus formel</td></tr><tr><td>Autrement dit…</td><td>je redis plus court ce que je viens d'expliquer</td></tr><tr><td>En somme…</td><td>je referme une explication longue</td></tr><tr><td>Par conséquent…</td><td>je tire la suite, à l'écrit formel</td></tr><tr><td>D'une part… d'autre part…</td><td>je sépare deux demandes pour qu'on réponde aux deux</td></tr></table></section><section class="bloc card ml"><h3>Quatre questions, carnet fermé</h3><p class="mp">Répondez sans remonter dans la page.</p><ol class="check"><li><span class="q">« Quant à » se construit avec…</span><ul class="opts"><li>un nom ou un pronom</li><li>un verbe conjugué</li></ul></li><li><span class="q">Dans une lettre formelle, on préfère…</span><ul class="opts"><li>donc</li><li>par conséquent</li></ul></li><li><span class="q">« En somme » ouvre ou referme ?</span><ul class="opts"><li>ouvrir un sujet</li><li>refermer une explication</li></ul></li><li><span class="q">Combien de connecteurs pour une page ?</span><ul class="opts"><li>trois ou quatre</li><li>un par phrase</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> un nom ou un pronom — Quant à la compensation, quant à cela. Jamais « quant à je demande ». · <b>2.</b> par conséquent — « Donc » est correct mais courant. Ne pas mêler les deux dans la même lettre. · <b>3.</b> refermer une explication — C'est un connecteur de reformulation : il redonne l'essentiel en dix mots. · <b>4.</b> trois ou quatre — Un par idée. Au-delà, la lettre se lit comme un exercice d'école.</div></section><section class="bloc card ml"><h3>Trois faux pas, et comment s'en sortir</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">mettre un connecteur devant chaque phrase</p><div class="k">Ce qui arrive</div><p class="ph">un par idée, pas un par phrase</p><p class="px">Une lettre où tout est « en effet », « toutefois », « par conséquent » perd son autorité : on n'y voit plus qu'un devoir bien appris.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">écrire « quant à ce qui concerne »</p><div class="k">Ce qui arrive</div><p class="ph">choisir l'un ou l'autre</p><p class="px">Les deux expressions font le même travail. Les coller l'une à l'autre est une des fautes les plus repérables du niveau.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">mêler « donc » et « par conséquent »</p><div class="k">Ce qui arrive</div><p class="ph">tenir une lettre dans un seul registre</p><p class="px">« Bref, par conséquent, je vous demande » mêle l'oral et le formel dans la même phrase. Choisissez avant d'écrire, pas en écrivant.</p></div></div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Trois signes que la lettre formelle demande</h2><section class="bloc card ml"><h3>La ponctuation dit qui a écrit la lettre, avant même le contenu</h3><p class="mp">Une mise en demeure sera peut-être lue par quelqu'un qui ne vous connaît pas, des mois après son envoi. Cette personne se fera une idée de vous en trois secondes, avant d'avoir lu un mot : une liste à tirets bien tenue, une citation entre guillemets correctement annoncée, et elle saura que la personne qui a écrit savait ce qu'elle faisait. Trois signes suffisent à produire cet effet.</p><div class="note">Le programme du niveau 7 les nomme tous les trois : « comprendre que les guillemets précédés d'un deux-points introduisent un discours direct », « employer le point-virgule pour séparer les termes d'une énumération », « employer le tiret devant chaque terme d'une énumération ».</div></section><section class="bloc card ml"><h3>Les <b>deux-points</b> suivis de <b>guillemets</b> : les mots exacts de quelqu'un</h3><p class="mp">Cette combinaison annonce un discours direct : ce qui suit est mot pour mot ce que la personne a dit. C'est la partie la plus solide d'une lettre — à une condition.</p><table class="ana"><tr><td>On écrit</td><td class="">Vous m'aviez dit : « Revenez me le dire si ça ne suffit pas. »</td></tr><tr><td>On écrit aussi</td><td class="cle">Il m'a répondu : « Je ne peux pas changer mon heure de départ. »</td></tr><tr><td>La condition</td><td class="">ce qui est entre guillemets doit être exact. Sinon, pas de guillemets.</td></tr></table><p class="dit"><span class="k">On dit</span> Vous m'aviez dit : « Revenez me le dire si ça ne suffit pas. »</p><div class="note">Si vous n'êtes pas sûr des mots, écrivez « vous m'aviez dit que… » sans guillemets. Une citation approximative vous fait perdre ce que vous avez de plus précieux : votre crédibilité.</div></section><section class="bloc card ml"><h3>Les guillemets français prennent une espace</h3><p class="mp">Détail de typographie, mais c'est justement ce genre de détail qui fait l'effet dont on parlait.</p><table class="ana"><tr><td>La forme</td><td class="">« Revenez me le dire. » — une espace après le guillemet ouvrant, une avant le fermant</td></tr><tr><td>Le point final</td><td class="cle">à l'intérieur quand la citation est une phrase complète</td></tr><tr><td>Les guillemets anglais</td><td class="">" " s'emploient à l'intérieur d'une citation déjà entre guillemets français</td></tr></table><p class="dit"><span class="k">On dit</span> Il m'a dit : « Je regarderai, c'est promis. »</p><div class="note">Sur un clavier, les guillemets français se font avec les touches d'accents, ou se copient. Beaucoup de traitements de texte les mettent automatiquement en français du Canada.</div></section><section class="bloc card ml"><h3>Le <b>point-virgule</b> : deux idées liées, qu'un point séparerait trop</h3><p class="mp">Il unit ce qu'un point couperait. On l'emploie quand les deux propositions se répondent et qu'on veut qu'on les lise ensemble.</p><table class="ana"><tr><td>On écrit</td><td class="">Le caoutchouc a été posé ; l'appareil, lui, n'a pas bougé.</td></tr><tr><td>On écrit aussi</td><td class="cle">Le bruit a diminué ; il n'a pas cessé.</td></tr><tr><td>Son autre emploi</td><td class="">séparer les termes d'une énumération dont les éléments contiennent déjà des virgules</td></tr></table><p class="dit"><span class="k">On dit</span> Le caoutchouc a été posé ; l'appareil, lui, n'a pas bougé.</p><div class="note">Pas de majuscule après un point-virgule : c'est ce qui le distingue du point à l'œil, et c'est l'erreur la plus fréquente.</div></section><section class="bloc card ml"><h3>Le <b>tiret</b> : une demande qu'on ne peut pas mal lire</h3><p class="mp">Devant chaque terme d'une énumération verticale. C'est ce qui rend une demande impossible à contourner : chaque ligne appelle sa réponse.</p><table class="ana"><tr><td>La forme</td><td class="">un tiret par ligne, un point-virgule à la fin de chaque terme, un point après le dernier</td></tr><tr><td>L'exemple</td><td class="cle">Je vous demande trois choses : — le déplacement de l'appareil ; — une réponse écrite ; — un délai de dix jours.</td></tr><tr><td>Pourquoi ça marche</td><td class="">le destinataire ne peut plus répondre à une seule des trois sans que ça se voie</td></tr></table><p class="dit"><span class="k">On dit</span> Je vous demande trois choses : le déplacement de l'appareil, une réponse écrite, et un délai de dix jours.</p><div class="note">La ligne d'introduction se termine par un deux-points, et chaque terme commence par une minuscule. C'est la présentation attendue en français du Québec comme en France.</div></section><section class="bloc card ml"><h3>Six phrases, trois signes</h3><p class="mp">À gauche la phrase, à droite le signe qu'elle appelle.</p><table class="ex2"><tr><td>Vous m'aviez dit ___ Revenez me le dire. ___</td><td>deux-points et guillemets</td></tr><tr><td>Le caoutchouc a été posé ___ l'appareil n'a pas bougé.</td><td>point-virgule</td></tr><tr><td>___ une réponse écrite dans les dix jours</td><td>tiret</td></tr><tr><td>Il m'a répondu ___ Je ne peux pas. ___</td><td>deux-points et guillemets</td></tr><tr><td>Deux mesures ont été prises ___ la troisième non.</td><td>point-virgule</td></tr><tr><td>___ le déplacement de l'appareil</td><td>tiret</td></tr></table></section><section class="bloc card ml"><h3>Quatre questions, carnet fermé</h3><p class="mp">Répondez sans remonter dans la page.</p><ol class="check"><li><span class="q">Ce qui est entre guillemets doit être…</span><ul class="opts"><li>fidèle à l'esprit</li><li>exact, mot pour mot</li></ul></li><li><span class="q">Après un point-virgule, on met…</span><ul class="opts"><li>une majuscule</li><li>une minuscule</li></ul></li><li><span class="q">Dans une liste à tirets, chaque terme se termine par…</span><ul class="opts"><li>un point-virgule</li><li>un point</li></ul></li><li><span class="q">Les guillemets français prennent…</span><ul class="opts"><li>une espace à l'intérieur</li><li>aucune espace</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> exact, mot pour mot — Sinon on écrit « il m'a dit que… », sans guillemets, et on ne risque rien. · <b>2.</b> une minuscule — C'est ce qui le distingue du point. L'erreur est très fréquente. · <b>3.</b> un point-virgule — Un point-virgule à chaque terme, un point après le dernier. · <b>4.</b> une espace à l'intérieur — « comme ceci » — une après l'ouvrant, une avant le fermant.</div></section><section class="bloc card ml"><h3>Trois faux pas, et comment s'en sortir</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">citer entre guillemets sans être sûr des mots</p><div class="k">Ce qui arrive</div><p class="ph">résumer sans guillemets</p><p class="px">C'est le seul de ces trois faux pas qui puisse vous coûter votre dossier. Un résumé honnête vaut toujours mieux qu'une citation approximative.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">mettre une majuscule après le point-virgule</p><div class="k">Ce qui arrive</div><p class="ph">se rappeler que la phrase continue</p><p class="px">Le point-virgule relie ; il ne coupe pas. La majuscule le transforme en point mal formé.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">mêler tirets et numéros</p><div class="k">Ce qui arrive</div><p class="ph">choisir une seule présentation</p><p class="px">« 1. — le déplacement » mélange deux systèmes. Des tirets, ou des chiffres, jamais les deux.</p></div></div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Mettre en relief : choisir ce que le lecteur retiendra</h2><section class="bloc card ml"><h3>Une phrase ordinaire laisse le lecteur choisir tout seul</h3><p class="mp">« Le bruit du matin me dérange, pas celui du soir. » Toutes les informations y sont, au même niveau, et le lecteur retiendra celle qu'il voudra — souvent la dernière. « Ce qui me dérange, c'est le bruit du matin » choisit à sa place. Les phrases emphatiques ne changent rien au contenu : elles décident de ce qui reste en tête, et c'est exactement ce dont on a besoin dans une lettre qui sera lue en diagonale.</p><div class="note">Le programme du niveau 7 consacre cinq savoirs aux phrases emphatiques : le clivage du sujet avec « c'est… qui », le clivage d'un autre élément avec « c'est… que », le pseudoclivage du groupe du nom, et la construction « ce que… , c'est ».</div></section><section class="bloc card ml"><h3><b>C'est… qui</b> — pour mettre le sujet en avant</h3><p class="mp">On encadre le sujet. Le verbe qui suit s'accorde avec l'élément encadré, pas avec « c'est ».</p><table class="ana"><tr><td>On dit</td><td class="">C'est l'appareil qui me réveille, pas les pas.</td></tr><tr><td>On dit aussi</td><td class="cle">C'est moi qui ai écrit la lettre. — « ai », pas « a »</td></tr><tr><td>Le pluriel</td><td class="">Ce sont les matins de semaine qui posent problème.</td></tr></table><p class="dit"><span class="k">On dit</span> C'est l'appareil qui me réveille, pas les pas.</p><div class="note">« C'est moi qui a écrit » est une faute très fréquente : le pronom relatif « qui » reprend « moi », donc le verbe se met à la première personne.</div></section><section class="bloc card ml"><h3><b>C'est… que</b> — pour tout le reste</h3><p class="mp">Dès que l'élément mis en avant n'est pas le sujet — un complément, un moment, un lieu —, c'est « que » et non « qui ».</p><table class="ana"><tr><td>Un complément</td><td class="">C'est du matin que je me plains.</td></tr><tr><td>Un moment</td><td class="cle">C'est au mois de janvier qu'il a commencé.</td></tr><tr><td>Un lieu</td><td class="">C'est dans la chambre que le bruit s'entend le plus.</td></tr></table><p class="dit"><span class="k">On dit</span> C'est au mois de janvier qu'il a commencé.</p><div class="note">Le test est simple : si vous pouvez remplacer l'élément encadré par « il » ou « elle » sujet, c'est « qui ». Sinon, c'est « que ».</div></section><section class="bloc card ml"><h3><b>Ce qui… , c'est</b> / <b>Ce que… , c'est</b> — la plus utile des quatre</h3><p class="mp">Le pseudoclivage. On annonce d'abord la catégorie — ce qui me dérange, ce que je veux, ce que je demande —, puis on donne le contenu après la virgule.</p><table class="ana"><tr><td>Ce qui + sujet</td><td class="">Ce qui me dérange, c'est la répétition.</td></tr><tr><td>Ce que + complément</td><td class="cle">Ce que je veux, c'est dormir.</td></tr><tr><td>Ce que je demande</td><td class="">Ce que je vous demande, c'est d'intervenir avant le 30 mars.</td></tr></table><p class="dit"><span class="k">On dit</span> Ce qui me dérange, c'est la répétition, plus que la force du bruit.</p><div class="note">C'est la tournure à employer une fois par lettre, au moment où vous dites ce qui est vraiment en jeu. Elle marque une pause : le lecteur ralentit malgré lui.</div></section><section class="bloc card ml"><h3>Le détachement : plus léger, et souvent meilleur</h3><p class="mp">On détache un élément par une virgule et on le reprend par un pronom. Même effet, moins de machinerie.</p><table class="ana"><tr><td>On dit</td><td class="">Le bruit de l'escalier, lui, a complètement cessé.</td></tr><tr><td>On dit aussi</td><td class="cle">L'appareil, lui, n'a pas bougé. · Celui que j'entends, c'est le moteur.</td></tr><tr><td>Quand le préférer</td><td class="">quand la phrase est déjà longue, ou quand on a déjà employé un « c'est… que »</td></tr></table><p class="dit"><span class="k">On dit</span> Le bruit de l'escalier, lui, a complètement cessé.</p><div class="note">Ce petit « lui » ou « elle » entre virgules fait tout le travail d'un « c'est… qui » en trois lettres. Il est très courant à l'oral et parfaitement correct à l'écrit.</div></section><section class="bloc card ml"><h3>La même idée, quatre mises en relief</h3><p class="mp">Choisissez l'idée, puis la construction.</p><table class="labo"><thead><tr><th>Quelle idée ? · Quelle tournure ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">l'appareil me réveille + phrase ordinaire</td><td>L'appareil me réveille, pas les pas.</td><td>tout au même niveau : le lecteur choisit</td></tr><tr><td class="cle">l'appareil me réveille + c'est… qui / que</td><td>C'est l'appareil qui me réveille, pas les pas.</td><td>le sujet encadré : « qui », et le verbe s'accorde avec lui</td></tr><tr><td class="cle">l'appareil me réveille + ce qui / ce que… , c'est</td><td>Ce qui me réveille, c'est l'appareil, pas les pas.</td><td>la catégorie d'abord, le contenu après : le lecteur ralentit</td></tr><tr><td class="cle">je me plains du matin + phrase ordinaire</td><td>Je me plains du matin.</td><td>juste, mais tout est au même niveau</td></tr><tr><td class="cle">je me plains du matin + c'est… qui / que</td><td>C'est du matin que je me plains.</td><td>un complément : « que », jamais « qui »</td></tr><tr><td class="cle">je me plains du matin + ce qui / ce que… , c'est</td><td>Ce dont je me plains, c'est du matin.</td><td>avec un verbe qui prend « de », on emploie « ce dont »</td></tr><tr><td class="cle">je veux dormir + phrase ordinaire</td><td>Je veux dormir.</td><td>direct, mais un peu sec dans une lettre</td></tr><tr><td class="cle">je veux dormir + c'est… qui / que</td><td>C'est dormir que je veux.</td><td>correct, mais rare : la construction sonne littéraire</td></tr><tr><td class="cle">je veux dormir + ce qui / ce que… , c'est</td><td>Ce que je veux, c'est dormir.</td><td>la meilleure des trois : simple, nette, impossible à survoler</td></tr></tbody></table><div class="note">Deux mises en relief par lettre suffisent. Au-delà, l'effet s'annule et le texte devient fatigant.</div></section><section class="bloc card ml"><h3>Six phrases, avant et après</h3><p class="mp">À gauche la phrase ordinaire, à droite la mise en relief.</p><table class="ex2"><tr><td>L'appareil me réveille, pas les pas.</td><td>C'est l'appareil qui me réveille, pas les pas.</td></tr><tr><td>Je me plains du matin.</td><td>C'est du matin que je me plains.</td></tr><tr><td>La répétition me dérange.</td><td>Ce qui me dérange, c'est la répétition.</td></tr><tr><td>Je veux dormir.</td><td>Ce que je veux, c'est dormir.</td></tr><tr><td>Il a commencé en janvier.</td><td>C'est en janvier qu'il a commencé.</td></tr><tr><td>Le bruit de l'escalier a cessé.</td><td>Le bruit de l'escalier, lui, a cessé.</td></tr></table></section><section class="bloc card ml"><h3>Quatre questions, carnet fermé</h3><p class="mp">Répondez sans remonter dans la page.</p><ol class="check"><li><span class="q">« C'est moi ___ ai écrit la lettre. »</span><ul class="opts"><li>qui</li><li>que</li></ul></li><li><span class="q">« C'est du matin ___ je me plains. »</span><ul class="opts"><li>qui</li><li>que</li></ul></li><li><span class="q">La tournure la plus utile dans une lettre est…</span><ul class="opts"><li>c'est… que</li><li>ce que… , c'est</li></ul></li><li><span class="q">Combien de mises en relief par lettre ?</span><ul class="opts"><li>deux</li><li>une par paragraphe</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> qui — On encadre le sujet : « qui », et le verbe s'accorde avec « moi ». · <b>2.</b> que — « Du matin » n'est pas le sujet : c'est donc « que ». · <b>3.</b> ce que… , c'est — Elle annonce la catégorie, puis le contenu. Le lecteur ralentit malgré lui. · <b>4.</b> deux — Au-delà de deux, l'effet s'annule et le texte fatigue.</div></section><section class="bloc card ml"><h3>Trois faux pas, et comment s'en sortir</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">« C'est moi qui a écrit »</p><div class="k">Ce qui arrive</div><p class="ph">accorder le verbe avec l'élément encadré</p><p class="px">« Qui » reprend « moi » : le verbe se met à la première personne. C'est moi qui ai, c'est vous qui avez, ce sont eux qui ont.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">employer « qui » pour un complément</p><div class="k">Ce qui arrive</div><p class="ph">vérifier si l'élément est le sujet</p><p class="px">Remplacez-le par « il » : si la phrase tient, c'est « qui ». « C'est du matin qui je me plains » ne tient pas.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">mettre tout en relief</p><div class="k">Ce qui arrive</div><p class="ph">choisir deux phrases, et deux seulement</p><p class="px">Une lettre où chaque phrase commence par « ce qui » se lit comme un exercice. La mise en relief ne fonctionne que par contraste.</p></div></div></section></section></div>
+<footer><span>D2 · Le bruit d'en haut</span><span>Fiche élève</span></footer>
+</body>
+</html>

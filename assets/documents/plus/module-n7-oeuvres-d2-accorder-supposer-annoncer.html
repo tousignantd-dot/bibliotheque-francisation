@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>D2 · Accorder, supposer, annoncer — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance D2 · Module 9 · 75 minutes</div>
+    <h1>Accorder, supposer, annoncer</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Trois outils, et une réunion tient debout : la concession pour accorder, l'hypothèse pour déplacer sans attaquer, les connecteurs pour dire où l'on en est.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>employer « bien que » avec le subjonctif et « même si » avec l'indicatif ;</li><li>transformer un adjectif en nom après « malgré » ;</li><li>poser une hypothèse avec « si » plus imparfait, puis conditionnel ;</li><li>employer quant à, autrement dit, en somme, par conséquent.</li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Trois marqueurs, trois constructions</h2><table><thead><tr><th>Le marqueur</th><th>Ce qui suit</th></tr></thead><tbody><tr><td class="cle">bien que</td><td>le subjonctif : bien que le film soit lent</td></tr><tr><td class="cle">même si</td><td>l'indicatif : même si le film est lent</td></tr><tr><td class="cle">malgré</td><td>un nom : malgré sa lenteur</td></tr></tbody></table><div class="note">La concession se place avant votre position, jamais après.</div></section><section class="bloc"><div class="lbl">Analyse</div><h2 class="t">Transformer l'adjectif en nom</h2><div class="grid"><div class="card"><h3>lent</h3><p>la lenteur</p></div><div class="card"><h3>long</h3><p>la longueur</p></div><div class="card"><h3>cher</h3><p>le prix</p></div><div class="card"><h3>petit</h3><p>la petite taille</p></div><div class="card"><h3>court</h3><p>la brièveté</p></div><div class="card"><h3>difficile</h3><p>la difficulté</p></div></div></section><section class="bloc regle"><div class="lbl">Après « si », l'imparfait. Jamais le conditionnel</div><p class="r">« Si j'avais le temps, je viendrais » — et non « si j'aurais ».</p><p class="pr">Le conditionnel se tient de l'autre côté de la virgule. Il se fabrique avec le radical du futur et les terminaisons de l'imparfait : il y a toujours un r avant la terminaison. Le même temps sert à demander poliment : pourriez-vous, je voudrais, il faudrait.</p></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Six mots qui tiennent une discussion</h2><table><thead><tr><th>Le mot</th><th>Ce qu'il annonce</th></tr></thead><tbody><tr><td class="cle">quant à</td><td>je passe au point suivant</td></tr><tr><td class="cle">en ce qui concerne</td><td>je cadre l'aspect dont je vais parler</td></tr><tr><td class="cle">autrement dit</td><td>je redis la même chose plus simplement</td></tr><tr><td class="cle">en somme</td><td>je ramasse tout avant de conclure</td></tr><tr><td class="cle">par conséquent</td><td>je tire la suite logique</td></tr><tr><td class="cle">cela dit</td><td>je nuance ce que je viens d'affirmer</td></tr></tbody></table></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Grammaire</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">« Bien que le film est lent, il tient. »</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">« Bien que le film soit lent, il tient. »</p></div></div><div class="note">Après « bien que », l'indicatif n'existe pas. Si le subjonctif ne vient pas au moment de parler, changez de marqueur : « même s'il est lent » dit exactement la même chose et ne fait jamais de faute de mode.</div></section><section class="bloc card"><div class="lbl">Grammaire</div><h2 class="t">Accordez, puis maintenez</h2><p class="consigne">Employez le marqueur demandé et la bonne forme.</p><ol class="ex"><li><span class="q">(bien que + être) ___ le début ___ lent, la deuxième heure tient.</span><span class="ligne"></span></li><li><span class="q">(même si + coûter) ___ le billet ___ trente-quatre dollars, il entre au budget.</span><span class="ligne"></span></li><li><span class="q">(malgré + nom) ___ sa ___, le film ne m'a jamais perdue.</span><span class="ligne ligne--court"></span></li><li><span class="q">(bien que + pouvoir) ___ on ___ regarder un film chez soi, une salle change l'écoute.</span><span class="ligne ligne--court"></span></li><li><span class="q">(si + imparfait) Si le budget ___ plus grand, je ___ l'humour.</span><span class="ligne ligne--court"></span></li><li><span class="q">(politesse) ___ -vous nous réserver dix places ?</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">Lecture</div><h2 class="t">La critique du Courrier</h2><p class="consigne">Fait, opinion, ou nuance ?</p><ol class="ex"><li><span class="q">Le film dure une heure cinquante.</span><span class="ligne"></span></li><li><span class="q">Le premier quart d'heure m'a paru interminable.</span><span class="ligne"></span></li><li><span class="q">Aucune parole n'est échangée avant la douzième minute.</span><span class="ligne"></span></li><li><span class="q">Bien que le rythme demeure lent, la deuxième heure tient.</span><span class="ligne"></span></li><li><span class="q">C'est la plus belle scène du film.</span><span class="ligne"></span></li><li><span class="q">À voir, mais pas un soir de fatigue.</span><span class="ligne"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez la phrase de concession que vous emploierez jeudi.</p><ul><li>Avec « bien que » et un subjonctif, ou « malgré » et un nom.</li><li>Suivie de votre position, dans la même phrase.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Accorder un point, puis tenir le sien</h2><section class="bloc card ml"><h3>La concession n'est pas une reculade</h3><p class="mp">Donner raison à l'autre sur un point avant de lui répondre est ce qui rend la suite audible. Ce n'est pas de la politesse et ce n'est pas une faiblesse : c'est une technique, et elle ne fonctionne qu'à une condition — le point accordé doit être réellement vrai. Une concession sur un faux point s'entend tout de suite et retourne la table contre vous.</p><div class="note">C'est exactement ce que fait Marilou : « c'est vrai qu'on peut regarder un film chez soi », et Gaétan écoute la suite.</div></section><section class="bloc card ml"><h3>bien que + subjonctif</h3><p class="mp">Le marqueur de l'écrit et de la réunion. Il annonce d'entrée qu'une objection suit.</p><table class="ana"><tr><td>La forme</td><td class=""><b>Bien que</b> le film <b>soit</b> lent, il tient.</td></tr><tr><td>Le mode</td><td class="">subjonctif, toujours, sans une seule exception</td></tr><tr><td>Où</td><td class="">compte rendu, exposé, lettre, réunion</td></tr></table><p class="dit"><span class="k">On dit</span> Bien que le film soit lent, il tient.</p><div class="note">« Quoique » se construit de la même façon et veut dire la même chose.</div></section><section class="bloc card ml"><h3>même si + indicatif</h3><p class="mp">Le marqueur de la conversation. Aucun risque de faute de mode.</p><table class="ana"><tr><td>La forme</td><td class=""><b>Même si</b> le film <b>est</b> lent, il tient.</td></tr><tr><td>Le mode</td><td class="">indicatif</td></tr><tr><td>Où</td><td class="">partout, à l'oral surtout</td></tr></table><p class="dit"><span class="k">On dit</span> Même si le film est lent, il tient.</p><div class="note">Si vous n'êtes pas sûr du subjonctif, employez celui-ci : il dit exactement la même chose.</div></section><section class="bloc card ml"><h3>malgré + nom</h3><p class="mp">Pas de verbe conjugué après « malgré ». Il faut transformer.</p><table class="ana"><tr><td>La forme</td><td class=""><b>Malgré</b> sa <b>lenteur</b>, le film tient.</td></tr><tr><td>La transformation à faire</td><td class="">lent devient <b>la lenteur</b> · long devient <b>la longueur</b> · cher devient <b>le prix</b></td></tr><tr><td>La faute</td><td class="">« malgré qu'il soit lent » est à éviter à l'écrit</td></tr></table><p class="dit"><span class="k">On dit</span> Malgré sa lenteur, le film tient.</p><div class="note">Cette transformation d'un adjectif en nom s'appelle une nominalisation, et c'est la marque de la langue écrite.</div></section><section class="bloc card ml"><h3>Où placer la concession</h3><p class="mp">Avant votre position, jamais après. La deuxième moitié de la phrase est celle qu'on retient.</p><table class="ana"><tr><td>Bon ordre</td><td class="">Bien que ce soit cher, <b>j'y vais</b>.</td></tr><tr><td>Mauvais ordre</td><td class="">J'y vais, <b>bien que ce soit cher</b>.</td></tr><tr><td>Ce que ça déplace</td><td class="">la première finit sur votre décision, la seconde sur l'obstacle</td></tr></table><p class="dit"><span class="k">On dit</span> Bien que ce soit cher, j'y vais.</p><div class="note">C'est vrai à l'oral comme à l'écrit, et c'est la moitié du travail.</div></section><section class="bloc card ml"><h3>Trois marqueurs, une seule idée</h3><p class="mp">Choisissez une objection et un marqueur.</p><table class="labo"><thead><tr><th>Quelle objection ? · Quel mot de concession ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">le film est lent + bien que</td><td>Bien que le film soit lent, il tient.</td><td>subjonctif de être</td></tr><tr><td class="cle">le film est lent + même si</td><td>Même si le film est lent, il tient.</td><td>indicatif</td></tr><tr><td class="cle">le film est lent + malgré</td><td>Malgré sa lenteur, le film tient.</td><td>un nom, pas un verbe</td></tr><tr><td class="cle">le billet est cher + bien que</td><td>Bien que le billet soit cher, il reste dans le budget.</td><td>subjonctif</td></tr><tr><td class="cle">le billet est cher + même si</td><td>Même si le billet est cher, il reste dans le budget.</td><td>indicatif</td></tr><tr><td class="cle">le billet est cher + malgré</td><td>Malgré son prix, le billet reste dans le budget.</td><td>cher devient le prix</td></tr><tr><td class="cle">la salle est petite + bien que</td><td>Bien que la salle soit petite, on y entend très bien.</td><td>subjonctif</td></tr><tr><td class="cle">la salle est petite + même si</td><td>Même si la salle est petite, on y entend très bien.</td><td>indicatif</td></tr><tr><td class="cle">la salle est petite + malgré</td><td>Malgré sa petite taille, la salle sonne très bien.</td><td>un groupe du nom</td></tr></tbody></table><div class="note">Trois formes, un seul geste : accorder, puis maintenir.</div></section><section class="bloc card ml"><h3>Les sept subjonctifs à savoir par cœur</h3><p class="mp">Ce sont ceux qui reviennent dans toutes les concessions.</p><table class="ex2"><tr><td>être</td><td>qu'il soit · que nous soyons</td></tr><tr><td>avoir</td><td>qu'il ait · que nous ayons</td></tr><tr><td>faire</td><td>qu'il fasse · que nous fassions</td></tr><tr><td>aller</td><td>qu'il aille · que nous allions</td></tr><tr><td>pouvoir</td><td>qu'il puisse · que nous puissions</td></tr><tr><td>savoir</td><td>qu'il sache · que nous sachions</td></tr><tr><td>vouloir</td><td>qu'il veuille · que nous voulions</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">bien qu'il est</p><div class="k">Ce qui arrive</div><p class="ph">bien qu'il soit</p><p class="px">Après « bien que », l'indicatif n'existe pas. Si le subjonctif ne vient pas, changez de marqueur : « même s'il est ».</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">malgré qu'il soit</p><div class="k">Ce qui arrive</div><p class="ph">malgré sa lenteur</p><p class="px">« Malgré que » existe, mais il est critiqué et il détonne à l'écrit. Après malgré, un nom.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">accorder un point faux</p><div class="k">Ce qui arrive</div><p class="ph">accorder ce qui est vrai</p><p class="px">« C'est vrai que c'est un mauvais film, mais… » : personne ne vous croit, et vous venez de perdre votre propre position.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre formes.</p><ol class="check"><li><span class="q">« Bien que le film ___ lent, il tient. »</span><ul class="opts"><li>soit</li><li>est</li></ul></li><li><span class="q">« Même si le billet ___ cher, j'y vais. »</span><ul class="opts"><li>est</li><li>soit</li></ul></li><li><span class="q">Ce qui suit « malgré », c'est…</span><ul class="opts"><li>un nom</li><li>un verbe conjugué</li></ul></li><li><span class="q">Où se place la concession, déjà ?</span><ul class="opts"><li>avant sa position</li><li>après sa position</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> soit — Bien que appelle le subjonctif. · <b>2.</b> est — Même si appelle l'indicatif. · <b>3.</b> un nom — Malgré sa lenteur, malgré son prix, malgré le froid. · <b>4.</b> avant sa position — On finit sur ce qu'on veut faire retenir.</div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Si c'était différent, je dirais autre chose</h2><section class="bloc card ml"><h3>Supposer, c'est déplacer la discussion sans attaquer personne</h3><p class="mp">« Si le budget était de deux mille dollars, je proposerais l'humour. » Marilou n'a contredit personne, et pourtant elle vient de dire exactement pourquoi elle refuse. L'hypothèse est l'outil le plus courtois d'une réunion : elle transporte le désaccord dans un monde qui n'existe pas, où il ne blesse personne.</p><div class="note">Le même temps sert à demander poliment — « pourriez-vous », « je voudrais ». Une forme, deux emplois.</div></section><section class="bloc card ml"><h3>La règle tient sur une ligne</h3><p class="mp">Si + imparfait, puis conditionnel présent. Et jamais l'inverse.</p><table class="ana"><tr><td>La forme</td><td class=""><b>Si</b> le budget <b>était</b> plus grand, je <b>proposerais</b> l'humour.</td></tr><tr><td>Ce que la phrase suppose</td><td class="">le budget n'est pas plus grand</td></tr><tr><td>Ce qui ne se dit jamais</td><td class="">« si j'aurais » n'existe pas</td></tr></table><p class="dit"><span class="k">On dit</span> Si le budget était plus grand, je proposerais l'humour.</p><div class="note">L'ordre des deux moitiés peut s'inverser : « je proposerais l'humour si le budget était plus grand ».</div></section><section class="bloc card ml"><h3>Comment se fabrique le conditionnel</h3><p class="mp">Le radical du futur, les terminaisons de l'imparfait. Il y a toujours un r avant la terminaison.</p><table class="ana"><tr><td>Régulier</td><td class="">je propos<b>erais</b> · tu chant<b>erais</b> · elle finir<b>ait</b></td></tr><tr><td>Les six terminaisons, sans exception</td><td class="">-rais, -rais, -rait, -rions, -riez, -raient</td></tr><tr><td>Le signe</td><td class="">le <b>r</b>, qui le distingue de l'imparfait</td></tr></table><p class="dit"><span class="k">On dit</span> je proposerais, tu chanterais, elle finirait</p><div class="note">À l'oral, « je proposerai » et « je proposerais » se ressemblent beaucoup : c'est le contexte qui tranche.</div></section><section class="bloc card ml"><h3>Les sept radicaux irréguliers</h3><p class="mp">Ce sont les mêmes qu'au futur : apprenez-les une fois, ils servent deux fois.</p><table class="ana"><tr><td>Les voici</td><td class="">aller <b>j'irais</b> · faire <b>je ferais</b> · venir <b>je viendrais</b> · voir <b>je verrais</b></td></tr><tr><td>Et encore</td><td class="">vouloir <b>je voudrais</b> · devoir <b>je devrais</b> · pouvoir <b>je pourrais</b></td></tr><tr><td>Impersonnel</td><td class="">falloir <b>il faudrait</b></td></tr></table><p class="dit"><span class="k">On dit</span> j'irais, je ferais, je viendrais, je verrais, je voudrais, je pourrais</p><div class="note">« Il faudrait » est probablement la forme la plus utile de toute la liste dans une réunion.</div></section><section class="bloc card ml"><h3>Le même temps pour demander</h3><p class="mp">Le conditionnel enlève à une demande ce qu'elle a de brusque.</p><table class="ana"><tr><td>Demander</td><td class=""><b>Pourriez</b>-vous nous réserver dix places ?</td></tr><tr><td>Vouloir</td><td class="">Je <b>voudrais</b> deux billets pour jeudi.</td></tr><tr><td>Suggérer</td><td class="">Il <b>faudrait</b> décider avant lundi.</td></tr></table><p class="dit"><span class="k">On dit</span> Pourriez-vous nous réserver dix places ? Je voudrais deux billets.</p><div class="note">« Je veux deux billets » n'est pas impoli en soi, mais « je voudrais » est ce que tout le monde dit.</div></section><section class="bloc card ml"><h3>L'hypothèse, ou la politesse ?</h3><p class="mp">Choisissez un verbe, puis ce qu'on en fait.</p><table class="labo"><thead><tr><th>Quel verbe de parole ? · Supposer, ou demander ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">pouvoir + hypothèse</td><td>Si je pouvais choisir seule, je prendrais le film.</td><td>imparfait puis conditionnel</td></tr><tr><td class="cle">pouvoir + politesse</td><td>Pourriez-vous nous réserver dix places ?</td><td>une demande, pas une supposition</td></tr><tr><td class="cle">vouloir + hypothèse</td><td>Si nous voulions rire, nous choisirions l'humour.</td><td>un monde qui n'existe pas</td></tr><tr><td class="cle">vouloir + politesse</td><td>Je voudrais deux billets pour jeudi.</td><td>la formule ordinaire au comptoir</td></tr><tr><td class="cle">aller + hypothèse</td><td>Si le film durait une heure, Gaétan irait avec nous.</td><td>radical irrégulier : ir-</td></tr><tr><td class="cle">aller + politesse</td><td>Nous irions volontiers, si cela vous convient.</td><td>atténuation polie</td></tr></tbody></table><div class="note">Même forme, deux mondes : l'un imagine, l'autre demande.</div></section><section class="bloc card ml"><h3>Trois pièges</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">si j'aurais</p><div class="k">Ce qui arrive</div><p class="ph">si j'avais</p><p class="px">Le conditionnel ne se met jamais après « si ». C'est la faute la plus reconnaissable du français, et elle se corrige d'un coup : après si, imparfait.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">confondre futur et conditionnel</p><div class="k">Ce qui arrive</div><p class="ph">chercher le r et la terminaison</p><p class="px">« Je proposerai » (futur, ça va arriver) et « je proposerais » (conditionnel, ça dépend). Un seul s à l'écrit, et tout change.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">employer l'hypothèse pour se cacher</p><div class="k">Ce qui arrive</div><p class="ph">dire ensuite ce qu'on pense</p><p class="px">« Si nous étions vingt, je dirais oui » ne dit pas ce que vous pensez du spectacle. Faites suivre d'une phrase claire.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre choix.</p><ol class="check"><li><span class="q">« Si j'___ le temps, je viendrais. »</span><ul class="opts"><li>avais</li><li>aurais</li></ul></li><li><span class="q">« Si nous avions plus d'argent, nous ___ (aller) au spectacle. »</span><ul class="opts"><li>irions</li><li>allerions</li></ul></li><li><span class="q">« Pourriez-vous… » est…</span><ul class="opts"><li>une demande polie</li><li>une hypothèse</li></ul></li><li><span class="q">Le conditionnel se reconnaît à…</span><ul class="opts"><li>un r avant la terminaison</li><li>un s final</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> avais — Après si : imparfait. Jamais de conditionnel. · <b>2.</b> irions — Radical irrégulier : ir-. · <b>3.</b> une demande polie — Même forme, autre emploi : le contexte tranche. · <b>4.</b> un r avant la terminaison — Radical du futur, donc toujours un r.</div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Six mots qui tiennent une réunion debout</h2><section class="bloc card ml"><h3>Ils ne disent rien, et sans eux on ne suit plus</h3><p class="mp">« Quant à », « autrement dit », « en somme » ne portent aucune information. Ils disent seulement ce que vous êtes en train de faire : passer à un autre point, redire plus simplement, conclure. Dans une discussion à huit personnes, c'est ce qui permet à chacun de savoir où l'on en est.</p><div class="note">Ce sont les mots que Ghyslaine emploie pour tenir la réunion : « en ce qui concerne l'argent », « autrement dit », « en somme ».</div></section><section class="bloc card ml"><h3>Annoncer de quoi on va parler</h3><p class="mp">On prévient avant de dire, et l'auditoire se prépare.</p><table class="ana"><tr><td>Changer de point</td><td class=""><b>Quant à</b> la chanson, elle est magnifique.</td></tr><tr><td>Cadrer un aspect</td><td class=""><b>En ce qui concerne</b> l'argent, les trois entrent dans le budget.</td></tr><tr><td>Variante</td><td class=""><b>À propos de</b> la salle, elle ne compte que cent vingt places.</td></tr></table><p class="dit"><span class="k">On dit</span> Quant à la chanson, elle est magnifique. En ce qui concerne l'argent, les trois entrent dans le budget.</p><div class="note">« Quant à » ne s'écrit jamais « quand à » : il n'a rien à voir avec le temps.</div></section><section class="bloc card ml"><h3>Redire la même chose, plus simplement</h3><p class="mp">On reformule pour vérifier qu'on a été compris, ou pour faire confirmer ce qu'on vient d'entendre.</p><table class="ana"><tr><td>Reformuler</td><td class=""><b>Autrement dit</b>, il ne resterait rien pour le transport.</td></tr><tr><td>Vérifier</td><td class=""><b>Si je comprends bien</b>, nous partons de la même heure.</td></tr><tr><td>Résumer une explication</td><td class=""><b>En d'autres mots</b>, la garantie ne couvre plus rien.</td></tr></table><p class="dit"><span class="k">On dit</span> Autrement dit, il ne resterait rien pour le transport.</p><div class="note">C'est aussi la façon polie de faire répéter sans avouer qu'on n'a pas compris.</div></section><section class="bloc card ml"><h3>Ramasser et conclure</h3><p class="mp">On rassemble tout ce qui vient d'être dit avant de trancher.</p><table class="ana"><tr><td>Ramasser</td><td class=""><b>En somme</b> : le film pour le prix, l'humour pour l'ambiance.</td></tr><tr><td>Tirer la suite</td><td class=""><b>Par conséquent</b>, nous voterons à main levée.</td></tr><tr><td>Variante</td><td class=""><b>Donc</b>, <b>en définitive</b>, <b>au total</b></td></tr></table><p class="dit"><span class="k">On dit</span> En somme : le film pour le prix, l'humour pour l'ambiance. Par conséquent, nous voterons.</p><div class="note">« En somme » résume, « par conséquent » déduit. Ce n'est pas la même chose.</div></section><section class="bloc card ml"><h3>Revenir en arrière pour nuancer</h3><p class="mp">On vient d'affirmer quelque chose, et on l'adoucit sans le retirer.</p><table class="ana"><tr><td>Nuancer</td><td class=""><b>Cela dit</b>, le spectacle reste très bon.</td></tr><tr><td>Concéder</td><td class=""><b>Cela étant</b>, l'argument de Gaétan tient.</td></tr><tr><td>Variante familière</td><td class=""><b>ceci dit</b> — courant, mais critiqué à l'écrit</td></tr></table><p class="dit"><span class="k">On dit</span> Cela dit, le spectacle reste très bon.</p><div class="note">« Cela dit » se place en tête de phrase, suivi d'une virgule.</div></section><section class="bloc card ml"><h3>Six connecteurs et leur travail</h3><p class="mp">À gauche le connecteur, à droite le travail qu'il fait.</p><table class="ex2"><tr><td>quant à</td><td>je passe au point suivant</td></tr><tr><td>en ce qui concerne</td><td>je cadre l'aspect dont je vais parler</td></tr><tr><td>autrement dit</td><td>je redis la même chose plus simplement</td></tr><tr><td>en somme</td><td>je ramasse tout avant de conclure</td></tr><tr><td>par conséquent</td><td>je tire la suite logique</td></tr><tr><td>cela dit</td><td>je nuance ce que je viens d'affirmer</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">quand à</p><div class="k">Ce qui arrive</div><p class="ph">quant à</p><p class="px">Deux mots différents. « Quand » est le temps, « quant à » veut dire « pour ce qui est de ». L'orthographe se voit tout de suite dans un compte rendu.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">en somme pour dire donc</p><div class="k">Ce qui arrive</div><p class="ph">en somme résume, donc déduit</p><p class="px">« En somme, nous voterons » est bancal : on n'a rien résumé. Employez « par conséquent » ou « donc ».</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">en semer à chaque phrase</p><div class="k">Ce qui arrive</div><p class="ph">un par mouvement</p><p class="px">Trois connecteurs dans deux phrases donnent l'impression d'un texte administratif. Un par changement de sujet suffit.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre emplois.</p><ol class="check"><li><span class="q">Pour passer au point suivant, on emploie…</span><ul class="opts"><li>quant à</li><li>autrement dit</li></ul></li><li><span class="q">Pour redire plus simplement, on emploie…</span><ul class="opts"><li>autrement dit</li><li>par conséquent</li></ul></li><li><span class="q">« ___ , nous voterons à main levée. »</span><ul class="opts"><li>Par conséquent</li><li>En somme</li></ul></li><li><span class="q">L'orthographe correcte est…</span><ul class="opts"><li>quant à</li><li>quand à</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> quant à — « Quant à la chanson… » : on change de sujet. · <b>2.</b> autrement dit — « Autrement dit » reformule. · <b>3.</b> Par conséquent — On tire une conséquence, on ne résume pas. · <b>4.</b> quant à — Rien à voir avec le temps.</div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Lire une critique sans se faire porter</h2><section class="bloc card ml"><h3>Une critique n'est pas un résumé</h3><p class="mp">Elle contient trois sortes de phrases : des faits qu'on peut vérifier, des jugements qui n'engagent que son auteur, et une recommandation à la fin. Le lecteur pressé ne retient que la dernière. Le lecteur qui sait lire commence par séparer les deux premières — et découvre souvent que le jugement tient à très peu de choses.</p><div class="note">C'est le même travail que dans un article d'actualité, avec ceci de particulier : ici le journaliste a le droit de donner son avis, et il est même payé pour ça.</div></section><section class="bloc card ml"><h3>Les faits — quelqu'un d'autre peut aller compter</h3><p class="mp">Une durée, un lieu, un nombre, une date.</p><table class="ana"><tr><td>Dans la critique</td><td class="">« Le film dure une heure cinquante. » · « Elle intervient onze fois. »</td></tr><tr><td>Le test</td><td class="">deux personnes qui vérifient trouvent la même chose</td></tr><tr><td>L'usage qu'on en fait</td><td class="">on s'en sert pour appuyer, ou pour contredire</td></tr></table><p class="dit"><span class="k">On dit</span> Le film dure une heure cinquante. Elle intervient onze fois.</p><div class="note">Un fait faux dans une critique est une erreur ; un jugement faux n'existe pas.</div></section><section class="bloc card ml"><h3>Les jugements — ils valent ce que vaut leur appui</h3><p class="mp">Un adjectif, un superlatif, une impression.</p><table class="ana"><tr><td>Sans appui</td><td class="">« Le premier quart d'heure m'a paru interminable. »</td></tr><tr><td>Avec appui</td><td class="">« …aucune parole n'est échangée avant la douzième minute. »</td></tr><tr><td>Le repère</td><td class="">cherchez la phrase juste après le jugement</td></tr></table><p class="dit"><span class="k">On dit</span> Le premier quart d'heure m'a paru interminable.</p><div class="note">Un bon critique appuie ; un critique pressé enchaîne les adjectifs.</div></section><section class="bloc card ml"><h3>La nuance — le mot qui annonce le virage</h3><p class="mp">« Bien que », « malgré », « certes… mais », « cela dit ».</p><table class="ana"><tr><td>Dans la critique</td><td class="">« <b>Bien que</b> le rythme demeure lent, la deuxième heure tient sans effort. »</td></tr><tr><td>Ce qui se voit</td><td class="">le critique a vu l'objection et il y répond d'avance</td></tr><tr><td>Le poids que ça donne</td><td class="">beaucoup : un texte sans nuance est une publicité</td></tr></table><p class="dit"><span class="k">On dit</span> Bien que le rythme demeure lent, la deuxième heure tient sans effort.</p><div class="note">Repérez ces mots-là et vous avez le plan du texte en trente secondes.</div></section><section class="bloc card ml"><h3>La recommandation — la seule réponse à votre question</h3><p class="mp">Presque toujours à la dernière ligne, souvent assortie d'une condition.</p><table class="ana"><tr><td>Ici</td><td class="">« À voir, donc, mais pas un soir de fatigue. »</td></tr><tr><td>Ailleurs</td><td class="">« à voir absolument » · « on peut attendre » · « à réserver aux amateurs »</td></tr><tr><td>Attention</td><td class="">la condition est la moitié la plus utile</td></tr></table><p class="dit"><span class="k">On dit</span> À voir, donc, mais pas un soir de fatigue.</p><div class="note">« Mais pas un soir de fatigue » vous dit plus que les quarante lignes précédentes.</div></section><section class="bloc card ml"><h3>Fait, jugement, ou nuance ?</h3><p class="mp">Choisissez un passage et voyez ce qu'il est.</p><table class="labo"><thead><tr><th>Quel passage ? · Quoi savoir ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">le film dure une heure cinquante + ce que c'est</td><td>Un fait, vérifiable avec une montre.<span class="tags">Un fait.</span></td><td>personne ne peut le contester</td></tr><tr><td class="cle">le film dure une heure cinquante + ce qu'on en fait</td><td>On s'en sert pour appuyer un jugement.</td><td>un fait seul ne dit rien</td></tr><tr><td class="cle">le début m'a paru interminable + ce que c'est</td><td>Un jugement, sans appui pour l'instant.</td><td>on peut ne pas être d'accord</td></tr><tr><td class="cle">le début m'a paru interminable + ce qu'on en fait</td><td>On cherche la phrase suivante, qui l'appuie ou non.</td><td>ici, elle l'appuie</td></tr><tr><td class="cle">bien que le rythme demeure lent… + ce que c'est</td><td>Une concession.</td><td>le critique accorde avant de maintenir</td></tr><tr><td class="cle">bien que le rythme demeure lent… + ce qu'on en fait</td><td>On y lit le plan du texte.</td><td>l'objection, puis la réponse</td></tr></tbody></table><div class="note">Trois passages, trois usages. Une critique bien faite a les trois.</div></section><section class="bloc card ml"><h3>Deux pièges</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">lire seulement la dernière ligne</p><div class="k">Ce qui arrive</div><p class="ph">lire les faits d'abord</p><p class="px">« À voir » ne vous dit pas si c'est pour vous. Les faits — la durée, le sujet, le rythme — le disent beaucoup mieux.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">prendre un jugement pour un fait</p><div class="k">Ce qui arrive</div><p class="ph">chercher le verbe</p><p class="px">« Le film est trop long » a l'air d'un fait. « M'a paru », « je trouve », « à mon avis » sont les marques d'un jugement ; leur absence n'en fait pas une vérité.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre passages à classer.</p><ol class="check"><li><span class="q">« Elle intervient onze fois. » C'est…</span><ul class="opts"><li>un fait</li><li>un jugement</li></ul></li><li><span class="q">« C'est la plus belle scène du film. » C'est…</span><ul class="opts"><li>un jugement</li><li>un fait</li></ul></li><li><span class="q">« Bien que le rythme demeure lent… » annonce…</span><ul class="opts"><li>une nuance</li><li>un fait</li></ul></li><li><span class="q">La partie la plus utile de la recommandation est souvent…</span><ul class="opts"><li>la condition</li><li>le verbe</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> un fait — On peut compter. · <b>2.</b> un jugement — Un superlatif d'appréciation : personne ne peut le vérifier. · <b>3.</b> une nuance — Le critique accorde un point avant de maintenir le sien. · <b>4.</b> la condition — « mais pas un soir de fatigue » : c'est là que se trouve le conseil.</div></section></section></div>
+<footer><span>D2 · Ce que j'en pense, et pourquoi</span><span>Fiche élève</span></footer>
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B2 · La question glissée dans une phrase — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance B2 · Module 14 · 75 minutes</div>
+    <h1>La question glissée dans une phrase</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">« Est-ce que je garde ma place ? » n'a rien de fautif. Mais trois questions directes de suite, au comptoir, et le ton devient sec sans qu'on l'ait voulu. « Je voudrais savoir si je garde ma place » dit la même chose et laisse à l'autre le temps de chercher.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>transformer une question directe en question glissée dans une phrase ;</li><li>remplacer « est-ce que » par « si » et « qu'est-ce que » par « ce que » ;</li><li>supprimer l'inversion du sujet et le point d'interrogation ;</li><li>employer quatre entrées : je voudrais savoir, pourriez-vous me dire, je ne sais pas, j'aimerais comprendre.</li></ol></section><section class="bloc regle"><div class="lbl">Deux transformations, et c'est tout</div><p class="r">« Est-ce que » devient « si ». « Qu'est-ce que » devient « ce que ».</p><p class="pr">Les autres mots de question — quand, où, pourquoi, comment, combien de — se replacent tels quels.</p></section><section class="bloc card"><div class="lbl">La même demande, deux fois</div><h2 class="t">Directe, puis glissée</h2><table><thead><tr><th>Question directe</th><th>Question glissée</th></tr></thead><tbody><tr><td>Est-ce que je garde ma place ?</td><td class="cle">Je voudrais savoir si je garde ma place.</td></tr><tr><td>Quand dois-je remettre le formulaire ?</td><td class="cle">Pourriez-vous me dire quand je dois le remettre.</td></tr><tr><td>Qu'est-ce qu'il faut écrire ?</td><td class="cle">Je ne sais pas ce qu'il faut écrire.</td></tr><tr><td>Le rattrapage se donne où ?</td><td class="cle">J'aimerais comprendre où se donne le rattrapage.</td></tr></tbody></table></section><section class="bloc"><div class="lbl">Les quatre entrées</div><h2 class="t">À savoir par cœur, comme quatre mots</h2><div class="grid"><div class="card"><h3>Je voudrais savoir…</h3><p>La plus neutre. Passe partout, à l'oral comme à l'écrit.</p></div><div class="card"><h3>Pourriez-vous me dire…</h3><p>Plus polie. Elle finit par un point d'interrogation, exceptionnellement.</p></div><div class="card"><h3>Je ne sais pas…</h3><p>Pour avouer qu'on ignore quelque chose sans avoir l'air perdu.</p></div><div class="card"><h3>J'aimerais comprendre…</h3><p>Quand la réponse demande une explication, pas seulement un fait.</p></div></div></section><section class="bloc card"><div class="lbl">Transformation</div><h2 class="t">Glissez la question dans la phrase</h2><p class="consigne">À l'oral d'abord, puis à l'écrit.</p><ol class="ex"><li><span class="q">Est-ce que mon absence est autorisée ?</span><span class="ligne"></span></li><li><span class="q">Quand est-ce que la réponse arrive ?</span><span class="ligne"></span></li><li><span class="q">Qu'est-ce qu'il faut mettre dans la case du motif ?</span><span class="ligne"></span></li><li><span class="q">Qu'est-ce qui manque dans mon dossier ?</span><span class="ligne"></span></li><li><span class="q">Combien de jours ça prend ?</span><span class="ligne"></span></li><li><span class="q">Où se donne le rattrapage ?</span><span class="ligne"></span></li></ol></section><section class="bloc regle"><div class="lbl">Trois signes de relecture</div><p class="r">Le point final. Le sujet devant son verbe. Aucun « est-ce que ».</p><p class="pr">Un trait d'union entre le verbe et le pronom — « dois-je », « avez-vous » — signale toujours une question directe.</p></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Laisser le « est-ce que » au milieu de la phrase</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">Je voudrais savoir est-ce que je garde ma place.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">Je voudrais savoir si je garde ma place.</p></div></div><div class="note">Le « est-ce que » et le « si » font le même travail : il ne peut pas y en avoir deux. C'est la faute la plus visible du défi, et elle se corrige mécaniquement dès qu'on la repère.</div></section><section class="bloc card"><div class="lbl">Tri</div><h2 class="t">Directe, ou glissée ?</h2><p class="consigne">Levez la main gauche pour directe, la droite pour glissée.</p><ol class="ex"><li><span class="q">Est-ce que je garde ma place dans le groupe ?</span><span class="ligne ligne--court"></span></li><li><span class="q">Je voudrais savoir si je garde ma place.</span><span class="ligne ligne--court"></span></li><li><span class="q">Quand dois-je remettre le formulaire ?</span><span class="ligne ligne--court"></span></li><li><span class="q">Pourriez-vous me dire quand je dois le remettre ?</span><span class="ligne"></span></li><li><span class="q">Qu'est-ce qu'il faut écrire dans la case ?</span><span class="ligne ligne--court"></span></li><li><span class="q">J'aimerais comprendre où se donne le rattrapage.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez deux questions glissées que vous poserez au comptoir.</p><ul><li>Une avec « si », une avec « quand » ou « combien de ».</li><li>Relisez : point final, sujet devant, aucun « est-ce que ».</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>La question glissée dans une phrase</h2><section class="bloc card ml"><h3>Pourquoi ne pas poser la question directement</h3><p class="mp">Une question directe est courte et efficace : « Est-ce que je garde ma place ? » Il n'y a rien de fautif là-dedans. Le problème apparaît quand il y en a trois de suite : au comptoir, cela devient un interrogatoire, et la personne en face se met à répondre par oui et par non au lieu d'expliquer. La question glissée dans une phrase — « Je voudrais savoir si je garde ma place » — dit exactement la même chose, mais elle laisse à l'autre le temps de chercher, de nuancer, d'ajouter ce que vous n'avez pas pensé à demander.</p><div class="note">Le programme du niveau 5 parle de discours simples mais organisés. C'est précisément ça : la même information, rangée autrement, pour que la conversation continue au lieu de s'arrêter à chaque réponse.</div></section><section class="bloc card ml"><h3>« Est-ce que » devient « si »</h3><p class="mp">C'est la transformation la plus utile du module. Le « est-ce que » disparaît, le « si » prend sa place, et le point d'interrogation s'en va avec lui.</p><table class="ana"><tr><td>La forme directe</td><td class="">Est-ce que je garde ma place ? · Est-ce que le formulaire est prêt ?</td></tr><tr><td>La forme glissée</td><td class="cle">Je voudrais savoir si je garde ma place. · Pourriez-vous me dire si le formulaire est prêt.</td></tr><tr><td>Ce qui ne change jamais</td><td class="">le sujet reste devant le verbe · le reste de la phrase ne bouge pas</td></tr></table><p class="dit"><span class="k">On dit</span> Je voudrais savoir si je garde ma place dans le groupe.</p><div class="note">Ce « si » n'a rien à voir avec le « si » de la condition (« si je pars, je préviens »). Ici, il ne pose aucune condition : il porte une question.</div></section><section class="bloc card ml"><h3>Les mots de question se replacent tels quels</h3><p class="mp">Quand, où, pourquoi, comment, combien de : ceux-là passent sans changer une lettre. Il n'y a qu'à supprimer l'inversion du sujet et le point d'interrogation.</p><table class="ana"><tr><td>Le temps</td><td class="">Pourriez-vous me dire quand je dois remettre le formulaire.</td></tr><tr><td>Le lieu</td><td class="cle">Je voudrais savoir où se donne le rattrapage.</td></tr><tr><td>La quantité et la manière</td><td class="">J'aimerais savoir combien de jours ça prend. · Dites-moi comment il faut remplir la case.</td></tr></table><p class="dit"><span class="k">On dit</span> Pourriez-vous me dire quand je dois remettre le formulaire.</p><div class="note">« Quand dois-je » devient « quand je dois ». C'est l'inversion qui tombe, jamais le mot de question — et c'est là que la plupart des erreurs se logent.</div></section><section class="bloc card ml"><h3>« Qu'est-ce que » devient « ce que »</h3><p class="mp">La deuxième transformation à retenir, et la dernière. Le « qu'est-ce que » devient « ce que », le « qu'est-ce qui » devient « ce qui ».</p><table class="ana"><tr><td>Complément</td><td class="">Qu'est-ce qu'il faut écrire ? → Je ne sais pas ce qu'il faut écrire.</td></tr><tr><td>Sujet</td><td class="cle">Qu'est-ce qui manque ? → Dites-moi ce qui manque dans mon dossier.</td></tr><tr><td>Les quatre entrées à connaître</td><td class="">Je voudrais savoir… · Pourriez-vous me dire… · Je ne sais pas… · J'aimerais comprendre…</td></tr></table><p class="dit"><span class="k">On dit</span> Je ne sais pas ce qu'il faut écrire dans la case du motif.</p><div class="note">« Ce que » et « ce qui » se choisissent comme « que » et « qui » : si le mot fait l'action, c'est « ce qui » ; s'il la subit, c'est « ce que ».</div></section><section class="bloc card ml"><h3>La même demande, des deux façons</h3><p class="mp">Choisissez une demande et écoutez-la posée directement, puis glissée dans une phrase.</p><table class="labo"><thead><tr><th>Quelle demande ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">garder sa place</td><td>Est-ce que je garde ma place ? Je voudrais savoir si je garde ma place.<span class="tags">une absence</span></td><td>est-ce que devient si</td></tr><tr><td class="cle">la date de remise</td><td>Quand dois-je remettre le formulaire ? Pourriez-vous me dire quand je dois remettre le formulaire.<span class="tags">une échéance</span></td><td>l'inversion tombe, le mot de question reste</td></tr><tr><td class="cle">ce qu'il faut écrire</td><td>Qu'est-ce qu'il faut écrire ? Je ne sais pas ce qu'il faut écrire.<span class="tags">un motif</span></td><td>qu'est-ce que devient ce que</td></tr><tr><td class="cle">le lieu du rattrapage</td><td>Le rattrapage se donne où ? J'aimerais comprendre où se donne le rattrapage.<span class="tags">un rattrapage · un local</span></td><td>le mot de question passe devant</td></tr><tr><td class="cle">le délai de réponse</td><td>Ça prend combien de jours ? Je voudrais savoir combien de jours ça prend.<span class="tags">un délai</span></td><td>la quantité se glisse comme le reste</td></tr></tbody></table><div class="note">Répétez chaque paire deux fois : la première pour entendre la transformation, la seconde en ne disant que la version glissée.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six demandes glissées, prêtes à servir au comptoir.</p><table class="ex2"><tr><td>Je voudrais savoir si mon absence est autorisée.</td><td>la plus utile du module</td></tr><tr><td>Pourriez-vous me dire quand la réponse arrivera.</td><td>un point, pas un point d'interrogation</td></tr><tr><td>Je ne sais pas ce qu'il faut mettre dans la case du motif.</td><td>ce que, sans est-ce que</td></tr><tr><td>J'aimerais comprendre pourquoi ma demande a été refusée.</td><td>pourquoi se replace tel quel</td></tr><tr><td>Dites-moi ce qui manque dans mon dossier, s'il vous plaît.</td><td>ce qui, parce que le mot fait l'action</td></tr><tr><td>Je voudrais savoir combien de temps prend un transfert.</td><td>la question du délai, en fin de conversation</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges de l'interrogative indirecte</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">laisser le « est-ce que » au milieu</p><div class="k">Ce qui arrive</div><p class="ph">« Je voudrais savoir est-ce que je garde ma place. »</p><p class="px">C'est la faute la plus visible de ce défi. Le « est-ce que » et le « si » font le même travail : il ne peut pas y en avoir deux. Dès qu'une phrase commence par « je voudrais savoir », le « est-ce que » devient « si ».</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">garder l'inversion du sujet</p><div class="k">Ce qui arrive</div><p class="ph">« Pourriez-vous me dire quand dois-je remettre le papier. »</p><p class="px">L'inversion appartient à la question directe. Dans une phrase, le sujet revient devant son verbe : « quand je dois remettre le papier ».</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">mettre un point d'interrogation à la fin</p><div class="k">Ce qui arrive</div><p class="ph">« Je voudrais savoir si je garde ma place ? »</p><p class="px">La phrase n'est plus une question : c'est une déclaration qui en contient une. Elle finit par un point. L'exception : quand la phrase porteuse est elle-même une question — « Pourriez-vous me dire quand ça ouvre ? » —, le point d'interrogation appartient au « pourriez-vous ».</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">« Est-ce que » devient…</span><ul class="opts"><li>si</li><li>que</li></ul></li><li><span class="q">« Quand dois-je partir ? » devient…</span><ul class="opts"><li>quand dois-je partir</li><li>quand je dois partir</li></ul></li><li><span class="q">« Je voudrais savoir si le local est libre » se termine par…</span><ul class="opts"><li>un point</li><li>un point d'interrogation</li></ul></li><li><span class="q">« Qu'est-ce qui manque ? » devient…</span><ul class="opts"><li>ce que manque</li><li>ce qui manque</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> si — « si ». C'est la transformation la plus utile du défi. · <b>2.</b> quand je dois partir — « quand je dois partir » : l'inversion tombe, le mot de question reste. · <b>3.</b> un point — Un point. La phrase est une déclaration qui contient une question. · <b>4.</b> ce qui manque — « ce qui manque » : le mot fait l'action, donc « ce qui ».</div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Reconnaître une question glissée en une seconde</h2><section class="bloc card ml"><h3>Trois signes, et c'est réglé</h3><p class="mp">Distinguer une question directe d'une question glissée n'est pas un exercice d'école : c'est ce qui vous permet de relire votre propre courriel avant de l'envoyer. Trois signes suffisent, et ils se voient tous les trois d'un coup d'œil : le point final, la place du sujet, et la présence ou l'absence de « est-ce que ».</p><div class="note">Cette leçon ne vous apprend rien de neuf sur la grammaire — elle vous donne un réflexe de relecture. Ce sont deux choses différentes, et la seconde est celle qui sert au quotidien.</div></section><section class="bloc card ml"><h3>Signe 1 : le point final</h3><p class="mp">Une question directe finit par un point d'interrogation. Une question glissée finit par un point — sauf si la phrase qui la porte est elle-même une question.</p><table class="ana"><tr><td>Directe</td><td class="">Est-ce que le local est libre ?</td></tr><tr><td>Glissée</td><td class="cle">Je me demande si le local est libre.</td></tr><tr><td>L'exception</td><td class="">Pourriez-vous me dire si le local est libre ?</td></tr></table><p class="dit"><span class="k">On dit</span> Je me demande si le local est libre.</p><div class="note">Dans l'exception, le point d'interrogation appartient au « pourriez-vous », pas à la question glissée. C'est la seule subtilité de ce signe.</div></section><section class="bloc card ml"><h3>Signe 2 : la place du sujet</h3><p class="mp">Dans une question directe soutenue, le sujet passe derrière le verbe. Cette inversion ne survit jamais au passage dans une phrase.</p><table class="ana"><tr><td>Le sujet derrière : directe</td><td class="">Quand dois-je remettre le papier ? · Où se trouve le local ?</td></tr><tr><td>Le sujet devant : glissée</td><td class="cle">… quand je dois remettre le papier. · … où le local se trouve.</td></tr><tr><td>Le repère visuel</td><td class="">un trait d'union entre le verbe et le pronom signale toujours une directe</td></tr></table><p class="dit"><span class="k">On dit</span> Pourriez-vous me dire quand je dois remettre le formulaire.</p><div class="note">Le trait d'union de « dois-je », « puis-je », « avez-vous » est le signe le plus rapide à repérer dans un texte que vous relisez.</div></section><section class="bloc card ml"><h3>Signe 3 : le « est-ce que »</h3><p class="mp">Il n'appartient qu'à la question directe. Rencontré au milieu d'une phrase, c'est toujours une erreur.</p><table class="ana"><tr><td>Directe</td><td class="">Est-ce que ma demande est arrivée ?</td></tr><tr><td>Glissée</td><td class="cle">Je voudrais savoir si ma demande est arrivée.</td></tr><tr><td>Jamais</td><td class="">Je voudrais savoir est-ce que ma demande est arrivée.</td></tr></table><p class="dit"><span class="k">On dit</span> Je voudrais savoir si ma demande est arrivée.</p><div class="note">Un « est-ce que » précédé de « je voudrais savoir », « dites-moi » ou « j'aimerais comprendre » se remplace mécaniquement par « si ».</div></section><section class="bloc card ml"><h3>La même phrase, dans les deux formes</h3><p class="mp">Choisissez une phrase et écoutez la version directe, puis la version glissée.</p><table class="labo"><thead><tr><th>Quelle phrase ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">la place dans le groupe</td><td>Est-ce que je garde ma place ? Je voudrais savoir si je garde ma place.<span class="tags">une absence</span></td><td>le est-ce que devient si</td></tr><tr><td class="cle">la date de remise</td><td>Quand dois-je remettre le formulaire ? Pourriez-vous me dire quand je dois le remettre.<span class="tags">une échéance</span></td><td>le trait d'union disparaît</td></tr><tr><td class="cle">le contenu du motif</td><td>Qu'est-ce qu'il faut écrire ? Je ne sais pas ce qu'il faut écrire.<span class="tags">un motif</span></td><td>qu'est-ce que devient ce que</td></tr><tr><td class="cle">le lieu du rattrapage</td><td>Le rattrapage se donne où ? J'aimerais comprendre où se donne le rattrapage.<span class="tags">un rattrapage</span></td><td>le mot de question passe devant</td></tr><tr><td class="cle">les quatre à la suite</td><td>Est-ce que le formulaire est prêt ? Je voudrais savoir si le formulaire est prêt. Quand est l'échéance ? Pourriez-vous me dire quand est l'échéance.<span class="tags">un formulaire · une échéance</span></td><td>deux paires à la suite, pour l'oreille</td></tr></tbody></table><div class="note">Écoutez chaque paire en fermant les yeux : la version directe monte à la fin, la version glissée descend. C'est le quatrième signe, celui qu'on n'écrit pas.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six phrases : trois directes, trois glissées, en alternance.</p><table class="ex2"><tr><td>Est-ce que mon absence est autorisée ?</td><td>directe : est-ce que, point d'interrogation</td></tr><tr><td>Je voudrais savoir si mon absence est autorisée.</td><td>glissée : si, point final</td></tr><tr><td>Quand dois-je apporter ma pièce justificative ?</td><td>directe : trait d'union, sujet derrière</td></tr><tr><td>Dites-moi quand je dois apporter ma pièce justificative.</td><td>glissée : sujet devant</td></tr><tr><td>Qu'est-ce qui manque dans mon dossier ?</td><td>directe : qu'est-ce qui</td></tr><tr><td>J'aimerais comprendre ce qui manque dans mon dossier.</td><td>glissée : ce qui</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges de relecture</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">le point d'interrogation en trop</p><div class="k">Ce qui arrive</div><p class="ph">« Je voudrais savoir si vous avez reçu ma demande ? »</p><p class="px">La phrase commence par une déclaration : elle finit par un point. Ce point d'interrogation est la trace de la question directe qu'on avait d'abord en tête — et il se voit tout de suite dans un courriel.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">l'inversion oubliée en chemin</p><div class="k">Ce qui arrive</div><p class="ph">« Dites-moi où se trouve-t-il. »</p><p class="px">Le « -t-il » n'a plus rien à faire là : le sujet est déjà devant. On écrit « Dites-moi où il se trouve. »</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">croire qu'une glissée est plus polie en soi</p><div class="k">Ce qui arrive</div><p class="ph">« Je voudrais savoir si vous pourriez éventuellement peut-être… »</p><p class="px">La question glissée n'est pas une formule magique : empilée avec trois précautions, elle devient illisible. Une entrée, une question, et on s'arrête.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">« Dites-moi ce qui manque. » est…</span><ul class="opts"><li>une question glissée</li><li>une question directe</li></ul></li><li><span class="q">Un trait d'union dans « dois-je » signale…</span><ul class="opts"><li>une directe</li><li>une glissée</li></ul></li><li><span class="q">« Pourriez-vous me dire si c'est ouvert ? » se termine par un point d'interrogation parce que…</span><ul class="opts"><li>la question glissée en demande un</li><li>la phrase porteuse est une question</li></ul></li><li><span class="q">Un « est-ce que » au milieu d'une phrase est…</span><ul class="opts"><li>toujours une erreur</li><li>parfois accepté</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> une question glissée — Une question glissée : sujet devant, point final, pas de « est-ce que ». · <b>2.</b> une directe — Une question directe : c'est l'inversion du sujet. · <b>3.</b> la phrase porteuse est une question — C'est le « pourriez-vous » qui le demande, pas la question glissée. · <b>4.</b> toujours une erreur — Toujours une erreur : il se remplace par « si ».</div></section></section></div>
+<footer><span>B2 · Régler une affaire au centre</span><span>Fiche élève</span></footer>
+</body>
+</html>

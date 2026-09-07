@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>D2 · En passant par le boulevard — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance D2 · Module 9 · 75 minutes</div>
+    <h1>En passant par le boulevard</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">« En sortant à Marcel-Laurin et en prenant le boulevard, on arrive à huit heures quinze. » Une phrase, deux gérondifs, un chemin complet et une heure. C'est le français du niveau 5 : des idées qui s'emboîtent au lieu de se suivre.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>former le gérondif à partir du verbe à « nous » ;</li><li>employer le gérondif pour dire par quel chemin on passe ;</li><li>employer le futur proche à l'oral et le futur simple à l'écrit ;</li><li>annoncer une heure d'arrivée en chiffres.</li></ol></section><section class="bloc regle"><div class="lbl">Le gérondif se forme sur « nous »</div><p class="r">Nous passons, en passant. Nous prenons, en prenant. Nous sortons, en sortant.</p><p class="pr">Trois exceptions seulement : être donne « en étant », avoir « en ayant », savoir « en sachant ».</p></section><section class="bloc card"><div class="lbl">Deux emplois</div><h2 class="t">La manière, et la simultanéité</h2><table><thead><tr><th>On veut dire</th><th>On dit</th></tr></thead><tbody><tr><td>Par quel chemin</td><td class="cle">En passant par le boulevard</td></tr><tr><td>Comment gagner du temps</td><td class="cle">En partant à six heures</td></tr><tr><td>Deux choses à la fois</td><td class="cle">Il écoute la radio en conduisant</td></tr><tr><td>Pendant qu'on écoutait</td><td class="cle">En écoutant, nous avons appris</td></tr></tbody></table></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Changer de sujet en cours de route</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">En écoutant la radio, l'accident a été annoncé.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">En écoutant la radio, nous avons appris l'accident.</p></div></div><div class="note">Ce n'est pas l'accident qui écoute. Le sujet du gérondif est toujours celui de la phrase. Quand les deux actions n'ont pas le même sujet, on emploie « pendant que ».</div></section><section class="bloc regle"><div class="lbl">Deux futurs, deux distances</div><p class="r">Au téléphone : je vais être en retard. Par écrit : nous partirons plus tôt lundi.</p><p class="pr">Le présent convient aussi, à une condition : que l'heure soit dite. « J'arrive » tout seul veut dire « je suis presque là ».</p></section><section class="bloc"><div class="lbl">Cinq futurs irréguliers</div><h2 class="t">Exactement ceux dont on a besoin</h2><div class="grid"><div class="card"><h3>être</h3><p>je serai là vers huit heures et quart</p></div><div class="card"><h3>avoir</h3><p>j'aurai vingt minutes de retard</p></div><div class="card"><h3>aller</h3><p>j'irai directement à l'atelier</p></div><div class="card"><h3>faire</h3><p>nous ferons le détour demain aussi</p></div><div class="card"><h3>pouvoir</h3><p>Farida pourra ouvrir à sept heures et demie</p></div></div></section><section class="bloc card"><div class="lbl">Gérondif</div><h2 class="t">Récrivez avec « en » + le verbe en -ant</h2><p class="consigne">Une seule phrase à la place de deux.</p><ol class="ex"><li><span class="q">Nous prenons le boulevard et nous évitons le bouchon.</span><span class="ligne"></span></li><li><span class="q">Vous partez à six heures, vous éviterez le bouchon.</span><span class="ligne"></span></li><li><span class="q">Il sort à Marcel-Laurin et il gagne dix minutes.</span><span class="ligne"></span></li><li><span class="q">Nous suivons le détour et nous arrivons à huit heures.</span><span class="ligne"></span></li><li><span class="q">Elle écoutait le bulletin, elle a appris l'accident.</span><span class="ligne"></span></li></ol></section><section class="bloc card"><div class="lbl">Futurs</div><h2 class="t">Mettez le verbe au temps demandé</h2><p class="consigne">Futur proche à l'oral, futur simple à l'écrit.</p><ol class="ex"><li><span class="q">Futur proche : je (être) ___ en retard.</span><span class="ligne ligne--court"></span></li><li><span class="q">Futur simple : j'(arriver) ___ vers huit heures quinze.</span><span class="ligne ligne--court"></span></li><li><span class="q">Futur proche : on (sortir) ___ à la prochaine.</span><span class="ligne ligne--court"></span></li><li><span class="q">Futur simple : la bretelle (être) ___ fermée deux jours.</span><span class="ligne ligne--court"></span></li><li><span class="q">Futur simple : Farida (pouvoir) ___ ouvrir l'atelier.</span><span class="ligne ligne--court"></span></li><li><span class="q">Futur simple : nous (faire) ___ le détour demain aussi.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez votre chemin de rechange en une phrase, avec deux gérondifs et une heure.</p><ul><li>En sortant à …, et en prenant …, j'arriverai vers …</li><li>Si vous prenez le transport en commun, dites la correspondance.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Le gérondif : dire par où et comment</h2><section class="bloc card ml"><h3>Trois mots pour expliquer un détour</h3><p class="mp">« En sortant à Marcel-Laurin et en prenant le boulevard, on arrive à huit heures quinze. » Une phrase, deux gérondifs, un chemin complet et une heure d'arrivée. Sans le gérondif, il faudrait dire : « Nous sortons à Marcel-Laurin. Ensuite, nous prenons le boulevard. Et comme ça, nous arrivons à huit heures quinze. » Trois phrases pour la même chose, et l'autre a déjà décroché.</p><div class="note">Le programme du niveau 5 le nomme explicitement : l'adulte emploie le gérondif pour marquer la simultanéité ou la manière. C'est une des marques du passage au stade intermédiaire.</div></section><section class="bloc card ml"><h3>Comment il se forme</h3><p class="mp">On prend le verbe à « nous » au présent, on enlève -ons, on ajoute -ant, et on met « en » devant. Trois verbes seulement font autrement.</p><table class="ana"><tr><td>La règle</td><td class="">nous passons → en passant · nous prenons → en prenant</td></tr><tr><td>D'autres verbes du module</td><td class="cle">nous sortons → en sortant · nous suivons → en suivant · nous écoutons → en écoutant</td></tr><tr><td>Les trois exceptions</td><td class="">être → en étant · avoir → en ayant · savoir → en sachant</td></tr></table><p class="dit"><span class="k">On dit</span> En passant. En prenant. En sortant. En écoutant.</p><div class="note">La forme en -ant est la même pour tous les sujets : en passant, que ce soit je, tu, nous ou elles. Rien ne s'accorde, rien ne change.</div></section><section class="bloc card ml"><h3>La manière : par quel moyen on y arrive</h3><p class="mp">C'est l'emploi central du module. Le gérondif dit comment on règle le problème, et il tient en deux ou trois mots.</p><table class="ana"><tr><td>Éviter une entrave</td><td class="">En passant par le boulevard, on évite l'autoroute.</td></tr><tr><td>Gagner du temps</td><td class="cle">En partant à six heures, vous éviterez le bouchon.</td></tr><tr><td>Un chemin complet</td><td class="">En sortant à Marcel-Laurin et en prenant le boulevard, on arrive à huit heures quinze.</td></tr></table><p class="dit"><span class="k">On dit</span> En passant par le boulevard, on évite tout le secteur.</p><div class="note">Le gérondif de manière répond à la question « comment ? » ou « par où ? ». C'est exactement la question que votre collègue vous posera.</div></section><section class="bloc card ml"><h3>La simultanéité : deux choses en même temps</h3><p class="mp">Les deux actions se passent au même moment, et c'est la même personne qui fait les deux.</p><table class="ana"><tr><td>Dans l'auto</td><td class="">Il écoute la radio en conduisant.</td></tr><tr><td>Le matin</td><td class="cle">Elle a entendu le bulletin en déjeunant.</td></tr><tr><td>Au travail</td><td class="">On prend une note en écoutant le message.</td></tr></table><p class="dit"><span class="k">On dit</span> Elle a entendu le bulletin en déjeunant.</p><div class="note">Le gérondif ne change pas avec le temps de la phrase : « elle a entendu… en déjeunant » au passé, « elle entendra… en déjeunant » au futur. Un seul verbe porte le temps, l'autre reste en -ant.</div></section><section class="bloc card ml"><h3>La règle qui ne se contourne pas</h3><p class="mp">Le sujet du gérondif est toujours celui de la phrase. Une seule personne fait les deux actions.</p><table class="ana"><tr><td>Correct</td><td class="">En écoutant la radio, nous avons appris l'accident.</td></tr><tr><td>Faux</td><td class="cle">En écoutant la radio, l'accident a été annoncé.</td></tr><tr><td>La réparation</td><td class="">Pendant que nous écoutions la radio, l'accident a été annoncé.</td></tr></table><p class="dit"><span class="k">On dit</span> En écoutant la radio, nous avons appris l'accident.</p><div class="note">Ce n'est pas l'accident qui écoute la radio. Quand les deux actions n'ont pas le même sujet, on abandonne le gérondif et on emploie « pendant que ».</div></section><section class="bloc card ml"><h3>Deux phrases, puis une seule</h3><p class="mp">Choisissez un couple d'actions et écoutez-le devenir une seule phrase.</p><table class="labo"><thead><tr><th>Quel couple ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">Prendre le boulevard · éviter le bouchon</td><td>En prenant le boulevard, nous évitons le bouchon.<span class="tags">un détour · un bouchon</span></td><td>la manière : par quel moyen</td></tr><tr><td class="cle">Partir à six heures · éviter l'heure de pointe</td><td>En partant à six heures, vous éviterez l'heure de pointe.<span class="tags">un imprévu</span></td><td>la manière, avec un futur dans l'autre verbe</td></tr><tr><td class="cle">Écouter la radio · conduire</td><td>Il écoute la radio en conduisant.<span class="tags">le covoiturage</span></td><td>la simultanéité : les deux en même temps</td></tr><tr><td class="cle">Sortir à Marcel-Laurin · gagner dix minutes</td><td>En sortant à Marcel-Laurin, il gagne dix minutes.<span class="tags">un détour</span></td><td>la manière, avec un lieu</td></tr><tr><td class="cle">Suivre le détour · arriver à huit heures</td><td>En suivant le détour, nous arrivons à huit heures quinze.<span class="tags">un détour</span></td><td>la manière, avec une heure d'arrivée</td></tr></tbody></table><div class="note">Essayez ensuite de dire votre propre trajet du matin avec deux gérondifs. C'est l'exercice qui rend la tournure automatique.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six phrases du module.</p><table class="ex2"><tr><td>En prenant le boulevard, nous évitons le bouchon.</td><td>manière</td></tr><tr><td>En partant à six heures, vous éviterez le bouchon.</td><td>manière + futur</td></tr><tr><td>En sortant à Marcel-Laurin, il gagne dix minutes.</td><td>manière + lieu</td></tr><tr><td>En suivant le détour, nous arrivons à huit heures quinze.</td><td>manière + heure</td></tr><tr><td>Elle a entendu le bulletin en déjeunant.</td><td>simultanéité</td></tr><tr><td>Il écoute la radio en conduisant.</td><td>simultanéité</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges du gérondif</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">oublier le « en »</p><div class="k">Ce qui arrive</div><p class="ph">« Passant par le boulevard, on évite le bouchon »</p><p class="px">Sans « en », la forme existe encore mais elle change de sens et de registre : c'est du français écrit, littéraire. Pour dire la manière à l'oral, le « en » est obligatoire.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">changer de sujet en cours de route</p><div class="k">Ce qui arrive</div><p class="ph">« En écoutant la radio, l'accident a été annoncé »</p><p class="px">Le sujet du gérondif est celui de la phrase : ici, ce serait l'accident qui écoute. Dites plutôt « pendant que nous écoutions la radio, l'accident a été annoncé ».</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">former le gérondif sur l'infinitif</p><div class="k">Ce qui arrive</div><p class="ph">« en prendant » au lieu de « en prenant »</p><p class="px">La forme part du verbe à <b>nous</b> : nous prenons → en prenant. Nous venons → en venant. Nous faisons → en faisant. Passer par « nous » évite toutes les erreurs.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">Le gérondif se forme à partir du verbe…</span><ul class="opts"><li>à l'infinitif</li><li>à « nous » au présent</li></ul></li><li><span class="q">« En sortant à Marcel-Laurin, il gagne dix minutes » exprime…</span><ul class="opts"><li>la manière</li><li>la cause</li></ul></li><li><span class="q">Le sujet du gérondif est…</span><ul class="opts"><li>libre</li><li>celui de la phrase</li></ul></li><li><span class="q">Le gérondif de « avoir » est…</span><ul class="opts"><li>en ayant</li><li>en avant</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> à « nous » au présent — À « nous » au présent : nous prenons → en prenant. · <b>2.</b> la manière — La manière : par quel moyen il gagne dix minutes. · <b>3.</b> celui de la phrase — Celui de la phrase. Une seule personne fait les deux actions. · <b>4.</b> en ayant — En ayant. C'est une des trois exceptions, avec « en étant » et « en sachant ».</div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Annoncer une heure d'arrivée</h2><section class="bloc card ml"><h3>Une heure, même approximative</h3><p class="mp">« Je vais essayer d'arriver le plus vite possible » n'annonce rien. Personne ne peut s'organiser avec cette phrase : ni la responsable qui doit ouvrir l'atelier, ni le collègue qui vous attend, ni le camion de livraison. Une heure, même approximative, permet de décider. C'est pour cela que ce module finit sur les futurs : ils servent à donner un chiffre à quelqu'un qui en a besoin.</p><div class="note">« Vers huit heures quinze, huit heures vingt au plus tard » est la formule parfaite : une heure probable, et une limite. La personne au bout du fil sait tout ce qu'elle doit savoir.</div></section><section class="bloc card ml"><h3>Le futur proche : tout de suite, et c'est décidé</h3><p class="mp">Le verbe « aller » au présent, puis l'infinitif. C'est le futur du téléphone : ce qui arrive dans les minutes qui viennent.</p><table class="ana"><tr><td>Annoncer le retard</td><td class="">Je vais être en retard. · On va manquer l'ouverture.</td></tr><tr><td>Annoncer la manœuvre</td><td class="cle">On va sortir à la prochaine. · Je vais prendre le boulevard.</td></tr><tr><td>Avec une durée</td><td class="">Ça va prendre une vingtaine de minutes.</td></tr></table><p class="dit"><span class="k">On dit</span> Je vais être en retard d'une quinzaine de minutes.</p><div class="note">Le futur proche n'est pas « moins bon » que le futur simple : il est simplement plus près. Au téléphone, dans une auto, c'est celui qu'on emploie neuf fois sur dix.</div></section><section class="bloc card ml"><h3>Le futur simple : plus loin, ou plus officiel</h3><p class="mp">Les terminaisons se posent sur l'infinitif : -ai, -as, -a, -ons, -ez, -ont. C'est le futur du bulletin et de l'écrit.</p><table class="ana"><tr><td>Annoncer une arrivée</td><td class="">J'arriverai vers huit heures quinze.</td></tr><tr><td>Dans le bulletin</td><td class="cle">La bretelle sera fermée toute la fin de semaine.</td></tr><tr><td>Dans un courriel</td><td class="">Nous partirons plus tôt lundi matin. · Les travaux se poursuivront jusqu'à neuf heures.</td></tr></table><p class="dit"><span class="k">On dit</span> J'arriverai vers huit heures quinze. La bretelle sera fermée toute la fin de semaine.</p><div class="note">Dans un courriel, le futur simple est presque obligatoire : le futur proche y fait parlé, et l'écrit du travail reste un cran au-dessus.</div></section><section class="bloc card ml"><h3>Les cinq irréguliers dont vous aurez besoin</h3><p class="mp">Ce sont exactement ceux qui servent à annoncer un retard. Les autres verbes suivent la règle.</p><table class="ana"><tr><td>Les trois premiers</td><td class="">être → je serai · avoir → j'aurai · aller → j'irai</td></tr><tr><td>Les deux autres</td><td class="cle">faire → je ferai · pouvoir → je pourrai</td></tr><tr><td>Dans une phrase</td><td class="">Je serai là vers huit heures et quart. · Farida pourra ouvrir.</td></tr></table><p class="dit"><span class="k">On dit</span> Je serai là vers huit heures et quart. Farida pourra ouvrir l'atelier.</p><div class="note">Tous les futurs simples, réguliers comme irréguliers, ont un « r » avant la terminaison : arriverai, serai, aurai, irai, ferai, pourrai. C'est le son qui les reconnaît à l'oreille.</div></section><section class="bloc card ml"><h3>Le présent, quand l'heure est dite</h3><p class="mp">Le français parlé emploie le présent pour un futur très proche et très sûr — c'est ce que Tereza fait au téléphone. C'est correct, à une condition.</p><table class="ana"><tr><td>Avec l'heure</td><td class="">J'arrive vers huit heures quinze.</td></tr><tr><td>Sans l'heure, c'est ambigu</td><td class="cle">J'arrive. · On arrive.</td></tr><tr><td>Ce qu'on ajoute</td><td class="">huit heures vingt au plus tard</td></tr></table><p class="dit"><span class="k">On dit</span> J'arrive vers huit heures quinze, huit heures vingt au plus tard.</p><div class="note">« J'arrive » tout court veut dire « je suis presque là » — et si vous êtes à trente minutes, la personne se sentira trompée. Avec l'heure, la phrase est parfaite ; sans elle, elle est fausse.</div></section><section class="bloc card ml"><h3>La même annonce, trois façons</h3><p class="mp">Choisissez une annonce et écoutez-la au futur proche, au futur simple et au présent.</p><table class="labo"><thead><tr><th>Quelle annonce ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">Le retard</td><td>Je vais être en retard. Je serai en retard d'un quart d'heure.<span class="tags">un imprévu</span></td><td>proche à l'oral, simple à l'écrit</td></tr><tr><td class="cle">L'heure d'arrivée</td><td>J'arriverai vers huit heures quinze. J'arrive vers huit heures quinze.<span class="tags">un imprévu</span></td><td>le présent passe, parce que l'heure est dite</td></tr><tr><td class="cle">La manœuvre</td><td>On va sortir à la prochaine. Nous sortirons à la prochaine sortie.<span class="tags">un détour</span></td><td>proche dans l'auto, simple dans un courriel</td></tr><tr><td class="cle">Ce que fera quelqu'un d'autre</td><td>Farida va ouvrir l'atelier. Farida pourra ouvrir l'atelier à sept heures et demie.<span class="tags">le covoiturage</span></td><td>« pouvoir » au futur simple : pourra</td></tr><tr><td class="cle">Ce qui est annoncé au bulletin</td><td>La bretelle sera fermée toute la fin de semaine. Les travaux se poursuivront lundi matin.<span class="tags">une bretelle</span></td><td>le futur du bulletin est toujours le simple</td></tr></tbody></table><div class="note">Écoutez le « r » dans chaque futur simple : arriverai, sortirons, pourra, sera. C'est lui qu'on entend, bien plus que la terminaison.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six annonces, trois au téléphone et trois par écrit.</p><table class="ex2"><tr><td>Je vais être en retard d'une quinzaine de minutes.</td><td>futur proche, au téléphone</td></tr><tr><td>On va sortir à la prochaine.</td><td>futur proche, dans l'auto</td></tr><tr><td>J'arrive vers huit heures quinze.</td><td>présent, avec l'heure</td></tr><tr><td>J'arriverai vers huit heures quinze.</td><td>futur simple</td></tr><tr><td>La bretelle sera fermée toute la fin de semaine.</td><td>futur simple, au bulletin</td></tr><tr><td>Nous partirons plus tôt lundi matin.</td><td>futur simple, dans un courriel</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges de l'annonce</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">annoncer sans chiffre</p><div class="k">Ce qui arrive</div><p class="ph">« Je vais essayer d'arriver le plus vite possible »</p><p class="px">Ce n'est pas une annonce, c'est une intention. Donnez une heure, même large : « entre huit heures et huit heures et demie » vaut mieux que « le plus vite possible ».</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">dire « j'arrive » sans l'heure</p><div class="k">Ce qui arrive</div><p class="ph">« J'arrive ! » à trente minutes de distance</p><p class="px">« J'arrive » veut dire « je suis presque là ». Sans l'heure, la personne vous attend dans deux minutes, et le retard devient un malentendu en plus d'un retard.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">oublier le « r » du futur simple</p><div class="k">Ce qui arrive</div><p class="ph">« j'arrivai » au lieu de « j'arriverai »</p><p class="px">« J'arrivai » est un passé (le passé simple) ; « j'arriverai » est le futur. À l'oral, c'est le « r » qui distingue les deux, et il s'entend nettement : arrive-<b>r</b>-ai.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">Au téléphone, pour un retard de quinze minutes, on dit plutôt…</span><ul class="opts"><li>je vais être en retard</li><li>je fus en retard</li></ul></li><li><span class="q">Dans un courriel, on écrit plutôt…</span><ul class="opts"><li>on va partir plus tôt</li><li>nous partirons plus tôt</li></ul></li><li><span class="q">« J'arrive » est correct…</span><ul class="opts"><li>toujours</li><li>si on dit l'heure</li></ul></li><li><span class="q">Le futur simple de « pouvoir » à la troisième personne est…</span><ul class="opts"><li>pourra</li><li>pouvera</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> je vais être en retard — « Je vais être en retard » : le futur proche est celui du téléphone. · <b>2.</b> nous partirons plus tôt — « Nous partirons » : le futur simple convient mieux à l'écrit du travail. · <b>3.</b> si on dit l'heure — Si on dit l'heure. Sans elle, « j'arrive » veut dire « je suis presque là ». · <b>4.</b> pourra — « Pourra ». C'est un des cinq irréguliers utiles ici.</div></section></section></div>
+<footer><span>D2 · Ça bloque ce matin</span><span>Fiche élève</span></footer>
+</body>
+</html>

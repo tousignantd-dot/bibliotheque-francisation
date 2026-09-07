@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B2 · Répondre court, et dire où l'on est — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance B2 · Module 6 · 75 minutes</div>
+    <h1>Répondre court, et dire où l'on est</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Sept questions, sept réponses de moins de dix mots. Et une adresse qui ne s'arrête pas au nom de la rue : l'étage, la porte, la lumière allumée.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>répondre à chaque question du répartiteur en une phrase courte ;</li><li>dire « je ne sais pas » plutôt que d'inventer ;</li><li>situer un endroit avec les bons mots : hauteur, façade, repère ;</li><li>préparer l'arrivée des secours pendant l'appel.</li></ol></section><section class="bloc"><div class="lbl">Les mots qui situent</div><h2 class="t">Trois éléments suffisent presque toujours</h2><div class="grid"><div class="card"><h3>La hauteur</h3><p>au premier étage · au sous-sol · en bas de l'escalier</p></div><div class="card"><h3>La façade</h3><p>devant l'entrée · derrière l'immeuble · dans la cour arrière</p></div><div class="card"><h3>Le repère</h3><p>à côté de la pharmacie · entre la 3e et la 4e Avenue</p></div><div class="card"><h3>Dehors</h3><p>la porte 3 du stationnement · devant le dépanneur · à l'arrêt d'autobus</p></div></div></section><section class="bloc card"><div class="lbl">Question, réponse</div><h2 class="t">Sept échanges, aucun de plus de dix mots</h2><table><thead><tr><th>Le répartiteur demande</th><th>On répond</th></tr></thead><tbody><tr><td>L'endroit de votre urgence ?</td><td class="cle">5412, rue des Ormeaux, app. 2.</td></tr><tr><td>Le numéro d'où vous appelez ?</td><td class="cle">Le 514 555-0198.</td></tr><tr><td>Dites-moi ce qui se passe.</td><td class="cle">Ma mère est tombée dans l'escalier.</td></tr><tr><td>Est-ce qu'elle est consciente ?</td><td class="cle">Oui, elle me répond.</td></tr><tr><td>Est-ce qu'elle respire ?</td><td class="cle">Oui, elle respire.</td></tr><tr><td>S'est-elle frappé la tête ?</td><td class="cle">Je ne sais pas.</td></tr><tr><td>Quel âge a-t-elle ?</td><td class="cle">Soixante et onze ans.</td></tr></tbody></table></section><section class="bloc regle"><div class="lbl">« Je ne sais pas » est une bonne réponse</div><p class="r">Une invention peut envoyer la mauvaise équipe ; une ignorance avouée, jamais.</p><p class="pr">Le répartiteur pose ensuite une question plus simple, ou il note l'incertitude pour les ambulanciers. Ce qu'il ne peut pas faire, c'est corriger une information fausse qu'il croit vraie.</p></section><section class="bloc"><div class="lbl">Quatre gestes qui font gagner une minute</div><h2 class="t">Pendant que vous attendez</h2><div class="grid"><div class="card"><h3>Déverrouiller</h3><p>La porte de l'immeuble, et celle du logement.</p></div><div class="card"><h3>Éclairer</h3><p>La lumière de l'entrée et celle du corridor.</p></div><div class="card"><h3>Dégager</h3><p>Enfermer le chien, écarter ce qui bloque le passage.</p></div><div class="card"><h3>Accueillir</h3><p>Envoyer quelqu'un attendre en bas, s'il y a quelqu'un d'autre.</p></div></div></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Donner un repère que vous seul connaissez</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">C'est en face de chez Ana, la maison avec les fleurs.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">C'est au coin de Bélanger, à côté de la pharmacie.</p></div></div><div class="note">Donnez ce qui est écrit et visible depuis la rue : un numéro, une enseigne, un nom de rue. Une ambulance ne cherche pas une maison, elle cherche un point sur une carte.</div></section><section class="bloc card"><div class="lbl">Emploi</div><h2 class="t">Le mot qui situe</h2><p class="consigne">Complétez à l'oral, puis vérifiez.</p><ol class="ex"><li><span class="q">Nous sommes ___ l'appartement 2, ___ premier étage.</span><span class="ligne ligne--court"></span></li><li><span class="q">Elle est ___ bas de l'escalier intérieur.</span><span class="ligne ligne--court"></span></li><li><span class="q">Je vous attends ___ l'entrée principale.</span><span class="ligne ligne--court"></span></li><li><span class="q">L'immeuble est ___ la pharmacie.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le stationnement est ___ l'immeuble, par la ruelle.</span><span class="ligne ligne--court"></span></li><li><span class="q">C'est ___ la rue Bélanger et la rue Jean-Talon.</span><span class="ligne ligne--court"></span></li><li><span class="q">Il est tombé ___ le trottoir, devant le dépanneur.</span><span class="ligne ligne--court"></span></li><li><span class="q">Ma mère est ___ la salle de bain et la porte est bloquée.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Décrivez en trois phrases comment on arrive jusqu'à vous, chez vous.</p><ul><li>L'adresse · l'étage et la porte · un repère visible de la rue.</li><li>Ajoutez ce que vous feriez pendant l'attente.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Les questions du 9-1-1, dans l'ordre où elles viennent</h2><section class="bloc card ml"><h3>Ce n'est pas une conversation</h3><p class="mp">Un appel au 9-1-1 suit un protocole. Le répartiteur lit des questions à l'écran, dans un ordre décidé d'avance, et il tape vos réponses pendant que d'autres personnes préparent déjà le départ. Votre travail n'est pas de bien raconter : c'est de <b>répondre court et dans l'ordre</b>.</p><div class="note">Savoir d'avance quelles questions viennent enlève la moitié de la panique. Elles sont toujours les mêmes, quel que soit l'appel.</div></section><section class="bloc card ml"><h3>1 — Où ? La question qui passe avant tout</h3><p class="mp">Tant que l'adresse n'est pas prise, personne ne part. Si la ligne se coupe, l'adresse est la seule chose qui permette d'envoyer quelqu'un.</p><table class="ana"><tr><td>Le numéro et la rue</td><td class="">5412, rue des Ormeaux</td></tr><tr><td>La ville et l'appartement</td><td class="cle">à Saint-Léonard, appartement 2</td></tr><tr><td>Le détail qui fait gagner une minute</td><td class="">en bas de l'escalier intérieur</td></tr></table><p class="dit"><span class="k">On dit</span> Cinq mille quatre cent douze, rue des Ormeaux, à Saint-Léonard, appartement deux.</p><div class="note">Le répartiteur répétera l'adresse. Écoutez-la et corrigez tout de suite si un chiffre est faux : c'est le seul moment où l'erreur se rattrape facilement.</div></section><section class="bloc card ml"><h3>2 — Le numéro de téléphone, puis « que se passe-t-il ? »</h3><p class="mp">Le numéro sert à vous rappeler si la communication tombe. Ensuite seulement vient l'évènement, en une phrase.</p><table class="ana"><tr><td>Chiffre par chiffre</td><td class="">cinq un quatre, cinq cinq cinq, zéro un neuf huit</td></tr><tr><td>Une seule phrase</td><td class="cle">ma mère est tombée dans l'escalier</td></tr><tr><td>Pas encore</td><td class="">l'histoire des deux derniers jours</td></tr></table><p class="dit"><span class="k">On dit</span> Ma mère est tombée dans l'escalier et elle ne peut pas se relever.</p><div class="note">Un bon repère : sujet, verbe, où. « Ma mère est tombée dans l'escalier. » Tout le reste viendra par questions.</div></section><section class="bloc card ml"><h3>3 — Consciente ? Respire-t-elle ?</h3><p class="mp">Ces deux questions décident du type d'équipe et de la vitesse. Répondez oui ou non, puis une précision utile.</p><table class="ana"><tr><td>Consciente</td><td class="">oui, elle me répond</td></tr><tr><td>Respiration</td><td class="cle">oui, elle respire, elle pleure mais elle respire</td></tr><tr><td>Si vous ne savez pas</td><td class="">dites-le : « je ne sais pas, je ne l'ai pas vue tomber »</td></tr></table><p class="dit"><span class="k">On dit</span> Oui, elle me répond. Elle respire, elle pleure mais elle respire.</p><div class="note">« Je ne sais pas » est une bonne réponse. Une invention, non : elle peut envoyer la mauvaise équipe.</div></section><section class="bloc card ml"><h3>Les mêmes questions, quatre urgences différentes</h3><p class="mp">Choisissez une urgence et écoutez la réponse type à la question « dites-moi ce qui se passe ».</p><table class="labo"><thead><tr><th>Quelle urgence ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">une chute dans un escalier</td><td>Ma mère est tombée dans l'escalier et elle ne peut pas se relever.<span class="tags">une chute</span></td><td>qui, quoi, où — trois éléments</td></tr><tr><td class="cle">une douleur à la poitrine</td><td>Mon conjoint a une forte douleur à la poitrine depuis dix minutes.<span class="tags">une douleur</span></td><td>la durée compte, ici : dites-la</td></tr><tr><td class="cle">une personne inconsciente dans la rue</td><td>Un homme est par terre devant le dépanneur et il ne répond pas.<span class="tags">inconsciente</span></td><td>dehors, on donne un point que tout le monde voit</td></tr><tr><td class="cle">un saignement qui ne s'arrête pas</td><td>Mon collègue s'est coupé au bras et le saignement ne s'arrête pas.<span class="tags">un saignement</span></td><td>dites où saigne la personne</td></tr><tr><td class="cle">une difficulté à respirer</td><td>Ma fille a beaucoup de difficulté à <b>respirer</b> depuis cinq minutes.</td><td>l'âge sera demandé aussitôt : préparez-le</td></tr></tbody></table><div class="note">Cinq urgences, une seule forme de phrase. C'est cette forme-là qu'il faut avoir en tête, pas les mots exacts.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six réponses courtes, dans l'ordre de l'appel.</p><table class="ex2"><tr><td>5412, rue des Ormeaux, appartement 2, à Saint-Léonard.</td><td>l'endroit</td></tr><tr><td>Le 514 555-0198.</td><td>le numéro d'où vous appelez</td></tr><tr><td>Ma mère est tombée dans l'escalier.</td><td>une phrase</td></tr><tr><td>Oui, elle me répond.</td><td>consciente</td></tr><tr><td>Oui, elle respire normalement.</td><td>respiration</td></tr><tr><td>Soixante et onze ans, et elle prend des médicaments pour la tension.</td><td>l'âge et les médicaments</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges de l'appel</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">commencer par le récit</p><div class="k">Ce qui arrive</div><p class="ph">« bonjour, alors voilà, depuis mercredi ma mère… »</p><p class="px">Le répartiteur vous coupera pour demander l'adresse. Donnez-la en premier, sans qu'on vous la demande, et vous aurez gagné vingt secondes.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">raccrocher trop tôt</p><div class="k">Ce qui arrive</div><p class="ph">« bon, ils s'en viennent, merci, au revoir »</p><p class="px">Le répartiteur reste avec vous et donne des consignes jusqu'à l'arrivée. C'est lui qui dit quand raccrocher.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">répondre longuement</p><div class="k">Ce qui arrive</div><p class="ph">« est-ce qu'elle est consciente ? — ah, vous savez, elle est fatiguée depuis… »</p><p class="px">Oui ou non, puis une précision de quatre mots. Le reste sera demandé si c'est utile.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Trois questions rapides.</p><ol class="check"><li><span class="q">La première question du répartiteur porte sur…</span><ul class="opts"><li>l'endroit</li><li>ce qui s'est passé</li></ul></li><li><span class="q">Vous ignorez si la personne s'est frappé la tête. Vous dites…</span><ul class="opts"><li>« je ne sais pas »</li><li>« non, sûrement pas »</li></ul></li><li><span class="q">Quand raccroche-t-on ?</span><ul class="opts"><li>dès que l'ambulance part</li><li>quand le répartiteur le dit</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> l'endroit — L'endroit. Tant qu'il n'est pas pris, personne ne part. · <b>2.</b> « je ne sais pas » — « Je ne sais pas » est une bonne réponse. Une invention peut envoyer la mauvaise équipe. · <b>3.</b> quand le répartiteur le dit — Il reste en ligne avec vous et vous guide jusqu'à l'arrivée.</div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Dire où vous êtes, quand chaque seconde compte</h2><section class="bloc card ml"><h3>L'adresse n'est que la moitié du travail</h3><p class="mp">Un numéro et une rue amènent les ambulanciers devant l'immeuble. Ils ne les amènent pas jusqu'à la personne. Le reste — l'étage, l'appartement, la porte, le côté — se dit en une phrase, et c'est cette phrase qui fait la différence entre trois minutes et huit.</p><div class="note">Vous connaissez votre logement par cœur ; eux ne l'ont jamais vu, et il fait nuit.</div></section><section class="bloc card ml"><h3>Les mots qui situent</h3><p class="mp">Une petite liste, à avoir en tête avant d'en avoir besoin.</p><table class="ana"><tr><td>La hauteur</td><td class="">au premier étage · au sous-sol · en bas de l'escalier</td></tr><tr><td>La façade</td><td class="cle">devant l'entrée · derrière l'immeuble · dans la cour arrière</td></tr><tr><td>Le repère</td><td class="">à côté de la pharmacie · entre la 3e et la 4e Avenue · sur le trottoir</td></tr></table><p class="dit"><span class="k">On dit</span> Nous sommes dans l'appartement deux, en bas de l'escalier intérieur.</p><div class="note">Un mot pour la hauteur, un mot pour la façade, un repère : trois éléments suffisent presque toujours.</div></section><section class="bloc card ml"><h3>Dehors, c'est plus difficile que dedans</h3><p class="mp">Dans un parc, un stationnement, une station de métro, donnez ce que tout le monde peut voir.</p><table class="ana"><tr><td>Une porte, un numéro</td><td class="">la porte 3 du stationnement souterrain</td></tr><tr><td>Un commerce</td><td class="cle">devant le dépanneur, au coin de Bélanger</td></tr><tr><td>Un panneau, un arrêt</td><td class="">à l'arrêt d'autobus, direction est</td></tr></table><p class="dit"><span class="k">On dit</span> Dans le parc, près du module de jeux, du côté de la rue Bélanger.</p><div class="note">Si vous ne savez pas où vous êtes, dites-le et lisez à voix haute ce qui est écrit autour de vous. Le répartiteur travaillera avec ça.</div></section><section class="bloc card ml"><h3>Ce que vous pouvez faire avant qu'on le demande</h3><p class="mp">Quatre gestes qui font gagner une minute entière.</p><table class="ana"><tr><td>Ouvrir</td><td class="">déverrouiller la porte de l'immeuble</td></tr><tr><td>Éclairer</td><td class="cle">allumer la lumière de l'entrée et du corridor</td></tr><tr><td>Dégager et accueillir</td><td class="">enfermer le chien · envoyer quelqu'un attendre en bas</td></tr></table><p class="dit"><span class="k">On dit</span> Je descends déverrouiller la porte et j'allume la lumière de l'entrée.</p><div class="note">Dites au répartiteur ce que vous faites pendant que vous le faites : il le note, et les ambulanciers l'entendent avant d'arriver.</div></section><section class="bloc card ml"><h3>Cinq endroits, cinq phrases</h3><p class="mp">Choisissez un endroit et écoutez comment on le décrit.</p><table class="labo"><thead><tr><th>Où êtes-vous ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">dans un appartement au 3e</td><td>Au troisième étage, appartement 34, la porte est au bout du corridor à droite.<span class="tags">au troisième</span></td><td>étage, numéro, chemin</td></tr><tr><td class="cle">au sous-sol d'une maison</td><td>Au sous-sol, l'entrée est sur le côté de la maison, par la porte blanche.<span class="tags">au sous-sol</span></td><td>dites toujours par où entrer</td></tr><tr><td class="cle">dans un stationnement</td><td>Dans le <b>stationnement</b> souterrain, près de la porte 3, niveau moins deux.</td><td>un numéro visible vaut mieux qu'une description</td></tr><tr><td class="cle">dans un parc</td><td>Dans le parc, près du module de jeux, du côté de la rue Bélanger.<span class="tags">dans le parc</span></td><td>donnez la rue la plus proche</td></tr><tr><td class="cle">au travail, dans un entrepôt</td><td>À l'entrepôt, quai de chargement numéro 4, à l'arrière du bâtiment.<span class="tags">à l'entrepôt</span></td><td>au travail, quelqu'un doit attendre dehors</td></tr></tbody></table><div class="note">Aucune de ces phrases ne dépasse quinze mots. C'est la longueur d'une bonne réponse au 9-1-1.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six façons de situer un endroit.</p><table class="ex2"><tr><td>5412, rue des Ormeaux, appartement 2, à Saint-Léonard.</td><td>l'adresse complète</td></tr><tr><td>Elle est en bas de l'escalier intérieur.</td><td>la hauteur</td></tr><tr><td>Je vous attends devant l'entrée principale.</td><td>la façade</td></tr><tr><td>L'immeuble est à côté de la pharmacie.</td><td>le repère</td></tr><tr><td>C'est entre la rue Bélanger et la rue Jean-Talon.</td><td>entre deux rues</td></tr><tr><td>Je descends déverrouiller et j'allume la lumière.</td><td>ce que vous faites</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges de l'endroit</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">donner un repère que vous seul connaissez</p><div class="k">Ce qui arrive</div><p class="ph">« c'est en face de chez Ana »</p><p class="px">Donnez ce qui est écrit et visible de la rue : un numéro, une enseigne, un nom de rue.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">oublier l'étage et l'appartement</p><div class="k">Ce qui arrive</div><p class="ph">« 5412, des Ormeaux » et rien d'autre</p><p class="px">L'immeuble compte douze logements. Sans l'appartement, on frappe à douze portes.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">dire « ici » ou « à la maison »</p><div class="k">Ce qui arrive</div><p class="ph">« venez vite, on est à la maison »</p><p class="px">Le répartiteur ne voit pas d'où vous appelez, même sur un téléphone cellulaire — la localisation est approximative. Il faut l'adresse, dite à voix haute.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Trois questions rapides.</p><ol class="check"><li><span class="q">Après le numéro et la rue, on donne…</span><ul class="opts"><li>l'étage et l'appartement</li><li>son âge</li></ul></li><li><span class="q">Dehors, le meilleur repère est…</span><ul class="opts"><li>un commerce ou un numéro visible</li><li>le nom d'un voisin</li></ul></li><li><span class="q">Pendant que vous attendez, vous pouvez…</span><ul class="opts"><li>déverrouiller et éclairer</li><li>déplacer la personne</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> l'étage et l'appartement — Ce qui permet de vous trouver dans l'immeuble. · <b>2.</b> un commerce ou un numéro visible — Quelque chose que tout le monde peut lire ou voir. · <b>3.</b> déverrouiller et éclairer — Ouvrir, éclairer, enfermer le chien, envoyer quelqu'un en bas.</div></section></section></div>
+<footer><span>B2 · Une nuit à l'urgence</span><span>Fiche élève</span></footer>
+</body>
+</html>

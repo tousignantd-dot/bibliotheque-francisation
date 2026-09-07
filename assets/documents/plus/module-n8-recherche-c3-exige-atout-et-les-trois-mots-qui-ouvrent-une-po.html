@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C3 · Exigé, atout, et les trois mots qui ouvrent une porte — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance C3 · Module 2 · 75 minutes</div>
+    <h1>Exigé, atout, et les trois mots qui ouvrent une porte</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Une majorité de candidats renoncent devant une exigence qu'ils croient absolue. Or presque toutes les exigences portent une porte, et elle tient en trois mots.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>distinguer ce qui est exigé de ce qui est un atout ;</li><li>repérer la formule qui ouvre une exigence ;</li><li>lire les conditions aussi attentivement que les exigences ;</li><li>recopier le titre du poste mot pour mot.</li></ol></section><section class="bloc regle"><div class="lbl">Exigé élimine, atout distingue</div><p class="r">Ce qui est exigé vous écarte si vous ne l'avez pas. Ce qui est un atout vous distingue si vous l'avez, et ne vous coûte rien sinon. Ne renoncez jamais à une offre faute d'un atout.</p><p class="pr">Un dossier sans aucun des atouts mais avec toutes les exigences passe le tri. L'inverse ne le passe pas. Les deux mots ne pèsent pas pareil, et l'annonce ne le dit nulle part.</p></section><section class="bloc"><div class="lbl">Analyse</div><h2 class="t">Les trois mots qui ouvrent une exigence</h2><div class="grid"><div class="card"><h3>« ou l'équivalent »</h3><p>Cinq années en supervision, ou l'équivalent. L'employeur sait qu'il ne trouvera pas le profil idéal, et il l'écrit exprès.</p></div><div class="card"><h3>« ou expérience jugée pertinente »</h3><p>Diplôme collégial, ou expérience jugée pertinente. C'est à l'employeur de juger, pas à vous de vous éliminer d'avance.</p></div><div class="card"><h3>« ou toute expérience équivalente »</h3><p>La formule de l'offre de Boréalis, et c'est par cette porte-là que Shirin passe avec ses onze années de Téhéran.</p></div><div class="card"><h3>Comment franchir la porte</h3><p>Pas en affirmant. Avec une taille d'équipe, un nombre d'années et un résultat : vingt-deux personnes, trois lignes, onze ans.</p></div></div></section><section class="bloc card"><div class="lbl">Pratique 1 de 2</div><h2 class="t">Où est-ce écrit ?</h2><p class="consigne">Retrouvez dans l'offre le passage qui répond.</p><ol class="ex"><li><span class="q">Quel est le titre exact du poste ?</span><span class="ligne"></span></li><li><span class="q">Quel est l'horaire précis du quart ?</span><span class="ligne"></span></li><li><span class="q">Quelle responsabilité ne figure pas dans le titre ?</span><span class="ligne"></span></li><li><span class="q">Quelle porte l'exigence d'expérience laisse-t-elle ?</span><span class="ligne"></span></li><li><span class="q">Combien de temps dure la période d'essai ?</span><span class="ligne ligne--court"></span></li><li><span class="q">Sur quoi le congé annuel est-il calculé ?</span><span class="ligne"></span></li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Huit formules, et ce qu'elles cachent</h2><table><thead><tr><th>Ce qui est écrit</th><th>Ce que cela veut dire</th></tr></thead><tbody><tr><td class="cle">« ou toute expérience jugée équivalente »</td><td>la porte : à vous de démontrer l'équivalence</td></tr><tr><td class="cle">« capacité démontrée à »</td><td>il faudra un exemple précis, pas une affirmation</td></tr><tr><td class="cle">« selon l'échelle en vigueur »</td><td>le salaire n'est pas dit : question à poser</td></tr><tr><td class="cle">« participer au recrutement »</td><td>une responsabilité absente du titre</td></tr><tr><td class="cle">« selon la Loi sur les normes du travail »</td><td>le minimum légal, rien de plus</td></tr></tbody></table></section><section class="bloc regle"><div class="lbl">Le congé annuel selon la loi, c'est le minimum</div><p class="r">Deux semaines après un an de service continu, trois semaines après trois ans. Le service continu se compte chez un même employeur, sans interruption.</p><p class="pr">Une expérience acquise ailleurs, même de vingt ans, ne compte jamais dans le service continu. Un employeur peut en revanche accorder davantage par contrat, et cela se demande — c'est exactement ce qui n'est pas affiché.</p></section><section class="bloc card"><div class="lbl">Pratique 2 de 2</div><h2 class="t">Postuler ou non ?</h2><p class="consigne">Dites si le dossier passe le tri.</p><ol class="ex"><li><span class="q">Il manque un atout, toutes les exigences sont là.</span><span class="ligne"></span></li><li><span class="q">Trois ans d'expérience au lieu de cinq, avec « ou l'équivalent ».</span><span class="ligne"></span></li><li><span class="q">Trois ans au lieu de cinq, sans aucune formule d'ouverture.</span><span class="ligne"></span></li><li><span class="q">Aucune disponibilité pour le quart demandé.</span><span class="ligne"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Reprenez l'offre de votre devoir et faites-en deux colonnes.</p><ul><li>À gauche ce qui est exigé, à droite ce qui est un atout.</li><li>Soulignez toute formule d'ouverture que vous trouvez.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Lire une offre d'emploi pour décider</h2><section class="bloc card ml"><h3>Deux documents, deux lectures</h3><p class="mp">Un profil d'entreprise se lit pour <b>prélever</b> : on y cherche des faits. Une offre d'emploi se lit pour <b>décider</b> : suis-je admissible, est-ce que je veux ces conditions, et à quoi est-ce que je m'engage exactement ? Ce sont deux gestes de lecture différents, et c'est pour cette raison que le module vous fait travailler les deux textes séparément. On peut très bien avoir tout compris d'une entreprise et se tromper complètement sur le poste.</p><div class="note">Lisez l'offre en entier avant d'en lire une ligne deux fois. Beaucoup de gens s'arrêtent aux exigences et ne lisent jamais les conditions.</div></section><section class="bloc card ml"><h3>L'erreur la plus coûteuse : s'éliminer soi-même</h3><p class="mp">Une majorité de candidats renoncent devant une exigence qu'ils croient absolue. Or presque toutes les exigences portent une porte, et cette porte tient en trois mots : « <b>ou l'équivalent</b> », « <b>ou expérience jugée pertinente</b> », « <b>ou toute expérience équivalente</b> ». Ces formules ne sont pas décoratives : elles sont écrites exprès, parce que l'employeur sait qu'il ne trouvera pas le profil idéal. Les chercher avant de renoncer est le geste le plus rentable de toute une recherche d'emploi.</p><div class="note">Dans l'offre de Boréalis, l'exigence dit « cinq années en supervision manufacturière, ou toute expérience jugée équivalente ». C'est cette porte-là que Shirin franchit avec ses onze années de Téhéran.</div></section><section class="bloc card ml"><h3>« Exigé » élimine, « atout » distingue</h3><p class="mp">Deux mots, deux poids complètement différents. Les confondre fait renoncer pour rien, ou postuler à l'aveugle.</p><table class="ana"><tr><td>Exigé</td><td class="">ce qui vous écarte si vous ne l'avez pas</td></tr><tr><td>Atout</td><td class="cle">ce qui vous distingue si vous l'avez</td></tr><tr><td>La règle</td><td class="">ne jamais renoncer faute d'un atout</td></tr></table><p class="dit"><span class="k">On dit</span> Ce qui est exigé vous écarte ; ce qui est un atout vous distingue.</p><div class="note">Un dossier sans aucun des atouts mais avec toutes les exigences passe. L'inverse ne passe pas.</div></section><section class="bloc card ml"><h3>Les trois mots qui ouvrent une exigence</h3><p class="mp">Cherchez-les systématiquement. Ils changent une porte fermée en porte entrebâillée.</p><table class="ana"><tr><td>Les formules</td><td class="">« ou l'équivalent » · « ou expérience jugée pertinente »</td></tr><tr><td>Ce qu'elles disent</td><td class="cle">l'employeur sait qu'il ne trouvera pas l'idéal</td></tr><tr><td>Ce qu'il faut faire</td><td class="">démontrer l'équivalence, en chiffres</td></tr></table><p class="dit"><span class="k">On dit</span> Cinq années en supervision, ou toute expérience jugée équivalente.</p><div class="note">Démontrer l'équivalence ne se fait pas en affirmant : ça se fait avec une taille d'équipe, un nombre d'années et un résultat.</div></section><section class="bloc card ml"><h3>Les conditions valent autant que le salaire</h3><p class="mp">Le salaire est une ligne parmi six ou sept. La probation, l'horaire, l'assurance, les vacances, la formation et le préavis pèsent parfois davantage sur une année de vie.</p><table class="ana"><tr><td>Ce qu'on lit</td><td class="">probation de six mois, assurance dès le premier jour</td></tr><tr><td>Ce qu'on compare</td><td class="cle">ce que vous avez déjà, ligne par ligne</td></tr><tr><td>Ce qui manque</td><td class="">tout ce dont l'offre ne parle pas</td></tr></table><p class="dit"><span class="k">On dit</span> Période de probation de six mois, assurance collective dès le premier jour.</p><div class="note">« Congé annuel selon la Loi sur les normes du travail » veut dire : le minimum légal. Deux semaines après un an, trois après trois ans de service continu chez le même employeur.</div></section><section class="bloc card ml"><h3>Ce qui n'est pas écrit se demande</h3><p class="mp">Une annonce muette sur un point n'est pas une annonce incomplète : c'est une annonce qui vous donne une question préparée, et presque personne ne s'en sert.</p><table class="ana"><tr><td>Ce qui manque souvent</td><td class="">le nom du supérieur, la taille de l'équipe, la raison du poste</td></tr><tr><td>Ce que ça vous donne</td><td class="cle">trois questions pour l'appel</td></tr><tr><td>L'effet</td><td class="">vous êtes la seule à en poser</td></tr></table><p class="dit"><span class="k">On dit</span> L'annonce ne dit pas pourquoi le poste a été créé. C'est ma première question.</p><div class="note">Dans le module, c'est exactement ce que fait Shirin : « l'équipe existe-t-elle, ou faut-il la constituer ? ». La réponse change tout le poste.</div></section><section class="bloc card ml"><h3>Chaque section, et ce qu'on en fait</h3><p class="mp">Choisissez une section de l'offre et un geste.</p><table class="labo"><thead><tr><th>Quelle section ? · Quel geste ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">titre + ce qu'on prend</td><td>Superviseure ou superviseur de production, quart de soir.<span class="tags">le titre exact</span></td><td>à recopier mot pour mot dans l'objet du courriel</td></tr><tr><td class="cle">titre + ce qu'on vérifie</td><td>Du lundi au vendredi, de quinze heures à vingt-trois heures trente.<span class="tags">le lieu et l'horaire</span></td><td>vérifier avant tout le reste</td></tr><tr><td class="cle">exigences + ce qu'on prend</td><td>Cinq années en supervision, ou toute expérience jugée équivalente.<span class="tags">la porte de l'exigence</span></td><td>chercher « ou l'équivalent »</td></tr><tr><td class="cle">exigences + ce qu'on vérifie</td><td>Capacité démontrée à décider seul en dehors des heures de soutien.<span class="tags">ce qui est vraiment obligatoire</span></td><td>celle-là n'a pas de porte</td></tr><tr><td class="cle">atouts + ce qu'on prend</td><td>Expérience du contrôle de la qualité en transformation alimentaire.<span class="tags">l'atout qu'on possède</span></td><td>à mettre en avant dès la lettre</td></tr><tr><td class="cle">atouts + ce qu'on vérifie</td><td>Expérience du démarrage d'une équipe ou d'une ligne nouvelle.<span class="tags">l'atout qui révèle le besoin</span></td><td>cet atout-là dit ce que le poste sera vraiment</td></tr><tr><td class="cle">conditions + ce qu'on prend</td><td>Période de probation de six mois.<span class="tags">la probation</span></td><td>six mois, c'est long : le noter</td></tr><tr><td class="cle">conditions + ce qu'on vérifie</td><td>Congé annuel selon la Loi sur les normes du travail : le minimum.<span class="tags">ce que « selon la loi » veut dire</span></td><td>deux semaines, trois après trois ans</td></tr></tbody></table><div class="note">Passez une vraie offre à ce filtre avant votre prochaine candidature : cinq minutes, et vous savez quoi demander.</div></section><section class="bloc card ml"><h3>Huit formules d'annonce, et ce qu'elles cachent</h3><p class="mp">À gauche ce qui est écrit, à droite ce que ça veut dire.</p><table class="ex2"><tr><td>« ou toute expérience jugée équivalente »</td><td>la porte : à vous de démontrer l'équivalence</td></tr><tr><td>« capacité démontrée à »</td><td>il faudra un exemple précis, pas une affirmation</td></tr><tr><td>« selon l'échelle en vigueur »</td><td>le salaire n'est pas dit : question à poser</td></tr><tr><td>« entrée en fonction dès que possible »</td><td>ils sont pressés — c'est une force pour vous</td></tr><tr><td>« participer au recrutement »</td><td>une responsabilité absente du titre</td></tr><tr><td>« selon la Loi sur les normes du travail »</td><td>le minimum légal, rien de plus</td></tr><tr><td>« environnement en forte croissance »</td><td>attendez-vous à de la désorganisation</td></tr><tr><td>« au plus tard le 3 novembre »</td><td>une vraie date : envoyez trois jours avant</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges de l'offre d'emploi</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">renoncer devant une exigence</p><div class="k">Ce qui arrive</div><p class="ph">chercher la porte d'abord</p><p class="px">« Cinq ans exigés » et vous en avez trois : lisez la phrase en entier. Si elle contient « ou l'équivalent », vous êtes admissible et c'est à l'employeur de trancher, pas à vous.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">ne lire que les exigences</p><div class="k">Ce qui arrive</div><p class="ph">lire aussi les conditions</p><p class="px">La probation, l'horaire et les vacances décident de votre année. Beaucoup de gens acceptent un poste sans avoir lu la ligne qui les fera partir dans six mois.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">réécrire le titre du poste avec ses propres mots</p><div class="k">Ce qui arrive</div><p class="ph">le recopier tel quel</p><p class="px">Le titre est ce que la personne cherche des yeux en ouvrant vingt dossiers. « Chef d'équipe soir » à la place de « superviseure de production, quart de soir » vous fait perdre trois secondes d'attention que vous n'avez pas.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">Il vous manque un atout, mais vous avez toutes les exigences.</span><ul class="opts"><li>ne pas postuler</li><li>postuler</li></ul></li><li><span class="q">« Ou toute expérience jugée équivalente » signifie…</span><ul class="opts"><li>que l'exigence est ferme</li><li>que vous pouvez démontrer autre chose</li></ul></li><li><span class="q">« Congé annuel selon la Loi sur les normes du travail » veut dire…</span><ul class="opts"><li>quatre semaines</li><li>le minimum légal</li></ul></li><li><span class="q">Le titre du poste, dans votre courriel…</span><ul class="opts"><li>se reformule</li><li>se recopie mot pour mot</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> postuler — Un atout distingue, il n'élimine pas. Le dossier passe. · <b>2.</b> que vous pouvez démontrer autre chose — C'est la porte. Il faut la franchir avec des chiffres, pas avec une affirmation. · <b>3.</b> le minimum légal — Deux semaines après un an, trois après trois ans de service continu. · <b>4.</b> se recopie mot pour mot — C'est ce que la personne cherche des yeux dans une boîte pleine.</div></section></section></div>
+<footer><span>C3 · Passer au travers du processus</span><span>Fiche élève</span></footer>
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B3 · Ce qui aurait pu se passer et ne s'est pas passé — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance B3 · Module 6 · 75 minutes</div>
+    <h1>Ce qui aurait pu se passer et ne s'est pas passé</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">« Elle aurait pu détacher la corde. » Elle ne l'a pas fait, et pourtant la phrase place le geste sous nos yeux. Une œuvre se comprend aussi par ce qu'elle écarte.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>former le conditionnel passé avec avoir et avec être ;</li><li>nommer un geste que le personnage n'a pas fait ;</li><li>construire l'hypothèse irréelle : si + plus-que-parfait ;</li><li>ne jamais mettre de conditionnel après « si ».</li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Le conditionnel passé, en deux morceaux</h2><table><thead><tr><th>Avec</th><th>Ce que ça donne</th></tr></thead><tbody><tr><td class="cle">avoir</td><td>elle aurait pu, j'aurais compris, nous aurions aimé</td></tr><tr><td class="cle">être</td><td>elle serait partie, ils seraient restés</td></tr><tr><td class="cle">l'accord</td><td>avec être seulement : elle serait restée</td></tr></tbody></table><div class="note">Vous connaissez déjà les deux moitiés : rien de neuf à apprendre.</div></section><section class="bloc regle"><div class="lbl">Trois emplois, un seul temps</div><p class="r">Le geste non fait, le regret ou le reproche, l'information qu'on rapporte sans la garantir.</p><p class="pr">« Elle aurait pu détacher la corde » nomme un geste écarté. « Tu aurais dû me le dire » reproche. « Le tournage aurait duré onze jours » rapporte sans certifier. Le troisième se reconnaît à ce qu'il n'y a aucun « si » dans la phrase.</p></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Piège</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">« elle aurait comprise »</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">« elle aurait compris »</p></div></div><div class="note">Avec l'auxiliaire avoir, le participe ne s'accorde jamais avec le sujet. L'oreille entend un sujet féminin et veut un « e » ; il ne faut pas le suivre. Avec être, au contraire, il s'accorde toujours : « elle serait restée ». Deux auxiliaires, deux règles opposées — c'est ce qui rend ce temps-là difficile, et rien d'autre.</div></section><section class="bloc card"><div class="lbl">Pratique</div><h2 class="t">Le conditionnel passé</h2><p class="consigne">Mettez le verbe au conditionnel passé.</p><ol class="ex"><li><span class="q">Elle ___ (pouvoir) détacher la corde.</span><span class="ligne ligne--court"></span></li><li><span class="q">La réalisatrice ___ (devoir) couper ce plan.</span><span class="ligne ligne--court"></span></li><li><span class="q">Estelle ___ (partir) au printemps.</span><span class="ligne ligne--court"></span></li><li><span class="q">Nous ___ (aimer) un dernier plan sur le chalet.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le tournage ___ (durer) onze jours de plus.</span><span class="ligne ligne--court"></span></li><li><span class="q">Elle ___ (comprendre) tout de suite.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Trois marches de l'hypothèse</h2><table><thead><tr><th>La marche</th><th>La forme</th></tr></thead><tbody><tr><td class="cle">C'est encore possible</td><td>si elle part, je le dirai</td></tr><tr><td class="cle">C'est imaginé</td><td>si elle partait, je le dirais</td></tr><tr><td class="cle">C'est fini</td><td>si elle était partie, je l'aurais dit</td></tr></tbody></table><div class="note">Une œuvre est finie : c'est la troisième marche qui sert.</div></section><section class="bloc card"><div class="lbl">Pratique</div><h2 class="t">L'hypothèse irréelle du passé</h2><p class="consigne">Complétez.</p><ol class="ex"><li><span class="q">Si elle avait voulu partir, elle ___ (détacher) la corde.</span><span class="ligne ligne--court"></span></li><li><span class="q">Si elle ___ (démarrer) le moteur, la série finissait autrement.</span><span class="ligne ligne--court"></span></li><li><span class="q">Si le plan ___ (durer) deux secondes, personne ne l'aurait vu.</span><span class="ligne ligne--court"></span></li><li><span class="q">Nous ___ (comprendre) plus vite si on nous avait montré.</span><span class="ligne ligne--court"></span></li><li><span class="q">Si vous ___ (venir) mardi, vous auriez entendu trois lectures.</span><span class="ligne ligne--court"></span></li><li><span class="q">Si j'avais su, je ___ (regarder) deux fois.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez deux phrases sur la fin de votre œuvre : une avec « elle aurait pu », une avec « si… avait…, … aurait… ».</p><ul><li>« Il aurait pu répondre, et il n'a rien dit. »</li><li>« Si elle avait ouvert la lettre, on saurait ce qu'elle contient. »</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Le temps de ce qui n'a pas eu lieu</h2><section class="bloc card ml"><h3>Le temps de ce qui n'a pas eu lieu</h3><p class="mp">Le conditionnel passé sert à nommer un geste que personne n'a fait. « Elle aurait pu détacher la corde » : elle ne l'a pas fait, et pourtant la phrase place le geste sous nos yeux. C'est pour cela qu'il est le premier outil de l'interprétation — une œuvre se comprend autant par ce qu'elle écarte que par ce qu'elle montre, et il faut un temps de verbe pour dire ce qu'elle a écarté.</p><div class="note">Sans ce temps, vous ne pouvez parler que de ce qui arrive. Avec lui, vous pouvez parler de tout ce qui aurait pu arriver — c'est-à-dire du travail de l'auteur.</div></section><section class="bloc card ml"><h3>Comment on le fabrique</h3><p class="mp">Deux morceaux que vous connaissez déjà : <b>avoir</b> ou <b>être</b> au conditionnel présent, puis le participe passé.</p><table class="ana"><tr><td>Avec avoir</td><td class="">j'aurais compris · elle aurait pu · nous aurions aimé</td></tr><tr><td>Avec être</td><td class="cle">elle serait partie · ils seraient restés</td></tr><tr><td>Aucune forme neuve</td><td class="">vous savez déjà les deux moitiés</td></tr></table><p class="dit"><span class="k">On dit</span> J'aurais compris. Elle aurait pu. Elle serait partie.</p><div class="note">Le choix entre avoir et être est exactement le même qu'au passé composé : si vous dites « elle est partie », vous direz « elle serait partie ».</div></section><section class="bloc card ml"><h3>Le regret et le reproche — trois verbes suffisent</h3><p class="mp">Devoir, pouvoir, aimer au conditionnel passé portent le regret sans qu'on ait besoin de l'expliquer.</p><table class="ana"><tr><td>Le reproche</td><td class="">Tu aurais dû me le dire.</td></tr><tr><td>Le regret</td><td class="cle">J'aurais aimé un troisième acte.</td></tr><tr><td>La possibilité manquée</td><td class="">Elle aurait pu la détacher.</td></tr></table><p class="dit"><span class="k">On dit</span> Tu aurais dû me le dire. J'aurais aimé un troisième acte. Elle aurait pu la détacher.</p><div class="note">Dans une critique, « on aurait aimé » est la formule polie du reproche. Le critique de « L'Écho » s'en sert, puis se dédit dans la même phrase.</div></section><section class="bloc card ml"><h3>L'information qu'on rapporte sans la garantir</h3><p class="mp">Le même temps sert au journalisme : il dit « je le rapporte, je ne le certifie pas ».</p><table class="ana"><tr><td>On lit</td><td class="">Le tournage aurait duré onze jours de plus.</td></tr><tr><td>Ce que ça signale</td><td class="cle">quelqu'un le dit, le journal ne le confirme pas</td></tr><tr><td>Le repère</td><td class="">aucun « si » nulle part dans la phrase</td></tr></table><p class="dit"><span class="k">On dit</span> Le tournage aurait duré onze jours de plus que prévu.</p><div class="note">C'est le seul emploi du conditionnel qui ne parle pas d'hypothèse. Le reconnaître évite de croire un journal sur parole.</div></section><section class="bloc card ml"><h3>Trois emplois, deux exemples chacun</h3><p class="mp">Choisissez un emploi et un exemple.</p><table class="labo"><thead><tr><th>Quel usage ? · Lequel des deux ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">le geste non fait + le premier</td><td>Elle aurait pu détacher la corde.</td><td>le geste existe dans la phrase, pas dans la scène</td></tr><tr><td class="cle">le geste non fait + le second</td><td>Elle serait partie au printemps.</td><td>avec être : le participe s'accorde</td></tr><tr><td class="cle">le regret + le premier</td><td>On aurait aimé un troisième acte.</td><td>le reproche poli d'une critique</td></tr><tr><td class="cle">le regret + le second</td><td>Tu aurais dû venir mardi.</td><td>le reproche direct, entre deux personnes</td></tr><tr><td class="cle">l'information non confirmée + le premier</td><td>Le tournage aurait duré onze jours de plus.</td><td>rapporté, non garanti</td></tr><tr><td class="cle">l'information non confirmée + le second</td><td>La pièce aurait coûté quarante mille dollars.</td><td>le journal se protège avec un temps de verbe</td></tr></tbody></table><div class="note">Le troisième emploi se reconnaît à ce qu'il n'y a jamais de « si » dans la phrase.</div></section><section class="bloc card ml"><h3>Six phrases, six emplois</h3><p class="mp">À gauche, la phrase. À droite, ce qu'elle fait.</p><table class="ex2"><tr><td>Elle aurait pu détacher la corde.</td><td>le geste qu'elle n'a pas fait</td></tr><tr><td>Nous aurions aimé un dernier plan.</td><td>le regret d'un spectateur</td></tr><tr><td>Tu aurais dû le dire tout de suite.</td><td>le reproche</td></tr><tr><td>Le tournage aurait duré onze jours.</td><td>l'information non confirmée</td></tr><tr><td>Sans les bottes, la scène serait restée fermée.</td><td>la conséquence d'une hypothèse</td></tr><tr><td>Elle aurait compris, si on lui avait expliqué.</td><td>la moitié d'une hypothèse irréelle</td></tr></table></section><section class="bloc card ml"><h3>L'accord du participe, et ses deux règles opposées</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">« elle aurait comprise »</p><div class="k">Ce qui arrive</div><p class="ph">« elle aurait compris »</p><p class="px">Avec <b>avoir</b>, le participe ne s'accorde jamais avec le sujet. C'est la faute la plus fréquente à ce temps-là, parce que l'oreille entend un sujet féminin et veut un e.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">« elle serait resté »</p><div class="k">Ce qui arrive</div><p class="ph">« elle serait restée »</p><p class="px">Avec <b>être</b>, au contraire, il s'accorde toujours avec le sujet. Deux auxiliaires, deux règles opposées : c'est ce qui rend le temps difficile.</p></div></div></section><section class="bloc card ml"><h3>Le conditionnel passé, est-il en place ?</h3><p class="mp">Quatre contrôles rapides.</p><ol class="check"><li><span class="q">Le conditionnel passé se fabrique avec…</span><ul class="opts"><li>avoir ou être au conditionnel présent + participe passé</li><li>l'imparfait + un infinitif</li></ul></li><li><span class="q">« Elle aurait ___ » — le participe de comprendre s'écrit…</span><ul class="opts"><li>compris</li><li>comprise</li></ul></li><li><span class="q">« Le tournage aurait duré onze jours » veut dire…</span><ul class="opts"><li>c'est confirmé</li><li>c'est rapporté sans garantie</li></ul></li><li><span class="q">Pour dire un regret, les trois verbes les plus utiles sont…</span><ul class="opts"><li>devoir, pouvoir, aimer</li><li>aller, venir, faire</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> avoir ou être au conditionnel présent + participe passé — Deux morceaux que vous connaissez déjà. · <b>2.</b> compris — Avec avoir, pas d'accord avec le sujet. · <b>3.</b> c'est rapporté sans garantie — Aucun « si » dans la phrase : c'est l'emploi journalistique. · <b>4.</b> devoir, pouvoir, aimer — Devoir, pouvoir, aimer : ils portent le regret sans qu'on l'explique.</div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Si les choses s'étaient passées autrement</h2><section class="bloc card ml"><h3>Trois hypothèses, et une seule change tout</h3><p class="mp">Le français range les hypothèses sur trois marches. « Si elle part, je le dirai » : c'est possible, ça peut encore arriver. « Si elle partait, je le dirais » : c'est imaginé, ça n'arrivera probablement pas. « Si elle était partie, je l'aurais dit » : c'est fini, ça ne peut plus arriver. La troisième marche s'appelle l'<b>irréel du passé</b>, et c'est celle dont vous avez besoin devant une œuvre : une œuvre est finie.</p><div class="note">Chaque marche recule d'un cran des deux côtés à la fois. Si vous savez faire la deuxième, vous savez faire la troisième.</div></section><section class="bloc card ml"><h3>La forme, et elle ne varie jamais</h3><p class="mp"><b>Si</b> + plus-que-parfait d'un côté, conditionnel passé de l'autre. L'ordre des deux moitiés est libre ; les temps, non.</p><table class="ana"><tr><td>La moitié « si »</td><td class="">Si elle avait voulu partir,</td></tr><tr><td>La moitié qui suit</td><td class="cle">elle aurait détaché la corde.</td></tr><tr><td>Dans l'autre sens</td><td class="">Elle aurait détaché la corde si elle avait voulu partir.</td></tr></table><p class="dit"><span class="k">On dit</span> Si elle avait voulu partir, elle aurait détaché la corde.</p><div class="note">Quand la condition vient en premier, une virgule sépare les deux moitiés. Quand elle vient en second, pas de virgule.</div></section><section class="bloc card ml"><h3>Jamais de conditionnel après « si »</h3><p class="mp">C'est la faute la plus surveillée du français écrit, et un correcteur la voit avant tout le reste.</p><table class="ana"><tr><td>On écrit</td><td class="">si elle avait su</td></tr><tr><td>On n'écrit pas</td><td class="cle">si elle aurait su</td></tr><tr><td>Le repère</td><td class="">après « si », jamais de -rais, -rait, -rions</td></tr></table><p class="dit"><span class="k">On dit</span> Si elle avait su, elle serait venue.</p><div class="note">Une règle simple pour l'oreille : le « r » du conditionnel ne se met pas dans la même moitié de phrase que le « si ».</div></section><section class="bloc card ml"><h3>Ce que ça permet de dire sur une œuvre</h3><p class="mp">L'irréel du passé sert à montrer qu'un détail compte : sans lui, il n'y aurait rien à discuter.</p><table class="ana"><tr><td>Le détail</td><td class="">la corde restée attachée</td></tr><tr><td>La phrase</td><td class="cle">Si elle l'avait détachée, on n'en parlerait pas.</td></tr><tr><td>L'effet</td><td class="">le détail devient l'objet de la discussion</td></tr></table><p class="dit"><span class="k">On dit</span> Si elle l'avait détachée, on n'en parlerait pas un mardi matin.</p><div class="note">C'est une manière élégante d'argumenter : au lieu de dire « ce détail est important », on montre le vide qu'il laisserait.</div></section><section class="bloc card ml"><h3>Monter les trois marches</h3><p class="mp">Choisissez une marche et un exemple.</p><table class="labo"><thead><tr><th>Quelle hypothèse ? · Lequel des deux ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">réelle + la chaloupe</td><td>Si elle part, la série finit autrement.</td><td>présent + présent ou futur : c'est encore possible</td></tr><tr><td class="cle">réelle + la lecture</td><td>Si vous venez mardi, vous entendrez trois lectures.</td><td>présent + futur</td></tr><tr><td class="cle">irréelle du présent + la chaloupe</td><td>Si elle partait, la série finirait autrement.</td><td>imparfait + conditionnel présent : imaginé</td></tr><tr><td class="cle">irréelle du présent + la lecture</td><td>Si vous veniez mardi, vous entendriez trois lectures.</td><td>la même chose, mais on n'y croit pas trop</td></tr><tr><td class="cle">irréelle du passé + la chaloupe</td><td>Si elle était partie, la série aurait fini autrement.</td><td>plus-que-parfait + conditionnel passé : c'est fini</td></tr><tr><td class="cle">irréelle du passé + la lecture</td><td>Si vous étiez venu mardi, vous auriez entendu trois lectures.</td><td>le reproche affectueux se dit à cette marche-là</td></tr></tbody></table><div class="note">Lisez les six à voix haute dans l'ordre des colonnes : on entend la langue reculer d'un cran à chaque ligne.</div></section><section class="bloc card ml"><h3>Les trois marches, côte à côte</h3><p class="mp">À gauche, la phrase. À droite, ce qu'elle dit du réel.</p><table class="ex2"><tr><td>Si elle part, je le dirai.</td><td>c'est encore possible</td></tr><tr><td>Si elle partait, je le dirais.</td><td>c'est imaginé, peu probable</td></tr><tr><td>Si elle était partie, je l'aurais dit.</td><td>c'est fini, ça ne peut plus arriver</td></tr><tr><td>Si le plan avait duré deux secondes, personne ne l'aurait vu.</td><td>le détail justifie la discussion</td></tr><tr><td>Si j'avais su, j'aurais regardé deux fois.</td><td>le regret, à la troisième marche</td></tr><tr><td>Si vous étiez venu, vous auriez entendu.</td><td>le reproche affectueux</td></tr></table></section><section class="bloc card ml"><h3>Deux pièges de l'irréel</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">« si elle aurait su »</p><div class="k">Ce qui arrive</div><p class="ph">« si elle avait su »</p><p class="px">Aucun conditionnel après « si ». Cette faute a un statut particulier en français : elle est repérée immédiatement, y compris par des gens qui n'expliqueraient pas la règle.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">mélanger les marches</p><div class="k">Ce qui arrive</div><p class="ph">garder la même marche des deux côtés</p><p class="px">« Si elle était partie, je le dirais » boite : la première moitié est au passé, la seconde au présent. Elles doivent être du même cran, sauf effet voulu.</p></div></div></section><section class="bloc card ml"><h3>Les trois marches, les distinguez-vous ?</h3><p class="mp">Quatre contrôles rapides.</p><ol class="check"><li><span class="q">Dans l'irréel du passé, juste après « si », on met…</span><ul class="opts"><li>le plus-que-parfait</li><li>le conditionnel passé</li></ul></li><li><span class="q">« Si elle avait voulu partir, elle ___ la corde. »</span><ul class="opts"><li>aurait détaché</li><li>avait détaché</li></ul></li><li><span class="q">L'irréel du passé dit que…</span><ul class="opts"><li>ça peut encore arriver</li><li>c'est fini et ça ne peut plus arriver</li></ul></li><li><span class="q">Quand la condition vient en premier…</span><ul class="opts"><li>une virgule sépare les deux moitiés</li><li>on ne met jamais de virgule</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> le plus-que-parfait — Le plus-que-parfait. Le conditionnel passé va dans l'autre moitié. · <b>2.</b> aurait détaché — Conditionnel passé dans la conséquence. · <b>3.</b> c'est fini et ça ne peut plus arriver — C'est la marche du « c'est trop tard » — celle qu'il faut devant une œuvre finie. · <b>4.</b> une virgule sépare les deux moitiés — Virgule si la condition ouvre la phrase ; pas de virgule si elle la ferme.</div></section></section></div>
+<footer><span>B3 · Ce que l'œuvre ne dit pas</span><span>Fiche élève</span></footer>
+</body>
+</html>

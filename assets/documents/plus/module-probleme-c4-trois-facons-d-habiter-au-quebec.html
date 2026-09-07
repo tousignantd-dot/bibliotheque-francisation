@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C4 · Trois façons d'habiter au Québec — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance C4 · Module 10 · 55 minutes</div>
+    <h1>Trois façons d'habiter au Québec</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Quand on cherche un logement, on rencontre trois modèles très différents. Vos droits, vos coûts et vos obligations ne sont pas les mêmes dans les trois. Une coopérative n'est ni un logement privé, ni un HLM.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>distinguer le logement locatif privé, la coopérative d'habitation et le HLM ;</li><li>savoir qui décide et qui paie dans chacun des trois modèles ;</li><li>savoir à qui s'adresser quand un problème survient ;</li><li>connaître ce qu'on obtient — et ce qu'on doit donner — en coopérative.</li></ol></section><section class="bloc card"><div class="lbl">Modèle 1</div><h2 class="t">Le logement locatif privé</h2><table><thead><tr><th>Question</th><th>Réponse</th><th></th></tr></thead><tbody><tr><td>Qui décide ?</td><td class="cle">la personne propriétaire</td><td>seule</td></tr><tr><td>Qui paie les réparations ?</td><td class="cle">la personne propriétaire</td><td>c'est son immeuble</td></tr><tr><td>Que fait le locataire ?</td><td class="cle">payer le loyer, signaler</td><td>rien de plus</td></tr></tbody></table><div class="note">C'est le modèle le plus courant, et aussi celui où le loyer est le plus élevé, parce que la personne propriétaire cherche un rendement. L'immeuble d'Oksana est un immeuble privé.</div></section><section class="bloc card"><div class="lbl">Modèle 2</div><h2 class="t">La coopérative d'habitation</h2><table><thead><tr><th>Question</th><th>Réponse</th><th></th></tr></thead><tbody><tr><td>Qui décide ?</td><td class="cle">les membres, par vote</td><td>ensemble</td></tr><tr><td>Qui paie ?</td><td class="cle">la coopérative</td><td>sans profit</td></tr><tr><td>Que fait le membre ?</td><td class="cle">payer, participer, siéger</td><td>du temps en plus</td></tr></tbody></table><div class="note">L'immeuble appartient collectivement à celles et ceux qui y habitent. Chaque membre est à la fois locataire de son logement et copropriétaire de l'immeuble.</div></section><section class="bloc regle"><div class="lbl">Modèle 3 · le HLM</div><p class="r">Une habitation à loyer modique est un logement social géré par un office public.</p><p class="pr">Le loyer y est calculé selon le revenu — souvent autour de 25 % du revenu du ménage — et l'accès se fait par une liste d'attente, selon des critères précis. Ce n'est ni un immeuble privé ni un groupe qui se gère lui-même : c'est un programme public.</p></section><section class="bloc regle"><div class="lbl">Le résumé en une ligne</div><p class="r">Privé : le marché. Coopérative : un groupe qui se gère lui-même. HLM : un programme public selon le revenu.</p><p class="pr">Trois logiques différentes, trois interlocuteurs différents quand un problème survient. Mais dans les trois cas, le réflexe reste exactement le même : signaler tôt, et garder une trace écrite.</p></section><section class="bloc card"><div class="lbl">Pratique</div><h2 class="t">Qui règle le problème ?</h2><p class="consigne">Le calorifère ne chauffe plus. À qui vous adressez-vous ?</p><ol class="ex"><li><span class="q">Dans un logement privé</span><span class="ligne"></span></li><li><span class="q">Dans une coopérative</span><span class="ligne"></span></li><li><span class="q">Dans un HLM</span><span class="ligne"></span></li></ol></section><section class="bloc card"><div class="lbl">Vocabulaire</div><h2 class="t">Les mots à retenir</h2><table class="voc"><tbody><tr><td class="mot">une part sociale</td><td class="def">Ce qu'on achète pour devenir membre d'une coopérative.</td></tr><tr><td class="mot">un membre</td><td class="def">Une personne qui habite la coopérative et participe à sa gestion.</td></tr><tr><td class="mot">le comité d'entretien</td><td class="def">Le groupe de membres qui s'occupe des réparations.</td></tr><tr><td class="mot">un office d'habitation</td><td class="def">L'organisme public qui gère les HLM d'une ville.</td></tr><tr><td class="mot">le logement social</td><td class="def">Un logement dont le loyer est adapté au revenu.</td></tr></tbody></table></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">La première confusion</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">En coopérative, j'achète mon logement.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">En coopérative, je deviens membre.</p></div></div><div class="note">On n'achète pas un logement : on achète une part sociale de la coopérative. En partant, on récupère sa part — pas la valeur du logement. La coopérative reste propriétaire. C'est la différence essentielle avec un condo, et elle surprend beaucoup de gens au moment de déménager.</div></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">La deuxième confusion</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">Coopérative et HLM, c'est la même chose.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">La coopérative se gère elle-même ; le HLM est géré par un office public.</p></div></div><div class="note">Les deux offrent des loyers plus bas que le marché, ce qui explique la confusion. Mais le fonctionnement n'a rien à voir : dans un cas, ce sont les résidents qui décident et qui donnent du temps ; dans l'autre, c'est un organisme public qui gère, et le loyer suit le revenu.</div></section><section class="bloc card"><div class="lbl">Vérification</div><h2 class="t">Vrai ou faux</h2><p class="consigne">Répondez sans regarder vos notes.</p><ol class="ex"><li><span class="q">Dans une coopérative, les membres sont locataires et copropriétaires.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le loyer y est généralement plus cher que sur le marché privé.</span><span class="ligne"></span></li><li><span class="q">Les membres participent à la gestion de l'immeuble.</span><span class="ligne ligne--court"></span></li><li><span class="q">Quand un membre quitte son logement, il revend sa part comme un condo.</span><span class="ligne"></span></li><li><span class="q">Les premières coopératives québécoises datent des années 1970.</span><span class="ligne ligne--court"></span></li><li><span class="q">Être membre n'exige aucune participation personnelle.</span><span class="ligne"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Dans quel type de logement habitez-vous, et à qui vous adressez-vous en cas de problème ?</p><ul><li>Une phrase. Vous n'avez pas à écrire votre adresse.</li><li>Exemple : « J'habite un logement privé ; je m'adresse à mon propriétaire. »</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Trois façons d'habiter au Québec</h2><section class="bloc card ml"><h3>Pourquoi c'est utile de connaître la différence</h3><p class="mp">Quand on cherche un logement, on rencontre trois modèles très différents, et vos <b>droits, vos coûts et vos obligations</b> ne sont pas les mêmes dans les trois. Une coopérative n'est ni un logement privé, ni un HLM.</p><div class="note">Dans le module, l'immeuble d'Oksana est un immeuble <b>privé</b> : il appartient à madame Rioux, qui décide et qui paie les réparations.</div></section><section class="bloc card ml"><h3>Le logement locatif privé</h3><p class="mp">Le modèle le plus courant : une personne ou une compagnie possède l'immeuble et le loue.</p><table class="ana"><tr><td>Qui décide</td><td class="cle">la personne propriétaire</td></tr><tr><td>Qui paie les réparations</td><td class="">la personne propriétaire</td></tr><tr><td>Ce que fait le locataire</td><td class="">payer le loyer, signaler les problèmes</td></tr></table><p class="dit"><span class="k">On dit</span> Dans un logement privé, la personne propriétaire décide et paie les réparations.</p><div class="note">C'est aussi le modèle où le loyer est le plus élevé, parce que le propriétaire cherche un rendement.</div></section><section class="bloc card ml"><h3>La coopérative d'habitation</h3><p class="mp">L'immeuble appartient collectivement à celles et ceux qui y habitent.</p><table class="ana"><tr><td>Qui décide</td><td class="cle">les membres, par vote</td></tr><tr><td>Qui paie</td><td class="">la coopérative, sans profit</td></tr><tr><td>Ce que fait le membre</td><td class="">payer, participer, siéger</td></tr></table><p class="dit"><span class="k">On dit</span> Dans une coopérative, les membres décident ensemble et participent à l'entretien.</p><div class="note">Chaque membre est à la fois <b>locataire</b> de son logement et <b>copropriétaire</b> de l'immeuble. Il y a plus de 1 000 coopératives au Québec depuis les années 1970.</div></section><section class="bloc card ml"><h3>Et le HLM ?</h3><p class="mp">Le <b>HLM</b> (habitation à loyer modique) est un logement social géré par un office public. Le loyer y est calculé selon le revenu — souvent 25 % du revenu du ménage — et l'accès se fait par une liste d'attente selon des critères précis.</p><div class="note">Résumé en une ligne : <b>privé</b> = le marché · <b>coopérative</b> = un groupe qui se gère lui-même · <b>HLM</b> = un programme public selon le revenu.</div></section><section class="bloc card ml"><h3>Qui règle le problème ?</h3><p class="mp">Choisissez un type d'immeuble et voyez à qui vous vous adressez.</p><table class="labo"><thead><tr><th>Quel type de logement ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">logement privé</td><td>On prévient la propriétaire.</td><td>elle décide et elle paie</td></tr><tr><td class="cle">coopérative</td><td>On prévient le comité d'entretien.</td><td>les membres s'en occupent eux-mêmes</td></tr><tr><td class="cle">HLM</td><td>On prévient l'office d'habitation.</td><td>un organisme public gère l'immeuble</td></tr></tbody></table><div class="note">Dans les trois cas, le réflexe reste le même : <b>signaler tôt, et garder une trace écrite</b>.</div></section><section class="bloc card ml"><h3>Le vocabulaire à retenir</h3><p class="mp">Écoutez chaque phrase et repérez le mot clé.</p><table class="ex2"><tr><td>Les membres de la coopérative votent le budget des rénovations.</td><td>décider ensemble</td></tr><tr><td>Le loyer d'une coopérative est souvent moins cher que sur le marché privé.</td><td>l'avantage</td></tr><tr><td>Chaque membre participe au comité d'entretien.</td><td>la contrepartie</td></tr><tr><td>Quand un membre part, la coopérative reste propriétaire du logement.</td><td>la différence avec un condo</td></tr><tr><td>Dans un HLM, le loyer est calculé selon le revenu du ménage.</td><td>le logement social</td></tr></table></section><section class="bloc card ml"><h3>Deux confusions fréquentes</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">croire qu'on achète son logement en coopérative</p><div class="k">Ce qui arrive</div><p class="ph">on devient membre, pas propriétaire d'un logement</p><p class="px">On n'achète pas un logement : on achète une <b>part sociale</b> de la coopérative. En partant, on récupère sa part, pas la valeur du logement.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">confondre coopérative et HLM</p><div class="k">Ce qui arrive</div><p class="ph">la coopérative se gère elle-même ; le HLM est géré par un office public</p><p class="px">Les deux offrent des loyers plus bas, mais le fonctionnement n'a rien à voir : dans un cas les résidents décident, dans l'autre c'est un organisme public.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">Dans une coopérative, les membres sont…</span><ul class="opts"><li>seulement locataires</li><li>locataires et copropriétaires</li></ul></li><li><span class="q">Le loyer en coopérative est généralement…</span><ul class="opts"><li>plus bas que sur le marché privé</li><li>plus élevé</li></ul></li><li><span class="q">Un membre qui quitte sa coopérative…</span><ul class="opts"><li>revend son logement</li><li>récupère sa part sociale</li></ul></li><li><span class="q">Dans un HLM, le loyer est calculé…</span><ul class="opts"><li>selon le revenu du ménage</li><li>selon la grandeur du logement</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> locataires et copropriétaires — Les deux à la fois : ils louent leur logement et possèdent collectivement l'immeuble. · <b>2.</b> plus bas que sur le marché privé — Plus bas, parce que la coopérative ne cherche pas à faire de profit. · <b>3.</b> récupère sa part sociale — La coopérative reste propriétaire du logement ; le membre récupère seulement sa part. · <b>4.</b> selon le revenu du ménage — C'est un logement social : le loyer suit le revenu, souvent autour de 25 %.</div></section></section></div>
+<footer><span>C4 · Pouvez-vous régler le problème ?</span><span>Fiche élève</span></footer>
+</body>
+</html>

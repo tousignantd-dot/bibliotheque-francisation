@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>D2 · Rapporter ce que chacun a dit — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance D2 · Module 10 · 75 minutes</div>
+    <h1>Rapporter ce que chacun a dit</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Un compte rendu est fait, du début à la fin, de phrases rapportées. Le verbe qui introduit est au passé, donc tout ce qui suit recule d'un cran. Ce n'est pas un choix : c'est un mécanisme.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>reculer d'un cran le temps du verbe rapporté ;</li><li>changer les personnes, les possessifs et les repères de temps ;</li><li>rapporter une question sans inversion ni point d'interrogation ;</li><li>mettre en relief ce qui compte avec c'est… qui et ce que…, c'est.</li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Les quatre reculs</h2><table><thead><tr><th>Au style direct</th><th>Rapporté au passé</th></tr></thead><tbody><tr><td class="cle">présent : je pars</td><td>imparfait : qu'il partait</td></tr><tr><td class="cle">passé composé : je suis parti</td><td>plus-que-parfait : qu'il était parti</td></tr><tr><td class="cle">futur : je partirai</td><td>conditionnel : qu'il partirait</td></tr><tr><td class="cle">va partir</td><td>allait partir</td></tr></tbody></table><div class="note">Ne bougent pas : imparfait, conditionnel, subjonctif. Ils sont déjà en arrière.</div></section><section class="bloc card"><div class="lbl">Grammaire</div><h2 class="t">Mettez au discours indirect passé</h2><p class="consigne">Le verbe qui introduit est déjà au passé.</p><ol class="ex"><li><span class="q">« Je propose qu'on compte. » devient : Il a dit qu'il ___</span><span class="ligne ligne--court"></span></li><li><span class="q">« Ça ne prouve rien. » devient : Il a répondu que ça ne ___ rien</span><span class="ligne ligne--court"></span></li><li><span class="q">« J'ai pris la mesure en juillet. » devient : Elle a précisé qu'elle ___</span><span class="ligne ligne--court"></span></li><li><span class="q">« Je vérifierai mes notes. » devient : Il a promis qu'il ___</span><span class="ligne ligne--court"></span></li><li><span class="q">« Je vais envoyer le compte rendu. » devient : Elle a annoncé qu'elle ___</span><span class="ligne ligne--court"></span></li><li><span class="q">« Ce résumé est trop proche. » devient : Elle a expliqué qu'il ___</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Ce qui change aussi</h2><table><thead><tr><th>Ce qui bouge</th><th>Exemple</th></tr></thead><tbody><tr><td class="cle">Les personnes</td><td>je devient il ou elle</td></tr><tr><td class="cle">Les possessifs</td><td>mon devient son, notre devient leur</td></tr><tr><td class="cle">Aujourd'hui</td><td>devient ce jour-là</td></tr><tr><td class="cle">Demain</td><td>devient le lendemain</td></tr><tr><td class="cle">Hier</td><td>devient la veille</td></tr></tbody></table><div class="note">Un compte rendu se relit des semaines plus tard : « demain » n'y veut plus rien dire.</div></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Grammaire</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">« Elle a demandé quand partait-il ? »</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">« Elle a demandé quand il partait. »</p></div></div><div class="note">Une question rapportée n'a ni inversion, ni point d'interrogation, ni « est-ce que ». Trois formes seulement : s'il venait, ce qu'il comptait, quand il partait.</div></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Mettre en relief, à l'écrit</h2><table><thead><tr><th>La construction</th><th>Un exemple</th></tr></thead><tbody><tr><td class="cle">c'est… qui</td><td>C'est Miguel qui a proposé de noter l'ombre.</td></tr><tr><td class="cle">c'est… que</td><td>C'est samedi qu'on y va, et non vendredi.</td></tr><tr><td class="cle">ce que…, c'est</td><td>Ce qu'on cherche, c'est une différence.</td></tr><tr><td class="cle">ce qui…, c'est</td><td>Ce qui manque, c'est l'ombre au sol.</td></tr></tbody></table><div class="note">En parlant, la voix appuie. À l'écrit, la construction fait ce travail.</div></section><section class="bloc card"><div class="lbl">Production écrite</div><h2 class="t">Le compte rendu de votre dernière rencontre</h2><p class="consigne">Une page, six sections, à écrire pendant la séance.</p><ol class="ex"><li><span class="q">Le cadre</span><span class="ligne"></span></li><li><span class="q">Les positions</span><span class="ligne"></span></li><li><span class="q">Le désaccord</span><span class="ligne"></span></li><li><span class="q">Les décisions</span><span class="ligne"></span></li><li><span class="q">À faire</span><span class="ligne"></span></li><li><span class="q">À l'absent</span><span class="ligne"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Rapportez au passé une phrase que quelqu'un a dite en classe aujourd'hui.</p><ul><li>Le nom, le verbe introducteur au passé, puis la phrase.</li><li>Attention au temps du verbe rapporté.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Rapporter au passé : tout recule d'un cran</h2><section class="bloc card ml"><h3>Le savoir qui fait tenir un compte rendu</h3><p class="mp">Un compte rendu est fait, du début à la fin, de phrases rapportées : Youssouf a proposé que…, Miguel a répondu que…, elle a précisé que… Sans ce mécanisme, il ne reste qu'une transcription — trois pages du dialogue, que personne ne lira. Avec lui, une page utile. C'est le savoir le plus rentable du module.</p><div class="note">Le verbe qui introduit est au passé, donc tout ce qui suit recule. Vous ne choisissez pas : le temps de départ décide du temps d'arrivée.</div></section><section class="bloc card ml"><h3>Les quatre reculs à savoir par cœur</h3><p class="mp">Quatre couples, et ils couvrent presque tout ce que vous aurez à rapporter.</p><table class="ana"><tr><td>présent → imparfait</td><td class="">« Je pars » → il a dit qu'il <b>partait</b></td></tr><tr><td>passé composé → plus-que-parfait</td><td class="">« Je suis parti » → il a dit qu'il <b>était parti</b></td></tr><tr><td>futur → conditionnel présent</td><td class="">« Je partirai » → il a dit qu'il <b>partirait</b></td></tr><tr><td>va + infinitif → allait + infinitif</td><td class="cle">« Je vais partir » → il a dit qu'il <b>allait partir</b></td></tr></table><p class="dit"><span class="k">On dit</span> Il a dit qu'il partait. Il a dit qu'il était parti. Il a dit qu'il partirait. Il a dit qu'il allait partir.</p><div class="note">Le troisième couple explique pourquoi le conditionnel du défi 1 revient ici : dans un discours rapporté au passé, il n'exprime aucune incertitude — il exprime l'avenir.</div></section><section class="bloc card ml"><h3>Les trois temps qui ne reculent pas</h3><p class="mp">Trois temps sont déjà en arrière : il n'y a pas de cran de plus, et ils restent tels quels.</p><table class="ana"><tr><td>L'imparfait</td><td class="">« Je travaillais » → elle a dit qu'elle <b>travaillait</b></td></tr><tr><td>Le conditionnel</td><td class="">« Je viendrais » → elle a dit qu'elle <b>viendrait</b></td></tr><tr><td>Le subjonctif</td><td class="cle">« Il faut que je parte » → elle a dit qu'il fallait qu'elle <b>parte</b></td></tr></table><p class="dit"><span class="k">On dit</span> Elle a dit qu'elle travaillait. Elle a dit qu'elle viendrait.</p><div class="note">Beaucoup d'élèves reculent l'imparfait vers le plus-que-parfait par excès de zèle. Il n'y a rien à reculer.</div></section><section class="bloc card ml"><h3>Ce qui bouge en même temps que le verbe</h3><p class="mp">Trois choses de plus bougent en même temps que le verbe. Les oublier produit des phrases où l'on ne sait plus de qui ni de quand on parle.</p><table class="ana"><tr><td>Les personnes</td><td class="">je → il ou elle · tu → je, selon qui rapporte</td></tr><tr><td>Les possessifs</td><td class="">mon → son · notre → leur</td></tr><tr><td>Les repères de temps</td><td class="cle">aujourd'hui → <b>ce jour-là</b> · demain → <b>le lendemain</b> · hier → <b>la veille</b></td></tr></table><p class="dit"><span class="k">On dit</span> Il a dit qu'il écrivait à Perrine le lendemain.</p><div class="note">« Il a dit qu'il écrivait demain » se comprend, mais devient faux dès qu'on relit le compte rendu trois jours plus tard. <i>Le lendemain</i> reste juste pour toujours.</div></section><section class="bloc card ml"><h3>La question rapportée</h3><p class="mp">Ni point d'interrogation, ni inversion, ni <i>est-ce que</i>. Trois formes seulement.</p><table class="ana"><tr><td>Question par oui ou non</td><td class="">« Est-ce que tu viens ? » → elle a demandé <b>s'il</b> venait</td></tr><tr><td>Question en quoi</td><td class="">« Tu comptes quoi ? » → elle a demandé <b>ce qu'</b>il comptait</td></tr><tr><td>Question avec un mot interrogatif</td><td class="cle">« Quand pars-tu ? » → elle a demandé <b>quand</b> il partait</td></tr></table><p class="dit"><span class="k">On dit</span> Elle a demandé s'il venait. Elle a demandé ce qu'il comptait exactement.</p><div class="note"><i>Qu'est-ce que</i> et <i>quoi</i> deviennent tous les deux <b>ce que</b>. C'est la transformation qu'on rate le plus souvent.</div></section><section class="bloc card ml"><h3>Du dialogue au compte rendu</h3><p class="mp">Choisissez une réplique, puis la version rapportée.</p><table class="labo"><thead><tr><th>Quelle réplique ? · Quelle version ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">« Je propose qu'on compte. » + au présent</td><td>Il dit qu'il propose qu'on compte.</td><td>verbe introducteur au présent : rien ne recule</td></tr><tr><td class="cle">« Je propose qu'on compte. » + au passé</td><td>Il a dit qu'il proposait qu'on compte.</td><td>présent → imparfait ; le subjonctif ne bouge pas</td></tr><tr><td class="cle">« J'ai pris la mesure en juillet. » + au présent</td><td>Elle dit qu'elle a pris la mesure en juillet.</td><td>passé composé conservé</td></tr><tr><td class="cle">« J'ai pris la mesure en juillet. » + au passé</td><td>Elle a précisé qu'elle avait pris la mesure en juillet.</td><td>passé composé → plus-que-parfait</td></tr><tr><td class="cle">« Je vérifierai mes notes. » + au présent</td><td>Il promet qu'il vérifiera ses notes.</td><td>futur conservé</td></tr><tr><td class="cle">« Je vérifierai mes notes. » + au passé</td><td>Il a promis qu'il vérifierait ses notes.</td><td>futur → conditionnel présent</td></tr><tr><td class="cle">« Tu comptes quoi ? » + au présent</td><td>Elle demande ce qu'il compte.</td><td>« quoi » devient « ce que », sans inversion</td></tr><tr><td class="cle">« Tu comptes quoi ? » + au passé</td><td>Elle lui a demandé ce qu'il comptait.</td><td>et le présent recule à l'imparfait</td></tr></tbody></table><div class="note">Comparez chaque paire : c'est le temps du <b>verbe introducteur</b> qui commande tout le reste.</div></section><section class="bloc card ml"><h3>Six répliques de la rencontre, mises au compte rendu</h3><p class="mp">À gauche ce qui a été dit, à droite ce que Neusa a écrit le soir même.</p><table class="ex2"><tr><td>« Je propose qu'on compte les arbres. »</td><td>Youssouf a proposé qu'on compte les arbres.</td></tr><tr><td>« Ça ne prouve rien. »</td><td>Miguel a répondu que cela ne prouvait rien.</td></tr><tr><td>« J'ai pris la mesure en juillet. »</td><td>Elle a précisé qu'elle avait pris la mesure en juillet.</td></tr><tr><td>« Je vérifierai mes notes. »</td><td>Youssouf a promis qu'il vérifierait ses notes.</td></tr><tr><td>« Je vais envoyer le compte rendu. »</td><td>Neusa a annoncé qu'elle allait envoyer le compte rendu.</td></tr><tr><td>« J'écris à Perrine demain. »</td><td>Miguel a dit qu'il écrivait à Perrine le lendemain.</td></tr></table></section><section class="bloc card ml"><h3>Le demain qui ne veut plus rien dire</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">garder « demain » et « aujourd'hui »</p><div class="k">Ce qui arrive</div><p class="ph">le lendemain, ce jour-là</p><p class="px">Un compte rendu se relit des semaines plus tard. « Demain » ne veut alors plus rien dire, et personne ne sait quelle date était visée.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">reculer l'imparfait</p><div class="k">Ce qui arrive</div><p class="ph">le laisser tel quel</p><p class="px">« Elle a dit qu'elle avait travaillé » ne rapporte pas « je travaillais » : ça rapporte « j'ai travaillé ». Un cran de trop change le sens.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">garder l'inversion de la question</p><div class="k">Ce qui arrive</div><p class="ph">ni inversion ni point d'interrogation</p><p class="px">« Elle a demandé quand partait-il ? » n'existe pas. On écrit : elle a demandé <b>quand il partait</b>, avec un point.</p></div></div></section><section class="bloc card ml"><h3>Quatre phrases à rapporter</h3><p class="mp">Quatre transformations.</p><ol class="check"><li><span class="q">« Je pars à dix heures. » → Il a dit qu'il ___ à dix heures.</span><ul class="opts"><li>partait</li><li>est parti</li></ul></li><li><span class="q">« Je vérifierai. » → Il a promis qu'il ___.</span><ul class="opts"><li>vérifiera</li><li>vérifierait</li></ul></li><li><span class="q">« Tu comptes quoi ? » → Elle a demandé ___ il comptait.</span><ul class="opts"><li>ce qu'</li><li>qu'est-ce qu'</li></ul></li><li><span class="q">« Je viendrais si je pouvais. » → Elle a dit qu'elle ___ si elle pouvait.</span><ul class="opts"><li>serait venue</li><li>viendrait</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> partait — Présent → imparfait. Le premier des quatre reculs. · <b>2.</b> vérifierait — Futur → conditionnel présent : ici il n'exprime aucun doute, seulement l'avenir. · <b>3.</b> ce qu' — <i>Quoi</i> et <i>qu'est-ce que</i> deviennent tous les deux <b>ce que</b>. · <b>4.</b> viendrait — Le conditionnel est déjà en arrière : il ne recule pas.</div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Mettre en relief : c'est… qui, ce que… c'est</h2><section class="bloc card ml"><h3>Comment écrire l'insistance</h3><p class="mp">En parlant, vous appuyez sur le mot qui compte, et tout le monde comprend où regarder. Dans un compte rendu ou sur une diapositive, personne n'entend votre voix : la seule façon d'écrire cette insistance est de <b>construire</b> la phrase autrement. C'est ce que font les phrases emphatiques — elles ne changent rien au sens, elles déplacent l'attention.</p><div class="note">Le programme les appelle des phrases <b>emphatiques</b>, et il en nomme deux procédés : le clivage (c'est… qui) et le pseudoclivage (ce que…, c'est).</div></section><section class="bloc card ml"><h3>C'est… qui — pour mettre en avant le sujet</h3><p class="mp">On encadre celui qui fait l'action. Le verbe s'accorde avec ce qu'on encadre, pas avec « c'est ».</p><table class="ana"><tr><td>La phrase plate</td><td class="">Miguel a trouvé la solution.</td></tr><tr><td>La phrase emphatique</td><td class=""><b>C'est</b> Miguel <b>qui</b> a trouvé la solution.</td></tr><tr><td>Avec un pronom</td><td class="cle">c'est moi <b>qui</b> anime · c'est nous <b>qui</b> avons décidé</td></tr></table><p class="dit"><span class="k">On dit</span> C'est Miguel qui a trouvé la solution. C'est moi qui anime.</p><div class="note">« C'est moi qui <b>anime</b> », jamais « qui anim<b>e</b>nt » ni « qui animes » : le verbe suit la personne encadrée.</div></section><section class="bloc card ml"><h3>C'est… que — pour tout le reste</h3><p class="mp">Complément, moment, lieu, manière : tout ce qui n'est pas le sujet passe par <i>que</i>.</p><table class="ana"><tr><td>Le complément</td><td class=""><b>C'est</b> l'ombre <b>qu'</b>on note, pas le nombre.</td></tr><tr><td>Le moment</td><td class=""><b>C'est</b> samedi <b>qu'</b>on y va.</td></tr><tr><td>Le lieu</td><td class="cle"><b>C'est</b> dans le secteur est <b>que</b> l'écart est le plus grand.</td></tr></table><p class="dit"><span class="k">On dit</span> C'est l'ombre qu'on note, pas le nombre. C'est samedi qu'on y va.</p><div class="note">Le choix entre <i>qui</i> et <i>que</i> ne dépend pas de la personne ni de la chose : il dépend de la fonction. Sujet, <i>qui</i> ; le reste, <i>que</i>.</div></section><section class="bloc card ml"><h3>Ce que…, c'est — annoncer avant de dire</h3><p class="mp">On pose d'abord la question dans la tête de l'autre, on répond ensuite. C'est la forme de l'animation et de l'exposé.</p><table class="ana"><tr><td>Pour un complément</td><td class=""><b>Ce qu'</b>on cherche, <b>c'est</b> une différence entre deux rues.</td></tr><tr><td>Pour un sujet</td><td class=""><b>Ce qui</b> manque, <b>c'est</b> l'ombre au sol.</td></tr><tr><td>Pour une action</td><td class="cle"><b>Ce que</b> je propose, <b>c'est</b> de noter les deux.</td></tr></table><p class="dit"><span class="k">On dit</span> Ce qu'on cherche, c'est une différence entre deux rues. Ce qui manque, c'est l'ombre au sol.</p><div class="note"><b>Ce qui</b> quand la suite est le sujet du verbe, <b>ce que</b> quand elle en est le complément. Même règle que <i>qui</i> et <i>que</i>, un cran plus loin.</div></section><section class="bloc card ml"><h3>La phrase plate, et ses mises en relief</h3><p class="mp">Choisissez une phrase, puis ce que vous voulez mettre en avant.</p><table class="labo"><thead><tr><th>Quelle phrase ? · Quoi mettre en avant ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">Miguel note l'ombre samedi + la personne ou la cause</td><td>C'est Miguel qui note l'ombre.</td><td>sujet encadré : c'est… qui</td></tr><tr><td class="cle">Miguel note l'ombre samedi + ce qu'on fait</td><td>C'est l'ombre que Miguel note.</td><td>complément encadré : c'est… que</td></tr><tr><td class="cle">Miguel note l'ombre samedi + le moment</td><td>C'est samedi que Miguel note l'ombre.</td><td>le moment : c'est… que</td></tr><tr><td class="cle">la canopée explique l'écart + la personne ou la cause</td><td>C'est la canopée qui explique l'écart.</td><td>la cause est le sujet : qui</td></tr><tr><td class="cle">la canopée explique l'écart + ce qu'on fait</td><td>Ce que la canopée explique, c'est l'écart entre deux rues.</td><td>pseudoclivage : on annonce, puis on dit</td></tr><tr><td class="cle">la canopée explique l'écart + le moment</td><td>C'est dans le secteur est que l'écart est le plus grand.</td><td>le lieu s'encadre comme le moment</td></tr><tr><td class="cle">nous partons à dix heures + la personne ou la cause</td><td>C'est nous qui avons décidé de partir à dix heures.</td><td>accord du verbe avec nous : avons</td></tr><tr><td class="cle">nous partons à dix heures + ce qu'on fait</td><td>Ce que nous avons décidé, c'est de partir à dix heures.</td><td>la forme d'un compte rendu</td></tr><tr><td class="cle">nous partons à dix heures + le moment</td><td>C'est à dix heures que nous partons.</td><td>et non à neuf : l'heure est l'information</td></tr></tbody></table><div class="note">Écoutez-les : la voix appuie déjà sur le groupe encadré. À l'écrit, la construction fait ce travail toute seule.</div></section><section class="bloc card ml"><h3>Six phrases, avant et après</h3><p class="mp">À gauche la phrase plate, à droite la même avec sa mise en relief.</p><table class="ex2"><tr><td>Miguel a proposé de noter l'ombre.</td><td>C'est Miguel qui a proposé de noter l'ombre.</td></tr><tr><td>On note l'ombre, pas le nombre.</td><td>C'est l'ombre qu'on note, pas le nombre.</td></tr><tr><td>On y va samedi.</td><td>C'est samedi qu'on y va.</td></tr><tr><td>Nous cherchons une différence.</td><td>Ce que nous cherchons, c'est une différence.</td></tr><tr><td>L'ombre au sol manque dans ce secteur.</td><td>Ce qui manque, c'est l'ombre au sol.</td></tr><tr><td>J'anime la rencontre.</td><td>C'est moi qui anime la rencontre.</td></tr></table></section><section class="bloc card ml"><h3>Qui ou que, et l'accord du verbe</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">« c'est moi qui anime » écrit « qui animent »</p><div class="k">Ce qui arrive</div><p class="ph">accorder avec la personne encadrée</p><p class="px">Le verbe ne s'accorde pas avec <i>c'est</i>. C'est moi qui <b>anime</b>, c'est toi qui <b>animes</b>, c'est nous qui <b>animons</b>.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">employer « qui » pour un complément</p><div class="k">Ce qui arrive</div><p class="ph">sujet = qui, le reste = que</p><p class="px">« C'est l'ombre &lt;s&gt;qui&lt;/s&gt; on note » est faux : <i>l'ombre</i> est complément du verbe <i>noter</i>, donc <b>que</b>.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">mettre tout en relief</p><div class="k">Ce qui arrive</div><p class="ph">une par paragraphe</p><p class="px">Si chaque phrase est emphatique, plus rien ne ressort. La mise en relief marche par contraste avec des phrases ordinaires autour.</p></div></div></section><section class="bloc card ml"><h3>Quatre mises en relief</h3><p class="mp">Quatre choix.</p><ol class="check"><li><span class="q">« ___ Miguel ___ a trouvé la solution. »</span><ul class="opts"><li>C'est … qui</li><li>C'est … que</li></ul></li><li><span class="q">« ___ l'ombre ___ on note. »</span><ul class="opts"><li>C'est … qui</li><li>C'est … qu'</li></ul></li><li><span class="q">« C'est nous qui ___ décidé. »</span><ul class="opts"><li>avons</li><li>ont</li></ul></li><li><span class="q">« ___ manque, c'est l'ombre au sol. »</span><ul class="opts"><li>Ce qui</li><li>Ce que</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> C'est … qui — Miguel fait l'action : c'est le sujet, donc <i>qui</i>. · <b>2.</b> C'est … qu' — L'ombre est complément de <i>noter</i> : <i>que</i>. · <b>3.</b> avons — Le verbe s'accorde avec <i>nous</i>, la personne encadrée. · <b>4.</b> Ce qui — <i>L'ombre</i> est le sujet de <i>manque</i> : <i>ce qui</i>.</div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Écrire un compte rendu qui sert à quelque chose</h2><section class="bloc card ml"><h3>À quoi il sert, et à qui</h3><p class="mp">Un compte rendu n'est pas un souvenir de la rencontre : c'est un <b>outil</b>. Il sert d'abord à celui qui n'était pas là, qui doit pouvoir travailler dès le lendemain sans appeler personne. Il sert ensuite à ceux qui étaient là, quand ils ne se rappellent plus qui devait faire quoi. Et il sert la semaine suivante, quand quelqu'un dit « on n'avait pas décidé ça ».</p><div class="note">Une page. Pas deux. Un compte rendu de trois pages n'est pas lu, donc il ne sert à rien du tout.</div></section><section class="bloc card ml"><h3>Le cadre, en trois lignes</h3><p class="mp">Première section, et la plus courte. Elle permet à l'absent de savoir tout de suite si une décision a été prise sans lui.</p><table class="ana"><tr><td>Ce qu'on écrit</td><td class="">la date, l'heure de début et de fin, qui était là, qui manquait</td></tr><tr><td>Exemple</td><td class="">« Rencontre de l'équipe 3, mardi de 19 h 05 à 19 h 35. Présents : Youssouf, Miguel et moi. »</td></tr><tr><td>Ce qu'on n'écrit pas</td><td class="cle">pourquoi la personne était absente</td></tr></table><p class="dit"><span class="k">On dit</span> Rencontre de l'équipe 3, mardi de dix-neuf heures cinq à dix-neuf heures trente-cinq.</p><div class="note">L'heure de fin n'est pas décorative : une rencontre de trente minutes et une rencontre de deux heures ne produisent pas le même genre de décisions.</div></section><section class="bloc card ml"><h3>Les positions, une phrase chacune</h3><p class="mp">Deuxième section. Chaque proposition est rapportée en une phrase, au discours indirect passé, avec le nom de qui l'a portée.</p><table class="ana"><tr><td>On écrit</td><td class="">« Youssouf a proposé que nous descendions les deux rues samedi. »</td></tr><tr><td>On n'écrit pas</td><td class="">« Youssouf : Ma proposition est simple, samedi matin on descend… »</td></tr><tr><td>Le principe</td><td class="cle">on dit ce qui a été soutenu, on ne transcrit pas</td></tr></table><p class="dit"><span class="k">On dit</span> Youssouf a proposé que nous descendions les deux rues samedi matin.</p><div class="note">Le nom devant chaque position n'est pas une formalité : c'est ce qui permet à l'absent de savoir à qui parler s'il n'est pas d'accord.</div></section><section class="bloc card ml"><h3>Le désaccord, écrit et réglé</h3><p class="mp">Troisième section, celle que tout le monde escamote. On nomme l'écart, puis on dit comment il s'est refermé.</p><table class="ana"><tr><td>On écrit</td><td class="">« Le désaccord ne portait pas sur le fait d'y aller, mais sur ce que nous allions noter. »</td></tr><tr><td>Puis</td><td class="">« Miguel a proposé de noter l'ombre ; Youssouf a accepté de l'ajouter. »</td></tr><tr><td>Ce qu'on ne fait pas</td><td class="cle">écrire « tout le monde était d'accord » quand ce n'était pas le cas</td></tr></table><p class="dit"><span class="k">On dit</span> Le désaccord ne portait pas sur le fait d'y aller, mais sur ce que nous allions noter.</p><div class="note">Un compte rendu qui efface le désaccord se retourne contre son auteur à la rencontre suivante, quand la question revient intacte.</div></section><section class="bloc card ml"><h3>Les décisions et les engagements</h3><p class="mp">Deux dernières sections, et ce sont elles qu'on relira. Les décisions sont numérotées ; les engagements portent un nom et une date.</p><table class="ana"><tr><td>Une décision</td><td class="">« Nous partons samedi à 10 h, et non à 9 h, parce que l'ombre à 9 h ne se compare pas. »</td></tr><tr><td>Un engagement</td><td class="">« Miguel écrit à Perrine avant jeudi. »</td></tr><tr><td>La règle</td><td class="cle">sans nom, personne ne le fait ; sans date, tout le monde le fait la dernière semaine</td></tr></table><p class="dit"><span class="k">On dit</span> Miguel écrit à Perrine avant jeudi. Youssouf apporte deux copies de la carte samedi matin.</p><div class="note">Une décision se donne toujours avec sa raison : c'est ce qui empêche de la rediscuter deux fois.</div></section><section class="bloc card ml"><h3>La même rencontre, bien ou mal rendue</h3><p class="mp">Choisissez une section, puis la version.</p><table class="labo"><thead><tr><th>Quelle section ? · Quelle version ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">le cadre + la version faible</td><td>On s'est vus mardi soir.</td><td>ni heure, ni présents : l'absent ne sait rien</td></tr><tr><td class="cle">le cadre + la version utile</td><td>Mardi, de dix-neuf heures cinq à dix-neuf heures trente-cinq. Présents : Youssouf, Miguel et moi.<span class="tags">Mardi, 19 h 05 à 19 h 35. Présents : Youssouf, Miguel, moi.</span></td><td>trois lignes, et tout y est</td></tr><tr><td class="cle">une position + la version faible</td><td>On a parlé de la méthode.</td><td>aucune position, aucun nom : inutilisable</td></tr><tr><td class="cle">une position + la version utile</td><td>Youssouf a proposé de compter les arbres des deux rues.</td><td>un nom, une phrase, au discours rapporté</td></tr><tr><td class="cle">le désaccord + la version faible</td><td>Tout le monde était d'accord.</td><td>faux, et la question reviendra intacte</td></tr><tr><td class="cle">le désaccord + la version utile</td><td>Le désaccord portait sur ce qu'on note, pas sur le fait d'y aller.</td><td>l'écart est nommé, donc il est réglé</td></tr><tr><td class="cle">un engagement + la version faible</td><td>Il faudrait écrire à Perrine.</td><td>ni nom ni date : personne ne le fera</td></tr><tr><td class="cle">un engagement + la version utile</td><td>Miguel écrit à Perrine avant jeudi.</td><td>un nom, un verbe, une date</td></tr></tbody></table><div class="note">Les versions faibles ne sont pas fausses : elles sont inutilisables. C'est pire, parce que personne ne s'en aperçoit avant la semaine suivante.</div></section><section class="bloc card ml"><h3>Les six sections, dans l'ordre</h3><p class="mp">Le plan d'un compte rendu d'une page.</p><table class="ex2"><tr><td>1. Le cadre</td><td>date, heures, présents, absents</td></tr><tr><td>2. Les positions</td><td>une phrase par personne, au discours rapporté</td></tr><tr><td>3. Le désaccord</td><td>ce sur quoi il portait, et comment il s'est réglé</td></tr><tr><td>4. Les décisions</td><td>numérotées, chacune avec sa raison</td></tr><tr><td>5. À faire</td><td>un nom, un verbe, une date par ligne</td></tr><tr><td>6. La demande à l'absent</td><td>ce qu'on attend de lui, et avant quand</td></tr></table></section><section class="bloc card ml"><h3>Trois façons de rendre un compte rendu inutile</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">transcrire le dialogue</p><div class="k">Ce qui arrive</div><p class="ph">rapporter en une phrase par position</p><p class="px">Trois pages de répliques ne se lisent pas. Ce n'est pas un procès-verbal de tribunal : c'est une page de travail.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">écrire « on » partout</p><div class="k">Ce qui arrive</div><p class="ph">nommer les personnes</p><p class="px">« On a décidé, on devrait, on va vérifier » : à la fin, personne n'a rien à faire. Chaque engagement porte un nom propre.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">l'envoyer trois jours plus tard</p><div class="k">Ce qui arrive</div><p class="ph">le soir même</p><p class="px">Une décision qu'un absent apprend le vendredi pour un travail du samedi n'est pas une décision : c'est une nouvelle.</p></div></div></section><section class="bloc card ml"><h3>Quatre décisions d'écriture</h3><p class="mp">Quatre décisions d'écriture.</p><ol class="check"><li><span class="q">Une position d'un coéquipier s'écrit…</span><ul class="opts"><li>en une phrase rapportée, avec son nom</li><li>au mot à mot, entre guillemets</li></ul></li><li><span class="q">Le désaccord, dans un compte rendu…</span><ul class="opts"><li>s'écrit, avec la façon dont il s'est réglé</li><li>s'efface pour garder la bonne entente</li></ul></li><li><span class="q">Un engagement doit porter…</span><ul class="opts"><li>un nom et une date</li><li>une explication</li></ul></li><li><span class="q">Le compte rendu part…</span><ul class="opts"><li>le soir même</li><li>avant la rencontre suivante</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> en une phrase rapportée, avec son nom — On dit ce qui a été soutenu ; on ne transcrit pas. · <b>2.</b> s'écrit, avec la façon dont il s'est réglé — Un désaccord effacé revient intact à la rencontre suivante. · <b>3.</b> un nom et une date — Sans nom, personne ne le fait ; sans date, tout le monde le fait trop tard. · <b>4.</b> le soir même — Le soir même : c'est ce qui permet à l'absent de travailler dès le lendemain.</div></section></section></div>
+<footer><span>D2 · Faire parler l'équipe</span><span>Fiche élève</span></footer>
+</body>
+</html>

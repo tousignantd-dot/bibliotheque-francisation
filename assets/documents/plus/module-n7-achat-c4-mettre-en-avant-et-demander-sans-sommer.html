@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C4 · Mettre en avant, et demander sans sommer — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance C4 · Module 6 · 75 minutes</div>
+    <h1>Mettre en avant, et demander sans sommer</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">La personne au comptoir retient la première moitié de votre phrase. Deux procédés décident vous-même de ce qu'elle emportera.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>mettre un mot en relief avec « c'est… qui » et « c'est… que » ;</li><li>mettre une idée en relief avec « ce que… c'est » ;</li><li>former le conditionnel présent à partir du radical du futur ;</li><li>savoir quand passer du conditionnel à l'indicatif.</li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Deux procédés de mise en relief</h2><table><thead><tr><th>La forme</th><th>Quand l'employer</th></tr></thead><tbody><tr><td class="cle">c'est… qui</td><td>l'élément mis en avant est le sujet</td></tr><tr><td class="cle">c'est… que</td><td>dans tous les autres cas</td></tr><tr><td class="cle">ce que… c'est</td><td>pour une idée entière</td></tr><tr><td class="cle">ce n'est pas… c'est</td><td>la plus forte : elle écarte et elle pose</td></tr><tr><td class="cle">moi, je… ; l'auto, elle…</td><td>à l'oral seulement, jamais dans la lettre</td></tr></tbody></table></section><section class="bloc regle"><div class="lbl">« Ce que je demande, c'est… » annonce qu'il n'y a qu'une demande</div><p class="r">C'est la phrase la plus rentable du module.</p><p class="pr">Elle coupe court à la négociation : une seule chose est sur la table, et l'autre doit répondre à celle-là. Deux demandes dans le même échange en font un marchandage, et le commerçant accordera la moins chère. Cette règle vaut aussi pour la lettre du bloc D.</p></section><section class="bloc card"><div class="lbl">Grammaire</div><h2 class="t">Mettez en relief</h2><p class="consigne">Refaites la phrase avec le procédé indiqué.</p><ol class="ex"><li><span class="q">La garantie légale s'applique. (c'est… qui)</span><span class="ligne"></span></li><li><span class="q">Je demande la réparation. (ce que… c'est)</span><span class="ligne"></span></li><li><span class="q">Je conteste l'exclusion. (forme négative)</span><span class="ligne"></span></li><li><span class="q">J'ai posé la question deux fois. (c'est… qui)</span><span class="ligne"></span></li><li><span class="q">Vous devez réparer avant vendredi. (c'est… que)</span><span class="ligne"></span></li><li><span class="q">Le rapport établit la fuite. (c'est… qui)</span><span class="ligne"></span></li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Le conditionnel présent</h2><table><thead><tr><th>La pièce</th><th>Où on la prend</th></tr></thead><tbody><tr><td class="cle">Le radical</td><td>celui du futur, sans exception</td></tr><tr><td class="cle">Les terminaisons</td><td>celles de l'imparfait</td></tr><tr><td class="cle">Les irréguliers</td><td>les mêmes qu'au futur</td></tr><tr><td class="cle">Le s à « je »</td><td>toujours : je voudrais, pas je voudrai</td></tr><tr><td class="cle">Ce qu'il change</td><td>le ton, jamais le contenu</td></tr></tbody></table></section><section class="bloc card"><div class="lbl">Grammaire</div><h2 class="t">Mettez au conditionnel présent</h2><p class="consigne">Le verbe entre parenthèses.</p><ol class="ex"><li><span class="q">(accepter) ___ -vous de faire réparer la transmission sans frais ?</span><span class="ligne ligne--court"></span></li><li><span class="q">Je (vouloir) ___ savoir à quelle catégorie appartient mon véhicule.</span><span class="ligne ligne--court"></span></li><li><span class="q">Me (passer) ___ -vous une autre voiture en attendant ?</span><span class="ligne ligne--court"></span></li><li><span class="q">Il me (falloir) ___ une copie du rapport.</span><span class="ligne ligne--court"></span></li><li><span class="q">J'(aimer) ___ que la réponse me soit donnée par écrit.</span><span class="ligne ligne--court"></span></li><li><span class="q">Ce (être) ___ possible de faire le travail chez mon garage ?</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Piège</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">rester au conditionnel dans la lettre</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">passer à l'indicatif une fois le délai posé</p></div></div><div class="note">« Je vous demanderais de procéder » n'est pas une mise en demeure : c'est encore une demande. Dans la lettre, on écrit « je vous demande de procéder ». Le conditionnel au comptoir, l'indicatif dans la lettre — c'est cette progression qui rend l'écrit crédible.</div></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écris ta demande au comptoir : une phrase emphatique et une demande au conditionnel.</p><ul><li>« Ce que je demande, c'est… »</li><li>« Accepteriez-vous de… ? »</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Mettre en avant ce que le comptoir doit retenir</h2><section class="bloc card ml"><h3>La personne en face retient la première moitié de votre phrase</h3><p class="mp">Au comptoir d'un service à la clientèle, on traite vingt dossiers par jour. Ce qui reste d'un échange de trois minutes, c'est le début : les premiers mots de chaque phrase. La phrase emphatique sert exactement à cela — décider vous-même de ce qui sera retenu, en le déplaçant à l'avant. Ce n'est pas un effet de style ; c'est un choix de ce que l'autre emportera.</p><div class="note">Le programme du niveau 7 consacre cinq points de savoir aux « phrases emphatiques ». C'est beaucoup, et ce n'est pas un hasard : c'est le procédé qui permet d'insister sans hausser le ton.</div></section><section class="bloc card ml"><h3>Le premier procédé : <b>c'est… qui</b>, <b>c'est… que</b></h3><p class="mp">On extrait un mot ou un groupe et on le met en tête, encadré.</p><table class="ana"><tr><td>Quand l'élément est sujet, on emploie <b>qui</b></td><td class="">C'est la garantie légale qui s'applique.</td></tr><tr><td>Dans tous les autres cas, <b>que</b></td><td class="">C'est la réparation que je demande. · C'est avant vendredi que je veux une réponse.</td></tr><tr><td>Ce que ça déplace</td><td class="cle">le mot mis en avant devient le sujet de la conversation</td></tr><tr><td>Ce que ça ne change pas</td><td class="">le reste de la phrase, mot pour mot</td></tr></table><p class="dit"><span class="k">On dit</span> C'est la garantie légale qui s'applique, pas la prolongée.</p><div class="note">Le test pour choisir entre <b>qui</b> et <b>que</b> : remettez la phrase à plat. Si le mot mis en avant faisait le verbe, c'est <b>qui</b> ; s'il subissait ou complétait, c'est <b>que</b>.</div></section><section class="bloc card ml"><h3>Le second procédé : <b>ce que… c'est</b>, <b>ce qui… c'est</b></h3><p class="mp">Pour mettre en avant une idée entière plutôt qu'un mot. C'est la forme la plus utile dans une réclamation.</p><table class="ana"><tr><td>La forme</td><td class="">Ce que je demande, c'est la réparation.</td></tr><tr><td>Sa variante</td><td class="">Ce qui me dérange, c'est la date, pas l'âge de l'auto.</td></tr><tr><td>Sa force particulière</td><td class="cle">elle annonce d'avance qu'une seule chose est demandée</td></tr><tr><td>Son négatif</td><td class="">Ce n'est pas le prix que je conteste, c'est l'exclusion.</td></tr></table><p class="dit"><span class="k">On dit</span> Ce que je demande, c'est la réparation, rien d'autre.</p><div class="note">« Ce que je demande, c'est… » est la phrase la plus rentable de tout ce module. Elle coupe court à la négociation en annonçant qu'il n'y a qu'une demande, et elle oblige l'autre à répondre à celle-là.</div></section><section class="bloc card ml"><h3>La reprise par un pronom : bonne à l'oral, à éviter à l'écrit</h3><p class="mp">Le français parlé du Québec met le sujet en avant et le reprend par un pronom. C'est correct et c'est efficace — en parlant.</p><table class="ana"><tr><td>La forme</td><td class="">L'auto, elle, a vingt-quatre jours de route.</td></tr><tr><td>Avec un démonstratif</td><td class="">Cette exclusion-là, je ne l'ai jamais lue.</td></tr><tr><td>Avec un pronom tonique</td><td class="">Moi, je vous parle de la garantie de la loi.</td></tr><tr><td>Dans la lettre</td><td class="cle">on n'en emploie aucune : l'écrit formel les refuse</td></tr></table><p class="dit"><span class="k">On dit</span> Moi, je vous parle de la garantie de la loi.</p><div class="note">Cette différence oral/écrit est réelle et se corrige mal après coup. En parlant, reprenez ; en écrivant, employez « c'est… qui » et « ce que… c'est », qui passent partout.</div></section><section class="bloc card ml"><h3>La même phrase, trois mises en relief</h3><p class="mp">Choisissez une phrase plate, puis ce que vous voulez mettre en avant.</p><table class="labo"><thead><tr><th>Quel énoncé plat ? · Quelle mise en relief ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">La garantie légale s'applique. + c'est… qui / que</td><td>C'est la garantie légale qui s'applique.</td><td>sujet mis en avant, donc « qui »</td></tr><tr><td class="cle">La garantie légale s'applique. + ce que… c'est</td><td>Ce qui s'applique, c'est la garantie légale.</td><td>la même idée, avec le suspense inversé</td></tr><tr><td class="cle">La garantie légale s'applique. + la forme négative</td><td>Ce n'est pas la prolongée qui s'applique, c'est la garantie légale.</td><td>la forme la plus forte : elle écarte et elle pose</td></tr><tr><td class="cle">Je demande la réparation. + c'est… qui / que</td><td>C'est la réparation que je demande.</td><td>complément mis en avant, donc « que »</td></tr><tr><td class="cle">Je demande la réparation. + ce que… c'est</td><td>Ce que je demande, c'est la réparation.</td><td>la plus utile des trois au comptoir</td></tr><tr><td class="cle">Je demande la réparation. + la forme négative</td><td>Ce n'est pas un remboursement que je demande, c'est la réparation.</td><td>elle empêche qu'on vous propose autre chose</td></tr><tr><td class="cle">Je veux une réponse avant vendredi. + c'est… qui / que</td><td>C'est avant vendredi que je veux une réponse.</td><td>un complément de temps se met en avant avec « que »</td></tr><tr><td class="cle">Je veux une réponse avant vendredi. + ce que… c'est</td><td>Ce que j'attends, c'est une réponse avant vendredi.</td><td>plus souple : la demande passe avant la date</td></tr><tr><td class="cle">Je veux une réponse avant vendredi. + la forme négative</td><td>Ce n'est pas la semaine prochaine que je veux une réponse, c'est avant vendredi.</td><td>à garder pour la deuxième visite</td></tr></tbody></table><div class="note">Neuf phrases, un seul contenu. Le fond n'a pas bougé d'un mot : c'est l'ordre qui décide de ce qu'on retient.</div></section><section class="bloc card ml"><h3>Huit phrases plates, huit versions emphatiques</h3><p class="mp">À gauche la phrase ordinaire, à droite celle qui reste.</p><table class="ex2"><tr><td>La garantie légale s'applique.</td><td>C'est la garantie légale qui s'applique.</td></tr><tr><td>Je demande la réparation.</td><td>Ce que je demande, c'est la réparation.</td></tr><tr><td>La date me dérange.</td><td>Ce qui me dérange, c'est la date.</td></tr><tr><td>J'ai posé la question deux fois.</td><td>C'est moi qui ai posé la question deux fois.</td></tr><tr><td>Je conteste l'exclusion.</td><td>Ce n'est pas le prix que je conteste, c'est l'exclusion.</td></tr><tr><td>Le rapport établit la fuite.</td><td>C'est le rapport qui établit la fuite.</td></tr><tr><td>Vous devez réparer avant vendredi.</td><td>C'est avant vendredi que vous devez réparer.</td></tr><tr><td>L'information me manque.</td><td>Ce qui me manque, c'est l'information.</td></tr></table></section><section class="bloc card ml"><h3>Quatre questions sur la mise en relief</h3><p class="mp">Répondez sans remonter dans la leçon.</p><ol class="check"><li><span class="q">« C'est moi qui ___ signé. »</span><ul class="opts"><li>ai</li><li>a</li></ul></li><li><span class="q">« C'est la réparation ___ je demande. »</span><ul class="opts"><li>qui</li><li>que</li></ul></li><li><span class="q">Dans une lettre formelle, on évite…</span><ul class="opts"><li>ce que… c'est</li><li>moi, je…</li></ul></li><li><span class="q">« Ce que je demande, c'est… » sert surtout à…</span><ul class="opts"><li>adoucir</li><li>annoncer une seule demande</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> ai — Le verbe s'accorde avec le pronom mis en relief, pas avec « c'est ». · <b>2.</b> que — La réparation est complément du verbe : donc « que ». · <b>3.</b> moi, je… — La reprise par un pronom est excellente à l'oral et refusée à l'écrit formel. · <b>4.</b> annoncer une seule demande — Elle coupe court à la négociation : il n'y a qu'une chose sur la table.</div></section><section class="bloc card ml"><h3>Trois faux pas, et comment s'en sortir</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">écrire « c'est moi qui a »</p><div class="k">Ce qui arrive</div><p class="ph">remettre le pronom devant le verbe</p><p class="px">« Moi… ai signé. » Le verbe suit le pronom mis en relief, à la même personne que lui.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">mettre deux choses en relief dans la même phrase</p><div class="k">Ce qui arrive</div><p class="ph">en choisir une</p><p class="px">« C'est la garantie légale que je demande avant vendredi » ne met rien en avant. Deux emphases s'annulent.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">employer la reprise pronominale dans la lettre</p><div class="k">Ce qui arrive</div><p class="ph">la remplacer par « c'est… qui »</p><p class="px">« L'auto, elle, a vingt-quatre jours » devient « C'est une auto de vingt-quatre jours ». Même insistance, registre correct.</p></div></div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Le conditionnel : demander sans rien lâcher</h2><section class="bloc card ml"><h3>Changer le ton sans changer le contenu</h3><p class="mp">« Réparez-moi ça » et « accepteriez-vous de faire réparer la transmission ? » demandent exactement la même chose. Le montant est le même, la date est la même, la demande est la même. Ce qui diffère, c'est qu'une des deux phrases oblige la personne en face à se défendre, et l'autre non. Le conditionnel est l'outil le moins coûteux de toute la négociation : il ne concède rien et il ouvre une porte.</p><div class="note">Le programme du niveau 7 donne lui-même l'exemple, dans cette situation-ci : « Me passeriez-vous une autre voiture en attendant ? » Cinq points de savoir sont consacrés au conditionnel présent.</div></section><section class="bloc card ml"><h3>Comment il se forme : le futur, avec les fins de l'imparfait</h3><p class="mp">Aucun radical à apprendre. Si vous savez dire le futur d'un verbe, vous savez son conditionnel.</p><table class="ana"><tr><td>La recette</td><td class="">radical du futur + -ais, -ais, -ait, -ions, -iez, -aient</td></tr><tr><td>Trois exemples réguliers</td><td class="">je réparerai → je réparerais · vous accepterez → vous accepteriez</td></tr><tr><td>Ce qui ne change jamais</td><td class="cle">le radical est celui du futur, y compris pour les irréguliers</td></tr></table><p class="dit"><span class="k">On dit</span> Accepteriez-vous de faire réparer la transmission sans frais ?</p><div class="note">Cette parenté avec le futur est la meilleure nouvelle de la leçon : les verbes qui vous donnaient du fil à retordre au futur sont exactement ceux qui vous en donneront ici, et pas un de plus.</div></section><section class="bloc card ml"><h3>Les huit irréguliers de la réclamation</h3><p class="mp">Ce sont les mêmes qu'au futur, et ils reviennent tous les trois mots.</p><table class="ana"><tr><td>être · avoir</td><td class="">je serais · j'aurais</td></tr><tr><td>aller · faire</td><td class="">j'irais · je ferais</td></tr><tr><td>pouvoir · vouloir</td><td class="">je pourrais · je voudrais</td></tr><tr><td>devoir · savoir</td><td class="cle">je devrais · je saurais</td></tr><tr><td>Et deux impersonnels</td><td class="">il faudrait · il vaudrait mieux</td></tr></table><p class="dit"><span class="k">On dit</span> Je voudrais savoir à quelle catégorie appartient mon véhicule.</p><div class="note">« Il faudrait » et « il vaudrait mieux » sont d'un usage particulier : ils demandent sans désigner personne. « Il faudrait que j'aie une copie du rapport » ne met personne en cause et obtient souvent la copie.</div></section><section class="bloc card ml"><h3>Le <b>-s</b> de la première personne</h3><p class="mp">À l'oral, « je voudrai » et « je voudrais » se ressemblent. À l'écrit, ils ne disent pas la même chose.</p><table class="ana"><tr><td>Le conditionnel</td><td class="">je voudrais, j'aimerais, je pourrais — toujours avec un s</td></tr><tr><td>Le futur</td><td class="">je voudrai, j'aimerai, je pourrai — sans s</td></tr><tr><td>Ce que le futur annonce</td><td class="cle">que la chose est décidée, pas demandée</td></tr><tr><td>Le test</td><td class="">remplacez par « nous » : nous voudrions → conditionnel</td></tr></table><p class="dit"><span class="k">On dit</span> J'aimerais que la réponse me soit donnée par écrit.</p><div class="note">Dans une lettre, l'oubli du <b>s</b> transforme une demande en annonce. « Je voudrai une réponse » se lit comme une exigence maladroite ; « je voudrais » se lit comme une demande.</div></section><section class="bloc card ml"><h3>Quand ne pas l'employer</h3><p class="mp">Le conditionnel ouvre la discussion. Il n'a plus sa place quand la discussion est finie.</p><table class="ana"><tr><td>Au comptoir, première visite</td><td class="">Accepteriez-vous de faire réparer ?</td></tr><tr><td>Au comptoir, deuxième visite</td><td class="">Je vous demande de faire réparer.</td></tr><tr><td>Dans la mise en demeure</td><td class="cle">Je vous demande de procéder, à vos frais, dans un délai de dix jours.</td></tr><tr><td>Ce que la progression montre</td><td class="">que vous saviez demander avant d'exiger</td></tr></table><p class="dit"><span class="k">On dit</span> Je vous demande de procéder à la réparation dans un délai de dix jours.</p><div class="note">La progression conditionnel → indicatif est ce qui rend une mise en demeure crédible. Une lettre qui exige d'emblée paraît excessive ; une lettre qui exige après deux demandes polies paraît méritée.</div></section><section class="bloc card ml"><h3>La même demande, deux tons</h3><p class="mp">Choisissez ce que vous demandez, puis le moment.</p><table class="labo"><thead><tr><th>Vous demandez… · Vous le dites où ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">la réparation + au comptoir</td><td>Accepteriez-vous de faire réparer la transmission sans frais ?</td><td>la porte reste ouverte : elle peut dire oui sans perdre la face</td></tr><tr><td class="cle">la réparation + dans la lettre</td><td>Je vous demande de procéder, à vos frais, à la réparation complète de la transmission.</td><td>indicatif : la demande est devenue une exigence datée</td></tr><tr><td class="cle">une auto en attendant + au comptoir</td><td>Me passeriez-vous une autre voiture en attendant ?</td><td>l'exemple que donne le programme lui-même</td></tr><tr><td class="cle">une auto en attendant + dans la lettre</td><td>Je vous demande de mettre un véhicule à ma disposition pendant l'immobilisation.</td><td>à l'écrit, on nomme aussi la durée</td></tr><tr><td class="cle">une réponse écrite + au comptoir</td><td>Pourriez-vous me confirmer cela par écrit ?</td><td>la demande la plus utile de toutes, et la moins coûteuse</td></tr><tr><td class="cle">une réponse écrite + dans la lettre</td><td>Je vous demande de me répondre par écrit dans les dix jours.</td><td>le délai apparaît : c'est ce qui fait la mise en demeure</td></tr></tbody></table><div class="note">Regardez les six phrases ensemble : le contenu ne bouge pas d'un mot d'une colonne à l'autre. Seuls le mode du verbe et la présence du délai changent.</div></section><section class="bloc card ml"><h3>Dix demandes, du plus souple au plus ferme</h3><p class="mp">À gauche la formule, à droite le moment où elle sert.</p><table class="ex2"><tr><td>Ce serait possible de… ?</td><td>ouverture, quand on ne sait pas encore à qui on parle</td></tr><tr><td>Est-ce que vous accepteriez de… ?</td><td>la demande standard au comptoir</td></tr><tr><td>Pourriez-vous… ?</td><td>la même, plus courte, aussi bonne</td></tr><tr><td>J'aimerais que…</td><td>quand la demande porte sur la forme, pas sur le fond</td></tr><tr><td>Il faudrait que…</td><td>quand on ne veut désigner personne</td></tr><tr><td>Je vous demanderais de…</td><td>ferme, et toujours une demande</td></tr><tr><td>Je souhaiterais obtenir…</td><td>écrit, formel, un peu distant</td></tr><tr><td>Je vous demande de…</td><td>deuxième visite, ou début de lettre</td></tr><tr><td>Je vous demande de procéder à…</td><td>mise en demeure : la formule consacrée</td></tr><tr><td>Je vous mets en demeure de…</td><td>la formule la plus forte, à réserver à la dernière lettre</td></tr></table></section><section class="bloc card ml"><h3>Quatre questions sur le conditionnel</h3><p class="mp">Répondez sans remonter dans la leçon.</p><ol class="check"><li><span class="q">Le radical du conditionnel est celui…</span><ul class="opts"><li>de l'imparfait</li><li>du futur</li></ul></li><li><span class="q">« Je voudrai » sans s est…</span><ul class="opts"><li>un conditionnel</li><li>un futur</li></ul></li><li><span class="q">Dans une mise en demeure, on emploie…</span><ul class="opts"><li>le conditionnel</li><li>l'indicatif</li></ul></li><li><span class="q">« Il faudrait que » sert à…</span><ul class="opts"><li>demander sans désigner personne</li><li>adoucir un reproche</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> du futur — Radical du futur, terminaisons de l'imparfait. Les deux moitiés viennent d'endroits différents. · <b>2.</b> un futur — Et il annonce une décision au lieu de formuler une demande. · <b>3.</b> l'indicatif — « Je vous demande de procéder ». Le conditionnel a servi avant ; la lettre, elle, exige. · <b>4.</b> demander sans désigner personne — C'est sa vraie utilité : la demande existe, personne n'est mis en cause.</div></section><section class="bloc card ml"><h3>Trois faux pas, et comment s'en sortir</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">oublier le s de la première personne</p><div class="k">Ce qui arrive</div><p class="ph">remplacer par « nous » pour vérifier</p><p class="px">« Nous voudrions » : si la phrase tient, c'est un conditionnel, donc un s à « je ».</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">croire que le conditionnel affaiblit la demande</p><div class="k">Ce qui arrive</div><p class="ph">garder le chiffre et la date</p><p class="px">« Accepteriez-vous de réparer avant le 15 ? » est aussi précis que « réparez avant le 15 ». La précision fait le travail ; le mode décide de la suite.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">rester au conditionnel dans la lettre</p><div class="k">Ce qui arrive</div><p class="ph">passer à l'indicatif après le délai</p><p class="px">Une mise en demeure au conditionnel n'en est pas une. Le conditionnel avant, l'indicatif après : c'est la progression qui rend la lettre crédible.</p></div></div></section></section></div>
+<footer><span>C4 · Réclamer après l'achat</span><span>Fiche élève</span></footer>
+</body>
+</html>

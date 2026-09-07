@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>D2 · Une critique qu'on discute sans avoir vu la pièce — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance D2 · Module 6 · 75 minutes</div>
+    <h1>Une critique qu'on discute sans avoir vu la pièce</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Personne au cercle n'a vu « Le troisième rang ». Personne ne peut donc dire si le critique a raison. Tout le monde peut dire si son texte tient.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>distinguer dans une critique ce qui décrit, ce qui juge, ce qui devine ;</li><li>citer un passage avec « dont », « auquel », « sur lequel » ;</li><li>distinguer citer, résumer et déformer ;</li><li>choisir un verbe introducteur neutre quand on veut être cru.</li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Trois choses qu'une critique fait</h2><table><thead><tr><th>L'opération</th><th>Comment la reconnaître</th></tr></thead><tbody><tr><td class="cle">Elle décrit</td><td>un fait daté, chiffré, vérifiable</td></tr><tr><td class="cle">Elle juge</td><td>bon ou mauvais, avec ou sans appui</td></tr><tr><td class="cle">Elle devine</td><td>on devine, il semble, sans doute, visiblement</td></tr></tbody></table><div class="note">Un jugement vaut ce que vaut le fait auquel il est accroché.</div></section><section class="bloc"><div class="lbl">Analyse</div><h2 class="t">La phrase, et son statut</h2><div class="grid"><div class="card"><h3>« Quatre comédiens, une heure quarante. »</h3><p>fait vérifiable</p></div><div class="card"><h3>« Le spectacle le plus juste de la saison. »</h3><p>jugement sans appui</p></div><div class="card"><h3>« La comédienne ne quitte pas la scène. »</h3><p>fait vérifiable</p></div><div class="card"><h3>« Elle porte le spectacle d'un bout à l'autre. »</h3><p>jugement, accroché au fait</p></div><div class="card"><h3>« On devine que l'auteur a grandi là. »</h3><p>supposition, et il le marque</p></div><div class="card"><h3>« Je n'ai pas pu le vérifier. »</h3><p>aveu, et il vaut de l'or</p></div></div></section><section class="bloc regle"><div class="lbl">On ne conteste pas le fait, on conteste l'accrochage</div><p class="r">Vous n'étiez pas dans la salle. Le seul terrain où vous êtes son égal est le texte.</p><p class="pr">La question à poser est toujours la même : ce jugement-là repose-t-il sur ce fait-là ? « Le spectacle le plus juste de la saison » ne repose sur rien pour l'instant — et c'est une question légitime, publiable, à laquelle le critique doit répondre.</p></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Le verbe décide du pronom</h2><table><thead><tr><th>Le verbe</th><th>Le pronom</th></tr></thead><tbody><tr><td class="cle">parler de, se souvenir de</td><td>dont, ce dont</td></tr><tr><td class="cle">penser à, faire allusion à</td><td>auquel, ce à quoi</td></tr><tr><td class="cle">répondre à (une question)</td><td>à laquelle</td></tr><tr><td class="cle">s'appuyer sur, compter sur</td><td>sur lequel, ce sur quoi</td></tr><tr><td class="cle">parler à (une personne)</td><td>à qui</td></tr></tbody></table><div class="note">Faites la phrase à l'endroit pour trouver la préposition.</div></section><section class="bloc card"><div class="lbl">Pratique</div><h2 class="t">Le pronom relatif</h2><p class="consigne">Complétez.</p><ol class="ex"><li><span class="q">Le détail ___ il parle est à la troisième strophe.</span><span class="ligne ligne--court"></span></li><li><span class="q">La question ___ personne n'a répondu, c'est la corde.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le passage ___ vous faites allusion tient en une parenthèse.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ je pense, c'est la nappe pliée en quatre.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le fait ___ votre jugement s'appuie n'est pas dans le texte.</span><span class="ligne ligne--court"></span></li><li><span class="q">La voisine ___ elle tend la carte se met à lire.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Citer, résumer, déformer</h2><table><thead><tr><th>L'opération</th><th>La règle</th></tr></thead><tbody><tr><td class="cle">Citer</td><td>deux-points, guillemets, mots exacts</td></tr><tr><td class="cle">Résumer</td><td>d'autres mots, et la personne pourrait approuver</td></tr><tr><td class="cle">Déformer</td><td>un absolu ajouté, une condition retirée</td></tr></tbody></table><div class="note">Le test : la personne citée approuve-t-elle d'un signe de tête ?</div></section><section class="bloc card"><div class="lbl">Pratique</div><h2 class="t">Exact, fidèle, ou déformé ?</h2><p class="consigne">Dites ce que fait chaque phrase rapportée.</p><ol class="ex"><li><span class="q">Josyane a dit : « Une lecture se juge à ce qu'elle explique. »</span><span class="ligne ligne--court"></span></li><li><span class="q">Selon Josyane, une lecture vaut par ce qu'elle explique.</span><span class="ligne ligne--court"></span></li><li><span class="q">Josyane prétend qu'aucune lecture n'est meilleure.</span><span class="ligne ligne--court"></span></li><li><span class="q">Léandre trouve la finale bâclée faute de temps.</span><span class="ligne ligne--court"></span></li><li><span class="q">Léandre soutient que toute la série est ratée.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le critique affirme que l'auteur a grandi là.</span><span class="ligne"></span></li></ol></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Piège</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">« il prétend que »</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">« il écrit que »</p></div></div><div class="note">Le verbe introducteur juge celui qu'on rapporte avant même que le lecteur ait lu la citation. « Prétend » signale que vous ne le croyez pas ; « avoue » suppose qu'il y avait quelque chose à cacher. Employés sans le savoir dans une lettre au journal, ils décrédibilisent votre propre texte : le lecteur voit d'abord l'attaque, et il ne lit pas votre argument.</div></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Choisissez un jugement de la critique et écrivez la question que vous poseriez au critique. Un verbe introducteur neutre, aucune attaque.</p><ul><li>« Vous écrivez que c'est le spectacle le plus juste de la saison ; sur quelle scène ce jugement repose-t-il ? »</li><li>Deux phrases au maximum.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Lire une critique, et lui répondre</h2><section class="bloc card ml"><h3>On peut discuter un texte sans avoir vu l'œuvre</h3><p class="mp">Personne au cercle n'a vu « Le troisième rang ». Personne ne peut donc dire si Gaspard Thivierge a raison. Mais tout le monde peut dire si son texte <b>tient</b> : où décrit-il, où juge-t-il, où devine-t-il, et chaque jugement est-il accroché à quelque chose ? C'est un travail complètement différent, et c'est celui qu'on fait toute sa vie avec les critiques qu'on lit.</p><div class="note">Ne jamais contester le fait — vous n'y étiez pas. Contester l'accrochage : ce jugement-là repose-t-il sur ce fait-là ?</div></section><section class="bloc card ml"><h3>Ce qu'une critique décrit</h3><p class="mp">Les faits vérifiables : les dates, la durée, le nombre de comédiens, le lieu de l'action, ce qui arrive sur scène. Souvent les phrases les moins nombreuses.</p><table class="ana"><tr><td>Un fait</td><td class="">Quatre comédiens, un décor unique, une heure quarante.</td></tr><tr><td>Un fait</td><td class="cle">La comédienne ne quitte pas la scène.</td></tr><tr><td>Leur usage</td><td class="">ce sont les seuls appuis disponibles</td></tr></table><p class="dit"><span class="k">On dit</span> Quatre comédiens, un décor unique, une heure quarante sans entracte.</p><div class="note">Comptez-les en lisant. Une critique de trente lignes qui porte quatre faits vous en dit très peu sur la pièce.</div></section><section class="bloc card ml"><h3>Ce qu'elle juge</h3><p class="mp">Un jugement vaut ce que vaut le fait auquel il est accroché.</p><table class="ana"><tr><td>Accroché</td><td class="">Elle ne quitte pas la scène et porte le spectacle.</td></tr><tr><td>Non accroché</td><td class="cle">Le spectacle le plus juste de la saison.</td></tr><tr><td>La question</td><td class="">sur quoi cette phrase repose-t-elle ?</td></tr></table><p class="dit"><span class="k">On dit</span> Elle ne quitte pas la scène, et elle porte le spectacle d'un bout à l'autre.</p><div class="note">Un jugement seul ne vous apprend rien sur l'œuvre, seulement sur le critique. Ce n'est pas inutile — c'est autre chose.</div></section><section class="bloc card ml"><h3>Ce qu'elle devine, et qui doit se voir</h3><p class="mp">Le critique a le droit de supposer, à condition de le marquer.</p><table class="ana"><tr><td>Les verbes à surveiller</td><td class="">on devine · on sent · il semble · visiblement · sans doute</td></tr><tr><td>Dans ce texte</td><td class="cle">On devine que l'auteur a grandi dans une famille de terriens.</td></tr><tr><td>L'aveu qui vaut de l'or</td><td class="">Je n'ai pas pu le vérifier avant l'heure de tombée.</td></tr></table><p class="dit"><span class="k">On dit</span> On devine que l'auteur a grandi dans une famille de terriens.</p><div class="note">Un critique qui écrit « je n'ai pas pu vérifier » vous dit exactement où sa parole s'arrête. Cela rend le reste plus fiable, pas moins.</div></section><section class="bloc card ml"><h3>Trois phrases, trois statuts</h3><p class="mp">Choisissez une phrase et ce que vous voulez en faire.</p><table class="labo"><thead><tr><th>Sur quelle phrase ? · Votre intention…</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">le spectacle le plus juste + la classer</td><td>Un jugement d'ensemble, posé avant tout argument.</td><td>aucun fait ne le soutient encore</td></tr><tr><td class="cle">le spectacle le plus juste + y répondre</td><td>Sur quoi appuyez-vous ce classement ?</td><td>on demande le fait manquant, sans nier le jugement</td></tr><tr><td class="cle">les cadets jouent trop fort + la classer</td><td>Un jugement, appuyé sur une observation de jeu.</td><td>accroché à quelque chose, mais invérifiable pour nous</td></tr><tr><td class="cle">les cadets jouent trop fort + y répondre</td><td>Vous leur reprochez le volume ; est-ce le jeu ou la salle ?</td><td>on discute l'accrochage, pas le fait</td></tr><tr><td class="cle">on devine que l'auteur… + la classer</td><td>Une supposition, et elle est marquée comme telle.</td><td>« on devine » fait le travail</td></tr><tr><td class="cle">on devine que l'auteur… + y répondre</td><td>Vous le devinez, et vous écrivez ne pas l'avoir vérifié.</td><td>on lui rend son propre aveu, sans agressivité</td></tr></tbody></table><div class="note">Remarquez qu'on ne conteste jamais un fait dans la colonne de droite. On n'y était pas.</div></section><section class="bloc card ml"><h3>La phrase · ce qu'elle est</h3><p class="mp">À gauche, un extrait. À droite, son statut.</p><table class="ex2"><tr><td>« Quatre comédiens, une heure quarante. »</td><td>fait vérifiable</td></tr><tr><td>« Le spectacle le plus juste de la saison. »</td><td>jugement non accroché</td></tr><tr><td>« Elle ne quitte pas la scène. »</td><td>fait vérifiable</td></tr><tr><td>« Elle porte le spectacle d'un bout à l'autre. »</td><td>jugement accroché au fait précédent</td></tr><tr><td>« On devine que l'auteur a grandi là. »</td><td>supposition marquée</td></tr><tr><td>« Je n'ai pas pu le vérifier. »</td><td>aveu — et il rend le reste plus fiable</td></tr></table></section><section class="bloc card ml"><h3>Deux façons de mal répondre à une critique</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">« Vous n'y connaissez rien »</p><div class="k">Ce qui arrive</div><p class="ph">« Ce jugement-là repose sur quel moment ? »</p><p class="px">Attaquer la personne ferme la discussion et ne se publie pas. Attaquer l'accrochage se publie, et le critique doit répondre.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">contredire un fait qu'on n'a pas vu</p><div class="k">Ce qui arrive</div><p class="ph">travailler sur le texte qu'on a sous les yeux</p><p class="px">Vous n'étiez pas dans la salle. Le seul terrain où vous êtes son égal est le texte : sa construction, ses appuis, ses trous.</p></div></div></section><section class="bloc card ml"><h3>Une critique, savez-vous la peser ?</h3><p class="mp">Quatre contrôles rapides.</p><ol class="check"><li><span class="q">Sans avoir vu la pièce, on peut dire…</span><ul class="opts"><li>si la critique a raison</li><li>si la critique est appuyée</li></ul></li><li><span class="q">« On devine que… » signale…</span><ul class="opts"><li>une supposition</li><li>un fait</li></ul></li><li><span class="q">Un jugement vaut ce que vaut…</span><ul class="opts"><li>le talent du critique</li><li>le fait auquel il est accroché</li></ul></li><li><span class="q">Pour répondre à une critique, on conteste…</span><ul class="opts"><li>l'accrochage</li><li>le fait</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> si la critique est appuyée — On peut examiner sa construction, pas vérifier son contenu. · <b>2.</b> une supposition — Et c'est correct : le critique a le droit de supposer, s'il le marque. · <b>3.</b> le fait auquel il est accroché — Sans fait à côté, il ne renseigne que sur celui qui parle. · <b>4.</b> l'accrochage — L'accrochage. Vous n'étiez pas dans la salle : le fait vous échappe.</div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Citer un passage sans le répéter en entier</h2><section class="bloc card ml"><h3>Le problème que ces pronoms résolvent</h3><p class="mp">Dans une discussion sur une œuvre, on renvoie sans arrêt à des passages : celui dont il parle, celui auquel vous faites allusion, celui sur lequel votre jugement repose. Sans les relatifs à préposition, il faudrait tout répéter à chaque fois, ou dire « le passage que vous parlez de », qui ne se dit pas. Ce sont les outils du renvoi — et ils sont ce qui rend une phrase longue lisible.</p><div class="note">Ils sont aussi ce qui rend une phrase longue illisible quand on se trompe. D'où la méthode ci-dessous, qui ne varie jamais.</div></section><section class="bloc card ml"><h3>La méthode : chercher la préposition du verbe</h3><p class="mp">Ce n'est jamais le nom qui décide, c'est le verbe de la relative. Trouvez sa préposition, et le pronom suit.</p><table class="ana"><tr><td>parler DE</td><td class="">le détail dont il parle</td></tr><tr><td>penser À</td><td class="cle">le passage auquel je pense</td></tr><tr><td>s'appuyer SUR</td><td class="">le fait sur lequel vous vous appuyez</td></tr></table><p class="dit"><span class="k">On dit</span> Le détail dont il parle. Le passage auquel je pense. Le fait sur lequel vous vous appuyez.</p><div class="note">Faites la phrase à l'endroit pour trouver la préposition : « il parle de ce détail » → de → dont.</div></section><section class="bloc card ml"><h3>Dont — pour tout ce qui appelle « de »</h3><p class="mp">Le plus courant, et celui qui remplace le plus de choses.</p><table class="ana"><tr><td>Complément du verbe</td><td class="">la scène dont je me souviens</td></tr><tr><td>Complément du nom</td><td class="cle">un poème dont la fin bascule</td></tr><tr><td>Complément de l'adjectif</td><td class="">un texte dont il est fier</td></tr></table><p class="dit"><span class="k">On dit</span> La scène dont je me souviens. Un poème dont la fin bascule.</p><div class="note">Ne jamais doubler le « de » : on n'écrit pas « le détail dont il parle de ». Le « de » est déjà dans « dont ».</div></section><section class="bloc card ml"><h3>Ce dont, ce à quoi — quand rien n'est nommé devant</h3><p class="mp">S'emploient quand la chose n'a pas encore de nom dans la phrase.</p><table class="ana"><tr><td>Avec un nom</td><td class="">le passage dont il parle</td></tr><tr><td>Sans nom</td><td class="cle">ce dont il parle</td></tr><tr><td>Avec « à »</td><td class="">ce à quoi je pense, c'est la parenthèse</td></tr></table><p class="dit"><span class="k">On dit</span> Ce dont il parle est à la troisième strophe. Ce à quoi je pense, c'est la parenthèse.</p><div class="note">Ces formes se combinent très bien avec l'emphase : « ce dont il ne parle jamais, c'est du jeu des cadets ».</div></section><section class="bloc card ml"><h3>Auquel, à laquelle, sur lequel — la chose est nommée</h3><p class="mp">Après une préposition, une chose prend lequel et ses composés ; une personne préfère « qui ».</p><table class="ana"><tr><td>Pour une chose</td><td class="">la question à laquelle personne ne répond</td></tr><tr><td>Pour une chose</td><td class="cle">le fait sur lequel il s'appuie</td></tr><tr><td>Pour une personne</td><td class="">la voisine à qui elle tend la carte</td></tr></table><p class="dit"><span class="k">On dit</span> La question à laquelle personne ne répond. La voisine à qui elle tend la carte.</p><div class="note">à + lequel donne <b>auquel</b> ; à + lesquels donne <b>auxquels</b>. « à laquelle » ne se contracte pas.</div></section><section class="bloc card ml"><h3>Le verbe décide</h3><p class="mp">Choisissez un verbe et le mot repris.</p><table class="labo"><thead><tr><th>Quel verbe commande ? · On reprend…</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">parler de + une chose nommée</td><td>Le détail dont il parle est à la troisième strophe.<span class="tags">le détail dont il parle</span></td><td>de → dont</td></tr><tr><td class="cle">parler de + rien de nommé</td><td>Ce dont il parle est à la troisième strophe.<span class="tags">ce dont il parle</span></td><td>rien devant : ce dont</td></tr><tr><td class="cle">penser à + une chose nommée</td><td>Le passage auquel je pense tient en une parenthèse.<span class="tags">le passage auquel je pense</span></td><td>à + lequel → auquel</td></tr><tr><td class="cle">penser à + rien de nommé</td><td>Ce à quoi je pense, c'est la parenthèse.<span class="tags">ce à quoi je pense</span></td><td>rien devant : ce à quoi</td></tr><tr><td class="cle">s'appuyer sur + une chose nommée</td><td>Le fait sur lequel il s'appuie n'est pas dans la critique.<span class="tags">le fait sur lequel il s'appuie</span></td><td>sur + lequel, sans contraction</td></tr><tr><td class="cle">s'appuyer sur + rien de nommé</td><td>Ce sur quoi il s'appuie n'est pas dans la critique.<span class="tags">ce sur quoi il s'appuie</span></td><td>rien devant : ce sur quoi</td></tr></tbody></table><div class="note">Six cases, un seul raisonnement : la préposition du verbe, puis la présence ou l'absence d'un nom devant.</div></section><section class="bloc card ml"><h3>Le verbe · le pronom</h3><p class="mp">À gauche, le verbe et sa préposition. À droite, le pronom.</p><table class="ex2"><tr><td>parler de, se souvenir de, avoir besoin de</td><td>dont</td></tr><tr><td>penser à, faire allusion à (une chose)</td><td>auquel, à laquelle</td></tr><tr><td>répondre à (une question)</td><td>à laquelle</td></tr><tr><td>s'appuyer sur, compter sur</td><td>sur lequel, sur laquelle</td></tr><tr><td>tendre à, parler à (une personne)</td><td>à qui</td></tr><tr><td>rien de nommé devant</td><td>ce dont, ce à quoi, ce sur quoi</td></tr></table></section><section class="bloc card ml"><h3>Trois faux pas avec les relatifs</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">« le passage que vous parlez »</p><div class="k">Ce qui arrive</div><p class="ph">« le passage dont vous parlez »</p><p class="px">« Que » ne remplace jamais un complément introduit par une préposition. C'est la faute la plus répandue, et elle vient de l'oral rapide.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">« le détail dont il parle de »</p><div class="k">Ce qui arrive</div><p class="ph">« le détail dont il parle »</p><p class="px">Le « de » est déjà contenu dans « dont ». Le répéter double la préposition.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">« le fait que vous vous appuyez dessus »</p><div class="k">Ce qui arrive</div><p class="ph">« le fait sur lequel vous vous appuyez »</p><p class="px">À l'écrit soutenu, la préposition ne se rejette jamais à la fin de la phrase. La forme avec « dessus » est parlée et ne se publie pas.</p></div></div></section><section class="bloc card ml"><h3>Le bon relatif vous vient-il ?</h3><p class="mp">Quatre contrôles rapides.</p><ol class="check"><li><span class="q">« Le détail ___ il parle. »</span><ul class="opts"><li>dont</li><li>auquel</li></ul></li><li><span class="q">« La question ___ personne n'a répondu. »</span><ul class="opts"><li>dont</li><li>à laquelle</li></ul></li><li><span class="q">Ce qui décide du pronom, c'est…</span><ul class="opts"><li>le nom repris</li><li>la préposition du verbe</li></ul></li><li><span class="q">Devant une personne, après « à », on préfère…</span><ul class="opts"><li>à qui</li><li>à laquelle</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> dont — Parler de… → dont. · <b>2.</b> à laquelle — Répondre à… → à laquelle. · <b>3.</b> la préposition du verbe — Toujours le verbe. Faites la phrase à l'endroit pour la trouver. · <b>4.</b> à qui — « La voisine à qui elle tend la carte » — plus naturel et plus court.</div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Citer, résumer, déformer</h2><section class="bloc card ml"><h3>Trois façons de rapporter, et une frontière</h3><p class="mp">Rapporter ce que quelqu'un a dit est une opération honnête ou malhonnête selon très peu de chose : un mot ajouté, une condition supprimée, un verbe changé. La frontière n'est pas morale, elle est technique — et le test tient en une phrase : <b>la personne citée pourrait-elle approuver votre version d'un signe de tête ?</b></p><div class="note">Ce test vaut aussi pour vous-même. On déforme le plus souvent sans intention, en résumant trop vite.</div></section><section class="bloc card ml"><h3>Citer — les mots exacts, entre guillemets</h3><p class="mp">Deux-points, guillemets ouvrants, majuscule, guillemets fermants. On ne change pas un mot, pas même pour corriger une faute.</p><table class="ana"><tr><td>Les signes à poser</td><td class="">Josyane a dit : « Une lecture se juge à ce qu'elle permet d'expliquer. »</td></tr><tr><td>Le point</td><td class="cle">le point final se met à l'intérieur des guillemets</td></tr><tr><td>La coupure</td><td class="">trois points entre crochets pour ce qu'on retire</td></tr></table><p class="dit"><span class="k">On dit</span> Josyane a dit : une lecture se juge à ce qu'elle permet d'expliquer.</p><div class="note">En français, on emploie les guillemets français « » avec une espace à l'intérieur. Les guillemets droits sont tolérés, les italiques ne remplacent rien.</div></section><section class="bloc card ml"><h3>Résumer — d'autres mots, la même chose</h3><p class="mp">Aucun guillemet, et une seule règle : la personne doit pouvoir approuver votre phrase.</p><table class="ana"><tr><td>Elle a dit</td><td class="">Une lecture se juge à ce qu'elle permet d'expliquer.</td></tr><tr><td>On résume</td><td class="cle">Selon Josyane, une lecture vaut par le nombre de détails dont elle rend compte.</td></tr><tr><td>Le contrôle</td><td class="">elle approuve d'un signe de tête</td></tr></table><p class="dit"><span class="k">On dit</span> Selon Josyane, une lecture vaut par le nombre de détails dont elle rend compte.</p><div class="note">Le résumé est plus difficile que la citation, et beaucoup plus utile : il montre que vous avez compris.</div></section><section class="bloc card ml"><h3>Déformer — trois marques à connaître</h3><p class="mp">Généraliser un cas particulier, supprimer une condition, changer un verbe d'opinion en verbe de certitude.</p><table class="ana"><tr><td>Généraliser</td><td class="">« aucune lecture n'est meilleure » — elle a dit le contraire</td></tr><tr><td>Supprimer une condition</td><td class="cle">on retire le « quand » ou le « si » qui limitait</td></tr><tr><td>Durcir le verbe</td><td class="">« il se peut que » devenu « il affirme que »</td></tr></table><p class="dit"><span class="k">On dit</span> Josyane prétend qu'aucune lecture n'est meilleure qu'une autre.</p><div class="note">L'ajout le plus courant est l'absolu : toujours, jamais, aucun, tout le monde. Ces mots-là entrent tout seuls dans un résumé pressé.</div></section><section class="bloc card ml"><h3>Le verbe introducteur pèse lourd</h3><p class="mp">Le verbe que vous choisissez juge celui que vous rapportez, avant même que le lecteur ait lu la citation.</p><table class="ana"><tr><td>Neutres</td><td class="">dit · écrit · explique · précise</td></tr><tr><td>Chargés</td><td class="cle">prétend · avoue · admet · laisse entendre</td></tr><tr><td>Ce qui vaut</td><td class="">neutre quand vous voulez être cru</td></tr></table><p class="dit"><span class="k">On dit</span> Il dit. Il explique. Il prétend. Il avoue.</p><div class="note">« Prétend » signale que vous ne le croyez pas ; « avoue » suppose qu'il y avait quelque chose à cacher. Employés sans le savoir, ils décrédibilisent votre propre texte.</div></section><section class="bloc card ml"><h3>La même parole, trois traitements</h3><p class="mp">Choisissez une personne et un traitement.</p><table class="labo"><thead><tr><th>Qui ? · On…</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">Josyane + cite</td><td>Josyane a dit : une lecture se juge à ce qu'elle permet d'expliquer.</td><td>mots exacts, guillemets</td></tr><tr><td class="cle">Josyane + résume</td><td>Selon Josyane, une lecture vaut par ce qu'elle explique.</td><td>autres mots, même contenu</td></tr><tr><td class="cle">Josyane + déforme</td><td>Josyane prétend qu'aucune lecture n'est meilleure.</td><td>généralisation + verbe chargé</td></tr><tr><td class="cle">Léandre + cite</td><td>Léandre a dit : six épisodes pour arriver à ça.</td><td>la citation garde le ton</td></tr><tr><td class="cle">Léandre + résume</td><td>Léandre trouve la finale bâclée faute de temps.</td><td>résumé fidèle, plus court</td></tr><tr><td class="cle">Léandre + déforme</td><td>Léandre soutient que toute la série est ratée.</td><td>on étend la finale à la série entière</td></tr><tr><td class="cle">le critique + cite</td><td>Il écrit : je n'ai pas pu le vérifier avant l'heure de tombée.</td><td>son aveu, mot pour mot</td></tr><tr><td class="cle">le critique + résume</td><td>Le critique reconnaît ne pas avoir vérifié ce point.</td><td>résumé fidèle</td></tr><tr><td class="cle">le critique + déforme</td><td>Le critique affirme que l'auteur a grandi dans une famille de terriens.</td><td>« on devine » devenu « affirme » : le doute a disparu</td></tr></tbody></table><div class="note">Comparez les trois colonnes : rien n'est inventé dans la troisième. On a seulement retiré une nuance, et cela suffit.</div></section><section class="bloc card ml"><h3>Le verbe · ce qu'il ajoute</h3><p class="mp">À gauche, le verbe. À droite, ce qu'il fait entendre.</p><table class="ex2"><tr><td>il dit · il écrit</td><td>rien : le verbe neutre</td></tr><tr><td>il explique · il précise</td><td>il rend quelque chose plus clair</td></tr><tr><td>il soutient</td><td>il maintient contre des objections</td></tr><tr><td>il admet</td><td>la chose lui coûte</td></tr><tr><td>il prétend</td><td>vous ne le croyez pas</td></tr><tr><td>il avoue</td><td>il y avait quelque chose à cacher</td></tr></table></section><section class="bloc card ml"><h3>Deux déformations qu'on commet sans le vouloir</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">« il n'aime pas la pièce »</p><div class="k">Ce qui arrive</div><p class="ph">« il reproche aux deux cadets de jouer trop fort »</p><p class="px">Étendre un reproche précis à l'ensemble de l'œuvre est la déformation la plus fréquente, et la plus difficile à voir en se relisant.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">« il affirme que »</p><div class="k">Ce qui arrive</div><p class="ph">« il devine que »</p><p class="px">Changer un verbe de supposition en verbe de certitude supprime la seule précaution que l'autre avait prise. C'est ce qui rend un résumé injuste sans qu'un seul fait soit faux.</p></div></div></section><section class="bloc card ml"><h3>Citer, résumer, déformer : c'est clair ?</h3><p class="mp">Quatre contrôles rapides.</p><ol class="check"><li><span class="q">Le test d'un bon résumé, c'est que la personne citée…</span><ul class="opts"><li>ne réponde pas</li><li>puisse l'approuver d'un signe de tête</li></ul></li><li><span class="q">« Il prétend que » ajoute…</span><ul class="opts"><li>rien</li><li>que vous ne le croyez pas</li></ul></li><li><span class="q">La marque la plus fréquente d'une déformation est…</span><ul class="opts"><li>un mot absolu ajouté</li><li>une citation trop longue</li></ul></li><li><span class="q">Dans une citation, on peut corriger une faute de la personne ?</span><ul class="opts"><li>oui</li><li>non</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> puisse l'approuver d'un signe de tête — C'est la frontière entre résumer et déformer. · <b>2.</b> que vous ne le croyez pas — Et cela se voit. Choisissez un verbe neutre quand vous voulez être cru. · <b>3.</b> un mot absolu ajouté — Toujours, jamais, aucun, tout le monde : ils entrent tout seuls dans un résumé pressé. · <b>4.</b> non — Non. On cite exactement, ou on résume.</div></section></section></div>
+<footer><span>D2 · Ce que l'œuvre ne dit pas</span><span>Fiche élève</span></footer>
+</body>
+</html>

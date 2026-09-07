@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>D1 · L'appel à l'Office, et la lettre qui en sort — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance D1 · Module 6 · 75 minutes</div>
+    <h1>L'appel à l'Office, et la lettre qui en sort</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Une mise en demeure n'est pas une lettre de plainte : c'est un document dont la forme est convenue, et cette forme est ce qui lui donne son poids.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>comprendre ce qu'un organisme de renseignements fait et ne fait pas ;</li><li>savoir ce qu'une mise en demeure doit contenir ;</li><li>reconnaître les six parties de la lettre d'Ernestine ;</li><li>employer cinq mots de la lettre.</li></ol></section><section class="bloc card"><div class="lbl">Dialogue · 1 de 3</div><h2 class="t">Ce que l'Office peut dire</h2><p class="consigne">Écouter d'abord, sans lire le texte.</p><div class="rep rep--key"><div class="qui">ÉDITH</div><div>Office de la protection du consommateur, Édith Vanasse, bonjour.</div></div><div class="rep rep--key"><div class="qui">ÉDITH</div><div>Je ne peux pas régler le dossier à votre place, mais je peux vous dire quelles règles s'appliquent.</div></div><div class="rep rep--key"><div class="qui">ERNESTINE</div><div>J'ai l'étiquette. Catégorie C.</div></div><div class="rep rep--key"><div class="qui">ÉDITH</div><div>Alors la garantie de bon fonctionnement est d'un mois ou de mille sept cents kilomètres. Vous étiez dedans ?</div></div></section><section class="bloc card"><div class="lbl">Dialogue · 2 de 3</div><h2 class="t">La durée raisonnable</h2><div class="rep rep--key"><div class="qui">ÉDITH</div><div>Même si vous n'y étiez plus, la garantie légale ne se compte pas en jours.</div></div><div class="rep rep--key"><div class="qui">ÉDITH</div><div>Un bien doit servir pendant une durée raisonnable, compte tenu du prix payé.</div></div><div class="rep rep--key"><div class="qui">ÉDITH</div><div>Onze mille quatre cents dollars pour vingt-quatre jours, personne ne trouvera ça raisonnable.</div></div><div class="rep rep--key"><div class="qui">ERNESTINE</div><div>Ils m'ont dit que c'était de l'usure normale.</div></div></section><section class="bloc card"><div class="lbl">Dialogue · 3 de 3</div><h2 class="t">Ce que la lettre doit contenir</h2><div class="rep rep--key"><div class="qui">ÉDITH</div><div>Vous envoyez une mise en demeure.</div></div><div class="rep rep--key"><div class="qui">ERNESTINE</div><div>C'est un avocat qui la fait ?</div></div><div class="rep rep--key"><div class="qui">ÉDITH</div><div>Pas du tout. C'est une lettre que vous écrivez vous-même. Elle raconte les faits, elle dit ce que vous demandez, elle accorde un délai.</div></div><div class="rep rep--key"><div class="qui">ÉDITH</div><div>Écrivez les faits, pas ce que vous ressentez. Une lettre qui donne des dates obtient une réponse.</div></div></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Les six parties de la lettre</h2><table><thead><tr><th>La partie</th><th>Ce qu'elle fait</th></tr></thead><tbody><tr><td class="cle">L'objet</td><td>annonce le genre et le dossier, sans verbe</td></tr><tr><td class="cle">Les faits</td><td>l'achat, puis la panne, par ordre de dates</td></tr><tr><td class="cle">Le droit</td><td>la garantie invoquée, en deux phrases</td></tr><tr><td class="cle">La demande</td><td>une seule, avec « à vos frais »</td></tr><tr><td class="cle">Le délai</td><td>dix jours, à compter de la réception</td></tr><tr><td class="cle">La suite</td><td>annoncée au futur, jamais menacée</td></tr></tbody></table></section><section class="bloc card"><div class="lbl">Vocabulaire</div><h2 class="t">Cinq mots de la lettre</h2><table class="voc"><tbody><tr><td class="mot">une mise en demeure</td><td class="def">Une lettre qui expose des faits, formule une demande et accorde un délai.</td></tr><tr><td class="mot">un délai raisonnable</td><td class="def">Le temps accordé pour agir : dix jours, le plus souvent.</td></tr><tr><td class="mot">une pièce justificative</td><td class="def">Un papier daté qui prouve ce qu'on avance.</td></tr><tr><td class="mot">un accusé de réception</td><td class="def">Ce qui prouve la date à laquelle la lettre est arrivée.</td></tr><tr><td class="mot">la Division des petites créances</td><td class="def">Le tribunal où l'on réclame soi-même, jusqu'à 15 000 $.</td></tr></tbody></table></section><section class="bloc card"><div class="lbl">Compréhension</div><h2 class="t">Vrai ou faux ?</h2><p class="consigne">Répondez d'après l'appel à l'Office.</p><ol class="ex"><li><span class="q">Madame Vanasse propose de régler le dossier à sa place.</span><span class="ligne"></span></li><li><span class="q">En catégorie C, la garantie dure un mois ou 1 700 km.</span><span class="ligne ligne--court"></span></li><li><span class="q">La garantie légale se compte en jours.</span><span class="ligne"></span></li><li><span class="q">Une mise en demeure doit être rédigée par un avocat.</span><span class="ligne"></span></li><li><span class="q">Le délai habituel est de dix jours.</span><span class="ligne ligne--court"></span></li><li><span class="q">Aux petites créances, la réclamation doit être de 15 000 $ ou moins.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Quelle est la seule demande que tu ferais, si c'était ton dossier ?</p><ul><li>Réparer, remplacer ou rembourser : une seule.</li><li>Une phrase, avec « à vos frais ».</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>L'anatomie d'une mise en demeure</h2><section class="bloc card ml"><h3>Une lettre qui n'a rien d'un texte libre</h3><p class="mp">Une mise en demeure n'est pas une lettre de plainte. C'est un document dont la forme est convenue, et cette forme est ce qui lui donne son poids : le destinataire la reconnaît au premier coup d'œil et comprend qu'un délai vient de commencer. Vous n'avez besoin d'aucun avocat, d'aucune formule latine et d'aucun timbre spécial. Vous avez besoin de six paragraphes, dans l'ordre.</p><div class="note">C'est l'intention de production écrite de la situation, telle que le programme la nomme : « rédiger une lettre de réclamation ». L'Office de la protection du consommateur et le ministère de la Justice publient chacun un modèle.</div></section><section class="bloc card ml"><h3>L'objet : trois éléments, aucun verbe</h3><p class="mp">C'est la première ligne lue, souvent la seule que le destinataire lira avant de classer.</p><table class="ana"><tr><td>Ce qu'il contient</td><td class="">le genre de lettre, l'objet du litige, le numéro du dossier</td></tr><tr><td>Un exemple</td><td class="">Objet : mise en demeure — réparation de la transmission, contrat 2026-0406-118</td></tr><tr><td>Ce qu'il ne contient pas</td><td class="cle">aucune phrase complète, aucun verbe conjugué</td></tr><tr><td>Pourquoi « mise en demeure » y figure</td><td class="">pour que personne ne puisse dire qu'il ne l'avait pas comprise</td></tr></table><p class="dit"><span class="k">On dit</span> Objet : mise en demeure, réparation de la transmission.</p><div class="note">Écrire « mise en demeure » dans l'objet n'est pas agressif : c'est ce qui rend la lettre efficace. Une lettre qui n'annonce pas ce qu'elle est se traite comme du courrier ordinaire.</div></section><section class="bloc card ml"><h3>Les faits : du plus ancien au plus récent, une date par phrase</h3><p class="mp">C'est la partie la plus longue, et la seule qui exige de la discipline.</p><table class="ana"><tr><td>La règle</td><td class="">l'ordre du calendrier, pas l'ordre de l'importance</td></tr><tr><td>Une date par phrase</td><td class="">le 6 avril, le 24 avril, le 30 avril, le 2 mai</td></tr><tr><td>Aucun adjectif de jugement</td><td class="cle">pas de « scandaleux », pas de « inadmissible »</td></tr><tr><td>Ce qui remplace la colère</td><td class="">la précision — un chiffre, une heure, un kilométrage</td></tr></table><p class="dit"><span class="k">On dit</span> Le 24 avril, un cognement est apparu au passage des rapports, à froid, systématiquement.</p><div class="note">C'est ici que tout le Défi 1 sert : les trois coordonnées de la description de panne se retrouvent telles quelles dans le paragraphe des faits. Ce que vous avez appris à dire au garagiste, vous l'écrivez au commerçant.</div></section><section class="bloc card ml"><h3>Le droit, la demande, le délai : trois paragraphes courts</h3><p class="mp">Chacun fait une chose, et une seule.</p><table class="ana"><tr><td>Le droit</td><td class="">nommer la garantie et démontrer qu'on était dedans, en deux phrases</td></tr><tr><td>La demande</td><td class="">une seule — réparer, ou remplacer, ou rembourser — avec « à vos frais »</td></tr><tr><td>Le délai</td><td class="cle">dix jours à compter de la réception de la présente</td></tr><tr><td>La suite</td><td class="">À défaut, je m'adresserai à la Division des petites créances.</td></tr></table><p class="dit"><span class="k">On dit</span> Vous disposez d'un délai de dix jours à compter de la réception de la présente.</p><div class="note">« À compter de la réception » et non « à compter de la date de la présente » : c'est la réception qui fait courir le délai, et c'est pour cela qu'on envoie la lettre par un moyen qui laisse une trace.</div></section><section class="bloc card ml"><h3>Le bon paragraphe pour la bonne phrase</h3><p class="mp">Choisissez ce que vous voulez dire, puis la version à retenir.</p><table class="labo"><thead><tr><th>Vous voulez dire… · On garde laquelle ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">que c'est arrivé vite + la version à éviter</td><td>C'est absolument inadmissible qu'une auto brise aussi vite.</td><td>un jugement : le destinataire peut ne pas le partager</td></tr><tr><td class="cle">que c'est arrivé vite + la version qui tient</td><td>Le véhicule m'a été livré le six avril ; la panne est survenue le vingt-quatre avril, après neuf cents kilomètres.<span class="tags">Le véhicule m'a été livré le 6 avril ; la panne est survenue le 24 avril, après 900 kilomètres.</span></td><td>deux dates et un chiffre : personne ne peut ne pas les partager</td></tr><tr><td class="cle">que la garantie s'applique + la version à éviter</td><td>Vous savez très bien que la loi est de mon côté.</td><td>une accusation d'intention, et aucune règle citée</td></tr><tr><td class="cle">que la garantie s'applique + la version qui tient</td><td>L'étiquette que vous m'avez remise classe le véhicule en catégorie C.<span class="tags">L'étiquette que vous m'avez remise classe le véhicule en catégorie C : la garantie de bon fonctionnement le couvrait jusqu'au 6 mai.</span></td><td>son propre document, et une date : rien à discuter</td></tr><tr><td class="cle">que vous irez plus loin + la version à éviter</td><td>Sinon, vous allez le regretter.</td><td>une menace : elle affaiblit la lettre et peut se retourner</td></tr><tr><td class="cle">que vous irez plus loin + la version qui tient</td><td>À défaut, je m'adresserai à la Division des petites créances sans autre avis ni délai.</td><td>un fait au futur : plus fort qu'une menace, et vérifiable</td></tr></tbody></table><div class="note">La colonne de droite ne contient pas un mot plus poli que celle de gauche — elle contient des faits là où l'autre contient des jugements. C'est la seule différence, et c'est toute la différence.</div></section><section class="bloc card ml"><h3>Les onze lignes de la lettre d'Ernestine</h3><p class="mp">À gauche le passage, à droite son rôle.</p><table class="ex2"><tr><td>Victoriaville, le 8 mai</td><td>le lieu et la date : la lettre se situe</td></tr><tr><td>Objet : mise en demeure — réparation…</td><td>annonce le genre et le dossier</td></tr><tr><td>Madame, Monsieur,</td><td>formule d'appel, quand on ne connaît pas le nom</td></tr><tr><td>Le 6 avril, j'ai acheté chez vous…</td><td>les faits de l'achat</td></tr><tr><td>Le 24 avril, un cognement est apparu…</td><td>la chronologie de la panne</td></tr><tr><td>À cette date, j'avais parcouru 900 km…</td><td>l'état au moment du défaut</td></tr><tr><td>L'étiquette classe le véhicule en catégorie C…</td><td>la garantie chiffrée, démontrée</td></tr><tr><td>La garantie légale exige une durée raisonnable…</td><td>la garantie de repli, sans date</td></tr><tr><td>En conséquence, je vous demande…</td><td>la demande, une seule, à vos frais</td></tr><tr><td>Vous disposez d'un délai de dix jours…</td><td>le délai et son point de départ</td></tr><tr><td>Vous trouverez ci-joint copie…</td><td>les pièces, énumérées sans commentaire</td></tr></table></section><section class="bloc card ml"><h3>Quatre questions sur la mise en demeure</h3><p class="mp">Répondez sans remonter dans la leçon.</p><ol class="check"><li><span class="q">L'objet d'une mise en demeure contient…</span><ul class="opts"><li>une phrase complète</li><li>le genre, le litige, le dossier</li></ul></li><li><span class="q">Les faits se rangent…</span><ul class="opts"><li>du plus grave au moins grave</li><li>dans l'ordre du calendrier</li></ul></li><li><span class="q">Le délai court à compter…</span><ul class="opts"><li>de la date de la lettre</li><li>de sa réception</li></ul></li><li><span class="q">Combien de demandes dans une mise en demeure ?</span><ul class="opts"><li>une</li><li>autant qu'on veut</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> le genre, le litige, le dossier — Trois éléments, sans verbe conjugué. · <b>2.</b> dans l'ordre du calendrier — Une date par phrase, du plus ancien au plus récent. · <b>3.</b> de sa réception — C'est pour cela qu'on l'envoie par un moyen qui prouve la date de réception. · <b>4.</b> une — Deux demandes en font une négociation, et le destinataire accordera la moins chère.</div></section><section class="bloc card ml"><h3>Trois faux pas, et comment s'en sortir</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">écrire ce qu'on ressent</p><div class="k">Ce qui arrive</div><p class="ph">le remplacer par un chiffre</p><p class="px">« J'ai été très déçue » devient « le véhicule a servi vingt-quatre jours ». Le second dit la même chose et se prouve.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">menacer au lieu d'annoncer</p><div class="k">Ce qui arrive</div><p class="ph">mettre le verbe au futur, à la première personne</p><p class="px">« Vous le regretterez » devient « je m'adresserai aux petites créances ». Un fait annoncé pèse plus qu'une menace.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">envoyer sans preuve de réception</p><div class="k">Ce qui arrive</div><p class="ph">courrier recommandé, ou remise avec signature</p><p class="px">Sans preuve de la date, le délai de dix jours ne commence jamais, et la lettre ne sert à rien devant le tribunal.</p></div></div></section></section></div>
+<footer><span>D1 · Réclamer après l'achat</span><span>Fiche élève</span></footer>
+</body>
+</html>

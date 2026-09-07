@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>D2 · Ce que j'ai fait, et ce qu'il y avait autour — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance D2 · Module 10 · 75 minutes</div>
+    <h1>Ce que j'ai fait, et ce qu'il y avait autour</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Raconter sa journée demande deux temps à la fois : le passé composé pour ce qu'on a fait, l'imparfait pour ce qu'il y avait pendant qu'on le faisait. « J'ai visité le phare pendant qu'il pleuvait. »</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>employer le gérondif pour dire comment ou en même temps ;</li><li>raconter au passé composé ce qu'on a fait ;</li><li>décrire à l'imparfait ce qu'il y avait autour ;</li><li>poser à quelqu'un de la région les questions qui font parler.</li></ol></section><section class="bloc regle"><div class="lbl">Le gérondif : « en » plus la forme en -ant</div><p class="r">En marchant, comptez quarante minutes. En passant par le petit chemin, vous coupez dix minutes.</p><p class="pr">Il dit comment on fait quelque chose, ou ce qu'on fait en même temps. Le sujet est le même pour les deux verbes.</p></section><section class="bloc card"><div class="lbl">Deux usages</div><h2 class="t">Le gérondif dit comment, ou quand</h2><table><thead><tr><th>La phrase</th><th>Ce qu'il dit</th></tr></thead><tbody><tr><td>En marchant, comptez quarante minutes</td><td class="cle">Comment : à pied</td></tr><tr><td>En passant par l'église, vous coupez</td><td class="cle">Comment : par où</td></tr><tr><td>Elle regardait dehors en voyageant</td><td class="cle">Quand : en même temps</td></tr><tr><td>On voit les phoques en arrivant tôt</td><td class="cle">Condition : si on arrive tôt</td></tr></tbody></table></section><section class="bloc regle"><div class="lbl">Deux temps pour un seul récit</div><p class="r">Passé composé : ce que j'ai fait, une action terminée. Imparfait : ce qu'il y avait autour, le décor.</p><p class="pr">« J'ai visité le phare pendant qu'il pleuvait. » La visite est finie ; la pluie était là tout le temps.</p></section><section class="bloc card"><div class="lbl">Le récit de Thuy</div><h2 class="t">Ce qu'elle a fait, ce qu'il y avait</h2><table><thead><tr><th>Passé composé</th><th>Imparfait</th></tr></thead><tbody><tr><td>J'ai fait le sentier</td><td class="cle">il faisait beau</td></tr><tr><td>J'ai visité le phare</td><td class="cle">il pleuvait</td></tr><tr><td>Je suis montée au belvédère</td><td class="cle">on voyait les îles</td></tr><tr><td>J'ai pris l'autocar</td><td class="cle">je regardais dehors</td></tr></tbody></table></section><section class="bloc card"><div class="lbl">Choix du temps</div><h2 class="t">Passé composé ou imparfait ?</h2><p class="consigne">À l'oral, puis à l'écrit.</p><ol class="ex"><li><span class="q">Hier, j'… (visiter) le phare.</span><span class="ligne"></span></li><li><span class="q">Il … (pleuvoir) toute la journée.</span><span class="ligne ligne--court"></span></li><li><span class="q">Nous … (arriver) à trois heures.</span><span class="ligne"></span></li><li><span class="q">Le fleuve … (être) très large.</span><span class="ligne"></span></li><li><span class="q">Elle … (regarder) dehors pendant tout le trajet.</span><span class="ligne ligne--court"></span></li><li><span class="q">J'… (monter) au belvédère ce matin.</span><span class="ligne"></span></li></ol></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Raconter seulement au passé composé</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">J'ai pris l'autocar. J'ai marché. J'ai vu des phoques.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">J'ai pris l'autocar : je regardais dehors, le fleuve était immense.</p></div></div><div class="note">Une suite d'actions sans décor ressemble à une liste de tâches. L'imparfait est ce qui fait qu'on écoute jusqu'au bout — et le niveau 5 demande un récit, pas un relevé.</div></section><section class="bloc"><div class="lbl">Questions qui font parler</div><h2 class="t">À poser à quelqu'un de la région</h2><div class="grid"><div class="card"><h3>Qu'est-ce qu'il faut voir ici ?</h3><p>Ouverte : on ne peut pas répondre par oui ou non.</p></div><div class="card"><h3>Vous venez ici depuis longtemps ?</h3><p>Elle invite à raconter, pas seulement à dater.</p></div><div class="card"><h3>Qu'est-ce que vous préférez, vous ?</h3><p>Le « vous » final rend la question personnelle.</p></div><div class="card"><h3>C'est comment en hiver ?</h3><p>Elle porte sur ce qu'on ne verra pas soi-même.</p></div></div></section><section class="bloc card"><div class="lbl">Production</div><h2 class="t">Racontez votre journée d'hier, en quatre phrases</h2><p class="consigne">Deux au passé composé, deux à l'imparfait. À l'oral, par deux.</p><ol class="ex"><li><span class="q">Avez-vous dit ce que vous avez fait ?</span><span class="ligne ligne--court"></span></li><li><span class="q">Avez-vous dit le temps qu'il faisait ?</span><span class="ligne ligne--court"></span></li><li><span class="q">Avez-vous dit ce que vous voyiez ?</span><span class="ligne ligne--court"></span></li><li><span class="q">Avez-vous posé une question à votre voisin ?</span><span class="ligne ligne--court"></span></li><li><span class="q">Avez-vous vouvoyé ?</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">En quatre phrases : ce que vous avez fait en fin de semaine, et ce qu'il y avait autour.</p><ul><li>Deux phrases au passé composé, deux à l'imparfait.</li><li>Soulignez les verbes avant de remettre.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Le gérondif : en marchant, en passant</h2><section class="bloc card ml"><h3>Trois mots qui remplacent une phrase entière</h3><p class="mp">« Si vous passez par le petit chemin derrière l'église, vous couperez dix minutes. » Neuf mots avant d'arriver à l'information. La même chose avec un gérondif : « En passant par le petit chemin, vous coupez dix minutes. » C'est plus court, c'est plus clair, et surtout c'est ainsi qu'on vous parlera en région : les indications de chemin, les conseils, les explications de raccourci passent presque toutes par cette tournure. La comprendre est indispensable ; l'employer soi-même fait passer d'un français d'élève à un français de tous les jours.</p><div class="note">Le gérondif est aussi la marque du niveau 5 dans le programme : le savoir dit « employer des participes présents avec en pour marquer la simultanéité ou la manière ».</div></section><section class="bloc card ml"><h3>Comment il se forme : une seule recette</h3><p class="mp">On prend le verbe à « nous » au présent, on enlève -ons, on ajoute -ant, et on met « en » devant.</p><table class="ana"><tr><td>La recette</td><td class="">nous marchons → en marchant · nous prenons → en prenant · nous partons → en partant</td></tr><tr><td>Sur des verbes du module</td><td class="cle">nous réservons → en réservant · nous montons → en montant · nous attendons → en attendant</td></tr><tr><td>Les trois exceptions</td><td class="">être → en étant · avoir → en ayant · savoir → en sachant</td></tr></table><p class="dit"><span class="k">On dit</span> En marchant, comptez quarante minutes. En passant par le petit chemin, vous coupez dix minutes.</p><div class="note">La recette marche même sur les verbes irréguliers : nous faisons → en faisant, nous allons → en allant, nous venons → en venant. Il n'y a vraiment que trois exceptions.</div></section><section class="bloc card ml"><h3>Le chemin qu'on prend pour y arriver</h3><p class="mp">C'est l'emploi le plus utile du module. Le gérondif répond à « comment ? ».</p><table class="ana"><tr><td>Un chemin</td><td class="">En passant par le chemin de l'église, vous coupez dix minutes.</td></tr><tr><td>Une économie</td><td class="cle">En réservant en basse saison, on paie vingt dollars de moins par nuit.</td></tr><tr><td>Un conseil</td><td class="">En partant tôt le matin, vous éviterez le monde sur le sentier.</td></tr></table><p class="dit"><span class="k">On dit</span> En réservant après le quinze septembre, je paie le tarif de basse saison.</p><div class="note">Ce gérondif-là se place presque toujours en tête de phrase, suivi d'une virgule. C'est la position qui met le moyen en avant.</div></section><section class="bloc card ml"><h3>La simultanéité : deux choses en même temps</h3><p class="mp">Les deux actions se passent au même moment, et c'est la même personne qui fait les deux.</p><table class="ana"><tr><td>Pendant le trajet</td><td class="">Elle a regardé le fleuve en voyageant. · Il a lu le dépliant en attendant l'autocar.</td></tr><tr><td>Sur place</td><td class="cle">On jase en marchant. · Il a pris des photos en montant au belvédère.</td></tr><tr><td>La règle qui ne se contourne pas</td><td class="">le sujet du gérondif est celui de la phrase</td></tr></table><p class="dit"><span class="k">On dit</span> Il a lu le dépliant en attendant l'autocar.</p><div class="note">Ce gérondif-là se place plutôt après le verbe. « En attendant l'autocar, il a lu le dépliant » se dit aussi, et met l'attente en avant.</div></section><section class="bloc card ml"><h3>Le sujet est toujours celui de la phrase</h3><p class="mp">C'est la seule erreur qui rend une phrase impossible à comprendre, et elle est fréquente.</p><table class="ana"><tr><td>Ce qui ne se dit pas</td><td class="">En montant au belvédère, les îles sont apparues.</td></tr><tr><td>Ce qui se dit</td><td class="cle">En montant au belvédère, nous avons vu les îles.</td></tr><tr><td>Le test</td><td class="">qui monte ? Ce doit être le sujet de la phrase principale.</td></tr></table><p class="dit"><span class="k">On dit</span> En montant au belvédère, nous avons vu les îles et l'autre rive.</p><div class="note">Le test tient en une question : qui fait l'action du gérondif ? Si ce n'est pas le sujet de la phrase, il faut refaire la phrase autrement.</div></section><section class="bloc card ml"><h3>La phrase longue, puis la phrase courte</h3><p class="mp">Choisissez un cas et écoutez la version longue, puis la version au gérondif.</p><table class="labo"><thead><tr><th>Quel cas ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">Le raccourci</td><td>Si vous passez par le chemin de l'église, vous couperez dix minutes. En passant par le chemin de l'église, vous coupez dix minutes et le sentier est plus joli.<span class="tags">un sentier</span></td><td>le moyen, en tête de phrase</td></tr><tr><td class="cle">L'économie</td><td>Si vous réservez après le quinze septembre, le gîte coûte moins cher. En réservant en basse saison, on paie vingt dollars de moins par nuit.<span class="tags">la basse saison · un gîte</span></td><td>le gérondif remplace un si</td></tr><tr><td class="cle">Pendant le trajet</td><td>Elle regardait le fleuve et elle voyageait. Elle a regardé le fleuve en voyageant, le dépliant sur les genoux.<span class="tags">le fleuve · un dépliant</span></td><td>deux actions au même moment</td></tr><tr><td class="cle">Sur le sentier</td><td>Nous sommes montés au belvédère et nous avons vu les îles. En montant au belvédère, nous avons vu les îles.<span class="tags">un belvédère</span></td><td>la même personne pour les deux verbes</td></tr><tr><td class="cle">Deux gérondifs à la file</td><td>En sortant du gîte et en tournant à droite après l'église, vous êtes au sentier en dix minutes.<span class="tags">un gîte · un sentier</span></td><td>deux gérondifs, un chemin complet</td></tr></tbody></table><div class="note">Le dernier cas est le modèle à réutiliser : deux gérondifs suffisent à expliquer n'importe quel chemin, et c'est ainsi qu'on vous les donnera.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six phrases du module.</p><table class="ex2"><tr><td>En marchant, comptez quarante minutes.</td><td>le moyen, tout court</td></tr><tr><td>En passant par le petit chemin, vous coupez dix minutes.</td><td>le raccourci</td></tr><tr><td>En réservant en basse saison, on paie moins cher.</td><td>le gérondif à la place d'un si</td></tr><tr><td>Elle a regardé le fleuve en voyageant.</td><td>deux actions en même temps</td></tr><tr><td>Il a lu le dépliant en attendant l'autocar.</td><td>l'attente, occupée</td></tr><tr><td>En sortant du gîte et en tournant à droite, vous y êtes.</td><td>deux gérondifs, un chemin</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges du gérondif</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">changer de sujet en cours de route</p><div class="k">Ce qui arrive</div><p class="ph">« En montant au belvédère, les îles sont apparues »</p><p class="px">Le sujet du gérondif doit être celui de la phrase. Ce ne sont pas les îles qui montent : dites « en montant au belvédère, nous avons vu les îles ». C'est la seule erreur qui rend la phrase incompréhensible.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">oublier le « en »</p><div class="k">Ce qui arrive</div><p class="ph">« Marchant, comptez quarante minutes »</p><p class="px">Le participe présent sans « en » existe, mais il ne dit ni le moyen ni la simultanéité, et il appartient à l'écrit soigné. Dans une conversation, le <b>en</b> est obligatoire.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">former le gérondif sur l'infinitif</p><div class="k">Ce qui arrive</div><p class="ph">« en prendant » au lieu de « en prenant »</p><p class="px">La recette part du verbe à <b>nous</b>, jamais de l'infinitif : nous prenons → en prenant, nous venons → en venant, nous faisons → en faisant. Un instant pour dire le « nous » dans sa tête, et la forme sort juste.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">Le gérondif se forme à partir du verbe à…</span><ul class="opts"><li>l'infinitif</li><li>nous, au présent</li></ul></li><li><span class="q">« En montant au belvédère, ___ »</span><ul class="opts"><li>les îles sont apparues</li><li>nous avons vu les îles</li></ul></li><li><span class="q">Combien d'exceptions à la recette ?</span><ul class="opts"><li>trois</li><li>une dizaine</li></ul></li><li><span class="q">« En réservant en basse saison, on paie moins cher » dit…</span><ul class="opts"><li>le moyen</li><li>le moment</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> nous, au présent — À partir de « nous » au présent : nous prenons → en prenant. · <b>2.</b> nous avons vu les îles — « Nous avons vu les îles » : c'est nous qui montons. · <b>3.</b> trois — Trois : être, avoir, savoir. · <b>4.</b> le moyen — Le moyen : c'est la réponse à « comment paie-t-on moins cher ? ».</div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Raconter : le passé composé et l'imparfait</h2><section class="bloc card ml"><h3>L'un fait avancer le récit, l'autre plante le décor</h3><p class="mp">On rentre au gîte, on vous demande comment s'est passée la journée, et il faut raconter. C'est là que les deux temps du passé se séparent, et la règle n'est pas une affaire de durée : elle est une affaire de rôle. Le passé composé raconte ce qui s'est passé — les actions, l'une après l'autre, qui font avancer l'histoire. L'imparfait décrit ce qu'il y avait autour — le temps qu'il faisait, le paysage, l'ambiance, ce que l'on ressentait. Un récit fait uniquement de passé composé est une liste. Un récit fait uniquement d'imparfait est une carte postale. Il en faut les deux.</p><div class="note">Le test qui marche presque toujours : si l'on peut demander « et après ? », c'est du passé composé. Si l'on peut demander « c'était comment ? », c'est de l'imparfait.</div></section><section class="bloc card ml"><h3>Le passé composé : ce qui s'est passé</h3><p class="mp">Une action, un moment, et le récit avance d'un pas. C'est le temps des verbes d'action.</p><table class="ana"><tr><td>Le départ</td><td class="">J'ai pris l'autocar de sept heures. · Nous sommes partis vers neuf heures.</td></tr><tr><td>Sur place</td><td class="cle">Elle a visité le phare. · Nous sommes montés au belvédère. · J'ai vu trois phoques.</td></tr><tr><td>Le test</td><td class="">peut-on demander « et après ? » ? Alors c'est le passé composé.</td></tr></table><p class="dit"><span class="k">On dit</span> Lundi matin, j'ai pris l'autocar de sept heures.</p><div class="note">Une action qui a duré longtemps reste au passé composé si elle est terminée et située : « j'ai marché pendant trois heures » est un événement, pas un décor.</div></section><section class="bloc card ml"><h3>L'imparfait : ce qu'il y avait autour</h3><p class="mp">Le temps qu'il faisait, le paysage, les gens, l'ambiance. Rien n'avance : c'est le décor.</p><table class="ana"><tr><td>Le temps qu'il faisait</td><td class="">Il pleuvait. · Il faisait frais. · Le fleuve était gris.</td></tr><tr><td>Le décor</td><td class="cle">Il n'y avait personne sur le sentier. · La marée descendait. · Les phoques dormaient.</td></tr><tr><td>Ce qu'on ressentait</td><td class="">J'étais fatiguée mais contente. · J'avais froid aux mains.</td></tr></table><p class="dit"><span class="k">On dit</span> Il faisait frais et il n'y avait personne sur le sentier.</p><div class="note">« Il y avait », « c'était », « il faisait », « j'étais » : quatre formes qui ouvrent presque tous les décors. Apprenez-les comme des blocs, elles reviennent sans arrêt.</div></section><section class="bloc card ml"><h3>Les deux ensemble, dans la même phrase</h3><p class="mp">C'est la construction la plus utile de toutes : l'imparfait pose la situation, le passé composé y fait tomber l'événement.</p><table class="ana"><tr><td>Avec « pendant que »</td><td class="">J'ai visité le phare pendant qu'il pleuvait.</td></tr><tr><td>Avec « quand »</td><td class="cle">Quand nous sommes arrivés, la marée descendait.</td></tr><tr><td>Sans mot de liaison</td><td class="">Il faisait déjà noir ; nous sommes rentrés à pied.</td></tr></table><p class="dit"><span class="k">On dit</span> J'ai visité le phare pendant qu'il pleuvait. Quand nous sommes arrivés, la marée descendait.</p><div class="note">Regardez lequel des deux verbes est interrompu par l'autre : celui qui était déjà en cours va à l'imparfait, celui qui survient va au passé composé.</div></section><section class="bloc card ml"><h3>L'habitude va à l'imparfait</h3><p class="mp">Ce qui se répétait pendant le séjour se raconte à l'imparfait, même si le séjour est bel et bien fini.</p><table class="ana"><tr><td>L'habitude du séjour</td><td class="">Tous les matins, je déjeunais à sept heures et je partais marcher.</td></tr><tr><td>Les marqueurs qui l'annoncent</td><td class="cle">tous les jours · chaque matin · d'habitude · le soir</td></tr><tr><td>Le contraste</td><td class="">Tous les matins je marchais, mais le jeudi j'ai pris l'autobus.</td></tr></table><p class="dit"><span class="k">On dit</span> Tous les matins, je déjeunais à sept heures et je partais marcher.</p><div class="note">C'est le point qui surprend le plus : « le séjour est fini, donc tout devrait être au passé composé » — non. Une habitude est un décor, quel que soit son âge.</div></section><section class="bloc card ml"><h3>Être ou avoir : le piège de l'auxiliaire</h3><p class="mp">Une petite famille de verbes se conjugue avec « être », et alors le participe s'accorde avec le sujet. Tous les autres prennent « avoir ».</p><table class="ana"><tr><td>Les verbes avec être</td><td class="">aller · venir · partir · arriver · monter · descendre · rester · entrer · sortir · tomber</td></tr><tr><td>L'accord qui suit</td><td class="cle">je suis allée · nous sommes montés · elle est restée · ils sont partis</td></tr><tr><td>Tous les autres</td><td class="">j'ai pris · j'ai vu · j'ai marché · j'ai visité — le participe ne bouge pas</td></tr></table><p class="dit"><span class="k">On dit</span> Je suis allée au parc. Nous sommes montés au belvédère. J'ai visité le phare.</p><div class="note">Attention : monter, descendre et sortir prennent « avoir » quand ils ont un complément direct — « j'ai monté ma valise », « j'ai sorti le dépliant ». C'est le seul cas qui bascule.</div></section><section class="bloc card ml"><h3>Le décor, l'action, et les deux ensemble</h3><p class="mp">Choisissez un moment de la journée et écoutez comment il se raconte.</p><table class="labo"><thead><tr><th>Quel moment ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">Le décor du matin</td><td>Ce matin, il faisait frais, le fleuve était gris et il n'y avait personne sur le sentier.<span class="tags">un sentier</span></td><td>imparfait : rien n'avance, tout est autour</td></tr><tr><td class="cle">Les actions de la journée</td><td>Je suis partie vers neuf heures, j'ai marché jusqu'à l'anse, j'ai visité le phare et je suis montée au belvédère.<span class="tags">un phare · un belvédère</span></td><td>passé composé : quatre pas dans le récit</td></tr><tr><td class="cle">Les deux dans la même phrase</td><td>Quand je suis arrivée à l'anse, <b>la marée</b> descendait et trois phoques dormaient sur les roches.</td><td>l'action tombe dans le décor</td></tr><tr><td class="cle">L'habitude du séjour</td><td>Tous les matins, je déjeunais à sept heures au gîte et je partais marcher avant huit heures.<span class="tags">un gîte</span></td><td>une habitude, donc l'imparfait</td></tr><tr><td class="cle">Le récit complet</td><td>Ce matin il faisait frais. Je suis partie vers neuf heures. Il n'y avait aucun vacancier sur le sentier. J'ai vu trois phoques. Du belvédère, on voyait les îles. C'était la plus belle journée depuis mon arrivée.<span class="tags">un vacancier · un belvédère</span></td><td>le décor et les actions, en alternance</td></tr></tbody></table><div class="note">Écoutez le récit complet en dernier : c'est le modèle de ce que vous aurez à produire, et l'alternance des deux temps s'y entend très nettement.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six phrases du récit.</p><table class="ex2"><tr><td>Lundi matin, j'ai pris l'autocar de sept heures.</td><td>une action, le récit avance</td></tr><tr><td>Pendant tout le trajet, il faisait soleil.</td><td>un décor, rien n'avance</td></tr><tr><td>Quand nous sommes arrivés, la marée descendait.</td><td>l'action tombe dans le décor</td></tr><tr><td>J'ai visité le phare pendant qu'il pleuvait.</td><td>les deux dans la même phrase</td></tr><tr><td>Tous les matins, je déjeunais à sept heures.</td><td>une habitude du séjour</td></tr><tr><td>Le dernier jour, nous sommes montés au belvédère.</td><td>être, avec accord</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges du récit au passé</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">choisir selon la durée</p><div class="k">Ce qui arrive</div><p class="ph">« j'ai marché trois heures » mis à l'imparfait parce que c'est long</p><p class="px">La durée n'entre pas en jeu. Ce qui compte, c'est le rôle : une marche terminée et située est un événement, donc du passé composé, même si elle a duré toute la journée.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">oublier l'accord avec « être »</p><div class="k">Ce qui arrive</div><p class="ph">« je suis allé » écrit par une femme, « nous sommes monté »</p><p class="px">Avec l'auxiliaire <b>être</b>, le participe s'accorde avec le sujet : je suis allée, nous sommes montés, elles sont restées. C'est visible à l'écrit, et parfois audible : « allée » et « allé » se disent pareil, mais « monté » et « montés » aussi — c'est donc surtout une question d'écrit.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">tout mettre au passé composé</p><div class="k">Ce qui arrive</div><p class="ph">« Il a fait frais, il n'y a pas eu personne, la marée est descendue »</p><p class="px">C'est correct grammaticalement et c'est illisible comme récit : rien ne distingue plus le décor des événements. Posez d'abord une phrase d'imparfait, puis enchaînez vos actions.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">« Quand nous sommes arrivés, la marée ___ »</span><ul class="opts"><li>descendait</li><li>est descendue</li></ul></li><li><span class="q">« Tous les matins, je ___ à sept heures. »</span><ul class="opts"><li>ai déjeuné</li><li>déjeunais</li></ul></li><li><span class="q">« Nous ___ au belvédère. »</span><ul class="opts"><li>avons monté</li><li>sommes montés</li></ul></li><li><span class="q">Le test du passé composé, c'est de pouvoir demander…</span><ul class="opts"><li>« et après ? »</li><li>« c'était comment ? »</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> descendait — Descendait : c'est le décor, déjà en cours quand nous arrivons. · <b>2.</b> déjeunais — Déjeunais : une habitude va à l'imparfait, même terminée. · <b>3.</b> sommes montés — Sommes montés : « monter » sans complément direct prend « être », et le participe s'accorde. · <b>4.</b> « et après ? » — « Et après ? ». « C'était comment ? » appelle l'imparfait.</div></section></section></div>
+<footer><span>D2 · Une semaine au Bic</span><span>Fiche élève</span></footer>
+</body>
+</html>

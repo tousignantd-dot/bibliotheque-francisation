@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fiches élèves du niveau 8 — la série « (+) »</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Nunito:wght@400;600;700;800&display=swap">
+<style>
+:root{
+  --ground:#F7F7F5; --card:#FFFFFF; --sunken:#FBFBFA;
+  --ink:#17181A; --body:#3A3D40; --muted:#6E7175;
+  --line:#E4E4E0; --line-fort:#D2D2CD;
+  --acier:#1D6B8F; --acier-bg:#E7F0F6;
+  --fait:#0A8F5B; --fait-bg:#E6F5EE;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#151618; --card:#1D1F22; --sunken:#212326;
+  --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+  --line:#2E3135; --line-fort:#3D4146;
+  --acier:#6DAFD2; --acier-bg:#14242C;
+  --fait:#4BC48D; --fait-bg:#12291F;
+}}
+:root[data-theme="dark"]{
+  --ground:#151618; --card:#1D1F22; --sunken:#212326;
+  --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+  --line:#2E3135; --line-fort:#3D4146;
+  --acier:#6DAFD2; --acier-bg:#14242C;
+  --fait:#4BC48D; --fait-bg:#12291F;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--body);
+  font-family:Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.doc{max-width:1280px;margin:0 auto;padding:26px 22px 60px}
+.retour{display:inline-flex;gap:8px;font-size:13px;font-weight:700;color:var(--muted);
+  text-decoration:none;margin-bottom:22px}
+.retour:hover{color:var(--acier)}
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--acier);margin:0 0 10px}
+h1{font-family:Newsreader,Georgia,serif;font-size:clamp(30px,4.6vw,44px);line-height:1.06;
+  font-weight:500;letter-spacing:-.02em;color:var(--ink);margin:0 0 14px;text-wrap:balance}
+.chapeau{font-size:17px;margin:0 0 8px;max-width:70ch}
+.chapeau strong{color:var(--ink);font-weight:700}
+.note{font-size:14px;color:var(--muted);margin:0 0 24px;max-width:74ch}
+.note code{font-family:var(--mono);font-size:.88em;background:var(--sunken);
+  border:1px solid var(--line);border-radius:4px;padding:1px 5px}
+
+.plan{display:grid;grid-template-columns:270px 1fr;gap:18px;align-items:start}
+@media (max-width:880px){.plan{grid-template-columns:1fr}}
+
+.rail{background:var(--card);border:1px solid var(--line);border-radius:4px;
+  overflow:hidden;position:sticky;top:14px}
+@media (max-width:880px){.rail{position:static}}
+.rail h2{font-size:11.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--muted);margin:0;padding:12px 15px 8px;background:var(--sunken);
+  border-bottom:1px solid var(--line)}
+select.mod{width:100%;border:0;border-bottom:1px solid var(--line);background:var(--card);
+  color:var(--ink);font:inherit;font-weight:700;padding:11px 14px;cursor:pointer}
+select.mod:focus{outline:2px solid var(--acier);outline-offset:-2px}
+ul.seances{list-style:none;margin:0;padding:0;max-height:62vh;overflow-y:auto}
+ul.seances li{border-bottom:1px solid var(--line)}
+ul.seances li:last-child{border-bottom:0}
+ul.seances button{display:flex;gap:9px;align-items:baseline;width:100%;text-align:left;
+  border:0;background:transparent;font:inherit;color:var(--body);padding:9px 14px;
+  cursor:pointer;border-left:3px solid transparent}
+ul.seances button:hover{background:var(--sunken)}
+ul.seances button[aria-current="true"]{background:var(--acier-bg);color:var(--ink);
+  font-weight:700;border-left-color:var(--acier)}
+.code{font-family:var(--mono);font-size:11.5px;font-weight:700;color:var(--muted);
+  min-width:20px}
+ul.seances button[aria-current="true"] .code{color:var(--acier)}
+.tt{flex:1;font-size:14px;line-height:1.35}
+.pastille{width:7px;height:7px;border-radius:50%;background:var(--fait);flex:none;
+  align-self:center}
+.pastille.non{background:transparent;border:1px solid var(--line-fort)}
+
+.vue{background:var(--card);border:1px solid var(--line);border-radius:4px;overflow:hidden}
+.onglets{display:flex;gap:2px;padding:10px 12px 0;background:var(--sunken);
+  border-bottom:1px solid var(--line);flex-wrap:wrap;align-items:flex-end}
+.onglets button{border:1px solid var(--line);border-bottom:0;background:var(--sunken);
+  color:var(--muted);font:inherit;font-weight:700;font-size:14px;padding:9px 16px;
+  border-radius:4px 4px 0 0;cursor:pointer;position:relative;top:1px}
+.onglets button[aria-selected="true"]{background:var(--card);color:var(--ink);
+  border-color:var(--line)}
+.onglets .droite{margin-left:auto;padding:0 2px 9px;font-size:13px}
+.onglets .droite a{color:var(--acier);font-weight:700;text-decoration:none}
+.onglets .droite a:hover{text-decoration:underline}
+.barre{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;
+  padding:10px 15px;border-bottom:1px solid var(--line);font-size:13.5px;color:var(--muted)}
+.barre b{color:var(--ink);font-size:15px;font-weight:700}
+.badge{font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;
+  padding:3px 9px;border-radius:2px;background:var(--fait-bg);color:var(--fait)}
+.badge.non{background:var(--sunken);color:var(--muted);border:1px solid var(--line)}
+iframe{display:block;width:100%;height:78vh;border:0;background:#fff}
+.niveaux{margin:14px 0 0;font-size:14px;color:var(--muted)}
+.niveaux a{color:var(--acier);font-weight:700;text-decoration:none}
+.niveaux a:hover{text-decoration:underline}
+.pied{margin-top:30px;padding-top:18px;border-top:1px solid var(--line);
+  font-size:13px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="doc">
+<a class="retour" href="/presentations.html"><span aria-hidden="true">&#8592;</span> Le classeur</a>
+<p class="eyebrow">Bibliothèque de francisation · niveau 8</p>
+<h1>La théorie descend-elle dans la fiche&nbsp;?</h1>
+<p class="chapeau">Les <strong>96 fiches du niveau 8</strong>, en deux
+versions&nbsp;: celle d'aujourd'hui, et la <strong>fiche (+)</strong>, où la mini-leçon — le
+« En apprendre plus » qui ne vit qu'à l'écran — est imprimée <strong>dans la fiche de sa
+séance</strong>. Changez d'onglet&nbsp;: la séance ne bouge pas, seule la version change.</p>
+<p class="niveaux">Les autres niveaux&nbsp;: <a href="fiches-plus-niveau-1.html">niveau 1</a> · <a href="fiches-plus-niveau-2.html">niveau 2</a> · <a href="fiches-plus-niveau-3.html">niveau 3</a> · <a href="fiches-plus-niveau-4.html">niveau 4</a> · <a href="fiches-plus-niveau-5.html">niveau 5</a> · <a href="fiches-plus-niveau-6.html">niveau 6</a> · <a href="fiches-plus-niveau-7.html">niveau 7</a> · <b>niveau 8</b></p>
+<p class="note">66 fiches sur 96 portent une mini-leçon&nbsp;; les
+30 autres sont identiques dans les deux onglets — ce sont les séances de production
+et d'application, qui n'en ont pas. Le point vert dans la liste dit lesquelles changent. Le rattachement d'une
+mini-leçon à une séance est lu dans le deck de la séance, pas deviné.
+<strong>La série d'origine n'a pas été touchée</strong>&nbsp;: l'essai vit dans
+<code>assets/documents/plus/</code>.</p>
+
+<div class="plan">
+  <nav class="rail">
+    <h2>6 modules</h2>
+    <select class="mod" id="mod"></select>
+    <ul class="seances" id="seances"></ul>
+  </nav>
+  <main class="vue">
+    <div class="onglets" role="tablist">
+      <button role="tab" id="ong-avant" aria-selected="true">Fiche élève</button>
+      <button role="tab" id="ong-apres" aria-selected="false">Fiche élève (+)</button>
+      <span class="droite"><a id="ouvrir" href="#" target="_blank" rel="noopener">Ouvrir seule&nbsp;↗</a></span>
+    </div>
+    <div class="barre"><b id="tt">—</b><span id="etat"></span></div>
+    <iframe id="vue" title="La fiche"></iframe>
+  </main>
+</div>
+
+<div class="pied">
+  <p>Produit par <code>python3 build/fiches_plus.py</code>. Le rendu papier des mini-leçons
+  est celui du manuel de l'élève, réemployé tel quel — une seule mise en page pour une
+  seule chose.</p>
+</div>
+</div>
+
+<script>
+var DONNEES = [{"slug": "module-n8-emploi", "titre": "Tenir son bout au travail", "seances": [{"code": "A1", "titre": "A1 · Ta description de tâches, au complet", "f": "module-n8-emploi-a1-ta-description-de-taches-au-complet.html", "plus": false}, {"code": "A2", "titre": "A2 · La voix qui dit « ce n'est pas fini »", "f": "module-n8-emploi-a2-la-voix-qui-dit-ce-n-est-pas-fini.html", "plus": true}, {"code": "A3", "titre": "A3 · Deux registres, un seul français", "f": "module-n8-emploi-a3-deux-registres-un-seul-francais.html", "plus": true}, {"code": "A4", "titre": "A4 · Les mots du poste", "f": "module-n8-emploi-a4-les-mots-du-poste.html", "plus": false}, {"code": "B1", "titre": "B1 · Quarante-quatre heures, payées quarante-quatre", "f": "module-n8-emploi-b1-quarante-quatre-heures-payees-quarante-quatre.html", "plus": false}, {"code": "B2", "titre": "B2 · Ce que dit la norme, et ce qu'elle ne dit pas", "f": "module-n8-emploi-b2-ce-que-dit-la-norme-et-ce-qu-elle-ne-dit-pas.html", "plus": true}, {"code": "B3", "titre": "B3 · Il faut que ça passe par : le subjonctif", "f": "module-n8-emploi-b3-il-faut-que-ca-passe-par-le-subjonctif.html", "plus": true}, {"code": "B4", "titre": "B4 · La lettre en cinq parties", "f": "module-n8-emploi-b4-la-lettre-en-cinq-parties.html", "plus": true}, {"code": "C1", "titre": "C1 · La réunion du mardi", "f": "module-n8-emploi-c1-la-reunion-du-mardi.html", "plus": false}, {"code": "C2", "titre": "C2 · Intervenir sans couper la parole", "f": "module-n8-emploi-c2-intervenir-sans-couper-la-parole.html", "plus": true}, {"code": "C3", "titre": "C3 · Proposer, nuancer, regretter", "f": "module-n8-emploi-c3-proposer-nuancer-regretter.html", "plus": true}, {"code": "C4", "titre": "C4 · Le compte rendu", "f": "module-n8-emploi-c4-le-compte-rendu.html", "plus": true}, {"code": "D1", "titre": "D1 · Ce qui existe, et ce que ça demande", "f": "module-n8-emploi-d1-ce-qui-existe-et-ce-que-ca-demande.html", "plus": false}, {"code": "D2", "titre": "D2 · Auquel, dont, et si j'avais su", "f": "module-n8-emploi-d2-auquel-dont-et-si-j-avais-su.html", "plus": true}, {"code": "E1", "titre": "E1 · L'appel et la réunion", "f": "module-n8-emploi-e1-l-appel-et-la-reunion.html", "plus": false}, {"code": "E2", "titre": "E2 · La demande écrite, et le bilan", "f": "module-n8-emploi-e2-la-demande-ecrite-et-le-bilan.html", "plus": false}]}, {"slug": "module-n8-recherche", "titre": "Passer au travers du processus", "seances": [{"code": "A1", "titre": "A1 · Le dossier est parti. Et maintenant ?", "f": "module-n8-recherche-a1-le-dossier-est-parti-et-maintenant.html", "plus": false}, {"code": "A2", "titre": "A2 · Quatre mélodies, et ce qu'elles disent à votre place", "f": "module-n8-recherche-a2-quatre-melodies-et-ce-qu-elles-disent-a-votre-pl.html", "plus": true}, {"code": "A3", "titre": "A3 · Seize mots, et onze qui ne s'illustrent pas", "f": "module-n8-recherche-a3-seize-mots-et-onze-qui-ne-s-illustrent-pas.html", "plus": false}, {"code": "A4", "titre": "A4 · Ce rachat, cette acquisition, cet isolement", "f": "module-n8-recherche-a4-ce-rachat-cette-acquisition-cet-isolement.html", "plus": true}, {"code": "B1", "titre": "B1 · L'appel qu'on croit subir", "f": "module-n8-recherche-b1-l-appel-qu-on-croit-subir.html", "plus": false}, {"code": "B2", "titre": "B2 · Rien n'est décidé, et la langue doit le dire", "f": "module-n8-recherche-b2-rien-n-est-decide-et-la-langue-doit-le-dire.html", "plus": true}, {"code": "B3", "titre": "B3 · Trois hauteurs pour une même question", "f": "module-n8-recherche-b3-trois-hauteurs-pour-une-meme-question.html", "plus": true}, {"code": "B4", "titre": "B4 · « Je n'ai pas compris » est presque toujours faux", "f": "module-n8-recherche-b4-je-n-ai-pas-compris-est-presque-toujours-faux.html", "plus": true}, {"code": "C1", "titre": "C1 · Écouter une présentation sans s'endormir", "f": "module-n8-recherche-c1-ecouter-une-presentation-sans-s-endormir.html", "plus": false}, {"code": "C2", "titre": "C2 · Un texte écrit pour rassurer", "f": "module-n8-recherche-c2-un-texte-ecrit-pour-rassurer.html", "plus": true}, {"code": "C3", "titre": "C3 · Exigé, atout, et les trois mots qui ouvrent une porte", "f": "module-n8-recherche-c3-exige-atout-et-les-trois-mots-qui-ouvrent-une-po.html", "plus": true}, {"code": "C4", "titre": "C4 · Certes, en revanche, dont, auquel", "f": "module-n8-recherche-c4-certes-en-revanche-dont-auquel.html", "plus": true}, {"code": "D1", "titre": "D1 · Raconter une erreur, et s'en sortir grandi", "f": "module-n8-recherche-d1-raconter-une-erreur-et-s-en-sortir-grandi.html", "plus": true}, {"code": "D2", "titre": "D2 · Ce qu'on n'a pas le droit de vous demander", "f": "module-n8-recherche-d2-ce-qu-on-n-a-pas-le-droit-de-vous-demander.html", "plus": true}, {"code": "E1", "titre": "E1 · C'est à vous : quarante-cinq minutes devant le comité", "f": "module-n8-recherche-e1-c-est-a-vous-quarante-cinq-minutes-devant-le-com.html", "plus": false}, {"code": "E2", "titre": "E2 · Ce qu'on écrit le lendemain, et ce qu'on emporte", "f": "module-n8-recherche-e2-ce-qu-on-ecrit-le-lendemain-et-ce-qu-on-emporte.html", "plus": true}]}, {"slug": "module-n8-emmenagement", "titre": "Ce qui est couvert, et ce qui se défend", "seances": [{"code": "A1", "titre": "A1 · Le camion est reparti, et il reste trois choses", "f": "module-n8-emmenagement-a1-le-camion-est-reparti-et-il-reste-trois-choses.html", "plus": false}, {"code": "A2", "titre": "A2 · Ce que la voix dit et que les mots ne disent pas", "f": "module-n8-emmenagement-a2-ce-que-la-voix-dit-et-que-les-mots-ne-disent-pas.html", "plus": true}, {"code": "A3", "titre": "A3 · Trois dommages et une clause", "f": "module-n8-emmenagement-a3-trois-dommages-et-une-clause.html", "plus": true}, {"code": "A4", "titre": "A4 · La phrase passive, et ce qu'elle cache", "f": "module-n8-emmenagement-a4-la-phrase-passive-et-ce-qu-elle-cache.html", "plus": true}, {"code": "B1", "titre": "B1 · L'appel au courtier", "f": "module-n8-emmenagement-b1-l-appel-au-courtier.html", "plus": true}, {"code": "B2", "titre": "B2 · Les six mots qui décident d'une police", "f": "module-n8-emmenagement-b2-les-six-mots-qui-decident-d-une-police.html", "plus": true}, {"code": "B3", "titre": "B3 · Le subjonctif présent, et ce qui le déclenche", "f": "module-n8-emmenagement-b3-le-subjonctif-present-et-ce-qui-le-declenche.html", "plus": true}, {"code": "B4", "titre": "B4 · Le pronom relatif après une préposition", "f": "module-n8-emmenagement-b4-le-pronom-relatif-apres-une-preposition.html", "plus": true}, {"code": "B5", "titre": "B5 · Lire un sommaire de police, et faire clarifier", "f": "module-n8-emmenagement-b5-lire-un-sommaire-de-police-et-faire-clarifier.html", "plus": true}, {"code": "C1", "titre": "C1 · Ce qui est accepté, ce qui est refusé", "f": "module-n8-emmenagement-c1-ce-qui-est-accepte-ce-qui-est-refuse.html", "plus": true}, {"code": "C2", "titre": "C2 · Lire une lettre de décision", "f": "module-n8-emmenagement-c2-lire-une-lettre-de-decision.html", "plus": true}, {"code": "C3", "titre": "C3 · Ce qui aurait pu ne pas arriver", "f": "module-n8-emmenagement-c3-ce-qui-aurait-pu-ne-pas-arriver.html", "plus": true}, {"code": "C4", "titre": "C4 · Concéder, puis avancer", "f": "module-n8-emmenagement-c4-conceder-puis-avancer.html", "plus": true}, {"code": "C5", "titre": "C5 · Mettre en relief ce qui compte", "f": "module-n8-emmenagement-c5-mettre-en-relief-ce-qui-compte.html", "plus": true}, {"code": "E1", "titre": "E1 · L'appel de révision", "f": "module-n8-emmenagement-e1-l-appel-de-revision.html", "plus": false}, {"code": "E2", "titre": "E2 · La demande de révision", "f": "module-n8-emmenagement-e2-la-demande-de-revision.html", "plus": true}]}, {"slug": "module-n8-habitation", "titre": "Faire renverser une décision", "seances": [{"code": "A1", "titre": "A1 · La lettre dit non. Ce n'est pas la fin.", "f": "module-n8-habitation-a1-la-lettre-dit-non-ce-n-est-pas-la-fin.html", "plus": false}, {"code": "A2", "titre": "A2 · La même phrase, trois intentions", "f": "module-n8-habitation-a2-la-meme-phrase-trois-intentions.html", "plus": true}, {"code": "A3", "titre": "A3 · Dix mots qu'on ne peut pas remplacer", "f": "module-n8-habitation-a3-dix-mots-qu-on-ne-peut-pas-remplacer.html", "plus": false}, {"code": "A4", "titre": "A4 · Le plus-que-parfait, ou l'étage du dessous", "f": "module-n8-habitation-a4-le-plus-que-parfait-ou-l-etage-du-dessous.html", "plus": true}, {"code": "B1", "titre": "B1 · Trois sortes de phrases, trois poids", "f": "module-n8-habitation-b1-trois-sortes-de-phrases-trois-poids.html", "plus": false}, {"code": "B2", "titre": "B2 · Cinq blocs, et on lit le mandat en premier", "f": "module-n8-habitation-b2-cinq-blocs-et-on-lit-le-mandat-en-premier.html", "plus": true}, {"code": "B3", "titre": "B3 · Suivre le fil d'une phrase longue", "f": "module-n8-habitation-b3-suivre-le-fil-d-une-phrase-longue.html", "plus": true}, {"code": "B4", "titre": "B4 · « Par qui ? » — la question qui ouvre un dossier", "f": "module-n8-habitation-b4-par-qui-la-question-qui-ouvre-un-dossier.html", "plus": true}, {"code": "C1", "titre": "C1 · L'appel qui conteste", "f": "module-n8-habitation-c1-l-appel-qui-conteste.html", "plus": false}, {"code": "C2", "titre": "C2 · Une page pour un dossier de quatre", "f": "module-n8-habitation-c2-une-page-pour-un-dossier-de-quatre.html", "plus": true}, {"code": "C3", "titre": "C3 · Donner raison, puis avancer", "f": "module-n8-habitation-c3-donner-raison-puis-avancer.html", "plus": true}, {"code": "C4", "titre": "C4 · L'hypothèse irréelle, l'arme tranquille", "f": "module-n8-habitation-c4-l-hypothese-irreelle-l-arme-tranquille.html", "plus": true}, {"code": "D1", "titre": "D1 · Quinze minutes, un seul homme, quatre temps", "f": "module-n8-habitation-d1-quinze-minutes-un-seul-homme-quatre-temps.html", "plus": true}, {"code": "D2", "titre": "D2 · Je demande que le dossier soit rouvert", "f": "module-n8-habitation-d2-je-demande-que-le-dossier-soit-rouvert.html", "plus": true}, {"code": "E1", "titre": "E1 · Vous menez l'appel", "f": "module-n8-habitation-e1-vous-menez-l-appel.html", "plus": false}, {"code": "E2", "titre": "E2 · La lettre qui demande qu'on recommence", "f": "module-n8-habitation-e2-la-lettre-qui-demande-qu-on-recommence.html", "plus": true}]}, {"slug": "module-n8-actualite", "titre": "Deux versions, et la mienne", "seances": [{"code": "A1", "titre": "A1 · Deux journaux, deux soirées, aucun menteur", "f": "module-n8-actualite-a1-deux-journaux-deux-soirees-aucun-menteur.html", "plus": false}, {"code": "A2", "titre": "A2 · Quatre mélodies, et ce qu'elles disent à votre place", "f": "module-n8-actualite-a2-quatre-melodies-et-ce-qu-elles-disent-a-votre-pl.html", "plus": true}, {"code": "A3", "titre": "A3 · Trois choses qu'on ne classe pas ensemble", "f": "module-n8-actualite-a3-trois-choses-qu-on-ne-classe-pas-ensemble.html", "plus": true}, {"code": "A4", "titre": "A4 · Seize mots, et onze qui ne s'illustrent pas", "f": "module-n8-actualite-a4-seize-mots-et-onze-qui-ne-s-illustrent-pas.html", "plus": false}, {"code": "B1", "titre": "B1 · Deux personnes, une soirée, deux récits", "f": "module-n8-actualite-b1-deux-personnes-une-soiree-deux-recits.html", "plus": false}, {"code": "B2", "titre": "B2 · Ce qui apparaît quand on met les deux côte à côte", "f": "module-n8-actualite-b2-ce-qui-apparait-quand-on-met-les-deux-cote-a-cot.html", "plus": false}, {"code": "B3", "titre": "B3 · Un passif sans « par » est un endroit où quelqu'un manque", "f": "module-n8-actualite-b3-un-passif-sans-par-est-un-endroit-ou-quelqu-un-m.html", "plus": true}, {"code": "B4", "titre": "B4 · Le mot choisi n'est jamais neutre", "f": "module-n8-actualite-b4-le-mot-choisi-n-est-jamais-neutre.html", "plus": true}, {"code": "C1", "titre": "C1 · Douze minutes, et personne pour vous attendre", "f": "module-n8-actualite-c1-douze-minutes-et-personne-pour-vous-attendre.html", "plus": true}, {"code": "C2", "titre": "C2 · Un éditorial n'est pas une suite d'idées, c'est un bâtiment", "f": "module-n8-actualite-c2-un-editorial-n-est-pas-une-suite-d-idees-c-est-u.html", "plus": true}, {"code": "C3", "titre": "C3 · Certes, bien que, même si, or", "f": "module-n8-actualite-c3-certes-bien-que-meme-si-or.html", "plus": true}, {"code": "C4", "titre": "C4 · Je pense que c'est, je ne pense pas que ce soit", "f": "module-n8-actualite-c4-je-pense-que-c-est-je-ne-pense-pas-que-ce-soit.html", "plus": true}, {"code": "D1", "titre": "D1 · Deux minutes d'antenne, et quelqu'un qui vous contredit", "f": "module-n8-actualite-d1-deux-minutes-d-antenne-et-quelqu-un-qui-vous-con.html", "plus": true}, {"code": "D2", "titre": "D2 · Le reproche civilisé, et ce qu'on souligne à l'oral", "f": "module-n8-actualite-d2-le-reproche-civilise-et-ce-qu-on-souligne-a-l-or.html", "plus": true}, {"code": "E1", "titre": "E1 · C'est à vous : la ligne est ouverte", "f": "module-n8-actualite-e1-c-est-a-vous-la-ligne-est-ouverte.html", "plus": false}, {"code": "E2", "titre": "E2 · Résumer ce qu'on conteste, puis répondre", "f": "module-n8-actualite-e2-resumer-ce-qu-on-conteste-puis-repondre.html", "plus": true}]}, {"slug": "module-n8-oeuvres", "titre": "Ce que l'œuvre ne dit pas", "seances": [{"code": "A1", "titre": "A1 · Un cercle de lecture qui tourne à vide", "f": "module-n8-oeuvres-a1-un-cercle-de-lecture-qui-tourne-a-vide.html", "plus": false}, {"code": "A2", "titre": "A2 · Ce que la voix ajoute aux mots", "f": "module-n8-oeuvres-a2-ce-que-la-voix-ajoute-aux-mots.html", "plus": true}, {"code": "A3", "titre": "A3 · Les mots de l'interprétation", "f": "module-n8-oeuvres-a3-les-mots-de-l-interpretation.html", "plus": false}, {"code": "A4", "titre": "A4 · Trois opérations, et comment redire celle des autres", "f": "module-n8-oeuvres-a4-trois-operations-et-comment-redire-celle-des-aut.html", "plus": true}, {"code": "B1", "titre": "B1 · La finale des « Eaux basses »", "f": "module-n8-oeuvres-b1-la-finale-des-eaux-basses.html", "plus": false}, {"code": "B2", "titre": "B2 · Le même indice, deux lectures", "f": "module-n8-oeuvres-b2-le-meme-indice-deux-lectures.html", "plus": true}, {"code": "B3", "titre": "B3 · Ce qui aurait pu se passer et ne s'est pas passé", "f": "module-n8-oeuvres-b3-ce-qui-aurait-pu-se-passer-et-ne-s-est-pas-passe.html", "plus": true}, {"code": "B4", "titre": "B4 · Mettre en avant l'indice qui porte votre lecture", "f": "module-n8-oeuvres-b4-mettre-en-avant-l-indice-qui-porte-votre-lecture.html", "plus": true}, {"code": "C1", "titre": "C1 · La chronique du samedi : trois écoutes, trois consignes", "f": "module-n8-oeuvres-c1-la-chronique-du-samedi-trois-ecoutes-trois-consi.html", "plus": false}, {"code": "C2", "titre": "C2 · « La chaise du fond » : six pages, quatre gestes", "f": "module-n8-oeuvres-c2-la-chaise-du-fond-six-pages-quatre-gestes.html", "plus": true}, {"code": "C3", "titre": "C3 · « Déneigement » : vingt-deux vers, un mot", "f": "module-n8-oeuvres-c3-deneigement-vingt-deux-vers-un-mot.html", "plus": true}, {"code": "C4", "titre": "C4 · Dire son doute sans le déguiser", "f": "module-n8-oeuvres-c4-dire-son-doute-sans-le-deguiser.html", "plus": true}, {"code": "D1", "titre": "D1 · Le cercle du mardi, huit heures moins dix", "f": "module-n8-oeuvres-d1-le-cercle-du-mardi-huit-heures-moins-dix.html", "plus": true}, {"code": "D2", "titre": "D2 · Une critique qu'on discute sans avoir vu la pièce", "f": "module-n8-oeuvres-d2-une-critique-qu-on-discute-sans-avoir-vu-la-piec.html", "plus": true}, {"code": "E1", "titre": "E1 · Proposez une lecture devant le cercle", "f": "module-n8-oeuvres-e1-proposez-une-lecture-devant-le-cercle.html", "plus": false}, {"code": "E2", "titre": "E2 · La lettre au courrier des lecteurs, et le bilan", "f": "module-n8-oeuvres-e2-la-lettre-au-courrier-des-lecteurs-et-le-bilan.html", "plus": false}]}];
+var mod = 0, sea = 0, apres = false;
+/* On ouvre sur la première séance qui porte une mini-leçon : atterrir sur une
+   séance où les deux onglets sont identiques ferait croire que la page ne
+   marche pas. */
+function premiereAvecPlus(m) {
+  for (var i = 0; i < m.seances.length; i++) if (m.seances[i].plus) return i;
+  return 0;
+}
+var $ = function (id) { return document.getElementById(id); };
+
+function chemin() {
+  var s = DONNEES[mod].seances[sea];
+  return '../documents/' + (apres ? 'plus/' : '') + s.f;
+}
+
+function rendre() {
+  var m = DONNEES[mod], s = m.seances[sea];
+  $('vue').src = chemin();
+  $('ouvrir').href = chemin();
+  $('tt').textContent = s.titre;
+  /* Dire quand les deux onglets montrent la même chose. Sans ce mot, une
+     séance sans mini-leçon passerait pour un onglet cassé. */
+  $('etat').innerHTML = s.plus
+    ? '<span class="badge">porte une mini-leçon</span>'
+    : '<span class="badge non">aucune mini-leçon — les deux onglets sont identiques</span>';
+  $('ong-avant').setAttribute('aria-selected', String(!apres));
+  $('ong-apres').setAttribute('aria-selected', String(apres));
+  Array.prototype.forEach.call($('seances').children, function (li, i) {
+    li.firstChild.setAttribute('aria-current', String(i === sea));
+  });
+}
+
+function rendreSeances() {
+  $('seances').innerHTML = DONNEES[mod].seances.map(function (s, i) {
+    return '<li><button type="button" data-i="' + i + '">'
+      + '<span class="code">' + s.code + '</span>'
+      + '<span class="tt">' + s.titre.replace(/^[A-E]\d+\s*·\s*/, '') + '</span>'
+      + '<span class="pastille' + (s.plus ? '' : ' non') + '" title="'
+      + (s.plus ? 'porte une mini-leçon' : 'aucune mini-leçon') + '"></span>'
+      + '</button></li>';
+  }).join('');
+}
+
+$('mod').innerHTML = DONNEES.map(function (m, i) {
+  return '<option value="' + i + '">' + m.titre + '</option>';
+}).join('');
+$('mod').addEventListener('change', function () {
+  mod = Number(this.value); sea = premiereAvecPlus(DONNEES[mod]);
+  rendreSeances(); rendre();
+});
+$('seances').addEventListener('click', function (e) {
+  var b = e.target.closest('button[data-i]');
+  /* On garde l'onglet en changeant de séance : c'est tout l'intérêt de la
+     page — comparer la même chose, pas retrouver son onglet à chaque clic. */
+  if (b) { sea = Number(b.dataset.i); rendre(); }
+});
+$('ong-avant').addEventListener('click', function () { apres = false; rendre(); });
+$('ong-apres').addEventListener('click', function () { apres = true; rendre(); });
+sea = premiereAvecPlus(DONNEES[0]);
+rendreSeances(); rendre();
+</script>
+</body>
+</html>

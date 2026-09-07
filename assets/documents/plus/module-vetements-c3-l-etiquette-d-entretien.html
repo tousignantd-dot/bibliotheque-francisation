@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C3 · L'étiquette d'entretien — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance C3 · Module 18 · 60 minutes</div>
+    <h1>L'étiquette d'entretien</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Cinq dessins cousus dans le col, les mêmes partout dans le monde. Ils disent comment laver, sécher et repasser — et comment ne pas ruiner un vêtement en une seule brassée.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>reconnaître les cinq symboles d'entretien ;</li><li>lire une température de lavage ;</li><li>comprendre ce qu'un X veut dire ;</li><li>employer le vocabulaire du lavage.</li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Les cinq symboles</h2><table><thead><tr><th>Le dessin</th><th>Ce qu'il dit</th></tr></thead><tbody><tr><td class="cle">Un bac d'eau</td><td>le lavage — souvent avec une température</td></tr><tr><td class="cle">Un triangle</td><td>l'eau de Javel</td></tr><tr><td class="cle">Un carré</td><td>le séchage</td></tr><tr><td class="cle">Un fer</td><td>le repassage</td></tr><tr><td class="cle">Un cercle</td><td>le nettoyage à sec</td></tr></tbody></table><div class="note">Toujours dans cet ordre, de gauche à droite.</div></section><section class="bloc regle"><div class="lbl">La croix veut dire non</div><p class="r">Un X sur un symbole : c'est interdit.</p><p class="pr">Un carré barré : ne pas mettre à la sécheuse. Un triangle barré : pas d'eau de Javel. Un fer barré : ne pas repasser. C'est la convention la plus utile de toute l'étiquette, et elle s'apprend en dix secondes.</p></section><section class="bloc"><div class="lbl">Les points et les chiffres</div><h2 class="t">Deux façons de dire la chaleur</h2><div class="grid"><div class="card"><h3>Les chiffres dans le bac</h3><p>30, 40, 60 : la température de l'eau en degrés. 30, c'est l'eau froide ; 60, c'est très chaud et réservé au coton blanc.</p></div><div class="card"><h3>Les points</h3><p>Un point = doux ou froid. Deux points = moyen. Trois points = chaud. On les trouve dans le fer et dans le carré du séchage.</p></div><div class="card"><h3>La main dans le bac</h3><p>Lavage à la main seulement. La machine, même au cycle délicat, abîmera le vêtement.</p></div></div></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Les mots du lavage</h2><table><thead><tr><th>Le mot</th><th>Ce que ça veut dire</th></tr></thead><tbody><tr><td>laver à froid</td><td class="cle">à trente degrés ou moins</td></tr><tr><td>sécher à plat</td><td class="cle">étendu, jamais suspendu</td></tr><tr><td>ne pas mettre à la sécheuse</td><td class="cle">il rétrécirait</td></tr><tr><td>nettoyage à sec</td><td class="cle">au nettoyeur, pas à la maison</td></tr></tbody></table><div class="note">« Sécher à plat » évite qu'un lainage s'étire et s'allonge.</div></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">La laine à la sécheuse</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">Je l'ai mis à la sécheuse avec le reste.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">Lavage à froid, séchage à plat.</p></div></div><div class="note">La chaleur et le mouvement font feutrer la laine : les fibres s'accrochent entre elles et le vêtement rétrécit de plusieurs tailles, définitivement. Aucun traitement ne le répare.</div></section><section class="bloc card"><div class="lbl">Pratique · 1 de 2</div><h2 class="t">Que dit l'étiquette ?</h2><p class="consigne">Traduisez le symbole en phrase.</p><ol class="ex"><li><span class="q">Un bac avec 30</span><span class="ligne"></span></li><li><span class="q">Un carré barré</span><span class="ligne"></span></li><li><span class="q">Un triangle barré</span><span class="ligne ligne--court"></span></li><li><span class="q">Un fer à un point</span><span class="ligne"></span></li><li><span class="q">Un cercle</span><span class="ligne ligne--court"></span></li><li><span class="q">Une main dans le bac</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">Pratique · 2 de 2</div><h2 class="t">Que faire de ce vêtement ?</h2><p class="consigne">Choisissez.</p><ol class="ex"><li><span class="q">Un chandail de laine</span><span class="ligne"></span></li><li><span class="q">Un manteau de duvet</span><span class="ligne"></span></li><li><span class="q">Une chemise de coton blanc</span><span class="ligne"></span></li><li><span class="q">Un manteau de laine habillé</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Lisez l'étiquette d'un vêtement que vous portez souvent.</p><ul><li>Notez les cinq symboles et ce qu'ils disent.</li><li>Est-ce que vous le laviez comme il faut ?</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Cinq dessins dans le col</h2><section class="bloc card ml"><h3>Une étiquette, cinq symboles</h3><p class="mp">Dans le col ou la couture de côté, une petite étiquette porte cinq dessins. Ils disent comment laver, blanchir, sécher, repasser et nettoyer. Ces cinq symboles sont les mêmes partout dans le monde — une fois appris, ils servent toute la vie.</p><div class="note">Un manteau d'hiver mal lavé perd sa chaleur. Ce n'est pas une question d'apparence.</div></section><section class="bloc card ml"><h3>Le bac d'eau : le lavage</h3><p class="mp">Le chiffre à l'intérieur est la température maximale.</p><table class="ana"><tr><td>Un bac avec 30</td><td class="">laver à <b>30</b> degrés</td></tr><tr><td>Un bac avec une main</td><td class="cle">lavage à la <b>main</b></td></tr><tr><td>Un bac barré</td><td class="">ne pas laver à l'eau</td></tr></table><p class="dit"><span class="k">On dit</span> Le bac d'eau avec un chiffre, c'est la température de lavage.</p><div class="note">Sur un manteau en duvet, l'eau chaude tasse le duvet et le manteau perd sa chaleur. Trente degrés, jamais plus.</div></section><section class="bloc card ml"><h3>Le triangle : l'eau de Javel</h3><p class="mp">Un triangle barré veut dire : jamais de Javel.</p><table class="ana"><tr><td>Triangle vide</td><td class="">Javel permise</td></tr><tr><td>Triangle {barré}</td><td class="cle">pas de Javel</td></tr><tr><td>Sur un manteau</td><td class="">toujours barré</td></tr></table><p class="dit"><span class="k">On dit</span> Le triangle barré, c'est : pas d'eau de Javel.</p><div class="note">C'est le symbole le plus souvent barré : presque tous les vêtements de couleur l'interdisent.</div></section><section class="bloc card ml"><h3>Le carré : le séchage</h3><p class="mp">Un cercle dedans veut dire que la sécheuse est permise ; les points donnent la température.</p><table class="ana"><tr><td>Carré + cercle + 1 point</td><td class="">sécheuse, <b>basse</b> température</td></tr><tr><td>Carré + cercle + 2 points</td><td class="cle">température moyenne</td></tr><tr><td>Carré {barré}</td><td class="">pas de sécheuse</td></tr></table><p class="dit"><span class="k">On dit</span> Un point, c'est basse température.</p><div class="note">Pour un manteau en duvet, la sécheuse à basse température est <em>utile</em> : elle fait regonfler le duvet. C'est contre-intuitif et important.</div></section><section class="bloc card ml"><h3>Le fer et le cercle</h3><p class="mp">Le fer, c'est le repassage ; le cercle seul, le nettoyage à sec.</p><table class="ana"><tr><td>Fer avec des points</td><td class="">température de <b>repassage</b></td></tr><tr><td>Fer {barré}</td><td class="cle">pas de repassage</td></tr><tr><td>Cercle</td><td class="">nettoyage à sec</td></tr></table><p class="dit"><span class="k">On dit</span> Le fer barré, c'est : pas de repassage.</p><div class="note">La lettre dans le cercle s'adresse au nettoyeur, pas à vous : elle lui dit quel produit employer.</div></section><section class="bloc card ml"><h3>Que veut dire ce symbole ?</h3><p class="mp">Choisissez un symbole.</p><table class="labo"><thead><tr><th>Quel symbole ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">un bac d'eau avec « 30 »</td><td>Trente degrés, à l'eau froide.<span class="tags">laver à <b>30</b> degrés</span></td><td>plus chaud, le duvet se tasse</td></tr><tr><td class="cle">un triangle barré</td><td>Pas d'eau de Javel. Jamais, sur un manteau.<span class="tags">pas d'<b>eau de Javel</b></span></td><td>le symbole le plus souvent barré</td></tr><tr><td class="cle">un carré avec un cercle et un point</td><td>Un point, c'est basse température.<span class="tags">sécheuse, <b>basse</b> température</span></td><td>utile : ça fait regonfler le duvet</td></tr><tr><td class="cle">un carré barré</td><td>Le carré barré : pas de sécheuse.<span class="tags"><b>pas</b> de sécheuse</span></td><td>fréquent sur la laine</td></tr><tr><td class="cle">un fer barré</td><td>Pas de repassage.</td><td>de toute façon, on ne repasse pas un manteau</td></tr></tbody></table><div class="note">Cinq symboles, cinq consignes. Ils reviennent sur tous les vêtements que vous achèterez.</div></section><section class="bloc card ml"><h3>Les consignes du module</h3><p class="mp">Écoutez chacune.</p><table class="ex2"><tr><td>Le bac d'eau avec un chiffre, c'est la température de lavage.</td><td>le lavage</td></tr><tr><td>Trente degrés, à l'eau froide.</td><td>la température</td></tr><tr><td>Pas d'eau de Javel. Jamais, sur un manteau.</td><td>le triangle</td></tr><tr><td>Un point, c'est basse température.</td><td>la sécheuse</td></tr><tr><td>Ça fait regonfler le duvet.</td><td>pourquoi la sécheuse est utile</td></tr><tr><td>Une ou deux fois par hiver, pas plus.</td><td>la fréquence de lavage</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges à connaître</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">laver un manteau à l'eau chaude</p><div class="k">Ce qui arrive</div><p class="ph">le duvet se tasse et le manteau perd sa chaleur</p><p class="px">C'est irréversible. Trente degrés, c'est écrit sur l'étiquette, et ce n'est pas une suggestion.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">éviter la sécheuse par prudence</p><div class="k">Ce qui arrive</div><p class="ph">pour le duvet, elle est utile</p><p class="px">À basse température, elle fait regonfler le duvet. Sécher un manteau de duvet à l'air le laisse plat et froid.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">laver trop souvent</p><div class="k">Ce qui arrive</div><p class="ph">une ou deux fois par hiver</p><p class="px">Chaque lavage use le duvet et l'imperméabilisation. Un manteau se brosse et s'aère plus qu'il ne se lave.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">Un bac d'eau avec « 30 » veut dire…</span><ul class="opts"><li>laver à 30 degrés</li><li>30 minutes de lavage</li></ul></li><li><span class="q">Un triangle barré veut dire…</span><ul class="opts"><li>pas de Javel</li><li>pas de sécheuse</li></ul></li><li><span class="q">Pour un manteau en duvet, la sécheuse est…</span><ul class="opts"><li>à éviter</li><li>utile à basse température</li></ul></li><li><span class="q">On lave un manteau d'hiver…</span><ul class="opts"><li>une ou deux fois par hiver</li><li>chaque mois</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> laver à 30 degrés — C'est la température maximale. · <b>2.</b> pas de Javel — Le carré, c'est le séchage. · <b>3.</b> utile à basse température — Elle fait regonfler le duvet. · <b>4.</b> une ou deux fois par hiver — Trop de lavages usent le duvet.</div></section></section></div>
+<footer><span>C3 · Acheter des vêtements</span><span>Fiche élève</span></footer>
+</body>
+</html>

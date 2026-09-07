@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>D2 · Un mode d'emploi en trois blocs — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance D2 · Module 14 · 75 minutes</div>
+    <h1>Un mode d'emploi en trois blocs</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">La dose en haut, les étapes au milieu, les avertissements en bas. Toujours dans cet ordre. Une fois qu'on le sait, on trouve ce qu'on cherche en cinq secondes.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>trouver la dose, les étapes et les avertissements sur une étiquette ;</li><li>convertir millilitres et cuillères à soupe ;</li><li>comprendre pourquoi il ne faut pas mélanger deux produits ;</li><li>suivre un mode d'emploi du début à la fin.</li></ol></section><section class="bloc card"><div class="lbl">Dialogue</div><h2 class="t">Trente millilitres, c'est combien ?</h2><p class="consigne">Écoutez, puis cherchez les trois blocs sur les bouteilles distribuées.</p><div class="rep rep--key"><div class="qui">CLAUDE</div><div>« Diluer trente millilitres dans quatre litres d'eau tiède. » Trente millilitres, c'est combien ?</div></div><div class="rep rep--key"><div class="qui">FARIDA</div><div>Deux cuillères à soupe, à peu près. Il y a un bouchon doseur sur la bouteille.</div></div><div class="rep"><div class="qui">CLAUDE</div><div>Et après ? Il faut rincer ?</div></div><div class="rep rep--key"><div class="qui">FARIDA</div><div>C'est écrit juste en dessous : « Rincer à l'eau claire. Ne pas mélanger avec un produit chloré. »</div></div></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Les trois blocs</h2><table><thead><tr><th>Bloc</th><th>Ce qu'on y trouve</th></tr></thead><tbody><tr><td>1 · En haut</td><td>la dose : combien de produit, dans combien d'eau</td></tr><tr><td>2 · Au milieu</td><td>les étapes, dans l'ordre</td></tr><tr><td>3 · En bas</td><td>les avertissements, souvent en gras</td></tr></tbody></table><div class="note">Le troisième bloc est séparé du reste justement pour être trouvé vite.</div></section><section class="bloc card"><div class="lbl">Les mesures</div><h2 class="t">Quatre repères suffisent</h2><table><thead><tr><th>Mesure</th><th>Équivalent</th></tr></thead><tbody><tr><td class="cle">30 ml</td><td>≈ 2 cuillères à soupe</td></tr><tr><td class="cle">15 ml</td><td>≈ 1 cuillère à soupe</td></tr><tr><td class="cle">250 ml</td><td>≈ 1 tasse</td></tr><tr><td class="cle">1 litre</td><td>1000 ml</td></tr></tbody></table><div class="note">Sans bouchon doseur, une cuillère à soupe de cuisine fait l'affaire.</div></section><section class="bloc regle"><div class="lbl">La dose est calculée</div><p class="r">En mettre plus ne nettoie pas mieux.</p><p class="pr">Deux fois la dose laisse un film collant sur la surface, qui attire la poussière et oblige à nettoyer plus souvent. C'est exactement ce que faisait Farida avant de lire l'étiquette.</p></section><section class="bloc regle"><div class="lbl">Ne jamais mélanger deux produits</div><p class="r">Un nettoyant et de l'eau de Javel dégagent un gaz toxique.</p><p class="pr">C'est l'accident domestique le plus fréquent avec les produits d'entretien. L'avertissement figure sur presque toutes les bouteilles, en bas, avec un triangle. Ce n'est pas une formalité juridique.</p></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Sauter les avertissements</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">C'est en bas et en petit, ce n'est sûrement pas important.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">C'est en bas et séparé pour être trouvé vite.</p></div></div><div class="note">Les avertissements sont détachés du reste du texte précisément pour qu'on puisse les repérer d'un coup d'œil. Sur un produit qu'on ne connaît pas, c'est le premier bloc à lire, pas le dernier.</div></section><section class="bloc card"><div class="lbl">Pratique · 1 de 2</div><h2 class="t">Dans quel bloc ?</h2><p class="consigne">Dites où se trouve chaque phrase.</p><ol class="ex"><li><span class="q">« Diluer 30 ml dans 4 litres d'eau tiède. »</span><span class="ligne ligne--court"></span></li><li><span class="q">« Laisser agir deux minutes. »</span><span class="ligne ligne--court"></span></li><li><span class="q">« Rincer à l'eau claire. »</span><span class="ligne ligne--court"></span></li><li><span class="q">« Ne pas mélanger avec un produit chloré. »</span><span class="ligne"></span></li><li><span class="q">« Tenir hors de la portée des enfants. »</span><span class="ligne"></span></li><li><span class="q">« Utiliser le bouchon doseur fourni. »</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">Pratique · 2 de 2</div><h2 class="t">Combien de produit ?</h2><p class="consigne">Calculez la quantité.</p><ol class="ex"><li><span class="q">30 ml, sans bouchon doseur</span><span class="ligne ligne--court"></span></li><li><span class="q">15 ml</span><span class="ligne ligne--court"></span></li><li><span class="q">60 ml</span><span class="ligne"></span></li><li><span class="q">Un demi-litre d'eau</span><span class="ligne"></span></li></ol></section><section class="bloc"><div class="lbl">Un mode d'emploi complet</div><h2 class="t">Les six lignes types</h2><div class="grid"><div class="card"><h3>La dose</h3><p>« Diluer 30 ml dans 4 litres d'eau tiède. » · « Utiliser le bouchon doseur fourni. »</p></div><div class="card"><h3>Les étapes</h3><p>« Appliquer sur la surface. » · « Laisser agir deux minutes. » · « Rincer à l'eau claire. »</p></div><div class="card"><h3>Les avertissements</h3><p>« Ne pas mélanger avec un produit chloré. » · « Tenir hors de la portée des enfants. »</p></div></div></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Prenez un produit d'entretien de chez vous et relevez ses trois blocs.</p><ul><li>La dose exacte, les étapes, les avertissements.</li><li>Notez si vous employiez la bonne dose jusqu'à maintenant.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Un mode d'emploi en trois blocs</h2><section class="bloc card ml"><h3>Toujours le même ordre</h3><p class="mp">Le mode d'emploi d'un produit d'entretien tient en trois blocs, toujours disposés de la même façon : la <b>dose</b> en haut, les <b>étapes</b> au milieu, les <b>avertissements</b> en bas. Une fois qu'on le sait, on trouve ce qu'on cherche en cinq secondes.</p><div class="note">C'est vrai des nettoyants, des savons, des détachants — et de la plupart des produits vendus en épicerie.</div></section><section class="bloc card ml"><h3>1 · La dose, en haut</h3><p class="mp">Combien de produit, dans combien d'eau.</p><table class="ana"><tr><td>La formule</td><td class=""><b>Diluer</b> 30 ml dans 4 litres</td></tr><tr><td>L'outil</td><td class="cle">un bouchon doseur</td></tr><tr><td>L'équivalent</td><td class="">30 ml ≈ 2 c. à soupe</td></tr></table><p class="dit"><span class="k">On dit</span> Diluer trente millilitres dans quatre litres d'eau tiède.</p><div class="note">Presque toutes les bouteilles ont un bouchon doseur. Deux fois trop de produit ne nettoie pas mieux : ça laisse un film collant.</div></section><section class="bloc card ml"><h3>2 · Les étapes, au milieu</h3><p class="mp">À l'impératif, dans l'ordre où il faut les faire.</p><table class="ana"><tr><td>Étape 1</td><td class=""><b>Appliquer</b> sur la surface</td></tr><tr><td>Étape 2</td><td class="cle">Laisser agir deux minutes</td></tr><tr><td>Étape 3</td><td class="">Rincer à l'eau claire</td></tr></table><p class="dit"><span class="k">On dit</span> Rincer à l'eau claire.</p><div class="note">Le verbe est souvent à l'infinitif dans les textes imprimés (« diluer », « rincer ») plutôt qu'à l'impératif. Cela veut dire la même chose.</div></section><section class="bloc card ml"><h3>3 · Les avertissements, en bas</h3><p class="mp">Séparés du reste, souvent en gras, avec un triangle.</p><table class="ana"><tr><td>Le plus important</td><td class=""><b>Ne pas mélanger</b> avec un produit chloré</td></tr><tr><td>Le plus fréquent</td><td class="cle">Tenir hors de la portée des enfants</td></tr><tr><td>Le signe</td><td class="">un triangle</td></tr></table><p class="dit"><span class="k">On dit</span> Ne pas mélanger avec un produit chloré.</p><div class="note">Cet avertissement n'est pas une formalité : un nettoyant et de l'eau de Javel dégagent un gaz toxique. C'est un accident domestique courant.</div></section><section class="bloc card ml"><h3>Les mesures dont vous avez besoin</h3><p class="mp"><b>30 ml</b> ≈ deux cuillères à soupe · <b>15 ml</b> ≈ une cuillère à soupe · <b>250 ml</b> ≈ une tasse · <b>1 litre</b> = 1000 ml. Avec ces quatre repères, tous les modes d'emploi d'épicerie deviennent lisibles.</p><div class="note">Si vous n'avez pas de bouchon doseur, une cuillère à soupe de cuisine fait très bien l'affaire.</div></section><section class="bloc card ml"><h3>Dans quel bloc ?</h3><p class="mp">Choisissez une phrase et voyez où elle se trouve.</p><table class="labo"><thead><tr><th>Quelle phrase ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">Diluer 30 ml dans 4 litres.</td><td>Diluer trente millilitres dans quatre litres d'eau tiède.<span class="tags">la <b>dose</b> — en haut</span></td><td>combien de produit, dans combien d'eau</td></tr><tr><td class="cle">b.</td><td>Laisser agir deux minutes.<span class="tags">les <b>étapes</b> — au milieu</span></td><td>dans l'ordre où il faut les faire</td></tr><tr><td class="cle">c.</td><td>Rincer à l'eau claire.<span class="tags">les <b>étapes</b> — au milieu</span></td><td>la dernière étape, presque toujours</td></tr><tr><td class="cle">d.</td><td>Ne pas mélanger avec un produit chloré.<span class="tags">les <b>avertissements</b> — en bas</span></td><td>en gras, avec un triangle</td></tr><tr><td class="cle">e.</td><td>Tenir hors de la portée des enfants.<span class="tags">les <b>avertissements</b> — en bas</span></td><td>sur tous les produits d'entretien</td></tr></tbody></table><div class="note">Trois blocs, cinq phrases : c'est la structure complète d'une étiquette de nettoyant.</div></section><section class="bloc card ml"><h3>Le mode d'emploi complet</h3><p class="mp">Écoutez chaque ligne, dans l'ordre.</p><table class="ex2"><tr><td>Diluer trente millilitres dans quatre litres d'eau tiède.</td><td>la dose</td></tr><tr><td>Utiliser le bouchon doseur fourni.</td><td>la dose</td></tr><tr><td>Laisser agir deux minutes.</td><td>une étape</td></tr><tr><td>Rincer à l'eau claire.</td><td>une étape</td></tr><tr><td>Ne pas mélanger avec un produit chloré.</td><td>un avertissement</td></tr><tr><td>Tenir hors de la portée des enfants.</td><td>un avertissement</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges à connaître</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">en mettre plus pour mieux nettoyer</p><div class="k">Ce qui arrive</div><p class="ph">deux fois la dose ne nettoie pas mieux</p><p class="px">Le produit laisse un film collant qui attire la saleté. La dose est calculée : c'est la bonne.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">sauter les avertissements</p><div class="k">Ce qui arrive</div><p class="ph">ils sont en bas, pas parce qu'ils sont moins importants</p><p class="px">Ils sont séparés du reste justement pour être trouvés vite. C'est la partie à lire en premier sur un produit qu'on ne connaît pas.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">mélanger deux produits</p><div class="k">Ce qui arrive</div><p class="ph">un nettoyant et de l'eau de Javel dégagent un gaz toxique</p><p class="px">C'est l'accident domestique le plus fréquent avec les produits d'entretien. L'avertissement est sur presque toutes les bouteilles.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">La dose se trouve…</span><ul class="opts"><li>en haut</li><li>en bas</li></ul></li><li><span class="q">Trente millilitres, c'est environ…</span><ul class="opts"><li>une tasse</li><li>deux cuillères à soupe</li></ul></li><li><span class="q">Mettre deux fois la dose…</span><ul class="opts"><li>nettoie mieux</li><li>laisse un film collant</li></ul></li><li><span class="q">« Ne pas mélanger avec un produit chloré » est…</span><ul class="opts"><li>une formalité</li><li>un vrai danger</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> en haut — Dose en haut, étapes au milieu, avertissements en bas. · <b>2.</b> deux cuillères à soupe — Une tasse, c'est 250 ml. · <b>3.</b> laisse un film collant — La dose est calculée. En mettre plus nuit au résultat. · <b>4.</b> un vrai danger — Le mélange dégage un gaz toxique.</div></section></section></div>
+<footer><span>D2 · Faire l'épicerie</span><span>Fiche élève</span></footer>
+</body>
+</html>

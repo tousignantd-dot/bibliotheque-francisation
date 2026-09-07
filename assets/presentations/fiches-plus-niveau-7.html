@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fiches élèves du niveau 7 — la série « (+) »</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Nunito:wght@400;600;700;800&display=swap">
+<style>
+:root{
+  --ground:#F7F7F5; --card:#FFFFFF; --sunken:#FBFBFA;
+  --ink:#17181A; --body:#3A3D40; --muted:#6E7175;
+  --line:#E4E4E0; --line-fort:#D2D2CD;
+  --acier:#1D6B8F; --acier-bg:#E7F0F6;
+  --fait:#0A8F5B; --fait-bg:#E6F5EE;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#151618; --card:#1D1F22; --sunken:#212326;
+  --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+  --line:#2E3135; --line-fort:#3D4146;
+  --acier:#6DAFD2; --acier-bg:#14242C;
+  --fait:#4BC48D; --fait-bg:#12291F;
+}}
+:root[data-theme="dark"]{
+  --ground:#151618; --card:#1D1F22; --sunken:#212326;
+  --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+  --line:#2E3135; --line-fort:#3D4146;
+  --acier:#6DAFD2; --acier-bg:#14242C;
+  --fait:#4BC48D; --fait-bg:#12291F;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--body);
+  font-family:Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.doc{max-width:1280px;margin:0 auto;padding:26px 22px 60px}
+.retour{display:inline-flex;gap:8px;font-size:13px;font-weight:700;color:var(--muted);
+  text-decoration:none;margin-bottom:22px}
+.retour:hover{color:var(--acier)}
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--acier);margin:0 0 10px}
+h1{font-family:Newsreader,Georgia,serif;font-size:clamp(30px,4.6vw,44px);line-height:1.06;
+  font-weight:500;letter-spacing:-.02em;color:var(--ink);margin:0 0 14px;text-wrap:balance}
+.chapeau{font-size:17px;margin:0 0 8px;max-width:70ch}
+.chapeau strong{color:var(--ink);font-weight:700}
+.note{font-size:14px;color:var(--muted);margin:0 0 24px;max-width:74ch}
+.note code{font-family:var(--mono);font-size:.88em;background:var(--sunken);
+  border:1px solid var(--line);border-radius:4px;padding:1px 5px}
+
+.plan{display:grid;grid-template-columns:270px 1fr;gap:18px;align-items:start}
+@media (max-width:880px){.plan{grid-template-columns:1fr}}
+
+.rail{background:var(--card);border:1px solid var(--line);border-radius:4px;
+  overflow:hidden;position:sticky;top:14px}
+@media (max-width:880px){.rail{position:static}}
+.rail h2{font-size:11.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--muted);margin:0;padding:12px 15px 8px;background:var(--sunken);
+  border-bottom:1px solid var(--line)}
+select.mod{width:100%;border:0;border-bottom:1px solid var(--line);background:var(--card);
+  color:var(--ink);font:inherit;font-weight:700;padding:11px 14px;cursor:pointer}
+select.mod:focus{outline:2px solid var(--acier);outline-offset:-2px}
+ul.seances{list-style:none;margin:0;padding:0;max-height:62vh;overflow-y:auto}
+ul.seances li{border-bottom:1px solid var(--line)}
+ul.seances li:last-child{border-bottom:0}
+ul.seances button{display:flex;gap:9px;align-items:baseline;width:100%;text-align:left;
+  border:0;background:transparent;font:inherit;color:var(--body);padding:9px 14px;
+  cursor:pointer;border-left:3px solid transparent}
+ul.seances button:hover{background:var(--sunken)}
+ul.seances button[aria-current="true"]{background:var(--acier-bg);color:var(--ink);
+  font-weight:700;border-left-color:var(--acier)}
+.code{font-family:var(--mono);font-size:11.5px;font-weight:700;color:var(--muted);
+  min-width:20px}
+ul.seances button[aria-current="true"] .code{color:var(--acier)}
+.tt{flex:1;font-size:14px;line-height:1.35}
+.pastille{width:7px;height:7px;border-radius:50%;background:var(--fait);flex:none;
+  align-self:center}
+.pastille.non{background:transparent;border:1px solid var(--line-fort)}
+
+.vue{background:var(--card);border:1px solid var(--line);border-radius:4px;overflow:hidden}
+.onglets{display:flex;gap:2px;padding:10px 12px 0;background:var(--sunken);
+  border-bottom:1px solid var(--line);flex-wrap:wrap;align-items:flex-end}
+.onglets button{border:1px solid var(--line);border-bottom:0;background:var(--sunken);
+  color:var(--muted);font:inherit;font-weight:700;font-size:14px;padding:9px 16px;
+  border-radius:4px 4px 0 0;cursor:pointer;position:relative;top:1px}
+.onglets button[aria-selected="true"]{background:var(--card);color:var(--ink);
+  border-color:var(--line)}
+.onglets .droite{margin-left:auto;padding:0 2px 9px;font-size:13px}
+.onglets .droite a{color:var(--acier);font-weight:700;text-decoration:none}
+.onglets .droite a:hover{text-decoration:underline}
+.barre{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;
+  padding:10px 15px;border-bottom:1px solid var(--line);font-size:13.5px;color:var(--muted)}
+.barre b{color:var(--ink);font-size:15px;font-weight:700}
+.badge{font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;
+  padding:3px 9px;border-radius:2px;background:var(--fait-bg);color:var(--fait)}
+.badge.non{background:var(--sunken);color:var(--muted);border:1px solid var(--line)}
+iframe{display:block;width:100%;height:78vh;border:0;background:#fff}
+.niveaux{margin:14px 0 0;font-size:14px;color:var(--muted)}
+.niveaux a{color:var(--acier);font-weight:700;text-decoration:none}
+.niveaux a:hover{text-decoration:underline}
+.pied{margin-top:30px;padding-top:18px;border-top:1px solid var(--line);
+  font-size:13px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="doc">
+<a class="retour" href="/presentations.html"><span aria-hidden="true">&#8592;</span> Le classeur</a>
+<p class="eyebrow">Bibliothèque de francisation · niveau 7</p>
+<h1>La théorie descend-elle dans la fiche&nbsp;?</h1>
+<p class="chapeau">Les <strong>176 fiches du niveau 7</strong>, en deux
+versions&nbsp;: celle d'aujourd'hui, et la <strong>fiche (+)</strong>, où la mini-leçon — le
+« En apprendre plus » qui ne vit qu'à l'écran — est imprimée <strong>dans la fiche de sa
+séance</strong>. Changez d'onglet&nbsp;: la séance ne bouge pas, seule la version change.</p>
+<p class="niveaux">Les autres niveaux&nbsp;: <a href="fiches-plus-niveau-1.html">niveau 1</a> · <a href="fiches-plus-niveau-2.html">niveau 2</a> · <a href="fiches-plus-niveau-3.html">niveau 3</a> · <a href="fiches-plus-niveau-4.html">niveau 4</a> · <a href="fiches-plus-niveau-5.html">niveau 5</a> · <a href="fiches-plus-niveau-6.html">niveau 6</a> · <b>niveau 7</b> · <a href="fiches-plus-niveau-8.html">niveau 8</a></p>
+<p class="note">118 fiches sur 176 portent une mini-leçon&nbsp;; les
+58 autres sont identiques dans les deux onglets — ce sont les séances de production
+et d'application, qui n'en ont pas. Le point vert dans la liste dit lesquelles changent. Le rattachement d'une
+mini-leçon à une séance est lu dans le deck de la séance, pas deviné.
+<strong>La série d'origine n'a pas été touchée</strong>&nbsp;: l'essai vit dans
+<code>assets/documents/plus/</code>.</p>
+
+<div class="plan">
+  <nav class="rail">
+    <h2>11 modules</h2>
+    <select class="mod" id="mod"></select>
+    <ul class="seances" id="seances"></ul>
+  </nav>
+  <main class="vue">
+    <div class="onglets" role="tablist">
+      <button role="tab" id="ong-avant" aria-selected="true">Fiche élève</button>
+      <button role="tab" id="ong-apres" aria-selected="false">Fiche élève (+)</button>
+      <span class="droite"><a id="ouvrir" href="#" target="_blank" rel="noopener">Ouvrir seule&nbsp;↗</a></span>
+    </div>
+    <div class="barre"><b id="tt">—</b><span id="etat"></span></div>
+    <iframe id="vue" title="La fiche"></iframe>
+  </main>
+</div>
+
+<div class="pied">
+  <p>Produit par <code>python3 build/fiches_plus.py</code>. Le rendu papier des mini-leçons
+  est celui du manuel de l'élève, réemployé tel quel — une seule mise en page pour une
+  seule chose.</p>
+</div>
+</div>
+
+<script>
+var DONNEES = [{"slug": "module-n7-actualite", "titre": "Suivre l'actualité", "seances": [{"code": "A1", "titre": "A1 · Qui parle, quand la radio parle ?", "f": "module-n7-actualite-a1-qui-parle-quand-la-radio-parle.html", "plus": false}, {"code": "A2", "titre": "A2 · Le « e » qu'on entend et celui qui disparaît", "f": "module-n7-actualite-a2-le-e-qu-on-entend-et-celui-qui-disparait.html", "plus": true}, {"code": "A3", "titre": "A3 · Les mots de l'information", "f": "module-n7-actualite-a3-les-mots-de-l-information.html", "plus": false}, {"code": "A4", "titre": "A4 · Un fait, ou une opinion ?", "f": "module-n7-actualite-a4-un-fait-ou-une-opinion.html", "plus": true}, {"code": "B1", "titre": "B1 · Première écoute : de quoi ça parle ?", "f": "module-n7-actualite-b1-premiere-ecoute-de-quoi-ca-parle.html", "plus": false}, {"code": "B2", "titre": "B2 · Deuxième écoute : les chiffres exacts", "f": "module-n7-actualite-b2-deuxieme-ecoute-les-chiffres-exacts.html", "plus": false}, {"code": "B3", "titre": "B3 · Ce qui est confirmé et ce qui ne l'est pas", "f": "module-n7-actualite-b3-ce-qui-est-confirme-et-ce-qui-ne-l-est-pas.html", "plus": true}, {"code": "B4", "titre": "B4 · Les mots qui tiennent le reportage debout", "f": "module-n7-actualite-b4-les-mots-qui-tiennent-le-reportage-debout.html", "plus": true}, {"code": "C1", "titre": "C1 · Huit minutes avec la conseillère", "f": "module-n7-actualite-c1-huit-minutes-avec-la-conseillere.html", "plus": false}, {"code": "C2", "titre": "C2 · Quand personne ne semble agir : la phrase passive", "f": "module-n7-actualite-c2-quand-personne-ne-semble-agir-la-phrase-passive.html", "plus": true}, {"code": "C3", "titre": "C3 · Rapporter ce que quelqu'un a dit", "f": "module-n7-actualite-c3-rapporter-ce-que-quelqu-un-a-dit.html", "plus": true}, {"code": "C4", "titre": "C4 · Lire l'article du lendemain", "f": "module-n7-actualite-c4-lire-l-article-du-lendemain.html", "plus": true}, {"code": "D1", "titre": "D1 · La chronique de samedi", "f": "module-n7-actualite-d1-la-chronique-de-samedi.html", "plus": false}, {"code": "D2", "titre": "D2 · Accorder, mettre en avant, restreindre", "f": "module-n7-actualite-d2-accorder-mettre-en-avant-restreindre.html", "plus": true}, {"code": "E1", "titre": "E1 · Discuter d'une nouvelle, et en faire le compte rendu", "f": "module-n7-actualite-e1-discuter-d-une-nouvelle-et-en-faire-le-compte-re.html", "plus": false}, {"code": "E2", "titre": "E2 · Écrire son billet dans Le fil du Ruisseau", "f": "module-n7-actualite-e2-ecrire-son-billet-dans-le-fil-du-ruisseau.html", "plus": false}]}, {"slug": "module-n7-emploi", "titre": "Présenter un projet au travail", "seances": [{"code": "A1", "titre": "A1 · Se plaindre, ou présenter un projet ?", "f": "module-n7-emploi-a1-se-plaindre-ou-presenter-un-projet.html", "plus": true}, {"code": "A2", "titre": "A2 · La voix qui monte et la voix qui descend", "f": "module-n7-emploi-a2-la-voix-qui-monte-et-la-voix-qui-descend.html", "plus": true}, {"code": "A3", "titre": "A3 · Les seize mots du dossier", "f": "module-n7-emploi-a3-les-seize-mots-du-dossier.html", "plus": false}, {"code": "A4", "titre": "A4 · Lire un ordre du jour", "f": "module-n7-emploi-a4-lire-un-ordre-du-jour.html", "plus": true}, {"code": "B1", "titre": "B1 · Douze minutes pour un projet", "f": "module-n7-emploi-b1-douze-minutes-pour-un-projet.html", "plus": false}, {"code": "B2", "titre": "B2 · Les cinq parties, et la phrase qui les ouvre", "f": "module-n7-emploi-b2-les-cinq-parties-et-la-phrase-qui-les-ouvre.html", "plus": true}, {"code": "B3", "titre": "B3 · Les panneaux de la route", "f": "module-n7-emploi-b3-les-panneaux-de-la-route.html", "plus": true}, {"code": "B4", "titre": "B4 · Quand nous aurons reçu le prix", "f": "module-n7-emploi-b4-quand-nous-aurons-recu-le-prix.html", "plus": true}, {"code": "C1", "titre": "C1 · Ce qui se passe au poste 4", "f": "module-n7-emploi-c1-ce-qui-se-passe-au-poste-4.html", "plus": false}, {"code": "C2", "titre": "C2 · Faire une évaluation sommaire", "f": "module-n7-emploi-c2-faire-une-evaluation-sommaire.html", "plus": true}, {"code": "C3", "titre": "C3 · Mettre en avant ce qui compte", "f": "module-n7-emploi-c3-mettre-en-avant-ce-qui-compte.html", "plus": true}, {"code": "C4", "titre": "C4 · Ce que la loi dit vraiment", "f": "module-n7-emploi-c4-ce-que-la-loi-dit-vraiment.html", "plus": true}, {"code": "D1", "titre": "D1 · La note de service", "f": "module-n7-emploi-d1-la-note-de-service.html", "plus": true}, {"code": "D2", "titre": "D2 · La lettre d'affaires courantes", "f": "module-n7-emploi-d2-la-lettre-d-affaires-courantes.html", "plus": true}, {"code": "E1", "titre": "E1 · Présentez votre projet", "f": "module-n7-emploi-e1-presentez-votre-projet.html", "plus": false}, {"code": "E2", "titre": "E2 · Écrivez la note de service", "f": "module-n7-emploi-e2-ecrivez-la-note-de-service.html", "plus": false}]}, {"slug": "module-n7-recherche", "titre": "Chercher un emploi en région", "seances": [{"code": "A1", "titre": "A1 · Chercher là où l'on cherche tous", "f": "module-n7-recherche-a1-chercher-la-ou-l-on-cherche-tous.html", "plus": false}, {"code": "A2", "titre": "A2 · Le « e » qu'on avale", "f": "module-n7-recherche-a2-le-e-qu-on-avale.html", "plus": true}, {"code": "A3", "titre": "A3 · Les outils, et les lieux qui vont avec", "f": "module-n7-recherche-a3-les-outils-et-les-lieux-qui-vont-avec.html", "plus": false}, {"code": "A4", "titre": "A4 · Le verbe caché sous le nom", "f": "module-n7-recherche-a4-le-verbe-cache-sous-le-nom.html", "plus": true}, {"code": "B1", "titre": "B1 · Première écoute : de quoi ça parle ?", "f": "module-n7-recherche-b1-premiere-ecoute-de-quoi-ca-parle.html", "plus": false}, {"code": "B2", "titre": "B2 · Deuxième écoute : les chiffres exacts", "f": "module-n7-recherche-b2-deuxieme-ecoute-les-chiffres-exacts.html", "plus": false}, {"code": "B3", "titre": "B3 · Les mots qui font tourner un long discours", "f": "module-n7-recherche-b3-les-mots-qui-font-tourner-un-long-discours.html", "plus": true}, {"code": "B4", "titre": "B4 · Restreindre et comparer", "f": "module-n7-recherche-b4-restreindre-et-comparer.html", "plus": true}, {"code": "C1", "titre": "C1 · Deux portraits sur la table", "f": "module-n7-recherche-c1-deux-portraits-sur-la-table.html", "plus": false}, {"code": "C2", "titre": "C2 · Ce que dit le portrait, ligne par ligne", "f": "module-n7-recherche-c2-ce-que-dit-le-portrait-ligne-par-ligne.html", "plus": true}, {"code": "C3", "titre": "C3 · Quand personne ne semble agir", "f": "module-n7-recherche-c3-quand-personne-ne-semble-agir.html", "plus": true}, {"code": "C4", "titre": "C4 · « Ils », et les mots qui reprennent", "f": "module-n7-recherche-c4-ils-et-les-mots-qui-reprennent.html", "plus": true}, {"code": "D1", "titre": "D1 · Ce que l'offre demande vraiment", "f": "module-n7-recherche-d1-ce-que-l-offre-demande-vraiment.html", "plus": true}, {"code": "D2", "titre": "D2 · Mettre en avant, et demander poliment", "f": "module-n7-recherche-d2-mettre-en-avant-et-demander-poliment.html", "plus": true}, {"code": "E1", "titre": "E1 · L'appel, et l'exposé", "f": "module-n7-recherche-e1-l-appel-et-l-expose.html", "plus": false}, {"code": "E2", "titre": "E2 · La lettre, et le bilan", "f": "module-n7-recherche-e2-la-lettre-et-le-bilan.html", "plus": false}]}, {"slug": "module-n7-logement", "titre": "Rester locataire ou devenir propriétaire", "seances": [{"code": "A1", "titre": "A1 · L'enveloppe dans la porte", "f": "module-n7-logement-a1-l-enveloppe-dans-la-porte.html", "plus": false}, {"code": "A2", "titre": "A2 · Demander, exiger, se renseigner", "f": "module-n7-logement-a2-demander-exiger-se-renseigner.html", "plus": true}, {"code": "A3", "titre": "A3 · Le nom caché sous le verbe", "f": "module-n7-logement-a3-le-nom-cache-sous-le-verbe.html", "plus": true}, {"code": "A4", "titre": "A4 · Deux mondes, deux vocabulaires", "f": "module-n7-logement-a4-deux-mondes-deux-vocabulaires.html", "plus": true}, {"code": "B1", "titre": "B1 · La contre-proposition", "f": "module-n7-logement-b1-la-contre-proposition.html", "plus": false}, {"code": "B2", "titre": "B2 · Lire l'avis, ligne par ligne", "f": "module-n7-logement-b2-lire-l-avis-ligne-par-ligne.html", "plus": true}, {"code": "B3", "titre": "B3 · Demander sans exiger : le conditionnel", "f": "module-n7-logement-b3-demander-sans-exiger-le-conditionnel.html", "plus": true}, {"code": "B4", "titre": "B4 · Mettre en avant, concéder, demander", "f": "module-n7-logement-b4-mettre-en-avant-conceder-demander.html", "plus": true}, {"code": "C1", "titre": "C1 · La visite du samedi matin", "f": "module-n7-logement-c1-la-visite-du-samedi-matin.html", "plus": false}, {"code": "C2", "titre": "C2 · Qui fait quoi, et quoi leur demander", "f": "module-n7-logement-c2-qui-fait-quoi-et-quoi-leur-demander.html", "plus": true}, {"code": "C3", "titre": "C3 · Lequel, auquel, duquel", "f": "module-n7-logement-c3-lequel-auquel-duquel.html", "plus": true}, {"code": "C4", "titre": "C4 · Qui, que, dont, où", "f": "module-n7-logement-c4-qui-que-dont-ou.html", "plus": true}, {"code": "D1", "titre": "D1 · À la caisse, puis la promesse d'achat", "f": "module-n7-logement-d1-a-la-caisse-puis-la-promesse-d-achat.html", "plus": true}, {"code": "D2", "titre": "D2 · À condition que… : le subjonctif, puis la comparaison", "f": "module-n7-logement-d2-a-condition-que-le-subjonctif-puis-la-comparaiso.html", "plus": true}, {"code": "E1", "titre": "E1 · Négocier, puis décider à voix haute", "f": "module-n7-logement-e1-negocier-puis-decider-a-voix-haute.html", "plus": false}, {"code": "E2", "titre": "E2 · Écris ta réponse à l'avis", "f": "module-n7-logement-e2-ecris-ta-reponse-a-l-avis.html", "plus": false}]}, {"slug": "module-n7-habitation", "titre": "Le bruit d'en haut", "seances": [{"code": "A1", "titre": "A1 · Trois semaines de cinq heures quarante-cinq", "f": "module-n7-habitation-a1-trois-semaines-de-cinq-heures-quarante-cinq.html", "plus": false}, {"code": "A2", "titre": "A2 · Le « e » qu'on garde et le « e » qui tombe", "f": "module-n7-habitation-a2-le-e-qu-on-garde-et-le-e-qui-tombe.html", "plus": true}, {"code": "A3", "titre": "A3 · Dire la conséquence, pas l'émotion", "f": "module-n7-habitation-a3-dire-la-consequence-pas-l-emotion.html", "plus": true}, {"code": "A4", "titre": "A4 · Inconvénient normal ou trouble de voisinage ?", "f": "module-n7-habitation-a4-inconvenient-normal-ou-trouble-de-voisinage.html", "plus": true}, {"code": "B1", "titre": "B1 · Sur le palier du troisième", "f": "module-n7-habitation-b1-sur-le-palier-du-troisieme.html", "plus": false}, {"code": "B2", "titre": "B2 · Demander au conditionnel", "f": "module-n7-habitation-b2-demander-au-conditionnel.html", "plus": true}, {"code": "B3", "titre": "B3 · Concéder avant de demander", "f": "module-n7-habitation-b3-conceder-avant-de-demander.html", "plus": true}, {"code": "B4", "titre": "B4 · Jusqu'où ça va, et ce que ça entraîne", "f": "module-n7-habitation-b4-jusqu-ou-ca-va-et-ce-que-ca-entraine.html", "plus": true}, {"code": "C1", "titre": "C1 · Deux appels le même soir", "f": "module-n7-habitation-c1-deux-appels-le-meme-soir.html", "plus": false}, {"code": "C2", "titre": "C2 · Redire au passé ce qui a été dit", "f": "module-n7-habitation-c2-redire-au-passe-ce-qui-a-ete-dit.html", "plus": true}, {"code": "C3", "titre": "C3 · Ce que dit la ville, ce que dit le bail", "f": "module-n7-habitation-c3-ce-que-dit-la-ville-ce-que-dit-le-bail.html", "plus": true}, {"code": "C4", "titre": "C4 · Reprendre sans répéter, et ne pas conclure à la place de l'autre", "f": "module-n7-habitation-c4-reprendre-sans-repeter-et-ne-pas-conclure-a-la-p.html", "plus": true}, {"code": "D1", "titre": "D1 · Deux lettres, et ce qui les distingue", "f": "module-n7-habitation-d1-deux-lettres-et-ce-qui-les-distingue.html", "plus": true}, {"code": "D2", "titre": "D2 · Les mots qui tiennent une lettre debout", "f": "module-n7-habitation-d2-les-mots-qui-tiennent-une-lettre-debout.html", "plus": true}, {"code": "E1", "titre": "E1 · Monter parler, puis raconter", "f": "module-n7-habitation-e1-monter-parler-puis-raconter.html", "plus": false}, {"code": "E2", "titre": "E2 · Écris la lettre qui demande d'intervenir", "f": "module-n7-habitation-e2-ecris-la-lettre-qui-demande-d-intervenir.html", "plus": false}]}, {"slug": "module-n7-achat", "titre": "Réclamer après l'achat", "seances": [{"code": "A1", "titre": "A1 · La signature du lundi", "f": "module-n7-achat-a1-la-signature-du-lundi.html", "plus": false}, {"code": "A2", "titre": "A2 · Constater, se plaindre, accuser", "f": "module-n7-achat-a2-constater-se-plaindre-accuser.html", "plus": true}, {"code": "A3", "titre": "A3 · Ce que le préfixe change au verbe", "f": "module-n7-achat-a3-ce-que-le-prefixe-change-au-verbe.html", "plus": true}, {"code": "A4", "titre": "A4 · L'étiquette et le contrat, ligne par ligne", "f": "module-n7-achat-a4-l-etiquette-et-le-contrat-ligne-par-ligne.html", "plus": true}, {"code": "B1", "titre": "B1 · Ce que le bruit veut dire", "f": "module-n7-achat-b1-ce-que-le-bruit-veut-dire.html", "plus": false}, {"code": "B2", "titre": "B2 · Trois coordonnées, et rien d'autre", "f": "module-n7-achat-b2-trois-coordonnees-et-rien-d-autre.html", "plus": true}, {"code": "B3", "titre": "B3 · Systématiquement, par intermittence, seulement", "f": "module-n7-achat-b3-systematiquement-par-intermittence-seulement.html", "plus": true}, {"code": "B4", "titre": "B4 · Ce qui s'était passé avant", "f": "module-n7-achat-b4-ce-qui-s-etait-passe-avant.html", "plus": true}, {"code": "C1", "titre": "C1 · Au comptoir du service à la clientèle", "f": "module-n7-achat-c1-au-comptoir-du-service-a-la-clientele.html", "plus": false}, {"code": "C2", "titre": "C2 · Trois garanties sur la même auto", "f": "module-n7-achat-c2-trois-garanties-sur-la-meme-auto.html", "plus": true}, {"code": "C3", "titre": "C3 · Lire une fiche de droits sans la lire en entier", "f": "module-n7-achat-c3-lire-une-fiche-de-droits-sans-la-lire-en-entier.html", "plus": true}, {"code": "C4", "titre": "C4 · Mettre en avant, et demander sans sommer", "f": "module-n7-achat-c4-mettre-en-avant-et-demander-sans-sommer.html", "plus": true}, {"code": "D1", "titre": "D1 · L'appel à l'Office, et la lettre qui en sort", "f": "module-n7-achat-d1-l-appel-a-l-office-et-la-lettre-qui-en-sort.html", "plus": true}, {"code": "D2", "titre": "D2 · Un paragraphe, une fonction", "f": "module-n7-achat-d2-un-paragraphe-une-fonction.html", "plus": true}, {"code": "E1", "titre": "E1 · Réclamez à voix haute", "f": "module-n7-achat-e1-reclamez-a-voix-haute.html", "plus": false}, {"code": "E2", "titre": "E2 · Écris ta mise en demeure", "f": "module-n7-achat-e2-ecris-ta-mise-en-demeure.html", "plus": false}]}, {"slug": "module-n7-banque", "titre": "Emprunter, épargner, se protéger", "seances": [{"code": "A1", "titre": "A1 · La pause de dix heures", "f": "module-n7-banque-a1-la-pause-de-dix-heures.html", "plus": false}, {"code": "A2", "titre": "A2 · Un taux, un montant, une durée", "f": "module-n7-banque-a2-un-taux-un-montant-une-duree.html", "plus": true}, {"code": "A3", "titre": "A3 · Le nom caché sous le verbe", "f": "module-n7-banque-a3-le-nom-cache-sous-le-verbe.html", "plus": true}, {"code": "A4", "titre": "A4 · Dire ce qu'on n'a pas compris", "f": "module-n7-banque-a4-dire-ce-qu-on-n-a-pas-compris.html", "plus": true}, {"code": "B1", "titre": "B1 · Trois façons d'emprunter", "f": "module-n7-banque-b1-trois-facons-d-emprunter.html", "plus": false}, {"code": "B2", "titre": "B2 · Lire la fiche à l'envers", "f": "module-n7-banque-b2-lire-la-fiche-a-l-envers.html", "plus": true}, {"code": "B3", "titre": "B3 · Demander sans exiger, supposer sans promettre", "f": "module-n7-banque-b3-demander-sans-exiger-supposer-sans-promettre.html", "plus": true}, {"code": "B4", "titre": "B4 · Comparer, et savoir ce qu'on vaut", "f": "module-n7-banque-b4-comparer-et-savoir-ce-qu-on-vaut.html", "plus": true}, {"code": "C1", "titre": "C1 · Où mettre l'argent qui reste", "f": "module-n7-banque-c1-ou-mettre-l-argent-qui-reste.html", "plus": false}, {"code": "C2", "titre": "C2 · Lire un document qui compare", "f": "module-n7-banque-c2-lire-un-document-qui-compare.html", "plus": true}, {"code": "C3", "titre": "C3 · La phrase qui ne dit pas qui fait", "f": "module-n7-banque-c3-la-phrase-qui-ne-dit-pas-qui-fait.html", "plus": true}, {"code": "C4", "titre": "C4 · Les mots qui tiennent une comparaison debout", "f": "module-n7-banque-c4-les-mots-qui-tiennent-une-comparaison-debout.html", "plus": true}, {"code": "D1", "titre": "D1 · Sept cent quatre-vingts dollars", "f": "module-n7-banque-d1-sept-cent-quatre-vingts-dollars.html", "plus": true}, {"code": "D2", "titre": "D2 · Mettre en avant, et demander fermement", "f": "module-n7-banque-d2-mettre-en-avant-et-demander-fermement.html", "plus": true}, {"code": "E1", "titre": "E1 · S'informer, puis décider à voix haute", "f": "module-n7-banque-e1-s-informer-puis-decider-a-voix-haute.html", "plus": false}, {"code": "E2", "titre": "E2 · La lettre qui laisse une trace", "f": "module-n7-banque-e2-la-lettre-qui-laisse-une-trace.html", "plus": true}]}, {"slug": "module-n7-publicite", "titre": "Ce que la publicité ne dit pas", "seances": [{"code": "A1", "titre": "A1 · Neuf quatre-vingt-dix-neuf, et la facture dit cent quatre-vingt-neuf", "f": "module-n7-publicite-a1-neuf-quatre-vingt-dix-neuf-et-la-facture-dit-cen.html", "plus": false}, {"code": "A2", "titre": "A2 · Le « e » que la vitesse avale", "f": "module-n7-publicite-a2-le-e-que-la-vitesse-avale.html", "plus": true}, {"code": "A3", "titre": "A3 · Où la publicité vous rejoint", "f": "module-n7-publicite-a3-ou-la-publicite-vous-rejoint.html", "plus": false}, {"code": "A4", "titre": "A4 · Affirmé, ou seulement suggéré ?", "f": "module-n7-publicite-a4-affirme-ou-seulement-suggere.html", "plus": true}, {"code": "B1", "titre": "B1 · Vingt-cinq secondes chaudes, cinq secondes froides", "f": "module-n7-publicite-b1-vingt-cinq-secondes-chaudes-cinq-secondes-froide.html", "plus": true}, {"code": "B2", "titre": "B2 · « Pourraient » : le conditionnel qui ne promet rien", "f": "module-n7-publicite-b2-pourraient-le-conditionnel-qui-ne-promet-rien.html", "plus": true}, {"code": "B3", "titre": "B3 · Plus chaleureux — mais que quoi ?", "f": "module-n7-publicite-b3-plus-chaleureux-mais-que-quoi.html", "plus": true}, {"code": "B4", "titre": "B4 · Trois jours, et pas un de plus", "f": "module-n7-publicite-b4-trois-jours-et-pas-un-de-plus.html", "plus": true}, {"code": "C1", "titre": "C1 · Lire un dépliant du bas vers le haut", "f": "module-n7-publicite-c1-lire-un-depliant-du-bas-vers-le-haut.html", "plus": true}, {"code": "C2", "titre": "C2 · Qui a été effacé de la phrase ?", "f": "module-n7-publicite-c2-qui-a-ete-efface-de-la-phrase.html", "plus": true}, {"code": "C3", "titre": "C3 · Le prix est exact, et l'annonce reste discutable", "f": "module-n7-publicite-c3-le-prix-est-exact-et-l-annonce-reste-discutable.html", "plus": true}, {"code": "C4", "titre": "C4 · Autrement dit, combien ?", "f": "module-n7-publicite-c4-autrement-dit-combien.html", "plus": true}, {"code": "D1", "titre": "D1 · Trois questions, trois portes", "f": "module-n7-publicite-d1-trois-questions-trois-portes.html", "plus": true}, {"code": "D2", "titre": "D2 · « Ils » sans nom, et « un matelas » en général", "f": "module-n7-publicite-d2-ils-sans-nom-et-un-matelas-en-general.html", "plus": true}, {"code": "E1", "titre": "E1 · L'appel, et l'exposé", "f": "module-n7-publicite-e1-l-appel-et-l-expose.html", "plus": false}, {"code": "E2", "titre": "E2 · La lettre, et le bilan", "f": "module-n7-publicite-e2-la-lettre-et-le-bilan.html", "plus": false}]}, {"slug": "module-n7-oeuvres", "titre": "Ce que j'en pense, et pourquoi", "seances": [{"code": "A1", "titre": "A1 · Trois propositions, et un avis à préparer pour jeudi", "f": "module-n7-oeuvres-a1-trois-propositions-et-un-avis-a-preparer-pour-je.html", "plus": false}, {"code": "A2", "titre": "A2 · Le même avis, trois façons de le dire", "f": "module-n7-oeuvres-a2-le-meme-avis-trois-facons-de-le-dire.html", "plus": true}, {"code": "A3", "titre": "A3 · Le vocabulaire d'une soirée de spectacle", "f": "module-n7-oeuvres-a3-le-vocabulaire-d-une-soiree-de-spectacle.html", "plus": false}, {"code": "A4", "titre": "A4 · Un goût, un avis, un argument", "f": "module-n7-oeuvres-a4-un-gout-un-avis-un-argument.html", "plus": true}, {"code": "B1", "titre": "B1 · « J'adore ça, attendre »", "f": "module-n7-oeuvres-b1-j-adore-ca-attendre.html", "plus": false}, {"code": "B2", "titre": "B2 · Cinq façons de faire rire, et leurs noms", "f": "module-n7-oeuvres-b2-cinq-facons-de-faire-rire-et-leurs-noms.html", "plus": true}, {"code": "B3", "titre": "B3 · Qui parle ? L'incise et les guillemets", "f": "module-n7-oeuvres-b3-qui-parle-l-incise-et-les-guillemets.html", "plus": true}, {"code": "B4", "titre": "B4 · Mettre en avant ce qui vous a fait rire", "f": "module-n7-oeuvres-b4-mettre-en-avant-ce-qui-vous-a-fait-rire.html", "plus": true}, {"code": "C1", "titre": "C1 · « Elle parle d'un escalier »", "f": "module-n7-oeuvres-c1-elle-parle-d-un-escalier.html", "plus": false}, {"code": "C2", "titre": "C2 · Les paroles du « Troisième étage »", "f": "module-n7-oeuvres-c2-les-paroles-du-troisieme-etage.html", "plus": true}, {"code": "C3", "titre": "C3 · Ils, le, en : reprendre sans répéter", "f": "module-n7-oeuvres-c3-ils-le-en-reprendre-sans-repeter.html", "plus": true}, {"code": "C4", "titre": "C4 · Tellement froid que j'oublie de compter", "f": "module-n7-oeuvres-c4-tellement-froid-que-j-oublie-de-compter.html", "plus": true}, {"code": "D1", "titre": "D1 · Le comité, jeudi, dix-sept heures", "f": "module-n7-oeuvres-d1-le-comite-jeudi-dix-sept-heures.html", "plus": true}, {"code": "D2", "titre": "D2 · Accorder, supposer, annoncer", "f": "module-n7-oeuvres-d2-accorder-supposer-annoncer.html", "plus": true}, {"code": "E1", "titre": "E1 · Présentez une œuvre à la classe", "f": "module-n7-oeuvres-e1-presentez-une-uvre-a-la-classe.html", "plus": false}, {"code": "E2", "titre": "E2 · Le compte rendu, et le bilan", "f": "module-n7-oeuvres-e2-le-compte-rendu-et-le-bilan.html", "plus": false}]}, {"slug": "module-n7-classe", "titre": "Faire parler l'équipe", "seances": [{"code": "A1", "titre": "A1 · Ce n'est pas le rôle que je voulais", "f": "module-n7-classe-a1-ce-n-est-pas-le-role-que-je-voulais.html", "plus": false}, {"code": "A2", "titre": "A2 · Le petit « e » quand on parle à un groupe", "f": "module-n7-classe-a2-le-petit-e-quand-on-parle-a-un-groupe.html", "plus": true}, {"code": "A3", "titre": "A3 · Cinq rôles, et ce que chacun fait vraiment", "f": "module-n7-classe-a3-cinq-roles-et-ce-que-chacun-fait-vraiment.html", "plus": false}, {"code": "A4", "titre": "A4 · À un ami, ou devant la classe ?", "f": "module-n7-classe-a4-a-un-ami-ou-devant-la-classe.html", "plus": true}, {"code": "B1", "titre": "B1 · La personne-ressource, un mardi soir", "f": "module-n7-classe-b1-la-personne-ressource-un-mardi-soir.html", "plus": false}, {"code": "B2", "titre": "B2 · Les panneaux de route d'un exposé", "f": "module-n7-classe-b2-les-panneaux-de-route-d-un-expose.html", "plus": true}, {"code": "B3", "titre": "B3 · Le chiffre qu'on n'a pas vérifié", "f": "module-n7-classe-b3-le-chiffre-qu-on-n-a-pas-verifie.html", "plus": true}, {"code": "B4", "titre": "B4 · Ce qui est établi, ce qui est approché", "f": "module-n7-classe-b4-ce-qui-est-etabli-ce-qui-est-approche.html", "plus": true}, {"code": "C1", "titre": "C1 · Vous m'avez remis un copier-coller poli", "f": "module-n7-classe-c1-vous-m-avez-remis-un-copier-coller-poli.html", "plus": false}, {"code": "C2", "titre": "C2 · Lire une fiche sans la lire au complet", "f": "module-n7-classe-c2-lire-une-fiche-sans-la-lire-au-complet.html", "plus": true}, {"code": "C3", "titre": "C3 · Un nom à la place d'une phrase", "f": "module-n7-classe-c3-un-nom-a-la-place-d-une-phrase.html", "plus": true}, {"code": "C4", "titre": "C4 · Redire sans répéter, et tenir les phrases ensemble", "f": "module-n7-classe-c4-redire-sans-repeter-et-tenir-les-phrases-ensembl.html", "plus": true}, {"code": "D1", "titre": "D1 · Ça ne prouve rien, ton comptage", "f": "module-n7-classe-d1-ca-ne-prouve-rien-ton-comptage.html", "plus": true}, {"code": "D2", "titre": "D2 · Rapporter ce que chacun a dit", "f": "module-n7-classe-d2-rapporter-ce-que-chacun-a-dit.html", "plus": true}, {"code": "E1", "titre": "E1 · Animer, puis présenter", "f": "module-n7-classe-e1-animer-puis-presenter.html", "plus": false}, {"code": "E2", "titre": "E2 · La lettre au camarade absent, et le bilan", "f": "module-n7-classe-e2-la-lettre-au-camarade-absent-et-le-bilan.html", "plus": false}]}, {"slug": "module-n7-etablissement", "titre": "Entrer dans le programme", "seances": [{"code": "A1", "titre": "A1 · Le dîner de midi et quart", "f": "module-n7-etablissement-a1-le-diner-de-midi-et-quart.html", "plus": false}, {"code": "A2", "titre": "A2 · Le « e » qu'on garde et le « e » qui tombe", "f": "module-n7-etablissement-a2-le-e-qu-on-garde-et-le-e-qui-tombe.html", "plus": true}, {"code": "A3", "titre": "A3 · Familier, standard, soutenu", "f": "module-n7-etablissement-a3-familier-standard-soutenu.html", "plus": true}, {"code": "A4", "titre": "A4 · La fiche du programme, lue jusqu'en bas", "f": "module-n7-etablissement-a4-la-fiche-du-programme-lue-jusqu-en-bas.html", "plus": true}, {"code": "B1", "titre": "B1 · Ce que la lettre ne dit pas", "f": "module-n7-etablissement-b1-ce-que-la-lettre-ne-dit-pas.html", "plus": false}, {"code": "B2", "titre": "B2 · Les sept parties de la lettre", "f": "module-n7-etablissement-b2-les-sept-parties-de-la-lettre.html", "plus": true}, {"code": "B3", "titre": "B3 · Annoncer son sujet", "f": "module-n7-etablissement-b3-annoncer-son-sujet.html", "plus": true}, {"code": "B4", "titre": "B4 · Le nom caché sous le verbe", "f": "module-n7-etablissement-b4-le-nom-cache-sous-le-verbe.html", "plus": true}, {"code": "C1", "titre": "C1 · Vingt-cinq minutes", "f": "module-n7-etablissement-c1-vingt-cinq-minutes.html", "plus": false}, {"code": "C2", "titre": "C2 · Demander sans exiger", "f": "module-n7-etablissement-c2-demander-sans-exiger.html", "plus": true}, {"code": "C3", "titre": "C3 · Mettre en avant ce qui compte", "f": "module-n7-etablissement-c3-mettre-en-avant-ce-qui-compte.html", "plus": true}, {"code": "C4", "titre": "C4 · Concéder sans s'effacer", "f": "module-n7-etablissement-c4-conceder-sans-s-effacer.html", "plus": true}, {"code": "D1", "titre": "D1 · Personne ne s'occupe de ça", "f": "module-n7-etablissement-d1-personne-ne-s-occupe-de-ca.html", "plus": true}, {"code": "D2", "titre": "D2 · Rapporter ce qui a été dit", "f": "module-n7-etablissement-d2-rapporter-ce-qui-a-ete-dit.html", "plus": true}, {"code": "E1", "titre": "E1 · L'appel en trois temps", "f": "module-n7-etablissement-e1-l-appel-en-trois-temps.html", "plus": true}, {"code": "E2", "titre": "E2 · Votre lettre, et le bilan du module", "f": "module-n7-etablissement-e2-votre-lettre-et-le-bilan-du-module.html", "plus": true}]}];
+var mod = 0, sea = 0, apres = false;
+/* On ouvre sur la première séance qui porte une mini-leçon : atterrir sur une
+   séance où les deux onglets sont identiques ferait croire que la page ne
+   marche pas. */
+function premiereAvecPlus(m) {
+  for (var i = 0; i < m.seances.length; i++) if (m.seances[i].plus) return i;
+  return 0;
+}
+var $ = function (id) { return document.getElementById(id); };
+
+function chemin() {
+  var s = DONNEES[mod].seances[sea];
+  return '../documents/' + (apres ? 'plus/' : '') + s.f;
+}
+
+function rendre() {
+  var m = DONNEES[mod], s = m.seances[sea];
+  $('vue').src = chemin();
+  $('ouvrir').href = chemin();
+  $('tt').textContent = s.titre;
+  /* Dire quand les deux onglets montrent la même chose. Sans ce mot, une
+     séance sans mini-leçon passerait pour un onglet cassé. */
+  $('etat').innerHTML = s.plus
+    ? '<span class="badge">porte une mini-leçon</span>'
+    : '<span class="badge non">aucune mini-leçon — les deux onglets sont identiques</span>';
+  $('ong-avant').setAttribute('aria-selected', String(!apres));
+  $('ong-apres').setAttribute('aria-selected', String(apres));
+  Array.prototype.forEach.call($('seances').children, function (li, i) {
+    li.firstChild.setAttribute('aria-current', String(i === sea));
+  });
+}
+
+function rendreSeances() {
+  $('seances').innerHTML = DONNEES[mod].seances.map(function (s, i) {
+    return '<li><button type="button" data-i="' + i + '">'
+      + '<span class="code">' + s.code + '</span>'
+      + '<span class="tt">' + s.titre.replace(/^[A-E]\d+\s*·\s*/, '') + '</span>'
+      + '<span class="pastille' + (s.plus ? '' : ' non') + '" title="'
+      + (s.plus ? 'porte une mini-leçon' : 'aucune mini-leçon') + '"></span>'
+      + '</button></li>';
+  }).join('');
+}
+
+$('mod').innerHTML = DONNEES.map(function (m, i) {
+  return '<option value="' + i + '">' + m.titre + '</option>';
+}).join('');
+$('mod').addEventListener('change', function () {
+  mod = Number(this.value); sea = premiereAvecPlus(DONNEES[mod]);
+  rendreSeances(); rendre();
+});
+$('seances').addEventListener('click', function (e) {
+  var b = e.target.closest('button[data-i]');
+  /* On garde l'onglet en changeant de séance : c'est tout l'intérêt de la
+     page — comparer la même chose, pas retrouver son onglet à chaque clic. */
+  if (b) { sea = Number(b.dataset.i); rendre(); }
+});
+$('ong-avant').addEventListener('click', function () { apres = false; rendre(); });
+$('ong-apres').addEventListener('click', function () { apres = true; rendre(); });
+sea = premiereAvecPlus(DONNEES[0]);
+rendreSeances(); rendre();
+</script>
+</body>
+</html>

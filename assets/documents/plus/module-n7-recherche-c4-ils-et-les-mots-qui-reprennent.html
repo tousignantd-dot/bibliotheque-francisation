@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C4 · « Ils », et les mots qui reprennent — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance C4 · Module 3 · 75 minutes</div>
+    <h1>« Ils », et les mots qui reprennent</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">« L'usine a rouvert en mars. Ils ont investi douze millions. » Qui, « ils » ? Personne ne l'a dit — et vous n'avez rien manqué.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>reconnaître un « ils » qui ne reprend aucun groupe nommé ;</li><li>chercher le référent dans le paragraphe, pas dans la phrase ;</li><li>repérer les quatre façons de reprendre un mot sans le répéter ;</li><li>achever sa feuille de comparaison à deux colonnes.</li></ol></section><section class="bloc regle"><div class="lbl">Un « ils » peut n'avoir aucun antécédent écrit</div><p class="r">Il désigne alors les décideurs sans les nommer : l'entreprise, la direction, la municipalité, le gouvernement.</p><p class="pr">C'est ce qu'on appelle un référent implicite. Le contexte tranche : si le paragraphe parle d'une usine, ce sont ses propriétaires ; s'il parle d'un budget, c'est le gouvernement. Et quand rien ne tranche, c'est que la phrase ne veut pas qu'on tranche.</p></section><section class="bloc"><div class="lbl">Analyse</div><h2 class="t">Retrouver le référent dans le paragraphe</h2><div class="grid"><div class="card"><h3>La direction a présenté son plan au conseil. Ils ont approuvé.</h3><p>le conseil</p></div><div class="card"><h3>Le laboratoire compte sept personnes. Ils cherchent deux techniciens.</h3><p>le laboratoire, comme équipe</p></div><div class="card"><h3>Le gouvernement a publié le portrait. Ils y donnent le PIB.</h3><p>le gouvernement</p></div><div class="card"><h3>Elle a appelé les ressources humaines. Ils ont demandé son dossier.</h3><p>le service des ressources humaines</p></div><div class="card"><h3>Le budget a été voté en avril. Ils avaient promis un centre.</h3><p>des élus — aucun nom n'est donné</p></div></div></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Écriture</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">« ils m'ont demandé de former deux techniciennes »</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">« la direction m'a demandé de former deux techniciennes »</p></div></div><div class="note">Ce flou est permis au journaliste, dont le sujet est le fait. Dans une lettre de candidature, il laisse penser que vous ne savez pas qui vous employait. Précision et responsabilité vont ensemble ; c'est vrai aussi de « on ».</div></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Quatre façons de reprendre un mot</h2><table><thead><tr><th>Le procédé</th><th>Le mot, puis sa reprise</th></tr></thead><tbody><tr><td class="cle">Synonyme</td><td>une usine, une fabrique</td></tr><tr><td class="cle">Mot générique</td><td>l'aluminium, ce métal</td></tr><tr><td class="cle">Nominalisation</td><td>on a embauché, cette embauche</td></tr><tr><td class="cle">Périphrase</td><td>le Saguenay, cette région du nord du fleuve</td></tr></tbody></table><div class="note">Le signal le plus fiable : un « ce » ou un « cette » devant un mot très général.</div></section><section class="bloc card"><div class="lbl">Lecture</div><h2 class="t">Qu'est-ce qui reprend quoi ?</h2><p class="consigne">Associez le mot et sa reprise.</p><ol class="ex"><li><span class="q">l'aluminium</span><span class="ligne ligne--court"></span></li><li><span class="q">le Saguenay–Lac-Saint-Jean</span><span class="ligne"></span></li><li><span class="q">l'usine de Jonquière</span><span class="ligne ligne--court"></span></li><li><span class="q">on a embauché douze personnes</span><span class="ligne ligne--court"></span></li><li><span class="q">les techniciennes et les techniciens</span><span class="ligne"></span></li><li><span class="q">la transformation du bois</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">Compréhension</div><h2 class="t">Achevez la comparaison</h2><p class="consigne">Complétez d'après le portrait et le dialogue.</p><ol class="ex"><li><span class="q">Le Saguenay transforme surtout des ressources ___ .</span><span class="ligne ligne--court"></span></li><li><span class="q">Chaudière-Appalaches transforme surtout des ___ et du métal ouvré.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le secteur primaire du Saguenay pèse ___ fois la moyenne québécoise.</span><span class="ligne ligne--court"></span></li><li><span class="q">La construction y occupe 8,9 %, contre ___ % au Québec.</span><span class="ligne ligne--court"></span></li><li><span class="q">Les services y représentent plus des trois ___ de l'emploi.</span><span class="ligne ligne--court"></span></li><li><span class="q">Pour savoir s'il manque de la main-d'œuvre, il faut consulter ___ .</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Troisième ligne de votre feuille : votre famille pourrait-elle vivre dans cette région ?</p><ul><li>Aucun document ne répondra à votre place.</li><li>Écrivez ce qui vous retient, et ce qui vous attire.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>« Ils » quand personne n'a été nommé</h2><section class="bloc card ml"><h3>Le pronom qui ne reprend rien</h3><p class="mp">« L'usine a rouvert en mars. Ils ont investi douze millions. » Qui, « ils » ? Relisez la première phrase : personne n'y est nommé au pluriel. Ce n'est pas une faute de l'auteur et ce n'est pas un mot que vous auriez manqué. C'est un <b>référent implicite</b> : « ils » désigne des décideurs que le texte a choisi de ne pas nommer.</p><div class="note">Le savoir change tout : au lieu de relire trois fois en cherchant votre erreur, vous continuez.</div></section><section class="bloc card ml"><h3>Le cas ordinaire, pour comparer</h3><p class="mp">D'habitude, un pronom reprend un groupe nommé juste avant. C'est ce à quoi vous êtes habitué.</p><table class="ana"><tr><td>Phrase 1</td><td class="">Les techniciens ont signé leur contrat.</td></tr><tr><td>Phrase 2</td><td class="cle">Ils commencent lundi.</td></tr><tr><td>« Ils » désigne</td><td class="">les techniciens — c'est écrit</td></tr></table><p class="dit"><span class="k">On dit</span> Les techniciens ont signé leur contrat. Ils commencent lundi.</p><div class="note">On appelle ça la reprise de l'information, et c'est ce qui tient un texte ensemble.</div></section><section class="bloc card ml"><h3>Le cas du niveau 7 : rien à reprendre</h3><p class="mp">Le groupe n'a jamais été nommé, et il ne le sera pas.</p><table class="ana"><tr><td>Phrase 1</td><td class="">L'usine a rouvert en mars.</td></tr><tr><td>Phrase 2</td><td class="cle">Ils ont investi douze millions.</td></tr><tr><td>« Ils » désigne</td><td class="">les propriétaires, la direction — non nommés</td></tr></table><p class="dit"><span class="k">On dit</span> L'usine a rouvert en mars. Ils ont investi douze millions.</p><div class="note">Le pluriel du pronom ne prouve rien : il peut renvoyer à une seule entreprise, vue comme un groupe de gens.</div></section><section class="bloc card ml"><h3>Ce que le contexte permet de deviner</h3><p class="mp">On ne devine pas au hasard : le paragraphe précédent donne presque toujours la famille.</p><table class="ana"><tr><td>Le paragraphe parle d'une usine</td><td class="">« ils » = la direction, les propriétaires</td></tr><tr><td>Le paragraphe parle d'un budget</td><td class="cle">« ils » = le gouvernement, les élus</td></tr><tr><td>Le paragraphe parle d'un service</td><td class="">« ils » = les gens de ce service</td></tr></table><p class="dit"><span class="k">On dit</span> Hafida a téléphoné aux ressources humaines. Ils lui ont demandé son curriculum vitæ.</p><div class="note">Le bon réflexe : remonter d'un paragraphe, pas d'une phrase. C'est là que se trouve la famille du référent.</div></section><section class="bloc card ml"><h3>Le « ils » du français parlé au Québec</h3><p class="mp">À l'oral, « ils » sert de « on » vague, et personne ne se demande qui : « Ils ont encore augmenté le loyer. » « Ils ferment à cinq heures. » Il se prononce souvent [i] ou [j], sans le « l » : « <i>Y ont fermé à cinq heures.</i> » Vous l'entendrez tous les jours, et vous pouvez l'employer en conversation sans crainte.</p><div class="note">Ne le corrigez pas chez les autres : c'est du français standard parlé, pas une négligence.</div></section><section class="bloc card ml"><h3>Mais pas dans votre lettre</h3><p class="mp">Ce flou est permis au journaliste et à l'auteur d'un rapport, parce que leur sujet est le fait, pas les personnes. Dans une lettre d'accompagnement, il vous dessert : « ils m'ont demandé de former deux techniciennes » laisse penser que vous ne savez pas qui vous employait. Nommez : « la direction m'a demandé », « le service de la qualité m'a confié ». Précision et responsabilité vont ensemble.</p><div class="note">C'est vrai aussi de « on ». Dans une candidature, « on » est presque toujours à remplacer par un vrai sujet.</div></section><section class="bloc card ml"><h3>Cinq « ils », et ce qu'ils désignent</h3><p class="mp">À gauche le contexte, à droite le référent probable.</p><table class="ex2"><tr><td>La direction a présenté son plan au conseil. Ils ont approuvé.</td><td>le conseil — c'est lui qui approuve</td></tr><tr><td>Le laboratoire compte sept personnes. Ils cherchent deux techniciens.</td><td>le laboratoire, vu comme une équipe</td></tr><tr><td>Le gouvernement a publié le portrait. Ils y donnent le produit intérieur brut.</td><td>le gouvernement</td></tr><tr><td>Elle a appelé les ressources humaines. Ils ont demandé son dossier.</td><td>le service des ressources humaines</td></tr><tr><td>Le budget a été voté en avril. Ils avaient promis un centre de formation.</td><td>des élus — aucun nom n'est donné</td></tr></table></section><section class="bloc card ml"><h3>Deux pièges</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">se croire fautif</p><div class="k">Ce qui arrive</div><p class="ph">accepter le flou du texte</p><p class="px">Quand vous ne trouvez pas le référent, ce n'est presque jamais votre lecture : c'est une information que le texte n'a pas donnée.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">inventer un référent précis</p><div class="k">Ce qui arrive</div><p class="ph">rester dans la famille</p><p class="px">Répondre « le président de l'entreprise » quand le texte dit seulement « ils », c'est ajouter ce qui n'y est pas. « La direction » suffit.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">« L'usine a rouvert. Ils ont investi. » Ici, « ils »…</span><ul class="opts"><li>n'a pas d'antécédent écrit</li><li>reprend « l'usine »</li></ul></li><li><span class="q">Pour deviner le référent, il faut remonter…</span><ul class="opts"><li>d'un paragraphe</li><li>d'un seul mot</li></ul></li><li><span class="q">À l'oral au Québec, « ils » se prononce souvent…</span><ul class="opts"><li>[i] ou [j]</li><li>avec un « l » très net</li></ul></li><li><span class="q">Dans une lettre d'accompagnement, ce « ils » vague…</span><ul class="opts"><li>est à remplacer par un vrai sujet</li><li>convient très bien</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> n'a pas d'antécédent écrit — C'est un référent implicite : les décideurs, non nommés. · <b>2.</b> d'un paragraphe — La famille du référent se trouve dans le paragraphe précédent. · <b>3.</b> [i] ou [j] — « Y ont fermé à cinq heures. » C'est du français standard parlé. · <b>4.</b> est à remplacer par un vrai sujet — Nommez : « la direction », « le service de la qualité ».</div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>La substitution lexicale : redire sans répéter</h2><section class="bloc card ml"><h3>Pourquoi un mot revient sous quatre visages</h3><p class="mp">Dans un texte suivi, le même objet est nommé plusieurs fois, et presque jamais avec le même mot : « l'usine », puis « l'établissement », puis « l'installation », puis « le site ». Ce n'est pas de la coquetterie : répéter huit fois le même mot rend un texte pénible. Mais pour le lecteur qui apprend le français, c'est un piège : on croit qu'un nouveau sujet apparaît alors qu'on nous reparle du même.</p><div class="note">C'est la première cause de perte du fil dans un texte informatif long — avant le vocabulaire, avant la grammaire.</div></section><section class="bloc card ml"><h3>Procédé 1 — le synonyme</h3><p class="mp">Un autre mot de même sens. Le plus simple, et le plus facile à repérer.</p><table class="ana"><tr><td>Le mot</td><td class="">une usine</td></tr><tr><td>La reprise</td><td class="cle">une fabrique · une manufacture</td></tr><tr><td>Le repère</td><td class="">les deux mots sont du même niveau de précision</td></tr></table><p class="dit"><span class="k">On dit</span> L'usine de Jonquière emploie six cents personnes. Cette fabrique existe depuis 1943.</p><div class="note">Les vrais synonymes sont rares. Le plus souvent, la reprise est un peu plus générale que le mot de départ.</div></section><section class="bloc card ml"><h3>Procédé 2 — le mot générique</h3><p class="mp">Le procédé le plus fréquent, et le plus déroutant. On remonte d'un cran vers le général.</p><table class="ana"><tr><td>Le mot</td><td class="">l'aluminium</td></tr><tr><td>La reprise</td><td class="cle">ce métal · cette ressource · ce produit</td></tr><tr><td>Le signal</td><td class="">le déterminant « ce » ou « cette » devant un mot très général</td></tr></table><p class="dit"><span class="k">On dit</span> La région produit de l'aluminium. Ce métal représente l'essentiel de ses exportations.</p><div class="note">Règle pratique : un « ce » ou un « cette » devant un mot très général annonce presque toujours une reprise. Cherchez en arrière.</div></section><section class="bloc card ml"><h3>Procédé 3 — la nominalisation</h3><p class="mp">On reprend une action déjà racontée en la transformant en nom.</p><table class="ana"><tr><td>Ce qui précède</td><td class="">L'entreprise a embauché douze personnes.</td></tr><tr><td>La reprise</td><td class="cle">Cette embauche portera ses fruits en janvier.</td></tr><tr><td>Le signal</td><td class="">« cette » + un nom qui vient d'un verbe déjà employé</td></tr></table><p class="dit"><span class="k">On dit</span> L'entreprise a embauché douze personnes. Cette embauche portera ses fruits en janvier.</p><div class="note">C'est la rencontre des deux savoirs de ce module : la nominalisation sert à reprendre l'information.</div></section><section class="bloc card ml"><h3>Procédé 4 — la périphrase</h3><p class="mp">On remplace le nom par une description. Fréquent pour les lieux et les personnes.</p><table class="ana"><tr><td>Le mot</td><td class="">le Saguenay–Lac-Saint-Jean</td></tr><tr><td>La reprise</td><td class="cle">cette région du nord du fleuve · ce territoire de deux cent quatre-vingt-six mille habitants</td></tr><tr><td>Le repère</td><td class="">plusieurs mots au lieu d'un</td></tr></table><p class="dit"><span class="k">On dit</span> Le Saguenay–Lac-Saint-Jean produit de l'aluminium. Cette région du nord du fleuve compte deux cent quatre-vingt-six mille habitants.</p><div class="note">Dans les portraits régionaux, la périphrase sert surtout à éviter de réécrire un nom de région très long.</div></section><section class="bloc card ml"><h3>Le même référent, quatre reprises</h3><p class="mp">Choisissez un procédé et un exemple.</p><table class="labo"><thead><tr><th>Quel procédé ? · Quel exemple ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">synonyme + le premier</td><td>L'usine de Jonquière. Cette fabrique existe depuis 1943.<span class="tags">synonyme</span></td><td>usine → fabrique</td></tr><tr><td class="cle">synonyme + le second</td><td>Le poste affiché. Cette fonction est offerte sur le quart de jour.<span class="tags">synonyme</span></td><td>poste → fonction</td></tr><tr><td class="cle">générique + le premier</td><td>La région produit de l'aluminium. Ce métal part vers l'étranger.<span class="tags">générique</span></td><td>aluminium → ce métal</td></tr><tr><td class="cle">générique + le second</td><td>Le programme d'aide à l'installation. Cette mesure vise les gens d'ailleurs.<span class="tags">générique</span></td><td>programme → cette mesure</td></tr><tr><td class="cle">nominalisation + le premier</td><td>L'entreprise a embauché douze personnes. Cette embauche était attendue.<span class="tags">nominalisation</span></td><td>a embauché → cette embauche</td></tr><tr><td class="cle">nominalisation + le second</td><td>On a agrandi le laboratoire. Cet agrandissement date de 2021.<span class="tags">nominalisation</span></td><td>a agrandi → cet agrandissement</td></tr><tr><td class="cle">périphrase + le premier</td><td>Le Saguenay–Lac-Saint-Jean. Cette région du nord du fleuve.<span class="tags">périphrase</span></td><td>un nom long remplacé par sa description</td></tr><tr><td class="cle">périphrase + le second</td><td>Frédérick Gauthier-Simard. Le chef du laboratoire d'Alumico.<span class="tags">périphrase</span></td><td>une personne remplacée par sa fonction</td></tr></tbody></table><div class="note">Écoutez les deux phrases : c'est toujours du même objet qu'on parle.</div></section><section class="bloc card ml"><h3>Ce que ça vous donne en écriture</h3><p class="mp">Votre lettre y gagne autant que votre lecture. Vous voulez parler trois fois du poste sans recopier l'annonce trois fois : « ce poste », puis « cette fonction », puis « le mandat que vous décrivez ». Trois façons de désigner une seule chose. C'est ce qui distingue une lettre écrite d'une lettre remplie.</p><div class="note">Le seul mot qu'on répète volontiers, c'est le titre exact du poste, et seulement en tête du curriculum vitæ.</div></section><section class="bloc card ml"><h3>Deux pièges</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">croire à un nouveau sujet</p><div class="k">Ce qui arrive</div><p class="ph">suivre le « ce » et le « cette »</p><p class="px">« Ce métal », « cette mesure », « cette activité » : à chaque fois, cherchez en arrière. Vous n'avez pas changé de sujet.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">chercher un synonyme parfait</p><div class="k">Ce qui arrive</div><p class="ph">accepter le mot plus général</p><p class="px">Une reprise est presque toujours un peu plus vague que le mot de départ. C'est normal, et c'est même son intérêt.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">« La région produit de l'aluminium. Ce métal… » — « ce métal » désigne…</span><ul class="opts"><li>l'aluminium</li><li>un autre produit</li></ul></li><li><span class="q">Le signal le plus fiable d'une reprise, c'est…</span><ul class="opts"><li>« ce » ou « cette » devant un mot général</li><li>une majuscule</li></ul></li><li><span class="q">« On a agrandi le laboratoire. Cet agrandissement… » est une reprise par…</span><ul class="opts"><li>nominalisation</li><li>périphrase</li></ul></li><li><span class="q">Dans votre lettre, la substitution sert à…</span><ul class="opts"><li>ne pas recopier l'annonce</li><li>allonger le texte</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> l'aluminium — C'est une reprise par mot générique. · <b>2.</b> « ce » ou « cette » devant un mot général — Un déterminant démonstratif devant un mot vague : cherchez en arrière. · <b>3.</b> nominalisation — Le verbe de la phrase précédente est devenu un nom. · <b>4.</b> ne pas recopier l'annonce — « ce poste », « cette fonction », « le mandat que vous décrivez ».</div></section></section></div>
+<footer><span>C4 · Chercher un emploi en région</span><span>Fiche élève</span></footer>
+</body>
+</html>

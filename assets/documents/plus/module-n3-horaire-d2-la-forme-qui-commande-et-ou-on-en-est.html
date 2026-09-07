@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>D2 · La forme qui commande, et où on en est — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance D2 · Module 11 · 60 minutes</div>
+    <h1>La forme qui commande, et où on en est</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">« Sortez », « rangez », « éteignez » : le verbe passe en premier et le sujet disparaît. Et quand le chef revient, trois réponses possibles — c'est fait, je suis en train, je vais le faire.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>reconnaître et former l'impératif en -ez ;</li><li>employer la négation « n'oubliez pas » ;</li><li>dire où on en est : c'est fait, en train de, je vais ;</li><li>répondre à un chef qui demande si c'est terminé.</li></ol></section><section class="bloc regle"><div class="lbl">Le sujet disparaît</div><p class="r">Vous sortez les plateaux. — Sortez les plateaux.</p><p class="pr">Pour donner une consigne, on enlève le mot « vous » et le verbe se retrouve en premier. Rien d'autre ne change. Ce n'est pas impoli : c'est la forme normale du travail, souvent adoucie par « s'il vous plaît ».</p></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Trois formes, et une seule sert vraiment</h2><table><thead><tr><th>La forme</th><th>À qui on parle</th></tr></thead><tbody><tr><td>range</td><td class="cle">à un collègue qu'on tutoie</td></tr><tr><td>rangez</td><td class="cle">à vous, ou à plusieurs, ou poliment</td></tr><tr><td>rangeons</td><td class="cle">à tout le groupe, en s'incluant</td></tr></tbody></table><div class="note">Au travail, c'est presque toujours la forme en -ez. Les deux autres s'entendent, mais rarement d'un chef d'équipe.</div></section><section class="bloc card"><div class="lbl">Écriture</div><h2 class="t">Mettez le verbe à la forme du chef d'équipe</h2><p class="consigne">La forme en -ez, sans le mot « vous ».</p><ol class="ex"><li><span class="q">___ les plateaux du chariot. (sortir)</span><span class="ligne ligne--court"></span></li><li><span class="q">___ les boîtes dans la chambre froide. (ranger)</span><span class="ligne ligne--court"></span></li><li><span class="q">___ le four à onze heures. (éteindre)</span><span class="ligne ligne--court"></span></li><li><span class="q">N'___ pas de poinçonner en arrivant. (oublier)</span><span class="ligne ligne--court"></span></li><li><span class="q">___ me voir avant votre pause. (venir)</span><span class="ligne ligne--court"></span></li><li><span class="q">___ là à six heures, s'il vous plaît. (être)</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc regle"><div class="lbl">La négation entoure le verbe</div><p class="r">N'oubliez pas le four. Ne partez pas avant midi.</p><p class="pr">Comme d'habitude : « ne » devant, « pas » derrière. C'est la forme qu'un chef emploie pour ce qui a déjà été oublié une fois.</p></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Dire où on en est</h2><table><thead><tr><th>La réponse</th><th>Ce qu'elle dit</th></tr></thead><tbody><tr><td>C'est fait. Je viens de finir.</td><td class="cle">terminé, à l'instant</td></tr><tr><td>Je suis en train de le faire.</td><td class="cle">commencé, pas fini</td></tr><tr><td>Je vais le faire à onze heures.</td><td class="cle">pas commencé, mais prévu</td></tr></tbody></table><div class="note">Les trois sont de bonnes réponses. La seule mauvaise est celle qui laisse croire que c'est fait quand ça ne l'est pas.</div></section><section class="bloc card"><div class="lbl">Écriture</div><h2 class="t">Viens de, suis en train de, ou vais</h2><p class="consigne">Dites où en est la tâche.</p><ol class="ex"><li><span class="q">Les plateaux sont sortis depuis deux minutes : je ___ finir.</span><span class="ligne ligne--court"></span></li><li><span class="q">Il me reste trois boîtes : je ___ les ranger.</span><span class="ligne ligne--court"></span></li><li><span class="q">Il est dix heures et demie : je ___ éteindre le four dans trente minutes.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le lave-vaisselle tourne encore : il ___ laver la dernière brassée.</span><span class="ligne ligne--court"></span></li><li><span class="q">Tout est terminé : les trois tâches, ___ .</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">Écoute</div><h2 class="t">C'est fait, ou pas encore ?</h2><p class="consigne">Écoutez la phrase : est-ce que la tâche est terminée ?</p><ol class="ex"><li><span class="q">Je viens de finir les plateaux.</span><span class="ligne ligne--court"></span></li><li><span class="q">Je suis en train de ranger les boîtes.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le four est éteint depuis onze heures.</span><span class="ligne ligne--court"></span></li><li><span class="q">Je vais poinçonner dans deux minutes.</span><span class="ligne ligne--court"></span></li><li><span class="q">Les plateaux, c'est fait.</span><span class="ligne ligne--court"></span></li><li><span class="q">Il me reste trois boîtes.</span><span class="ligne ligne--court"></span></li><li><span class="q">J'ai terminé la chambre froide.</span><span class="ligne ligne--court"></span></li><li><span class="q">Je commence tout de suite après ma pause.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez où vous en êtes dans trois tâches d'aujourd'hui.</p><ul><li>Une terminée, une commencée, une à venir.</li><li>« Les plateaux, c'est fait. Je suis en train de… »</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>L'impératif : la forme qui commande</h2><section class="bloc card ml"><h3>Le verbe passe en premier, et le sujet disparaît</h3><p class="mp">Quand un chef d'équipe donne une consigne, il ne dit pas « vous sortez les plateaux », il dit « <b>Sortez</b> les plateaux ». C'est la même forme du verbe, mais sans le mot « vous » devant. Le verbe se retrouve au début de la phrase : c'est le signal qu'on te demande de faire quelque chose maintenant.</p><div class="note">Reconnaître cette forme, c'est reconnaître qu'on te parle à toi. C'est l'intention « comprendre une consigne » du programme.</div></section><section class="bloc card ml"><h3>Trois formes, et une seule sert vraiment</h3><p class="mp">Selon à qui on parle.</p><table class="ana"><tr><td>À un collègue</td><td class=""><b>Range</b> les boîtes.</td></tr><tr><td>À vous, ou poliment</td><td class=""><b>Rangez</b> les boîtes.</td></tr><tr><td>Ensemble</td><td class="cle"><b>Rangeons</b> les boîtes.</td></tr></table><p class="dit"><span class="k">On dit</span> Range les boîtes. Rangez les boîtes.</p><div class="note">Au travail, la forme en -ez domine : elle sert pour « vous » et comme forme polie. C'est celle du module.</div></section><section class="bloc card ml"><h3>La négation entoure le verbe</h3><p class="mp">Comme dans toutes les phrases négatives.</p><table class="ana"><tr><td>La forme</td><td class=""><b>N’oubliez pas</b> le four.</td></tr><tr><td>Autre exemple</td><td class=""><b>Ne partez pas</b> avant midi.</td></tr><tr><td>À l’oral</td><td class="cle">on entend surtout le « pas »</td></tr></table><p class="dit"><span class="k">On dit</span> N'oubliez pas le four à onze heures.</p><div class="note">« N'oubliez pas » est la consigne la plus fréquente de toutes les cuisines. Apprends-la en bloc.</div></section><section class="bloc card ml"><h3>Trois verbes irréguliers à connaître</h3><p class="mp">Ceux-là ne suivent pas la règle.</p><table class="ana"><tr><td>venir</td><td class=""><b>Venez</b> me voir.</td></tr><tr><td>faire</td><td class=""><b>Faites</b> les plateaux d’abord.</td></tr><tr><td>être</td><td class="cle"><b>Soyez</b> là à six heures.</td></tr></table><p class="dit"><span class="k">On dit</span> Venez me voir. Faites les plateaux. Soyez là à six heures.</p><div class="note">Trois formes à apprendre par cœur : elles reviennent chaque semaine dans une cuisine.</div></section><section class="bloc card ml"><h3>La consigne et ce qu'elle demande</h3><p class="mp">Choisis un verbe et vois la consigne complète.</p><table class="labo"><thead><tr><th>Quel verbe ? · Quelle forme ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">sortir + on demande</td><td>Sortez les plateaux du chariot.</td><td>la consigne</td></tr><tr><td class="cle">sortir + on interdit</td><td>Ne sortez pas les plateaux tout de suite.</td><td>la consigne au négatif</td></tr><tr><td class="cle">ranger + on demande</td><td>Rangez les boîtes dans la chambre froide.</td><td>la consigne</td></tr><tr><td class="cle">ranger + on interdit</td><td>Ne rangez pas les boîtes dans le corridor.</td><td>la consigne au négatif</td></tr><tr><td class="cle">éteindre + on demande</td><td>Éteignez le four à onze heures.</td><td>la consigne</td></tr><tr><td class="cle">éteindre + on interdit</td><td>N'éteignez pas le lave-vaisselle.</td><td>la consigne au négatif</td></tr><tr><td class="cle">venir + on demande</td><td>Venez me voir avant votre pause.</td><td>verbe irrégulier</td></tr><tr><td class="cle">venir + on interdit</td><td>Ne venez pas avant six heures.</td><td>verbe irrégulier au négatif</td></tr></tbody></table><div class="note">Huit consignes réelles. Écoute-les, puis redis-les : c'est exactement ce que fait Fabiola dans le dialogue.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six consignes de la cuisine.</p><table class="ex2"><tr><td>Sortez les plateaux du chariot.</td><td>-ez</td></tr><tr><td>Rangez les boîtes dans la chambre froide.</td><td>-ez</td></tr><tr><td>Éteignez le four à onze heures.</td><td>-ez</td></tr><tr><td>N'oubliez pas de poinçonner.</td><td>au négatif</td></tr><tr><td>Venez me voir avant midi.</td><td>irrégulier</td></tr><tr><td>Soyez là à six heures, s'il vous plaît.</td><td>irrégulier</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges à connaître</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">croire que c'est impoli</p><div class="k">Ce qui arrive</div><p class="ph">une consigne n'est pas une colère</p><p class="px">« Éteignez le four » est la façon normale de donner une tâche. Le « s'il vous plaît » qui suit dit tout.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">garder le mot « vous »</p><div class="k">Ce qui arrive</div><p class="ph">« Vous rangez les boîtes » n'est pas une consigne</p><p class="px">Sans le sujet, c'est un ordre ; avec le sujet, c'est une description. Le chef d'équipe emploie la première forme.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">oublier le « ne » à l'écrit</p><div class="k">Ce qui arrive</div><p class="ph">« oubliez pas » s'entend, mais s'écrit avec « n’ »</p><p class="px">À l'oral québécois, le « ne » disparaît souvent. Dans le petit mot qu'on laisse, il s'écrit.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">« Sortez les plateaux » est…</span><ul class="opts"><li>une consigne</li><li>une question</li></ul></li><li><span class="q">La forme la plus employée au travail est…</span><ul class="opts"><li>-e</li><li>-ez</li></ul></li><li><span class="q">Le négatif se construit avec…</span><ul class="opts"><li>ne… pas autour du verbe</li><li>pas devant le verbe</li></ul></li><li><span class="q">L'impératif de « être » à la forme polie est…</span><ul class="opts"><li>soyez</li><li>êtes</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> une consigne — Le verbe est en premier : c'est une consigne. · <b>2.</b> -ez — Elle sert pour « vous » et comme forme polie. · <b>3.</b> ne… pas autour du verbe — « N'oubliez pas », « ne partez pas ». · <b>4.</b> soyez — « Soyez là à six heures. »</div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Fini, en cours, ou pas commencé</h2><section class="bloc card ml"><h3>Trois tournures qui disent où en est une tâche</h3><p class="mp">Quand le chef d'équipe demande « et les boîtes ? », il attend une réponse précise. Trois tournures suffisent : <b>je viens de</b> (fini à l'instant), <b>je suis en train de</b> (en cours), <b>je vais</b> (pas commencé, mais prévu). Elles se placent devant le verbe, qui ne change pas.</p><div class="note">Ces trois réponses rassurent, chacune à sa manière. La pire réponse est « oui » tout seul : personne ne sait ce qu'elle veut dire.</div></section><section class="bloc card ml"><h3>Juste avant : venir de</h3><p class="mp">L'action est terminée depuis une ou deux minutes.</p><table class="ana"><tr><td>La forme</td><td class=""><b>Je viens de</b> finir.</td></tr><tr><td>Avec la tâche</td><td class=""><b>Je viens de</b> sortir les plateaux.</td></tr><tr><td>Encore plus court</td><td class="cle"><b>C’est fait.</b></td></tr></table><p class="dit"><span class="k">On dit</span> Je viens de finir les plateaux.</p><div class="note">« Je viens de » ne parle jamais d'hier : c'est tout juste avant, à la minute près.</div></section><section class="bloc card ml"><h3>Pendant : être en train de</h3><p class="mp">J'ai commencé, je n'ai pas fini, je le fais maintenant.</p><table class="ana"><tr><td>La forme</td><td class=""><b>Je suis en train de</b> ranger.</td></tr><tr><td>Avec le détail</td><td class="">Il me reste <b>trois boîtes</b>.</td></tr><tr><td>Pour un appareil</td><td class="cle">Le lave-vaisselle <b>est en train de</b> laver.</td></tr></table><p class="dit"><span class="k">On dit</span> Je suis en train de ranger les boîtes.</p><div class="note">Ajoute toujours ce qui reste : « il me reste trois boîtes ». Le chef d'équipe sait alors s'il doit envoyer quelqu'un.</div></section><section class="bloc card ml"><h3>Après : aller + infinitif</h3><p class="mp">Ce n'est pas commencé, mais c'est prévu, et je dis quand.</p><table class="ana"><tr><td>La forme</td><td class=""><b>Je vais</b> éteindre le four.</td></tr><tr><td>Avec l’heure</td><td class=""><b>Je vais</b> le faire à onze heures.</td></tr><tr><td>Tout de suite après</td><td class="cle"><b>Je vais</b> commencer après ma pause.</td></tr></table><p class="dit"><span class="k">On dit</span> Je vais éteindre le four à onze heures.</p><div class="note">Dis toujours quand. « Je vais le faire » sans heure ressemble à une façon de gagner du temps.</div></section><section class="bloc card ml"><h3>La même tâche, trois moments</h3><p class="mp">Choisis la tâche et son état.</p><table class="labo"><thead><tr><th>Quelle tâche ? · Où en es-tu ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">les plateaux + fini</td><td>Je viens de finir les plateaux.</td><td>fini à l’instant</td></tr><tr><td class="cle">les plateaux + en cours</td><td>Je suis en train de sortir les plateaux.</td><td>en cours</td></tr><tr><td class="cle">les plateaux + à venir</td><td>Je vais sortir les plateaux après ma pause.</td><td>prévu, avec le moment</td></tr><tr><td class="cle">les boîtes + fini</td><td>Les boîtes, c'est fait.</td><td>la réponse la plus courte</td></tr><tr><td class="cle">les boîtes + en cours</td><td>Je suis en train de les ranger, il en reste trois.</td><td>en cours, avec le reste</td></tr><tr><td class="cle">les boîtes + à venir</td><td>Je vais les ranger avant midi.</td><td>prévu, avec l’heure</td></tr><tr><td class="cle">le four + fini</td><td>Le four est éteint depuis onze heures.</td><td>fini, avec l’heure</td></tr><tr><td class="cle">le four + en cours</td><td>Le four est en train de refroidir.</td><td>en cours</td></tr><tr><td class="cle">le four + à venir</td><td>Je vais éteindre le four à onze heures.</td><td>prévu, avec l’heure</td></tr></tbody></table><div class="note">Neuf réponses possibles à une seule question. Choisis celle qui est vraie : c'est tout ce qu'on te demande.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six réponses au chef d'équipe.</p><table class="ex2"><tr><td>Je viens de finir les plateaux.</td><td>fini</td></tr><tr><td>Les boîtes, c'est fait.</td><td>fini</td></tr><tr><td>Je suis en train de les ranger.</td><td>en cours</td></tr><tr><td>Il me reste trois boîtes.</td><td>en cours</td></tr><tr><td>Je vais éteindre le four à onze heures.</td><td>à venir</td></tr><tr><td>J'ai mis mon minuteur.</td><td>à venir</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges à connaître</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">conjuguer le verbe qui suit</p><div class="k">Ce qui arrive</div><p class="ph">« je viens de je finis »</p><p class="px">Après ces trois tournures, le verbe reste à l'infinitif : finir, ranger, éteindre.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">répondre seulement « oui »</p><div class="k">Ce qui arrive</div><p class="ph">personne ne sait si c'est fait</p><p class="px">« Oui » ne dit pas si la tâche est finie ou commencée. Une des trois tournures règle la question.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">employer « je viens de » pour hier</p><div class="k">Ce qui arrive</div><p class="ph">c'est seulement pour l'instant d'avant</p><p class="px">Pour hier, on dit « j'ai fini hier ». « Je viens de » veut dire : il y a une ou deux minutes.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">« Je viens de finir » veut dire…</span><ul class="opts"><li>c'est fini à l'instant</li><li>je vais finir</li></ul></li><li><span class="q">« Je suis en train de ranger » veut dire…</span><ul class="opts"><li>c'est commencé, pas fini</li><li>c'est fini</li></ul></li><li><span class="q">Après « je vais », le verbe est…</span><ul class="opts"><li>à l'infinitif</li><li>conjugué</li></ul></li><li><span class="q">La réponse la plus courte pour une tâche terminée est…</span><ul class="opts"><li>c'est fait</li><li>oui</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> c'est fini à l'instant — L'action est terminée depuis une ou deux minutes. · <b>2.</b> c'est commencé, pas fini — L'action est en cours maintenant. · <b>3.</b> à l'infinitif — Je vais éteindre, je vais ranger. · <b>4.</b> c'est fait — Trois mots, et la tâche est réglée.</div></section></section></div>
+<footer><span>D2 · Mon quart de travail</span><span>Fiche élève</span></footer>
+</body>
+</html>

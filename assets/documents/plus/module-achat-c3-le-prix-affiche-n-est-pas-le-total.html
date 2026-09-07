@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C3 · Le prix affiché n'est pas le total — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance C3 · Module 15 · 75 minutes</div>
+    <h1>Le prix affiché n'est pas le total</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Un appareil affiché à 800 $ peut en coûter 1 100. Taxes, livraison, installation, garantie prolongée : quatre lignes qui s'ajoutent, et qu'on peut toutes prévoir.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>calculer les taxes de tête, approximativement ;</li><li>distinguer la livraison de l'installation ;</li><li>comprendre ce que veut dire « douze versements sans intérêt » ;</li><li>faire écrire ce qui a été promis.</li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Ce qui s'ajoute au prix affiché</h2><table><thead><tr><th>Ligne</th><th>Combien</th></tr></thead><tbody><tr><td class="cle">Les taxes</td><td>environ 15 %</td></tr><tr><td class="cle">La livraison</td><td>50 à 80 $, parfois gratuite</td></tr><tr><td class="cle">L'installation</td><td>un service à part, souvent 40 $</td></tr><tr><td class="cle">La garantie prolongée</td><td>facultative, 100 à 200 $</td></tr></tbody></table><div class="note">Sur 800 $, le total dépasse fréquemment 1 000 $.</div></section><section class="bloc regle"><div class="lbl">Calculer les taxes de tête</div><p class="r">Ajoutez le dixième, puis la moitié de ce dixième.</p><p class="pr">800 $ › 80 $ + 40 $ = 120 $. Total : 920 $. Le calcul est approximatif mais suffisant pour décider. Au Québec, les taxes ne sont jamais incluses dans le prix affiché — c'est différent de beaucoup de pays.</p></section><section class="bloc regle"><div class="lbl">Monter n'est pas brancher</div><p class="r">La livraison apporte l'appareil. L'installation le met en marche.</p><p class="pr">Les livreurs montent l'appareil à l'endroit voulu et repartent avec l'emballage. Ils ne raccordent ni l'eau, ni l'électricité, ni le renvoi. C'est la surprise la plus fréquente du jour de la livraison.</p></section><section class="bloc"><div class="lbl">Les versements</div><h2 class="t">Ce que « sans intérêt » veut dire</h2><div class="grid"><div class="card"><h3>Le principe</h3><p>Le prix divisé en douze, sans frais supplémentaires. Douze mois pour payer un appareil au lieu d'un seul.</p></div><div class="card"><h3>La condition</h3><p>Payer à temps chaque mois. Un retard fait souvent tomber la gratuité et applique un taux élevé sur tout le solde restant.</p></div><div class="card"><h3>Où c'est écrit</h3><p>En petit, dans le contrat. Lisez la ligne qui commence par « en cas de retard » avant de signer.</p></div></div></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Ne rien faire écrire</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">Le vendeur a dit qu'ils reprendraient l'ancienne laveuse.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">C'est noté sur le bon de livraison ?</p></div></div><div class="note">Une promesse orale ne voyage pas jusqu'au livreur. Le bon de livraison est le seul document que l'équipe de livraison consulte. Tout ce qui n'y est pas écrit n'arrivera pas — la reprise de l'ancien appareil en particulier.</div></section><section class="bloc card"><div class="lbl">Pratique · 1 de 2</div><h2 class="t">Calculez le total</h2><p class="consigne">Appareil à 800 $. Ajoutez les lignes demandées.</p><ol class="ex"><li><span class="q">Avec les taxes seulement</span><span class="ligne ligne--court"></span></li><li><span class="q">Plus la livraison à 60 $</span><span class="ligne ligne--court"></span></li><li><span class="q">Plus l'installation à 40 $</span><span class="ligne ligne--court"></span></li><li><span class="q">Plus la garantie prolongée à 120 $</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">Pratique · 2 de 2</div><h2 class="t">Quel service ?</h2><p class="consigne">Livraison, installation, ou ni l'un ni l'autre ?</p><ol class="ex"><li><span class="q">Descendre l'appareil du camion</span><span class="ligne ligne--court"></span></li><li><span class="q">Le monter jusqu'au sous-sol</span><span class="ligne ligne--court"></span></li><li><span class="q">Brancher l'eau et l'électricité</span><span class="ligne ligne--court"></span></li><li><span class="q">Vérifier que l'appareil est de niveau</span><span class="ligne ligne--court"></span></li><li><span class="q">Repartir avec l'ancien appareil</span><span class="ligne"></span></li></ol></section><section class="bloc"><div class="lbl">Les quatre questions du paiement</div><h2 class="t">À poser avant de signer</h2><div class="grid"><div class="card"><h3>« Ça fait combien, taxes comprises ? »</h3><p>Le seul chiffre qui compte vraiment.</p></div><div class="card"><h3>« L'installation est-elle comprise ? »</h3><p>La réponse est presque toujours non. Autant le savoir.</p></div><div class="card"><h3>« Vous reprenez l'ancien appareil ? »</h3><p>Souvent oui, souvent gratuit — mais seulement si c'est noté.</p></div><div class="card"><h3>« Qu'est-ce qui arrive si je paie en retard ? »</h3><p>Pour les versements. La réponse est dans le contrat, en petit.</p></div></div></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Calculez le total réel d'un appareil qui vous intéresse.</p><ul><li>Prix affiché, taxes, livraison, installation.</li><li>Notez l'écart avec le prix affiché.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Le prix affiché n'est pas le total</h2><section class="bloc card ml"><h3>Ce qui s'ajoute à la caisse</h3><p class="mp">Un appareil affiché à 800 $ ne coûte pas 800 $. Les <b>taxes</b> s'ajoutent — environ 15 % au Québec — et il faut souvent compter la livraison, l'installation, la reprise de l'ancien appareil et parfois la garantie prolongée.</p><div class="note">L'écart entre le prix affiché et le total réel dépasse fréquemment 200 $ sur un gros appareil. Le calculer avant évite une mauvaise surprise.</div></section><section class="bloc card ml"><h3>Les taxes</h3><p class="mp">Deux taxes s'additionnent, et elles ne sont jamais incluses dans le prix affiché.</p><table class="ana"><tr><td>Total</td><td class="">environ <b>15 %</b></td></tr><tr><td>Sur 800 $</td><td class="cle">environ <b>920 $</b></td></tr><tr><td>Le repère</td><td class="">ajoutez un sixième, en gros</td></tr></table><p class="dit"><span class="k">On dit</span> Le prix affiché ne comprend pas les taxes.</p><div class="note">Un calcul mental commode : ajouter 15 %, c'est ajouter le dixième du prix, puis la moitié de ce dixième. 800 › 80 + 40 = 120.</div></section><section class="bloc card ml"><h3>La livraison et l'installation</h3><p class="mp">Deux services distincts, deux prix distincts. C'est la confusion la plus coûteuse du module.</p><table class="ana"><tr><td>La livraison</td><td class="">on <b>monte</b> l'appareil</td></tr><tr><td>L'installation</td><td class="cle">on le <b>branche</b></td></tr><tr><td>Le prix</td><td class="">60 $ et 40 $ dans ce module</td></tr></table><p class="dit"><span class="k">On dit</span> Les livreurs la montent, mais ils ne la branchent pas.</p><div class="note">Beaucoup de gens découvrent le jour de la livraison que l'appareil est dans la pièce, mais pas raccordé. Demandez au moment de l'achat.</div></section><section class="bloc card ml"><h3>Les versements</h3><p class="mp">Payer en plusieurs fois, souvent sans frais.</p><table class="ana"><tr><td>La formule</td><td class=""><b>12 versements</b> sans intérêt</td></tr><tr><td>Ce que ça veut dire</td><td class="cle">le prix divisé en douze</td></tr><tr><td>La condition</td><td class="">payer à temps chaque mois</td></tr></table><p class="dit"><span class="k">On dit</span> Douze versements sans intérêt, si vous préférez.</p><div class="note">« Sans intérêt » tient tant qu'on paie à temps. Un retard fait souvent tomber la gratuité et applique un taux élevé sur tout le solde — c'est écrit en petit dans le contrat.</div></section><section class="bloc card ml"><h3>Le bon de livraison</h3><p class="mp">Le papier qui dit <b>quoi</b>, <b>quand</b>, et <b>ce qui est inclus</b>. Tout ce qui n'y est pas écrit n'arrivera pas : la reprise de l'ancien appareil, notamment, se perd très souvent parce qu'elle n'a pas été notée.</p><div class="note">Relisez-le avant de signer, et gardez-en une copie. C'est votre seule preuve de ce qui a été promis.</div></section><section class="bloc card ml"><h3>Combien ça coûte vraiment ?</h3><p class="mp">Choisissez un poste et voyez ce qu'il ajoute.</p><table class="labo"><thead><tr><th>Quel poste ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">les taxes sur 800 $</td><td>Le prix affiché ne comprend pas les taxes.<span class="tags">environ <b>120 $</b></span></td><td>≈ 15 %, jamais inclus</td></tr><tr><td class="cle">la livraison</td><td>Soixante dollars, ou gratuite au-dessus de mille dollars.<span class="tags"><b>60 $</b> — ou gratuite</span></td><td>souvent gratuite au-dessus d'un montant</td></tr><tr><td class="cle">l'installation</td><td>L'installation est un service à part, quarante dollars.<span class="tags"><b>40 $</b> — service à part</span></td><td>la livraison ne l'inclut pas</td></tr><tr><td class="cle">la garantie prolongée</td><td>Cent vingt dollars pour trois ans de plus.<span class="tags"><b>120 $</b> pour trois ans</span></td><td>facultative</td></tr><tr><td class="cle">le déplacement du technicien</td><td>Le déplacement du technicien coûte quatre-vingt-dix dollars.<span class="tags">environ <b>90 $</b></span></td><td>sauf si la prolongée le couvre</td></tr></tbody></table><div class="note">Sur un appareil à 800 $, ces postes peuvent porter le total à plus de 1 100 $. Le savoir avant change la décision.</div></section><section class="bloc card ml"><h3>Les phrases du module</h3><p class="mp">Écoutez chacune.</p><table class="ex2"><tr><td>Comptant, débit, crédit.</td><td>les modes de paiement</td></tr><tr><td>Douze versements sans intérêt.</td><td>payer en plusieurs fois</td></tr><tr><td>Soixante dollars, ou gratuite au-dessus de mille dollars.</td><td>la livraison</td></tr><tr><td>L'installation est un service à part, quarante dollars.</td><td>à ne pas confondre</td></tr><tr><td>Les livreurs la montent, mais ils ne la branchent pas.</td><td>la phrase à retenir</td></tr><tr><td>Si c'est noté sur le bon de livraison, oui.</td><td>tout ce qui n'est pas écrit n'arrive pas</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges à connaître</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">calculer avec le prix affiché</p><div class="k">Ce qui arrive</div><p class="ph">ajoutez 15 % de taxes</p><p class="px">Le prix affiché n'est jamais le total au Québec. C'est différent de beaucoup de pays, où la taxe est incluse.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">croire que la livraison inclut l'installation</p><div class="k">Ce qui arrive</div><p class="ph">monter n'est pas brancher</p><p class="px">Deux services, deux prix. À demander explicitement au moment de l'achat.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">ne rien faire écrire</p><div class="k">Ce qui arrive</div><p class="ph">tout ce qui n'est pas sur le bon n'arrivera pas</p><p class="px">La reprise de l'ancien appareil est ce qui se perd le plus souvent. Faites-la noter.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">Un appareil affiché à 800 $ coûte, taxes comprises…</span><ul class="opts"><li>environ 920 $</li><li>800 $</li></ul></li><li><span class="q">Les livreurs…</span><ul class="opts"><li>branchent l'appareil</li><li>le montent seulement</li></ul></li><li><span class="q">« Douze versements sans intérêt » suppose…</span><ul class="opts"><li>rien de particulier</li><li>de payer à temps chaque mois</li></ul></li><li><span class="q">La reprise de l'ancien appareil…</span><ul class="opts"><li>est automatique</li><li>doit être notée sur le bon</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> environ 920 $ — Les taxes ajoutent environ 15 %. · <b>2.</b> le montent seulement — L'installation est un service à part. · <b>3.</b> de payer à temps chaque mois — Un retard fait souvent tomber la gratuité. · <b>4.</b> doit être notée sur le bon — Tout ce qui n'est pas écrit n'arrivera pas.</div></section></section></div>
+<footer><span>C3 · Acheter un appareil</span><span>Fiche élève</span></footer>
+</body>
+</html>

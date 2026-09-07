@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B3 · Le plus, le moins — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance B3 · Module 13 · 75 minutes</div>
+    <h1>Le plus, le moins</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Un dépliant municipal contient une trentaine d'activités. Pour choisir, on compare : la moins chère, la plus proche, celle qui a le plus de places.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>comparer deux activités avec plus, moins ou aussi ;</li><li>comparer une activité à toutes les autres avec le superlatif ;</li><li>accorder le petit mot : le, la ou les ;</li><li>employer meilleur au lieu de « plus bon ».</li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Comparer deux choses, ou toutes</h2><table><thead><tr><th>On compare</th><th>La forme</th></tr></thead><tbody><tr><td>deux choses</td><td class="cle">plus / moins / aussi … que</td></tr><tr><td>à toutes les autres</td><td class="cle">le / la / les plus, le / la / les moins</td></tr><tr><td>le groupe</td><td class="cle">s'introduit par de : la moins chère de toutes</td></tr></tbody></table><div class="note">Le test : y a-t-il un « que » après ? Alors on compare deux choses.</div></section><section class="bloc regle"><div class="lbl">Le superlatif, en un mot de plus</div><p class="r">Ajoutez le, la ou les devant plus ou moins. C'est tout.</p><p class="pr">« moins chère que la natation » compare deux activités. « la moins chère de toutes » la compare à l'ensemble. La différence tient à deux lettres.</p></section><section class="bloc regle"><div class="lbl">L'accord du petit mot</div><p class="r">le, la ou les s'accorde avec le nom, comme un article.</p><p class="pr">le cours &lt;b&gt;le plus&lt;/b&gt; court · l'activité &lt;b&gt;la plus&lt;/b&gt; chère · les places &lt;b&gt;les moins&lt;/b&gt; chères. Si vous savez mettre l'article, vous savez faire l'accord.</p></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Dire « plus bon »</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">La chorale, c'est plus bon que la natation.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">La chorale, c'est mieux que la natation.</p></div></div><div class="note">Un seul adjectif fait exception, et c'est l'un des plus employés : &lt;b&gt;bon&lt;/b&gt; devient &lt;b&gt;meilleur&lt;/b&gt;. L'adverbe &lt;b&gt;bien&lt;/b&gt; devient &lt;b&gt;mieux&lt;/b&gt;. « Plus bon » n'existe pas, dans aucune situation.</div></section><section class="bloc card"><div class="lbl">Pratique · 1 de 2</div><h2 class="t">Deux choses, ou toutes ?</h2><p class="consigne">Complétez.</p><ol class="ex"><li><span class="q">La chorale coûte 30 $ : c'est ___ chère de toutes.</span><span class="ligne ligne--court"></span></li><li><span class="q">La natation coûte 85 $ : c'est ___ chère des deux.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le cours du samedi est ___ proche que celui du mardi.</span><span class="ligne ligne--court"></span></li><li><span class="q">De toutes les activités, c'est celle qui a ___ de places.</span><span class="ligne ligne--court"></span></li><li><span class="q">Ces places-là sont ___ chères du dépliant.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le jeudi soir, c'est ___ moment de la semaine pour elle.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">Pratique · 2 de 2</div><h2 class="t">Comparez pour de vrai</h2><p class="consigne">Écrivez une phrase comparant les deux activités.</p><ol class="ex"><li><span class="q">Natation : 85 $, 12 semaines. Chorale : 30 $, 10 semaines.</span><span class="ligne"></span></li><li><span class="q">Soccer : 120 $. Natation : 85 $. Chorale : 30 $.</span><span class="ligne"></span></li><li><span class="q">Natation : 12 semaines. Chorale : 10 semaines. Soccer : 16 semaines.</span><span class="ligne"></span></li><li><span class="q">Chorale : 3 places. Natation : 8 places. Soccer : 20 places.</span><span class="ligne"></span></li></ol></section><section class="bloc"><div class="lbl">Ce que la comparaison sert à décider</div><h2 class="t">Trois vraies questions</h2><div class="grid"><div class="card"><h3>Laquelle je peux me permettre ?</h3><p>« C'est la moins chère de toutes. » — la première question de bien des familles.</p></div><div class="card"><h3>Laquelle est la plus proche ?</h3><p>Une activité à quarante minutes d'autobus se termine souvent par un abandon en novembre.</p></div><div class="card"><h3>Laquelle risque d'être pleine ?</h3><p>« Celle qui a le moins de places » est celle où il faut s'inscrire cette semaine, pas le mois prochain.</p></div></div></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Comparez trois activités de votre ville en quatre phrases.</p><ul><li>Deux comparaisons entre deux activités, deux superlatifs.</li><li>Employez au moins une fois meilleur ou mieux.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Le plus, le moins</h2><section class="bloc card ml"><h3>Choisir parmi trente activités</h3><p class="mp">Un dépliant municipal contient une trentaine d'activités. Pour choisir, on compare : la moins chère, la plus proche, celle qui a le plus de places. C'est le <b>superlatif</b>, et il se construit en ajoutant un seul petit mot.</p><div class="note">Vous savez déjà comparer deux choses. Le superlatif compare une chose à <b>toutes</b> les autres.</div></section><section class="bloc card ml"><h3>Comparer deux choses</h3><p class="mp">C'est ce que vous savez déjà faire : plus, moins ou aussi, suivi de <b>que</b>.</p><table class="ana"><tr><td>Supérieur</td><td class=""><b>plus</b> chère que</td></tr><tr><td>Inférieur</td><td class="cle">moins chère que</td></tr><tr><td>Égal</td><td class="">aussi chère que</td></tr></table><p class="dit"><span class="k">On dit</span> La natation est plus chère que la chorale.</p><div class="note">L'adjectif s'accorde avec ce dont on parle : plus cher, plus chère, plus chers, plus chères.</div></section><section class="bloc card ml"><h3>Comparer avec tout le reste</h3><p class="mp">On ajoute <b>le</b>, <b>la</b> ou <b>les</b> devant plus ou moins. C'est tout.</p><table class="ana"><tr><td>Deux choses</td><td class="">moins chère que</td></tr><tr><td>Toutes les choses</td><td class="cle"><b>la moins</b> chère</td></tr><tr><td>Le groupe</td><td class="">la moins chère de toutes</td></tr></table><p class="dit"><span class="k">On dit</span> C'est la moins chère de toutes les activités.</p><div class="note">Le petit mot s'accorde avec le nom : <b>le</b> cours le plus court, <b>l'</b>activité la plus chère, <b>les</b> places les moins chères.</div></section><section class="bloc card ml"><h3>Le groupe se marque avec « de »</h3><p class="mp">Ce à quoi on compare s'introduit par <b>de</b>, jamais par « dans » : « la moins chère <b>de</b> toutes », « le plus proche <b>du</b> quartier », « la meilleure <b>de</b> la session ».</p><div class="note">C'est une des rares constructions où le français n'a qu'une seule possibilité. Tant mieux.</div></section><section class="bloc card ml"><h3>Le cas de « bon »</h3><p class="mp"><b>bon</b> ne suit pas la règle : il devient <b>meilleur</b>, et « le meilleur » au superlatif.</p><table class="ana"><tr><td>Comparaison</td><td class=""><b>meilleur</b> que</td></tr><tr><td>Superlatif</td><td class="cle">le <b>meilleur</b></td></tr><tr><td>Jamais</td><td class="">« plus bon »</td></tr></table><p class="dit"><span class="k">On dit</span> C'est le meilleur moment de la semaine.</p><div class="note">L'adverbe <em>bien</em> a la même particularité : il devient <b>mieux</b>. « Elle nage mieux que l'an passé. »</div></section><section class="bloc card ml"><h3>Deux choses, ou toutes ?</h3><p class="mp">Choisissez une phrase et voyez quelle forme elle demande.</p><table class="labo"><thead><tr><th>Quelle phrase ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">la natation et la chorale</td><td>La natation est plus chère que la chorale.</td><td>deux choses › plus … que</td></tr><tr><td class="cle">la chorale et les trente activités</td><td>C'est la moins chère de toutes les activités.<span class="tags">C'est <b>la moins chère de</b> toutes.</span></td><td>toutes les choses › le superlatif</td></tr><tr><td class="cle">le cours du samedi et celui du mardi</td><td>Le cours du samedi est plus proche que celui du mardi.<span class="tags">Le samedi est <b>plus proche que</b> le mardi.</span></td><td>deux choses › plus … que</td></tr><tr><td class="cle">les places de ce dépliant</td><td>Ces places-là sont les moins chères du dépliant.<span class="tags">Ce sont <b>les moins chères</b> du dépliant.</span></td><td>pluriel › les moins</td></tr><tr><td class="cle">le jeudi soir, pour Rosa</td><td>C'est le meilleur moment de la semaine.</td><td>bon › meilleur, jamais « plus bon »</td></tr></tbody></table><div class="note">Le test : y a-t-il un <b>que</b> après ? Alors on compare deux choses. Sinon, c'est un superlatif.</div></section><section class="bloc card ml"><h3>Les comparaisons du module</h3><p class="mp">Écoutez chacune et repérez la forme.</p><table class="ex2"><tr><td>La natation est plus chère que la chorale.</td><td>comparaison — deux choses</td></tr><tr><td>C'est la moins chère de toutes les activités.</td><td>superlatif</td></tr><tr><td>Le cours du samedi est plus proche que celui du mardi.</td><td>comparaison</td></tr><tr><td>C'est celle qui a le moins de places disponibles.</td><td>superlatif</td></tr><tr><td>Ces places-là sont les moins chères du dépliant.</td><td>superlatif au pluriel</td></tr><tr><td>C'est le meilleur moment de la semaine.</td><td>superlatif irrégulier</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges à connaître</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">dire « plus bon »</p><div class="k">Ce qui arrive</div><p class="ph">c'est « meilleur »</p><p class="px">Un seul adjectif fait exception, mais c'est un des plus employés. « Meilleur que », « le meilleur ».</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">oublier l'accord du petit mot</p><div class="k">Ce qui arrive</div><p class="ph">« la moins chère », « les moins chères »</p><p class="px">le, la ou les s'accorde avec le nom, exactement comme un article.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">employer « dans » au lieu de « de »</p><div class="k">Ce qui arrive</div><p class="ph">« la moins chère de toutes », pas « dans toutes »</p><p class="px">Le groupe de comparaison s'introduit toujours par <b>de</b>. C'est mécanique.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">« La chorale est ___ chère de toutes » demande…</span><ul class="opts"><li>moins</li><li>la moins</li></ul></li><li><span class="q">Le contraire de « pire » pour l'adjectif bon, c'est…</span><ul class="opts"><li>plus bon</li><li>meilleur</li></ul></li><li><span class="q">Le groupe de comparaison s'introduit par…</span><ul class="opts"><li>de</li><li>dans</li></ul></li><li><span class="q">S'il y a un « que » après, on compare…</span><ul class="opts"><li>deux choses</li><li>une chose à toutes les autres</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> la moins — On compare à toutes les autres : c'est un superlatif. · <b>2.</b> meilleur — « Plus bon » n'existe pas. · <b>3.</b> de — « la moins chère <b>de</b> toutes ». · <b>4.</b> deux choses — « plus chère <b>que</b> » compare deux choses.</div></section></section></div>
+<footer><span>B3 · S'inscrire à une activité</span><span>Fiche élève</span></footer>
+</body>
+</html>

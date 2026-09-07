@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C2 · Prenez-la, ne la lâchez pas — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance C2 · Module 13 · 90 minutes</div>
+    <h1>Prenez-la, ne la lâchez pas</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Le même verbe, le même pronom — et deux places différentes. C'est la seule chose à comprendre, et c'est ce qui rend les consignes du moniteur difficiles à suivre.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>placer le pronom après le verbe à la forme affirmative ;</li><li>le placer avant le verbe à la forme négative ;</li><li>employer moi et toi à l'affirmative, me et te à la négative ;</li><li>reconnaître deux pronoms enchaînés : donne-les-leur.</li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Une règle, deux places</h2><table><thead><tr><th>La forme</th><th>Où va le pronom</th></tr></thead><tbody><tr><td class="cle">Affirmative</td><td>après le verbe, avec un trait d'union</td></tr><tr><td class="cle">Négative</td><td>avant le verbe, sans trait d'union</td></tr></tbody></table><div class="note">Prenez-la. / Ne la lâchez pas. Le même mot, deux places.</div></section><section class="bloc regle"><div class="lbl">À l'affirmative : le pronom suit</div><p class="r">Il se colle après le verbe, avec un trait d'union.</p><p class="pr">« Prenez-la. » · « Compte-les. » · « Envoie-le à la douche. » · « Laissez-les au bord. » Le trait d'union n'est pas décoratif : il montre que le pronom remplace le nom.</p></section><section class="bloc regle"><div class="lbl">À la négative : le pronom précède</div><p class="r">Il repasse devant le verbe, et le trait d'union disparaît.</p><p class="pr">« Ne la lâchez pas. » · « Ne les jetez pas. » · « Ne le cherche pas toi-même. » Le « ne » et le « pas » entourent l'ensemble pronom + verbe.</p></section><section class="bloc regle"><div class="lbl">me devient moi, te devient toi</div><p class="r">À l'affirmative seulement.</p><p class="pr">« Regarde-moi. » · « Assieds-toi. » · « Mets-toi à côté de Sofia. » Mais à la négative, ils reprennent leur forme courte : « ne me regarde pas », « ne te lève pas ».</p></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Garder le pronom après le verbe à la négative</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">Ne lâchez-la pas !</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">Ne la lâchez pas !</p></div></div><div class="note">À la négative, tout revient devant le verbe. C'est la faute la plus fréquente, parce qu'on a la forme affirmative en tête. Le repère : s'il y a un « ne », le pronom est &lt;b&gt;avant&lt;/b&gt;.</div></section><section class="bloc card"><div class="lbl">Pratique · 1 de 2</div><h2 class="t">Remplacez par un pronom</h2><p class="consigne">Récrivez la consigne à la forme affirmative.</p><ol class="ex"><li><span class="q">Prenez la planche à deux mains.</span><span class="ligne"></span></li><li><span class="q">Laissez les planches au bord.</span><span class="ligne ligne--court"></span></li><li><span class="q">Compte les enfants quand ils entrent.</span><span class="ligne"></span></li><li><span class="q">Envoie l'enfant à la douche chaude.</span><span class="ligne"></span></li><li><span class="q">Regarde le moniteur.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">Pratique · 2 de 2</div><h2 class="t">Maintenant à la négative</h2><p class="consigne">Récrivez la même consigne, en négatif.</p><ol class="ex"><li><span class="q">Ne lâchez pas la planche.</span><span class="ligne ligne--court"></span></li><li><span class="q">Ne jetez pas les planches dans l'eau.</span><span class="ligne"></span></li><li><span class="q">Ne cherche pas l'enfant toi-même.</span><span class="ligne"></span></li><li><span class="q">Ne donne pas les serviettes avant la sortie.</span><span class="ligne"></span></li><li><span class="q">Ne ferme pas les yeux.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc"><div class="lbl">Deux pronoms ensemble</div><h2 class="t">La forme la plus difficile</h2><div class="grid"><div class="card"><h3>L'exemple du module</h3><p>« Donne les serviettes aux enfants » devient « Donne-les-leur. » Deux pronoms, deux traits d'union.</p></div><div class="card"><h3>L'ordre</h3><p>Verbe, puis &lt;b&gt;le / la / les&lt;/b&gt;, puis &lt;b&gt;moi / lui / leur&lt;/b&gt;. Toujours dans cet ordre.</p></div><div class="card"><h3>Ce qu'on vous demande</h3><p>La reconnaître, pas la produire. « Donne les serviettes aux enfants » est parfaitement correct et beaucoup plus simple.</p></div></div></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez six consignes pour une activité : trois affirmatives, trois négatives.</p><ul><li>Chacune doit contenir un pronom : le, la, les, moi ou toi.</li><li>Vérifiez le trait d'union à l'affirmative, et son absence à la négative.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Prenez-la, ne la lâchez pas</h2><section class="bloc card ml"><h3>Le petit mot qui change de place</h3><p class="mp">Au bord d'une piscine, les consignes sont courtes : « Prenez-la. » « Ne la lâchez pas. » Le pronom est le même, le verbe est le même — mais il n'est pas au même endroit. C'est la seule chose à comprendre.</p><div class="note">Cette règle vaut pour toutes les consignes, pas seulement à la piscine : recettes, modes d'emploi, consignes de sécurité.</div></section><section class="bloc card ml"><h3>À l'affirmative : le pronom suit</h3><p class="mp">Il se colle après le verbe, avec un trait d'union.</p><table class="ana"><tr><td>La forme</td><td class=""><b>Prenez-la</b></td></tr><tr><td>Le trait d'union</td><td class="cle">obligatoire</td></tr><tr><td>Autres</td><td class="">Compte-les · Envoie-le</td></tr></table><p class="dit"><span class="k">On dit</span> Prenez la planche à deux mains. Tenez-la bien devant vous.</p><div class="note">Autres exemples du module : <em>regarde-moi</em>, <em>assieds-toi</em>, <em>mets-toi à côté de Sofia</em>, <em>laissez-les au bord</em>.</div></section><section class="bloc card ml"><h3>À la négative : le pronom précède</h3><p class="mp">Tout change de place. Le pronom repasse devant le verbe, et le trait d'union disparaît.</p><table class="ana"><tr><td>La forme</td><td class=""><b>Ne la lâchez pas</b></td></tr><tr><td>Trait d'union</td><td class="cle">aucun</td></tr><tr><td>Autres</td><td class="">Ne te lève pas · Ne les jetez pas</td></tr></table><p class="dit"><span class="k">On dit</span> Ne la lâchez pas.</p><div class="note">Le <b>ne</b> et le <b>pas</b> entourent l'ensemble « pronom + verbe ». Le pronom est à l'intérieur.</div></section><section class="bloc card ml"><h3>me devient moi, te devient toi</h3><p class="mp">À l'affirmative seulement. À la négative, ils reprennent leur forme courte.</p><table class="ana"><tr><td>Affirmatif</td><td class="">Regarde-<b>moi</b></td></tr><tr><td>Négatif</td><td class="cle">Ne <b>me</b> regarde pas</td></tr><tr><td>Aussi</td><td class="">Assieds-toi / Ne te lève pas</td></tr></table><p class="dit"><span class="k">On dit</span> Mateo, regarde-moi. Souffle dans l'eau.</p><div class="note">C'est la seule irrégularité de la leçon, et elle ne touche que deux pronoms.</div></section><section class="bloc card ml"><h3>Deux pronoms ensemble</h3><p class="mp">« Donne les serviettes aux enfants » devient « <b>Donne-les-leur</b>. » L'ordre est : verbe, puis <b>le / la / les</b>, puis <b>moi / lui / leur</b>. C'est la forme la plus difficile du français parlé courant — il suffit de la reconnaître.</p><div class="note">Vous l'entendrez souvent. Vous n'avez pas à la produire pour être compris.</div></section><section class="bloc card ml"><h3>Affirmatif ou négatif ?</h3><p class="mp">Choisissez une consigne du module.</p><table class="labo"><thead><tr><th>Quelle consigne ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">tenir la planche</td><td>Tenez-la bien devant vous.</td><td>affirmatif › le pronom suit, trait d'union</td></tr><tr><td class="cle">ne pas lâcher la planche</td><td>Ne la lâchez pas.</td><td>négatif › le pronom précède, sans trait d'union</td></tr><tr><td class="cle">compter les enfants</td><td>Compte-les quand ils entrent dans l'eau.<span class="tags"><b>Compte-les</b> quand ils entrent.</span></td><td>affirmatif › le pronom suit</td></tr><tr><td class="cle">ne pas chercher l'enfant</td><td>Tu ne le cherches pas toi-même.<span class="tags"><b>Ne le cherche pas</b> toi-même.</span></td><td>négatif › le pronom précède</td></tr><tr><td class="cle">donner les serviettes aux enfants</td><td>Donne-les-leur à la sortie, pas avant.<span class="tags"><b>Donne-les-leur</b> à la sortie.</span></td><td>deux pronoms : le/la/les puis moi/lui/leur</td></tr></tbody></table><div class="note">Comparez a et b : le même verbe, le même pronom, deux places différentes. C'est toute la leçon.</div></section><section class="bloc card ml"><h3>Les consignes du module</h3><p class="mp">Écoutez chacune et repérez la place du pronom.</p><table class="ex2"><tr><td>Tenez-la bien devant vous.</td><td>affirmatif — après le verbe</td></tr><tr><td>Ne la lâchez pas.</td><td>négatif — avant le verbe</td></tr><tr><td>Mets-toi à côté de Sofia.</td><td>affirmatif — toi, pas te</td></tr><tr><td>Ne te lève pas, reste assis.</td><td>négatif — te, forme courte</td></tr><tr><td>Compte-les quand ils entrent dans l'eau.</td><td>affirmatif</td></tr><tr><td>Donne-les-leur à la sortie.</td><td>deux pronoms</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges à connaître</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">garder le pronom après le verbe à la négative</p><div class="k">Ce qui arrive</div><p class="ph">« ne la lâchez pas », jamais « ne lâchez-la pas »</p><p class="px">À la négative, tout revient devant. C'est l'erreur la plus fréquente, parce qu'on garde en tête la forme affirmative.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">oublier le trait d'union</p><div class="k">Ce qui arrive</div><p class="ph">« prenez-la », pas « prenez la »</p><p class="px">Sans trait d'union, « prenez la » attend un nom : prenez la planche. Le trait d'union montre que le pronom remplace le nom.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">dire « regarde-me »</p><div class="k">Ce qui arrive</div><p class="ph">c'est « regarde-moi »</p><p class="px">À l'affirmative, me devient moi et te devient toi. Deux pronoms, une seule règle à retenir.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">« Ne lâchez pas la planche » devient…</span><ul class="opts"><li>Ne lâchez-la pas</li><li>Ne la lâchez pas</li></ul></li><li><span class="q">« Prenez la planche » devient…</span><ul class="opts"><li>Prenez-la</li><li>La prenez</li></ul></li><li><span class="q">À l'affirmative, « me » devient…</span><ul class="opts"><li>moi</li><li>m'</li></ul></li><li><span class="q">Le trait d'union s'emploie…</span><ul class="opts"><li>aux deux formes</li><li>seulement à l'affirmative</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> Ne la lâchez pas — À la négative, le pronom passe devant le verbe. · <b>2.</b> Prenez-la — À l'affirmative, le pronom suit, avec un trait d'union. · <b>3.</b> moi — « Regarde-moi », « écoute-moi ». · <b>4.</b> seulement à l'affirmative — À la négative, il n'y en a pas.</div></section></section></div>
+<footer><span>C2 · S'inscrire à une activité</span><span>Fiche élève</span></footer>
+</body>
+</html>

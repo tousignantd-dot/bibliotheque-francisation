@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>D1 · Ce qui me bloque, c'est l'horaire — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance D1 · Module 14 · 75 minutes</div>
+    <h1>Ce qui me bloque, c'est l'horaire</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Amelia est revenue, et sa vie a changé pendant qu'elle était partie : elle travaille le matin. Demander un changement, ce n'est pas se plaindre — c'est nommer ce qui bloque et proposer une solution.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>séparer ce qui bloque de ce qui déplaît ;</li><li>proposer une solution et accepter ce qu'elle coûte ;</li><li>mettre en avant l'essentiel avec « ce qui…, c'est… » ;</li><li>distinguer l'attestation de fréquentation du relevé des apprentissages.</li></ol></section><section class="bloc card"><div class="lbl">Dialogue · 1 de 4</div><h2 class="t">Il faut que je vous parle de mon horaire</h2><p class="consigne">Écoutez deux fois avant de lire le texte.</p><div class="rep rep--key"><div class="qui">AMELIA</div><div>Monsieur Gauthier, il faut que je vous parle de mon horaire.</div></div><div class="rep rep--key"><div class="qui">RÉMI</div><div>Asseyez-vous. Qu'est-ce qui se passe depuis votre retour ?</div></div><div class="rep rep--key"><div class="qui">AMELIA</div><div>J'ai trouvé un emploi. Je commence à sept heures le matin.</div></div><div class="rep rep--key"><div class="qui">RÉMI</div><div>Ah. Et nos cours de jour finissent à midi et demi.</div></div></section><section class="bloc card"><div class="lbl">Dialogue · 2 de 4</div><h2 class="t">L'horaire, pas le cours</h2><div class="rep rep--key"><div class="qui">AMELIA</div><div>Ce qui me bloque, c'est l'horaire, pas le cours. J'aime le cours.</div></div><div class="rep rep--key"><div class="qui">RÉMI</div><div>Vous voulez passer au groupe du soir, si je comprends bien.</div></div><div class="rep rep--key"><div class="qui">AMELIA</div><div>Oui. Il faut que je travaille, sinon je ne paie pas mon loyer.</div></div><div class="rep rep--key"><div class="qui">RÉMI</div><div>C'est légitime. Par contre, le soir, c'est quatre soirs par semaine.</div></div></section><section class="bloc card"><div class="lbl">Dialogue · 3 de 4</div><h2 class="t">Quatre soirs, je peux</h2><div class="rep rep--key"><div class="qui">AMELIA</div><div>Quatre soirs, je peux. Comme je finis à trois heures, ça se place.</div></div><div class="rep rep--key"><div class="qui">RÉMI</div><div>Bien. Pour que le transfert se fasse, il me faut une demande écrite.</div></div><div class="rep rep--key"><div class="qui">AMELIA</div><div>Je dois l'écrire comment ? Je n'ai jamais fait ça en français.</div></div><div class="rep rep--key"><div class="qui">RÉMI</div><div>Court. Qui vous êtes, ce que vous demandez, pourquoi, et à partir de quand.</div></div></section><section class="bloc card"><div class="lbl">Dialogue · 4 de 4</div><h2 class="t">Gardez-en une copie</h2><div class="rep rep--key"><div class="qui">AMELIA</div><div>Et mon employeur veut une preuve que je suis inscrite ici.</div></div><div class="rep rep--key"><div class="qui">RÉMI</div><div>Une attestation de fréquentation. Le secrétariat l'imprime sur-le-champ.</div></div><div class="rep rep--key"><div class="qui">AMELIA</div><div>Ce n'est pas la même chose que le relevé, alors ?</div></div><div class="rep rep--key"><div class="qui">RÉMI</div><div>Non. Le relevé des apprentissages vient du ministère, à la fin du cours.</div></div></section><section class="bloc regle"><div class="lbl">Nommer ce qui bloque, pas ce qui déplaît</div><p class="r">Ce qui me bloque, c'est l'horaire, pas le cours.</p><p class="pr">Une phrase qui sépare le problème de tout le reste. La personne en face cesse alors de chercher ce qui ne va pas et se met à chercher une solution — ce sont deux conversations très différentes.</p></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Deux papiers qu'on confond</h2><table><thead><tr><th>Le papier</th><th>Ce qu'il dit, et d'où il vient</th></tr></thead><tbody><tr><td>L'attestation de fréquentation</td><td class="cle">vous êtes inscrit ici en ce moment ; le secrétariat l'imprime</td></tr><tr><td>Le relevé des apprentissages</td><td class="cle">ce que vous avez réussi ; il vient du ministère, après le cours</td></tr><tr><td>Ce que l'employeur demande</td><td class="cle">presque toujours l'attestation, avec les heures par semaine</td></tr><tr><td>Ce qu'il faut demander avant de partir</td><td class="cle">le délai : combien de temps ça prend, d'habitude</td></tr></tbody></table></section><section class="bloc regle"><div class="lbl">Ce qui…, c'est… — mettre un mot devant tous les autres</div><p class="r">L'horaire me bloque devient : Ce qui me bloque, c'est l'horaire.</p><p class="pr">La même information, mais l'horaire est maintenant au bout de la phrase, à l'endroit où l'oreille s'arrête. Une seule par demande : trois de suite, et plus rien n'est éclairé.</p></section><section class="bloc card"><div class="lbl">Compréhension</div><h2 class="t">Vrai ou faux ?</h2><p class="consigne">Relisez le dialogue du bureau, puis répondez.</p><ol class="ex"><li><span class="q">Amelia a trouvé un emploi qui commence à sept heures le matin.</span><span class="ligne ligne--court"></span></li><li><span class="q">Elle n'aime plus le cours et veut arrêter.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le groupe du soir demande quatre soirs par semaine.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le transfert se fait sans demande écrite.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le relevé des apprentissages s'imprime au secrétariat.</span><span class="ligne"></span></li><li><span class="q">Monsieur Gauthier lui conseille de garder une copie.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">Écriture</div><h2 class="t">Ce qui, ce que, c'est, c'est que</h2><p class="consigne">Complétez pour mettre en avant ce qui compte.</p><ol class="ex"><li><span class="q">___ me bloque, c'est l'horaire du matin, pas le cours.</span><span class="ligne ligne--court"></span></li><li><span class="q">Ce que je demande, ___ un transfert au groupe du soir.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ je ne comprends pas, c'est la date écrite en gras.</span><span class="ligne ligne--court"></span></li><li><span class="q">Ce qui me dérange, ___ le cours finit à midi et demi.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ me manque, c'est une attestation pour mon employeur.</span><span class="ligne ligne--court"></span></li><li><span class="q">Ce qui compte pour moi, ___ de finir le cours cette année.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez ce qui vous bloque, dans une vraie situation, avec « ce qui…, c'est… ».</p><ul><li>Une seule phrase, sur quelque chose de vrai.</li><li>Ajoutez ce que vous demanderiez, et à partir de quand.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Mettre un mot devant tous les autres</h2><section class="bloc card ml"><h3>La même information, mais à la bonne place</h3><p class="mp">« L'horaire me bloque » est une phrase exacte, plate, et oubliée aussitôt dite. « Ce qui me bloque, c'est l'horaire » dit rigoureusement la même chose — mais l'horaire est maintenant au bout de la phrase, à l'endroit où l'oreille s'arrête et où la mémoire retient. C'est ce que la grammaire appelle une phrase emphatique, et le programme du niveau 5 lui accorde quatre points de savoir.</p><div class="note">Dans une demande, cette tournure fait une chose que rien d'autre ne fait aussi bien : elle sépare le problème du reste. « Ce qui me bloque, c'est l'horaire, pas le cours » évite à la personne en face de chercher ce qui ne va pas dans son enseignement.</div></section><section class="bloc card ml"><h3>« Ce qui … c'est » quand le mot fait l'action</h3><p class="mp">Dans la phrase plate, si le mot mis en avant était le sujet, la reprise se fait par « ce qui ».</p><table class="ana"><tr><td>Phrase plate</td><td class="">L'horaire me bloque. · Une attestation me manque.</td></tr><tr><td>Phrase emphatique</td><td class="cle">Ce qui me bloque, c'est l'horaire. · Ce qui me manque, c'est une attestation.</td></tr><tr><td>Le test</td><td class="">le mot faisait-il l'action ? alors « ce qui »</td></tr></table><p class="dit"><span class="k">On dit</span> Ce qui me bloque, c'est l'horaire du matin, pas le cours.</p><div class="note">La virgule avant « c'est » n'est pas facultative : elle marque la pause qu'on fait en parlant, et sans elle la phrase se lit d'un trait, ce qui annule tout l'effet.</div></section><section class="bloc card ml"><h3>« Ce que … c'est » quand le mot subit l'action</h3><p class="mp">Si le mot mis en avant était complément — je demande quelque chose, je ne comprends pas quelque chose —, la reprise se fait par « ce que ».</p><table class="ana"><tr><td>Phrase plate</td><td class="">Je demande un transfert. · Je ne comprends pas la date.</td></tr><tr><td>Phrase emphatique</td><td class="cle">Ce que je demande, c'est un transfert. · Ce que je ne comprends pas, c'est la date.</td></tr><tr><td>Devant une voyelle</td><td class="">ce qu'il me faut · ce qu'on me demande</td></tr></table><p class="dit"><span class="k">On dit</span> Ce que je demande, c'est un transfert au groupe du soir.</p><div class="note">« Ce que » s'élide devant une voyelle : « ce qu'il me faut ». « Ce qui », lui, ne s'élide jamais — c'est un moyen rapide de vérifier lequel des deux on a écrit.</div></section><section class="bloc card ml"><h3>« c'est que » quand la suite est une phrase entière</h3><p class="mp">Dès qu'un verbe conjugué suit, il faut ajouter « que ». Sans lui, la phrase s'arrête au milieu.</p><table class="ana"><tr><td>Un nom suit : c'est</td><td class="">Ce qui me bloque, c'est l'horaire.</td></tr><tr><td>Une phrase suit : c'est que</td><td class="cle">Ce qui me bloque, c'est que le cours finit à midi et demi.</td></tr><tr><td>Le repère</td><td class="">cherchez un verbe conjugué après « c'est » : s'il y en a un, il faut « que »</td></tr></table><p class="dit"><span class="k">On dit</span> Ce qui me dérange, c'est que le cours finit à midi et demi.</p><div class="note">C'est la faute la plus fréquente de ce défi, et elle s'entend : « ce qui me bloque, c'est le cours finit à midi » laisse la personne en face attendre la fin de la phrase.</div></section><section class="bloc card ml"><h3>La phrase plate, puis la phrase emphatique</h3><p class="mp">Choisissez une idée et écoutez-la dite des deux façons.</p><table class="labo"><thead><tr><th>Quelle idée ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">l'horaire</td><td>L'horaire me bloque. Ce qui me bloque, c'est l'horaire du matin.<span class="tags">une session</span></td><td>sujet, donc ce qui</td></tr><tr><td class="cle">le transfert</td><td>Je demande <b>un transfert</b>. Ce que je demande, c'est un transfert au groupe du soir.</td><td>complément, donc ce que</td></tr><tr><td class="cle">l'attestation</td><td>Une attestation me manque. Ce qui me manque, c'est <b>une attestation</b> pour mon employeur.</td><td>sujet, donc ce qui</td></tr><tr><td class="cle">la date en gras</td><td>Je ne comprends pas la date en gras. Ce que je ne comprends pas, c'est la date en gras.<span class="tags">une échéance</span></td><td>complément, donc ce que</td></tr><tr><td class="cle">les quatre à la suite</td><td>Ce qui me bloque, c'est l'horaire. Ce que je demande, c'est <b>un transfert</b>. Ce qui me manque, c'est <b>une attestation</b>.</td><td>trois emphases à la suite — à ne jamais faire dans une vraie lettre</td></tr></tbody></table><div class="note">La cinquième sortie montre exactement ce qu'il ne faut pas faire : trois emphases de suite et plus rien n'est mis en avant. Une par demande, au début.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six phrases emphatiques, telles qu'on les dit dans un bureau.</p><table class="ex2"><tr><td>Ce qui me bloque, c'est l'horaire, pas le cours.</td><td>la phrase qui ouvre la demande</td></tr><tr><td>Ce que je demande, c'est un transfert au groupe du soir.</td><td>complément mis en avant</td></tr><tr><td>Ce qui me manque, c'est une attestation pour mon employeur.</td><td>sujet mis en avant</td></tr><tr><td>Ce que je ne comprends pas, c'est la date écrite en gras.</td><td>une question posée sans point d'interrogation</td></tr><tr><td>Ce qui me dérange, c'est que le cours finit à midi et demi.</td><td>une phrase suit, donc « c'est que »</td></tr><tr><td>Ce qui compte pour moi, c'est de finir le cours cette année.</td><td>un infinitif suit : « c'est de »</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges de la phrase emphatique</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">oublier le « que » devant une phrase</p><div class="k">Ce qui arrive</div><p class="ph">« Ce qui me dérange, c'est le cours finit à midi. »</p><p class="px">Un verbe conjugué suit : il faut « c'est que le cours finit à midi ». Sans ce mot, la phrase reste ouverte et l'auditeur attend la suite.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">confondre « ce qui » et « ce que »</p><div class="k">Ce qui arrive</div><p class="ph">« Ce que me bloque, c'est l'horaire. »</p><p class="px">Dans la phrase plate, l'horaire faisait l'action : il bloque. C'est donc « ce qui ». Le test tient en une seconde et il ne rate jamais.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">en mettre trois de suite</p><div class="k">Ce qui arrive</div><p class="ph">une lettre entière écrite en phrases emphatiques</p><p class="px">Cette tournure éclaire ce qui compte. Trois de suite, et plus rien n'est éclairé : le lecteur ne sait plus quel est le vrai problème. Une seule, au début, puis des phrases ordinaires.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">« ___ je demande, c'est un transfert. »</span><ul class="opts"><li>Ce que</li><li>Ce qui</li></ul></li><li><span class="q">« Ce qui me dérange, c'est ___ le cours finit tôt. »</span><ul class="opts"><li>que</li><li>–</li></ul></li><li><span class="q">« Ce qui » peut-il s'élider en « ce qu' » ?</span><ul class="opts"><li>oui</li><li>non</li></ul></li><li><span class="q">Dans une demande écrite, on emploie cette tournure…</span><ul class="opts"><li>une fois, au début</li><li>à chaque paragraphe</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> Ce que — « Ce que » : le transfert subit l'action, il est complément. · <b>2.</b> que — « que » : une phrase entière suit, avec un verbe conjugué. · <b>3.</b> non — Non, jamais. Seul « ce que » s'élide — c'est un bon moyen de vérification. · <b>4.</b> une fois, au début — Une fois, au début. Répétée, elle n'éclaire plus rien.</div></section></section></div>
+<footer><span>D1 · Régler une affaire au centre</span><span>Fiche élève</span></footer>
+</body>
+</html>

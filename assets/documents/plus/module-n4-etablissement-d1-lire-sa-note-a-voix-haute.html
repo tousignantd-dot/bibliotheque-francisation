@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>D1 · Lire sa note à voix haute — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance D1 · Module 17 · 75 minutes</div>
+    <h1>Lire sa note à voix haute</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Un message enregistré s'efface ; une note reste. Le centre demande donc un papier, cinq ou six lignes, daté et signé. Nourhane le lit devant monsieur Corriveau — et c'est en le lisant qu'elle entend ce qui cloche.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>connaître les six lignes d'une note d'absence et leur ordre ;</li><li>repérer ce qui manque à une note incomplète ;</li><li>relire à voix haute pour entendre ses propres fautes ;</li><li>savoir pourquoi on garde une copie.</li></ol></section><section class="bloc card"><div class="lbl">Dialogue · 1 de 4</div><h2 class="t">Est-ce que je peux vous la lire ?</h2><p class="consigne">Écoutez d'abord, sans lire le texte.</p><div class="rep rep--key"><div class="qui">NOURHANE</div><div>Monsieur Corriveau, voici ma note pour lundi. Est-ce que je peux vous la lire ?</div></div><div class="rep rep--key"><div class="qui">FABIEN</div><div>Lisez-la-moi, oui. C'est le meilleur moyen de voir ce qui manque.</div></div><div class="rep rep--key"><div class="qui">NOURHANE</div><div>Laval, le 16 septembre. Madame, Monsieur. Je suis Nourhane Ouazzani, du groupe 6.</div></div><div class="rep rep--key"><div class="qui">FABIEN</div><div>Bon début. La date et le groupe sont là dès les deux premières lignes.</div></div></section><section class="bloc card"><div class="lbl">Dialogue · 2 de 4</div><h2 class="t">Une phrase, un motif</h2><div class="rep rep--key"><div class="qui">NOURHANE</div><div>J'ai été absente le lundi 14 septembre parce que mon fils est tombé malade.</div></div><div class="rep rep--key"><div class="qui">FABIEN</div><div>Une phrase, un motif. C'est exactement ce qu'il faut.</div></div><div class="rep rep--key"><div class="qui">NOURHANE</div><div>Je suis allée à la clinique avec lui et je suis revenue trop tard pour le cours.</div></div><div class="rep rep--key"><div class="qui">FABIEN</div><div>Attention : vous avez écrit « je suis allé », sans e. C'est vous qui êtes allée.</div></div></section><section class="bloc card"><div class="lbl">Dialogue · 3 de 4</div><h2 class="t">Le futur, ici, c'est ce qu'on attend</h2><div class="rep rep--key"><div class="qui">NOURHANE</div><div>Avec être, le participe s'accorde. Je l'oublie chaque fois.</div></div><div class="rep rep--key"><div class="qui">FABIEN</div><div>Chaque fois, mais vous vous en souvenez quand vous relisez à voix haute. Continuez.</div></div><div class="rep rep--key"><div class="qui">NOURHANE</div><div>Je rattraperai la matière au local 214 et je vous remettrai le papier de la clinique.</div></div><div class="rep rep--key"><div class="qui">FABIEN</div><div>Le futur, ici, c'est ce que le centre attend. Vous dites ce qui va se passer.</div></div></section><section class="bloc card"><div class="lbl">Dialogue · 4 de 4</div><h2 class="t">Il manque une chose, et une seule</h2><div class="rep rep--key"><div class="qui">NOURHANE</div><div>Veuillez agréer mes salutations. Nourhane Ouazzani. Et je signe en dessous.</div></div><div class="rep rep--key"><div class="qui">FABIEN</div><div>Il manque une chose, et une seule : à qui la note est adressée.</div></div><div class="rep rep--key"><div class="qui">NOURHANE</div><div>Je réécris la ligne du haut et je descends au comptoir avant midi.</div></div><div class="rep"><div class="qui">FABIEN</div><div>Faites-en une copie avant. Une note remise sans copie, ça n'a jamais existé.</div></div></section><section class="bloc regle"><div class="lbl">Six lignes, et il faut les six</div><p class="r">La date. Le destinataire. Qui vous êtes. Ce qui est arrivé. Ce que vous ferez. La signature.</p><p class="pr">Une note à laquelle il manque une ligne ne fait pas ce qu'elle devrait faire.</p></section><section class="bloc card"><div class="lbl">Ce qui arrive quand une ligne manque</div><h2 class="t">Cinq conséquences</h2><table><thead><tr><th>La ligne</th><th>Ce que la note ne peut plus faire</th></tr></thead><tbody><tr><td>La date</td><td class="cle">Prouver quand elle a été écrite et remise.</td></tr><tr><td>Le groupe</td><td class="cle">Arriver au bon dossier parmi douze listes.</td></tr><tr><td>Le destinataire</td><td class="cle">Se distinguer d'un brouillon.</td></tr><tr><td>La signature</td><td class="cle">Être officielle. Sans elle, c'est une feuille.</td></tr><tr><td>La copie</td><td class="cle">Vous défendre le jour où le dossier dit le contraire.</td></tr></tbody></table></section><section class="bloc"><div class="lbl">La note de Nourhane</div><h2 class="t">Les six lignes, dans l'ordre</h2><div class="grid"><div class="card"><h3>Laval, le 16 septembre 2026.</h3><p>La ville et la date.</p></div><div class="card"><h3>Madame, Monsieur,</h3><p>Le destinataire.</p></div><div class="card"><h3>Je suis Nourhane Ouazzani, du groupe 6.</h3><p>Qui vous êtes.</p></div><div class="card"><h3>J'ai été absente le lundi 14 septembre parce que mon fils est tombé malade.</h3><p>Ce qui est arrivé, au passé composé.</p></div><div class="card"><h3>Je rattraperai la matière et je vous remettrai le papier.</h3><p>Ce que vous ferez, au futur.</p></div><div class="card"><h3>Veuillez agréer mes salutations.</h3><p>La formule, puis la signature.</p></div></div></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Écrire le motif au présent</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">Je suis absente parce que mon fils est malade.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">J'ai été absente le lundi 14 parce que mon fils est tombé malade.</p></div></div><div class="note">Une note remise après coup parle du passé. Le présent laisse croire que vous êtes absente aujourd'hui aussi, et le secrétariat inscrit alors deux journées au lieu d'une.</div></section><section class="bloc card"><div class="lbl">Compréhension</div><h2 class="t">Vrai ou faux ?</h2><p class="consigne">Répondez d'après le dialogue.</p><ol class="ex"><li><span class="q">Nourhane lit sa note à voix haute devant son enseignant.</span><span class="ligne ligne--court"></span></li><li><span class="q">Sa note commence par la date et le nom de la ville.</span><span class="ligne ligne--court"></span></li><li><span class="q">Monsieur Corriveau trouve le motif trop court.</span><span class="ligne"></span></li><li><span class="q">Elle avait écrit « je suis allé » sans e.</span><span class="ligne ligne--court"></span></li><li><span class="q">Il manquait la signature.</span><span class="ligne ligne--court"></span></li><li><span class="q">Il lui conseille de faire une copie.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Reprenez votre phrase de C4 et écrivez au-dessus les trois lignes qui manquent : la date, le destinataire, votre nom et votre groupe.</p><ul><li>La ville et la date en toutes lettres.</li><li>Madame, Monsieur — cela suffit comme destinataire.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Les six lignes d'une note d'absence</h2><section class="bloc card ml"><h3>Cinq lignes suffisent, mais il faut les cinq</h3><p class="mp">Une note d'absence est le plus court des écrits officiels : cinq ou six lignes, pas davantage. Ce qui la rend difficile n'est donc pas la longueur, c'est la présentation — savoir ce qui va en haut, ce qui va au milieu, ce qui va en bas, et ne rien oublier. Une note à laquelle il manque une ligne n'est pas une note incomplète : c'est une note qui ne fait pas ce qu'elle devrait faire. Sans date, elle ne prouve rien. Sans signature, elle ne vaut rien. Sans groupe, elle n'arrive nulle part.</p><div class="note">C'est le savoir du programme appelé « tenir compte de la présentation matérielle et de la mise en page ». Il ne s'agit pas de style : il s'agit de ce que le papier peut faire.</div></section><section class="bloc card ml"><h3>Le haut : la date, puis le destinataire</h3><p class="mp">Deux lignes, séparées par une ligne blanche. La date à droite ou à gauche, peu importe, mais toujours avec la ville.</p><table class="ana"><tr><td>La ligne de date</td><td class="">Laval, le 16 septembre 2026</td></tr><tr><td>Le destinataire</td><td class="cle">Madame, Monsieur — ou : Au secrétariat du Centre</td></tr><tr><td>Si un enseignant a vu la note</td><td class="">avec mention de son nom, en dessous</td></tr></table><p class="dit"><span class="k">On dit</span> La note tient en cinq lignes, datées et signées.</p><div class="note">On écrit « le 16 septembre », jamais « le 16 de septembre » ni « septembre 16 ». Et le mois ne prend pas de majuscule en français.</div></section><section class="bloc card ml"><h3>Le milieu : qui, ce qui est arrivé, ce qui suivra</h3><p class="mp">Trois phrases, dans cet ordre, et pas une de plus. C'est le corps de la note.</p><table class="ana"><tr><td>Qui vous êtes</td><td class="">Je suis Nourhane Ouazzani, du groupe 6, francisation de jour.</td></tr><tr><td>Ce qui est arrivé, au passé composé</td><td class="cle">J'ai été absente le lundi 14 septembre parce que mon fils est tombé malade.</td></tr><tr><td>Ce que vous ferez, au futur</td><td class="">Je rattraperai la matière et je vous remettrai le papier de la clinique.</td></tr></table><p class="dit"><span class="k">On dit</span> Le motif se dit en une seule phrase.</p><div class="note">Le groupe est aussi important que le nom. Dans un centre de mille élèves, un prénom seul ne mène à aucun dossier.</div></section><section class="bloc card ml"><h3>Le bas : la formule, la signature, la copie</h3><p class="mp">La formule de politesse tient en une ligne. La signature est manuscrite, sous le nom écrit en toutes lettres.</p><table class="ana"><tr><td>La formule</td><td class="">Veuillez agréer mes salutations. — ou : Merci de votre compréhension.</td></tr><tr><td>Le nom et la signature</td><td class="cle">Nourhane Ouazzani, groupe 6 — puis la signature à la main</td></tr><tr><td>Avant de remettre</td><td class="">une photo ou une photocopie, pour vous</td></tr></table><p class="dit"><span class="k">On dit</span> Sans signature, la note reste une simple feuille.</p><div class="note">Une note tapée à l'ordinateur se signe quand même : on l'imprime et on signe à la main. Sans ce geste, ce n'est qu'un brouillon.</div></section><section class="bloc card ml"><h3>Ce qui arrive quand une ligne manque</h3><p class="mp">Choisissez la ligne manquante et écoutez ce que la note ne peut plus faire.</p><table class="labo"><thead><tr><th>Quelle ligne manque ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">la date</td><td>Sans date, personne ne sait quand la note a été écrite ni si elle est arrivée à temps.<span class="tags">une note</span></td><td>le secrétariat classe par date</td></tr><tr><td class="cle">le groupe</td><td>Sans le groupe, il faut chercher votre nom dans douze listes.<span class="tags">un poste</span></td><td>un prénom ne mène à aucun dossier</td></tr><tr><td class="cle">le destinataire</td><td>Sans destinataire, la note ressemble à un brouillon et personne ne sait à qui la transmettre.<span class="tags">un message</span></td><td>Madame, Monsieur suffit</td></tr><tr><td class="cle">la signature</td><td>Sans signature, la note n'est pas officielle : c'est une feuille et rien de plus.<span class="tags">une signature</span></td><td>la signature se fait à la main</td></tr><tr><td class="cle">la copie</td><td>Sans copie, vous n'avez plus rien le jour où le dossier dit le contraire.<span class="tags">une copie</span></td><td>une photo prend cinq secondes</td></tr></tbody></table><div class="note">Cinq lignes, cinq conséquences. Relisez votre note en vous posant ces cinq questions dans l'ordre : c'est plus rapide que de la recommencer.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Les six lignes de la note de Nourhane.</p><table class="ex2"><tr><td>Laval, le 16 septembre 2026.</td><td>la ville et la date</td></tr><tr><td>Madame, Monsieur,</td><td>le destinataire</td></tr><tr><td>Je suis Nourhane Ouazzani, du groupe 6.</td><td>qui vous êtes</td></tr><tr><td>J'ai été absente le lundi 14 septembre parce que mon fils est tombé malade.</td><td>ce qui est arrivé</td></tr><tr><td>Je rattraperai la matière et je vous remettrai le papier de la clinique.</td><td>ce qui suivra</td></tr><tr><td>Veuillez agréer mes salutations.</td><td>la formule de fin</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges de la note</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">écrire le motif au présent</p><div class="k">Ce qui arrive</div><p class="ph">« je suis absente parce que mon fils est malade », pour une absence d'hier</p><p class="px">Une note remise après coup parle du passé : « j'ai été absente », « mon fils est tombé malade ». Le présent laisse croire que vous êtes absente aujourd'hui aussi.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">signer d'un prénom</p><div class="k">Ce qui arrive</div><p class="ph">« Nourhane » seul, sans nom ni groupe</p><p class="px">Il y a plusieurs Nourhane dans un centre de mille élèves. Nom complet, groupe, et la signature en dessous.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">remettre l'original sans copie</p><div class="k">Ce qui arrive</div><p class="ph">descendre au comptoir avec une seule feuille</p><p class="px">Le jour où le dossier dit « absence non motivée », c'est votre copie datée qui tranche. Une photo avec le téléphone, avant de sortir de la classe.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">Que met-on sur la toute première ligne ?</span><ul class="opts"><li>son nom</li><li>la ville et la date</li></ul></li><li><span class="q">Le motif d'une absence passée s'écrit…</span><ul class="opts"><li>au passé composé</li><li>au présent</li></ul></li><li><span class="q">Une note tapée à l'ordinateur…</span><ul class="opts"><li>n'a pas besoin de signature</li><li>se signe à la main après impression</li></ul></li><li><span class="q">Que fait-on avant de remettre la note ?</span><ul class="opts"><li>une copie pour soi</li><li>rien de particulier</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> la ville et la date — La ville et la date : Laval, le 16 septembre 2026. · <b>2.</b> au passé composé — Au passé composé : j'ai été absente, mon fils est tombé malade. · <b>3.</b> se signe à la main après impression — Elle se signe à la main. Sans signature, c'est un brouillon. · <b>4.</b> une copie pour soi — Une copie. C'est elle qui tranchera si le dossier dit le contraire.</div></section></section></div>
+<footer><span>D1 · Prévenir le centre</span><span>Fiche élève</span></footer>
+</body>
+</html>

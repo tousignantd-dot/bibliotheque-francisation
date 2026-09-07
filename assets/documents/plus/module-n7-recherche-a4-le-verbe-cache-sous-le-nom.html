@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A4 · Le verbe caché sous le nom — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance A4 · Module 3 · 75 minutes</div>
+    <h1>Le verbe caché sous le nom</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">« La transformation des ressources naturelles » plutôt que « on transforme le bois ». Un texte officiel nomme des activités au lieu de raconter, et c'est ce qui le rend court, froid et difficile.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>reconnaître un nom formé sur un verbe ;</li><li>connaître les quatre fabriques : -tion, -ment, -ance, et rien du tout ;</li><li>remettre un verbe debout pour comprendre une phrase officielle ;</li><li>savoir qu'une lettre de candidature s'écrit, elle, avec des verbes.</li></ol></section><section class="bloc regle"><div class="lbl">Nominaliser, c'est transformer une action en chose</div><p class="r">Le verbe disparaît, le nom prend sa place — et avec le verbe s'en va celui qui agissait.</p><p class="pr">Un nom n'a ni sujet ni temps. « La fermeture de l'usine » ne dit ni qui ferme, ni quand. C'est commode pour l'auteur d'un rapport, et c'est exactement ce qui rend le texte opaque pour le lecteur.</p></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Les quatre fabriques</h2><table><thead><tr><th>La fabrique</th><th>Le verbe donne</th></tr></thead><tbody><tr><td class="cle">-tion, -sion, -ation — féminin</td><td>transformer, la transformation · produire, la production</td></tr><tr><td class="cle">-ment — masculin</td><td>recruter, le recrutement · investir, l'investissement</td></tr><tr><td class="cle">-ance, -ence — féminin</td><td>croître, la croissance · exiger, l'exigence</td></tr><tr><td class="cle">rien du tout</td><td>embaucher, l'embauche · demander, la demande · appeler, l'appel</td></tr></tbody></table><div class="note">Tous les noms en -tion sont féminins, sans exception. C'est une des rares règles sans trou.</div></section><section class="bloc"><div class="lbl">Analyse</div><h2 class="t">Remettre le verbe debout</h2><div class="grid"><div class="card"><h3>La transformation des ressources naturelles</h3><p>on transforme le bois et le métal</p></div><div class="card"><h3>La baisse de l'embauche</h3><p>on engage moins de monde</p></div><div class="card"><h3>Le comblement des postes par voie interne</h3><p>on remplit les postes avec les gens de la maison</p></div><div class="card"><h3>L'évaluation comparative de vos études</h3><p>on compare vos études à celles d'ici</p></div><div class="card"><h3>La mise en valeur de votre expérience</h3><p>vous montrez ce que votre expérience vaut</p></div><div class="card"><h3>Une hausse de quatre virgule sept pour cent</h3><p>l'économie a grandi de 4,7 %</p></div></div></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Écriture</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">nominaliser sa propre lettre de candidature</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">écrire avec des verbes, à la première personne</p></div></div><div class="note">« La formation de deux techniciennes » convient à un rapport annuel. Dans une lettre où vous vous présentez, écrivez « j'ai formé deux techniciennes » : le nom efface justement celui qui agit, et c'est vous.</div></section><section class="bloc card"><div class="lbl">Grammaire</div><h2 class="t">Du verbe au nom</h2><p class="consigne">Écrivez le nom qui correspond au verbe entre parenthèses.</p><ol class="ex"><li><span class="q">On transforme l'aluminium : la ___ de l'aluminium. (transformer)</span><span class="ligne ligne--court"></span></li><li><span class="q">L'entreprise fabrique des pièces : la ___ de pièces. (fabriquer)</span><span class="ligne ligne--court"></span></li><li><span class="q">On recrute peu : le ___ est difficile cette année. (recruter)</span><span class="ligne ligne--court"></span></li><li><span class="q">Le laboratoire a agrandi ses locaux : l'___ date de 2021. (agrandir)</span><span class="ligne ligne--court"></span></li><li><span class="q">L'économie croît : la ___ a été de 4,7 %. (croître)</span><span class="ligne ligne--court"></span></li><li><span class="q">Ils ont investi douze millions : cet ___ crée trente postes. (investir)</span><span class="ligne ligne--court"></span></li><li><span class="q">L'usine embauche : l'___ se fera avant janvier. (embaucher)</span><span class="ligne ligne--court"></span></li><li><span class="q">Le poste exige un diplôme : c'est une ___ de l'employeur. (exiger)</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Trouvez dans un document officiel une phrase pleine de noms, et récrivez-la avec des verbes.</p><ul><li>Un avis de la ville, une lettre d'un organisme, une page du gouvernement.</li><li>Deux lignes suffisent.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>La nominalisation : le verbe déguisé en nom</h2><section class="bloc card ml"><h3>Pourquoi les textes officiels sont fatigants</h3><p class="mp">Comparez ces deux phrases. « On transforme le bois dans quatre usines de la région. » « La transformation du bois occupe quatre établissements régionaux. » Elles disent la même chose. La deuxième est plus courte, plus froide, et beaucoup plus difficile — parce que l'action a été changée en chose. C'est ce qu'on appelle la <b>nominalisation</b>, et un portrait économique en est fait à quatre-vingts pour cent.</p><div class="note">Ce n'est pas de la complication gratuite : un nom se compte, se compare et se met dans un tableau. Un verbe, non.</div></section><section class="bloc card ml"><h3>Les noms en -tion, -sion, -ation</h3><p class="mp">La plus grosse famille, et la plus régulière. Elle vient presque toujours d'un verbe en -er ou en -ir.</p><table class="ana"><tr><td>Le verbe</td><td class="">transformer · fabriquer · produire · évaluer</td></tr><tr><td>Le nom</td><td class="cle">la transformation · la fabrication · la production · l'évaluation</td></tr><tr><td>Le genre</td><td class="">tous féminins, sans exception</td></tr></table><p class="dit"><span class="k">On dit</span> la transformation, la fabrication, la production, une évaluation</p><div class="note">Bonne nouvelle : tous les noms en -tion sont féminins. C'est une des rares règles du français sans exception.</div></section><section class="bloc card ml"><h3>Les noms en -ment</h3><p class="mp">Deuxième famille. Attention à ne pas les confondre avec les adverbes en -ment, qui s'écrivent pareil mais ne sont pas des noms.</p><table class="ana"><tr><td>Le verbe</td><td class="">recruter · investir · agrandir · développer</td></tr><tr><td>Le nom</td><td class="cle">le recrutement · l'investissement · l'agrandissement · le développement</td></tr><tr><td>Le genre</td><td class="">tous masculins</td></tr></table><p class="dit"><span class="k">On dit</span> le recrutement, un investissement, le développement</p><div class="note"><b>Rapidement</b> est un adverbe, <b>le recrutement</b> est un nom. Le déterminant devant les distingue à coup sûr.</div></section><section class="bloc card ml"><h3>Les noms en -ance et en -ence</h3><p class="mp">Plus petite famille, mais elle contient des mots très fréquents dans les textes économiques.</p><table class="ana"><tr><td>Le verbe</td><td class="">croître · exiger · différer · concurrencer</td></tr><tr><td>Le nom</td><td class="cle">la croissance · l'exigence · la différence · la concurrence</td></tr><tr><td>Le genre</td><td class="">tous féminins</td></tr></table><p class="dit"><span class="k">On dit</span> la croissance, une exigence, la concurrence</p><div class="note">On ne peut pas deviner entre -ance et -ence : ces mots-là s'apprennent avec leur orthographe.</div></section><section class="bloc card ml"><h3>Les noms sans suffixe</h3><p class="mp">Les plus courts, et les plus traîtres : rien ne signale qu'ils viennent d'un verbe.</p><table class="ana"><tr><td>Le verbe</td><td class="">embaucher · demander · appeler · viser</td></tr><tr><td>Le nom</td><td class="cle">l'embauche · la demande · l'appel · la visée</td></tr><tr><td>La règle</td><td class="">il n'y en a pas : un par un</td></tr></table><p class="dit"><span class="k">On dit</span> l'embauche, la demande, un appel</p><div class="note">Ce sont souvent les plus fréquents dans une offre d'emploi : « l'embauche », « la demande », « l'appel ».</div></section><section class="bloc card ml"><h3>Le verbe et son nom, côte à côte</h3><p class="mp">Choisissez une famille et un exemple.</p><table class="labo"><thead><tr><th>Quelle famille ? · Quel exemple ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">-tion + le premier</td><td>On transforme l'aluminium : <b>la transformation</b> de l'aluminium.</td><td>transformer → la transformation</td></tr><tr><td class="cle">-tion + le second</td><td>On fabrique des pièces : <b>la fabrication</b> de pièces.</td><td>fabriquer → la fabrication</td></tr><tr><td class="cle">-ment + le premier</td><td>On recrute peu : <b>le recrutement</b> est difficile.</td><td>recruter → le recrutement</td></tr><tr><td class="cle">-ment + le second</td><td>Ils ont investi douze millions : cet investissement crée trente postes.<span class="tags">un investissement</span></td><td>investir → un investissement</td></tr><tr><td class="cle">-ance + le premier</td><td>L'économie croît : <b>la croissance</b> a été de quatre virgule sept pour cent.</td><td>croître → la croissance</td></tr><tr><td class="cle">-ance + le second</td><td>Le poste exige un diplôme : c'est <b>une exigence</b> de l'employeur.</td><td>exiger → une exigence</td></tr><tr><td class="cle">sans suffixe + le premier</td><td>L'usine embauche : <b>l'embauche</b> se fera avant janvier.</td><td>embaucher → l'embauche</td></tr><tr><td class="cle">sans suffixe + le second</td><td>Elle demande une rencontre : sa demande est claire.<span class="tags">la demande</span></td><td>demander → la demande</td></tr></tbody></table><div class="note">Écoutez la phrase avec le verbe, puis la phrase avec le nom. C'est la même information, deux fois.</div></section><section class="bloc card ml"><h3>Le sens passif, et c'est là que ça se complique</h3><p class="mp">« L'évaluation du dossier » ne veut pas dire que le dossier évalue quelque chose : il <b>est évalué</b>. Le nom garde l'action mais perd celui qui la fait, et le « de » qui suit désigne tantôt celui qui agit, tantôt celui qui subit. « La décision du comité » : c'est le comité qui décide. « L'évaluation du dossier » : personne ne sait qui évalue.</p><div class="note">Devant un nom en -tion suivi de « de », posez-vous la question : est-ce que ce qui suit fait l'action, ou la subit ?</div></section><section class="bloc card ml"><h3>Six phrases, remises debout</h3><p class="mp">À gauche la phrase officielle, à droite ce qu'elle veut dire.</p><table class="ex2"><tr><td>La transformation des ressources naturelles</td><td>on transforme le bois et le métal</td></tr><tr><td>La baisse de l'embauche</td><td>on engage moins de monde</td></tr><tr><td>Le comblement des postes par voie interne</td><td>on remplit les postes avec les gens de la maison</td></tr><tr><td>L'évaluation comparative de vos études</td><td>on compare vos études à celles d'ici</td></tr><tr><td>La mise en valeur de votre expérience</td><td>vous montrez ce que votre expérience vaut</td></tr><tr><td>Une hausse de quatre virgule sept pour cent</td><td>l'économie a grandi de quatre virgule sept pour cent</td></tr></table></section><section class="bloc card ml"><h3>Deux pièges</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">croire qu'on manque de vocabulaire</p><div class="k">Ce qui arrive</div><p class="ph">remettre le verbe debout</p><p class="px">Vous connaissez « transformer ». Vous butez sur « transformation » parce que la phrase autour a changé de forme, pas parce que le mot vous est inconnu.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">nominaliser sa propre lettre</p><div class="k">Ce qui arrive</div><p class="ph">écrire avec des verbes</p><p class="px">Dans une lettre d'accompagnement, écrivez « j'ai formé deux techniciennes » et non « la formation de deux techniciennes ». Le nom convient au rapport officiel, pas à quelqu'un qui se présente.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">Le nom qui vient de « fabriquer », c'est…</span><ul class="opts"><li>la fabrication</li><li>le fabriquement</li></ul></li><li><span class="q">Les noms en -tion sont…</span><ul class="opts"><li>tous féminins</li><li>tantôt l'un, tantôt l'autre</li></ul></li><li><span class="q">« L'évaluation du dossier » veut dire…</span><ul class="opts"><li>le dossier est évalué</li><li>le dossier évalue</li></ul></li><li><span class="q">Dans une lettre d'accompagnement, il vaut mieux…</span><ul class="opts"><li>employer des verbes</li><li>nominaliser partout</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> la fabrication — Verbe en -er → nom en -tion, féminin. · <b>2.</b> tous féminins — Sans exception : la transformation, la production, une exigence est en -ence. · <b>3.</b> le dossier est évalué — C'est un sens passif : le nom perd celui qui agit. · <b>4.</b> employer des verbes — Vous vous présentez : « j'ai formé », pas « la formation de ».</div></section></section></div>
+<footer><span>A4 · Chercher un emploi en région</span><span>Fiche élève</span></footer>
+</body>
+</html>

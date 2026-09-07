@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C2 · Quarante-cinq dollars, en lettres — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance C2 · Module 8 · 75 minutes</div>
+    <h1>Quarante-cinq dollars, en lettres</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Écrire un montant en lettres sur la longue ligne du chèque, avec le trait d'union et le trait de fin qui protègent.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>écrire un montant en lettres ;</li><li>mettre le trait d'union au bon endroit ;</li><li>tirer un trait jusqu'au bout de la ligne ;</li><li>vérifier un chèque avant de le donner.</li></ol></section><section class="bloc card"><div class="lbl">Dialogue · 1 de 3</div><h2 class="t">Il manque une chose</h2><p class="consigne">Écoutez deux fois avant de lire.</p><div class="rep rep--key"><div class="qui">MONIQUE</div><div>Attendez. Il manque une chose sur votre chèque.</div></div><div class="rep rep--key"><div class="qui">AMADOU</div><div>Ah bon ? J'ai écrit la date et le nom.</div></div><div class="rep rep--key"><div class="qui">MONIQUE</div><div>Oui, mais le montant en lettres n'est pas là.</div></div><div class="rep rep--key"><div class="qui">AMADOU</div><div>Quarante-cinq… ça s'écrit comment ?</div></div></section><section class="bloc card"><div class="lbl">Dialogue · 2 de 3</div><h2 class="t">Avec un trait entre les deux mots</h2><div class="rep rep--key"><div class="qui">MONIQUE</div><div>Quarante-cinq dollars. Avec un trait entre les deux mots.</div></div><div class="rep rep--key"><div class="qui">AMADOU</div><div>D'accord. Et après le mot, je fais un trait ?</div></div><div class="rep rep--key"><div class="qui">MONIQUE</div><div>Oui, un trait jusqu'au bout de la ligne.</div></div><div class="rep rep--key"><div class="qui">AMADOU</div><div>Pourquoi ?</div></div></section><section class="bloc card"><div class="lbl">Dialogue · 3 de 3</div><h2 class="t">Pour que personne n'ajoute rien</h2><div class="rep rep--key"><div class="qui">MONIQUE</div><div>Pour que personne n'ajoute un mot après.</div></div><div class="rep rep--key"><div class="qui">AMADOU</div><div>Ah ! Je comprends. Voilà, c'est fini.</div></div></section><section class="bloc regle"><div class="lbl">Un trait entre les deux morceaux du nombre</div><p class="r">45 devient quarante-cinq. 72 devient soixante-douze.</p><p class="pr">Le mot « dollars » vient après, écrit en lettres lui aussi — jamais le signe de dollar sur cette ligne. Et s'il y a des cents : quarante-cinq dollars et cinquante cents.</p></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Les nombres qu'on écrit le plus</h2><table><thead><tr><th>En chiffres</th><th>En lettres, sur le chèque</th></tr></thead><tbody><tr><td>13 $</td><td class="cle">treize dollars</td></tr><tr><td>30 $</td><td class="cle">trente dollars</td></tr><tr><td>45 $</td><td class="cle">quarante-cinq dollars</td></tr><tr><td>60 $</td><td class="cle">soixante dollars</td></tr><tr><td>80 $</td><td class="cle">quatre-vingts dollars</td></tr></tbody></table><div class="note">Après soixante : soixante-dix, quatre-vingts, quatre-vingt-dix.</div></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Le trait oublié</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">quarante cinq dollars</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">quarante-cinq dollars, puis un trait</p></div></div><div class="note">Deux fautes coûtent un chèque refusé : le trait d'union oublié entre les deux morceaux du nombre, et la ligne laissée vide après le mot « dollars ». Le long trait n'est pas une décoration : il empêche d'ajouter un mot.</div></section><section class="bloc card"><div class="lbl">Écriture</div><h2 class="t">Le montant en lettres</h2><p class="consigne">Écrivez chaque montant comme sur la longue ligne du chèque.</p><ol class="ex"><li><span class="q">45 $ : ___ dollars</span><span class="ligne ligne--court"></span></li><li><span class="q">13 $ : ___ dollars</span><span class="ligne ligne--court"></span></li><li><span class="q">30 $ : ___ dollars</span><span class="ligne ligne--court"></span></li><li><span class="q">60 $ : ___ dollars</span><span class="ligne ligne--court"></span></li><li><span class="q">80 $ : ___ dollars</span><span class="ligne ligne--court"></span></li><li><span class="q">Après le dernier mot, je fais un ___ jusqu'au bout.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">Compréhension</div><h2 class="t">Vrai ou faux ?</h2><p class="consigne">Répondez d'après le dialogue.</p><ol class="ex"><li><span class="q">Il manque le montant en lettres.</span><span class="ligne ligne--court"></span></li><li><span class="q">« Quarante-cinq » s'écrit avec un trait entre les deux mots.</span><span class="ligne ligne--court"></span></li><li><span class="q">Après le mot, on laisse la ligne vide.</span><span class="ligne"></span></li><li><span class="q">Le trait empêche d'ajouter un mot après.</span><span class="ligne ligne--court"></span></li><li><span class="q">Amadou repart sans finir son chèque.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">Pratique · seul puis à deux</div><h2 class="t">Terminez votre chèque</h2><p class="consigne">Reprenez le chèque de la séance C1 et finissez-le.</p><ol class="ex"><li><span class="q">Étape 1</span><span class="ligne"></span></li><li><span class="q">Étape 2</span><span class="ligne"></span></li><li><span class="q">Étape 3</span><span class="ligne"></span></li><li><span class="q">Étape 4</span><span class="ligne"></span></li></ol></section><section class="bloc card"><div class="lbl">Vocabulaire</div><h2 class="t">Les cinq mots du chèque et du paiement</h2><table class="voc"><tbody><tr><td class="mot">un chèque</td><td class="def">Le papier signé qui paie à la place de l'argent.</td></tr><tr><td class="mot">un montant</td><td class="def">Le nombre de dollars qu'on paie ou qu'on retire.</td></tr><tr><td class="mot">une signature</td><td class="def">Ton nom écrit de ta main, en bas du papier.</td></tr><tr><td class="mot">le paiement direct</td><td class="def">Payer avec sa carte, sur la petite machine du magasin.</td></tr><tr><td class="mot">le comptant</td><td class="def">Payer avec des billets et des pièces, pas avec une carte.</td></tr></tbody></table></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez trois montants en lettres, avec le mot dollars.</p><ul><li>quinze dollars</li><li>quarante-cinq dollars</li><li>quatre-vingts dollars</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Écrire un montant en lettres</h2><section class="bloc card ml"><h3>Sur un chèque, le nombre s'écrit deux fois</h3><p class="mp">Une fois en chiffres, dans la petite case à droite : <b>45,00</b>. Une fois en lettres, sur la longue ligne : <b>quarante-cinq dollars</b>. Si les deux ne disent pas la même chose, c'est la ligne en lettres qui compte — c'est elle qu'on ne peut pas modifier après.</p><div class="note">C'est pour ça qu'on la remplit lentement, et qu'on tire un trait jusqu'au bout.</div></section><section class="bloc card ml"><h3>Le trait entre les deux morceaux</h3><p class="mp">De 17 à 99, presque tous les nombres en ont un.</p><table class="ana"><tr><td>On écrit</td><td class="">45 : quarante<b>-</b>cinq</td></tr><tr><td>Aussi</td><td class="">72 : soixante<b>-</b>douze</td></tr><tr><td>On n'écrit pas</td><td class="cle">quarante cinq</td></tr></table><p class="dit"><span class="k">On dit</span> Quarante-cinq. Soixante-douze. Vingt-trois.</p><div class="note">Le petit trait s'appelle un trait d'union. Il colle les deux morceaux du nombre.</div></section><section class="bloc card ml"><h3>Le mot dollars, après le nombre</h3><p class="mp">Jamais le signe $ sur cette ligne.</p><table class="ana"><tr><td>On écrit</td><td class="">quarante-cinq <b>dollars</b></td></tr><tr><td>Un seul</td><td class="">un <b>dollar</b>, sans « s »</td></tr><tr><td>On n'écrit pas</td><td class="cle">quarante-cinq $</td></tr></table><p class="dit"><span class="k">On dit</span> Quarante-cinq dollars. Cent dollars. Un dollar.</p><div class="note">La ligne en lettres se lit comme une phrase : elle ne prend pas de signe.</div></section><section class="bloc card ml"><h3>Après soixante, c'est particulier</h3><p class="mp">Trois nombres à connaître par cœur.</p><table class="ana"><tr><td>70</td><td class="">soixante<b>-</b>dix</td></tr><tr><td>80</td><td class="">quatre<b>-</b>vingts</td></tr><tr><td>90</td><td class="cle">quatre<b>-</b>vingt<b>-</b>dix</td></tr></table><p class="dit"><span class="k">On dit</span> Soixante-dix. Quatre-vingts. Quatre-vingt-dix.</p><div class="note">Le français du Québec dit comme celui de France : soixante-dix, quatre-vingts, quatre-vingt-dix.</div></section><section class="bloc card ml"><h3>Le trait jusqu'au bout de la ligne</h3><p class="mp">La ligne ne reste jamais vide après le mot.</p><table class="ana"><tr><td>On écrit</td><td class="">quarante-cinq dollars <b>———</b></td></tr><tr><td>Pourquoi</td><td class="">pour que personne n'ajoute un mot</td></tr><tr><td>Sinon</td><td class="cle">« quarante-cinq dollars et cent »</td></tr></table><p class="dit"><span class="k">On dit</span> Quarante-cinq dollars. Et un trait jusqu'au bout.</p><div class="note">Ce trait est une habitude de sécurité, pas une décoration. Toutes les caisses le recommandent.</div></section><section class="bloc card ml"><h3>Écrire le montant</h3><p class="mp">Choisissez un montant et une partie du chèque.</p><table class="labo"><thead><tr><th>Quel montant ? · Quelle partie ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">45,00 $ + la case en chiffres</td><td>Quarante-cinq.<span class="tags">45,00</span></td><td>la virgule, puis deux zéros</td></tr><tr><td class="cle">45,00 $ + la ligne en lettres</td><td>Quarante-cinq dollars.</td><td>un trait d'union, puis le mot</td></tr><tr><td class="cle">45,00 $ + le mémo</td><td>Cours de natation.</td><td>pourquoi on paie</td></tr><tr><td class="cle">20,00 $ + la case en chiffres</td><td>Vingt.<span class="tags">20,00</span></td><td>un nombre simple, sans trait</td></tr><tr><td class="cle">20,00 $ + la ligne en lettres</td><td>Vingt dollars.</td><td>pas de trait d'union ici</td></tr><tr><td class="cle">20,00 $ + le mémo</td><td>Carte d'autobus.</td><td>deux ou trois mots suffisent</td></tr><tr><td class="cle">72,00 $ + la case en chiffres</td><td>Soixante-douze.<span class="tags">72,00</span></td><td>soixante et douze</td></tr><tr><td class="cle">72,00 $ + la ligne en lettres</td><td>Soixante-douze dollars.</td><td>un seul trait d'union</td></tr><tr><td class="cle">72,00 $ + le mémo</td><td>Frais de cours.</td><td>court et clair</td></tr><tr><td class="cle">80,00 $ + la case en chiffres</td><td>Quatre-vingts.<span class="tags">80,00</span></td><td>un chiffre rond</td></tr><tr><td class="cle">80,00 $ + la ligne en lettres</td><td>Quatre-vingts dollars.</td><td>deux traits d'union, et un s</td></tr><tr><td class="cle">80,00 $ + le mémo</td><td>Loyer du garage.</td><td>pour se souvenir plus tard</td></tr><tr><td class="cle">45,50 $ + la case en chiffres</td><td>Quarante-cinq et cinquante.<span class="tags">45,50</span></td><td>la virgule sépare les cents</td></tr><tr><td class="cle">45,50 $ + la ligne en lettres</td><td>Quarante-cinq dollars et cinquante cents.</td><td>les cents s'écrivent aussi</td></tr><tr><td class="cle">45,50 $ + le mémo</td><td>Cours et matériel.</td><td>deux choses, une ligne</td></tr></tbody></table><div class="note">Quinze cases. Écrivez-les à la main sur un papier : c'est la seule façon de les retenir.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six montants à écrire.</p><table class="ex2"><tr><td>quarante-cinq dollars</td><td>45,00</td></tr><tr><td>vingt dollars</td><td>20,00</td></tr><tr><td>soixante-douze dollars</td><td>72,00</td></tr><tr><td>quatre-vingts dollars</td><td>80,00</td></tr><tr><td>cent dollars</td><td>100,00</td></tr><tr><td>quarante-cinq dollars et cinquante cents</td><td>45,50</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges à connaître</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">« quarante cinq dollars »</p><div class="k">Ce qui arrive</div><p class="ph">quarante-cinq dollars</p><p class="px">Le trait d'union manque. Sans lui, la ligne peut se lire de deux façons, et une caisse peut refuser le chèque.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">mettre le signe $ en lettres</p><div class="k">Ce qui arrive</div><p class="ph">écrire le mot dollars</p><p class="px">La ligne en lettres est une phrase. Le signe $ va dans la petite case, avec les chiffres.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">laisser la ligne vide après le mot</p><div class="k">Ce qui arrive</div><p class="ph">tirer un trait</p><p class="px">Un espace vide après « quarante-cinq dollars » permet d'ajouter un mot. Le trait ferme la ligne.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">45 s'écrit…</span><ul class="opts"><li>quarante cinq</li><li>quarante-cinq</li></ul></li><li><span class="q">Sur la ligne en lettres, on écrit…</span><ul class="opts"><li>45 $</li><li>quarante-cinq dollars</li></ul></li><li><span class="q">80 s'écrit…</span><ul class="opts"><li>quatre-vingts</li><li>quatre vingt</li></ul></li><li><span class="q">Après le mot, on…</span><ul class="opts"><li>laisse la ligne vide</li><li>tire un trait</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> quarante-cinq — Avec un trait d'union entre les deux morceaux. · <b>2.</b> quarante-cinq dollars — Des mots, jamais de signe. · <b>3.</b> quatre-vingts — Quatre-vingts : deux traits d'union et un s. · <b>4.</b> tire un trait — Le trait empêche d'ajouter quoi que ce soit.</div></section></section></div>
+<footer><span>C2 · Je retire de l'argent</span><span>Fiche élève</span></footer>
+</body>
+</html>

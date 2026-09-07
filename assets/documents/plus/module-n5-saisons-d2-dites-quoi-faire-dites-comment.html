@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>D2 · Dites quoi faire, dites comment — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance D2 · Module 12 · 75 minutes</div>
+    <h1>Dites quoi faire, dites comment</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">L'impératif donne la consigne, le gérondif donne la manière. Séparément, ils font une phrase de plus ; ensemble, ils font un avis que personne ne rappelle pour faire préciser.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>donner une consigne à l'impératif, deuxième personne du pluriel ;</li><li>placer le pronom d'un verbe pronominal du bon côté ;</li><li>former un gérondif et dire la manière avec ;</li><li>écrire une consigne en trois morceaux : quoi, pourquoi, comment.</li></ol></section><section class="bloc regle"><div class="lbl">L'impératif, c'est le présent sans le pronom</div><p class="r">Vous apportez devient : Apportez. Vous buvez devient : Buvez.</p><p class="pr">Trois personnes seulement — tu, nous, vous — et devant un groupe, c'est presque toujours vous. La négation entoure le verbe : N'oubliez pas vos crampons. À l'oral on entend « oubliez pas » ; dans un avis affiché, on garde le ne.</p></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Ce qui bouge, et où</h2><table><thead><tr><th>La forme</th><th>Ce qu'elle devient</th></tr></thead><tbody><tr><td>être · avoir · savoir</td><td class="cle">soyez · ayez · sachez</td></tr><tr><td>vous vous habillez</td><td class="cle">habillez-vous, avec un trait d'union</td></tr><tr><td>au négatif</td><td class="cle">ne vous découvrez pas la tête</td></tr><tr><td>pour adoucir</td><td class="cle">pensez à… · n'oubliez pas de… · prévoyez…</td></tr></tbody></table><div class="note">Il faut prévoir deux litres d'eau par personne : l'impersonnel adoucit encore, et dit la même chose.</div></section><section class="bloc card"><div class="lbl">Grammaire</div><h2 class="t">L'impératif des consignes</h2><p class="consigne">Deuxième personne du pluriel : c'est un groupe, et Marisol le vouvoie.</p><ol class="ex"><li><span class="q">___ (apporter) des bottes à bonne semelle et vos crampons.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ (s'habiller) en trois couches plutôt qu'avec un gros manteau.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ (ne pas oublier) votre gourde : deux litres par personne.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ (être) devant le Centre à midi quarante-cinq.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ (boire) toutes les vingt minutes, même sans avoir soif.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ (se couvrir) le visage : le vent est plus froid que le thermomètre.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc regle"><div class="lbl">Le gérondif : en, plus le verbe en -ant</div><p class="r">Nous marchons devient : en marchant. Nous buvons devient : en buvant.</p><p class="pr">On prend le « nous » du présent, on enlève -ons, on ajoute -ant, et on met « en » devant. Trois exceptions seulement : en étant, en ayant, en sachant.</p></section><section class="bloc"><div class="lbl">À quoi sert le gérondif</div><h2 class="t">Deux emplois, et une règle qui les tient</h2><div class="grid"><div class="card"><h3>La manière — comment on s'y prend</h3><p>On évite un coup de chaleur en buvant avant d'avoir soif. On reste au chaud en s'habillant en trois couches. C'est l'emploi le plus utile du module.</p></div><div class="card"><h3>La simultanéité — en même temps</h3><p>En marchant, regardez où vous mettez les pieds. Elle écoutait le bulletin en préparant le café. Les deux actions se déroulent ensemble.</p></div><div class="card"><h3>Un seul sujet pour les deux verbes</h3><p>En sortant du Centre, vous verrez la promenade : c'est vous qui sortez et vous qui voyez. La promenade, elle, ne sort de nulle part.</p></div><div class="card"><h3>À ne pas confondre avec « en train de »</h3><p>Il est en train de neiger décrit ce qui se passe maintenant. Les deux commencent par « en » et ne font pas le même travail.</p></div></div></section><section class="bloc card"><div class="lbl">Grammaire</div><h2 class="t">Le gérondif : la manière et le moment</h2><p class="consigne">Complétez avec « en » + le participe présent.</p><ol class="ex"><li><span class="q">On évite un coup de chaleur ___ (boire) avant d'avoir soif.</span><span class="ligne ligne--court"></span></li><li><span class="q">Vous resterez au chaud ___ (s'habiller) en trois couches.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ (marcher), regardez toujours où vous mettez les pieds.</span><span class="ligne ligne--court"></span></li><li><span class="q">Nous éviterons la chaleur ___ (partir) à neuf heures du matin.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ (sortir) du Centre, vous verrez la promenade à votre droite.</span><span class="ligne ligne--court"></span></li><li><span class="q">Elle a suivi le bulletin ___ (préparer) le café du groupe.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc regle"><div class="lbl">Trois morceaux, et personne ne rappelle</div><p class="r">La consigne, la raison, la manière — dans une seule phrase.</p><p class="pr">Habillez-vous en trois couches, parce que nous entrerons au café au milieu de la marche : vous resterez confortable en enlevant une couche à l'intérieur. Quoi, pourquoi, comment.</p></section><section class="bloc card"><div class="lbl">Écriture</div><h2 class="t">La consigne, sa raison, sa manière</h2><p class="consigne">Une phrase par consigne. Impératif, cause, gérondif.</p><ol class="ex"><li><span class="q">Crampons · trottoirs glacés à treize heures · les attacher avant de sortir.</span><span class="ligne"></span></li><li><span class="q">Trois couches · on entre au café · enlever une couche à l'intérieur.</span><span class="ligne"></span></li><li><span class="q">Deux litres d'eau · indice UV de neuf · boire toutes les vingt minutes.</span><span class="ligne"></span></li><li><span class="q">Arriver à midi quarante-cinq · l'autobus part à treize heures · dix minutes de plus pour le stationnement.</span><span class="ligne"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez la consigne d'équipement pour une sortie de juillet : quoi, pourquoi, comment.</p><ul><li>Un impératif, un connecteur de cause, un gérondif. Deux lignes.</li><li>Relisez-vous : la manière est ce qu'on oublie presque toujours.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>L'impératif : dire quoi faire sans commander</h2><section class="bloc card ml"><h3>Un temps à trois personnes seulement</h3><p class="mp">L'impératif n'a ni « je », ni « il », ni « ils » : il ne s'adresse qu'à quelqu'un. Trois formes en tout — tu, nous, vous — et devant un groupe c'est presque toujours « vous ». Sa forme est celle du présent, sans le pronom sujet : vous apportez donne apportez. C'est le temps des consignes, des recettes, des modes d'emploi et des avis affichés à la porte d'un centre communautaire.</p><div class="note">Une seule bizarrerie d'écriture : à la deuxième personne du singulier, les verbes en -er perdent leur s. « Tu apportes » donne « apporte ». Devant un groupe, la question ne se pose pas.</div></section><section class="bloc card ml"><h3>La forme, et la négation</h3><p class="mp">On prend le présent et on enlève le pronom. À la forme négative, le ne et le pas entourent le verbe comme d'habitude.</p><table class="ana"><tr><td>Affirmatif</td><td class="">apportez · prévoyez · buvez · attachez · marchez</td></tr><tr><td>Négatif</td><td class="cle">n'oubliez pas · ne partez pas sans eau · ne restez pas immobiles</td></tr><tr><td>Dans un avis</td><td class="">N'oubliez pas vos crampons : les trottoirs seront glacés.</td></tr></table><p class="dit"><span class="k">On dit</span> Apportez vos crampons. N'oubliez pas votre gourde.</p><div class="note">À l'oral, on entend souvent « oubliez pas » sans le « ne ». C'est du français parlé normal ; sur une feuille affichée, gardez le « ne ».</div></section><section class="bloc card ml"><h3>Les verbes pronominaux : le pronom passe derrière</h3><p class="mp">S'habiller, se couvrir, se rendre : à l'impératif affirmatif, le pronom vient après le verbe, avec un trait d'union. À la forme négative, il revient devant.</p><table class="ana"><tr><td>Affirmatif</td><td class="">habillez-vous en trois couches · couvrez-vous le visage</td></tr><tr><td>Négatif</td><td class="cle">ne vous découvrez pas la tête · ne vous éloignez pas du groupe</td></tr><tr><td>Avec « nous »</td><td class="">rendons-nous devant le Centre à midi quarante-cinq</td></tr></table><p class="dit"><span class="k">On dit</span> Habillez-vous en trois couches. Couvrez-vous le visage.</p><div class="note">C'est le point qui se voit le plus à l'écrit : « vous habillez-vous » ou « habillez vous » sans trait d'union sont deux fautes fréquentes, et faciles à éviter.</div></section><section class="bloc card ml"><h3>Trois irréguliers, et la façon d'adoucir</h3><p class="mp">Être, avoir et savoir ont un impératif à part, et les trois servent dans un avis. À côté, quelques formules rendent la consigne moins sèche sans rien lui enlever.</p><table class="ana"><tr><td>Les trois irréguliers</td><td class="">soyez au Centre à midi · ayez vos crampons dans votre sac · sachez que la marche dure une heure</td></tr><tr><td>Adoucir</td><td class="cle">pensez à apporter… · n'oubliez pas de… · prévoyez…</td></tr><tr><td>Adoucir encore</td><td class="">il faut prévoir deux litres d'eau par personne</td></tr></table><p class="dit"><span class="k">On dit</span> Soyez au Centre à midi quarante-cinq. Ayez vos crampons dans votre sac.</p><div class="note">« Pensez à apporter » et « apportez » disent exactement la même chose ; le premier laisse à l'autre l'impression d'avoir décidé lui-même. Devant des adultes, ça compte.</div></section><section class="bloc card ml"><h3>La même consigne, quatre façons de la donner</h3><p class="mp">Choisissez une forme et écoutez comment elle sonne.</p><table class="labo"><thead><tr><th>Quelle forme ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">Impératif direct</td><td>Apportez <b>des crampons</b> et des bottes à bonne semelle.</td><td>clair, court, un peu sec</td></tr><tr><td class="cle">Impératif adouci</td><td>Pensez à apporter vos crampons : les trottoirs seront glacés.<span class="tags">des crampons</span></td><td>la même consigne, en plus doux</td></tr><tr><td class="cle">Impératif négatif</td><td>Ne partez pas sans votre gourde : deux litres par personne.<span class="tags">un coup de chaleur</span></td><td>le ne et le pas entourent le verbe</td></tr><tr><td class="cle">Verbe pronominal</td><td>Habillez-vous en trois couches et couvrez-vous le visage.<span class="tags">le refroidissement éolien</span></td><td>le pronom passe derrière, avec un trait d'union</td></tr><tr><td class="cle">Tournure impersonnelle</td><td>Il faut prévoir deux litres d'eau par personne.<span class="tags">la chaleur extrême</span></td><td>l'obligation sans dire à qui elle s'adresse</td></tr></tbody></table><div class="note">Les cinq disent la même chose. Dans un avis de trois lignes, alternez : cinq impératifs de suite donnent l'impression d'un règlement militaire.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six consignes du Centre communautaire.</p><table class="ex2"><tr><td>Apportez des bottes à bonne semelle et vos crampons.</td><td>impératif direct</td></tr><tr><td>Habillez-vous en trois couches plutôt qu'avec un gros manteau.</td><td>pronominal, trait d'union</td></tr><tr><td>N'oubliez pas votre gourde : deux litres par personne.</td><td>négatif, avec la quantité</td></tr><tr><td>Soyez devant le Centre à midi quarante-cinq.</td><td>être : soyez</td></tr><tr><td>Buvez toutes les vingt minutes, même sans avoir soif.</td><td>la consigne qui sauve l'été</td></tr><tr><td>Couvrez-vous le visage : le vent est plus froid que le thermomètre.</td><td>pronominal, avec la raison</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges de l'impératif</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">garder le pronom sujet</p><div class="k">Ce qui arrive</div><p class="ph">« vous apportez vos crampons » comme consigne</p><p class="px">Sans le « vous » devant, c'est une consigne ; avec, c'est une observation. « Vous apportez vos crampons » décrit ce que les gens font, il ne leur demande rien.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">oublier le trait d'union des pronominaux</p><div class="k">Ce qui arrive</div><p class="ph">« habillez vous », « couvrez vous »</p><p class="px">À l'impératif affirmatif, le pronom se rattache au verbe par un trait d'union : habillez-vous, couvrez-vous. À la forme négative, il repasse devant, sans trait d'union : ne vous découvrez pas.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">enchaîner cinq impératifs</p><div class="k">Ce qui arrive</div><p class="ph">« Apportez… Prenez… Mettez… Buvez… Soyez… »</p><p class="px">Une liste d'ordres met les gens sur la défensive, même quand elle est juste. Donnez la raison après chaque consigne, ou passez de temps en temps par « il faut » et « pensez à ».</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">L'impératif existe à…</span><ul class="opts"><li>trois personnes</li><li>six personnes</li></ul></li><li><span class="q">« S'habiller » à l'impératif, avec vous, donne…</span><ul class="opts"><li>vous habillez-vous</li><li>habillez-vous</li></ul></li><li><span class="q">L'impératif d'« être », avec vous, c'est…</span><ul class="opts"><li>soyez</li><li>êtes</li></ul></li><li><span class="q">Pour adoucir une consigne, on peut dire…</span><ul class="opts"><li>pensez à apporter…</li><li>vous apportez…</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> trois personnes — Trois : tu, nous, vous. Devant un groupe, c'est « vous ». · <b>2.</b> habillez-vous — « Habillez-vous » : pas de pronom sujet, et un trait d'union avant « vous ». · <b>3.</b> soyez — « Soyez ». C'est l'un des trois irréguliers utiles ici. · <b>4.</b> pensez à apporter… — « Pensez à apporter » : même consigne, moins sec.</div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Le gérondif : « en » plus le verbe en -ant</h2><section class="bloc card ml"><h3>La moitié de la consigne que tout le monde oublie</h3><p class="mp">« Buvez deux litres d'eau » dit quoi faire. « En buvant un peu toutes les vingt minutes » dit comment s'y prendre — et c'est cette moitié-là qui change quelque chose. Le gérondif est la forme qui porte la manière : une seule syllabe ajoutée devant un verbe en -ant, et la consigne devient exécutable. Le programme du niveau 5 le demande explicitement, pour marquer la manière ou la simultanéité ; le module vous fait l'employer dans les deux sens.</p><div class="note">Ne le confondez pas avec « être en train de », qui décrit ce qui se passe maintenant. « Il est en train de neiger » et « en neigeant toute la nuit » n'ont rien à voir.</div></section><section class="bloc card ml"><h3>La formation : le « nous » du présent, moins -ons, plus -ant</h3><p class="mp">Une seule règle, trois exceptions. On part du présent à la première personne du pluriel, on enlève la terminaison, on ajoute -ant, et on met « en » devant.</p><table class="ana"><tr><td>La règle</td><td class="">nous marchons → en marchant · nous buvons → en buvant · nous partons → en partant</td></tr><tr><td>Les trois exceptions</td><td class="cle">être → en étant · avoir → en ayant · savoir → en sachant</td></tr><tr><td>Les pronominaux</td><td class="">nous nous habillons → en vous habillant</td></tr></table><p class="dit"><span class="k">On dit</span> En marchant. En buvant. En partant. En vous habillant.</p><div class="note">Prendre le « nous » du présent règle presque tous les cas irréguliers d'un coup : nous prenons → en prenant, nous faisons → en faisant, nous voyons → en voyant.</div></section><section class="bloc card ml"><h3>Il dit la manière — comment on s'y prend</h3><p class="mp">C'est l'emploi le plus utile du module. La consigne vient d'abord, la manière ensuite, et le gérondif les colle ensemble.</p><table class="ana"><tr><td>Dans les consignes du Centre</td><td class="">On évite un coup de chaleur en buvant avant d'avoir soif.</td></tr><tr><td>Encore</td><td class="cle">On reste au chaud en s'habillant en trois couches.</td></tr><tr><td>Et encore</td><td class="">On évite la foule en partant à neuf heures.</td></tr></table><p class="dit"><span class="k">On dit</span> On évite un coup de chaleur en buvant avant d'avoir soif.</p><div class="note">Posez-vous la question « comment ? » après chaque consigne que vous donnez. Si vous n'avez pas de réponse, la consigne n'est pas finie.</div></section><section class="bloc card ml"><h3>Il dit aussi la simultanéité — en même temps</h3><p class="mp">Deux actions qui se déroulent ensemble, faites par la même personne. C'est le second emploi que le programme demande à ce niveau.</p><table class="ana"><tr><td>Deux actions ensemble</td><td class="">En marchant, regardez où vous mettez les pieds.</td></tr><tr><td>Encore</td><td class="cle">Elle écoutait le bulletin en préparant le café du groupe.</td></tr><tr><td>Avec un repère de lieu</td><td class="">En sortant du Centre, vous verrez la promenade à votre droite.</td></tr></table><p class="dit"><span class="k">On dit</span> En marchant, regardez toujours où vous mettez les pieds.</p><div class="note">La règle qui compte : les deux verbes ont le même sujet. « En sortant du Centre, vous verrez la promenade » — c'est vous qui sortez et vous qui voyez.</div></section><section class="bloc card ml"><h3>La même consigne, avec et sans la manière</h3><p class="mp">Choisissez une consigne et écoutez-la deux fois : nue, puis avec son gérondif.</p><table class="labo"><thead><tr><th>Quelle consigne ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">L'eau, l'été</td><td>Buvez deux litres d'eau. Buvez deux litres d'eau en prenant une gorgée toutes les vingt minutes.<span class="tags">un coup de chaleur</span></td><td>la manière dit quand, pas seulement combien</td></tr><tr><td class="cle">Les trois couches</td><td>Habillez-vous chaudement. Restez confortable en enlevant une couche à l'intérieur.<span class="tags">le refroidissement éolien</span></td><td>la manière explique pourquoi trois couches</td></tr><tr><td class="cle">La marche sur la glace</td><td>Attachez vos crampons. Vous éviterez les chutes en attachant vos crampons avant de sortir.<span class="tags">des crampons</span></td><td>la manière dit à quel moment</td></tr><tr><td class="cle">L'heure de départ</td><td>Partez tôt. Nous éviterons la chaleur en partant à neuf heures du matin.<span class="tags">la chaleur extrême</span></td><td>la manière donne le chiffre</td></tr><tr><td class="cle">Les quatre à la suite</td><td>En buvant toutes les vingt minutes. En enlevant une couche à l'intérieur. En attachant vos crampons avant de sortir. En partant à neuf heures.<span class="tags">un coup de chaleur · des crampons</span></td><td>quatre manières, quatre consignes complètes</td></tr></tbody></table><div class="note">Écoutez la première version puis la seconde : la première se discute, la seconde s'exécute. C'est toute la différence que fait un gérondif.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six phrases avec gérondif, tirées du module.</p><table class="ex2"><tr><td>On évite un coup de chaleur en buvant avant d'avoir soif.</td><td>manière</td></tr><tr><td>Vous resterez au chaud en vous habillant en trois couches.</td><td>manière, verbe pronominal</td></tr><tr><td>En marchant, regardez où vous mettez les pieds.</td><td>simultanéité</td></tr><tr><td>Nous éviterons la chaleur en partant à neuf heures.</td><td>manière, avec l'heure</td></tr><tr><td>En sortant du Centre, vous verrez la promenade à droite.</td><td>simultanéité et repère de lieu</td></tr><tr><td>Elle a suivi le bulletin en préparant le café.</td><td>deux actions, un seul sujet</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges du gérondif</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">changer de sujet en cours de route</p><div class="k">Ce qui arrive</div><p class="ph">« en sortant du Centre, la promenade est visible »</p><p class="px">Les deux verbes doivent avoir le même sujet. La promenade ne sort pas du Centre : écrivez « en sortant du Centre, vous verrez la promenade ».</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">oublier le « en »</p><div class="k">Ce qui arrive</div><p class="ph">« buvant toutes les vingt minutes » tout seul</p><p class="px">Sans « en », ce n'est plus un gérondif mais un participe présent, et la phrase devient un français d'écrit ancien. Devant un groupe, gardez le « en » : c'est lui qui dit la manière.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">le confondre avec « être en train de »</p><div class="k">Ce qui arrive</div><p class="ph">« il est en neigeant » au lieu de « il est en train de neiger »</p><p class="px">« En train de » décrit ce qui se passe maintenant. Le gérondif dit la manière ou la simultanéité. Les deux commencent par « en » et ne font pas le même travail.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">Le gérondif se forme sur…</span><ul class="opts"><li>le « nous » du présent</li><li>l'infinitif</li></ul></li><li><span class="q">« En marchant, regardez où vous mettez les pieds » exprime…</span><ul class="opts"><li>la simultanéité</li><li>une condition</li></ul></li><li><span class="q">Les deux verbes d'un gérondif doivent avoir…</span><ul class="opts"><li>le même sujet</li><li>deux sujets différents</li></ul></li><li><span class="q">Le gérondif de « savoir », c'est…</span><ul class="opts"><li>en savant</li><li>en sachant</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> le « nous » du présent — Sur le « nous » du présent : nous buvons → en buvant. · <b>2.</b> la simultanéité — La simultanéité : les deux actions se font en même temps. · <b>3.</b> le même sujet — Le même sujet. C'est la règle qui attrape le plus de fautes à l'écrit. · <b>4.</b> en sachant — « En sachant » : l'une des trois exceptions, avec en étant et en ayant.</div></section></section></div>
+<footer><span>D2 · Quand la météo décide</span><span>Fiche élève</span></footer>
+</body>
+</html>

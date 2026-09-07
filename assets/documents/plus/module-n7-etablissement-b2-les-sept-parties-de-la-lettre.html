@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B2 · Les sept parties de la lettre — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance B2 · Module 11 · 90 minutes</div>
+    <h1>Les sept parties de la lettre</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Une lettre formelle se juge en deux secondes, avant le premier mot : une date, un objet, des paragraphes séparés, une signature. La mise en page est de la politesse visible.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>nommer les sept parties d'une lettre formelle et leur fonction ;</li><li>écrire un objet de six ou sept mots, sans verbe conjugué ;</li><li>répartir le contenu en trois paragraphes, un par idée ;</li><li>choisir une formule de courtoisie qui laisse debout.</li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Sept parties, sept fonctions</h2><table><thead><tr><th>La partie</th><th>Ce qu'elle fait</th></tr></thead><tbody><tr><td class="cle">lieu et date</td><td>permettent de dire « ma lettre du 26 février »</td></tr><tr><td class="cle">l'objet</td><td>dit de quoi il s'agit, sans verbe conjugué</td></tr><tr><td class="cle">l'appel</td><td>s'adresse à quelqu'un : Madame, Monsieur,</td></tr><tr><td class="cle">paragraphe 1</td><td>la demande, et pourquoi cet établissement-là</td></tr><tr><td class="cle">paragraphe 2</td><td>les faits datés, et le trou expliqué</td></tr><tr><td class="cle">paragraphe 3</td><td>l'après-diplôme, et ce qui est déjà commencé</td></tr><tr><td class="cle">la courtoisie</td><td>ferme la lettre et reprend les mots de l'appel</td></tr></tbody></table></section><section class="bloc regle"><div class="lbl">Le premier paragraphe nomme l'établissement</div><p class="r">Une raison qui vaut pour tous les centres ne vaut pour aucun.</p><p class="pr">« Votre établissement a une excellente réputation » se lit soixante-huit fois par jour. « J'ai choisi votre centre parce que le premier stage y a lieu avant Noël » se lit une fois — et elle prouve que la fiche a été lue.</p></section><section class="bloc regle"><div class="lbl">Le troisième paragraphe est celui qui distingue</div><p class="r">Une formation contingentée cherche des personnes qui finissent.</p><p class="pr">Dire où l'on va après le diplôme, et ce qu'on fait déjà pour y arriver, sépare deux dossiers autrement identiques. C'est aussi le paragraphe qu'on saute quand on écrit tard le soir.</p></section><section class="bloc card"><div class="lbl">Lecture</div><h2 class="t">À quoi sert chaque passage ?</h2><p class="consigne">Retrouvez dans la lettre modèle le passage qui remplit chaque fonction.</p><ol class="ex"><li><span class="q">Il dit en six mots de quoi parle la lettre.</span><span class="ligne ligne--court"></span></li><li><span class="q">Il annonce ce que la personne demande, et pour quand.</span><span class="ligne"></span></li><li><span class="q">Il dit pourquoi ce centre-là plutôt qu'un autre.</span><span class="ligne"></span></li><li><span class="q">Il remplace l'adjectif « expérimentée ».</span><span class="ligne"></span></li><li><span class="q">Il explique le trou du parcours.</span><span class="ligne"></span></li><li><span class="q">Il montre que l'organisation est réglée, pas souhaitée.</span><span class="ligne"></span></li></ol></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Piège</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">Merci beaucoup pour votre temps !</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">Veuillez agréer, Madame, Monsieur, mes salutations distinguées.</p></div></div><div class="note">La première remercie d'avance de ce qui n'a pas encore été accordé, et ça se sent. Une formule de courtoisie ferme la lettre sans rien demander de plus.</div></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écris l'objet de ta propre lettre de motivation : six ou sept mots, sans verbe conjugué.</p><ul><li>Candidature au programme Santé, assistance et soins infirmiers</li><li>Candidature au diplôme en soutien informatique</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>La lettre de motivation, paragraphe par paragraphe</h2><section class="bloc card ml"><h3>Elle répond à une question que personne n'écrit</h3><p class="mp">Le formulaire demande vos coordonnées, vos diplômes et vos disponibilités. La lettre, elle, répond à la seule question que le comité se pose vraiment : pourquoi vous, et pas la personne suivante ? Une lettre qui explique pourquoi le métier est beau répond à côté — les soixante-sept autres candidatures le trouvent beau aussi.</p><div class="note">Le programme du niveau 7 range ce travail sous « assurer la structure et la progression des différents types d'informations dans une lettre formelle ». Structure et progression : trois paragraphes, un par idée, dans un ordre qui ne se change pas.</div></section><section class="bloc card ml"><h3>Premier paragraphe : ce que je demande, et pourquoi ici</h3><p class="mp">Deux phrases, pas plus. La demande, puis une raison qui ne pourrait pas être écrite pour un autre établissement.</p><table class="ana"><tr><td>La demande</td><td class="">« Je vous soumets ma candidature au programme… pour l'entrée du mois d'août. »</td></tr><tr><td>La raison propre au centre</td><td class="cle">« … parce que le premier stage y a lieu avant Noël. »</td></tr><tr><td>Ce qu'on évite</td><td class="">« Votre établissement a une excellente réputation. » — vrai partout, donc nulle part</td></tr></table><p class="dit"><span class="k">On dit</span> Je vous soumets ma candidature au programme, pour l'entrée du mois d'août.</p><div class="note">Cette raison-là se trouve en lisant la fiche du programme. Dix minutes de lecture, une phrase que personne d'autre n'écrira.</div></section><section class="bloc card ml"><h3>Deuxième paragraphe : les faits, et le trou expliqué</h3><p class="mp">Un fait daté vaut trois adjectifs. Et s'il manque quelque chose au parcours, c'est ici qu'on le dit — une phrase, sans excuse, sans détour.</p><table class="ana"><tr><td>L'adjectif qui ne prouve rien</td><td class="">« Je suis patiente, responsable et à l'écoute. »</td></tr><tr><td>Le fait qui prouve</td><td class="cle">« Depuis cinq ans, à l'unité prothétique, j'accompagne douze résidents. »</td></tr><tr><td>Le trou, en une phrase</td><td class="">« L'établissement a fermé pendant ma troisième année ; je n'ai pas obtenu de diplôme. »</td></tr></table><p class="dit"><span class="k">On dit</span> Depuis cinq ans, à l'unité prothétique, j'accompagne douze résidents.</p><div class="note">Ce qui inquiète un comité n'est jamais le trou : c'est de le découvrir tout seul, après avoir lu la lettre. Expliqué, il devient un renseignement de plus ; caché, il devient un doute.</div></section><section class="bloc card ml"><h3>Troisième paragraphe : où je vais, et ce que je fais déjà</h3><p class="mp">C'est celui qui distingue, et c'est celui que presque personne n'écrit. Une formation contingentée cherche des personnes qui finissent.</p><table class="ana"><tr><td>Où je vais</td><td class="">« Après le diplôme, je souhaite obtenir mon permis de l'Ordre. »</td></tr><tr><td>Ce que je fais déjà</td><td class="cle">« Je suis, depuis janvier, un cours de français écrit le mercredi soir. »</td></tr><tr><td>Ce qui est réglé</td><td class="">« J'ai obtenu par écrit le passage à deux quarts de fin de semaine. »</td></tr></table><p class="dit"><span class="k">On dit</span> Après le diplôme, je souhaite obtenir mon permis de l'Ordre.</p><div class="note">« Ce que je fais déjà » est la phrase la plus forte de toute la lettre : elle prouve que le projet existait avant la candidature.</div></section><section class="bloc card ml"><h3>Sept parties, et ce que chacune fait</h3><p class="mp">L'ordre ne se change pas.</p><table class="ex2"><tr><td>Le lieu et la date</td><td>Permettent de dire, six semaines plus tard : « ma lettre du 26 février ».</td></tr><tr><td>L'objet</td><td>Six ou sept mots, sans verbe conjugué.</td></tr><tr><td>La formule d'appel</td><td>« Madame, Monsieur, » quand on ne sait pas qui lira.</td></tr><tr><td>Paragraphe 1</td><td>La demande, et pourquoi cet établissement-là.</td></tr><tr><td>Paragraphe 2</td><td>Les faits datés, et le trou expliqué.</td></tr><tr><td>Paragraphe 3</td><td>L'après-diplôme, et ce qui est déjà commencé.</td></tr><tr><td>La formule de courtoisie</td><td>Ferme sans rien demander de plus.</td></tr></table></section><section class="bloc card ml"><h3>Quatre décisions de rédaction</h3><p class="mp">Laquelle des deux entre dans la lettre ?</p><ol class="check"><li><span class="q">Pour l'objet :</span><ul class="opts"><li>« Je souhaiterais vous soumettre ma candidature au programme de santé, assistance et soins infirmiers pour l'année prochaine »</li><li>« Candidature au programme Santé, assistance et soins infirmiers »</li></ul></li><li><span class="q">Pour dire qu'on est fiable :</span><ul class="opts"><li>« Je suis une personne responsable. »</li><li>« Depuis cinq ans, je n'ai manqué aucun quart de travail. »</li></ul></li><li><span class="q">Pour la formation non terminée :</span><ul class="opts"><li>ne pas en parler</li><li>l'expliquer en une phrase et passer à la suite</li></ul></li><li><span class="q">Pour finir :</span><ul class="opts"><li>« Merci beaucoup pour votre temps ! »</li><li>« Veuillez agréer, Madame, Monsieur, mes salutations distinguées. »</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> « Candidature au programme Santé, assistance et soins infirmiers » — Un objet n'est pas une phrase : c'est une étiquette. · <b>2.</b> « Depuis cinq ans, je n'ai manqué aucun quart de travail. » — Le fait se vérifie ; l'adjectif se déclare. · <b>3.</b> l'expliquer en une phrase et passer à la suite — Elle paraîtra de toute façon au relevé de notes joint. · <b>4.</b> « Veuillez agréer, Madame, Monsieur, mes salutations distinguées. » — On ne remercie pas d'avance de ce qui n'a pas encore été accordé.</div></section><section class="bloc card ml"><h3>Trois lettres sur quatre font ceci</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">raconter le métier au lieu de se raconter</p><div class="k">Ce qui arrive</div><p class="ph">chaque phrase doit contenir un fait qui vous appartient</p><p class="px">« Le métier d'infirmière auxiliaire est essentiel » : le comité le sait, et cette phrase ne lui apprend rien sur vous.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">accumuler les adjectifs</p><div class="k">Ce qui arrive</div><p class="ph">un fait daté, un chiffre, un lieu</p><p class="px">Trois adjectifs occupent une ligne et ne prouvent rien. Une date et un nombre occupent la même ligne et se vérifient.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">oublier le troisième paragraphe</p><div class="k">Ce qui arrive</div><p class="ph">dire où l'on va et ce qu'on fait déjà</p><p class="px">C'est le paragraphe qui sépare deux dossiers autrement identiques, et c'est celui qu'on saute quand on écrit tard le soir.</p></div></div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>La mise en page d'une lettre formelle</h2><section class="bloc card ml"><h3>Ce qui se voit avant d'être lu</h3><p class="mp">Une lettre formelle se juge en deux secondes, avant le premier mot : y a-t-il une date ? un objet ? des paragraphes séparés ? une signature ? Le comité en lit soixante-huit dans la même journée, et celles qui sont mal disposées coûtent un effort qu'il n'a pas à faire. La mise en page n'est pas de la décoration : c'est de la politesse rendue visible.</p><div class="note">Le programme du niveau 7 range ce point sous « tenir compte de la présentation matérielle et de la mise en page » : découper, disposer, formuler et présenter le contenu.</div></section><section class="bloc card ml"><h3>Le haut : lieu, date, objet</h3><p class="mp">Trois lignes, dans cet ordre, avant toute phrase.</p><table class="ana"><tr><td>Le lieu et la date</td><td class="">Granby, le 26 février — pas « 26/02 », pas « lundi »</td></tr><tr><td>L'objet</td><td class="cle">Objet : Candidature au programme Santé, assistance et soins infirmiers</td></tr><tr><td>Ce que ça donne</td><td class="">six semaines plus tard, on peut dire « ma lettre du 26 février »</td></tr></table><p class="dit"><span class="k">On dit</span> Granby, le 26 février. Objet : candidature au programme.</p><div class="note">Sans date, une lettre ne se relance pas : on ne peut pas dire « ma lettre du… », et l'autre ne peut pas la retrouver dans une pile.</div></section><section class="bloc card ml"><h3>Le milieu : la formule d'appel et les paragraphes</h3><p class="mp">Une formule d'appel, puis des paragraphes séparés par une ligne blanche, un par idée.</p><table class="ana"><tr><td>Quand on ne sait pas qui lira</td><td class="">Madame, Monsieur,</td></tr><tr><td>Quand on sait</td><td class="cle">Monsieur Fiset, — le nom, jamais le prénom seul</td></tr><tr><td>Les paragraphes</td><td class="">trois, séparés, jamais un bloc de vingt lignes</td></tr></table><p class="dit"><span class="k">On dit</span> Madame, Monsieur, je vous soumets ma candidature.</p><div class="note">La virgule après la formule d'appel est obligatoire, et la phrase qui suit commence par une majuscule.</div></section><section class="bloc card ml"><h3>Le bas : courtoisie, signature, pièces jointes</h3><p class="mp">On ferme, on signe, et on annonce ce qui est joint.</p><table class="ana"><tr><td>La courtoisie</td><td class="">Veuillez agréer, Madame, Monsieur, mes salutations distinguées.</td></tr><tr><td>La signature</td><td class="cle">le prénom et le nom, écrits au complet</td></tr><tr><td>Les pièces</td><td class="">« Vous trouverez ci-joint… » — la liste de ce qui accompagne</td></tr></table><p class="dit"><span class="k">On dit</span> Veuillez agréer, Madame, Monsieur, mes salutations distinguées.</p><div class="note">La formule reprend exactement les mots de la formule d'appel : si l'on a écrit « Madame, Monsieur, » en haut, on les reprend en bas.</div></section><section class="bloc card ml"><h3>Sept parties, sept fonctions</h3><p class="mp">C'est l'ordre, et il ne change pas.</p><table class="ex2"><tr><td>Lieu et date</td><td>Situer la lettre dans le temps.</td></tr><tr><td>Objet</td><td>Dire de quoi il s'agit en six mots.</td></tr><tr><td>Formule d'appel</td><td>S'adresser à quelqu'un.</td></tr><tr><td>Paragraphe 1</td><td>Demander, et dire pourquoi ici.</td></tr><tr><td>Paragraphe 2</td><td>Prouver par des faits.</td></tr><tr><td>Paragraphe 3</td><td>Dire l'après, et ce qui est commencé.</td></tr><tr><td>Courtoisie et signature</td><td>Fermer, signer, annoncer les pièces.</td></tr></table></section><section class="bloc card ml"><h3>Quatre détails de disposition</h3><p class="mp">Vrai ou faux, en une seconde.</p><ol class="check"><li><span class="q">La date peut s'écrire « 26/02 ».</span><ul class="opts"><li>oui</li><li>non, on écrit le mois en lettres</li></ul></li><li><span class="q">L'objet se termine par un point.</span><ul class="opts"><li>oui</li><li>non, ce n'est pas une phrase</li></ul></li><li><span class="q">On peut écrire « Bonjour, » comme formule d'appel.</span><ul class="opts"><li>dans une candidature, non</li><li>toujours</li></ul></li><li><span class="q">Les pièces jointes s'annoncent dans la lettre.</span><ul class="opts"><li>oui</li><li>non, l'enveloppe suffit</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> non, on écrit le mois en lettres — « Granby, le 26 février » : c'est la forme d'une lettre formelle. · <b>2.</b> non, ce n'est pas une phrase — Un objet est une étiquette, sans verbe conjugué et sans point final. · <b>3.</b> dans une candidature, non — « Bonjour » convient à un courriel entre collègues, pas à une candidature. · <b>4.</b> oui — « Vous trouverez ci-joint… » : sans cette phrase, une pièce perdue ne se remarque jamais.</div></section><section class="bloc card ml"><h3>Trois lettres qui se disqualifient sans une faute</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">un seul bloc de vingt lignes</p><div class="k">Ce qui arrive</div><p class="ph">trois paragraphes séparés par une ligne blanche</p><p class="px">Le contenu peut être excellent : personne ne le lira jusqu'au bout.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">aucune date</p><div class="k">Ce qui arrive</div><p class="ph">toujours le lieu et la date en haut</p><p class="px">Six semaines plus tard, au téléphone, vous n'aurez aucune façon de nommer votre propre lettre.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">une formule d'appel qui ne correspond pas à la formule finale</p><div class="k">Ce qui arrive</div><p class="ph">reprendre les mêmes mots en haut et en bas</p><p class="px">« Madame, Monsieur, » en haut et « Monsieur le Directeur » en bas : le lecteur comprend que la lettre a été recopiée.</p></div></div></section></section></div>
+<footer><span>B2 · Entrer dans le programme</span><span>Fiche élève</span></footer>
+</body>
+</html>

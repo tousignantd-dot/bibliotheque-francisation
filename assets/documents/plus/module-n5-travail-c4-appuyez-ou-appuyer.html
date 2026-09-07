@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C4 · « Appuyez », ou « appuyer » ? — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance C4 · Module 7 · 75 minutes</div>
+    <h1>« Appuyez », ou « appuyer » ?</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Les deux demandent la même chose. La première s'adresse à quelqu'un ; la seconde ne s'adresse à personne. C'est toute la différence, et elle décide de laquelle vous emploierez.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>choisir entre l'impératif et l'infinitif selon ce qu'on écrit ;</li><li>nier correctement dans les deux formes ;</li><li>tenir la même forme du début à la fin d'une note ;</li><li>savoir ce qu'on règle soi-même et ce qu'on appelle.</li></ol></section><section class="bloc card"><div class="lbl">Deux formes</div><h2 class="t">Le même geste, deux tons</h2><table><thead><tr><th>Impératif</th><th>Infinitif</th></tr></thead><tbody><tr><td class="cle">Appuyez sur le bouton vert.</td><td>Appuyer sur le bouton vert.</td></tr><tr><td class="cle">Insérez votre carte.</td><td>Insérer sa carte.</td></tr><tr><td class="cle">N'ouvrez pas la porte du bas.</td><td>Ne pas ouvrir la porte du bas.</td></tr><tr><td class="cle">Refermez bien.</td><td>Refermer bien.</td></tr></tbody></table><div class="note">À l'impératif, la négation entoure le verbe. À l'infinitif, les deux mots restent collés devant.</div></section><section class="bloc"><div class="lbl">Laquelle choisir</div><h2 class="t">Une question suffit</h2><div class="grid"><div class="card"><h3>Est-ce que j'écris à quelqu'un ?</h3><p>Oui : l'impératif. Une note aux collègues, un courriel, une consigne dite.</p></div><div class="card"><h3>Est-ce que j'écris une affiche ?</h3><p>Oui : l'infinitif. Un livret d'appareil, une affiche, une recette, un formulaire.</p></div><div class="card"><h3>À l'infinitif, « votre » devient « son »</h3><p>Insérez votre carte devient Insérer sa carte : la phrase ne parle à personne.</p></div><div class="card"><h3>Ce qu'on n'écrit jamais</h3><p>« Vous devez appuyer sur le bouton vert » : plus long, et ça n'ajoute rien.</p></div></div></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Mélanger les deux formes</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">Levez le couvercle. Puis placer la feuille.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">Levez le couvercle. Puis placez la feuille.</p></div></div><div class="note">Choisissez au début et tenez-vous-y. Le mélange donne l'impression que deux personnes ont écrit la note, et le lecteur se demande à qui elle s'adresse.</div></section><section class="bloc card"><div class="lbl">Transformation</div><h2 class="t">Changez de forme</h2><p class="consigne">Récrivez chaque directive dans la forme demandée.</p><ol class="ex"><li><span class="q">Appuyer sur Numériser. (impératif)</span><span class="ligne ligne--court"></span></li><li><span class="q">Insérez votre carte. (infinitif)</span><span class="ligne ligne--court"></span></li><li><span class="q">Ne pas forcer sur la feuille. (impératif)</span><span class="ligne"></span></li><li><span class="q">N'ouvrez pas la porte du bas. (infinitif)</span><span class="ligne"></span></li><li><span class="q">Confirmer l'adresse. (impératif)</span><span class="ligne ligne--court"></span></li><li><span class="q">Refermez bien la porte. (infinitif)</span><span class="ligne"></span></li><li><span class="q">Verrouiller l'écran. (impératif)</span><span class="ligne ligne--court"></span></li><li><span class="q">Ne laissez pas votre original. (infinitif)</span><span class="ligne"></span></li></ol></section><section class="bloc regle"><div class="lbl">Ce qui s'ouvre sans outil est à vous</div><p class="r">Ce qui demande de forcer, de dévisser ou de deviner ne l'est pas.</p><p class="pr">Et ne le faites surtout pas deux fois : un appareil qu'on force deux fois passe d'une réparation de dix minutes à une réparation de trois jours.</p></section><section class="bloc card"><div class="lbl">Décision</div><h2 class="t">Je règle, ou j'appelle le poste dix-neuf ?</h2><p class="consigne">Pour chaque situation, choisissez.</p><ol class="ex"><li><span class="q">Une feuille est coincée derrière la porte de côté.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le bac à papier est vide.</span><span class="ligne ligne--court"></span></li><li><span class="q">Une odeur de brûlé sort de l'arrière de l'appareil.</span><span class="ligne ligne--court"></span></li><li><span class="q">L'écran demande de confirmer l'adresse courriel.</span><span class="ligne ligne--court"></span></li><li><span class="q">L'écran reste rouge après avoir été redémarré.</span><span class="ligne ligne--court"></span></li><li><span class="q">La feuille s'est déchirée, un morceau est resté dedans.</span><span class="ligne ligne--court"></span></li><li><span class="q">Les copies sortent à l'envers : le document était mal placé.</span><span class="ligne ligne--court"></span></li><li><span class="q">Il y a un liquide sombre sous l'appareil.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez la demi-page de Dorine et Kevin : les quatre opérations du photocopieur.</p><ul><li>Copier · numériser · remplir le bac · débloquer une feuille.</li><li>Une seule forme du début à la fin, et des marqueurs de temps.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Impératif ou infinitif : deux façons d’écrire une consigne</h2><section class="bloc card ml"><h3>Le même geste, deux tons</h3><p class="mp">« Appuyez sur le bouton vert » et « Appuyer sur le bouton vert » demandent exactement la même chose. La première s’adresse à quelqu’un ; la seconde ne s’adresse à personne. C’est toute la différence, et elle décide de laquelle vous emploierez selon ce que vous écrivez.</p><div class="note">Ce choix se fait au début, pas en cours de route. Une demi-page qui mélange les deux formes se lit mal et donne l’impression d’avoir été écrite à deux mains.</div></section><section class="bloc card ml"><h3>L’impératif — quand vous parlez à vos collègues</h3><p class="mp">Il s’adresse à une personne. Il est plus chaleureux, un peu plus long.</p><table class="ana"><tr><td>Où on l’emploie</td><td class="">une note collée au mur · un courriel · une consigne dite de vive voix</td></tr><tr><td>Comment ça sonne</td><td class="cle">Appuyez sur le bouton vert. · Placez la feuille dans le chargeur.</td></tr><tr><td>À la négative</td><td class="">N’ouvrez pas la porte du bas. · Ne forcez pas.</td></tr></table><p class="dit"><span class="k">On dit</span> Appuyez sur le bouton vert, puis placez la feuille dans le chargeur.</p><div class="note">C’est la forme que Dorine et Kevin choisissent pour leur demi-page : ils écrivent à des gens qu’ils connaissent, dans un corridor où ils passent tous les jours.</div></section><section class="bloc card ml"><h3>L’infinitif — quand vous écrivez une affiche</h3><p class="mp">Il ne s’adresse à personne en particulier. Plus court, plus neutre, un peu plus froid.</p><table class="ana"><tr><td>Où on l’emploie</td><td class="">un livret d’appareil · une affiche · une recette · un formulaire</td></tr><tr><td>Comment ça sonne</td><td class="cle">Appuyer sur le bouton vert. · Placer la feuille dans le chargeur.</td></tr><tr><td>À la négative</td><td class="">Ne pas ouvrir la porte du bas. · Ne pas forcer.</td></tr></table><p class="dit"><span class="k">On dit</span> Appuyer sur le bouton vert, puis placer la feuille dans le chargeur.</p><div class="note">C’est la forme du livret de quatre-vingts pages, et c’est une des raisons pour lesquelles personne ne le lit avec plaisir.</div></section><section class="bloc card ml"><h3>La négation, le seul vrai piège</h3><p class="mp">Les deux formes ne nient pas de la même façon, et c’est là qu’on se trompe en passant de l’une à l’autre.</p><table class="ana"><tr><td>Impératif : la négation entoure</td><td class="">N’ouvrez pas. · Ne forcez pas. · Ne laissez pas votre original.</td></tr><tr><td>Infinitif : les deux mots restent collés devant</td><td class="cle">Ne pas ouvrir. · Ne pas forcer. · Ne pas laisser son original.</td></tr><tr><td>Ce qui change aussi</td><td class="">votre → son, vos → ses : l’infinitif ne parle à personne</td></tr></table><p class="dit"><span class="k">On dit</span> N’ouvrez pas la porte du bas. Ne pas ouvrir la porte du bas.</p><div class="note">Écoutez les deux phrases à la suite : « ne … pas » qui s’écarte, « ne pas » qui reste soudé. C’est le seul détail à retenir de cette leçon.</div></section><section class="bloc card ml"><h3>La même consigne dans les deux formes</h3><p class="mp">Choisissez une consigne et écoutez ses deux versions.</p><table class="labo"><thead><tr><th>Quelle consigne ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">Appuyer sur Numériser</td><td>Appuyez sur Numériser. Appuyer sur Numériser.<span class="tags">un mode d'emploi</span></td><td>affirmatif : seule la terminaison change</td></tr><tr><td class="cle">Insérer sa carte</td><td>Insérez votre carte dans la fente. Insérer sa carte dans la fente.<span class="tags">le bac à papier</span></td><td>« votre » devient « sa » à l’infinitif</td></tr><tr><td class="cle">Ne pas forcer</td><td>Ne forcez pas sur la feuille coincée. Ne pas forcer sur la feuille coincée.<span class="tags">un bourrage de papier</span></td><td>la négation s’ouvre, puis se soude</td></tr><tr><td class="cle">Ne pas laisser son original</td><td>Ne laissez pas votre original sur la vitre. Ne pas laisser son original sur la vitre.<span class="tags">des directives</span></td><td>deux changements dans la même phrase</td></tr><tr><td class="cle">Verrouiller en partant</td><td>Verrouillez l’écran en partant. Verrouiller l’écran en partant.<span class="tags">une tâche</span></td><td>l’affiche du local, et le courriel du collègue</td></tr></tbody></table><div class="note">Dites-vous à chaque fois : « est-ce que j’écris à quelqu’un, ou est-ce que j’écris une affiche ? » La réponse choisit la forme.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six consignes, trois de chaque forme.</p><table class="ex2"><tr><td>Appuyez sur le bouton vert.</td><td>impératif, à vos collègues</td></tr><tr><td>Appuyer sur le bouton vert.</td><td>infinitif, sur l’affiche</td></tr><tr><td>Ne forcez pas sur la feuille.</td><td>impératif négatif</td></tr><tr><td>Ne pas forcer sur la feuille.</td><td>infinitif négatif</td></tr><tr><td>Refermez bien la porte de côté.</td><td>impératif</td></tr><tr><td>Ne pas laisser son original sur la vitre.</td><td>infinitif, avec « son »</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges des consignes écrites</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">mélanger les deux formes</p><div class="k">Ce qui arrive</div><p class="ph">« Levez le couvercle. Puis placer la feuille. »</p><p class="px">Choisissez au début et tenez-vous-y. Le mélange donne l’impression que deux personnes ont écrit la note.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">nier à l’infinitif comme à l’impératif</p><div class="k">Ce qui arrive</div><p class="ph">« Ne ouvrir pas la porte. »</p><p class="px">À l’infinitif, les deux mots de la négation restent collés devant : « Ne pas ouvrir la porte. »</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">ajouter « vous devez »</p><div class="k">Ce qui arrive</div><p class="ph">« Vous devez appuyer sur le bouton vert. »</p><p class="px">C’est plus long et ça n’ajoute rien : une consigne dit déjà qu’il faut le faire. « Appuyez sur le bouton vert » suffit.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c’est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">« Ne pas ouvrir » est…</span><ul class="opts"><li>un impératif</li><li>un infinitif</li></ul></li><li><span class="q">Pour une note écrite à ses collègues, on choisit…</span><ul class="opts"><li>l’impératif</li><li>l’infinitif</li></ul></li><li><span class="q">« Insérez votre carte » à l’infinitif donne…</span><ul class="opts"><li>Insérer votre carte</li><li>Insérer sa carte</li></ul></li><li><span class="q">Mélanger les deux formes dans une même note…</span><ul class="opts"><li>se remarque</li><li>n’a aucune importance</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> un infinitif — Un infinitif : les deux mots de la négation restent devant le verbe. · <b>2.</b> l’impératif — L’impératif : elle s’adresse à quelqu’un. · <b>3.</b> Insérer sa carte — « Insérer sa carte » : l’infinitif ne parle à personne, donc « votre » devient « sa ». · <b>4.</b> se remarque — Se remarque tout de suite, et rend la note plus difficile à suivre.</div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Où s’arrête ce qu’on répare soi-même</h2><section class="bloc card ml"><h3>Une règle, et elle tient en une phrase</h3><p class="mp">Ce qui s’ouvre par une porte prévue à cette fin et se règle sans outil, vous le faites. Ce qui demande de forcer, de dévisser ou de deviner, vous ne le faites pas. Et vous ne le faites surtout pas deux fois : un appareil qu’on force deux fois passe d’une réparation de dix minutes à une réparation de trois jours.</p><div class="note">Cette règle n’est pas propre au photocopieur. Elle vaut pour le lave-vaisselle de la cuisine, la déchiqueteuse, la machine à café et le terminal de paiement.</div></section><section class="bloc card ml"><h3>Ce que vous faites vous-même</h3><p class="mp">Trois situations, et vous n’avez besoin de personne.</p><table class="ana"><tr><td>Le bourrage simple</td><td class="">ouvrir la porte de côté, tirer lentement, refermer</td></tr><tr><td>Le bac vide</td><td class="cle">vérifier le format, poser la pile bien à plat, refermer sans forcer</td></tr><tr><td>L’écran qui pose une question</td><td class="">lire, répondre, confirmer — la plupart des blocages sont là</td></tr></table><p class="dit"><span class="k">On dit</span> Ouvrez la porte de côté, tirez la feuille lentement, puis refermez bien.</p><div class="note">« Lentement » et « d’un seul mouvement » ne sont pas des politesses : une feuille tirée par saccades se déchire, et le morceau qui reste dedans, lui, demande le service technique.</div></section><section class="bloc card ml"><h3>Ce qui n’est jamais à vous</h3><p class="mp">Cinq signes qui font arrêter tout de suite et appeler.</p><table class="ana"><tr><td>Ce qui se sent ou s’entend</td><td class="">une odeur de brûlé · de la fumée · un bruit sec et répété</td></tr><tr><td>Ce qui se voit</td><td class="cle">un liquide sous l’appareil · un écran rouge après un redémarrage</td></tr><tr><td>Ce qu’on fait alors</td><td class="">on n’insiste pas, on débranche si c’est sûr, on appelle le poste dix-neuf</td></tr></table><p class="dit"><span class="k">On dit</span> Il y a une odeur de brûlé : je n’insiste pas, j’appelle le poste dix-neuf.</p><div class="note">Un appareil qui sent le brûlé et qu’on redémarre « juste pour voir » est la façon la plus rapide de transformer un problème en accident.</div></section><section class="bloc card ml"><h3>Ce qu’il faut dire au téléphone</h3><p class="mp">L’appel dure trente secondes s’il contient les bons mots, et cinq minutes s’il n’en contient aucun.</p><table class="ana"><tr><td>Le message exact de l’écran</td><td class="">« erreur E-042, bac 2 » — mot pour mot, chiffre pour chiffre</td></tr><tr><td>L’appareil et l’endroit</td><td class="cle">le photocopieur du corridor du deuxième étage</td></tr><tr><td>Ce que vous avez déjà essayé</td><td class="">« j’ai ouvert la porte de côté, il n’y avait rien »</td></tr></table><p class="dit"><span class="k">On dit</span> Erreur E zéro quarante-deux, bac deux, sur le photocopieur du deuxième étage.</p><div class="note">« Ça ne marche pas » fait déplacer quelqu’un pour rien. Le code d’erreur fait venir la bonne pièce du premier coup.</div></section><section class="bloc card ml"><h3>Cinq situations devant l’appareil</h3><p class="mp">Choisissez une situation et écoutez ce qu’il faut faire.</p><table class="labo"><thead><tr><th>Quelle situation ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">Une feuille coincée</td><td>J’ouvre la porte de côté, je tire la feuille lentement, je referme. L’écran redevient vert.<span class="tags">un bourrage de papier</span></td><td>trois gestes, sans outil : c’est à vous</td></tr><tr><td class="cle">Le bac est vide</td><td>Je vérifie le format, je pose la pile bien à plat, je referme sans forcer.<span class="tags">le bac à papier</span></td><td>aucune permission à demander</td></tr><tr><td class="cle">Une odeur de brûlé</td><td>Je n’insiste pas. Je débranche si l’accès est sûr et j’appelle le poste dix-neuf.<span class="tags">un photocopieur</span></td><td>un des cinq signes qui arrêtent tout</td></tr><tr><td class="cle">La feuille s’est déchirée</td><td>Un morceau est resté à l’intérieur. Je n’essaie pas de le sortir : j’appelle le poste dix-neuf.<span class="tags">des directives</span></td><td>ce qui demande de deviner n’est pas à vous</td></tr><tr><td class="cle">Un liquide sous l’appareil</td><td>Je ne touche à rien, je préviens les collègues et j’appelle le poste dix-neuf.<span class="tags">un mode d'emploi</span></td><td>un liquide sous un appareil branché : jamais soi-même</td></tr></tbody></table><div class="note">Remarquez que les trois derniers se règlent par le même geste : cesser, et appeler avec les bons mots.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six phrases à dire devant un appareil.</p><table class="ex2"><tr><td>J’ouvre la porte de côté et je tire la feuille lentement.</td><td>le bourrage simple</td></tr><tr><td>Je vérifie le format avant de remplir le bac.</td><td>le bac à papier</td></tr><tr><td>L’écran demande de confirmer l’adresse : je confirme.</td><td>la plupart des blocages</td></tr><tr><td>Je n’insiste pas : j’appelle le poste dix-neuf.</td><td>la phrase qui sauve un appareil</td></tr><tr><td>Erreur E-042, bac 2, photocopieur du deuxième étage.</td><td>ce qu’on dit au téléphone</td></tr><tr><td>J’ai déjà ouvert la porte de côté, il n’y avait rien.</td><td>ce qu’on a essayé</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges devant un appareil bloqué</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">recommencer dix fois</p><div class="k">Ce qui arrive</div><p class="ph">relancer la copie après chaque message d’erreur</p><p class="px">Chaque relance ajoute une feuille dans l’appareil. Après trois essais, le bourrage simple est devenu un empilement que personne ne démêle sans outil.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">dire « ça ne marche pas »</p><div class="k">Ce qui arrive</div><p class="ph">au téléphone, sans le code d’erreur</p><p class="px">Le service technique se déplace sans savoir quoi apporter. Le code affiché à l’écran vaut trois minutes d’explications.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">forcer sur une feuille coincée</p><div class="k">Ce qui arrive</div><p class="ph">tirer par petits coups jusqu’à ce qu’elle vienne</p><p class="px">Elle vient — en deux morceaux. Le morceau resté à l’intérieur est exactement ce qui fait passer d’une réparation de dix minutes à une réparation de trois jours.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c’est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">Une feuille coincée derrière la porte de côté, c’est…</span><ul class="opts"><li>à vous</li><li>au service technique</li></ul></li><li><span class="q">Une odeur de brûlé, on…</span><ul class="opts"><li>redémarre pour voir</li><li>arrête et on appelle</li></ul></li><li><span class="q">Au téléphone, on donne d’abord…</span><ul class="opts"><li>le code d’erreur exact</li><li>son opinion sur l’appareil</li></ul></li><li><span class="q">Une feuille déchirée dont un morceau reste dedans…</span><ul class="opts"><li>se règle soi-même</li><li>demande le service technique</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> à vous — À vous : ça s’ouvre par une porte prévue à cette fin et se règle sans outil. · <b>2.</b> arrête et on appelle — On arrête. Redémarrer « juste pour voir » transforme un problème en accident. · <b>3.</b> le code d’erreur exact — Le code exact : il fait venir la bonne pièce du premier coup. · <b>4.</b> demande le service technique — Demande le service technique : sortir un morceau invisible, c’est deviner.</div></section></section></div>
+<footer><span>C4 · Le travail par écrit</span><span>Fiche élève</span></footer>
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B2 · Quel, quelle, et la date de naissance — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance B2 · Module 2 · 60 minutes</div>
+    <h1>Quel, quelle, et la date de naissance</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Le jour avant le mois. Ce n'est pas l'ordre de tout le monde, et une date lue à l'envers vous change d'âge.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>écrire quel devant un mot masculin, quelle devant un mot féminin ;</li><li>dire sa date de naissance ;</li><li>l'écrire dans l'ordre jour / mois / année ;</li><li>écrire l'année en quatre chiffres.</li></ol></section><section class="bloc card"><div class="lbl">Dialogue</div><h2 class="t">Quelle est votre date de naissance ?</h2><p class="consigne">Écoutez deux fois avant de lire.</p><div class="rep rep--key"><div class="qui">MADAME CÔTÉ</div><div>Quelle est votre date de naissance ?</div></div><div class="rep rep--key"><div class="qui">YUSUF</div><div>Le douze mars.</div></div><div class="rep rep--key"><div class="qui">MADAME CÔTÉ</div><div>Quelle année ?</div></div><div class="rep rep--key"><div class="qui">YUSUF</div><div>Mille neuf cent quatre-vingt-douze.</div></div><div class="rep rep--key"><div class="qui">MADAME CÔTÉ</div><div>Douze, zéro trois, quatre-vingt-douze.</div></div><div class="rep rep--key"><div class="qui">YUSUF</div><div>Zéro trois ? Pourquoi ?</div></div><div class="rep rep--key"><div class="qui">MADAME CÔTÉ</div><div>Mars, c'est le mois numéro trois.</div></div><div class="rep rep--key"><div class="qui">YUSUF</div><div>Ah ! Le jour avant le mois.</div></div></section><section class="bloc card"><div class="lbl">Analyse · 1 de 2</div><h2 class="t">Quel ou quelle ?</h2><table><thead><tr><th>Devant un mot masculin</th><th>Devant un mot féminin</th></tr></thead><tbody><tr><td>quel est votre nom ?</td><td>quelle est votre adresse ?</td></tr><tr><td>quel est votre prénom ?</td><td>quelle est votre date ?</td></tr><tr><td>quel est votre numéro ?</td><td>quelle est votre année ?</td></tr></tbody></table><div class="note">C'est le mot qui suit qui décide, jamais la personne qui parle.</div></section><section class="bloc regle"><div class="lbl">Quel et quelle se disent pareil</div><p class="r">On entend « kel » dans les deux cas.</p><p class="pr">La différence ne se voit qu'à l'écrit, et elle vient du mot d'après : &lt;b&gt;le&lt;/b&gt; nom, &lt;b&gt;le&lt;/b&gt; prénom, &lt;b&gt;le&lt;/b&gt; numéro sont masculins ; &lt;b&gt;l'&lt;/b&gt;adresse, &lt;b&gt;la&lt;/b&gt; date, &lt;b&gt;l'&lt;/b&gt;année sont féminines. À l'oral, vous ne pouvez pas vous tromper.</p></section><section class="bloc card"><div class="lbl">Analyse · 2 de 2</div><h2 class="t">Les douze mois en chiffres</h2><table><thead><tr><th>Le mois</th><th>Le numéro</th></tr></thead><tbody><tr><td>janvier · février · mars</td><td>01 · 02 · 03</td></tr><tr><td>avril · mai · juin</td><td>04 · 05 · 06</td></tr><tr><td>juillet · août · septembre</td><td>07 · 08 · 09</td></tr><tr><td>octobre · novembre · décembre</td><td>10 · 11 · 12</td></tr></tbody></table><div class="note">Comptez sur vos doigts : c'est le seul moyen, et il marche.</div></section><section class="bloc regle"><div class="lbl">Le jour, le mois, puis l'année</div><p class="r">Le 12 mars 1992 s'écrit 12 / 03 / 1992.</p><p class="pr">Deux chiffres pour le jour — le 5 janvier s'écrit &lt;b&gt;05&lt;/b&gt; / 01 — deux pour le mois, et &lt;b&gt;quatre&lt;/b&gt; pour l'année : 1992, jamais 92. Dans plusieurs pays le mois passe devant : la même date y devient 03 / 12 / 1992, c'est-à-dire le 3 décembre.</p></section><section class="bloc card"><div class="lbl">Pratique</div><h2 class="t">Complétez</h2><p class="consigne">Yusuf est né le 12 mars 1992.</p><ol class="ex"><li><span class="q">Le jour : ___</span><span class="ligne ligne--court"></span></li><li><span class="q">Le mois de mars s'écrit ___</span><span class="ligne ligne--court"></span></li><li><span class="q">L'année : ___</span><span class="ligne ligne--court"></span></li><li><span class="q">Le 5 janvier s'écrit ___ / 01</span><span class="ligne ligne--court"></span></li><li><span class="q">Le jour, le ___ , l'année.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le mois de septembre s'écrit ___</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Écrire l'année à deux chiffres</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">Naissance : 12 / 03 / 92.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">Naissance : 12 / 03 / 1992.</p></div></div><div class="note">Quatre chiffres, toujours. Une fiche refuse souvent les deux chiffres, et « 26 » peut vouloir dire 1926 comme 2026. Le premier jour du mois, lui, s'écrit &lt;b&gt;1er&lt;/b&gt; : le 1er novembre, jamais « un novembre ».</div></section><section class="bloc card"><div class="lbl">Pratique · à deux</div><h2 class="t">Votre date, la sienne</h2><p class="consigne">Demandez, écoutez, écrivez — puis faites vérifier.</p><ol class="ex"><li><span class="q">Étape 1</span><span class="ligne"></span></li><li><span class="q">Étape 2</span><span class="ligne"></span></li><li><span class="q">Étape 3</span><span class="ligne"></span></li><li><span class="q">Étape 4</span><span class="ligne"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez votre date de naissance de deux façons.</p><ul><li>En chiffres : __ / __ / ____</li><li>En lettres : le … (mois) …</li><li>Puis dites-la à voix haute, lentement.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Quel ou quelle ?</h2><section class="bloc card ml"><h3>La question qu'on vous posera toute la vie</h3><p class="mp">« <b>Quel</b> est votre nom ? » « <b>Quelle</b> est votre adresse ? » C'est la forme des questions d'une fiche, d'un guichet, d'un formulaire. Les deux se disent exactement de la même façon : à l'oral, vous n'avez rien à choisir. À l'écrit, une seule chose décide — le mot qui vient après.</p><div class="note">Ce n'est pas vous qui êtes masculin ou féminin dans cette phrase : c'est le mot de la case.</div></section><section class="bloc card ml"><h3>Quel — devant un mot masculin</h3><p class="mp">Un nom, un prénom, un numéro, un code.</p><table class="ana"><tr><td>Le nom</td><td class=""><b>Quel</b> est votre nom de famille ?</td></tr><tr><td>Le prénom</td><td class=""><b>Quel</b> est votre prénom ?</td></tr><tr><td>Le numéro</td><td class="cle"><b>Quel</b> est votre numéro de téléphone ?</td></tr></table><p class="dit"><span class="k">On dit</span> Quel est votre nom de famille ? Quel est votre prénom ?</p><div class="note">Le nom, le prénom, le numéro, le code postal, le courriel : tous masculins.</div></section><section class="bloc card ml"><h3>Quelle — devant un mot féminin</h3><p class="mp">Une adresse, une date, une année, une langue.</p><table class="ana"><tr><td>L'adresse</td><td class=""><b>Quelle</b> est votre adresse ?</td></tr><tr><td>La date</td><td class=""><b>Quelle</b> est votre date de naissance ?</td></tr><tr><td>L'année</td><td class="cle"><b>Quelle</b> est votre année de naissance ?</td></tr></table><p class="dit"><span class="k">On dit</span> Quelle est votre adresse ? Quelle est votre date de naissance ?</p><div class="note">L'adresse, la date, l'année, la ville, la rue : toutes féminines.</div></section><section class="bloc card ml"><h3>À l'oreille, aucune différence</h3><p class="mp">Un seul son pour deux orthographes.</p><table class="ana"><tr><td>On entend</td><td class="">« kel »</td></tr><tr><td>On écrit</td><td class="">quel ou quelle</td></tr><tr><td>Ce qui décide</td><td class="cle">le mot juste après</td></tr></table><p class="dit"><span class="k">On dit</span> Quel. Quelle. Quel. Quelle.</p><div class="note">C'est une bonne nouvelle : à l'oral, vous ne pouvez pas vous tromper.</div></section><section class="bloc card ml"><h3>Posez la question</h3><p class="mp">Choisissez une case de la fiche.</p><table class="labo"><thead><tr><th>Quelle case ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">le nom de famille</td><td>Quel est votre nom de famille ?</td><td>le nom — masculin</td></tr><tr><td class="cle">le prénom</td><td>Quel est votre prénom ?</td><td>le prénom — masculin</td></tr><tr><td class="cle">l'adresse</td><td>Quelle est votre adresse ?</td><td>l'adresse — féminin</td></tr><tr><td class="cle">la date de naissance</td><td>Quelle est votre date de naissance ?</td><td>la date — féminin</td></tr><tr><td class="cle">le téléphone</td><td>Quel est votre numéro de téléphone ?</td><td>le numéro — masculin</td></tr><tr><td class="cle">le code postal</td><td>Quel est votre code postal ?</td><td>le code — masculin</td></tr></tbody></table><div class="note">Six questions. Ce sont celles qu'on vous posera à l'inscription, mot pour mot.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Les six questions de la fiche.</p><table class="ex2"><tr><td>Quel est votre nom de famille ?</td><td>masculin</td></tr><tr><td>Quel est votre prénom ?</td><td>masculin</td></tr><tr><td>Quelle est votre date de naissance ?</td><td>féminin</td></tr><tr><td>Quelle est votre adresse ?</td><td>féminin</td></tr><tr><td>Quel est votre numéro de téléphone ?</td><td>masculin</td></tr><tr><td>Quel est votre courriel ?</td><td>masculin</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges à connaître</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">accorder avec soi-même</p><div class="k">Ce qui arrive</div><p class="ph">« quelle est mon nom ? »</p><p class="px">Une femme dit « <b>quel</b> est mon nom ? » et un homme dit « <b>quelle</b> est mon adresse ? ». C'est le mot de la case qui décide, jamais la personne.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">chercher la différence à l'oral</p><div class="k">Ce qui arrive</div><p class="ph">il n'y en a pas</p><p class="px">Quel et quelle se prononcent pareil. Inutile de forcer une différence que personne n'entend.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">écrire « qu'elle »</p><div class="k">Ce qui arrive</div><p class="ph">« qu'elle est votre adresse ? »</p><p class="px">« Qu'elle » avec une apostrophe veut dire « que elle ». Dans une question de fiche, c'est toujours <b>quelle</b>, en un seul mot.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">___ est votre adresse ?</span><ul class="opts"><li>Quel</li><li>Quelle</li></ul></li><li><span class="q">___ est votre prénom ?</span><ul class="opts"><li>Quel</li><li>Quelle</li></ul></li><li><span class="q">À l'oral, quel et quelle…</span><ul class="opts"><li>se disent pareil</li><li>se disent autrement</li></ul></li><li><span class="q">Ce qui décide, c'est…</span><ul class="opts"><li>la personne qui parle</li><li>le mot qui suit</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> Quelle — L'adresse est un mot féminin. · <b>2.</b> Quel — Le prénom est un mot masculin. · <b>3.</b> se disent pareil — Un seul son : « kel ». · <b>4.</b> le mot qui suit — Le mot de la case, toujours.</div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Le jour, le mois, l'année</h2><section class="bloc card ml"><h3>Trois nombres, un seul ordre</h3><p class="mp">Ici, une date s'écrit dans cet ordre : le <b>jour</b>, puis le <b>mois</b>, puis l'<b>année</b>. Le 12 mars 1992 devient <b>12 / 03 / 1992</b>. Dans plusieurs pays, le mois passe devant — et la même date y devient 03 / 12 / 1992, c'est-à-dire le 3 décembre. Une case remplie dans le mauvais ordre vous change de date de naissance.</p><div class="note">Quand vous doutez, écrivez le mois en lettres : 12 mars 1992. Personne ne peut se tromper.</div></section><section class="bloc card ml"><h3>Le jour — deux chiffres</h3><p class="mp">Du 01 au 31.</p><table class="ana"><tr><td>Le 5 janvier</td><td class=""><b>05</b> / 01</td></tr><tr><td>Le 12 mars</td><td class=""><b>12</b> / 03</td></tr><tr><td>La règle</td><td class="cle">un zéro devant les nombres d'un seul chiffre</td></tr></table><p class="dit"><span class="k">On dit</span> Le cinq janvier. Le douze mars.</p><div class="note">05 et non 5 : la case attend deux chiffres, comme toutes les cases de date.</div></section><section class="bloc card ml"><h3>Le mois — un numéro, pas un mot</h3><p class="mp">Janvier est 01, décembre est 12.</p><table class="ana"><tr><td>Mars</td><td class=""><b>03</b></td></tr><tr><td>Juillet</td><td class=""><b>07</b></td></tr><tr><td>Novembre</td><td class="cle"><b>11</b></td></tr></table><p class="dit"><span class="k">On dit</span> Mars, zéro trois. Juillet, zéro sept. Novembre, onze.</p><div class="note">Comptez sur vos doigts : janvier 1, février 2, mars 3… C'est le seul moyen, et il marche.</div></section><section class="bloc card ml"><h3>L'année — quatre chiffres</h3><p class="mp">Jamais deux.</p><table class="ana"><tr><td>On écrit</td><td class=""><b>1992</b></td></tr><tr><td>On n'écrit pas</td><td class="">92</td></tr><tr><td>Aujourd'hui</td><td class="cle"><b>2026</b></td></tr></table><p class="dit"><span class="k">On dit</span> Mille neuf cent quatre-vingt-douze. Deux mille vingt-six.</p><div class="note">Une année à deux chiffres est ambiguë : 26 peut vouloir dire 1926 ou 2026.</div></section><section class="bloc card ml"><h3>Écrivez la date</h3><p class="mp">Choisissez une date.</p><table class="labo"><thead><tr><th>Quelle date ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">le 12 mars 1992</td><td>Le douze mars mille neuf cent quatre-vingt-douze.<span class="tags">12 / 03 / 1992</span></td><td>mars, le mois numéro trois</td></tr><tr><td class="cle">le 5 janvier 1988</td><td>Le cinq janvier mille neuf cent quatre-vingt-huit.<span class="tags">05 / 01 / 1988</span></td><td>un zéro devant le cinq</td></tr><tr><td class="cle">le 30 juillet 2001</td><td>Le trente juillet deux mille un.<span class="tags">30 / 07 / 2001</span></td><td>juillet, le mois numéro sept</td></tr><tr><td class="cle">le 1er novembre 1975</td><td>Le premier novembre mille neuf cent soixante-quinze.<span class="tags">01 / 11 / 1975</span></td><td>le premier du mois se dit « premier »</td></tr><tr><td class="cle">le 9 septembre 2010</td><td>Le neuf septembre deux mille dix.<span class="tags">09 / 09 / 2010</span></td><td>même chiffre deux fois, par hasard</td></tr></tbody></table><div class="note">Faites la vôtre à la fin : écrivez votre date de naissance dans les trois cases.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six dates.</p><table class="ex2"><tr><td>Le douze mars mille neuf cent quatre-vingt-douze.</td><td>la date de Yusuf</td></tr><tr><td>Le cinq janvier.</td><td>un zéro devant</td></tr><tr><td>Le premier novembre.</td><td>« premier », pas « un »</td></tr><tr><td>Le trente juillet.</td><td>une dizaine</td></tr><tr><td>Deux mille vingt-six.</td><td>l'année d'aujourd'hui</td></tr><tr><td>Je suis né le quinze août.</td><td>la phrase complète</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges à connaître</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">le mois avant le jour</p><div class="k">Ce qui arrive</div><p class="ph">03 / 12 au lieu de 12 / 03</p><p class="px">Ici, le jour vient toujours en premier. Dans le doute, écrivez le mois en lettres.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">écrire l'année à deux chiffres</p><div class="k">Ce qui arrive</div><p class="ph">« 92 »</p><p class="px">Quatre chiffres, toujours : 1992. Une fiche refuse souvent les deux chiffres.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">dire « un novembre »</p><div class="k">Ce qui arrive</div><p class="ph">le premier novembre</p><p class="px">Le premier jour du mois se dit et s'écrit <b>1er</b> : le 1er novembre. Les autres jours sont des nombres ordinaires : le 2, le 3, le 15.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">Le 12 mars 1992 s'écrit…</span><ul class="opts"><li>12 / 03 / 1992</li><li>03 / 12 / 1992</li></ul></li><li><span class="q">Le mois de juillet s'écrit…</span><ul class="opts"><li>06</li><li>07</li></ul></li><li><span class="q">L'année s'écrit avec…</span><ul class="opts"><li>deux chiffres</li><li>quatre chiffres</li></ul></li><li><span class="q">Le 5 janvier s'écrit…</span><ul class="opts"><li>5 / 01</li><li>05 / 01</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> 12 / 03 / 1992 — Le jour, puis le mois, puis l'année. · <b>2.</b> 07 — Janvier 01, février 02… juillet 07. · <b>3.</b> quatre chiffres — 1992, et non 92. · <b>4.</b> 05 / 01 — Un zéro devant les nombres d'un seul chiffre.</div></section></section></div>
+<footer><span>B2 · Je remplis ma fiche</span><span>Fiche élève</span></footer>
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>D2 · Mettre en avant, et demander fermement — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance D2 · Module 7 · 90 minutes</div>
+    <h1>Mettre en avant, et demander fermement</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Deux tournures, et une lettre de réclamation devient lisible par quelqu'un de pressé : la mise en relief et le subjonctif après un verbe de volonté.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>mettre un mot en avant avec c'est... qui et c'est... que ;</li><li>annoncer avant de dire avec ce qui... c'est ;</li><li>employer le subjonctif après je demande que et il faut que ;</li><li>reconnaître les faux amis qui veulent l'indicatif.</li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Trois façons de mettre en avant</h2><table><thead><tr><th>La tournure</th><th>Ce qu'elle met devant</th></tr></thead><tbody><tr><td class="cle">c'est... qui</td><td>celui qui fait l'action</td></tr><tr><td class="cle">c'est... que</td><td>tout le reste : objet, date, lieu</td></tr><tr><td class="cle">ce qui..., c'est</td><td>un sujet, annoncé avant</td></tr><tr><td class="cle">ce que..., c'est</td><td>un complément, annoncé avant</td></tr></tbody></table><div class="note">Qui ne s'élide jamais : c'est moi qui ai, jamais qu'ai.</div></section><section class="bloc regle"><div class="lbl">Le verbe s'accorde avec le mot mis en avant</div><p class="r">C'est moi qui ai appelé. C'est nous qui avons écrit.</p><p class="pr">Le verbe ne s'accorde pas avec « c'est » mais avec le pronom qu'on a fait passer devant. Et la virgule avant « c'est », dans « ce qui m'inquiète, c'est le délai », n'est pas décorative : elle marque la pause qui fait tout le travail à l'oral.</p></section><section class="bloc card"><div class="lbl">Application</div><h2 class="t">Récrivez en mettant le groupe en avant</h2><p class="consigne">La tournure est indiquée.</p><ol class="ex"><li><span class="q">L'agent a bloqué la carte. (c'est... qui)</span><span class="ligne"></span></li><li><span class="q">J'ai appelé le quinze mars. (c'est... que)</span><span class="ligne"></span></li><li><span class="q">Le délai m'inquiète. (ce qui... c'est)</span><span class="ligne"></span></li><li><span class="q">Je demande un écrit. (ce que... c'est)</span><span class="ligne"></span></li><li><span class="q">J'ai signalé l'opération moi-même. (c'est... qui)</span><span class="ligne"></span></li></ol></section><section class="bloc regle"><div class="lbl">C'est le mot d'avant qui décide du subjonctif</div><p class="r">Je demande que, il faut que, à condition que, avant que, bien que : subjonctif, sans exception.</p><p class="pr">Ce n'est pas le doute qui commande, c'est le déclencheur. « Bien que la carte soit restée dans mon portefeuille » est parfaitement certain et prend quand même le subjonctif. À l'inverse, « j'espère que » est bien plus incertain et prend l'indicatif.</p></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Ce qui déclenche, ce qui ne déclenche pas</h2><table><thead><tr><th>Subjonctif</th><th>Indicatif</th></tr></thead><tbody><tr><td class="cle">je demande que</td><td>j'espère que</td></tr><tr><td class="cle">il faut que</td><td>je pense que</td></tr><tr><td class="cle">à condition que</td><td>parce que</td></tr><tr><td class="cle">avant que</td><td>après que</td></tr><tr><td class="cle">bien que</td><td>puisque</td></tr></tbody></table></section><section class="bloc card"><div class="lbl">Application</div><h2 class="t">Mettez le verbe au subjonctif présent</h2><p class="consigne">Le verbe est entre parenthèses.</p><ol class="ex"><li><span class="q">Je demande que le montant ___ (être) retiré de mon relevé.</span><span class="ligne ligne--court"></span></li><li><span class="q">Il faut que vous ___ (faire) bloquer la carte aujourd'hui.</span><span class="ligne ligne--court"></span></li><li><span class="q">Je souhaite que ma contestation ___ (avoir) une réponse écrite.</span><span class="ligne ligne--court"></span></li><li><span class="q">J'accepte, à condition que le taux ___ (rester) fixe.</span><span class="ligne ligne--court"></span></li><li><span class="q">Écrivez avant que le délai de trente jours ___ (finir).</span><span class="ligne ligne--court"></span></li><li><span class="q">Bien que la carte ___ (être) restée chez moi, l'achat a passé.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Le piège</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">j'espère que le montant soit retiré</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">j'espère que le montant sera retiré</p></div></div><div class="note">Espérer prend l'indicatif, souhaiter prend le subjonctif. Deux verbes voisins, deux modes. Et quand les deux verbes ont le même sujet, on n'emploie pas « que » du tout : « je veux obtenir une réponse », jamais « je veux que j'obtienne ».</div></section><section class="bloc card"><div class="lbl">La lettre</div><h2 class="t">Six parties, six travaux</h2><table><thead><tr><th>La partie</th><th>Ce qu'on y écrit</th></tr></thead><tbody><tr><td class="cle">l'objet</td><td>motif, numéro de dossier, montant</td></tr><tr><td class="cle">1er paragraphe</td><td>ce qui s'est passé, et quand</td></tr><tr><td class="cle">2e paragraphe</td><td>les faits qui appuient</td></tr><tr><td class="cle">3e paragraphe</td><td>ce que je demande, pour quelle date</td></tr><tr><td class="cle">la salutation</td><td>fermée, neutre, sans remerciement</td></tr></tbody></table></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écris la première phrase de ta lettre, avec une mise en relief.</p><ul><li>Ce que je conteste, ce n'est pas le service, c'est une opération de 780 $ que je n'ai pas faite.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Mettre en avant ce qui compte</h2><section class="bloc card ml"><h3>Une phrase, une idée mise en lumière</h3><p class="mp">À l'oral, on appuie sur un mot avec la voix. À l'écrit, la voix n'existe plus : il faut construire la phrase pour que le mot important passe devant. C'est ce que fait la mise en relief, et c'est ce qui rend une lettre de réclamation lisible par quelqu'un de pressé — chaque phrase dit une chose, et on voit laquelle du premier coup d'œil.</p><div class="note">Le programme du niveau 7 la nomme sous « phrases emphatiques », cinq points. Elle sert ici deux fois : dans la production orale, pour dire ce qui a fait pencher la décision ; dans la lettre, pour dire ce qu'on conteste.</div></section><section class="bloc card ml"><h3>C'est… qui met en avant celui qui fait l'action</h3><p class="mp">On extrait le sujet et on le place entre <b>c'est</b> et <b>qui</b>.</p><table class="ana"><tr><td>Avant</td><td class="">L'agent a bloqué la carte.</td></tr><tr><td>Après</td><td class="cle">C'est l'agent qui a bloqué la carte.</td></tr><tr><td>La règle à ne pas rater</td><td class="">qui ne s'élide jamais : « c'est moi qui ai », jamais « qu'ai »</td></tr></table><p class="dit"><span class="k">On dit</span> C'est l'agent qui a bloqué la carte à onze heures vingt.</p><div class="note">Le verbe s'accorde avec le mot mis en avant, pas avec « c'est » : « c'est moi qui <b>ai</b> appelé », « c'est nous qui <b>avons</b> écrit ».</div></section><section class="bloc card ml"><h3>C'est… que met en avant tout le reste</h3><p class="mp">Le complément, la date, le lieu, le moyen : tout ce qui n'est pas le sujet passe entre <b>c'est</b> et <b>que</b>.</p><table class="ana"><tr><td>Un complément</td><td class="">C'est ce montant-là que je conteste.</td></tr><tr><td>Une date</td><td class="cle">C'est le quinze mars que j'ai appelé.</td></tr><tr><td>L'élision</td><td class="">que s'élide normalement devant une voyelle : « qu'elle », « qu'il »</td></tr></table><p class="dit"><span class="k">On dit</span> C'est le quinze mars que j'ai appelé le service de sécurité.</p><div class="note">« Qui » ne s'élide jamais, « que » s'élide toujours. C'est la seule chose à retenir pour ne pas confondre les deux tournures à l'écrit.</div></section><section class="bloc card ml"><h3>Ce qui… c'est et ce que… c'est annoncent avant de dire</h3><p class="mp">On prévient le lecteur qu'une chose importante arrive, puis on la dit. La virgule fait la pause.</p><table class="ana"><tr><td>Sujet</td><td class="">Ce qui m'inquiète, c'est le délai.</td></tr><tr><td>Complément</td><td class="cle">Ce que je demande, c'est un écrit.</td></tr><tr><td>Le choix entre les deux</td><td class="">même question que pour qui et que : est-ce sujet ou complément ?</td></tr></table><p class="dit"><span class="k">On dit</span> Ce que je conteste, ce n'est pas le service, c'est une opération que je n'ai pas faite.</p><div class="note">La forme négative — « ce n'est pas… , c'est… » — est la plus utile de toutes dans une réclamation : elle écarte le malentendu avant qu'il naisse.</div></section><section class="bloc card ml"><h3>La même information, trois mises en relief</h3><p class="mp">Choisissez l'information à mettre en avant, puis la tournure.</p><table class="labo"><thead><tr><th>Quoi mettre en avant ? · Quelle tournure de relief ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">ce qui / ce que… c'est + c'est… qui / que</td><td>C'est moi qui ai signalé l'opération, le jour même.</td><td>qui ne s'élide pas, et le verbe s'accorde avec « moi »</td></tr><tr><td class="cle">ce qui / ce que… c'est + ce qui / ce que… c'est</td><td>Ce qui compte ici, c'est que j'ai appelé le jour même.</td><td>on annonce, puis on dit</td></tr><tr><td class="cle">ce qui / ce que… c'est + la forme négative</td><td>Ce n'est pas la banque qui a signalé l'opération, c'est moi.</td><td>la forme négative écarte le malentendu</td></tr><tr><td class="cle">le montant + c'est… qui / que</td><td>C'est une opération de sept cent quatre-vingts dollars que je conteste.</td><td>que, parce que le groupe est complément</td></tr><tr><td class="cle">le montant + ce qui / ce que… c'est</td><td>Ce que je conteste, c'est une opération de sept cent quatre-vingts dollars.</td><td>la phrase d'ouverture d'une lettre de réclamation</td></tr><tr><td class="cle">le montant + la forme négative</td><td>Ce que je conteste, ce n'est pas le service, c'est ce montant-là.</td><td>on dit d'abord ce qu'on ne reproche pas</td></tr><tr><td class="cle">la date + c'est… qui / que</td><td>C'est le quinze mars que j'ai appelé, à onze heures vingt.</td><td>la date passe devant : elle est la preuve</td></tr><tr><td class="cle">la date + ce qui / ce que… c'est</td><td>Ce qui est important, c'est la date de mon appel.</td><td>annoncer l'importance avant de la donner</td></tr><tr><td class="cle">la date + la forme négative</td><td>Ce n'est pas le jour du relevé qui compte, c'est celui de mon appel.</td><td>une correction, dite sans reproche</td></tr></tbody></table><div class="note">Toutes ces phrases sont plus longues que la phrase simple correspondante. C'est le prix de la mise en relief, et il vaut la peine d'être payé une ou deux fois par lettre, pas dix.</div></section><section class="bloc card ml"><h3>Sept phrases plates, sept phrases qui portent</h3><p class="mp">À gauche la phrase ordinaire, à droite la même, avec le mot en avant.</p><table class="ex2"><tr><td>J'ai appelé le quinze mars.</td><td>C'est le quinze mars que j'ai appelé.</td></tr><tr><td>L'agent a bloqué la carte.</td><td>C'est l'agent qui a bloqué la carte.</td></tr><tr><td>Le délai m'inquiète.</td><td>Ce qui m'inquiète, c'est le délai.</td></tr><tr><td>Je demande un écrit.</td><td>Ce que je demande, c'est un écrit.</td></tr><tr><td>Je conteste ce montant.</td><td>C'est ce montant-là que je conteste.</td></tr><tr><td>J'ai signalé l'opération moi-même.</td><td>C'est moi qui ai signalé l'opération.</td></tr><tr><td>Je veux la correction du relevé.</td><td>Ce que j'attends, c'est la correction de mon relevé.</td></tr></table></section><section class="bloc card ml"><h3>Quatre mises en relief</h3><p class="mp">Répondez sans regarder les exemples ci-dessus.</p><ol class="check"><li><span class="q">On écrit…</span><ul class="opts"><li>c'est moi qu'ai appelé</li><li>c'est moi qui ai appelé</li></ul></li><li><span class="q">Pour mettre en avant une date, on emploie…</span><ul class="opts"><li>c'est… qui</li><li>c'est… que</li></ul></li><li><span class="q">« Ce qui… c'est » s'emploie quand le groupe mis en avant est…</span><ul class="opts"><li>sujet</li><li>complément</li></ul></li><li><span class="q">Dans « c'est moi qui… », le verbe s'accorde avec…</span><ul class="opts"><li>c'est</li><li>moi</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> c'est moi qui ai appelé — « Qui » ne s'élide jamais, devant aucune voyelle. · <b>2.</b> c'est… que — Tout ce qui n'est pas le sujet passe par « que ». · <b>3.</b> sujet — Même question que pour choisir entre qui et que. · <b>4.</b> moi — C'est moi qui ai, c'est nous qui avons, c'est vous qui avez.</div></section><section class="bloc card ml"><h3>Trois mises en relief manquées</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">élider « qui »</p><div class="k">Ce qui arrive</div><p class="ph">le laisser entier, toujours</p><p class="px">« C'est moi qu'ai appelé » s'entend dans la langue parlée ; à l'écrit, c'est une faute qui se voit tout de suite.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">oublier la virgule avant « c'est »</p><div class="k">Ce qui arrive</div><p class="ph">la poser systématiquement</p><p class="px">« Ce qui m'inquiète, c'est le délai. » Sans la virgule, la pause disparaît et la mise en relief avec elle.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">mettre en relief à toutes les phrases</p><div class="k">Ce qui arrive</div><p class="ph">une ou deux par lettre</p><p class="px">La tournure attire l'œil parce qu'elle est rare. Employée partout, elle n'attire plus rien et alourdit tout.</p></div></div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Le subjonctif : c'est le mot d'avant qui décide</h2><section class="bloc card ml"><h3>Ce n'est pas une question de doute, c'est une question de déclencheur</h3><p class="mp">On enseigne souvent que le subjonctif exprime l'incertitude. C'est une bonne image et un mauvais critère : « j'espère que » est bien plus incertain que « il faut que », et pourtant c'est le deuxième qui prend le subjonctif. Le vrai critère est mécanique : certains mots le déclenchent, d'autres non. La liste est courte, et elle s'apprend.</p><div class="note">Le programme du niveau 7 lui consacre cinq points, sous « subjonctif présent ». Dans ce module, il sert à demander fermement sans agresser : « je demande que le montant soit retiré ».</div></section><section class="bloc card ml"><h3>Les déclencheurs, et eux seuls</h3><p class="mp">Après ces mots-là, le subjonctif, sans exception et quel que soit le sens de la phrase.</p><table class="ana"><tr><td>Volonté</td><td class="">je veux que · je demande que · je souhaite que · il faut que</td></tr><tr><td>Doute et négation</td><td class="cle">je ne crois pas que · je ne pense pas que</td></tr><tr><td>Conjonctions</td><td class="">à condition que · avant que · pour que · bien que · jusqu'à ce que</td></tr></table><p class="dit"><span class="k">On dit</span> Je demande que, il faut que, à condition que, avant que, pour que, bien que.</p><div class="note">Notez « bien que » : la phrase qui suit est parfaitement certaine — « bien que la carte soit restée dans mon portefeuille » — et prend quand même le subjonctif. La preuve que le sens n'y est pour rien.</div></section><section class="bloc card ml"><h3>Les faux amis : ceux qui n'en veulent pas</h3><p class="mp">Ils ressemblent aux déclencheurs et prennent l'indicatif.</p><table class="ana"><tr><td>Opinion</td><td class="">je pense que · je crois que · il me semble que</td></tr><tr><td>Espoir</td><td class="cle">j'espère que — l'un des plus contre-intuitifs</td></tr><tr><td>Temps et cause</td><td class="">après que · parce que · puisque</td></tr></table><p class="dit"><span class="k">On dit</span> J'espère que le montant sera retiré — jamais « soit retiré ».</p><div class="note">« Après que » prend l'indicatif, « avant que » le subjonctif : la chose est faite dans un cas, pas encore dans l'autre. C'est la seule paire où l'image du doute fonctionne.</div></section><section class="bloc card ml"><h3>Comment il se fabrique, en une ligne</h3><p class="mp">Radical de la troisième personne du pluriel du présent, plus les terminaisons.</p><table class="ana"><tr><td>Les terminaisons</td><td class="">-e, -es, -e, -ions, -iez, -ent</td></tr><tr><td>Deux exemples</td><td class="cle">ils retirent → que je retire · ils remboursent → que vous remboursiez</td></tr><tr><td>Les six irréguliers du module</td><td class="">que je sois · que j'aie · que vous fassiez · que je puisse · que j'aille · que je sache</td></tr></table><p class="dit"><span class="k">On dit</span> Que je sois, que j'aie, que vous fassiez, que je puisse, que j'aille, que je sache.</p><div class="note">Pour <b>nous</b> et <b>vous</b>, la forme est celle de l'imparfait : que nous remboursions, que vous remboursiez. Ça se dit tout seul si on ne se force pas.</div></section><section class="bloc card ml"><h3>Le même verbe, avec et sans déclencheur</h3><p class="mp">Choisissez un verbe, puis le mot qui vient avant.</p><table class="labo"><thead><tr><th>Quel verbe du rendez-vous ? · Quel mot avant ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">j'espère que + je demande que</td><td>Je demande que le montant soit retiré de mon relevé.</td><td>déclencheur de volonté : subjonctif</td></tr><tr><td class="cle">j'espère que + j'espère que</td><td>J'espère que le montant sera retiré de mon relevé.</td><td>espérer prend l'indicatif : futur simple ici</td></tr><tr><td class="cle">j'espère que + à condition que</td><td>J'accepte, à condition que le montant soit retiré avant le 30 avril.</td><td>la conjonction déclenche, comme un verbe</td></tr><tr><td class="cle">faire + je demande que</td><td>Je demande que vous fassiez enquête sur cette opération.</td><td>faire est irrégulier : que vous fassiez</td></tr><tr><td class="cle">faire + j'espère que</td><td>J'espère que vous ferez enquête sur cette opération.</td><td>même idée, indicatif futur</td></tr><tr><td class="cle">faire + à condition que</td><td>Je signerai, à condition que vous fassiez le calcul par écrit.</td><td>la condition, dite fermement et poliment</td></tr><tr><td class="cle">rester + je demande que</td><td>Je demande que le taux reste fixe jusqu'à la fin du prêt.</td><td>rester est régulier : ils restent → que je reste</td></tr><tr><td class="cle">rester + j'espère que</td><td>J'espère que le taux restera fixe jusqu'à la fin du prêt.</td><td>un souhait, pas une demande — et l'institution l'entend ainsi</td></tr><tr><td class="cle">rester + à condition que</td><td>J'accepte le prêt, à condition que le taux reste fixe.</td><td>la phrase à connaître avant de signer quoi que ce soit</td></tr></tbody></table><div class="note">Comparez « je demande que » et « j'espère que » : la même idée, deux modes, et surtout deux effets très différents sur celui qui lit.</div></section><section class="bloc card ml"><h3>Huit débuts de phrase, et le mode qui suit</h3><p class="mp">À gauche le déclencheur, à droite ce qu'il commande.</p><table class="ex2"><tr><td>je demande que</td><td>subjonctif — que le montant soit retiré</td></tr><tr><td>il faut que</td><td>subjonctif — qu'il fasse bloquer la carte</td></tr><tr><td>à condition que</td><td>subjonctif — que le taux reste fixe</td></tr><tr><td>avant que</td><td>subjonctif — que le délai finisse</td></tr><tr><td>bien que</td><td>subjonctif — que la carte soit restée chez moi</td></tr><tr><td>j'espère que</td><td>indicatif — que le montant sera retiré</td></tr><tr><td>je pense que</td><td>indicatif — que c'est une fraude</td></tr><tr><td>après que</td><td>indicatif — après que j'ai appelé</td></tr></table></section><section class="bloc card ml"><h3>Quatre déclencheurs à reconnaître</h3><p class="mp">Répondez sans relire la liste des déclencheurs.</p><ol class="check"><li><span class="q">« J'espère que » demande…</span><ul class="opts"><li>le subjonctif</li><li>l'indicatif</li></ul></li><li><span class="q">« Bien que » demande le subjonctif même quand la chose est certaine…</span><ul class="opts"><li>vrai</li><li>faux</li></ul></li><li><span class="q">Le subjonctif se forme sur le radical de…</span><ul class="opts"><li>la 3e personne du pluriel</li><li>l'infinitif</li></ul></li><li><span class="q">Quand les deux verbes ont le même sujet, on met…</span><ul class="opts"><li>que + subjonctif</li><li>l'infinitif</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> l'indicatif — C'est le faux ami le plus fréquent : j'espère qu'il sera, jamais qu'il soit. · <b>2.</b> vrai — Ce qui prouve que le déclencheur compte, pas le sens. · <b>3.</b> la 3e personne du pluriel — Ils retirent → que je retire. Plus les terminaisons -e, -es, -e, -ions, -iez, -ent. · <b>4.</b> l'infinitif — « Je veux obtenir une réponse », jamais « je veux que j'obtienne ».</div></section><section class="bloc card ml"><h3>Trois modes échangés</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">mettre le subjonctif après « espérer »</p><div class="k">Ce qui arrive</div><p class="ph">retenir la paire espérer / souhaiter</p><p class="px">« Je souhaite que ce soit » — subjonctif ; « j'espère que ce sera » — indicatif. Deux verbes voisins, deux modes.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">employer « que » quand le sujet ne change pas</p><div class="k">Ce qui arrive</div><p class="ph">passer à l'infinitif</p><p class="px">« Je demande d'être remboursée » quand c'est moi ; « je demande que le montant soit retiré » quand c'est autre chose.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">chercher le doute dans la phrase</p><div class="k">Ce qui arrive</div><p class="ph">chercher le mot d'avant</p><p class="px">Le critère est mécanique. Apprenez la liste des déclencheurs et cessez d'interroger le sens.</p></div></div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>La lettre de réclamation : six parties, un ton</h2><section class="bloc card ml"><h3>Elle n'a qu'un but : obtenir une réponse écrite</h3><p class="mp">Tout ce qui ne contribue pas à ce but l'affaiblit. Le récit de votre journée, ce que vous pensez du service, le nombre de fois où vous avez rappelé : rien de cela n'aide. Une lettre de réclamation efficace tient en trois paragraphes, se lit en une minute, et se termine par une date. Le lecteur est quelqu'un qui traite quarante dossiers par jour ; écrivez pour lui.</p><div class="note">Cette tâche vient des attentes de fin de cours du niveau 7 : « à l'aide d'un modèle, il rédige une lettre de réclamation », « il organise ses idées à l'aide de paragraphes, entre lesquels il établit des liens au moyen de connecteurs ».</div></section><section class="bloc card ml"><h3>L'objet fait le tri</h3><p class="mp">C'est la seule ligne que tout le monde lit. Elle décide sur quelle pile la lettre atterrit.</p><table class="ana"><tr><td>Ce qu'il contient</td><td class="">le mot « contestation », le numéro de dossier, le montant</td></tr><tr><td>Ce qu'il n'est pas</td><td class="cle">une phrase complète, avec un verbe conjugué</td></tr><tr><td>Un exemple</td><td class="">Contestation — dossier 4471822 — opération de 780 $ du 14 mars</td></tr></table><p class="dit"><span class="k">On dit</span> Contestation, dossier quarante-quatre soixante et onze huit cent vingt-deux, opération de sept cent quatre-vingts dollars.</p><div class="note">Un objet vague — « problème avec ma carte » — met la lettre sur la pile des lettres à lire plus tard, et il n'y a pas de plus tard.</div></section><section class="bloc card ml"><h3>Trois paragraphes, trois travaux</h3><p class="mp">Un par idée, et jamais deux idées dans le même.</p><table class="ana"><tr><td>Le premier</td><td class="">ce qui s'est passé, la date de l'opération, la date de l'appel</td></tr><tr><td>Le deuxième</td><td class="cle">les faits qui appuient : la carte en votre possession, le commerçant inconnu</td></tr><tr><td>Le troisième</td><td class="">ce que vous demandez, et pour quelle date</td></tr></table><p class="dit"><span class="k">On dit</span> Ce qui s'est passé, les faits qui appuient, ce que je demande et pour quand.</p><div class="note">Le lecteur pressé lit le premier paragraphe et le dernier. Mettez donc dans le premier ce qui identifie le dossier, et dans le dernier ce que vous voulez.</div></section><section class="bloc card ml"><h3>Le ton se choisit, et il se tient jusqu'à la fin</h3><p class="mp">Ferme et neutre. On ne s'excuse pas d'écrire, et on n'accuse personne.</p><table class="ana"><tr><td>À éviter</td><td class="">« je suis désolée de vous déranger » · « c'est inadmissible »</td></tr><tr><td>À employer</td><td class="cle">« je vous demande de » · « je constate que » · « conformément à »</td></tr><tr><td>La règle</td><td class="">un ton choisi au premier mot et tenu jusqu'au dernier</td></tr></table><p class="dit"><span class="k">On dit</span> Je vous demande de retirer ce montant de mon relevé d'ici le 30 avril.</p><div class="note">Le programme le formule ainsi : « choisir et maintenir un ton approprié à la situation et en fonction de ses intentions ». Le mot qui compte est <b>maintenir</b> : une lettre qui commence poliment et finit sèchement se retourne contre son auteur.</div></section><section class="bloc card ml"><h3>Une date se demande, elle ne se souhaite pas</h3><p class="mp">C'est la différence entre une lettre qui obtient une réponse et une lettre qui n'en obtient pas.</p><table class="ana"><tr><td>Faible</td><td class="">J'espère avoir de vos nouvelles bientôt.</td></tr><tr><td>Fort</td><td class="cle">Je vous demande de me répondre par écrit d'ici le 30 avril.</td></tr><tr><td>Pourquoi</td><td class="">une date crée une échéance ; un souhait n'en crée aucune</td></tr></table><p class="dit"><span class="k">On dit</span> Je vous demande de me répondre par écrit d'ici le 30 avril.</p><div class="note">Et notez que la version forte n'est pas plus agressive : elle est plus précise. C'est la précision qui fait le travail, pas le ton.</div></section><section class="bloc card ml"><h3>Sept phrases à ne pas écrire, et par quoi les remplacer</h3><p class="mp">À gauche ce qu'on écrit spontanément, à droite ce qui fonctionne.</p><table class="ex2"><tr><td>« Problème avec ma carte »</td><td>« Contestation — dossier 4471822 — 780 $ du 14 mars »</td></tr><tr><td>« Je suis désolée de vous déranger »</td><td>(rien : on entre dans le sujet)</td></tr><tr><td>« C'est inadmissible »</td><td>« Je constate que le montant figure toujours au relevé »</td></tr><tr><td>« J'ai rappelé quatre fois »</td><td>« J'ai signalé l'opération le 15 mars à 11 h 20 »</td></tr><tr><td>« Vous devriez faire attention »</td><td>« Je vous demande de faire enquête »</td></tr><tr><td>« J'espère une réponse rapide »</td><td>« Je vous demande de répondre d'ici le 30 avril »</td></tr><tr><td>« En vous remerciant à l'avance »</td><td>« Veuillez agréer mes salutations distinguées »</td></tr></table></section><section class="bloc card ml"><h3>Quatre choix de rédaction</h3><p class="mp">Répondez en pensant à votre propre lettre.</p><ol class="check"><li><span class="q">L'objet d'une lettre de réclamation contient…</span><ul class="opts"><li>une phrase complète</li><li>le motif, le numéro de dossier et le montant</li></ul></li><li><span class="q">Le lecteur pressé lit…</span><ul class="opts"><li>tout</li><li>le premier paragraphe et le dernier</li></ul></li><li><span class="q">« J'espère avoir de vos nouvelles » vaut…</span><ul class="opts"><li>moins qu'une date</li><li>autant qu'une date</li></ul></li><li><span class="q">Le ton d'une réclamation est…</span><ul class="opts"><li>ferme et neutre</li><li>chaleureux puis ferme</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> le motif, le numéro de dossier et le montant — Pas de verbe conjugué : c'est une étiquette, pas une phrase. · <b>2.</b> le premier paragraphe et le dernier — Mettez-y l'identification et la demande. · <b>3.</b> moins qu'une date — Une date crée une échéance ; un souhait n'engage personne. · <b>4.</b> ferme et neutre — Choisi au premier mot, tenu jusqu'au dernier.</div></section><section class="bloc card ml"><h3>Trois lettres qui n'obtiennent rien</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">raconter toute l'histoire</p><div class="k">Ce qui arrive</div><p class="ph">garder les dates et les montants</p><p class="px">Ce qui prouve n'est pas ce qui émeut : la date de l'appel, l'heure, le nom de la personne, le numéro de dossier.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">mêler la colère à la demande</p><div class="k">Ce qui arrive</div><p class="ph">écrire, laisser dormir une nuit, relire</p><p class="px">La phrase qui soulage à l'écriture est presque toujours celle qui affaiblit à la lecture.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">terminer sans date</p><div class="k">Ce qui arrive</div><p class="ph">fixer une échéance raisonnable</p><p class="px">Trente jours, dix jours ouvrables : n'importe quelle date précise vaut mieux que « bientôt ».</p></div></div></section></section></div>
+<footer><span>D2 · Emprunter, épargner, se protéger</span><span>Fiche élève</span></footer>
+</body>
+</html>

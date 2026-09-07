@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C2 · Le décor et l'évènement — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance C2 · Module 6 · 75 minutes</div>
+    <h1>Le décor et l'évènement</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Deux temps, deux rôles. L'imparfait pour ce qui durait autour, le passé composé pour ce qui est arrivé. Ce n'est pas de la grammaire savante : c'est ce qui permet à l'infirmière de comprendre.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>employer l'imparfait pour le décor et le passé composé pour les faits ;</li><li>former l'imparfait à partir du radical de « nous » ;</li><li>accorder le participe passé avec l'auxiliaire être ;</li><li>raconter une nuit en cinq phrases organisées.</li></ol></section><section class="bloc regle"><div class="lbl">L'imparfait plante le décor, le passé composé raconte</div><p class="r">Elle avait de la fièvre. Elle est tombée.</p><p class="pr">L'imparfait dit ce qui durait, se répétait ou était vrai autour. Le passé composé dit ce qui est arrivé une fois, à un moment qu'on peut nommer.</p></section><section class="bloc card"><div class="lbl">Les signaux</div><h2 class="t">Les mots qui appellent un temps</h2><table><thead><tr><th>Ils appellent l'imparfait</th><th>Ils appellent le passé composé</th></tr></thead><tbody><tr><td class="cle">depuis, ça faisait… que</td><td>hier, cette nuit, ce matin-là</td></tr><tr><td class="cle">tous les jours, souvent, toujours</td><td>à deux heures, vers minuit</td></tr><tr><td class="cle">pendant que, quand (le décor)</td><td>tout d'un coup, soudain</td></tr><tr><td class="cle">avant, dans ce temps-là</td><td>trois fois, une fois</td></tr><tr><td class="cle">c'était, il faisait, elle avait</td><td>elle est tombée, j'ai appelé</td></tr></tbody></table></section><section class="bloc"><div class="lbl">Former les deux temps</div><h2 class="t">Deux mécaniques, peu d'exceptions</h2><div class="grid"><div class="card"><h3>Imparfait</h3><p>Le radical de « nous » au présent + -ais, -ais, -ait, -ions, -iez, -aient. Nous fais-ons donne je faisais.</p></div><div class="card"><h3>Une seule exception</h3><p>être donne j'étais, tu étais, il était.</p></div><div class="card"><h3>Passé composé avec avoir</h3><p>j'ai appelé, elle a dormi, nous avons attendu.</p></div><div class="card"><h3>Passé composé avec être</h3><p>les verbes de mouvement et tous les pronominaux : elle est tombée, elle s'est levée.</p></div></div></section><section class="bloc card"><div class="lbl">Formation</div><h2 class="t">Imparfait ou passé composé ?</h2><p class="consigne">Mettez le verbe au temps qui convient.</p><ol class="ex"><li><span class="q">Elle ___ (avoir) de la fièvre depuis mercredi.</span><span class="ligne ligne--court"></span></li><li><span class="q">Elle ___ (manger) très peu depuis deux jours.</span><span class="ligne ligne--court"></span></li><li><span class="q">Cette nuit, elle ___ (se lever) pour aller à la toilette.</span><span class="ligne ligne--court"></span></li><li><span class="q">Elle ___ (tomber) dans l'escalier vers deux heures.</span><span class="ligne ligne--court"></span></li><li><span class="q">Il ___ (faire) noir et l'escalier ___ (être) étroit.</span><span class="ligne ligne--court"></span></li><li><span class="q">J'___ (appeler) le 9-1-1 tout de suite après.</span><span class="ligne ligne--court"></span></li><li><span class="q">Quand je suis arrivée en bas, elle me ___ (parler) déjà.</span><span class="ligne ligne--court"></span></li><li><span class="q">Les ambulanciers ___ (arriver) sept minutes plus tard.</span><span class="ligne ligne--court"></span></li><li><span class="q">Avant sa chute, elle ___ (marcher) sans marchette.</span><span class="ligne ligne--court"></span></li><li><span class="q">Elle ___ (ne pas perdre) connaissance.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Employer avoir avec un verbe pronominal</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">Elle s'a levée à deux heures.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">Elle s'est levée à deux heures.</p></div></div><div class="note">Tous les verbes pronominaux prennent être : elle s'est levée, je me suis blessé, ils se sont assis.</div></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Oublier l'accord avec être</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">Elle est tombé.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">Elle est tombée.</p></div></div><div class="note">Avec l'auxiliaire être, le participe s'accorde avec le sujet : elle est tombée, ils sont arrivés, nous sommes restées.</div></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Racontez en cinq phrases une nuit où quelqu'un n'allait pas bien.</p><ul><li>Deux phrases à l'imparfait pour le décor, trois au passé composé.</li><li>Une nuit inventée fait le même travail qu'une nuit vécue.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Imparfait et passé composé : le décor et l'évènement</h2><section class="bloc card ml"><h3>Deux temps, deux rôles</h3><p class="mp">Au triage, on vous demandera de raconter depuis le début. Un récit compréhensible tient sur deux temps : l'<b>imparfait</b> pour ce qui durait autour de l'évènement, le <b>passé composé</b> pour l'évènement lui-même. Ce n'est pas une question de grammaire savante : c'est ce qui permet à l'infirmière de distinguer ce qui dure de ce qui vient d'arriver.</p><div class="note">Un récit tout entier au passé composé se lit comme une liste. Un récit tout entier à l'imparfait n'a plus d'évènement. Il faut les deux.</div></section><section class="bloc card ml"><h3>L'imparfait plante le décor</h3><p class="mp">Ce qui durait, ce qui se répétait, ce qui était vrai autour.</p><table class="ana"><tr><td>Ce qui durait</td><td class="">elle avait de la fièvre depuis mercredi</td></tr><tr><td>Ce qui se répétait</td><td class="cle">elle mangeait deux cuillerées par repas</td></tr><tr><td>Le décor</td><td class="">il faisait noir et l'escalier était étroit</td></tr></table><p class="dit"><span class="k">On dit</span> Elle avait de la fièvre depuis mercredi et elle mangeait très peu.</p><div class="note">Formation : le radical du « nous » au présent, plus -ais, -ais, -ait, -ions, -iez, -aient. Nous fais-ons → je faisais. Une seule exception : être → j'étais.</div></section><section class="bloc card ml"><h3>Le passé composé raconte l'évènement</h3><p class="mp">Ce qui est arrivé une fois, à un moment qu'on peut nommer.</p><table class="ana"><tr><td>Avec avoir</td><td class="">j'ai appelé le 9-1-1</td></tr><tr><td>Avec être</td><td class="cle">elle est tombée · elle s'est levée</td></tr><tr><td>Le participe s'accorde avec être</td><td class="">elle est tombé<b>e</b> · ils sont arrivé<b>s</b></td></tr></table><p class="dit"><span class="k">On dit</span> Elle s'est levée à deux heures et elle est tombée dans l'escalier.</p><div class="note">Les verbes de mouvement et tous les verbes pronominaux prennent <b>être</b> : aller, venir, entrer, sortir, monter, descendre, tomber, rester, se lever, se blesser.</div></section><section class="bloc card ml"><h3>Le même verbe, deux temps, deux sens</h3><p class="mp">Ce n'est pas le verbe qui décide : c'est ce que vous voulez dire.</p><table class="ana"><tr><td>Le décor</td><td class="">elle dormait quand je suis rentrée</td></tr><tr><td>Le fait</td><td class="cle"> elle a dormi quatre heures</td></tr><tr><td>Le changement</td><td class="">au début c'était rare, puis c'est devenu quotidien</td></tr></table><p class="dit"><span class="k">On dit</span> Elle dormait quand je suis rentrée ; elle a dormi quatre heures en tout.</p><div class="note">Test rapide : si vous pouvez ajouter « ce jour-là, à telle heure », c'est le passé composé. Si vous pouvez ajouter « dans ce temps-là », c'est l'imparfait.</div></section><section class="bloc card ml"><h3>La même nuit, racontée cinq fois</h3><p class="mp">Choisissez un moment du récit et écoutez comment les deux temps se répartissent.</p><table class="labo"><thead><tr><th>Quel moment ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">les deux jours d'avant</td><td>Elle avait de la fièvre depuis mercredi et elle mangeait très peu.<span class="tags">elle avait</span></td><td>deux imparfaits : rien n'arrive encore</td></tr><tr><td class="cle">le moment de la chute</td><td>Vers deux heures, elle s'est levée pour aller à la toilette et <b>elle est tombée</b>.</td><td>deux passés composés : l'évènement</td></tr><tr><td class="cle">l'arrivée en bas de l'escalier</td><td>Quand je suis arrivée en bas, elle me parlait déjà.<span class="tags">elle parlait</span></td><td>un de chaque : le décor et le fait, dans la même phrase</td></tr><tr><td class="cle">l'appel et l'attente</td><td>J'ai appelé le 9-1-1 tout de suite et je suis restée en ligne.<span class="tags">j'ai appelé</span></td><td>la suite des actions</td></tr><tr><td class="cle">l'arrivée des ambulanciers</td><td>Ils sont arrivés sept minutes plus tard ; elle avait encore mal à la hanche.<span class="tags">ils sont arrivés</span></td><td>le fait, puis l'état qui durait</td></tr></tbody></table><div class="note">Écoutez la troisième : « quand je suis arrivée, elle me parlait ». C'est la structure la plus utile du récit — un évènement dans un décor.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six phrases du récit de Marisol, au triage.</p><table class="ex2"><tr><td>Elle avait de la fièvre depuis mercredi.</td><td>imparfait : ça durait</td></tr><tr><td>Elle mangeait très peu depuis deux jours.</td><td>imparfait : ça se répétait</td></tr><tr><td>Cette nuit, elle s'est levée pour aller à la toilette.</td><td>passé composé : un fait daté</td></tr><tr><td>Elle est tombée dans l'escalier vers deux heures.</td><td>passé composé avec être</td></tr><tr><td>Quand je suis arrivée en bas, elle me parlait déjà.</td><td>les deux dans une phrase</td></tr><tr><td>Je n'ai pas vu la chute, j'étais en haut.</td><td>le fait, puis le décor</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges du récit</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">tout mettre au passé composé</p><div class="k">Ce qui arrive</div><p class="ph">« elle a eu de la fièvre, elle a mangé peu, elle est tombée »</p><p class="px">Le décor disparaît, et l'infirmière ne sait plus ce qui durait depuis deux jours. « Elle avait de la fièvre » n'est pas la même information que « elle a eu de la fièvre ».</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">oublier l'accord avec être</p><div class="k">Ce qui arrive</div><p class="ph">« elle est tombé »</p><p class="px">Avec l'auxiliaire être, le participe s'accorde avec le sujet : elle est tombé<b>e</b>, ils sont arrivé<b>s</b>, nous sommes resté<b>es</b>.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">employer avoir avec les verbes pronominaux</p><div class="k">Ce qui arrive</div><p class="ph">« elle s'a levée »</p><p class="px">Tous les verbes pronominaux prennent être : elle <b>s'est</b> levée, je <b>me suis</b> blessé, ils <b>se sont</b> assis.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">« Elle ___ de la fièvre depuis mercredi » :</span><ul class="opts"><li>avait</li><li>a eu</li></ul></li><li><span class="q">« Elle ___ dans l'escalier vers deux heures » :</span><ul class="opts"><li>tombait</li><li>est tombée</li></ul></li><li><span class="q">L'auxiliaire de « se lever » :</span><ul class="opts"><li>avoir</li><li>être</li></ul></li><li><span class="q">« Quand je suis arrivée, elle me ___ » :</span><ul class="opts"><li>parlait</li><li>a parlé</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> avait — Ça durait au moment de la chute : imparfait. · <b>2.</b> est tombée — Un évènement daté : passé composé. · <b>3.</b> être — Tous les verbes pronominaux prennent être. · <b>4.</b> parlait — C'était en cours quand l'autre fait est arrivé : imparfait.</div></section></section></div>
+<footer><span>C2 · Une nuit à l'urgence</span><span>Fiche élève</span></footer>
+</body>
+</html>

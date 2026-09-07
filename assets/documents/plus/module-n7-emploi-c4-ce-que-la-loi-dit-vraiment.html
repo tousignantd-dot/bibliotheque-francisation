@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C4 · Ce que la loi dit vraiment — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance C4 · Module 2 · 75 minutes</div>
+    <h1>Ce que la loi dit vraiment</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Deux sortes de textes vous concernent au travail : les politiques de l'employeur, qu'il écrit lui-même, et la loi, qui est la même partout au Québec et qu'aucun employeur ne peut réduire.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>distinguer une politique d'employeur d'une loi ;</li><li>savoir ce qu'un établissement de vingt travailleurs ou plus doit avoir ;</li><li>savoir qui élit le représentant en santé et en sécurité ;</li><li>dire dans quels cas le droit de refus s'applique, et dans quels cas non.</li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Deux régimes, selon la taille</h2><table><thead><tr><th>La taille</th><th>Ce qu'il faut avoir</th></tr></thead><tbody><tr><td class="cle">20 travailleurs et plus</td><td>un programme de prévention</td></tr><tr><td class="cle"></td><td>un comité de santé et de sécurité</td></tr><tr><td class="cle"></td><td>un représentant en santé et en sécurité</td></tr><tr><td class="cle">19 travailleurs et moins</td><td>un plan d'action</td></tr><tr><td class="cle"></td><td>un agent de liaison en santé et en sécurité</td></tr></tbody></table><div class="note">Règlement en vigueur depuis le 1er octobre 2025. Le seuil se compte par établissement, pas par entreprise.</div></section><section class="bloc regle"><div class="lbl">Le programme de prévention se met à jour chaque année</div><p class="r">Il s'élabore, s'applique et se met à jour annuellement.</p><p class="pr">Ce n'est pas un document qu'on écrit une fois et qu'on range. L'employeur doit y inscrire les risques de son établissement et ce qu'il fait pour les enlever, puis le reprendre tous les ans. Et tous les trois ans, il transmet à la CNESST ses priorités d'action et le suivi de ses mesures, sur le formulaire prescrit.</p></section><section class="bloc"><div class="lbl">Analyse</div><h2 class="t">Le représentant en santé et en sécurité</h2><div class="grid"><div class="card"><h3>Il est élu</h3><p>Par les travailleurs, pas nommé par la direction. C'est ce qui distingue Thérèse d'une gestionnaire.</p></div><div class="card"><h3>Il siège au comité</h3><p>Où au moins la moitié des membres, dont lui, représentent les travailleurs.</p></div><div class="card"><h3>On peut lui parler</h3><p>Sans passer par son supérieur. C'est tout l'intérêt d'une personne élue.</p></div><div class="card"><h3>Le comité réunit les deux côtés</h3><p>Employeur et travailleurs. Le représentant, lui, est d'un seul côté, et c'est écrit dans la loi.</p></div></div></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Le droit de refus, articles 12 et 13</h2><table><thead><tr><th>La situation</th><th>Ce que dit la loi</th></tr></thead><tbody><tr><td class="cle">On peut refuser</td><td>s'il y a des motifs raisonnables de croire à un danger</td></tr><tr><td class="cle">Pour soi ou pour autrui</td><td>un danger semblable pour une autre personne compte aussi</td></tr><tr><td class="cle">On ne peut pas refuser</td><td>si le refus met en péril immédiat une autre personne</td></tr><tr><td class="cle">Ni refuser</td><td>si les conditions sont normales pour ce genre de travail</td></tr><tr><td class="cle">En cas de désaccord</td><td>l'inspecteur de la CNESST décide s'il y a danger</td></tr></tbody></table><div class="note">« Motifs raisonnables de croire » n'exige pas d'avoir raison : il exige d'avoir des raisons.</div></section><section class="bloc card"><div class="lbl">Le document</div><h2 class="t">Le programme de prévention, et la loi</h2><p class="consigne">Un extrait du document interne, puis deux articles de la loi. Les deux premiers blocs sont écrits par l'employeur ; les deux articles, non.</p><div class="doc-in"><p>PROGRAMME DE PRÉVENTION — MEUBLES RIVE-DU-NORD. Section 3 : manutention manuelle. Mise à jour du 14 janvier.</p><p>3.1 L'établissement comptant vingt travailleurs ou plus, il élabore, applique et met à jour annuellement un programme de prévention. La présente section porte sur les postes où des charges sont soulevées à la main.</p><p>3.2 Sont visés les postes 3, 4 et 7. Le risque retenu est la manutention répétitive de charges prises sous la hauteur des genoux.</p><p>3.3 Mesures retenues : réduire le nombre de flexions par quart, maintenir la charge entre la hauteur des genoux et celle des épaules, et former le personnel aux techniques de levage.</p><p>3.4 Le comité de santé et de sécurité se réunit quatre fois par année. Au moins la moitié de ses membres, dont la représentante en santé et en sécurité, représentent les travailleurs.</p><p>LOI SUR LA SANTÉ ET LA SÉCURITÉ DU TRAVAIL — extraits.</p><p>Article 12. Un travailleur a le droit de refuser d'exécuter un travail s'il a des motifs raisonnables de croire que l'exécution de ce travail l'expose à un danger pour sa santé, sa sécurité ou son intégrité physique, ou peut avoir l'effet d'exposer une autre personne à un semblable danger.</p><p>Article 13. Le travailleur ne peut cependant pas refuser si ce refus met en péril immédiat la vie, la santé, la sécurité ou l'intégrité physique d'une autre personne, ou si les conditions d'exécution de ce travail sont normales dans le genre de travail qu'il exerce.</p><p>En cas de désaccord, l'inspecteur de la CNESST détermine s'il existe ou non un danger justifiant le refus.</p></div></section><section class="bloc card"><div class="lbl">Compréhension</div><h2 class="t">Six questions sur le document</h2><p class="consigne">Répondez d'après le document et les articles ci-dessus.</p><ol class="ex"><li><span class="q">À partir de combien de travailleurs un programme est-il obligatoire ?</span><span class="ligne ligne--court"></span></li><li><span class="q">À quelle fréquence se met-il à jour ?</span><span class="ligne ligne--court"></span></li><li><span class="q">Qui élit le représentant en santé et en sécurité ?</span><span class="ligne ligne--court"></span></li><li><span class="q">Dans quel cas peut-on refuser un travail ?</span><span class="ligne"></span></li><li><span class="q">Peut-on refuser si les conditions sont normales pour ce métier ?</span><span class="ligne ligne--court"></span></li><li><span class="q">Qui tranche s'il y a désaccord sur le danger ?</span><span class="ligne"></span></li></ol></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Compréhension</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">croire qu'une politique d'employeur est une loi</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">demander où c'est écrit</p></div></div><div class="note">Une politique interne s'applique parce que l'employeur s'y engage. Elle peut être meilleure que la loi - jamais moins bonne. Savoir de quel texte vient une règle change tout : on négocie une politique, on n'en négocie pas une loi.</div></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Cherchez si votre milieu de travail a un programme de prévention.</p><ul><li>Combien de personnes travaillent dans votre établissement ?</li><li>Y a-t-il un comité de santé et de sécurité ? Un représentant ?</li><li>À qui poseriez-vous la question ?</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Santé et sécurité : ce qui est vrai au Québec</h2><section class="bloc card ml"><h3>Deux sortes de règles, et il ne faut pas les confondre</h3><p class="mp">Dans une usine, deux sortes de textes vous concernent. Les <b>politiques de l'employeur</b>, qu'il écrit lui-même et qui changent d'une entreprise à l'autre. Et la <b>loi</b>, qui est la même partout au Québec et qu'aucun employeur ne peut réduire. Le programme de prévention de Meubles Rive-du-Nord est du premier type ; le droit de refus est du second.</p><div class="note">Tout ce qui suit se vérifie sur <b>cnesst.gouv.qc.ca</b>. Les personnes et l'usine de ce module sont inventées ; ces règles-là, non.</div></section><section class="bloc card ml"><h3>Vingt travailleurs : la ligne qui décide de tout</h3><p class="mp">Depuis le 1<sup>er</sup> octobre 2025, le Règlement sur les mécanismes de prévention et de participation en établissement s'applique.</p><table class="ana"><tr><td>20 travailleurs ou plus</td><td class="">programme de prévention · comité de santé et de sécurité · représentant en santé et en sécurité</td></tr><tr><td>19 travailleurs ou moins</td><td class="cle">plan d'action · agent de liaison en santé et en sécurité</td></tr><tr><td>Meubles Rive-du-Nord</td><td class="">soixante-deux personnes : le premier régime</td></tr></table><p class="dit"><span class="k">On dit</span> Vingt travailleurs ou plus : un programme de prévention, un comité, un représentant.</p><div class="note">Le seuil se compte par <b>établissement</b>, pas par entreprise : une compagnie de deux cents personnes réparties en trois petits ateliers relève du second régime pour chacun.</div></section><section class="bloc card ml"><h3>Le programme de prévention</h3><p class="mp">Ce n'est pas un document qu'on écrit une fois.</p><table class="ana"><tr><td>L'employeur doit</td><td class="">l'élaborer, l'appliquer et le mettre à jour chaque année</td></tr><tr><td>Tous les trois ans</td><td class="cle">transmettre à la CNESST les priorités d'action et le suivi des mesures</td></tr><tr><td>Ce qu'il contient</td><td class="">les risques de l'établissement et ce qu'on fait pour les enlever</td></tr></table><p class="dit"><span class="k">On dit</span> Le programme de prévention se met à jour annuellement.</p><div class="note">C'est le document qu'Aïcha ne connaissait pas et qui parlait déjà de son problème : la manutention manuelle répétitive.</div></section><section class="bloc card ml"><h3>Le représentant en santé et en sécurité</h3><p class="mp">Ce qui distingue Thérèse d'une gestionnaire.</p><table class="ana"><tr><td>Il est élu</td><td class="">par les travailleurs, pas nommé par la direction</td></tr><tr><td>Au comité</td><td class="cle">au moins la moitié des membres, dont lui, représentent les travailleurs</td></tr><tr><td>Ce que ça change</td><td class="">on peut lui parler sans passer par son supérieur</td></tr></table><p class="dit"><span class="k">On dit</span> La représentante en santé et en sécurité est élue par les travailleurs.</p><div class="note">Le comité de santé et de sécurité réunit les deux côtés. Le représentant, lui, est du côté des travailleurs, et c'est écrit dans la loi.</div></section><section class="bloc card ml"><h3>Le droit de refus</h3><p class="mp">Articles 12 et 13 de la Loi sur la santé et la sécurité du travail.</p><table class="ana"><tr><td>Article 12</td><td class="">un travailleur peut refuser s'il a des motifs raisonnables de croire que le travail l'expose à un danger — ou expose une autre personne à un danger semblable</td></tr><tr><td>Article 13 — il ne peut pas refuser</td><td class="cle">si le refus met en péril immédiat une autre personne, ou si les conditions sont normales pour ce genre de travail</td></tr><tr><td>En cas de désaccord</td><td class="">l'inspecteur de la CNESST décide s'il existe un danger</td></tr></table><p class="dit"><span class="k">On dit</span> Un travailleur a le droit de refuser d'exécuter un travail s'il a des motifs raisonnables de croire qu'il l'expose à un danger.</p><div class="note">« Motifs raisonnables de croire » n'exige pas d'avoir raison : il exige d'avoir des raisons. C'est une nuance juridique importante, et elle protège la personne de bonne foi.</div></section><section class="bloc card ml"><h3>Trois confusions courantes</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">croire qu'une politique d'employeur est une loi</p><div class="k">Ce qui arrive</div><p class="ph">demander où c'est écrit</p><p class="px">Une politique interne s'applique parce que l'employeur s'y engage. Elle peut être meilleure que la loi, jamais moins bonne.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">croire que le droit de refus sert à tout</p><div class="k">Ce qui arrive</div><p class="ph">le réserver au danger</p><p class="px">Il ne sert pas à contester un horaire ou une tâche déplaisante. Il porte sur un danger pour la santé, la sécurité ou l'intégrité.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">croire que refuser règle le problème</p><div class="k">Ce qui arrive</div><p class="ph">refuser fait venir un inspecteur</p><p class="px">Le refus déclenche une procédure : on en informe l'employeur, et s'il y a désaccord, l'inspecteur de la CNESST tranche.</p></div></div></section></section></div>
+<footer><span>C4 · Présenter un projet au travail</span><span>Fiche élève</span></footer>
+</body>
+</html>

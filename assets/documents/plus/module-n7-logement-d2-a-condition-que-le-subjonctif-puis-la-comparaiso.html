@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>D2 · À condition que… : le subjonctif, puis la comparaison — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance D2 · Module 4 · 75 minutes</div>
+    <h1>À condition que… : le subjonctif, puis la comparaison</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Une condition écrite parle de ce qui n'est pas encore arrivé et qui devrait arriver. C'est le terrain du subjonctif — et c'est pour ça qu'une promesse d'achat en est remplie.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>former le subjonctif présent des verbes réguliers et des cinq irréguliers ;</li><li>employer le subjonctif après à condition que, pour que, bien que ;</li><li>comparer deux options avec plus, moins, aussi et autant de ;</li><li>employer « d'autant plus… que » pour comparer et expliquer d'un coup.</li></ol></section><section class="bloc regle"><div class="lbl">Le subjonctif se prend sur « ils »</div><p class="r">On enlève -ent à la troisième personne du pluriel, on ajoute -e, -es, -e, -ions, -iez, -ent.</p><p class="pr">ils prennent donne que je prenne ; ils écrivent donne que j'écrive ; ils finissent donne que je finisse. Cinq verbes seuls font autrement, et ce sont malheureusement les plus fréquents : que je sois, que j'aie, que j'aille, que je fasse, que je puisse.</p></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Ce qui appelle le subjonctif, et ce qui ne l'appelle pas</h2><table><thead><tr><th>Ce que le mot annonce</th><th>Le mode</th></tr></thead><tbody><tr><td class="cle">une condition : à condition que, pourvu que</td><td>subjonctif</td></tr><tr><td class="cle">un but : pour que, afin que</td><td>subjonctif</td></tr><tr><td class="cle">une concession : bien que, quoique</td><td>subjonctif</td></tr><tr><td class="cle">une volonté : il faut que, je souhaite que</td><td>subjonctif</td></tr><tr><td class="cle">un fait établi : parce que, après que, puisque</td><td>indicatif</td></tr></tbody></table></section><section class="bloc card"><div class="lbl">Écriture</div><h2 class="t">Mettez le verbe au subjonctif présent</h2><p class="consigne">Un seul mot par trou.</p><ol class="ex"><li><span class="q">La promesse tient à condition que l'acheteuse (obtenir) ___ son prêt.</span><span class="ligne ligne--court"></span></li><li><span class="q">Il faut que l'inspection (être) ___ faite dans les dix jours.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le vendeur exige une réponse pour que le dossier (pouvoir) ___ avancer.</span><span class="ligne ligne--court"></span></li><li><span class="q">Bien que le fonds (avoir) ___ peu d'argent, l'immeuble est bien tenu.</span><span class="ligne ligne--court"></span></li><li><span class="q">Avant que vous (prendre) ___ votre décision, lisez le procès-verbal.</span><span class="ligne ligne--court"></span></li><li><span class="q">J'accepte, à condition que la fenêtre (aller) ___ à un vitrier.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc"><div class="lbl">Analyse</div><h2 class="t">Comparer deux options</h2><div class="grid"><div class="card"><h3>plus / moins / aussi … que</h3><p>Avec un adjectif ou un adverbe. Acheter coûte plus cher que louer. Le condo est aussi bien situé que mon logement.</p></div><div class="card"><h3>autant de … que</h3><p>Avec un nom. Je n'aurais pas autant de liberté qu'aujourd'hui. C'est la seule distinction à tenir.</p></div><div class="card"><h3>meilleur, mieux, pire</h3><p>Bon donne meilleur (adjectif), bien donne mieux (adverbe). « Plus bon » et « plus bien » n'existent pas.</p></div><div class="card"><h3>d'autant plus … que</h3><p>Compare et explique en même temps : la décision est d'autant plus difficile que les deux options se défendent.</p></div></div></section><section class="bloc card"><div class="lbl">Écriture</div><h2 class="t">Complétez la comparaison</h2><p class="consigne">Un seul mot par trou.</p><ol class="ex"><li><span class="q">Être propriétaire coûterait 600 $ ___ cher par mois que rester locataire.</span><span class="ligne ligne--court"></span></li><li><span class="q">Louer engage ___ longtemps qu'acheter.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le condo est ___ bien situé que le logement de la rue Bourdages.</span><span class="ligne ligne--court"></span></li><li><span class="q">En achetant, je n'aurais pas ___ de liberté qu'aujourd'hui.</span><span class="ligne ligne--court"></span></li><li><span class="q">Une entente écrite vaut ___ qu'une bonne mémoire.</span><span class="ligne ligne--court"></span></li><li><span class="q">Pour cette année, rester locataire reste la ___ solution.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écris une phrase avec « d'autant plus… que » sur ta propre situation.</p><ul><li>« La décision est d'autant plus difficile que… »</li><li>Une phrase.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Le subjonctif : le mode de ce qui doit arriver</h2><section class="bloc card ml"><h3>Pourquoi une promesse d'achat en est remplie</h3><p class="mp">« À condition que l'acheteur obtienne son prêt. » « Pour que le dossier puisse avancer. » « Bien que le fonds ait peu d'argent. » Une condition écrite parle de ce qui n'est pas encore arrivé et qui devrait arriver : c'est exactement le terrain du subjonctif. Ce n'est pas un mode savant réservé aux livres — c'est le mode ordinaire des contrats et des demandes.</p><div class="note">Le subjonctif présent compte cinq points aux savoirs du niveau 7. Le module l'aborde par son emploi le plus concret : les conditions d'un document et les demandes d'une négociation.</div></section><section class="bloc card ml"><h3>La forme régulière : la troisième personne du pluriel</h3><p class="mp">On part de « ils », on enlève -ent, on ajoute les terminaisons. Cela marche pour la grande majorité des verbes.</p><table class="ana"><tr><td>On part de</td><td class="">ils finiss<i>ent</i> · ils prenn<i>ent</i> · ils écriv<i>ent</i></td></tr><tr><td>On ajoute</td><td class="cle">-e, -es, -e, -ions, -iez, -ent</td></tr><tr><td>On obtient</td><td class="">que je finisse · que tu prennes · qu'il écrive</td></tr></table><p class="dit"><span class="k">On dit</span> que je finisse, que tu prennes, qu'il écrive, que nous écrivions</p><div class="note">Aux deux premières personnes du pluriel, la forme ressemble à l'imparfait : que nous <b>écrivions</b>, que vous <b>écriviez</b>. Ce n'est pas une faute d'orthographe, c'est la forme juste.</div></section><section class="bloc card ml"><h3>Les cinq irréguliers qu'il faut connaître</h3><p class="mp">Ce sont malheureusement les plus fréquents dans une condition ou une demande.</p><table class="ana"><tr><td>être</td><td class="">que je <b>sois</b>, que nous <b>soyons</b></td></tr><tr><td>avoir</td><td class="cle">que j'<b>aie</b>, que nous <b>ayons</b></td></tr><tr><td>aller</td><td class="">que j'<b>aille</b>, que nous <b>allions</b></td></tr><tr><td>faire</td><td class="">que je <b>fasse</b>, que nous <b>fassions</b></td></tr><tr><td>pouvoir</td><td class="">que je <b>puisse</b>, que nous <b>puissions</b></td></tr></table><p class="dit"><span class="k">On dit</span> que je sois, que j'aie, que j'aille, que je fasse, que je puisse</p><div class="note">Cinq verbes, une dizaine de formes : c'est peu, et cela couvre la moitié des phrases que vous aurez à écrire dans une lettre formelle.</div></section><section class="bloc card ml"><h3>Les mots qui l'appellent — et ceux qui ne l'appellent pas</h3><p class="mp">Le subjonctif ne suit pas tous les « que ». Il suit ceux qui posent une condition, un but, une concession ou une volonté.</p><table class="ana"><tr><td>La condition</td><td class="">à condition que · pourvu que · à moins que</td></tr><tr><td>Le but</td><td class="cle">pour que · afin que</td></tr><tr><td>La concession</td><td class="">bien que · quoique</td></tr><tr><td>La volonté</td><td class="">il faut que · je souhaite que · j'aimerais que</td></tr><tr><td>Mais pas</td><td class="">parce que · après que · pendant que · puisque</td></tr></table><p class="dit"><span class="k">On dit</span> à condition que, pour que, bien que, il faut que</p><div class="note">Le test rapide : si la phrase raconte un fait déjà arrivé, ce n'est pas du subjonctif. « Parce que le toit a été refait » — fait établi, indicatif.</div></section><section class="bloc card ml"><h3>Le même verbe, deux mondes</h3><p class="mp">Choisissez un verbe, puis le mode qu'appelle la phrase.</p><table class="labo"><thead><tr><th>Quel verbe ? · Après quoi ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">être + à condition que</td><td>à condition que l'inspection soit faite</td><td>condition : subjonctif — soit</td></tr><tr><td class="cle">être + parce que</td><td>parce que l'inspection est faite</td><td>fait établi : indicatif — est</td></tr><tr><td class="cle">avoir + à condition que</td><td>bien que le fonds ait peu d'argent</td><td>concession : subjonctif — ait</td></tr><tr><td class="cle">avoir + parce que</td><td>parce que le fonds a peu d'argent</td><td>fait établi : indicatif — a</td></tr><tr><td class="cle">pouvoir + à condition que</td><td>pour que le dossier puisse avancer</td><td>but : subjonctif — puisse</td></tr><tr><td class="cle">pouvoir + parce que</td><td>parce que le dossier peut avancer</td><td>fait établi : indicatif — peut</td></tr></tbody></table><div class="note">Les six phrases se ressemblent et deux mots seulement changent. C'est ce qui rend ce point difficile à l'oreille et facile à la règle.</div></section><section class="bloc card ml"><h3>Huit conditions du dossier de Sokhna</h3><p class="mp">À gauche le déclencheur, à droite la phrase.</p><table class="ex2"><tr><td>à condition que</td><td>à condition que l'acheteuse obtienne son prêt en 21 jours</td></tr><tr><td>il faut que</td><td>il faut que l'inspection soit faite dans les 10 jours</td></tr><tr><td>pour que</td><td>pour que le dossier puisse avancer, il faut une réponse écrite</td></tr><tr><td>bien que</td><td>bien que le fonds ait peu d'argent, l'immeuble est bien tenu</td></tr><tr><td>j'aimerais que</td><td>j'aimerais que nous fassions le tour des inclusions</td></tr><tr><td>avant que</td><td>avant que vous preniez votre décision, lisez le procès-verbal</td></tr><tr><td>jusqu'à ce que</td><td>le notaire attendra jusqu'à ce que la caisse envoie ses instructions</td></tr><tr><td>à condition que</td><td>à condition que la fenêtre aille à un vitrier cet automne</td></tr></table></section><section class="bloc card ml"><h3>Quatre questions, sans filet</h3><p class="mp">Répondez de mémoire, sans remonter plus haut.</p><ol class="check"><li><span class="q">Après « bien que », on emploie…</span><ul class="opts"><li>l'indicatif</li><li>le subjonctif</li></ul></li><li><span class="q">Après « parce que », on emploie…</span><ul class="opts"><li>l'indicatif</li><li>le subjonctif</li></ul></li><li><span class="q">Le subjonctif régulier se prend sur…</span><ul class="opts"><li>la 3e personne du pluriel</li><li>l'infinitif</li></ul></li><li><span class="q">« Que je puisse » est le subjonctif de…</span><ul class="opts"><li>pouvoir</li><li>prendre</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> le subjonctif — Bien que le fonds <b>ait</b> peu d'argent. · <b>2.</b> l'indicatif — C'est un fait établi : parce que le toit <b>a été</b> refait. · <b>3.</b> la 3e personne du pluriel — ils prenn<i>ent</i> → que je prenn<b>e</b>. · <b>4.</b> pouvoir — L'un des cinq irréguliers à connaître par cœur.</div></section><section class="bloc card ml"><h3>Trois faux pas, et comment s'en sortir</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">mettre du subjonctif après tous les « que »</p><div class="k">Ce qui arrive</div><p class="ph">chercher ce que le mot annonce</p><p class="px">Condition, but, concession, volonté : subjonctif. Fait établi : indicatif.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">écrire « que nous soyions »</p><div class="k">Ce qui arrive</div><p class="ph">deux formes seulement : soyons, soyez</p><p class="px">Le verbe être ne prend pas de i à ces deux personnes-là, contrairement à écrivions ou finissions.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">éviter le subjonctif en changeant de phrase</p><div class="k">Ce qui arrive</div><p class="ph">garder les quatre formules du module</p><p class="px">À condition que, pour que, bien que, il faut que : quatre formules et cinq verbes irréguliers suffisent à écrire une lettre formelle entière.</p></div></div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Comparer deux options, puis décider</h2><section class="bloc card ml"><h3>Une comparaison n'est pas une hésitation</h3><p class="mp">On croit souvent que peser le pour et le contre montre qu'on ne sait pas quoi faire. C'est l'inverse : une décision qui n'a comparé que les avantages d'un seul côté n'est pas une décision, c'est une préférence. Ce que le niveau 7 attend de vous, c'est d'exposer les deux colonnes avec des chiffres, puis de trancher — et de dire ce qui vous ferait changer d'avis.</p><div class="note">C'est l'attente de fin de cours, mot pour mot : « il expose les avantages et les inconvénients de deux situations ou contextes pour prendre une décision durant une négociation ».</div></section><section class="bloc card ml"><h3>Les trois degrés, et le mot qui les suit</h3><p class="mp">Le second terme de la comparaison s'introduit toujours par « que ».</p><table class="ana"><tr><td>Supériorité</td><td class="">Acheter coûte <b>plus</b> cher <b>que</b> louer.</td></tr><tr><td>Infériorité</td><td class="cle">Louer engage <b>moins</b> longtemps <b>que</b> d'acheter.</td></tr><tr><td>Égalité</td><td class="">Le condo est <b>aussi</b> bien situé <b>que</b> mon logement.</td></tr><tr><td>Avec un nom</td><td class="">Je n'aurais pas <b>autant de</b> liberté <b>qu'</b>aujourd'hui.</td></tr></table><p class="dit"><span class="k">On dit</span> plus cher que, moins longtemps que, aussi bien situé que, autant de liberté que</p><div class="note"><b>aussi</b> devant un adjectif ou un adverbe ; <b>autant de</b> devant un nom. C'est la seule distinction à tenir, et elle s'entend tout de suite quand on se trompe.</div></section><section class="bloc card ml"><h3>Les formes irrégulières</h3><p class="mp">Trois adjectifs et adverbes ne se comparent pas avec « plus ».</p><table class="ana"><tr><td>bon</td><td class=""><b>meilleur</b> — la meilleure solution pour cette année</td></tr><tr><td>bien</td><td class="cle"><b>mieux</b> — une entente écrite vaut mieux qu'une bonne mémoire</td></tr><tr><td>mauvais</td><td class=""><b>pire</b> ou plus mauvais — les deux se disent</td></tr><tr><td>À ne pas dire</td><td class="">« plus bon », « plus bien »</td></tr></table><p class="dit"><span class="k">On dit</span> meilleur, mieux, pire</p><div class="note">« Meilleur » est un adjectif : il accompagne un nom. « Mieux » est un adverbe : il accompagne un verbe. La meilleure solution ; ça vaut mieux.</div></section><section class="bloc card ml"><h3>D'autant plus… que : comparer et expliquer en même temps</h3><p class="mp">La tournure la plus utile du niveau, parce qu'elle fait deux choses d'un coup.</p><table class="ana"><tr><td>La forme</td><td class="">La décision est <b>d'autant plus</b> difficile <b>que</b> les deux chiffres se tiennent.</td></tr><tr><td>Ce qu'elle dit</td><td class="cle">c'est difficile, et voici ce qui rend ça encore plus difficile</td></tr><tr><td>Variante négative</td><td class=""><b>d'autant moins</b>… que</td></tr><tr><td>Cousine</td><td class=""><b>Plus</b> la mise de fonds est élevée, <b>moins</b> le paiement l'est.</td></tr></table><p class="dit"><span class="k">On dit</span> La décision est d'autant plus difficile que les deux options se défendent.</p><div class="note">Dans un exposé oral, une seule phrase de ce type suffit à faire entendre que vous ne vous contentez pas d'aligner des faits.</div></section><section class="bloc card ml"><h3>Les deux colonnes de Sokhna</h3><p class="mp">À gauche rester locataire, à droite devenir propriétaire.</p><table class="ex2"><tr><td>1 024 $ par mois, rien d'autre</td><td>environ 1 600 $ par mois, tout compris</td></tr><tr><td>rien ne m'appartient</td><td>une partie du paiement me revient</td></tr><tr><td>une hausse possible chaque année</td><td>un paiement connu pour la durée du terme</td></tr><tr><td>je peux partir avec un avis</td><td>je ne me libère pas en trois mois</td></tr><tr><td>le propriétaire répare</td><td>les réparations sont à moi</td></tr><tr><td>aucun frais d'entrée</td><td>notaire, inspection, droits de mutation la première année</td></tr><tr><td>19 800 $ restent à la banque</td><td>13 750 $ partent en mise de fonds</td></tr><tr><td>le Tribunal me protège</td><td>je me protège par mes conditions écrites</td></tr></table></section><section class="bloc card ml"><h3>Quatre questions, sans filet</h3><p class="mp">Répondez de mémoire, sans remonter plus haut.</p><ol class="check"><li><span class="q">Devant un nom, on emploie…</span><ul class="opts"><li>aussi</li><li>autant de</li></ul></li><li><span class="q">Le comparatif de « bien » est…</span><ul class="opts"><li>mieux</li><li>meilleur</li></ul></li><li><span class="q">« D'autant plus… que » sert à…</span><ul class="opts"><li>comparer seulement</li><li>comparer et donner la raison</li></ul></li><li><span class="q">Une bonne comparaison se termine par…</span><ul class="opts"><li>une décision et ce qui la ferait changer</li><li>les deux colonnes</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> autant de — Autant <b>de</b> liberté, autant <b>de</b> frais. « Aussi » va devant un adjectif. · <b>2.</b> mieux — « Meilleur » est le comparatif de « bon », et c'est un adjectif. · <b>3.</b> comparer et donner la raison — C'est ce qui la rend si utile dans un exposé. · <b>4.</b> une décision et ce qui la ferait changer — Comparer sans trancher ne répond pas à la question posée.</div></section><section class="bloc card ml"><h3>Trois faux pas, et comment s'en sortir</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">remplir une seule colonne</p><div class="k">Ce qui arrive</div><p class="ph">se forcer à en trouver deux de chaque</p><p class="px">Si un côté n'a aucun inconvénient, c'est que la liste n'est pas finie.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">comparer un chiffre avec un sentiment</p><div class="k">Ce qui arrive</div><p class="ph">séparer les faits et les valeurs</p><p class="px">« 600 $ de plus » et « je serais chez moi » comptent tous les deux, mais pas dans la même phrase.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">conclure « je ne sais pas »</p><div class="k">Ce qui arrive</div><p class="ph">dater sa décision</p><p class="px">« Je reste locataire cette année, et je reviens voir si j'atteins 30 000 $ » est une vraie conclusion.</p></div></div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Décider, et savoir dire pourquoi</h2><section class="bloc card ml"><h3>Il n'y a pas de bonne réponse, il y a une réponse tenue</h3><p class="mp">Personne ne peut vous dire s'il vaut mieux louer ou acheter : cela dépend de votre épargne, de votre emploi, de vos projets et de ce que vous acceptez de porter. Ce qui se juge, en revanche — à l'école comme dans la vie —, c'est la façon dont vous êtes arrivé à votre décision : avec quels chiffres, en tenant compte de quels inconvénients, et jusqu'à quand.</p><div class="note">La conseillère de la caisse refuse de répondre à « à ma place, vous achèteriez ? ». Ce n'est pas une dérobade : c'est le seul comportement professionnel possible. Retenez la formule, vous en aurez besoin un jour de l'autre côté.</div></section><section class="bloc card ml"><h3>Ce qui joue pour l'achat</h3><p class="mp">Quatre arguments solides, chiffrés autant que possible.</p><table class="ana"><tr><td>Le capital</td><td class="">une partie du paiement mensuel vous revient</td></tr><tr><td>La stabilité</td><td class="cle">plus d'avis de hausse chaque printemps</td></tr><tr><td>La liberté d'usage</td><td class="">percer, repeindre, changer sans demander</td></tr><tr><td>La prévisibilité</td><td class="">le paiement est connu pour la durée du terme</td></tr></table><p class="dit"><span class="k">On dit</span> le capital remboursé, la stabilité, la liberté d'usage, la prévisibilité</p><div class="note">Attention à l'argument « c'est un investissement » : il est vrai à long terme et faux les trois premières années, à cause des frais d'entrée.</div></section><section class="bloc card ml"><h3>Ce qui joue contre</h3><p class="mp">Quatre coûts qu'on oublie systématiquement dans le premier calcul.</p><table class="ana"><tr><td>Les frais d'entrée</td><td class="">notaire, inspection, droits de mutation</td></tr><tr><td>L'entretien</td><td class="cle">le toit, les balcons, le fonds de prévoyance</td></tr><tr><td>La prime d'assurance</td><td class="">sous 20 % de mise de fonds, elle s'ajoute au prêt</td></tr><tr><td>La liquidité</td><td class="">on ne se libère pas d'une propriété en trois mois</td></tr></table><p class="dit"><span class="k">On dit</span> les frais d'entrée, l'entretien, la prime d'assurance, la liquidité</p><div class="note">Le quatrième est le moins visible et le plus lourd : un emploi qui change de ville se règle en un mois quand on est locataire.</div></section><section class="bloc card ml"><h3>La forme d'une décision qui tient</h3><p class="mp">Quatre temps, dans cet ordre. C'est aussi le plan de votre production orale.</p><table class="ana"><tr><td>1. Les deux options</td><td class="">« J'ai deux possibilités : rester ou acheter. »</td></tr><tr><td>2. Deux avantages et deux inconvénients chacune</td><td class="cle">avec un chiffre à l'appui</td></tr><tr><td>3. La comparaison</td><td class="">« C'est d'autant plus difficile que… »</td></tr><tr><td>4. La décision datée</td><td class="">« Cette année, je reste. Je reviendrai voir si… »</td></tr></table><p class="dit"><span class="k">On dit</span> Cette année, je reste locataire, et je reviendrai voir si j'atteins trente mille dollars de mise de fonds.</p><div class="note">Le quatrième temps est celui qu'on oublie, et c'est celui qui transforme un exposé en décision.</div></section><section class="bloc card ml"><h3>Quatre questions, sans filet</h3><p class="mp">Répondez de mémoire, sans remonter plus haut.</p><ol class="check"><li><span class="q">L'argument « c'est un investissement » est…</span><ul class="opts"><li>toujours vrai</li><li>faux les premières années</li></ul></li><li><span class="q">Le coût le moins visible de la propriété est…</span><ul class="opts"><li>la difficulté à se libérer</li><li>la peinture</li></ul></li><li><span class="q">Une décision qui tient se termine par…</span><ul class="opts"><li>une date</li><li>un souhait</li></ul></li><li><span class="q">À « qu'est-ce que vous feriez à ma place ? », une professionnelle répond…</span><ul class="opts"><li>ce qu'elle ferait</li><li>les deux chiffres, et à vous de choisir</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> faux les premières années — Les frais d'entrée sont concentrés sur la première année. · <b>2.</b> la difficulté à se libérer — Un déménagement pour un emploi ne se règle pas en trois mois. · <b>3.</b> une date — « Cette année je reste, et je reviens voir en mars » : c'est daté, donc vérifiable. · <b>4.</b> les deux chiffres, et à vous de choisir — Et c'est exactement ce qu'on attend d'elle.</div></section></section></div>
+<footer><span>D2 · Rester locataire ou devenir propriétaire</span><span>Fiche élève</span></footer>
+</body>
+</html>

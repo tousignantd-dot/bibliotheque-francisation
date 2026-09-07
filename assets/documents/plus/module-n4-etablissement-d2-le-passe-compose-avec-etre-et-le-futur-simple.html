@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>D2 · Le passé composé avec être, et le futur simple — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance D2 · Module 17 · 75 minutes</div>
+    <h1>Le passé composé avec être, et le futur simple</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Deux temps, deux moitiés de la note. Le passé composé dit ce qui est arrivé ; le futur dit ce qui va se passer. Et entre les deux, une lettre qu'on n'entend pas et qui se voit : le « e » de « je suis allée ».</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>reconnaître les verbes qui prennent l'auxiliaire être ;</li><li>accorder le participe passé avec le sujet ;</li><li>reconnaître le futur simple à son « r » ;</li><li>écrire les deux dernières lignes d'une note d'abandon.</li></ol></section><section class="bloc regle"><div class="lbl">Avec être, le participe s'accorde</div><p class="r">Il est allé. Elle est allée. Ils sont allés. Elles sont allées.</p><p class="pr">Avec avoir, il ne bouge pas : elle a téléphoné, jamais « téléphonée ».</p></section><section class="bloc card"><div class="lbl">Les verbes qui prennent être</div><h2 class="t">Une quinzaine, et la liste ne s'allonge pas</h2><table><thead><tr><th>La famille</th><th>Les verbes</th></tr></thead><tbody><tr><td>Aller et venir</td><td>aller, venir, revenir, retourner, arriver, partir</td></tr><tr><td>Entrer et sortir</td><td>entrer, sortir, monter, descendre, rester, tomber</td></tr><tr><td>Naître et devenir</td><td>naître, mourir, devenir, rentrer</td></tr><tr><td>Tous les pronominaux</td><td>se lever, se rendre, s'absenter, se présenter</td></tr></tbody></table><div class="note">Tous les autres verbes prennent avoir.</div></section><section class="bloc"><div class="lbl">Ce qui ne s'entend pas</div><h2 class="t">Et qui se voit quand même</h2><div class="grid"><div class="card"><h3>allé, allée</h3><p>Se prononcent exactement pareil. C'est pourquoi la faute survit à l'oral.</p></div><div class="card"><h3>Le test en deux secondes</h3><p>Remplacez le sujet par « une femme » : une femme est allée.</p></div><div class="card"><h3>revenu, revenue</h3><p>Ici, un peu de différence s'entend. Écoutez les deux.</p></div><div class="card"><h3>Relire à voix haute</h3><p>C'est ainsi que Nourhane a entendu son « je suis allé » sans e.</p></div></div></section><section class="bloc card"><div class="lbl">Accord</div><h2 class="t">Écrivez le participe passé</h2><p class="consigne">C'est une femme qui écrit.</p><ol class="ex"><li><span class="q">Je suis (aller) ___ à la clinique avec mon fils.</span><span class="ligne ligne--court"></span></li><li><span class="q">Mon fils est (tomber) ___ malade dimanche soir.</span><span class="ligne ligne--court"></span></li><li><span class="q">Je suis (rester) ___ à la maison toute la journée.</span><span class="ligne ligne--court"></span></li><li><span class="q">J'ai (téléphoner) ___ au centre à sept heures dix.</span><span class="ligne ligne--court"></span></li><li><span class="q">Elle est (revenir) ___ trop tard pour le cours.</span><span class="ligne ligne--court"></span></li><li><span class="q">Je me suis (lever) ___ à cinq heures.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc regle"><div class="lbl">Le futur se reconnaît à son « r »</div><p class="r">je remettrai, je rattraperai, je serai, j'irai, je viendrai.</p><p class="pr">Le « r » est là dans tous les cas. Cherchez-le : c'est le repère le plus sûr.</p></section><section class="bloc card"><div class="lbl">Ce que vous promettez</div><h2 class="t">Six phrases de fin de note</h2><table><thead><tr><th>La phrase</th><th>Ce qu'elle promet</th></tr></thead><tbody><tr><td>Je serai en classe demain matin.</td><td class="cle">Votre retour, avec le jour.</td></tr><tr><td>Je rattraperai la matière.</td><td class="cle">Comment vous reprendrez ce qui a été manqué.</td></tr><tr><td>Je vous remettrai le papier jeudi.</td><td class="cle">Une preuve, à une date.</td></tr><tr><td>Je vous rappellerai avant seize heures.</td><td class="cle">Un second appel, aujourd'hui.</td></tr><tr><td>Je devrai quitter à onze heures.</td><td class="cle">Un départ avant la fin, annoncé.</td></tr><tr><td>J'irai au secrétariat avant midi.</td><td class="cle">Où vous irez, et avant quelle heure.</td></tr></tbody></table></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Écrire « je remettrais » avec un s</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">Je vous remettrais le papier jeudi.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">Je vous remettrai le papier jeudi.</p></div></div><div class="note">Avec un « s », c'est un conditionnel : cela veut dire « si les choses le permettaient ». Dans une note, on écrit le futur, sans « s » : c'est un engagement, pas une intention.</div></section><section class="bloc regle"><div class="lbl">Le mot fait peur, et c'est lui qu'il faut écrire</div><p class="r">Un abandon annoncé avant la date limite ne laisse aucune trace négative. Un cours qu'on cesse de fréquenter, si.</p><p class="pr">Le personnel entend ce mot dix fois par semaine et n'y met aucun jugement.</p></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez votre note complète : les six lignes, avec le passé composé et le futur.</p><ul><li>Vérifiez l'accord du participe passé avec être.</li><li>Vérifiez qu'il n'y a pas de « s » au futur.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Le passé composé avec être, et son accord</h2><section class="bloc card ml"><h3>Une lettre qu'on n'entend pas, et qui se voit</h3><p class="mp">« Je suis allé » et « je suis allée » se prononcent exactement pareil. C'est pourquoi cette faute traverse des années d'apprentissage sans jamais être corrigée à l'oral : personne ne l'entend. Mais une note d'absence est un écrit, et là elle saute aux yeux. La règle tient en une phrase : quand le passé composé se forme avec l'auxiliaire être, le participe passé s'accorde avec le sujet, comme un adjectif. Avec avoir, il ne bouge pas.</p><div class="note">Dans ce module, c'est une femme qui écrit. Tous les participes des verbes avec être prennent donc un « e » : allée, restée, revenue, arrivée, levée.</div></section><section class="bloc card ml"><h3>Quels verbes prennent être</h3><p class="mp">Une quinzaine, presque tous des verbes de déplacement ou de changement d'état. Ils s'apprennent en bloc, et la liste ne s'allonge pas.</p><table class="ana"><tr><td>Aller et venir</td><td class="">aller · venir · revenir · retourner · arriver · partir</td></tr><tr><td>Entrer et sortir</td><td class="cle">entrer · sortir · monter · descendre · rester · tomber</td></tr><tr><td>Naître et mourir</td><td class="">naître · mourir · devenir · rentrer</td></tr></table><p class="dit"><span class="k">On dit</span> Son absence de lundi est inscrite au dossier.</p><div class="note">Tous les autres verbes prennent avoir : j'ai téléphoné, j'ai écouté, j'ai remis, j'ai signé. Et avec avoir, le participe ne s'accorde pas avec le sujet.</div></section><section class="bloc card ml"><h3>L'accord : comme un adjectif</h3><p class="mp">Quatre formes, exactement comme pour « grand, grande, grands, grandes ».</p><table class="ana"><tr><td>Un homme</td><td class="">il est allé · il est resté · il est tombé</td></tr><tr><td>Une femme</td><td class="cle">elle est allée · elle est restée · elle est tombée</td></tr><tr><td>Plusieurs</td><td class="">ils sont allés · elles sont allées · nous sommes arrivés</td></tr></table><p class="dit"><span class="k">On dit</span> La note tient en cinq lignes, datées et signées.</p><div class="note">« Nous sommes arrivés » prend un « s » ; si le groupe n'est composé que de femmes, on écrit « nous sommes arrivées ». Un seul homme dans le groupe suffit pour le masculin.</div></section><section class="bloc card ml"><h3>Les verbes pronominaux prennent être aussi</h3><p class="mp">Tous les verbes qui portent « se » à l'infinitif : se lever, se rendre, s'absenter, se présenter. Le participe s'accorde le plus souvent avec le sujet.</p><table class="ana"><tr><td>Se lever</td><td class="">Je me suis levée à cinq heures.</td></tr><tr><td>S'absenter</td><td class="cle">Elle s'est absentée deux jours.</td></tr><tr><td>Se présenter</td><td class="">Nous nous sommes présentés au comptoir.</td></tr></table><p class="dit"><span class="k">On dit</span> Sans signature, la note reste une simple feuille.</p><div class="note">Il existe des cas où le participe d'un pronominal ne s'accorde pas, mais ils sont rares et n'apparaissent pas dans une note d'absence. À ce niveau, accordez.</div></section><section class="bloc card ml"><h3>La même phrase, au masculin puis au féminin</h3><p class="mp">Choisissez une phrase et écoutez les deux versions. Elles se disent pareil.</p><table class="labo"><thead><tr><th>Quelle phrase ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">aller à la clinique</td><td>Il est allé à la clinique. Elle est allée à la clinique.<span class="tags">une absence</span></td><td>un e de plus, aucune différence à l'oreille</td></tr><tr><td class="cle">rester à la maison</td><td>Il est resté à la maison. Elle est restée à la maison.<span class="tags">un empêchement</span></td><td>même règle, même silence</td></tr><tr><td class="cle">revenir trop tard</td><td>Il est revenu trop tard. Elle est revenue trop tard.<span class="tags">un retard</span></td><td>ici, le e s'entend un peu : revenu, revenue</td></tr><tr><td class="cle">se lever à cinq heures</td><td>Il s'est levé à cinq heures. Elle s'est levée à cinq heures.<span class="tags">une note</span></td><td>les pronominaux prennent être aussi</td></tr><tr><td class="cle">téléphoner au centre</td><td>Il a téléphoné au centre. Elle a téléphoné au centre.<span class="tags">un message</span></td><td>avec avoir, rien ne change</td></tr></tbody></table><div class="note">La dernière est celle qu'il faut retenir : avec avoir, aucun accord avec le sujet. C'est la moitié de la règle, et on l'oublie souvent.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six phrases d'une note d'absence.</p><table class="ex2"><tr><td>Je suis allée à la clinique avec mon fils.</td><td>être : accord au féminin</td></tr><tr><td>Mon fils est tombé malade dimanche soir.</td><td>être : masculin, pas de e</td></tr><tr><td>Je suis restée à la maison toute la journée.</td><td>être : accord au féminin</td></tr><tr><td>J'ai téléphoné au centre à sept heures dix.</td><td>avoir : pas d'accord</td></tr><tr><td>Je me suis levée très tôt ce matin-là.</td><td>pronominal : être, et accord</td></tr><tr><td>Madame Sansregret a inscrit mon absence.</td><td>avoir : pas d'accord</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges de l'accord</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">accorder avec avoir</p><div class="k">Ce qui arrive</div><p class="ph">« elle a téléphonée »</p><p class="px">Avec avoir, le participe ne s'accorde jamais avec le sujet. « Elle a téléphoné », « elle a remis », « elle a signé ».</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">oublier le e au féminin</p><div class="k">Ce qui arrive</div><p class="ph">« je suis allé » écrit par une femme</p><p class="px">Ça ne s'entend pas, mais ça se lit. Relisez en remplaçant le sujet par « une femme » : une femme est allée.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">oublier que les pronominaux prennent être</p><div class="k">Ce qui arrive</div><p class="ph">« je me suis levé » sans accord</p><p class="px">Tout verbe avec « se » prend être, et le participe s'accorde presque toujours : je me suis levée, elle s'est absentée.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">Avec l'auxiliaire avoir, le participe…</span><ul class="opts"><li>s'accorde avec le sujet</li><li>ne s'accorde pas avec le sujet</li></ul></li><li><span class="q">Une femme écrit…</span><ul class="opts"><li>je suis allé</li><li>je suis allée</li></ul></li><li><span class="q">« Se lever » prend l'auxiliaire…</span><ul class="opts"><li>avoir</li><li>être</li></ul></li><li><span class="q">« Allé » et « allée » se prononcent…</span><ul class="opts"><li>pareil</li><li>différemment</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> ne s'accorde pas avec le sujet — Il ne s'accorde pas : elle a téléphoné, elle a signé. · <b>2.</b> je suis allée — Je suis allée. Le participe s'accorde comme un adjectif. · <b>3.</b> être — Être, comme tous les verbes pronominaux : je me suis levée. · <b>4.</b> pareil — Pareil. C'est pour cela que la faute survit à l'oral et se voit à l'écrit.</div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Le futur simple : ce qu'on promet par écrit</h2><section class="bloc card ml"><h3>Le temps qui referme un dossier</h3><p class="mp">Une note qui ne parle que du passé demande à être excusée. Une note qui se termine au futur dit ce qui va se passer, et le dossier peut se refermer : la personne du secrétariat sait quand vous revenez, quand le papier arrivera, quand le rattrapage sera fait. C'est pour cela que le futur simple appartient à l'écrit officiel — et c'est pour cela qu'il faut savoir le reconnaître dans un avis, même si à l'oral vous continuez de dire « je vais remettre le papier ».</p><div class="note">Reconnaître le futur suffit largement à ce niveau. Le produire vient ensuite, et six verbes irréguliers couvrent presque tous les besoins.</div></section><section class="bloc card ml"><h3>La marque : un « r » avant la terminaison</h3><p class="mp">C'est le repère le plus sûr, et il ne rate jamais. Les terminaisons, elles, sont les mêmes pour tous les verbes.</p><table class="ana"><tr><td>Les terminaisons</td><td class="">-ai · -as · -a · -ons · -ez · -ont</td></tr><tr><td>Verbes réguliers</td><td class="cle">je remettrai · je rattraperai · j'appellerai · je signerai</td></tr><tr><td>Toujours le r</td><td class="">tu viendras · il devra · nous serons · vous pourrez</td></tr></table><p class="dit"><span class="k">On dit</span> La note tient en cinq lignes, datées et signées.</p><div class="note">Pour les verbes en -er, le futur se construit sur l'infinitif entier : téléphoner ▸ je téléphonerai. On voit encore l'infinitif dans le mot.</div></section><section class="bloc card ml"><h3>Six irréguliers qui reviennent tout le temps</h3><p class="mp">Ils ne se déduisent pas de l'infinitif : ils s'apprennent, et ce sont les six qu'on rencontre dans tous les avis.</p><table class="ana"><tr><td>Être et avoir</td><td class="">je serai · j'aurai</td></tr><tr><td>Aller et venir</td><td class="cle">j'irai · je viendrai</td></tr><tr><td>Pouvoir et devoir</td><td class="">je pourrai · je devrai</td></tr></table><p class="dit"><span class="k">On dit</span> Le motif se dit en une seule phrase.</p><div class="note">« Je serai » est le plus utile de tous : « je serai en classe demain », « je serai absente jeudi ». Ne le confondez pas avec « je saurai », qui vient de savoir.</div></section><section class="bloc card ml"><h3>Le futur proche, à l'oral</h3><p class="mp">« Aller » suivi d'un infinitif dit la même chose, et c'est ce qu'on emploie en parlant. Les deux sont corrects ; seul le registre change.</p><table class="ana"><tr><td>À l'oral</td><td class="">Je vais remettre le papier jeudi.</td></tr><tr><td>À l'écrit</td><td class="cle">Je vous remettrai le papier jeudi.</td></tr><tr><td>Dans un avis du centre</td><td class="">Vous recevrez une confirmation par courriel.</td></tr></table><p class="dit"><span class="k">On dit</span> Elle a fait une copie avant de descendre au comptoir.</p><div class="note">Dans un message téléphonique, le futur proche est parfaitement à sa place. Gardez le futur simple pour la note écrite : c'est ce que le lecteur attend.</div></section><section class="bloc card ml"><h3>La même promesse, à l'oral puis à l'écrit</h3><p class="mp">Choisissez une promesse et écoutez ses deux formes.</p><table class="labo"><thead><tr><th>Quelle promesse ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">revenir en classe</td><td>Je vais être en classe demain. Je serai en classe demain matin.<span class="tags">une absence</span></td><td>le plus utile des six irréguliers</td></tr><tr><td class="cle">remettre le papier</td><td>Je vais remettre le papier jeudi. Je vous remettrai le papier jeudi.<span class="tags">une note</span></td><td>l'infinitif se voit encore dans le futur</td></tr><tr><td class="cle">rattraper la matière</td><td>Je vais rattraper la matière. Je rattraperai la matière au local 214.<span class="tags">un retard</span></td><td>un verbe en -er, tout régulier</td></tr><tr><td class="cle">rappeler le secrétariat</td><td>Je vais vous rappeler cet après-midi. Je vous rappellerai avant seize heures.<span class="tags">un poste</span></td><td>deux l au futur : rappellerai</td></tr><tr><td class="cle">passer au comptoir</td><td>Je vais passer au comptoir avant midi. J'irai au comptoir avant midi.<span class="tags">une copie</span></td><td>aller devient j'irai, sans prévenir</td></tr></tbody></table><div class="note">Dites la version orale au téléphone et écrivez la version écrite dans la note. Les deux disent la même chose et personne ne vous reprendra.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six phrases de fin de note.</p><table class="ex2"><tr><td>Je serai en classe demain matin.</td><td>être, au futur</td></tr><tr><td>Je vous remettrai le papier de la clinique jeudi.</td><td>une preuve, à une date</td></tr><tr><td>Je rattraperai la matière au local 214.</td><td>comment reprendre</td></tr><tr><td>Je vous rappellerai avant la fin de la journée.</td><td>un second appel promis</td></tr><tr><td>Je devrai quitter le cours à onze heures.</td><td>un départ annoncé</td></tr><tr><td>J'irai au secrétariat avant midi.</td><td>aller, au futur</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges du futur</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">confondre -ai et -ais</p><div class="k">Ce qui arrive</div><p class="ph">« je remettrais » au lieu de « je remettrai »</p><p class="px">Avec un « s », c'est un conditionnel : « je remettrais » veut dire « si les choses le permettaient ». Dans une note, on écrit le futur, sans « s ».</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">oublier le r</p><div class="k">Ce qui arrive</div><p class="ph">« je remettai »</p><p class="px">Le « r » est la marque du futur : sans lui, le mot n'existe pas. Cherchez-le à chaque fois que vous écrivez un futur.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">employer le futur à l'oral quand ce n'est pas nécessaire</p><div class="k">Ce qui arrive</div><p class="ph">« je vous remettrai le papier », au téléphone</p><p class="px">Ce n'est pas une faute, mais cela sonne écrit. « Je vais vous remettre le papier » est ce que tout le monde dit.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">La marque du futur simple est…</span><ul class="opts"><li>un r avant la terminaison</li><li>un accent</li></ul></li><li><span class="q">« Je serai » vient du verbe…</span><ul class="opts"><li>savoir</li><li>être</li></ul></li><li><span class="q">Dans une note écrite, on emploie…</span><ul class="opts"><li>le futur simple</li><li>le futur proche</li></ul></li><li><span class="q">« Je remettrais » est…</span><ul class="opts"><li>un futur</li><li>un conditionnel</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> un r avant la terminaison — Un « r » : je remettrai, je serai, je viendrai. · <b>2.</b> être — Être. « Je saurai » vient de savoir, et ce n'est pas la même chose. · <b>3.</b> le futur simple — Le futur simple : c'est ce que le lecteur d'un écrit officiel attend. · <b>4.</b> un conditionnel — Un conditionnel : le « s » change tout. Le futur s'écrit « je remettrai ».</div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Annoncer un abandon en trois phrases</h2><section class="bloc card ml"><h3>Le mot fait peur, et c'est pourtant lui qu'il faut écrire</h3><p class="mp">Beaucoup d'élèves cessent simplement de venir. Ils ne veulent pas écrire « j'abandonne », parce que le mot sonne comme un échec — et c'est justement ce qui arrive quand on ne l'écrit pas : le cours continue de compter des absences, et le relevé finira par porter un échec au lieu d'un abandon. Le mot est celui de la case dans le système, rien de plus. Le personnel l'entend dix fois par semaine et n'y met aucun jugement. Trois phrases suffisent, et elles vous laissent en bons termes avec un établissement où vous reviendrez peut-être.</p><div class="note">Un abandon annoncé avant la date limite ne laisse aucune trace négative. Après la date limite, il en laisse une. C'est la seule raison pour laquelle il faut se dépêcher.</div></section><section class="bloc card ml"><h3>Phrase 1 : le mot, et le nom du cours</h3><p class="mp">On nomme le cours exactement, parce qu'un élève peut être inscrit à deux choses en même temps — c'est le cas de Nourhane.</p><table class="ana"><tr><td>La formule</td><td class="">Je vous écris pour abandonner le cours d'informatique du soir.</td></tr><tr><td>Une variante</td><td class="cle">Je vous informe que j'abandonne le cours d'informatique du soir.</td></tr><tr><td>Ce qui ne suffit pas</td><td class="">« Je ne pourrai plus venir le soir. »</td></tr></table><p class="dit"><span class="k">On dit</span> Un abandon annoncé par écrit n'est pas un échec.</p><div class="note">Si vous abandonnez un cours et que vous en gardez un autre, dites-le dans la même phrase : « je garde le cours de francisation de jour ».</div></section><section class="bloc card ml"><h3>Phrase 2 : la date d'effet</h3><p class="mp">Sans elle, le centre ne sait pas s'il doit vous compter présente la semaine prochaine, et votre place reste bloquée pour quelqu'un d'autre.</p><table class="ana"><tr><td>Une date précise</td><td class="">À partir du 1er octobre.</td></tr><tr><td>Une date déjà passée</td><td class="cle">Ma dernière présence était le 26 septembre.</td></tr><tr><td>Le mot à éviter</td><td class="">« bientôt », « à la fin », « prochainement »</td></tr></table><p class="dit"><span class="k">On dit</span> La note tient en cinq lignes, datées et signées.</p><div class="note">On écrit « le 1er octobre », avec « er » en petit ou en toutes lettres. Les autres jours du mois s'écrivent sans rien : le 2 octobre, le 15 octobre.</div></section><section class="bloc card ml"><h3>Phrase 3 : le motif, court et général</h3><p class="mp">Personne ne vérifie, personne ne juge. Ce qu'on veut, c'est une ligne dans le dossier, pas une confession.</p><table class="ana"><tr><td>Le travail</td><td class="">parce que mes horaires de travail ont changé</td></tr><tr><td>La famille</td><td class="cle">pour des raisons familiales</td></tr><tr><td>La santé</td><td class="">pour des raisons de santé</td></tr><tr><td>La charge</td><td class="">parce que deux cours en même temps, c'est trop pour moi</td></tr></table><p class="dit"><span class="k">On dit</span> Le motif se dit en une seule phrase.</p><div class="note">La dernière est celle que le personnel entend le plus souvent, et celle qu'il respecte le plus : elle montre que vous avez évalué votre situation au lieu de disparaître.</div></section><section class="bloc card ml"><h3>Les trois phrases, et la quatrième facultative</h3><p class="mp">Choisissez une phrase et écoutez-la telle qu'elle s'écrit.</p><table class="labo"><thead><tr><th>Quelle phrase ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">phrase 1 · le mot et le cours</td><td>Je vous écris pour abandonner le cours d'informatique du soir.<span class="tags">un abandon</span></td><td>le mot exact, et le nom du cours</td></tr><tr><td class="cle">phrase 2 · la date d'effet</td><td>Cet abandon prend effet à partir du 1er octobre.<span class="tags">une note</span></td><td>une date, jamais « bientôt »</td></tr><tr><td class="cle">phrase 3 · le motif</td><td>J'abandonne ce cours parce que mes horaires de travail ont changé.<span class="tags">un motif</span></td><td>une phrase, générale, et c'est assez</td></tr><tr><td class="cle">la phrase qui garde la porte ouverte</td><td>Je souhaiterais me réinscrire à la prochaine session.<span class="tags">une signature</span></td><td>elle transforme un départ en pause</td></tr><tr><td class="cle">les quatre à la suite</td><td>Je vous écris pour abandonner le cours d'informatique du soir. Cet abandon prend effet à partir du 1er octobre. J'abandonne ce cours parce que mes horaires de travail ont changé. Je souhaiterais me réinscrire à la prochaine session.<span class="tags">une copie</span></td><td>quatre phrases, vingt secondes</td></tr></tbody></table><div class="note">Quatre phrases, et la note est complète. Ajoutez la date en haut, le destinataire, votre nom et votre signature : la démarche est faite.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six phrases d'une note d'abandon.</p><table class="ex2"><tr><td>Je vous écris pour abandonner le cours du soir.</td><td>le mot exact</td></tr><tr><td>Cet abandon prend effet à partir du 1er octobre.</td><td>la date d'effet</td></tr><tr><td>Ma dernière présence était le 26 septembre.</td><td>quand la date est déjà passée</td></tr><tr><td>J'abandonne ce cours pour des raisons familiales.</td><td>un motif général</td></tr><tr><td>Je garde le cours de francisation de jour.</td><td>ce que vous continuez</td></tr><tr><td>Je souhaiterais me réinscrire à la prochaine session.</td><td>la porte laissée ouverte</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges de l'abandon</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">ne rien écrire du tout</p><div class="k">Ce qui arrive</div><p class="ph">cesser simplement de venir</p><p class="px">C'est le seul vrai piège, et il coûte cher : après quelques semaines, le cours s'inscrit comme un échec au relevé. Trois phrases l'évitent.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">écrire une longue lettre d'explication</p><div class="k">Ce qui arrive</div><p class="ph">dix lignes de justifications</p><p class="px">Une note longue inquiète et demande une réponse. Trois phrases claires se traitent en une minute, et l'affaire est réglée le jour même.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">oublier de dire ce qu'on garde</p><div class="k">Ce qui arrive</div><p class="ph">abandonner un cours et laisser croire qu'on part</p><p class="px">Si vous restez inscrite à autre chose, dites-le. Sans cela, le secrétariat peut fermer votre dossier au complet, et il faudra tout rouvrir.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">Un abandon s'annonce…</span><ul class="opts"><li>par écrit</li><li>de vive voix</li></ul></li><li><span class="q">Que se passe-t-il si l'on cesse de venir sans rien dire ?</span><ul class="opts"><li>rien de particulier</li><li>le cours s'inscrit comme un échec</li></ul></li><li><span class="q">Combien de phrases suffisent ?</span><ul class="opts"><li>trois</li><li>une page</li></ul></li><li><span class="q">Le motif d'un abandon doit être…</span><ul class="opts"><li>détaillé et prouvé</li><li>court et général</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> par écrit — Par écrit, toujours. C'est le seul des trois motifs qui l'exige. · <b>2.</b> le cours s'inscrit comme un échec — Il finit par s'inscrire comme un échec. C'est ce que l'écrit évite. · <b>3.</b> trois — Trois : le mot et le cours, la date d'effet, le motif. · <b>4.</b> court et général — Court et général. Personne ne vérifie et personne ne juge.</div></section></section></div>
+<footer><span>D2 · Prévenir le centre</span><span>Fiche élève</span></footer>
+</body>
+</html>

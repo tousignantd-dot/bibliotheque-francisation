@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>D2 · Un paragraphe, une fonction — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance D2 · Module 6 · 75 minutes</div>
+    <h1>Un paragraphe, une fonction</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Ce qui bloque dans une lettre de réclamation n'est presque jamais l'orthographe : c'est le paragraphe qui raconte, argumente et exige en même temps.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>nommer la fonction de chaque paragraphe avant de rédiger ;</li><li>placer un connecteur en tête de paragraphe, suivi d'une virgule ;</li><li>employer le subjonctif après un verbe de demande ;</li><li>préférer l'infinitif quand le destinataire est celui qui agit.</li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Sept étiquettes, écrites avant de rédiger</h2><table><thead><tr><th>Le paragraphe</th><th>Sa fonction</th></tr></thead><tbody><tr><td class="cle">1</td><td>les faits de l'achat : date, bien, prix</td></tr><tr><td class="cle">2</td><td>la chronologie du défaut, une date par phrase</td></tr><tr><td class="cle">3</td><td>l'état au moment du défaut</td></tr><tr><td class="cle">4</td><td>la garantie chiffrée, et la preuve</td></tr><tr><td class="cle">5</td><td>la garantie légale, en appui</td></tr><tr><td class="cle">6</td><td>la demande, une seule, et le délai</td></tr><tr><td class="cle">7</td><td>les pièces jointes, sans commentaire</td></tr></tbody></table></section><section class="bloc regle"><div class="lbl">L'ordre n'est pas libre</div><p class="r">Faits, puis droit, puis demande, puis délai.</p><p class="pr">Demander avant d'avoir raconté fait paraître la demande arbitraire ; raconter après avoir demandé la fait oublier. La lettre se résume en une phrase : voici ce qui s'est passé, voici pourquoi vous devez agir, voici ce que je veux, voici jusqu'à quand. C'est aussi l'ordre d'une plaidoirie.</p></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Quatre familles de connecteurs</h2><table><thead><tr><th>La famille</th><th>Les mots</th></tr></thead><tbody><tr><td class="cle">Ajouter</td><td>en outre, par ailleurs, de plus</td></tr><tr><td class="cle">Opposer</td><td>or, toutefois, cependant</td></tr><tr><td class="cle">Conclure</td><td>en conséquence, par conséquent</td></tr><tr><td class="cle">Situer</td><td>dès, à compter de, à ce jour</td></tr><tr><td class="cle">La place</td><td>en tête, suivi d'une virgule</td></tr></tbody></table></section><section class="bloc card"><div class="lbl">Grammaire</div><h2 class="t">Complétez avec le bon connecteur</h2><p class="consigne">Un connecteur par trou, jamais deux fois le même.</p><ol class="ex"><li><span class="q">___ le lendemain de la livraison, j'ai noté le kilométrage.</span><span class="ligne ligne--court"></span></li><li><span class="q">Je vous rappelle ___ que la garantie légale s'applique.</span><span class="ligne ligne--court"></span></li><li><span class="q">Vous invoquez l'usure normale. ___ , l'auto avait 24 jours.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ , je vous demande de procéder à la réparation.</span><span class="ligne ligne--court"></span></li><li><span class="q">Vous disposez de dix jours ___ la réception de la présente.</span><span class="ligne ligne--court"></span></li><li><span class="q">J'ai téléphoné le 2 mai ; ___ , personne ne m'a rappelée.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Indicatif ou subjonctif ?</h2><table><thead><tr><th>Le verbe d'avant</th><th>Ce qui suit</th></tr></thead><tbody><tr><td class="cle">je constate que</td><td>indicatif : un fait</td></tr><tr><td class="cle">je vous informe que</td><td>indicatif : un fait transmis</td></tr><tr><td class="cle">je demande que</td><td>subjonctif : pas encore un fait</td></tr><tr><td class="cle">j'exige que</td><td>subjonctif</td></tr><tr><td class="cle">il faut que</td><td>subjonctif : nécessité</td></tr><tr><td class="cle">je vous demande de</td><td>infinitif : plus court et plus ferme</td></tr></tbody></table></section><section class="bloc card"><div class="lbl">Grammaire</div><h2 class="t">Mettez au subjonctif présent</h2><p class="consigne">Le verbe entre parenthèses.</p><ol class="ex"><li><span class="q">Je demande que la réparation (être) ___ effectuée à vos frais.</span><span class="ligne ligne--court"></span></li><li><span class="q">J'exige que votre réponse me (parvenir) ___ par écrit.</span><span class="ligne ligne--court"></span></li><li><span class="q">Il faut que vous (répondre) ___ dans les dix jours.</span><span class="ligne ligne--court"></span></li><li><span class="q">J'aimerais que nous (pouvoir) ___ régler cela sans tribunal.</span><span class="ligne ligne--court"></span></li><li><span class="q">Je souhaite que le garage de mon choix (faire) ___ le travail.</span><span class="ligne ligne--court"></span></li><li><span class="q">Je demande que les pièces (être) ___ comprises.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écris les deux phrases centrales de ta lettre : la demande, et le délai.</p><ul><li>« Je vous demande de… à vos frais. »</li><li>« Vous disposez d'un délai de dix jours à compter de… »</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Un paragraphe, une fonction</h2><section class="bloc card ml"><h3>Le défaut le plus courant n'est pas la faute de français</h3><p class="mp">Dans les lettres de réclamation, ce qui bloque n'est presque jamais l'orthographe : c'est le paragraphe qui raconte, argumente, se plaint et exige en même temps. Le lecteur arrive au bout sans savoir ce qu'on attend de lui, et il classe. Un paragraphe fait une chose. Sept paragraphes courts valent mieux que trois longs, et ils s'écrivent plus vite.</p><div class="note">Le programme du niveau 7 le dit à sa manière, dans les attentes de fin de cours : « il organise ses idées à l'aide de paragraphes, entre lesquels il établit des liens au moyen de connecteurs ».</div></section><section class="bloc card ml"><h3>La méthode : nommer la fonction avant d'écrire la phrase</h3><p class="mp">Avant de rédiger, on écrit sept étiquettes sur une feuille. Puis on remplit.</p><table class="ana"><tr><td>1</td><td class="">les faits de l'achat : date, bien, prix</td></tr><tr><td>2</td><td class="">la chronologie du défaut : une date par phrase</td></tr><tr><td>3</td><td class="">la garantie chiffrée, et la preuve qu'on était dedans</td></tr><tr><td>4</td><td class="">la garantie légale, en appui</td></tr><tr><td>5</td><td class="cle">la demande, une seule</td></tr><tr><td>6</td><td class="">le délai et son point de départ</td></tr><tr><td>7</td><td class="">les pièces jointes</td></tr></table><p class="dit"><span class="k">On dit</span> Un paragraphe, une fonction : les faits, la chronologie, le droit, la demande, le délai.</p><div class="note">Cette liste-là s'écrit en deux minutes et fait gagner une heure. Elle évite aussi l'oubli le plus fréquent : le délai, qui est pourtant ce qui distingue une mise en demeure d'une lettre de plainte.</div></section><section class="bloc card ml"><h3>L'ordre n'est pas libre</h3><p class="mp">Chaque paragraphe prépare le suivant. En changer l'ordre affaiblit la lettre.</p><table class="ana"><tr><td>Pourquoi les faits d'abord</td><td class="">une demande sans faits paraît arbitraire</td></tr><tr><td>Pourquoi le droit avant la demande</td><td class="">il transforme un souhait en obligation</td></tr><tr><td>Pourquoi le délai après la demande</td><td class="cle">un délai sans demande ne porte sur rien</td></tr><tr><td>Pourquoi les pièces à la fin</td><td class="">elles confirment ; elles ne démontrent pas toutes seules</td></tr></table><p class="dit"><span class="k">On dit</span> Les faits, puis le droit, puis la demande, puis le délai.</p><div class="note">On peut résumer l'ordre en une phrase : voici ce qui s'est passé, voici pourquoi vous devez agir, voici ce que je veux, voici jusqu'à quand. C'est aussi l'ordre d'une plaidoirie.</div></section><section class="bloc card ml"><h3>La longueur d'un paragraphe</h3><p class="mp">Deux à quatre phrases. Au-delà, il fait deux choses.</p><table class="ana"><tr><td>Le test</td><td class="">si le paragraphe a deux idées, il a besoin de deux paragraphes</td></tr><tr><td>Le paragraphe le plus court</td><td class="">celui du délai : une phrase suffit</td></tr><tr><td>Le paragraphe le plus long</td><td class="cle">la chronologie, et encore : quatre phrases</td></tr><tr><td>La ligne blanche</td><td class="">elle est un signe de ponctuation : elle sépare deux fonctions</td></tr></table><p class="dit"><span class="k">On dit</span> Vous disposez d'un délai de dix jours à compter de la réception de la présente.</p><div class="note">Une lettre de réclamation d'une page bien découpée obtient plus qu'une lettre de deux pages compactes. Le blanc n'est pas de l'espace perdu : c'est ce qui rend la structure visible avant la lecture.</div></section><section class="bloc card ml"><h3>Où va cette phrase ?</h3><p class="mp">Choisissez une phrase, puis voyez son paragraphe.</p><table class="labo"><thead><tr><th>Laquelle de ces phrases ? · Ce qui vous intéresse…</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">Le 6 avril, j'ai acheté… + son numéro</td><td>Paragraphe un : les faits de l'achat.<span class="tags">Paragraphe 1 — les faits de l'achat</span></td><td>la date, le bien, le prix : rien d'autre dans ce paragraphe</td></tr><tr><td class="cle">Le 6 avril, j'ai acheté… + sa justification</td><td>Sans les faits de l'achat, tout ce qui suit flotte.<span class="tags">Sans elle, tout ce qui suit flotte : on ne sait pas de quoi on parle.</span></td><td>c'est le point d'ancrage de la chronologie</td></tr><tr><td class="cle">L'étiquette dit catégorie C. + son numéro</td><td>Paragraphe trois : la garantie chiffrée.<span class="tags">Paragraphe 3 — la garantie chiffrée</span></td><td>elle vient après la chronologie, jamais avant</td></tr><tr><td class="cle">L'étiquette dit catégorie C. + sa justification</td><td>Elle transforme la demande en obligation.<span class="tags">Elle transforme la demande en obligation, et elle cite le document du commerçant.</span></td><td>c'est le paragraphe qui fait basculer la lettre</td></tr><tr><td class="cle">Vous disposez de dix jours. + son numéro</td><td>Paragraphe six : le délai.<span class="tags">Paragraphe 6 — le délai</span></td><td>une seule phrase, juste après la demande</td></tr><tr><td class="cle">Vous disposez de dix jours. + sa justification</td><td>C'est le délai qui fait de la lettre une mise en demeure.<span class="tags">C'est lui qui fait de la lettre une mise en demeure plutôt qu'une plainte.</span></td><td>sans délai, la lettre n'ouvre aucun compte à rebours</td></tr></tbody></table><div class="note">Trois phrases, trois places, trois raisons. Une lettre bien découpée se relit en trente secondes, et c'est le temps que le destinataire lui accordera.</div></section><section class="bloc card ml"><h3>Sept fonctions, sept ouvertures possibles</h3><p class="mp">À gauche la fonction, à droite comment on peut commencer le paragraphe.</p><table class="ex2"><tr><td>les faits de l'achat</td><td>Le 6 avril, j'ai acheté chez vous…</td></tr><tr><td>la chronologie du défaut</td><td>Le 24 avril, un cognement est apparu…</td></tr><tr><td>l'état au moment du défaut</td><td>À cette date, j'avais parcouru…</td></tr><tr><td>la garantie chiffrée</td><td>L'étiquette que vous m'avez remise classe…</td></tr><tr><td>la garantie légale, en appui</td><td>Je vous rappelle en outre que…</td></tr><tr><td>la demande</td><td>En conséquence, je vous demande de…</td></tr><tr><td>le délai et la suite</td><td>Vous disposez d'un délai de dix jours…</td></tr></table></section><section class="bloc card ml"><h3>Quatre questions sur le découpage</h3><p class="mp">Répondez sans remonter dans la leçon.</p><ol class="check"><li><span class="q">Un paragraphe de six phrases…</span><ul class="opts"><li>est trop long</li><li>est normal</li></ul></li><li><span class="q">Le paragraphe du délai fait…</span><ul class="opts"><li>une phrase</li><li>un développement</li></ul></li><li><span class="q">Le droit se place…</span><ul class="opts"><li>avant la demande</li><li>après la demande</li></ul></li><li><span class="q">Les pièces jointes se…</span><ul class="opts"><li>commentent</li><li>énumèrent</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> est trop long — Deux à quatre phrases. Six veut presque toujours dire deux fonctions mélangées. · <b>2.</b> une phrase — Une phrase, et elle nomme le point de départ du décompte. · <b>3.</b> avant la demande — Il transforme le souhait en obligation. Après, il arrive trop tard. · <b>4.</b> énumèrent — Elles parlent seules. Un commentaire donne l'impression qu'elles ne suffisent pas.</div></section><section class="bloc card ml"><h3>Trois faux pas, et comment s'en sortir</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">tout mettre dans un paragraphe</p><div class="k">Ce qui arrive</div><p class="ph">écrire les sept étiquettes avant de rédiger</p><p class="px">Deux minutes de plan valent une heure de réécriture, et elles empêchent d'oublier le délai.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">glisser une deuxième demande</p><div class="k">Ce qui arrive</div><p class="ph">garder l'autre pour la lettre suivante</p><p class="px">Réparation et remboursement de la garantie prolongée sont deux dossiers. Ensemble, ils se négocient l'un contre l'autre.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">commenter les pièces jointes</p><div class="k">Ce qui arrive</div><p class="ph">les énumérer et s'arrêter</p><p class="px">« Vous constaterez que le rapport prouve bien que… » affaiblit le rapport. « Copie du rapport du 30 avril » suffit.</p></div></div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Les connecteurs, ces panneaux routiers</h2><section class="bloc card ml"><h3>Le mot qui dit au lecteur ce qui l'attend</h3><p class="mp">Un connecteur ne relie pas seulement deux phrases : il annonce ce que la suivante va faire. « En outre » prévient qu'un argument s'ajoute ; « or » prévient qu'un fait va renverser ce qu'on vient de lire ; « en conséquence » prévient qu'on arrive à la demande. Le lecteur d'une lettre de réclamation lit vite : les connecteurs sont ce qui lui permet de suivre sans relire.</p><div class="note">Dix points de savoir du niveau 7 portent sur les « connecteurs et relations logiques ». C'est le plus gros bloc de la grammaire du texte, et c'est ce qui distingue un texte de niveau 7 d'une suite de phrases justes.</div></section><section class="bloc card ml"><h3>Ajouter : <b>en outre</b>, <b>par ailleurs</b>, <b>de plus</b></h3><p class="mp">Ils annoncent un argument qui s'ajoute sans remplacer le précédent.</p><table class="ana"><tr><td>Le plus formel</td><td class="">en outre — c'est celui des lettres d'affaires</td></tr><tr><td>Le plus souple</td><td class="">par ailleurs — il ouvre aussi un sujet un peu différent</td></tr><tr><td>Correct aussi</td><td class="">de plus</td></tr><tr><td>À éviter à l'écrit</td><td class="cle">en plus, et surtout « pis là »</td></tr></table><p class="dit"><span class="k">On dit</span> Je vous rappelle en outre que la garantie légale s'applique en toute circonstance.</p><div class="note">« En outre » est particulièrement utile pour introduire la garantie légale après la garantie chiffrée : il dit clairement que le deuxième argument ne remplace pas le premier, mais s'y ajoute.</div></section><section class="bloc card ml"><h3>Conclure : <b>en conséquence</b>, <b>par conséquent</b>, <b>c'est pourquoi</b></h3><p class="mp">C'est le connecteur du paragraphe de la demande. Il ne devrait paraître qu'une fois dans la lettre.</p><table class="ana"><tr><td>La formule consacrée</td><td class="">En conséquence, je vous demande de…</td></tr><tr><td>Une variante</td><td class="">Par conséquent, la garantie courait encore le 30 avril.</td></tr><tr><td>Plus léger</td><td class="">C'est pourquoi je m'adresse à vous.</td></tr><tr><td>La règle du nombre</td><td class="cle">deux conclusions, c'est aucune</td></tr></table><p class="dit"><span class="k">On dit</span> En conséquence, je vous demande de procéder à la réparation à vos frais.</p><div class="note">L'erreur classique est d'employer « donc » quatre fois dans une lettre. « Donc » est un mot de l'oral ; dans une lettre formelle, on le garde pour un raisonnement court à l'intérieur d'une phrase, et on réserve « en conséquence » à la vraie conclusion.</div></section><section class="bloc card ml"><h3>Opposer : <b>or</b>, <b>toutefois</b>, <b>cependant</b></h3><p class="mp">Trois forces différentes, et il faut choisir la bonne.</p><table class="ana"><tr><td><b>or</b> : le plus fort</td><td class="">il introduit le fait qui renverse l'argument d'en face</td></tr><tr><td><b>toutefois</b>, <b>cependant</b> : la nuance</td><td class="">ils réservent un point sans tout renverser</td></tr><tr><td><b>néanmoins</b></td><td class="">il concède d'abord, puis maintient</td></tr><tr><td>La place</td><td class="cle">en tête de phrase, suivi d'une virgule</td></tr></table><p class="dit"><span class="k">On dit</span> Vous invoquez l'usure normale. Or, le véhicule avait vingt-quatre jours de route.</p><div class="note">« Or » ne s'emploie qu'une fois dans une lettre, et il faut qu'il porte le fait le plus fort du dossier. Employé trois fois, il ne renverse plus rien du tout.</div></section><section class="bloc card ml"><h3>Situer dans le temps : <b>dès</b>, <b>à compter de</b>, <b>par la suite</b></h3><p class="mp">Une lettre de réclamation est une chronologie : ses connecteurs sont d'abord temporels.</p><table class="ana"><tr><td><b>dès</b></td><td class="">immédiatement après : dès le lendemain de la livraison</td></tr><tr><td><b>à compter de</b></td><td class="cle">la formule du délai : à compter de la réception de la présente</td></tr><tr><td><b>par la suite</b></td><td class="">ce qui vient après, sans précision de date</td></tr><tr><td><b>à ce jour</b></td><td class="">utile pour dire qu'il ne s'est rien passé : à ce jour, je n'ai reçu aucune réponse</td></tr></table><p class="dit"><span class="k">On dit</span> Vous disposez de dix jours à compter de la réception de la présente.</p><div class="note">« À ce jour » est le connecteur du reproche sans reproche. « À ce jour, je n'ai reçu aucune réponse » constate un fait daté, là où « vous ne m'avez jamais répondu » accuse.</div></section><section class="bloc card ml"><h3>Le bon connecteur pour la bonne charnière</h3><p class="mp">Choisissez ce que la phrase suivante va faire, puis le registre.</p><table class="labo"><thead><tr><th>Elle va… · Quel registre ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">ajouter un argument + écrit formel</td><td>En outre, je vous rappelle que la garantie légale s'applique.<span class="tags">En outre, …</span></td><td>le connecteur des lettres d'affaires</td></tr><tr><td class="cle">ajouter un argument + parlé</td><td>Et il y a autre chose : on ne m'a jamais parlé de la garantie légale.<span class="tags">Et il y a autre chose : …</span></td><td>parfait au comptoir, à ne pas écrire</td></tr><tr><td class="cle">renverser l'argument d'en face + écrit formel</td><td>Or, le véhicule avait vingt-quatre jours de route.<span class="tags">Or, …</span></td><td>une seule fois par lettre, sur le fait le plus fort</td></tr><tr><td class="cle">renverser l'argument d'en face + parlé</td><td>Sauf que le véhicule avait vingt-quatre jours de route.<span class="tags">Sauf que …</span></td><td>très efficace à l'oral, refusé à l'écrit formel</td></tr><tr><td class="cle">conclure + écrit formel</td><td>En conséquence, je vous demande de procéder à la réparation.<span class="tags">En conséquence, …</span></td><td>une seule fois, et elle annonce la demande</td></tr><tr><td class="cle">conclure + parlé</td><td>Ça fait que je vous demande de la réparer.<span class="tags">Ça fait que …</span></td><td>du français québécois parlé, correct et hors de la lettre</td></tr></tbody></table><div class="note">La colonne « parlé » n'est pas fautive : elle est excellente au comptoir. Ce qui serait fautif, c'est de la transporter telle quelle dans la lettre — et l'inverse serait aussi bizarre : personne ne dit « en outre » debout devant un comptoir.</div></section><section class="bloc card ml"><h3>Douze connecteurs, et ce qu'ils annoncent</h3><p class="mp">À gauche le connecteur, à droite ce que la phrase qui suit va faire.</p><table class="ex2"><tr><td>en outre</td><td>ajouter un argument au précédent</td></tr><tr><td>par ailleurs</td><td>ajouter, en ouvrant un peu le sujet</td></tr><tr><td>de plus</td><td>ajouter, registre courant</td></tr><tr><td>or</td><td>renverser l'argument qu'on vient de citer</td></tr><tr><td>toutefois</td><td>réserver un point, sans tout renverser</td></tr><tr><td>cependant</td><td>même chose, un peu plus léger</td></tr><tr><td>néanmoins</td><td>concéder, puis maintenir sa position</td></tr><tr><td>en conséquence</td><td>arriver à la demande</td></tr><tr><td>par conséquent</td><td>tirer une conclusion de fait</td></tr><tr><td>dès</td><td>situer juste après un moment</td></tr><tr><td>à compter de</td><td>faire partir un délai</td></tr><tr><td>à ce jour</td><td>constater qu'il ne s'est rien passé</td></tr></table></section><section class="bloc card ml"><h3>Quatre questions sur les connecteurs</h3><p class="mp">Répondez sans remonter dans la leçon.</p><ol class="check"><li><span class="q">Combien de fois « en conséquence » dans une lettre ?</span><ul class="opts"><li>une</li><li>autant qu'il en faut</li></ul></li><li><span class="q">Le plus fort des connecteurs d'opposition est…</span><ul class="opts"><li>cependant</li><li>or</li></ul></li><li><span class="q">« À compter de » sert à…</span><ul class="opts"><li>ajouter</li><li>faire partir un délai</li></ul></li><li><span class="q">Où se place le connecteur ?</span><ul class="opts"><li>au milieu de la phrase</li><li>en tête, suivi d'une virgule</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> une — Deux conclusions, c'est aucune conclusion. · <b>2.</b> or — Il introduit le fait qui renverse. À réserver au meilleur fait du dossier. · <b>3.</b> faire partir un délai — C'est la formule consacrée : à compter de la réception de la présente. · <b>4.</b> en tête, suivi d'une virgule — C'est un panneau routier : il doit se voir de loin.</div></section><section class="bloc card ml"><h3>Trois faux pas, et comment s'en sortir</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">empiler les connecteurs</p><div class="k">Ce qui arrive</div><p class="ph">en garder un par charnière</p><p class="px">« Donc en conséquence, par conséquent » : trois pour la même chose. Un seul, et des paragraphes courts entre eux.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">employer « or » trois fois</p><div class="k">Ce qui arrive</div><p class="ph">le réserver au fait le plus fort</p><p class="px">Répété, il perd toute force et le lecteur ne sait plus quel argument compte.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">écrire « en plus » dans une lettre</p><div class="k">Ce qui arrive</div><p class="ph">le remplacer par « en outre »</p><p class="px">« En plus » est correct en parlant. Dans une lettre d'affaires, il détonne — et c'est exactement le genre de détail qui fait juger l'auteur.</p></div></div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Le subjonctif : dire ce qui n'est pas encore arrivé</h2><section class="bloc card ml"><h3>Le mode de ce qu'on demande</h3><p class="mp">« Je constate que la transmission est réparée » et « je demande que la transmission soit réparée » ne parlent pas du même monde. La première décrit un fait ; la seconde décrit quelque chose qui n'existe pas encore et qu'on veut faire exister. C'est exactement ce qu'une réclamation exprime, du début à la fin — et c'est pourquoi le subjonctif y revient à chaque paragraphe.</p><div class="note">Cinq points de savoir du niveau 7 portent sur le subjonctif présent. Dans cette situation-ci, on n'en a besoin que d'un usage : après les verbes qui demandent, qui exigent ou qui jugent nécessaire.</div></section><section class="bloc card ml"><h3>Ce qui le déclenche : le verbe d'avant, pas le sens</h3><p class="mp">Le subjonctif n'est pas déclenché par l'idée : il est déclenché par le verbe de la principale, suivi de <b>que</b>.</p><table class="ana"><tr><td>Volonté et demande</td><td class="">je demande que · j'exige que · je souhaite que · je veux que</td></tr><tr><td>Nécessité</td><td class="">il faut que · il est nécessaire que · il importe que</td></tr><tr><td>Souhait atténué</td><td class="">j'aimerais que · je souhaiterais que</td></tr><tr><td>Et le contraire, à l'indicatif</td><td class="cle">je constate que · je note que · je vous informe que</td></tr></table><p class="dit"><span class="k">On dit</span> Je demande que la réparation soit effectuée à vos frais.</p><div class="note">Le contraste est net et facile à retenir : les verbes qui <b>constatent</b> appellent l'indicatif, les verbes qui <b>demandent</b> appellent le subjonctif. Dans une mise en demeure, les deux se suivent : on constate, puis on demande.</div></section><section class="bloc card ml"><h3>Comment il se forme, pour presque tous les verbes</h3><p class="mp">Une seule recette, à partir d'une forme que vous connaissez déjà.</p><table class="ana"><tr><td>La recette</td><td class="">3ᵉ personne du pluriel de l'indicatif présent, moins -ent, plus -e, -es, -e, -ions, -iez, -ent</td></tr><tr><td>Un exemple</td><td class="">ils répondent → que je réponde, que vous répondiez</td></tr><tr><td>Un autre</td><td class="">ils procèdent → que je procède, que nous procédions</td></tr><tr><td>Ce qui surprend</td><td class="cle">aux trois personnes du singulier, ça sonne comme l'indicatif</td></tr></table><p class="dit"><span class="k">On dit</span> Il faut que vous répondiez dans les dix jours.</p><div class="note">C'est ce qui rend le subjonctif moins effrayant qu'il n'en a l'air : pour la plupart des verbes et à la plupart des personnes, la forme est celle qu'on dirait de toute façon. Ce sont les personnes « nous » et « vous » qui trahissent — et sept verbes irréguliers.</div></section><section class="bloc card ml"><h3>Les sept qu'on n'apprend pas par la règle</h3><p class="mp">Ils couvrent la moitié des emplois réels, et ils sont partout dans une lettre.</p><table class="ana"><tr><td>être · avoir</td><td class="">que je sois, que nous soyons · que j'aie, que nous ayons</td></tr><tr><td>faire · aller</td><td class="">que je fasse · que j'aille</td></tr><tr><td>pouvoir · savoir</td><td class="">que je puisse · que je sache</td></tr><tr><td>vouloir</td><td class="cle">que je veuille</td></tr><tr><td>Le plus fréquent de tous</td><td class="">que ce soit — et « que ce soit fait » dans une réclamation</td></tr></table><p class="dit"><span class="k">On dit</span> Je demande que les pièces et la main-d'œuvre soient comprises dans la réparation.</p><div class="note">« Soit » et « soient » sont, à eux deux, la moitié des subjonctifs d'une lettre de réclamation, parce que la demande porte presque toujours sur un passif : que la réparation <b>soit</b> effectuée, que les pièces <b>soient</b> comprises, que le véhicule <b>soit</b> rendu.</div></section><section class="bloc card ml"><h3>L'évitement, et quand il est meilleur</h3><p class="mp">On peut souvent employer un infinitif à la place, et c'est parfois plus ferme.</p><table class="ana"><tr><td>Avec « de » + infinitif</td><td class="">Je vous demande de procéder à la réparation.</td></tr><tr><td>Avec « que » + subjonctif</td><td class="">Je demande que vous procédiez à la réparation.</td></tr><tr><td>Quand l'infinitif est meilleur</td><td class="cle">quand le destinataire est celui qui doit agir : plus court, plus direct</td></tr><tr><td>Quand le subjonctif est obligatoire</td><td class="">quand le sujet change : que la réparation soit faite à vos frais</td></tr></table><p class="dit"><span class="k">On dit</span> Je vous demande de procéder, à vos frais, à la réparation complète.</p><div class="note">Les modèles officiels de mise en demeure emploient l'infinitif pour la demande principale et le subjonctif pour les conditions. C'est une bonne habitude à prendre : elle raccourcit la phrase là où elle doit frapper.</div></section><section class="bloc card ml"><h3>Indicatif ou subjonctif ?</h3><p class="mp">Choisissez le verbe introducteur, puis ce qui suit.</p><table class="labo"><thead><tr><th>Quel verbe ? · La suite ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">je constate que + la réparation</td><td>Je constate que la réparation n'a pas été effectuée.</td><td>indicatif : un fait, vérifiable, daté</td></tr><tr><td class="cle">je constate que + une réponse écrite</td><td>Je constate qu'aucune réponse écrite ne m'est parvenue.</td><td>indicatif, même sous une négation</td></tr><tr><td class="cle">je demande que + la réparation</td><td>Je demande que la réparation soit effectuée à vos frais.</td><td>subjonctif : la chose n'existe pas encore</td></tr><tr><td class="cle">je demande que + une réponse écrite</td><td>Je demande que votre réponse me soit transmise par écrit.</td><td>encore « soit » : la demande porte sur un passif</td></tr><tr><td class="cle">il faut que + la réparation</td><td>Il faut que la réparation soit terminée avant le dix-huit mai.<span class="tags">Il faut que la réparation soit terminée avant le 18 mai.</span></td><td>la nécessité appelle le subjonctif, et le délai suit</td></tr><tr><td class="cle">il faut que + une réponse écrite</td><td>Il faut que vous me répondiez dans les dix jours.</td><td>« répondiez » : c'est la personne « vous » qui révèle le subjonctif</td></tr></tbody></table><div class="note">Trois verbes, deux suites, et la règle se voit d'un coup d'œil : la première ligne constate à l'indicatif, les deux autres demandent au subjonctif. Le sens de la phrase n'y est pour rien — c'est le verbe d'avant qui décide.</div></section><section class="bloc card ml"><h3>Dix formules de la lettre, au bon mode</h3><p class="mp">À gauche la formule, à droite le mode et pourquoi.</p><table class="ex2"><tr><td>Je constate que…</td><td>indicatif — un fait</td></tr><tr><td>Je vous informe que…</td><td>indicatif — un fait qu'on transmet</td></tr><tr><td>Je note que…</td><td>indicatif — un fait qu'on relève</td></tr><tr><td>Je demande que…</td><td>subjonctif — pas encore réalisé</td></tr><tr><td>J'exige que…</td><td>subjonctif — même chose, plus ferme</td></tr><tr><td>Il faut que…</td><td>subjonctif — nécessité</td></tr><tr><td>Il est nécessaire que…</td><td>subjonctif — nécessité</td></tr><tr><td>J'aimerais que…</td><td>subjonctif — souhait</td></tr><tr><td>Je vous demande de…</td><td>infinitif — plus court, quand c'est vous qui agissez</td></tr><tr><td>Je m'attends à ce que…</td><td>subjonctif — attente, donc pas encore réalisé</td></tr></table></section><section class="bloc card ml"><h3>Quatre questions sur les deux modes</h3><p class="mp">Répondez sans remonter dans la leçon.</p><ol class="check"><li><span class="q">« Je constate que la réparation ___ faite. »</span><ul class="opts"><li>est</li><li>soit</li></ul></li><li><span class="q">« Il faut que vous ___ dans les dix jours. »</span><ul class="opts"><li>répondez</li><li>répondiez</li></ul></li><li><span class="q">Le subjonctif se forme à partir de…</span><ul class="opts"><li>la 3ᵉ personne du pluriel</li><li>l'infinitif</li></ul></li><li><span class="q">« Je vous demande de procéder » est…</span><ul class="opts"><li>une faute</li><li>un infinitif correct</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> est — Constater est un verbe de fait : indicatif. · <b>2.</b> répondiez — C'est à « vous » que le subjonctif se trahit : répondiez, et non répondez. · <b>3.</b> la 3ᵉ personne du pluriel — Ils répondent → que je réponde. Sauf pour les sept irréguliers. · <b>4.</b> un infinitif correct — Et souvent meilleur : plus court, plus direct, c'est la formule des modèles officiels.</div></section><section class="bloc card ml"><h3>Trois faux pas, et comment s'en sortir</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">mettre le subjonctif après « je constate »</p><div class="k">Ce qui arrive</div><p class="ph">se demander si le fait existe déjà</p><p class="px">S'il existe, indicatif. S'il reste à obtenir, subjonctif. La règle tient en une question.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">écrire « que j'aies »</p><div class="k">Ce qui arrive</div><p class="ph">se rappeler que c'est « que j'aie »</p><p class="px">Pas de s à la première personne du subjonctif d'avoir. « Que tu aies », en revanche, en prend un.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">employer le subjonctif partout par prudence</p><div class="k">Ce qui arrive</div><p class="ph">préférer l'infinitif quand c'est possible</p><p class="px">« Je vous demande de procéder » vaut mieux que « je demande que vous procédiez » : c'est plus court, et il n'y a plus de forme à risquer.</p></div></div></section></section></div>
+<footer><span>D2 · Réclamer après l'achat</span><span>Fiche élève</span></footer>
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C3 · Quatre questions au vendeur — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance C3 · Module 3 · 60 minutes</div>
+    <h1>Quatre questions au vendeur</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Où, combien, est-ce que vous avez, combien de large. Avec quatre débuts de phrase et un nom d'appareil, on obtient tout ce dont on a besoin.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>poser une question avec où, combien et est-ce que ;</li><li>faire monter la voix à la fin d'une question ;</li><li>demander de répéter quand on n'a pas compris ;</li><li>conclure un achat en une phrase.</li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Les quatre questions du magasin</h2><table><thead><tr><th>Ce qu'on veut savoir</th><th>Ce qu'on dit</th></tr></thead><tbody><tr><td>où c'est</td><td class="cle">Où est le rayon des laveuses ?</td></tr><tr><td>le prix</td><td class="cle">C'est combien, celui-là ?</td></tr><tr><td>si le magasin l'a</td><td class="cle">Est-ce que vous avez ce modèle en gris ?</td></tr><tr><td>le format</td><td class="cle">Elle fait combien de large ?</td></tr></tbody></table><div class="note">Une question à la fois : on attend la réponse avant de poser la suivante.</div></section><section class="bloc regle"><div class="lbl">Est-ce que transforme n'importe quelle phrase en question</div><p class="r">Vous avez ce modèle.  ·  Est-ce que vous avez ce modèle ?</p><p class="pr">On pose « est-ce que » devant la phrase, et rien d'autre ne change. C'est l'outil le plus rentable du niveau : il sert dans toutes les situations.</p></section><section class="bloc"><div class="lbl">Trois façons de demander le prix</div><h2 class="t">Toutes les trois correctes</h2><div class="grid"><div class="card"><h3>C'est combien ?</h3><p>La plus courte et la plus entendue. On l'accompagne du doigt.</p></div><div class="card"><h3>Elle coûte combien ?</h3><p>Un peu plus complète. Le verbe change selon l'appareil : elle coûte, il coûte.</p></div><div class="card"><h3>Quel est le prix de ce modèle ?</h3><p>Plus soutenue. Correcte, mais on l'entend surtout au téléphone.</p></div></div></section><section class="bloc card"><div class="lbl">Production</div><h2 class="t">Que dites-vous ?</h2><p class="consigne">Une phrase courte et polie pour chaque situation.</p><ol class="ex"><li><span class="q">Vous entrez et vous cherchez les laveuses.</span><span class="ligne"></span></li><li><span class="q">Vous voulez le prix de la machine blanche.</span><span class="ligne ligne--court"></span></li><li><span class="q">Vous voulez savoir si le magasin l'a en gris.</span><span class="ligne"></span></li><li><span class="q">Vous voulez la largeur de l'appareil.</span><span class="ligne"></span></li><li><span class="q">Le vendeur a parlé trop vite.</span><span class="ligne"></span></li><li><span class="q">Vous avez choisi : vous la voulez.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Rester bloqué quand on n'a pas compris</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">faire oui de la tête sans avoir compris</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">Pardon, pouvez-vous répéter, s'il vous plaît ?</p></div></div><div class="note">C'est la phrase la plus utile du module, et tout le monde la dit, y compris les gens d'ici entre eux. Un vendeur qui répète plus lentement, c'est normal ; un client qui repart avec le mauvais appareil, c'est une journée perdue.</div></section><section class="bloc regle"><div class="lbl">La voix monte à la fin de la question</div><p class="r">Vous l'avez en gris ?</p><p class="pr">Sans « est-ce que », c'est l'intonation seule qui fait la question. Si la voix descend, le vendeur entend une affirmation et ne répond pas.</p></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Préparez votre achat : écrivez vos quatre questions.</p><ul><li>Choisissez un appareil dont vous avez besoin.</li><li>Écrivez les quatre questions dans l'ordre où vous les poserez.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Quatre questions qui suffisent au magasin</h2><section class="bloc card ml"><h3>On n'a pas besoin de longues phrases</h3><p class="mp">Un vendeur répond à des questions courtes. Où, combien, est-ce que vous avez : avec trois débuts de phrase et un mot d'appareil, tu obtiens tout ce dont tu as besoin. Le reste — la politesse — tient en deux mots : <b>bonjour</b> et <b>merci</b>.</p><div class="note">Commence toujours par « Bonjour ». Ici, entrer dans un magasin et parler sans saluer surprend.</div></section><section class="bloc card ml"><h3>Trouver le rayon</h3><p class="mp">La première question, celle de l'entrée.</p><table class="ana"><tr><td>On dit</td><td class=""><b>où est le rayon</b> des laveuses ?</td></tr><tr><td>Au pluriel</td><td class="cle">Où sont les micro-ondes ?</td></tr><tr><td>Réponse type</td><td class="">Au fond, à gauche.</td></tr></table><p class="dit"><span class="k">On dit</span> Bonjour, où est le rayon des laveuses ?</p><div class="note">« Où est » pour un mot singulier, « Où sont » pour un pluriel. Les deux se disent presque pareil, et personne ne te reprendra.</div></section><section class="bloc card ml"><h3>Demander le prix</h3><p class="mp">Deux façons, également correctes.</p><table class="ana"><tr><td>La plus courte</td><td class=""><b>c'est combien</b> ?</td></tr><tr><td>La plus complète</td><td class="cle">Elle coûte combien ?</td></tr><tr><td>Avec le doigt</td><td class="">C'est combien, celui-là ?</td></tr></table><p class="dit"><span class="k">On dit</span> C'est combien, celui-là ?</p><div class="note">La voix monte à la fin. C'est ce qui fait de la phrase une question, même sans « est-ce que ».</div></section><section class="bloc card ml"><h3>Demander si le magasin l'a</h3><p class="mp">La question qui évite de chercher pour rien.</p><table class="ana"><tr><td>On dit</td><td class=""><b>est-ce que vous avez</b> ce modèle en gris ?</td></tr><tr><td>Plus court</td><td class="cle">Vous l'avez en gris ?</td></tr><tr><td>Autre usage</td><td class="">Est-ce que vous livrez ?</td></tr></table><p class="dit"><span class="k">On dit</span> Est-ce que vous avez ce modèle en gris ?</p><div class="note">« Est-ce que » se met devant n'importe quelle phrase et la transforme en question. C'est l'outil le plus rentable du niveau.</div></section><section class="bloc card ml"><h3>Demander le format, et faire répéter</h3><p class="mp">Deux questions qui sauvent un achat.</p><table class="ana"><tr><td>Le format</td><td class="">Elle fait <b>combien de large</b> ?</td></tr><tr><td>Au Québec</td><td class="cle">on répond en pouces</td></tr><tr><td>Si tu perds le fil</td><td class=""><b>pouvez-vous répéter</b> ?</td></tr></table><p class="dit"><span class="k">On dit</span> Elle fait combien de large ? Pouvez-vous répéter, s'il vous plaît ?</p><div class="note">Mesure chez toi <b>avant</b> de partir, et note le chiffre sur un papier. Un appareil trop large revient au magasin.</div></section><section class="bloc card ml"><h3>Construis ta question</h3><p class="mp">Choisis ce que tu veux savoir et pour quel appareil.</p><table class="labo"><thead><tr><th>Tu veux savoir… · Quel appareil ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">où c'est + la laveuse</td><td>Où est le rayon des laveuses ?</td><td>singulier : où est</td></tr><tr><td class="cle">où c'est + le micro-ondes</td><td>Où sont les micro-ondes ?</td><td>pluriel : où sont</td></tr><tr><td class="cle">le prix + la laveuse</td><td>Cette laveuse-là coûte combien ?</td><td>avec le doigt</td></tr><tr><td class="cle">le prix + le micro-ondes</td><td>C'est combien, celui-là ?</td><td>la forme la plus courte</td></tr><tr><td class="cle">la couleur + la laveuse</td><td>Est-ce que vous l'avez en gris ?</td><td>est-ce que + phrase</td></tr><tr><td class="cle">la couleur + le micro-ondes</td><td>Est-ce que vous l'avez en blanc ?</td><td>la même question, autre couleur</td></tr><tr><td class="cle">le format + la laveuse</td><td>Elle fait combien de large ?</td><td>féminin : elle</td></tr><tr><td class="cle">le format + le micro-ondes</td><td>Il fait combien de large ?</td><td>masculin : il</td></tr></tbody></table><div class="note">Huit questions, quatre besoins. C'est tout ce qu'il faut pour un achat.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six phrases à dire au vendeur.</p><table class="ex2"><tr><td>Bonjour, où est le rayon des laveuses ?</td><td>pour entrer</td></tr><tr><td>C'est combien, celui-là ?</td><td>pour le prix</td></tr><tr><td>Est-ce que vous avez ce modèle en gris ?</td><td>pour la couleur</td></tr><tr><td>Elle fait combien de large ?</td><td>pour le format</td></tr><tr><td>Pouvez-vous répéter, s'il vous plaît ?</td><td>quand ça va trop vite</td></tr><tr><td>Merci beaucoup. Je la prends.</td><td>pour finir</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges à connaître</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">ne pas saluer</p><div class="k">Ce qui arrive</div><p class="ph">entrer et demander tout de suite</p><p class="px">Un « bonjour » change complètement l'accueil. Ce n'est pas une règle de grammaire, c'est une règle d'ici.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">dire « je comprends pas » et s'arrêter</p><div class="k">Ce qui arrive</div><p class="ph">rester bloqué</p><p class="px">« Pouvez-vous répéter, s'il vous plaît ? » relance la conversation. Tout le monde le dit, y compris entre gens d'ici.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">oublier la voix qui monte</p><div class="k">Ce qui arrive</div><p class="ph">« Vous l'avez en gris. »</p><p class="px">Dite avec la voix qui descend, la phrase n'est plus une question : le vendeur croit que tu lui apprends quelque chose.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">Pour trouver le rayon, on demande…</span><ul class="opts"><li>Où est le rayon des laveuses ?</li><li>Le rayon des laveuses.</li></ul></li><li><span class="q">« Est-ce que » se met…</span><ul class="opts"><li>au début de la phrase</li><li>à la fin</li></ul></li><li><span class="q">Au Québec, la largeur d'un appareil se dit en…</span><ul class="opts"><li>centimètres</li><li>pouces</li></ul></li><li><span class="q">Quand tu n'as pas compris, tu dis…</span><ul class="opts"><li>rien</li><li>Pouvez-vous répéter ?</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> Où est le rayon des laveuses ? — Une vraie question, avec « où ». · <b>2.</b> au début de la phrase — Devant la phrase, qui ne change pas autrement. · <b>3.</b> pouces — 27 pouces, 20 pouces : c'est la mesure du magasin. · <b>4.</b> Pouvez-vous répéter ? — C'est la phrase la plus utile de tout le module.</div></section></section></div>
+<footer><span>C3 · Acheter un appareil</span><span>Fiche élève</span></footer>
+</body>
+</html>

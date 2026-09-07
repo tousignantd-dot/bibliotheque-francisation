@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>D2 · La lettre d'affaires courantes — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance D2 · Module 2 · 75 minutes</div>
+    <h1>La lettre d'affaires courantes</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Elle sort de l'entreprise, et ce qui y est écrit peut être invoqué plus tard. D'où sa longueur, ses formules, et le soin qu'on met à ne pas écrire « nous voulons acheter » quand on veut dire « nous demandons un prix ».</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>nommer les sept parties d'une lettre d'affaires ;</li><li>employer la formule qui fait le travail voulu ;</li><li>employer le subjonctif après un verbe de volonté ;</li><li>employer le conditionnel pour demander, proposer et estimer.</li></ol></section><section class="bloc card"><div class="lbl">Dialogue · 1 de 4</div><h2 class="t">Demander la bonne chose</h2><p class="consigne">Écoutez d'abord, sans lire le texte.</p><div class="rep"><div class="qui">VINCENT</div><div>Équipements Sorel, bonjour, Vincent Béliveau à l'appareil.</div></div><div class="rep rep--key"><div class="qui">AÏCHA</div><div>Bonjour monsieur Béliveau. Aïcha Traoré, de Meubles Rive-du-Nord. Je vous appelle au sujet d'une table élévatrice pour un poste d'emballage.</div></div><div class="rep"><div class="qui">VINCENT</div><div>Vous cherchez de l'information, ou vous êtes rendue au prix ?</div></div><div class="rep rep--key"><div class="qui">AÏCHA</div><div>Les deux, je pense. On voudrait une soumission écrite, mais avant je voudrais être sûre de vous demander la bonne chose.</div></div></section><section class="bloc card"><div class="lbl">Dialogue · 2 de 4</div><h2 class="t">Trois données pour un prix juste</h2><div class="rep rep--key"><div class="qui">VINCENT</div><div>Il me faut trois choses : la charge maximale sur la palette, les dimensions de la palette, et la hauteur de travail que vous visez.</div></div><div class="rep"><div class="qui">AÏCHA</div><div>La palette standard, quarante-huit par quarante pouces. Douze cents livres pleine. La hauteur de travail, je ne sais pas.</div></div><div class="rep rep--key"><div class="qui">VINCENT</div><div>Prenez la hauteur du coude de la personne qui travaille là, debout, bras le long du corps. Mesurez-la sur deux ou trois personnes et donnez-moi la moyenne.</div></div><div class="rep"><div class="qui">AÏCHA</div><div>Je peux faire ça cet après-midi.</div></div></section><section class="bloc card"><div class="lbl">Dialogue · 3 de 4</div><h2 class="t">Un ordre de grandeur n'est pas un prix</h2><div class="rep"><div class="qui">AÏCHA</div><div>Est-ce que vous pouvez me donner un prix approximatif tout de suite ?</div></div><div class="rep rep--key"><div class="qui">VINCENT</div><div>Je peux vous donner un ordre de grandeur, en vous disant bien que ce n'est pas une soumission. Comptez entre quatre et sept mille dollars, selon la finition.</div></div><div class="rep"><div class="qui">AÏCHA</div><div>Et le plateau tournant, ça sert à quoi ?</div></div><div class="rep rep--key"><div class="qui">VINCENT</div><div>À ne pas contourner la palette. Sur un poste où on fait quatre-vingts caisses, ça change beaucoup de choses. Ça ajoute à peu près huit cents dollars.</div></div></section><section class="bloc card"><div class="lbl">Dialogue · 4 de 4</div><h2 class="t">Ce qu'il faut écrire, et ce qu'il ne faut pas</h2><div class="rep"><div class="qui">AÏCHA</div><div>Est-ce que j'écris que nous voulons acheter ?</div></div><div class="rep rep--key"><div class="qui">VINCENT</div><div>Surtout pas. Vous écrivez que vous demandez une soumission. Dites simplement où vous en êtes : le projet est à l'étude, la décision se prend en octobre.</div></div><div class="rep rep--key"><div class="qui">VINCENT</div><div>Et quand vous recevrez notre soumission, regardez la date de validité en bas de page. Un prix d'équipement ne tient pas six mois.</div></div><div class="rep"><div class="qui">AÏCHA</div><div>Je ne l'aurais pas remarqué. Merci beaucoup, monsieur Béliveau.</div></div></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Les sept parties, de haut en bas</h2><table><thead><tr><th>La partie</th><th>Ce qu'elle contient</th></tr></thead><tbody><tr><td class="cle">Le lieu et la date</td><td>en haut à droite, le mois en toutes lettres</td></tr><tr><td class="cle">La vedette</td><td>nom, fonction, entreprise, adresse du destinataire</td></tr><tr><td class="cle">L'objet</td><td>sans verbe conjugué, comme dans la note</td></tr><tr><td class="cle">L'appel</td><td>« Monsieur, » seul sur sa ligne, avec une virgule</td></tr><tr><td class="cle">Le corps</td><td>trois paragraphes : pourquoi, quoi, la suite</td></tr></tbody></table><div class="note">Puis la salutation, qui reprend l'appel mot pour mot, et la signature, avec p. j. et c. c. s'il y a lieu.</div></section><section class="bloc card"><div class="lbl">Pratique</div><h2 class="t">Que fait cette formule ?</h2><p class="consigne">Chaque formule fait un travail précis.</p><ol class="ex"><li><span class="q">« Nous vous écrivons afin de... »</span><span class="ligne"></span></li><li><span class="q">« Je vous saurais gré de bien vouloir... »</span><span class="ligne ligne--court"></span></li><li><span class="q">« Sous réserve de l'approbation du budget... »</span><span class="ligne"></span></li><li><span class="q">« Vous trouverez ci-joint... »</span><span class="ligne"></span></li><li><span class="q">« Dans l'attente de votre réponse, »</span><span class="ligne"></span></li><li><span class="q">« Nous accusons réception de... »</span><span class="ligne"></span></li></ol></section><section class="bloc regle"><div class="lbl">Le subjonctif après le verbe de volonté</div><p class="r">Je souhaite que vous nous FASSIEZ parvenir votre soumission.</p><p class="pr">Vouloir que, souhaiter que, demander que, exiger que, préférer que, il faut que, il importe que : tous au subjonctif. Les verbes d'opinion, eux, prennent l'indicatif à la forme affirmative - « je pense que la table EST nécessaire » - et basculent au subjonctif à la forme négative : « je ne pense pas que la table SOIT nécessaire ». Dès que la certitude tombe, le subjonctif arrive.</p></section><section class="bloc card"><div class="lbl">Pratique</div><h2 class="t">Subjonctif ou conditionnel ?</h2><p class="consigne">Mettez le verbe à la forme qui convient.</p><ol class="ex"><li><span class="q">Je souhaite que vous nous ... (faire) parvenir votre soumission.</span><span class="ligne ligne--court"></span></li><li><span class="q">Il faut que la soumission ... (être) valide jusqu'en novembre.</span><span class="ligne ligne--court"></span></li><li><span class="q">Nous ... (vouloir) connaître le prix d'une table élévatrice.</span><span class="ligne ligne--court"></span></li><li><span class="q">... (pouvoir)-vous nous indiquer votre délai de livraison ?</span><span class="ligne ligne--court"></span></li><li><span class="q">Selon un premier appel, l'appareil ... (coûter) entre quatre et sept mille dollars.</span><span class="ligne ligne--court"></span></li><li><span class="q">Si l'essai était concluant, nous ... (installer) la table en novembre.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Écriture</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">« Je demanderai votre meilleur prix. »</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">« Je demanderais votre meilleur prix. »</p></div></div><div class="note">À l'oral, la différence s'entend à peine. À l'écrit, le -s change tout : l'un annonce ce que vous ferez, l'autre demande poliment. C'est la faute la plus fréquente dans les lettres d'affaires. Relisez tous vos verbes en -rai et en -rais avant d'envoyer. Et jamais de conditionnel juste après « si » : « si j'étais », pas « si je serais ».</div></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez le premier paragraphe de votre lettre au fournisseur.</p><ul><li>« Nous vous écrivons afin de... »</li><li>Dites où vous en êtes : le projet est à l'étude.</li><li>N'écrivez pas « nous voulons acheter ».</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Les formules : à quoi chacune sert</h2><section class="bloc card ml"><h3>Ce ne sont pas des politesses vides</h3><p class="mp">On croit souvent que les formules d'une lettre d'affaires sont de la décoration. Elles ne le sont pas : chacune fait un <b>travail précis</b> que le lecteur reconnaît immédiatement. « Sous réserve de » ne dit pas la même chose que « nous confirmons ». Employer la mauvaise formule, ce n'est pas manquer de politesse : c'est écrire autre chose que ce qu'on voulait dire.</p><div class="note">C'est pour ça qu'elles s'apprennent par leur fonction, jamais par cœur en liste.</div></section><section class="bloc card ml"><h3>Huit formules et leur travail</h3><p class="mp">À gauche la formule, à droite ce qu'elle fait.</p><table class="ex2"><tr><td>Nous vous écrivons afin de…</td><td>Ouvrir en disant tout de suite pourquoi. Évite les trois lignes d'introduction.</td></tr><tr><td>Je vous saurais gré de bien vouloir…</td><td>Demander sans ordonner. La plus utile des huit.</td></tr><tr><td>Sous réserve de…</td><td>Prévenir que rien n'est décidé. Protège l'entreprise et informe le fournisseur.</td></tr><tr><td>Vous trouverez ci-joint…</td><td>Annoncer un document. Se double d'un « p. j. » en bas de page.</td></tr><tr><td>Nous souhaiterions recevoir votre réponse pour le…</td><td>Demander une date sans en faire une exigence.</td></tr><tr><td>Dans l'attente de votre réponse,</td><td>Fermer le corps, juste avant la salutation.</td></tr><tr><td>Veuillez agréer, Monsieur, mes salutations distinguées.</td><td>Saluer, en reprenant l'appel.</td></tr><tr><td>Nous accusons réception de…</td><td>Confirmer qu'un document est arrivé. Se fait dans les jours qui suivent.</td></tr></table></section><section class="bloc card ml"><h3>Les trois degrés de la demande</h3><p class="mp">Du plus direct au plus prudent.</p><table class="ana"><tr><td>Direct</td><td class="">Envoyez-nous votre prix. — un ordre, réservé à un fournisseur habituel</td></tr><tr><td>Neutre</td><td class="cle">Nous vous demandons de nous faire parvenir votre prix.</td></tr><tr><td>Prudent</td><td class="">Je vous saurais gré de bien vouloir nous faire parvenir votre prix.</td></tr></table><p class="dit"><span class="k">On dit</span> Je vous saurais gré de bien vouloir nous faire parvenir votre prix.</p><div class="note">« Je vous saurais gré » est du verbe <i>savoir</i> au conditionnel : « je vous saurais gré », jamais « je vous serais gré ».</div></section><section class="bloc card ml"><h3>La salutation, et l'erreur qui se voit</h3><p class="mp">Elle reprend l'appel, exactement.</p><table class="ana"><tr><td>Appel « Monsieur, »</td><td class="">Veuillez agréer, Monsieur, mes salutations distinguées.</td></tr><tr><td>Appel « Madame, »</td><td class="cle">Veuillez agréer, Madame, mes salutations distinguées.</td></tr><tr><td>Ce qu'on n'écrit pas</td><td class="">Cordialement, dans une lettre d'affaires formelle</td></tr></table><p class="dit"><span class="k">On dit</span> Veuillez agréer, Monsieur, mes salutations distinguées.</p><div class="note">« Cordialement » et « Bien à vous » appartiennent au courriel, pas à la lettre. Dans un courriel professionnel, ils sont très bien.</div></section><section class="bloc card ml"><h3>Trois formules mal employées</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">« Je vous serais gré »</p><div class="k">Ce qui arrive</div><p class="ph">« Je vous saurais gré »</p><p class="px">C'est le verbe savoir, pas être. L'erreur est fréquente y compris chez les francophones, et elle se voit.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">« Nous accusons réception » avant d'avoir reçu</p><div class="k">Ce qui arrive</div><p class="ph">seulement après réception</p><p class="px">La formule confirme une arrivée. L'employer d'avance n'a aucun sens et engage sur un document qu'on n'a pas vu.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">« Veuillez agréer » sans reprendre l'appel</p><div class="k">Ce qui arrive</div><p class="ph">reprendre l'appel mot pour mot</p><p class="px">« Monsieur, » au début et « Veuillez agréer, Madame » à la fin : c'est le signe d'une lettre recopiée sans être relue.</p></div></div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Le subjonctif après le verbe qui introduit</h2><section class="bloc card ml"><h3>Le mode de ce qui n'est pas encore vrai</h3><p class="mp">L'indicatif dit ce qui est. Le subjonctif dit ce qu'on veut, ce qu'on craint, ce qu'on doute, ce qu'on souhaite — bref, ce qui n'est <b>pas encore</b> vrai au moment où on parle. Dans une lettre d'affaires, on souhaite beaucoup et on affirme peu : c'est pourquoi le subjonctif y est partout.</p><div class="note">Le programme du niveau 7 lui consacre cinq points de savoir.</div></section><section class="bloc card ml"><h3>Comment il se forme</h3><p class="mp">Une seule opération, et elle marche pour presque tous les verbes.</p><table class="ana"><tr><td>On part de</td><td class="">la 3e personne du pluriel du présent : ils envoient, ils reçoivent</td></tr><tr><td>On enlève -ent</td><td class="cle">envoi- · reçoiv-</td></tr><tr><td>On ajoute</td><td class="">-e, -es, -e, -ions, -iez, -ent</td></tr><tr><td>Résultat</td><td class="">que j'envoie · que nous recevions · qu'ils reçoivent</td></tr></table><p class="dit"><span class="k">On dit</span> Que j'envoie. Que nous recevions. Qu'ils reçoivent.</p><div class="note">Aux deux premières personnes du pluriel, la forme est celle de l'imparfait : que nous <b>recevions</b>, que vous <b>receviez</b>.</div></section><section class="bloc card ml"><h3>Les six irréguliers qu'il faut savoir</h3><p class="mp">Ce sont ceux qui reviennent tout le temps.</p><table class="ana"><tr><td>être · avoir</td><td class="">que je sois · que j'aie · que nous soyons · que nous ayons</td></tr><tr><td>faire · aller</td><td class="cle">que je fasse · que j'aille · que nous fassions · que nous allions</td></tr><tr><td>pouvoir · savoir</td><td class="">que je puisse · que je sache · que nous puissions · que nous sachions</td></tr></table><p class="dit"><span class="k">On dit</span> Que je sois, que j'aie, que je fasse, que j'aille, que je puisse, que je sache.</p><div class="note">Six verbes appris une fois couvrent la grande majorité des subjonctifs d'une lettre.</div></section><section class="bloc card ml"><h3>Les verbes qui l'appellent</h3><p class="mp">Volonté, souhait, nécessité, sentiment.</p><table class="ana"><tr><td>Volonté et souhait</td><td class="">vouloir que · souhaiter que · demander que · exiger que · préférer que · proposer que</td></tr><tr><td>Nécessité</td><td class="cle">il faut que · il est nécessaire que · il importe que · il convient que</td></tr><tr><td>Sentiment</td><td class="">je regrette que · je crains que · je suis heureux que</td></tr></table><p class="dit"><span class="k">On dit</span> Je souhaite que vous nous fassiez parvenir votre soumission. Il faut que la soumission soit valide.</p><div class="note">« Espérer que » est l'exception qui surprend tout le monde : à la forme affirmative, il prend l'<b>indicatif</b>. « J'espère que vous recevrez ma lettre. »</div></section><section class="bloc card ml"><h3>Les verbes qui ne l'appellent pas — et qui basculent</h3><p class="mp">Déclaration et opinion prennent l'indicatif… tant qu'ils sont affirmatifs.</p><table class="ana"><tr><td>Affirmatif → indicatif</td><td class="">Je pense que la table est nécessaire.</td></tr><tr><td>Négatif → subjonctif</td><td class="cle">Je ne pense pas que la table soit nécessaire.</td></tr><tr><td>Interrogatif → souvent subjonctif</td><td class="">Pensez-vous que ce délai soit réaliste ?</td></tr></table><p class="dit"><span class="k">On dit</span> Je pense que la table est nécessaire. Je ne pense pas que la table soit nécessaire.</p><div class="note">La logique est constante : dès que la certitude tombe, le subjonctif arrive.</div></section><section class="bloc card ml"><h3>Le même verbe, deux modes</h3><p class="mp">Choisissez le verbe introducteur et la forme.</p><table class="labo"><thead><tr><th>Quel verbe ? · Quelle forme ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">je souhaite que + affirmative</td><td>Je souhaite que vous nous fassiez parvenir votre soumission.<span class="tags">une soumission</span></td><td>subjonctif : c'est un souhait</td></tr><tr><td class="cle">je souhaite que + négative</td><td>Je ne souhaite pas que cela vous fasse perdre du temps.<span class="tags">une soumission</span></td><td>subjonctif encore : la négation ne change rien ici</td></tr><tr><td class="cle">je pense que + affirmative</td><td>Je pense que ce délai est réaliste.<span class="tags">une soumission</span></td><td>indicatif : opinion affirmée</td></tr><tr><td class="cle">je pense que + négative</td><td>Je ne pense pas que ce délai soit réaliste.<span class="tags">une soumission</span></td><td>subjonctif : la certitude est tombée</td></tr><tr><td class="cle">il faut que + affirmative</td><td>Il faut que la soumission soit valide jusqu'en novembre.<span class="tags">une soumission</span></td><td>subjonctif : nécessité</td></tr><tr><td class="cle">il faut que + négative</td><td>Il ne faut pas que la soumission expire avant la décision.<span class="tags">une soumission</span></td><td>subjonctif : nécessité, encore</td></tr></tbody></table><div class="note">Écoutez les deux formes de « je pense que » l'une après l'autre : c'est le seul couple du laboratoire où le mode change.</div></section><section class="bloc card ml"><h3>Trois pièges</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">« après que » au subjonctif</p><div class="k">Ce qui arrive</div><p class="ph">à l'indicatif</p><p class="px">« Après que la direction a approuvé » est la forme correcte. C'est « avant que » qui prend le subjonctif. L'erreur est si répandue qu'elle passe presque inaperçue — presque.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">« espérer que » au subjonctif</p><div class="k">Ce qui arrive</div><p class="ph">à l'indicatif</p><p class="px">« J'espère que vous recevrez » et non « que vous receviez ». Verbe d'espoir, mais construction de déclaration.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">éviter le subjonctif par prudence</p><div class="k">Ce qui arrive</div><p class="ph">l'employer là où il s'impose</p><p class="px">« Je veux que vous envoyez » n'est pas plus simple : c'est faux, et ça s'entend tout de suite. Six verbes irréguliers appris une fois règlent le problème.</p></div></div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Le conditionnel : demander, proposer, nuancer</h2><section class="bloc card ml"><h3>Un temps qui sert surtout à ne pas heurter</h3><p class="mp">Le conditionnel présent a la réputation de servir aux hypothèses. C'est vrai, mais en milieu de travail son usage principal est ailleurs : il sert à <b>demander sans exiger</b>, à <b>proposer sans imposer</b> et à <b>dire un chiffre dont on n'est pas sûr</b>. Trois emplois, et vous les rencontrerez dans chaque lettre que vous écrirez.</p><div class="note">Cinq points de savoir au niveau 7, dont l'exemple du programme : « Me passeriez-vous une autre voiture en attendant ? »</div></section><section class="bloc card ml"><h3>Comment il se forme</h3><p class="mp">Le radical du futur, les terminaisons de l'imparfait.</p><table class="ana"><tr><td>Réguliers</td><td class="">je demanderais · nous souhaiterions · vous pourriez</td></tr><tr><td>Radicaux irréguliers du futur</td><td class="cle">je ferais · j'irais · je verrais · il faudrait · je voudrais</td></tr><tr><td>La marque</td><td class="">-ais, -ais, -ait, -ions, -iez, -aient</td></tr></table><p class="dit"><span class="k">On dit</span> Je demanderais. Nous souhaiterions. Vous pourriez. Il faudrait.</p><div class="note">Si vous savez le futur, vous savez le conditionnel : c'est le même radical.</div></section><section class="bloc card ml"><h3>1 · Demander sans exiger</h3><p class="mp">L'emploi le plus fréquent dans une lettre d'affaires.</p><table class="ana"><tr><td>On n'écrit pas</td><td class="">Je veux connaître votre prix.</td></tr><tr><td>On écrit</td><td class="cle">Je voudrais connaître votre prix.</td></tr><tr><td>Encore plus prudent</td><td class="">Pourriez-vous nous indiquer votre délai de livraison ?</td></tr></table><p class="dit"><span class="k">On dit</span> Nous voudrions connaître le prix d'une table élévatrice. Pourriez-vous nous indiquer votre délai ?</p><div class="note">Il ne s'agit pas d'être gentil : il s'agit de ne pas engager l'autre avant qu'il ait répondu.</div></section><section class="bloc card ml"><h3>2 · Proposer sans imposer</h3><p class="mp">En réunion, c'est ce qui ouvre la discussion au lieu de la fermer.</p><table class="ana"><tr><td>Fermé</td><td class="">Nous commencerons la rotation le 22 septembre.</td></tr><tr><td>Ouvert</td><td class="cle">Nous pourrions commencer la rotation le 22 septembre.</td></tr><tr><td>Ce que la salle entend</td><td class="">on me demande mon avis</td></tr></table><p class="dit"><span class="k">On dit</span> Nous pourrions commencer la rotation le vingt-deux septembre.</p><div class="note">Le futur annonce une décision prise ; le conditionnel annonce une décision à prendre. Choisissez selon ce qui est vrai.</div></section><section class="bloc card ml"><h3>3 · Dire ce qui n'est pas certain</h3><p class="mp">Un chiffre entendu au téléphone n'est pas une soumission.</p><table class="ana"><tr><td>On écrit</td><td class="">L'installation coûterait entre onze et treize mille dollars.</td></tr><tr><td>Et on ajoute</td><td class="cle">selon un premier appel · d'après une estimation verbale</td></tr><tr><td>Ce que ça évite</td><td class="">qu'on vous cite ce chiffre en octobre comme une promesse</td></tr></table><p class="dit"><span class="k">On dit</span> Selon un premier appel, l'appareil coûterait entre quatre et sept mille dollars.</p><div class="note">C'est le même conditionnel que celui des journalistes : « le local serait loué pour cinq ans ».</div></section><section class="bloc card ml"><h3>4 · L'hypothèse en « si »</h3><p class="mp">Imparfait après <i>si</i>, conditionnel dans l'autre partie.</p><table class="ana"><tr><td>La forme</td><td class="">Si l'essai était concluant, nous installerions en novembre.</td></tr><tr><td>Jamais</td><td class="cle">Si l'essai serait concluant…</td></tr><tr><td>L'autre forme, réelle</td><td class="">Si l'essai est concluant, nous installerons en novembre.</td></tr></table><p class="dit"><span class="k">On dit</span> Si l'essai était concluant, nous installerions la table en novembre.</p><div class="note">La règle absolue : <b>jamais de conditionnel juste après « si »</b>. C'est l'une des rares règles du français qui ne souffre aucune exception.</div></section><section class="bloc card ml"><h3>Le piège de l'écrit</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">« je demanderai » pour « je demanderais »</p><div class="k">Ce qui arrive</div><p class="ph">relire tous les verbes en -rai / -rais</p><p class="px">À l'oral, la différence s'entend à peine. À l'écrit, le -s change tout : l'un annonce ce que vous ferez, l'autre demande poliment. C'est la faute la plus fréquente dans les lettres d'affaires.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">« si je serais »</p><div class="k">Ce qui arrive</div><p class="ph">« si j'étais »</p><p class="px">Aucune exception. Après « si », jamais de conditionnel.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">tout mettre au conditionnel</p><div class="k">Ce qui arrive</div><p class="ph">garder l'indicatif pour les faits</p><p class="px">Une lettre entièrement au conditionnel n'a plus l'air prudente : elle a l'air de ne rien savoir. Les faits se disent à l'indicatif ; seules les demandes, les propositions et les estimations passent au conditionnel.</p></div></div></section></section></div>
+<footer><span>D2 · Présenter un projet au travail</span><span>Fiche élève</span></footer>
+</body>
+</html>

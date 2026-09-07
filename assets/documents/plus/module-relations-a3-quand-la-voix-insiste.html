@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A3 · Quand la voix insiste — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance A3 · Module 11 · 60 minutes</div>
+    <h1>Quand la voix insiste</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">« Elle portait des sandales. » et « Des sandales ! » — mêmes mots, deux messages. En français, ce n'est pas le vocabulaire qui porte la surprise, c'est la voix.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>reconnaître à l'oreille une phrase où la personne insiste ;</li><li>comprendre qu'une exclamation n'attend pas de réponse ;</li><li>savoir que les phrases d'insistance sont souvent très courtes ;</li><li>laisser monter ma propre voix sur le mot qui compte.</li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Ce qui change entre les deux</h2><table><thead><tr><th></th><th>Phrase neutre</th><th>Phrase qui insiste</th></tr></thead><tbody><tr><td>Ce qu'on fait</td><td class="cle">on informe</td><td>on réagit, on s'étonne</td></tr><tr><td>La voix</td><td class="cle">elle descend jusqu'au point</td><td>une syllabe monte nettement</td></tr><tr><td>La longueur</td><td class="cle">phrase complète</td><td>souvent deux ou trois mots</td></tr><tr><td>Ce qu'on attend</td><td class="cle">rien de spécial</td><td>que l'autre confirme</td></tr></tbody></table><div class="note">La ligne de la longueur est le repère le plus simple : une phrase très courte, dans une conversation, est presque toujours une réaction.</div></section><section class="bloc regle"><div class="lbl">Ce que vous devez faire</div><p class="r">Reconnaître l'insistance suffit. Vous n'avez pas à la produire parfaitement.</p><p class="pr">Le programme du cours demande de la reconnaître, pour comprendre son interlocuteur. La produire viendra tout seul, à force d'écouter. Ne bloquez pas là-dessus.</p></section><section class="bloc"><div class="lbl">Les exclamations du module</div><h2 class="t">Ce qu'elles veulent dire</h2><div class="grid"><div class="card"><h3>« Des sandales ! En janvier ! »</h3><p>Surprise. Chantal ne demande pas quel type de chaussures : elle trouve ça incroyable. La bonne réponse est « oui, je ne savais pas ».</p></div><div class="card"><h3>« Cinq heures et quart ! »</h3><p>Étonnement. Chantal ne demande pas l'heure : elle trouve ça très tôt.</p></div><div class="card"><h3>« Six ans dans la même équipe ! »</h3><p>Admiration. Mariama ne pose pas de question : elle souligne que c'est long.</p></div><div class="card"><h3>« Onze voyages ! »</h3><p>Incrédulité. La phrase entière monte, parce que c'est le nombre qui surprend.</p></div></div></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Confondre exclamation et question</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">— Des sandales ! — Euh… oui, des sandales bleues.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">— Des sandales ! — Oui ! Personne ne m'avait dit qu'il faisait si froid.</p></div></div><div class="note">Une exclamation réagit à ce que vous venez de dire ; elle ne demande pas d'information nouvelle. Y répondre par un détail donne l'impression de ne pas avoir compris. Il suffit de confirmer, et d'ajouter une phrase.</div></section><section class="bloc card"><div class="lbl">Pratique</div><h2 class="t">On insiste, ou pas ?</h2><p class="consigne">Écoutez chaque phrase et dites si la personne insiste ou parle normalement.</p><ol class="ex"><li><span class="q">Des sandales ! En janvier !</span><span class="ligne ligne--court"></span></li><li><span class="q">Elle portait des sandales à l'aéroport.</span><span class="ligne ligne--court"></span></li><li><span class="q">Cinq heures et quart !</span><span class="ligne ligne--court"></span></li><li><span class="q">Je me lève à cinq heures et quart.</span><span class="ligne ligne--court"></span></li><li><span class="q">Six ans dans la même équipe !</span><span class="ligne ligne--court"></span></li><li><span class="q">Elle joue dans cette équipe depuis six ans.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc"><div class="lbl">À vous</div><h2 class="t">Trois phrases à dire à voix haute</h2><div class="grid"><div class="card"><h3>« Félicitations ! »</h3><p>La voix monte sur la dernière syllabe. C'est la phrase la plus utile du bloc D.</p></div><div class="card"><h3>« Tu ferais ça ? »</h3><p>Surprise reconnaissante : quelqu'un vous offre quelque chose et vous ne l'attendiez pas.</p></div><div class="card"><h3>« Depuis l'automne seulement ! »</h3><p>Étonnement admiratif. À réutiliser au bloc B, dans le dialogue du tournoi.</p></div></div></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Notez une phrase entendue cette semaine où quelqu'un insistait.</p><ul><li>Au travail, dans l'autobus, à la télévision — n'importe où.</li><li>Écrivez la phrase, puis soulignez le mot sur lequel la voix montait.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Quand la voix insiste</h2><section class="bloc card ml"><h3>La même phrase, deux intentions</h3><p class="mp">En français, on ne change pas les mots pour montrer qu'on est surpris ou qu'on trouve ça énorme : <b>on change la voix</b>. La syllabe importante monte plus haut, dure plus longtemps, et se prononce plus fort. C'est ce qu'on appelle l'<b>accent d'insistance</b>.</p><div class="note">Comparez « Elle portait des sandales. » et « Des sandales ! » — mêmes mots, deux messages complètement différents.</div></section><section class="bloc card ml"><h3>La phrase neutre : on informe</h3><p class="mp">La voix descend tranquillement jusqu'au point. Aucune syllabe ne ressort.</p><table class="ana"><tr><td>Ce qu'on fait</td><td class="">on donne une information</td></tr><tr><td>La voix</td><td class="cle">elle descend</td></tr><tr><td>Comme dans</td><td class="">Elle portait des <b>san</b>dales.</td></tr></table><p class="dit"><span class="k">On dit</span> Elle portait des sandales à l'aéroport.</p><div class="note">C'est la façon normale de raconter. Vous l'entendez toute la journée, à la radio comme au travail.</div></section><section class="bloc card ml"><h3>La phrase exclamative : on insiste</h3><p class="mp">Une syllabe est nettement plus haute et plus longue que les autres, et la phrase est souvent très courte.</p><table class="ana"><tr><td>Ce qu'on fait</td><td class="">on réagit, on s'étonne</td></tr><tr><td>La voix</td><td class="cle">elle monte fort</td></tr><tr><td>Comme dans</td><td class="">Des <b>SAN</b>dales !</td></tr></table><p class="dit"><span class="k">On dit</span> Des sandales ! En janvier !</p><div class="note">Souvent, la personne ne répète que le mot qui la surprend. C'est plus fort qu'une phrase complète.</div></section><section class="bloc card ml"><h3>Ce que ça change pour vous</h3><p class="mp">Vous n'êtes pas obligé de produire cet accent parfaitement. Mais vous devez le <b>reconnaître</b> : c'est lui qui vous dit si votre interlocuteur est surpris, choqué, admiratif — ou s'il constate simplement un fait.</p><div class="note">Si quelqu'un vous répond « Cinq heures et quart ! », il ne vous demande pas l'heure : il trouve que c'est très tôt.</div></section><section class="bloc card ml"><h3>Écoutez la différence</h3><p class="mp">Choisissez une paire et écoutez les deux versions l'une après l'autre.</p><table class="labo"><thead><tr><th>Quelle paire ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">les sandales</td><td>Elle portait des sandales à l'aéroport.<span class="tags">Elle portait des <b>san</b>dales.</span></td><td>neutre — on informe</td></tr><tr><td class="cle">cinq heures et quart</td><td>Je me lève à cinq heures et quart.</td><td>neutre — on informe</td></tr><tr><td class="cle">six ans</td><td>Elle joue dans cette équipe depuis six ans.<span class="tags">Elle joue depuis <b>six</b> ans.</span></td><td>neutre — on informe</td></tr><tr><td class="cle">onze voyages</td><td>Ils ont fait onze voyages en voiture.<span class="tags">Ils ont fait onze <b>vo</b>yages.</span></td><td>neutre — on informe</td></tr></tbody></table><div class="note">Réécoutez ensuite l'exercice 2 : les phrases courtes sont celles où la voix insiste.</div></section><section class="bloc card ml"><h3>Les exclamations du module</h3><p class="mp">Écoutez chacune et répétez en exagérant la montée de la voix.</p><table class="ex2"><tr><td>Des sandales ! En janvier !</td><td>surprise — la voix monte sur « san- »</td></tr><tr><td>Cinq heures et quart !</td><td>étonnement — la voix monte sur « cinq »</td></tr><tr><td>Six ans dans la même équipe !</td><td>admiration — la voix monte sur « six »</td></tr><tr><td>Onze voyages !</td><td>incrédulité — tout le groupe monte</td></tr><tr><td>Tu ferais ça ?</td><td>surprise reconnaissante — la voix monte à la fin</td></tr><tr><td>Félicitations !</td><td>joie — la voix monte sur « -tions »</td></tr></table></section><section class="bloc card ml"><h3>Deux malentendus fréquents</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">croire qu'une exclamation est une question</p><div class="k">Ce qui arrive</div><p class="ph">« Des sandales ! » n'attend pas de réponse</p><p class="px">Une question demande une information. Une exclamation <b>réagit</b> à ce que vous venez de dire. Souvent, il suffit de confirmer : « Oui, je ne savais pas. »</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">parler toujours sur le même ton</p><div class="k">Ce qui arrive</div><p class="ph">une phrase française n'est jamais plate</p><p class="px">Si toutes vos phrases ont la même voix, vos interlocuteurs vous trouveront difficile à suivre. Laissez monter la voix sur le mot qui compte le plus pour vous.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Trois questions rapides. Elles ne comptent pas dans votre score.</p><ol class="check"><li><span class="q">Pour insister en français, on change surtout…</span><ul class="opts"><li>les mots de la phrase</li><li>la hauteur et la durée de la voix</li></ul></li><li><span class="q">« Cinq heures et quart ! » veut dire…</span><ul class="opts"><li>je trouve ça très tôt</li><li>quelle heure est-il ?</li></ul></li><li><span class="q">Les phrases où on insiste sont souvent…</span><ul class="opts"><li>longues et complètes</li><li>très courtes</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> la hauteur et la durée de la voix — Les mots restent les mêmes. C'est la <b>voix</b> qui porte l'insistance. · <b>2.</b> je trouve ça très tôt — C'est une réaction, pas une question. La personne s'étonne. · <b>3.</b> très courtes — On répète souvent le seul mot qui surprend : « Des sandales ! »</div></section></section></div>
+<footer><span>A3 · Des nouvelles à donner</span><span>Fiche élève</span></footer>
+</body>
+</html>

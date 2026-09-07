@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C2 · Intervenir sans couper la parole — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance C2 · Module 1 · 75 minutes</div>
+    <h1>Intervenir sans couper la parole</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Un connecteur ne décore pas la phrase : il annonce ce qui vient. « Cependant » prévient votre interlocuteur qu'une objection arrive — et vous donne le temps de la formuler.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>employer sept formules d'intervention selon l'intention ;</li><li>distinguer l'opposition qui admet de celle qui met en balance ;</li><li>choisir le mode après un connecteur de condition ;</li><li>reformuler pour garder la parole quand la phrase part de travers.</li></ol></section><section class="bloc"><div class="lbl">Sept façons d'intervenir</div><h2 class="t">L'intention d'abord, la formule ensuite</h2><div class="grid"><div class="card"><h3>Reformuler pour vérifier</h3><p>Si je résume ce que vous venez de dire…</p></div><div class="card"><h3>Appuyer sur une source</h3><p>C'est écrit à la page quatre ; j'ai vérifié deux fois.</p></div><div class="card"><h3>Objecter sans contredire de front</h3><p>Cependant, il y a une donnée qui n'est pas dans la soumission.</p></div><div class="card"><h3>Reconnaître avant de nuancer</h3><p>Tout à fait, et je ne dis pas qu'il faut refuser.</p></div><div class="card"><h3>Avancer une solution sans l'imposer</h3><p>Je proposerais un partage.</p></div><div class="card"><h3>Nommer son propre intérêt</h3><p>C'est moi qui écoperais de ce travail, alors je le dis en connaissance de cause.</p></div><div class="card"><h3>Reconnaître ce qui a manqué</h3><p>On aurait dû demander leurs délais avant de comparer les prix.</p></div></div></section><section class="bloc card"><div class="lbl">Analyse · 1 de 2</div><h2 class="t">L'opposition et la conséquence</h2><table><thead><tr><th>Ce que ça fait</th><th>Les connecteurs</th></tr></thead><tbody><tr><td class="cle">J'admets, puis j'objecte</td><td>cependant · toutefois · néanmoins</td></tr><tr><td class="cle">Je mets deux choses en balance</td><td>en revanche · par contre</td></tr><tr><td class="cle">Ce qui suit découle de ce qui précède</td><td>par conséquent · donc · c'est pourquoi</td></tr></tbody></table><div class="note">« Par contre » est correct au Québec ; « en revanche » passe mieux dans une lettre.</div></section><section class="bloc card"><div class="lbl">Analyse · 2 de 2</div><h2 class="t">L'explication et la condition</h2><table><thead><tr><th>Ce que ça fait</th><th>Les connecteurs</th></tr></thead><tbody><tr><td class="cle">Je confirme et j'explique</td><td>en effet · car · en raison de</td></tr><tr><td class="cle">Je pose une condition (indicatif)</td><td>du moment que · dès lors que · puisque</td></tr><tr><td class="cle">Je pose une condition (subjonctif)</td><td>à condition que · pourvu que · à moins que</td></tr></tbody></table><div class="note">« En effet » confirme ; « en fait » corrige. Ce ne sont pas des variantes.</div></section><section class="bloc regle"><div class="lbl">Reformuler pour garder la parole</div><p class="r">Autrement dit…</p><p class="pr">Quand vous sentez que votre phrase est partie de travers, n'arrêtez pas et ne vous excusez pas : enchaînez « autrement dit » et redites la même chose plus simplement. Personne n'y verra une hésitation ; tout le monde y verra un souci de clarté. Même service avec « ce que je veux dire, c'est que ».</p></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Confondre en effet et en fait</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">Le portrait change. En fait, le délai passe à dix jours.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">Le portrait change. En effet, le délai passe à dix jours.</p></div></div><div class="note">« En effet » confirme ce qu'on vient de dire et l'explique. « En fait » corrige ce que l'autre croyait. Employer le second à la place du premier revient à contredire son propre propos, et l'interlocuteur cherche l'erreur qu'on vient de lui signaler — sans la trouver.</div></section><section class="bloc card"><div class="lbl">Grammaire</div><h2 class="t">Le connecteur juste</h2><p class="consigne">Complétez la phrase.</p><ol class="ex"><li><span class="q">L'écart de prix est réel. ___, le délai est de dix jours.</span><span class="ligne ligne--court"></span></li><li><span class="q">Ferrico livre en quatre jours ; ___, Lachance en demande dix.</span><span class="ligne"></span></li><li><span class="q">Il faudrait doubler le stock ; ___, l'économie tombe à vingt mille.</span><span class="ligne ligne--court"></span></li><li><span class="q">Ça change le portrait. ___, tout le calcul reposait sur le prix.</span><span class="ligne ligne--court"></span></li><li><span class="q">J'accepte, ___ Ferrico n'impose rien avant octobre.</span><span class="ligne ligne--court"></span></li><li><span class="q">Nous tranchons le seize, ___ vous ayez les deux chiffres.</span><span class="ligne ligne--court"></span></li><li><span class="q">___, je ne viens pas demander une faveur.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">Production</div><h2 class="t">Prenez la parole</h2><p class="consigne">En équipes de trois, rejouez le point trois de l'ordre du jour.</p><ol class="ex"><li><span class="q">L'un défend le changement de fournisseur (le prix).</span><span class="ligne ligne--court"></span></li><li><span class="q">L'un apporte la donnée du délai et propose un compromis.</span><span class="ligne ligne--court"></span></li><li><span class="q">L'un dirige la réunion et tranche ou reporte.</span><span class="ligne ligne--court"></span></li><li><span class="q">Chacun doit employer au moins trois des sept formules.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Choisissez deux formules d'intervention et écrivez-les sur une fiche.</p><ul><li>Une pour objecter, une pour proposer.</li><li>Gardez la fiche : elle sert à la production orale de E1.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Les connecteurs : dire le rapport exact entre deux idées</h2><section class="bloc card ml"><h3>Ce qu'un connecteur fait vraiment</h3><p class="mp">Un connecteur ne décore pas la phrase : il <b>annonce ce qui vient</b>. Quand votre interlocuteur entend « cependant », il sait avant même la fin de la phrase qu'une objection arrive et il se prépare à l'entendre. C'est un service qu'on lui rend — et c'est aussi ce qui vous donne le temps de formuler la suite.</p><div class="note">À ce niveau, le vocabulaire n'est plus le problème. Ce qui distingue une intervention efficace, c'est l'articulation.</div></section><section class="bloc card ml"><h3>L'opposition, en deux nuances</h3><p class="mp">Elles ne sont pas interchangeables.</p><table class="ana"><tr><td>J'admets et j'objecte</td><td class=""><b>cependant</b> · <b>toutefois</b> · <b>néanmoins</b></td></tr><tr><td>Je mets en balance</td><td class=""><b>en revanche</b> · <b>par contre</b></td></tr><tr><td>Exemple</td><td class="">L'écart est réel. <b>Cependant</b>, le délai est de dix jours.</td></tr></table><p class="dit"><span class="k">On dit</span> L'écart est réel. Cependant, le délai est de dix jours.</p><div class="note"><i>Par contre</i> est parfaitement correct au Québec, à l'oral comme à l'écrit courant. <i>En revanche</i> est plus soutenu ; dans une lettre d'affaires, il passe mieux.</div></section><section class="bloc card ml"><h3>La conséquence et l'explication</h3><p class="mp">Deux familles qu'on confond souvent, et qui vont dans des sens opposés.</p><table class="ana"><tr><td>La conséquence suit</td><td class=""><b>par conséquent</b> · <b>donc</b> · <b>c'est pourquoi</b> · <b>d'où</b></td></tr><tr><td>L'explication précède</td><td class=""><b>en effet</b> · <b>car</b> · <b>en raison de</b></td></tr><tr><td>Le test</td><td class="">« en effet » confirme ce qui vient d'être dit ; « en fait » le <b>corrige</b></td></tr></table><p class="dit"><span class="k">On dit</span> Le stock doublerait ; par conséquent, l'économie tombe à vingt mille.</p><div class="note"><i>En effet</i> et <i>en fait</i> ne sont pas la même chose. « Le portrait change. En effet, le délai passe à dix jours » confirme. « En fait, le délai est de dix jours » corrige ce qu'on croyait.</div></section><section class="bloc card ml"><h3>La condition et le mode qui suit</h3><p class="mp">C'est ici qu'on se trompe le plus, parce que le mode change selon le connecteur.</p><table class="ana"><tr><td>+ indicatif</td><td class=""><b>du moment que</b> · <b>dès lors que</b> · <b>puisque</b></td></tr><tr><td>+ subjonctif</td><td class=""><b>à condition que</b> · <b>pourvu que</b> · <b>à moins que</b></td></tr><tr><td>Exemple</td><td class="">Ça me va, <b>du moment que</b> Ferrico n'impose pas son augmentation.</td></tr></table><p class="dit"><span class="k">On dit</span> Ça me va, du moment que Ferrico n'impose pas son augmentation.</p><div class="note">En cas de doute, employez <i>si</i> + indicatif : c'est toujours correct, et personne ne vous reprochera d'être simple.</div></section><section class="bloc card ml"><h3>Reformuler pour garder la parole</h3><p class="mp"><b>Autrement dit</b> et <b>c'est-à-dire</b> ont une vertu que les manuels ne disent pas : ils vous donnent trois secondes. Quand vous sentez que votre phrase est partie de travers, au lieu de vous excuser ou de vous taire, vous enchaînez « autrement dit… » et vous redites la même chose plus clairement. Personne n'y voit une hésitation ; tout le monde y voit un souci de clarté.</p><div class="note">Même service avec <i>si je résume</i> et <i>ce que je veux dire, c'est que</i>.</div></section><section class="bloc card ml"><h3>Huit connecteurs en situation</h3><p class="mp">Tirés de la réunion du mardi.</p><table class="ex2"><tr><td>L'écart est réel. Cependant, le délai est de dix jours.</td><td>admettre puis objecter</td></tr><tr><td>Ferrico livre en quatre jours ; en revanche, Lachance en demande dix.</td><td>mettre en balance</td></tr><tr><td>Il faudrait doubler le stock ; par conséquent, l'économie tombe à vingt mille.</td><td>conséquence</td></tr><tr><td>Ça change le portrait. En effet, tout le calcul reposait sur le prix.</td><td>confirmer et expliquer</td></tr><tr><td>J'accepte, du moment que Ferrico n'impose rien avant octobre.</td><td>condition + indicatif</td></tr><tr><td>Nous tranchons le seize, à condition que vous ayez les chiffres.</td><td>condition + subjonctif</td></tr><tr><td>Autrement dit, je ne viens pas demander une faveur.</td><td>reformuler</td></tr><tr><td>Deux fournisseurs, donc deux facturations.</td><td>conséquence brève</td></tr></table></section><section class="bloc card ml"><h3>Trois emplois qui trahissent le niveau</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">commencer trois phrases de suite par « et »</p><div class="k">Ce qui arrive</div><p class="ph">varier : de plus, par ailleurs, en outre</p><p class="px">À l'oral ça passe ; à l'écrit, un texte tenu par des « et » se lit comme une liste de courses.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">confondre « en effet » et « en fait »</p><div class="k">Ce qui arrive</div><p class="ph">le premier confirme, le second corrige</p><p class="px">L'erreur inverse le sens de votre phrase, et c'est l'une des plus fréquentes à ce niveau.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">« malgré que »</p><div class="k">Ce qui arrive</div><p class="ph">« bien que » ou « malgré + nom »</p><p class="px"><i>Malgré que</i> est critiqué et fait tache à l'écrit. Écrivez <i>bien que le prix soit bon</i> ou <i>malgré le prix</i>.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">« En effet » sert à…</span><ul class="opts"><li>confirmer</li><li>corriger</li></ul></li><li><span class="q">« À condition que » est suivi…</span><ul class="opts"><li>de l'indicatif</li><li>du subjonctif</li></ul></li><li><span class="q">« Par contre », au Québec…</span><ul class="opts"><li>est à éviter partout</li><li>est correct à l'oral et à l'écrit courant</li></ul></li><li><span class="q">« Autrement dit » vous permet aussi de…</span><ul class="opts"><li>gagner quelques secondes</li><li>conclure la réunion</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> confirmer — C'est « en fait » qui corrige. · <b>2.</b> du subjonctif — Alors que « du moment que » demande l'indicatif. · <b>3.</b> est correct à l'oral et à l'écrit courant — « En revanche » reste plus soutenu pour une lettre. · <b>4.</b> gagner quelques secondes — Et de reformuler sans avoir l'air d'hésiter.</div></section></section></div>
+<footer><span>C2 · Tenir son bout au travail</span><span>Fiche élève</span></footer>
+</body>
+</html>

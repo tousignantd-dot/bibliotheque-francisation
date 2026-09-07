@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C2 · Le présent de l'indicatif — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance C2 · Module 1 · 75 minutes</div>
+    <h1>Le présent de l'indicatif</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">« J'ai mal », « je suis fatigué », « je peux marcher » : trois phrases de consultation, trois verbes irréguliers. Le présent est le temps de la salle d'attente.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>conjuguer un verbe régulier en -er aux six personnes ;</li><li>conjuguer avoir, être et pouvoir sans hésiter ;</li><li>écrire la terminaison qu'on n'entend pas ;</li><li>employer le présent pour décrire un symptôme actuel.</li></ol></section><section class="bloc regle"><div class="lbl">Le temps de maintenant</div><p class="r">Le présent dit ce qui est vrai en ce moment : un symptôme, un état, une habitude.</p><p class="pr">C'est le premier temps de toute consultation. Yannick l'emploie d'un bout à l'autre : « j'ai mal », « je ne peux pas plier », « nous sommes dans la salle d'attente ».</p></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Les verbes réguliers en -er</h2><table><thead><tr><th>La personne</th><th>La forme</th><th>La terminaison</th></tr></thead><tbody><tr><td>je</td><td>je soulève</td><td class="cle">-e</td></tr><tr><td>tu</td><td>tu soulèves</td><td class="cle">-es</td></tr><tr><td>il, elle</td><td>elle soulève</td><td class="cle">-e</td></tr><tr><td>nous</td><td>nous soulevons</td><td class="cle">-ons</td></tr><tr><td>vous</td><td>vous soulevez</td><td class="cle">-ez</td></tr><tr><td>ils, elles</td><td>elles soulèvent</td><td class="cle">-ent</td></tr></tbody></table></section><section class="bloc regle"><div class="lbl">La règle qui coûte le plus de points</div><p class="r">Les terminaisons -e, -es, -e et -ent se prononcent toutes de la même façon.</p><p class="pr">« Il soulève » et « ils soulèvent » se disent exactement pareil. À l'oral, personne ne peut vous corriger. À l'écrit, c'est l'erreur la plus visible. Il faut donc regarder le sujet, pas écouter le verbe.</p></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Trois verbes irréguliers, à savoir par cœur</h2><table><thead><tr><th>avoir</th><th>être</th><th>pouvoir</th></tr></thead><tbody><tr><td>j'ai</td><td>je suis</td><td>je peux</td></tr><tr><td>tu as</td><td>tu es</td><td>tu peux</td></tr><tr><td>il a</td><td>il est</td><td>il peut</td></tr><tr><td>nous avons</td><td>nous sommes</td><td>nous pouvons</td></tr><tr><td>vous avez</td><td>vous êtes</td><td>vous pouvez</td></tr><tr><td>ils ont</td><td>ils sont</td><td>ils peuvent</td></tr></tbody></table></section><section class="bloc"><div class="lbl">Ouvrir la mini-leçon</div><h2 class="t">Ce qui n'est pas dans le tableau</h2><div class="grid"><div class="card"><h3>Les accents de « soulever »</h3><p>Le e du radical prend un accent grave quand la terminaison est muette : je soulève, mais nous soulevons. Même chose pour « lever », « emmener ».</p></div><div class="card"><h3>« pouvoir » au je et au tu</h3><p>Je peux, tu peux — avec un x, jamais un t. Le t apparaît seulement à la troisième personne : il peut.</p></div><div class="card"><h3>Le présent pour une habitude</h3><p>« Je soulève des boîtes toute la soirée » ne décrit pas maintenant, mais chaque soir. Le présent sert aussi à ça.</p></div><div class="card"><h3>Le présent pour un futur proche</h3><p>« Je reviens dans une semaine » se dit au présent, même si c'est dans le futur. Très courant en consultation.</p></div></div></section><section class="bloc card"><div class="lbl">Pratique · 1 de 3</div><h2 class="t">Écrivez le verbe au présent</h2><p class="consigne">Regardez le sujet avant d'écrire la terminaison.</p><ol class="ex"><li><span class="q">Yannick (avoir) ___ mal au genou depuis cette nuit.</span><span class="ligne ligne--court"></span></li><li><span class="q">Nous (être) ___ dans la salle d'attente.</span><span class="ligne ligne--court"></span></li><li><span class="q">Vous (pouvoir) ___ vous asseoir ici.</span><span class="ligne ligne--court"></span></li><li><span class="q">Les employés (soulever) ___ des boîtes toute la soirée.</span><span class="ligne ligne--court"></span></li><li><span class="q">Je (prendre) ___ un numéro au triage.</span><span class="ligne ligne--court"></span></li><li><span class="q">La docteure (examiner) ___ le genou.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Le piège du « nous »</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">Nous soulève des boîtes.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">Nous soulevons des boîtes.</p></div></div><div class="note">Le sujet « nous » demande toujours la terminaison -ons, dans tous les verbes sauf « être ». C'est une terminaison qui s'entend : si vous la prononcez, vous ne l'oublierez pas à l'écrit.</div></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Le piège du « je peux »</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">Je peut vous aider.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">Je peux vous aider.</p></div></div><div class="note">« Pouvoir » prend un x au je et au tu, un t seulement au il. C'est une particularité de trois verbes seulement : pouvoir, vouloir, valoir. Elle s'apprend par la forme, pas par une règle générale.</div></section><section class="bloc card"><div class="lbl">Pratique · 2 de 3</div><h2 class="t">Singulier ou pluriel ?</h2><p class="consigne">Le verbe est écrit. Le sujet est-il singulier ou pluriel ?</p><ol class="ex"><li><span class="q">Ils examinent le patient.</span><span class="ligne"></span></li><li><span class="q">Elle examine le patient.</span><span class="ligne"></span></li><li><span class="q">Vous avez de la fièvre.</span><span class="ligne"></span></li><li><span class="q">Il peut marcher.</span><span class="ligne"></span></li><li><span class="q">Nous sommes en retard.</span><span class="ligne"></span></li><li><span class="q">Tu es à la clinique.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">Pratique · 3 de 3</div><h2 class="t">Décrivez votre état au présent</h2><p class="consigne">Une phrase par situation, verbe conjugué correctement.</p><ol class="ex"><li><span class="q">Vous avez mal au dos depuis ce matin.</span><span class="ligne"></span></li><li><span class="q">Vous et votre collègue êtes fatigués.</span><span class="ligne ligne--court"></span></li><li><span class="q">Votre voisin ne peut pas marcher.</span><span class="ligne"></span></li><li><span class="q">Vos collègues soulèvent des charges tous les jours.</span><span class="ligne"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez trois phrases au présent sur votre état en ce moment.</p><ul><li>Une avec « avoir », une avec « être », une avec un verbe en -er.</li><li>Soulignez la terminaison de chaque verbe.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Le présent de l'indicatif</h2><section class="bloc card ml"><h3>Le temps de « maintenant »</h3><p class="mp">Le présent sert à décrire ce qui est vrai en ce moment : un symptôme, un état, une habitude. C'est le premier temps qu'on utilise en consultation : « J'<b>ai</b> mal », « Je <b>suis</b> fatigué », « Je <b>peux</b> plier la jambe ». Le français a des terminaisons régulières pour la grande majorité des verbes, et quelques verbes très fréquents qui se conjuguent à part.</p><div class="note">Yannick l'utilise tout au long de sa consultation : « J'<em>ai</em> mal », « Je <em>ne peux pas</em> plier », « Nous <em>sommes</em> dans la salle d'attente ».</div></section><section class="bloc card ml"><h3>Les verbes réguliers en -er</h3><p class="mp">C'est le groupe le plus grand : on enlève « -er » et on ajoute la terminaison selon la personne.</p><table class="ana"><tr><td>Sujet</td><td class="">il</td></tr><tr><td>Radical</td><td class="">soulèv</td></tr><tr><td>Terminaison</td><td class="cle">e</td></tr></table><p class="dit"><span class="k">On dit</span> il soulève</p><div class="note">Les six terminaisons : je -e, tu -es, il/elle -e, nous -ons, vous -ez, ils/elles -ent. Les quatre premières se prononcent presque toutes pareil ; c'est à l'écrit qu'elles se distinguent.</div></section><section class="bloc card ml"><h3>Conjuguez « soulever » selon le sujet</h3><p class="mp">Choisissez un sujet et observez la terminaison.</p><table class="labo"><thead><tr><th>Qui ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">je</td><td>je soulève</td><td>terminaison -e</td></tr><tr><td class="cle">nous</td><td>nous soulevons</td><td>terminaison -ons</td></tr><tr><td class="cle">ils</td><td>ils soulèvent</td><td>terminaison -ent, mais se prononce comme -e</td></tr></tbody></table><div class="note">« ils soulèvent » et « il soulève » se prononcent presque pareil à l'oral — c'est à l'écrit que le -ent apparaît. Ne l'oubliez pas dans vos réponses écrites.</div></section><section class="bloc card ml"><h3>Quatre verbes très fréquents, irréguliers</h3><p class="mp">Ces verbes ne suivent pas le modèle en -er. Ils reviennent constamment : à mémoriser par cœur.</p><table class="ex2"><tr><td>j'ai · tu as · il a</td><td>avoir, singulier</td></tr><tr><td>nous avons · vous avez · ils ont</td><td>avoir, pluriel</td></tr><tr><td>je suis · tu es · il est</td><td>être, singulier</td></tr><tr><td>nous sommes · vous êtes · ils sont</td><td>être, pluriel</td></tr><tr><td>je peux · tu peux · il peut</td><td>pouvoir, singulier</td></tr><tr><td>nous pouvons · vous pouvez · ils peuvent</td><td>pouvoir, pluriel</td></tr></table></section><section class="bloc card ml"><h3>Deux pièges fréquents</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">Nous soulève des boîtes.</p><div class="k">Ce qui arrive</div><p class="ph">Nous soulevons des boîtes.</p><p class="px">Le sujet « nous » demande toujours la terminaison « -ons » — jamais la forme du « il ».</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">Je peut vous aider.</p><div class="k">Ce qui arrive</div><p class="ph">Je peux vous aider.</p><p class="px">« pouvoir » au « je » et au « tu » prend un -x, pas un -t : je peux, tu peux, mais il peut.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides. Elles ne comptent pas dans votre score.</p><ol class="check"><li><span class="q">Yannick (avoir) ___ mal au genou.</span><ul class="opts"><li>a</li><li>as</li></ul></li><li><span class="q">Nous (être) ___ dans la salle d'attente.</span><ul class="opts"><li>sommes</li><li>êtes</li></ul></li><li><span class="q">Vous (pouvoir) ___ vous asseoir ici.</span><ul class="opts"><li>pouvez</li><li>peuvent</li></ul></li><li><span class="q">Les employés (soulever) ___ des boîtes.</span><ul class="opts"><li>soulève</li><li>soulèvent</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> a — Avec « il » (Yannick), le verbe avoir donne « a ». · <b>2.</b> sommes — « nous » donne « sommes » avec le verbe être. · <b>3.</b> pouvez — « vous » donne « pouvez » avec le verbe pouvoir. · <b>4.</b> soulèvent — Sujet pluriel « les employés » : terminaison -ent, écrite mais peu entendue.</div></section></section></div>
+<footer><span>C2 · Consulter au bon endroit</span><span>Fiche élève</span></footer>
+</body>
+</html>

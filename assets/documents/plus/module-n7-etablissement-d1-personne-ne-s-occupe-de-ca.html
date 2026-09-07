@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>D1 · Personne ne s'occupe de ça — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance D1 · Module 11 · 75 minutes</div>
+    <h1>Personne ne s'occupe de ça</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">La lettre dit que la candidature est retenue et qu'elle est sur la liste d'attente. Ni le rang, ni jusqu'à quand, ni ce qu'il faudrait faire. Il n'y a pas de comptoir pour ça.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>distinguer « retenue » et « admise » dans un avis ;</li><li>trouver dans une lettre la date et le nom qui donnent prise ;</li><li>comprendre ce qu'une liste d'attente fait et ne fait pas ;</li><li>employer quatre mots du suivi avec leur article.</li></ol></section><section class="bloc card"><div class="lbl">Dialogue · 1 de 3</div><h2 class="t">Le rang ne se communique pas</h2><p class="consigne">Écouter d'abord, sans lire le texte.</p><div class="rep rep--key"><div class="qui">RANIA</div><div>Bonjour. Rania Nassar, dossier 41-2887. J'appelle au sujet de la lettre de lundi.</div></div><div class="rep rep--key"><div class="qui">RANIA</div><div>Elle dit que je suis sur la liste d'attente. Je voudrais savoir à quel rang je suis.</div></div><div class="rep rep--key"><div class="qui">NADINE</div><div>Le rang ne se communique pas, madame. Ce n'est pas moi qui décide de ça.</div></div><div class="rep rep--key"><div class="qui">RANIA</div><div>Je comprends. Est-ce que quelqu'un s'occupe des personnes qui sont sur la liste ?</div></div></section><section class="bloc card"><div class="lbl">Dialogue · 2 de 3</div><h2 class="t">Un message précis</h2><div class="rep rep--key"><div class="qui">NADINE</div><div>Personne ne s'en occupe comme telle. La liste bouge quand une personne se désiste.</div></div><div class="rep rep--key"><div class="qui">RANIA</div><div>Monsieur Fiset m'avait dit de le rappeler après la décision. Est-ce qu'il est là ?</div></div><div class="rep rep--key"><div class="qui">NADINE</div><div>Il est en rencontre jusqu'à onze heures. Vous voulez que je lui dise quoi exactement ?</div></div><div class="rep rep--key"><div class="qui">RANIA</div><div>Que j'ai rappelé comme il l'avait demandé, au sujet du dossier 41-2887.</div></div></section><section class="bloc card"><div class="lbl">Dialogue · 3 de 3</div><h2 class="t">Une seule case</h2><div class="rep rep--key"><div class="qui">ÉMILIEN</div><div>Il y avait vingt-quatre places et quarante et une candidatures retenues.</div></div><div class="rep rep--key"><div class="qui">ÉMILIEN</div><div>Ceux qui sont passés devant vous avaient tous leur préalable de mathématiques.</div></div><div class="rep rep--key"><div class="qui">RANIA</div><div>Donc ce n'est ni l'entrevue ni la lettre. C'est une seule case.</div></div><div class="rep rep--key"><div class="qui">ÉMILIEN</div><div>Une seule case, oui. Et c'est une bonne nouvelle, parce qu'une case, ça se remplit.</div></div></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Ce que l'avis dit, et ce qu'il cache</h2><table><thead><tr><th>Dans la lettre</th><th>Ce que ça veut dire</th></tr></thead><tbody><tr><td class="cle">retenue</td><td>le dossier a passé la sélection</td></tr><tr><td class="cle">admise</td><td>il y avait une place</td></tr><tr><td class="cle">liste d'attente</td><td>retenue, sans place, appelée si quelqu'un se désiste</td></tr><tr><td class="cle">rang non communiqué</td><td>inutile de le redemander, il change tous les jours</td></tr><tr><td class="cle">dossier actif</td><td>rien à refaire d'ici la date indiquée</td></tr></tbody></table></section><section class="bloc regle"><div class="lbl">Un avis dit trois choses et en cache une quatrième</div><p class="r">Il dit ce qui a été décidé, sur quoi, à quelle date. Il ne dit jamais ce qu'il faudrait changer.</p><p class="pr">Cette quatrième chose ne s'obtient qu'au téléphone, et seulement si l'on appelle. C'est aussi la seule qui serve à l'année suivante.</p></section><section class="bloc card"><div class="lbl">Vocabulaire</div><h2 class="t">Quatre mots du suivi</h2><table class="voc"><tbody><tr><td class="mot">une liste d'attente</td><td class="def">Le classement des personnes retenues qui n'ont pas eu de place.</td></tr><tr><td class="mot">un rang</td><td class="def">La position d'une personne dans un classement.</td></tr><tr><td class="mot">une mise à niveau</td><td class="def">Le cours court qu'on suit pour atteindre le niveau exigé.</td></tr><tr><td class="mot">la reconnaissance des acquis</td><td class="def">La démarche qui évalue ce qu'une personne sait déjà faire.</td></tr></tbody></table></section><section class="bloc card"><div class="lbl">Compréhension</div><h2 class="t">Vrai ou faux ?</h2><p class="consigne">Répondez d'après les deux appels.</p><ol class="ex"><li><span class="q">La lettre indique le rang de Rania sur la liste.</span><span class="ligne"></span></li><li><span class="q">Une personne du centre est chargée de faire avancer les dossiers.</span><span class="ligne ligne--court"></span></li><li><span class="q">Rania rappelle parce que le conseiller le lui avait demandé.</span><span class="ligne ligne--court"></span></li><li><span class="q">Selon le conseiller, l'entrevue s'est mal passée.</span><span class="ligne"></span></li><li><span class="q">Il lui manque le préalable de mathématiques.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le conseiller lui promet une place en janvier.</span><span class="ligne"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écris ce que tu dirais dans les vingt premières secondes d'un appel de suivi.</p><ul><li>Bonjour, Rania Nassar, dossier 41-2887.</li><li>Je vous appelle au sujet de la lettre du 10 avril.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Lire un avis administratif sans se décourager</h2><section class="bloc card ml"><h3>Quatre choses à y chercher, dans cet ordre</h3><p class="mp">Une lettre de décision se lit deux fois. La première fois, on cherche le mot qui dit oui ou non, et on s'arrête là — c'est la lecture qui décourage. La seconde se fait un crayon à la main : qu'est-ce qui a été décidé exactement ? sur quoi ? à quelle date ? et qui est nommé ? Ce sont ces quatre renseignements qui permettent de faire quelque chose ensuite.</p><div class="note">Un avis ne dit presque jamais la cinquième chose, celle qui compte le plus : ce qu'il faudrait changer. Elle ne s'obtient qu'au téléphone, et seulement si l'on appelle.</div></section><section class="bloc card ml"><h3>« Retenue » n'est pas « admise »</h3><p class="mp">Deux mots voisins, deux situations complètement différentes. C'est le mot qu'on lit le plus vite et qu'on comprend le moins.</p><table class="ana"><tr><td>Retenue</td><td class="">le dossier a passé la sélection</td></tr><tr><td>Admise</td><td class="cle">il y avait une place</td></tr><tr><td>Entre les deux</td><td class="">la liste d'attente — retenue sans place</td></tr></table><p class="dit"><span class="k">On dit</span> Votre candidature a été retenue, mais aucune place ne peut vous être offerte pour le moment.</p><div class="note">Une personne retenue est déjà passée devant les deux tiers des candidatures. Le lui dire change la façon dont elle prépare l'année suivante.</div></section><section class="bloc card ml"><h3>Cherchez la phrase qui contient une date</h3><p class="mp">C'est la seule qui vous donne prise. Une décision sans date ne se relance pas ; une décision datée se relance la veille.</p><table class="ana"><tr><td>Exemples de dates utiles</td><td class="">« examinés à la mi-décembre » · « actif jusqu'au 30 juin »</td></tr><tr><td>Ce qu'on en fait</td><td class="cle">on note la date, et on appelle avant, jamais après</td></tr><tr><td>Le piège</td><td class="">« dès que possible » et « sous peu » ne sont pas des dates</td></tr></table><p class="dit"><span class="k">On dit</span> Les dossiers en vue de cette entrée sont examinés à la mi-décembre.</p><div class="note">Rappeler en février un dossier qui se regarde en décembre, c'est rappeler pour rien. La date est le renseignement le plus utile de toute la lettre.</div></section><section class="bloc card ml"><h3>Cherchez le nom d'une personne</h3><p class="mp">Un avis signé par une fonction ne se rappelle pas. Un avis qui nomme quelqu'un, oui — avec son poste téléphonique.</p><table class="ana"><tr><td>Ce qu'on cherche</td><td class="">« vous pouvez joindre monsieur X, conseiller pédagogique, au poste 2244 »</td></tr><tr><td>S'il n'y a personne</td><td class="cle">la personne qui vous a reçue en entrevue</td></tr><tr><td>Ce qu'on ne fait pas</td><td class="">écrire une seconde lettre à personne</td></tr></table><p class="dit"><span class="k">On dit</span> Pour toute question relative à la présente décision, vous pouvez joindre le conseiller pédagogique au poste 2244.</p><div class="note">C'est cette ligne-là, en bas de page et en petits caractères, qui transforme un refus en démarche.</div></section><section class="bloc card ml"><h3>Sept formules d'avis, et ce qu'elles veulent dire</h3><p class="mp">À gauche ce qui est écrit, à droite ce que ça veut dire.</p><table class="ex2"><tr><td>« votre candidature a été retenue »</td><td>le dossier a passé la sélection</td></tr><tr><td>« il ne nous a pas été possible de vous offrir une place »</td><td>il n'y a pas de place, ce n'est pas un refus du dossier</td></tr><tr><td>« votre nom est inscrit sur la liste d'attente »</td><td>vous serez appelée si quelqu'un se désiste</td></tr><tr><td>« le rang n'est pas communiqué »</td><td>inutile de le redemander ; demandez autre chose</td></tr><tr><td>« votre dossier demeure actif jusqu'au 30 juin »</td><td>rien à refaire d'ici là</td></tr><tr><td>« les dossiers sont examinés à la mi-décembre »</td><td>la date à noter, et à devancer d'une semaine</td></tr><tr><td>« vous pouvez joindre monsieur X au poste 2244 »</td><td>la porte d'entrée : c'est là qu'on appelle</td></tr></table></section><section class="bloc card ml"><h3>Quatre lectures rapides</h3><p class="mp">Que faut-il en conclure ?</p><ol class="check"><li><span class="q">« Votre candidature a été retenue. » suivi de « aucune place disponible » :</span><ul class="opts"><li>vous êtes refusée</li><li>vous êtes retenue sans place</li></ul></li><li><span class="q">« Le rang n'est pas communiqué. » :</span><ul class="opts"><li>insister au téléphone</li><li>demander plutôt ce qui ferait la différence</li></ul></li><li><span class="q">« Les dossiers sont examinés à la mi-décembre. » — vous rappelez :</span><ul class="opts"><li>en février</li><li>au début de décembre</li></ul></li><li><span class="q">L'avis nomme une personne et un poste téléphonique :</span><ul class="opts"><li>c'est une formule de politesse</li><li>c'est la porte d'entrée, et il faut s'en servir</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> vous êtes retenue sans place — C'est la liste d'attente, et c'est très différent d'un refus. · <b>2.</b> demander plutôt ce qui ferait la différence — Le rang change tous les jours ; ce qui ne change pas, c'est ce qui manque au dossier. · <b>3.</b> au début de décembre — Avant la date, jamais après : après, tout est décidé. · <b>4.</b> c'est la porte d'entrée, et il faut s'en servir — Cette ligne existe parce que quelqu'un doit répondre. Très peu de gens appellent.</div></section><section class="bloc card ml"><h3>Trois façons de mal lire une décision</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">s'arrêter au premier paragraphe</p><div class="k">Ce qui arrive</div><p class="ph">lire jusqu'au bas de la page, où sont les dates et les noms</p><p class="px">Le paragraphe qui dit ce qu'il faut faire ensuite est presque toujours l'avant-dernier.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">prendre « retenue » pour « admise »</p><div class="k">Ce qui arrive</div><p class="ph">chercher le mot « place »</p><p class="px">Deux candidates lisent la même lettre : l'une comprend qu'elle a réussi, l'autre qu'elle est refusée. Ni l'une ni l'autre n'a raison.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">répondre par écrit à un avis</p><div class="k">Ce qui arrive</div><p class="ph">téléphoner à la personne nommée</p><p class="px">Une lettre entre dans une pile. Un appel obtient en trois minutes ce que la lettre ne dira jamais : ce qu'il faudrait changer.</p></div></div></section></section></div>
+<footer><span>D1 · Entrer dans le programme</span><span>Fiche élève</span></footer>
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>D2 · Trois fois par jour, pas plus de quatre — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance D2 · Module 5 · 75 minutes</div>
+    <h1>Trois fois par jour, pas plus de quatre</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Trois points de langue pour la même étiquette : compter les prises, comprendre les ordres polis, et lire les chiffres qui protègent.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>dire combien de fois par jour et pendant combien de jours ;</li><li>comprendre « aux huit heures » et « avec de la nourriture » ;</li><li>lire les consignes à l'impératif, à la forme positive et négative ;</li><li>comprendre « pas plus de », « de moins de » et « au moins ».</li></ol></section><section class="bloc card"><div class="lbl">Analyse · 1</div><h2 class="t">Compter les prises</h2><table><thead><tr><th>Ce qu'on lit</th><th>Ce que ça veut dire</th></tr></thead><tbody><tr><td class="cle">trois fois par jour</td><td>le matin, le midi et le soir</td></tr><tr><td class="cle">deux fois par semaine</td><td>deux jours, pas tous les jours</td></tr><tr><td class="cle">aux huit heures</td><td>huit heures entre deux comprimés</td></tr><tr><td class="cle">avec de la nourriture</td><td>pendant le repas ou juste après</td></tr><tr><td class="cle">au coucher</td><td>juste avant de dormir</td></tr></tbody></table><div class="note">Après « par », le mot reste au singulier.</div></section><section class="bloc regle"><div class="lbl">La formule la plus fréquente</div><p class="r">« un comprimé, trois fois par jour »</p><p class="pr">Un comprimé chaque fois, trois fois dans la journée — jamais trois comprimés d'un coup. C'est la confusion la plus dangereuse de toute l'étiquette.</p></section><section class="bloc card"><div class="lbl">Analyse · 2</div><h2 class="t">Comment l'étiquette donne ses ordres</h2><table><thead><tr><th>La forme</th><th>Exemple</th></tr></thead><tbody><tr><td class="cle">le verbe en -ez</td><td>Prenez un comprimé.</td></tr><tr><td class="cle">ne… pas + verbe en -ez</td><td>Ne prenez pas deux comprimés.</td></tr><tr><td class="cle">ne pas + infinitif</td><td>Ne pas donner aux enfants.</td></tr><tr><td class="cle">autres verbes utiles</td><td>Agitez. Rincez. Terminez.</td></tr></tbody></table><div class="note">Sur les boîtes, « ne pas donner » est la forme la plus fréquente.</div></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Lecture</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">« plus de quatre comprimés par jour »</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">« pas plus de quatre comprimés par jour »</p></div></div><div class="note">Sans le mot « pas », la phrase dit exactement le contraire de ce qu'elle veut dire. C'est le mot le plus court de la mise en garde et le plus important : « pas plus de » fixe un maximum.</div></section><section class="bloc card"><div class="lbl">Analyse · 3</div><h2 class="t">Les chiffres qui protègent</h2><table><thead><tr><th>L'expression</th><th>Ce qu'elle fixe</th></tr></thead><tbody><tr><td class="cle">pas plus de quatre comprimés</td><td>un maximum</td></tr><tr><td class="cle">au moins quatre heures</td><td>un minimum</td></tr><tr><td class="cle">de moins de six ans</td><td>les plus jeunes : interdit</td></tr><tr><td class="cle">de plus de dix-huit ans</td><td>les plus âgés : permis</td></tr></tbody></table><div class="note">Sur une boîte, « 6 ans + » veut dire six ans et plus.</div></section><section class="bloc card"><div class="lbl">Application · 1</div><h2 class="t">Combien de fois, et quand ?</h2><p class="consigne">Complétez chaque phrase.</p><ol class="ex"><li><span class="q">Prenez un comprimé trois ___ par jour.</span><span class="ligne ligne--court"></span></li><li><span class="q">Un comprimé deux fois ___ semaine.</span><span class="ligne ligne--court"></span></li><li><span class="q">Prenez ce médicament ___ huit heures.</span><span class="ligne ligne--court"></span></li><li><span class="q">Ce comprimé se prend ___ les repas, l'estomac plein.</span><span class="ligne ligne--court"></span></li><li><span class="q">Ce sirop se prend ___ les repas, l'estomac vide.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">Application · 2</div><h2 class="t">Écrivez la consigne</h2><p class="consigne">Écrivez chaque consigne comme sur une étiquette.</p><ol class="ex"><li><span class="q">Dire de prendre un comprimé.</span><span class="ligne"></span></li><li><span class="q">Dire de ne pas en prendre deux en même temps.</span><span class="ligne"></span></li><li><span class="q">Dire d'agiter le sirop avant de l'ouvrir.</span><span class="ligne"></span></li><li><span class="q">Dire de ne pas donner aux enfants.</span><span class="ligne"></span></li><li><span class="q">Dire de terminer les sept jours.</span><span class="ligne"></span></li></ol></section><section class="bloc card"><div class="lbl">Application · 3</div><h2 class="t">Les mises en garde</h2><p class="consigne">Complétez, puis expliquez ce que ça interdit ou permet.</p><ol class="ex"><li><span class="q">Ne pas donner aux enfants ___ six ans.</span><span class="ligne"></span></li><li><span class="q">Ce sirop est pour les adultes ___ dix-huit ans.</span><span class="ligne"></span></li><li><span class="q">Prendre ___ quatre comprimés par jour.</span><span class="ligne"></span></li><li><span class="q">Attendez ___ quatre heures entre deux doses.</span><span class="ligne"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez la posologie d'un médicament que vous connaissez.</p><ul><li>Combien, combien de fois, quand, pendant combien de jours.</li><li>Ajoutez une mise en garde avec « pas plus de » ou « de moins de ».</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Combien de fois par jour ?</h2><section class="bloc card ml"><h3>La ligne la plus importante de l'étiquette</h3><p class="mp">Sur une étiquette de pharmacie, tout tient en une phrase : <b>combien</b> de comprimés, <b>combien de fois</b> par jour, <b>quand</b>, et <b>pendant combien de jours</b>. Quatre renseignements, dans cet ordre. Si tu sais lire ces quatre-là, tu sais lire une posologie.</p><div class="note">Le programme de niveau 3 nomme les marqueurs de fréquence pour cette situation. Ce sont eux, et ils ne sont pas nombreux.</div></section><section class="bloc card ml"><h3>Compter les prises : une fois, deux fois, trois fois</h3><p class="mp">Le mot « fois » ne change jamais de forme.</p><table class="ana"><tr><td>On dit</td><td class="">une <b>fois</b> par jour</td></tr><tr><td>Aussi</td><td class="cle">trois <b>fois</b> par jour</td></tr><tr><td>Et</td><td class="">deux <b>fois</b> par semaine</td></tr></table><p class="dit"><span class="k">On dit</span> Une fois par jour. Trois fois par jour. Deux fois par semaine.</p><div class="note">« Fois » s'écrit toujours avec un s, même au singulier : une fois. C'est un mot qui garde son s partout.</div></section><section class="bloc card ml"><h3>Les moments de la journée</h3><p class="mp">Quatre mots qui reviennent sur toutes les étiquettes.</p><table class="ana"><tr><td>Le jour</td><td class=""><b>le matin</b>, le midi, le soir</td></tr><tr><td>La nuit</td><td class="cle"><b>au coucher</b>, avant de dormir</td></tr><tr><td>La règle</td><td class="">trois fois par jour = matin, midi et soir</td></tr></table><p class="dit"><span class="k">On dit</span> Le matin, le midi, le soir. Une fois par jour, au coucher.</p><div class="note">Quand l'étiquette dit seulement « trois fois par jour », le pharmacien traduit : matin, midi et soir, à peu près aux huit heures.</div></section><section class="bloc card ml"><h3>L'heure entre deux comprimés : aux</h3><p class="mp">Une façon de parler bien québécoise, et très fréquente.</p><table class="ana"><tr><td>On dit</td><td class=""><b>aux</b> huit heures</td></tr><tr><td>Aussi</td><td class="cle"><b>aux</b> quatre heures, <b>aux</b> six heures</td></tr><tr><td>Ailleurs</td><td class="">en France, on dirait « toutes les huit heures »</td></tr></table><p class="dit"><span class="k">On dit</span> Prenez ce médicament aux huit heures.</p><div class="note">« Aux huit heures » ne veut pas dire « à 8 h » : ça veut dire qu'il y a huit heures entre deux comprimés.</div></section><section class="bloc card ml"><h3>Avant, après, avec de la nourriture</h3><p class="mp">Le moment par rapport au repas change l'effet du médicament.</p><table class="ana"><tr><td>Estomac vide</td><td class=""><b>avant</b> les repas</td></tr><tr><td>Estomac plein</td><td class="cle"><b>après</b> les repas</td></tr><tr><td>Pendant ou juste après</td><td class=""><b>avec de la nourriture</b></td></tr></table><p class="dit"><span class="k">On dit</span> Avant les repas. Après les repas. Avec de la nourriture.</p><div class="note">« Avec de la nourriture » est la formule la plus fréquente sur les étiquettes du Québec. Elle veut dire : pas l'estomac vide.</div></section><section class="bloc card ml"><h3>Lis la posologie à voix haute</h3><p class="mp">Choisis une quantité et un moment.</p><table class="labo"><thead><tr><th>Combien de fois ? · Quand ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">une fois + avec de la nourriture</td><td>Un comprimé une fois par jour, avec de la nourriture.</td><td>la posologie la plus simple</td></tr><tr><td class="cle">une fois + au coucher</td><td>Un comprimé une fois par jour, au coucher.</td><td>souvent pour dormir</td></tr><tr><td class="cle">deux fois + avec de la nourriture</td><td>Un comprimé deux fois par jour, avec de la nourriture.</td><td>matin et soir</td></tr><tr><td class="cle">deux fois + au coucher</td><td>Un comprimé deux fois par jour, dont un au coucher.</td><td>le soir compte comme une prise</td></tr><tr><td class="cle">trois fois + avec de la nourriture</td><td>Un comprimé trois fois par jour, avec de la nourriture.</td><td>celle de l'étiquette de Nadia</td></tr><tr><td class="cle">trois fois + au coucher</td><td>Trois fois par jour, et le dernier au coucher.</td><td>matin, midi, coucher</td></tr><tr><td class="cle">aux huit heures + avec de la nourriture</td><td>Un comprimé aux huit heures, avec de la nourriture.</td><td>huit heures entre deux prises</td></tr><tr><td class="cle">aux huit heures + au coucher</td><td>Un comprimé aux huit heures, même la nuit.</td><td>huit phrases toutes prêtes</td></tr></tbody></table><div class="note">Répète la posologie à voix haute devant le pharmacien avant de partir : c'est la meilleure vérification qui existe.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six phrases d'étiquette.</p><table class="ex2"><tr><td>Un comprimé, trois fois par jour.</td><td>la plus fréquente</td></tr><tr><td>Deux fois par semaine, le lundi et le jeudi.</td><td>par semaine</td></tr><tr><td>Prenez ce médicament aux huit heures.</td><td>la formule québécoise</td></tr><tr><td>Ce comprimé se prend après les repas.</td><td>estomac plein</td></tr><tr><td>Ce sirop se prend avant les repas.</td><td>estomac vide</td></tr><tr><td>Une fois par jour, le soir, au coucher.</td><td>les trois renseignements ensemble</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges à connaître</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">comprendre « aux huit heures » comme une heure</p><div class="k">Ce qui arrive</div><p class="ph">croire qu'il faut le prendre à 8 h du matin</p><p class="px">Non : c'est l'écart entre deux comprimés. À 8 h, à 16 h, à minuit, par exemple.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">mettre le mot au pluriel après « par »</p><div class="k">Ce qui arrive</div><p class="ph">« trois fois par jours »</p><p class="px">Après <b>par</b>, le mot reste au singulier : trois fois par <b>jour</b>, deux fois par <b>semaine</b>.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">croire que « avec de la nourriture » veut dire un gros repas</p><div class="k">Ce qui arrive</div><p class="ph">attendre le souper pour prendre son comprimé</p><p class="px">Une rôtie, un yogourt, un verre de lait suffisent. Le but est seulement de ne pas avoir l'estomac vide.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">« Trois fois par jour » veut dire…</span><ul class="opts"><li>matin, midi et soir</li><li>trois comprimés le matin</li></ul></li><li><span class="q">« Aux huit heures » veut dire…</span><ul class="opts"><li>à 8 h du matin</li><li>huit heures entre deux prises</li></ul></li><li><span class="q">« Avec de la nourriture » veut dire…</span><ul class="opts"><li>l'estomac vide</li><li>pendant ou juste après avoir mangé</li></ul></li><li><span class="q">On écrit…</span><ul class="opts"><li>trois fois par jour</li><li>trois fois par jours</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> matin, midi et soir — Trois moments, un comprimé chaque fois. · <b>2.</b> huit heures entre deux prises — C'est un écart, pas une heure. · <b>3.</b> pendant ou juste après avoir mangé — Jamais l'estomac vide. · <b>4.</b> trois fois par jour — Après « par », le mot reste au singulier.</div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Prenez, agitez, ne prenez pas</h2><section class="bloc card ml"><h3>Comment l'étiquette te parle</h3><p class="mp">Une étiquette de pharmacie ne raconte rien : elle donne des ordres, poliment. Le verbe est en premier, il finit par <b>-ez</b>, et il n'y a pas de « vous » devant : <b>Prenez</b> un comprimé. <b>Agitez</b> avant usage. <b>Gardez</b> au froid. C'est ce qu'on appelle l'impératif.</p><div class="note">Le même temps sert partout dans la vie quotidienne : les recettes, les consignes de sécurité, les instructions d'un appareil.</div></section><section class="bloc card ml"><h3>Donner la consigne : le verbe en premier</h3><p class="mp">On enlève le « vous », on garde le verbe.</p><table class="ana"><tr><td>Vous prenez →</td><td class=""><b>prenez</b> un comprimé</td></tr><tr><td>Vous agitez →</td><td class="cle"><b>agitez</b> avant d'ouvrir</td></tr><tr><td>Vous gardez →</td><td class="">gardez au froid</td></tr></table><p class="dit"><span class="k">On dit</span> Prenez un comprimé. Agitez avant d'ouvrir.</p><div class="note">C'est la forme que le pharmacien emploie aussi quand il te parle : « Prenez-le avec de la nourriture. »</div></section><section class="bloc card ml"><h3>Dire de ne pas faire : ne… pas</h3><p class="mp">Le petit mot devant, l'autre derrière.</p><table class="ana"><tr><td>On dit</td><td class=""><b>ne prenez pas</b> deux comprimés</td></tr><tr><td>Aussi</td><td class="cle"><b>n'arrêtez pas</b> avant sept jours</td></tr><tr><td>La règle</td><td class="">ne devant le verbe, pas derrière</td></tr></table><p class="dit"><span class="k">On dit</span> Ne prenez pas deux comprimés en même temps.</p><div class="note">Devant une voyelle, « ne » devient « n' » : <b>n'</b>arrêtez pas, <b>n'</b>ouvrez pas.</div></section><section class="bloc card ml"><h3>La forme écrite, sans personne : ne pas + infinitif</h3><p class="mp">Sur les boîtes, on écrit souvent le verbe sans le conjuguer.</p><table class="ana"><tr><td>On écrit</td><td class=""><b>ne pas donner</b> aux enfants</td></tr><tr><td>Aussi</td><td class="cle"><b>ne pas conserver</b> après cette date</td></tr><tr><td>Ça veut dire</td><td class="">la même chose que « ne donnez pas »</td></tr></table><p class="dit"><span class="k">On dit</span> Ne pas donner aux enfants de moins de six ans.</p><div class="note">Cette forme s'adresse à tout le monde à la fois. Tu la verras sur presque toutes les boîtes de médicaments.</div></section><section class="bloc card ml"><h3>Rincer et terminer : deux verbes des conseils</h3><p class="mp">Deux mots du programme, et ce qu'ils demandent vraiment.</p><table class="ana"><tr><td>rincer</td><td class=""><b>rincez</b> votre bouche après chaque dose</td></tr><tr><td>terminer</td><td class="cle"><b>terminez</b> le traitement, même si ça va mieux</td></tr><tr><td>Attention</td><td class="">arrêter trop tôt fait revenir la maladie</td></tr></table><p class="dit"><span class="k">On dit</span> Rincez votre bouche. Terminez le traitement.</p><div class="note">« Terminez le traitement » est le conseil que les pharmaciens répètent le plus souvent, et celui qu'on oublie le plus.</div></section><section class="bloc card ml"><h3>Écris la consigne</h3><p class="mp">Choisis une action et une forme.</p><table class="labo"><thead><tr><th>Quelle action ? · Quelle forme ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">prendre un comprimé + faire</td><td>Prenez un comprimé trois fois par jour.</td><td>la consigne de base</td></tr><tr><td class="cle">prendre un comprimé + ne pas faire</td><td>Ne prenez pas deux comprimés en même temps.</td><td>ne… pas</td></tr><tr><td class="cle">agiter la bouteille + faire</td><td>Agitez la bouteille avant d'ouvrir.</td><td>pour les sirops</td></tr><tr><td class="cle">agiter la bouteille + ne pas faire</td><td>N'ouvrez pas la bouteille sans l'agiter.</td><td>ne devient n' devant une voyelle</td></tr><tr><td class="cle">donner aux enfants + faire</td><td>Donnez une cuillère au coucher.</td><td>consigne pour un enfant</td></tr><tr><td class="cle">donner aux enfants + ne pas faire</td><td>Ne pas donner aux enfants de moins de six ans.</td><td>la forme écrite des boîtes</td></tr><tr><td class="cle">terminer le traitement + faire</td><td>Terminez le traitement, même si ça va mieux.</td><td>le conseil le plus répété</td></tr><tr><td class="cle">terminer le traitement + ne pas faire</td><td>N'arrêtez pas avant la fin des sept jours.</td><td>huit consignes toutes prêtes</td></tr></tbody></table><div class="note">Les deux formes disent la même chose : « terminez » et « n'arrêtez pas ». Choisis celle que tu comprends le mieux.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six consignes d'étiquette.</p><table class="ex2"><tr><td>Prenez un comprimé trois fois par jour.</td><td>la consigne de base</td></tr><tr><td>Agitez la bouteille avant d'ouvrir.</td><td>pour les sirops</td></tr><tr><td>Ne prenez pas deux comprimés en même temps.</td><td>ne… pas</td></tr><tr><td>Ne pas donner aux enfants de moins de six ans.</td><td>la forme écrite</td></tr><tr><td>Rincez votre bouche après chaque dose.</td><td>un verbe du programme</td></tr><tr><td>Terminez le traitement, même si ça va mieux.</td><td>le conseil le plus important</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges à connaître</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">écrire le « vous »</p><div class="k">Ce qui arrive</div><p class="ph">« vous prenez un comprimé » sur une consigne</p><p class="px">Ce n'est pas faux, mais ce n'est pas la forme de l'étiquette. La consigne commence par le verbe : <b>Prenez</b>.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">oublier le « ne »</p><div class="k">Ce qui arrive</div><p class="ph">« prenez pas deux comprimés »</p><p class="px">À l'oral, beaucoup de gens laissent tomber le « ne ». À l'écrit, il reste obligatoire : <b>ne</b> prenez <b>pas</b>.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">conjuguer après « ne pas »</p><div class="k">Ce qui arrive</div><p class="ph">« ne pas donnez aux enfants »</p><p class="px">Dans la forme écrite des boîtes, le verbe ne se conjugue pas : ne pas <b>donner</b>, ne pas <b>conserver</b>.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">La consigne d'une étiquette commence par…</span><ul class="opts"><li>le verbe</li><li>le mot vous</li></ul></li><li><span class="q">Pour dire de ne pas faire, on met…</span><ul class="opts"><li>ne devant, pas derrière</li><li>pas devant seulement</li></ul></li><li><span class="q">« Ne pas donner aux enfants » s'adresse…</span><ul class="opts"><li>à une seule personne</li><li>à tout le monde</li></ul></li><li><span class="q">« Terminez le traitement » veut dire…</span><ul class="opts"><li>arrête quand tu vas mieux</li><li>prends tous les comprimés</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> le verbe — Prenez, agitez, gardez. · <b>2.</b> ne devant, pas derrière — Le verbe est pris entre les deux. · <b>3.</b> à tout le monde — C'est la forme écrite, sans personne nommée. · <b>4.</b> prends tous les comprimés — Même si ça va mieux avant.</div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>De plus de, de moins de, pas plus de</h2><section class="bloc card ml"><h3>Les chiffres qui protègent</h3><p class="mp">Les mises en garde d'un médicament sont presque toujours des chiffres : un âge, un nombre de comprimés, un nombre d'heures. Autour de ces chiffres, quatre expressions reviennent — <b>de plus de</b>, <b>de moins de</b>, <b>pas plus de</b>, <b>au moins</b> — et le programme de niveau 3 les nomme explicitement pour cette situation.</p><div class="note">Se tromper ici n'est pas une faute de français ordinaire : c'est prendre un médicament de travers. Prends le temps.</div></section><section class="bloc card ml"><h3>Les enfants trop jeunes : de moins de</h3><p class="mp">En dessous de ce chiffre, c'est interdit.</p><table class="ana"><tr><td>On lit</td><td class="">ne pas donner aux enfants <b>de moins de</b> six ans</td></tr><tr><td>Ça veut dire</td><td class="cle">cinq ans : interdit · sept ans : permis</td></tr><tr><td>Sur la boîte</td><td class="">on écrit parfois « 6 ans + »</td></tr></table><p class="dit"><span class="k">On dit</span> Ne pas donner aux enfants de moins de six ans.</p><div class="note">Six ans exactement ? La règle est « moins de six » : à six ans, c'est permis. Dans le doute, demande au pharmacien.</div></section><section class="bloc card ml"><h3>Les personnes assez âgées : de plus de</h3><p class="mp">Au-dessus de ce chiffre, c'est permis.</p><table class="ana"><tr><td>On lit</td><td class="">pour les adultes <b>de plus de</b> dix-huit ans</td></tr><tr><td>Ça veut dire</td><td class="cle">dix-neuf ans : permis · seize ans : non</td></tr><tr><td>Aussi</td><td class="">si la toux dure <b>plus de</b> sept jours, consultez</td></tr></table><p class="dit"><span class="k">On dit</span> Pour les adultes de plus de dix-huit ans.</p><div class="note">« Plus de » sert aussi aux durées : plus de sept jours, plus de deux semaines. C'est le signal d'aller consulter.</div></section><section class="bloc card ml"><h3>La limite à ne pas dépasser : pas plus de</h3><p class="mp">Le maximum d'une journée.</p><table class="ana"><tr><td>On lit</td><td class=""><b>pas plus de</b> quatre comprimés par jour</td></tr><tr><td>Ça veut dire</td><td class="cle">quatre : correct · cinq : dangereux</td></tr><tr><td>Ailleurs</td><td class="">« maximum 4 par 24 heures » dit la même chose</td></tr></table><p class="dit"><span class="k">On dit</span> Pas plus de quatre comprimés par jour.</p><div class="note">C'est la mise en garde la plus importante des médicaments en vente libre : beaucoup de gens dépassent sans le savoir.</div></section><section class="bloc card ml"><h3>Le minimum à respecter : au moins</h3><p class="mp">En dessous, c'est trop tôt.</p><table class="ana"><tr><td>On lit</td><td class="">attendez <b>au moins</b> quatre heures entre deux doses</td></tr><tr><td>Ça veut dire</td><td class="cle">quatre heures : correct · deux heures : trop tôt</td></tr><tr><td>Aussi</td><td class="">buvez <b>au moins</b> un grand verre d'eau</td></tr></table><p class="dit"><span class="k">On dit</span> Attendez au moins quatre heures entre deux doses.</p><div class="note">« Au moins » et « pas plus de » sont les deux bornes : l'une dit le minimum, l'autre le maximum.</div></section><section class="bloc card ml"><h3>Lis la mise en garde</h3><p class="mp">Choisis un type de limite et un chiffre.</p><table class="labo"><thead><tr><th>Quelle limite ? · Quel chiffre ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">un âge minimum + le plus petit</td><td>Ne pas donner aux enfants de moins de six ans.</td><td>très fréquent sur les sirops</td></tr><tr><td class="cle">un âge minimum + le plus grand</td><td>Ne pas donner aux enfants de moins de douze ans.</td><td>pour les comprimés</td></tr><tr><td class="cle">un âge adulte + le plus petit</td><td>Pour les adultes de plus de dix-huit ans.</td><td>la limite adulte</td></tr><tr><td class="cle">un âge adulte + le plus grand</td><td>Pour les personnes de plus de soixante-cinq ans, demandez conseil.</td><td>une autre borne fréquente</td></tr><tr><td class="cle">un maximum par jour + le plus petit</td><td>Pas plus de deux comprimés par jour.</td><td>maximum serré</td></tr><tr><td class="cle">un maximum par jour + le plus grand</td><td>Pas plus de quatre comprimés par jour.</td><td>le maximum le plus courant</td></tr><tr><td class="cle">une attente minimale + le plus petit</td><td>Attendez au moins quatre heures entre deux doses.</td><td>minimum</td></tr><tr><td class="cle">une attente minimale + le plus grand</td><td>Attendez au moins huit heures entre deux doses.</td><td>huit phrases toutes prêtes</td></tr></tbody></table><div class="note">Relis toujours ces phrases deux fois. Ce sont les seules d'une étiquette où une erreur coûte cher.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six mises en garde.</p><table class="ex2"><tr><td>Ne pas donner aux enfants de moins de six ans.</td><td>âge minimum</td></tr><tr><td>Pour les adultes de plus de dix-huit ans.</td><td>âge adulte</td></tr><tr><td>Pas plus de quatre comprimés par jour.</td><td>maximum</td></tr><tr><td>Attendez au moins quatre heures entre deux doses.</td><td>minimum</td></tr><tr><td>Si la toux dure plus de sept jours, consultez un médecin.</td><td>durée</td></tr><tr><td>Gardez hors de la portée des enfants.</td><td>la mise en garde de toutes les boîtes</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges à connaître</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">confondre « moins de » et « plus de »</p><div class="k">Ce qui arrive</div><p class="ph">donner à un enfant de cinq ans un sirop marqué « 6 ans et plus »</p><p class="px">Cinq ans, c'est <b>moins de</b> six : c'est interdit. Compare toujours le chiffre de la boîte avec l'âge réel.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">oublier « pas » dans « pas plus de »</p><div class="k">Ce qui arrive</div><p class="ph">lire « plus de quatre comprimés par jour »</p><p class="px">Sans le « pas », la phrase dit le contraire. C'est le mot le plus court de la mise en garde et le plus important.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">additionner deux médicaments</p><div class="k">Ce qui arrive</div><p class="ph">prendre deux marques différentes le même jour</p><p class="px">Deux boîtes peuvent contenir le même médicament sous deux noms. Demande au pharmacien avant de mélanger.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">« Enfants de moins de six ans » : un enfant de cinq ans…</span><ul class="opts"><li>peut en prendre</li><li>ne peut pas en prendre</li></ul></li><li><span class="q">« Pas plus de quatre par jour » : cinq comprimés, c'est…</span><ul class="opts"><li>correct</li><li>trop</li></ul></li><li><span class="q">« Au moins quatre heures » : attendre deux heures, c'est…</span><ul class="opts"><li>trop tôt</li><li>correct</li></ul></li><li><span class="q">« Si ça dure plus de sept jours »…</span><ul class="opts"><li>continue le sirop</li><li>va voir un médecin</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> ne peut pas en prendre — Cinq, c'est moins de six. · <b>2.</b> trop — Quatre est le maximum. · <b>3.</b> trop tôt — Quatre heures est le minimum. · <b>4.</b> va voir un médecin — C'est le signal d'aller consulter.</div></section></section></div>
+<footer><span>D2 · Aller à la pharmacie</span><span>Fiche élève</span></footer>
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>D2 · Accorder, mettre en avant, restreindre — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance D2 · Module 1 · 75 minutes</div>
+    <h1>Accorder, mettre en avant, restreindre</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Trois outils pour répondre sans se faire fermer la porte : donner raison avant d'objecter, placer en tête ce qui compte, et dire « seulement » sans dire « non ».</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>employer « bien que » avec le subjonctif et « même si » avec l'indicatif ;</li><li>mettre un élément en relief avec « c'est... qui » et « ce qui... c'est » ;</li><li>restreindre avec « ne... que » sans en faire une négation ;</li><li>choisir une formule d'opinion selon la force qu'on veut lui donner.</li></ol></section><section class="bloc regle"><div class="lbl">Bien que et même si ne se conduisent pas pareil</div><p class="r">Bien que + subjonctif. Même si + indicatif. Jamais l'inverse.</p><p class="pr">« Bien que le projet soit utile » - subjonctif, toujours. « Même si je trouve son ton un peu fort » - indicatif, toujours. Les deux marqueurs se ressemblent par le sens et ne se ressemblent en rien par la construction. Dans le doute, employez « même si » : il ne demande rien de particulier.</p></section><section class="bloc"><div class="lbl">Les cinq subjonctifs à connaître</div><h2 class="t">Après « bien que »</h2><div class="grid"><div class="card"><h3>être</h3><p>bien que ce soit, bien qu'ils soient</p></div><div class="card"><h3>avoir</h3><p>bien qu'il ait, bien qu'ils aient</p></div><div class="card"><h3>pouvoir</h3><p>bien qu'elle puisse</p></div><div class="card"><h3>venir</h3><p>bien que ça vienne</p></div><div class="card"><h3>faire</h3><p>bien qu'il fasse</p></div></div></section><section class="bloc regle"><div class="lbl">Mettre en relief, c'est déplacer et encadrer</div><p class="r">En français, on n'insiste pas en criant un mot : on l'encadre.</p><p class="pr">« C'est le comité qui a retenu Boisjoli » encadre le sujet. « C'est le 14 octobre qu'on décide » encadre un moment. « Ce qui m'inquiète, c'est les heures » encadre une idée entière. Le repère : « qui » quand ce qui suit a besoin d'un sujet, « que » dans tous les autres cas.</p></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Bien que suivi de l'indicatif</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">Bien que c'est une bonne idée, la consultation a manqué.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">Bien que ce soit une bonne idée, la consultation a manqué.</p></div></div><div class="note">C'est l'erreur numéro un du niveau, et elle est audible. Elle vient de ce que « bien que » se traduit dans beaucoup de langues par un mot qui n'exige rien. La parade est mécanique : après « bien que », on écrit d'abord le verbe au subjonctif, on relit ensuite.</div></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Dire une opinion, plus ou moins fort</h2><table><thead><tr><th>La formule</th><th>La force</th></tr></thead><tbody><tr><td class="cle">Il me semble que...</td><td>très prudent : je le pense, sans en être sûr</td></tr><tr><td class="cle">Je trouve que...</td><td>ordinaire : mon avis, sans prétention</td></tr><tr><td class="cle">À ma connaissance...</td><td>prudent sur un fait : d'après ce que je sais</td></tr><tr><td class="cle">Je suis convaincue que...</td><td>fort : je n'ai plus de doute</td></tr><tr><td class="cle">Il est inacceptable que...</td><td>très fort : je juge et j'attends que ça change</td></tr></tbody></table><div class="note">« À ma connaissance » est la formule la plus utile du tableau : elle protège celui qui écrit.</div></section><section class="bloc card"><div class="lbl">Application</div><h2 class="t">Concéder, puis objecter</h2><p class="consigne">Complétez avec le mode qui convient.</p><ol class="ex"><li><span class="q">Bien que le projet ____ (être) utile, la façon de faire dérange.</span><span class="ligne ligne--court"></span></li><li><span class="q">Même si je ____ (trouver) son ton un peu fort, elle a raison sur un point.</span><span class="ligne ligne--court"></span></li><li><span class="q">Bien que la Ville ____ (avoir) consulté le comité, les citoyens n'ont rien vu venir.</span><span class="ligne ligne--court"></span></li><li><span class="q">Bien que les chiffres ____ (être) exacts, la conclusion reste discutable.</span><span class="ligne ligne--court"></span></li><li><span class="q">Même si le dépôt ____ (ouvrir) au printemps, je ne pourrai pas y aller après le travail.</span><span class="ligne ligne--court"></span></li><li><span class="q">Bien que ça ____ (venir) du comité exécutif, ça reste une recommandation.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">Application</div><h2 class="t">Mettez en avant ce qui compte</h2><p class="consigne">Récrivez en encadrant l'élément indiqué.</p><ol class="ex"><li><span class="q">Le comité a retenu Boisjoli. (le comité)</span><span class="ligne"></span></li><li><span class="q">Le conseil décide le 14 octobre. (la date)</span><span class="ligne"></span></li><li><span class="q">Les heures d'ouverture m'inquiètent. (les heures)</span><span class="ligne"></span></li><li><span class="q">Je demande une réponse claire. (la réponse)</span><span class="ligne"></span></li><li><span class="q">Vous devriez poser la question. (vous)</span><span class="ligne"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez une phrase de concession sur le projet du quartier.</p><ul><li>Commencez par « Bien que » ou par « Même si ».</li><li>Reprenez le point d'accord que vous avez noté en D1.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>La concession : donner raison pour mieux objecter</h2><section class="bloc card ml"><h3>Le mouvement en deux temps</h3><p class="mp">Concéder, c'est accorder quelque chose à celui qui ne pense pas comme vous, puis maintenir votre objection. <i>« Bien que le projet parte d'une bonne intention, la décision s'est prise sans nous. »</i> La première moitié désarme le lecteur ; la seconde le garde. C'est la façon la plus efficace d'être en désaccord sans qu'on cesse de vous lire.</p><div class="note">C'est aussi ce que le programme attend au niveau 7 : comprendre <i>et</i> exprimer la concession.</div></section><section class="bloc card ml"><h3>« bien que » demande le subjonctif</h3><p class="mp">Sans exception. C'est la seule chose à retenir absolument.</p><table class="ana"><tr><td>être</td><td class="">bien que ce <b>soit</b> · bien qu'ils <b>soient</b></td></tr><tr><td>avoir</td><td class="">bien qu'il <b>ait</b> · bien qu'ils <b>aient</b></td></tr><tr><td>pouvoir</td><td class="">bien qu'elle <b>puisse</b></td></tr><tr><td>venir</td><td class="cle">bien que ça <b>vienne</b></td></tr><tr><td>faire</td><td class="">bien qu'il <b>fasse</b></td></tr></table><p class="dit"><span class="k">On dit</span> bien que ce soit, bien qu'il ait, bien qu'elle puisse</p><div class="note">Les mêmes cinq verbes reviennent sans cesse. Apprenez ces formes-là, le reste suivra.</div></section><section class="bloc card ml"><h3>« même si » demande l'indicatif</h3><p class="mp">Jamais de subjonctif après « même si ». Jamais.</p><table class="ana"><tr><td>Présent</td><td class="">même si je <b>trouve</b> son ton fort</td></tr><tr><td>Imparfait</td><td class="">même si le local <b>était</b> plus petit</td></tr><tr><td>Passé composé</td><td class="cle">même si la Ville <b>a consulté</b> le comité</td></tr><tr><td>Ce que ça ajoute</td><td class="">une nuance d'hypothèse : « admettons que »</td></tr></table><p class="dit"><span class="k">On dit</span> Même si je trouve son ton un peu fort, elle a raison.</p><div class="note">C'est la construction la plus sûre pour un élève : si vous hésitez sur le subjonctif, employez « même si ».</div></section><section class="bloc card ml"><h3>Les autres marqueurs</h3><p class="mp">Quatre de plus, tous très courants.</p><table class="ana"><tr><td>malgré + nom</td><td class="">malgré le retard · malgré son ton</td></tr><tr><td>pourtant</td><td class="">C'est un bon projet. Pourtant, personne n'est content.</td></tr><tr><td>quand même</td><td class="">Le local est petit ; il fera quand même l'affaire.</td></tr><tr><td>par contre</td><td class="cle">L'idée est bonne. Par contre, la date est mauvaise.</td></tr></table><p class="dit"><span class="k">On dit</span> malgré le retard ; pourtant ; quand même ; par contre</p><div class="note"><b>Malgré</b> est suivi d'un <b>nom</b>, jamais d'une phrase. <i>❌ malgré qu'il soit tard</i> — dites <i>bien qu'il soit tard</i>.</div></section><section class="bloc card ml"><h3>L'ordre décide de ce qu'on retient</h3><p class="mp">Mettez la concession en premier et l'objection en second : <i>« Bien que ce soit une bonne idée, la consultation a manqué. »</i> Le lecteur retient la consultation. Inversez, et il retient la bonne idée. Rien n'a changé dans les faits, tout a changé dans l'effet.</p><div class="note">C'est le premier outil de celui qui écrit un commentaire ou un billet. Décidez ce que vous voulez qu'on retienne, et mettez-le en deuxième.</div></section><section class="bloc card ml"><h3>Six concessions à réutiliser</h3><p class="mp">Prêtes à recopier dans votre billet.</p><table class="ex2"><tr><td>Bien que le projet soit utile, …</td><td>reconnaître l'utilité, objecter sur autre chose</td></tr><tr><td>Bien qu'il ait consulté le comité, …</td><td>reconnaître la démarche, objecter sur l'étendue</td></tr><tr><td>Même si je comprends son point de vue, …</td><td>reconnaître l'autre, garder le sien</td></tr><tr><td>Même si les chiffres sont exacts, …</td><td>reconnaître les faits, contester la conclusion</td></tr><tr><td>Malgré une bonne intention, …</td><td>concession courte, avec un nom</td></tr><tr><td>C'est un bon projet. Par contre, …</td><td>deux phrases, plus simple à écrire</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">bien que + indicatif</p><div class="k">Ce qui arrive</div><p class="ph">bien que + subjonctif</p><p class="px"><i>❌ Bien que c'est une bonne idée…</i> → <i>✅ Bien que <b>ce soit</b> une bonne idée…</i> C'est l'erreur numéro un.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">même si + subjonctif</p><div class="k">Ce qui arrive</div><p class="ph">même si + indicatif</p><p class="px"><i>❌ Même si ce soit tard…</i> → <i>✅ Même si <b>c'est</b> tard…</i> Les deux marqueurs se ressemblent et ne se conduisent pas pareil.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">malgré que</p><div class="k">Ce qui arrive</div><p class="ph">bien que</p><p class="px"><i>malgré que</i> s'entend, mais reste critiqué à l'écrit. Dans un texte que vous signez, écrivez <b>bien que</b>.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">« Bien que le projet ___ utile »</span><ul class="opts"><li>est</li><li>soit</li></ul></li><li><span class="q">« Même si je ___ son ton fort »</span><ul class="opts"><li>trouve</li><li>trouve au subjonctif</li></ul></li><li><span class="q">« Malgré » est suivi…</span><ul class="opts"><li>d'un nom</li><li>d'une phrase</li></ul></li><li><span class="q">Ce que le lecteur retient, c'est…</span><ul class="opts"><li>la première moitié</li><li>la seconde moitié</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> soit — « Bien que » demande le subjonctif, toujours. · <b>2.</b> trouve — « Même si » demande l'indicatif : je trouve. · <b>3.</b> d'un nom — Malgré le retard, malgré son ton. Pas « malgré qu'il ». · <b>4.</b> la seconde moitié — D'où l'ordre : concession d'abord, objection ensuite.</div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Mettre en relief : c'est… qui, c'est… que</h2><section class="bloc card ml"><h3>Insister sans élever la voix</h3><p class="mp">En français, on ne peut pas insister sur un mot en le disant plus fort, comme dans beaucoup de langues. Il faut le <b>déplacer</b> et l'<b>encadrer</b>. <i>« Farida devrait l'écrire »</i> devient <i>« <b>C'est</b> Farida <b>qui</b> devrait l'écrire »</i> : le nom passe en tête, encadré, et il devient le cœur de la phrase.</p><div class="note">On appelle ça le <b>clivage</b> : la phrase est fendue en deux pour loger l'élément important à l'avant.</div></section><section class="bloc card ml"><h3>Encadrer le sujet : c'est… qui</h3><p class="mp">Quand l'élément mis en avant est celui qui fait l'action.</p><table class="ana"><tr><td>La forme</td><td class="">c'est … qui + verbe</td></tr><tr><td>Un exemple</td><td class="">C'est le comité <b>qui</b> a retenu Boisjoli.</td></tr><tr><td>L'accord surprend</td><td class="cle">c'est <b>moi qui suis</b> · c'est <b>vous qui avez</b></td></tr></table><p class="dit"><span class="k">On dit</span> C'est le comité qui a retenu Boisjoli.</p><div class="note">Après « qui », le verbe s'accorde avec l'élément encadré, pas avec « c'est ». <i>C'est vous qui <b>devriez</b> poser la question.</i></div></section><section class="bloc card ml"><h3>Encadrer tout le reste : c'est… que</h3><p class="mp">Un lieu, un moment, un complément : tout passe par « que ».</p><table class="ana"><tr><td>Un moment</td><td class="">C'est le 14 octobre <b>qu'</b>on décide.</td></tr><tr><td>Un lieu</td><td class="">C'est rue Boisjoli <b>que</b> le dépôt ouvrira.</td></tr><tr><td>Un complément</td><td class="">C'est cette question-là <b>que</b> je pose.</td></tr><tr><td>Un point de vue</td><td class="cle">C'est sur ce point <b>qu'</b>elle a raison.</td></tr></table><p class="dit"><span class="k">On dit</span> C'est le 14 octobre qu'on décide.</p><div class="note">Le repère est simple : <b>qui</b> si ce qui suit manque d'un sujet, <b>que</b> dans tous les autres cas.</div></section><section class="bloc card ml"><h3>Encadrer une idée entière : ce qui… c'est</h3><p class="mp">Pour mettre en avant non pas un mot, mais toute une chose.</p><table class="ana"><tr><td>Sujet</td><td class=""><b>Ce qui</b> m'inquiète, <b>c'est</b> les heures d'ouverture.</td></tr><tr><td>Complément</td><td class=""><b>Ce que</b> je demande, <b>c'est</b> une réponse claire.</td></tr><tr><td>Manque</td><td class="cle"><b>Ce qui</b> manque, <b>ce n'est pas</b> une opinion de plus.</td></tr></table><p class="dit"><span class="k">On dit</span> Ce qui manque, ce n'est pas une opinion de plus.</p><div class="note">C'est la tournure la plus utile pour ouvrir un billet de blogue : elle annonce d'emblée de quoi vous allez parler.</div></section><section class="bloc card ml"><h3>La phrase plate et la phrase en relief</h3><p class="mp">Choisissez une phrase et la version que vous voulez entendre.</p><table class="labo"><thead><tr><th>Quelle phrase ? · Quelle version ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">le comité + sans relief</td><td>Le comité a retenu Boisjoli.</td><td>phrase ordinaire</td></tr><tr><td class="cle">le comité + avec relief</td><td>C'est le comité qui a retenu Boisjoli.</td><td>le sujet est encadré : c'est… qui</td></tr><tr><td class="cle">la date + sans relief</td><td>Le conseil décide le 14 octobre.</td><td>phrase ordinaire</td></tr><tr><td class="cle">la date + avec relief</td><td>C'est le 14 octobre que le conseil décide.</td><td>un moment encadré : c'est… que</td></tr><tr><td class="cle">les heures + sans relief</td><td>Les heures d'ouverture m'inquiètent.</td><td>phrase ordinaire</td></tr><tr><td class="cle">les heures + avec relief</td><td>Ce qui m'inquiète, c'est les heures d'ouverture.</td><td>toute l'idée est encadrée</td></tr></tbody></table><div class="note">Écoutez les deux : la seconde n'est pas plus longue pour rien, elle dirige votre attention.</div></section><section class="bloc card ml"><h3>Trois pièges</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">choisir « que » à la place de « qui »</p><div class="k">Ce qui arrive</div><p class="ph">tester le sujet</p><p class="px"><i>❌ C'est le comité que a retenu…</i> Après le blanc, « a retenu » n'a pas de sujet : il faut <b>qui</b>.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">oublier l'accord après « qui »</p><div class="k">Ce qui arrive</div><p class="ph">le verbe suit l'élément encadré</p><p class="px"><i>❌ C'est moi qui est venue.</i> → <i>✅ C'est moi qui <b>suis</b> venue.</i></p></div><div class="pg"><div class="k">Le piège</div><p class="ph">en mettre partout</p><div class="k">Ce qui arrive</div><p class="ph">un par paragraphe</p><p class="px">La mise en relief perd tout effet si chaque phrase en porte une. Réservez-la à ce qui compte vraiment.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">« C'est le comité ___ a retenu le local. »</span><ul class="opts"><li>qui</li><li>que</li></ul></li><li><span class="q">« C'est le 14 octobre ___ on décide. »</span><ul class="opts"><li>qui</li><li>qu'</li></ul></li><li><span class="q">« C'est vous qui ___ raison. »</span><ul class="opts"><li>a</li><li>avez</li></ul></li><li><span class="q">Pour mettre en avant une idée entière, on emploie…</span><ul class="opts"><li>c'est… qui</li><li>ce qui… c'est</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> qui — « a retenu » a besoin d'un sujet : qui. · <b>2.</b> qu' — Un moment : c'est… que. · <b>3.</b> avez — Le verbe s'accorde avec « vous ». · <b>4.</b> ce qui… c'est — « Ce qui manque, c'est… »</div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Restreindre, reformuler, conclure</h2><section class="bloc card ml"><h3>Trois outils pour être précis sans être long</h3><p class="mp">Quand on écrit un commentaire ou un billet, la place manque. Trois procédés permettent de dire beaucoup en peu de mots : restreindre (<b>ne… que</b>), reformuler (<b>autrement dit</b>) et conclure (<b>par conséquent</b>). Ils sont au programme du niveau 7 et ils reviennent dans tous les textes d'opinion.</p><div class="note">Ce sont aussi trois façons de montrer qu'on maîtrise la langue : ils sont rares chez les débutants.</div></section><section class="bloc card ml"><h3>ne… que : « seulement », et ce n'est pas une négation</h3><p class="mp">Deux morceaux qui encadrent le verbe, comme « ne… pas », mais avec un sens tout différent.</p><table class="ana"><tr><td>La forme</td><td class="">ne + verbe + que + l'élément restreint</td></tr><tr><td>Un exemple</td><td class="">Le dépôt <b>n'</b>ouvrira <b>qu'</b>au printemps.</td></tr><tr><td>Le sens</td><td class="cle">il ouvrira — mais pas avant le printemps</td></tr><tr><td>À comparer</td><td class="">Il <b>ne</b> répond <b>pas</b>. (rien) · Il <b>ne</b> répond <b>qu'</b>aux courriels. (à ça seulement)</td></tr></table><p class="dit"><span class="k">On dit</span> Le dépôt n'ouvrira qu'au printemps.</p><div class="note">« Que » se place juste devant ce qu'on restreint. Déplacez-le, et le sens change : <i>Je ne lis que le samedi</i> ≠ <i>Je ne lis le journal que le samedi</i>.</div></section><section class="bloc card ml"><h3>Reformuler : traduire ce qu'on vient de dire</h3><p class="mp">On vient d'écrire quelque chose de technique ou d'abstrait, et on le redit simplement.</p><table class="ana"><tr><td>autrement dit</td><td class="">le plus courant, à l'oral comme à l'écrit</td></tr><tr><td>c'est-à-dire</td><td class="">sert aussi à définir un mot au passage</td></tr><tr><td>en d'autres termes</td><td class="">plus soutenu</td></tr><tr><td>en somme</td><td class="cle">résume plusieurs phrases d'un coup</td></tr></table><p class="dit"><span class="k">On dit</span> autrement dit, c'est-à-dire, en d'autres termes, en somme</p><div class="note">Écrire « autrement dit » vous oblige à formuler deux fois la même idée. C'est un excellent exercice : si la seconde version ne vient pas, c'est que la première n'était pas claire.</div></section><section class="bloc card ml"><h3>Conclure : tirer une conséquence</h3><p class="mp">Attention, ce n'est pas la même chose que résumer.</p><table class="ana"><tr><td>donc</td><td class="">courant, neutre, s'emploie partout</td></tr><tr><td>par conséquent</td><td class="">plus formel, à l'écrit</td></tr><tr><td>c'est pourquoi</td><td class="">met la cause en avant</td></tr><tr><td>La différence</td><td class="cle"><b>en somme</b> résume · <b>par conséquent</b> ajoute une conséquence</td></tr></table><p class="dit"><span class="k">On dit</span> donc, par conséquent, c'est pourquoi</p><div class="note"><i>« Le local est plus grand, par conséquent le comité l'a retenu. »</i> Il y a bien une conséquence. <i>« Par conséquent, merci de votre attention »</i> n'en a aucune : c'est la faute à éviter.</div></section><section class="bloc card ml"><h3>Six formules à réutiliser dans votre billet</h3><p class="mp">À gauche la formule, à droite ce qu'elle fait.</p><table class="ex2"><tr><td>Le dépôt n'ouvrira qu'au printemps.</td><td>restreint : il ouvrira, mais pas avant</td></tr><tr><td>La Ville ne fournit que le local.</td><td>restreint : elle fournit ça, rien d'autre</td></tr><tr><td>Autrement dit, il faut un endroit où aller.</td><td>reformule plus simplement</td></tr><tr><td>En somme : un bon projet, une question sans réponse.</td><td>résume tout</td></tr><tr><td>Par conséquent, le comité l'a retenu.</td><td>tire une conséquence</td></tr><tr><td>C'est pourquoi je pose la question.</td><td>met la cause en avant</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">lire « ne… que » comme une négation</p><div class="k">Ce qui arrive</div><p class="ph">c'est « seulement »</p><p class="px"><i>Il n'a répondu qu'à deux questions</i> ne veut pas dire qu'il n'a pas répondu. Il a répondu à deux.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">placer « que » n'importe où</p><div class="k">Ce qui arrive</div><p class="ph">juste devant l'élément restreint</p><p class="px"><i>Je ne lis <b>que</b> le journal le samedi</i> (rien d'autre que le journal) ≠ <i>Je ne lis le journal <b>que</b> le samedi</i> (aucun autre jour).</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">conclure sans conséquence</p><div class="k">Ce qui arrive</div><p class="ph">garder « en somme » pour résumer</p><p class="px">« Par conséquent » annonce un effet. S'il n'y en a pas, employez « en somme » ou ne mettez rien.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">« Il ne répond qu'aux courriels » veut dire…</span><ul class="opts"><li>il ne répond pas</li><li>il répond aux courriels seulement</li></ul></li><li><span class="q">Pour redire une idée plus simplement, on emploie…</span><ul class="opts"><li>autrement dit</li><li>par conséquent</li></ul></li><li><span class="q">« En somme » sert à…</span><ul class="opts"><li>résumer</li><li>conclure sur un effet</li></ul></li><li><span class="q">Où se place « que » dans « ne… que » ?</span><ul class="opts"><li>devant le verbe</li><li>devant ce qu'on restreint</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> il répond aux courriels seulement — « ne… que » signifie « seulement ». · <b>2.</b> autrement dit — « Par conséquent » tire une conséquence. · <b>3.</b> résumer — Résumer. Pour l'effet, c'est « par conséquent ». · <b>4.</b> devant ce qu'on restreint — Sa place change le sens de la phrase.</div></section></section></div>
+<footer><span>D2 · Suivre l'actualité</span><span>Fiche élève</span></footer>
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C2 · Trois décisions, trois messages — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance C2 · Module 12 · 75 minutes</div>
+    <h1>Trois décisions, trois messages</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Huit situations du Centre communautaire, quatre saisons, et chaque fois la même méthode : est-ce que ça touche mon créneau, est-ce dangereux ou seulement désagréable, y a-t-il une date de rechange ?</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>appliquer les trois questions dans l'ordre, chaque fois ;</li><li>distinguer ce qui est dangereux de ce qui est seulement désagréable ;</li><li>reconnaître le cas où l'on déplace l'heure au lieu de toucher à la date ;</li><li>savoir qu'on ne décide pas trop tôt, mais qu'on annonce quand on décidera.</li></ol></section><section class="bloc regle"><div class="lbl">Trois questions, toujours dans cet ordre</div><p class="r">Est-ce que ça touche mon créneau ? Est-ce dangereux ou seulement désagréable ? Existe-t-il une date de rechange ?</p><p class="pr">La première vient du Défi 1, la deuxième dépend de votre groupe, la troisième ne dépend pas du tout de la météo.</p></section><section class="bloc card"><div class="lbl">Deux catégories</div><h2 class="t">Désagréable, ou dangereux ?</h2><table><thead><tr><th>Désagréable</th><th>Dangereux</th></tr></thead><tbody><tr><td>De la pluie, du vent ordinaire</td><td class="cle">De la glace au sol</td></tr><tr><td>Du froid d'hiver normal</td><td class="cle">Un refroidissement éolien de −35</td></tr><tr><td>Un ciel gris toute la journée</td><td class="cle">Une visibilité nulle en poudrerie</td></tr><tr><td>Une journée chaude d'été</td><td class="cle">Une chaleur extrême, indice UV de 9</td></tr></tbody></table><div class="note">Et la limite bouge : huit personnes de plus de 70 ans la déplacent.</div></section><section class="bloc"><div class="lbl">Quatre décisions</div><h2 class="t">Ce qu'on dit dans chaque cas</h2><div class="grid"><div class="card"><h3>On maintient</h3><p>« L'atelier de cuisine est maintenu : il a lieu à l'intérieur. »</p></div><div class="card"><h3>On reporte</h3><p>« La marche est reportée au samedi 22, même heure, même endroit. »</p></div><div class="card"><h3>On annule</h3><p>« Le spectacle est annulé : la chorale ne repasse pas cette saison. »</p></div><div class="card"><h3>On déplace</h3><p>« La pétanque est maintenue, mais déplacée à neuf heures. »</p></div></div></section><section class="bloc card"><div class="lbl">Décision</div><h2 class="t">Maintenir, reporter ou annuler ?</h2><p class="consigne">Pour chaque situation du Centre, choisissez et justifiez.</p><ol class="ex"><li><span class="q">Verglas samedi matin ; la marche peut se refaire le 22.</span><span class="ligne"></span></li><li><span class="q">Ciel gris, averses ; l'atelier de cuisine est à l'intérieur.</span><span class="ligne"></span></li><li><span class="q">Tempête samedi ; le spectacle de la chorale passe ce soir-là seulement.</span><span class="ligne"></span></li><li><span class="q">Crue printanière ; le parc rouvre dans deux semaines.</span><span class="ligne"></span></li><li><span class="q">Chaleur extrême, UV de 9 ; la pétanque était à 14 h.</span><span class="ligne ligne--court"></span></li><li><span class="q">Froid extrême ; l'autobus loué est payé et non remboursable.</span><span class="ligne"></span></li></ol></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Décider trop tôt</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">Mercredi : « J'annule, il y a une veille pour samedi. »</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">Mercredi : « Je vous confirme vendredi à midi. »</p></div></div><div class="note">Les prévisions changeront d'ici là, souvent dans le bon sens. On annonce le moment de la décision, on écoute jusque-là, et on tranche à l'heure dite — même si l'on n'est pas plus sûr.</div></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez la décision et sa raison pour l'un des huit cas, en une seule phrase.</p><ul><li>Choisissez le cas que votre équipe a défendu.</li><li>La décision doit contenir la date, l'heure ou le lieu, selon le cas.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Maintenir, reporter, annuler</h2><section class="bloc card ml"><h3>Trois verbes, trois messages complètement différents</h3><p class="mp">C'est le cœur du module, et ce n'est pas de la grammaire : c'est du vocabulaire qui engage. Maintenir, c'est dire que l'activité a lieu comme prévu. Reporter, c'est la déplacer à une autre date. Annuler, c'est dire qu'elle n'aura pas lieu du tout. Employer l'un pour l'autre déclenche vingt téléphones, et fait manquer une sortie à des gens qui l'attendaient depuis un mois.</p><div class="note">Les trois se disent aussi de soi : « je maintiens ma décision », « je reporte mon rendez-vous », « j'annule ma commande ». Ce que vous apprenez ici sert bien au-delà des sorties de groupe.</div></section><section class="bloc card ml"><h3>Maintenir — l'activité a lieu comme prévu</h3><p class="mp">On maintient quand l'avis ne touche pas le créneau, quand l'effet est faible, ou quand l'activité se passe à l'intérieur. Maintenir n'est pas ne rien faire : il faut le dire, sinon la moitié du groupe reste chez elle.</p><table class="ana"><tr><td>Comment ça se dit</td><td class="">la sortie est maintenue · l'activité a lieu comme prévu</td></tr><tr><td>Avec un changement</td><td class="cle">elle est maintenue, mais nous partirons à neuf heures</td></tr><tr><td>Ce qu'on ajoute</td><td class="">habillez-vous chaudement · apportez vos crampons</td></tr></table><p class="dit"><span class="k">On dit</span> La sortie est maintenue : nous partirons à neuf heures comme prévu.</p><div class="note">Un maintien s'annonce aussi clairement qu'une annulation. Le silence n'est pas un maintien : dans le doute, les gens restent chez eux.</div></section><section class="bloc card ml"><h3>Reporter — même activité, autre date</h3><p class="mp">On reporte quand une date de rechange existe. C'est la décision la plus fréquente et la mieux acceptée : personne ne perd rien, on attend deux semaines.</p><table class="ana"><tr><td>Comment ça se dit</td><td class="">la sortie est reportée au samedi vingt-deux</td></tr><tr><td>Ce qu'il faut toujours ajouter</td><td class="cle">même heure, même endroit · le rendez-vous ne change pas</td></tr><tr><td>La formule complète</td><td class="">reportée au 22 février, à treize heures, devant le Centre</td></tr></table><p class="dit"><span class="k">On dit</span> La sortie est reportée au samedi vingt-deux février, à treize heures, devant le Centre.</p><div class="note">« Reportée » sans nouvelle date ne règle rien. Une décision incomplète crée plus d'appels qu'un silence : donnez la date dans la même phrase.</div></section><section class="bloc card ml"><h3>Annuler — l'activité n'aura pas lieu</h3><p class="mp">On annule quand il n'existe pas de date de rechange : un spectacle qui passe une seule fois, un autobus déjà payé, un guide qui ne revient pas, une saison qui se termine.</p><table class="ana"><tr><td>Comment ça se dit</td><td class="">l'activité est annulée · elle n'aura pas lieu</td></tr><tr><td>Ce qu'on ajoute toujours</td><td class="cle">la raison, et ce qui arrive à l'argent s'il y en a</td></tr><tr><td>Ce qu'on ne dit pas</td><td class="">« on verra plus tard » — c'est un report qui n'ose pas dire son nom</td></tr></table><p class="dit"><span class="k">On dit</span> Le spectacle de samedi est annulé : la chorale ne repasse pas cette saison.</p><div class="note">Annuler coûte plus cher en déception que reporter. Dites-le plus tôt, dites la raison, et dites-la en une seule phrase claire.</div></section><section class="bloc card ml"><h3>La même semaine, quatre décisions</h3><p class="mp">Choisissez une situation et écoutez la décision, avec sa raison.</p><table class="labo"><thead><tr><th>Quelle situation ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">Verglas, marche reportable</td><td>Comme un avertissement de pluie verglaçante est en vigueur, la marche est reportée au samedi vingt-deux.<span class="tags">reporter · la pluie verglaçante</span></td><td>une date de rechange existe : on reporte</td></tr><tr><td class="cle">Ciel gris, atelier à l'intérieur</td><td>L'atelier de cuisine est maintenu : il a lieu à l'intérieur, au Centre.<span class="tags">un avertissement</span></td><td>l'avis ne touche pas l'activité : on maintient</td></tr><tr><td class="cle">Tempête, spectacle unique</td><td>Le spectacle de la chorale est annulé : il passait seulement samedi soir.<span class="tags">annuler</span></td><td>aucune date de rechange : on annule</td></tr><tr><td class="cle">Chaleur extrême, on change l'heure</td><td>La pétanque est maintenue, mais elle est déplacée à neuf heures du matin.<span class="tags">la chaleur extrême</span></td><td>on change l'heure plutôt que la date</td></tr><tr><td class="cle">Les quatre à la suite</td><td>La marche est reportée. L'atelier est maintenu. Le spectacle est annulé. La pétanque est déplacée à neuf heures.<span class="tags">reporter · annuler</span></td><td>les quatre décisions du module</td></tr></tbody></table><div class="note">La quatrième est celle qu'on oublie : déplacer l'heure ou le lieu au lieu de toucher à la date. C'est souvent la meilleure décision de la liste.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six annonces de décision, entières.</p><table class="ex2"><tr><td>La sortie est maintenue : nous partons à treize heures comme prévu.</td><td>maintien, avec l'heure rappelée</td></tr><tr><td>La sortie est reportée au samedi vingt-deux, même heure, même endroit.</td><td>report, avec la date complète</td></tr><tr><td>Le spectacle est annulé : la chorale ne repasse pas cette saison.</td><td>annulation, avec la raison</td></tr><tr><td>La marche est maintenue, mais nous irons au centre commercial.</td><td>maintien avec changement de lieu</td></tr><tr><td>Si la nouvelle date ne vous convient pas, appelez-moi avant jeudi.</td><td>la ligne qui évite vingt appels</td></tr><tr><td>Je vous confirme vendredi à midi.</td><td>la phrase à dire quand on n'a pas encore tranché</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges de la décision</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">dire « annulé » pour « reporté »</p><div class="k">Ce qui arrive</div><p class="ph">« la sortie est annulée » alors qu'elle est déplacée au 22</p><p class="px">Annulée veut dire qu'elle n'aura pas lieu, point. Vingt personnes ne se réinscriront pas, et trois seront fâchées quand elles apprendront qu'elle a eu lieu sans elles.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">reporter sans donner de date</p><div class="k">Ce qui arrive</div><p class="ph">« on reporte, je vous reviens là-dessus »</p><p class="px">Une date, même provisoire, vaut mieux que rien : « reportée au 22, je confirme lundi ». Sans date, chacun invente la sienne et personne ne réserve son samedi.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">décider trop tôt</p><div class="k">Ce qui arrive</div><p class="ph">annuler le mercredi pour une veille émise pour le samedi</p><p class="px">Les prévisions changeront d'ici là, et souvent dans le bon sens. Annoncez le moment de la décision, écoutez jusque-là, et tranchez à l'heure dite.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">On reporte plutôt qu'on annule quand…</span><ul class="opts"><li>une date de rechange existe</li><li>la météo est très mauvaise</li></ul></li><li><span class="q">Un maintien…</span><ul class="opts"><li>se dit, comme les autres décisions</li><li>n'a pas besoin d'être annoncé</li></ul></li><li><span class="q">« Reportée » sans nouvelle date…</span><ul class="opts"><li>suffit</li><li>crée plus d'appels qu'un silence</li></ul></li><li><span class="q">Déplacer l'heure d'une activité, c'est…</span><ul class="opts"><li>une forme de maintien</li><li>une annulation</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> une date de rechange existe — Quand une date de rechange existe. La météo dit qu'il ne faut pas y aller samedi ; le calendrier dit s'il y a un autre samedi. · <b>2.</b> se dit, comme les autres décisions — Se dit. Sans message, la moitié du groupe reste chez elle au cas où. · <b>3.</b> crée plus d'appels qu'un silence — Crée plus d'appels. Donnez la date dans la même phrase. · <b>4.</b> une forme de maintien — Une forme de maintien : l'activité a lieu, à un autre moment de la journée.</div></section></section></div>
+<footer><span>C2 · Quand la météo décide</span><span>Fiche élève</span></footer>
+</body>
+</html>

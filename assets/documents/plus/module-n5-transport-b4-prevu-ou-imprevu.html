@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B4 · Prévu ou imprévu — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance B4 · Module 9 · 75 minutes</div>
+    <h1>Prévu ou imprévu</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Devant une entrave, une seule question compte : est-ce que quelqu'un le savait d'avance ? Si oui, il y a une heure de fin. Si non, personne ne peut vous dire quand ce sera fini — pas même la personne au micro.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>reconnaître si une entrave était prévue ou vient d'arriver ;</li><li>savoir ce que les véhicules présents disent de la durée ;</li><li>connaître Québec 511 et ce qu'on y trouve ;</li><li>redire une annonce en une phrase, avec ses quatre informations.</li></ol></section><section class="bloc regle"><div class="lbl">Deux familles, deux façons d'y répondre</div><p class="r">Le prévu se contourne la veille. L'imprévu se décide en trente secondes, avec ce qu'on vient d'entendre.</p><p class="pr">Des travaux annoncés jusqu'à cinq heures finissent à cinq heures. Un accident finit quand la remorqueuse a fini.</p></section><section class="bloc card"><div class="lbl">Deux familles</div><h2 class="t">Ce qui les distingue</h2><table><thead><tr><th>Prévu</th><th>Imprévu</th></tr></thead><tbody><tr><td>des travaux</td><td class="cle">un accident</td></tr><tr><td>une fermeture annoncée</td><td class="cle">une panne</td></tr><tr><td>une heure de fin connue</td><td class="cle">personne ne sait</td></tr><tr><td>publié sur Québec 511</td><td class="cle">d'abord à la radio</td></tr></tbody></table></section><section class="bloc"><div class="lbl">Les véhicules disent la durée</div><h2 class="t">Sans qu'on ait à la dire</h2><div class="grid"><div class="card"><h3>Une remorqueuse en route</h3><p>Elle n'est pas arrivée : ça va durer.</p></div><div class="card"><h3>Une remorqueuse sur place</h3><p>Ça commence : il faut charger le véhicule.</p></div><div class="card"><h3>Des véhicules d'urgence</h3><p>Ce sera long : on ne rouvre pas tant qu'ils y sont.</p></div><div class="card"><h3>Les policiers dirigent</h3><p>Une voie passe, lentement, sous contrôle.</p></div></div></section><section class="bloc regle"><div class="lbl">Se ranger pour les véhicules d'urgence</div><p class="r">Gyrophares derrière vous : on se range à droite et on immobilise son véhicule.</p><p class="pr">Près d'un véhicule d'urgence arrêté sur le bord de la route, on ralentit et on se déplace dans la voie voisine.</p></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Croire qu'un accident finit à l'heure annoncée</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">Il a dit vingt minutes, donc dans vingt minutes ça passe.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">Vingt minutes est une estimation faite pendant que ça se passe.</p></div></div><div class="note">Si les remorqueuses viennent d'arriver, ce sera plus long. Le chiffre est une indication, pas un horaire — sauf pour des travaux annoncés.</div></section><section class="bloc card"><div class="lbl">Classement</div><h2 class="t">Prévu ou imprévu ?</h2><p class="consigne">Dites à quelle famille appartient chaque annonce.</p><ol class="ex"><li><span class="q">La bretelle sera fermée samedi et dimanche.</span><span class="ligne ligne--court"></span></li><li><span class="q">Un carambolage vient de se produire.</span><span class="ligne ligne--court"></span></li><li><span class="q">Les travaux de nuit se prolongent.</span><span class="ligne ligne--court"></span></li><li><span class="q">Un véhicule lourd est immobilisé sur l'accotement.</span><span class="ligne ligne--court"></span></li><li><span class="q">On signale un nid-de-poule dans la voie de droite.</span><span class="ligne ligne--court"></span></li><li><span class="q">La voie de gauche est fermée toutes les nuits.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">Production</div><h2 class="t">Redites l'annonce en une phrase</h2><p class="consigne">Quatre informations, dans l'ordre, en une seule phrase.</p><ol class="ex"><li><span class="q">Accident · 40 · Côte-de-Liesse · ouest · 2 voies sur 3 · 20 min</span><span class="ligne"></span></li><li><span class="q">Travaux · pont Jacques-Cartier · vers Montréal · fermé · 9 h</span><span class="ligne"></span></li><li><span class="q">Panne · 40 · accotement · Pie-IX · ouest · remorqueuse en route</span><span class="ligne"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez la phrase que vous diriez à quelqu'un qui vous attend, ce matin.</p><ul><li>Ce qui bloque, où, dans quel sens, pour combien de temps.</li><li>Une seule phrase, deux respirations au maximum.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Prévu ou imprévu : deux familles d'entraves</h2><section class="bloc card ml"><h3>La question qui change tout</h3><p class="mp">Devant une entrave, une seule question compte vraiment : est-ce que quelqu'un le savait d'avance ? Si oui, il y a une heure de fin, elle est publiée, et vous pouvez organiser votre trajet la veille. Si non, personne ne peut vous dire quand ce sera fini — pas même la personne au micro. Toute la différence entre les deux familles tient là, et elle décide de ce que vous faites de votre matinée.</p><div class="note">Au Québec, ce qui est prévu se trouve sur Québec 511 : la ligne téléphonique 511 et le site du ministère des Transports, qui publient les travaux et les fermetures planifiées. Ce qui n'est pas prévu passe d'abord à la radio, parce qu'elle parle pendant que ça se passe.</div></section><section class="bloc card ml"><h3>Ce qui est prévu : les travaux et les fermetures planifiées</h3><p class="mp">On les annonce des jours à l'avance, avec une heure de début et une heure de fin. Ils reviennent souvent aux mêmes heures, toutes les nuits ou toutes les fins de semaine.</p><table class="ana"><tr><td>Les mots qui l'annoncent</td><td class="">des travaux · un chantier · une réfection · une fermeture planifiée</td></tr><tr><td>Les durées typiques</td><td class="cle">toutes les nuits de vingt-trois heures à cinq heures · toute la fin de semaine</td></tr><tr><td>Ce qu'on peut faire</td><td class="">le savoir la veille · refaire son trajet tranquillement</td></tr></table><p class="dit"><span class="k">On dit</span> La bretelle sera fermée toute la fin de semaine pour des travaux de réfection de la chaussée.</p><div class="note">Une fermeture planifiée finit à l'heure dite, sauf quand les travaux de nuit « se prolongent » — la formule exacte du bulletin quand le chantier a pris du retard.</div></section><section class="bloc card ml"><h3>Ce qui arrive : l'accident, la panne, le nid-de-poule</h3><p class="mp">Personne ne le savait il y a dix minutes. Le bulletin est alors plus rapide que n'importe quel site, mais il ne peut pas vous dire quand ce sera fini.</p><table class="ana"><tr><td>Les mots qui l'annoncent</td><td class="">un accident · un carambolage · une panne · un nid-de-poule</td></tr><tr><td>Les formules du bulletin</td><td class="cle">vient de se produire · on nous signale · en cours de dégagement</td></tr><tr><td>Ce qu'on peut faire</td><td class="">décider en trente secondes, avec ce qu'on a entendu</td></tr></table><p class="dit"><span class="k">On dit</span> Un carambolage de quatre véhicules vient de se produire sur l'autoroute quarante.</p><div class="note">« On nous signale » veut dire que l'information vient d'arriver et n'est pas encore complète. Le bulletin suivant, dix minutes plus tard, en dira davantage.</div></section><section class="bloc card ml"><h3>Les véhicules qui disent combien de temps</h3><p class="mp">Le bulletin nomme les véhicules présents, et chacun est une indication de durée sans qu'on ait besoin de la dire.</p><table class="ana"><tr><td>Une remorqueuse en route</td><td class="">ça va durer : elle n'est pas encore arrivée</td></tr><tr><td>Une remorqueuse sur place</td><td class="cle">ça commence : il faut charger le véhicule</td></tr><tr><td>Des véhicules d'urgence</td><td class="">ce sera long : on ne rouvre pas tant qu'ils y sont</td></tr></table><p class="dit"><span class="k">On dit</span> Deux remorqueuses sont sur place ; les policiers dirigent la circulation sur la voie de droite.</p><div class="note">Amine décide de passer par le boulevard non pas parce que c'est plus court, mais parce que les remorqueuses viennent d'arriver — donc que personne ne sait quand ce sera fini. C'est du raisonnement, pas du vocabulaire.</div></section><section class="bloc card ml"><h3>Se ranger pour les véhicules d'urgence</h3><p class="mp">Quand une ambulance, un camion de pompiers ou une auto de police arrive derrière vous avec ses gyrophares, la loi vous demande de vous ranger à droite et d'arrêter.</p><table class="ana"><tr><td>Ce qu'on fait</td><td class="">se ranger à droite · immobiliser son véhicule · attendre qu'il soit passé</td></tr><tr><td>Ce qu'on ne fait pas</td><td class="cle">accélérer pour dégager · rouler sur l'accotement pour le laisser passer</td></tr><tr><td>Ce que le bulletin dit</td><td class="">on demande de laisser passer les véhicules d'urgence</td></tr></table><p class="dit"><span class="k">On dit</span> On demande aux automobilistes de laisser passer les véhicules d'urgence.</p><div class="note">Il existe aussi une règle du corridor de sécurité : en passant près d'un véhicule d'urgence arrêté sur le bord de la route, on ralentit et on se déplace dans la voie voisine quand c'est possible.</div></section><section class="bloc card ml"><h3>Prévu ou imprévu ?</h3><p class="mp">Choisissez une annonce et écoutez-la, puis regardez ce qu'elle vous dit de faire.</p><table class="labo"><thead><tr><th>Quelle annonce ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">Des travaux de fin de semaine</td><td>La bretelle sera fermée samedi et dimanche pour des travaux de réfection.<span class="tags">une bretelle</span></td><td>prévu : on refait son trajet la veille</td></tr><tr><td class="cle">Un carambolage</td><td>Un carambolage de quatre véhicules vient de se produire ; les remorqueuses sont sur place.<span class="tags">un carambolage · une remorqueuse</span></td><td>imprévu : on décide tout de suite</td></tr><tr><td class="cle">Des travaux de nuit prolongés</td><td>Le pont est fermé jusqu'à neuf heures : les travaux de nuit se prolongent.<span class="tags">une entrave</span></td><td>prévu, mais en retard : l'heure de fin a bougé</td></tr><tr><td class="cle">Un camion en panne</td><td>Un véhicule lourd est immobilisé sur <b>l'accotement</b> ; <b>une remorqueuse</b> est en route.</td><td>imprévu, mais la circulation n'est pas touchée</td></tr><tr><td class="cle">Un nid-de-poule</td><td>On nous signale <b>un nid-de-poule</b> important dans la voie de droite.</td><td>imprévu : le dégel les creuse en une nuit</td></tr></tbody></table><div class="note">À Montréal, un nid-de-poule se signale au 311. Il en apparaît des milliers au printemps, quand le gel et le dégel se succèdent.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six annonces, trois de chaque famille.</p><table class="ex2"><tr><td>La bretelle sera fermée toute la fin de semaine.</td><td>prévu : une heure de fin existe</td></tr><tr><td>Un carambolage vient de se produire.</td><td>imprévu : personne ne sait pour combien de temps</td></tr><tr><td>La voie de gauche est fermée toutes les nuits.</td><td>prévu : ça revient tous les jours</td></tr><tr><td>Une remorqueuse est en route.</td><td>imprévu : ça ne fait que commencer</td></tr><tr><td>Les travaux de nuit se prolongent.</td><td>prévu, mais en retard</td></tr><tr><td>On nous signale un nid-de-poule important.</td><td>imprévu : l'information vient d'arriver</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges devant une entrave</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">croire qu'un accident finit à l'heure annoncée</p><div class="k">Ce qui arrive</div><p class="ph">« vingt minutes » compris comme une promesse</p><p class="px">Les vingt minutes annoncées sont une estimation faite pendant que ça se passe. Si les remorqueuses viennent d'arriver, ce sera plus long. Le chiffre est une indication, pas un horaire.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">partir quand même parce qu'on est déjà en retard</p><div class="k">Ce qui arrive</div><p class="ph">« de toute façon, je suis en retard »</p><p class="px">C'est le raisonnement qui coûte le plus cher : on entre dans le bouchon, et là on ne peut plus rien décider. Tant qu'on n'est pas engagé, on a le choix ; après, on ne l'a plus.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">oublier de prévenir avant d'entrer dans le bouchon</p><div class="k">Ce qui arrive</div><p class="ph">téléphoner une fois arrêté depuis vingt minutes</p><p class="px">Le meilleur moment pour appeler est celui où l'on comprend qu'on sera en retard, pas celui où l'on est certain de combien. Un appel de trente secondes à sept heures vingt vaut mieux qu'une explication parfaite à huit heures et quart.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">« Des travaux de réfection toute la fin de semaine », c'est…</span><ul class="opts"><li>prévu</li><li>imprévu</li></ul></li><li><span class="q">Une remorqueuse « en route » veut dire…</span><ul class="opts"><li>que c'est presque fini</li><li>qu'elle n'est pas encore arrivée</li></ul></li><li><span class="q">« Les travaux de nuit se prolongent » veut dire…</span><ul class="opts"><li>qu'ils ont pris du retard</li><li>qu'ils commencent plus tard</li></ul></li><li><span class="q">Quand un véhicule d'urgence arrive derrière vous…</span><ul class="opts"><li>on accélère pour dégager</li><li>on se range à droite et on arrête</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> prévu — Prévu : c'est annoncé d'avance, avec un début et une fin. · <b>2.</b> qu'elle n'est pas encore arrivée — Qu'elle n'est pas encore arrivée : le dégagement n'a même pas commencé. · <b>3.</b> qu'ils ont pris du retard — Qu'ils ont pris du retard : la fermeture dure plus longtemps que prévu. · <b>4.</b> on se range à droite et on arrête — On se range à droite et on immobilise son véhicule. C'est la loi.</div></section></section></div>
+<footer><span>B4 · Ça bloque ce matin</span><span>Fiche élève</span></footer>
+</body>
+</html>

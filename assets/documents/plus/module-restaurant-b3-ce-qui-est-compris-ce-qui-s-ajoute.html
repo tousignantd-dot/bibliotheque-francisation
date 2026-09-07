@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B3 · Ce qui est compris, ce qui s'ajoute — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance B3 · Module 16 · 60 minutes</div>
+    <h1>Ce qui est compris, ce qui s'ajoute</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Deux plats au même prix ne comprennent pas la même chose. La différence est dans une petite ligne, sous le prix — et elle vaut souvent plusieurs dollars.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>repérer la ligne qui dit ce qui est compris ;</li><li>reconnaître « servi avec », « au choix », « supplément » ;</li><li>calculer le prix réel d'une formule ;</li><li>choisir la formule la plus avantageuse pour soi.</li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Les mots qui changent le prix</h2><table><thead><tr><th>Le mot</th><th>Ce qu'il veut dire</th></tr></thead><tbody><tr><td>servi avec</td><td>c'est compris, rien à payer de plus</td></tr><tr><td>au choix</td><td>vous décidez, dans une liste</td></tr><tr><td>inclus</td><td>compris dans le prix affiché</td></tr><tr><td>supplément</td><td>ça coûte plus cher</td></tr><tr><td>prix du marché</td><td>il faut demander le prix</td></tr></tbody></table><div class="note">Le quatrième est le seul qui augmente la facture. Il est toujours écrit petit.</div></section><section class="bloc regle"><div class="lbl">La ligne sous le prix</div><p class="r">C'est là qu'est la vraie différence.</p><p class="pr">« Poulet grillé — 24 $ » et « Poulet grillé — 24 $, servi avec soupe et café » sont deux offres très différentes au même prix affiché. La deuxième vaut six ou sept dollars de plus.</p></section><section class="bloc regle"><div class="lbl">Le calcul de la formule</div><p class="r">Prix fixe contre plats commandés séparément.</p><p class="pr">Table d'hôte 32 $. Le même plat seul coûte 24 $, une soupe 6 $, un dessert 8 $ — soit 38 $. La formule fait économiser six dollars, à condition d'avoir assez faim pour trois services.</p></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Ne pas voir le supplément</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">La table d'hôte est à 32 $, je prends le poisson.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">Table d'hôte 32 $ — supplément 4 $ pour le poisson. Ça fait 36 $.</p></div></div><div class="note">Le supplément est toujours écrit petit, souvent entre parenthèses, souvent à côté du plat concerné plutôt qu'à côté du prix. C'est le seul mot du menu qui augmente la facture sans qu'on s'en aperçoive.</div></section><section class="bloc card"><div class="lbl">Pratique · 1 de 2</div><h2 class="t">Ça coûte combien ?</h2><p class="consigne">Calculez le prix réel.</p><ol class="ex"><li><span class="q">Table d'hôte 32 $, supplément 4 $ pour le poisson</span><span class="ligne ligne--court"></span></li><li><span class="q">Plat 24 $, soupe 6 $, dessert 8 $, commandés séparément</span><span class="ligne ligne--court"></span></li><li><span class="q">Menu du midi 18 $, café inclus</span><span class="ligne ligne--court"></span></li><li><span class="q">Plat 22 $, servi avec salade et café</span><span class="ligne"></span></li><li><span class="q">Plat du jour « prix du marché »</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">Pratique · 2 de 2</div><h2 class="t">Quelle formule pour vous ?</h2><p class="consigne">Choisissez et justifiez.</p><ol class="ex"><li><span class="q">Vous avez très faim et vous voulez un dessert.</span><span class="ligne ligne--court"></span></li><li><span class="q">Vous voulez seulement un plat.</span><span class="ligne ligne--court"></span></li><li><span class="q">Vous êtes le midi et vous voulez un café.</span><span class="ligne"></span></li><li><span class="q">Vous voulez le poisson frais du jour.</span><span class="ligne"></span></li></ol></section><section class="bloc"><div class="lbl">Trois habitudes utiles</div><h2 class="t">Au moment de commander</h2><div class="grid"><div class="card"><h3>Lire la ligne sous le prix</h3><p>Deux secondes, et on sait ce qui est compris.</p></div><div class="card"><h3>Demander le prix quand il n'est pas écrit</h3><p>« Prix du marché » veut dire qu'il faut demander. Personne ne trouve la question déplacée.</p></div><div class="card"><h3>Compter les services</h3><p>Si vous ne mangez pas de dessert, une table d'hôte n'est pas une économie. La formule ne vaut que si on la consomme.</p></div></div></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Choisissez un menu réel et composez deux repas : un à la carte, un en formule.</p><ul><li>Calculez le prix de chacun.</li><li>Dites lequel vous choisiriez, et pourquoi.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Lire un menu</h2><section class="bloc card ml"><h3>Quatre formules, quatre prix</h3><p class="mp"><b>La carte</b>, <b>le menu du jour</b>, <b>la table d'hôte</b>, <b>à la carte</b>. Ce sont quatre choses différentes, et l'écart de prix entre elles peut atteindre le double pour un repas comparable.</p><div class="note">Comprendre ces quatre mots est la compétence la plus rentable du module.</div></section><section class="bloc card ml"><h3>La carte et « à la carte »</h3><p class="mp">La carte est le document ; « à la carte » est une façon de commander.</p><table class="ana"><tr><td>La {carte}</td><td class="">tout ce que le restaurant sert</td></tr><tr><td>À la {carte}</td><td class="cle">un plat seul, sans formule</td></tr><tr><td>Le prix</td><td class="">chaque plat à son prix</td></tr></table><p class="dit"><span class="k">On dit</span> Je vais prendre le poulet, mais à la carte. Sans entrée.</p><div class="note">Commander à la carte revient plus cher si on prend plusieurs services — mais c'est le bon choix si on n'a pas très faim.</div></section><section class="bloc card ml"><h3>Le menu du jour</h3><p class="mp">Un choix limité, différent chaque jour, à prix réduit.</p><table class="ana"><tr><td>Où</td><td class="">sur une <b>ardoise</b>, souvent</td></tr><tr><td>Quand</td><td class="cle">le midi surtout</td></tr><tr><td>Le prix</td><td class="">moins cher que la carte</td></tr></table><p class="dit"><span class="k">On dit</span> Le menu du jour est sur l'ardoise, là-bas.</p><div class="note">Le midi, il comprend souvent le café ou le dessert. C'est presque toujours le meilleur rapport qualité-prix.</div></section><section class="bloc card ml"><h3>La table d'hôte</h3><p class="mp">Un prix fixe pour trois services : entrée, plat, dessert.</p><table class="ana"><tr><td>Ce qui est compris</td><td class=""><b>trois</b> services</td></tr><tr><td>Le choix</td><td class="cle">limité, mais réel</td></tr><tr><td>Le calcul</td><td class="">8 $ de plus pour deux services</td></tr></table><p class="dit"><span class="k">On dit</span> La table d'hôte, c'est un prix fixe pour trois services.</p><div class="note">Table d'hôte à 32 $ contre plat seul à 24 $ : huit dollars de plus pour une entrée et un dessert. Presque toujours avantageux si on a faim.</div></section><section class="bloc card ml"><h3>Les mots à repérer sur un menu</h3><p class="mp"><b>servi avec</b> (ce qui vient avec le plat) · <b>au choix</b> (vous décidez) · <b>selon arrivage</b> (ça change chaque jour) · <b>supplément</b> (ça coûte plus cher) · <b>prix du marché</b> (il faut demander le prix).</p><div class="note">« Supplément » est le mot à ne pas manquer : il transforme un prix affiché en prix plus élevé.</div></section><section class="bloc card ml"><h3>Quelle formule choisir ?</h3><p class="mp">Choisissez une situation et voyez ce qui convient.</p><table class="labo"><thead><tr><th>Quelle situation ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">Vous avez très faim, le soir.</td><td>La table d'hôte, c'est un prix fixe pour trois services.<span class="tags">la <b>table d'hôte</b></span></td><td>trois services, huit dollars de plus</td></tr><tr><td class="cle">Vous n'avez pas très faim.</td><td>Je vais prendre le poulet, mais à la carte.<span class="tags">à la <b>carte</b></span></td><td>un plat seul, sans entrée</td></tr><tr><td class="cle">Vous mangez le midi, en semaine.</td><td>Le menu du midi est servi jusqu'à deux heures.<span class="tags">le menu du <b>midi</b></span></td><td>souvent café inclus</td></tr><tr><td class="cle">Vous voulez goûter le poisson frais.</td><td>Le poisson du jour, c'est de la truite.<span class="tags">le <b>plat du jour</b></span></td><td>ce que la cuisine a reçu aujourd'hui</td></tr><tr><td class="cle">Vous êtes pressé.</td><td>Le menu du jour est sur l'ardoise.<span class="tags">le menu du <b>jour</b></span></td><td>choix limité, service plus rapide</td></tr></tbody></table><div class="note">Un choix limité n'est pas un défaut : il veut dire que la cuisine a préparé ces plats d'avance, donc qu'ils arrivent plus vite.</div></section><section class="bloc card ml"><h3>Les mots du menu</h3><p class="mp">Écoutez chacun.</p><table class="ex2"><tr><td>La carte, c'est tout ce qu'ils font.</td><td>le document complet</td></tr><tr><td>Le menu du jour change chaque jour.</td><td>choix limité, moins cher</td></tr><tr><td>La table d'hôte, un prix fixe pour trois services.</td><td>entrée, plat, dessert</td></tr><tr><td>Je vais prendre le poulet, mais à la carte.</td><td>un plat seul</td></tr><tr><td>La truite est servie avec des légumes et du riz.</td><td>l'accompagnement</td></tr><tr><td>Le café est inclus dans le menu du midi.</td><td>ce qui vient avec</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges à connaître</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">confondre la carte et le menu</p><div class="k">Ce qui arrive</div><p class="ph">la carte est plus chère, le menu du jour moins</p><p class="px">En français d'ici, « le menu » désigne souvent une formule à prix fixe, pas la liste complète. La liste complète, c'est la carte.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">ne pas voir la ligne « servi avec »</p><div class="k">Ce qui arrive</div><p class="ph">c'est là qu'est la vraie différence de prix</p><p class="px">Deux plats au même prix n'ont pas le même contenu si l'un est servi avec soupe et café.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">oublier le mot « supplément »</p><div class="k">Ce qui arrive</div><p class="ph">le prix affiché n'est plus le bon</p><p class="px">« Table d'hôte 32 $, supplément 4 $ pour le poisson » veut dire 36 $.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">« À la carte » veut dire…</span><ul class="opts"><li>un plat seul, sans formule</li><li>tous les plats du restaurant</li></ul></li><li><span class="q">La table d'hôte comprend…</span><ul class="opts"><li>un plat</li><li>trois services</li></ul></li><li><span class="q">Le menu du jour est…</span><ul class="opts"><li>plus cher que la carte</li><li>moins cher</li></ul></li><li><span class="q">« Supplément » veut dire…</span><ul class="opts"><li>c'est inclus</li><li>ça coûte plus cher</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> un plat seul, sans formule — La carte est le document ; à la carte est une façon de commander. · <b>2.</b> trois services — Entrée, plat, dessert, à prix fixe. · <b>3.</b> moins cher — Choix limité, prix réduit. · <b>4.</b> ça coûte plus cher — Le prix affiché n'est plus le bon.</div></section></section></div>
+<footer><span>B3 · Au restaurant</span><span>Fiche élève</span></footer>
+</body>
+</html>

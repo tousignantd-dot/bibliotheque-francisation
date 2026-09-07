@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C3 · Mon ordonnance, votre carte — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance C3 · Module 5 · 75 minutes</div>
+    <h1>Mon ordonnance, votre carte</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Au comptoir, on ne parle que de choses qui appartiennent à quelqu'un. Cinq petits mots, et c'est le nom qui suit qui décide — jamais la personne qui parle.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>employer mon, ma et mes correctement ;</li><li>comprendre votre et vos dans la bouche du pharmacien ;</li><li>savoir pourquoi on dit « mon ordonnance » ;</li><li>écrire six phrases justes.</li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Ce qui est à moi, ce qui est à vous</h2><table><thead><tr><th></th><th>Ce qui est à moi</th><th>Ce qui est à vous</th></tr></thead><tbody><tr><td class="cle">masculin</td><td>mon dossier</td><td>votre dossier</td></tr><tr><td class="cle">féminin</td><td>ma carte</td><td>votre carte</td></tr><tr><td class="cle">devant une voyelle</td><td>mon ordonnance</td><td>votre ordonnance</td></tr><tr><td class="cle">pluriel</td><td>mes comprimés</td><td>vos comprimés</td></tr></tbody></table><div class="note">À vous : votre au singulier, vos au pluriel.</div></section><section class="bloc regle"><div class="lbl">Ce n'est pas vous qui décidez</div><p class="r">« ma carte », même pour un homme</p><p class="pr">Le petit mot suit le nom qui vient après, jamais la personne qui parle. « Carte » est féminin : c'est « ma carte » pour tout le monde. « Dossier » est masculin : c'est « mon dossier » pour tout le monde.</p></section><section class="bloc regle"><div class="lbl">La seule exception à retenir</div><p class="r">« mon ordonnance »</p><p class="pr">Devant une voyelle, « ma » devient « mon » : mon ordonnance, mon assurance, mon adresse. Le mot reste féminin — on écrit « mon ordonnance est finie » avec un e à la fin de « finie ».</p></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Choix du mot</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">« votre médicaments »</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">« vos médicaments »</p></div></div><div class="note">« Votre » sert pour une seule chose, « vos » pour plusieurs. L'indice est au bout du nom : s'il y a un s, c'est « vos ». La même règle vaut pour « ma » et « mes ».</div></section><section class="bloc card"><div class="lbl">Application</div><h2 class="t">Mon, ma, mes, votre ou vos ?</h2><p class="consigne">Complétez chaque phrase.</p><ol class="ex"><li><span class="q">Voici ___ carte d'assurance maladie. (elle est à moi)</span><span class="ligne ligne--court"></span></li><li><span class="q">___ ordonnance est finie depuis samedi. (elle est à moi)</span><span class="ligne ligne--court"></span></li><li><span class="q">« ___ nom, s'il vous plaît ? » demande la pharmacienne.</span><span class="ligne ligne--court"></span></li><li><span class="q">Je prends ___ comprimés le matin. (ils sont à moi)</span><span class="ligne ligne--court"></span></li><li><span class="q">« ___ médicaments seront prêts dans vingt minutes. »</span><span class="ligne ligne--court"></span></li><li><span class="q">Le pharmacien regarde ___ dossier. (il est à moi)</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">Production</div><h2 class="t">Le même échange, des deux côtés</h2><p class="consigne">En paires : l'un demande, l'autre répond.</p><ol class="ex"><li><span class="q">Le pharmacien demande la carte.</span><span class="ligne"></span></li><li><span class="q">Le client la donne.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le pharmacien annonce le délai.</span><span class="ligne"></span></li><li><span class="q">Le client demande une précision.</span><span class="ligne"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez cinq phrases sur vos affaires : mon, ma, mes.</p><ul><li>Mon dossier, ma carte, mes comprimés…</li><li>Ajoutez une phrase avec « mon » devant une voyelle.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Mon, ma, mes — votre, vos</h2><section class="bloc card ml"><h3>Dire à qui appartient la carte</h3><p class="mp">Au comptoir, on parle sans arrêt de choses qui appartiennent à quelqu'un : <b>ma</b> carte, <b>mon</b> dossier, <b>vos</b> médicaments. Le français change le petit mot selon deux choses seulement : à qui c'est, et si le mot qui suit est masculin, féminin ou pluriel.</p><div class="note">Le pharmacien te vouvoie : il dira toujours <b>votre</b> et <b>vos</b>. Toi, tu parles de tes affaires : <b>mon</b>, <b>ma</b>, <b>mes</b>.</div></section><section class="bloc card ml"><h3>Ce qui est à moi</h3><p class="mp">Trois formes, selon le mot qui suit.</p><table class="ana"><tr><td>Masculin</td><td class=""><b>mon</b> dossier, <b>mon</b> médicament</td></tr><tr><td>Féminin</td><td class="cle"><b>ma</b> carte, <b>ma</b> pharmacie</td></tr><tr><td>Pluriel</td><td class=""><b>mes</b> comprimés, <b>mes</b> médicaments</td></tr></table><p class="dit"><span class="k">On dit</span> Mon dossier, ma carte, mes comprimés.</p><div class="note">Ce n'est pas toi qui décides : c'est le mot qui suit. « Carte » est féminin, donc <b>ma</b> carte, même si tu es un homme.</div></section><section class="bloc card ml"><h3>L'exception qui compte : mon ordonnance</h3><p class="mp">Devant une voyelle, « ma » devient « mon ».</p><table class="ana"><tr><td>On dit</td><td class=""><b>mon</b> ordonnance</td></tr><tr><td>Aussi</td><td class="cle"><b>mon</b> assurance, <b>mon</b> adresse</td></tr><tr><td>Jamais</td><td class="">« ma ordonnance » ne se dit pas</td></tr></table><p class="dit"><span class="k">On dit</span> Mon ordonnance est finie depuis samedi.</p><div class="note">Le mot reste féminin — on dit « mon ordonnance est fini<b>e</b> » — mais le petit mot change pour que ce soit plus facile à dire.</div></section><section class="bloc card ml"><h3>Ce qui est à vous</h3><p class="mp">Deux formes seulement, et c'est le nombre qui décide.</p><table class="ana"><tr><td>Une chose</td><td class=""><b>votre</b> nom, <b>votre</b> carte</td></tr><tr><td>Plusieurs choses</td><td class="cle"><b>vos</b> médicaments, <b>vos</b> comprimés</td></tr><tr><td>Le genre</td><td class="">ne change rien : votre nom, votre carte</td></tr></table><p class="dit"><span class="k">On dit</span> Votre carte, s'il vous plaît. Vos médicaments sont prêts.</p><div class="note">Plus simple que « mon / ma » : masculin ou féminin, c'est <b>votre</b>. Au pluriel, <b>vos</b>.</div></section><section class="bloc card ml"><h3>À qui c'est ?</h3><p class="mp">Choisis un objet et une personne.</p><table class="labo"><thead><tr><th>Quel objet ? · À qui ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">la carte + à moi</td><td>Voici ma carte d'assurance maladie.</td><td>féminin : ma</td></tr><tr><td class="cle">la carte + à vous</td><td>Votre carte, s'il vous plaît ?</td><td>votre, masculin comme féminin</td></tr><tr><td class="cle">le dossier + à moi</td><td>Mon dossier est à la pharmacie du coin.</td><td>masculin : mon</td></tr><tr><td class="cle">le dossier + à vous</td><td>Votre dossier dit que le médicament a été servi en mai.</td><td>ce que dit le pharmacien</td></tr><tr><td class="cle">les comprimés + à moi</td><td>Je prends mes comprimés le matin.</td><td>pluriel : mes</td></tr><tr><td class="cle">les comprimés + à vous</td><td>Vos comprimés seront prêts dans vingt minutes.</td><td>pluriel : vos</td></tr><tr><td class="cle">l'ordonnance + à moi</td><td>Mon ordonnance est finie.</td><td>voyelle : mon, même au féminin</td></tr><tr><td class="cle">l'ordonnance + à vous</td><td>Votre ordonnance est échue depuis mai.</td><td>huit phrases toutes prêtes</td></tr></tbody></table><div class="note">Écoute la différence entre « ma carte » et « votre carte » : c'est la même chose, dite des deux côtés du comptoir.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six phrases du comptoir.</p><table class="ex2"><tr><td>Voici ma carte d'assurance maladie.</td><td>féminin : ma</td></tr><tr><td>Mon ordonnance est finie depuis samedi.</td><td>voyelle : mon</td></tr><tr><td>Je prends mes comprimés le matin.</td><td>pluriel : mes</td></tr><tr><td>Votre nom, s'il vous plaît ?</td><td>la première question</td></tr><tr><td>Vos médicaments seront prêts dans vingt minutes.</td><td>pluriel : vos</td></tr><tr><td>Le pharmacien regarde mon dossier.</td><td>masculin : mon</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges à connaître</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">choisir selon soi-même</p><div class="k">Ce qui arrive</div><p class="ph">un homme qui dit « mon carte »</p><p class="px">Le petit mot suit le nom, jamais la personne qui parle. « Carte » est féminin : <b>ma</b> carte pour tout le monde.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">dire « ma ordonnance »</p><div class="k">Ce qui arrive</div><p class="ph">garder « ma » devant une voyelle</p><p class="px">On dit <b>mon</b> ordonnance, <b>mon</b> assurance, <b>mon</b> adresse. Le mot reste féminin, mais le petit mot change.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">confondre votre et vos</p><div class="k">Ce qui arrive</div><p class="ph">« votre médicaments »</p><p class="px">Une chose : <b>votre</b>. Plusieurs : <b>vos</b>. Regarde s'il y a un s au bout du mot.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">___ carte, s'il vous plaît ? (le pharmacien parle)</span><ul class="opts"><li>Votre</li><li>Vos</li></ul></li><li><span class="q">___ ordonnance est finie. (je parle de la mienne)</span><ul class="opts"><li>Ma</li><li>Mon</li></ul></li><li><span class="q">Je prends ___ comprimés le matin.</span><ul class="opts"><li>mes</li><li>ma</li></ul></li><li><span class="q">Le petit mot suit…</span><ul class="opts"><li>la personne qui parle</li><li>le mot qui vient après</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> Votre — Une seule carte. · <b>2.</b> Mon — Devant une voyelle, « ma » devient « mon ». · <b>3.</b> mes — Plusieurs comprimés. · <b>4.</b> le mot qui vient après — C'est le nom qui décide.</div></section></section></div>
+<footer><span>C3 · Aller à la pharmacie</span><span>Fiche élève</span></footer>
+</body>
+</html>

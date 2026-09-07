@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>D1 · Le cercle du mardi, huit heures moins dix — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance D1 · Module 6 · 75 minutes</div>
+    <h1>Le cercle du mardi, huit heures moins dix</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Deux lectures s'affrontent, et l'invitée pose la seule question qui les départage : est-ce que votre lecture explique aussi l'indice de l'autre ?</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>suivre une discussion à trois voix sur une même scène ;</li><li>reprendre l'indice de l'autre dans sa propre lecture ;</li><li>concéder avec « bien que » et opposer avec « même si » ;</li><li>reformuler la lecture d'autrui avant d'y répondre.</li></ol></section><section class="bloc card"><div class="lbl">Dialogue · 1 de 3</div><h2 class="t">Chacun sa lecture</h2><p class="consigne">Écoutez d'abord, sans lire le texte.</p><div class="rep rep--key"><div class="qui">FATOUMATA</div><div>Ma lecture : Estelle choisit de rester, et c'est le premier choix qu'elle fait dans toute la série.</div></div><div class="rep rep--key"><div class="qui">LÉANDRE</div><div>Et la corde, madame Sidibé ? Vous passez la corde sous silence, ce soir.</div></div><div class="rep rep--key"><div class="qui">FATOUMATA</div><div>Je ne la passe pas sous silence. Je vous laisse la sortir : c'est votre meilleur argument, et il est à vous.</div></div><div class="rep rep--key"><div class="qui">LÉANDRE</div><div>Une femme assise dans une embarcation attachée, ça ne s'appelle pas un choix, ça s'appelle un piège.</div></div></section><section class="bloc card"><div class="lbl">Dialogue · 2 de 3</div><h2 class="t">La question qui départage</h2><div class="rep rep--key"><div class="qui">JOSYANE</div><div>Chacun de vous a un indice. Le téléphone contre la corde. Est-ce que l'un des deux explique aussi l'autre ?</div></div><div class="rep rep--key"><div class="qui">LÉANDRE</div><div>Comment ça, expliquer l'autre ?</div></div><div class="rep rep--key"><div class="qui">JOSYANE</div><div>Votre lecture doit rendre compte du téléphone, et la sienne doit rendre compte de la corde.</div></div><div class="rep rep--key"><div class="qui">JOSYANE</div><div>Sinon, chacun de vous a raison sur un tiers de la scène et se tait sur le reste.</div></div></section><section class="bloc card"><div class="lbl">Dialogue · 3 de 3</div><h2 class="t">Retourner, plutôt que nier</h2><div class="rep rep--key"><div class="qui">FATOUMATA</div><div>Si elle avait voulu partir, elle l'aurait détachée. Elle ne l'a pas détachée.</div></div><div class="rep rep--key"><div class="qui">FATOUMATA</div><div>Donc soit elle est prise, soit elle a décidé de ne pas partir — et alors la corde n'est pas ce qui la retient, c'est ce qu'elle laisse en place.</div></div><div class="rep rep--key"><div class="qui">JOSYANE</div><div>Vous n'avez pas nié l'indice de l'autre : vous l'avez repris dans votre lecture.</div></div><div class="rep rep--key"><div class="qui">JOSYANE</div><div>Retourner un indice, c'est permis. Le passer sous silence, non.</div></div></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Trois gestes qui font avancer</h2><table><thead><tr><th>Le geste</th><th>Ce qu'il produit</th></tr></thead><tbody><tr><td class="cle">Laisser l'argument à l'autre</td><td>il l'écoute au lieu de le défendre</td></tr><tr><td class="cle">Reprendre son indice</td><td>la discussion couvre toute la scène</td></tr><tr><td class="cle">Concéder avant de répondre</td><td>on vous accorde la suite</td></tr></tbody></table><div class="note">Aucun des trois ne coûte votre lecture. Les trois la rendent audible.</div></section><section class="bloc regle"><div class="lbl">Bien que veut le subjonctif, même si veut l'indicatif</div><p class="r">« Bien que la corde soit attachée » · « Même si vous avez raison sur la corde ».</p><p class="pr">Le repère est fiable : « même si » contient un « si », et aucun « si » du français n'est suivi du subjonctif. Concéder n'est pas céder — vous accordez un point, puis vous avancez le vôtre, et c'est ce qui vous rend écoutable.</p></section><section class="bloc card"><div class="lbl">Compréhension</div><h2 class="t">Vrai ou faux ?</h2><p class="consigne">Répondez d'après le dialogue.</p><ol class="ex"><li><span class="q">Fatoumata propose la première lecture de la soirée.</span><span class="ligne ligne--court"></span></li><li><span class="q">Elle empêche Léandre de parler de la corde.</span><span class="ligne"></span></li><li><span class="q">Josyane demande si chaque lecture explique l'indice de l'autre.</span><span class="ligne ligne--court"></span></li><li><span class="q">Léandre refuse de s'expliquer sur le téléphone.</span><span class="ligne ligne--court"></span></li><li><span class="q">Passer un indice sous silence est permis, selon Josyane.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le cercle a vu la pièce dont parle la critique.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">Pratique</div><h2 class="t">Concéder ou opposer ?</h2><p class="consigne">Complétez.</p><ol class="ex"><li><span class="q">___ la corde soit attachée, c'est elle qui l'a remise à l'eau.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ vous avez raison sur la corde, il reste le téléphone.</span><span class="ligne ligne--court"></span></li><li><span class="q">La notaire porte la pièce ; ___, les cadets jouent trop fort.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ il ait raison sur un point, sa lecture explique moins.</span><span class="ligne ligne--court"></span></li><li><span class="q">___, la salle n'était pas pleine, mais ce n'est pas le reproche.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ la parenthèse, on pourrait défendre la lecture tendre.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez la phrase qui reprend l'indice gênant de votre œuvre et le retourne, sur le modèle de Fatoumata.</p><ul><li>« La corde n'est pas ce qui la retient : c'est ce qu'elle laisse en place. »</li><li>Une seule phrase, avec deux-points au milieu.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Accorder quelque chose avant de répondre</h2><section class="bloc card ml"><h3>Concéder n'est pas céder</h3><p class="mp">Quelqu'un qui n'accorde jamais rien n'est plus écouté au bout de deux minutes : le groupe entend qu'il défend une position, pas qu'il examine une œuvre. Concéder, c'est reconnaître ce que l'autre a de juste, puis avancer son propre point. Vous ne perdez rien — vous gagnez le droit d'être entendu sur le reste, et c'est exactement ce que fait Fatoumata avec la corde.</p><div class="note">C'est aussi ce qui distingue un texte d'opinion publiable d'un texte de colère. Le courrier des lecteurs publie le premier.</div></section><section class="bloc card ml"><h3>Bien que · quoique + subjonctif</h3><p class="mp">Les deux concessives les plus employées, et elles demandent toujours le subjonctif.</p><table class="ana"><tr><td>On dit</td><td class="">Bien que la corde soit attachée, c'est elle qui l'a remise à l'eau.</td></tr><tr><td>On dit</td><td class="cle">Quoiqu'il ait raison sur ce point, sa lecture explique moins.</td></tr><tr><td>Ce qui vaut</td><td class="">subjonctif, sans exception</td></tr></table><p class="dit"><span class="k">On dit</span> Bien que la corde soit attachée, c'est elle qui l'a remise à l'eau.</p><div class="note">« Quoique » en un mot signifie « bien que ». « Quoi que » en deux mots signifie « peu importe ce que ». Deux mots différents.</div></section><section class="bloc card ml"><h3>Même si + indicatif</h3><p class="mp">Le piège du couple : deux tournures voisines, deux modes opposés.</p><table class="ana"><tr><td>Subjonctif</td><td class="">Bien que vous ayez raison…</td></tr><tr><td>Indicatif</td><td class="cle">Même si vous avez raison…</td></tr><tr><td>Le repère</td><td class="">« même si » contient un « si », et « si » ne prend jamais le subjonctif</td></tr></table><p class="dit"><span class="k">On dit</span> Même si vous avez raison sur la corde, il reste le téléphone.</p><div class="note">Le repère du « si » est fiable et vaut la peine d'être retenu : aucun « si » du français n'est suivi du subjonctif.</div></section><section class="bloc card ml"><h3>Opposer sans rien accorder</h3><p class="mp">En revanche, alors que, tandis que : ils mettent deux choses côte à côte sans concéder quoi que ce soit.</p><table class="ana"><tr><td>En revanche</td><td class="">La notaire porte la pièce ; en revanche, les cadets jouent trop fort.</td></tr><tr><td>Alors que</td><td class="cle">Le premier acte se passe en 1961, alors que le second se passe dix-neuf ans plus tard.</td></tr><tr><td>La nuance</td><td class="">opposer n'est pas concéder : rien n'est accordé à personne</td></tr></table><p class="dit"><span class="k">On dit</span> La notaire porte la pièce ; en revanche, les cadets jouent trop fort.</p><div class="note">« Par contre » est correct et courant au Québec ; « en revanche » est plus soutenu et convient mieux à une lettre publiée.</div></section><section class="bloc card ml"><h3>Certes… mais — la concession de l'écrit</h3><p class="mp">La forme la plus utile dans une lettre au courrier des lecteurs : deux mots, et votre texte cesse d'être un règlement de comptes.</p><table class="ana"><tr><td>On écrit</td><td class="">Certes, la salle n'était pas pleine, mais…</td></tr><tr><td>Variante</td><td class="cle">Il est vrai que je n'ai pas vu la pièce ; cependant…</td></tr><tr><td>L'effet</td><td class="">le lecteur vous accorde la suite</td></tr></table><p class="dit"><span class="k">On dit</span> Certes, la salle n'était pas pleine, mais ce n'est pas ce que vous reprochez à la pièce.</p><div class="note">Placez la concession en premier et votre point en second : c'est la seconde moitié que le lecteur retient.</div></section><section class="bloc card ml"><h3>Concéder ou opposer ?</h3><p class="mp">Choisissez ce que vous faites et le registre.</p><table class="labo"><thead><tr><th>Votre intention… · Lequel des deux ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">concéder puis avancer + sur la télésérie</td><td>Bien que la corde soit attachée, c'est elle qui l'a remise à l'eau.</td><td>bien que + subjonctif</td></tr><tr><td class="cle">concéder puis avancer + sur la critique</td><td>Même si vous n'avez pas vu la pièce, vous pouvez lire le texte.</td><td>même si + indicatif</td></tr><tr><td class="cle">opposer deux choses + sur la télésérie</td><td>Elle remet la chaloupe à l'eau ; en revanche, elle ne détache rien.</td><td>deux faits côte à côte, rien d'accordé</td></tr><tr><td class="cle">opposer deux choses + sur la critique</td><td>Il donne quatre faits, alors qu'il porte onze jugements.</td><td>l'opposition chiffrée, très efficace par écrit</td></tr><tr><td class="cle">concéder par écrit + sur la télésérie</td><td>Certes, la fin est abrupte, mais elle n'est pas manquante.</td><td>la concession d'ouverture</td></tr><tr><td class="cle">concéder par écrit + sur la critique</td><td>Il est vrai que je n'y étais pas ; cependant, votre texte se lit.</td><td>concession + connecteur soutenu</td></tr></tbody></table><div class="note">Trois usages, six formules. Deux d'entre elles suffisent pour une lettre de deux cents mots.</div></section><section class="bloc card ml"><h3>Le connecteur · le mode</h3><p class="mp">À gauche, le connecteur. À droite, ce qui suit.</p><table class="ex2"><tr><td>bien que</td><td>subjonctif</td></tr><tr><td>quoique (en un mot)</td><td>subjonctif</td></tr><tr><td>même si</td><td>indicatif</td></tr><tr><td>alors que · tandis que</td><td>indicatif</td></tr><tr><td>en revanche · par contre</td><td>une phrase entière</td></tr><tr><td>malgré</td><td>un nom, jamais une phrase</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges de la concession</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">« malgré que la corde soit attachée »</p><div class="k">Ce qui arrive</div><p class="ph">« malgré la corde » ou « bien que la corde soit attachée »</p><p class="px">« Malgré » se met devant un nom. « Malgré que » est refusé à l'écrit soigné, même s'il s'entend souvent.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">« bien que vous avez raison »</p><div class="k">Ce qui arrive</div><p class="ph">« bien que vous ayez raison »</p><p class="px">Bien que appelle le subjonctif, toujours. L'oreille propose l'indicatif parce que la phrase semble affirmer quelque chose.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">concéder à la fin</p><div class="k">Ce qui arrive</div><p class="ph">concéder d'abord</p><p class="px">Une concession placée après votre argument l'annule. Placée avant, elle le prépare. L'ordre change tout, et il ne coûte rien.</p></div></div></section><section class="bloc card ml"><h3>Concéder, opposer : la règle est-elle prise ?</h3><p class="mp">Quatre contrôles rapides.</p><ol class="check"><li><span class="q">« Bien que la corde ___ attachée… »</span><ul class="opts"><li>soit</li><li>est</li></ul></li><li><span class="q">« Même si vous ___ raison… »</span><ul class="opts"><li>ayez</li><li>avez</li></ul></li><li><span class="q">« Malgré » se met devant…</span><ul class="opts"><li>un nom</li><li>une phrase</li></ul></li><li><span class="q">Dans une lettre, la concession se place…</span><ul class="opts"><li>avant votre argument</li><li>après votre argument</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> soit — Bien que + subjonctif, sans exception. · <b>2.</b> avez — Il y a un « si » : jamais de subjonctif après un « si ». · <b>3.</b> un nom — Devant un nom. « Malgré que » ne se publie pas. · <b>4.</b> avant votre argument — Avant : c'est la seconde moitié que le lecteur retient.</div></section></section></div>
+<footer><span>D1 · Ce que l'œuvre ne dit pas</span><span>Fiche élève</span></footer>
+</body>
+</html>

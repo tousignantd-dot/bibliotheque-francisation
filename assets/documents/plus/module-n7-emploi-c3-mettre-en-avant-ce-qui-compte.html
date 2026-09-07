@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C3 · Mettre en avant ce qui compte — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance C3 · Module 2 · 75 minutes</div>
+    <h1>Mettre en avant ce qui compte</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Dans une phrase ordinaire, tous les mots ont le même poids. Or vous voulez qu'on retienne un mot sur douze. Parler plus fort ne sert à rien : le volume ne désigne rien. Changer la construction, oui.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>mettre un sujet en avant avec « ce qui... c'est » ;</li><li>mettre un complément en avant avec « ce que... c'est » et « ce dont... c'est » ;</li><li>choisir entre « c'est... qui » et « c'est... que » ;</li><li>reconnaître une phrase passive et voir qui n'y est pas nommé.</li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Quatre façons de mettre en relief</h2><table><thead><tr><th>La construction</th><th>Exemple</th></tr></thead><tbody><tr><td class="cle">ce qui... c'est</td><td>Ce qui use le dos, C'EST de se pencher.</td></tr><tr><td class="cle">ce que... c'est</td><td>Ce que je demande, C'EST l'autorisation.</td></tr><tr><td class="cle">ce dont... c'est</td><td>Ce dont j'ai besoin, C'EST d'une soumission.</td></tr><tr><td class="cle">c'est... qui</td><td>C'est la répétition QUI blesse, pas le poids.</td></tr><tr><td class="cle">c'est... que</td><td>C'est le prix QUE j'attends.</td></tr></tbody></table><div class="note">« qui » quand le mot mis en avant fait l'action, « que » quand il la subit.</div></section><section class="bloc regle"><div class="lbl">Le test de « qui » et de « que »</div><p class="r">Remplacez le mot par « elle » : si « elle blesse » se dit, c'est « qui ».</p><p class="pr">« C'est la répétition qui blesse » - on peut dire « elle blesse », donc « qui ». « C'est le prix que j'attends » - on ne dit pas « il j'attends », mais « je l'attends », donc « que ». Le test prend deux secondes et il ne se trompe jamais.</p></section><section class="bloc card"><div class="lbl">Pratique</div><h2 class="t">Réécrivez en mettant en relief</h2><p class="consigne">Le mot souligné doit ressortir.</p><ol class="ex"><li><span class="q">Se pencher use le dos. Devient : Ce qui use le dos, ... de se pencher.</span><span class="ligne ligne--court"></span></li><li><span class="q">Je demande l'autorisation. Devient : Ce que je demande, ... l'autorisation.</span><span class="ligne ligne--court"></span></li><li><span class="q">La répétition blesse. Devient : C'est la répétition ... blesse.</span><span class="ligne ligne--court"></span></li><li><span class="q">J'attends le prix. Devient : C'est le prix ... j'attends.</span><span class="ligne ligne--court"></span></li><li><span class="q">J'ai besoin d'une soumission. Devient : Ce dont j'ai besoin, ... d'une soumission.</span><span class="ligne ligne--court"></span></li><li><span class="q">Monsieur Cormier a demandé la copie. Devient : C'est monsieur Cormier ... a demandé la copie.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">La phrase passive, en trois mouvements</h2><table><thead><tr><th>Le mouvement</th><th>Ce qui se passe</th></tr></thead><tbody><tr><td class="cle">1 · Le complément monte</td><td>Thérèse a signalé LE RISQUE, donc Le risque...</td></tr><tr><td class="cle">2 · Le verbe passe à être</td><td>...a été signalé...</td></tr><tr><td class="cle">3 · Le sujet part</td><td>...par Thérèse. Ou il disparaît.</td></tr><tr><td class="cle">Le repère</td><td>être conjugué + participe, et le sujet ne fait rien</td></tr><tr><td class="cle">L'accord</td><td>avec être, le participe suit le sujet</td></tr></tbody></table><div class="note">Attention : « elle est partie » n'est pas une passive. Partir se conjugue avec être, et le sujet fait bien l'action.</div></section><section class="bloc card"><div class="lbl">Pratique</div><h2 class="t">La même chose, dite autrement</h2><p class="consigne">Trouvez la phrase passive.</p><ol class="ex"><li><span class="q">Thérèse a signalé le risque.</span><span class="ligne"></span></li><li><span class="q">On affichera les résultats au babillard.</span><span class="ligne"></span></li><li><span class="q">Les travailleurs ont élu Thérèse Lapointe.</span><span class="ligne"></span></li><li><span class="q">Personne n'a corrigé le poste 4.</span><span class="ligne"></span></li><li><span class="q">Le fournisseur nous livrera la table.</span><span class="ligne"></span></li></ol></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Écriture</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">« Des erreurs ont été commises. »</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">nommer qui, quand le nom compte</p></div></div><div class="note">La passive permet de ne pas nommer, et c'est souvent utile : personne n'a besoin de savoir qui tiendra le rouleau de papier collant au babillard. Elle devient malhonnête quand elle efface un responsable qu'on devrait nommer. Le test, à faire sur vos propres textes : ajoutez « par qui ? » après chaque passive. Si la réponse compte et n'y est pas, remettez-la.</div></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Réécrivez trois phrases de votre évaluation en mettant en relief.</p><ul><li>Une avec « ce qui... c'est ».</li><li>Une avec « c'est... qui ».</li><li>Une phrase passive, et dites pourquoi vous ne nommez pas l'auteur.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>La mise en relief : faire ressortir un mot</h2><section class="bloc card ml"><h3>Le problème d'une phrase ordinaire</h3><p class="mp">Dans une phrase ordinaire, tous les mots ont à peu près le même poids. Or vous voulez souvent qu'on retienne <b>un</b> mot sur douze. Parler plus fort ne sert à rien : le volume ne désigne rien. Le français a des constructions faites exprès pour ça, et elles sont plus efficaces qu'un ton de voix.</p><div class="note">On les appelle des <b>phrases emphatiques</b> — cinq points de savoir au niveau 7, ce qui dit assez leur importance.</div></section><section class="bloc card ml"><h3>« ce qui… c'est » — mettre en avant un sujet</h3><p class="mp">On isole le sujet de l'action et on le rejette après « c'est ».</p><table class="ana"><tr><td>Phrase ordinaire</td><td class="">Se pencher quatre-vingt-deux fois use le dos.</td></tr><tr><td>Mise en relief</td><td class="cle">Ce qui use le dos, c'est de se pencher quatre-vingt-deux fois.</td></tr><tr><td>Ce que ça fait</td><td class="">le vrai coupable arrive en fin de phrase, là où on l'entend</td></tr></table><p class="dit"><span class="k">On dit</span> Ce qui use le dos, ce n'est pas le poids d'une caisse, c'est de se pencher quatre-vingt-deux fois.</p><div class="note">La forme négative est encore plus forte : « ce n'est pas X, c'est Y ».</div></section><section class="bloc card ml"><h3>« ce que… c'est » et « ce dont… c'est »</h3><p class="mp">Pour un complément direct, puis pour un complément en « de ».</p><table class="ana"><tr><td>Complément direct</td><td class="">Ce que je demande, c'est l'autorisation d'écrire.</td></tr><tr><td>Complément en « de »</td><td class="cle">Ce dont j'ai besoin, c'est d'une soumission écrite.</td></tr><tr><td>Le repère</td><td class="">« avoir besoin DE » → ce DONT</td></tr></table><p class="dit"><span class="k">On dit</span> Ce que je demande, c'est l'autorisation d'écrire. Ce dont j'ai besoin, c'est d'une soumission écrite.</p><div class="note">« Ce dont » est la forme que les apprenants évitent le plus, et celle qui impressionne le plus quand elle est juste.</div></section><section class="bloc card ml"><h3>« c'est… qui » et « c'est… que »</h3><p class="mp">Le mot mis en avant passe tout de suite après « c'est ».</p><table class="ana"><tr><td>Il fait l'action → qui</td><td class="">C'est la répétition qui blesse, pas le poids.</td></tr><tr><td>Il subit l'action → que</td><td class="cle">C'est le prix que j'attends avant de décider.</td></tr><tr><td>Une personne</td><td class="">C'est monsieur Cormier qui a demandé la mise en copie.</td></tr></table><p class="dit"><span class="k">On dit</span> C'est la répétition qui blesse. C'est le prix que j'attends.</p><div class="note">L'erreur classique est « c'est la répétition que blesse ». Le test : remplacez par « elle blesse » — le sujet fait l'action, donc « qui ».</div></section><section class="bloc card ml"><h3>Le détachement à gauche — la forme parlée</h3><p class="mp">On sort le mot, on met une virgule, et on le reprend par un pronom.</p><table class="ana"><tr><td>On dit</td><td class="">Le poste 4, il nous coûte quinze jours par année.</td></tr><tr><td>Ou à droite</td><td class="cle">Il nous coûte cher, le poste 4.</td></tr><tr><td>Registre</td><td class="">très courant à l'oral, correct, plus rare à l'écrit formel</td></tr></table><p class="dit"><span class="k">On dit</span> Le poste quatre, il nous coûte quinze jours par année.</p><div class="note">À l'écrit d'affaires, préférez « ce qui… c'est ». À l'oral d'une réunion, le détachement passe très bien.</div></section><section class="bloc card ml"><h3>La même idée, quatre façons</h3><p class="mp">Choisissez ce que vous voulez mettre en avant.</p><table class="labo"><thead><tr><th>Quoi mettre en avant ? · Quelle construction ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">la cause + ce qui / ce que… c'est</td><td>Ce qui use le dos, c'est de se pencher quatre-vingt-deux fois.<span class="tags">la moins spectaculaire</span></td><td>la construction la plus neutre</td></tr><tr><td class="cle">la cause + c'est… qui / que</td><td>C'est la répétition qui use le dos, pas le poids.<span class="tags">la moins spectaculaire</span></td><td>plus tranchant, parce qu'il y a un contraste</td></tr><tr><td class="cle">ce que je demande + ce qui / ce que… c'est</td><td>Ce que je demande, c'est l'autorisation d'écrire.<span class="tags">la moins spectaculaire</span></td><td>la demande arrive en fin de phrase</td></tr><tr><td class="cle">ce que je demande + c'est… qui / que</td><td>C'est l'autorisation d'écrire que je demande, rien de plus.<span class="tags">la moins spectaculaire</span></td><td>utile pour corriger un malentendu</td></tr><tr><td class="cle">la personne + ce qui / ce que… c'est</td><td>Ce que monsieur Cormier a demandé, c'est d'être mis en copie.<span class="tags">la moins spectaculaire</span></td><td>on met en avant la demande</td></tr><tr><td class="cle">la personne + c'est… qui / que</td><td>C'est monsieur Cormier qui a demandé la mise en copie.<span class="tags">la moins spectaculaire</span></td><td>on met en avant la personne</td></tr></tbody></table><div class="note">Écoutez les deux versions de chaque paire : ce n'est pas la même information qui reste.</div></section><section class="bloc card ml"><h3>Le dosage, et une faute d'accord</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">deux mises en relief de suite</p><div class="k">Ce qui arrive</div><p class="ph">une par minute</p><p class="px">Deux insistances collées s'annulent : la salle entend une insistance générale, donc plus aucune insistance.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">« c'est… que » pour un sujet</p><div class="k">Ce qui arrive</div><p class="ph">« c'est… qui »</p><p class="px">« C'est la répétition qui blesse », jamais « que blesse ». Remplacez le mot par « elle » : si « elle blesse » se dit, c'est « qui ».</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">« ce que j'ai besoin »</p><div class="k">Ce qui arrive</div><p class="ph">« ce dont j'ai besoin »</p><p class="px">Le verbe est « avoir besoin DE ». La reprise prend donc « dont », qui contient le « de ».</p></div></div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>La phrase passive, et ce qu'elle cache</h2><section class="bloc card ml"><h3>Pourquoi les écrits de travail en sont pleins</h3><p class="mp">Ouvrez n'importe quelle note de service, n'importe quel compte rendu, n'importe quelle politique : vous y trouverez « les résultats seront affichés », « trois risques ont été signalés », « le programme est mis à jour annuellement ». Ce n'est pas un tic de style. Ces textes parlent de <b>ce qui se fait</b>, pas de qui le fait — et la phrase passive est la seule construction qui permet de dire l'un sans l'autre.</p><div class="note">Le programme demande de la <b>reconnaître</b> et de la comprendre. Produire des passives à tout bout de champ n'est pas le but.</div></section><section class="bloc card ml"><h3>Comment elle se forme</h3><p class="mp">Trois mouvements, toujours les mêmes.</p><table class="ana"><tr><td>1 · Le complément direct devient sujet</td><td class="">Thérèse a signalé le risque → Le risque…</td></tr><tr><td>2 · Le verbe passe à être + participe</td><td class="cle">…a été signalé…</td></tr><tr><td>3 · L'ancien sujet part derrière « par »</td><td class="">…par Thérèse. — ou disparaît.</td></tr></table><p class="dit"><span class="k">On dit</span> Thérèse a signalé le risque. Le risque a été signalé par Thérèse. Le risque a été signalé.</p><div class="note">Le temps du verbe ne change pas : c'est l'auxiliaire <i>être</i> qui le porte. « signale » → « est signalé » ; « signalera » → « sera signalé ».</div></section><section class="bloc card ml"><h3>Le repère pour la reconnaître</h3><p class="mp">Deux marques, et il les faut toutes les deux.</p><table class="ana"><tr><td>être conjugué</td><td class="">est · sont · a été · sera · avait été</td></tr><tr><td>+ un participe passé</td><td class="cle">signalé · affichés · élue · corrigé</td></tr><tr><td>+ le sujet ne fait pas l'action</td><td class="">« la table sera livrée » : la table ne livre rien</td></tr></table><p class="dit"><span class="k">On dit</span> La table sera livrée. Les caisses ont été empilées. La demande avait été refusée.</p><div class="note">Attention : « elle est partie » n'est pas une passive. « Partir » se conjugue avec être — le sujet fait bien l'action.</div></section><section class="bloc card ml"><h3>L'accord du participe</h3><p class="mp">Avec être, il suit toujours le sujet.</p><table class="ana"><tr><td>masculin singulier</td><td class="">le risque a été signalé</td></tr><tr><td>féminin singulier</td><td class="cle">la table sera livrée</td></tr><tr><td>féminin pluriel</td><td class="">les caisses ont été empilées</td></tr><tr><td>masculin pluriel</td><td class="">les résultats seront affichés</td></tr></table><p class="dit"><span class="k">On dit</span> Le risque a été signalé. La table sera livrée. Les caisses ont été empilées.</p><div class="note">C'est l'accord le plus simple du français, et c'est aussi l'oubli le plus visible à l'écrit.</div></section><section class="bloc card ml"><h3>Quand elle devient malhonnête</h3><p class="mp">La passive permet de ne pas nommer. C'est utile quand le nom n'a pas d'importance — personne n'a besoin de savoir qui tiendra le rouleau de papier collant au babillard. Elle devient malhonnête quand elle sert à effacer un responsable qu'on devrait nommer : <i>« Des erreurs ont été commises. »</i> Par qui ? La phrase est faite pour éviter la question.</p><div class="note">Le test, à faire sur vos propres écrits : ajoutez « par qui ? » après chaque passive. Si la réponse compte et n'y est pas, remettez-la.</div></section><section class="bloc card ml"><h3>Quatre questions</h3><ol class="check"><li><span class="q">« La demande a été refusée. » C'est…</span><ul class="opts"><li>une passive</li><li>un passé composé ordinaire</li></ul></li><li><span class="q">« Elle est partie à midi. » C'est…</span><ul class="opts"><li>une passive</li><li>un passé composé avec être</li></ul></li><li><span class="q">« Les caisses ont été empil___ »</span><ul class="opts"><li>empilé</li><li>empilées</li></ul></li><li><span class="q">Pourquoi les comptes rendus emploient-ils la passive ?</span><ul class="opts"><li>par politesse</li><li>parce qu'ils parlent de ce qui se fait, pas de qui le fait</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> une passive — être conjugué + participe, et la demande ne refuse rien. · <b>2.</b> un passé composé avec être — Le sujet fait l'action : ce n'est pas une passive. · <b>3.</b> empilées — Avec être, le participe s'accorde avec le sujet. · <b>4.</b> parce qu'ils parlent de ce qui se fait, pas de qui le fait — C'est une question de point de vue, pas de politesse.</div></section></section></div>
+<footer><span>C3 · Présenter un projet au travail</span><span>Fiche élève</span></footer>
+</body>
+</html>

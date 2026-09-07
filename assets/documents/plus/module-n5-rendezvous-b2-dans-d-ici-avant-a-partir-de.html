@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B2 · Dans, d'ici, avant, à partir de — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance B2 · Module 5 · 75 minutes</div>
+    <h1>Dans, d'ici, avant, à partir de</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Sept petits mots décident du jour où vous vous présenterez. Les confondre ne rend pas la phrase fausse : ça vous fait venir le mauvais jour.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>distinguer « dans » et « d'ici » ;</li><li>employer « avant » et « à partir de » pour poser une limite ou un début ;</li><li>distinguer « en » (le temps qu'il faut) de « dans » (le moment) ;</li><li>savoir que « vers » ne s'emploie jamais pour l'heure d'un rendez-vous.</li></ol></section><section class="bloc regle"><div class="lbl">« dans » pose un point, « d'ici » ouvre une fenêtre</div><p class="r">« dans trois jours » = jeudi. « d'ici trois jours » = mardi, mercredi ou jeudi.</p><p class="pr">C'est la différence la plus coûteuse du module : on attend un appel jeudi alors qu'il pouvait arriver mardi, ou l'inverse. Les deux s'entendent dans la même conversation.</p></section><section class="bloc"><div class="lbl">Sept mots de temps</div><h2 class="t">Et ce que chacun fait</h2><div class="grid"><div class="card"><h3>dans + une durée</h3><p>Un moment futur, compté depuis aujourd'hui. « Le rendez-vous est dans trois semaines. »</p></div><div class="card"><h3>d'ici + un moment</h3><p>Avant la fin de ce délai. « Vous aurez le résultat d'ici vendredi. »</p></div><div class="card"><h3>avant</h3><p>La limite à ne pas dépasser. « Il faut annuler avant vingt-quatre heures. »</p></div><div class="card"><h3>à partir de</h3><p>Le moment où ça commence. « La clinique ouvre à partir de sept heures quinze. »</p></div><div class="card"><h3>vers</h3><p>Approximatif — pour votre arrivée à vous, jamais pour l'heure du rendez-vous.</p></div><div class="card"><h3>pour + durée / en + durée</h3><p>Ce qui est réservé, et le temps qu'il faut. « une plage pour trente minutes ».</p></div></div></section><section class="bloc card"><div class="lbl">Le cas qui trompe tout le monde</div><h2 class="t">en trois jours, ou dans trois jours ?</h2><table><thead><tr><th>La phrase</th><th>Ce que ça veut dire</th></tr></thead><tbody><tr><td class="cle">Le laboratoire donne le résultat en trois jours.</td><td>ça lui prend trois jours</td></tr><tr><td class="cle">Vous aurez le résultat dans trois jours.</td><td>ce sera jeudi</td></tr><tr><td class="cle">Vous l'aurez d'ici trois jours.</td><td>jeudi au plus tard</td></tr><tr><td class="cle">Vous l'aurez à partir de jeudi.</td><td>pas avant jeudi</td></tr></tbody></table></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Lire « avant vingt-quatre heures » comme une heure</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">« Avant minuit, alors ? »</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">« Plus de vingt-quatre heures avant le rendez-vous. »</p></div></div><div class="note">C'est un délai, pas une heure de la journée. Si le rendez-vous est jeudi à seize heures trente, la limite est mercredi à seize heures trente — et non mercredi soir.</div></section><section class="bloc card"><div class="lbl">Écriture</div><h2 class="t">Complétez avec le mot juste</h2><p class="consigne">dans · d'ici · avant · à partir de · vers · pour · en</p><ol class="ex"><li><span class="q">Le prochain rendez-vous libre est ___ trois semaines.</span><span class="ligne ligne--court"></span></li><li><span class="q">Vous recevrez le résultat ___ vendredi, au plus tard.</span><span class="ligne ligne--court"></span></li><li><span class="q">Il faut annuler ___ vingt-quatre heures.</span><span class="ligne ligne--court"></span></li><li><span class="q">La docteure reçoit ___ sept heures quinze.</span><span class="ligne ligne--court"></span></li><li><span class="q">Je pense arriver ___ seize heures quarante.</span><span class="ligne ligne--court"></span></li><li><span class="q">Je vous réserve une plage ___ trente minutes.</span><span class="ligne ligne--court"></span></li><li><span class="q">L'étourdissement passe ___ dix secondes.</span><span class="ligne ligne--court"></span></li><li><span class="q">Mon horaire change ___ lundi prochain.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez trois phrases sur votre semaine avec « dans », « d'ici » et « avant ».</p><ul><li>« J'ai un rendez-vous dans… », « Je dois répondre d'ici… », « Il faut partir avant… »</li><li>Des phrases vraies : vos vraies dates, votre vraie semaine.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Les sept mots qui placent un rendez-vous dans le temps</h2><section class="bloc card ml"><h3>Sept mots, et pas un de plus</h3><p class="mp">Un appel pour un rendez-vous se joue presque entièrement sur sept petits mots de temps. Les confondre ne rend pas la phrase fausse : ça vous fait manquer le rendez-vous, ou arriver le mauvais jour. C'est la différence entre « le résultat arrive <b>en</b> trois jours » et « le résultat arrive <b>dans</b> trois jours ».</p><div class="note">Apprenez-les par paires opposées, pas en liste : dans / d'ici, avant / à partir de, en / dans. C'est l'opposition qui se retient.</div></section><section class="bloc card ml"><h3>dans — un moment futur, compté depuis aujourd'hui</h3><p class="mp">Il annonce une date à venir.</p><table class="ana"><tr><td>Structure</td><td class="">dans + une durée</td></tr><tr><td>Sens</td><td class="cle">à ce moment-là, pas avant</td></tr><tr><td>Exemple</td><td class="">le rendez-vous est dans trois semaines</td></tr></table><p class="dit"><span class="k">On dit</span> Le prochain rendez-vous libre est dans trois semaines.</p><div class="note">« dans trois semaines » ne veut pas dire « pendant les trois prochaines semaines ». C'est un point, pas une période.</div></section><section class="bloc card ml"><h3>d'ici — avant la fin du délai</h3><p class="mp">Il ouvre une fenêtre, alors que <b>dans</b> pose un point.</p><table class="ana"><tr><td>Structure</td><td class="">d'ici + un moment</td></tr><tr><td>Sens</td><td class="cle">à ce moment-là ou avant</td></tr><tr><td>Exemple</td><td class="">vous aurez le résultat d'ici vendredi</td></tr></table><p class="dit"><span class="k">On dit</span> Vous aurez le résultat d'ici vendredi.</p><div class="note">Si on vous dit « d'ici vendredi » et que le résultat arrive le mercredi, tout est normal. « Dans trois jours » aurait promis jeudi.</div></section><section class="bloc card ml"><h3>avant et à partir de — les deux bornes</h3><p class="mp">L'un ferme, l'autre ouvre.</p><table class="ana"><tr><td>avant</td><td class="">la limite : appelez avant quinze heures</td></tr><tr><td>à partir de</td><td class="cle">le début : ouvert à partir de sept heures quinze</td></tr><tr><td>Ensemble</td><td class="">ouvert à partir de sept heures, fermé avant midi</td></tr></table><p class="dit"><span class="k">On dit</span> La clinique ouvre à partir de sept heures quinze, et il faut annuler avant vingt-quatre heures.</p><div class="note">« avant vingt-quatre heures » veut dire « plus de vingt-quatre heures à l'avance », et non « avant minuit ». C'est un délai, pas une heure.</div></section><section class="bloc card ml"><h3>vers, pour, en — les trois autres</h3><p class="mp">Le premier approxime, le deuxième réserve, le troisième mesure.</p><table class="ana"><tr><td>vers</td><td class="">approximatif : j'arriverai vers dix-sept heures</td></tr><tr><td>pour + durée</td><td class="cle">ce qui est réservé : une plage pour trente minutes</td></tr><tr><td>en + durée</td><td class="">le temps qu'il faut : ça passe en dix secondes</td></tr></table><p class="dit"><span class="k">On dit</span> J'arriverai vers seize heures quarante, pour une plage de trente minutes.</p><div class="note">Un rendez-vous n'est jamais « vers » : il est <b>à</b> dix-sept heures. Employez « vers » pour votre propre arrivée, jamais pour l'heure qu'on vous donne.</div></section><section class="bloc card ml"><h3>La même phrase, avec chaque mot</h3><p class="mp">Choisissez un mot et écoutez ce qu'il change au sens.</p><table class="labo"><thead><tr><th>Quel mot de temps ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">dans</td><td>Vous aurez le résultat <b>dans trois jours</b>.</td><td>jeudi, si on est lundi — un point précis</td></tr><tr><td class="cle">d'ici</td><td>Vous aurez le résultat <b>d'ici trois jours</b>.</td><td>mardi, mercredi ou jeudi — une fenêtre</td></tr><tr><td class="cle">avant</td><td>Vous aurez le résultat <b>avant trois jours</b>.</td><td>la limite à ne pas dépasser</td></tr><tr><td class="cle">à partir de</td><td>Vous aurez le résultat <b>à partir de jeudi</b>.</td><td>pas avant jeudi — le début</td></tr><tr><td class="cle">en</td><td>Le laboratoire donne le résultat <b>en trois jours</b>.</td><td>c'est le temps que ça prend au laboratoire</td></tr></tbody></table><div class="note">Cinq phrases presque identiques, cinq réalités différentes. C'est exactement le genre de nuance qui fait revenir quelqu'un pour rien.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six phrases de l'appel.</p><table class="ex2"><tr><td>Le prochain rendez-vous libre est dans trois semaines.</td><td>dans</td></tr><tr><td>Vous aurez le résultat d'ici vendredi.</td><td>d'ici</td></tr><tr><td>Il faut annuler avant vingt-quatre heures.</td><td>avant</td></tr><tr><td>La docteure reçoit à partir de sept heures quinze.</td><td>à partir de</td></tr><tr><td>Je serai là vers seize heures quarante.</td><td>vers</td></tr><tr><td>Je vous réserve une plage pour trente minutes.</td><td>pour + durée</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges de temps</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">confondre en et dans</p><div class="k">Ce qui arrive</div><p class="ph">« le résultat arrive en trois jours » / « dans trois jours »</p><p class="px">en trois jours = ça prend trois jours de travail. dans trois jours = ce sera jeudi. On peut vous dire les deux dans le même appel.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">dire vers pour un rendez-vous</p><div class="k">Ce qui arrive</div><p class="ph">« mon rendez-vous est vers dix-sept heures »</p><p class="px">Un rendez-vous a une heure exacte. « vers » ne s'emploie que pour votre propre arrivée, ou pour une estimation qu'on vous donne.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">lire avant vingt-quatre heures comme une heure</p><div class="k">Ce qui arrive</div><p class="ph">« avant minuit, alors ? »</p><p class="px">Non : plus de vingt-quatre heures avant le rendez-vous. Si le rendez-vous est jeudi à seize heures trente, la limite est mercredi à seize heures trente.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">« Le résultat arrive dans trois jours » veut dire :</span><ul class="opts"><li>ce sera jeudi</li><li>ça prend trois jours de travail</li></ul></li><li><span class="q">« d'ici vendredi » veut dire :</span><ul class="opts"><li>vendredi exactement</li><li>vendredi au plus tard</li></ul></li><li><span class="q">« ouvert à partir de sept heures » veut dire :</span><ul class="opts"><li>fermé après sept heures</li><li>pas avant sept heures</li></ul></li><li><span class="q">Une plage réservée « pour trente minutes » :</span><ul class="opts"><li>dure trente minutes</li><li>commence dans trente minutes</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> ce sera jeudi — dans pose un point futur : jeudi. · <b>2.</b> vendredi au plus tard — C'est une fenêtre : jeudi compte aussi. · <b>3.</b> pas avant sept heures — à partir de ouvre la période. · <b>4.</b> dure trente minutes — pour + durée dit combien de temps est réservé.</div></section></section></div>
+<footer><span>B2 · Prendre rendez-vous chez le médecin</span><span>Fiche élève</span></footer>
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C1 · Case par case — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance C1 · Module 6 · 75 minutes</div>
+    <h1>Case par case</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Comprendre chaque case d'un formulaire et écrire dedans la bonne réponse.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>nommer les sept cases du formulaire ;</li><li>écrire la bonne réponse dans chaque case ;</li><li>comprendre le mot « scolarité » ;</li><li>demander « c'est quoi, cette case ? ».</li></ol></section><section class="bloc card"><div class="lbl">Dialogue · 1 de 2</div><h2 class="t">Le nom, le prénom, la naissance</h2><p class="consigne">Écoutez, puis comptez les mots de chaque réponse.</p><div class="rep rep--key"><div class="qui">MME BOURGEOIS</div><div>Votre nom de famille, s'il vous plaît.</div></div><div class="rep rep--key"><div class="qui">YARA</div><div>Haddad.</div></div><div class="rep rep--key"><div class="qui">MME BOURGEOIS</div><div>Et votre prénom ?</div></div><div class="rep rep--key"><div class="qui">YARA</div><div>Yara.</div></div><div class="rep rep--key"><div class="qui">MME BOURGEOIS</div><div>Votre date de naissance ?</div></div><div class="rep rep--key"><div class="qui">YARA</div><div>Le 7 mars 1994.</div></div></section><section class="bloc card"><div class="lbl">Dialogue · 2 de 2</div><h2 class="t">La case qu'on ne comprend pas</h2><div class="rep rep--key"><div class="qui">MME BOURGEOIS</div><div>Combien d'années d'école, dans votre pays ?</div></div><div class="rep rep--key"><div class="qui">YARA</div><div>Onze ans. Je mets onze dans la case ?</div></div><div class="rep rep--key"><div class="qui">MME BOURGEOIS</div><div>Oui, onze. C'est la case « scolarité ».</div></div></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Les sept cases, dans l'ordre</h2><table><thead><tr><th>La case</th><th>Ce qu'on écrit dedans</th></tr></thead><tbody><tr><td class="cle">Nom de famille</td><td>HADDAD — en lettres majuscules</td></tr><tr><td class="cle">Prénom</td><td>Yara — une majuscule, puis des petites lettres</td></tr><tr><td class="cle">Date de naissance</td><td>1994-03-07 — année, mois, jour</td></tr><tr><td class="cle">Adresse</td><td>3420, rue Papineau, Montréal</td></tr></tbody></table><div class="note">Une case, une réponse. Jamais deux choses dans la même case.</div></section><section class="bloc card"><div class="lbl">Analyse · suite</div><h2 class="t">Et les trois dernières</h2><table><thead><tr><th>La case</th><th>Ce qu'on écrit dedans</th></tr></thead><tbody><tr><td class="cle">Téléphone et courriel</td><td>dix chiffres, puis son adresse de messages</td></tr><tr><td class="cle">Scolarité</td><td>11 — le nombre d'années d'école</td></tr><tr><td class="cle">Signature</td><td>son nom écrit à la main, au bas de la page</td></tr></tbody></table><div class="note">Un formulaire sans signature n'est pas accepté.</div></section><section class="bloc regle"><div class="lbl">« C'est quoi, cette case ? »</div><p class="r">Quatre mots qui débloquent tout le formulaire.</p><p class="pr">Une case vide arrête le dossier entier. Une question de quatre mots le débloque. La personne au comptoir répond à celle-là dix fois par jour : elle ne se fâche jamais, et elle a l'habitude d'expliquer avec d'autres mots.</p></section><section class="bloc card"><div class="lbl">Pratique</div><h2 class="t">Dans quelle case ?</h2><p class="consigne">Dites le nom de la case pour chaque renseignement.</p><ol class="ex"><li><span class="q">HADDAD</span><span class="ligne ligne--court"></span></li><li><span class="q">1994-03-07</span><span class="ligne ligne--court"></span></li><li><span class="q">3420, rue Papineau</span><span class="ligne ligne--court"></span></li><li><span class="q">11</span><span class="ligne ligne--court"></span></li><li><span class="q">son nom écrit à la main</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">Pratique · avec un vrai formulaire</div><h2 class="t">Remplissez le vôtre</h2><p class="consigne">Vingt-cinq minutes. Chacun remplit sa propre feuille.</p><ol class="ex"><li><span class="q">Étape 1</span><span class="ligne"></span></li><li><span class="q">Étape 2</span><span class="ligne"></span></li><li><span class="q">Étape 3</span><span class="ligne"></span></li><li><span class="q">Étape 4</span><span class="ligne"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez ce que vous mettez dans les sept cases de votre formulaire.</p><ul><li>Nom de famille : …</li><li>Date de naissance : …</li><li>Scolarité : … années</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Les cases d'un formulaire</h2><section class="bloc card ml"><h3>Une case, une réponse</h3><p class="mp">Un formulaire fait peur parce qu'il est plein. Mais chaque case demande <b>une seule chose</b>, et les cases se ressemblent d'un papier à l'autre : le nom, le prénom, la date de naissance, l'adresse, le téléphone. Quand on connaît les six premières, on peut remplir presque n'importe quel formulaire du Québec.</p><div class="note">Distribuer un vrai formulaire vierge — inscription, bibliothèque, carte de la ville — et faire retrouver les six cases connues avant toute explication.</div></section><section class="bloc card ml"><h3>Le nom et le prénom</h3><p class="mp">Les deux premières cases, et les deux plus souvent inversées.</p><table class="ana"><tr><td>Nom de famille</td><td class=""><b>HADDAD</b> — en lettres majuscules</td></tr><tr><td>Prénom</td><td class=""><b>Yara</b> — une majuscule, puis des petites lettres</td></tr><tr><td>Sur la pièce d'identité</td><td class="">les deux sont écrits, dans cet ordre</td></tr><tr><td>On n'écrit pas</td><td class="cle">son prénom dans la case du nom</td></tr></table><p class="dit"><span class="k">On dit</span> Nom de famille : Haddad. Prénom : Yara.</p><div class="note">Beaucoup de pays écrivent le nom avant le prénom, d'autres l'inverse. Faire lire à chacun sa propre pièce d'identité : c'est elle qui tranche.</div></section><section class="bloc card ml"><h3>La date de naissance et l'adresse</h3><p class="mp">Deux cases, deux formes imposées.</p><table class="ana"><tr><td>Date de naissance</td><td class=""><b>1994-03-07</b> — année, mois, jour</td></tr><tr><td>Adresse</td><td class=""><b>3420, rue Papineau</b></td></tr><tr><td>Puis</td><td class=""><b>Montréal</b> et le code postal</td></tr><tr><td>On n'écrit pas</td><td class="cle">le nom de son pays dans la case adresse</td></tr></table><p class="dit"><span class="k">On dit</span> Date de naissance : 1994-03-07. Adresse : 3420, rue Papineau, Montréal.</p><div class="note">La case adresse veut l'adresse d'ici, celle où le centre peut poster une lettre. C'est un malentendu fréquent en première inscription.</div></section><section class="bloc card ml"><h3>La scolarité et la signature</h3><p class="mp">La case qu'on ne comprend pas, et celle qu'on oublie.</p><table class="ana"><tr><td>Scolarité</td><td class=""><b>11</b> — le nombre d'années d'école</td></tr><tr><td>On compte</td><td class="">l'école primaire, l'école secondaire, le reste</td></tr><tr><td>Signature</td><td class="">son nom écrit <b>à la main</b>, au bas de la page</td></tr><tr><td>Un formulaire sans signature</td><td class="cle">n'est pas un formulaire</td></tr></table><p class="dit"><span class="k">On dit</span> Scolarité : onze ans. Signature, au bas de la page.</p><div class="note">« Scolarité » est le mot du programme et personne ne le comprend la première fois. Le dire autrement : combien d'années d'école ?</div></section><section class="bloc card ml"><h3>Remplis la case</h3><p class="mp">Choisis une case et ce que tu veux savoir.</p><table class="labo"><thead><tr><th>Quelle case ? · Quoi ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">nom et prénom + la question de la secrétaire</td><td>Votre nom de famille, s'il vous plaît.</td><td>la première question, toujours</td></tr><tr><td class="cle">nom et prénom + la réponse</td><td>Haddad. Mon prénom, c'est Yara.</td><td>nom d’abord, prénom ensuite</td></tr><tr><td class="cle">nom et prénom + ce qu'on demande si on ne comprend pas</td><td>Le nom de famille ou le prénom ?</td><td>une question qui évite tout un formulaire à refaire</td></tr><tr><td class="cle">date de naissance + la question de la secrétaire</td><td>Quelle est votre date de naissance ?</td><td>date est féminin : quelle</td></tr><tr><td class="cle">date de naissance + la réponse</td><td>Le 7 mars 1994.</td><td>à l’oral, en toutes lettres</td></tr><tr><td class="cle">date de naissance + ce qu'on demande si on ne comprend pas</td><td>J'écris l'année en premier ?</td><td>la forme change d’un formulaire à l’autre</td></tr><tr><td class="cle">adresse + la question de la secrétaire</td><td>Quelle est votre adresse ?</td><td>le numéro, la rue, la ville</td></tr><tr><td class="cle">adresse + la réponse</td><td>3420, rue Papineau, à Montréal.</td><td>l’adresse d’ici, pas celle du pays</td></tr><tr><td class="cle">adresse + ce qu'on demande si on ne comprend pas</td><td>Avec le code postal ?</td><td>presque toujours oui</td></tr><tr><td class="cle">scolarité + la question de la secrétaire</td><td>Combien d'années d'école ?</td><td>la vraie question derrière le mot « scolarité »</td></tr><tr><td class="cle">scolarité + la réponse</td><td>Onze ans.</td><td>un chiffre suffit</td></tr><tr><td class="cle">scolarité + ce qu'on demande si on ne comprend pas</td><td>C'est quoi, cette case ?</td><td>la phrase qui débloque tout le reste</td></tr></tbody></table><div class="note">Douze extraits. Les faire jouer deux par deux, un élève tenant le formulaire, l'autre le crayon.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Les sept cases du formulaire.</p><table class="ex2"><tr><td>Nom de famille</td><td>en lettres majuscules</td></tr><tr><td>Prénom</td><td>une majuscule au début</td></tr><tr><td>Date de naissance</td><td>année, mois, jour</td></tr><tr><td>Adresse</td><td>numéro, rue, ville</td></tr><tr><td>Téléphone</td><td>dix chiffres</td></tr><tr><td>Scolarité</td><td>le nombre d'années d'école</td></tr><tr><td>Signature</td><td>son nom à la main, en bas</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges à connaître</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">mettre son prénom dans la case du nom</p><div class="k">Ce qui arrive</div><p class="ph">regarde ta pièce d'identité</p><p class="px">Le nom de famille est celui des parents ; le prénom est celui que les parents ont choisi. Sur ta carte, ils sont écrits l'un sous l'autre, chacun avec son étiquette.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">laisser une case vide sans le dire</p><div class="k">Ce qui arrive</div><p class="ph">demande</p><p class="px">Une case vide arrête tout le dossier. Si tu ne comprends pas, dis « c'est quoi, cette case ? ». Personne ne se fâche : la secrétaire répond à cette question dix fois par jour.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">oublier de signer</p><div class="k">Ce qui arrive</div><p class="ph">le formulaire n'est pas fini</p><p class="px">Un formulaire sans signature n'est pas accepté. La signature, c'est ton nom écrit à la main, au bas de la page, à côté de la date du jour.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">Dans la case « scolarité », on écrit…</span><ul class="opts"><li>le nombre d'années d'école</li><li>le nom de son école</li></ul></li><li><span class="q">Le nom de famille, c'est…</span><ul class="opts"><li>Haddad</li><li>Yara</li></ul></li><li><span class="q">Quand tu ne comprends pas une case, tu…</span><ul class="opts"><li>demandes</li><li>laisses vide</li></ul></li><li><span class="q">Un formulaire est fini quand…</span><ul class="opts"><li>il est signé</li><li>les cases sont remplies</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> le nombre d'années d'école — Un chiffre. Yara écrit onze. · <b>2.</b> Haddad — Haddad est le nom de famille ; Yara est le prénom. · <b>3.</b> demandes — « C'est quoi, cette case ? » — la phrase la plus utile du défi. · <b>4.</b> il est signé — La signature au bas de la page fait partie du formulaire.</div></section></section></div>
+<footer><span>C1 · Je m'inscris au cours de français</span><span>Fiche élève</span></footer>
+</body>
+</html>

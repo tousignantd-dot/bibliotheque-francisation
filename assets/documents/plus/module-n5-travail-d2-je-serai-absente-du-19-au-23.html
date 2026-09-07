@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>D2 · « Je serai absente du 19 au 23 » — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance D2 · Module 7 · 75 minutes</div>
+    <h1>« Je serai absente du 19 au 23 »</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">À l'oral, « je vais être absente » se dit très bien. Mais un message d'accueil, une réponse automatique et un formulaire sont des écrits, et l'écrit préfère le futur simple.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>employer le futur simple à l'écrit, y compris ses irréguliers ;</li><li>mettre le futur après « quand » et « dès que » ;</li><li>poser une question à l'intérieur d'une phrase, devant un supérieur ;</li><li>écrire un courriel de réponse automatique en cinq lignes.</li></ol></section><section class="bloc regle"><div class="lbl">L'infinitif entier, plus six terminaisons</div><p class="r">ai, as, a, ons, ez, ont — les mêmes pour tous les verbes.</p><p class="pr">Les verbes en « re » perdent leur e : répondre donne je répondrai. Ce sont les terminaisons du verbe avoir au présent, et c'est ainsi que le futur s'est formé.</p></section><section class="bloc card"><div class="lbl">Les irréguliers du bureau</div><h2 class="t">Huit bases, et ce sont celles qu'on emploie</h2><table><thead><tr><th>Verbe</th><th>Au futur, à je</th></tr></thead><tbody><tr><td>être · avoir</td><td class="cle">je serai · j'aurai</td></tr><tr><td>faire · aller</td><td class="cle">je ferai · j'irai</td></tr><tr><td>pouvoir · devoir</td><td class="cle">je pourrai · je devrai</td></tr><tr><td>voir · venir</td><td class="cle">je verrai · je viendrai</td></tr></tbody></table><div class="note">Les terminaisons ne changent jamais : seule la base est irrégulière.</div></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Mettre le présent après « dès que »</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">Je vous répondrai dès que je suis de retour.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">Je vous répondrai dès que je serai de retour.</p></div></div><div class="note">Après quand, dès que, lorsque, aussitôt que, tant que, le français met le futur. Deux futurs dans la même phrase : c'est correct, et c'est même obligatoire.</div></section><section class="bloc card"><div class="lbl">Futur simple</div><h2 class="t">Complétez au futur</h2><p class="consigne">Employez le verbe entre parenthèses.</p><ol class="ex"><li><span class="q">Je ___ (être) absente du 19 au 23 août.</span><span class="ligne ligne--court"></span></li><li><span class="q">Je ___ (répondre) à vos courriels à mon retour.</span><span class="ligne ligne--court"></span></li><li><span class="q">Kevin ___ (prendre) les appels de l'avant-midi.</span><span class="ligne ligne--court"></span></li><li><span class="q">Nous ___ (avoir) une réponse de la paie avant vendredi.</span><span class="ligne ligne--court"></span></li><li><span class="q">Vous ___ (pouvoir) joindre Amel au poste dix-huit.</span><span class="ligne ligne--court"></span></li><li><span class="q">Elle ___ (faire) suivre le formulaire dès aujourd'hui.</span><span class="ligne ligne--court"></span></li><li><span class="q">Je vous ___ (rappeler) dans les meilleurs délais.</span><span class="ligne ligne--court"></span></li><li><span class="q">Je vous écrirai dès que je ___ (être) de retour.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc regle"><div class="lbl">Poser sa question à l'intérieur d'une phrase</div><p class="r">Je voudrais savoir combien de jours il me reste.</p><p class="pr">La question perd son inversion, son « est-ce que » et son point d'interrogation. Devant un supérieur, c'est la forme qui permet d'enchaîner trois questions sans avoir l'air d'un interrogatoire.</p></section><section class="bloc card"><div class="lbl">Trois amorces</div><h2 class="t">Elles se suivent d'une phrase, jamais d'une question</h2><table><thead><tr><th>La question directe</th><th>Posée poliment</th></tr></thead><tbody><tr><td>Combien de jours me reste-t-il ?</td><td class="cle">Je voudrais savoir combien de jours il me reste.</td></tr><tr><td>Est-ce que la journée est payée ?</td><td class="cle">Je voudrais savoir si la journée est payée.</td></tr><tr><td>Quand est-ce que j'aurai la réponse ?</td><td class="cle">Pourriez-vous me dire quand j'aurai la réponse.</td></tr><tr><td>Qu'est-ce qu'il faut remplir ?</td><td class="cle">J'aimerais savoir ce qu'il faut remplir.</td></tr></tbody></table></section><section class="bloc card"><div class="lbl">Question indirecte</div><h2 class="t">Posez la question poliment</h2><p class="consigne">Transformez chaque question directe.</p><ol class="ex"><li><span class="q">Combien de jours me reste-t-il ?</span><span class="ligne"></span></li><li><span class="q">Est-ce que la journée est payée ?</span><span class="ligne"></span></li><li><span class="q">Où est-ce que j'envoie le formulaire ?</span><span class="ligne"></span></li><li><span class="q">Qui me remplacera l'après-midi ?</span><span class="ligne"></span></li><li><span class="q">Qu'est-ce qu'il faut écrire dans cette case ?</span><span class="ligne"></span></li><li><span class="q">Est-ce que je dois écrire les deux dates ?</span><span class="ligne"></span></li></ol></section><section class="bloc card"><div class="lbl">Production écrite</div><h2 class="t">Le courriel de réponse automatique</h2><p class="consigne">Complétez les cinq lignes.</p><ol class="ex"><li><span class="q">Bonjour, je suis ___ du 19 au 23 août.</span><span class="ligne ligne--court"></span></li><li><span class="q">Je ne ___ (lire) pas mes courriels pendant cette période.</span><span class="ligne ligne--court"></span></li><li><span class="q">Pour toute question, écrivez à Kevin Dorais ou faites le ___ dix-neuf.</span><span class="ligne ligne--court"></span></li><li><span class="q">Je serai de ___ le lundi 26 août.</span><span class="ligne ligne--court"></span></li><li><span class="q">Je ___ (répondre) à votre message à mon retour.</span><span class="ligne ligne--court"></span></li><li><span class="q">On l'éteint le matin du ___ , avant toute autre chose.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez votre courriel de réponse automatique en cinq lignes.</p><ul><li>Vos dates, la date du retour avec le jour de la semaine, un nom et un poste.</li><li>Signez avec votre nom et votre fonction.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Le futur simple, le temps des absences annoncées</h2><section class="bloc card ml"><h3>Pourquoi lui, et pas le futur proche</h3><p class="mp">À l’oral, « je vais être absente » se dit très bien et personne ne vous reprendra. Mais un message d’accueil, une réponse automatique et un formulaire sont des écrits, et l’écrit préfère le futur simple : « je serai absente », « je répondrai à mon retour ». C’est plus court, plus net, et c’est la forme attendue.</p><div class="note">Les attentes de fin de cours du niveau 5 le disent : l’adulte « écrit un texte descriptif simple pour décrire ses projets à court terme en employant de manière appropriée le futur simple ou le futur proche ». Ici, la situation choisit.</div></section><section class="bloc card ml"><h3>Comment il se forme</h3><p class="mp">L’infinitif entier, plus six terminaisons qui ne changent jamais.</p><table class="ana"><tr><td>Les terminaisons</td><td class="">-ai, -as, -a, -ons, -ez, -ont</td></tr><tr><td>Sur un verbe en -er ou -ir</td><td class="cle">je rappellerai · vous finirez · elle partira</td></tr><tr><td>Sur un verbe en -re, le e tombe</td><td class="">répondre → je répondrai · prendre → il prendra</td></tr></table><p class="dit"><span class="k">On dit</span> Je vous rappellerai et je répondrai à vos courriels.</p><div class="note">Les terminaisons sont celles du verbe « avoir » au présent : ai, as, a, (av)ons, (av)ez, ont. C’est ainsi que le futur s’est formé, il y a très longtemps.</div></section><section class="bloc card ml"><h3>Les irréguliers du bureau</h3><p class="mp">Huit verbes changent de base. Ce sont, évidemment, les huit qu’on emploie tous les jours.</p><table class="ana"><tr><td>Les quatre premiers</td><td class="">être → je serai · avoir → j’aurai · faire → je ferai · aller → j’irai</td></tr><tr><td>Les quatre suivants</td><td class="cle">pouvoir → je pourrai · devoir → je devrai · voir → je verrai · venir → je viendrai</td></tr><tr><td>Ce qui ne change jamais</td><td class="">les terminaisons : elles sont les mêmes pour tous</td></tr></table><p class="dit"><span class="k">On dit</span> Je serai absente, j’aurai peu de temps, mais je pourrai répondre lundi.</p><div class="note">Repérez le double r de « pourrai » et de « verrai » : il s’entend, et c’est lui qui distingue « je verrai » de « je vais ».</div></section><section class="bloc card ml"><h3>Après « quand » et « dès que », le futur</h3><p class="mp">Le français ne fait pas comme beaucoup d’autres langues, et c’est une faute très fréquente.</p><table class="ana"><tr><td>On écrit</td><td class="">Je vous répondrai dès que je serai de retour.</td></tr><tr><td>Et non</td><td class="cle">Je vous répondrai dès que je suis de retour.</td></tr><tr><td>Les mots concernés</td><td class="">quand · dès que · lorsque · aussitôt que · tant que</td></tr></table><p class="dit"><span class="k">On dit</span> Je vous répondrai dès que je serai de retour au bureau.</p><div class="note">Deux futurs dans la même phrase, donc : celui de l’action principale, et celui d’après « dès que ». C’est correct, et c’est même obligatoire.</div></section><section class="bloc card ml"><h3>Le futur simple dans les quatre écrits du module</h3><p class="mp">Choisissez un écrit et écoutez comment le futur y apparaît.</p><table class="labo"><thead><tr><th>Quel écrit ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">Le message d’accueil</td><td>Je vous rappellerai dans les meilleurs délais.<span class="tags">rappeler</span></td><td>un seul futur, et il suffit</td></tr><tr><td class="cle">La réponse automatique</td><td>Je serai absente du 19 au 23 août. Je ne lirai pas mes courriels. Je répondrai à mon retour, le lundi 26.<span class="tags">une réponse automatique</span></td><td>trois futurs, trois lignes</td></tr><tr><td class="cle">La note d’appel</td><td>Elle dit que son aide ne viendra pas cette semaine et qu’elle rappellera demain.<span class="tags">une abréviation</span></td><td>un futur à l’intérieur d’une phrase rapportée</td></tr><tr><td class="cle">La demande de congé</td><td>Kevin prendra les appels de l’avant-midi et Amel ceux de l’après-midi.<span class="tags">un formulaire</span></td><td>le futur des ententes</td></tr><tr><td class="cle">Les irréguliers ensemble</td><td>Je serai, j’aurai, je ferai, j’irai, je pourrai, je devrai, je verrai, je viendrai.<span class="tags">la paie</span></td><td>les huit irréguliers, à répéter</td></tr></tbody></table><div class="note">La dernière piste se répète comme une gamme : huit verbes, dans l’ordre, jusqu’à ce qu’ils viennent sans réfléchir.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six phrases au futur simple, tirées des écrits de ce module.</p><table class="ex2"><tr><td>Je serai absente du 19 au 23 août.</td><td>être, l’irrégulier le plus fréquent</td></tr><tr><td>Je répondrai à vos courriels à mon retour.</td><td>répondre : le e de l’infinitif tombe</td></tr><tr><td>Kevin prendra les appels de l’avant-midi.</td><td>prendre, même règle</td></tr><tr><td>Vous pourrez le joindre au poste dix-neuf.</td><td>pouvoir, et son double r</td></tr><tr><td>Nous aurons une réponse de la paie avant vendredi.</td><td>avoir</td></tr><tr><td>Je vous écrirai dès que je serai de retour.</td><td>deux futurs dans la même phrase</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges du futur simple</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">mettre le présent après « dès que »</p><div class="k">Ce qui arrive</div><p class="ph">« Je répondrai dès que je suis de retour. »</p><p class="px">Après quand, dès que, lorsque, tant que, le français met le futur : « dès que je serai de retour ».</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">oublier le e des verbes en -er</p><div class="k">Ce qui arrive</div><p class="ph">« je rappelrai », « j’appelrai »</p><p class="px">Le e de l’infinitif reste : rappeler → je rappell<b>e</b>rai. On l’écrit même si on l’entend à peine.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">confondre je serai et je serais</p><div class="k">Ce qui arrive</div><p class="ph">« Je serais absente du 19 au 23 août. »</p><p class="px">« Je serai » annonce un fait ; « je serais » suppose une condition. Dans une réponse automatique, c’est bien un fait.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c’est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">« Répondre » au futur, à je, donne…</span><ul class="opts"><li>je répondrai</li><li>je répondrerai</li></ul></li><li><span class="q">Après « dès que », on met…</span><ul class="opts"><li>le présent</li><li>le futur</li></ul></li><li><span class="q">« Pouvoir » au futur, à vous, donne…</span><ul class="opts"><li>vous pourrez</li><li>vous pouvrez</li></ul></li><li><span class="q">Dans une réponse automatique, on écrit…</span><ul class="opts"><li>je serai absente</li><li>je serais absente</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> je répondrai — Le e final de l’infinitif tombe pour les verbes en -re. · <b>2.</b> le futur — Le futur : « dès que je serai de retour ». · <b>3.</b> vous pourrez — Vous pourrez, avec deux r qui s’entendent. · <b>4.</b> je serai absente — « Je serai » : c’est un fait annoncé, pas une supposition.</div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Poser sa question à l’intérieur d’une phrase</h2><section class="bloc card ml"><h3>La même question, en plus poli</h3><p class="mp">« Combien de jours me reste-t-il ? » n’a rien d’impoli, mais c’est direct. Devant un supérieur, dans un bureau, on emploie souvent une autre forme : « Je voudrais savoir combien de jours il me reste. » La question devient un morceau de phrase. Elle perd son inversion, son « est-ce que » et son point d’interrogation — et elle gagne beaucoup.</p><div class="note">C’est la forme des demandes au travail, à l’oral comme dans un courriel. C’est aussi celle qui permet d’enchaîner trois questions sans avoir l’air d’un interrogatoire.</div></section><section class="bloc card ml"><h3>Les trois amorces utiles</h3><p class="mp">Elles se suivent toutes d’une phrase ordinaire, jamais d’une question.</p><table class="ana"><tr><td>Je voudrais savoir…</td><td class="">Je voudrais savoir si la journée est payée.</td></tr><tr><td>Pourriez-vous me dire…</td><td class="cle">Pourriez-vous me dire quand je recevrai la réponse.</td></tr><tr><td>J’aimerais comprendre…</td><td class="">J’aimerais comprendre ce qu’il faut écrire dans cette case.</td></tr></table><p class="dit"><span class="k">On dit</span> Je voudrais savoir si la journée est payée, et quand je recevrai la réponse.</p><div class="note">« Pourriez-vous me dire où est-ce que je dois l’envoyer ? » est la faute typique : on garde l’amorce polie et la question directe en même temps. Il faut choisir.</div></section><section class="bloc card ml"><h3>Question fermée → « si »</h3><p class="mp">Toute question à laquelle on répond par oui ou par non devient une phrase avec « si ».</p><table class="ana"><tr><td>La question directe</td><td class="">« Est-ce que la journée est payée ? »</td></tr><tr><td>À l’intérieur d’une phrase</td><td class="cle">Je voudrais savoir si la journée est payée.</td></tr><tr><td>Ce qui disparaît</td><td class="">est-ce que · l’inversion · le point d’interrogation</td></tr></table><p class="dit"><span class="k">On dit</span> Je voudrais savoir si la journée est payée.</p><div class="note">Jamais « si est-ce que ». « Si » remplace « est-ce que » : il ne s’ajoute pas à lui.</div></section><section class="bloc card ml"><h3>Question ouverte → le mot reste, l’ordre change</h3><p class="mp">Quand, où, combien, comment, pourquoi, qui : le mot garde sa place en tête, mais ce qui suit redevient une phrase ordinaire.</p><table class="ana"><tr><td>On garde le mot</td><td class="">quand · où · combien · comment · pourquoi · qui</td></tr><tr><td>On remet sujet, puis verbe</td><td class="cle">Pourriez-vous me dire quand je recevrai la réponse.</td></tr><tr><td>Deux cas à part</td><td class="">qu’est-ce que → ce que · qu’est-ce qui → ce qui</td></tr></table><p class="dit"><span class="k">On dit</span> Pourriez-vous me dire quand je recevrai la réponse et qui me remplacera.</p><div class="note">L’erreur la plus fréquente est de garder l’inversion : « pourriez-vous me dire quand recevrai-je la réponse ». Après le mot interrogatif, sujet puis verbe.</div></section><section class="bloc card ml"><h3>Cinq questions à poser dans le bureau du chef d’équipe</h3><p class="mp">Choisissez une question et écoutez ses deux versions.</p><table class="labo"><thead><tr><th>Quelle question ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">Combien de jours il reste</td><td>Combien de jours me reste-t-il ? Je voudrais savoir combien de jours il me reste.<span class="tags">le registre des heures</span></td><td>l’inversion disparaît</td></tr><tr><td class="cle">Si la journée est payée</td><td>Est-ce que la journée est payée ? Je voudrais savoir si la journée est payée.<span class="tags">une autorisation d'absence</span></td><td>« est-ce que » devient « si »</td></tr><tr><td class="cle">Quand la réponse arrivera</td><td>Quand est-ce que je recevrai la réponse ? Pourriez-vous me dire quand je recevrai la réponse.<span class="tags">la paie</span></td><td>le mot reste, l’ordre change</td></tr><tr><td class="cle">Où envoyer le formulaire</td><td>Où est-ce que j’envoie le formulaire ? J’aimerais savoir où j’envoie le formulaire.<span class="tags">un formulaire</span></td><td>même mouvement avec « où »</td></tr><tr><td class="cle">Ce qu’il faut remplir</td><td>Qu’est-ce qu’il faut remplir ? J’aimerais savoir ce qu’il faut remplir.<span class="tags">une tâche</span></td><td>« qu’est-ce que » devient « ce que »</td></tr></tbody></table><div class="note">Écoutez les deux versions à la suite : la seconde n’est pas plus longue de beaucoup, et elle change tout le ton de l’échange.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six questions telles qu’on les pose à un supérieur.</p><table class="ex2"><tr><td>Je voudrais savoir combien de jours il me reste.</td><td>question fermée sur un nombre</td></tr><tr><td>Je voudrais savoir si la journée est payée.</td><td>« si », sans « est-ce que »</td></tr><tr><td>Pourriez-vous me dire quand je recevrai la réponse.</td><td>« quand » suivi de sujet et verbe</td></tr><tr><td>J’aimerais savoir où j’envoie le formulaire.</td><td>« où »</td></tr><tr><td>J’aimerais savoir ce qu’il faut écrire dans cette case.</td><td>« ce que »</td></tr><tr><td>Je voudrais savoir qui me remplacera l’après-midi.</td><td>« qui »</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges de l’interrogation indirecte</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">garder l’inversion</p><div class="k">Ce qui arrive</div><p class="ph">« Pourriez-vous me dire quand recevrai-je la réponse. »</p><p class="px">Après le mot interrogatif, l’ordre redevient ordinaire : sujet, puis verbe. « quand je recevrai la réponse ».</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">garder « est-ce que »</p><div class="k">Ce qui arrive</div><p class="ph">« Je voudrais savoir si est-ce que c’est payé. »</p><p class="px">« Si » remplace « est-ce que ». Les deux ensemble ne se disent jamais.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">mettre un point d’interrogation</p><div class="k">Ce qui arrive</div><p class="ph">« Je voudrais savoir quand je recevrai la réponse ? »</p><p class="px">La phrase entière n’est pas une question : elle dit ce que vous voudriez savoir. Elle se termine par un point.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c’est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">« Est-ce que c’est payé ? » devient…</span><ul class="opts"><li>… savoir si c’est payé</li><li>… savoir si est-ce que c’est payé</li></ul></li><li><span class="q">Après « quand », dans une phrase indirecte, on met…</span><ul class="opts"><li>sujet puis verbe</li><li>verbe puis sujet</li></ul></li><li><span class="q">La phrase entière se termine par…</span><ul class="opts"><li>un point</li><li>un point d’interrogation</li></ul></li><li><span class="q">« Qu’est-ce qui manque ? » devient…</span><ul class="opts"><li>ce qui manque</li><li>ce que manque</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> … savoir si c’est payé — « Si » remplace « est-ce que » ; les deux ensemble ne se disent pas. · <b>2.</b> sujet puis verbe — Sujet puis verbe : « quand je recevrai la réponse ». · <b>3.</b> un point — Un point : elle dit ce que vous voudriez savoir, elle ne demande pas directement. · <b>4.</b> ce qui manque — « Ce qui », parce que le mot est sujet du verbe.</div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>La réponse automatique : cinq lignes pour une semaine</h2><section class="bloc card ml"><h3>Elle ne s’excuse pas : elle empêche d’attendre</h3><p class="mp">Beaucoup de réponses automatiques commencent par des regrets. Ce n’est pas leur rôle. Leur rôle est qu’une personne qui vous écrit sache en dix secondes trois choses : vous n’êtes pas là, jusqu’à quand, et à qui s’adresser d’ici là. Tout ce qui n’est pas ça peut être retiré.</p><div class="note">C’est l’une des sept intentions de la situation « Emploi » au niveau 5, et c’est la plus courte à produire : cinq lignes, écrites une fois, qui travaillent pendant une semaine.</div></section><section class="bloc card ml"><h3>Les cinq lignes, dans l’ordre</h3><p class="mp">Aucune n’est facultative, et aucune n’a besoin d’être longue.</p><table class="ana"><tr><td>1 et 2</td><td class="">Bonjour. Je suis absente du 19 au 23 août.</td></tr><tr><td>3 et 4</td><td class="cle">Je ne lirai pas mes courriels pendant cette période. Pour toute question, écrivez à Kevin Dorais ou faites le poste dix-neuf.</td></tr><tr><td>5</td><td class="">Je répondrai à votre message à mon retour, le lundi 26 août.</td></tr></table><p class="dit"><span class="k">On dit</span> Bonjour. Je suis absente du 19 au 23 août. Je ne lirai pas mes courriels pendant cette période. Pour toute question, écrivez à Kevin Dorais ou faites le poste dix-neuf. Je répondrai à votre message à mon retour, le lundi 26 août.</p><div class="note">La ligne 3 est celle qu’on oublie, et elle est utile : sans elle, la personne suppose que vous lisez vos courriels le soir, et elle attend.</div></section><section class="bloc card ml"><h3>La date du retour, jamais la durée</h3><p class="mp">Une durée oblige le lecteur à calculer, et il calcule à partir du mauvais jour.</p><table class="ana"><tr><td>On écrit</td><td class="">Je serai de retour le lundi 26 août.</td></tr><tr><td>On n’écrit pas</td><td class="cle">Je suis absente une semaine. · Je reviens dans dix jours.</td></tr><tr><td>On donne le jour ET la date</td><td class="">« le lundi 26 août » se vérifie d’un coup d’œil sur un calendrier</td></tr></table><p class="dit"><span class="k">On dit</span> Je serai de retour le lundi 26 août.</p><div class="note">Le jour de la semaine évite une erreur fréquente : celui qui lit croit que vous revenez le 26, mais le 26 est un dimanche et personne ne vous trouve.</div></section><section class="bloc card ml"><h3>La personne à joindre, avec de quoi la joindre</h3><p class="mp">Un nom seul ne sert à rien. Et cette personne doit être prévenue avant que son nom paraisse.</p><table class="ana"><tr><td>Le nom et le moyen</td><td class="">Kevin Dorais, poste dix-neuf · amel@… , poste dix-huit</td></tr><tr><td>Prévenir la personne</td><td class="cle">elle recevra vos courriels toute la semaine : c’est une politesse élémentaire</td></tr><tr><td>Quand la mettre en marche</td><td class="">le vendredi avant de partir, pas le lundi de votre départ</td></tr></table><p class="dit"><span class="k">On dit</span> Pour toute question, écrivez à Kevin Dorais ou faites le poste dix-neuf.</p><div class="note">Et éteignez-la le matin du retour, avant toute autre chose : une réponse automatique qui tourne encore trois jours après le retour fait perdre trois jours à tout le monde.</div></section><section class="bloc card ml"><h3>Quatre absences, quatre réponses automatiques</h3><p class="mp">Choisissez une situation et écoutez la réponse qui lui convient.</p><table class="labo"><thead><tr><th>Quelle absence ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">Une semaine de vacances</td><td>Je suis absente du 19 au 23 août et je serai de retour le lundi 26 août.<span class="tags">une réponse automatique</span></td><td>deux dates, un jour de semaine</td></tr><tr><td class="cle">Une journée seulement</td><td>Je suis absente aujourd’hui et je répondrai demain matin.<span class="tags">une autorisation d'absence</span></td><td>pour une journée, trois lignes suffisent</td></tr><tr><td class="cle">Une absence sans date de retour</td><td>Je suis absente pour une durée indéterminée. Pour toute question, écrivez à Kevin Dorais, poste dix-neuf.<span class="tags">la paie</span></td><td>quand on ne sait pas, on le dit</td></tr><tr><td class="cle">Un départ définitif</td><td>Je ne travaille plus à la Coopérative d’aide à domicile de Rosemont. Vos messages ne seront pas transférés. Écrivez à l’accueil, poste vingt-deux.<span class="tags">l'accueil</span></td><td>il faut dire que les messages se perdent</td></tr><tr><td class="cle">La version complète</td><td>Bonjour. Je suis absente du 19 au 23 août. Je ne lirai pas mes courriels pendant cette période. Pour toute question, écrivez à Kevin Dorais ou faites le poste dix-neuf. Je répondrai à votre message à mon retour, le lundi 26 août. Salutations, Dorine Kabeya, accueil.<span class="tags">un formulaire</span></td><td>cinq lignes et une signature</td></tr></tbody></table><div class="note">Remarquez la troisième et la quatrième : dire ce qu’on ne sait pas, ou dire que les messages se perdent, vaut mieux que de laisser croire.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Les cinq lignes, une par une.</p><table class="ex2"><tr><td>Bonjour.</td><td>une seule ligne, et elle suffit</td></tr><tr><td>Je suis absente du 19 au 23 août.</td><td>les deux dates</td></tr><tr><td>Je ne lirai pas mes courriels pendant cette période.</td><td>la ligne qu’on oublie</td></tr><tr><td>Pour toute question, écrivez à Kevin Dorais ou faites le poste dix-neuf.</td><td>le nom, et de quoi le joindre</td></tr><tr><td>Je répondrai à votre message à mon retour, le lundi 26 août.</td><td>le jour et la date</td></tr><tr><td>Salutations, Dorine Kabeya, accueil.</td><td>la signature, avec la fonction</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges de la réponse automatique</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">donner une durée au lieu d’une date</p><div class="k">Ce qui arrive</div><p class="ph">« Je suis absente une semaine. »</p><p class="px">Une semaine à partir de quand ? Le lecteur calcule à partir du jour où il lit, et il se trompe. Donnez le jour et la date du retour.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">mettre le nom d’un collègue sans le prévenir</p><div class="k">Ce qui arrive</div><p class="ph">« Écrivez à Kevin Dorais. »</p><p class="px">Kevin recevra vos courriels toute la semaine. Le prévenir avant est une politesse élémentaire, et ça évite qu’il réponde « je ne suis au courant de rien ».</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">oublier de l’éteindre au retour</p><div class="k">Ce qui arrive</div><p class="ph">la réponse tourne encore le mercredi suivant</p><p class="px">Tout le monde continue d’écrire à Kevin, qui continue de transférer. On l’éteint le matin du retour, avant de lire ses courriels.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c’est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">On écrit…</span><ul class="opts"><li>la durée de l’absence</li><li>la date du retour</li></ul></li><li><span class="q">On met la réponse en marche…</span><ul class="opts"><li>le vendredi avant de partir</li><li>le lundi matin de son départ</li></ul></li><li><span class="q">Avant de mettre le nom d’un collègue, on…</span><ul class="opts"><li>le prévient</li><li>ne dit rien, c’est normal</li></ul></li><li><span class="q">On l’éteint…</span><ul class="opts"><li>quelques jours après le retour</li><li>le matin du retour</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> la date du retour — La date du retour, avec le jour de la semaine : « le lundi 26 août ». · <b>2.</b> le vendredi avant de partir — Le vendredi : le lundi matin, vous n’êtes déjà plus là pour le faire. · <b>3.</b> le prévient — On le prévient : il recevra vos courriels toute la semaine. · <b>4.</b> le matin du retour — Le matin du retour, avant toute autre chose.</div></section></section></div>
+<footer><span>D2 · Le travail par écrit</span><span>Fiche élève</span></footer>
+</body>
+</html>

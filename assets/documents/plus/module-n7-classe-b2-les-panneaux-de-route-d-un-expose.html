@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B2 · Les panneaux de route d'un exposé — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance B2 · Module 10 · 75 minutes</div>
+    <h1>Les panneaux de route d'un exposé</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Dans une conversation, on répond à ce qui vient d'être dit. Devant quelqu'un qui expose, on sait à l'avance ce qui s'en vient — à condition d'entendre les panneaux.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>reconnaître le connecteur qui annonce le plan d'un exposé ;</li><li>reconnaître ceux qui marquent les étapes et ceux qui changent de sujet ;</li><li>entendre qu'une reformulation ne contient rien de neuf ;</li><li>prendre des notes en mots-clés, pas en phrases.</li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Quatre familles de connecteurs</h2><table><thead><tr><th>Ce qu'il annonce</th><th>Les mots</th></tr></thead><tbody><tr><td class="cle">Le plan</td><td>avant de commencer, je vais parler d'abord de, mon exposé comprend</td></tr><tr><td class="cle">Une étape</td><td>premier point, deuxième point, d'abord, ensuite, enfin</td></tr><tr><td class="cle">Un changement</td><td>quant à, en ce qui concerne, à propos de</td></tr><tr><td class="cle">Une reformulation</td><td>autrement dit, c'est-à-dire, en d'autres mots</td></tr><tr><td class="cle">Une conséquence</td><td>par conséquent, donc, ainsi</td></tr><tr><td class="cle">La fin</td><td>en somme, pour finir, ce qu'il faut retenir</td></tr></tbody></table></section><section class="bloc regle"><div class="lbl">Le connecteur dit quoi faire de la suite</div><p class="r">Un connecteur ne décore pas la phrase : il dit à celui qui écoute ce qu'il doit faire de ce qui vient.</p><p class="pr">« Quant à » veut dire : nouveau paragraphe dans vos notes. « Autrement dit » veut dire : rien de neuf, voici la version courte, notez celle-là. « En somme » veut dire : c'est fini.</p></section><section class="bloc card"><div class="lbl">Compréhension</div><h2 class="t">Que faut-il faire de ce qui suit ?</h2><p class="consigne">Pour chaque phrase entendue, dites quoi noter.</p><ol class="ex"><li><span class="q">« En ce qui concerne l'arrosage… »</span><span class="ligne"></span></li><li><span class="q">« Autrement dit, la canopée compte plus. »</span><span class="ligne"></span></li><li><span class="q">« Par conséquent, le secteur chauffe. »</span><span class="ligne"></span></li><li><span class="q">« Deuxième point : ce que fait un arbre. »</span><span class="ligne ligne--court"></span></li><li><span class="q">« En somme, c'est la canopée. »</span><span class="ligne"></span></li><li><span class="q">« À propos de la méthode… »</span><span class="ligne"></span></li></ol></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Écoute</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">« Quand à notre secteur… »</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">« Quant à notre secteur… »</p></div></div><div class="note">Les deux se prononcent pareil et ne s'écrivent pas pareil. « Quant à » est suivi d'un nom et annonce un changement de sujet ; « quand » est suivi d'un verbe et parle du temps. La suite de la phrase les sépare, l'oreille ne le fait pas.</div></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Prendre des notes pendant un exposé</h2><table><thead><tr><th>Ce qu'on écrit</th><th>Ce qu'on n'écrit pas</th></tr></thead><tbody><tr><td class="cle">Un tiret par idée</td><td>des phrases complètes</td></tr><tr><td class="cle">Le connecteur entendu</td><td>les mots de liaison inutiles</td></tr><tr><td class="cle">Les chiffres et leur année</td><td>les chiffres seuls</td></tr><tr><td class="cle">Un point d'interrogation sur ce qui est estimé</td><td>rien du tout</td></tr></tbody></table><div class="note">Trois ou quatre mots par idée suffisent, et la phrase suivante ne se perd pas.</div></section><section class="bloc card"><div class="lbl">Écoute</div><h2 class="t">La transcription du début de la rencontre</h2><p class="consigne">Retrouvez dans le texte le passage qui répond à chaque question.</p><ol class="ex"><li><span class="q">Où annonce-t-elle ses trois parties ?</span><span class="ligne"></span></li><li><span class="q">Quelle est la définition d'un îlot de chaleur ?</span><span class="ligne"></span></li><li><span class="q">Quel renseignement est présenté comme certain ?</span><span class="ligne"></span></li><li><span class="q">Quel chiffre est donné au conditionnel ?</span><span class="ligne"></span></li><li><span class="q">Quel passage reformule en plus court ?</span><span class="ligne"></span></li><li><span class="q">Quel connecteur annonce un changement ?</span><span class="ligne"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez la phrase par laquelle vous annoncerez le plan de votre exposé.</p><ul><li>Commencez par « Avant de commencer… » ou « Je vais parler d'abord de… ».</li><li>Trois parties, pas quatre.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Les panneaux de route d'un exposé</h2><section class="bloc card ml"><h3>Pourquoi un exposé s'écoute autrement qu'une conversation</h3><p class="mp">Dans une conversation, vous répondez à ce qui vient d'être dit : vous n'avez rien à anticiper. Devant une personne qui expose, c'est l'inverse — elle a préparé un chemin, elle vous l'annonce, et tout ce qui suit se range dans les cases qu'elle a ouvertes. Écouter un exposé, c'est d'abord attraper l'annonce du plan, puis suivre les panneaux.</p><div class="note">Perrine l'a fait dès sa deuxième phrase : « je vous dis où je m'en vais ». Trois cases, avant même de commencer.</div></section><section class="bloc card ml"><h3>Les connecteurs qui annoncent le plan</h3><p class="mp">Ils arrivent au tout début et donnent la carte entière. Notez-les : ils vous donnent la structure de vos propres notes.</p><table class="ana"><tr><td>On entend</td><td class="">« Avant de commencer, je vous dis où je m'en vais. »</td></tr><tr><td>Ou encore</td><td class="">« Je vais parler d'abord de… ensuite de… et enfin de… »</td></tr><tr><td>Ce que ça vous donne</td><td class="cle">trois tiroirs à ouvrir dans votre cahier</td></tr></table><p class="dit"><span class="k">On dit</span> Je vais parler d'abord de ce qu'est un îlot de chaleur, ensuite de ce que fait un arbre, et enfin de ce qui se passe chez vous.</p><div class="note">Si personne ne vous annonce le plan, demandez-le : « Comment allez-vous procéder ? » est une question tout à fait recevable.</div></section><section class="bloc card ml"><h3>Les connecteurs qui marquent les étapes</h3><p class="mp">Ils disent où vous en êtes et combien il en reste. Ce sont les plus faciles à entendre, et les plus utiles à réemployer dans votre propre exposé.</p><table class="ana"><tr><td>On entend</td><td class="">premier point · deuxième point · pour finir</td></tr><tr><td>Ou encore</td><td class="">d'abord · ensuite · puis · enfin</td></tr><tr><td>Ce que ça vous donne</td><td class="cle">le droit de tourner la page de vos notes</td></tr></table><p class="dit"><span class="k">On dit</span> Premier point. Deuxième point. Et pour finir.</p><div class="note">Dans un exposé de quatre minutes, trois étapes suffisent. Au-delà, l'auditoire perd le compte.</div></section><section class="bloc card ml"><h3>Les connecteurs qui changent de sujet</h3><p class="mp">Ils préviennent que ce qui suit ne prolonge pas ce qui précède : on quitte un point pour un autre. Ce sont eux qu'on manque le plus souvent, et les manquer fait croire à une contradiction.</p><table class="ana"><tr><td>On entend</td><td class="">quant à · en ce qui concerne · à propos de</td></tr><tr><td>Exemple</td><td class="">« Quant au secteur de votre centre, ce serait sous les dix pour cent. »</td></tr><tr><td>Ce que ça vous donne</td><td class="cle">un nouveau paragraphe dans vos notes</td></tr></table><p class="dit"><span class="k">On dit</span> Quant au secteur de votre centre, ce serait plutôt sous les dix pour cent.</p><div class="note"><b>Quant à</b> + le = <b>quant au</b>, + les = <b>quant aux</b>. Et il n'a rien à voir avec <i>quand</i>, malgré la prononciation.</div></section><section class="bloc card ml"><h3>Les connecteurs qui reformulent et qui concluent</h3><p class="mp">Ils annoncent que rien de neuf ne vient : ce qui suit redit, en plus court, ce qui a déjà été dit. Ce sont les phrases à noter en priorité — quelqu'un vient de résumer à votre place.</p><table class="ana"><tr><td>Reformuler</td><td class="">autrement dit · c'est-à-dire · en d'autres mots</td></tr><tr><td>Conclure</td><td class="">en somme · par conséquent · donc</td></tr><tr><td>Ce que ça vous donne</td><td class="cle">la phrase du résumé, toute prête</td></tr></table><p class="dit"><span class="k">On dit</span> Autrement dit, un arbre ne fait pas seulement de l'ombre. En somme, c'est la canopée qu'il faut mesurer.</p><div class="note"><b>Autrement dit</b> vaut pour une phrase ; <b>en somme</b> rassemble un paragraphe entier et ne s'emploie qu'une fois.</div></section><section class="bloc card ml"><h3>Quel connecteur pour quel moment ?</h3><p class="mp">Choisissez un moment de l'exposé, puis une formule.</p><table class="labo"><thead><tr><th>Quel moment ? · Quelle formule ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">j'annonce mon plan + la courante</td><td>Je vais parler d'abord de la cause, ensuite des effets.<span class="tags">Je vais parler d'abord de…</span></td><td>simple et parfaitement suffisante</td></tr><tr><td class="cle">j'annonce mon plan + la plus soignée</td><td>Mon exposé comprendra trois parties.</td><td>plus formelle, très claire pour l'auditoire</td></tr><tr><td class="cle">je change de point + la courante</td><td>Maintenant, parlons de notre quartier.<span class="tags">Maintenant, parlons de…</span></td><td>le passage le plus courant à l'oral</td></tr><tr><td class="cle">je change de point + la plus soignée</td><td>En ce qui concerne notre quartier…</td><td>annonce le changement sans le dire lourdement</td></tr><tr><td class="cle">je reformule + la courante</td><td>Autrement dit, l'arbre refroidit l'air autour de lui.<span class="tags">Autrement dit…</span></td><td>pour redire une phrase en plus simple</td></tr><tr><td class="cle">je reformule + la plus soignée</td><td>C'est-à-dire que l'arbre refroidit l'air autour de lui.<span class="tags">C'est-à-dire que…</span></td><td>même usage, un ton au-dessus</td></tr><tr><td class="cle">je conclus + la courante</td><td>Donc, ce qu'il faut retenir, c'est la surface des cimes.<span class="tags">Donc, ce qu'il faut retenir…</span></td><td>la conclusion ordinaire d'un exposé de classe</td></tr><tr><td class="cle">je conclus + la plus soignée</td><td>En somme, c'est la canopée qu'il faut mesurer.<span class="tags">En somme…</span></td><td>rassemble tout ; une seule fois, à la toute fin</td></tr></tbody></table><div class="note">Réemployez-les dans votre exposé de « Je me lance » : ce sont eux qui feront la différence entre une liste et un propos suivi.</div></section><section class="bloc card ml"><h3>Six connecteurs et ce qu'ils promettent</h3><p class="mp">À gauche ce qu'on entend, à droite ce que l'auditeur doit en faire.</p><table class="ex2"><tr><td>« Avant de commencer… »</td><td>ouvrez trois tiroirs, il annonce son plan</td></tr><tr><td>« Deuxième point… »</td><td>tournez la page, une étape se termine</td></tr><tr><td>« Quant à… »</td><td>nouveau sujet, ne le rattachez pas au précédent</td></tr><tr><td>« Autrement dit… »</td><td>rien de neuf : voici la version courte</td></tr><tr><td>« Par conséquent… »</td><td>ce qui suit découle de ce qui précède</td></tr><tr><td>« En somme… »</td><td>c'est la fin : tout tient dans la phrase qui vient</td></tr></table></section><section class="bloc card ml"><h3>Ce qui fait manquer un panneau</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">confondre « quant à » et « quand »</p><div class="k">Ce qui arrive</div><p class="ph">écouter ce qui suit</p><p class="px">« Quant à » est suivi d'un nom (quant au secteur, quant aux données) ; « quand » est suivi d'un verbe (quand nous irons). L'oreille ne les sépare pas, la suite de la phrase les sépare.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">mettre un connecteur à chaque phrase</p><div class="k">Ce qui arrive</div><p class="ph">un par idée, là où on peut se perdre</p><p class="px">Un texte où chaque phrase commence par un connecteur devient illisible et un exposé qui en abuse devient mécanique. Ils servent aux virages, pas aux lignes droites.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">noter la phrase entière</p><div class="k">Ce qui arrive</div><p class="ph">noter le connecteur et trois mots</p><p class="px">Pendant qu'on écrit une phrase complète, la phrase suivante passe. Un tiret, le connecteur, trois mots-clés : c'est ce qu'on relit le soir avec profit.</p></div></div></section><section class="bloc card ml"><h3>Quatre phrases entendues, quatre panneaux</h3><p class="mp">Quatre phrases entendues : que faut-il en conclure ?</p><ol class="check"><li><span class="q">« En ce qui concerne l'arrosage… »</span><ul class="opts"><li>on change de point</li><li>on conclut</li></ul></li><li><span class="q">« Autrement dit, la canopée compte plus que le nombre d'arbres. »</span><ul class="opts"><li>une idée nouvelle arrive</li><li>la même idée, en plus court</li></ul></li><li><span class="q">« Par conséquent, le secteur chauffe davantage. »</span><ul class="opts"><li>une conséquence de ce qui précède</li><li>une opinion personnelle</li></ul></li><li><span class="q">« Deuxième point : ce que fait un arbre. »</span><ul class="opts"><li>une étape du plan annoncé</li><li>la conclusion</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> on change de point — C'est un connecteur de changement de sujet : nouveau paragraphe dans vos notes. · <b>2.</b> la même idée, en plus court — Rien de neuf : c'est la version résumée, celle qu'on note. · <b>3.</b> une conséquence de ce qui précède — Il annonce que ce qui suit découle de ce qui vient d'être dit. · <b>4.</b> une étape du plan annoncé — Une étape, et il en reste au moins une autre derrière.</div></section></section></div>
+<footer><span>B2 · Faire parler l'équipe</span><span>Fiche élève</span></footer>
+</body>
+</html>

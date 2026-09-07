@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B1 · Tout droit, à droite, à gauche — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance B1 · Module 1 · 75 minutes</div>
+    <h1>Tout droit, à droite, à gauche</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">On ne comprendra pas toute la phrase, et ce n'est pas grave. Six mots suffisent à trouver son chemin.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>comprendre les six mots de la direction ;</li><li>suivre une direction en trois étapes ;</li><li>donner une direction simple ;</li><li>employer « jusqu'au », « jusqu'à la ».</li></ol></section><section class="bloc card"><div class="lbl">Dialogue</div><h2 class="t">Je répète pour être sûr</h2><p class="consigne">Écoutez deux fois avant de lire.</p><div class="rep rep--key"><div class="qui">MARIE-JOSÉE</div><div>Vous continuez tout droit jusqu'au feu.</div></div><div class="rep rep--key"><div class="qui">HASSAN</div><div>Jusqu'au feu.</div></div><div class="rep rep--key"><div class="qui">MARIE-JOSÉE</div><div>Au feu, vous tournez à droite.</div></div><div class="rep rep--key"><div class="qui">HASSAN</div><div>À droite au feu.</div></div><div class="rep rep--key"><div class="qui">MARIE-JOSÉE</div><div>Et la bibliothèque est au coin, à gauche.</div></div></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Les six mots</h2><table><thead><tr><th>Le mot</th><th>Ce qu'il dit</th></tr></thead><tbody><tr><td>tout droit</td><td>ne tournez pas</td></tr><tr><td>à droite / à gauche</td><td>tournez de ce côté</td></tr><tr><td>jusqu'à</td><td>allez jusque-là, puis arrêtez</td></tr><tr><td>au coin</td><td>là où deux rues se rencontrent</td></tr><tr><td>après</td><td>d'abord ceci, ensuite cela</td></tr></tbody></table><div class="note">Ces mots-là portent l'information. Le reste de la phrase, on peut le perdre sans conséquence.</div></section><section class="bloc regle"><div class="lbl">Jusqu'au, jusqu'à la</div><p class="r">« Jusqu'à » se colle à l'article, comme « à ».</p><p class="pr">jusqu'&lt;b&gt;au&lt;/b&gt; feu (masculin) · jusqu'&lt;b&gt;à la&lt;/b&gt; pharmacie (féminin) · jusqu'&lt;b&gt;à l'&lt;/b&gt;école (voyelle).</p></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Piège</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">à droite</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">tout droit</p></div></div><div class="note">Deux expressions très proches, deux sens opposés. &lt;b&gt;Tout droit&lt;/b&gt; : on ne tourne pas. &lt;b&gt;À droite&lt;/b&gt; : on tourne. Dans le doute, montrer la direction avec la main et demander « comme ça ? ».</div></section><section class="bloc card"><div class="lbl">Compréhension</div><h2 class="t">Vrai ou faux ?</h2><p class="consigne">Répondez d'après le dialogue.</p><ol class="ex"><li><span class="q">Il faut continuer tout droit jusqu'au feu.</span><span class="ligne ligne--court"></span></li><li><span class="q">Au feu, on tourne à gauche.</span><span class="ligne ligne--court"></span></li><li><span class="q">La bibliothèque est au coin.</span><span class="ligne ligne--court"></span></li><li><span class="q">Hassan répète ce qu'il a compris.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">Pratique · à deux</div><h2 class="t">Expliquez un chemin</h2><p class="consigne">Deux par deux, avec un plan du quartier.</p><ol class="ex"><li><span class="q">Étape 1</span><span class="ligne"></span></li><li><span class="q">Étape 2</span><span class="ligne"></span></li><li><span class="q">Étape 3</span><span class="ligne"></span></li><li><span class="q">Étape 4</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez le chemin du centre jusqu'à chez vous, en trois étapes.</p><ul><li>Je sors et je vais tout droit.</li><li>Au feu, je tourne à gauche.</li><li>Ma maison est au coin.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Les mots de la direction</h2><section class="bloc card ml"><h3>Six mots suffisent</h3><p class="mp">Quand on vous indique un chemin, la réponse tient presque toujours dans les mêmes six mots : <b>tout droit</b>, <b>à droite</b>, <b>à gauche</b>, <b>jusqu'à</b>, <b>au coin</b>, <b>après</b>. Sachez les six, et vous comprendrez la plupart des réponses — même dites vite.</p><div class="note">Vous n'avez pas besoin de comprendre toute la phrase. Ces six mots-là portent l'information.</div></section><section class="bloc card ml"><h3>Où tourner</h3><p class="mp">Trois directions, et c'est tout.</p><table class="ana"><tr><td>Sans tourner</td><td class="">Continuez <b>tout droit</b>.</td></tr><tr><td>Vers la droite</td><td class="">Tournez <b>à droite</b>.</td></tr><tr><td>Vers la gauche</td><td class="cle">Tournez <b>à gauche</b>.</td></tr></table><p class="dit"><span class="k">On dit</span> Tout droit. À droite. À gauche.</p><div class="note">Beaucoup de gens montrent la direction avec la main en même temps. Regardez la main : elle confirme le mot.</div></section><section class="bloc card ml"><h3>Jusqu'où</h3><p class="mp">Le mot qui dit où s'arrêter.</p><table class="ana"><tr><td>On dit</td><td class="">Continuez <b>jusqu'au</b> feu.</td></tr><tr><td>Aussi</td><td class="">Marchez <b>jusqu'à la</b> pharmacie.</td></tr><tr><td>Le sens</td><td class="cle">allez, puis arrêtez-vous là</td></tr></table><p class="dit"><span class="k">On dit</span> Continuez jusqu'au feu. Marchez jusqu'à la pharmacie.</p><div class="note">« Jusqu'à » suit la même règle que « à » : jusqu'<b>au</b> feu, jusqu'<b>à la</b> pharmacie, jusqu'<b>à l'</b>école.</div></section><section class="bloc card ml"><h3>Le repère</h3><p class="mp">Ce qu'on cherche des yeux en marchant.</p><table class="ana"><tr><td>Le carrefour</td><td class="">C'est <b>au coin</b>.</td></tr><tr><td>L'ordre</td><td class=""><b>Après</b> le feu, à droite.</td></tr><tr><td>La distance</td><td class="cle">C'est à <b>dix minutes</b> à pied.</td></tr></table><p class="dit"><span class="k">On dit</span> C'est au coin. Après le feu, à droite. Dix minutes à pied.</p><div class="note">Un repère est plus sûr qu'un nom de rue : un feu, une pharmacie, une école se voient de loin.</div></section><section class="bloc card ml"><h3>Comprendre une direction</h3><p class="mp">Choisissez un mot et une situation.</p><table class="labo"><thead><tr><th>Quel mot ? · Où ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">tout droit + à pied</td><td>Continuez tout droit sur le trottoir.</td><td>sans tourner</td></tr><tr><td class="cle">tout droit + à l'arrêt</td><td>L'arrêt est tout droit, devant l'école.</td><td>un repère : l'école</td></tr><tr><td class="cle">à droite + à pied</td><td>Tournez à droite au feu.</td><td>le feu dit où tourner</td></tr><tr><td class="cle">à droite + à l'arrêt</td><td>L'arrêt est à droite, de l'autre côté.</td><td>traverser la rue</td></tr><tr><td class="cle">jusqu'à + à pied</td><td>Marchez jusqu'à la pharmacie.</td><td>jusqu'à la — féminin</td></tr><tr><td class="cle">jusqu'à + à l'arrêt</td><td>Restez dans l'autobus jusqu'au parc.</td><td>jusqu'au — masculin</td></tr><tr><td class="cle">au coin + à pied</td><td>La bibliothèque est au coin.</td><td>où deux rues se rencontrent</td></tr><tr><td class="cle">au coin + à l'arrêt</td><td>L'arrêt est au coin, près du dépanneur.</td><td>deux repères valent mieux qu'un</td></tr><tr><td class="cle">après + à pied</td><td>Après le feu, tournez à gauche.</td><td>d'abord le feu, ensuite gauche</td></tr><tr><td class="cle">après + à l'arrêt</td><td>Descendez après le pont.</td><td>pour savoir quand sonner</td></tr></tbody></table><div class="note">Écoutez chaque phrase deux fois : la première pour le sens, la seconde pour la répéter.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six phrases qu'on vous dira.</p><table class="ex2"><tr><td>Vous continuez tout droit.</td><td>le début, presque toujours</td></tr><tr><td>Jusqu'au feu.</td><td>où s'arrêter</td></tr><tr><td>Après le feu, à droite.</td><td>l'ordre compte</td></tr><tr><td>C'est au coin, à gauche.</td><td>l'arrivée</td></tr><tr><td>C'est à dix minutes à pied.</td><td>la distance</td></tr><tr><td>Vous ne pouvez pas la manquer.</td><td>ça veut dire : c'est très visible</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges à connaître</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">confondre droite et tout droit</p><div class="k">Ce qui arrive</div><p class="ph">deux mots très proches, deux sens différents</p><p class="px"><b>Tout droit</b> veut dire : ne tournez pas. <b>À droite</b> veut dire : tournez de ce côté. Dans le doute, montrez avec la main et demandez « comme ça ? ».</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">« jusqu'à le feu »</p><div class="k">Ce qui arrive</div><p class="ph">jusqu'au feu</p><p class="px">« Jusqu'à » se colle à l'article comme « à » : jusqu'<b>au</b> feu, jusqu'<b>à la</b> banque, jusqu'<b>à l'</b>école.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">partir sans avoir compris</p><div class="k">Ce qui arrive</div><p class="ph">on marche dix minutes dans le mauvais sens</p><p class="px">Répétez ce que vous avez compris avant de partir. La personne corrigera tout de suite si c'est faux — c'est plus rapide que de revenir.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">« Tout droit » veut dire…</span><ul class="opts"><li>ne pas tourner</li><li>tourner à droite</li></ul></li><li><span class="q">« Jusqu'au feu » veut dire…</span><ul class="opts"><li>avant le feu</li><li>allez jusque-là, puis arrêtez</li></ul></li><li><span class="q">« C'est au coin » veut dire…</span><ul class="opts"><li>où deux rues se rencontrent</li><li>au bout de la ville</li></ul></li><li><span class="q">« Vous ne pouvez pas la manquer » veut dire…</span><ul class="opts"><li>c'est très visible</li><li>c'est fermé</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> ne pas tourner — Tout droit : on continue dans la même direction. · <b>2.</b> allez jusque-là, puis arrêtez — « Jusqu'à » dit où s'arrêter. · <b>3.</b> où deux rues se rencontrent — Le coin, c'est le carrefour de deux rues. · <b>4.</b> c'est très visible — C'est une façon de dire : vous allez la voir tout de suite.</div></section></section></div>
+<footer><span>B1 · Prendre l'autobus</span><span>Fiche élève</span></footer>
+</body>
+</html>

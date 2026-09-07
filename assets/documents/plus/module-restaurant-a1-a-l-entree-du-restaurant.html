@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A1 · À l'entrée du restaurant — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance A1 · Module 16 · 75 minutes</div>
+    <h1>À l'entrée du restaurant</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Andrés invite Manon pour la remercier. C'est son premier repas assis dans un restaurant d'ici — et déjà, à l'entrée, il y a des choses qu'il ne connaît pas.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>entrer dans un restaurant et répondre aux questions de l'accueil ;</li><li>savoir qu'on attend qu'on nous place ;</li><li>distinguer la carte, le menu du jour et la table d'hôte ;</li><li>demander deux minutes avant de commander.</li></ol></section><section class="bloc"><div class="lbl">La situation</div><h2 class="t">Ce qu'on sait d'Andrés</h2><div class="grid"><div class="card"><h3>D'où il vient</h3><p>Du Pérou. Il est au Québec depuis deux ans.</p></div><div class="card"><h3>Pourquoi il invite</h3><p>Manon, une collègue, l'a aidé toute la semaine. Il veut la remercier.</p></div><div class="card"><h3>Ce qu'il ne connaît pas</h3><p>Il n'a mangé qu'au comptoir jusqu'ici. La carte, le menu du jour, la table d'hôte : trois mots qu'il n'a jamais eu à distinguer.</p></div><div class="card"><h3>Ce qu'il fait de bien</h3><p>Il demande à Manon. Poser la question à quelqu'un qui sait est plus rapide que de deviner.</p></div></div></section><section class="bloc card"><div class="lbl">Dialogue · 1 de 3</div><h2 class="t">Les trois questions de l'accueil</h2><p class="consigne">Écoutez d'abord l'enregistrement, diapo masquée. Lisez ensuite.</p><div class="rep rep--key"><div class="qui">SOPHIE</div><div>Bonsoir ! Vous êtes combien ?</div></div><div class="rep rep--key"><div class="qui">ANDRÉS</div><div>Bonsoir. Deux, s'il vous plaît.</div></div><div class="rep rep--key"><div class="qui">SOPHIE</div><div>Vous avez une réservation ?</div></div><div class="rep rep--key"><div class="qui">ANDRÉS</div><div>Non, je n'en ai pas. Est-ce qu'il y a de la place ?</div></div></section><section class="bloc card"><div class="lbl">Dialogue · 2 de 3</div><h2 class="t">On vous place</h2><div class="rep rep--key"><div class="qui">SOPHIE</div><div>Oui, ça va. Vous préférez près de la fenêtre ou au fond ?</div></div><div class="rep rep--key"><div class="qui">ANDRÉS</div><div>Près de la fenêtre, si c'est possible.</div></div><div class="rep rep--key"><div class="qui">SOPHIE</div><div>Suivez-moi. Voici la carte. Le menu du jour est sur l'ardoise, là-bas.</div></div><div class="rep rep--key"><div class="qui">MANON</div><div>Merci. On peut prendre deux minutes avant de commander ?</div></div></section><section class="bloc card"><div class="lbl">Dialogue · 3 de 3</div><h2 class="t">Trois mots à distinguer</h2><div class="rep rep--key"><div class="qui">ANDRÉS</div><div>Manon, c'est quoi la différence entre la carte et le menu du jour ?</div></div><div class="rep rep--key"><div class="qui">MANON</div><div>La carte, c'est tout ce qu'ils font. Le menu du jour change chaque jour et coûte moins cher.</div></div><div class="rep"><div class="qui">ANDRÉS</div><div>Et la table d'hôte ?</div></div><div class="rep rep--key"><div class="qui">MANON</div><div>C'est un prix fixe pour trois services : entrée, plat, dessert. Souvent le meilleur choix.</div></div></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Les trois formules</h2><table><thead><tr><th>La formule</th><th>Ce que c'est</th></tr></thead><tbody><tr><td>La carte</td><td>tout ce que le restaurant sert, chaque plat à son prix</td></tr><tr><td>Le menu du jour</td><td>un choix limité, différent chaque jour, moins cher</td></tr><tr><td>La table d'hôte</td><td>un prix fixe pour trois services</td></tr><tr><td>À la carte</td><td>un plat seul, sans entrée ni dessert</td></tr></tbody></table><div class="note">La table d'hôte est souvent le meilleur rapport si on a faim.</div></section><section class="bloc card"><div class="lbl">Vocabulaire · 1 de 2</div><h2 class="t">À l'entrée</h2><table class="voc"><tbody><tr><td class="mot">une réservation</td><td class="def">Une table réservée d'avance, à son nom.</td></tr><tr><td class="mot">l'hôtesse</td><td class="def">La personne qui accueille et qui place les clients.</td></tr><tr><td class="mot">la carte</td><td class="def">La liste de tout ce que le restaurant sert.</td></tr><tr><td class="mot">l'ardoise</td><td class="def">Le tableau noir où est écrit le menu du jour.</td></tr><tr><td class="mot">la salle à manger</td><td class="def">La partie du restaurant où on mange, avec les tables.</td></tr></tbody></table></section><section class="bloc card"><div class="lbl">Vocabulaire · 2 de 2</div><h2 class="t">Les formules</h2><table class="voc"><tbody><tr><td class="mot">le menu du jour</td><td class="def">Un choix limité qui change chaque jour.</td></tr><tr><td class="mot">la table d'hôte</td><td class="def">Un prix fixe pour trois services.</td></tr><tr><td class="mot">à la carte</td><td class="def">Un plat seul, sans formule.</td></tr><tr><td class="mot">un service</td><td class="def">Une partie du repas : entrée, plat ou dessert.</td></tr><tr><td class="mot">le plat du jour</td><td class="def">Le plat préparé seulement aujourd'hui.</td></tr></tbody></table></section><section class="bloc regle"><div class="lbl">Ce qu'il faut retenir</div><p class="r">On attend qu'on vous place, et on peut prendre deux minutes.</p><p class="pr">Dans un restaurant avec service aux tables, on ne choisit pas sa table. Et une fois assis, personne ne vous presse : « on peut prendre deux minutes ? » est une phrase parfaitement ordinaire, que le serveur entend vingt fois par soir.</p></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Commander la première chose venue</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">Euh… le poulet. [parce que le serveur attend]</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">On peut prendre deux minutes avant de commander ?</p></div></div><div class="note">Beaucoup de gens commandent trop vite parce qu'ils se sentent pressés — et regrettent en voyant l'assiette du voisin. Le serveur, lui, s'attend à repasser : c'est même prévu dans son service.</div></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez les quatre premières phrases que vous direz en entrant dans un restaurant.</p><ul><li>La salutation, le nombre de personnes, la réservation, la préférence de table.</li><li>Ajoutez la phrase pour demander deux minutes.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Les premières minutes</h2><section class="bloc card ml"><h3>On attend qu'on vous place</h3><p class="mp">Dans un restaurant avec service aux tables, on <b>ne choisit pas sa table soi-même</b>. On s'arrête à l'entrée et on attend qu'une personne vienne. Un petit panneau le dit souvent : « Veuillez attendre qu'on vous place. »</p><div class="note">C'est différent d'un casse-croûte ou d'une aire de restauration, où on s'installe où on veut. La règle change selon le type d'endroit.</div></section><section class="bloc card ml"><h3>Les trois questions de l'accueil</h3><p class="mp">Toujours les mêmes, toujours dans cet ordre.</p><table class="ana"><tr><td>1</td><td class="">Vous êtes <b>combien</b> ?</td></tr><tr><td>2</td><td class="cle">Vous avez une <b>réservation</b> ?</td></tr><tr><td>3</td><td class="">Vous préférez où ?</td></tr></table><p class="dit"><span class="k">On dit</span> Bonsoir ! Vous êtes combien ?</p><div class="note">Trois réponses courtes suffisent : « Deux. » · « Non. » · « Près de la fenêtre, si c'est possible. »</div></section><section class="bloc card ml"><h3>Ce qu'on vous donne à lire</h3><p class="mp">La carte, et parfois une ardoise pour ce qui change chaque jour.</p><table class="ana"><tr><td>La carte</td><td class="">tout ce que le restaurant sert</td></tr><tr><td>L'{ardoise}</td><td class="cle">le menu du jour, qui change</td></tr><tr><td>Le prix</td><td class="">l'ardoise est presque toujours moins chère</td></tr></table><p class="dit"><span class="k">On dit</span> Voici la carte. Le menu du jour est sur l'ardoise.</p><div class="note">L'ardoise est souvent au mur ou près de l'entrée. Si vous ne la voyez pas, demandez : « qu'est-ce qu'il y a au menu du jour ? »</div></section><section class="bloc card ml"><h3>La formule qui sauve</h3><p class="mp">« <b>On peut prendre deux minutes ?</b> » Personne ne s'en formalise, et cela évite de commander dans la précipitation. Le serveur repassera — c'est même ce qu'il attend.</p><div class="note">Beaucoup d'élèves commandent la première chose venue parce qu'ils se sentent pressés. Cette phrase règle le problème.</div></section><section class="bloc card ml"><h3>Que répondre ?</h3><p class="mp">Choisissez une question de l'accueil.</p><table class="labo"><thead><tr><th>Quelle question ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">Vous êtes combien ?</td><td>Deux, s'il vous plaît.</td><td>un chiffre suffit</td></tr><tr><td class="cle">Vous avez une réservation ?</td><td>Non, je n'en ai pas. Est-ce qu'il y a de la place ?<span class="tags"><b>Non</b>, je n'en ai pas.</span></td><td>et on demande s'il y a de la place</td></tr><tr><td class="cle">Vous préférez près de la fenêtre ou au fond ?</td><td>Près de la fenêtre, si c'est possible.</td><td>« si c'est possible » adoucit</td></tr><tr><td class="cle">Vous avez fait votre choix ?</td><td>On peut prendre deux minutes avant de commander ?<span class="tags"><b>On peut prendre deux minutes ?</b></span></td><td>la formule qui sauve</td></tr><tr><td class="cle">Quelque chose à boire ?</td><td>De l'eau, s'il vous plaît.</td><td>l'eau du robinet est gratuite</td></tr></tbody></table><div class="note">Cinq questions, cinq réponses courtes. Aucune ne demande plus de six mots.</div></section><section class="bloc card ml"><h3>Les phrases de l'accueil</h3><p class="mp">Écoutez chacune.</p><table class="ex2"><tr><td>Bonsoir ! Vous êtes combien ?</td><td>la première question</td></tr><tr><td>Deux, s'il vous plaît.</td><td>la réponse</td></tr><tr><td>Vous avez une réservation ?</td><td>la deuxième question</td></tr><tr><td>Non, je n'en ai pas. Est-ce qu'il y a de la place ?</td><td>la réponse, avec une question</td></tr><tr><td>Voici la carte. Le menu du jour est sur l'ardoise.</td><td>ce qu'on vous donne</td></tr><tr><td>On peut prendre deux minutes ?</td><td>la formule qui sauve</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges à connaître</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">s'asseoir soi-même</p><div class="k">Ce qui arrive</div><p class="ph">on attend qu'on vous place</p><p class="px">Dans un restaurant avec service aux tables, choisir sa table soi-même surprend. Un panneau à l'entrée le dit souvent.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">commander trop vite</p><div class="k">Ce qui arrive</div><p class="ph">« on peut prendre deux minutes ? »</p><p class="px">Beaucoup de gens commandent la première chose venue parce qu'ils se sentent pressés. Le serveur, lui, s'attend à repasser.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">ne pas voir l'ardoise</p><div class="k">Ce qui arrive</div><p class="ph">demandez le menu du jour</p><p class="px">Elle est souvent au mur, hors du champ de vision quand on est assis. Le menu du jour est presque toujours le meilleur rapport.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">Dans un restaurant avec service aux tables, on…</span><ul class="opts"><li>choisit sa table</li><li>attend qu'on nous place</li></ul></li><li><span class="q">« Vous êtes combien ? » demande…</span><ul class="opts"><li>le nombre de personnes</li><li>votre âge</li></ul></li><li><span class="q">Le menu du jour se trouve souvent…</span><ul class="opts"><li>sur la carte</li><li>sur une ardoise</li></ul></li><li><span class="q">Si vous n'êtes pas prêt à commander…</span><ul class="opts"><li>il faut choisir vite</li><li>on peut prendre deux minutes</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> attend qu'on nous place — Un panneau à l'entrée le dit souvent. · <b>2.</b> le nombre de personnes — Un chiffre suffit comme réponse. · <b>3.</b> sur une ardoise — Il change chaque jour : on ne l'imprime pas. · <b>4.</b> on peut prendre deux minutes — Le serveur s'attend à repasser.</div></section></section></div>
+<footer><span>A1 · Au restaurant</span><span>Fiche élève</span></footer>
+</body>
+</html>

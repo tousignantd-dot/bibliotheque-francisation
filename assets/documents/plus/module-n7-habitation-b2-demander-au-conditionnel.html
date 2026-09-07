@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B2 · Demander au conditionnel — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance B2 · Module 5 · 75 minutes</div>
+    <h1>Demander au conditionnel</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">« Mettez du caoutchouc » et « accepteriez-vous de mettre du caoutchouc ? » demandent la même chose. La première obtient un refus une fois sur deux.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>former le conditionnel présent de tous les verbes du dossier ;</li><li>demander poliment : accepteriez-vous, pourriez-vous, je voudrais ;</li><li>construire une hypothèse : si + imparfait, puis conditionnel ;</li><li>reconnaître le conditionnel d'incertitude.</li></ol></section><section class="bloc regle"><div class="lbl">Le conditionnel présent</div><p class="r">Le radical du futur, plus les terminaisons de l'imparfait.</p><p class="pr">-ais, -ais, -ait, -ions, -iez, -aient. « J'accepterais, tu accepterais, il accepterait, nous accepterions, vous accepteriez, ils accepteraient. » Si vous savez le futur, vous savez le conditionnel : les radicaux irréguliers sont les mêmes.</p></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Les radicaux irréguliers, les mêmes qu'au futur</h2><table><thead><tr><th>Infinitif</th><th>Radical</th></tr></thead><tbody><tr><td>être</td><td class="cle">je serais</td></tr><tr><td>avoir</td><td class="cle">j'aurais</td></tr><tr><td>aller</td><td class="cle">j'irais</td></tr><tr><td>faire</td><td class="cle">je ferais</td></tr><tr><td>pouvoir</td><td class="cle">je pourrais</td></tr><tr><td>vouloir</td><td class="cle">je voudrais</td></tr><tr><td>devoir</td><td class="cle">je devrais</td></tr></tbody></table></section><section class="bloc"><div class="lbl">Analyse</div><h2 class="t">Trois emplois, et ce qu'ils font</h2><div class="grid"><div class="card"><h3>La politesse</h3><p>« Accepteriez-vous de mettre du caoutchouc ? » L'autre garde le droit de refuser.</p></div><div class="card"><h3>L'hypothèse</h3><p>« Si le tapis était contre l'autre mur, je ne l'entendrais plus. » On montre sans imposer.</p></div><div class="card"><h3>L'incertitude</h3><p>« Le bruit viendrait du moteur plutôt que de vos pas. » On avance sans accuser.</p></div></div></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Grammaire</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">Si vous partiriez plus tard</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">Si vous partiez plus tard, cela changerait tout</p></div></div><div class="note">Après « si », jamais de conditionnel. La condition est à l'imparfait, la conséquence au conditionnel — jamais l'inverse, jamais les deux. Un moyen de ne plus se tromper : après « si », il n'y a jamais de -rais.</div></section><section class="bloc card"><div class="lbl">Pratique</div><h2 class="t">Mettez le verbe au conditionnel présent</h2><p class="consigne">Attention au s de la première personne.</p><ol class="ex"><li><span class="q">Est-ce que vous ___ (accepter) de mettre un tapis de caoutchouc ?</span><span class="ligne ligne--court"></span></li><li><span class="q">___ (pouvoir)-vous regarder si le tapis rentre dans le couloir ?</span><span class="ligne ligne--court"></span></li><li><span class="q">Je ___ (vouloir) vous parler cinq minutes, si vous avez le temps.</span><span class="ligne ligne--court"></span></li><li><span class="q">Si le tapis était contre l'autre mur, je ne l'___ (entendre) presque plus.</span><span class="ligne ligne--court"></span></li><li><span class="q">Si vous partiez à sept heures, cela me ___ (donner) une heure de plus.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le bruit ___ (venir) du moteur plutôt que de vos pas.</span><span class="ligne ligne--court"></span></li><li><span class="q">Je ___ (être) prête à ne rien dire pour les fins de semaine.</span><span class="ligne ligne--court"></span></li><li><span class="q">Nous ___ (faire) le point dans deux semaines, si cela vous va.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écris une demande au conditionnel à quelqu'un qui n'est pas obligé de dire oui.</p><ul><li>Commence par « Accepteriez-vous » ou « Pourriez-vous ».</li><li>Demande une seule chose, et une chose précise.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Le conditionnel présent : demander sans exiger</h2><section class="bloc card ml"><h3>Le temps qui laisse à l'autre le droit de dire non</h3><p class="mp">« Mettez du caoutchouc sous votre appareil » et « Accepteriez-vous de mettre du caoutchouc sous votre appareil ? » demandent exactement la même chose. La première phrase obtient un refus une fois sur deux ; la seconde presque jamais. La différence n'est pas la politesse : c'est que la seconde laisse à l'autre la possibilité de refuser, et que personne n'a besoin de se défendre contre une demande à laquelle il pourrait dire non.</p><div class="note">Au niveau 7, le conditionnel présent est un savoir à part entière : le programme demande de le reconnaître, de le former, et de l'employer pour la politesse, pour l'hypothèse et pour l'incertitude. Les trois emplois servent dans ce module.</div></section><section class="bloc card ml"><h3>Comment il se forme : le futur, avec les terminaisons de l'imparfait</h3><p class="mp">Il n'y a rien d'autre à retenir. Si vous savez faire le futur simple, vous savez faire le conditionnel : même radical, autres terminaisons.</p><table class="ana"><tr><td>Les terminaisons</td><td class="">-ais, -ais, -ait, -ions, -iez, -aient</td></tr><tr><td>Un verbe régulier</td><td class="cle">j'accepterais, tu accepterais, il accepterait, nous accepterions, vous accepteriez, ils accepteraient</td></tr><tr><td>Les radicaux irréguliers</td><td class="">être → ser- · avoir → aur- · aller → ir- · faire → fer- · pouvoir → pourr- · vouloir → voudr- · devoir → devr- · savoir → saur- · venir → viendr- · falloir → faudr-</td></tr></table><p class="dit"><span class="k">On dit</span> J'accepterais, tu accepterais, il accepterait, nous accepterions, vous accepteriez, ils accepteraient.</p><div class="note">Les radicaux irréguliers sont exactement les mêmes qu'au futur simple. Vous ne les apprenez donc pas deux fois.</div></section><section class="bloc card ml"><h3>Emploi 1 — la politesse : la demande qui obtient une réponse</h3><p class="mp">On l'emploie au moment de demander quelque chose à quelqu'un qui n'est pas obligé de le donner. C'est le cas de tout ce module.</p><table class="ana"><tr><td>On dit</td><td class="">Accepteriez-vous de mettre un tapis de caoutchouc sous l'appareil ?</td></tr><tr><td>On dit aussi</td><td class="cle">Pourriez-vous regarder s'il rentre dans le couloir ? · Je voudrais vous parler cinq minutes.</td></tr><tr><td>Ce qu'on évite</td><td class="">Mettez du caoutchouc. · Je veux que vous le déplaciez.</td></tr></table><p class="dit"><span class="k">On dit</span> Accepteriez-vous de mettre un tapis de caoutchouc sous l'appareil ?</p><div class="note">« Je voudrais » plutôt que « je veux » : deux syllabes de plus, et une conversation qui reste ouverte.</div></section><section class="bloc card ml"><h3>Emploi 2 — l'hypothèse : <b>si</b> + imparfait, puis conditionnel</h3><p class="mp">On imagine autre chose que ce qui est. C'est la façon la plus efficace de faire voir une solution à quelqu'un sans la lui imposer.</p><table class="ana"><tr><td>On dit</td><td class="">Si le tapis était contre le mur du couloir, je ne l'entendrais presque plus.</td></tr><tr><td>On dit aussi</td><td class="cle">Si vous partiez à sept heures, cela me donnerait une heure de sommeil de plus.</td></tr><tr><td>L'ordre des temps</td><td class="">si + IMPARFAIT dans la condition, CONDITIONNEL dans la conséquence</td></tr></table><p class="dit"><span class="k">On dit</span> Si le tapis était contre le mur du couloir, je ne l'entendrais presque plus.</p><div class="note">Jamais de conditionnel après « si ». « Si vous partiriez » est la faute la plus fréquente de ce niveau, et elle s'entend tout de suite.</div></section><section class="bloc card ml"><h3>Emploi 3 — l'incertitude : avancer sans affirmer</h3><p class="mp">On propose une explication sans se porter garant. Très utile quand on ne veut accuser personne — c'est-à-dire tout le temps, ici.</p><table class="ana"><tr><td>On dit</td><td class="">Le bruit viendrait du moteur plutôt que de vos pas.</td></tr><tr><td>On dit aussi</td><td class="cle">Il y aurait une solution moins chère, d'après ce qu'on m'a dit.</td></tr><tr><td>Ce que ça change</td><td class="">on ouvre une piste, l'autre peut la corriger sans se contredire</td></tr></table><p class="dit"><span class="k">On dit</span> Le bruit viendrait du moteur plutôt que de vos pas.</p><div class="note">C'est aussi le conditionnel des journalistes : « l'incendie aurait pris naissance au sous-sol ». Il dit « on me l'a rapporté, je ne l'ai pas vérifié ».</div></section><section class="bloc card ml"><h3>La même demande, trois façons</h3><p class="mp">Choisissez ce que vous demandez, puis la manière.</p><table class="labo"><thead><tr><th>Quoi ? · Comment ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">au conditionnel + à l'impératif</td><td>Mettez du caoutchouc sous votre appareil.</td><td>un ordre : l'autre se prépare à se défendre</td></tr><tr><td class="cle">au conditionnel + au conditionnel</td><td>Accepteriez-vous de mettre du caoutchouc sous l'appareil ?</td><td>une demande : l'autre peut dire non, donc il écoute</td></tr><tr><td class="cle">au conditionnel + par une hypothèse</td><td>S'il y avait du caoutchouc sous l'appareil, le bruit passerait beaucoup moins.</td><td>on montre la solution sans demander : souvent, l'autre la propose lui-même</td></tr><tr><td class="cle">déplacer l'appareil + à l'impératif</td><td>Déplacez l'appareil dans le couloir.</td><td>trop direct pour une première conversation</td></tr><tr><td class="cle">déplacer l'appareil + au conditionnel</td><td>Pourriez-vous regarder si l'appareil rentre dans le couloir ?</td><td>on demande une vérification, pas un déménagement : plus facile à accepter</td></tr><tr><td class="cle">déplacer l'appareil + par une hypothèse</td><td>Si l'appareil était contre le mur du couloir, il ne serait plus au-dessus de ma chambre.</td><td>un fait de géographie, présenté sans demande</td></tr><tr><td class="cle">un moment pour se parler + à l'impératif</td><td>Parlons-en ce soir.</td><td>convenable entre amis, brusque entre voisins</td></tr><tr><td class="cle">un moment pour se parler + au conditionnel</td><td>Je voudrais vous parler cinq minutes, si vous avez le temps.</td><td>la durée annoncée rassure autant que le conditionnel</td></tr><tr><td class="cle">un moment pour se parler + par une hypothèse</td><td>Si vous aviez cinq minutes un soir de la semaine, cela nous éviterait des lettres.</td><td>l'hypothèse dit l'enjeu sans le brandir</td></tr></tbody></table><div class="note">Écoutez les trois manières pour une même demande. Ce n'est jamais le contenu qui change : c'est la porte de sortie qu'on laisse à l'autre.</div></section><section class="bloc card ml"><h3>Huit phrases, avant et après</h3><p class="mp">À gauche l'ordre, à droite la demande.</p><table class="ex2"><tr><td>Mettez du caoutchouc.</td><td>Accepteriez-vous de mettre du caoutchouc ?</td></tr><tr><td>Déplacez l'appareil.</td><td>Pourriez-vous regarder si l'appareil se déplace ?</td></tr><tr><td>Je veux vous parler.</td><td>Je voudrais vous parler cinq minutes.</td></tr><tr><td>Il faut changer d'heure.</td><td>Il faudrait peut-être regarder l'heure ensemble.</td></tr><tr><td>Vous devez faire quelque chose.</td><td>Vous pourriez sans doute faire quelque chose.</td></tr><tr><td>Répondez-moi avant vendredi.</td><td>Auriez-vous une réponse d'ici vendredi ?</td></tr></table></section><section class="bloc card ml"><h3>Quatre questions, carnet fermé</h3><p class="mp">Répondez sans remonter dans la page.</p><ol class="check"><li><span class="q">Le conditionnel se forme avec…</span><ul class="opts"><li>le radical du futur et les terminaisons de l'imparfait</li><li>le radical de l'imparfait et les terminaisons du futur</li></ul></li><li><span class="q">Après « si » dans une hypothèse, on met…</span><ul class="opts"><li>l'imparfait</li><li>le conditionnel</li></ul></li><li><span class="q">« Je proposerais » est…</span><ul class="opts"><li>un futur</li><li>un conditionnel</li></ul></li><li><span class="q">« Le bruit viendrait du moteur » exprime…</span><ul class="opts"><li>une certitude</li><li>une hypothèse non vérifiée</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> le radical du futur et les terminaisons de l'imparfait — Radical du futur, terminaisons de l'imparfait. Dans cet ordre. · <b>2.</b> l'imparfait — Si + imparfait, puis conditionnel. Jamais deux conditionnels. · <b>3.</b> un conditionnel — Le s final le dit. « Je proposerai », sans s, serait un futur. · <b>4.</b> une hypothèse non vérifiée — C'est le conditionnel de l'incertitude, celui des journalistes.</div></section><section class="bloc card ml"><h3>Trois faux pas, et comment s'en sortir</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">glisser un conditionnel juste après « si »</p><div class="k">Ce qui arrive</div><p class="ph">se dire : après si, jamais de -rais</p><p class="px">« Si vous partiriez » n'existe pas. La condition est à l'imparfait, la conséquence au conditionnel — jamais l'inverse, jamais les deux.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">oublier le s à la première personne</p><div class="k">Ce qui arrive</div><p class="ph">relire les verbes en -rai / -rais</p><p class="px">« Je proposerai cinquante dollars » promet ; « je proposerais cinquante dollars » suggère. Une lettre ne dit pas la même chose selon la lettre qui manque.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">croire que le conditionnel affaiblit la demande</p><div class="k">Ce qui arrive</div><p class="ph">garder le chiffre, poser le ton</p><p class="px">« Accepteriez-vous de déplacer l'appareil avant le 30 mars ? » est aussi précis que l'ordre correspondant. Le chiffre fait le travail ; le mode décide de la suite.</p></div></div></section></section></div>
+<footer><span>B2 · Le bruit d'en haut</span><span>Fiche élève</span></footer>
+</body>
+</html>

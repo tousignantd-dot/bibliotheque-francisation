@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C1 · Est-ce que je peux… ? — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance C1 · Module 4 · 75 minutes</div>
+    <h1>Est-ce que je peux… ?</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Une seule formule, et elle sert partout : en classe, au guichet, à la clinique.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>demander une permission avec « est-ce que je peux » ;</li><li>garder le deuxième verbe à l'infinitif ;</li><li>reconnaître trois réponses possibles ;</li><li>ajouter une raison en trois mots.</li></ol></section><section class="bloc card"><div class="lbl">Dialogue</div><h2 class="t">Trois demandes de suite</h2><p class="consigne">Écoutez deux fois, puis comptez les oui et les non.</p><div class="rep rep--key"><div class="qui">TARIQ</div><div>Madame, est-ce que je peux sortir deux minutes ?</div></div><div class="rep rep--key"><div class="qui">MADAME LEDUC</div><div>Oui, bien sûr. La pause est à dix heures.</div></div><div class="rep rep--key"><div class="qui">TARIQ</div><div>Merci. Est-ce que je peux prendre mon téléphone ?</div></div><div class="rep rep--key"><div class="qui">MADAME LEDUC</div><div>Non. En classe, le téléphone est interdit.</div></div><div class="rep rep--key"><div class="qui">TARIQ</div><div>D'accord. Et l'eau ?</div></div><div class="rep rep--key"><div class="qui">MADAME LEDUC</div><div>L'eau, c'est permis. Le café aussi.</div></div></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">La formule, en trois morceaux</h2><table><thead><tr><th>Le morceau</th><th>Ce qu'on met</th></tr></thead><tbody><tr><td>le début</td><td>Est-ce que je peux</td></tr><tr><td>le verbe</td><td>sortir · ouvrir · prendre · boire</td></tr><tr><td>la politesse</td><td>s'il vous plaît</td></tr><tr><td>plus court, à l'oral</td><td>Je peux sortir ? — la voix monte</td></tr></tbody></table><div class="note">Le deuxième verbe ne se conjugue jamais : il reste comme dans le dictionnaire.</div></section><section class="bloc regle"><div class="lbl">Le deuxième verbe ne bouge pas</div><p class="r">Après « je peux », le verbe reste tel quel.</p><p class="pr">On dit « je peux &lt;b&gt;sortir&lt;/b&gt; », jamais « je peux je sors ». C'est vrai aussi après &lt;b&gt;devoir&lt;/b&gt; et après &lt;b&gt;il faut&lt;/b&gt; : vous devez &lt;b&gt;téléphoner&lt;/b&gt;, il faut &lt;b&gt;être&lt;/b&gt; à l'heure.</p></section><section class="bloc regle"><div class="lbl">Une raison en trois mots</div><p class="r">Elle fait presque toujours dire oui.</p><p class="pr">« Est-ce que je peux ouvrir la fenêtre ? &lt;b&gt;Il fait chaud.&lt;/b&gt; » « Est-ce que je peux partir plus tôt ? &lt;b&gt;J'ai un rendez-vous.&lt;/b&gt; » Trois mots après la demande, jamais une longue explication.</p></section><section class="bloc card"><div class="lbl">Production orale</div><h2 class="t">Que dites-vous ?</h2><p class="consigne">Formulez la demande à voix haute.</p><ol class="ex"><li><span class="q">Vous voulez sortir deux minutes.</span><span class="ligne"></span></li><li><span class="q">Vous n'avez pas de crayon.</span><span class="ligne"></span></li><li><span class="q">Il fait chaud dans la classe.</span><span class="ligne"></span></li><li><span class="q">Vous voulez boire de l'eau.</span><span class="ligne"></span></li><li><span class="q">Vous n'avez pas compris.</span><span class="ligne"></span></li></ol></section><section class="bloc"><div class="lbl">Les trois réponses qu'on entend</div><h2 class="t">À reconnaître tout de suite</h2><div class="grid"><div class="card"><h3>Oui, bien sûr.</h3><p>C'est un oui. On dit merci et on y va.</p></div><div class="card"><h3>Oui, mais attends deux minutes.</h3><p>C'est un oui aussi. L'enseignante finit son explication.</p></div><div class="card"><h3>Non, pas maintenant.</h3><p>Ce n'est pas un refus définitif : on redemande à la pause.</p></div></div></section><section class="bloc card"><div class="lbl">Pratique · à deux</div><h2 class="t">Dix demandes en dix minutes</h2><p class="consigne">Deux par deux, l'un joue l'enseignante.</p><ol class="ex"><li><span class="q">Étape 1</span><span class="ligne"></span></li><li><span class="q">Étape 2</span><span class="ligne"></span></li><li><span class="q">Étape 3</span><span class="ligne"></span></li><li><span class="q">Étape 4</span><span class="ligne"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez trois permissions que vous voulez demander cette semaine.</p><ul><li>Est-ce que je peux sortir deux minutes ?</li><li>Est-ce que je peux prendre une feuille ?</li><li>Est-ce que je peux partir à midi ? J'ai un rendez-vous.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Demander la permission</h2><section class="bloc card ml"><h3>Une seule formule à retenir</h3><p class="mp">Pour demander la permission, on dit <b>« Est-ce que je peux… »</b> et on ajoute un verbe qui ne change jamais : <b>sortir</b>, <b>ouvrir</b>, <b>prendre</b>, <b>boire</b>. La phrase finit là, avec la voix qui monte.</p><div class="note">C'est la même formule dans un bureau, à la banque et chez le médecin. Elle sert bien au-delà de la classe.</div></section><section class="bloc card ml"><h3>La formule complète</h3><p class="mp">Trois morceaux, toujours dans le même ordre.</p><table class="ana"><tr><td>Le début</td><td class=""><b>Est-ce que je peux</b></td></tr><tr><td>Le verbe qui ne change pas</td><td class="">sortir · ouvrir · prendre · boire</td></tr><tr><td>La politesse</td><td class="">s'il vous plaît</td></tr><tr><td>Tout ensemble</td><td class="">Est-ce que je peux <b>sortir</b>, s'il vous plaît ?</td></tr></table><p class="dit"><span class="k">On dit</span> Est-ce que je peux sortir, s'il vous plaît ?</p><div class="note">On peut enlever « est-ce que » à l'oral : « Je peux sortir ? » — la voix monte à la fin.</div></section><section class="bloc card ml"><h3>Le deuxième verbe ne bouge jamais</h3><p class="mp">C'est la seule règle à surveiller.</p><table class="ana"><tr><td>On dit</td><td class="">Je peux <b>sortir</b>.</td></tr><tr><td>Aussi</td><td class="">Je peux <b>prendre</b> un crayon.</td></tr><tr><td>Aussi</td><td class="">Je peux <b>ouvrir</b> la fenêtre.</td></tr><tr><td>On ne dit pas</td><td class="cle">« Je peux je sors »</td></tr></table><p class="dit"><span class="k">On dit</span> Je peux sortir. Je peux prendre un crayon. Je peux ouvrir la fenêtre.</p><div class="note">Le verbe reste dans sa forme du dictionnaire : sortir, prendre, ouvrir, boire, aller.</div></section><section class="bloc card ml"><h3>Les réponses qu'on entend</h3><p class="mp">Trois, et il faut les reconnaître.</p><table class="ana"><tr><td>Oui</td><td class="">Oui, bien sûr.</td></tr><tr><td>Oui, mais plus tard</td><td class="">Oui, mais <b>attends</b> deux minutes.</td></tr><tr><td>Non</td><td class="">Non, pas maintenant.</td></tr><tr><td>Ce qu'on répond</td><td class="">Merci, madame.</td></tr></table><p class="dit"><span class="k">On dit</span> Oui, bien sûr. Oui, mais attends deux minutes. Non, pas maintenant.</p><div class="note">« Pas maintenant » n'est pas un refus définitif : ça veut dire « redemande à la pause ».</div></section><section class="bloc card ml"><h3>Demande ta permission</h3><p class="mp">Choisis ce que tu veux faire et à quel moment.</p><table class="labo"><thead><tr><th>Tu veux quoi ? · Quand ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">sortir deux minutes + pendant le cours</td><td>Est-ce que je peux sortir deux minutes ?</td><td>on dit combien de temps : ça rassure</td></tr><tr><td class="cle">sortir deux minutes + à la pause</td><td>Je sors à la pause.</td><td>à la pause, pas besoin de permission</td></tr><tr><td class="cle">sortir deux minutes + avant de commencer</td><td>Est-ce que je peux sortir avant de commencer ?</td><td>le meilleur moment pour demander</td></tr><tr><td class="cle">prendre un crayon + pendant le cours</td><td>Est-ce que je peux prendre un crayon ?</td><td>la boîte est devant, près du tableau</td></tr><tr><td class="cle">prendre un crayon + à la pause</td><td>Je prends un crayon pour tantôt.</td><td>on prépare son matériel pendant la pause</td></tr><tr><td class="cle">prendre un crayon + avant de commencer</td><td>Est-ce que je peux prendre un crayon, s'il vous plaît ?</td><td>la forme complète, polie</td></tr><tr><td class="cle">ouvrir la fenêtre + pendant le cours</td><td>Est-ce que je peux ouvrir la fenêtre ? Il fait chaud.</td><td>on ajoute la raison en trois mots</td></tr><tr><td class="cle">ouvrir la fenêtre + à la pause</td><td>J'ouvre la fenêtre pendant la pause ?</td><td>la classe est vide : c'est le bon moment</td></tr><tr><td class="cle">ouvrir la fenêtre + avant de commencer</td><td>Est-ce que je peux ouvrir la fenêtre avant le cours ?</td><td>poli et prévenant</td></tr><tr><td class="cle">boire de l'eau + pendant le cours</td><td>Est-ce que je peux boire de l'eau ?</td><td>en classe, l'eau est permise</td></tr><tr><td class="cle">boire de l'eau + à la pause</td><td>Je bois de l'eau à la pause.</td><td>aucune permission à demander</td></tr><tr><td class="cle">boire de l'eau + avant de commencer</td><td>Est-ce que l'eau est permise en classe ?</td><td>on demande la règle, pas la permission</td></tr><tr><td class="cle">partir plus tôt + pendant le cours</td><td>Est-ce que je peux partir à midi ?</td><td>on demande longtemps d'avance</td></tr><tr><td class="cle">partir plus tôt + à la pause</td><td>Je peux partir plus tôt aujourd'hui ?</td><td>la forme courte, à l'oral</td></tr><tr><td class="cle">partir plus tôt + avant de commencer</td><td>Est-ce que je peux partir plus tôt ? J'ai un rendez-vous.</td><td>la raison change tout</td></tr></tbody></table><div class="note">Quinze phrases. Remarque que la raison, en trois mots, fait presque toujours dire oui.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six demandes de la vraie vie d'une classe.</p><table class="ex2"><tr><td>Est-ce que je peux sortir deux minutes ?</td><td>la plus fréquente</td></tr><tr><td>Est-ce que je peux prendre un crayon ?</td><td>quand on a oublié son sac</td></tr><tr><td>Est-ce que je peux ouvrir la fenêtre ?</td><td>il fait chaud</td></tr><tr><td>Est-ce que je peux boire de l'eau ?</td><td>l'eau est permise</td></tr><tr><td>Pouvez-vous répéter, s'il vous plaît ?</td><td>ce n'est pas une permission, mais ça se dit pareil</td></tr><tr><td>Merci, madame.</td><td>après chaque oui</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges à connaître</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">conjuguer le deuxième verbe</p><div class="k">Ce qui arrive</div><p class="ph">je peux <b>sortir</b></p><p class="px">Après « je peux », le verbe reste tel quel : sortir, prendre, ouvrir. On ne dit jamais « je peux je sors ».</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">oublier de faire monter la voix</p><div class="k">Ce qui arrive</div><p class="ph">c'est une question</p><p class="px">« Je peux sortir » sans monter la voix ressemble à une phrase qui raconte. Monte sur la dernière syllabe et la demande devient claire.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">prendre « pas maintenant » pour un non</p><div class="k">Ce qui arrive</div><p class="ph">redemande à la pause</p><p class="px">L'enseignante veut souvent finir son explication. « Pas maintenant » veut dire « dans deux minutes ».</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">On dit…</span><ul class="opts"><li>Je peux sortir ?</li><li>Je peux je sors ?</li></ul></li><li><span class="q">La formule complète commence par…</span><ul class="opts"><li>Est-ce que je peux</li><li>Je veux</li></ul></li><li><span class="q">« Oui, mais attends deux minutes » veut dire…</span><ul class="opts"><li>non</li><li>oui, dans un instant</li></ul></li><li><span class="q">Après un oui, on dit…</span><ul class="opts"><li>merci</li><li>d'accord</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> Je peux sortir ? — Le deuxième verbe ne se conjugue pas. · <b>2.</b> Est-ce que je peux — « Je veux » sonne comme un ordre. « Est-ce que je peux » demande. · <b>3.</b> oui, dans un instant — C'est un oui qui demande de patienter. · <b>4.</b> merci — « Merci, madame » : au Québec, on remercie beaucoup.</div></section></section></div>
+<footer><span>C1 · Ouvrez votre cahier</span><span>Fiche élève</span></footer>
+</body>
+</html>

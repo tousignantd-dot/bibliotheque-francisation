@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B3 · Ce modèle-ci, celui-là — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance B3 · Module 15 · 75 minutes</div>
+    <h1>Ce modèle-ci, celui-là</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Devant deux appareils presque identiques, il faut désigner l'un plutôt que l'autre. Le français a deux outils — et il ne faut pas les mélanger.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>employer ce, cet, cette, ces devant un nom ;</li><li>employer celui, celle, ceux, celles à la place d'un nom ;</li><li>distinguer -ci et -là ;</li><li>reprendre un nom par un autre pour ne pas se répéter.</li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Accompagner, ou remplacer</h2><table><thead><tr><th></th><th>Accompagne le nom</th><th>Remplace le nom</th></tr></thead><tbody><tr><td>Masculin</td><td class="cle">ce modèle · cet appareil</td><td>celui</td></tr><tr><td>Féminin</td><td class="cle">cette laveuse</td><td>celle</td></tr><tr><td>Pluriel</td><td class="cle">ces modèles</td><td>ceux, celles</td></tr></tbody></table><div class="note">Le test : le nom est-il écrit juste après ? Si oui, ce/cet/cette.</div></section><section class="bloc regle"><div class="lbl">cet, devant une voyelle</div><p class="r">« cet appareil », jamais « ce appareil ».</p><p class="pr">&lt;b&gt;cet&lt;/b&gt; existe précisément pour éviter la rencontre de deux voyelles : cet appareil, cet écran, cet homme. Devant une consonne, c'est &lt;b&gt;ce&lt;/b&gt; : ce modèle, ce magasin.</p></section><section class="bloc regle"><div class="lbl">Jamais celui tout seul</div><p class="r">-là, -ci, qui, que ou de : il faut toujours une suite.</p><p class="pr">« celui-là », « celui de gauche », « celui qui consomme le moins ». « Celui » seul ne veut rien dire. Dans le doute, employez &lt;b&gt;-là&lt;/b&gt; : c'est toujours correct.</p></section><section class="bloc"><div class="lbl">-ci et -là</div><h2 class="t">Deux choses côte à côte</h2><div class="grid"><div class="card"><h3>-ci désigne le plus proche</h3><p>« Ce modèle-ci » : celui devant lequel on se tient.</p></div><div class="card"><h3>-là désigne le plus éloigné</h3><p>« Celui-là » : l'autre, plus loin dans le rayon.</p></div><div class="card"><h3>À l'oral, -là l'emporte</h3><p>Beaucoup de gens emploient « celui-là » pour les deux, en montrant du doigt. Ce n'est pas une faute, c'est l'usage courant.</p></div></div></section><section class="bloc regle"><div class="lbl">Reprendre par un autre nom</div><p class="r">« la laveuse » devient « l'appareil », « le modèle », « la machine ».</p><p class="pr">C'est ce que fait le vendeur pour ne pas répéter le même mot. &lt;b&gt;appareil&lt;/b&gt; est général, &lt;b&gt;modèle&lt;/b&gt; désigne une version précise, &lt;b&gt;machine&lt;/b&gt; est familier. Les alterner allège beaucoup un texte.</p></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Mélanger les deux outils</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">Celui modèle est plus économe.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">Ce modèle est plus économe. / Celui-là est plus économe.</p></div></div><div class="note">Soit le nom est là, et on emploie &lt;b&gt;ce&lt;/b&gt;. Soit il disparaît, et on emploie &lt;b&gt;celui&lt;/b&gt;. Jamais les deux ensemble — c'est comme dire « le il ».</div></section><section class="bloc card"><div class="lbl">Pratique · 1 de 2</div><h2 class="t">Accompagner ou remplacer ?</h2><p class="consigne">Complétez.</p><ol class="ex"><li><span class="q">Quelle est la différence entre ___ modèle-ci et celui-là ?</span><span class="ligne ligne--court"></span></li><li><span class="q">___ appareil est plus économe que l'autre.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ laveuse fait soixante-huit centimètres.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ deux modèles se ressemblent beaucoup.</span><span class="ligne ligne--court"></span></li><li><span class="q">Prenez ___ de gauche : il entre partout.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ est trop large pour votre local.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">Pratique · 2 de 2</div><h2 class="t">Supprimez la répétition</h2><p class="consigne">Récrivez la deuxième phrase.</p><ol class="ex"><li><span class="q">Prenez la laveuse. La laveuse de gauche entre partout.</span><span class="ligne"></span></li><li><span class="q">Regardez ce modèle. Ce modèle consomme le moins.</span><span class="ligne"></span></li><li><span class="q">Les deux appareils se ressemblent. Les appareils ont la même garantie.</span><span class="ligne"></span></li><li><span class="q">J'aime cette laveuse. Cette laveuse est silencieuse.</span><span class="ligne"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Comparez deux appareils en cinq phrases, sans jamais répéter leur nom.</p><ul><li>Employez ce/cet/cette une fois, celui/celle deux fois.</li><li>Reprenez au moins une fois par un autre nom : l'appareil, le modèle.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Ce modèle-ci, celui-là</h2><section class="bloc card ml"><h3>Deux appareils côte à côte</h3><p class="mp">Devant deux modèles presque identiques, il faut pouvoir désigner l'un plutôt que l'autre — sans les toucher, sans répéter leur nom à chaque phrase. Le français a deux outils pour ça, et il ne faut pas les mélanger.</p><div class="note">L'un <b>accompagne</b> le nom, l'autre le <b>remplace</b>. Toute la leçon tient là.</div></section><section class="bloc card ml"><h3>ce, cet, cette, ces — ils accompagnent</h3><p class="mp">Ils se mettent devant le nom, comme un article.</p><table class="ana"><tr><td>Masculin</td><td class=""><b>ce</b> modèle</td></tr><tr><td>Devant une voyelle</td><td class="cle"><b>cet</b> appareil</td></tr><tr><td>Féminin et pluriel</td><td class="">cette laveuse · ces deux-là</td></tr></table><p class="dit"><span class="k">On dit</span> Ce modèle-ci est plus petit que celui-là.</p><div class="note"><b>cet</b> ne s'emploie que devant une voyelle ou un h muet : <em>cet</em> appareil, <em>cet</em> écran, <em>cet</em> homme. Devant une consonne, c'est <b>ce</b>.</div></section><section class="bloc card ml"><h3>celui, celle, ceux, celles — ils remplacent</h3><p class="mp">Ils prennent la place du nom, qui disparaît de la phrase.</p><table class="ana"><tr><td>Masculin</td><td class=""><b>celui</b> de gauche</td></tr><tr><td>Féminin</td><td class="cle">celle-là</td></tr><tr><td>Pluriel</td><td class="">ceux qui consomment le moins</td></tr></table><p class="dit"><span class="k">On dit</span> Prenez celui de gauche, il entre partout.</p><div class="note">Comme dans le module des déplacements : jamais tout seul. Toujours suivi de <b>-là</b>, <b>-ci</b>, <b>qui</b>, <b>que</b> ou <b>de</b>.</div></section><section class="bloc card ml"><h3>-ci et -là</h3><p class="mp">Pour distinguer deux choses présentes en même temps.</p><table class="ana"><tr><td>Le plus proche</td><td class="">ce modèle-<b>ci</b></td></tr><tr><td>Le plus éloigné</td><td class="cle">ce modèle-<b>là</b></td></tr><tr><td>À l'oral</td><td class="">-là l'emporte souvent partout</td></tr></table><p class="dit"><span class="k">On dit</span> Quelle est la différence entre ce modèle-ci et celui-là ?</p><div class="note">Dans la conversation courante, beaucoup de gens emploient <b>-là</b> pour les deux : « celui-là » et « celui-là, à côté ». Ce n'est pas une faute.</div></section><section class="bloc card ml"><h3>Reprendre autrement</h3><p class="mp">Une troisième façon d'éviter la répétition : changer de nom. « La laveuse » devient « <b>l'appareil</b> », « <b>le modèle</b> », « <b>la machine</b> ». C'est ce que fait le vendeur du module, et c'est très naturel à l'écrit.</p><div class="note">Trois mots pour la même chose : appareil (général), modèle (une version précise), machine (familier). Les alterner rend un texte beaucoup plus léger.</div></section><section class="bloc card ml"><h3>Accompagner ou remplacer ?</h3><p class="mp">Choisissez une phrase et voyez lequel employer.</p><table class="labo"><thead><tr><th>Quelle phrase ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">___ modèle-ci et celui-là</td><td>Quelle est la différence entre ce modèle-ci et celui-là ?<span class="tags"><b>ce</b> modèle-ci</span></td><td>accompagne le nom « modèle »</td></tr><tr><td class="cle">___ appareil est plus économe</td><td>Cet appareil est plus économe.<span class="tags"><b>cet</b> appareil</span></td><td>devant une voyelle › cet</td></tr><tr><td class="cle">___ laveuse fait 68 cm</td><td>Cette laveuse fait soixante-huit centimètres.<span class="tags"><b>cette</b> laveuse</span></td><td>féminin › cette</td></tr><tr><td class="cle">Prenez ___ de gauche</td><td>Prenez celui de gauche.</td><td>remplace le nom</td></tr><tr><td class="cle">___ est trop large</td><td>Celle-là est trop large pour votre local.<span class="tags"><b>Celle-là</b> est trop large</span></td><td>remplace, avec -là</td></tr></tbody></table><div class="note">Le test : le nom est-il écrit juste après ? Si oui › ce, cet, cette. Si non › celui, celle.</div></section><section class="bloc card ml"><h3>Les phrases du module</h3><p class="mp">Écoutez chacune et repérez lequel des deux est employé.</p><table class="ex2"><tr><td>Quelle est la différence entre ce modèle-ci et celui-là ?</td><td>les deux dans la même phrase</td></tr><tr><td>Cet appareil est plus économe.</td><td>accompagne</td></tr><tr><td>Cette laveuse fait soixante-huit centimètres.</td><td>accompagne</td></tr><tr><td>Prenez celui de gauche.</td><td>remplace</td></tr><tr><td>Celle-là est trop large.</td><td>remplace</td></tr><tr><td>Ces deux modèles se ressemblent beaucoup.</td><td>accompagne, au pluriel</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges à connaître</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">mélanger les deux</p><div class="k">Ce qui arrive</div><p class="ph">« celui modèle » n'existe pas</p><p class="px">Soit le nom est là et on emploie <b>ce</b>, soit il disparaît et on emploie <b>celui</b>. Jamais les deux ensemble.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">employer ce devant une voyelle</p><div class="k">Ce qui arrive</div><p class="ph">« cet appareil », pas « ce appareil »</p><p class="px"><b>cet</b> existe précisément pour éviter la rencontre de deux voyelles.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">laisser celui tout seul</p><div class="k">Ce qui arrive</div><p class="ph">« celui-là », « celui de gauche », « celui qui »</p><p class="px">Un pronom démonstratif appelle toujours une suite.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">Devant « appareil », on emploie…</span><ul class="opts"><li>ce</li><li>cet</li></ul></li><li><span class="q">« ___ de gauche est moins cher » demande…</span><ul class="opts"><li>Ce</li><li>Celui</li></ul></li><li><span class="q">« celui modèle » est…</span><ul class="opts"><li>correct</li><li>impossible</li></ul></li><li><span class="q">-ci désigne…</span><ul class="opts"><li>le plus proche</li><li>le plus éloigné</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> cet — Devant une voyelle, c'est <b>cet</b>. · <b>2.</b> Celui — Le nom n'est pas là : il faut le pronom. · <b>3.</b> impossible — <b>celui</b> remplace le nom, il ne l'accompagne jamais. · <b>4.</b> le plus proche — -ci le proche, -là l'éloigné.</div></section></section></div>
+<footer><span>B3 · Acheter un appareil</span><span>Fiche élève</span></footer>
+</body>
+</html>

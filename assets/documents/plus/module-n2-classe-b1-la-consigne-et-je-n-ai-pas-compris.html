@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B1 · La consigne, et « je n'ai pas compris » — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance B1 · Module 4 · 75 minutes</div>
+    <h1>La consigne, et « je n'ai pas compris »</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Huit verbes suffisent à suivre une matinée de cours. Et une phrase suffit quand ils manquent.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>reconnaître huit consignes de classe ;</li><li>faire le geste demandé sans traduire ;</li><li>demander de répéter poliment ;</li><li>demander le sens d'un seul mot.</li></ol></section><section class="bloc card"><div class="lbl">Dialogue · 1 de 2</div><h2 class="t">Fermez votre cahier</h2><p class="consigne">Écoutez deux fois avant de lire.</p><div class="rep rep--key"><div class="qui">MADAME LEDUC</div><div>Fermez votre cahier. Prenez une feuille.</div></div><div class="rep rep--key"><div class="qui">TARIQ</div><div>Une feuille blanche ?</div></div><div class="rep rep--key"><div class="qui">MADAME LEDUC</div><div>Oui, une feuille blanche. Écrivez votre nom en haut.</div></div><div class="rep rep--key"><div class="qui">MYRIAM</div><div>Madame, pouvez-vous répéter ?</div></div><div class="rep rep--key"><div class="qui">MADAME LEDUC</div><div>Écrivez votre nom en haut de la feuille.</div></div></section><section class="bloc card"><div class="lbl">Dialogue · 2 de 2</div><h2 class="t">Un mot qui bloque</h2><div class="rep rep--key"><div class="qui">TARIQ</div><div>Moi, je n'ai pas compris le mot « effacez ».</div></div><div class="rep rep--key"><div class="qui">MYRIAM</div><div>Effacer, c'est enlever avec la gomme.</div></div><div class="rep rep--key"><div class="qui">TARIQ</div><div>Ah ! D'accord. Merci, Myriam.</div></div><div class="rep rep--key"><div class="qui">MADAME LEDUC</div><div>Effacez. On efface avec la gomme. Comme ça.</div></div></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Les huit consignes de la classe</h2><table><thead><tr><th>Ce qu'on entend</th><th>Ce qu'on fait</th></tr></thead><tbody><tr><td>Ouvrez · Prenez</td><td>on sort le cahier, la feuille</td></tr><tr><td>Écoutez · Regardez</td><td>on arrête d'écrire, on lève les yeux</td></tr><tr><td>Écrivez · Effacez</td><td>le crayon, puis la gomme</td></tr><tr><td>Fermez · Donnez</td><td>on range, on remet son travail</td></tr></tbody></table><div class="note">Huit mots. Une fois qu'ils sont là, la matinée se suit sans traduire.</div></section><section class="bloc regle"><div class="lbl">Le verbe est seul, au début</div><p class="r">Une consigne n'a pas de « vous » devant.</p><p class="pr">On dit « &lt;b&gt;Ouvrez&lt;/b&gt; votre cahier », pas « vous ouvrez votre cahier ». Avec « vous », ce n'est plus une consigne : c'est une phrase qui raconte une habitude. Le verbe seul, en tête de phrase, veut dire « faites-le maintenant ».</p></section><section class="bloc regle"><div class="lbl">« Pouvez-vous répéter ? »</div><p class="r">La phrase qui remplace toutes les traductions.</p><p class="pr">Trois autres, aussi utiles : « &lt;b&gt;Plus lentement&lt;/b&gt;, s'il vous plaît. » « &lt;b&gt;Qu'est-ce que ça veut dire&lt;/b&gt;, effacez ? » Et pour vérifier : « Alors, j'ouvre à la page douze ? »</p></section><section class="bloc card"><div class="lbl">Pratique</div><h2 class="t">La consigne et le geste</h2><p class="consigne">Associez chaque consigne à ce que fait l'élève.</p><ol class="ex"><li><span class="q">Ouvrez votre cahier à la page douze.</span><span class="ligne"></span></li><li><span class="q">Prenez une feuille blanche.</span><span class="ligne"></span></li><li><span class="q">Effacez le mot.</span><span class="ligne"></span></li><li><span class="q">Regardez le tableau.</span><span class="ligne"></span></li><li><span class="q">Donnez-moi votre feuille.</span><span class="ligne"></span></li><li><span class="q">Fermez votre cahier.</span><span class="ligne"></span></li></ol></section><section class="bloc card"><div class="lbl">Pratique · en groupe</div><h2 class="t">Jacques a dit, version classe</h2><p class="consigne">Debout. Une consigne, un geste. Qui se trompe s'assoit.</p><ol class="ex"><li><span class="q">Étape 1</span><span class="ligne"></span></li><li><span class="q">Étape 2</span><span class="ligne"></span></li><li><span class="q">Étape 3</span><span class="ligne"></span></li><li><span class="q">Étape 4</span><span class="ligne"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez trois consignes, et à côté, ce que vous faites.</p><ul><li>Ouvrez votre cahier. — J'ouvre mon cahier.</li><li>Écoutez bien. — J'arrête d'écrire.</li><li>Effacez le mot. — Je prends ma gomme.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Quand je n'ai pas compris</h2><section class="bloc card ml"><h3>Quatre phrases, et le cours redevient suivable</h3><p class="mp">Ne pas comprendre est normal au niveau 2. Ce qui compte, c'est de le <b>dire tout de suite</b>, avec une phrase courte. Quatre phrases suffisent, et elles se disent à n'importe quel moment du cours.</p><div class="note">Un élève qui demande de répéter avance plus vite qu'un élève qui recopie son voisin. C'est vrai dans tous les groupes.</div></section><section class="bloc card ml"><h3>Dire qu'on n'a pas compris</h3><p class="mp">La phrase la plus utile du module.</p><table class="ana"><tr><td>On dit</td><td class="">Je n'ai pas <b>compris</b>.</td></tr><tr><td>Plus court, à l'oral</td><td class="">J'ai pas compris.</td></tr><tr><td>Avec la politesse</td><td class=""><b>Excusez-moi</b>, je n'ai pas compris.</td></tr><tr><td>On ne dit pas</td><td class="cle">« Je ne comprends pas rien »</td></tr></table><p class="dit"><span class="k">On dit</span> Excusez-moi, je n'ai pas compris.</p><div class="note">On commence par « excusez-moi » quand on coupe la parole à l'enseignante.</div></section><section class="bloc card ml"><h3>Demander une deuxième fois</h3><p class="mp">Deux façons, aussi bonnes l'une que l'autre.</p><table class="ana"><tr><td>On dit</td><td class="">Pouvez-vous <b>répéter</b>, s'il vous plaît ?</td></tr><tr><td>Aussi</td><td class="">Encore une fois, s'il vous plaît ?</td></tr><tr><td>Pour le débit</td><td class="">Plus <b>lentement</b>, s'il vous plaît.</td></tr><tr><td>On ne dit pas</td><td class="cle">« Répétez ! » — trop sec sans « pouvez-vous »</td></tr></table><p class="dit"><span class="k">On dit</span> Pouvez-vous répéter, s'il vous plaît ? Plus lentement, s'il vous plaît.</p><div class="note">« Pouvez-vous » adoucit tout : c'est la formule polie de base au Québec.</div></section><section class="bloc card ml"><h3>Demander le sens d'un seul mot</h3><p class="mp">Souvent, un seul mot bloque toute la phrase.</p><table class="ana"><tr><td>On dit</td><td class="">Qu'est-ce que ça veut dire, « <b>effacer</b> » ?</td></tr><tr><td>Aussi</td><td class="">Comment on dit ce mot ?</td></tr><tr><td>On montre</td><td class="">Vous pouvez me <b>montrer</b> ?</td></tr><tr><td>On vérifie</td><td class="">Alors, j'ouvre mon cahier à la page douze ?</td></tr></table><p class="dit"><span class="k">On dit</span> Qu'est-ce que ça veut dire, effacer ? Comment on dit ce mot ?</p><div class="note">Redire la consigne dans ses mots est la meilleure vérification : l'enseignante confirme ou corrige en deux secondes.</div></section><section class="bloc card ml"><h3>La bonne phrase, au bon moment</h3><p class="mp">Choisis ton problème et à qui tu parles.</p><table class="labo"><thead><tr><th>Quel problème ? · À qui ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">je n'ai rien compris + l'enseignante</td><td>Excusez-moi, madame. Je n'ai pas compris.</td><td>poli, court, tout de suite</td></tr><tr><td class="cle">je n'ai rien compris + mon voisin de classe</td><td>Tu comprends la consigne ?</td><td>à un camarade, on tutoie</td></tr><tr><td class="cle">elle parle trop vite + l'enseignante</td><td>Plus lentement, s'il vous plaît.</td><td>quatre mots suffisent</td></tr><tr><td class="cle">elle parle trop vite + mon voisin de classe</td><td>Elle parle vite, hein ?</td><td>entre élèves, à voix basse</td></tr><tr><td class="cle">un mot me bloque + l'enseignante</td><td>Qu'est-ce que ça veut dire, effacer ?</td><td>on nomme le mot qui bloque</td></tr><tr><td class="cle">un mot me bloque + mon voisin de classe</td><td>C'est quoi, effacer ?</td><td>la forme familière, entre camarades</td></tr><tr><td class="cle">je veux vérifier + l'enseignante</td><td>Alors, j'ouvre à la page douze ?</td><td>on redit la consigne pour vérifier</td></tr><tr><td class="cle">je veux vérifier + mon voisin de classe</td><td>C'est la page douze ?</td><td>la question la plus posée d'une classe</td></tr><tr><td class="cle">je n'entends pas + l'enseignante</td><td>Pouvez-vous répéter, s'il vous plaît ?</td><td>la formule polie de base</td></tr><tr><td class="cle">je n'entends pas + mon voisin de classe</td><td>Tu peux répéter ?</td><td>la même chose, en tutoyant</td></tr></tbody></table><div class="note">Dix phrases. Les cinq de gauche se disent à l'enseignante, les cinq de droite à un camarade.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six phrases à savoir par cœur.</p><table class="ex2"><tr><td>Excusez-moi, madame.</td><td>on commence toujours par là</td></tr><tr><td>Je n'ai pas compris.</td><td>la phrase la plus utile</td></tr><tr><td>Pouvez-vous répéter, s'il vous plaît ?</td><td>polie et complète</td></tr><tr><td>Plus lentement, s'il vous plaît.</td><td>pour le débit</td></tr><tr><td>Qu'est-ce que ça veut dire ?</td><td>pour un mot</td></tr><tr><td>Merci, madame.</td><td>toujours, après l'explication</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges à connaître</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">attendre la fin du cours</p><div class="k">Ce qui arrive</div><p class="ph">dis-le tout de suite</p><p class="px">Une consigne mal comprise gâche l'exercice entier. Deux secondes au bon moment valent vingt minutes perdues.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">dire « répétez ! » tout court</p><div class="k">Ce qui arrive</div><p class="ph">ajoute « pouvez-vous »</p><p class="px">Sans « pouvez-vous » et sans « s'il vous plaît », la phrase sonne comme un ordre. Ce n'est pas grave, mais la forme polie s'apprend en même temps que le reste.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">hocher la tête sans comprendre</p><div class="k">Ce qui arrive</div><p class="ph">personne n'est dupe</p><p class="px">L'enseignante voit tout de suite qu'un cahier n'est pas ouvert à la bonne page. Dire « je n'ai pas compris » est toujours mieux reçu.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">La phrase la plus utile quand on est perdu…</span><ul class="opts"><li>Je n'ai pas compris.</li><li>Ce n'est pas grave.</li></ul></li><li><span class="q">Pour faire répéter poliment, on dit…</span><ul class="opts"><li>Répétez !</li><li>Pouvez-vous répéter ?</li></ul></li><li><span class="q">Si l'enseignante parle vite, on demande…</span><ul class="opts"><li>plus lentement</li><li>plus fort</li></ul></li><li><span class="q">Redire la consigne dans ses mots, c'est…</span><ul class="opts"><li>impoli</li><li>une bonne vérification</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> Je n'ai pas compris. — Quatre mots qui débloquent toute la matinée. · <b>2.</b> Pouvez-vous répéter ? — « Pouvez-vous » est la formule polie de base. · <b>3.</b> plus lentement — « Plus lentement, s'il vous plaît. » · <b>4.</b> une bonne vérification — L'enseignante confirme ou corrige en deux secondes.</div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>La consigne commence par un verbe</h2><section class="bloc card ml"><h3>Trois mots, et c'est tout</h3><p class="mp">Une consigne de classe est très courte : un <b>verbe</b>, puis ce qu'il faut prendre. « Ouvrez votre cahier. » « Prenez une feuille. » Il n'y a <b>pas de « vous »</b> devant le verbe : le verbe est seul, au début de la phrase.</p><div class="note">Si tu reconnais le premier mot, tu as compris la consigne. C'est pour ça qu'on apprend les huit verbes par cœur.</div></section><section class="bloc card ml"><h3>Les huit verbes à connaître par cœur</h3><p class="mp">Ce sont les mêmes dans tous les centres.</p><table class="ana"><tr><td>On commence</td><td class=""><b>Ouvrez</b> · <b>Prenez</b></td></tr><tr><td>On regarde et on écoute</td><td class=""><b>Écoutez</b> · <b>Regardez</b></td></tr><tr><td>On écrit et on enlève</td><td class=""><b>Écrivez</b> · <b>Effacez</b></td></tr><tr><td>On termine</td><td class=""><b>Fermez</b> · <b>Donnez</b></td></tr></table><p class="dit"><span class="k">On dit</span> Ouvrez. Prenez. Écoutez. Regardez. Écrivez. Effacez. Fermez. Donnez.</p><div class="note">Huit mots. Une fois qu'ils sont là, une matinée de cours se suit sans traduire.</div></section><section class="bloc card ml"><h3>Le verbe est seul : pas de « vous »</h3><p class="mp">C'est la différence avec une phrase ordinaire.</p><table class="ana"><tr><td>La consigne</td><td class=""><b>Ouvrez</b> votre cahier.</td></tr><tr><td>La phrase ordinaire</td><td class="">Vous <b>ouvrez</b> votre cahier tous les matins.</td></tr><tr><td>La consigne à un ami</td><td class=""><b>Ouvre</b> ton cahier. — sans z</td></tr><tr><td>On ne dit pas</td><td class="cle">« Vous ouvrez votre cahier ! » pour donner une consigne</td></tr></table><p class="dit"><span class="k">On dit</span> Ouvrez votre cahier. Vous ouvrez votre cahier tous les matins.</p><div class="note">L'enseignante enlève le « vous » : c'est ce qui transforme la phrase en consigne.</div></section><section class="bloc card ml"><h3>Ce qui vient après le verbe</h3><p class="mp">Presque toujours un objet de la classe.</p><table class="ana"><tr><td>L'objet</td><td class="">Ouvrez votre <b>cahier</b>.</td></tr><tr><td>Le numéro</td><td class="">Ouvrez à la <b>page douze</b>.</td></tr><tr><td>Le lieu</td><td class="">Écrivez votre nom <b>en haut</b>.</td></tr><tr><td>La politesse</td><td class="">Prenez une feuille, <b>s'il vous plaît</b>.</td></tr></table><p class="dit"><span class="k">On dit</span> Ouvrez votre cahier à la page douze. Écrivez votre nom en haut.</p><div class="note">Écoute le deuxième mot : c'est lui qui dit quel objet sortir du sac.</div></section><section class="bloc card ml"><h3>Construis la consigne</h3><p class="mp">Choisis un verbe et un objet.</p><table class="labo"><thead><tr><th>Quel verbe ? · Quoi ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">ouvrir + le cahier</td><td>Ouvrez votre cahier.</td><td>la première consigne du matin</td></tr><tr><td class="cle">ouvrir + une feuille</td><td>Ouvrez une feuille ?</td><td>on n'ouvre pas une feuille : on la prend</td></tr><tr><td class="cle">ouvrir + le tableau</td><td>Ouvrez le tableau ?</td><td>un tableau ne s'ouvre pas non plus</td></tr><tr><td class="cle">ouvrir + son nom</td><td>Ouvrez votre nom ?</td><td>impossible : un nom s'écrit</td></tr><tr><td class="cle">prendre + le cahier</td><td>Prenez votre cahier.</td><td>on le sort du sac</td></tr><tr><td class="cle">prendre + une feuille</td><td>Prenez une feuille.</td><td>la consigne la plus fréquente avec « ouvrez »</td></tr><tr><td class="cle">prendre + le tableau</td><td>Prenez le tableau ?</td><td>le tableau est fixé au mur</td></tr><tr><td class="cle">prendre + son nom</td><td>Prenez votre nom ?</td><td>un nom ne se prend pas</td></tr><tr><td class="cle">regarder + le cahier</td><td>Regardez votre cahier.</td><td>possible : on vérifie sa page</td></tr><tr><td class="cle">regarder + une feuille</td><td>Regardez votre feuille.</td><td>possible aussi</td></tr><tr><td class="cle">regarder + le tableau</td><td>Regardez le tableau.</td><td>la consigne normale</td></tr><tr><td class="cle">regarder + son nom</td><td>Regardez votre nom.</td><td>possible : on vérifie l'orthographe</td></tr><tr><td class="cle">écrire + le cahier</td><td>Écrivez dans votre cahier.</td><td>il faut « dans »</td></tr><tr><td class="cle">écrire + une feuille</td><td>Écrivez sur une feuille.</td><td>il faut « sur »</td></tr><tr><td class="cle">écrire + le tableau</td><td>Écrivez au tableau.</td><td>on va en avant de la classe</td></tr><tr><td class="cle">écrire + son nom</td><td>Écrivez votre nom.</td><td>la consigne complète : en haut de la feuille</td></tr><tr><td class="cle">fermer + le cahier</td><td>Fermez votre cahier.</td><td>la consigne de la fin du cours</td></tr><tr><td class="cle">fermer + une feuille</td><td>Fermez une feuille ?</td><td>une feuille ne se ferme pas</td></tr><tr><td class="cle">fermer + le tableau</td><td>Fermez le tableau ?</td><td>non plus</td></tr><tr><td class="cle">fermer + son nom</td><td>Fermez votre nom ?</td><td>impossible</td></tr></tbody></table><div class="note">Vingt réponses, et plusieurs sont fausses exprès : toutes les consignes ne vont pas avec tous les objets.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six consignes, dans l'ordre d'une matinée.</p><table class="ex2"><tr><td>Ouvrez votre cahier à la page douze.</td><td>le début du cours</td></tr><tr><td>Écoutez bien.</td><td>avant un dialogue</td></tr><tr><td>Prenez une feuille blanche.</td><td>avant un exercice</td></tr><tr><td>Écrivez votre nom en haut.</td><td>toujours en premier</td></tr><tr><td>Donnez-moi votre feuille.</td><td>à la fin de l'exercice</td></tr><tr><td>Fermez votre cahier.</td><td>le cours est fini</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges à connaître</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">ajouter « vous » devant</p><div class="k">Ce qui arrive</div><p class="ph">la consigne n'en a pas</p><p class="px">On dit <b>Ouvrez</b> votre cahier, pas « vous ouvrez votre cahier ». Avec « vous », ce n'est plus une consigne : c'est une phrase qui raconte une habitude.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">répondre « oui » sans agir</p><div class="k">Ce qui arrive</div><p class="ph">la consigne demande un geste</p><p class="px">Quand l'enseignante dit « Ouvrez votre cahier », elle n'attend pas de réponse : elle attend que le cahier s'ouvre. Si tu n'as pas compris, dis-le tout de suite.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">ne pas oser demander</p><div class="k">Ce qui arrive</div><p class="ph">« pouvez-vous répéter ? » fait partie du cours</p><p class="px">Personne ne se fâche. Un élève qui demande de répéter comprend la consigne ; un élève qui ne demande rien fait le mauvais exercice pendant vingt minutes.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">Une consigne commence par…</span><ul class="opts"><li>un verbe</li><li>le mot vous</li></ul></li><li><span class="q">« Fermez votre cahier » veut dire…</span><ul class="opts"><li>le cours commence</li><li>le cours est fini</li></ul></li><li><span class="q">Pour enlever un mot au crayon, l'enseignante dit…</span><ul class="opts"><li>Effacez</li><li>Donnez</li></ul></li><li><span class="q">Quand tu n'as pas compris une consigne…</span><ul class="opts"><li>tu attends</li><li>tu demandes de répéter</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> un verbe — Le verbe est seul, au début : Ouvrez, Prenez, Écoutez. · <b>2.</b> le cours est fini — On ferme le cahier à la fin. · <b>3.</b> Effacez — Effacer, c'est enlever avec la gomme. · <b>4.</b> tu demandes de répéter — « Pouvez-vous répéter ? » est la bonne réponse, toujours.</div></section></section></div>
+<footer><span>B1 · Ouvrez votre cahier</span><span>Fiche élève</span></footer>
+</body>
+</html>

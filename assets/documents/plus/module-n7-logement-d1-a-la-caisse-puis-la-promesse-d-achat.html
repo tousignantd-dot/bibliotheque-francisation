@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>D1 · À la caisse, puis la promesse d'achat — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance D1 · Module 4 · 75 minutes</div>
+    <h1>À la caisse, puis la promesse d'achat</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Une promesse d'achat acceptée n'est pas une intention : c'est un contrat. Ce qui la rend supportable, ce sont ses conditions — et chacune porte un nombre de jours.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>comprendre ce qu'est une mise de fonds et à quel seuil elle se calcule ;</li><li>distinguer ce qui engage de ce qui protège dans une promesse d'achat ;</li><li>relever le délai de chaque condition ;</li><li>nommer ce que le notaire fait et ce que la municipalité facture.</li></ol></section><section class="bloc card"><div class="lbl">Dialogue · 1 de 3</div><h2 class="t">Cinq pour cent de deux cent soixante-quinze mille</h2><p class="consigne">Écouter deux fois, sans lire le texte.</p><div class="rep rep--key"><div class="qui">FARAH</div><div>Commençons par la question que tout le monde pose en dernier : combien avez-vous de côté ?</div></div><div class="rep"><div class="qui">SOKHNA</div><div>Dix-neuf mille huit cents.</div></div><div class="rep rep--key"><div class="qui">FARAH</div><div>Pour une propriété de deux cent soixante-quinze mille, la mise de fonds minimale est de cinq pour cent, parce qu'on est sous cinq cent mille. Ça fait treize mille sept cent cinquante.</div></div><div class="rep"><div class="qui">SOKHNA</div><div>Donc j'ai assez ?</div></div><div class="rep rep--key"><div class="qui">FARAH</div><div>Pour le minimum, oui. Mais sous vingt pour cent de mise de fonds, votre prêt doit être assuré, et la prime s'ajoute à votre prêt.</div></div></section><section class="bloc card"><div class="lbl">Dialogue · 2 de 3</div><h2 class="t">Les frais dont personne ne parle</h2><div class="rep rep--key"><div class="qui">SOKHNA</div><div>Les droits de mutation, c'est la taxe de bienvenue ?</div></div><div class="rep rep--key"><div class="qui">FARAH</div><div>C'est le même impôt. C'est la municipalité qui le perçoit, et c'est le nouveau propriétaire qui le paie, quelques mois après l'achat.</div></div><div class="rep rep--key"><div class="qui">SOKHNA</div><div>Et le notaire, il est obligatoire ?</div></div><div class="rep rep--key"><div class="qui">FARAH</div><div>Pour l'acte hypothécaire, oui. C'est lui aussi qui fait l'examen des titres, c'est-à-dire qu'il vérifie que la personne qui vous vend a bien le droit de vous vendre.</div></div></section><section class="bloc card"><div class="lbl">Dialogue · 3 de 3</div><h2 class="t">À ma place, vous achèteriez ?</h2><div class="rep rep--key"><div class="qui">SOKHNA</div><div>Madame Zaoui, à ma place, vous achèteriez ?</div></div><div class="rep rep--key"><div class="qui">FARAH</div><div>Je ne peux pas répondre à ça, et personne ne devrait répondre à ça à votre place. Ce que je peux faire, c'est vous donner les deux chiffres.</div></div><div class="rep rep--key"><div class="qui">FARAH</div><div>Locataire, à mille vingt-quatre par mois, vous n'avez rien d'autre à payer et rien qui vous appartienne. Propriétaire, tout compris, vous seriez autour de mille six cents.</div></div><div class="rep rep--key"><div class="qui">SOKHNA</div><div>Six cents dollars de plus par mois.</div></div></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Ce qui engage, ce qui protège</h2><table><thead><tr><th>Dans la promesse</th><th>Ce que ça fait</th></tr></thead><tbody><tr><td class="cle">le prix et la date d'occupation</td><td>ça vous engage</td></tr><tr><td class="cle">les inclusions</td><td>ça vous engage : ce qui n'est pas écrit n'est pas vendu</td></tr><tr><td class="cle">la condition de financement</td><td>ça vous protège : vingt et un jours</td></tr><tr><td class="cle">la condition d'inspection</td><td>ça vous protège : une dizaine de jours</td></tr><tr><td class="cle">les déclarations du vendeur</td><td>ça vous protège : ce qu'il affirme savoir</td></tr></tbody></table></section><section class="bloc regle"><div class="lbl">Les jours se comptent en jours de calendrier</div><p class="r">Samedis, dimanches et jours fériés compris.</p><p class="pr">Dix jours pour l'inspection, ce n'est pas deux semaines de travail : c'est une semaine et demie, fins de semaine comprises. L'inspecteur doit donc être appelé le jour même de l'acceptation. Vingt et un jours pour le financement, c'est trois semaines pleines, et c'est un minimum raisonnable.</p></section><section class="bloc card"><div class="lbl">Compréhension écrite</div><h2 class="t">Où est la réponse dans la promesse ?</h2><p class="consigne">Pour chaque question, retrouvez le passage exact.</p><ol class="ex"><li><span class="q">Quel prix l'acheteuse offre-t-elle ?</span><span class="ligne"></span></li><li><span class="q">Qu'est-ce qui est exclu de la vente ?</span><span class="ligne ligne--court"></span></li><li><span class="q">Combien de jours pour confirmer le financement ?</span><span class="ligne"></span></li><li><span class="q">Qui paie l'inspection du bâtiment ?</span><span class="ligne ligne--court"></span></li><li><span class="q">Que peut-elle faire si l'inspection révèle un problème majeur ?</span><span class="ligne"></span></li><li><span class="q">À partir de quand les deux parties sont-elles liées ?</span><span class="ligne"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Quelle condition écrirais-tu, toi, dans une promesse d'achat ?</p><ul><li>Le financement et l'inspection sont les deux habituelles.</li><li>Y en a-t-il une troisième que tu voudrais ?</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Ce qui engage et ce qui protège dans une promesse d'achat</h2><section class="bloc card ml"><h3>Un document en deux moitiés</h3><p class="mp">Une promesse d'achat acceptée n'est pas une intention : c'est un contrat qui lie les deux parties. La moitié qu'on lit d'abord — le prix, la date d'occupation, ce qui est inclus — vous engage. La moitié qu'on saute — les conditions — vous protège. Le jour où quelque chose tourne mal, c'est uniquement la seconde qui parle.</p><div class="note">Vérifié auprès de l'organisme qui encadre le courtage : les conditions les plus courantes sont le financement et l'inspection du bâtiment, et le nombre de jours d'une condition se compte en jours de calendrier — samedis, dimanches et jours fériés compris.</div></section><section class="bloc card ml"><h3>La condition de financement</h3><p class="mp">Elle dit : j'achète, à condition d'obtenir mon prêt. Sans elle, un refus de la banque vous laisse engagé.</p><table class="ana"><tr><td>Ce qu'on y écrit</td><td class="">le montant du prêt cherché et le nombre de jours</td></tr><tr><td>Le délai usuel</td><td class="cle">au moins vingt et un jours de calendrier</td></tr><tr><td>Ce qu'on doit faire</td><td class="">informer le vendeur par écrit dans le délai</td></tr><tr><td>Si on ne fait rien</td><td class="">la promesse peut devenir nulle</td></tr></table><p class="dit"><span class="k">On dit</span> La promesse est conditionnelle à l'obtention d'un prêt hypothécaire.</p><div class="note">Une préautorisation obtenue avant de faire une offre ne remplace pas cette condition : la préautorisation porte sur vous, l'approbation finale porte aussi sur la propriété.</div></section><section class="bloc card ml"><h3>La condition d'inspection</h3><p class="mp">Elle dit : j'achète, à condition que le bâtiment soit dans l'état que je crois.</p><table class="ana"><tr><td>Qui la paie</td><td class="">l'acheteur, presque toujours</td></tr><tr><td>Le délai usuel</td><td class="cle">une dizaine de jours de calendrier</td></tr><tr><td>Si le rapport est mauvais</td><td class="">demander une baisse de prix, des réparations, ou se retirer</td></tr><tr><td>La loi</td><td class="">elle n'oblige personne à faire inspecter</td></tr></table><p class="dit"><span class="k">On dit</span> La promesse est conditionnelle à une inspection du bâtiment par un professionnel.</p><div class="note">Renoncer à l'inspection se signe : l'acheteur qui y renonce le fait inscrire, et si un problème survient plus tard, on lui demandera pourquoi il n'a pas regardé.</div></section><section class="bloc card ml"><h3>Ce qui engage : prix, dates, inclusions</h3><p class="mp">Trois éléments qui ne se rediscutent pas une fois la promesse acceptée.</p><table class="ana"><tr><td>Le prix</td><td class="">écrit en chiffres et en lettres, payable à la signature</td></tr><tr><td>Les deux dates</td><td class="cle">celle de l'acte de vente, celle de l'occupation</td></tr><tr><td>Les inclusions</td><td class="">ce qui n'est pas écrit n'est pas vendu</td></tr><tr><td>Le délai d'acceptation</td><td class="">le vendeur a jusqu'à une heure précise pour répondre</td></tr></table><p class="dit"><span class="k">On dit</span> le prix, la date de l'acte de vente, la date d'occupation, les inclusions</p><div class="note">Les luminaires, les stores, le lave-vaisselle, le cabanon : la liste paraît petite et c'est la source la plus fréquente de disputes après la vente.</div></section><section class="bloc card ml"><h3>Après l'acceptation : le notaire</h3><p class="mp">La promesse ne transfère rien. Ce qui transfère la propriété, c'est l'acte de vente.</p><table class="ana"><tr><td>L'examen des titres</td><td class="">le notaire remonte les anciens actes</td></tr><tr><td>L'acte hypothécaire</td><td class="cle">sa forme notariée est obligatoire au Québec</td></tr><tr><td>Les droits de mutation</td><td class="">facturés plus tard par la municipalité</td></tr><tr><td>Ce qu'il faut prévoir</td><td class="">notaire, inspection, mutation : des milliers de dollars</td></tr></table><p class="dit"><span class="k">On dit</span> l'examen des titres, l'acte de vente, les droits de mutation</p><div class="note">Les frais qui s'ajoutent au prix ne sont pas des extras : ils font partie du prix réel, et se calculent avant l'offre, pas après.</div></section><section class="bloc card ml"><h3>Quatre questions, sans filet</h3><p class="mp">Répondez de mémoire, sans remonter plus haut.</p><ol class="check"><li><span class="q">Une promesse d'achat acceptée…</span><ul class="opts"><li>est une intention</li><li>lie les deux parties</li></ul></li><li><span class="q">Les jours d'une condition se comptent…</span><ul class="opts"><li>en jours ouvrables</li><li>en jours de calendrier</li></ul></li><li><span class="q">L'inspection préachat est…</span><ul class="opts"><li>obligatoire par la loi</li><li>fortement recommandée</li></ul></li><li><span class="q">Ce qui n'est pas écrit aux inclusions…</span><ul class="opts"><li>est vendu quand même</li><li>n'est pas vendu</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> lie les deux parties — C'est pourquoi les conditions comptent autant que le prix. · <b>2.</b> en jours de calendrier — Samedis, dimanches et jours fériés compris. · <b>3.</b> fortement recommandée — Y renoncer se signe, et se retourne contre l'acheteur en cas de problème. · <b>4.</b> n'est pas vendu — Les stores et les luminaires partent avec le vendeur si personne ne les a nommés.</div></section><section class="bloc card ml"><h3>Trois faux pas, et comment s'en sortir</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">faire une offre sans condition pour être choisi</p><div class="k">Ce qui arrive</div><p class="ph">garder au moins le financement</p><p class="px">Une offre sans condition est plus attirante pour le vendeur, et elle vous laisse sans porte de sortie si la banque dit non.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">compter les délais en jours ouvrables</p><div class="k">Ce qui arrive</div><p class="ph">compter les fins de semaine</p><p class="px">Dix jours de calendrier, c'est une semaine et demie : l'inspecteur doit être appelé le jour même.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">oublier les frais qui suivent</p><div class="k">Ce qui arrive</div><p class="ph">les additionner avant l'offre</p><p class="px">Notaire, inspection, droits de mutation : ils ne sont pas dans le prix affiché et ils arrivent tous dans la même année.</p></div></div></section></section></div>
+<footer><span>D1 · Rester locataire ou devenir propriétaire</span><span>Fiche élève</span></footer>
+</body>
+</html>

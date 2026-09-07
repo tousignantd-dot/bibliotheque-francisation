@@ -1,10 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Les fiches élèves **avec la théorie du « En apprendre plus »**.
+La **fiche élève (+)** : la fiche de la séance, avec la théorie du
+« En apprendre plus » imprimée dessus.
 
-    python3 build/fiches_plus.py            # le niveau 6, au complet
-    python3 build/fiches_plus.py --releve   # ce qui serait fait, sans écrire
+    python3 build/fiches_plus.py 3          # un niveau, au complet
+    python3 build/fiches_plus.py 3 --releve # ce qui serait fait, sans écrire
+    for n in 1 2 3 4 5 6 7 8; do python3 build/fiches_plus.py $n; done
+
+Le niveau est un argument, et le défaut reste `6` — le premier produit. Chaque
+page porte une barre vers les autres niveaux, et cette barre ne renvoie qu'aux
+pages **déjà écrites** : après avoir produit un niveau neuf, repasser sur les
+autres pour qu'ils le nomment.
 
 Pourquoi ce fichier existe
 --------------------------
@@ -15,8 +22,10 @@ n'existe que dans le manuel relié (`build/manuel_eleve.py`), en section à la
 fin de chaque module, et seulement pour le niveau 4.
 
 Ce script produit une **seconde série** de fiches où la mini-leçon descend
-dans la fiche de sa séance. C'est un essai destiné à être comparé à l'autre,
-en classe, avec un enseignant.
+dans la fiche de sa séance. Née comme un essai à comparer en classe sur le
+seul niveau 6, elle couvre les huit niveaux depuis le 7 septembre 2026 :
+1 265 fiches, dont 728 changent. Le catalogue l'offre sur chaque ligne, sous
+« Fiche élève (+) », à côté de la fiche ordinaire.
 
 **Il n'écrit jamais dans `assets/documents/`.** La série d'origine ne bouge
 pas : les fiches d'essai sortent dans `assets/documents/plus/`, sous le même
@@ -212,7 +221,7 @@ GABARIT_PAGE = """<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Fiches élèves du niveau 6 — l'essai « En apprendre plus »</title>
+<title>Fiches élèves du niveau {{NIVEAU}} — la série « (+) »</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Nunito:wght@400;600;700;800&display=swap">
@@ -304,6 +313,9 @@ ul.seances button[aria-current="true"] .code{color:var(--acier)}
   padding:3px 9px;border-radius:2px;background:var(--fait-bg);color:var(--fait)}
 .badge.non{background:var(--sunken);color:var(--muted);border:1px solid var(--line)}
 iframe{display:block;width:100%;height:78vh;border:0;background:#fff}
+.niveaux{margin:14px 0 0;font-size:14px;color:var(--muted)}
+.niveaux a{color:var(--acier);font-weight:700;text-decoration:none}
+.niveaux a:hover{text-decoration:underline}
 .pied{margin-top:30px;padding-top:18px;border-top:1px solid var(--line);
   font-size:13px;color:var(--muted)}
 </style>
@@ -311,29 +323,30 @@ iframe{display:block;width:100%;height:78vh;border:0;background:#fff}
 <body>
 <div class="doc">
 <a class="retour" href="/presentations.html"><span aria-hidden="true">&#8592;</span> Le classeur</a>
-<p class="eyebrow">Bibliothèque de francisation · niveau 6 · essai</p>
+<p class="eyebrow">Bibliothèque de francisation · niveau {{NIVEAU}}</p>
 <h1>La théorie descend-elle dans la fiche&nbsp;?</h1>
-<p class="chapeau">Les <strong>160 fiches du niveau 6</strong>, en deux versions&nbsp;: celle
-d'aujourd'hui, et une où la mini-leçon — le « En apprendre plus » qui ne vit qu'à l'écran —
-est imprimée <strong>dans la fiche de sa séance</strong>. Changez d'onglet&nbsp;: la séance
-ne bouge pas, seule la version change.</p>
-<p class="note">111 fiches sur 160 portent une mini-leçon&nbsp;; les 49 autres sont
-identiques dans les deux onglets — ce sont les séances de production et d'application, qui
-n'en ont pas. Le point vert dans la liste dit lesquelles changent. Le rattachement d'une
+<p class="chapeau">Les <strong>{{N_FICHES}} fiches du niveau {{NIVEAU}}</strong>, en deux
+versions&nbsp;: celle d'aujourd'hui, et la <strong>fiche (+)</strong>, où la mini-leçon — le
+« En apprendre plus » qui ne vit qu'à l'écran — est imprimée <strong>dans la fiche de sa
+séance</strong>. Changez d'onglet&nbsp;: la séance ne bouge pas, seule la version change.</p>
+{{NIVEAUX}}
+<p class="note">{{N_PLUS}} fiches sur {{N_FICHES}} portent une mini-leçon&nbsp;; les
+{{N_SANS}} autres sont identiques dans les deux onglets — ce sont les séances de production
+et d'application, qui n'en ont pas. Le point vert dans la liste dit lesquelles changent. Le rattachement d'une
 mini-leçon à une séance est lu dans le deck de la séance, pas deviné.
 <strong>La série d'origine n'a pas été touchée</strong>&nbsp;: l'essai vit dans
 <code>assets/documents/plus/</code>.</p>
 
 <div class="plan">
   <nav class="rail">
-    <h2>Les dix modules</h2>
+    <h2>{{N_MODULES}}</h2>
     <select class="mod" id="mod"></select>
     <ul class="seances" id="seances"></ul>
   </nav>
   <main class="vue">
     <div class="onglets" role="tablist">
       <button role="tab" id="ong-avant" aria-selected="true">Fiche élève</button>
-      <button role="tab" id="ong-apres" aria-selected="false">Fiche élève avec « En apprendre plus »</button>
+      <button role="tab" id="ong-apres" aria-selected="false">Fiche élève (+)</button>
       <span class="droite"><a id="ouvrir" href="#" target="_blank" rel="noopener">Ouvrir seule&nbsp;↗</a></span>
     </div>
     <div class="barre"><b id="tt">—</b><span id="etat"></span></div>
@@ -423,7 +436,12 @@ rendreSeances(); rendre();
 # des deux côtés, et le passage de l'un à l'autre **sans changer de séance** —
 # c'est le seul geste qui compte quand on montre ça à un enseignant.
 
-PAGE = os.path.join(RACINE, 'assets', 'presentations', 'fiches-plus-niveau-6.html')
+PRESENTATIONS = os.path.join(RACINE, 'assets', 'presentations')
+NIVEAUX = ('1', '2', '3', '4', '5', '6', '7', '8')
+
+
+def page_du_niveau(niveau):
+    return os.path.join(PRESENTATIONS, 'fiches-plus-niveau-%s.html' % niveau)
 
 
 def titre_de(chemin):
@@ -437,17 +455,39 @@ def titre_de(chemin):
     return t
 
 
-def ecrire_page(index):
-    """L'index est [(slug, titre du module, [(code, titre, fichier, aPlus)])]."""
+def ecrire_page(index, niveau, n_fiches, n_plus, n_modules):
+    """L'index est [(slug, titre du module, [(code, titre, fichier, aPlus)])].
+
+    La barre des niveaux ne renvoie qu'aux pages **qui existent** : un lien
+    vers un niveau jamais produit serait un 404, et le classeur en a déjà
+    coûté un ([[liens_catalogue]] fait le même travail sur le catalogue).
+    """
     import json as _json
     donnees = _json.dumps([
         {'slug': s, 'titre': t,
          'seances': [{'code': c.upper(), 'titre': ti, 'f': f, 'plus': p}
                      for c, ti, f, p in ss]}
         for s, t, ss in index], ensure_ascii=False)
-    with open(PAGE, 'w', encoding='utf-8') as f:
-        f.write(GABARIT_PAGE.replace('/*DONNEES*/', donnees))
-    print('✓ %s' % os.path.relpath(PAGE, RACINE))
+    liens = []
+    for n in NIVEAUX:
+        if n == str(niveau):
+            liens.append('<b>niveau %s</b>' % n)
+        elif os.path.exists(page_du_niveau(n)):
+            liens.append('<a href="fiches-plus-niveau-%s.html">niveau %s</a>' % (n, n))
+    barre = ('<p class="niveaux">Les autres niveaux&nbsp;: %s</p>' % ' · '.join(liens)
+             if len(liens) > 1 else '')
+    mots = {1: 'Le module', }.get(n_modules, '%d modules' % n_modules)
+    dest = page_du_niveau(niveau)
+    with open(dest, 'w', encoding='utf-8') as f:
+        f.write(GABARIT_PAGE
+                .replace('/*DONNEES*/', donnees)
+                .replace('{{NIVEAU}}', str(niveau))
+                .replace('{{NIVEAUX}}', barre)
+                .replace('{{N_FICHES}}', str(n_fiches))
+                .replace('{{N_PLUS}}', str(n_plus))
+                .replace('{{N_SANS}}', str(n_fiches - n_plus))
+                .replace('{{N_MODULES}}', mots))
+    print('✓ %s' % os.path.relpath(dest, RACINE))
 
 
 def main():
@@ -516,7 +556,7 @@ def main():
     print('%d sommaires suivis. %d mini-leçons qu’aucune fiche ne nomme.'
           % (sommaires, orphelines))
     if not args.releve:
-        ecrire_page(index)
+        ecrire_page(index, args.niveau, total, enrichies, len(slugs))
     print('\nLa série d’origine dans assets/documents/ n’a pas été touchée.')
     return 0
 

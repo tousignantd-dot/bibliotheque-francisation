@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C2 · Je voudrais, j'aimerais, est-ce que je pourrais — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance C2 · Module 8 · 75 minutes</div>
+    <h1>Je voudrais, j'aimerais, est-ce que je pourrais</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Au téléphone, la politesse remplace le sourire. Trois blocs de deux mots suffisent à changer tout un appel.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>employer je voudrais et j'aimerais pour demander ;</li><li>employer est-ce que je pourrais pour demander une permission ;</li><li>savoir que le verbe qui suit ne change jamais ;</li><li>finir chaque demande par s'il vous plaît.</li></ol></section><section class="bloc regle"><div class="lbl">Ce que le téléphone enlève</div><p class="r">Le visage, les gestes, le sourire</p><p class="pr">En personne, le visage adoucit tout. Au téléphone, il ne reste que les mots, et « je veux visiter » sonne dur même quand on ne le pense pas. Trois formules suffisent à rétablir ce que la voix seule ne dit pas.</p></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Les trois formules polies</h2><table><thead><tr><th>On dit</th><th>Quand</th></tr></thead><tbody><tr><td class="cle">je voudrais</td><td>pour demander quelque chose</td></tr><tr><td class="cle">j'aimerais</td><td>pour annoncer une question</td></tr><tr><td class="cle">est-ce que je pourrais</td><td>pour demander une permission</td></tr><tr><td class="cle">est-ce que je peux</td><td>la même chose, un peu plus direct</td></tr></tbody></table><div class="note">Les quatre sont corrects. Le premier suffit presque toujours.</div></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Le verbe qui suit ne change jamais</h2><table><thead><tr><th>On dit</th><th>Le second verbe</th></tr></thead><tbody><tr><td>je voudrais visiter</td><td class="cle">visiter</td></tr><tr><td>j'aimerais savoir</td><td class="cle">savoir</td></tr><tr><td>est-ce que je pourrais venir</td><td class="cle">venir</td></tr><tr><td>est-ce que je peux rappeler</td><td class="cle">rappeler</td></tr></tbody></table><div class="note">C'est la forme du dictionnaire : elle ne se conjugue pas.</div></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Les quatre phrases polies de l'appel</h2><table><thead><tr><th>Le moment</th><th>La phrase</th></tr></thead><tbody><tr><td class="cle">ouvrir</td><td>Bonjour. Je vous appelle pour l'annonce.</td></tr><tr><td class="cle">annoncer</td><td>J'aimerais poser trois questions.</td></tr><tr><td class="cle">demander</td><td>Est-ce que je pourrais le visiter ?</td></tr><tr><td class="cle">faire répéter</td><td>Pouvez-vous répéter, s'il vous plaît ?</td></tr></tbody></table><div class="note">Quatre phrases, et l'appel entier tient debout.</div></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Registre</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">« Je veux voir le logement. »</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">« Je voudrais visiter le logement, s'il vous plaît. »</p></div></div><div class="note">Ce n'est pas une faute de grammaire, c'est une faute de ton. La personne au bout du fil peut décider de ne pas rappeler, et vous ne saurez jamais pourquoi.</div></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Grammaire</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">« je voudrais je visite »</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">« je voudrais visiter »</p></div></div><div class="note">Après je voudrais, j'aimerais et je pourrais, le verbe reste à sa forme de base : visiter, savoir, venir, parler. Un seul verbe se conjugue dans la phrase.</div></section><section class="bloc card"><div class="lbl">Grammaire</div><h2 class="t">Complétez la demande</h2><p class="consigne">Je voudrais, j'aimerais ou est-ce que je pourrais ?</p><ol class="ex"><li><span class="q">Bonjour. ___ visiter le logement, s'il vous plaît.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ poser trois questions, si vous avez une minute.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ venir samedi matin ?</span><span class="ligne ligne--court"></span></li><li><span class="q">___ vous rappeler demain ?</span><span class="ligne ligne--court"></span></li><li><span class="q">Pouvez-vous répéter l'adresse, ___ ?</span><span class="ligne ligne--court"></span></li><li><span class="q">___ savoir si le chauffage est compris.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">Répétition</div><h2 class="t">Quatre phrases à savoir par cœur</h2><p class="consigne">Écoutez, puis répétez sans regarder.</p><ol class="ex"><li><span class="q">Bonjour. Je vous appelle pour l'annonce.</span><span class="ligne ligne--court"></span></li><li><span class="q">J'aimerais poser trois questions.</span><span class="ligne ligne--court"></span></li><li><span class="q">Est-ce que je pourrais le visiter cette semaine ?</span><span class="ligne ligne--court"></span></li><li><span class="q">Pouvez-vous répéter, s'il vous plaît ?</span><span class="ligne ligne--court"></span></li><li><span class="q">Merci beaucoup, madame. Bonne journée.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez trois demandes polies que vous ferez au téléphone.</p><ul><li>Je voudrais ___ .</li><li>J'aimerais ___ . Est-ce que je pourrais ___ ?</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Je voudrais, j'aimerais, est-ce que je pourrais</h2><section class="bloc card ml"><h3>Au téléphone, la politesse remplace le sourire</h3><p class="mp">Quand on parle en personne, le visage adoucit tout. Au téléphone, il ne reste que les mots — et « je veux visiter » sonne dur, même quand on ne le pense pas. Trois formules suffisent à changer tout un appel : <b>je voudrais</b>, <b>j'aimerais</b>, <b>est-ce que je pourrais</b>.</p><div class="note">Ce sont les formes du conditionnel. On ne les analyse pas ici : on les apprend comme des blocs, tels quels.</div></section><section class="bloc card ml"><h3>Je voudrais — la formule d'entrée</h3><p class="mp">C'est « je veux », mais poli. On l'emploie dès la première phrase.</p><table class="ana"><tr><td>On dit</td><td class=""><b>je voudrais</b> visiter le logement</td></tr><tr><td>Aussi</td><td class="cle"><b>je voudrais</b> un renseignement</td></tr><tr><td>On ne dit pas</td><td class="">« je veux visiter », qui est sec</td></tr></table><p class="dit"><span class="k">On dit</span> Je voudrais visiter le logement, s'il vous plaît.</p><div class="note">Après « je voudrais », le verbe ne change jamais : je voudrais <b>visiter</b>, je voudrais <b>savoir</b>, je voudrais <b>parler</b>.</div></section><section class="bloc card ml"><h3>J'aimerais — un peu plus doux encore</h3><p class="mp">Très employé au téléphone, surtout avant une question.</p><table class="ana"><tr><td>On dit</td><td class=""><b>j'aimerais</b> poser trois questions</td></tr><tr><td>Aussi</td><td class="cle"><b>j'aimerais</b> savoir si c'est chauffé</td></tr><tr><td>Même règle</td><td class="">le verbe qui suit ne change pas</td></tr></table><p class="dit"><span class="k">On dit</span> J'aimerais poser trois questions, si vous avez une minute.</p><div class="note">« J'aimerais savoir » est la façon la plus douce de poser une question difficile : le prix, l'argent, une date.</div></section><section class="bloc card ml"><h3>Est-ce que je pourrais — demander une permission</h3><p class="mp">Quand la réponse dépend de l'autre personne, on demande si c'est possible.</p><table class="ana"><tr><td>On dit</td><td class=""><b>est-ce que je pourrais</b> le visiter</td></tr><tr><td>Un peu plus direct</td><td class="cle"><b>est-ce que je peux</b> venir demain</td></tr><tr><td>On répond</td><td class="">« Bien sûr » ou « Malheureusement, non »</td></tr></table><p class="dit"><span class="k">On dit</span> Est-ce que je pourrais le visiter samedi ?</p><div class="note"><b>Pourrais</b> est plus poli que <b>peux</b>, mais les deux sont corrects. Au téléphone avec une personne qu'on ne connaît pas, prends « pourrais ».</div></section><section class="bloc card ml"><h3>La même demande, quatre façons</h3><p class="mp">Choisis une formule et écoute-la dans une phrase.</p><table class="labo"><thead><tr><th>Quelle formule ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">je veux</td><td>Je veux visiter le logement.</td><td>trop sec au téléphone</td></tr><tr><td class="cle">je voudrais</td><td>Je voudrais visiter le logement, s'il vous plaît.<span class="tags"><b>je voudrais</b> visiter le logement</span></td><td>poli, et suffisant</td></tr><tr><td class="cle">j'aimerais</td><td>J'aimerais visiter le logement.</td><td>doux, très employé</td></tr><tr><td class="cle">est-ce que je pourrais</td><td>Est-ce que je pourrais visiter le logement ?</td><td>le plus poli des quatre</td></tr></tbody></table><div class="note">Les trois derniers sont bons. Le premier se garde pour un ami.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six phrases d'un appel poli.</p><table class="ex2"><tr><td>Bonjour, madame. Je vous appelle pour l'annonce.</td><td>l'entrée en matière</td></tr><tr><td>J'aimerais poser trois questions, si vous avez une minute.</td><td>demander la parole</td></tr><tr><td>Je voudrais savoir si le chauffage est compris.</td><td>une question douce</td></tr><tr><td>Est-ce que je pourrais le visiter cette semaine ?</td><td>demander une permission</td></tr><tr><td>Pouvez-vous répéter l'adresse, s'il vous plaît ?</td><td>faire répéter</td></tr><tr><td>Merci beaucoup, madame. Bonne journée.</td><td>la sortie</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges à connaître</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">dire « je veux » au téléphone</p><div class="k">Ce qui arrive</div><p class="ph">« Je veux voir le logement. »</p><p class="px">Ce n'est pas une faute de grammaire, c'est une faute de ton. La personne peut décider de ne pas rappeler.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">oublier de dire pourquoi on appelle</p><div class="k">Ce qui arrive</div><p class="ph">commencer par « Bonjour, ça va ? »</p><p class="px">La deuxième phrase doit dire pourquoi tu appelles : « Je vous appelle pour l'annonce du quatre et demie. » Sans ça, la personne ne sait pas à qui elle parle.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">changer le verbe qui suit</p><div class="k">Ce qui arrive</div><p class="ph">« je voudrais je visite »</p><p class="px">Après <b>je voudrais</b>, <b>j'aimerais</b>, <b>je pourrais</b>, le verbe reste à l'infinitif : visiter, savoir, venir, parler.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">Au téléphone, on dit plutôt…</span><ul class="opts"><li>je veux visiter</li><li>je voudrais visiter</li></ul></li><li><span class="q">Après « je voudrais », le verbe…</span><ul class="opts"><li>ne change pas</li><li>se conjugue</li></ul></li><li><span class="q">Le plus poli des quatre, c'est…</span><ul class="opts"><li>est-ce que je pourrais</li><li>est-ce que je peux</li></ul></li><li><span class="q">La deuxième phrase de l'appel dit…</span><ul class="opts"><li>comment on va</li><li>pourquoi on appelle</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> je voudrais visiter — Trois lettres de plus, tout un ton. · <b>2.</b> ne change pas — Il reste à l'infinitif. · <b>3.</b> est-ce que je pourrais — « Pourrais », pour une personne qu'on ne connaît pas. · <b>4.</b> pourquoi on appelle — « Je vous appelle pour l'annonce. »</div></section></section></div>
+<footer><span>C2 · Trois questions avant de louer</span><span>Fiche élève</span></footer>
+</body>
+</html>

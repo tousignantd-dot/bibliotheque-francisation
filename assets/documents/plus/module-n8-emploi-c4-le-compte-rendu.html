@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C4 · Le compte rendu — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance C4 · Module 1 · 75 minutes</div>
+    <h1>Le compte rendu</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Personne ne relira ce que chacun a dit. Ce qu'on cherche dans un compte rendu, trois semaines plus tard, c'est : qu'est-ce qui a été décidé, qui le fait, pour quand.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>rapporter au passé une parole entendue au présent ;</li><li>adapter les pronoms et les repères de temps ;</li><li>transformer une question directe en question rapportée ;</li><li>écrire une ligne de décision : quoi, qui, quand.</li></ol></section><section class="bloc regle"><div class="lbl">Une ligne de compte rendu</div><p class="r">Ce qui a été décidé — qui le fait — pour quand.</p><p class="pr">Rien d'autre. Une ligne qui ne porte pas ces trois informations n'est pas une décision : c'est une discussion. Exemple : « Demander à Lachance un prix sur une liste courte — N. Kessab — 12 septembre. » Court, daté, vérifiable un mois plus tard.</p></section><section class="bloc card"><div class="lbl">Analyse · 1 de 2</div><h2 class="t">Le recul des temps</h2><table><thead><tr><th>Ce qui a été dit</th><th>Ce qui s'écrit</th></tr></thead><tbody><tr><td>« Je vérifie »</td><td class="cle">elle a précisé qu'elle vérifiait</td></tr><tr><td>« J'ai fait le calcul »</td><td class="cle">elle a indiqué qu'elle avait fait le calcul</td></tr><tr><td>« On tranchera »</td><td class="cle">elle a annoncé qu'on trancherait</td></tr></tbody></table><div class="note">Quand le verbe introducteur est au passé, tout recule d'un cran.</div></section><section class="bloc card"><div class="lbl">Analyse · 2 de 2</div><h2 class="t">Les pronoms et les repères</h2><table><thead><tr><th>Dans la salle</th><th>Dans le compte rendu</th></tr></thead><tbody><tr><td>je</td><td class="cle">elle, il, ou le nom</td></tr><tr><td>aujourd'hui · demain · hier</td><td class="cle">ce jour-là · le lendemain · la veille</td></tr><tr><td>ici · ce bureau-ci</td><td class="cle">là · ce bureau-là</td></tr></tbody></table><div class="note">Un compte rendu qui garde « demain » oblige le lecteur à retrouver la date de la réunion.</div></section><section class="bloc"><div class="lbl">Le verbe porte l'intention</div><h2 class="t">Ne pas écrire « a dit » huit fois</h2><div class="grid"><div class="card"><h3>a rappelé</h3><p>l'information était déjà connue du groupe</p></div><div class="card"><h3>a précisé</h3><p>il manquait un détail, il l'a fourni</p></div><div class="card"><h3>a objecté</h3><p>il n'était pas d'accord, et il l'a dit</p></div><div class="card"><h3>a proposé</h3><p>il a avancé une solution, sans l'imposer</p></div><div class="card"><h3>s'est engagé à</h3><p>il le fera — et un mois plus tard, on s'en souviendra</p></div><div class="card"><h3>a reconnu</h3><p>il a admis un point, souvent contre son propre intérêt</p></div></div></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Rapporter la question telle quelle</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">Il a demandé est-ce qu'elle était sûre ?</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">Il lui a demandé si elle était sûre.</p></div></div><div class="note">La question rapportée n'est plus une question : elle perd l'inversion, le « est-ce que » devient « si », et le point d'interrogation disparaît. La faute est très visible parce qu'elle laisse dans le texte un mot qui n'a plus de raison d'être.</div></section><section class="bloc card"><div class="lbl">Grammaire</div><h2 class="t">Au discours rapporté</h2><p class="consigne">Transformez la parole en phrase de compte rendu.</p><ol class="ex"><li><span class="q">« Je vérifie deux fois. »</span><span class="ligne"></span></li><li><span class="q">« Ça me force à doubler mon stock. »</span><span class="ligne"></span></li><li><span class="q">« Es-tu sûre de ton affaire ? »</span><span class="ligne"></span></li><li><span class="q">« On tranche à la réunion du seize. »</span><span class="ligne"></span></li><li><span class="q">« J'ai fait le calcul. »</span><span class="ligne"></span></li><li><span class="q">« C'est ma faute. »</span><span class="ligne"></span></li><li><span class="q">« Je note les trois décisions. »</span><span class="ligne"></span></li></ol></section><section class="bloc card"><div class="lbl">Rédaction</div><h2 class="t">Les trois lignes de décision</h2><p class="consigne">Manon a donné trois consignes. Écrivez-les au format : quoi — qui — quand.</p><ol class="ex"><li><span class="q">La demande de prix à Lachance</span><span class="ligne"></span></li><li><span class="q">Le calcul d'espace</span><span class="ligne"></span></li><li><span class="q">Le choix du fournisseur</span><span class="ligne"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Rédigez le compte rendu complet de la réunion, en une demi-page.</p><ul><li>Deux phrases de contexte, puis les trois lignes de décision.</li><li>Aucune parole rapportée mot à mot.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Rapporter ce qui a été dit, par écrit</h2><section class="bloc card ml"><h3>Un compte rendu n'est pas une transcription</h3><p class="mp">C'est la première chose que Manon dit à Nadia, et c'est la seule qui compte. Personne ne relira ce que chacun a dit. Ce qu'on cherche dans un compte rendu, trois semaines plus tard, c'est : <b>qu'est-ce qui a été décidé, qui le fait, pour quand</b>. Tout le reste est du remplissage — les hésitations, les blagues, les redites, les débats qui n'ont mené à rien.</p><div class="note">Une réunion d'une heure tient en une demi-page. Si votre compte rendu fait trois pages, vous avez transcrit au lieu de rapporter.</div></section><section class="bloc card ml"><h3>Le recul des temps</h3><p class="mp">Quand le verbe introducteur est au passé, tout recule d'un cran.</p><table class="ana"><tr><td>présent → imparfait</td><td class="">« Je vérifie » → elle a précisé qu'elle <b>vérifiait</b></td></tr><tr><td>passé composé → plus-que-parfait</td><td class="">« J'ai fait le calcul » → elle a indiqué qu'elle <b>avait fait</b></td></tr><tr><td>futur → conditionnel</td><td class="">« On tranchera » → elle a annoncé qu'on <b>trancherait</b></td></tr></table><p class="dit"><span class="k">On dit</span> Elle a précisé qu'elle vérifiait deux fois.</p><div class="note">Si le verbe introducteur est au présent (<i>elle dit que…</i>), rien ne recule. C'est le passé qui déclenche le mouvement.</div></section><section class="bloc card ml"><h3>Les pronoms et les repères de temps</h3><p class="mp">Ils changent aussi, et on les oublie plus souvent que les temps.</p><table class="ana"><tr><td>Les personnes</td><td class="">je → <b>elle</b> · tu → <b>vous</b> ou le nom</td></tr><tr><td>Les jours</td><td class="">aujourd'hui → <b>ce jour-là</b> · demain → <b>le lendemain</b> · hier → <b>la veille</b></td></tr><tr><td>Les lieux</td><td class="">ici → <b>là</b> · ce bureau-ci → <b>ce bureau-là</b></td></tr></table><p class="dit"><span class="k">On dit</span> Elle a annoncé que la décision serait prise le lendemain.</p><div class="note">Un compte rendu qui garde « demain » oblige le lecteur à retrouver la date de la réunion pour comprendre.</div></section><section class="bloc card ml"><h3>Les questions rapportées</h3><p class="mp">Elles perdent l'inversion et le point d'interrogation.</p><table class="ana"><tr><td>est-ce que → si</td><td class="">« Es-tu sûre ? » → il lui a demandé <b>si elle était sûre</b></td></tr><tr><td>Mot interrogatif conservé</td><td class="">« Quand ? » → il a demandé <b>quand</b> la décision serait prise</td></tr><tr><td>qu'est-ce que → ce que</td><td class="">« Qu'est-ce qu'on fait ? » → il a demandé <b>ce qu'on ferait</b></td></tr></table><p class="dit"><span class="k">On dit</span> Il lui a demandé si elle était sûre de son information.</p><div class="note">Écrire « il a demandé est-ce qu'elle était sûre » est la faute la plus visible du discours rapporté.</div></section><section class="bloc card ml"><h3>Le verbe introducteur porte l'intention</h3><p class="mp">Répéter « a dit » huit fois donne un texte plat où l'on ne distingue plus une objection d'un engagement. Le verbe fait ce travail à lui seul : <b>a rappelé</b> (c'était déjà connu), <b>a précisé</b> (il manquait un détail), <b>a objecté</b> (il n'était pas d'accord), <b>a proposé</b> (une solution), <b>s'est engagé à</b> (il le fera), <b>a reconnu</b> (il admet), <b>a demandé</b>.</p><div class="note">Choisir le bon verbe est un acte de rédaction, pas de style : « a proposé » et « s'est engagé à » n'ont pas les mêmes conséquences un mois plus tard.</div></section><section class="bloc card ml"><h3>Huit transformations de la réunion</h3><p class="mp">À gauche ce qui a été dit, à droite ce qui s'écrit.</p><table class="ex2"><tr><td>« Je vérifie deux fois. »</td><td>Elle a précisé qu'elle vérifiait deux fois.</td></tr><tr><td>« Ça me force à doubler mon stock. »</td><td>Il a objecté que cela le forçait à doubler son stock.</td></tr><tr><td>« Es-tu sûre de ton affaire ? »</td><td>Il lui a demandé si elle était sûre de son information.</td></tr><tr><td>« On tranche à la réunion du seize. »</td><td>Elle a annoncé qu'on trancherait à la réunion du seize.</td></tr><tr><td>« J'ai fait le calcul. »</td><td>Elle a indiqué qu'elle avait fait le calcul.</td></tr><tr><td>« Envoie-le avant jeudi. »</td><td>Elle lui a demandé de l'envoyer avant le jeudi.</td></tr><tr><td>« C'est ma faute. »</td><td>Elle a reconnu que c'était sa faute.</td></tr><tr><td>« Je note les trois décisions. »</td><td>Elle s'est engagée à noter les trois décisions.</td></tr></table></section><section class="bloc card ml"><h3>Trois erreurs de compte rendu</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">« Il a demandé est-ce qu'elle était sûre »</p><div class="k">Ce qui arrive</div><p class="ph">« … s'il elle était sûre » → « si elle était sûre »</p><p class="px">La question rapportée n'est plus une question : ni inversion, ni « est-ce que », ni point d'interrogation.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">garder « demain » et « hier »</p><div class="k">Ce qui arrive</div><p class="ph">« le lendemain », « la veille »</p><p class="px">Le lecteur du compte rendu n'était pas dans la salle et ne connaît pas la date de référence.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">rapporter les propos vifs</p><div class="k">Ce qui arrive</div><p class="ph">rapporter la décision</p><p class="px">Un désaccord se note « X a objecté que… ». Les mots exacts d'un moment de tension n'ont rien à faire dans un document qui circule.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">« Je vérifie » rapporté au passé devient…</span><ul class="opts"><li>qu'elle vérifiait</li><li>qu'elle a vérifié</li></ul></li><li><span class="q">« Est-ce que » rapporté devient…</span><ul class="opts"><li>si</li><li>que</li></ul></li><li><span class="q">« Demain » rapporté devient…</span><ul class="opts"><li>le lendemain</li><li>ce jour-là</li></ul></li><li><span class="q">Un compte rendu garde…</span><ul class="opts"><li>les propos de chacun</li><li>les décisions, les responsables, les dates</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> qu'elle vérifiait — Présent → imparfait. · <b>2.</b> si — Et l'inversion disparaît. · <b>3.</b> le lendemain — « Ce jour-là » traduit « aujourd'hui ». · <b>4.</b> les décisions, les responsables, les dates — Le reste appartient à la réunion.</div></section></section></div>
+<footer><span>C4 · Tenir son bout au travail</span><span>Fiche élève</span></footer>
+</body>
+</html>

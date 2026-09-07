@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B2 · Dire ce qui ne va pas — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance B2 · Module 18 · 60 minutes</div>
+    <h1>Dire ce qui ne va pas</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">« Trop », « un peu », « pas assez » : trois mots qui changent tout. Avec un endroit, ils disent exactement ce qu'il faut changer.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>employer trop, un peu, pas assez devant un adjectif ;</li><li>situer le problème avec à, aux, dans ;</li><li>demander une autre taille poliment ;</li><li>distinguer taille et pointure.</li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Les trois degrés</h2><table><thead><tr><th>Le mot</th><th>Ce que ça veut dire</th></tr></thead><tbody><tr><td>un peu serré</td><td>ça peut aller, mais je le remarque</td></tr><tr><td>serré</td><td>ça ne va pas très bien</td></tr><tr><td>trop serré</td><td>ça ne va pas — je change</td></tr><tr><td>pas assez chaud</td><td>il en manque</td></tr></tbody></table><div class="note">« Trop » ferme la porte. « Un peu » la laisse ouverte.</div></section><section class="bloc regle"><div class="lbl">La formule complète</div><p class="r">degré + adjectif + endroit</p><p class="pr">« Il est &lt;b&gt;un peu&lt;/b&gt; &lt;b&gt;serré&lt;/b&gt; &lt;b&gt;aux épaules&lt;/b&gt;. » Les trois morceaux ensemble donnent à la personne tout ce qu'il lui faut. Sans l'endroit, elle apportera une autre taille ; avec l'endroit, elle peut proposer une autre coupe.</p></section><section class="bloc"><div class="lbl">Les endroits</div><h2 class="t">Trois petits mots</h2><div class="grid"><div class="card"><h3>aux — pour une partie double</h3><p>aux épaules, aux bras, aux jambes, aux hanches. C'est le cas le plus fréquent.</p></div><div class="card"><h3>à la, au — pour une partie unique</h3><p>à la taille, à la poitrine, au cou, au dos.</p></div><div class="card"><h3>dans — pour ce qui contient</h3><p>« Je flotte dans ce manteau. » « J'ai mal dans les bottes. » Moins fréquent, mais très naturel.</p></div></div></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Taille ou pointure ?</h2><table><thead><tr><th>On dit</th><th>Pour</th></tr></thead><tbody><tr><td>la taille</td><td class="cle">manteaux, chandails, pantalons, robes</td></tr><tr><td>la pointure</td><td class="cle">souliers, bottes, sandales</td></tr><tr><td>« Je fais du 9 »</td><td class="cle">la pointure, en chiffres</td></tr><tr><td>« Je fais un moyen »</td><td class="cle">la taille, en lettres</td></tr></tbody></table><div class="note">Un pied a une pointure ; tout le reste a une taille.</div></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Dire seulement « ça ne va pas »</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">Non, ça ne va pas.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">Il est trop serré aux épaules.</p></div></div><div class="note">« Ça ne va pas » oblige la personne à deviner : elle apportera une autre taille, puis une autre, puis une autre. Dire où et comment fait gagner dix minutes et trois allers-retours.</div></section><section class="bloc card"><div class="lbl">Pratique · 1 de 2</div><h2 class="t">Complétez la phrase</h2><p class="consigne">Employez un degré, un adjectif et un endroit.</p><ol class="ex"><li><span class="q">Le pantalon me serre à la ceinture.</span><span class="ligne"></span></li><li><span class="q">Je ne peux pas lever les bras.</span><span class="ligne"></span></li><li><span class="q">Les manches dépassent mes mains.</span><span class="ligne"></span></li><li><span class="q">Le manteau flotte partout.</span><span class="ligne"></span></li><li><span class="q">J'ai encore froid avec ce manteau.</span><span class="ligne"></span></li></ol></section><section class="bloc card"><div class="lbl">Pratique · 2 de 2</div><h2 class="t">Demander une autre taille</h2><p class="consigne">Trouvez une formule polie.</p><ol class="ex"><li><span class="q">Vous avez besoin d'un plus grand.</span><span class="ligne"></span></li><li><span class="q">Vous avez besoin d'un plus petit.</span><span class="ligne"></span></li><li><span class="q">Vous voulez une autre couleur.</span><span class="ligne"></span></li><li><span class="q">Vous voulez essayer.</span><span class="ligne"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez cinq phrases de la forme : degré + adjectif + endroit.</p><ul><li>Une avec « un peu », deux avec « trop », une avec « pas assez ».</li><li>Chacune avec un endroit différent.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Dire ce qui ne va pas</h2><section class="bloc card ml"><h3>Un adjectif, un endroit</h3><p class="mp">« Il est un peu <b>serré</b> <b>aux épaules</b>. » Un adjectif et un endroit : c'est tout ce qu'il faut pour qu'on vous propose la bonne chose. Dire seulement « ça ne va pas » oblige la personne à deviner.</p><div class="note">Cette formule en deux morceaux marche pour n'importe quel vêtement, dans n'importe quel magasin.</div></section><section class="bloc card ml"><h3>Trop petit : serré</h3><p class="mp">On ne dit pas « petit » pour un vêtement qu'on porte : on dit <b>serré</b>.</p><table class="ana"><tr><td>L'adjectif</td><td class=""><b>serré</b></td></tr><tr><td>L'endroit</td><td class="cle">aux épaules · à la taille</td></tr><tr><td>La phrase</td><td class="">Il est serré aux épaules.</td></tr></table><p class="dit"><span class="k">On dit</span> Il est un peu serré aux épaules.</p><div class="note">« Un peu » adoucit et laisse la porte ouverte : « un peu serré » invite à essayer la taille au-dessus, sans rejeter le vêtement.</div></section><section class="bloc card ml"><h3>Trop grand : large</h3><p class="mp"><b>large</b> ou <b>ample</b>. « Ample » est plus neutre : c'est parfois une coupe voulue.</p><table class="ana"><tr><td>L'adjectif</td><td class=""><b>large</b> · ample</td></tr><tr><td>L'endroit</td><td class="cle">aux épaules · au dos</td></tr><tr><td>La phrase</td><td class="">Il est trop large aux épaules.</td></tr></table><p class="dit"><span class="k">On dit</span> Il est trop large aux épaules.</p><div class="note">Un manteau d'hiver <em>doit</em> être un peu ample : il faut de la place pour un chandail. « Ample » n'est donc pas un défaut.</div></section><section class="bloc card ml"><h3>Les longueurs</h3><p class="mp"><b>court</b> et <b>long</b>, pour le vêtement entier ou pour les manches.</p><table class="ana"><tr><td>Le vêtement</td><td class="">il est trop <b>court</b></td></tr><tr><td>Les manches</td><td class="cle">elles sont trop <b>longues</b></td></tr><tr><td>L'accord</td><td class="">manche est féminin</td></tr></table><p class="dit"><span class="k">On dit</span> Les manches sont un peu longues.</p><div class="note">Attention à l'accord : <em>les manches sont longues</em>, <em>le manteau est long</em>. C'est le nom qui décide.</div></section><section class="bloc card ml"><h3>Dire l'endroit change la réponse</h3><p class="mp">« Ça ne me va pas » obtient une autre taille. « C'est serré <b>aux épaules</b> » obtient une autre <b>coupe</b> — parfois la même taille dans un modèle différent. Nommer l'endroit permet à la personne de vous aider vraiment.</p><div class="note">Les endroits utiles : aux épaules, à la taille, aux manches, à la poitrine, aux hanches, au col.</div></section><section class="bloc card ml"><h3>Quel adjectif ?</h3><p class="mp">Choisissez un problème et voyez comment le dire.</p><table class="labo"><thead><tr><th>Quel problème ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">Je ne peux pas lever les bras.</td><td>Il est un peu serré aux épaules.<span class="tags">Il est <b>serré</b> aux épaules.</span></td><td>trop petit › serré</td></tr><tr><td class="cle">Il y a trop de place partout.</td><td>Il est trop large aux épaules.<span class="tags">Il est trop <b>large</b>.</span></td><td>trop grand › large</td></tr><tr><td class="cle">Les manches dépassent la main.</td><td>Les manches sont un peu longues.<span class="tags">Les manches sont trop <b>longues</b>.</span></td><td>accord au féminin pluriel</td></tr><tr><td class="cle">Le manteau arrive à la taille.</td><td>Il est trop court, il faudrait aux genoux.<span class="tags">Il est trop <b>court</b>.</span></td><td>la longueur du vêtement</td></tr><tr><td class="cle">Je ne peux pas fermer le manteau.</td><td>Il est serré à la poitrine.</td><td>l'endroit précise le problème</td></tr></tbody></table><div class="note">Cinq problèmes, deux adjectifs : serré et large couvrent presque tout. Ce qui change, c'est l'endroit.</div></section><section class="bloc card ml"><h3>Les phrases de la cabine</h3><p class="mp">Écoutez chacune et répétez-la.</p><table class="ex2"><tr><td>Il est un peu serré aux épaules.</td><td>trop petit</td></tr><tr><td>Je ne peux pas lever les bras.</td><td>la preuve que c'est serré</td></tr><tr><td>Il est trop large aux épaules.</td><td>trop grand</td></tr><tr><td>Les manches sont un peu longues.</td><td>la longueur, au féminin pluriel</td></tr><tr><td>Il est trop court.</td><td>la longueur du vêtement</td></tr><tr><td>Est-ce que vous l'avez dans la taille au-dessus ?</td><td>la question qui suit</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges à connaître</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">dire « petit » au lieu de « serré »</p><div class="k">Ce qui arrive</div><p class="ph">« il est serré », pas « il est petit »</p><p class="px">« Petit » décrit la taille de l'objet ; « serré » décrit ce que vous ressentez en le portant. C'est le second qu'on emploie en cabine.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">ne pas dire l'endroit</p><div class="k">Ce qui arrive</div><p class="ph">« serré aux épaules » plutôt que « ça ne va pas »</p><p class="px">L'endroit permet de proposer une autre coupe, pas seulement une autre taille.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">oublier l'accord des manches</p><div class="k">Ce qui arrive</div><p class="ph">« les manches sont longues », au féminin pluriel</p><p class="px">Manche est féminin. C'est une des rares fautes d'accord qui s'entendent nettement.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">Un vêtement trop petit est…</span><ul class="opts"><li>petit</li><li>serré</li></ul></li><li><span class="q">Pourquoi dire l'endroit ?</span><ul class="opts"><li>pour obtenir une autre coupe</li><li>par politesse</li></ul></li><li><span class="q">« Les manches sont… »</span><ul class="opts"><li>longues</li><li>longs</li></ul></li><li><span class="q">Un manteau d'hiver doit être…</span><ul class="opts"><li>ajusté</li><li>un peu ample</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> serré — « Serré » décrit ce qu'on ressent en le portant. · <b>2.</b> pour obtenir une autre coupe — Une autre coupe, pas seulement une autre taille. · <b>3.</b> longues — Manche est féminin. · <b>4.</b> un peu ample — Il faut de la place pour un chandail.</div></section></section></div>
+<footer><span>B2 · Acheter des vêtements</span><span>Fiche élève</span></footer>
+</body>
+</html>

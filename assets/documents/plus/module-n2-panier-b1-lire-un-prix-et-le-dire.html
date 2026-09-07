@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B1 · Lire un prix, et le dire — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance B1 · Module 2 · 75 minutes</div>
+    <h1>Lire un prix, et le dire</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Une virgule, deux nombres. Et une barre oblique qui change tout.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>lire un prix écrit avec une virgule ;</li><li>dire un prix à voix haute, en deux formes ;</li><li>comprendre « 3,99 $ / kg » ;</li><li>comprendre un spécial « 2 pour 9 $ ».</li></ol></section><section class="bloc card"><div class="lbl">Dialogue · 1 de 2</div><h2 class="t">Deux pour neuf dollars</h2><p class="consigne">Écoutez deux fois avant de lire.</p><div class="rep rep--key"><div class="qui">AMINATA</div><div>Rose, je lis « 2 pour 9 $ ». Je ne comprends pas.</div></div><div class="rep rep--key"><div class="qui">ROSE</div><div>Tu achètes deux paquets. Tu payes neuf dollars.</div></div><div class="rep rep--key"><div class="qui">AMINATA</div><div>Et un seul paquet ?</div></div><div class="rep rep--key"><div class="qui">ROSE</div><div>Un seul paquet, c'est six dollars. Deux, c'est moins cher.</div></div></section><section class="bloc card"><div class="lbl">Dialogue · 2 de 2</div><h2 class="t">Trois dollars quatre-vingt-dix-neuf</h2><div class="rep rep--key"><div class="qui">AMINATA</div><div>D'accord. Et ici : « 3,99 $ le kilo » ?</div></div><div class="rep rep--key"><div class="qui">ROSE</div><div>Trois dollars quatre-vingt-dix-neuf pour un kilo de pommes.</div></div><div class="rep rep--key"><div class="qui">AMINATA</div><div>Trois dollars quatre-vingt-dix-neuf. C'est ça ?</div></div><div class="rep rep--key"><div class="qui">ROSE</div><div>C'est ça. Tu lis bien !</div></div></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Trois écritures, trois sens</h2><table><thead><tr><th>Ce qui est écrit</th><th>Ce que ça veut dire</th></tr></thead><tbody><tr><td>3,99 $</td><td>le prix du produit</td></tr><tr><td>3,99 $ / kg</td><td>le prix d'&lt;b&gt;un kilo&lt;/b&gt; seulement</td></tr><tr><td>2 pour 9 $</td><td>deux produits ensemble pour 9 $</td></tr><tr><td>1,29 $ ch.</td><td>« ch. » = chacun, le prix d'un seul</td></tr></tbody></table><div class="note">La barre oblique et l'unité disent que le prix vaut pour une mesure. Un sac de deux kilos coûte donc deux fois ce prix.</div></section><section class="bloc regle"><div class="lbl">Dire un prix</div><p class="r">On ne dit jamais la virgule.</p><p class="pr">On écrit &lt;b&gt;3,99 $&lt;/b&gt;. On dit « &lt;b&gt;trois dollars quatre-vingt-dix-neuf&lt;/b&gt; », ou, plus court, « &lt;b&gt;trois quatre-vingt-dix-neuf&lt;/b&gt; ». À la caisse, c'est presque toujours la forme courte qu'on entend.</p></section><section class="bloc"><div class="lbl">Cinq prix à dire</div><h2 class="t">Longue forme, forme courte</h2><div class="grid"><div class="card"><h3>3,99 $</h3><p>trois dollars quatre-vingt-dix-neuf · trois quatre-vingt-dix-neuf</p></div><div class="card"><h3>1,29 $</h3><p>un dollar vingt-neuf · un vingt-neuf</p></div><div class="card"><h3>12,50 $</h3><p>douze dollars cinquante · douze cinquante</p></div><div class="card"><h3>0,89 $</h3><p>quatre-vingt-neuf cents</p></div><div class="card"><h3>24,15 $</h3><p>vingt-quatre dollars quinze · vingt-quatre quinze</p></div></div></section><section class="bloc card"><div class="lbl">Compréhension</div><h2 class="t">D'après le dialogue</h2><p class="consigne">Complétez avec un nombre ou un mot.</p><ol class="ex"><li><span class="q">« 2 pour 9 $ » : je prends ___ paquets.</span><span class="ligne ligne--court"></span></li><li><span class="q">« 2 pour 9 $ » : je paye ___ dollars.</span><span class="ligne ligne--court"></span></li><li><span class="q">Un seul paquet coûte ___ dollars.</span><span class="ligne ligne--court"></span></li><li><span class="q">« 3,99 $ / kg » est le prix d'un ___ .</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">Pratique · à deux</div><h2 class="t">La circulaire à voix haute</h2><p class="consigne">Deux par deux, avec la circulaire de la semaine.</p><ol class="ex"><li><span class="q">Étape 1</span><span class="ligne"></span></li><li><span class="q">Étape 2</span><span class="ligne"></span></li><li><span class="q">Étape 3</span><span class="ligne"></span></li><li><span class="q">Étape 4</span><span class="ligne"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez trois prix de la circulaire, en chiffres et en mots.</p><ul><li>3,99 $ — trois dollars quatre-vingt-dix-neuf</li><li>1,29 $ — un dollar vingt-neuf</li><li>2 pour 9 $ — deux paquets pour neuf dollars</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Lire un prix, et le dire</h2><section class="bloc card ml"><h3>Une virgule, deux nombres</h3><p class="mp">Au Québec, un prix s'écrit avec une <b>virgule</b> et le signe de dollar <b>après</b> : « 3,99 $ ». Avant la virgule, ce sont les <b>dollars</b>. Après, ce sont les <b>cents</b>. On lit les deux nombres l'un après l'autre.</p><div class="note">Dans plusieurs pays, on écrit un point : « 3.99 ». Ici, c'est une virgule. Le prix est le même.</div></section><section class="bloc card ml"><h3>Le prix simple</h3><p class="mp">Deux nombres, dans l'ordre.</p><table class="ana"><tr><td>On écrit</td><td class="">3,99 $</td></tr><tr><td>On dit</td><td class="">trois dollars <b>quatre-vingt-dix-neuf</b></td></tr><tr><td>Plus court</td><td class="">trois <b>quatre-vingt-dix-neuf</b></td></tr><tr><td>On ne dit pas</td><td class="cle">trois virgule quatre-vingt-dix-neuf</td></tr></table><p class="dit"><span class="k">On dit</span> Trois dollars quatre-vingt-dix-neuf. Trois quatre-vingt-dix-neuf.</p><div class="note">À la caisse, on entend presque toujours la forme courte : « ça fait trois quatre-vingt-dix-neuf ».</div></section><section class="bloc card ml"><h3>Le prix d'une mesure</h3><p class="mp">Une barre oblique, puis l'unité.</p><table class="ana"><tr><td>On écrit</td><td class="">3,99 $ / kg</td></tr><tr><td>On dit</td><td class="">trois quatre-vingt-dix-neuf le <b>kilo</b></td></tr><tr><td>Aussi</td><td class="">1,49 $ / L : un quarante-neuf le <b>litre</b></td></tr><tr><td>Attention</td><td class="cle">ce n'est pas le prix du sac entier</td></tr></table><p class="dit"><span class="k">On dit</span> Trois quatre-vingt-dix-neuf le kilo. Un quarante-neuf le litre.</p><div class="note">C'est le piège le plus courant : le prix affiché en gros est souvent celui du kilo, pas celui de ce que vous mettez dans votre panier.</div></section><section class="bloc card ml"><h3>Le spécial « 2 pour »</h3><p class="mp">Deux produits, un seul prix.</p><table class="ana"><tr><td>On écrit</td><td class="">2 pour 9 $</td></tr><tr><td>Ça veut dire</td><td class="">deux paquets, <b>neuf</b> dollars</td></tr><tr><td>Un seul paquet</td><td class="">plus cher : six dollars</td></tr><tr><td>Autre forme</td><td class="cle">1,29 $ ch. — « ch. » = chacun</td></tr></table><p class="dit"><span class="k">On dit</span> Deux pour neuf dollars. Un dollar vingt-neuf chacun.</p><div class="note">Un « 2 pour » n'oblige presque jamais à en prendre deux — mais le rabais, lui, n'arrive qu'à partir de deux.</div></section><section class="bloc card ml"><h3>Dites ce prix</h3><p class="mp">Choisissez un prix et une façon de le dire.</p><table class="labo"><thead><tr><th>Quel prix ? · Comment ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">3,99 $ + la forme longue</td><td>Trois dollars quatre-vingt-dix-neuf.</td><td>la forme complète</td></tr><tr><td class="cle">3,99 $ + la forme courte</td><td>Trois quatre-vingt-dix-neuf.</td><td>celle qu'on entend le plus</td></tr><tr><td class="cle">3,99 $ + à la caisse</td><td>Ça fait trois quatre-vingt-dix-neuf.</td><td>la phrase de la caissière</td></tr><tr><td class="cle">1,29 $ + la forme longue</td><td>Un dollar vingt-neuf.</td><td>un seul dollar : « dollar », sans s</td></tr><tr><td class="cle">1,29 $ + la forme courte</td><td>Un vingt-neuf.</td><td>très courant</td></tr><tr><td class="cle">1,29 $ + à la caisse</td><td>Ça fait un vingt-neuf.</td><td>à la caisse</td></tr><tr><td class="cle">12,50 $ + la forme longue</td><td>Douze dollars cinquante.</td><td>50 cents : « cinquante »</td></tr><tr><td class="cle">12,50 $ + la forme courte</td><td>Douze cinquante.</td><td>la forme courte</td></tr><tr><td class="cle">12,50 $ + à la caisse</td><td>Ça fait douze cinquante.</td><td>à la caisse</td></tr><tr><td class="cle">0,89 $ + la forme longue</td><td>Quatre-vingt-neuf cents.</td><td>moins d'un dollar : on dit « cents »</td></tr><tr><td class="cle">0,89 $ + la forme courte</td><td>Quatre-vingt-neuf.</td><td>le mot « cents » se perd souvent</td></tr><tr><td class="cle">0,89 $ + à la caisse</td><td>Ça fait quatre-vingt-neuf cents.</td><td>à la caisse</td></tr><tr><td class="cle">24,15 $ + la forme longue</td><td>Vingt-quatre dollars quinze.</td><td>un total d'épicerie</td></tr><tr><td class="cle">24,15 $ + la forme courte</td><td>Vingt-quatre quinze.</td><td>la forme courte</td></tr><tr><td class="cle">24,15 $ + à la caisse</td><td>Ça fait vingt-quatre quinze.</td><td>à la caisse</td></tr></tbody></table><div class="note">Quinze prix. Répétez-les à voix haute : c'est ce que vous entendrez au comptoir.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six phrases pour lire la circulaire.</p><table class="ex2"><tr><td>trois dollars quatre-vingt-dix-neuf</td><td>3,99 $</td></tr><tr><td>trois quatre-vingt-dix-neuf le kilo</td><td>3,99 $ / kg</td></tr><tr><td>deux pour neuf dollars</td><td>2 pour 9 $</td></tr><tr><td>un dollar vingt-neuf chacun</td><td>1,29 $ ch.</td></tr><tr><td>C'est combien ?</td><td>la question qui trouve tout</td></tr><tr><td>Pouvez-vous répéter le prix ?</td><td>quand ça va trop vite</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges à connaître</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">« trois virgule quatre-vingt-dix-neuf »</p><div class="k">Ce qui arrive</div><p class="ph">trois quatre-vingt-dix-neuf</p><p class="px">On ne dit jamais la virgule dans un prix. On dit les dollars, puis les cents, sans rien entre les deux.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">prendre le prix du kilo pour le prix du sac</p><div class="k">Ce qui arrive</div><p class="ph">3,99 $ / kg n'est pas 3,99 $</p><p class="px">La barre oblique et l'unité — <b>/ kg</b>, <b>/ L</b>, <b>/ 100 g</b> — disent que le prix vaut pour <b>une</b> mesure. Un sac de deux kilos coûte donc deux fois ce prix.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">croire qu'un « 2 pour » oblige à en prendre deux</p><div class="k">Ce qui arrive</div><p class="ph">c'est un choix</p><p class="px">Vous pouvez n'en prendre qu'un — vous payez alors le prix normal, écrit plus petit. Le rabais commence à deux.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">« 2,50 $ » se dit…</span><ul class="opts"><li>deux virgule cinquante</li><li>deux cinquante</li></ul></li><li><span class="q">« 4,99 $ / kg » est le prix…</span><ul class="opts"><li>d'un kilo</li><li>du sac entier</li></ul></li><li><span class="q">« 2 pour 7 $ » : deux paquets coûtent…</span><ul class="opts"><li>7 $</li><li>14 $</li></ul></li><li><span class="q">« ch. » sur une affichette veut dire…</span><ul class="opts"><li>chaud</li><li>chacun</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> deux cinquante — On ne dit pas la virgule : « deux cinquante », ou « deux dollars cinquante ». · <b>2.</b> d'un kilo — La barre oblique donne le prix d'une seule mesure : ici, un kilo. · <b>3.</b> 7 $ — Sept dollars pour les deux ensemble. C'est le sens du « 2 pour ». · <b>4.</b> chacun — « ch. » est l'abréviation de « chacun » : le prix d'un seul produit.</div></section></section></div>
+<footer><span>B1 · Remplir mon panier</span><span>Fiche élève</span></footer>
+</body>
+</html>

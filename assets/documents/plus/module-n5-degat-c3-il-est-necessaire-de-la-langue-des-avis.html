@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C3 · Il est nécessaire de : la langue des avis — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance C3 · Module 2 · 75 minutes</div>
+    <h1>Il est nécessaire de : la langue des avis</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Trois tournures tiennent tout document administratif. Savoir les lire vous protège ; savoir les écrire vous ouvre des portes.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>reconnaître et former la phrase impersonnelle ;</li><li>former le passif et accorder son participe ;</li><li>employer « veuillez » + infinitif ;</li><li>réutiliser ces tournures dans ses propres lettres.</li></ol></section><section class="bloc regle"><div class="lbl">Un avis ne dit jamais « vous devez »</div><p class="r">L'obligation paraît venir de la situation, pas d'une personne.</p><p class="pr">« Il est nécessaire de libérer l'accès » : personne ne s'adresse à personne, et pourtant vous êtes tenu de faire quelque chose. Ce n'est pas de la politesse et ce n'est pas de la lâcheté : c'est une langue faite pour s'appliquer à tout le monde de la même façon.</p></section><section class="bloc card"><div class="lbl">Les trois tournures</div><h2 class="t">La charpente de tout document officiel</h2><table><thead><tr><th>La tournure</th><th>Comment elle se fait</th></tr></thead><tbody><tr><td class="cle">la phrase impersonnelle</td><td>« il » qui ne désigne personne : il est nécessaire de, il est interdit de</td></tr><tr><td class="cle">le passif</td><td>être au temps voulu + participe passé : les travaux seront effectués</td></tr><tr><td class="cle">« veuillez » + infinitif</td><td>l'impératif poli des écrits : veuillez prévoir, veuillez nous aviser</td></tr><tr><td class="cle">les formules de conséquence</td><td>à défaut, faute de quoi, le cas échéant</td></tr></tbody></table><div class="note">Quatre lignes, et vous lisez n'importe quel avis du Québec.</div></section><section class="bloc"><div class="lbl">La phrase impersonnelle de près</div><h2 class="t">Deux constructions</h2><div class="grid"><div class="card"><h3>il est nécessaire DE + infinitif</h3><p>Quand personne n'est visé en particulier : « il est nécessaire de libérer l'accès ».</p></div><div class="card"><h3>il est nécessaire QUE + subjonctif</h3><p>Quand on précise qui : « il est nécessaire que vous libériez l'accès ».</p></div><div class="card"><h3>Les autres tournures du même type</h3><p>il est interdit de, il est important de, il est possible de, il y aura.</p></div><div class="card"><h3>Ce qu'elle n'est pas</h3><p>Elle n'est pas plus faible qu'un ordre. « Il est interdit de » a la même force.</p></div></div></section><section class="bloc regle"><div class="lbl">Le passif, et son accord</div><p class="r">Être + participe passé, accordé avec le sujet.</p><p class="pr">« Les travaux seront effectués. » « Vous serez avisés. » « La porte sera ouverte. » Le participe s'accorde toujours avec le sujet, ce qui distingue immédiatement un écrit soigné. Et le passif sert aussi dans vos lettres : « aucune réponse ne m'a été transmise » est plus ferme et moins accusateur que « vous ne m'avez pas répondu ».</p></section><section class="bloc card"><div class="lbl">Pratique · exercice t2imperso</div><h2 class="t">Récrivez comme le ferait un avis</h2><p class="consigne">Employez la tournure demandée entre parenthèses.</p><ol class="ex"><li><span class="q">Vous devez libérer l'accès au mur. (impersonnel)</span><span class="ligne"></span></li><li><span class="q">On fera les travaux du 12 au 14 novembre. (passif)</span><span class="ligne"></span></li><li><span class="q">Ne fumez pas dans les corridors. (impersonnel)</span><span class="ligne"></span></li><li><span class="q">Prévoyez un accès, s'il vous plaît. (veuillez)</span><span class="ligne"></span></li><li><span class="q">Si vous ne le faites pas, nous appellerons. (conséquence)</span><span class="ligne"></span></li><li><span class="q">On vous préviendra la veille. (passif)</span><span class="ligne"></span></li></ol></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Conjuguer « veuillez »</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">Veux-tu prévoir un accès ? / Veuilles nous aviser.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">Veuillez prévoir un accès. Veuillez nous aviser.</p></div></div><div class="note">La forme est figée : « veuillez », et rien d'autre. C'est la façon la plus courtoise et la plus neutre de demander quelque chose par écrit. Elle ne vieillit pas et ne choque personne, ce qui en fait un outil précieux quand on écrit à quelqu'un qu'on ne connaît pas.</div></section><section class="bloc card"><div class="lbl">À réutiliser dans vos lettres</div><h2 class="t">Le passif au service du locataire</h2><table><thead><tr><th>Ce qu'on dirait</th><th>Ce qu'on écrit</th></tr></thead><tbody><tr><td>Vous ne m'avez pas répondu.</td><td class="cle">Aucune réponse ne m'a été transmise à ce jour.</td></tr><tr><td>Vous n'avez rien réparé.</td><td class="cle">Aucun travail n'a été effectué depuis le 10 novembre.</td></tr><tr><td>Vous m'aviez promis mercredi.</td><td class="cle">Une intervention m'avait été confirmée pour le mercredi 12.</td></tr></tbody></table><div class="note">Même contenu, aucune accusation — et rien n'est perdu.</div></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez une phrase de votre choix dans une tournure d'avis.</p><ul><li>« Il est nécessaire de libérer le corridor avant vendredi. »</li><li>« Vous serez avisés vingt-quatre heures d'avance. »</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>« Il est nécessaire de… » : la langue des avis</h2><section class="bloc card ml"><h3>Pourquoi un avis ne dit jamais « vous devez »</h3><p class="mp">Un avis officiel évite de désigner qui commande et qui obéit. Il présente l'obligation comme si elle venait de la situation elle-même : « il est nécessaire de », « les travaux seront effectués », « veuillez prévoir ». Personne ne s'adresse à personne, et pourtant vous êtes tenu de faire quelque chose. Ces trois tournures — <b>l'impersonnel</b>, <b>le passif</b>, <b>« veuillez »</b> — sont la charpente de tout document administratif au Québec.</p><div class="note">Savoir les lire vous protège ; savoir les écrire vous ouvre des portes. Une lettre de locataire rédigée dans cette langue-là est lue autrement qu'un message de colère.</div></section><section class="bloc card ml"><h3>La phrase impersonnelle</h3><p class="mp">Le sujet « il » ne désigne personne : il occupe la place, rien de plus.</p><table class="ana"><tr><td>Obligation</td><td class="">Il est nécessaire de libérer l'accès.</td></tr><tr><td>Interdiction</td><td class="cle">Il est interdit de fumer dans les corridors.</td></tr><tr><td>Constat</td><td class="">Il y aura du bruit pendant trois jours.</td></tr></table><p class="dit"><span class="k">On dit</span> Il est nécessaire de libérer l'accès au mur touché.</p><div class="note">Suivi de <b>de</b> + infinitif quand personne n'est visé ; suivi de <b>que</b> + subjonctif quand on précise qui : « il est nécessaire que <b>vous</b> libériez ».</div></section><section class="bloc card ml"><h3>Le passif</h3><p class="mp">On dit ce qui sera fait sans dire par qui.</p><table class="ana"><tr><td>Formation</td><td class="">être au temps voulu + participe passé</td></tr><tr><td>Futur</td><td class="cle">Les travaux seront effectués du 12 au 14.</td></tr><tr><td>Accord</td><td class="">Vous serez avisés — le participe s'accorde avec le sujet</td></tr></table><p class="dit"><span class="k">On dit</span> Des travaux d'assèchement seront effectués du 12 au 14 novembre.</p><div class="note">Le passif est utile aussi dans vos lettres : « aucune réponse ne m'a été transmise » est plus ferme et moins accusateur que « vous ne m'avez pas répondu ».</div></section><section class="bloc card ml"><h3>« Veuillez » + infinitif</h3><p class="mp">L'impératif poli des documents écrits.</p><table class="ana"><tr><td>On écrit</td><td class="">Veuillez prévoir un accès au logement.</td></tr><tr><td>Autre exemple</td><td class="cle">Veuillez nous aviser de votre disponibilité.</td></tr><tr><td>Il ne se conjugue pas</td><td class="">« veuillez », et rien d'autre</td></tr></table><p class="dit"><span class="k">On dit</span> Veuillez prévoir un accès au logement.</p><div class="note">C'est la forme la plus courtoise et la plus neutre pour demander quelque chose par écrit. Elle ne vieillit pas et ne choque personne.</div></section><section class="bloc card ml"><h3>Les trois formules de conséquence</h3><p class="mp">Elles introduisent ce qui arrive si la consigne n'est pas suivie.</p><table class="ana"><tr><td>À défaut</td><td class="">si vous ne le faites pas</td></tr><tr><td>Faute de quoi</td><td class="cle">sinon</td></tr><tr><td>Le cas échéant</td><td class="">si le cas se présente</td></tr></table><p class="dit"><span class="k">On dit</span> À défaut, l'entrepreneur communiquera avec le propriétaire.</p><div class="note">Employez-les dans vos propres lettres : « Faute de réponse d'ici le 30 novembre, je transmettrai le dossier. » C'est ferme sans être menaçant.</div></section><section class="bloc card ml"><h3>Du parlé à l'écrit administratif</h3><p class="mp">Choisissez une phrase de tous les jours et voyez comment un avis l'écrirait.</p><table class="labo"><thead><tr><th>Quelle phrase ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">Vous devez libérer l'accès au mur.</td><td>Il est nécessaire de libérer l'accès au mur.</td><td>impersonnel + de + infinitif</td></tr><tr><td class="cle">On fera les travaux du 12 au 14.</td><td>Les travaux seront effectués du 12 au 14 novembre.<span class="tags">Les travaux seront effectués du 12 au 14.</span></td><td>passif au futur</td></tr><tr><td class="cle">Ne fumez pas dans les corridors.</td><td>Il est interdit de fumer dans les corridors.</td><td>impersonnel d'interdiction</td></tr><tr><td class="cle">Prévoyez un accès, s'il vous plaît.</td><td>Veuillez prévoir un accès au logement.</td><td>l'impératif poli</td></tr><tr><td class="cle">Si vous ne le faites pas, on appellera le propriétaire.</td><td>À défaut, nous communiquerons avec le propriétaire.</td><td>formule de conséquence</td></tr><tr><td class="cle">On vous préviendra la veille.</td><td>Vous serez avisés vingt-quatre heures d'avance.<span class="tags">Vous serez avisés la veille.</span></td><td>passif, participe accordé</td></tr></tbody></table><div class="note">Remarquez que la version administrative n'est jamais plus longue. Elle est seulement plus impersonnelle.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six phrases à réutiliser dans vos propres lettres.</p><table class="ex2"><tr><td>Il est nécessaire de libérer l'accès au mur touché.</td><td>impersonnel</td></tr><tr><td>Les travaux seront effectués du 12 au 14 novembre.</td><td>passif</td></tr><tr><td>Veuillez prévoir un accès au logement.</td><td>impératif poli</td></tr><tr><td>Vous serez avisés vingt-quatre heures d'avance.</td><td>passif accordé</td></tr><tr><td>À défaut, nous communiquerons avec le propriétaire.</td><td>conséquence</td></tr><tr><td>Aucune réponse ne m'a été transmise à ce jour.</td><td>passif, dans une lettre de locataire</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges à connaître</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">conjuguer « veuillez »</p><div class="k">Ce qui arrive</div><p class="ph">« veux-tu prévoir », « veuilles »</p><p class="px">Cette forme est figée : « veuillez », toujours, et rien d'autre.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">oublier l'accord du participe au passif</p><div class="k">Ce qui arrive</div><p class="ph">« vous serez avisé » pour plusieurs personnes</p><p class="px">Le participe s'accorde avec le sujet : vous serez avisés, les travaux seront effectués, la porte sera ouverte.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">croire que l'impersonnel est plus faible</p><div class="k">Ce qui arrive</div><p class="ph">« ce n'est pas vraiment une obligation »</p><p class="px">Au contraire : « il est interdit de » a exactement la même force que « vous ne devez pas », en plus difficile à discuter.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">Dans « il est nécessaire de partir », « il » désigne…</span><ul class="opts"><li>personne</li><li>le propriétaire</li></ul></li><li><span class="q">« Les travaux seront effectués » est…</span><ul class="opts"><li>un passif</li><li>un impersonnel</li></ul></li><li><span class="q">« Veuillez » se conjugue-t-il ?</span><ul class="opts"><li>oui</li><li>non</li></ul></li><li><span class="q">« Faute de quoi » veut dire…</span><ul class="opts"><li>sinon</li><li>par erreur</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> personne — C'est un sujet impersonnel : il occupe la place, sans désigner quelqu'un. · <b>2.</b> un passif — être + participe passé : on dit ce qui sera fait sans dire par qui. · <b>3.</b> non — La forme est figée. · <b>4.</b> sinon — C'est une formule de conséquence, comme « à défaut ».</div></section></section></div>
+<footer><span>C3 · Un dégât d'eau</span><span>Fiche élève</span></footer>
+</body>
+</html>

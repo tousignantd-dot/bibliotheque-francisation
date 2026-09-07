@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C2 · Lire un document qui compare — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance C2 · Module 7 · 90 minutes</div>
+    <h1>Lire un document qui compare</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Un document qui compare trois produits ne se lit pas du début à la fin. On lui pose une question, et on la pose aux trois.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>lire un document comparatif par question et non par page ;</li><li>se servir des intertitres comme d'une table des matières ;</li><li>ranger une caractéristique sous le bon produit ;</li><li>dire ce que l'impôt fait à l'entrée et à la sortie.</li></ol></section><section class="bloc regle"><div class="lbl">On lit par question, pas par page</div><p class="r">Choisissez la vôtre - combien, pour quand, avec quel impôt - et posez-la aux trois produits.</p><p class="pr">Les intertitres sont là pour qu'on saute directement à sa question. C'est le savoir que le programme du niveau 7 appelle « organiser clairement de l'information dans le but de comparer des éléments », et il vaut pour lire comme pour écrire.</p></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">L'impôt, à l'entrée et à la sortie</h2><table><thead><tr><th>Le régime</th><th>Ce que fait l'impôt</th></tr></thead><tbody><tr><td class="cle">CELI</td><td>rien à l'entrée, rien à la sortie</td></tr><tr><td class="cle">REER</td><td>déduction à l'entrée, impôt à la sortie</td></tr><tr><td class="cle">dépôt à terme</td><td>ce n'est pas un régime, c'est un placement</td></tr><tr><td class="cle">compte épargne</td><td>l'intérêt s'ajoute au revenu de l'année</td></tr></tbody></table><div class="note">Plafond du CELI : 7 000 $ pour 2026. Droit REER : 18 % du revenu gagné.</div></section><section class="bloc regle"><div class="lbl">Un abri n'est pas un placement</div><p class="r">Le CELI et le REER ne rapportent rien par eux-mêmes : ce qu'on met dedans, voilà le placement.</p><p class="pr">Un CELI qui contient un compte à zéro pour cent rapporte zéro pour cent, exonéré d'impôt. Demandez toujours les deux choses : quel placement, et dans quel régime. Un conseiller qui ne répond qu'à l'une des deux n'a répondu qu'à moitié.</p></section><section class="bloc card"><div class="lbl">Lecture</div><h2 class="t">Cherchez la réponse dans le document</h2><p class="consigne">Une question, un passage. Soulignez-le au crayon.</p><ol class="ex"><li><span class="q">Quel taux le dépôt à terme offre-t-il, et pour combien de temps ?</span><span class="ligne ligne--court"></span></li><li><span class="q">Que se passe-t-il si on retire avant l'échéance ?</span><span class="ligne"></span></li><li><span class="q">Combien peut-on verser dans un CELI en 2026 ?</span><span class="ligne"></span></li><li><span class="q">Quand récupère-t-on le droit de remettre un retrait de CELI ?</span><span class="ligne ligne--court"></span></li><li><span class="q">Comment se calcule le droit annuel au REER ?</span><span class="ligne"></span></li><li><span class="q">Jusqu'à quel montant les dépôts sont-ils protégés ?</span><span class="ligne"></span></li></ol></section><section class="bloc card"><div class="lbl">Application</div><h2 class="t">De quel produit parle-t-on ?</h2><p class="consigne">Répondez : CELI, REER ou dépôt à terme.</p><ol class="ex"><li><span class="q">Ce que j'y mets est déduit de mon revenu cette année.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le taux est fixé au départ et ne bouge plus.</span><span class="ligne ligne--court"></span></li><li><span class="q">Mes retraits ne sont pas imposables.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le plafond est de sept mille dollars pour 2026.</span><span class="ligne ligne--court"></span></li><li><span class="q">Tout ce que j'en sors s'ajoute à mon revenu de l'année.</span><span class="ligne ligne--court"></span></li><li><span class="q">C'est le produit d'un projet qui a une date connue.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Le piège</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">remettre en mars l'argent sorti du CELI en janvier</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">attendre le 1er janvier suivant</p></div></div><div class="note">Le montant retiré n'est rendu aux droits de cotisation que l'année suivante. Le remettre avant crée un excédent, frappé d'un impôt de un pour cent par mois. La faute se commet toujours de bonne foi, et elle coûte de l'argent tous les mois jusqu'au retrait de l'excédent.</div></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Pour ton propre projet le plus proche, écris la date et le produit qui conviendrait.</p><ul><li>Dans dix-huit mois : un dépôt à terme dans un CELI.</li><li>Dans quinze ans : un REER.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Lire un document qui compare</h2><section class="bloc card ml"><h3>On ne lit pas un tableau comme on lit une lettre</h3><p class="mp">Un document qui compare trois produits n'est pas fait pour être lu du début à la fin. Il est fait pour qu'on lui pose une question et qu'on la pose aux trois. Choisissez la vôtre — combien ça rapporte, quand je peux le reprendre, ce que l'impôt en fait — et suivez-la horizontalement. Vous aurez votre réponse en trois lignes au lieu de trois pages.</p><div class="note">Le savoir du programme s'appelle « organiser clairement de l'information dans le but de comparer des éléments ». Il vaut pour lire comme pour écrire : ce qu'on sait repérer, on sait le produire.</div></section><section class="bloc card ml"><h3>Les intertitres sont une table des matières déguisée</h3><p class="mp">« Ce que ça rapporte », « Quand on peut le reprendre », « Ce que l'impôt en fait » : ils sont là pour qu'on saute directement à sa question.</p><table class="ana"><tr><td>Le réflexe</td><td class="">lire tous les intertitres d'abord, le corps ensuite</td></tr><tr><td>Ce qu'on gagne</td><td class="cle">on sait en trente secondes si le document répond à sa question</td></tr><tr><td>Le signe d'un mauvais document</td><td class="">aucun intertitre, ou des intertitres publicitaires</td></tr></table><p class="dit"><span class="k">On dit</span> Lire tous les intertitres d'abord, et le corps du texte ensuite.</p><div class="note">Un document sans intertitres se lit trois fois plus lentement, et c'est parfois exprès.</div></section><section class="bloc card ml"><h3>Un abri fiscal n'est pas un placement</h3><p class="mp">C'est la confusion la plus courante de tout le domaine, et elle empêche de comprendre le reste.</p><table class="ana"><tr><td>Le placement</td><td class="">ce qui rapporte : un dépôt à terme, un fonds, une action</td></tr><tr><td>L'abri</td><td class="cle">le régime dans lequel on le met : CELI, REER</td></tr><tr><td>La phrase juste</td><td class="">« un dépôt à terme dans un CELI » — deux choses, pas une</td></tr></table><p class="dit"><span class="k">On dit</span> Le CELI n'est pas un placement : c'est un abri dans lequel on met un placement.</p><div class="note">Demandez toujours les deux : quel placement, et dans quel régime. Un conseiller qui ne répond qu'à l'une des deux questions n'a répondu qu'à moitié.</div></section><section class="bloc card ml"><h3>La question qui décide de tout : quand en avez-vous besoin ?</h3><p class="mp">Le calendrier choisit le produit avant le rendement.</p><table class="ana"><tr><td>Deux ans</td><td class="">écarte tout ce qui peut baisser : il n'y aurait pas le temps de se refaire</td></tr><tr><td>Vingt ans</td><td class="cle">écarte tout ce qui rapporte trop peu : l'inflation mangerait le reste</td></tr><tr><td>Ce que ça veut dire</td><td class="">on ne demande pas « quel est le meilleur placement », on demande « pour quand »</td></tr></table><p class="dit"><span class="k">On dit</span> Quand est-ce que vous aurez besoin de cet argent-là ?</p><div class="note">C'est la première question de la planificatrice dans le dialogue, et ce n'est pas un hasard : tout le reste en découle.</div></section><section class="bloc card ml"><h3>Sept lignes de documentation, et ce qu'elles veulent dire</h3><p class="mp">À gauche ce qui est écrit, à droite ce que ça change pour vous.</p><table class="ex2"><tr><td>« taux fixé au moment du dépôt »</td><td>vous savez d'avance ce que vous aurez</td></tr><tr><td>« l'argent est immobilisé »</td><td>vous ne pouvez pas le reprendre sans perdre quelque chose</td></tr><tr><td>« les sommes versées ne sont pas déductibles »</td><td>aucun effet sur vos impôts cette année</td></tr><tr><td>« les retraits ne sont pas imposables »</td><td>ce que vous sortez est à vous en entier</td></tr><tr><td>« les sommes versées sont déductibles »</td><td>moins d'impôt cette année</td></tr><tr><td>« tout retrait s'ajoute au revenu imposable »</td><td>l'impôt reviendra le jour où vous sortirez l'argent</td></tr><tr><td>« droits non utilisés des années passées »</td><td>le plafond de cette année n'est pas votre seule marge</td></tr></table></section><section class="bloc card ml"><h3>Quatre réflexes de lecture</h3><p class="mp">Répondez avant de rouvrir le document.</p><ol class="check"><li><span class="q">Un document comparatif se lit…</span><ul class="opts"><li>du début à la fin</li><li>une question à la fois, sur les trois produits</li></ul></li><li><span class="q">Le CELI est…</span><ul class="opts"><li>un placement</li><li>un régime dans lequel on met un placement</li></ul></li><li><span class="q">La première question à se poser est…</span><ul class="opts"><li>quel rendement ?</li><li>pour quand ?</li></ul></li><li><span class="q">Un document sans intertitres…</span><ul class="opts"><li>se lit plus vite</li><li>se lit trois fois plus lentement</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> une question à la fois, sur les trois produits — On suit sa question horizontalement, pas le texte verticalement. · <b>2.</b> un régime dans lequel on met un placement — C'est un abri. Ce qui rapporte, c'est ce qu'on met dedans. · <b>3.</b> pour quand ? — Le calendrier choisit le produit avant le rendement. · <b>4.</b> se lit trois fois plus lentement — Et c'est parfois exactement ce que veut celui qui l'a écrit.</div></section><section class="bloc card ml"><h3>Trois manières de lire trop vite</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">lire un tableau ligne par ligne, de haut en bas</p><div class="k">Ce qui arrive</div><p class="ph">choisir une question et la poser aux trois</p><p class="px">C'est la différence entre trois minutes et vingt minutes, pour la même information.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">croire qu'un CELI rapporte quelque chose par lui-même</p><div class="k">Ce qui arrive</div><p class="ph">demander les deux : quel placement, quel régime</p><p class="px">Un CELI qui contient un compte à zéro pour cent rapporte zéro pour cent, exonéré d'impôt.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">choisir d'abord le rendement</p><div class="k">Ce qui arrive</div><p class="ph">choisir d'abord l'horizon</p><p class="px">Un rendement plus élevé sur un argent dont on aura besoin dans dix-huit mois est une mauvaise nouvelle, pas une bonne.</p></div></div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>CELI, REER, dépôt à terme : trois logiques</h2><section class="bloc card ml"><h3>Trois produits, trois questions différentes</h3><p class="mp">On les met souvent dans le même sac parce qu'ils servent tous à « mettre de l'argent de côté ». Ils ne répondent pourtant pas à la même question. Le dépôt à terme répond à « combien ça rapporte, et jusqu'à quand ». Le CELI et le REER répondent à « qu'est-ce que l'impôt en fait ». On peut donc parfaitement avoir les trois à la fois, et c'est même le cas le plus courant.</p><div class="note">Les chiffres de cette leçon sont vérifiés : plafond du CELI à 7 000 $ pour 2026, droit REER de 18 % du revenu gagné de l'année précédente. Le taux de 3,10 % du dépôt à terme, lui, est celui d'une caisse inventée.</div></section><section class="bloc card ml"><h3>Le CELI : rien à l'entrée, rien à la sortie</h3><p class="mp">On y verse de l'argent déjà imposé, et tout ce qui en sort est à vous, gains compris.</p><table class="ana"><tr><td>À l'entrée</td><td class="">les sommes versées ne sont pas déductibles du revenu</td></tr><tr><td>À la sortie</td><td class="cle">ni les gains ni les retraits ne sont imposables</td></tr><tr><td>Le plafond</td><td class="">7 000 $ pour 2026, plus les droits non utilisés des années passées</td></tr><tr><td>Le détail qui piège</td><td class="">le montant retiré n'est rendu aux droits que le 1er janvier suivant</td></tr></table><p class="dit"><span class="k">On dit</span> Dans un CELI, les versements ne sont pas déductibles et les retraits ne sont pas imposables.</p><div class="note">Remettre dans l'année ce qu'on vient d'en sortir crée un excédent, frappé d'un impôt de un pour cent par mois. C'est la faute la plus courante, et elle se commet de bonne foi.</div></section><section class="bloc card ml"><h3>Le REER : une déduction aujourd'hui, un impôt plus tard</h3><p class="mp">Il ne fait pas disparaître l'impôt : il le déplace vers une année où vous gagnerez moins.</p><table class="ana"><tr><td>À l'entrée</td><td class="">les sommes versées sont déductibles du revenu de l'année</td></tr><tr><td>À la sortie</td><td class="cle">tout retrait s'ajoute au revenu imposable de l'année du retrait</td></tr><tr><td>Le droit annuel</td><td class="">18 % du revenu gagné de l'année précédente, jusqu'à un plafond fédéral</td></tr><tr><td>Pour qui</td><td class="">un horizon long — la retraite —, pas un projet de deux ans</td></tr></table><p class="dit"><span class="k">On dit</span> Dans un REER, les versements sont déductibles et les retraits sont imposables.</p><div class="note">Sortir un REER pour payer un cégep, c'est ajouter la somme à son revenu de l'année et payer l'impôt au plus mauvais moment. Le module le dit à Marlène en une phrase.</div></section><section class="bloc card ml"><h3>Le dépôt à terme : un taux connu, une date, une porte fermée</h3><p class="mp">Ce n'est pas un régime : c'est un placement, qu'on peut mettre dans un CELI, dans un REER ou dans rien du tout.</p><table class="ana"><tr><td>Ce qu'il donne</td><td class="">un taux fixé au moment du dépôt, valable jusqu'à l'échéance</td></tr><tr><td>Ce qu'il exige</td><td class="cle">l'argent est immobilisé jusque-là</td></tr><tr><td>Si on reprend avant</td><td class="">pénalité ou perte des intérêts</td></tr><tr><td>Pour quel projet</td><td class="">celui qui a une date connue : un cégep, un voyage, une voiture</td></tr></table><p class="dit"><span class="k">On dit</span> Le dépôt à terme donne un taux connu d'avance, à condition de laisser l'argent jusqu'à l'échéance.</p><div class="note">C'est le produit du dossier de Marlène : deux ans, une date ferme, aucune envie de voir le montant baisser.</div></section><section class="bloc card ml"><h3>La même question posée aux trois</h3><p class="mp">Choisissez un produit, puis une question.</p><table class="labo"><thead><tr><th>Quel produit ? · Quelle question ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">le CELI + à l'entrée ?</td><td>Ce que je verse dans un CELI n'est pas déductible de mon revenu.<span class="tags">Rien : ce que j'y verse n'est pas déductible de mon revenu.</span></td><td>l'argent y entre déjà imposé</td></tr><tr><td class="cle">le CELI + à la sortie ?</td><td>Ni les gains ni les retraits d'un CELI ne sont imposables.<span class="tags">Rien non plus : ni les gains ni les retraits ne sont imposables.</span></td><td>c'est là tout son intérêt</td></tr><tr><td class="cle">le CELI + pour quel projet ?</td><td>Le CELI convient à un projet à moyen terme ou à une réserve.<span class="tags">Un projet à moyen terme, ou une réserve qu'on veut pouvoir reprendre.</span></td><td>souplesse : on reprend quand on veut, les droits reviennent au 1er janvier</td></tr><tr><td class="cle">le REER + à l'entrée ?</td><td>Ce que je verse dans un REER baisse mon revenu imposable de l'année.<span class="tags">Une déduction : ce que j'y verse baisse mon revenu imposable de l'année.</span></td><td>l'avantage est immédiat, et visible sur le rapport d'impôt</td></tr><tr><td class="cle">le REER + à la sortie ?</td><td>Tout retrait d'un REER s'ajoute au revenu imposable de l'année du retrait.<span class="tags">Un impôt : tout ce que j'en sors s'ajoute à mon revenu de l'année du retrait.</span></td><td>l'impôt n'a pas disparu, il a été déplacé</td></tr><tr><td class="cle">le REER + pour quel projet ?</td><td>Le REER convient à un horizon long, pas à un projet de deux ans.<span class="tags">La retraite, ou un horizon long. Pas un cégep dans deux ans.</span></td><td>sortir au mauvais moment coûte l'impôt de l'année</td></tr><tr><td class="cle">le dépôt à terme + à l'entrée ?</td><td>Le dépôt à terme est un placement, pas un régime fiscal.<span class="tags">Rien de particulier : c'est un placement, pas un régime fiscal.</span></td><td>on peut le loger dans un CELI ou dans un REER</td></tr><tr><td class="cle">le dépôt à terme + à la sortie ?</td><td>Le dépôt à terme rend le capital et les intérêts à l'échéance.<span class="tags">Le capital et les intérêts, à l'échéance et pas avant.</span></td><td>reprendre avant coûte une pénalité ou les intérêts</td></tr><tr><td class="cle">le dépôt à terme + pour quel projet ?</td><td>Le dépôt à terme convient à un projet qui a une date connue.<span class="tags">Un projet qui a une date connue : un cégep, un voyage, une voiture.</span></td><td>la date du projet et la date de l'échéance doivent se répondre</td></tr></tbody></table><div class="note">Neuf réponses, et vous avez de quoi tenir votre bout dans le rendez-vous.</div></section><section class="bloc card ml"><h3>Neuf phrases, un produit chacune</h3><p class="mp">À gauche ce qu'on vous dit, à droite de quoi il s'agit.</p><table class="ex2"><tr><td>« ce que vous y mettez baisse votre revenu »</td><td>le REER</td></tr><tr><td>« ce que vous en sortez n'est pas imposé »</td><td>le CELI</td></tr><tr><td>« le taux est fixé au départ »</td><td>le dépôt à terme</td></tr><tr><td>« sept mille dollars pour 2026 »</td><td>le CELI</td></tr><tr><td>« dix-huit pour cent du revenu gagné »</td><td>le REER</td></tr><tr><td>« l'argent est immobilisé deux ans »</td><td>le dépôt à terme</td></tr><tr><td>« les droits reviennent le premier janvier »</td><td>le CELI</td></tr><tr><td>« l'impôt viendra à la sortie »</td><td>le REER</td></tr><tr><td>« pénalité si vous reprenez avant »</td><td>le dépôt à terme</td></tr></table></section><section class="bloc card ml"><h3>Quatre chiffres à ne pas mêler</h3><p class="mp">Répondez sans regarder le tableau des trois produits.</p><ol class="check"><li><span class="q">Le plafond du CELI pour 2026 est de…</span><ul class="opts"><li>7 000 $</li><li>10 000 $</li></ul></li><li><span class="q">Retirer 2 000 $ d'un CELI en mars permet de les remettre…</span><ul class="opts"><li>dès le mois suivant</li><li>le 1er janvier suivant</li></ul></li><li><span class="q">Un retrait de REER…</span><ul class="opts"><li>n'est pas imposable</li><li>s'ajoute au revenu de l'année</li></ul></li><li><span class="q">Pour un projet dans deux ans, on écarte…</span><ul class="opts"><li>le REER</li><li>le dépôt à terme</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> 7 000 $ — Sept mille dollars, plus les droits non utilisés des années passées. · <b>2.</b> le 1er janvier suivant — Remettre avant crée un excédent, imposé à 1 % par mois. · <b>3.</b> s'ajoute au revenu de l'année — L'impôt a été déplacé, pas effacé. · <b>4.</b> le REER — Le REER est un produit d'horizon long, et son retrait tombe au mauvais moment.</div></section><section class="bloc card ml"><h3>Trois régimes confondus</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">remettre dans un CELI l'argent qu'on vient d'en sortir</p><div class="k">Ce qui arrive</div><p class="ph">attendre le 1er janvier</p><p class="px">L'impôt de un pour cent par mois sur l'excédent tombe même quand la personne était de bonne foi.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">prendre le REER pour un compte d'épargne avantageux</p><div class="k">Ce qui arrive</div><p class="ph">se rappeler la sortie</p><p class="px">Ce qui entre est déduit, ce qui sort est imposé. Pour un projet court, l'ordre est mauvais.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">confondre le régime et le placement</p><div class="k">Ce qui arrive</div><p class="ph">poser les deux questions</p><p class="px">« Un dépôt à terme dans un CELI » : deux décisions, et un conseiller doit répondre aux deux.</p></div></div></section></section></div>
+<footer><span>C2 · Emprunter, épargner, se protéger</span><span>Fiche élève</span></footer>
+</body>
+</html>

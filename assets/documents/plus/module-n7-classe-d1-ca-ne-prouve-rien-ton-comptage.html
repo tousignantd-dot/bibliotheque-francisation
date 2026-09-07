@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>D1 · Ça ne prouve rien, ton comptage — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance D1 · Module 10 · 75 minutes</div>
+    <h1>Ça ne prouve rien, ton comptage</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Deux coéquipiers ne s'entendent plus, et aucun des deux n'a tort. Animer, c'est reformuler jusqu'à ce que chacun se reconnaisse — et découvrir que le désaccord était plus étroit qu'il ne paraissait.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>reconnaître les six gestes de parole de la personne qui anime ;</li><li>reformuler la position de quelqu'un pour qu'il la corrige ;</li><li>accorder un point avec bien que ou même si, puis maintenir le sien ;</li><li>fermer une rencontre sur des décisions vérifiées à voix haute.</li></ol></section><section class="bloc card"><div class="lbl">Dialogue · 1 de 4</div><h2 class="t">Elle ouvre, il propose</h2><p class="consigne">Écoutez d'abord, sans lire le texte.</p><div class="rep rep--key"><div class="qui">NEUSA</div><div>Il est sept heures cinq, on a quarante minutes. Je rappelle où on en est : on cherche pourquoi certaines rues sont plus chaudes.</div></div><div class="rep rep--key"><div class="qui">YOUSSOUF</div><div>Samedi matin, on descend la rue des Ormes et la rue Bellechasse, et on compte les arbres. Un côté chacun.</div></div><div class="rep rep--key"><div class="qui">MIGUEL</div><div>Franchement, ça ne prouve rien, ton comptage.</div></div><div class="rep rep--key"><div class="qui">NEUSA</div><div>Attends, Miguel. Youssouf, avant qu'on discute : tu comptes quoi exactement ?</div></div></section><section class="bloc card"><div class="lbl">Dialogue · 2 de 4</div><h2 class="t">Elle reformule les deux</h2><div class="rep rep--key"><div class="qui">NEUSA</div><div>Je reformule, et vous me dites si je me trompe. Youssouf, tu dis qu'une donnée que nous avons prise nous-mêmes vaut mieux qu'un chiffre repris ailleurs.</div></div><div class="rep rep--key"><div class="qui">YOUSSOUF</div><div>C'est ça. Et on est les seuls à être allés voir.</div></div><div class="rep rep--key"><div class="qui">NEUSA</div><div>Miguel, tu dis que compter des troncs ne mesure pas ce qu'on cherche, et qu'un chiffre qui ne répond pas à la question est un chiffre perdu.</div></div><div class="rep rep--key"><div class="qui">MIGUEL</div><div>C'est exactement ça. Je ne suis pas contre aller marcher. Je suis contre compter la mauvaise chose.</div></div></section><section class="bloc card"><div class="lbl">Dialogue · 3 de 4</div><h2 class="t">Le désaccord rétrécit</h2><div class="rep rep--key"><div class="qui">NEUSA</div><div>Alors écoutez ce que je viens d'entendre : vous n'êtes pas en désaccord sur le fait d'y aller. Vous êtes en désaccord sur ce qu'on note en y allant.</div></div><div class="rep rep--key"><div class="qui">MIGUEL</div><div>Bien que ce soit plus long, on pourrait noter autre chose. Par exemple, à chaque coin de rue, est-ce que le trottoir est à l'ombre ou au soleil.</div></div><div class="rep rep--key"><div class="qui">NEUSA</div><div>Répète ça, Miguel, je le note. L'ombre au sol, à une heure fixe, à des endroits fixes.</div></div><div class="rep rep--key"><div class="qui">YOUSSOUF</div><div>Même si je trouve qu'on complique, je suis d'accord. On note les deux.</div></div></section><section class="bloc card"><div class="lbl">Dialogue · 4 de 4</div><h2 class="t">Elle ferme sur des décisions</h2><div class="rep rep--key"><div class="qui">NEUSA</div><div>Je résume les décisions, et Youssouf, tu vérifies tes notes pendant que je parle.</div></div><div class="rep rep--key"><div class="qui">NEUSA</div><div>Un : on y va samedi à dix heures, pas à neuf, parce que l'ombre à neuf heures ne veut rien dire.</div></div><div class="rep rep--key"><div class="qui">NEUSA</div><div>Deux : à chaque coin, on note le nombre d'arbres et si le trottoir est à l'ombre. Trois : Miguel écrit à Perrine.</div></div><div class="rep rep--key"><div class="qui">YOUSSOUF</div><div>Tout y est. Et il est sept heures trente-cinq.</div></div></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Six gestes, six phrases</h2><table><thead><tr><th>Le geste</th><th>La phrase toute prête</th></tr></thead><tbody><tr><td class="cle">Ouvrir</td><td>Je rappelle où on en est. Il nous reste quarante minutes.</td></tr><tr><td class="cle">Donner la parole</td><td>Youssouf, tu voulais commencer.</td></tr><tr><td class="cle">Faire préciser</td><td>Tu comptes quoi, exactement ?</td></tr><tr><td class="cle">Reprendre la parole</td><td>Je t'arrête une seconde, Miguel n'a pas répondu.</td></tr><tr><td class="cle">Reformuler</td><td>Je reformule, et vous me dites si je me trompe.</td></tr><tr><td class="cle">Fermer</td><td>Je résume les décisions ; vérifie tes notes.</td></tr></tbody></table></section><section class="bloc regle"><div class="lbl">Bien que veut le subjonctif, même si veut l'indicatif</div><p class="r">Bien que ce soit plus long. Même si c'est plus long. Le sens est le même ; la construction ne l'est pas.</p><p class="pr">Une concession accorde un point à l'autre avant de maintenir sa position. Elle appelle toujours une suite : sans elle, vous n'avez pas concédé, vous avez changé d'avis.</p></section><section class="bloc card"><div class="lbl">Grammaire</div><h2 class="t">Accordez, puis maintenez</h2><p class="consigne">Complétez avec bien que ou même si, et le bon mode.</p><ol class="ex"><li><span class="q">___ ce ___ (être) plus long, on note l'ombre.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ je ___ (trouver) qu'on complique, je suis d'accord.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ nous ___ (avoir) trois semaines, c'est serré.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ le chiffre ___ (venir) de la ville, on cite la date.</span><span class="ligne"></span></li><li><span class="q">___ ça ___ (prendre) deux heures, ça en vaut la peine.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez une phrase qui accorde un point à quelqu'un et maintient le vôtre.</p><ul><li>Commencez par bien que ou par même si.</li><li>N'oubliez pas ce qui vient après la virgule.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Les six gestes de parole de qui anime</h2><section class="bloc card ml"><h3>Animer n'est pas présider</h3><p class="mp">On imagine celui qui anime comme celui qui décide et qui parle le plus. C'est le contraire : il parle souvent et brièvement, et presque jamais de son propre avis. Son travail tient en six gestes, et chacun se fait avec une phrase toute prête. Apprenez les six phrases, et l'animation cesse d'être une affaire de tempérament.</p><div class="note">C'est ce que Ghislaine dit à Neusa dès le premier jour : ce n'est pas un caractère, c'est un rôle, et un rôle s'apprend.</div></section><section class="bloc card ml"><h3>Ouvrir et cadrer</h3><p class="mp">Premier geste, trente secondes, et il détermine le reste. On rappelle la question, le temps dont on dispose et ce qu'on doit avoir décidé à la fin.</p><table class="ana"><tr><td>La phrase</td><td class="">« Je rappelle où on en est : on cherche… Il nous reste quarante minutes. »</td></tr><tr><td>Ce que ça fait</td><td class="">tout le monde repart du même endroit</td></tr><tr><td>Sans ce geste</td><td class="cle">chacun repart de là où il s'était arrêté dans sa tête</td></tr></table><p class="dit"><span class="k">On dit</span> Je rappelle où on en est : on cherche pourquoi certaines rues sont plus chaudes. On a quarante minutes.</p><div class="note">Une rencontre qui commence sans cadrage ne rattrape jamais ce retard-là.</div></section><section class="bloc card ml"><h3>Donner la parole, et la reprendre</h3><p class="mp">Deuxième et troisième gestes. Donner, c'est nommer quelqu'un ; reprendre, c'est interrompre poliment celui qui garde la parole trop longtemps.</p><table class="ana"><tr><td>Donner</td><td class="">« Youssouf, tu voulais commencer. »</td></tr><tr><td>Reprendre</td><td class="">« Je t'arrête une seconde — Miguel n'a pas encore répondu. »</td></tr><tr><td>Ce que ça fait</td><td class="cle">le silencieux parle, le bavard respire</td></tr></table><p class="dit"><span class="k">On dit</span> Youssouf, tu voulais commencer. Je t'arrête une seconde : Miguel n'a pas encore répondu.</p><div class="note">Interrompre est le geste qui coûte le plus à apprendre, et c'est celui qui manque le plus. Ce n'est pas impoli : c'est le rôle.</div></section><section class="bloc card ml"><h3>Faire préciser</h3><p class="mp">Quatrième geste. Devant une affirmation vague, une question factuelle — jamais un jugement.</p><table class="ana"><tr><td>Devant un chiffre</td><td class="">« Combien, exactement ? Et comment le sais-tu ? »</td></tr><tr><td>Devant une proposition</td><td class="">« Tu comptes quoi, au juste : tous les arbres ou ceux de la rue ? »</td></tr><tr><td>Ce que ça fait</td><td class="cle">le désaccord se déplace du général vers le précis</td></tr></table><p class="dit"><span class="k">On dit</span> Tu comptes quoi, exactement : tous les arbres, ou seulement ceux du bord de la rue ?</p><div class="note">Neuf désaccords sur dix viennent d'un mot que deux personnes n'entendaient pas pareil. Faire préciser en règle la moitié.</div></section><section class="bloc card ml"><h3>Reformuler, et fermer</h3><p class="mp">Cinquième et sixième gestes, et les deux plus utiles. Reformuler, c'est redire la position de quelqu'un jusqu'à ce qu'il s'y reconnaisse. Fermer, c'est énumérer les décisions à voix haute pendant qu'un autre vérifie.</p><table class="ana"><tr><td>Reformuler</td><td class="">« Je reformule, et tu me dis si je me trompe : tu dis que… »</td></tr><tr><td>Fermer</td><td class="">« Je résume les décisions, et toi, tu vérifies tes notes pendant que je parle. »</td></tr><tr><td>Ce que ça fait</td><td class="cle">personne ne sort avec une version différente</td></tr></table><p class="dit"><span class="k">On dit</span> Je reformule, et tu me dis si je me trompe. Je résume les décisions : premièrement…</p><div class="note">Faire vérifier les décisions par la personne aux notes, à voix haute, prend deux minutes et évite une rencontre entière.</div></section><section class="bloc card ml"><h3>Que dire, et à quel moment ?</h3><p class="mp">Choisissez une situation, puis le geste.</p><table class="labo"><thead><tr><th>Que se passe-t-il ? · Quel ton ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">quelqu'un parle depuis six minutes + direct</td><td>Je t'arrête là, Youssouf.</td><td>net, et parfaitement acceptable dans ce rôle</td></tr><tr><td class="cle">quelqu'un parle depuis six minutes + plus enveloppé</td><td>Je te propose qu'on entende Miguel là-dessus.</td><td>interrompt sans le dire : très efficace</td></tr><tr><td class="cle">deux personnes se contredisent + direct</td><td>Vous n'êtes pas en désaccord sur tout.</td><td>montre que l'écart est plus étroit qu'il n'y paraît</td></tr><tr><td class="cle">deux personnes se contredisent + plus enveloppé</td><td>Je reformule les deux positions, et vous me corrigez.<span class="tags">Je reformule les deux positions, corrigez-moi.</span></td><td>le geste central de l'animation</td></tr><tr><td class="cle">une affirmation est vague + direct</td><td>Combien, exactement ?</td><td>trois mots, et la discussion devient utilisable</td></tr><tr><td class="cle">une affirmation est vague + plus enveloppé</td><td>Peux-tu préciser ce que tu comptes ?</td><td>même effet, un ton plus doux</td></tr><tr><td class="cle">il reste cinq minutes + direct</td><td>On termine : voici les décisions.</td><td>ferme la rencontre au lieu de la laisser s'éteindre</td></tr><tr><td class="cle">il reste cinq minutes + plus enveloppé</td><td>Je résume, et tu vérifies pendant que je parle.</td><td>fait valider les décisions par une autre personne</td></tr></tbody></table><div class="note">Aucune de ces phrases ne donne d'avis. C'est le signe qu'elles appartiennent au rôle et non à la personne.</div></section><section class="bloc card ml"><h3>Les six gestes, dans l'ordre d'une rencontre</h3><p class="mp">Ce que fait la personne qui anime, du début à la fin.</p><table class="ex2"><tr><td>ouvrir et cadrer</td><td>« Je rappelle où on en est. On a quarante minutes. »</td></tr><tr><td>donner la parole</td><td>« Youssouf, tu voulais commencer. »</td></tr><tr><td>faire préciser</td><td>« Tu comptes quoi, exactement ? »</td></tr><tr><td>reprendre la parole</td><td>« Je t'arrête une seconde, Miguel n'a pas répondu. »</td></tr><tr><td>reformuler</td><td>« Je reformule, et vous me dites si je me trompe. »</td></tr><tr><td>fermer</td><td>« Je résume les décisions ; vérifie tes notes pendant que je parle. »</td></tr></table></section><section class="bloc card ml"><h3>Ce qui fait dérailler une animation</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">donner son avis en premier</p><div class="k">Ce qui arrive</div><p class="ph">le garder pour la fin, ou se le faire demander</p><p class="px">Dès que celui qui anime prend parti, les autres se rangent ou se taisent. Vous avez le droit d'avoir un avis ; annoncez alors que vous quittez un instant votre rôle.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">laisser parler par politesse</p><div class="k">Ce qui arrive</div><p class="ph">interrompre, c'est le rôle</p><p class="px">Six minutes de monologue coûtent le tour de parole de quelqu'un d'autre. Interrompre n'est pas un manque de respect envers celui qui parle : c'en est un envers celui qui se tait.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">fermer sans récapituler</p><div class="k">Ce qui arrive</div><p class="ph">énumérer les décisions à voix haute</p><p class="px">Une rencontre qui s'éteint faute de temps produit trois versions différentes de ce qui a été décidé, et on les découvre la semaine suivante.</p></div></div></section><section class="bloc card ml"><h3>Quatre situations d'animation</h3><p class="mp">Quatre situations.</p><ol class="check"><li><span class="q">Deux coéquipiers se contredisent. Le premier geste est…</span><ul class="opts"><li>reformuler les deux positions</li><li>trancher tout de suite</li></ul></li><li><span class="q">Quelqu'un affirme « il y a beaucoup d'arbres ». Vous demandez…</span><ul class="opts"><li>combien, et comment le sais-tu ?</li><li>es-tu certain ?</li></ul></li><li><span class="q">Interrompre celui qui parle depuis six minutes, c'est…</span><ul class="opts"><li>impoli</li><li>le rôle de qui anime</li></ul></li><li><span class="q">À la fin, on énumère les décisions…</span><ul class="opts"><li>pendant qu'une autre personne vérifie ses notes</li><li>dans le compte rendu seulement</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> reformuler les deux positions — Neuf fois sur dix, le désaccord se dégonfle pendant la reformulation. · <b>2.</b> combien, et comment le sais-tu ? — Une question factuelle, jamais une mise en doute de la personne. · <b>3.</b> le rôle de qui anime — C'est ce qui protège le tour de parole des autres. · <b>4.</b> pendant qu'une autre personne vérifie ses notes — À voix haute, vérifiées sur-le-champ : deux minutes bien employées.</div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Bien que, même si : dire non sans casser l'équipe</h2><section class="bloc card ml"><h3>Accorder d'abord, maintenir ensuite</h3><p class="mp">Dire « je ne suis pas d'accord » met l'autre en position de défendre son idée : la discussion devient un match. La concession fait autre chose — elle <b>donne raison</b> à l'autre sur un point avant de maintenir sa position. Celui qui l'entend n'a plus rien à défendre, puisqu'on vient de lui accorder son argument. C'est le geste de langue le plus utile d'une équipe.</p><div class="note">Miguel l'emploie dans la rencontre : « Bien que ce soit plus long, on pourrait noter autre chose. » Youssouf accepte trois répliques plus tard.</div></section><section class="bloc card ml"><h3>Bien que + subjonctif, toujours</h3><p class="mp">Une des rares conjonctions qui n'acceptent rien d'autre. Aucune exception.</p><table class="ana"><tr><td>Les quatre à savoir</td><td class="">bien qu'il <b>soit</b> · bien que nous <b>ayons</b> · bien que ça <b>prenne</b> · bien qu'elle <b>puisse</b></td></tr><tr><td>Exemple</td><td class="">« <b>Bien que</b> ton idée <b>soit</b> plus rapide, elle ne mesure pas ce qu'on cherche. »</td></tr><tr><td>Sa variante</td><td class="cle"><i>malgré que</i>, aussi avec le subjonctif, moins bien reçu à l'écrit</td></tr></table><p class="dit"><span class="k">On dit</span> Bien que ton idée soit plus rapide, elle ne mesure pas ce qu'on cherche.</p><div class="note">Si le subjonctif vous fait hésiter, prenez <i>même si</i> : le sens est le même et la construction est plus simple.</div></section><section class="bloc card ml"><h3>Même si + indicatif, toujours</h3><p class="mp">Jamais de subjonctif après <i>même si</i>. C'est l'erreur la plus courante, et elle vient précisément de <i>bien que</i>.</p><table class="ana"><tr><td>On dit</td><td class="">même si c'<b>est</b> long · même si tu <b>as</b> raison · même si ça <b>prend</b> deux heures</td></tr><tr><td>On ne dit pas</td><td class="">« même si ce soit long »</td></tr><tr><td>Exemple</td><td class="cle">« <b>Même si</b> je <b>trouve</b> qu'on complique, je suis d'accord. »</td></tr></table><p class="dit"><span class="k">On dit</span> Même si je trouve qu'on complique, je suis d'accord avec la méthode.</p><div class="note"><i>Même si</i> est plus direct, se dit très bien entre coéquipiers, et n'exige aucun subjonctif. C'est celui qu'on emploie à l'oral.</div></section><section class="bloc card ml"><h3>Les autres façons de concéder</h3><p class="mp">Trois de plus, dont deux très courantes à l'oral québécois.</p><table class="ana"><tr><td>Avec un nom</td><td class=""><b>malgré</b> la longueur · <b>en dépit de</b> son coût</td></tr><tr><td>Avec un verbe conjugué</td><td class=""><b>quand même</b> · <b>tout de même</b> : « C'est long ; on le fait quand même. »</td></tr><tr><td>En deux temps</td><td class="cle">« Tu as raison sur le fond. <b>Cela dit</b>, la méthode ne mesure pas ça. »</td></tr></table><p class="dit"><span class="k">On dit</span> Tu as raison sur le fond. Cela dit, la méthode ne mesure pas ce qu'on cherche.</p><div class="note">« Tu as raison, cela dit… » est la forme la plus douce de toutes, et souvent la plus efficace en équipe.</div></section><section class="bloc card ml"><h3>La même objection, quatre formulations</h3><p class="mp">Choisissez ce que vous accordez, puis la construction.</p><table class="labo"><thead><tr><th>Vous accordez… · Avec quelle construction ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">que c'est plus rapide + bien que + subjonctif</td><td>Bien que ce soit plus rapide, ça ne mesure pas la bonne chose.</td><td>la forme écrite, la plus soignée</td></tr><tr><td class="cle">que c'est plus rapide + même si + indicatif</td><td>Même si c'est plus rapide, ça ne mesure pas la bonne chose.</td><td>la forme orale, aussi correcte</td></tr><tr><td class="cle">que c'est plus rapide + en deux phrases</td><td>C'est plus rapide, c'est vrai. Cela dit, ça ne mesure pas la bonne chose.</td><td>la plus douce : l'accord occupe une phrase entière</td></tr><tr><td class="cle">qu'il a raison sur le fond + bien que + subjonctif</td><td>Bien que tu aies raison sur le fond, la méthode reste à revoir.</td><td>avoir au subjonctif : que tu aies</td></tr><tr><td class="cle">qu'il a raison sur le fond + même si + indicatif</td><td>Même si tu as raison sur le fond, la méthode reste à revoir.</td><td>indicatif : tu as, sans hésitation</td></tr><tr><td class="cle">qu'il a raison sur le fond + en deux phrases</td><td>Tu as raison sur le fond. La méthode, elle, reste à revoir.</td><td>le pronom de reprise appuie le contraste</td></tr><tr><td class="cle">que ça prend du temps + bien que + subjonctif</td><td>Bien que ça prenne deux heures, ça en vaut la peine.</td><td>prendre au subjonctif : que ça prenne</td></tr><tr><td class="cle">que ça prend du temps + même si + indicatif</td><td>Même si ça prend deux heures, ça en vaut la peine.</td><td>indicatif : ça prend</td></tr><tr><td class="cle">que ça prend du temps + en deux phrases</td><td>Ça prend deux heures. On le fait quand même.</td><td>le plus court, et très naturel à l'oral</td></tr></tbody></table><div class="note">Les neuf disent la même chose. Choisissez selon l'endroit : l'écrit préfère la première ligne, la rencontre préfère les deux autres.</div></section><section class="bloc card ml"><h3>Six concessions entendues en équipe</h3><p class="mp">À gauche ce qu'on accorde, à droite ce qu'on maintient.</p><table class="ex2"><tr><td>« Bien que ce soit plus long… »</td><td>« …on pourrait noter autre chose que le nombre. »</td></tr><tr><td>« Même si je trouve qu'on complique… »</td><td>« …je suis d'accord avec la méthode. »</td></tr><tr><td>« Bien que la fiche donne un chiffre… »</td><td>« …il faut écrire l'année à côté. »</td></tr><tr><td>« Même si le chiffre vient de la ville… »</td><td>« …on le cite avec sa source. »</td></tr><tr><td>« Tu as raison sur le fond. Cela dit… »</td><td>« …la méthode ne mesure pas ça. »</td></tr><tr><td>« C'est vrai que c'est plus rapide. »</td><td>« On perd quand même l'essentiel. »</td></tr></table></section><section class="bloc card ml"><h3>Concéder à moitié, ou concéder trois fois</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">« même si ce soit »</p><div class="k">Ce qui arrive</div><p class="ph">« même si c'est »</p><p class="px">Le subjonctif appartient à <i>bien que</i>, jamais à <i>même si</i>. C'est l'erreur numéro un du niveau intermédiaire, et elle s'entend tout de suite.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">concéder sans rien maintenir</p><div class="k">Ce qui arrive</div><p class="ph">faire suivre d'un mais, ou d'un je pense quand même</p><p class="px">« Bien que ce soit plus long… » et rien après : vous n'avez pas concédé, vous avez changé d'avis. La concession n'existe qu'avec sa suite.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">concéder trois fois de suite</p><div class="k">Ce qui arrive</div><p class="ph">une fois, puis on maintient</p><p class="px">Trois concessions dans la même intervention et plus personne ne sait ce que vous pensez. Une seule, nette, puis votre position.</p></div></div></section><section class="bloc card ml"><h3>Quatre concessions à compléter</h3><p class="mp">Quatre phrases à compléter.</p><ol class="check"><li><span class="q">« ___ ce soit plus long, ça en vaut la peine. »</span><ul class="opts"><li>Bien que</li><li>Même si</li></ul></li><li><span class="q">« ___ tu as raison, je maintiens ma position. »</span><ul class="opts"><li>Bien que</li><li>Même si</li></ul></li><li><span class="q">Une concession doit être suivie…</span><ul class="opts"><li>de ce qu'on maintient</li><li>d'un exemple</li></ul></li><li><span class="q">À l'oral, entre coéquipiers, on emploiera plutôt…</span><ul class="opts"><li>même si</li><li>bien que</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> Bien que — <i>Soit</i> est un subjonctif : seul <i>bien que</i> l'accepte. · <b>2.</b> Même si — <i>Tu as</i> est un indicatif : c'est <i>même si</i>. · <b>3.</b> de ce qu'on maintient — Sans la suite, ce n'est plus une concession : c'est un changement d'avis. · <b>4.</b> même si — Plus direct, plus simple, et sans subjonctif à fabriquer.</div></section></section></div>
+<footer><span>D1 · Faire parler l'équipe</span><span>Fiche élève</span></footer>
+</body>
+</html>

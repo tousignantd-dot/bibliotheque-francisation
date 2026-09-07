@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fiches élèves du niveau 3 — la série « (+) »</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Nunito:wght@400;600;700;800&display=swap">
+<style>
+:root{
+  --ground:#F7F7F5; --card:#FFFFFF; --sunken:#FBFBFA;
+  --ink:#17181A; --body:#3A3D40; --muted:#6E7175;
+  --line:#E4E4E0; --line-fort:#D2D2CD;
+  --acier:#1D6B8F; --acier-bg:#E7F0F6;
+  --fait:#0A8F5B; --fait-bg:#E6F5EE;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#151618; --card:#1D1F22; --sunken:#212326;
+  --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+  --line:#2E3135; --line-fort:#3D4146;
+  --acier:#6DAFD2; --acier-bg:#14242C;
+  --fait:#4BC48D; --fait-bg:#12291F;
+}}
+:root[data-theme="dark"]{
+  --ground:#151618; --card:#1D1F22; --sunken:#212326;
+  --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+  --line:#2E3135; --line-fort:#3D4146;
+  --acier:#6DAFD2; --acier-bg:#14242C;
+  --fait:#4BC48D; --fait-bg:#12291F;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--body);
+  font-family:Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.doc{max-width:1280px;margin:0 auto;padding:26px 22px 60px}
+.retour{display:inline-flex;gap:8px;font-size:13px;font-weight:700;color:var(--muted);
+  text-decoration:none;margin-bottom:22px}
+.retour:hover{color:var(--acier)}
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--acier);margin:0 0 10px}
+h1{font-family:Newsreader,Georgia,serif;font-size:clamp(30px,4.6vw,44px);line-height:1.06;
+  font-weight:500;letter-spacing:-.02em;color:var(--ink);margin:0 0 14px;text-wrap:balance}
+.chapeau{font-size:17px;margin:0 0 8px;max-width:70ch}
+.chapeau strong{color:var(--ink);font-weight:700}
+.note{font-size:14px;color:var(--muted);margin:0 0 24px;max-width:74ch}
+.note code{font-family:var(--mono);font-size:.88em;background:var(--sunken);
+  border:1px solid var(--line);border-radius:4px;padding:1px 5px}
+
+.plan{display:grid;grid-template-columns:270px 1fr;gap:18px;align-items:start}
+@media (max-width:880px){.plan{grid-template-columns:1fr}}
+
+.rail{background:var(--card);border:1px solid var(--line);border-radius:4px;
+  overflow:hidden;position:sticky;top:14px}
+@media (max-width:880px){.rail{position:static}}
+.rail h2{font-size:11.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--muted);margin:0;padding:12px 15px 8px;background:var(--sunken);
+  border-bottom:1px solid var(--line)}
+select.mod{width:100%;border:0;border-bottom:1px solid var(--line);background:var(--card);
+  color:var(--ink);font:inherit;font-weight:700;padding:11px 14px;cursor:pointer}
+select.mod:focus{outline:2px solid var(--acier);outline-offset:-2px}
+ul.seances{list-style:none;margin:0;padding:0;max-height:62vh;overflow-y:auto}
+ul.seances li{border-bottom:1px solid var(--line)}
+ul.seances li:last-child{border-bottom:0}
+ul.seances button{display:flex;gap:9px;align-items:baseline;width:100%;text-align:left;
+  border:0;background:transparent;font:inherit;color:var(--body);padding:9px 14px;
+  cursor:pointer;border-left:3px solid transparent}
+ul.seances button:hover{background:var(--sunken)}
+ul.seances button[aria-current="true"]{background:var(--acier-bg);color:var(--ink);
+  font-weight:700;border-left-color:var(--acier)}
+.code{font-family:var(--mono);font-size:11.5px;font-weight:700;color:var(--muted);
+  min-width:20px}
+ul.seances button[aria-current="true"] .code{color:var(--acier)}
+.tt{flex:1;font-size:14px;line-height:1.35}
+.pastille{width:7px;height:7px;border-radius:50%;background:var(--fait);flex:none;
+  align-self:center}
+.pastille.non{background:transparent;border:1px solid var(--line-fort)}
+
+.vue{background:var(--card);border:1px solid var(--line);border-radius:4px;overflow:hidden}
+.onglets{display:flex;gap:2px;padding:10px 12px 0;background:var(--sunken);
+  border-bottom:1px solid var(--line);flex-wrap:wrap;align-items:flex-end}
+.onglets button{border:1px solid var(--line);border-bottom:0;background:var(--sunken);
+  color:var(--muted);font:inherit;font-weight:700;font-size:14px;padding:9px 16px;
+  border-radius:4px 4px 0 0;cursor:pointer;position:relative;top:1px}
+.onglets button[aria-selected="true"]{background:var(--card);color:var(--ink);
+  border-color:var(--line)}
+.onglets .droite{margin-left:auto;padding:0 2px 9px;font-size:13px}
+.onglets .droite a{color:var(--acier);font-weight:700;text-decoration:none}
+.onglets .droite a:hover{text-decoration:underline}
+.barre{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;
+  padding:10px 15px;border-bottom:1px solid var(--line);font-size:13.5px;color:var(--muted)}
+.barre b{color:var(--ink);font-size:15px;font-weight:700}
+.badge{font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;
+  padding:3px 9px;border-radius:2px;background:var(--fait-bg);color:var(--fait)}
+.badge.non{background:var(--sunken);color:var(--muted);border:1px solid var(--line)}
+iframe{display:block;width:100%;height:78vh;border:0;background:#fff}
+.niveaux{margin:14px 0 0;font-size:14px;color:var(--muted)}
+.niveaux a{color:var(--acier);font-weight:700;text-decoration:none}
+.niveaux a:hover{text-decoration:underline}
+.pied{margin-top:30px;padding-top:18px;border-top:1px solid var(--line);
+  font-size:13px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="doc">
+<a class="retour" href="/presentations.html"><span aria-hidden="true">&#8592;</span> Le classeur</a>
+<p class="eyebrow">Bibliothèque de francisation · niveau 3</p>
+<h1>La théorie descend-elle dans la fiche&nbsp;?</h1>
+<p class="chapeau">Les <strong>208 fiches du niveau 3</strong>, en deux
+versions&nbsp;: celle d'aujourd'hui, et la <strong>fiche (+)</strong>, où la mini-leçon — le
+« En apprendre plus » qui ne vit qu'à l'écran — est imprimée <strong>dans la fiche de sa
+séance</strong>. Changez d'onglet&nbsp;: la séance ne bouge pas, seule la version change.</p>
+<p class="niveaux">Les autres niveaux&nbsp;: <a href="fiches-plus-niveau-1.html">niveau 1</a> · <a href="fiches-plus-niveau-2.html">niveau 2</a> · <b>niveau 3</b> · <a href="fiches-plus-niveau-4.html">niveau 4</a> · <a href="fiches-plus-niveau-5.html">niveau 5</a> · <a href="fiches-plus-niveau-6.html">niveau 6</a> · <a href="fiches-plus-niveau-7.html">niveau 7</a> · <a href="fiches-plus-niveau-8.html">niveau 8</a></p>
+<p class="note">100 fiches sur 208 portent une mini-leçon&nbsp;; les
+108 autres sont identiques dans les deux onglets — ce sont les séances de production
+et d'application, qui n'en ont pas. Le point vert dans la liste dit lesquelles changent. Le rattachement d'une
+mini-leçon à une séance est lu dans le deck de la séance, pas deviné.
+<strong>La série d'origine n'a pas été touchée</strong>&nbsp;: l'essai vit dans
+<code>assets/documents/plus/</code>.</p>
+
+<div class="plan">
+  <nav class="rail">
+    <h2>13 modules</h2>
+    <select class="mod" id="mod"></select>
+    <ul class="seances" id="seances"></ul>
+  </nav>
+  <main class="vue">
+    <div class="onglets" role="tablist">
+      <button role="tab" id="ong-avant" aria-selected="true">Fiche élève</button>
+      <button role="tab" id="ong-apres" aria-selected="false">Fiche élève (+)</button>
+      <span class="droite"><a id="ouvrir" href="#" target="_blank" rel="noopener">Ouvrir seule&nbsp;↗</a></span>
+    </div>
+    <div class="barre"><b id="tt">—</b><span id="etat"></span></div>
+    <iframe id="vue" title="La fiche"></iframe>
+  </main>
+</div>
+
+<div class="pied">
+  <p>Produit par <code>python3 build/fiches_plus.py</code>. Le rendu papier des mini-leçons
+  est celui du manuel de l'élève, réemployé tel quel — une seule mise en page pour une
+  seule chose.</p>
+</div>
+</div>
+
+<script>
+var DONNEES = [{"slug": "module-n3-epicerie", "titre": "À l'épicerie", "seances": [{"code": "A1", "titre": "A1 · Je ne trouve pas", "f": "module-n3-epicerie-a1-je-ne-trouve-pas.html", "plus": false}, {"code": "A2", "titre": "A2 · Treize ou trente ?", "f": "module-n3-epicerie-a2-treize-ou-trente.html", "plus": true}, {"code": "A3", "titre": "A3 · Comment une épicerie est rangée", "f": "module-n3-epicerie-a3-comment-une-epicerie-est-rangee.html", "plus": false}, {"code": "A4", "titre": "A4 · Où aller acheter ?", "f": "module-n3-epicerie-a4-ou-aller-acheter.html", "plus": false}, {"code": "B1", "titre": "B1 · Dans quelle allée ?", "f": "module-n3-epicerie-b1-dans-quelle-allee.html", "plus": false}, {"code": "B2", "titre": "B2 · Dire où c'est", "f": "module-n3-epicerie-b2-dire-ou-c-est.html", "plus": true}, {"code": "B3", "titre": "B3 · Demander de l'aide", "f": "module-n3-epicerie-b3-demander-de-l-aide.html", "plus": true}, {"code": "B4", "titre": "B4 · Trouver sans chercher", "f": "module-n3-epicerie-b4-trouver-sans-chercher.html", "plus": false}, {"code": "C1", "titre": "C1 · La circulaire de la semaine", "f": "module-n3-epicerie-c1-la-circulaire-de-la-semaine.html", "plus": false}, {"code": "C2", "titre": "C2 · Les mots qui mesurent", "f": "module-n3-epicerie-c2-les-mots-qui-mesurent.html", "plus": true}, {"code": "C3", "titre": "C3 · Lire la circulaire", "f": "module-n3-epicerie-c3-lire-la-circulaire.html", "plus": false}, {"code": "C4", "titre": "C4 · Attention, c'est dangereux", "f": "module-n3-epicerie-c4-attention-c-est-dangereux.html", "plus": true}, {"code": "D1", "titre": "D1 · À la caisse", "f": "module-n3-epicerie-d1-a-la-caisse.html", "plus": false}, {"code": "D2", "titre": "D2 · Lire sa facture", "f": "module-n3-epicerie-d2-lire-sa-facture.html", "plus": true}, {"code": "E1", "titre": "E1 · Je me lance", "f": "module-n3-epicerie-e1-je-me-lance.html", "plus": false}, {"code": "E2", "titre": "E2 · Je retiens des mots", "f": "module-n3-epicerie-e2-je-retiens-des-mots.html", "plus": false}]}, {"slug": "module-n3-vetements", "titre": "Magasiner du linge", "seances": [{"code": "A1", "titre": "A1 · Je cherche un manteau", "f": "module-n3-vetements-a1-je-cherche-un-manteau.html", "plus": false}, {"code": "A2", "titre": "A2 · Le « u » de jupe et le « ou » de rouge", "f": "module-n3-vetements-a2-le-u-de-jupe-et-le-ou-de-rouge.html", "plus": true}, {"code": "A3", "titre": "A3 · Les couleurs et les motifs", "f": "module-n3-vetements-a3-les-couleurs-et-les-motifs.html", "plus": false}, {"code": "A4", "titre": "A4 · Un manteau, une tuque", "f": "module-n3-vetements-a4-un-manteau-une-tuque.html", "plus": true}, {"code": "B1", "titre": "B1 · Quelle taille ?", "f": "module-n3-vetements-b1-quelle-taille.html", "plus": false}, {"code": "B2", "titre": "B2 · La couleur après le vêtement", "f": "module-n3-vetements-b2-la-couleur-apres-le-vetement.html", "plus": true}, {"code": "B3", "titre": "B3 · Taille, pointure et essayage", "f": "module-n3-vetements-b3-taille-pointure-et-essayage.html", "plus": true}, {"code": "B4", "titre": "B4 · Ce qu'on entend dans le magasin", "f": "module-n3-vetements-b4-ce-qu-on-entend-dans-le-magasin.html", "plus": false}, {"code": "C1", "titre": "C1 · Lequel est le moins cher ?", "f": "module-n3-vetements-c1-lequel-est-le-moins-cher.html", "plus": false}, {"code": "C2", "titre": "C2 · Plus cher, moins cher, aussi cher", "f": "module-n3-vetements-c2-plus-cher-moins-cher-aussi-cher.html", "plus": true}, {"code": "C3", "titre": "C3 · Lire une étiquette de prix", "f": "module-n3-vetements-c3-lire-une-etiquette-de-prix.html", "plus": false}, {"code": "C4", "titre": "C4 · Celui-ci, celui-là", "f": "module-n3-vetements-c4-celui-ci-celui-la.html", "plus": true}, {"code": "D1", "titre": "D1 · L'étiquette d'entretien", "f": "module-n3-vetements-d1-l-etiquette-d-entretien.html", "plus": true}, {"code": "D2", "titre": "D2 · À la caisse", "f": "module-n3-vetements-d2-a-la-caisse.html", "plus": false}, {"code": "E1", "titre": "E1 · Je me lance", "f": "module-n3-vetements-e1-je-me-lance.html", "plus": false}, {"code": "E2", "titre": "E2 · Je retiens des mots", "f": "module-n3-vetements-e2-je-retiens-des-mots.html", "plus": false}]}, {"slug": "module-n3-electro", "titre": "Acheter un appareil", "seances": [{"code": "A1", "titre": "A1 · Ma laveuse est brisée", "f": "module-n3-electro-a1-ma-laveuse-est-brisee.html", "plus": false}, {"code": "A2", "titre": "A2 · Le son ON et le son AN", "f": "module-n3-electro-a2-le-son-on-et-le-son-an.html", "plus": true}, {"code": "A3", "titre": "A3 · Dans le magasin des appareils", "f": "module-n3-electro-a3-dans-le-magasin-des-appareils.html", "plus": false}, {"code": "A4", "titre": "A4 · Une laveuse, un réfrigérateur", "f": "module-n3-electro-a4-une-laveuse-un-refrigerateur.html", "plus": true}, {"code": "B1", "titre": "B1 · Le spécial finit dimanche", "f": "module-n3-electro-b1-le-special-finit-dimanche.html", "plus": false}, {"code": "B2", "titre": "B2 · Huit cent quarante-neuf dollars", "f": "module-n3-electro-b2-huit-cent-quarante-neuf-dollars.html", "plus": true}, {"code": "B3", "titre": "B3 · Les mots de la circulaire", "f": "module-n3-electro-b3-les-mots-de-la-circulaire.html", "plus": false}, {"code": "B4", "titre": "B4 · Du mardi au dimanche", "f": "module-n3-electro-b4-du-mardi-au-dimanche.html", "plus": true}, {"code": "C1", "titre": "C1 · Où est le rayon ?", "f": "module-n3-electro-c1-ou-est-le-rayon.html", "plus": false}, {"code": "C2", "titre": "C2 · Cette laveuse-là", "f": "module-n3-electro-c2-cette-laveuse-la.html", "plus": true}, {"code": "C3", "titre": "C3 · Quatre questions au vendeur", "f": "module-n3-electro-c3-quatre-questions-au-vendeur.html", "plus": true}, {"code": "C4", "titre": "C4 · Lire l'affichette", "f": "module-n3-electro-c4-lire-l-affichette.html", "plus": false}, {"code": "D1", "titre": "D1 · Au comptoir de la livraison", "f": "module-n3-electro-d1-au-comptoir-de-la-livraison.html", "plus": false}, {"code": "D2", "titre": "D2 · Je vais payer, je la prends", "f": "module-n3-electro-d2-je-vais-payer-je-la-prends.html", "plus": true}, {"code": "E1", "titre": "E1 · Je me lance", "f": "module-n3-electro-e1-je-me-lance.html", "plus": false}, {"code": "E2", "titre": "E2 · Je retiens des mots", "f": "module-n3-electro-e2-je-retiens-des-mots.html", "plus": false}]}, {"slug": "module-n3-restaurant", "titre": "Commander au comptoir", "seances": [{"code": "A1", "titre": "A1 · Chez Marcel, on commande au comptoir", "f": "module-n3-restaurant-a1-chez-marcel-on-commande-au-comptoir.html", "plus": false}, {"code": "A2", "titre": "A2 · Le son OU et le son U", "f": "module-n3-restaurant-a2-le-son-ou-et-le-son-u.html", "plus": true}, {"code": "A3", "titre": "A3 · Dans le casse-croûte", "f": "module-n3-restaurant-a3-dans-le-casse-croute.html", "plus": false}, {"code": "A4", "titre": "A4 · Petit, moyen, grand", "f": "module-n3-restaurant-a4-petit-moyen-grand.html", "plus": true}, {"code": "B1", "titre": "B1 · Lire le tableau avant de commander", "f": "module-n3-restaurant-b1-lire-le-tableau-avant-de-commander.html", "plus": false}, {"code": "B2", "titre": "B2 · Où regarder sur le tableau", "f": "module-n3-restaurant-b2-ou-regarder-sur-le-tableau.html", "plus": true}, {"code": "B3", "titre": "B3 · Au poulet, à la tomate, aux légumes", "f": "module-n3-restaurant-b3-au-poulet-a-la-tomate-aux-legumes.html", "plus": true}, {"code": "B4", "titre": "B4 · Ce sandwich-là, c'est quoi ?", "f": "module-n3-restaurant-b4-ce-sandwich-la-c-est-quoi.html", "plus": true}, {"code": "C1", "titre": "C1 · Au comptoir, chez Marcel", "f": "module-n3-restaurant-c1-au-comptoir-chez-marcel.html", "plus": false}, {"code": "C2", "titre": "C2 · Je voudrais", "f": "module-n3-restaurant-c2-je-voudrais.html", "plus": true}, {"code": "C3", "titre": "C3 · Les cinq questions du préposé", "f": "module-n3-restaurant-c3-les-cinq-questions-du-prepose.html", "plus": true}, {"code": "C4", "titre": "C4 · Le préposé ou le client ?", "f": "module-n3-restaurant-c4-le-prepose-ou-le-client.html", "plus": false}, {"code": "D1", "titre": "D1 · Numéro 42 !", "f": "module-n3-restaurant-d1-numero-42.html", "plus": true}, {"code": "D2", "titre": "D2 · Du sel, des serviettes — et il n'en reste plus", "f": "module-n3-restaurant-d2-du-sel-des-serviettes-et-il-n-en-reste-plus.html", "plus": true}, {"code": "E1", "titre": "E1 · Je me lance", "f": "module-n3-restaurant-e1-je-me-lance.html", "plus": false}, {"code": "E2", "titre": "E2 · Je retiens des mots", "f": "module-n3-restaurant-e2-je-retiens-des-mots.html", "plus": false}]}, {"slug": "module-n3-pharmacie", "titre": "Aller à la pharmacie", "seances": [{"code": "A1", "titre": "A1 · Deux comptoirs, une pharmacie", "f": "module-n3-pharmacie-a1-deux-comptoirs-une-pharmacie.html", "plus": false}, {"code": "A2", "titre": "A2 · Le son AN et le son ON", "f": "module-n3-pharmacie-a2-le-son-an-et-le-son-on.html", "plus": true}, {"code": "A3", "titre": "A3 · Les seize mots de la pharmacie", "f": "module-n3-pharmacie-a3-les-seize-mots-de-la-pharmacie.html", "plus": false}, {"code": "A4", "titre": "A4 · J'ai mal à la tête, j'ai mal au dos", "f": "module-n3-pharmacie-a4-j-ai-mal-a-la-tete-j-ai-mal-au-dos.html", "plus": true}, {"code": "B1", "titre": "B1 · Qu'est-ce que vous avez, madame ?", "f": "module-n3-pharmacie-b1-qu-est-ce-que-vous-avez-madame.html", "plus": false}, {"code": "B2", "titre": "B2 · Je tousse, j'ai de la fièvre, je me suis coupé", "f": "module-n3-pharmacie-b2-je-tousse-j-ai-de-la-fievre-je-me-suis-coupe.html", "plus": true}, {"code": "B3", "titre": "B3 · Depuis quand est-ce que ça dure ?", "f": "module-n3-pharmacie-b3-depuis-quand-est-ce-que-ca-dure.html", "plus": true}, {"code": "B4", "titre": "B4 · Le pharmacien ou le client ?", "f": "module-n3-pharmacie-b4-le-pharmacien-ou-le-client.html", "plus": false}, {"code": "C1", "titre": "C1 · Il me reste deux comprimés", "f": "module-n3-pharmacie-c1-il-me-reste-deux-comprimes.html", "plus": false}, {"code": "C2", "titre": "C2 · Est-ce que je peux, je dois, il faut", "f": "module-n3-pharmacie-c2-est-ce-que-je-peux-je-dois-il-faut.html", "plus": true}, {"code": "C3", "titre": "C3 · Mon ordonnance, votre carte", "f": "module-n3-pharmacie-c3-mon-ordonnance-votre-carte.html", "plus": true}, {"code": "C4", "titre": "C4 · Les étapes du renouvellement", "f": "module-n3-pharmacie-c4-les-etapes-du-renouvellement.html", "plus": false}, {"code": "D1", "titre": "D1 · Ce qui est écrit sur l'étiquette", "f": "module-n3-pharmacie-d1-ce-qui-est-ecrit-sur-l-etiquette.html", "plus": false}, {"code": "D2", "titre": "D2 · Trois fois par jour, pas plus de quatre", "f": "module-n3-pharmacie-d2-trois-fois-par-jour-pas-plus-de-quatre.html", "plus": true}, {"code": "E1", "titre": "E1 · Je me lance", "f": "module-n3-pharmacie-e1-je-me-lance.html", "plus": false}, {"code": "E2", "titre": "E2 · Je retiens des mots", "f": "module-n3-pharmacie-e2-je-retiens-des-mots.html", "plus": false}]}, {"slug": "module-n3-metro", "titre": "Le bon titre de transport", "seances": [{"code": "A1", "titre": "A1 · La carte que j'ai dans ma poche", "f": "module-n3-metro-a1-la-carte-que-j-ai-dans-ma-poche.html", "plus": false}, {"code": "A2", "titre": "A2 · Le son IN et le son AN", "f": "module-n3-metro-a2-le-son-in-et-le-son-an.html", "plus": true}, {"code": "A3", "titre": "A3 · Les seize mots du transport collectif", "f": "module-n3-metro-a3-les-seize-mots-du-transport-collectif.html", "plus": false}, {"code": "A4", "titre": "A4 · Trois dollars soixante-quinze", "f": "module-n3-metro-a4-trois-dollars-soixante-quinze.html", "plus": true}, {"code": "B1", "titre": "B1 · Quatre titres, quatre prix", "f": "module-n3-metro-b1-quatre-titres-quatre-prix.html", "plus": false}, {"code": "B2", "titre": "B2 · Ce titre-là, cette carte-là", "f": "module-n3-metro-b2-ce-titre-la-cette-carte-la.html", "plus": true}, {"code": "B3", "titre": "B3 · Le titre qu'il me faut", "f": "module-n3-metro-b3-le-titre-qu-il-me-faut.html", "plus": false}, {"code": "B4", "titre": "B4 · Retenir le prix qu'on vient de me dire", "f": "module-n3-metro-b4-retenir-le-prix-qu-on-vient-de-me-dire.html", "plus": false}, {"code": "C1", "titre": "C1 · Je voudrais un mensuel, s'il vous plaît", "f": "module-n3-metro-c1-je-voudrais-un-mensuel-s-il-vous-plait.html", "plus": false}, {"code": "C2", "titre": "C2 · Poser sa question au comptoir", "f": "module-n3-metro-c2-poser-sa-question-au-comptoir.html", "plus": true}, {"code": "C3", "titre": "C3 · Je voudrais, je peux, je dois, il faut", "f": "module-n3-metro-c3-je-voudrais-je-peux-je-dois-il-faut.html", "plus": true}, {"code": "C4", "titre": "C4 · Les étapes de l'achat", "f": "module-n3-metro-c4-les-etapes-de-l-achat.html", "plus": false}, {"code": "D1", "titre": "D1 · Lire la grille sans se perdre", "f": "module-n3-metro-d1-lire-la-grille-sans-se-perdre.html", "plus": true}, {"code": "D2", "titre": "D2 · Jusqu'à quand, et moins cher que quoi", "f": "module-n3-metro-d2-jusqu-a-quand-et-moins-cher-que-quoi.html", "plus": true}, {"code": "E1", "titre": "E1 · Je me lance — au comptoir, à voix haute", "f": "module-n3-metro-e1-je-me-lance-au-comptoir-a-voix-haute.html", "plus": false}, {"code": "E2", "titre": "E2 · Je retiens des mots — et j'écris à quelqu'un qui arrive", "f": "module-n3-metro-e2-je-retiens-des-mots-et-j-ecris-a-quelqu-un-qui-a.html", "plus": false}]}, {"slug": "module-n3-poste", "titre": "Le colis de Yassine", "seances": [{"code": "A1", "titre": "A1 · Le bureau de poste de la 3e Avenue", "f": "module-n3-poste-a1-le-bureau-de-poste-de-la-3e-avenue.html", "plus": false}, {"code": "A2", "titre": "A2 · Le « eu » de deux et le « eu » de neuf", "f": "module-n3-poste-a2-le-eu-de-deux-et-le-eu-de-neuf.html", "plus": true}, {"code": "A3", "titre": "A3 · Les seize mots du bureau de poste", "f": "module-n3-poste-a3-les-seize-mots-du-bureau-de-poste.html", "plus": false}, {"code": "A4", "titre": "A4 · Je voudrais, j'aimerais, est-ce que je pourrais", "f": "module-n3-poste-a4-je-voudrais-j-aimerais-est-ce-que-je-pourrais.html", "plus": true}, {"code": "B1", "titre": "B1 · Combien ça coûte, combien de temps ça prend", "f": "module-n3-poste-b1-combien-ca-coute-combien-de-temps-ca-prend.html", "plus": false}, {"code": "B2", "titre": "B2 · Les cinq questions du comptoir", "f": "module-n3-poste-b2-les-cinq-questions-du-comptoir.html", "plus": true}, {"code": "B3", "titre": "B3 · Chaque envoi sert à quelque chose", "f": "module-n3-poste-b3-chaque-envoi-sert-a-quelque-chose.html", "plus": false}, {"code": "B4", "titre": "B4 · Les prix, les délais, et faire répéter", "f": "module-n3-poste-b4-les-prix-les-delais-et-faire-repeter.html", "plus": true}, {"code": "C1", "titre": "C1 · Qu'est-ce qu'il y a dans la boîte ?", "f": "module-n3-poste-c1-qu-est-ce-qu-il-y-a-dans-la-boite.html", "plus": false}, {"code": "C2", "titre": "C2 · Il y a, contient, c'est, ce sont", "f": "module-n3-poste-c2-il-y-a-contient-c-est-ce-sont.html", "plus": true}, {"code": "C3", "titre": "C3 · Je vais le prendre, je vais en prendre trois", "f": "module-n3-poste-c3-je-vais-le-prendre-je-vais-en-prendre-trois.html", "plus": true}, {"code": "C4", "titre": "C4 · L'adresse sur la boîte, et l'ordre de l'envoi", "f": "module-n3-poste-c4-l-adresse-sur-la-boite-et-l-ordre-de-l-envoi.html", "plus": true}, {"code": "D1", "titre": "D1 · Ce carton-là était dans ma boîte aux lettres", "f": "module-n3-poste-d1-ce-carton-la-etait-dans-ma-boite-aux-lettres.html", "plus": true}, {"code": "D2", "titre": "D2 · Ce carton-là, cet avis, cette boîte", "f": "module-n3-poste-d2-ce-carton-la-cet-avis-cette-boite.html", "plus": true}, {"code": "E1", "titre": "E1 · Je me lance", "f": "module-n3-poste-e1-je-me-lance.html", "plus": false}, {"code": "E2", "titre": "E2 · Je retiens des mots", "f": "module-n3-poste-e2-je-retiens-des-mots.html", "plus": false}]}, {"slug": "module-n3-loyer", "titre": "Trois questions avant de louer", "seances": [{"code": "A1", "titre": "A1 · Trois personnes dans un deux et demie", "f": "module-n3-loyer-a1-trois-personnes-dans-un-deux-et-demie.html", "plus": false}, {"code": "A2", "titre": "A2 · Le son CH et le son S", "f": "module-n3-loyer-a2-le-son-ch-et-le-son-s.html", "plus": true}, {"code": "A3", "titre": "A3 · Les seize mots du logement", "f": "module-n3-loyer-a3-les-seize-mots-du-logement.html", "plus": false}, {"code": "A4", "titre": "A4 · Un salon, une cuisine", "f": "module-n3-loyer-a4-un-salon-une-cuisine.html", "plus": true}, {"code": "B1", "titre": "B1 · Chauffé, éclairé, non meublé", "f": "module-n3-loyer-b1-chauffe-eclaire-non-meuble.html", "plus": false}, {"code": "B2", "titre": "B2 · Une annonce écrite en abrégé", "f": "module-n3-loyer-b2-une-annonce-ecrite-en-abrege.html", "plus": true}, {"code": "B3", "titre": "B3 · Compris dans le loyer, ou à payer en plus ?", "f": "module-n3-loyer-b3-compris-dans-le-loyer-ou-a-payer-en-plus.html", "plus": true}, {"code": "B4", "titre": "B4 · L'adjectif qui suit le nom", "f": "module-n3-loyer-b4-l-adjectif-qui-suit-le-nom.html", "plus": true}, {"code": "C1", "titre": "C1 · Bonjour, je vous appelle pour l'annonce", "f": "module-n3-loyer-c1-bonjour-je-vous-appelle-pour-l-annonce.html", "plus": false}, {"code": "C2", "titre": "C2 · Je voudrais, j'aimerais, est-ce que je pourrais", "f": "module-n3-loyer-c2-je-voudrais-j-aimerais-est-ce-que-je-pourrais.html", "plus": true}, {"code": "C3", "titre": "C3 · Mes trois questions, préparées", "f": "module-n3-loyer-c3-mes-trois-questions-preparees.html", "plus": true}, {"code": "C4", "titre": "C4 · Je vais venir samedi", "f": "module-n3-loyer-c4-je-vais-venir-samedi.html", "plus": true}, {"code": "D1", "titre": "D1 · Entrez, je vais vous montrer", "f": "module-n3-loyer-d1-entrez-je-vais-vous-montrer.html", "plus": true}, {"code": "D2", "titre": "D2 · Il n'y a pas de stationnement", "f": "module-n3-loyer-d2-il-n-y-a-pas-de-stationnement.html", "plus": true}, {"code": "E1", "titre": "E1 · Je me lance — la visite, à voix haute", "f": "module-n3-loyer-e1-je-me-lance-la-visite-a-voix-haute.html", "plus": false}, {"code": "E2", "titre": "E2 · Je retiens des mots — et j'écris à ma famille", "f": "module-n3-loyer-e2-je-retiens-des-mots-et-j-ecris-a-ma-famille.html", "plus": false}]}, {"slug": "module-n3-voisins", "titre": "L'escalier de la rue Dézéry", "seances": [{"code": "A1", "titre": "A1 · C'est vous, le nouveau du troisième ?", "f": "module-n3-voisins-a1-c-est-vous-le-nouveau-du-troisieme.html", "plus": false}, {"code": "A2", "titre": "A2 · Content, voisin : deux sons qui passent par le nez", "f": "module-n3-voisins-a2-content-voisin-deux-sons-qui-passent-par-le-nez.html", "plus": true}, {"code": "A3", "titre": "A3 · Les lieux qu'on partage", "f": "module-n3-voisins-a3-les-lieux-qu-on-partage.html", "plus": false}, {"code": "A4", "titre": "A4 · Je m'appelle, je vous présente", "f": "module-n3-voisins-a4-je-m-appelle-je-vous-presente.html", "plus": true}, {"code": "B1", "titre": "B1 · Mon vélo gêne dans le corridor", "f": "module-n3-voisins-b1-mon-velo-gene-dans-le-corridor.html", "plus": false}, {"code": "B2", "titre": "B2 · Est-ce que je peux, est-ce que je pourrais", "f": "module-n3-voisins-b2-est-ce-que-je-peux-est-ce-que-je-pourrais.html", "plus": true}, {"code": "B3", "titre": "B3 · Le, la, les, lui : ne pas répéter le mot", "f": "module-n3-voisins-b3-le-la-les-lui-ne-pas-repeter-le-mot.html", "plus": true}, {"code": "B4", "titre": "B4 · Ce qu'on entend dans la réponse", "f": "module-n3-voisins-b4-ce-qu-on-entend-dans-la-reponse.html", "plus": false}, {"code": "C1", "titre": "C1 · Venez prendre un café samedi", "f": "module-n3-voisins-c1-venez-prendre-un-cafe-samedi.html", "plus": false}, {"code": "C2", "titre": "C2 · Les trois renseignements de toute invitation", "f": "module-n3-voisins-c2-les-trois-renseignements-de-toute-invitation.html", "plus": true}, {"code": "C3", "titre": "C3 · Ce qui va arriver, et ce qui aura lieu", "f": "module-n3-voisins-c3-ce-qui-va-arriver-et-ce-qui-aura-lieu.html", "plus": true}, {"code": "C4", "titre": "C4 · Répondre, complimenter, lire le carton", "f": "module-n3-voisins-c4-repondre-complimenter-lire-le-carton.html", "plus": true}, {"code": "D1", "titre": "D1 · Il est comment, votre chat ?", "f": "module-n3-voisins-d1-il-est-comment-votre-chat.html", "plus": false}, {"code": "D2", "titre": "D2 · L'adjectif s'accorde, et il se place", "f": "module-n3-voisins-d2-l-adjectif-s-accorde-et-il-se-place.html", "plus": true}, {"code": "E1", "titre": "E1 · Je me lance", "f": "module-n3-voisins-e1-je-me-lance.html", "plus": false}, {"code": "E2", "titre": "E2 · Je retiens des mots", "f": "module-n3-voisins-e2-je-retiens-des-mots.html", "plus": false}]}, {"slug": "module-n3-recherche-emploi", "titre": "On embauche", "seances": [{"code": "A1", "titre": "A1 · Un papier rouge dans la vitrine", "f": "module-n3-recherche-emploi-a1-un-papier-rouge-dans-la-vitrine.html", "plus": false}, {"code": "A2", "titre": "A2 · Le é de métier, le è de salaire", "f": "module-n3-recherche-emploi-a2-le-e-de-metier-le-e-de-salaire.html", "plus": true}, {"code": "A3", "titre": "A3 · Où on cherche du travail", "f": "module-n3-recherche-emploi-a3-ou-on-cherche-du-travail.html", "plus": false}, {"code": "A4", "titre": "A4 · Les quatre choses qu'on dit en entrant", "f": "module-n3-recherche-emploi-a4-les-quatre-choses-qu-on-dit-en-entrant.html", "plus": true}, {"code": "B1", "titre": "B1 · Fanta pousse la porte", "f": "module-n3-recherche-emploi-b1-fanta-pousse-la-porte.html", "plus": false}, {"code": "B2", "titre": "B2 · Est-ce que vous engagez ?", "f": "module-n3-recherche-emploi-b2-est-ce-que-vous-engagez.html", "plus": true}, {"code": "B3", "titre": "B3 · Je sais faire, j'ai de l'expérience en", "f": "module-n3-recherche-emploi-b3-je-sais-faire-j-ai-de-l-experience-en.html", "plus": true}, {"code": "B4", "titre": "B4 · Du lundi au vendredi, de 9 h à 13 h", "f": "module-n3-recherche-emploi-b4-du-lundi-au-vendredi-de-9-h-a-13-h.html", "plus": true}, {"code": "C1", "titre": "C1 · Deux offres au babillard", "f": "module-n3-recherche-emploi-c1-deux-offres-au-babillard.html", "plus": false}, {"code": "C2", "titre": "C2 · Chaque ligne répond à une question", "f": "module-n3-recherche-emploi-c2-chaque-ligne-repond-a-une-question.html", "plus": false}, {"code": "C3", "titre": "C3 · De l'heure, par semaine, aux deux semaines", "f": "module-n3-recherche-emploi-c3-de-l-heure-par-semaine-aux-deux-semaines.html", "plus": true}, {"code": "C4", "titre": "C4 · Exigé, aucune expérience, un atout", "f": "module-n3-recherche-emploi-c4-exige-aucune-experience-un-atout.html", "plus": true}, {"code": "D1", "titre": "D1 · Le formulaire d'Hugo", "f": "module-n3-recherche-emploi-d1-le-formulaire-d-hugo.html", "plus": false}, {"code": "D2", "titre": "D2 · Écrivez, cochez, signez, datez", "f": "module-n3-recherche-emploi-d2-ecrivez-cochez-signez-datez.html", "plus": true}, {"code": "E1", "titre": "E1 · Pousse la porte", "f": "module-n3-recherche-emploi-e1-pousse-la-porte.html", "plus": false}, {"code": "E2", "titre": "E2 · Ma petite annonce", "f": "module-n3-recherche-emploi-e2-ma-petite-annonce.html", "plus": true}]}, {"slug": "module-n3-horaire", "titre": "Mon quart de travail", "seances": [{"code": "A1", "titre": "A1 · Ton horaire est affiché en haut", "f": "module-n3-horaire-a1-ton-horaire-est-affiche-en-haut.html", "plus": false}, {"code": "A2", "titre": "A2 · Le son « ou » et le son « u »", "f": "module-n3-horaire-a2-le-son-ou-et-le-son-u.html", "plus": true}, {"code": "A3", "titre": "A3 · Les lieux, les objets, les verbes", "f": "module-n3-horaire-a3-les-lieux-les-objets-les-verbes.html", "plus": false}, {"code": "A4", "titre": "A4 · Les moments de la journée", "f": "module-n3-horaire-a4-les-moments-de-la-journee.html", "plus": true}, {"code": "B1", "titre": "B1 · Mon quart commence à quelle heure ?", "f": "module-n3-horaire-b1-mon-quart-commence-a-quelle-heure.html", "plus": false}, {"code": "B2", "titre": "B2 · De… à, jusqu'à, à partir de", "f": "module-n3-horaire-b2-de-a-jusqu-a-a-partir-de.html", "plus": true}, {"code": "B3", "titre": "B3 · L'heure écrite, l'heure dite, la question qui manque", "f": "module-n3-horaire-b3-l-heure-ecrite-l-heure-dite-la-question-qui-manq.html", "plus": true}, {"code": "B4", "titre": "B4 · Matin ou après-midi ?", "f": "module-n3-horaire-b4-matin-ou-apres-midi.html", "plus": false}, {"code": "C1", "titre": "C1 · Est-ce que je peux échanger mon jeudi ?", "f": "module-n3-horaire-c1-est-ce-que-je-peux-echanger-mon-jeudi.html", "plus": false}, {"code": "C2", "titre": "C2 · Pouvoir, devoir, falloir", "f": "module-n3-horaire-c2-pouvoir-devoir-falloir.html", "plus": true}, {"code": "C3", "titre": "C3 · Ce que la phrase demande, et comment on répond", "f": "module-n3-horaire-c3-ce-que-la-phrase-demande-et-comment-on-repond.html", "plus": true}, {"code": "C4", "titre": "C4 · Permission ou aide ?", "f": "module-n3-horaire-c4-permission-ou-aide.html", "plus": false}, {"code": "D1", "titre": "D1 · Trois choses avant midi", "f": "module-n3-horaire-d1-trois-choses-avant-midi.html", "plus": false}, {"code": "D2", "titre": "D2 · La forme qui commande, et où on en est", "f": "module-n3-horaire-d2-la-forme-qui-commande-et-ou-on-en-est.html", "plus": true}, {"code": "E1", "titre": "E1 · Je me lance", "f": "module-n3-horaire-e1-je-me-lance.html", "plus": false}, {"code": "E2", "titre": "E2 · Je retiens des mots", "f": "module-n3-horaire-e2-je-retiens-des-mots.html", "plus": false}]}, {"slug": "module-n3-loisirs", "titre": "Choisir une activité au centre", "seances": [{"code": "A1", "titre": "A1 · Le babillard de l'entrée", "f": "module-n3-loisirs-a1-le-babillard-de-l-entree.html", "plus": false}, {"code": "A2", "titre": "A2 · Le son « ch » et le son « j »", "f": "module-n3-loisirs-a2-le-son-ch-et-le-son-j.html", "plus": true}, {"code": "A3", "titre": "A3 · Dans le centre communautaire", "f": "module-n3-loisirs-a3-dans-le-centre-communautaire.html", "plus": false}, {"code": "A4", "titre": "A4 · Mardi, ou le mardi ?", "f": "module-n3-loisirs-a4-mardi-ou-le-mardi.html", "plus": true}, {"code": "B1", "titre": "B1 · Je voudrais des renseignements", "f": "module-n3-loisirs-b1-je-voudrais-des-renseignements.html", "plus": false}, {"code": "B2", "titre": "B2 · Poser sa question : trois façons", "f": "module-n3-loisirs-b2-poser-sa-question-trois-facons.html", "plus": true}, {"code": "B3", "titre": "B3 · Je voudrais, j'aimerais, vous pourriez", "f": "module-n3-loisirs-b3-je-voudrais-j-aimerais-vous-pourriez.html", "plus": true}, {"code": "B4", "titre": "B4 · Au comptoir du centre", "f": "module-n3-loisirs-b4-au-comptoir-du-centre.html", "plus": false}, {"code": "C1", "titre": "C1 · Quatre films, quatre petits textes", "f": "module-n3-loisirs-c1-quatre-films-quatre-petits-textes.html", "plus": false}, {"code": "C2", "titre": "C2 · Dix-neuf heures trente, ou sept heures et demie ?", "f": "module-n3-loisirs-c2-dix-neuf-heures-trente-ou-sept-heures-et-demie.html", "plus": true}, {"code": "C3", "titre": "C3 · Lire le feuillet du ciné-club", "f": "module-n3-loisirs-c3-lire-le-feuillet-du-cine-club.html", "plus": false}, {"code": "C4", "titre": "C4 · L'adjectif qui décrit le film", "f": "module-n3-loisirs-c4-l-adjectif-qui-decrit-le-film.html", "plus": true}, {"code": "D1", "titre": "D1 · Un pâté chinois pour quatre", "f": "module-n3-loisirs-d1-un-pate-chinois-pour-quatre.html", "plus": false}, {"code": "D2", "titre": "D2 · Pelez, coupez, ajoutez", "f": "module-n3-loisirs-d2-pelez-coupez-ajoutez.html", "plus": true}, {"code": "E1", "titre": "E1 · Se renseigner à voix haute", "f": "module-n3-loisirs-e1-se-renseigner-a-voix-haute.html", "plus": false}, {"code": "E2", "titre": "E2 · Écrire pour inviter", "f": "module-n3-loisirs-e2-ecrire-pour-inviter.html", "plus": false}]}, {"slug": "module-n3-secretariat", "titre": "L'absence de Nawel", "seances": [{"code": "A1", "titre": "A1 · Il faut le dire au secrétariat", "f": "module-n3-secretariat-a1-il-faut-le-dire-au-secretariat.html", "plus": false}, {"code": "A2", "titre": "A2 · Le son AN et le son IN", "f": "module-n3-secretariat-a2-le-son-an-et-le-son-in.html", "plus": true}, {"code": "A3", "titre": "A3 · Une journée au centre", "f": "module-n3-secretariat-a3-une-journee-au-centre.html", "plus": false}, {"code": "A4", "titre": "A4 · Bonjour madame", "f": "module-n3-secretariat-a4-bonjour-madame.html", "plus": true}, {"code": "B1", "titre": "B1 · Je vais être absente jeudi", "f": "module-n3-secretariat-b1-je-vais-etre-absente-jeudi.html", "plus": false}, {"code": "B2", "titre": "B2 · Je vais être absente", "f": "module-n3-secretariat-b2-je-vais-etre-absente.html", "plus": true}, {"code": "B3", "titre": "B3 · Jeudi ou le jeudi ?", "f": "module-n3-secretariat-b3-jeudi-ou-le-jeudi.html", "plus": true}, {"code": "B4", "titre": "B4 · L'affiche du comptoir", "f": "module-n3-secretariat-b4-l-affiche-du-comptoir.html", "plus": false}, {"code": "C1", "titre": "C1 · J'apporte mon billet", "f": "module-n3-secretariat-c1-j-apporte-mon-billet.html", "plus": false}, {"code": "C2", "titre": "C2 · Dire quelles journées", "f": "module-n3-secretariat-c2-dire-quelles-journees.html", "plus": true}, {"code": "C3", "titre": "C3 · Mon billet, votre dossier", "f": "module-n3-secretariat-c3-mon-billet-votre-dossier.html", "plus": true}, {"code": "C4", "titre": "C4 · Lire un billet de clinique", "f": "module-n3-secretariat-c4-lire-un-billet-de-clinique.html", "plus": false}, {"code": "D1", "titre": "D1 · Je dois arrêter le cours", "f": "module-n3-secretariat-d1-je-dois-arreter-le-cours.html", "plus": false}, {"code": "D2", "titre": "D2 · Avant de partir", "f": "module-n3-secretariat-d2-avant-de-partir.html", "plus": true}, {"code": "E1", "titre": "E1 · Je me lance", "f": "module-n3-secretariat-e1-je-me-lance.html", "plus": false}, {"code": "E2", "titre": "E2 · Je retiens des mots", "f": "module-n3-secretariat-e2-je-retiens-des-mots.html", "plus": false}]}];
+var mod = 0, sea = 0, apres = false;
+/* On ouvre sur la première séance qui porte une mini-leçon : atterrir sur une
+   séance où les deux onglets sont identiques ferait croire que la page ne
+   marche pas. */
+function premiereAvecPlus(m) {
+  for (var i = 0; i < m.seances.length; i++) if (m.seances[i].plus) return i;
+  return 0;
+}
+var $ = function (id) { return document.getElementById(id); };
+
+function chemin() {
+  var s = DONNEES[mod].seances[sea];
+  return '../documents/' + (apres ? 'plus/' : '') + s.f;
+}
+
+function rendre() {
+  var m = DONNEES[mod], s = m.seances[sea];
+  $('vue').src = chemin();
+  $('ouvrir').href = chemin();
+  $('tt').textContent = s.titre;
+  /* Dire quand les deux onglets montrent la même chose. Sans ce mot, une
+     séance sans mini-leçon passerait pour un onglet cassé. */
+  $('etat').innerHTML = s.plus
+    ? '<span class="badge">porte une mini-leçon</span>'
+    : '<span class="badge non">aucune mini-leçon — les deux onglets sont identiques</span>';
+  $('ong-avant').setAttribute('aria-selected', String(!apres));
+  $('ong-apres').setAttribute('aria-selected', String(apres));
+  Array.prototype.forEach.call($('seances').children, function (li, i) {
+    li.firstChild.setAttribute('aria-current', String(i === sea));
+  });
+}
+
+function rendreSeances() {
+  $('seances').innerHTML = DONNEES[mod].seances.map(function (s, i) {
+    return '<li><button type="button" data-i="' + i + '">'
+      + '<span class="code">' + s.code + '</span>'
+      + '<span class="tt">' + s.titre.replace(/^[A-E]\d+\s*·\s*/, '') + '</span>'
+      + '<span class="pastille' + (s.plus ? '' : ' non') + '" title="'
+      + (s.plus ? 'porte une mini-leçon' : 'aucune mini-leçon') + '"></span>'
+      + '</button></li>';
+  }).join('');
+}
+
+$('mod').innerHTML = DONNEES.map(function (m, i) {
+  return '<option value="' + i + '">' + m.titre + '</option>';
+}).join('');
+$('mod').addEventListener('change', function () {
+  mod = Number(this.value); sea = premiereAvecPlus(DONNEES[mod]);
+  rendreSeances(); rendre();
+});
+$('seances').addEventListener('click', function (e) {
+  var b = e.target.closest('button[data-i]');
+  /* On garde l'onglet en changeant de séance : c'est tout l'intérêt de la
+     page — comparer la même chose, pas retrouver son onglet à chaque clic. */
+  if (b) { sea = Number(b.dataset.i); rendre(); }
+});
+$('ong-avant').addEventListener('click', function () { apres = false; rendre(); });
+$('ong-apres').addEventListener('click', function () { apres = true; rendre(); });
+sea = premiereAvecPlus(DONNEES[0]);
+rendreSeances(); rendre();
+</script>
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C4 · Certes, en revanche, dont, auquel — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance C4 · Module 2 · 75 minutes</div>
+    <h1>Certes, en revanche, dont, auquel</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Les phrases longues d'un document d'entreprise tiennent sur deux familles de mots : ceux qui articulent un raisonnement, et ceux qui renvoient à ce qui précède.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>employer les connecteurs d'opposition, de concession, d'ajout et de conclusion ;</li><li>concéder avant d'avancer : certes... mais, bien que... soit ;</li><li>choisir le relatif d'après la préposition que demande le verbe ;</li><li>ne jamais écrire « dont » avec un second « de ».</li></ol></section><section class="bloc"><div class="lbl">Analyse</div><h2 class="t">Quatre familles de connecteurs</h2><div class="grid"><div class="card"><h3>Opposer</h3><p>en revanche, par contre, alors que, tandis que. Deux faits vrais qui se contredisent, et qui gardent le même poids.</p></div><div class="card"><h3>Concéder</h3><p>certes... mais, bien que plus le subjonctif, même si plus l'indicatif. On donne raison, puis on avance. C'est la forme reine de l'entrevue.</p></div><div class="card"><h3>Ajouter</h3><p>de plus reste sur le même sujet, par ailleurs change légèrement d'angle. En outre et qui plus est sont soutenus : parfaits à l'écrit.</p></div><div class="card"><h3>Conclure</h3><p>par conséquent, ainsi, c'est pourquoi. Une seule fois : deux conclusions de suite annulent la première.</p></div></div></section><section class="bloc regle"><div class="lbl">Concéder, c'est donner raison avant d'avancer</div><p class="r">Certes mon expérience a été acquise ailleurs, mais elle porte sur seize ans d'usine. Bien que la question soit interdite, je comprends l'inquiétude.</p><p class="pr">Ce mouvement en deux temps dit à votre interlocuteur que vous avez entendu son objection, que vous ne la niez pas, et que vous avez quand même quelque chose à répondre. Nier l'objection ferme la conversation ; la concéder l'ouvre.</p></section><section class="bloc card"><div class="lbl">Pratique 1 de 2</div><h2 class="t">Le bon connecteur</h2><p class="consigne">Un seul convient : le sens de la phrase le désigne.</p><ol class="ex"><li><span class="q">L'acquisition n'a supprimé aucun emploi ; ___, elle a tout réorganisé.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ mon expérience vient d'ailleurs, mais elle est vérifiable.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ que la question soit interdite, je comprends l'inquiétude.</span><span class="ligne ligne--court"></span></li><li><span class="q">L'équipe reste à bâtir ; ___, le poste comporte du recrutement.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le carnet a doublé ; ___, un troisième quart a été ouvert.</span><span class="ligne ligne--court"></span></li><li><span class="q">Les arrêts planifiés sont exclus ; ___, ces dix points sont perdus.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc regle"><div class="lbl">Le verbe décide du relatif</div><p class="r">Si le verbe se construit avec « de », ce sera « dont ». S'il se construit avec « à », ce sera auquel, à laquelle, auxquels ou auxquelles. On ne devine pas : on regarde le verbe.</p><p class="pr">Parler de, avoir besoin de, s'occuper de donnent « dont ». Participer à, penser à, s'attendre à donnent la famille de « auquel ». Le test : refaites la phrase simple, et la préposition apparaît.</p></section><section class="bloc card"><div class="lbl">Pratique 2 de 2</div><h2 class="t">Dont, auquel, laquelle</h2><p class="consigne">Regardez d'abord quelle préposition le verbe demande.</p><ol class="ex"><li><span class="q">C'est le poste ___ je vous ai parlé.</span><span class="ligne ligne--court"></span></li><li><span class="q">Une entreprise ___ le carnet a doublé embauche forcément.</span><span class="ligne ligne--court"></span></li><li><span class="q">L'équipe comptera seize personnes, ___ neuf restent à recruter.</span><span class="ligne"></span></li><li><span class="q">Voici le processus ___ je participe.</span><span class="ligne ligne--court"></span></li><li><span class="q">Ce sont les conditions ___ je m'attendais.</span><span class="ligne"></span></li><li><span class="q">L'échelle ___ les salaires sont fixés compte six échelons.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Piège</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">« l'entreprise dont son carnet a doublé »</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">« l'entreprise dont le carnet a doublé »</p></div></div><div class="note">« Dont » contient déjà le « de ». Ajouter un possessif derrière fait doublon, et c'est la faute qu'un correcteur repère en premier à ce niveau. Même chose avec un second « de » : jamais « dont le carnet de l'entreprise ».</div></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez trois phrases sur une entreprise qui vous intéresse.</p><ul><li>Une avec une concession : certes..., mais...</li><li>Une avec « dont », une avec « auquel » ou « à laquelle ».</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Les mots qui articulent un raisonnement</h2><section class="bloc card ml"><h3>Ce que le niveau 8 demande, exactement</h3><p class="mp">Le programme du niveau 8 range sous « connecteurs et relations logiques » vingt et un points de savoir, et trois d'entre eux nomment la même famille : comprendre des connecteurs argumentatifs marquant l'<b>opposition ou la concession</b>, la <b>complémentation</b>, la <b>conclusion</b> — et en employer soi-même. Ce ne sont pas des mots de liaison décoratifs : ce sont les articulations d'un raisonnement. Une entrevue et une lettre d'affaires se jugent presque entièrement là-dessus.</p><div class="note">À ce niveau, on ne vous reprochera plus une faute d'accord ; on remarquera un raisonnement qui n'avance pas.</div></section><section class="bloc card ml"><h3>La concession, forme reine de l'entrevue</h3><p class="mp">De toutes ces familles, une seule change vraiment ce qu'on pense de vous : la <b>concession</b>. Elle consiste à donner raison à l'autre <i>avant</i> d'avancer votre argument. « Certes mon expérience a été acquise ailleurs, mais elle porte sur seize ans d'usine. » Ce mouvement en deux temps dit à votre interlocuteur que vous avez entendu son objection, que vous ne la niez pas, et que vous avez quand même quelque chose à répondre. Nier l'objection ferme la conversation ; la concéder l'ouvre.</p><div class="note">Shirin l'emploie deux fois dans l'entrevue : « bien que la question soit interdite, je comprends l'inquiétude », et « c'est vrai, mais incomplet » dans son courriel.</div></section><section class="bloc card ml"><h3>Opposer — deux faits vrais qui se contredisent</h3><p class="mp">Les deux propositions gardent le même poids : on ne choisit pas entre elles, on les met côte à côte.</p><table class="ana"><tr><td>Les mots</td><td class="">en revanche · par contre · alors que · tandis que</td></tr><tr><td>L'exemple</td><td class="cle">Aucune mise à pied ; en revanche, une réorganisation complète.</td></tr><tr><td>La ponctuation</td><td class="">virgule après, point-virgule avant</td></tr></table><p class="dit"><span class="k">On dit</span> L'acquisition n'a supprimé aucun emploi ; en revanche, elle a réorganisé la production.</p><div class="note">« Alors que » et « tandis que » s'emploient sans virgule devant, à l'intérieur de la phrase : « les habitudes sont installées alors que l'équipe est neuve ».</div></section><section class="bloc card ml"><h3>Concéder — reconnaître, puis avancer</h3><p class="mp">Deux constructions à connaître par cœur : « certes… mais » et « bien que » suivi du subjonctif. « Même si » fait la même chose, mais avec l'indicatif.</p><table class="ana"><tr><td>Avec certes</td><td class="">Certes mon expérience vient d'ailleurs, mais elle est vérifiable.</td></tr><tr><td>Avec bien que</td><td class="cle">Bien que la question soit interdite, je comprends l'inquiétude.</td></tr><tr><td>Avec même si</td><td class="">Même si le service part à dix-huit heures, la ligne tourne.</td></tr></table><p class="dit"><span class="k">On dit</span> Certes mon expérience vient d'ailleurs, mais elle porte sur seize ans d'usine.</p><div class="note">Retenez la différence de mode : <b>bien que</b> + subjonctif, <b>même si</b> + indicatif. C'est la faute la plus fréquente à ce niveau.</div></section><section class="bloc card ml"><h3>Ajouter — empiler dans le même sens</h3><p class="mp">On accumule des arguments qui vont tous dans la même direction. Attention à la nuance entre les deux principaux.</p><table class="ana"><tr><td>De plus</td><td class="">reste exactement sur le même sujet</td></tr><tr><td>Par ailleurs</td><td class="cle">ajoute en changeant légèrement d'angle</td></tr><tr><td>Les autres</td><td class="">en outre · qui plus est · de surcroît</td></tr></table><p class="dit"><span class="k">On dit</span> Le carnet a doublé ; par ailleurs, un troisième quart a été ouvert.</p><div class="note">« Qui plus est » et « de surcroît » sont soutenus : parfaits à l'écrit, un peu appuyés à l'oral.</div></section><section class="bloc card ml"><h3>Conclure — fermer, une seule fois</h3><p class="mp">On tire la conséquence de ce qui précède. La règle absolue : une seule conclusion. Deux de suite annulent la première.</p><table class="ana"><tr><td>Les mots</td><td class="">par conséquent · ainsi · c'est pourquoi · en somme</td></tr><tr><td>L'exemple</td><td class="cle">L'équipe reste à bâtir ; par conséquent, le poste comporte du recrutement.</td></tr><tr><td>L'erreur</td><td class="">« donc… par conséquent… en conclusion… »</td></tr></table><p class="dit"><span class="k">On dit</span> L'équipe reste à bâtir ; par conséquent, le poste comporte une part de recrutement.</p><div class="note">« En somme » et « bref » résument plutôt qu'ils ne concluent : ils rassemblent sans tirer de conséquence.</div></section><section class="bloc card ml"><h3>Reformuler — traduire, sans rien ajouter</h3><p class="mp">« Autrement dit », « c'est-à-dire », « en d'autres termes » ne sont pas des connecteurs d'argument : ils redisent la même chose autrement.</p><table class="ana"><tr><td>Ce qu'ils font</td><td class="">ils traduisent la phrase précédente</td></tr><tr><td>Ce qu'ils ne font pas</td><td class="cle">ils n'ajoutent aucune idée neuve</td></tr><tr><td>L'erreur</td><td class="">s'en servir pour glisser un argument de plus</td></tr></table><p class="dit"><span class="k">On dit</span> Les arrêts planifiés sont exclus ; autrement dit, ces dix points sont perdus.</p><div class="note">Un « autrement dit » suivi d'une idée nouvelle se remarque immédiatement : le lecteur cherche la correspondance et ne la trouve pas.</div></section><section class="bloc card ml"><h3>Le même couple de faits, six articulations</h3><p class="mp">Choisissez une famille et un exemple.</p><table class="labo"><thead><tr><th>Quelle famille ? · Quel exemple ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">opposition + le premier</td><td>Aucune mise à pied ; <b>en revanche</b>, la production a été réorganisée.</td><td>deux faits vrais, même poids</td></tr><tr><td class="cle">opposition + le second</td><td>Les habitudes sont installées <b>alors que</b> l'équipe du soir est neuve.</td><td>pas de virgule devant</td></tr><tr><td class="cle">concession + le premier</td><td>Certes mon expérience vient d'ailleurs, mais elle est vérifiable.<span class="tags">certes… mais</span></td><td>on donne raison, puis on avance</td></tr><tr><td class="cle">concession + le second</td><td>Bien que la question soit interdite, je comprends l'inquiétude.<span class="tags">bien que</span></td><td>subjonctif obligatoire après bien que</td></tr><tr><td class="cle">ajout + le premier</td><td>Le carnet a doublé ; <b>par ailleurs</b>, un troisième quart a été ouvert.</td><td>on change légèrement d'angle</td></tr><tr><td class="cle">ajout + le second</td><td>Le carnet a doublé ; <b>de plus</b>, il devrait croître encore.</td><td>on reste sur le même sujet</td></tr><tr><td class="cle">conclusion + le premier</td><td>L'équipe reste à bâtir ; <b>par conséquent</b>, le poste comporte du recrutement.</td><td>une seule conclusion par raisonnement</td></tr><tr><td class="cle">conclusion + le second</td><td>En somme, un processus plus lourd que la moyenne.<span class="tags">en somme</span></td><td>on résume plutôt qu'on ne conclut</td></tr><tr><td class="cle">reformulation + le premier</td><td>Les arrêts planifiés sont exclus ; <b>autrement dit</b>, ces dix points sont perdus.</td><td>on traduit, on n'ajoute rien</td></tr><tr><td class="cle">reformulation + le second</td><td>Le minimum légal, <b>c'est-à-dire</b> deux semaines après un an.</td><td>on précise un terme</td></tr></tbody></table><div class="note">Le même couple de faits change de sens selon le connecteur choisi. C'est ce choix-là qu'on évalue à ce niveau.</div></section><section class="bloc card ml"><h3>Neuf connecteurs, un emploi chacun</h3><p class="mp">À gauche le mot, à droite ce qu'il fait exactement.</p><table class="ex2"><tr><td>en revanche</td><td>oppose deux faits de même poids</td></tr><tr><td>alors que</td><td>oppose à l'intérieur de la phrase, sans virgule devant</td></tr><tr><td>certes… mais</td><td>concède, puis avance — la forme de l'entrevue</td></tr><tr><td>bien que + subjonctif</td><td>concède ; attention au mode</td></tr><tr><td>même si + indicatif</td><td>concède aussi, mais avec l'indicatif</td></tr><tr><td>par ailleurs</td><td>ajoute en changeant d'angle</td></tr><tr><td>de plus</td><td>ajoute sur le même sujet</td></tr><tr><td>par conséquent</td><td>conclut — une seule fois</td></tr><tr><td>autrement dit</td><td>redit la même chose, sans rien ajouter</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges des connecteurs</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">« bien que » suivi de l'indicatif</p><div class="k">Ce qui arrive</div><p class="ph">« bien que » + subjonctif</p><p class="px">« Bien que la question est interdite » est une faute franche à ce niveau. C'est « soit ». Si le subjonctif vous coûte, employez « même si », qui prend l'indicatif et dit presque la même chose.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">conclure deux fois de suite</p><div class="k">Ce qui arrive</div><p class="ph">conclure une seule fois</p><p class="px">« Donc, par conséquent, en conclusion » : trois conclusions annulent la première et donnent l'impression qu'on ne sait pas s'arrêter. Une phrase, un connecteur, et on passe à autre chose.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">glisser une idée neuve derrière « autrement dit »</p><div class="k">Ce qui arrive</div><p class="ph">garder la même idée</p><p class="px">« Autrement dit » promet une traduction. Si ce qui suit est nouveau, le lecteur cherche la correspondance, ne la trouve pas, et relit — ce qui est exactement ce qu'on voulait éviter.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">Après « bien que », quel mode ?</span><ul class="opts"><li>l'indicatif</li><li>le subjonctif</li></ul></li><li><span class="q">Quelle famille sert le plus en entrevue ?</span><ul class="opts"><li>la concession</li><li>l'ajout</li></ul></li><li><span class="q">« Autrement dit » sert à…</span><ul class="opts"><li>ajouter un argument</li><li>redire la même chose</li></ul></li><li><span class="q">Combien de conclusions dans un raisonnement ?</span><ul class="opts"><li>une</li><li>autant qu'on veut</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> le subjonctif — Bien que la question soit interdite. « Même si », lui, prend l'indicatif. · <b>2.</b> la concession — Donner raison avant d'avancer : c'est ce mouvement qui change ce qu'on pense de vous. · <b>3.</b> redire la même chose — Il traduit. Une idée neuve derrière lui se remarque immédiatement. · <b>4.</b> une — Deux de suite annulent la première.</div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>« Dont », « auquel », « laquelle »</h2><section class="bloc card ml"><h3>Le geste unique : regarder le verbe</h3><p class="mp">On croit devoir choisir entre « dont » et « auquel » à l'oreille. En réalité, on ne choisit rien : c'est le <b>verbe</b> qui décide, et il le fait toujours de la même façon. Si le verbe se construit avec <b>de</b> — parler de, s'occuper de, avoir besoin de, se souvenir de —, ce sera « dont ». S'il se construit avec <b>à</b> — participer à, penser à, répondre à, s'attendre à —, ce sera « auquel », « à laquelle », « auxquels » ou « auxquelles ». Une seconde de vérification, et la faute disparaît.</p><div class="note">Le test pratique : refaites la phrase simple. « Je participe <b>à</b> ce processus » → « le processus <b>auquel</b> je participe ».</div></section><section class="bloc card ml"><h3>Pourquoi ça compte pour lire un document d'entreprise</h3><p class="mp">Un profil d'entreprise et une offre d'emploi sont pleins de phrases longues, et ces relatifs y renvoient à quelque chose écrit trois lignes plus haut. « Les conditions auxquelles il est fait référence » ne veut rien dire tant qu'on n'a pas retrouvé les conditions. Savoir ce que reprend un « dont » n'est pas de la grammaire d'exercice : c'est ce qui vous permet de lire un contrat sans le relire trois fois.</p><div class="note">Le programme du niveau 8 range ces relatifs sous « reprise de l'information », et non sous « grammaire de la phrase ». C'est le bon endroit.</div></section><section class="bloc card ml"><h3>« Dont » — trois emplois, un seul mot</h3><p class="mp">Il remplace toujours « de + quelque chose », mais ce « de » vient de trois endroits différents.</p><table class="ana"><tr><td>Le verbe</td><td class="">le poste dont je vous ai parlé — parler DE</td></tr><tr><td>Le nom</td><td class="cle">une entreprise dont le carnet a doublé — le carnet DE l'entreprise</td></tr><tr><td>La partie d'un tout</td><td class="">seize personnes, dont neuf à recruter</td></tr></table><p class="dit"><span class="k">On dit</span> Le poste dont je vous ai parlé comporte une part de recrutement.</p><div class="note">Le troisième emploi — la partie d'un tout — est le plus fréquent dans les textes d'entreprise, et le plus facile à reconnaître : il est presque toujours précédé d'une virgule.</div></section><section class="bloc card ml"><h3>Jamais « dont » et « de » ensemble</h3><p class="mp">« Dont » contient déjà le « de ». Le répéter est la faute la plus visible du niveau, et elle se voit à l'écrit comme à l'oral.</p><table class="ana"><tr><td>On écrit</td><td class="">l'entreprise dont le carnet a doublé</td></tr><tr><td>On n'écrit pas</td><td class="cle">« dont son carnet » ni « dont le carnet de l'entreprise »</td></tr><tr><td>Le test</td><td class="">y a-t-il déjà un « de » caché ?</td></tr></table><p class="dit"><span class="k">On dit</span> L'entreprise dont le carnet de commandes a doublé embauche forcément.</p><div class="note">Même chose avec le possessif : « dont son directeur » est faux ; on dit « dont le directeur ».</div></section><section class="bloc card ml"><h3>« Auquel » et sa famille s'accordent</h3><p class="mp">Quatre formes, et le genre et le nombre viennent du nom qui précède — jamais du verbe.</p><table class="ana"><tr><td>Masculin singulier</td><td class="">le processus auquel je participe</td></tr><tr><td>Féminin singulier</td><td class="cle">l'étape à laquelle je pense</td></tr><tr><td>Pluriel</td><td class="">les documents auxquels · les conditions auxquelles</td></tr></table><p class="dit"><span class="k">On dit</span> Le processus auquel je participe, l'étape à laquelle je pense.</p><div class="note">Notez la forme écrite : « auquel » et « auxquels » sont soudés, « à laquelle » et « auxquelles » aussi — mais « à laquelle » s'écrit en deux mots.</div></section><section class="bloc card ml"><h3>Après une autre préposition : lequel, laquelle</h3><p class="mp">Sur, dans, selon, pour, avec : pour une chose, on emploie la famille de « lequel ». Pour une personne, « qui » reste possible.</p><table class="ana"><tr><td>Une chose</td><td class="">l'échelle selon laquelle on paie · le document sur lequel je m'appuie</td></tr><tr><td>Une personne</td><td class="cle">la personne avec qui j'ai parlé</td></tr><tr><td>Le figé</td><td class="">la raison pour laquelle</td></tr></table><p class="dit"><span class="k">On dit</span> L'échelle selon laquelle les salaires sont fixés compte six échelons.</p><div class="note">« La raison pour laquelle » est une expression figée à retenir telle quelle : on ne dit ni « la raison que » ni « la raison pourquoi ».</div></section><section class="bloc card ml"><h3>La virgule qui change tout</h3><p class="mp">Une relative encadrée de virgules ajoute une information à tous ; sans virgules, elle restreint à un sous-ensemble. C'est un point de ponctuation du niveau 8.</p><table class="ana"><tr><td>Sans virgules</td><td class="">Les candidats qui ont réussi l'examen passeront l'entrevue.</td></tr><tr><td>Avec virgules</td><td class="cle">Les candidats, qui ont réussi l'examen, passeront l'entrevue.</td></tr><tr><td>La différence</td><td class="">seulement certains, ou bien tous</td></tr></table><p class="dit"><span class="k">On dit</span> Les candidats qui ont réussi l'examen passeront l'entrevue.</p><div class="note">Dans la première phrase, une partie seulement passe. Dans la seconde, tous passent, et l'on précise au passage qu'ils ont réussi. Deux virgules, et le sens bascule.</div></section><section class="bloc card ml"><h3>Le verbe, puis le relatif</h3><p class="mp">Choisissez une construction et un exemple.</p><table class="labo"><thead><tr><th>Quelle construction ? · Quel exemple ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">verbe + DE + le premier</td><td>C'est le poste <b>dont je vous ai parlé</b>.</td><td>parler DE quelque chose</td></tr><tr><td class="cle">verbe + DE + le second</td><td>Voici le document <b>dont j'ai besoin</b>.</td><td>avoir besoin DE</td></tr><tr><td class="cle">nom + DE + le premier</td><td>Une entreprise <b>dont le carnet a doublé</b> embauche forcément.</td><td>le carnet DE l'entreprise</td></tr><tr><td class="cle">nom + DE + le second</td><td>Seize personnes, <b>dont neuf restent à recruter</b>.</td><td>la partie d'un tout</td></tr><tr><td class="cle">verbe + À + le premier</td><td>Le processus <b>auquel je participe</b> compte trois étapes.</td><td>participer À</td></tr><tr><td class="cle">verbe + À + le second</td><td>Ce sont les conditions <b>auxquelles je m'attendais</b>.</td><td>s'attendre À, féminin pluriel</td></tr><tr><td class="cle">autre préposition + le premier</td><td>L'échelle <b>selon laquelle</b> les salaires sont fixés compte six échelons.</td><td>selon + laquelle</td></tr><tr><td class="cle">autre préposition + le second</td><td>Je ne connais pas la raison <b>pour laquelle</b> ce poste a été créé.</td><td>expression figée</td></tr></tbody></table><div class="note">À chaque fois, refaites d'abord la phrase simple avec le verbe : c'est elle qui donne la préposition.</div></section><section class="bloc card ml"><h3>Dix verbes, et le relatif qu'ils appellent</h3><p class="mp">À gauche le verbe, à droite le relatif.</p><table class="ex2"><tr><td>parler de</td><td>dont</td></tr><tr><td>avoir besoin de</td><td>dont</td></tr><tr><td>s'occuper de</td><td>dont</td></tr><tr><td>se souvenir de</td><td>dont</td></tr><tr><td>participer à</td><td>auquel, à laquelle</td></tr><tr><td>penser à</td><td>auquel, à laquelle</td></tr><tr><td>répondre à</td><td>auquel, à laquelle</td></tr><tr><td>s'attendre à</td><td>auquel, à laquelle</td></tr><tr><td>s'appuyer sur</td><td>sur lequel, sur laquelle</td></tr><tr><td>travailler avec (une personne)</td><td>avec qui</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges des relatifs</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">« dont son carnet »</p><div class="k">Ce qui arrive</div><p class="ph">« dont le carnet »</p><p class="px">« Dont » contient le « de » : ajouter un possessif derrière fait doublon. C'est la faute qu'un correcteur repère en premier à ce niveau.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">« la raison que le poste existe »</p><div class="k">Ce qui arrive</div><p class="ph">« la raison pour laquelle »</p><p class="px">Expression figée. « La raison que » et « la raison pourquoi » n'existent ni l'une ni l'autre en français standard.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">accorder « auquel » avec le verbe</p><div class="k">Ce qui arrive</div><p class="ph">l'accorder avec le nom qui précède</p><p class="px">« Les conditions auxquelles » : c'est « conditions » qui donne le féminin pluriel, pas « s'attendre ». Le verbe ne donne que la préposition.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">« Je participe à ce processus » donne…</span><ul class="opts"><li>le processus dont je participe</li><li>le processus auquel je participe</li></ul></li><li><span class="q">« Une entreprise ___ le carnet a doublé »</span><ul class="opts"><li>dont</li><li>auquel</li></ul></li><li><span class="q">« Dont son directeur » est…</span><ul class="opts"><li>correct</li><li>fautif</li></ul></li><li><span class="q">« Les candidats, qui ont réussi l'examen, passeront » signifie…</span><ul class="opts"><li>seulement ceux qui ont réussi</li><li>tous, et ils ont réussi</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> le processus auquel je participe — Participer À : c'est « auquel ». Le verbe décide. · <b>2.</b> dont — Le carnet DE l'entreprise : c'est « dont ». · <b>3.</b> fautif — « Dont » contient déjà le « de ». On dit « dont le directeur ». · <b>4.</b> tous, et ils ont réussi — Les deux virgules changent le sens : l'information s'ajoute, elle ne restreint pas.</div></section></section></div>
+<footer><span>C4 · Passer au travers du processus</span><span>Fiche élève</span></footer>
+</body>
+</html>

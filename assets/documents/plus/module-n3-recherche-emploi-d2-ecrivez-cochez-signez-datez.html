@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>D2 · Écrivez, cochez, signez, datez — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance D2 · Module 10 · 75 minutes</div>
+    <h1>Écrivez, cochez, signez, datez</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Six verbes, et tous les formulaires du Québec s'ouvrent : ceux de l'emploi, de la clinique, de l'école, de la bibliothèque. Ils s'écrivent tous de la même façon.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>reconnaître les six verbes de consigne d'un formulaire ;</li><li>comprendre que l'impératif n'est pas impoli ;</li><li>remplir un formulaire au complet ;</li><li>lire une petite annonce et en repérer les parties.</li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Les six verbes des formulaires</h2><table><thead><tr><th>Le verbe</th><th>Ce qu'il demande</th></tr></thead><tbody><tr><td class="cle">Écrivez</td><td>mettre des mots dans une case, en lettres moulées</td></tr><tr><td class="cle">Remplissez</td><td>faire toutes les cases, sans en sauter</td></tr><tr><td class="cle">Cochez</td><td>faire un crochet dans un petit carré : oui ou non</td></tr><tr><td class="cle">Signez</td><td>écrire son nom à la main, en bas</td></tr><tr><td class="cle">Datez</td><td>mettre le jour, le mois et l'année</td></tr><tr><td class="cle">Joignez</td><td>ajouter un papier : une copie, jamais l'original</td></tr></tbody></table></section><section class="bloc regle"><div class="lbl">L'impératif des formulaires n'est pas impoli</div><p class="r">Écrivez. Cochez. Signez.</p><p class="pr">Il n'y a pas de « vous » devant, et ce n'est pas sec : c'est la langue des papiers officiels, la même pour tout le monde. Un formulaire ne s'adresse à personne en particulier.</p></section><section class="bloc"><div class="lbl">Deux règles qui évitent des ennuis</div><h2 class="t">À retenir absolument</h2><div class="grid"><div class="card"><h3>Aucune case vide</h3><p>Une case vide ne veut pas dire « non » : elle veut dire que la question n'a pas été lue. Cochez « non », ou écrivez « aucun ». La personne qui lit ne devine pas à votre place.</p></div><div class="card"><h3>Une copie, jamais l'original</h3><p>Carte d'assurance maladie, permis, passeport : on joint une photocopie et on garde l'original sur soi. Un original remis ne revient pas toujours, et il est long à remplacer.</p></div><div class="card"><h3>La signature</h3><p>C'est votre nom écrit à la main, toujours de la même façon. Elle n'a pas besoin d'être lisible : elle doit être la vôtre, et la même chaque fois.</p></div><div class="card"><h3>La date au Québec</h3><p>On écrit souvent 2026-08-22 : l'année, le mois, le jour. On peut aussi écrire 22 août 2026. Les deux se comprennent.</p></div></div></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Laisser une case vide</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">Avez-vous un permis de conduire ? (rien de coché)</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">Cochez « non ».</p></div></div><div class="note">Celui qui lit ne sait pas si vous avez répondu non ou si vous n'avez pas compris la question. Dans le doute, il met le formulaire de côté. Une seconde pour cocher, et le formulaire reste dans la pile.</div></section><section class="bloc card"><div class="lbl">Écriture</div><h2 class="t">Quel verbe manque ?</h2><p class="consigne">Complétez avec : écrivez, cochez, signez, datez, remplissez, joignez.</p><ol class="ex"><li><span class="q">___ votre nom en lettres moulées.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ la case « non » si vous n'avez pas de permis.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ au bas de la page, dans le rectangle.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ le formulaire : le jour, le mois et l'année.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ toutes les cases : n'en laissez aucune vide.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ une copie de votre carte d'assurance maladie.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">Lecture</div><h2 class="t">La petite annonce de Fanta</h2><p class="consigne">Lisez l'annonce, puis répondez par vrai ou faux.</p><ol class="ex"><li><span class="q">L'annonce dit ce que Fanta sait faire.</span><span class="ligne ligne--court"></span></li><li><span class="q">Elle dit dans quel quartier elle habite.</span><span class="ligne ligne--court"></span></li><li><span class="q">Elle est libre le soir et la fin de semaine.</span><span class="ligne"></span></li><li><span class="q">Elle dit combien elle demande de l'heure.</span><span class="ligne ligne--court"></span></li><li><span class="q">Elle donne son adresse complète.</span><span class="ligne"></span></li><li><span class="q">On peut la joindre par téléphone.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">Production</div><h2 class="t">Remplissez le formulaire au complet</h2><p class="consigne">Chacun remplit le formulaire distribué. Le voisin vérifie.</p><ol class="ex"><li><span class="q">Les cases d'identité</span><span class="ligne"></span></li><li><span class="q">Le poste demandé</span><span class="ligne"></span></li><li><span class="q">Les disponibilités</span><span class="ligne"></span></li><li><span class="q">Le bas</span><span class="ligne"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Quelle case du formulaire vous a demandé le plus de temps ?</p><ul><li>Le nom de la case, et pourquoi.</li><li>Une phrase suffit.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Écrivez, cochez, signez, datez</h2><section class="bloc card ml"><h3>La forme des consignes</h3><p class="mp">Sur un formulaire, les verbes ne sont pas conjugués comme dans une phrase ordinaire : ils sont à l'<b>impératif</b>, la forme qui donne une consigne. « Écrivez », « cochez », « signez ». Il n'y a pas de « vous » devant, et ce n'est pas impoli : c'est la langue des papiers officiels, et elle est la même pour tout le monde.</p><div class="note">Reconnaître ces six verbes, c'est pouvoir remplir n'importe quel formulaire du Québec — d'emploi, de clinique, d'école, de bibliothèque.</div></section><section class="bloc card ml"><h3>Écrivez, remplissez — mettre des mots</h3><p class="mp">Les deux verbes les plus fréquents du formulaire.</p><table class="ana"><tr><td>La consigne</td><td class=""><b>Écrivez</b> votre nom en lettres moulées.</td></tr><tr><td>Le tout d'un coup</td><td class="cle"><b>Remplissez</b> le formulaire au complet.</td></tr><tr><td>Ce qu'on ajoute souvent</td><td class="">en lettres moulées · en majuscules · lisiblement</td></tr></table><p class="dit"><span class="k">On dit</span> Écrivez votre nom en lettres moulées.</p><div class="note">Les <b>lettres moulées</b> sont les majuscules bien détachées, une par case. C'est demandé partout : la machine et l'œil les lisent sans se tromper.</div></section><section class="bloc card ml"><h3>Cochez — faire un crochet</h3><p class="mp">Un petit carré, un crochet, et la réponse est donnée.</p><table class="ana"><tr><td>La consigne</td><td class=""><b>Cochez</b> la bonne case.</td></tr><tr><td>Ce qu'on lit à côté</td><td class="cle">oui / non · homme / femme · temps plein / temps partiel</td></tr><tr><td>La règle d'or</td><td class="">Ne laissez jamais une case vide.</td></tr></table><p class="dit"><span class="k">On dit</span> Cochez la bonne case : oui ou non.</p><div class="note">Une case vide n'est pas un « non » : c'est une réponse manquante, et celui qui lit le formulaire ne sait pas quoi en faire.</div></section><section class="bloc card ml"><h3>Signez, datez — au bas de la page</h3><p class="mp">Les deux derniers gestes, et ils vont toujours ensemble.</p><table class="ana"><tr><td>La consigne</td><td class=""><b>Signez</b> et <b>datez</b> au bas de la page.</td></tr><tr><td>La date au Québec</td><td class="cle">2026-08-22, ou 22 août 2026</td></tr><tr><td>Ce que dit la signature</td><td class="">ce que j'ai écrit est vrai.</td></tr></table><p class="dit"><span class="k">On dit</span> Signez ici, puis datez le formulaire.</p><div class="note">Une signature, c'est ton nom écrit à la main, toujours de la même façon. Elle n'a pas besoin d'être lisible : elle doit être <b>la tienne</b>.</div></section><section class="bloc card ml"><h3>Joignez — ajouter un papier</h3><p class="mp">Le verbe qui demande un document en plus.</p><table class="ana"><tr><td>La consigne</td><td class=""><b>Joignez</b> une copie de votre carte.</td></tr><tr><td>Autres formes</td><td class="cle">Veuillez joindre… · Prière de joindre…</td></tr><tr><td>Ce qu'on demande souvent</td><td class="">une pièce d'identité · un numéro d'assurance sociale</td></tr></table><p class="dit"><span class="k">On dit</span> Joignez une copie de votre carte d'assurance maladie.</p><div class="note">On joint une <b>copie</b>, jamais l'original. Un original remis ne revient pas toujours, et il est difficile à remplacer.</div></section><section class="bloc card ml"><h3>Que faut-il faire ?</h3><p class="mp">Choisis la case et vois la consigne.</p><table class="labo"><thead><tr><th>Quelle case ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">Nom de famille</td><td>Écrivez votre nom de famille en lettres moulées.<span class="tags">Écrivez TRAORÉ en lettres moulées, une lettre par case.</span></td><td>le nom de famille, sans le prénom</td></tr><tr><td class="cle">Avez-vous un permis de conduire ?</td><td>Cochez oui ou non. Ne laissez pas le carré vide.</td><td>une case vide n'est pas une réponse</td></tr><tr><td class="cle">Disponibilités</td><td>Du mardi au samedi, de neuf heures à treize heures.<span class="tags">Écrivez les jours et les heures : du mardi au samedi, de 9 h à 13 h.</span></td><td>précis, comme au comptoir</td></tr><tr><td class="cle">Signature</td><td>Signez à la main, puis datez le formulaire.<span class="tags">Signez à la main, puis datez : 2026-08-22.</span></td><td>les deux gestes vont ensemble</td></tr><tr><td class="cle">Documents</td><td>Joignez une copie de votre carte, jamais l'original.</td><td>l'original reste chez toi</td></tr></tbody></table><div class="note">Cinq cases, cinq gestes. C'est tout ce que demande un formulaire de demande d'emploi.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six consignes de formulaire.</p><table class="ex2"><tr><td>Écrivez en lettres moulées.</td><td>la consigne la plus fréquente</td></tr><tr><td>Remplissez toutes les cases.</td><td>ne rien laisser vide</td></tr><tr><td>Cochez la bonne case.</td><td>oui ou non</td></tr><tr><td>Signez au bas de la page.</td><td>ton nom à la main</td></tr><tr><td>Datez le formulaire.</td><td>le jour, le mois, l'année</td></tr><tr><td>Joignez une copie de votre carte.</td><td>une copie, pas l'original</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges à connaître</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">laisser une case vide</p><div class="k">Ce qui arrive</div><p class="ph">la case « permis de conduire »</p><p class="px">Une case vide ne veut pas dire « non » : elle veut dire que la question n'a pas été lue. Coche « non », ou écris « aucun ».</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">écrire en lettres attachées</p><div class="k">Ce qui arrive</div><p class="ph">quand il est demandé des lettres moulées</p><p class="px">Les lettres moulées sont des majuscules détachées, une par case. C'est demandé pour que personne ne se trompe en lisant ton nom.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">remettre un original</p><div class="k">Ce qui arrive</div><p class="ph">« Joignez une copie »</p><p class="px">Ta carte d'assurance maladie, ton permis, ton passeport ne se remettent jamais. Fais une photocopie et garde l'original sur toi.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">« Lettres moulées » veut dire…</span><ul class="opts"><li>majuscules détachées</li><li>lettres attachées</li></ul></li><li><span class="q">La réponse est non. Tu…</span><ul class="opts"><li>laisses la case vide</li><li>coches « non »</li></ul></li><li><span class="q">« Joignez une copie » veut dire…</span><ul class="opts"><li>remettez l'original</li><li>ajoutez une photocopie</li></ul></li><li><span class="q">Signer, ça veut dire…</span><ul class="opts"><li>écrire son nom à la main</li><li>écrire son nom en lettres moulées</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> majuscules détachées — Une lettre par case, bien séparée, comme sur une carte d'assurance maladie. · <b>2.</b> coches « non » — Une case vide est une réponse manquante, pas un non. · <b>3.</b> ajoutez une photocopie — L'original reste toujours chez toi. · <b>4.</b> écrire son nom à la main — La signature est ton nom écrit à la main, toujours de la même façon.</div></section></section></div>
+<footer><span>D2 · On embauche</span><span>Fiche élève</span></footer>
+</body>
+</html>

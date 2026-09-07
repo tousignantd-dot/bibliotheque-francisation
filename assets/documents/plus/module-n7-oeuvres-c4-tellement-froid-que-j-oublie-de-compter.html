@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C4 · Tellement froid que j'oublie de compter — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance C4 · Module 9 · 75 minutes</div>
+    <h1>Tellement froid que j'oublie de compter</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">« Le film est lent » se répond par « moi je ne trouve pas ». « Le film est assez lent pour que la moitié de la salle décroche » ne se répond plus.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>exprimer un degré et sa conséquence avec « tellement... que » ;</li><li>employer « trop » et « assez... pour que » avec le subjonctif ;</li><li>alléger en « pour » plus infinitif quand le sujet est le même ;</li><li>distinguer un nom pris en général d'un nom pris en particulier.</li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Trois tournures, deux modes</h2><table><thead><tr><th>La tournure</th><th>Ce qu'elle dit</th></tr></thead><tbody><tr><td class="cle">si ou tellement + que</td><td>le degré est fort, et la conséquence a lieu : indicatif</td></tr><tr><td class="cle">tellement de ou tant de + nom</td><td>avec un nom, il faut le « de »</td></tr><tr><td class="cle">trop ou assez + pour que</td><td>la conséquence est empêchée ou rendue possible : subjonctif</td></tr></tbody></table><div class="note">Retenez la paire : « que » indicatif, « pour que » subjonctif.</div></section><section class="bloc regle"><div class="lbl">Après « pour que », jamais l'indicatif</div><p class="r">« Trop cher pour qu'on puisse y aller », et non « pour qu'on peut ».</p><p class="pr">Sept subjonctifs suffisent pour presque tous les cas : qu'il soit, qu'il ait, qu'il fasse, qu'il aille, qu'il puisse, qu'il sache, qu'il veuille. Ce sont les mêmes qui serviront à la concession en D2.</p></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Grammaire</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">« Elle est trop fatiguée pour qu'elle sorte. »</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">« Elle est trop fatiguée pour sortir. »</p></div></div><div class="note">Quand c'est la même personne des deux côtés, on allège : « pour » plus infinitif. « Pour que » plus subjonctif ne sert que si les deux sujets diffèrent. La première phrase n'est pas seulement lourde, elle est fautive.</div></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">En général, ou cette chose-là</h2><table><thead><tr><th>La phrase</th><th>De quoi on parle</th></tr></thead><tbody><tr><td class="cle">La musique, ça me calme</td><td>de toute la musique : le « ça » est le signe</td></tr><tr><td class="cle">La musique de ce film</td><td>de celle-là, accrochée par un complément</td></tr><tr><td class="cle">Il y a un sketch qui parle</td><td>d'un seul, et c'est ainsi qu'on l'introduit à l'oral</td></tr></tbody></table><div class="note">« Les films lents, ça m'endort » est un goût. « Ce film-là m'a endormie » est un avis.</div></section><section class="bloc card"><div class="lbl">Grammaire</div><h2 class="t">Reliez le degré et sa conséquence</h2><p class="consigne">Employez la tournure demandée.</p><ol class="ex"><li><span class="q">Le vent est froid. Elle oublie de compter. (tellement... que)</span><span class="ligne"></span></li><li><span class="q">Il y a du monde. Nous restons debout. (tellement de... que)</span><span class="ligne"></span></li><li><span class="q">Le refrain monte haut. Elle le manque. (trop... pour que)</span><span class="ligne"></span></li><li><span class="q">Le film est lent. La salle décroche. (assez... pour que)</span><span class="ligne"></span></li><li><span class="q">Elle est fatiguée. Elle ne monte pas. (même sujet)</span><span class="ligne"></span></li><li><span class="q">Le billet coûte cher. Nous n'y allons pas. (trop... pour que)</span><span class="ligne"></span></li></ol></section><section class="bloc card"><div class="lbl">Écoute</div><h2 class="t">En général, ou cette chose-là ?</h2><p class="consigne">Écoutez et classez chaque phrase.</p><ol class="ex"><li><span class="q">La musique, ça me calme.</span><span class="ligne ligne--court"></span></li><li><span class="q">La musique de ce film intervient onze fois.</span><span class="ligne ligne--court"></span></li><li><span class="q">Un bon sketch, ça se termine par une chute.</span><span class="ligne ligne--court"></span></li><li><span class="q">Il y a un sketch qui parle d'un comptoir de pièces.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Transformez un de vos avis en argument, avec un degré et sa conséquence.</p><ul><li>Assez... pour que, ou tellement... que.</li><li>Une seule phrase, et vérifiez le mode du verbe.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Jusqu'à quel point, et avec quelle conséquence</h2><section class="bloc card ml"><h3>Le degré transforme un goût en argument</h3><p class="mp">« Le film est lent » : on peut vous répondre « moi je ne trouve pas ». « Le film est assez lent pour que la moitié de la salle décroche » : on ne peut plus. Vous avez donné un degré et sa conséquence, et la conséquence se vérifie. C'est la construction la plus utile de tout le module pour la réunion de jeudi.</p><div class="note">On l'appelle la subordonnée corrélative : deux morceaux qui se répondent, l'intensité d'un côté, la conséquence de l'autre.</div></section><section class="bloc card ml"><h3>si / tellement + adjectif ou adverbe + que</h3><p class="mp">La conséquence a lieu pour de vrai : indicatif après « que ».</p><table class="ana"><tr><td>Avec un adjectif de degré</td><td class="">Le vent est <b>tellement</b> froid <b>qu'</b>elle oublie de compter.</td></tr><tr><td>Avec un adverbe de manière</td><td class="">Elle chante <b>si</b> fort <b>qu'</b>on l'entend dehors.</td></tr><tr><td>Le mode</td><td class="">indicatif — ça se produit</td></tr></table><p class="dit"><span class="k">On dit</span> Le vent est tellement froid qu'elle oublie de compter.</p><div class="note">« si » et « tellement » sont interchangeables ici. « si » est un peu plus soutenu.</div></section><section class="bloc card ml"><h3>tellement de / tant de + nom + que</h3><p class="mp">Devant un nom, il faut le « de ».</p><table class="ana"><tr><td>La forme</td><td class="">Il y a <b>tellement de</b> monde <b>que</b> nous restons debout.</td></tr><tr><td>Variante</td><td class="">Il a raconté <b>tant d'</b>histoires <b>que</b> personne n'a vu l'heure.</td></tr><tr><td>L'élision</td><td class="">tant de + voyelle donne tant d'</td></tr></table><p class="dit"><span class="k">On dit</span> Il y a tellement de monde que nous restons debout.</p><div class="note">Jamais « si de » : avec un nom, c'est tellement de ou tant de.</div></section><section class="bloc card ml"><h3>trop / assez + pour que + subjonctif</h3><p class="mp">Ici, la conséquence n'a pas lieu, ou elle est seulement rendue possible. D'où le subjonctif.</p><table class="ana"><tr><td>Empêchement</td><td class="">Le refrain monte <b>trop</b> haut <b>pour qu'</b>elle le <b>réussisse</b> chaque soir.</td></tr><tr><td>Possibilité</td><td class="">La salle est <b>assez</b> petite <b>pour qu'</b>on l'<b>entende</b> sans micro.</td></tr><tr><td>Le mode</td><td class="">subjonctif, sans exception</td></tr></table><p class="dit"><span class="k">On dit</span> Le refrain monte trop haut pour qu'elle le réussisse chaque soir.</p><div class="note">Retenez la paire : « que » indicatif, « pour que » subjonctif.</div></section><section class="bloc card ml"><h3>Même personne des deux côtés : pour + infinitif</h3><p class="mp">Quand c'est la même personne des deux côtés, on allège.</p><table class="ana"><tr><td>Deux sujets</td><td class="">Elle est trop fatiguée <b>pour que</b> nous <b>sortions</b>.</td></tr><tr><td>Une seule personne</td><td class="">Elle est trop fatiguée <b>pour sortir</b>.</td></tr><tr><td>Le test</td><td class="">demandez qui fait quoi de chaque côté</td></tr></table><p class="dit"><span class="k">On dit</span> Elle est trop fatiguée pour sortir.</p><div class="note">C'est plus court et plus naturel : préférez-le chaque fois que c'est possible.</div></section><section class="bloc card ml"><h3>Le degré et sa conséquence</h3><p class="mp">Choisissez une idée et une tournure.</p><table class="labo"><thead><tr><th>Quel jugement ? · Quel dosage ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">le film est lent + tellement… que</td><td>Le film est tellement lent que la moitié de la salle décroche.</td><td>la conséquence a lieu : indicatif</td></tr><tr><td class="cle">le film est lent + trop / assez… pour que</td><td>Le film est assez lent pour que la moitié de la salle décroche.</td><td>subjonctif après pour que</td></tr><tr><td class="cle">la salle est petite + tellement… que</td><td>La salle est tellement petite qu'on entend tout.</td><td>indicatif</td></tr><tr><td class="cle">la salle est petite + trop / assez… pour que</td><td>La salle est assez petite pour qu'on l'entende sans micro.</td><td>entende, subjonctif</td></tr><tr><td class="cle">le billet coûte cher + tellement… que</td><td>Le billet coûte tellement cher que nous hésitons.</td><td>indicatif</td></tr><tr><td class="cle">le billet coûte cher + trop / assez… pour que</td><td>Le billet coûte trop cher pour que nous puissions y aller.</td><td>puissions, subjonctif</td></tr></tbody></table><div class="note">Même idée, deux constructions, deux modes. Le mode dit si la chose arrive.</div></section><section class="bloc card ml"><h3>Trois pièges</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">pour qu'on peut</p><div class="k">Ce qui arrive</div><p class="ph">pour qu'on puisse</p><p class="px">Après « pour que », l'indicatif n'existe pas. C'est la faute la plus repérable de cette leçon, et elle se corrige en apprenant sept subjonctifs.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">si de monde</p><div class="k">Ce qui arrive</div><p class="ph">tellement de monde</p><p class="px">Devant un nom, « si » ne s'emploie pas. Tellement de, tant de, beaucoup de : tous prennent le « de ».</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">pour que + même sujet</p><div class="k">Ce qui arrive</div><p class="ph">pour + infinitif</p><p class="px">« Elle est trop fatiguée pour qu'elle sorte » est lourd et fautif. Même personne des deux côtés : « pour sortir ».</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre choix.</p><ol class="check"><li><span class="q">« Le billet coûte trop cher pour que nous ___ y aller. »</span><ul class="opts"><li>puissions</li><li>pouvons</li></ul></li><li><span class="q">« Il y a ___ monde que nous restons debout. »</span><ul class="opts"><li>tellement de</li><li>si</li></ul></li><li><span class="q">« Le vent est tellement froid qu'elle ___ de compter. »</span><ul class="opts"><li>oublie</li><li>oublierait</li></ul></li><li><span class="q">Même sujet des deux côtés, on écrit…</span><ul class="opts"><li>pour + infinitif</li><li>pour que + subjonctif</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> puissions — Pour que appelle le subjonctif, toujours. · <b>2.</b> tellement de — Devant un nom : tellement de, ou tant de. · <b>3.</b> oublie — Après « que » seul, l'indicatif présent : la conséquence a lieu pour de vrai. · <b>4.</b> pour + infinitif — « trop fatiguée pour sortir », plus court et plus juste.</div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>La musique, ou cette musique-là</h2><section class="bloc card ml"><h3>Un même nom, deux portées</h3><p class="mp">« La musique, ça me calme » ne parle d'aucune musique en particulier : ça parle de la musique en général. « La musique de ce film est trop forte » parle d'une chose qu'on peut aller écouter. Le nom est le même ; ce qui change est le déterminant, le complément et le pronom de reprise.</p><div class="note">L'exemple du programme est lui-même musical, et ce n'est pas un hasard : c'est avec les arts qu'on glisse le plus souvent du général au particulier sans s'en rendre compte.</div></section><section class="bloc card ml"><h3>Le sens général — et son pronom « ça »</h3><p class="mp">On parle de toute une catégorie. Le pronom de reprise est presque toujours « ça ».</p><table class="ana"><tr><td>Avec un défini</td><td class=""><b>La</b> musique, <b>ça</b> me calme.</td></tr><tr><td>Avec un indéfini singulier</td><td class=""><b>Un</b> réfrigérateur, <b>ça</b> dure quinze ans.</td></tr><tr><td>Avec un pluriel</td><td class=""><b>Les</b> longs métrages, <b>ça</b> dure plus d'une heure.</td></tr></table><p class="dit"><span class="k">On dit</span> La musique, ça me calme. Un bon film, ça ne s'explique pas.</p><div class="note">Le « ça » est le signe le plus sûr : il ne reprend jamais une chose précise.</div></section><section class="bloc card ml"><h3>Le sens spécifique, accroché au réel par un complément</h3><p class="mp">Un complément, une relative, un démonstratif : quelque chose montre du doigt.</p><table class="ana"><tr><td>Un complément qui accroche</td><td class="">La musique <b>de ce film</b> intervient onze fois.</td></tr><tr><td>Une relative</td><td class="">La chanson <b>qu'elle a chantée en rappel</b> n'est pas sur son disque.</td></tr><tr><td>Avec un démonstratif</td><td class=""><b>Ce</b> film-<b>là</b> m'a endormie.</td></tr></table><p class="dit"><span class="k">On dit</span> La musique de ce film intervient onze fois.</p><div class="note">Sans accroche, le nom reste général. L'accroche est ce qui le fait descendre dans le monde.</div></section><section class="bloc card ml"><h3>« Il y a… qui » — le spécifique du français parlé</h3><p class="mp">À l'oral, on n'introduit presque jamais une chose nouvelle en sujet direct.</p><table class="ana"><tr><td>Ce qu'on dit</td><td class=""><b>Il y a un</b> gars <b>qui</b> a ri tout seul.</td></tr><tr><td>Ce qui ne se dit pas</td><td class="">Un gars a ri tout seul.</td></tr><tr><td>Où</td><td class="">partout, dans toute conversation en français du Québec</td></tr></table><p class="dit"><span class="k">On dit</span> Il y a un gars qui a ri tout seul dans la salle.</p><div class="note">La forme écrite « Un gars a ri » est correcte, mais elle sonne comme un roman.</div></section><section class="bloc card ml"><h3>Quatre paires</h3><p class="mp">À gauche le général, à droite le spécifique.</p><table class="ex2"><tr><td>La musique, ça me calme.</td><td>La musique de ce film est trop forte.</td></tr><tr><td>Un bon sketch, ça finit par une chute.</td><td>Il y a un sketch qui parle d'un comptoir de pièces.</td></tr><tr><td>Le cinéma, ça coûte moins cher que le théâtre.</td><td>Le cinéma de la rue Notre-Dame a cent quatre-vingts places.</td></tr><tr><td>Les chansons tristes, ça ne me dérange pas.</td><td>La chanson du rappel n'est pas sur son disque.</td></tr></table></section><section class="bloc card ml"><h3>Deux pièges</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">juger une œuvre par sa catégorie</p><div class="k">Ce qui arrive</div><p class="ph">juger l'œuvre elle-même</p><p class="px">« Les films lents, ça m'endort » ne dit rien du film qu'on vient de voir. C'est un goût sur une catégorie, et il empêche de regarder ce qu'on a devant soi.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">reprendre une chose précise par « ça »</p><div class="k">Ce qui arrive</div><p class="ph">employer il, elle, le, la</p><p class="px">« Ce film-là, ça m'a plu » se dit, mais dérive vers le général. Écrivez « il m'a plu » : vous parlez de celui-là et de nul autre.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre phrases.</p><ol class="check"><li><span class="q">« Un bon film, ça ne s'explique pas » parle…</span><ul class="opts"><li>de tous les bons films</li><li>d'un film précis</li></ul></li><li><span class="q">« La chanson qu'elle a chantée en rappel » est…</span><ul class="opts"><li>spécifique</li><li>général</li></ul></li><li><span class="q">Le signe le plus sûr du sens général est…</span><ul class="opts"><li>le pronom ça</li><li>le déterminant la</li></ul></li><li><span class="q">À l'oral, on introduit une chose nouvelle par…</span><ul class="opts"><li>il y a… qui</li><li>le sujet direct</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> de tous les bons films — Le « ça » reprend une catégorie entière. · <b>2.</b> spécifique — La relative l'accroche à une chanson qu'on peut nommer. · <b>3.</b> le pronom ça — « La » sert aux deux ; « ça » ne sert qu'au général. · <b>4.</b> il y a… qui — « Il y a un gars qui… » : la forme normale de la conversation.</div></section></section></div>
+<footer><span>C4 · Ce que j'en pense, et pourquoi</span><span>Fiche élève</span></footer>
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B1 · L'appel au courtier — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance B1 · Module 3 · 75 minutes</div>
+    <h1>L'appel au courtier</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Trente-six répliques, dont quatorze d'affilée par la même personne. On n'écoute pas un exposé comme on écoute une conversation.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>suivre un exposé de quatorze répliques sans perdre le fil ;</li><li>prélever un fait à la première écoute, des chiffres à la deuxième ;</li><li>repérer ce qui est dit deux fois — c'est ce qui compte ;</li><li>reformuler à la fin, comme Amira le fait.</li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Trois écoutes, trois consignes</h2><table><thead><tr><th>L'écoute</th><th>Ce qu'on cherche</th></tr></thead><tbody><tr><td class="cle">Première</td><td>de quoi parle-t-on, et qui sont les deux personnes</td></tr><tr><td class="cle">Deuxième</td><td>les chiffres : plafonds, franchise, millions</td></tr><tr><td class="cle">Troisième</td><td>ce que le courtier dit deux fois</td></tr></tbody></table><div class="note">Annoncer la consigne AVANT chaque écoute, jamais après.</div></section><section class="bloc card"><div class="lbl">Écoute</div><h2 class="t">Ce que ma police couvre vraiment</h2><p class="consigne">Six répliques sur trente-six. Cinq sont en couleur : ce sont celles qu'on redemandera.</p><div class="rep rep--key"><div class="qui">AMIRA</div><div>J'ai eu des dommages. Avant de réclamer, j'aimerais comprendre ce que j'ai acheté.</div></div><div class="rep"><div class="qui">GHISLAIN</div><div>C'est la meilleure question que vous puissiez me poser, et la plupart des gens la posent après le sinistre.</div></div><div class="rep rep--key"><div class="qui">GHISLAIN</div><div>Trois choses qui n'ont rien à voir entre elles : vos biens, votre responsabilité civile, vos frais de subsistance.</div></div><div class="rep rep--key"><div class="qui">AMIRA</div><div>Attendez. « Valeur à neuf », « franchise » — pouvez-vous me redire ça autrement ?</div></div><div class="rep rep--key"><div class="qui">GHISLAIN</div><div>Un refus sans clause n'est pas un refus, c'est une opinion.</div></div><div class="rep rep--key"><div class="qui">AMIRA</div><div>Je résume, pour être certaine : je déclare, je monte un inventaire, j'attends l'expert.</div></div></section><section class="bloc regle"><div class="lbl">Déclarer, ce n'est pas réclamer</div><p class="r">La déclaration dit qu'il s'est passé quelque chose. Elle n'engage à rien, et elle se fait le jour même.</p><p class="pr">La réclamation vient après, avec un inventaire et des preuves. Attendre d'avoir tout chiffré pour appeler fait perdre trois semaines et affaiblit le dossier.</p></section><section class="bloc card"><div class="lbl">Pratique</div><h2 class="t">Vrai ou faux</h2><p class="consigne">Écoutez de nouveau, puis répondez.</p><ol class="ex"><li><span class="q">Amira appelle son courtier avant d'avoir déclaré son sinistre.</span><span class="ligne ligne--court"></span></li><li><span class="q">La franchise s'applique une fois par objet endommagé.</span><span class="ligne ligne--court"></span></li><li><span class="q">Elle est indemnisée à la valeur au jour du sinistre.</span><span class="ligne ligne--court"></span></li><li><span class="q">Selon le courtier, un refus doit toujours s'appuyer sur une clause.</span><span class="ligne ligne--court"></span></li><li><span class="q">Une preuve d'achat doit obligatoirement être une facture.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le courtier conseille de s'entendre d'abord avec le déménageur.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écris la question que tu poserais à ton courtier demain matin.</p><ul><li>Une seule question, et elle doit appeler un chiffre ou un mot précis.</li><li>Pas « est-ce que je suis bien couvert ? » — trop large.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Les six mots qui décident d'une police</h2><section class="bloc card ml"><h3>Trois protections dans un seul contrat</h3><p class="mp">Une police de locataire n'est pas une protection, c'en est trois, et elles n'ont rien à voir entre elles. La <b>section des biens</b> paie ce qui vous appartient. La <b>responsabilité civile</b> paie ce que vous faites subir aux autres. Les <b>frais de subsistance</b> paient le supplément si votre logement devient inhabitable. Trois plafonds différents, parfois trois franchises différentes.</p><div class="note">Premier réflexe devant un refus : la réclamation refusée sous une section peut parfois être présentée sous une autre.</div></section><section class="bloc card ml"><h3>La franchise, et le calcul qu'on ne fait jamais</h3><p class="mp">La franchise est la part qui reste toujours à votre charge, et elle s'applique <b>par sinistre</b>, jamais par objet. Avec une franchise de cinq cents dollars : un dommage de mille deux cents vous rapporte sept cents ; un dommage de quatre cents ne vous rapporte rien du tout, et déclarer ne servirait qu'à inscrire un dossier à votre nom. Faites la soustraction avant de décrocher le téléphone.</p><div class="note">Une franchise plus haute fait baisser la prime. C'est le seul levier vraiment efficace sur le prix d'une police.</div></section><section class="bloc card ml"><h3>Valeur à neuf ou valeur au jour du sinistre</h3><p class="mp">Deux façons d'indemniser, et l'écart entre les deux peut atteindre les trois quarts du montant. La <b>valeur au jour du sinistre</b> retranche la dépréciation : un téléviseur de huit ans vous est remboursé au prix d'un téléviseur de huit ans, c'est-à-dire presque rien. La <b>valeur à neuf</b> paie l'équivalent neuf, souvent sur présentation d'une preuve de remplacement. Une seule ligne du sommaire dit laquelle vous avez, et c'est celle que personne ne lit.</p><div class="note">« Sur présentation d'une preuve de remplacement » veut dire : on vous verse d'abord la valeur au jour du sinistre, et le complément quand vous avez racheté.</div></section><section class="bloc card ml"><h3>Six mots, six effets concrets</h3><p class="mp">À gauche le mot, à droite ce qu'il change pour vous.</p><table class="ex2"><tr><td>une prime</td><td>Ce que vous payez par année, quoi qu'il arrive</td></tr><tr><td>une franchise</td><td>Ce qui se soustrait à chaque sinistre, quoi qu'il arrive</td></tr><tr><td>un plafond</td><td>Le maximum que l'assureur versera, jamais une promesse</td></tr><tr><td>une sous-limite</td><td>Un plafond particulier caché sous le plafond général</td></tr><tr><td>un avenant</td><td>Une protection ajoutée par écrit à un contrat qui ne l'offrait pas</td></tr><tr><td>une exclusion</td><td>Un cas annoncé d'avance comme non couvert : à lire en premier</td></tr></table></section><section class="bloc card ml"><h3>Les exclusions se lisent avant les protections</h3><p class="mp">C'est contre-intuitif et c'est pourtant l'ordre utile. Les protections décrivent un monde généreux ; les exclusions décrivent le vrai contrat. Les trois quarts des refus s'appuient sur une exclusion, et la plupart d'entre elles sont raisonnables — l'usure, la négligence, le vice caché, les biens confiés à un transporteur professionnel. Ce que vous cherchez en les lisant, ce n'est pas une injustice : c'est de savoir d'avance sur quoi vous n'êtes pas couvert.</p><div class="note">Le jour où l'une d'elles vous est opposée, vous n'aurez plus qu'à en lire les mots exacts. Vous saurez déjà laquelle.</div></section><section class="bloc card ml"><h3>Trois idées fausses sur une police d'assurance</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">« je suis assurée, donc je suis couverte »</p><div class="k">Ce qui arrive</div><p class="ph">« je suis assurée pour ceci, jusqu'à ce montant, moins la franchise »</p><p class="px">Aucune police ne couvre tout. Savoir pour quoi et jusqu'où est la seule façon de ne pas être surpris au pire moment.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">« cinquante mille dollars, c'est ce que je vais toucher »</p><div class="k">Ce qui arrive</div><p class="ph">c'est le maximum, jamais un montant garanti</p><p class="px">Ce que vous toucherez dépend de l'inventaire, du mode d'indemnisation et de la franchise. Le plafond ne se rencontre presque jamais.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">« mes bijoux sont dans les cinquante mille »</p><div class="k">Ce qui arrive</div><p class="ph">ils sont dans leur sous-limite, à deux mille</p><p class="px">Les sous-limites sont le piège le plus fréquent : bijoux, argent comptant, vélos, instruments, objets d'art. Au-delà, il faut un avenant et une déclaration.</p></div></div></section><section class="bloc card ml"><h3>Quatre calculs à faire de tête</h3><p class="mp">Quatre questions, vite fait.</p><ol class="check"><li><span class="q">Franchise de 500 $, dommage de 940 $. Vous touchez…</span><ul class="opts"><li>940 $</li><li>440 $</li></ul></li><li><span class="q">Franchise de 500 $, dommage de 400 $. Vous…</span><ul class="opts"><li>réclamez quand même</li><li>ne réclamez pas, ça ne rapporterait rien</li></ul></li><li><span class="q">Trois objets abîmés dans un même dégât d'eau. La franchise s'applique…</span><ul class="opts"><li>trois fois</li><li>une seule fois</li></ul></li><li><span class="q">Une bague de 3 500 $ sous une sous-limite de 2 000 $, sans avenant. Vous touchez au plus…</span><ul class="opts"><li>3 500 $</li><li>2 000 $</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> 440 $ — La franchise se soustrait : 940 moins 500 égale 440. · <b>2.</b> ne réclamez pas, ça ne rapporterait rien — Rien ne serait versé, et un dossier serait inscrit à votre nom pour rien. · <b>3.</b> une seule fois — Par sinistre, jamais par objet. C'est un seul événement. · <b>4.</b> 2 000 $ — La sous-limite plafonne, et pas un cent de plus sans avenant ni déclaration.</div></section></section></div>
+<footer><span>B1 · Ce qui est couvert, et ce qui se défend</span><span>Fiche élève</span></footer>
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C2 · Qui fait quoi, et quoi leur demander — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance C2 · Module 4 · 75 minutes</div>
+    <h1>Qui fait quoi, et quoi leur demander</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Six personnes interviennent dans un achat. Toutes sont compétentes, aucune n'a le même intérêt que vous — et la réponse change les questions que vous devez poser.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>nommer six intervenants et dire pour qui chacun travaille ;</li><li>distinguer une question précise d'une question vague ;</li><li>poser une question qui appelle un chiffre, une date ou un document ;</li><li>accepter « je ne sais pas, je vérifie » comme une bonne réponse.</li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Six personnes, six rôles</h2><table><thead><tr><th>La personne</th><th>Ce quelle fait, et pour qui</th></tr></thead><tbody><tr><td class="cle">le courtier du vendeur</td><td>il fait vendre ; il vous doit un traitement équitable</td></tr><tr><td class="cle">le courtier de l'acheteur</td><td>il cherche pour vous et discute le prix à votre place</td></tr><tr><td class="cle">l'inspecteur en bâtiment</td><td>il examine et vous remet un rapport écrit</td></tr><tr><td class="cle">la conseillère hypothécaire</td><td>elle établit ce que vous pouvez emprunter</td></tr><tr><td class="cle">le notaire</td><td>il vérifie les titres et reçoit l'acte de vente</td></tr></tbody></table></section><section class="bloc"><div class="lbl">Analyse</div><h2 class="t">Deux choses qui surprennent</h2><div class="grid"><div class="card"><h3>Le courtier du vendeur ne vous représente pas</h3><p>Il est lié par un contrat de courtage avec le vendeur et défend ses intérêts. Il doit néanmoins traiter équitablement l'acheteur non représenté et lui communiquer l'information de façon objective.</p></div><div class="card"><h3>Il ne peut rien vous réclamer</h3><p>Sa rétribution est fixée dans le contrat signé par le vendeur. Dans la plupart des transactions résidentielles, avoir son propre courtier ne coûte donc rien de plus à l'acheteur.</p></div><div class="card"><h3>Le syndicat de copropriété</h3><p>Il administre les parties communes, tient le fonds de prévoyance et fait faire les travaux. C'est à lui — par ses procès-verbaux — qu'on demande l'état du fonds.</p></div><div class="card"><h3>La bonne question, en dix mots</h3><p>« Avec qui avez-vous un contrat, dans cette transaction ? » Elle se pose sans agressivité, et elle règle tout le reste.</p></div></div></section><section class="bloc regle"><div class="lbl">Une question utile appelle un chiffre, une date ou un document</div><p class="r">Ce sont les trois seules réponses qu'on ne peut pas remplacer par « ça dépend ».</p><p class="pr">« Est-ce que c'est un bon immeuble ? » n'a aucune réponse vérifiable, et elle est posée à quelqu'un qui vend. « Quels travaux majeurs ont été faits depuis dix ans ? » porte sur la même curiosité et obtient une réponse qu'on peut noter. Les six questions se préparent la veille, par écrit : sur place, on regarde les armoires et on oublie le fonds de prévoyance.</p></section><section class="bloc card"><div class="lbl">Écoute et réponds</div><h2 class="t">Question précise ou question vague ?</h2><p class="consigne">Pour chacune, dites laquelle des deux, et pourquoi.</p><ol class="ex"><li><span class="q">Combien y a-t-il actuellement dans le fonds de prévoyance ?</span><span class="ligne ligne--court"></span></li><li><span class="q">Est-ce que c'est un bon immeuble ?</span><span class="ligne"></span></li><li><span class="q">En quelle année le toit a-t-il été refait ?</span><span class="ligne ligne--court"></span></li><li><span class="q">Est-ce que les voisins sont tranquilles ?</span><span class="ligne ligne--court"></span></li><li><span class="q">Pouvez-vous me remettre le procès-verbal de la dernière assemblée ?</span><span class="ligne ligne--court"></span></li><li><span class="q">Pensez-vous que je devrais faire une offre ?</span><span class="ligne"></span></li></ol></section><section class="bloc card"><div class="lbl">Écoute et réponds</div><h2 class="t">À qui poser cette question ?</h2><p class="consigne">Nommez la personne, puis dites pourquoi elle est la bonne.</p><ol class="ex"><li><span class="q">Quels sont les trois points les plus préoccupants du rapport ?</span><span class="ligne ligne--court"></span></li><li><span class="q">De quel montant serait mon paiement mensuel, tout compris ?</span><span class="ligne ligne--court"></span></li><li><span class="q">Y a-t-il quelque chose d'inhabituel dans les titres ?</span><span class="ligne ligne--court"></span></li><li><span class="q">Une cotisation spéciale est-elle prévue cette année ?</span><span class="ligne ligne--court"></span></li><li><span class="q">Depuis combien de jours la propriété est-elle affichée ?</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écris les trois questions que tu poserais en premier, dans l'ordre.</p><ul><li>Chacune doit appeler un chiffre, une date ou un document.</li><li>Trois lignes.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Six personnes, six intérêts</h2><section class="bloc card ml"><h3>La première question d'un achat n'est pas « combien »</h3><p class="mp">C'est « à qui suis-je en train de parler, et pour qui travaille cette personne ? ». Dans une transaction immobilière, tout le monde est compétent et personne n'a le même intérêt que vous. Ce n'est pas une raison de se méfier : c'est une raison de savoir, parce que la réponse change les questions que vous devez poser vous-même.</p><div class="note">Vérifié auprès de l'organisme qui encadre le courtage au Québec : un courtier lié par un contrat de courtage avec le vendeur ne représente pas l'acheteur. Il doit toutefois traiter équitablement l'acheteur non représenté et lui communiquer l'information de façon objective.</div></section><section class="bloc card ml"><h3>Le courtier du vendeur</h3><p class="mp">Il a signé un contrat avec le vendeur ; c'est ce contrat qui décide de son rôle et de sa rétribution.</p><table class="ana"><tr><td>Pour qui il travaille</td><td class="">le vendeur, et il doit le dire à l'acheteur</td></tr><tr><td>Ce qu'il vous doit</td><td class="cle">un traitement équitable et une information objective</td></tr><tr><td>Ce qu'il ne peut pas faire</td><td class="">vous réclamer une rétribution</td></tr><tr><td>La bonne question</td><td class="">« Avez-vous un contrat de courtage avec le vendeur ? »</td></tr></table><p class="dit"><span class="k">On dit</span> Le courtier du vendeur ne représente pas l'acheteur, et il doit le dire.</p><div class="note">Une courtière qui annonce cela d'elle-même en début de visite fait exactement son travail. C'est un bon signe, pas un aveu.</div></section><section class="bloc card ml"><h3>Le courtier de l'acheteur, l'inspecteur, la conseillère</h3><p class="mp">Trois personnes qui travaillent pour vous — chacune sur une chose différente.</p><table class="ana"><tr><td>Le courtier de l'acheteur</td><td class="">il cherche, il discute le prix, il vous conseille</td></tr><tr><td>L'inspecteur</td><td class="cle">il examine le bâtiment et remet un rapport écrit</td></tr><tr><td>La conseillère hypothécaire</td><td class="">elle dit ce que vous pouvez emprunter et à quel prix</td></tr><tr><td>Ce qu'aucun des trois ne fait</td><td class="">décider à votre place</td></tr></table><p class="dit"><span class="k">On dit</span> le courtier de l'acheteur, l'inspecteur en bâtiment, la conseillère hypothécaire</p><div class="note">Dans la plupart des transactions résidentielles, la rétribution des courtiers est payée par le vendeur : avoir son propre courtier ne coûte donc pas nécessairement plus cher à l'acheteur.</div></section><section class="bloc card ml"><h3>Le notaire et le syndicat de copropriété</h3><p class="mp">L'un ferme la transaction, l'autre administre l'immeuble après.</p><table class="ana"><tr><td>Le notaire</td><td class="">il examine les titres et reçoit l'acte de vente</td></tr><tr><td>Sa présence est obligatoire</td><td class="cle">pour l'acte hypothécaire, au Québec</td></tr><tr><td>Le syndicat</td><td class="">il administre les parties communes et tient le fonds</td></tr><tr><td>Ce qu'il faut lui demander</td><td class="">les procès-verbaux et l'état du fonds</td></tr></table><p class="dit"><span class="k">On dit</span> le notaire, l'examen des titres, le syndicat de copropriété</p><div class="note">L'examen des titres consiste à remonter les anciens actes pour vérifier que la personne qui vend a bien le droit de vendre. C'est invisible et c'est essentiel.</div></section><section class="bloc card ml"><h3>La personne, et la question qu'on lui pose</h3><p class="mp">À gauche qui, à droite quoi lui demander.</p><table class="ex2"><tr><td>le courtier du vendeur</td><td>Avez-vous un contrat de courtage avec le vendeur ?</td></tr><tr><td>le courtier du vendeur</td><td>Depuis combien de jours la propriété est-elle affichée ?</td></tr><tr><td>l'inspecteur</td><td>Quels sont les trois points les plus préoccupants du rapport ?</td></tr><tr><td>la conseillère</td><td>De quel montant serait mon paiement mensuel, tout compris ?</td></tr><tr><td>le notaire</td><td>Y a-t-il quelque chose d'inhabituel dans les titres ?</td></tr><tr><td>le syndicat</td><td>Combien y a-t-il dans le fonds, et une cotisation spéciale est-elle prévue ?</td></tr></table></section><section class="bloc card ml"><h3>Quatre questions, sans filet</h3><p class="mp">Répondez de mémoire, sans remonter plus haut.</p><ol class="check"><li><span class="q">Le courtier lié au vendeur…</span><ul class="opts"><li>défend les deux parties</li><li>défend le vendeur</li></ul></li><li><span class="q">Le courtier du vendeur peut-il vous réclamer une rétribution ?</span><ul class="opts"><li>non</li><li>oui, la moitié</li></ul></li><li><span class="q">Le notaire est obligatoire…</span><ul class="opts"><li>pour l'acte hypothécaire</li><li>seulement si on le souhaite</li></ul></li><li><span class="q">Le fonds de prévoyance est tenu par…</span><ul class="opts"><li>le courtier</li><li>le syndicat de copropriété</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> défend le vendeur — Il doit néanmoins traiter l'acheteur équitablement et l'informer objectivement. · <b>2.</b> non — Sa rétribution est fixée dans le contrat qu'il a signé avec le vendeur. · <b>3.</b> pour l'acte hypothécaire — Et c'est lui qui fait l'examen des titres avant la signature. · <b>4.</b> le syndicat de copropriété — C'est pour cela qu'on demande les procès-verbaux de ses assemblées.</div></section><section class="bloc card ml"><h3>Trois faux pas, et comment s'en sortir</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">prendre le courtier du vendeur pour son conseiller</p><div class="k">Ce qui arrive</div><p class="ph">poser la question du contrat de courtage</p><p class="px">La question se pose en dix mots et sans agressivité : « Avec qui avez-vous un contrat, dans cette transaction ? »</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">renoncer à son propre courtier « pour économiser »</p><div class="k">Ce qui arrive</div><p class="ph">vérifier qui paie la rétribution</p><p class="px">Dans la plupart des transactions résidentielles, elle est payée par le vendeur.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">demander un avis à quelqu'un qui vend</p><div class="k">Ce qui arrive</div><p class="ph">demander des faits, pas des jugements</p><p class="px">« Est-ce un bon achat ? » n'a pas de réponse utile. « Depuis combien de jours est-ce affiché ? » en a une.</p></div></div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Six questions à préparer avant une visite</h2><section class="bloc card ml"><h3>Sur place, on regarde les armoires et on oublie le fonds</h3><p class="mp">Une visite dure quarante minutes, il y a du monde, on est intimidé, et on ressort avec une impression au lieu d'une information. La parade tient en une feuille : six questions écrites la veille, dans le téléphone, qu'on lit sans gêne devant la courtière. Personne n'a jamais mal jugé quelqu'un qui arrive préparé.</p><div class="note">La situation du programme s'appelle « s'informer pour acheter une habitation ». S'informer est un acte de langage précis : il ne s'agit pas de bavarder, il s'agit d'obtenir des faits vérifiables.</div></section><section class="bloc card ml"><h3>Ce qui distingue une question précise</h3><p class="mp">Elle appelle un chiffre, une date ou un papier. Elle ne peut pas recevoir « ça dépend ».</p><table class="ana"><tr><td>Un chiffre</td><td class="">Combien y a-t-il dans le fonds de prévoyance ?</td></tr><tr><td>Une date</td><td class="cle">En quelle année le toit a-t-il été refait ?</td></tr><tr><td>Un document</td><td class="">Pouvez-vous me remettre le procès-verbal de la dernière assemblée ?</td></tr><tr><td>Le contraire</td><td class="">Est-ce que c'est un bon immeuble ?</td></tr></table><p class="dit"><span class="k">On dit</span> Combien y a-t-il dans le fonds de prévoyance, et depuis quand ?</p><div class="note">Une question posée à la mauvaise personne n'est jamais précise : demander à quelqu'un qui vend si c'est un bon achat, c'est demander à quelqu'un s'il fait bien son travail.</div></section><section class="bloc card ml"><h3>Les six questions qui servent partout</h3><p class="mp">À copier telles quelles. Elles valent pour un condo comme pour une maison.</p><table class="ana"><tr><td>1</td><td class="">Depuis combien de jours la propriété est-elle affichée ?</td></tr><tr><td>2</td><td class="cle">Qu'est-ce que les frais mensuels comprennent, exactement ?</td></tr><tr><td>3</td><td class="">Combien y a-t-il dans le fonds, et une cotisation spéciale est-elle prévue ?</td></tr><tr><td>4</td><td class="">Quels travaux majeurs ont été faits, et en quelle année ?</td></tr><tr><td>5</td><td class="">Qu'est-ce qui est inclus, et qu'est-ce qui ne l'est pas ?</td></tr><tr><td>6</td><td class="">Y a-t-il eu une infiltration d'eau ou un litige dans l'immeuble ?</td></tr></table><p class="dit"><span class="k">On dit</span> Depuis combien de jours la propriété est-elle affichée ?</p><div class="note">La sixième question ne se pose pas pour piéger : le vendeur devra de toute façon déclarer par écrit ce qu'il sait, et l'entendre de vive voix vous dit comment il répond.</div></section><section class="bloc card ml"><h3>Ce qu'il faut savoir écouter dans la réponse</h3><p class="mp">Trois réponses possibles, et la meilleure n'est pas celle qu'on croit.</p><table class="ana"><tr><td>« Voici le chiffre »</td><td class="">on note, et on demande le document</td></tr><tr><td>« Je ne sais pas, je vérifie »</td><td class="cle">la meilleure : on note la question et la date</td></tr><tr><td>« Ça dépend » ou un changement de sujet</td><td class="">on repose la question une fois, autrement</td></tr></table><p class="dit"><span class="k">On dit</span> Je ne sais pas, je vérifie et je vous rappelle.</p><div class="note">Une personne qui répond à tout n'est pas mieux informée : elle est seulement plus rapide. Notez ce qui vous a été promis par écrit, avec la date.</div></section><section class="bloc card ml"><h3>Vague à gauche, précise à droite</h3><p class="mp">La même curiosité, deux formulations.</p><table class="ex2"><tr><td>Est-ce que c'est un bon immeuble ?</td><td>Quels travaux majeurs ont été faits depuis dix ans ?</td></tr><tr><td>Les voisins sont tranquilles ?</td><td>Y a-t-il eu des plaintes inscrites aux procès-verbaux ?</td></tr><tr><td>Est-ce que ça se vend bien, ce coin-là ?</td><td>Depuis combien de jours est-ce affiché ?</td></tr><tr><td>Les frais sont-ils raisonnables ?</td><td>Qu'est-ce que les 190 $ comprennent exactement ?</td></tr><tr><td>C'est solide, cet immeuble ?</td><td>En quelle année le toit et les balcons ont-ils été refaits ?</td></tr><tr><td>Je devrais faire une offre ?</td><td>Y a-t-il d'autres promesses d'achat déposées ?</td></tr></table></section><section class="bloc card ml"><h3>Quatre questions, sans filet</h3><p class="mp">Répondez de mémoire, sans remonter plus haut.</p><ol class="check"><li><span class="q">Une question précise appelle…</span><ul class="opts"><li>une opinion</li><li>un chiffre, une date ou un papier</li></ul></li><li><span class="q">« Je ne sais pas, je vérifie » est…</span><ul class="opts"><li>une mauvaise réponse</li><li>une bonne réponse</li></ul></li><li><span class="q">Les six questions se préparent…</span><ul class="opts"><li>la veille, par écrit</li><li>sur place, de mémoire</li></ul></li><li><span class="q">Demander au vendeur si c'est un bon achat, c'est…</span><ul class="opts"><li>utile</li><li>poser la question à la mauvaise personne</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> un chiffre, une date ou un papier — C'est la définition, et c'est la seule qui compte. · <b>2.</b> une bonne réponse — À condition de noter la question et de la faire revenir par écrit. · <b>3.</b> la veille, par écrit — Sur place, on regarde les armoires et on oublie le reste. · <b>4.</b> poser la question à la mauvaise personne — La même curiosité se transforme en question vérifiable.</div></section></section></div>
+<footer><span>C2 · Rester locataire ou devenir propriétaire</span><span>Fiche élève</span></footer>
+</body>
+</html>

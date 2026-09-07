@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B2 · Raconter au présent — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance B2 · Module 13 · 75 minutes</div>
+    <h1>Raconter au présent</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Le livre est écrit au passé, l'autrice l'a fini il y a trois ans — et tout le monde le raconte au présent. Ce n'est pas une règle de grammaire : c'est ce qui place la personne qui écoute à l'intérieur de la scène, au moment où ça arrive.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>employer le présent pour raconter ce qui arrive dans une œuvre ;</li><li>distinguer l'action en cours de l'action habituelle ;</li><li>dire deux choses en même temps sans changer de temps ;</li><li>tenir le présent jusqu'au bout, sans glisser au passé composé.</li></ol></section><section class="bloc regle"><div class="lbl">Le présent place l'autre dans la scène</div><p class="r">Au passé, votre récit devient un rapport. Au présent, il devient une scène.</p><p class="pr">« Elle arrive. Elle ouvre la maison. Elle trouve une boîte de lettres. » Trois verbes, trois moments, et la personne en face avance avec le personnage. C'est le temps de tous les résumés du monde, et il ne demande aucune conjugaison difficile.</p></section><section class="bloc card"><div class="lbl">Deux emplois, un seul temps</div><h2 class="t">Ce qui décide, c'est le mot devant</h2><table><thead><tr><th>Ce qui arrive maintenant</th><th>Ce qui se répète</th></tr></thead><tbody><tr><td>Elle arrive au village.</td><td class="cle">Tous les soirs, elle marche jusqu'au quai.</td></tr><tr><td>Elle ouvre la maison.</td><td class="cle">Chaque matin, elle ouvre les volets.</td></tr><tr><td>Le personnage hésite.</td><td class="cle">D'habitude, il ne répond pas.</td></tr><tr><td>La porte s'ouvre.</td><td class="cle">Le dimanche, personne ne travaille.</td></tr><tr><td>Aucun mot devant</td><td class="cle">Tous les soirs · chaque matin · d'habitude</td></tr></tbody></table></section><section class="bloc"><div class="lbl">Les verbes de tous les résumés</div><h2 class="t">À la troisième personne, au présent</h2><div class="grid"><div class="card"><h3>il s'appelle · elle vit</h3><p>On présente le personnage : qui il est, où il vit.</p></div><div class="card"><h3>il rencontre · elle découvre</h3><p>L'évènement qui met l'histoire en marche.</p></div><div class="card"><h3>elle veut · il refuse</h3><p>Le désir et l'obstacle : le cœur du temps 3.</p></div><div class="card"><h3>elle décide · il part</h3><p>Le moment du choix — c'est là qu'on s'arrête.</p></div></div></section><section class="bloc card"><div class="lbl">Conjugaison</div><h2 class="t">Mettez le verbe au présent</h2><p class="consigne">Le verbe est entre parenthèses. Restez au présent partout.</p><ol class="ex"><li><span class="q">Une femme ___ (revenir) au village après vingt ans.</span><span class="ligne ligne--court"></span></li><li><span class="q">Elle ___ (vouloir) repartir le jour même.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le personnage principal ___ (ouvrir) la maison de sa mère.</span><span class="ligne ligne--court"></span></li><li><span class="q">Dans le grenier, elle ___ (découvrir) une boîte de lettres.</span><span class="ligne ligne--court"></span></li><li><span class="q">Tous les soirs, elle ___ (marcher) jusqu'au quai.</span><span class="ligne ligne--court"></span></li><li><span class="q">Pendant qu'elle range la maison, elle ___ (relire) les lettres.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc regle"><div class="lbl">Deux choses en même temps, deux présents</div><p class="r">Pendant qu'elle range la maison, elle relit les lettres.</p><p class="pr">Les deux verbes restent au présent : rien n'est décalé, tout se passe au même moment de l'histoire. C'est la façon la plus simple de dire la simultanéité, et elle suffit largement pour deux minutes. Le gérondif — « en rangeant la maison » — dit la même chose en moins de mots, et un seul par présentation fait bon effet.</p></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Changer de temps au milieu du résumé</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">Elle arrive au village et elle a trouvé une boîte de lettres.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">Elle arrive au village et elle trouve une boîte de lettres.</p></div></div><div class="note">Une fois au présent, il faut y rester jusqu'à la fin. Le mélange est la faute la plus audible d'une présentation : l'auditeur ne sait plus s'il est dans l'histoire ou dans votre souvenir de l'histoire.</div></section><section class="bloc card"><div class="lbl">À l'oral</div><h2 class="t">Trois phrases de suite, au présent</h2><p class="consigne">Racontez le début de votre œuvre. Trois verbes, trois moments.</p><ol class="ex"><li><span class="q">Phrase 1 — ce que fait le personnage en premier.</span><span class="ligne ligne--court"></span></li><li><span class="q">Phrase 2 — ce qui arrive ensuite.</span><span class="ligne ligne--court"></span></li><li><span class="q">Phrase 3 — ce qui complique tout.</span><span class="ligne ligne--court"></span></li><li><span class="q">Redites les trois d'affilée, sans vous arrêter entre elles.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez trois phrases au présent qui racontent le début de votre œuvre.</p><ul><li>Trois verbes différents, trois moments qui se suivent.</li><li>Ajoutez une quatrième phrase avec « tous les soirs » ou « chaque matin ».</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Le présent qui raconte une histoire</h2><section class="bloc card ml"><h3>Pourquoi on raconte au présent une histoire déjà écrite</h3><p class="mp">Regardez le dos de n'importe quel livre, dans n'importe quelle bibliothèque du Québec : le résumé est au présent. « Une femme revient au village. Elle veut vendre la maison de sa mère. Elle trouve une boîte de lettres. » Le livre est écrit au passé, l'autrice l'a fini il y a trois ans, et pourtant tout le monde le raconte au présent. Ce n'est pas une règle de grammaire : c'est un choix qui met la personne qui écoute à l'intérieur de la scène, au moment où ça arrive.</p><div class="note">Au passé composé, la même chose devient un rapport : « une femme est revenue au village, elle a voulu vendre la maison ». C'est correct, mais on dirait un procès-verbal. Essayez les deux à voix haute, vous entendrez la différence tout de suite.</div></section><section class="bloc card ml"><h3>L'action qui se déroule maintenant, dans l'histoire</h3><p class="mp">Chaque verbe est un moment, et les moments se suivent dans l'ordre où vous les racontez. Pas de « et après », pas de « ensuite » à toutes les phrases : le présent suffit à faire avancer.</p><table class="ana"><tr><td>Le début de l'histoire</td><td class="">elle arrive · elle ouvre la maison · elle trouve une boîte</td></tr><tr><td>Ce qui bouge</td><td class="cle">la porte s'ouvre · personne ne répond · il hésite</td></tr><tr><td>Ce que le personnage veut</td><td class="">elle veut repartir · il cherche sa sœur · elle refuse</td></tr></table><p class="dit"><span class="k">On dit</span> Elle arrive au village. Elle ouvre la maison. Elle trouve une boîte.</p><div class="note">Trois verbes au présent, trois moments : c'est exactement la longueur d'une bonne mise en marche d'histoire. Au quatrième, on est déjà en train d'en dire trop.</div></section><section class="bloc card ml"><h3>L'action habituelle, au même temps</h3><p class="mp">Le présent dit aussi ce qui se répète dans l'histoire. Le verbe ne change pas ; ce qui change, c'est le petit mot devant. Sans ce mot, la personne qui écoute croira que ça n'arrive qu'une fois.</p><table class="ana"><tr><td>Les mots qui disent l'habitude</td><td class="">tous les soirs · chaque matin · d'habitude</td></tr><tr><td>Dans le roman</td><td class="cle">tous les soirs, elle marche jusqu'au quai</td></tr><tr><td>Ce qui change le sens</td><td class="">elle marche jusqu'au quai / tous les soirs, elle marche jusqu'au quai</td></tr></table><p class="dit"><span class="k">On dit</span> Tous les soirs, elle marche jusqu'au quai.</p><div class="note">C'est un savoir du programme de niveau 5 : distinguer l'action en cours de l'action habituelle. Le français les met au même temps, et laisse le repère de temps faire tout le travail.</div></section><section class="bloc card ml"><h3>Deux choses en même temps</h3><p class="mp">Quand deux actions se passent au même moment de l'histoire, les deux verbes restent au présent. Rien n'est décalé, rien ne recule.</p><table class="ana"><tr><td>Avec pendant que</td><td class="">pendant qu'elle range la maison, elle relit les lettres</td></tr><tr><td>Avec quand</td><td class="cle">quand elle ouvre la boîte, elle reconnaît l'écriture</td></tr><tr><td>Avec le gérondif</td><td class="">elle relit les lettres en rangeant la maison</td></tr></table><p class="dit"><span class="k">On dit</span> Pendant qu'elle range la maison, elle relit les lettres.</p><div class="note">Le gérondif — « en rangeant » — dit la même chose en moins de mots, et il fait très bon effet dans une présentation de deux minutes. Un seul par présentation suffit.</div></section><section class="bloc card ml"><h3>La même histoire, racontée de quatre façons</h3><p class="mp">Écoutez le même passage au présent, au passé, à l'habitude et en simultané. Choisissez, comparez.</p><table class="labo"><thead><tr><th>Comment on le raconte ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">au présent, comme au club</td><td>Elle arrive au village. Elle ouvre la maison de sa mère. Elle trouve une boîte de lettres dans le grenier.<span class="tags">l'intrigue</span></td><td>le présent : on est dans la scène</td></tr><tr><td class="cle">au passé composé, pour comparer</td><td>Elle est arrivée au village. Elle a ouvert la maison de sa mère. Elle a trouvé une boîte de lettres.<span class="tags">un personnage</span></td><td>le passé composé : on est devant un rapport</td></tr><tr><td class="cle">une habitude du personnage</td><td>Tous les soirs, elle marche jusqu'au quai. Elle regarde la mer et elle rentre.<span class="tags">un personnage</span></td><td>l'habitude : le repère de temps fait tout</td></tr><tr><td class="cle">deux actions en même temps</td><td>Pendant qu'elle range la maison, elle relit les lettres une par une.<span class="tags">l'intrigue</span></td><td>deux actions, un seul moment</td></tr><tr><td class="cle">les quatre à la suite</td><td>Elle arrive au village. Elle est arrivée au village. Tous les soirs, elle marche jusqu'au quai. Pendant qu'elle range, elle relit les lettres.<span class="tags">l'intrigue · un personnage</span></td><td>les quatre à la suite, pour entendre l'écart</td></tr></tbody></table><div class="note">La deuxième option est là exprès : elle n'est pas fautive, elle est seulement moins vivante. Entendre les deux vous fera choisir le présent sans y penser.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six phrases de résumé, toutes au présent.</p><table class="ex2"><tr><td>Une femme revient au village après vingt ans.</td><td>le verbe qui met l'histoire en marche</td></tr><tr><td>Elle veut repartir le jour même.</td><td>ce que le personnage veut : toujours utile</td></tr><tr><td>Elle ouvre la maison et elle découvre une boîte de lettres.</td><td>deux moments dans la même phrase</td></tr><tr><td>Tous les soirs, elle marche jusqu'au quai.</td><td>l'habitude, marquée par le repère de temps</td></tr><tr><td>Pendant qu'elle range la maison, elle relit les lettres.</td><td>deux actions au même moment</td></tr><tr><td>Le personnage principal ne parle presque jamais.</td><td>une description, au présent elle aussi</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges du présent de récit</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">changer de temps au milieu du résumé</p><div class="k">Ce qui arrive</div><p class="ph">« elle arrive au village et elle a trouvé une boîte »</p><p class="px">Une fois que vous êtes au présent, restez-y jusqu'à la fin. Le mélange est la faute la plus fréquente, et c'est celle qui s'entend le plus : l'auditeur ne sait plus s'il est dans l'histoire ou dans votre souvenir de l'histoire.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">oublier le repère de l'habitude</p><div class="k">Ce qui arrive</div><p class="ph">« elle marche jusqu'au quai » pour dire qu'elle le fait chaque soir</p><p class="px">Sans « tous les soirs », la phrase décrit une seule promenade. Le français ne change pas le verbe : c'est vous qui devez ajouter le repère, sinon l'information se perd sans que personne s'en aperçoive.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">reculer le deuxième verbe</p><div class="k">Ce qui arrive</div><p class="ph">« pendant qu'elle rangeait, elle relit les lettres »</p><p class="px">Quand les deux actions sont au même moment de l'histoire, les deux verbes restent au présent. Le décalage n'existe que si vous racontez quelque chose qui s'est passé avant le moment raconté.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">On raconte une histoire au présent parce que…</span><ul class="opts"><li>c'est plus facile à conjuguer</li><li>ça place l'autre dans la scène</li></ul></li><li><span class="q">Pour dire une habitude du personnage, on change…</span><ul class="opts"><li>le temps du verbe</li><li>le repère de temps devant</li></ul></li><li><span class="q">« Pendant qu'elle range, elle ___ les lettres. »</span><ul class="opts"><li>relit</li><li>relisait</li></ul></li><li><span class="q">Au milieu d'un résumé au présent, on peut…</span><ul class="opts"><li>passer au passé composé</li><li>rester au présent jusqu'au bout</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> ça place l'autre dans la scène — Ça place l'autre dans la scène, au moment où ça arrive. · <b>2.</b> le repère de temps devant — Le repère de temps : tous les soirs, chaque matin, d'habitude. · <b>3.</b> relit — Relit : deux actions au même moment, deux présents. · <b>4.</b> rester au présent jusqu'au bout — Rester au présent. Le mélange est ce qui s'entend le plus.</div></section></section></div>
+<footer><span>B2 · Le club du jeudi</span><span>Fiche élève</span></footer>
+</body>
+</html>

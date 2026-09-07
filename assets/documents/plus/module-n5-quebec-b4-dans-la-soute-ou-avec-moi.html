@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B4 · Dans la soute, ou avec moi ? — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance B4 · Module 10 · 75 minutes</div>
+    <h1>Dans la soute, ou avec moi ?</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Deux bagages en soute par personne, plus un bagage à main de cinq kilos qu'on garde avec soi. Ce qui dépasse part par le service de messagerie et se paie au poids. Ce sont des règles précises, et elles se demandent avant de partir.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>distinguer le bagage à main du bagage en soute ;</li><li>comprendre une règle chiffrée dite à l'oral ;</li><li>demander ce qu'on a le droit d'emporter ;</li><li>reprendre sa demande complète, avec les bagages et le retour.</li></ol></section><section class="bloc card"><div class="lbl">Les règles</div><h2 class="t">Ce qu'on a le droit d'emporter</h2><table><thead><tr><th>Le bagage</th><th>La règle</th></tr></thead><tbody><tr><td>En soute</td><td class="cle">Deux par personne</td></tr><tr><td>À main</td><td class="cle">Un seul, cinq kilos</td></tr><tr><td>Trop gros</td><td class="cle">Par messagerie, au poids</td></tr><tr><td>Le chargement</td><td class="cle">Avant le départ, pas après</td></tr></tbody></table></section><section class="bloc"><div class="lbl">Ce qui reste avec soi</div><h2 class="t">Huit heures sans pouvoir ouvrir la soute</h2><div class="grid"><div class="card"><h3>Les papiers</h3><p>Billet, pièce d'identité, carte d'assurance maladie.</p></div><div class="card"><h3>Les médicaments</h3><p>Tout ce qu'on prend à heure fixe.</p></div><div class="card"><h3>Le manteau</h3><p>Il fait plus froid à Rimouski qu'à Montréal.</p></div><div class="card"><h3>De quoi manger</h3><p>Les arrêts sont courts et ne tombent pas à l'heure des repas.</p></div></div></section><section class="bloc card"><div class="lbl">Compréhension</div><h2 class="t">Vrai ou faux ?</h2><p class="consigne">Répondez d'après le dialogue de la séance B1.</p><ol class="ex"><li><span class="q">On peut mettre deux valises en soute.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le bagage à main peut peser dix kilos.</span><span class="ligne ligne--court"></span></li><li><span class="q">Ce qui dépasse voyage gratuitement.</span><span class="ligne"></span></li><li><span class="q">On peut ouvrir la soute pendant le trajet.</span><span class="ligne"></span></li><li><span class="q">Le tarif économique permet de changer la date.</span><span class="ligne ligne--court"></span></li><li><span class="q">Il faut se présenter vingt minutes avant.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc regle"><div class="lbl">Votre demande, d'un seul tenant</div><p class="r">Où · quand · combien de temps · combien de personnes · les bagages · le retour.</p><p class="pr">Six informations. C'est la version complète de la règle de B1, et c'est celle du jeu de rôle.</p></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Attendre d'être au comptoir pour décider</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">Je verrai sur place ce que je prends comme tarif.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">Je sais avant d'arriver si je veux pouvoir changer ma date.</p></div></div><div class="note">Au comptoir, il y a quelqu'un derrière soi et on choisit vite. La seule question qui demande vraiment à être pesée — un tarif ferme ou un tarif qui se change — se décide tranquillement, la veille.</div></section><section class="bloc card"><div class="lbl">Production</div><h2 class="t">Reprenez votre demande, complète</h2><p class="consigne">Debout, deux par deux : l'un demande, l'autre est au comptoir.</p><ol class="ex"><li><span class="q">Avez-vous dit où vous allez, et dans quelle région ?</span><span class="ligne"></span></li><li><span class="q">Avez-vous donné les deux dates ?</span><span class="ligne"></span></li><li><span class="q">Avez-vous dit combien de personnes ?</span><span class="ligne"></span></li><li><span class="q">Avez-vous demandé pour les bagages ?</span><span class="ligne"></span></li><li><span class="q">Avez-vous répété l'heure et le quai ?</span><span class="ligne"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Notez la question sur les bagages que vous poseriez pour votre propre voyage.</p><ul><li>Une question précise, pas « c'est quoi les règles ? ».</li><li>Pensez à ce que vous emporteriez vraiment.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Ce qu'on emporte dans un autocar</h2><section class="bloc card ml"><h3>Deux endroits, deux règles, et huit heures entre les deux</h3><p class="mp">Un autocar interurbain, ce n'est ni un autobus de ville ni un avion. Il y a deux endroits où mettre ses affaires : la soute, sous le plancher, et le siège, avec soi. Ce qui va dans la soute disparaît pour toute la durée du trajet — huit heures, dans le cas de Montréal-Rimouski, avec des arrêts où l'on descend sans pouvoir y accéder. Ce qui reste avec soi doit tenir dans un seul sac léger. Toute la difficulté du départ tient dans cette phrase : ce dont vous aurez besoin en route ne doit pas être sous le plancher.</p><div class="note">Cette règle vaut aussi pour le train et pour l'avion, avec d'autres chiffres. Ce qui s'apprend ici s'applique au prochain voyage, quel qu'il soit.</div></section><section class="bloc card ml"><h3>Ce que le transporteur accepte</h3><p class="mp">Chez le principal transporteur interurbain du Québec, chaque personne a droit à deux bagages en soute et à un bagage à main.</p><table class="ana"><tr><td>En soute</td><td class="">deux bagages par personne · remis au chauffeur avant de monter</td></tr><tr><td>Avec soi</td><td class="cle">un seul bagage à main · cinq kilos au maximum · cent quinze centimètres au total</td></tr><tr><td>Ce qui dépasse</td><td class="">le service de messagerie du transporteur, payé au poids</td></tr></table><p class="dit"><span class="k">On dit</span> Deux valises par personne sont acceptées dans la soute, plus un bagage à main.</p><div class="note">Les cent quinze centimètres sont la longueur, la largeur et la hauteur additionnées — c'est la mesure qu'emploient tous les transporteurs, et elle surprend toujours la première fois.</div></section><section class="bloc card ml"><h3>Ce qui ne descend jamais dans la soute</h3><p class="mp">Ce n'est pas une question de vol : c'est une question de huit heures sans accès.</p><table class="ana"><tr><td>Les indispensables</td><td class="">les médicaments · les papiers d'identité · l'argent · le téléphone et son chargeur</td></tr><tr><td>Les fragiles et les chers</td><td class="cle">les lunettes · un ordinateur · un appareil photo</td></tr><tr><td>Le confort du trajet</td><td class="">de l'eau · un lunch · un chandail · un livre ou le dépliant du parc</td></tr></table><p class="dit"><span class="k">On dit</span> Les médicaments, les papiers et le téléphone restent avec vous, à votre siège.</p><div class="note">Le chandail est le plus oublié des huit : la climatisation d'un autocar est réglée pour le chauffeur, pas pour vous, et le trajet se fait en septembre.</div></section><section class="bloc card ml"><h3>Comment ça se passe, au quai</h3><p class="mp">Vingt minutes avant le départ, avec ses valises, à côté de l'autocar. Le chauffeur ouvre la soute et charge lui-même.</p><table class="ana"><tr><td>Avant de monter</td><td class="">on présente son billet · on remet ses valises au chauffeur</td></tr><tr><td>À l'arrivée</td><td class="cle">on attend à côté de l'autocar · le chauffeur ressort les valises une à une</td></tr><tr><td>Aux arrêts en route</td><td class="">la soute reste fermée · on descend avec son seul bagage à main</td></tr></table><p class="dit"><span class="k">On dit</span> Présentez-vous vingt minutes avant : les valises se chargent avant le départ, pas après.</p><div class="note">Aux arrêts de vingt ou quarante minutes, on peut descendre manger. Le bagage à main descend avec vous : rien n'est surveillé à bord.</div></section><section class="bloc card ml"><h3>Chaque objet à sa place</h3><p class="mp">Choisissez un objet et écoutez où il va, et pourquoi.</p><table class="labo"><thead><tr><th>Quel objet ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">Une grosse valise</td><td>Une grosse valise va dans <b>la soute</b>. Vous la remettez au chauffeur avant de monter.</td><td>deux par personne, sans supplément</td></tr><tr><td class="cle">Vos médicaments</td><td>Vos médicaments restent avec vous. Huit heures de trajet et une correspondance, ce n'est pas le moment de les avoir sous le plancher.<span class="tags">la soute · une correspondance</span></td><td>jamais en soute, jamais</td></tr><tr><td class="cle">Une bicyclette</td><td>Une bicyclette passe par le service de messagerie et se paie au poids. Elle n'entre pas dans le prix de l'aller-retour.<span class="tags">un aller-retour</span></td><td>il faut arriver plus tôt au comptoir</td></tr><tr><td class="cle">Un sac à dos léger</td><td>Un sac à dos de trois kilos reste avec vous : un livre, un lunch, un chandail, le dépliant du parc.<span class="tags">un dépliant</span></td><td>cinq kilos au maximum</td></tr><tr><td class="cle">Les quatre à la suite</td><td>La valise dans la soute. Les médicaments avec vous. La bicyclette par messagerie. Le sac à dos et le dépliant, à votre siège.<span class="tags">la soute · un dépliant</span></td><td>les quatre cas, à la file</td></tr></tbody></table><div class="note">Faites la liste de ce que vous emporteriez, puis rangez chaque objet dans l'une des deux colonnes. C'est plus rapide que d'y penser au quai.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six phrases du comptoir.</p><table class="ex2"><tr><td>Deux bagages en soute par personne, plus un bagage à main.</td><td>la règle, en une phrase</td></tr><tr><td>Le bagage à main, c'est cinq kilos maximum.</td><td>la limite qu'on oublie</td></tr><tr><td>Est-ce que je pourrais apporter une grosse valise ?</td><td>la question polie</td></tr><tr><td>Ce qui dépasse passe par le service de messagerie.</td><td>ce qu'on répond au comptoir</td></tr><tr><td>Présentez-vous vingt minutes avant le départ.</td><td>le conseil qui compte</td></tr><tr><td>Les valises se chargent avant le départ, pas après.</td><td>et la raison du conseil</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges du départ</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">mettre ses médicaments dans la valise</p><div class="k">Ce qui arrive</div><p class="ph">huit heures sans y avoir accès, et une correspondance</p><p class="px">La soute ne s'ouvre pas en route, même aux arrêts. Médicaments, papiers, argent, téléphone, lunettes : dans le sac qui reste avec vous, toujours, quel que soit le moyen de transport.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">arriver à la dernière minute avec deux valises</p><div class="k">Ce qui arrive</div><p class="ph">le chauffeur a fermé la soute, vous prenez le suivant</p><p class="px">Le chargement se fait avant le départ. Vingt minutes, c'est la marge que les préposés recommandent d'eux-mêmes, et elle suffit — sauf si vous avez un colis à faire peser au comptoir.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">croire qu'un troisième sac passera</p><div class="k">Ce qui arrive</div><p class="ph">« c'est tout petit, ils ne diront rien »</p><p class="px">Parfois ils ne disent rien, souvent ils le disent. Un troisième bagage se règle au comptoir, au poids, et ça prend dix minutes qu'on n'a pas quand on arrive vingt minutes avant.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">Combien de bagages en soute par personne ?</span><ul class="opts"><li>un</li><li>deux</li></ul></li><li><span class="q">Le bagage à main ne doit pas dépasser…</span><ul class="opts"><li>cinq kilos</li><li>quinze kilos</li></ul></li><li><span class="q">Vos médicaments vont…</span><ul class="opts"><li>dans la soute</li><li>avec vous, à votre siège</li></ul></li><li><span class="q">On se présente au quai…</span><ul class="opts"><li>cinq minutes avant</li><li>vingt minutes avant</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> deux — Deux en soute, plus un bagage à main gardé avec soi. · <b>2.</b> cinq kilos — Cinq kilos, et cent quinze centimètres en dimensions additionnées. · <b>3.</b> avec vous, à votre siège — Avec vous. La soute ne s'ouvre pas pendant le trajet. · <b>4.</b> vingt minutes avant — Vingt minutes avant : les valises se chargent avant le départ.</div></section></section></div>
+<footer><span>B4 · Une semaine au Bic</span><span>Fiche élève</span></footer>
+</body>
+</html>

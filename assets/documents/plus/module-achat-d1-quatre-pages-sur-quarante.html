@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>D1 · Quatre pages sur quarante — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance D1 · Module 15 · 75 minutes</div>
+    <h1>Quatre pages sur quarante</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Quarante pages en trois langues. En réalité, quatre pages comptent : l'installation, la première utilisation, les avertissements, et le tableau des problèmes.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>trouver la section française d'un livret trilingue ;</li><li>repérer les quatre parties utiles ;</li><li>savoir ce qu'il faut faire avant le premier usage ;</li><li>reconnaître un avertissement.</li></ol></section><section class="bloc card"><div class="lbl">Dialogue · 1 de 2</div><h2 class="t">Le tiers du livret</h2><p class="consigne">Écoutez d'abord, diapo masquée.</p><div class="rep"><div class="qui">THÉRÈSE</div><div>Tu as reçu ta laveuse ? Tu as lu le mode d'emploi ?</div></div><div class="rep rep--key"><div class="qui">YIN</div><div>Je l'ai ouvert. Il fait quarante pages, en trois langues.</div></div><div class="rep rep--key"><div class="qui">THÉRÈSE</div><div>Il n'y a que quatre pages à lire, en réalité. Le reste, ce sont les mêmes pages en anglais et en espagnol.</div></div><div class="rep"><div class="qui">YIN</div><div>Lesquelles ?</div></div></section><section class="bloc card"><div class="lbl">Dialogue · 2 de 2</div><h2 class="t">Les quatre pages</h2><div class="rep rep--key"><div class="qui">THÉRÈSE</div><div>L'installation, la première utilisation, les avertissements, et le tableau des problèmes.</div></div><div class="rep"><div class="qui">YIN</div><div>Et la première utilisation ?</div></div><div class="rep rep--key"><div class="qui">THÉRÈSE</div><div>On fait un cycle à vide, sans linge, avant tout. Ça enlève ce qui reste de l'usine.</div></div><div class="rep rep--key"><div class="qui">THÉRÈSE</div><div>C'est écrit à la page trois. Personne ne la lit.</div></div></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Les quatre parties</h2><table><thead><tr><th>Partie</th><th>Ce qu'on y trouve</th></tr></thead><tbody><tr><td>1 · L'installation</td><td>boulons de transport, mise de niveau, raccordement</td></tr><tr><td>2 · La première utilisation</td><td>un cycle à vide, sans linge</td></tr><tr><td>3 · Les avertissements</td><td>ce qui peut blesser ou briser l'appareil</td></tr><tr><td>4 · Le tableau des problèmes</td><td>le problème, et quoi vérifier</td></tr></tbody></table><div class="note">La quatrième est la plus rentable et la moins lue.</div></section><section class="bloc regle"><div class="lbl">Les boulons de transport</div><p class="r">Quatre boulons à l'arrière, à enlever avant le premier lavage.</p><p class="pr">Ils bloquent le tambour pendant le transport. Oubliés, ils font sauter la machine au premier essorage — et le dommage n'est pas couvert par la garantie : c'est une mauvaise utilisation.</p></section><section class="bloc regle"><div class="lbl">Le cycle à vide</div><p class="r">Un lavage sans linge, avant la première brassée.</p><p class="pr">Il enlève les résidus d'usine — poussière de métal, huile de montage. Deux lignes à la page trois, que personne ne lit, et qui évitent que la première brassée sorte tachée.</p></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Jeter le livret avec l'emballage</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">Les livreurs ont tout emporté.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">Je sors le livret de la boîte avant qu'ils repartent.</p></div></div><div class="note">Le livret contient le tableau des problèmes, qui règle neuf appels de service sur dix. Un déplacement de technicien coûte environ quatre-vingt-dix dollars. Ce petit livre vaut donc plusieurs centaines de dollars sur la vie de l'appareil.</div></section><section class="bloc card"><div class="lbl">Pratique</div><h2 class="t">Dans quelle partie ?</h2><p class="consigne">Dites où se trouve chaque phrase.</p><ol class="ex"><li><span class="q">« Retirer les quatre boulons de transport. »</span><span class="ligne ligne--court"></span></li><li><span class="q">« Ajuster les pieds pour que l'appareil soit de niveau. »</span><span class="ligne ligne--court"></span></li><li><span class="q">« Effectuer un cycle à vide avant la première utilisation. »</span><span class="ligne"></span></li><li><span class="q">« Ne pas laver de vêtements imbibés de solvant. »</span><span class="ligne ligne--court"></span></li><li><span class="q">« L'appareil vibre : vérifier trois choses. »</span><span class="ligne"></span></li><li><span class="q">« L'eau ne se vide pas : vérifier le tuyau. »</span><span class="ligne"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Trouvez le mode d'emploi d'un appareil de chez vous et repérez les quatre parties.</p><ul><li>Notez la page de chacune.</li><li>Lisez la première utilisation : l'aviez-vous faite ?</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Quatre pages sur quarante</h2><section class="bloc card ml"><h3>Pourquoi c'est si épais</h3><p class="mp">Un mode d'emploi vendu au Canada contient le même texte en <b>français</b>, en <b>anglais</b>, souvent en <b>espagnol</b>. Sur quarante pages, le tiers vous concerne. Et dans ce tiers, quatre pages suffisent.</p><div class="note">Trouver la section française prend dix secondes : elle est signalée par un onglet, une couleur ou une page de garde.</div></section><section class="bloc card ml"><h3>1 · L'installation</h3><p class="mp">Ce qu'il faut enlever et vérifier avant de brancher.</p><table class="ana"><tr><td>À enlever</td><td class="">les <b>boulons de transport</b></td></tr><tr><td>À vérifier</td><td class="cle">que l'appareil est <b>de niveau</b></td></tr><tr><td>À raccorder</td><td class="">l'eau, le renvoi, la prise</td></tr></table><p class="dit"><span class="k">On dit</span> Il faut enlever les quatre boulons de transport.</p><div class="note">Les boulons bloquent le tambour pendant le transport. Oubliés, ils font sauter la machine au premier essorage — et le dommage n'est pas couvert par la garantie.</div></section><section class="bloc card ml"><h3>2 · La première utilisation</h3><p class="mp">Presque toujours un cycle à vide, sans linge.</p><table class="ana"><tr><td>Ce qu'on fait</td><td class="">un <b>cycle à vide</b></td></tr><tr><td>Pourquoi</td><td class="cle">enlever ce qui reste de l'usine</td></tr><tr><td>Où c'est écrit</td><td class="">deux lignes, page trois</td></tr></table><p class="dit"><span class="k">On dit</span> On fait un cycle à vide, sans linge, avant tout.</p><div class="note">Deux lignes que personne ne lit — et qui évitent que la première brassée sorte tachée.</div></section><section class="bloc card ml"><h3>3 · Les avertissements</h3><p class="mp">Ce qui peut blesser ou briser l'appareil. Séparés du reste, souvent avec un triangle.</p><table class="ana"><tr><td>Le signe</td><td class="">un <b>triangle</b></td></tr><tr><td>La forme</td><td class="cle">« Ne pas… »</td></tr><tr><td>La place</td><td class="">encadrés, avant le mode d'emploi</td></tr></table><p class="dit"><span class="k">On dit</span> Ne pas laver de vêtements imbibés de solvant.</p><div class="note">Sur un appareil qu'on ne connaît pas, c'est le premier bloc à lire, pas le dernier.</div></section><section class="bloc card ml"><h3>4 · Le tableau des problèmes</h3><p class="mp">À la fin. Deux colonnes : le problème à gauche, quoi vérifier à droite.</p><table class="ana"><tr><td>Colonne 1</td><td class="">le <b>problème</b></td></tr><tr><td>Colonne 2</td><td class="cle">quoi <b>vérifier</b></td></tr><tr><td>Ce que ça vaut</td><td class="">environ 90 $ par appel évité</td></tr></table><p class="dit"><span class="k">On dit</span> Neuf appels sur dix se règlent avec ce tableau.</p><div class="note">C'est la page la plus rentable de tout le livret, et la moins lue. Cornez-la le jour de la livraison.</div></section><section class="bloc card ml"><h3>Dans quelle partie ?</h3><p class="mp">Choisissez une phrase et voyez où elle se trouve.</p><table class="labo"><thead><tr><th>Quelle phrase ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">Retirer les quatre boulons.</td><td>Il faut enlever les quatre boulons de transport.<span class="tags">l'<b>installation</b></span></td><td>avant de brancher</td></tr><tr><td class="cle">Ajuster les pieds pour le niveau.</td><td>Vérifiez que l'appareil est de niveau.<span class="tags">l'<b>installation</b></span></td><td>avant de brancher</td></tr><tr><td class="cle">Effectuer un cycle à vide.</td><td>On fait un cycle à vide, sans linge, avant tout.<span class="tags">la <b>première utilisation</b></span></td><td>page trois, deux lignes</td></tr><tr><td class="cle">d.</td><td>Ne pas laver de vêtements imbibés de solvant.<span class="tags">les <b>avertissements</b></span></td><td>encadrés, avec un triangle</td></tr><tr><td class="cle">L'appareil vibre : vérifier trois choses.</td><td>Neuf appels sur dix se règlent avec ce tableau.<span class="tags">le <b>tableau des problèmes</b></span></td><td>à la fin, deux colonnes</td></tr></tbody></table><div class="note">Quatre parties, cinq phrases : c'est la structure complète du livret d'un électroménager.</div></section><section class="bloc card ml"><h3>Les phrases du module</h3><p class="mp">Écoutez chacune.</p><table class="ex2"><tr><td>Il faut enlever les quatre boulons de transport.</td><td>installation</td></tr><tr><td>Vérifiez que l'appareil est de niveau.</td><td>installation</td></tr><tr><td>On fait un cycle à vide, sans linge, avant tout.</td><td>première utilisation</td></tr><tr><td>Neuf appels sur dix se règlent avec ce tableau.</td><td>le tableau des problèmes</td></tr><tr><td>Elle vibre beaucoup à l'essorage.</td><td>un problème du tableau</td></tr><tr><td>Deux serviettes se collent d'un côté et le tambour tourne de travers.</td><td>la cause, et la solution</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges à connaître</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">jeter le livret avec l'emballage</p><div class="k">Ce qui arrive</div><p class="ph">le tableau des problèmes vaut 90 $ par appel</p><p class="px">Les livreurs repartent avec la boîte. Sortez le livret avant, et rangez-le près de l'appareil.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">laisser les boulons de transport</p><div class="k">Ce qui arrive</div><p class="ph">la machine saute, et ce n'est pas couvert</p><p class="px">C'est le dommage le plus fréquent d'une première installation, et la garantie ne le couvre pas : c'est une mauvaise utilisation.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">appeler le service avant de vérifier</p><div class="k">Ce qui arrive</div><p class="ph">trois choses à regarder d'abord</p><p class="px">Les boulons, le niveau, la répartition du linge. Cinq minutes contre quatre-vingt-dix dollars.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">Sur quarante pages, combien comptent vraiment ?</span><ul class="opts"><li>quatre</li><li>vingt</li></ul></li><li><span class="q">Les boulons de transport…</span><ul class="opts"><li>se laissent en place</li><li>s'enlèvent avant le premier lavage</li></ul></li><li><span class="q">Le tableau des problèmes se trouve…</span><ul class="opts"><li>au début</li><li>à la fin</li></ul></li><li><span class="q">Avant d'appeler le service, on vérifie…</span><ul class="opts"><li>rien, on appelle</li><li>les trois choses du tableau</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> quatre — Le reste, ce sont les autres langues et les détails. · <b>2.</b> s'enlèvent avant le premier lavage — Sinon la machine saute, et ce n'est pas couvert. · <b>3.</b> à la fin — Deux colonnes : le problème, quoi vérifier. · <b>4.</b> les trois choses du tableau — Neuf appels sur dix s'y règlent.</div></section></section></div>
+<footer><span>D1 · Acheter un appareil</span><span>Fiche élève</span></footer>
+</body>
+</html>

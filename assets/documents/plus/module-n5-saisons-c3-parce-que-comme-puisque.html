@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C3 · Parce que, comme, puisque — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance C3 · Module 12 · 75 minutes</div>
+    <h1>Parce que, comme, puisque</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">« Les gens acceptent presque tout quand ils comprennent pourquoi. » Six connecteurs pour dire la raison, et ils ne se placent pas au même endroit : choisir le bon, c'est décider ce que le lecteur entendra en premier.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>employer « parce que » après la décision, et jamais en tête de phrase ;</li><li>employer « comme » en tête de phrase, et jamais ailleurs ;</li><li>distinguer « puisque » d'« étant donné que » par le registre ;</li><li>employer « donc » et « c'est pourquoi » pour la conséquence.</li></ol></section><section class="bloc regle"><div class="lbl">Parce que vient après ; comme vient avant</div><p class="r">« La sortie est reportée parce qu'un avis est en vigueur. » « Comme un avis est en vigueur, la sortie est reportée. »</p><p class="pr">« Comme » de cause ne se place qu'en tête de phrase. Au milieu, il veut dire « de la même façon que » — autre chose.</p></section><section class="bloc"><div class="lbl">Six connecteurs</div><h2 class="t">Où chacun se place, et pour qui</h2><div class="grid"><div class="card"><h3>Parce que</h3><p>Après la décision. Le plus neutre : dans le doute, prenez celui-là.</p></div><div class="card"><h3>Comme</h3><p>En tête de phrase seulement. La situation d'abord, la décision ensuite.</p></div><div class="card"><h3>Puisque</h3><p>Une raison que l'autre connaît déjà. Sinon, il sonne prétentieux.</p></div><div class="card"><h3>Étant donné que</h3><p>Le registre de l'avis affiché et du courriel de service.</p></div><div class="card"><h3>Donc</h3><p>La conséquence, à l'oral. « Il y a un avertissement, donc on reporte. »</p></div><div class="card"><h3>C'est pourquoi</h3><p>La conséquence, à l'écrit. Il vient après la cause, jamais avant.</p></div></div></section><section class="bloc card"><div class="lbl">Deux directions</div><h2 class="t">Cause et conséquence</h2><table><thead><tr><th>Ils disent la cause</th><th>Ils disent la conséquence</th></tr></thead><tbody><tr><td>parce que</td><td>donc</td></tr><tr><td>comme</td><td>c'est pourquoi</td></tr><tr><td>puisque</td><td>par conséquent</td></tr><tr><td>étant donné que</td><td>—</td></tr></tbody></table><div class="note">Un seul connecteur par relation : jamais « comme… , donc… ».</div></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Mettre « comme » au milieu de la phrase</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">La sortie est reportée comme il y a du verglas.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">La sortie est reportée parce qu'il y a du verglas.</p></div></div><div class="note">« Comme » de cause ne se place qu'en tête. Au milieu, employez « parce que » — c'est une règle sans exception.</div></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Employer « puisque » avec une information neuve</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">Puisqu'il tombera cinq millimètres de glace, la sortie est reportée. (À quelqu'un qui l'ignore.)</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">Parce qu'il tombera cinq millimètres de glace, la sortie est reportée.</p></div></div><div class="note">« Puisque » s'appuie sur ce que l'autre sait déjà. Devant une information neuve, il donne l'impression de reprocher à l'autre de ne pas être au courant.</div></section><section class="bloc card"><div class="lbl">Grammaire</div><h2 class="t">Complétez avec le bon connecteur</h2><p class="consigne">parce que · comme · puisque · étant donné que · donc · c'est pourquoi</p><ol class="ex"><li><span class="q">La sortie est reportée ___ un avertissement est en vigueur.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ les trottoirs seront glacés, nous préférons attendre.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ vous avez tous reçu l'alerte, vous savez de quoi je parle.</span><span class="ligne ligne--court"></span></li><li><span class="q">___ un avertissement est en vigueur, l'activité du 8 est reportée.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le parc est fermé jusqu'au 20 ; ___ nous avons choisi le 22.</span><span class="ligne ligne--court"></span></li><li><span class="q">Il y a de la glace partout, ___ on ne sort pas.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Reprenez votre décision de C2 et réécrivez-la trois fois, avec trois connecteurs différents.</p><ul><li>Une version avec « parce que », une avec « comme », une avec « c'est pourquoi ».</li><li>Laquelle enverriez-vous vraiment ? Écrivez pourquoi en une ligne.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Dire pourquoi : six connecteurs de cause</h2><section class="bloc card ml"><h3>Une décision sans raison se fait discuter toute la semaine</h3><p class="mp">C'est la phrase de Réjean, et c'est vrai bien au-delà des sorties de groupe : les gens acceptent presque tout quand ils comprennent pourquoi. Le français a une demi-douzaine de façons de dire la cause, et elles ne se placent pas au même endroit dans la phrase. Choisir la bonne, c'est décider ce que le lecteur entendra en premier — la raison, ou la décision.</p><div class="note">Deux de ces six mots ne disent pas la cause mais la conséquence : « donc » et « c'est pourquoi ». On les range avec les autres parce qu'ils font le même travail, à l'envers.</div></section><section class="bloc card ml"><h3>Parce que — après la décision, toujours</h3><p class="mp">Le plus neutre et le plus courant. Il répond à la question « pourquoi ? » et il se place après ce qu'il explique. Devant une voyelle, il devient « parce qu' ».</p><table class="ana"><tr><td>La forme normale</td><td class="">La sortie est reportée parce qu'un avertissement est en vigueur.</td></tr><tr><td>En réponse à une question</td><td class="cle">— Pourquoi ? — Parce que les trottoirs seront glacés.</td></tr><tr><td>Ce qu'il ne fait pas</td><td class="">il ne commence jamais une phrase, sauf en réponse</td></tr></table><p class="dit"><span class="k">On dit</span> La sortie est reportée parce qu'un avertissement de pluie verglaçante est en vigueur.</p><div class="note">Quand vous hésitez entre les six, prenez celui-là. Il n'est jamais faux, il n'est jamais bizarre, et il ne dit rien de plus que la cause.</div></section><section class="bloc card ml"><h3>Comme — en tête de phrase, jamais ailleurs</h3><p class="mp">Il met la raison avant la décision. On l'emploie quand on veut que l'autre comprenne la situation avant d'entendre ce qu'on a décidé — souvent une bonne idée devant un groupe.</p><table class="ana"><tr><td>La forme</td><td class="">Comme les trottoirs seront glacés, la sortie est reportée.</td></tr><tr><td>Ce qui est interdit</td><td class="cle">« La sortie est reportée comme les trottoirs seront glacés. »</td></tr><tr><td>Son voisin plus lourd</td><td class="">Étant donné que les trottoirs seront glacés, …</td></tr></table><p class="dit"><span class="k">On dit</span> Comme les trottoirs seront glacés toute la journée, la sortie est reportée au vingt-deux.</p><div class="note">« Comme » en tête de phrase veut dire « parce que ». Ailleurs, il veut dire « de la même façon que » — deux mots identiques, deux emplois qui n'ont rien à voir.</div></section><section class="bloc card ml"><h3>Puisque et étant donné que — deux registres particuliers</h3><p class="mp">Puisque s'appuie sur une raison que l'autre connaît déjà. Étant donné que est la formule officielle de l'avis affiché et du courriel de service.</p><table class="ana"><tr><td>Puisque — une raison partagée</td><td class="">Puisque vous avez tous reçu l'alerte, vous savez pourquoi j'écris.</td></tr><tr><td>Étant donné que — l'écrit officiel</td><td class="cle">Étant donné qu'un avertissement est en vigueur, l'activité est reportée.</td></tr><tr><td>Le piège de puisque</td><td class="">employé avec une raison inconnue, il sonne prétentieux</td></tr></table><p class="dit"><span class="k">On dit</span> Puisque vous avez tous reçu l'alerte, vous savez pourquoi je vous écris.</p><div class="note">« Étant donné que » est un peu lourd à l'oral entre deux personnes, et parfait sur une feuille affichée à la porte du Centre. Le registre fait partie du choix.</div></section><section class="bloc card ml"><h3>Donc et c'est pourquoi — la conséquence</h3><p class="mp">Ceux-là ne disent pas la cause mais l'effet, et ils viennent après elle. La moitié de phrase qu'ils introduisent est la décision, pas la raison.</p><table class="ana"><tr><td>Donc — l'oral</td><td class="">Il y a un avertissement, donc on reporte.</td></tr><tr><td>C'est pourquoi — l'écrit</td><td class="cle">Les trottoirs seront glacés ; c'est pourquoi la sortie est reportée.</td></tr><tr><td>Leur cousin</td><td class="">par conséquent — encore plus écrit, presque administratif</td></tr></table><p class="dit"><span class="k">On dit</span> Les trottoirs seront glacés toute la journée ; c'est pourquoi la sortie est reportée.</p><div class="note">On ne met jamais deux connecteurs pour la même relation : « comme il y a un avertissement, donc on reporte » en dit un de trop. Un seul suffit, toujours.</div></section><section class="bloc card ml"><h3>La même décision, cinq façons de la dire</h3><p class="mp">Choisissez un connecteur et écoutez la phrase entière.</p><table class="labo"><thead><tr><th>Quel connecteur ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">parce que</td><td>La sortie est reportée parce qu'un avertissement de pluie verglaçante est en vigueur.<span class="tags">reporter · un avertissement</span></td><td>la décision d'abord, la raison ensuite</td></tr><tr><td class="cle">comme</td><td>Comme les trottoirs seront glacés toute la journée, la sortie est reportée au vingt-deux.<span class="tags">reporter</span></td><td>la raison d'abord : en tête de phrase seulement</td></tr><tr><td class="cle">puisque</td><td>Puisque vous avez tous reçu l'alerte, vous savez déjà de quoi je parle.<span class="tags">un avertissement</span></td><td>une raison que l'autre connaît déjà</td></tr><tr><td class="cle">étant donné que</td><td>Étant donné qu'un avertissement est en vigueur, l'activité du huit est reportée au vingt-deux.<span class="tags">un avertissement · reporter</span></td><td>le registre de l'avis affiché</td></tr><tr><td class="cle">c'est pourquoi</td><td>Le parc est fermé jusqu'au vingt ; c'est pourquoi nous avons choisi le samedi vingt-deux.<span class="tags">reporter</span></td><td>la conséquence, après la cause</td></tr></tbody></table><div class="note">Écoutez les cinq à la suite : c'est exactement la même décision, et elle ne fait pas du tout le même effet. C'est ça, choisir un connecteur.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six phrases complètes, décision et raison.</p><table class="ex2"><tr><td>La sortie est reportée parce qu'un avertissement est en vigueur.</td><td>le plus neutre des six</td></tr><tr><td>Comme les trottoirs seront glacés, nous préférons attendre.</td><td>la raison en premier</td></tr><tr><td>Puisque vous avez reçu l'alerte, vous savez de quoi je parle.</td><td>une raison partagée</td></tr><tr><td>Étant donné qu'un avis est en vigueur, l'activité est reportée au 22.</td><td>le registre de l'écrit officiel</td></tr><tr><td>Le parc est fermé ; c'est pourquoi nous avons choisi le 22.</td><td>la conséquence, à l'écrit</td></tr><tr><td>Il y a de la glace partout, donc on ne sort pas.</td><td>la conséquence, à l'oral</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges des connecteurs de cause</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">mettre « comme » au milieu de la phrase</p><div class="k">Ce qui arrive</div><p class="ph">« la sortie est reportée comme il y a du verglas »</p><p class="px">« Comme » de cause ne se place qu'en tête de phrase. Au milieu, employez « parce que ». C'est une règle sans exception, et elle règle la moitié des fautes de ce point.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">doubler le connecteur</p><div class="k">Ce qui arrive</div><p class="ph">« comme il y a un avertissement, donc on reporte »</p><p class="px">Une seule relation, un seul mot. Soit « comme… , on reporte », soit « il y a un avertissement, donc on reporte ». Les deux ensemble sonnent comme une phrase qui recommence.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">employer « puisque » avec une raison inconnue</p><div class="k">Ce qui arrive</div><p class="ph">« puisqu'il y aura cinq millimètres de glace » à quelqu'un qui l'ignore</p><p class="px">« Puisque » s'appuie sur ce que l'autre sait déjà. Devant une information neuve, il donne l'impression de reprocher à l'autre de ne pas être au courant. Prenez « parce que ».</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">« Comme » de cause se place…</span><ul class="opts"><li>en tête de phrase</li><li>après la décision</li></ul></li><li><span class="q">Le connecteur le plus neutre des six, c'est…</span><ul class="opts"><li>puisque</li><li>parce que</li></ul></li><li><span class="q">« C'est pourquoi » introduit…</span><ul class="opts"><li>la cause</li><li>la conséquence</li></ul></li><li><span class="q">Sur un avis affiché à la porte, on écrirait plutôt…</span><ul class="opts"><li>étant donné que</li><li>donc</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> en tête de phrase — En tête de phrase, toujours. Ailleurs, employez « parce que ». · <b>2.</b> parce que — « Parce que ». Dans le doute, prenez celui-là. · <b>3.</b> la conséquence — La conséquence : la décision, pas la raison. · <b>4.</b> étant donné que — « Étant donné que » : c'est le registre de l'écrit officiel.</div></section></section></div>
+<footer><span>C3 · Quand la météo décide</span><span>Fiche élève</span></footer>
+</body>
+</html>

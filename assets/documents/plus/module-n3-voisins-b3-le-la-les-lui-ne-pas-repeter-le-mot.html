@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B3 · Le, la, les, lui : ne pas répéter le mot — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance B3 · Module 9 · 60 minutes</div>
+    <h1>Le, la, les, lui : ne pas répéter le mot</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Une demande polie qui répète trois fois « mon vélo » devient lourde. Quatre petits mots suffisent à ne rien redire — encore faut-il savoir lequel prendre.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>remplacer un nom déjà dit par « le », « la » ou « les » ;</li><li>employer « lui » quand la personne est précédée de « à » ;</li><li>placer le petit mot avant le verbe ;</li><li>reconnaître le seul cas où il passe derrière.</li></ol></section><section class="bloc regle"><div class="lbl">Le français déteste répéter</div><p class="r">Mon vélo gêne : je vais le mettre dans la remise.</p><p class="pr">Le mot « le » remplace « mon vélo », qui vient d'être dit. On ne redit jamais un nom que l'autre a déjà entendu dans la phrase d'avant.</p></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Quel petit mot, pour quoi</h2><table><thead><tr><th>Ce qu'on remplace</th><th>Le petit mot</th></tr></thead><tbody><tr><td>une chose masculine — mon vélo</td><td class="cle">le : je le mets dans la remise</td></tr><tr><td>une chose féminine — la tondeuse</td><td class="cle">la : je la laisse passer</td></tr><tr><td>plusieurs choses — mes clés</td><td class="cle">les : je les remets ce soir</td></tr><tr><td>une personne avec « à » devant — à monsieur Nadeau</td><td class="cle">lui : je lui parle</td></tr></tbody></table><div class="note">Les trois premiers changent avec le genre et le nombre. « Lui » ne change jamais : il vaut pour un homme comme pour une femme.</div></section><section class="bloc regle"><div class="lbl">Il se place avant le verbe</div><p class="r">Je le mets. Je lui parle. Je les remets.</p><p class="pr">Toujours devant, jamais derrière — sauf à l'impératif, quand on donne un ordre ou un conseil : « Accrochez-le au mur ! »</p></section><section class="bloc card"><div class="lbl">Écriture</div><h2 class="t">Complétez avec le, la, les ou lui</h2><p class="consigne">Cherchez d'abord ce que le petit mot remplace.</p><ol class="ex"><li><span class="q">Mon vélo gêne : je vais ___ mettre dans la remise.</span><span class="ligne ligne--court"></span></li><li><span class="q">La clé de la remise ? Le concierge ___ garde chez lui.</span><span class="ligne ligne--court"></span></li><li><span class="q">J'ai trouvé des clés dans l'escalier. Je vais ___ remettre ce soir.</span><span class="ligne ligne--court"></span></li><li><span class="q">Monsieur Nadeau est en bas : je vais ___ demander la clé.</span><span class="ligne"></span></li><li><span class="q">Madame Lachapelle m'a aidé. Je vais ___ dire merci.</span><span class="ligne"></span></li><li><span class="q">Mes boîtes sont encore pleines : je vais ___ vider ce soir.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Répéter le nom au lieu de le remplacer</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">Je vais mettre mon vélo dans la remise, mon vélo est dans le corridor.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">Mon vélo est dans le corridor : je vais le mettre dans la remise.</p></div></div><div class="note">Répéter n'est pas une faute de grammaire — c'est une faute de ton. La phrase devient lourde, et l'autre a l'impression qu'on lui parle comme à un enfant. Le petit mot est ce qui rend la demande adulte.</div></section><section class="bloc card"><div class="lbl">Écriture</div><h2 class="t">Réécrivez sans répéter</h2><p class="consigne">Une seule phrase, avec le petit mot au bon endroit.</p><ol class="ex"><li><span class="q">J'ai trouvé un trousseau de clés. Je vais remettre le trousseau ce soir.</span><span class="ligne"></span></li><li><span class="q">La corde à linge est libre. Je vais utiliser la corde à linge demain.</span><span class="ligne"></span></li><li><span class="q">Monsieur Nadeau a la clé. Je vais demander la clé à monsieur Nadeau.</span><span class="ligne"></span></li><li><span class="q">Mes voisins m'ont aidé. Je veux dire merci à mes voisins.</span><span class="ligne"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Réécrivez votre demande de B2 en supprimant les répétitions.</p><ul><li>Trois phrases, et le nom de l'objet une seule fois.</li><li>« Ma poussette bloque l'entrée. Est-ce que je pourrais la mettre dans la remise ? »</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Le, la, les, lui : ne pas répéter le mot</h2><section class="bloc card ml"><h3>Le français déteste répéter</h3><p class="mp">« Mon vélo gêne. Je vais mettre mon vélo dans la remise. » Personne ne parle ainsi. On remplace le deuxième « mon vélo » par un petit mot : <b>je vais le mettre dans la remise</b>. Ce petit mot se choisit selon ce qu'il remplace, et il se place toujours au même endroit.</p><div class="note">C'est le point de grammaire qui fait le plus vite « parler comme tout le monde ». Quatre mots à ranger, et la phrase devient naturelle.</div></section><section class="bloc card ml"><h3>Une chose masculine : le</h3><p class="mp">Il remplace un nom masculin déjà nommé.</p><table class="ana"><tr><td>On dit</td><td class="">Mon vélo ? Je <b>le</b> mets dans la remise.</td></tr><tr><td>Aussi</td><td class="cle">Le courrier ? Je <b>le</b> monte.</td></tr><tr><td>Devant une voyelle</td><td class="">Je <b>l'</b>accroche au mur.</td></tr></table><p class="dit"><span class="k">On dit</span> Mon vélo ? Je le mets dans la remise.</p><div class="note">Devant a, e, i, o, u, le mot perd sa voyelle : je l'accroche, je l'ouvre, je l'apporte.</div></section><section class="bloc card ml"><h3>Une chose féminine : la</h3><p class="mp">Il remplace un nom féminin déjà nommé.</p><table class="ana"><tr><td>On dit</td><td class="">La tondeuse ? Je <b>la</b> laisse passer.</td></tr><tr><td>Aussi</td><td class="cle">La clé ? Le concierge <b>la</b> garde.</td></tr><tr><td>Devant une voyelle</td><td class="">L'affiche ? Je <b>l'</b>ai vue ce matin.</td></tr></table><p class="dit"><span class="k">On dit</span> La tondeuse ? Je la laisse passer.</p><div class="note">Au son, « je le mets » et « je la mets » ne se distinguent que par une voyelle. Écoute-la : c'est elle qui dit de quoi on parle.</div></section><section class="bloc card ml"><h3>Plusieurs choses : les</h3><p class="mp">Un seul mot pour le masculin et le féminin.</p><table class="ana"><tr><td>On dit</td><td class="">Mes clés ? Je <b>les</b> remets ce soir.</td></tr><tr><td>Aussi</td><td class="cle">Mes boîtes ? Je <b>les</b> vide ce soir.</td></tr><tr><td>Toujours</td><td class="">le s se prononce devant une voyelle : je <b>les</b> ai vues</td></tr></table><p class="dit"><span class="k">On dit</span> Mes clés ? Je les remets ce soir.</p><div class="note">Rien à choisir au pluriel : « les » sert dans tous les cas. C'est le plus facile des quatre.</div></section><section class="bloc card ml"><h3>Une personne à qui on parle : lui</h3><p class="mp">Quand le mot « à » est devant la personne.</p><table class="ana"><tr><td>On dit</td><td class="">Je parle <b>à</b> monsieur Nadeau → je <b>lui</b> parle.</td></tr><tr><td>Aussi</td><td class="cle">Je dis merci <b>à</b> ma voisine → je <b>lui</b> dis merci.</td></tr><tr><td>Le test</td><td class="">le verbe demande-t-il « à quelqu'un » ?</td></tr></table><p class="dit"><span class="k">On dit</span> Monsieur Nadeau est en bas : je lui parle tout de suite.</p><div class="note">« Lui » vaut pour un homme comme pour une femme. C'est le petit mot qui surprend le plus au début.</div></section><section class="bloc card ml"><h3>Où se place le petit mot</h3><p class="mp">Une seule règle, et une seule exception.</p><table class="ana"><tr><td>La règle</td><td class="">toujours <b>avant</b> le verbe : je <b>le</b> mets</td></tr><tr><td>Avec deux verbes</td><td class="cle">avant le second : je vais <b>le</b> mettre</td></tr><tr><td>L'exception</td><td class="">à l'impératif, il passe après : accrochez-<b>le</b> !</td></tr></table><p class="dit"><span class="k">On dit</span> Accrochez-le au mur du fond, s'il vous plaît.</p><div class="note">À l'impératif, le petit mot se colle au verbe avec un trait d'union : accrochez-le, dis-lui, remets-les.</div></section><section class="bloc card ml"><h3>Remplace le mot</h3><p class="mp">Choisis ce dont tu parles et le moment.</p><table class="labo"><thead><tr><th>Tu parles de quoi ? · Quel verbe ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">mon vélo + maintenant</td><td>Je le mets dans la remise.</td><td>masculin singulier</td></tr><tr><td class="cle">mon vélo + tout à l'heure</td><td>Je vais le mettre dans la remise.</td><td>avec deux verbes, il passe avant le second</td></tr><tr><td class="cle">la clé + maintenant</td><td>Le concierge la garde chez lui.</td><td>féminin singulier</td></tr><tr><td class="cle">la clé + tout à l'heure</td><td>Je vais la lui demander.</td><td>deux petits mots, dans cet ordre</td></tr><tr><td class="cle">mes clés + maintenant</td><td>Je les remets ce soir.</td><td>pluriel : un seul mot possible</td></tr><tr><td class="cle">mes clés + tout à l'heure</td><td>Je vais les remettre ce soir.</td><td>même place qu'au singulier</td></tr><tr><td class="cle">monsieur Nadeau + maintenant</td><td>Je lui parle tout de suite.</td><td>on parle À quelqu'un : lui</td></tr><tr><td class="cle">monsieur Nadeau + tout à l'heure</td><td>Je vais lui demander la clé.</td><td>on demande À quelqu'un : lui</td></tr></tbody></table><div class="note">Regarde la place : le petit mot est toujours collé devant le verbe qui compte, jamais après.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six phrases d'immeuble.</p><table class="ex2"><tr><td>Mon vélo gêne : je vais le mettre dans la remise.</td><td>le, masculin</td></tr><tr><td>La clé ? Le concierge la garde chez lui.</td><td>la, féminin</td></tr><tr><td>J'ai trouvé des clés : je vais les remettre ce soir.</td><td>les, pluriel</td></tr><tr><td>Monsieur Nadeau est en bas : je vais lui demander.</td><td>lui, la personne</td></tr><tr><td>Madame Lachapelle m'a aidé : je vais lui dire merci.</td><td>lui, au féminin aussi</td></tr><tr><td>Accrochez-le au mur du fond.</td><td>à l'impératif, il passe après</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges à connaître</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">placer le petit mot après le verbe</p><div class="k">Ce qui arrive</div><p class="ph">« Je mets le dans la remise. »</p><p class="px">En français, il vient avant : je le mets. La seule exception est l'impératif : accrochez-le.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">employer « le » pour une personne à qui on parle</p><div class="k">Ce qui arrive</div><p class="ph">« Je le parle. »</p><p class="px">Le verbe « parler » demande « à quelqu'un » : je lui parle. Le test tient en une question — le verbe demande-t-il « à » ?</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">répéter le nom quand même</p><div class="k">Ce qui arrive</div><p class="ph">« Mon vélo, je le mets mon vélo dans la remise. »</p><p class="px">Une seule fois suffit : ou le nom, ou le petit mot, jamais les deux dans la même phrase.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">« Mes clés ? Je ___ remets. »</span><ul class="opts"><li>le</li><li>les</li></ul></li><li><span class="q">« Je parle à monsieur Nadeau » devient…</span><ul class="opts"><li>je le parle</li><li>je lui parle</li></ul></li><li><span class="q">Le petit mot se place…</span><ul class="opts"><li>avant le verbe</li><li>après le verbe</li></ul></li><li><span class="q">« La tondeuse ? Je ___ laisse passer. »</span><ul class="opts"><li>le</li><li>la</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> les — Au pluriel, un seul mot possible : les. · <b>2.</b> je lui parle — Le verbe demande « à quelqu'un » : c'est « lui ». · <b>3.</b> avant le verbe — Sauf à l'impératif : accrochez-le. · <b>4.</b> la — « Tondeuse » est féminin : la.</div></section></section></div>
+<footer><span>B3 · L'escalier de la rue Dézéry</span><span>Fiche élève</span></footer>
+</body>
+</html>

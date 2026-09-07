@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B3 · Le décor : l'imparfait — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance B3 · Module 11 · 75 minutes</div>
+    <h1>Le décor : l'imparfait</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Il était quatre heures. Tout le monde dormait. Il ventait fort. L'immeuble avait quatre logements. Rien n'y commence ni n'y finit : c'est la toile de fond sur laquelle l'évènement va se planter.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>former l'imparfait à partir du radical du « nous » du présent ;</li><li>reconnaître ce qui se met à l'imparfait dans un fait divers ;</li><li>repérer les mots qui appellent l'imparfait ;</li><li>construire une phrase à deux temps, décor et évènement.</li></ol></section><section class="bloc regle"><div class="lbl">Une seule série de terminaisons, pour tous les verbes</div><p class="r">-ais · -ais · -ait · -ions · -iez · -aient. Sans exception, d'un bout à l'autre du français.</p><p class="pr">On les colle au radical du « nous » du présent : nous dorm-ons donne il dormait ; nous fais-ons donne il faisait ; nous pren-ons donne elle prenait. Un seul verbe sort du rang, et c'est être : j'étais, tu étais, il était.</p></section><section class="bloc card"><div class="lbl">Le décor</div><h2 class="t">Ce qu'on met à l'imparfait</h2><table><thead><tr><th>Ce qu'on dit</th><th>La phrase</th></tr></thead><tbody><tr><td>L'heure</td><td class="cle">Il était quatre heures du matin.</td></tr><tr><td>Le temps qu'il faisait</td><td class="cle">Il ventait fort. Il pleuvait depuis trois jours.</td></tr><tr><td>Ce que les gens faisaient</td><td class="cle">Tout le monde dormait dans l'immeuble.</td></tr><tr><td>Ce qui existait déjà</td><td class="cle">L'immeuble avait quatre logements.</td></tr><tr><td>Ce qui durait</td><td class="cle">La rivière montait depuis trois jours.</td></tr></tbody></table></section><section class="bloc"><div class="lbl">Les mots qui trahissent l'imparfait</div><h2 class="t">Quand vous les voyez, la situation dure</h2><div class="grid"><div class="card"><h3>pendant que</h3><p>Pendant que les pompiers travaillaient, la police fermait la rue.</p></div><div class="card"><h3>depuis</h3><p>La rivière montait depuis trois jours.</p></div><div class="card"><h3>quand</h3><p>Il dormait quand il a entendu l'alarme.</p></div><div class="card"><h3>toujours, encore, chaque fois</h3><p>Les portes des cabanons n'étaient jamais barrées.</p></div></div></section><section class="bloc regle"><div class="lbl">La phrase à deux temps, à savoir par cœur</div><p class="r">Il dormait quand il a entendu l'alarme.</p><p class="pr">L'imparfait pose la toile de fond, le passé composé y plante l'évènement. L'eau montait déjà quand la Ville a distribué les sacs de sable. Changez les deux de place et la phrase ne veut plus rien dire.</p></section><section class="bloc card"><div class="lbl">Écriture</div><h2 class="t">Mettez le verbe à l'imparfait</h2><p class="consigne">Le radical vient du « nous » du présent.</p><ol class="ex"><li><span class="q">Il ___ (être) quatre heures du matin.</span><span class="ligne ligne--court"></span></li><li><span class="q">Tout le monde ___ (dormir) dans l'immeuble.</span><span class="ligne ligne--court"></span></li><li><span class="q">La rivière ___ (monter) depuis trois jours.</span><span class="ligne ligne--court"></span></li><li><span class="q">L'immeuble ___ (avoir) quatre logements.</span><span class="ligne ligne--court"></span></li><li><span class="q">Les portes des cabanons ___ (ne pas être) barrées.</span><span class="ligne ligne--court"></span></li><li><span class="q">Pendant que les pompiers ___ (travailler), la police fermait la rue.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Mettre à l'imparfait ce qui s'est passé une fois</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">Les pompiers arrivaient huit minutes après l'appel.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">Les pompiers sont arrivés huit minutes après l'appel.</p></div></div><div class="note">« Huit minutes après l'appel » désigne un moment précis : c'est un évènement, donc le passé composé. L'imparfait aurait voulu dire qu'ils arrivaient toujours en huit minutes, chaque fois.</div></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Chercher un radical d'imparfait dans l'infinitif</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">faire, donc il fairait</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">nous faisons, donc il faisait</p></div></div><div class="note">Le radical de l'imparfait ne vient jamais de l'infinitif : il vient toujours du « nous » du présent. Prenez le nous, enlevez -ons, ajoutez la terminaison. Trois gestes, et aucune exception sauf être.</div></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez deux phrases de décor et une phrase à deux temps.</p><ul><li>Le décor : l'heure, le temps qu'il faisait, ce que les gens faisaient.</li><li>La phrase à deux temps : quelque chose durait quand un évènement est arrivé.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>L'imparfait, ou le décor autour de l'évènement</h2><section class="bloc card ml"><h3>Le temps le plus régulier du français</h3><p class="mp">L'imparfait n'a qu'une série de terminaisons — ais, ais, ait, ions, iez, aient — et elles valent pour tous les verbes de la langue, sans exception. On les colle au radical du « nous » du présent : nous dormons donne il dormait, nous faisons donne il faisait, nous prenons donne elle prenait. Un seul verbe échappe à la règle, et c'est « être » : j'étais, tu étais, il était.</p><div class="note">C'est le temps le plus facile du français et le plus mal employé par les personnes qui l'apprennent — non pas parce que la forme est difficile, mais parce qu'on ne sait pas quand s'en servir.</div></section><section class="bloc card ml"><h3>Ce qu'on met à l'imparfait</h3><p class="mp">Tout ce qui était déjà là quand l'évènement est arrivé : l'heure, le temps qu'il faisait, ce que les gens faisaient, l'état des choses. Rien n'y commence, rien n'y finit.</p><table class="ana"><tr><td>L'heure et le temps</td><td class="cle">il était quatre heures · il ventait · il pleuvait</td></tr><tr><td>Ce que les gens faisaient</td><td class="">tout le monde dormait · elle lisait le journal</td></tr><tr><td>L'état des choses</td><td class="">l'immeuble avait quatre logements · la rue était déserte</td></tr></table><p class="dit"><span class="k">On dit</span> Il était quatre heures. Tout le monde dormait. La rue était déserte.</p><div class="note">Ces trois phrases-là ouvrent le deuxième paragraphe de presque tous les faits divers d'incendie. Elles ne racontent rien ; elles installent la scène pour que le reste se comprenne.</div></section><section class="bloc card ml"><h3>Les mots qui appellent l'imparfait</h3><p class="mp">Certains mots annoncent que la situation durait. Dès que vous les voyez ou que vous les employez, le verbe qui suit est presque toujours à l'imparfait.</p><table class="ana"><tr><td>La durée</td><td class="cle">depuis trois jours · pendant que · encore</td></tr><tr><td>L'habitude</td><td class="">chaque matin · tous les mardis · toujours</td></tr><tr><td>Le décor</td><td class="">il y avait · c'était · on voyait</td></tr></table><p class="dit"><span class="k">On dit</span> La rivière montait depuis trois jours. Chaque matin, elle lisait le journal.</p><div class="note">« Depuis » est le plus fiable des trois. « La rivière montait depuis trois jours » : impossible de mettre le passé composé là, la phrase ne veut plus rien dire.</div></section><section class="bloc card ml"><h3>La phrase à deux temps, celle qu'il faut savoir par cœur</h3><p class="mp">L'imparfait plante la toile de fond, le passé composé y accroche l'évènement. Les deux dans la même phrase, séparés par « quand » ou « pendant que ».</p><table class="ana"><tr><td>Le feu</td><td class="cle">il dormait quand il a entendu l'alarme</td></tr><tr><td>L'eau</td><td class="">l'eau montait déjà quand la Ville a distribué les sacs</td></tr><tr><td>Le vol</td><td class="">le cabanon était ouvert quand ils sont entrés</td></tr></table><p class="dit"><span class="k">On dit</span> Il dormait quand il a entendu l'alarme. L'eau montait déjà quand la Ville a distribué les sacs.</p><div class="note">Dites ces deux phrases à voix haute cinq fois. Cette structure-là revient dans chaque récit du module, dans chaque fait divers du journal, et dans à peu près toutes les histoires qu'on raconte à table.</div></section><section class="bloc card ml"><h3>Le décor, puis l'évènement</h3><p class="mp">Choisissez une scène et écoutez le décor à l'imparfait, suivi de l'évènement au passé composé.</p><table class="labo"><thead><tr><th>Quelle scène ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">l'incendie de la rue Alexandre</td><td>Il était quatre heures et tout le monde dormait. Le feu a éclaté dans la cuisine du deuxième.<span class="tags">un incendie</span></td><td>deux imparfaits, puis un passé composé</td></tr><tr><td class="cle">l'inondation de la rue des Peupliers</td><td>La rivière montait depuis trois jours. Lundi, la Ville a distribué des sacs de sable.<span class="tags">une inondation</span></td><td>la durée, puis l'évènement daté</td></tr><tr><td class="cle">les vols de vélos du quartier</td><td>Les portes des cabanons n'étaient pas barrées. En un mois, une trentaine de vélos ont disparu.<span class="tags">un cabanon · un vol</span></td><td>l'état des choses, puis le bilan</td></tr><tr><td class="cle">les trois scènes à la suite</td><td>Il était quatre heures et tout le monde dormait. La rivière montait depuis trois jours. Les cabanons n'étaient pas barrés.<span class="tags">un incendie · une inondation · un vol</span></td><td>trois décors, sans les évènements</td></tr></tbody></table><div class="note">La dernière option ne donne que les décors. Écoutez-la : vous entendrez que rien ne se passe. C'est exactement ce que fait un récit tout à l'imparfait.</div></section><section class="bloc card ml"><h3>À écouter et à répéter</h3><p class="mp">Six phrases de décor, prises dans les trois nouvelles du module.</p><table class="ex2"><tr><td>Il était quatre heures du matin.</td><td>le seul verbe irrégulier</td></tr><tr><td>Tout le monde dormait dans l'immeuble.</td><td>radical du « nous » du présent</td></tr><tr><td>La rivière montait depuis trois jours.</td><td>« depuis » appelle l'imparfait</td></tr><tr><td>L'immeuble avait quatre logements.</td><td>l'état des choses</td></tr><tr><td>Les portes des cabanons n'étaient pas barrées.</td><td>négation à l'imparfait</td></tr><tr><td>Pendant que les pompiers travaillaient, la police fermait la rue.</td><td>deux imparfaits en même temps</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges de l'imparfait</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">raconter tout le fait divers à l'imparfait</p><div class="k">Ce qui arrive</div><p class="ph">« le feu éclatait, les pompiers arrivaient, ils éteignaient »</p><p class="px">L'imparfait ne fait pas avancer l'histoire : il la met en pause. Un récit entièrement à l'imparfait donne une scène figée où rien n'arrive jamais. Les évènements veulent le passé composé.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">oublier le i de « nous » et « vous »</p><div class="k">Ce qui arrive</div><p class="ph">« nous travaillons » au lieu de « nous travaillions »</p><p class="px">Aux deux premières personnes du pluriel, l'imparfait ajoute un i : nous travaillions, vous travailliez. Ça ne s'entend presque pas dans certains verbes, mais ça se voit à l'écrit — et le courriel de « Je me lance » est à l'écrit.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">mettre le passé composé après « depuis »</p><div class="k">Ce qui arrive</div><p class="ph">« la rivière est montée depuis trois jours »</p><p class="px">« Depuis » dit qu'une chose durait encore : imparfait. « La rivière montait depuis trois jours. » Le passé composé fermerait la durée, et « depuis » la garde ouverte : les deux se contredisent.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">Combien de verbes sont irréguliers à l'imparfait ?</span><ul class="opts"><li>un seul, être</li><li>une trentaine</li></ul></li><li><span class="q">« La rivière ___ depuis trois jours » se complète par…</span><ul class="opts"><li>est montée</li><li>montait</li></ul></li><li><span class="q">L'imparfait sert à…</span><ul class="opts"><li>faire avancer l'histoire</li><li>planter le décor</li></ul></li><li><span class="q">À la première personne du pluriel, on écrit…</span><ul class="opts"><li>nous travaillions</li><li>nous travaillons</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> un seul, être — Un seul : être. Tous les autres suivent le radical du « nous » du présent. · <b>2.</b> montait — Montait. « Depuis » garde la durée ouverte : imparfait. · <b>3.</b> planter le décor — Planter le décor. Les évènements se disent au passé composé. · <b>4.</b> nous travaillions — Nous travaillions, avec un i : c'est la marque de l'imparfait.</div></section></section></div>
+<footer><span>B3 · Raconter une nouvelle</span><span>Fiche élève</span></footer>
+</body>
+</html>
