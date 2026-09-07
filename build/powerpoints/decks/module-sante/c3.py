@@ -54,7 +54,11 @@ def build(dossier):
        notes="C'est l'exercice 3 du défi 2. Faire justifier chaque forme : nom ou "
              "infinitif, voyelle ou consonne.")
 
-    d.capture('l3', "Avoir besoin de")
+    # `capture` n'existe que dans theme.Deck : les présentations la portent,
+    # les fiches imprimées non. Sans cette garde, le module entier refusait
+    # de se régénérer en fiches — c'est la convention des autres decks.
+    if hasattr(d, 'capture'):
+        d.capture('l3', "Avoir besoin de")
 
     d.piege("Le piège du « de » qui saute",
             "J'ai besoin un rendez-vous.",

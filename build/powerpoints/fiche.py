@@ -54,7 +54,26 @@ from theme import C, SECTIONS
 
 
 def esc(t):
-    return (str(t).replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;'))
+    """Échappe le HTML, et pose les espaces insécables du français.
+
+    La règle typographique — une espace insécable devant `? ! ; :` et à
+    l'intérieur des guillemets — n'est pas ici pour la beauté. C'est elle qui
+    empêche une ponctuation de se retrouver **seule sur la ligne suivante** :
+    le titre « Qu'est-ce que vous cherchez, exactement ? » sortait sur trois
+    lignes, la troisième ne portant que le point d'interrogation.
+
+    L'insécable ordinaire (U+00A0) plutôt que la fine (U+202F), qui serait plus
+    juste : ces feuilles sont photocopiées, et une fine que la police ne porte
+    pas laisse un rectangle vide au milieu du texte. Sur du papier, un défaut
+    qu'on ne peut plus corriger vaut moins qu'une espace un peu large.
+
+    C'est le seul entonnoir par lequel passe tout le texte d'une fiche ; les
+    noms de fichiers, eux, viennent de `_slug()` sur le titre brut et ne sont
+    donc pas touchés.
+    """
+    t = str(t).replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+    t = re.sub(r'[ ]+([?!;:»])', '\u00a0\\1', t)
+    return re.sub(r'(«)[ ]+', '\\1\u00a0', t)
 
 
 def _slug(s):

@@ -67,7 +67,11 @@ def build(dossier):
        notes="Dire chaque heure une seule fois, au rythme normal du téléphone. Répéter "
              "seulement si un élève le DEMANDE — c'est l'exercice de B4 qui commence ici.")
 
-    d.capture('co2', "L'heure du rendez-vous")
+    # `capture` n'existe que dans theme.Deck : les présentations la portent,
+    # les fiches imprimées non. Sans cette garde, le module entier refusait
+    # de se régénérer en fiches — c'est la convention des autres decks.
+    if hasattr(d, 'capture'):
+        d.capture('co2', "L'heure du rendez-vous")
 
     d.cartes('Analyse', "Faire répéter, poliment", [
         ("Demander de répéter",

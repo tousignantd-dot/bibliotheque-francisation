@@ -68,7 +68,11 @@ def build(dossier):
        notes="C'est l'exercice 2 du défi 2. Faire dire chaque phrase complète à voix "
              "haute après l'avoir écrite.")
 
-    d.capture('l2', "Les verbes pronominaux")
+    # `capture` n'existe que dans theme.Deck : les présentations la portent,
+    # les fiches imprimées non. Sans cette garde, le module entier refusait
+    # de se régénérer en fiches — c'est la convention des autres decks.
+    if hasattr(d, 'capture'):
+        d.capture('l2', "Les verbes pronominaux")
 
     d.piege("Le piège du pronom oublié",
             "Je sens fatiguée.",

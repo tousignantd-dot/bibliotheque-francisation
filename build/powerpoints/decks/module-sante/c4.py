@@ -54,7 +54,11 @@ def build(dossier):
        notes="C'est l'exercice 4 du défi 2. Les indices entre parenthèses sont ceux du "
              "module : les garder, ils évitent de deviner.")
 
-    d.capture('l4', "Les adverbes d'intensité")
+    # `capture` n'existe que dans theme.Deck : les présentations la portent,
+    # les fiches imprimées non. Sans cette garde, le module entier refusait
+    # de se régénérer en fiches — c'est la convention des autres decks.
+    if hasattr(d, 'capture'):
+        d.capture('l4', "Les adverbes d'intensité")
 
     d.piege("Le piège du trop qui veut dire très",
             "Ce médecin est trop gentil !",
