@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
 <link rel="stylesheet" href="assets/design-system/marque-francis.css">
 <link rel="icon" type="image/svg+xml" href="assets/design-system/marque-francis-favicon.svg">
 <style>
@@ -259,6 +260,116 @@
     .onglets{margin-right:0}
   }
   @media (prefers-reduced-motion:reduce){*{transition-duration:0ms!important}}
+
+  /* ═══════════════════════════════════════════════════════════════════
+     UN SECOND SYSTÈME DE DESIGN, SUR LE MÊME DOCUMENT
+     Le classeur sert de banc d'essai : le bouton « habillage » de la barre
+     pose `data-systeme` sur la racine, et tout ce qui suit s'allume.
+
+     Ajouter un troisième système, c'est trois gestes et rien d'autre :
+       1. un bloc `:root[data-systeme="<nom>"]{…}` qui redonne les VALEURS
+          des jetons — jamais leurs noms, sinon la feuille au-dessus casse ;
+       2. les quelques règles qu'un jeton ne porte pas, préfixées du même
+          sélecteur — police de lecture, formes, ombres, barre de marque ;
+       3. le nom ajouté au tableau SYSTEMES, en bas de page.
+     Rien à supprimer pour revenir en arrière : l'habillage par défaut est
+     celui de francis, et c'est lui qui s'affiche si le nom est inconnu.
+     ═════════════════════════════════════════════════════════════════ */
+
+  /* ---------- Trame : les valeurs des jetons ---------- */
+  :root[data-systeme="trame"]{
+    /* L'action est en encre, jamais en couleur ; l'indigo — la « chaîne » —
+       porte les liens et le focus. */
+    --accent:#14161F;      --accent-soft:#E4E6F3;  --accent-ink:#1E2A78;
+    --surface-band:#E9A63B;   /* le champ de marque, une fois par écran */
+    --ink-900:#14161F; --ink-700:#3B3D46; --ink-500:#4A4C55; --ink-400:#6A6B6E;
+    --surface-page:#F4EEE1; --surface-card:#FBF8F1; --surface-sunken:#F1EADB;
+    --paper-200:#EAE2D0;
+    --border:#DDD4C2; --border-firm:#C4B99F; --border-tint:rgba(20,22,31,.16);
+    /* Trame n'a pas cinq couleurs de section : un seul ocre de sur-titre,
+       et les formats redeviennent neutres. */
+    --acier-600:#6A6B6E; --acier-100:#EAE2D0;
+    --ambre-700:#8A5A0A; --ambre-100:#F6E6C8;
+    --teal-700:#6A6B6E;  --teal-100:#EAE2D0;
+    --foret-700:#8A5A0A;
+    --font-sans:"Manrope",ui-sans-serif,system-ui,"Helvetica Neue",Arial,sans-serif;
+    --font-lecture:"Source Serif 4",Georgia,"Times New Roman",serif;
+    --fs-body:17px; --fs-body-sm:16px;
+    --lh-title:1.18; --ls-hero:-0.03em; --ls-title:-0.02em; --ls-label:0.08em;
+    --r-sm:2px; --r-md:6px; --r-lg:6px; --r-pill:2px;   /* les angles restent des angles */
+    --sh-card:none; --sh-raise:none;                     /* le tissu est plat */
+    --ease:cubic-bezier(.4,0,.2,1);
+    --focus-ring:#1E2A78;
+  }
+  /* ---------- Trame : ce qu'un jeton ne porte pas ---------- */
+  :root[data-systeme="trame"] body{font-weight:500}
+  :root[data-systeme="trame"] h1,
+  :root[data-systeme="trame"] h2,
+  :root[data-systeme="trame"] .fiche .titre,
+  :root[data-systeme="trame"] .note b{font-weight:800}   /* Manrope s'arrête à 800 */
+  :root[data-systeme="trame"] .eyebrow,
+  :root[data-systeme="trame"] .surtitre,
+  :root[data-systeme="trame"] .btn,
+  :root[data-systeme="trame"] .onglet,
+  :root[data-systeme="trame"] .eti,
+  :root[data-systeme="trame"] .date,
+  :root[data-systeme="trame"] .ou{font-weight:700}
+  /* Ce qui se lit longtemps se lit en serif. */
+  :root[data-systeme="trame"] .chapeau,
+  :root[data-systeme="trame"] .tete p,
+  :root[data-systeme="trame"] .fiche .quoi,
+  :root[data-systeme="trame"] .note p,
+  :root[data-systeme="trame"] .vide{font-family:var(--font-lecture); font-weight:400; line-height:1.6}
+  :root[data-systeme="trame"] .fiche .quoi b,
+  :root[data-systeme="trame"] .note p b,
+  :root[data-systeme="trame"] .chapeau b{font-weight:600; color:var(--ink-900)}
+  :root[data-systeme="trame"] .eyebrow{color:var(--ambre-700)}
+  /* Un format n'est pas un signal : filet plutôt qu'aplat. */
+  :root[data-systeme="trame"] .eti{background:transparent; border:1px solid var(--border-firm);
+    color:var(--ink-500); text-transform:none; letter-spacing:0}
+  /* Le bandeau porte le motif de fils ; le pied redescend sur l'écru. */
+  :root[data-systeme="trame"] .bande{background-image:
+    repeating-linear-gradient(0deg, rgba(20,22,31,.10) 0 1px, transparent 1px 16px),
+    repeating-linear-gradient(90deg, rgba(20,22,31,.10) 0 1px, transparent 1px 16px)}
+  :root[data-systeme="trame"] .bande .surtitre{color:var(--ink-900); opacity:.75}
+  :root[data-systeme="trame"] .bande .chapeau{color:var(--ink-900)}
+  :root[data-systeme="trame"] footer{background:var(--paper-200)}
+  /* Manrope est plus large que Nunito : la date ne tenait plus dans sa colonne. */
+  :root[data-systeme="trame"] table.index .c-date{width:8.75rem}
+  :root[data-systeme="trame"] table.index .c-fam{width:7rem}
+  :root[data-systeme="trame"] table.index .c-type{width:7.5rem}
+  :root[data-systeme="trame"] table.index td.c-date,
+  :root[data-systeme="trame"] table.index .t-lien{font-size:var(--fs-label)}
+
+  /* ---------- Les barres de marque : une par système ---------- */
+  /* Les deux sont dans le document ; l'habillage choisit laquelle paraît. */
+  .tr-barre,.tr-logo{display:none}
+  :root[data-systeme="trame"] .fr-barre,
+  :root[data-systeme="trame"] footer .fr-nom{display:none}
+  :root[data-systeme="trame"] .tr-barre{display:block}
+  :root[data-systeme="trame"] .tr-logo{display:inline-flex}
+  .tr-barre{background:var(--surface-card); border-bottom:1px solid var(--border)}
+  .tr-barre__in{max-width:var(--content-max); margin:0 auto; padding:14px var(--gutter);
+    display:flex; align-items:center; gap:var(--sp-3)}
+  .tr-logo{align-items:center; gap:.28em; color:var(--ink-900); font-size:1.25rem; line-height:1}
+  .tr-logo svg{width:.62em; height:.62em; flex-shrink:0; display:block}
+  .tr-logo .mot{font-weight:800; letter-spacing:-.045em}
+  .tr-trait{width:1px; height:1.1rem; background:var(--border-firm)}
+  .tr-desc{font-family:var(--font-lecture,inherit); font-size:var(--fs-ui); color:var(--ink-400)}
+  @media (max-width:520px){.tr-trait,.tr-desc{display:none}}
+
+  /* ---------- Le bouton d'habillage ---------- */
+  /* La barre de francis vient d'une feuille extérieure et n'est pas une
+     boîte flexible : sans cette ligne, le bouton tombe sous le logotype. */
+  .fr-barre__in{display:flex; align-items:center; gap:var(--sp-3)}
+  .habillage{margin-left:auto; display:inline-flex; align-items:center; gap:var(--sp-2);
+    appearance:none; font:inherit; font-size:var(--fs-label); font-weight:800;
+    background:transparent; color:var(--ink-400); border:1px solid var(--border-firm);
+    border-radius:var(--r-pill); padding:5px 12px; cursor:pointer;
+    transition:color var(--dur) var(--ease), border-color var(--dur) var(--ease)}
+  .habillage:hover{color:var(--ink-900); border-color:var(--ink-400)}
+  .habillage .puce{width:11px; height:11px; border-radius:var(--r-pill);
+    background:var(--accent); border:1px solid var(--border-firm)}
 </style>
 </head>
 <body>
@@ -270,6 +381,16 @@
       <span class="fr-trait" aria-hidden="true"></span>
       <span class="fr-desc">Aide à l'apprentissage du français</span>
     </div>
+    <button type="button" class="habillage" id="habillage" title="Changer le système de design de cette page"><span class="puce" aria-hidden="true"></span><span class="nom">francis</span></button>
+  </div>
+</div>
+
+<div class="tr-barre">
+  <div class="tr-barre__in">
+    <span class="tr-logo" role="img" aria-label="Trame"><svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g fill="currentColor"><rect x="4" y="10" width="3.5" height="8"/><rect x="20.5" y="10" width="19.5" height="8"/><rect x="4" y="26" width="19.5" height="8"/><rect x="36.5" y="26" width="3.5" height="8"/><rect x="10" y="4" width="8" height="19.5"/><rect x="10" y="36.5" width="8" height="3.5"/><rect x="26" y="4" width="8" height="3.5"/><rect x="26" y="20.5" width="8" height="19.5"/></g></svg><span class="mot">Trame</span></span>
+    <span class="tr-trait" aria-hidden="true"></span>
+    <span class="tr-desc">Le classeur du projet francis</span>
+    <button type="button" class="habillage" id="habillage2" title="Changer le système de design de cette page"><span class="puce" aria-hidden="true"></span><span class="nom">francis</span></button>
   </div>
 </div>
 
@@ -2231,26 +2352,26 @@
           </div>
         </article>
 
-<article class="fiche" data-cle="essai classeur habille trame systeme de design maison comparaison avant apres decision migration site entier jetons manrope source serif ocre indigo angles sans ombre">
+<article class="fiche" data-cle="habillage systeme de design bascule essai erreur banc d essai trame francis jetons comparer avant apres bouton barre ajouter un troisieme">
           <div>
-            <h3 class="titre">Le classeur en Trame — un essai</h3>
-            <p class="quoi"><b>La même page, habillée du système de la maison, pour trancher avant de l'appliquer partout.</b>
-            Écru et encre à la place du blanc et du gris, <b>le bandeau de tête en champ ocre</b> avec son motif de fils,
-            Manrope pour les titres et <b>Source Serif pour tout ce qui se lit</b> — les résumés des fiches passent en serif.
-            Les angles remplacent les arrondis, les ombres disparaissent, l'action passe du vert à l'encre et les liens à l'indigo.
-            Deux partis pris à regarder de près : <b>les cinq couleurs de section disparaissent</b> au profit d'un seul ocre de sur-titre,
-            et <b>les étiquettes de format redeviennent neutres</b> — un format n'est pas un signal.
-            Le classeur en service n'est pas touché : la variante <b>se régénère depuis lui</b> par <code>build/classeur_trame.py</code>,
-            donc une fiche ajoutée se retrouve dans les deux. Si la réponse est non, deux fichiers à supprimer.</p>
+            <h3 class="titre">Le banc d'essai des habillages</h3>
+            <p class="quoi"><b>Le bouton en haut à droite change le système de design de cette page.</b>
+            Deux habillages pour l'instant : <b>francis</b>, celui du site, et <b>Trame</b>, celui de la maison —
+            écru et encre, bandeau ocre à motif de fils, Manrope pour les titres et <b>Source Serif pour tout ce qui se lit</b>,
+            angles au lieu d'arrondis, aucune ombre, action en encre et liens en indigo. Le choix tient d'une visite à l'autre.
+            Deux partis pris de Trame à regarder de près : <b>les cinq couleurs de section disparaissent</b> au profit d'un seul
+            ocre de sur-titre, et <b>les étiquettes de format redeviennent neutres</b> — un format n'est pas un signal.
+            <b>En ajouter un troisième tient en trois gestes</b>, écrits en commentaire dans la feuille : un bloc de valeurs de jetons,
+            les quelques règles qu'un jeton ne porte pas, et une ligne dans la liste. Les <b>noms</b> des jetons ne changent jamais —
+            c'est ce qui permet d'habiller 3 000 lignes de feuille sans les réécrire, et ce qui rend le retour en arrière gratuit.</p>
             <div class="meta">
               <span class="eti eti-page">Page du site</span>
               <span class="date">7 septembre 2026</span>
-              <span class="ou">presentations-trame.html · build/classeur_trame.py</span>
+              <span class="ou">presentations.html · le bouton de la barre</span>
             </div>
           </div>
           <div class="actions">
-            <a class="btn" href="presentations-trame.html" target="_blank" rel="noopener">Voir l'essai</a>
-            <a class="btn btn-2" href="presentations.html" target="_blank" rel="noopener">Comparer</a>
+            <a class="btn" href="assets/presentations/trame/systeme.html" target="_blank" rel="noopener">Le système Trame</a>
           </div>
         </article>
 
@@ -2809,6 +2930,7 @@
 <footer>
   <div class="conteneur">
     <span class="fr-nom" role="img" aria-label="francis">franc<span class="fr-i" aria-hidden="true">ı<span class="fr-point"></span></span>s</span>
+    <span class="tr-logo" role="img" aria-label="Trame" style="font-size:1.05rem"><svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g fill="currentColor"><rect x="4" y="10" width="3.5" height="8"/><rect x="20.5" y="10" width="19.5" height="8"/><rect x="4" y="26" width="19.5" height="8"/><rect x="36.5" y="26" width="3.5" height="8"/><rect x="10" y="4" width="8" height="19.5"/><rect x="10" y="36.5" width="8" height="3.5"/><rect x="26" y="4" width="8" height="3.5"/><rect x="26" y="20.5" width="8" height="19.5"/></g></svg><span class="mot">Trame</span></span>
     <!-- La date est posée au chargement, jamais écrite ici : elle annonçait
          le 20 août sous des fiches datées du 31. Même maladie que le compte
          du chapeau, même remède — on lit ce qui est là. -->
@@ -3103,6 +3225,46 @@
   // La vue choisie tient d'une visite à l'autre : celui qui vient chercher
   // vite y revient toujours. Un navigateur qui refuse le stockage retombe
   // sur les fiches, ce qui est la vue par défaut de toute façon.
+  // ── L'habillage : quel système de design porte la page ────────────
+  // Le classeur sert de banc d'essai. Pour en ajouter un : un bloc
+  // `:root[data-systeme="<nom>"]` dans la feuille, ses règles préfixées du
+  // même sélecteur, et une ligne ici. Le premier de la liste s'affiche par
+  // défaut, et c'est vers lui qu'on retombe si le nom gardé ne veut plus
+  // rien dire — un habillage supprimé ne doit pas laisser une page à
+  // moitié dessinée.
+  var SYSTEMES = [
+    { cle: '', nom: 'francis', favicon: 'assets/design-system/marque-francis-favicon.svg' },
+    { cle: 'trame', nom: 'Trame', favicon: 'assets/presentations/trame/favicon.svg' }
+  ];
+  var boutonsHabillage = [document.getElementById('habillage'),
+                          document.getElementById('habillage2')].filter(Boolean);
+  var icone = document.querySelector('link[rel="icon"]');
+
+  function poserSysteme(cle) {
+    var sys = SYSTEMES.filter(function (x) { return x.cle === cle; })[0] || SYSTEMES[0];
+    if (sys.cle) document.documentElement.setAttribute('data-systeme', sys.cle);
+    else document.documentElement.removeAttribute('data-systeme');
+    boutonsHabillage.forEach(function (b) {
+      b.querySelector('.nom').textContent = sys.nom;
+      b.setAttribute('aria-label', 'Habillage : ' + sys.nom + '. Changer de système de design.');
+    });
+    if (icone) icone.href = sys.favicon;
+    try { localStorage.setItem('classeur-systeme', sys.cle); } catch (e) {}
+  }
+
+  boutonsHabillage.forEach(function (b) {
+    b.addEventListener('click', function () {
+      var actuel = document.documentElement.getAttribute('data-systeme') || '';
+      var i = 0;
+      SYSTEMES.forEach(function (x, n) { if (x.cle === actuel) i = n; });
+      poserSysteme(SYSTEMES[(i + 1) % SYSTEMES.length].cle);
+    });
+  });
+
+  var systemeGarde = '';
+  try { systemeGarde = localStorage.getItem('classeur-systeme') || ''; } catch (e) {}
+  poserSysteme(systemeGarde);
+
   var vueGardee = 'fiches';
   try { vueGardee = localStorage.getItem('classeur-vue') || 'fiches'; } catch (e) {}
   poserVue(vueGardee === 'tableau');
