@@ -66,6 +66,19 @@ def build(dossier):
     ], notes="Reprendre les quatre mots de la séance A1 : temps plein, temps partiel, "
              "permanent, contrat. Ils reviennent ici dans un texte réel.")
 
+    d.document('Le document', "L'offre de Boisverte, au complet", [
+        "BOISVERTE — COMMIS À L'INVENTAIRE. Longueuil. Offre affichée le 1er mars.",
+        "L'entreprise. Boisverte fabrique des meubles en bois massif depuis 1998. Quarante employés, à Longueuil.",
+        "Les tâches. Tenir l'inventaire de l'entrepôt à jour. Recevoir les livraisons et vérifier les quantités. Préparer les commandes pour l'expédition. Signaler les écarts entre le décompte et le système.",
+        "Les exigences. Deux ans d'expérience en entrepôt sont requis. Français fonctionnel à l'oral et à l'écrit. Capacité à soulever des charges de 20 kg. La connaissance d'un logiciel d'inventaire est un atout. L'anglais serait apprécié. Une expérience dans le domaine du meuble serait un plus.",
+        "Les conditions. Poste permanent, 37,5 h par semaine, du lundi au vendredi. Assurance collective après trois mois.",
+        "Pour postuler. Faire parvenir votre curriculum vitae avant le 15 mars, à l'attention de Robert Chartier, chef d'entrepôt.",
+    ], source="C'est l'offre que Marisol et Djamila viennent de lire. Le bloc B entier "
+              "y revient ; ceux qui ont apporté la leur travaillent sur la leur.",
+       notes="Le tableau qui suit nomme les quatre parties : les faire trouver d'abord "
+             "ici, au doigt, avant de les nommer. Les six lignes des exigences sont "
+             "exactement celles de l'exercice `t1exig` du module.")
+
     d.tableau('Analyse', "Les quatre parties, dans l'ordre",
               ['La partie', 'Ce qu\'on y trouve'],
               [["1. L'entreprise", "Ce qu'elle fait, depuis quand, combien d'employés."],
@@ -87,7 +100,7 @@ def build(dossier):
                   "bloc C se fait ici.")
 
     d.pratique('Compréhension', "Vrai ou faux ?",
-               "Répondez d'après le dialogue et l'offre projetée.", [
+               "Répondez d'après les dialogues et l'offre ci-dessus.", [
         ("Boisverte fabrique des meubles depuis 1998.", "vrai"),
         ("« Signaler les écarts » est une des tâches.", "vrai"),
         ("Connaître le logiciel est obligatoire.", "faux — c'est un atout"),

@@ -102,8 +102,24 @@ def build(dossier):
                     "protège la personne de bonne foi. Loi sur la santé et la sécurité "
                     "du travail, articles 12 et 13, vérifiés le 22 août 2026.")
 
-    d.pratique('Compréhension', "Le programme de prévention et la loi",
-               "Répondez d'après le document projeté au module.", [
+    d.document('Le document', "Le programme de prévention, et la loi", [
+        "PROGRAMME DE PRÉVENTION — MEUBLES RIVE-DU-NORD. Section 3 : manutention manuelle. Mise à jour du 14 janvier.",
+        "3.1 L'établissement comptant vingt travailleurs ou plus, il élabore, applique et met à jour annuellement un programme de prévention. La présente section porte sur les postes où des charges sont soulevées à la main.",
+        "3.2 Sont visés les postes 3, 4 et 7. Le risque retenu est la manutention répétitive de charges prises sous la hauteur des genoux.",
+        "3.3 Mesures retenues : réduire le nombre de flexions par quart, maintenir la charge entre la hauteur des genoux et celle des épaules, et former le personnel aux techniques de levage.",
+        "3.4 Le comité de santé et de sécurité se réunit quatre fois par année. Au moins la moitié de ses membres, dont la représentante en santé et en sécurité, représentent les travailleurs.",
+        "LOI SUR LA SANTÉ ET LA SÉCURITÉ DU TRAVAIL — extraits.",
+        "Article 12. Un travailleur a le droit de refuser d'exécuter un travail s'il a des motifs raisonnables de croire que l'exécution de ce travail l'expose à un danger pour sa santé, sa sécurité ou son intégrité physique, ou peut avoir l'effet d'exposer une autre personne à un semblable danger.",
+        "Article 13. Le travailleur ne peut cependant pas refuser si ce refus met en péril immédiat la vie, la santé, la sécurité ou l'intégrité physique d'une autre personne, ou si les conditions d'exécution de ce travail sont normales dans le genre de travail qu'il exerce.",
+        "En cas de désaccord, l'inspecteur de la CNESST détermine s'il existe ou non un danger justifiant le refus.",
+    ], source="Un extrait du document interne, puis deux articles de la loi. Les deux "
+              "premiers blocs sont écrits par l'employeur ; les deux articles, non.",
+       notes="Le texte même de l'exercice `t2cnesst`. Les articles 12 et 13 sont cités "
+             "au mot près : c'est le seul endroit du module où l'on ne reformule pas. "
+             "Faire remarquer le changement de voix entre 3.4 et l'article 12.")
+
+    d.pratique('Compréhension', "Six questions sur le document",
+               "Répondez d'après le document et les articles ci-dessus.", [
         ("À partir de combien de travailleurs un programme est-il obligatoire ?", "vingt"),
         ("À quelle fréquence se met-il à jour ?", "chaque année"),
         ("Qui élit le représentant en santé et en sécurité ?", "les travailleurs"),

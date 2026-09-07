@@ -858,6 +858,75 @@ class Deck:
                  "Ouvrir ensuite le module sur les postes.")
         return sl
 
+    # ── gabarit 11 · le document source ─────────────────────────────
+    def document(self, surtitre, titre, paras, source=None, notes=''):
+        """Le document que la séance fait lire — un ordre du jour, une note de
+        service, une offre d'emploi — posé dans la séance elle-même.
+
+        Il est né d'un défaut de la fiche élève : cinq séances posaient leurs
+        questions « d'après le document projeté au module », c'est-à-dire
+        d'après quelque chose que la feuille ne portait pas et que l'élève
+        n'a plus sous les yeux le soir. Le PowerPoint y gagne du même coup :
+        l'enseignante n'a plus à ouvrir l'activité interactive en parallèle
+        pour montrer le texte.
+
+        Les passages ne sont pas mis en évidence : dans le module, ce sont
+        les réponses. Un document trop long se poursuit sur une diapositive
+        « (suite) » — la fiche, elle, n'a pas de hauteur à respecter.
+        """
+        tw = CONTENT_W - 0.9
+        haut_source = (h_of(source, FS['body_sm'], False, CONTENT_W, 1.3)
+                       if source else 0.0)
+
+        def pages(size):
+            """Découpe le document en diapositives à ce corps-là."""
+            dispo = FOOT_Y - 0.3 - (BODY_TOP + 0.12)
+            reste, pages_ = list(paras), []
+            while reste:
+                libre = dispo - (haut_source + SP[5] if not pages_ and source
+                                 else 0) - 0.56
+                pris, haut = [], 0.0
+                for par in reste:
+                    hh = h_of(par, size, False, tw, 1.45)
+                    # Le blanc entre deux paragraphes ne se compte qu'entre
+                    # deux paragraphes : l'ajouter au dernier renvoyait à la
+                    # diapositive suivante un paragraphe qui tenait.
+                    if pris and haut + SP[4] + hh > libre:
+                        break
+                    haut += (SP[4] if pris else 0) + hh
+                    pris.append(par)
+                pages_.append((pris, haut))
+                reste = reste[len(pris):]
+            return pages_
+
+        # Un document se lit d'un coup. On cherche donc le plus GRAND corps
+        # qui tienne sur le plus PETIT nombre de diapositives : rapetisser
+        # pour rien fatigue la dernière rangée, et couper pour rien fait
+        # perdre le fil. Rien ne descend sous le plancher de projection.
+        essais = [(len(pages(t)), -t, t) for t in range(FS['body_sm'], FS_MIN - 1, -1)]
+        size = min(essais)[2]
+
+        sl = None
+        for i, (pris, haut) in enumerate(pages(size)):
+            sl = self._new()
+            self._entete(sl, surtitre, titre if not i else titre + ' (suite)')
+            y = BODY_TOP + 0.12
+            if not i and source:
+                sl.text(source, MARGIN, y, CONTENT_W, haut_source + 0.04,
+                        size=FS['body_sm'], color='ink_400', autofit=False)
+                y += haut_source + SP[5]
+            self._carte(sl, MARGIN, y, CONTENT_W, haut + 0.56)
+            cy = y + 0.28
+            for par in pris:
+                hh = h_of(par, size, False, tw, 1.45)
+                sl.text(par, MARGIN + 0.45, cy, tw, hh + 0.04, size=size,
+                        color='ink_700', lh=1.45, autofit=False)
+                cy += hh + SP[4]
+            sl.notes(notes if not i else
+                     "Suite du document. Laisser le temps de le lire en entier "
+                     "avant de poser la première question.")
+        return sl
+
     # ── gabarit 10 · vocabulaire ────────────────────────────────────
     def vocabulaire(self, surtitre, titre, mots, notes=''):
         """mots = [(mot, définition)] — l'article fait partie du mot."""

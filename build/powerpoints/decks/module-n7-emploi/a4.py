@@ -69,8 +69,20 @@ def build(dossier):
                   "d'établissement ou à une assemblée de copropriétaires : le même mot "
                   "y a le même sens.")
 
-    d.pratique('Compréhension', "L'ordre du jour du 8 septembre",
-               "Répondez d'après le document projeté au module.", [
+    d.document('Le document', "L'ordre du jour du 8 septembre", [
+        "MEUBLES RIVE-DU-NORD — RÉUNION DE PRODUCTION. Lundi 8 septembre, de 8 h à 9 h 15, salle Bellerive. Convocation : Renaud Cormier, chef de production.",
+        "Personnes convoquées : les cinq chefs d'équipe, la coordonnatrice adjointe à l'expédition et la représentante en santé et en sécurité. Absence à signaler à la réception avant le vendredi 16 h.",
+        "1. Réaménagement du quai d'expédition — présentation du projet, douze minutes suivies d'une période de questions. R. Cormier.",
+        "2. Retards de livraison du mois d'août — tour de table. Les chefs d'équipe.",
+        "3. Rappel de la procédure de cadenassage — cinq minutes. T. Lapointe.",
+        "4. Varia. Les points de varia se demandent en début de réunion, pas pendant.",
+        "Document joint : le relevé des temps d'attente de juillet et d'août, deux pages. Le procès-verbal de la réunion du 25 août est déposé pour adoption.",
+    ], notes="Le texte même de l'exercice `prOrdre`. Le projeter et laisser lire en "
+             "silence deux minutes avant la première question : c'est le premier texte "
+             "suivi du module, et plusieurs élèves n'ont jamais lu d'ordre du jour.")
+
+    d.pratique('Compréhension', "Ce que dit l'ordre du jour",
+               "Répondez d'après l'ordre du jour ci-dessus.", [
         ("Quand la réunion a-t-elle lieu, et pendant combien de temps ?", "le lundi 8 septembre, de 8 h à 9 h 15"),
         ("Qui convoque la réunion ?", "Renaud Cormier, chef de production"),
         ("Combien de temps dure la présentation du point 1 ?", "douze minutes, puis les questions"),

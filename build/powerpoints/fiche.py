@@ -71,9 +71,40 @@ def esc(t):
     noms de fichiers, eux, viennent de `_slug()` sur le titre brut et ne sont
     donc pas touchés.
     """
-    t = str(t).replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+    t = _sans_ecran(str(t))
+    t = t.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
     t = re.sub(r'[ ]+([?!;:»])', '\u00a0\\1', t)
     return re.sub(r'(«)[ ]+', '\\1\u00a0', t)
+
+
+# Ce qu'une consigne écrite pour la classe dit, et ce qu'elle doit dire sur
+# une feuille qui se relit seule. L'ordre compte : les tournures les plus
+# longues d'abord, sinon la plus courte les ampute.
+_ECRANS = [
+    (r"(?:sur|à|de|dans)\s+la\s+diapositive\s+suivante", "ci-dessous"),
+    (r"(?:sur|à|de|dans)\s+la\s+diapositive\s+précédente", "ci-dessus"),
+    (r"la\s+diapositive\s+suivante", "la suite, ci-dessous"),
+    (r"la\s+diapositive\s+précédente", "ce qui précède"),
+    (r"(?:le\s+)?tableau\s+suivant", "le tableau ci-dessous"),
+    (r",?\s*diapositive\s+masquée", ", sans lire le texte"),
+]
+
+
+def _sans_ecran(t):
+    """Une fiche élève ne montre jamais du doigt un écran qu'elle n'a pas.
+
+    « Répondez en regardant la diapositive précédente » n'a aucun sens sur une
+    feuille photocopiée : le tableau y est juste au-dessus. « Écoutez d'abord,
+    diapositive masquée » est une consigne adressée à l'enseignante, imprimée
+    par accident sur la feuille de l'élève — 160 fois.
+
+    Le même texte reste juste dans le PowerPoint, où il y a bel et bien une
+    diapositive : c'est la fiche seule qui traduit, à la volée. Les notes
+    d'enseignant ne passent pas par ici et gardent donc leurs mots.
+    """
+    for motif, remplacement in _ECRANS:
+        t = re.sub(motif, remplacement, t, flags=re.I)
+    return t
 
 
 def _slug(s):
@@ -198,6 +229,19 @@ td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en
 .duo .ok .k{color:var(--ink)}
 .duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
 .duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── le document source, imprimé sur la feuille ────────────────────
+   Une séance qui fait lire un ordre du jour, une note de service ou
+   une offre d'emploi doit porter le document, sinon la feuille ne
+   se relit pas seule. Le cadre le désigne comme une pièce reproduite
+   et non comme un propos de la fiche ; le corps y descend d'un cran,
+   parce qu'un document se lit de près et qu'il tient alors sur une
+   seule page avec ses questions. ──────────────────────────────── */
+.doc-in{border:1.5px solid var(--rule); border-radius:8px;
+        padding:10px 12px 11px}
+.doc-in p{font-size:10.5pt; line-height:1.45; margin-bottom:6px}
+.doc-in p:last-child{margin-bottom:0}
+.doc-in p.ent{font-weight:900; color:var(--ink); letter-spacing:.02em}
 
 /* ── Vocabulaire ── */
 .voc{width:100%; border-collapse:collapse}
@@ -348,6 +392,27 @@ class Deck:
                      f'<td class="def">{esc(d)}</td></tr>' for m, d in mots)
         self._add('<section class="bloc card">' + self._tete(surtitre, titre)
                   + f'<table class="voc"><tbody>{tr}</tbody></table></section>')
+        return self
+
+    def document(self, surtitre, titre, paras, source=None, notes=''):
+        """Le document que la séance fait lire, imprimé au complet.
+
+        C'est la pièce maîtresse de l'autonomie de la feuille : une fiche qui
+        pose six questions « d'après le document projeté » est inutilisable
+        à la maison, où il n'y a ni projecteur ni module ouvert. Le document
+        descend donc sur le papier, juste avant les questions qu'il sert.
+
+        Les passages ne sont jamais mis en évidence : dans le module, ce sont
+        exactement les réponses. Le premier paragraphe, s'il tient sur une
+        ligne, est traité comme un en-tête de document.
+        """
+        src = f'<p class="consigne">{esc(source)}</p>' if source else ''
+        ps = ''
+        for i, p in enumerate(paras):
+            cl = ' class="ent"' if i == 0 and len(p) <= 60 else ''
+            ps += f'<p{cl}>{esc(p)}</p>'
+        self._add('<section class="bloc card">' + self._tete(surtitre, titre)
+                  + src + f'<div class="doc-in">{ps}</div></section>')
         return self
 
     def billet(self, consigne, exemples=None, notes=''):

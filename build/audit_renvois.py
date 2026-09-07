@@ -13,13 +13,17 @@ quelque chose qu'elle ne porte pas. Ce contrôle balaie les 1 265 fiches de
 façon :
 
 1. **Le document source n'est pas sur la feuille.** L'exercice est
-   inapplicable seul. Cinq fiches — à trancher une par une, parce que la
-   réponse dépend de la taille du document.
+   inapplicable seul. Cinq fiches, refermées par le gabarit `document()`, qui
+   imprime le document au complet — et le projette aussi.
 2. **Le renvoi nomme un écran, mais le contenu est là.** « Les trois derniers
    sujets sont sur la diapositive suivante » : ils sont juste dessous, dans un
    bloc « (suite) ». Le mot ment, le document non.
 3. **Une consigne de classe imprimée sur la feuille de l'élève.** « Écoutez
    d'abord, diapositive masquée » s'adresse à la classe, pas au lecteur.
+
+Les cas 2 et 3 sont refermés par `_sans_ecran()`, dans `fiche.py`. Les trois
+chiffres doivent donc rester à **zéro** : ce fichier n'est plus un relevé,
+c'est un contrôle.
 
 Le balayage lit **le corps** des fiches, jamais leur feuille de style : le CSS
 des fiches contient lui-même « qu'à l'écran », et le compter donnait 2 537
@@ -40,26 +44,6 @@ import sys
 RACINE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DOCS = os.path.join(RACINE, 'assets', 'documents')
 PAGE = os.path.join(RACINE, 'assets', 'presentations', 'renvois-des-fiches.html')
-
-# Ce qui manque, pour les cinq fiches du premier cas. Écrit à la main : c'est
-# un jugement sur le document, pas quelque chose qui se déduit du texte.
-MANQUE = {
-    'module-n6-recherche-b1': ("l’offre d’emploi Boisverte",
-        "Les six énoncés restent répondables depuis les trois dialogues et la "
-        "règle, qui sont sur la feuille. C’est la consigne qui renvoie à côté."),
-    'module-n2-couloirs-b1': ("le plan du centre",
-        "Le plan est un document visuel : sans lui, aucun des six énoncés ne "
-        "peut être tranché. C’est la fiche la plus cassée des cinq."),
-    'module-n7-emploi-a4': ("l’ordre du jour du 8 septembre",
-        "Un ordre du jour tient en quinze lignes : c’est le plus facile des "
-        "trois à imprimer sur la feuille."),
-    'module-n7-emploi-c4': ("l’extrait de la loi sur le programme de prévention",
-        "Un texte de loi cité au long alourdirait la feuille ; un extrait de "
-        "cinq lignes suffirait aux questions posées."),
-    'module-n7-emploi-d1': ("la note de service d’Aïcha",
-        "Une note de service est courte et c’est le genre même que la séance "
-        "enseigne : la lire sur papier vaut mieux que la lire projetée."),
-}
 
 CAS1 = re.compile(r"(?:d'après|regardant)[^.]{0,60}(?:projet[ée]e?|diapositive)", re.I)
 CAS2 = re.compile(r"(?:diapositive (?:précédente|suivante)|tableau suivant)", re.I)
@@ -115,30 +99,32 @@ def _mille(n):
 
 
 def rendre(total, un, deux, trois):
-    def lignes(items, avec_manque=False):
-        out = []
-        for c, titre, ctx in items:
-            manque = MANQUE.get(c)
-            out.append(
-                '<tr><td class="q"><code>%s</code><small>%s</small></td>'
-                '<td>%s%s</td></tr>'
-                % (e(c), e(titre),
-                   ('<b>%s</b><small>%s</small>' % (e(manque[0]), e(manque[1])))
-                   if avec_manque and manque else '',
-                   ('<span class="cit">…%s…</span>' % e(ctx)) if ctx else ''))
-        return ''.join(out)
-
-    modules3 = sorted({c.rsplit('-', 1)[0] for c, _, _ in trois})
+    """La page n'énumère plus les défauts : ils sont refermés, et elle dit
+    comment. Elle n'énumère que ce qui serait REVENU — un renvoi neuf posé
+    dans un deck après coup. Tant que les trois chiffres valent zéro, il n'y
+    a rien à lire de plus que la méthode."""
+    reste = ''
+    if un or deux or trois:
+        lignes = ''.join(
+            '<tr><td class="q"><code>%s</code><small>%s</small></td>'
+            '<td><span class="cit">…%s…</span></td></tr>' % (e(c), e(t), e(ctx))
+            for c, t, ctx in (un + deux + trois))
+        reste = ('<div class="tete"><h2>Un renvoi est revenu</h2>'
+                 '<span class="badge b-loi">À reprendre</span></div>'
+                 '<p>Ces fiches ont été écrites ou modifiées depuis, et elles '
+                 'renvoient de nouveau à quelque chose qu\'elles ne portent pas. '
+                 'Le gabarit <code>document()</code> et <code>_sans_ecran()</code> '
+                 'existent : c\'est le deck qu\'il faut reprendre.</p>'
+                 '<div class="defile"><table><thead><tr><th>La fiche</th>'
+                 '<th>Ce qu\'elle dit</th></tr></thead><tbody>%s</tbody></table></div>'
+                 % lignes)
     with io.open(PAGE, 'w', encoding='utf-8') as f:
         f.write(GABARIT
                 .replace('{{TOTAL}}', _mille(total))
                 .replace('{{N1}}', str(len(un)))
                 .replace('{{N2}}', str(len(deux)))
                 .replace('{{N3}}', str(len(trois)))
-                .replace('{{M3}}', str(len(modules3)))
-                .replace('{{TABLE1}}', lignes(un, avec_manque=True))
-                .replace('{{TABLE2}}', lignes(deux))
-                .replace('{{LISTE3}}', ' · '.join('<code>%s</code>' % e(m) for m in modules3)))
+                .replace('{{RESTE}}', reste))
     print('✓ %s' % os.path.relpath(PAGE, RACINE))
 
 
@@ -243,21 +229,20 @@ td small{display:block;color:var(--muted);font-size:13px;line-height:1.45;margin
 <body>
 <div class="doc">
 <a class="retour" href="/presentations.html"><span aria-hidden="true">&#8592;</span> Le classeur</a>
-<p class="eyebrow">Bibliothèque de francisation · 7 septembre 2026 · relevé</p>
+<p class="eyebrow">Bibliothèque de francisation · 7 septembre 2026 · refermé</p>
 <h1>Ce que les fiches montrent sans le porter</h1>
 <p class="chapeau">Une fiche de séance est une <strong>feuille volante</strong> : l'élève la
 relit chez lui, sans le diaporama et sans la classe. Elle ne devrait donc jamais renvoyer à
-quelque chose qu'elle ne porte pas. Les <strong>{{TOTAL}} fiches</strong> ont été balayées.
-Trois cas en sortent, et ils ne se règlent pas de la même façon.</p>
+quelque chose qu'elle ne porte pas. Les <strong>{{TOTAL}} fiches</strong> ont été balayées,
+trois défauts en sont sortis, et les trois sont refermés.</p>
 
 <section class="premier">
   <div class="these">
-    <p class="cle">Le renvoi n'est presque jamais un document manquant. Il est presque
-    toujours un mot d'écran resté sur du papier.</p>
-    <p>Cinq fiches sur {{TOTAL}} sont réellement inapplicables seules. Les autres portent bien
-    ce dont elles parlent — elles l'appellent seulement « la diapositive suivante » au lieu de
-    « ci-dessous ». La distinction compte, parce que la première liste demande votre jugement
-    document par document, et les deux autres se règlent d'un seul geste.</p>
+    <p class="cle">Une fiche qui montre du doigt un écran absent n'est pas une fiche : c'est
+    la moitié d'une séance.</p>
+    <p>La règle est posée : <strong>la fiche de l'élève doit être autonome</strong>. Ce qu'une
+    question fait lire, la feuille le porte. Le relevé ci-dessous reste calculé à chaque
+    passage — il ne raconte plus un problème, il garantit qu'il n'est pas revenu.</p>
   </div>
   <div class="chiffres">
     <div><b>{{N1}}</b><span>fiches où le document source n'est pas sur la feuille</span></div>
@@ -265,72 +250,75 @@ Trois cas en sortent, et ils ne se règlent pas de la même façon.</p>
     <div><b>{{N3}}</b><span>fiches portant une consigne de classe</span></div>
     <div><b>{{TOTAL}}</b><span>fiches balayées, tous niveaux</span></div>
   </div>
+{{RESTE}}
 </section>
 
 <section>
-  <div class="tete"><h2>1 · Le document n'est pas sur la feuille</h2>
-    <span class="badge b-loi">À trancher une par une</span></div>
-  <p>Ces cinq-là sont de vrais trous : la consigne renvoie à un document projeté ou affiché,
-  et la feuille ne contient <strong>ni image ni texte source</strong>. Un élève qui reprend sa
-  fiche seul ne peut pas refaire l'exercice.</p>
+  <div class="tete"><h2>1 · Le document descend sur la feuille</h2>
+    <span class="badge b-fait">Fait</span></div>
+  <p>Cinq fiches posaient leurs questions « d'après le document projeté au module » — c'est-à-dire
+  d'après quelque chose que la feuille ne portait pas et que l'élève n'a plus sous les yeux le
+  soir. Un gabarit neuf, <code>document()</code>, imprime le document au complet juste avant
+  les questions qu'il sert. Il existe dans les <strong>deux</strong> moteurs : la diapositive
+  le montre, la fiche le porte, et l'enseignante n'a plus à ouvrir l'activité interactive en
+  parallèle pour projeter le texte.</p>
   <div class="defile">
   <table>
-    <thead><tr><th>La fiche</th><th>Ce qui manque, et ce que ça coûte</th></tr></thead>
-    <tbody>{{TABLE1}}</tbody>
+    <thead><tr><th>La fiche</th><th>Ce qui y est imprimé désormais</th></tr></thead>
+    <tbody>
+      <tr><td class="q"><code>module-n7-emploi-a4</code><small>Lire un ordre du jour</small></td>
+          <td><b>L'ordre du jour du 8 septembre</b><small>Sept paragraphes, le texte même de
+          l'exercice <code>prOrdre</code>. Une seule diapositive, et la fiche tient toujours
+          sur sa page.</small></td></tr>
+      <tr><td class="q"><code>module-n7-emploi-c4</code><small>Ce que la loi dit vraiment</small></td>
+          <td><b>Le programme de prévention, et les articles 12 et 13</b><small>Le seul endroit
+          du module où l'on ne reformule pas : la loi est citée au mot près.</small></td></tr>
+      <tr><td class="q"><code>module-n7-emploi-d1</code><small>La note de service</small></td>
+          <td><b>La note de service d'Aïcha</b><small>C'est le modèle que les élèves imitent en
+          D2. La lire sur papier vaut mieux que la lire projetée.</small></td></tr>
+      <tr><td class="q"><code>module-n6-recherche-b1</code><small>Lisons l'offre au complet</small></td>
+          <td><b>L'offre de Boisverte, au complet</b><small>Elle n'existait nulle part : le
+          module la citait par morceaux, dans trois dialogues et six énoncés. Elle a été
+          écrite à partir de ces morceaux, sans en contredire un seul.</small></td></tr>
+      <tr><td class="q"><code>module-n2-couloirs-b1</code><small>Le plan du centre</small></td>
+          <td><b>Rien — le plan y était déjà</b><small>Deux tableaux « PLAN DU CENTRE
+          BELLEVUE » portent les étages et les repères, et les six énoncés s'y tranchent tous.
+          Seule la consigne mentait.</small></td></tr>
+    </tbody>
   </table>
   </div>
-  <p><strong>Deux façons de refermer, et elles ne se valent pas :</strong></p>
-  <ul class="simple">
-    <li><strong>Imprimer le document sur la fiche.</strong> La feuille devient autonome —
-    c'est ce qu'on veut d'une feuille volante. Coût : la place, et pour le plan du centre,
-    une image dans une fiche qui n'en a aucune aujourd'hui.</li>
-    <li><strong>Réécrire la consigne.</strong> « Répondez d'après le dialogue » au lieu de
-    « d'après le dialogue et l'offre projetée ». Gratuit, honnête, mais la fiche reste
-    dépendante de la classe pour les trois de <code>module-n7-emploi</code>, dont les
-    questions portent vraiment sur le document.</li>
-  </ul>
   <div class="reserve">
-    <strong>Ce que le relevé ne dit pas.</strong>
-    <p>Il ne vérifie pas que les <em>questions</em> sont répondables sans le document — il
-    dit seulement que le document est absent. Je l'ai fait à la main pour
-    <code>module-n6-recherche-b1</code> : les six énoncés y passent sans l'offre. Pour les
-    quatre autres, ça reste à regarder, et c'est justement ce qui décide entre imprimer et
-    réécrire.</p>
+    <strong>Une erreur de ce relevé, corrigée.</strong>
+    <p>Il annonçait <code>module-n2-couloirs-b1</code> comme « la fiche la plus cassée des
+    cinq », faute d'y avoir cherché le plan sous une autre forme qu'une image. Le plan y est,
+    en toutes lettres, depuis toujours. Le tri automatique voit l'absence d'un <em>mot</em> ;
+    il ne voit pas la présence d'un <em>contenu</em> sous un autre nom.</p>
   </div>
 </section>
 
 <section>
-  <div class="tete"><h2>2 · Le mot ment, le document non</h2>
-    <span class="badge b-dec">Un seul geste</span></div>
-  <p>« Les trois derniers sujets sont sur la <em>diapositive suivante</em> » — ils sont juste
-  dessous, dans un bloc « (suite) ». Le contenu est là ; c'est le vocabulaire du diaporama
-  qui a survécu au passage sur papier. Même chose pour « quatre autres au
-  <em>tableau suivant</em> ».</p>
+  <div class="tete"><h2>2 et 3 · La feuille cesse de nommer un écran</h2>
+    <span class="badge b-fait">Fait</span></div>
+  <p>Les 179 autres renvois ne manquaient de rien : ils employaient le vocabulaire du
+  diaporama sur du papier. « Répondez en regardant le plan de la <em>diapositive précédente</em> »
+  quand le plan est juste au-dessus ; « Écoutez d'abord, <em>diapositive masquée</em> » — une
+  consigne adressée à l'enseignante, imprimée 160 fois sur la feuille de l'élève, et qui y
+  décrit un geste que l'élève ne peut pas faire.</p>
+  <p>La traduction se fait en un seul endroit, <code>_sans_ecran()</code> dans
+  <code>fiche.py</code>, greffée sur <code>esc()</code> — l'entonnoir par lequel passe tout le
+  texte d'une fiche, et rien d'autre. Le PowerPoint garde ses mots, qui y sont justes ; les
+  notes d'enseignant aussi, puisqu'elles ne passent pas par là.</p>
   <div class="defile">
   <table>
-    <thead><tr><th>La fiche</th><th>Ce qu'elle dit</th></tr></thead>
-    <tbody>{{TABLE2}}</tbody>
+    <thead><tr><th>Sur la feuille, on lisait</th><th>On lit maintenant</th></tr></thead>
+    <tbody>
+      <tr><td class="q">…de la diapositive précédente</td><td>…ci-dessus</td></tr>
+      <tr><td class="q">…sur la diapositive suivante</td><td>…ci-dessous</td></tr>
+      <tr><td class="q">…au tableau suivant</td><td>…au tableau ci-dessous</td></tr>
+      <tr><td class="q">Écoutez d'abord, diapositive masquée.</td><td>Écoutez d'abord, sans lire le texte.</td></tr>
+    </tbody>
   </table>
   </div>
-  <p>Ces renvois viennent des fichiers de contenu, qui servent aux deux sorties — le
-  PowerPoint et la fiche. Le mot est juste à l'écran et faux sur papier. La correction
-  appartient donc à <code>fiche.py</code>, qui sait déjà retirer les notes d'enseignant et les
-  corrigés : « diapositive suivante » et « tableau suivant » y deviendraient « ci-dessous »,
-  sans toucher au diaporama.</p>
-</section>
-
-<section>
-  <div class="tete"><h2>3 · Une consigne de classe sur la feuille de l'élève</h2>
-    <span class="badge b-dec">Un seul geste</span></div>
-  <p><strong>{{N3}} fiches</strong>, dans {{M3}} modules, portent « Écoutez d'abord,
-  <em>diapositive masquée</em> ». C'est une consigne adressée à la classe : l'enseignant
-  masque la diapositive pour qu'on écoute avant de lire. Sur la feuille, elle ne veut rien
-  dire — et pire, elle décrit un geste que l'élève ne peut pas faire, puisque le texte du
-  dialogue est imprimé juste en dessous.</p>
-  <p>Même endroit que le cas 2, même geste. Deux options : la retirer, ou la remplacer par ce
-  qu'elle veut vraiment dire à un lecteur seul — <em>« Écoutez l'enregistrement avant de lire
-  le texte. »</em> La seconde garde l'intention pédagogique, qui est bonne.</p>
-  <p style="font-size:14.5px;color:var(--muted)">Les modules touchés : {{LISTE3}}</p>
 </section>
 
 <section>
@@ -351,7 +339,7 @@ Trois cas en sortent, et ils ne se règlent pas de la même façon.</p>
 
 <div class="pied">
   <p>Refait par <code>python3 build/audit_renvois.py</code> — le relevé est calculé, pas
-  recopié.</p>
+  recopié, et c'est aujourd'hui un contrôle : les trois chiffres doivent rester à zéro.</p>
   <p>Le balayage lit le <strong>corps</strong> des fiches, jamais leur feuille de style : le
   CSS des fiches contient lui-même « qu'à l'écran », et le compter donnait 2 537 fausses
   alertes sur 1 264 fiches.</p>

@@ -70,8 +70,20 @@ def build(dossier):
                   "demande de noter l'heure de chaque changement sur une feuille au "
                   "poste, et elle donne la date du relevé.")
 
-    d.pratique('Compréhension', "La note de service d'Aïcha",
-               "Répondez d'après le document projeté au module.", [
+    d.document('Le document', "La note de service d'Aïcha", [
+        "MEUBLES RIVE-DU-NORD — NOTE DE SERVICE",
+        "DESTINATAIRES : le personnel du poste 4 et les chefs d'équipe de l'expédition. EXPÉDITRICE : Aïcha Traoré, coordonnatrice adjointe à l'expédition. DATE : le 16 septembre. OBJET : rotation des tâches au poste 4, à l'essai.",
+        "À la réunion de production du 15 septembre, le nombre de flexions exigées au poste d'emballage a été présenté au comité. Trois personnes du poste ont consulté pour le dos depuis le mois de mars.",
+        "À compter du lundi 22 septembre, et pour une période d'essai de quatre semaines, les cinq personnes affectées au poste 4 alterneront : quatre heures d'emballage, puis quatre heures à la préparation des commandes. L'alternance se fera à 11 h 30.",
+        "Il vous est demandé de noter, sur la feuille affichée au poste, l'heure de chaque changement et toute difficulté rencontrée. Ces notes seront relevées le vendredi 17 octobre.",
+        "Aucune modification n'est apportée aux quotas de production pendant l'essai. Toute question peut m'être adressée directement ou par l'entremise de votre chef d'équipe.",
+        "Aïcha Traoré, coordonnatrice adjointe à l'expédition. c. c. R. Cormier, chef de production ; T. Lapointe, représentante en santé et en sécurité.",
+    ], notes="Le texte même de l'exercice `t3note`. Faire retrouver les six parties à "
+             "même le document, dans l'ordre, avant de poser la moindre question : "
+             "c'est le modèle que les élèves imiteront en D2.")
+
+    d.pratique('Compréhension', "Ce que la note demande",
+               "Répondez d'après la note de service ci-dessus.", [
         ("À qui la note s'adresse-t-elle ?", "au personnel du poste 4 et aux chefs d'équipe"),
         ("Quel est l'objet ?", "rotation des tâches au poste 4, à l'essai"),
         ("Qu'est-ce qui change, et à partir de quand ?", "l'alternance, à compter du lundi 22 septembre"),
