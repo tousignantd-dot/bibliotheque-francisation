@@ -1,0 +1,447 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Borner un enseignant à un niveau</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap">
+<style>
+/* ═══════════════════════════════════════════════════════════
+   GUIDE POUR LA DIRECTION
+   Ce qu'il faut décider, ce que la loi exige, ce que ça coûte.
+
+   La couleur sépare trois choses et rien d'autre : vert ce qui
+   est déjà en place, ambre ce qui attend une décision du centre,
+   rouge ce qui est une obligation légale de l'organisme. L'acier
+   ne fait que la structure.
+   ═══════════════════════════════════════════════════════════ */
+
+:root{
+  --ground:#F7F7F5; --card:#FFFFFF; --sunken:#FBFBFA;
+  --ink:#17181A; --body:#3A3D40; --muted:#6E7175;
+  --line:#E4E4E0; --line-fort:#D2D2CD;
+
+  --fait:#0A8F5B;    --fait-bg:#E6F5EE;
+  --decid:#C07A08;   --decid-bg:#FBF2E2;
+  --loi:#C7302B;     --loi-bg:#FBEDEC;
+  --acier:#1D6B8F;   --acier-bg:#E7F0F6;
+
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#151618; --card:#1D1F22; --sunken:#212326;
+    --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+    --line:#2E3135; --line-fort:#3D4146;
+    --fait:#4BC48D; --fait-bg:#12291F;
+    --decid:#E0A63F; --decid-bg:#2C2213;
+    --loi:#EE7A73; --loi-bg:#2E1917;
+    --acier:#6DAFD2; --acier-bg:#14242C;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#151618; --card:#1D1F22; --sunken:#212326;
+  --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+  --line:#2E3135; --line-fort:#3D4146;
+  --fait:#4BC48D; --fait-bg:#12291F;
+  --decid:#E0A63F; --decid-bg:#2C2213;
+  --loi:#EE7A73; --loi-bg:#2E1917;
+  --acier:#6DAFD2; --acier-bg:#14242C;
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--body);
+  font-family:Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased}
+.doc{max-width:880px;margin:0 auto;padding:56px 24px 96px}
+
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--acier);margin:0 0 14px}
+h1{font-family:Newsreader,Georgia,serif;font-size:clamp(38px,6.4vw,58px);line-height:1.04;
+  font-weight:500;letter-spacing:-.02em;color:var(--ink);margin:0 0 20px;text-wrap:balance}
+.chapeau{font-size:19px;line-height:1.6;color:var(--body);margin:0;max-width:62ch}
+.chapeau strong{color:var(--ink);font-weight:700}
+h2{font-family:Newsreader,Georgia,serif;font-size:29px;line-height:1.2;font-weight:600;
+  letter-spacing:-.01em;color:var(--ink);margin:0 0 4px;text-wrap:balance}
+h3{font-size:15px;font-weight:800;color:var(--ink);margin:0 0 6px}
+p{margin:0;max-width:68ch}
+section{display:flex;flex-direction:column;gap:16px;padding:44px 0 0;margin:44px 0 0;
+  border-top:1px solid var(--line)}
+section.premier{border-top:none;margin-top:0;padding-top:40px}
+code{font-family:var(--mono);font-size:.86em;background:var(--sunken);
+  border:1px solid var(--line);border-radius:4px;padding:1px 5px;color:var(--ink)}
+ul.simple{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px}
+ul.simple li{max-width:66ch} ul.simple li strong{color:var(--ink)}
+em.art{font-style:normal;font-family:var(--mono);font-size:.82em;color:var(--muted);
+  white-space:nowrap}
+
+.these{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--acier);
+  border-radius:3px;padding:26px 28px;display:flex;flex-direction:column;gap:12px}
+.these p{font-size:18px}
+.these .cle{font-family:Newsreader,Georgia,serif;font-size:23px;line-height:1.3;
+  font-weight:500;color:var(--ink);font-style:italic}
+
+/* ── Les décisions ─────────────────────────────────────── */
+.decisions{display:flex;flex-direction:column;gap:2px;counter-reset:d}
+.dec{counter-increment:d;background:var(--card);border:1px solid var(--line);
+  border-left:5px solid var(--decid);border-radius:3px;padding:19px 22px 19px 60px;
+  position:relative;display:flex;flex-direction:column;gap:8px}
+.dec.ok{border-left-color:var(--fait)}
+.dec::before{content:counter(d);position:absolute;left:24px;top:18px;
+  font-family:var(--mono);font-size:14px;color:var(--muted)}
+.dec .ligne{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;
+  justify-content:space-between}
+.dec p{font-size:15.5px}
+.dec .defaut{font-size:13.5px;color:var(--muted);font-style:italic}
+
+.badge{display:inline-block;font-size:11.5px;font-weight:800;letter-spacing:.05em;
+  text-transform:uppercase;padding:3px 9px;border-radius:2px;white-space:nowrap}
+.b-fait{background:var(--fait-bg);color:var(--fait)}
+.b-dec{background:var(--decid-bg);color:var(--decid)}
+.b-loi{background:var(--loi-bg);color:var(--loi)}
+.b-n{background:var(--sunken);color:var(--muted);border:1px solid var(--line)}
+
+/* ── Tableaux ──────────────────────────────────────────── */
+.defile{overflow-x:auto;border:1px solid var(--line);border-radius:3px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:15px;min-width:640px}
+caption{caption-side:top;text-align:left;padding:0 0 10px;font-size:13.5px;color:var(--muted)}
+th,td{padding:12px 15px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{font-size:11.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--muted);background:var(--sunken);white-space:nowrap}
+tbody tr:last-child td{border-bottom:none}
+td.q{font-weight:700;color:var(--ink)}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+td small{display:block;color:var(--muted);font-size:13px;line-height:1.45;margin-top:3px}
+tbody tr td:first-child{border-left:4px solid transparent}
+tr.l td:first-child{border-left-color:var(--loi)}
+tr.d td:first-child{border-left-color:var(--decid)}
+tr.f td:first-child{border-left-color:var(--fait)}
+
+/* ── Chiffres ──────────────────────────────────────────── */
+.chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.ch{background:var(--card);border:1px solid var(--line);border-radius:3px;
+  border-top:3px solid var(--acier);padding:15px 16px}
+.ch .n{font-family:Newsreader,Georgia,serif;font-size:30px;line-height:1;font-weight:500;
+  color:var(--ink);display:block;font-variant-numeric:tabular-nums}
+.ch .q{font-size:12.5px;font-weight:700;color:var(--muted);line-height:1.35;display:block;margin-top:7px}
+
+/* ── Marche à suivre ───────────────────────────────────── */
+ol.actions{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;
+  counter-reset:a}
+ol.actions li{counter-increment:a;background:var(--card);border:1px solid var(--line);
+  border-radius:3px;padding:18px 22px 18px 62px;position:relative;display:flex;
+  flex-direction:column;gap:6px}
+ol.actions li::before{content:counter(a);position:absolute;left:22px;top:17px;
+  font-family:var(--mono);font-size:14px;color:var(--muted)}
+ol.actions li p{font-size:15.5px}
+.qui{font-size:13px;color:var(--muted);font-style:italic}
+
+.reserve{border:1px dashed var(--line-fort);border-radius:3px;padding:20px 24px;
+  font-size:15px;color:var(--muted);display:flex;flex-direction:column;gap:9px}
+.reserve strong{color:var(--body)}
+.avert{background:var(--loi-bg);border:1px solid var(--loi);border-radius:3px;
+  padding:20px 24px;display:flex;flex-direction:column;gap:9px}
+.avert strong{color:var(--ink)}
+.avert p{font-size:15.5px;color:var(--body)}
+.pied{margin-top:52px;padding-top:22px;border-top:1px solid var(--line);font-size:13.5px;
+  color:var(--muted);display:flex;flex-direction:column;gap:5px}
+@media (max-width:620px){ .doc{padding:36px 18px 72px} }
+</style>
+<style>
+  .doc{padding-top:26px}
+  .retour{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;
+    color:var(--muted);text-decoration:none;margin-bottom:34px}
+  .retour:hover{color:var(--acier)}
+  table.cmp{width:100%;border-collapse:collapse;font-size:15px;background:var(--card);
+    border:1px solid var(--line);border-radius:3px;overflow:hidden}
+  table.cmp th,table.cmp td{padding:13px 15px;text-align:left;vertical-align:top;
+    border-bottom:1px solid var(--line)}
+  table.cmp thead th{background:var(--sunken);font-size:12px;font-weight:800;
+    letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+  table.cmp tbody tr:last-child td{border-bottom:0}
+  table.cmp td:first-child{font-weight:700;color:var(--ink)}
+  .roule{overflow-x:auto}
+  .voie{background:var(--card);border:1px solid var(--line);border-radius:3px;
+    padding:24px 26px;display:flex;flex-direction:column;gap:11px}
+  .voie.oui{border-color:var(--fait);border-width:2px;padding:23px 25px}
+  .voie.non{border-left:5px solid var(--loi)}
+  .voie h3{font-size:19px;font-family:Newsreader,Georgia,serif;font-weight:600;margin:0}
+  .voie .cout{font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+  .verdict{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+    padding:3px 10px;border-radius:99px;align-self:flex-start}
+  .v-oui{background:var(--fait-bg);color:var(--fait)}
+  .v-peut{background:var(--decid-bg);color:var(--decid)}
+  .v-non{background:var(--loi-bg);color:var(--loi)}
+  .mes{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:2px;
+    background:var(--line);border:1px solid var(--line);border-radius:3px;overflow:hidden}
+  .mes div{background:var(--card);padding:16px 18px}
+  .mes b{display:block;font-family:Newsreader,Georgia,serif;font-size:27px;font-weight:500;
+    color:var(--ink);line-height:1.1}
+  .mes span{font-size:13px;color:var(--muted)}
+  @media (max-width:640px){ .doc{padding-left:18px;padding-right:18px} }
+</style>
+</head>
+<body>
+<div class="doc">
+
+<a class="retour" href="/presentations.html"><span aria-hidden="true">&#8592;</span> Le classeur</a>
+
+<p class="eyebrow">Bibliothèque de francisation · 7 septembre 2026 · proposition</p>
+<h1>Borner un enseignant à un niveau</h1>
+<p class="chapeau">Donner à quelqu'un un accès qui ne porte que sur le niveau 6 — mais
+<strong>tout</strong> le niveau 6. C'est possible, et la moitié du chemin est déjà faite :
+le portail sait déjà borner un catalogue par niveau. Ce qu'il ne sait pas encore, c'est
+<strong>empêcher</strong> — le bornage d'aujourd'hui oriente, il n'interdit rien.</p>
+
+<section class="premier">
+  <div class="these">
+    <p class="cle">Aujourd'hui, le niveau appartient au groupe, et le groupe appartient à
+    l'enseignante. Elle en change quand elle veut.</p>
+    <p>Ce n'est pas un défaut tant que tout le monde est de la maison : le niveau du groupe
+    est là pour <em>ranger</em>, pas pour fermer — il évite de planifier un module de
+    niveau 7 dans une classe de niveau 4. Il devient un défaut le jour où l'on ouvre un
+    compte à quelqu'un qui ne doit voir qu'un niveau. La demande d'aujourd'hui est donc
+    moins « ajouter un filtre » que <strong>faire passer le niveau du groupe à la
+    personne</strong>, et lui donner enfin la force d'un refus.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Ce qui existe déjà</h2>
+  <p>Un groupe porte un champ <code>niveau</code> (« Niveau 6 »), choisi à sa création.
+  <code>catalogue.html</code> et le dépôt de matériel ne montrent que ce niveau, à une
+  exception près — « Corrige-moi&nbsp;! », ouvert à toutes les classes. Une enseignante dont
+  le groupe est au niveau 6 voit donc <strong>déjà</strong> tout le niveau 6 et rien d'autre.</p>
+  <p>Trois trous font que cela ne tient pas devant quelqu'un qui chercherait à passer outre —
+  et il n'a même pas à chercher&nbsp;:</p>
+  <div class="defile">
+  <table>
+    <caption>Ce qui laisse aujourd'hui sortir du niveau</caption>
+    <thead><tr><th>Le trou</th><th>Où</th><th>Ce qui se passe</th></tr></thead>
+    <tbody>
+      <tr class="l"><td class="q">Le filtre est dans le navigateur</td>
+        <td><em class="art">catalogue.html</em></td>
+        <td>La page demande <code>/api/activities?catalogue=1</code>, qui rend <strong>les
+        177 activités des huit niveaux</strong>, et en cache sept à l'écran.
+        <small>Le serveur, lui, n'a rien borné : la réponse porte tout.</small></td></tr>
+      <tr class="l"><td class="q">Le niveau du groupe se change</td>
+        <td><em class="art">« Changer le niveau »</em></td>
+        <td>Un <code>PATCH /api/prof/groupes/:id</code> avec <code>niveau</code>, sans aucun
+        contrôle de ce que la personne a le droit de demander.
+        <small>Deux clics, et la classe passe du niveau 6 au niveau 3.</small></td></tr>
+      <tr class="l"><td class="q">Les groupes se créent librement</td>
+        <td><em class="art">_handle_group_add</em></td>
+        <td>Rien ne limite le nombre de groupes ni leurs niveaux.
+        <small>Un deuxième groupe « Niveau 2 » ouvre le niveau 2.</small></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>Autrement dit&nbsp;: le bornage par niveau existe comme <strong>confort d'affichage</strong>.
+  Il n'existe pas comme autorisation.</p>
+</section>
+
+<section>
+  <h2>Le précédent à copier : la période d'essai</h2>
+  <p>Le dépôt sait déjà faire exactement ce qu'on demande, pour une autre raison. Un centre
+  peut être en <strong>période d'essai</strong> : il ne voit alors que les deux premiers
+  modules de chaque niveau, et tous les ateliers. Trois choses y ont été bien faites, et
+  c'est le patron à reprendre sans rien inventer&nbsp;:</p>
+  <ul class="simple">
+    <li><strong>Un champ sur un nœud de l'arbre</strong>, à trois valeurs — <code>oui</code>,
+    <code>non</code>, <code>herite</code> — et une remontée où <em>le premier réglage explicite
+    tranche</em> (<code>essai_effective()</code>). Le défaut n'ouvre ni ne ferme par accident.</li>
+    <li><strong>Un seul entonnoir.</strong> <code>activities_for_group()</code> sert le
+    catalogue, la planification, le menu des séances et la liste de l'élève. L'essai s'y borne
+    une fois ; les quatre écrans suivent sans savoir qu'il existe. Le commentaire du code le dit
+    lui-même : quatre gardes auraient donné quatre endroits d'où l'essai peut fuir.</li>
+    <li><strong>L'écran le dit.</strong> Le sous-titre du catalogue écrit pourquoi la liste est
+    courte, et qui l'a décidé. Une liste bornée qu'on n'explique pas se lit comme une panne.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Où poser le bornage — trois façons</h2>
+
+  <div class="voie non">
+    <span class="verdict v-non">Rejeté</span>
+    <h3>A · Un champ sur le compte de l'enseignant</h3>
+    <p>Le plus court à écrire : <code>niveaux</code> à côté de <code>role</code> dans la fiche
+    du compte. C'est aussi la seule des trois qui <strong>défait une décision déjà prise</strong> :
+    l'étape 2 du réseau des centres a séparé les <em>pouvoirs</em> (le champ <code>role</code>)
+    de la <em>portée</em> (la table <code>data/acces.json</code>), précisément parce que les
+    deux avaient été confondus. Un bornage par niveau est de la portée. Le remettre sur le
+    compte, c'est rouvrir la confusion qu'on a payé pour fermer.</p>
+    <p class="cout">Coût : le plus bas · Dette : la plus haute</p>
+  </div>
+
+  <div class="voie">
+    <span class="verdict v-peut">Possible, plus tard</span>
+    <h3>B · Un champ sur le centre, comme l'essai</h3>
+    <p><code>niveaux: ["Niveau 6"]</code> posé sur un nœud <em>centre</em> ou <em>CSS</em>,
+    hérité vers le bas par la même remontée que l'essai. Presque gratuit : la mécanique existe,
+    il n'y a qu'à la rappeler.</p>
+    <p>Mais ce n'est pas la demande. Un centre de francisation fait tourner plusieurs niveaux
+    en même temps ; borner le centre bornerait aussi ses collègues. C'est le bon outil pour
+    « ce centre n'a acheté que le niveau 6 », pas pour « cette personne n'enseigne que le
+    niveau 6 ».</p>
+    <p class="cout">Coût : une demi-journée · À garder pour la vente par niveau</p>
+  </div>
+
+  <div class="voie oui">
+    <span class="verdict v-oui">Recommandé</span>
+    <h3>C · Un champ sur la ligne d'accès</h3>
+    <p>Une ligne de <code>data/acces.json</code> dit déjà <em>qui</em>, <em>où</em>, <em>à quel
+    titre</em> : <code>{teacherId, orgId, role}</code>. On y ajoute <code>niveaux</code> — une
+    liste, vide par défaut, vide signifiant <strong>aucun bornage</strong>.</p>
+    <p>Trois raisons, et la troisième est celle qui compte&nbsp;:</p>
+    <ul class="simple">
+      <li>C'est déjà une <strong>table</strong>, pas une colonne : quelqu'un qui enseigne dans
+      deux centres a deux lignes, donc deux bornages possibles. La bonne forme est déjà là.</li>
+      <li>La portée s'y lit déjà par une seule fonction. Le bornage suit le même chemin que le
+      reste, au lieu d'en ouvrir un deuxième.</li>
+      <li>Il se retire aussi facilement qu'il se pose. Un bornage qu'on ne sait pas défaire vite
+      finit par se défaire mal — et le seul défaut de ce dépôt qu'on ne rattrape pas le
+      lendemain, c'est <strong>un verrou qui ferme une classe</strong>.</li>
+    </ul>
+    <p class="cout">Coût : un après-midi · Portée : une personne, un centre à la fois</p>
+  </div>
+
+  <p>B et C ne s'excluent pas : ce sont deux étages de la même remontée. Si vous voulez les
+  deux un jour, l'ordre est C d'abord — c'est celui qui répond à la question posée.</p>
+</section>
+
+<section>
+  <h2>Ce qu'il faut toucher</h2>
+  <ol class="actions">
+    <li>
+      <p><strong>Une seule fonction de portée</strong> — <code>niveaux_de(teacher)</code>,
+      l'union des <code>niveaux</code> de ses lignes d'accès actives. Une liste vide veut dire
+      <em>tous les niveaux</em>.</p>
+      <p class="qui">Et le doute laisse travailler : pas de ligne d'accès, arbre vide, champ
+      illisible → aucun bornage, avec un <code>[WARN]</code>. C'est déjà la règle des deux
+      replis de <code>groups_of_teacher()</code>, pour la même raison.</p>
+    </li>
+    <li>
+      <p><strong>L'entonnoir</strong> — <code>activities_for_group()</code> filtre par niveau
+      exactement là où il filtre l'essai. Le catalogue, la planification, le menu des séances et
+      la liste de l'élève suivent sans être touchés.</p>
+      <p class="qui">Plus un point à part : <code>/api/activities?catalogue=1</code> ne passe
+      pas par l'entonnoir. C'est le trou d'aujourd'hui — il se bouche ici ou nulle part.</p>
+    </li>
+    <li>
+      <p><strong>Deux refus sur le groupe</strong> — à la création et au changement de niveau,
+      un niveau hors portée est refusé par le serveur, en 403, avec un message écrit.</p>
+      <p class="qui">Le menu « Changer le niveau » ne proposera que les niveaux permis, mais ce
+      n'est pas lui qui protège : l'écran est un confort, le refus est au serveur. Et le message
+      affiché est celui du serveur mot pour mot — sinon deux formulations d'une même règle.</p>
+    </li>
+    <li>
+      <p><strong>Le dire à l'écran.</strong> Le sous-titre du catalogue devient « Niveau 6 —
+      votre accès ne porte que sur ce niveau ».</p>
+      <p class="qui">Et si la période d'essai borne <em>aussi</em>, l'écran doit nommer les deux :
+      une liste courte avec une seule explication laisse croire que l'autre cause n'existe pas.</p>
+    </li>
+    <li>
+      <p><strong>Le poser et le retirer depuis la console du réseau</strong>
+      (<code>reseau.html</code>), sur la ligne d'accès, journalisé comme les six autres gestes
+      d'écriture.</p>
+      <p class="qui">Un bornage posé à la main dans un fichier de données est un bornage que
+      personne ne retrouve six mois plus tard.</p>
+    </li>
+    <li>
+      <p><strong>Un contrôle</strong> dans <code>build/controles/organisations.py</code> : une
+      ligne d'accès dont les <code>niveaux</code> ne sont pas des niveaux du programme, un
+      groupe dont le niveau est hors de la portée de son titulaire.</p>
+      <p class="qui">Le second cas arrivera : on borne une personne qui tient déjà un groupe
+      d'un autre niveau. Il faut le voir, pas le corriger en silence.</p>
+    </li>
+  </ol>
+</section>
+
+<section>
+  <h2>Ce qui reste à trancher</h2>
+  <p>Six questions. J'ai mis ma réponse sous chacune ; ce sont des propositions, pas des
+  décisions.</p>
+  <div class="decisions">
+    <div class="dec">
+      <div class="ligne"><h3>Un seul niveau, ou une liste&nbsp;?</h3><span class="badge b-dec">À décider</span></div>
+      <p class="defaut">Je propose une <strong>liste</strong>. L'usage du jour n'en a qu'un, mais
+      « niveaux 5 et 6 » arrivera, et une liste ne coûte rien de plus à écrire qu'un champ — alors
+      qu'élargir un champ après coup, c'est une migration.</p>
+    </div>
+    <div class="dec">
+      <div class="ligne"><h3>« Corrige-moi&nbsp;! » échappe-t-il au bornage&nbsp;?</h3><span class="badge b-dec">À décider</span></div>
+      <p class="defaut">Je propose <strong>oui</strong>, comme il échappe déjà au niveau du
+      groupe : l'assistant oral ne fait passer aucune notion, il reprend l'élève là où il en est.
+      Même exception, même raison, et surtout le même drapeau — pas un second.</p>
+    </div>
+    <div class="dec">
+      <div class="ligne"><h3>Le bornage vaut-il aussi pour l'élève&nbsp;?</h3><span class="badge b-dec">À décider</span></div>
+      <p class="defaut">Je propose <strong>non, et il n'a pas à valoir</strong> : l'élève ne voit
+      que ce que sa classe a planifié, et sa classe est tenue par une enseignante déjà bornée. Un
+      second verrou sur l'élève ne fermerait rien de plus et ferait un deuxième endroit où se
+      tromper.</p>
+    </div>
+    <div class="dec">
+      <div class="ligne"><h3>Que voit-elle des <em>autres</em> niveaux&nbsp;?</h3><span class="badge b-dec">À décider</span></div>
+      <p class="defaut">Je propose <strong>rien du tout</strong> — pas de titres grisés, pas de
+      « disponible sur demande ». Montrer ce qu'on refuse transforme un bornage en vitrine, et une
+      liste de 177 titres apprend le fonds à qui n'y a pas droit. Le sous-titre dit qu'il y a un
+      bornage ; il ne dit pas ce qu'il y a derrière.</p>
+    </div>
+    <div class="dec">
+      <div class="ligne"><h3>Le fondateur peut-il être borné&nbsp;?</h3><span class="badge b-dec">À décider</span></div>
+      <p class="defaut">Je propose <strong>non</strong>, comme les deux refus qui protègent déjà
+      la console d'elle-même : on ne retire pas l'accès du fondateur, on ne désactive pas le
+      réseau. Se borner soi-même au niveau 6 est le genre de geste que l'interface ne pourrait
+      plus défaire.</p>
+    </div>
+    <div class="dec">
+      <div class="ligne"><h3>Et les groupes déjà ouverts&nbsp;?</h3><span class="badge b-dec">À décider</span></div>
+      <p class="defaut">Je propose de <strong>ne rien changer aux groupes existants</strong> : on
+      borne les gestes à venir, on ne réécrit pas le niveau d'une classe qui tourne. Le contrôle
+      signale l'écart, et c'est vous qui tranchez cas par cas. Réparer automatiquement ici
+      voudrait dire changer sous les pieds d'une enseignante le catalogue de sa classe.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Ce que ça coûte</h2>
+  <div class="mes">
+    <div><b>1</b><span>fonction de portée à écrire</span></div>
+    <div><b>2</b><span>points de filtrage — l'entonnoir, et le catalogue brut</span></div>
+    <div><b>2</b><span>refus à poser sur le groupe</span></div>
+    <div><b>~1</b><span>après-midi, contrôle compris</span></div>
+  </div>
+  <p>Rien de tout cela ne touche les 87 modules, ni le système de design, ni la chaîne de
+  production. C'est un couloir à trois fichiers — <code>server.py</code>,
+  <code>reseau.html</code>, <code>catalogue.html</code> — plus un contrôle.</p>
+</section>
+
+<section>
+  <div class="avert">
+    <strong>La seule façon d'y croire, c'est de le faire échouer.</strong>
+    <p>Un bornage qui n'a jamais refusé ne prouve rien — ce dépôt a déjà payé un contrôle qui
+    avait tort. Avant de s'en servir pour de vrai : un compte borné au niveau 6, et on essaie
+    d'ouvrir par l'URL une séance de niveau 3, on rejoue à la main l'appel
+    <code>?catalogue=1</code>, on envoie un <code>PATCH</code> qui demande le niveau 2. Les trois
+    doivent être refusés <strong>au serveur</strong>, et le refus doit se lire à l'écran dans les
+    mots du serveur.</p>
+    <p>Le défaut du même genre trouvé à l'étape 1 — deux groupes dans un centre, et le second
+    enseignant les voyait tous les deux — n'a pas été vu en relisant le code. Il a été vu au banc
+    d'essai.</p>
+  </div>
+</section>
+
+<div class="pied">
+  <p>Bibliothèque de francisation · proposition du 7 septembre 2026 · rien n'est implémenté</p>
+  <p>Voisins : « Le réseau des centres » (l'arbre et la table des accès), « Le mode sans
+  assistance » (le même patron de réglage hérité par centre).</p>
+</div>
+
+</div>
+</body>
+</html>
