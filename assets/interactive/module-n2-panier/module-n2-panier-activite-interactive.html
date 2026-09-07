@@ -3613,6 +3613,18 @@ function jrEnvoyer(){
   jrTour();
 }
 
+// L'élève demande la correction : il vient de dire qu'il a fini de parler. Le
+// micro se ferme pour de bon — `JR.reprise` remis à faux, sinon la fin d'une
+// réplique encore en vol le rouvrirait derrière son dos.
+function jrMicroArreter(){
+  JR.reprise=false;
+  if(!JR.rec) return;
+  // `stop()` et non `abort()` : rien ne va parler ici, donc la fermeture peut
+  // être polie — et ce que l'élève finissait de dire a le temps d'arriver dans
+  // le champ, au cas où il voudrait l'envoyer avant de lire sa correction.
+  try{ JR.rec.stop(); }catch(e){}
+}
+
 async function jrFini(){
   const mes=JR.hist.filter(m=>m.role==='user').map(m=>m.contenu);
   // La salutation d'ouverture vient du serveur, pas de l'élève : on ne la
@@ -3620,6 +3632,10 @@ async function jrFini(){
   if(mes.length>1) mes.shift();
   if(!mes.length){ showErr('jrErr',"Pose au moins une question avant de demander la correction."); return; }
   hideErr('jrErr');
+  // APRÈS le refus ci-dessus, et pas avant : un élève qui touche le bouton
+  // sans avoir rien dit se fait répondre de parler d'abord — lui fermer le
+  // micro au même moment serait le contraire de ce qu'on lui demande.
+  jrMicroArreter();
   document.getElementById('jrStatus').classList.add('on');
   try{
     const res=await fetch('/api/correct-french',{method:'POST',headers:{'Content-Type':'application/json'},

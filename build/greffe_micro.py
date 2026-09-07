@@ -1,10 +1,16 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Le micro se ferme AVANT que l'assistant parle, pas pendant son premier mot.
+Le micro du jeu de rôle : quand il se ferme, et quand il ne se rouvre plus.
 
-    python3 build/greffe_micro_abort.py --releve   # ce qui serait changé
-    python3 build/greffe_micro_abort.py            # le gabarit + les 78 modules
+    python3 build/greffe_micro.py --releve   # ce qui serait changé
+    python3 build/greffe_micro.py            # le gabarit + les 78 modules
+
+Deux corrections du 7 septembre 2026, toutes deux signalées à l'oreille par
+l'utilisateur. La première est décrite ci-dessous ; la seconde, plus simple,
+est que **le micro se ferme quand l'élève demande la correction** — il vient
+de dire qu'il a fini, et le laisser ouvert pendant qu'il lit sa correction
+n'avait aucun sens (voir GREFFE 2, plus bas).
 
 Le défaut, tel que l'utilisateur l'a entendu
 ---------------------------------------------
@@ -53,6 +59,8 @@ import sys
 
 RACINE = pathlib.Path(__file__).resolve().parent.parent
 
+# ── GREFFE 1 · abort() plutôt que stop() ──────────────────────────────────
+
 AVANT_FERMER = """function jrMicroFermer(){
   if(!JR.rec) return false;
   JR.reprise=true;
@@ -97,6 +105,47 @@ APRES_ROUVRIR = """function jrMicroRouvrir(){
 """
 
 
+# ── GREFFE 2 · « J'ai fini — corrigez mes phrases » ferme le micro ────────
+#
+# Le bouton dit que l'élève a fini de parler ; le micro restait pourtant
+# ouvert pendant toute la lecture de la correction. `jrMicroFermer()` ne
+# convenait pas : il pose `JR.reprise`, donc la fin d'une réplique encore en
+# vol aurait rouvert le micro derrière son dos. Il fallait une fermeture
+# **définitive**, et c'est une fonction de plus plutôt qu'un drapeau de plus
+# dans l'ancienne — deux fermetures qui ne veulent pas dire la même chose.
+
+ARRETER = """// L'élève demande la correction : il vient de dire qu'il a fini de parler. Le
+// micro se ferme pour de bon — `JR.reprise` remis à faux, sinon la fin d'une
+// réplique encore en vol le rouvrirait derrière son dos.
+function jrMicroArreter(){
+  JR.reprise=false;
+  if(!JR.rec) return;
+  // `stop()` et non `abort()` : rien ne va parler ici, donc la fermeture peut
+  // être polie — et ce que l'élève finissait de dire a le temps d'arriver dans
+  // le champ, au cas où il voudrait l'envoyer avant de lire sa correction.
+  try{ JR.rec.stop(); }catch(e){}
+}
+
+"""
+
+AVANT_FINI = """  if(!mes.length){ showErr('jrErr',"Pose au moins une question avant de demander la correction."); return; }
+  hideErr('jrErr');
+  document.getElementById('jrStatus').classList.add('on');
+"""
+
+APRES_FINI = """  if(!mes.length){ showErr('jrErr',"Pose au moins une question avant de demander la correction."); return; }
+  hideErr('jrErr');
+  // APRÈS le refus ci-dessus, et pas avant : un élève qui touche le bouton
+  // sans avoir rien dit se fait répondre de parler d'abord — lui fermer le
+  // micro au même moment serait le contraire de ce qu'on lui demande.
+  jrMicroArreter();
+  document.getElementById('jrStatus').classList.add('on');
+"""
+
+# La fonction se pose juste avant `jrFini`, qui est son seul appelant.
+ANCRE_ARRETER = "async function jrFini(){"
+
+
 def fichiers():
     """Les fichiers qui portent le jeu de rôle. Cherchés, jamais listés en dur :
     une liste écrite à la main vieillit au premier module de plus."""
@@ -121,14 +170,21 @@ def main():
     for rel in liste:
         chemin = RACINE / rel
         texte = chemin.read_text(encoding='utf-8')
-        if 'JR.rec.abort()' in texte:
+        besoin1 = 'JR.rec.abort()' not in texte
+        besoin2 = 'function jrMicroArreter(' not in texte
+        if not besoin1 and not besoin2:
             deja.append(rel)
             continue
         # Une seule occurrence de chaque, sinon on ne sait pas laquelle greffer.
-        if texte.count(AVANT_FERMER) != 1 or texte.count(AVANT_ROUVRIR) != 1:
-            refus.append(rel)
+        manque = []
+        if besoin1 and (texte.count(AVANT_FERMER) != 1 or texte.count(AVANT_ROUVRIR) != 1):
+            manque.append('greffe 1')
+        if besoin2 and (texte.count(AVANT_FINI) != 1 or texte.count(ANCRE_ARRETER) != 1):
+            manque.append('greffe 2')
+        if manque:
+            refus.append('%s (%s)' % (rel, ', '.join(manque)))
             continue
-        a_faire.append((chemin, rel, texte))
+        a_faire.append((chemin, rel, texte, besoin1, besoin2))
 
     if refus:
         print('REFUS — le texte attendu n’est pas là, ou pas une seule fois :')
@@ -137,11 +193,16 @@ def main():
         print('\nRien n’a été écrit. Une greffe qui devine est une greffe qui casse.')
         return 1
 
-    for chemin, rel, texte in a_faire:
+    for chemin, rel, texte, besoin1, besoin2 in a_faire:
         if args.releve:
             continue
-        neuf = texte.replace(AVANT_FERMER, APRES_FERMER, 1)
-        neuf = neuf.replace(AVANT_ROUVRIR, APRES_ROUVRIR, 1)
+        neuf = texte
+        if besoin1:
+            neuf = neuf.replace(AVANT_FERMER, APRES_FERMER, 1)
+            neuf = neuf.replace(AVANT_ROUVRIR, APRES_ROUVRIR, 1)
+        if besoin2:
+            neuf = neuf.replace(AVANT_FINI, APRES_FINI, 1)
+            neuf = neuf.replace(ANCRE_ARRETER, ARRETER + ANCRE_ARRETER, 1)
         chemin.write_text(neuf, encoding='utf-8')
 
     quoi = 'à greffer' if args.releve else 'greffés'
@@ -149,7 +210,8 @@ def main():
           % (len(a_faire), quoi, len(deja), len(refus)))
     if a_faire and not args.releve:
         print('Dont le gabarit : %s'
-              % ('oui' if any('gabarit' in r for _, r, _ in a_faire) else 'NON — à vérifier'))
+              % ('oui' if any('gabarit' in r for _, r, _, _, _ in a_faire)
+                 else 'NON — à vérifier'))
     return 0
 
 
