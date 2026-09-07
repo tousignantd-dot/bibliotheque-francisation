@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Montrer le mode sans compte</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Nunito:wght@400;600;700;800&display=swap">
+<style>
+:root{
+  --ground:#F7F7F5; --card:#FFFFFF; --sunken:#FBFBFA;
+  --ink:#17181A; --body:#3A3D40; --muted:#6E7175;
+  --line:#E4E4E0; --line-fort:#D2D2CD;
+  --acier:#1D6B8F; --acier-bg:#E7F0F6;
+  --fait:#0A8F5B; --fait-bg:#E6F5EE;
+  --decid:#C07A08; --decid-bg:#FBF2E2;
+  --loi:#C7302B; --loi-bg:#FBEDEC;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#151618; --card:#1D1F22; --sunken:#212326;
+  --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+  --line:#2E3135; --line-fort:#3D4146;
+  --acier:#6DAFD2; --acier-bg:#14242C;
+  --fait:#4BC48D; --fait-bg:#12291F;
+  --decid:#E0A63F; --decid-bg:#2C2213;
+  --loi:#EE7A73; --loi-bg:#2E1917;
+}}
+:root[data-theme="dark"]{
+  --ground:#151618; --card:#1D1F22; --sunken:#212326;
+  --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+  --line:#2E3135; --line-fort:#3D4146;
+  --acier:#6DAFD2; --acier-bg:#14242C;
+  --fait:#4BC48D; --fait-bg:#12291F;
+  --decid:#E0A63F; --decid-bg:#2C2213;
+  --loi:#EE7A73; --loi-bg:#2E1917;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--body);
+  font-family:Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased}
+.doc{max-width:900px;margin:0 auto;padding:26px 24px 90px}
+.retour{display:inline-flex;gap:8px;font-size:13px;font-weight:700;color:var(--muted);
+  text-decoration:none;margin-bottom:30px}
+.retour:hover{color:var(--acier)}
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--acier);margin:0 0 12px}
+h1{font-family:Newsreader,Georgia,serif;font-size:clamp(34px,5.6vw,50px);line-height:1.05;
+  font-weight:500;letter-spacing:-.02em;color:var(--ink);margin:0 0 18px;text-wrap:balance}
+h2{font-family:Newsreader,Georgia,serif;font-size:27px;line-height:1.2;font-weight:600;
+  color:var(--ink);margin:0 0 6px;text-wrap:balance}
+.chapeau{font-size:19px;line-height:1.6;margin:0;max-width:64ch}
+.chapeau strong{color:var(--ink);font-weight:700}
+p{margin:0;max-width:68ch}
+section{display:flex;flex-direction:column;gap:15px;padding:42px 0 0;margin:42px 0 0;
+  border-top:1px solid var(--line)}
+section.premier{border-top:none;margin-top:0;padding-top:34px}
+code{font-family:var(--mono);font-size:.85em;background:var(--sunken);
+  border:1px solid var(--line);border-radius:4px;padding:1px 5px;color:var(--ink)}
+ul.simple{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:7px}
+ul.simple li{max-width:66ch}
+.these{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--acier);
+  border-radius:3px;padding:24px 26px;display:flex;flex-direction:column;gap:11px}
+.these .cle{font-family:Newsreader,Georgia,serif;font-size:22px;line-height:1.3;
+  font-weight:500;color:var(--ink);font-style:italic}
+.chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:2px;
+  background:var(--line);border:1px solid var(--line);border-radius:3px;overflow:hidden}
+.chiffres div{background:var(--card);padding:16px 18px}
+.chiffres b{display:block;font-family:Newsreader,Georgia,serif;font-size:30px;font-weight:500;
+  color:var(--ink);line-height:1;font-variant-numeric:tabular-nums}
+.chiffres span{font-size:12.5px;color:var(--muted);display:block;margin-top:7px;line-height:1.35}
+.defile{overflow-x:auto;border:1px solid var(--line);border-radius:3px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:15px;min-width:560px}
+th,td{padding:13px 15px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{font-size:11.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--muted);background:var(--sunken);white-space:nowrap}
+tbody tr:last-child td{border-bottom:none}
+td.q{font-weight:700;color:var(--ink);white-space:nowrap}
+td small{display:block;color:var(--muted);font-size:13px;line-height:1.45;margin-top:4px;
+  font-weight:600;white-space:normal;max-width:34ch}
+.cit{display:block;margin-top:6px;font-size:13.5px;color:var(--muted);font-style:italic;
+  line-height:1.5}
+.badge{display:inline-block;font-size:11.5px;font-weight:800;letter-spacing:.05em;
+  text-transform:uppercase;padding:3px 9px;border-radius:2px;white-space:nowrap}
+.b-loi{background:var(--loi-bg);color:var(--loi)}
+.b-dec{background:var(--decid-bg);color:var(--decid)}
+.b-fait{background:var(--fait-bg);color:var(--fait)}
+.tete{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.reserve{border:1px dashed var(--line-fort);border-radius:3px;padding:19px 22px;
+  font-size:15px;color:var(--muted);display:flex;flex-direction:column;gap:8px}
+.reserve strong{color:var(--body)}
+.pied{margin-top:48px;padding-top:20px;border-top:1px solid var(--line);font-size:13.5px;
+  color:var(--muted);display:flex;flex-direction:column;gap:5px}
+@media (max-width:620px){ .doc{padding:22px 17px 70px} }
+
+/* Les captures. Bordées et posées sur la surface enfoncée : ce sont des
+   copies d'écran, pas des illustrations — le cadre dit qu'on regarde le
+   produit et non un dessin de ce qu'il pourrait être. */
+figure{margin:0;border:1px solid var(--line);border-radius:3px;overflow:hidden;
+  background:var(--sunken)}
+figure img{display:block;width:100%;height:auto}
+figure figcaption{padding:11px 15px;font-size:13.5px;color:var(--muted);
+  border-top:1px solid var(--line);background:var(--card)}
+figure figcaption b{color:var(--body)}
+ol.deroule{margin:0;padding-left:0;list-style:none;counter-reset:d;
+  display:flex;flex-direction:column;gap:16px}
+ol.deroule li{counter-increment:d;position:relative;padding-left:44px;max-width:66ch}
+ol.deroule li::before{content:counter(d);position:absolute;left:0;top:-2px;
+  width:28px;height:28px;border-radius:50%;border:1.5px solid var(--line-fort);
+  display:flex;align-items:center;justify-content:center;font-weight:800;
+  font-size:14px;color:var(--ink)}
+ol.deroule b{color:var(--ink)}
+.dit{font-family:Newsreader,Georgia,serif;font-size:19px;line-height:1.45;
+  font-style:italic;color:var(--ink);border-left:3px solid var(--acier);
+  padding-left:14px;margin-top:8px}
+</style>
+</head>
+<body>
+<div class="doc">
+<a class="retour" href="/presentations.html"><span aria-hidden="true">&#8592;</span> Le classeur</a>
+<p class="eyebrow">Bibliothèque de francisation · 7 septembre 2026 · pour montrer</p>
+<h1>Montrer le mode sans compte</h1>
+<p class="chapeau">Le mode sans compte est le plus difficile à raconter des trois&nbsp;: il
+n'y a rien à voir avant qu'une classe l'ait utilisé. Cette page donne la classe — vingt
+appareils entrés avec un code, une heure de travail — et le déroulé de la démonstration.</p>
+
+<section class="premier">
+  <div class="these">
+    <p class="cle">Une démonstration qui commence par un tableau vide ne démontre rien.</p>
+    <p>On ne peut pas montrer « rien à créer avant le cours » sur un écran où il n'y a rien.
+    <code>build/demo_seance.py</code> ouvre une séance et y fait entrer vingt participants
+    anonymes, avec leurs réponses. Rien n'est un vrai élève, et <strong>aucun n'a de
+    compte</strong> — c'est exactement ce qu'on vient montrer.</p>
+  </div>
+  <div class="chiffres">
+    <div><b>PROB24</b><span>le code, imprimé sur la feuille</span></div>
+    <div><b>20</b><span>appareils entrés, aucun compte</span></div>
+    <div><b>1 152</b><span>réponses, item par item</span></div>
+    <div><b>0</b><span>nom, pseudo ou enregistrement collecté</span></div>
+  </div>
+</section>
+
+<section>
+  <div class="tete"><h2>La poser, la retirer</h2>
+    <span class="badge b-fait">Deux commandes</span></div>
+  <p>Sur le poste, dans <code>bibliotheque-francisation</code>&nbsp;:</p>
+  <div class="defile"><table>
+    <thead><tr><th>Commande</th><th>Ce qu'elle fait</th></tr></thead>
+    <tbody>
+      <tr><td class="q"><code>python3 build/demo_seance.py --install</code></td>
+          <td>ouvre la séance <b>PROB24</b> sur le module 10 du niveau 4 et pose les
+          1 152 réponses</td></tr>
+      <tr><td class="q"><code>python3 build/demo_seance.py --etat</code></td>
+          <td>dit ce qui est posé</td></tr>
+      <tr><td class="q"><code>python3 build/demo_seance.py --purge</code></td>
+          <td>retire tout — la séance et ses traces</td></tr>
+    </tbody>
+  </table></div>
+  <p>Le tableau se regarde dans <b>Progression des élèves</b>, groupe <i>Niveau 4</i>,
+  module <i>10 · Pouvez-vous régler le problème&nbsp;?</i> Les chiffres sont
+  <strong>semés</strong>&nbsp;: la démonstration se répète dix fois sans qu'un chiffre
+  bouge entre deux répétitions.</p>
+</section>
+
+<section>
+  <div class="tete"><h2>Le déroulé, en quatre gestes</h2>
+    <span class="badge b-dec">Cinq minutes</span></div>
+  <ol class="deroule">
+    <li><b>Ouvrir la séance devant eux.</b> Depuis la progression du groupe, bouton
+      <i>Séance sans compte</i>. Le serveur rend un code de six caractères.
+      <p class="dit">« Je n'ai rien préparé. Personne dans cette classe n'a de compte. »</p></li>
+    <li><b>Montrer la feuille.</b> Bouton <i>La feuille</i>&nbsp;: une page noir et blanc,
+      le code QR et le code en gros caractères. On l'imprime, on la colle au tableau.
+      <p class="dit">« Voilà tout ce que l'élève reçoit. Il scanne, il travaille. »</p></li>
+    <li><b>Ouvrir le tableau.</b> C'est la capture ci-dessous&nbsp;: qui est en ligne, qui
+      avance, qui bloque — et personne n'a donné son nom.</li>
+    <li><b>Déplier un exercice.</b> C'est là que la salle comprend&nbsp;: la question à
+      50&nbsp;%, avec le compte de ceux qui ont répondu VRAI et de ceux qui ont répondu
+      FAUX. La chose qu'on reprend au tableau dans les deux minutes qui suivent.</li>
+  </ol>
+</section>
+
+<section>
+  <div class="tete"><h2>La classe d'un coup d'œil</h2></div>
+  <p>Quatre solides, douze à suivre, quatre en difficulté — le taux affiché est celui des
+  <strong>réponses justes du premier coup</strong>, pas des réponses justes. L'élève inscrit
+  au groupe figure au-dessus, séparément&nbsp;: le tableau ne mélange pas ceux qui ont un
+  compte et ceux qui n'en ont pas.</p>
+  <figure>
+    <img src="demo-seance/classe.png" alt="Le direct de la classe : vingt participants anonymes, leur taux du premier coup, puis les exercices de la section">
+    <figcaption><b>Noms affichés</b> — les participants s'appellent « Participant 1 » à
+    « Participant 20 », et c'est tout ce que le portail sait d'eux. La bascule
+    <i>Anonyme</i> les réduit à un rang, pour projeter devant la classe.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <div class="tete"><h2>La question qui a divisé la classe</h2></div>
+  <p>Chaque question porte sa part de réussite, ses essais, et <strong>ce que les élèves ont
+  répondu</strong>, compté. La première est à 50&nbsp;%&nbsp;: quatre ont dit VRAI, quatre
+  ont dit FAUX.</p>
+  <figure>
+    <img src="demo-seance/questions.png" alt="L'exercice 1 déplié : huit questions, chacune avec son taux, ses essais et les réponses de la classe comptées">
+    <figcaption>Un exercice passé sous 50&nbsp;% <b>s'ouvre de lui-même</b> — l'écran met
+    devant les yeux ce qu'il faut reprendre, sans qu'on ait à le chercher.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <div class="tete"><h2>Ce que la démonstration ne montre pas, et pourquoi</h2></div>
+  <div class="reserve">
+    <strong>Ni production orale, ni texte déposé.</strong>
+    <p>Dans ce mode, l'élève s'enregistre et s'écoute&nbsp;: <b>rien ne part</b>. La voix est
+    la donnée la plus identifiante du portail, et l'argument du mode est de ne pas la
+    collecter. Une démonstration qui montrerait des dépôts mentirait sur ce que le mode
+    ramasse — c'est la question qu'une direction posera, et il faut pouvoir y répondre en
+    montrant un écran qui n'en a pas.</p>
+    <p>Le texte des réponses ouvertes ne monte pas non plus. Le serveur ne le garde que là
+    où une bonne réponse est déclarée — vrai ou faux, glisser-déposer&nbsp;: de la
+    comparaison de chaînes, déjà faite sur l'appareil. Les cases corrigées par l'assistant
+    n'envoient que juste ou faux.</p>
+  </div>
+  <div class="reserve">
+    <strong>La classe est vraisemblable, pas tirée au hasard.</strong>
+    <p>Chaque participant porte une aisance, chaque question une difficulté, et trois
+    questions sont délibérément dures. Sans elles, « ce qui bloque » n'aurait rien à
+    montrer et la démonstration ne dirait pas à quoi le tableau sert. Un premier réglage
+    mettait <b>quatorze cartes sur vingt en rouge</b>&nbsp;: l'écran donnait alors
+    l'impression de montrer une classe qui coule plutôt qu'un instrument qui sert.</p>
+  </div>
+</section>
+
+<div class="pied">
+  <p>La séance vit dans <code>data/seances.json</code>, sur le volume et jamais dans le
+  dépôt&nbsp;: c'est de la trace, comme <code>data/direct.json</code>.</p>
+  <p>Les questions et leurs bonnes réponses sont <strong>lues dans le module</strong>, jamais
+  recopiées&nbsp;: le fichier de contenu est du JavaScript, et le script le fait exécuter
+  plutôt que de le deviner.</p>
+</div>
+</div>
+</body>
+</html>
