@@ -163,8 +163,15 @@ def installer():
     # Deux courbes plutôt qu'un seul tirage : sans la seconde, tout le monde
     # rate au même endroit avec la même probabilité, et le tableau devient un
     # bruit régulier où aucune ligne ne ressort.
-    aisance = [de.uniform(0.55, 0.97) for _ in range(COMBIEN)]
-    difficulte = {z["zone"]: de.uniform(0.05, 0.35) for z in zones}
+    # Les bornes sont réglées sur ce que l'écran affiche, pas au jugé :
+    # `progression.html` classe à 80 % (« Solide ») et 60 % (« À suivre ») du
+    # **premier coup**. Un tirage plus large mettait quatorze cartes sur vingt
+    # en rouge — une classe en train de couler, ce qui donne à la démonstration
+    # l'air de montrer un échec plutôt qu'un instrument. On vise une classe
+    # ordinaire : quelques-uns solides, la plupart à suivre, quatre ou cinq en
+    # difficulté, dont on a quelque chose à faire.
+    aisance = [de.uniform(0.62, 0.98) for _ in range(COMBIEN)]
+    difficulte = {z["zone"]: de.uniform(0.03, 0.22) for z in zones}
     for z in de.sample([z for z in zones if z["type"] in ("vf", "match")], DURES):
         difficulte[z["zone"]] = 0.80
 
