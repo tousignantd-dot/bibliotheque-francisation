@@ -632,6 +632,11 @@
 const MATERIEL = [
   { cle: 'slideshow',   nom: 'Présentation',        accept: '.ppt,.pptx',                    astuce: 'PPT, PPTX' },
   { cle: 'studentDoc',  nom: 'Fiche élève',         accept: '.html,.htm,.pdf',               astuce: 'HTML, PDF' },
+  /* La seconde série de fiches : la même séance, avec la théorie du
+     « En apprendre plus » imprimée dessus. `genere: true` — elle sort de
+     `build/fiches_plus.py` et ne se téléverse pas ; elle apparaît donc en
+     lien sur la ligne, jamais dans les formulaires de dépôt. */
+  { cle: 'studentDocPlus', nom: 'Fiche élève avec les notions', genere: true },
   { cle: 'corrige',     nom: 'Corrigé',             accept: '.pdf,.docx,.html,.htm',         astuce: 'PDF, DOCX, HTML' },
   { cle: 'planCours',   nom: 'Plan de cours',       accept: '.docx',                         astuce: 'DOCX' },
   { cle: 'interactive', nom: 'Activité interactive',accept: '.html,.htm,.zip',               astuce: 'HTML ou ZIP (dossier compressé)' },
@@ -731,8 +736,9 @@ function brancherDepot(prefixe, m) {
 /* ======================================================
    Formulaire d'ajout d'une activité
    ====================================================== */
-document.getElementById('ajoutMateriel').innerHTML = MATERIEL.map(m => blocDepot('add', m)).join('');
-MATERIEL.forEach(m => brancherDepot('add', m));
+const DEPOSABLE = MATERIEL.filter(m => !m.genere);
+document.getElementById('ajoutMateriel').innerHTML = DEPOSABLE.map(m => blocDepot('add', m)).join('');
+DEPOSABLE.forEach(m => brancherDepot('add', m));
 
 /* La fenêtre de dépôt : ouverte depuis l'en-tête, fermée par la croix, par
    « Annuler », par le fond ou par Échap. Le formulaire n'est pas vidé à la
@@ -774,7 +780,7 @@ document.getElementById('addForm').addEventListener('submit', async e => {
   fd.append('title', title);
   fd.append('level', document.getElementById('niveauInput').value);
   fd.append('categorie', document.getElementById('categorieInput').value);
-  for (const m of MATERIEL) {
+  for (const m of DEPOSABLE) {
     const f = document.getElementById(`add${m.cle}Input`).files[0];
     if (f) fd.append(m.cle, f);
   }
@@ -868,6 +874,11 @@ function blocInteractif(a, outil) {
 /* Le matériel d'une ligne. Trois cas : le fichier est nommé dans l'activité,
    ou il n'y est pas mais l'inventaire en porte plusieurs, ou il n'y a rien. */
 function chipMateriel(a, m) {
+  /* Une pièce générée ne se réclame pas : elle n'existe que là où elle a été
+     produite (les fiches « avec les notions » sont un essai du niveau 6).
+     L'annoncer manquante sur les 168 autres activités ferait lire un trou là
+     où il n'y a rien à combler. */
+  if (m.genere && !a[m.cle]) return '';
   if (a[m.cle]) {
     return `<span class="mat-ligne mat-ligne--oui"><span class="puce" aria-hidden="true">✓</span>
       <a class="nom" href="${escHtml(a[m.cle])}" target="_blank" rel="noopener">${escHtml(m.nom)}</a></span>`;
@@ -1153,7 +1164,7 @@ function ouvrirAjout(activity) {
   document.getElementById('editModalTitle').textContent = activity.title;
 
   const corps = document.getElementById('editModalBody');
-  corps.innerHTML = MATERIEL.map(m => a_deja(activity[m.cle])
+  corps.innerHTML = DEPOSABLE.map(m => a_deja(activity[m.cle])
     ? `<div class="form-group mat-bloc">
          <label>${escHtml(m.nom)}</label>
          <div class="current-file">
@@ -1163,7 +1174,7 @@ function ouvrirAjout(activity) {
        </div>`
     : blocDepot('mod', m)).join('');
 
-  MATERIEL.forEach(m => { if (!a_deja(activity[m.cle])) brancherDepot('mod', m); });
+  DEPOSABLE.forEach(m => { if (!a_deja(activity[m.cle])) brancherDepot('mod', m); });
   document.getElementById('editModal').classList.add('open');
 }
 
@@ -1186,7 +1197,7 @@ document.getElementById('editSaveBtn').addEventListener('click', async () => {
 
   const fd = new FormData();
   let nb = 0;
-  for (const m of MATERIEL) {
+  for (const m of DEPOSABLE) {
     const input = document.getElementById(`mod${m.cle}Input`);
     const f = input && input.files[0];
     if (f) { fd.append(m.cle, f); nb++; }

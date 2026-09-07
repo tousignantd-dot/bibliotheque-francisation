@@ -15,7 +15,8 @@ Ce script règle les deux sens :
 · **Décrocher** ce qui n'existe pas. Un champ vide est prévu par le portail —
   trente-cinq activités en ont déjà — et il dit la vérité : le diaporama
   n'existe pas encore. Un lien mort, lui, ment.
-· **Raccrocher les fiches** apparues depuis. `studentDoc` n'a aucun repli :
+· **Raccrocher les fiches** apparues depuis. `studentDoc` et
+  `studentDocPlus` n'ont aucun repli :
   si le champ est vide, la ligne du catalogue dit « absent » même quand le
   fichier est là. Le jour où les séances manquantes sont construites, le lien
   revient sans que personne ait à s'en souvenir — c'est tout l'intérêt d'une
@@ -44,7 +45,16 @@ CATALOGUE = RACINE / 'data' / 'activities.json'
 MORCEAUX = (
     ('slideshow',  'assets/powerpoints/{slug}/presentations.html'),
     ('studentDoc', 'assets/documents/{slug}-fiches-eleves.html'),
+    # La seconde série, avec la théorie du « En apprendre plus » imprimée sur
+    # la fiche. Elle n'existe qu'où `build/fiches_plus.py` est passé — le
+    # niveau 6 pour l'instant. Même règle que `studentDoc` : le fichier
+    # présent se raccroche tout seul, le lien mort se décroche.
+    ('studentDocPlus', 'assets/documents/plus/{slug}-fiches-eleves.html'),
 )
+
+# Les champs qui n'ont AUCUN repli : champ vide, ligne muette. Ils se
+# raccrochent, les autres se contentent d'être signalés.
+SANS_REPLI = ('studentDoc', 'studentDocPlus')
 
 
 def dans_un_worktree():
@@ -112,7 +122,7 @@ def main():
     # « tout va bien » et rentrait sans raccrocher les fiches — c'est ce qui a
     # laissé les seize fiches de module-n5-actualite invisibles au catalogue
     # alors qu'elles étaient sur le disque.
-    a_faire = morts + [x for x in absents if x[1] == 'studentDoc']
+    a_faire = morts + [x for x in absents if x[1] in SANS_REPLI]
     if not a_faire:
         print('✓ rien à décrocher, rien à raccrocher')
         return 0
@@ -122,7 +132,7 @@ def main():
 
     for a, champ, _ in morts:
         a[champ] = ''
-    raccroches = [x for x in absents if x[1] == 'studentDoc']
+    raccroches = [x for x in absents if x[1] in SANS_REPLI]
     for a, champ, lien in raccroches:
         a[champ] = lien
     CATALOGUE.write_text(json.dumps(activites, ensure_ascii=False, indent=2) + '\n',

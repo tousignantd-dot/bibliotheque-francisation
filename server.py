@@ -596,8 +596,8 @@ def init_storage():
     # mais un emplacement vide dans le code laisse la place au dépôt du volume.
     # Sans cette nuance, un corrigé ajouté en ligne disparaissait au premier
     # redéploiement, et le catalogue ne servirait plus à rien.
-    FICHIER_FIELDS = ("thumbnail", "interactive", "studentDoc", "slideshow",
-                      "planCours", "corrige", "autres")
+    FICHIER_FIELDS = ("thumbnail", "interactive", "studentDoc", "studentDocPlus",
+                      "slideshow", "planCours", "corrige", "autres")
     if src_acts.exists() and dst_acts.exists():
         try:
             with open(src_acts, encoding="utf-8") as f:
@@ -17391,7 +17391,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             json_response(self, {"error": "Activité introuvable"}, 404)
             return
 
-        for key in ("thumbnail", "interactive", "studentDoc", "slideshow", "planCours", "autres", "parcours"):
+        for key in ("thumbnail", "interactive", "studentDoc", "studentDocPlus",
+                    "slideshow", "planCours", "autres", "parcours"):
             self._delete_file(target.get(key, ""), key)
 
         activities = [a for a in activities if a["id"] != activity_id]
