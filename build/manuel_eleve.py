@@ -602,13 +602,16 @@ table.labo th{font-size:9pt}
 .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
 .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
 ol.check{list-style:none; counter-reset:c}
-ol.check li{counter-increment:c; position:relative; padding-left:9mm; margin-bottom:8px;
+/* `>` et non l'espace : les <li> des options sont dans un <ul> imbriqué, et
+   le sélecteur descendant leur donnait à chacune un numéro et une pastille
+   par-dessus leur texte. */
+ol.check > li{counter-increment:c; position:relative; padding-left:9mm; margin-bottom:8px;
   break-inside:avoid}
-ol.check li::before{content:counter(c); position:absolute; left:0; top:0; width:6mm;
+ol.check > li::before{content:counter(c); position:absolute; left:0; top:0; width:6mm;
   height:6mm; border-radius:50%; border:1.5px solid var(--rule); font-size:9.5pt;
   font-weight:800; color:var(--ink); display:flex; align-items:center; justify-content:center}
 ol.check .q{font-weight:800; color:var(--ink)}
-ul.opts{list-style:none; margin-top:3px; display:flex; gap:10px; flex-wrap:wrap}
+ul.opts{list-style:none; margin-top:3px; padding:0; display:flex; gap:10px; flex-wrap:wrap}
 ul.opts li{font-weight:600; border:1px solid var(--line); border-radius:999px;
   padding:2px 11px; font-size:10.5pt}
 .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
@@ -664,8 +667,8 @@ th{padding-bottom:3px; font-size:8.5pt}
 .ml p.mp{margin-bottom:5px}
 .pieges{gap:6px} .pg{padding:7px 9px} .pg .ph{font-size:9.5pt}
 .dit{padding:5px 9px; margin-top:5px}
-ol.check li{margin-bottom:5px; padding-left:7mm}
-ol.check li::before{width:5mm; height:5mm; font-size:8pt}
+ol.check > li{margin-bottom:5px; padding-left:7mm}
+ol.check > li::before{width:5mm; height:5mm; font-size:8pt}
 .reps{font-size:9pt; padding-top:4px}
 
 /* intercalaire : un bandeau en tête de module, plus une page à lui tout seul */

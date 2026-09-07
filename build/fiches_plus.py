@@ -118,9 +118,13 @@ CSS_PLUS = """
 .plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
 .plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
 .plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
-.plus-papier ol.check li{counter-increment:c; position:relative; padding-left:9mm;
+/* `>` et non l'espace : `ol.check li` attrapait aussi les <li> des options,
+   qui sont dans un <ul> imbriqué. Chacune s'incrémentait donc et recevait sa
+   pastille, posée en absolu par-dessus son propre texte — la numérotation
+   allait de 1 à 12 pour quatre questions. */
+.plus-papier ol.check > li{counter-increment:c; position:relative; padding-left:9mm;
   margin-bottom:8px; break-inside:avoid}
-.plus-papier ol.check li::before{content:counter(c); position:absolute; left:0; top:0;
+.plus-papier ol.check > li::before{content:counter(c); position:absolute; left:0; top:0;
   width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
   font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
   align-items:center; justify-content:center}
