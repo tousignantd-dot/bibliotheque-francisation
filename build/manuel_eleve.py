@@ -242,6 +242,49 @@ def _accent(s):
     return re.sub(r'\{([^}]*)\}', r'<b>\1</b>', _riche(s))
 
 
+def _nu(s):
+    """La forme nue d'une chaîne : pour comparer deux textes, pas pour les rendre."""
+    return re.sub(r'[^a-zà-ÿ0-9]', '', (s or '').lower())
+
+
+def _mise_en_evidence(say, mots):
+    """(la phrase, les mots dessous) — et le plus souvent, rien dessous.
+
+    À l'écran, `w` surligne des mots **dans** la phrase. Le papier les
+    recopiait tous en petit sous la phrase, ce qui donnait le plus souvent la
+    phrase écrite deux fois. Compté sur les 304 lignes de tableau « labo » du
+    niveau 6, les trois cas viennent des données et non d'une intuition :
+
+    - **249 fois, les mots SONT la phrase.** La répéter en petit n'apprend
+      rien : on rend la phrase seule.
+    - **45 fois, les mots sont des morceaux de la phrase.** L'écran les
+      surligne ; le papier les met en gras **à leur place**, ce qui est la même
+      information au bon endroit. Le marquage passe par `{…}` et `_accent()`,
+      la mécanique qui existe déjà pour ça — pas par une seconde façon de
+      mettre en gras.
+    - **10 fois, les mots disent autre chose** : une version pronominalisée de
+      la phrase, par exemple. Ceux-là gardent leur ligne dessous, c'est une
+      information de plus.
+
+    Une phrase qui porte déjà des `{…}` n'est jamais remarquée : on ne
+    superpose pas deux marquages.
+    """
+    mots = [m for m in (mots or []) if (m or '').strip()]
+    if not mots:
+        return _riche(say), ''
+    if _nu(' · '.join(mots)) == _nu(say):
+        return _riche(say), ''
+    if '{' not in (say or '') and all(m in (say or '') for m in mots):
+        marque = say
+        # Du plus long au plus court : « k » marqué avant « le k » irait se
+        # loger dans le mot déjà marqué.
+        for m in sorted(mots, key=len, reverse=True):
+            marque = marque.replace(m, '{%s}' % m, 1)
+        return _accent(marque), ''
+    return (_riche(say),
+            '<span class="tags">%s</span>' % ' · '.join(_accent(w) for w in mots))
+
+
 def bloc_html(b):
     """Un bloc de mini-leçon, mis en page pour le papier.
 
@@ -274,7 +317,6 @@ def bloc_html(b):
         for ax in axes:
             for cle, lbl in ax.get('opts', []):
                 etiquettes[cle] = lbl
-        nu = lambda s: re.sub(r'[^a-zà-ÿ0-9]', '', (s or '').lower())
         rangs = []
         for rang, (cle, sortie) in enumerate((b.get('out') or {}).items(), 1):
             # La clé est la concaténation des options choisies sur chaque axe.
@@ -287,13 +329,11 @@ def bloc_html(b):
             # la lettre de l'option — et non un rang inventé : les notes des
             # mini-leçons disent « la phrase c », et cette lettre doit se
             # retrouver dans le tableau.
-            if nu(choix) == nu(sortie.get('say', '')):
+            if _nu(choix) == _nu(sortie.get('say', '')):
                 choix = '%s.' % cle
-            tags = ' · '.join(_accent(w) for w in (sortie.get('w') or []))
+            phrase, tags = _mise_en_evidence(sortie.get('say', ''), sortie.get('w'))
             rangs.append('<tr><td class="cle">%s</td><td>%s%s</td><td>%s</td></tr>'
-                         % (e(choix), _riche(sortie.get('say', '')),
-                            '<span class="tags">%s</span>' % tags if tags else '',
-                            _riche(sortie.get('n', ''))))
+                         % (e(choix), phrase, tags, _riche(sortie.get('n', ''))))
         titres = ' · '.join(e(a.get('lbl', '')) for a in axes)
         return ('<section class="bloc card ml">%s%s<table class="labo">'
                 '<thead><tr><th>%s</th><th>Ce qui se dit</th><th>Ce qu’on observe</th>'
