@@ -89,6 +89,38 @@ for i, capsule in enumerate(filmees, 1):
       </details>
     </section>""")
 
+# ── Le tutoriel papier ────────────────────────────────────────────────────
+#
+# Il passe AVANT les films, et c'est un choix : quand on découvre le portail,
+# on veut un document qu'on feuillette, qu'on annote et qu'on garde à côté du
+# clavier. Une vidéo se regarde une fois ; celui-ci se pose ouvert à la page
+# qu'on est en train de faire.
+#
+# Il vit dans `assets/outils/`, comme cette page — et non dans
+# `assets/presentations/`, qui est derrière le verrou du classeur : le lien y
+# demandait un identifiant que l'enseignante n'a pas.
+PAPIER = DEPOT / "assets" / "outils" / "tutoriel-espace-enseignant.pdf"
+papier = ""
+if PAPIER.exists():
+    mo = PAPIER.stat().st_size / (1024 * 1024)
+    papier = f"""
+      <section class="tu-capsule tu-papier" id="papier">
+        <div class="tu-num">Le document · à imprimer ou à garder ouvert</div>
+        <h2>Le tutoriel de l'espace enseignant</h2>
+        <p class="tu-chapeau">Tout ce que disent les capsules, en un seul document :
+           un chapitre par sujet, une étape par geste, et les copies d'écran du
+           portail. C'est par là qu'on commence.</p>
+        <div class="tu-boutons">
+          <a class="btn btn--primary" href="tutoriel-espace-enseignant.pdf"
+             target="_blank" rel="noopener">Ouvrir le PDF ({mo:.0f} Mo)</a>
+          <a class="btn btn--ghost" href="tutoriel-espace-enseignant.html"
+             target="_blank" rel="noopener">Le lire dans le navigateur</a>
+        </div>
+      </section>"""
+else:
+    print("[!] tutoriel-espace-enseignant.pdf absent — bloc papier omis")
+
+
 # ── Le film de présentation ───────────────────────────────────────────────
 # Ce n'est pas une capsule : les capsules apprennent à se servir du portail,
 # celui-ci présente le produit. Il a donc son bloc, au-dessus du sommaire, et
@@ -185,6 +217,13 @@ PAGE.write_text(f"""<!DOCTYPE html>
      décollée du surtitre. */
   .tu-presentation {{ padding: var(--sp-5); border-radius: var(--r-lg);
     background: var(--acier-100); }}
+  /* Le document papier, en tête : c'est par lui qu'on commence quand on
+     découvre le portail, et une vidéo ne se feuillette pas. Encadré plutôt
+     que teinté — il n'est pas de la même nature que les films. */
+  .tu-papier {{ padding: var(--sp-5); border-radius: var(--r-lg);
+    border: 2px solid var(--line-300); background: var(--surface-card); }}
+  .tu-papier .tu-boutons {{ display: flex; flex-wrap: wrap; gap: var(--sp-3);
+    margin-top: var(--sp-4); }}
   .tu-chapeau {{ margin: 0; color: var(--ink-500); font-size: var(--fs-body-sm); }}
   .tu-sansst {{ margin: 0; color: var(--ink-500); font-size: var(--fs-ui-sm); }}
   .tu-retour {{ margin: 0 0 var(--sp-4); }}
@@ -196,14 +235,16 @@ PAGE.write_text(f"""<!DOCTYPE html>
     <div class="container">
       <a class="btn btn--ghost btn--sm tu-retour" href="../../enseignant.html"><span aria-hidden="true">←</span> Retour à l’espace enseignant</a>
       <div class="band__eyebrow">Espace enseignant · Francisation Niveau 4</div>
-      <h1 style="margin:var(--sp-3) 0 0;font-size:var(--fs-h2);font-weight:var(--fw-black)">Tutoriels en vidéo</h1>
-      <p class="band__lead">{combien} capsules courtes, filmées dans le portail, avec narration
-         et sous-titres. Regardez celle dont vous avez besoin — elles ne se suivent
-         pas obligatoirement.</p>
+      <h1 style="margin:var(--sp-3) 0 0;font-size:var(--fs-h2);font-weight:var(--fw-black)">Tutoriels</h1>
+      <p class="band__lead">Le tutoriel en document, d'abord — c'est le plus complet, et
+         il s'imprime. Puis {combien.lower()} capsules courtes, filmées dans le portail, avec
+         narration et sous-titres : regardez celle dont vous avez besoin, elles ne se
+         suivent pas obligatoirement.</p>
     </div>
   </header>
   <div class="container">
     <div class="tu-pile">
+      {papier}
       {presentation}
       <ul class="tu-sommaire">{''.join(sommaire)}</ul>
       {''.join(cartes)}

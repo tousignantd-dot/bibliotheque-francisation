@@ -49,7 +49,12 @@ ICI = pathlib.Path(__file__).resolve().parent
 RACINE = ICI.parent.parent
 sys.path.insert(0, str(RACINE / "build"))
 
-SORTIE = RACINE / "assets/presentations/tutoriel-espace-enseignant.html"
+# Le tutoriel papier vit dans `assets/outils/`, avec ce que l'enseignante
+# ouvre — et non dans `assets/presentations/`, qui est derrière le verrou du
+# classeur : une enseignante qui cliquait dessus depuis la page des tutoriels
+# se faisait demander un identifiant qu'elle n'a pas. Les chemins relatifs
+# ne changent pas : les deux dossiers sont à la même profondeur.
+SORTIE = RACINE / "assets/outils/tutoriel-espace-enseignant.html"
 PDF = SORTIE.with_suffix(".pdf")
 DS = RACINE / "assets/design-system"
 
