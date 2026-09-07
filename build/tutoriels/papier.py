@@ -190,7 +190,19 @@ h1,h2,h3{color:var(--ink);line-height:1.2;letter-spacing:-0.01em}
           font-weight:800;font-variant-numeric:tabular-nums}
 
 /* — Chapitres — */
+/* Sur le papier, le saut de page fait tout le blanc qu'il faut. À l'écran il
+   ne fait rien : le chapitre suivant venait se coller sous l'encadré « À
+   retenir » du précédent, sans même un filet entre les deux. Le blanc est
+   donc posé à l'écran seulement — l'ajouter aussi à l'impression
+   descendrait chaque titre de chapitre d'un pouce, en haut d'une page vide. */
 .chap{break-before:page}
+@media screen{
+  /* `.chap ~ .chap` et non `.chap:first-of-type` : le premier `<section>` de
+     la page est la couverture, si bien que `:first-of-type` n'atteignait
+     aucun chapitre et posait un filet au-dessus du premier. Le sélecteur de
+     frère ne prend que les chapitres qui en suivent un autre. */
+  .chap ~ .chap{margin-top:26mm; padding-top:14mm; border-top:1px dashed var(--line)}
+}
 .chap > header{border-bottom:2.5px solid var(--rule);padding-bottom:8pt;margin-bottom:16pt}
 .chap h2{font-size:22pt;font-weight:900;margin-top:3pt}
 .chap .promesse{font-size:12pt;font-weight:600;color:var(--soft);margin-top:4pt}
