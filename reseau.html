@@ -87,6 +87,9 @@
                          white-space: nowrap; }
     .rs-table tbody tr:last-child td { border-bottom: 0; }
     .rs-eteint { color: var(--text-muted); }
+    /* « tous » n'est pas une absence de donnée : c'est le défaut, et il
+       doit se lire comme une valeur. */
+    .rs-tous { color: var(--text-muted); font-style: italic; }
 
     /* — L'IA, autorisée ou non — */
     .rs-ia { font-size: var(--fs-meta); font-weight: var(--fw-black);
@@ -195,7 +198,7 @@
     <div class="rs-cadre">
       <table class="rs-table">
         <thead>
-          <tr><th>Personne</th><th>Rôle</th><th>Posé sur</th><th>Depuis</th><th>État</th></tr>
+          <tr><th>Personne</th><th>Rôle</th><th>Posé sur</th><th>Niveaux</th><th>Depuis</th><th>État</th></tr>
         </thead>
         <tbody id="rsAcces"></tbody>
       </table>
@@ -539,10 +542,28 @@
         || '<li class="rs-vide">Aucune organisation. L\'arbre sera posé au prochain démarrage du serveur.</li>';
 
       document.getElementById('rsAcces').innerHTML = acces.map(function (a) {
+        /* Les niveaux d'une ligne d'accès. Rien d'écrit veut dire « tous » —
+           c'est le défaut du serveur, et l'écran doit le dire en toutes
+           lettres : une colonne vide se lirait comme une donnée manquante,
+           alors que c'est une décision. Le fondateur ne se borne pas ; la
+           colonne le dit plutôt que d'offrir un bouton que le serveur
+           refuserait. */
+        var bornes = (a.niveaux || []).map(function (n) {
+          return String(n).replace(/^Niveau\s*/i, '');
+        });
+        var dit = bornes.length
+          ? 'Niveau' + (bornes.length > 1 ? 'x ' : ' ') + bornes.join(', ')
+          : '<span class="rs-tous">tous</span>';
+        var bouton = (a.actif === false || a.role === 'fondateur') ? ''
+          : ' <button type="button" class="btn btn--ghost btn--sm" '
+            + 'data-geste="borner-acces" data-acces="' + a.id + '" '
+            + 'data-niveaux="' + ech(bornes.join(',')) + '">'
+            + (bornes.length ? 'Changer' : 'Borner') + '</button>';
         return '<tr' + (a.actif === false ? ' class="rs-eteint"' : '') + '>'
           + '<td>' + ech(a.nom) + '</td>'
           + '<td>' + ech(LIBELLE_ROLE[a.role] || a.role) + '</td>'
           + '<td>' + ech(a.organisation) + '</td>'
+          + '<td>' + dit + bouton + '</td>'
           + '<td>' + jour(a.accordeLe) + '</td>'
           + '<td>' + (a.actif === false ? 'Éteint'
               : a.role === 'fondateur'
@@ -551,7 +572,7 @@
                   + 'data-geste="retirer-acces" data-acces="' + a.id + '">Retirer</button>')
           + '</td>'
           + '</tr>';
-      }).join('') || '<tr><td colspan="5" class="rs-vide">Aucun accès.</td></tr>';
+      }).join('') || '<tr><td colspan="6" class="rs-vide">Aucun accès.</td></tr>';
 
       document.getElementById('rsQui').textContent = moi ? moi.nom : '';
       document.getElementById('rsCorps').hidden = false;
@@ -740,6 +761,20 @@
         try { await navigator.clipboard.writeText(lien); message('Lien copié.', true); }
         catch (e) { message('La copie a échoué — sélectionnez le lien à la main.', false); }
         return;
+      }
+      if (geste === 'borner-acces') {
+        /* Une invite plutôt qu'un formulaire : c'est un geste rare, posé par
+           une seule personne, et le champ vide est la façon de tout rouvrir.
+           Le dire est plus important que le styler — un bornage qu'on ne sait
+           pas défaire finit par se défaire mal. */
+        var pose = b.dataset.niveaux || '';
+        var rep2 = prompt('Niveaux de cet accès — des chiffres de 1 à 8, séparés par des virgules.'
+          + '\n\nLaisser vide pour lever le bornage : la personne retrouve tous les niveaux.', pose);
+        if (rep2 === null) return;
+        var liste = rep2.split(',').map(function (x) { return x.trim(); })
+                        .filter(function (x) { return x !== ''; });
+        return void agir('PATCH', '/api/admin/acces/' + Number(b.dataset.acces),
+                         { niveaux: liste });
       }
       if (geste === 'retirer-acces') {
         if (!confirm('Retirer cet accès ? La personne garde son compte et ses '

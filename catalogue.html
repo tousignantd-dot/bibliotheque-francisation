@@ -965,13 +965,26 @@ async function loadList() {
     // essai croirait le produit vide plutôt que bridé.
     const essai = Prof.state && Prof.state.essai;
     const parQui = (Prof.state && Prof.state.essaiDecidePar) || '';
-    if (sousTitre) sousTitre.textContent = essai
-      ? `${niv || 'Tous les niveaux'} · période d’essai — les ${
-          (Prof.state && Prof.state.essaiModules) || 2} premiers modules de chaque niveau, et tous les ateliers${
-          parQui ? ' (' + parQui + ')' : ''}`
+    // Deux causes peuvent raccourcir la liste, et elles se cumulent : le
+    // bornage de l'accès et la période d'essai. On les nomme **toutes les
+    // deux**. N'en dire qu'une laisserait croire que l'autre n'existe pas —
+    // et ce serait la même faute, un cran plus loin, que la liste courte
+    // qu'on n'explique pas du tout.
+    const bornes = (Prof.state && Prof.state.niveauxBornes) || [];
+    const ditBornes = bornes.length
+      ? (bornes.length > 1 ? 'les niveaux ' : 'le niveau ')
+        + bornes.map(n => String(n).replace(/^Niveau\s*/i, '')).join(' et ')
+      : '';
+    const base = bornes.length
+      ? `${niv || 'Tous les niveaux'} — votre accès ne porte que sur ${ditBornes}`
       : niv
         ? `${niv} — les activités de votre groupe`
         : 'Tous les niveaux — ce groupe n’a pas de niveau enregistré';
+    if (sousTitre) sousTitre.textContent = essai
+      ? `${base} · période d’essai — les ${
+          (Prof.state && Prof.state.essaiModules) || 2} premiers modules de chaque niveau, et tous les ateliers${
+          parQui ? ' (' + parQui + ')' : ''}`
+      : base;
     // Une activité déposée d'ici appartient au niveau du groupe, sauf mention
     // contraire : le champ reste libre.
     const champNiveau = document.getElementById('niveauInput');

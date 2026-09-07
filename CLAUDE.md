@@ -731,6 +731,78 @@ défaite.
   les effacer. `retirer_acces(teacherId, orgId=None)` retire d'un centre sans
   toucher au compte : une personne rattachée à deux centres qui quitte l'un
   garde l'autre.
+### Le bornage par niveau (`niveaux` sur la ligne d'accès)
+
+Décidé et livré le **7 septembre 2026**. Un accès peut ne porter que sur
+certains niveaux : « cette personne n'enseigne que le niveau 6 — et elle y a
+tout ». La proposition et ses six arbitrages sont dans
+`assets/presentations/acces-borne-par-niveau.html`.
+
+**Le champ vit sur la ligne de `data/acces.json`, jamais sur le compte.**
+L'étape 2 a séparé les *pouvoirs* (`role`) de la *portée* (la table) ; un
+bornage par niveau est de la portée. Le poser sur le compte rouvrirait la
+confusion qu'on a payé pour fermer. Une **liste vide veut dire « tous les
+niveaux »** — c'est le défaut, et le seul acceptable : un verrou qui se trompe
+ferme une classe.
+
+    python3 build/controles/niveaux_acces.py --etat
+
+Quatre fonctions, dans `server.py`, à côté de la période d'essai dont elles
+copient le patron : `normalize_niveaux()`, `niveaux_de(teacher)` (ensemble vide
+= tous), `au_niveau(activite, niveaux)`, `refus_de_niveau(teacher, niveau, quoi)`.
+
+- **`niveaux_de()` prend l'union des lignes, et c'est volontaire.** Une personne
+  bornée dans un centre et libre dans un autre **n'est pas bornée**. Pour qu'un
+  bornage tienne, il faut le poser sur chaque ligne : explicite, donc réparable —
+  la règle inverse (une ligne oubliée qui ferme tout) ne se verrait qu'au moment
+  où une classe s'arrête. Le contrôle sort en écart sur un bornage à demi posé.
+- **Trois cas rendent l'ensemble vide** : le fondateur (qui ne se borne pas —
+  il n'y aurait plus personne pour lever le bornage), une personne sans ligne
+  d'accès, une ligne d'avant ce jour. Mêmes replis que `groups_of_teacher()` :
+  le doute laisse travailler.
+- **Quatre points d'application, et un seul texte de refus.**
+  `refus_de_niveau()` porte la règle ; l'appelant ne fournit que le sujet de la
+  phrase. Deux formulations d'une même règle finissent par diverger — c'est le
+  défaut que l'étape 2 a supprimé.
+  1. **L'entonnoir** `activities_for_group(group_id, teacher=None)`. Le
+     paramètre est facultatif et **sans personne rien n'est borné** : c'est ce
+     que veut la liste de l'élève, qui n'est bornée par personne (sa classe est
+     tenue par quelqu'un que le bornage a déjà borné ; un second verrou ne
+     fermerait rien de plus et ferait un deuxième endroit où se tromper).
+  2. **`/api/activities?catalogue=1`, qui ne passe pas par l'entonnoir.**
+     C'était le trou : la page recevait les huit niveaux et n'en cachait sept
+     que dans le navigateur. Le bornage y est écrit à la main.
+  3. **Le groupe, à la création et au changement de niveau** — 403. L'écran ne
+     propose que les niveaux permis (`trierLesNiveauxOfferts()` dans
+     `js/enseignant.js`), mais **ce n'est pas lui qui protège**.
+  4. **La séance**, et le bornage s'y vérifie **avant toutes les autres
+     gardes** : les refus suivants décrivent le fonds (« ne renvoie pas les
+     réponses », « pas dans l'essai »), et les servir apprendrait à la personne
+     ce qu'il y a derrière son bornage. Il n'a **pas** l'échappatoire du « déjà
+     daté » qu'a la règle du niveau de groupe — les groupes existants ne sont
+     pas réécrits, donc ce cas est certain.
+- **« Corrige-moi ! » échappe au bornage** comme il échappe au niveau du groupe,
+  par le **même drapeau** (« Pratique orale libre », dans `au_niveau()` et nulle
+  part ailleurs). Une activité sans niveau lisible est **fermée** à une personne
+  bornée : même arbitrage que l'essai avec un module sans numéro.
+- **Une demande non vide dont rien n'est lisible est refusée en 400**, jamais
+  traitée comme « ouvrir tout » : `normalize_niveaux()` jette en silence, et
+  accepter le résultat vide rouvrirait ce qu'on croyait fermer. C'est la seule
+  raison pour laquelle `_handle_acces_niveaux()` compare avec ce qu'il a reçu.
+- **La console pose et lève par le même geste** (`PATCH /api/admin/acces/<id>`,
+  fondateur seul, journalisé `acces.borne`) : un champ vide rouvre tout. Un
+  bornage qu'on ne sait pas défaire vite finit par se défaire mal.
+- **Les écrans le disent.** `/api/prof/me` rend `niveauxBornes`, et le
+  sous-titre du catalogue nomme **les deux** causes possibles d'une liste
+  courte quand elles se cumulent (bornage et période d'essai). Une liste bornée
+  qu'on n'explique pas se lit comme une panne ; n'en expliquer qu'une laisse
+  croire que l'autre n'existe pas.
+- **Éprouvé en le faisant échouer**, aux deux bouts : 26 vérifications sur un
+  bac d'essai monté sur `STORAGE_DIR` (les trois refus joués en HTTP, dont la
+  séance déjà datée), et les **quatre écarts du contrôle injectés et vus
+  détectés** avec le bon diagnostic. Un contrôle qu'on n'a jamais fait échouer
+  ne prouve rien.
+
 ### La console du réseau (`reseau.html`)
 
 Étape 3, première tranche. **Lecture seule**, réservée au **compte fondateur**

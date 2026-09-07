@@ -25,6 +25,10 @@ const Prof = (() => {
     essai: false,
     essaiDecidePar: '',
     essaiModules: 0,
+    // Les niveaux auxquels l'accès de cette personne se borne. Vide = tous,
+    // comme côté serveur — c'est le défaut, et le seul défaut acceptable :
+    // un verrou qui se trompe ferme une classe.
+    niveauxBornes: [],
   };
 
   const listeners = [];
@@ -145,6 +149,7 @@ const Prof = (() => {
     state.essai = data.essai === true;
     state.essaiDecidePar = data.essaiDecidePar || '';
     state.essaiModules = data.essaiModules || 0;
+    state.niveauxBornes = Array.isArray(data.niveauxBornes) ? data.niveauxBornes : [];
     setGroupes(data.groupes);
     if (!state.groupes.length && redirect) {
       // Un enseignant sans groupe ne peut rien planifier : on l'envoie

@@ -315,6 +315,27 @@
 
   /* ══════════ Démarrage ══════════ */
 
+  /* Les deux sélecteurs de niveau ne proposent que ce que l'accès permet.
+     **Ce n'est pas ça qui protège** — le serveur refuse en 403, et c'est lui
+     qui garde. C'est un confort, et une politesse : un menu qui offre un
+     niveau que la personne ne peut pas prendre la fait échouer devant sa
+     classe pour rien. Rien à faire quand l'accès n'est pas borné. */
+  function trierLesNiveauxOfferts() {
+    const bornes = etat.niveauxBornes || [];
+    if (!bornes.length) return;
+    ['premierGroupeNiveau', 'nouveauNiveau'].forEach((id) => {
+      const sel = $(id);
+      if (!sel) return;
+      Array.from(sel.options).forEach((o) => {
+        if (o.value && !bornes.includes(o.value)) o.remove();
+      });
+      // Un seul niveau permis : il se choisit tout seul, l'invite « Choisir… »
+      // n'a plus rien à demander.
+      const restants = Array.from(sel.options).filter((o) => o.value);
+      if (restants.length === 1) sel.value = restants[0].value;
+    });
+  }
+
   async function demarrer() {
     let data;
     try {
@@ -335,6 +356,8 @@
     // Le serveur refuse de toute façon — c'est lui qui garde.
     etat.seanceAutorisee = data.seanceAutorisee !== false;
     $('boutonSeance').hidden = !etat.seanceAutorisee;
+    etat.niveauxBornes = Array.isArray(data.niveauxBornes) ? data.niveauxBornes : [];
+    trierLesNiveauxOfferts();
     poserGroupes(data.groupes);
     // Sans groupe, il n'y a pas de niveau ; sans niveau, ni catalogue à
     // montrer ni élève à inscrire. La page se réduit donc à un seul écran,
@@ -1696,11 +1719,24 @@
     if (changerNiveau) {
       const id = Number(changerNiveau.dataset.niveauGroupe);
       const groupe = etat.groupes.find((g) => g.id === id);
-      const rep = prompt(`Niveau du groupe « ${groupe ? groupe.nom : ''} » — un chiffre de 1 à 8.\n\nIl décide de ce que le catalogue et le dépôt de matériel montrent.`,
+      // Les chiffres offerts suivent l'accès, comme les deux sélecteurs.
+      // Le refus, lui, est au serveur : c'est son message qu'on affichera.
+      const bornes = etat.niveauxBornes || [];
+      const chiffres = bornes.length
+        ? bornes.map((x) => String(x).replace(/\D/g, '')).filter(Boolean)
+        : ['1', '2', '3', '4', '5', '6', '7', '8'];
+      const dits = chiffres.length === 1 ? `le ${chiffres[0]}` : chiffres.join(', ');
+      const rep = prompt(`Niveau du groupe « ${groupe ? groupe.nom : ''} » — ${
+        chiffres.length === 1 ? 'votre accès ne permet que ' + dits : 'un chiffre parmi ' + dits}.\n\nIl décide de ce que le catalogue et le dépôt de matériel montrent.`,
         String(niveauDe(groupe)).replace(/\D/g, ''));
       if (rep === null) return;
       const n = parseInt(rep.trim(), 10);
-      if (!(n >= 1 && n <= 8)) { dire('Le niveau doit être un chiffre de 1 à 8.'); return; }
+      if (!chiffres.includes(String(n))) {
+        dire(chiffres.length === 1
+          ? `Votre accès ne porte que sur le niveau ${chiffres[0]}.`
+          : `Le niveau doit être un chiffre parmi ${dits}.`);
+        return;
+      }
       try {
         await envoyer(`/api/prof/groupes/${id}`, { niveau: `Niveau ${n}` }, 'PATCH');
         etat.groupes = await json('/api/prof/groupes');

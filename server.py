@@ -1654,19 +1654,30 @@ def a_un_jeu_de_role(activite):
     """
     return _fichier_porte(activite, MARQUES_JEU_DE_ROLE, _CACHE_JEU_DE_ROLE)
 
-def activities_for_group(group_id):
+def activities_for_group(group_id, teacher=None):
     """Le catalogue commun, avec les dates du groupe superposées.
 
     **C'est l'entonnoir.** Cette fonction sert le catalogue, la planification,
     le menu des séances et la liste de l'élève : la période d'essai s'y borne
     une fois, et les quatre écrans suivent sans savoir qu'elle existe. Poser
     quatre gardes aurait donné quatre endroits d'où l'essai peut fuir.
+
+    Le **bornage par niveau** passe au même endroit, pour la même raison — mais
+    il demande de savoir *qui* regarde, et l'entonnoir ne servait jusqu'ici que
+    le groupe. D'où `teacher`, facultatif : **sans personne, aucun bornage**.
+    C'est ce que veut la liste de l'élève, qui n'est bornée par personne — il
+    voit ce que sa classe a planifié, et sa classe est tenue par quelqu'un que
+    le bornage a déjà borné. Un second verrou sur l'élève ne fermerait rien de
+    plus et ferait un deuxième endroit où se tromper.
     """
     sched = schedule_for_group(group_id)
     en_essai, _ = essai_pour_groupe(group_id)
+    niveaux = niveaux_de(teacher)
     result = []
     for a in load_activities():
         if en_essai and not ouverte_en_essai(a):
+            continue
+        if not au_niveau(a, niveaux):
             continue
         entry = dict(a)
         dates = sched.get(a["id"], {})
@@ -2173,6 +2184,132 @@ def essai_pour_groupe(group_id, orgs=None, groups=None):
         if g.get("id") == group_id:
             return essai_effective(g.get("centreId"), orgs)
     return False, None
+
+
+# ── Le bornage par niveau ───────────────────────────────────────────────────
+#
+# Un accès peut ne porter que sur certains niveaux : « cette personne
+# n'enseigne que le niveau 6 — et elle y a tout ». Décidé le 7 septembre 2026 ;
+# la proposition et ses six arbitrages sont dans
+# `assets/presentations/acces-borne-par-niveau.html`.
+#
+# **Le bornage vit sur la ligne d'accès, jamais sur le compte.** L'étape 2 du
+# réseau des centres a séparé les *pouvoirs* (le champ `role`) de la *portée*
+# (la table `data/acces.json`) ; un bornage par niveau est de la portée. Le
+# poser sur le compte rouvrirait exactement la confusion qu'on a payé pour
+# fermer.
+#
+# **Une liste vide veut dire « tous les niveaux ».** C'est le défaut, et c'est
+# le seul défaut acceptable ici : un verrou qui se trompe ferme une classe, et
+# c'est le seul défaut de ce dépôt qu'on ne rattrape pas le lendemain.
+
+
+def normalize_niveaux(value):
+    """Une liste de niveaux propre, ou une liste vide — qui ne borne rien.
+
+    Tolérante par construction : « Niveau 6 », « niveau 6 », « 6 » et le
+    nombre JSON 6 veulent dire la même chose, et le champ traverse un
+    formulaire, une console et un fichier de données avant d'arriver ici.
+    Ce qui n'est pas lisible **disparaît** plutôt que de devenir un bornage —
+    l'appelant qui a besoin de distinguer « rien demandé » de « demande
+    illisible » compare avec ce qu'il a reçu (voir `_handle_acces_niveaux`).
+    """
+    if value is None:
+        return []
+    if isinstance(value, (str, int)):
+        value = [value]
+    if not isinstance(value, (list, tuple, set)):
+        return []
+    gardes = []
+    for brut in value:
+        brut = str(brut).strip()
+        trouve = re.fullmatch(r"(?:niveau\s*)?([1-8])", brut, re.I)
+        if not trouve:
+            continue
+        niveau = "Niveau %s" % trouve.group(1)
+        if niveau not in gardes:
+            gardes.append(niveau)
+    return sorted(gardes)
+
+
+def niveaux_de(teacher, acces=None):
+    """Les niveaux auxquels une personne a droit. **Un ensemble vide = tous.**
+
+    L'union de ses lignes d'accès actives, et l'union est bien la bonne
+    opération : une personne rattachée à deux centres, bornée dans l'un et
+    libre dans l'autre, n'est pas bornée. Pour qu'un bornage tienne, il doit
+    être posé sur **chaque** ligne. C'est explicite, donc réparable ; la règle
+    inverse — une ligne oubliée qui ferme tout — ne se verrait qu'au moment où
+    une classe s'arrête.
+
+    Trois cas rendent l'ensemble vide, et les trois sont voulus. Le doute
+    laisse travailler, comme les deux replis de `groups_of_teacher()` :
+
+    1. **Le fondateur**, qui ne se borne pas — il n'y aurait plus personne
+       pour lever le bornage (même refus que l'accès qu'on ne retire pas).
+    2. **Une personne sans ligne d'accès**, que la portée laisse déjà passer.
+    3. **Une ligne sans champ `niveaux`** : toutes celles d'avant ce jour.
+    """
+    if not teacher:
+        return set()
+    if is_founder(teacher):
+        return set()
+    lignes = acces_of_teacher(teacher["id"], acces)
+    if not lignes:
+        return set()
+    borne = set()
+    for a in lignes:
+        niveaux = normalize_niveaux(a.get("niveaux"))
+        if not niveaux:
+            return set()
+        borne |= set(niveaux)
+    return borne
+
+
+def au_niveau(activite, niveaux):
+    """Cette activité est-elle dans les niveaux d'une personne bornée ?
+
+    Deux façons de passer : aucun bornage, ou « Pratique orale libre ».
+    **« Corrige-moi ! » échappe au bornage** comme il échappe déjà au niveau du
+    groupe — l'assistant oral ne fait passer aucune notion, il reprend l'élève
+    là où il en est. Même exception, **même drapeau** : en ouvrir un second
+    donnerait deux endroits d'où le bornage peut fuir.
+
+    Une activité sans niveau lisible est **fermée** à une personne bornée
+    (`normalize_level` la range au niveau 4). Même arbitrage que l'essai avec
+    un module sans numéro : mieux vaut une activité absente qu'un bornage qui
+    fuit sans qu'on sache par où.
+    """
+    if not niveaux:
+        return True
+    if re.match(r"pratique orale libre", activite.get("domaineDeVie", "") or "", re.I):
+        return True
+    return normalize_level(activite.get("level")) in niveaux
+
+
+def _dire_niveaux(niveaux):
+    """« le niveau 6 », « les niveaux 5 et 6 » — pour un message lisible."""
+    chiffres = sorted(n.split()[-1] for n in niveaux)
+    if len(chiffres) == 1:
+        return "le niveau " + chiffres[0]
+    return "les niveaux " + " et ".join([", ".join(chiffres[:-1]), chiffres[-1]])
+
+
+def refus_de_niveau(teacher, niveau, quoi):
+    """Le motif écrit du refus, ou None si le niveau est dans la portée.
+
+    Une seule formulation de la règle, pour tous ses points d'application :
+    l'appelant ne fournit que le **sujet** de la phrase. Le message part du
+    serveur et s'affiche mot pour mot — reformuler un refus à l'écran recrée
+    deux formulations d'une même règle, le défaut que l'étape 2 du réseau a
+    supprimé.
+    """
+    niveaux = niveaux_de(teacher)
+    niveau = normalize_level(niveau)
+    if not niveaux or niveau in niveaux:
+        return None
+    return ("%s est du %s : votre accès ne porte que sur %s."
+            % (quoi, niveau.lower(), _dire_niveaux(niveaux)))
 
 
 def seance_pour_enseignant(teacher, orgs=None, acces=None):
@@ -16450,12 +16587,19 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             # donc une erreur lisible, et la trace part dans les journaux.
             try:
                 if params.get("catalogue", [""])[0]:
-                    json_response(self, load_activities())
+                    # Cet appel-ci **ne passe pas par l'entonnoir** : il rend
+                    # le fonds sans dates. Le bornage doit donc y être écrit à
+                    # la main — c'est par là que le niveau fuyait avant le
+                    # 7 septembre 2026, la page recevant les huit niveaux et
+                    # n'en cachant sept que dans le navigateur.
+                    niveaux = niveaux_de(teacher)
+                    json_response(self, [a for a in load_activities()
+                                         if au_niveau(a, niveaux)])
                     return
                 group_id = self._group_from_params(teacher, params)
                 if group_id is None:
                     return
-                json_response(self, activities_for_group(group_id))
+                json_response(self, activities_for_group(group_id, teacher))
             except Exception as e:
                 import traceback
                 traceback.print_exc()
@@ -16742,6 +16886,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         _REQUETE.chemin = path
         if re.match(r"^/api/admin/organisations/\d+$", path):
             self._handle_org_update(int(path.rsplit("/", 1)[1]))
+            return
+        if re.match(r"^/api/admin/acces/\d+$", path):
+            self._handle_acces_niveaux(int(path.rsplit("/", 1)[1]))
             return
         if re.match(r"^/api/direction/enseignants/\d+$", path):
             self._handle_direction_enseignant_update(int(path.rsplit("/", 1)[1]))
@@ -17344,6 +17491,27 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                         None)
         if activite is None:
             json_response(self, {"error": "Ce module n'existe pas"}, 404)
+            return
+        # **Le bornage par niveau se vérifie en premier**, avant toutes les
+        # autres gardes de cette route. Les refus qui suivent décrivent le
+        # fonds — celui-ci ne renvoie pas les réponses, celui-là n'est pas dans
+        # l'essai — et les servir à quelqu'un qui n'a pas le droit de voir ce
+        # module lui apprendrait ce qu'il y a derrière son bornage. Décision du
+        # 7 septembre 2026 : d'un niveau qu'on n'a pas, on ne voit rien.
+        #
+        # Et il n'a **pas** l'échappatoire du « déjà daté » qu'a la règle du
+        # niveau de groupe, plus bas : un groupe ouvert avant qu'on borne son
+        # enseignante porte des dates hors niveau, et c'est justement par là
+        # qu'un accès borné fuirait. Les groupes existants ne sont pas réécrits,
+        # donc le cas est certain, pas hypothétique. « Pratique orale libre »
+        # passe, comme partout ailleurs — `au_niveau()` le sait, et c'est le
+        # seul endroit qui le sait.
+        if not au_niveau(activite, niveaux_de(teacher)):
+            json_response(self, {
+                "error": refus_de_niveau(
+                    teacher, activite.get("level"),
+                    "« %s »" % activite.get("title", "Cette activité")),
+            }, 403)
             return
         # La direction autorise, l'enseignant choisit. Le refus est vérifié
         # ici, à l'ouverture, et non à l'entrée des élèves : une séance qui
@@ -17968,6 +18136,14 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             "essai": bool(en_essai),
             "essaiDecidePar": (decideur_essai or {}).get("nom", ""),
             "essaiModules": ESSAI_MODULES,
+            # Le bornage par niveau, pour la même raison exactement : le
+            # serveur a déjà retiré ce que la personne n'a pas le droit de
+            # voir, et l'écran reçoit une liste courte sans savoir pourquoi.
+            # Une liste bornée qu'on n'explique pas se lit comme une panne.
+            # Trié : l'ordre d'un ensemble n'est pas stable, et une liste qui
+            # change d'ordre d'un chargement à l'autre passerait pour un
+            # changement de réglage.
+            "niveauxBornes": sorted(niveaux_de(teacher)),
         })
 
     def _handle_prof_password(self):
@@ -18173,6 +18349,50 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 {"teacherId": ligne.get("teacherId"), "orgId": ligne.get("orgId"),
                  "role": ligne.get("role")})
         json_response(self, {"success": True})
+
+    def _handle_acces_niveaux(self, acces_id):
+        """Borne une ligne d'accès à certains niveaux — ou lève le bornage.
+
+        **Le même geste dans les deux sens** : une liste vide rouvre tout. Un
+        bornage qu'on ne sait pas défaire vite finit par se défaire mal, et
+        celui-ci ferme une classe quand il se trompe.
+        """
+        fondateur = self._require_founder()
+        if not fondateur:
+            return
+        acces = load_acces()
+        ligne = next((a for a in acces if a.get("id") == acces_id), None)
+        if ligne is None:
+            json_response(self, {"error": "Accès introuvable"}, 404)
+            return
+        # Même refus que pour le retrait, et pour la même raison : se borner
+        # soi-même au niveau 6 est un geste que la console ne pourrait plus
+        # défaire, puisqu'il faut le fondateur pour le défaire.
+        if ligne.get("role") == "fondateur":
+            json_response(self, {
+                "error": "L'accès du fondateur ne se borne pas : il n'y aurait "
+                         "plus personne pour lever le bornage."
+            }, 403)
+            return
+        body = self._read_json_body()
+        demande = body.get("niveaux")
+        niveaux = normalize_niveaux(demande)
+        # Une demande **non vide** dont rien n'est lisible n'est pas un
+        # « ouvrir tout » : c'est une faute de saisie. L'accepter en silence
+        # rouvrirait ce qu'on croyait fermer, et personne ne le verrait.
+        if demande and not niveaux:
+            json_response(self, {
+                "error": "Aucun niveau lisible dans la demande : attendu des "
+                         "chiffres de 1 à 8."
+            }, 400)
+            return
+        avant = normalize_niveaux(ligne.get("niveaux"))
+        ligne["niveaux"] = niveaux
+        save_acces(acces)
+        journal(fondateur, "acces.borne", acces_id,
+                {"teacherId": ligne.get("teacherId"), "orgId": ligne.get("orgId"),
+                 "avant": avant, "apres": niveaux})
+        json_response(self, {"success": True, "acces": ligne})
 
     def _handle_groupe_centre(self, group_id):
         """Déplace un groupe vers un centre — c'est ainsi qu'on rattache un
@@ -19080,6 +19300,16 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 json_response(self, {"error": "Enseignant introuvable"}, 404)
                 return
             titulaire_id = candidat
+        # Un accès borné ne s'ouvre pas un groupe d'un autre niveau : c'est le
+        # premier des deux endroits par lesquels on sortirait sinon du bornage,
+        # le second étant « Changer le niveau ». L'écran ne proposera que les
+        # niveaux permis, mais ce n'est pas lui qui protège — une liste n'est
+        # pas une garde.
+        niveau = niveau_de_groupe({"niveau": body.get("niveau"), "nom": nom})
+        motif = refus_de_niveau(teacher, niveau, "Ce groupe")
+        if motif:
+            json_response(self, {"error": motif}, 403)
+            return
         groups = load_groups()
         # Un groupe appartient à un centre. Le titulaire reste ce qu'il était :
         # qui l'enseigne, pas qui le possède.
@@ -19089,7 +19319,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             "nom": nom[:80],
             # Le niveau borne le catalogue et le dépôt de matériel du groupe.
             # Sans choix explicite, il se lit dans le nom.
-            "niveau": niveau_de_groupe({"niveau": body.get("niveau"), "nom": nom}),
+            "niveau": niveau,
             "teacherId": titulaire_id,
             "centreId": centre["id"] if centre else None,
             "teams": normalize_lien(body.get("teams")),
@@ -19120,7 +19350,12 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                         return
                     g["nom"] = nom[:80]
                 if "niveau" in body:
-                    g["niveau"] = normalize_level(body["niveau"])
+                    demande = normalize_level(body["niveau"])
+                    motif = refus_de_niveau(teacher, demande, "Ce groupe")
+                    if motif:
+                        json_response(self, {"error": motif}, 403)
+                        return
+                    g["niveau"] = demande
                 if "teams" in body:
                     g["teams"] = normalize_lien(body["teams"])
                 # Seul un administrateur peut réaffecter un groupe
