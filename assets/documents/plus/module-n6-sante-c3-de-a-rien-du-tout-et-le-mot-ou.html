@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C3 · De, à, rien du tout — et le mot « où » — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+.plus-papier ol.check li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance C3 · Module 7 · 75 minutes</div>
+    <h1>De, à, rien du tout — et le mot « où »</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Deux hésitations qui reviennent dix fois par jour : quel petit mot avant un infinitif, et comment coller une phrase à un nom sans le répéter.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>employer « de » ou « à » selon le verbe qui précède l'infinitif ;</li><li>ne rien mettre après vouloir, pouvoir, devoir, savoir ;</li><li>poser une question avec « quoi » devant un infinitif ;</li><li>relier une phrase à un nom de lieu ou de temps avec « où ».</li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Trois familles de verbes</h2><table><thead><tr><th>La famille</th><th>Les verbes</th></tr></thead><tbody><tr><td class="cle">Avec de</td><td>demander, arrêter, éviter, essayer, oublier, accepter</td></tr><tr><td class="cle">Avec à</td><td>commencer, continuer, apprendre, aider, réussir, hésiter</td></tr><tr><td class="cle">Avec rien</td><td>vouloir, pouvoir, devoir, falloir, savoir, aller</td></tr></tbody></table><div class="note">Retenez le verbe avec son petit mot : « demander de » est un seul bloc à mémoriser.</div></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Grammaire</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">je dois de passer d'autres examens</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">je dois passer d'autres examens</p></div></div><div class="note">Vouloir, pouvoir, devoir, falloir, savoir et aller collent directement à l'infinitif. Ce sont justement les verbes qu'on emploie le plus souvent, et un « de » de trop après eux s'entend tout de suite.</div></section><section class="bloc regle"><div class="lbl">Devant un infinitif, la question se pose avec « quoi »</div><p class="r">« Je ne sais pas quoi répondre », jamais « je ne sais pas que répondre ».</p><p class="pr">Après savoir, demander et se demander, on peut poser une question sans point d'interrogation : « je ne sais pas comment le dire », « je me demande où aller ». C'est une phrase d'adulte, et elle est parfaitement polie.</p></section><section class="bloc card"><div class="lbl">Grammaire</div><h2 class="t">De, à, quoi, ou rien ?</h2><p class="consigne">Complétez avec un seul mot.</p><ol class="ex"><li><span class="q">La docteure m'a demandé ___ noter mes journées.</span><span class="ligne ligne--court"></span></li><li><span class="q">Je commence ___ monter les escaliers plus lentement.</span><span class="ligne ligne--court"></span></li><li><span class="q">J'ai arrêté ___ parler en montant.</span><span class="ligne ligne--court"></span></li><li><span class="q">Je ne savais pas ___ répondre.</span><span class="ligne ligne--court"></span></li><li><span class="q">Je dois ___ passer d'autres prélèvements.</span><span class="ligne ligne--court"></span></li><li><span class="q">Elle a réussi ___ dire ce qui avait changé.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Le mot « où » ne parle pas que des endroits</h2><table><thead><tr><th>Il relie</th><th>Un exemple</th></tr></thead><tbody><tr><td class="cle">Un lieu</td><td>le laboratoire où vous êtes entrée ce matin</td></tr><tr><td class="cle">Un moment</td><td>le mois où mon fils a déménagé</td></tr><tr><td class="cle">Un moment à venir</td><td>le jour où j'aurai les résultats</td></tr><tr><td class="cle">Un instant précis</td><td>au moment où on l'a appelée</td></tr></tbody></table><div class="note">C'est l'emploi de temps que le français parlé oublie, et c'est celui qui manque au niveau 6.</div></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Grammaire</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">le jour quand j'aurai les résultats</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">le jour où j'aurai les résultats</p></div></div><div class="note">« Quand » ouvre une phrase entière et ne s'accroche jamais à un nom. « Quand j'aurai les résultats, je vous appellerai » est juste ; « le jour quand j'aurai » ne l'est pas. Même chose pour « le jour que », qui se dit beaucoup et ne s'écrit pas.</div></section><section class="bloc card"><div class="lbl">Grammaire</div><h2 class="t">Où, ou bien ou ?</h2><p class="consigne">Complétez, avec ou sans accent.</p><ol class="ex"><li><span class="q">Février est le mois ___ ma fatigue a commencé.</span><span class="ligne ligne--court"></span></li><li><span class="q">Elle vient le lundi ___ le jeudi.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le jour ___ j'aurai les résultats, je vous appelle.</span><span class="ligne ligne--court"></span></li><li><span class="q">C'est la seule salle ___ on peut parler à quelqu'un.</span><span class="ligne ligne--court"></span></li><li><span class="q">Apportez la feuille ___ envoyez-la par la poste.</span><span class="ligne ligne--court"></span></li><li><span class="q">L'année ___ elle est arrivée, il neigeait en mai.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez une phrase avec « le jour où » ou « le mois où ».</p><ul><li>Un souvenir personnel fait très bien l'affaire.</li><li>Le nom de temps vient avant, la phrase entière après.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>De, à, ou rien du tout</h2><section class="bloc card ml"><h3>Une hésitation qui revient dix fois par jour</h3><p class="mp">« Elle m'a demandé de noter », « j'ai commencé à comprendre », « je dois passer des examens ». Trois phrases, trois façons différentes d'accrocher un infinitif au verbe qui précède — et aucune règle ne les explique. C'est une habitude, verbe par verbe, comme le genre des noms. La bonne nouvelle, c'est qu'il y en a peu à retenir pour parler d'une consultation.</p><div class="note">Le programme du niveau 6 en fait un savoir à part : « employer des phrases subordonnées infinitives CD, avec subordonnant de, avec subordonnant à, sans subordonnant ».</div></section><section class="bloc card ml"><h3>Ceux qui demandent « de »</h3><p class="mp">Ce sont souvent des verbes de demande, d'arrêt ou d'évitement — ceux d'une consultation, justement.</p><table class="ana"><tr><td>La liste utile ici</td><td class="">demander de · essayer de · arrêter de · éviter de · accepter de · oublier de · finir de · permettre de · refuser de</td></tr><tr><td>Dans une phrase</td><td class="cle">la docteure m'a demandé <b>de</b> noter mes journées · j'ai arrêté <b>de</b> monter en parlant</td></tr><tr><td>Devant une voyelle</td><td class=""><b>de</b> devient <b>d'</b> : elle a évité <b>d'</b>en parler · j'ai oublié <b>d'</b>apporter la feuille</td></tr></table><p class="dit"><span class="k">On dit</span> elle m'a demandé de noter mes journées, j'ai arrêté de monter en parlant, j'ai oublié d'apporter la feuille</p><div class="note">Repère approximatif mais utile : quand le verbe parle de ce qu'on fait faire à quelqu'un d'autre, c'est souvent « de ».</div></section><section class="bloc card ml"><h3>Ceux qui demandent « à »</h3><p class="mp">Souvent des verbes de commencement, d'effort ou de progression.</p><table class="ana"><tr><td>La liste utile ici</td><td class="">commencer à · continuer à · apprendre à · aider à · réussir à · hésiter à · se mettre à · arriver à</td></tr><tr><td>Dans une phrase</td><td class="cle">je commence <b>à</b> comprendre ce qu'elle cherche · Gilles a aidé sa femme <b>à</b> tenir</td></tr><tr><td>Il ne change jamais</td><td class="">« à » n'a pas de forme élidée : on écrit toujours à, même devant une voyelle</td></tr></table><p class="dit"><span class="k">On dit</span> je commence à comprendre, Gilles a aidé sa femme à tenir, elle a réussi à dire ce qui avait changé</p><div class="note">Repère approximatif : quand le verbe parle d'un mouvement vers quelque chose — commencer, apprendre, arriver —, c'est souvent « à ».</div></section><section class="bloc card ml"><h3>Ceux qui ne demandent rien</h3><p class="mp">Ce sont les plus fréquents de la langue, et c'est là que la faute se glisse.</p><table class="ana"><tr><td>La liste</td><td class="">vouloir · pouvoir · devoir · falloir · savoir · aller · venir · préférer · espérer · aimer · faire · laisser</td></tr><tr><td>Dans une phrase</td><td class="cle">je dois passer d'autres prélèvements · elle veut savoir ce qui a changé</td></tr><tr><td>La faute la plus fréquente à ce niveau</td><td class="">« je dois &lt;s&gt;de&lt;/s&gt; passer », « je peux &lt;s&gt;de&lt;/s&gt; venir » — ces verbes ne veulent rien du tout</td></tr></table><p class="dit"><span class="k">On dit</span> je dois passer d'autres prélèvements, elle veut savoir ce qui a changé, je peux revenir en janvier</p><div class="note">Ce sont justement les verbes qu'on emploie le plus. Un « de » de trop après « devoir » ou « pouvoir » s'entend tout de suite.</div></section><section class="bloc card ml"><h3>La question qui entre dans la phrase</h3><p class="mp">Après savoir, demander, se demander, on peut poser une question sans point d'interrogation.</p><table class="ana"><tr><td>Avec un mot interrogatif</td><td class="">je ne sais pas <b>quoi</b> répondre · je ne sais pas <b>comment</b> le dire · je me demande <b>où</b> aller</td></tr><tr><td>C'est quoi, jamais que</td><td class="cle">« je ne sais pas &lt;s&gt;que&lt;/s&gt; répondre » ne se dit pas : devant un infinitif, c'est <b>quoi</b></td></tr><tr><td>Le sujet est le même des deux côtés</td><td class="">c'est ce qui permet l'infinitif : je ne sais pas / je réponds → je ne sais pas quoi répondre</td></tr></table><p class="dit"><span class="k">On dit</span> je ne sais pas quoi répondre, je ne sais pas comment le dire, je me demande où aller</p><div class="note">Leyla emploie cette forme dans le bureau : « je ne sais pas quoi vous répondre pour la moyenne ». C'est une phrase d'adulte, et elle est parfaitement polie.</div></section><section class="bloc card ml"><h3>Huit phrases du dossier</h3><p class="mp">Le verbe, ce qui le suit, et l'infinitif.</p><table class="ex2"><tr><td>demander</td><td>de</td></tr><tr><td>arrêter</td><td>de</td></tr><tr><td>éviter</td><td>d'</td></tr><tr><td>commencer</td><td>à</td></tr><tr><td>réussir</td><td>à</td></tr><tr><td>hésiter</td><td>à</td></tr><tr><td>devoir</td><td>—</td></tr><tr><td>savoir</td><td>quoi</td></tr></table></section><section class="bloc card ml"><h3>Trois erreurs et leur correction</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">mettre « de » après devoir, pouvoir, vouloir</p><div class="k">Ce qui arrive</div><p class="ph">ne rien mettre</p><p class="px">« Je dois de passer » n'existe pas. Ces verbes-là collent directement à l'infinitif, et ce sont ceux qu'on emploie le plus souvent.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">écrire « je ne sais pas que faire »</p><div class="k">Ce qui arrive</div><p class="ph">écrire « je ne sais pas quoi faire »</p><p class="px">Devant un infinitif, la question se pose avec quoi. « Que faire ? » existe, seul, comme titre — pas après « je ne sais pas ».</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">apprendre les listes séparément du verbe</p><div class="k">Ce qui arrive</div><p class="ph">apprendre le verbe avec son petit mot</p><p class="px">Retenir « demander de » comme un seul bloc coûte le même effort que retenir « demander », et vous n'hésiterez plus jamais.</p></div></div></section><section class="bloc card ml"><h3>Quatre questions, pour vérifier</h3><p class="mp">Une bonne réponse par question.</p><ol class="check"><li><span class="q">« La docteure m'a demandé ___ noter mes journées. »</span><ul class="opts"><li>de</li><li>à</li></ul></li><li><span class="q">« Je commence ___ comprendre. »</span><ul class="opts"><li>de</li><li>à</li></ul></li><li><span class="q">« Je dois ___ passer d'autres examens. »</span><ul class="opts"><li>de</li><li>rien du tout</li></ul></li><li><span class="q">« Je ne sais pas ___ répondre. »</span><ul class="opts"><li>que</li><li>quoi</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> de — Demander de : un bloc à retenir tel quel. · <b>2.</b> à — Commencer à, continuer à, apprendre à : les verbes de mouvement vers quelque chose. · <b>3.</b> rien du tout — Devoir, pouvoir, vouloir, savoir : rien entre le verbe et l'infinitif. · <b>4.</b> quoi — Devant un infinitif, la question se pose toujours avec quoi.</div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>« Où » ne parle pas que des endroits</h2><section class="bloc card ml"><h3>Un mot de trois lettres qui recolle deux phrases</h3><p class="mp">« Février est le mois. Ma fatigue a commencé ce mois-là. » Deux phrases courtes, un lecteur qui trébuche. « Février est le mois où ma fatigue a commencé » : une phrase, aucune répétition, et le lien est dit. C'est tout le travail du pronom relatif — et « où » est le seul qui serve à la fois pour un lieu et pour un moment.</p><div class="note">Le programme demande deux choses : « associer le pronom relatif de lieu ou de temps où à son antécédent » et « employer des phrases subordonnées relatives avec le pronom relatif où ».</div></section><section class="bloc card ml"><h3>L'emploi qu'on connaît — le lieu</h3><p class="mp">Celui-là ne pose de problème à personne.</p><table class="ana"><tr><td>Ce qu'il remplace</td><td class="">la salle. J'attends dans cette salle. → la salle <b>où</b> j'attends</td></tr><tr><td>Dans le dossier de Leyla</td><td class="cle">le laboratoire, <b>où</b> vous êtes entrée ce matin · la seule salle <b>où</b> on peut parler à quelqu'un</td></tr><tr><td>Ce qu'il évite</td><td class="">une deuxième phrase avec « dans cette salle », « à cet endroit », « là »</td></tr></table><p class="dit"><span class="k">On dit</span> la salle où j'attends, le laboratoire où vous êtes entrée ce matin</p><div class="note">Le mot juste avant « où » s'appelle son antécédent : c'est lui que la suite de la phrase vient préciser. Le repérer, c'est comprendre la phrase.</div></section><section class="bloc card ml"><h3>L'emploi qu'on oublie — le moment</h3><p class="mp">C'est celui-ci qui manque au français d'un adulte de niveau 6, et il est partout dans un récit.</p><table class="ana"><tr><td>Avec un nom de temps</td><td class="">le jour <b>où</b> · le mois <b>où</b> · l'année <b>où</b> · le matin <b>où</b> · l'époque <b>où</b> · le moment <b>où</b></td></tr><tr><td>Dans le dossier de Leyla</td><td class="cle">le mois <b>où</b> mon fils a déménagé · le jour <b>où</b> j'aurai les résultats</td></tr><tr><td>Ce qu'on met à sa place, à tort</td><td class="">« le jour quand », « le jour que » — les deux se disent, aucun des deux ne s'écrit</td></tr></table><p class="dit"><span class="k">On dit</span> le jour où j'aurai les résultats, le mois où mon fils a déménagé, au moment où on l'a appelée</p><div class="note">« Quand » commence une phrase et ne s'accroche pas à un nom : « quand j'aurai les résultats, je vous appellerai » est juste, « le jour quand j'aurai » ne l'est pas.</div></section><section class="bloc card ml"><h3>L'accent, et ce qu'il change</h3><p class="mp">Deux mots différents, qui s'écrivent presque pareil et ne se prononcent pas autrement.</p><table class="ana"><tr><td><b>où</b> avec accent — il relie</td><td class="">la salle <b>où</b> j'attends · le jour <b>où</b> elle rappellera</td></tr><tr><td><b>ou</b> sans accent — il sépare deux possibilités</td><td class="cle">le lundi <b>ou</b> le jeudi · apportez la feuille <b>ou</b> envoyez-la</td></tr><tr><td>Le test</td><td class="">remplacez par « ou bien » : si la phrase tient, c'est celui sans accent</td></tr></table><p class="dit"><span class="k">On dit</span> la salle où j'attends, le lundi ou le jeudi, apportez la feuille ou envoyez-la</p><div class="note">C'est un des rares accents du français qui distingue deux mots sans rien changer à la prononciation. Le test de « ou bien » ne se trompe jamais.</div></section><section class="bloc card ml"><h3>Deux phrases soudées en une</h3><p class="mp">Choisissez un cas, puis regardez ce que donne la soudure.</p><table class="labo"><thead><tr><th>Quel cas ? · Quel exemple ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">un lieu + le premier</td><td>le laboratoire où vous êtes entrée ce matin<span class="tags">le laboratoire où vous êtes entrée ce matin</span></td><td>antécédent : le laboratoire</td></tr><tr><td class="cle">un lieu + le second</td><td>la seule salle où on peut parler à quelqu'un<span class="tags">la seule salle où on peut parler à quelqu'un</span></td><td>antécédent : la salle</td></tr><tr><td class="cle">un moment + le premier</td><td>le mois où mon fils a déménagé<span class="tags">le mois où mon fils a déménagé</span></td><td>antécédent : le mois — un temps, pas un lieu</td></tr><tr><td class="cle">un moment + le second</td><td>le jour où j'aurai les résultats<span class="tags">le jour où j'aurai les résultats</span></td><td>antécédent : le jour — et le verbe peut être au futur</td></tr></tbody></table><div class="note">Dans les quatre cas, le mot juste avant « où » est l'antécédent. C'est lui qu'il faut repérer d'abord, à l'écoute comme à la lecture.</div></section><section class="bloc card ml"><h3>Six phrases recollées</h3><p class="mp">À gauche, les deux phrases ; à droite, la phrase unique.</p><table class="ex2"><tr><td>Février est le mois. Ma fatigue a commencé ce mois-là.</td><td>Février est le mois où ma fatigue a commencé.</td></tr><tr><td>Le laboratoire est en bas. Vous êtes entrée là ce matin.</td><td>Le laboratoire est en bas, où vous êtes entrée ce matin.</td></tr><tr><td>Elle rappellera un jour. Elle aura les résultats ce jour-là.</td><td>Elle rappellera le jour où elle aura les résultats.</td></tr><tr><td>C'est la seule salle. On peut y parler à quelqu'un.</td><td>C'est la seule salle où on peut parler à quelqu'un.</td></tr><tr><td>On l'a appelée à un moment. Elle parlait avec Gilles.</td><td>Au moment où on l'a appelée, elle parlait avec Gilles.</td></tr><tr><td>Elle est arrivée une année. Il neigeait en mai cette année-là.</td><td>L'année où elle est arrivée, il neigeait en mai.</td></tr></table></section><section class="bloc card ml"><h3>Trois faux pas de ce point-ci</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">écrire « le jour quand »</p><div class="k">Ce qui arrive</div><p class="ph">écrire « le jour où »</p><p class="px">« Quand » ouvre une phrase entière ; il ne s'accroche jamais à un nom. C'est la faute la plus fréquente, et elle s'entend.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">écrire « le jour que »</p><div class="k">Ce qui arrive</div><p class="ph">écrire « le jour où »</p><p class="px">« Le jour que je l'ai vue » se dit couramment à l'oral et ne s'écrit pas. À l'écrit, un nom de temps appelle « où ».</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">oublier l'accent</p><div class="k">Ce qui arrive</div><p class="ph">faire le test de « ou bien »</p><p class="px">« La salle ou j'attends » ne veut rien dire, et le lecteur le sent avant de comprendre pourquoi. Si « ou bien » ne marche pas, mettez l'accent.</p></div></div></section><section class="bloc card ml"><h3>Quatre questions, pour vérifier</h3><p class="mp">Une bonne réponse par question.</p><ol class="check"><li><span class="q">« Février est le mois ___ ma fatigue a commencé. »</span><ul class="opts"><li>quand</li><li>où</li></ul></li><li><span class="q">« Elle vient le lundi ___ le jeudi. »</span><ul class="opts"><li>ou</li><li>où</li></ul></li><li><span class="q">Dans « le laboratoire où vous êtes entrée », l'antécédent est…</span><ul class="opts"><li>le laboratoire</li><li>vous</li></ul></li><li><span class="q">« Le jour ___ j'aurai les résultats, je vous appelle. »</span><ul class="opts"><li>que</li><li>où</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> où — Un nom de temps appelle « où », jamais « quand ». · <b>2.</b> ou — On peut dire « ou bien » : c'est celui sans accent. · <b>3.</b> le laboratoire — C'est le nom juste avant « où » que la suite vient préciser. · <b>4.</b> où — « Le jour que » se dit, mais ne s'écrit pas.</div></section></section></div>
+<footer><span>C3 · Nommer ce qu'on a</span><span>Fiche élève</span></footer>
+</body>
+</html>

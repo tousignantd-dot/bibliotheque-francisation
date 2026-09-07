@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C4 · Il faut que, je souhaite que — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+.plus-papier ol.check li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance C4 · Module 2 · 75 minutes</div>
+    <h1>Il faut que, je souhaite que</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Ce que Myriam Vaugeois demande n'existe pas encore : c'est pour ça qu'elle dit « il faut que les pièces existent ». Un souhait n'est pas un fait, et le français le marque dans le verbe.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>employer le subjonctif après il faut que, je veux que, je souhaite que ;</li><li>former le subjonctif à partir de la troisième personne du pluriel ;</li><li>choisir entre « de » et un infinitif, ou « que » et un subjonctif ;</li><li>distinguer une idée principale d'une idée secondaire.</li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Ce qui demande le subjonctif, ce qui ne le demande pas</h2><table><thead><tr><th>La formule</th><th>Le verbe qui suit</th></tr></thead><tbody><tr><td class="cle">il faut que, je veux que</td><td>subjonctif : ce n'est pas un fait</td></tr><tr><td class="cle">je souhaite que, j'aimerais que</td><td>subjonctif : c'est un souhait</td></tr><tr><td class="cle">je demande que, j'ai peur que</td><td>subjonctif : exigence ou crainte</td></tr><tr><td class="cle">je pense que, je crois que</td><td>indicatif : on présente un fait</td></tr><tr><td class="cle">je sais que, j'espère que</td><td>indicatif : j'espère qu'il rappellera</td></tr></tbody></table><div class="note">Les deux dernières lignes sont les pièges : espérer ne prend jamais le subjonctif.</div></section><section class="bloc regle"><div class="lbl">Comment le former, à l'oral</div><p class="r">Prends la troisième personne du pluriel du présent et enlève la finale.</p><p class="pr">Ils écrivent, donc que j'écrive. Ils appellent, donc qu'ils appellent. Pour beaucoup de verbes, le subjonctif s'entend exactement comme le présent : il n'y a donc rien de nouveau à prononcer. Six irréguliers seulement reviennent partout : que je sois, que j'aie, que j'aille, que je fasse, que je puisse, que je sache.</p></section><section class="bloc card"><div class="lbl">Grammaire</div><h2 class="t">Mettez le verbe au subjonctif présent</h2><p class="consigne">Après il faut que, je souhaite que, j'ai peur que.</p><ol class="ex"><li><span class="q">Il faut que les pièces ... (exister) et qu'on puisse les commander.</span><span class="ligne ligne--court"></span></li><li><span class="q">Je souhaite qu'ils ... (appeler) avant de jeter.</span><span class="ligne ligne--court"></span></li><li><span class="q">Elle veut que la personne ... (garder) ses preuves.</span><span class="ligne ligne--court"></span></li><li><span class="q">Il faut que la personne ... (avoir) gardé sa facture.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le journal demande que chaque lettre ... (être) signée.</span><span class="ligne ligne--court"></span></li><li><span class="q">Il faut que tu ... (savoir) ce que tu demandes avant d'écrire.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc regle"><div class="lbl">Un seul sujet, ou deux sujets</div><p class="r">Même sujet : « de » et un infinitif. Deux sujets : « que » et un subjonctif.</p><p class="pr">Je vous demande d'être prudent - c'est moi qui demande, et c'est vous qui devez l'être, mais un seul verbe se conjugue. Je demande que les pièces soient disponibles - moi je demande, les pièces sont : deux sujets, donc « que ». Vouloir et espérer se passent de « de » : je veux partir, j'espère gagner.</p></section><section class="bloc card"><div class="lbl">Grammaire</div><h2 class="t">« de » ou « que » ?</h2><p class="consigne">Le verbe qui suit vous indique lequel.</p><ol class="ex"><li><span class="q">Je vous demande ... être prudent avec cette expression.</span><span class="ligne ligne--court"></span></li><li><span class="q">Je demande ... les pièces soient disponibles.</span><span class="ligne ligne--court"></span></li><li><span class="q">Elle souhaite ... les gens appellent avant de jeter.</span><span class="ligne ligne--court"></span></li><li><span class="q">Il a refusé ... réparer l'appareil.</span><span class="ligne ligne--court"></span></li><li><span class="q">Il faut éviter ... jeter l'appareil trop vite.</span><span class="ligne ligne--court"></span></li><li><span class="q">J'ai peur ... perdre mes soirées.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">Compréhension</div><h2 class="t">Idée principale ou idée secondaire ?</h2><p class="consigne">Une idée principale se retient seule ; une idée secondaire dépend d'une autre.</p><ol class="ex"><li><span class="q">Trois problèmes se cachent derrière l'expression « obsolescence programmée ».</span><span class="ligne ligne--court"></span></li><li><span class="q">Nos lignes sonnent pendant trois jours.</span><span class="ligne"></span></li><li><span class="q">Un appareil qu'on ne peut pas réparer est jetable, même bien fait.</span><span class="ligne ligne--court"></span></li><li><span class="q">L'entente sur les ampoules a duré seize ans.</span><span class="ligne ligne--court"></span></li><li><span class="q">L'Office ne prend pas le dossier en main : il dit ce qu'on peut faire.</span><span class="ligne ligne--court"></span></li><li><span class="q">Les documents ont été retrouvés dans des archives d'entreprise.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écris une phrase avec « il faut que » sur le sujet de ton choix.</p><ul><li>Une seule phrase, avec le subjonctif.</li><li>Elle servira dans ton courriel de la dernière séance.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Le subjonctif après il faut que, je veux que…</h2><section class="bloc card ml"><h3>Ce que le subjonctif signale</h3><p class="mp">Il ne dit pas un fait. Il dit ce qu'on veut, ce qu'on exige, ce qu'on souhaite, ce qu'on craint. « Il faut que les pièces existent » : justement, elles n'existent pas toujours — c'est ce qu'on réclame. Un indicatif dirait le contraire : « les pièces existent » serait un constat.</p><div class="note">Le programme du niveau 6 demande d'employer le subjonctif présent après quelques verbes introducteurs usuels suivis de « que ».</div></section><section class="bloc card ml"><h3>Les six verbes introducteurs à retenir</h3><p class="mp">Après chacun d'eux, suivi de « que », le subjonctif est obligatoire.</p><table class="ana"><tr><td>la nécessité</td><td class="">il faut que · il est important que</td></tr><tr><td>la volonté</td><td class="cle">je veux que · je demande que</td></tr><tr><td>le souhait</td><td class="">je souhaite que · j'aimerais que</td></tr><tr><td>la crainte</td><td class="">j'ai peur que · je crains que</td></tr></table><p class="dit"><span class="k">On dit</span> il faut que, je veux que, je souhaite que, j'ai peur que</p><div class="note">Retenez-les comme des blocs sonores, pas comme une règle. C'est ainsi qu'on les emploie sans y penser.</div></section><section class="bloc card ml"><h3>Comment il se forme, à l'oral</h3><p class="mp">Un seul geste : on part du présent, 3e personne du pluriel.</p><table class="ana"><tr><td>On prend</td><td class="">ils écriv<b>ent</b> · ils appell<b>ent</b> · ils gard<b>ent</b></td></tr><tr><td>On enlève -ent</td><td class="cle">que j'écriv<b>e</b> · qu'ils appell<b>ent</b> · qu'elle gard<b>e</b></td></tr><tr><td>Ce qui surprend</td><td class="">pour beaucoup de verbes, ça s'entend exactement comme le présent</td></tr><tr><td>Les six irréguliers</td><td class="">que je sois · que j'aie · que j'aille · que je fasse · que je puisse · que je sache</td></tr></table><p class="dit"><span class="k">On dit</span> que j'écrive, qu'ils appellent, que je sois, que j'aie, que je fasse, que je sache</p><div class="note">Si vous ne retenez que six formes, retenez ces six-là : elles couvrent la moitié des subjonctifs qu'on entend.</div></section><section class="bloc card ml"><h3>Ce qui ne demande PAS le subjonctif</h3><p class="mp">Un verbe qui présente un fait garde l'indicatif. C'est l'erreur la plus fréquente dans l'autre sens.</p><table class="ana"><tr><td>je pense que</td><td class="">je pense qu'il <b>a</b> raison</td></tr><tr><td>je crois que</td><td class="cle">je crois qu'elle <b>viendra</b></td></tr><tr><td>je sais que</td><td class="">je sais que la garantie <b>court</b> encore</td></tr><tr><td>j'espère que</td><td class="">j'espère qu'il <b>rappellera</b> — jamais « qu'il rappelle »</td></tr></table><p class="dit"><span class="k">On dit</span> Je pense qu'il a raison. J'espère qu'il rappellera.</p><div class="note">« Espérer » est le grand piège : il ressemble à « souhaiter », mais il prend l'indicatif.</div></section><section class="bloc card ml"><h3>Écoutez les deux côtés</h3><p class="mp">Le même verbe, avec un introducteur puis l'autre.</p><table class="labo"><thead><tr><th>Quel mode ? · Quel exemple ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">subjonctif + le premier</td><td>Il faut que les pièces existent.<span class="tags">Il faut qu'ils existent.</span></td><td>nécessité : subjonctif</td></tr><tr><td class="cle">subjonctif + le second</td><td>Je souhaite qu'ils appellent avant de jeter.<span class="tags">Je souhaite qu'ils appellent.</span></td><td>souhait : subjonctif</td></tr><tr><td class="cle">indicatif + le premier</td><td>Je sais que les pièces existent.<span class="tags">Je sais qu'elles existent.</span></td><td>constat : indicatif</td></tr><tr><td class="cle">indicatif + le second</td><td>J'espère qu'ils appelleront avant de jeter.<span class="tags">J'espère qu'ils appelleront.</span></td><td>espérer : indicatif, malgré le sens</td></tr></tbody></table><div class="note">Écoutez le début de la phrase, pas la fin : c'est l'introducteur qui décide de tout.</div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">« Il faut que les pièces ___ . »</span><ul class="opts"><li>existent</li><li>existeront</li></ul></li><li><span class="q">« J'espère qu'il ___ . »</span><ul class="opts"><li>rappelle</li><li>rappellera</li></ul></li><li><span class="q">Pour former le subjonctif, on part de…</span><ul class="opts"><li>l'infinitif</li><li>la 3e personne du pluriel du présent</li></ul></li><li><span class="q">« Je pense que » demande…</span><ul class="opts"><li>l'indicatif</li><li>le subjonctif</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> existent — Après « il faut que », subjonctif obligatoire. · <b>2.</b> rappellera — « Espérer » prend l'indicatif, malgré le sens de souhait. · <b>3.</b> la 3e personne du pluriel du présent — On enlève « -ent » et on ajoute les terminaisons. · <b>4.</b> l'indicatif — Il présente un fait : indicatif.</div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>« de » et un infinitif, ou « que » et un subjonctif</h2><section class="bloc card ml"><h3>Une question à se poser, et une seule</h3><p class="mp">« Est-ce que c'est la même personne qui fait les deux choses ? » Si oui, un infinitif suffit et on n'a pas besoin de subjonctif du tout. Si non, il faut « que » et le subjonctif. Cette question règle presque tous les cas, et elle épargne beaucoup de conjugaisons.</p><div class="note">Le programme le formule ainsi : distinguer un verbe introducteur + de et un verbe introducteur + que.</div></section><section class="bloc card ml"><h3>Un seul sujet : de + infinitif</h3><p class="mp">La deuxième action est faite par la même personne.</p><table class="ana"><tr><td>La phrase</td><td class="">Je vous demande <b>d'</b>être prudent.</td></tr><tr><td>Qui demande ? qui est prudent ?</td><td class="cle">moi qui demande, vous à qui je le demande — un seul verbe conjugué</td></tr><tr><td>Les verbes de cette famille</td><td class="">demander de · accepter de · refuser de · éviter de · essayer de · oublier de</td></tr><tr><td>Deux sans « de »</td><td class="">vouloir et espérer : je veux <b>partir</b> · j'espère <b>gagner</b></td></tr></table><p class="dit"><span class="k">On dit</span> Je vous demande d'être prudent. Je veux partir.</p><div class="note">L'infinitif est plus court, plus simple, et toujours juste quand le sujet est le même.</div></section><section class="bloc card ml"><h3>Deux sujets : que + subjonctif</h3><p class="mp">Les deux actions ont deux auteurs différents.</p><table class="ana"><tr><td>La phrase</td><td class="">Je demande <b>que</b> les pièces <b>soient</b> disponibles.</td></tr><tr><td>Qui demande ? qui est disponible ?</td><td class="cle">moi d'un côté, les pièces de l'autre : deux sujets</td></tr><tr><td>Même chose après</td><td class="">avant que · pour que · bien que · jusqu'à ce que</td></tr><tr><td>Le repère</td><td class="">si vous pouvez nommer deux sujets différents, c'est « que »</td></tr></table><p class="dit"><span class="k">On dit</span> Je demande que les pièces soient disponibles.</p><div class="note">« Avant que le juge entende la cause » : moi je parle, le juge entend. Deux sujets, donc subjonctif.</div></section><section class="bloc card ml"><h3>Six phrases de l'entrevue</h3><p class="mp">À gauche la phrase, à droite pourquoi.</p><table class="ex2"><tr><td>Je vous demande d'être prudent.</td><td>un seul sujet → de + infinitif</td></tr><tr><td>Je demande que les pièces soient disponibles.</td><td>deux sujets → que + subjonctif</td></tr><tr><td>Elle souhaite aider les gens.</td><td>elle souhaite, elle aide → infinitif</td></tr><tr><td>Elle souhaite que les gens appellent.</td><td>elle souhaite, les gens appellent → que</td></tr><tr><td>Il faut éviter de jeter trop vite.</td><td>un seul sujet → de + infinitif</td></tr><tr><td>Il faut que la personne ait gardé ses preuves.</td><td>deux sujets → que + subjonctif</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">répéter le sujet avec « que »</p><div class="k">Ce qui arrive</div><p class="ph">employer l'infinitif</p><p class="px">« Je veux que je comprenne » ❌ → « Je veux comprendre ». Avec le même sujet, on ne double jamais.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">mettre « de » après vouloir</p><div class="k">Ce qui arrive</div><p class="ph">ne rien mettre</p><p class="px">« Je veux de partir » ❌ → « Je veux partir ». Vouloir et espérer se passent de préposition.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">employer l'indicatif après « avant que »</p><div class="k">Ce qui arrive</div><p class="ph">le subjonctif</p><p class="px">« avant que le juge entend » ❌ → « avant que le juge entende ». Ces conjonctions demandent toujours le subjonctif.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">« Je vous demande ___ être prudent. »</span><ul class="opts"><li>d'</li><li>que vous soyez</li></ul></li><li><span class="q">« Elle souhaite ___ les gens appellent. »</span><ul class="opts"><li>de</li><li>que</li></ul></li><li><span class="q">« Je veux ___ comprendre. »</span><ul class="opts"><li>de</li><li>rien</li></ul></li><li><span class="q">« Avant que le juge ___ la cause. »</span><ul class="opts"><li>entend</li><li>entende</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> d' — Les deux se disent, mais l'infinitif est le plus naturel ici. · <b>2.</b> que — Deux sujets différents : « que » et le subjonctif. · <b>3.</b> rien — Vouloir n'a pas de préposition devant l'infinitif. · <b>4.</b> entende — « Avant que » demande le subjonctif.</div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Idée principale, idée secondaire</h2><section class="bloc card ml"><h3>Pourquoi ça compte plus qu'on ne croit</h3><p class="mp">Écouter une entrevue de vingt minutes en essayant de tout retenir ne marche pas. Ce qu'on retient, c'est trois ou quatre idées principales, et le reste sert à les appuyer. Savoir lesquelles sont principales, c'est ce qui permet de résumer ensuite — et de rédiger un texte en paragraphes, ce que le niveau 6 demande à l'écrit.</p><div class="note">« Idée principale ou secondaire » fait partie du métalangage du niveau 6 : ce sont des mots que l'élève doit pouvoir employer.</div></section><section class="bloc card ml"><h3>Le test de l'idée principale</h3><p class="mp">Répétez-la à quelqu'un qui n'a rien entendu.</p><table class="ana"><tr><td>Si elle se comprend seule</td><td class="">c'est une idée principale</td></tr><tr><td>Si elle laisse une question</td><td class="cle">c'est une idée secondaire</td></tr><tr><td>Exemple principal</td><td class="">Un appareil qu'on ne peut pas réparer est jetable.</td></tr><tr><td>Exemple secondaire</td><td class="">Nos lignes sonnent pendant trois jours. → trois jours après quoi ?</td></tr></table><p class="dit"><span class="k">On dit</span> Un appareil qu'on ne peut pas réparer est jetable.</p><div class="note">Ce test se fait en une seconde, et il ne se trompe presque jamais.</div></section><section class="bloc card ml"><h3>Où se cache l'idée principale d'une entrevue</h3><p class="mp">Trois endroits, presque toujours les mêmes.</p><table class="ana"><tr><td>Après une question courte</td><td class="">« Laquelle vous préoccupe le plus ? » — ce qui suit est central</td></tr><tr><td>Après « ce que je veux dire, c'est »</td><td class="cle">l'invité se corrige et resserre</td></tr><tr><td>Dans la dernière réponse</td><td class="">on demande souvent « un mot pour finir »</td></tr><tr><td>Rarement au début</td><td class="">les premières minutes servent à présenter, pas à dire</td></tr></table><p class="dit"><span class="k">On dit</span> Laquelle des trois vous préoccupe le plus ?</p><div class="note">Les questions courtes d'un animateur ne sont pas des transitions : ce sont ses vraies questions.</div></section><section class="bloc card ml"><h3>Six phrases de l'entrevue, triées</h3><p class="mp">À gauche la phrase, à droite ce qu'elle est.</p><table class="ex2"><tr><td>Trois problèmes se cachent derrière la même expression.</td><td>PRINCIPALE — se comprend seule</td></tr><tr><td>Nos lignes sonnent pendant trois jours.</td><td>SECONDAIRE — après quoi ?</td></tr><tr><td>Un appareil qu'on ne peut réparer est jetable.</td><td>PRINCIPALE — c'est sa thèse</td></tr><tr><td>L'entente a duré seize ans.</td><td>SECONDAIRE — un détail de l'exemple</td></tr><tr><td>Une lettre écrite laisse une trace.</td><td>PRINCIPALE — c'est son conseil</td></tr><tr><td>Les documents étaient dans des archives d'entreprise.</td><td>SECONDAIRE — une précision</td></tr></table></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">Une idée secondaire, répétée seule…</span><ul class="opts"><li>se comprend</li><li>laisse une question</li></ul></li><li><span class="q">Après « par exemple », vient…</span><ul class="opts"><li>une idée secondaire</li><li>une idée principale</li></ul></li><li><span class="q">Dans une entrevue, l'idée principale se trouve souvent…</span><ul class="opts"><li>dans les premières minutes</li><li>après une question courte</li></ul></li><li><span class="q">À quoi sert cette distinction, à l'écrit ?</span><ul class="opts"><li>à écrire en paragraphes</li><li>à écrire plus long</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> laisse une question — C'est exactement le test. · <b>2.</b> une idée secondaire — Un exemple illustre : il dépend de ce qui précède. · <b>3.</b> après une question courte — Les premières minutes servent à présenter. · <b>4.</b> à écrire en paragraphes — Un paragraphe porte une idée principale ; les autres phrases la servent.</div></section></section></div>
+<footer><span>C4 · Suivre un sujet dans les médias</span><span>Fiche élève</span></footer>
+</body>
+</html>

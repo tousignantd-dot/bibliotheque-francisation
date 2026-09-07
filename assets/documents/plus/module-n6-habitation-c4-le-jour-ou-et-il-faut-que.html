@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C4 · Le jour où, et il faut que — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+.plus-papier ol.check li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance C4 · Module 9 · 75 minutes</div>
+    <h1>Le jour où, et il faut que</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Deux tournures qui font tenir un texte long : l'une colle deux phrases en une, l'autre transforme un ordre en demande.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>réunir deux phrases avec « où » pour un lieu ;</li><li>employer « où » pour un moment : le jour où, l'année où ;</li><li>employer le subjonctif après il faut que, j'aimerais que ;</li><li>choisir entre « de » + infinitif et « que » + subjonctif.</li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">« où » pour un lieu, « où » pour un moment</h2><table><thead><tr><th>Ce qu'il reprend</th><th>Un exemple</th></tr></thead><tbody><tr><td class="cle">un mur</td><td>le mur nord, où la fissure a été relevée</td></tr><tr><td class="cle">un coin</td><td>le coin du sous-sol où le puisard se trouve</td></tr><tr><td class="cle">un jour</td><td>le jour où on a ouvert le plancher</td></tr><tr><td class="cle">une année</td><td>l'année où la maison fut construite</td></tr></tbody></table><div class="note">On n'écrit jamais « le jour que » : ça s'entend, ça ne s'écrit pas.</div></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">La virgule change le sens</h2><table><thead><tr><th>La phrase</th><th>Ce qu'elle dit</th></tr></thead><tbody><tr><td class="cle">le mur où la fissure est</td><td>lequel des murs : il y en a plusieurs</td></tr><tr><td class="cle">le mur nord, où elle est,</td><td>un renseignement sur un mur déjà nommé</td></tr><tr><td class="cle">le jour où le permis arrive</td><td>lequel des jours</td></tr><tr><td class="cle">le 18, où il est arrivé,</td><td>un ajout sur une date déjà nommée</td></tr></tbody></table><div class="note">Les virgules vont par deux, ou pas du tout. Une seule est toujours une erreur.</div></section><section class="bloc card"><div class="lbl">Pratique</div><h2 class="t">Réunir avec « où »</h2><p class="consigne">Faites une seule phrase.</p><ol class="ex"><li><span class="q">Le mur nord présente 19 %. La fissure a été relevée dans ce mur.</span><span class="ligne"></span></li><li><span class="q">Tout a changé ce jour-là. On a ouvert le plancher ce jour-là.</span><span class="ligne"></span></li><li><span class="q">La maison fut construite en 1961. On ne posait pas de membrane cette année-là.</span><span class="ligne"></span></li><li><span class="q">Le coin est le plus humide. Le puisard se trouve dans ce coin.</span><span class="ligne"></span></li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Les verbes qui commandent le subjonctif</h2><table><thead><tr><th>La famille</th><th>Les verbes</th></tr></thead><tbody><tr><td class="cle">la nécessité</td><td>il faut que, il est important que</td></tr><tr><td class="cle">la volonté</td><td>je veux que, j'exige que, je demande que</td></tr><tr><td class="cle">le souhait</td><td>je souhaite que, j'aimerais que</td></tr><tr><td class="cle">l'attente</td><td>avant que, en attendant que</td></tr></tbody></table><div class="note">Cinq irréguliers suffisent : sois, aie, fasse, aille, puisse.</div></section><section class="bloc regle"><div class="lbl">La langue de la demande écrite</div><p class="r">« Ajoutez une phrase » est un ordre ; « j'aimerais que vous ajoutiez une phrase » est une demande.</p><p class="pr">La différence tient au verbe qui suit « que », et ce verbe est au subjonctif. Ce n'est pas une politesse décorative : dans un courriel à quelqu'un que vous payez, l'impératif se lit comme un reproche, et le subjonctif comme une demande ferme et normale.</p></section><section class="bloc card"><div class="lbl">Pratique</div><h2 class="t">Mettre au subjonctif</h2><p class="consigne">Complétez avec le verbe entre parenthèses.</p><ol class="ex"><li><span class="q">Il faut que le mur ___ (être) sec avant qu'on referme.</span><span class="ligne ligne--court"></span></li><li><span class="q">J'aimerais que vous ___ (écrire) cette phrase dans la soumission.</span><span class="ligne ligne--court"></span></li><li><span class="q">Kettly souhaite que Doïna ___ (avoir) une réserve.</span><span class="ligne ligne--court"></span></li><li><span class="q">Il est important que nous ___ (faire) vérifier la licence.</span><span class="ligne ligne--court"></span></li><li><span class="q">Fernand demande que Doïna lui ___ (répondre) avant le 15.</span><span class="ligne ligne--court"></span></li><li><span class="q">Il faudrait que vous ___ (pouvoir) commencer avant les pluies.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écris une demande que tu ferais à un entrepreneur, avec « j'aimerais que ».</p><ul><li>Une phrase.</li><li>Demande une seule chose, et donne une date.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>« où » : un endroit, mais aussi un moment</h2><section class="bloc card ml"><h3>Le mot qui colle deux phrases</h3><p class="mp">« Le mur nord présente dix-neuf pour cent d'humidité. La fissure a été relevée dans ce mur. » Deux phrases, et le nom du mur écrit deux fois. Un rapport technique ne peut pas se permettre ça : il aurait trois cents phrases et il répéterait le même mot toutes les deux lignes. « Où » sert exactement à ça — coller les deux, et ne nommer le mur qu'une seule fois.</p><div class="note">Le programme du niveau 6 le demande deux fois : associer le pronom relatif de lieu ou de temps « où » à son antécédent, et employer des phrases subordonnées relatives avec « où ».</div></section><section class="bloc card ml"><h3>« où » pour un endroit</h3><p class="mp">C'est l'emploi qu'on connaît déjà, et le plus simple.</p><table class="ana"><tr><td>un mur</td><td class="">Le mur nord, <b>où</b> la fissure a été relevée, est le plus humide.</td></tr><tr><td>une pièce</td><td class="cle">Le coin du sous-sol <b>où</b> le puisard se trouve reste froid.</td></tr><tr><td>une ville</td><td class="">Saint-Jérôme, <b>où</b> ils habitent depuis deux ans.</td></tr><tr><td>Le test</td><td class="">on pourrait dire « dans lequel », « sur lequel », « auquel ».</td></tr></table><p class="dit"><span class="k">On dit</span> le mur nord où la fissure a été relevée, le coin où le puisard se trouve</p><div class="note">« Où » remplace ici tout un groupe : dans ce mur, dans ce coin, dans cette ville. Un seul mot pour trois.</div></section><section class="bloc card ml"><h3>« où » pour un moment</h3><p class="mp">C'est l'emploi que le niveau 6 ajoute, et c'est le plus fréquent à l'écrit — alors qu'il n'a rien à voir avec un lieu.</p><table class="ana"><tr><td>un jour</td><td class="">Le jour <b>où</b> on a ouvert le plancher, tout a changé.</td></tr><tr><td>une année</td><td class="cle">L'année <b>où</b> la maison fut construite, on ne posait pas de membrane.</td></tr><tr><td>un moment</td><td class="">Le moment <b>où</b> le béton est sec est celui où l'on referme.</td></tr><tr><td>une semaine</td><td class="">La semaine <b>où</b> le permis est arrivé, l'équipe est revenue.</td></tr></table><p class="dit"><span class="k">On dit</span> le jour où, l'année où, le moment où, la semaine où</p><div class="note">On n'écrit jamais « le jour que ». Ça s'entend beaucoup à l'oral, ça ne s'écrit pas, et un correcteur le relève chaque fois.</div></section><section class="bloc card ml"><h3>Coller deux phrases en une</h3><p class="mp">Choisissez le mot de départ, puis regardez la phrase soudée.</p><table class="labo"><thead><tr><th>Quel mot ? · Quoi voir ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">le mur + les deux phrases</td><td>Le mur nord est le plus humide. La fissure a été relevée dans ce mur.<span class="tags">Le mur nord est le plus humide. La fissure a été relevée dans ce mur.</span></td><td>le nom du mur est écrit deux fois</td></tr><tr><td class="cle">le mur + la phrase soudée</td><td>Le mur nord, où la fissure a été relevée, est le plus humide.<span class="tags">Le mur nord, où la fissure a été relevée, est le plus humide.</span></td><td>une seule phrase, et deux virgules qui encadrent l'ajout</td></tr><tr><td class="cle">le jour + les deux phrases</td><td>Tout a changé ce jour-là. On a ouvert le plancher ce jour-là.<span class="tags">Tout a changé ce jour-là. On a ouvert le plancher ce jour-là.</span></td><td>« ce jour-là » revient deux fois</td></tr><tr><td class="cle">le jour + la phrase soudée</td><td>Le jour où on a ouvert le plancher, tout a changé.<span class="tags">Le jour où on a ouvert le plancher, tout a changé.</span></td><td>« où » pour un moment : l'emploi le plus fréquent à l'écrit</td></tr><tr><td class="cle">l'année + les deux phrases</td><td>La maison fut construite en 1961. On ne posait pas de membrane cette année-là.<span class="tags">La maison fut construite en 1961. On ne posait pas de membrane cette année-là.</span></td><td>deux faits, deux phrases</td></tr><tr><td class="cle">l'année + la phrase soudée</td><td>L'année où la maison fut construite, on ne posait pas de membrane.<span class="tags">L'année où la maison fut construite, on ne posait pas de membrane.</span></td><td>la phrase du rapport, en une seule ligne</td></tr></tbody></table><div class="note">Faites l'exercice à l'envers aussi : prenez une phrase avec « où » et coupez-la en deux. C'est ce qu'on fait dans sa tête pour comprendre un rapport.</div></section><section class="bloc card ml"><h3>La virgule change le sens</h3><p class="mp">À gauche sans virgule, à droite avec.</p><table class="ex2"><tr><td>Le mur où la fissure a été relevée…</td><td>dit lequel des murs : il y en a plusieurs</td></tr><tr><td>Le mur nord, où la fissure a été relevée, …</td><td>ajoute un renseignement sur un mur déjà nommé</td></tr><tr><td>Le jour où le permis est arrivé…</td><td>dit lequel des jours</td></tr><tr><td>Le 18 septembre, où l'inspection a eu lieu, …</td><td>ajoute un renseignement sur une date déjà nommée</td></tr></table></section><section class="bloc card ml"><h3>Deux erreurs, une à l'oral, une à l'écrit</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">écrire « le jour que je suis arrivée »</p><div class="k">Ce qui arrive</div><p class="ph">écrire « le jour où »</p><p class="px">« Que » s'entend beaucoup et se dit sans problème entre amis. Dans un courriel à un entrepreneur, il se voit tout de suite.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">oublier les virgules autour de l'ajout</p><div class="k">Ce qui arrive</div><p class="ph">les mettre des deux côtés, ou d'aucun</p><p class="px">« Le mur nord où la fissure a été relevée est le plus humide » se lit comme s'il y avait plusieurs murs nord. Une virgule d'un seul côté est toujours une erreur.</p></div></div></section><section class="bloc card ml"><h3>Trois questions</h3><ol class="check"><li><span class="q">« Le jour ___ on a ouvert le plancher »</span><ul class="opts"><li>que</li><li>où</li></ul></li><li><span class="q">« Où » peut remplacer…</span><ul class="opts"><li>seulement un lieu</li><li>un lieu ou un moment</li></ul></li><li><span class="q">Les virgules autour d'une relative en « où »…</span><ul class="opts"><li>se mettent des deux côtés ou d'aucun</li><li>se mettent au choix</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> où — « Où » vaut aussi pour un moment. · <b>2.</b> un lieu ou un moment — Et l'emploi temporel est le plus fréquent à l'écrit. · <b>3.</b> se mettent des deux côtés ou d'aucun — Une seule virgule est toujours une erreur.</div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>La langue de la demande écrite</h2><section class="bloc card ml"><h3>Pourquoi ce temps-là et pas un autre</h3><p class="mp">« Ajoutez une phrase à la soumission » est un ordre. « J'aimerais que vous ajoutiez une phrase à la soumission » est une demande — ferme, polie, et impossible à prendre de travers. La différence tient au verbe qui suit « que », et ce verbe est au subjonctif. Ce n'est pas une politesse décorative : c'est la forme normale de la demande écrite en français.</p><div class="note">Le programme du niveau 6 y consacre cinq points, dont : employer obligatoirement le subjonctif présent après quelques verbes introducteurs usuels + que, et distinguer un verbe introducteur + de d'un verbe introducteur + que.</div></section><section class="bloc card ml"><h3>Les verbes qui l'imposent</h3><p class="mp">Après eux, quand « que » suit, le verbe suivant se met au subjonctif. Sans exception.</p><table class="ana"><tr><td>la nécessité</td><td class="">il faut <b>que</b> · il est important <b>que</b> · il vaut mieux <b>que</b></td></tr><tr><td>la volonté</td><td class="cle">je veux <b>que</b> · j'exige <b>que</b> · je demande <b>que</b></td></tr><tr><td>le souhait</td><td class="">je souhaite <b>que</b> · j'aimerais <b>que</b> · je préfère <b>que</b></td></tr><tr><td>le doute et l'attente</td><td class="">je ne crois pas <b>que</b> · en attendant <b>que</b> · avant <b>que</b></td></tr></table><p class="dit"><span class="k">On dit</span> il faut que, je veux que, je souhaite que, avant que</p><div class="note">Les verbes d'opinion positifs ne le prennent pas : « je crois que le mur est sec », indicatif. À la forme négative, oui : « je ne crois pas que le mur soit sec ».</div></section><section class="bloc card ml"><h3>Sa forme, en une règle et cinq exceptions</h3><p class="mp">On part du « ils » du présent, on enlève -ent, on ajoute les terminaisons.</p><table class="ana"><tr><td>la règle</td><td class="">ils sèch&lt;s&gt;ent&lt;/s&gt; → que je <b>sèche</b> · ils finiss&lt;s&gt;ent&lt;/s&gt; → que tu <b>finisses</b> · ils écriv&lt;s&gt;ent&lt;/s&gt; → qu'il <b>écrive</b></td></tr><tr><td>être et avoir</td><td class="cle">que je <b>sois</b> · que nous <b>soyons</b> · que j'<b>aie</b> · que vous <b>ayez</b></td></tr><tr><td>faire, aller, pouvoir</td><td class="">que je <b>fasse</b> · que j'<b>aille</b> · que je <b>puisse</b></td></tr><tr><td>« nous » et « vous »</td><td class="">ils ressemblent à l'imparfait : que nous <b>fassions</b>, que vous <b>écriviez</b></td></tr></table><p class="dit"><span class="k">On dit</span> que je sèche, que je sois, que j'aie, que je fasse, que je puisse</p><div class="note">Cinq irréguliers — être, avoir, faire, aller, pouvoir — et vous avez de quoi écrire une demande complète.</div></section><section class="bloc card ml"><h3>« de » + infinitif, ou « que » + subjonctif ?</h3><p class="mp">C'est la question qui décide, et elle est simple : est-ce la même personne des deux côtés ?</p><table class="ana"><tr><td>même personne → de + infinitif</td><td class="">Je souhaite <b>recevoir</b> la soumission jeudi.</td></tr><tr><td>personne différente → que + subjonctif</td><td class="cle">Je souhaite que vous m'<b>envoyiez</b> la soumission jeudi.</td></tr><tr><td>même personne</td><td class="">Il faut <b>vérifier</b> la licence avant de signer.</td></tr><tr><td>personne différente</td><td class="">Il faut que <b>vous</b> vérifiiez la licence avant de signer.</td></tr></table><p class="dit"><span class="k">On dit</span> je souhaite recevoir, je souhaite que vous envoyiez</p><div class="note">« Je souhaite que je reçoive » ne se dit pas. Quand c'est vous des deux côtés, l'infinitif est obligatoire.</div></section><section class="bloc card ml"><h3>La même demande, deux registres</h3><p class="mp">Choisissez une demande, puis la façon de la formuler.</p><table class="labo"><thead><tr><th>Quelle demande ? · Comment ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">écrire une phrase dans la soumission + à l'impératif</td><td>Ajoutez cette phrase à la soumission.<span class="tags">Ajoutez cette phrase à la soumission.</span></td><td>court, clair — et sec, dans un courriel</td></tr><tr><td class="cle">écrire une phrase dans la soumission + au subjonctif</td><td>J'aimerais que vous ajoutiez cette phrase à la soumission.<span class="tags">J'aimerais que vous ajoutiez cette phrase à la soumission.</span></td><td>la même demande, et elle passe partout</td></tr><tr><td class="cle">envoyer les deux prix + à l'impératif</td><td>Envoyez-moi les deux prix aujourd'hui.<span class="tags">Envoyez-moi les deux prix aujourd'hui.</span></td><td>utile au téléphone, entre gens qui se connaissent</td></tr><tr><td class="cle">envoyer les deux prix + au subjonctif</td><td>Je souhaite que vous m'envoyiez les deux prix aujourd'hui.<span class="tags">Je souhaite que vous m'envoyiez les deux prix aujourd'hui.</span></td><td>écrit, daté, et impossible à comprendre de travers</td></tr><tr><td class="cle">attendre que le mur soit sec + à l'impératif</td><td>Ne refermez pas les cloisons avant que ce soit sec.<span class="tags">Ne refermez pas les cloisons avant que ce soit sec.</span></td><td>notez : « avant que » commande lui aussi le subjonctif</td></tr><tr><td class="cle">attendre que le mur soit sec + au subjonctif</td><td>Il faut que le mur soit sec avant qu'on referme les cloisons.<span class="tags">Il faut que le mur soit sec avant qu'on referme les cloisons.</span></td><td>deux subjonctifs dans la même phrase, et c'est correct</td></tr></tbody></table><div class="note">L'impératif n'est pas interdit : il est seulement plus dur à l'écrit qu'à l'oral. Dans un courriel à quelqu'un que vous payez, le subjonctif tient mieux la relation.</div></section><section class="bloc card ml"><h3>Huit demandes du module</h3><table class="ex2"><tr><td>Il faut que le mur soit sec.</td><td>être</td></tr><tr><td>J'aimerais que vous écriviez cette phrase.</td><td>écrire</td></tr><tr><td>Kettly souhaite que Doïna ait une réserve.</td><td>avoir</td></tr><tr><td>Le service des permis exige que le plan parte cette semaine.</td><td>partir</td></tr><tr><td>Il est important que nous fassions vérifier la licence.</td><td>faire</td></tr><tr><td>Fernand demande que Doïna réponde avant le 15.</td><td>répondre</td></tr><tr><td>Je veux que tout imprévu fasse l'objet d'un avis écrit.</td><td>faire</td></tr><tr><td>Il faudrait que vous puissiez commencer avant les pluies.</td><td>pouvoir</td></tr></table></section><section class="bloc card ml"><h3>Trois erreurs fréquentes</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">« après que » au subjonctif</p><div class="k">Ce qui arrive</div><p class="ph">« après que » + indicatif</p><p class="px">« Avant que » commande le subjonctif ; « après que » ne le commande pas. On écrit « après qu'il a signé », pas « après qu'il ait signé » — même si presque tout le monde dit le contraire.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">« je souhaite que je reçoive »</p><div class="k">Ce qui arrive</div><p class="ph">« je souhaite recevoir »</p><p class="px">Quand c'est la même personne des deux côtés, l'infinitif est obligatoire. La phrase avec « que » est simplement impossible.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">« il faut que je vais »</p><div class="k">Ce qui arrive</div><p class="ph">« il faut que j'aille »</p><p class="px">Aller est l'un des cinq irréguliers. Que j'aille, que tu ailles, qu'il aille, que nous allions.</p></div></div></section><section class="bloc card ml"><h3>Quatre questions</h3><ol class="check"><li><span class="q">« Il faut que le mur ___ sec. »</span><ul class="opts"><li>est</li><li>soit</li></ul></li><li><span class="q">« Je souhaite ___ la soumission jeudi. » (c'est moi qui la reçois)</span><ul class="opts"><li>recevoir</li><li>que je reçoive</li></ul></li><li><span class="q">« Avant qu'il ___ » demande…</span><ul class="opts"><li>le subjonctif</li><li>l'indicatif</li></ul></li><li><span class="q">« Il faut que j'___ au bureau des permis. »</span><ul class="opts"><li>aille</li><li>vais</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> soit — Après « il faut que », le subjonctif est obligatoire. · <b>2.</b> recevoir — Même personne des deux côtés : infinitif. · <b>3.</b> le subjonctif — « Avant que » le commande ; « après que » non. · <b>4.</b> aille — Aller : que j'aille.</div></section></section></div>
+<footer><span>C4 · Faire faire des travaux</span><span>Fiche élève</span></footer>
+</body>
+</html>

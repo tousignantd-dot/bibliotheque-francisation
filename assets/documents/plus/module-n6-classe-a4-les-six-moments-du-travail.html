@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A4 · Les six moments du travail — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+.plus-papier ol.check li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance A4 · Module 10 · 75 minutes</div>
+    <h1>Les six moments du travail</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Un travail de recherche ne se fait pas d'un bloc. La semaine qui ne produit aucune page est celle qui décide de la note.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>nommer les six moments d'un travail de recherche ;</li><li>dire ce qui se décide dans chacun ;</li><li>répartir trois semaines entre décider, écrire et corriger ;</li><li>reconnaître un travail d'équipe d'un travail simplement partagé.</li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Trois semaines, trois travaux différents</h2><table><thead><tr><th>La semaine</th><th>Ce qui doit être fini</th></tr></thead><tbody><tr><td class="cle">Semaine 1 — décider</td><td>le sujet approuvé et trois sources trouvées</td></tr><tr><td class="cle">Semaine 2 — écrire</td><td>le plan, puis un texte complet même imparfait</td></tr><tr><td class="cle">Semaine 3 — finir</td><td>la relecture à trois et l'exposé répété</td></tr></tbody></table><div class="note">La première semaine ne produit aucune page. C'est elle qui décide de tout.</div></section><section class="bloc"><div class="lbl">Analyse</div><h2 class="t">Les six moments, et ce qui s'y décide</h2><div class="grid"><div class="card"><h3>1 · L'équipe</h3><p>Qui fait quoi. Le dire à voix haute et l'écrire.</p></div><div class="card"><h3>2 · Le sujet</h3><p>Une question précise, approuvée avant qu'on cherche.</p></div><div class="card"><h3>3 · Les sources</h3><p>Trois genres différents, avec leur date.</p></div><div class="card"><h3>4 · Le plan</h3><p>L'ordre des idées, une par paragraphe.</p></div><div class="card"><h3>5 · Le texte</h3><p>Les phrases, la bibliographie, la relecture à voix haute.</p></div><div class="card"><h3>6 · L'exposé</h3><p>Ce qu'on dira en cinq minutes, répété jusqu'à tenir.</p></div></div></section><section class="bloc regle"><div class="lbl">Le plan vient avant le texte, toujours</div><p class="r">On ne déplace pas un paragraphe déjà écrit sans le réécrire au complet.</p><p class="pr">Un plan se corrige en deux traits de crayon. C'est la seule raison de l'écrire, et elle suffit.</p></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Méthode</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">se partager le travail en trois morceaux</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">écrire chacun sa partie, puis relire à trois</p></div></div><div class="note">Trois textes collés bout à bout se reconnaissent à la première page : le ton change, les mots changent, et les mêmes choses sont dites deux fois. La relecture commune à voix haute prend une heure et fait disparaître les coutures.</div></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Ce qu'on voit à chaque moment</h2><table><thead><tr><th>Le moment</th><th>Ce qu'on a devant soi</th></tr></thead><tbody><tr><td class="cle">l'annonce</td><td>une classe, une enseignante, une pile de feuilles</td></tr><tr><td class="cle">la consigne</td><td>une feuille imprimée, quelques lignes soulignées</td></tr><tr><td class="cle">la bibliothèque</td><td>des étagères, une table ronde, une chaise tirée</td></tr><tr><td class="cle">les sources</td><td>trois documents étalés côte à côte</td></tr><tr><td class="cle">le plan</td><td>une feuille quadrillée, des ratures, des flèches</td></tr></tbody></table><div class="note">Chaque moment a son décor, et le décor aide à se rappeler l'ordre.</div></section><section class="bloc card"><div class="lbl">Pratique</div><h2 class="t">Chaque moment, ce qui s'y décide</h2><p class="consigne">Reliez le moment à la décision qui s'y prend.</p><ol class="ex"><li><span class="q">la formation de l'équipe</span><span class="ligne"></span></li><li><span class="q">le choix du sujet</span><span class="ligne"></span></li><li><span class="q">la recherche des sources</span><span class="ligne"></span></li><li><span class="q">l'écriture du plan</span><span class="ligne"></span></li><li><span class="q">la rédaction</span><span class="ligne"></span></li><li><span class="q">la préparation de l'exposé</span><span class="ligne"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écris ce que ton équipe doit avoir fini vendredi prochain.</p><ul><li>Une seule phrase, avec une date dedans.</li><li>Exemple : « Vendredi 7, notre sujet est approuvé. »</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Trois semaines, et où elles passent vraiment</h2><section class="bloc card ml"><h3>Le calendrier que personne ne vous donne</h3><p class="mp">Une consigne dit ce qu'il faut remettre et quand. Elle ne dit jamais comment répartir le temps, et c'est pourtant là que se joue la note. Toutes les équipes qui coulent un travail de recherche font la même chose : elles cherchent longtemps, elles écrivent vite, et elles ne relisent pas. Voici l'ordre inverse, et pourquoi il vaut mieux.</p><div class="note">Rien de tout ceci n'est une règle de français. C'est de la méthode, et c'est la partie du travail qu'on n'enseigne presque jamais.</div></section><section class="bloc card ml"><h3>Semaine 1 — décider</h3><p class="mp">Le sujet et les sources. Rien d'écrit encore, et c'est normal : cette semaine-là ne produit aucune page, et elle décide de tout le reste.</p><table class="ana"><tr><td>Ce qui doit être fini</td><td class="">le sujet approuvé et trois sources trouvées</td></tr><tr><td>Le signe que ça va bien</td><td class="cle">vous pouvez dire votre sujet en une phrase à quelqu'un qui ne l'a pas lu</td></tr><tr><td>Le signe que ça va mal</td><td class="">vous avez douze pages imprimées et aucune question précise</td></tr></table><p class="dit"><span class="k">On dit</span> Semaine un : décider. Le sujet approuvé et trois sources trouvées.</p><div class="note">Une équipe qui n'a pas de sujet approuvé le vendredi de la première semaine a déjà perdu une semaine, et elle ne le sait pas encore.</div></section><section class="bloc card ml"><h3>Semaine 2 — écrire</h3><p class="mp">Le plan d'abord, le texte ensuite. Jamais l'inverse : on ne déplace pas un paragraphe déjà écrit sans le réécrire au complet.</p><table class="ana"><tr><td>Ce qui doit être fini</td><td class="">le plan, puis un premier texte complet, même imparfait</td></tr><tr><td>Le bon réflexe</td><td class="cle">écrire la bibliographie en même temps que le texte, pas après</td></tr><tr><td>Ce qui fait perdre deux jours</td><td class="">chercher encore des sources pendant qu'on écrit</td></tr></table><p class="dit"><span class="k">On dit</span> Semaine deux : écrire. Le plan d'abord, puis un premier texte complet.</p><div class="note">Un premier texte laid mais complet vaut mieux que trois beaux paragraphes et un trou. Ce qui est complet se corrige ; ce qui manque se réécrit.</div></section><section class="bloc card ml"><h3>Semaine 3 — corriger et répéter</h3><p class="mp">Deux tâches distinctes, et la deuxième est celle qu'on oublie.</p><table class="ana"><tr><td>La relecture à voix haute</td><td class="">à trois, ensemble : c'est la seule façon de faire disparaître les coutures entre trois écritures</td></tr><tr><td>La répétition de l'exposé</td><td class="cle">trois fois, chronomètre en main</td></tr><tr><td>La vérité sur les cinq minutes</td><td class="">la première répétition dure toujours huit minutes, sans exception</td></tr></table><p class="dit"><span class="k">On dit</span> Semaine trois : corriger et répéter. La relecture à voix haute, puis l'exposé trois fois.</p><div class="note">Répéter un exposé n'est pas de l'orgueil : c'est ce qui permet de ne pas lire sa feuille, et de ne pas lire sa feuille est explicitement demandé.</div></section><section class="bloc card ml"><h3>Ce qui se décide à chaque moment</h3><p class="mp">Six moments, six décisions. Aucune ne se rattrape à l'étape suivante.</p><table class="ex2"><tr><td>La formation de l'équipe</td><td>Qui fait quoi. Le dire à voix haute et l'écrire, sinon deux personnes feront la même partie.</td></tr><tr><td>Le choix du sujet</td><td>Une question précise, pas un thème. « Le bac brun » n'est pas une question.</td></tr><tr><td>La recherche des sources</td><td>Trois genres différents, avec leur date, notées pendant la lecture.</td></tr><tr><td>L'écriture du plan</td><td>Une ligne par idée principale. C'est le squelette, il se corrige en deux minutes.</td></tr><tr><td>La rédaction</td><td>Un paragraphe par ligne du plan, plus la bibliographie.</td></tr><tr><td>La préparation de l'exposé</td><td>Ce qu'on dira en cinq minutes, répété jusqu'à tenir dans le temps.</td></tr></table></section><section class="bloc card ml"><h3>Les trois façons de perdre une semaine</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">chercher avant d'avoir un sujet approuvé</p><div class="k">Ce qui arrive</div><p class="ph">faire approuver, puis chercher</p><p class="px">Deux semaines de lecture sur une question que l'enseignante va refuser, ça s'est vu. L'approbation prend deux minutes et ne coûte rien.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">se partager le travail au lieu de le faire ensemble</p><div class="k">Ce qui arrive</div><p class="ph">écrire chacun sa partie, puis relire à trois</p><p class="px">Trois textes collés bout à bout se reconnaissent à la première page : le ton change, les mots changent, les mêmes choses sont dites deux fois. La relecture commune est ce qui fait la différence, et elle prend une heure.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">préparer l'exposé la veille</p><div class="k">Ce qui arrive</div><p class="ph">répéter trois fois dans la dernière semaine</p><p class="px">Cinq minutes, c'est très court. Sans répétition, on en dit la moitié en huit minutes, on se fait couper, et on n'arrive jamais à la conclusion — qui est justement la partie évaluée.</p></div></div></section><section class="bloc card ml"><h3>On vérifie — trois questions</h3><p class="mp">Une bonne réponse par question.</p><ol class="check"><li><span class="q">Quand faut-il écrire la bibliographie ?</span><ul class="opts"><li>pendant qu'on lit les sources</li><li>la veille de la remise</li></ul></li><li><span class="q">Qu'est-ce qui vient avant le texte ?</span><ul class="opts"><li>le plan</li><li>la conclusion</li></ul></li><li><span class="q">Combien de fois répéter un exposé de cinq minutes ?</span><ul class="opts"><li>une fois suffit</li><li>trois fois, chronomètre en main</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> pendant qu'on lit les sources — Retrouver trois jours plus tard la page d'où venait une phrase prend plus de temps que de l'avoir notée sur le coup. · <b>2.</b> le plan — Un plan se corrige en deux traits de crayon ; un texte déjà écrit se réécrit au complet. · <b>3.</b> trois fois, chronomètre en main — La première répétition dure toujours huit minutes. C'est la deuxième et la troisième qui la ramènent à cinq.</div></section></section></div>
+<footer><span>A4 · Un travail de recherche en équipe</span><span>Fiche élève</span></footer>
+</body>
+</html>

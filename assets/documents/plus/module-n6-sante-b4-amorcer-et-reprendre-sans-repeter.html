@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B4 · Amorcer, et reprendre sans répéter — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+.plus-papier ol.check li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance B4 · Module 7 · 75 minutes</div>
+    <h1>Amorcer, et reprendre sans répéter</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Deux gestes qui n'ont l'air de rien : entrer dans une conversation, et redire la même chose sans employer le même mot. Ce sont eux qui tiennent un échange debout.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>amorcer une conversation avec un inconnu, sans rien demander de privé ;</li><li>reprendre un mot de l'autre pour montrer qu'on écoutait ;</li><li>reprendre un référent en changeant seulement le déterminant ;</li><li>reprendre un référent en changeant de mot.</li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Sept phrases, sept travaux</h2><table><thead><tr><th>La phrase</th><th>Ce qu'elle fait</th></tr></thead><tbody><tr><td class="cle">Vous attendez ?</td><td>ouvrir sur ce qui est commun aux deux</td></tr><tr><td class="cle">Ah, tout ce temps-là ?</td><td>reprendre un mot pour montrer qu'on écoutait</td></tr><tr><td class="cle">Chez nous, c'était pareil.</td><td>donner un peu de soi</td></tr><tr><td class="cle">Fatiguée comment ?</td><td>demander une précision, une fois l'autre lancé</td></tr><tr><td class="cle">Ça, c'est une bonne nouvelle.</td><td>réagir avant d'enchaîner sur soi</td></tr></tbody></table><div class="note">Et pour finir : « Bon, ils vous appellent. Bonne chance. » On termine sans se justifier.</div></section><section class="bloc regle"><div class="lbl">On donne un peu avant de demander</div><p class="r">Questionner sans rien dire de soi donne l'impression d'un interrogatoire.</p><p class="pr">« Chez nous, c'était pareil avec mon père » libère l'autre : il peut raconter à son tour, ou non. C'est ce qui distingue une conversation d'une enquête, et ça s'apprend en une phrase.</p></section><section class="bloc card"><div class="lbl">Conversation</div><h2 class="t">Debout, deux minutes chacun</h2><p class="consigne">Amorcez, reprenez un mot, donnez un peu de vous, terminez.</p><ol class="ex"><li><span class="q">Vous attendez à l'urgence, un samedi soir.</span><span class="ligne ligne--court"></span></li><li><span class="q">Vous attendez à la pharmacie, avant la fermeture.</span><span class="ligne ligne--court"></span></li><li><span class="q">Vous attendez l'autobus, en février.</span><span class="ligne ligne--court"></span></li><li><span class="q">Vous attendez au comptoir d'un centre de services.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Reprendre en changeant le déterminant</h2><table><thead><tr><th>Première phrase</th><th>La reprise</th></tr></thead><tbody><tr><td class="cle">Une fatigue est apparue.</td><td>Cette fatigue n'est jamais repartie.</td></tr><tr><td class="cle">Elle a attendu sept mois.</td><td>Ce délai lui a paru interminable.</td></tr><tr><td class="cle">Gilles accompagne sa femme.</td><td>Sa patience étonne tout le monde.</td></tr><tr><td class="cle">Ils se parlent le dimanche.</td><td>Leurs appels durent une heure.</td></tr></tbody></table><div class="note">Passer de « une » à « cette » ou à « la » dit que la chose a déjà été présentée.</div></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Reprendre en changeant de mot</h2><table><thead><tr><th>Le moyen</th><th>Un exemple</th></tr></thead><tbody><tr><td class="cle">Un synonyme</td><td>un rendez-vous devient une rencontre</td></tr><tr><td class="cle">Un mot plus général</td><td>une échographie devient cet examen</td></tr><tr><td class="cle">Le nom tiré du verbe</td><td>il a fallu attendre devient cette attente</td></tr></tbody></table><div class="note">Quand aucun synonyme ne vient, montez d'un cran : cet examen, cette démarche, ce papier.</div></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Écriture</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">la docteure a expliqué, la docteure a demandé, la docteure a dit</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">elle a expliqué, puis elle a demandé des examens</p></div></div><div class="note">Le texte n'est pas faux : il est illisible. Reprendre autrement n'est pas une élégance de style, c'est ce qui permet au lecteur de savoir qu'on parle encore de la même chose sans le lui répéter à chaque phrase.</div></section><section class="bloc card"><div class="lbl">Grammaire</div><h2 class="t">Reprenez sans répéter</h2><p class="consigne">Complétez la deuxième phrase.</p><ol class="ex"><li><span class="q">Une fatigue est apparue en février. ___ fatigue n'est jamais repartie.</span><span class="ligne ligne--court"></span></li><li><span class="q">Elle a attendu sept mois. ___ délai lui a paru interminable.</span><span class="ligne ligne--court"></span></li><li><span class="q">On a demandé deux examens. ___ examens se font en bas.</span><span class="ligne ligne--court"></span></li><li><span class="q">Il a fallu attendre la matinée. Cette ___ est la partie la plus dure.</span><span class="ligne ligne--court"></span></li><li><span class="q">Elle est arrivée en retard. Ce ___ n'a rien changé.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez deux phrases sur le rendez-vous de Leyla, sans répéter de mot.</p><ul><li>Première phrase : ce qui est arrivé.</li><li>Deuxième phrase : reprenez-le autrement.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Parler à quelqu'un qui ne vous doit rien</h2><section class="bloc card ml"><h3>Le seul endroit d'un hôpital sans guichet</h3><p class="mp">Partout ailleurs dans un établissement, quelqu'un est payé pour vous répondre. Dans une salle d'attente, non : la personne à côté de vous n'a aucune obligation, et c'est précisément ce qui rend la conversation possible. Personne n'évalue votre français, personne ne remplit un formulaire. C'est le meilleur exercice de langue de la matinée, et il est gratuit.</p><div class="note">Le programme du niveau 6 nomme cette intention à part : « échanger avec quelqu'un dans la salle d'attente ». Elle n'existe à aucun niveau plus bas.</div></section><section class="bloc card ml"><h3>Ce dont on parle, et ce dont on ne parle pas</h3><p class="mp">La règle tient en une phrase : on parle de ce qui est à tout le monde, jamais de ce qui est à l'autre.</p><table class="ana"><tr><td>Ce qui est à tout le monde</td><td class="">l'attente, l'heure, le stationnement, le froid, le café de la machine</td></tr><tr><td>Ce qui appartient à l'autre</td><td class="cle">ce qu'il a, pourquoi il est là, ce qu'on lui a dit, son âge</td></tr><tr><td>Ce qui se donne, jamais ne se demande</td><td class="">si l'autre raconte sa maladie, c'est son choix ; on ne le provoque pas</td></tr></table><p class="dit"><span class="k">On dit</span> l'attente, l'heure, le stationnement, ce qu'il a, pourquoi il est là</p><div class="note">Cette frontière n'est pas propre au Québec, mais elle y est nette. Une question sur la santé de quelqu'un qu'on ne connaît pas met mal à l'aise, même posée gentiment.</div></section><section class="bloc card ml"><h3>Trois amorces qui marchent partout</h3><p class="mp">Elles se répondent en un mot par quelqu'un qui n'a pas envie de parler, et en dix minutes par quelqu'un qui en a envie. C'est tout leur mérite.</p><table class="ana"><tr><td>« Vous attendez depuis longtemps ? »</td><td class="">la plus sûre : elle porte sur ce qu'on partage</td></tr><tr><td>« Ça avance, vous pensez ? »</td><td class="cle">la même, en plus léger, quand la salle est pleine</td></tr><tr><td>« C'est bien ici, la salle C ? »</td><td class="">une vraie question, à laquelle on ne peut pas ne pas répondre</td></tr></table><p class="dit"><span class="k">On dit</span> Vous attendez depuis longtemps ? Ça avance, vous pensez ? C'est bien ici, la salle C ?</p><div class="note">Si la réponse est courte et ne revient pas vers vous, on s'arrête. Ce n'est pas un refus de vous : c'est un refus de parler, et il est légitime.</div></section><section class="bloc card ml"><h3>Ce qui transforme deux phrases polies en conversation</h3><p class="mp">Trois gestes, dans cet ordre. Ils s'apprennent une fois et servent partout ailleurs.</p><table class="ana"><tr><td>Reprendre un mot de l'autre</td><td class="">« — C'est ma femme qui est là-dedans. — Ah, vous l'attendez tout ce temps-là ? »</td></tr><tr><td>Donner un peu de soi</td><td class="cle">« Chez nous, c'était pareil avec mon père. » — sans quoi ça devient un interrogatoire</td></tr><tr><td>Réagir avant d'enchaîner</td><td class="">« Ça, c'est une bonne nouvelle. » plutôt que de repartir aussitôt sur soi</td></tr></table><p class="dit"><span class="k">On dit</span> Ah, vous l'attendez tout ce temps-là ? Chez nous, c'était pareil avec mon père. Ça, c'est une bonne nouvelle.</p><div class="note">Reprendre un mot de l'autre est ce que le programme appelle « s'introduire dans une discussion et y participer ». C'est aussi le geste qui vous laisse le temps de chercher vos mots.</div></section><section class="bloc card ml"><h3>Sept phrases et leur travail</h3><p class="mp">Chacune fait une chose et une seule.</p><table class="ex2"><tr><td>Vous attendez depuis longtemps ?</td><td>ouvrir sur ce qui est commun</td></tr><tr><td>Ah, vous l'attendez tout ce temps-là ?</td><td>reprendre un mot pour montrer qu'on écoutait</td></tr><tr><td>Chez nous, c'était pareil.</td><td>donner un peu de soi</td></tr><tr><td>Fatiguée comment, exactement ?</td><td>demander une précision, une fois l'autre lancé</td></tr><tr><td>Je ne veux pas être indiscret, par exemple.</td><td>annoncer qu'on s'arrête si ça va trop loin</td></tr><tr><td>Ça, c'est une bonne nouvelle.</td><td>réagir sans enchaîner sur soi</td></tr><tr><td>Bon, ils vous appellent. Bonne chance.</td><td>terminer sans avoir à se justifier</td></tr></table></section><section class="bloc card ml"><h3>Trois façons de faire fuir son voisin de banquette</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">demander ce que l'autre a</p><div class="k">Ce qui arrive</div><p class="ph">attendre qu'il le dise, ou ne jamais le savoir</p><p class="px">« Vous êtes ici pour quoi ? » est la seule question vraiment déplacée dans une salle d'attente. Tout le reste se pardonne.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">enchaîner tout de suite sur son propre cas</p><div class="k">Ce qui arrive</div><p class="ph">réagir d'abord à ce qui vient d'être dit</p><p class="px">L'autre raconte l'opération de sa femme, et vous parlez de votre cousin. La conversation meurt là. Un « ça n'a pas dû être facile » avant de continuer change tout.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">s'excuser de son français</p><div class="k">Ce qui arrive</div><p class="ph">parler, tout simplement</p><p class="px">« Excusez mon français » ouvre une conversation sur vous au lieu d'une conversation avec vous. Personne dans une salle d'attente ne juge un accent : tout le monde attend.</p></div></div></section><section class="bloc card ml"><h3>Trois questions, pour vérifier</h3><p class="mp">Une bonne réponse par question.</p><ol class="check"><li><span class="q">Quelle amorce est la plus sûre ?</span><ul class="opts"><li>« Vous êtes ici pour quoi ? »</li><li>« Vous attendez depuis longtemps ? »</li></ul></li><li><span class="q">Votre voisin répond en deux mots et ne vous demande rien. Vous…</span><ul class="opts"><li>reposez une autre question</li><li>vous arrêtez là</li></ul></li><li><span class="q">L'autre vient de raconter quelque chose de difficile. Le mieux est de…</span><ul class="opts"><li>réagir à ce qu'il a dit avant de parler de soi</li><li>raconter tout de suite un cas semblable</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> « Vous attendez depuis longtemps ? » — L'attente appartient à tout le monde ; la raison de la visite appartient à l'autre. · <b>2.</b> vous arrêtez là — Ce n'est pas un refus de vous : c'est un refus de parler, et il se respecte sans commentaire. · <b>3.</b> réagir à ce qu'il a dit avant de parler de soi — Réagir d'abord, enchaîner ensuite. C'est ce qui distingue une conversation d'une suite de monologues.</div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Redire la même chose sans employer le même mot</h2><section class="bloc card ml"><h3>Ce qui tient un texte ensemble</h3><p class="mp">Prenez n'importe quel paragraphe qui vous a paru difficile et regardez ce qui s'y répète : presque rien. Le même sujet y est nommé quatre fois de quatre façons — « une fatigue », « cette fatigue », « ce malaise », « le problème ». Rien n'a changé, et pourtant chaque phrase paraît neuve. Suivre un texte au niveau 6, c'est d'abord savoir que ces quatre groupes désignent la même chose.</p><div class="note">Le programme parle de « reprendre des référents par une variété de déterminants possessifs, démonstratifs et définis » et d'« employer des procédés de substitution lexicale ».</div></section><section class="bloc card ml"><h3>Reprendre en changeant seulement le déterminant</h3><p class="mp">Le nom reste, le petit mot devant change. C'est la reprise la plus simple et la plus fréquente.</p><table class="ana"><tr><td>Le démonstratif — je montre celui dont je viens de parler</td><td class="">une fatigue est apparue… → <b>cette</b> fatigue dure encore</td></tr><tr><td>Le possessif — je le rattache à quelqu'un</td><td class="cle">Gilles accompagne sa femme… → <b>sa</b> patience étonne tout le monde</td></tr><tr><td>Le défini — c'est déjà connu, on ne le présente plus</td><td class="">une lettre est arrivée… → <b>la</b> lettre était courte</td></tr></table><p class="dit"><span class="k">On dit</span> cette fatigue, sa patience, la lettre</p><div class="note">Passer de « une » à « la » n'est pas décoratif : c'est le signal que la chose a déjà été présentée. Un texte qui garde « une » partout donne l'impression qu'on recommence à chaque phrase.</div></section><section class="bloc card ml"><h3>Reprendre en changeant de mot</h3><p class="mp">Trois façons, de la plus facile à la plus utile.</p><table class="ana"><tr><td>Le synonyme</td><td class="">un rendez-vous → une rencontre ; une feuille → un papier</td></tr><tr><td>Le mot plus général</td><td class="cle">une échographie, une prise de sang → <b>cet examen</b> ; le rendez-vous, la lettre, l'appel → <b>cette démarche</b></td></tr><tr><td>Le nom tiré du verbe</td><td class="">elle a attendu → <b>cette attente</b> ; elle est arrivée en retard → <b>ce retard</b></td></tr></table><p class="dit"><span class="k">On dit</span> cet examen, cette démarche, cette attente, ce retard</p><div class="note">Le mot plus général est celui qui sauve quand aucun synonyme ne vient. Il suffit de monter d'un cran : un objet, un papier, une démarche, une question, un problème.</div></section><section class="bloc card ml"><h3>Le nom tiré du verbe, celui des documents</h3><p class="mp">C'est le procédé le plus employé par les textes administratifs, et c'est pour ça qu'ils paraissent difficiles.</p><table class="ana"><tr><td>attendre → l'attente</td><td class="">il a fallu attendre. Cette attente a duré sept mois.</td></tr><tr><td>arriver → l'arrivée</td><td class="cle">elle est arrivée à neuf heures. Son arrivée est notée au dossier.</td></tr><tr><td>prélever → le prélèvement</td><td class="">on a prélevé du sang. Le prélèvement date de mars.</td></tr></table><p class="dit"><span class="k">On dit</span> cette attente, son arrivée, le prélèvement</p><div class="note">Le Défi 3 revient là-dessus en entier : c'est exactement ce qui sépare ce que vous dites de ce que la médecin écrit.</div></section><section class="bloc card ml"><h3>Sept reprises, tirées du dossier de Leyla</h3><p class="mp">À gauche, la première phrase ; à droite, la reprise.</p><table class="ex2"><tr><td>Une fatigue est apparue en février.</td><td>Cette fatigue n'est jamais repartie.</td></tr><tr><td>Elle a attendu sept mois.</td><td>Ce délai lui a paru interminable.</td></tr><tr><td>On a demandé une échographie et une prise de sang.</td><td>Ces examens se font au rez-de-chaussée.</td></tr><tr><td>Gilles accompagne sa femme depuis deux ans.</td><td>Sa patience étonne tout le monde.</td></tr><tr><td>Leyla et son fils se parlent le dimanche.</td><td>Leurs appels durent une heure.</td></tr><tr><td>Il a fallu attendre toute la matinée.</td><td>Cette attente est la partie la plus dure.</td></tr><tr><td>Elle est repartie sans savoir ce qu'elle avait.</td><td>Cette incertitude pèse plus que la fatigue.</td></tr></table></section><section class="bloc card ml"><h3>Trois défauts de reprise</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">répéter le nom à chaque phrase</p><div class="k">Ce qui arrive</div><p class="ph">changer le déterminant, au minimum</p><p class="px">« La docteure a expliqué. La docteure a demandé des examens. La docteure a dit que la docteure allait écrire. » Le texte n'est pas faux : il est illisible.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">reprendre par un mot plus précis que le premier</p><div class="k">Ce qui arrive</div><p class="ph">monter d'un cran, jamais descendre</p><p class="px">Si l'on a dit « un examen », on peut reprendre par « cet examen ». On ne peut pas reprendre par « cette échographie » si personne n'a dit qu'il s'agissait d'une échographie.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">employer « ce » pour quelque chose de neuf</p><div class="k">Ce qui arrive</div><p class="ph">présenter d'abord avec « un » ou « une »</p><p class="px">« Cette fatigue » en première phrase d'un courriel laisse le lecteur chercher de quelle fatigue on parle. Le démonstratif reprend ; il ne présente pas.</p></div></div></section><section class="bloc card ml"><h3>Quatre questions, pour vérifier</h3><p class="mp">Une bonne réponse par question.</p><ol class="check"><li><span class="q">« Elle a attendu sept mois. ___ délai lui a paru long. »</span><ul class="opts"><li>Un</li><li>Ce</li></ul></li><li><span class="q">Le nom tiré du verbe « attendre » est…</span><ul class="opts"><li>l'attendage</li><li>l'attente</li></ul></li><li><span class="q">Après « une échographie et une prise de sang », on peut reprendre par…</span><ul class="opts"><li>ces examens</li><li>cette échographie</li></ul></li><li><span class="q">À quoi sert la reprise, au fond ?</span><ul class="opts"><li>à faire plus joli</li><li>à faire tenir un texte ensemble</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> Ce — Le démonstratif reprend ce qui vient d'être dit ; « un » le présenterait comme neuf. · <b>2.</b> l'attente — Irrégulier, et à apprendre en paire : attendre / l'attente. · <b>3.</b> ces examens — On monte d'un cran vers le mot plus général. On ne redescend pas vers un seul des deux. · <b>4.</b> à faire tenir un texte ensemble — C'est ce qui permet au lecteur de savoir qu'on parle encore de la même chose.</div></section></section></div>
+<footer><span>B4 · Nommer ce qu'on a</span><span>Fiche élève</span></footer>
+</body>
+</html>

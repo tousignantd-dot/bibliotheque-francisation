@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>D1 · Quatre personnes, une seule décide — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+.plus-papier ol.check li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance D1 · Module 5 · 75 minutes</div>
+    <h1>Quatre personnes, une seule décide</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Autour d'une table, tout le monde parle sur le même ton. Rien, dans la voix, ne dit qui a le pouvoir : c'est dans les verbes que ça se voit.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>suivre une rencontre où quatre personnes parlent du même dossier ;</li><li>entendre qui explique, qui décide et qui témoigne ;</li><li>distinguer une proposition, une règle et un engagement ;</li><li>employer les trois mots de la rencontre avec leur article.</li></ol></section><section class="bloc card"><div class="lbl">Dialogue · 1 de 3</div><h2 class="t">Je résume en trois phrases</h2><p class="consigne">Écouter d'abord, diapositive masquée.</p><div class="rep rep--key"><div class="qui">PASCAL</div><div>Merci d'être là. On a une heure. Madame Sangaré, je résume pour tout le monde en trois phrases, puis vous corrigerez si je me trompe.</div></div><div class="rep rep--key"><div class="qui">PASCAL</div><div>Bintou Sangaré termine sa francisation en février. Elle vise un diplôme d'études professionnelles. Elle a un avis d'admission conditionnelle, et la condition est la réussite du test.</div></div><div class="rep rep--key"><div class="qui">BINTOU</div><div>C'est exact. J'ajoute une chose : le test est le vingt-huit novembre, et je suis inscrite.</div></div><div class="rep rep--key"><div class="qui">AMÉLIE</div><div>C'est noté. De mon côté, je veux qu'une chose soit claire dès maintenant : le centre n'accorde aucun délai après le six février.</div></div></section><section class="bloc card"><div class="lbl">Dialogue · 2 de 3</div><h2 class="t">Si je peux me permettre</h2><div class="rep rep--key"><div class="qui">MARC-OLIVIER</div><div>Si je peux me permettre — sur le français, je n'ai aucune inquiétude. Bintou lit des textes officiels depuis septembre et elle les lit mieux que la moitié du groupe.</div></div><div class="rep rep--key"><div class="qui">AMÉLIE</div><div>Ce n'est pas rien non plus. Nos consignes de laboratoire sont écrites comme cet avis-là.</div></div><div class="rep rep--key"><div class="qui">BINTOU</div><div>Est-ce que je peux poser une question ?</div></div><div class="rep rep--key"><div class="qui">BINTOU</div><div>Si je réussis le test le vingt-huit et que la preuve arrive en janvier, est-ce que ça suffit ?</div></div></section><section class="bloc card"><div class="lbl">Dialogue · 3 de 3</div><h2 class="t">Pour ma part, je préférerais après</h2><div class="rep rep--key"><div class="qui">AMÉLIE</div><div>J'aimerais que madame Sangaré vienne visiter le laboratoire avant de décider. Beaucoup de gens s'inscrivent sans avoir vu la place où ils passeront neuf mois.</div></div><div class="rep rep--key"><div class="qui">BINTOU</div><div>Pour ma part, je préférerais y aller après le test. Si j'y vais avant, je vais penser à ça pendant l'épreuve.</div></div><div class="rep rep--key"><div class="qui">AMÉLIE</div><div>C'est raisonnable. Le trois décembre, alors.</div></div><div class="rep rep--key"><div class="qui">MARC-OLIVIER</div><div>Une dernière chose, et j'y tiens : que quelqu'un lui envoie le compte rendu de cette rencontre par écrit. On a dit quatre dates en une heure.</div></div></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Qui peut quoi, autour de la table</h2><table><thead><tr><th>La personne</th><th>Ce qu'elle peut</th></tr></thead><tbody><tr><td class="cle">Le conseiller</td><td>explique, calcule, propose — il n'admet personne</td></tr><tr><td class="cle">La responsable</td><td>tient le calendrier et décide de ce que le centre accepte</td></tr><tr><td class="cle">L'enseignant</td><td>dit où en est l'élève : son avis pèse, il ne tranche pas</td></tr><tr><td class="cle">L'élève</td><td>apporte ses documents, pose ses conditions, s'engage sur des dates</td></tr></tbody></table><div class="note">Confondre une proposition et une règle, c'est repartir en croyant qu'une chose est réglée alors qu'elle a seulement été souhaitée.</div></section><section class="bloc regle"><div class="lbl">Écoutez le verbe, pas le ton</div><p class="r">« Je propose » n'engage rien ; « j'exige » engage l'établissement ; « c'est noté » veut dire qu'une chose vient d'entrer au dossier.</p><p class="pr">Tout le monde parle poliment et sur le même ton. Ce sont les verbes qui portent le pouvoir : je vous explique, je vous propose, j'aimerais que, je veux que, aucun délai n'est accordé, c'est noté.</p></section><section class="bloc card"><div class="lbl">Vocabulaire</div><h2 class="t">Les trois mots de la rencontre</h2><table class="voc"><tbody><tr><td class="mot">une rencontre de suivi</td><td class="def">Un rendez-vous où plusieurs personnes font le point sur le dossier d'un seul élève.</td></tr><tr><td class="mot">un plan de formation</td><td class="def">L'ordre écrit des cours à suivre, avec le temps prévu et les dates à respecter.</td></tr><tr><td class="mot">un compte rendu</td><td class="def">Le texte court qui rapporte ce qui a été dit et décidé pendant une rencontre.</td></tr></tbody></table></section><section class="bloc card"><div class="lbl">Compréhension</div><h2 class="t">Vrai ou faux ?</h2><p class="consigne">Répondez d'après la rencontre du 14 novembre.</p><ol class="ex"><li><span class="q">Pascal commence en résumant le dossier en trois phrases.</span><span class="ligne ligne--court"></span></li><li><span class="q">Amélie annonce qu'aucun délai n'est accordé après le 6 février.</span><span class="ligne ligne--court"></span></li><li><span class="q">Selon Marc-Olivier, c'est la langue qui arrête Bintou.</span><span class="ligne"></span></li><li><span class="q">Bintou accepte de visiter le laboratoire avant l'épreuve.</span><span class="ligne"></span></li><li><span class="q">C'est Marc-Olivier qui demande un compte rendu écrit.</span><span class="ligne ligne--court"></span></li><li><span class="q">La rencontre se termine sans qu'aucune date soit fixée.</span><span class="ligne"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Qui, dans cette rencontre, peut vraiment changer quelque chose ?</p><ul><li>Nomme une personne et écris la phrase qui te l'a fait comprendre.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Qui décide quoi, autour d'une table</h2><section class="bloc card ml"><h3>Quatre personnes parlent, une seule décide</h3><p class="mp">Dans une rencontre scolaire, tout le monde parle sur le même ton et avec les mêmes politesses. Rien, dans la voix, ne dit qui a le pouvoir. C'est dans les verbes que ça se voit : l'un dit « je propose », l'autre « j'exige », un troisième « je constate ». Confondre les trois, c'est repartir en croyant qu'une chose est réglée alors qu'elle a seulement été souhaitée.</p><div class="note">Le programme du niveau 6 demande de « saisir les rapports entre les interlocutrices ou les interlocuteurs ». C'est une compétence d'écoute, et elle ne s'exerce nulle part ailleurs.</div></section><section class="bloc card ml"><h3>Les verbes de celui qui explique</h3><p class="mp">Le conseiller d'orientation n'a aucun pouvoir de décision, et c'est très bien ainsi : il peut donc tout vous dire.</p><table class="ana"><tr><td>Ce qu'il dit</td><td class="">je vous explique · je vous propose · je vous suggère · voici les trois voies</td></tr><tr><td>Ce que ça vaut</td><td class="cle">une information juste, et un chemin — pas une place</td></tr><tr><td>Ce qu'il ne dira jamais</td><td class="">« Vous êtes admise. » Il n'en a pas le droit.</td></tr></table><p class="dit"><span class="k">On dit</span> Je vous explique les trois voies. Je vous propose de commencer par le test.</p><div class="note">C'est la personne à qui poser toutes ses questions, y compris celles qui font peur : rien de ce que vous lui direz ne peut vous coûter une place.</div></section><section class="bloc card ml"><h3>Les verbes de celle qui décide</h3><p class="mp">La responsable de l'admission tient le calendrier. Ses phrases engagent l'établissement.</p><table class="ana"><tr><td>Ce qu'elle dit</td><td class="">je veux que · j'exige que · aucun délai n'est accordé · c'est noté</td></tr><tr><td>Ce que ça vaut</td><td class="cle">une règle qui s'appliquera, même si elle vous déplaît</td></tr><tr><td>Comment lui parler</td><td class="">en posant des conditions claires, jamais en demandant une faveur</td></tr></table><p class="dit"><span class="k">On dit</span> Aucun délai n'est accordé après le 6 février. C'est noté.</p><div class="note">Quand elle dit « c'est noté », quelque chose vient d'entrer dans un dossier. Ce sont les deux mots les plus importants d'une rencontre.</div></section><section class="bloc card ml"><h3>Les verbes de celui qui témoigne</h3><p class="mp">L'enseignant ne décide de rien, mais son avis pèse — parce qu'il vous voit trois fois par semaine.</p><table class="ana"><tr><td>Ce qu'il dit</td><td class="">je constate · je n'ai aucune inquiétude · elle lit mieux que…</td></tr><tr><td>Ce que ça vaut</td><td class="cle">un fait observé, qui appuie ou qui nuance</td></tr><tr><td>Pourquoi l'amener</td><td class="">une heure d'entretien ne remplace pas six mois d'observation</td></tr></table><p class="dit"><span class="k">On dit</span> Sur le français, je n'ai aucune inquiétude. Elle lit des textes officiels depuis septembre.</p><div class="note">« Si je peux me permettre » est sa formule d'entrée : il demande la parole parce qu'il n'est pas là pour trancher.</div></section><section class="bloc card ml"><h3>Six phrases, et ce qu'elles engagent vraiment</h3><p class="mp">À gauche ce qui se dit, à droite ce que ça vaut.</p><table class="ex2"><tr><td>Je vous propose de commencer par le test.</td><td>Un conseil. Rien n'est réservé pour autant.</td></tr><tr><td>Aucun délai n'est accordé après cette date.</td><td>Une règle. Elle s'appliquera telle quelle.</td></tr><tr><td>Sur le français, je n'ai aucune inquiétude.</td><td>Un témoignage. Il appuie, il ne décide pas.</td></tr><tr><td>C'est noté.</td><td>Quelque chose vient d'entrer au dossier.</td></tr><tr><td>J'aimerais que vous visitiez le laboratoire.</td><td>Un souhait. Vous pouvez proposer une autre date.</td></tr><tr><td>Je le déposerai la semaine où je le reçois.</td><td>Un engagement — le vôtre. Tenez-le.</td></tr></table></section></section></div>
+<footer><span>D1 · Choisir la suite</span><span>Fiche élève</span></footer>
+</body>
+</html>

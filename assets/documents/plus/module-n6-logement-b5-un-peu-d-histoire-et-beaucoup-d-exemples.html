@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B5 · Un peu d'histoire, et beaucoup d'exemples — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+.plus-papier ol.check li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance B5 · Module 8 · 75 minutes</div>
+    <h1>Un peu d'histoire, et beaucoup d'exemples</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Un temps qu'on lit sans jamais l'écrire, et quatre familles de mots qui préviennent le lecteur de ce qui vient.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>reconnaître un passé simple à la troisième personne ;</li><li>le traduire en passé composé pour comprendre ;</li><li>annoncer un exemple et annoncer un avis ;</li><li>rapporter une règle sans se porter garant.</li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Le passé simple à la troisième personne</h2><table><thead><tr><th>La terminaison</th><th>Les verbes</th></tr></thead><tbody><tr><td class="cle">-a, -èrent</td><td>il adopta, ils adoptèrent</td></tr><tr><td class="cle">-it, -irent</td><td>il finit, ils finirent</td></tr><tr><td class="cle">-ut, -urent</td><td>il reçut, ils reçurent</td></tr><tr><td class="cle">irréguliers</td><td>il fut, il eut, il fit</td></tr></tbody></table><div class="note">Au pluriel, le groupe -rent se voit de loin.</div></section><section class="bloc card"><div class="lbl">Pratique</div><h2 class="t">Dites-le comme on le dirait</h2><p class="consigne">Traduisez en passé composé.</p><ol class="ex"><li><span class="q">Le législateur adopta une loi.</span><span class="ligne ligne--court"></span></li><li><span class="q">La Régie du logement fut créée en 1980.</span><span class="ligne ligne--court"></span></li><li><span class="q">Elle devint le Tribunal administratif du logement.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le nouveau nom entra en vigueur en 2020.</span><span class="ligne ligne--court"></span></li><li><span class="q">Farida lut la page trois fois.</span><span class="ligne ligne--court"></span></li><li><span class="q">Elle prit un crayon et nota les dates.</span><span class="ligne"></span></li></ol></section><section class="bloc regle"><div class="lbl">Un passé simple se lit, ne s'écrit pas</div><p class="r">Dans un avis, dans un courriel, c'est le passé composé.</p><p class="pr">Le passé simple survit à l'écrit : les romans, les contes, les notices historiques, les encadrés « un peu d'histoire » des sites officiels. Un courriel au passé simple ne fait pas sérieux : il fait bizarre. Devant une forme courte qui vous étonne, essayez le passé composé — si la phrase tient, c'était un passé simple.</p></section><section class="bloc"><div class="lbl">Connecteurs</div><h2 class="t">Quatre familles, pour un dossier</h2><div class="grid"><div class="card"><h3>Annoncer un exemple</h3><p>par exemple, notamment, entre autres, ainsi. Ils préviennent : ce qui suit n'est pas une règle nouvelle, c'est un cas de la règle d'avant.</p></div><div class="card"><h3>Annoncer un avis</h3><p>à mon avis, selon moi, pour ma part. Ils disent : ce qui suit n'est plus le texte, c'est moi. Sans eux, un avis passe pour une affirmation de droit.</p></div><div class="card"><h3>Rapporter une source</h3><p>selon la page, d'après monsieur Tardif. On rapporte sans se porter garant — exactement ce qu'il faut faire d'une règle qu'on vient de lire.</p></div><div class="card"><h3>Opposer deux choses vraies</h3><p>en revanche, par contre, cependant, toutefois. Le cas le plus fréquent d'un dossier : les deux phrases sont vraies et tirent en sens contraires.</p></div></div></section><section class="bloc card"><div class="lbl">Pratique</div><h2 class="t">Quel connecteur ?</h2><p class="consigne">Complétez avec un mot ou une expression de la bonne famille.</p><ol class="ex"><li><span class="q">Le motif doit être sérieux. …, un défaut de paiement.</span><span class="ligne ligne--court"></span></li><li><span class="q">La page nomme plusieurs papiers, … l'accusé de réception.</span><span class="ligne ligne--court"></span></li><li><span class="q">…, ce refus ne tient pas debout.</span><span class="ligne ligne--court"></span></li><li><span class="q">… la page du Tribunal, le silence vaut consentement.</span><span class="ligne ligne--court"></span></li><li><span class="q">Il peut réclamer ses frais. …, il ne peut pas fixer un montant.</span><span class="ligne"></span></li><li><span class="q">Elle a gardé une copie. …, elle peut prouver la date.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Attention</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">« Ce refus n'est pas valable. »</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">« À mon avis, ce refus n'est pas valable. »</p></div></div><div class="note">La première phrase est une affirmation de droit, et vous n'êtes pas un tribunal. La seconde est une opinion, et personne ne peut vous la reprocher. Trois mots de différence, et tout le ton du dossier change.</div></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Résumez le Défi 1 en trois phrases : ce que dit la page sur l'avis, le délai et le refus.</p><ul><li>Une phrase par point.</li><li>Employez au moins un connecteur.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Un temps qui se lit et ne se dit pas</h2><section class="bloc card ml"><h3>Un temps qu'on rencontre et qu'on n'emploie pas</h3><p class="mp">Personne, au Québec, ne dit « je pris le bail » ou « il fut créé ». Le passé simple ne se parle plus depuis longtemps. Il survit à l'écrit : dans les romans, les contes, les notices historiques, les encadrés « un peu d'histoire » que les sites officiels aiment beaucoup. Vous le rencontrerez donc en lisant, et seulement en lisant.</p><div class="note">Le programme du niveau 6 ne demande que deux choses : « reconnaître les verbes courants à la 3e personne » et « associer le passé simple au passé composé ». Rien sur la production.</div></section><section class="bloc card ml"><h3>Ce qui change à la fin du verbe</h3><p class="mp">Ce sont les seules à connaître : un texte au passé simple raconte, donc il parle de « il », « elle », « ils ».</p><table class="ana"><tr><td>verbes en -er</td><td class="">il adopt<b>a</b> · ils adopt<b>èrent</b></td></tr><tr><td>verbes en -ir</td><td class="cle">il fin<b>it</b> · ils fin<b>irent</b></td></tr><tr><td>beaucoup d'autres</td><td class="">il reç<b>ut</b> · ils reç<b>urent</b> · il l<b>ut</b> · ils l<b>urent</b></td></tr><tr><td>venir et tenir</td><td class="">il v<b>int</b> · ils v<b>inrent</b> · il t<b>int</b> · ils t<b>inrent</b></td></tr></table><p class="dit"><span class="k">On dit</span> il adopta, il finit, il reçut, il vint</p><div class="note">Le pluriel se reconnaît toujours au groupe -rent à la fin. Si vous voyez -èrent, -irent, -urent, -inrent : c'est du passé simple, au pluriel.</div></section><section class="bloc card ml"><h3>Trois irréguliers qui sont partout</h3><p class="mp">Courts, étranges, et impossibles à confondre avec autre chose une fois qu'on les connaît.</p><table class="ana"><tr><td>être</td><td class="">il <b>fut</b> · ils <b>furent</b> — « il a été »</td></tr><tr><td>avoir</td><td class="cle">il <b>eut</b> · ils <b>eurent</b> — « il a eu »</td></tr><tr><td>faire</td><td class="">il <b>fit</b> · ils <b>firent</b> — « il a fait »</td></tr><tr><td>Le piège</td><td class="">« il fut » n'est pas un futur ; « il eut » n'est pas un présent</td></tr></table><p class="dit"><span class="k">On dit</span> il fut, il eut, il fit</p><div class="note">Ces trois-là suffisent à débloquer la plupart des phrases. « La Régie fut créée en 1980 » : « a été créée ».</div></section><section class="bloc card ml"><h3>L'encadré historique, traduit</h3><p class="mp">À gauche le texte écrit, à droite ce qu'on dirait.</p><table class="ex2"><tr><td>Le législateur adopta une loi.</td><td>Le législateur a adopté une loi.</td></tr><tr><td>La Régie du logement fut créée en 1980.</td><td>La Régie du logement a été créée en 1980.</td></tr><tr><td>Elle devint le Tribunal administratif du logement.</td><td>Elle est devenue le Tribunal administratif du logement.</td></tr><tr><td>Le nouveau nom entra en vigueur en 2020.</td><td>Le nouveau nom est entré en vigueur en 2020.</td></tr><tr><td>Les locataires eurent un recours nouveau.</td><td>Les locataires ont eu un recours nouveau.</td></tr><tr><td>Elle lut la page trois fois.</td><td>Elle a lu la page trois fois.</td></tr><tr><td>Elle prit un crayon.</td><td>Elle a pris un crayon.</td></tr><tr><td>Ils firent la démarche ensemble.</td><td>Ils ont fait la démarche ensemble.</td></tr></table></section><section class="bloc card ml"><h3>Deux malentendus qui reviennent</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">prendre « il fut » pour un futur</p><div class="k">Ce qui arrive</div><p class="ph">essayer le passé composé</p><p class="px">La ressemblance avec « futur » est une coïncidence. Devant une forme courte qui vous étonne dans un texte écrit, remplacez-la par un passé composé : si la phrase tient, c'était un passé simple.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">vouloir en employer pour faire sérieux</p><div class="k">Ce qui arrive</div><p class="ph">écrire au passé composé</p><p class="px">Un courriel au passé simple ne fait pas sérieux : il fait bizarre. Dans un avis, dans une lettre, dans un courriel, le passé composé est le seul temps juste.</p></div></div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Prévenir votre lecteur de ce qui vient</h2><section class="bloc card ml"><h3>Trois mots qui évitent un malentendu</h3><p class="mp">Sans connecteur, le lecteur ne sait pas si votre phrase suivante ajoute une règle, donne un exemple ou exprime votre opinion. Il le devine, souvent mal. « Par exemple » et « à mon avis » coûtent deux mots et retirent tout le risque. Dans un dossier de logement, ce n'est pas un raffinement : c'est ce qui empêche votre locateur de croire que vous inventez la loi.</p><div class="note">Le programme demande deux familles au niveau 6 : les connecteurs d'exemplification et d'illustration, et les connecteurs de point de vue.</div></section><section class="bloc card ml"><h3>Annoncer un exemple</h3><p class="mp">Ils préviennent : ce qui suit n'est pas une règle nouvelle, c'est un cas de la règle précédente.</p><table class="ana"><tr><td>par exemple</td><td class="">le plus simple, et jamais déplacé</td></tr><tr><td>notamment</td><td class="cle">quand vous ne donnez qu'un cas parmi plusieurs</td></tr><tr><td>entre autres</td><td class="">même emploi, un peu plus parlé</td></tr><tr><td>ainsi</td><td class="">plus soutenu, en tête de phrase : « Ainsi, un défaut de paiement… »</td></tr></table><p class="dit"><span class="k">On dit</span> par exemple, notamment, entre autres, ainsi</p><div class="note">Sans eux, votre exemple passe pour une deuxième règle — et votre interlocuteur croira que vous en ajoutez.</div></section><section class="bloc card ml"><h3>Annoncer un point de vue</h3><p class="mp">Ils disent : ce qui suit n'est plus le texte, c'est moi.</p><table class="ana"><tr><td>à mon avis</td><td class="">le plus courant, en parlant comme en écrivant</td></tr><tr><td>selon moi</td><td class="cle">même chose, un peu plus ferme</td></tr><tr><td>pour ma part</td><td class="">quand d'autres avis viennent d'être exposés</td></tr><tr><td>personnellement</td><td class="">à garder pour l'oral : à l'écrit, il alourdit</td></tr></table><p class="dit"><span class="k">On dit</span> à mon avis, selon moi, pour ma part, personnellement</p><div class="note">Dans une lettre à un locateur, un avis annoncé se discute ; un avis non annoncé passe pour une affirmation de droit, et il sera contredit.</div></section><section class="bloc card ml"><h3>Rapporter, opposer, résumer</h3><p class="mp">Trois autres familles, plus rares mais indispensables dans un dossier.</p><table class="ana"><tr><td>rapporter</td><td class=""><b>selon</b> la page du Tribunal · <b>d'après</b> monsieur Tardif</td></tr><tr><td>opposer</td><td class="cle"><b>en revanche</b> · <b>par contre</b> · <b>cependant</b> · <b>toutefois</b></td></tr><tr><td>résumer</td><td class=""><b>autrement dit</b> · <b>bref</b> · <b>en somme</b></td></tr><tr><td>conclure</td><td class=""><b>ainsi</b> · <b>de cette façon</b> · <b>donc</b></td></tr></table><p class="dit"><span class="k">On dit</span> selon, d'après, en revanche, autrement dit</p><div class="note">« Selon » vous met à l'abri : vous rapportez sans vous porter garant. C'est exactement ce qu'il faut faire d'une règle qu'on vient de lire sur un site.</div></section><section class="bloc card ml"><h3>La même phrase, avec et sans</h3><p class="mp">À gauche ce qui prête à confusion, à droite ce qui ne s'y prête plus.</p><table class="ex2"><tr><td>Le motif doit être sérieux. Un défaut de paiement.</td><td>Le motif doit être sérieux. Par exemple, un défaut de paiement.</td></tr><tr><td>Ce refus ne tient pas.</td><td>À mon avis, ce refus ne tient pas.</td></tr><tr><td>Le silence vaut consentement.</td><td>Selon la page du Tribunal, le silence vaut consentement.</td></tr><tr><td>Il peut réclamer ses frais. Il ne peut pas fixer un montant.</td><td>Il peut réclamer ses frais. En revanche, il ne peut pas fixer un montant.</td></tr><tr><td>J'ai lu, j'ai appelé, j'ai écrit.</td><td>J'ai lu, j'ai appelé, j'ai écrit : bref, j'ai suivi les étapes.</td></tr><tr><td>J'ai gardé une copie. Je peux prouver la date.</td><td>J'ai gardé une copie. Ainsi, je peux prouver la date.</td></tr></table></section><section class="bloc card ml"><h3>Deux excès à éviter</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">mettre un connecteur à chaque phrase</p><div class="k">Ce qui arrive</div><p class="ph">un par idée, pas plus</p><p class="px">Un texte saturé de « donc », « ainsi », « en effet » devient illisible. Le connecteur sert quand le lien n'est pas évident ; quand il l'est, il alourdit.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">donner son avis sans le dire</p><div class="k">Ce qui arrive</div><p class="ph">annoncer d'un seul mot</p><p class="px">« Ce refus n'est pas valable » est une affirmation de droit, et vous n'êtes pas un tribunal. « À mon avis, ce refus n'est pas valable » est une opinion, et personne ne peut vous la reprocher.</p></div></div></section></section></div>
+<footer><span>B5 · Six mois ailleurs</span><span>Fiche élève</span></footer>
+</body>
+</html>

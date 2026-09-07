@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C1 · Deux papiers sur la table — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+.plus-papier ol.check li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance C1 · Module 9 · 75 minutes</div>
+    <h1>Deux papiers sur la table</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Le rapport décrit ce qui est ; la soumission décrit ce qui sera fait. Ils ne se contredisent pas : ils ne font pas le même travail.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>dire lequel des deux papiers porte quel renseignement ;</li><li>nommer les mots des papiers du chantier ;</li><li>trouver la section des limites d'un rapport ;</li><li>trouver la ligne des exclusions d'une soumission.</li></ol></section><section class="bloc card"><div class="lbl">Dialogue · 1 de 3</div><h2 class="t">Deux papiers, deux métiers</h2><p class="consigne">Écouter d'abord, diapositive masquée.</p><div class="rep rep--key"><div class="qui">DOÏNA</div><div>J'ai votre rapport devant moi et la soumission de monsieur Trudelle à côté. Je n'arrive pas à les faire concorder.</div></div><div class="rep rep--key"><div class="qui">KETTLY</div><div>C'est normal, et c'est même sain. Ces deux papiers ne servent pas à la même chose. Le mien décrit ce qui est ; le sien décrit ce qui sera fait.</div></div><div class="rep rep--key"><div class="qui">DOÏNA</div><div>Il y a une section que je ne comprends pas du tout, à la page deux. Elle s'appelle « Historique du bâtiment ».</div></div><div class="rep rep--key"><div class="qui">KETTLY</div><div>Celle-là, je la rédige au passé des documents, parce que je recopie ce que disent les archives de la ville.</div></div></section><section class="bloc card"><div class="lbl">Dialogue · 2 de 3</div><h2 class="t">Dix-neuf pour cent</h2><div class="rep rep--key"><div class="qui">DOÏNA</div><div>Vous écrivez : « Le mur nord, où la fissure a été relevée, présente un taux d'humidité de dix-neuf pour cent. » Dix-neuf, c'est beaucoup ?</div></div><div class="rep rep--key"><div class="qui">KETTLY</div><div>C'est trop pour refermer un mur par-dessus. En bas de quinze, je vous dirais d'y aller. À dix-neuf, il faut que vous laissiez sécher.</div></div><div class="rep rep--key"><div class="qui">DOÏNA</div><div>Monsieur Trudelle m'a dit la même chose. Trois ou quatre semaines.</div></div><div class="rep rep--key"><div class="qui">KETTLY</div><div>Alors vous avez deux avis qui concordent. Notez-le : c'est rare, et ça vaut la peine d'être noté.</div></div></section><section class="bloc card"><div class="lbl">Dialogue · 3 de 3</div><h2 class="t">Pourquoi écrire ce qu'on ne fait pas</h2><div class="rep rep--key"><div class="qui">DOÏNA</div><div>Sa soumission a une colonne « exclusions ». Pourquoi une entreprise écrirait-elle ce qu'elle ne fait pas ?</div></div><div class="rep rep--key"><div class="qui">KETTLY</div><div>Parce que c'est là que se trouvent les mauvaises surprises. Lisez-moi les exclusions.</div></div><div class="rep rep--key"><div class="qui">DOÏNA</div><div>« Le permis, la peinture, les luminaires, la disposition des matériaux, et tout travail découlant d'une condition non visible au moment de la visite. »</div></div><div class="rep rep--key"><div class="qui">KETTLY</div><div>Arrêtez-vous sur la dernière. Si on ouvre le plancher et qu'on trouve quelque chose que personne ne pouvait voir, ce n'est pas dans le prix.</div></div></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Les mots des papiers</h2><table><thead><tr><th>Le mot</th><th>Ce que c'est</th></tr></thead><tbody><tr><td class="cle">le rapport</td><td>un document qui décrit l'état réel, sans prix</td></tr><tr><td class="cle">le taux</td><td>un chiffre mesuré, en pourcentage</td></tr><tr><td class="cle">les exclusions</td><td>ce qui n'est pas compris dans le prix</td></tr><tr><td class="cle">l'échéancier</td><td>le calendrier des travaux, séchage compris</td></tr></tbody></table><div class="note">Deux de ces quatre mots décident de la facture finale.</div></section><section class="bloc regle"><div class="lbl">Savoir dans lequel des deux chercher</div><p class="r">Un état est dans le rapport ; une intention est dans la soumission.</p><p class="pr">Chercher un prix dans un rapport, c'est perdre dix minutes : il n'en donne pas, exprès. Croire une soumission sur l'état d'un mur, c'est plus grave : elle décrit ce qu'elle fera, pas ce qui est. Quand les deux papiers ne s'accordent pas sur l'état du bâtiment, c'est le rapport qui l'emporte.</p></section><section class="bloc card"><div class="lbl">Pratique</div><h2 class="t">Dans lequel des deux ?</h2><p class="consigne">Dites où se trouve chaque renseignement, et à quel endroit.</p><ol class="ex"><li><span class="q">le taux d'humidité du mur nord</span><span class="ligne ligne--court"></span></li><li><span class="q">le montant à verser à la signature</span><span class="ligne"></span></li><li><span class="q">l'année de construction</span><span class="ligne ligne--court"></span></li><li><span class="q">ce qui n'est pas compris dans le prix</span><span class="ligne"></span></li><li><span class="q">ce que l'inspectrice n'a pas pu voir</span><span class="ligne ligne--court"></span></li><li><span class="q">la durée de validité du prix</span><span class="ligne"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Quel document as-tu déjà reçu sans savoir ce qu'il fallait y chercher ?</p><ul><li>Un bail, une assurance, un avis de la ville, un relevé.</li><li>Dis ce que tu aurais voulu y trouver.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Deux papiers, deux métiers</h2><section class="bloc card ml"><h3>Le même chantier, décrit deux fois</h3><p class="mp">Sur la table de Doïna, deux documents parlent de la même maison la même semaine, et ils ne se contredisent pas : ils ne font pas le même travail. Le rapport décrit ce qui est ; la soumission décrit ce qui sera fait. Confondre les deux, c'est aller chercher un prix dans le premier et une vérité dans le second — et n'en trouver ni dans l'un ni dans l'autre.</p><div class="note">Savoir d'avance ce qu'un papier va donner, c'est déjà la moitié de la lecture. C'est le geste que le module installe.</div></section><section class="bloc card ml"><h3>Le rapport d'inspection</h3><p class="mp">Écrit par quelqu'un qui ne fera pas les travaux, et payé par vous.</p><table class="ana"><tr><td>son verbe</td><td class="">constater : il dit ce qu'il a vu, à une date, avec des chiffres</td></tr><tr><td>sa mise en page</td><td class="cle">des sections numérotées, une constatation par paragraphe, des photos</td></tr><tr><td>sa langue</td><td class="">impersonnelle, sans « je » ; parfois du passé simple dans l'historique</td></tr><tr><td>sa partie décisive</td><td class="">les limites : ce qui n'a pas pu être vu</td></tr></table><p class="dit"><span class="k">On dit</span> constater, des sections numérotées, une langue sans je, les limites</p><div class="note">C'est le seul des deux papiers qui n'a rien à vendre. Voilà pourquoi il pèse lourd le jour d'un désaccord.</div></section><section class="bloc card ml"><h3>La soumission</h3><p class="mp">Écrite par celui qui exécutera, et gratuite — jusqu'à ce qu'on signe.</p><table class="ana"><tr><td>son verbe</td><td class="">proposer : elle dit ce qu'elle fera, et pour combien</td></tr><tr><td>sa mise en page</td><td class="cle">des postes numérotés, un prix par ligne, un total, un échéancier</td></tr><tr><td>sa durée de vie</td><td class="">trente jours, en général, et la date est écrite en haut</td></tr><tr><td>sa partie décisive</td><td class="">les exclusions : ce qui n'est pas dans le prix</td></tr></table><p class="dit"><span class="k">On dit</span> proposer, un prix par ligne, trente jours, les exclusions</p><div class="note">Les exclusions sont écrites en petit, en bas, après le total. Ce n'est pas un hasard : c'est là que la facture finale se joue.</div></section><section class="bloc card ml"><h3>Où chercher ce renseignement</h3><p class="mp">Choisissez ce que vous cherchez, puis voyez dans quel papier aller.</p><table class="labo"><thead><tr><th>Vous cherchez… · Lequel ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">un chiffre sur l'état du bâtiment + le premier exemple</td><td>le taux d'humidité du mur nord<span class="tags">le taux d'humidité du mur nord</span></td><td>le rapport, section 2, dans la phrase chiffrée</td></tr><tr><td class="cle">un chiffre sur l'état du bâtiment + le second</td><td>l'année de construction de la maison<span class="tags">l'année de construction de la maison</span></td><td>le rapport, section 1, écrite au passé des récits</td></tr><tr><td class="cle">un montant + le premier exemple</td><td>l'acompte à verser à la signature<span class="tags">l'acompte à verser à la signature</span></td><td>la soumission, juste sous le total</td></tr><tr><td class="cle">un montant + le second</td><td>le prix du séchage assisté<span class="tags">le prix du séchage assisté</span></td><td>la soumission, poste 3 des postes inclus</td></tr><tr><td class="cle">une date + le premier exemple</td><td>la date de l'inspection<span class="tags">la date de l'inspection</span></td><td>le rapport, tout en haut, avec le numéro de dossier</td></tr><tr><td class="cle">une date + le second</td><td>la date jusqu'à laquelle le prix tient<span class="tags">la date jusqu'à laquelle le prix tient</span></td><td>la soumission, première ligne : valide trente jours</td></tr></tbody></table><div class="note">Refaites le laboratoire en vous demandant chaque fois : est-ce que je cherche un état, ou une intention ? L'état est dans le rapport, l'intention dans la soumission.</div></section><section class="bloc card ml"><h3>Six renseignements, deux papiers</h3><table class="ex2"><tr><td>le taux d'humidité du mur nord</td><td>le rapport, section 2</td></tr><tr><td>le montant à verser à la signature</td><td>la soumission, sous le total</td></tr><tr><td>l'année de construction</td><td>le rapport, section 1</td></tr><tr><td>ce qui n'est pas compris dans le prix</td><td>la soumission, tout en bas</td></tr><tr><td>ce que l'inspectrice n'a pas pu voir</td><td>le rapport, section 4</td></tr><tr><td>la durée de validité du prix</td><td>la soumission, première ligne</td></tr></table></section><section class="bloc card ml"><h3>Deux confusions de table de cuisine</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">chercher un prix dans le rapport</p><div class="k">Ce qui arrive</div><p class="ph">le chercher dans la soumission</p><p class="px">Un rapport qui chiffrerait des travaux se placerait du côté de celui qui les fait. Il n'en donne pas, exprès.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">croire la soumission sur l'état du bâtiment</p><div class="k">Ce qui arrive</div><p class="ph">croire le rapport</p><p class="px">Une soumission décrit ce qu'elle fera, pas ce qui est. Si les deux papiers ne disent pas la même chose sur l'état d'un mur, c'est le rapport qui l'emporte.</p></div></div></section><section class="bloc card ml"><h3>Trois questions</h3><ol class="check"><li><span class="q">Le mot « exclusions » appartient…</span><ul class="opts"><li>au rapport</li><li>à la soumission</li></ul></li><li><span class="q">Le mot « limites » appartient…</span><ul class="opts"><li>au rapport</li><li>à la soumission</li></ul></li><li><span class="q">Combien de temps un prix de soumission tient-il, en général ?</span><ul class="opts"><li>trente jours</li><li>toujours</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> à la soumission — C'est la partie la plus utile d'une soumission, et la plus vite sautée. · <b>2.</b> au rapport — Ce que l'inspection n'a pas pu voir. · <b>3.</b> trente jours — Et la date de départ est écrite en haut.</div></section></section></div>
+<footer><span>C1 · Faire faire des travaux</span><span>Fiche élève</span></footer>
+</body>
+</html>

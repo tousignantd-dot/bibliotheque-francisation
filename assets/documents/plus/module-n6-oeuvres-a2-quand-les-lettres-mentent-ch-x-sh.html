@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A2 · Quand les lettres mentent : ch, x, sh — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+.plus-papier ol.check li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance A2 · Module 6 · 75 minutes</div>
+    <h1>Quand les lettres mentent : ch, x, sh</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Chronologie, orchestre, flash-back, schéma : le vocabulaire du cinéma est plein de mots dont l'écriture trompe l'oreille. Trois cas, et ils se comptent sur les doigts.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>entendre le son k derrière les lettres ch dans les mots savants ;</li><li>entendre le son s derrière la lettre x dans les nombres ;</li><li>entendre le son ch derrière les lettres sh et sch ;</li><li>retrouver un mot au dictionnaire quand on ne l'a qu'entendu.</li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Trois cas, et rien de plus</h2><table><thead><tr><th>Les lettres</th><th>Ce qu'on entend, et où</th></tr></thead><tbody><tr><td class="cle">ch</td><td>le son k, dans les mots savants : chronologie, orchestre, chorale</td></tr><tr><td class="cle">x</td><td>le son s, dans quelques nombres : dix, six, soixante</td></tr><tr><td class="cle">sh, sch</td><td>le son ch, dans les mots empruntés : flash-back, schéma</td></tr><tr><td class="cle">ch, ailleurs</td><td>le son ch normal : chercher, chaque, chose</td></tr></tbody></table><div class="note">La quatrième ligne est la règle ; les trois premières sont les exceptions.</div></section><section class="bloc regle"><div class="lbl">Les mots savants gardent leur k</div><p class="r">Presque tous les ch qui se disent k viennent du grec.</p><p class="pr">Chronologie, orchestre, chorale, chorégraphie, psychologie, technique : ce sont des mots d'école, de musique et de sciences. Ils sont peu nombreux et ils s'apprennent un par un — mais ils reviennent sans arrêt dès qu'on parle d'art.</p></section><section class="bloc regle"><div class="lbl">Le x de dix, six et soixante</div><p class="r">Ce x se dit comme un s, et il change encore selon ce qui suit.</p><p class="pr">Dix, tout seul, se dit « dis ». Dix minutes se dit « di minutes ». Dix ans se dit « diz ans ». Trois formes pour un seul mot, et personne ne vous reprendra si vous vous trompez : ce qui compte est de reconnaître les trois à l'écoute.</p></section><section class="bloc card"><div class="lbl">Phonétique</div><h2 class="t">Quel son entends-tu ?</h2><p class="consigne">Écoutez chaque mot, puis écrivez k, s ou ch.</p><ol class="ex"><li><span class="q">la chronologie</span><span class="ligne ligne--court"></span></li><li><span class="q">un orchestre</span><span class="ligne ligne--court"></span></li><li><span class="q">une chorale</span><span class="ligne ligne--court"></span></li><li><span class="q">dix</span><span class="ligne ligne--court"></span></li><li><span class="q">soixante-dix</span><span class="ligne ligne--court"></span></li><li><span class="q">un flash-back</span><span class="ligne ligne--court"></span></li><li><span class="q">un schéma</span><span class="ligne ligne--court"></span></li><li><span class="q">une chorégraphie</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Chercher au dictionnaire le mot tel qu'on l'a entendu</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">J'ai entendu « cronologie » : je cherche cronologie.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">J'ai entendu « cronologie » : j'essaie ch à la place du k.</p></div></div><div class="note">C'est la conséquence pratique de toute la séance. Un mot entendu qui ne se trouve pas au dictionnaire n'est presque jamais un mot rare : c'est presque toujours un mot dont on a deviné l'écriture. Deux essais suffisent : ch à la place du k, x à la place du s.</div></section><section class="bloc"><div class="lbl">Le réflexe</div><h2 class="t">Un mot entendu qui ne se trouve pas</h2><div class="grid"><div class="card"><h3>Essaie ch</h3><p>le son k dans un mot savant s'écrit souvent ch : chronologie.</p></div><div class="card"><h3>Essaie x</h3><p>le son s dans un nombre s'écrit souvent x : dix, six, soixante.</p></div><div class="card"><h3>Essaie sh ou sch</h3><p>le son ch dans un mot court venu d'ailleurs : flash-back, schéma.</p></div><div class="card"><h3>Sinon, demande</h3><p>trois essais suffisent ; au-delà, c'est plus rapide de demander.</p></div></div></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écris un mot que tu as déjà entendu sans savoir l'écrire.</p><ul><li>Un seul mot suffit.</li><li>On les cherchera ensemble à la prochaine séance.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Quand les lettres mentent : ch, x, sh</h2><section class="bloc card ml"><h3>Trois cas où l'écriture trompe l'oreille</h3><p class="mp">Le cinéma est plein de mots savants — chronologie, orchestre, chorégraphie — et de mots empruntés — flash-back, schéma. Tous s'écrivent avec des lettres qui ne se disent pas comme on croit. Ce n'est pas grave dans la vie courante ; ça devient gênant le jour où l'on entend un mot pour la première fois, où l'on va le chercher dans un dictionnaire, et où l'on ne le trouve pas, parce qu'on l'a écrit comme on l'a entendu.</p><div class="note">Le programme du niveau 6 nomme ces trois cas et rien d'autre : « ch » qui se dit comme un k, « x » qui se dit comme un s, et « sh » ou « sch » qui se disent comme un ch.</div></section><section class="bloc card ml"><h3>Cas 1 — « ch » qui se dit comme un K</h3><p class="mp">Presque toujours dans des mots venus du grec. Ce sont des mots savants, et le vocabulaire des arts en est plein.</p><table class="ana"><tr><td>On écrit</td><td class="">la <b>ch</b>ronologie · un or<b>ch</b>estre · une <b>ch</b>orale · une <b>ch</b>orégraphie</td></tr><tr><td>On entend</td><td class="cle">[k], comme dans « kilo »</td></tr><tr><td>Le repère</td><td class="">un mot savant, souvent avec « y », « ph » ou « rh » à côté</td></tr></table><p class="dit"><span class="k">On dit</span> la chronologie, un orchestre, une chorale, une chorégraphie</p><div class="note">Attention : « chercher », « chaque », « chose » gardent le son normal. Le K est l'exception, pas la règle — mais dans les mots du cinéma et de la musique, il revient sans arrêt.</div></section><section class="bloc card ml"><h3>Cas 2 — « x » qui se dit comme un S</h3><p class="mp">Dans quelques nombres et quelques noms de lieux, très fréquents dans une biographie remplie de dates.</p><table class="ana"><tr><td>On écrit</td><td class="">di<b>x</b> · si<b>x</b> · soi<b>x</b>ante · Bru<b>x</b>elles</td></tr><tr><td>On entend</td><td class="cle">[s], comme dans « dis »</td></tr><tr><td>Le piège du nombre</td><td class="">« dix » se dit [dis] tout seul, [di] devant un nom qui commence par une consonne, et [diz] devant une voyelle</td></tr></table><p class="dit"><span class="k">On dit</span> dix, six, soixante, Bruxelles</p><div class="note">Dix minutes se dit « di minutes ». Dix ans se dit « diz ans ». Dix, tout seul, se dit « dis ».</div></section><section class="bloc card ml"><h3>Cas 3 — « sh » et « sch » qui se disent comme un CH</h3><p class="mp">Des mots empruntés à l'anglais ou à l'allemand, et devenus courants dans le vocabulaire du cinéma.</p><table class="ana"><tr><td>On écrit</td><td class="">un fla<b>sh</b>-back · un <b>sch</b>éma · un <b>sh</b>érif</td></tr><tr><td>On entend</td><td class="cle">[ʃ], le son de « chat »</td></tr><tr><td>Le repère</td><td class="">un mot qui vient d'ailleurs, souvent court</td></tr></table><p class="dit"><span class="k">On dit</span> un flash-back, un schéma, un shérif</p><div class="note">« Un flash-back » est le mot anglais du retour en arrière. On l'entend beaucoup au ciné-club — et il se prononce à la française, avec le son de « chat ».</div></section><section class="bloc card ml"><h3>Écoutez, puis répétez</h3><p class="mp">Choisissez un cas et un exemple.</p><table class="labo"><thead><tr><th>Quelles lettres ? · Quel exemple ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">ch qui dit K + le premier</td><td>la chronologie<span class="tags">la chronologie</span></td><td>mot grec : « cro-no-lo-gie »</td></tr><tr><td class="cle">ch qui dit K + le second</td><td>un orchestre<span class="tags">un orchestre</span></td><td>« or-kestre », jamais « or-chestre »</td></tr><tr><td class="cle">x qui dit S + le premier</td><td>dix<span class="tags">dix</span></td><td>tout seul, on entend le S final</td></tr><tr><td class="cle">x qui dit S + le second</td><td>soixante<span class="tags">soixante</span></td><td>« soi-sante », jamais « soi-ksante »</td></tr><tr><td class="cle">sh, sch qui disent CH + le premier</td><td>un schéma<span class="tags">un schéma</span></td><td>trois lettres pour le son de « chat »</td></tr><tr><td class="cle">sh, sch qui disent CH + le second</td><td>un flash-back<span class="tags">un flash-back</span></td><td>venu de l'anglais, prononcé à la française</td></tr></tbody></table><div class="note">Écoutez deux fois avant de répéter. C'est l'oreille qu'on entraîne, pas la mémoire.</div></section><section class="bloc card ml"><h3>Huit mots du module</h3><p class="mp">À gauche ce qui est écrit, à droite ce qui se dit.</p><table class="ex2"><tr><td>la chronologie</td><td>« cro-no-lo-gie » — le ch fait k</td></tr><tr><td>un orchestre</td><td>« or-kestre » — le ch fait k</td></tr><tr><td>une chorale</td><td>« co-rale » — le ch fait k</td></tr><tr><td>une chorégraphie</td><td>« co-ré-gra-phie » — le ch fait k</td></tr><tr><td>dix minutes</td><td>« di minutes » — le x se tait devant une consonne</td></tr><tr><td>soixante-dix</td><td>« soi-sante-dis » — le x fait s</td></tr><tr><td>un schéma</td><td>« ché-ma » — sch fait ch</td></tr><tr><td>un flash-back</td><td>« flach-back » — sh fait ch</td></tr></table></section><section class="bloc card ml"><h3>Deux pièges, une consolation</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">chercher le mot avec la lettre entendue</p><div class="k">Ce qui arrive</div><p class="ph">chercher avec la lettre écrite</p><p class="px">Vous entendez « cronologie » et vous cherchez « cronologie » : rien. Quand un mot entendu ne se trouve pas, essayez « ch » à la place du k, et « x » à la place du s.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">prononcer chaque « ch » comme dans « chat »</p><div class="k">Ce qui arrive</div><p class="ph">reconnaître les mots savants</p><p class="px">« Orchestre » dit avec le son de « chat » ne se comprend pas du tout. Ces mots-là sont peu nombreux : ils s'apprennent un par un.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">s'inquiéter pour « dix »</p><div class="k">Ce qui arrive</div><p class="ph">les trois formes se comprennent</p><p class="px">Personne ne vous reprendra si vous dites « diz minutes ». Ce qui compte, c'est de reconnaître les trois formes à l'écoute, pas de les produire parfaitement.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">Dans « chronologie », les lettres « ch » se disent…</span><ul class="opts"><li>comme dans chat</li><li>comme un k</li></ul></li><li><span class="q">Dans « soixante », la lettre « x » se dit…</span><ul class="opts"><li>comme un s</li><li>comme un ks</li></ul></li><li><span class="q">Dans « un flash-back », les lettres « sh » se disent…</span><ul class="opts"><li>comme un s</li><li>comme dans chat</li></ul></li><li><span class="q">« Dix minutes » se prononce…</span><ul class="opts"><li>« di minutes »</li><li>« diss minutes »</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> comme un k — C'est un mot venu du grec : « cro-no-lo-gie ». · <b>2.</b> comme un s — « Soi-sante ». Même chose dans « dix » et « six ». · <b>3.</b> comme dans chat — C'est le son de « chat », même si le mot vient de l'anglais. · <b>4.</b> « di minutes » — Devant une consonne, le x de « dix » ne s'entend pas.</div></section></section></div>
+<footer><span>A2 · Un film, et ce qu'on en écrit</span><span>Fiche élève</span></footer>
+</body>
+</html>

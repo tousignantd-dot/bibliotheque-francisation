@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>D2 · Accorder un point, puis répondre — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+.plus-papier ol.check li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance D2 · Module 6 · 75 minutes</div>
+    <h1>Accorder un point, puis répondre</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Un avis qu'on peut discuter a trois marques : il s'annonce comme un avis, il accorde quelque chose à l'autre, et il s'appuie sur un moment précis.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>employer le subjonctif après il faut que, je doute que, il vaut mieux que ;</li><li>poser une hypothèse réaliste avec « si », sans futur après « si » ;</li><li>accorder un point avant de répondre ;</li><li>reconnaître une phrase qui ferme la discussion.</li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Les verbes qui demandent le subjonctif</h2><table><thead><tr><th>Le verbe introducteur</th><th>Ce qui suit</th></tr></thead><tbody><tr><td class="cle">il faut que</td><td>subjonctif : il faut qu'elle arrive</td></tr><tr><td class="cle">il vaut mieux que</td><td>subjonctif : il vaut mieux que tu voies</td></tr><tr><td class="cle">je doute que</td><td>subjonctif : je doute qu'il ait compris</td></tr><tr><td class="cle">je pense que</td><td>indicatif : je pense qu'elle est nécessaire</td></tr><tr><td class="cle">j'espère que</td><td>indicatif : j'espère qu'ils publieront</td></tr></tbody></table><div class="note">Les deux dernières lignes sont celles qu'on se trompe : penser et espérer ne le demandent pas.</div></section><section class="bloc regle"><div class="lbl">Comment se fabrique le subjonctif</div><p class="r">On part de la 3e personne du pluriel du présent, et on enlève la terminaison.</p><p class="pr">Ils viennent, que je vienne. Ils prennent, que tu prennes. Quatre irréguliers seulement : être, que je sois ; avoir, que j'aie ; aller, que j'aille ; faire, que je fasse. Pour la plupart des verbes en -er, personne n'entend la différence avec le présent.</p></section><section class="bloc regle"><div class="lbl">Jamais de futur après « si »</div><p class="r">Si + présent, puis présent ou futur. Si + passé composé, puis présent ou futur.</p><p class="pr">On n'écrit pas « si tu manqueras » : on écrit « si tu manques ». La conséquence, elle, peut être au futur : « si tu écris au journal, ils publieront ta lettre ». Attention au « si » qui n'est pas une condition : « je me demande si le journal publiera » — là, le futur est permis.</p></section><section class="bloc card"><div class="lbl">Grammaire</div><h2 class="t">Subjonctif ou indicatif ?</h2><p class="consigne">Complétez avec le verbe entre parenthèses.</p><ol class="ex"><li><span class="q">Il faut que la voisine ... (arriver) tard.</span><span class="ligne ligne--court"></span></li><li><span class="q">Je doute que le public ... (avoir) appris ces signaux.</span><span class="ligne ligne--court"></span></li><li><span class="q">Il vaut mieux que tu ... (voir) le film avant la critique.</span><span class="ligne ligne--court"></span></li><li><span class="q">Il faudrait qu'on ... (être) plus attentif au son.</span><span class="ligne ligne--court"></span></li><li><span class="q">Je pense que le personnage ... (être) nécessaire.</span><span class="ligne"></span></li><li><span class="q">Il faut que ce reproche ... (faire) réagir quelqu'un.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">Grammaire</div><h2 class="t">Posez la condition avec « si »</h2><p class="consigne">Attention au temps qui suit « si ».</p><ol class="ex"><li><span class="q">Si tu ... (manquer) le bruit de la mer, tu ne sais plus où tu es.</span><span class="ligne ligne--court"></span></li><li><span class="q">Si le public n' ... (avoir) jamais appris ces signaux, il ne peut pas les voir.</span><span class="ligne ligne--court"></span></li><li><span class="q">Si tu ... (lire) la critique avant, tu regarderas le film autrement.</span><span class="ligne ligne--court"></span></li><li><span class="q">Si on ... (rater) le signal une fois, on se perd pour vingt minutes.</span><span class="ligne ligne--court"></span></li><li><span class="q">Si Thérèse ... (écrire) au journal, ils publieront sa réponse.</span><span class="ligne ligne--court"></span></li><li><span class="q">Je me demande si le journal ... (publier) sa lettre.</span><span class="ligne"></span></li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Annoncer, accorder, nuancer</h2><table><thead><tr><th>L'intention</th><th>La formule</th></tr></thead><tbody><tr><td class="cle">annoncer un avis</td><td>à mon avis, pour ma part, je trouve que</td></tr><tr><td class="cle">accorder un point</td><td>c'est vrai que..., j'admets que..., mais</td></tr><tr><td class="cle">concéder</td><td>même si, bien que, quand même</td></tr><tr><td class="cle">mettre à distance</td><td>un film qu'on dit « ambitieux »</td></tr><tr><td class="cle">citer</td><td>il écrit : « mon vrai reproche est ailleurs »</td></tr></tbody></table><div class="note">« Bien que » demande le subjonctif ; « même si » demande l'indicatif.</div></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Contredire en bloc</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">Il a tort.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">Il a raison sur la lenteur, mais pas sur les signaux.</p></div></div><div class="note">Contredire en bloc oblige l'autre à tout défendre, et la discussion s'arrête. Accorder un point d'abord donne du poids à ce qui suit : celui qui vient d'être approuvé écoute la suite, celui qui vient d'être contredit prépare sa réponse.</div></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écris ton avis sur le film en deux phrases : un point accordé, un point défendu.</p><ul><li>Première phrase : « C'est vrai que... »</li><li>Deuxième phrase : « Mais, pour ma part... »</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Le subjonctif après un verbe introducteur</h2><section class="bloc card ml"><h3>Ce n'est pas un temps, c'est une conséquence</h3><p class="mp">On n'emploie pas le subjonctif parce qu'on veut : on l'emploie parce qu'un certain verbe, suivi de « que », l'oblige. Il faut que, je veux que, je doute que, il vaut mieux que. Le verbe commande, et le subjonctif suit. C'est pour ça qu'on l'apprend par la liste des verbes, jamais par le sens.</p><div class="note">Le programme du niveau 6 le dit ainsi : employer obligatoirement le subjonctif présent après quelques verbes introducteurs usuels + que.</div></section><section class="bloc card ml"><h3>Comment on le fabrique</h3><p class="mp">Une seule règle, et quatre irréguliers à savoir par cœur.</p><table class="ana"><tr><td>Le point de départ</td><td class="">la 3e personne du pluriel du présent : ils <b>viennent</b>, ils <b>prennent</b></td></tr><tr><td>On enlève -ent</td><td class="">que je vien<b>ne</b>, que tu prenn<b>es</b>, qu'elle arriv<b>e</b></td></tr><tr><td>Les quatre irréguliers</td><td class="cle">être → que je <b>sois</b> · avoir → que j'<b>aie</b> · aller → que j'<b>aille</b> · faire → que je <b>fasse</b></td></tr><tr><td>À l'oreille</td><td class="">pour beaucoup de verbes, le subjonctif se dit comme le présent : qu'elle arrive, elle arrive</td></tr></table><p class="dit"><span class="k">On dit</span> que je vienne, que tu prennes, que je sois, que j'aie, que j'aille, que je fasse</p><div class="note">C'est une bonne nouvelle : pour la majorité des verbes en -er, personne n'entend la différence. Le subjonctif ne s'entend vraiment que sur les quatre irréguliers.</div></section><section class="bloc card ml"><h3>Les verbes qui le demandent, et ceux qui trompent</h3><p class="mp">Cette liste-là est courte. Apprenez-la, et vous aurez fait quatre-vingts pour cent du travail.</p><table class="ana"><tr><td>Ils le demandent</td><td class="">il faut que · il vaut mieux que · je veux que · je souhaite que · je doute que</td></tr><tr><td>Ils ne le demandent pas</td><td class="">je pense que · je crois que · j'espère que · il paraît que</td></tr><tr><td>Le piège de la négation</td><td class="cle">je ne crois pas que… le demande, alors que je crois que… ne le demande pas</td></tr><tr><td>Ce qu'il ne dit jamais</td><td class="">le futur — « il faut qu'elle arrive » ne parle pas de demain</td></tr></table><p class="dit"><span class="k">On dit</span> il faut que, il vaut mieux que, je veux que, je doute que, je pense que, je crois que</p><div class="note">« J'espère que » ne demande pas le subjonctif, alors que « je souhaite que » le demande. C'est arbitraire, et il n'y a rien à comprendre : c'est à retenir.</div></section><section class="bloc card ml"><h3>Six phrases du module</h3><p class="mp">À gauche le verbe introducteur, à droite la phrase entière.</p><table class="ex2"><tr><td>il faut que</td><td>Il faut que la voisine arrive tard.</td></tr><tr><td>je doute que</td><td>Je doute que le public ait appris ces signaux.</td></tr><tr><td>il vaut mieux que</td><td>Il vaut mieux que tu voies le film avant de lire la critique.</td></tr><tr><td>il souhaite que</td><td>Bruno souhaite que Thérèse écrive au journal.</td></tr><tr><td>il faudrait qu'on</td><td>Il faudrait qu'on soit plus attentif au son.</td></tr><tr><td>je pense que</td><td>Je pense que le personnage est nécessaire. — pas de subjonctif</td></tr></table></section><section class="bloc card ml"><h3>Deux fautes fréquentes</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">« je pense qu'elle soit nécessaire »</p><div class="k">Ce qui arrive</div><p class="ph">« je pense qu'elle est nécessaire »</p><p class="px">« Penser que » et « croire que » ne demandent pas le subjonctif. C'est l'erreur la plus courante à ce niveau, et elle vient d'une bonne intention.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">« il faut qu'elle arrivera »</p><div class="k">Ce qui arrive</div><p class="ph">« il faut qu'elle arrive »</p><p class="px">Le subjonctif ne connaît pas le futur. « Il faut que » parle de ce qui est nécessaire, pas de demain.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">Après « il faut que », on emploie…</span><ul class="opts"><li>le subjonctif</li><li>le futur</li></ul></li><li><span class="q">Après « je pense que », on emploie…</span><ul class="opts"><li>le subjonctif</li><li>l'indicatif</li></ul></li><li><span class="q">« que je fasse » vient du verbe…</span><ul class="opts"><li>faire</li><li>falloir</li></ul></li><li><span class="q">On fabrique le subjonctif à partir de…</span><ul class="opts"><li>la 3e personne du pluriel du présent</li><li>l'infinitif</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> le subjonctif — Il faut qu'elle arrive, jamais « qu'elle arrivera ». · <b>2.</b> l'indicatif — Je pense qu'elle est nécessaire. · <b>3.</b> faire — C'est l'un des quatre irréguliers à retenir. · <b>4.</b> la 3e personne du pluriel du présent — Ils viennent → que je vienne.</div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Poser une condition avec « si »</h2><section class="bloc card ml"><h3>La conjonction qui permet de discuter sans se fâcher</h3><p class="mp">« Si on manque le signal une fois, on se perd pour vingt minutes. » Cette phrase dit exactement la même chose que « celui qui n'a pas compris n'a pas regardé », mais elle ne vise personne : elle pose une condition. C'est ce qui la rend discutable — et une opinion qu'on peut discuter vaut mieux qu'une opinion qui ferme la porte.</p><div class="note">Le programme demande deux choses : comprendre l'hypothèse réaliste sur un fait passé (si + passé composé) et employer l'hypothèse réaliste sur un fait présent ou à venir (si + présent).</div></section><section class="bloc card ml"><h3>Les deux formes réalistes</h3><p class="mp">Réaliste veut dire : ça peut arriver, ou c'est peut-être arrivé.</p><table class="ana"><tr><td>Sur le présent ou l'avenir</td><td class=""><b>si + présent</b>, puis présent ou futur — Si tu <b>manques</b> le signal, tu <b>te perds</b>.</td></tr><tr><td>Sur le passé</td><td class=""><b>si + passé composé</b>, puis présent ou futur — Si tu <b>as lu</b> la critique, tu <b>regardes</b> le film autrement.</td></tr><tr><td>Jamais de futur après « si »</td><td class="cle">on n'écrit pas « si tu manqueras »</td></tr><tr><td>Ce qui suit, lui, peut être au futur</td><td class="">Si tu écris au journal, ils <b>publieront</b> ta lettre.</td></tr></table><p class="dit"><span class="k">On dit</span> Si tu manques le signal, tu te perds. Si tu as lu la critique, tu regardes le film autrement.</p><div class="note">La faute « si + futur » est la plus fréquente de toutes, à tous les niveaux, et elle s'entend immédiatement.</div></section><section class="bloc card ml"><h3>Le « si » qui n'est pas une condition</h3><p class="mp">Le même mot introduit aussi une question rapportée — et là, le futur est permis.</p><table class="ana"><tr><td>Une condition</td><td class=""><b>Si</b> tu écris au journal, ils publieront ta lettre.</td></tr><tr><td>Une question rapportée</td><td class="">Je me demande <b>si</b> le journal publiera ma lettre.</td></tr><tr><td>Comment les distinguer</td><td class="cle">la question rapportée suit un verbe comme se demander, savoir, ignorer</td></tr><tr><td>Ce que ça change</td><td class="">dans la question rapportée, le futur est permis et souvent nécessaire</td></tr></table><p class="dit"><span class="k">On dit</span> Si tu écris au journal, ils publieront ta lettre. Je me demande si le journal publiera ma lettre.</p><div class="note">C'est le même mot et deux emplois sans rapport. Le verbe qui précède dit lequel.</div></section><section class="bloc card ml"><h3>Six hypothèses du module</h3><p class="mp">À gauche la condition, à droite la conséquence.</p><table class="ex2"><tr><td>Si tu manques le bruit de la mer</td><td>tu ne sais plus en quelle année tu es</td></tr><tr><td>Si le public n'a jamais appris ces signaux</td><td>il ne peut pas les reconnaître</td></tr><tr><td>Si tu lis la critique avant la projection</td><td>tu regarderas le film autrement</td></tr><tr><td>Si on rate le signal une seule fois</td><td>on se perd pour vingt minutes</td></tr><tr><td>Si Thérèse écrit au journal</td><td>ils publieront sa réponse</td></tr><tr><td>Je me demande si le journal</td><td>publiera sa lettre la semaine prochaine</td></tr></table></section><section class="bloc card ml"><h3>La faute à ne plus faire</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">« si tu manqueras le signal »</p><div class="k">Ce qui arrive</div><p class="ph">« si tu manques le signal »</p><p class="px">Jamais de futur après « si » quand il pose une condition. C'est la faute la plus fréquente et la plus audible.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">« si vous n'avez pas compris, c'est que vous n'avez pas regardé »</p><div class="k">Ce qui arrive</div><p class="ph">« si on les manque une fois, on se perd »</p><p class="px">La première vise la personne et ferme la discussion ; la seconde pose une condition et laisse répondre. Grammaticalement, les deux sont justes.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">Après « si » qui pose une condition, on met…</span><ul class="opts"><li>le présent</li><li>le futur</li></ul></li><li><span class="q">« Je me demande si elle reviendra » est…</span><ul class="opts"><li>une condition</li><li>une question rapportée</li></ul></li><li><span class="q">La conséquence, elle, peut être…</span><ul class="opts"><li>au futur</li><li>jamais au futur</li></ul></li><li><span class="q">Poser une condition plutôt qu'accuser permet…</span><ul class="opts"><li>de fermer la discussion</li><li>de laisser répondre</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> le présent — Si tu manques, jamais « si tu manqueras ». · <b>2.</b> une question rapportée — Après « se demander », le futur est permis. · <b>3.</b> au futur — Si tu écris, ils publieront. · <b>4.</b> de laisser répondre — C'est tout l'intérêt de « si » dans une discussion.</div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Accorder un point, puis répondre</h2><section class="bloc card ml"><h3>Ce qui distingue un avis d'une humeur</h3><p class="mp">Un avis qu'on peut discuter a trois marques : il s'annonce comme un avis, il accorde quelque chose à l'autre, et il s'appuie sur un moment précis. Sans la première, il se lit comme un fait. Sans la deuxième, il se lit comme une attaque. Sans la troisième, il ne se lit pas du tout.</p><div class="note">C'est ici que le niveau 6 se sépare du niveau 5. Au 5, on dit ce qu'on a aimé et pourquoi. Au 6, on tient un avis nuancé devant quelqu'un qui n'est pas d'accord.</div></section><section class="bloc card ml"><h3>Annoncer que ce qui suit est un avis</h3><p class="mp">Quatre formules, et la différence entre un fait et une opinion devient visible.</p><table class="ana"><tr><td>Les plus courantes</td><td class=""><b>à mon avis</b> · <b>pour ma part</b> · <b>personnellement</b> · <b>je trouve que</b></td></tr><tr><td>Ce qu'elles font</td><td class="">elles préviennent le lecteur : ce qui suit n'est pas vérifiable</td></tr><tr><td>Sans elles</td><td class="cle">« La voisine arrive au bon moment » se lit comme un fait, et se conteste comme un fait</td></tr><tr><td>Où les placer</td><td class="">en tête de phrase, presque toujours</td></tr></table><p class="dit"><span class="k">On dit</span> à mon avis, pour ma part, personnellement, je trouve que</p><div class="note">Ce n'est pas de la modestie : c'est de la précision. Annoncer un avis, c'est dire à l'autre où il peut vous contredire.</div></section><section class="bloc card ml"><h3>Accorder un point, et concéder</h3><p class="mp">Le geste qui donne du poids à tout ce qui suit.</p><table class="ana"><tr><td>Accorder</td><td class=""><b>c'est vrai que</b>… · <b>j'admets que</b>… · <b>il a raison sur</b>…</td></tr><tr><td>Puis retourner</td><td class=""><b>mais</b> · <b>par contre</b> · <b>en revanche</b> · <b>cela dit</b></td></tr><tr><td>Concéder sans changer d'avis</td><td class="cle"><b>même si</b>… · <b>bien que</b>… · <b>quand même</b></td></tr><tr><td>Pourquoi ça marche</td><td class="">celui qui vient d'être approuvé écoute la suite ; celui qui vient d'être contredit prépare sa réponse</td></tr></table><p class="dit"><span class="k">On dit</span> C'est vrai que le début est lent, mais c'est un parti pris.</p><div class="note">« Bien que » demande le subjonctif : bien que le début soit lent. « Même si » demande l'indicatif : même si le début est lent.</div></section><section class="bloc card ml"><h3>Les guillemets qui prennent une distance</h3><p class="mp">Le troisième outil, plus discret, et qui se lit plus qu'il ne s'écrit.</p><table class="ana"><tr><td>Autour d'une phrase entière</td><td class="">ce sont les <b>mots exacts</b> de quelqu'un — il écrit : « mon vrai reproche est ailleurs »</td></tr><tr><td>Autour d'un seul mot</td><td class="">l'auteur <b>ne le prend pas à son compte</b> — un film qu'on dit « ambitieux »</td></tr><tr><td>Comment les distinguer</td><td class="cle">une citation est annoncée : deux points, « il écrit », « selon lui »</td></tr><tr><td>À l'écrit, prudence</td><td class="">un mot entre guillemets se voit ; employé à tort, il passe pour de l'ironie</td></tr></table><p class="dit"><span class="k">On dit</span> Il écrit : mon vrai reproche est ailleurs. Un film qu'on dit ambitieux.</p><div class="note">À l'oral, on ne les entend pas — d'où « entre guillemets », qu'on dit à voix haute pour les rendre audibles.</div></section><section class="bloc card ml"><h3>Six intentions, six formules</h3><p class="mp">À gauche ce qu'on veut faire, à droite comment on le dit.</p><table class="ex2"><tr><td>annoncer un avis</td><td>Pour ma part, je trouve que la lenteur est voulue.</td></tr><tr><td>accorder un point avant de répondre</td><td>C'est vrai que la première demi-heure est lente, mais…</td></tr><tr><td>mettre un mot à distance</td><td>un film qu'on dit « ambitieux »</td></tr><tr><td>concéder sans changer d'avis</td><td>Même si les signaux sont discrets, ils existent.</td></tr><tr><td>citer les mots exacts</td><td>Il écrit : « mon vrai reproche est ailleurs ».</td></tr><tr><td>fermer la discussion — à éviter</td><td>Si vous n'avez pas compris, c'est que vous n'avez pas regardé.</td></tr></table></section><section class="bloc card ml"><h3>Deux façons de perdre son interlocuteur</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">« il a tort »</p><div class="k">Ce qui arrive</div><p class="ph">« il a raison sur la lenteur, mais pas sur les signaux »</p><p class="px">Contredire en bloc oblige l'autre à tout défendre. Accorder un point ouvre une vraie discussion.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">« celui qui n'a pas compris n'a pas regardé »</p><div class="k">Ce qui arrive</div><p class="ph">« si on manque le signal, on se perd »</p><p class="px">La première phrase ne se répond pas. Un avis auquel on ne peut rien répondre n'est plus une opinion : c'est une fin de discussion.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">« Pour ma part » sert à…</span><ul class="opts"><li>annoncer un avis</li><li>citer quelqu'un</li></ul></li><li><span class="q">Accorder un point avant de répondre…</span><ul class="opts"><li>affaiblit ce qu'on dit</li><li>donne du poids à la suite</li></ul></li><li><span class="q">« Bien que le début soit lent » emploie…</span><ul class="opts"><li>le subjonctif</li><li>l'indicatif</li></ul></li><li><span class="q">Des guillemets autour d'un seul mot disent…</span><ul class="opts"><li>que le mot est important</li><li>que l'auteur ne le reprend pas à son compte</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> annoncer un avis — Elle prévient : ce qui suit n'est pas un fait. · <b>2.</b> donne du poids à la suite — Celui qui vient d'être approuvé écoute la suite. · <b>3.</b> le subjonctif — « Bien que » demande le subjonctif ; « même si » demande l'indicatif. · <b>4.</b> que l'auteur ne le reprend pas à son compte — C'est une mise à distance polie.</div></section></section></div>
+<footer><span>D2 · Un film, et ce qu'on en écrit</span><span>Fiche élève</span></footer>
+</body>
+</html>

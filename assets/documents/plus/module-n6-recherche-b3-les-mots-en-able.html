@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B3 · Les mots en -able — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+.plus-papier ol.check li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance B3 · Module 1 · 60 minutes</div>
+    <h1>Les mots en -able</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Une offre d'emploi est un texte court qui doit tout dire. Elle écrit « un contrat renouvelable » plutôt que « un contrat qu'on peut renouveler ». Un suffixe, et quatre mots économisés.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>former un adjectif en -able à partir d'un verbe ;</li><li>comprendre qu'il dit toujours une possibilité ;</li><li>connaître la petite famille en -ible ;</li><li>employer le préfixe in- pour dire le contraire.</li></ol></section><section class="bloc card"><div class="lbl">Anatomie</div><h2 class="t">Trois gestes, toujours les mêmes</h2><table><thead><tr><th>L'étape</th><th>Ce qu'on fait</th></tr></thead><tbody><tr><td class="cle">1. On part du verbe</td><td>renouveler</td></tr><tr><td class="cle">2. On enlève -er ou -re</td><td>renouvel-</td></tr><tr><td class="cle">3. On ajoute -able</td><td>renouvelable</td></tr></tbody></table><div class="note">Le sens ne change jamais : -able veut toujours dire « qu'on peut ».</div></section><section class="bloc"><div class="lbl">Les mots en -ible</div><h2 class="t">Une petite famille à apprendre par cœur</h2><div class="grid"><div class="card"><h3>disponible</h3><p>Le plus utile de tous : libre, prêt à commencer. « Je suis disponible dès lundi. »</p></div><div class="card"><h3>flexible, accessible</h3><p>Un horaire flexible s'adapte ; un lieu accessible se rejoint facilement.</p></div><div class="card"><h3>compatible, lisible, possible</h3><p>Ils s'apprennent un par un : aucune règle ne permet de deviner le -ible.</p></div><div class="card"><h3>Ce sont presque tous des mots du travail</h3><p>C'est une bonne nouvelle : les apprendre sert deux fois.</p></div></div></section><section class="bloc regle"><div class="lbl">Le préfixe in-</div><p class="r">On le colle devant, et le sens s'inverse.</p><p class="pr">Acceptable devient inacceptable ; disponible devient indisponible. Devant un b ou un p, in- s'écrit im- : impossible, imprévisible. Devant un l, il- : illisible. Quelques adjectifs refusent le préfixe et prennent « non » devant, séparé par une espace : un salaire non négociable.</p></section><section class="bloc card"><div class="lbl">Application</div><h2 class="t">Formez l'adjectif</h2><p class="consigne">Transformez le verbe entre parenthèses.</p><ol class="ex"><li><span class="q">Une expérience qu'on peut transférer. (transférer)</span><span class="ligne ligne--court"></span></li><li><span class="q">Un contrat qu'on peut renouveler. (renouveler)</span><span class="ligne ligne--court"></span></li><li><span class="q">Un horaire qu'on peut adapter. (adapter)</span><span class="ligne ligne--court"></span></li><li><span class="q">Un salaire qu'on peut négocier. (négocier)</span><span class="ligne ligne--court"></span></li><li><span class="q">Un poste qu'on ne peut pas accepter. (accepter, au négatif)</span><span class="ligne ligne--court"></span></li><li><span class="q">Une candidate qu'on peut joindre. (le mot en -ible)</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">Lecture</div><h2 class="t">Six phrases d'offres réelles</h2><p class="consigne">Que veut dire le mot souligné ?</p><ol class="ex"><li><span class="q">Le poste est disponible immédiatement.</span><span class="ligne"></span></li><li><span class="q">Votre expérience est transférable.</span><span class="ligne ligne--court"></span></li><li><span class="q">Contrat renouvelable après un an.</span><span class="ligne ligne--court"></span></li><li><span class="q">L'horaire est flexible du lundi au jeudi.</span><span class="ligne ligne--court"></span></li><li><span class="q">Ce document est illisible : réécrivez-le.</span><span class="ligne ligne--court"></span></li><li><span class="q">Salaire négociable selon l'expérience.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Croire que -able dit un fait accompli</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">Un horaire modifiable est un horaire qui a été modifié.</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">Un horaire modifiable est un horaire qu'on peut modifier.</p></div></div><div class="note">Le suffixe dit une possibilité, jamais un fait. La différence compte : un poste « renouvelable » n'est pas renouvelé d'avance, et une expérience « transférable » demande encore d'être expliquée à l'employeur.</div></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez trois adjectifs en -able utiles à votre métier.</p><ul><li>Partez de trois verbes que vous employez tous les jours au travail.</li><li>Exemple : réparer · réparable ; livrer · livrable ; laver · lavable.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Les mots en -able : dire ce qui est possible</h2><section class="bloc card ml"><h3>Un raccourci que les offres d'emploi adorent</h3><p class="mp">Une offre d'emploi est un texte court qui doit tout dire. Alors elle remplace « un contrat qu'on peut renouveler » par « un contrat <b>renouvelable</b> », et « une expérience qu'on peut transférer d'un emploi à l'autre » par « une expérience <b>transférable</b> ». Comprendre ce suffixe, c'est comprendre le quart d'une offre.</p><div class="note">Le sens ne change jamais : <b>-able</b> veut toujours dire « qu'on peut ».</div></section><section class="bloc card ml"><h3>Comment on le fabrique</h3><p class="mp">Trois gestes, toujours les mêmes.</p><table class="ana"><tr><td>Le verbe</td><td class=""><b>renouveler</b></td></tr><tr><td>On enlève</td><td class="">-er</td></tr><tr><td>On ajoute</td><td class="cle">-<b>able</b></td></tr><tr><td>Le résultat</td><td class="">renouvel<b>able</b></td></tr></table><p class="dit"><span class="k">On dit</span> un contrat renouvelable</p><div class="note">Avec les verbes en <b>-re</b>, on enlève le <b>-re</b> : <i>vendre → vendable</i>, <i>lire → lisible</i> (celui-là est irrégulier).</div></section><section class="bloc card ml"><h3>La famille en -ible</h3><p class="mp">Une minorité de mots prennent <b>-ible</b> au lieu de <b>-able</b>.</p><table class="ana"><tr><td>Le plus utile</td><td class="cle">dispon<b>ible</b></td></tr><tr><td>Les autres du travail</td><td class="">access<b>ible</b> · flex<b>ible</b> · compat<b>ible</b></td></tr><tr><td>Le sens</td><td class="">le même : ce qui est possible</td></tr></table><p class="dit"><span class="k">On dit</span> Je suis disponible dès lundi.</p><div class="note">Il n'y a pas de règle pour deviner. Heureusement, ils sont peu nombreux, et ce sont presque tous des mots du monde du travail : apprenez-les comme des mots de vocabulaire.</div></section><section class="bloc card ml"><h3>Le préfixe in- qui renverse tout</h3><p class="mp">On colle <b>in-</b> devant, et le sens s'inverse.</p><table class="ana"><tr><td>Le mot</td><td class=""><b>acceptable</b></td></tr><tr><td>Le préfixe</td><td class="cle"><b>in</b>-</td></tr><tr><td>Le contraire</td><td class=""><b>in</b>acceptable</td></tr></table><p class="dit"><span class="k">On dit</span> Ces conditions sont inacceptables.</p><div class="note">Devant <b>p</b> et <b>b</b>, <i>in-</i> s'écrit <b>im-</b> : <i>impossible, imprévisible</i>. Devant <b>l</b>, c'est <b>il-</b> : <i>illisible</i>.</div></section><section class="bloc card ml"><h3>Fabriquez l'adjectif</h3><p class="mp">Choisissez un verbe, puis la forme voulue.</p><table class="labo"><thead><tr><th>Quel verbe ? · Quelle forme ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">transférer + ce qui est possible</td><td>une expérience transférable<span class="tags">une expérience transférable</span></td><td>qu'on peut transférer d'un emploi à l'autre</td></tr><tr><td class="cle">transférer + le contraire</td><td>un diplôme intransférable<span class="tags">un diplôme intransférable</span></td><td>qui ne se transfère pas</td></tr><tr><td class="cle">négocier + ce qui est possible</td><td>un salaire négociable<span class="tags">un salaire négociable</span></td><td>on peut en discuter</td></tr><tr><td class="cle">négocier + le contraire</td><td>un salaire non négociable<span class="tags">un salaire non négociable</span></td><td>ici on dit « non », pas « in- »</td></tr><tr><td class="cle">accepter + ce qui est possible</td><td>une offre acceptable<span class="tags">une offre acceptable</span></td><td>qu'on peut accepter</td></tr><tr><td class="cle">accepter + le contraire</td><td>des conditions inacceptables<span class="tags">des conditions inacceptables</span></td><td>in- devant une voyelle</td></tr><tr><td class="cle">prévoir + ce qui est possible</td><td>un horaire prévisible<span class="tags">un horaire prévisible</span></td><td>celui-là prend -ible</td></tr><tr><td class="cle">prévoir + le contraire</td><td>un horaire imprévisible<span class="tags">un horaire imprévisible</span></td><td>im- devant un p</td></tr></tbody></table><div class="note">Remarquez le cas de « non négociable » : quelques mots refusent le préfixe et prennent « non » devant. On les entend, on les retient.</div></section><section class="bloc card ml"><h3>Six phrases entendues en recherche d'emploi</h3><p class="mp">Toutes contiennent un mot en -able ou -ible.</p><table class="ex2"><tr><td>Le poste est disponible immédiatement.</td><td>libre, à prendre</td></tr><tr><td>Votre expérience est transférable.</td><td>elle compte ici aussi</td></tr><tr><td>C'est un contrat renouvelable après un an.</td><td>on peut le prolonger</td></tr><tr><td>L'horaire est flexible du lundi au jeudi.</td><td>il peut s'adapter</td></tr><tr><td>Ce document est illisible : réécrivez-le.</td><td>on ne peut pas le lire</td></tr><tr><td>Le salaire est négociable selon l'expérience.</td><td>on peut en discuter</td></tr></table></section><section class="bloc card ml"><h3>Trois pièges à connaître</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">« un horaire adaptible »</p><div class="k">Ce qui arrive</div><p class="ph">« un horaire adaptable »</p><p class="px">La forme normale est <b>-able</b>. On ne met <b>-ible</b> que dans la petite liste apprise par cœur : <i>disponible, accessible, flexible, compatible, lisible, possible, prévisible</i>.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">croire que -able veut dire « déjà fait »</p><div class="k">Ce qui arrive</div><p class="ph">-able dit « qu'on peut faire »</p><p class="px">Un horaire <i>modifiable</i> n'a pas été modifié : il <b>peut</b> l'être. C'est une possibilité, jamais un fait accompli.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">dire « innégociable »</p><div class="k">Ce qui arrive</div><p class="ph">« non négociable »</p><p class="px">Quelques adjectifs refusent <i>in-</i> et prennent <i>non</i> devant, séparé par une espace. En cas de doute, <i>non</i> passe toujours.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">Un contrat renouvelable est un contrat…</span><ul class="opts"><li>déjà renouvelé</li><li>qu'on peut renouveler</li></ul></li><li><span class="q">Le mot pour dire « libre, prêt à travailler » est…</span><ul class="opts"><li>disponable</li><li>disponible</li></ul></li><li><span class="q">Le contraire de « possible » est…</span><ul class="opts"><li>impossible</li><li>inpossible</li></ul></li><li><span class="q">« Une expérience transférable » veut dire…</span><ul class="opts"><li>elle compte dans un autre emploi</li><li>elle est finie</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> qu'on peut renouveler — -able dit toujours la possibilité. · <b>2.</b> disponible — C'est un des rares mots en -ible, et le plus utile de tous. · <b>3.</b> impossible — Devant un p, in- devient im-. · <b>4.</b> elle compte dans un autre emploi — C'est le mot qu'il faut employer quand votre expérience vient d'un autre pays.</div></section></section></div>
+<footer><span>B3 · Chercher un emploi</span><span>Fiche élève</span></footer>
+</body>
+</html>

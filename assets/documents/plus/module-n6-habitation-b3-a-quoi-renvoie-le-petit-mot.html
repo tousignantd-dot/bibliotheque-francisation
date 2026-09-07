@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B3 · À quoi renvoie le petit mot — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+.plus-papier ol.check li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance B3 · Module 9 · 75 minutes</div>
+    <h1>À quoi renvoie le petit mot</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">« Je la répare », « on en a parlé », « il faut y penser ». Perdre le fil d'une explication, ce n'est pas manquer un mot : c'est perdre ce à quoi il renvoie.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>choisir le pronom sur le verbe, et non au son ;</li><li>employer le, la, les quand le verbe n'a pas de préposition ;</li><li>employer en après un verbe qui demande « de » ;</li><li>employer y après un verbe qui demande « à », ou pour un lieu.</li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Le pronom se choisit sur le verbe</h2><table><thead><tr><th>Le verbe demande</th><th>Le pronom</th></tr></thead><tbody><tr><td class="cle">rien du tout</td><td>réparer quelque chose : le, la, les</td></tr><tr><td class="cle">la préposition de</td><td>parler de quelque chose : en</td></tr><tr><td class="cle">la préposition à</td><td>penser à quelque chose : y</td></tr><tr><td class="cle">un lieu</td><td>descendre au sous-sol : y</td></tr></tbody></table><div class="note">« J'en pense » n'existe pas : on pense à. « J'y parle » non plus : on parle de.</div></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Un « le » à part : celui qui reprend une idée</h2><table><thead><tr><th>La phrase</th><th>Ce que « le » reprend</th></tr></thead><tbody><tr><td class="cle">Doïna le sait.</td><td>que le sous-sol n'est pas sec</td></tr><tr><td class="cle">Il me l'a dit deux fois.</td><td>qu'il faut attendre quatre semaines</td></tr><tr><td class="cle">Personne ne le sait.</td><td>si le permis sortira à temps</td></tr><tr><td class="cle">Léandre le lui a déconseillé.</td><td>de faire les travaux lui-même</td></tr></tbody></table><div class="note">Ce « le »-là ne s'accorde jamais : « elle l'a su », pas « elle l'a sue ».</div></section><section class="bloc regle"><div class="lbl">Reprendre au lieu de répéter</div><p class="r">Répéter le même nom six fois se lit comme un texte d'enfant.</p><p class="pr">Le niveau 6 demande l'inverse : reprendre un référent par une variété de pronoms et de déterminants. « La fissure » devient « la », puis « cette fente », puis « le problème du mur nord ». C'est ce qui fait tenir un texte long — et ce qui le rend difficile à suivre quand on ne le sait pas.</p></section><section class="bloc card"><div class="lbl">Pratique</div><h2 class="t">Quel pronom ?</h2><p class="consigne">Lisez les deux phrases, puis complétez.</p><ol class="ex"><li><span class="q">Fernand a examiné la fissure. Il ___ répare après les travaux du terrain.</span><span class="ligne ligne--court"></span></li><li><span class="q">Doïna a lu le rapport hier soir. Elle ___ a relu deux fois.</span><span class="ligne ligne--court"></span></li><li><span class="q">Il faut penser au permis. Il faut ___ penser tout de suite.</span><span class="ligne ligne--court"></span></li><li><span class="q">On a parlé du taux d'humidité. Kettly ___ a reparlé dans son rapport.</span><span class="ligne ligne--court"></span></li><li><span class="q">Le sous-sol n'est pas sec. Doïna ___ sait.</span><span class="ligne ligne--court"></span></li><li><span class="q">La maison repose sur cette fondation. On ne peut pas ___ toucher.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Piège</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">choisir le pronom au son</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">chercher la préposition du verbe</p></div></div><div class="note">« J'en pense » et « j'y parle » sonnent bien à l'oreille de qui apprend le français, et les deux sont impossibles. On pense À, donc « j'y pense ». On parle DE, donc « j'en parle ». Le verbe décide, jamais le son.</div></section><section class="bloc card"><div class="lbl">Écriture</div><h2 class="t">Reprendre sans répéter</h2><p class="consigne">Réécrivez la deuxième phrase en remplaçant le groupe souligné.</p><ol class="ex"><li><span class="q">On a fait injecter la fissure. On a payé la fissure 2 600 $.</span><span class="ligne ligne--court"></span></li><li><span class="q">Il y a deux solutions. Fernand a proposé une des deux solutions.</span><span class="ligne"></span></li><li><span class="q">Le permis prend dix jours. Doïna pense au permis tous les jours.</span><span class="ligne"></span></li><li><span class="q">Le mur n'est pas sec. Kettly a parlé de l'humidité du mur.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écris deux phrases sur ton logement : la seconde reprend un mot de la première.</p><ul><li>Emploie le, la, en ou y.</li><li>Souligne le mot repris.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Le petit mot qui porte toute une phrase</h2><section class="bloc card ml"><h3>Ce qui rend une explication difficile à suivre</h3><p class="mp">Fernand Trudelle parle vingt minutes sans reprendre son souffle. Le vocabulaire n'est pas le problème : il explique de lui-même ce que veut dire « injecter » ou « reprofiler ». Ce qui fait perdre le fil, ce sont trois lettres. « Je la répare », « on en a parlé », « il faut y penser » — et il faut savoir, chaque fois, de quoi il vient de parler. Le référent est parfois à trois répliques de distance.</p><div class="note">Le programme du niveau 6 y consacre quatre points de grammaire du texte : associer le pronom « le » à une subordonnée complétive, « en » à un GPrép inanimé, « où » à son antécédent, et reconnaître les deux référents quand le pronom CD est absent.</div></section><section class="bloc card ml"><h3>le, la, l', les — pour ce qui suit le verbe sans préposition</h3><p class="mp">On dit « je répare quelque chose », sans petit mot entre les deux. Le pronom est alors le, la, l' ou les.</p><table class="ana"><tr><td>la fissure</td><td class="">Je vois la fissure. Je <b>la</b> répare la semaine prochaine.</td></tr><tr><td>le rapport</td><td class="cle">Doïna a lu le rapport. Elle <b>l'</b>a relu deux fois.</td></tr><tr><td>les gouttières</td><td class="">On rallonge les gouttières. On <b>les</b> rallonge d'un mètre.</td></tr><tr><td>Le test</td><td class="">remplacez le nom par « ça » : si « je répare ça » se dit, c'est le, la ou les.</td></tr></table><p class="dit"><span class="k">On dit</span> je la répare, elle l'a relu, on les rallonge</p><div class="note">Devant une voyelle, « le » et « la » deviennent « l' ». « Je l'ai relu » ne dit pas si c'est masculin ou féminin — seul le participe le dirait à l'écrit.</div></section><section class="bloc card ml"><h3>le — pour toute une idée, pas pour un objet</h3><p class="mp">C'est l'emploi que le niveau 6 ajoute, et c'est le plus difficile. « Le » reprend alors une phrase entière.</p><table class="ana"><tr><td>ce qu'on vient de dire</td><td class="">Le sous-sol est encore humide. Doïna <b>le</b> sait.</td></tr><tr><td>une chose annoncée</td><td class="cle">Il faut attendre quatre semaines. Fernand me <b>l'</b>a dit deux fois.</td></tr><tr><td>une question</td><td class="">Est-ce que le permis va sortir à temps ? Personne ne <b>le</b> sait.</td></tr><tr><td>Le test</td><td class="">remplacez par « cela » : « Doïna sait cela » — oui, donc c'est ce « le »-là.</td></tr></table><p class="dit"><span class="k">On dit</span> Doïna le sait, Fernand me l'a dit, personne ne le sait</p><div class="note">Ce « le » ne s'accorde jamais : il ne remplace pas un nom, il remplace une idée. « Elle l'a su » et non « elle l'a sue ».</div></section><section class="bloc card ml"><h3>en et y — pour ce qui vient après une préposition</h3><p class="mp">Ils remplacent un groupe introduit par « de » ou par « à ». Le choix ne se fait pas au son : il se fait sur le verbe.</p><table class="ana"><tr><td>parler <b>de</b> quelque chose → <b>en</b></td><td class="">On a parlé du taux d'humidité. On <b>en</b> a reparlé hier.</td></tr><tr><td>avoir besoin <b>de</b> → <b>en</b></td><td class="cle">Vous avez besoin d'une réserve ? Vous <b>en</b> aurez besoin.</td></tr><tr><td>penser <b>à</b> quelque chose → <b>y</b></td><td class="">Il faut penser au permis. J'<b>y</b> pense tous les jours.</td></tr><tr><td>un lieu → <b>y</b></td><td class="">Le sous-sol ? On <b>y</b> descend par la cuisine.</td></tr></table><p class="dit"><span class="k">On dit</span> on en a reparlé, vous en aurez besoin, j'y pense, on y descend</p><div class="note">Le seul travail à faire est de retrouver la préposition du verbe. Parler DE, avoir besoin DE, s'occuper DE → en. Penser À, s'habituer À, aller À → y.</div></section><section class="bloc card ml"><h3>Deux phrases, un pronom</h3><p class="mp">Choisissez le verbe, puis le pronom qu'il commande.</p><table class="labo"><thead><tr><th>Quel verbe ? · Quel exemple ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">réparer quelque chose + le premier</td><td>Je vois la fissure. Je la répare demain.<span class="tags">Je vois la fissure. Je la répare demain.</span></td><td>réparer quelque chose : aucune préposition, donc « la »</td></tr><tr><td class="cle">réparer quelque chose + le second</td><td>Doïna a lu le rapport. Elle l'a relu hier soir.<span class="tags">Doïna a lu le rapport. Elle l'a relu hier soir.</span></td><td>lire quelque chose : « le », qui devient « l' » devant une voyelle</td></tr><tr><td class="cle">parler de quelque chose + le premier</td><td>On a parlé du taux d'humidité. On en a reparlé hier.<span class="tags">On a parlé du taux d'humidité. On en a reparlé hier.</span></td><td>parler DE : le pronom est « en »</td></tr><tr><td class="cle">parler de quelque chose + le second</td><td>Il y a deux solutions. Fernand en a proposé une troisième.<span class="tags">Il y a deux solutions. Fernand en a proposé une troisième.</span></td><td>« en » reprend aussi une quantité : une troisième de ces solutions</td></tr><tr><td class="cle">penser à quelque chose + le premier</td><td>Il faut penser au permis. J'y pense tous les jours.<span class="tags">Il faut penser au permis. J'y pense tous les jours.</span></td><td>penser À : le pronom est « y »</td></tr><tr><td class="cle">penser à quelque chose + le second</td><td>La maison repose sur cette fondation. On ne peut pas y toucher.<span class="tags">La maison repose sur cette fondation. On ne peut pas y toucher.</span></td><td>toucher À quelque chose : encore « y »</td></tr></tbody></table><div class="note">Refaites le laboratoire en cachant la seconde phrase : c'est en la reconstruisant qu'on installe le réflexe.</div></section><section class="bloc card ml"><h3>Huit reprises du dialogue</h3><p class="mp">À gauche ce qui a été dit, à droite ce que le pronom reprend.</p><table class="ex2"><tr><td>Je la répare seulement après</td><td>la fissure</td></tr><tr><td>Elle l'a relu deux fois</td><td>le rapport d'inspection</td></tr><tr><td>Il faut y penser tout de suite</td><td>au permis municipal</td></tr><tr><td>On en a reparlé dans le rapport</td><td>du taux d'humidité</td></tr><tr><td>Doïna le sait</td><td>que le sous-sol n'est pas sec</td></tr><tr><td>Fernand en a proposé une troisième</td><td>des solutions</td></tr><tr><td>On ne peut pas y toucher sans plan</td><td>à la fondation</td></tr><tr><td>Léandre le lui a déconseillé</td><td>de faire les travaux lui-même</td></tr></table></section><section class="bloc card ml"><h3>Trois confusions classiques</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">choisir le pronom au son</p><div class="k">Ce qui arrive</div><p class="ph">le choisir sur le verbe</p><p class="px">« J'en pense » n'existe pas, parce qu'on pense À. « J'y parle » n'existe pas non plus, parce qu'on parle DE. Cherchez la préposition, jamais l'oreille.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">accorder le « le » d'une idée</p><div class="k">Ce qui arrive</div><p class="ph">le laisser invariable</p><p class="px">« Elle l'a su » et non « elle l'a sue » : ce « le » reprend une phrase entière, et une phrase n'a pas de genre.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">répéter le nom par prudence</p><div class="k">Ce qui arrive</div><p class="ph">le reprendre</p><p class="px">Répéter « la fissure » six fois dans un paragraphe se lit comme un texte d'enfant. Le niveau 6 demande justement l'inverse : reprendre sans répéter.</p></div></div></section><section class="bloc card ml"><h3>Quatre questions</h3><ol class="check"><li><span class="q">« On a parlé de la soumission. On ___ a parlé hier. »</span><ul class="opts"><li>en</li><li>y</li></ul></li><li><span class="q">« Il faut penser au séchage. Il faut ___ penser. »</span><ul class="opts"><li>en</li><li>y</li></ul></li><li><span class="q">Dans « Doïna le sait », « le » reprend…</span><ul class="opts"><li>un objet</li><li>toute une idée</li></ul></li><li><span class="q">« Elle l'a su » ou « elle l'a sue » ?</span><ul class="opts"><li>elle l'a su</li><li>elle l'a sue</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> en — Parler DE quelque chose : le pronom est « en ». · <b>2.</b> y — Penser À quelque chose : le pronom est « y ». · <b>3.</b> toute une idée — Remplacez par « cela » : ça marche, donc c'est une idée. · <b>4.</b> elle l'a su — Ce « le »-là ne s'accorde jamais.</div></section></section></div>
+<footer><span>B3 · Faire faire des travaux</span><span>Fiche élève</span></footer>
+</body>
+</html>

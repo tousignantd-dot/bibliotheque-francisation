@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C4 · « Où », et les petits mots qui renvoient en arrière — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+.plus-papier ol.check li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance C4 · Module 6 · 75 minutes</div>
+    <h1>« Où », et les petits mots qui renvoient en arrière</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Une biographie de dix lignes contient six mots de deux lettres. Perdre le fil, ce n'est pas manquer un mot : c'est perdre à quoi il renvoie.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>réunir deux phrases avec « où », pour un lieu ou pour un moment ;</li><li>retrouver à quoi renvoient « le », « en » et « y » ;</li><li>reprendre un mot sans le répéter, par un synonyme ;</li><li>ne plus écrire « le jour que » à la place de « le jour où ».</li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Trois pronoms, trois emplois</h2><table><thead><tr><th>Le pronom</th><th>Ce qu'il remplace</th></tr></thead><tbody><tr><td class="cle">le</td><td>toute une idée : qu'elle a appris son métier au montage</td></tr><tr><td class="cle">en</td><td>un groupe avec « de » : de son premier court métrage</td></tr><tr><td class="cle">y</td><td>un lieu, ou un groupe avec « à » : à la salle Beauchemin</td></tr><tr><td class="cle">le geste</td><td>reculer d'une phrase, jamais plus loin</td></tr></tbody></table><div class="note">Si le référent n'est pas dans la phrase d'avant, c'est le texte qui est mal écrit.</div></section><section class="bloc regle"><div class="lbl">« Où » fait deux métiers</div><p class="r">Il remplace un complément de lieu, ou un complément de temps.</p><p class="pr">« Sherbrooke, où il avait été présenté en premier » parle d'une ville. « L'année où elle cessa de tourner » parle d'un moment. C'est le même mot, écrit pareil. Ce qui les distingue est le mot juste avant : une ville, une salle, une maison pour le lieu ; une année, un jour, un moment pour le temps.</p></section><section class="bloc regle"><div class="lbl">Jamais « le jour que »</div><p class="r">Avec un mot de temps, c'est « où », et rien d'autre.</p><p class="pr">« Le jour que je suis arrivée » est la faute la plus fréquente du niveau 6, et elle vient d'une bonne logique : « que » fonctionne partout ailleurs. Ici, non. Le jour où, l'année où, le moment où, l'époque où.</p></section><section class="bloc card"><div class="lbl">Grammaire</div><h2 class="t">Réunissez les deux phrases avec « où »</h2><p class="consigne">Écrivez une seule phrase.</p><ol class="ex"><li><span class="q">Elle est née dans une famille. Personne n'y allait au cinéma.</span><span class="ligne"></span></li><li><span class="q">Elle est entrée dans une salle. Elle y a appris son métier.</span><span class="ligne"></span></li><li><span class="q">Le film est sorti en 1994. Cette année-là...</span><span class="ligne"></span></li><li><span class="q">Estelle revient au village. Elle avait grandi là.</span><span class="ligne"></span></li><li><span class="q">L'autobus est tombé en panne ce jour-là.</span><span class="ligne"></span></li><li><span class="q">Tu viens mercredi ... jeudi, comme tu veux.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">Grammaire</div><h2 class="t">Remplacez par le, en ou y</h2><p class="consigne">Récrivez la deuxième phrase avec le bon pronom.</p><ol class="ex"><li><span class="q">Une rétrospective eut lieu à la salle. Elle est venue à la salle.</span><span class="ligne ligne--court"></span></li><li><span class="q">Elle a appris son métier au montage. Elle répète cela partout.</span><span class="ligne ligne--court"></span></li><li><span class="q">Elle parle rarement de son court métrage. Elle en parle à ses étudiants.</span><span class="ligne"></span></li><li><span class="q">Le film compte quatre retours en arrière. Bruno a compté quatre retours.</span><span class="ligne"></span></li><li><span class="q">Personne ne sait pourquoi elle a cessé. Personne ne sait cela.</span><span class="ligne ligne--court"></span></li><li><span class="q">Elle a besoin de silence. Elle a toujours eu besoin de silence.</span><span class="ligne"></span></li></ol></section><section class="bloc"><div class="lbl">Reprendre sans répéter</div><h2 class="t">L'autre façon d'éviter la répétition</h2><div class="grid"><div class="card"><h3>Par un synonyme</h3><p>le film, l'œuvre, ce long métrage.</p></div><div class="card"><h3>Par un mot plus général</h3><p>« Les Marées de novembre », ce film, cette histoire.</p></div><div class="card"><h3>Par une nominalisation</h3><p>elle a cessé de tourner : cet arrêt, cette décision.</p></div><div class="card"><h3>Deux fois, pas trois</h3><p>à la troisième reprise, le lecteur ne sait plus de quoi on parle.</p></div></div></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écris une phrase avec « où », et une avec « le », « en » ou « y ».</p><ul><li>Deux phrases, courtes.</li><li>Dis ce que le pronom remplace, entre parenthèses.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>« Où » : un seul mot, un lieu ou un moment</h2><section class="bloc card ml"><h3>Un mot qui fait deux métiers</h3><p class="mp">« Sherbrooke, où il avait été présenté en premier » parle d'une ville. « L'année où elle cessa de tourner » parle d'un moment. C'est le même mot, écrit pareil, et rien ne les distingue sauf ce qui vient juste avant. Une fois qu'on le sait, on cesse de buter dessus — et on gagne le droit d'écrire des phrases plus longues.</p><div class="note">Le programme du niveau 6 le demande deux fois : associer le pronom relatif « où » à son antécédent, et employer des phrases subordonnées relatives avec « où », complément de lieu ou de temps.</div></section><section class="bloc card ml"><h3>Le lieu</h3><p class="mp">Le mot qui précède « où » désigne un endroit.</p><table class="ana"><tr><td>Deux phrases</td><td class="">Le film a tenu l'affiche à Sherbrooke. Il y avait été présenté en premier.</td></tr><tr><td>Une seule</td><td class="">Il a tenu l'affiche à Sherbrooke, <b>où</b> il avait été présenté en premier.</td></tr><tr><td>Les mots qui l'annoncent</td><td class="cle">une ville, un village, une salle, une maison, un endroit</td></tr><tr><td>Ce que ça remplace</td><td class="">« dans cette ville », « à cet endroit-là »</td></tr></table><p class="dit"><span class="k">On dit</span> Il a tenu l'affiche à Sherbrooke, où il avait été présenté en premier.</p><div class="note">« Où » évite de répéter le nom du lieu. Sans lui, il faut écrire « dans cette ville », ce qui alourdit tout de suite.</div></section><section class="bloc card ml"><h3>Le temps</h3><p class="mp">Le mot qui précède « où » désigne un moment.</p><table class="ana"><tr><td>Deux phrases</td><td class="">Elle cessa de tourner en 2007. Cette année-là, elle commença à enseigner.</td></tr><tr><td>Une seule</td><td class="">2007 est l'année <b>où</b> elle cessa de tourner.</td></tr><tr><td>Les mots qui l'annoncent</td><td class="cle">une année, un jour, un matin, un moment, une époque</td></tr><tr><td>Attention</td><td class="">on ne dit pas « l'année quand » ni « le jour que » : c'est « où »</td></tr></table><p class="dit"><span class="k">On dit</span> 2007 est l'année où elle cessa de tourner.</p><div class="note">C'est la faute la plus fréquente à ce niveau : « le jour que je suis arrivée ». La forme juste est « le jour où je suis arrivée ».</div></section><section class="bloc card ml"><h3>Six phrases réunies</h3><p class="mp">À gauche deux phrases, à droite une seule.</p><table class="ex2"><tr><td>Elle est née dans une famille. Personne n'y allait au cinéma.</td><td>une famille où personne n'allait au cinéma</td></tr><tr><td>Elle est entrée dans une salle de montage. Elle y a appris son métier.</td><td>la salle de montage où elle a appris son métier</td></tr><tr><td>Le film est sorti en 1994. Cette année-là…</td><td>1994, l'année où le film est sorti</td></tr><tr><td>Il y a un moment. L'image devient plus froide à ce moment-là.</td><td>un moment où l'image devient plus froide</td></tr><tr><td>Estelle revient au village. Elle avait grandi là.</td><td>le village où elle avait grandi</td></tr><tr><td>L'autobus est tombé en panne ce jour-là.</td><td>le jour où l'autobus est tombé en panne</td></tr></table></section><section class="bloc card ml"><h3>Deux confusions</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">« le jour que je suis arrivée »</p><div class="k">Ce qui arrive</div><p class="ph">« le jour où je suis arrivée »</p><p class="px">Avec un mot de temps, c'est « où » et jamais « que ». C'est la faute la plus fréquente au niveau 6.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">« ou » sans accent</p><div class="k">Ce qui arrive</div><p class="ph">« où » avec accent</p><p class="px">« Ou » veut dire « l'un ou l'autre » : mercredi ou jeudi. « Où » est le relatif, ou la question « où est-il ? ». Un seul accent, deux sens sans rapport.</p></div></div></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">Dans « l'année où elle cessa de tourner », « où » désigne…</span><ul class="opts"><li>un lieu</li><li>un moment</li></ul></li><li><span class="q">Pour savoir lequel des deux, il faut regarder…</span><ul class="opts"><li>le mot juste avant</li><li>le verbe qui suit</li></ul></li><li><span class="q">« Le jour que je suis arrivée » est…</span><ul class="opts"><li>correct</li><li>fautif</li></ul></li><li><span class="q">« Tu viens mercredi ou jeudi » s'écrit…</span><ul class="opts"><li>ou, sans accent</li><li>où, avec accent</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> un moment — Le mot qui précède est « année » : c'est du temps. · <b>2.</b> le mot juste avant — Une ville → lieu ; une année → temps. · <b>3.</b> fautif — Avec un mot de temps, c'est « où ». · <b>4.</b> ou, sans accent — Ici, c'est « l'un ou l'autre » : pas d'accent.</div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Le, en, y : ne pas répéter sans perdre le lecteur</h2><section class="bloc card ml"><h3>Trois mots de deux lettres qui font tomber les lecteurs</h3><p class="mp">Un texte bien écrit ne répète pas. À la place, il pose « le », « en » ou « y », et il compte sur vous pour retrouver de quoi il parle. Ça marche très bien en langue maternelle, où on le fait sans y penser. En français appris, c'est le premier endroit où l'on décroche — et on ne s'en aperçoit pas, parce qu'on continue de lire.</p><div class="note">Le programme y consacre quatre savoirs d'un coup : associer « le » à son référent, associer « en » à son référent, associer « où » à son antécédent, et employer des procédés de substitution lexicale.</div></section><section class="bloc card ml"><h3>Chacun remplace un genre de groupe précis</h3><p class="mp">Ils ne sont pas interchangeables : c'est ce qui permet de deviner juste.</p><table class="ana"><tr><td><b>le</b></td><td class="">remplace <b>toute une idée</b>, une subordonnée complète — Elle a appris son métier au montage. Elle <b>le</b> répète partout.</td></tr><tr><td><b>en</b></td><td class="">remplace un groupe avec <b>de</b> — Elle parle rarement de son court métrage. Elle n'<b>en</b> parle qu'à ses étudiants.</td></tr><tr><td><b>y</b></td><td class="cle">remplace un groupe avec <b>à</b> ou un <b>lieu</b> — Une rétrospective eut lieu à la salle. Elle <b>y</b> vint.</td></tr><tr><td>Le geste</td><td class="">reculer d'une phrase, et chercher un groupe qui commence par « de » ou par « à »</td></tr></table><p class="dit"><span class="k">On dit</span> le remplace une idée, en remplace un groupe avec de, y remplace un lieu ou un groupe avec à</p><div class="note">Si vous ne trouvez pas le référent dans la phrase d'avant, ce n'est presque jamais vous : c'est le texte qui est mal écrit.</div></section><section class="bloc card ml"><h3>La substitution lexicale : reprendre par un autre mot</h3><p class="mp">L'autre façon de ne pas se répéter, et celle qui distingue un texte adulte d'un texte d'école.</p><table class="ana"><tr><td>Par un synonyme</td><td class="">le film → l'œuvre → ce long métrage</td></tr><tr><td>Par un mot plus général</td><td class="">les Marées de novembre → ce film → cette histoire</td></tr><tr><td>Par une nominalisation</td><td class="cle">elle a cessé de tourner → cet arrêt, cette décision</td></tr><tr><td>Le risque</td><td class="">changer de mot au point qu'on ne sache plus de quoi on parle</td></tr></table><p class="dit"><span class="k">On dit</span> le film, l'œuvre, ce long métrage, cette histoire, cette décision</p><div class="note">Deux reprises différentes suffisent. À la troisième, le lecteur commence à se demander si vous parlez encore de la même chose.</div></section><section class="bloc card ml"><h3>Six reprises de la biographie</h3><p class="mp">À gauche le petit mot, à droite ce qu'il remplace.</p><table class="ex2"><tr><td>Elle <b>y</b> resta onze ans.</td><td>dans la salle de montage</td></tr><tr><td>Elle <b>y</b> vint, et elle refusa de parler.</td><td>à la salle Beauchemin</td></tr><tr><td>Le public, lui, <b>revint</b>.</td><td>le public, repris par « lui » pour l'opposer à la critique</td></tr><tr><td>Elle <b>le</b> répète dans chaque entrevue.</td><td>qu'elle a appris son métier au montage</td></tr><tr><td>Elle n'<b>en</b> parle qu'à ses étudiants.</td><td>de son premier court métrage</td></tr><tr><td>Bruno <b>en</b> a compté quatre.</td><td>des retours en arrière</td></tr></table></section><section class="bloc card ml"><h3>Est-ce que c'est clair maintenant ?</h3><p class="mp">Quatre questions rapides.</p><ol class="check"><li><span class="q">« Elle y vint » — « y » remplace…</span><ul class="opts"><li>un lieu</li><li>une personne</li></ul></li><li><span class="q">« Elle n'en parle qu'à ses étudiants » — « en » remplace…</span><ul class="opts"><li>un groupe avec « de »</li><li>un groupe avec « à »</li></ul></li><li><span class="q">« Elle le répète partout » — « le » remplace…</span><ul class="opts"><li>un objet</li><li>toute une idée</li></ul></li><li><span class="q">Pour retrouver le référent, on recule…</span><ul class="opts"><li>d'une phrase</li><li>au début du texte</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> un lieu — « Y » remplace un lieu, ou un groupe avec « à ». · <b>2.</b> un groupe avec « de » — Parler DE quelque chose → en. · <b>3.</b> toute une idée — Une subordonnée complète : qu'elle a appris son métier au montage. · <b>4.</b> d'une phrase — Presque toujours la phrase d'avant, jamais plus loin.</div></section></section></div>
+<footer><span>C4 · Un film, et ce qu'on en écrit</span><span>Fiche élève</span></footer>
+</body>
+</html>

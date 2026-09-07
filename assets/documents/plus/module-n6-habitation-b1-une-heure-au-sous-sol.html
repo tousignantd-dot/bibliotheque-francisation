@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B1 · Une heure au sous-sol — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance B1 · Module 9 · 75 minutes</div>
+    <h1>Une heure au sous-sol</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">L'entrepreneur a fait le tour. Il explique ce qu'il a trouvé, ce qui l'a causé, et dans quel ordre on va travailler. Vingt minutes sans reprendre son souffle.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>suivre une explication technique du début à la fin ;</li><li>nommer les quatre mots de la fondation et du drainage ;</li><li>repérer les chiffres donnés au passage ;</li><li>arrêter quelqu'un poliment pour lui faire répéter.</li></ol></section><section class="bloc card"><div class="lbl">Dialogue · 1 de 3</div><h2 class="t">Ce qu'il a trouvé</h2><p class="consigne">Écouter d'abord, diapositive masquée.</p><div class="rep rep--key"><div class="qui">FERNAND</div><div>Je viens de passer une heure en bas et j'ai fait le tour du terrain. Je vais vous expliquer, et après vous poserez vos questions.</div></div><div class="rep rep--key"><div class="qui">DOÏNA</div><div>Allez-y. Je vous préviens, je vais vous arrêter souvent.</div></div><div class="rep rep--key"><div class="qui">FERNAND</div><div>Arrêtez-moi tant que vous voulez. Premièrement, la fissure. Elle est dans le mur de fondation, du côté nord, et elle monte en biais sur à peu près un mètre.</div></div><div class="rep rep--key"><div class="qui">DOÏNA</div><div>Elle est apparue quand ? On a acheté la maison il y a deux ans.</div></div></section><section class="bloc card"><div class="lbl">Dialogue · 2 de 3</div><h2 class="t">La cause est dehors</h2><div class="rep rep--key"><div class="qui">FERNAND</div><div>Elle s'était ouverte bien avant que vous achetiez. Votre inspectrice l'avait notée dans son rapport, d'ailleurs.</div></div><div class="rep rep--key"><div class="qui">FERNAND</div><div>La cause est dehors. Vous voyez la descente de gouttière, au coin ? Elle se vide à trente centimètres du mur.</div></div><div class="rep rep--key"><div class="qui">DOÏNA</div><div>Et c'est un problème ?</div></div><div class="rep rep--key"><div class="qui">FERNAND</div><div>Chaque grosse pluie, vous envoyez des centaines de litres d'eau contre votre fondation. Le sol se gorge, il pousse sur le mur, et le mur finit par fendre.</div></div></section><section class="bloc card"><div class="lbl">Dialogue · 3 de 3</div><h2 class="t">L'ordre des travaux</h2><div class="rep rep--key"><div class="qui">DOÏNA</div><div>Alors ce n'est pas la fissure, le vrai problème.</div></div><div class="rep rep--key"><div class="qui">FERNAND</div><div>Vous venez de dire la chose la plus importante de la matinée. La fissure, c'est le résultat. Si je la répare sans toucher au reste, elle revient dans trois ans.</div></div><div class="rep rep--key"><div class="qui">FERNAND</div><div>Dans l'ordre : on rallonge les descentes de gouttière, on refait la pente du terrain, et seulement après, on fait injecter la fissure.</div></div><div class="rep rep--key"><div class="qui">DOÏNA</div><div>Vous dites « on fait injecter ». Ce n'est pas vous qui le faites ?</div></div></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Ce qui tient la maison debout</h2><table><thead><tr><th>Le mot</th><th>Ce que c'est</th></tr></thead><tbody><tr><td class="cle">la fondation</td><td>le mur de béton enfoui, sur lequel tout repose</td></tr><tr><td class="cle">une fissure</td><td>une fente qui traverse le mur et qui bouge</td></tr><tr><td class="cle">la descente</td><td>le tuyau qui amène l'eau du toit jusqu'au sol</td></tr><tr><td class="cle">la pente</td><td>l'inclinaison du sol autour de la maison</td></tr></tbody></table><div class="note">Trois des quatre sont dehors. C'est là que se règlent les problèmes du sous-sol.</div></section><section class="bloc regle"><div class="lbl">Le visible arrive toujours en second</div><p class="r">Une fissure, une tache, un plancher qui gondole : ce sont des résultats.</p><p class="pr">La cause est ailleurs, presque toujours dehors, et presque toujours une histoire d'eau. Le test tient en une phrase : « si je répare seulement ça et que rien d'autre ne change, est-ce que ça revient ? » Si la réponse est oui, vous regardez un résultat.</p></section><section class="bloc card"><div class="lbl">Compréhension</div><h2 class="t">Vrai ou faux ?</h2><p class="consigne">Répondez d'après l'explication de Fernand Trudelle.</p><ol class="ex"><li><span class="q">La fissure se trouve dans le mur de fondation, du côté nord.</span><span class="ligne ligne--court"></span></li><li><span class="q">Elle est apparue après l'achat de la maison.</span><span class="ligne ligne--court"></span></li><li><span class="q">La descente de gouttière se vide à trois mètres du mur.</span><span class="ligne"></span></li><li><span class="q">Fernand veut injecter la fissure avant de toucher au terrain.</span><span class="ligne ligne--court"></span></li><li><span class="q">L'injection sera faite par un spécialiste.</span><span class="ligne ligne--court"></span></li><li><span class="q">Il faut laisser sécher trois ou quatre semaines.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Redis en deux phrases ce que Fernand a trouvé et pourquoi.</p><ul><li>Une phrase pour le résultat, une pour la cause.</li><li>Emploie « parce que » ou « à cause de ».</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<footer><span>B1 · Faire faire des travaux</span><span>Fiche élève</span></footer>
+</body>
+</html>

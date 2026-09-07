@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B4 · Celui qui, celle que — et la question qui entre dans la phrase — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+.plus-papier ol.check li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance B4 · Module 5 · 75 minutes</div>
+    <h1>Celui qui, celle que — et la question qui entre dans la phrase</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Deux outils pour parler dans un bureau : désigner sans répéter, et poser sa question sans la poser.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>employer celui, celle, ceux, celles suivis de qui, que, où ou dont ;</li><li>distinguer « celui que » de « ce que » ;</li><li>transformer une question directe en question indirecte ;</li><li>poser une question avec un mot interrogatif suivi d'un infinitif.</li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Quatre formes, un seul mécanisme</h2><table><thead><tr><th>La forme</th><th>Ce qu'elle reprend</th></tr></thead><tbody><tr><td class="cle">celui</td><td>un nom masculin singulier : le papier, celui que je crains</td></tr><tr><td class="cle">celle</td><td>un nom féminin singulier : la voie, celle qui vous concerne</td></tr><tr><td class="cle">ceux</td><td>un nom masculin pluriel : les documents, ceux qui portent un sceau</td></tr><tr><td class="cle">celles</td><td>un nom féminin pluriel : les preuves, celles qui comptent</td></tr></tbody></table><div class="note">Le genre et le nombre viennent du nom qu'on ne répète pas. En cas de doute, remettez le nom.</div></section><section class="bloc regle"><div class="lbl">Il ne reste jamais seul</div><p class="r">Celui, celle, ceux, celles appellent toujours une suite : qui, que, où, dont, ou « de… ».</p><p class="pr">« Prends celui » n'existe pas en français. Il faut « celui-ci », « celui-là », « celui de Bintou » ou « celui qui… ». Après le pronom, si le verbe n'a pas de sujet, c'est « qui » ; s'il lui manque un complément, c'est « que ».</p></section><section class="bloc card"><div class="lbl">Pratique</div><h2 class="t">Complétez avec celui, celle, ceux ou celles</h2><p class="consigne">Attention à la majuscule quand le mot ouvre la phrase.</p><ol class="ex"><li><span class="q">Il y a trois voies d'admission. ... qui concerne Bintou demande le test.</span><span class="ligne ligne--court"></span></li><li><span class="q">Deux papiers sont arrivés. ... que je crains, c'est l'avis d'une page.</span><span class="ligne ligne--court"></span></li><li><span class="q">Parmi tous ses documents, elle garde ... qui portent un sceau.</span><span class="ligne ligne--court"></span></li><li><span class="q">De toutes les dates, ... dont personne ne se rappelle est la bonne.</span><span class="ligne ligne--court"></span></li><li><span class="q">Deux locaux portent le numéro 118. ... où la rencontre a lieu est au fond.</span><span class="ligne ligne--court"></span></li><li><span class="q">Parmi les préalables, ... qu'il lui manque sont en mathématiques.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Grammaire</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">je ne sais pas celui que je dois faire</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">je ne sais pas ce que je dois faire</p></div></div><div class="note">« Ce que » quand aucun nom n'a été posé avant : c'est une chose sans nom. « Celui que » quand le nom a été dit : le formulaire, celui que je dois remplir. Un nom avant, on prend celui ; pas de nom, on prend ce.</div></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">La question qui entre dans une phrase</h2><table><thead><tr><th>Question directe</th><th>Question indirecte</th></tr></thead><tbody><tr><td>Est-ce que ça compte ?</td><td class="cle">Je me demande si ça compte.</td></tr><tr><td>Est-ce qu'il faut un rendez-vous ?</td><td class="cle">Il demande s'il faut un rendez-vous.</td></tr><tr><td>Qu'est-ce que je dois faire ?</td><td class="cle">Je ne sais pas ce que je dois faire.</td></tr><tr><td>Qu'est-ce qui manque ?</td><td class="cle">J'aimerais savoir ce qui manque.</td></tr><tr><td>Comment est-ce que je m'inscris ?</td><td class="cle">Je ne sais pas comment m'inscrire.</td></tr></tbody></table><div class="note">Trois choses disparaissent : le point d'interrogation, l'inversion du sujet, et « est-ce que ».</div></section><section class="bloc card"><div class="lbl">Pratique</div><h2 class="t">Transformez la question</h2><p class="consigne">Écrivez seulement le mot ou les deux mots qui manquent.</p><ol class="ex"><li><span class="q">Est-ce que mes années comptent ? Je me demande ... mes années comptent.</span><span class="ligne ligne--court"></span></li><li><span class="q">Qu'est-ce que je dois faire ? Je ne sais pas ... je dois faire.</span><span class="ligne ligne--court"></span></li><li><span class="q">Où est-ce que je dépose ça ? Je voudrais savoir ... je dépose ça.</span><span class="ligne ligne--court"></span></li><li><span class="q">Qu'est-ce qui manque à mon dossier ? J'aimerais savoir ... manque.</span><span class="ligne ligne--court"></span></li><li><span class="q">Que faire de mes six ans ? Je ne sais pas ... faire de mes six ans.</span><span class="ligne ligne--court"></span></li><li><span class="q">Est-ce qu'il faut un rendez-vous ? Il demande ... faut un rendez-vous.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écris trois questions que tu poserais à un conseiller, en question indirecte.</p><ul><li>Commence par « Je me demande… », « Je voudrais savoir… », « Je ne sais pas… ».</li><li>Ce sont celles que tu emploieras dans le jeu de rôle.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Celui, celle, ceux, celles — et ce qui suit</h2><section class="bloc card ml"><h3>Désigner sans répéter</h3><p class="mp">« Il y a trois voies d'admission. La voie qui vous concerne demande le test. » On peut dire cela, mais on ne le dit pas : on dit « Celle qui vous concerne ». Le pronom démonstratif reprend un nom déjà posé et lui accroche aussitôt une petite phrase qui le distingue des autres. Sans lui, un entretien d'orientation deviendrait insupportable de répétitions.</p><div class="note">Le programme du niveau 6 nomme la structure : <b>pronom démonstratif + subordonnée relative</b>.</div></section><section class="bloc card ml"><h3>Les quatre formes, et d'où vient leur genre</h3><p class="mp">Le genre et le nombre viennent du nom qu'on ne répète pas.</p><table class="ana"><tr><td>un masculin</td><td class=""><b>celui</b> — le papier → <b>celui</b> que je crains</td></tr><tr><td>un féminin</td><td class="cle"><b>celle</b> — la voie → <b>celle</b> qui vous concerne</td></tr><tr><td>des masculins</td><td class=""><b>ceux</b> — les documents → <b>ceux</b> qui portent un sceau</td></tr><tr><td>des féminins</td><td class=""><b>celles</b> — les preuves → <b>celles</b> qui comptent</td></tr></table><p class="dit"><span class="k">On dit</span> celui que je crains, celle qui vous concerne, ceux qui portent un sceau, celles qui comptent</p><div class="note">Si vous hésitez, remettez le nom : « la voie qui vous concerne ». Le genre saute aux yeux.</div></section><section class="bloc card ml"><h3>Il ne reste jamais seul</h3><p class="mp">Il appelle toujours une suite. Quatre suites possibles.</p><table class="ana"><tr><td>avec qui</td><td class="">celui <b>qui</b> arrive — le verbe qui suit n'a pas de sujet</td></tr><tr><td>avec que</td><td class="cle">celui <b>que</b> j'attends — il manque un complément direct</td></tr><tr><td>avec où</td><td class="">celle <b>où</b> la rencontre a lieu — un lieu ou un moment</td></tr><tr><td>avec dont</td><td class="">celle <b>dont</b> personne ne se rappelle — le verbe se construit avec « de »</td></tr></table><p class="dit"><span class="k">On dit</span> celui qui arrive, celui que j'attends, celle où la rencontre a lieu, celle dont personne ne se rappelle</p><div class="note">Le test qui tranche entre « qui » et « que » : enlevez le pronom et remettez la phrase droite. Verbe sans sujet, c'est « qui » ; verbe sans objet, c'est « que ».</div></section><section class="bloc card ml"><h3>Écoutez les quatre suites</h3><p class="mp">Choisissez la forme et l'exemple.</p><table class="labo"><thead><tr><th>Quelle forme ? · Quel exemple ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">celui + le premier</td><td>Deux papiers sont arrivés. Celui que je crains, c'est l'avis d'une page.<span class="tags">celui que je crains</span></td><td>un papier, complément direct manquant</td></tr><tr><td class="cle">celui + le second</td><td>Deux locaux portent le numéro 118. Celui où la rencontre a lieu est au fond.<span class="tags">celui où la rencontre a lieu</span></td><td>un local, donc un lieu</td></tr><tr><td class="cle">celle + le premier</td><td>Il y a trois voies. Celle qui vous concerne demande le test.<span class="tags">celle qui vous concerne</span></td><td>une voie, sujet manquant</td></tr><tr><td class="cle">celle + le second</td><td>De toutes les dates, celle dont personne ne se rappelle est la bonne.<span class="tags">celle dont personne ne se rappelle</span></td><td>se rappeler de : donc « dont »</td></tr><tr><td class="cle">ceux / celles + le premier</td><td>Parmi tous ses documents, elle garde ceux qui portent un sceau.<span class="tags">ceux qui portent un sceau</span></td><td>des documents, masculin pluriel</td></tr><tr><td class="cle">ceux / celles + le second</td><td>Il y a des preuves qui comptent et celles qui ne comptent pas.<span class="tags">celles qui ne comptent pas</span></td><td>des preuves, féminin pluriel</td></tr></tbody></table><div class="note">Chaque exemple sort du dossier de Bintou : ce sont des phrases que vous entendrez telles quelles.</div></section><section class="bloc card ml"><h3>Deux pièges</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">confondre « celui que » et « ce que »</p><div class="k">Ce qui arrive</div><p class="ph">regarder s'il y a un nom avant</p><p class="px">« Ce que je dois faire » — il n'y a aucun nom, c'est une chose sans nom. « Celui que je dois remplir » — le formulaire a été nommé avant. Un nom avant : celui. Pas de nom : ce.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">laisser le pronom tout seul</p><div class="k">Ce qui arrive</div><p class="ph">toujours lui donner une suite</p><p class="px">« Prends celui. » ❌ En français, il faut « celui-ci », « celui-là », « celui de Bintou » ou « celui qui… ». Seul, le pronom démonstratif n'existe pas.</p></div></div></section><section class="bloc card ml"><h3>Trois questions pour vérifier</h3><p class="mp">Une seule bonne réponse par question.</p><ol class="check"><li><span class="q">« Il y a trois voies. ___ qui vous concerne… »</span><ul class="opts"><li>Celui</li><li>Celle</li></ul></li><li><span class="q">« Je ne sais pas ___ je dois faire. »</span><ul class="opts"><li>ce que</li><li>celui que</li></ul></li><li><span class="q">« Deux locaux portent le même numéro. ___ où la rencontre a lieu… »</span><ul class="opts"><li>Celui</li><li>Celle</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> Celle — Une voie est féminin : celle. · <b>2.</b> ce que — Aucun nom n'a été posé avant : c'est « ce que ». · <b>3.</b> Celui — Un local est masculin : celui.</div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>La question qui entre dans une phrase</h2><section class="bloc card ml"><h3>Pourquoi on ne pose pas toujours sa question directement</h3><p class="mp">Devant quelqu'un qu'on ne connaît pas, une question directe peut sonner sec : « Est-ce que ça compte ? » La même question, glissée dans une phrase — « Je me demande si ça compte » — devient une remarque, et elle se relie à ce qu'on vient de dire. C'est ainsi que parlent les adultes dans un bureau, et c'est ce qui fait qu'un entretien avance au lieu de ressembler à un questionnaire.</p><div class="note">Le programme du niveau 6 demande deux choses ici : l'interrogation indirecte, et la subordonnée infinitive interrogative avec mot interrogatif.</div></section><section class="bloc card ml"><h3>Trois choses disparaissent</h3><p class="mp">La question se range, et elle perd trois signes.</p><table class="ana"><tr><td>Le point d'interrogation</td><td class="">Où est-ce que je dépose ça <b>?</b> → …où je dépose ça<b>.</b></td></tr><tr><td>L'inversion du sujet</td><td class="cle">Quand a-t-il lieu ? → …quand il a lieu.</td></tr><tr><td>« est-ce que »</td><td class="">Où est-ce que je dépose ? → …où je dépose.</td></tr></table><p class="dit"><span class="k">On dit</span> Je voudrais savoir où je dépose mes papiers.</p><div class="note">Écrire « je voudrais savoir où est-ce que je dépose » est la faute la plus fréquente, à tous les niveaux.</div></section><section class="bloc card ml"><h3>Les deux transformations à retenir</h3><p class="mp">Deux formules deviennent deux autres formules, et c'est tout.</p><table class="ana"><tr><td>« est-ce que » devient « si »</td><td class="">Est-ce que ça compte ? → Je me demande <b>si</b> ça compte.</td></tr><tr><td>devant « il », « si » se colle</td><td class="cle">Est-ce qu'il faut un rendez-vous ? → Il demande <b>s'il</b> faut un rendez-vous.</td></tr><tr><td>« qu'est-ce que » devient « ce que »</td><td class="">Qu'est-ce que je fais ? → Je ne sais pas <b>ce que</b> je fais.</td></tr><tr><td>« qu'est-ce qui » devient « ce qui »</td><td class="">Qu'est-ce qui manque ? → J'aimerais savoir <b>ce qui</b> manque.</td></tr></table><p class="dit"><span class="k">On dit</span> Je me demande si ça compte. Je ne sais pas ce que je dois faire.</p><div class="note">Les autres mots interrogatifs — où, quand, comment, pourquoi, combien — ne changent pas du tout.</div></section><section class="bloc card ml"><h3>Avec un infinitif, c'est encore plus court</h3><p class="mp">Quand le sujet est le même des deux côtés, on garde le mot interrogatif et on met l'infinitif.</p><table class="ana"><tr><td>comment</td><td class="">Je ne sais pas <b>comment</b> m'inscrire.</td></tr><tr><td>quoi</td><td class="cle">Je ne sais pas <b>quoi</b> faire de mes six ans.</td></tr><tr><td>où</td><td class="">Je ne sais pas <b>où</b> déposer mes papiers.</td></tr><tr><td>à qui</td><td class="">Je ne sais pas <b>à qui</b> m'adresser.</td></tr></table><p class="dit"><span class="k">On dit</span> Je ne sais pas comment m'inscrire. Je ne sais pas quoi faire de mes six ans.</p><div class="note">Attention : ici c'est <b>quoi</b>, jamais « que ». « Je ne sais pas que faire » existe à l'écrit soutenu, mais personne ne le dit.</div></section><section class="bloc card ml"><h3>Écoutez la question, puis sa forme rangée</h3><p class="mp">Choisissez le mot et l'exemple.</p><table class="labo"><thead><tr><th>Quel mot ? · Quel exemple ?</th><th>Ce qui se dit</th><th>Ce qu’on observe</th></tr></thead><tbody><tr><td class="cle">si + le premier</td><td>Est-ce que ça compte ? Je me demande si ça compte.<span class="tags">Je me demande si ça compte.</span></td><td>« est-ce que » devient « si »</td></tr><tr><td class="cle">si + le second</td><td>Est-ce qu'il faut un rendez-vous ? Il demande s'il faut un rendez-vous.<span class="tags">Il demande s'il faut un rendez-vous.</span></td><td>devant « il », si se colle</td></tr><tr><td class="cle">ce que / ce qui + le premier</td><td>Qu'est-ce que je dois faire ? Je ne sais pas ce que je dois faire.<span class="tags">Je ne sais pas ce que je dois faire.</span></td><td>« qu'est-ce que » devient « ce que »</td></tr><tr><td class="cle">ce que / ce qui + le second</td><td>Qu'est-ce qui manque à mon dossier ? J'aimerais savoir ce qui manque à mon dossier.<span class="tags">J'aimerais savoir ce qui manque.</span></td><td>« qu'est-ce qui » devient « ce qui »</td></tr><tr><td class="cle">avec un infinitif + le premier</td><td>Comment est-ce que je m'inscris ? Je ne sais pas comment m'inscrire.<span class="tags">Je ne sais pas comment m'inscrire.</span></td><td>même sujet des deux côtés : infinitif</td></tr><tr><td class="cle">avec un infinitif + le second</td><td>Que faire de mes six ans de pharmacie ? Je ne sais pas quoi faire de mes six ans.<span class="tags">Je ne sais pas quoi faire.</span></td><td>c'est « quoi », jamais « que »</td></tr></tbody></table><div class="note">Ces huit phrases suffisent pour tout un rendez-vous. Apprenez-les comme des formules.</div></section><section class="bloc card ml"><h3>Six phrases toutes faites, pour un bureau</h3><p class="mp">À gauche ce que vous dites, à droite ce que ça fait.</p><table class="ex2"><tr><td>Je me demande si mes années comptent.</td><td>poser une question sans avoir l'air d'exiger une réponse</td></tr><tr><td>Je voudrais savoir où je dépose mes papiers.</td><td>demander une information précise, poliment</td></tr><tr><td>Je ne sais pas ce que je dois faire.</td><td>dire qu'on est perdu, sans se plaindre</td></tr><tr><td>J'aimerais savoir ce qui manque à mon dossier.</td><td>obtenir une liste plutôt qu'un avis</td></tr><tr><td>Pouvez-vous me dire quand le test a lieu ?</td><td>demander une date, en laissant l'autre chercher</td></tr><tr><td>Je ne sais pas comment m'inscrire.</td><td>ouvrir la porte à une explication complète</td></tr></table></section><section class="bloc card ml"><h3>Deux pièges</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">garder « est-ce que » dans la phrase</p><div class="k">Ce qui arrive</div><p class="ph">le remplacer par « si »</p><p class="px">« Je voudrais savoir est-ce que ça compte. » ❌ On dit « Je voudrais savoir si ça compte ». « Est-ce que » ne survit jamais à l'entrée dans une phrase.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">écrire « si il »</p><div class="k">Ce qui arrive</div><p class="ph">écrire « s'il »</p><p class="px">Devant « il » et « ils », « si » se colle : <b>s'il</b>, <b>s'ils</b>. Mais devant « elle », il ne change pas : « si elle ».</p></div></div></section></section></div>
+<footer><span>B4 · Choisir la suite</span><span>Fiche élève</span></footer>
+</body>
+</html>

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B3 · Ce que la page dit avant ses phrases — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+.plus-papier ol.check li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance B3 · Module 8 · 75 minutes</div>
+    <h1>Ce que la page dit avant ses phrases</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Trois secondes de survol donnent la carte du texte. Sans elle, on lit sans savoir où l'on va.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>nommer les six repères d'une page Web officielle ;</li><li>dire ce que chacun apprend avant la lecture ;</li><li>juger de la fiabilité d'une page en deux indices ;</li><li>appliquer les mêmes repères à un texte qu'on écrit soi-même.</li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Six repères, et ce qu'ils apprennent</h2><table><thead><tr><th>Le repère</th><th>Ce qu'il vous dit</th></tr></thead><tbody><tr><td class="cle">le titre</td><td>de quoi ça parle, et si vous êtes au bon endroit</td></tr><tr><td class="cle">la mise à jour</td><td>si ce que vous lisez tient encore</td></tr><tr><td class="cle">les intertitres</td><td>combien d'étapes, et dans quel ordre</td></tr><tr><td class="cle">l'encadré</td><td>ce que les gens oublient le plus souvent</td></tr></tbody></table><div class="note">Le gras marque le terme exact à recopier dans vos papiers.</div></section><section class="bloc regle"><div class="lbl">Le gras n'est pas une décoration</div><p class="r">Dans une fiche de droits, il marque les mots qui ont une valeur précise.</p><p class="pr">« Motif sérieux », « dépenses raisonnables », « réputé avoir consenti » : ce sont les mots à recopier tels quels dans un avis ou un courriel. Les remplacer par un synonyme affaiblit la phrase — et parfois change ce qu'elle demande.</p></section><section class="bloc"><div class="lbl">Fiabilité</div><h2 class="t">Deux indices avant de faire confiance</h2><div class="grid"><div class="card"><h3>Qui écrit ?</h3><p>Un organisme public, un cabinet, un forum, une personne ? Une page sans nom d'auteur n'est pas fausse — elle est seulement invérifiable.</p></div><div class="card"><h3>Depuis quand ?</h3><p>Une date de mise à jour ancienne n'est pas rédhibitoire, mais elle demande vérification : les règles de logement changent.</p></div><div class="card"><h3>Le doute utile</h3><p>Deux pages qui se contredisent, c'est normal : l'une est peut-être périmée. Le téléphone tranche en quatre minutes, gratuitement.</p></div><div class="card"><h3>La page de ce module</h3><p>Elle imite la forme d'une fiche officielle et elle est écrite pour le cours. Pour un vrai dossier, on ouvre celle du Tribunal.</p></div></div></section><section class="bloc card"><div class="lbl">Pratique</div><h2 class="t">Quel repère répond à la question ?</h2><p class="consigne">Dites quel élément de la page vous renseigne.</p><ol class="ex"><li><span class="q">Suis-je au bon endroit ?</span><span class="ligne ligne--court"></span></li><li><span class="q">Est-ce encore à jour ?</span><span class="ligne"></span></li><li><span class="q">Combien y a-t-il d'étapes ?</span><span class="ligne"></span></li><li><span class="q">Quel mot dois-je recopier dans mon avis ?</span><span class="ligne ligne--court"></span></li><li><span class="q">Qu'est-ce que je ne dois surtout pas manquer ?</span><span class="ligne ligne--court"></span></li><li><span class="q">Où en lire plus long sur ce point ?</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc card"><div class="lbl">Retour</div><h2 class="t">Les mêmes repères, quand c'est vous qui écrivez</h2><table><thead><tr><th>Dans la page</th><th>Dans votre courriel</th></tr></thead><tbody><tr><td class="cle">le titre</td><td>l'objet du message</td></tr><tr><td class="cle">les intertitres</td><td>un paragraphe par idée</td></tr><tr><td class="cle">le gras</td><td>les dates et les noms</td></tr><tr><td class="cle">l'encadré</td><td>la demande, seule, à la fin</td></tr></tbody></table></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écrivez l'objet d'un courriel qui annonce une sous-location.</p><ul><li>Cinq ou six mots, sans verbe conjugué.</li><li>Quelqu'un doit comprendre sans ouvrir le message.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Ce que la mise en page dit avant les mots</h2><section class="bloc card ml"><h3>On lit une page avant de la lire</h3><p class="mp">Avant même la première phrase, une page vous a déjà appris quatre choses : de quoi elle traite, quand elle a été écrite, combien d'étapes elle contient, et ce qu'elle juge le plus important. Tout cela se voit en trois secondes, sans lire un mot. C'est un savoir du programme au niveau 6, et c'est celui qui fait gagner le plus de temps.</p><div class="note">Le programme l'appelle « tenir compte de la présentation matérielle et de la mise en page ». Il vaut pour ce que vous lisez et pour ce que vous écrivez.</div></section><section class="bloc card ml"><h3>Les six repères d'une page Web officielle</h3><p class="mp">Ils sont presque toujours là, et toujours à la même place.</p><table class="ana"><tr><td>Le titre, tout en haut</td><td class="">de quoi ça parle — et si vous êtes au bon endroit</td></tr><tr><td>La date de mise à jour</td><td class="cle">si ce que vous lisez tient encore</td></tr><tr><td>Les intertitres numérotés</td><td class="">combien d'étapes, et dans quel ordre</td></tr><tr><td>Le gras</td><td class="">le mot exact à employer dans vos papiers</td></tr><tr><td>L'encadré</td><td class="">ce que l'auteur ne veut surtout pas que vous manquiez</td></tr><tr><td>Le lien souligné</td><td class="">qu'une autre page traite le point plus au long</td></tr></table><p class="dit"><span class="k">On dit</span> le titre, la date, les intertitres, le gras, l'encadré, le lien</p><div class="note">Le gras n'est pas une décoration : dans une fiche de droits, il marque les termes qui ont une valeur précise. Ce sont ceux à recopier tels quels dans un avis.</div></section><section class="bloc card ml"><h3>Les mêmes repères, quand c'est vous qui écrivez</h3><p class="mp">Un courriel bien découpé se lit en quinze secondes ; le même texte en un bloc se lit deux fois, ou pas du tout.</p><table class="ana"><tr><td>Un objet</td><td class="">ce que votre titre est à la page : de quoi il s'agit</td></tr><tr><td>Un paragraphe par idée</td><td class="cle">trois idées, trois paragraphes, une ligne blanche entre eux</td></tr><tr><td>Une date par fait</td><td class="">« le 18 novembre », jamais « l'autre jour »</td></tr><tr><td>Une demande à la fin</td><td class="">le lecteur pressé lit le début et la fin</td></tr></table><p class="dit"><span class="k">On dit</span> un objet, un paragraphe par idée, une date par fait, une demande à la fin</p><div class="note">C'est aussi la deuxième attente de fin de cours du niveau : « rédiger un court texte en organisant ses idées à l'aide de paragraphes ».</div></section><section class="bloc card ml"><h3>Le même contenu, deux mises en page</h3><p class="mp">À gauche ce qui décourage, à droite ce qui se lit.</p><table class="ex2"><tr><td>un seul bloc de douze lignes</td><td>trois paragraphes séparés</td></tr><tr><td>« bonjour j'ai une question »</td><td>un objet : « Avis de sous-location — logement 2 »</td></tr><tr><td>« l'autre jour je vous ai parlé »</td><td>« le 18 novembre, je vous ai remis »</td></tr><tr><td>la demande noyée au milieu</td><td>la demande seule, au dernier paragraphe</td></tr><tr><td>tout au même niveau</td><td>les dates et les noms en gras</td></tr><tr><td>aucune signature</td><td>le nom, le logement, le téléphone</td></tr></table></section><section class="bloc card ml"><h3>Deux habitudes à défaire</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">commencer à lire par la première ligne</p><div class="k">Ce qui arrive</div><p class="ph">balayer les intertitres d'abord</p><p class="px">Trois secondes de survol donnent la carte du texte. Sans elle, vous lisez sans savoir où vous allez, et vous ne voyez pas venir le délai.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">croire qu'un texte long est un texte sérieux</p><div class="k">Ce qui arrive</div><p class="ph">juger sur le découpage</p><p class="px">Un texte bien découpé est un texte dont l'auteur a réfléchi à ce qu'il voulait dire. Un bloc compact cache souvent une pensée en désordre — y compris la vôtre.</p></div></div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Lire une page de droits sans s'y perdre</h2><section class="bloc card ml"><h3>Un texte qui ne parle de personne, et qui parle de vous</h3><p class="mp">Une fiche de droits est écrite pour des milliers de situations à la fois. Elle dit « le locataire », jamais « vous » ; elle dit « le cas échéant », « il est réputé », « de plein droit ». Cette langue-là n'est pas faite pour vous décourager : elle est faite pour être vraie dans tous les cas. Votre travail est de la traduire en une phrase qui commence par « moi, je ».</p><div class="note">C'est l'intention unique de la situation, au programme du niveau 6 : « s'informer sur ses droits et ses obligations en consultant un site Web ».</div></section><section class="bloc card ml"><h3>Une fiche suit toujours le même ordre</h3><p class="mp">Quatre morceaux, dans cet ordre. Le connaître fait gagner la moitié du temps de lecture.</p><table class="ana"><tr><td>1. Ce que c'est</td><td class="">une définition, et souvent la distinction avec ce qui lui ressemble</td></tr><tr><td>2. Ce que vous devez faire</td><td class="">l'action, la forme, le contenu obligatoire</td></tr><tr><td>3. Le délai</td><td class="cle">le nombre de jours, et à partir de quand il court</td></tr><tr><td>4. Ce qui arrive après</td><td class="">le refus, les frais, les recours</td></tr></table><p class="dit"><span class="k">On dit</span> la définition, l'obligation, le délai, la suite</p><div class="note">Le troisième morceau est celui qu'on saute quand on lit vite, et c'est le seul qui a une date. Commencez par lui si vous êtes pressé.</div></section><section class="bloc card ml"><h3>Quatre tournures à décoder</h3><p class="mp">Elles reviennent dans toutes les fiches, et chacune a une traduction simple.</p><table class="ana"><tr><td>« est réputé avoir consenti »</td><td class="">la loi considère qu'il a dit oui, même s'il n'a rien dit</td></tr><tr><td>« doit faire connaître »</td><td class="cle">il est obligé de le dire, et de le dire à vous</td></tr><tr><td>« peut exiger »</td><td class="">il a le droit de demander — pas celui d'obtenir n'importe quoi</td></tr><tr><td>« demeure tenu de »</td><td class="">ça reste sur vos épaules, malgré tout le reste</td></tr></table><p class="dit"><span class="k">On dit</span> est réputé avoir consenti, doit faire connaître, peut exiger, demeure tenu de</p><div class="note">« Peut » et « doit » ne se lisent jamais assez lentement. Un texte de droits ne les emploie jamais l'un pour l'autre.</div></section><section class="bloc card ml"><h3>La fiche, traduite en « moi, je »</h3><p class="mp">À gauche la ligne de la page, à droite ce qu'elle veut dire pour Farida.</p><table class="ex2"><tr><td>Le locataire doit aviser le locateur par écrit</td><td>Je dois écrire, pas seulement en parler</td></tr><tr><td>L'avis indique le nom et l'adresse de la personne</td><td>Je dois avoir trouvé quelqu'un avant d'écrire</td></tr><tr><td>Quinze jours à compter de la réception</td><td>Mon délai part du jour où il l'a eu en main</td></tr><tr><td>Il est réputé avoir consenti</td><td>Son silence me dit oui</td></tr><tr><td>Il ne peut refuser sans un motif sérieux</td><td>Un « je n'aime pas ça » ne tient pas</td></tr><tr><td>Il doit faire connaître par écrit les motifs</td><td>J'ai droit à une réponse écrite qui explique</td></tr><tr><td>Le remboursement des dépenses raisonnables</td><td>Ses frais réels, oui ; un montant inventé, non</td></tr><tr><td>Le locataire demeure tenu de ses obligations</td><td>Je reste responsable du loyer, même à Sept-Îles</td></tr></table></section><section class="bloc card ml"><h3>Trois questions de lecture</h3><ol class="check"><li><span class="q">Dans une fiche de droits, le délai se trouve le plus souvent…</span><ul class="opts"><li>au début</li><li>au milieu</li></ul></li><li><span class="q">« Il est réputé avoir consenti » veut dire…</span><ul class="opts"><li>il a signé</li><li>son silence vaut oui</li></ul></li><li><span class="q">Une fiche officielle dit « vous »…</span><ul class="opts"><li>souvent</li><li>presque jamais</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> au milieu — Le début définit, la fin donne les recours. Le chiffre est entre les deux. · <b>2.</b> son silence vaut oui — C'est la loi qui décide de la valeur du silence. · <b>3.</b> presque jamais — Elle dit « le locataire ». Traduisez-la vous-même en « moi, je ».</div></section><section class="bloc card ml"><h3>Trois façons de mal lire une fiche</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">lire seulement le premier paragraphe</p><div class="k">Ce qui arrive</div><p class="ph">descendre jusqu'au délai</p><p class="px">Le premier paragraphe définit. Il ne dit jamais ce qu'il faut faire ni quand. C'est l'erreur que Gilles met en garde dès le premier dialogue.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">prendre une page trouvée n'importe où pour une source</p><div class="k">Ce qui arrive</div><p class="ph">regarder qui écrit et depuis quand</p><p class="px">Une page de blogue, un forum, une vidéo peuvent avoir raison — ou dater d'avant un changement. La date de mise à jour et le nom de l'organisme sont la première chose à regarder.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">croire que la fiche règle votre cas</p><div class="k">Ce qui arrive</div><p class="ph">téléphoner pour la partie qui vous concerne</p><p class="px">Une fiche donne la règle générale. Le cas particulier — le vôtre — se vérifie au téléphone, gratuitement.</p></div></div></section></section></div>
+<footer><span>B3 · Six mois ailleurs</span><span>Fiche élève</span></footer>
+</body>
+</html>

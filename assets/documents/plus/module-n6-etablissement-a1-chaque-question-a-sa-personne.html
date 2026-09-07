@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A1 · Chaque question a sa personne — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance A1 · Module 5 · 75 minutes</div>
+    <h1>Chaque question a sa personne</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Bintou termine sa francisation en février et ne sait pas ce qui vient après. Au comptoir, elle apprend une chose que personne ne dit à voix haute : ici, tout finit en papier.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>nommer les personnes d'un établissement et dire ce que chacune peut faire ;</li><li>distinguer ce qui se règle au comptoir de ce qui demande un rendez-vous ;</li><li>comprendre pourquoi une chose dite ne compte pas tant qu'elle n'est pas écrite ;</li><li>employer les cinq premiers mots du dossier avec leur article.</li></ol></section><section class="bloc card"><div class="lbl">Dialogue · 1 de 3</div><h2 class="t">Ce n'est pas à moi qu'il faut demander ça</h2><p class="consigne">Écouter d'abord, diapositive masquée.</p><div class="rep rep--key"><div class="qui">BINTOU</div><div>Bonjour. Je m'excuse, je ne sais pas si c'est ici qu'il faut demander ça.</div></div><div class="rep rep--key"><div class="qui">RÉAL</div><div>Bonjour. Demandez toujours, on verra bien. Vous êtes en francisation ?</div></div><div class="rep rep--key"><div class="qui">BINTOU</div><div>Oui, au local 214, le soir. Je finis mon dernier cours en février et je voudrais savoir ce que je fais après.</div></div><div class="rep rep--key"><div class="qui">RÉAL</div><div>Ah. Ça, c'est une belle question, et ce n'est pas à moi qu'il faut la poser.</div></div></section><section class="bloc card"><div class="lbl">Dialogue · 2 de 3</div><h2 class="t">Choisir un programme, c'est autre chose</h2><div class="rep rep--key"><div class="qui">RÉAL</div><div>Des inscriptions, oui. Des dossiers, des relevés de notes, des changements d'horaire : tout ce qui est papier passe par le comptoir. Mais choisir un programme, c'est autre chose.</div></div><div class="rep rep--key"><div class="qui">BINTOU</div><div>L'orientation, c'est une personne ?</div></div><div class="rep rep--key"><div class="qui">RÉAL</div><div>C'est une personne, oui. Son métier, c'est de s'asseoir avec quelqu'un et de regarder avec lui ce qui est possible.</div></div><div class="rep rep--key"><div class="qui">BINTOU</div><div>Et il décide si je peux entrer dans un programme ?</div></div></section><section class="bloc card"><div class="lbl">Dialogue · 3 de 3</div><h2 class="t">Toujours par écrit</h2><div class="rep rep--key"><div class="qui">RÉAL</div><div>Non. Personne ne décide en parlant. La décision arrive après, par écrit, du centre de formation professionnelle.</div></div><div class="rep rep--key"><div class="qui">BINTOU</div><div>Par écrit.</div></div><div class="rep rep--key"><div class="qui">RÉAL</div><div>Toujours par écrit. Ici, une chose qui compte finit toujours en papier : un avis, une lettre, une ligne dans votre dossier. Ce qui se dit au comptoir ne compte pas.</div></div><div class="rep rep--key"><div class="qui">BINTOU</div><div>Et mon enseignant, monsieur Béliveau, il sert à quoi là-dedans ?</div></div></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Quatre personnes, quatre pouvoirs</h2><table><thead><tr><th>La personne</th><th>Ce qu'elle peut faire pour toi</th></tr></thead><tbody><tr><td class="cle">Au comptoir</td><td>recevoir les papiers, ouvrir un dossier, donner un relevé de notes</td></tr><tr><td class="cle">À l'orientation</td><td>expliquer, calculer tes préalables, nommer ce qui bloque</td></tr><tr><td class="cle">Ton enseignant</td><td>dire où tu en es en français ; son avis pèse, il ne tranche pas</td></tr><tr><td class="cle">La direction</td><td>décider, et sa décision arrive toujours par écrit</td></tr></tbody></table><div class="note">Aucune de ces personnes ne peut faire le travail d'une autre. Poser sa question au mauvais endroit fait perdre une semaine.</div></section><section class="bloc regle"><div class="lbl">Ce qui compte finit en papier</div><p class="r">Une chose dite au comptoir n'engage personne ; une ligne au dossier engage l'établissement.</p><p class="pr">Ce n'est pas de la mauvaise volonté. La personne qui vous a parlé changera de poste, partira, oubliera. Le dossier, lui, reste. Un adulte qui sait demander un écrit avance deux fois plus vite qu'un adulte qui parle bien.</p></section><section class="bloc card"><div class="lbl">Vocabulaire</div><h2 class="t">Les cinq premiers mots, avec leur article</h2><table class="voc"><tbody><tr><td class="mot">une conseillère d'orientation</td><td class="def">La personne dont le métier est de regarder avec toi quels programmes te sont ouverts.</td></tr><tr><td class="mot">un dossier scolaire</td><td class="def">L'ensemble des papiers qu'un établissement garde sur toi et qui te suit.</td></tr><tr><td class="mot">un relevé de notes</td><td class="def">Le papier officiel qui montre les cours réussis et le résultat de chacun.</td></tr><tr><td class="mot">l'enseignement individualisé</td><td class="def">Une façon d'apprendre où chacun avance à son rythme dans son cahier.</td></tr><tr><td class="mot">une matière</td><td class="def">Un domaine d'étude à part, avec ses propres cours et ses unités.</td></tr></tbody></table></section><section class="bloc card"><div class="lbl">Compréhension</div><h2 class="t">Vrai ou faux ?</h2><p class="consigne">Répondez d'après la conversation de Bintou et de Réal.</p><ol class="ex"><li><span class="q">Bintou termine sa francisation en février.</span><span class="ligne ligne--court"></span></li><li><span class="q">Tout ce qui est papier passe par le comptoir de l'accueil.</span><span class="ligne ligne--court"></span></li><li><span class="q">C'est le comptoir qui choisit le programme d'un élève.</span><span class="ligne"></span></li><li><span class="q">Le conseiller d'orientation décide lui-même de l'admission.</span><span class="ligne"></span></li><li><span class="q">Réal conseille d'amener son enseignant à la rencontre.</span><span class="ligne ligne--court"></span></li><li><span class="q">Il faut n'apporter que les papiers qu'on juge utiles.</span><span class="ligne"></span></li></ol></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Quelle question voudrais-tu poser, et à qui la poserais-tu ?</p><ul><li>Une phrase suffit, et elle peut commencer par « je me demande ».</li><li>Nomme la personne : le comptoir, l'orientation, ton enseignant.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<footer><span>A1 · Choisir la suite</span><span>Fiche élève</span></footer>
+</body>
+</html>

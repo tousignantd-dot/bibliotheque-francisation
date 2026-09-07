@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>D2 · Les petits mots qui tiennent les idées ensemble — Fiche élève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHE ÉLÈVE · IMPRESSION LETTRE, NOIR ET BLANC
+   ───────────────────────────────────────────────────────────────
+   Aucune couleur : ces fiches sont photocopiées en noir et blanc.
+   Toute la hiérarchie passe par la GRAISSE, les FILETS et les MOTS.
+   C'est d'ailleurs la règle du système de design poussée à son
+   terme : « jamais d'information portée par la couleur seule ».
+
+   Les gris viennent des neutres du système (ink-900 à ink-400),
+   qui sont déjà quasi neutres. Les filets sont volontairement plus
+   sombres qu'à l'écran : une photocopieuse efface tout ce qui est
+   plus clair que 15 % de noir.
+   ═══════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#FFFFFF;
+  --tint:#F0F0EE;          /* aplat le plus clair encore visible en photocopie */
+  --line:#C9C9C6;          /* filet fin */
+  --rule:#17181A;          /* filet structurant */
+  --ink:#17181A;           /* titres */
+  --body:#2B2E30;          /* texte courant, un cran plus sombre qu'à l'écran */
+  --soft:#4B4F52;          /* texte secondaire */
+  --muted:#5E6165;         /* sur-titres, méta */
+}
+html{background:#BBBBBB}
+body{
+  font-family:'Nunito','Trebuchet MS',sans-serif;
+  font-size:11.5pt; line-height:1.5; color:var(--body);
+  background:var(--paper);
+  width:215.9mm;                    /* 8,5 po — format lettre */
+  margin:0 auto; padding:14mm 15mm 16mm;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+h1,h2,h3{color:var(--ink); line-height:1.2; letter-spacing:-0.01em}
+
+/* ── En-tête ── */
+.hdr{border-bottom:2.5px solid var(--rule); padding-bottom:8px; margin-bottom:14px;
+     display:flex; align-items:flex-end; gap:14px}
+.hdr-l{flex:1}
+.eyebrow{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+         letter-spacing:.12em; color:var(--muted)}
+.hdr h1{font-size:22pt; font-weight:900; margin-top:3px}
+.hdr-r{flex-shrink:0; display:flex; gap:10px; align-items:flex-end;
+       font-size:9.5pt; font-weight:800; text-transform:uppercase;
+       letter-spacing:.08em; color:var(--muted); padding-bottom:2px}
+.nomline{display:inline-block; border-bottom:1.5px solid var(--rule);
+         height:6mm; vertical-align:bottom; margin-left:5px}
+.nomline--nom{width:48mm} .nomline--date{width:26mm}
+.chapeau{font-size:12pt; font-weight:600; color:var(--soft); margin-bottom:16px}
+
+/* ── Blocs ── */
+.bloc{break-inside:avoid; page-break-inside:avoid; margin-bottom:13px}
+.card{border:1px solid var(--line); border-radius:12px; padding:11px 14px 12px;
+      background:var(--paper)}
+.lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+     letter-spacing:.12em; color:var(--muted); margin-bottom:5px}
+h2.t{font-size:15pt; font-weight:900; margin-bottom:7px}
+.consigne{font-size:11pt; font-weight:600; color:var(--soft); margin-bottom:8px}
+
+/* ── Objectifs et exercices : pastille en cerne, jamais en aplat ── */
+ol.obj,ol.ex{list-style:none}
+ol.obj{counter-reset:o} ol.ex{counter-reset:e}
+ol.obj li,ol.ex li{position:relative; padding-left:9mm; font-weight:600}
+ol.obj li{counter-increment:o; margin-bottom:6px}
+ol.ex li{counter-increment:e; margin-bottom:9px; break-inside:avoid}
+ol.obj li::before,ol.ex li::before{
+  position:absolute; left:0; top:0; width:6mm; height:6mm; border-radius:50%;
+  border:1.5px solid var(--rule); color:var(--ink);
+  font-size:9.5pt; font-weight:800;
+  display:flex; align-items:center; justify-content:center}
+ol.obj li::before{content:counter(o)}
+ol.ex li::before{content:counter(e)}
+
+/* ── Dialogue ── */
+.rep{display:flex; gap:10px; padding:4px 0; border-top:1px solid var(--line)}
+.rep:first-of-type{border-top:0}
+.rep--key{background:var(--tint); border-radius:8px; padding:5px 8px;
+          border-top:0; margin:2px 0}
+.qui{flex:0 0 30mm; font-weight:800; color:var(--ink); font-size:10.5pt}
+
+/* ── Règle : encadrée au filet épais, c'est elle qu'on repère de loin ── */
+.regle{border:2.5px solid var(--rule); border-radius:12px; padding:12px 14px}
+.regle .lbl{color:var(--ink)}
+.regle p.r{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.regle p.pr{margin-top:7px; font-weight:600; color:var(--soft)}
+
+/* ── Tableau ── */
+table{width:100%; border-collapse:collapse}
+th{font-size:9.5pt; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
+   color:var(--muted); text-align:left; padding:0 8px 5px 0;
+   border-bottom:1.5px solid var(--rule)}
+td{padding:6px 8px 6px 0; border-top:1px solid var(--line); vertical-align:top;
+   font-weight:600}
+td.cle{font-weight:900; color:var(--ink)}   /* la colonne clé : en gras, pas en couleur */
+.note{margin-top:8px; font-size:10.5pt; font-weight:600; color:var(--soft);
+      background:var(--tint); border-radius:9px; padding:8px 11px}
+
+/* ── Cartes ── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+.grid .card h3{font-size:11.5pt; font-weight:900; color:var(--ink); margin-bottom:3px}
+.grid .card p{font-size:11pt}
+
+/* ── Piège : le filet distingue les deux colonnes, pas la couleur ──
+   À gauche, un filet TIRETÉ — ce qui ne tient pas.
+   À droite, un filet PLEIN et épais — ce qu'il faut retenir.
+   Les deux intitulés disent la même chose en mots.                */
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.duo>div{border-radius:12px; padding:10px 13px}
+.duo .no{border:1.5px dashed var(--muted)}
+.duo .ok{border:2.5px solid var(--rule); background:var(--tint)}
+.duo .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+        letter-spacing:.1em; margin-bottom:4px; color:var(--muted)}
+.duo .ok .k{color:var(--ink)}
+.duo p.ph{font-size:12pt; font-weight:800; color:var(--ink); line-height:1.3}
+.duo .no p.ph{font-weight:600; font-style:italic; color:var(--soft)}
+
+/* ── Vocabulaire ── */
+.voc{width:100%; border-collapse:collapse}
+.voc td{border-top:1px solid var(--line); padding:6px 8px 6px 0}
+.voc td.mot{width:38%; font-weight:900; color:var(--ink)}
+.voc td.def{color:var(--soft)}
+
+/* ── Zones de réponse ── */
+.ligne{display:block; border-bottom:1px dotted #8E8E8A; height:8mm; margin-top:2px}
+.ligne--court{width:55%}
+
+/* ── Billet de sortie ── */
+.billet{border:2.5px solid var(--rule); border-radius:12px; padding:13px 15px}
+.billet .k{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+           letter-spacing:.12em; color:var(--ink); margin-bottom:4px}
+.billet p.c{font-size:14pt; font-weight:900; color:var(--ink); line-height:1.3}
+.billet ul{list-style:none; margin-top:7px}
+.billet li{font-weight:600; color:var(--soft); margin-bottom:3px}
+
+/* ── Pied ── */
+footer{margin-top:16px; padding-top:7px; border-top:1px solid var(--line);
+       font-size:9.5pt; font-weight:700; color:var(--muted);
+       display:flex; justify-content:space-between}
+
+/* ── Impression ── */
+@page{size:8.5in 11in; margin:14mm 15mm}
+@media print{
+  html{background:#FFFFFF}
+  body{width:auto; padding:0}
+  .bloc{break-inside:avoid; page-break-inside:avoid}
+  h2.t,.lbl{break-after:avoid; page-break-after:avoid}
+}
+</style>
+<style>
+/* ── « En apprendre plus », descendu dans la fiche ────────────────────
+   Porté sous .plus-papier : la fiche a ses propres .card, .note, .k et
+   .cle, et un CSS à plat aurait repeint ses blocs. */
+.plus-papier{margin-top:10px; border-top:2.5px solid var(--rule); padding-top:9px}
+.plus-papier > .lbl{font-size:9.5pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-bottom:6px}
+.plus-papier > .chapeau{font-weight:600; color:var(--soft); margin-bottom:9px;
+  font-size:10.5pt}
+.plus-papier .ml{margin-bottom:8px; break-inside:avoid; page-break-inside:avoid}
+.plus-papier .ml > .eyebrow{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted)}
+.plus-papier .ml > h2{font-size:14pt; font-weight:900; color:var(--ink);
+  margin:2px 0 7px}
+.plus-papier h3{font-size:12.5pt; font-weight:900; color:var(--ink); margin-bottom:5px}
+.plus-papier p.mp{font-weight:600; margin-bottom:7px}
+.plus-papier .note{margin-top:6px}
+.plus-papier table{width:100%; border-collapse:collapse}
+.plus-papier table.ana td, .plus-papier table.ex2 td, .plus-papier table.labo td{
+  padding:5px 8px 5px 0; border-top:1px solid var(--line); vertical-align:top;
+  font-weight:600}
+.plus-papier table.ana td:first-child, .plus-papier table.ex2 td:nth-child(2),
+.plus-papier table.labo td:first-child{color:var(--muted); font-size:10pt; font-weight:800}
+.plus-papier table.ana td.cle, .plus-papier table.labo td.cle{
+  font-weight:900; color:var(--ink); font-size:11pt}
+.plus-papier table.labo th{font-size:9pt; text-align:left; color:var(--muted);
+  font-weight:800; padding-bottom:3px}
+.plus-papier .tags{display:block; font-size:10pt; font-weight:800; color:var(--muted);
+  margin-top:2px}
+.plus-papier .dit{margin-top:8px; background:var(--tint); border-radius:9px;
+  padding:7px 11px; font-weight:700; color:var(--ink)}
+.plus-papier .dit .k{font-size:9pt; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-right:6px}
+.plus-papier .pieges{display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px}
+.plus-papier .pg{border:1.5px dashed var(--muted); border-radius:12px; padding:9px 11px}
+.plus-papier .pg .k{font-size:9pt; font-weight:800; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--muted); margin-top:5px}
+.plus-papier .pg .k:first-child{margin-top:0}
+.plus-papier .pg .ph{font-weight:800; color:var(--ink); font-size:10.5pt}
+.plus-papier .pg .px{margin-top:6px; font-weight:600; font-size:10pt; color:var(--soft)}
+.plus-papier ol.check{list-style:none; counter-reset:c; margin:0; padding:0}
+.plus-papier ol.check li{counter-increment:c; position:relative; padding-left:9mm;
+  margin-bottom:8px; break-inside:avoid}
+.plus-papier ol.check li::before{content:counter(c); position:absolute; left:0; top:0;
+  width:6mm; height:6mm; border-radius:50%; border:1.5px solid var(--rule);
+  font-size:9.5pt; font-weight:800; color:var(--ink); display:flex;
+  align-items:center; justify-content:center}
+.plus-papier ol.check .q{font-weight:800; color:var(--ink)}
+.plus-papier ul.opts{list-style:none; margin:3px 0 0; padding:0; display:flex;
+  gap:10px; flex-wrap:wrap}
+.plus-papier ul.opts li{font-weight:600; border:1px solid var(--line);
+  border-radius:999px; padding:2px 11px; font-size:10.5pt}
+.plus-papier .reps{margin-top:8px; border-top:1px solid var(--line); padding-top:6px;
+  font-size:10pt; font-weight:600; color:var(--soft)}
+@media print{ .plus-papier{break-before:auto} }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="eyebrow">Séance D2 · Module 4 · 75 minutes</div>
+    <h1>Les petits mots qui tiennent les idées ensemble</h1>
+  </div>
+  <div class="hdr-r"><span>Nom<span class="nomline nomline--nom"></span></span><span>Date<span class="nomline nomline--date"></span></span></div>
+</header>
+<p class="chapeau">Un connecteur annonce ce qui s'en vient avant que ça arrive. Celui qui les lit avance plus vite et se trompe moins.</p>
+<section class="bloc card"><div class="lbl">Objectifs</div><h2 class="t">À la fin, je serai capable de…</h2><ol class="obj"><li>reconnaître les quatre familles de connecteurs ;</li><li>deviner la suite d'une phrase à partir du connecteur qui l'annonce ;</li><li>lire le tiret et les guillemets sans se tromper de sens ;</li><li>connaître le plan d'un courriel qui informe du contenu d'un article.</li></ol></section><section class="bloc card"><div class="lbl">Analyse</div><h2 class="t">Quatre familles de connecteurs</h2><table><thead><tr><th>La famille</th><th>Les mots, et ce qu'ils annoncent</th></tr></thead><tbody><tr><td class="cle">Ajouter</td><td>de plus, d'ailleurs : la suite va dans le même sens</td></tr><tr><td class="cle">Opposer</td><td>pourtant, cependant : la suite va contre</td></tr><tr><td class="cle">Expliquer</td><td>car, parce que, en effet : la suite dit pourquoi</td></tr><tr><td class="cle">Conclure</td><td>donc, c'est pourquoi : la suite est le résultat</td></tr><tr><td class="cle">Situer</td><td>d'abord, ensuite, depuis, au bout de : la suite se place</td></tr></tbody></table><div class="note">Ainsi appartient à deux familles : il conclut et il illustre.</div></section><section class="bloc card"><div class="lbl">Grammaire</div><h2 class="t">Quel connecteur ?</h2><p class="consigne">Complétez chaque paire de phrases.</p><ol class="ex"><li><span class="q">Le programme est gratuit. ..., il reste des places.</span><span class="ligne ligne--court"></span></li><li><span class="q">Marisol travaille vendredi. ... Ghislain ira au terminus.</span><span class="ligne ligne--court"></span></li><li><span class="q">Elle n'est pas venue, ... elle travaillait de nuit.</span><span class="ligne ligne--court"></span></li><li><span class="q">Les activités sont libres : une marche, un souper, ... une visite au marché.</span><span class="ligne ligne--court"></span></li><li><span class="q">..., on remplit une fiche ; ensuite, on rencontre la coordonnatrice.</span><span class="ligne ligne--court"></span></li><li><span class="q">L'organisme existe ... 1998 et n'a jamais changé de sous-sol.</span><span class="ligne ligne--court"></span></li></ol></section><section class="bloc"><div class="lbl">Attention</div><h2 class="t">Connecteur</h2><div class="duo"><div class="no"><div class="k">On entend souvent</div><p class="ph">Il habite ici depuis six mois, donc c'est fini</p></div><div class="ok"><div class="k">Il faut dire plutôt</div><p class="ph">Il habite ici depuis six mois, donc il y habite encore</p></div></div><div class="note">Depuis dit qu'une durée continue jusqu'à maintenant. Il y a six mois dit qu'un fait est terminé. Confondre les deux fait comprendre l'inverse — et c'est une erreur qui coûte cher dans un formulaire.</div></section><section class="bloc card"><div class="lbl">Ponctuation</div><h2 class="t">Trois signes qui portent du sens</h2><table><thead><tr><th>Le signe</th><th>Ce qu'il apporte</th></tr></thead><tbody><tr><td class="cle">Un tiret seul</td><td>il ouvre une liste après une phrase complète</td></tr><tr><td class="cle">Un tiret en tête</td><td>quelqu'un d'autre prend la parole</td></tr><tr><td class="cle">Deux tirets</td><td>ils encadrent une précision qu'on pourrait retirer</td></tr><tr><td class="cle">Guillemets, phrase</td><td>ce sont les mots exacts de quelqu'un</td></tr><tr><td class="cle">Guillemets, un mot</td><td>l'auteur ne prend pas ce mot à son compte</td></tr><tr><td class="cle">Deux virgules</td><td>elles encadrent un groupe qui explique un nom</td></tr></tbody></table></section><section class="bloc"><div class="lbl">Plan</div><h2 class="t">Le courriel qui informe, en quatre paragraphes</h2><div class="grid"><div class="card"><h3>1. D'où ça vient</h3><p>J'ai lu ça dans L'Écho de la Yamaska de cette semaine. Deux phrases, pas plus.</p></div><div class="card"><h3>2. Les faits</h3><p>Ce que c'est, pour qui, combien de temps, à quel rythme. Trois ou quatre faits choisis, pas dix.</p></div><div class="card"><h3>3. Ton avis, annoncé</h3><p>À mon avis, pour ma part, je trouve que. Trois mots qui séparent le fait de l'opinion.</p></div><div class="card"><h3>4. Ce qu'on peut faire</h3><p>Les inscriptions se prennent jusqu'au 30 septembre. Sans cela, le courriel se lit et s'oublie.</p></div></div></section><section class="bloc regle"><div class="lbl">Informer n'est pas donner son avis</div><p class="r">Celui qui te lit n'a pas lu l'article : tout ce qu'il en saura vient de toi.</p><p class="pr">S'il ne peut plus distinguer ce que le journal a écrit de ce que tu en penses, tu ne l'as pas informé : tu lui as donné une opinion en la faisant passer pour une nouvelle. Trois mots suffisent à séparer les deux.</p></section><section class="bloc billet"><div class="k">Billet de sortie</div><p class="c">Écris la première phrase de ton courriel à Ousmane.</p><ul><li>Elle doit dire d'où vient l'article.</li><li>Une seule phrase.</li></ul><span class="ligne"></span><span class="ligne"></span><span class="ligne"></span></section>
+<div class="plus-papier"><div class="lbl">En apprendre plus</div><p class="chapeau">Ce que le module explique à l’écran quand on clique « Ouvrir la mini-leçon » : la règle, ses cas particuliers, les pièges et de quoi vérifier qu’on a compris. Rien de tout cela n’est exigé en classe — c’est là pour la personne qui veut savoir pourquoi.</p><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Les connecteurs : deviner la suite d'une demi-phrase d'avance</h2><section class="bloc card ml"><h3>Ce que gagne celui qui les lit</h3><p class="mp">Un connecteur annonce ce qui s'en vient avant que ça arrive. « Pourtant » prévient qu'on va dire le contraire ; « donc » prévient qu'on va conclure. Celui qui les lit avance plus vite et se trompe moins. Celui qui les saute lit deux fois.</p><div class="note">« Connecteurs et relations logiques » est le savoir de grammaire du texte le plus fourni du niveau 6 : huit points à lui seul.</div></section><section class="bloc card ml"><h3>Les quatre familles</h3><p class="mp">Quatre relations, et presque tous les connecteurs y entrent.</p><table class="ana"><tr><td>Ajouter</td><td class="">de plus · d'ailleurs · en outre — la suite va dans le même sens</td></tr><tr><td>Opposer</td><td class="cle">pourtant · cependant · en revanche — la suite va contre</td></tr><tr><td>Expliquer</td><td class="">car · parce que · en effet — la suite dit pourquoi</td></tr><tr><td>Conclure</td><td class="">donc · c'est pourquoi · ainsi — la suite est le résultat</td></tr></table><p class="dit"><span class="k">On dit</span> Le programme est gratuit. Pourtant, il reste des places.</p><div class="note">« Ainsi » appartient à deux familles : il conclut, mais il annonce aussi un exemple. C'est le seul qui soit vraiment ambigu.</div></section><section class="bloc card ml"><h3>Les connecteurs de temps, qui ordonnent le récit</h3><p class="mp">Ils ne donnent pas de date, mais ils mettent en ordre.</p><table class="ana"><tr><td>Le rang</td><td class="">d'abord · ensuite · enfin</td></tr><tr><td>Le point de départ</td><td class="cle">depuis · à partir de</td></tr><tr><td>La durée écoulée</td><td class="">au bout de · après</td></tr><tr><td>Ce qu'ils remplacent</td><td class="">les dates, quand celui qui écrit ne les a pas</td></tr></table><p class="dit"><span class="k">On dit</span> Au bout de six mois, les deux familles se voyaient encore.</p><div class="note">« Depuis 1998 » dit un point de départ ; « au bout de six mois » dit une durée écoulée. Les deux se confondent facilement.</div></section><section class="bloc card ml"><h3>Huit connecteurs, huit annonces</h3><p class="mp">À gauche le mot, à droite ce qu'il te promet.</p><table class="ex2"><tr><td>pourtant</td><td>ce qui suit va contre ce que tu viens de lire</td></tr><tr><td>d'ailleurs</td><td>ce qui suit ajoute, dans le même sens</td></tr><tr><td>car</td><td>ce qui suit explique pourquoi</td></tr><tr><td>c'est pourquoi</td><td>ce qui suit est le résultat</td></tr><tr><td>par exemple</td><td>ce qui suit illustre, sans rien ajouter de nouveau</td></tr><tr><td>d'abord</td><td>c'est le premier de plusieurs</td></tr><tr><td>depuis</td><td>le point de départ d'une durée qui continue</td></tr><tr><td>au bout de</td><td>une durée déjà écoulée</td></tr></table></section><section class="bloc card ml"><h3>Deux confusions coûteuses</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">lire « pourtant » comme « donc »</p><div class="k">Ce qui arrive</div><p class="ph">« pourtant » annonce le contraire</p><p class="px">Confondre l'opposition et la conséquence fait comprendre l'inverse de ce qui est écrit.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">« depuis six mois » = « il y a six mois »</p><div class="k">Ce qui arrive</div><p class="ph">« depuis » dit que ça dure encore</p><p class="px">« Il habite ici depuis six mois » : il y habite toujours. « Il est arrivé il y a six mois » : c'est fini.</p></div></div></section><section class="bloc card ml"><h3>Quatre suites à deviner</h3><p class="mp">Que va dire la phrase suivante ?</p><ol class="check"><li><span class="q">« Le programme est gratuit. Pourtant… »</span><ul class="opts"><li>il reste des places</li><li>tout le monde s'inscrit</li></ul></li><li><span class="q">« Marisol travaille vendredi. C'est pourquoi… »</span><ul class="opts"><li>Ghislain ira au terminus</li><li>elle aime son métier</li></ul></li><li><span class="q">« Elle n'est pas venue, car… »</span><ul class="opts"><li>elle travaillait de nuit</li><li>elle viendra demain</li></ul></li><li><span class="q">« Les activités sont libres : une marche, un souper, par exemple… »</span><ul class="opts"><li>une visite au marché</li><li>c'est gratuit</li></ul></li></ol><div class="reps"><span class="k">Réponses</span> <b>1.</b> il reste des places — « Pourtant » annonce le contraire de ce qu'on attendrait. · <b>2.</b> Ghislain ira au terminus — « C'est pourquoi » annonce une conséquence. · <b>3.</b> elle travaillait de nuit — « Car » annonce une explication. · <b>4.</b> une visite au marché — « Par exemple » annonce un élément de la même liste.</div></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Le tiret, les guillemets, et la virgule du groupe détaché</h2><section class="bloc card ml"><h3>Trois signes qui portent du sens</h3><p class="mp">Dans un journal, ces signes ne sont pas là pour aérer la page. Chacun dit quelque chose, et ne pas le lire, c'est perdre une information. On les rencontre bien avant d'avoir à les écrire : on les apprend donc d'abord en lecteur.</p><div class="note">Le programme du niveau 6 nomme les trois : comprendre le tiret, employer les guillemets pour souligner ou nuancer un mot, employer la virgule pour encadrer un groupe détaché.</div></section><section class="bloc card ml"><h3>Le tiret, trois emplois</h3><p class="mp">Le même signe, trois travaux. C'est la place dans la phrase qui les distingue.</p><table class="ana"><tr><td>Après une phrase complète</td><td class="">il ouvre une <b>énumération</b></td></tr><tr><td>En tête de ligne</td><td class="cle">il marque un <b>changement de locuteur</b></td></tr><tr><td>En paire, au milieu</td><td class="">il encadre une <b>précision</b>, comme des parenthèses</td></tr><tr><td>Ce qu'il ne fait jamais</td><td class="">remplacer un point ou une virgule ordinaire</td></tr></table><p class="dit"><span class="k">On dit</span> Trois activités — une marche, un souper, une visite au marché.</p><div class="note">Le tiret de la paire s'ouvre et se ferme. Un tiret seul au milieu d'une phrase est presque toujours le premier emploi.</div></section><section class="bloc card ml"><h3>Les guillemets, deux emplois opposés</h3><p class="mp">L'un rend les mots à quelqu'un ; l'autre les met à distance. Les confondre fait tout lire à l'envers.</p><table class="ana"><tr><td>Autour d'une phrase entière</td><td class="">ce sont les <b>mots exacts</b> de quelqu'un</td></tr><tr><td>Autour d'un seul mot</td><td class="cle">l'auteur <b>ne le prend pas à son compte</b></td></tr><tr><td>Le repère de la citation</td><td class="">elle est annoncée : « dit-elle », « précise la coordonnatrice »</td></tr><tr><td>Le repère de la distance</td><td class="">le mot est courant, et souvent celui de quelqu'un d'autre</td></tr></table><p class="dit"><span class="k">On dit</span> L'organisme parle de « duos » plutôt que de « parrainage ».</p><div class="note">« Un programme de parrainage » et « un programme de “parrainage” » ne disent pas la même chose : dans le second, le journal se met à part du mot.</div></section><section class="bloc card ml"><h3>La virgule du groupe détaché</h3><p class="mp">Deux virgules autour d'un nom qui en explique un autre. On peut retirer le groupe sans casser la phrase.</p><table class="ana"><tr><td>La forme</td><td class="">Le Fil d'ici<b>,</b> l'organisme du quartier<b>,</b> occupe deux locaux.</td></tr><tr><td>Le test</td><td class="cle">retire le groupe : la phrase tient encore</td></tr><tr><td>L'erreur fréquente</td><td class="">une seule virgule au lieu de deux</td></tr><tr><td>À quoi ça sert</td><td class="">ajouter une explication sans faire une phrase de plus</td></tr></table><p class="dit"><span class="k">On dit</span> Le Fil d'ici, l'organisme du quartier, occupe deux locaux.</p><div class="note">Une virgule ouvrante sans virgule fermante laisse le lecteur suspendu : c'est l'erreur de ponctuation la plus fréquente à l'écrit.</div></section><section class="bloc card ml"><h3>Six exemples, et ce qu'ils apportent</h3><p class="mp">À gauche la phrase, à droite ce que le signe ajoute.</p><table class="ex2"><tr><td>Trois activités — une marche, un souper, une visite.</td><td>Le tiret annonce la liste qui suit.</td></tr><tr><td>— Et si personne ne s'inscrit ?</td><td>Quelqu'un d'autre prend la parole.</td></tr><tr><td>Le mot parrainage — que l'organisme refuse — suppose une aide.</td><td>Précision ajoutée, qu'on pourrait retirer.</td></tr><tr><td>« Les deux familles apprennent », précise-t-elle.</td><td>Ce sont ses mots exacts.</td></tr><tr><td>un programme de « parrainage »</td><td>Le journal ne prend pas ce mot à son compte.</td></tr><tr><td>Le Fil d'ici, l'organisme du quartier, occupe deux locaux.</td><td>Une explication glissée entre deux virgules.</td></tr></table></section></section><section class="ml"><div class="eyebrow">Mini-leçon</div><h2>Informer quelqu'un du contenu d'un article</h2><section class="bloc card ml"><h3>Informer n'est pas donner son avis</h3><p class="mp">Quand tu écris à quelqu'un pour lui parler d'un article, il ne l'a pas lu. Tout ce qu'il en saura viendra de toi. S'il ne peut plus distinguer ce que le journal a écrit de ce que tu en penses, tu ne l'as pas informé : tu lui as donné ton opinion en lui faisant croire que c'était une nouvelle.</p><div class="note">C'est l'une des quatre intentions du programme pour cette situation : « informer un destinataire par courriel du contenu d'un article d'intérêt général ».</div></section><section class="bloc card ml"><h3>Les quatre paragraphes, dans cet ordre</h3><p class="mp">Chacun a un travail, et un seul.</p><table class="ana"><tr><td>1. D'où ça vient</td><td class="">J'ai lu ça dans L'Écho de la Yamaska de cette semaine.</td></tr><tr><td>2. Les faits</td><td class="cle">ce que c'est, pour qui, combien de temps, à quel rythme</td></tr><tr><td>3. Ton avis, annoncé</td><td class="">À mon avis, ça conviendrait bien à Kadiatou.</td></tr><tr><td>4. Ce qu'on peut faire</td><td class="">Les inscriptions se prennent jusqu'au 30 septembre.</td></tr></table><p class="dit"><span class="k">On dit</span> J'ai lu ça dans L'Écho de la Yamaska de cette semaine.</p><div class="note">Un courriel d'information sans quatrième paragraphe se lit et s'oublie. Une date limite ou un numéro de téléphone lui donne une suite.</div></section><section class="bloc card ml"><h3>Les trois mots qui séparent le fait de l'avis</h3><p class="mp">Ils ne coûtent rien et ils changent tout.</p><table class="ana"><tr><td>Pour annoncer un avis</td><td class="">à mon avis · pour ma part · je trouve que</td></tr><tr><td>Pour rapporter un fait</td><td class="cle">selon l'article · le journal écrit que · la coordonnatrice dit que</td></tr><tr><td>Pour marquer un doute</td><td class="">il semble que · si j'ai bien compris</td></tr><tr><td>Ce qu'on n'écrit pas</td><td class="">« C'est une excellente idée » au milieu du résumé</td></tr></table><p class="dit"><span class="k">On dit</span> À mon avis, ça conviendrait bien à Kadiatou.</p><div class="note">Trois mots suffisent. Sans eux, celui qui lit attribue ton opinion au journal — et il la répétera comme un fait.</div></section><section class="bloc card ml"><h3>Un courriel d'information, phrase par phrase</h3><p class="mp">Le plan, avec une phrase pour chaque temps.</p><table class="ex2"><tr><td>Objet</td><td>Un programme de jumelage à Saint-Hyacinthe</td></tr><tr><td>Paragraphe 1</td><td>J'ai lu un article dans L'Écho de la Yamaska de cette semaine.</td></tr><tr><td>Paragraphe 2</td><td>Un organisme du quartier jumelle des familles pour six mois, à raison d'une rencontre aux deux semaines.</td></tr><tr><td>Paragraphe 3</td><td>À mon avis, ça conviendrait bien à Kadiatou, qui ne connaît personne ici.</td></tr><tr><td>Paragraphe 4</td><td>Les inscriptions se prennent jusqu'au 30 septembre, au local ou par téléphone.</td></tr><tr><td>Dernière ligne</td><td>Écris-moi ce que tu en penses. Marisol</td></tr></table></section><section class="bloc card ml"><h3>Trois façons de mal informer</h3><div class="pieges"><div class="pg"><div class="k">Le piège</div><p class="ph">Il y a un super programme, tu devrais t'inscrire !</p><div class="k">Ce qui arrive</div><p class="ph">Le journal décrit un programme de jumelage de six mois.</p><p class="px">Tout est avis, aucun fait. Celui qui lit ne sait toujours pas ce que c'est.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">Ils font du parrainage pour les nouveaux arrivants.</p><div class="k">Ce qui arrive</div><p class="ph">L'organisme parle de « duos » et refuse le mot « parrainage ».</p><p class="px">Résumer avec le mot que la source a justement refusé, c'est la déformer.</p></div><div class="pg"><div class="k">Le piège</div><p class="ph">copier l'article au complet dans le courriel</p><div class="k">Ce qui arrive</div><p class="ph">trois ou quatre faits choisis</p><p class="px">Un article recopié n'est pas un résumé : celui qui lit refait tout le travail que tu devais faire.</p></div></div></section></section></div>
+<footer><span>D2 · Reprendre le fil</span><span>Fiche élève</span></footer>
+</body>
+</html>
