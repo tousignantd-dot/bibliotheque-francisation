@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Quatre-vingt-dix secondes de compressions, une barre, aucune consigne. Le temps qu'un defibrillateur met a arriver.">
+<title>Quatre-vingt-dix secondes</title>
+<style>html{color-scheme:light dark}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>Quatre-vingt-dix secondes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════════════════
+   QUATRE-VINGT-DIX SECONDES
+   La pièce n'a pas de thème clair. Ce n'est pas un oubli : elle dure une
+   minute et demie, elle ne se lit pas, et le noir est le seul moyen qu'il ne
+   reste qu'une chose à regarder. Les jetons de « Braise » sont recopiés dans
+   leur version sombre uniquement.
+   ══════════════════════════════════════════════════════════════════════════ */
+:root{
+  --fond:#09090B; --fond-2:#0F0F11; --fond-3:#18181B;
+  --encre:#FAFAFA; --encre-2:#D4D4D8; --encre-3:#A1A1AA; --encre-4:#52525B;
+  --bord:#27272A; --bord-fort:#3F3F46;
+  --marque-rose:#FF4FB0; --marque-corail:#FF6A50;
+  --signal:#FF7A45;
+  --mesure:#8FB2F0;
+  --police:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --police-mono:ui-monospace,"SF Mono","Menlo","Consolas",monospace;
+  --e-1:.25rem; --e-2:.5rem; --e-3:.75rem; --e-4:1rem; --e-5:1.5rem;
+  --e-6:2rem; --e-7:3rem; --e-8:4rem;
+  --r-1:.375rem; --r-2:.5rem; --r-3:.75rem; --r-4:1rem; --r-plein:9999px;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--fond);color:var(--encre-3);
+     font-family:var(--police);line-height:1.6;
+     -webkit-font-smoothing:antialiased;
+     overscroll-behavior:none}
+
+/* ── La scène : elle occupe tout, et rien ne défile pendant la partie ── */
+.scene{min-height:100svh;display:flex;flex-direction:column;
+       padding:max(var(--e-5),env(safe-area-inset-top)) var(--e-5)
+               max(var(--e-5),env(safe-area-inset-bottom));
+       gap:var(--e-5)}
+body[data-phase="joue"]{overflow:hidden;touch-action:none}
+
+.tete{display:flex;align-items:baseline;gap:var(--e-4);
+      max-width:56rem;width:100%;margin:0 auto}
+.tete__mot{font-size:.8125rem;letter-spacing:.14em;text-transform:uppercase;
+           color:var(--encre-4);font-weight:600}
+.horloge{margin-left:auto;font-family:var(--police-mono);font-size:1.25rem;
+         color:var(--encre-4);font-variant-numeric:tabular-nums;
+         transition:color 300ms}
+body[data-phase="joue"] .horloge{color:var(--encre)}
+
+/* ── La barre ── */
+.zone{max-width:56rem;width:100%;margin:0 auto;flex:none}
+.barre{height:clamp(40px,9vh,72px);background:var(--fond-3);
+       border:1px solid var(--bord);border-radius:var(--r-2);
+       position:relative;overflow:hidden}
+.barre__b{position:absolute;inset:0 auto 0 0;width:0%;
+          background:linear-gradient(90deg,var(--marque-corail),var(--marque-rose));
+          transition:width 80ms linear}
+.barre__seuil{position:absolute;top:0;bottom:0;left:60%;width:1px;
+              background:var(--bord-fort)}
+.barre__seuil::after{content:"";position:absolute;left:-3px;top:-1px;
+                     width:7px;height:7px;border-radius:50%;background:var(--bord-fort)}
+.sous{position:relative;display:flex;justify-content:space-between;font-size:.75rem;
+      color:var(--encre-4);margin-top:var(--e-2);letter-spacing:.02em}
+/* Le trait du seuil est à 60 % de la barre : son nom doit y être aussi.
+   Centré par space-between il tombait à 50 %, et désignait un trait absent. */
+.sous__seuil{position:absolute;left:60%;transform:translateX(-50%)}
+
+/* ── Le champ d'appui : tout le reste de l'écran ── */
+.champ{flex:1;display:flex;flex-direction:column;align-items:center;
+       justify-content:center;gap:var(--e-4);
+       border:1px dashed var(--bord);border-radius:var(--r-4);
+       max-width:56rem;width:100%;margin:0 auto;
+       cursor:pointer;user-select:none;-webkit-user-select:none;
+       -webkit-tap-highlight-color:transparent;touch-action:manipulation;
+       text-align:center;padding:var(--e-6) var(--e-5);
+       transition:border-color 160ms,background 160ms}
+.champ:active{background:var(--fond-2);border-color:var(--bord-fort)}
+body[data-phase="fin"] .champ{cursor:default;border-style:solid}
+.consigne{font-size:clamp(1.5rem,5vw,2.25rem);color:var(--encre);
+          font-weight:600;letter-spacing:-.02em;line-height:1.15}
+.souffle{font-size:.875rem;color:var(--encre-4)}
+body[data-phase="joue"] .souffle{opacity:0}
+
+/* ── L'anneau qui bat : il ne prescrit pas de tempo, il dit qu'on est vivant ── */
+.pouls{width:14px;height:14px;border-radius:50%;background:var(--encre-4);
+       opacity:0;transform:scale(1)}
+body[data-phase="joue"] .pouls{opacity:1}
+.pouls.bat{animation:bat 320ms ease-out}
+@keyframes bat{from{transform:scale(2.1);background:var(--marque-corail)}
+               to{transform:scale(1);background:var(--encre-4)}}
+
+/* ── La fin ── */
+.fin{display:none;max-width:44rem;margin:0 auto;width:100%}
+body[data-phase="fin"] .fin{display:block;animation:venir 520ms ease-out both}
+@keyframes venir{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.verdict{font-size:clamp(1.375rem,4vw,1.875rem);color:var(--encre);font-weight:600;
+         letter-spacing:-.02em;line-height:1.2;margin:0 0 var(--e-5)}
+.chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+          gap:1px;background:var(--bord);border:1px solid var(--bord);
+          border-radius:var(--r-3);overflow:hidden}
+.ch{background:var(--fond);padding:var(--e-4)}
+.ch__v{font-family:var(--police-mono);font-size:1.5rem;color:var(--encre);
+       font-variant-numeric:tabular-nums}
+.ch__c{font-size:.75rem;color:var(--encre-4);text-transform:uppercase;
+       letter-spacing:.1em;margin-top:var(--e-1)}
+.apres{margin-top:var(--e-6);font-size:.9375rem;color:var(--encre-3);max-width:38rem}
+.apres b{color:var(--encre-2);font-weight:600}
+.liens{display:flex;flex-wrap:wrap;gap:var(--e-3);margin-top:var(--e-5)}
+.bt{display:inline-block;padding:var(--e-3) var(--e-5);border-radius:var(--r-2);
+    background:var(--encre);color:#09090B;text-decoration:none;font-weight:600;
+    font-size:.9375rem;border:0;font-family:inherit;cursor:pointer}
+.bt-2{background:transparent;color:var(--encre-2);border:1px solid var(--bord-fort)}
+
+/* ── Le capot : il ne s'ouvre qu'après la partie ── */
+.capot{display:none;max-width:44rem;margin:var(--e-7) auto 0;width:100%;
+       border-top:1px solid var(--bord);padding-top:var(--e-5);font-size:.875rem}
+body[data-phase="fin"] .capot{display:block}
+.capot summary{cursor:pointer;color:var(--encre-2);font-weight:600;
+               font-size:.9375rem;list-style:none}
+.capot summary::-webkit-details-marker{display:none}
+.capot summary::before{content:"▸ ";color:var(--encre-4)}
+.capot[open] summary::before{content:"▾ "}
+.capot__c{padding-top:var(--e-4);color:var(--encre-3)}
+.capot__c p{margin:0 0 var(--e-4)}
+.capot__c b{color:var(--encre-2)}
+.capot__c code{font-family:var(--police-mono);font-size:.85em;
+               background:var(--fond-3);padding:.1em .35em;border-radius:var(--r-1);
+               color:var(--encre-2)}
+.reglages{display:grid;gap:var(--e-2);margin:var(--e-4) 0;
+          font-family:var(--police-mono);font-size:.8125rem}
+.reglages div{display:flex;gap:var(--e-3);border-bottom:1px solid var(--bord);
+              padding-bottom:var(--e-2)}
+.reglages b{color:var(--mesure);flex:none;min-width:7ch;font-weight:500}
+
+@media (prefers-reduced-motion:reduce){
+  .barre__b{transition:none}
+  .pouls.bat{animation:none}
+  body[data-phase="fin"] .fin{animation:none}
+}
+</style>
+
+<div class="scene">
+  <div class="tete">
+    <span class="tete__mot">Débit</span>
+    <span class="horloge" id="horloge">0,0 s</span>
+  </div>
+
+  <div class="zone">
+    <div class="barre">
+      <div class="barre__b" id="jauge"></div>
+      <div class="barre__seuil"></div>
+    </div>
+    <div class="sous"><span>rien</span><span class="sous__seuil">seuil utile</span><span>plein</span></div>
+  </div>
+
+  <div class="champ" id="champ">
+    <div id="bloc-jeu">
+      <p class="consigne" id="consigne">Appuyez.</p>
+      <p class="souffle" id="souffle">Espace, ou n'importe où ici.</p>
+      <div class="pouls" id="pouls" style="margin:1rem auto 0"></div>
+    </div>
+
+    <div class="fin" id="fin">
+      <p class="verdict" id="verdict"></p>
+      <div class="chiffres">
+        <div class="ch"><div class="ch__v" id="c1">—</div><div class="ch__c">compressions</div></div>
+        <div class="ch"><div class="ch__v" id="c2">—</div><div class="ch__c">par minute</div></div>
+        <div class="ch"><div class="ch__v" id="c3">—</div><div class="ch__c">sous le seuil</div></div>
+        <div class="ch"><div class="ch__v" id="c4">—</div><div class="ch__c">plus long arrêt</div></div>
+      </div>
+      <p class="apres" id="apres"></p>
+      <div class="liens">
+        <button class="bt" id="rejouer" type="button">Recommencer</button>
+        <a class="bt bt-2" href="simulateur-dea.html">Le simulateur complet</a>
+      </div>
+    </div>
+  </div>
+
+  <details class="capot">
+    <summary>Le modèle, en clair</summary>
+    <div class="capot__c">
+      <p>La barre ne dit pas « survie ». Un pourcentage de survie serait faux, et
+      sa précision ferait croire à une science absente. Elle dit <b>débit</b> : la
+      pression que vos mains construisent, et qui n'existe que tant qu'elles
+      bougent.</p>
+      <div class="reglages">
+        <div><b>+4</b><span>points sur cent par compression — quinze pour franchir le seuil utile</span></div>
+        <div><b>0,9 s</b><span>de silence avant que la chute commence, soit sous ~65 par minute</span></div>
+        <div><b>−40</b><span>points par seconde d'arrêt : deux secondes et demie effacent tout</span></div>
+        <div><b>250 ms</b><span>entre deux compressions au plus vite ; en dessous, le coup est ignoré</span></div>
+        <div><b>90 s</b><span>la partie : le temps qu'un défibrillateur met à arriver</span></div>
+      </div>
+      <p><b>Pourquoi pas de métronome.</b> Un tempo audible donnerait la réponse et
+      changerait le sujet : la pièce ne porte pas sur la cadence, elle porte sur le
+      fait de <b>ne pas s'arrêter</b>. Le point qui bat ne prescrit rien — il
+      confirme qu'un appui a été compté, ce qui est une information et non un
+      ornement.</p>
+      <p><b>Pourquoi la limite à 250 ms.</b> Sans elle, marteler la touche remplit
+      la barre en une seconde et la cadence affichée devient une plaisanterie.
+      Quatre cents compressions à la minute n'existent pas ; le modèle refuse ce
+      qu'un corps refuse.</p>
+      <p><b>La mesure ne passe pas par l'affichage.</b> La barre que vous voyez
+      vit dans la boucle d'images ; les quatre chiffres ci-dessus sont recalculés
+      à la fin, pas à pas, sur les seuls horodatages de vos appuis. La première
+      version accumulait la fraction de temps sous le seuil <i>dans</i> la boucle
+      d'affichage — et une fraction échantillonnée au rythme des images n'est
+      juste que si les images tombent régulièrement, ce qu'aucun navigateur ne
+      garantit : la première partie mesurée a rendu « 100 % sous le seuil » alors
+      que la barre était pleine depuis quatorze secondes.</p>
+      <p><b>Ce qui est mesuré, et ce qui ne l'est pas.</b> Sont mesurés : le nombre
+      d'appuis, la cadence médiane, la fraction de temps sous le seuil et le plus
+      long arrêt. Ne sont pas mesurés, et ne peuvent pas l'être par un écran : la
+      profondeur, le recul complet du thorax, la position des mains, et le fait
+      d'oser. Aucune des quatre phrases de sortie n'est écrite pour une trajectoire
+      particulière : elles sont choisies par la seule fraction sous le seuil, dont
+      le plancher n'est pas zéro — même une partie parfaite passe une dizaine de
+      secondes à construire la barre.</p>
+      <p style="margin-bottom:0"><b>Ceci n'est pas une formation</b>, et ne prépare
+      qu'à en suivre une. La montée lente et la chute brutale sont la forme réelle
+      de la pression de perfusion coronarienne ; aucun chiffre affiché ici n'a de
+      valeur clinique.</p>
+    </div>
+  </details>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════════════
+   Le modèle tient en cinq nombres, tous dans RÉGLAGES. Rien d'autre dans ce
+   fichier ne décide de quoi que ce soit : les phrases de sortie sont choisies
+   par la fraction de temps sous le seuil, et les quatre chiffres du bilan sont
+   des mesures, pas des jugements.
+   ══════════════════════════════════════════════════════════════════════════ */
+(function(){
+  var R = {
+    MONTEE: 4,        /* points de débit par compression */
+    CHUTE: 40,        /* points perdus par seconde, une fois la grâce écoulée */
+    GRACE: 900,       /* ms de silence avant que la chute commence.
+                         900 et non 500 : à 110 compressions par minute
+                         l'intervalle vaut 545 ms, et un délai plus court
+                         punirait une cadence juste. */
+    SEUIL: 60,        /* le repère « utile », en points */
+    MINI: 250,        /* ms au plus vite entre deux appuis comptés */
+    DUREE: 90000,     /* la partie : le temps d'arrivée d'un défibrillateur */
+    ABANDON: 10000    /* silence au bout duquel la partie se termine seule */
+  };
+
+  var el = function(i){ return document.getElementById(i); };
+  var corps = document.body, champ = el('champ');
+  var jauge = el('jauge'), horloge = el('horloge'), pouls = el('pouls');
+
+  /* ── Deux choses, et il a fallu un défaut pour les séparer ─────────────
+     `debit` sert à L'AFFICHAGE et vit dans la boucle d'images. Le BILAN, lui,
+     se recalcule à la fin sur les seuls horodatages des appuis. La première
+     version accumulait la fraction de temps sous le seuil à l'intérieur de la
+     boucle — et une fraction de temps échantillonnée au rythme des images
+     n'est juste que si les images tombent régulièrement, ce qu'aucun
+     navigateur ne garantit : la première partie mesurée a rendu « 100 % sous
+     le seuil » alors que la barre était pleine depuis quatorze secondes.
+     Une mesure ne doit pas dépendre de la cadence d'affichage.            ── */
+  var debit, coups, depart, dernier, dernierCoup, phase, boucle;
+  var horodatages;   /* ms depuis le départ, un par compression comptée */
+
+  function remettre(){
+    debit = 0; coups = 0; depart = 0; dernier = 0; dernierCoup = 0;
+    horodatages = [];
+    phase = 'attente'; corps.setAttribute('data-phase', 'attente');
+    jauge.style.width = '0%'; horloge.textContent = '0,0 s';
+    el('consigne').textContent = 'Appuyez.';
+    el('souffle').textContent = "Espace, ou n'importe où ici.";
+    el('bloc-jeu').style.display = '';
+  }
+
+  /* Le modèle rejoué pas à pas sur les horodatages. Déterministe : deux
+     exécutions sur la même partie rendent exactement les mêmes nombres. */
+  function bilan(duree){
+    var PAS = 10, d = 0, sousSeuil = 0, plusLongArret = 0, dernierC = 0, i = 0;
+    for (var t = 0; t < duree; t += PAS) {
+      while (i < horodatages.length && horodatages[i] <= t) {
+        d = Math.min(100, d + R.MONTEE); dernierC = horodatages[i]; i++;
+      }
+      var silence = t - dernierC;
+      if (silence > R.GRACE) d = Math.max(0, d - R.CHUTE * PAS / 1000);
+      if (silence > plusLongArret) plusLongArret = silence;
+      if (d < R.SEUIL) sousSeuil += PAS / 1000;
+    }
+    return { part: Math.round(100 * sousSeuil / (duree / 1000)),
+             arret: plusLongArret / 1000, debit: d };
+  }
+
+  function tic(t){
+    if (phase !== 'joue') return;
+    var dt = (t - dernier) / 1000; dernier = t;
+    var silence = t - dernierCoup;
+    if (silence > R.GRACE) debit = Math.max(0, debit - R.CHUTE * dt);
+    jauge.style.width = debit.toFixed(1) + '%';
+    var ecoule = t - depart;
+    horloge.textContent = (ecoule / 1000).toFixed(1).replace('.', ',') + ' s';
+    if (silence >= R.ABANDON) { terminer(ecoule, 'abandon'); return; }
+    if (ecoule >= R.DUREE)    { terminer(R.DUREE, 'terme'); return; }
+    boucle = requestAnimationFrame(tic);
+  }
+
+  function comprimer(){
+    if (phase === 'fin') return;
+    var t = performance.now();
+    if (phase === 'attente') {
+      phase = 'joue'; corps.setAttribute('data-phase', 'joue');
+      depart = dernier = dernierCoup = t;
+      el('consigne').textContent = '';
+      boucle = requestAnimationFrame(tic);
+    } else if (t - depart >= R.DUREE) {
+      /* La partie est finie même si la prochaine image n'est pas encore
+         arrivée. Sans ce contrôle, la fin dépendait de la cadence
+         d'affichage : un rendu espacé laissait compter des compressions
+         au-delà des quatre-vingt-dix secondes — 201 au lieu de 165 sur la
+         première partie jouée jusqu'au bout. */
+      terminer(R.DUREE, 'terme'); return;
+    } else if (t - dernierCoup < R.MINI) {
+      return;   /* plus vite qu'un corps ne peut : le coup n'existe pas */
+    }
+    dernierCoup = t; coups++;
+    horodatages.push(t - depart);
+    debit = Math.min(100, debit + R.MONTEE);
+    jauge.style.width = debit.toFixed(1) + '%';
+    pouls.classList.remove('bat'); void pouls.offsetWidth; pouls.classList.add('bat');
+  }
+
+  function mediane(a){
+    if (a.length < 2) return 0;
+    var e = [], i;
+    for (i = 1; i < a.length; i++) e.push(a[i] - a[i - 1]);
+    e.sort(function(x, y){ return x - y; });
+    var m = Math.floor(e.length / 2);
+    return e.length % 2 ? e[m] : (e[m - 1] + e[m]) / 2;
+  }
+
+  function terminer(ecoule, cause){
+    phase = 'fin'; corps.setAttribute('data-phase', 'fin');
+    cancelAnimationFrame(boucle);
+    el('bloc-jeu').style.display = 'none';
+    /* L'horloge s'arrête sur la durée du modèle, pas sur l'instant où la
+       dernière image est arrivée. */
+    horloge.textContent = (ecoule / 1000).toFixed(1).replace('.', ',') + ' s';
+
+    var sec = ecoule / 1000;
+    var b = bilan(ecoule);
+    /* La barre gèle sur la valeur du MODÈLE, pas sur la dernière image
+       affichée. Les deux peuvent diverger quand les images s'espacent, et
+       une barre pleine au-dessus d'un « 100 % sous le seuil » ferait douter
+       du chiffre plutôt que de l'image. */
+    jauge.style.width = b.debit.toFixed(1) + '%';
+    var med = mediane(horodatages);
+    var cadence = med ? Math.round(60000 / med) : 0;
+
+    /* Les quatre phrases sont choisies par la seule fraction sous le seuil.
+       Le plancher n'est pas zéro : construire la barre coûte une dizaine de
+       secondes, donc une partie tenue de bout en bout tourne autour de 9 %.
+       Bornes vérifiées hors navigateur avant d'être crues : 9 % tenu de bout
+       en bout, 20 % avec un seul arrêt de quatre secondes, 73 % avec six. Un
+       unique arrêt doit faire changer de phrase, sinon la pièce ne dit rien. */
+    var v;
+    if (cause === 'abandon') {
+      v = 'Vous vous êtes arrêté à ' + sec.toFixed(0) + ' secondes. '
+        + "L'appareil n'était pas encore là.";
+    } else if (b.part <= 14) {
+      v = "Quatre-vingt-dix secondes. L'appareil arrive maintenant.";
+    } else if (b.part <= 35) {
+      v = "L'appareil arrive. Chaque arrêt vous a coûté vingt-cinq compressions.";
+    } else if (b.part <= 70) {
+      v = "L'appareil arrive. La barre a passé plus de temps à se reconstruire qu'à servir.";
+    } else {
+      v = "L'appareil arrive. La barre n'a presque jamais servi à rien.";
+    }
+    el('verdict').textContent = v;
+
+    el('c1').textContent = coups;
+    el('c2').textContent = cadence || '—';
+    el('c3').textContent = b.part + ' %';
+    el('c4').textContent = b.arret.toFixed(1).replace('.', ',') + ' s';
+
+    var apres = cause === 'abandon'
+      ? "<b>C'est le résultat le plus fréquent, et ce n'est pas un reproche.</b> "
+      + "Quatre-vingt-dix secondes de compressions épuisent une personne seule — "
+      + "c'est précisément pourquoi la première chose à faire n'est pas de comprimer, "
+      + "mais d'envoyer quelqu'un chercher l'appareil et d'appeler à l'aide. "
+      + "Le simulateur complet commence là."
+      : "<b>Le défibrillateur n'était pas le sujet.</b> Il arrive après une minute "
+      + "et demie, et tout ce qui se joue avant se joue avec les mains. La barre "
+      + "n'enseigne qu'une forme — montée lente, chute brutale — qui est celle de "
+      + "la pression que vos compressions construisent, et que cinq secondes "
+      + "d'arrêt suffisent à défaire.";
+    el('apres').innerHTML = apres;
+  }
+
+  champ.addEventListener('pointerdown', function(e){
+    if (phase === 'fin') return;
+    e.preventDefault(); comprimer();
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.code !== 'Space' && e.key !== ' ') return;
+    if (e.repeat) return;   /* garder la touche enfoncée n'est pas comprimer */
+    if (phase === 'fin') return;
+    e.preventDefault(); comprimer();
+  });
+  el('rejouer').addEventListener('click', function(e){ e.stopPropagation(); remettre(); });
+
+  remettre();
+})();
+</script>
+
+</body>
+</html>

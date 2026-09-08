@@ -1,0 +1,664 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Sept defauts reels du simulateur de defibrillateur, dates et corriges, et l'instrument qui a trouve chacun.">
+<title>Sept cicatrices</title>
+<style>html{color-scheme:light dark}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>Sept cicatrices</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+<style>
+/* ═══ Jetons « Braise », recopiés ══════════════════════════════════════════
+   Jamais importés. Comme dans simdea-v3, la largeur de lecture s'appelle
+   --mesure-l : dans la source du système, --mesure porte à la fois une
+   couleur et une longueur dans le même :root, et la seconde écrase la
+   première. Le symptôme change de thème, ce qui est la pire espèce.        */
+:root{
+  --fond:#FFFFFF; --fond-2:#FAFAFA; --fond-3:#F4F4F5;
+  --encre:#09090B; --encre-2:#52525B; --encre-3:#71717A; --encre-4:#A1A1AA;
+  --bord:#E4E4E7; --bord-fort:#D4D4D8;
+  --marque-rose:#F0359F; --marque-corail:#F5533D;
+  --marque-degrade:linear-gradient(100deg,var(--marque-rose) 0%,var(--marque-corail) 100%);
+  --signal:#F5652E; --signal-encre:#FFFFFF; --signal-voile:#FEF1EA;
+  --mesure:#2B4E9B; --mesure-2:#5C7EBF; --mesure-voile:#EAEFFA;
+  --action:#18181B; --action-survol:#27272A; --action-encre:#FAFAFA;
+  --police:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --police-mono:ui-monospace,"SF Mono","Menlo","Consolas",monospace;
+  --t-affiche:clamp(2.5rem,7.4vw,4.75rem); --t-titre-1:clamp(1.75rem,4vw,2.75rem);
+  --t-titre-2:clamp(1.375rem,2.6vw,1.75rem); --t-titre-3:1.1875rem;
+  --t-avant:1.1875rem; --t-petit:.875rem; --t-menu:.8125rem;
+  --g-moyen:500; --g-fort:600; --g-noir:800;
+  --i-serre:.98; --i-titre:1.15; --i-corps:1.62;
+  --l-serre:-.035em; --l-titre:-.02em; --l-large:.02em;
+  --e-1:.25rem; --e-2:.5rem; --e-3:.75rem; --e-4:1rem; --e-5:1.5rem;
+  --e-6:2rem; --e-7:3rem; --e-8:4rem; --e-9:6rem;
+  --mesure-l:42rem; --contenu:74rem;
+  --r-1:.375rem; --r-2:.5rem; --r-3:.75rem; --r-4:1rem; --r-plein:9999px;
+  --o-1:0 1px 2px rgba(9,9,11,.06);
+  --o-2:0 1px 3px rgba(9,9,11,.08),0 1px 2px rgba(9,9,11,.04);
+  --o-3:0 4px 12px rgba(9,9,11,.08);
+  --transition:140ms cubic-bezier(.4,0,.2,1);
+}
+:root[data-theme="sombre"]{
+  --fond:#09090B; --fond-2:#0F0F11; --fond-3:#18181B;
+  --encre:#FAFAFA; --encre-2:#D4D4D8; --encre-3:#A1A1AA; --encre-4:#52525B;
+  --bord:#27272A; --bord-fort:#3F3F46;
+  --marque-rose:#FF4FB0; --marque-corail:#FF6A50;
+  --signal:#FF7A45; --signal-encre:#1A0C05; --signal-voile:#2A1610;
+  --mesure:#8FB2F0; --mesure-2:#6E8FCB; --mesure-voile:#18213A;
+  --action:#FAFAFA; --action-survol:#E4E4E7; --action-encre:#18181B;
+  --o-1:0 1px 2px rgba(0,0,0,.5);
+  --o-2:0 1px 3px rgba(0,0,0,.6),0 1px 2px rgba(0,0,0,.4);
+  --o-3:0 4px 14px rgba(0,0,0,.6);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="clair"]){
+    --fond:#09090B; --fond-2:#0F0F11; --fond-3:#18181B;
+    --encre:#FAFAFA; --encre-2:#D4D4D8; --encre-3:#A1A1AA; --encre-4:#52525B;
+    --bord:#27272A; --bord-fort:#3F3F46;
+    --marque-rose:#FF4FB0; --marque-corail:#FF6A50;
+    --signal:#FF7A45; --signal-encre:#1A0C05; --signal-voile:#2A1610;
+    --mesure:#8FB2F0; --mesure-2:#6E8FCB; --mesure-voile:#18213A;
+    --action:#FAFAFA; --action-survol:#E4E4E7; --action-encre:#18181B;
+    --o-1:0 1px 2px rgba(0,0,0,.5);
+    --o-2:0 1px 3px rgba(0,0,0,.6),0 1px 2px rgba(0,0,0,.4);
+    --o-3:0 4px 14px rgba(0,0,0,.6);
+  }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--fond);color:var(--encre-2);
+     font-family:var(--police);font-size:1rem;line-height:var(--i-corps);
+     -webkit-font-smoothing:antialiased}
+.enveloppe{max-width:var(--contenu);margin:0 auto;padding:0 var(--e-5)}
+h1,h2,h3,h4{color:var(--encre);letter-spacing:var(--l-titre);line-height:var(--i-titre);
+            font-weight:var(--g-fort);margin:0;text-wrap:balance}
+p{margin:0 0 var(--e-4)}
+b,strong{color:var(--encre);font-weight:var(--g-fort)}
+code{font-family:var(--police-mono);font-size:.9em;background:var(--fond-3);
+     padding:.1em .35em;border-radius:var(--r-1);color:var(--encre)}
+.lire{max-width:var(--mesure-l)}
+
+.barre{position:sticky;top:0;z-index:40;
+       background:color-mix(in srgb,var(--fond) 88%,transparent);
+       backdrop-filter:blur(12px);border-bottom:1px solid var(--bord)}
+.barre__int{max-width:var(--contenu);margin:0 auto;padding:var(--e-3) var(--e-5);
+            display:flex;align-items:center;gap:var(--e-3);flex-wrap:wrap}
+.marque{font-weight:var(--g-noir);letter-spacing:var(--l-serre);
+        color:var(--encre);font-size:1.0625rem}
+.marque i{font-style:normal;background:var(--marque-degrade);
+          -webkit-background-clip:text;background-clip:text;color:transparent}
+.barre__vide{flex:1}
+.bt{border:1px solid var(--bord-fort);background:var(--fond);color:var(--encre-2);
+    font:inherit;font-size:var(--t-menu);font-weight:var(--g-moyen);
+    padding:var(--e-1) var(--e-3);border-radius:var(--r-plein);cursor:pointer;
+    transition:var(--transition)}
+.bt:hover{border-color:var(--encre-4);color:var(--encre)}
+.bt[aria-pressed="true"]{background:var(--mesure);border-color:var(--mesure);
+                         color:#fff}
+:root[data-theme="sombre"] .bt[aria-pressed="true"],
+:root:not([data-theme="clair"]) .bt[aria-pressed="true"]{color:#09090B}
+
+.heros{padding:var(--e-9) 0 var(--e-8)}
+.pastille{display:inline-flex;align-items:center;gap:var(--e-2);font-size:var(--t-petit);
+          font-weight:var(--g-moyen);color:var(--signal);background:var(--signal-voile);
+          border-radius:var(--r-plein);padding:var(--e-1) var(--e-3);margin-bottom:var(--e-5)}
+.pastille::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--signal)}
+.heros h1{font-size:var(--t-affiche);font-weight:var(--g-noir);
+          letter-spacing:var(--l-serre);line-height:var(--i-serre);max-width:18ch}
+.heros h1 i{font-style:normal;background:var(--marque-degrade);
+            -webkit-background-clip:text;background-clip:text;color:transparent}
+.heros .avant{font-size:var(--t-avant);color:var(--encre-3);
+              max-width:var(--mesure-l);margin-top:var(--e-5);text-wrap:pretty}
+
+section{padding:var(--e-8) 0;border-top:1px solid var(--bord)}
+.oeil{font-size:var(--t-menu);text-transform:uppercase;letter-spacing:.14em;
+      color:var(--encre-4);font-weight:var(--g-fort);margin-bottom:var(--e-3)}
+section>.enveloppe>h2{font-size:var(--t-titre-1);margin-bottom:var(--e-5)}
+
+/* ── Une cicatrice ── */
+.cic{border:1px solid var(--bord);border-radius:var(--r-4);background:var(--fond);
+     box-shadow:var(--o-1);overflow:hidden;margin-bottom:var(--e-5)}
+.cic__tete{display:flex;gap:var(--e-4);align-items:flex-start;
+           padding:var(--e-6) var(--e-6) var(--e-3);flex-wrap:wrap}
+.cic__no{font-family:var(--police-mono);font-size:var(--t-petit);color:var(--encre-4);
+         border:1px solid var(--bord);border-radius:var(--r-2);
+         padding:var(--e-1) var(--e-2);flex:none;margin-top:.35rem}
+.cic__tete h3{font-size:var(--t-titre-2)}
+.trouve{font-size:var(--t-menu);color:var(--encre-3);margin-top:var(--e-1)}
+.trouve b{color:var(--encre-2)}
+.cic__corps{padding:0 var(--e-6) var(--e-6);max-width:58rem}
+.bloc{margin-bottom:var(--e-5)}
+.bloc:last-child{margin-bottom:0}
+.bloc h4{font-size:var(--t-menu);text-transform:uppercase;letter-spacing:.1em;
+         color:var(--encre-4);margin-bottom:var(--e-2)}
+.bloc p:last-child{margin-bottom:0}
+.cite{border-left:2px solid var(--signal);padding-left:var(--e-4);
+      color:var(--encre);font-size:1.0625rem;margin:0 0 var(--e-4)}
+
+/* ── Le capot : masqué tant que « vue conception » n'est pas enclenchée ── */
+.capot{display:none;margin-top:var(--e-5);border-top:1px dashed var(--bord-fort);
+       padding-top:var(--e-5)}
+body.conception .capot{display:block}
+.capot h4{color:var(--mesure)}
+pre{margin:0 0 var(--e-4);background:var(--fond-3);border:1px solid var(--bord);
+    border-radius:var(--r-2);padding:var(--e-4);overflow-x:auto;
+    font-family:var(--police-mono);font-size:.8125rem;line-height:1.55;
+    color:var(--encre)}
+pre .c{color:var(--encre-4)}
+pre .x{color:var(--marque-corail)}
+pre .v{color:var(--mesure-2)}
+.preuve{background:var(--mesure-voile);border-radius:var(--r-2);
+        padding:var(--e-4) var(--e-5);font-size:.9375rem;color:var(--encre-2)}
+.preuve b{color:var(--encre)}
+.vide{color:var(--encre-4);font-size:.9375rem;font-style:italic}
+body.conception .vide{display:none}
+
+/* ── Tableaux ── */
+.enrob{overflow-x:auto}
+.tab{width:100%;border-collapse:collapse;font-size:.9375rem;margin-top:var(--e-5)}
+.tab th,.tab td{text-align:left;padding:var(--e-3) var(--e-4);
+                border-bottom:1px solid var(--bord);vertical-align:top}
+.tab th{font-size:var(--t-menu);text-transform:uppercase;letter-spacing:.1em;
+        color:var(--encre-4);font-weight:var(--g-fort)}
+.tab td:first-child{color:var(--encre);font-weight:var(--g-moyen)}
+.tab tr:last-child td{border-bottom:0}
+
+.regles{counter-reset:r;display:grid;gap:var(--e-4);margin-top:var(--e-5)}
+.regle{border:1px solid var(--bord);border-left:3px solid var(--signal);
+       border-radius:var(--r-2);padding:var(--e-5);background:var(--fond-2)}
+.regle h3{font-size:var(--t-titre-3);margin-bottom:var(--e-2)}
+.regle h3::before{counter-increment:r;content:counter(r) " · ";color:var(--encre-4);
+                  font-family:var(--police-mono);font-size:.85em}
+.regle p:last-child{margin-bottom:0}
+
+footer{padding:var(--e-8) 0 var(--e-9);color:var(--encre-4);font-size:var(--t-petit)}
+@media (max-width:640px){
+  .cic__tete{padding:var(--e-5) var(--e-5) var(--e-3)}
+  .cic__corps{padding:0 var(--e-5) var(--e-5)}
+}
+@media print{
+  :root{--fond:#FFF;--fond-2:#FFF;--fond-3:#F4F4F5;--encre:#09090B;
+        --encre-2:#3F3F46;--encre-3:#52525B;--encre-4:#71717A;
+        --bord:#D4D4D8;--bord-fort:#A1A1AA;--o-1:none;--o-2:none;--o-3:none}
+  @page{margin:14mm 12mm}
+  .barre{display:none}
+  .heros{padding-top:0}
+  body{font-size:10.5pt}
+  .capot{display:block}       /* le papier montre tout : il n'a pas d'interrupteur */
+  .vide{display:none}
+  .cic,.regle,.tab tr,pre{break-inside:avoid}
+  h1,h2,h3{break-after:avoid}
+  .enveloppe{padding:0}
+}
+</style>
+
+<div class="barre"><div class="barre__int">
+  <span class="marque">Sept <i>cicatrices</i></span>
+  <span class="barre__vide"></span>
+  <button class="bt" id="bVue" type="button" aria-pressed="false">Vue conception</button>
+  <button class="bt" id="bTheme" type="button">Thème</button>
+</div></div>
+
+<div class="heros"><div class="enveloppe">
+  <span class="pastille">Simulateur de défibrillateur · 8 septembre 2026</span>
+  <h1>Sept défauts, <i>et ce qui les a trouvés.</i></h1>
+  <p class="avant">Personne ne met ses bugs dans son portfolio. C'est exactement pour ça
+  que celui-ci les met : à côté de la correction et de la preuve qu'elle tient, un défaut
+  cesse d'être une faiblesse. Il devient la seule démonstration crédible qu'il y a eu une
+  méthode — et il dit lequel des quatre instruments l'a attrapé, ce qu'aucun discours ne
+  peut faire à sa place.</p>
+  <p class="avant" style="font-size:1rem"><b>L'interrupteur « vue conception »</b>, en haut,
+  ouvre le capot de chaque cicatrice : le code fautif, et la manière dont le défaut a été
+  <i>prouvé</i> plutôt que supposé.</p>
+</div></div>
+
+<section><div class="enveloppe">
+  <div class="oeil">Avant de lire</div>
+  <h2>Quatre instruments, quatre familles de défauts</h2>
+  <p class="lire">Le point de cette page n'est pas la liste. C'est que chaque défaut a été
+  attrapé par un instrument différent, et qu'aucun des quatre n'aurait trouvé ce que les
+  trois autres ont trouvé. Un concepteur qui n'en a qu'un livre les trois autres familles
+  à son client.</p>
+  <div class="enrob"><table class="tab">
+    <thead><tr><th>L'instrument</th><th>Ce qu'il trouve</th><th>Ce qu'il ne trouve jamais</th></tr></thead>
+    <tbody>
+      <tr><td>Le vérificateur automatique</td>
+          <td>Les clés absentes, les branches mortes, les traductions qui divergent.</td>
+          <td>Une valeur bien nommée mais mal formée. Un texte juste qui enseigne une erreur.</td></tr>
+      <tr><td>La partie jouée jusqu'au bout</td>
+          <td>Les fermetures périmées, les états sans issue, tout ce qui n'apparaît qu'au bilan.</td>
+          <td>Ce que l'auteur sait déjà faire — il ne se piège pas lui-même.</td></tr>
+      <tr><td>Le journal instrumenté</td>
+          <td>Les délais, les pauses, les abandons, et l'endroit exact où quelqu'un s'est arrêté.</td>
+          <td>Le <i>pourquoi</i>. Il compte, il n'explique pas.</td></tr>
+      <tr><td>Un lecteur réel, cinq minutes</td>
+          <td>Le tort de conception. Ce que personne à l'intérieur ne voit plus.</td>
+          <td>Rien qui demande de jouer vingt fois. Il ne vient qu'une.</td></tr>
+    </tbody>
+  </table></div>
+</div></section>
+
+<section><div class="enveloppe">
+  <div class="oeil">Les sept</div>
+  <h2>Ce qui a cassé, et comment on l'a su</h2>
+
+  <!-- 01 ─────────────────────────────────────────────────────────────── -->
+  <article class="cic">
+    <div class="cic__tete">
+      <span class="cic__no">01</span>
+      <div>
+        <h3>Le premier lecteur venu</h3>
+        <p class="trouve">Trouvé par <b>un essai réel</b> · 5 minutes contre six parties jouées par l'auteur</p>
+      </div>
+    </div>
+    <div class="cic__corps">
+      <div class="bloc"><h4>Le symptôme</h4>
+        <p>Trois passages guidés sur la fibrillation se sont arrêtés à <code>IDLE</code> ou
+        <code>RCP_ATTENTE</code>. Deux y sont restés <b>plus de cinq minutes</b>, sans qu'il
+        se passe quoi que ce soit. La personne n'était pas perdue : elle attendait.</p></div>
+      <div class="bloc"><h4>La cause — trois, en fait</h4>
+        <p>La phase la plus longue de la simulation n'avait <b>aucune consigne</b>, même en
+        mode « on montre » : on comprimait dans le vide pendant quatre-vingt-dix secondes
+        sans que rien ne dise ce qu'on attendait. La barre de progression était
+        <b>pleine dès la première seconde</b> — <code>avancement</code> valait 100 quand la
+        durée était inconnue, et une barre pleine se lit « terminé ». Et l'arrivée du
+        défibrillateur ne se signalait que par un <b>son</b>, qui peut être coupé, à
+        l'instant précis où l'on est occupé à comprimer.</p></div>
+      <div class="bloc"><h4>Le reproche de fond, et c'est le plus juste</h4>
+        <p class="cite">On ne met pas quelqu'un dans une situation qui exige un geste qu'on
+        ne lui a jamais montré.</p>
+        <p>« Apprendre le geste » existait — <b>sous</b> les scénarios. Personne ne descend
+        jusque-là : on clique le gros bouton. Il est passé au-dessus, et tant que rien n'a
+        été joué il <i>est</i> le chemin : « 1 · Commencez par ici », puis « 2 · Puis
+        mettez-vous en situation ».</p></div>
+      <div class="bloc"><h4>Ce qu'on en retient</h4>
+        <p><b>L'auteur ne peut pas éprouver son propre dispositif.</b> Six parties jouées
+        par celui qui l'a écrit n'avaient rien vu, parce qu'il connaissait la réponse et
+        que sa main allait toute seule là où il fallait. Cinq minutes d'un lecteur venu de
+        nulle part ont trouvé trois défauts et un tort de conception.</p></div>
+      <div class="capot">
+        <h4>Vue conception</h4>
+        <p class="preuve">Le journal de passage a <b>confirmé</b> ce que l'essai avait
+        montré : trois passages arrêtés à un état identifiable, dont deux au-delà de cinq
+        minutes. C'est le cas où deux instruments se répondent — le lecteur dit
+        <i>quoi</i>, le journal dit <i>où</i>, et la correction devient précise au lieu
+        d'être une intuition.</p>
+        <p style="margin-bottom:0">La correction du troisième défaut est le seul endroit de
+        tout le projet où un <b>signal visuel triple</b> a été jugé nécessaire : le panneau
+        d'arrivée se signale trois fois. Un son unique suppose un casque, une pièce
+        silencieuse et une attention disponible ; aucune des trois n'est acquise quand on
+        comprime.</p>
+      </div>
+      <p class="vide">— Le capot de cette cicatrice est fermé.</p>
+    </div>
+  </article>
+
+  <!-- 02 ─────────────────────────────────────────────────────────────── -->
+  <article class="cic">
+    <div class="cic__tete">
+      <span class="cic__no">02</span>
+      <div>
+        <h3>Les voix muettes</h3>
+        <p class="trouve">Trouvé par <b>une relecture des données</b> · prouvé par un script en dix lignes</p>
+      </div>
+    </div>
+    <div class="cic__corps">
+      <div class="bloc"><h4>Le symptôme</h4>
+        <p><b>Aucun.</b> C'est ce qui en fait le plus intéressant des sept. L'appareil disait
+        une phrase sur trois — en français, en anglais et en espagnol — et personne ne
+        pouvait s'en apercevoir, puisqu'une phrase jamais prononcée ne laisse pas de trace à
+        l'oreille. Le défibrillateur simulé donnait le choc, puis se taisait au lieu de dire
+        <i>« Reprenez les compressions immédiatement. Ne vous arrêtez pas. »</i> — exactement
+        la phrase qui compte.</p></div>
+      <div class="bloc"><h4>La cause</h4>
+        <p>Trois clés de voix étaient écrites comme <i>une</i> liste de trois textes au lieu
+        de <i>trois</i> couples « texte, attente ». La lecture déstructurait la première
+        entrée : la deuxième phrase devenait un délai, la troisième disparaissait.</p></div>
+      <div class="bloc"><h4>Ce qu'on en retient</h4>
+        <p><b>Le vérificateur comptait les clés, pas la forme de leur valeur.</b> Les trois
+        langues étaient parfaitement concordantes — elles avaient toutes la même clé, avec
+        la même faute dedans. Un contrôle de structure ne dit rien du contenu qu'il
+        structure.</p></div>
+      <div class="capot">
+        <h4>Vue conception</h4>
+<pre><span class="c">// Ce qui était écrit — une liste d'UNE entrée à trois textes</span>
+<span class="x">"SHOCK_DELIVERED": [["Choc délivré.",
+                    "Reprenez les compressions immédiatement.",
+                    "Ne vous arrêtez pas."]]</span>
+
+<span class="c">// Ce que la lecture en faisait</span>
+const [texte, attente] = segments[i];
+<span class="c">//     ↑ "Choc délivré."   ↑ "Reprenez les compressions…" comme DÉLAI</span>
+
+<span class="c">// Ce qui est écrit maintenant — trois couples</span>
+<span class="v">"SHOCK_DELIVERED": [["Choc délivré.", 0],
+                    ["Reprenez les compressions immédiatement.", 700],
+                    ["Ne vous arrêtez pas.", 600]]</span></pre>
+        <p class="preuve"><b>Prouvé avant d'être corrigé.</b> Un script a compté, pour
+        chaque clé, les phrases écrites et les phrases effectivement prononcées par le
+        lecteur de voix. Verdict sur l'ancienne donnée : <b>3 phrases écrites,
+        1 prononcée</b> — dans les trois langues. Sans ce comptage, la correction aurait été
+        une conviction ; avec lui, c'est une mesure, et on sait exactement ce qui manquait
+        à l'apprenant.</p>
+      </div>
+      <p class="vide">— Le capot de cette cicatrice est fermé.</p>
+    </div>
+  </article>
+
+  <!-- 03 ─────────────────────────────────────────────────────────────── -->
+  <article class="cic">
+    <div class="cic__tete">
+      <span class="cic__no">03</span>
+      <div>
+        <h3>Le bilan qui mentait</h3>
+        <p class="trouve">Trouvé par <b>une relecture méthodique</b> · les douze questions du dossier de méthode</p>
+      </div>
+    </div>
+    <div class="cic__corps">
+      <div class="bloc"><h4>Le symptôme</h4>
+        <p>Sept contrôles au bilan de fin, tous verts. Quelle que soit la partie. Un
+        apprenant qui n'avait ni appelé les secours, ni envoyé personne, ni respecté quoi
+        que ce soit ressortait avec une page de réussites.</p></div>
+      <div class="bloc"><h4>La cause</h4>
+        <p><b>Quatre des sept contrôles étaient écrits en dur à « fait ».</b> Ce n'était pas
+        une erreur de calcul : il n'y avait pas de calcul. Le bilan affichait la mise en
+        page d'une évaluation sans en être une.</p></div>
+      <div class="bloc"><h4>La correction</h4>
+        <p>Le bilan porte maintenant <b>deux listes</b> : « ce que la simulation a mesuré »
+        et <b>« ce qu'elle n'évalue pas »</b>. Deux contrôles sont devenus des mesures
+        réelles — l'absence de choc sur un rythme non choquable, et le nombre de
+        compressions. La cadence, elle, reste explicitement non mesurée, et le bilan le
+        dit. La barre d'étapes a perdu sa coche verte au profit d'un point plein : elle
+        situe, elle ne juge pas.</p></div>
+      <div class="bloc"><h4>Ce qu'on en retient</h4>
+        <p><b>Le pire défaut d'un dispositif d'évaluation n'est pas de se tromper. C'est de
+        ne rien mesurer, et de le dire quand même.</b> Une erreur de mesure se corrige ;
+        une réussite déclarée sans mesure apprend à l'apprenant qu'il sait faire, ce qui est
+        exactement l'inverse du service rendu.</p></div>
+      <div class="capot">
+        <h4>Vue conception</h4>
+<pre><span class="c">// Avant — quatre des sept</span>
+<span class="x">{ fait: true, texte: t('bilan.controles.secours') }</span>
+
+<span class="c">// Après — la liste des mesures ne contient que ce qui se mesure</span>
+<span class="v">{ fait: !!(ordres && ordres.appel), texte: t('bilan.controles.secours') }
+{ fait: compressionsSuffisantes,     texte: t('bilan.controles.compressions') }</span>
+
+<span class="c">// Et une seconde liste, qui n'existait pas :</span>
+<span class="v">t('bilan.nonEvalue')      // « ce que la simulation n'évalue pas »</span></pre>
+        <p class="preuve">La règle inscrite dans le fichier, pour que la prochaine main la
+        trouve : <b>ce bilan ne fait jamais passer une chose non mesurée pour une
+        mesure</b>. Et son corollaire, moins évident : un contrôle qui ne peut pas échouer
+        n'apprend rien et <b>décrédibilise ceux qui mesurent quelque chose</b>. Une seule
+        coche gratuite suffit à rendre les six autres suspectes.</p>
+      </div>
+      <p class="vide">— Le capot de cette cicatrice est fermé.</p>
+    </div>
+  </article>
+
+  <!-- 04 ─────────────────────────────────────────────────────────────── -->
+  <article class="cic">
+    <div class="cic__tete">
+      <span class="cic__no">04</span>
+      <div>
+        <h3>Le vérificateur aveugle</h3>
+        <p class="trouve">Trouvé par <b>une partie jouée jusqu'au bilan</b> · deux fois, devant l'utilisateur</p>
+      </div>
+    </div>
+    <div class="cic__corps">
+      <div class="bloc"><h4>Le symptôme</h4>
+        <p>Au bilan, en clair, à la place d'une phrase :
+        <code>bilan.controles.secours</code>. Puis, une autre fois,
+        <code>bilan.horsPortee.insufflations</code>. Le nom technique d'une clé, affiché à
+        quelqu'un qui vient de jouer une réanimation.</p></div>
+      <div class="bloc"><h4>La cause</h4>
+        <p>Le vérificateur du dépôt comparait les langues <b>entre elles</b>. Or trois
+        fichiers parfaitement concordants peuvent tous manquer une clé que le code réclame —
+        et c'est précisément ce qui arrive après un ménage : la clé est supprimée partout,
+        puis redemandée par un lot suivant. La concordance était parfaite ; c'était le code
+        qui réclamait l'absent.</p></div>
+      <div class="bloc"><h4>Ce qu'on en retient</h4>
+        <p><b>Un contrôle qui n'a jamais échoué ne prouve rien.</b> Celui-là passait au vert
+        depuis des semaines, et son vert ne voulait rien dire dans la direction qui
+        comptait.</p></div>
+      <div class="capot">
+        <h4>Vue conception</h4>
+        <p>Le second contrôle relève les appels <code>t('…')</code> dans les 31 fichiers de
+        <code>src/</code> et vérifie qu'ils tombent sur quelque chose. Les chemins
+        interpolés deviennent un motif — <code>scene.fautes.${'{'}id}</code> doit
+        correspondre à au moins une clé réelle — ce qui suffit à détecter une branche
+        entièrement absente.</p>
+        <p class="preuve"><b>Éprouvé plutôt que supposé.</b> En retirant la clé fautive
+        exprès, le contrôle la nomme et interrompt la construction. En retirant la branche
+        <code>scene</code> entière, il signale aussi le motif. Un contrôle s'installe en
+        deux temps : on l'écrit, puis <b>on le fait échouer volontairement</b> — sinon on a
+        installé un voyant, pas un contrôle.</p>
+      </div>
+      <p class="vide">— Le capot de cette cicatrice est fermé.</p>
+    </div>
+  </article>
+
+  <!-- 05 ─────────────────────────────────────────────────────────────── -->
+  <article class="cic">
+    <div class="cic__tete">
+      <span class="cic__no">05</span>
+      <div>
+        <h3>Deux ordres, un seul retenu</h3>
+        <p class="trouve">Trouvé par <b>une partie jouée</b> · en disant la phrase comme on la dirait</p>
+      </div>
+    </div>
+    <div class="cic__corps">
+      <div class="bloc"><h4>Le symptôme</h4>
+        <p class="cite">« Vous, appelez le 911. Vous, allez chercher le défibrillateur. »</p>
+        <p>C'est une seule phrase, et elle se clique d'un trait. Or le second clic
+        <b>effaçait le premier</b>. La coche revenait en arrière, le bouton « appelez le
+        911 » réapparaissait — et si l'on ne le remarquait pas, le bilan reprochait ensuite
+        de ne pas avoir appelé les secours à quelqu'un qui les avait appelés. Le même défaut
+        faisait arriver l'appareil à <b>150 secondes au lieu de 90</b>.</p></div>
+      <div class="bloc"><h4>La cause</h4>
+        <p>Une <b>fermeture périmée</b> : les deux boutons lisaient la même version de
+        l'état, celle capturée avant le premier clic. Rien ne lève d'erreur ; le second
+        écrit simplement par-dessus.</p></div>
+      <div class="bloc"><h4>Le jumeau, trouvé de la même manière</h4>
+        <p>Le délai entre le choc et la reprise des compressions affichait
+        <b>−1 788 727 973 s</b>. Même famille : une fonction appelée sans figurer dans ses
+        dépendances, donc capturée quand l'origine des temps valait encore zéro — et
+        <code>Date.now() - 0</code> rend un horodatage absolu. <b>Le premier défaut se
+        voyait à peine ; le second affichait un milliard.</b> Ils avaient la même cause.</p></div>
+      <div class="capot">
+        <h4>Vue conception</h4>
+<pre><span class="c">// Le miroir synchrone : un drapeau qui ne fait que passer de faux à vrai</span>
+<span class="v">const ordresRef = useRef({ appel: false, envoi: false });</span>
+
+const geste = useCallback((id, extra) => {
+  if (extra && extra.ordre) {
+    <span class="v">ordresRef.current = { ...ordresRef.current, [extra.ordre]: true };</span>
+    setEtat((e) => ({ ...e, ordres: { ...e.ordres, [extra.ordre]: true } }));
+  }
+}, []);
+
+<span class="c">// et la suite lit le miroir, pas la fermeture</span>
+<span class="v">const { appel, envoi } = ordresRef.current;</span></pre>
+        <p class="preuve"><b>Reproduit, corrigé, reproduit à nouveau.</b> L'expérience :
+        cliquer les deux boutons dans la même image. Avant —
+        <code>« — secours appelés · ✓ appareil demandé »</code>, le premier ordre perdu.
+        Après — <code>« ✓ secours appelés · ✓ appareil demandé »</code>, les deux boutons
+        disparus. Une correction qu'on ne peut pas faire échouer à volonté n'est pas
+        vérifiée, elle est espérée.</p>
+      </div>
+      <p class="vide">— Le capot de cette cicatrice est fermé.</p>
+    </div>
+  </article>
+
+  <!-- 06 ─────────────────────────────────────────────────────────────── -->
+  <article class="cic">
+    <div class="cic__tete">
+      <span class="cic__no">06</span>
+      <div>
+        <h3>L'instrument qui se trompait</h3>
+        <p class="trouve">Trouvé par <b>le journal lui-même</b> · trois défauts au premier passage, dont deux les siens</p>
+      </div>
+    </div>
+    <div class="cic__corps">
+      <div class="bloc"><h4>Le symptôme</h4>
+        <p>Le journal de passage, tout neuf, a rendu son premier rapport. Il a trouvé trois
+        défauts. <b>Deux étaient les siens.</b></p></div>
+      <div class="bloc"><h4>Les trois</h4>
+        <p>Les durées d'état mélangeaient <b>deux repères de temps</b> — l'un relatif au
+        passage, l'autre absolu : elles étaient toutes fausses. La « première action » de la
+        phase de compressions valait invariablement 120 secondes, parce qu'une compression
+        passait par une fonction qui ne la marquait pas comme une action. Et la pause
+        maximale se calculait sur des intervalles <b>déjà filtrés à cinq secondes</b> — donc
+        aucune interruption longue ne pouvait jamais apparaître, ce qu'on cherchait
+        justement à voir.</p></div>
+      <div class="bloc"><h4>Ce qu'on en retient</h4>
+        <p><b>Un instrument non éprouvé produit des chiffres faux avec l'autorité des
+        chiffres.</b> Le troisième défaut est le plus vicieux : l'instrument ne se taisait
+        pas, il répondait « aucune interruption longue » — une réponse rassurante, précise,
+        et structurellement impossible à contredire.</p></div>
+      <div class="capot">
+        <h4>Vue conception</h4>
+        <p class="preuve"><b>On l'éprouve en lui injectant des écarts connus.</b> Ici : une
+        pause de 7 secondes, un délai de 8 secondes avant la première compression, et une
+        cadence tenue à 545 millisecondes. Le journal doit les retrouver <b>au chiffre
+        près</b>. Tant qu'il ne les retrouve pas, ce qu'il dit sur une vraie partie n'a
+        aucune valeur, et sa précision décimale ne fait qu'aggraver le malentendu.</p>
+        <p style="margin-bottom:0">Le journal n'a par ailleurs <b>aucun appel réseau</b> :
+        ni nom, ni texte libre, ni identifiant durable, tout dans le stockage local, et une
+        seule sortie — un bouton d'export. L'horodatage réel est conservé volontairement,
+        pour lire les effets de fin d'après-midi ; croisé avec une liste de présences il
+        resterait identifiant, donc un journal exporté se traite comme une donnée d'essai.
+        Cela aussi est une décision, pas un réglage par défaut.</p>
+      </div>
+      <p class="vide">— Le capot de cette cicatrice est fermé.</p>
+    </div>
+  </article>
+
+  <!-- 07 ─────────────────────────────────────────────────────────────── -->
+  <article class="cic">
+    <div class="cic__tete">
+      <span class="cic__no">07</span>
+      <div>
+        <h3>La mesure prise au rythme des images</h3>
+        <p class="trouve">Trouvé <b>en écrivant cette page</b> · le 8 septembre 2026, dans la pièce d'à côté</p>
+      </div>
+    </div>
+    <div class="cic__corps">
+      <div class="bloc"><h4>Le symptôme</h4>
+        <p>Dans <i>Quatre-vingt-dix secondes</i>, une partie tenue à 110 compressions par
+        minute — barre pleine depuis quatorze secondes, visible à l'écran — s'est terminée
+        sur un bilan annonçant <b>« 100 % du temps sous le seuil »</b>. L'image et le chiffre
+        se contredisaient franchement.</p></div>
+      <div class="bloc"><h4>La cause</h4>
+        <p>La fraction de temps sous le seuil s'accumulait <b>à l'intérieur de la boucle
+        d'affichage</b>, image par image. Or une fraction de temps échantillonnée au rythme
+        des images n'est juste que si les images tombent régulièrement — ce qu'aucun
+        navigateur ne garantit, et que rien ne signale quand ça cesse d'être vrai.</p></div>
+      <div class="bloc"><h4>La correction</h4>
+        <p>La boucle ne fait plus qu'<b>afficher</b>. Le bilan se recalcule à la fin, pas à
+        pas, sur les seuls horodatages des appuis : deux exécutions sur la même partie
+        rendent exactement les mêmes nombres. Et la barre gèle sur la valeur du
+        <b>modèle</b>, pas sur la dernière image affichée — sans quoi une barre pleine
+        au-dessus d'un « 100 % » ferait douter du chiffre plutôt que de l'image.</p></div>
+      <div class="bloc"><h4>Ce qu'on en retient</h4>
+        <p><b>Une mesure ne doit jamais dépendre de la couche qui affiche.</b> C'est la même
+        faute que la 06, dans un autre costume : l'instrument était mêlé à ce qu'il
+        mesurait. Deux autres défauts sont sortis du même passage complet — l'horloge
+        s'arrêtait à 109,4 s au lieu de 90,0, et 201 compressions étaient comptées au lieu
+        de 165, parce que la fin de la partie attendait la prochaine image pour se
+        déclarer.</p></div>
+      <div class="capot">
+        <h4>Vue conception</h4>
+<pre><span class="c">// Avant — la mesure vivait dans la boucle d'images</span>
+function tic(t){
+  var dt = (t - dernier) / 1000; dernier = t;
+  <span class="x">if (debit &lt; SEUIL) sousSeuil += dt;   // ← faux dès que les images s'espacent</span>
+}
+
+<span class="c">// Après — la boucle affiche, le bilan se rejoue sur les horodatages</span>
+<span class="v">function bilan(duree){
+  var PAS = 10, d = 0, sousSeuil = 0, i = 0;
+  for (var t = 0; t &lt; duree; t += PAS) {
+    while (i &lt; horodatages.length &amp;&amp; horodatages[i] &lt;= t) { d += MONTEE; i++; }
+    ...
+  }
+}</span></pre>
+        <p class="preuve"><b>Vérifié sur trois régimes avant d'être cru.</b> À 110 par
+        minute sans arrêt : 166 compressions, 8 % sous le seuil, plus long arrêt 0,5 s. À
+        38 par minute : 57 compressions, 100 % sous le seuil — la barre ne monte jamais.
+        Arrêt volontaire à 30 secondes : la partie se termine seule à 40 secondes de
+        silence, et le texte de fin change. Les mêmes nombres avaient été prédits hors
+        navigateur avant d'être mesurés dedans.</p>
+      </div>
+      <p class="vide">— Le capot de cette cicatrice est fermé.</p>
+    </div>
+  </article>
+</div></section>
+
+<section><div class="enveloppe">
+  <div class="oeil">Ce qui reste, une fois les sept refermées</div>
+  <h2>Quatre règles, payées comptant</h2>
+  <div class="regles lire">
+    <div class="regle"><h3>Un contrôle qui n'a jamais échoué ne prouve rien.</h3>
+      <p>On l'écrit, puis on le fait échouer volontairement — en retirant la clé, en
+      supprimant la branche. Sans ce second temps, on a installé un voyant.</p></div>
+    <div class="regle"><h3>Un instrument s'éprouve avec des écarts connus.</h3>
+      <p>Une pause de sept secondes, une cadence tenue à 545 millisecondes : il doit les
+      retrouver au chiffre près, sinon sa précision ne fait qu'aggraver le malentendu.</p></div>
+    <div class="regle"><h3>L'auteur ne peut pas éprouver son propre dispositif.</h3>
+      <p>Il connaît la réponse et sa main y va toute seule. Six parties de l'auteur contre
+      cinq minutes d'un inconnu : trois défauts et un tort de conception.</p></div>
+    <div class="regle"><h3>Une mesure ne doit pas dépendre de la couche qui affiche.</h3>
+      <p>Ni de la cadence des images, ni du moment où la prochaine arrive. On enregistre des
+      faits horodatés, et on calcule après.</p></div>
+  </div>
+</div></section>
+
+<section><div class="enveloppe">
+  <div class="oeil">Et ce qui manque toujours</div>
+  <h2>La huitième n'est pas encore écrite</h2>
+  <div class="lire">
+    <p>Sept défauts trouvés, sept corrigés, chacun avec sa preuve. Il manque pourtant la
+    seule chose qui compte vraiment : <b>le dispositif n'a jamais été mis devant cinq
+    personnes qui n'ont jamais vu un défibrillateur</b>, pour relever où elles posent les
+    électrodes sans qu'on leur dise rien.</p>
+    <p>Un lecteur unique a déjà trouvé, en cinq minutes, plus que six parties de l'auteur.
+    Cinq en trouveraient davantage, et surtout ils trouveraient <b>autre chose</b> — la
+    dispersion d'un geste, ce qu'aucun des quatre instruments de cette page ne sait
+    produire. Le dispositif est instrumenté pour la mener. Elle ne l'est pas.</p>
+    <p style="margin-bottom:0">C'est écrit ici parce que cette page perdrait tout son sens à
+    ne montrer que des cicatrices refermées.</p>
+  </div>
+</div></section>
+
+<footer><div class="enveloppe">
+  Portfolio de conception pédagogique · Simulateur de défibrillateur · 8 septembre 2026.
+  Les sept défauts sont réels, datés et corrigés ; les extraits de code sont ceux du dépôt.
+</div></footer>
+
+<script>
+(function(){
+  var r = document.documentElement;
+  document.getElementById('bTheme').addEventListener('click', function(){
+    var sombre = r.getAttribute('data-theme') === 'sombre';
+    if (!r.hasAttribute('data-theme')) {
+      sombre = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    }
+    r.setAttribute('data-theme', sombre ? 'clair' : 'sombre');
+  });
+  var b = document.getElementById('bVue');
+  b.addEventListener('click', function(){
+    var ouvert = document.body.classList.toggle('conception');
+    b.setAttribute('aria-pressed', ouvert ? 'true' : 'false');
+    b.textContent = ouvert ? 'Refermer le capot' : 'Vue conception';
+  });
+})();
+</script>
+
+</body>
+</html>
