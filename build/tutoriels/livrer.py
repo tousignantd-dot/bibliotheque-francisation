@@ -364,9 +364,11 @@ PAGE.write_text(f"""<!DOCTYPE html>
     if (b.dataset.vtt) {{
       const t = document.createElement("track");
       t.kind = "subtitles"; t.srclang = "fr"; t.label = "Fran\u00e7ais";
-      t.default = true; t.src = b.dataset.vtt;
+      t.src = b.dataset.vtt;
       v.crossOrigin = "anonymous";
       v.appendChild(t);
+      // Offerts dans le menu du lecteur, jamais affich\u00e9s d'embl\u00e9e.
+      if (t.track) t.track.mode = "disabled";
     }}
     const carte = b.closest(".tu-capsule");
     b.replaceWith(v);

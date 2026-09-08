@@ -433,9 +433,11 @@
     if (b.dataset.vtt) {
       const t = document.createElement("track");
       t.kind = "subtitles"; t.srclang = "fr"; t.label = "Français";
-      t.default = true; t.src = b.dataset.vtt;
+      t.src = b.dataset.vtt;
       v.crossOrigin = "anonymous";
       v.appendChild(t);
+      // Offerts dans le menu du lecteur, jamais affichés d'emblée.
+      if (t.track) t.track.mode = "disabled";
     }
     const carte = b.closest(".tu-capsule");
     b.replaceWith(v);
