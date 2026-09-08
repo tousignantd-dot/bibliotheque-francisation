@@ -46,9 +46,44 @@ RACINE = pathlib.Path(__file__).resolve().parent.parent
 FILM = RACINE / "assets" / "tutoriels" / "teaser-francis.mp4"
 POLICE_SRC = RACINE / "assets" / "design-system" / "fonts" / "nunito-latin.woff2"
 
-DEBUT, FIN = 61.0, 71.6          # la fenêtre où le tableau est à l'écran
 IPS = 30
 ENCRE = (23, 24, 26)
+
+# ── L'échelle, et pourquoi elle existe ───────────────────────────────────────
+# Tout ce fichier a été mesuré sur un export **1920×1080**. Le second export,
+# remis le 7 septembre 2026, est arrivé en **1280×720** : hauteur de rangée,
+# gouttière, fenêtre de recherche — pas une seule de ces mesures ne tombait
+# plus, et le script ne détectait rien du tout sans rien signaler. Les
+# longueurs sont donc écrites dans l'étalon 1080 et ramenées à la hauteur
+# réelle du film par `px()`.
+HAUTEUR_ETALON = 1080
+
+# La fenêtre où chercher la colonne des noms, en **fractions de l'image**. Un
+# rectangle en pixels ne survit pas à un changement de définition, et un
+# rectangle simplement mis à l'échelle ne survit pas à un recadrage : le
+# nouveau montage ne cadre pas le tableau comme l'ancien. Large des deux
+# côtés — c'est `gauche_du_texte()` qui trouve la colonne, pas ce cadre.
+FENETRE_REL = (0.078, 0.139, 0.500, 0.833)
+
+_TAILLE = None
+
+
+def taille_du_film():
+    """(largeur, hauteur) du film, demandées à ffprobe une seule fois."""
+    global _TAILLE
+    if _TAILLE is None:
+        sortie = subprocess.run(
+            ["ffprobe", "-v", "error", "-select_streams", "v:0",
+             "-show_entries", "stream=width,height", "-of", "csv=p=0:s=x",
+             str(FILM)], capture_output=True, text=True, check=True)
+        l, h = sortie.stdout.strip().split("x")
+        _TAILLE = (int(l), int(h))
+    return _TAILLE
+
+
+def px(valeur):
+    """Une longueur mesurée sur l'étalon 1080, ramenée à ce film-ci."""
+    return max(1, int(round(valeur * taille_du_film()[1] / HAUTEUR_ETALON)))
 
 # Les pseudonymes de la maison — ceux de la classe de démonstration. Six, dans
 # l'ordre alphabétique du tableau, comme les six noms qu'ils remplacent.
@@ -57,8 +92,11 @@ PSEUDOS = ["Alouette", "Bambou", "Cactus", "Colibri", "Épinette", "Érable"]
 # La légende sous le tableau, réécrite au pseudonyme de la deuxième rangée.
 LEGENDE = "%s — le futur simple revient dans 2 scénarios sur 3."
 
-# La zone où chercher la colonne des noms. Large : le tableau bouge.
-FENETRE = (150, 150, 700, 820)
+def fenetre():
+    """La zone où chercher la colonne des noms, pour ce film-ci."""
+    l, h = taille_du_film()
+    x0, y0, x1, y1 = FENETRE_REL
+    return (int(x0 * l), int(y0 * h), int(x1 * l), int(y1 * h))
 
 
 def police(dossier, graisse, nom):
@@ -123,8 +161,9 @@ def patcher(im, chemin_police, chemin_police_normale, memoire=None):
     memoire = {} if memoire is None else memoire
     """Rend l'image corrigée, ou None si le tableau n'y est pas."""
     gris = im.convert("L")
-    seuil = seuil_adaptatif(gris, FENETRE)
-    bs = bandes(gris, FENETRE, seuil=seuil)
+    FEN = fenetre()
+    seuil = seuil_adaptatif(gris, FEN)
+    bs = bandes(gris, FEN, seuil=seuil, mini=px(3))
     # On veut six rangées de noms. Le titre et l'en-tête « APPRENANT » entrent
     # aussi dans la fenêtre : les rangées sont les six DERNIÈRES bandes
     # régulièrement espacées.
@@ -147,7 +186,7 @@ def patcher(im, chemin_police, chemin_police_normale, memoire=None):
     # et se glissait dans le groupe pendant l'entrée du tableau — d'où trois
     # bandes « régulières » qui ne l'étaient pas, et douze images sorties avec
     # les vrais noms au moment précis où l'œil arrive sur le plan.
-    bs = [(a, b) for a, b in bs if 12 <= (b - a) <= 30]
+    bs = [(a, b) for a, b in bs if px(12) <= (b - a) <= px(30)]
     if len(bs) < 2:
         return None
     # Le tableau N'ARRIVE PAS D'UN COUP : ses rangées entrent l'une après
@@ -163,7 +202,7 @@ def patcher(im, chemin_police, chemin_police_normale, memoire=None):
             grp = bs[d:d + n]
             ecarts = [grp[i + 1][0] - grp[i][0] for i in range(n - 1)]
             moyen = sum(ecarts) / len(ecarts)
-            if not (40 <= moyen <= 110):
+            if not (px(40) <= moyen <= px(110)):
                 continue
             if max(abs(e - moyen) for e in ecarts) <= moyen * 0.12:
                 rangees = grp
@@ -180,11 +219,12 @@ def patcher(im, chemin_police, chemin_police_normale, memoire=None):
         # Les toutes premières images du fondu portent un texte à peine plus
         # foncé que le fond : il faut monter très haut pour le voir.
         for essai_seuil in (seuil, 200, 215, 228, 238):
-            cand = [(a, b) for a, b in bandes(gris, FENETRE, seuil=essai_seuil)
-                    if 8 <= (b - a) <= 30
-                    and (gauche_du_texte(gris, a, b, FENETRE, essai_seuil) or 0)
-                    and abs(gauche_du_texte(gris, a, b, FENETRE, essai_seuil)
-                            - memoire["x_nom"]) <= 14]
+            cand = [(a, b) for a, b in bandes(gris, FEN, seuil=essai_seuil,
+                                              mini=px(3))
+                    if px(8) <= (b - a) <= px(30)
+                    and (gauche_du_texte(gris, a, b, FEN, essai_seuil) or 0)
+                    and abs(gauche_du_texte(gris, a, b, FEN, essai_seuil)
+                            - memoire["x_nom"]) <= px(14)]
             # Une seule rangée suffit dans le repli : à la toute première
             # image du tableau, « Amina B. » paraît seule, et c'est justement
             # celle-là qu'il ne faut pas laisser passer. Le risque de faux
@@ -196,7 +236,7 @@ def patcher(im, chemin_police, chemin_police_normale, memoire=None):
     if rangees is None:
         return None
 
-    x_nom = min(filter(None, (gauche_du_texte(gris, a, b, FENETRE, seuil)
+    x_nom = min(filter(None, (gauche_du_texte(gris, a, b, FEN, seuil)
                               for a, b in rangees)))
     memoire["x_nom"] = x_nom
     # Le bord droit du cache : la gouttière qui sépare les noms de la colonne
@@ -206,27 +246,36 @@ def patcher(im, chemin_police, chemin_police_normale, memoire=None):
     #    d'« Épinette », le nom le plus long dépassant les autres ;
     #  · sans cette gouttière du tout, le cache mangeait le début de
     #    « Un appel au superviseur ».
-    px = gris.load()
-    x_fin = x_nom + 40
+    pix = gris.load()
+    largeur = taille_du_film()[0]
+    x_fin = x_nom + px(40)
     for a, b in rangees:
-        vide, fin = 0, x_nom + 40
-        for x in range(x_nom + 40, FENETRE[2] + 700):
-            if any(px[x, y] < seuil + 25 for y in range(a - 2, b + 2)):
+        vide, fin = 0, x_nom + px(40)
+        for x in range(x_nom + px(40), min(largeur, FEN[2] + px(700))):
+            if any(pix[x, y] < seuil + 25 for y in range(a - px(2), b + px(2))):
                 vide = 0
             else:
                 vide += 1
-                if vide > 26:
-                    fin = x - 26
+                if vide > px(26):
+                    fin = x - px(26)
                     break
         x_fin = max(x_fin, fin)
+    # La gouttière ne se mesure plus pendant un fondu : le texte y est à peine
+    # plus foncé que le fond, la recherche ne trouve donc rien et le cache se
+    # réduit à sa largeur minimale — d'où, à la sortie du plan, « Bambou »
+    # écrit par-dessus « Karim » et le « H. » d'origine resté à côté, sur six
+    # rangées à la fois. On garde la plus grande LARGEUR mesurée sur ce plan,
+    # jamais la position : la colonne dérive avec le zoom, sa largeur non.
+    memoire["largeur_nom"] = max(memoire.get("largeur_nom", 0), x_fin - x_nom)
+    x_fin = max(x_fin, x_nom + memoire["largeur_nom"])
     memoire["x_fin"] = x_fin
 
     hauteur = max(b - a for a, b in rangees)
     taille = 8
-    for t in range(8, 60):
+    for t in range(6, 60):
         f = ImageFont.truetype(str(chemin_police), t)
         bb = f.getbbox("A")
-        if (bb[3] - bb[1]) >= hauteur - 5:
+        if (bb[3] - bb[1]) >= hauteur - px(5):
             taille = t
             break
     fonte = ImageFont.truetype(str(chemin_police), taille)
@@ -238,18 +287,19 @@ def patcher(im, chemin_police, chemin_police_normale, memoire=None):
     # pire des deux mondes — un tableau anonymisé et un nom juste en dessous.
     # Elle se réécrit en entier, en graisse normale, à sa taille mesurée.
     for y0, y1 in bs:
-        if y0 <= rangees[-1][1] or (y1 - y0) > 30:
+        if y0 <= rangees[-1][1] or (y1 - y0) > px(30):
             continue
-        gx = gauche_du_texte(gris, y0, y1, (FENETRE[0], y0, 900, y1), seuil)
+        gx = gauche_du_texte(gris, y0, y1, (FEN[0], y0, min(largeur, px(900)), y1),
+                             seuil)
         if gx is None or gx > x_nom:
             continue
         vide, fin = 0, gx
-        for x in range(gx + 20, 1400):
-            if any(px[x, y] < seuil + 25 for y in range(y0 - 2, y1 + 2)):
+        for x in range(gx + px(20), largeur):
+            if any(pix[x, y] < seuil + 25 for y in range(y0 - px(2), y1 + px(2))):
                 vide, fin = 0, x
             else:
                 vide += 1
-                if vide > 30:
+                if vide > px(30):
                     break
         # La taille se règle sur la LARGEUR de la ligne d'origine, pas sur sa
         # hauteur : réglée en hauteur, la ligne sortait tassée — « revientdans
@@ -264,28 +314,67 @@ def patcher(im, chemin_police, chemin_police_normale, memoire=None):
             if ecart is None or abs(l - vise) < ecart:
                 ecart, t = abs(l - vise), tt
         f = ImageFont.truetype(str(chemin_police_normale), t)
-        fond = im.getpixel((max(0, gx - 12), (y0 + y1) // 2))
-        d.rectangle([gx - 6, y0 - 8, fin + 8, y1 + 8], fill=fond)
-        bb = f.getbbox(texte)
+        fond = im.getpixel((max(0, gx - px(12)), (y0 + y1) // 2))
+        # L'encre se relève AVANT d'effacer, comme pour les rangées. Elle se
+        # relevait après : on échantillonnait le rectangle qu'on venait de
+        # peindre, la légende était donc réécrite dans la couleur du fond —
+        # c'est-à-dire effacée. Sur le 1080 la ligne paraissait tard dans le
+        # plan et le défaut n'a jamais été regardé ; sur le 1280×720 il laisse
+        # un blanc là où une phrase était.
         encre_l = min((im.getpixel((x, y)) for y in range(y0, y1)
-                       for x in range(gx, min(fin, gx + 300), 2)),
+                       for x in range(gx, min(fin, gx + px(300)), 2)),
                       key=lambda c: c[0] + c[1] + c[2])
+        d.rectangle([gx - px(6), y0 - px(8), fin + px(8), y1 + px(8)], fill=fond)
+        bb = f.getbbox(texte)
         d.text((gx, (y0 + y1) // 2 - (bb[3] + bb[1]) // 2), texte, font=f,
                fill=encre_l)
         break
 
     for (y0, y1), mot in zip(rangees, PSEUDOS):
         milieu = (y0 + y1) // 2
-        fond = im.getpixel((max(0, x_nom - 16), milieu))
+        fond = im.getpixel((max(0, x_nom - px(16)), milieu))
         # L'encre se relève sur le texte qu'on efface : pendant un fondu, le
         # nom d'origine n'est qu'un gris clair, et le réécrire en noir plein
         # ferait clignoter la rangée à l'entrée du plan.
         encre = min((im.getpixel((x, y)) for y in range(y0, y1)
-                     for x in range(x_nom, min(x_fin, x_nom + 200), 2)),
+                     for x in range(x_nom, min(x_fin, x_nom + px(200)), 2)),
                     key=lambda c: c[0] + c[1] + c[2])
-        d.rectangle([x_nom - 5, y0 - 8, x_fin, y1 + 8], fill=fond)
+        d.rectangle([x_nom - px(5), y0 - px(8), x_fin, y1 + px(8)], fill=fond)
         bb = fonte.getbbox(mot)
         d.text((x_nom, milieu - (bb[3] + bb[1]) // 2), mot, font=fonte, fill=encre)
+
+    # ── La rangée qui n'est pas encore arrivée ──────────────────────────────
+    # Le tableau se pose rangée par rangée. Celle qui entre est plus pâle que
+    # les autres : elle ne rejoint pas le groupe régulier, donc elle n'est pas
+    # repeinte — et « Thanh N. » restait parfaitement lisible sur l'image même
+    # où le plan se pose. Sous la dernière rangée traitée, on efface donc tout
+    # ce qui reste dans la colonne des noms. Rien n'est réécrit : sur un fondu
+    # d'entrée, une case vide se lit comme une case qui n'est pas encore
+    # arrivée, alors qu'un pseudonyme posé sur une géométrie non mesurée se
+    # verrait de travers.
+    if len(rangees) < 6:
+        # On n'essaie plus de *voir* les rangées manquantes : à quelques pour
+        # cent d'opacité, une détection les rate une fois sur trente, et il
+        # suffit d'une image pour qu'un nom paraisse. On efface donc la colonne
+        # par BANDES RÉGULIÈRES, du pas mesuré, depuis la première rangée
+        # traitée jusqu'au bas de la fenêtre — sans rien chercher. Un rectangle
+        # de la couleur du fond posé sur du fond ne se voit pas ; un nom laissé
+        # une image, oui.
+        if len(rangees) >= 2:
+            memoire["pas"] = (rangees[-1][0] - rangees[0][0]) / (len(rangees) - 1)
+        pas = memoire.get("pas")
+        if pas and pas > px(10):
+            haut = rangees[0][0] - px(4)
+            y = haut
+            while y < FEN[3] - px(6):
+                milieu = int(y + pas / 2)
+                if not any(milieu >= a - px(6) and milieu <= b + px(6)
+                           for a, b in rangees):
+                    couleur = im.getpixel((max(0, x_nom - px(16)),
+                                           min(milieu, im.height - 1)))
+                    d.rectangle([x_nom - px(5), int(y), x_fin,
+                                 int(min(y + pas - px(2), FEN[3]))], fill=couleur)
+                y += pas
     return im
 
 
@@ -301,24 +390,90 @@ def effacer_colonne(im, x0, x1):
     géométrie qu'on n'a pas mesurée le poserait de travers.
     """
     gris = im.convert("L")
-    px = gris.load()
-    fond = max(range(256), key=lambda v: gris.crop((x0, 150, x1, 900)).histogram()[v])
+    pix = gris.load()
+    haut, bas = px(150), min(taille_du_film()[1], px(900))
+    fond = max(range(256), key=lambda v: gris.crop((x0, haut, x1, bas)).histogram()[v])
     lignes, dans, d = [], False, 0
-    for y in range(150, 900):
-        sombre = sum(1 for x in range(x0, x1, 2) if px[x, y] < fond - 6)
-        if sombre > 2 and not dans:
+    for y in range(haut, bas):
+        # `fond - 3` et `sombre > 1` : à la sortie du plan, le tableau se
+        # dissout jusqu'à quelques pour cent d'opacité, et un seuil plus franc
+        # laissait passer « Karim H. » et « Fatou D. » sur les deux dernières
+        # images. Un faux positif ici ne coûte qu'un rectangle de la couleur du
+        # fond, posé sur du fond.
+        sombre = sum(1 for x in range(x0, x1, 2) if pix[x, y] < fond - 3)
+        if sombre > 1 and not dans:
             dans, d = True, y
-        elif sombre <= 2 and dans:
+        elif sombre <= 1 and dans:
             dans = False
-            if 8 <= y - d <= 30:
+            if px(8) <= y - d <= px(30):
                 lignes.append((d, y))
     if not lignes:
         return None
     dr = ImageDraw.Draw(im)
     for a, b in lignes:
-        couleur = im.getpixel((max(0, x0 - 14), (a + b) // 2))
-        dr.rectangle([x0 - 5, a - 6, x1, b + 6], fill=couleur)
+        couleur = im.getpixel((max(0, x0 - px(14)), (a + b) // 2))
+        dr.rectangle([x0 - px(5), a - px(6), x1, b + px(6)], fill=couleur)
     return im
+
+
+def rangees_visibles(im):
+    """Le nombre de rangées de noms régulièrement espacées dans cette image.
+
+    Sert à trouver le plan tout seul. C'est la même mesure que `patcher()`,
+    sans le dessin : un tableau qu'on sait repeindre est un tableau qu'on sait
+    reconnaître.
+    """
+    gris = im.convert("L")
+    FEN = fenetre()
+    seuil = seuil_adaptatif(gris, FEN)
+    bs = [(a, b) for a, b in bandes(gris, FEN, seuil=seuil, mini=px(3))
+          if px(8) <= (b - a) <= px(30)]
+    for n in range(6, 2, -1):
+        for d in range(len(bs) - n + 1):
+            grp = bs[d:d + n]
+            ecarts = [grp[i + 1][0] - grp[i][0] for i in range(n - 1)]
+            moyen = sum(ecarts) / len(ecarts)
+            if not (px(28) <= moyen <= px(110)):
+                continue
+            if max(abs(e - moyen) for e in ecarts) <= moyen * 0.12:
+                return n
+    return 0
+
+
+def trouver_le_plan(pas=0.2, marge=1.0):
+    """Cherche dans tout le film la fenêtre où le tableau de groupe paraît.
+
+    Elle était écrite en dur — 61,0 à 71,6 s — et le second montage l'a
+    déplacée de huit secondes en plus de changer de définition. Deux mesures à
+    refaire à la main au prochain export, c'est une de trop : on balaie le
+    film et on prend le plus long passage où six rangées régulières se lisent.
+    Les groupes de trois ou quatre ne comptent pas ici — d'autres écrans du
+    film en donnent, et seule la table de groupe en a six.
+
+    La marge est large (une seconde) parce que le tableau se pose rangée par
+    rangée : à un dixième de seconde du bord, « Amina B. » et « Karim H. »
+    sont déjà lisibles alors que six rangées régulières ne le sont pas encore.
+    """
+    tmp = pathlib.Path(tempfile.mkdtemp())
+    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(FILM),
+                    "-vf", "fps=%g" % (1 / pas), str(tmp / "%05d.png")], check=True)
+    fichiers = sorted(tmp.glob("*.png"))
+    vus = [(i * pas, rangees_visibles(Image.open(f).convert("RGB")))
+           for i, f in enumerate(fichiers)]
+    passages, debut = [], None
+    for t, n in vus + [(len(vus) * pas, 0)]:
+        if n >= 6 and debut is None:
+            debut = t
+        elif n < 6 and debut is not None:
+            passages.append((debut, t))
+            debut = None
+    if not passages:
+        raise SystemExit("Aucun tableau de six rangées trouvé dans le film.")
+    d, f = max(passages, key=lambda p: p[1] - p[0])
+    # La marge attrape l'entrée et la sortie du tableau, où les rangées
+    # arrivent une à une : ce sont justement les images où les vrais noms se
+    # lisent, et `patcher()` sait les traiter par son repli guidé.
+    return max(0.0, d - marge), f + marge
 
 
 def essai(seconde):
@@ -335,7 +490,8 @@ def essai(seconde):
     dest = RACINE / "essais" / ("teaser-pseudos-%s.png" % seconde)
     dest.parent.mkdir(exist_ok=True)
     im.save(dest)
-    im.crop((150, 150, 900, 830)).resize((1500, 1360), Image.LANCZOS).save(
+    im.crop((px(150), px(150), px(900), px(830))).resize(
+        (1500, 1360), Image.LANCZOS).save(
         dest.with_name(dest.stem + "-zoom.png"))
     print("→ %s" % dest.relative_to(RACINE))
     return 0
@@ -344,9 +500,23 @@ def essai(seconde):
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--essai", type=float)
+    ap.add_argument("--fenetre", action="store_true",
+                    help="dire où est le plan, sans rien produire")
+    ap.add_argument("--de", type=float, help="forcer le début du plan")
+    ap.add_argument("--a", type=float, dest="jusqua", help="forcer la fin")
     a = ap.parse_args()
     if a.essai is not None:
         return essai(a.essai)
+
+    l, h = taille_du_film()
+    if a.de is not None and a.jusqua is not None:
+        DEBUT, FIN = a.de, a.jusqua
+    else:
+        print("Recherche du plan dans %s (%d×%d)…" % (FILM.name, l, h))
+        DEBUT, FIN = trouver_le_plan()
+    print("Le tableau est à l'écran de %.1f à %.1f s." % (DEBUT, FIN))
+    if a.fenetre:
+        return 0
 
     tmp = pathlib.Path(tempfile.mkdtemp())
     pol = police(tmp, 800, "b.ttf")
@@ -384,7 +554,7 @@ def main():
             im = effacer_colonne(Image.open(f).convert("RGB"),
                                  memoire_finale["x_nom"],
                                  memoire_finale.get("x_fin",
-                                                    memoire_finale["x_nom"] + 210))
+                                                    memoire_finale["x_nom"] + px(210)))
             if im is not None:
                 im.save(f)
                 efface += 1
