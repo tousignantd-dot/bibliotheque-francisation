@@ -111,6 +111,13 @@ section>.enveloppe>h2{font-size:var(--t-titre-1);margin-bottom:var(--e-5)}
 /* ══ LA SCÈNE ═════════════════════════════════════════════════════════════ */
 .plateau{background:#09090B;border:1px solid #27272A;border-radius:var(--r-4);
          color:#A1A1AA;overflow:hidden;max-width:64rem;margin:0 auto}
+/* Le gras dans un panneau sombre ─────────────────────────────────────────
+   La règle globale de Braise pose `b,strong{color:var(--encre)}`, et --encre
+   vaut #09090B en thème clair. Les panneaux de scène ont un fond sombre écrit
+   en dur, indépendant du thème : sans cette reprise, tout le gras des
+   répliques et des didascalies est noir sur noir — invisible, sans erreur, et
+   seule une lecture des pixels le révèle. */
+.plateau b, .plateau strong{color:#FAFAFA}
 .plateau__tete{display:flex;align-items:center;gap:var(--e-4);padding:var(--e-4) var(--e-5);
                border-bottom:1px solid #18181B;flex-wrap:wrap}
 .cond{font-size:var(--t-menu);letter-spacing:.12em;text-transform:uppercase;

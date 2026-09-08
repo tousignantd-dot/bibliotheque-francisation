@@ -1,0 +1,709 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="L'appel au 911 comme scene : le repartiteur guide la reanimation, et l'aide qu'il donne depend de votre reponse sur la respiration.">
+<title>Le répartiteur</title>
+<style>html{color-scheme:light dark}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>Le répartiteur</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+<style>
+/* ═══ Jetons « Braise », recopiés — jamais importés (un @import en file://
+   échoue sans rien dire). --mesure-l porte la largeur de lecture : dans la
+   source du système, --mesure porte à la fois une couleur et une longueur
+   dans le même :root, et la seconde écrase la première.                    */
+:root{
+  --fond:#FFFFFF; --fond-2:#FAFAFA; --fond-3:#F4F4F5;
+  --encre:#09090B; --encre-2:#52525B; --encre-3:#71717A; --encre-4:#A1A1AA;
+  --bord:#E4E4E7; --bord-fort:#D4D4D8;
+  --marque-rose:#F0359F; --marque-corail:#F5533D;
+  --marque-degrade:linear-gradient(100deg,var(--marque-rose) 0%,var(--marque-corail) 100%);
+  --signal:#F5652E; --signal-encre:#FFFFFF; --signal-voile:#FEF1EA;
+  --mesure:#2B4E9B; --mesure-2:#5C7EBF; --mesure-voile:#EAEFFA;
+  --action:#18181B; --action-survol:#27272A; --action-encre:#FAFAFA;
+  --police:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --police-mono:ui-monospace,"SF Mono","Menlo","Consolas",monospace;
+  --t-affiche:clamp(2.5rem,7.4vw,4.75rem); --t-titre-1:clamp(1.75rem,4vw,2.75rem);
+  --t-titre-2:clamp(1.375rem,2.6vw,1.75rem); --t-titre-3:1.1875rem;
+  --t-avant:1.1875rem; --t-petit:.875rem; --t-menu:.8125rem;
+  --g-moyen:500; --g-fort:600; --g-noir:800;
+  --i-serre:.98; --i-titre:1.15; --i-corps:1.62;
+  --l-serre:-.035em; --l-titre:-.02em;
+  --e-1:.25rem; --e-2:.5rem; --e-3:.75rem; --e-4:1rem; --e-5:1.5rem;
+  --e-6:2rem; --e-7:3rem; --e-8:4rem; --e-9:6rem;
+  --mesure-l:42rem; --contenu:74rem;
+  --r-1:.375rem; --r-2:.5rem; --r-3:.75rem; --r-4:1rem; --r-plein:9999px;
+  --o-1:0 1px 2px rgba(9,9,11,.06);
+  --o-2:0 1px 3px rgba(9,9,11,.08),0 1px 2px rgba(9,9,11,.04);
+  --o-3:0 4px 12px rgba(9,9,11,.08);
+  --transition:140ms cubic-bezier(.4,0,.2,1);
+}
+:root[data-theme="sombre"]{
+  --fond:#09090B; --fond-2:#0F0F11; --fond-3:#18181B;
+  --encre:#FAFAFA; --encre-2:#D4D4D8; --encre-3:#A1A1AA; --encre-4:#52525B;
+  --bord:#27272A; --bord-fort:#3F3F46;
+  --marque-rose:#FF4FB0; --marque-corail:#FF6A50;
+  --signal:#FF7A45; --signal-encre:#1A0C05; --signal-voile:#2A1610;
+  --mesure:#8FB2F0; --mesure-2:#6E8FCB; --mesure-voile:#18213A;
+  --action:#FAFAFA; --action-survol:#E4E4E7; --action-encre:#18181B;
+  --o-1:0 1px 2px rgba(0,0,0,.5); --o-2:0 1px 3px rgba(0,0,0,.6);
+  --o-3:0 4px 14px rgba(0,0,0,.6);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="clair"]){
+    --fond:#09090B; --fond-2:#0F0F11; --fond-3:#18181B;
+    --encre:#FAFAFA; --encre-2:#D4D4D8; --encre-3:#A1A1AA; --encre-4:#52525B;
+    --bord:#27272A; --bord-fort:#3F3F46;
+    --marque-rose:#FF4FB0; --marque-corail:#FF6A50;
+    --signal:#FF7A45; --signal-encre:#1A0C05; --signal-voile:#2A1610;
+    --mesure:#8FB2F0; --mesure-2:#6E8FCB; --mesure-voile:#18213A;
+    --action:#FAFAFA; --action-survol:#E4E4E7; --action-encre:#18181B;
+    --o-1:0 1px 2px rgba(0,0,0,.5); --o-2:0 1px 3px rgba(0,0,0,.6);
+    --o-3:0 4px 14px rgba(0,0,0,.6);
+  }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--fond);color:var(--encre-2);font-family:var(--police);
+     font-size:1rem;line-height:var(--i-corps);-webkit-font-smoothing:antialiased}
+.enveloppe{max-width:var(--contenu);margin:0 auto;padding:0 var(--e-5)}
+h1,h2,h3,h4{color:var(--encre);letter-spacing:var(--l-titre);line-height:var(--i-titre);
+            font-weight:var(--g-fort);margin:0;text-wrap:balance}
+p{margin:0 0 var(--e-4)}
+b,strong{color:var(--encre);font-weight:var(--g-fort)}
+code{font-family:var(--police-mono);font-size:.9em;background:var(--fond-3);
+     padding:.1em .35em;border-radius:var(--r-1);color:var(--encre)}
+.lire{max-width:var(--mesure-l)}
+.masque{display:none}
+.barre{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--fond) 88%,transparent);
+       backdrop-filter:blur(12px);border-bottom:1px solid var(--bord)}
+.barre__int{max-width:var(--contenu);margin:0 auto;padding:var(--e-3) var(--e-5);
+            display:flex;align-items:center;gap:var(--e-3);flex-wrap:wrap}
+.marque{font-weight:var(--g-noir);letter-spacing:var(--l-serre);color:var(--encre);font-size:1.0625rem}
+.marque i{font-style:normal;background:var(--marque-degrade);
+          -webkit-background-clip:text;background-clip:text;color:transparent}
+.barre__vide{flex:1}
+.bt{border:1px solid var(--bord-fort);background:var(--fond);color:var(--encre-2);font:inherit;
+    font-size:var(--t-menu);font-weight:var(--g-moyen);padding:var(--e-1) var(--e-3);
+    border-radius:var(--r-plein);cursor:pointer;transition:var(--transition)}
+.bt:hover{border-color:var(--encre-4);color:var(--encre)}
+.bt[aria-pressed="true"]{background:var(--mesure);border-color:var(--mesure);color:#fff}
+:root[data-theme="sombre"] .bt[aria-pressed="true"]{color:#09090B}
+.heros{padding:var(--e-8) 0 var(--e-6)}
+.pastille{display:inline-flex;align-items:center;gap:var(--e-2);font-size:var(--t-petit);
+          font-weight:var(--g-moyen);color:var(--signal);background:var(--signal-voile);
+          border-radius:var(--r-plein);padding:var(--e-1) var(--e-3);margin-bottom:var(--e-5)}
+.pastille::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--signal)}
+.heros h1{font-size:var(--t-affiche);font-weight:var(--g-noir);letter-spacing:var(--l-serre);
+          line-height:var(--i-serre);max-width:17ch}
+.heros h1 i{font-style:normal;background:var(--marque-degrade);
+            -webkit-background-clip:text;background-clip:text;color:transparent}
+.heros .avant{font-size:var(--t-avant);color:var(--encre-3);max-width:var(--mesure-l);
+              margin-top:var(--e-5);text-wrap:pretty}
+section{padding:var(--e-7) 0;border-top:1px solid var(--bord);scroll-margin-top:4.5rem}
+.oeil{font-size:var(--t-menu);text-transform:uppercase;letter-spacing:.14em;
+      color:var(--encre-4);font-weight:var(--g-fort);margin-bottom:var(--e-3)}
+section>.enveloppe>h2{font-size:var(--t-titre-1);margin-bottom:var(--e-5)}
+.gros{display:inline-block;padding:var(--e-3) var(--e-6);border-radius:var(--r-2);
+      background:var(--action);color:var(--action-encre);border:0;font:inherit;
+      font-weight:var(--g-fort);font-size:1rem;cursor:pointer;text-decoration:none}
+.gros[disabled]{opacity:.4;cursor:default}
+.capot{display:none;margin-top:var(--e-6);border-top:1px dashed var(--bord-fort);padding-top:var(--e-5)}
+body.conception .capot{display:block}
+.capot h4{color:var(--mesure);font-size:var(--t-menu);text-transform:uppercase;
+          letter-spacing:.1em;margin-bottom:var(--e-3)}
+.preuve{background:var(--fond-3);border-radius:var(--r-2);padding:var(--e-4) var(--e-5);font-size:.9375rem}
+.preuve p:last-child{margin-bottom:0}
+.enrob{overflow-x:auto}
+.tab{width:100%;border-collapse:collapse;font-size:.9375rem;margin-top:var(--e-4)}
+.tab th,.tab td{text-align:left;padding:var(--e-2) var(--e-3);border-bottom:1px solid var(--bord);
+                vertical-align:top}
+.tab th{font-size:var(--t-menu);text-transform:uppercase;letter-spacing:.1em;
+        color:var(--encre-4);font-weight:var(--g-fort)}
+.tab tr:last-child td{border-bottom:0}
+.garde{background:var(--fond-3);border-radius:var(--r-3);padding:var(--e-5) var(--e-6)}
+.garde ul{margin:0;padding-left:1.1em}
+.garde li{margin-bottom:var(--e-2)}
+.garde li:last-child{margin-bottom:0}
+.chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;
+          background:var(--bord);border:1px solid var(--bord);border-radius:var(--r-3);
+          overflow:hidden;margin-top:var(--e-5)}
+.ch{background:var(--fond);padding:var(--e-4) var(--e-5)}
+.ch__v{font-family:var(--police-mono);font-size:1.5rem;color:var(--encre);
+       font-variant-numeric:tabular-nums}
+.ch__v--m{color:var(--mesure)}
+.ch__v--s{color:var(--signal)}
+.ch__c{font-size:.75rem;color:var(--encre-4);text-transform:uppercase;
+       letter-spacing:.1em;margin-top:var(--e-1)}
+footer{padding:var(--e-8) 0 var(--e-9);color:var(--encre-4);font-size:var(--t-petit)}
+@media print{
+  :root{--fond:#FFF;--fond-2:#FFF;--fond-3:#F4F4F5;--encre:#09090B;--encre-2:#3F3F46;
+        --encre-3:#52525B;--encre-4:#71717A;--bord:#D4D4D8;--bord-fort:#A1A1AA;
+        --o-1:none;--o-2:none;--o-3:none}
+  @page{margin:14mm 12mm}
+  .barre{display:none}
+  .heros{padding-top:0}
+  .capot{display:block}
+  body{font-size:10.5pt}
+  .tab tr,.preuve,.garde{break-inside:avoid}
+  h1,h2,h3{break-after:avoid}
+  .enveloppe{padding:0}
+}
+
+
+/* ══ L'appel ══════════════════════════════════════════════════════════════ */
+.plateau{background:#09090B;border:1px solid #27272A;border-radius:var(--r-4);
+         color:#A1A1AA;overflow:hidden;max-width:64rem;margin:0 auto}
+/* Le gras dans un panneau sombre ─────────────────────────────────────────
+   La règle globale de Braise pose `b,strong{color:var(--encre)}`, et --encre
+   vaut #09090B en thème clair. Les panneaux de scène ont un fond sombre écrit
+   en dur, indépendant du thème : sans cette reprise, tout le gras des
+   répliques et des didascalies est noir sur noir — invisible, sans erreur, et
+   seule une lecture des pixels le révèle. */
+.plateau b, .plateau strong{color:#FAFAFA}
+.plateau__tete{display:flex;align-items:center;gap:var(--e-4);padding:var(--e-4) var(--e-5);
+               border-bottom:1px solid #18181B;flex-wrap:wrap}
+.etat{font-size:var(--t-menu);letter-spacing:.12em;text-transform:uppercase;
+      color:#52525B;font-weight:var(--g-fort)}
+.chrono{margin-left:auto;font-family:var(--police-mono);font-size:1.375rem;color:#FAFAFA;
+        font-variant-numeric:tabular-nums}
+.plateau__corps{display:grid;grid-template-columns:1.15fr 1fr;gap:1px;background:#18181B;
+                min-height:24rem}
+.fil,.mains{background:#09090B;padding:var(--e-5)}
+.fil h4,.mains h4{font-size:var(--t-menu);text-transform:uppercase;letter-spacing:.1em;
+                  color:#52525B;margin-bottom:var(--e-3)}
+.echange{display:flex;flex-direction:column;gap:var(--e-3);max-height:19rem;overflow-y:auto}
+.bulle{border-radius:var(--r-3);padding:var(--e-3) var(--e-4);max-width:92%;
+       animation:venir 300ms ease-out both;font-size:.9375rem}
+.bulle--rep{background:#18181B;border:1px solid #27272A;color:#FAFAFA;align-self:flex-start}
+.bulle--moi{background:#FAFAFA;color:#09090B;align-self:flex-end}
+.bulle--scene{background:transparent;border-left:2px solid #3F3F46;border-radius:0;
+              color:#71717A;font-style:italic;align-self:stretch;max-width:100%;
+              padding-left:var(--e-3)}
+.bulle--fort{border-color:var(--signal);border-left:2px solid var(--signal)}
+@keyframes venir{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+.gestes{display:flex;flex-direction:column;gap:var(--e-2)}
+.geste{text-align:left;background:#18181B;border:1px solid #27272A;color:#FAFAFA;font:inherit;
+       font-size:.9375rem;padding:var(--e-3) var(--e-4);border-radius:var(--r-2);
+       cursor:pointer;transition:var(--transition)}
+.geste:hover:not([disabled]){background:#27272A;border-color:#3F3F46}
+.geste[disabled]{opacity:.32;cursor:default}
+.geste--fort{background:#FAFAFA;color:#09090B;border-color:#FAFAFA;font-weight:var(--g-fort)}
+.geste--fort:hover:not([disabled]){background:#E4E4E7}
+.geste__pourquoi{display:block;font-size:.75rem;color:#71717A;margin-top:2px}
+.geste--fort .geste__pourquoi{color:#52525B}
+
+/* Les deux témoins : la ligne, et les mains. Ce sont les deux ressources que
+   l'appel met en concurrence, donc elles se voient en permanence. */
+.temoins{display:flex;gap:var(--e-3);margin-bottom:var(--e-4);flex-wrap:wrap}
+.temoin{display:flex;align-items:center;gap:var(--e-2);font-size:.8125rem;color:#71717A;
+        border:1px solid #27272A;border-radius:var(--r-plein);padding:var(--e-1) var(--e-3)}
+.temoin::before{content:"";width:7px;height:7px;border-radius:50%;background:#3F3F46}
+.temoin.on::before{background:#4ADE80}
+.temoin.off::before{background:var(--signal)}
+.temoin.on{color:#D4D4D8}
+
+.occupe{margin-top:var(--e-4);color:#71717A;font-size:.9375rem}
+.occupe__b{height:3px;background:#18181B;border-radius:2px;overflow:hidden;margin-top:var(--e-2)}
+.occupe__b i{display:block;height:100%;width:0;background:var(--signal)}
+
+/* ══ Le relevé ════════════════════════════════════════════════════════════ */
+.ligne{display:grid;grid-template-columns:4.5rem 1fr;gap:var(--e-3);padding:var(--e-2) 0;
+       border-bottom:1px solid var(--bord);font-size:.9375rem}
+.ligne:last-child{border-bottom:0}
+.ligne__t{font-family:var(--police-mono);color:var(--encre-4);font-variant-numeric:tabular-nums}
+.ligne--faute .ligne__q{color:var(--signal)}
+.ligne--cle .ligne__q{color:var(--encre);font-weight:var(--g-fort)}
+.verdict{border:1px solid var(--bord);border-left:3px solid var(--mesure);
+         border-radius:var(--r-3);padding:var(--e-6);background:var(--mesure-voile);
+         margin-top:var(--e-6)}
+.verdict h3{font-size:var(--t-titre-2);margin-bottom:var(--e-3)}
+.verdict p:last-child{margin-bottom:0}
+@media (max-width:760px){ .plateau__corps{grid-template-columns:1fr} }
+@media (prefers-reduced-motion:reduce){ .bulle{animation:none} }
+@media print{ .plateau{display:none} }
+</style>
+
+<div class="barre"><div class="barre__int">
+  <span class="marque">Le <i>répartiteur</i></span>
+  <span class="barre__vide"></span>
+  <button class="bt" id="bVue" type="button" aria-pressed="false">Vue conception</button>
+  <button class="bt" id="bTheme" type="button">Thème</button>
+</div></div>
+
+<div class="heros"><div class="enveloppe">
+  <span class="pastille">Simulateur de défibrillateur · proposition 02 · 8 septembre 2026</span>
+  <h1>Le 911 est un formateur, <i>pas un bouton.</i></h1>
+  <p class="avant">Au Québec, la personne au bout du fil <b>guide la réanimation</b>. Dans le
+  simulateur, appeler le 911 est un clic qui allume une coche : on escamote le seul moment
+  où quelqu'un reçoit vraiment de l'aide.</p>
+  <p class="avant" style="font-size:1rem">Ici, l'appel est une scène. Le répartiteur pose ses
+  questions dans l'ordre du protocole, et <b>l'aide qu'il donne dépend de vos réponses</b> —
+  pas d'un barème. Une mauvaise réponse ne déclenche pas une correction : elle éteint le
+  guidage, et la scène continue sans vous le dire.</p>
+  <p><button class="gros" id="bDemarrer" type="button">Composer le 911</button></p>
+</div></div>
+
+<section id="jeu"><div class="enveloppe">
+  <div class="plateau masque" id="plateau">
+    <div class="plateau__tete">
+      <span class="etat" id="etat">Appel en cours</span>
+      <span class="chrono" id="chrono">0,0 s</span>
+    </div>
+    <div class="plateau__corps">
+      <div class="fil">
+        <h4>La ligne</h4>
+        <div class="echange" id="echange"></div>
+      </div>
+      <div class="mains">
+        <div class="temoins">
+          <span class="temoin off" id="tMains">Une main tient le téléphone</span>
+          <span class="temoin" id="tLigne">Ligne ouverte</span>
+        </div>
+        <h4>Ce que vous pouvez faire</h4>
+        <div class="gestes" id="gestes"></div>
+        <div class="occupe masque" id="occupe">
+          <span id="occupeTexte"></span>
+          <div class="occupe__b"><i id="occupeBarre"></i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<section class="masque" id="bilan"><div class="enveloppe">
+  <div class="oeil">Le relevé</div>
+  <h2>L'appel, seconde par seconde</h2>
+  <div id="trace" style="max-width:44rem"></div>
+  <div class="chiffres" id="chiffres"></div>
+  <div class="verdict" id="verdict"></div>
+
+  <div class="capot">
+    <h4>Vue conception — pourquoi ce n'est pas un questionnaire</h4>
+    <p class="lire"><b>La question de la respiration est la seule qui compte, et elle ne se
+    corrige pas.</b> Répondre « oui, il respire » est une réponse plausible : la respiration
+    agonale ressemble à une respiration, elle en a le mouvement et le bruit. Le répartiteur
+    la croit, comme il croirait un appelant réel — et il bascule dans le protocole de la
+    personne inconsciente qui respire : « mettez-le sur le côté, restez avec lui ».</p>
+    <p class="lire">Le guidage s'éteint. Personne ne vous dit que vous avez tort. La scène
+    continue, la ligne reste ouverte, et il ne se passe plus rien — <b>ce qui est exactement
+    ce qui se passe au bout du fil</b>. Une porte de sortie apparaît au bout de quelques
+    secondes ; le temps qu'elle met à être empruntée est enregistré, et c'est la mesure la
+    plus intéressante de la pièce.</p>
+    <div class="enrob"><table class="tab">
+      <thead><tr><th>Ce qui est mesuré</th><th>Pourquoi ça, et pas autre chose</th></tr></thead>
+      <tbody>
+        <tr><td>Délai avant la première compression</td>
+            <td>La seule variable dont on sait qu'elle change l'issue.</td></tr>
+        <tr><td>La réponse donnée sur la respiration</td>
+            <td>Une erreur de <b>perception</b>, pas de procédure. Aucun questionnaire ne
+            peut la détecter : à l'écrit, tout le monde sait que la respiration agonale n'est
+            pas une respiration.</td></tr>
+        <tr><td>Le délai de rattrapage</td>
+            <td>Combien de temps avant de contredire le répartiteur. C'est une compétence en
+            soi, et elle n'est enseignée nulle part.</td></tr>
+        <tr><td>Le moment où les mains sont libres</td>
+            <td>Une main sur le téléphone, c'est zéro compression. Mettre le haut-parleur est
+            un geste banal que personne ne pense à enseigner.</td></tr>
+        <tr><td>Raccrocher</td>
+            <td>Tentant, et c'est perdre le guidage. Compté comme faute, jamais empêché.</td></tr>
+      </tbody>
+    </table></div>
+    <div class="preuve" style="margin-top:var(--e-5)">
+      <p><b>Ce que la pièce ne fait pas.</b> Le répartiteur n'est pas un modèle de langue :
+      c'est une machine à états d'une douzaine de nœuds, hors ligne, déterministe, sans
+      facture. Le choix est assumé — un interlocuteur qui improvise donnerait des réponses
+      plausibles à des questions qu'on n'a pas prévues, et surtout il <b>aiderait</b>, ce qui
+      ferait tomber la mécanique en trois répliques.</p>
+      <p style="margin-bottom:0"><b>Ce qu'elle ne mesure pas :</b> la voix. Un vrai appel se
+      fait en parlant, avec une main qui tremble, à quelqu'un qui parle en même temps que
+      vous. Ici on clique des phrases écrites, et l'écart entre les deux n'est pas
+      mesurable à l'écran.</p>
+    </div>
+  </div>
+
+  <div style="margin-top:var(--e-6)">
+    <button class="gros" id="bRejouer" type="button">Refaire l'appel</button>
+  </div>
+</div></section>
+
+<section class="masque" id="apres"><div class="enveloppe">
+  <div class="oeil">Le fond de l'affaire</div>
+  <h2>La respiration agonale</h2>
+  <div class="lire">
+    <p>Dans les premières minutes d'un arrêt cardiaque, <b>plus d'un tiers des personnes</b>
+    présentent des mouvements respiratoires : la poitrine se soulève, il y a un bruit rauque,
+    parfois un râle. Ce n'est pas une respiration — c'est un réflexe du tronc cérébral privé
+    d'oxygène. Vu de près, ça ressemble pourtant beaucoup à quelqu'un qui respire mal.</p>
+    <p>C'est la raison pour laquelle les répartiteurs ne demandent pas « est-ce qu'il
+    respire ? » mais <b>« est-ce qu'il respire normalement ? »</b> — et pourquoi la formation
+    insiste sur la description plutôt que sur le verdict : <i>« il fait un bruit rauque, par
+    à-coups, toutes les huit secondes »</i> est une réponse infiniment plus utile que
+    <i>« oui »</i> ou <i>« non »</i>.</p>
+    <p style="margin-bottom:0">Cette pièce ne l'enseigne pas par une phrase. Elle vous fait
+    répondre, puis vous fait vivre les conséquences de votre réponse. Si vous vous êtes
+    trompé, vous ne l'oublierez pas — et c'est la seule justification qu'une simulation ait
+    besoin d'invoquer.</p>
+  </div>
+  <div class="garde lire" style="margin-top:var(--e-6)">
+    <ul>
+      <li><b>Aucun pourcentage de survie</b> n'est affiché.</li>
+      <li><b>Aucun score.</b> Le relevé est une trace horodatée, pas une note.</li>
+      <li><b>Ceci ne remplace pas une formation</b> et ne prépare qu'à en suivre une.</li>
+      <li><b>Le répartiteur n'a pas tort.</b> Il fait exactement son travail avec
+      l'information qu'on lui donne — c'est le sens de la scène.</li>
+    </ul>
+  </div>
+</div></section>
+
+<footer><div class="enveloppe">
+  Portfolio de conception pédagogique · Simulateur de défibrillateur, proposition 02 ·
+  8 septembre 2026. Machine à états déterministe, hors ligne, sans modèle de langue.
+</div></footer>
+
+<script>
+(function(){
+/* ═══════════════════════════════════════════════════════════════════════════
+   Le répartiteur est une machine à états. Chaque nœud porte ce qu'il DIT et
+   les réponses possibles ; une réponse porte sa durée, sa suite, et ce qu'elle
+   change dans le monde. Rien n'est écrit pour une trajectoire particulière :
+   le bilan est dérivé du journal.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+var NOEUDS = {
+  ouverture: {
+    dit: "911, j'écoute. Quelle est votre urgence ?",
+    reponses: [
+      { texte: "« Un homme s'est effondré. Il ne bouge pas. »", duree: 3000, vers: 'adresse' },
+      { texte: "« Envoyez une ambulance, vite ! »", duree: 3000, vers: 'ouverture2', faute: 'imprecis' }
+    ]
+  },
+  ouverture2: {
+    dit: "Je vais vous aider. Dites-moi ce que vous voyez.",
+    reponses: [
+      { texte: "« Un homme s'est effondré. Il ne bouge pas. »", duree: 3000, vers: 'adresse' }
+    ]
+  },
+  adresse: {
+    dit: "À quelle adresse ?",
+    reponses: [
+      { texte: "« 1240, rue Sainte-Catherine Est. La clinique, au rez-de-chaussée. »",
+        duree: 4000, vers: 'conscience' },
+      { texte: "« Je… je ne sais pas exactement où on est. »", duree: 3000,
+        vers: 'adresse2', faute: 'adresse' }
+    ]
+  },
+  adresse2: {
+    dit: "Regardez autour de vous. Une enseigne, un numéro de porte, un commerce.",
+    reponses: [
+      { texte: "« 1240, rue Sainte-Catherine Est. La clinique. »", duree: 6000, vers: 'conscience' }
+    ]
+  },
+  conscience: {
+    dit: "Est-ce qu'il réagit quand vous lui parlez ?",
+    reponses: [
+      { texte: "« Non. Rien du tout. »", duree: 2500, vers: 'respiration' },
+      { texte: "« Je n'ai pas vérifié. »", duree: 2000, vers: 'conscience2' }
+    ]
+  },
+  conscience2: {
+    dit: "Parlez-lui fort et touchez-lui l'épaule. Dites-moi ce qui se passe.",
+    reponses: [
+      { texte: "Lui parler fort et lui toucher l'épaule", duree: 7000,
+        scene: "Vous le secouez doucement par l'épaule. <b>Aucune réaction.</b>",
+        vers: 'respiration' }
+    ]
+  },
+  respiration: {
+    dit: "Est-ce qu'il respire normalement ?",
+    pivot: true,
+    reponses: [
+      { texte: "« Oui, je le vois respirer. »", duree: 2500, vers: 'impasse',
+        marque: 'respiration_oui', faute: 'perception' },
+      { texte: "« Non. Il fait un bruit rauque, par à-coups. »", duree: 3500,
+        vers: 'guidage', marque: 'respiration_non' },
+      { texte: "« Je ne sais pas. »", duree: 2000, vers: 'respiration2', marque: 'respiration_doute' }
+    ]
+  },
+  respiration2: {
+    dit: "Penchez-vous près de son visage. Regardez sa poitrine pendant dix secondes.",
+    reponses: [
+      { texte: "Regarder sa poitrine dix secondes", duree: 10000,
+        scene: "Sa poitrine se soulève une fois, avec un bruit rauque. Puis plus rien "
+             + "pendant neuf secondes. Puis encore une fois.",
+        vers: 'respirationApres' }
+    ]
+  },
+  respirationApres: {
+    dit: "Alors ? Est-ce qu'il respire normalement ?",
+    pivot: true,
+    reponses: [
+      { texte: "« Oui, il respire. »", duree: 2500, vers: 'impasse',
+        marque: 'respiration_oui', faute: 'perception' },
+      { texte: "« Non. Ce n'est pas normal. »", duree: 3000, vers: 'guidage',
+        marque: 'respiration_non' }
+    ]
+  },
+  impasse: {
+    dit: "D'accord. Mettez-le en position latérale, sur le côté, et restez avec lui. "
+       + "Les secours sont en route. Ne raccrochez pas.",
+    impasse: true,
+    reponses: [
+      { texte: "Le mettre sur le côté", duree: 8000,
+        scene: "Vous le tournez. <b>Il ne respire toujours pas.</b> Le répartiteur ne dit "
+             + "plus rien. La ligne reste ouverte.", vers: 'impasse', faute: 'lateral' },
+      { texte: "Attendre les secours", duree: 12000,
+        scene: "Douze secondes. La ligne grésille. <b>Il ne se passe rien.</b>", vers: 'impasse' }
+    ],
+    rattrapage: {
+      texte: "« Attendez — ce n'est pas une respiration normale. »",
+      pourquoi: "Contredire le répartiteur",
+      duree: 3000, vers: 'guidage', marque: 'rattrapage'
+    }
+  },
+  guidage: {
+    dit: "Écoutez-moi bien. Mettez-le sur le dos, sur une surface dure. Placez vos deux mains "
+       + "au centre de sa poitrine et appuyez fort et vite. Je compte avec vous.",
+    guidage: true,
+    reponses: []
+  }
+};
+
+/* Les gestes disponibles à tout moment, indépendants de la conversation.
+   Ils sont la deuxième ressource de la scène : les mains. */
+var HORS_FIL = [
+  { id: 'hautParleur', texte: "Mettre le haut-parleur", pourquoi: "Libère vos deux mains",
+    duree: 2500, effet: 'mains' },
+  { id: 'raccrocher', texte: "Raccrocher pour avoir les mains libres",
+    pourquoi: "Vous perdez le guidage", duree: 1500, effet: 'raccrocher', faute: 'raccroche' },
+  { id: 'comprimer', texte: "Commencer les compressions", fort: true, fin: true }
+];
+
+/* ── État ────────────────────────────────────────────────────────────────── */
+var el = function(i){ return document.getElementById(i); };
+var noeud, depart, boucle, journal, mainsLibres, ligneOuverte, guidageOuvert;
+var occupeJusqua, occupeDebut, rattrapageOffert;
+
+function t(){ return performance.now() - depart; }
+function noter(q, o){ journal.push(Object.assign({ t: t(), q: q }, o || {})); }
+
+function demarrer(){
+  journal = []; mainsLibres = false; ligneOuverte = true; guidageOuvert = false; vus = {};
+  occupeJusqua = 0; rattrapageOffert = false;
+  el('plateau').classList.remove('masque');
+  el('bilan').classList.add('masque'); el('apres').classList.add('masque');
+  el('echange').innerHTML = '';
+  el('bDemarrer').disabled = true;
+  depart = performance.now();
+  temoins();
+  dire('scene', "Vous composez le 911. Deux sonneries.");
+  boucle = requestAnimationFrame(tic);
+  setTimeout(function(){ aller('ouverture'); }, 2500);
+}
+
+function tic(){
+  el('chrono').textContent = (t() / 1000).toFixed(1).replace('.', ',') + ' s';
+  if (occupeJusqua) {
+    var p = (performance.now() - occupeDebut) / (occupeJusqua - occupeDebut);
+    el('occupeBarre').style.width = Math.min(100, 100 * p) + '%';
+  }
+  boucle = requestAnimationFrame(tic);
+}
+
+function dire(qui, texte, fort){
+  var d = document.createElement('div');
+  d.className = 'bulle bulle--' + qui + (fort ? ' bulle--fort' : '');
+  d.innerHTML = texte;
+  el('echange').appendChild(d);
+  el('echange').scrollTop = el('echange').scrollHeight;
+}
+
+function temoins(){
+  var m = el('tMains'), l = el('tLigne');
+  m.className = 'temoin ' + (mainsLibres ? 'on' : 'off');
+  m.textContent = mainsLibres ? 'Vos deux mains sont libres' : 'Une main tient le téléphone';
+  l.className = 'temoin ' + (ligneOuverte ? 'on' : 'off');
+  l.textContent = ligneOuverte ? 'Ligne ouverte' : 'Ligne coupée';
+}
+
+var vus = {};
+
+function aller(id){
+  var premiere = !vus[id]; vus[id] = true;
+  noeud = NOEUDS[id];
+  /* Les réponses de l'impasse ramènent à l'impasse : sans ce garde, le
+     répartiteur répétait sa consigne à chaque tour, le journal comptait
+     plusieurs fois l'extinction du guidage, et un nouveau minuteur de
+     rattrapage partait à chaque passage. */
+  if (ligneOuverte && premiere) dire('rep', noeud.dit, noeud.pivot);
+  if (noeud.guidage && !guidageOuvert) {
+    guidageOuvert = true; noter('le guidage commence', { cle: true });
+  }
+  if (noeud.impasse && premiere) {
+    noter("le guidage s'éteint", { faute: true, cle: true });
+    /* La porte de sortie n'apparaît pas tout de suite : elle doit être
+       cherchée, et le temps qu'elle met à l'être est la mesure. */
+    setTimeout(function(){ rattrapageOffert = true; gestes(); }, 6000);
+  }
+  gestes();
+}
+
+function gestes(){
+  var z = el('gestes'); z.innerHTML = '';
+  var liste = [];
+  (noeud.reponses || []).forEach(function(r){ liste.push(r); });
+  if (noeud.rattrapage && rattrapageOffert) liste.push(noeud.rattrapage);
+  HORS_FIL.forEach(function(g){
+    if (g.id === 'hautParleur' && (mainsLibres || !ligneOuverte)) return;
+    if (g.id === 'raccrocher' && (!ligneOuverte || mainsLibres)) return;
+    liste.push(g);
+  });
+  liste.forEach(function(g){
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'geste' + (g.fort ? ' geste--fort' : '');
+    b.innerHTML = g.texte + (g.pourquoi
+      ? '<span class="geste__pourquoi">' + g.pourquoi + '</span>' : '');
+    if (g.fin && !mainsLibres) {
+      b.disabled = true;
+      b.innerHTML = g.texte + '<span class="geste__pourquoi">Vous tenez le téléphone '
+        + "d'une main.</span>";
+    }
+    b.addEventListener('click', function(){ choisir(g); });
+    z.appendChild(b);
+  });
+}
+
+function choisir(g){
+  if (performance.now() < occupeJusqua) return;
+
+  if (g.fin) { noter('première compression', { cle: true }); terminer(); return; }
+
+  if (g.texte && g.texte.charAt(0) === '«' && ligneOuverte) dire('moi', g.texte);
+  noter(g.texte.replace(/<[^>]+>/g, ''), { faute: !!g.faute, marque: g.marque });
+  if (g.marque) journal[journal.length - 1].marque = g.marque;
+
+  occupeDebut = performance.now();
+  occupeJusqua = occupeDebut + (g.duree || 1000);
+  Array.prototype.forEach.call(el('gestes').children, function(b){ b.disabled = true; });
+  el('occupe').classList.remove('masque');
+  /* Le libellé de l'attente : « Vous parlez » pour une réplique, le geste
+     lui-même sinon. Un « En cours… » générique ne dit pas ce qui occupe. */
+  el('occupeTexte').textContent =
+    (g.texte.charAt(0) === '«' ? 'Vous parlez' : g.texte.replace(/<[^>]+>/g, '')) + '…';
+  el('occupeBarre').style.width = '0%';
+
+  setTimeout(function(){
+    occupeJusqua = 0;
+    el('occupe').classList.add('masque');
+    if (g.scene) dire('scene', g.scene);
+    if (g.effet === 'mains') { mainsLibres = true; temoins();
+      dire('scene', "Le téléphone est posé par terre, haut-parleur activé. "
+                  + "<b>Vos deux mains sont libres.</b>"); }
+    if (g.effet === 'raccrocher') { ligneOuverte = false; mainsLibres = true; temoins();
+      dire('scene', "Vous raccrochez. <b>Le répartiteur n'est plus là.</b> "
+                  + "Vos mains sont libres, et vous êtes seul."); }
+    if (g.vers) aller(g.vers); else gestes();
+  }, g.duree || 1000);
+}
+
+/* ── Le relevé ───────────────────────────────────────────────────────────── */
+function terminer(){
+  cancelAnimationFrame(boucle);
+  el('plateau').classList.add('masque');
+  el('bilan').classList.remove('masque');
+  el('apres').classList.remove('masque');
+  el('bDemarrer').disabled = false;
+
+  el('trace').innerHTML = journal.map(function(x){
+    return '<div class="ligne' + (x.faute ? ' ligne--faute' : '')
+         + (x.cle ? ' ligne--cle' : '') + '">'
+         + '<span class="ligne__t">' + (x.t / 1000).toFixed(1).replace('.', ',') + ' s</span>'
+         + '<span class="ligne__q">' + x.q + '</span></div>';
+  }).join('');
+
+  var trouve = function(f){ return journal.filter(f)[0]; };
+  var compression = trouve(function(x){ return x.q === 'première compression'; });
+  var oui = trouve(function(x){ return x.marque === 'respiration_oui'; });
+  var rat = trouve(function(x){ return x.marque === 'rattrapage'; });
+  var mains = trouve(function(x){ return /haut-parleur/.test(x.q); });
+  var raccroche = trouve(function(x){ return /Raccrocher/.test(x.q); });
+
+  var chiffres = [
+    { v: (compression.t / 1000).toFixed(1).replace('.', ',') + ' s', c: 'avant la 1re compression', m: true },
+    { v: mains ? (mains.t / 1000).toFixed(1).replace('.', ',') + ' s' : '—',
+      c: 'mains libérées', s: !mains },
+    { v: oui ? 'oui' : 'non', c: 'a dit « il respire »', s: !!oui },
+    { v: rat ? ((rat.t - oui.t) / 1000).toFixed(1).replace('.', ',') + ' s' : '—',
+      c: 'délai de rattrapage', s: !!rat }
+  ];
+  el('chiffres').innerHTML = chiffres.map(function(c){
+    return '<div class="ch"><div class="ch__v' + (c.m ? ' ch__v--m' : '')
+      + (c.s ? ' ch__v--s' : '') + '">' + c.v + '</div>'
+      + '<div class="ch__c">' + c.c + '</div></div>';
+  }).join('');
+
+  var h = '';
+  if (oui && rat) {
+    h = '<h3>Vous avez dit qu\'il respirait, puis vous vous êtes repris.</h3>'
+      + '<p>Le répartiteur vous a cru — c\'est son travail — et il a basculé dans le '
+      + 'protocole de la personne inconsciente qui respire. <b>Le guidage s\'est éteint '
+      + 'sans que personne ne vous dise que vous aviez tort.</b></p>'
+      + '<p>Il vous a fallu <b>' + ((rat.t - oui.t) / 1000).toFixed(1).replace('.', ',')
+      + ' secondes</b> pour contredire une voix officielle qui venait de vous donner une '
+      + 'consigne claire. C\'est la mesure la plus intéressante de cette pièce, et elle '
+      + 'n\'a rien à voir avec le fait de connaître ou non le geste.</p>';
+  } else if (oui) {
+    h = '<h3>Vous avez dit qu\'il respirait, et vous n\'êtes pas revenu dessus.</h3>'
+      + '<p>Le répartiteur vous a cru. Le guidage s\'est éteint, la ligne est restée '
+      + 'ouverte, et il ne s\'est plus rien passé — <b>ce qui est exactement ce qui se '
+      + 'passe au bout du fil.</b> Vous avez fini par comprimer quand même.</p>'
+      + '<p>La respiration agonale est un mouvement respiratoire. Elle ressemble à une '
+      + 'respiration, elle en a le bruit. C\'est pourquoi la question posée n\'est jamais '
+      + '« est-ce qu\'il respire » mais <b>« est-ce qu\'il respire normalement »</b>.</p>';
+  } else {
+    h = '<h3>Le guidage ne s\'est jamais éteint.</h3>'
+      + '<p>Vous avez décrit ce que vous voyiez au lieu de trancher, et le répartiteur a pu '
+      + 'faire son travail. C\'est le chemin court, et il est plus rare qu\'on ne croit : '
+      + 'devant un thorax qui se soulève, répondre « non » demande de contredire ses '
+      + 'propres yeux.</p>';
+  }
+  if (raccroche) {
+    h += '<p><b>Vous avez raccroché.</b> Vous avez gagné une main et perdu la seule personne '
+      + 'qui savait quoi faire — et qui aurait compté la cadence pendant deux minutes. '
+      + 'Le haut-parleur donnait les deux.</p>';
+  } else if (!mains) {
+    h += '<p><b>Vous avez comprimé avec le téléphone dans une main</b>, ce que la scène a '
+      + 'laissé passer parce que la vraie vie le laisse passer aussi. La qualité s\'en '
+      + 'ressent, et aucun écran ne peut la mesurer.</p>';
+  }
+  el('verdict').innerHTML = h;
+  el('bilan').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+el('bDemarrer').addEventListener('click', demarrer);
+el('bRejouer').addEventListener('click', function(){
+  window.scrollTo({ top: 0, behavior: 'smooth' }); demarrer();
+});
+var r = document.documentElement;
+el('bTheme').addEventListener('click', function(){
+  var s = r.getAttribute('data-theme') === 'sombre';
+  if (!r.hasAttribute('data-theme')) s = matchMedia('(prefers-color-scheme: dark)').matches;
+  r.setAttribute('data-theme', s ? 'clair' : 'sombre');
+});
+var bv = el('bVue');
+bv.addEventListener('click', function(){
+  var o = document.body.classList.toggle('conception');
+  bv.setAttribute('aria-pressed', o ? 'true' : 'false');
+  bv.textContent = o ? 'Refermer le capot' : 'Vue conception';
+});
+})();
+</script>
+
+</body>
+</html>

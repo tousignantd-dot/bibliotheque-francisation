@@ -1,0 +1,745 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Mesurer la cadence reelle des compressions par le microphone ou l'accelerometre, et surtout sa derive sur deux minutes.">
+<title>Les mains</title>
+<style>html{color-scheme:light dark}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>Les mains</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+<style>
+/* ═══ Jetons « Braise », recopiés — jamais importés (un @import en file://
+   échoue sans rien dire). --mesure-l porte la largeur de lecture : dans la
+   source du système, --mesure porte à la fois une couleur et une longueur
+   dans le même :root, et la seconde écrase la première.                    */
+:root{
+  --fond:#FFFFFF; --fond-2:#FAFAFA; --fond-3:#F4F4F5;
+  --encre:#09090B; --encre-2:#52525B; --encre-3:#71717A; --encre-4:#A1A1AA;
+  --bord:#E4E4E7; --bord-fort:#D4D4D8;
+  --marque-rose:#F0359F; --marque-corail:#F5533D;
+  --marque-degrade:linear-gradient(100deg,var(--marque-rose) 0%,var(--marque-corail) 100%);
+  --signal:#F5652E; --signal-encre:#FFFFFF; --signal-voile:#FEF1EA;
+  --mesure:#2B4E9B; --mesure-2:#5C7EBF; --mesure-voile:#EAEFFA;
+  --action:#18181B; --action-survol:#27272A; --action-encre:#FAFAFA;
+  --police:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --police-mono:ui-monospace,"SF Mono","Menlo","Consolas",monospace;
+  --t-affiche:clamp(2.5rem,7.4vw,4.75rem); --t-titre-1:clamp(1.75rem,4vw,2.75rem);
+  --t-titre-2:clamp(1.375rem,2.6vw,1.75rem); --t-titre-3:1.1875rem;
+  --t-avant:1.1875rem; --t-petit:.875rem; --t-menu:.8125rem;
+  --g-moyen:500; --g-fort:600; --g-noir:800;
+  --i-serre:.98; --i-titre:1.15; --i-corps:1.62;
+  --l-serre:-.035em; --l-titre:-.02em;
+  --e-1:.25rem; --e-2:.5rem; --e-3:.75rem; --e-4:1rem; --e-5:1.5rem;
+  --e-6:2rem; --e-7:3rem; --e-8:4rem; --e-9:6rem;
+  --mesure-l:42rem; --contenu:74rem;
+  --r-1:.375rem; --r-2:.5rem; --r-3:.75rem; --r-4:1rem; --r-plein:9999px;
+  --o-1:0 1px 2px rgba(9,9,11,.06);
+  --o-2:0 1px 3px rgba(9,9,11,.08),0 1px 2px rgba(9,9,11,.04);
+  --o-3:0 4px 12px rgba(9,9,11,.08);
+  --transition:140ms cubic-bezier(.4,0,.2,1);
+}
+:root[data-theme="sombre"]{
+  --fond:#09090B; --fond-2:#0F0F11; --fond-3:#18181B;
+  --encre:#FAFAFA; --encre-2:#D4D4D8; --encre-3:#A1A1AA; --encre-4:#52525B;
+  --bord:#27272A; --bord-fort:#3F3F46;
+  --marque-rose:#FF4FB0; --marque-corail:#FF6A50;
+  --signal:#FF7A45; --signal-encre:#1A0C05; --signal-voile:#2A1610;
+  --mesure:#8FB2F0; --mesure-2:#6E8FCB; --mesure-voile:#18213A;
+  --action:#FAFAFA; --action-survol:#E4E4E7; --action-encre:#18181B;
+  --o-1:0 1px 2px rgba(0,0,0,.5); --o-2:0 1px 3px rgba(0,0,0,.6);
+  --o-3:0 4px 14px rgba(0,0,0,.6);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="clair"]){
+    --fond:#09090B; --fond-2:#0F0F11; --fond-3:#18181B;
+    --encre:#FAFAFA; --encre-2:#D4D4D8; --encre-3:#A1A1AA; --encre-4:#52525B;
+    --bord:#27272A; --bord-fort:#3F3F46;
+    --marque-rose:#FF4FB0; --marque-corail:#FF6A50;
+    --signal:#FF7A45; --signal-encre:#1A0C05; --signal-voile:#2A1610;
+    --mesure:#8FB2F0; --mesure-2:#6E8FCB; --mesure-voile:#18213A;
+    --action:#FAFAFA; --action-survol:#E4E4E7; --action-encre:#18181B;
+    --o-1:0 1px 2px rgba(0,0,0,.5); --o-2:0 1px 3px rgba(0,0,0,.6);
+    --o-3:0 4px 14px rgba(0,0,0,.6);
+  }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--fond);color:var(--encre-2);font-family:var(--police);
+     font-size:1rem;line-height:var(--i-corps);-webkit-font-smoothing:antialiased}
+.enveloppe{max-width:var(--contenu);margin:0 auto;padding:0 var(--e-5)}
+h1,h2,h3,h4{color:var(--encre);letter-spacing:var(--l-titre);line-height:var(--i-titre);
+            font-weight:var(--g-fort);margin:0;text-wrap:balance}
+p{margin:0 0 var(--e-4)}
+b,strong{color:var(--encre);font-weight:var(--g-fort)}
+code{font-family:var(--police-mono);font-size:.9em;background:var(--fond-3);
+     padding:.1em .35em;border-radius:var(--r-1);color:var(--encre)}
+.lire{max-width:var(--mesure-l)}
+.masque{display:none}
+.barre{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--fond) 88%,transparent);
+       backdrop-filter:blur(12px);border-bottom:1px solid var(--bord)}
+.barre__int{max-width:var(--contenu);margin:0 auto;padding:var(--e-3) var(--e-5);
+            display:flex;align-items:center;gap:var(--e-3);flex-wrap:wrap}
+.marque{font-weight:var(--g-noir);letter-spacing:var(--l-serre);color:var(--encre);font-size:1.0625rem}
+.marque i{font-style:normal;background:var(--marque-degrade);
+          -webkit-background-clip:text;background-clip:text;color:transparent}
+.barre__vide{flex:1}
+.bt{border:1px solid var(--bord-fort);background:var(--fond);color:var(--encre-2);font:inherit;
+    font-size:var(--t-menu);font-weight:var(--g-moyen);padding:var(--e-1) var(--e-3);
+    border-radius:var(--r-plein);cursor:pointer;transition:var(--transition)}
+.bt:hover{border-color:var(--encre-4);color:var(--encre)}
+.bt[aria-pressed="true"]{background:var(--mesure);border-color:var(--mesure);color:#fff}
+:root[data-theme="sombre"] .bt[aria-pressed="true"]{color:#09090B}
+.heros{padding:var(--e-8) 0 var(--e-6)}
+.pastille{display:inline-flex;align-items:center;gap:var(--e-2);font-size:var(--t-petit);
+          font-weight:var(--g-moyen);color:var(--signal);background:var(--signal-voile);
+          border-radius:var(--r-plein);padding:var(--e-1) var(--e-3);margin-bottom:var(--e-5)}
+.pastille::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--signal)}
+.heros h1{font-size:var(--t-affiche);font-weight:var(--g-noir);letter-spacing:var(--l-serre);
+          line-height:var(--i-serre);max-width:17ch}
+.heros h1 i{font-style:normal;background:var(--marque-degrade);
+            -webkit-background-clip:text;background-clip:text;color:transparent}
+.heros .avant{font-size:var(--t-avant);color:var(--encre-3);max-width:var(--mesure-l);
+              margin-top:var(--e-5);text-wrap:pretty}
+section{padding:var(--e-7) 0;border-top:1px solid var(--bord);scroll-margin-top:4.5rem}
+.oeil{font-size:var(--t-menu);text-transform:uppercase;letter-spacing:.14em;
+      color:var(--encre-4);font-weight:var(--g-fort);margin-bottom:var(--e-3)}
+section>.enveloppe>h2{font-size:var(--t-titre-1);margin-bottom:var(--e-5)}
+.gros{display:inline-block;padding:var(--e-3) var(--e-6);border-radius:var(--r-2);
+      background:var(--action);color:var(--action-encre);border:0;font:inherit;
+      font-weight:var(--g-fort);font-size:1rem;cursor:pointer;text-decoration:none}
+.gros[disabled]{opacity:.4;cursor:default}
+.capot{display:none;margin-top:var(--e-6);border-top:1px dashed var(--bord-fort);padding-top:var(--e-5)}
+body.conception .capot{display:block}
+.capot h4{color:var(--mesure);font-size:var(--t-menu);text-transform:uppercase;
+          letter-spacing:.1em;margin-bottom:var(--e-3)}
+.preuve{background:var(--fond-3);border-radius:var(--r-2);padding:var(--e-4) var(--e-5);font-size:.9375rem}
+.preuve p:last-child{margin-bottom:0}
+.enrob{overflow-x:auto}
+.tab{width:100%;border-collapse:collapse;font-size:.9375rem;margin-top:var(--e-4)}
+.tab th,.tab td{text-align:left;padding:var(--e-2) var(--e-3);border-bottom:1px solid var(--bord);
+                vertical-align:top}
+.tab th{font-size:var(--t-menu);text-transform:uppercase;letter-spacing:.1em;
+        color:var(--encre-4);font-weight:var(--g-fort)}
+.tab tr:last-child td{border-bottom:0}
+.garde{background:var(--fond-3);border-radius:var(--r-3);padding:var(--e-5) var(--e-6)}
+.garde ul{margin:0;padding-left:1.1em}
+.garde li{margin-bottom:var(--e-2)}
+.garde li:last-child{margin-bottom:0}
+.chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;
+          background:var(--bord);border:1px solid var(--bord);border-radius:var(--r-3);
+          overflow:hidden;margin-top:var(--e-5)}
+.ch{background:var(--fond);padding:var(--e-4) var(--e-5)}
+.ch__v{font-family:var(--police-mono);font-size:1.5rem;color:var(--encre);
+       font-variant-numeric:tabular-nums}
+.ch__v--m{color:var(--mesure)}
+.ch__v--s{color:var(--signal)}
+.ch__c{font-size:.75rem;color:var(--encre-4);text-transform:uppercase;
+       letter-spacing:.1em;margin-top:var(--e-1)}
+footer{padding:var(--e-8) 0 var(--e-9);color:var(--encre-4);font-size:var(--t-petit)}
+@media print{
+  :root{--fond:#FFF;--fond-2:#FFF;--fond-3:#F4F4F5;--encre:#09090B;--encre-2:#3F3F46;
+        --encre-3:#52525B;--encre-4:#71717A;--bord:#D4D4D8;--bord-fort:#A1A1AA;
+        --o-1:none;--o-2:none;--o-3:none}
+  @page{margin:14mm 12mm}
+  .barre{display:none}
+  .heros{padding-top:0}
+  .capot{display:block}
+  body{font-size:10.5pt}
+  .tab tr,.preuve,.garde{break-inside:avoid}
+  h1,h2,h3{break-after:avoid}
+  .enveloppe{padding:0}
+}
+
+
+.plateau{background:#09090B;border:1px solid #27272A;border-radius:var(--r-4);
+         color:#A1A1AA;overflow:hidden;max-width:64rem;margin:0 auto}
+/* Le gras dans un panneau sombre ─────────────────────────────────────────
+   La règle globale de Braise pose `b,strong{color:var(--encre)}`, et --encre
+   vaut #09090B en thème clair. Les panneaux de scène ont un fond sombre écrit
+   en dur, indépendant du thème : sans cette reprise, tout le gras des
+   répliques et des didascalies est noir sur noir — invisible, sans erreur, et
+   seule une lecture des pixels le révèle. */
+.plateau b, .plateau strong{color:#FAFAFA}
+.plateau__tete{display:flex;align-items:center;gap:var(--e-4);padding:var(--e-4) var(--e-5);
+               border-bottom:1px solid #18181B;flex-wrap:wrap}
+.etat{font-size:var(--t-menu);letter-spacing:.12em;text-transform:uppercase;
+      color:#52525B;font-weight:var(--g-fort)}
+.chrono{margin-left:auto;font-family:var(--police-mono);font-size:1.375rem;color:#FAFAFA;
+        font-variant-numeric:tabular-nums}
+.plateau__corps{padding:var(--e-6) var(--e-5);text-align:center}
+
+/* ── Le choix de l'entrée ── */
+.voies{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:var(--e-3);
+       max-width:44rem;margin:0 auto}
+.voie{background:#18181B;border:1px solid #27272A;color:#FAFAFA;font:inherit;text-align:left;
+      padding:var(--e-4);border-radius:var(--r-3);cursor:pointer;transition:var(--transition)}
+.voie:hover:not([disabled]){background:#27272A;border-color:#3F3F46}
+.voie[disabled]{opacity:.35;cursor:default}
+.voie b{display:block;font-size:1rem;margin-bottom:var(--e-1)}
+.voie span{font-size:.8125rem;color:#71717A;line-height:1.45;display:block}
+
+/* ── Le niveau, pendant l'étalonnage ── */
+.niveau{height:8px;background:#18181B;border:1px solid #27272A;border-radius:var(--r-plein);
+        overflow:hidden;max-width:24rem;margin:var(--e-5) auto 0}
+.niveau i{display:block;height:100%;width:0;background:var(--signal)}
+
+/* ── Le pouls ── */
+.pouls{width:120px;height:120px;border-radius:50%;border:2px solid #27272A;margin:var(--e-5) auto;
+       display:flex;align-items:center;justify-content:center;
+       font-family:var(--police-mono);font-size:2rem;color:#FAFAFA}
+.pouls.bat{animation:bat 260ms ease-out}
+@keyframes bat{from{transform:scale(1.16);border-color:var(--marque-corail);
+                    box-shadow:0 0 0 10px rgba(245,83,61,.10)}
+               to{transform:scale(1);border-color:#27272A;box-shadow:0 0 0 0 rgba(245,83,61,0)}}
+.consigne{font-size:1.25rem;color:#FAFAFA;font-weight:var(--g-fort);margin:0 0 var(--e-3)}
+.souffle{font-size:.9375rem;color:#71717A;max-width:34rem;margin:0 auto}
+
+/* ── La prédiction ── */
+.pari{display:flex;gap:var(--e-3);justify-content:center;flex-wrap:wrap;margin-top:var(--e-5)}
+.pari button{background:#18181B;border:1px solid #27272A;color:#FAFAFA;font:inherit;
+             font-size:.9375rem;padding:var(--e-3) var(--e-5);border-radius:var(--r-2);cursor:pointer}
+.pari button:hover{background:#27272A}
+
+/* ── Le graphique ── */
+.graphe{background:var(--fond);border:1px solid var(--bord);border-radius:var(--r-3);
+        padding:var(--e-5);margin-top:var(--e-5)}
+canvas{width:100%;height:auto;display:block}
+.legende{display:flex;gap:var(--e-5);flex-wrap:wrap;font-size:var(--t-menu);
+         color:var(--encre-3);margin-top:var(--e-4)}
+.legende span{display:flex;align-items:center;gap:var(--e-2)}
+.puce{width:14px;height:3px;border-radius:2px;background:var(--mesure)}
+.puce--bande{height:12px;width:14px;border-radius:3px;background:var(--mesure-voile);
+             border:1px solid var(--mesure-2)}
+.puce--rep{background:var(--signal)}
+
+.verdict{border:1px solid var(--bord);border-left:3px solid var(--mesure);border-radius:var(--r-3);
+         padding:var(--e-6);background:var(--mesure-voile);margin-top:var(--e-6)}
+.verdict h3{font-size:var(--t-titre-2);margin-bottom:var(--e-3)}
+.verdict p:last-child{margin-bottom:0}
+.rate{color:var(--signal);font-weight:var(--g-fort)}
+@media (prefers-reduced-motion:reduce){ .pouls.bat{animation:none} }
+@media print{ .plateau{display:none} }
+</style>
+
+<div class="barre"><div class="barre__int">
+  <span class="marque">Les <i>mains</i></span>
+  <span class="barre__vide"></span>
+  <button class="bt" id="bVue" type="button" aria-pressed="false">Vue conception</button>
+  <button class="bt" id="bTheme" type="button">Thème</button>
+</div></div>
+
+<div class="heros"><div class="enveloppe">
+  <span class="pastille">Simulateur de défibrillateur · proposition 03 · 8 septembre 2026</span>
+  <h1>Mesurer le geste, <i>pas la barre d'espace.</i></h1>
+  <p class="avant">Une touche du clavier ne fatigue pas, ne ralentit pas, et ne ressemble à
+  rien. Ici, le rythme se mesure sur le monde réel : <b>vous frappez la table et le
+  microphone entend les coups</b>, ou vous secouez le téléphone et l'accéléromètre les
+  compte.</p>
+  <p class="avant" style="font-size:1rem">Ce qu'on cherche n'est pas votre cadence — c'est sa
+  <b>dérive</b>. Tout le monde ralentit après quarante secondes, tout le monde croit que non,
+  et c'est exactement ce qu'un graphique peut montrer et qu'un discours ne peut pas.</p>
+</div></div>
+
+<section id="jeu"><div class="enveloppe">
+  <div class="plateau" id="plateau">
+    <div class="plateau__tete">
+      <span class="etat" id="etat">Choisissez comment vous voulez être entendu</span>
+      <span class="chrono" id="chrono">—</span>
+    </div>
+
+    <div class="plateau__corps">
+      <!-- 1 · le choix de la voie -->
+      <div id="pas-voie">
+        <p class="souffle" style="margin-bottom:var(--e-5)">Aucun son n'est enregistré, aucune
+        donnée ne quitte cette page. Le microphone ne sert qu'à détecter des attaques : on lit
+        un niveau, on ne garde rien.</p>
+        <div class="voies">
+          <button class="voie" id="vMicro" type="button">
+            <b>Frapper la table</b>
+            <span>Le microphone entend les coups. Le plus proche du geste réel.</span>
+          </button>
+          <button class="voie" id="vMouv" type="button">
+            <b>Secouer le téléphone</b>
+            <span>L'accéléromètre compte les mouvements. Sur un appareil mobile.</span>
+          </button>
+          <button class="voie" id="vTape" type="button">
+            <b>Taper l'écran</b>
+            <span>Le repli. Mesure un rythme, pas un effort — et ne fatigue pas.</span>
+          </button>
+        </div>
+        <p class="souffle" id="refus" style="margin-top:var(--e-5);color:var(--signal)"></p>
+      </div>
+
+      <!-- 2 · l'étalonnage -->
+      <div id="pas-etalon" class="masque">
+        <p class="consigne">Ne faites rien pendant trois secondes.</p>
+        <p class="souffle">On mesure le bruit de fond pour savoir à partir de quel niveau un
+        coup est un coup. Sans cet étalonnage, la même valeur compterait tout dans une pièce
+        calme et rien dans un café.</p>
+        <div class="niveau"><i id="niveauB"></i></div>
+      </div>
+
+      <!-- 3 · la mesure -->
+      <div id="pas-mesure" class="masque">
+        <p class="consigne" id="consigneMesure">Allez-y. Deux minutes.</p>
+        <div class="pouls" id="pouls">0</div>
+        <p class="souffle" id="souffleMesure">Rien ne vous dira si vous êtes trop lent ou trop
+        vite. C'est le sujet.</p>
+        <div class="niveau"><i id="niveauM"></i></div>
+        <p style="margin-top:var(--e-5)">
+          <button class="gros" id="bArreter" type="button">J'arrête</button>
+        </p>
+      </div>
+
+      <!-- 4 · le pari -->
+      <div id="pas-pari" class="masque">
+        <p class="consigne">Avant de voir la courbe : qu'est-ce qui s'est passé ?</p>
+        <p class="souffle">Répondez d'instinct. La réponse est enregistrée avant que le
+        graphique ne s'affiche — c'est la seule façon de savoir si vous le saviez.</p>
+        <div class="pari">
+          <button type="button" data-p="ralenti">J'ai ralenti</button>
+          <button type="button" data-p="stable">J'ai gardé le même rythme</button>
+          <button type="button" data-p="accelere">J'ai accéléré</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<section class="masque" id="bilan"><div class="enveloppe">
+  <div class="oeil">Le relevé</div>
+  <h2>Votre cadence, seconde par seconde</h2>
+  <div class="chiffres" id="chiffres"></div>
+  <div class="graphe">
+    <canvas id="toile" width="1200" height="420"></canvas>
+    <div class="legende">
+      <span><i class="puce"></i> votre cadence, lissée sur cinq coups</span>
+      <span><i class="puce puce--bande"></i> la zone recommandée, 100 à 120 par minute</span>
+      <span><i class="puce puce--rep"></i> les quinze premières et les quinze dernières secondes</span>
+    </div>
+  </div>
+  <div class="verdict" id="verdict"></div>
+
+  <div class="capot">
+    <h4>Vue conception — ce que la détection fait, et ce qu'elle ne peut pas faire</h4>
+    <p class="lire"><b>Un coup est détecté quand l'énergie du signal franchit un seuil
+    calculé sur VOTRE bruit de fond</b>, jamais sur une valeur écrite en dur : le seuil vaut
+    quatre fois le niveau moyen des trois secondes d'étalonnage, avec un plancher pour les
+    pièces silencieuses. Un délai réfractaire de 250 ms suit chaque détection — au-delà de
+    240 coups par minute, il n'y a plus de geste humain, seulement du bruit.</p>
+    <div class="enrob"><table class="tab">
+      <thead><tr><th>Ce qui est mesuré</th><th>Comment</th></tr></thead>
+      <tbody>
+        <tr><td>Cadence instantanée</td>
+            <td>60 000 divisé par l'intervalle, lissé par la médiane de cinq intervalles.
+            La médiane et non la moyenne : un seul coup manqué double un intervalle et
+            emporterait une moyenne.</td></tr>
+        <tr><td>La dérive</td>
+            <td>Médiane des quinze premières secondes contre médiane des quinze dernières.
+            Deux fenêtres égales, aux deux bouts, sans rien lisser entre les deux.</td></tr>
+        <tr><td>Le plus long arrêt</td>
+            <td>Le plus grand intervalle entre deux coups. Calculé sur les intervalles
+            <b>bruts</b> — un filtre appliqué avant rendrait la mesure aveugle à ce qu'elle
+            cherche, ce qui est déjà arrivé dans ce projet.</td></tr>
+        <tr><td>Votre pari</td>
+            <td>Enregistré <b>avant</b> l'affichage. Sans cet ordre, la page ne mesurerait
+            que votre capacité à commenter un graphique.</td></tr>
+      </tbody>
+    </table></div>
+    <div class="preuve" style="margin-top:var(--e-5)">
+      <p><b>Ce que ça ne mesure pas, et il faut le dire fort.</b> La profondeur. Le recul
+      complet du thorax entre deux compressions. La position des mains. Frapper une table
+      n'est pas comprimer un thorax : le geste réel demande de descendre de cinq centimètres
+      dans une cage thoracique, ce qui épuise en une minute et qu'aucun capteur d'un
+      navigateur ne verra jamais.</p>
+      <p style="margin-bottom:0"><b>La dérive mesurée ici est donc un plancher.</b> Sur un
+      mannequin, avec l'effort réel, elle est plus forte — jamais moins. C'est la seule
+      chose qu'on puisse affirmer honnêtement, et elle suffit à faire le point.</p>
+    </div>
+  </div>
+
+  <div style="margin-top:var(--e-6)">
+    <button class="gros" id="bRejouer" type="button">Recommencer</button>
+  </div>
+</div></section>
+
+<section class="masque" id="apres"><div class="enveloppe">
+  <div class="oeil">Pourquoi la dérive et pas la cadence</div>
+  <h2>Personne ne se sent ralentir</h2>
+  <div class="lire">
+    <p>La cadence, tout le monde peut l'apprendre : cent à cent vingt par minute, on la donne
+    en une phrase et un métronome la tient. <b>Ce qui ne s'apprend pas en une phrase, c'est
+    que l'on ralentit sans le sentir</b> — et que la personne qui ralentit est justement
+    celle qui est convaincue de tenir le rythme, parce que l'effort augmente pendant que la
+    vitesse baisse. Les deux sensations se compensent.</p>
+    <p>C'est pour ça que la page vous fait <b>parier avant de montrer la courbe</b>. Un
+    graphique commenté après coup ne prouve rien : on trouve toujours dans une courbe ce
+    qu'on vient d'y lire. Un pari enregistré avant, lui, se trompe ou non.</p>
+    <p style="margin-bottom:0">Et c'est pour ça que la conséquence pratique n'est pas
+    « comptez dans votre tête » mais <b>relayez-vous toutes les deux minutes</b> — la seule
+    consigne qui tienne compte du fait que l'on ne peut pas se surveiller soi-même.</p>
+  </div>
+  <div class="garde lire" style="margin-top:var(--e-6)">
+    <ul>
+      <li><b>Aucun son n'est enregistré</b> et rien ne quitte la page : le microphone alimente
+      un analyseur de niveau, jamais un enregistreur.</li>
+      <li><b>Aucun score, aucun classement.</b> Une courbe et quatre nombres.</li>
+      <li><b>La profondeur n'est pas mesurée</b>, et c'est écrit partout où un chiffre
+      pourrait laisser croire le contraire.</li>
+      <li><b>Ceci ne remplace pas une formation</b> et ne prépare qu'à en suivre une.</li>
+    </ul>
+  </div>
+</div></section>
+
+<footer><div class="enveloppe">
+  Portfolio de conception pédagogique · Simulateur de défibrillateur, proposition 03 ·
+  8 septembre 2026. Détection locale, aucun enregistrement, aucun appel réseau.
+</div></footer>
+
+<script>
+(function(){
+var R = {
+  DUREE: 120000,     /* deux minutes */
+  REFRAC: 250,       /* ms entre deux coups comptés : 240 par minute au plus vite */
+  ETALON: 3000,      /* durée de la mesure du bruit de fond */
+  FACTEUR: 4,        /* le seuil vaut FACTEUR fois le bruit de fond… */
+  PLANCHER: 0.012,   /* …sans jamais descendre sous ce niveau */
+  FENETRE: 15000,    /* les deux fenêtres de comparaison, aux deux bouts */
+  LISSAGE: 5         /* nombre d'intervalles pour la médiane glissante */
+};
+
+var el = function(i){ return document.getElementById(i); };
+var voie, coups, depart, boucle, fond, seuil, dernier, armee, pari;
+var ctx, analyseur, flux, tampon, mouvBase;
+
+function med(a){
+  if (!a.length) return 0;
+  var b = a.slice().sort(function(x, y){ return x - y; });
+  var m = Math.floor(b.length / 2);
+  return b.length % 2 ? b[m] : (b[m - 1] + b[m]) / 2;
+}
+function montrer(id){
+  ['pas-voie', 'pas-etalon', 'pas-mesure', 'pas-pari'].forEach(function(p){
+    el(p).classList.toggle('masque', p !== id);
+  });
+}
+
+/* ── Les trois entrées ───────────────────────────────────────────────────── */
+function niveauMicro(){
+  analyseur.getByteTimeDomainData(tampon);
+  var s = 0;
+  for (var i = 0; i < tampon.length; i++) { var v = (tampon[i] - 128) / 128; s += v * v; }
+  return Math.sqrt(s / tampon.length);
+}
+
+function voiesActives(oui){
+  ['vMicro', 'vMouv', 'vTape'].forEach(function(i){ el(i).disabled = !oui; });
+}
+
+async function parMicro(){
+  /* Une demande d'autorisation peut ne jamais aboutir — invite ignorée,
+     onglet en arrière-plan, navigateur qui l'interdit hors HTTPS. Sans état
+     d'attente ni sortie, le clic ne produisait rien du tout : ni permission,
+     ni message, ni bouton actif. */
+  voiesActives(false);
+  el('refus').style.color = 'var(--encre-4)';
+  el('refus').textContent = "En attente de votre autorisation pour le microphone…";
+  var rendu = false;
+  var minuteur = setTimeout(function(){
+    if (rendu) return;
+    rendu = true; voiesActives(true);
+    el('refus').style.color = 'var(--signal)';
+    el('refus').textContent = "Aucune réponse à la demande d'autorisation. Sur un fichier "
+      + "ouvert en local, certains navigateurs refusent le microphone sans le dire — "
+      + "les deux autres voies restent ouvertes.";
+  }, 12000);
+  try {
+    flux = await navigator.mediaDevices.getUserMedia({ audio: {
+      echoCancellation: false, autoGainControl: false, noiseSuppression: false } });
+  } catch (e) {
+    clearTimeout(minuteur); if (rendu) return; rendu = true; voiesActives(true);
+    el('refus').style.color = 'var(--signal)';
+    el('refus').textContent = "Le microphone n'est pas accessible — refus, ou navigateur "
+      + "qui l'interdit hors HTTPS. Les deux autres voies restent ouvertes.";
+    return;
+  }
+  clearTimeout(minuteur);
+  if (rendu) { flux.getTracks().forEach(function(p){ p.stop(); }); return; }
+  rendu = true; el('refus').textContent = '';
+  ctx = new (window.AudioContext || window.webkitAudioContext)();
+  var src = ctx.createMediaStreamSource(flux);
+  analyseur = ctx.createAnalyser();
+  analyseur.fftSize = 1024;
+  tampon = new Uint8Array(analyseur.fftSize);
+  src.connect(analyseur);          /* jamais connecté à la sortie : rien n'est joué */
+  voie = 'micro';
+  etalonner();
+}
+
+async function parMouvement(){
+  if (typeof DeviceMotionEvent === 'undefined') {
+    el('refus').textContent = "Cet appareil n'a pas d'accéléromètre accessible.";
+    return;
+  }
+  if (typeof DeviceMotionEvent.requestPermission === 'function') {
+    try {
+      var r = await DeviceMotionEvent.requestPermission();
+      if (r !== 'granted') { el('refus').textContent = "Accès au mouvement refusé."; return; }
+    } catch (e) { el('refus').textContent = "Accès au mouvement refusé."; return; }
+  }
+  voie = 'mouvement'; mouvBase = 9.81;
+  addEventListener('devicemotion', surMouvement);
+  etalonner();
+}
+
+var mouvNiveau = 0;
+function surMouvement(e){
+  var a = e.accelerationIncludingGravity; if (!a) return;
+  var g = Math.sqrt((a.x || 0) * (a.x || 0) + (a.y || 0) * (a.y || 0) + (a.z || 0) * (a.z || 0));
+  mouvBase = mouvBase * 0.95 + g * 0.05;      /* passe-haut : on retire la gravité */
+  mouvNiveau = Math.abs(g - mouvBase) / 20;
+}
+
+function parTape(){
+  voie = 'tape';
+  fond = 0; seuil = 0;
+  lancer();
+}
+
+/* ── Étalonnage ─────────────────────────────────────────────────────────── */
+function etalonner(){
+  montrer('pas-etalon');
+  el('etat').textContent = 'Étalonnage';
+  var t0 = performance.now(), somme = 0, n = 0;
+  (function boucler(){
+    var t = performance.now(), v = voie === 'micro' ? niveauMicro() : mouvNiveau;
+    somme += v; n++;
+    el('niveauB').style.width = Math.min(100, v * 900) + '%';
+    if (t - t0 < R.ETALON) requestAnimationFrame(boucler);
+    else {
+      fond = somme / Math.max(1, n);
+      seuil = Math.max(R.PLANCHER, fond * R.FACTEUR);
+      lancer();
+    }
+  })();
+}
+
+/* ── Mesure ─────────────────────────────────────────────────────────────── */
+function lancer(){
+  montrer('pas-mesure');
+  el('etat').textContent = 'En cours';
+  el('consigneMesure').textContent = voie === 'micro'
+    ? 'Frappez la table. Deux minutes.'
+    : voie === 'mouvement' ? 'Secouez le téléphone. Deux minutes.'
+    : "Tapez l'écran. Deux minutes.";
+  if (voie === 'tape') {
+    el('souffleMesure').textContent = "Rien ne vous dira si vous êtes trop lent ou trop "
+      + "vite. C'est le sujet. — Cette voie mesure un rythme, pas un effort.";
+    el('pouls').style.cursor = 'pointer';
+    /* Posé une seule fois : « Recommencer » repasse par lancer(), et un
+       écouteur ajouté à chaque partie compterait chaque coup deux fois — le
+       délai réfractaire le masquerait, ce qui est pire qu'un bug visible. */
+    if (!el('pouls').dataset.arme) {
+      el('pouls').dataset.arme = '1';
+      el('pouls').addEventListener('pointerdown', function(e){ e.preventDefault(); coup(); });
+    }
+  }
+  /* Le niveau n'a pas de sens quand il n'y a pas de capteur. */
+  el('niveauM').parentNode.style.display = voie === 'tape' ? 'none' : '';
+  coups = []; dernier = -1e9; armee = true;
+  depart = performance.now();
+  boucle = requestAnimationFrame(tic);
+}
+
+function coup(){
+  var t = performance.now();
+  if (t - dernier < R.REFRAC) return;
+  dernier = t;
+  coups.push(t - depart);
+  el('pouls').textContent = coups.length;
+  el('pouls').classList.remove('bat'); void el('pouls').offsetWidth;
+  el('pouls').classList.add('bat');
+}
+
+function tic(){
+  var t = performance.now(), ecoule = t - depart;
+  el('chrono').textContent = (ecoule / 1000).toFixed(1).replace('.', ',') + ' s';
+
+  if (voie !== 'tape') {
+    var v = voie === 'micro' ? niveauMicro() : mouvNiveau;
+    el('niveauM').style.width = Math.min(100, v * 900) + '%';
+    /* Front montant : on ne compte qu'au franchissement, pas tant que le
+       niveau reste haut — sinon un coup sourd compte trois fois. */
+    if (v > seuil && armee) { armee = false; coup(); }
+    else if (v < seuil * 0.6) armee = true;
+  }
+
+  if (ecoule >= R.DUREE) { arreter(); return; }
+  boucle = requestAnimationFrame(tic);
+}
+
+function arreter(){
+  cancelAnimationFrame(boucle);
+  if (flux) flux.getTracks().forEach(function(p){ p.stop(); });
+  if (ctx) ctx.close();
+  removeEventListener('devicemotion', surMouvement);
+  el('etat').textContent = 'Terminé';
+  montrer('pas-pari');
+}
+
+/* ── Le relevé ───────────────────────────────────────────────────────────── */
+function intervalles(){
+  var e = [];
+  for (var i = 1; i < coups.length; i++) e.push({ t: coups[i], d: coups[i] - coups[i - 1] });
+  return e;
+}
+function medianeFenetre(e, a, b){
+  var d = e.filter(function(x){ return x.t >= a && x.t < b; }).map(function(x){ return x.d; });
+  return d.length >= 3 ? 60000 / med(d) : null;
+}
+
+function rendre(){
+  var e = intervalles();
+  var duree = coups.length ? coups[coups.length - 1] : 0;
+  var cadence = e.length ? Math.round(60000 / med(e.map(function(x){ return x.d; }))) : 0;
+  var debut = medianeFenetre(e, 0, R.FENETRE);
+  var fin = medianeFenetre(e, Math.max(R.FENETRE, duree - R.FENETRE), duree + 1);
+  var derive = (debut && fin) ? Math.round(fin - debut) : null;
+  var arret = e.length ? Math.max.apply(null, e.map(function(x){ return x.d; })) : 0;
+
+  el('chiffres').innerHTML = [
+    { v: coups.length, c: 'coups comptés' },
+    { v: cadence || '—', c: 'cadence médiane', m: true },
+    { v: derive === null ? '—' : (derive > 0 ? '+' : '−') + Math.abs(derive),
+      c: 'dérive, en coups/min', s: derive !== null && derive < -5 },
+    { v: (arret / 1000).toFixed(1).replace('.', ',') + ' s', c: 'plus long arrêt' }
+  ].map(function(c){
+    return '<div class="ch"><div class="ch__v' + (c.m ? ' ch__v--m' : '')
+      + (c.s ? ' ch__v--s' : '') + '">' + c.v + '</div><div class="ch__c">' + c.c + '</div></div>';
+  }).join('');
+
+  dessiner(e, duree, debut, fin);
+
+  var h = '', assez = duree >= 45000 && e.length >= 20;
+  if (!assez) {
+    h = '<h3>Trop court pour lire une dérive.</h3><p>Il faut au moins quarante-cinq secondes '
+      + 'et une vingtaine de coups pour que les deux fenêtres de comparaison aient un sens. '
+      + "Le dispositif refuse de conclure plutôt que d'annoncer un effet qu'il n'a pas mesuré.</p>";
+  } else {
+    var reel = derive < -5 ? 'ralenti' : (derive > 5 ? 'accelere' : 'stable');
+    var nom = { ralenti: 'ralenti', stable: 'tenu le même rythme', accelere: 'accéléré' };
+    h = '<h3>Vous avez ' + nom[reel] + '.</h3>';
+    if (pari === reel) {
+      h += '<p>Et vous l\'aviez dit. C\'est plus rare qu\'on ne pense : la sensation d\'effort '
+        + 'augmente pendant que la vitesse baisse, et les deux se compensent presque '
+        + 'exactement.</p>';
+    } else {
+      h += '<p class="rate">Vous aviez répondu « ' + { ralenti: "j'ai ralenti",
+        stable: "j'ai gardé le même rythme", accelere: "j'ai accéléré" }[pari] + ' ».</p>'
+        + '<p>C\'est le résultat le plus fréquent, et il est le sujet même de cette pièce : '
+        + '<b>on ne se sent pas ralentir</b>. L\'effort monte pendant que la vitesse baisse, '
+        + 'les deux sensations se compensent, et il ne reste rien pour vous avertir.</p>';
+    }
+    h += '<p>Vous êtes passé de <b>' + Math.round(debut) + '</b> à <b>' + Math.round(fin)
+      + '</b> coups par minute entre les quinze premières et les quinze dernières secondes. '
+      + 'Et vous frappiez une table : <b>sur un thorax, la dérive est plus forte</b>, jamais '
+      + 'moins. Ce chiffre est un plancher.</p>';
+  }
+  el('verdict').innerHTML = h;
+  el('bilan').classList.remove('masque');
+  el('apres').classList.remove('masque');
+  el('bilan').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function jeton(n){
+  return getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+}
+
+function dessiner(e, duree, debut, fin){
+  var c = el('toile'), g = c.getContext('2d');
+  var L = c.width, H = c.height, mg = { h: 28, b: 44, g: 52, d: 18 };
+  var Y0 = 40, Y1 = 180;                       /* bornes de l'axe des cadences */
+  var x = function(t){ return mg.g + (L - mg.g - mg.d) * (t / Math.max(1, duree)); };
+  var y = function(v){ return mg.h + (H - mg.h - mg.b) * (1 - (v - Y0) / (Y1 - Y0)); };
+
+  g.clearRect(0, 0, L, H);
+  g.fillStyle = jeton('--mesure-voile');
+  g.fillRect(mg.g, y(120), L - mg.g - mg.d, y(100) - y(120));
+
+  g.strokeStyle = jeton('--bord'); g.lineWidth = 1;
+  g.fillStyle = jeton('--encre-4');
+  g.font = '13px ' + jeton('--police-mono');
+  [40, 60, 80, 100, 120, 140, 160, 180].forEach(function(v){
+    g.beginPath(); g.moveTo(mg.g, y(v)); g.lineTo(L - mg.d, y(v)); g.stroke();
+    g.textAlign = 'right'; g.fillText(v, mg.g - 10, y(v) + 4);
+  });
+  g.textAlign = 'center';
+  for (var s = 0; s <= duree; s += 15000) {
+    g.fillText((s / 1000) + ' s', x(s), H - mg.b + 22);
+  }
+
+  /* La courbe : médiane glissante sur cinq intervalles. La médiane et non la
+     moyenne — un seul coup manqué double un intervalle et emporterait une
+     moyenne, ce qui inventerait un creux qui n'a pas eu lieu. */
+  g.strokeStyle = jeton('--mesure'); g.lineWidth = 2.5;
+  g.lineJoin = 'round'; g.beginPath();
+  var premier = true;
+  for (var i = 0; i < e.length; i++) {
+    var a = Math.max(0, i - R.LISSAGE + 1);
+    var m = med(e.slice(a, i + 1).map(function(p){ return p.d; }));
+    var v = Math.max(Y0, Math.min(Y1, 60000 / m));
+    if (premier) { g.moveTo(x(e[i].t), y(v)); premier = false; }
+    else g.lineTo(x(e[i].t), y(v));
+  }
+  g.stroke();
+
+  /* Les deux fenêtres de comparaison, dessinées comme deux traits courts :
+     c'est la mesure elle-même, pas un ornement. */
+  g.strokeStyle = jeton('--signal'); g.lineWidth = 3;
+  if (debut) { g.beginPath(); g.moveTo(x(0), y(debut)); g.lineTo(x(R.FENETRE), y(debut)); g.stroke(); }
+  if (fin) { g.beginPath(); g.moveTo(x(Math.max(R.FENETRE, duree - R.FENETRE)), y(fin));
+             g.lineTo(x(duree), y(fin)); g.stroke(); }
+}
+
+/* ── Boutons ─────────────────────────────────────────────────────────────── */
+el('vMicro').addEventListener('click', parMicro);
+el('vMouv').addEventListener('click', parMouvement);
+el('vTape').addEventListener('click', parTape);
+el('bArreter').addEventListener('click', arreter);
+Array.prototype.forEach.call(document.querySelectorAll('.pari button'), function(b){
+  b.addEventListener('click', function(){ pari = b.dataset.p; rendre(); });
+});
+el('bRejouer').addEventListener('click', function(){
+  el('bilan').classList.add('masque'); el('apres').classList.add('masque');
+  el('refus').textContent = ''; el('chrono').textContent = '—';
+  el('etat').textContent = 'Choisissez comment vous voulez être entendu';
+  el('pouls').textContent = '0';
+  montrer('pas-voie');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+var r = document.documentElement;
+el('bTheme').addEventListener('click', function(){
+  var s = r.getAttribute('data-theme') === 'sombre';
+  if (!r.hasAttribute('data-theme')) s = matchMedia('(prefers-color-scheme: dark)').matches;
+  r.setAttribute('data-theme', s ? 'clair' : 'sombre');
+  if (!el('bilan').classList.contains('masque')) {
+    var e = intervalles(), d = coups.length ? coups[coups.length - 1] : 0;
+    dessiner(e, d, medianeFenetre(e, 0, R.FENETRE),
+             medianeFenetre(e, Math.max(R.FENETRE, d - R.FENETRE), d + 1));
+  }
+});
+var bv = el('bVue');
+bv.addEventListener('click', function(){
+  var o = document.body.classList.toggle('conception');
+  bv.setAttribute('aria-pressed', o ? 'true' : 'false');
+  bv.textContent = o ? 'Refermer le capot' : 'Vue conception';
+});
+})();
+</script>
+
+</body>
+</html>
