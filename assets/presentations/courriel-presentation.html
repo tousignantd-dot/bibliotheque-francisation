@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Le courriel de présentation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap">
+<style>
+/* ═══════════════════════════════════════════════════════════
+   LE COURRIEL DE PRÉSENTATION
+   Le courriel qui montre, par opposition à celui qui fait cliquer.
+   Même langue visuelle que courriel-directions.html.
+   Vert = ce que je recommande. Ambre = ce qui vous revient.
+   ═══════════════════════════════════════════════════════════ */
+:root{
+  --ground:#F7F7F5; --card:#FFFFFF; --sunken:#FBFBFA;
+  --ink:#17181A; --body:#3A3D40; --muted:#6E7175;
+  --line:#E4E4E0; --line-fort:#D2D2CD;
+  --fait:#0A8F5B; --fait-bg:#E6F5EE;
+  --decid:#C07A08; --decid-bg:#FBF2E2;
+  --acier:#1D6B8F; --acier-bg:#E7F0F6;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#151618; --card:#1D1F22; --sunken:#212326;
+    --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+    --line:#2E3135; --line-fort:#3D4146;
+    --fait:#4BC48D; --fait-bg:#12291F;
+    --decid:#E0A63F; --decid-bg:#2C2213;
+    --acier:#6DAFD2; --acier-bg:#14242C;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#151618; --card:#1D1F22; --sunken:#212326;
+  --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+  --line:#2E3135; --line-fort:#3D4146;
+  --fait:#4BC48D; --fait-bg:#12291F;
+  --decid:#E0A63F; --decid-bg:#2C2213;
+  --acier:#6DAFD2; --acier-bg:#14242C;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--body);
+  font-family:Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased}
+.doc{max-width:880px;margin:0 auto;padding:26px 24px 96px}
+.retour{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;
+  color:var(--muted);text-decoration:none;margin-bottom:34px}
+.retour:hover{color:var(--acier)}
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--acier);margin:0 0 14px}
+h1{font-family:Newsreader,Georgia,serif;font-size:clamp(38px,6.4vw,58px);line-height:1.04;
+  font-weight:500;letter-spacing:-.02em;color:var(--ink);margin:0 0 20px;text-wrap:balance}
+.chapeau{font-size:19px;line-height:1.6;color:var(--body);margin:0;max-width:62ch}
+.chapeau strong{color:var(--ink);font-weight:700}
+h2{font-family:Newsreader,Georgia,serif;font-size:29px;line-height:1.2;font-weight:600;
+  letter-spacing:-.01em;color:var(--ink);margin:0 0 4px;text-wrap:balance}
+h3{font-size:15px;font-weight:800;color:var(--ink);margin:0 0 6px}
+p{margin:0;max-width:68ch}
+section{display:flex;flex-direction:column;gap:16px;padding:44px 0 0;margin:44px 0 0;
+  border-top:1px solid var(--line)}
+section.premier{border-top:none;margin-top:0;padding-top:34px}
+.these{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--acier);
+  border-radius:3px;padding:26px 28px;display:flex;flex-direction:column;gap:12px}
+.these p{font-size:18px}
+.these .cle{font-family:Newsreader,Georgia,serif;font-size:23px;line-height:1.3;
+  font-weight:500;color:var(--ink);font-style:italic}
+/* ── les choix ─────────────────────────────────────────── */
+.choix{display:flex;flex-direction:column;gap:2px;counter-reset:c}
+.ch{background:var(--card);border:1px solid var(--line);padding:22px 24px;
+  display:grid;grid-template-columns:44px 1fr;gap:18px;align-items:start}
+.ch:first-child{border-radius:3px 3px 0 0}
+.ch:last-child{border-radius:0 0 3px 3px}
+.ch .n{font-family:Newsreader,Georgia,serif;font-size:30px;line-height:1;font-weight:500;
+  color:var(--line-fort);counter-increment:c}
+.ch .n::before{content:counter(c)}
+.ch .t{display:flex;flex-direction:column;gap:7px}
+.ch h3{margin:0}
+.ch p{font-size:15.5px;line-height:1.58}
+.eti{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.06em;
+  text-transform:uppercase;padding:2px 8px;border-radius:99px;vertical-align:2px;margin-left:8px}
+.eti-oui{background:var(--fait-bg);color:var(--fait)}
+.eti-non{background:var(--decid-bg);color:var(--decid)}
+/* ── le courriel ───────────────────────────────────────── */
+.mail{background:var(--card);border:1px solid var(--line-fort);border-radius:4px;
+  overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.mail .barre{background:var(--sunken);border-bottom:1px solid var(--line);
+  padding:12px 20px;display:flex;justify-content:space-between;align-items:center;gap:14px;
+  flex-wrap:wrap}
+.mail .objet{font-size:14px;color:var(--muted)}
+.mail .objet b{color:var(--ink);font-weight:700}
+.copier{font:inherit;font-size:12.5px;font-weight:800;letter-spacing:.03em;
+  background:var(--acier);color:#fff;border:0;border-radius:3px;padding:6px 14px;cursor:pointer}
+.copier:hover{filter:brightness(1.08)}
+.copier.fait{background:var(--fait)}
+.mail .corps{padding:24px 26px;font-size:16px;line-height:1.66;
+  display:flex;flex-direction:column;gap:14px}
+.mail .corps p{max-width:none}
+.mail a.lien{color:var(--acier);font-weight:700;word-break:break-all}
+.mail .sig{color:var(--muted);font-size:14.5px;border-top:1px solid var(--line);
+  padding-top:14px;margin-top:4px}
+.trou{background:var(--decid-bg);color:var(--decid);font-weight:700;
+  padding:0 5px;border-radius:3px}
+.compte{font-size:13px;color:var(--muted);font-family:var(--mono)}
+/* ── images ────────────────────────────────────────────── */
+.deux{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.vig{background:var(--card);border:1px solid var(--line);border-radius:4px;
+  padding:18px;display:flex;flex-direction:column;gap:12px}
+.vig.retenue{border-color:var(--fait);border-width:2px;padding:17px}
+.vig img{width:100%;max-width:230px;margin:0 auto;display:block;border-radius:6px;
+  border:1px solid var(--line)}
+.vig .l{font-size:14.5px;line-height:1.55}
+.vig .l strong{color:var(--ink)}
+@media (max-width:680px){
+  .deux{grid-template-columns:1fr}
+  .ch{grid-template-columns:1fr;gap:8px}
+  .ch .n{font-size:22px}
+  .doc{padding:20px 18px 72px}
+}
+ul.simple{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:9px}
+ul.simple li{max-width:66ch}
+ul.simple li strong{color:var(--ink)}
+.fin{background:var(--decid-bg);border:1px solid var(--decid);border-radius:3px;
+  padding:22px 24px;display:flex;flex-direction:column;gap:12px}
+.fin h3{color:var(--decid)}
+
+/* ── le courriel avec ses images ───────────────────────── */
+.mail .corps .fig{margin:6px 0 2px;display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+.mail .corps .fig img{max-width:100%;border:1px solid var(--line-fort);border-radius:4px;display:block}
+.mail .corps .fig .repere{font-size:12px;font-weight:800;letter-spacing:.05em;
+  text-transform:uppercase;color:var(--muted)}
+.mail .corps h4{font-size:16px;font-weight:800;color:var(--ink);margin:8px 0 -6px}
+.fichiers{display:flex;flex-direction:column;gap:2px}
+.fi{background:var(--card);border:1px solid var(--line);padding:16px 18px;
+  display:grid;grid-template-columns:132px 1fr;gap:18px;align-items:center}
+.fi:first-child{border-radius:3px 3px 0 0}
+.fi:last-child{border-radius:0 0 3px 3px}
+.fi img{width:132px;border:1px solid var(--line);border-radius:3px;display:block}
+.fi .t{display:flex;flex-direction:column;gap:5px}
+.fi p{font-size:14.5px;line-height:1.55}
+.fi .n{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.fi .alt{font-size:13.5px;color:var(--body);background:var(--sunken);
+  border-left:3px solid var(--line-fort);padding:7px 11px;border-radius:0 3px 3px 0}
+@media (max-width:680px){ .fi{grid-template-columns:1fr} .fi img{width:100%;max-width:240px} }
+</style>
+</head>
+<body>
+<div class="doc">
+<a class="retour" href="../../presentations.html">← Le classeur</a>
+
+<p class="eyebrow">Bibliothèque de francisation · 8 septembre 2026</p>
+<h1>Le courriel de présentation</h1>
+<p class="chapeau">Un courriel qui <strong>montre</strong>, avec quatre images — deux d'ordinateur,
+deux de téléphone. C'est l'autre courriel : celui de démarchage tient en 150 mots et n'a qu'un
+but, faire cliquer. Celui-ci fait le tour de ce qu'est Francis et de ce qui l'y distingue,
+pour une direction qui vous connaît déjà ou qui a demandé à en savoir plus.</p>
+
+<section class="premier">
+  <div class="these">
+    <p class="cle">Une direction ne se laisse pas convaincre par une description. Elle se
+    laisse convaincre par un écran d'élève.</p>
+    <p>D'où la forme : chaque affirmation du courriel est suivie de l'image qui la prouve.
+    Trois innovations, trois images, plus une pour dire ce que c'est. Le texte seul
+    tiendrait en dix lignes ; ce sont les images qui portent l'envoi.</p>
+  </div>
+</section>
+
+<section>
+  <p class="eyebrow">Le courriel</p>
+  <h2>Prêt à envoyer</h2>
+  <p>Les images sont à glisser dans le corps du message aux endroits indiqués. Les repères
+  en majuscules disparaissent une fois l'image posée.</p>
+
+  <div class="mail">
+    <div class="barre">
+      <span class="objet"><b>Objet :</b> Francis — la francisation, les huit niveaux, en service</span>
+      <button class="copier" data-cible="corps">Copier le texte</button>
+    </div>
+    <div class="corps" id="corps">
+      <p>Bonjour <span class="trou">[prénom]</span>,</p>
+
+      <p>Je vous écris au sujet de <b>Francis</b>, la bibliothèque de cours de francisation
+      pour adultes que j'ai développée et que j'utilise en classe. Elle couvre les huit
+      niveaux du programme d'études du Ministère : 87 modules de cours, 90 ateliers,
+      1 518 heures de classe préparées, et le matériel papier de chaque séance — la fiche
+      de l'élève et le diaporama de l'enseignant pour chacune des 1 264 séances. Le contenu
+      est original : aucun manuel n'y est reproduit.</p>
+
+      <p>Voici ce qu'un élève ouvre le matin. Un module est une situation de vie complète —
+      ici, consulter au bon endroit : le dialogue, les mots, les exercices, puis une
+      production orale et une production écrite.</p>
+
+      <div class="fig">
+        <span class="repere">[ image 1 — ordi-cours.jpg ]</span>
+        <img src="captures-courriel/ordi-cours.jpg" alt="Le module d'un élève : le dialogue, le vocabulaire et les exercices">
+      </div>
+
+      <p>Trois choses la distinguent de ce qui se fait ailleurs.</p>
+
+      <h4>1. L'élève s'exerce à parler sans témoin.</h4>
+      <p>C'est le mur de nos classes : l'adulte qui n'ose pas ouvrir la bouche devant les
+      autres. Ici, il s'enregistre seul, il s'écoute, il recommence autant de fois qu'il
+      veut, et il n'envoie son enregistrement à son enseignant que lorsqu'il le décide.
+      Un élève parle ainsi vingt fois plus qu'en classe, et ce sont ses vingtièmes essais
+      que l'enseignant écoute.</p>
+
+      <div class="fig">
+        <span class="repere">[ image 2 — tel-oral.jpg ]</span>
+        <img src="captures-courriel/tel-oral.jpg" alt="Le panneau d'enregistrement : je m'enregistre, je m'écoute et je corrige, j'envoie à mon enseignant">
+      </div>
+
+      <h4>2. Le cours entier tient dans un téléphone.</h4>
+      <p>Beaucoup de nos élèves n'ont pas d'ordinateur. Ce n'est pas une version réduite :
+      les mêmes dialogues, les mêmes exercices, corrigés sur l'appareil. Et une classe peut
+      y entrer <b>sans compte</b> — l'enseignant imprime une feuille, l'élève vise le carré
+      avec son appareil photo, et il est dedans pour l'heure : pas de mot de passe, pas de
+      nom à donner.</p>
+
+      <div class="fig">
+        <span class="repere">[ image 3 — tel-cours.jpg ]</span>
+        <img src="captures-courriel/tel-cours.jpg" alt="Deux écrans de téléphone : le dialogue du module, et l'entrée dans une séance sans compte">
+      </div>
+
+      <h4>3. L'enseignant voit la classe pendant qu'elle travaille.</h4>
+      <p>Qui a fait quoi, qui bloque en ce moment même, quelles erreurs reviennent dans le
+      groupe. Ce n'est pas un bulletin livré à la fin : c'est la classe en train de se
+      faire, et le matériel qui sert à reprendre le point manqué est déjà là.</p>
+
+      <div class="fig">
+        <span class="repere">[ image 4 — ordi-classe.jpg ]</span>
+        <img src="captures-courriel/ordi-classe.jpg" alt="Le tableau du groupe : où en est la classe, module par module">
+      </div>
+
+      <p>Deux choses appartiendraient à votre centre avant toute utilisation : la durée de
+      conservation des travaux des élèves, et l'ouverture — ou non — de l'assistance
+      automatisée qui explique une consigne à celui qui n'ose pas lever la main. Les deux se
+      règlent dans un écran, et tout le reste continue de fonctionner quand elle est fermée.
+      J'ai écrit ce que ça implique ici :<br>
+      <a class="lien" href="#">portail.edufrancis.ca/assets/presentations/guide-direction.html</a></p>
+
+      <p>Vous pouvez l'essayer maintenant, sans compte, comme un élève — dix minutes :<br>
+      <a class="lien" href="#">portail.edufrancis.ca/modules-autonomes/le-on-quebecois/</a></p>
+
+      <p>Auriez-vous vingt minutes dans les prochaines semaines ? Je vous montre le reste
+      en direct.</p>
+
+      <p class="sig"><span class="trou">[Prénom Nom]</span><br>
+      <span class="trou">[titre]</span>, <span class="trou">[centre]</span></p>
+    </div>
+  </div>
+  <p class="compte">420 mots · 4 images · 2 liens</p>
+</section>
+
+<section>
+  <p class="eyebrow">Les images</p>
+  <h2>Les quatre fichiers, et ce qu'ils disent</h2>
+  <p>Toutes sont des captures du portail en marche, pas des maquettes. Elles sont cadrées
+  pour un courriel : 560 px de large au plus, et jamais l'écran entier — seulement la zone
+  qui porte l'argument. Le texte de remplacement compte autant que l'image : Outlook ne
+  l'affichera pas d'emblée, et c'est lui qui sera lu à sa place.</p>
+
+  <div class="fichiers">
+    <div class="fi">
+      <img src="captures-courriel/ordi-cours.jpg" alt="">
+      <div class="t">
+        <h3>1 · Le cours de l'élève</h3>
+        <span class="n">captures-courriel/ordi-cours.jpg · 560 px</span>
+        <p>Dit ce que c'est en un coup d'œil : une situation de vie, un dialogue à écouter,
+        les mots, les exercices. Le rail d'outils à droite se voit sans être expliqué.</p>
+        <p class="alt"><b>Texte de remplacement :</b> Le module d'un élève : le dialogue,
+        le vocabulaire et les exercices</p>
+      </div>
+    </div>
+    <div class="fi">
+      <img src="captures-courriel/tel-oral.jpg" alt="">
+      <div class="t">
+        <h3>2 · S'enregistrer</h3>
+        <span class="n">captures-courriel/tel-oral.jpg · 300 px</span>
+        <p>Les trois gestes numérotés — je m'enregistre · je m'écoute et je corrige ·
+        j'envoie à mon enseignant — et, sous le bouton, « tu pourras recommencer autant de
+        fois que tu veux ». L'image prouve le paragraphe au lieu de le promettre.</p>
+        <p class="alt"><b>Texte de remplacement :</b> Le panneau d'enregistrement : je
+        m'enregistre, je m'écoute et je corrige, j'envoie à mon enseignant</p>
+      </div>
+    </div>
+    <div class="fi">
+      <img src="captures-courriel/tel-cours.jpg" alt="">
+      <div class="t">
+        <h3>3 · Sur un téléphone</h3>
+        <span class="n">captures-courriel/tel-cours.jpg · 538 px</span>
+        <p>Deux écrans dans une seule image, pour ne pas multiplier les chargements : le
+        dialogue du module tel qu'il se lit sur un appareil, et l'entrée dans une séance
+        sans compte — « c'est toi, pour cette heure ».</p>
+        <p class="alt"><b>Texte de remplacement :</b> Deux écrans de téléphone : le
+        dialogue du module, et l'entrée dans une séance sans compte</p>
+      </div>
+    </div>
+    <div class="fi">
+      <img src="captures-courriel/ordi-classe.jpg" alt="">
+      <div class="t">
+        <h3>4 · Où en est la classe</h3>
+        <span class="n">captures-courriel/ordi-classe.jpg · 560 px</span>
+        <p>Le tableau du groupe, module par module, avec le direct en tête. C'est l'image
+        qui parle à une direction : elle y reconnaît un instrument de suivi, pas un
+        exerciseur.</p>
+        <p class="alt"><b>Texte de remplacement :</b> Le tableau du groupe : où en est la
+        classe, module par module</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <p class="eyebrow">À l'envoi</p>
+  <h2>Quatre gestes qui décident si les images s'affichent</h2>
+  <div class="choix">
+    <div class="ch">
+      <span class="n"></span>
+      <div class="t">
+        <h3>Glisser l'image dans le corps, jamais en pièce jointe</h3>
+        <p>Dans Outlook comme dans Gmail, une image déposée dans le texte voyage
+        <b>avec</b> le message. Une image liée à une adresse web est bloquée par défaut par
+        Outlook : le destinataire voit quatre rectangles vides et un bandeau d'avertissement.</p>
+      </div>
+    </div>
+    <div class="ch">
+      <span class="n"></span>
+      <div class="t">
+        <h3>Écrire le texte de remplacement des quatre</h3>
+        <p>Clic droit sur l'image → « Texte de remplacement ». C'est ce qui s'affiche tant
+        que le destinataire n'a pas cliqué sur « Afficher les images » — c'est-à-dire, pour
+        beaucoup, toujours. Les quatre textes sont donnés ci-dessus.</p>
+      </div>
+    </div>
+    <div class="ch">
+      <span class="n"></span>
+      <div class="t">
+        <h3>Ne pas ouvrir sur une image</h3>
+        <p>Une image en tête de message est la signature visuelle d'un envoi de masse, et
+        les filtres la lisent ainsi. La première image arrive après le troisième paragraphe,
+        quand le destinataire sait déjà de quoi on parle.</p>
+      </div>
+    </div>
+    <div class="ch">
+      <span class="n"></span>
+      <div class="t">
+        <h3>Vérifier le poids total</h3>
+        <p>Les quatre font 119 Ko ensemble, ce qui passe partout. Au-delà de 1 Mo,
+        certains serveurs de centre de services découpent ou refusent le message.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="fin">
+    <h3>Ce que ce courriel-ci coûte</h3>
+    <p>Il enfreint sciemment la règle d'<b>une seule image</b> établie pour le courriel de
+    démarchage. Elle reste juste pour un premier contact à froid : quatre images font une
+    infolettre, et une infolettre se classe au lieu de se lire.</p>
+    <p>Ce courriel-ci vise l'autre situation — une direction qui vous connaît, ou qui a
+    répondu « racontez-moi ». Là, le risque n'est plus de paraître promotionnel, c'est de
+    rester abstrait. <b>Si vous ne savez pas dans lequel des deux cas vous êtes, envoyez
+    celui de démarchage</b>, et gardez celui-ci pour la réponse.</p>
+    <p>À trancher avant d'envoyer, comme pour l'autre : le « je » (vous seul, ou le centre),
+    ce que vous demandez vraiment (vingt minutes, ou un groupe-pilote), et l'adresse du lien
+    d'essai — les deux liens du modèle sont des repères, à remplacer par les vôtres.</p>
+  </div>
+</section>
+
+</div>
+<script>
+document.querySelectorAll('.copier').forEach(function (b) {
+  b.addEventListener('click', function () {
+    var t = document.getElementById(b.dataset.cible).innerText;
+    navigator.clipboard.writeText(t).then(function () {
+      b.textContent = 'Copié'; b.classList.add('fait');
+      setTimeout(function () { b.textContent = 'Copier le texte'; b.classList.remove('fait'); }, 1800);
+    });
+  });
+});
+</script>
+</body>
+</html>
