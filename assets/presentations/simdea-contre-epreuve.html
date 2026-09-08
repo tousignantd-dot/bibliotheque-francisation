@@ -1,0 +1,516 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Le protocole et l'instrument de la contre-épreuve de SimDEA : où quelqu'un qui n'a jamais vu de défibrillateur pose les électrodes.">
+<title>La contre-épreuve</title>
+<style>html{color-scheme:light dark}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>La contre-épreuve</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+<style>
+/* ═══ Jetons « Braise », recopiés — jamais importés (un @import en file://
+   échoue sans rien dire). --mesure-l porte la largeur de lecture : dans la
+   source du système, --mesure porte à la fois une couleur et une longueur
+   dans le même :root, et la seconde écrase la première.                    */
+:root{
+  --fond:#FFFFFF; --fond-2:#FAFAFA; --fond-3:#F4F4F5;
+  --encre:#09090B; --encre-2:#52525B; --encre-3:#71717A; --encre-4:#A1A1AA;
+  --bord:#E4E4E7; --bord-fort:#D4D4D8;
+  --marque-rose:#F0359F; --marque-corail:#F5533D;
+  --marque-degrade:linear-gradient(100deg,var(--marque-rose) 0%,var(--marque-corail) 100%);
+  --signal:#F5652E; --signal-encre:#FFFFFF; --signal-voile:#FEF1EA;
+  --mesure:#2B4E9B; --mesure-2:#5C7EBF; --mesure-voile:#EAEFFA;
+  --action:#18181B; --action-survol:#27272A; --action-encre:#FAFAFA;
+  --police:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --police-mono:ui-monospace,"SF Mono","Menlo","Consolas",monospace;
+  --t-affiche:clamp(2.5rem,7.4vw,4.75rem); --t-titre-1:clamp(1.75rem,4vw,2.75rem);
+  --t-titre-2:clamp(1.375rem,2.6vw,1.75rem); --t-titre-3:1.1875rem;
+  --t-avant:1.1875rem; --t-petit:.875rem; --t-menu:.8125rem;
+  --g-moyen:500; --g-fort:600; --g-noir:800;
+  --i-serre:.98; --i-titre:1.15; --i-corps:1.62;
+  --l-serre:-.035em; --l-titre:-.02em;
+  --e-1:.25rem; --e-2:.5rem; --e-3:.75rem; --e-4:1rem; --e-5:1.5rem;
+  --e-6:2rem; --e-7:3rem; --e-8:4rem; --e-9:6rem;
+  --mesure-l:42rem; --contenu:74rem;
+  --r-1:.375rem; --r-2:.5rem; --r-3:.75rem; --r-4:1rem; --r-plein:9999px;
+  --o-1:0 1px 2px rgba(9,9,11,.06);
+  --o-2:0 1px 3px rgba(9,9,11,.08),0 1px 2px rgba(9,9,11,.04);
+  --o-3:0 4px 12px rgba(9,9,11,.08);
+  --transition:140ms cubic-bezier(.4,0,.2,1);
+}
+:root[data-theme="sombre"]{
+  --fond:#09090B; --fond-2:#0F0F11; --fond-3:#18181B;
+  --encre:#FAFAFA; --encre-2:#D4D4D8; --encre-3:#A1A1AA; --encre-4:#52525B;
+  --bord:#27272A; --bord-fort:#3F3F46;
+  --marque-rose:#FF4FB0; --marque-corail:#FF6A50;
+  --signal:#FF7A45; --signal-encre:#1A0C05; --signal-voile:#2A1610;
+  --mesure:#8FB2F0; --mesure-2:#6E8FCB; --mesure-voile:#18213A;
+  --action:#FAFAFA; --action-survol:#E4E4E7; --action-encre:#18181B;
+  --o-1:0 1px 2px rgba(0,0,0,.5); --o-2:0 1px 3px rgba(0,0,0,.6);
+  --o-3:0 4px 14px rgba(0,0,0,.6);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="clair"]){
+    --fond:#09090B; --fond-2:#0F0F11; --fond-3:#18181B;
+    --encre:#FAFAFA; --encre-2:#D4D4D8; --encre-3:#A1A1AA; --encre-4:#52525B;
+    --bord:#27272A; --bord-fort:#3F3F46;
+    --marque-rose:#FF4FB0; --marque-corail:#FF6A50;
+    --signal:#FF7A45; --signal-encre:#1A0C05; --signal-voile:#2A1610;
+    --mesure:#8FB2F0; --mesure-2:#6E8FCB; --mesure-voile:#18213A;
+    --action:#FAFAFA; --action-survol:#E4E4E7; --action-encre:#18181B;
+    --o-1:0 1px 2px rgba(0,0,0,.5); --o-2:0 1px 3px rgba(0,0,0,.6);
+    --o-3:0 4px 14px rgba(0,0,0,.6);
+  }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--fond);color:var(--encre-2);font-family:var(--police);
+     font-size:1rem;line-height:var(--i-corps);-webkit-font-smoothing:antialiased}
+.enveloppe{max-width:var(--contenu);margin:0 auto;padding:0 var(--e-5)}
+h1,h2,h3,h4{color:var(--encre);letter-spacing:var(--l-titre);line-height:var(--i-titre);
+            font-weight:var(--g-fort);margin:0;text-wrap:balance}
+p{margin:0 0 var(--e-4)}
+b,strong{color:var(--encre);font-weight:var(--g-fort)}
+code{font-family:var(--police-mono);font-size:.9em;background:var(--fond-3);
+     padding:.1em .35em;border-radius:var(--r-1);color:var(--encre)}
+.lire{max-width:var(--mesure-l)}
+.masque{display:none}
+.barre{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--fond) 88%,transparent);
+       backdrop-filter:blur(12px);border-bottom:1px solid var(--bord)}
+.barre__int{max-width:var(--contenu);margin:0 auto;padding:var(--e-3) var(--e-5);
+            display:flex;align-items:center;gap:var(--e-3);flex-wrap:wrap}
+.marque{font-weight:var(--g-noir);letter-spacing:var(--l-serre);color:var(--encre);font-size:1.0625rem}
+.marque i{font-style:normal;background:var(--marque-degrade);
+          -webkit-background-clip:text;background-clip:text;color:transparent}
+.barre__vide{flex:1}
+.bt{border:1px solid var(--bord-fort);background:var(--fond);color:var(--encre-2);font:inherit;
+    font-size:var(--t-menu);font-weight:var(--g-moyen);padding:var(--e-1) var(--e-3);
+    border-radius:var(--r-plein);cursor:pointer;transition:var(--transition)}
+.bt:hover{border-color:var(--encre-4);color:var(--encre)}
+.bt[aria-pressed="true"]{background:var(--mesure);border-color:var(--mesure);color:#fff}
+:root[data-theme="sombre"] .bt[aria-pressed="true"]{color:#09090B}
+.heros{padding:var(--e-8) 0 var(--e-6)}
+.pastille{display:inline-flex;align-items:center;gap:var(--e-2);font-size:var(--t-petit);
+          font-weight:var(--g-moyen);color:var(--signal);background:var(--signal-voile);
+          border-radius:var(--r-plein);padding:var(--e-1) var(--e-3);margin-bottom:var(--e-5)}
+.pastille::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--signal)}
+.heros h1{font-size:var(--t-affiche);font-weight:var(--g-noir);letter-spacing:var(--l-serre);
+          line-height:var(--i-serre);max-width:17ch}
+.heros h1 i{font-style:normal;background:var(--marque-degrade);
+            -webkit-background-clip:text;background-clip:text;color:transparent}
+.heros .avant{font-size:var(--t-avant);color:var(--encre-3);max-width:var(--mesure-l);
+              margin-top:var(--e-5);text-wrap:pretty}
+section{padding:var(--e-7) 0;border-top:1px solid var(--bord);scroll-margin-top:4.5rem}
+.oeil{font-size:var(--t-menu);text-transform:uppercase;letter-spacing:.14em;
+      color:var(--encre-4);font-weight:var(--g-fort);margin-bottom:var(--e-3)}
+section>.enveloppe>h2{font-size:var(--t-titre-1);margin-bottom:var(--e-5)}
+.gros{display:inline-block;padding:var(--e-3) var(--e-6);border-radius:var(--r-2);
+      background:var(--action);color:var(--action-encre);border:0;font:inherit;
+      font-weight:var(--g-fort);font-size:1rem;cursor:pointer;text-decoration:none}
+.gros[disabled]{opacity:.4;cursor:default}
+.capot{display:none;margin-top:var(--e-6);border-top:1px dashed var(--bord-fort);padding-top:var(--e-5)}
+body.conception .capot{display:block}
+.capot h4{color:var(--mesure);font-size:var(--t-menu);text-transform:uppercase;
+          letter-spacing:.1em;margin-bottom:var(--e-3)}
+.preuve{background:var(--fond-3);border-radius:var(--r-2);padding:var(--e-4) var(--e-5);font-size:.9375rem}
+.preuve p:last-child{margin-bottom:0}
+.enrob{overflow-x:auto}
+.tab{width:100%;border-collapse:collapse;font-size:.9375rem;margin-top:var(--e-4)}
+.tab th,.tab td{text-align:left;padding:var(--e-2) var(--e-3);border-bottom:1px solid var(--bord);
+                vertical-align:top}
+.tab th{font-size:var(--t-menu);text-transform:uppercase;letter-spacing:.1em;
+        color:var(--encre-4);font-weight:var(--g-fort)}
+.tab tr:last-child td{border-bottom:0}
+.garde{background:var(--fond-3);border-radius:var(--r-3);padding:var(--e-5) var(--e-6)}
+.garde ul{margin:0;padding-left:1.1em}
+.garde li{margin-bottom:var(--e-2)}
+.garde li:last-child{margin-bottom:0}
+.chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;
+          background:var(--bord);border:1px solid var(--bord);border-radius:var(--r-3);
+          overflow:hidden;margin-top:var(--e-5)}
+.ch{background:var(--fond);padding:var(--e-4) var(--e-5)}
+.ch__v{font-family:var(--police-mono);font-size:1.5rem;color:var(--encre);
+       font-variant-numeric:tabular-nums}
+.ch__v--m{color:var(--mesure)}
+.ch__v--s{color:var(--signal)}
+.ch__c{font-size:.75rem;color:var(--encre-4);text-transform:uppercase;
+       letter-spacing:.1em;margin-top:var(--e-1)}
+footer{padding:var(--e-8) 0 var(--e-9);color:var(--encre-4);font-size:var(--t-petit)}
+@media print{
+  :root{--fond:#FFF;--fond-2:#FFF;--fond-3:#F4F4F5;--encre:#09090B;--encre-2:#3F3F46;
+        --encre-3:#52525B;--encre-4:#71717A;--bord:#D4D4D8;--bord-fort:#A1A1AA;
+        --o-1:none;--o-2:none;--o-3:none}
+  @page{margin:14mm 12mm}
+  .barre{display:none}
+  .heros{padding-top:0}
+  .capot{display:block}
+  body{font-size:10.5pt}
+  .tab tr,.preuve,.garde{break-inside:avoid}
+  h1,h2,h3{break-after:avoid}
+  .enveloppe{padding:0}
+}
+
+
+.enveloppe{max-width:64rem;margin:0 auto;padding:var(--e-6) var(--e-5) var(--e-8)}
+.chapeau{max-width:42rem}
+.surtitre{font-size:var(--t-menu);letter-spacing:.14em;text-transform:uppercase;
+          color:var(--encre-4);font-weight:var(--g-fort)}
+h1{font-size:clamp(1.75rem,5vw,2.75rem);line-height:1.12;letter-spacing:-.02em;
+   margin:var(--e-3) 0 var(--e-4)}
+h2{font-size:1.25rem;margin:var(--e-7) 0 var(--e-3)}
+h3{font-size:.8125rem;letter-spacing:.1em;text-transform:uppercase;
+   color:var(--encre-4);font-weight:var(--g-fort);margin:0 0 var(--e-3)}
+p{line-height:1.6;max-width:42rem}
+.doux{color:var(--encre-3)}
+
+/* Le manque, énoncé. C'est la pièce maîtresse de la page : elle existe pour
+   dire qu'une mesure n'a pas encore été faite, et une page qui dit cela doit
+   le dire au premier coup d'œil, pas dans une note de bas de page. */
+.manque{border:1px solid var(--signal);border-left-width:3px;border-radius:var(--r-3);
+        padding:var(--e-4) var(--e-5);margin:var(--e-5) 0;background:var(--fond-2)}
+.manque b{color:var(--encre)}
+
+.grille{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+        gap:var(--e-5);align-items:start}
+@media (max-width:52rem){.grille{grid-template-columns:1fr}}
+
+.carte{border:1px solid var(--trait);border-radius:var(--r-3);padding:var(--e-5)}
+.carte--dire{background:var(--encre);color:var(--fond)}
+.carte--dire h3{color:rgba(255,255,255,.55)}
+.script{margin:0;font-size:1.0625rem;line-height:1.5}
+.liste{margin:0;padding-left:1.125rem}
+.liste li{margin-bottom:var(--e-2);line-height:1.55}
+
+/* Le torse. Les zones sont dessinées : ici on ANALYSE, on ne joue pas, et
+   cacher la cible n'aurait plus aucun sens. */
+.planche{border:1px solid var(--trait);border-radius:var(--r-3);padding:var(--e-4);
+         background:var(--fond-2)}
+.planche svg{display:block;width:100%;height:auto}
+.legende{display:flex;flex-wrap:wrap;gap:var(--e-4);margin-top:var(--e-3);
+         font-size:.8125rem;color:var(--encre-3)}
+.legende span{display:flex;align-items:center;gap:var(--e-2)}
+.pastille{width:10px;height:10px;border-radius:50%}
+
+.chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(9rem,1fr));
+          gap:1px;background:var(--trait);border:1px solid var(--trait);
+          border-radius:var(--r-3);overflow:hidden;margin-top:var(--e-4)}
+.chiffres div{background:var(--fond);padding:var(--e-4)}
+.chiffres b{display:block;font-size:1.5rem;font-variant-numeric:tabular-nums}
+.chiffres span{display:block;font-size:.75rem;color:var(--encre-4);margin-top:2px}
+
+.depot{border:2px dashed var(--trait);border-radius:var(--r-3);padding:var(--e-6);
+       text-align:center;color:var(--encre-3);margin-top:var(--e-4)}
+.depot.survol{border-color:var(--encre);color:var(--encre)}
+.bouton{font:inherit;font-weight:var(--g-fort);padding:.625rem 1.125rem;
+        border-radius:var(--r-2);border:0;background:var(--encre);color:var(--fond);
+        cursor:pointer}
+.bouton--pale{background:none;border:1px solid var(--trait);color:var(--encre-3)}
+.rangee{display:flex;flex-wrap:wrap;gap:var(--e-3);margin-top:var(--e-4)}
+
+/* L'essai fabriqué se signale partout où il apparaît, sans exception. Un jeu
+   de démonstration qu'on oublie d'étiqueter devient une donnée le lendemain. */
+.factice{border:1px solid var(--signal);border-radius:var(--r-2);
+         padding:var(--e-2) var(--e-3);color:var(--signal);font-size:.8125rem;
+         font-weight:var(--g-fort);margin-top:var(--e-4)}
+table{width:100%;border-collapse:collapse;margin-top:var(--e-4);font-size:.9375rem}
+th,td{text-align:left;padding:.5rem .625rem;border-bottom:1px solid var(--trait)}
+th{font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--encre-4)}
+td{font-variant-numeric:tabular-nums}
+footer{margin-top:var(--e-8);padding-top:var(--e-4);border-top:1px solid var(--trait);
+       font-size:.8125rem;color:var(--encre-4)}
+</style>
+
+<div class="enveloppe">
+
+<header class="chapeau">
+  <p class="surtitre">SimDEA · l'épreuve qui manque</p>
+  <h1>Ce simulateur n'a jamais été mis devant quelqu'un qui ignore ce qu'est un défibrillateur.</h1>
+  <p>Tant qu'il ne l'aura pas été, deux choses qu'il affirme restent des convictions
+  de son auteur : que la pose des électrodes est le geste où les gens se trompent,
+  et que la zone de tolérance dessinée sur le plan a la bonne taille. La première
+  justifie le composant le plus coûteux de l'outil. La seconde décide de qui
+  réussit.</p>
+</header>
+
+<div class="manque">
+  <p><b>Aucune donnée n'a encore été recueillie.</b> Cette page n'est pas un
+  résultat : c'est l'instrument, le protocole, et la place vide où le résultat
+  ira. Elle est publiée dans cet état exprès — un dispositif qui prétend mesurer
+  doit pouvoir montrer ce qu'il n'a pas encore mesuré.</p>
+</div>
+
+<h2>Le protocole</h2>
+<p class="doux">Il tient en une page parce qu'il doit être suivi cinq fois de la
+même façon. Ce qui change d'un participant à l'autre n'est plus une mesure,
+c'est une anecdote.</p>
+
+<div class="grille">
+  <div class="carte carte--dire">
+    <h3>Ce qu'on dit, mot pour mot</h3>
+    <p class="script">« Une personne est inconsciente. Voici un défibrillateur.
+    Placez les deux électrodes sur sa poitrine, puis appuyez sur le bouton. »</p>
+    <p style="margin-top:1rem;font-size:.875rem;color:rgba(255,255,255,.62)">Rien
+    d'autre. Si on demande de répéter, on répète la même phrase sans en changer
+    un mot.</p>
+  </div>
+
+  <div class="carte">
+    <h3>Ce qu'on ne dit jamais</h3>
+    <ul class="liste">
+      <li>Aucun mot qui situe : ni « clavicule », ni « côté », ni « en diagonale ».</li>
+      <li>Ni « c'est ça », ni « êtes-vous sûr ». Les deux enseignent, et la
+      seconde autant que la première.</li>
+      <li>On ne regarde pas l'écran par-dessus l'épaule : on corrige avec le
+      corps avant de corriger avec la voix.</li>
+      <li>À « c'est bon ? », une seule réponse : « Posez-les où vous croyez. »</li>
+    </ul>
+  </div>
+</div>
+
+<div class="grille" style="margin-top:1.5rem">
+  <div class="carte">
+    <h3>Trois décisions qui font la valeur du relevé</h3>
+    <ul class="liste">
+      <li><b>Aucun obstacle.</b> Un obstacle est une seconde variable ; la
+      dispersion mesurée ne serait plus celle du placement.</li>
+      <li><b>Un seul essai.</b> Le refus de l'appareil est un guidage — il
+      apprend qu'on s'est trompé. Le deuxième essai n'est plus le geste de
+      quelqu'un qui n'a jamais vu de DEA.</li>
+      <li><b>Rien avant.</b> Ni scène, ni appel, ni atelier. Tout ce qui précède
+      enseigne, et enseigner est exactement ce qu'on s'interdit ici.</li>
+    </ul>
+  </div>
+
+  <div class="carte">
+    <h3>Ce qui annule un passage</h3>
+    <ul class="liste">
+      <li>La personne a suivi une formation, même ancienne, même courte — et on
+      le lui demande <b>avant</b>, jamais après : après, on répond ce qui arrange.</li>
+      <li>Quelqu'un a parlé, soupiré ou ri pendant qu'elle posait.</li>
+      <li>Elle a vu quelqu'un d'autre le faire, ou l'écran de quelqu'un d'autre.</li>
+    </ul>
+  </div>
+</div>
+
+<h2>Ce que cinq personnes peuvent dire, et ce qu'elles ne peuvent pas</h2>
+<p><b>Elles peuvent</b> montrer que la dispersion est large. Si elle l'est, la
+zone de tolérance choisie sur plan ne vaut rien, et la vraie pose d'électrodes
+cesse d'être une conviction pour devenir une nécessité démontrée. C'est
+exactement le genre de constat qu'on ne peut pas obtenir en relisant son propre
+code.</p>
+<p><b>Elles ne peuvent donner aucun taux.</b> « Trois sur cinq » n'est pas 60 % :
+c'est trois personnes. Tout pourcentage tiré de ce relevé serait une invention
+avec l'apparence d'une mesure — et cette page-là existe précisément pour ne pas
+en produire.</p>
+
+<h2>Le relevé</h2>
+<p class="doux">L'écran de contre-épreuve du simulateur s'ouvre par
+<code>#contre-epreuve</code> — il n'est pas au menu : un apprenant ne doit pas
+tomber dessus. Il exporte un fichier JSON. Déposez-le ici.</p>
+
+<div class="grille">
+  <div>
+    <div class="planche">
+      <svg id="planche" viewBox="0 0 300 330" role="img"
+           aria-label="Torse, zones de tolérance et points posés"></svg>
+      <div class="legende">
+        <span><i class="pastille" style="background:var(--encre-4)"></i> zone de tolérance</span>
+        <span><i class="pastille" style="background:var(--signal)"></i> électrode haute</span>
+        <span><i class="pastille" style="background:var(--accent,#2B6CB0)"></i> électrode basse</span>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="depot" id="depot">
+      Déposez le fichier <code>simdea-journal-….json</code><br>
+      <span style="font-size:.8125rem">ou cliquez pour le choisir</span>
+      <input type="file" id="fichier" accept="application/json" hidden>
+    </div>
+    <div class="rangee">
+      <button class="bouton bouton--pale" id="essai" type="button">Charger un jeu d'essai fabriqué</button>
+      <button class="bouton bouton--pale" id="vider" type="button">Vider</button>
+    </div>
+    <div id="etiquette"></div>
+    <div class="chiffres" id="chiffres"></div>
+    <div id="tableau"></div>
+  </div>
+</div>
+
+<footer>
+  <div>SimDEA · la contre-épreuve. Le fichier déposé est lu dans le navigateur ;
+  rien n'est envoyé nulle part. 8 septembre 2026.</div>
+</footer>
+</div>
+
+<script>
+(function(){
+  /* Les cibles ne sont PAS écrites ici : elles viennent du relevé lui-même
+     (`cibleDroite`, `cibleGauche`, enregistrées à chaque pose). Si les zones
+     du simulateur changent un jour, une analyse qui les aurait recopiées
+     mesurerait un écart à une cible qui n'existait pas au moment du geste. */
+  var CIBLES_DEFAUT = { droite:{x:104,y:118,r:30}, gauche:{x:205,y:205,r:32} };
+  var poses = [], factice = false;
+  var el = function(i){ return document.getElementById(i); };
+
+  function torse(){
+    /* Une silhouette, pas un dessin anatomique : ce qu'on regarde ici, c'est
+       la dispersion des points, et un torse détaillé attirerait l'œil. */
+    return '<path d="M150 18c-22 0-38 10-46 22-10 15-40 18-52 30-9 9-12 24-10 40'
+      + ' 4 30 10 60 12 96 2 34 4 70 6 104h180c2-34 4-70 6-104 2-36 8-66 12-96'
+      + ' 2-16-1-31-10-40-12-12-42-15-52-30-8-12-24-22-46-22z"'
+      + ' fill="var(--fond)" stroke="var(--trait)" stroke-width="1.5"/>';
+  }
+
+  function dessiner(){
+    var c = poses.length && poses[0].cibleDroite
+      ? { droite: poses[0].cibleDroite, gauche: poses[0].cibleGauche } : CIBLES_DEFAUT;
+    var s = torse();
+    ['droite','gauche'].forEach(function(k){
+      s += '<circle cx="'+c[k].x+'" cy="'+c[k].y+'" r="'+c[k].r+'" fill="none"'
+         + ' stroke="var(--encre-4)" stroke-dasharray="4 4" stroke-width="1.5"/>'
+         + '<circle cx="'+c[k].x+'" cy="'+c[k].y+'" r="2" fill="var(--encre-4)"/>';
+    });
+    poses.forEach(function(p, i){
+      s += pointe(p.droite, 'var(--signal)', i + 1);
+      s += pointe(p.gauche, 'var(--accent,#2B6CB0)', i + 1);
+      s += '<line x1="'+p.droite.x+'" y1="'+p.droite.y+'" x2="'+p.gauche.x+'" y2="'+p.gauche.y
+         + '" stroke="var(--encre-4)" stroke-width="1" opacity=".28"/>';
+    });
+    el('planche').innerHTML = s;
+  }
+
+  function pointe(p, couleur, n){
+    return '<g><circle cx="'+p.x+'" cy="'+p.y+'" r="7" fill="'+couleur+'" opacity=".82"/>'
+      + '<text x="'+p.x+'" y="'+(p.y+3.5)+'" text-anchor="middle" font-size="9"'
+      + ' fill="var(--fond)" font-weight="700">'+n+'</text></g>';
+  }
+
+  function moyenne(a){ return a.reduce(function(x,y){return x+y;},0) / a.length; }
+
+  /* Médiane, et non moyenne : sur cinq valeurs, un participant qui hésite
+     trente secondes déplace une moyenne de six secondes. Le nom affiché et le
+     calcul doivent dire la même chose — un chiffre étiqueté « médian » qui est
+     une moyenne est un mensonge de plus petite taille, pas d'une autre nature. */
+  function mediane(a){
+    var b = a.slice().sort(function(x,y){ return x-y; });
+    var m = Math.floor(b.length/2);
+    return b.length % 2 ? b[m] : (b[m-1]+b[m])/2;
+  }
+
+  /** Écart-type des distances au centre de gravité du nuage : c'est LA
+      grandeur qui répond à la question posée. Une moyenne d'écarts à la cible
+      dirait si les gens visent juste ; la dispersion dit s'ils sont d'accord
+      entre eux, ce qui est une autre chose et la plus intéressante des deux. */
+  function dispersion(pts){
+    if (pts.length < 2) return null;
+    var cx = moyenne(pts.map(function(p){return p.x;}));
+    var cy = moyenne(pts.map(function(p){return p.y;}));
+    var d = pts.map(function(p){ return Math.hypot(p.x-cx, p.y-cy); });
+    return { cx: cx, cy: cy, rayon: Math.round(moyenne(d)) };
+  }
+
+  function rendre(){
+    dessiner();
+    el('etiquette').innerHTML = factice
+      ? '<div class="factice">JEU D\'ESSAI FABRIQUÉ — aucune de ces poses n\'a été '
+        + 'faite par une personne. Il ne sert qu\'à montrer que la page calcule.</div>'
+      : '';
+    if (!poses.length) {
+      el('chiffres').innerHTML = '<div><b>—</b><span>aucun passage</span></div>';
+      el('tableau').innerHTML = '';
+      return;
+    }
+    var dh = dispersion(poses.map(function(p){return p.droite;}));
+    var db = dispersion(poses.map(function(p){return p.gauche;}));
+    var justes = poses.filter(function(p){ return p.ok; }).length;
+    var inv = poses.filter(function(p){ return p.raison === 'inversees'; }).length;
+    el('chiffres').innerHTML =
+        bloc(poses.length, 'passages')
+      + bloc(justes + ' / ' + poses.length, 'les deux dans la zone')
+      + bloc(inv, 'inversées')
+      + bloc(dh ? dh.rayon + ' px' : '—', 'dispersion, haute')
+      + bloc(db ? db.rayon + ' px' : '—', 'dispersion, basse')
+      + bloc(Math.round(mediane(poses.map(function(p){return p.secondes;}))) + ' s', 'temps médian de pose');
+
+    var lignes = poses.map(function(p, i){
+      return '<tr><td>'+(i+1)+'</td><td>'+Math.round(p.dDroite)+' px</td><td>'
+        + Math.round(p.dGauche)+' px</td><td>'+p.raison+'</td><td>'+p.secondes+' s</td></tr>';
+    }).join('');
+    el('tableau').innerHTML = '<table><thead><tr><th>#</th><th>Écart haut</th>'
+      + '<th>Écart bas</th><th>Verdict</th><th>Temps</th></tr></thead><tbody>'
+      + lignes + '</tbody></table>';
+  }
+
+  function bloc(v, l){ return '<div><b>'+v+'</b><span>'+l+'</span></div>'; }
+
+  function charger(texte){
+    var j;
+    try { j = JSON.parse(texte); } catch (e) { alert("Ce fichier n'est pas du JSON."); return; }
+    var p = (j.passages || []).filter(function(x){ return x.contreEpreuve; });
+    var out = [];
+    p.forEach(function(x){
+      (x.actions || []).forEach(function(a){
+        if (a.nom === 'contre_epreuve_pose') out.push(a);
+      });
+    });
+    if (!out.length) {
+      alert("Aucun passage de contre-épreuve dans ce fichier. "
+          + "Les passages d'apprentissage ne comptent pas : la personne y a déjà vu le schéma.");
+      return;
+    }
+    poses = out; factice = false; rendre();
+  }
+
+  var depot = el('depot'), fichier = el('fichier');
+  depot.addEventListener('click', function(){ fichier.click(); });
+  fichier.addEventListener('change', function(e){
+    var f = e.target.files[0]; if (!f) return;
+    var r = new FileReader(); r.onload = function(){ charger(r.result); }; r.readAsText(f);
+  });
+  ['dragenter','dragover'].forEach(function(t){
+    depot.addEventListener(t, function(e){ e.preventDefault(); depot.classList.add('survol'); });
+  });
+  ['dragleave','drop'].forEach(function(t){
+    depot.addEventListener(t, function(e){ e.preventDefault(); depot.classList.remove('survol'); });
+  });
+  depot.addEventListener('drop', function(e){
+    var f = e.dataTransfer.files[0]; if (!f) return;
+    var r = new FileReader(); r.onload = function(){ charger(r.result); }; r.readAsText(f);
+  });
+
+  el('essai').addEventListener('click', function(){
+    /* Cinq poses inventées, et elles le disent. Elles ne servent qu'à vérifier
+       que la page calcule et dessine — jamais à suggérer un résultat. */
+    var brut = [[150,60,150,250],[104,118,205,205],[205,205,104,118],
+                [120,150,190,150],[95,95,215,235]];
+    poses = brut.map(function(v, i){
+      var d = {x:v[0], y:v[1]}, g = {x:v[2], y:v[3]};
+      var c = CIBLES_DEFAUT;
+      var dD = Math.hypot(d.x-c.droite.x, d.y-c.droite.y);
+      var dG = Math.hypot(g.x-c.gauche.x, g.y-c.gauche.y);
+      var ok = dD <= c.droite.r && dG <= c.gauche.r;
+      /* Le jeu d'essai doit produire les MÊMES catégories que le simulateur,
+         inversion comprise : sans cela le compteur « inversées » ne peut
+         jamais s'allumer, et on croit la page cassée le jour où un vrai
+         relevé en contient une. */
+      var inv = Math.hypot(d.x-c.gauche.x, d.y-c.gauche.y) <= c.gauche.r
+             && Math.hypot(g.x-c.droite.x, g.y-c.droite.y) <= c.droite.r;
+      return { droite:d, gauche:g, cibleDroite:c.droite, cibleGauche:c.gauche,
+               dDroite:dD, dGauche:dG, ok: ok,
+               raison: inv ? 'inversees' : ok ? 'ok' : 'lesDeux',
+               secondes: [9, 12, 41, 14, 11][i] };
+    });
+    factice = true; rendre();
+  });
+  el('vider').addEventListener('click', function(){ poses = []; factice = false; rendre(); });
+
+  rendre();
+})();
+</script>
+
+</body>
+</html>
