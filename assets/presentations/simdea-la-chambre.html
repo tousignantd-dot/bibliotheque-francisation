@@ -1,0 +1,646 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="La meme scene jouee deux fois : une piece qui parle, une piece qui se tait, et l'ecart avant la premiere compression.">
+<title>La chambre</title>
+<style>html{color-scheme:light dark}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>La chambre</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+<style>
+/* ═══ Jetons « Braise », recopiés (--mesure-l porte la largeur de lecture) ═══ */
+:root{
+  --fond:#FFFFFF; --fond-2:#FAFAFA; --fond-3:#F4F4F5;
+  --encre:#09090B; --encre-2:#52525B; --encre-3:#71717A; --encre-4:#A1A1AA;
+  --bord:#E4E4E7; --bord-fort:#D4D4D8;
+  --marque-rose:#F0359F; --marque-corail:#F5533D;
+  --marque-degrade:linear-gradient(100deg,var(--marque-rose) 0%,var(--marque-corail) 100%);
+  --signal:#F5652E; --signal-encre:#FFFFFF; --signal-voile:#FEF1EA;
+  --mesure:#2B4E9B; --mesure-2:#5C7EBF; --mesure-voile:#EAEFFA;
+  --action:#18181B; --action-survol:#27272A; --action-encre:#FAFAFA;
+  --police:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --police-mono:ui-monospace,"SF Mono","Menlo","Consolas",monospace;
+  --t-affiche:clamp(2.5rem,7.4vw,4.75rem); --t-titre-1:clamp(1.75rem,4vw,2.75rem);
+  --t-titre-2:clamp(1.375rem,2.6vw,1.75rem); --t-titre-3:1.1875rem;
+  --t-avant:1.1875rem; --t-petit:.875rem; --t-menu:.8125rem;
+  --g-moyen:500; --g-fort:600; --g-noir:800;
+  --i-serre:.98; --i-titre:1.15; --i-corps:1.62;
+  --l-serre:-.035em; --l-titre:-.02em;
+  --e-1:.25rem; --e-2:.5rem; --e-3:.75rem; --e-4:1rem; --e-5:1.5rem;
+  --e-6:2rem; --e-7:3rem; --e-8:4rem; --e-9:6rem;
+  --mesure-l:42rem; --contenu:74rem;
+  --r-1:.375rem; --r-2:.5rem; --r-3:.75rem; --r-4:1rem; --r-plein:9999px;
+  --o-1:0 1px 2px rgba(9,9,11,.06);
+  --o-2:0 1px 3px rgba(9,9,11,.08),0 1px 2px rgba(9,9,11,.04);
+  --o-3:0 4px 12px rgba(9,9,11,.08);
+  --transition:140ms cubic-bezier(.4,0,.2,1);
+}
+:root[data-theme="sombre"]{
+  --fond:#09090B; --fond-2:#0F0F11; --fond-3:#18181B;
+  --encre:#FAFAFA; --encre-2:#D4D4D8; --encre-3:#A1A1AA; --encre-4:#52525B;
+  --bord:#27272A; --bord-fort:#3F3F46;
+  --marque-rose:#FF4FB0; --marque-corail:#FF6A50;
+  --signal:#FF7A45; --signal-encre:#1A0C05; --signal-voile:#2A1610;
+  --mesure:#8FB2F0; --mesure-2:#6E8FCB; --mesure-voile:#18213A;
+  --action:#FAFAFA; --action-survol:#E4E4E7; --action-encre:#18181B;
+  --o-1:0 1px 2px rgba(0,0,0,.5); --o-2:0 1px 3px rgba(0,0,0,.6);
+  --o-3:0 4px 14px rgba(0,0,0,.6);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="clair"]){
+    --fond:#09090B; --fond-2:#0F0F11; --fond-3:#18181B;
+    --encre:#FAFAFA; --encre-2:#D4D4D8; --encre-3:#A1A1AA; --encre-4:#52525B;
+    --bord:#27272A; --bord-fort:#3F3F46;
+    --marque-rose:#FF4FB0; --marque-corail:#FF6A50;
+    --signal:#FF7A45; --signal-encre:#1A0C05; --signal-voile:#2A1610;
+    --mesure:#8FB2F0; --mesure-2:#6E8FCB; --mesure-voile:#18213A;
+    --action:#FAFAFA; --action-survol:#E4E4E7; --action-encre:#18181B;
+    --o-1:0 1px 2px rgba(0,0,0,.5); --o-2:0 1px 3px rgba(0,0,0,.6);
+    --o-3:0 4px 14px rgba(0,0,0,.6);
+  }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--fond);color:var(--encre-2);font-family:var(--police);
+     font-size:1rem;line-height:var(--i-corps);-webkit-font-smoothing:antialiased}
+.enveloppe{max-width:var(--contenu);margin:0 auto;padding:0 var(--e-5)}
+h1,h2,h3,h4{color:var(--encre);letter-spacing:var(--l-titre);line-height:var(--i-titre);
+            font-weight:var(--g-fort);margin:0;text-wrap:balance}
+p{margin:0 0 var(--e-4)}
+b,strong{color:var(--encre);font-weight:var(--g-fort)}
+code{font-family:var(--police-mono);font-size:.9em;background:var(--fond-3);
+     padding:.1em .35em;border-radius:var(--r-1);color:var(--encre)}
+.lire{max-width:var(--mesure-l)}
+
+.barre{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--fond) 88%,transparent);
+       backdrop-filter:blur(12px);border-bottom:1px solid var(--bord)}
+.barre__int{max-width:var(--contenu);margin:0 auto;padding:var(--e-3) var(--e-5);
+            display:flex;align-items:center;gap:var(--e-3);flex-wrap:wrap}
+.marque{font-weight:var(--g-noir);letter-spacing:var(--l-serre);color:var(--encre);font-size:1.0625rem}
+.marque i{font-style:normal;background:var(--marque-degrade);
+          -webkit-background-clip:text;background-clip:text;color:transparent}
+.barre__vide{flex:1}
+.bt{border:1px solid var(--bord-fort);background:var(--fond);color:var(--encre-2);font:inherit;
+    font-size:var(--t-menu);font-weight:var(--g-moyen);padding:var(--e-1) var(--e-3);
+    border-radius:var(--r-plein);cursor:pointer;transition:var(--transition)}
+.bt:hover{border-color:var(--encre-4);color:var(--encre)}
+.bt[aria-pressed="true"]{background:var(--mesure);border-color:var(--mesure);color:#fff}
+:root[data-theme="sombre"] .bt[aria-pressed="true"]{color:#09090B}
+
+.heros{padding:var(--e-8) 0 var(--e-6)}
+.pastille{display:inline-flex;align-items:center;gap:var(--e-2);font-size:var(--t-petit);
+          font-weight:var(--g-moyen);color:var(--signal);background:var(--signal-voile);
+          border-radius:var(--r-plein);padding:var(--e-1) var(--e-3);margin-bottom:var(--e-5)}
+.pastille::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--signal)}
+.heros h1{font-size:var(--t-affiche);font-weight:var(--g-noir);letter-spacing:var(--l-serre);
+          line-height:var(--i-serre);max-width:16ch}
+.heros h1 i{font-style:normal;background:var(--marque-degrade);
+            -webkit-background-clip:text;background-clip:text;color:transparent}
+.heros .avant{font-size:var(--t-avant);color:var(--encre-3);max-width:var(--mesure-l);
+              margin-top:var(--e-5);text-wrap:pretty}
+
+section{padding:var(--e-7) 0;border-top:1px solid var(--bord);scroll-margin-top:4.5rem}
+.oeil{font-size:var(--t-menu);text-transform:uppercase;letter-spacing:.14em;
+      color:var(--encre-4);font-weight:var(--g-fort);margin-bottom:var(--e-3)}
+section>.enveloppe>h2{font-size:var(--t-titre-1);margin-bottom:var(--e-5)}
+
+/* ══ LA SCÈNE ═════════════════════════════════════════════════════════════ */
+.plateau{background:#09090B;border:1px solid #27272A;border-radius:var(--r-4);
+         color:#A1A1AA;overflow:hidden;max-width:64rem;margin:0 auto}
+.plateau__tete{display:flex;align-items:center;gap:var(--e-4);padding:var(--e-4) var(--e-5);
+               border-bottom:1px solid #18181B;flex-wrap:wrap}
+.cond{font-size:var(--t-menu);letter-spacing:.12em;text-transform:uppercase;
+      color:#52525B;font-weight:var(--g-fort)}
+.chrono{margin-left:auto;font-family:var(--police-mono);font-size:1.375rem;color:#FAFAFA;
+        font-variant-numeric:tabular-nums}
+.plateau__corps{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#18181B;
+                min-height:22rem}
+.piece,.mains{background:#09090B;padding:var(--e-5)}
+.decor{color:#D4D4D8;font-size:1.0625rem;margin:0 0 var(--e-4)}
+.decor b{color:#FAFAFA}
+.piece h4,.mains h4{font-size:var(--t-menu);text-transform:uppercase;letter-spacing:.1em;
+                    color:#52525B;margin-bottom:var(--e-3)}
+.voix{display:flex;flex-direction:column;gap:var(--e-2);max-height:16rem;overflow-y:auto}
+.dit{border-left:2px solid #27272A;padding:0 0 0 var(--e-3);animation:venir 340ms ease-out both}
+.dit__qui{font-size:.75rem;color:#52525B}
+.dit__quoi{color:#D4D4D8}
+.dit--fort{border-left-color:var(--signal)}
+.dit--fort .dit__quoi{color:#FAFAFA;font-weight:var(--g-moyen)}
+.dit--rien{border-left-color:#3F3F46}
+.dit--rien .dit__quoi{color:#71717A;font-style:italic}
+@keyframes venir{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.silence{color:#3F3F46;font-style:italic}
+
+.gestes{display:flex;flex-direction:column;gap:var(--e-2)}
+.geste{text-align:left;background:#18181B;border:1px solid #27272A;color:#FAFAFA;
+       font:inherit;font-size:.9375rem;padding:var(--e-3) var(--e-4);border-radius:var(--r-2);
+       cursor:pointer;transition:var(--transition)}
+.geste:hover:not([disabled]){background:#27272A;border-color:#3F3F46}
+.geste[disabled]{opacity:.35;cursor:default}
+.geste--fort{background:#FAFAFA;color:#09090B;border-color:#FAFAFA;font-weight:var(--g-fort)}
+.geste--fort:hover:not([disabled]){background:#E4E4E7}
+.occupe{margin-top:var(--e-4);color:#71717A;font-size:.9375rem}
+.occupe__b{height:3px;background:#18181B;border-radius:2px;overflow:hidden;margin-top:var(--e-2)}
+.occupe__b i{display:block;height:100%;width:0;background:var(--signal);transition:width 100ms linear}
+
+.plateau__pied{padding:var(--e-4) var(--e-5);border-top:1px solid #18181B;
+               color:#71717A;font-size:.875rem}
+
+/* ══ Le relevé ════════════════════════════════════════════════════════════ */
+.releve{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:var(--e-5)}
+.colonne{border:1px solid var(--bord);border-radius:var(--r-3);padding:var(--e-5);background:var(--fond)}
+.colonne h3{font-size:var(--t-titre-3);margin-bottom:var(--e-1)}
+.colonne__sous{font-size:var(--t-menu);color:var(--encre-4);margin-bottom:var(--e-4)}
+.ligne{display:grid;grid-template-columns:4.5rem 1fr;gap:var(--e-3);
+       padding:var(--e-2) 0;border-bottom:1px solid var(--bord);font-size:.9375rem}
+.ligne:last-child{border-bottom:0}
+.ligne__t{font-family:var(--police-mono);color:var(--encre-4);font-variant-numeric:tabular-nums}
+.ligne--faute .ligne__q{color:var(--signal)}
+.ligne--cle .ligne__q{color:var(--encre);font-weight:var(--g-fort)}
+
+.ecart{border:1px solid var(--bord);border-left:3px solid var(--mesure);border-radius:var(--r-3);
+       padding:var(--e-6);background:var(--mesure-voile);margin-top:var(--e-6)}
+.ecart__n{font-family:var(--police-mono);font-size:clamp(2.5rem,7vw,4rem);color:var(--mesure);
+          line-height:1;font-variant-numeric:tabular-nums}
+.ecart__q{font-size:var(--t-menu);text-transform:uppercase;letter-spacing:.1em;
+          color:var(--mesure);margin-top:var(--e-2);font-weight:var(--g-fort)}
+.ecart p{margin-top:var(--e-4);margin-bottom:0;color:var(--encre-2)}
+
+.capot{display:none;margin-top:var(--e-6);border-top:1px dashed var(--bord-fort);padding-top:var(--e-5)}
+body.conception .capot{display:block}
+.capot h4{color:var(--mesure);font-size:var(--t-menu);text-transform:uppercase;
+          letter-spacing:.1em;margin-bottom:var(--e-3)}
+.preuve{background:var(--fond-3);border-radius:var(--r-2);padding:var(--e-4) var(--e-5);
+        font-size:.9375rem}
+.preuve p:last-child{margin-bottom:0}
+.enrob{overflow-x:auto}
+.tab{width:100%;border-collapse:collapse;font-size:.9375rem;margin-top:var(--e-4)}
+.tab th,.tab td{text-align:left;padding:var(--e-2) var(--e-3);border-bottom:1px solid var(--bord);
+                vertical-align:top}
+.tab th{font-size:var(--t-menu);text-transform:uppercase;letter-spacing:.1em;
+        color:var(--encre-4);font-weight:var(--g-fort)}
+.tab td:first-child{font-family:var(--police-mono);color:var(--encre-4);white-space:nowrap}
+
+.garde{background:var(--fond-3);border-radius:var(--r-3);padding:var(--e-5) var(--e-6)}
+.garde ul{margin:0;padding-left:1.1em}
+.garde li{margin-bottom:var(--e-2)}
+.garde li:last-child{margin-bottom:0}
+.gros{display:inline-block;padding:var(--e-3) var(--e-6);border-radius:var(--r-2);
+      background:var(--action);color:var(--action-encre);border:0;font:inherit;
+      font-weight:var(--g-fort);font-size:1rem;cursor:pointer;text-decoration:none}
+.masque{display:none}
+footer{padding:var(--e-8) 0 var(--e-9);color:var(--encre-4);font-size:var(--t-petit)}
+
+@media (max-width:760px){ .plateau__corps{grid-template-columns:1fr} }
+@media (prefers-reduced-motion:reduce){ .dit{animation:none} }
+@media print{
+  :root{--fond:#FFF;--fond-2:#FFF;--fond-3:#F4F4F5;--encre:#09090B;--encre-2:#3F3F46;
+        --encre-3:#52525B;--encre-4:#71717A;--bord:#D4D4D8;--bord-fort:#A1A1AA;
+        --o-1:none;--o-2:none;--o-3:none}
+  @page{margin:14mm 12mm}
+  .barre,.plateau{display:none}
+  .capot{display:block}
+  body{font-size:10.5pt}
+  .colonne,.ecart,.tab tr{break-inside:avoid}
+  .enveloppe{padding:0}
+}
+</style>
+
+<div class="barre"><div class="barre__int">
+  <span class="marque">La <i>chambre</i></span>
+  <span class="barre__vide"></span>
+  <button class="bt" id="bVue" type="button" aria-pressed="false">Vue conception</button>
+  <button class="bt" id="bTheme" type="button">Thème</button>
+</div></div>
+
+<div class="heros"><div class="enveloppe">
+  <span class="pastille">Simulateur de défibrillateur · proposition 01 · 8 septembre 2026</span>
+  <h1>Le vrai obstacle, <i>c'est la pièce.</i></h1>
+  <p class="avant">Un simulateur de défibrillateur suppose un témoin seul et décidé. Ce n'est
+  presque jamais le cas. Ce qui empêche quelqu'un de commencer, ce n'est pas d'ignorer le
+  geste — c'est quatre personnes autour qui ne bougent pas, quelqu'un qui filme, et une voix
+  raisonnable qui dit <i>« attends, je pense qu'il respire »</i>.</p>
+  <p class="avant" style="font-size:1rem">Vous allez jouer <b>deux fois la même scène</b>.
+  Mêmes gestes possibles, mêmes durées, même minutage. <b>Une seule chose change</b> — et on
+  ne vous dira laquelle qu'après le premier passage.</p>
+</div></div>
+
+<section id="jeu"><div class="enveloppe">
+  <div id="avant-jeu">
+    <div class="oeil">Passage <span id="numPassage">1</span> sur 2</div>
+    <h2 id="titreJeu">Une personne vient de s'effondrer</h2>
+    <p class="lire">Vous êtes dans une salle d'attente. Il est 14 h 10. Le chronomètre part
+    au premier clic sur <b>Commencer</b>, et s'arrête à votre première compression.</p>
+    <p><button class="gros" id="bDemarrer" type="button">Commencer</button></p>
+  </div>
+
+  <div class="plateau masque" id="plateau">
+    <div class="plateau__tete">
+      <span class="cond" id="etiqCond">Passage 1</span>
+      <span class="chrono" id="chrono">0,0 s</span>
+    </div>
+    <div class="plateau__corps">
+      <div class="piece">
+        <p class="decor">Un homme d'une soixantaine d'années s'est effondré près des
+        chaises. <b>Il ne bouge pas.</b> Sa poitrine se soulève par à-coups, avec un bruit
+        rauque, toutes les huit ou dix secondes.</p>
+        <!-- Cette phrase est la même dans les deux conditions, et elle est indispensable :
+             sans elle, le passage « silence » se lirait « vous êtes seul », et on
+             comparerait deux scènes au lieu d'une seule variable. -->
+        <p class="decor" style="font-size:1rem;color:#71717A">Vous n'êtes pas seul.
+        <b style="color:#A1A1AA">Huit personnes</b> sont dans la salle. Trois se sont
+        levées. Toutes vous regardent.</p>
+        <h4>La pièce</h4>
+        <div class="voix" id="voix"><p class="silence" id="silence">Personne ne dit rien.</p></div>
+      </div>
+      <div class="mains">
+        <h4>Ce que vous pouvez faire</h4>
+        <div class="gestes" id="gestes"></div>
+        <div class="occupe masque" id="occupe">
+          <span id="occupeTexte"></span>
+          <div class="occupe__b"><i id="occupeBarre"></i></div>
+        </div>
+      </div>
+    </div>
+    <div class="plateau__pied" id="pied">Rien n'est corrigé pendant la scène.</div>
+  </div>
+
+  <div class="masque" id="entre-deux">
+    <div class="oeil">Fin du passage 1</div>
+    <h2 id="entreTitre"></h2>
+    <div class="lire" id="entreTexte"></div>
+    <p><button class="gros" id="bSecond" type="button">Jouer le second passage</button></p>
+  </div>
+</div></section>
+
+<section class="masque" id="bilan"><div class="enveloppe">
+  <div class="oeil">Le relevé</div>
+  <h2>Les deux passages, côte à côte</h2>
+  <p class="lire">Chaque geste est horodaté au dixième de seconde. Rien n'a été corrigé
+  pendant la scène : ce qui suit est une trace, pas une note.</p>
+  <div class="releve" id="releve"></div>
+
+  <div class="ecart" id="blocEcart">
+    <div class="ecart__n" id="ecartN">—</div>
+    <div class="ecart__q">écart avant la première compression</div>
+    <p id="ecartTexte"></p>
+  </div>
+
+  <div class="capot">
+    <h4>Vue conception — ce que la scène manipule</h4>
+    <p class="lire"><b>Une seule variable change entre les deux passages :</b> les voix de
+    la pièce. Les gestes disponibles, leurs durées, l'ordre dans lequel ils se débloquent,
+    le fait que personne ne réponde à un ordre vague — tout cela est identique. Sans cette
+    règle, l'écart mesuré ne voudrait rien dire : on aurait comparé deux scènes différentes
+    et attribué la différence à la pression.</p>
+    <div class="enrob"><table class="tab">
+      <thead><tr><th>Temps</th><th>Ce que dit la pièce</th><th>Ce que ça fait</th></tr></thead>
+      <tbody id="tabVoix"></tbody>
+    </table></div>
+    <div class="preuve" style="margin-top:var(--e-5)">
+      <p><b>La onzième seconde est le cœur du dispositif.</b> Vérifier la respiration prend
+      dix secondes. La phrase <i>« Attends — je pense qu'il respire »</i> arrive à la
+      onzième : juste après que vous ayez constaté vous-même une respiration agonale. La
+      scène met donc en collision <b>ce que vous avez vu</b> et <b>ce qu'on vous dit</b>, et
+      elle enregistre lequel des deux l'emporte.</p>
+      <p><b>Ce qui est mesuré :</b> le délai avant la première compression, le délai avant
+      chaque geste, les ordres vagues, et — la mesure qui n'existe nulle part ailleurs — le
+      fait de <b>revérifier la respiration après la phrase</b>. Ce dernier geste est le seul
+      signe direct qu'une parole a écrasé une observation.</p>
+      <p style="margin-bottom:0"><b>Ce qui n'est pas mesuré</b>, et ne peut pas l'être : le
+      fait d'oser. Un clic n'est pas un geste posé devant huit personnes qui regardent, et
+      aucun écran ne franchira cet écart-là.</p>
+    </div>
+  </div>
+
+  <div style="margin-top:var(--e-6)">
+    <button class="gros" id="bRejouer" type="button">Recommencer les deux passages</button>
+  </div>
+</div></section>
+
+<section class="masque" id="apresBilan"><div class="enveloppe">
+  <div class="oeil">Avant de croire le chiffre</div>
+  <h2>Ce que deux passages ne prouvent pas</h2>
+  <div class="lire">
+    <p>Vous venez de produire <b>deux mesures sur une personne</b>. Cela ne dit rien des
+    gens en général : vous connaissiez la scène au second passage, vous saviez ce qu'on
+    attendait, et l'ordre des conditions suffit à expliquer une partie de l'écart. Un
+    dispositif honnête doit le dire avant que son auteur ait à l'admettre.</p>
+    <p>Ce que ces deux passages montrent, en revanche, c'est <b>ce que le dispositif est
+    capable de mesurer</b> — un délai, un ordre vague, une observation écrasée par une
+    parole — et c'est la seule chose qu'on puisse démontrer sans cohorte. La mesure devient
+    un résultat le jour où <b>trente personnes</b> jouent, la moitié dans un ordre et la
+    moitié dans l'autre.</p>
+    <p style="margin-bottom:0">L'écart affiché plus haut est donc une <b>illustration de
+    l'instrument</b>, pas un résultat. La différence entre les deux tient en une phrase :
+    un résultat survit au fait que son auteur souhaitait le contraire.</p>
+  </div>
+  <div class="garde lire" style="margin-top:var(--e-6)">
+    <ul>
+      <li><b>Aucun pourcentage de survie</b> n'est affiché : il serait faux, et sa précision
+      ferait croire à une science absente.</li>
+      <li><b>Aucun score, aucun classement.</b> Le relevé est une trace horodatée.</li>
+      <li><b>Ceci ne remplace pas une formation</b> et ne prépare qu'à en suivre une.</li>
+      <li><b>Les personnages ne sont pas des méchants.</b> Aucune réplique ne dépasse sept
+      mots, aucune n'est agressive : les gens qui n'aident pas, dans la vraie vie, sont
+      polis et raisonnables. C'est ce qui les rend efficaces.</li>
+    </ul>
+  </div>
+</div></section>
+
+<footer><div class="enveloppe">
+  Portfolio de conception pédagogique · Simulateur de défibrillateur, proposition 01 ·
+  8 septembre 2026. La scène est jouable ; l'écart mesuré illustre l'instrument et n'est
+  pas un résultat.
+</div></footer>
+
+<script>
+(function(){
+/* ═══════════════════════════════════════════════════════════════════════════
+   Une seule variable change entre les deux passages : la présence des voix.
+   Tout le reste — gestes, durées, déblocages, refus d'un ordre vague — est
+   commun aux deux conditions et vit dans les deux tables ci-dessous.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+var VOIX = [
+  { t:  2000, qui: "une femme, debout",        quoi: "Oh mon dieu." },
+  { t:  4500, qui: "quelqu'un derrière vous",  quoi: "Qu'est-ce qui se passe ?" },
+  { t:  7000, qui: "un homme en veste bleue",  quoi: "Reculez, laissez-lui de l'air." },
+  { t: 11000, qui: "la femme, accroupie",      quoi: "Attends — je pense qu'il respire.",
+    fort: true, effet: "doute" },
+  { t: 14500, qui: "l'homme en veste bleue",   quoi: "On a le droit d'y toucher ?" },
+  { t: 18000, qui: "quelqu'un, au comptoir",   quoi: "Y'a quelqu'un qui appelle ?" },
+  { t: 23000, qui: "une voix, plus loin",      quoi: "Le gérant s'en vient." },
+  { t: 28000, qui: "la femme accroupie",       quoi: "Il a peut-être juste fait un malaise." },
+  { t: 34000, qui: "un jeune homme, téléphone en main", quoi: "Je filme, ça peut servir." },
+  { t: 41000, qui: "l'homme en veste bleue",   quoi: "Vous êtes formé, vous ?" },
+  { t: 50000, qui: "quelqu'un, au comptoir",   quoi: "On attend pas l'ambulance ?" }
+];
+
+var GESTES = [
+  { id:'respirer', court:"Vous vérifiez la respiration", texte:"Vérifier s'il respire", duree:10000, rejouable:true,
+    suite:"Sa poitrine se soulève à peine, par à-coups, avec un bruit rauque. "
+        + "<b>Ce n'est pas une respiration normale.</b>" },
+  { id:'pouls', court:"Vous cherchez le pouls", texte:"Chercher le pouls", duree:15000, faute:true,
+    suite:"Vous cherchez au cou, puis au poignet. <b>Vous n'êtes pas sûr.</b> "
+        + "Quinze secondes sont passées." },
+  { id:'lateral', court:"Vous le tournez sur le côté", texte:"Le mettre sur le côté", duree:7000, faute:true,
+    suite:"Vous le tournez. <b>Il ne respire toujours pas normalement</b>, et vous n'avez "
+        + "plus accès à sa poitrine." },
+  { id:'infirmier', court:"Vous demandez à la salle", texte:"Demander si quelqu'un est infirmier", duree:5000, faute:true,
+    suite:"Personne ne répond. <b>Cinq secondes.</b>" },
+  { id:'appelVague', court:"Vous lancez la consigne", texte:"« Que quelqu'un appelle le 911 ! »", duree:2500, faute:true,
+    suite:"<b>Personne ne bouge.</b> Trois personnes se regardent. Un ordre adressé à tout "
+        + "le monde n'est adressé à personne." },
+  { id:'appel', court:"Vous désignez quelqu'un", texte:"« Vous, en veste bleue : appelez le 911. »", duree:2500, ordre:'appel',
+    suite:"Il sort son téléphone. <b>Il appelle.</b>" },
+  { id:'deaVague', court:"Vous posez la question", texte:"« Il y a un défibrillateur quelque part ? »", duree:2500, faute:true,
+    suite:"Deux personnes regardent autour d'elles. <b>Personne ne part.</b>" },
+  { id:'dea', court:"Vous désignez quelqu'un", texte:"« Vous, au comptoir : allez chercher le défibrillateur. »",
+    duree:2500, ordre:'envoi',
+    suite:"Elle se lève et part en courant. <b>Elle revient dans quatre-vingt-dix secondes.</b>" },
+  { id:'comprimer', texte:"Commencer les compressions", fin:true, fort:true }
+];
+
+var TABLE_EFFETS = {
+  doute: "Arrive juste après la vérification. Met en collision ce que vous avez vu et ce "
+       + "qu'on vous dit."
+};
+
+/* ── État ────────────────────────────────────────────────────────────────── */
+var el = function(i){ return document.getElementById(i); };
+var passages = [], ordreConditions, passage, depart, boucle, minuteurs = [];
+var journal, occupeJusqua, aRevu, aDejaVerifie;
+
+function melanger(){
+  /* L'ordre des conditions est tiré au sort. Toujours commencer par le
+     silence transformerait l'écart en simple effet d'apprentissage. */
+  return Math.random() < 0.5 ? ['silence', 'chambre'] : ['chambre', 'silence'];
+}
+
+function demarrer(n){
+  passage = n;
+  journal = [];
+  aRevu = false; aDejaVerifie = false; occupeJusqua = 0;
+  el('avant-jeu').classList.add('masque');
+  el('entre-deux').classList.add('masque');
+  el('plateau').classList.remove('masque');
+  el('etiqCond').textContent = 'Passage ' + (n + 1) + ' sur 2';
+  el('voix').innerHTML = '<p class="silence" id="silence">Personne ne dit rien.</p>';
+  el('occupe').classList.add('masque');
+  el('pied').innerHTML = "Rien n'est corrigé pendant la scène.";
+  dessinerGestes();
+  depart = performance.now();
+  minuteurs.forEach(clearTimeout); minuteurs = [];
+  if (ordreConditions[n] === 'chambre') {
+    VOIX.forEach(function(v){
+      minuteurs.push(setTimeout(function(){ dire(v); }, v.t));
+    });
+  }
+  boucle = requestAnimationFrame(tic);
+}
+
+function tic(t){
+  var ecoule = t - depart;
+  el('chrono').textContent = (ecoule / 1000).toFixed(1).replace('.', ',') + ' s';
+  if (occupeJusqua && t < occupeJusqua) {
+    var g = occupeJusqua - occupeDebut;
+    el('occupeBarre').style.width = Math.min(100, 100 * (t - occupeDebut) / g) + '%';
+  }
+  boucle = requestAnimationFrame(tic);
+}
+
+function dire(v){
+  var s = el('silence'); if (s) s.remove();
+  var d = document.createElement('div');
+  d.className = 'dit' + (v.fort ? ' dit--fort' : '') + (v.rien ? ' dit--rien' : '');
+  d.innerHTML = '<div class="dit__qui">' + v.qui + '</div>'
+              + '<div class="dit__quoi">' + (v.rien ? v.quoi : '« ' + v.quoi + ' »') + '</div>';
+  el('voix').appendChild(d);
+  el('voix').scrollTop = el('voix').scrollHeight;
+  if (v.effet === 'doute') journal.push({ t: maintenant(), q: 'la pièce doute de la respiration', voix: true });
+}
+
+function maintenant(){ return performance.now() - depart; }
+
+var occupeDebut = 0;
+
+function dessinerGestes(){
+  var z = el('gestes'); z.innerHTML = '';
+  GESTES.forEach(function(g){
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'geste' + (g.fort ? ' geste--fort' : '');
+    b.textContent = g.texte;
+    b.dataset.id = g.id;
+    b.addEventListener('click', function(){ faire(g, b); });
+    z.appendChild(b);
+  });
+}
+
+function bloquer(vrai){
+  Array.prototype.forEach.call(el('gestes').children, function(b){ b.disabled = vrai; });
+}
+
+function faire(g, bouton){
+  if (performance.now() < occupeJusqua) return;
+  var t = maintenant();
+
+  if (g.fin) { journal.push({ t: t, q: 'première compression', cle: true }); terminer(); return; }
+
+  if (g.id === 'respirer') {
+    if (aDejaVerifie) { aRevu = true;
+      journal.push({ t: t, q: 'revérifie la respiration', faute: true, cle: true }); }
+    else journal.push({ t: t, q: g.texte });
+    aDejaVerifie = true;
+  } else {
+    journal.push({ t: t, q: g.texte, faute: !!g.faute });
+  }
+
+  /* Le geste occupe les mains : rien d'autre n'est possible pendant sa durée.
+     C'est ce qui rend un mauvais geste coûteux sans qu'on ait à le dire. */
+  occupeDebut = performance.now();
+  occupeJusqua = occupeDebut + g.duree;
+  bloquer(true);
+  el('occupe').classList.remove('masque');
+  el('occupeTexte').textContent = (g.court || g.texte) + '…';
+  el('occupeBarre').style.width = '0%';
+  if (bouton && !g.rejouable) bouton.disabled = true;
+
+  setTimeout(function(){
+    occupeJusqua = 0;
+    bloquer(false);
+    if (bouton && !g.rejouable) bouton.disabled = true;
+    el('occupe').classList.add('masque');
+    if (g.suite) el('pied').innerHTML = g.suite;
+  }, g.duree);
+}
+
+function terminer(){
+  cancelAnimationFrame(boucle);
+  minuteurs.forEach(clearTimeout); minuteurs = [];
+  passages[passage] = { condition: ordreConditions[passage], journal: journal, revu: aRevu };
+  el('plateau').classList.add('masque');
+
+  if (passage === 0) {
+    var c = ordreConditions[0];
+    el('entre-deux').classList.remove('masque');
+    el('entreTitre').textContent = c === 'chambre'
+      ? 'Vous étiez dans une pièce pleine de monde.'
+      : 'Vous étiez dans une pièce où personne ne parlait.';
+    el('entreTexte').innerHTML = c === 'chambre'
+      ? "<p>Huit personnes autour de vous, dont quatre qui ont parlé. Aucune n'était "
+      + "hostile, aucune n'a menti sciemment : elles disaient ce que disent les gens.</p>"
+      + "<p><b>Le second passage est exactement la même scène</b> — mêmes gestes, mêmes "
+      + "durées, même minutage — mais la pièce se taira.</p>"
+      : "<p>Les mêmes huit personnes étaient là. Elles regardaient. Aucune n'a parlé.</p>"
+      + "<p><b>Le second passage est exactement la même scène</b> — mêmes gestes, mêmes "
+      + "durées, même minutage — sauf qu'elles vont parler.</p>";
+    el('numPassage').textContent = '2';
+    return;
+  }
+  rendreBilan();
+}
+
+/* ── Le relevé ───────────────────────────────────────────────────────────── */
+function tempsCompression(p){
+  var l = p.journal.filter(function(x){ return x.q === 'première compression'; })[0];
+  return l ? l.t : null;
+}
+
+function rendreBilan(){
+  el('bilan').classList.remove('masque');
+  el('apresBilan').classList.remove('masque');
+  var z = el('releve'); z.innerHTML = '';
+
+  passages.forEach(function(p, i){
+    var c = document.createElement('div');
+    c.className = 'colonne';
+    var titre = p.condition === 'chambre' ? 'La chambre' : 'Le silence';
+    var sous = p.condition === 'chambre'
+      ? 'Passage ' + (i + 1) + ' · huit personnes, quatre qui parlent'
+      : 'Passage ' + (i + 1) + ' · huit personnes, aucune ne parle';
+    var lignes = p.journal.map(function(x){
+      return '<div class="ligne' + (x.faute ? ' ligne--faute' : '')
+           + (x.cle ? ' ligne--cle' : '') + '">'
+           + '<span class="ligne__t">' + (x.t / 1000).toFixed(1).replace('.', ',') + ' s</span>'
+           + '<span class="ligne__q">' + x.q + '</span></div>';
+    }).join('');
+    c.innerHTML = '<h3>' + titre + '</h3><p class="colonne__sous">' + sous + '</p>' + lignes;
+    z.appendChild(c);
+  });
+
+  var pc = passages.filter(function(p){ return p.condition === 'chambre'; })[0];
+  var ps = passages.filter(function(p){ return p.condition === 'silence'; })[0];
+  var tc = tempsCompression(pc), ts = tempsCompression(ps);
+  var d = (tc - ts) / 1000;
+
+  el('ecartN').textContent = (d >= 0 ? '+' : '−')
+    + Math.abs(d).toFixed(1).replace('.', ',') + ' s';
+
+  var phrase;
+  if (d > 3) {
+    phrase = "Sous la pression de la pièce, il vous a fallu <b>"
+      + Math.abs(d).toFixed(1).replace('.', ',') + " secondes de plus</b> pour commencer à "
+      + "comprimer. C'est le sens de la proposition : ce n'est pas le geste qui manquait.";
+  } else if (d < -3) {
+    phrase = "Vous avez commencé <b>plus vite</b> dans la pièce bruyante. Cela arrive, et "
+      + "l'explication la plus probable n'est pas le courage : c'est l'ordre des passages, "
+      + "puisque la seconde fois vous connaissiez la scène.";
+  } else {
+    phrase = "L'écart est <b>inférieur à trois secondes</b> : à cette échelle, il ne se "
+      + "distingue pas du bruit. Un dispositif qui annoncerait un effet ici mentirait.";
+  }
+  if (pc && pc.revu) {
+    phrase += " Et vous avez <b>revérifié la respiration</b> après la phrase de la pièce, "
+      + "alors que vous veniez de constater vous-même le contraire — c'est la mesure la "
+      + "plus parlante du dispositif.";
+  }
+  el('ecartTexte').innerHTML = phrase;
+
+  var tb = el('tabVoix'); tb.innerHTML = '';
+  VOIX.forEach(function(v){
+    var tr = document.createElement('tr');
+    tr.innerHTML = '<td>' + (v.t / 1000).toFixed(1).replace('.', ',') + ' s</td>'
+      + '<td>« ' + v.quoi + ' »</td>'
+      + '<td>' + (v.effet ? TABLE_EFFETS[v.effet]
+      : "Occupe l'attention. Aucun effet sur les gestes disponibles.") + '</td>';
+    tb.appendChild(tr);
+  });
+  el('bilan').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+/* ── Boutons ─────────────────────────────────────────────────────────────── */
+el('bDemarrer').addEventListener('click', function(){
+  ordreConditions = melanger(); passages = []; demarrer(0);
+});
+el('bSecond').addEventListener('click', function(){ demarrer(1); });
+el('bRejouer').addEventListener('click', function(){
+  el('bilan').classList.add('masque');
+  el('apresBilan').classList.add('masque');
+  el('avant-jeu').classList.remove('masque');
+  el('numPassage').textContent = '1';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+var r = document.documentElement;
+el('bTheme').addEventListener('click', function(){
+  var sombre = r.getAttribute('data-theme') === 'sombre';
+  if (!r.hasAttribute('data-theme')) sombre = matchMedia('(prefers-color-scheme: dark)').matches;
+  r.setAttribute('data-theme', sombre ? 'clair' : 'sombre');
+});
+var bv = el('bVue');
+bv.addEventListener('click', function(){
+  var o = document.body.classList.toggle('conception');
+  bv.setAttribute('aria-pressed', o ? 'true' : 'false');
+  bv.textContent = o ? 'Refermer le capot' : 'Vue conception';
+});
+})();
+</script>
+
+</body>
+</html>
