@@ -1,0 +1,717 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Six deplacements possibles pour le simulateur de defibrillateur, classes, avec un demonstrateur jouable.">
+<title>Ce qui manque encore</title>
+<style>html{color-scheme:light dark}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>Ce qui manque encore</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+<style>
+/* ═══ Jetons « Braise », recopiés ══════════════════════════════════════════
+   Jamais importés : un @import en file:// échoue sans rien dire. Deux
+   corrections par rapport à la source : --mesure-l porte la largeur de
+   lecture, parce que --mesure portait à la fois une couleur et une longueur
+   dans le même :root, et que la seconde déclaration écrasait la première.  */
+:root{
+  --fond:#FFFFFF; --fond-2:#FAFAFA; --fond-3:#F4F4F5;
+  --encre:#09090B; --encre-2:#52525B; --encre-3:#71717A; --encre-4:#A1A1AA;
+  --bord:#E4E4E7; --bord-fort:#D4D4D8;
+  --marque-rose:#F0359F; --marque-corail:#F5533D;
+  --marque-degrade:linear-gradient(100deg,var(--marque-rose) 0%,var(--marque-corail) 100%);
+  --signal:#F5652E; --signal-encre:#FFFFFF; --signal-voile:#FEF1EA;
+  --mesure:#2B4E9B; --mesure-2:#5C7EBF; --mesure-voile:#EAEFFA;
+  --action:#18181B; --action-survol:#27272A; --action-encre:#FAFAFA;
+  --police:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --police-mono:ui-monospace,"SF Mono","Menlo","Consolas",monospace;
+  --t-affiche:clamp(2.5rem,7.4vw,4.75rem); --t-titre-1:clamp(1.75rem,4vw,2.75rem);
+  --t-titre-2:clamp(1.375rem,2.6vw,1.75rem); --t-titre-3:1.1875rem;
+  --t-avant:1.1875rem; --t-corps:1rem; --t-petit:.875rem; --t-menu:.8125rem;
+  --g-normal:400; --g-moyen:500; --g-fort:600; --g-noir:800;
+  --i-serre:.98; --i-titre:1.15; --i-corps:1.62;
+  --l-serre:-.035em; --l-titre:-.02em; --l-large:.02em;
+  --e-1:.25rem; --e-2:.5rem; --e-3:.75rem; --e-4:1rem; --e-5:1.5rem;
+  --e-6:2rem; --e-7:3rem; --e-8:4rem; --e-9:6rem; --e-10:8rem;
+  --mesure-l:42rem; --contenu:74rem;
+  --r-1:.375rem; --r-2:.5rem; --r-3:.75rem; --r-4:1rem; --r-plein:9999px;
+  --o-1:0 1px 2px rgba(9,9,11,.06);
+  --o-2:0 1px 3px rgba(9,9,11,.08),0 1px 2px rgba(9,9,11,.04);
+  --o-3:0 4px 12px rgba(9,9,11,.08);
+  --transition:140ms cubic-bezier(.4,0,.2,1);
+}
+:root[data-theme="sombre"]{
+  --fond:#09090B; --fond-2:#0F0F11; --fond-3:#18181B;
+  --encre:#FAFAFA; --encre-2:#D4D4D8; --encre-3:#A1A1AA; --encre-4:#52525B;
+  --bord:#27272A; --bord-fort:#3F3F46;
+  --marque-rose:#FF4FB0; --marque-corail:#FF6A50;
+  --signal:#FF7A45; --signal-encre:#1A0C05; --signal-voile:#2A1610;
+  --mesure:#8FB2F0; --mesure-2:#6E8FCB; --mesure-voile:#18213A;
+  --action:#FAFAFA; --action-survol:#E4E4E7; --action-encre:#18181B;
+  --o-1:0 1px 2px rgba(0,0,0,.5);
+  --o-2:0 1px 3px rgba(0,0,0,.6),0 1px 2px rgba(0,0,0,.4);
+  --o-3:0 4px 14px rgba(0,0,0,.6);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="clair"]){
+    --fond:#09090B; --fond-2:#0F0F11; --fond-3:#18181B;
+    --encre:#FAFAFA; --encre-2:#D4D4D8; --encre-3:#A1A1AA; --encre-4:#52525B;
+    --bord:#27272A; --bord-fort:#3F3F46;
+    --marque-rose:#FF4FB0; --marque-corail:#FF6A50;
+    --signal:#FF7A45; --signal-encre:#1A0C05; --signal-voile:#2A1610;
+    --mesure:#8FB2F0; --mesure-2:#6E8FCB; --mesure-voile:#18213A;
+    --action:#FAFAFA; --action-survol:#E4E4E7; --action-encre:#18181B;
+    --o-1:0 1px 2px rgba(0,0,0,.5);
+    --o-2:0 1px 3px rgba(0,0,0,.6),0 1px 2px rgba(0,0,0,.4);
+    --o-3:0 4px 14px rgba(0,0,0,.6);
+  }
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--fond);color:var(--encre-2);
+     font-family:var(--police);font-size:var(--t-corps);line-height:var(--i-corps);
+     -webkit-font-smoothing:antialiased}
+.enveloppe{max-width:var(--contenu);margin:0 auto;padding:0 var(--e-5)}
+h1,h2,h3{color:var(--encre);letter-spacing:var(--l-titre);line-height:var(--i-titre);
+         font-weight:var(--g-fort);margin:0;text-wrap:balance}
+p{margin:0 0 var(--e-4)}
+b,strong{color:var(--encre);font-weight:var(--g-fort)}
+a{color:var(--encre)}
+code,.mono{font-family:var(--police-mono);font-size:.9em;
+           background:var(--fond-3);padding:.1em .35em;border-radius:var(--r-1)}
+.lire{max-width:var(--mesure-l)}
+hr{border:0;border-top:1px solid var(--bord);margin:var(--e-8) 0}
+
+/* ── Barre ── */
+.barre{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--fond) 88%,transparent);
+       backdrop-filter:blur(12px);border-bottom:1px solid var(--bord)}
+.barre__int{max-width:var(--contenu);margin:0 auto;padding:var(--e-3) var(--e-5);
+            display:flex;align-items:center;gap:var(--e-4)}
+.marque{font-weight:var(--g-noir);letter-spacing:var(--l-serre);color:var(--encre);font-size:1.0625rem}
+.marque i{font-style:normal;background:var(--marque-degrade);
+          -webkit-background-clip:text;background-clip:text;color:transparent}
+.barre__vide{flex:1}
+.lien-nav{font-size:var(--t-menu);color:var(--encre-3);text-decoration:none;font-weight:var(--g-moyen)}
+.lien-nav:hover{color:var(--encre)}
+.bouton-theme{border:1px solid var(--bord-fort);background:var(--fond);color:var(--encre-2);
+              font:inherit;font-size:var(--t-menu);padding:var(--e-1) var(--e-3);
+              border-radius:var(--r-plein);cursor:pointer;transition:var(--transition)}
+.bouton-theme:hover{border-color:var(--encre-4);color:var(--encre)}
+
+/* ── Héros ── */
+.heros{padding:var(--e-9) 0 var(--e-8)}
+.pastille{display:inline-flex;align-items:center;gap:var(--e-2);font-size:var(--t-petit);
+          font-weight:var(--g-moyen);color:var(--signal);background:var(--signal-voile);
+          border-radius:var(--r-plein);padding:var(--e-1) var(--e-3);margin-bottom:var(--e-5)}
+.pastille::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--signal)}
+.heros h1{font-size:var(--t-affiche);font-weight:var(--g-noir);
+          letter-spacing:var(--l-serre);line-height:var(--i-serre);max-width:20ch}
+.heros h1 i{font-style:normal;background:var(--marque-degrade);
+            -webkit-background-clip:text;background-clip:text;color:transparent}
+.heros .avant{font-size:var(--t-avant);color:var(--encre-3);max-width:var(--mesure-l);
+              margin-top:var(--e-5);text-wrap:pretty}
+
+/* ── Sections ── */
+section{padding:var(--e-8) 0;border-top:1px solid var(--bord)}
+.oeil{font-size:var(--t-menu);text-transform:uppercase;letter-spacing:.14em;
+      color:var(--encre-4);font-weight:var(--g-fort);margin-bottom:var(--e-3)}
+section>.enveloppe>h2{font-size:var(--t-titre-1);margin-bottom:var(--e-5)}
+
+/* ── Thèse ── */
+.these{border-left:3px solid var(--signal);padding:var(--e-2) 0 var(--e-2) var(--e-5);
+       font-size:1.125rem;color:var(--encre);max-width:var(--mesure-l);margin:var(--e-6) 0}
+
+/* ── Fiches de proposition ── */
+.fiches{display:grid;gap:var(--e-5)}
+.fiche{border:1px solid var(--bord);border-radius:var(--r-4);background:var(--fond);
+       box-shadow:var(--o-1);overflow:hidden}
+.fiche__tete{display:flex;gap:var(--e-4);align-items:flex-start;
+             padding:var(--e-6) var(--e-6) var(--e-4)}
+.fiche__no{font-family:var(--police-mono);font-size:var(--t-petit);color:var(--encre-4);
+           border:1px solid var(--bord);border-radius:var(--r-2);
+           padding:var(--e-1) var(--e-2);flex:none;margin-top:.35rem}
+.fiche h3{font-size:var(--t-titre-2)}
+.fiche__sous{color:var(--encre-3);font-size:.9375rem;margin-top:var(--e-1)}
+.fiche__corps{padding:0 var(--e-6) var(--e-6);max-width:56rem}
+.fiche__corps>p:last-child{margin-bottom:0}
+.fiche--phare{border-color:var(--encre);box-shadow:var(--o-3)}
+.etiq{display:inline-block;font-size:var(--t-menu);font-weight:var(--g-fort);
+      letter-spacing:var(--l-large);text-transform:uppercase;padding:var(--e-1) var(--e-3);
+      border-radius:var(--r-plein);background:var(--action);color:var(--action-encre);
+      margin-left:auto;flex:none}
+
+/* ── Le triptyque coût / preuve / risque ── */
+.jauges{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+        gap:1px;background:var(--bord);border-top:1px solid var(--bord);
+        border-bottom:1px solid var(--bord);margin:var(--e-5) 0}
+.jauge{background:var(--fond);padding:var(--e-4) var(--e-5)}
+.jauge__cle{font-size:var(--t-menu);text-transform:uppercase;letter-spacing:.1em;
+            color:var(--encre-4);font-weight:var(--g-fort)}
+.jauge__val{color:var(--encre);font-weight:var(--g-moyen);margin-top:var(--e-1);font-size:.9375rem}
+.jauge--m .jauge__val{color:var(--mesure)}
+
+/* ── Le démonstrateur ── */
+.demo{background:#09090B;border-radius:var(--r-4);padding:var(--e-6);color:#A1A1AA;
+      border:1px solid #27272A}
+.demo__tete{display:flex;align-items:baseline;gap:var(--e-4);flex-wrap:wrap;
+            margin-bottom:var(--e-5)}
+.demo__titre{color:#FAFAFA;font-weight:var(--g-fort);font-size:var(--t-titre-3)}
+.demo__horloge{font-family:var(--police-mono);font-size:1.5rem;color:#FAFAFA;
+               margin-left:auto;font-variant-numeric:tabular-nums}
+.jauge-debit{height:26px;background:#18181B;border-radius:var(--r-1);overflow:hidden;
+             border:1px solid #27272A;position:relative}
+.jauge-debit__b{height:100%;width:0%;background:linear-gradient(90deg,#F5533D,#F0359F);
+                transition:width 90ms linear}
+.jauge-debit__seuil{position:absolute;top:0;bottom:0;left:60%;width:1px;background:#52525B}
+.demo__legende{position:relative;display:flex;justify-content:space-between;
+               font-size:var(--t-menu);margin-top:var(--e-2);color:#71717A}
+/* Le repère du seuil est à 60 % de la barre : sa légende doit y être aussi.
+   Centrée par space-between, elle tombait à 50 % et désignait un trait qui
+   n'était pas là. */
+.demo__legende span:nth-child(2){position:absolute;left:60%;transform:translateX(-50%)}
+.demo__presse{width:100%;margin-top:var(--e-5);padding:var(--e-5);border-radius:var(--r-3);
+              background:#FAFAFA;color:#09090B;border:0;font:inherit;
+              font-weight:var(--g-fort);font-size:1.0625rem;cursor:pointer;
+              user-select:none;-webkit-user-select:none;touch-action:manipulation}
+.demo__presse:active{background:#D4D4D8;transform:scale(.995)}
+.demo__presse[disabled]{opacity:.45;cursor:default}
+.demo__mot{margin-top:var(--e-4);min-height:3.2em;font-size:.9375rem;color:#D4D4D8}
+.demo__mot b{color:#FAFAFA}
+.demo__chiffre{font-family:var(--police-mono);color:#FF6A50}
+
+/* ── Tableau d'arbitrage ── */
+.tab{width:100%;border-collapse:collapse;font-size:.9375rem;margin-top:var(--e-5)}
+.tab th,.tab td{text-align:left;padding:var(--e-3) var(--e-4);
+                border-bottom:1px solid var(--bord);vertical-align:top}
+.tab th{font-size:var(--t-menu);text-transform:uppercase;letter-spacing:.1em;
+        color:var(--encre-4);font-weight:var(--g-fort)}
+.tab td:first-child{color:var(--encre);font-weight:var(--g-moyen);white-space:nowrap}
+.tab tr:last-child td{border-bottom:0}
+.enrob{overflow-x:auto}
+
+/* ── Décisions ── */
+.dec{border:1px solid var(--bord);border-left:3px solid var(--mesure);
+     border-radius:var(--r-2);padding:var(--e-5);margin-bottom:var(--e-4);background:var(--fond-2)}
+.dec h3{font-size:var(--t-titre-3);margin-bottom:var(--e-2)}
+.dec p:last-child{margin-bottom:0}
+.dec__q{color:var(--mesure);font-weight:var(--g-fort);font-size:var(--t-menu);
+        text-transform:uppercase;letter-spacing:.1em;margin-bottom:var(--e-2)}
+
+.garde{background:var(--fond-3);border-radius:var(--r-3);padding:var(--e-5) var(--e-6)}
+.garde ul{margin:0;padding-left:1.1em}
+.garde li{margin-bottom:var(--e-2)}
+.garde li:last-child{margin-bottom:0}
+
+footer{padding:var(--e-8) 0 var(--e-9);color:var(--encre-4);font-size:var(--t-petit)}
+/* ── Papier ────────────────────────────────────────────────────────────
+   Le PDF se tire en thème clair quoi qu'il arrive : les jetons sombres du
+   média `prefers-color-scheme` suivraient sinon le réglage de la machine
+   qui imprime, et le même document sortirait deux fois différent. */
+@media print{
+  :root{
+    --fond:#FFF; --fond-2:#FFF; --fond-3:#F4F4F5;
+    --encre:#09090B; --encre-2:#3F3F46; --encre-3:#52525B; --encre-4:#71717A;
+    --bord:#D4D4D8; --bord-fort:#A1A1AA;
+    --o-1:none; --o-2:none; --o-3:none;
+  }
+  @page{margin:14mm 12mm}
+  .barre{display:none}
+  .heros{padding-top:0}
+  body{font-size:10.5pt}
+  section{break-inside:auto;padding:var(--e-6) 0}
+  .fiche,.dec,.demo,.garde,.tab tr{break-inside:avoid}
+  h1,h2,h3{break-after:avoid}
+  .demo__presse{display:none}
+  .demo{background:#18181B}
+  .enveloppe{padding:0}
+}
+@media (max-width:640px){
+  .fiche__tete{flex-wrap:wrap;padding:var(--e-5) var(--e-5) var(--e-3)}
+  .fiche__corps{padding:0 var(--e-5) var(--e-5)}
+  .etiq{margin-left:0}
+}
+</style>
+
+<div class="barre"><div class="barre__int">
+  <span class="marque">SimDEA <i>v3</i></span>
+  <span class="barre__vide"></span>
+  <a class="lien-nav" href="#propositions">Les six</a>
+  <a class="lien-nav" href="#arbitrage">Arbitrage</a>
+  <a class="lien-nav" href="#decisions">Décisions</a>
+  <button class="bouton-theme" id="bTheme" type="button">Thème</button>
+</div></div>
+
+<div class="heros"><div class="enveloppe">
+  <span class="pastille">Proposition — 8 septembre 2026</span>
+  <h1>Le simulateur est fini. <i>La pièce ne l'est pas.</i></h1>
+  <p class="avant">Six déplacements possibles, classés. Un seul est recommandé pour cette
+  semaine, et ce n'est pas une fonctionnalité. La page contient un démonstrateur jouable :
+  il tient dans trente secondes et il défend la proposition&nbsp;05 mieux que ne le ferait
+  un paragraphe.</p>
+</div></div>
+
+<section><div class="enveloppe">
+  <div class="oeil">Le constat qui commande tout le reste</div>
+  <h2>Produire n'est plus rare</h2>
+  <div class="lire">
+    <p>En 2026, un simulateur soigné, trilingue, en un seul fichier, avec un tracé ECG animé
+    et une voix d'appareil, se construit en quelques jours. La preuve&nbsp;: celui-ci existe.
+    Un client qui regarde le portfolio ne se demande plus <b>« sait-il produire&nbsp;? »</b> —
+    il le voit en dix secondes, et il l'a déjà vu ailleurs.</p>
+    <p>Ce qu'il ne trouve nulle part, c'est quelqu'un capable de lui dire <b>si sa formation
+    fonctionne, et comment il le sait</b>. Le banc d'essai du 5&nbsp;septembre l'avait déjà écrit&nbsp;:
+    SimDEA démontre une maîtrise de production, pas de diagnostic. Rien n'a changé là-dessus.</p>
+  </div>
+  <p class="these">Toute amélioration se juge maintenant à une seule question&nbsp;:
+  <b>est-ce qu'elle produit une preuve&nbsp;?</b> Une fonctionnalité qui rend la simulation
+  plus belle sans rien mesurer de neuf coûte du temps et n'ajoute rien au dossier.</p>
+  <div class="lire">
+    <p>C'est aussi pourquoi la contre-épreuve — cinq personnes qui n'ont jamais vu un DEA
+    posent les électrodes sans indication, on relève la dispersion — vaut plus que
+    n'importe laquelle des six propositions qui suivent. Elle prend une soirée. Elle est
+    reportée depuis trois séances.</p>
+  </div>
+</div></section>
+
+<section id="propositions"><div class="enveloppe">
+  <div class="oeil">Six déplacements</div>
+  <h2>Ce qu'on pourrait faire à la place d'ajouter des écrans</h2>
+  <p class="lire" style="margin-bottom:var(--e-7)">Chacun déplace l'objet de la simulation,
+  comme la v2 l'avait déplacé de l'appareil vers les trois premières minutes. Aucun n'est un
+  perfectionnement du même objet&nbsp;: si on veut seulement polir l'existant, il ne faut rien
+  faire du tout et aller chercher les cinq personnes.</p>
+
+  <div class="fiches">
+
+    <article class="fiche fiche--phare">
+      <div class="fiche__tete">
+        <span class="fiche__no">01</span>
+        <div>
+          <h3>La chambre</h3>
+          <p class="fiche__sous">Le vrai obstacle n'est pas l'appareil. C'est la pièce.</p>
+        </div>
+        <span class="etiq">Le saut de contenu</span>
+      </div>
+      <div class="fiche__corps">
+        <p>Le simulateur suppose un témoin seul et décidé. Or ce n'est presque jamais le cas.
+        Ce qui empêche quelqu'un de commencer, ce n'est pas de ne pas savoir&nbsp;: c'est
+        quatre personnes autour qui ne bougent pas, quelqu'un qui filme, un gérant qui dit
+        <i>« on n'a pas le droit d'y toucher »</i>, et une voix qui dit
+        <i>« attends, je pense qu'il respire »</i> — la phrase qui tue, parce que la
+        respiration agonale ressemble à une respiration.</p>
+        <p>Concrètement&nbsp;: la scène gagne trois à cinq voix. Elles ne s'adressent pas
+        toutes à l'apprenant, elles se parlent entre elles, elles se chevauchent, elles ne
+        s'arrêtent pas quand on agit. Une seule est franchement nuisible. Aucune n'est
+        corrigée sur le coup.</p>
+        <p><b>Ce que ça mesure, et personne d'autre ne le mesure&nbsp;:</b> le même scénario,
+        joué seul puis joué sous pression, et l'écart en secondes avant la première
+        compression. Cet écart <i>est</i> le résultat. C'est un graphique qu'aucun concurrent
+        ne peut improviser, parce qu'il faut avoir instrumenté le dispositif avant de
+        pouvoir le tracer — ce qui est déjà fait.</p>
+        <div class="jauges">
+          <div class="jauge"><div class="jauge__cle">Coût</div><div class="jauge__val">2 à 3 jours</div></div>
+          <div class="jauge jauge--m"><div class="jauge__cle">Preuve produite</div><div class="jauge__val">Délai sous pression sociale</div></div>
+          <div class="jauge"><div class="jauge__cle">Risque</div><div class="jauge__val">Le mélodrame</div></div>
+        </div>
+        <p style="margin-bottom:0"><b>Pourquoi ça pourrait rater.</b> Mal écrit, c'est du
+        théâtre. La garde est simple&nbsp;: des répliques courtes, jamais plus de sept mots,
+        jamais d'insulte, jamais de personnage méchant. Les gens qui n'aident pas, dans la
+        vraie vie, sont polis et raisonnables. C'est ce qui les rend efficaces.</p>
+      </div>
+    </article>
+
+    <article class="fiche">
+      <div class="fiche__tete">
+        <span class="fiche__no">02</span>
+        <div>
+          <h3>Le répartiteur</h3>
+          <p class="fiche__sous">Le 911 est un formateur, pas un bouton.</p>
+        </div>
+      </div>
+      <div class="fiche__corps">
+        <p>Au Québec, la personne au bout du fil <b>guide la réanimation</b>. Dans le
+        simulateur, appeler le 911 est un clic qui allume une coche. On escamote le seul
+        moment où quelqu'un reçoit vraiment de l'aide.</p>
+        <p>L'appel devient une scène&nbsp;: donner une adresse, répondre à
+        <i>« est-ce qu'il respire normalement&nbsp;? »</i>, mettre le haut-parleur — et
+        seulement alors, obéir à une voix qui compte la cadence pendant qu'on a les mains
+        occupées.</p>
+        <p><b>Ce que ça mesure&nbsp;:</b> a-t-on libéré ses mains&nbsp;? A-t-on répondu
+        « oui, il respire » devant une respiration agonale&nbsp;? Cette seconde mesure est la
+        plus intéressante du projet — c'est une erreur de <i>perception</i>, pas de
+        procédure, et aucun quiz ne peut la détecter.</p>
+        <div class="jauges">
+          <div class="jauge"><div class="jauge__cle">Coût</div><div class="jauge__val">2 jours, la voix existe déjà</div></div>
+          <div class="jauge jauge--m"><div class="jauge__cle">Preuve produite</div><div class="jauge__val">Erreur de perception, mains libres</div></div>
+          <div class="jauge"><div class="jauge__cle">Risque</div><div class="jauge__val">Une scène de plus avant l'action</div></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="fiche">
+      <div class="fiche__tete">
+        <span class="fiche__no">03</span>
+        <div>
+          <h3>Les mains</h3>
+          <p class="fiche__sous">Mesurer le geste, pas la barre d'espace.</p>
+        </div>
+      </div>
+      <div class="fiche__corps">
+        <p>Le banc d'essai reprochait à la pose d'électrodes d'être un bouton&nbsp;; c'est
+        corrigé. La cadence, elle, reste une touche du clavier. Or une touche ne fatigue
+        pas, ne ralentit pas, et ne ressemble à rien.</p>
+        <p>La proposition&nbsp;: on frappe la table, et le micro détecte les attaques. Ou,
+        sur téléphone, l'accéléromètre lit le mouvement du bras. Le dispositif mesure alors
+        une <b>vraie cadence</b>, avec ce qu'elle a de plus révélateur&nbsp;: la dérive.
+        Tout le monde ralentit après quarante secondes, tout le monde croit que non, et
+        c'est exactement ce qu'un graphique peut montrer et qu'un discours ne peut pas.</p>
+        <div class="jauges">
+          <div class="jauge"><div class="jauge__cle">Coût</div><div class="jauge__val">1 à 2 jours</div></div>
+          <div class="jauge jauge--m"><div class="jauge__cle">Preuve produite</div><div class="jauge__val">Dérive de cadence sur 2 min</div></div>
+          <div class="jauge"><div class="jauge__cle">Risque</div><div class="jauge__val">Permission micro, bruit ambiant</div></div>
+        </div>
+        <p style="margin-bottom:0">Réserve honnête&nbsp;: on mesure alors le <i>rythme</i>, jamais
+        la <i>profondeur</i>. Un écran ne saura jamais si l'enfoncement fait cinq centimètres,
+        et il faut continuer à l'écrire dans le bilan.</p>
+      </div>
+    </article>
+
+    <article class="fiche">
+      <div class="fiche__tete">
+        <span class="fiche__no">04</span>
+        <div>
+          <h3>La cohorte</h3>
+          <p class="fiche__sous">Retourner la pièce&nbsp;: le visiteur devient le concepteur.</p>
+        </div>
+      </div>
+      <div class="fiche__corps">
+        <p>Sur le modèle de <code>cohorte.html</code>, mais avec les <b>vraies traces</b> du
+        journal de passage. Le recruteur voit quarante parties anonymes et dispose de trois
+        corrections. Les données décident&nbsp;: la correction que tout le monde veut faire
+        (plus d'aide sur les électrodes) ne change rien, et celle que personne ne choisit
+        (retarder encore l'appareil) change tout.</p>
+        <p>C'est la pièce qui prouve le <b>diagnostic</b> plutôt que la production — donc la
+        seule qui réponde vraiment au constat du banc d'essai. Elle a une condition
+        d'entrée&nbsp;: il faut des traces réelles. Sans la contre-épreuve, elle serait une
+        simulation de diagnostic, ce qui est précisément le reproche qu'on cherche à lever.</p>
+        <div class="jauges">
+          <div class="jauge"><div class="jauge__cle">Coût</div><div class="jauge__val">3 jours + la contre-épreuve</div></div>
+          <div class="jauge jauge--m"><div class="jauge__cle">Preuve produite</div><div class="jauge__val">La compétence de diagnostic</div></div>
+          <div class="jauge"><div class="jauge__cle">Risque</div><div class="jauge__val">Bloquée tant qu'on n'a pas les gens</div></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="fiche fiche--phare">
+      <div class="fiche__tete">
+        <span class="fiche__no">05</span>
+        <div>
+          <h3>Quatre-vingt-dix secondes</h3>
+          <p class="fiche__sous">La version non réaliste. Ni thorax, ni appareil, ni pièce.</p>
+        </div>
+        <span class="etiq">À faire cette semaine</span>
+      </div>
+      <div class="fiche__corps">
+        <p>Vous avez ouvert la porte au « non réaliste ». La voici, et c'est peut-être le
+        meilleur rapport effort-effet de la liste. Une page noire, une seule barre, une
+        horloge. Aucun décor, aucun personnage, aucune consigne sauf trois mots. On ne peut
+        rien faire d'autre que continuer.</p>
+        <p>La barre ne dit pas « survie » — ce serait un chiffre faux et le garde-fou l'interdit.
+        Elle dit <b>débit</b>&nbsp;: la pression que vos mains construisent. Et elle a la seule
+        propriété qui compte, celle qu'aucun cours ne réussit à faire sentir&nbsp;:
+        <b>elle met une quinzaine de compressions à monter, et s'effondre en moins de trois
+        secondes d'arrêt.</b> C'est toute la leçon de la fraction sans compression, sans une phrase de
+        théorie.</p>
+        <p>Sa fonction dans le portfolio n'est pas d'enseigner&nbsp;: c'est d'être la
+        <b>couverture</b>. Trente secondes qui donnent envie d'ouvrir le simulateur complet.
+        Un recruteur accorde quatre minutes à un dossier&nbsp;; celle-ci en coûte une demie
+        et se retient.</p>
+        <div class="jauges">
+          <div class="jauge"><div class="jauge__cle">Coût</div><div class="jauge__val">Une demi-journée</div></div>
+          <div class="jauge jauge--m"><div class="jauge__cle">Preuve produite</div><div class="jauge__val">Aucune — et c'est assumé</div></div>
+          <div class="jauge"><div class="jauge__cle">Risque</div><div class="jauge__val">Faible&nbsp;; se jette sans regret</div></div>
+        </div>
+        <p><b>Elle est jouable ici même</b>, plus bas. Ce n'est pas une maquette&nbsp;: c'est
+        la mécanique, en état de marche. Si elle ne fait pas son effet sur vous en trente
+        secondes, elle ne le fera pas sur un client, et on la jette — ce qui est encore la
+        meilleure façon d'arbitrer une idée.</p>
+      </div>
+    </article>
+
+    <article class="fiche">
+      <div class="fiche__tete">
+        <span class="fiche__no">06</span>
+        <div>
+          <h3>Les cicatrices</h3>
+          <p class="fiche__sous">Le format, pas le contenu&nbsp;: une pièce qui montre ses erreurs.</p>
+        </div>
+      </div>
+      <div class="fiche__corps">
+        <p>Aujourd'hui le simulateur est ici, et les dossiers qui l'expliquent sont ailleurs.
+        Un visiteur lit l'un <i>ou</i> l'autre. La proposition&nbsp;: un seul document, avec
+        l'interrupteur <b>« vue conception »</b> qui a déjà fait ses preuves dans les
+        prototypes — sauf qu'il ne révèle pas seulement les variables cachées. Il révèle
+        <b>ce qui a été raté</b>.</p>
+        <p>Quatre défauts sont documentés, datés, corrigés et vérifiés&nbsp;: les trois voix
+        de l'appareil dont deux phrases sur trois n'ont jamais été prononcées dans les trois
+        langues&nbsp;; le bilan qui déclarait quatre réussites qu'il n'avait jamais
+        mesurées&nbsp;; deux ordres donnés d'un souffle dont le second effaçait le
+        premier&nbsp;; et l'instrument de mesure qui, au premier passage, s'est trouvé trois
+        erreurs dont deux étaient les siennes.</p>
+        <p style="margin-bottom:0"><b>Personne ne met ses bugs dans son portfolio.</b> C'est
+        précisément pour ça que ça marche&nbsp;: à côté de la correction et de la preuve
+        qu'elle tient, un défaut cesse d'être une faiblesse et devient la seule démonstration
+        crédible qu'il y a eu une méthode. Un client expérimenté sait qu'un projet sans
+        incident est un projet dont on lui cache les incidents.</p>
+      </div>
+    </article>
+
+  </div>
+</div></section>
+
+<section><div class="enveloppe">
+  <div class="oeil">Démonstrateur — proposition 05</div>
+  <h2>Trente secondes, une barre, aucune consigne</h2>
+  <p class="lire">Frappez la touche <b>Espace</b>, ou martelez le bouton. Il n'y a rien
+  d'autre à faire, et c'est le sujet.</p>
+
+  <div class="demo" id="demo">
+    <div class="demo__tete">
+      <span class="demo__titre">Débit</span>
+      <span class="demo__horloge" id="dHorloge">0,0 s</span>
+    </div>
+    <div class="jauge-debit">
+      <div class="jauge-debit__b" id="dBarre"></div>
+      <div class="jauge-debit__seuil"></div>
+    </div>
+    <div class="demo__legende"><span>rien</span><span>seuil utile</span><span>plein</span></div>
+    <button class="demo__presse" id="dPresse" type="button">Appuyez</button>
+    <div class="demo__mot" id="dMot">Appuyez. C'est tout.</div>
+  </div>
+
+  <div class="lire" style="margin-top:var(--e-6)">
+    <p><b>Ce que le modèle fait, sans le dire à l'écran.</b> Chaque compression ajoute au
+    débit de quatre points sur cent&nbsp;: il faut <b>quinze compressions consécutives</b>
+    pour franchir le seuil utile. La chute ne commence qu'après neuf dixièmes de seconde de
+    silence — c'est-à-dire en dessous d'environ soixante-cinq compressions à la minute —
+    mais elle tombe alors de quarante points par seconde. <b>Deux secondes et demie d'arrêt
+    effacent tout</b>, soit vingt-cinq compressions à reconstruire. Aucune rétroaction n'est
+    écrite pour une trajectoire particulière&nbsp;: les quatre phrases de sortie sont
+    choisies par la seule fraction de temps passée sous le seuil.</p>
+    <p style="margin-bottom:0">C'est une caricature physiologique, et il faut l'écrire dans
+    la pièce finale. La pression de perfusion coronarienne se comporte ainsi, mais aucun
+    chiffre affiché ici n'a de valeur clinique. La barre enseigne <b>une forme</b> —
+    montée lente, chute brutale — et rien d'autre.</p>
+  </div>
+</div></section>
+
+<section id="arbitrage"><div class="enveloppe">
+  <div class="oeil">Arbitrage</div>
+  <h2>Dans quel ordre, et pourquoi</h2>
+  <div class="enrob"><table class="tab">
+    <thead><tr><th>Ordre</th><th>Quoi</th><th>Pourquoi maintenant</th></tr></thead>
+    <tbody>
+      <tr><td>D'abord</td><td>La contre-épreuve</td>
+        <td>Une soirée, cinq personnes, aucune ligne de code. Elle débloque la 04 et
+        transforme chaque affirmation du dossier en mesure. Reportée trois fois&nbsp;: c'est
+        le seul point de cette page qui coûte plus cher à retarder qu'à faire.</td></tr>
+      <tr><td>Cette semaine</td><td>05 — Quatre-vingt-dix secondes</td>
+        <td>Une demi-journée pour la couverture du dossier. Le démonstrateur ci-dessus est
+        déjà la mécanique&nbsp;; il reste l'habillage et le texte de sortie.</td></tr>
+      <tr><td>Puis</td><td>06 — Les cicatrices</td>
+        <td>Zéro contenu neuf à inventer&nbsp;: les quatre défauts sont déjà écrits et
+        corrigés. C'est un travail de mise en page qui ajoute la seule chose que le dossier
+        n'a pas — la preuve qu'il y a eu une méthode.</td></tr>
+      <tr><td>Le saut</td><td>01 — La chambre</td>
+        <td>Le déplacement le plus ambitieux, et le seul qui change ce que le simulateur
+        <i>enseigne</i>. À faire quand il y a deux ou trois jours d'affilée.</td></tr>
+      <tr><td>Ensuite</td><td>03 — Les mains</td>
+        <td>Le morceau technique qui impressionne, mais qui ne change pas le sujet. Il vaut
+        surtout par la courbe de dérive.</td></tr>
+      <tr><td>Plus tard</td><td>02 — Le répartiteur</td>
+        <td>Excellent contenu, coût moyen, et il allonge encore la partie avant l'appareil.
+        À reprendre après la contre-épreuve, qui dira si la scène est déjà trop longue.</td></tr>
+      <tr><td>Bloquée</td><td>04 — La cohorte</td>
+        <td>Ne peut pas être honnête sans traces réelles. La construire avant serait
+        commettre exactement la faute qu'elle dénonce.</td></tr>
+    </tbody>
+  </table></div>
+</div></section>
+
+<section><div class="enveloppe">
+  <div class="oeil">Ce qui reste interdit</div>
+  <h2>Les garde-fous ne bougent pas</h2>
+  <div class="garde lire">
+    <ul>
+      <li><b>Aucun pourcentage de survie affiché à l'apprenant.</b> Le chiffre serait faux,
+      et sa précision ferait croire à une science absente.</li>
+      <li><b>Aucun score de vitesse, aucun classement, aucun badge.</b></li>
+      <li><b>Jamais laisser croire que l'outil remplace une formation.</b> Il prépare à en
+      suivre une, et il doit le dire lui-même.</li>
+      <li><b>Le protocole appartient au référentiel cité</b>, pas au concepteur&nbsp;: il
+      reste un réglage d'un mot dans <code>src/config.js</code>.</li>
+      <li><b>Ce que l'écran ne peut pas mesurer doit rester écrit au bilan</b> — la
+      profondeur, le recul complet du thorax, et le fait d'oser.</li>
+    </ul>
+  </div>
+</div></section>
+
+<section id="decisions"><div class="enveloppe">
+  <div class="oeil">À trancher</div>
+  <h2>Quatre décisions, aucune engagée</h2>
+
+  <div class="dec">
+    <div class="dec__q">Décision 06</div>
+    <h3>La couverture&nbsp;: on garde ou on jette&nbsp;?</h3>
+    <p>Vous venez de jouer le démonstrateur. S'il vous a fait quelque chose, la 05 se fait
+    cette semaine. S'il vous a laissé froid, on le supprime sans discussion — une idée
+    d'accroche qui n'accroche pas son auteur n'accrochera personne.</p>
+  </div>
+
+  <div class="dec">
+    <div class="dec__q">Décision 07</div>
+    <h3>La contre-épreuve&nbsp;: qui, et quand&nbsp;?</h3>
+    <p>Cinq personnes qui n'ont jamais vu un DEA, vingt minutes chacune, aucune consigne
+    pendant la pose. Ce n'est pas un problème technique, c'est un carnet d'adresses et une
+    soirée. Tant qu'elle n'a pas lieu, tout le reste du dossier reste une affirmation.</p>
+  </div>
+
+  <div class="dec">
+    <div class="dec__q">Décision 08</div>
+    <h3>Montrer les défauts, ou pas&nbsp;?</h3>
+    <p>La 06 expose quatre erreurs réelles avec leur date. C'est le pari le plus fort de
+    cette page et le plus inconfortable&nbsp;: il suppose un lecteur assez expérimenté pour
+    y voir de la rigueur plutôt que de la négligence. Un recruteur RH pressé peut lire
+    l'inverse. La question est donc&nbsp;: à qui ce dossier s'adresse-t-il en
+    premier&nbsp;?</p>
+  </div>
+
+  <div class="dec">
+    <div class="dec__q">Décision 09</div>
+    <h3>La chambre&nbsp;: jusqu'où&nbsp;?</h3>
+    <p>La 01 peut être une version douce (deux voix, aucune hostile) ou une version dure
+    (le gérant qui interdit, le téléphone qui filme). La version dure mesure beaucoup plus
+    et met certains apprenants mal à l'aise. C'est une décision de contenu, pas de
+    conception&nbsp;: elle vous revient.</p>
+  </div>
+</div></section>
+
+<footer><div class="enveloppe">
+  Portfolio de conception pédagogique · Proposition v3 pour le simulateur de défibrillateur ·
+  8 septembre 2026. Le démonstrateur de cette page est fonctionnel&nbsp;; tout le reste est
+  une proposition, et rien n'est engagé.
+</div></footer>
+
+<script>
+/* ── Thème ──────────────────────────────────────────────────────────────── */
+(function(){
+  var b = document.getElementById('bTheme'), r = document.documentElement;
+  b.addEventListener('click', function(){
+    var sombre = r.getAttribute('data-theme') === 'sombre';
+    if (!r.hasAttribute('data-theme')) {
+      sombre = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    }
+    r.setAttribute('data-theme', sombre ? 'clair' : 'sombre');
+  });
+})();
+
+/* ── Démonstrateur « Quatre-vingt-dix secondes » ─────────────────────────
+   Le modèle tient en trois nombres. Le débit monte d'un cran par compression
+   et retombe tout seul ; la chute est six fois plus rapide que la montée, ce
+   qui est toute la thèse. Aucun texte n'est écrit pour une trajectoire
+   donnée : les quatre phrases de sortie sont choisies par la fraction de
+   temps passée sous le seuil utile.                                        */
+(function(){
+  var MONTEE = 4;        /* points de débit gagnés par compression */
+  var CHUTE  = 40;       /* points perdus par seconde d'ARRÊT — voir GRACE */
+  var GRACE  = 900;      /* ms sans compression avant que la chute commence.
+                            Réglé à 900 et non à 500 : à 110 compressions par
+                            minute l'intervalle vaut 545 ms, donc un délai de
+                            500 ms punissait une cadence juste — la barre
+                            perdait 1,8 point entre chaque coup. 900 ms place
+                            le seuil de punition sous 65 par minute. */
+  var SEUIL  = 60;       /* la barre du « seuil utile », en points */
+  var DUREE  = 30000;    /* la partie, en millisecondes */
+
+  var barre = document.getElementById('dBarre');
+  var horloge = document.getElementById('dHorloge');
+  var presse = document.getElementById('dPresse');
+  var mot = document.getElementById('dMot');
+
+  var debit = 0, coups = 0, depart = 0, dernier = 0, dernierCoup = 0;
+  var sousSeuil = 0, enCours = false, fini = false, boucle = null;
+
+  function afficher(){
+    barre.style.width = Math.max(0, Math.min(100, debit)) + '%';
+  }
+
+  function tic(t){
+    if (!enCours) return;
+    var dt = (t - dernier) / 1000; dernier = t;
+    /* La chute ne s'applique qu'après un silence : sans ce délai de grâce,
+       aucune cadence humaine ne ferait monter la barre — 110 compressions à
+       la minute valent 7 points par seconde, contre 40 perdus. Le premier
+       modèle écrit avait ce défaut, et la barre restait plate. */
+    if (t - dernierCoup > GRACE) debit = Math.max(0, debit - CHUTE * dt);
+    if (debit < SEUIL) sousSeuil += dt;
+    var ecoule = t - depart;
+    horloge.textContent = (ecoule / 1000).toFixed(1).replace('.', ',') + ' s';
+    afficher();
+    if (ecoule >= DUREE) { terminer(ecoule); return; }
+    boucle = requestAnimationFrame(tic);
+  }
+
+  function comprimer(){
+    if (fini) return;
+    if (!enCours) {
+      enCours = true;
+      depart = dernier = dernierCoup = performance.now();
+      mot.textContent = '';
+      presse.textContent = 'Encore';
+      boucle = requestAnimationFrame(tic);
+    }
+    coups++;
+    dernierCoup = performance.now();
+    debit = Math.min(100, debit + MONTEE);
+    afficher();
+  }
+
+  function terminer(ecoule){
+    enCours = false; fini = true;
+    cancelAnimationFrame(boucle);
+    presse.disabled = true;
+    presse.textContent = 'Terminé';
+    var part = Math.round(100 * sousSeuil / (ecoule / 1000));
+    var cadence = Math.round(coups / (ecoule / 60000));
+    var verdict;
+    /* Le plancher n'est pas zéro : même une partie parfaite passe environ
+       27 % du temps sous le seuil, le temps de le construire. Les bornes en
+       tiennent compte — sans quoi la meilleure partie possible recevrait la
+       deuxième phrase, et le démonstrateur mentirait. */
+    if (part <= 35)      verdict = "Vous avez tenu. C'est épuisant, et il restait une minute.";
+    else if (part <= 55) verdict = "Chaque arrêt a coûté vingt-cinq compressions à rattraper.";
+    else if (part <= 80) verdict = "Le débit a passé plus de temps à se reconstruire qu'à servir.";
+    else                 verdict = "La barre n'a presque jamais servi à rien. C'est le cas le plus fréquent.";
+    mot.innerHTML = '<b>' + verdict + '</b><br>' +
+      '<span class="demo__chiffre">' + coups + '</span> compressions · ' +
+      '<span class="demo__chiffre">' + cadence + '</span> par minute · ' +
+      'sous le seuil <span class="demo__chiffre">' + part + ' %</span> du temps.';
+  }
+
+  presse.addEventListener('pointerdown', function(e){ e.preventDefault(); comprimer(); });
+  document.addEventListener('keydown', function(e){
+    if (e.code !== 'Space' && e.key !== ' ') return;
+    var d = document.getElementById('demo').getBoundingClientRect();
+    if (d.bottom < 0 || d.top > innerHeight) return;   /* seulement si la pièce est à l'écran */
+    e.preventDefault(); comprimer();
+  });
+  afficher();
+})();
+</script>
+
+</body>
+</html>
