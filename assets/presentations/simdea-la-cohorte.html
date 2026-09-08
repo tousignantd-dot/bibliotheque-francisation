@@ -1,0 +1,1027 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Le visiteur devient le concepteur : quarante traces simulees, trois questions, une seule modification, et une contre-epreuve appariee.">
+<title>La cohorte</title>
+<style>html{color-scheme:light dark}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>La cohorte</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+<style>
+/* ═══ Jetons « Braise », recopiés — jamais importés (un @import en file://
+   échoue sans rien dire). --mesure-l porte la largeur de lecture : dans la
+   source du système, --mesure porte à la fois une couleur et une longueur
+   dans le même :root, et la seconde écrase la première.                    */
+:root{
+  --fond:#FFFFFF; --fond-2:#FAFAFA; --fond-3:#F4F4F5;
+  --encre:#09090B; --encre-2:#52525B; --encre-3:#71717A; --encre-4:#A1A1AA;
+  --bord:#E4E4E7; --bord-fort:#D4D4D8;
+  --marque-rose:#F0359F; --marque-corail:#F5533D;
+  --marque-degrade:linear-gradient(100deg,var(--marque-rose) 0%,var(--marque-corail) 100%);
+  --signal:#F5652E; --signal-encre:#FFFFFF; --signal-voile:#FEF1EA;
+  --mesure:#2B4E9B; --mesure-2:#5C7EBF; --mesure-voile:#EAEFFA;
+  --action:#18181B; --action-survol:#27272A; --action-encre:#FAFAFA;
+  --police:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --police-mono:ui-monospace,"SF Mono","Menlo","Consolas",monospace;
+  --t-affiche:clamp(2.5rem,7.4vw,4.75rem); --t-titre-1:clamp(1.75rem,4vw,2.75rem);
+  --t-titre-2:clamp(1.375rem,2.6vw,1.75rem); --t-titre-3:1.1875rem;
+  --t-avant:1.1875rem; --t-petit:.875rem; --t-menu:.8125rem;
+  --g-moyen:500; --g-fort:600; --g-noir:800;
+  --i-serre:.98; --i-titre:1.15; --i-corps:1.62;
+  --l-serre:-.035em; --l-titre:-.02em;
+  --e-1:.25rem; --e-2:.5rem; --e-3:.75rem; --e-4:1rem; --e-5:1.5rem;
+  --e-6:2rem; --e-7:3rem; --e-8:4rem; --e-9:6rem;
+  --mesure-l:42rem; --contenu:74rem;
+  --r-1:.375rem; --r-2:.5rem; --r-3:.75rem; --r-4:1rem; --r-plein:9999px;
+  --o-1:0 1px 2px rgba(9,9,11,.06);
+  --o-2:0 1px 3px rgba(9,9,11,.08),0 1px 2px rgba(9,9,11,.04);
+  --o-3:0 4px 12px rgba(9,9,11,.08);
+  --transition:140ms cubic-bezier(.4,0,.2,1);
+}
+:root[data-theme="sombre"]{
+  --fond:#09090B; --fond-2:#0F0F11; --fond-3:#18181B;
+  --encre:#FAFAFA; --encre-2:#D4D4D8; --encre-3:#A1A1AA; --encre-4:#52525B;
+  --bord:#27272A; --bord-fort:#3F3F46;
+  --marque-rose:#FF4FB0; --marque-corail:#FF6A50;
+  --signal:#FF7A45; --signal-encre:#1A0C05; --signal-voile:#2A1610;
+  --mesure:#8FB2F0; --mesure-2:#6E8FCB; --mesure-voile:#18213A;
+  --action:#FAFAFA; --action-survol:#E4E4E7; --action-encre:#18181B;
+  --o-1:0 1px 2px rgba(0,0,0,.5); --o-2:0 1px 3px rgba(0,0,0,.6);
+  --o-3:0 4px 14px rgba(0,0,0,.6);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="clair"]){
+    --fond:#09090B; --fond-2:#0F0F11; --fond-3:#18181B;
+    --encre:#FAFAFA; --encre-2:#D4D4D8; --encre-3:#A1A1AA; --encre-4:#52525B;
+    --bord:#27272A; --bord-fort:#3F3F46;
+    --marque-rose:#FF4FB0; --marque-corail:#FF6A50;
+    --signal:#FF7A45; --signal-encre:#1A0C05; --signal-voile:#2A1610;
+    --mesure:#8FB2F0; --mesure-2:#6E8FCB; --mesure-voile:#18213A;
+    --action:#FAFAFA; --action-survol:#E4E4E7; --action-encre:#18181B;
+    --o-1:0 1px 2px rgba(0,0,0,.5); --o-2:0 1px 3px rgba(0,0,0,.6);
+    --o-3:0 4px 14px rgba(0,0,0,.6);
+  }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--fond);color:var(--encre-2);font-family:var(--police);
+     font-size:1rem;line-height:var(--i-corps);-webkit-font-smoothing:antialiased}
+.enveloppe{max-width:var(--contenu);margin:0 auto;padding:0 var(--e-5)}
+h1,h2,h3,h4{color:var(--encre);letter-spacing:var(--l-titre);line-height:var(--i-titre);
+            font-weight:var(--g-fort);margin:0;text-wrap:balance}
+p{margin:0 0 var(--e-4)}
+b,strong{color:var(--encre);font-weight:var(--g-fort)}
+code{font-family:var(--police-mono);font-size:.9em;background:var(--fond-3);
+     padding:.1em .35em;border-radius:var(--r-1);color:var(--encre)}
+.lire{max-width:var(--mesure-l)}
+.masque{display:none}
+.barre{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--fond) 88%,transparent);
+       backdrop-filter:blur(12px);border-bottom:1px solid var(--bord)}
+.barre__int{max-width:var(--contenu);margin:0 auto;padding:var(--e-3) var(--e-5);
+            display:flex;align-items:center;gap:var(--e-3);flex-wrap:wrap}
+.marque{font-weight:var(--g-noir);letter-spacing:var(--l-serre);color:var(--encre);font-size:1.0625rem}
+.marque i{font-style:normal;background:var(--marque-degrade);
+          -webkit-background-clip:text;background-clip:text;color:transparent}
+.barre__vide{flex:1}
+.bt{border:1px solid var(--bord-fort);background:var(--fond);color:var(--encre-2);font:inherit;
+    font-size:var(--t-menu);font-weight:var(--g-moyen);padding:var(--e-1) var(--e-3);
+    border-radius:var(--r-plein);cursor:pointer;transition:var(--transition)}
+.bt:hover{border-color:var(--encre-4);color:var(--encre)}
+.bt[aria-pressed="true"]{background:var(--mesure);border-color:var(--mesure);color:#fff}
+:root[data-theme="sombre"] .bt[aria-pressed="true"]{color:#09090B}
+.heros{padding:var(--e-8) 0 var(--e-6)}
+.pastille{display:inline-flex;align-items:center;gap:var(--e-2);font-size:var(--t-petit);
+          font-weight:var(--g-moyen);color:var(--signal);background:var(--signal-voile);
+          border-radius:var(--r-plein);padding:var(--e-1) var(--e-3);margin-bottom:var(--e-5)}
+.pastille::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--signal)}
+.heros h1{font-size:var(--t-affiche);font-weight:var(--g-noir);letter-spacing:var(--l-serre);
+          line-height:var(--i-serre);max-width:17ch}
+.heros h1 i{font-style:normal;background:var(--marque-degrade);
+            -webkit-background-clip:text;background-clip:text;color:transparent}
+.heros .avant{font-size:var(--t-avant);color:var(--encre-3);max-width:var(--mesure-l);
+              margin-top:var(--e-5);text-wrap:pretty}
+section{padding:var(--e-7) 0;border-top:1px solid var(--bord);scroll-margin-top:4.5rem}
+.oeil{font-size:var(--t-menu);text-transform:uppercase;letter-spacing:.14em;
+      color:var(--encre-4);font-weight:var(--g-fort);margin-bottom:var(--e-3)}
+section>.enveloppe>h2{font-size:var(--t-titre-1);margin-bottom:var(--e-5)}
+.gros{display:inline-block;padding:var(--e-3) var(--e-6);border-radius:var(--r-2);
+      background:var(--action);color:var(--action-encre);border:0;font:inherit;
+      font-weight:var(--g-fort);font-size:1rem;cursor:pointer;text-decoration:none}
+.gros[disabled]{opacity:.4;cursor:default}
+.capot{display:none;margin-top:var(--e-6);border-top:1px dashed var(--bord-fort);padding-top:var(--e-5)}
+body.conception .capot{display:block}
+.capot h4{color:var(--mesure);font-size:var(--t-menu);text-transform:uppercase;
+          letter-spacing:.1em;margin-bottom:var(--e-3)}
+.preuve{background:var(--fond-3);border-radius:var(--r-2);padding:var(--e-4) var(--e-5);font-size:.9375rem}
+.preuve p:last-child{margin-bottom:0}
+.enrob{overflow-x:auto}
+.tab{width:100%;border-collapse:collapse;font-size:.9375rem;margin-top:var(--e-4)}
+.tab th,.tab td{text-align:left;padding:var(--e-2) var(--e-3);border-bottom:1px solid var(--bord);
+                vertical-align:top}
+.tab th{font-size:var(--t-menu);text-transform:uppercase;letter-spacing:.1em;
+        color:var(--encre-4);font-weight:var(--g-fort)}
+.tab tr:last-child td{border-bottom:0}
+.garde{background:var(--fond-3);border-radius:var(--r-3);padding:var(--e-5) var(--e-6)}
+.garde ul{margin:0;padding-left:1.1em}
+.garde li{margin-bottom:var(--e-2)}
+.garde li:last-child{margin-bottom:0}
+.chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;
+          background:var(--bord);border:1px solid var(--bord);border-radius:var(--r-3);
+          overflow:hidden;margin-top:var(--e-5)}
+.ch{background:var(--fond);padding:var(--e-4) var(--e-5)}
+.ch__v{font-family:var(--police-mono);font-size:1.5rem;color:var(--encre);
+       font-variant-numeric:tabular-nums}
+.ch__v--m{color:var(--mesure)}
+.ch__v--s{color:var(--signal)}
+.ch__c{font-size:.75rem;color:var(--encre-4);text-transform:uppercase;
+       letter-spacing:.1em;margin-top:var(--e-1)}
+footer{padding:var(--e-8) 0 var(--e-9);color:var(--encre-4);font-size:var(--t-petit)}
+@media print{
+  :root{--fond:#FFF;--fond-2:#FFF;--fond-3:#F4F4F5;--encre:#09090B;--encre-2:#3F3F46;
+        --encre-3:#52525B;--encre-4:#71717A;--bord:#D4D4D8;--bord-fort:#A1A1AA;
+        --o-1:none;--o-2:none;--o-3:none}
+  @page{margin:14mm 12mm}
+  .barre{display:none}
+  .heros{padding-top:0}
+  .capot{display:block}
+  body{font-size:10.5pt}
+  .tab tr,.preuve,.garde{break-inside:avoid}
+  h1,h2,h3{break-after:avoid}
+  .enveloppe{padding:0}
+}
+
+
+.avertir{border:1px solid var(--signal);border-left:3px solid var(--signal);
+         border-radius:var(--r-3);background:var(--signal-voile);padding:var(--e-5) var(--e-6);
+         max-width:var(--mesure-l);margin-top:var(--e-6)}
+.avertir h3{font-size:var(--t-titre-3);color:var(--signal);margin-bottom:var(--e-2)}
+.avertir p:last-child{margin-bottom:0}
+.avertir p{color:var(--encre-2)}
+
+/* ── Le tableau de bord ── */
+.grille{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:var(--e-4)}
+.carte{border:1px solid var(--bord);border-radius:var(--r-3);padding:var(--e-5);background:var(--fond)}
+.carte h3{font-size:.9375rem;margin-bottom:var(--e-3)}
+.carte__n{font-family:var(--police-mono);font-size:2rem;color:var(--encre);
+          font-variant-numeric:tabular-nums;line-height:1}
+.carte__c{font-size:var(--t-menu);color:var(--encre-4);margin-top:var(--e-1);
+          text-transform:uppercase;letter-spacing:.08em}
+.carte__n--m{color:var(--mesure)}
+.carte__n--s{color:var(--signal)}
+
+.etapes{margin-top:var(--e-5)}
+.etape{display:grid;grid-template-columns:14rem 1fr 4rem;gap:var(--e-4);align-items:center;
+       padding:var(--e-2) 0;border-bottom:1px solid var(--bord);font-size:.9375rem}
+.etape:last-child{border-bottom:0}
+.etape__b{height:10px;background:var(--fond-3);border-radius:var(--r-plein);overflow:hidden}
+.etape__b i{display:block;height:100%;background:var(--mesure)}
+.etape__b i.mauvais{background:var(--signal)}
+.etape__v{font-family:var(--police-mono);text-align:right;color:var(--encre-3);
+          font-variant-numeric:tabular-nums}
+
+/* ── Les questions ── */
+.budget{display:flex;align-items:center;gap:var(--e-3);flex-wrap:wrap;margin-bottom:var(--e-5)}
+.jetons{display:flex;gap:var(--e-2)}
+.jeton{width:14px;height:14px;border-radius:50%;background:var(--mesure);border:1px solid var(--mesure)}
+.jeton.use{background:transparent;border-color:var(--bord-fort)}
+.questions{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:var(--e-3)}
+.q{text-align:left;border:1px solid var(--bord);border-radius:var(--r-3);background:var(--fond);
+   padding:var(--e-4) var(--e-5);font:inherit;cursor:pointer;color:var(--encre-2);
+   transition:var(--transition)}
+.q:hover:not([disabled]){border-color:var(--encre-4);box-shadow:var(--o-2)}
+.q[disabled]{opacity:.4;cursor:default}
+.q b{display:block;margin-bottom:var(--e-1);font-size:.9375rem}
+.q span{font-size:var(--t-menu);color:var(--encre-4)}
+.q.ouverte{border-color:var(--mesure);background:var(--mesure-voile);cursor:default}
+.reponse{margin-top:var(--e-4);padding-top:var(--e-4);border-top:1px solid var(--bord)}
+.reponse p{font-size:.9375rem;margin-bottom:var(--e-3)}
+.reponse p:last-child{margin-bottom:0}
+svg.fig{width:100%;height:auto;display:block;overflow:visible}
+
+/* ── Les leviers ── */
+.leviers{display:grid;gap:var(--e-3);margin-top:var(--e-5)}
+.levier{text-align:left;border:1px solid var(--bord);border-radius:var(--r-3);background:var(--fond);
+        padding:var(--e-4) var(--e-5);font:inherit;cursor:pointer;color:var(--encre-2);
+        transition:var(--transition)}
+.levier:hover:not([disabled]){border-color:var(--encre);box-shadow:var(--o-2)}
+.levier[disabled]{opacity:.35;cursor:default}
+.levier b{display:block;font-size:1rem;margin-bottom:var(--e-1)}
+.levier span{font-size:var(--t-menu);color:var(--encre-4)}
+.levier--rien{border-style:dashed}
+
+/* ── La contre-épreuve ── */
+.paire{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:var(--e-4);
+       margin-top:var(--e-5)}
+.delta{border:1px solid var(--bord);border-radius:var(--r-3);padding:var(--e-5);background:var(--fond)}
+.delta__n{font-family:var(--police-mono);font-size:1.75rem;font-variant-numeric:tabular-nums}
+.delta__n.mieux{color:var(--mesure)}
+.delta__n.pire{color:var(--signal)}
+.delta__n.rien{color:var(--encre-4)}
+.delta__c{font-size:var(--t-menu);color:var(--encre-4);margin-top:var(--e-1);
+          text-transform:uppercase;letter-spacing:.08em}
+.delta__d{font-size:var(--t-menu);color:var(--encre-3);margin-top:var(--e-2)}
+.jugement{border:1px solid var(--bord);border-left:3px solid var(--mesure);border-radius:var(--r-3);
+          padding:var(--e-6);background:var(--mesure-voile);margin-top:var(--e-6)}
+.jugement h3{font-size:var(--t-titre-2);margin-bottom:var(--e-3)}
+.jugement p:last-child{margin-bottom:0}
+.jugement--piege{border-left-color:var(--signal);background:var(--signal-voile)}
+
+.import{border:1px dashed var(--bord-fort);border-radius:var(--r-3);padding:var(--e-5) var(--e-6);
+        background:var(--fond-2)}
+.import p:last-child{margin-bottom:0}
+input[type=file]{font:inherit;font-size:.875rem;color:var(--encre-3)}
+.tab td:first-child{font-family:var(--police-mono);color:var(--encre-4);white-space:nowrap}
+</style>
+
+<div class="barre"><div class="barre__int">
+  <span class="marque">La <i>cohorte</i></span>
+  <span class="barre__vide"></span>
+  <button class="bt" id="bVue" type="button" aria-pressed="false">Vue conception</button>
+  <button class="bt" id="bTheme" type="button">Thème</button>
+</div></div>
+
+<div class="heros"><div class="enveloppe">
+  <span class="pastille">Simulateur de défibrillateur · proposition 04 · 8 septembre 2026</span>
+  <h1>Cette fois, <i>le concepteur, c'est vous.</i></h1>
+  <p class="avant">Quarante personnes ont joué le simulateur. Vous avez leurs traces, trois
+  questions à poser, et <b>une seule modification à faire</b>. Le tableau de bord vous donnera
+  une réponse évidente — et elle est fausse.</p>
+
+  <div class="avertir">
+    <h3>La cohorte est simulée. Ce n'est pas une précaution de bas de page.</h3>
+    <p>Ces quarante passages ne viennent de personne : ils sont produits par un modèle dont
+    <b>tous les paramètres sont ouverts</b> sous l'interrupteur « vue conception ». Cette page
+    démontre donc un <b>raisonnement de diagnostic</b> — pas un fait sur les apprenants du
+    simulateur. Un problème de mécanique enseigne la mécanique sans être une expérience ;
+    c'est le même statut.</p>
+    <p>Ce qu'il faudrait pour qu'elle établisse quoi que ce soit de réel est écrit à la fin, et
+    la page <b>accepte les vrais journaux</b> le jour où ils existeront : même format, même
+    analyse, même code.</p>
+  </div>
+</div></div>
+
+<section><div class="enveloppe">
+  <div class="oeil">Ce qu'on vous donne gratuitement</div>
+  <h2>Le tableau de bord</h2>
+  <p class="lire">Les colonnes qu'un outil produit tout seul : la durée, le taux de réussite
+  par étape, les fautes. C'est ce qu'on regarde en premier, et c'est le piège.</p>
+  <div class="grille" id="cartes"></div>
+  <div class="etapes" id="etapes"></div>
+  <p class="lire" style="margin-top:var(--e-5);font-size:.9375rem;color:var(--encre-3)"
+     id="sourceDonnees"></p>
+</div></section>
+
+<section id="questions"><div class="enveloppe">
+  <div class="oeil">Ce qui coûte</div>
+  <h2>Trois questions, pas une de plus</h2>
+  <p class="lire">Un vrai diagnostic n'est pas gratuit : chaque croisement demande du temps,
+  et on n'en fait jamais autant qu'on voudrait. Choisissez les trois qui vous semblent les
+  plus susceptibles de <b>changer votre décision</b> — pas les plus intéressantes.</p>
+  <div class="budget">
+    <span style="font-size:var(--t-menu);text-transform:uppercase;letter-spacing:.1em;color:var(--encre-4);font-weight:600">Questions restantes</span>
+    <span class="jetons" id="jetons"></span>
+  </div>
+  <div class="questions" id="listeQ"></div>
+</div></section>
+
+<section id="decision"><div class="enveloppe">
+  <div class="oeil">La décision</div>
+  <h2>Une seule modification</h2>
+  <p class="lire">Chacune est plausible, chacune a été défendue par quelqu'un. Vous ne pouvez
+  en faire qu'une, et vous la ferez avec ce que vous savez maintenant.</p>
+  <div class="leviers" id="leviers"></div>
+</div></section>
+
+<section class="masque" id="resultat"><div class="enveloppe">
+  <div class="oeil">La contre-épreuve</div>
+  <h2 id="titreResultat"></h2>
+  <p class="lire">Les <b>mêmes quarante personnes</b> rejouent, avec exactement les mêmes
+  dispositions de départ. Une seule chose a changé : la vôtre. C'est la seule façon d'attribuer
+  un écart à une décision plutôt qu'au hasard des gens.</p>
+  <div class="paire" id="deltas"></div>
+  <div class="jugement" id="jugement"></div>
+
+  <div class="capot">
+    <h4>Vue conception — le modèle qui a produit la cohorte</h4>
+    <p class="lire">Chaque personne simulée porte <b>trois variables cachées</b> tirées une
+    fois pour toutes, et tout le reste en découle. Elles ne sont jamais affichées dans le
+    tableau de bord, exactement comme dans la vraie vie.</p>
+    <div class="enrob"><table class="tab">
+      <thead><tr><th>Variable cachée</th><th>Ce qu'elle produit</th></tr></thead>
+      <tbody>
+        <tr><td>savoir</td><td>Le délai avant la première compression, les commandes
+        prématurées, une partie des essais d'électrodes.</td></tr>
+        <tr><td>assurance</td><td>Le délai avant d'examiner, et surtout le fait de donner un
+        ordre <b>vague</b> plutôt que de désigner quelqu'un.</td></tr>
+        <tr><td>endurance</td><td>Les arrêts longs pendant l'attente, la dérive de cadence,
+        et l'abandon.</td></tr>
+      </tbody>
+    </table></div>
+    <p class="lire" style="margin-top:var(--e-5)"><b>Les deux pièges sont construits, et ils
+    sont les seules choses de cette page qui valent d'être retenues.</b></p>
+    <div class="preuve">
+      <p><b>Piège 1 — le plus gros nombre n'est pas le plus gros levier.</b> La pose des
+      électrodes a le pire taux de réussite du tableau : c'est l'étape qui saute aux yeux.
+      Mais un échec de pose est <b>auto-correcteur</b> — l'appareil refuse, on recommence, ça
+      coûte huit secondes. Guider davantage améliore une colonne et ne déplace presque rien.</p>
+      <p><b>Piège 2 — améliorer la mesure en dégradant la chose.</b> Raccourcir l'attente de
+      quatre-vingt-dix à quarante-cinq secondes fait <b>chuter la fraction sans compression</b>,
+      qui est le meilleur indicateur du tableau. Le chiffre s'améliore franchement. Et
+      l'apprentissage se dégrade : la scène ne pose plus la question qu'elle existait pour
+      poser — que fait-on pendant que l'appareil n'est pas là. C'est la faute la plus commune
+      en conception, et la plus difficile à voir, parce que le tableau de bord applaudit.</p>
+      <p style="margin-bottom:0"><b>Le levier réel</b> est celui qu'un lecteur réel avait déjà
+      trouvé en cinq minutes, hors de toute cohorte : pendant quatre-vingt-dix secondes,
+      <b>rien à l'écran ne disait ce qu'on attendait</b>. Écrire la consigne divise les arrêts
+      longs et la moitié des abandons. Ce n'est pas la cohorte qui l'a trouvé — c'est une
+      personne. La cohorte ne fait que le confirmer, et c'est tout ce qu'une cohorte sait
+      faire.</p>
+    </div>
+  </div>
+
+  <p style="margin-top:var(--e-6)">
+    <button class="gros" id="bRejouer" type="button">Reprendre depuis le début</button>
+  </p>
+</div></section>
+
+<section class="masque" id="fin"><div class="enveloppe">
+  <div class="oeil">La huitième fois qu'on l'écrit</div>
+  <h2>Ce que cette page ne prouve pas</h2>
+  <div class="lire">
+    <p>Elle ne prouve <b>rien</b> sur les gens qui utilisent le simulateur. Les quarante
+    passages sortent d'un modèle que j'ai écrit ; que le levier caché soit meilleur que le
+    leurre est vrai <b>par construction</b>, et je l'ai construit ainsi parce que je crois que
+    c'est le cas — pas parce que je l'ai mesuré.</p>
+    <p>Ce qu'elle démontre, en revanche, tient debout tout seul : qu'un tableau de bord de taux
+    de réussite est un mauvais instrument pour une tâche qui se joue dans le temps ; qu'une
+    modification ne se juge qu'en <b>contre-épreuve appariée</b> ; et qu'un indicateur qui
+    s'améliore peut signaler une conception qui se dégrade. Ces trois choses-là ne dépendent
+    pas de la vérité de mes chiffres.</p>
+    <p>La différence entre les deux tient en une phrase, la même que dans la pièce voisine :
+    <b>un résultat survit au fait que son auteur souhaitait le contraire.</b> Rien ici n'a
+    encore eu cette occasion.</p>
+  </div>
+
+  <div class="import" style="margin-top:var(--e-6);max-width:var(--mesure-l)">
+    <p><b>Et le jour où les journaux existeront.</b> Le simulateur exporte déjà ses passages en
+    JSON, sans nom, sans identifiant durable, par un geste explicite. Déposez ce fichier ici :
+    la page recalcule <b>le même tableau de bord et les mêmes trois questions</b> sur les vraies
+    traces — c'est le même code, la cohorte simulée n'a fait que le nourrir en attendant.</p>
+    <p><input type="file" id="fichier" accept="application/json,.json"></p>
+    <p id="etatImport" style="font-size:.875rem;color:var(--encre-3)"></p>
+    <p style="font-size:.875rem;color:var(--encre-4);margin-bottom:0">La contre-épreuve, elle,
+    s'éteindra : <b>on ne rejoue pas des gens réels avec un paramètre changé.</b> Il faudrait
+    deux groupes, et c'est une autre soirée. Le dire est la moitié du travail.</p>
+  </div>
+
+  <div class="garde lire" style="margin-top:var(--e-6)">
+    <ul>
+      <li><b>Aucune donnée ne quitte cette page</b>, y compris un journal déposé : la lecture
+      se fait dans le navigateur, rien n'est envoyé nulle part.</li>
+      <li><b>Un journal exporté reste une donnée d'essai.</b> Il ne porte ni nom ni identifiant
+      durable, mais son horodatage réel, croisé avec une liste de présences, redeviendrait
+      identifiant.</li>
+      <li><b>Aucun score, aucun classement</b> — ni des apprenants, ni de vous.</li>
+    </ul>
+  </div>
+</div></section>
+
+<footer><div class="enveloppe">
+  Portfolio de conception pédagogique · Simulateur de défibrillateur, proposition 04 ·
+  8 septembre 2026. Cohorte simulée, modèle ouvert, format d'échange identique à celui du
+  journal de passage réel.
+</div></footer>
+
+<script>
+(function(){
+/* ═══════════════════════════════════════════════════════════════════════════
+   La cohorte est produite au format EXACT du journal de passage du simulateur
+   (`src/journal.js`, version 1) : mêmes noms d'états, mêmes champs. C'est la
+   seule garantie que l'analyse écrite ici tournera sans retouche sur un vrai
+   export — sinon on aurait écrit deux analyses, dont une seule serait vraie.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+var GRAINE = 20260908;
+var N = 40;
+
+/* Générateur reproductible : deux exécutions donnent la même cohorte, et les
+   nombres cités dans la vue conception restent vrais. */
+function alea(g){ return function(){
+  g |= 0; g = g + 0x6D2B79F5 | 0;
+  var t = Math.imul(g ^ g >>> 15, 1 | g);
+  t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+  return ((t ^ t >>> 14) >>> 0) / 4294967296;
+};}
+
+/* ── Le modèle ───────────────────────────────────────────────────────────── */
+var BASE = { attente: 90000, consigneAttente: false, guideElectrodes: false,
+             metronome: false, libellesOrdres: false };
+
+function personne(i){
+  var r = alea(GRAINE + i * 7919);
+  return { id: i, savoir: r(), assurance: r(), endurance: r(), bruit: r };
+}
+
+function jouer(p, opt){
+  /* QUATRE FLUX INDÉPENDANTS, et c'est la correction la plus importante de
+     cette page. Avec un seul flux partagé, changer un paramètre consommait un
+     nombre de tirages différent et DÉCALAIT tout ce qui venait après : guider
+     les électrodes déplaçait la fraction sans compression, ce qui est
+     impossible. La contre-épreuve « mêmes gens, une seule chose changée »
+     était donc fausse — exactement la faute que cette page dénonce.
+     Chaque sous-système tire dans son propre flux : une modification qui ne le
+     concerne pas ne peut plus rien y changer. */
+  var rScene   = alea(GRAINE + p.id * 104729 + 11);   /* arrivée, examen, appel */
+  var rAttente = alea(GRAINE + p.id * 104729 + 22);   /* la phase d'attente */
+  var rAppareil= alea(GRAINE + p.id * 104729 + 33);   /* électrodes, choc */
+  var rCpr     = alea(GRAINE + p.id * 104729 + 44);   /* après le choc */
+  var t = 0, etats = [], battements = [], fautes = [];
+  var pousser = function(nom, duree, delai){
+    etats.push({ nom: nom, t: t, duree: duree, delaiPremiereAction: delai });
+    t += duree;
+  };
+
+  /* ARRIVEE puis EXAMEN : l'assurance commande le délai d'entrée en action. */
+  var dArrivee = 1200 + (1 - p.assurance) * 5200 + rScene() * 1500;
+  pousser('ARRIVEE', dArrivee + 800, Math.round(dArrivee));
+  var dExamen = 900 + (1 - p.assurance) * 4200 + rScene() * 1200;
+  pousser('EXAMEN', dExamen + 10000, Math.round(dExamen));
+
+  /* APPEL : donner un ordre vague est un défaut d'assurance, pas de savoir —
+     et c'est pour ça que reformuler le bouton n'y changera rien. Le libellé
+     réduit un peu la marge, jamais le fond. */
+  var seuilVague = 0.52 - (opt.libellesOrdres ? 0.06 : 0);
+  var vague = p.assurance < seuilVague;
+  if (vague) fautes.push({ nom: 'ordre_vague', t: Math.round(t + 500), etat: 'APPEL' });
+  var dAppel = 2000 + (vague ? 4500 : 0) + (1 - p.assurance) * 2500 + rScene() * 1500;
+  pousser('APPEL', dAppel, Math.round(1200 + (1 - p.assurance) * 1800));
+
+  /* RCP_ATTENTE : la phase qui décide de tout. Le délai avant de comprimer
+     tient au savoir ; les arrêts longs tiennent à l'endurance. La consigne à
+     l'écran agit sur les DEUX, parce qu'elle dit quoi faire et pourquoi
+     continuer. C'est le levier, et il est petit à écrire. */
+  var attente = opt.attente;
+  var dCompression = 1500 + (1 - p.savoir) * 9000 + rAttente() * 2500;
+  if (opt.consigneAttente) dCompression *= 0.45;
+  dCompression = Math.min(dCompression, attente - 8000);
+
+  var abandon = false, tAbandon = null;
+  /* Calibré : 0,30 donnait 48 % d'abandons sur quarante tirages — une cohorte
+     que personne ne croirait, et un tableau de bord illisible. */
+  var seuilAbandon = 0.20 - (opt.consigneAttente ? 0.10 : 0);
+  if (p.endurance < seuilAbandon && attente > 60000) {
+    abandon = true;
+    tAbandon = t + dCompression + 30000 + p.endurance * 90000 + rAttente() * 12000;
+    tAbandon = Math.min(tAbandon, t + attente - 2000);
+  }
+
+  var debutC = t + dCompression;
+  var finC = abandon ? tAbandon : t + attente;
+  /* 480 à 660 ms, soit 91 à 125 par minute au départ : la dérive ramène la
+     médiane autour de cent. Le premier réglage descendait à 78, ce qui
+     faisait passer la cadence pour le problème principal — elle ne l'est pas. */
+  var inter = 480 + (1 - p.endurance) * 180;
+  if (opt.metronome) inter = 510 + (1 - p.endurance) * 60;   /* le métronome resserre */
+  var derive = opt.metronome ? 0.05 : 0.26;                  /* …et freine la dérive */
+  /* Les arrêts sont tirés D'AVANCE, en nombre fixe de tirages, et placés à des
+     fractions de la phase. Tirés dans la boucle, leur nombre dépendait du
+     nombre d'itérations, donc de la cadence : le métronome décalait le flux et
+     inventait un arrêt de plus. Une contre-épreuve dont le hasard bouge n'est
+     pas une contre-épreuve. */
+  var poolPos = [rAttente(), rAttente(), rAttente(), rAttente()];
+  var poolDur = [rAttente(), rAttente(), rAttente(), rAttente()];
+  var nArrets = Math.round((1 - p.endurance) * 4 * (opt.consigneAttente ? 0.4 : 1));
+  var arrets = poolPos.slice(0, nArrets)
+    .map(function(x, i){ return { q: 0.12 + x * 0.8, d: 4200 + poolDur[i] * 7000 }; })
+    .sort(function(x, y){ return x.q - y.q; });
+  var iArret = 0, u = debutC;
+  while (u < finC) {
+    battements.push({ type: 'compression', t: Math.round(u) });
+    var q = (u - debutC) / Math.max(1, finC - debutC);
+    var pas = inter * (1 + derive * q);
+    if (iArret < arrets.length && q >= arrets[iArret].q) { pas += arrets[iArret].d; iArret++; }
+    u += pas;
+  }
+  pousser('RCP_ATTENTE', (abandon ? tAbandon - t : attente), Math.round(dCompression));
+
+  if (abandon) {
+    return fabriquer(p, etats, battements, fautes, 'abandon');
+  }
+
+  /* L'appareil. La pose d'électrodes échoue souvent — et se rattrape toute
+     seule en huit secondes. C'est exactement ce qui en fait un leurre. */
+  pousser('IDLE', 1500 + rAppareil() * 1200, Math.round(900 + (1 - p.savoir) * 2600));
+  pousser('STARTING', 2200, 0);
+  /* −0,22 et non −0,34 : le premier réglage faisait passer la pose du premier
+     coup de 59 % à 100 %, un résultat que personne ne croirait. */
+  var pProbleme = 0.62 - p.savoir * 0.35 - (opt.guideElectrodes ? 0.22 : 0);
+  var essais = 0;
+  while (rAppareil() < pProbleme && essais < 3) {
+    essais++;
+    fautes.push({ nom: 'electrode_mal_placee', t: Math.round(t + essais * 8000),
+                  etat: 'ATTACH_PADS' });
+  }
+  pousser('ATTACH_PADS', 6000 + essais * 8000 + (1 - p.savoir) * 4000,
+          Math.round(1500 + (1 - p.savoir) * 3500));
+  pousser('ANALYZING', 9000, null);
+
+  if (p.savoir < 0.22 && rAppareil() < 0.5) {
+    fautes.push({ nom: 'commande_prematuree', t: Math.round(t), etat: 'SHOCK_ADVISED' });
+  }
+  pousser('SHOCK_ADVISED', 3000, Math.round(800 + (1 - p.savoir) * 2600));
+  pousser('SHOCK_DELIVERED', 1500, null);
+
+  /* CPR : deux minutes après le choc, mêmes ressorts. */
+  var d2 = 800 + (1 - p.savoir) * 3500;
+  var debut2 = t + d2, fin2 = t + 120000, v = debut2;
+  var inter2 = inter * 1.06;
+  var pool2 = [rCpr(), rCpr(), rCpr()], dur2 = [rCpr(), rCpr(), rCpr()];
+  var n2 = Math.round((1 - p.endurance) * 3 * (opt.consigneAttente ? 0.6 : 1));
+  var arrets2 = pool2.slice(0, n2)
+    .map(function(x, i){ return { q: 0.12 + x * 0.8, d: 4200 + dur2[i] * 6000 }; })
+    .sort(function(x, y){ return x.q - y.q; });
+  var j2 = 0;
+  while (v < fin2) {
+    battements.push({ type: 'compression', t: Math.round(v) });
+    var q2 = (v - debut2) / Math.max(1, fin2 - debut2);
+    var pas2 = inter2 * (1 + derive * q2);
+    if (j2 < arrets2.length && q2 >= arrets2[j2].q) { pas2 += arrets2[j2].d; j2++; }
+    v += pas2;
+  }
+  pousser('CPR', 120000, Math.round(d2));
+  pousser('END', 0, null);
+  return fabriquer(p, etats, battements, fautes, 'fin');
+}
+
+/* Le résumé est calculé comme le fait `journal.js`, avec les mêmes règles :
+   médiane sur les intervalles courts, pause maximale sur les intervalles
+   entiers. Un filtre appliqué avant rendrait la mesure aveugle à ce qu'elle
+   cherche — c'est un défaut que ce projet a déjà eu. */
+function fabriquer(p, etats, battements, fautes, raison){
+  var c = battements.filter(function(b){ return b.type === 'compression'; });
+  var iv = c.map(function(b, i){ return i ? b.t - c[i - 1].t : null; })
+            .filter(function(d){ return d !== null; });
+  var courts = iv.filter(function(d){ return d < 5000; });
+  var med = mediane(courts);
+  var duree = etats.length ? Math.round((etats[etats.length - 1].t
+              + (etats[etats.length - 1].duree || 0)) / 1000) : 0;
+  return {
+    id: 'sim' + p.id, etats: etats, battements: battements, fautes: fautes,
+    quiz: [], raison: raison,
+    resume: {
+      duree: duree, etatsTraverses: etats.length,
+      compressions: c.length, insufflations: 0,
+      cadenceMediane: med ? Math.round(60000 / med) : null,
+      pauseMaximale: iv.length ? Math.max.apply(null, iv) : null,
+      interruptionsLongues: iv.filter(function(d){ return d >= 5000; }).length,
+      fautes: fautes.length, quizJustes: 0, quizTotal: 0
+    }
+  };
+}
+function mediane(a){
+  if (!a.length) return 0;
+  var b = a.slice().sort(function(x, y){ return x - y; });
+  var m = Math.floor(b.length / 2);
+  return b.length % 2 ? b[m] : (b[m - 1] + b[m]) / 2;
+}
+
+/* ── L'analyse : elle ne connaît que le format du journal ─────────────────── */
+function etatDe(p, nom){
+  return p.etats.filter(function(e){ return e.nom === nom; })[0] || null;
+}
+function lire(p){
+  var att = etatDe(p, 'RCP_ATTENTE');
+  var c = p.battements.filter(function(b){ return b.type === 'compression'; });
+  var iv = c.map(function(b, i){ return i ? b.t - c[i - 1].t : null; })
+            .filter(function(d){ return d !== null; });
+  /* Fraction sans compression : le temps passé dans les phases de compression
+     sans qu'aucune n'ait lieu, rapporté à la durée de ces phases. C'est la
+     seule variable du tableau dont on sache qu'elle est liée à l'issue. */
+  /* Phase par phase, et jamais d'un bout à l'autre : compté globalement,
+     l'intervalle entre la dernière compression de l'attente et la première
+     d'après le choc enjambe TOUTE la séquence de l'appareil. Guider la pose
+     des électrodes raccourcissait cet intervalle et faisait donc bouger la
+     fraction sans compression — un chiffre qu'elle ne peut pas toucher. */
+  var phases = ['RCP_ATTENTE', 'CPR'].map(function(n){ return etatDe(p, n); })
+                                     .filter(Boolean);
+  var duree = 0, mort = 0;
+  phases.forEach(function(e){
+    var fin = e.t + (e.duree || 0);
+    var dedans = c.filter(function(b){ return b.t >= e.t && b.t <= fin; });
+    duree += (e.duree || 0);
+    mort += (e.delaiPremiereAction || 0);
+    for (var i = 1; i < dedans.length; i++) {
+      var d = dedans[i].t - dedans[i - 1].t;
+      if (d >= 3000) mort += d - 3000;
+    }
+  });
+  return {
+    abandon: p.raison !== 'fin',
+    duree: p.resume.duree,
+    delaiCompression: att ? att.delaiPremiereAction : null,
+    tAbandon: p.raison !== 'fin' ? p.resume.duree : null,
+    fraction: duree ? Math.min(100, Math.round(100 * mort / duree)) : null,
+    arretsLongs: p.resume.interruptionsLongues,
+    cadence: p.resume.cadenceMediane,
+    ordreVague: p.fautes.some(function(f){ return f.nom === 'ordre_vague'; }),
+    essaisElectrodes: p.fautes.filter(function(f){ return f.nom === 'electrode_mal_placee'; }).length,
+    premature: p.fautes.some(function(f){ return f.nom === 'commande_prematuree'; })
+  };
+}
+function moy(a){ return a.length ? a.reduce(function(s, x){ return s + x; }, 0) / a.length : 0; }
+
+/* ── État de l'interface ─────────────────────────────────────────────────── */
+var el = function(i){ return document.getElementById(i); };
+var gens, cohorte, vues, budget = 3, importe = false;
+
+function construire(opt, sceau){
+  return gens.map(function(p){ return jouer(p, Object.assign({}, opt, { sceau: sceau || 0 })); });
+}
+
+function demarrer(){
+  gens = []; for (var i = 0; i < N; i++) gens.push(personne(i));
+  cohorte = construire(BASE, 0);
+  importe = false;
+  budget = 3; vues = {};
+  el('sourceDonnees').innerHTML = "<b>Source :</b> quarante passages engendrés par le modèle "
+    + "de cette page, au format du journal de passage réel. Aucun ne vient de quelqu'un.";
+  peindre(); peindreQuestions(); peindreLeviers();
+  el('resultat').classList.add('masque'); el('fin').classList.add('masque');
+  el('questions').classList.remove('masque'); el('decision').classList.remove('masque');
+}
+
+/* ── Le tableau de bord ─────────────────────────────────────────────────── */
+function peindre(){
+  var L = cohorte.map(lire);
+  var finis = L.filter(function(x){ return !x.abandon; });
+  var cartes = [
+    { n: L.length, c: 'passages' },
+    { n: Math.round(100 * L.filter(function(x){ return x.abandon; }).length / L.length) + ' %',
+      c: 'abandons', s: true },
+    { n: Math.round(moy(finis.map(function(x){ return x.fraction; }))) + ' %',
+      c: 'sans compression', m: true },
+    { n: Math.round(moy(L.map(function(x){ return x.cadence || 0; }))), c: 'cadence médiane' }
+  ];
+  el('cartes').innerHTML = cartes.map(function(c){
+    return '<div class="carte"><div class="carte__n' + (c.m ? ' carte__n--m' : '')
+      + (c.s ? ' carte__n--s' : '') + '">' + c.n + '</div>'
+      + '<div class="carte__c">' + c.c + '</div></div>';
+  }).join('');
+
+  var etapes = [
+    { nom: 'A désigné quelqu\'un précisément',
+      v: L.filter(function(x){ return !x.ordreVague; }).length / L.length },
+    /* Une ligne qui vaut 100 % pour tout le monde n'informe de rien et
+       décrédibilise les quatre autres. On mesure le SEUIL, pas la présence. */
+    { nom: 'A comprimé dans les cinq secondes',
+      v: L.filter(function(x){ return x.delaiCompression !== null
+                                 && x.delaiCompression <= 5000; }).length / L.length },
+    { nom: 'A posé les électrodes du premier coup',
+      v: finis.filter(function(x){ return x.essaisElectrodes === 0; }).length
+         / Math.max(1, finis.length) },
+    { nom: 'N\'a pas commandé le choc trop tôt',
+      v: finis.filter(function(x){ return !x.premature; }).length / Math.max(1, finis.length) },
+    { nom: 'Est allé jusqu\'au bout',
+      v: finis.length / L.length }
+  ];
+  el('etapes').innerHTML = etapes.map(function(e){
+    var pc = Math.round(100 * e.v);
+    return '<div class="etape"><span>' + e.nom + '</span>'
+      + '<span class="etape__b"><i class="' + (pc < 55 ? 'mauvais' : '')
+      + '" style="width:' + pc + '%"></i></span>'
+      + '<span class="etape__v">' + pc + ' %</span></div>';
+  }).join('');
+}
+
+/* ── Les questions ───────────────────────────────────────────────────────── */
+var QUESTIONS = [
+  { id: 'delais', t: 'Comment se répartit le délai avant la première compression ?',
+    s: 'Une moyenne cache une bimodalité.', f: figDelais },
+  { id: 'abandons', t: 'À quel moment les gens abandonnent-ils ?',
+    s: 'Un instant précis, ou un peu partout ?', f: figAbandons },
+  { id: 'arrets', t: 'Où se produisent les arrêts de plus de cinq secondes ?',
+    s: 'Pendant l\'attente, ou après le choc ?', f: figArrets },
+  { id: 'electrodes', t: 'Combien coûte vraiment un échec de pose d\'électrodes ?',
+    s: 'Le taux d\'échec ne dit pas le coût.', f: figElectrodes },
+  { id: 'ordres', t: 'Un ordre vague va-t-il avec un mauvais reste de partie ?',
+    s: 'Croiser la faute avec le délai de compression.', f: figOrdres },
+  { id: 'chrono', t: 'Trois chronologies individuelles, au hasard.',
+    s: 'Ce qu\'aucune moyenne ne montre.', f: figChrono }
+];
+
+function peindreQuestions(){
+  el('jetons').innerHTML = [0, 1, 2].map(function(i){
+    return '<span class="jeton' + (i < 3 - budget ? ' use' : '') + '"></span>';
+  }).join('');
+  el('listeQ').innerHTML = '';
+  QUESTIONS.forEach(function(q){
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'q' + (vues[q.id] ? ' ouverte' : '');
+    b.innerHTML = '<b>' + q.t + '</b><span>' + q.s + '</span>';
+    if (vues[q.id]) {
+      var d = document.createElement('div'); d.className = 'reponse';
+      d.innerHTML = q.f(cohorte.map(lire));
+      b.appendChild(d);
+    } else if (budget <= 0) b.disabled = true;
+    b.addEventListener('click', function(){
+      if (vues[q.id] || budget <= 0) return;
+      vues[q.id] = true; budget--; peindreQuestions();
+    });
+    el('listeQ').appendChild(b);
+  });
+}
+
+/* ── Les figures : SVG, construites à partir des données lues ────────────── */
+function barres(valeurs, etiquettes, couleur, unite){
+  var max = Math.max.apply(null, valeurs.concat([1]));
+  var L = 520, H = 130, n = valeurs.length, l = L / n;
+  var s = '<svg class="fig" viewBox="0 0 ' + L + ' ' + (H + 34) + '">';
+  valeurs.forEach(function(v, i){
+    var h = Math.round(H * v / max);
+    s += '<rect x="' + (i * l + 3) + '" y="' + (H - h) + '" width="' + (l - 6) + '" height="'
+      + h + '" rx="3" fill="' + (typeof couleur === 'function' ? couleur(i) : couleur) + '"/>';
+    s += '<text x="' + (i * l + l / 2) + '" y="' + (H + 15) + '" font-size="11" '
+      + 'text-anchor="middle" fill="currentColor" opacity=".55">' + etiquettes[i] + '</text>';
+    if (v) s += '<text x="' + (i * l + l / 2) + '" y="' + (H - h - 5) + '" font-size="11" '
+      + 'text-anchor="middle" fill="currentColor" opacity=".8">' + v + (unite || '') + '</text>';
+  });
+  return s + '</svg>';
+}
+function jeton(n){ return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
+
+function figDelais(L){
+  var b = [0, 0, 0, 0, 0, 0];
+  L.forEach(function(x){
+    if (x.delaiCompression === null) return;
+    var s = x.delaiCompression / 1000;
+    b[Math.min(5, Math.floor(s / 2))]++;
+  });
+  return barres(b, ['0-2 s', '2-4 s', '4-6 s', '6-8 s', '8-10 s', '10 s +'], jeton('--mesure'))
+    + '<p><b>Deux populations, pas une.</b> Un groupe comprime presque tout de suite ; '
+    + 'un autre attend huit à douze secondes. La moyenne tombe entre les deux, là où il '
+    + 'n\'y a personne — et c\'est la moyenne que le tableau de bord affiche.</p>';
+}
+function figAbandons(L){
+  var a = L.filter(function(x){ return x.abandon; });
+  var b = [0, 0, 0, 0, 0, 0];
+  a.forEach(function(x){ b[Math.min(5, Math.max(0, Math.floor((x.tAbandon - 30) / 15)))]++; });
+  return barres(b, ['30-45 s', '45-60 s', '60-75 s', '75-90 s', '90-105 s', '105 s +'],
+                jeton('--signal'))
+    + '<p><b>Ils ne s\'arrêtent pas n\'importe quand.</b> Les abandons se massent avant '
+    + 'l\'arrivée de l\'appareil — pendant la phase où l\'on comprime sans savoir combien de '
+    + 'temps encore. Personne n\'abandonne après le choc.</p>';
+}
+function figArrets(L){
+  var avant = moy(L.map(function(x){ return x.arretsLongs; }));
+  return '<p><b>' + avant.toFixed(1).replace('.', ',') + ' arrêts de plus de cinq secondes '
+    + 'par passage en moyenne</b>, et les trois quarts tombent pendant l\'attente de '
+    + 'l\'appareil, pas après le choc.</p>'
+    + '<p>Un arrêt de cinq secondes coûte, dans le simulateur comme dans la réalité, bien '
+    + 'plus que les cinq secondes : la pression construite par les compressions s\'effondre '
+    + 'et met une quinzaine de compressions à revenir.</p>';
+}
+function figElectrodes(L){
+  var f = L.filter(function(x){ return !x.abandon; });
+  var avec = f.filter(function(x){ return x.essaisElectrodes > 0; });
+  return '<p><b>' + Math.round(100 * avec.length / Math.max(1, f.length))
+    + ' % ratent la pose au moins une fois</b> — c\'est le pire chiffre du tableau de bord. '
+    + 'Chaque échec coûte <b>huit secondes</b>, l\'appareil refuse et on recommence : '
+    + 'l\'erreur se corrige toute seule, et personne n\'abandonne à cause d\'elle.</p>'
+    + '<p>Le temps total perdu sur les électrodes, sur toute la cohorte, vaut environ '
+    + '<b>' + Math.round(moy(f.map(function(x){ return x.essaisElectrodes * 8; })))
+    + ' secondes par passage</b>. Comparez-le au temps mort de la phase d\'attente avant de '
+    + 'décider où porter l\'effort.</p>';
+}
+function figOrdres(L){
+  var v = L.filter(function(x){ return x.ordreVague; });
+  var nv = L.filter(function(x){ return !x.ordreVague; });
+  var m = function(g){
+    var d = g.map(function(x){ return x.delaiCompression; })
+             .filter(function(x){ return x !== null; });
+    return (moy(d) / 1000).toFixed(1).replace('.', ',');
+  };
+  return '<p>Délai avant la première compression :<br>'
+    + '<b>' + m(v) + ' s</b> chez ceux qui ont donné un ordre vague (' + v.length + ' personnes)<br>'
+    + '<b>' + m(nv) + ' s</b> chez les autres (' + nv.length + ' personnes)</p>'
+    + '<p><b>L\'écart est faible.</b> L\'ordre vague accompagne une hésitation générale, il ne '
+    + 'la cause pas — les deux sortent du même endroit. Reformuler le bouton déplacerait le '
+    + 'symptôme, pas la personne.</p>';
+}
+function figChrono(L){
+  var pris = [3, 17, 31];
+  var lignes = pris.map(function(i){
+    var x = L[i];
+    return '<p style="font-family:var(--police-mono);font-size:.8125rem">'
+      + '#' + i + ' · ' + (x.abandon ? 'ABANDON à ' + x.tAbandon + ' s'
+      : 'jusqu\'au bout, ' + x.duree + ' s')
+      + ' · 1re compression à ' + (x.delaiCompression / 1000).toFixed(1).replace('.', ',') + ' s'
+      + ' · ' + x.arretsLongs + ' arrêt(s) long(s)'
+      + ' · ' + x.essaisElectrodes + ' essai(s) d\'électrodes</p>';
+  }).join('');
+  return lignes + '<p>Trois personnes, trois histoires qui n\'ont rien à voir. Aucune ne '
+    + 'ressemble à la moyenne du tableau de bord, et c\'est normal : la moyenne n\'est le '
+    + 'portrait de personne.</p>';
+}
+
+/* ── Les leviers ─────────────────────────────────────────────────────────── */
+var LEVIERS = [
+  { id: 'electrodes', t: 'Guider davantage la pose des électrodes',
+    s: 'C\'est l\'étape la plus ratée du tableau de bord.',
+    opt: { guideElectrodes: true } },
+  { id: 'ordres', t: 'Reformuler les boutons pour éviter les ordres vagues',
+    s: 'La faute la plus fréquente de la scène.',
+    opt: { libellesOrdres: true } },
+  { id: 'metronome', t: 'Ajouter un métronome sonore pendant les compressions',
+    s: 'La cadence est basse et dérive.',
+    opt: { metronome: true } },
+  { id: 'consigne', t: 'Écrire à l\'écran ce qu\'on attend pendant l\'attente',
+    s: 'La phase la plus longue ne dit rien.',
+    opt: { consigneAttente: true } },
+  { id: 'raccourcir', t: 'Raccourcir l\'attente de quatre-vingt-dix à quarante-cinq secondes',
+    s: 'L\'attente est ce qui coûte le plus de temps mort.',
+    opt: { attente: 45000 } },
+  { id: 'rien', t: 'Ne rien changer, et aller chercher cinq personnes réelles',
+    s: 'Refuser de décider est une décision.', rien: true }
+];
+
+function peindreLeviers(){
+  el('leviers').innerHTML = '';
+  LEVIERS.forEach(function(g){
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'levier' + (g.rien ? ' levier--rien' : '');
+    b.innerHTML = '<b>' + g.t + '</b><span>' + g.s + '</span>';
+    b.addEventListener('click', function(){ decider(g); });
+    el('leviers').appendChild(b);
+  });
+}
+
+/* ── La contre-épreuve ───────────────────────────────────────────────────── */
+function decider(g){
+  el('resultat').classList.remove('masque');
+  el('fin').classList.remove('masque');
+
+  if (g.rien) {
+    el('titreResultat').textContent = 'Vous n\'avez rien changé.';
+    el('deltas').innerHTML = '';
+    el('jugement').className = 'jugement';
+    el('jugement').innerHTML = '<h3>C\'est défendable, et c\'est même souvent juste.</h3>'
+      + '<p>Aucune des cinq autres modifications ne repose sur une observation : elles reposent '
+      + 'sur un modèle que quelqu\'un a écrit. Refuser d\'agir sur des données inventées est un '
+      + 'réflexe correct, et c\'est exactement ce que cette page dit d\'elle-même plus bas.</p>'
+      + '<p>Reste que <b>les deux pièges valaient d\'être vus</b> : ouvrez la vue conception, '
+      + 'ils sont décrits là. Puis revenez et choisissez, pour voir ce qu\'aurait fait chaque '
+      + 'décision.</p>';
+    el('resultat').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    return;
+  }
+
+  /* Mêmes personnes, mêmes tirages, un seul paramètre changé : c'est la seule
+     façon d'attribuer un écart à la décision plutôt qu'au hasard des gens. */
+  var apres = gens.map(function(p){
+    return jouer(p, Object.assign({}, BASE, g.opt, { sceau: 0 }));
+  });
+  var A = cohorte.map(lire), B = apres.map(lire);
+  var stat = function(L){
+    var f = L.filter(function(x){ return !x.abandon; });
+    return {
+      abandons: Math.round(100 * L.filter(function(x){ return x.abandon; }).length / L.length),
+      fraction: Math.round(moy(f.map(function(x){ return x.fraction; }))),
+      arrets: moy(L.map(function(x){ return x.arretsLongs; })),
+      electrodes: Math.round(100 * f.filter(function(x){ return x.essaisElectrodes === 0; }).length
+                  / Math.max(1, f.length)),
+      vagues: Math.round(100 * L.filter(function(x){ return x.ordreVague; }).length / L.length),
+      delai: moy(L.map(function(x){ return x.delaiCompression || 0; })) / 1000
+    };
+  };
+  var a = stat(A), b = stat(B);
+
+  var mesures = [
+    { c: 'sans compression', a: a.fraction, b: b.fraction, u: ' %', bas: true },
+    { c: 'abandons', a: a.abandons, b: b.abandons, u: ' %', bas: true },
+    { c: 'arrêts longs par passage', a: a.arrets, b: b.arrets, u: '', bas: true, dec: 1 },
+    { c: 'électrodes du 1er coup', a: a.electrodes, b: b.electrodes, u: ' %', bas: false },
+    { c: 'ordres vagues', a: a.vagues, b: b.vagues, u: ' %', bas: true }
+  ];
+  el('deltas').innerHTML = mesures.map(function(m){
+    var d = m.b - m.a, mieux = m.bas ? d < -0.5 : d > 0.5, pire = m.bas ? d > 0.5 : d < -0.5;
+    var fmt = function(v){ return m.dec ? v.toFixed(1).replace('.', ',') : Math.round(v); };
+    return '<div class="delta"><div class="delta__n '
+      + (mieux ? 'mieux' : pire ? 'pire' : 'rien') + '">'
+      + (d > 0 ? '+' : d < 0 ? '−' : '±') + fmt(Math.abs(d)) + m.u + '</div>'
+      + '<div class="delta__c">' + m.c + '</div>'
+      + '<div class="delta__d">' + fmt(m.a) + m.u + ' → ' + fmt(m.b) + m.u + '</div></div>';
+  }).join('');
+
+  var h, piege = false;
+  if (g.id === 'consigne') {
+    el('titreResultat').textContent = 'Vous avez écrit la consigne.';
+    h = '<h3>C\'était le levier.</h3>'
+      + '<p>Une phrase à l\'écran pendant la phase la plus longue : le délai avant la première '
+      + 'compression tombe, les arrêts longs se raréfient, et <b>la moitié des abandons '
+      + 'disparaissent</b>. Rien n\'a été ajouté au dispositif — on a seulement cessé de '
+      + 'laisser quelqu\'un seul devant une tâche sans fin annoncée.</p>'
+      + '<p>Ce n\'est pas la cohorte qui l\'a trouvé. <b>Un lecteur réel l\'avait vu en cinq '
+      + 'minutes</b>, sans aucune donnée : « on comprimait dans le vide pendant quatre-vingt-dix '
+      + 'secondes sans que rien ne dise ce qu\'on attendait ». La cohorte ne fait que le '
+      + 'confirmer, et c\'est tout ce qu\'une cohorte sait faire.</p>';
+  } else if (g.id === 'raccourcir') {
+    piege = true;
+    el('titreResultat').textContent = 'Vous avez raccourci l\'attente.';
+    h = '<h3>Les abandons tombent à zéro. La pièce se dégrade.</h3>'
+      + '<p>Plus un seul abandon — c\'est mécanique et c\'est spectaculaire : on ne peut plus '
+      + 'renoncer pendant une attente qui n\'existe plus. Le tableau de bord applaudit. '
+      + 'Remarquez au passage que la <b>fraction sans compression empire</b> : le même temps '
+      + 'mort rapporté à une phase deux fois plus courte. Un seul des deux chiffres a été '
+      + 'regardé, et c\'est toujours le plus flatteur.</p>'
+      + '<p><b>Et la scène ne pose plus la question qu\'elle existait pour poser.</b> Le '
+      + 'simulateur enseigne les trois premières minutes précisément parce que l\'appareil met '
+      + 'quatre-vingt-dix secondes à arriver : c\'est là que se joue ce qu\'un témoin fait '
+      + 'ou ne fait pas. Raccourcir l\'attente, c\'est retirer le sujet pour améliorer '
+      + 'l\'indicateur.</p>'
+      + '<p>C\'est la faute la plus commune en conception, et la plus difficile à voir, '
+      + 'parce qu\'<b>aucun tableau de bord ne la signale</b> — le tableau de bord ne connaît '
+      + 'pas l\'intention.</p>';
+  } else if (g.id === 'electrodes') {
+    h = '<h3>Vous avez corrigé la colonne la plus rouge.</h3>'
+      + '<p>Le taux de pose du premier coup monte franchement — c\'est réel, et c\'est visible. '
+      + 'Regardez maintenant les trois autres nombres : <b>ils n\'ont pratiquement pas '
+      + 'bougé</b>.</p>'
+      + '<p>Un échec de pose est <b>auto-correcteur</b> : l\'appareil refuse, on recommence, ça '
+      + 'coûte huit secondes, et personne n\'abandonne à cause de ça. Le plus gros nombre du '
+      + 'tableau n\'était pas le plus gros levier — il était seulement le plus voyant.</p>';
+  } else if (g.id === 'ordres') {
+    h = '<h3>Vous avez déplacé un symptôme.</h3>'
+      + '<p>Les ordres vagues reculent un peu. Le reste ne bouge pas.</p>'
+      + '<p>Donner un ordre vague n\'est pas une erreur de formulation : c\'est ce que fait '
+      + 'quelqu\'un qui n\'ose pas désigner une personne du doigt. <b>Le libellé n\'est pas la '
+      + 'cause</b>, et la question « à qui parlez-vous ? » ne se règle pas dans un bouton.</p>';
+  } else {
+    h = '<h3>La cadence se resserre. Le reste tient.</h3>'
+      + '<p>Le métronome fait ce qu\'un métronome fait : il tient le rythme et freine la '
+      + 'dérive. Il ne fait <b>rien</b> contre les arrêts ni contre les abandons — on ne '
+      + 's\'arrête pas parce qu\'on a perdu le tempo, on s\'arrête parce qu\'on ne sait plus '
+      + 'combien de temps il reste.</p>'
+      + '<p>C\'est une bonne modification, petite, et qui ne répond pas à la question qu\'on '
+      + 'avait.</p>';
+  }
+  el('jugement').className = 'jugement' + (piege ? ' jugement--piege' : '');
+  el('jugement').innerHTML = h;
+  el('resultat').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+/* ── L'import d'un vrai journal ──────────────────────────────────────────── */
+el('fichier').addEventListener('change', function(e){
+  var f = e.target.files[0]; if (!f) return;
+  var l = new FileReader();
+  l.onload = function(){
+    try {
+      var d = JSON.parse(l.result);
+      var p = d.passages || d;
+      if (!Array.isArray(p) || !p.length) throw new Error('aucun passage');
+      if (!p[0].etats || !p[0].resume) throw new Error('format inattendu');
+      cohorte = p; importe = true; budget = 3; vues = {};
+      peindre(); peindreQuestions();
+      el('sourceDonnees').innerHTML = '<b>Source : ' + p.length + ' passages réels</b>, lus '
+        + 'depuis le fichier déposé. Le modèle simulé n\'est plus utilisé — c\'est le même '
+        + 'tableau de bord et les mêmes questions, sur vos données.';
+      el('etatImport').innerHTML = '<b>' + p.length + ' passages chargés.</b> La contre-épreuve '
+        + 'est désactivée : on ne rejoue pas des gens réels avec un paramètre changé.';
+      el('decision').classList.add('masque');
+      el('resultat').classList.add('masque');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch (err) {
+      el('etatImport').innerHTML = '<span style="color:var(--signal)">Ce fichier n\'a pas la '
+        + 'forme d\'un export SimDEA (' + err.message + '). Rien n\'a été modifié.</span>';
+    }
+  };
+  l.readAsText(f);
+});
+
+el('bRejouer').addEventListener('click', function(){
+  demarrer(); window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+var r = document.documentElement;
+el('bTheme').addEventListener('click', function(){
+  var s = r.getAttribute('data-theme') === 'sombre';
+  if (!r.hasAttribute('data-theme')) s = matchMedia('(prefers-color-scheme: dark)').matches;
+  r.setAttribute('data-theme', s ? 'clair' : 'sombre');
+  peindreQuestions();
+});
+var bv = el('bVue');
+bv.addEventListener('click', function(){
+  var o = document.body.classList.toggle('conception');
+  bv.setAttribute('aria-pressed', o ? 'true' : 'false');
+  bv.textContent = o ? 'Refermer le capot' : 'Vue conception';
+});
+demarrer();
+})();
+</script>
+
+</body>
+</html>
