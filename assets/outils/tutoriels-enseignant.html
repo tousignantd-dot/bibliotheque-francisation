@@ -35,6 +35,53 @@
     width: 100%; aspect-ratio: 16 / 9; display: block;
     background: var(--ink-900); border-radius: var(--r-lg); box-shadow: var(--sh-raise);
   }
+  /* ── La vignette ──────────────────────────────────────────────────────
+     Onze lecteurs pleine largeur faisaient une page qu'on ne parcourait
+     plus : rien que des rectangles noirs de la même taille, un titre par
+     écran. La vignette rend la liste lisible d'un coup d'œil, et le clic
+     rend le lecteur — avec ses sous-titres, qu'un lien vers le fichier
+     aurait perdus. */
+  .tu-rangee { display: grid; grid-template-columns: 300px 1fr;
+    gap: var(--sp-5); align-items: start; }
+  .tu-vignette {
+    position: relative; padding: 0; border: 0; background: var(--ink-900);
+    border-radius: var(--r-lg); overflow: hidden; cursor: pointer; display: block;
+    width: 100%; aspect-ratio: 16 / 9; box-shadow: var(--sh-card);
+  }
+  .tu-vignette img { width: 100%; height: 100%; object-fit: cover; display: block;
+    transition: transform .18s ease, opacity .18s ease; }
+  .tu-vignette:hover img, .tu-vignette:focus-visible img {
+    transform: scale(1.03); opacity: .88; }
+  .tu-vignette:focus-visible { outline: 3px solid var(--text-accent);
+    outline-offset: 3px; }
+  /* Le triangle est dessiné en CSS : aucune image, aucun émoji. */
+  .tu-play {
+    position: absolute; inset: 0; margin: auto; width: 54px; height: 54px;
+    border-radius: 50%; background: rgba(255,255,255,.92);
+    box-shadow: 0 2px 10px rgba(0,0,0,.28);
+  }
+  .tu-play::after {
+    content: ""; position: absolute; inset: 0; margin: auto;
+    width: 0; height: 0; margin-left: 22px;
+    border-left: 17px solid var(--ink-900);
+    border-top: 10px solid transparent; border-bottom: 10px solid transparent;
+  }
+  .tu-duree {
+    position: absolute; right: 8px; bottom: 8px;
+    background: rgba(23,24,26,.82); color: #fff; border-radius: var(--r-sm);
+    padding: 2px 7px; font-size: var(--fs-ui-sm); font-weight: var(--fw-bold);
+    font-variant-numeric: tabular-nums;
+  }
+  .tu-infos { display: grid; gap: var(--sp-3); }
+  .tu-fichier { margin: 0; font-size: var(--fs-ui-sm); }
+  .tu-fichier a { color: var(--text-muted); font-weight: var(--fw-medium); }
+  /* Une fois lancée, la capsule reprend toute la largeur : à 300 px, on ne
+     lit pas ce qui se passe dans le portail, et c'est tout ce que la capsule
+     montre. La vignette sert à choisir, le lecteur à regarder. */
+  .tu-capsule.joue .tu-rangee { grid-template-columns: 1fr; }
+  @media (max-width: 720px) {
+    .tu-rangee { grid-template-columns: 1fr; }
+  }
   .tu-texte summary {
     cursor: pointer; min-height: var(--tap-min); display: flex; align-items: center;
     font-size: var(--fs-ui); font-weight: var(--fw-bold); color: var(--text-accent);
@@ -95,178 +142,245 @@
       </section>
       
       <section class="tu-capsule tu-presentation" id="film">
-        <div class="tu-num">Film de présentation · 1 min 32 s</div>
-        <h2>Le film de présentation</h2>
-        <p class="tu-chapeau">Quatre-vingt-douze secondes sur ce que fait francis. À montrer à une direction, à une collègue, à un groupe le premier jour.</p>
-        <video controls preload="none" playsinline
-               poster="../tutoriels/teaser-francis-pseudos.jpg">
-          <source src="../tutoriels/teaser-francis-pseudos.mp4" type="video/mp4" />
-          Votre navigateur ne peut pas lire cette vidéo.
-          <a href="../tutoriels/teaser-francis-pseudos.mp4">Téléchargez-la</a>.
-        </video>
-        <p class="tu-sansst">Ce film n'a pas de sous-titres, contrairement aux capsules.</p>
+        <div class="tu-rangee">
+          <button class="tu-vignette" type="button"
+                  data-video="../tutoriels/teaser-francis-pseudos.mp4"
+                  aria-label="Lire le film de présentation">
+            <img src="../tutoriels/teaser-francis-pseudos.jpg" alt="" loading="lazy" />
+            <span class="tu-play" aria-hidden="true"></span>
+            <span class="tu-duree">1 min 43 s</span>
+          </button>
+          <div class="tu-infos">
+            <div class="tu-num">Film de présentation</div>
+            <h2>Le film de présentation</h2>
+            <p class="tu-chapeau">Cent quatre secondes sur ce que fait francis. À montrer à une direction, à une collègue, à un groupe le premier jour.</p>
+            <p class="tu-sansst">Ce film n'a pas de sous-titres, contrairement aux capsules.</p>
+            <p class="tu-fichier"><a href="../tutoriels/teaser-francis-pseudos.mp4">
+              Ouvrir la vidéo dans un onglet</a></p>
+          </div>
+        </div>
       </section>
       <ul class="tu-sommaire"><li><a href="#c1"><span>1</span>Le portail en un coup d&#x27;œil<em>1 min 38 s</em></a></li><li><a href="#c2"><span>2</span>Ouvrir un groupe<em>1 min 13 s</em></a></li><li><a href="#c3"><span>3</span>Planifier : donner une date<em>2 min 50 s</em></a></li><li><a href="#c4"><span>4</span>Ouvrir un module par sections<em>1 min 27 s</em></a></li><li><a href="#c5"><span>5</span>Les élèves et leurs codes<em>1 min 27 s</em></a></li><li><a href="#c6"><span>6</span>Le dépôt de matériel<em>2 min 34 s</em></a></li><li><a href="#c7"><span>7</span>Composer une activité<em>2 min 51 s</em></a></li><li><a href="#c8"><span>8</span>La séance sans compte<em>1 min 57 s</em></a></li><li><a href="#c9"><span>9</span>Suivre la classe<em>2 min 16 s</em></a></li><li><a href="#c10"><span>10</span>Le dossier d&#x27;un élève<em>1 min 40 s</em></a></li></ul>
       
     <section class="tu-capsule" id="c1">
-      <div class="tu-num">Capsule 1 sur 10 · 1 min 38 s</div>
-      <h2>Le portail en un coup d&#x27;œil</h2>
-      <video controls preload="none" playsinline crossorigin="anonymous"
-             poster="../tutoriels/01-tour-du-portail.jpg">
-        <source src="../tutoriels/01-tour-du-portail.mp4" type="video/mp4" />
-        <track kind="subtitles" srclang="fr" label="Français" default
-               src="../tutoriels/01-tour-du-portail.vtt" />
-        Votre navigateur ne peut pas lire cette vidéo.
-        <a href="../tutoriels/01-tour-du-portail.mp4">Téléchargez-la</a>.
-      </video>
-      <details class="tu-texte">
-        <summary>Lire la transcription</summary>
-        <p>Bienvenue dans l&#x27;espace enseignant de francis. En quelques minutes, nous allons faire le tour de vos outils : ouvrir un groupe, donner des dates à vos activités, suivre vos élèves et sortir le matériel de la semaine. </p><p>Tout tient dans une seule page. En haut, une bande blanche : le nom de la plateforme, et à droite votre session. C&#x27;est aussi de là que vous vous déconnectez, à la fin de votre journée.</p><p>Juste en dessous, votre groupe. C&#x27;est la première chose à choisir, et tout le reste en découle : le niveau du groupe décide de ce que vous verrez du catalogue et du matériel. Changez de groupe, et vous changez de classe.</p><p>Sous le groupe, neuf boutons rangés en trois familles. Le cours : le catalogue, la planification, le matériel. Ma classe : les élèves et leurs codes, la progression, la séance sans compte. Et les outils, qui s&#x27;ouvrent chacun dans un nouvel onglet.</p><p>Au bout de la ligne, un résumé dit où vous en êtes : combien d&#x27;élèves, et combien d&#x27;activités déjà planifiées sur l&#x27;ensemble du catalogue.</p><p>Dessous, le programme du jour : ce qui ouvre et ce qui ferme aujourd&#x27;hui. S&#x27;il est vide, c&#x27;est que rien ne bouge — vos activités déjà ouvertes, elles, restent accessibles.</p><p>Vous connaissez maintenant les grandes pièces du portail : le groupe, les neuf boutons, le programme du jour. Les prochaines capsules reprennent chacun de ces boutons en détail. Voilà pour cette capsule. À la prochaine.</p>
-      </details>
+      <div class="tu-rangee">
+        <button class="tu-vignette" type="button"
+                data-video="../tutoriels/01-tour-du-portail.mp4"
+                data-vtt="../tutoriels/01-tour-du-portail.vtt"
+                aria-label="Lire la capsule 1 : Le portail en un coup d&#x27;œil">
+          <img src="../tutoriels/01-tour-du-portail.jpg" alt="" loading="lazy" />
+          <span class="tu-play" aria-hidden="true"></span>
+          <span class="tu-duree">1 min 38 s</span>
+        </button>
+        <div class="tu-infos">
+          <div class="tu-num">Capsule 1 sur 10</div>
+          <h2>Le portail en un coup d&#x27;œil</h2>
+          <details class="tu-texte">
+            <summary>Lire la transcription</summary>
+            <p>Bienvenue dans l&#x27;espace enseignant de francis. En quelques minutes, nous allons faire le tour de vos outils : ouvrir un groupe, donner des dates à vos activités, suivre vos élèves et sortir le matériel de la semaine. </p><p>Tout tient dans une seule page. En haut, une bande blanche : le nom de la plateforme, et à droite votre session. C&#x27;est aussi de là que vous vous déconnectez, à la fin de votre journée.</p><p>Juste en dessous, votre groupe. C&#x27;est la première chose à choisir, et tout le reste en découle : le niveau du groupe décide de ce que vous verrez du catalogue et du matériel. Changez de groupe, et vous changez de classe.</p><p>Sous le groupe, neuf boutons rangés en trois familles. Le cours : le catalogue, la planification, le matériel. Ma classe : les élèves et leurs codes, la progression, la séance sans compte. Et les outils, qui s&#x27;ouvrent chacun dans un nouvel onglet.</p><p>Au bout de la ligne, un résumé dit où vous en êtes : combien d&#x27;élèves, et combien d&#x27;activités déjà planifiées sur l&#x27;ensemble du catalogue.</p><p>Dessous, le programme du jour : ce qui ouvre et ce qui ferme aujourd&#x27;hui. S&#x27;il est vide, c&#x27;est que rien ne bouge — vos activités déjà ouvertes, elles, restent accessibles.</p><p>Vous connaissez maintenant les grandes pièces du portail : le groupe, les neuf boutons, le programme du jour. Les prochaines capsules reprennent chacun de ces boutons en détail. Voilà pour cette capsule. À la prochaine.</p>
+          </details>
+          <p class="tu-fichier"><a href="../tutoriels/01-tour-du-portail.mp4">
+            Ouvrir la vidéo dans un onglet</a></p>
+        </div>
+      </div>
     </section>
     <section class="tu-capsule" id="c2">
-      <div class="tu-num">Capsule 2 sur 10 · 1 min 13 s</div>
-      <h2>Ouvrir un groupe</h2>
-      <video controls preload="none" playsinline crossorigin="anonymous"
-             poster="../tutoriels/05-groupes.jpg">
-        <source src="../tutoriels/05-groupes.mp4" type="video/mp4" />
-        <track kind="subtitles" srclang="fr" label="Français" default
-               src="../tutoriels/05-groupes.vtt" />
-        Votre navigateur ne peut pas lire cette vidéo.
-        <a href="../tutoriels/05-groupes.mp4">Téléchargez-la</a>.
-      </video>
-      <details class="tu-texte">
-        <summary>Lire la transcription</summary>
-        <p>Avant tout le reste, il faut un groupe : un par classe, chacun avec ses élèves, ses dates et sa progression. Pour en ouvrir un, cliquez sur « Nouveau groupe », en haut de la page.</p><p>Le formulaire demande deux choses. D&#x27;abord un nom : celui qui vous parle à vous, pas un code. « Avant-midi — Marie », par exemple.</p><p>Ensuite le niveau. C&#x27;est le réglage le plus important du portail : il décide de ce que le groupe voit. Le catalogue, le matériel, la séance sans compte. Un groupe de niveau quatre ne verra jamais les activités du niveau six. Choisissez-le, puis cliquez sur « Créer le groupe ».</p><p>Le groupe est créé, et le portail vous ramène à la planification, avec ce groupe en tête de page. Il part vide. Le catalogue d&#x27;activités, lui, est commun à toute l&#x27;équipe : personne ne recrée le contenu. Ce qui vous appartient, ce sont les dates que vous posez dessus.</p><p>Vous savez ouvrir un groupe et lui donner son niveau. La prochaine capsule montre comment poser des dates sur ses activités. Voilà pour celle-ci. À la prochaine.</p>
-      </details>
+      <div class="tu-rangee">
+        <button class="tu-vignette" type="button"
+                data-video="../tutoriels/05-groupes.mp4"
+                data-vtt="../tutoriels/05-groupes.vtt"
+                aria-label="Lire la capsule 2 : Ouvrir un groupe">
+          <img src="../tutoriels/05-groupes.jpg" alt="" loading="lazy" />
+          <span class="tu-play" aria-hidden="true"></span>
+          <span class="tu-duree">1 min 13 s</span>
+        </button>
+        <div class="tu-infos">
+          <div class="tu-num">Capsule 2 sur 10</div>
+          <h2>Ouvrir un groupe</h2>
+          <details class="tu-texte">
+            <summary>Lire la transcription</summary>
+            <p>Avant tout le reste, il faut un groupe : un par classe, chacun avec ses élèves, ses dates et sa progression. Pour en ouvrir un, cliquez sur « Nouveau groupe », en haut de la page.</p><p>Le formulaire demande deux choses. D&#x27;abord un nom : celui qui vous parle à vous, pas un code. « Avant-midi — Marie », par exemple.</p><p>Ensuite le niveau. C&#x27;est le réglage le plus important du portail : il décide de ce que le groupe voit. Le catalogue, le matériel, la séance sans compte. Un groupe de niveau quatre ne verra jamais les activités du niveau six. Choisissez-le, puis cliquez sur « Créer le groupe ».</p><p>Le groupe est créé, et le portail vous ramène à la planification, avec ce groupe en tête de page. Il part vide. Le catalogue d&#x27;activités, lui, est commun à toute l&#x27;équipe : personne ne recrée le contenu. Ce qui vous appartient, ce sont les dates que vous posez dessus.</p><p>Vous savez ouvrir un groupe et lui donner son niveau. La prochaine capsule montre comment poser des dates sur ses activités. Voilà pour celle-ci. À la prochaine.</p>
+          </details>
+          <p class="tu-fichier"><a href="../tutoriels/05-groupes.mp4">
+            Ouvrir la vidéo dans un onglet</a></p>
+        </div>
+      </div>
     </section>
     <section class="tu-capsule" id="c3">
-      <div class="tu-num">Capsule 3 sur 10 · 2 min 50 s</div>
-      <h2>Planifier : donner une date</h2>
-      <video controls preload="none" playsinline crossorigin="anonymous"
-             poster="../tutoriels/02-planifier.jpg">
-        <source src="../tutoriels/02-planifier.mp4" type="video/mp4" />
-        <track kind="subtitles" srclang="fr" label="Français" default
-               src="../tutoriels/02-planifier.vtt" />
-        Votre navigateur ne peut pas lire cette vidéo.
-        <a href="../tutoriels/02-planifier.mp4">Téléchargez-la</a>.
-      </video>
-      <details class="tu-texte">
-        <summary>Lire la transcription</summary>
-        <p>Voici la règle la plus importante du portail, et la seule qu&#x27;il faut vraiment retenir. Une activité sans date n&#x27;existe pas pour l&#x27;élève. Un groupe neuf part complètement vide : tant que vous n&#x27;avez pas donné de date d&#x27;ouverture, la classe ne voit rien.</p><p>Pour trouver une activité, un champ de recherche, et trois filtres. Cours, ce sont les modules de quatre heures du matin. Ateliers, les activités de deux heures de l&#x27;après-midi. La recherche cherche large : le titre, le domaine, même un temps de verbe.</p><p>En dessous, la liste. Chaque rangée porte une pastille d&#x27;état, à droite. Elle a toujours une couleur, un symbole et un mot : vous n&#x27;avez jamais à deviner d&#x27;après la couleur seule.</p><p>Quatre états, et c&#x27;est tout. Tiret, sans date : l&#x27;élève ne la voit pas. Flèche, à venir : la date est posée, elle arrive. Crochet, ouverte : l&#x27;élève peut y répondre. Croix, fermée : il peut relire, mais plus répondre.</p><p>Cochez maintenant les activités de la semaine. Dès la première case, une barre apparaît en bas de l&#x27;écran et vous suit. C&#x27;est là que tout se décide.</p><p>Vous donnez une date d&#x27;ouverture, une date de fermeture si vous en voulez une, puis vous choisissez un rythme. « Aucun », si elles ouvrent toutes le même jour ; « une par semaine », « une aux deux semaines », ou « une par jour ». Et par défaut, le portail saute les samedis et les dimanches.</p><p>À droite, l&#x27;aperçu vous montre, avant de valider, quelle activité tombe quel jour. Si vous vous êtes trompé, « Retirer les dates » ramène tout à zéro. Sinon, cliquez sur « Enregistrer », en bas de la barre : rien n&#x27;est posé avant ce clic. Les pastilles passent aussitôt à « à venir ».</p><p>Dernier réflexe avant de quitter la page : le bouton « Ce que l&#x27;élève voit ». Il ouvre exactement ce que votre classe a sous les yeux aujourd&#x27;hui. C&#x27;est le meilleur moyen de vérifier votre travail.</p><p>Un dernier geste, pour plus tard. Quand vous redonnerez le même niveau à une autre session, vous n&#x27;aurez pas à redater cinquante-sept activités. « Copier une planification » reprend le calendrier d&#x27;un de vos groupes et le décale du nombre de jours qui sépare les deux sessions.</p><p>Deux précautions. Cette copie remplace les dates du groupe où vous êtes, elle ne s&#x27;y ajoute pas. Et la date « vue en classe » n&#x27;est pas copiée. Celle-là reste votre trace personnelle, que l&#x27;élève ne voit jamais.</p><p>Vous savez cocher des activités, leur donner une date et un rythme, enregistrer, vérifier ce que votre classe voit, et reprendre une planification d&#x27;une session à l&#x27;autre. Voilà pour cette capsule. À la prochaine.</p>
-      </details>
+      <div class="tu-rangee">
+        <button class="tu-vignette" type="button"
+                data-video="../tutoriels/02-planifier.mp4"
+                data-vtt="../tutoriels/02-planifier.vtt"
+                aria-label="Lire la capsule 3 : Planifier : donner une date">
+          <img src="../tutoriels/02-planifier.jpg" alt="" loading="lazy" />
+          <span class="tu-play" aria-hidden="true"></span>
+          <span class="tu-duree">2 min 50 s</span>
+        </button>
+        <div class="tu-infos">
+          <div class="tu-num">Capsule 3 sur 10</div>
+          <h2>Planifier : donner une date</h2>
+          <details class="tu-texte">
+            <summary>Lire la transcription</summary>
+            <p>Voici la règle la plus importante du portail, et la seule qu&#x27;il faut vraiment retenir. Une activité sans date n&#x27;existe pas pour l&#x27;élève. Un groupe neuf part complètement vide : tant que vous n&#x27;avez pas donné de date d&#x27;ouverture, la classe ne voit rien.</p><p>Pour trouver une activité, un champ de recherche, et trois filtres. Cours, ce sont les modules de quatre heures du matin. Ateliers, les activités de deux heures de l&#x27;après-midi. La recherche cherche large : le titre, le domaine, même un temps de verbe.</p><p>En dessous, la liste. Chaque rangée porte une pastille d&#x27;état, à droite. Elle a toujours une couleur, un symbole et un mot : vous n&#x27;avez jamais à deviner d&#x27;après la couleur seule.</p><p>Quatre états, et c&#x27;est tout. Tiret, sans date : l&#x27;élève ne la voit pas. Flèche, à venir : la date est posée, elle arrive. Crochet, ouverte : l&#x27;élève peut y répondre. Croix, fermée : il peut relire, mais plus répondre.</p><p>Cochez maintenant les activités de la semaine. Dès la première case, une barre apparaît en bas de l&#x27;écran et vous suit. C&#x27;est là que tout se décide.</p><p>Vous donnez une date d&#x27;ouverture, une date de fermeture si vous en voulez une, puis vous choisissez un rythme. « Aucun », si elles ouvrent toutes le même jour ; « une par semaine », « une aux deux semaines », ou « une par jour ». Et par défaut, le portail saute les samedis et les dimanches.</p><p>À droite, l&#x27;aperçu vous montre, avant de valider, quelle activité tombe quel jour. Si vous vous êtes trompé, « Retirer les dates » ramène tout à zéro. Sinon, cliquez sur « Enregistrer », en bas de la barre : rien n&#x27;est posé avant ce clic. Les pastilles passent aussitôt à « à venir ».</p><p>Dernier réflexe avant de quitter la page : le bouton « Ce que l&#x27;élève voit ». Il ouvre exactement ce que votre classe a sous les yeux aujourd&#x27;hui. C&#x27;est le meilleur moyen de vérifier votre travail.</p><p>Un dernier geste, pour plus tard. Quand vous redonnerez le même niveau à une autre session, vous n&#x27;aurez pas à redater cinquante-sept activités. « Copier une planification » reprend le calendrier d&#x27;un de vos groupes et le décale du nombre de jours qui sépare les deux sessions.</p><p>Deux précautions. Cette copie remplace les dates du groupe où vous êtes, elle ne s&#x27;y ajoute pas. Et la date « vue en classe » n&#x27;est pas copiée. Celle-là reste votre trace personnelle, que l&#x27;élève ne voit jamais.</p><p>Vous savez cocher des activités, leur donner une date et un rythme, enregistrer, vérifier ce que votre classe voit, et reprendre une planification d&#x27;une session à l&#x27;autre. Voilà pour cette capsule. À la prochaine.</p>
+          </details>
+          <p class="tu-fichier"><a href="../tutoriels/02-planifier.mp4">
+            Ouvrir la vidéo dans un onglet</a></p>
+        </div>
+      </div>
     </section>
     <section class="tu-capsule" id="c4">
-      <div class="tu-num">Capsule 4 sur 10 · 1 min 27 s</div>
-      <h2>Ouvrir un module par sections</h2>
-      <video controls preload="none" playsinline crossorigin="anonymous"
-             poster="../tutoriels/03-sections.jpg">
-        <source src="../tutoriels/03-sections.mp4" type="video/mp4" />
-        <track kind="subtitles" srclang="fr" label="Français" default
-               src="../tutoriels/03-sections.vtt" />
-        Votre navigateur ne peut pas lire cette vidéo.
-        <a href="../tutoriels/03-sections.mp4">Téléchargez-la</a>.
-      </video>
-      <details class="tu-texte">
-        <summary>Lire la transcription</summary>
-        <p>Un module de cours ne s&#x27;ouvre pas forcément d&#x27;un seul bloc. Regardez le petit chevron, à gauche de chaque rangée : c&#x27;est lui qui donne accès aux sections.</p><p>Il déplie les sections du module : « Je découvre », les défis, « Je me lance », « Je retiens des mots ». Chacune a sa propre case et sa propre pastille.</p><p>Chaque section a sa propre case et son propre bouton « Dates ». Vous pouvez donc donner une date au « Défi 2 » comme vous en donnez une au module entier. Ce qui n&#x27;est pas encore ouvert reste grisé chez l&#x27;élève, avec sa date d&#x27;ouverture affichée.</p><p>La fenêtre demande la date d&#x27;ouverture, celle de fermeture, et la date où vous l&#x27;avez vue en classe. Et vous n&#x27;êtes jamais obligé de dater les six sections : une section sans date propre suit simplement son module. Datez ce que vous voulez retenir ; le reste s&#x27;ouvre avec le module.</p><p>Sous les sections, le même chevron vous donne la fiche pédagogique du module : les savoirs, les actes de parole, les compétences visées et le vocabulaire. De quoi préparer votre cours sans même ouvrir l&#x27;activité.</p><p>Un module peut s&#x27;ouvrir section par section, et vous ne datez que ce que vous voulez retenir. Voilà pour cette capsule. À la prochaine.</p>
-      </details>
+      <div class="tu-rangee">
+        <button class="tu-vignette" type="button"
+                data-video="../tutoriels/03-sections.mp4"
+                data-vtt="../tutoriels/03-sections.vtt"
+                aria-label="Lire la capsule 4 : Ouvrir un module par sections">
+          <img src="../tutoriels/03-sections.jpg" alt="" loading="lazy" />
+          <span class="tu-play" aria-hidden="true"></span>
+          <span class="tu-duree">1 min 27 s</span>
+        </button>
+        <div class="tu-infos">
+          <div class="tu-num">Capsule 4 sur 10</div>
+          <h2>Ouvrir un module par sections</h2>
+          <details class="tu-texte">
+            <summary>Lire la transcription</summary>
+            <p>Un module de cours ne s&#x27;ouvre pas forcément d&#x27;un seul bloc. Regardez le petit chevron, à gauche de chaque rangée : c&#x27;est lui qui donne accès aux sections.</p><p>Il déplie les sections du module : « Je découvre », les défis, « Je me lance », « Je retiens des mots ». Chacune a sa propre case et sa propre pastille.</p><p>Chaque section a sa propre case et son propre bouton « Dates ». Vous pouvez donc donner une date au « Défi 2 » comme vous en donnez une au module entier. Ce qui n&#x27;est pas encore ouvert reste grisé chez l&#x27;élève, avec sa date d&#x27;ouverture affichée.</p><p>La fenêtre demande la date d&#x27;ouverture, celle de fermeture, et la date où vous l&#x27;avez vue en classe. Et vous n&#x27;êtes jamais obligé de dater les six sections : une section sans date propre suit simplement son module. Datez ce que vous voulez retenir ; le reste s&#x27;ouvre avec le module.</p><p>Sous les sections, le même chevron vous donne la fiche pédagogique du module : les savoirs, les actes de parole, les compétences visées et le vocabulaire. De quoi préparer votre cours sans même ouvrir l&#x27;activité.</p><p>Un module peut s&#x27;ouvrir section par section, et vous ne datez que ce que vous voulez retenir. Voilà pour cette capsule. À la prochaine.</p>
+          </details>
+          <p class="tu-fichier"><a href="../tutoriels/03-sections.mp4">
+            Ouvrir la vidéo dans un onglet</a></p>
+        </div>
+      </div>
     </section>
     <section class="tu-capsule" id="c5">
-      <div class="tu-num">Capsule 5 sur 10 · 1 min 27 s</div>
-      <h2>Les élèves et leurs codes</h2>
-      <video controls preload="none" playsinline crossorigin="anonymous"
-             poster="../tutoriels/04-eleves.jpg">
-        <source src="../tutoriels/04-eleves.mp4" type="video/mp4" />
-        <track kind="subtitles" srclang="fr" label="Français" default
-               src="../tutoriels/04-eleves.vtt" />
-        Votre navigateur ne peut pas lire cette vidéo.
-        <a href="../tutoriels/04-eleves.mp4">Téléchargez-la</a>.
-      </video>
-      <details class="tu-texte">
-        <summary>Lire la transcription</summary>
-        <p>Deuxième onglet : les élèves. Et ici, une chose à savoir tout de suite. Un élève ne s&#x27;inscrit jamais lui-même. C&#x27;est vous qui l&#x27;ajoutez au groupe, et le portail fabrique son code.</p><p>Ce code de six caractères est sa seule clé d&#x27;entrée. Pas de courriel, pas de mot de passe à retenir, pas de compte à créer. Il l&#x27;entre dans le portail élève, et il retrouve son travail.</p><p>Pour ajouter quelqu&#x27;un : un pseudo, et pas le vrai nom. Le champ le dit lui-même — Colibri, Érable, Cardinal font très bien l&#x27;affaire. C&#x27;est ce pseudo qui s&#x27;affichera partout dans le portail. Puis « Générer le code », et l&#x27;élève apparaît dans la liste avec le sien.</p><p>Si vous préparez une rentrée, laissez le champ vide et demandez plusieurs codes d&#x27;un coup : ils s&#x27;appelleront « Élève un, deux, trois », et vous poserez les pseudos à l&#x27;arrivée des personnes. Enfin, « Imprimer les codes » sort un billet par élève, en noir et blanc. La voici : le groupe, le pseudo, le code et l&#x27;adresse du portail. Vous découpez, vous distribuez, et la classe est en ligne.</p><p>Chaque élève a son pseudo et son code, et vous savez comment les imprimer. Le suivi d&#x27;un élève a sa propre capsule. Voilà pour celle-ci. À la prochaine.</p>
-      </details>
+      <div class="tu-rangee">
+        <button class="tu-vignette" type="button"
+                data-video="../tutoriels/04-eleves.mp4"
+                data-vtt="../tutoriels/04-eleves.vtt"
+                aria-label="Lire la capsule 5 : Les élèves et leurs codes">
+          <img src="../tutoriels/04-eleves.jpg" alt="" loading="lazy" />
+          <span class="tu-play" aria-hidden="true"></span>
+          <span class="tu-duree">1 min 27 s</span>
+        </button>
+        <div class="tu-infos">
+          <div class="tu-num">Capsule 5 sur 10</div>
+          <h2>Les élèves et leurs codes</h2>
+          <details class="tu-texte">
+            <summary>Lire la transcription</summary>
+            <p>Deuxième onglet : les élèves. Et ici, une chose à savoir tout de suite. Un élève ne s&#x27;inscrit jamais lui-même. C&#x27;est vous qui l&#x27;ajoutez au groupe, et le portail fabrique son code.</p><p>Ce code de six caractères est sa seule clé d&#x27;entrée. Pas de courriel, pas de mot de passe à retenir, pas de compte à créer. Il l&#x27;entre dans le portail élève, et il retrouve son travail.</p><p>Pour ajouter quelqu&#x27;un : un pseudo, et pas le vrai nom. Le champ le dit lui-même — Colibri, Érable, Cardinal font très bien l&#x27;affaire. C&#x27;est ce pseudo qui s&#x27;affichera partout dans le portail. Puis « Générer le code », et l&#x27;élève apparaît dans la liste avec le sien.</p><p>Si vous préparez une rentrée, laissez le champ vide et demandez plusieurs codes d&#x27;un coup : ils s&#x27;appelleront « Élève un, deux, trois », et vous poserez les pseudos à l&#x27;arrivée des personnes. Enfin, « Imprimer les codes » sort un billet par élève, en noir et blanc. La voici : le groupe, le pseudo, le code et l&#x27;adresse du portail. Vous découpez, vous distribuez, et la classe est en ligne.</p><p>Chaque élève a son pseudo et son code, et vous savez comment les imprimer. Le suivi d&#x27;un élève a sa propre capsule. Voilà pour celle-ci. À la prochaine.</p>
+          </details>
+          <p class="tu-fichier"><a href="../tutoriels/04-eleves.mp4">
+            Ouvrir la vidéo dans un onglet</a></p>
+        </div>
+      </div>
     </section>
     <section class="tu-capsule" id="c6">
-      <div class="tu-num">Capsule 6 sur 10 · 2 min 34 s</div>
-      <h2>Le dépôt de matériel</h2>
-      <video controls preload="none" playsinline crossorigin="anonymous"
-             poster="../tutoriels/06-materiel.jpg">
-        <source src="../tutoriels/06-materiel.mp4" type="video/mp4" />
-        <track kind="subtitles" srclang="fr" label="Français" default
-               src="../tutoriels/06-materiel.vtt" />
-        Votre navigateur ne peut pas lire cette vidéo.
-        <a href="../tutoriels/06-materiel.mp4">Téléchargez-la</a>.
-      </video>
-      <details class="tu-texte">
-        <summary>Lire la transcription</summary>
-        <p>Dernier onglet : le dépôt de matériel. C&#x27;est ici que vivent les présentations de séance et les fiches à imprimer produites par l&#x27;équipe. Deux vues du même écran : « Ma semaine » et « Le catalogue ».</p><p>« Ma semaine » part de votre planification et vous montre, jour par jour, ce que vous avez au programme. Pour chaque plage, l&#x27;activité prévue et ses séances offertes en pastilles.</p><p>Le catalogue, lui, range tout par module. Chaque module de cours est découpé en seize séances, codées de A un à E deux. Le code dit le bloc d&#x27;enseignement, et la barre du haut vous dit combien sont déjà produites.</p><p>Un mot sur les seize séances, parce que ça surprend. Vos dates de planification suivent le découpage du module en six sections. Les présentations, elles, suivent une grille de seize séances de cours. Les deux grilles ne se correspondent pas : le portail vous les offre toutes, et c&#x27;est vous qui choisissez.</p><p>Cliquez sur le titre d&#x27;une séance : le panneau de droite vous montre la présentation, son aperçu, le nombre de diapositives, et la fiche élève qui l&#x27;accompagne. Vous téléchargez, vous ouvrez, ou vous imprimez directement.</p><p>Descendez maintenant au bas du catalogue : « Dépôts de l&#x27;équipe ». Voici deux versions retravaillées par une collègue. Sur la séance A3, des diapositives allégées — deux exemples de moins, plus de temps de parole. Sur la A4, un exercice de plus pour ceux qui finissent avant les autres.</p><p>C&#x27;est ça, déposer sa propre version. Votre fichier se range à côté de l&#x27;officiel, jamais à sa place : l&#x27;original reste téléchargeable, et la prochaine production automatique ne l&#x27;écrasera pas. Un compte administrateur peut aller plus loin et faire servir un dépôt à la place de l&#x27;officiel — là encore sans rien effacer, et ça se défait d&#x27;un clic.</p><p>Cochez enfin plusieurs séances, et la sélection s&#x27;accumule en bas du panneau : vous descendez d&#x27;un coup toutes les présentations, ou toutes les fiches, ou vous les envoyez à l&#x27;imprimante en un seul dialogue, une fiche par page. Voilà, vous avez fait le tour. Le seul réflexe à garder : une activité qu&#x27;on n&#x27;a pas datée n&#x27;existe pas pour la classe.</p><p>Le matériel de la semaine est à portée de main, et vos versions retravaillées se rangent à côté des fiches officielles. Voilà pour cette capsule. À la prochaine.</p>
-      </details>
+      <div class="tu-rangee">
+        <button class="tu-vignette" type="button"
+                data-video="../tutoriels/06-materiel.mp4"
+                data-vtt="../tutoriels/06-materiel.vtt"
+                aria-label="Lire la capsule 6 : Le dépôt de matériel">
+          <img src="../tutoriels/06-materiel.jpg" alt="" loading="lazy" />
+          <span class="tu-play" aria-hidden="true"></span>
+          <span class="tu-duree">2 min 34 s</span>
+        </button>
+        <div class="tu-infos">
+          <div class="tu-num">Capsule 6 sur 10</div>
+          <h2>Le dépôt de matériel</h2>
+          <details class="tu-texte">
+            <summary>Lire la transcription</summary>
+            <p>Dernier onglet : le dépôt de matériel. C&#x27;est ici que vivent les présentations de séance et les fiches à imprimer produites par l&#x27;équipe. Deux vues du même écran : « Ma semaine » et « Le catalogue ».</p><p>« Ma semaine » part de votre planification et vous montre, jour par jour, ce que vous avez au programme. Pour chaque plage, l&#x27;activité prévue et ses séances offertes en pastilles.</p><p>Le catalogue, lui, range tout par module. Chaque module de cours est découpé en seize séances, codées de A un à E deux. Le code dit le bloc d&#x27;enseignement, et la barre du haut vous dit combien sont déjà produites.</p><p>Un mot sur les seize séances, parce que ça surprend. Vos dates de planification suivent le découpage du module en six sections. Les présentations, elles, suivent une grille de seize séances de cours. Les deux grilles ne se correspondent pas : le portail vous les offre toutes, et c&#x27;est vous qui choisissez.</p><p>Cliquez sur le titre d&#x27;une séance : le panneau de droite vous montre la présentation, son aperçu, le nombre de diapositives, et la fiche élève qui l&#x27;accompagne. Vous téléchargez, vous ouvrez, ou vous imprimez directement.</p><p>Descendez maintenant au bas du catalogue : « Dépôts de l&#x27;équipe ». Voici deux versions retravaillées par une collègue. Sur la séance A3, des diapositives allégées — deux exemples de moins, plus de temps de parole. Sur la A4, un exercice de plus pour ceux qui finissent avant les autres.</p><p>C&#x27;est ça, déposer sa propre version. Votre fichier se range à côté de l&#x27;officiel, jamais à sa place : l&#x27;original reste téléchargeable, et la prochaine production automatique ne l&#x27;écrasera pas. Un compte administrateur peut aller plus loin et faire servir un dépôt à la place de l&#x27;officiel — là encore sans rien effacer, et ça se défait d&#x27;un clic.</p><p>Cochez enfin plusieurs séances, et la sélection s&#x27;accumule en bas du panneau : vous descendez d&#x27;un coup toutes les présentations, ou toutes les fiches, ou vous les envoyez à l&#x27;imprimante en un seul dialogue, une fiche par page. Voilà, vous avez fait le tour. Le seul réflexe à garder : une activité qu&#x27;on n&#x27;a pas datée n&#x27;existe pas pour la classe.</p><p>Le matériel de la semaine est à portée de main, et vos versions retravaillées se rangent à côté des fiches officielles. Voilà pour cette capsule. À la prochaine.</p>
+          </details>
+          <p class="tu-fichier"><a href="../tutoriels/06-materiel.mp4">
+            Ouvrir la vidéo dans un onglet</a></p>
+        </div>
+      </div>
     </section>
     <section class="tu-capsule" id="c7">
-      <div class="tu-num">Capsule 7 sur 10 · 2 min 51 s</div>
-      <h2>Composer une activité</h2>
-      <video controls preload="none" playsinline crossorigin="anonymous"
-             poster="../tutoriels/07-composer.jpg">
-        <source src="../tutoriels/07-composer.mp4" type="video/mp4" />
-        <track kind="subtitles" srclang="fr" label="Français" default
-               src="../tutoriels/07-composer.vtt" />
-        Votre navigateur ne peut pas lire cette vidéo.
-        <a href="../tutoriels/07-composer.mp4">Téléchargez-la</a>.
-      </video>
-      <details class="tu-texte">
-        <summary>Lire la transcription</summary>
-        <p>Dernier outil de la barre de groupe : « Composer une activité ». Il s&#x27;ouvre dans un nouvel onglet, donc votre planification en cours n&#x27;est jamais perdue.</p><p>Le compositeur ne fabrique pas l&#x27;activité lui-même. Il assemble une commande — un prompt — à partir des critères du programme officiel de francisation. Vous choisissez, il écrit.</p><p>Première étape, le cadre. Et d&#x27;abord le niveau, parce qu&#x27;il commande tout le reste : les domaines, les situations, les intentions et les savoirs qui vous seront proposés en dépendent. Ici, niveau 4.</p><p>Puis la compétence travaillée, la durée de l&#x27;activité et la modalité de travail. Trois clics qui disent au modèle ce qu&#x27;il doit préparer : ici une production orale, en deux heures, en dyade.</p><p>Deuxième étape, la thématique. Le domaine de vie, puis la situation de communication. Ces listes ne sont pas inventées : ce sont celles que le programme prescrit pour le niveau que vous venez de choisir.</p><p>Troisième étape, les intentions de communication. Le programme en prescrit une liste pour cette situation, et une seule : ici, s&#x27;informer sur les conditions de location, et exprimer ses besoins ou ses préférences. Cochez celles que votre activité doit faire travailler.</p><p>Quatrième étape, les savoirs. Il y en a plus de deux cents au niveau 4 : le champ de recherche les resserre. Tapez un mot, et vous ne voyez plus que ce qui s&#x27;y rapporte. Cochez la grammaire et le vocabulaire visés.</p><p>Vous pouvez aussi joindre votre propre documentation : un texte de départ, une annonce trouvée en ligne, une situation vécue en classe. « Ajouter un document » ouvre un champ où vous la collez, et l&#x27;activité se construira autour.</p><p>Pendant que vous cochez, le compteur en haut suit le coût en jetons : ce que le prompt enverra, ce que l&#x27;activité produira, et le total. Vous savez ce que vous engagez avant de lancer quoi que ce soit.</p><p>Et le prompt s&#x27;écrit à mesure, en bas. Il reprend le niveau, le sigle du cours, la situation, les intentions et les savoirs que vous avez cochés, dans les termes exacts du programme.</p><p>Il ne reste qu&#x27;à le prendre. « Copier le prompt » pour le coller dans Claude. « Modifier le prompt » si vous voulez ajuster une phrase, « Télécharger en point m d » pour le garder, et « Tout réinitialiser » pour recommencer une autre activité.</p><p>Le compositeur vous rend un prompt écrit dans les termes du programme, prêt à coller. Voilà pour cette capsule. À la prochaine.</p>
-      </details>
+      <div class="tu-rangee">
+        <button class="tu-vignette" type="button"
+                data-video="../tutoriels/07-composer.mp4"
+                data-vtt="../tutoriels/07-composer.vtt"
+                aria-label="Lire la capsule 7 : Composer une activité">
+          <img src="../tutoriels/07-composer.jpg" alt="" loading="lazy" />
+          <span class="tu-play" aria-hidden="true"></span>
+          <span class="tu-duree">2 min 51 s</span>
+        </button>
+        <div class="tu-infos">
+          <div class="tu-num">Capsule 7 sur 10</div>
+          <h2>Composer une activité</h2>
+          <details class="tu-texte">
+            <summary>Lire la transcription</summary>
+            <p>Dernier outil de la barre de groupe : « Composer une activité ». Il s&#x27;ouvre dans un nouvel onglet, donc votre planification en cours n&#x27;est jamais perdue.</p><p>Le compositeur ne fabrique pas l&#x27;activité lui-même. Il assemble une commande — un prompt — à partir des critères du programme officiel de francisation. Vous choisissez, il écrit.</p><p>Première étape, le cadre. Et d&#x27;abord le niveau, parce qu&#x27;il commande tout le reste : les domaines, les situations, les intentions et les savoirs qui vous seront proposés en dépendent. Ici, niveau 4.</p><p>Puis la compétence travaillée, la durée de l&#x27;activité et la modalité de travail. Trois clics qui disent au modèle ce qu&#x27;il doit préparer : ici une production orale, en deux heures, en dyade.</p><p>Deuxième étape, la thématique. Le domaine de vie, puis la situation de communication. Ces listes ne sont pas inventées : ce sont celles que le programme prescrit pour le niveau que vous venez de choisir.</p><p>Troisième étape, les intentions de communication. Le programme en prescrit une liste pour cette situation, et une seule : ici, s&#x27;informer sur les conditions de location, et exprimer ses besoins ou ses préférences. Cochez celles que votre activité doit faire travailler.</p><p>Quatrième étape, les savoirs. Il y en a plus de deux cents au niveau 4 : le champ de recherche les resserre. Tapez un mot, et vous ne voyez plus que ce qui s&#x27;y rapporte. Cochez la grammaire et le vocabulaire visés.</p><p>Vous pouvez aussi joindre votre propre documentation : un texte de départ, une annonce trouvée en ligne, une situation vécue en classe. « Ajouter un document » ouvre un champ où vous la collez, et l&#x27;activité se construira autour.</p><p>Pendant que vous cochez, le compteur en haut suit le coût en jetons : ce que le prompt enverra, ce que l&#x27;activité produira, et le total. Vous savez ce que vous engagez avant de lancer quoi que ce soit.</p><p>Et le prompt s&#x27;écrit à mesure, en bas. Il reprend le niveau, le sigle du cours, la situation, les intentions et les savoirs que vous avez cochés, dans les termes exacts du programme.</p><p>Il ne reste qu&#x27;à le prendre. « Copier le prompt » pour le coller dans Claude. « Modifier le prompt » si vous voulez ajuster une phrase, « Télécharger en point m d » pour le garder, et « Tout réinitialiser » pour recommencer une autre activité.</p><p>Le compositeur vous rend un prompt écrit dans les termes du programme, prêt à coller. Voilà pour cette capsule. À la prochaine.</p>
+          </details>
+          <p class="tu-fichier"><a href="../tutoriels/07-composer.mp4">
+            Ouvrir la vidéo dans un onglet</a></p>
+        </div>
+      </div>
     </section>
     <section class="tu-capsule" id="c8">
-      <div class="tu-num">Capsule 8 sur 10 · 1 min 57 s</div>
-      <h2>La séance sans compte</h2>
-      <video controls preload="none" playsinline crossorigin="anonymous"
-             poster="../tutoriels/08-seance.jpg">
-        <source src="../tutoriels/08-seance.mp4" type="video/mp4" />
-        <track kind="subtitles" srclang="fr" label="Français" default
-               src="../tutoriels/08-seance.vtt" />
-        Votre navigateur ne peut pas lire cette vidéo.
-        <a href="../tutoriels/08-seance.mp4">Téléchargez-la</a>.
-      </video>
-      <details class="tu-texte">
-        <summary>Lire la transcription</summary>
-        <p>Il arrive qu&#x27;une classe doive travailler sans compte : des élèves de passage, un groupe qui commence, des téléphones prêtés. Le mode séance sert à ça. Vous ouvrez une séance sur un module, vous imprimez une feuille, et la classe entre avec un code — sans nom, sans mot de passe, sans rien à retenir.</p><p>Tout part d&#x27;ici, dans « Travailler avec la classe ». Choisissez d&#x27;abord le module à faire : c&#x27;est lui que la séance ouvrira, et rien d&#x27;autre. Un code de séance donne accès à un seul module, jamais à tout le catalogue du groupe.</p><p>Puis, dans la barre noire, cliquez sur « Ouvrir la séance ». Le portail tire un code de six caractères et la porte est ouverte. Personne n&#x27;a eu à créer de compte.</p><p>Le bouton « La feuille » remplace alors celui d&#x27;ouverture. Elle porte le code en gros, un carré à faire scanner, et l&#x27;adresse à taper pour ceux qui n&#x27;ont pas d&#x27;appareil photo. Elle s&#x27;imprime en noir et blanc : c&#x27;est la photocopieuse de l&#x27;école qui la tire.</p><p>Voici la feuille. L&#x27;élève scanne le carré ou tape l&#x27;adresse, entre le code, et le module s&#x27;ouvre. Aucun nom ne lui est demandé, et il n&#x27;a rien à installer.</p><p>Ce que les appareils répondent remonte dans le tableau du direct, exactement comme les réponses des élèves inscrits. Ils y paraissent sous « Participant » suivi d&#x27;un numéro — c&#x27;est tout ce que le portail sait d&#x27;eux.</p><p>Trois choses à retenir. Une séance porte sur un seul module. Rien de ce qu&#x27;un participant fait n&#x27;est rattaché à une personne : il n&#x27;y a pas de dossier au bout, et l&#x27;enregistrement d&#x27;une production orale y est refusé. Et fermer la séance ferme vraiment la porte, y compris pour les appareils déjà entrés. Voilà pour cette capsule. À la prochaine.</p>
-      </details>
+      <div class="tu-rangee">
+        <button class="tu-vignette" type="button"
+                data-video="../tutoriels/08-seance.mp4"
+                data-vtt="../tutoriels/08-seance.vtt"
+                aria-label="Lire la capsule 8 : La séance sans compte">
+          <img src="../tutoriels/08-seance.jpg" alt="" loading="lazy" />
+          <span class="tu-play" aria-hidden="true"></span>
+          <span class="tu-duree">1 min 57 s</span>
+        </button>
+        <div class="tu-infos">
+          <div class="tu-num">Capsule 8 sur 10</div>
+          <h2>La séance sans compte</h2>
+          <details class="tu-texte">
+            <summary>Lire la transcription</summary>
+            <p>Il arrive qu&#x27;une classe doive travailler sans compte : des élèves de passage, un groupe qui commence, des téléphones prêtés. Le mode séance sert à ça. Vous ouvrez une séance sur un module, vous imprimez une feuille, et la classe entre avec un code — sans nom, sans mot de passe, sans rien à retenir.</p><p>Tout part d&#x27;ici, dans « Travailler avec la classe ». Choisissez d&#x27;abord le module à faire : c&#x27;est lui que la séance ouvrira, et rien d&#x27;autre. Un code de séance donne accès à un seul module, jamais à tout le catalogue du groupe.</p><p>Puis, dans la barre noire, cliquez sur « Ouvrir la séance ». Le portail tire un code de six caractères et la porte est ouverte. Personne n&#x27;a eu à créer de compte.</p><p>Le bouton « La feuille » remplace alors celui d&#x27;ouverture. Elle porte le code en gros, un carré à faire scanner, et l&#x27;adresse à taper pour ceux qui n&#x27;ont pas d&#x27;appareil photo. Elle s&#x27;imprime en noir et blanc : c&#x27;est la photocopieuse de l&#x27;école qui la tire.</p><p>Voici la feuille. L&#x27;élève scanne le carré ou tape l&#x27;adresse, entre le code, et le module s&#x27;ouvre. Aucun nom ne lui est demandé, et il n&#x27;a rien à installer.</p><p>Ce que les appareils répondent remonte dans le tableau du direct, exactement comme les réponses des élèves inscrits. Ils y paraissent sous « Participant » suivi d&#x27;un numéro — c&#x27;est tout ce que le portail sait d&#x27;eux.</p><p>Trois choses à retenir. Une séance porte sur un seul module. Rien de ce qu&#x27;un participant fait n&#x27;est rattaché à une personne : il n&#x27;y a pas de dossier au bout, et l&#x27;enregistrement d&#x27;une production orale y est refusé. Et fermer la séance ferme vraiment la porte, y compris pour les appareils déjà entrés. Voilà pour cette capsule. À la prochaine.</p>
+          </details>
+          <p class="tu-fichier"><a href="../tutoriels/08-seance.mp4">
+            Ouvrir la vidéo dans un onglet</a></p>
+        </div>
+      </div>
     </section>
     <section class="tu-capsule" id="c9">
-      <div class="tu-num">Capsule 9 sur 10 · 2 min 16 s</div>
-      <h2>Suivre la classe</h2>
-      <video controls preload="none" playsinline crossorigin="anonymous"
-             poster="../tutoriels/09-suivre.jpg">
-        <source src="../tutoriels/09-suivre.mp4" type="video/mp4" />
-        <track kind="subtitles" srclang="fr" label="Français" default
-               src="../tutoriels/09-suivre.vtt" />
-        Votre navigateur ne peut pas lire cette vidéo.
-        <a href="../tutoriels/09-suivre.mp4">Téléchargez-la</a>.
-      </video>
-      <details class="tu-texte">
-        <summary>Lire la transcription</summary>
-        <p>« Progression des élèves » répond à une seule question : où en est la classe. C&#x27;est la page qu&#x27;on ouvre le soir, après le cours, ou pendant qu&#x27;on circule entre les rangées.</p><p>En haut, « Le bilan » : le module regardé et la période. Trois périodes, et elles ne disent pas la même chose. « Aujourd&#x27;hui », c&#x27;est la soirée même. « Depuis l&#x27;ouverture du module », c&#x27;est depuis la date que vous avez posée pour ce groupe. « Depuis toujours », c&#x27;est tout.</p><p>Le bilan tient en quatre chiffres : combien d&#x27;élèves ont travaillé, combien de couples élève-module sont achevés, et ce qui a été déposé — les enregistrements d&#x27;un côté, les textes de l&#x27;autre. Quatre nombres lus en trois secondes, avant même de regarder qui que ce soit.</p><p>Dessous, une rangée par élève : l&#x27;avancement, l&#x27;état, la part de zones réussies du premier coup, les enregistrements, les textes, la dernière trace. Un élève qui n&#x27;est jamais venu se lit tout de suite — sa rangée est vide de bout en bout, et c&#x27;est souvent l&#x27;information la plus utile de la page.</p><p>Le chevron au bout d&#x27;une rangée déplie ce que cet élève a envoyé pendant la période : ses textes, ses enregistrements. Quand il n&#x27;y a rien, il n&#x27;y a pas de chevron — la page ne promet jamais du vide.</p><p>Et pendant que la classe répond, la barre noire du direct montre la réussite question par question. Les questions en alerte sont celles que la moitié du groupe rate : c&#x27;est là qu&#x27;il faut revenir, tout de suite, au tableau.</p><p>Deux réglages valent d&#x27;être connus. La bascule dit l&#x27;état des noms : par défaut le direct est anonyme, pour que la barre puisse être projetée au tableau ; un clic affiche les noms quand vous êtes seul devant l&#x27;écran. Et « Mettre en pause » arrête le rafraîchissement, pour qu&#x27;un onglet oublié ne compte pas des élèves partis comme des élèves en ligne.</p><p>Retenez la division : le bilan regarde, la barre du direct suit ce qui se passe maintenant. Le premier ne se verrouille jamais, pour que vous puissiez lire l&#x27;ensemble du groupe pendant que la classe travaille. Voilà pour cette capsule. À la prochaine.</p>
-      </details>
+      <div class="tu-rangee">
+        <button class="tu-vignette" type="button"
+                data-video="../tutoriels/09-suivre.mp4"
+                data-vtt="../tutoriels/09-suivre.vtt"
+                aria-label="Lire la capsule 9 : Suivre la classe">
+          <img src="../tutoriels/09-suivre.jpg" alt="" loading="lazy" />
+          <span class="tu-play" aria-hidden="true"></span>
+          <span class="tu-duree">2 min 16 s</span>
+        </button>
+        <div class="tu-infos">
+          <div class="tu-num">Capsule 9 sur 10</div>
+          <h2>Suivre la classe</h2>
+          <details class="tu-texte">
+            <summary>Lire la transcription</summary>
+            <p>« Progression des élèves » répond à une seule question : où en est la classe. C&#x27;est la page qu&#x27;on ouvre le soir, après le cours, ou pendant qu&#x27;on circule entre les rangées.</p><p>En haut, « Le bilan » : le module regardé et la période. Trois périodes, et elles ne disent pas la même chose. « Aujourd&#x27;hui », c&#x27;est la soirée même. « Depuis l&#x27;ouverture du module », c&#x27;est depuis la date que vous avez posée pour ce groupe. « Depuis toujours », c&#x27;est tout.</p><p>Le bilan tient en quatre chiffres : combien d&#x27;élèves ont travaillé, combien de couples élève-module sont achevés, et ce qui a été déposé — les enregistrements d&#x27;un côté, les textes de l&#x27;autre. Quatre nombres lus en trois secondes, avant même de regarder qui que ce soit.</p><p>Dessous, une rangée par élève : l&#x27;avancement, l&#x27;état, la part de zones réussies du premier coup, les enregistrements, les textes, la dernière trace. Un élève qui n&#x27;est jamais venu se lit tout de suite — sa rangée est vide de bout en bout, et c&#x27;est souvent l&#x27;information la plus utile de la page.</p><p>Le chevron au bout d&#x27;une rangée déplie ce que cet élève a envoyé pendant la période : ses textes, ses enregistrements. Quand il n&#x27;y a rien, il n&#x27;y a pas de chevron — la page ne promet jamais du vide.</p><p>Et pendant que la classe répond, la barre noire du direct montre la réussite question par question. Les questions en alerte sont celles que la moitié du groupe rate : c&#x27;est là qu&#x27;il faut revenir, tout de suite, au tableau.</p><p>Deux réglages valent d&#x27;être connus. La bascule dit l&#x27;état des noms : par défaut le direct est anonyme, pour que la barre puisse être projetée au tableau ; un clic affiche les noms quand vous êtes seul devant l&#x27;écran. Et « Mettre en pause » arrête le rafraîchissement, pour qu&#x27;un onglet oublié ne compte pas des élèves partis comme des élèves en ligne.</p><p>Retenez la division : le bilan regarde, la barre du direct suit ce qui se passe maintenant. Le premier ne se verrouille jamais, pour que vous puissiez lire l&#x27;ensemble du groupe pendant que la classe travaille. Voilà pour cette capsule. À la prochaine.</p>
+          </details>
+          <p class="tu-fichier"><a href="../tutoriels/09-suivre.mp4">
+            Ouvrir la vidéo dans un onglet</a></p>
+        </div>
+      </div>
     </section>
     <section class="tu-capsule" id="c10">
-      <div class="tu-num">Capsule 10 sur 10 · 1 min 40 s</div>
-      <h2>Le dossier d&#x27;un élève</h2>
-      <video controls preload="none" playsinline crossorigin="anonymous"
-             poster="../tutoriels/10-dossier.jpg">
-        <source src="../tutoriels/10-dossier.mp4" type="video/mp4" />
-        <track kind="subtitles" srclang="fr" label="Français" default
-               src="../tutoriels/10-dossier.vtt" />
-        Votre navigateur ne peut pas lire cette vidéo.
-        <a href="../tutoriels/10-dossier.mp4">Téléchargez-la</a>.
-      </video>
-      <details class="tu-texte">
-        <summary>Lire la transcription</summary>
-        <p>La page précédente répond à « où en est la classe ». Celle-ci répond à « qu&#x27;a fait cette personne ». On y entre par le nom de l&#x27;élève, ou par le bouton « Dossier » au bout de sa rangée.</p><p>Le dossier s&#x27;ouvre sur le bilan, et c&#x27;est exactement ce que l&#x27;élève voit sur son propre portail : les modules terminés, les mots de vocabulaire maîtrisés, les jours de pratique de la semaine. Rien de plus que ce qu&#x27;il sait déjà de lui-même.</p><p>Puis, activité par activité : l&#x27;état, le dialogue écouté ou non, la part de zones réussies du premier coup, le nombre d&#x27;erreurs, la dernière trace. Une activité ouverte mais pas terminée se voit ; une activité jamais ouverte n&#x27;y est pas du tout.</p><p>Le chevron d&#x27;une rangée ouvre ce que l&#x27;élève a remis dans cette activité : son texte, son enregistrement, et la rétroaction qu&#x27;il a reçue. Rien n&#x27;est reconstitué : ce sont les fichiers qu&#x27;il a envoyés lui-même.</p><p>En tête du dossier, un bouton : « Envoyer un point express ». C&#x27;est l&#x27;endroit prévu pour ça — vous venez de voir la difficulté, vous envoyez à cet élève un exercice de dix minutes sur ce seul point. Le portail ne le suggère jamais tout seul : le diagnostic reste le vôtre.</p><p>Une dernière chose, et elle compte. Ce que vous lisez ici, ce sont les traces que l&#x27;élève a laissées et les productions qu&#x27;il a choisi d&#x27;envoyer. Les corrections qu&#x27;il demande à l&#x27;assistant pendant qu&#x27;il travaille ne remontent jamais : elles lui appartiennent. Voilà pour cette capsule. À la prochaine.</p>
-      </details>
+      <div class="tu-rangee">
+        <button class="tu-vignette" type="button"
+                data-video="../tutoriels/10-dossier.mp4"
+                data-vtt="../tutoriels/10-dossier.vtt"
+                aria-label="Lire la capsule 10 : Le dossier d&#x27;un élève">
+          <img src="../tutoriels/10-dossier.jpg" alt="" loading="lazy" />
+          <span class="tu-play" aria-hidden="true"></span>
+          <span class="tu-duree">1 min 40 s</span>
+        </button>
+        <div class="tu-infos">
+          <div class="tu-num">Capsule 10 sur 10</div>
+          <h2>Le dossier d&#x27;un élève</h2>
+          <details class="tu-texte">
+            <summary>Lire la transcription</summary>
+            <p>La page précédente répond à « où en est la classe ». Celle-ci répond à « qu&#x27;a fait cette personne ». On y entre par le nom de l&#x27;élève, ou par le bouton « Dossier » au bout de sa rangée.</p><p>Le dossier s&#x27;ouvre sur le bilan, et c&#x27;est exactement ce que l&#x27;élève voit sur son propre portail : les modules terminés, les mots de vocabulaire maîtrisés, les jours de pratique de la semaine. Rien de plus que ce qu&#x27;il sait déjà de lui-même.</p><p>Puis, activité par activité : l&#x27;état, le dialogue écouté ou non, la part de zones réussies du premier coup, le nombre d&#x27;erreurs, la dernière trace. Une activité ouverte mais pas terminée se voit ; une activité jamais ouverte n&#x27;y est pas du tout.</p><p>Le chevron d&#x27;une rangée ouvre ce que l&#x27;élève a remis dans cette activité : son texte, son enregistrement, et la rétroaction qu&#x27;il a reçue. Rien n&#x27;est reconstitué : ce sont les fichiers qu&#x27;il a envoyés lui-même.</p><p>En tête du dossier, un bouton : « Envoyer un point express ». C&#x27;est l&#x27;endroit prévu pour ça — vous venez de voir la difficulté, vous envoyez à cet élève un exercice de dix minutes sur ce seul point. Le portail ne le suggère jamais tout seul : le diagnostic reste le vôtre.</p><p>Une dernière chose, et elle compte. Ce que vous lisez ici, ce sont les traces que l&#x27;élève a laissées et les productions qu&#x27;il a choisi d&#x27;envoyer. Les corrections qu&#x27;il demande à l&#x27;assistant pendant qu&#x27;il travaille ne remontent jamais : elles lui appartiennent. Voilà pour cette capsule. À la prochaine.</p>
+          </details>
+          <p class="tu-fichier"><a href="../tutoriels/10-dossier.mp4">
+            Ouvrir la vidéo dans un onglet</a></p>
+        </div>
+      </div>
     </section>
       <div class="tu-autre">
         <b>Vous préférez lire ?</b> Le même contenu existe en diapositives, à parcourir
@@ -296,6 +410,38 @@
     window.close();
     // window.close() est silencieux quand il est refusé : on vérifie après coup.
     setTimeout(() => { if (!window.closed) location.href = cible; }, 200);
+  });
+})();
+
+/* La vignette devient le lecteur, à sa place. On construit le <video> au
+   clic plutôt que de le poser masqué : onze lecteurs dans le document, même
+   invisibles, c'est onze fois la plomberie du navigateur pour une page qu'on
+   ouvre le plus souvent pour lire une transcription. Un seul joue à la fois —
+   deux narrations en même temps ne s'écoutent pas. */
+(() => {
+  let enCours = null;
+  document.addEventListener("click", (e) => {
+    const b = e.target.closest(".tu-vignette");
+    if (!b) return;
+    if (enCours && enCours.pause) enCours.pause();
+    const v = document.createElement("video");
+    v.controls = true; v.autoplay = true; v.playsInline = true;
+    v.setAttribute("poster", b.querySelector("img").getAttribute("src"));
+    const src = document.createElement("source");
+    src.src = b.dataset.video; src.type = "video/mp4";
+    v.appendChild(src);
+    if (b.dataset.vtt) {
+      const t = document.createElement("track");
+      t.kind = "subtitles"; t.srclang = "fr"; t.label = "Français";
+      t.default = true; t.src = b.dataset.vtt;
+      v.crossOrigin = "anonymous";
+      v.appendChild(t);
+    }
+    const carte = b.closest(".tu-capsule");
+    b.replaceWith(v);
+    if (carte) carte.classList.add("joue");
+    enCours = v;
+    v.focus({ preventScroll: true });
   });
 })();
 </script>

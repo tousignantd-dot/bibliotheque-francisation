@@ -71,22 +71,33 @@ for i, capsule in enumerate(filmees, 1):
 
     transcription = "".join(
         f"<p>{escape(p['texte'])}</p>" for p in capsule["plans"])
+    # La vignette remplace le lecteur pleine largeur. Onze lecteurs empilés
+    # font une page qu'on ne parcourt plus : on ne voit que des rectangles
+    # noirs, tous de la même taille, et il faut défiler pour lire un titre.
+    # Le bouton devient le lecteur au clic — la piste de sous-titres est donc
+    # gardée, ce qu'un simple lien vers le fichier aurait perdu.
     cartes.append(f"""
     <section class="tu-capsule" id="c{i}">
-      <div class="tu-num">Capsule {i} sur {len(filmees)} · {d}</div>
-      <h2>{titre}</h2>
-      <video controls preload="none" playsinline crossorigin="anonymous"
-             poster="../tutoriels/{capsule['id']}.jpg">
-        <source src="../tutoriels/{capsule['id']}.mp4" type="video/mp4" />
-        <track kind="subtitles" srclang="fr" label="Français" default
-               src="../tutoriels/{capsule['id']}.vtt" />
-        Votre navigateur ne peut pas lire cette vidéo.
-        <a href="../tutoriels/{capsule['id']}.mp4">Téléchargez-la</a>.
-      </video>
-      <details class="tu-texte">
-        <summary>Lire la transcription</summary>
-        {transcription}
-      </details>
+      <div class="tu-rangee">
+        <button class="tu-vignette" type="button"
+                data-video="../tutoriels/{capsule['id']}.mp4"
+                data-vtt="../tutoriels/{capsule['id']}.vtt"
+                aria-label="Lire la capsule {i} : {titre}">
+          <img src="../tutoriels/{capsule['id']}.jpg" alt="" loading="lazy" />
+          <span class="tu-play" aria-hidden="true"></span>
+          <span class="tu-duree">{d}</span>
+        </button>
+        <div class="tu-infos">
+          <div class="tu-num">Capsule {i} sur {len(filmees)}</div>
+          <h2>{titre}</h2>
+          <details class="tu-texte">
+            <summary>Lire la transcription</summary>
+            {transcription}
+          </details>
+          <p class="tu-fichier"><a href="../tutoriels/{capsule['id']}.mp4">
+            Ouvrir la vidéo dans un onglet</a></p>
+        </div>
+      </div>
     </section>""")
 
 # ── Le tutoriel papier ────────────────────────────────────────────────────
@@ -150,16 +161,23 @@ if pres:
                 "contrairement aux capsules.</p>" if pres.get("sans_sous_titres") else "")
         presentation = f"""
       <section class="tu-capsule tu-presentation" id="film">
-        <div class="tu-num">Film de présentation · {mmss(duree(film))}</div>
-        <h2>{escape(pres['titre'])}</h2>
-        <p class="tu-chapeau">{escape(pres.get('chapeau', ''))}</p>
-        <video controls preload="none" playsinline
-               poster="../tutoriels/{pres['id']}.jpg">
-          <source src="../tutoriels/{pres['id']}.mp4" type="video/mp4" />
-          Votre navigateur ne peut pas lire cette vidéo.
-          <a href="../tutoriels/{pres['id']}.mp4">Téléchargez-la</a>.
-        </video>
-        {note}
+        <div class="tu-rangee">
+          <button class="tu-vignette" type="button"
+                  data-video="../tutoriels/{pres['id']}.mp4"
+                  aria-label="Lire le film de présentation">
+            <img src="../tutoriels/{pres['id']}.jpg" alt="" loading="lazy" />
+            <span class="tu-play" aria-hidden="true"></span>
+            <span class="tu-duree">{mmss(duree(film))}</span>
+          </button>
+          <div class="tu-infos">
+            <div class="tu-num">Film de présentation</div>
+            <h2>{escape(pres['titre'])}</h2>
+            <p class="tu-chapeau">{escape(pres.get('chapeau', ''))}</p>
+            {note}
+            <p class="tu-fichier"><a href="../tutoriels/{pres['id']}.mp4">
+              Ouvrir la vidéo dans un onglet</a></p>
+          </div>
+        </div>
       </section>"""
 
 combien = combien(len(filmees))
@@ -199,6 +217,53 @@ PAGE.write_text(f"""<!DOCTYPE html>
   .tu-capsule video {{
     width: 100%; aspect-ratio: 16 / 9; display: block;
     background: var(--ink-900); border-radius: var(--r-lg); box-shadow: var(--sh-raise);
+  }}
+  /* ── La vignette ──────────────────────────────────────────────────────
+     Onze lecteurs pleine largeur faisaient une page qu'on ne parcourait
+     plus : rien que des rectangles noirs de la même taille, un titre par
+     écran. La vignette rend la liste lisible d'un coup d'œil, et le clic
+     rend le lecteur — avec ses sous-titres, qu'un lien vers le fichier
+     aurait perdus. */
+  .tu-rangee {{ display: grid; grid-template-columns: 300px 1fr;
+    gap: var(--sp-5); align-items: start; }}
+  .tu-vignette {{
+    position: relative; padding: 0; border: 0; background: var(--ink-900);
+    border-radius: var(--r-lg); overflow: hidden; cursor: pointer; display: block;
+    width: 100%; aspect-ratio: 16 / 9; box-shadow: var(--sh-card);
+  }}
+  .tu-vignette img {{ width: 100%; height: 100%; object-fit: cover; display: block;
+    transition: transform .18s ease, opacity .18s ease; }}
+  .tu-vignette:hover img, .tu-vignette:focus-visible img {{
+    transform: scale(1.03); opacity: .88; }}
+  .tu-vignette:focus-visible {{ outline: 3px solid var(--text-accent);
+    outline-offset: 3px; }}
+  /* Le triangle est dessiné en CSS : aucune image, aucun émoji. */
+  .tu-play {{
+    position: absolute; inset: 0; margin: auto; width: 54px; height: 54px;
+    border-radius: 50%; background: rgba(255,255,255,.92);
+    box-shadow: 0 2px 10px rgba(0,0,0,.28);
+  }}
+  .tu-play::after {{
+    content: ""; position: absolute; inset: 0; margin: auto;
+    width: 0; height: 0; margin-left: 22px;
+    border-left: 17px solid var(--ink-900);
+    border-top: 10px solid transparent; border-bottom: 10px solid transparent;
+  }}
+  .tu-duree {{
+    position: absolute; right: 8px; bottom: 8px;
+    background: rgba(23,24,26,.82); color: #fff; border-radius: var(--r-sm);
+    padding: 2px 7px; font-size: var(--fs-ui-sm); font-weight: var(--fw-bold);
+    font-variant-numeric: tabular-nums;
+  }}
+  .tu-infos {{ display: grid; gap: var(--sp-3); }}
+  .tu-fichier {{ margin: 0; font-size: var(--fs-ui-sm); }}
+  .tu-fichier a {{ color: var(--text-muted); font-weight: var(--fw-medium); }}
+  /* Une fois lancée, la capsule reprend toute la largeur : à 300 px, on ne
+     lit pas ce qui se passe dans le portail, et c'est tout ce que la capsule
+     montre. La vignette sert à choisir, le lecteur à regarder. */
+  .tu-capsule.joue .tu-rangee {{ grid-template-columns: 1fr; }}
+  @media (max-width: 720px) {{
+    .tu-rangee {{ grid-template-columns: 1fr; }}
   }}
   .tu-texte summary {{
     cursor: pointer; min-height: var(--tap-min); display: flex; align-items: center;
@@ -276,6 +341,38 @@ PAGE.write_text(f"""<!DOCTYPE html>
     window.close();
     // window.close() est silencieux quand il est refusé : on vérifie après coup.
     setTimeout(() => {{ if (!window.closed) location.href = cible; }}, 200);
+  }});
+}})();
+
+/* La vignette devient le lecteur, à sa place. On construit le <video> au
+   clic plutôt que de le poser masqué : onze lecteurs dans le document, même
+   invisibles, c'est onze fois la plomberie du navigateur pour une page qu'on
+   ouvre le plus souvent pour lire une transcription. Un seul joue à la fois —
+   deux narrations en même temps ne s'écoutent pas. */
+(() => {{
+  let enCours = null;
+  document.addEventListener("click", (e) => {{
+    const b = e.target.closest(".tu-vignette");
+    if (!b) return;
+    if (enCours && enCours.pause) enCours.pause();
+    const v = document.createElement("video");
+    v.controls = true; v.autoplay = true; v.playsInline = true;
+    v.setAttribute("poster", b.querySelector("img").getAttribute("src"));
+    const src = document.createElement("source");
+    src.src = b.dataset.video; src.type = "video/mp4";
+    v.appendChild(src);
+    if (b.dataset.vtt) {{
+      const t = document.createElement("track");
+      t.kind = "subtitles"; t.srclang = "fr"; t.label = "Fran\u00e7ais";
+      t.default = true; t.src = b.dataset.vtt;
+      v.crossOrigin = "anonymous";
+      v.appendChild(t);
+    }}
+    const carte = b.closest(".tu-capsule");
+    b.replaceWith(v);
+    if (carte) carte.classList.add("joue");
+    enCours = v;
+    v.focus({{ preventScroll: true }});
   }});
 }})();
 </script>
