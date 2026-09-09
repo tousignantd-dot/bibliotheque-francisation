@@ -468,6 +468,117 @@ figcaption b{color:var(--encre);font-weight:var(--g-fort);letter-spacing:.08em;t
 .fiche dd.limite{color:var(--enc2)}
 .fiche dd.test{color:var(--encre)}
 .compteur{font-family:"Roboto Mono",monospace;font-size:10.5px;color:var(--enc2);letter-spacing:.06em;margin-bottom:.9rem}
+/* ⟦css-planches⟧ */
+/* ═══════════════ planches — l'exemple et son contraire ═══════════════
+   Ajouté le 9 septembre 2026. Le champ « Exemple » des fiches décrivait un
+   cas ; on ne le voyait pas. Chaque fiche porte maintenant deux maquettes
+   côte à côte : la même activité ratée, puis corrigée. Tout est dessiné en
+   CSS — aucune image à charger, l'impression suit, et le thème sombre aussi.
+   Le volet fautif ne porte AUCUNE couleur d'alarme : le système n'a pas de
+   rouge (§ 5). Il se reconnaît à sa forme — cadre tireté, filigrane oblique,
+   étiquettes qui débordent. */
+.pl-btn{
+  font-family:"Roboto Mono",monospace;font-size:9.5px;letter-spacing:.11em;
+  text-transform:uppercase;color:var(--enc2);background:none;border:0;
+  border-bottom:1px solid var(--regle2);padding:.15rem 0;cursor:pointer;
+  justify-self:start;
+}
+.pl-btn:hover{color:var(--encre);border-color:var(--encre)}
+.pl-btn::after{content:" ▾";letter-spacing:0}
+.pl-btn[aria-expanded="true"]::after{content:" ▴"}
+.pl[hidden]{display:none}
+.pl{margin-top:.5rem}
+.pl-grille{
+  display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--regle);
+  border:1px solid var(--regle);border-radius:var(--r-3);overflow:hidden;
+}
+@media(max-width:660px){.pl-grille{grid-template-columns:1fr}}
+.pl-vol{background:var(--fond);padding:.8rem .85rem;display:grid;gap:.5rem;align-content:start}
+.pl-tete{
+  font-family:"Roboto Mono",monospace;font-size:9px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--enc3);display:flex;align-items:center;gap:.4rem;
+}
+.pl-tete::before{content:"";width:.5rem;height:.5rem;flex:none}
+.pl-vol.avant .pl-tete::before{border:1px dashed var(--enc3)}
+.pl-vol.apres .pl-tete::before{background:var(--action)}
+.pl-vol.apres{box-shadow:inset 2px 0 0 var(--action)}
+.pl-dit{font-size:.85rem;line-height:1.45;color:var(--enc2)}
+.pl-vol.apres .pl-dit{color:var(--encre)}
+.pl-chg{
+  font-size:.85rem;line-height:1.5;color:var(--enc2);margin-top:.5rem;
+  padding-left:.75rem;border-left:2px solid var(--sig);
+}
+.pl-chg b{color:var(--encre);font-weight:600}
+
+/* ── la scène : les pièces avec lesquelles on maquette ── */
+.sc{
+  background:var(--fond-3);border:1px solid var(--regle);border-radius:2px;
+  padding:.55rem;display:grid;gap:.35rem;position:relative;min-height:5.5rem;
+  align-content:start;
+}
+.pl-vol.avant .sc{border-style:dashed}
+.sc-t{font-family:"Roboto Mono",monospace;font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--enc4)}
+.sc-l{height:4px;border-radius:2px;background:var(--bord-fort)}
+.sc-l.fort{background:var(--enc3);height:5px}
+.sc-l.pale{background:var(--bord)}
+.sc-p{display:grid;gap:3px}
+.sc-r{display:flex;gap:.4rem;align-items:flex-start}
+.sc-r.centre{align-items:center}
+.sc-c{display:grid;gap:3px;flex:1;min-width:0}
+.sc-fig{
+  background:var(--fond);border:1px solid var(--bord-fort);border-radius:2px;
+  min-height:3rem;position:relative;flex:1;
+}
+.sc-fig::before{content:"";position:absolute;inset:22%;border:1px solid var(--bord-fort);border-radius:1px}
+.sc-fig::after{content:"";position:absolute;left:30%;right:30%;top:52%;border-top:1px solid var(--bord-fort);transform:rotate(-7deg)}
+.sc-etq{
+  font-family:"Roboto Mono",monospace;font-size:8px;line-height:1.3;
+  background:var(--fond);border:1px solid var(--bord-fort);border-radius:2px;
+  padding:1px 4px;color:var(--enc2);white-space:nowrap;justify-self:start;
+}
+.sc-etq.dedans{position:absolute;z-index:2}
+.sc-etq.noir{background:var(--action);border-color:var(--action);color:var(--action-encre)}
+.sc-btn{
+  font-family:"Roboto Mono",monospace;font-size:8px;background:var(--action);
+  color:var(--action-encre);border-radius:2px;padding:2px 7px;justify-self:start;letter-spacing:.06em;
+}
+.sc-champ{background:var(--fond);border:1px solid var(--bord-fort);border-radius:2px;height:1.15rem}
+.sc-note{font-family:"Roboto Mono",monospace;font-size:8.5px;color:var(--enc3);line-height:1.4}
+.sc-va{
+  font-family:"Roboto Mono",monospace;font-size:8.5px;color:var(--enc3);
+  display:flex;align-items:center;gap:.3rem;
+}
+.sc-va::before{content:"";flex:none;width:1.6rem;border-top:1px dashed var(--enc4)}
+.sc-frise{display:flex;gap:2px}
+.sc-bloc{
+  flex:1;height:1.2rem;border:1px solid var(--bord-fort);background:var(--fond);
+  display:grid;place-items:center;font-family:"Roboto Mono",monospace;font-size:8px;
+  color:var(--enc2);border-radius:1px;
+}
+.sc-bloc.plein{background:var(--action);color:var(--action-encre);border-color:var(--action)}
+.sc-bloc.creux{background:repeating-linear-gradient(45deg,transparent 0 3px,var(--bord) 3px 4px)}
+.sc-bloc.mince{height:.7rem}
+.sc-voile{
+  position:absolute;inset:0;pointer-events:none;
+  background:repeating-linear-gradient(-45deg,transparent 0 15px,var(--bord) 15px 16px);
+  opacity:.3;
+}
+.sc-pile{display:grid;gap:2px}
+.sc-pile .sc-r>.sc-etq:first-child{min-width:5.6rem;text-align:center;flex:none}
+.sc-pts{display:flex;gap:2px;flex-wrap:wrap}
+.sc-pt{width:.42rem;height:.42rem;border:1px solid var(--bord-fort);border-radius:50%}
+.sc-pt.plein{background:var(--action);border-color:var(--action)}
+
+/* À l'impression, la planche ne peut pas se replier : on la déplie, on retire
+   le bouton, et le hachuré — qui coûte de l'encre sans rien dire sur papier. */
+@media print{
+  .pl-btn{display:none!important}
+  .pl[hidden]{display:block!important}
+  .pl-grille{break-inside:avoid-page}
+  .sc-voile{display:none}
+  .pl-vol.apres{box-shadow:none;border-left:2px solid var(--encre)}
+}
+/* ⟦/css-planches⟧ */
 
 /* ═══════════════ pupitre des tensions ═══════════════ */
 .tension{border-top:1px solid var(--regle);padding:1.5rem 0 1.7rem}
@@ -924,6 +1035,7 @@ textarea.champ:focus{outline:2px solid var(--str);outline-offset:2px}
   <h2>Ce que la recherche met entre les mains du concepteur</h2>
   <p>Un concepteur qui travaille sans la recherche réinvente, mal, des résultats vieux de quarante ans. Un concepteur qui s'y noie produit un document qui cite tout et ne décide rien. La bonne façon d'entrer dans cette littérature n'est pas alphabétique ni chronologique : c'est <strong>par le problème qu'on a sur la table</strong>.</p>
   <p>L'index ci-dessous se lit donc dans ce sens. Chaque fiche donne cinq choses : la question à laquelle le résultat répond, ce qu'il prescrit concrètement, <strong>un cas où cela se voit</strong>, sa limite — car aucun ne vaut partout — et la façon de vérifier qu'il opère <em>chez vos apprenants</em>, ce qui est le seul point qui compte vraiment.</p>
+  <p>Un cas décrit reste un cas décrit. Sous chaque fiche, une <strong>planche</strong> montre la même activité deux fois : telle qu'on la rencontre le plus souvent, puis telle que le résultat la prescrit — mêmes notions, même durée, et l'écart tient à un seul geste de conception, nommé sous les deux volets.</p>
 
   <aside class="col-d trace">
     <b>Trace 02 · essai à trois lecteurs</b>
@@ -1677,6 +1789,370 @@ const FICHES = [
  l:`Demande du temps de conception et une bonne connaissance du domaine. Se prête mal à la production en série.`,
  v:`Classer les erreurs par forme et non par item. Une même forme sur plusieurs items dénonce un obstacle, pas une inattention.`}
 ];
+/* ⟦planches⟧ */
+/* ─── Les planches ───────────────────────────────────────────────────────
+   Une par fiche : la même activité ratée, puis corrigée. Maquettes en CSS,
+   jamais d'image. Le volet fautif se dit par la forme — cadre tireté,
+   filigrane oblique, étiquettes reléguées — jamais par une couleur : le
+   système « Braise » n'a pas de rouge, et lui en inventer un ici aurait
+   enfreint la règle qui tient tout le reste du document. */
+const PLANCHES = {
+
+"Charge cognitive": {
+ a:{dit:`La même consigne en trois colonnes : le texte à gauche, le schéma au centre, la légende à droite. Rien n'est faux — mais l'apprenant doit tenir les trois en tête à la fois.`,
+    sc:`<div class="sc-t">Consigne de sécurité · fiche A4</div>
+        <div class="sc-r">
+          <div class="sc-c"><div class="sc-l fort" style="width:70%"></div><div class="sc-l"></div><div class="sc-l"></div><div class="sc-l" style="width:80%"></div><div class="sc-l"></div><div class="sc-l" style="width:55%"></div></div>
+          <div class="sc-fig" style="flex:1.1"><span class="sc-etq dedans" style="top:12%;left:8%">1</span><span class="sc-etq dedans" style="top:44%;right:10%">2</span><span class="sc-etq dedans" style="bottom:12%;left:22%">3</span></div>
+          <div class="sc-c"><div class="sc-etq">1 · levier</div><div class="sc-etq">2 · carter</div><div class="sc-etq">3 · arrêt</div></div>
+        </div>
+        <div class="sc-va">le regard croise trois sources · 14 allers-retours</div>`},
+ b:{dit:`Un seul schéma, les mots posés là où la main agit. Pas une notion retirée : les mêmes informations, réunies au même endroit.`,
+    sc:`<div class="sc-t">Consigne de sécurité · fiche A4</div>
+        <div class="sc-r"><div class="sc-fig" style="min-height:3.6rem">
+          <span class="sc-etq dedans noir" style="top:10%;left:6%">levier vers le bas</span>
+          <span class="sc-etq dedans noir" style="top:46%;right:6%">carter fermé</span>
+          <span class="sc-etq dedans noir" style="bottom:9%;left:16%">arrêt rouge à portée</span>
+        </div></div>
+        <div class="sc-note">→ première action après 11 s, au lieu de 26 s</div>`},
+ chg:`Le nombre d'informations est <b>identique</b>. Ce qui disparaît, c'est le travail de mise en correspondance — celui que l'apprenant payait à la place de la matière.`
+},
+
+"Attention partagée": {
+ a:{dit:`Six zones numérotées sur la capture, la légende dessous. Chaque numéro coûte un aller-retour du regard, et il faut retrouver sa place à chaque fois.`,
+    sc:`<div class="sc-t">Tutoriel logiciel · page 3</div>
+        <div class="sc-fig" style="min-height:3.1rem"><span class="sc-etq dedans" style="top:10%;left:8%">①</span><span class="sc-etq dedans" style="top:10%;right:14%">②</span><span class="sc-etq dedans" style="top:48%;left:34%">③</span><span class="sc-etq dedans" style="bottom:10%;left:10%">④</span><span class="sc-etq dedans" style="bottom:10%;right:12%">⑤</span></div>
+        <div class="sc-p"><div class="sc-l pale" style="width:88%"></div><div class="sc-l pale" style="width:94%"></div><div class="sc-l pale" style="width:61%"></div></div>
+        <div class="sc-va">légende ↔ capture · 12 fois par page</div>`},
+ b:{dit:`Les mêmes mots, écrits directement sur la capture. La légende n'existe plus : il n'y a plus rien à mettre en correspondance.`,
+    sc:`<div class="sc-t">Tutoriel logiciel · page 3</div>
+        <div class="sc-fig" style="min-height:4.2rem">
+          <span class="sc-etq dedans noir" style="top:8%;left:6%">ouvrir le menu</span>
+          <span class="sc-etq dedans noir" style="top:8%;right:8%">nommer le fichier</span>
+          <span class="sc-etq dedans noir" style="top:47%;left:26%">choisir le format</span>
+          <span class="sc-etq dedans noir" style="bottom:8%;left:8%">enregistrer</span>
+        </div>
+        <div class="sc-note">→ 0 aller-retour · la page ne se lit plus, elle se suit</div>`},
+ chg:`On n'a rien simplifié : on a <b>déplacé</b>. L'information est allée là où elle sert, au moment où elle sert.`
+},
+
+"Exemple entièrement résolu": {
+ a:{dit:`Trois exercices identiques, chacun donnant une situation et un champ vide. Le débutant cherche, échoue, recommence — et ce qu'il apprend, c'est surtout à échouer.`,
+    sc:`<div class="sc-t">Rédiger un courriel de refus</div>
+        <div class="sc-pile">
+          <div class="sc-r centre"><span class="sc-etq">1</span><div class="sc-c"><div class="sc-l" style="width:72%"></div><div class="sc-champ"></div></div></div>
+          <div class="sc-r centre"><span class="sc-etq">2</span><div class="sc-c"><div class="sc-l" style="width:66%"></div><div class="sc-champ"></div></div></div>
+          <div class="sc-r centre"><span class="sc-etq">3</span><div class="sc-c"><div class="sc-l" style="width:78%"></div><div class="sc-champ"></div></div></div>
+        </div>
+        <div class="sc-note">« À vous » × 3 · 18 min · le 3<sup>e</sup> aussi raté que le 1<sup>er</sup></div>`},
+ b:{dit:`Le premier est écrit en entier et annoté. Le deuxième a deux phrases à trous. Le troisième ne donne que la situation — et il passe.`,
+    sc:`<div class="sc-t">Rédiger un courriel de refus</div>
+        <div class="sc-pile">
+          <div class="sc-r centre"><span class="sc-etq noir">1 · montré</span><div class="sc-c"><div class="sc-l fort" style="width:92%"></div><div class="sc-l fort" style="width:84%"></div><div class="sc-l fort" style="width:70%"></div></div></div>
+          <div class="sc-r centre"><span class="sc-etq noir">2 · à trous</span><div class="sc-c"><div class="sc-l fort" style="width:90%"></div><div class="sc-champ" style="height:.75rem;width:46%"></div></div></div>
+          <div class="sc-r centre"><span class="sc-etq">3 · à vous</span><div class="sc-c"><div class="sc-l" style="width:60%"></div><div class="sc-champ"></div></div></div>
+        </div>
+        <div class="sc-note">9 min · le 3<sup>e</sup> réussi</div>`},
+ chg:`Le temps de pratique n'augmente pas — il <b>se déplace vers l'étude</b>. Et l'étayage est retiré item par item, sans quoi l'effet s'inverserait (voir « Inversion de l'expertise »).`
+},
+
+"Espacement": {
+ a:{dit:`Quatre reprises dans la même séance. Tout est frais, tout paraît su : la performance du jour est excellente, et c'est exactement ce qui trompe.`,
+    sc:`<div class="sc-t">Quatre reprises · lundi</div>
+        <div class="sc-frise"><span class="sc-bloc plein">R1</span><span class="sc-bloc plein">R2</span><span class="sc-bloc plein">R3</span><span class="sc-bloc plein">R4</span><span class="sc-bloc creux"></span><span class="sc-bloc creux"></span><span class="sc-bloc creux"></span><span class="sc-bloc creux"></span></div>
+        <div class="sc-note">jour 1 : 95 % · jour 30 : 34 %</div>
+        <div class="sc-va">l'oubli travaille pendant les 29 jours vides</div>`},
+ b:{dit:`Les mêmes quatre reprises, écartées. Chaque retour se fait sur une trace un peu effacée — c'est l'effort de la rappeler qui la fixe.`,
+    sc:`<div class="sc-t">Quatre reprises · J1 · J3 · J10 · J28</div>
+        <div class="sc-frise"><span class="sc-bloc plein">R1</span><span class="sc-bloc creux"></span><span class="sc-bloc plein">R2</span><span class="sc-bloc creux"></span><span class="sc-bloc creux"></span><span class="sc-bloc plein">R3</span><span class="sc-bloc creux"></span><span class="sc-bloc plein">R4</span></div>
+        <div class="sc-note">jour 1 : 78 % · jour 30 : 71 %</div>`},
+ chg:`Même coût en minutes, même contenu. Ce qui change, c'est le <b>calendrier</b> — et le fait d'accepter d'être moins bon pendant qu'on apprend.`
+}
+,
+
+"Inversion de l'expertise": {
+ a:{dit:`La fiche pas-à-pas qui sauvait la première semaine. Au bout d'un mois, il faut relire douze lignes connues pour retrouver la seule qui change selon le client.`,
+    sc:`<div class="sc-t">Procédure d'ouverture de compte · semaine 5</div>
+        <div class="sc-p"><div class="sc-l"></div><div class="sc-l"></div><div class="sc-l"></div><div class="sc-l"></div><div class="sc-l fort" style="width:64%"></div><div class="sc-l"></div><div class="sc-l"></div><div class="sc-l"></div><div class="sc-l"></div></div>
+        <div class="sc-va">la seule ligne utile est la 5<sup>e</sup> · 40 s pour la retrouver</div>`},
+ b:{dit:`Deux versions du même document, et une règle qui décide laquelle s'affiche : celui qui a réussi l'item 3 reçoit la carte courte.`,
+    sc:`<div class="sc-t">Deux versions · commutées sur la réussite</div>
+        <div class="sc-r"><div class="sc-c"><span class="sc-etq">débutant</span><div class="sc-l"></div><div class="sc-l"></div><div class="sc-l"></div><div class="sc-l"></div></div>
+        <div class="sc-c"><span class="sc-etq noir">a réussi l'item 3</span><div class="sc-l fort" style="width:80%"></div><div class="sc-note">ce qui change selon le client</div></div></div>
+        <div class="sc-note">→ 40 s → 6 s</div>`},
+ chg:`Le meilleur support pour un débutant devient une charge pour l'habitué. C'est <b>le même document qui doit s'effacer</b> — ce qui suppose de savoir où en est chacun.`
+},
+
+"Apprentissage multimédia": {
+ a:{dit:`La voix lit mot pour mot ce qui est écrit à l'écran. L'apprenant traite deux fois le même texte, et ne peut suspendre ni l'un ni l'autre.`,
+    sc:`<div class="sc-t">Capsule · 1 min</div>
+        <div class="sc-p"><div class="sc-l fort" style="width:88%"></div><div class="sc-l"></div><div class="sc-l"></div><div class="sc-l" style="width:74%"></div><div class="sc-l"></div></div>
+        <div class="sc-r centre"><span class="sc-etq">🔊 voix</span><div class="sc-c"><div class="sc-l" style="width:88%"></div><div class="sc-l" style="width:74%"></div></div></div>
+        <div class="sc-note">le même texte, deux fois · rappel à J+1 : 3 items / 8</div>`},
+ b:{dit:`Le schéma reste muet, le commentaire est parlé. Deux canaux, chacun sa charge — l'œil suit ce que la voix explique.`,
+    sc:`<div class="sc-t">Capsule · 1 min</div>
+        <div class="sc-r"><div class="sc-fig"><span class="sc-etq dedans noir" style="top:14%;left:8%">A</span><span class="sc-etq dedans noir" style="bottom:14%;right:10%">B</span></div></div>
+        <div class="sc-r centre"><span class="sc-etq noir">🔊 voix</span><div class="sc-note">« la pièce A entre avant la pièce B »</div></div>
+        <div class="sc-note">rappel à J+1 : 6 items / 8</div>`},
+ chg:`On n'a pas retiré d'information : on l'a <b>répartie entre deux canaux</b> au lieu d'en saturer un seul.`
+},
+
+"Détails séduisants": {
+ a:{dit:`L'accident spectaculaire ouvre le module. Tout le monde s'en souvient six mois plus tard ; presque personne ne se rappelle les trois vérifications.`,
+    sc:`<div class="sc-t">Module de sécurité · ouverture</div>
+        <div class="sc-fig" style="min-height:3.4rem"><span class="sc-etq dedans" style="top:38%;left:26%">l'accident, en vidéo</span></div>
+        <div class="sc-p"><div class="sc-l pale" style="width:52%"></div><div class="sc-l pale" style="width:46%"></div><div class="sc-l pale" style="width:49%"></div></div>
+        <div class="sc-note">les trois vérifications, en bas de page · rappel : 1 / 3</div>`},
+ b:{dit:`La machine réelle ouvre le module, et les trois vérifications sont l'événement. L'intérêt n'est pas supprimé : il est déplacé sur ce qui compte.`,
+    sc:`<div class="sc-t">Module de sécurité · ouverture</div>
+        <div class="sc-pile">
+          <div class="sc-r centre"><span class="sc-etq noir">1</span><div class="sc-l fort" style="width:70%"></div></div>
+          <div class="sc-r centre"><span class="sc-etq noir">2</span><div class="sc-l fort" style="width:62%"></div></div>
+          <div class="sc-r centre"><span class="sc-etq noir">3</span><div class="sc-l fort" style="width:66%"></div></div>
+        </div>
+        <div class="sc-note">« la dernière fois que la 2 a sauté, voici ce qui s'est passé » · rappel : 3 / 3</div>`},
+ chg:`Le remède n'est pas l'austérité. C'est de <b>rendre intéressant ce qui est essentiel</b>, plutôt que d'emprunter l'intérêt ailleurs.`
+},
+
+"Segmentation et pré-entraînement": {
+ a:{dit:`Neuf minutes d'un seul tenant, et trois mots techniques qui tombent en cours de route. Chacun coûte un décrochage, et le décrochage arrive au pire moment.`,
+    sc:`<div class="sc-t">Capsule · 9 min, d'un bloc</div>
+        <div class="sc-frise"><span class="sc-bloc plein" style="flex:8">9 minutes sans arrêt</span></div>
+        <div class="sc-note">↑ « débit » ↑ « ampérage » ↑ « seuil » — appris en même temps que la procédure</div>
+        <div class="sc-va">abandon médian : 4 min 20</div>`},
+ b:{dit:`Les trois mots d'abord, seuls, une minute. Puis trois segments que l'apprenant lance lui-même.`,
+    sc:`<div class="sc-t">Vocabulaire, puis trois segments</div>
+        <div class="sc-frise"><span class="sc-bloc" style="flex:2">3 mots · 1 min</span><span class="sc-bloc plein">seg. 1</span><span class="sc-bloc plein">seg. 2</span><span class="sc-bloc plein">seg. 3</span></div>
+        <div class="sc-r"><span class="sc-btn">continuer</span><span class="sc-note">la main sur le rythme</span></div>
+        <div class="sc-note">abandon médian : aucun · reprise le lendemain : 7 / 9</div>`},
+ chg:`Deux gestes séparés, souvent confondus : <b>découper</b> (qui rend le rythme à l'apprenant) et <b>pré-enseigner</b> (qui vide la mémoire de travail avant l'effort).`
+},
+
+"Difficultés désirables": {
+ a:{dit:`Tout est donné, tout est guidé, tout est réussi. La séance a l'air excellente — et c'est la performance du jour, pas l'apprentissage.`,
+    sc:`<div class="sc-t">Exercice guidé · aujourd'hui</div>
+        <div class="sc-pile"><div class="sc-r centre"><span class="sc-etq">modèle</span><div class="sc-l fort" style="width:78%"></div></div>
+        <div class="sc-r centre"><span class="sc-etq">modèle</span><div class="sc-l fort" style="width:72%"></div></div>
+        <div class="sc-r centre"><span class="sc-etq">modèle</span><div class="sc-l fort" style="width:80%"></div></div></div>
+        <div class="sc-frise"><span class="sc-bloc plein">aujourd'hui 100 %</span><span class="sc-bloc creux"></span><span class="sc-bloc">J+14 : 41 %</span></div>`},
+ b:{dit:`Le modèle est retiré, la réponse est à rappeler de mémoire, les cas sont mêlés. On réussit moins bien aujourd'hui, et on sait encore dans deux semaines.`,
+    sc:`<div class="sc-t">Rappel sans support · aujourd'hui</div>
+        <div class="sc-pile"><div class="sc-r centre"><span class="sc-etq">de mémoire</span><div class="sc-champ" style="flex:1"></div></div>
+        <div class="sc-r centre"><span class="sc-etq">cas mêlés</span><div class="sc-champ" style="flex:1"></div></div></div>
+        <div class="sc-frise"><span class="sc-bloc">aujourd'hui 72 %</span><span class="sc-bloc creux"></span><span class="sc-bloc plein">J+14 : 68 %</span></div>`},
+ chg:`La difficulté doit être <b>désirable</b>, c'est-à-dire porter sur la matière. Celle qu'ajoute une consigne obscure ne fixe rien : elle coûte, simplement.`
+},
+
+"Effet de test": {
+ a:{dit:`Quatre relectures. La page devient familière, et la familiarité se confond avec le savoir : on se croit prêt.`,
+    sc:`<div class="sc-t">Préparation · 40 min</div>
+        <div class="sc-frise"><span class="sc-bloc creux mince"></span></div>
+        <div class="sc-r"><span class="sc-etq">relire</span><span class="sc-etq">relire</span><span class="sc-etq">relire</span><span class="sc-etq">relire</span></div>
+        <div class="sc-note">confiance déclarée : haute · rappel à J+7 : 28 %</div>`},
+ b:{dit:`Une lecture, puis trois rappels à livre fermé. Chaque rappel est plus pénible que la relecture — et c'est la peine qui fixe.`,
+    sc:`<div class="sc-t">Préparation · 40 min</div>
+        <div class="sc-r"><span class="sc-etq">relire</span><span class="sc-etq noir">se tester</span><span class="sc-etq noir">se tester</span><span class="sc-etq noir">se tester</span></div>
+        <div class="sc-champ"></div>
+        <div class="sc-note">confiance déclarée : moyenne · rappel à J+7 : 62 %</div>`},
+ chg:`Le test n'est pas une mesure posée après l'apprentissage : <b>c'est l'apprentissage</b>. D'où la place du diagnostic au milieu du parcours, pas à la fin.`
+},
+
+"Entrelacement": {
+ a:{dit:`Tous les cas du type A, puis tous les B, puis tous les C. Dans un bloc, on n'a jamais à choisir la méthode : on la répète.`,
+    sc:`<div class="sc-t">Série d'exercices · par blocs</div>
+        <div class="sc-frise"><span class="sc-bloc plein">A</span><span class="sc-bloc plein">A</span><span class="sc-bloc plein">A</span><span class="sc-bloc">B</span><span class="sc-bloc">B</span><span class="sc-bloc">B</span><span class="sc-bloc creux">C</span><span class="sc-bloc creux">C</span></div>
+        <div class="sc-note">en série : 89 % · le jour où les cas sont mêlés : 51 %</div>`},
+ b:{dit:`Les mêmes exercices, mêlés. Chaque item oblige d'abord à reconnaître à quel cas on a affaire — ce que la vraie situation demandera.`,
+    sc:`<div class="sc-t">Série d'exercices · entrelacés</div>
+        <div class="sc-frise"><span class="sc-bloc plein">A</span><span class="sc-bloc">B</span><span class="sc-bloc creux">C</span><span class="sc-bloc">B</span><span class="sc-bloc plein">A</span><span class="sc-bloc creux">C</span><span class="sc-bloc">B</span><span class="sc-bloc plein">A</span></div>
+        <div class="sc-note">en série : 71 % · le jour où les cas sont mêlés : 74 %</div>`},
+ chg:`Ce qu'on entraîne en mêlant, ce n'est pas la méthode : c'est <b>le choix de la méthode</b>. Il faut donc que les cas soient réellement confondables.`
+},
+
+"Zone proximale et étayage": {
+ a:{dit:`Deux échecs opposés et symétriques : la tâche hors d'atteinte, où l'on abandonne — et la tâche faite à sa place, où l'on n'a rien fait.`,
+    sc:`<div class="sc-t">Deux façons de rater la marche</div>
+        <div class="sc-r"><div class="sc-c"><span class="sc-etq">trop haut</span><div class="sc-frise"><span class="sc-bloc creux mince"></span><span class="sc-bloc creux mince"></span><span class="sc-bloc plein mince">?</span></div><div class="sc-note">abandon</div></div>
+        <div class="sc-c"><span class="sc-etq">fait à sa place</span><div class="sc-frise"><span class="sc-bloc plein mince"></span><span class="sc-bloc plein mince"></span><span class="sc-bloc plein mince"></span></div><div class="sc-note">rien appris</div></div></div>`},
+ b:{dit:`Un cran au-dessus de ce qu'il fait seul, avec un appui — et l'appui se retire à mesure, marche après marche.`,
+    sc:`<div class="sc-t">Un cran au-dessus · l'appui se retire</div>
+        <div class="sc-frise"><span class="sc-bloc plein mince">appui</span><span class="sc-bloc plein mince">appui</span><span class="sc-bloc mince">appui léger</span><span class="sc-bloc creux mince">seul</span></div>
+        <div class="sc-pile"><div class="sc-l fort" style="width:35%"></div><div class="sc-l fort" style="width:55%"></div><div class="sc-l fort" style="width:75%"></div><div class="sc-l fort" style="width:92%"></div></div>`},
+ chg:`La zone n'est pas une propriété de la tâche : <b>elle change à chaque séance, et pour chacun</b>. Sans diagnostic en cours de route, on vise au jugé.`
+},
+
+"Le guidage minimal ne fonctionne pas": {
+ a:{dit:`« Explorez, vous trouverez. » Le débutant n'a pas de quoi reconnaître ce qu'il devrait remarquer : il erre, et retient parfois l'erreur.`,
+    sc:`<div class="sc-t">Séance découverte · 45 min</div>
+        <div class="sc-fig" style="min-height:3.2rem"><span class="sc-etq dedans" style="top:40%;left:30%">à vous de trouver</span></div>
+        <div class="sc-va">3 pistes essayées · 0 aboutie · la fausse règle est retenue</div>`},
+ b:{dit:`On montre, on fait faire avec appui, puis on lâche. La découverte n'est pas supprimée : elle est placée là où elle est possible — après.`,
+    sc:`<div class="sc-t">Séance guidée · 45 min</div>
+        <div class="sc-frise"><span class="sc-bloc plein">on montre</span><span class="sc-bloc">on fait avec</span><span class="sc-bloc creux">seul</span></div>
+        <div class="sc-note">→ la variante inédite de la fin est traitée par 7 sur 9</div>`},
+ chg:`Le débat n'oppose pas actif et passif. Il porte sur <b>le moment où l'exploration devient rentable</b> — et ce moment vient plus tard qu'on ne croit.`
+},
+
+"La rétroaction efficace": {
+ a:{dit:`Une note et un jugement. L'apprenant sait qu'il a échoué, et rien de ce qui lui permettrait de s'y prendre autrement.`,
+    sc:`<div class="sc-t">Copie rendue</div>
+        <div class="sc-r centre"><span class="sc-etq noir">6 / 10</span><span class="sc-note">« Peut mieux faire. Un peu brouillon. »</span></div>
+        <div class="sc-p"><div class="sc-l pale"></div><div class="sc-l pale"></div><div class="sc-l pale" style="width:63%"></div></div>
+        <div class="sc-va">rien à faire de cette phrase demain matin</div>`},
+ b:{dit:`Trois questions, dans cet ordre : où j'en suis, où je vais, quoi faire tout de suite. Sur la tâche, jamais sur la personne.`,
+    sc:`<div class="sc-t">Copie rendue</div>
+        <div class="sc-pile">
+          <div class="sc-r centre"><span class="sc-etq">où j'en suis</span><div class="sc-note">les 3 dates sont là, l'objet du courriel manque</div></div>
+          <div class="sc-r centre"><span class="sc-etq">où je vais</span><div class="sc-note">un lecteur doit savoir quoi faire sans ouvrir la pièce jointe</div></div>
+          <div class="sc-r centre"><span class="sc-etq noir">tout de suite</span><div class="sc-note">réécris l'objet en 6 mots, garde le reste</div></div>
+        </div>`},
+ chg:`La rétroaction sur la <b>personne</b> (« tu es doué », « tu es brouillon ») est celle qui produit le moins d'effet — et parfois un effet négatif.`
+},
+
+"Alignement constructif": {
+ a:{dit:`Trois choses qui ne se regardent pas : l'intention parle de communiquer, l'activité fait cocher, l'épreuve fait rédiger.`,
+    sc:`<div class="sc-t">Cours de communication</div>
+        <div class="sc-pile">
+          <div class="sc-r centre"><span class="sc-etq">visé</span><div class="sc-note">« savoir communiquer au téléphone »</div></div>
+          <div class="sc-r centre"><span class="sc-etq">activité</span><div class="sc-note">QCM sur les règles de politesse</div></div>
+          <div class="sc-r centre"><span class="sc-etq">évalué</span><div class="sc-note">une rédaction de 300 mots</div></div>
+        </div>
+        <div class="sc-va">ce qui est noté n'est jamais ce qui a été exercé</div>`},
+ b:{dit:`La même chose aux trois places : on veut un appel, on s'entraîne sur des appels, on est évalué sur un appel.`,
+    sc:`<div class="sc-t">Cours de communication</div>
+        <div class="sc-pile">
+          <div class="sc-r centre"><span class="sc-etq noir">visé</span><div class="sc-note">prendre un rendez-vous par téléphone</div></div>
+          <div class="sc-r centre"><span class="sc-etq noir">activité</span><div class="sc-note">quatre appels joués, avec imprévu</div></div>
+          <div class="sc-r centre"><span class="sc-etq noir">évalué</span><div class="sc-note">un appel, la même grille qu'à l'entraînement</div></div>
+        </div>`},
+ chg:`L'apprenant travaille pour <b>ce qui sera évalué</b>, quoi qu'annonce l'intention. L'épreuve est donc le vrai programme du cours.`
+},
+
+"Conception à rebours": {
+ a:{dit:`On part du contenu : on rassemble ce qu'on sait, on en fait des diapositives, et on cherche à la fin une façon d'évaluer tout ça.`,
+    sc:`<div class="sc-t">Ordre de fabrication</div>
+        <div class="sc-frise"><span class="sc-bloc plein">contenu</span><span class="sc-bloc plein">diapos</span><span class="sc-bloc">activités</span><span class="sc-bloc creux">évaluation ?</span></div>
+        <div class="sc-note">l'évaluation doit couvrir 40 diapositives · elle devient un questionnaire de mémoire</div>`},
+ b:{dit:`On part de la preuve : à quoi verra-t-on que c'est acquis ? On construit l'épreuve, puis les activités qui y mènent, puis le contenu strictement nécessaire.`,
+    sc:`<div class="sc-t">Ordre de fabrication</div>
+        <div class="sc-frise"><span class="sc-bloc plein">preuve visée</span><span class="sc-bloc plein">épreuve</span><span class="sc-bloc">activités</span><span class="sc-bloc creux">contenu utile</span></div>
+        <div class="sc-note">→ 40 diapositives ramenées à 11, sans rien perdre de ce qui est évalué</div>`},
+ chg:`Le tri n'est pas une question de goût : ce qui ne sert <b>aucune preuve</b> sort. C'est la méthode la plus rapide pour raccourcir un cours sans l'appauvrir.`
+},
+
+"Apprentissage complexe (4C/ID)": {
+ a:{dit:`Douze leçons de sous-compétences, apprises séparément. Chacune est réussie ; personne n'a jamais fait le travail en entier.`,
+    sc:`<div class="sc-t">Formation · 12 modules</div>
+        <div class="sc-pts"><span class="sc-pt plein"></span><span class="sc-pt plein"></span><span class="sc-pt plein"></span><span class="sc-pt plein"></span><span class="sc-pt plein"></span><span class="sc-pt plein"></span><span class="sc-pt plein"></span><span class="sc-pt plein"></span><span class="sc-pt plein"></span><span class="sc-pt plein"></span><span class="sc-pt plein"></span><span class="sc-pt plein"></span></div>
+        <div class="sc-note">12 réussites · 0 tâche entière</div>
+        <div class="sc-va">le premier vrai dossier, en poste, échoue</div>`},
+ b:{dit:`Des tâches entières dès le début, du cas le plus simple au plus emmêlé. L'information de soutien avant, la procédure au moment où la main en a besoin, et l'exercice de la partie seulement là où il faut de l'automatisme.`,
+    sc:`<div class="sc-t">Formation · tâches entières, complexité croissante</div>
+        <div class="sc-frise"><span class="sc-bloc plein">cas simple</span><span class="sc-bloc plein">cas courant</span><span class="sc-bloc">cas emmêlé</span></div>
+        <div class="sc-r"><span class="sc-etq">soutien : avant</span><span class="sc-etq">procédure : pendant</span><span class="sc-etq">automatisme : à part</span></div>`},
+ chg:`Ce qui manque en découpant, c'est <b>la coordination</b> — et elle ne s'apprend que sur des tâches entières.`
+},
+
+"Transfert : accrochage et pontage": {
+ a:{dit:`Un formulaire inventé, dans une salle. Rien n'y ressemble à ce qu'on rencontrera, et personne ne dit où cela servira.`,
+    sc:`<div class="sc-t">Exercice · formulaire fictif</div>
+        <div class="sc-p"><div class="sc-l fort" style="width:44%"></div><div class="sc-champ"></div><div class="sc-l" style="width:38%"></div><div class="sc-champ"></div></div>
+        <div class="sc-note">« Société Exemple inc. » · aucun lien énoncé avec le travail réel</div>`},
+ b:{dit:`Le vrai formulaire du milieu — et le pont dit à voix haute : ici, la même case s'appelle autrement, voilà pourquoi.`,
+    sc:`<div class="sc-t">Exercice · le formulaire du milieu</div>
+        <div class="sc-p"><div class="sc-l fort" style="width:52%"></div><div class="sc-champ"></div></div>
+        <div class="sc-r"><span class="sc-etq noir">le pont</span><div class="sc-note">« au dépôt, cette case s'appelle <i>référence client</i> — c'est la même »</div></div>`},
+ chg:`Deux voies. L'<b>accrochage</b> mise sur la ressemblance de surface et ne porte pas loin ; le <b>pontage</b> se fabrique en nommant le principe — il coûte du temps de classe, explicitement.`
+},
+
+"Apprentissage situé": {
+ a:{dit:`Une situation inventée, dans une salle sans objets. Le vocabulaire est celui du manuel, pas celui du plancher.`,
+    sc:`<div class="sc-t">Salle de cours</div>
+        <div class="sc-fig" style="min-height:3rem"><span class="sc-etq dedans" style="top:38%;left:22%">« imaginez que vous êtes au comptoir »</span></div>
+        <div class="sc-note">objets réels : 0 · mots du métier : ceux du manuel</div>`},
+ b:{dit:`Sur place, avec les vrais objets, les vraies interruptions et les mots que les collègues emploient réellement.`,
+    sc:`<div class="sc-t">Sur le plancher</div>
+        <div class="sc-r"><div class="sc-fig"><span class="sc-etq dedans noir" style="top:16%;left:8%">le comptoir</span><span class="sc-etq dedans noir" style="bottom:14%;right:8%">le vrai bon de commande</span></div></div>
+        <div class="sc-note">interruptions comprises · les mots relevés auprès de trois collègues</div>`},
+ chg:`La limite est réelle : <b>tout ne peut pas se faire en situation</b> — le coût, la sécurité, la disponibilité. Le simulateur existe pour cela, à condition de nommer ce qu'il ne reproduit pas.`
+},
+
+"Autodétermination": {
+ a:{dit:`Un parcours imposé, sans marge, avec une échéance et un classement. On avance parce qu'il le faut, et on s'arrête dès qu'on peut.`,
+    sc:`<div class="sc-t">Parcours obligatoire</div>
+        <div class="sc-frise"><span class="sc-bloc plein mince"></span><span class="sc-bloc plein mince"></span><span class="sc-bloc plein mince"></span><span class="sc-bloc plein mince"></span></div>
+        <div class="sc-r"><span class="sc-etq">échéance vendredi</span><span class="sc-etq">rang : 14 / 18</span></div>
+        <div class="sc-note">achèvement : 44 % · reprise volontaire : nulle</div>`},
+ b:{dit:`Trois situations au choix, une progression visible, quelqu'un à qui parler. Les trois besoins, servis en même temps.`,
+    sc:`<div class="sc-t">Parcours choisi</div>
+        <div class="sc-r"><span class="sc-etq noir">au choix</span><span class="sc-etq">le comptoir</span><span class="sc-etq">le téléphone</span><span class="sc-etq">le courriel</span></div>
+        <div class="sc-frise"><span class="sc-bloc plein mince">acquis</span><span class="sc-bloc plein mince">acquis</span><span class="sc-bloc mince">en cours</span><span class="sc-bloc creux mince"></span></div>
+        <div class="sc-note">achèvement : 81 % · un pair relit et répond</div>`},
+ chg:`Autonomie, compétence, lien : trois besoins, pas un slogan. <b>Un choix offert sans progression visible ne tient pas</b> — c'est le trio qui porte, pas une de ses branches.`
+},
+
+"Le média n'est pas la cause": {
+ a:{dit:`Le même exposé, refait en 3D parce qu'il fallait moderniser. Le budget triple, la méthode ne bouge pas : on écoute, puis on répond à un questionnaire.`,
+    sc:`<div class="sc-t">Refonte · même méthode</div>
+        <div class="sc-r"><div class="sc-c"><span class="sc-etq">avant : diaporama</span><div class="sc-l"></div><div class="sc-l"></div></div><div class="sc-c"><span class="sc-etq">après : vidéo 3D</span><div class="sc-fig" style="min-height:1.8rem"></div></div></div>
+        <div class="sc-note">coût × 3 · résultat mesuré : identique</div>`},
+ b:{dit:`Le média ne change pas — c'est la méthode qui change : on pratique, on reçoit une rétroaction, on recommence.`,
+    sc:`<div class="sc-t">Refonte · même média</div>
+        <div class="sc-frise"><span class="sc-bloc">on montre</span><span class="sc-bloc plein">on pratique</span><span class="sc-bloc plein">rétroaction</span><span class="sc-bloc plein">on refait</span></div>
+        <div class="sc-note">coût × 1,2 · réussite à la tâche réelle : +26 points</div>`},
+ chg:`Le média décide de <b>l'accès et du coût</b> — ce qui n'est pas rien. Mais il ne décide pas de l'apprentissage : c'est la méthode qu'il transporte.`
+},
+
+"Les styles d'apprentissage : absence de preuve": {
+ a:{dit:`On classe les apprenants en visuels, auditifs, kinesthésiques, et on double le matériel pour servir chaque étiquette.`,
+    sc:`<div class="sc-t">Trois versions, une par « style »</div>
+        <div class="sc-r"><div class="sc-c"><span class="sc-etq">visuel</span><div class="sc-fig" style="min-height:1.6rem"></div></div><div class="sc-c"><span class="sc-etq">auditif</span><div class="sc-l"></div><div class="sc-l"></div></div><div class="sc-c"><span class="sc-etq">kinesthésique</span><div class="sc-l"></div><div class="sc-l"></div></div></div>
+        <div class="sc-note">production × 3 · gain mesuré de l'appariement : aucun</div>`},
+ b:{dit:`Un seul matériel, dont le canal est choisi par ce qu'il y a à apprendre : une carte se montre, une prononciation s'entend, un geste se fait.`,
+    sc:`<div class="sc-t">Un matériel · le canal suit le contenu</div>
+        <div class="sc-pile">
+          <div class="sc-r centre"><span class="sc-etq noir">une carte</span><div class="sc-note">se montre</div></div>
+          <div class="sc-r centre"><span class="sc-etq noir">une prononciation</span><div class="sc-note">s'entend</div></div>
+          <div class="sc-r centre"><span class="sc-etq noir">un geste</span><div class="sc-note">se fait</div></div>
+        </div>`},
+ chg:`Ce qui est faux, c'est l'<b>appariement</b> — pas la variété. Les préférences existent bel et bien ; elles ne prédisent simplement pas ce qui fera apprendre.`
+},
+
+"Est-ce un problème de formation ?": {
+ a:{dit:`On commande une formation. Or ils savent faire : c'est l'outil qui impose douze clics, et la prime récompense la vitesse, pas la conformité.`,
+    sc:`<div class="sc-t">Demande reçue : « formez-les »</div>
+        <div class="sc-frise"><span class="sc-bloc plein">formation 2 jours</span></div>
+        <div class="sc-note">outil : 12 clics · prime : au volume · conséquence de bien faire : plus lent</div>
+        <div class="sc-va">le taux d'erreur revient au même niveau en trois semaines</div>`},
+ b:{dit:`On passe la grille avant de produire quoi que ce soit. Trois questions, et la formation ne reste que si la première répond non.`,
+    sc:`<div class="sc-t">Grille · avant de produire</div>
+        <div class="sc-pile">
+          <div class="sc-r centre"><span class="sc-etq">sait-il faire ?</span><div class="sc-note">oui → ce n'est pas un manque de savoir</div></div>
+          <div class="sc-r centre"><span class="sc-etq">l'outil suit ?</span><div class="sc-note">non → 12 clics ramenés à 3</div></div>
+          <div class="sc-r centre"><span class="sc-etq">et la prime ?</span><div class="sc-note">elle punit la conformité → à revoir</div></div>
+        </div>
+        <div class="sc-note">→ formation : une demi-heure, pour la seule nouveauté réelle</div>`},
+ chg:`La question la plus rentable d'un mandat se pose <b>avant</b> le mandat. Elle est aussi la plus impopulaire : elle peut conclure qu'il n'y a rien à vendre.`
+},
+
+"L'erreur et l'obstacle": {
+ a:{dit:`L'erreur est barrée, la bonne réponse est donnée. On a corrigé la copie sans jamais rencontrer ce qui la produit — et la même erreur revient.`,
+    sc:`<div class="sc-t">Correction rendue</div>
+        <div class="sc-r centre"><div class="sc-note" style="text-decoration:line-through">j'ai allé au magasin</div><span class="sc-etq noir">je suis allé</span></div>
+        <div class="sc-p"><div class="sc-l pale" style="width:70%"></div></div>
+        <div class="sc-va">la même erreur, trois séances plus tard</div>`},
+ b:{dit:`L'erreur est lue comme une règle : il applique « avoir » à tous les passés, ce qui est cohérent. On construit alors la situation qui met cette règle en défaut sous ses yeux.`,
+    sc:`<div class="sc-t">Ce que l'erreur dit</div>
+        <div class="sc-pile">
+          <div class="sc-r centre"><span class="sc-etq">sa règle</span><div class="sc-note">« le passé se fait avec <i>avoir</i> » — appliquée partout</div></div>
+          <div class="sc-r centre"><span class="sc-etq noir">l'obstacle</span><div class="sc-note">les verbes de déplacement</div></div>
+          <div class="sc-r centre"><span class="sc-etq noir">la situation</span><div class="sc-note">six phrases où sa règle produit une phrase qu'il sait fausse</div></div>
+        </div>`},
+ chg:`Une erreur qui revient n'est pas une inattention : c'est une <b>règle cohérente</b>, apprise ailleurs. On ne l'efface pas, on la met en défaut.`
+}
+
+};
+/* ⟦/planches⟧ */
 
 /* ═══════════ 2. Pupitre des tensions ═══════════ */
 const TENSIONS = [
@@ -1848,6 +2324,28 @@ const SPECIMENS = [
       '<dt>Exemple</dt><dd class="exemple">'+f.x+'</dd>'+
       '<dt>Limite</dt><dd class="limite">'+f.l+'</dd>'+
       '<dt>Vérifier</dt><dd class="test">'+f.v+'</dd></dl>';
+    /* ⟦rendu-planche⟧ */
+    const pl = PLANCHES[f.n];
+    if(pl){
+      const idp = "pl-"+i;
+      const b = el("button","pl-btn","Voir la planche");
+      b.type="button"; b.setAttribute("aria-expanded","false"); b.setAttribute("aria-controls",idp);
+      const boite = el("div","pl"); boite.id = idp; boite.hidden = true;
+      boite.innerHTML =
+        '<div class="pl-grille">'+
+          '<div class="pl-vol avant"><div class="pl-tete">Ce qu\'on voit souvent</div>'+
+            '<div class="sc">'+pl.a.sc+'<span class="sc-voile"></span></div>'+
+            '<p class="pl-dit">'+pl.a.dit+'</p></div>'+
+          '<div class="pl-vol apres"><div class="pl-tete">Ce que la recherche prescrit</div>'+
+            '<div class="sc">'+pl.b.sc+'</div>'+
+            '<p class="pl-dit">'+pl.b.dit+'</p></div>'+
+        '</div><p class="pl-chg">'+pl.chg+'</p>';
+      b.onclick=()=>{ const o = boite.hidden; boite.hidden = !o;
+        b.setAttribute("aria-expanded", o?"true":"false");
+        b.firstChild.nodeValue = o ? "Replier la planche" : "Voir la planche"; };
+      d.appendChild(b); d.appendChild(boite);
+    }
+    /* ⟦/rendu-planche⟧ */
     boiteCartes.appendChild(d);
   });
   function rafraichir(){
