@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="La page « La boucle diagnostic » soumise à sa propre méthode : les six règles, le cycle en cinq temps, et les questions de l'index qui la concernent.">
+<title>La boucle, mise à sa propre épreuve</title>
+<style>html{color-scheme:light dark}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>La boucle, mise à sa propre épreuve</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Libre+Franklin:wght@400;500;600&family=Roboto+Mono:wght@400;500&display=swap">
+
+<style>
+:root{
+  --fond:#FFFFFF; --fond-2:#FAFAFA; --fond-3:#F4F4F5;
+  --encre:#09090B; --encre-2:#52525B; --encre-3:#71717A; --encre-4:#A1A1AA;
+  --bord:#E4E4E7; --bord-fort:#D4D4D8;
+  --marque-rose:#F0359F; --marque-corail:#F5533D;
+  --marque-degrade:linear-gradient(100deg,var(--marque-rose) 0%,var(--marque-corail) 100%);
+  --signal:#F5652E; --signal-voile:#FEF1EA;
+  --mesure:#2B4E9B; --mesure-voile:#EAEFFA;
+  --trace:#B5122F; --trace-voile:#FDF0F2;
+  --vert:#2F6B45; --vert-voile:#EDF5F0;
+  --action:#18181B; --action-encre:#FAFAFA;
+  --display:"Archivo",ui-sans-serif,system-ui,"Helvetica Neue",Arial,sans-serif;
+  --corps:"Libre Franklin",ui-sans-serif,system-ui,"Helvetica Neue",Arial,sans-serif;
+  --mono:"Roboto Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --e1:.25rem; --e2:.5rem; --e3:.75rem; --e4:1rem; --e5:1.5rem; --e6:2rem; --e7:3rem; --e8:4.5rem;
+  --r1:.375rem; --r2:.5rem; --r3:.75rem;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --fond:#09090B; --fond-2:#0F0F11; --fond-3:#18181B;
+    --encre:#FAFAFA; --encre-2:#D4D4D8; --encre-3:#A1A1AA; --encre-4:#52525B;
+    --bord:#27272A; --bord-fort:#3F3F46;
+    --marque-rose:#FF4FB0; --marque-corail:#FF6A50;
+    --signal:#FF7A45; --signal-voile:#2A1610;
+    --mesure:#8FB2F0; --mesure-voile:#18213A;
+    --trace:#F0736A; --trace-voile:#2A1216;
+    --vert:#6FBF8E; --vert-voile:#122018;
+    --action:#FAFAFA; --action-encre:#18181B;
+  }
+}
+:root[data-theme="dark"]{
+  --fond:#09090B; --fond-2:#0F0F11; --fond-3:#18181B;
+  --encre:#FAFAFA; --encre-2:#D4D4D8; --encre-3:#A1A1AA; --encre-4:#52525B;
+  --bord:#27272A; --bord-fort:#3F3F46;
+  --marque-rose:#FF4FB0; --marque-corail:#FF6A50;
+  --signal:#FF7A45; --signal-voile:#2A1610;
+  --mesure:#8FB2F0; --mesure-voile:#18213A;
+  --trace:#F0736A; --trace-voile:#2A1216;
+  --vert:#6FBF8E; --vert-voile:#122018;
+  --action:#FAFAFA; --action-encre:#18181B;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--fond);color:var(--encre-2);font-family:var(--corps);
+     font-size:1rem;line-height:1.6;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--display);color:var(--encre);margin:0;line-height:1.14;
+         letter-spacing:-.025em;text-wrap:balance;font-weight:600}
+p{margin:0}
+.col{width:100%;max-width:58rem;margin:0 auto;padding-inline:clamp(1.25rem,5vw,2.5rem)}
+.sect{padding-block:var(--e8);border-top:1px solid var(--bord)}
+
+/* ─── Entête ─────────────────────────────────────────────────────────── */
+.tete{padding:var(--e8) 0 var(--e7)}
+.marque{font-family:var(--display);font-weight:700;font-size:.8125rem;color:var(--encre);
+        margin-bottom:var(--e6)}
+.marque i{font-style:normal;background:var(--marque-degrade);
+          -webkit-background-clip:text;background-clip:text;color:transparent}
+.eyebrow{font-family:var(--mono);font-size:.6875rem;letter-spacing:.12em;text-transform:uppercase;
+         color:var(--encre-3);display:block;margin-bottom:var(--e3)}
+h1{font-size:clamp(1.875rem,4.6vw,2.875rem);letter-spacing:-.035em;margin-bottom:var(--e4)}
+.chapo{max-width:60ch;font-size:1.0625rem}
+.meta{display:flex;gap:var(--e5);flex-wrap:wrap;margin-top:var(--e5);
+      font-family:var(--mono);font-size:.6875rem;color:var(--encre-3)}
+
+/* ─── Verdict d'ensemble ─────────────────────────────────────────────── */
+.verdict-cadre{border:1px solid color-mix(in srgb,var(--trace) 34%,transparent);
+               background:var(--trace-voile);border-radius:var(--r3);
+               padding:var(--e6);margin-top:var(--e7)}
+.verdict-cadre h2{font-size:1.375rem;margin-bottom:var(--e3);color:var(--trace)}
+.verdict-cadre p{max-width:62ch;color:var(--encre-2)}
+.verdict-cadre p + p{margin-top:var(--e3)}
+
+/* ─── Tableau de critères ────────────────────────────────────────────── */
+h2.rubrique{font-size:1.5rem;margin-bottom:var(--e2)}
+.intro{max-width:62ch;margin-bottom:var(--e5)}
+.crit{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:var(--e3) var(--e4);
+      padding:var(--e4) 0;border-top:1px solid var(--bord);align-items:start}
+.crit:last-child{border-bottom:1px solid var(--bord)}
+.crit__n{font-family:var(--mono);font-size:.6875rem;color:var(--encre-4);padding-top:.3rem;
+         font-variant-numeric:tabular-nums}
+.crit__t{font-family:var(--display);font-weight:600;font-size:1rem;color:var(--encre);
+         letter-spacing:-.015em}
+.crit__s{font-family:var(--mono);font-size:.625rem;color:var(--encre-4);margin-top:.1rem}
+.crit__d{font-size:.9rem;margin-top:var(--e2);max-width:64ch}
+.crit__d b{color:var(--encre);font-weight:600}
+.sceau{font-family:var(--mono);font-size:.625rem;letter-spacing:.08em;text-transform:uppercase;
+       padding:.28rem .55rem;border-radius:var(--r1);white-space:nowrap;border:1px solid}
+.s-tenu{color:var(--vert);background:var(--vert-voile);border-color:color-mix(in srgb,var(--vert) 34%,transparent)}
+.s-partiel{color:var(--signal);background:var(--signal-voile);border-color:color-mix(in srgb,var(--signal) 34%,transparent)}
+.s-manque{color:var(--trace);background:var(--trace-voile);border-color:color-mix(in srgb,var(--trace) 34%,transparent)}
+.s-hors{color:var(--encre-3);background:var(--fond-3);border-color:var(--bord)}
+
+/* ─── Chiffres mesurés ───────────────────────────────────────────────── */
+.mesures{display:grid;grid-template-columns:repeat(auto-fit,minmax(9rem,1fr));
+         gap:var(--e5);margin:var(--e6) 0}
+.mes b{display:block;font-family:var(--display);font-size:1.875rem;font-weight:700;color:var(--encre);
+       letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums}
+.mes span{display:block;font-family:var(--mono);font-size:.625rem;letter-spacing:.1em;
+          text-transform:uppercase;color:var(--encre-3);margin-top:var(--e2);line-height:1.5}
+.mes.rouge b{color:var(--trace)}
+
+/* ─── Décisions ──────────────────────────────────────────────────────── */
+.dec{border-left:2px solid var(--mesure);padding-left:var(--e5);margin-top:var(--e5)}
+.dec__q{font-family:var(--display);font-weight:600;font-size:1.0625rem;color:var(--encre);
+        margin-bottom:var(--e2)}
+.dec p{font-size:.9rem;max-width:62ch}
+.dec__c{font-family:var(--mono);font-size:.625rem;letter-spacing:.1em;text-transform:uppercase;
+        color:var(--mesure);margin-bottom:var(--e1)}
+
+.note{border-left:2px solid var(--bord-fort);padding-left:var(--e4);margin-top:var(--e5);
+      font-size:.875rem;color:var(--encre-3);max-width:64ch}
+footer{border-top:1px solid var(--bord);padding:var(--e6) 0 var(--e8);
+       font-family:var(--mono);font-size:.6875rem;color:var(--encre-4);line-height:1.7}
+a{color:var(--encre)}
+@media (max-width:720px){
+  .crit{grid-template-columns:auto minmax(0,1fr)}
+  .sceau{grid-column:2}
+}
+</style>
+
+<div class="col tete">
+  <div class="marque">Dan<i>i</i>el Tousignant · conception pédagogique</div>
+  <span class="eyebrow">Validation · 10 septembre 2026</span>
+  <h1>La boucle, mise à sa propre épreuve</h1>
+  <p class="chapo">La page <b>« La boucle diagnostic »</b> prescrit une méthode. Ce document
+    la lui applique — les six règles de conduite, le cycle en cinq temps, la figure&nbsp;2,
+    puis les questions de l'index qui la concernent. Les chiffres sont mesurés sur la page
+    publiée, pas estimés.</p>
+  <div class="meta">
+    <span>OBJET : boucle-animee · 12 sections</span>
+    <span>MESURÉ LE 10 SEPTEMBRE 2026</span>
+    <span>AUTEUR ET AUDITEUR : LA MÊME MAIN</span>
+  </div>
+
+  <div class="verdict-cadre">
+    <h2>Le contenu tient. Le processus, non.</h2>
+    <p>Ce que la page <b>affirme</b> est conforme à sa source&nbsp;: les résultats sont
+      correctement rapportés, les limites sont dites, les tracés sont marqués comme formes
+      d'effet et non comme données. Sur ce plan, rien à redresser.</p>
+    <p>Ce que la page <b>fait</b> contredit ce qu'elle prescrit. Elle a été révisée cinq
+      fois et publiée quatre fois <b>sans qu'une seule personne l'ait lue</b>. Sur sa
+      propre figure&nbsp;2, elle est arrivée au centre — objet fini, coût de modification
+      élevé — sans avoir passé un seul des points E1 à E4. C'est exactement le trajet que
+      la figure sert à interdire.</p>
+    <p>La page le sait&nbsp;: sa dixième trace l'avoue. Un aveu porté au dossier n'est pas
+      une correction.</p>
+  </div>
+</div>
+
+<section class="sect">
+ <div class="col">
+  <h2 class="rubrique">Les six règles de conduite</h2>
+  <p class="intro">Sa propre section 05. Chaque règle est appliquée à la conduite du projet
+    qui a produit la page.</p>
+
+  <div class="crit">
+    <span class="crit__n">01</span>
+    <div><div class="crit__t">Tester avant d'avoir envie de tester</div>
+      <div class="crit__s">§ 05 · règle 1</div>
+      <p class="crit__d">Le moment où l'on se sent prêt est déjà trop tard. La page a été
+        publiée <b>quatre fois</b> — deck, défilement, ouverture étoffée, traces — et jamais
+        montrée à un lecteur. À ce stade, l'attachement au travail est constitué&nbsp;:
+        c'est la condition que la règle décrit.</p></div>
+    <span class="sceau s-manque">Manqué</span>
+  </div>
+
+  <div class="crit">
+    <span class="crit__n">02</span>
+    <div><div class="crit__t">Observer plutôt que demander</div>
+      <div class="crit__s">§ 05 · règle 2</div>
+      <p class="crit__d">Aucune observation n'a eu lieu. Les seuls retours reçus viennent
+        du commanditaire, sur ses intentions — pas d'un lecteur, sur son comportement.
+        Ce sont deux instruments différents, et la page dit elle-même que le second est
+        le seul qui mesure.</p></div>
+    <span class="sceau s-manque">Manqué</span>
+  </div>
+
+  <div class="crit">
+    <span class="crit__n">03</span>
+    <div><div class="crit__t">Un essai court battra toujours un essai parfait</div>
+      <div class="crit__s">§ 05 · règle 3</div>
+      <p class="crit__d">Zéro essai, et un objet très fini. C'est la conjonction que la
+        règle vise&nbsp;: le travail est allé vers la finition au lieu d'aller vers la
+        confrontation. <b>Trois lectures de vingt minutes auraient coûté moins cher que la
+        dernière révision.</b></p></div>
+    <span class="sceau s-manque">Manqué</span>
+  </div>
+
+  <div class="crit">
+    <span class="crit__n">04</span>
+    <div><div class="crit__t">Jamais de conclusion sur une seule observation</div>
+      <div class="crit__s">§ 05 · règle 4</div>
+      <p class="crit__d">Non enfreinte, faute d'observation. Mais la règle n'est pas
+        respectée pour autant&nbsp;: elle est simplement <b>sans objet</b>, ce qui est le
+        symptôme, pas l'absolution.</p></div>
+    <span class="sceau s-hors">Sans objet</span>
+  </div>
+
+  <div class="crit">
+    <span class="crit__n">05</span>
+    <div><div class="crit__t">Consigner la décision, pas seulement le constat</div>
+      <div class="crit__s">§ 05 · règle 5</div>
+      <p class="crit__d">Tenue. Dix traces rouges dans la page, et des messages de commit
+        qui portent le motif et non seulement le geste. Un chiffre y a même été corrigé
+        avant publication — une trace annonçait «&nbsp;environ 340 mots&nbsp;»&nbsp;;
+        comptés, l'ouverture en fait <b>277</b>.</p></div>
+    <span class="sceau s-tenu">Tenue</span>
+  </div>
+
+  <div class="crit">
+    <span class="crit__n">06</span>
+    <div><div class="crit__t">Chercher les résultats qui dérangent</div>
+      <div class="crit__s">§ 05 · règle 6</div>
+      <p class="crit__d">À moitié. La page nomme la contradiction qui la gêne le plus —
+        l'ouverture réécrite à 277 mots alors que le dossier mère consigne qu'une ouverture
+        longue a fait décrocher un lecteur. Mais nommer un risque n'est pas le mesurer, et
+        <b>aucun dispositif n'a été monté pour se donner tort</b>.</p></div>
+    <span class="sceau s-partiel">Partielle</span>
+  </div>
+ </div>
+</section>
+
+<section class="sect">
+ <div class="col">
+  <h2 class="rubrique">Le cycle en cinq temps</h2>
+  <p class="intro">Sa propre section 04. Voici quel cycle a réellement été conduit pour
+    produire la page.</p>
+
+  <div class="crit">
+    <span class="crit__n">1</span>
+    <div><div class="crit__t">Intention — écrire l'attente avant l'essai</div>
+      <p class="crit__d">Aucune attente écrite. On n'a jamais formulé ce qu'un lecteur
+        devrait être capable de faire ou de dire après la lecture. Sans cela, tout retour
+        futur se soldera par «&nbsp;c'est très bien&nbsp;».</p></div>
+    <span class="sceau s-manque">Sauté</span>
+  </div>
+  <div class="crit">
+    <span class="crit__n">2</span>
+    <div><div class="crit__t">Prototype — le moins de matériel possible</div>
+      <p class="crit__d">Fait, mais à l'envers de la prescription. Le premier jet était
+        déjà une page animée et publiée, non «&nbsp;un paragraphe, trois items, un
+        croquis&nbsp;».</p></div>
+    <span class="sceau s-partiel">Inversé</span>
+  </div>
+  <div class="crit">
+    <span class="crit__n">3</span>
+    <div><div class="crit__t">Confrontation — mettre l'objet devant quelqu'un, se taire</div>
+      <p class="crit__d">Jamais eu lieu.</p></div>
+    <span class="sceau s-manque">Sauté</span>
+  </div>
+  <div class="crit">
+    <span class="crit__n">4</span>
+    <div><div class="crit__t">Trace — consigner des faits</div>
+      <p class="crit__d">Fait, mais les faits consignés sont des <b>faits de fabrication</b>,
+        pas des faits d'usage. Ce sont les traces d'un atelier, pas celles d'un essai.</p></div>
+    <span class="sceau s-partiel">Déplacé</span>
+  </div>
+  <div class="crit">
+    <span class="crit__n">5</span>
+    <div><div class="crit__t">Interprétation — mettre les causes en concurrence</div>
+      <p class="crit__d">Sans objet&nbsp;: il n'y a rien à interpréter tant qu'il n'y a pas
+        d'observation.</p></div>
+    <span class="sceau s-hors">Sans objet</span>
+  </div>
+
+  <div class="note">Le cycle effectivement joué a donc été <b>2 → 4 → 2 → 4</b>, cinq fois
+    de suite. La page consacre une section entière à montrer ce qu'il en coûte de sauter
+    le cinquième temps&nbsp;; elle a sauté le troisième, qui le conditionne.</div>
+ </div>
+</section>
+
+<section class="sect">
+ <div class="col">
+  <h2 class="rubrique">Ce que l'index a à dire sur la page</h2>
+  <p class="intro">Les vingt-quatre questions servent à analyser un module de formation.
+    La page n'en est pas un — c'est une pièce de démonstration, et plusieurs questions
+    tombent à côté. Mais la page <b>enseigne</b>, et celles-ci mordent.</p>
+
+  <div class="crit">
+    <span class="crit__n">·</span>
+    <div><div class="crit__t">La figure et sa légende sont-elles séparées&nbsp;?</div>
+      <div class="crit__s">Attention partagée · Chandler &amp; Sweller, 1992</div>
+      <p class="crit__d">Dans la section 03, les nœuds de la spirale portent
+        <b>1, 2, 3, 4</b> et les quatre cartes qui les nomment sont posées
+        <b>32&nbsp;px sous la figure</b>. Le lecteur doit croiser du regard exactement
+        comme dans la démonstration de la section 06. <b>La page commet la faute qu'elle
+        enseigne.</b></p></div>
+    <span class="sceau s-manque">Enfreinte</span>
+  </div>
+
+  <div class="crit">
+    <span class="crit__n">·</span>
+    <div><div class="crit__t">L'ornement qui capte l'attention aide-t-il&nbsp;?</div>
+      <div class="crit__s">Détails séduisants · Harp &amp; Mayer, 1998</div>
+      <p class="crit__d">Les arcs de la roue d'ouverture tournent <b>en boucle infinie</b>
+        et n'enseignent rien après le premier passage. Le ruban des vingt-quatre questions
+        défile aussi sans fin&nbsp;: la section qui présente une <b>grille d'analyse</b>
+        rend sa propre grille impossible à parcourir du regard.</p></div>
+    <span class="sceau s-partiel">À trancher</span>
+  </div>
+
+  <div class="crit">
+    <span class="crit__n">·</span>
+    <div><div class="crit__t">Le lecteur produit-il quelque chose&nbsp;?</div>
+      <div class="crit__s">Effet de test · Roediger &amp; Karpicke, 2006</div>
+      <p class="crit__d">Quatorze commandes, et <b>pas une seule</b> qui demande au lecteur
+        de s'engager avant de voir la réponse. Il rejoue des tracés, il bascule des vues.
+        Par le résultat même que la section 08 démontre, cela produit une bonne séance et
+        peu de trace. Le dossier mère a un exercice d'ordonnancement pour cette
+        raison&nbsp;; la page n'en a pas.</p></div>
+    <span class="sceau s-manque">Enfreinte</span>
+  </div>
+
+  <div class="crit">
+    <span class="crit__n">·</span>
+    <div><div class="crit__t">Que doit savoir faire le lecteur après&nbsp;?</div>
+      <div class="crit__s">Alignement constructif · Biggs, 1996</div>
+      <p class="crit__d">La page ne l'énonce nulle part. Sans cible, on ne peut ni bâtir un
+        essai ni juger un retour. <b>C'est le premier manque à combler</b>, avant toute
+        retouche de forme&nbsp;: il conditionne les autres.</p></div>
+    <span class="sceau s-manque">Enfreinte</span>
+  </div>
+
+  <div class="crit">
+    <span class="crit__n">·</span>
+    <div><div class="crit__t">Le lecteur sature-t-il&nbsp;?</div>
+      <div class="crit__s">Charge cognitive · Sweller, 1988</div>
+      <p class="crit__d">2&nbsp;776 mots, douze sections, 12&nbsp;089&nbsp;px de haut. La
+        section 10 pèse à elle seule <b>722 mots</b>, soit un quart de la page, sans une
+        seule commande. Rien ne dit que c'est trop&nbsp;: rien ne dit non plus que ce ne
+        l'est pas. <b>Cela se mesure, cela ne se déduit pas.</b></p></div>
+    <span class="sceau s-partiel">Non mesuré</span>
+  </div>
+ </div>
+</section>
+
+<section class="sect">
+ <div class="col">
+  <h2 class="rubrique">Ce qui a été mesuré</h2>
+  <div class="mesures">
+    <div class="mes"><b>2 776</b><span>mots</span></div>
+    <div class="mes"><b>12</b><span>sections</span></div>
+    <div class="mes"><b>14</b><span>commandes</span></div>
+    <div class="mes rouge"><b>0</b><span>qui demandent une réponse</span></div>
+    <div class="mes"><b>7</b><span>sections sans aucune commande</span></div>
+    <div class="mes rouge"><b>0</b><span>lecteur · aucun essai</span></div>
+  </div>
+  <p class="note">Relevé sur la page publiée par un navigateur sans interface&nbsp;: comptage
+    des mots du texte rendu, des commandes actives, et de l'écart en pixels entre le bas de
+    la figure&nbsp;2 et le haut des cartes qui la légendent.</p>
+ </div>
+</section>
+
+<section class="sect">
+ <div class="col">
+  <h2 class="rubrique">Ce qu'il y a à décider</h2>
+  <p class="intro">Quatre décisions, dans l'ordre où elles se prennent. La première commande
+    les trois autres.</p>
+
+  <div class="dec">
+    <div class="dec__c">Décision 1 · avant toute retouche</div>
+    <div class="dec__q">Que doit-il se passer dans la tête du lecteur&nbsp;?</div>
+    <p>Écrire, en une phrase, ce qu'un lecteur devrait pouvoir dire ou faire après la
+      page — et devant qui elle est jouée&nbsp;: un employeur, un jury, un pair. Sans cela,
+      aucun essai n'est interprétable et les décisions 2 à 4 n'ont pas de critère.</p>
+  </div>
+
+  <div class="dec">
+    <div class="dec__c">Décision 2 · l'essai</div>
+    <div class="dec__q">Trois lecteurs, vingt minutes chacun&nbsp;?</div>
+    <p>C'est le seul geste qui change le statut de cette page. On regarde où ils
+      s'arrêtent, ce qu'ils sautent, ce qu'ils rouvrent — on ne demande rien avant la fin.
+      Trois suffisent pour faire tomber les défauts grossiers.</p>
+  </div>
+
+  <div class="dec">
+    <div class="dec__c">Décision 3 · les deux fautes internes</div>
+    <div class="dec__q">Corriger maintenant, ou attendre l'essai&nbsp;?</div>
+    <p>L'attention partagée de la figure&nbsp;2 et l'absence de production du lecteur sont
+      des fautes que la page condamne elle-même&nbsp;: elles n'ont pas besoin d'un essai
+      pour être établies. Mon avis&nbsp;: corriger la première tout de suite — intégrer les
+      quatre libellés dans la figure — et <b>attendre l'essai</b> pour la seconde, parce
+      qu'ajouter un exercice change la nature de la pièce.</p>
+  </div>
+
+  <div class="dec">
+    <div class="dec__c">Décision 4 · les animations perpétuelles</div>
+    <div class="dec__q">La roue et le ruban continuent-ils de tourner&nbsp;?</div>
+    <p>Les deux sont des détails séduisants au sens de l'index. Le ruban a un coût
+      supplémentaire&nbsp;: il empêche de lire la grille qu'il présente. Une version fixe,
+      en grille, se parcourt&nbsp;; une version qui défile se subit. À trancher — c'est un
+      arbitrage entre l'effet de première seconde et l'usage.</p>
+  </div>
+ </div>
+</section>
+
+<footer>
+  <div class="col">
+    Validation conduite le 10 septembre 2026 sur boucle-animee, révision « traces de
+    révision ». Chiffres relevés par mesure automatisée sur la page rendue&nbsp;;
+    appréciations portées par l'auteur de la page — <b>ce qui est, en soi, le premier
+    biais que ce document ne peut pas corriger</b>. Le dossier mère dit pourquoi&nbsp;:
+    l'auteur relit l'intention, jamais les mots.
+  </div>
+</footer>
+
+</body>
+</html>
