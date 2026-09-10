@@ -363,8 +363,12 @@ var now = function(){ return performance.now(); };
 var t = function(){ return J.t0 == null ? 0 : now() - J.t0; };
 function note(quoi, x){ var e = { t: Math.round(t()), quoi: quoi }; for (var k in (x||{})) e[k]=x[k]; J.ev.push(e); return e; }
 function ss(ms){ var s = Math.floor(ms/1000); return Math.floor(s/60)+':'+String(s%60).padStart(2,'0'); }
+/* L'horloge se fige au miroir. Vue en capture : elle continuait de courir
+   pendant qu'on lisait — 4:09 affiché pour un passage de 2:09 — et la perte
+   de chances grimpait avec elle, comme si lire le bilan coûtait des points. */
+var fige = null;
 setInterval(function(){
-  if (J.t0 == null) return;
+  if (J.t0 == null || fige != null) return;
   horloge.textContent = ss(t());
   /* Ce que coûte le temps sans compression, en chances de survie : sept à dix
      points par minute. Fourchette, pas chiffre rond. */
@@ -631,7 +635,8 @@ function electrodes(){
 function trouver(q){ for (var i=0;i<J.ev.length;i++) if (J.ev[i].quoi===q) return J.ev[i]; return null; }
 function miroir(){
   couperTout(); note('fin');
-  var fin = t();
+  var fin = t(); fige = fin;
+  horloge.textContent = ss(fin);
   var sansC = tempsSansCompression();
   var e = J.ev;
   var interp = trouver('interpeller'), exam = trouver('examen_fin'), imp = trouver('impasse'), rat = trouver('rattrapage'), rcp = trouver('rcp_debut'), arr = trouver('appareil_arrive');
