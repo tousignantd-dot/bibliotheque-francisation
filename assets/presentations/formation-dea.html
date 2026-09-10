@@ -462,16 +462,21 @@ footer a{color:var(--encre-2)}
   </div>
 
   <div class="jeu">
-    <div class="jeu__t">Regardez la poitrine · dix secondes</div>
+    <div class="jeu__t">Regardez la poitrine, et écoutez · dix secondes</div>
     <canvas class="trace" id="trace" width="900" height="170"></canvas>
     <div class="souffle">
-      <span id="souffle-etat">Choisissez un tracé.</span>
+      <span id="souffle-etat">Choisissez un tracé. Montez le son.</span>
     </div>
     <div class="rangee" style="margin-top:1rem">
       <button class="b" type="button" data-souffle="normal">Une respiration normale</button>
       <button class="b" type="button" data-souffle="agonal">Ce qu'on voit dans un arrêt cardiaque</button>
       <button class="b b--plein" type="button" id="souffle-test">Me tester : lequel est-ce ?</button>
+      <button class="b" type="button" id="souffle-stop" disabled>Arrêter</button>
+      <button class="bt" type="button" id="souffle-son" aria-pressed="true">🔊 Son</button>
     </div>
+    <p class="mini" style="margin-top:.75rem;margin-bottom:0">Le son est
+      <b>synthétisé</b>, pas enregistré. Ce qu'il faut reconnaître n'est pas un
+      timbre mais un rythme : l'espacement, l'attaque brusque, le râle.</p>
     <div class="rangee" id="souffle-choix" style="margin-top:.75rem;display:none">
       <button class="b" type="button" data-rep="normal">Elle respire normalement</button>
       <button class="b" type="button" data-rep="agonal">Ce n'est pas une respiration normale</button>
@@ -1014,19 +1019,16 @@ footer a{color:var(--encre-2)}
      montrer ; vingt secondes qui défilent, oui.                            */
   var cv = el('trace'), cx = cv.getContext('2d');
   var FENETRE = 20000;              // secondes visibles, en millisecondes
+  var CYCLE = 45000;                // le motif agonal se répète, sans quoi le
+                                    // tracé finirait en ligne plate
+  var RESPI = 4300;                 // une respiration normale : ~14 par minute
+  var GASPS = [1200, 8300, 15100, 21400, 27200, 34600, 41000];
   var modeSouffle = null, t0 = 0, testEnCours = false, reponseAttendue = null;
 
   /** Amplitude du mouvement du thorax à l'instant `ms`, entre 0 et 1. */
   function amplitude(mode, ms) {
-    if (mode === 'normal') {
-      // 14 cycles par minute, réguliers, symétriques.
-      return 0.5 + 0.42 * Math.sin((ms / 4300) * Math.PI * 2);
-    }
-    // Agonal : un halètement bref toutes les 6 à 9 secondes, rien entre les deux.
-    // Le motif se répète toutes les 45 s pour que le tracé puisse tourner aussi
-    // longtemps qu'on le regarde sans devenir une ligne plate.
-    ms = ms % 45000;
-    var GASPS = [1200, 8300, 15100, 21400, 27200, 34600, 41000];
+    if (mode === 'normal') return 0.5 + 0.42 * Math.sin((ms / RESPI) * Math.PI * 2);
+    ms = ms % CYCLE;
     var v = 0.5;
     for (var i = 0; i < GASPS.length; i++) {
       var d = ms - GASPS[i];
@@ -1037,6 +1039,154 @@ footer a{color:var(--encre-2)}
       }
     }
     return Math.min(0.98, v);
+  }
+
+  /* ── Le son ────────────────────────────────────────────────────────────
+
+     Il est SYNTHÉTISÉ, pas enregistré, et la page le dit à l'apprenant. Trois
+     raisons, dans cet ordre : un enregistrement authentique d'une personne en
+     train de mourir n'a pas sa place dans une formation dont le brief exige
+     qu'elle rassure ; on ne le tiendrait de toute façon d'aucune source dont
+     le consentement soit clair ; et un son fabriqué se règle — on décide ce
+     qui doit s'entendre.
+
+     Ce qu'il faut reconnaître n'est pas un timbre, c'est un RYTHME. Le
+     halètement et le souffle normal ont donc la même matière — un bruit large
+     filtré — et diffèrent par ce qui distingue les deux dans la vraie vie :
+     l'espacement, l'attaque, et le râle. Sans cela on enseignerait « fort =
+     grave », qui est un raccourci vrai mais fragile.
+
+     Le son et le tracé lisent la MÊME table d'événements et la même horloge :
+     le silence qu'on voit est le silence qu'on entend. Deux horloges auraient
+     fini par diverger, et la démonstration se serait retournée contre elle. */
+
+  var ctx = null, bruitBuf = null, sonActif = true, maitre = null, planId = 0;
+
+  /** Le contexte partagé (métronome compris), ou `null` si le navigateur n'en
+      a pas. Il ne s'ouvre que sur un geste : c'est la règle des navigateurs. */
+  function audio() {
+    if (!ctx) {
+      var AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return null;
+      ctx = new AC();
+    }
+    if (ctx.state === 'suspended') ctx.resume();
+    return ctx;
+  }
+
+  function bruit() {
+    if (bruitBuf) return bruitBuf;
+    var n = Math.floor(ctx.sampleRate * 3);
+    bruitBuf = ctx.createBuffer(1, n, ctx.sampleRate);
+    var d = bruitBuf.getChannelData(0);
+    for (var i = 0; i < n; i++) d[i] = Math.random() * 2 - 1;
+    return bruitBuf;
+  }
+
+  /** Un halètement agonal : l'air entre d'un coup, ça racle, ça retombe. */
+  function halettement(quand) {
+    var s = ctx.createBufferSource(); s.buffer = bruit(); s.loop = true;
+    var bp = ctx.createBiquadFilter(); bp.type = 'bandpass'; bp.Q.value = 0.9;
+    var lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 1500;
+    var trem = ctx.createGain(); trem.gain.value = 0.6;
+    /* Le râle : le voile du palais qui bat autour de trente fois par seconde.
+       C'est lui qui fait dire aux témoins « il ronfle », et c'est donc lui
+       qu'il faut entendre. */
+    var lfo = ctx.createOscillator(); lfo.type = 'sine'; lfo.frequency.value = 29;
+    var lfoG = ctx.createGain(); lfoG.gain.value = 0.4;
+    var g = ctx.createGain(); g.gain.value = 0.0001;
+    lfo.connect(lfoG); lfoG.connect(trem.gain);
+    s.connect(bp); bp.connect(lp); lp.connect(trem); trem.connect(g); g.connect(maitre);
+    // L'inspiration force : le filtre monte, puis redescend en s'éteignant.
+    bp.frequency.setValueAtTime(230, quand);
+    bp.frequency.linearRampToValueAtTime(540, quand + 0.22);
+    bp.frequency.exponentialRampToValueAtTime(190, quand + 0.9);
+    /* Le gain paraît énorme : il l'est parce que le passe-bande à Q 0,9 sur du
+       bruit blanc jette l'essentiel de l'énergie, et que le trémolo en reprend
+       la moitié. Mesuré hors ligne : 0,40 donnait 0,058 de RMS, inaudible à
+       volume normal. Le chiffre à régler est le RMS rendu, pas le gain écrit. */
+    g.gain.setValueAtTime(0.0001, quand);
+    g.gain.linearRampToValueAtTime(1.15, quand + 0.14);
+    g.gain.setValueAtTime(1.15, quand + 0.34);
+    /* Deux pentes plutôt qu'une : une seule exponentielle vers zéro passe sous
+       le seuil d'audition en deux cent cinquante millisecondes, et le
+       halètement s'entendait plus court qu'il ne durait à l'écran. */
+    g.gain.exponentialRampToValueAtTime(0.34, quand + 0.62);
+    g.gain.exponentialRampToValueAtTime(0.0001, quand + 1.25);
+    s.start(quand); lfo.start(quand);
+    s.stop(quand + 1.3); lfo.stop(quand + 1.3);
+  }
+
+  /** Un souffle ordinaire. Doux, lisse, sans râle — et audible : le rendre
+      inaudible apprendrait « silence = normal », ce qui est faux et dangereux. */
+  function souffle(quand, entree) {
+    var s = ctx.createBufferSource(); s.buffer = bruit(); s.loop = true;
+    var bp = ctx.createBiquadFilter(); bp.type = 'bandpass'; bp.Q.value = 0.55;
+    bp.frequency.value = entree ? 700 : 480;
+    var g = ctx.createGain(); g.gain.value = 0.0001;
+    s.connect(bp); bp.connect(g); g.connect(maitre);
+    var duree = entree ? 1.05 : 1.9, pic = entree ? 0.42 : 0.30;
+    g.gain.setValueAtTime(0.0001, quand);
+    g.gain.linearRampToValueAtTime(pic, quand + duree * 0.42);
+    g.gain.exponentialRampToValueAtTime(0.0001, quand + duree);
+    s.start(quand); s.stop(quand + duree + 0.05);
+  }
+
+  /** Le prochain événement sonore à partir du temps de tracé `apres`. */
+  function prochainEvenement(mode, apres) {
+    if (mode === 'normal') {
+      // Inspiration au départ du cycle, expiration au quart suivant : ce sont
+      // les deux moments où la courbe change de sens à l'écran.
+      var n = Math.floor(apres / (RESPI / 2));
+      var t = (n + 1) * (RESPI / 2);
+      return { t: t, entree: (t % RESPI) === 0 };
+    }
+    var cycle = Math.floor(apres / CYCLE), meilleur = Infinity;
+    for (var k = 0; k <= 1; k++) {
+      for (var i = 0; i < GASPS.length; i++) {
+        var v = (cycle + k) * CYCLE + GASPS[i];
+        if (v > apres && v < meilleur) meilleur = v;
+      }
+    }
+    return { t: meilleur };
+  }
+
+  /* L'ordonnanceur regarde 250 ms devant lui et confie l'instant exact à
+     l'horloge audio, jamais à setTimeout : une minuterie de page dérive de
+     dizaines de millisecondes, et un râle qui tombe à côté de sa bosse
+     détruit la seule chose que le panneau démontre. */
+  /* L'avance doit dépasser le pire intervalle de minuterie, pas le meilleur.
+     L'horloge audio, elle, avance en temps réel quoi qu'il arrive — vérifié :
+     dans un onglet d'arrière-plan, `setTimeout(400)` rendait la main après une
+     seconde pendant que `currentTime` avait bien avancé d'une seconde. Avec
+     250 ms d'avance, les halètements seraient programmés dans le passé, donc
+     ramenés à zéro et tirés en rafale. Une seconde et demie couvre
+     l'étranglement à une seconde des navigateurs. */
+  var LOOKAHEAD = 1500, prochain = 0, sablier = 0;
+  function ordonnancer() {
+    if (!ctx || modeSouffle === null) return;
+    var ecoule = performance.now() - t0;
+    var garde = 0;
+    while (prochain <= ecoule + LOOKAHEAD && garde++ < 20) {
+      var e = prochainEvenement(modeSouffle, prochain);
+      var quand = ctx.currentTime + Math.max(0, (e.t - ecoule)) / 1000;
+      if (modeSouffle === 'agonal') halettement(quand);
+      else souffle(quand, e.entree);
+      prochain = e.t;
+    }
+  }
+
+  /** Coupe net ce qui est déjà programmé : changer de tracé ne doit pas
+      laisser traîner le halètement du précédent par-dessus le nouveau. */
+  function taire() {
+    clearInterval(sablier); sablier = 0;
+    if (maitre && ctx) {
+      var m = maitre;
+      m.gain.cancelScheduledValues(ctx.currentTime);
+      m.gain.setTargetAtTime(0, ctx.currentTime, 0.015);
+      setTimeout(function () { try { m.disconnect(); } catch (e) {} }, 1200);
+      maitre = null;
+    }
   }
 
   /* La boucle ne tourne QUE pendant qu'un tracé joue.
@@ -1074,6 +1224,15 @@ footer a{color:var(--encre-2)}
   dessiner();   // la grille seule, tant que rien n'est choisi
 
   function jouerSouffle(mode, muet) {
+    taire();
+    if (sonActif && audio()) {
+      maitre = ctx.createGain(); maitre.gain.value = 1; maitre.connect(ctx.destination);
+      // Le son part de la même origine que le tracé : la fenêtre est déjà
+      // pleine, donc le premier événement audible est celui qui atteint le
+      // bord droit — exactement la bosse qu'on voit arriver.
+      prochain = FENETRE;
+      sablier = setInterval(ordonnancer, 120);
+    }
     /* La fenêtre part PLEINE, pas vide.
 
        Premier jet : le tracé partait de zéro et mettait vingt secondes à
@@ -1084,15 +1243,47 @@ footer a{color:var(--encre-2)}
     modeSouffle = mode; t0 = performance.now() - FENETRE;
     cancelAnimationFrame(boucle);
     boucle = requestAnimationFrame(dessiner);
-    el('souffle-etat').textContent = muet ? 'Regardez dix secondes, puis répondez.'
-      : (mode === 'normal' ? 'Respiration normale : régulière, environ 14 par minute.'
-                           : 'Halètements agonaux : brefs, bruyants, séparés par de longs silences.');
+    ordonnancer();
+    el('souffle-etat').textContent = muet
+      ? 'Regardez et écoutez dix secondes, puis répondez.'
+      : (mode === 'normal'
+          ? 'Respiration normale : régulière, environ 14 par minute, sans à-coups.'
+          : 'Halètements agonaux : brefs, râlants, séparés par de longs silences.');
   }
+  /** Arrête tout : le son ET le tracé. Un panneau qu'on ne peut pas faire
+      taire est un panneau qu'on referme. */
+  function arreterSouffle() {
+    taire();
+    modeSouffle = null; cancelAnimationFrame(boucle); boucle = 0;
+    dessiner();                       // la grille seule
+    el('souffle-stop').disabled = true;
+    el('souffle-etat').textContent = 'Arrêté.';
+  }
+  el('souffle-stop').addEventListener('click', arreterSouffle);
+
+  el('souffle-son').addEventListener('click', function () {
+    sonActif = !sonActif;
+    this.setAttribute('aria-pressed', String(sonActif));
+    this.textContent = sonActif ? '🔊 Son' : '🔇 Muet';
+    if (!sonActif) taire();
+    else if (modeSouffle !== null) jouerSouffle(modeSouffle, testEnCours);
+  });
+
+  /* Le son s'arrête quand le panneau quitte l'écran. Sans cela un halètement
+     continue à racler pendant qu'on lit la partie sur les compressions —
+     personne ne comprend d'où ça vient, et on ferme l'onglet. */
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function (e) {
+      if (!e[0].isIntersecting && modeSouffle !== null) arreterSouffle();
+    }, { threshold: 0 }).observe(cv);
+  }
+
   Array.prototype.forEach.call(document.querySelectorAll('[data-souffle]'), function (b) {
     b.addEventListener('click', function () {
       testEnCours = false; el('souffle-choix').style.display = 'none';
       el('v-souffle').removeAttribute('data-etat');
       jouerSouffle(b.getAttribute('data-souffle'), false);
+      el('souffle-stop').disabled = false;
     });
   });
   el('souffle-test').addEventListener('click', function () {
@@ -1101,6 +1292,7 @@ footer a{color:var(--encre-2)}
     el('v-souffle').removeAttribute('data-etat');
     el('souffle-choix').style.display = 'flex';
     jouerSouffle(reponseAttendue, true);
+    el('souffle-stop').disabled = false;
   });
   Array.prototype.forEach.call(document.querySelectorAll('[data-rep]'), function (b) {
     b.addEventListener('click', function () {
@@ -1159,7 +1351,7 @@ footer a{color:var(--encre-2)}
   /* ═══ 4 · Le tempo ═════════════════════════════════════════════════════
      Le clic est synthétisé, pas chargé : la page doit fonctionner hors ligne
      et sans un seul fichier à côté d'elle.                                 */
-  var ctx = null, metroId = null;
+  var metroId = null;
   function clic() {
     if (!ctx) return;
     var o = ctx.createOscillator(), g = ctx.createGain();
@@ -1171,14 +1363,9 @@ footer a{color:var(--encre-2)}
     o.start(); o.stop(ctx.currentTime + 0.06);
   }
   el('metro').addEventListener('click', function () {
-    if (!ctx) {
-      var AC = window.AudioContext || window.webkitAudioContext;
-      if (!AC) { verdict('v-tempo', 'no', 'Pas de son ici.',
-        ' Ce navigateur ne synthétise pas de son. Frappez quand même : le cadran ' +
-        'mesure votre cadence sans avoir besoin d’entendre.'); return; }
-      ctx = new AC();
-    }
-    if (ctx.state === 'suspended') ctx.resume();
+    if (!audio()) { verdict('v-tempo', 'no', 'Pas de son ici.',
+      ' Ce navigateur ne synthétise pas de son. Frappez quand même : le cadran ' +
+      'mesure votre cadence sans avoir besoin d’entendre.'); return; }
     if (metroId) return;
     clic();
     metroId = setInterval(clic, 60000 / 110);
