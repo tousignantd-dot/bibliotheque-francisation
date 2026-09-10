@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Quelques résultats de recherche en conception pédagogique, montrés plutôt que cités, et la grille de questions qui sert à analyser un module.">
+<meta name="description" content="Le processus du diagnostic pédagogique, puis quelques résultats de recherche montrés plutôt que cités, et la grille de questions qui sert à analyser un module.">
 <title>La boucle diagnostic</title>
 <style>html{color-scheme:light dark}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 </head>
@@ -306,10 +306,45 @@ b,strong{color:var(--encre);font-weight:600}
 .colophon{margin-top:var(--e8);font-family:var(--mono);font-size:.6875rem;color:var(--encre-4);
           line-height:1.7;max-width:60ch}
 
+/* ═══ 01 · l'ouverture en deux colonnes ══════════════════════════════════ */
+.deux-col{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);
+          gap:var(--e8);align-items:start;margin-top:var(--e5)}
+.consequences{display:grid;gap:var(--e4);border-left:1px solid var(--bord);padding-left:var(--e5)}
+.conseq{display:grid;grid-template-columns:auto minmax(0,1fr);gap:var(--e3);align-items:start}
+.conseq__n{font-family:var(--mono);font-size:.6875rem;font-weight:500;color:var(--signal);
+           letter-spacing:.1em;padding-top:.22rem;font-variant-numeric:tabular-nums}
+.conseq p{font-size:.9375rem;line-height:1.55}
+
+/* ═══ 03 · la spirale ════════════════════════════════════════════════════ */
+.spirale{width:100%;max-width:34rem;height:auto;display:block;margin:0 auto}
+.spirale .fil{fill:none;stroke:var(--mesure);stroke-width:2;stroke-linecap:round;
+              stroke-dasharray:var(--len,4000);stroke-dashoffset:var(--len,4000);
+              transition:stroke-dashoffset 2200ms var(--courbe)}
+.joue .spirale .fil{stroke-dashoffset:0}
+.spirale .station{opacity:0;transition:opacity 340ms var(--courbe)}
+.joue .spirale .station{opacity:1}
+.joue .spirale .station:nth-of-type(1){transition-delay:1500ms}
+.joue .spirale .station:nth-of-type(2){transition-delay:1100ms}
+.joue .spirale .station:nth-of-type(3){transition-delay:750ms}
+.joue .spirale .station:nth-of-type(4){transition-delay:420ms}
+.spirale .axe-inc{stroke:var(--encre-4);stroke-width:1;fill:none}
+.spirale .lg{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;fill:var(--encre-3)}
+.spirale .fin{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;fill:var(--mesure);
+              stroke:var(--fond);stroke-width:3.5;paint-order:stroke;stroke-linejoin:round}
+.stations{display:grid;grid-template-columns:repeat(auto-fit,minmax(11rem,1fr));
+          gap:var(--e5);margin-top:var(--e6)}
+.stat__n{font-family:var(--mono);font-size:.625rem;letter-spacing:.12em;color:var(--signal);
+         margin-bottom:.25rem}
+.stat__t{font-family:var(--display);font-weight:600;font-size:.9375rem;color:var(--encre);
+         margin-bottom:.15rem}
+.stat p{font-size:.8125rem;line-height:1.45}
+
 @media (max-width:880px){
   .ouverture{grid-template-columns:minmax(0,1fr);gap:var(--e6)}
   .roue{max-width:17rem}
   .consigne,.trois,.balance{grid-template-columns:minmax(0,1fr)}
+  .deux-col{grid-template-columns:minmax(0,1fr);gap:var(--e5)}
+  .consequences{border-left:0;padding-left:0;border-top:1px solid var(--bord);padding-top:var(--e5)}
   .sect{padding-block:var(--e8)}
 }
 @media (prefers-reduced-motion: reduce){
@@ -325,13 +360,15 @@ b,strong{color:var(--encre);font-weight:600}
 
 <nav class="rail" aria-label="Sommaire">
   <a href="#ouverture" aria-current="true"><b>00</b><i></i></a>
-  <a href="#ecart"><b>01</b><i></i></a>
-  <a href="#partagee"><b>02</b><i></i></a>
-  <a href="#estompage"><b>03</b><i></i></a>
-  <a href="#difficultes"><b>04</b><i></i></a>
-  <a href="#pupitre"><b>05</b><i></i></a>
-  <a href="#index"><b>06</b><i></i></a>
-  <a href="#clore"><b>07</b><i></i></a>
+  <a href="#hypothese"><b>01</b><i></i></a>
+  <a href="#ecart"><b>02</b><i></i></a>
+  <a href="#spirale"><b>03</b><i></i></a>
+  <a href="#partagee"><b>04</b><i></i></a>
+  <a href="#estompage"><b>05</b><i></i></a>
+  <a href="#difficultes"><b>06</b><i></i></a>
+  <a href="#pupitre"><b>07</b><i></i></a>
+  <a href="#index"><b>08</b><i></i></a>
+  <a href="#clore"><b>09</b><i></i></a>
 </nav>
 
 <!-- ═══ 00 · ouverture ═══════════════════════════════════════════════════ -->
@@ -345,12 +382,14 @@ b,strong{color:var(--encre);font-weight:600}
         plutôt que cités — parce qu'un effet qu'on décrit reste une affirmation, et
         qu'un effet qu'on voit opérer devient un instrument.</p>
       <ol class="sommaire">
-        <li><b>01</b><a href="#ecart">L'écart entre ce qu'on enseigne et ce qui s'apprend</a></li>
-        <li><b>02</b><a href="#partagee">Ce que coûte une légende à côté du schéma</a></li>
-        <li><b>03</b><a href="#estompage">L'exemple résolu, et le moment où il se retourne</a></li>
-        <li><b>04</b><a href="#difficultes">Ce qui se voit en séance, et ce qui reste</a></li>
-        <li><b>05</b><a href="#pupitre">Le pupitre — quand deux résultats se contredisent</a></li>
-        <li><b>06</b><a href="#index">Les vingt autres, et l'art d'analyser un module</a></li>
+        <li><b>01</b><a href="#hypothese">Pourquoi une conception est un pari</a></li>
+        <li><b>02</b><a href="#ecart">L'écart entre ce qu'on enseigne et ce qui s'apprend</a></li>
+        <li><b>03</b><a href="#spirale">Les quatre tours : papier, maquette, prototype, situation</a></li>
+        <li><b>04</b><a href="#partagee">Ce que coûte une légende à côté du schéma</a></li>
+        <li><b>05</b><a href="#estompage">L'exemple résolu, et le moment où il se retourne</a></li>
+        <li><b>06</b><a href="#difficultes">Ce qui se voit en séance, et ce qui reste</a></li>
+        <li><b>07</b><a href="#pupitre">Le pupitre — quand deux résultats se contredisent</a></li>
+        <li><b>08</b><a href="#index">Les vingt autres, et l'art d'analyser un module</a></li>
       </ol>
     </div>
     <svg class="roue" viewBox="0 0 240 240" role="img" aria-label="La boucle du diagnostic : quatre moments qui se relancent.">
@@ -381,8 +420,62 @@ b,strong{color:var(--encre);font-weight:600}
  </div>
 </section>
 
+<!-- ═══ 01 · toute conception est une hypothèse ═════════════════════════ -->
+<section class="sect sect--pose" id="hypothese">
+ <div class="colonne">
+  <div class="chapeau"><em>Le point de départ</em></div>
+  <h2 class="these">Une conception est un empilement de paris, et chacun peut être faux sans que rien ne le signale.</h2>
+
+  <div class="deux-col">
+    <div>
+      <p class="dit">Quand on écrit une consigne, on parie qu'elle sera comprise. Quand on
+        choisit un exemple, on parie qu'il évoquera quelque chose. Quand on décide de
+        l'ordre de deux notions, on parie que la première rendra la seconde plus facile.
+        Une heure de formation en contient <b>plusieurs centaines</b>.</p>
+      <p class="dit">Rien ne signale ceux qui échouent, parce que le concepteur est
+        <b>structurellement le plus mal placé</b> pour les voir échouer. Il connaît la
+        matière&nbsp;: il ne peut plus se représenter ce que c'est que de ne pas la
+        connaître. Il a écrit la consigne&nbsp;: il en relit l'intention, jamais les mots.
+        Et le matériel qu'il vient de terminer lui paraît clair — pour la seule raison
+        qu'il vient de le terminer.</p>
+      <p class="dit">L'écart entre ce que le concepteur croit avoir enseigné et ce que
+        l'apprenant a effectivement construit n'est pas un accident de parcours.
+        <b>C'est l'objet même du métier.</b> Concevoir, ce n'est pas produire du matériel
+        juste&nbsp;: c'est instrumenter la mesure de cet écart, puis le réduire, tour
+        après tour.</p>
+    </div>
+    <aside class="consequences" aria-label="Trois conséquences">
+      <div class="conseq">
+        <span class="conseq__n">01</span>
+        <p><b>Une hypothèse se teste.</b> Non pas au sens d'un contrôle de qualité en fin
+          de course, mais au sens où l'on ne peut pas savoir avant d'avoir regardé.</p>
+      </div>
+      <div class="conseq">
+        <span class="conseq__n">02</span>
+        <p><b>Le seul instrument de mesure est l'apprenant visé.</b> Ni le collègue, ni
+          l'expert de contenu, ni le commanditaire — ils échouent tous pour la même raison
+          que le concepteur&nbsp;: ils savent déjà.</p>
+      </div>
+      <div class="conseq">
+        <span class="conseq__n">03</span>
+        <p><b>L'erreur n'est pas un défaut, c'est la sortie de mesure.</b> Un exercice où
+          personne ne se trompe n'apprend rien au concepteur&nbsp;; un exercice où tout le
+          monde se trompe au même endroit lui apprend énormément.</p>
+      </div>
+    </aside>
+  </div>
+
+  <div class="bilan">
+    <span class="bilan__et">Ce qui suit</span>
+    <p>Deux figures posent le processus — l'écart, puis les quatre tours qui le réduisent.
+      Viennent ensuite quatre démonstrations&nbsp;: des résultats de recherche qu'on peut
+      faire tourner soi-même plutôt que les croire sur parole.</p>
+  </div>
+ </div>
+</section>
+
 <!-- ═══ 01 · l'écart ═════════════════════════════════════════════════════ -->
-<section class="sect sect--pose" id="ecart">
+<section class="sect" id="ecart">
  <div class="colonne">
   <div class="chapeau"><em>Toute conception est une hypothèse</em></div>
   <h2 class="these">Ce qu'on a voulu enseigner n'est jamais ce qui est appris.</h2>
@@ -425,6 +518,56 @@ b,strong{color:var(--encre);font-weight:600}
       perfectionner.</figcaption>
   </figure>
   <div class="cmds"><button class="cmd" data-rejouer="figEcart">Rejouer le tracé</button></div>
+ </div>
+</section>
+
+<!-- ═══ 03 · la spirale ═════════════════════════════════════════════════ -->
+<section class="sect sect--pose" id="spirale">
+ <div class="colonne">
+  <div class="chapeau"><em>Le processus</em></div>
+  <h2 class="these">On ne repasse pas au même endroit&nbsp;: chaque tour se fait sur un objet plus achevé.</h2>
+  <p class="dit">Si la boucle était un cercle, elle dirait qu'on tourne en rond. C'est une
+    <b>spirale</b>&nbsp;: à chaque confrontation avec le public visé, l'incertitude se
+    réduit — mais le matériel est plus fini, donc le coût d'une modification monte. Les
+    deux courbes se croisent, et c'est ce croisement qui dicte la conduite.</p>
+
+  <figure class="fig" id="figSpirale">
+    <svg class="spirale" viewBox="128 12 404 380" role="img" aria-labelledby="fig2t">
+      <title id="fig2t">Une spirale à quatre tours : chaque tour est une confrontation avec le public cible, sur un objet de plus en plus achevé, et le rayon qui diminue figure l'incertitude qui se réduit.</title>
+      <path class="axe-inc" d="M508 30 L508 190"></path>
+      <path class="axe-inc" d="M504 36 L508 28 L512 36"></path>
+      <text class="lg" x="500" y="110" text-anchor="middle" transform="rotate(-90 500 110)">INCERTITUDE</text>
+      <path class="fil" id="fil"></path>
+      <circle cx="320" cy="200" r="6" fill="var(--mesure)"></circle>
+      <text class="fin" x="334" y="203.5">MISE EN SERVICE</text>
+      <g id="stations"></g>
+    </svg>
+    <figcaption><b>Fig. 2</b> — Le rayon qui diminue figure l'incertitude qui se réduit, et
+      le centre est la mise en service. La règle qui en découle&nbsp;:
+      <b style="color:var(--signal)">les tours du début doivent être courts, nombreux et
+      laids</b> — un objet qu'on a mis trois semaines à finir, on ne le jette pas, même
+      quand l'essai dit qu'il faut le jeter.</figcaption>
+  </figure>
+
+  <div class="stations">
+    <div class="stat"><div class="stat__n">01</div><div class="stat__t">Papier</div>
+      <p>Une consigne, trois items, un croquis. Une heure de travail, jetable sans regret.</p></div>
+    <div class="stat"><div class="stat__n">02</div><div class="stat__t">Maquette</div>
+      <p>La séquence entière, sans finition ni médias. On teste l'ordre et la durée.</p></div>
+    <div class="stat"><div class="stat__n">03</div><div class="stat__t">Prototype jouable</div>
+      <p>Le matériel réel, incomplet. On teste l'autonomie de l'apprenant.</p></div>
+    <div class="stat"><div class="stat__n">04</div><div class="stat__t">Essai en situation</div>
+      <p>Une séance complète, conduite par quelqu'un d'autre, dans le lieu réel.</p></div>
+  </div>
+
+  <div class="cmds"><button class="cmd" data-rejouer="figSpirale">Rejouer le tracé</button></div>
+
+  <div class="bilan">
+    <span class="bilan__et">L'ordre compte</span>
+    <p>Chaque palier détecte des défauts d'une <b>autre nature</b>. Les prendre à l'envers
+      revient à découvrir une faute de consigne pendant l'essai en classe — quand elle
+      coûte cent fois plus cher qu'au moment du croquis.</p>
+  </div>
  </div>
 </section>
 
@@ -720,7 +863,7 @@ b,strong{color:var(--encre);font-weight:600}
   const oeilleton = new IntersectionObserver((entrees) => {
     entrees.forEach(e => { if (e.isIntersecting) e.target.classList.add('joue'); });
   }, { threshold: .32 });
-  ['figEcart', 'graphe'].forEach(id => oeilleton.observe(document.getElementById(id)));
+  ['figEcart', 'figSpirale', 'graphe'].forEach(id => oeilleton.observe(document.getElementById(id)));
   document.querySelectorAll('[data-rejouer]').forEach(b => {
     b.addEventListener('click', () => {
       const c = document.getElementById(b.dataset.rejouer);
@@ -741,6 +884,50 @@ b,strong{color:var(--encre);font-weight:600}
     });
   }, { rootMargin: '-45% 0px -45% 0px' });
   sections.forEach(s => suiveur.observe(s));
+
+  /* ── 03 · la spirale ────────────────────────────────────────────────
+     Le chemin se calcule : une spirale d'Archimède parcourue de l'extérieur
+     vers le centre, parce que c'est le sens du travail — du premier jet,
+     incertain et large, jusqu'à la mise en service. ── */
+  (() => {
+    const NS = 'http://www.w3.org/2000/svg';
+    const cx = 320, cy = 200, r0 = 6, b = 6.2, tours = 4.2;
+    const tmax = tours * 2 * Math.PI;
+    let d = '', premier = true;
+    for (let th = tmax; th >= 0; th -= 0.05) {
+      const r = r0 + b * th, a = th - Math.PI / 2;
+      d += (premier ? 'M' : 'L') + (cx + r * Math.cos(a)).toFixed(1) + ',' + (cy + r * Math.sin(a)).toFixed(1);
+      premier = false;
+    }
+    const fil = document.getElementById('fil');
+    fil.setAttribute('d', d);
+    try { fil.style.setProperty('--len', Math.ceil(fil.getTotalLength())); }
+    catch (e) { fil.style.setProperty('--len', 4000); }
+
+    /* Les stations sont posées du centre vers l'extérieur, mais le tracé va
+       de l'extérieur vers le centre : les retards du CSS suivent donc l'ordre
+       inverse de l'ordre du DOM, et la station la plus large s'allume la
+       première. Le numéro affiché est celui du palier, pas celui du tour. */
+    const hote = document.getElementById('stations');
+    for (let k = 1; k <= 4; k++) {
+      const r = r0 + b * (2 * Math.PI * k), y = cy - r;
+      const g = document.createElementNS(NS, 'g');
+      g.setAttribute('class', 'station');
+      const c = document.createElementNS(NS, 'circle');
+      c.setAttribute('cx', cx); c.setAttribute('cy', y); c.setAttribute('r', 8);
+      c.setAttribute('fill', 'var(--fond)');
+      c.setAttribute('stroke', 'var(--signal)'); c.setAttribute('stroke-width', '1.8');
+      const t = document.createElementNS(NS, 'text');
+      t.setAttribute('x', cx); t.setAttribute('y', y + 3.4);
+      t.setAttribute('text-anchor', 'middle');
+      t.setAttribute('font-family', 'Roboto Mono, monospace');
+      t.setAttribute('font-size', '9.5');
+      t.setAttribute('fill', 'var(--signal)');
+      t.textContent = String(5 - k);
+      g.append(c, t);
+      hote.appendChild(g);
+    }
+  })();
 
   /* ── 02 · le regard qui traverse ────────────────────────────────────── */
   const consigne = document.getElementById('consigne');
