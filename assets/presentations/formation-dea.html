@@ -1,0 +1,1497 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Formation en ligne de 25 à 30 minutes à l'usage du défibrillateur (DEA) en milieu de travail : reconnaître un arrêt cardiaque, alerter, comprimer, se servir de l'appareil. Simulateur intégré.">
+<title>Quelqu'un s'effondre au travail</title>
+<style>html{color-scheme:light dark}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>Quelqu'un s'effondre au travail</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+<style>
+/* ═══ Jetons « Braise », recopiés — jamais importés (un @import en file://
+   échoue sans rien dire). --mesure-l porte la largeur de lecture : dans la
+   source du système, --mesure porte à la fois une couleur et une longueur
+   dans le même :root, et la seconde écrase la première.                    */
+:root{
+  --fond:#FFFFFF; --fond-2:#FAFAFA; --fond-3:#F4F4F5;
+  --encre:#09090B; --encre-2:#52525B; --encre-3:#71717A; --encre-4:#A1A1AA;
+  --bord:#E4E4E7; --bord-fort:#D4D4D8;
+  --marque-rose:#F0359F; --marque-corail:#F5533D;
+  --marque-degrade:linear-gradient(100deg,var(--marque-rose) 0%,var(--marque-corail) 100%);
+  --signal:#F5652E; --signal-encre:#FFFFFF; --signal-voile:#FEF1EA;
+  --mesure:#2B4E9B; --mesure-2:#5C7EBF; --mesure-voile:#EAEFFA;
+  --action:#18181B; --action-survol:#27272A; --action-encre:#FAFAFA;
+  --police:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --police-mono:ui-monospace,"SF Mono","Menlo","Consolas",monospace;
+  --t-affiche:clamp(2.5rem,7.4vw,4.75rem); --t-titre-1:clamp(1.75rem,4vw,2.75rem);
+  --t-titre-2:clamp(1.375rem,2.6vw,1.75rem); --t-titre-3:1.1875rem;
+  --t-avant:1.1875rem; --t-petit:.875rem; --t-menu:.8125rem;
+  --g-moyen:500; --g-fort:600; --g-noir:800;
+  --i-serre:.98; --i-titre:1.15; --i-corps:1.62;
+  --l-serre:-.035em; --l-titre:-.02em;
+  --e-1:.25rem; --e-2:.5rem; --e-3:.75rem; --e-4:1rem; --e-5:1.5rem;
+  --e-6:2rem; --e-7:3rem; --e-8:4rem; --e-9:6rem;
+  --mesure-l:42rem; --contenu:74rem;
+  --r-1:.375rem; --r-2:.5rem; --r-3:.75rem; --r-4:1rem; --r-plein:9999px;
+  --o-1:0 1px 2px rgba(9,9,11,.06);
+  --o-2:0 1px 3px rgba(9,9,11,.08),0 1px 2px rgba(9,9,11,.04);
+  --o-3:0 4px 12px rgba(9,9,11,.08);
+  --transition:140ms cubic-bezier(.4,0,.2,1);
+}
+:root[data-theme="sombre"]{
+  --fond:#09090B; --fond-2:#0F0F11; --fond-3:#18181B;
+  --encre:#FAFAFA; --encre-2:#D4D4D8; --encre-3:#A1A1AA; --encre-4:#52525B;
+  --bord:#27272A; --bord-fort:#3F3F46;
+  --marque-rose:#FF4FB0; --marque-corail:#FF6A50;
+  --signal:#FF7A45; --signal-encre:#1A0C05; --signal-voile:#2A1610;
+  --mesure:#8FB2F0; --mesure-2:#6E8FCB; --mesure-voile:#18213A;
+  --action:#FAFAFA; --action-survol:#E4E4E7; --action-encre:#18181B;
+  --o-1:0 1px 2px rgba(0,0,0,.5); --o-2:0 1px 3px rgba(0,0,0,.6);
+  --o-3:0 4px 14px rgba(0,0,0,.6);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="clair"]){
+    --fond:#09090B; --fond-2:#0F0F11; --fond-3:#18181B;
+    --encre:#FAFAFA; --encre-2:#D4D4D8; --encre-3:#A1A1AA; --encre-4:#52525B;
+    --bord:#27272A; --bord-fort:#3F3F46;
+    --marque-rose:#FF4FB0; --marque-corail:#FF6A50;
+    --signal:#FF7A45; --signal-encre:#1A0C05; --signal-voile:#2A1610;
+    --mesure:#8FB2F0; --mesure-2:#6E8FCB; --mesure-voile:#18213A;
+    --action:#FAFAFA; --action-survol:#E4E4E7; --action-encre:#18181B;
+    --o-1:0 1px 2px rgba(0,0,0,.5); --o-2:0 1px 3px rgba(0,0,0,.6);
+    --o-3:0 4px 14px rgba(0,0,0,.6);
+  }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--fond);color:var(--encre-2);font-family:var(--police);
+     font-size:1rem;line-height:var(--i-corps);-webkit-font-smoothing:antialiased}
+.enveloppe{max-width:var(--contenu);margin:0 auto;padding:0 var(--e-5)}
+h1,h2,h3,h4{color:var(--encre);letter-spacing:var(--l-titre);line-height:var(--i-titre);
+            font-weight:var(--g-fort);margin:0;text-wrap:balance}
+p{margin:0 0 var(--e-4)}
+b,strong{color:var(--encre);font-weight:var(--g-fort)}
+code{font-family:var(--police-mono);font-size:.9em;background:var(--fond-3);
+     padding:.1em .35em;border-radius:var(--r-1);color:var(--encre)}
+.lire{max-width:var(--mesure-l)}
+.masque{display:none}
+.barre{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--fond) 88%,transparent);
+       backdrop-filter:blur(12px);border-bottom:1px solid var(--bord)}
+.barre__int{max-width:var(--contenu);margin:0 auto;padding:var(--e-3) var(--e-5);
+            display:flex;align-items:center;gap:var(--e-3);flex-wrap:wrap}
+.marque{font-weight:var(--g-noir);letter-spacing:var(--l-serre);color:var(--encre);font-size:1.0625rem}
+.marque i{font-style:normal;background:var(--marque-degrade);
+          -webkit-background-clip:text;background-clip:text;color:transparent}
+.barre__vide{flex:1}
+.bt{border:1px solid var(--bord-fort);background:var(--fond);color:var(--encre-2);font:inherit;
+    font-size:var(--t-menu);font-weight:var(--g-moyen);padding:var(--e-1) var(--e-3);
+    border-radius:var(--r-plein);cursor:pointer;transition:var(--transition)}
+.bt:hover{border-color:var(--encre-4);color:var(--encre)}
+.bt[aria-pressed="true"]{background:var(--mesure);border-color:var(--mesure);color:#fff}
+:root[data-theme="sombre"] .bt[aria-pressed="true"]{color:#09090B}
+.heros{padding:var(--e-8) 0 var(--e-6)}
+.pastille{display:inline-flex;align-items:center;gap:var(--e-2);font-size:var(--t-petit);
+          font-weight:var(--g-moyen);color:var(--signal);background:var(--signal-voile);
+          border-radius:var(--r-plein);padding:var(--e-1) var(--e-3);margin-bottom:var(--e-5)}
+.pastille::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--signal)}
+.heros h1{font-size:var(--t-affiche);font-weight:var(--g-noir);letter-spacing:var(--l-serre);
+          line-height:var(--i-serre);max-width:17ch}
+.heros h1 i{font-style:normal;background:var(--marque-degrade);
+            -webkit-background-clip:text;background-clip:text;color:transparent}
+.heros .avant{font-size:var(--t-avant);color:var(--encre-3);max-width:var(--mesure-l);
+              margin-top:var(--e-5);text-wrap:pretty}
+section{padding:var(--e-7) 0;border-top:1px solid var(--bord);scroll-margin-top:4.5rem}
+.oeil{font-size:var(--t-menu);text-transform:uppercase;letter-spacing:.14em;
+      color:var(--encre-4);font-weight:var(--g-fort);margin-bottom:var(--e-3)}
+section>.enveloppe>h2{font-size:var(--t-titre-1);margin-bottom:var(--e-5)}
+.gros{display:inline-block;padding:var(--e-3) var(--e-6);border-radius:var(--r-2);
+      background:var(--action);color:var(--action-encre);border:0;font:inherit;
+      font-weight:var(--g-fort);font-size:1rem;cursor:pointer;text-decoration:none}
+.gros[disabled]{opacity:.4;cursor:default}
+.capot{display:none;margin-top:var(--e-6);border-top:1px dashed var(--bord-fort);padding-top:var(--e-5)}
+body.conception .capot{display:block}
+.capot h4{color:var(--mesure);font-size:var(--t-menu);text-transform:uppercase;
+          letter-spacing:.1em;margin-bottom:var(--e-3)}
+.preuve{background:var(--fond-3);border-radius:var(--r-2);padding:var(--e-4) var(--e-5);font-size:.9375rem}
+.preuve p:last-child{margin-bottom:0}
+.enrob{overflow-x:auto}
+.tab{width:100%;border-collapse:collapse;font-size:.9375rem;margin-top:var(--e-4)}
+.tab th,.tab td{text-align:left;padding:var(--e-2) var(--e-3);border-bottom:1px solid var(--bord);
+                vertical-align:top}
+.tab th{font-size:var(--t-menu);text-transform:uppercase;letter-spacing:.1em;
+        color:var(--encre-4);font-weight:var(--g-fort)}
+.tab tr:last-child td{border-bottom:0}
+.garde{background:var(--fond-3);border-radius:var(--r-3);padding:var(--e-5) var(--e-6)}
+.garde ul{margin:0;padding-left:1.1em}
+.garde li{margin-bottom:var(--e-2)}
+.garde li:last-child{margin-bottom:0}
+.chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;
+          background:var(--bord);border:1px solid var(--bord);border-radius:var(--r-3);
+          overflow:hidden;margin-top:var(--e-5)}
+.ch{background:var(--fond);padding:var(--e-4) var(--e-5)}
+.ch__v{font-family:var(--police-mono);font-size:1.5rem;color:var(--encre);
+       font-variant-numeric:tabular-nums}
+.ch__v--m{color:var(--mesure)}
+.ch__v--s{color:var(--signal)}
+.ch__c{font-size:.75rem;color:var(--encre-4);text-transform:uppercase;
+       letter-spacing:.1em;margin-top:var(--e-1)}
+footer{padding:var(--e-8) 0 var(--e-9);color:var(--encre-4);font-size:var(--t-petit)}
+@media print{
+  :root{--fond:#FFF;--fond-2:#FFF;--fond-3:#F4F4F5;--encre:#09090B;--encre-2:#3F3F46;
+        --encre-3:#52525B;--encre-4:#71717A;--bord:#D4D4D8;--bord-fort:#A1A1AA;
+        --o-1:none;--o-2:none;--o-3:none}
+  @page{margin:14mm 12mm}
+  .barre{display:none}
+  .heros{padding-top:0}
+  .capot{display:block}
+  body{font-size:10.5pt}
+  .tab tr,.preuve,.garde{break-inside:avoid}
+  h1,h2,h3{break-after:avoid}
+  .enveloppe{padding:0}
+}
+
+
+/* ═══ Formation DEA en milieu de travail ═══════════════════════════════════
+   Le contrat d'écriture est portfolio-conception/formation-dea-brief.md.
+   Tout écart par rapport à lui est une décision à justifier ici, en
+   commentaire, pas un oubli à corriger en silence.
+
+   Deux partis pris de mise en page, tirés de ce qui a été reproché aux pages
+   précédentes : aucune colonne vide à gauche — le texte est centré sur sa
+   mesure de lecture et les panneaux jouables débordent en pleine largeur —
+   et rien qui exige de défiler pour trouver le bouton qui fait avancer.  */
+
+.page{max-width:70rem;margin:0 auto;padding:0 var(--e-5)}
+.lire{max-width:40rem}
+p{line-height:1.62}
+h2{font-size:clamp(1.5rem,3.4vw,2.125rem);letter-spacing:-.022em;margin:0 0 var(--e-4)}
+h3{font-size:1.0625rem;margin:var(--e-6) 0 var(--e-3)}
+.doux{color:var(--encre-3)}
+/* --encre-4 donne 2,6:1 sur le fond clair : assez pour une graduation de
+   cadran, pas pour une phrase qu'on doit lire. Les mentions et les sources
+   passent à --encre-3 (4,9:1), mesuré. */
+.mini{font-size:var(--t-petit);color:var(--encre-3)}
+
+/* ── La barre : où j'en suis, et combien il reste ─────────────────────────
+   Une formation de vingt-cinq minutes doit dire en permanence où elle finit.
+   Sans cela, la personne ne sait pas si elle peut commencer maintenant.   */
+.barre__int{padding:var(--e-2) var(--e-5)}
+.jauge{position:absolute;left:0;bottom:-1px;height:2px;background:var(--marque-degrade);
+       width:0;transition:width 180ms linear}
+.barre{position:sticky;top:0;z-index:60}
+.nav{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
+.nav::-webkit-scrollbar{display:none}
+.nav a{flex:0 0 auto;font-size:var(--t-menu);color:var(--encre-3);text-decoration:none;
+       padding:var(--e-1) var(--e-3);border-radius:var(--r-plein);white-space:nowrap;
+       font-weight:var(--g-moyen);transition:var(--transition)}
+.nav a:hover{color:var(--encre);background:var(--fond-3)}
+.nav a[aria-current="true"]{color:var(--encre);background:var(--fond-3)}
+.nav a.fini::before{content:"✓ ";color:var(--mesure)}
+/* Sur téléphone la barre prenait trois lignes — marque, sommaire, bouton —
+   soit un huitième de l'écran en permanence. Le sommaire passe seul en
+   deuxième ligne et défile ; la marque et le bouton partagent la première. */
+@media (max-width:46rem){
+  .nav{order:3;width:100%;margin-top:var(--e-1)}
+  .barre__int{gap:var(--e-2);row-gap:0}
+}
+
+/* ── Ouverture ───────────────────────────────────────────────────────── */
+.ouverture{padding:var(--e-8) 0 var(--e-7)}
+.ouverture h1{font-size:clamp(2.25rem,6.4vw,4rem);font-weight:var(--g-noir);
+              letter-spacing:var(--l-serre);line-height:1.02;max-width:15ch}
+.ouverture h1 i{font-style:normal;background:var(--marque-degrade);
+                -webkit-background-clip:text;background-clip:text;color:transparent}
+.ouverture .avant{font-size:1.1875rem;color:var(--encre-3);max-width:38rem;margin-top:var(--e-5)}
+.faits{display:flex;flex-wrap:wrap;gap:var(--e-5);margin-top:var(--e-6);
+       padding-top:var(--e-5);border-top:1px solid var(--bord)}
+.fait b{display:block;font-family:var(--police-mono);font-size:1.375rem;color:var(--encre)}
+.fait span{font-size:.75rem;text-transform:uppercase;letter-spacing:.1em;color:var(--encre-3)}
+
+/* ── Le cadre : ce que la formation ne couvre pas ─────────────────────────
+   Le brief demande de le dire explicitement. Une portée annoncée à la fin
+   n'est pas une portée : elle est un regret.                              */
+.cadre{border:1px solid var(--bord-fort);border-left:3px solid var(--encre);
+       border-radius:var(--r-3);padding:var(--e-4) var(--e-5);margin-top:var(--e-6);
+       background:var(--fond-2);max-width:44rem}
+.cadre p:last-child{margin-bottom:0}
+
+section{border-top:1px solid var(--bord);padding:var(--e-8) 0;scroll-margin-top:5rem}
+.num{display:flex;align-items:baseline;gap:var(--e-3);margin-bottom:var(--e-3)}
+.num b{font-family:var(--police-mono);font-size:var(--t-petit);color:var(--signal)}
+.num span{font-size:var(--t-menu);text-transform:uppercase;letter-spacing:.14em;
+          color:var(--encre-3);font-weight:var(--g-fort)}
+
+/* ── Les panneaux jouables ────────────────────────────────────────────── */
+.jeu{border:1px solid var(--bord);border-radius:var(--r-4);background:var(--fond-2);
+     padding:var(--e-5) var(--e-5) var(--e-5);margin:var(--e-6) 0}
+.jeu__t{font-size:var(--t-menu);text-transform:uppercase;letter-spacing:.12em;
+        color:var(--encre-3);font-weight:var(--g-fort);margin-bottom:var(--e-4)}
+.rangee{display:flex;flex-wrap:wrap;gap:var(--e-3)}
+.b{font:inherit;font-size:.9375rem;font-weight:var(--g-moyen);padding:.5rem 1rem;
+   border-radius:var(--r-2);border:1px solid var(--bord-fort);background:var(--fond);
+   color:var(--encre);cursor:pointer;transition:var(--transition);text-align:left}
+.b:hover{border-color:var(--encre-4)}
+.b--plein{background:var(--action);color:var(--action-encre);border-color:var(--action)}
+.b--plein:hover{background:var(--action-survol)}
+.b[disabled]{opacity:.45;cursor:default}
+.b--ok{border-color:var(--mesure);background:var(--mesure-voile);color:var(--encre)}
+.b--no{border-color:var(--signal);background:var(--signal-voile);color:var(--encre)}
+
+/* Le --signal pur sur un fond clair donne 3:1 : bon pour un trait, court pour
+   un mot. Le titre du panneau garde la couleur de marque en la fonçant. */
+.jeu--signal{border-color:var(--signal)}
+.jeu--signal .jeu__t{color:color-mix(in srgb,var(--signal) 68%,var(--encre))}
+/* Même remarque pour la pastille du système : l'orange sur son voile plafonne
+   à 2,8:1, et cette étiquette-là porte la durée de la formation. */
+.pastille{color:color-mix(in srgb,var(--signal) 42%,var(--encre))}
+.verdict{margin-top:var(--e-4);padding:var(--e-4);border-radius:var(--r-2);
+         font-size:.9375rem;line-height:1.55;display:none}
+.verdict[data-etat]{display:block}
+.verdict[data-etat="ok"]{background:var(--mesure-voile);
+                         border-left:3px solid var(--mesure)}
+.verdict[data-etat="no"]{background:var(--signal-voile);
+                         border-left:3px solid var(--signal)}
+.verdict b{display:block;margin-bottom:var(--e-1)}
+
+/* ── Le hall, en plan ─────────────────────────────────────────────────── */
+.plan{border:1px solid var(--bord);border-radius:var(--r-3);background:var(--fond);
+      overflow:hidden}
+.plan svg{display:block;width:100%;height:auto}
+.zone{cursor:pointer;fill:transparent;stroke:var(--bord-fort);stroke-width:1;
+      stroke-dasharray:3 3;transition:var(--transition)}
+.zone:hover{fill:color-mix(in srgb,var(--mesure) 12%,transparent);stroke:var(--mesure)}
+.zone.trouve{fill:color-mix(in srgb,var(--mesure) 22%,transparent);stroke:var(--mesure);
+             stroke-dasharray:none;stroke-width:2}
+.zone.rate{fill:color-mix(in srgb,var(--signal) 16%,transparent);stroke:var(--signal);
+           stroke-dasharray:none}
+.plan text{font-family:var(--police);font-size:11px;fill:var(--encre-3)}
+.plan .etiq{font-size:10px;letter-spacing:.08em;text-transform:uppercase;fill:var(--encre-4)}
+
+/* ── Le tracé de la respiration ───────────────────────────────────────── */
+.trace{width:100%;height:170px;display:block;border-radius:var(--r-2);
+       background:var(--fond);border:1px solid var(--bord)}
+.souffle{display:flex;align-items:center;gap:var(--e-4);flex-wrap:wrap;
+         margin-top:var(--e-3);font-size:.875rem;color:var(--encre-3)}
+
+/* ── Le tempo ─────────────────────────────────────────────────────────── */
+.tempo{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:var(--e-5);
+       align-items:center}
+@media (max-width:46rem){.tempo{grid-template-columns:1fr}}
+.cadran{position:relative;height:96px;border-radius:var(--r-2);background:var(--fond);
+        border:1px solid var(--bord);overflow:hidden}
+.cadran__plage{position:absolute;top:0;bottom:0;background:var(--mesure-voile);
+               border-left:1px solid var(--mesure-2);border-right:1px solid var(--mesure-2)}
+.cadran__aig{position:absolute;top:0;bottom:0;width:2px;background:var(--signal);
+             left:0;transition:left 120ms linear;opacity:0}
+.cadran__aig.vue{opacity:1}
+/* Les graduations sont posées à leur VRAIE position, pas réparties : avec un
+   simple space-between, « 100 » et « 120 » tombaient loin des bords de la plage
+   recommandée, et le cadran affirmait le contraire de ce qu'il montrait. */
+.cadran__ech span{position:absolute;bottom:4px;font-size:10px;color:var(--encre-3);
+                  transform:translateX(-50%)}
+.cadran__val{position:absolute;top:50%;left:50%;transform:translate(-50%,-60%);
+             font-family:var(--police-mono);font-size:2rem;color:var(--encre);
+             font-variant-numeric:tabular-nums}
+.cadran__val small{font-size:.6875rem;display:block;text-align:center;color:var(--encre-4);
+                   font-family:var(--police);letter-spacing:.1em;text-transform:uppercase}
+.frappe{width:100%;padding:var(--e-6);font-size:1.0625rem;font-weight:var(--g-fort);
+        border-radius:var(--r-3);border:2px dashed var(--bord-fort);background:var(--fond);
+        color:var(--encre-3);cursor:pointer;font-family:inherit;user-select:none}
+.frappe:active{border-color:var(--signal);color:var(--encre);background:var(--signal-voile)}
+
+/* ── L'ordre des gestes ───────────────────────────────────────────────── */
+.pile{display:flex;flex-direction:column;gap:var(--e-2)}
+.pile .b{display:flex;gap:var(--e-3);align-items:flex-start}
+.pile .b i{font-style:normal;font-family:var(--police-mono);color:var(--encre-4);
+           flex:0 0 1.25rem}
+.pile .b.place i{color:var(--mesure)}
+.suite{display:flex;flex-wrap:wrap;gap:var(--e-2);margin-bottom:var(--e-4);min-height:2rem}
+.jeton{font-size:var(--t-petit);padding:.25rem .625rem;border-radius:var(--r-plein);
+       background:var(--mesure-voile);color:var(--encre);border:1px solid var(--mesure-2)}
+
+/* ── Objections ───────────────────────────────────────────────────────── */
+.obj{border:1px solid var(--bord);border-radius:var(--r-3);overflow:hidden;
+     background:var(--fond);margin-bottom:var(--e-3)}
+.obj summary{cursor:pointer;padding:var(--e-4) var(--e-5);font-weight:var(--g-fort);
+             color:var(--encre);list-style:none;display:flex;gap:var(--e-3);align-items:center}
+.obj summary::-webkit-details-marker{display:none}
+.obj summary::before{content:"+";font-family:var(--police-mono);color:var(--signal);
+                     font-size:1.125rem;flex:0 0 1rem}
+.obj[open] summary::before{content:"–"}
+.obj__c{padding:0 var(--e-5) var(--e-5);max-width:44rem}
+.obj__c p:last-child{margin-bottom:0}
+
+/* ── Le simulateur en encart ──────────────────────────────────────────── */
+.cadre-sim{border:1px solid var(--bord-fort);border-radius:var(--r-4);overflow:hidden;
+           background:var(--fond-3);margin-top:var(--e-5)}
+.cadre-sim iframe{display:block;width:100%;height:min(78vh,780px);border:0;background:var(--fond)}
+.cadre-sim__bas{padding:var(--e-3) var(--e-4);font-size:var(--t-petit);color:var(--encre-4);
+                border-top:1px solid var(--bord);display:flex;gap:var(--e-4);
+                align-items:center;flex-wrap:wrap}
+.passages{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));
+          gap:var(--e-3);margin:var(--e-5) 0}
+.passe{text-align:left;padding:var(--e-4) var(--e-5);border-radius:var(--r-3);
+       border:1px solid var(--bord-fort);background:var(--fond);cursor:pointer;font:inherit;
+       transition:var(--transition)}
+.passe:hover{border-color:var(--encre);box-shadow:var(--o-2)}
+.passe[aria-pressed="true"]{border-color:var(--encre);background:var(--fond-3)}
+.passe b{display:block;color:var(--encre);font-size:1.0625rem;margin-bottom:var(--e-1)}
+.passe span{font-size:.875rem;color:var(--encre-3);line-height:1.5}
+
+/* ── Le quiz ──────────────────────────────────────────────────────────── */
+.q{border:1px solid var(--bord);border-radius:var(--r-4);padding:var(--e-5);
+   background:var(--fond);margin-bottom:var(--e-4)}
+.q__n{font-family:var(--police-mono);font-size:var(--t-petit);color:var(--encre-3)}
+.q__t{color:var(--encre);font-weight:var(--g-fort);font-size:1.0625rem;
+      margin:var(--e-2) 0 var(--e-4);line-height:1.45}
+.q .rangee{flex-direction:column;align-items:stretch}
+.q .b{width:100%}
+.score{display:flex;align-items:baseline;gap:var(--e-3);padding:var(--e-5);
+       border-radius:var(--r-3);background:var(--fond-3);margin-top:var(--e-5)}
+.score b{font-family:var(--police-mono);font-size:2rem;color:var(--encre)}
+
+.rappel{background:var(--encre);color:var(--fond);border-radius:var(--r-4);
+        padding:var(--e-6) var(--e-6);margin:var(--e-7) 0}
+.rappel h3{color:var(--fond);margin-top:0}
+.rappel ol{margin:0;padding-left:1.25rem;line-height:1.7}
+.rappel li{margin-bottom:var(--e-2)}
+.rappel b{color:var(--fond)}
+/* Le panneau s'inverse avec le thème : son fond est --encre, son texte --fond.
+   Un blanc en dur ici disparaît en thème sombre, où le panneau devient clair —
+   c'est la faute « gras noir sur noir » du système, prise à l'envers. */
+.rappel .mini{color:color-mix(in srgb,var(--fond) 62%,var(--encre))}
+
+/* Braise met le pied de page en --encre-4 (2,6:1). Ici il porte les sources
+   et l'adresse des formations en présence : c'est du texte à lire. */
+footer{border-top:1px solid var(--bord);padding:var(--e-7) 0 var(--e-9);color:var(--encre-2)}
+footer a{color:var(--encre-2)}
+</style>
+
+<header class="barre">
+  <div class="barre__int">
+    <span class="marque">DEA<i>.</i></span>
+    <nav class="nav" id="nav" aria-label="Sections"></nav>
+    <span class="barre__vide"></span>
+    <button class="bt" id="theme" type="button">Sombre</button>
+    <div class="jauge" id="jauge"></div>
+  </div>
+</header>
+
+<main class="page">
+
+<div class="ouverture">
+  <span class="pastille">Formation · 25 à 30 minutes</span>
+  <h1>Quelqu'un s'effondre <i>au travail.</i></h1>
+  <p class="avant">Vous n'êtes pas soignant. Vous n'avez aucune formation médicale.
+    Dans les dix premières secondes, vous êtes pourtant la seule chose qui puisse
+    changer l'issue. Cette formation existe pour que vous osiez agir — et pour
+    que vous sachiez exactement quoi faire.</p>
+
+  <div class="faits">
+    <div class="fait"><b>~10 %</b><span>de survie perdue par minute</span></div>
+    <div class="fait"><b>2</b><span>signes à reconnaître</span></div>
+    <div class="fait"><b>2</b><span>personnes à désigner</span></div>
+    <div class="fait"><b>1</b><span>DEA dans l'immeuble</span></div>
+  </div>
+
+  <div class="cadre">
+    <p><b>Ce que cette formation couvre, et rien d'autre.</b> Une seule situation :
+      une personne s'effondre ou est trouvée inanimée dans l'immeuble. Elle ne
+      couvre pas l'étouffement, ni les saignements, ni les autres premiers soins.
+      Si vous cherchez ceux-là, il vous faut un cours de secourisme complet — nous
+      vous disons à la fin où le suivre.</p>
+    <p class="mini" style="margin-top:.75rem">Vous pouvez tout parcourir en vingt-cinq
+      minutes. La partie 8 vous fait vivre la séquence entière dans un simulateur ;
+      prévoyez d'y rester un peu.</p>
+  </div>
+</div>
+
+<!-- ═══ 1 ═══ L'emplacement, avant tout le reste. Le brief est catégorique :
+     c'est la première chose enseignée et la dernière révisée, parce que c'est
+     la seule information que personne ne peut déduire sur le moment.      -->
+<section id="s1">
+  <div class="num"><b>01</b><span>Le DEA de votre immeuble</span></div>
+  <h2>Il est au hall. À droite en entrant.</h2>
+  <div class="lire">
+    <p>Un boîtier blanc marqué d'un cœur vert, fixé au mur, à côté du comptoir de
+      la réception. C'est le seul appareil de l'immeuble.</p>
+    <p>Retenez cette phrase telle quelle : <b>« hall d'entrée, à droite, près de la
+      réception »</b>. Le jour où ça arrive, vous n'aurez pas à la chercher — vous
+      aurez à la crier à quelqu'un qui part en courant.</p>
+    <p class="doux">Depuis un bureau du 3<sup>e</sup> étage, descendre et remonter
+      prend environ deux minutes. C'est long. C'est exactement pour cela que
+      quelqu'un d'autre y va pendant que vous, vous comprimez.</p>
+  </div>
+
+  <div class="jeu">
+    <div class="jeu__t">Montrez-le · plan du hall</div>
+    <div class="plan" id="plan"></div>
+    <div class="verdict" id="v-plan"></div>
+  </div>
+</section>
+
+<!-- ═══ 2 ═══ Deux signes, et deux seulement. Le tracé animé porte le cœur de
+     cette partie : la respiration agonale ne se reconnaît pas dans une
+     définition, elle se reconnaît dans une DURÉE — les longs silences entre
+     les halètements sont ce qui trompe les témoins.                       -->
+<section id="s2">
+  <div class="num"><b>02</b><span>Reconnaître</span></div>
+  <h2>Deux signes. Pas trois.</h2>
+  <div class="lire">
+    <p><b>Un.</b> Secouez-lui doucement les épaules et appelez-la fort :
+      « Monsieur ! Madame ! Vous m'entendez ? » Elle ne répond pas, ne bouge pas,
+      n'ouvre pas les yeux.</p>
+    <p><b>Deux.</b> Regardez sa poitrine pendant dix secondes. Elle ne respire pas
+      normalement.</p>
+    <p>Ces deux signes suffisent. Vous n'avez rien d'autre à vérifier avant de
+      passer à l'action.</p>
+  </div>
+
+  <h3>Le piège : la respiration agonale</h3>
+  <div class="lire">
+    <p>Dans les premières minutes d'un arrêt cardiaque, beaucoup de personnes
+      émettent des halètements bruyants et irréguliers. Ça ressemble à un
+      ronflement, à un hoquet, à un râle. <b>Ce n'est pas une respiration.</b></p>
+    <p>C'est l'erreur qui coûte le plus cher : les témoins voient bouger, entendent
+      du bruit, et concluent qu'elle respire encore. Ils attendent. Les minutes
+      passent.</p>
+  </div>
+
+  <div class="jeu">
+    <div class="jeu__t">Regardez la poitrine · dix secondes</div>
+    <canvas class="trace" id="trace" width="900" height="170"></canvas>
+    <div class="souffle">
+      <span id="souffle-etat">Choisissez un tracé.</span>
+    </div>
+    <div class="rangee" style="margin-top:1rem">
+      <button class="b" type="button" data-souffle="normal">Une respiration normale</button>
+      <button class="b" type="button" data-souffle="agonal">Ce qu'on voit dans un arrêt cardiaque</button>
+      <button class="b b--plein" type="button" id="souffle-test">Me tester : lequel est-ce ?</button>
+    </div>
+    <div class="rangee" id="souffle-choix" style="margin-top:.75rem;display:none">
+      <button class="b" type="button" data-rep="normal">Elle respire normalement</button>
+      <button class="b" type="button" data-rep="agonal">Ce n'est pas une respiration normale</button>
+    </div>
+    <div class="verdict" id="v-souffle"></div>
+  </div>
+
+  <h3>Et le pouls ?</h3>
+  <div class="lire">
+    <p>On ne le cherche pas. Les protocoles destinés au public l'ont retiré :
+      il est long à trouver, peu fiable — les soignants eux-mêmes s'y trompent —
+      et chaque seconde passée à le chercher est une seconde sans compression.</p>
+    <p>Si vous vous attendiez à en entendre parler, c'est normal : on l'a enseigné
+      pendant des décennies. Il n'est plus au programme, et son retrait sauve des
+      vies plutôt que d'en coûter.</p>
+  </div>
+</section>
+
+<!-- ═══ 3 ═══ Le point où une formation ordinaire dit « appelez les secours »
+     et où celle-ci fait pratiquer une PHRASE. La différence entre les deux
+     est documentée : un ordre adressé à tout le monde n'est exécuté par
+     personne.                                                             -->
+<section id="s3">
+  <div class="num"><b>03</b><span>Alerter et déléguer</span></div>
+  <h2>Deux personnes. Deux ordres. Nommés.</h2>
+  <div class="lire">
+    <p>Ne dites jamais « quelqu'un appelle le 911 ». Dans un groupe, un ordre
+      adressé à tout le monde n'est exécuté par personne : chacun croit qu'un
+      autre s'en charge.</p>
+    <p>Regardez une personne dans les yeux, désignez-la d'un geste, et donnez-lui
+      une tâche unique. Puis la deuxième.</p>
+  </div>
+
+  <div class="jeu">
+    <div class="jeu__t">Ce que vous dites, mot pour mot</div>
+    <div class="rangee" style="flex-direction:column;align-items:stretch;max-width:44rem">
+      <button class="b" type="button" data-ordre="0">« Vite, quelqu'un appelle le 911 ! »</button>
+      <button class="b" type="button" data-ordre="1">« Vous, en bleu, appelez le 911 et revenez me le dire. »</button>
+      <button class="b" type="button" data-ordre="2">« Est-ce que quelqu'un pourrait aller voir s'il y a un défibrillateur ? »</button>
+    </div>
+    <div class="verdict" id="v-ordre"></div>
+  </div>
+
+  <div class="lire">
+    <p>Les deux phrases à avoir en tête :</p>
+  </div>
+  <div class="rappel">
+    <h3 style="margin-top:0">Les deux ordres</h3>
+    <ol>
+      <li><b>« Vous, en bleu, appelez le 911 et revenez me le dire. »</b><br>
+        Le « revenez me le dire » compte : il vous confirme que l'appel est fait.</li>
+      <li><b>« Vous, le DEA est dans le hall à droite près de la réception —
+        allez le chercher, courez. »</b><br>
+        Vous donnez l'emplacement dans l'ordre lui-même. La personne ne le connaît
+        peut-être pas.</li>
+    </ol>
+  </div>
+
+  <h3>Et si vous êtes seul ?</h3>
+  <div class="lire">
+    <p>Composez le 911, mettez le <b>haut-parleur</b>, posez le téléphone par terre
+      à côté de vous, et <b>commencez les compressions pendant que vous parlez</b>.
+      La répartitrice vous entendra très bien.</p>
+    <p>Si vous êtes vraiment seul et loin du hall, ne décidez pas tout seul de
+      partir : dites-lui où vous êtes et suivez ce qu'elle vous dit. C'est elle qui
+      tranche s'il faut quitter la personne pour aller chercher l'appareil.</p>
+  </div>
+</section>
+
+<!-- ═══ 4 ═══ Le geste. Le repère de tempo est exigé par le brief, et c'est
+     aussi la seule chose qu'un écran entraîne vraiment bien : on ne peut pas
+     apprendre la profondeur ici, on peut apprendre la cadence.            -->
+<section id="s4">
+  <div class="num"><b>04</b><span>Comprimer</span></div>
+  <h2>Au milieu de la poitrine, fort et vite.</h2>
+  <div class="lire">
+    <p><b>Mettez-la sur le dos</b>, sur une surface dure — le sol, pas un canapé.</p>
+    <p><b>Posez le talon d'une main au centre de sa poitrine</b>, sur le sternum,
+      à mi-hauteur entre les deux mamelons. Posez la seconde main par-dessus et
+      croisez les doigts.</p>
+    <p><b>Bras tendus, épaules à la verticale de vos mains.</b> Vous appuyez avec
+      le poids de votre corps, pas avec la force de vos bras — c'est ce qui vous
+      permet de tenir.</p>
+    <p><b>Enfoncez d'au moins 5 cm</b> — deux pouces. C'est plus profond que ce que
+      la plupart des gens osent.</p>
+    <p><b>Laissez la poitrine remonter complètement</b> entre chaque compression,
+      sans lever les mains. C'est la remontée qui remplit le cœur.</p>
+    <p><b>Pas de bouche-à-bouche.</b> Pour un adulte, dans le grand public, les
+      compressions seules sont ce qui est recommandé. Le sang contient encore de
+      l'oxygène pendant les premières minutes ; ce qui manque, c'est quelque chose
+      pour le faire circuler.</p>
+  </div>
+
+  <div class="jeu">
+    <div class="jeu__t">Le rythme · 100 à 120 par minute</div>
+    <div class="tempo">
+      <div>
+        <div class="rangee">
+          <button class="b b--plein" type="button" id="metro">▶ Entendre la cadence</button>
+          <button class="b" type="button" id="metro-stop" disabled>Arrêter</button>
+        </div>
+        <p class="mini" style="margin-top:.75rem">Un clic à 110 par minute — le milieu
+          de la plage. Écoutez-le une fois, puis frappez avec, à droite, sans le
+          regarder.</p>
+        <button class="frappe" id="frappe" type="button">Frappez ici avec le rythme</button>
+      </div>
+      <div>
+        <div class="cadran" id="cadran">
+          <div class="cadran__plage" id="plage"></div>
+          <div class="cadran__aig" id="aiguille"></div>
+          <div class="cadran__val"><span id="bpm">—</span><small>par minute</small></div>
+          <div class="cadran__ech" id="ech"></div>
+        </div>
+        <div class="verdict" id="v-tempo"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="lire">
+    <p><b>Ça fatigue vite.</b> En moins de deux minutes, la qualité chute chez
+      presque tout le monde, et on ne s'en rend pas compte soi-même. Dès qu'une
+      autre personne est là, relayez-vous toutes les deux minutes — et faites le
+      changement en moins de cinq secondes.</p>
+  </div>
+</section>
+
+<!-- ═══ 5 ═══ L'appareil. Deux idées portent tout : « faites ce qu'il dit »,
+     et « il refuse de choquer quand il ne faut pas ». La seconde est
+     l'objection numéro un et le brief demande qu'elle soit traitée tôt.   -->
+<section id="s5">
+  <div class="num"><b>05</b><span>Le DEA arrive</span></div>
+  <h2>Ouvrez, allumez, et faites ce qu'il dit.</h2>
+  <div class="lire">
+    <p>C'est la consigne entière. L'appareil parle, il guide, il attend. Il est
+      conçu pour être utilisé par quelqu'un qui n'en a jamais vu.</p>
+    <p>Pendant qu'on l'installe, <b>les compressions continuent</b>. On ne s'arrête
+      que quand l'appareil demande de s'écarter.</p>
+  </div>
+
+  <h3>Ce que vous faites de vos mains</h3>
+  <div class="lire">
+    <p><b>Dénudez la poitrine.</b> Le contact doit être peau contre peau : les
+      électrodes ne fonctionnent pas à travers un vêtement.</p>
+    <p><b>Essuyez-la si elle est mouillée</b>, avec n'importe quel tissu sec.</p>
+    <p><b>Écartez ce qui gêne</b> de la zone des électrodes : une chaîne, un
+      soutien-gorge à armature, un timbre de médicament collé sur la peau.</p>
+    <p><b>Collez les deux électrodes en suivant le dessin</b> imprimé dessus. Il
+      montre exactement où les poser. Appuyez bien pour chasser l'air.</p>
+  </div>
+
+  <div class="jeu">
+    <div class="jeu__t">Remettez la séquence dans l'ordre</div>
+    <div class="suite" id="suite"><span class="mini">Cliquez les gestes dans l'ordre où vous les faites.</span></div>
+    <div class="pile" id="pile"></div>
+    <div class="verdict" id="v-ordre5"></div>
+    <div class="rangee" style="margin-top:1rem">
+      <button class="b" type="button" id="reset5">Recommencer</button>
+    </div>
+  </div>
+
+  <h3>Ce que l'appareil fait, exactement</h3>
+  <div class="lire">
+    <p>Il lit le rythme du cœur, et il ne choque que <b>deux rythmes précis</b> :
+      la fibrillation ventriculaire et la tachycardie ventriculaire sans pouls.
+      Dans ces deux cas, le cœur ne bat pas — il tremble, ou il s'emballe à vide.</p>
+    <p>Le choc ne « redémarre » pas un cœur arrêté à plat. Il fait le contraire :
+      il arrête tout une fraction de seconde, pour que le cœur reparte de lui-même
+      avec un rythme ordonné. C'est une remise à zéro, pas un coup de fouet.</p>
+    <p><b>Donc « aucun choc conseillé » ne veut jamais dire « c'est fini ».</b>
+      Ça veut dire que le choc ne sert à rien sur ce rythme-là. Vous reprenez les
+      compressions immédiatement.</p>
+  </div>
+
+  <div class="jeu jeu--signal">
+    <div class="jeu__t">L'objection numéro un</div>
+    <p style="max-width:44rem"><b>« Et si je m'en sers sur quelqu'un qui n'en a pas
+      besoin ? »</b></p>
+    <p style="max-width:44rem;margin-bottom:0">Vous ne pouvez pas. L'appareil analyse
+      avant de délivrer quoi que ce soit, et s'il ne reconnaît pas un rythme
+      choquable, il refuse — même si vous appuyez sur le bouton, même si vous
+      appuyez dix fois. Il n'y a pas de scénario où vous électrocutez quelqu'un
+      par erreur. C'est une machine qui dit non.</p>
+  </div>
+
+  <h3>Le choc</h3>
+  <div class="lire">
+    <p>Quand l'appareil annonce l'analyse : <b>ne touchez plus la personne</b>, et
+      dites-le fort autour de vous.</p>
+    <p>Quand il annonce le choc : <b>« Écartez-vous, personne ne touche ! »</b>
+      Regardez que personne n'a une main ou un pied sur elle. Puis appuyez.</p>
+    <p><b>Reprenez les compressions immédiatement après le choc</b>, sans attendre,
+      sans vérifier quoi que ce soit. L'appareil vous redemandera de vous écarter
+      dans deux minutes.</p>
+  </div>
+</section>
+
+<!-- ═══ 6 ═══ La fin. Le brief demande explicitement la phrase sur le droit
+     d'être secoué : c'est ce qui manque à presque toutes les formations, et
+     c'est ce dont on se souvient.                                          -->
+<section id="s6">
+  <div class="num"><b>06</b><span>Passer le relais</span></div>
+  <h2>Vous continuez jusqu'à ce qu'ils vous remplacent.</h2>
+  <div class="lire">
+    <p>Vous ne vous arrêtez que dans trois cas : les secours prennent le relais,
+      la personne bouge et respire normalement, ou vous êtes physiquement
+      incapable de continuer.</p>
+    <p>Quand les paramédics arrivent, ils prennent la suite. <b>Votre travail est
+      terminé.</b> Dites-leur trois choses, dans cet ordre :</p>
+  </div>
+  <div class="rappel">
+    <ol>
+      <li>Ce que vous avez vu — « elle s'est effondrée, elle ne répondait pas,
+        elle ne respirait pas normalement ».</li>
+      <li>Depuis combien de temps, à peu près.</li>
+      <li>Ce que vous avez fait — « compressions depuis environ six minutes, le
+        DEA a donné un choc ».</li>
+    </ol>
+    <p class="mini" style="margin-top:1rem;margin-bottom:0">Puis retirez-vous. Vous
+      n'avez pas à rester.</p>
+  </div>
+  <div class="lire">
+    <p>Un dernier point, et il compte autant que le reste. <b>Vous avez le droit
+      d'être secoué après.</b> Les mains qui tremblent, la nuit blanche, le fait
+      d'y repenser pendant des jours : c'est une réaction ordinaire à une chose
+      qui ne l'est pas. Parlez-en à quelqu'un. Si votre employeur a un programme
+      d'aide, il est fait exactement pour ça.</p>
+    <p>Et sachez-le d'avance : <b>même bien faite, une réanimation échoue
+      souvent.</b> Cela ne veut pas dire que vous avez mal fait. Sans vous, il n'y
+      avait aucune chance ; avec vous, il y en avait une.</p>
+  </div>
+</section>
+
+<!-- ═══ 7 ═══ Les blocages, chacun reçu puis tranché. C'est la section que le
+     brief décrit le plus précisément, parce que c'est elle qui décide si la
+     personne agit ou non.                                                  -->
+<section id="s7">
+  <div class="num"><b>07</b><span>Vos objections</span></div>
+  <h2>Les raisons de ne rien faire, une par une.</h2>
+  <div class="lire">
+    <p>Elles sont toutes légitimes. Aucune ne tient devant ce qui se joue.</p>
+  </div>
+
+  <details class="obj"><summary>« J'ai peur de mal faire. »</summary>
+    <div class="obj__c">
+      <p>La seule chose qu'on peut vraiment mal faire, c'est ne rien faire. Une
+        compression trop lente, mal placée, trop peu profonde vaut infiniment mieux
+        que l'absence de compression — parce que sans elle, plus rien ne circule.</p>
+      <p>Et vous ne serez pas seul : la répartitrice du 911 reste en ligne et vous
+        guide, l'appareil parle et vous dit quoi faire.</p>
+    </div>
+  </details>
+
+  <details class="obj"><summary>« J'ai peur de casser des côtes. »</summary>
+    <div class="obj__c">
+      <p>Ça arrive, et c'est fréquent. Une côte cassée se soigne en quelques
+        semaines. <b>Un arrêt cardiaque non traité ne se soigne pas.</b></p>
+      <p>Si vous appuyez assez fort pour craindre de casser quelque chose, vous
+        appuyez probablement à la bonne profondeur.</p>
+    </div>
+  </details>
+
+  <details class="obj"><summary>« Et si on me poursuit ? »</summary>
+    <div class="obj__c">
+      <p>Au Québec, le Code civil vous protège. L'article 1471 prévoit que la
+        personne qui porte secours à autrui <b>est exonérée de toute
+        responsabilité</b> pour le préjudice qui peut en résulter — sauf faute
+        intentionnelle ou faute lourde.</p>
+      <p>Autrement dit : vouloir aider et s'y prendre imparfaitement est couvert.
+        Ce qui ne l'est pas, c'est vouloir nuire, ou une imprudence si grossière
+        qu'elle relève de l'insouciance.</p>
+      <p class="mini">Ce n'est pas un avis juridique, et cette formation n'en donne
+        pas. C'est le texte de la loi, et il dit ce qu'il dit.</p>
+    </div>
+  </details>
+
+  <details class="obj"><summary>« Je n'ose pas dénuder la poitrine de quelqu'un —
+    surtout celle d'une femme. »</summary>
+    <div class="obj__c">
+      <p>Cette gêne est réelle, elle est humaine, et elle est documentée : les
+        femmes reçoivent moins souvent une réanimation par un témoin que les
+        hommes, et cet écart coûte des vies.</p>
+      <p>Le fait est simple : <b>les électrodes ne fonctionnent pas à travers un
+        vêtement.</b> Ouvrez, déchirez ou coupez ce qu'il faut. Personne, jamais,
+        n'a reproché à quelqu'un d'avoir ouvert un chemisier pour lui sauver la
+        vie.</p>
+      <p>Si vous voulez faire les choses bien : demandez aux curieux de reculer,
+        et une fois les électrodes posées, posez une veste sur le reste. Cela ne
+        coûte rien et ça règle la question.</p>
+    </div>
+  </details>
+
+  <details class="obj"><summary>« Ce n'est pas mon rôle, il y a des secouristes
+    désignés dans l'immeuble. »</summary>
+    <div class="obj__c">
+      <p>Il y en a, et ils sont formés. Mais ils sont peut-être à un autre étage,
+        en réunion, ou absents ce jour-là. Les minutes qui décident de l'issue sont
+        celles qui précèdent l'arrivée de qui que ce soit.</p>
+      <p>Vous n'êtes pas là pour les remplacer. Vous êtes là pour tenir jusqu'à eux.</p>
+    </div>
+  </details>
+
+  <details class="obj"><summary>« Et si elle respirait encore, en fait ? »</summary>
+    <div class="obj__c">
+      <p>Vous avez regardé sa poitrine dix secondes, elle ne répond à rien : agissez.
+        Une personne qui respire vraiment réagit aux compressions — elle bouge, elle
+        gémit, elle repousse votre main. Vous vous en apercevrez tout de suite, et
+        vous arrêterez.</p>
+      <p>Le risque de comprimer quelqu'un qui n'en avait pas besoin est très
+        faible. Le risque de ne pas comprimer quelqu'un qui en avait besoin est
+        mortel en quelques minutes.</p>
+    </div>
+  </details>
+</section>
+
+<!-- ═══ 8 ═══ Le simulateur plutôt qu'une description de l'appareil. Deux
+     passages : le second se termine par « aucun choc conseillé », de sorte
+     que personne ne reparte en croyant que le choc est automatique. Le
+     fragment #passage=… ouvre directement le bon cas — laisser choisir dans
+     une liste de troubles du rythme reviendrait à demander le diagnostic
+     qu'on vient de dire de ne pas poser.                                   -->
+<section id="s8">
+  <div class="num"><b>08</b><span>Simulation</span></div>
+  <h2>Faites-le une fois pour de vrai.</h2>
+  <div class="lire">
+    <p>Le simulateur vous met dans la cafétéria de l'immeuble. Une personne est au
+      sol. La salle parle autour de vous. Vous décidez de tout : comment vous
+      l'examinez, qui vous envoyez, quand vous comprimez, où vous collez les
+      électrodes.</p>
+    <p>Il ne vous laissera pas tricher, et il vous dira à la fin ce que vos choix
+      ont coûté en secondes.</p>
+  </div>
+
+  <div class="passages">
+    <button class="passe" type="button" data-sim="vf" aria-pressed="false">
+      <b>Passage 1 · la séquence entière</b>
+      <span>Un rythme choquable. Vous irez jusqu'au choc, et jusqu'à la reprise
+        immédiate des compressions après.</span>
+    </button>
+    <button class="passe" type="button" data-sim="nsr" aria-pressed="false">
+      <b>Passage 2 · « aucun choc conseillé »</b>
+      <span>Le même début, une autre fin. À faire après le premier : c'est là que
+        se joue le réflexe qui manque le plus souvent.</span>
+    </button>
+  </div>
+
+  <div class="cadre-sim" id="cadre-sim" hidden>
+    <iframe id="sim" title="Simulateur de défibrillateur"
+            allow="microphone; autoplay"></iframe>
+    <div class="cadre-sim__bas">
+      <span id="sim-quoi"></span>
+      <span class="barre__vide" style="flex:1"></span>
+      <a class="bt" id="sim-neuf" href="simulateur-dea.html" target="_blank"
+         rel="noopener">Ouvrir en pleine page ↗</a>
+    </div>
+  </div>
+
+  <div class="lire" style="margin-top:2rem">
+    <p class="doux">Le simulateur demande l'accès au microphone pour mesurer la
+      cadence de vos compressions sur la table. Vous pouvez refuser : tout le reste
+      fonctionne, et vous pouvez frapper au clavier ou à l'écran.</p>
+  </div>
+</section>
+
+<!-- ═══ 9 ═══ Huit questions, chacune ancrée sur une décision. Aucune ne
+     demande une définition. La rétroaction explique toujours POURQUOI, y
+     compris quand la réponse est bonne — sinon on apprend à cocher.        -->
+<section id="s9">
+  <div class="num"><b>09</b><span>Vérification</span></div>
+  <h2>Huit décisions.</h2>
+  <div class="lire">
+    <p>Pas de définitions. Chaque question est un moment où il faut choisir.</p>
+  </div>
+  <div id="quiz"></div>
+  <div class="score" id="score" hidden>
+    <b><span id="score-n">0</span>/8</b>
+    <span id="score-mot"></span>
+  </div>
+
+  <div class="rappel">
+    <h3>Ce qu'il faut retenir, en six lignes</h3>
+    <ol>
+      <li>Le DEA est au <b>hall d'entrée, à droite, près de la réception</b>.</li>
+      <li>Deux signes : <b>elle ne répond pas</b>, <b>elle ne respire pas
+        normalement</b>. Les halètements ne sont pas une respiration.</li>
+      <li>Deux personnes désignées : <b>« Vous, appelez le 911 et revenez me le
+        dire »</b> · <b>« Vous, le DEA est au hall à droite, courez »</b>.</li>
+      <li>Comprimez au <b>milieu de la poitrine, au moins 5 cm, 100 à 120 fois par
+        minute</b>, sans bouche-à-bouche.</li>
+      <li>L'appareil parle : <b>faites ce qu'il dit</b>. Écartez-vous pour
+        l'analyse et le choc.</li>
+      <li><b>« Aucun choc conseillé » = reprenez les compressions tout de
+        suite.</b></li>
+    </ol>
+  </div>
+</section>
+
+<footer>
+  <div class="lire">
+    <h3 style="margin-top:0">Cette formation ne remplace pas une certification en RCR.</h3>
+    <p>Quatre choses s'apprennent seulement sur un mannequin, avec quelqu'un qui
+      corrige : la profondeur réelle, le relâchement complet, la position exacte
+      des mains, et ce que fait la fatigue à votre technique. Une heure y suffit.</p>
+    <p><b>Où en suivre une :</b> les cours grand public de <b>Cœur + AVC</b>, de la
+      <b>Croix-Rouge canadienne</b> et d'<b>Ambulance Saint-Jean</b> sont donnés
+      partout au Québec. Côté travail, la formation <b>« Secouriste en milieu de
+      travail »</b> de la CNESST dure 16 heures, est donnée par un fournisseur
+      reconnu, et la carte est valide trois ans. Demandez à votre employeur : ces
+      places sont souvent déjà budgétées.</p>
+    <p class="mini">Chiffres et gestes conformes aux lignes directrices de la
+      Fondation des maladies du cœur et de l'AVC du Canada (chute de survie
+      d'environ 10 % par minute, profondeur d'au moins 5 cm, cadence de 100 à 120
+      par minute, compressions seules pour le grand public, relais aux deux
+      minutes, aucune prise de pouls). Protection du secouriste : article 1471 du
+      Code civil du Québec. Le numéro d'urgence est le 911.</p>
+    <p class="mini">Simulateur de défibrillateur intégré à la partie 8 :
+      <a href="simulateur-dea.html">SimDEA</a>.</p>
+  </div>
+</footer>
+
+</main>
+
+<script>
+(function () {
+  'use strict';
+  var el = function (id) { return document.getElementById(id); };
+
+  /* ── Thème ─────────────────────────────────────────────────────────── */
+  var bTheme = el('theme');
+  bTheme.addEventListener('click', function () {
+    var sombre = document.documentElement.getAttribute('data-theme') === 'sombre';
+    document.documentElement.setAttribute('data-theme', sombre ? 'clair' : 'sombre');
+    bTheme.textContent = sombre ? 'Sombre' : 'Clair';
+  });
+
+  /* ── La barre de progression et le sommaire ─────────────────────────
+     La jauge suit le DÉFILEMENT, pas les sections faites : elle répond à
+     « combien il reste », qui est la question qu'on se pose à la minute
+     douze. Les coches, elles, suivent ce qui a été joué.                */
+  var TITRES = ['Le DEA', 'Reconnaître', 'Alerter', 'Comprimer', 'L’appareil',
+                'Le relais', 'Objections', 'Simulation', 'Vérification'];
+  var nav = el('nav');
+  TITRES.forEach(function (titre, i) {
+    var a = document.createElement('a');
+    a.href = '#s' + (i + 1); a.textContent = (i + 1) + '. ' + titre;
+    a.id = 'nav-s' + (i + 1);
+    nav.appendChild(a);
+  });
+  var sections = TITRES.map(function (_, i) { return el('s' + (i + 1)); });
+  var jauge = el('jauge');
+  function surDefilement() {
+    var h = document.documentElement;
+    var total = h.scrollHeight - h.clientHeight;
+    jauge.style.width = (total > 0 ? Math.min(100, (h.scrollTop / total) * 100) : 0) + '%';
+    var courante = null;
+    sections.forEach(function (s) {
+      if (s.getBoundingClientRect().top < window.innerHeight * 0.4) courante = s.id;
+    });
+    TITRES.forEach(function (_, i) {
+      el('nav-s' + (i + 1)).setAttribute('aria-current', ('s' + (i + 1)) === courante ? 'true' : 'false');
+    });
+  }
+  document.addEventListener('scroll', surDefilement, { passive: true });
+  surDefilement();
+
+  /** Coche une section au sommaire : elle a été jouée, pas seulement lue. */
+  function faite(n) { el('nav-s' + n).classList.add('fini'); }
+
+  /** Rend un verdict. Le texte explique TOUJOURS pourquoi, y compris quand la
+      réponse est bonne : sans le pourquoi, on apprend à cocher. */
+  function verdict(id, etat, titre, corps) {
+    var v = el(id);
+    v.setAttribute('data-etat', etat);
+    v.innerHTML = '<b>' + titre + '</b>' + corps;
+  }
+
+  /* ═══ 1 · Le plan du hall ══════════════════════════════════════════════
+     Cinq endroits plausibles, un seul juste. Les quatre autres sont les
+     endroits où les gens cherchent réellement : l'ascenseur, la cuisine,
+     l'escalier, le poste de sécurité.                                     */
+  var ZONES = [
+    { x: 24,  y: 40,  w: 96,  h: 108, n: 'ascenseurs', l: ['Ascenseurs'] },
+    { x: 140, y: 40,  w: 116, h: 60,  n: 'escalier',   l: ['Cage', 'd’escalier'] },
+    { x: 140, y: 116, w: 116, h: 62,  n: 'cafeteria',  l: ['Vers la', 'cafétéria'] },
+    { x: 276, y: 40,  w: 130, h: 78,  n: 'reception',  l: ['Comptoir de', 'la réception'] },
+    { x: 276, y: 128, w: 112, h: 50,  n: 'mur',        l: ['Mur à droite', 'de la réception'] }
+  ];
+  (function plan() {
+    var s = ['<svg viewBox="0 0 430 236" role="img" aria-label="Plan du hall d’entrée">'];
+    s.push('<rect x="10" y="14" width="410" height="180" rx="6" fill="var(--fond-3)" stroke="var(--bord-fort)"/>');
+    // Les portes d'entrée, en bas : le plan se lit depuis l'entrée, comme on arrive.
+    s.push('<rect x="170" y="190" width="90" height="8" fill="var(--encre-4)"/>');
+    s.push('<text class="etiq" x="215" y="216" text-anchor="middle">Portes d’entrée</text>');
+    ZONES.forEach(function (z) {
+      var titre = z.l.join(' ');
+      s.push('<rect class="zone" data-n="' + z.n + '" x="' + z.x + '" y="' + z.y +
+             '" width="' + z.w + '" height="' + z.h + '" rx="4"><title>' + titre + '</title></rect>');
+      /* Les libellés se coupent en lignes déclarées, jamais calculées : un
+         premier jet gardait « les deux premiers mots » et affichait « Comptoir
+         de », « Mur à », « Vers la ». Un plan dont les étiquettes sont tronquées
+         ne pose plus la question qu'on croit poser. */
+      var y0 = z.y + z.h / 2 + 4 - (z.l.length - 1) * 7;
+      z.l.forEach(function (ligne, i) {
+        s.push('<text x="' + (z.x + z.w / 2) + '" y="' + (y0 + i * 14) +
+               '" text-anchor="middle" pointer-events="none">' + ligne + '</text>');
+      });
+    });
+    // Le boîtier, caché jusqu'à la réponse : le montrer d'avance supprime la question.
+    // Contre le mur de droite, pas au milieu de la zone : c'est un boitier fixe
+    // au mur, et pose au centre il recouvrait le libelle de la zone.
+    s.push('<g id="boitier" opacity="0" pointer-events="none">' +
+           '<rect x="392" y="130" width="22" height="24" rx="3" fill="#FFFFFF" stroke="#16A34A" stroke-width="2"/>' +
+           '<path d="M403 147c-3.6-2.8-6.4-4.6-6.4-7.4a2.9 2.9 0 0 1 5.4-1.3 2.9 2.9 0 0 1 5.4 1.3c0 2.8-2.8 4.6-6.4 7.4z" fill="#16A34A"/>' +
+           '<text class="etiq" x="403" y="168" text-anchor="middle" fill="#16A34A">DEA</text></g>');
+    s.push('</svg>');
+    el('plan').innerHTML = s.join('');
+  })();
+  var planFait = false;
+  el('plan').addEventListener('click', function (e) {
+    var z = e.target.closest('.zone'); if (!z || planFait) return;
+    planFait = true;
+    var bon = z.getAttribute('data-n') === 'mur';
+    z.classList.add(bon ? 'trouve' : 'rate');
+    if (!bon) {
+      document.querySelector('.zone[data-n="mur"]').classList.add('trouve');
+    }
+    el('plan').querySelector('#boitier').setAttribute('opacity', '1');
+    verdict('v-plan', bon ? 'ok' : 'no',
+      bon ? 'Exactement là.' : 'Non — il est là, en vert.',
+      ' Boîtier blanc à cœur vert, sur le mur, à droite en entrant, juste à côté ' +
+      'du comptoir de la réception. C’est le seul appareil de l’immeuble, et ' +
+      'c’est la phrase que vous crierez à quelqu’un : « hall d’entrée, à droite, ' +
+      'près de la réception ».');
+    faite(1);
+  });
+
+  /* ═══ 2 · Le tracé de la respiration ═══════════════════════════════════
+     Ce n'est pas une illustration, c'est le contenu. On ne reconnaît pas une
+     respiration agonale à sa forme mais à sa DURÉE : les longs silences entre
+     les halètements sont ce qui trompe. Un dessin fixe ne peut pas les
+     montrer ; vingt secondes qui défilent, oui.                            */
+  var cv = el('trace'), cx = cv.getContext('2d');
+  var FENETRE = 20000;              // secondes visibles, en millisecondes
+  var modeSouffle = null, t0 = 0, testEnCours = false, reponseAttendue = null;
+
+  /** Amplitude du mouvement du thorax à l'instant `ms`, entre 0 et 1. */
+  function amplitude(mode, ms) {
+    if (mode === 'normal') {
+      // 14 cycles par minute, réguliers, symétriques.
+      return 0.5 + 0.42 * Math.sin((ms / 4300) * Math.PI * 2);
+    }
+    // Agonal : un halètement bref toutes les 6 à 9 secondes, rien entre les deux.
+    // Le motif se répète toutes les 45 s pour que le tracé puisse tourner aussi
+    // longtemps qu'on le regarde sans devenir une ligne plate.
+    ms = ms % 45000;
+    var GASPS = [1200, 8300, 15100, 21400, 27200, 34600, 41000];
+    var v = 0.5;
+    for (var i = 0; i < GASPS.length; i++) {
+      var d = ms - GASPS[i];
+      if (d > -200 && d < 1400) {
+        // Montée brusque, redescente plus lente : la forme d'un hoquet.
+        var p = d < 260 ? d / 260 : 1 - (d - 260) / 1140;
+        v += 0.46 * Math.max(0, p) * Math.max(0, p);
+      }
+    }
+    return Math.min(0.98, v);
+  }
+
+  /* La boucle ne tourne QUE pendant qu'un tracé joue.
+
+     Premier jet : `dessiner` rendait la main quand aucun mode n'était choisi,
+     sans se replanifier — la boucle mourait à la première image, avant tout
+     clic, et rien ne la relançait ensuite. La grille, elle, était dessinée :
+     le panneau avait donc l'air vivant et ne traçait jamais rien. Aucune
+     erreur, aucune trace en console. Trouvé sur une capture, pas à la
+     relecture. */
+  var boucle = 0;
+  function dessiner() {
+    var L = cv.width, H = cv.height;
+    var css = getComputedStyle(document.documentElement);
+    cx.clearRect(0, 0, L, H);
+    cx.strokeStyle = css.getPropertyValue('--bord') || '#E4E4E7';
+    cx.lineWidth = 1;
+    for (var g = 1; g < 4; g++) {
+      cx.beginPath(); cx.moveTo(0, (H / 4) * g); cx.lineTo(L, (H / 4) * g); cx.stroke();
+    }
+    if (modeSouffle === null) return;
+    var ecoule = performance.now() - t0;
+    cx.beginPath();
+    cx.lineWidth = 2.5;
+    cx.strokeStyle = css.getPropertyValue('--encre') || '#09090B';
+    for (var x = 0; x <= L; x++) {
+      // Le bord droit est « maintenant » ; le tracé défile vers la gauche.
+      var ms = ecoule - (1 - x / L) * FENETRE;
+      var y = H - amplitude(modeSouffle, ms) * (H - 24) - 12;
+      x === 0 ? cx.moveTo(x, y) : cx.lineTo(x, y);
+    }
+    cx.stroke();
+    boucle = requestAnimationFrame(dessiner);
+  }
+  dessiner();   // la grille seule, tant que rien n'est choisi
+
+  function jouerSouffle(mode, muet) {
+    /* La fenêtre part PLEINE, pas vide.
+
+       Premier jet : le tracé partait de zéro et mettait vingt secondes à
+       remplir la largeur. Or une ligne plate est exactement ce que produit la
+       respiration agonale entre deux halètements — on demandait donc à
+       l'apprenant de juger un écran vide, et « elle ne respire pas » était la
+       conclusion raisonnable dans les deux cas. La question devenait fausse. */
+    modeSouffle = mode; t0 = performance.now() - FENETRE;
+    cancelAnimationFrame(boucle);
+    boucle = requestAnimationFrame(dessiner);
+    el('souffle-etat').textContent = muet ? 'Regardez dix secondes, puis répondez.'
+      : (mode === 'normal' ? 'Respiration normale : régulière, environ 14 par minute.'
+                           : 'Halètements agonaux : brefs, bruyants, séparés par de longs silences.');
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('[data-souffle]'), function (b) {
+    b.addEventListener('click', function () {
+      testEnCours = false; el('souffle-choix').style.display = 'none';
+      el('v-souffle').removeAttribute('data-etat');
+      jouerSouffle(b.getAttribute('data-souffle'), false);
+    });
+  });
+  el('souffle-test').addEventListener('click', function () {
+    testEnCours = true;
+    reponseAttendue = Math.random() < 0.5 ? 'normal' : 'agonal';
+    el('v-souffle').removeAttribute('data-etat');
+    el('souffle-choix').style.display = 'flex';
+    jouerSouffle(reponseAttendue, true);
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('[data-rep]'), function (b) {
+    b.addEventListener('click', function () {
+      if (!testEnCours) return;
+      testEnCours = false;
+      var juste = b.getAttribute('data-rep') === reponseAttendue;
+      if (reponseAttendue === 'agonal') {
+        verdict('v-souffle', juste ? 'ok' : 'no',
+          juste ? 'Oui — ce n’était pas une respiration.' : 'Non. Ce n’était pas une respiration.',
+          ' Deux ou trois soubresauts en vingt secondes, avec de longs silences entre ' +
+          'eux : c’est de la respiration agonale. Une personne qui respire vraiment ' +
+          'le fait douze à vingt fois par minute, régulièrement. Ici, vous appelez le ' +
+          '911 et vous comprimez.');
+      } else {
+        verdict('v-souffle', juste ? 'ok' : 'no',
+          juste ? 'Oui — elle respirait.' : 'Non, elle respirait.',
+          ' Un mouvement régulier, sans à-coups, plus d’une dizaine de fois par ' +
+          'minute. Cette personne-là n’a pas besoin de compressions : mettez-la sur ' +
+          'le côté, restez avec elle et appelez le 911. Le doute se tranche sur la ' +
+          'RÉGULARITÉ, pas sur le bruit.');
+      }
+      faite(2);
+    });
+  });
+
+  /* ═══ 3 · La phrase ════════════════════════════════════════════════════ */
+  var ORDRES = [
+    { ok: false, t: 'Personne ne bouge.',
+      c: ' Un ordre adressé à tout le monde n’est exécuté par personne : chacun ' +
+         'suppose qu’un autre s’en charge, et tout le monde regarde. C’est le ' +
+         'réflexe le plus naturel du monde, et c’est celui qui coûte le plus de temps.' },
+    { ok: true, t: 'C’est celle-là.',
+      c: ' Une personne désignée du regard et du geste, une tâche unique, et un ' +
+         'retour exigé. Le « revenez me le dire » est ce qui vous confirme que ' +
+         'l’appel a vraiment été passé — sinon vous comprimez dix minutes en croyant ' +
+         'que les secours arrivent.' },
+    { ok: false, t: 'Trop poli, et trop vague.',
+      c: ' Une question laisse le choix de répondre non, et « s’il y a un ' +
+         'défibrillateur » suppose que la personne le cherche. Vous savez où il est : ' +
+         'dites-le dans l’ordre. « Vous, le DEA est au hall à droite près de la ' +
+         'réception, courez le chercher. »' }
+  ];
+  Array.prototype.forEach.call(document.querySelectorAll('[data-ordre]'), function (b) {
+    b.addEventListener('click', function () {
+      var o = ORDRES[+b.getAttribute('data-ordre')];
+      Array.prototype.forEach.call(document.querySelectorAll('[data-ordre]'), function (x) {
+        x.classList.remove('b--ok', 'b--no');
+      });
+      b.classList.add(o.ok ? 'b--ok' : 'b--no');
+      if (!o.ok) document.querySelector('[data-ordre="1"]').classList.add('b--ok');
+      verdict('v-ordre', o.ok ? 'ok' : 'no', o.t, o.c);
+      faite(3);
+    });
+  });
+
+  /* ═══ 4 · Le tempo ═════════════════════════════════════════════════════
+     Le clic est synthétisé, pas chargé : la page doit fonctionner hors ligne
+     et sans un seul fichier à côté d'elle.                                 */
+  var ctx = null, metroId = null;
+  function clic() {
+    if (!ctx) return;
+    var o = ctx.createOscillator(), g = ctx.createGain();
+    o.frequency.value = 1000; o.type = 'square';
+    g.gain.setValueAtTime(0.0001, ctx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.25, ctx.currentTime + 0.002);
+    g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.05);
+    o.connect(g); g.connect(ctx.destination);
+    o.start(); o.stop(ctx.currentTime + 0.06);
+  }
+  el('metro').addEventListener('click', function () {
+    if (!ctx) {
+      var AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) { verdict('v-tempo', 'no', 'Pas de son ici.',
+        ' Ce navigateur ne synthétise pas de son. Frappez quand même : le cadran ' +
+        'mesure votre cadence sans avoir besoin d’entendre.'); return; }
+      ctx = new AC();
+    }
+    if (ctx.state === 'suspended') ctx.resume();
+    if (metroId) return;
+    clic();
+    metroId = setInterval(clic, 60000 / 110);
+    el('metro').disabled = true; el('metro-stop').disabled = false;
+  });
+  el('metro-stop').addEventListener('click', function () {
+    clearInterval(metroId); metroId = null;
+    el('metro').disabled = false; el('metro-stop').disabled = true;
+  });
+
+  /* La cadence se lit sur la MÉDIANE des derniers intervalles, jamais sur la
+     moyenne : une hésitation d'une seconde décale une moyenne de dix frappes
+     de plus de dix par minute, et le cadran mentirait. */
+  var frappes = [];
+  function mediane(v) {
+    var s = v.slice().sort(function (a, b) { return a - b; });
+    var m = s.length >> 1;
+    return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2;
+  }
+  /* 60 → 160 par minute sur la largeur ; la plage utile est 100 → 120. */
+  var BAS = 60, HAUT = 160;
+  var pc = function (bpm) { return (bpm - BAS) / (HAUT - BAS) * 100; };
+  (function cadran() {
+    el('plage').style.left = pc(100) + '%';
+    el('plage').style.width = (pc(120) - pc(100)) + '%';
+    [60, 100, 120, 160].forEach(function (v) {
+      var s = document.createElement('span');
+      s.textContent = v;
+      s.style.left = Math.min(97, Math.max(3, pc(v))) + '%';
+      el('ech').appendChild(s);
+    });
+  })();
+  /* Deux frappes a moins de 200 ms l'une de l'autre ne sont pas une cadence :
+     c'est un rebond de bouton, un double-clic, ou deux doigts. Sans ce plancher,
+     un intervalle proche de zero fait afficher plusieurs milliers par minute et
+     epingle l'aiguille — vu en essai. Le simulateur a le meme garde-fou. */
+  var REFRAC = 200;
+  function frapper() {
+    var t = performance.now();
+    if (frappes.length && t - frappes[frappes.length - 1] < REFRAC) return;
+    frappes.push(t);
+    if (frappes.length > 9) frappes.shift();
+    if (frappes.length < 4) { el('bpm').textContent = '…'; return; }
+    var ecarts = [];
+    for (var i = 1; i < frappes.length; i++) ecarts.push(frappes[i] - frappes[i - 1]);
+    var bpm = Math.round(60000 / mediane(ecarts));
+    el('bpm').textContent = bpm;
+    el('aiguille').classList.add('vue');
+    el('aiguille').style.left = Math.max(0, Math.min(100, pc(bpm))) + '%';
+    if (frappes.length === 9) {
+      if (bpm >= 100 && bpm <= 120) {
+        verdict('v-tempo', 'ok', 'Dans la plage.',
+          ' C’est le rythme. Retenez la sensation plutôt que le chiffre : le jour ' +
+          'où vous comprimerez, il n’y aura pas de cadran.');
+      } else {
+        verdict('v-tempo', 'no', bpm < 100 ? 'Trop lent.' : 'Trop rapide.',
+          bpm < 100
+            ? ' En dessous de 100, le sang ne circule plus assez. Réécoutez le clic ' +
+              'et repartez : il est à 110, au milieu de la plage.'
+            : ' Au-dessus de 120, la poitrine n’a plus le temps de remonter — et ' +
+              'c’est la remontée qui remplit le cœur. Réécoutez le clic et ralentissez.');
+      }
+      faite(4);
+    }
+  }
+  el('frappe').addEventListener('pointerdown', function (e) { e.preventDefault(); frapper(); });
+  el('frappe').addEventListener('keydown', function (e) {
+    if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); frapper(); }
+  });
+
+  /* ═══ 5 · L'ordre des gestes ═══════════════════════════════════════════ */
+  var GESTES = [
+    { t: 'Ouvrir le boîtier et mettre l’appareil en marche', p:
+      'On allume d’abord : à partir de là, c’est lui qui donne les consignes.' },
+    { t: 'Dénuder la poitrine, l’essuyer si elle est mouillée', p:
+      'Les électrodes ne collent ni sur un vêtement ni sur une peau humide.' },
+    { t: 'Coller les deux électrodes en suivant le dessin', p:
+      'Le dessin imprimé sur les électrodes montre exactement où les poser.' },
+    { t: 'S’écarter — personne ne touche pendant l’analyse', p:
+      'Un contact fausse la lecture et peut faire recommencer l’analyse.' },
+    { t: 'Choc si l’appareil le conseille, puis compressions tout de suite', p:
+      'Immédiatement après le choc, sans rien vérifier : c’est là que tout se gagne.' }
+  ];
+  var attendu = 0, melange = GESTES.map(function (g, i) { return i; });
+  function battre(a) {
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1)), t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+  function rendrePile() {
+    /* Une distribution qui tombe deja dans le bon ordre laisserait gagner le
+       clic de haut en bas, sans avoir rien decide. Une chance sur cent vingt,
+       et c'est exactement l'essai qu'on ne referait jamais. */
+    do { battre(melange); } while (melange.every(function (v, i) { return v === i; }));
+    attendu = 0;
+    el('suite').innerHTML = '<span class="mini">Cliquez les gestes dans l’ordre où vous les faites.</span>';
+    el('v-ordre5').removeAttribute('data-etat');
+    var p = el('pile'); p.innerHTML = '';
+    melange.forEach(function (i) {
+      var b = document.createElement('button');
+      b.className = 'b'; b.type = 'button';
+      b.innerHTML = '<i>·</i><span>' + GESTES[i].t + '</span>';
+      b.addEventListener('click', function () {
+        if (b.disabled) return;
+        if (i === attendu) {
+          b.disabled = true; b.classList.add('b--ok', 'place');
+          b.querySelector('i').textContent = attendu + 1;
+          var j = document.createElement('span');
+          j.className = 'jeton'; j.textContent = (attendu + 1) + '. ' + GESTES[i].t;
+          if (attendu === 0) el('suite').innerHTML = '';
+          el('suite').appendChild(j);
+          attendu++;
+          if (attendu === GESTES.length) {
+            verdict('v-ordre5', 'ok', 'La séquence entière, dans l’ordre.',
+              ' Et la dernière ligne est celle qu’on oublie : on reprend les ' +
+              'compressions <b>immédiatement</b> après le choc. Pas de pause, pas de ' +
+              'vérification, pas d’attente. L’appareil vous redemandera de vous ' +
+              'écarter dans deux minutes.');
+            faite(5);
+          }
+        } else {
+          b.classList.add('b--no');
+          setTimeout(function () { b.classList.remove('b--no'); }, 700);
+          verdict('v-ordre5', 'no', 'Pas encore celui-là.',
+            ' ' + GESTES[attendu].p);
+        }
+      });
+      p.appendChild(b);
+    });
+  }
+  el('reset5').addEventListener('click', rendrePile);
+  rendrePile();
+
+  /* ═══ 8 · Le simulateur ════════════════════════════════════════════════
+     Le cadre reste vide tant qu'on n'a pas choisi : charger deux mégaoctets
+     de simulateur pour quelqu'un qui lit la page en diagonale serait payer
+     un poids que personne n'a demandé.                                     */
+  var QUOI = {
+    vf: 'Passage 1 — rythme choquable. Allez jusqu’à la reprise des compressions après le choc.',
+    nsr: 'Passage 2 — le rythme n’est pas choquable. L’appareil dira « aucun choc conseillé ».'
+  };
+  Array.prototype.forEach.call(document.querySelectorAll('[data-sim]'), function (b) {
+    b.addEventListener('click', function () {
+      var id = b.getAttribute('data-sim');
+      Array.prototype.forEach.call(document.querySelectorAll('[data-sim]'), function (x) {
+        x.setAttribute('aria-pressed', String(x === b));
+      });
+      el('cadre-sim').hidden = false;
+      // Le fragment seul ne recharge pas un cadre déjà chargé : on force.
+      el('sim').src = 'about:blank';
+      setTimeout(function () { el('sim').src = 'simulateur-dea.html#passage=' + id; }, 30);
+      el('sim-quoi').textContent = QUOI[id];
+      el('sim-neuf').href = 'simulateur-dea.html#passage=' + id;
+      el('cadre-sim').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      faite(8);
+    });
+  });
+
+  /* ═══ 9 · Les huit décisions ═══════════════════════════════════════════
+     Chaque rétroaction dit POURQUOI, y compris sur une bonne réponse. Une
+     question dont la bonne réponse ne s'explique pas est une question de
+     mémoire, et ce n'est pas ce qu'on cherche à installer.                 */
+  var QUESTIONS = [
+    { q: 'Où est le défibrillateur de votre immeuble ?',
+      r: ['Au poste de sécurité, au sous-sol',
+          'Dans le hall d’entrée, à droite, près de la réception',
+          'À chaque étage, près des ascenseurs',
+          'Dans la cuisine de la cafétéria'],
+      b: 1,
+      pq: 'Il y en a <b>un seul</b> dans l’immeuble, dans un boîtier blanc à cœur ' +
+          'vert fixé au mur. C’est la seule information de cette formation que ' +
+          'personne ne peut deviner sur le moment — d’où le fait qu’on commence et ' +
+          'qu’on finisse par elle.' },
+
+    { q: 'Vous êtes seul au 3<sup>e</sup> étage. Une collègue s’effondre, elle ne ' +
+         'répond pas et ne respire pas normalement. Que faites-vous en premier ?',
+      r: ['Je descends chercher le DEA au hall',
+          'Je cherche son pouls pour être sûr',
+          'Je compose le 911, haut-parleur, téléphone par terre, et je commence à comprimer',
+          'Je la mets sur le côté en attendant les secours'],
+      b: 2,
+      pq: 'Seul, vous ne choisissez pas entre appeler et comprimer : vous faites les ' +
+          'deux. Le haut-parleur libère vos mains, et la répartitrice vous guide ' +
+          'pendant que vous appuyez. Descendre chercher l’appareil coûterait deux ' +
+          'minutes sans aucune circulation — et c’est elle qui décidera si ça vaut ' +
+          'la peine.' },
+
+    { q: 'La personne fait des bruits de gorge irréguliers, comme des ronflements ' +
+         'espacés. Elle respire ?',
+      r: ['Oui, puisqu’elle fait du bruit',
+          'Non — ce n’est pas une respiration normale',
+          'Il faut attendre une minute pour voir'],
+      b: 1,
+      pq: 'C’est la respiration agonale, et c’est <b>le</b> piège. Elle trompe les ' +
+          'témoins parce qu’elle fait du bruit et du mouvement. Une vraie respiration ' +
+          'est régulière, douze à vingt fois par minute. Deux soubresauts en vingt ' +
+          'secondes n’en sont pas une.' },
+
+    { q: 'Vous êtes entouré de collègues. Que dites-vous pour faire appeler les secours ?',
+      r: ['« Vite, quelqu’un appelle le 911 ! »',
+          '« Vous, en bleu, appelez le 911 et revenez me le dire. »',
+          '« Est-ce que quelqu’un a un téléphone ? »'],
+      b: 1,
+      pq: 'Nommer, désigner, exiger un retour. Un ordre adressé au groupe se dilue : ' +
+          'chacun croit qu’un autre s’en occupe. Et le « revenez me le dire » est ce ' +
+          'qui vous évite de comprimer dix minutes en croyant à tort que les secours ' +
+          'sont en route.' },
+
+    { q: 'À quelle profondeur et à quel rythme comprimez-vous un adulte ?',
+      r: ['Environ 2 cm, aussi vite que possible',
+          'Au moins 5 cm, 100 à 120 fois par minute',
+          'Au moins 5 cm, 60 fois par minute',
+          '30 compressions puis 2 insufflations, toujours'],
+      b: 1,
+      pq: 'Cinq centimètres, c’est plus profond que ce que la plupart osent. Entre ' +
+          '100 et 120 : en dessous le sang ne circule plus assez, au-dessus la ' +
+          'poitrine n’a plus le temps de remonter — et c’est la remontée qui remplit ' +
+          'le cœur. Pour le grand public, sur un adulte : compressions seules.' },
+
+    { q: 'L’appareil annonce : « aucun choc conseillé ». Vous faites quoi ?',
+      r: ['J’arrête : l’appareil a dit que ce n’était pas nécessaire',
+          'Je reprends les compressions immédiatement',
+          'J’éteins et je rallume pour refaire une analyse',
+          'J’attends les secours sans y toucher'],
+      b: 1,
+      pq: 'Le DEA ne choque que deux rythmes précis. « Aucun choc conseillé » signifie ' +
+          '« le choc ne servirait à rien sur ce rythme-là » — jamais « c’est fini ». ' +
+          'La personne est toujours en arrêt cardiaque, et les compressions sont ' +
+          'désormais la seule chose qui la maintienne. Vous reprenez sans attendre.' },
+
+    { q: 'La personne au sol est une femme en chemisier. Le DEA est arrivé.',
+      r: ['Je pose les électrodes par-dessus le chemisier pour préserver sa pudeur',
+          'J’attends une femme dans l’assistance pour le faire',
+          'J’ouvre le chemisier, je pose les électrodes, puis je couvre le reste'],
+      b: 2,
+      pq: 'Les électrodes ne fonctionnent pas à travers un tissu : posées dessus, ' +
+          'l’appareil ne lit rien et ne choque pas. Attendre coûte des minutes. ' +
+          'Ouvrez, écartez ce qui gêne — armature, chaîne —, posez, et couvrez le ' +
+          'reste avec une veste une fois que c’est fait. Les femmes sont réanimées ' +
+          'moins souvent que les hommes, et cette hésitation-là en est la raison.' },
+
+    { q: 'Les paramédics arrivent pendant que vous comprimez.',
+      r: ['Je continue jusqu’à ce qu’ils me disent d’arrêter, puis je leur dis en ' +
+          'trois phrases ce que j’ai vu et fait',
+          'Je m’écarte tout de suite pour ne pas les gêner',
+          'Je reste comprimer à côté d’eux pour les aider'],
+      b: 0,
+      pq: 'On ne s’interrompt pas avant qu’ils prennent le relais : chaque pause ' +
+          'fait retomber la pression que vos compressions avaient construite. Puis ' +
+          'trois phrases — ce que vous avez vu, depuis quand, ce que vous avez fait — ' +
+          'et vous vous retirez. Votre travail s’arrête là, et vous avez le droit ' +
+          'd’être secoué.' }
+  ];
+
+  var repondues = 0, bonnes = 0;
+  (function quiz() {
+    var hote = el('quiz');
+    QUESTIONS.forEach(function (Q, n) {
+      var d = document.createElement('div');
+      d.className = 'q';
+      d.innerHTML = '<div class="q__n">Question ' + (n + 1) + ' / 8</div>' +
+                    '<div class="q__t">' + Q.q + '</div>';
+      var r = document.createElement('div'); r.className = 'rangee';
+      var v = document.createElement('div'); v.className = 'verdict'; v.id = 'v-q' + n;
+      /* L'ordre des reponses est battu a chaque chargement. Sans cela la bonne
+         reponse est en deuxieme position cinq fois sur huit, et « cliquer
+         toujours la deuxieme » donne 5/8 sans rien avoir lu — une strategie
+         paresseuse qui reussit rend le controle inutile. */
+      var ordre = battre(Q.r.map(function (_, i) { return i; }));
+      var iJuste = ordre.indexOf(Q.b);
+      ordre.forEach(function (i) {
+        var b = document.createElement('button');
+        b.className = 'b'; b.type = 'button'; b.innerHTML = Q.r[i];
+        b.addEventListener('click', function () {
+          if (d.dataset.fait) return;
+          d.dataset.fait = '1';
+          var juste = i === Q.b;
+          b.classList.add(juste ? 'b--ok' : 'b--no');
+          if (!juste) r.children[iJuste].classList.add('b--ok');
+          Array.prototype.forEach.call(r.children, function (x) { x.disabled = true; });
+          verdict('v-q' + n, juste ? 'ok' : 'no',
+                  juste ? 'Oui.' : 'Non — la bonne réponse est surlignée.', ' ' + Q.pq);
+          repondues++; if (juste) bonnes++;
+          el('score-n').textContent = bonnes;
+          el('score').hidden = false;
+          el('score-mot').textContent = repondues < QUESTIONS.length
+            ? (repondues + ' question' + (repondues > 1 ? 's' : '') + ' sur 8.')
+            : (bonnes === 8 ? 'Tout y est. Relisez les six lignes ci-dessous une dernière fois.'
+              : bonnes >= 6 ? 'Solide. Reprenez les explications des questions manquées : chacune porte une décision, pas un détail.'
+              : 'Reprenez les parties concernées avant de refermer la page — ce sont des décisions, pas des définitions.');
+          if (repondues === QUESTIONS.length) faite(9);
+        });
+        r.appendChild(b);
+      });
+      d.appendChild(r); d.appendChild(v);
+      hote.appendChild(d);
+    });
+  })();
+
+  /* Les sections purement lues se cochent quand elles ont été traversées :
+     6 et 7 n'ont rien à jouer, et laisser leur coche éteinte donnerait
+     l'impression d'un travail inachevé alors qu'il ne l'est pas. */
+  if ('IntersectionObserver' in window) {
+    var oeil = new IntersectionObserver(function (entrees) {
+      entrees.forEach(function (e) {
+        if (e.isIntersecting) { faite(e.target.id.slice(1)); oeil.unobserve(e.target); }
+      });
+    }, { threshold: 0.6 });
+    [el('s6'), el('s7')].forEach(function (s) { oeil.observe(s); });
+  }
+})();
+</script>
+
+</body>
+</html>
