@@ -1,0 +1,1009 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Quelques résultats de recherche en conception pédagogique, montrés plutôt que cités, et la grille de questions qui sert à analyser un module.">
+<title>La boucle diagnostic</title>
+<style>html{color-scheme:light dark}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>La boucle diagnostic</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Libre+Franklin:wght@400;500;600&family=Roboto+Mono:wght@400;500&display=swap">
+
+<style>
+/* ═══ Jetons — recopiés de la pièce mère, jamais importés ═══════════════ */
+:root{
+  --fond:#FFFFFF; --fond-2:#FAFAFA; --fond-3:#F4F4F5;
+  --encre:#09090B; --encre-2:#52525B; --encre-3:#71717A; --encre-4:#A1A1AA;
+  --bord:#E4E4E7; --bord-fort:#D4D4D8;
+  --marque-rose:#F0359F; --marque-corail:#F5533D;
+  --marque-degrade:linear-gradient(100deg,var(--marque-rose) 0%,var(--marque-corail) 100%);
+  --signal:#F5652E; --signal-voile:#FEF1EA;
+  --mesure:#2B4E9B; --mesure-2:#5C7EBF; --mesure-voile:#EAEFFA;
+  --action:#18181B; --action-encre:#FAFAFA;
+
+  --display:"Archivo",ui-sans-serif,system-ui,"Helvetica Neue",Arial,sans-serif;
+  --corps:"Libre Franklin",ui-sans-serif,system-ui,"Helvetica Neue",Arial,sans-serif;
+  --mono:"Roboto Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+
+  --e1:.25rem; --e2:.5rem; --e3:.75rem; --e4:1rem; --e5:1.5rem; --e6:2rem;
+  --e7:3rem; --e8:4.5rem; --e9:7rem;
+  --r1:.375rem; --r2:.5rem; --r3:.75rem;
+  --vif:180ms; --moyen:380ms; --lent:640ms;
+  --courbe:cubic-bezier(.22,.61,.36,1);
+  --colonne:60rem;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --fond:#09090B; --fond-2:#0F0F11; --fond-3:#18181B;
+    --encre:#FAFAFA; --encre-2:#D4D4D8; --encre-3:#A1A1AA; --encre-4:#52525B;
+    --bord:#27272A; --bord-fort:#3F3F46;
+    --marque-rose:#FF4FB0; --marque-corail:#FF6A50;
+    --signal:#FF7A45; --signal-voile:#2A1610;
+    --mesure:#8FB2F0; --mesure-2:#6E8FCB; --mesure-voile:#18213A;
+    --action:#FAFAFA; --action-encre:#18181B;
+  }
+}
+:root[data-theme="dark"]{
+  --fond:#09090B; --fond-2:#0F0F11; --fond-3:#18181B;
+  --encre:#FAFAFA; --encre-2:#D4D4D8; --encre-3:#A1A1AA; --encre-4:#52525B;
+  --bord:#27272A; --bord-fort:#3F3F46;
+  --marque-rose:#FF4FB0; --marque-corail:#FF6A50;
+  --signal:#FF7A45; --signal-voile:#2A1610;
+  --mesure:#8FB2F0; --mesure-2:#6E8FCB; --mesure-voile:#18213A;
+  --action:#FAFAFA; --action-encre:#18181B;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{overflow-x:clip}
+body{margin:0;background:var(--fond);color:var(--encre-2);
+     font-family:var(--corps);font-size:1rem;line-height:1.62;
+     -webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--display);color:var(--encre);margin:0;
+         line-height:1.1;letter-spacing:-.025em;text-wrap:balance;font-weight:600}
+p{margin:0}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--mesure);outline-offset:2px}
+
+/* ═══ Ossature ═══════════════════════════════════════════════════════════ */
+.colonne{width:100%;max-width:var(--colonne);margin:0 auto;
+         padding-inline:clamp(1.25rem,5vw,3rem)}
+.sect{padding-block:var(--e9);border-top:1px solid var(--bord)}
+.sect:first-of-type{border-top:0}
+.sect--pose{background:var(--fond-2)}
+
+/* Rail de progression — jalons réels de l'argument, pas décor */
+.rail{position:fixed;left:0;top:0;bottom:0;width:74px;z-index:30;
+      display:flex;flex-direction:column;align-items:flex-start;justify-content:center;
+      gap:var(--e3);padding-left:var(--e4);pointer-events:none}
+.rail a{pointer-events:auto;display:flex;align-items:center;gap:var(--e2);
+        text-decoration:none;padding:var(--e1) 0;border-radius:var(--r1)}
+.rail b{font-family:var(--mono);font-size:.625rem;font-weight:500;color:var(--encre-4);
+        font-variant-numeric:tabular-nums;transition:color var(--vif)}
+.rail i{display:block;width:16px;height:2px;background:var(--bord-fort);
+        transition:background var(--vif),width var(--vif)}
+.rail a:hover i{background:var(--encre-3)}
+.rail a[aria-current="true"] b{color:var(--encre)}
+.rail a[aria-current="true"] i{background:var(--encre);width:26px}
+@media (max-width:1180px){.rail{display:none}}
+
+/* ═══ Écriture ═══════════════════════════════════════════════════════════ */
+.chapeau{font-family:var(--mono);font-size:.75rem;font-weight:500;letter-spacing:.1em;
+         text-transform:uppercase;color:var(--encre-3);
+         display:flex;flex-wrap:wrap;align-items:baseline;gap:var(--e3);margin-bottom:var(--e4)}
+.chapeau em{font-style:normal;color:var(--encre)}
+.chapeau s{text-decoration:none;color:var(--encre-4);text-transform:none;letter-spacing:0}
+.these{font-family:var(--display);font-size:clamp(1.5rem,3.2vw,2.25rem);font-weight:600;
+       color:var(--encre);letter-spacing:-.03em;line-height:1.14;max-width:24ch;margin-bottom:var(--e4)}
+.dit{max-width:62ch;color:var(--encre-2)}
+.dit + .dit{margin-top:var(--e4)}
+.bilan{margin-top:var(--e5);padding-top:var(--e4);border-top:1px solid var(--bord);
+       display:flex;gap:var(--e4);align-items:baseline;flex-wrap:wrap}
+.bilan__et{font-family:var(--mono);font-size:.6875rem;letter-spacing:.1em;text-transform:uppercase;
+           color:var(--encre-4);white-space:nowrap}
+.bilan p{max-width:58ch;font-size:.9375rem}
+b,strong{color:var(--encre);font-weight:600}
+
+/* ═══ Boutons ════════════════════════════════════════════════════════════ */
+.cmd{appearance:none;border:1px solid var(--bord-fort);background:var(--fond);
+     color:var(--encre);border-radius:var(--r1);padding:.5rem .875rem;cursor:pointer;
+     font-family:var(--mono);font-size:.75rem;font-weight:500;
+     transition:background var(--vif),border-color var(--vif),transform var(--vif)}
+.cmd:hover{background:var(--fond-3);border-color:var(--encre-4)}
+.cmd:active{transform:scale(.98)}
+.cmd--plein{background:var(--action);color:var(--action-encre);border-color:var(--action)}
+.cmds{display:flex;gap:var(--e2);flex-wrap:wrap;align-items:center;margin-top:var(--e4)}
+
+/* ═══ Le banc d'essai ════════════════════════════════════════════════════ */
+.banc{border:1px solid var(--bord);border-radius:var(--r3);background:var(--fond);
+      padding:var(--e5);margin-top:var(--e6)}
+.sect--pose .banc{background:var(--fond)}
+.banc__tete{display:flex;justify-content:space-between;align-items:baseline;
+            gap:var(--e4);margin-bottom:var(--e4);flex-wrap:wrap}
+.banc__nom{font-family:var(--mono);font-size:.6875rem;letter-spacing:.1em;
+           text-transform:uppercase;color:var(--encre-3)}
+.compteur{font-family:var(--mono);font-size:.8125rem;display:flex;align-items:baseline;gap:var(--e2)}
+.compteur b{font-family:var(--display);font-size:1.75rem;font-weight:700;color:var(--mesure);
+            font-variant-numeric:tabular-nums;line-height:1;min-width:2.2ch;text-align:right}
+
+/* ═══ Ouverture ══════════════════════════════════════════════════════════ */
+.marque{font-family:var(--display);font-weight:700;font-size:.875rem;color:var(--encre);
+        margin-bottom:var(--e6)}
+.marque i{font-style:normal;background:var(--marque-degrade);
+          -webkit-background-clip:text;background-clip:text;color:transparent}
+.affiche{font-family:var(--display);font-size:clamp(2.25rem,6vw,4rem);font-weight:700;
+         letter-spacing:-.04em;line-height:1.02;color:var(--encre);margin-bottom:var(--e4)}
+.ouverture{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,22rem);
+           gap:var(--e8);align-items:center}
+.roue{width:100%;max-width:22rem;aspect-ratio:1;justify-self:center}
+.roue text{font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;fill:var(--encre-3)}
+.roue .lettre{font-family:var(--display);font-size:15px;font-weight:700;fill:var(--encre);letter-spacing:0}
+.roue .arc{fill:none;stroke:var(--bord-fort);stroke-width:1.5}
+.roue .arc--vif{stroke:var(--mesure);stroke-width:2.5;stroke-linecap:round;
+                stroke-dasharray:120;stroke-dashoffset:120;animation:tracer 5.2s var(--courbe) infinite}
+.roue .moyeu{fill:var(--fond);stroke:var(--bord);stroke-width:1}
+@keyframes tracer{0%{stroke-dashoffset:120}22%,100%{stroke-dashoffset:0}}
+.sommaire{list-style:none;margin:var(--e5) 0 0;padding:0;display:grid;gap:var(--e2)}
+.sommaire li{display:flex;gap:var(--e3);font-size:.9375rem}
+.sommaire b{font-family:var(--mono);font-size:.75rem;font-weight:500;color:var(--encre-4);
+            padding-top:.22rem;font-variant-numeric:tabular-nums}
+.sommaire a{color:var(--encre-2);text-decoration:none;border-bottom:1px solid transparent}
+.sommaire a:hover{color:var(--encre);border-bottom-color:var(--bord-fort)}
+
+/* ═══ Fig. 1 — l'écart ═══════════════════════════════════════════════════ */
+.fig{margin:var(--e6) 0 0}
+.fig svg{width:100%;height:auto;display:block;overflow:visible}
+.fig figcaption{font-size:.875rem;color:var(--encre-2);margin-top:var(--e4);
+                max-width:64ch;border-left:2px solid var(--signal);padding-left:var(--e4)}
+.tracer-svg{stroke-dasharray:var(--len);stroke-dashoffset:var(--len);
+            transition:stroke-dashoffset 1600ms var(--courbe)}
+.joue .tracer-svg{stroke-dashoffset:0}
+.jalon{opacity:0;transition:opacity 340ms var(--courbe)}
+.joue .jalon{opacity:1}
+.joue .jalon:nth-of-type(1){transition-delay:520ms}
+.joue .jalon:nth-of-type(2){transition-delay:820ms}
+.joue .jalon:nth-of-type(3){transition-delay:1120ms}
+.joue .jalon:nth-of-type(4){transition-delay:1420ms}
+
+/* ═══ 01 · attention partagée ════════════════════════════════════════════ */
+.consigne{position:relative;display:grid;gap:var(--e3);
+          grid-template-columns:repeat(3,minmax(0,1fr));transition:all var(--lent) var(--courbe)}
+.consigne.jointe{grid-template-columns:minmax(0,1fr);justify-items:center}
+.consigne.jointe .schema{width:100%;max-width:26rem}
+.consigne.jointe .bloc--texte,.consigne.jointe .bloc--legende{display:none}
+.bloc{border:1px solid var(--bord);border-radius:var(--r2);background:var(--fond-2);
+      padding:var(--e4);font-size:.8125rem;line-height:1.5}
+.bloc h4{font-family:var(--mono);font-size:.625rem;letter-spacing:.1em;text-transform:uppercase;
+         color:var(--encre-4);margin:0 0 var(--e2);font-weight:500}
+.schema{position:relative}
+.schema svg{width:100%;max-width:24rem;height:auto;display:block;margin:0 auto}
+.schema .trait{fill:none;stroke:var(--bord-fort);stroke-width:1.4}
+.schema .corps{fill:var(--fond-3);stroke:var(--bord-fort);stroke-width:1.4}
+.schema .etiq{font-family:var(--mono);font-size:8px;fill:var(--encre-2);opacity:0;
+              transition:opacity var(--moyen) var(--courbe)}
+.schema .amorce{stroke:var(--mesure);stroke-width:1;opacity:0;
+                transition:opacity var(--moyen) var(--courbe)}
+.consigne.jointe .schema .etiq,.consigne.jointe .schema .amorce{opacity:1}
+.oeil{position:absolute;width:14px;height:14px;border-radius:50%;background:var(--signal);
+      box-shadow:0 0 0 4px color-mix(in srgb,var(--signal) 24%,transparent);
+      pointer-events:none;left:0;top:0;opacity:0;transition:opacity var(--vif) linear}
+.oeil.va{opacity:1}
+
+/* ═══ 02 · l'estompage ═══════════════════════════════════════════════════ */
+.trois{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--e3)}
+.etape{border:1px solid var(--bord);border-radius:var(--r2);background:var(--fond-2);
+       padding:var(--e4);display:flex;flex-direction:column;gap:var(--e2);
+       transition:border-color var(--moyen) var(--courbe),box-shadow var(--moyen)}
+.etape__n{font-family:var(--mono);font-size:.625rem;letter-spacing:.1em;text-transform:uppercase;
+          color:var(--encre-4)}
+.etape__t{font-family:var(--display);font-size:.9375rem;font-weight:600;color:var(--encre)}
+.lettre-modele{font-size:.75rem;line-height:1.65;display:flex;flex-direction:column;gap:.3rem}
+.trou{display:inline-block;min-width:5.5em;border-bottom:1.5px solid var(--signal);
+      color:transparent;user-select:none}
+.vide{color:var(--encre-4);font-style:italic}
+.etape.sonne{border-color:var(--mesure);box-shadow:0 0 0 3px var(--mesure-voile)}
+.verdict{margin-top:var(--e4);border-left:2px solid var(--mesure);padding-left:var(--e4);min-height:5rem}
+.verdict__q{font-family:var(--mono);font-size:.6875rem;letter-spacing:.1em;text-transform:uppercase;
+            color:var(--encre-4)}
+.verdict__r{font-family:var(--display);font-size:1.0625rem;font-weight:600;color:var(--encre);
+            margin:var(--e1) 0}
+.verdict__d{font-size:.875rem;max-width:54ch}
+.bascule{display:inline-flex;border:1px solid var(--bord-fort);border-radius:var(--r1);overflow:hidden}
+.bascule button{appearance:none;border:0;background:var(--fond);cursor:pointer;padding:.45rem .9rem;
+                font-family:var(--mono);font-size:.75rem;color:var(--encre-3);
+                transition:background var(--vif),color var(--vif)}
+.bascule button[aria-pressed="true"]{background:var(--action);color:var(--action-encre)}
+
+/* ═══ 03 · les deux courbes ══════════════════════════════════════════════ */
+.graphe{width:100%;height:auto;display:block;overflow:visible}
+.graphe .axe{stroke:var(--bord-fort);stroke-width:1}
+.graphe .grille{stroke:var(--bord);stroke-width:1;stroke-dasharray:2 4}
+.graphe .lg{font-family:var(--mono);font-size:9px;fill:var(--encre-3)}
+.graphe .courbe{fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;
+                stroke-dasharray:520;stroke-dashoffset:520;
+                transition:stroke-dashoffset 1400ms var(--courbe)}
+.graphe.joue .courbe{stroke-dashoffset:0}
+.graphe .pt{opacity:0;transition:opacity 300ms var(--courbe) 1200ms}
+.graphe.joue .pt{opacity:1}
+.legendes{display:flex;gap:var(--e5);flex-wrap:wrap;margin-top:var(--e4)}
+.legende{display:flex;gap:var(--e2);align-items:flex-start;font-size:.8125rem;max-width:26rem}
+.legende i{width:14px;height:3px;border-radius:2px;margin-top:.58rem;flex:none}
+.legende b{font-family:var(--display);display:block}
+.avert{font-family:var(--mono);font-size:.6875rem;color:var(--encre-4);margin-top:var(--e4);
+       border-top:1px dashed var(--bord);padding-top:var(--e3)}
+
+/* ═══ 04 · le pupitre d'arbitrage ════════════════════════════════════════ */
+.onglets{display:flex;gap:var(--e2);flex-wrap:wrap;margin-bottom:var(--e5)}
+.onglet{appearance:none;border:1px solid var(--bord-fort);background:var(--fond);cursor:pointer;
+        border-radius:var(--r1);padding:.5rem .875rem;font-family:var(--mono);font-size:.75rem;
+        color:var(--encre-3);transition:background var(--vif),color var(--vif),border-color var(--vif)}
+.onglet[aria-selected="true"]{background:var(--action);color:var(--action-encre);border-color:var(--action)}
+.bornes{display:flex;justify-content:space-between;gap:var(--e4);align-items:flex-start}
+.borne{font-family:var(--display);font-size:1.0625rem;font-weight:600;color:var(--encre-4);
+       transition:color var(--moyen) var(--courbe);max-width:14ch}
+.borne:last-child{text-align:right}
+.borne.tire{color:var(--encre)}
+.glissiere{width:100%;margin:var(--e4) 0 var(--e2);appearance:none;background:none;height:28px;cursor:grab}
+.glissiere:active{cursor:grabbing}
+.glissiere::-webkit-slider-runnable-track{height:3px;background:var(--bord-fort);border-radius:2px}
+.glissiere::-moz-range-track{height:3px;background:var(--bord-fort);border-radius:2px}
+.glissiere::-webkit-slider-thumb{appearance:none;width:20px;height:20px;border-radius:50%;
+    background:var(--action);border:3px solid var(--fond);margin-top:-8.5px;
+    box-shadow:0 0 0 1px var(--bord-fort)}
+.glissiere::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--action);
+    border:3px solid var(--fond);box-shadow:0 0 0 1px var(--bord-fort)}
+.crans{display:flex;justify-content:space-between;font-family:var(--mono);font-size:.625rem;
+       letter-spacing:.06em;text-transform:uppercase;color:var(--encre-4)}
+.balance{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--e4);margin-top:var(--e5)}
+.plateau{border-radius:var(--r2);padding:var(--e4);border:1px solid var(--bord);background:var(--fond-2)}
+.plateau__t{font-family:var(--mono);font-size:.625rem;letter-spacing:.1em;text-transform:uppercase;
+            margin-bottom:var(--e2);color:var(--encre-3)}
+.plateau--cout{background:var(--signal-voile);border-color:color-mix(in srgb,var(--signal) 30%,transparent)}
+.plateau--cout .plateau__t{color:var(--signal)}
+.plateau p{font-size:.875rem;transition:opacity var(--vif)}
+.plateau.change p{opacity:0}
+.variable{margin-top:var(--e5);border-top:1px solid var(--bord);padding-top:var(--e4);
+          display:flex;gap:var(--e4);align-items:flex-start}
+.variable__t{font-family:var(--mono);font-size:.6875rem;letter-spacing:.1em;text-transform:uppercase;
+             color:var(--mesure);white-space:nowrap;padding-top:.15rem}
+.variable p{font-size:.9375rem;color:var(--encre);max-width:56ch}
+
+/* ═══ 05 · les vingt autres ══════════════════════════════════════════════ */
+.defile{margin-top:var(--e6);overflow:hidden;
+        width:100vw;position:relative;left:50%;transform:translateX(-50%);
+        -webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);
+        mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.piste{display:flex;gap:var(--e3);width:max-content;
+       animation:glisser var(--duree,64s) linear infinite}
+.piste--retour{animation-direction:reverse;margin-top:var(--e3)}
+.defile:hover .piste{animation-play-state:paused}
+@keyframes glisser{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.quest{display:flex;flex-direction:column;gap:.15rem;flex:none;
+       border:1px solid var(--bord);border-radius:var(--r2);background:var(--fond);
+       padding:var(--e3) var(--e4);max-width:23rem}
+.quest b{font-family:var(--display);font-size:.875rem;font-weight:600;color:var(--encre);
+         line-height:1.3;white-space:normal}
+.quest s{text-decoration:none;font-family:var(--mono);font-size:.625rem;letter-spacing:.08em;
+         text-transform:uppercase;color:var(--encre-4)}
+.quest[data-vu="1"]{border-color:var(--mesure);background:var(--mesure-voile)}
+.quest[data-vu="1"] s{color:var(--mesure)}
+.compte{display:flex;gap:var(--e8);margin-top:var(--e6);flex-wrap:wrap}
+.chiffre{display:flex;align-items:baseline;gap:var(--e3)}
+.compte b{font-family:var(--display);font-size:clamp(2.25rem,5.5vw,3.75rem);font-weight:700;
+          color:var(--encre);letter-spacing:-.04em;line-height:1;font-variant-numeric:tabular-nums}
+.compte s{text-decoration:none;font-family:var(--mono);font-size:.6875rem;letter-spacing:.1em;
+          text-transform:uppercase;color:var(--encre-3);line-height:1.5}
+
+/* ═══ Clôture ════════════════════════════════════════════════════════════ */
+.renvoi{display:inline-flex;align-items:center;gap:var(--e2);margin-top:var(--e5);
+        font-family:var(--mono);font-size:.8125rem;color:var(--encre);text-decoration:none;
+        border-bottom:1px solid var(--bord-fort);padding-bottom:.2rem}
+.renvoi:hover{border-color:var(--encre)}
+.colophon{margin-top:var(--e8);font-family:var(--mono);font-size:.6875rem;color:var(--encre-4);
+          line-height:1.7;max-width:60ch}
+
+@media (max-width:880px){
+  .ouverture{grid-template-columns:minmax(0,1fr);gap:var(--e6)}
+  .roue{max-width:17rem}
+  .consigne,.trois,.balance{grid-template-columns:minmax(0,1fr)}
+  .sect{padding-block:var(--e8)}
+}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;
+                       transition-duration:.01ms!important}
+  .roue .arc--vif,.tracer-svg,.graphe .courbe{stroke-dashoffset:0}
+  .jalon,.graphe .pt{opacity:1}
+  .piste{animation:none;flex-wrap:wrap;width:auto}
+  .defile{-webkit-mask-image:none;mask-image:none}
+}
+</style>
+
+<nav class="rail" aria-label="Sommaire">
+  <a href="#ouverture" aria-current="true"><b>00</b><i></i></a>
+  <a href="#ecart"><b>01</b><i></i></a>
+  <a href="#partagee"><b>02</b><i></i></a>
+  <a href="#estompage"><b>03</b><i></i></a>
+  <a href="#difficultes"><b>04</b><i></i></a>
+  <a href="#pupitre"><b>05</b><i></i></a>
+  <a href="#index"><b>06</b><i></i></a>
+  <a href="#clore"><b>07</b><i></i></a>
+</nav>
+
+<!-- ═══ 00 · ouverture ═══════════════════════════════════════════════════ -->
+<section class="sect" id="ouverture">
+ <div class="colonne">
+  <div class="marque">Dan<i>i</i>el Tousignant · conception pédagogique</div>
+  <div class="ouverture">
+    <div>
+      <h1 class="affiche">La boucle diagnostic</h1>
+      <p class="dit" style="max-width:44ch">Quelques résultats de recherche, montrés
+        plutôt que cités — parce qu'un effet qu'on décrit reste une affirmation, et
+        qu'un effet qu'on voit opérer devient un instrument.</p>
+      <ol class="sommaire">
+        <li><b>01</b><a href="#ecart">L'écart entre ce qu'on enseigne et ce qui s'apprend</a></li>
+        <li><b>02</b><a href="#partagee">Ce que coûte une légende à côté du schéma</a></li>
+        <li><b>03</b><a href="#estompage">L'exemple résolu, et le moment où il se retourne</a></li>
+        <li><b>04</b><a href="#difficultes">Ce qui se voit en séance, et ce qui reste</a></li>
+        <li><b>05</b><a href="#pupitre">Le pupitre — quand deux résultats se contredisent</a></li>
+        <li><b>06</b><a href="#index">Les vingt autres, et l'art d'analyser un module</a></li>
+      </ol>
+    </div>
+    <svg class="roue" viewBox="0 0 240 240" role="img" aria-label="La boucle du diagnostic : quatre moments qui se relancent.">
+      <circle class="moyeu" cx="120" cy="120" r="44"></circle>
+      <text x="120" y="112" text-anchor="middle">LE MATÉRIEL</text>
+      <text x="120" y="124" text-anchor="middle">EST UNE</text>
+      <text x="120" y="136" text-anchor="middle">HYPOTHÈSE</text>
+      <g fill="none">
+        <path class="arc" d="M120 44 A76 76 0 0 1 196 120"></path>
+        <path class="arc" d="M196 120 A76 76 0 0 1 120 196"></path>
+        <path class="arc" d="M120 196 A76 76 0 0 1 44 120"></path>
+        <path class="arc" d="M44 120 A76 76 0 0 1 120 44"></path>
+        <path class="arc arc--vif" style="animation-delay:0s"   d="M120 44 A76 76 0 0 1 196 120"></path>
+        <path class="arc arc--vif" style="animation-delay:1.3s" d="M196 120 A76 76 0 0 1 120 196"></path>
+        <path class="arc arc--vif" style="animation-delay:2.6s" d="M120 196 A76 76 0 0 1 44 120"></path>
+        <path class="arc arc--vif" style="animation-delay:3.9s" d="M44 120 A76 76 0 0 1 120 44"></path>
+      </g>
+      <text class="lettre" x="192" y="40"  text-anchor="middle">A</text>
+      <text class="lettre" x="192" y="212" text-anchor="middle">B</text>
+      <text class="lettre" x="48"  y="212" text-anchor="middle">C</text>
+      <text class="lettre" x="48"  y="40"  text-anchor="middle">D</text>
+      <text x="192" y="52"  text-anchor="middle">ENTRÉE</text>
+      <text x="192" y="224" text-anchor="middle">CONCEPTION</text>
+      <text x="48"  y="224" text-anchor="middle">USAGE</text>
+      <text x="48"  y="52"  text-anchor="middle">DIDACTIQUE</text>
+    </svg>
+  </div>
+ </div>
+</section>
+
+<!-- ═══ 01 · l'écart ═════════════════════════════════════════════════════ -->
+<section class="sect sect--pose" id="ecart">
+ <div class="colonne">
+  <div class="chapeau"><em>Toute conception est une hypothèse</em></div>
+  <h2 class="these">Ce qu'on a voulu enseigner n'est jamais ce qui est appris.</h2>
+  <p class="dit">L'écart existe dès le premier jet, et il ne se referme pas par le
+    raisonnement. Il ne bouge qu'aux moments où du matériel inachevé passe devant de
+    vraies personnes — et il rebouge à chaque fois.</p>
+
+  <figure class="fig" id="figEcart">
+    <svg viewBox="0 0 640 232" role="img" aria-labelledby="fig1t">
+      <title id="fig1t">Deux courbes, l'intention de conception et l'effet réel, qui se rapprochent par paliers à chaque essai avec le public cible.</title>
+      <defs>
+        <pattern id="hach" width="7" height="7" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+          <line x1="0" y1="0" x2="0" y2="7" stroke="var(--mesure)" stroke-width="1" opacity=".22"></line>
+        </pattern>
+      </defs>
+      <line x1="60" y1="200" x2="612" y2="200" stroke="var(--bord-fort)" stroke-width="1"></line>
+      <path d="M60,182 L140,176 L146,144 L260,140 L266,112 L380,108 L386,84 L500,80 L506,60 L600,56 L600,48 C420,52 200,58 60,70 Z"
+            fill="url(#hach)" stroke="none"></path>
+      <path class="tracer-svg" style="--len:600" d="M60,70 C200,58 420,52 600,48"
+            fill="none" stroke="var(--encre)" stroke-width="2"></path>
+      <path class="tracer-svg" style="--len:700"
+            d="M60,182 L140,176 L146,144 L260,140 L266,112 L380,108 L386,84 L500,80 L506,60 L600,56"
+            fill="none" stroke="var(--mesure)" stroke-width="2"></path>
+      <g class="jalon"><line x1="143" y1="60" x2="143" y2="186" stroke="var(--signal)" stroke-width="1.2" stroke-dasharray="3 3"></line><circle cx="143" cy="60" r="3.2" fill="var(--signal)"></circle><text x="143" y="46" text-anchor="middle" fill="var(--signal)" font-family="Roboto Mono, monospace" font-size="10">E1</text></g>
+      <g class="jalon"><line x1="263" y1="56" x2="263" y2="150" stroke="var(--signal)" stroke-width="1.2" stroke-dasharray="3 3"></line><circle cx="263" cy="56" r="3.2" fill="var(--signal)"></circle><text x="263" y="42" text-anchor="middle" fill="var(--signal)" font-family="Roboto Mono, monospace" font-size="10">E2</text></g>
+      <g class="jalon"><line x1="383" y1="53" x2="383" y2="118" stroke="var(--signal)" stroke-width="1.2" stroke-dasharray="3 3"></line><circle cx="383" cy="53" r="3.2" fill="var(--signal)"></circle><text x="383" y="39" text-anchor="middle" fill="var(--signal)" font-family="Roboto Mono, monospace" font-size="10">E3</text></g>
+      <g class="jalon"><line x1="503" y1="50" x2="503" y2="90" stroke="var(--signal)" stroke-width="1.2" stroke-dasharray="3 3"></line><circle cx="503" cy="50" r="3.2" fill="var(--signal)"></circle><text x="503" y="36" text-anchor="middle" fill="var(--signal)" font-family="Roboto Mono, monospace" font-size="10">E4</text></g>
+      <g font-family="Roboto Mono, monospace" font-size="10" fill="var(--encre-2)" letter-spacing="1">
+        <text x="60" y="220">PREMIER JET</text>
+        <text x="612" y="220" text-anchor="end">MISE EN SERVICE</text>
+        <text x="62" y="26" fill="var(--encre)">CE QU'ON A VOULU ENSEIGNER</text>
+        <text x="60" y="194" fill="var(--mesure)">CE QUI EST RÉELLEMENT APPRIS</text>
+        <text x="205" y="120" fill="var(--mesure)">écart</text>
+      </g>
+    </svg>
+    <figcaption><b>Fig. 1</b> — La courbe basse ne monte qu'aux moments
+      <b style="color:var(--signal)">E1 à E4</b>, où du matériel inachevé a été mis
+      devant de vrais apprenants. Entre deux essais, le concepteur travaille à
+      l'aveugle — d'où l'intérêt de <b>rapprocher les essais</b> plutôt que de les
+      perfectionner.</figcaption>
+  </figure>
+  <div class="cmds"><button class="cmd" data-rejouer="figEcart">Rejouer le tracé</button></div>
+ </div>
+</section>
+
+<!-- ═══ 02 · attention partagée ══════════════════════════════════════════ -->
+<section class="sect" id="partagee">
+ <div class="colonne">
+  <div class="chapeau"><em>Attention partagée</em> <s>Chandler &amp; Sweller, 1992</s></div>
+  <h2 class="these">Pourquoi une figure et sa légende séparées coûtent-elles si cher&nbsp;?</h2>
+  <p class="dit">Le contenu est juste, complet, bien écrit. Mais l'apprenant doit croiser
+    du regard trois blocs pour reconstituer une seule information — et chaque
+    aller-retour se paie en mémoire de travail, celle-là même qui devrait servir à
+    comprendre.</p>
+
+  <div class="banc">
+    <div class="banc__tete">
+      <span class="banc__nom">Consigne de sécurité · même contenu, deux mises en page</span>
+      <span class="compteur">Croisements du regard <b id="cpt">0</b></span>
+    </div>
+    <div class="consigne" id="consigne">
+      <div class="bloc bloc--texte">
+        <h4>Le texte</h4>
+        Couper l'alimentation au sectionneur <b>(1)</b>. Vérifier l'absence de tension
+        au point de contrôle <b>(2)</b>. Poser le cadenas et la plaquette nominative
+        <b>(3)</b> avant toute intervention.
+      </div>
+      <div class="bloc schema">
+        <h4>Le schéma</h4>
+        <svg viewBox="0 0 200 118" aria-label="Coffret électrique : sectionneur, point de contrôle, cadenas.">
+          <rect class="corps" x="52" y="16" width="96" height="86" rx="4"></rect>
+          <rect class="corps" x="68" y="30" width="28" height="18" rx="2"></rect>
+          <circle class="corps" cx="120" cy="39" r="9"></circle>
+          <path class="trait" d="M74 74h52"></path>
+          <circle class="corps" cx="86" cy="86" r="7"></circle>
+          <line class="amorce" x1="82" y1="39" x2="34" y2="30"></line>
+          <line class="amorce" x1="129" y1="39" x2="176" y2="30"></line>
+          <line class="amorce" x1="86" y1="93" x2="46" y2="106"></line>
+          <text class="etiq" x="2"   y="28">1 · SECTIONNEUR</text>
+          <text class="etiq" x="138" y="28">2 · CONTRÔLE</text>
+          <text class="etiq" x="2"   y="112">3 · CADENAS</text>
+        </svg>
+        <div class="oeil" id="oeil"></div>
+      </div>
+      <div class="bloc bloc--legende">
+        <h4>La légende</h4>
+        <b>1</b> — sectionneur général, en position basse.<br>
+        <b>2</b> — point de contrôle, voyant éteint.<br>
+        <b>3</b> — cadenas personnel, une clé unique.
+      </div>
+    </div>
+    <div class="cmds">
+      <button class="cmd cmd--plein" id="btLire">Lire la version en trois blocs</button>
+      <button class="cmd" id="btJoindre">Rassembler en un schéma annoté</button>
+    </div>
+  </div>
+
+  <div class="bilan">
+    <span class="bilan__et">Ce que ça change</span>
+    <p>Aucune notion n'a été retirée. Seule la distance entre l'information et
+      l'endroit où elle sert a changé. <b>Vérifier chez vos apprenants&nbsp;:</b>
+      chronométrer le délai avant la première action et compter les relectures de
+      consigne — la surcharge se voit avant de s'entendre.</p>
+  </div>
+ </div>
+</section>
+
+<!-- ═══ 03 · l'estompage ═════════════════════════════════════════════════ -->
+<section class="sect sect--pose" id="estompage">
+ <div class="colonne">
+  <div class="chapeau"><em>Exemple entièrement résolu</em> <s>Sweller &amp; Cooper, 1985 · Kalyuga et coll., 2003</s></div>
+  <h2 class="these">Faut-il faire chercher tout de suite, ou montrer d'abord&nbsp;?</h2>
+  <p class="dit">Chez le débutant, étudier un exemple complet apprend davantage — et plus
+    vite — que résoudre un problème équivalent. On retire ensuite l'appui, cran par
+    cran. Mais cet appui a une date de péremption.</p>
+
+  <div class="banc">
+    <div class="banc__tete">
+      <span class="banc__nom">Rédiger un courriel de refus · trois items, trois minutes chacun</span>
+      <div class="bascule" role="group" aria-label="Public">
+        <button id="btDebutant" aria-pressed="true">Débutant</button>
+        <button id="btAvance" aria-pressed="false">Déjà capable</button>
+      </div>
+    </div>
+    <div class="trois">
+      <div class="etape">
+        <span class="etape__n">Item 1 · l'exemple</span>
+        <span class="etape__t">Entièrement écrit</span>
+        <div class="lettre-modele">
+          <span>Madame Nguyen,</span>
+          <span>Nous avons étudié votre candidature avec attention.</span>
+          <span>Nous ne pourrons pas y donner suite cette fois-ci.</span>
+          <span>Nous conservons votre dossier pour six mois.</span>
+        </div>
+      </div>
+      <div class="etape">
+        <span class="etape__n">Item 2 · l'exemple à trous</span>
+        <span class="etape__t">Deux phrases à écrire</span>
+        <div class="lettre-modele">
+          <span>Monsieur Diallo,</span>
+          <span><span class="trou">............</span></span>
+          <span>Nous ne pourrons pas y donner suite cette fois-ci.</span>
+          <span><span class="trou">............</span></span>
+        </div>
+      </div>
+      <div class="etape">
+        <span class="etape__n">Item 3 · le problème</span>
+        <span class="etape__t">La situation seule</span>
+        <div class="lettre-modele">
+          <span class="vide">Un candidat retenu en deuxième position vous relance.
+            Le poste est pourvu. Vous voulez garder le lien.</span>
+        </div>
+      </div>
+    </div>
+    <div class="verdict" id="verdict">
+      <div class="verdict__q">Au troisième item</div>
+      <div class="verdict__r" id="vR">Réussi, en trois minutes.</div>
+      <div class="verdict__d" id="vD">L'appui a été retiré au bon rythme : ce qui restait
+        à faire tenait dans ce que l'exemple avait montré.</div>
+    </div>
+    <div class="cmds"><button class="cmd cmd--plein" id="btEstomper">Dérouler les trois items</button></div>
+  </div>
+
+  <div class="bilan">
+    <span class="bilan__et">La limite</span>
+    <p>L'effet s'inverse dès que l'apprenant sait faire&nbsp;: l'exemple devient alors du
+      bruit à traiter. <b>Vérifier chez vos apprenants&nbsp;:</b> comparer, sur deux
+      sous-groupes, le temps et le taux d'erreur <b>au troisième item</b> — jamais au
+      premier, où tout le monde réussit.</p>
+  </div>
+ </div>
+</section>
+
+<!-- ═══ 04 · difficultés désirables ══════════════════════════════════════ -->
+<section class="sect" id="difficultes">
+ <div class="colonne">
+  <div class="chapeau"><em>Difficultés désirables · effet de test</em> <s>Bjork &amp; Bjork, 2011 · Roediger &amp; Karpicke, 2006</s></div>
+  <h2 class="these">Ce qui se voit en séance n'est pas ce qui reste.</h2>
+  <p class="dit">Relire un texte donne une séance qui se passe bien. Se tester dessus donne
+    une séance qui se passe moins bien — et un souvenir qui tient. Les deux courbes se
+    croisent quelque part entre les deux, et c'est ce croisement qui rend le métier
+    difficile à défendre.</p>
+
+  <div class="banc">
+    <div class="banc__tete">
+      <span class="banc__nom">Forme de l'effet · relire vs se tester</span>
+      <button class="cmd" data-rejouer="graphe">Rejouer le tracé</button>
+    </div>
+    <svg class="graphe" id="graphe" viewBox="0 0 560 220" role="img"
+         aria-label="Deux courbes : relire part haut en séance puis chute à deux semaines ; se tester part plus bas et se maintient.">
+      <line class="grille" x1="60" y1="30"  x2="530" y2="30"></line>
+      <line class="grille" x1="60" y1="90"  x2="530" y2="90"></line>
+      <line class="grille" x1="60" y1="150" x2="530" y2="150"></line>
+      <line class="axe" x1="60" y1="180" x2="530" y2="180"></line>
+      <line class="axe" x1="60" y1="20"  x2="60"  y2="180"></line>
+      <text class="lg" x="52" y="34"  text-anchor="end">HAUT</text>
+      <text class="lg" x="52" y="184" text-anchor="end">BAS</text>
+      <text class="lg" x="60"  y="200">FIN DE SÉANCE</text>
+      <text class="lg" x="295" y="200" text-anchor="middle">UNE SEMAINE</text>
+      <text class="lg" x="530" y="200" text-anchor="end">DEUX SEMAINES</text>
+      <path class="courbe" stroke="var(--signal)" d="M60 42 C 180 58, 250 104, 330 132 S 460 164, 530 168"></path>
+      <path class="courbe" stroke="var(--mesure)" d="M60 96 C 180 100, 250 104, 330 108 S 460 114, 530 116"></path>
+      <circle class="pt" cx="530" cy="168" r="4" fill="var(--signal)"></circle>
+      <circle class="pt" cx="530" cy="116" r="4" fill="var(--mesure)"></circle>
+      <circle class="pt" cx="60" cy="42" r="4" fill="var(--signal)"></circle>
+      <circle class="pt" cx="60" cy="96" r="4" fill="var(--mesure)"></circle>
+    </svg>
+    <div class="legendes">
+      <div class="legende"><i style="background:var(--signal)"></i>
+        <span><b>Relire</b>La séance est bonne, la satisfaction est haute, et il ne reste
+          presque rien à deux semaines.</span></div>
+      <div class="legende"><i style="background:var(--mesure)"></i>
+        <span><b>Se tester</b>La séance est visiblement moins bonne. C'est l'effort de
+          récupération qui fabrique la trace.</span></div>
+    </div>
+    <p class="avert">Forme d'effet, non des données. Les deux tracés disent le sens et
+      l'ordre de grandeur du phénomène, pas les valeurs d'une étude particulière.</p>
+  </div>
+
+  <div class="bilan">
+    <span class="bilan__et">Ce que ça coûte</span>
+    <p>Le concepteur qui applique ce résultat produit des séances qui <em>paraissent</em>
+      moins réussies, et des évaluations de satisfaction en baisse. <b>À expliquer
+      d'avance</b> — sinon c'est lui qu'on juge, sur la seule mesure que le commanditaire
+      a sous les yeux.</p>
+  </div>
+ </div>
+</section>
+
+<!-- ═══ 05 · le pupitre ══════════════════════════════════════════════════ -->
+<section class="sect sect--pose" id="pupitre">
+ <div class="colonne">
+  <div class="chapeau"><em>Les acquis ne se composent pas d'eux-mêmes</em></div>
+  <h2 class="these">Ces résultats se contredisent. Ce n'est pas une faiblesse de la recherche.</h2>
+  <p class="dit">La charge cognitive demande d'alléger&nbsp;; les difficultés désirables
+    demandent d'alourdir. Le guidage explicite fait produire tout de suite&nbsp;; la
+    découverte fait construire la démarche. Ces énoncés sont tous vrais — ils ne
+    s'appliquent simplement pas au même apprenant, au même moment.</p>
+  <p class="dit">Un concepteur ne choisit pas un camp. <b>Il place un curseur, nomme ce
+    qu'il paie pour ce qu'il gagne, et identifie la variable qui décide où le curseur
+    devrait être.</b> Déplacez-le&nbsp;: les deux plateaux changent ensemble.</p>
+
+  <div class="banc">
+    <div class="onglets" role="tablist" aria-label="Tension">
+      <button class="onglet" role="tab" aria-selected="true"  data-t="0">Guider ou faire découvrir</button>
+      <button class="onglet" role="tab" aria-selected="false" data-t="1">Facile ou difficile à dessein</button>
+    </div>
+    <div class="bornes">
+      <span class="borne" id="bG">Guider explicitement</span>
+      <span class="borne" id="bD">Faire découvrir</span>
+    </div>
+    <input class="glissiere" id="curseur" type="range" min="0" max="2" step="1" value="1"
+           aria-label="Position du curseur entre les deux bornes">
+    <div class="crans"><span id="c0">Guidage</span><span id="c1">Étayage</span><span id="c2">Découverte</span></div>
+    <div class="balance">
+      <div class="plateau plateau--gain" id="plG">
+        <div class="plateau__t">Ce qu'on gagne</div>
+        <p id="pGain"></p>
+      </div>
+      <div class="plateau plateau--cout" id="plC">
+        <div class="plateau__t">Ce qu'on paie</div>
+        <p id="pCout"></p>
+      </div>
+    </div>
+    <div class="variable">
+      <span class="variable__t">La variable qui règle</span>
+      <p id="pVar"></p>
+    </div>
+  </div>
+ </div>
+</section>
+
+<!-- ═══ 06 · les vingt autres ════════════════════════════════════════════ -->
+<section class="sect" id="index">
+ <div class="colonne">
+  <div class="chapeau"><em>L'index des théories</em> <s>ce qui reste sur la table</s></div>
+  <h2 class="these">Quatre démonstrations, six résultats. Il en reste dix-huit.</h2>
+  <p class="dit">Chacun de ces résultats se ramène à une question qu'on peut poser à un
+    module de formation. Prises ensemble, elles ne forment pas une bibliographie&nbsp;:
+    elles forment une <b>grille d'analyse</b>. Analyser un module, c'est passer ces
+    questions sur lui, une à une, et noter à chaque fois si le matériel a une réponse.</p>
+  <p class="dit">Les questions en bleu sont celles que les sections précédentes ont
+    illustrées. Les autres attendent leur banc d'essai.</p>
+
+  <div class="compte">
+    <span class="chiffre"><b>24</b><s>questions à poser<br>à un module</s></span>
+    <span class="chiffre"><b style="color:var(--mesure)">6</b><s>illustrées<br>dans cette page</s></span>
+    <span class="chiffre"><b>18</b><s>qui attendent<br>leur banc d'essai</s></span>
+  </div>
+
+  <div class="defile" aria-label="Les vingt-quatre questions de l'index">
+    <div class="piste" style="--duree:78s" id="piste1"></div>
+    <div class="piste piste--retour" style="--duree:92s" id="piste2"></div>
+  </div>
+
+  <div class="bilan">
+    <span class="bilan__et">Ce que ça donne</span>
+    <p>Un module qui ne répond à aucune de ces questions n'est pas mauvais&nbsp;: il n'a
+      simplement pas été <em>conçu</em>, il a été rédigé. La grille ne juge pas le
+      contenu — elle repère les endroits où une décision de conception aurait dû être
+      prise et ne l'a pas été.</p>
+  </div>
+ </div>
+</section>
+
+<!-- ═══ 07 · clôture ═════════════════════════════════════════════════════ -->
+<section class="sect sect--pose" id="clore">
+ <div class="colonne">
+  <div class="chapeau"><em>Et c'est là que le diagnostic entre en scène</em></div>
+  <h2 class="affiche" style="font-size:clamp(1.75rem,4.2vw,2.75rem)">Aucun de ces curseurs
+    n'a de position juste dans l'absolu.</h2>
+  <p class="dit">Chacun a une position juste pour un public donné, sur un contenu donné, à
+    un moment donné du parcours — et cette position, personne ne peut la déduire d'un
+    fauteuil. Le diagnostic pédagogique est l'instrument qui règle les curseurs&nbsp;: on
+    met du matériel inachevé devant de vraies personnes, on observe, on interprète, on
+    modifie, on recommence.</p>
+  <p class="dit"><b>C'est pour cela que la boucle tourne au lieu d'avancer.</b></p>
+  <a class="renvoi" href="https://claude.ai/code/artifact/4e887431-3947-4e5c-b39b-a16a4b5281bf" target="_blank" rel="noopener">
+    Lire le dossier complet — 11 sections, 12 dispositifs manipulables
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+      <path d="M3 11L11 3M11 3H5M11 3v6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path>
+    </svg>
+  </a>
+  <p class="colophon">Essai en cours — six résultats sur les vingt-quatre de l'index.
+    Les exemples de consigne et de courriel sont fabriqués pour la démonstration.
+    Les tracés donnent la forme d'un effet, pas les données d'une étude.</p>
+ </div>
+</section>
+
+<script>
+(() => {
+  const doux = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ── Les animations se déclenchent à l'entrée dans le champ ─────────── */
+  const oeilleton = new IntersectionObserver((entrees) => {
+    entrees.forEach(e => { if (e.isIntersecting) e.target.classList.add('joue'); });
+  }, { threshold: .32 });
+  ['figEcart', 'graphe'].forEach(id => oeilleton.observe(document.getElementById(id)));
+  document.querySelectorAll('[data-rejouer]').forEach(b => {
+    b.addEventListener('click', () => {
+      const c = document.getElementById(b.dataset.rejouer);
+      c.classList.remove('joue');
+      void c.getBoundingClientRect();
+      requestAnimationFrame(() => c.classList.add('joue'));
+    });
+  });
+
+  /* ── Le rail suit la lecture ────────────────────────────────────────── */
+  const liens = [...document.querySelectorAll('.rail a')];
+  const sections = liens.map(a => document.querySelector(a.getAttribute('href')));
+  const suiveur = new IntersectionObserver((entrees) => {
+    entrees.forEach(e => {
+      if (!e.isIntersecting) return;
+      const i = sections.indexOf(e.target);
+      liens.forEach((a, k) => a.setAttribute('aria-current', k === i ? 'true' : 'false'));
+    });
+  }, { rootMargin: '-45% 0px -45% 0px' });
+  sections.forEach(s => suiveur.observe(s));
+
+  /* ── 02 · le regard qui traverse ────────────────────────────────────── */
+  const consigne = document.getElementById('consigne');
+  const oeil = document.getElementById('oeil'), cpt = document.getElementById('cpt');
+  let minuteurs = [];
+  const stop = () => { minuteurs.forEach(clearTimeout); minuteurs = []; oeil.classList.remove('va'); };
+  document.getElementById('btLire').addEventListener('click', () => {
+    stop();
+    consigne.classList.remove('jointe');
+    const cadre = consigne.querySelector('.schema').getBoundingClientRect();
+    const arret = sel => {
+      const r = consigne.querySelector(sel).getBoundingClientRect();
+      return { x: r.left - cadre.left + r.width / 2 - 7, y: r.top - cadre.top + r.height / 2 - 7 };
+    };
+    const chemin = ['.bloc--texte', '.schema', '.bloc--legende', '.schema',
+                    '.bloc--texte', '.schema', '.bloc--legende', '.schema',
+                    '.bloc--texte', '.schema', '.bloc--legende'];
+    cpt.textContent = '0';
+    oeil.classList.add('va');
+    const pas = doux ? 1 : 340;
+    chemin.forEach((sel, i) => minuteurs.push(setTimeout(() => {
+      const p = arret(sel);
+      oeil.style.transition = `transform ${pas - 60}ms cubic-bezier(.5,0,.5,1), opacity 180ms linear`;
+      oeil.style.transform = `translate(${p.x}px, ${p.y}px)`;
+      if (i > 0) cpt.textContent = String(i);
+    }, i * pas)));
+    minuteurs.push(setTimeout(stop, chemin.length * pas + 700));
+  });
+  document.getElementById('btJoindre').addEventListener('click', () => {
+    stop(); cpt.textContent = '0'; consigne.classList.add('jointe');
+  });
+
+  /* ── 03 · l'estompage et son retournement ───────────────────────────── */
+  const etapes = [...document.querySelectorAll('.etape')];
+  const vR = document.getElementById('vR'), vD = document.getElementById('vD');
+  const verdict = document.getElementById('verdict');
+  const btD = document.getElementById('btDebutant'), btA = document.getElementById('btAvance');
+  const VERDICTS = {
+    debutant: { r: 'Réussi, en trois minutes.', c: 'var(--mesure)',
+      d: "L'appui a été retiré au bon rythme : ce qui restait à faire tenait dans ce que l'exemple avait montré." },
+    avance: { r: "Plus lent qu'un problème posé d'emblée.", c: 'var(--signal)',
+      d: "Chez qui sait déjà faire, l'exemple n'est plus un appui : c'est du texte à lire et à mettre en correspondance avec une démarche qu'on avait déjà. C'est l'effet d'inversion de l'expertise." }
+  };
+  const choisir = p => {
+    const v = VERDICTS[p];
+    vR.textContent = v.r; vD.textContent = v.d;
+    verdict.style.borderLeftColor = v.c;
+    btD.setAttribute('aria-pressed', String(p === 'debutant'));
+    btA.setAttribute('aria-pressed', String(p === 'avance'));
+  };
+  btD.addEventListener('click', () => choisir('debutant'));
+  btA.addEventListener('click', () => choisir('avance'));
+  let mE = [];
+  document.getElementById('btEstomper').addEventListener('click', () => {
+    mE.forEach(clearTimeout); mE = [];
+    etapes.forEach(e => e.classList.remove('sonne'));
+    etapes.forEach((e, i) => mE.push(setTimeout(() => {
+      etapes.forEach(x => x.classList.remove('sonne'));
+      e.classList.add('sonne');
+    }, doux ? 1 : i * 760)));
+  });
+  choisir('debutant');
+
+  /* ── 05 · le pupitre, deux tensions ─────────────────────────────────── */
+  const TENSIONS = [
+    { g: 'Guider explicitement', d: 'Faire découvrir',
+      crans: ['Guidage', 'Étayage', 'Découverte'],
+      z: [
+        { gain: "Le débutant produit tout de suite, sans dépenser sa mémoire de travail à chercher quoi faire.",
+          cout: "Aucune occasion d'exercer le choix de la démarche : l'apprenant sait exécuter et ne sait pas décider." },
+        { gain: "Un modèle d'abord, un retrait ensuite : la structure classique de l'étayage.",
+          cout: "Le point de retrait est arbitraire tant qu'il n'est pas réglé sur des observations." },
+        { gain: "L'apprenant construit sa démarche, ce qui la rend disponible ailleurs.",
+          cout: "Chez le novice, une grande part du temps se dépense à chercher la tâche plutôt qu'à l'apprendre." }
+      ],
+      m: "L'expertise préalable. Le même support aide le débutant et gêne l'avancé — c'est l'effet d'inversion de l'expertise. La position juste change donc en cours de parcours, et se règle par une mesure d'entrée." },
+    { g: 'Rendre facile', d: 'Rendre difficile à dessein',
+      crans: ['Fluidité', 'Équilibre', 'Effort'],
+      z: [
+        { gain: "Réussite immédiate, sentiment de compétence, séance qui se passe bien.",
+          cout: "Ce qui n'a coûté aucun effort de récupération ne laisse presque rien à deux semaines." },
+        { gain: "Assez de fluidité pour tenir, assez d'effort pour marquer.",
+          cout: "L'équilibre dépend du contenu : il se cherche, il ne se déduit pas." },
+        { gain: "Récupération, variation, espacement : ce qui tient dans le temps.",
+          cout: "Performance en séance visiblement moins bonne, et évaluations de satisfaction en baisse. À expliquer, sinon c'est le concepteur qu'on juge." }
+      ],
+      m: "L'horizon visé. Pour une compétence à mobiliser dans six mois, la difficulté est un investissement ; pour un geste à poser dans dix minutes, c'est un coût pur." }
+  ];
+  const curseur = document.getElementById('curseur');
+  const bG = document.getElementById('bG'), bD = document.getElementById('bD');
+  const pGain = document.getElementById('pGain'), pCout = document.getElementById('pCout');
+  const pVar = document.getElementById('pVar');
+  const plG = document.getElementById('plG'), plC = document.getElementById('plC');
+  const crans = [0, 1, 2].map(i => document.getElementById('c' + i));
+  let tension = 0;
+
+  function rendre(anime) {
+    const T = TENSIONS[tension], n = +curseur.value, z = T.z[n];
+    const poser = () => {
+      pGain.textContent = z.gain; pCout.textContent = z.cout;
+      plG.classList.remove('change'); plC.classList.remove('change');
+    };
+    if (anime && !doux) {
+      plG.classList.add('change'); plC.classList.add('change');
+      setTimeout(poser, 170);
+    } else poser();
+    bG.textContent = T.g; bD.textContent = T.d;
+    T.crans.forEach((c, i) => crans[i].textContent = c);
+    pVar.textContent = T.m;
+    /* la borne vers laquelle on penche s'allume */
+    bG.classList.toggle('tire', n === 0);
+    bD.classList.toggle('tire', n === 2);
+  }
+  curseur.addEventListener('input', () => rendre(true));
+  document.querySelectorAll('.onglet').forEach(o => o.addEventListener('click', () => {
+    tension = +o.dataset.t;
+    document.querySelectorAll('.onglet').forEach(x =>
+      x.setAttribute('aria-selected', String(x === o)));
+    rendre(true);
+  }));
+  rendre(false);
+
+  /* ── 06 · le défilement des vingt-quatre questions ──────────────────── */
+  const QUESTIONS = [
+  {
+    "q": "Pourquoi un contenu juste et complet peut-il rester inapprenable ?",
+    "f": "Ils saturent",
+    "vu": true
+  },
+  {
+    "q": "Faut-il faire chercher tout de suite, ou montrer d'abord ?",
+    "f": "Ils saturent",
+    "vu": true
+  },
+  {
+    "q": "Pourquoi une figure et sa légende séparées coûtent-elles si cher ?",
+    "f": "Ils saturent",
+    "vu": true
+  },
+  {
+    "q": "Pourquoi un excellent support pour débutants nuit-il aux plus avancés ?",
+    "f": "Ils saturent",
+    "vu": true
+  },
+  {
+    "q": "Comment répartir l'information entre l'image, le texte et la voix ?",
+    "f": "Ils saturent",
+    "vu": false
+  },
+  {
+    "q": "L'anecdote qui capte l'attention aide-t-elle ?",
+    "f": "Ils saturent",
+    "vu": false
+  },
+  {
+    "q": "Comment aborder une procédure à douze étapes ?",
+    "f": "Ils saturent",
+    "vu": false
+  },
+  {
+    "q": "Pourquoi ce qui se passe bien en séance ne tient-il pas ?",
+    "f": "Ils oublient",
+    "vu": true
+  },
+  {
+    "q": "Relire ou se tester ?",
+    "f": "Ils oublient",
+    "vu": true
+  },
+  {
+    "q": "Une notion, combien de fois et quand ?",
+    "f": "Ils oublient",
+    "vu": false
+  },
+  {
+    "q": "Faut-il grouper les exercices d'un même type ?",
+    "f": "Ils oublient",
+    "vu": false
+  },
+  {
+    "q": "Quel est le bon niveau de difficulté ?",
+    "f": "Je ne sais pas par où commencer",
+    "vu": false
+  },
+  {
+    "q": "Découverte libre ou instruction guidée ?",
+    "f": "Je ne sais pas par où commencer",
+    "vu": false
+  },
+  {
+    "q": "Qu'est-ce qu'une bonne rétroaction ?",
+    "f": "Ils ne savent pas où ils en sont",
+    "vu": false
+  },
+  {
+    "q": "Pourquoi les apprenants travaillent-ils autre chose que ce que j'enseigne ?",
+    "f": "Je ne sais pas quoi évaluer",
+    "vu": false
+  },
+  {
+    "q": "Par quoi commence-t-on un projet ?",
+    "f": "Je ne sais pas quoi évaluer",
+    "vu": false
+  },
+  {
+    "q": "Comment enseigner une compétence qui ne se découpe pas ?",
+    "f": "Ils ne transfèrent pas",
+    "vu": false
+  },
+  {
+    "q": "Pourquoi ce qui est appris en salle ne ressort-il pas au travail ?",
+    "f": "Ils ne transfèrent pas",
+    "vu": false
+  },
+  {
+    "q": "Que perd-on à sortir une compétence de son milieu ?",
+    "f": "Ils ne transfèrent pas",
+    "vu": false
+  },
+  {
+    "q": "D'où vient l'engagement, une fois passée la nouveauté ?",
+    "f": "Ils décrochent",
+    "vu": false
+  },
+  {
+    "q": "Faut-il faire une vidéo, une capsule, une application ?",
+    "f": "Je ne sais pas par où commencer",
+    "vu": false
+  },
+  {
+    "q": "Faut-il adapter le support au canal préféré de chacun ?",
+    "f": "Ils décrochent",
+    "vu": false
+  },
+  {
+    "q": "Que faire d'une demande de formation ?",
+    "f": "Je ne sais pas par où commencer",
+    "vu": false
+  },
+  {
+    "q": "Que faire d'une erreur qui revient chez presque tout le monde ?",
+    "f": "Ils réussissent sans comprendre",
+    "vu": false
+  }
+];
+  const puce = q => {
+    const s = document.createElement('span');
+    s.className = 'quest';
+    if (q.vu) s.dataset.vu = '1';
+    const b = document.createElement('b'); b.textContent = q.q;
+    const t = document.createElement('s'); t.textContent = q.f;
+    s.append(b, t);
+    return s;
+  };
+  const remplir = (hote, liste) => {
+    /* deux exemplaires bout à bout : la translation de -50 % boucle sans saut */
+    [...liste, ...liste].forEach(q => hote.appendChild(puce(q)));
+  };
+  const moitie = Math.ceil(QUESTIONS.length / 2);
+  remplir(document.getElementById('piste1'), QUESTIONS.slice(0, moitie));
+  remplir(document.getElementById('piste2'), QUESTIONS.slice(moitie));
+})();
+</script>
+
+</body>
+</html>
