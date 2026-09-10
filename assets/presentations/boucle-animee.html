@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Le processus du diagnostic pédagogique — l'écart, la spirale, le cycle en cinq temps et ses six règles — puis des résultats de recherche montrés plutôt que cités.">
+<meta name="description" content="Le processus du diagnostic pédagogique montré en mouvement, et la page qui consigne ses propres révisions.">
 <title>La boucle diagnostic</title>
 <style>html{color-scheme:light dark}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 </head>
@@ -25,6 +25,14 @@
   --mesure:#2B4E9B; --mesure-2:#5C7EBF; --mesure-voile:#EAEFFA;
   --action:#18181B; --action-encre:#FAFAFA;
 
+  /* ── Trace — le rouge de ce qui a modifié cette page ────────────────
+     Rôle absent du système : --signal dit ce qu'on paie, --mesure ce que
+     la machine calcule, et aucun des deux ne peut dire « ceci a changé,
+     et voici pourquoi ». Les deux valeurs viennent du plan de design de
+     la pièce mère, où ce carmin était nommé et n'a jamais été posé.
+     Jamais pour du texte courant, jamais pour une action. ── */
+  --trace:#B5122F;
+
   --display:"Archivo",ui-sans-serif,system-ui,"Helvetica Neue",Arial,sans-serif;
   --corps:"Libre Franklin",ui-sans-serif,system-ui,"Helvetica Neue",Arial,sans-serif;
   --mono:"Roboto Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
@@ -45,6 +53,7 @@
     --signal:#FF7A45; --signal-voile:#2A1610;
     --mesure:#8FB2F0; --mesure-2:#6E8FCB; --mesure-voile:#18213A;
     --action:#FAFAFA; --action-encre:#18181B;
+    --trace:#F0736A;
   }
 }
 :root[data-theme="dark"]{
@@ -55,6 +64,7 @@
   --signal:#FF7A45; --signal-voile:#2A1610;
   --mesure:#8FB2F0; --mesure-2:#6E8FCB; --mesure-voile:#18213A;
   --action:#FAFAFA; --action-encre:#18181B;
+  --trace:#F0736A;
 }
 
 *,*::before,*::after{box-sizing:border-box}
@@ -385,6 +395,30 @@ b,strong{color:var(--encre);font-weight:600}
           letter-spacing:-.015em;margin-bottom:.15rem}
 .regle p{font-size:.875rem;line-height:1.5}
 
+/* ═══ Les traces de révision ═════════════════════════════════════════════ */
+/* Éteintes par défaut : la page se lit d'abord, elle se justifie ensuite. */
+.trace{display:none;font-family:var(--mono);font-size:11.5px;line-height:1.55;
+       color:var(--trace);border-left:2px solid var(--trace);
+       padding:2px 0 2px 12px;margin:var(--e5) 0 0;max-width:62ch}
+.trace b{color:var(--trace);font-weight:500}
+.trace em{font-style:normal;display:block;letter-spacing:.1em;text-transform:uppercase;
+          font-size:10px;margin-bottom:.25rem;opacity:.85}
+body.traces .trace{display:block;animation:entre .4s var(--courbe) both}
+@keyframes entre{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+
+.tampon{position:fixed;top:var(--e4);right:var(--e4);z-index:40;
+        display:inline-flex;align-items:center;gap:var(--e2);cursor:pointer;
+        background:var(--fond);border:1px solid var(--bord-fort);border-radius:var(--r1);
+        padding:.42rem .7rem;font-family:var(--mono);font-size:.6875rem;color:var(--encre-2);
+        transition:border-color var(--vif),color var(--vif)}
+.tampon:hover{border-color:var(--trace);color:var(--encre)}
+.tampon .voyant{width:7px;height:7px;border-radius:50%;background:var(--bord-fort);
+                transition:background var(--vif),box-shadow var(--vif)}
+.tampon[aria-pressed="true"]{border-color:var(--trace);color:var(--trace)}
+.tampon[aria-pressed="true"] .voyant{background:var(--trace);
+    box-shadow:0 0 0 3px color-mix(in srgb,var(--trace) 22%,transparent)}
+@media print{.trace{display:block!important;color:#000;border-color:#000}.tampon{display:none}}
+
 @media (max-width:880px){
   .ouverture{grid-template-columns:minmax(0,1fr);gap:var(--e6)}
   .roue{max-width:17rem}
@@ -405,6 +439,11 @@ b,strong{color:var(--encre);font-weight:600}
   .defile{-webkit-mask-image:none;mask-image:none}
 }
 </style>
+
+<button class="tampon" id="tampon" type="button" aria-pressed="false">
+  <span class="voyant" aria-hidden="true"></span>
+  <span id="tamponTxt">Traces de révision</span>
+</button>
 
 <nav class="rail" aria-label="Sommaire">
   <a href="#ouverture" aria-current="true"><b>00</b><i></i></a>
@@ -469,6 +508,21 @@ b,strong{color:var(--encre);font-weight:600}
       <text x="48"  y="52"  text-anchor="middle">DIDACTIQUE</text>
     </svg>
   </div>
+ 
+  <div class="trace">
+    <em>Révision 01 · demande du commanditaire</em>
+    Cette pièce était d'abord <b>six planches séparées</b>, qu'on parcourait aux
+    flèches. Demande&nbsp;: «&nbsp;qu'on puisse la lire comme un site, en défilant&nbsp;».
+    Le rail est passé de commande de navigation à repère de lecture, et les
+    animations ne se déclenchent plus au clic mais à l'entrée dans le champ.
+  </div>
+  <div class="trace">
+    <em>Contrôle 02 · lecture du rendu</em>
+    Les mots de la roue — ENTRÉE, CONCEPTION, USAGE, DIDACTIQUE — chevauchaient
+    l'anneau et devenaient illisibles. L'anneau a été réduit de 96 à 76&nbsp;px de
+    rayon et les libellés portés au-delà. <b>Trouvé en regardant une capture</b>,
+    pas en relisant le code.
+  </div>
  </div>
 </section>
 
@@ -522,6 +576,23 @@ b,strong{color:var(--encre);font-weight:600}
     <p>Deux figures posent le processus — l'écart, puis les quatre tours qui le réduisent.
       Viennent ensuite quatre démonstrations&nbsp;: des résultats de recherche qu'on peut
       faire tourner soi-même plutôt que les croire sur parole.</p>
+  </div>
+ 
+  <div class="trace">
+    <em>Révision 03 · demande du commanditaire</em>
+    La page entrait dans les démonstrations après quatre lignes. Demande&nbsp;:
+    «&nbsp;quelques paragraphes pour montrer l'importance du processus&nbsp;».
+    Cette ouverture fait maintenant <b>277 mots</b>.
+  </div>
+  <div class="trace">
+    <em>En attente · aucun essai de lecture</em>
+    Le dossier mère porte une trace qui contredit cette révision&nbsp;: sa
+    <b>Trace 01</b> dit qu'une ouverture de 480 mots a fait défiler un lecteur
+    jusqu'à la figure sans qu'il lise une ligne, et qu'elle a été ramenée à 190.
+    Les 277 mots ci-dessus <b>n'ont été lus par personne</b>. Les trois
+    conséquences ont été sorties du texte courant en cartes numérotées pour
+    qu'un lecteur qui défile attrape l'argument sans lire — mais c'est une
+    précaution, pas une mesure.
   </div>
  </div>
 </section>
@@ -620,6 +691,14 @@ b,strong{color:var(--encre);font-weight:600}
       revient à découvrir une faute de consigne pendant l'essai en classe — quand elle
       coûte cent fois plus cher qu'au moment du croquis.</p>
   </div>
+ 
+  <div class="trace">
+    <em>Révision 04 · demande du commanditaire</em>
+    «&nbsp;Après la figure un, on devrait aller à la figure deux.&nbsp;» La spirale
+    a été portée depuis le dossier avec sa géométrie exacte — même pas, même
+    rayon initial, mêmes 4,2 tours — et son tracé va de l'extérieur vers le
+    centre, dans le sens du travail.
+  </div>
  </div>
 </section>
 
@@ -690,6 +769,14 @@ b,strong{color:var(--encre);font-weight:600}
       explication en tête</b> — formuler les hypothèses concurrentes, choisir la
       contre-épreuve, décider. C'est l'étape qu'on saute, et c'est elle qui distingue un
       professionnel d'un amateur consciencieux.</p>
+  </div>
+ 
+  <div class="trace">
+    <em>Décision de conception 05</em>
+    Les cinq temps devaient être une liste. La source dit que l'interprétation
+    est «&nbsp;l'étape que l'on saute&nbsp;»&nbsp;: la bascule a été construite
+    pour que la page le <b>montre</b> au lieu de l'affirmer. En mode saut, la
+    suite jouée devient 1-2-3-4-2-3-4 — le cinquième nœud n'est jamais atteint.
   </div>
  </div>
 </section>
@@ -790,6 +877,15 @@ b,strong{color:var(--encre);font-weight:600}
       l'endroit où elle sert a changé. <b>Vérifier chez vos apprenants&nbsp;:</b>
       chronométrer le délai avant la première action et compter les relectures de
       consigne — la surcharge se voit avant de s'entendre.</p>
+  </div>
+ 
+  <div class="trace">
+    <em>Contrôle 06 · lecture du rendu</em>
+    Le schéma rassemblé s'étalait sur toute la largeur&nbsp;: une étiquette de
+    8&nbsp;px devenait énorme et poussait le titre de la section hors de l'écran.
+    Le schéma est plafonné à 24&nbsp;rem. <b>Le défaut était invisible dans le
+    code</b> — la règle qui le causait était correcte, c'est son effet qui ne
+    l'était pas.
   </div>
  </div>
 </section>
@@ -989,6 +1085,20 @@ b,strong{color:var(--encre);font-weight:600}
       contenu — elle repère les endroits où une décision de conception aurait dû être
       prise et ne l'a pas été.</p>
   </div>
+ 
+  <div class="trace">
+    <em>Contrôle 07 · contradiction interne</em>
+    Le titre annonçait «&nbsp;quatre effets montrés&nbsp;» au-dessus d'un
+    compteur qui en marquait six&nbsp;: les quatre démonstrations touchent en
+    fait <b>six</b> résultats de l'index. Le compte dit maintenant 24 / 6 / 18.
+  </div>
+  <div class="trace">
+    <em>Contrôle 08 · mesure, non regard</em>
+    Ce ruban était plus large que la page et rien ne le contenait&nbsp;: le corps
+    du document glissait latéralement. Son propre masque en dégradé le cachait à
+    l'œil. <b>Aucune capture ne pouvait le montrer</b> — il a fallu mesurer les
+    éléments plus larges que la fenêtre.
+  </div>
  </div>
 </section>
 
@@ -1010,6 +1120,15 @@ b,strong{color:var(--encre);font-weight:600}
       <path d="M3 11L11 3M11 3H5M11 3v6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path>
     </svg>
   </a>
+  <div class="trace">
+    <em>Ce que ces traces sont</em>
+    Elles consignent des <b>révisions réelles de cette page</b>, dans l'ordre où
+    elles ont eu lieu&nbsp;: des demandes du commanditaire, des défauts trouvés
+    en regardant le rendu, un défaut trouvé en mesurant, une décision de
+    conception. <b>Aucune n'est un essai avec un lecteur.</b> Le dossier mère
+    tire les siennes de confrontations&nbsp;; celle-ci n'en a encore aucune, et
+    c'est la chose qui lui manque le plus.
+  </div>
   <p class="colophon">Essai en cours — six résultats sur les vingt-quatre de l'index.
     Les exemples de consigne et de courriel sont fabriqués pour la démonstration.
     Les tracés donnent la forme d'un effet, pas les données d'une étude.</p>
@@ -1019,6 +1138,19 @@ b,strong{color:var(--encre);font-weight:600}
 <script>
 (() => {
   const doux = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ── L'interrupteur des traces ──────────────────────────────────────
+     Le nombre affiché se compte sur les traces présentes dans le document :
+     écrit à la main, il serait faux à la révision suivante. ── */
+  (() => {
+    const bouton = document.getElementById('tampon'), txt = document.getElementById('tamponTxt');
+    const combien = document.querySelectorAll('.trace').length;
+    bouton.addEventListener('click', () => {
+      const on = document.body.classList.toggle('traces');
+      bouton.setAttribute('aria-pressed', on ? 'true' : 'false');
+      txt.textContent = on ? 'Traces visibles · ' + combien : 'Traces de révision';
+    });
+  })();
 
   /* ── Les animations se déclenchent à l'entrée dans le champ ─────────── */
   const oeilleton = new IntersectionObserver((entrees) => {
