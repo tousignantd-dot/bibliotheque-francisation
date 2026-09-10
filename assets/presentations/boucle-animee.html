@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Le processus du diagnostic pédagogique montré en mouvement, et la page qui consigne ses propres révisions.">
+<meta name="description" content="Ce qu'est le diagnostic pédagogique, expliqué en cinq étapes, puis le processus et quelques résultats de recherche qu'on peut faire fonctionner soi-même.">
 <title>La boucle diagnostic</title>
 <style>html{color-scheme:light dark}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 </head>
@@ -149,21 +149,6 @@ b,strong{color:var(--encre);font-weight:600}
          letter-spacing:-.04em;line-height:1.02;color:var(--encre);margin-bottom:var(--e4)}
 .ouverture{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,22rem);
            gap:var(--e8);align-items:center}
-.roue{width:100%;max-width:22rem;aspect-ratio:1;justify-self:center}
-.roue text{font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;fill:var(--encre-3)}
-.roue .lettre{font-family:var(--display);font-size:15px;font-weight:700;fill:var(--encre);letter-spacing:0}
-.roue .arc{fill:none;stroke:var(--bord-fort);stroke-width:1.5}
-.roue .arc--vif{stroke:var(--mesure);stroke-width:2.5;stroke-linecap:round;
-                stroke-dasharray:120;stroke-dashoffset:120;animation:tracer 5.2s var(--courbe) infinite}
-.roue .moyeu{fill:var(--fond);stroke:var(--bord);stroke-width:1}
-@keyframes tracer{0%{stroke-dashoffset:120}22%,100%{stroke-dashoffset:0}}
-.sommaire{list-style:none;margin:var(--e5) 0 0;padding:0;display:grid;gap:var(--e2)}
-.sommaire li{display:flex;gap:var(--e3);font-size:.9375rem}
-.sommaire b{font-family:var(--mono);font-size:.75rem;font-weight:500;color:var(--encre-4);
-            padding-top:.22rem;font-variant-numeric:tabular-nums}
-.sommaire a{color:var(--encre-2);text-decoration:none;border-bottom:1px solid transparent}
-.sommaire a:hover{color:var(--encre);border-bottom-color:var(--bord-fort)}
-
 /* ═══ Fig. 1 — l'écart ═══════════════════════════════════════════════════ */
 .fig{margin:var(--e6) 0 0}
 .fig svg{width:100%;height:auto;display:block;overflow:visible}
@@ -316,6 +301,34 @@ b,strong{color:var(--encre);font-weight:600}
 .colophon{margin-top:var(--e8);font-family:var(--mono);font-size:.6875rem;color:var(--encre-4);
           line-height:1.7;max-width:60ch}
 
+/* ═══ 00 · l'exposé d'ouverture ══════════════════════════════════════════ */
+/* La même spirale qu'en section 03, mais nue : ici elle ne sert qu'à montrer
+   qu'on part loin et qu'on se rapproche. Les quatre paliers viennent plus tard,
+   sur une figure déjà connue — segmentation et pré-entraînement. */
+.fig--ouv{margin:0}
+.fig--ouv .spirale{max-width:27rem}
+/* .spirale .fil porte le tiret qui sert au tracé animé de la section 03 ;
+   ici le chemin est posé d'emblée, il faut donc une règle au moins aussi
+   spécifique pour l'annuler. */
+.spirale path.fil--ouv{stroke:var(--bord-fort);stroke-width:2;
+                       stroke-dasharray:none;stroke-dashoffset:0}
+.marqueur{opacity:0;transition:opacity 300ms var(--courbe)}
+.marqueur.la{opacity:1}
+.marqueur .coeur{fill:var(--mesure)}
+.marqueur .halo{fill:color-mix(in srgb,var(--mesure) 18%,transparent)}
+.marqueur.pose .halo{animation:battre 1.1s var(--courbe) infinite}
+@keyframes battre{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(1.35)}}
+
+.expose{display:grid;grid-template-columns:auto minmax(0,1fr);gap:var(--e4);
+        align-items:start;margin-top:var(--e6);min-height:6.5rem}
+.expose__n{text-align:center;font-family:var(--mono);font-size:.625rem;color:var(--encre-4);
+           letter-spacing:.08em;line-height:1.3;padding-top:.15rem}
+.expose__n b{display:block;font-family:var(--display);font-size:1.875rem;font-weight:700;
+             color:var(--mesure);letter-spacing:-.03em;line-height:1;
+             font-variant-numeric:tabular-nums}
+.expose__d{font-size:1.0625rem;color:var(--encre);max-width:44ch;line-height:1.5}
+.expose__aide{font-family:var(--mono);font-size:.6875rem;color:var(--encre-4)}
+
 /* ═══ 01 · l'ouverture en deux colonnes ══════════════════════════════════ */
 .deux-col{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);
           gap:var(--e8);align-items:start;margin-top:var(--e5)}
@@ -341,6 +354,17 @@ b,strong{color:var(--encre);font-weight:600}
 .spirale .lg{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;fill:var(--encre-3)}
 .spirale .fin{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;fill:var(--mesure);
               stroke:var(--fond);stroke-width:3.5;paint-order:stroke;stroke-linejoin:round}
+/* Le nom du palier est porté par la figure elle-même : sans lui, le nœud n'est
+   qu'un chiffre à décoder ailleurs — l'attention partagée que la section 06
+   démontre. Le halo blanc le détache de la spirale qu'il croise. */
+.spirale .nom{font-family:var(--mono);font-size:9px;letter-spacing:.09em;fill:var(--encre-2);
+              stroke:var(--fond);stroke-width:3.5;paint-order:stroke;stroke-linejoin:round;
+              transition:fill var(--vif)}
+.spirale .station.tenu circle{stroke-width:2.8;fill:var(--signal-voile)}
+.spirale .nom.tenu{fill:var(--encre);font-weight:500}
+.stat{transition:opacity var(--vif)}
+.stat.tenu .stat__t{color:var(--signal)}
+.stations.designe .stat:not(.tenu){opacity:.45}
 .stations{display:grid;grid-template-columns:repeat(auto-fit,minmax(11rem,1fr));
           gap:var(--e5);margin-top:var(--e6)}
 .stat__n{font-family:var(--mono);font-size:.625rem;letter-spacing:.12em;color:var(--signal);
@@ -467,62 +491,36 @@ body.traces .trace{display:block;animation:entre .4s var(--courbe) both}
   <div class="ouverture">
     <div>
       <h1 class="affiche">La boucle diagnostic</h1>
-      <p class="dit" style="max-width:44ch">Quelques résultats de recherche, montrés
-        plutôt que cités — parce qu'un effet qu'on décrit reste une affirmation, et
-        qu'un effet qu'on voit opérer devient un instrument.</p>
-      <ol class="sommaire">
-        <li><b>01</b><a href="#hypothese">Pourquoi une conception est un pari</a></li>
-        <li><b>02</b><a href="#ecart">L'écart entre ce qu'on enseigne et ce qui s'apprend</a></li>
-        <li><b>03</b><a href="#spirale">Les quatre tours : papier, maquette, prototype, situation</a></li>
-        <li><b>04</b><a href="#tour">Un tour de boucle, et l'étape qu'on saute</a></li>
-        <li><b>05</b><a href="#regles">Six règles de conduite</a></li>
-        <li><b>06</b><a href="#partagee">Ce que coûte une légende à côté du schéma</a></li>
-        <li><b>07</b><a href="#estompage">L'exemple résolu, et le moment où il se retourne</a></li>
-        <li><b>08</b><a href="#difficultes">Ce qui se voit en séance, et ce qui reste</a></li>
-        <li><b>09</b><a href="#pupitre">Le pupitre — quand deux résultats se contredisent</a></li>
-        <li><b>10</b><a href="#index">Les vingt autres, et l'art d'analyser un module</a></li>
-      </ol>
+      <p class="dit" style="max-width:50ch">Le diagnostic pédagogique est l'enquête qu'on
+        mène <b>pendant</b> qu'on conçoit un matériel de formation, et non après&nbsp;: on
+        mesure l'écart entre l'effet qu'il vise et l'effet qu'il produit réellement chez
+        les apprenants visés.</p>
+
+      <div class="expose" id="expose">
+        <div class="expose__n"><b id="xN">1</b><span>sur 5</span></div>
+        <p class="expose__d" id="xD">On conçoit un matériel de formation. Au départ, on est
+          loin de ce qu'il faudrait — et on ne sait pas encore de combien.</p>
+      </div>
+      <div class="cmds">
+        <button class="cmd cmd--plein" id="xRevoir">Revoir</button>
+        <span class="expose__aide">5 étapes, une quinzaine de secondes</span>
+      </div>
     </div>
-    <svg class="roue" viewBox="0 0 240 240" role="img" aria-label="La boucle du diagnostic : quatre moments qui se relancent.">
-      <circle class="moyeu" cx="120" cy="120" r="44"></circle>
-      <text x="120" y="112" text-anchor="middle">LE MATÉRIEL</text>
-      <text x="120" y="124" text-anchor="middle">EST UNE</text>
-      <text x="120" y="136" text-anchor="middle">HYPOTHÈSE</text>
-      <g fill="none">
-        <path class="arc" d="M120 44 A76 76 0 0 1 196 120"></path>
-        <path class="arc" d="M196 120 A76 76 0 0 1 120 196"></path>
-        <path class="arc" d="M120 196 A76 76 0 0 1 44 120"></path>
-        <path class="arc" d="M44 120 A76 76 0 0 1 120 44"></path>
-        <path class="arc arc--vif" style="animation-delay:0s"   d="M120 44 A76 76 0 0 1 196 120"></path>
-        <path class="arc arc--vif" style="animation-delay:1.3s" d="M196 120 A76 76 0 0 1 120 196"></path>
-        <path class="arc arc--vif" style="animation-delay:2.6s" d="M120 196 A76 76 0 0 1 44 120"></path>
-        <path class="arc arc--vif" style="animation-delay:3.9s" d="M44 120 A76 76 0 0 1 120 44"></path>
-      </g>
-      <text class="lettre" x="192" y="40"  text-anchor="middle">A</text>
-      <text class="lettre" x="192" y="212" text-anchor="middle">B</text>
-      <text class="lettre" x="48"  y="212" text-anchor="middle">C</text>
-      <text class="lettre" x="48"  y="40"  text-anchor="middle">D</text>
-      <text x="192" y="52"  text-anchor="middle">ENTRÉE</text>
-      <text x="192" y="224" text-anchor="middle">CONCEPTION</text>
-      <text x="48"  y="224" text-anchor="middle">USAGE</text>
-      <text x="48"  y="52"  text-anchor="middle">DIDACTIQUE</text>
-    </svg>
+
+    <figure class="fig fig--ouv">
+      <svg class="spirale" viewBox="120 16 480 372" role="img" aria-labelledby="ouvT">
+        <title id="ouvT">Une spirale parcourue de l'extérieur vers le centre : on part loin de la cible, et chaque tour resserre l'écart jusqu'à la mise en service.</title>
+        <path class="fil fil--ouv" id="filOuv"></path>
+        <circle cx="320" cy="200" r="6" fill="var(--mesure)"></circle>
+        <text class="fin" x="334" y="203.5">MISE EN SERVICE</text>
+        <g id="marqueur" class="marqueur">
+          <circle r="16" class="halo"></circle>
+          <circle r="7" class="coeur"></circle>
+        </g>
+      </svg>
+    </figure>
   </div>
- 
-  <div class="trace">
-    <em>Révision 01 · demande du commanditaire</em>
-    Cette pièce était d'abord <b>six planches séparées</b>, qu'on parcourait aux
-    flèches. Demande&nbsp;: «&nbsp;qu'on puisse la lire comme un site, en défilant&nbsp;».
-    Le rail est passé de commande de navigation à repère de lecture, et les
-    animations ne se déclenchent plus au clic mais à l'entrée dans le champ.
-  </div>
-  <div class="trace">
-    <em>Contrôle 02 · lecture du rendu</em>
-    Les mots de la roue — ENTRÉE, CONCEPTION, USAGE, DIDACTIQUE — chevauchaient
-    l'anneau et devenaient illisibles. L'anneau a été réduit de 96 à 76&nbsp;px de
-    rayon et les libellés portés au-delà. <b>Trouvé en regardant une capture</b>,
-    pas en relisant le code.
-  </div>
+ </div>
  </div>
 </section>
 
@@ -578,6 +576,30 @@ body.traces .trace{display:block;animation:entre .4s var(--courbe) both}
       faire tourner soi-même plutôt que les croire sur parole.</p>
   </div>
  
+  <div class="trace">
+    <em>Révision 12 · demande du commanditaire</em>
+    L'ouverture s'appuyait sur une formule — «&nbsp;montrés plutôt que cités&nbsp;»,
+    «&nbsp;un effet qu'on décrit reste une affirmation&nbsp;». Reproche&nbsp;:
+    <b>ce n'est pas un slogan qu'il faut, c'est une définition</b>. La page dit
+    maintenant en trois phrases ce qu'est le diagnostic pédagogique, avant toute
+    autre chose, et une animation en cinq étapes le montre.
+  </div>
+  <div class="trace">
+    <em>Révision 13 · demande du commanditaire</em>
+    La roue des quatre moments — A entrée, B conception, C usage, D didactique —
+    a été retirée&nbsp;: «&nbsp;on peut difficilement comprendre ce que ça veut
+    dire&nbsp;». Elle supposait le dossier lu. La spirale la remplace, qui dit au
+    moins qu'on part loin de la cible et qu'on s'en rapproche. <b>La table des
+    matières a été retirée aussi</b> — le rail de gauche la remplace.
+  </div>
+  <div class="trace">
+    <em>Révision 01 · demande du commanditaire</em>
+    Cette pièce était d'abord <b>six planches séparées</b>, qu'on parcourait aux
+    flèches. Demande&nbsp;: «&nbsp;qu'on puisse la lire comme un site, en
+    défilant&nbsp;». Le rail est passé de commande de navigation à repère de
+    lecture, et les animations se déclenchent à l'entrée dans le champ.
+  </div>
+
   <div class="trace">
     <em>Révision 03 · demande du commanditaire</em>
     La page entrait dans les démonstrations après quatre lignes. Demande&nbsp;:
@@ -664,6 +686,10 @@ body.traces .trace{display:block;animation:entre .4s var(--courbe) both}
       <circle cx="320" cy="200" r="6" fill="var(--mesure)"></circle>
       <text class="fin" x="334" y="203.5">MISE EN SERVICE</text>
       <g id="stations"></g>
+      <text class="nom" id="s1" x="334" y="41.5">PAPIER</text>
+      <text class="nom" id="s2" x="334" y="80.4">MAQUETTE</text>
+      <text class="nom" id="s3" x="334" y="119.4">PROTOTYPE JOUABLE</text>
+      <text class="nom" id="s4" x="334" y="158.3">ESSAI EN SITUATION</text>
     </svg>
     <figcaption><b>Fig. 2</b> — Le rayon qui diminue figure l'incertitude qui se réduit, et
       le centre est la mise en service. La règle qui en découle&nbsp;:
@@ -672,14 +698,14 @@ body.traces .trace{display:block;animation:entre .4s var(--courbe) both}
       quand l'essai dit qu'il faut le jeter.</figcaption>
   </figure>
 
-  <div class="stations">
-    <div class="stat"><div class="stat__n">01</div><div class="stat__t">Papier</div>
+  <div class="stations" id="cartesStations">
+    <div class="stat" data-st="1" tabindex="0"><div class="stat__n">01</div><div class="stat__t">Papier</div>
       <p>Une consigne, trois items, un croquis. Une heure de travail, jetable sans regret.</p></div>
-    <div class="stat"><div class="stat__n">02</div><div class="stat__t">Maquette</div>
+    <div class="stat" data-st="2" tabindex="0"><div class="stat__n">02</div><div class="stat__t">Maquette</div>
       <p>La séquence entière, sans finition ni médias. On teste l'ordre et la durée.</p></div>
-    <div class="stat"><div class="stat__n">03</div><div class="stat__t">Prototype jouable</div>
+    <div class="stat" data-st="3" tabindex="0"><div class="stat__n">03</div><div class="stat__t">Prototype jouable</div>
       <p>Le matériel réel, incomplet. On teste l'autonomie de l'apprenant.</p></div>
-    <div class="stat"><div class="stat__n">04</div><div class="stat__t">Essai en situation</div>
+    <div class="stat" data-st="4" tabindex="0"><div class="stat__n">04</div><div class="stat__t">Essai en situation</div>
       <p>Une séance complète, conduite par quelqu'un d'autre, dans le lieu réel.</p></div>
   </div>
 
@@ -692,6 +718,15 @@ body.traces .trace{display:block;animation:entre .4s var(--courbe) both}
       coûte cent fois plus cher qu'au moment du croquis.</p>
   </div>
  
+  <div class="trace">
+    <em>Révision 11 · correction issue de la validation</em>
+    La validation de cette page a relevé ici <b>l'attention partagée que la
+    section 06 démontre</b>&nbsp;: les nœuds ne portaient qu'un chiffre, et les
+    cartes qui les nomment étaient <b>32&nbsp;px plus bas</b>. Le nom du palier
+    est maintenant porté par la figure&nbsp;; les cartes ne servent plus qu'au
+    détail. La faute n'a pas été trouvée par un lecteur, mais par la grille
+    appliquée à la page — c'est un contrôle, pas un essai.
+  </div>
   <div class="trace">
     <em>Révision 04 · demande du commanditaire</em>
     «&nbsp;Après la figure un, on devrait aller à la figure deux.&nbsp;» La spirale
@@ -1178,6 +1213,79 @@ body.traces .trace{display:block;animation:entre .4s var(--courbe) both}
   }, { rootMargin: '-45% 0px -45% 0px' });
   sections.forEach(s => suiveur.observe(s));
 
+  /* ── 00 · l'exposé d'ouverture ──────────────────────────────────────
+     Un marqueur parcourt la spirale de l'extérieur vers le centre. Il
+     s'arrête à cinq endroits, et à chaque arrêt la phrase change. Le trajet
+     se lit sur le chemin lui-même (getPointAtLength) : aucune coordonnée
+     n'est écrite à la main, donc rien ne se désaccorde si la spirale bouge. ── */
+  (() => {
+    const ETAPES = [
+      { t: .02, d: "On conçoit un matériel de formation. Au départ, on est loin de ce qu'il faudrait — et on ne sait pas encore de combien." },
+      { t: .28, d: "On le met, <b>inachevé</b>, devant de vraies personnes du public visé. On les regarde faire, sans les aider." },
+      { t: .52, d: "On compare ce qu'on attendait à ce qui s'est passé. L'écart entre les deux, c'est la mesure qu'on cherchait." },
+      { t: .76, d: "On modifie, et on recommence — sur un objet un peu plus avancé, avec une question plus précise." },
+      { t: .99, d: "À chaque tour, l'écart se referme. Quand il est assez petit, le matériel entre en service." }
+    ];
+    const fil = document.getElementById('filOuv');
+    const marq = document.getElementById('marqueur');
+    const xN = document.getElementById('xN'), xD = document.getElementById('xD');
+
+    /* même géométrie qu'en section 03 : de l'extérieur vers le centre */
+    const cx = 320, cy = 200, r0 = 6, b = 6.2, tmax = 4.2 * 2 * Math.PI;
+    let d = '', premier = true;
+    for (let th = tmax; th >= 0; th -= 0.05) {
+      const r = r0 + b * th, a = th - Math.PI / 2;
+      d += (premier ? 'M' : 'L') + (cx + r * Math.cos(a)).toFixed(1) + ',' + (cy + r * Math.sin(a)).toFixed(1);
+      premier = false;
+    }
+    fil.setAttribute('d', d);
+    const L = fil.getTotalLength();
+    const poser = f => {
+      const pt = fil.getPointAtLength(Math.max(0, Math.min(1, f)) * L);
+      marq.setAttribute('transform', 'translate(' + pt.x.toFixed(1) + ',' + pt.y.toFixed(1) + ')');
+    };
+
+    let minuteurs = [], anim = null;
+    const stop = () => { minuteurs.forEach(clearTimeout); minuteurs = []; if (anim) cancelAnimationFrame(anim); };
+    const dire = i => { xN.textContent = String(i + 1); xD.innerHTML = ETAPES[i].d; };
+
+    /* déplacement doux d'une étape à la suivante, puis arrêt qui bat */
+    function glisser(de, vers, ms, fini) {
+      const t0 = performance.now();
+      marq.classList.remove('pose');
+      const pas = () => {
+        const k = Math.min(1, (performance.now() - t0) / ms);
+        const e = k < .5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
+        poser(de + (vers - de) * e);
+        if (k < 1) anim = requestAnimationFrame(pas);
+        else { marq.classList.add('pose'); if (fini) fini(); }
+      };
+      anim = requestAnimationFrame(pas);
+    }
+
+    function jouer() {
+      stop();
+      marq.classList.add('la');
+      poser(ETAPES[0].t); dire(0); marq.classList.add('pose');
+      if (doux) { poser(ETAPES[4].t); dire(4); return; }
+      let i = 0;
+      const suivant = () => {
+        if (i >= ETAPES.length - 1) return;
+        minuteurs.push(setTimeout(() => {
+          const de = ETAPES[i].t; i++;
+          dire(i);
+          glisser(de, ETAPES[i].t, 1250, suivant);
+        }, 2600));
+      };
+      suivant();
+    }
+    document.getElementById('xRevoir').addEventListener('click', jouer);
+    poser(ETAPES[0].t); marq.classList.add('la', 'pose');
+    new IntersectionObserver((e, o) => {
+      if (e[0].isIntersecting) { jouer(); o.disconnect(); }
+    }, { threshold: .3 }).observe(document.getElementById('expose'));
+  })();
+
   /* ── 03 · la spirale ────────────────────────────────────────────────
      Le chemin se calcule : une spirale d'Archimède parcourue de l'extérieur
      vers le centre, parce que c'est le sens du travail — du premier jet,
@@ -1220,6 +1328,30 @@ body.traces .trace{display:block;animation:entre .4s var(--courbe) both}
       g.append(c, t);
       hote.appendChild(g);
     }
+
+    /* Jumelage carte ↔ nœud. La figure se suffit maintenant à elle-même — le
+       nom y est porté — et ce lien ne sert qu'à retrouver le détail, pas à
+       décoder le dessin. */
+    const cartes = [...document.querySelectorAll('#cartesStations .stat')];
+    const boite = document.getElementById('cartesStations');
+    const noms = k => document.getElementById('s' + k);
+    const stations = k => hote.children[4 - k];   /* posées de k=1 à 4, soit du centre vers l'extérieur */
+    function designer(k) {
+      cartes.forEach(c => c.classList.toggle('tenu', +c.dataset.st === k));
+      [1,2,3,4].forEach(i => {
+        noms(i).classList.toggle('tenu', i === k);
+        stations(i).classList.toggle('tenu', i === k);
+      });
+      boite.classList.toggle('designe', k !== null);
+    }
+    const lacher = () => designer(null);
+    cartes.forEach(c => {
+      const k = +c.dataset.st;
+      c.addEventListener('mouseenter', () => designer(k));
+      c.addEventListener('focus', () => designer(k));
+      c.addEventListener('mouseleave', lacher);
+      c.addEventListener('blur', lacher);
+    });
   })();
 
   /* ── 04 · le tour de boucle ─────────────────────────────────────────
