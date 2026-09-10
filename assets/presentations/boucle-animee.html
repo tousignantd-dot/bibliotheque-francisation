@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Le processus du diagnostic pédagogique, puis quelques résultats de recherche montrés plutôt que cités, et la grille de questions qui sert à analyser un module.">
+<meta name="description" content="Le processus du diagnostic pédagogique — l'écart, la spirale, le cycle en cinq temps et ses six règles — puis des résultats de recherche montrés plutôt que cités.">
 <title>La boucle diagnostic</title>
 <style>html{color-scheme:light dark}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 </head>
@@ -339,11 +339,59 @@ b,strong{color:var(--encre);font-weight:600}
          margin-bottom:.15rem}
 .stat p{font-size:.8125rem;line-height:1.45}
 
+/* ═══ 04 · le tour de boucle ═════════════════════════════════════════════ */
+.tour{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);
+      gap:var(--e6);align-items:center}
+.anneau{width:100%;height:auto;display:block}
+.anneau .cercle{fill:none;stroke:var(--bord-fort);stroke-width:1.5}
+.anneau .lg{font-family:var(--mono);font-size:9px;letter-spacing:.1em;fill:var(--encre-3);
+            transition:fill var(--moyen) var(--courbe)}
+.anneau .noeud circle{fill:var(--fond);stroke:var(--bord-fort);stroke-width:1.8;
+                      transition:stroke var(--moyen) var(--courbe),fill var(--moyen) var(--courbe)}
+.anneau .noeud text{font-family:var(--mono);font-size:10px;fill:var(--encre-3);
+                    transition:fill var(--moyen) var(--courbe)}
+.anneau .noeud.vif circle{stroke:var(--mesure);fill:var(--mesure-voile);stroke-width:2.4}
+.anneau .noeud.vif text{fill:var(--mesure)}
+.anneau .noeud.vif ~ .lg{fill:var(--encre)}
+.anneau .noeud.eteint circle{stroke:var(--bord);fill:var(--fond-3)}
+.anneau .noeud.eteint text{fill:var(--encre-4)}
+.anneau .etiq.eteinte{fill:var(--encre-4)}
+.anneau .etiq.vive{fill:var(--encre)}
+.anneau .fleche{fill:none;stroke:var(--bord-fort);stroke-width:1.4}
+.anneau .raccourci{fill:none;stroke:var(--signal);stroke-width:2;stroke-dasharray:5 4;
+                   opacity:0;transition:opacity var(--moyen) var(--courbe)}
+.anneau.saute .raccourci{opacity:1}
+
+.temps{border-left:2px solid var(--mesure);padding-left:var(--e5);min-height:12rem}
+.temps__n{font-family:var(--mono);font-size:.6875rem;letter-spacing:.12em;color:var(--mesure)}
+.temps__t{font-family:var(--display);font-size:1.375rem;font-weight:600;color:var(--encre);
+          letter-spacing:-.02em;margin:var(--e1) 0 var(--e3)}
+.temps__d{font-size:.9375rem;max-width:44ch}
+.temps.alerte{border-left-color:var(--signal)}
+.temps.alerte .temps__n{color:var(--signal)}
+.consequence-saut{margin-top:var(--e4);padding:var(--e4);border-radius:var(--r2);
+                  background:var(--signal-voile);
+                  border:1px solid color-mix(in srgb,var(--signal) 30%,transparent);
+                  font-size:.875rem;display:none}
+.saute-on .consequence-saut{display:block}
+
+/* ═══ 05 · les six règles ════════════════════════════════════════════════ */
+.regles{display:grid;grid-template-columns:repeat(auto-fit,minmax(17rem,1fr));
+        gap:var(--e5) var(--e6);margin-top:var(--e6)}
+.regle{display:grid;grid-template-columns:auto minmax(0,1fr);gap:var(--e3);align-items:start}
+.regle__n{font-family:var(--mono);font-size:.6875rem;color:var(--signal);letter-spacing:.1em;
+          padding-top:.28rem;font-variant-numeric:tabular-nums}
+.regle__t{font-family:var(--display);font-weight:600;font-size:1rem;color:var(--encre);
+          letter-spacing:-.015em;margin-bottom:.15rem}
+.regle p{font-size:.875rem;line-height:1.5}
+
 @media (max-width:880px){
   .ouverture{grid-template-columns:minmax(0,1fr);gap:var(--e6)}
   .roue{max-width:17rem}
   .consigne,.trois,.balance{grid-template-columns:minmax(0,1fr)}
   .deux-col{grid-template-columns:minmax(0,1fr);gap:var(--e5)}
+  .tour{grid-template-columns:minmax(0,1fr);gap:var(--e5)}
+  .temps{min-height:0}
   .consequences{border-left:0;padding-left:0;border-top:1px solid var(--bord);padding-top:var(--e5)}
   .sect{padding-block:var(--e8)}
 }
@@ -363,12 +411,14 @@ b,strong{color:var(--encre);font-weight:600}
   <a href="#hypothese"><b>01</b><i></i></a>
   <a href="#ecart"><b>02</b><i></i></a>
   <a href="#spirale"><b>03</b><i></i></a>
-  <a href="#partagee"><b>04</b><i></i></a>
-  <a href="#estompage"><b>05</b><i></i></a>
-  <a href="#difficultes"><b>06</b><i></i></a>
-  <a href="#pupitre"><b>07</b><i></i></a>
-  <a href="#index"><b>08</b><i></i></a>
-  <a href="#clore"><b>09</b><i></i></a>
+  <a href="#tour"><b>04</b><i></i></a>
+  <a href="#regles"><b>05</b><i></i></a>
+  <a href="#partagee"><b>06</b><i></i></a>
+  <a href="#estompage"><b>07</b><i></i></a>
+  <a href="#difficultes"><b>08</b><i></i></a>
+  <a href="#pupitre"><b>09</b><i></i></a>
+  <a href="#index"><b>10</b><i></i></a>
+  <a href="#clore"><b>11</b><i></i></a>
 </nav>
 
 <!-- ═══ 00 · ouverture ═══════════════════════════════════════════════════ -->
@@ -385,11 +435,13 @@ b,strong{color:var(--encre);font-weight:600}
         <li><b>01</b><a href="#hypothese">Pourquoi une conception est un pari</a></li>
         <li><b>02</b><a href="#ecart">L'écart entre ce qu'on enseigne et ce qui s'apprend</a></li>
         <li><b>03</b><a href="#spirale">Les quatre tours : papier, maquette, prototype, situation</a></li>
-        <li><b>04</b><a href="#partagee">Ce que coûte une légende à côté du schéma</a></li>
-        <li><b>05</b><a href="#estompage">L'exemple résolu, et le moment où il se retourne</a></li>
-        <li><b>06</b><a href="#difficultes">Ce qui se voit en séance, et ce qui reste</a></li>
-        <li><b>07</b><a href="#pupitre">Le pupitre — quand deux résultats se contredisent</a></li>
-        <li><b>08</b><a href="#index">Les vingt autres, et l'art d'analyser un module</a></li>
+        <li><b>04</b><a href="#tour">Un tour de boucle, et l'étape qu'on saute</a></li>
+        <li><b>05</b><a href="#regles">Six règles de conduite</a></li>
+        <li><b>06</b><a href="#partagee">Ce que coûte une légende à côté du schéma</a></li>
+        <li><b>07</b><a href="#estompage">L'exemple résolu, et le moment où il se retourne</a></li>
+        <li><b>08</b><a href="#difficultes">Ce qui se voit en séance, et ce qui reste</a></li>
+        <li><b>09</b><a href="#pupitre">Le pupitre — quand deux résultats se contredisent</a></li>
+        <li><b>10</b><a href="#index">Les vingt autres, et l'art d'analyser un module</a></li>
       </ol>
     </div>
     <svg class="roue" viewBox="0 0 240 240" role="img" aria-label="La boucle du diagnostic : quatre moments qui se relancent.">
@@ -567,6 +619,115 @@ b,strong{color:var(--encre);font-weight:600}
     <p>Chaque palier détecte des défauts d'une <b>autre nature</b>. Les prendre à l'envers
       revient à découvrir une faute de consigne pendant l'essai en classe — quand elle
       coûte cent fois plus cher qu'au moment du croquis.</p>
+  </div>
+ </div>
+</section>
+
+<!-- ═══ 04 · un tour de boucle ═══════════════════════════════════════════ -->
+<section class="sect" id="tour">
+ <div class="colonne">
+  <div class="chapeau"><em>Un tour de boucle</em></div>
+  <h2 class="these">Chaque confrontation suit le même cycle en cinq temps.</h2>
+  <p class="dit">Ce qui change d'un tour à l'autre n'est pas la nature des opérations&nbsp;:
+    c'est la maturité de l'objet testé, et donc la nature de ce qu'on peut encore
+    apprendre. Le cycle, lui, ne bouge pas.</p>
+
+  <div class="banc" id="bancTour">
+    <div class="banc__tete">
+      <span class="banc__nom">Les cinq temps · un tour</span>
+      <div class="bascule" role="group" aria-label="Conduite du tour">
+        <button id="btComplet" aria-pressed="true">Tour complet</button>
+        <button id="btSaut" aria-pressed="false">Sauter l'interprétation</button>
+      </div>
+    </div>
+
+    <div class="tour">
+      <svg class="anneau" id="anneau" viewBox="0 0 460 262" role="img"
+           aria-label="Un cycle à cinq temps : intention, prototype, confrontation, trace, interprétation.">
+        <circle class="cercle" cx="230" cy="155" r="100"></circle>
+        <path class="pointe" d="M-5,-4 L5,0 L-5,4 Z" transform="translate(288.8,74.1) rotate(36)"
+              fill="var(--bord-fort)" stroke="none"></path>
+        <path class="raccourci" d="M171.2,235.9 Q230,150 325.1,124.1"></path>
+
+        <text class="lg etiq" id="e0" x="230" y="33"  text-anchor="middle">INTENTION</text>
+        <text class="lg etiq" id="e1" x="343" y="128" text-anchor="start">PROTOTYPE</text>
+        <text class="lg etiq" id="e2" x="306" y="241" text-anchor="start">CONFRONTATION</text>
+        <text class="lg etiq" id="e3" x="153" y="241" text-anchor="end">TRACE</text>
+        <text class="lg etiq" id="e4" x="117" y="128" text-anchor="end">INTERPRÉTATION</text>
+
+        <g class="noeud" id="n0"><circle cx="230"   cy="55"    r="14"></circle><text x="230"   y="58.5"  text-anchor="middle">1</text></g>
+        <g class="noeud" id="n1"><circle cx="325.1" cy="124.1" r="14"></circle><text x="325.1" y="127.6" text-anchor="middle">2</text></g>
+        <g class="noeud" id="n2"><circle cx="288.8" cy="235.9" r="14"></circle><text x="288.8" y="239.4" text-anchor="middle">3</text></g>
+        <g class="noeud" id="n3"><circle cx="171.2" cy="235.9" r="14"></circle><text x="171.2" y="239.4" text-anchor="middle">4</text></g>
+        <g class="noeud" id="n4"><circle cx="134.9" cy="124.1" r="14"></circle><text x="134.9" y="127.6" text-anchor="middle">5</text></g>
+      </svg>
+
+      <div>
+        <div class="temps" id="temps">
+          <div class="temps__n" id="tN">Temps 1 sur 5</div>
+          <div class="temps__t" id="tT">Intention</div>
+          <p class="temps__d" id="tD">Écrire, <b>avant</b> l'essai, ce qu'on s'attend à
+            observer. Un essai sans attente écrite se solde toujours par «&nbsp;ça s'est
+            bien passé&nbsp;».</p>
+        </div>
+        <div class="consequence-saut" id="csq">
+          <b>Le tour s'est refermé sur lui-même.</b> On a changé quelque chose, on
+          re-teste, et on recommencera — mais sans jamais avoir mis les causes
+          concurrentes en concurrence. C'est ainsi qu'une spirale redevient le cercle
+          que la figure 2 refusait&nbsp;: on tourne, et le rayon ne décroît plus.
+        </div>
+        <div class="cmds">
+          <button class="cmd cmd--plein" id="btTour">Dérouler le tour</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bilan">
+    <span class="bilan__et">L'étape qu'on saute</span>
+    <p>Les quatre premiers temps se font naturellement&nbsp;: on prévoit, on fabrique, on
+      montre, on note. <b>Le cinquième demande de s'arrêter alors qu'on a déjà une
+      explication en tête</b> — formuler les hypothèses concurrentes, choisir la
+      contre-épreuve, décider. C'est l'étape qu'on saute, et c'est elle qui distingue un
+      professionnel d'un amateur consciencieux.</p>
+  </div>
+ </div>
+</section>
+
+<!-- ═══ 05 · six règles de conduite ══════════════════════════════════════ -->
+<section class="sect sect--pose" id="regles">
+ <div class="colonne">
+  <div class="chapeau"><em>Six règles de conduite</em></div>
+  <h2 class="these">Ce qui se décide avant l'essai, et qu'on ne rattrape pas après.</h2>
+  <p class="dit">Aucune de ces règles n'est une préférence de méthode. Chacune corrige une
+    manière précise de se tromper, et chacune coûte quelque chose sur le moment.</p>
+
+  <div class="regles">
+    <div class="regle"><span class="regle__n">01</span><div>
+      <div class="regle__t">Tester avant d'avoir envie de tester</div>
+      <p>Le moment où l'on se sent prêt est déjà trop tard&nbsp;: à ce stade, on est
+        attaché au travail, et l'on argumente au lieu d'observer.</p></div></div>
+    <div class="regle"><span class="regle__n">02</span><div>
+      <div class="regle__t">Observer plutôt que demander</div>
+      <p>«&nbsp;Est-ce clair&nbsp;?&nbsp;» obtient «&nbsp;oui&nbsp;» presque toujours, par
+        politesse et parce que la personne ne peut pas savoir ce qu'elle n'a pas compris.
+        On regarde ce qu'elle fait&nbsp;; on ne l'interroge qu'ensuite, sur du factuel.</p></div></div>
+    <div class="regle"><span class="regle__n">03</span><div>
+      <div class="regle__t">Un essai court battra toujours un essai parfait</div>
+      <p>Trois essais de vingt minutes valent mieux qu'un protocole de deux heures, parce
+        qu'ils permettent de <b>modifier entre les deux</b>.</p></div></div>
+    <div class="regle"><span class="regle__n">04</span><div>
+      <div class="regle__t">Jamais de conclusion sur une seule observation</div>
+      <p>Une observation admet toujours plusieurs causes. Le travail consiste à les mettre
+        en concurrence, pas à retenir la première venue.</p></div></div>
+    <div class="regle"><span class="regle__n">05</span><div>
+      <div class="regle__t">Consigner la décision, pas seulement le constat</div>
+      <p>Sans journal, on refait deux mois plus tard le choix qu'on avait déjà tranché —
+        et souvent dans l'autre sens.</p></div></div>
+    <div class="regle"><span class="regle__n">06</span><div>
+      <div class="regle__t">Chercher les résultats qui dérangent</div>
+      <p>Un essai qui confirme tout n'a rien mesuré&nbsp;: il a mesuré la complaisance du
+        dispositif d'essai.</p></div></div>
   </div>
  </div>
 </section>
@@ -927,6 +1088,78 @@ b,strong{color:var(--encre);font-weight:600}
       g.append(c, t);
       hote.appendChild(g);
     }
+  })();
+
+  /* ── 04 · le tour de boucle ─────────────────────────────────────────
+     Le cinquième temps n'est pas décoratif : en mode « saut », le retour se
+     fait de la trace au prototype, et le cycle se referme sans que les causes
+     concurrentes aient jamais été mises en concurrence. La corde en pointillé
+     est le raccourci ; c'est elle qui ramène la spirale au cercle. ── */
+  (() => {
+    const TEMPS = [
+      { t: 'Intention', d: "Écrire, <b>avant</b> l'essai, ce qu'on s'attend à observer. Un essai sans attente écrite se solde toujours par « ça s'est bien passé »." },
+      { t: 'Prototype', d: "Fabriquer le <b>moins de matériel possible</b> pour éprouver l'attente. Un paragraphe, trois items, une capture annotée suffisent souvent." },
+      { t: 'Confrontation', d: "Mettre l'objet devant une personne du public cible, <b>se taire</b>, observer." },
+      { t: 'Trace', d: "Consigner des <b>faits</b> — ce qui a été fait, dit, sauté, relu, le temps écoulé — et non des impressions." },
+      { t: 'Interprétation', d: "Formuler les hypothèses concurrentes, choisir la contre-épreuve, décider. C'est l'étape qu'on saute, et c'est elle qui distingue un professionnel." }
+    ];
+    const anneau = document.getElementById('anneau');
+    const banc = document.getElementById('bancTour');
+    const noeuds = [0,1,2,3,4].map(i => document.getElementById('n' + i));
+    const etiqs  = [0,1,2,3,4].map(i => document.getElementById('e' + i));
+    const tN = document.getElementById('tN'), tT = document.getElementById('tT'), tD = document.getElementById('tD');
+    const temps = document.getElementById('temps');
+    const btC = document.getElementById('btComplet'), btS = document.getElementById('btSaut');
+    let saut = false, minuteurs = [], joue = false;
+
+    function poser(i) {
+      noeuds.forEach((n, k) => {
+        n.classList.toggle('vif', k === i);
+        n.classList.toggle('eteint', saut && k === 4);
+      });
+      etiqs.forEach((e, k) => {
+        e.classList.toggle('vive', k === i);
+        e.classList.toggle('eteinte', saut && k === 4);
+      });
+      tN.textContent = 'Temps ' + (i + 1) + ' sur 5';
+      tT.textContent = TEMPS[i].t;
+      tD.innerHTML = TEMPS[i].d;
+      temps.classList.toggle('alerte', i === 4);
+    }
+
+    function stop() { minuteurs.forEach(clearTimeout); minuteurs = []; joue = false; }
+
+    function derouler() {
+      stop(); joue = true;
+      banc.classList.remove('saute-on');
+      /* en mode saut, la trace renvoie au prototype : le 5 n'est jamais atteint */
+      const suite = saut ? [0, 1, 2, 3, 1, 2, 3] : [0, 1, 2, 3, 4];
+      const pas = doux ? 1 : 1150;
+      suite.forEach((i, k) => minuteurs.push(setTimeout(() => poser(i), k * pas)));
+      minuteurs.push(setTimeout(() => {
+        joue = false;
+        if (saut) banc.classList.add('saute-on');
+      }, suite.length * pas));
+    }
+
+    function mode(v) {
+      saut = v;
+      btC.setAttribute('aria-pressed', String(!v));
+      btS.setAttribute('aria-pressed', String(v));
+      anneau.classList.toggle('saute', v);
+      banc.classList.remove('saute-on');
+      stop();
+      poser(0);
+    }
+    btC.addEventListener('click', () => mode(false));
+    btS.addEventListener('click', () => mode(true));
+    document.getElementById('btTour').addEventListener('click', derouler);
+
+    poser(0);
+    /* joué une fois à l'entrée dans le champ, comme les autres figures */
+    new IntersectionObserver((e, o) => {
+      if (e[0].isIntersecting) { derouler(); o.disconnect(); }
+    }, { threshold: .4 }).observe(banc);
   })();
 
   /* ── 02 · le regard qui traverse ────────────────────────────────────── */
