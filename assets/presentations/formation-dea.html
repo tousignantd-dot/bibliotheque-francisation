@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Formation en ligne de 25 à 30 minutes à l'usage du défibrillateur (DEA) en milieu de travail : reconnaître un arrêt cardiaque, alerter, comprimer, se servir de l'appareil. Simulateur intégré.">
+<meta name="description" content="Formation en ligne de 25 à 30 minutes à l'usage du défibrillateur (DEA) en milieu de travail, en panneaux : reconnaître un arrêt cardiaque, alerter, comprimer, se servir de l'appareil. Simulateur intégré.">
 <title>Quelqu'un s'effondre au travail</title>
 <style>html{color-scheme:light dark}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 </head>
@@ -13,6 +13,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
 <style>
+
 /* ═══ Jetons « Braise », recopiés — jamais importés (un @import en file://
    échoue sans rien dire). --mesure-l porte la largeur de lecture : dans la
    source du système, --mesure porte à la fois une couleur et une longueur
@@ -369,21 +370,112 @@ section{border-top:1px solid var(--bord);padding:var(--e-8) 0;scroll-margin-top:
    et l'adresse des formations en présence : c'est du texte à lire. */
 footer{border-top:1px solid var(--bord);padding:var(--e-7) 0 var(--e-9);color:var(--encre-2)}
 footer a{color:var(--encre-2)}
+
+/* ══ LE MODULE — un panneau à la fois ══════════════════════════════════════
+   La page était juste, et trop longue : quatre mille mots qu'on fait défiler
+   se lisent en diagonale, et une formation lue en diagonale n'installe rien.
+   Le contenu n'a pas bougé d'une phrase ; c'est le RYTHME qui change. Un
+   panneau tient dans un écran, on le termine, on avance. */
+
+body { padding-bottom: 5.5rem; }          /* la barre du bas est fixe */
+/* Le panneau se centre dans la hauteur libre. `margin:auto 0` dans une
+   colonne flex est l'idiome sûr : un panneau court se centre, un panneau
+   trop haut remplit simplement sans se faire rogner par le haut — ce que
+   ferait `justify-content:center`. */
+.page { display: flex; flex-direction: column;
+        min-height: calc(100dvh - 11rem);
+        padding-top: var(--e-5); padding-bottom: var(--e-5); }
+.panneau { margin: auto 0; width: 100%; }
+
+.panneau { animation: entrer 420ms cubic-bezier(.22,.85,.28,1) both; }
+.panneau[data-part] { animation: sortir 190ms ease-in both; }
+@keyframes entrer { from { opacity: 0; transform: translate3d(26px,0,0); }
+                    to   { opacity: 1; transform: none; } }
+@keyframes sortir { from { opacity: 1; transform: none; }
+                    to   { opacity: 0; transform: translate3d(-22px,0,0); } }
+/* En arrière, le mouvement s'inverse : sinon « Retour » donne la sensation
+   d'avancer, et on ne sait plus où l'on est dans le module. */
+.panneau[data-sens="arriere"] { animation-name: entrerArriere; }
+.panneau[data-part][data-sens="arriere"] { animation-name: sortirArriere; }
+@keyframes entrerArriere { from { opacity: 0; transform: translate3d(-26px,0,0); }
+                           to   { opacity: 1; transform: none; } }
+@keyframes sortirArriere { from { opacity: 1; transform: none; }
+                           to   { opacity: 0; transform: translate3d(22px,0,0); } }
+@media (prefers-reduced-motion: reduce) {
+  .panneau, .panneau[data-part] { animation: none !important; }
+}
+
+/* Le premier panneau garde l'ampleur d'une couverture ; les autres non. */
+.panneau .ouverture { padding-top: var(--e-5); }
+
+/* ── Le rail des chapitres ─────────────────────────────────────────────
+   Neuf pastilles plutôt que neuf titres : sur une barre déjà chargée, le
+   titre du chapitre courant suffit, et les huit autres n'ont besoin que de
+   dire « fait », « ici », « pas encore ». */
+.rail { display: flex; gap: 4px; align-items: center; }
+.rail button {
+  width: 22px; height: 22px; border-radius: var(--r-plein); cursor: pointer;
+  border: 1px solid var(--bord-fort); background: var(--fond);
+  font-size: 10px; color: var(--encre-3); padding: 0; font-family: var(--police);
+  transition: var(--transition);
+}
+.rail button:hover:not([disabled]) { border-color: var(--encre); color: var(--encre); }
+.rail button[disabled] { opacity: .45; cursor: default; }
+.rail button[data-vu] { background: var(--mesure-voile); border-color: var(--mesure-2); color: var(--mesure); }
+.rail button[aria-current="true"] { background: var(--action); border-color: var(--action);
+                                    color: var(--action-encre); font-weight: var(--g-fort); }
+.chapTitre { font-size: var(--t-menu); color: var(--encre-2); font-weight: var(--g-moyen);
+             white-space: nowrap; }
+@media (max-width: 46rem) { .chapTitre { display: none; } }
+
+/* ── La barre du bas : ce qui fait avancer ─────────────────────────────
+   Fixe, toujours au même endroit. La règle qui vaut depuis le premier défaut
+   signalé sur le simulateur : on ne défile jamais pour agir. */
+.pied {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 70;
+  background: color-mix(in srgb, var(--fond) 92%, transparent);
+  backdrop-filter: blur(12px); border-top: 1px solid var(--bord);
+}
+.pied__int { max-width: 70rem; margin: 0 auto; padding: var(--e-3) var(--e-5);
+             display: flex; align-items: center; gap: var(--e-3); }
+.pied__vide { flex: 1; }
+.pied__ou { font-size: var(--t-petit); color: var(--encre-3); font-variant-numeric: tabular-nums; }
+#suivant { min-width: 11rem; text-align: center; }
+#suivant[disabled] { opacity: .45; cursor: default; }
+.verrouDit { font-size: var(--t-petit); color: var(--signal); }
+.passer { background: none; border: 0; font: inherit; font-size: var(--t-petit);
+          color: var(--encre-3); text-decoration: underline; cursor: pointer; padding: 0; }
+
+/* ── La reprise ───────────────────────────────────────────────────────
+   Un module de trente minutes se fait en deux fois. Reprendre où l'on
+   était est la moindre des choses ; ne pas le dire serait pire que de ne
+   pas le faire, parce qu'on croirait avoir perdu sa place. */
+.reprise { display: flex; align-items: center; gap: var(--e-3); flex-wrap: wrap;
+           background: var(--mesure-voile); border: 1px solid var(--mesure-2);
+           border-radius: var(--r-2); padding: var(--e-3) var(--e-4);
+           margin-bottom: var(--e-5); font-size: .9375rem; }
+
+/* Le cadre du simulateur a besoin de plus de hauteur maintenant qu'il est
+   seul sur son panneau. */
+.cadre-sim iframe { height: min(70vh, 720px); }
 </style>
 
 <header class="barre">
   <div class="barre__int">
     <span class="marque">DEA<i>.</i></span>
-    <nav class="nav" id="nav" aria-label="Sections"></nav>
+    <nav class="rail" id="rail" aria-label="Chapitres"></nav>
+    <span class="chapTitre" id="chapTitre"></span>
     <span class="barre__vide"></span>
     <button class="bt" id="theme" type="button">Sombre</button>
     <div class="jauge" id="jauge"></div>
   </div>
 </header>
 
-<main class="page">
+<main class="page" id="scene">
 
-<div class="ouverture">
+<article class="panneau" data-chap="s0">
+  <div class="ouverture">
+
   <span class="pastille">Formation · 25 à 30 minutes</span>
   <h1>Quelqu'un s'effondre <i>au travail.</i></h1>
   <p class="avant">Vous n'êtes pas soignant. Vous n'avez aucune formation médicale.
@@ -397,7 +489,12 @@ footer a{color:var(--encre-2)}
     <div class="fait"><b>2</b><span>personnes à désigner</span></div>
     <div class="fait"><b>1</b><span>DEA dans l'immeuble</span></div>
   </div>
+  </div>
+</article>
 
+<article class="panneau" data-chap="s0" hidden>
+  <div class="num"><b>00</b><span>Avant de commencer</span></div>
+  <h2>Une seule situation.</h2>
   <div class="cadre">
     <p><b>Ce que cette formation couvre, et rien d'autre.</b> Une seule situation :
       une personne s'effondre ou est trouvée inanimée dans l'immeuble. Elle ne
@@ -408,13 +505,13 @@ footer a{color:var(--encre-2)}
       minutes. La partie 8 vous fait vivre la séquence entière dans un simulateur ;
       prévoyez d'y rester un peu.</p>
   </div>
-</div>
+</article>
 
 <!-- ═══ 1 ═══ L'emplacement, avant tout le reste. Le brief est catégorique :
      c'est la première chose enseignée et la dernière révisée, parce que c'est
      la seule information que personne ne peut déduire sur le moment.      -->
-<section id="s1">
-  <div class="num"><b>01</b><span>Le DEA de votre immeuble</span></div>
+<article class="panneau" data-chap="s1" hidden>
+<div class="num"><b>01</b><span>Le DEA de votre immeuble</span></div>
   <h2>Il est au hall. À droite en entrant.</h2>
   <div class="lire">
     <p>Un boîtier blanc marqué d'un cœur vert, fixé au mur, à côté du comptoir de
@@ -426,20 +523,22 @@ footer a{color:var(--encre-2)}
       prend environ deux minutes. C'est long. C'est exactement pour cela que
       quelqu'un d'autre y va pendant que vous, vous comprimez.</p>
   </div>
+</article>
 
-  <div class="jeu">
+<article class="panneau" data-chap="s1" data-verrou="1" hidden>
+<div class="jeu">
     <div class="jeu__t">Montrez-le · plan du hall</div>
     <div class="plan" id="plan"></div>
     <div class="verdict" id="v-plan"></div>
   </div>
-</section>
+</article>
 
 <!-- ═══ 2 ═══ Deux signes, et deux seulement. Le tracé animé porte le cœur de
      cette partie : la respiration agonale ne se reconnaît pas dans une
      définition, elle se reconnaît dans une DURÉE — les longs silences entre
      les halètements sont ce qui trompe les témoins.                       -->
-<section id="s2">
-  <div class="num"><b>02</b><span>Reconnaître</span></div>
+<article class="panneau" data-chap="s2" hidden>
+<div class="num"><b>02</b><span>Reconnaître</span></div>
   <h2>Deux signes. Pas trois.</h2>
   <div class="lire">
     <p><b>Un.</b> Secouez-lui doucement les épaules et appelez-la fort :
@@ -450,8 +549,10 @@ footer a{color:var(--encre-2)}
     <p>Ces deux signes suffisent. Vous n'avez rien d'autre à vérifier avant de
       passer à l'action.</p>
   </div>
+</article>
 
-  <h3>Le piège : la respiration agonale</h3>
+<article class="panneau" data-chap="s2" hidden>
+<h3>Le piège : la respiration agonale</h3>
   <div class="lire">
     <p>Dans les premières minutes d'un arrêt cardiaque, beaucoup de personnes
       émettent des halètements bruyants et irréguliers. Ça ressemble à un
@@ -460,8 +561,10 @@ footer a{color:var(--encre-2)}
       du bruit, et concluent qu'elle respire encore. Ils attendent. Les minutes
       passent.</p>
   </div>
+</article>
 
-  <div class="jeu">
+<article class="panneau" data-chap="s2" data-verrou="1" hidden>
+<div class="jeu">
     <div class="jeu__t">Regardez la poitrine, et écoutez · dix secondes</div>
     <canvas class="trace" id="trace" width="900" height="170"></canvas>
     <div class="souffle">
@@ -483,8 +586,10 @@ footer a{color:var(--encre-2)}
     </div>
     <div class="verdict" id="v-souffle"></div>
   </div>
+</article>
 
-  <h3>Et le pouls ?</h3>
+<article class="panneau" data-chap="s2" hidden>
+<h3>Et le pouls ?</h3>
   <div class="lire">
     <p>On ne le cherche pas. Les protocoles destinés au public l'ont retiré :
       il est long à trouver, peu fiable — les soignants eux-mêmes s'y trompent —
@@ -493,14 +598,14 @@ footer a{color:var(--encre-2)}
       pendant des décennies. Il n'est plus au programme, et son retrait sauve des
       vies plutôt que d'en coûter.</p>
   </div>
-</section>
+</article>
 
 <!-- ═══ 3 ═══ Le point où une formation ordinaire dit « appelez les secours »
      et où celle-ci fait pratiquer une PHRASE. La différence entre les deux
      est documentée : un ordre adressé à tout le monde n'est exécuté par
      personne.                                                             -->
-<section id="s3">
-  <div class="num"><b>03</b><span>Alerter et déléguer</span></div>
+<article class="panneau" data-chap="s3" hidden>
+<div class="num"><b>03</b><span>Alerter et déléguer</span></div>
   <h2>Deux personnes. Deux ordres. Nommés.</h2>
   <div class="lire">
     <p>Ne dites jamais « quelqu'un appelle le 911 ». Dans un groupe, un ordre
@@ -509,8 +614,10 @@ footer a{color:var(--encre-2)}
     <p>Regardez une personne dans les yeux, désignez-la d'un geste, et donnez-lui
       une tâche unique. Puis la deuxième.</p>
   </div>
+</article>
 
-  <div class="jeu">
+<article class="panneau" data-chap="s3" data-verrou="1" hidden>
+<div class="jeu">
     <div class="jeu__t">Ce que vous dites, mot pour mot</div>
     <div class="rangee" style="flex-direction:column;align-items:stretch;max-width:44rem">
       <button class="b" type="button" data-ordre="0">« Vite, quelqu'un appelle le 911 ! »</button>
@@ -523,7 +630,10 @@ footer a{color:var(--encre-2)}
   <div class="lire">
     <p>Les deux phrases à avoir en tête :</p>
   </div>
-  <div class="rappel">
+</article>
+
+<article class="panneau" data-chap="s3" hidden>
+<div class="rappel">
     <h3 style="margin-top:0">Les deux ordres</h3>
     <ol>
       <li><b>« Vous, en bleu, appelez le 911 et revenez me le dire. »</b><br>
@@ -534,8 +644,10 @@ footer a{color:var(--encre-2)}
         peut-être pas.</li>
     </ol>
   </div>
+</article>
 
-  <h3>Et si vous êtes seul ?</h3>
+<article class="panneau" data-chap="s3" hidden>
+<h3>Et si vous êtes seul ?</h3>
   <div class="lire">
     <p>Composez le 911, mettez le <b>haut-parleur</b>, posez le téléphone par terre
       à côté de vous, et <b>commencez les compressions pendant que vous parlez</b>.
@@ -544,13 +656,13 @@ footer a{color:var(--encre-2)}
       partir : dites-lui où vous êtes et suivez ce qu'elle vous dit. C'est elle qui
       tranche s'il faut quitter la personne pour aller chercher l'appareil.</p>
   </div>
-</section>
+</article>
 
 <!-- ═══ 4 ═══ Le geste. Le repère de tempo est exigé par le brief, et c'est
      aussi la seule chose qu'un écran entraîne vraiment bien : on ne peut pas
      apprendre la profondeur ici, on peut apprendre la cadence.            -->
-<section id="s4">
-  <div class="num"><b>04</b><span>Comprimer</span></div>
+<article class="panneau" data-chap="s4" hidden>
+<div class="num"><b>04</b><span>Comprimer</span></div>
   <h2>Au milieu de la poitrine, fort et vite.</h2>
   <div class="lire">
     <p><b>Mettez-la sur le dos</b>, sur une surface dure — le sol, pas un canapé.</p>
@@ -560,6 +672,11 @@ footer a{color:var(--encre-2)}
     <p><b>Bras tendus, épaules à la verticale de vos mains.</b> Vous appuyez avec
       le poids de votre corps, pas avec la force de vos bras — c'est ce qui vous
       permet de tenir.</p>
+  </div>
+</article>
+
+<article class="panneau" data-chap="s4" hidden>
+<div class="lire">
     <p><b>Enfoncez d'au moins 5 cm</b> — deux pouces. C'est plus profond que ce que
       la plupart des gens osent.</p>
     <p><b>Laissez la poitrine remonter complètement</b> entre chaque compression,
@@ -569,8 +686,10 @@ footer a{color:var(--encre-2)}
       l'oxygène pendant les premières minutes ; ce qui manque, c'est quelque chose
       pour le faire circuler.</p>
   </div>
+</article>
 
-  <div class="jeu">
+<article class="panneau" data-chap="s4" data-verrou="1" hidden>
+<div class="jeu">
     <div class="jeu__t">Le rythme · 100 à 120 par minute</div>
     <div class="tempo">
       <div>
@@ -596,18 +715,23 @@ footer a{color:var(--encre-2)}
   </div>
 
   <div class="lire">
+  </div>
+</article>
+
+<article class="panneau" data-chap="s4" hidden>
+<div class="lire">
     <p><b>Ça fatigue vite.</b> En moins de deux minutes, la qualité chute chez
       presque tout le monde, et on ne s'en rend pas compte soi-même. Dès qu'une
       autre personne est là, relayez-vous toutes les deux minutes — et faites le
       changement en moins de cinq secondes.</p>
   </div>
-</section>
+</article>
 
 <!-- ═══ 5 ═══ L'appareil. Deux idées portent tout : « faites ce qu'il dit »,
      et « il refuse de choquer quand il ne faut pas ». La seconde est
      l'objection numéro un et le brief demande qu'elle soit traitée tôt.   -->
-<section id="s5">
-  <div class="num"><b>05</b><span>Le DEA arrive</span></div>
+<article class="panneau" data-chap="s5" hidden>
+<div class="num"><b>05</b><span>Le DEA arrive</span></div>
   <h2>Ouvrez, allumez, et faites ce qu'il dit.</h2>
   <div class="lire">
     <p>C'est la consigne entière. L'appareil parle, il guide, il attend. Il est
@@ -615,8 +739,10 @@ footer a{color:var(--encre-2)}
     <p>Pendant qu'on l'installe, <b>les compressions continuent</b>. On ne s'arrête
       que quand l'appareil demande de s'écarter.</p>
   </div>
+</article>
 
-  <h3>Ce que vous faites de vos mains</h3>
+<article class="panneau" data-chap="s5" hidden>
+<h3>Ce que vous faites de vos mains</h3>
   <div class="lire">
     <p><b>Dénudez la poitrine.</b> Le contact doit être peau contre peau : les
       électrodes ne fonctionnent pas à travers un vêtement.</p>
@@ -626,8 +752,10 @@ footer a{color:var(--encre-2)}
     <p><b>Collez les deux électrodes en suivant le dessin</b> imprimé dessus. Il
       montre exactement où les poser. Appuyez bien pour chasser l'air.</p>
   </div>
+</article>
 
-  <div class="jeu">
+<article class="panneau" data-chap="s5" data-verrou="1" hidden>
+<div class="jeu">
     <div class="jeu__t">Remettez la séquence dans l'ordre</div>
     <div class="suite" id="suite"><span class="mini">Cliquez les gestes dans l'ordre où vous les faites.</span></div>
     <div class="pile" id="pile"></div>
@@ -636,8 +764,10 @@ footer a{color:var(--encre-2)}
       <button class="b" type="button" id="reset5">Recommencer</button>
     </div>
   </div>
+</article>
 
-  <h3>Ce que l'appareil fait, exactement</h3>
+<article class="panneau" data-chap="s5" hidden>
+<h3>Ce que l'appareil fait, exactement</h3>
   <div class="lire">
     <p>Il lit le rythme du cœur, et il ne choque que <b>deux rythmes précis</b> :
       la fibrillation ventriculaire et la tachycardie ventriculaire sans pouls.
@@ -649,8 +779,10 @@ footer a{color:var(--encre-2)}
       Ça veut dire que le choc ne sert à rien sur ce rythme-là. Vous reprenez les
       compressions immédiatement.</p>
   </div>
+</article>
 
-  <div class="jeu jeu--signal">
+<article class="panneau" data-chap="s5" hidden>
+<div class="jeu jeu--signal">
     <div class="jeu__t">L'objection numéro un</div>
     <p style="max-width:44rem"><b>« Et si je m'en sers sur quelqu'un qui n'en a pas
       besoin ? »</b></p>
@@ -660,8 +792,10 @@ footer a{color:var(--encre-2)}
       appuyez dix fois. Il n'y a pas de scénario où vous électrocutez quelqu'un
       par erreur. C'est une machine qui dit non.</p>
   </div>
+</article>
 
-  <h3>Le choc</h3>
+<article class="panneau" data-chap="s5" hidden>
+<h3>Le choc</h3>
   <div class="lire">
     <p>Quand l'appareil annonce l'analyse : <b>ne touchez plus la personne</b>, et
       dites-le fort autour de vous.</p>
@@ -671,13 +805,13 @@ footer a{color:var(--encre-2)}
       sans vérifier quoi que ce soit. L'appareil vous redemandera de vous écarter
       dans deux minutes.</p>
   </div>
-</section>
+</article>
 
 <!-- ═══ 6 ═══ La fin. Le brief demande explicitement la phrase sur le droit
      d'être secoué : c'est ce qui manque à presque toutes les formations, et
      c'est ce dont on se souvient.                                          -->
-<section id="s6">
-  <div class="num"><b>06</b><span>Passer le relais</span></div>
+<article class="panneau" data-chap="s6" hidden>
+<div class="num"><b>06</b><span>Passer le relais</span></div>
   <h2>Vous continuez jusqu'à ce qu'ils vous remplacent.</h2>
   <div class="lire">
     <p>Vous ne vous arrêtez que dans trois cas : les secours prennent le relais,
@@ -686,7 +820,10 @@ footer a{color:var(--encre-2)}
     <p>Quand les paramédics arrivent, ils prennent la suite. <b>Votre travail est
       terminé.</b> Dites-leur trois choses, dans cet ordre :</p>
   </div>
-  <div class="rappel">
+</article>
+
+<article class="panneau" data-chap="s6" hidden>
+<div class="rappel">
     <ol>
       <li>Ce que vous avez vu — « elle s'est effondrée, elle ne répondait pas,
         elle ne respirait pas normalement ».</li>
@@ -697,7 +834,10 @@ footer a{color:var(--encre-2)}
     <p class="mini" style="margin-top:1rem;margin-bottom:0">Puis retirez-vous. Vous
       n'avez pas à rester.</p>
   </div>
-  <div class="lire">
+</article>
+
+<article class="panneau" data-chap="s6" hidden>
+<div class="lire">
     <p>Un dernier point, et il compte autant que le reste. <b>Vous avez le droit
       d'être secoué après.</b> Les mains qui tremblent, la nuit blanche, le fait
       d'y repenser pendant des jours : c'est une réaction ordinaire à une chose
@@ -707,13 +847,13 @@ footer a{color:var(--encre-2)}
       souvent.</b> Cela ne veut pas dire que vous avez mal fait. Sans vous, il n'y
       avait aucune chance ; avec vous, il y en avait une.</p>
   </div>
-</section>
+</article>
 
 <!-- ═══ 7 ═══ Les blocages, chacun reçu puis tranché. C'est la section que le
      brief décrit le plus précisément, parce que c'est elle qui décide si la
      personne agit ou non.                                                  -->
-<section id="s7">
-  <div class="num"><b>07</b><span>Vos objections</span></div>
+<article class="panneau" data-chap="s7" hidden>
+<div class="num"><b>07</b><span>Vos objections</span></div>
   <h2>Les raisons de ne rien faire, une par une.</h2>
   <div class="lire">
     <p>Elles sont toutes légitimes. Aucune ne tient devant ce qui se joue.</p>
@@ -751,8 +891,10 @@ footer a{color:var(--encre-2)}
         pas. C'est le texte de la loi, et il dit ce qu'il dit.</p>
     </div>
   </details>
+</article>
 
-  <details class="obj"><summary>« Je n'ose pas dénuder la poitrine de quelqu'un —
+<article class="panneau" data-chap="s7" hidden>
+<details class="obj"><summary>« Je n'ose pas dénuder la poitrine de quelqu'un —
     surtout celle d'une femme. »</summary>
     <div class="obj__c">
       <p>Cette gêne est réelle, elle est humaine, et elle est documentée : les
@@ -789,7 +931,7 @@ footer a{color:var(--encre-2)}
         mortel en quelques minutes.</p>
     </div>
   </details>
-</section>
+</article>
 
 <!-- ═══ 8 ═══ Le simulateur plutôt qu'une description de l'appareil. Deux
      passages : le second se termine par « aucun choc conseillé », de sorte
@@ -797,8 +939,8 @@ footer a{color:var(--encre-2)}
      fragment #passage=… ouvre directement le bon cas — laisser choisir dans
      une liste de troubles du rythme reviendrait à demander le diagnostic
      qu'on vient de dire de ne pas poser.                                   -->
-<section id="s8">
-  <div class="num"><b>08</b><span>Simulation</span></div>
+<article class="panneau" data-chap="s8" hidden>
+<div class="num"><b>08</b><span>Simulation</span></div>
   <h2>Faites-le une fois pour de vrai.</h2>
   <div class="lire">
     <p>Le simulateur vous met dans la cafétéria de l'immeuble. Une personne est au
@@ -832,19 +974,21 @@ footer a{color:var(--encre-2)}
          rel="noopener">Ouvrir en pleine page ↗</a>
     </div>
   </div>
+</article>
 
-  <div class="lire" style="margin-top:2rem">
+<article class="panneau" data-chap="s8" hidden>
+<div class="lire" style="margin-top:2rem">
     <p class="doux">Le simulateur demande l'accès au microphone pour mesurer la
       cadence de vos compressions sur la table. Vous pouvez refuser : tout le reste
       fonctionne, et vous pouvez frapper au clavier ou à l'écran.</p>
   </div>
-</section>
+</article>
 
 <!-- ═══ 9 ═══ Huit questions, chacune ancrée sur une décision. Aucune ne
      demande une définition. La rétroaction explique toujours POURQUOI, y
      compris quand la réponse est bonne — sinon on apprend à cocher.        -->
-<section id="s9">
-  <div class="num"><b>09</b><span>Vérification</span></div>
+<article class="panneau" data-chap="s9" hidden>
+<div class="num"><b>09</b><span>Vérification</span></div>
   <h2>Huit décisions.</h2>
   <div class="lire">
     <p>Pas de définitions. Chaque question est un moment où il faut choisir.</p>
@@ -854,8 +998,10 @@ footer a{color:var(--encre-2)}
     <b><span id="score-n">0</span>/8</b>
     <span id="score-mot"></span>
   </div>
+</article>
 
-  <div class="rappel">
+<article class="panneau" data-chap="s9" hidden>
+<div class="rappel">
     <h3>Ce qu'il faut retenir, en six lignes</h3>
     <ol>
       <li>Le DEA est au <b>hall d'entrée, à droite, près de la réception</b>.</li>
@@ -871,9 +1017,11 @@ footer a{color:var(--encre-2)}
         suite.</b></li>
     </ol>
   </div>
-</section>
+</article>
 
-<footer>
+<article class="panneau" data-chap="s9" hidden>
+  <div class="num"><b>—</b><span>Pour finir</span></div>
+
   <div class="lire">
     <h3 style="margin-top:0">Cette formation ne remplace pas une certification en RCR.</h3>
     <p>Quatre choses s'apprennent seulement sur un mannequin, avec quelqu'un qui
@@ -894,11 +1042,24 @@ footer a{color:var(--encre-2)}
     <p class="mini">Simulateur de défibrillateur intégré à la partie 8 :
       <a href="simulateur-dea.html">SimDEA</a>.</p>
   </div>
-</footer>
+</article>
 
 </main>
 
+<div class="pied">
+  <div class="pied__int">
+    <button class="b" type="button" id="retour">← Retour</button>
+    <span class="pied__ou" id="ou"></span>
+    <span class="verrouDit" id="verrouDit"></span>
+    <button class="passer" type="button" id="passer" hidden>Passer cet exercice</button>
+    <span class="pied__vide"></span>
+    <button class="b b--plein" type="button" id="suivant">Commencer</button>
+  </div>
+</div>
+
+
 <script>
+
 (function () {
   'use strict';
   var el = function (id) { return document.getElementById(id); };
@@ -911,38 +1072,10 @@ footer a{color:var(--encre-2)}
     bTheme.textContent = sombre ? 'Sombre' : 'Clair';
   });
 
-  /* ── La barre de progression et le sommaire ─────────────────────────
-     La jauge suit le DÉFILEMENT, pas les sections faites : elle répond à
-     « combien il reste », qui est la question qu'on se pose à la minute
-     douze. Les coches, elles, suivent ce qui a été joué.                */
-  var TITRES = ['Le DEA', 'Reconnaître', 'Alerter', 'Comprimer', 'L’appareil',
-                'Le relais', 'Objections', 'Simulation', 'Vérification'];
-  var nav = el('nav');
-  TITRES.forEach(function (titre, i) {
-    var a = document.createElement('a');
-    a.href = '#s' + (i + 1); a.textContent = (i + 1) + '. ' + titre;
-    a.id = 'nav-s' + (i + 1);
-    nav.appendChild(a);
-  });
-  var sections = TITRES.map(function (_, i) { return el('s' + (i + 1)); });
-  var jauge = el('jauge');
-  function surDefilement() {
-    var h = document.documentElement;
-    var total = h.scrollHeight - h.clientHeight;
-    jauge.style.width = (total > 0 ? Math.min(100, (h.scrollTop / total) * 100) : 0) + '%';
-    var courante = null;
-    sections.forEach(function (s) {
-      if (s.getBoundingClientRect().top < window.innerHeight * 0.4) courante = s.id;
-    });
-    TITRES.forEach(function (_, i) {
-      el('nav-s' + (i + 1)).setAttribute('aria-current', ('s' + (i + 1)) === courante ? 'true' : 'false');
-    });
-  }
-  document.addEventListener('scroll', surDefilement, { passive: true });
-  surDefilement();
-
-  /** Coche une section au sommaire : elle a été jouée, pas seulement lue. */
-  function faite(n) { el('nav-s' + n).classList.add('fini'); }
+  /** Marquait une section au sommaire du temps où la page défilait. Le
+      module coche les chapitres tout seul, en les traversant : la fonction
+      reste pour ne pas toucher aux six interactions qui l'appellent. */
+  function faite() {}
 
   /** Rend un verdict. Le texte explique TOUJOURS pourquoi, y compris quand la
       réponse est bonne : sans le pourquoi, on apprend à cocher. */
@@ -1623,8 +1756,17 @@ footer a{color:var(--encre-2)}
 
   var repondues = 0, bonnes = 0;
   (function quiz() {
+    /* Une question par panneau. Empilées, on les survole ; seules, on les
+       décide — et la rétroaction a toute la place de dire pourquoi. Les
+       panneaux sont fabriqués AVANT que le contrôleur fasse son inventaire. */
     var hote = el('quiz');
+    var apres = hote.closest('.panneau');
     QUESTIONS.forEach(function (Q, n) {
+      var pan = document.createElement('article');
+      pan.className = 'panneau'; pan.hidden = true;
+      pan.setAttribute('data-chap', 's9'); pan.setAttribute('data-verrou', '1');
+      apres.parentNode.insertBefore(pan, apres.nextSibling);
+      apres = pan;
       var d = document.createElement('div');
       d.className = 'q';
       d.innerHTML = '<div class="q__n">Question ' + (n + 1) + ' / 8</div>' +
@@ -1652,6 +1794,7 @@ footer a{color:var(--encre-2)}
           repondues++; if (juste) bonnes++;
           el('score-n').textContent = bonnes;
           el('score').hidden = false;
+          pan.appendChild(el('score'));
           el('score-mot').textContent = repondues < QUESTIONS.length
             ? (repondues + ' question' + (repondues > 1 ? 's' : '') + ' sur 8.')
             : (bonnes === 8 ? 'Tout y est. Relisez les six lignes ci-dessous une dernière fois.'
@@ -1662,21 +1805,162 @@ footer a{color:var(--encre-2)}
         r.appendChild(b);
       });
       d.appendChild(r); d.appendChild(v);
-      hote.appendChild(d);
+      pan.appendChild(d);
     });
+    hote.remove();
   })();
 
-  /* Les sections purement lues se cochent quand elles ont été traversées :
-     6 et 7 n'ont rien à jouer, et laisser leur coche éteinte donnerait
-     l'impression d'un travail inachevé alors qu'il ne l'est pas. */
-  if ('IntersectionObserver' in window) {
-    var oeil = new IntersectionObserver(function (entrees) {
-      entrees.forEach(function (e) {
-        if (e.isIntersecting) { faite(e.target.id.slice(1)); oeil.unobserve(e.target); }
-      });
-    }, { threshold: 0.6 });
-    [el('s6'), el('s7')].forEach(function (s) { oeil.observe(s); });
+
+  /* ══ LE CONTRÔLEUR DU MODULE ══════════════════════════════════════════
+     Un panneau à la fois, une avance explicite, et rien qui dépende du
+     défilement. Il s'installe APRÈS les interactions : le quiz fabrique ses
+     propres panneaux, et l'inventaire doit être complet quand on le prend. */
+  var CHAPS = { s0: 'Avant de commencer', s1: 'Le DEA', s2: 'Reconnaître',
+                s3: 'Alerter', s4: 'Comprimer', s5: 'L’appareil',
+                s6: 'Le relais', s7: 'Objections', s8: 'Simulation',
+                s9: 'Vérification' };
+  var CLE = 'formation-dea-ou';
+
+  var scene = el('scene');
+  var panneaux = [].slice.call(scene.querySelectorAll('.panneau'));
+  var ordreChaps = Object.keys(CHAPS);
+  var courant = 0, vus = {}, minuterieePasser = 0;
+
+  /* Le rail : une pastille par chapitre. On ne peut sauter qu'à un chapitre
+     DÉJÀ ATTEINT — un module qui laisse aller n'importe où n'est plus un
+     parcours, et celui qui saute la reconnaissance ne comprend pas l'appel. */
+  var rail = el('rail');
+  ordreChaps.slice(1).forEach(function (c, i) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.textContent = String(i + 1);
+    b.title = CHAPS[c]; b.setAttribute('aria-label', (i + 1) + '. ' + CHAPS[c]);
+    b.disabled = true;
+    b.addEventListener('click', function () {
+      for (var k = 0; k < panneaux.length; k++) {
+        if (panneaux[k].dataset.chap === c) { aller(k); return; }
+      }
+    });
+    rail.appendChild(b);
+  });
+
+  function majRail() {
+    var chapCourant = panneaux[courant].dataset.chap;
+    ordreChaps.slice(1).forEach(function (c, i) {
+      var b = rail.children[i];
+      b.setAttribute('aria-current', c === chapCourant ? 'true' : 'false');
+      if (vus[c]) { b.dataset.vu = '1'; b.disabled = false; }
+    });
+    el('chapTitre').textContent = CHAPS[chapCourant] || '';
   }
+
+  /** Le panneau est-il franchissable ? Un panneau à verrou attend qu'un
+      verdict soit rendu — juste OU faux : se tromper fait avancer, c'est même
+      ce qui apprend le plus. Ce qu'on refuse, c'est de passer sans essayer. */
+  function ouvert(p) {
+    if (!p.hasAttribute('data-verrou')) return true;
+    if (p.dataset.fait) return true;
+    return !!p.querySelector('.verdict[data-etat]');
+  }
+
+  function majPied() {
+    var p = panneaux[courant], dernier = courant === panneaux.length - 1;
+    el('retour').disabled = courant === 0;
+    el('ou').textContent = (courant + 1) + ' / ' + panneaux.length;
+    el('jauge').style.width = ((courant + 1) / panneaux.length * 100) + '%';
+    var libre = ouvert(p);
+    el('suivant').disabled = !libre || dernier;
+    el('suivant').textContent = dernier ? 'Terminé' : (courant === 0 ? 'Commencer' : 'Continuer →');
+    el('verrouDit').textContent = libre ? '' : 'Faites l’exercice pour continuer.';
+    el('passer').hidden = true;
+    clearTimeout(minuteriePasser);
+    if (!libre) {
+      /* L'échappatoire n'apparaît qu'au bout de vingt-cinq secondes. Offerte
+         tout de suite, elle devient le chemin normal ; jamais offerte, elle
+         bloque qui ne peut pas taper au rythme. */
+      minuteriePasser = setTimeout(function () { el('passer').hidden = false; }, 25000);
+    }
+  }
+
+  function aller(n, sens) {
+    n = Math.max(0, Math.min(panneaux.length - 1, n));
+    if (n === courant && panneaux[courant].hidden === false) return;
+    var arriere = sens === 'arriere' || n < courant;
+    var sortant = panneaux[courant];
+    var entrant = panneaux[n];
+    var jouer = function () {
+      sortant.hidden = true; sortant.removeAttribute('data-part');
+      entrant.hidden = false;
+      entrant.setAttribute('data-sens', arriere ? 'arriere' : 'avant');
+      courant = n;
+      vus[entrant.dataset.chap] = true;
+      try { localStorage.setItem(CLE, String(n)); } catch (e) {}
+      majRail(); majPied();
+      window.scrollTo(0, 0);
+      /* Le titre du panneau prend le focus : sans cela, un lecteur d'écran
+         reste sur le bouton « Continuer » et n'annonce jamais ce qui a
+         changé — on aurait fait un module muet pour qui ne voit pas. */
+      var tete = entrant.querySelector('h1, h2, h3, .jeu__t');
+      if (tete) { tete.setAttribute('tabindex', '-1'); tete.focus({ preventScroll: true }); }
+    };
+    if (sortant === entrant) { jouer(); return; }
+    var reduit = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduit) { jouer(); return; }
+    sortant.setAttribute('data-part', '1');
+    sortant.setAttribute('data-sens', arriere ? 'arriere' : 'avant');
+    setTimeout(jouer, 190);
+  }
+
+  el('suivant').addEventListener('click', function () { aller(courant + 1); });
+  el('retour').addEventListener('click', function () { aller(courant - 1, 'arriere'); });
+  el('passer').addEventListener('click', function () {
+    panneaux[courant].dataset.fait = '1'; majPied();
+  });
+
+  /* Le verrou se lève tout seul.
+
+     Plutôt que d'aller modifier chacune des six interactions pour qu'elle
+     prévienne le contrôleur, on observe ce qu'elles produisent déjà : un
+     verdict. Aucune ligne de la logique vérifiée n'a été touchée, et une
+     interaction ajoutée plus tard sera prise en charge sans rien câbler. */
+  if ('MutationObserver' in window) {
+    new MutationObserver(function () { majPied(); })
+      .observe(scene, { subtree: true, attributes: true, attributeFilter: ['data-etat'] });
+  }
+
+  /* Entrée et flèches. Pas la barre d'espace : elle sert à frapper la
+     cadence, et avancer d'un panneau au premier temps serait une trahison. */
+  document.addEventListener('keydown', function (e) {
+    if (e.target.closest('input, textarea, [contenteditable]')) return;
+    if (e.key === 'ArrowRight') { if (!el('suivant').disabled) aller(courant + 1); }
+    if (e.key === 'ArrowLeft') { if (!el('retour').disabled) aller(courant - 1, 'arriere'); }
+  });
+
+  /* La reprise. On ne replace pas les gens d'autorité : on leur dit où ils
+     en étaient et on les laisse choisir. */
+  panneaux.forEach(function (p, i) { p.hidden = i !== 0; });
+  panneaux[0].hidden = false;
+  vus.s0 = true;
+  var repris = 0;
+  try { repris = parseInt(localStorage.getItem(CLE) || '0', 10) || 0; } catch (e) {}
+  if (repris > 0 && repris < panneaux.length) {
+    for (var j = 0; j <= repris; j++) vus[panneaux[j].dataset.chap] = true;
+    var bandeau = document.createElement('div');
+    bandeau.className = 'reprise';
+    bandeau.innerHTML = '<span>Vous vous étiez arrêté au panneau ' + (repris + 1) +
+      ' sur ' + panneaux.length + '.</span>';
+    var bR = document.createElement('button');
+    bR.className = 'b'; bR.type = 'button'; bR.textContent = 'Reprendre là';
+    bR.addEventListener('click', function () { bandeau.remove(); aller(repris); });
+    var bZ = document.createElement('button');
+    bZ.className = 'passer'; bZ.type = 'button'; bZ.textContent = 'Recommencer du début';
+    bZ.addEventListener('click', function () {
+      bandeau.remove();
+      try { localStorage.removeItem(CLE); } catch (e) {}
+    });
+    bandeau.appendChild(bR); bandeau.appendChild(bZ);
+    panneaux[0].insertBefore(bandeau, panneaux[0].firstChild);
+  }
+  majRail(); majPied();
 })();
 </script>
 
