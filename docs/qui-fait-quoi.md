@@ -30,7 +30,6 @@ autre chose.
 
 | Session | Ouverte | Ce que je tiens | Jusqu'à |
 |---|---|---|---|
-| `bibliotheque-francisation-f6` | 11 sept., 10 h | `presentations.html`, `assets/presentations/copilote-*` | les deux feuilles du copilote de formation publiées |
 
 Le nom de session est celui que donne `ListAgents` (`claude-38`, `claude-71`…).
 Il ne survit pas à la fermeture, et c'est voulu : une ligne dont le nom ne
