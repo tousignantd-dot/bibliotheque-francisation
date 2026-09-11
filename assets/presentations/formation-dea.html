@@ -1402,14 +1402,20 @@ body { padding-bottom: 5.5rem; }          /* la barre du bas est fixe */
     else if (modeSouffle !== null) jouerSouffle(modeSouffle, testEnCours);
   });
 
-  /* Le son s'arrête quand le panneau quitte l'écran. Sans cela un halètement
-     continue à racler pendant qu'on lit la partie sur les compressions —
-     personne ne comprend d'où ça vient, et on ferme l'onglet. */
-  if ('IntersectionObserver' in window) {
-    new IntersectionObserver(function (e) {
-      if (!e[0].isIntersecting && modeSouffle !== null) arreterSouffle();
-    }, { threshold: 0 }).observe(cv);
-  }
+  /* LE SON S'ARRÊTE QUAND ON QUITTE LE PANNEAU.
+
+     Premier jet : un IntersectionObserver sur la toile, écrit du temps où la
+     page défilait. En panneaux, on ne fait pas sortir l'élément de l'écran —
+     on le met à `hidden`. Mesuré : l'observateur n'a rendu AUCUNE entrée, pas
+     même la première. C'était un garde-fou qu'on croyait avoir, et le
+     symptôme était une respiration qui continuait de souffler onze panneaux
+     plus loin sans qu'on sache d'où elle venait.
+
+     Le modèle en panneaux donne un signal exact plutôt qu'une géométrie
+     devinée : le contrôleur annonce le départ, on écoute. */
+  cv.closest('.panneau').addEventListener('panneau:quitte', function () {
+    if (modeSouffle !== null) arreterSouffle();
+  });
 
   Array.prototype.forEach.call(document.querySelectorAll('[data-souffle]'), function (b) {
     b.addEventListener('click', function () {
@@ -1504,10 +1510,14 @@ body { padding-bottom: 5.5rem; }          /* la barre du bas est fixe */
     metroId = setInterval(clic, 60000 / 110);
     el('metro').disabled = true; el('metro-stop').disabled = false;
   });
-  el('metro-stop').addEventListener('click', function () {
+  function arreterMetro() {
     clearInterval(metroId); metroId = null;
     el('metro').disabled = false; el('metro-stop').disabled = true;
-  });
+  }
+  el('metro-stop').addEventListener('click', arreterMetro);
+  /* Même défaut que le souffle, trouvé en cherchant le premier : le clic à
+     110 continuait indéfiniment si on quittait le panneau sans l'arrêter. */
+  el('metro').closest('.panneau').addEventListener('panneau:quitte', arreterMetro);
 
   /* La cadence se lit sur la MÉDIANE des derniers intervalles, jamais sur la
      moyenne : une hésitation d'une seconde décale une moyenne de dix frappes
@@ -1655,6 +1665,19 @@ body { padding-bottom: 5.5rem; }          /* la barre du bas est fixe */
       el('sim-neuf').href = 'simulateur-dea.html#passage=' + id;
       el('cadre-sim').scrollIntoView({ behavior: 'smooth', block: 'start' });
       faite(8);
+    });
+  });
+
+  /* Quitter le panneau ferme la simulation. Elle a son propre métronome et sa
+     propre horloge : la laisser tourner derrière soi, c'est le même bruit
+     inexplicable que le souffle, en plus long. Elle n'a pas de reprise — on la
+     relance d'un bouton, et c'est une séquence qui se fait d'un trait. */
+  el('cadre-sim').closest('.panneau').addEventListener('panneau:quitte', function () {
+    if (el('cadre-sim').hidden) return;
+    el('sim').src = 'about:blank';
+    el('cadre-sim').hidden = true;
+    Array.prototype.forEach.call(document.querySelectorAll('[data-sim]'), function (x) {
+      x.setAttribute('aria-pressed', 'false');
     });
   });
 
@@ -1859,7 +1882,11 @@ body { padding-bottom: 5.5rem; }          /* la barre du bas est fixe */
   function ouvert(p) {
     if (!p.hasAttribute('data-verrou')) return true;
     if (p.dataset.fait) return true;
-    return !!p.querySelector('.verdict[data-etat]');
+    /* Une fois franchi, TOUJOURS franchi. Sans cette mémoire, rejouer un
+       tracé après avoir répondu effaçait le verdict — et « Continuer » se
+       redésactivait sous les doigts de quelqu'un qui venait de réussir. */
+    if (p.querySelector('.verdict[data-etat]')) { p.dataset.fait = '1'; return true; }
+    return false;
   }
 
   function majPied() {
@@ -1888,6 +1915,11 @@ body { padding-bottom: 5.5rem; }          /* la barre du bas est fixe */
     var sortant = panneaux[courant];
     var entrant = panneaux[n];
     var jouer = function () {
+      /* On prévient le panneau qu'il s'en va, AVANT de le cacher : ce qui y
+         joue du son doit pouvoir s'arrêter. Un panneau caché n'émet plus
+         aucun signal de lui-même — c'est ce qui avait laissé une respiration
+         souffler onze panneaux plus loin. */
+      sortant.dispatchEvent(new CustomEvent('panneau:quitte'));
       sortant.hidden = true; sortant.removeAttribute('data-part');
       entrant.hidden = false;
       entrant.setAttribute('data-sens', arriere ? 'arriere' : 'avant');
