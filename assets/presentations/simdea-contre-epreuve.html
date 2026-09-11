@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Le protocole et l'instrument de la contre-épreuve de SimDEA : où quelqu'un qui n'a jamais vu de défibrillateur pose les électrodes.">
+<meta name="description" content="La contre-épreuve du simulateur de défibrillateur : le protocole de passation et l'instrument qui lit les relevés. Publiée sans données, et elle le dit.">
 <title>La contre-épreuve</title>
 <style>html{color-scheme:light dark}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 </head>
@@ -353,6 +353,21 @@ tomber dessus. Il exporte un fichier JSON. Déposez-le ici.</p>
      du simulateur changent un jour, une analyse qui les aurait recopiées
      mesurerait un écart à une cible qui n'existait pas au moment du geste. */
   var CIBLES_DEFAUT = { droite:{x:104,y:118,r:30}, gauche:{x:205,y:205,r:32} };
+  /* Le verdict s'écrit en toutes lettres. Le tableau affichait les
+     identifiants du code — « lesDeux », « inversees » — et c'est l'opérateur
+     qui lit ce tableau, pas le programme. Vu en y déposant un vrai relevé
+     exporté du simulateur : jusque-là, seul le jeu d'essai fabriqué y était
+     passé, et on ne le relit pas avec les mêmes yeux. */
+  var CLAIR = {
+    ok: 'Les deux dans la zone',
+    inversees: 'Les deux inversées',
+    lesDeux: 'Les deux hors zone',
+    droite: 'Haute hors zone',
+    gauche: 'Basse hors zone',
+    surStimulateur: 'Sur le boîtier',
+  };
+  var enClair = function (r) { return CLAIR[r] || r; };
+
   var poses = [], factice = false;
   var el = function(i){ return document.getElementById(i); };
 
@@ -438,7 +453,7 @@ tomber dessus. Il exporte un fichier JSON. Déposez-le ici.</p>
 
     var lignes = poses.map(function(p, i){
       return '<tr><td>'+(i+1)+'</td><td>'+Math.round(p.dDroite)+' px</td><td>'
-        + Math.round(p.dGauche)+' px</td><td>'+p.raison+'</td><td>'+p.secondes+' s</td></tr>';
+        + Math.round(p.dGauche)+' px</td><td>'+enClair(p.raison)+'</td><td>'+p.secondes+' s</td></tr>';
     }).join('');
     el('tableau').innerHTML = '<table><thead><tr><th>#</th><th>Écart haut</th>'
       + '<th>Écart bas</th><th>Verdict</th><th>Temps</th></tr></thead><tbody>'
