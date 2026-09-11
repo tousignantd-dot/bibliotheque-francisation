@@ -1391,6 +1391,12 @@ body { padding-bottom: 5.5rem; }          /* la barre du bas est fixe */
     dessiner();                       // la grille seule
     el('souffle-stop').disabled = true;
     el('souffle-etat').textContent = 'Arrêté.';
+    /* Arrêter ferme aussi le test en cours. Sans cela, les deux réponses
+       restaient offertes sur un tracé qu'on n'a pas vu jusqu'au bout : on
+       aurait pu répondre juste sans avoir rien regardé, et le verrou du
+       panneau se serait levé pour un exercice qui n'a pas eu lieu. */
+    testEnCours = false;
+    el('souffle-choix').style.display = 'none';
   }
   el('souffle-stop').addEventListener('click', arreterSouffle);
 
