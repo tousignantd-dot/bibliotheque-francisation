@@ -6222,109 +6222,6 @@ body.depot-ferme #poSend { display: none !important; }
 })();
 </script>
 <!-- DEPOT-ECRIT-JS:fin -->
-<!-- SECTIONS-DATEES:début — greffé par build/greffe_sections.py -->
-<style>
-  .tab.verrouillee { opacity: .55; cursor: not-allowed; }
-  .tab.verrouillee .tchk { visibility: visible; opacity: 1; }
-  #verrou-avis {
-    margin: 10px 0 0; padding: 10px 14px; border-radius: 10px;
-    background: #FDF3E3; color: #7A4A12; border: 1px solid #E8CDA0;
-    font-size: 15px; font-weight: 700;
-  }
-</style>
-<script>
-(function () {
-  var ACTIVITE = 78;
-
-  function joli(iso) {
-    if (!iso) return '';
-    var p = iso.split('-');
-    var mois = ['janvier','février','mars','avril','mai','juin','juillet',
-                'août','septembre','octobre','novembre','décembre'];
-    return Number(p[2]) + ' ' + mois[Number(p[1]) - 1];
-  }
-
-  function avis(texte) {
-    var el = document.getElementById('verrou-avis');
-    if (!el) {
-      var tabs = document.getElementById('tabs');
-      if (!tabs || !tabs.parentNode) return;
-      el = document.createElement('p');
-      el.id = 'verrou-avis';
-      tabs.parentNode.insertBefore(el, tabs.nextSibling);
-    }
-    el.textContent = texte;
-    el.hidden = !texte;
-  }
-
-  function appliquer(sections) {
-    var parId = {};
-    sections.forEach(function (s) { parId[s.id] = s; });
-
-    SECTIONS.forEach(function (sec) {
-      var etat = parId[sec.id];
-      var bouton = document.getElementById('tab-' + sec.id);
-      if (!bouton || !etat) return;
-      var fermee = !etat.ouverte;
-      bouton.classList.toggle('verrouillee', fermee);
-      bouton.setAttribute('aria-disabled', fermee ? 'true' : 'false');
-      var chk = bouton.querySelector('.tchk');
-      if (chk && fermee) chk.textContent = '🔒';
-      bouton.title = fermee
-        ? (etat.datePrevue ? 'Cette partie s’ouvre le ' + joli(etat.datePrevue)
-                           : 'Cette partie n’est pas encore ouverte.')
-        : '';
-    });
-
-    // Capture : l'écouteur du module est posé sur le bouton lui-même, il faut
-    // donc arrêter le clic avant lui plutôt qu'après.
-    var tabs = document.getElementById('tabs');
-    if (tabs && !tabs.dataset.verrou) {
-      tabs.dataset.verrou = '1';
-      tabs.addEventListener('click', function (e) {
-        var b = e.target.closest ? e.target.closest('.tab') : null;
-        if (!b || !b.classList.contains('verrouillee')) return;
-        e.stopPropagation();
-        e.preventDefault();
-        avis(b.title || 'Cette partie n’est pas encore ouverte.');
-      }, true);
-    }
-
-    var ouvertes = sections.filter(function (s) { return s.ouverte; });
-    if (!ouvertes.length) {
-      avis('Aucune partie de ce module n’est ouverte pour l’instant. '
-           + 'Ton enseignante les ouvrira une à une.');
-      return;
-    }
-    var courante = parId[curSec];
-    if (courante && !courante.ouverte) {
-      curSec = ouvertes[0].id;
-      avis('Cette partie n’est pas encore ouverte : voici celle que tu peux faire.');
-    }
-    if (typeof render === 'function') render();
-  }
-
-  function demarrer() {
-    if (typeof SECTIONS === 'undefined' || typeof curSec === 'undefined') return;
-    var code = (typeof studentCode !== 'undefined' && studentCode) || '';
-    if (!code) return;   // hors session : le module s'ouvre en entier
-    fetch('/api/student/sections?code=' + encodeURIComponent(code)
-          + '&activityId=' + ACTIVITE)
-      .then(function (r) { return r.ok ? r.json() : null; })
-      .then(function (d) {
-        if (d && d.decoupe && d.sections && d.sections.length) appliquer(d.sections);
-      })
-      .catch(function () { /* serveur muet : on n'enlève rien à l'élève */ });
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', demarrer);
-  } else {
-    demarrer();
-  }
-})();
-</script>
-<!-- SECTIONS-DATEES:fin -->
 <!-- TRANSCRIPTION:début — greffé par build/greffe_transcription.py -->
 <script>
 (function () {
@@ -6454,4 +6351,165 @@ body.depot-ferme #poSend { display: none !important; }
 }());
 </script>
 <!-- ECOUTE-VERROU:fin -->
+<!-- SECTIONS-DATEES:début — greffé par build/greffe_sections.py -->
+<style>
+  .tab.verrouillee { opacity: .55; cursor: not-allowed; }
+  .tab.verrouillee .tchk { visibility: visible; opacity: 1; }
+  #verrou-avis {
+    margin: 10px 0 0; padding: 10px 14px; border-radius: 10px;
+    background: #FDF3E3; color: #7A4A12; border: 1px solid #E8CDA0;
+    font-size: 15px; font-weight: 700;
+  }
+</style>
+<script>
+(function () {
+  var ACTIVITE = 78;
+
+  function joli(iso) {
+    if (!iso) return '';
+    var p = iso.split('-');
+    var mois = ['janvier','février','mars','avril','mai','juin','juillet',
+                'août','septembre','octobre','novembre','décembre'];
+    return Number(p[2]) + ' ' + mois[Number(p[1]) - 1];
+  }
+
+  function avis(texte) {
+    var el = document.getElementById('verrou-avis');
+    if (!el) {
+      var tabs = document.getElementById('tabs');
+      if (!tabs || !tabs.parentNode) return;
+      el = document.createElement('p');
+      el.id = 'verrou-avis';
+      tabs.parentNode.insertBefore(el, tabs.nextSibling);
+    }
+    el.textContent = texte;
+    el.hidden = !texte;
+  }
+
+  // L'état vu au dernier appel, pour ne rien refaire quand rien n'a bougé :
+  // `render()` reconstruit la section entière, et le rappeler toutes les
+  // trente secondes effacerait ce que l'élève est en train d'écrire.
+  var DERNIER = null;   // {id: ouverte} au dernier appel, ou null au premier
+
+  function etatDe(sections) {
+    var m = {};
+    sections.forEach(function (s) { m[s.id] = !!s.ouverte; });
+    return m;
+  }
+
+  function memeEtat(a, b) {
+    if (!a || !b) return false;
+    var cles = Object.keys(b);
+    if (Object.keys(a).length !== cles.length) return false;
+    return cles.every(function (k) { return a[k] === b[k]; });
+  }
+
+  function appliquer(sections) {
+    var parId = {};
+    var neuves = [];
+    sections.forEach(function (s) {
+      if (s.ouverte && DERNIER && DERNIER[s.id] === false) {
+        neuves.push(s.titre || s.id);
+      }
+      parId[s.id] = s;
+    });
+
+    SECTIONS.forEach(function (sec) {
+      var etat = parId[sec.id];
+      var bouton = document.getElementById('tab-' + sec.id);
+      if (!bouton || !etat) return;
+      var fermee = !etat.ouverte;
+      bouton.classList.toggle('verrouillee', fermee);
+      bouton.setAttribute('aria-disabled', fermee ? 'true' : 'false');
+      var chk = bouton.querySelector('.tchk');
+      if (chk && fermee) chk.textContent = '🔒';
+      bouton.title = fermee
+        ? (etat.datePrevue ? 'Cette partie s’ouvre le ' + joli(etat.datePrevue)
+                           : 'Cette partie n’est pas encore ouverte.')
+        : '';
+    });
+
+    // Capture : l'écouteur du module est posé sur le bouton lui-même, il faut
+    // donc arrêter le clic avant lui plutôt qu'après.
+    var tabs = document.getElementById('tabs');
+    if (tabs && !tabs.dataset.verrou) {
+      tabs.dataset.verrou = '1';
+      tabs.addEventListener('click', function (e) {
+        var b = e.target.closest ? e.target.closest('.tab') : null;
+        if (!b || !b.classList.contains('verrouillee')) return;
+        e.stopPropagation();
+        e.preventDefault();
+        avis(b.title || 'Cette partie n’est pas encore ouverte.');
+      }, true);
+    }
+
+    var ouvertes = sections.filter(function (s) { return s.ouverte; });
+    if (!ouvertes.length) {
+      avis('Aucune partie de ce module n’est ouverte pour l’instant. '
+           + 'Ton enseignante les ouvrira une à une.');
+      return;
+    }
+    var courante = parId[curSec];
+    if (courante && !courante.ouverte) {
+      curSec = ouvertes[0].id;
+      avis('Cette partie n’est pas encore ouverte : voici celle que tu peux faire.');
+    } else if (neuves.length) {
+      // Une partie qui s'ouvre pendant que l'élève travaille doit se voir :
+      // sans un mot, l'onglet change de teinte au coin de l'œil et personne
+      // ne le remarque. On ne déplace pas l'élève pour autant — il finit ce
+      // qu'il a commencé.
+      avis(neuves.length > 1
+           ? 'Ton enseignant vient d’ouvrir de nouvelles parties.'
+           : 'Ton enseignant vient d’ouvrir « ' + neuves[0] + ' ».');
+    }
+    if (typeof render === 'function') render();
+  }
+
+  function demander() {
+    if (typeof SECTIONS === 'undefined' || typeof curSec === 'undefined') return;
+    var code = (typeof studentCode !== 'undefined' && studentCode) || '';
+    if (!code) return;   // hors session : le module s'ouvre en entier
+    fetch('/api/student/sections?code=' + encodeURIComponent(code)
+          + '&activityId=' + ACTIVITE)
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (d) {
+        if (!d || !d.decoupe || !d.sections || !d.sections.length) return;
+        var etat = etatDe(d.sections);
+        // Rien n'a bougé : on ne touche à rien. C'est la condition qui rend
+        // la relance inoffensive.
+        if (memeEtat(DERNIER, etat)) return;
+        appliquer(d.sections);
+        DERNIER = etat;
+      })
+      .catch(function () { /* serveur muet : on n'enlève rien à l'élève */ });
+  }
+
+  /* En séance sans compte, l'enseignant change la partie ouverte en cours
+     d'heure — sans nouveau code, pour que personne ne rescanne. Le module
+     redemande donc, au lieu d'attendre un rechargement qu'il faudrait
+     réclamer à vingt personnes à voix haute.
+
+     Trente secondes, et **rien quand l'onglet est masqué** : même règle que
+     le direct de la classe. Un téléphone posé sur la table interrogerait le
+     serveur toute la soirée pour personne. On redemande aussi au retour sur
+     l'onglet, sinon l'élève qui revient de sa messagerie attend jusqu'à une
+     demi-minute devant un onglet encore verrouillé. */
+  function demarrer() {
+    demander();
+    setInterval(function () {
+      if (!document.hidden) demander();
+    }, 30000);
+    document.addEventListener('visibilitychange', function () {
+      if (!document.hidden) demander();
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', demarrer);
+  } else {
+    demarrer();
+  }
+})();
+</script>
+<!-- SECTIONS-DATEES:fin -->
 </body></html>

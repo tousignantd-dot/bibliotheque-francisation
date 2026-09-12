@@ -82,6 +82,11 @@
     .eyebrow { font-size:9.5pt; font-weight:800; text-transform:uppercase;
                letter-spacing:.12em; color:var(--muted); }
     .hdr h1 { font-size:22pt; font-weight:900; margin-top:3px; }
+    /* La partie du module, sous le titre. Elle n'est là que si la séance
+       n'ouvre pas tout : une feuille qui dirait « toutes les parties » ferait
+       lire une ligne pour apprendre qu'il n'y a rien à savoir. */
+    .hdr .partie { font-size:11pt; font-weight:700; color:var(--muted);
+                   margin-top:2mm; }
 
     /* ── Les deux façons d'entrer, d'un même regard ── */
     .entree { display:flex; gap:12mm; align-items:flex-start; }
@@ -174,6 +179,7 @@
   <header class="hdr">
     <div class="eyebrow" id="surtitre">Séance de classe</div>
     <h1 id="titre">L'activité</h1>
+    <p class="partie" id="partie" hidden></p>
   </header>
 
   <div class="entree">
@@ -242,6 +248,20 @@
       }
       var d = rep.d;
       document.getElementById('titre').textContent = d.activityTitle || 'L’activité';
+      // Seule, une partie se nomme en entier — « Défi 2 · L'examen ». À
+      // plusieurs, on ne garde que le nom court : les titres portent déjà un
+      // point médian, et quatre titres entiers enfilés sur le même signe ne se
+      // lisent plus. Vu à l'écran, pas en relisant.
+      var parties = d.sectionTitres || [];
+      var partie = document.getElementById('partie');
+      partie.textContent = parties.length
+        ? (parties.length > 1
+            ? 'Parties ouvertes : ' + parties.map(function (s) {
+                return String(s).split(' · ')[0];
+              }).join(' · ')
+            : 'Partie ouverte : ' + parties[0])
+        : '';
+      partie.hidden = !parties.length;
       document.getElementById('code').textContent = d.code;
       // `textContent` interdirait le <wbr> ; on découpe donc devant « /s/ »
       // et on pose le point de coupure nous-mêmes. Le texte reste échappé :

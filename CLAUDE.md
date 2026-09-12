@@ -3094,6 +3094,52 @@ des élèves » à quelqu'un dont la classe est en train de répondre — ce qui
 lit comme une panne. La bascule « Anonyme » du direct fonctionne telle quelle :
 un participant s'appelle déjà « Participant 7 ».
 
+### La partie du module, choisie et changée en cours de séance
+
+Livré le 12 septembre 2026. Une séance n'ouvre plus forcément le module
+entier : l'enseignante coche les parties (« Défi 1 », « Défi 2 », « Je me
+lance »), à l'ouverture **et pendant l'heure**. Le champ est `sectionIds` sur
+l'enregistrement de la séance ; une liste vide veut dire tout le module, et
+c'est le défaut.
+
+- **Rien n'a été écrit dans les modules.** Le verrou existait déjà : un
+  participant porte un vrai `groupId`, `GET /api/student/sections` lui répond
+  comme à un élève, et `build/greffe_sections.py` grise les onglets fermés.
+  Seule la greffe a changé — elle **redemande**, au lieu de ne demander qu'au
+  chargement.
+- **Le code ne change jamais.** `POST /api/prof/seances/sections` règle une
+  séance ouverte ; ni le code, ni les jetons des appareils, ni la feuille déjà
+  distribuée ne bougent. Ouvrir une seconde séance aurait marché tout aussi
+  bien côté serveur, et fait rescanner un carré à vingt personnes au milieu du
+  cours — c'est la contrainte qui a décidé de la forme. Une séance **fermée**
+  se refuse (409) : son code ne fait plus entrer personne, et la régler
+  laisserait croire le contraire.
+- **Trente secondes, et rien quand l'onglet est masqué** (`visibilitychange`),
+  comme le direct. Et **la relance ne fait rien tant que l'état n'a pas
+  bougé** : `render()` reconstruit la section, et le rappeler pour rien
+  effacerait ce que l'élève est en train d'écrire. Vérifié en le jouant —
+  35 secondes de relances sans changement : zéro `render()`, le texte tapé
+  toujours là.
+- **Une partie qui s'ouvre se dit** (« Ton enseignant vient d'ouvrir "Je
+  découvre" ») sans déplacer l'élève ; une partie qui se ferme sous lui le
+  repose sur la première ouverte, comme avant.
+- **Un identifiant inconnu ne ferme rien.** `normalize_section_ids()` est une
+  liste blanche tirée de `sections_of_activity` ; ce qui n'en est pas disparaît,
+  et s'il ne reste rien on rend la liste vide, donc le module entier. Tout coché
+  vaut aucune liste — sans quoi une section ajoutée demain au module naîtrait
+  fermée dans une séance qui voulait tout ouvrir.
+
+**Le défaut que ce chantier a trouvé, et qui n'était pas le sien.** Une séance
+s'ouvre sur ce qu'on fait aujourd'hui, **planifié ou non** — c'est la règle du
+menu. Mais `sections_state_for_student` regarde, elle, la planification du
+groupe : sur un module jamais daté, elle rendait **toutes les sections
+fermées**, et le module annonçait « Aucune partie de ce module n'est ouverte »
+à une classe assise devant son exercice. Personne ne l'avait vu parce que les
+séances d'essai portaient sur des modules datés. `_sections_de_la_seance()`
+tranche donc : pour un participant, **c'est la séance qui ouvre**, jamais le
+calendrier — tout, sauf ce qui est décoché. Un élève inscrit ne change pas de
+régime.
+
 Contrôles : `python3 build/controles/seances.py` (les gardes, fonction par
 fonction) et `python3 build/controles/seances_http.py` (les routes, jouées par
 HTTP sur un serveur jetable). Le second est celui qui compte : il vérifie que

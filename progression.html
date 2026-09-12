@@ -69,6 +69,13 @@
                   border-radius: 10px; box-shadow: var(--sh-card);
                   padding: var(--sp-5); display: flex; gap: var(--sp-6);
                   flex-wrap: wrap; align-items: flex-end; }
+    /* Les parties du module qu'une séance ouvre. Des cases, pas un menu :
+       « Défi 1 + Défi 2 » est un cas de classe aussi courant que « Défi 2
+       seul », et un menu à choix unique l'interdirait. */
+    .pg-parties { display: flex; flex-wrap: wrap; gap: var(--sp-2) var(--sp-4); }
+    .pg-partie { display: inline-flex; align-items: center; gap: var(--sp-2);
+                 font-size: var(--fs-sm); cursor: pointer; }
+    .pg-partie input { accent-color: var(--accent); }
     .pg-filtre-cle { display: block; font-size: var(--fs-label); font-weight: var(--fw-bold);
                      letter-spacing: .12em; text-transform: uppercase; color: var(--text-accent);
                      margin-bottom: var(--sp-2); }
@@ -506,8 +513,7 @@
               <span class="pg-verrou" id="pgVerrou" hidden tabindex="0"
                     data-info="Le direct suit un seul module à la fois. En changer ici l’arrêterait et effacerait ce qui est à l’écran, pendant que la classe répond. Fermez le direct, dans la barre noire plus bas, pour en choisir un autre. Le bilan, lui, reste libre.">Verrouillé pendant le direct</span>
             </div>
-            <p class="pg-note" style="flex:1;min-width:240px;margin:0">Le direct et la séance
-              sans compte portent sur ce module-là. Le bilan, au-dessus, ne bouge pas.</p>
+            <div id="pgParties" style="flex:1;min-width:260px"></div>
           </div>
         </div>
       </div>
@@ -660,12 +666,136 @@
   function choisirClasse(id) {
     CLASSE = id || '';
     document.getElementById('pgClasse').value = CLASSE;
+    // Les parties appartiennent au module : changer de module remet tout
+    // ouvert, sinon on fermerait des défis d'un autre module sans le voir.
+    PARTIES = null;
+    rendreParties();
     majAdresse();
     // Le suivi du groupe se cache pendant une séance : passer d'un module qui
     // en porte une à un module qui n'en porte pas change donc toute la page,
     // pas seulement le direct.
     rendre();
     drRelancer();
+  }
+
+  /* ---------- Les parties du module ouvertes à la classe ---------- */
+
+  /** Un module s'ouvre par parties : « Défi 2 » seul, plutôt que les six
+      onglets d'un coup. Le choix vit ici plutôt que dans une fenêtre au moment
+      d'ouvrir, parce qu'il se **change en cours de séance** — sans nouveau
+      code, sans nouvelle feuille, sans que vingt personnes rescannent un
+      carré. Le module des élèves redemande tout seul ce qui est ouvert.
+
+      `null` veut dire « tout le module », et c'est le défaut. Comme au
+      serveur, l'absence de liste ouvre tout : un verrou qui se trompe ferme
+      la classe. */
+  let PARTIES = null;   // Set d'identifiants de section, ou null
+
+  const sectionsDe = id => (SECTIONS[String(id)] || {}).sections || [];
+
+  /** Le nom court d'une partie : « Défi 2 · L'examen » se dit « Défi 2 » dans
+      une énumération. Le titre entier porte déjà un point médian, et quatre
+      titres entiers séparés par le même signe ne se lisent plus. */
+  const partieCourte = titre => String(titre || '').split(' · ')[0];
+
+  /** Ce qu'on envoie au serveur : rien quand tout est coché. Une liste qui
+      dirait la même chose qu'aucune liste fermerait la section qu'on
+      ajouterait demain au module. */
+  function partiesAEnvoyer() {
+    const secs = sectionsDe(CLASSE);
+    if (!PARTIES || !secs.length) return [];
+    const gardees = secs.filter(s => PARTIES.has(s.id)).map(s => s.id);
+    return gardees.length === secs.length ? [] : gardees;
+  }
+
+  /** L'état des cases : celui de la séance ouverte si elle existe — c'est
+      elle qui fait foi, pas ce que l'écran croit — sinon ce qu'on a coché. */
+  function accorderParties() {
+    const s = seanceDuModule();
+    if (s) {
+      const ids = s.sectionIds || [];
+      PARTIES = ids.length ? new Set(ids) : null;
+    }
+  }
+
+  function rendreParties() {
+    const boite = document.getElementById('pgParties');
+    if (!boite) return;
+    const secs = sectionsDe(CLASSE);
+    const note = `<p class="pg-note" style="margin:var(--sp-2) 0 0">Le direct et la
+      séance sans compte portent sur ce module-là. Le bilan, au-dessus, ne bouge pas.</p>`;
+    if (!CLASSE || !secs.length) { boite.innerHTML = note; return; }
+    accorderParties();
+    const seance = seanceDuModule();
+    // Ce que la ligne du dessous doit nommer : les parties gardées, dans
+    // l'ordre du module. Une ligne qui dirait « tout est ouvert » au-dessus de
+    // deux cases décochées ferait mentir l'écran.
+    const gardees = PARTIES ? secs.filter(s => PARTIES.has(s.id)) : secs;
+    const choisies = gardees.length === secs.length
+      ? []   // tout coché : c'est « tout le module », pas une liste
+      : gardees.map(s => partieCourte(s.titre || s.id));
+    const cases = secs.map(s => `
+      <label class="pg-partie">
+        <input type="checkbox" data-partie="${esc(s.id)}"
+               ${!PARTIES || PARTIES.has(s.id) ? 'checked' : ''}>
+        <span>${esc(s.titre || s.id)}</span>
+      </label>`).join('');
+    boite.innerHTML = `
+      <span class="pg-filtre-cle">Les parties ouvertes</span>
+      <div class="pg-parties" id="pgPartiesCases">${cases}</div>
+      <p class="pg-note" style="margin:var(--sp-2) 0 0" id="pgPartiesNote">${
+        seance
+          ? 'Décochez une partie et les téléphones suivent en moins d’une minute : '
+            + 'le code ne change pas, personne ne rescanne.'
+          : (choisies.length
+              ? 'La séance s’ouvrira sur ' + esc(choisies.join(', '))
+                + '. Ça se change aussi une fois ouverte.'
+              : 'Tout est ouvert. Décochez ce que la classe ne doit pas faire '
+                + 'aujourd’hui ; ça se change aussi une fois la séance ouverte.')}</p>
+      ${note}`;
+  }
+
+  /** Une case bascule. Avec une séance ouverte, c'est aussitôt au serveur —
+      l'écran ne garde jamais un réglage que la classe n'a pas reçu. */
+  async function basculerPartie(id, coche) {
+    const secs = sectionsDe(CLASSE);
+    if (!PARTIES) PARTIES = new Set(secs.map(s => s.id));
+    coche ? PARTIES.add(id) : PARTIES.delete(id);
+    // Zéro partie cochée n'est pas un état : la classe n'aurait plus rien à
+    // faire, et le serveur lirait cette liste vide comme « tout le module ».
+    // On remet tout plutôt que de laisser l'écran dire une chose et le serveur
+    // en faire une autre.
+    let toutRemis = false;
+    if (!PARTIES.size) { PARTIES = null; toutRemis = true; }
+
+    const seance = seanceDuModule();
+    if (!seance) { rendreParties(); if (toutRemis) direParties('Tout le module est ouvert.'); return; }
+    try {
+      const r = await Prof.fetch('/api/prof/seances/sections', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: Prof.body({ id: seance.id, sectionIds: partiesAEnvoyer() }),
+      });
+      const d = await r.json();
+      if (!r.ok) throw new Error(d.error || 'Changement impossible');
+      SEANCES = SEANCES.map(x => x.id === d.seance.id ? d.seance : x);
+      rendreParties();
+      const titres = (d.seance.sectionTitres || []).map(partieCourte);
+      direParties(titres.length
+        ? 'La classe a ' + titres.join(', ') + '. Les appareils suivent en moins d’une minute.'
+        : 'Tout le module est ouvert. Les appareils suivent en moins d’une minute.');
+    } catch (err) {
+      // On avait bougé la case avant la réponse : on la remet là où le serveur
+      // l'a laissée, sinon l'écran promet une partie que la classe n'a pas.
+      accorderParties();
+      rendreParties();
+      direParties(err.message);
+    }
+  }
+
+  function direParties(texte) {
+    const el = document.getElementById('pgPartiesNote');
+    if (el) el.textContent = texte;
   }
 
   function majAdresse() {
@@ -780,6 +910,7 @@
     // change, c'est qu'un atelier ne tombe plus dans ce cas.
     if (!MODULES.some(m => String(m.id) === String(CLASSE))) CLASSE = '';
     sel.value = CLASSE;
+    rendreParties();
     majAdresse();
 
     document.getElementById('pgBande').textContent =
@@ -1428,13 +1559,18 @@
       const r = await Prof.fetch('/api/prof/seances', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: Prof.body({ activityId: Number(CLASSE) }),   // ajoute groupId
+        // Les parties cochées partent avec l'ouverture : la séance naît déjà
+        // bornée, plutôt que de s'ouvrir en entier puis de se rétrécir sous
+        // les yeux de la classe.
+        body: Prof.body({ activityId: Number(CLASSE),
+                          sectionIds: partiesAEnvoyer() }),   // ajoute groupId
       });
       const d = await r.json();
       if (!r.ok) throw new Error(d.error || 'Séance impossible');
       SEANCES = SEANCES.concat([d.seance]);
       SEANCE_CLOSE = false;
       rendre();          // le suivi du groupe s'efface derrière la séance
+      rendreParties();   // la note passe à « décochez, les téléphones suivent »
       drRendre();
       window.open(`feuille-seance.html?code=${encodeURIComponent(d.seance.code)}`,
                   '_blank', 'noopener');
@@ -1518,6 +1654,10 @@
 
   document.addEventListener('change', e => {
     if (e.target.id === 'pgClasse') { choisirClasse(e.target.value); return; }
+    if (e.target.dataset && e.target.dataset.partie) {
+      basculerPartie(e.target.dataset.partie, e.target.checked);
+      return;
+    }
     if (e.target.id !== 'drSection') return;
     DIRECT_SECTION = e.target.value;
     drRendre();

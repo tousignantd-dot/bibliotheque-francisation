@@ -22,6 +22,14 @@ Trois précautions, parce qu'un verrou qui se trompe ferme la classe :
 3. **On n'abandonne jamais l'élève sur une section fermée** : si la sienne
    vient de se verrouiller, on le pose sur la première section ouverte.
 
+Et une quatrième, ajoutée le 12 septembre 2026 avec le choix de la partie en
+séance sans compte : le module **redemande toutes les trente secondes**, et
+seulement quand l'onglet est visible. L'enseignant change la partie ouverte en
+cours d'heure sans changer le code — personne ne rescanne, et il n'y a pas de
+« rechargez votre page » à crier à vingt personnes. La relance ne fait rien
+tant que l'état n'a pas bougé : `render()` reconstruit la section, et le
+rappeler pour rien effacerait ce que l'élève est en train d'écrire.
+
 module-probleme est **généré** (`build/module.py module-probleme`) : ne pas le
 greffer à la main, il serait écrasé à la reconstruction suivante.
 """
@@ -72,9 +80,33 @@ GABARIT = DEBUT + """
     el.hidden = !texte;
   }
 
+  // L'état vu au dernier appel, pour ne rien refaire quand rien n'a bougé :
+  // `render()` reconstruit la section entière, et le rappeler toutes les
+  // trente secondes effacerait ce que l'élève est en train d'écrire.
+  var DERNIER = null;   // {id: ouverte} au dernier appel, ou null au premier
+
+  function etatDe(sections) {
+    var m = {};
+    sections.forEach(function (s) { m[s.id] = !!s.ouverte; });
+    return m;
+  }
+
+  function memeEtat(a, b) {
+    if (!a || !b) return false;
+    var cles = Object.keys(b);
+    if (Object.keys(a).length !== cles.length) return false;
+    return cles.every(function (k) { return a[k] === b[k]; });
+  }
+
   function appliquer(sections) {
     var parId = {};
-    sections.forEach(function (s) { parId[s.id] = s; });
+    var neuves = [];
+    sections.forEach(function (s) {
+      if (s.ouverte && DERNIER && DERNIER[s.id] === false) {
+        neuves.push(s.titre || s.id);
+      }
+      parId[s.id] = s;
+    });
 
     SECTIONS.forEach(function (sec) {
       var etat = parId[sec.id];
@@ -115,11 +147,19 @@ GABARIT = DEBUT + """
     if (courante && !courante.ouverte) {
       curSec = ouvertes[0].id;
       avis('Cette partie n’est pas encore ouverte : voici celle que tu peux faire.');
+    } else if (neuves.length) {
+      // Une partie qui s'ouvre pendant que l'élève travaille doit se voir :
+      // sans un mot, l'onglet change de teinte au coin de l'œil et personne
+      // ne le remarque. On ne déplace pas l'élève pour autant — il finit ce
+      // qu'il a commencé.
+      avis(neuves.length > 1
+           ? 'Ton enseignant vient d’ouvrir de nouvelles parties.'
+           : 'Ton enseignant vient d’ouvrir « ' + neuves[0] + ' ».');
     }
     if (typeof render === 'function') render();
   }
 
-  function demarrer() {
+  function demander() {
     if (typeof SECTIONS === 'undefined' || typeof curSec === 'undefined') return;
     var code = (typeof studentCode !== 'undefined' && studentCode) || '';
     if (!code) return;   // hors session : le module s'ouvre en entier
@@ -127,9 +167,35 @@ GABARIT = DEBUT + """
           + '&activityId=' + ACTIVITE)
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (d) {
-        if (d && d.decoupe && d.sections && d.sections.length) appliquer(d.sections);
+        if (!d || !d.decoupe || !d.sections || !d.sections.length) return;
+        var etat = etatDe(d.sections);
+        // Rien n'a bougé : on ne touche à rien. C'est la condition qui rend
+        // la relance inoffensive.
+        if (memeEtat(DERNIER, etat)) return;
+        appliquer(d.sections);
+        DERNIER = etat;
       })
       .catch(function () { /* serveur muet : on n'enlève rien à l'élève */ });
+  }
+
+  /* En séance sans compte, l'enseignant change la partie ouverte en cours
+     d'heure — sans nouveau code, pour que personne ne rescanne. Le module
+     redemande donc, au lieu d'attendre un rechargement qu'il faudrait
+     réclamer à vingt personnes à voix haute.
+
+     Trente secondes, et **rien quand l'onglet est masqué** : même règle que
+     le direct de la classe. Un téléphone posé sur la table interrogerait le
+     serveur toute la soirée pour personne. On redemande aussi au retour sur
+     l'onglet, sinon l'élève qui revient de sa messagerie attend jusqu'à une
+     demi-minute devant un onglet encore verrouillé. */
+  function demarrer() {
+    demander();
+    setInterval(function () {
+      if (!document.hidden) demander();
+    }, 30000);
+    document.addEventListener('visibilitychange', function () {
+      if (!document.hidden) demander();
+    });
   }
 
   if (document.readyState === 'loading') {

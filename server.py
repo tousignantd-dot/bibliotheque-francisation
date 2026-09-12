@@ -4701,8 +4701,42 @@ def seance_ouverte(seance, aujourdhui=None):
     return not expire or (aujourdhui or date.today().isoformat()) <= expire
 
 
+def normalize_section_ids(activity_id, ids):
+    """Les parties d'un module qu'une séance ouvre. Une liste vide = tout.
+
+    Le filtre est une **liste blanche** tirée du découpage réel
+    (`sections_of_activity`) : un identifiant inventé ne ferme rien, il
+    disparaît. Et si plus rien ne reste, on rend la liste vide, donc le module
+    entier — un verrou qui se trompe ne doit jamais fermer la classe. C'est la
+    même précaution que `greffe_sections.py` écrit pour l'élève : le silence
+    ouvre tout.
+
+    L'ordre rendu est celui du module, jamais celui de la requête : la feuille
+    et l'écran nomment ainsi les parties dans l'ordre où l'élève les voit.
+    """
+    if not ids:
+        return []
+    voulus = {str(i) for i in ids if str(i).strip()}
+    connus = [s["id"] for s in sections_of_activity(activity_id)]
+    gardes = [sid for sid in connus if sid in voulus]
+    # Tout le découpage coché, c'est le module entier : on ne garde pas une
+    # liste qui dirait la même chose qu'aucune liste, sinon une section ajoutée
+    # plus tard au module se retrouverait fermée dans une séance qui voulait
+    # tout ouvrir.
+    return [] if len(gardes) == len(connus) else gardes
+
+
+def titres_de_sections(activity_id, section_ids):
+    """Les titres des parties choisies, pour les écrans et la feuille."""
+    if not section_ids:
+        return []
+    par_id = {s["id"]: s.get("titre", s["id"])
+              for s in sections_of_activity(activity_id)}
+    return [par_id.get(sid, sid) for sid in section_ids]
+
+
 def creer_seance(teacher, group_id, activity_id, titre="", jours=0,
-                 plafond=SEANCE_PLAFOND_DEFAUT):
+                 plafond=SEANCE_PLAFOND_DEFAUT, section_ids=()):
     """Ouvre une séance et rend son enregistrement. À appeler sous verrou."""
     seances = load_seances()
     try:
@@ -4724,6 +4758,11 @@ def creer_seance(teacher, group_id, activity_id, titre="", jours=0,
         "expire": (date.today() + timedelta(days=jours)).isoformat(),
         "plafond": plafond,
         "ouverte": True,
+        # Les parties du module ouvertes à la classe. Vide = tout le module.
+        # Elles se changent en cours de séance (`/api/prof/seances/sections`)
+        # **sans toucher au code** : le module les redemande tout seul, et
+        # personne ne rescanne.
+        "sectionIds": normalize_section_ids(activity_id, section_ids),
         "participants": [],
     }
     seances.append(seance)
@@ -4792,6 +4831,11 @@ def identite_de_participant(participant, seance):
         "seanceId": seance.get("id"),
         "seanceCode": seance.get("code"),
         "activityId": seance.get("activityId"),
+        # Les parties ouvertes voyagent avec l'identité : `_handle_student_sections`
+        # les lit sans avoir à relire la séance, et elles sont relues à chaque
+        # requête — c'est ce qui fait qu'un changement en cours de séance
+        # atteint la classe sans nouveau code.
+        "sectionIds": seance.get("sectionIds", []),
     }
 
 
@@ -4922,6 +4966,30 @@ def _identite_de_seance(jeton):
         return None
     return identite
 
+
+
+def _sections_de_la_seance(identite, sections):
+    """Pour un participant de séance, c'est **la séance** qui ouvre, pas le
+    calendrier du groupe.
+
+    Une séance s'ouvre sur ce qu'on fait aujourd'hui, planifié ou non — c'est
+    la règle du menu de `progression.html`, et le serveur ne regarde pas les
+    dates pour l'ouvrir. Mais `sections_state_for_student` les regarde, elle :
+    sur un module que le groupe n'a jamais daté, elle rendait **toutes les
+    sections fermées**, et le module annonçait « Aucune partie de ce module
+    n'est ouverte » à une classe assise devant son exercice. Défaut trouvé le
+    12 septembre 2026 en éprouvant le choix de la partie, pas en relisant : la
+    séance passait, chaque section échouait, et rien ne le disait.
+
+    La règle est donc : tout est ouvert, sauf ce que l'enseignante a décoché.
+    Une liste vide ouvre tout — le silence ouvre, comme dans la greffe du
+    module. Un élève inscrit, lui, ne change pas de régime : sa planification
+    décide, comme avant.
+    """
+    if not identite or not identite.get("anonyme") or not sections:
+        return sections
+    voulus = set(identite.get("sectionIds") or [])
+    return [dict(s, ouverte=(not voulus) or s["id"] in voulus) for s in sections]
 
 
 def activite_de_la_seance(identite, activity_id):
@@ -16808,6 +16876,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self._handle_materiel_promotion()
         elif path == "/api/prof/seances":
             self._handle_seance_creer()
+        elif path == "/api/prof/seances/sections":
+            self._handle_seance_sections()
         elif path == "/api/prof/seances/fermer":
             self._handle_seance_fermer()
         elif path == "/api/seance/entrer":
@@ -17307,6 +17377,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if not self._garde_activite(student, activity_id):
             return
         sections = sections_state_for_student(student.get("groupId"), activity_id)
+        sections = _sections_de_la_seance(student, sections)
         # La transcription se règle sur le module entier, jamais par section :
         # « écouter sans lire » est une consigne d'écoute, pas un découpage.
         # Elle voyage ici parce que c'est le seul appel que **tout** module fait
@@ -17417,6 +17488,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             "plafond": seance.get("plafond", SEANCE_PLAFOND_DEFAUT),
             "ouverte": seance_ouverte(seance),
             "fermeeALaMain": not seance.get("ouverte", True),
+            "sectionIds": seance.get("sectionIds", []),
+            "sectionTitres": titres_de_sections(seance.get("activityId"),
+                                                seance.get("sectionIds", [])),
             "participants": len(seance.get("participants", [])),
         }
 
@@ -17457,6 +17531,11 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             # l'alphabet français.
             "adresseCourte": adresse.split("://", 1)[-1],
             "activityTitle": seance.get("activityTitle", ""),
+            # Les parties ouvertes, nommées : deux feuilles du même module se
+            # ressemblent trait pour trait sur un bureau, et c'est la partie qui
+            # les distingue.
+            "sectionTitres": titres_de_sections(seance.get("activityId"),
+                                                seance.get("sectionIds", [])),
             "groupe": groupe.get("nom", ""),
             "expire": seance.get("expire", ""),
             "ouverte": seance_ouverte(seance),
@@ -17590,11 +17669,48 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             titre=body.get("activityTitle") or activite.get("title", ""),
             jours=body.get("jours", 0),
             plafond=body.get("plafond", SEANCE_PLAFOND_DEFAUT),
+            section_ids=body.get("sectionIds") or [],
         )
         journal(teacher,
                 "seance.ouvrir", str(seance["id"]),
                 {"groupe": group_id, "module": activity_id})
         json_response(self, {"success": True, "seance": self._seance_publique(seance)})
+
+    @sous_verrou
+    def _handle_seance_sections(self):
+        """Changer la partie ouverte **sans fermer la séance**.
+
+        C'est la raison d'être de cette route : ouvrir une nouvelle séance
+        marcherait tout aussi bien côté serveur, mais donnerait un nouveau
+        code — et vingt personnes rescanneraient un carré pendant que le cours
+        attend. Le code, le jeton de chaque appareil et la feuille déjà
+        distribuée ne bougent donc pas ; seule la liste change, et les modules
+        la redemandent d'eux-mêmes.
+
+        Une séance **fermée** se refuse : son code ne fait plus entrer
+        personne, et régler ce qu'elle ouvre laisserait croire le contraire.
+        """
+        teacher = self._require_teacher()
+        if not teacher:
+            return
+        body = self._read_json_body()
+        seances = load_seances()
+        seance = next((s for s in seances if s.get("id") == body.get("id")), None)
+        if seance is None:
+            json_response(self, {"error": "Séance introuvable"}, 404)
+            return
+        if self._require_group(teacher, seance.get("groupId")) is None:
+            return
+        if not seance_ouverte(seance):
+            json_response(self, {"error": "Cette séance est terminée."}, 409)
+            return
+        seance["sectionIds"] = normalize_section_ids(
+            seance.get("activityId"), body.get("sectionIds") or [])
+        save_seances(seances)
+        journal(teacher, "seance.sections", str(seance["id"]),
+                {"parties": seance["sectionIds"] or "tout le module"})
+        json_response(self, {"success": True,
+                             "seance": self._seance_publique(seance)})
 
     @sous_verrou
     def _handle_seance_fermer(self):

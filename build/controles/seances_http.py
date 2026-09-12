@@ -395,6 +395,65 @@ try:
         verifie("le dépôt oral est refusé", e.code == 401, str(e.code))
 
 
+    print("\n— Les parties du module ouvertes à la classe —")
+    # Le défaut que ce bloc a trouvé : `sections_state_for_student` regarde la
+    # planification du groupe, or une séance s'ouvre sur un module non daté.
+    # Toutes les sections revenaient fermées, et le module annonçait « aucune
+    # partie ouverte » à une classe assise devant son exercice.
+    st, r = appel("GET", "/api/student/sections?code=%s&activityId=%d" % (JET, ACT))
+    SECS = [s["id"] for s in r.get("sections", [])]
+    verifie("le module est découpé", len(SECS) >= 2, str(SECS))
+    verifie("sans liste, tout est ouvert",
+            all(s["ouverte"] for s in r["sections"]), str(r)[:200])
+    # Une partie seule, posée en cours de séance : ni le code ni le jeton ne
+    # bougent, c'est tout l'objet de cette route.
+    st, r = appel("POST", "/api/prof/seances/sections",
+                  {"id": SEANCE["id"], "sectionIds": [SECS[1]]}, JETON)
+    verifie("l'enseignant restreint la séance", st == 200, str(r)[:200])
+    verifie("le code n'a pas changé", r["seance"]["code"] == CODE, str(r)[:120])
+    verifie("la séance dit quelle partie", r["seance"]["sectionIds"] == [SECS[1]],
+            str(r["seance"].get("sectionIds")))
+    verifie("et la nomme", bool(r["seance"].get("sectionTitres")),
+            str(r["seance"].get("sectionTitres")))
+    st, r = appel("GET", "/api/student/sections?code=%s&activityId=%d" % (JET, ACT))
+    ouvertes = [s["id"] for s in r["sections"] if s["ouverte"]]
+    verifie("le même jeton ne voit plus qu'elle", ouvertes == [SECS[1]], str(ouvertes))
+    st, r = appel("GET", "/api/prof/seances/feuille?code=" + CODE, jeton=JETON)
+    verifie("la feuille nomme la partie", len(r.get("sectionTitres") or []) == 1,
+            str(r.get("sectionTitres")))
+    # Les refus. Un identifiant inventé ne ferme rien : un verrou qui se trompe
+    # fermerait la classe.
+    st, r = appel("POST", "/api/prof/seances/sections",
+                  {"id": SEANCE["id"], "sectionIds": ["section-qui-n-existe-pas"]}, JETON)
+    verifie("une partie inventée rouvre tout", r["seance"]["sectionIds"] == [], str(r)[:160])
+    st, r = appel("POST", "/api/prof/seances/sections",
+                  {"id": SEANCE["id"], "sectionIds": SECS}, JETON)
+    verifie("tout coché vaut aucune liste", r["seance"]["sectionIds"] == [], str(r)[:160])
+    st, r = appel("POST", "/api/prof/seances/sections",
+                  {"id": SEANCE["id"], "sectionIds": [SECS[0]]})
+    verifie("sans session enseignante : refusé", st == 401, str(st))
+    st, r = appel("POST", "/api/prof/seances/sections",
+                  {"id": 99999, "sectionIds": [SECS[0]]}, JETON)
+    verifie("séance inconnue : 404", st == 404, str(st))
+    st, r = appel("POST", "/api/prof/seances/sections",
+                  {"id": SEANCE["id"], "sectionIds": [SECS[0]]}, jeton=JET)
+    verifie("un participant ne règle rien", st == 401, str(st))
+    # Une séance neuve peut naître déjà bornée.
+    st, r = appel("POST", "/api/prof/seances",
+                  {"groupId": GROUPE, "activityId": AUTRE, "sectionIds": [SECS[0]]},
+                  JETON)
+    NEE = r.get("seance", {})
+    verifie("une séance s'ouvre déjà bornée",
+            NEE.get("sectionIds") in ([SECS[0]], []), str(NEE.get("sectionIds")))
+    if NEE:
+        appel("POST", "/api/prof/seances/fermer", {"id": NEE["id"]}, JETON)
+        st, r = appel("POST", "/api/prof/seances/sections",
+                      {"id": NEE["id"], "sectionIds": [SECS[0]]}, JETON)
+        verifie("une séance fermée ne se règle plus", st == 409, str(st))
+    # On repart de tout ouvert : la suite du contrôle ne parle pas de parties.
+    appel("POST", "/api/prof/seances/sections",
+          {"id": SEANCE["id"], "sectionIds": []}, JETON)
+
     print("\n— Le direct de la classe voit les participants —")
     # Deux appareils dans la séance : l'un répond, l'autre entre et ne fait
     # rien. Les deux doivent figurer pendant que la séance est ouverte.
