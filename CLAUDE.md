@@ -2128,6 +2128,11 @@ plus — ajouter une activité, ajouter du matériel à une activité.
   a tapé se lit comme un défaut de la recherche. Et **la recherche ne franchit
   pas le bornage** — le catalogue ne montre que le niveau du groupe, donc le
   message du vide le dit plutôt que de laisser croire l'activité disparue.
+- **Et elle cherche aussi _dans_ les modules et les fiches** — voir la section
+  suivante. Les deux tournent ensemble et **s'ajoutent** : la recherche locale
+  répond à la frappe, celle du serveur arrive après et élargit la liste. Jamais
+  l'inverse — une liste qui rétrécit une demi-seconde après qu'on a fini de
+  taper se lit comme un bogue.
 - **Le matériel présent est un lien** : le catalogue sert d'abord à
   retrouver un fichier. Ce qui manque reste écrit en gris, pour qu'on voie
   le trou.
@@ -2146,6 +2151,78 @@ plus — ajouter une activité, ajouter du matériel à une activité.
     encore de `js/prof.js`, qui injecte ses bleus : elle est rhabillée sur
     place par `#profBar …`, sans toucher `prof.js` que partagent les autres
     pages enseignantes.
+
+## La recherche dans le contenu (`recherche.py`)
+
+Livrée le 12 septembre 2026, sur une demande précise : « visite du quatre et
+demie » ne rendait rien. C'est pourtant le titre d'une fiche de séance **et**
+une réplique de dialogue du module 58 — mais ni l'un ni l'autre n'est dans
+`activities.json`, et le catalogue ne cherchait que là. Un fonds qu'on ne peut
+fouiller que par ses étiquettes est un fonds à moitié fermé.
+
+    python3 recherche.py "la visite du quatre et demie"   # en ligne de commande
+    python3 build/controles/recherche.py                  # le contrôle
+
+- **Le piège, et c'est le seul vrai.** Le contenu d'un module ne vit pas dans
+  son HTML : il vit dans des **constantes JavaScript** (`DIALOGUES`, `EXOS`,
+  `FC_CARDS`) à l'intérieur d'un `<script>`. Retirer les scripts avant de
+  dépouiller les balises — ce que fait n'importe quel extracteur de texte —
+  rend un module **vide** : 9 Ko d'habillage au lieu de 120 Ko de contenu, et
+  aucune réplique de dialogue trouvable. On dépouille donc les deux, et le
+  contrôle rejoue précisément cette panne.
+- **Une ligne de plus de 2 000 caractères n'est pas du contenu** : c'est un
+  actif encodé en base64. Les douze activités exportées par un bundler en
+  portent une de 1,7 **mégaoctet**, sur laquelle l'expression des littéraux
+  partait en arrière — 300 Mo de mémoire par fichier, jamais rendus, **3,5 Go**
+  pour douze fichiers. Mesuré, pas supposé ; les modules de la chaîne ne
+  dépassent pas 600 caractères par ligne. Avec la borne : 22 Mo de texte,
+  5 secondes de dépouillement, ~120 Mo en mémoire.
+- **L'index n'est pas versionné, et c'est la différence avec
+  `data/materiel.json` et `data/sections.json`.** Ceux-là *décrivent* ce que le
+  dépôt livre ; celui-ci n'est qu'un **cache** de ce qui est déjà sur le
+  disque, dix mégaoctets à réécrire à chaque construction de module. Il se
+  refait au démarrage, dans le fil d'initialisation, **en dernier** — il lit le
+  catalogue et ne conditionne rien. `RECHERCHE_INDEX=0` l'éteint sans
+  déployer.
+- **Deux racines, et elles ne se valent pas** : `assets/interactive/` vient du
+  **code**, le reste du **volume** avec le code en filet — la règle du serveur
+  de fichiers, recopiée pour que la recherche voie exactement ce que l'écran
+  ouvrira. Une fiche déposée en ligne n'existe que sur le volume.
+- **Une fiche appartient à l'activité dont le slug préfixe son nom**
+  (`module-n5-logement-c1-la-visite-….html`). On lit le disque plutôt que
+  `data/materiel.json`, qui décrit la même chose mais peut être en retard d'une
+  construction — et un index en retard perd silencieusement les fiches les plus
+  récentes, c'est-à-dire celles qu'on cherche. 1 372 fiches sur 1 374 se
+  rattachent ainsi ; les deux autres ne sont montrables nulle part.
+- **L'aplatissement garde la longueur, par construction.** L'extrait se découpe
+  dans le texte d'origine, aux positions trouvées dans le texte sans accents :
+  le `NFD` + retrait des marques qu'on écrit d'ordinaire change la longueur dès
+  qu'un caractère invisible s'y glisse (quatre d'écart sur un seul module, à
+  cause de sélecteurs de variante), et l'extrait se couperait au milieu d'un
+  mot. D'où une table caractère → caractère, **un pour un**. Le contrôle le
+  vérifie sur les 1 550 documents.
+- **Les mots cherchés doivent se rencontrer.** Sans la fenêtre de 220
+  caractères, « visite » au début d'un module et « quatre » à la fin faisaient
+  un résultat : huit modules sans rapport remontaient devant la bonne fiche. Et
+  les **mots vides** (`la`, `du`, `et`…) ne sont pas exigés — ils ne comptent
+  que dans le score et dans la phrase exacte, qui vaut 25 points.
+- **Le bornage est posé au serveur**, comme sur `/api/activities?catalogue=1` :
+  une recherche qui rendrait un module d'un niveau qu'on n'a pas le droit de
+  voir — même réduit à un titre, même réduit à un nombre — apprendrait ce qu'il
+  y a derrière la porte.
+- **Le bornage au niveau du groupe, lui, n'est pas une permission** : c'est le
+  cadrage de l'écran. Une fiche trouvée dans un autre niveau paraît donc, dans
+  une section **« Trouvées ailleurs »** — la taire à quelqu'un qui vient de la
+  chercher serait pire que la montrer.
+- **Les mots à surligner viennent du serveur** (`termes` dans la réponse) : la
+  liste des mots vides est une règle, et deux exemplaires d'une règle finissent
+  par diverger — la page surlignait « la » et « du », donc la moitié de la
+  phrase. Le surlignage marque des **mots entiers** (« du » se voyait à
+  l'intérieur de « module »), par des regards et non par `\b`, qui ne connaît
+  que l'ASCII et couperait « été » en son milieu.
+- **Un résultat montre son passage.** Sans lui, ce serait une affirmation sans
+  preuve : on ne saurait ni où le serveur a trouvé, ni si ça vaut la peine
+  d'ouvrir. Le nom de la fiche est un lien.
 
 ## Portail enseignant (`enseignant.html`)
 

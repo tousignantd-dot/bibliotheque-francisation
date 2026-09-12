@@ -210,6 +210,10 @@
     .activity-section { --sec-ligne: var(--accent);     --sec-fond: var(--accent-soft); --sec-ink: var(--accent-ink); }
     .activity-section--atelier { --sec-ligne: var(--acier-600); --sec-fond: var(--acier-100); --sec-ink: var(--acier-600); }
     .activity-section--outil   { --sec-ligne: var(--niv-outil-line); --sec-fond: var(--niv-outil-bg); --sec-ink: var(--ink-500); }
+    /* « Trouvées ailleurs » n'est pas une famille d'activités : c'est un
+       résultat de recherche. Teinte neutre, pour ne pas inventer une catégorie
+       de plus dans un écran qui en compte trois. */
+    .activity-section--ailleurs { --sec-ligne: var(--border); --sec-fond: var(--paper-200); --sec-ink: var(--text-muted); }
 
     .activity-card--n1 { --niv-bg: var(--niv-1-bg); --niv-line: var(--niv-1-line); }
     .activity-card--n2 { --niv-bg: var(--niv-2-bg); --niv-line: var(--niv-2-line); }
@@ -257,6 +261,21 @@
        l'activité, et elle disparaît avec la recherche. */
     .act-trouve { margin: var(--sp-1) 0 0; font-size: var(--fs-ui-sm);
                   color: var(--text-muted); }
+
+    /* Les passages trouvés dans le contenu. Ils appartiennent à la recherche,
+       pas à l'activité : encadré léger, texte en retrait, et tout disparaît
+       quand le champ se vide. */
+    .act-passages { margin: var(--sp-2) 0 0; display: grid; gap: var(--sp-2); }
+    .act-passage { border-left: 2px solid var(--border); padding-left: var(--sp-3); }
+    .act-passage-ou { display: block; font-size: var(--fs-ui-sm);
+                      font-weight: var(--fw-semi); color: var(--text-accent);
+                      text-decoration: none; }
+    .act-passage-ou:hover { text-decoration: underline; }
+    .act-passage-txt { margin: 2px 0 0; font-size: var(--fs-ui-sm);
+                       line-height: 1.45; color: var(--text-muted); }
+    .act-passage-txt mark { background: var(--accent-soft); color: var(--accent-ink);
+                            font-weight: var(--fw-bold); padding: 0 1px; }
+    .act-passage-reste { margin: 0; font-size: var(--fs-ui-sm); color: var(--text-muted); }
 
     /* Le niveau est une donnée de structure, pas un accent de repérage : il
        reste en encre sur creux, pour ne pas rivaliser avec les compétences. */
@@ -831,6 +850,12 @@ document.getElementById('addForm').addEventListener('submit', async e => {
    le catalogue montre le fonds, pas la planification d'une classe.
    ====================================================== */
 let allActivities = [];
+/* Le fonds **avant** le bornage au niveau du groupe. Il ne sert qu'à la
+   recherche dans le contenu : quand une fiche répond dans un autre niveau, on
+   la montre à part plutôt que de la taire. Le vrai verrou — ce que l'accès de
+   la personne permet de voir — est posé au serveur, et il l'est déjà ici :
+   `tout` est ce que `?catalogue=1` a bien voulu rendre. */
+let TOUT = [];
 
 /* Les présentations d'un module ne tiennent pas dans le champ `slideshow` :
    un cours en a seize, une par séance, et elles vivent dans l'inventaire du
@@ -967,6 +992,7 @@ async function loadList() {
     // niveau enregistré ne voyait que le niveau 4, et le sous-titre le lui
     // affirmait. Montrer tout est la bonne façon d'échouer ici.
     const niv = niveauGroupe();
+    TOUT = tout;
     allActivities = niv
       ? tout.filter(a => estOuvertATous(a) || niveauDe(a) === niv)
       : tout;
@@ -1120,6 +1146,62 @@ function motsTrouves(a, termes) {
 
 let RECHERCHE = [];   // les termes de la recherche en cours, normalisés
 
+/* ── La recherche dans le contenu ──────────────────────────────────────────
+
+   Le champ ci-dessus cherche dans ce qu'on sait *d'*une activité — titre,
+   mots-clés, domaine. Le serveur, lui, cherche *dedans* : les dialogues et les
+   exercices du module, le texte des fiches de séance. « La visite du quatre et
+   demie » est le titre d'une fiche et une réplique d'un dialogue ; rien de cela
+   n'est dans le catalogue.
+
+   Les deux tournent ensemble et **s'ajoutent** : la recherche locale répond à
+   la frappe, celle du serveur arrive après et élargit la liste. Jamais
+   l'inverse — une liste qui rétrécit une demi-seconde après qu'on a fini de
+   taper se lit comme un bogue. */
+let CONTENU = new Map();     // activiteId -> {extraits:[…], total}
+let CONTENU_MOTS = [];       // les mots à surligner, dits par le serveur
+let CONTENU_ETAT = '';       // '' · 'en cours' · 'pret' · 'indisponible'
+let CONTENU_POUR = '';       // la requête à laquelle CONTENU répond
+let CONTENU_TOUR = 0;        // pour ignorer une réponse en retard
+let CONTENU_MINUTERIE = null;
+
+/** Demande au serveur, une fois la frappe retombée.
+
+    300 ms : on ne lance pas une lecture de dix mégaoctets à chaque lettre, et
+    on n'attend pas assez pour qu'une pause de lecture paraisse longue. */
+function demanderContenu(requete) {
+  clearTimeout(CONTENU_MINUTERIE);
+  if (requete.length < 3) {
+    if (CONTENU.size) { CONTENU = new Map(); CONTENU_POUR = ''; applyFilters(); }
+    return;
+  }
+  if (requete === CONTENU_POUR) return;
+  CONTENU_MINUTERIE = setTimeout(async () => {
+    const tour = ++CONTENU_TOUR;
+    try {
+      const r = await Prof.fetch('/api/recherche?q=' + encodeURIComponent(requete));
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      const d = await r.json();
+      if (tour !== CONTENU_TOUR) return;   // une frappe plus récente a gagné
+      CONTENU_ETAT = d.pret ? 'pret' : (d.raison === 'en cours' ? 'en cours' : 'indisponible');
+      CONTENU_MOTS = d.termes || [];
+      CONTENU = new Map((d.resultats || []).map(x => [x.activiteId, x]));
+      CONTENU_POUR = requete;
+      applyFilters();
+      // L'index se construit au démarrage du serveur : on repose la question
+      // une fois, plutôt que de laisser l'écran sur « en préparation ».
+      if (CONTENU_ETAT === 'en cours') {
+        CONTENU_POUR = '';
+        setTimeout(() => demanderContenu(document.getElementById('listSearch').value.trim()), 4000);
+      }
+    } catch {
+      // Un serveur muet ne doit pas vider la liste : la recherche locale a
+      // déjà répondu, et c'est elle qu'on garde.
+      if (tour === CONTENU_TOUR) { CONTENU_ETAT = 'indisponible'; CONTENU = new Map(); }
+    }
+  }, 300);
+}
+
 /** Un terme, prêt à être cherché dans un index.
 
     Un **nombre** se cherche entier : « module 9 » ne doit pas rendre le 29 et
@@ -1139,10 +1221,21 @@ function applyFilters() {
   const temps = document.getElementById('filterTemps').value;
   const domaine = document.getElementById('filterDomaine').value;
 
-  renderList(allActivities.filter(a => {
+  demanderContenu(brut);
+
+  // Les activités trouvées par leur contenu et que le bornage au niveau du
+  // groupe avait écartées : elles entrent, dans leur propre section.
+  const deja = new Set(allActivities.map(a => a.id));
+  const candidates = CONTENU.size
+    ? allActivities.concat(TOUT.filter(a => CONTENU.has(a.id) && !deja.has(a.id)))
+    : allActivities;
+
+  renderList(candidates.filter(a => {
     if (chercheurs.length) {
       const index = indexDe(a);
-      if (!chercheurs.every(c => c(index))) return false;
+      // Trouvée dans son contenu : elle entre, même si son enregistrement ne
+      // dit rien de ce qu'on cherche. C'est tout l'objet de cette recherche.
+      if (!chercheurs.every(c => c(index)) && !CONTENU.has(a.id)) return false;
     }
     if (temps && !(a.tempsVerbaux || []).includes(temps)) return false;
     if (domaine && a.domaineDeVie !== domaine) return false;
@@ -1169,13 +1262,25 @@ const estOuvertATous = a => OUVERT_A_TOUS.test(a.domaineDeVie || '');
 // Les contenus se lisent en trois blocs : les cours (modules de 4 h, le matin),
 // les ateliers (activités de 2 h, l'après-midi) et les outils, qui ne se
 // planifient pas — ils restent ouverts et ne portent aucun matériel.
+/* Une activité d'un autre niveau que celui du groupe. Hors recherche, il n'y
+   en a jamais : la liste est bornée au chargement. Elles n'apparaissent que
+   quand le contenu d'une fiche ou d'un module répond — et alors les taire
+   serait pire que les montrer, puisque c'est la personne qui a cherché. */
+const horsNiveau = a => {
+  const niv = niveauGroupe();
+  return !!niv && niveauDe(a) !== niv && !estOuvertATous(a);
+};
+
 const SECTIONS = [
   { cle: 'cours',   titre: 'Cours',    sousTitre: '4 h — le matin',
-    garde: a => (a.categorie || 'atelier') === 'cours' && !estOutil(a) },
+    garde: a => (a.categorie || 'atelier') === 'cours' && !estOutil(a) && !horsNiveau(a) },
   { cle: 'atelier', titre: 'Ateliers', sousTitre: '2 h — l’après-midi',
-    garde: a => (a.categorie || 'atelier') !== 'cours' && !estOutil(a) },
+    garde: a => (a.categorie || 'atelier') !== 'cours' && !estOutil(a) && !horsNiveau(a) },
   { cle: 'outil',   titre: 'Outils',   sousTitre: 'toujours ouverts — sans matériel',
-    garde: estOutil },
+    garde: a => estOutil(a) && !horsNiveau(a) },
+  { cle: 'ailleurs', titre: 'Trouvées ailleurs',
+    sousTitre: 'hors du niveau de votre groupe — par leur contenu',
+    garde: horsNiveau },
 ];
 
 function renderList(items) {
@@ -1188,12 +1293,20 @@ function renderList(items) {
     // Un vide qui ne s'explique pas se lit comme une panne. Celui-ci a
     // presque toujours la même cause : le catalogue ne montre que le niveau
     // du groupe, et on cherche une activité d'un autre niveau.
-    const niv = niveauGroupe();
-    empty.textContent = RECHERCHE.length
-      ? `Rien ne répond à cette recherche${niv ? ' dans le ' + niv : ''}. `
-        + 'Le catalogue ne montre que le niveau de votre groupe ; changez de '
-        + 'groupe dans l’espace enseignant pour chercher ailleurs.'
-      : 'Aucune activité trouvée.';
+    empty.textContent = !RECHERCHE.length
+      ? 'Aucune activité trouvée.'
+      // L'index du contenu se construit au démarrage du serveur. Le dire vaut
+      // mieux que « rien ne répond » : la réponse n'est pas encore tombée.
+      : CONTENU_ETAT === 'en cours'
+        ? 'La recherche dans le contenu des modules et des fiches se prépare — '
+          + 'quelques secondes après le démarrage du serveur. Les titres et les '
+          + 'mots-clés, eux, sont déjà cherchés : rien n’y répond.'
+        // On ne parle plus du niveau du groupe ici : depuis que la recherche
+        // dans le contenu traverse les niveaux et range ce qu'elle trouve dans
+        // « Trouvées ailleurs », ce serait dire que le fonds est plus étroit
+        // qu'il ne vient d'être fouillé.
+        : 'Rien ne répond à cette recherche, ni dans les titres et les '
+          + 'mots-clés, ni dans le contenu des modules et des fiches.';
     empty.classList.add('visible');
     return;
   }
@@ -1229,11 +1342,15 @@ function renderItems(items, section) {
         ${(() => {
           // Pourquoi cette carte est là : les mots-clés qui ont répondu à la
           // recherche ne paraissent nulle part ailleurs sur la carte.
-          const mots = motsTrouves(a, RECHERCHE);
+          // Les mots qui portent la recherche, dits par le serveur quand il a
+          // répondu : sans eux, « la » ferait dire « Trouvé par délai ». Vu à
+          // l'écran — un mot vide se cache dans la moitié des mots-clés.
+          const mots = motsTrouves(a, CONTENU_MOTS.length ? CONTENU_MOTS : RECHERCHE);
           return mots.length
             ? `<p class="act-trouve">Trouvé par ${mots.map(escHtml).join(' · ')}</p>`
             : '';
         })()}
+        ${blocContenu(a)}
         ${(a.competences?.length || a.tempsVerbaux?.length || a.domaineDeVie) ? `<div class="act-tags">
           ${(a.competences || []).map(c => `<span class="act-tag act-tag--comp">${escHtml(c)}</span>`).join('')}
           ${(a.tempsVerbaux || []).map(t => `<span class="act-tag act-tag--temps">${escHtml(t)}</span>`).join('')}
@@ -1252,6 +1369,57 @@ function renderItems(items, section) {
         <button class="btn btn--ghost btn--sm ajout-btn" data-id="${a.id}">Ajouter du matériel</button>
       </div>`}
     </article>`).join('');
+}
+
+/** Les passages trouvés dans le contenu, sous le titre de la carte.
+
+    Un résultat sans son passage serait une affirmation sans preuve : on ne
+    saurait ni où le serveur a trouvé, ni si ça valait la peine d'ouvrir. Le
+    passage est donc montré, et la fiche s'ouvre d'un clic sur son nom. */
+function blocContenu(a) {
+  const r = CONTENU.get(a.id);
+  if (!r) return '';
+  const reste = r.total - r.extraits.length;
+  return `<div class="act-passages">
+    ${r.extraits.map(e => `
+      <div class="act-passage">
+        <a class="act-passage-ou" href="${escHtml(e.chemin)}" target="_blank" rel="noopener">${
+          e.type === 'module' ? 'Dans le module' : 'Fiche'} · ${escHtml(e.titre)}</a>
+        <p class="act-passage-txt">${surligner(e.extrait, CONTENU_MOTS)}</p>
+      </div>`).join('')}
+    ${reste > 0 ? `<p class="act-passage-reste">et ${reste} autre${reste > 1 ? 's' : ''} passage${reste > 1 ? 's' : ''} dans cette activité</p>` : ''}
+  </div>`;
+}
+
+/** Les mots cherchés, marqués dans l'extrait.
+
+    On ne compare pas deux textes aplatis pour retrouver les positions : retirer
+    les accents change la longueur d'une chaîne dès qu'un caractère invisible
+    s'y glisse, et le surlignage se décalerait d'un cran par accent. On fabrique
+    plutôt, pour chaque terme, une expression qui accepte les deux graphies —
+    « ete » trouve « été ».
+
+    Et on marque des **mots entiers**. Sans les deux bornes, « du » se
+    surlignait à l'intérieur de « module » : la moitié de l'extrait en jaune,
+    et le regard n'a plus rien à suivre. Vu à l'écran. */
+const LETTRES_ACCENTS = {
+  a: 'aàáâãäå', c: 'cç', e: 'eéèêë', i: 'iíìîï', n: 'nñ',
+  o: 'oóòôõö', u: 'uúùûü', y: 'yÿ',
+};
+function surligner(texte, termes) {
+  if (!termes || !termes.length) return escHtml(texte);
+  const motif = termes
+    .map(t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+               .replace(/[aceinouy]/g, l => `[${LETTRES_ACCENTS[l]}]`))
+    .join('|');
+  let re;
+  // Les bornes sont des regards, pas des `\b` : `\b` ne connaît que l'ASCII
+  // et couperait « été » en son milieu. Un navigateur trop ancien pour le
+  // regard arrière rend le texte sans marques — on perd le surlignage, pas
+  // l'extrait.
+  try { re = new RegExp('(?<![\\p{L}])(' + motif + ')(?![\\p{L}])', 'giu'); }
+  catch { return escHtml(texte); }
+  return escHtml(texte).replace(re, '<mark>$1</mark>');
 }
 
 function attachListEvents() {

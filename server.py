@@ -78,6 +78,16 @@ except ImportError:
           flush=True)
 
 try:
+    import recherche
+except ImportError:
+    # Même filet que la forge, `qr.py` et le registre. Sans ce module, le
+    # catalogue garde sa recherche sur les titres et les mots-clés : on perd
+    # la recherche **dans le contenu**, pas le catalogue.
+    recherche = None
+    print("[WARN] recherche.py absent : la recherche dans le contenu est "
+          "désactivée", flush=True)
+
+try:
     import journal_api
 except ImportError:
     # Même filet que pour la forge : un fichier oublié dans un commit ne doit
@@ -16675,6 +16685,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 json_response(self, {"error": "catalogue illisible : %s: %s"
                                      % (type(e).__name__, e)}, 500)
             return
+        if path == "/api/recherche":
+            self._handle_recherche(params)
+            return
         if path == "/api/sections":
             self._handle_sections(params)
             return
@@ -17312,6 +17325,53 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 
         entry = set_schedule_dates(group_id, activity_id, body, section_id)
         json_response(self, {"success": True, "dates": entry})
+
+    def _handle_recherche(self, params):
+        """Chercher **dans** les modules et les fiches, pas dans leurs titres.
+
+        Le bornage par niveau est posé ici, exactement comme sur
+        `/api/activities?catalogue=1` : une recherche qui rendrait un module
+        d'un niveau qu'on n'a pas le droit de voir — même réduit à un titre ou
+        à un compte — apprendrait ce qu'il y a derrière la porte. C'est la
+        raison pour laquelle cette route ne cherche pas dans l'index entier,
+        mais dans la part qui revient à la personne qui demande.
+
+        L'index se construit au démarrage. Tant qu'il n'est pas là, on le dit
+        (`pret: false`) au lieu de rendre une liste vide : un fonds qui répond
+        « rien » se lit comme un fonds sans rapport avec ce qu'on cherche,
+        alors qu'il n'a simplement pas fini de se lire lui-même.
+        """
+        teacher = self._require_teacher()
+        if not teacher:
+            return
+        requete = params.get("q", [""])[0].strip()
+        if recherche is None:
+            json_response(self, {"pret": False, "resultats": [],
+                                 "raison": "indisponible"})
+            return
+        index = recherche.index_courant()
+        if not index.pret:
+            # On la relance : sur un poste où le serveur a démarré avant que
+            # le dépouillement n'aboutisse, la première recherche est ce qui
+            # remet le travail en route. Sauf si on l'a éteinte exprès — la
+            # rallumer par une requête annulerait le réglage.
+            if os.environ.get("RECHERCHE_INDEX", "1") != "0":
+                recherche.construire_en_fond(BASE_DIR, load_activities, STORAGE_DIR)
+            json_response(self, {"pret": False, "resultats": [],
+                                 "raison": "en cours"})
+            return
+        if len(requete) < 3:
+            json_response(self, {"pret": True, "resultats": []})
+            return
+        niveaux = niveaux_de(teacher)
+        permises = {a["id"] for a in load_activities() if au_niveau(a, niveaux)}
+        json_response(self, {
+            "pret": True,
+            # Les mots à surligner viennent d'ici : c'est le serveur qui sait
+            # lesquels portent la recherche, et la page qui les met en évidence.
+            "termes": recherche.mots_pleins(requete),
+            "resultats": recherche.chercher(index, requete, permises),
+        })
 
     def _handle_sections(self, params):
         """Le découpage des modules, avec les dates de section du groupe.
@@ -22635,6 +22695,20 @@ if __name__ == "__main__":
             reconcilier_activites_forge()
         except Exception as e:
             print(f"[WARN] reconcilier_activites_forge a échoué : {e}", flush=True)
+        # L'index de la recherche dans le contenu, en tout dernier : il lit le
+        # catalogue, donc il attend `reconcilier_activites_forge()`, et il ne
+        # conditionne rien du tout. Il se construit dans son propre fil — une
+        # dizaine de secondes de dépouillement ne doivent retarder aucune des
+        # migrations ci-dessus.
+        # `RECHERCHE_INDEX=0` l'éteint sans déployer : l'index tient une
+        # centaine de mégaoctets en mémoire, et si un conteneur venait à en
+        # manquer, mieux vaut perdre la recherche dans le contenu que d'avoir à
+        # choisir dans l'urgence entre elle et le portail.
+        if recherche and os.environ.get("RECHERCHE_INDEX", "1") != "0":
+            try:
+                recherche.construire_en_fond(BASE_DIR, load_activities, STORAGE_DIR)
+            except Exception as e:
+                print(f"[WARN] index de recherche : {e}", flush=True)
 
 
     threading.Thread(target=_init_storage_safe, daemon=True).start()
