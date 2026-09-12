@@ -30,6 +30,7 @@ autre chose.
 
 | Session | Ouverte | Ce que je tiens | Jusqu'à |
 |---|---|---|---|
+| bibliotheque-francisation-0d | 12 sept. 2026 | `server.py` (routes de séance), `progression.html`, `feuille-seance.html`, `build/greffe_sections.py` + regreffe des 87 modules | la partie ouverte d'une séance sans compte |
 
 Le nom de session est celui que donne `ListAgents` (`claude-38`, `claude-71`…).
 Il ne survit pas à la fermeture, et c'est voulu : une ligne dont le nom ne
