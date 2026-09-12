@@ -2114,6 +2114,20 @@ plus — ajouter une activité, ajouter du matériel à une activité.
   programme et retombe sur *Niveau 4* pour toute autre valeur, y compris
   l'absence : les 43 activités écrites avant ce champ sont de ce cours-là.
   Le niveau ne se modifie pas après coup, comme le reste : on ajoute.
+- **La recherche cherche dans tout l'enregistrement**, pas dans le seul
+  titre — corrigé le 12 septembre 2026. Thèmes et mots-clés (« bail » trouve
+  « Je déménage ! »), identifiants de savoir (`n1-s22`, que les ateliers de la
+  banque portent dans leurs `keywords`), temps de verbe, compétences — en
+  toutes lettres aussi bien qu'en sigles (« oral » trouve les `PO`) —, niveau,
+  numéro d'activité, slug du dossier. **Sans accents ni casse** (« demenagement
+  » doit marcher), **plusieurs mots = tous les mots**, chacun pouvant tomber
+  dans un champ différent. Un **nombre se cherche entier** : « module 9 » ne
+  rend pas le 19 et le 29 — vu à l'écran, quatre résultats pour une recherche
+  qui en désignait un. Quand un résultat vient d'un mot-clé, la carte le dit
+  (« Trouvé par bail ») : sinon un résultat sans rapport visible avec ce qu'on
+  a tapé se lit comme un défaut de la recherche. Et **la recherche ne franchit
+  pas le bornage** — le catalogue ne montre que le niveau du groupe, donc le
+  message du vide le dit plutôt que de laisser croire l'activité disparue.
 - **Le matériel présent est un lien** : le catalogue sert d'abord à
   retrouver un fichier. Ce qui manque reste écrit en gris, pour qu'on voie
   le trou.
