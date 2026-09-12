@@ -30,7 +30,6 @@ autre chose.
 
 | Session | Ouverte | Ce que je tiens | Jusqu'à |
 |---|---|---|---|
-| bibliotheque-francisation-0d | 12 sept. 2026 | `server.py`, `catalogue.html`, `CLAUDE.md` | le commit de la recherche dans le contenu, dans la minute |
 
 Le nom de session est celui que donne `ListAgents` (`claude-38`, `claude-71`…).
 Il ne survit pas à la fermeture, et c'est voulu : une ligne dont le nom ne
