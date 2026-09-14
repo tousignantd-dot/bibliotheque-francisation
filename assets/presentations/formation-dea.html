@@ -1145,8 +1145,7 @@ section{border-top:1px solid var(--border);padding:var(--sp-8) 0;scroll-margin-t
    La maquette l'encadre : bandeau encre en haut, tracé au milieu, commandes
    en bas, le tout dans une seule boîte. Un tracé posé nu au milieu d'une
    page ne se lit pas comme un appareil.                                   */
-.trace{width:100%;height:170px;display:block;background:var(--surface-sunken);
-       border:0;border-radius:0}
+.trace{width:100%;height:170px;display:block;background:#0B0D0F;border:0;border-radius:0}
 .souffle{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-4);
        flex-wrap:wrap;padding:var(--sp-3) var(--sp-5);background:var(--ink-900);color:#fff;
        font-size:var(--fs-label);font-weight:var(--fw-black);
@@ -2290,28 +2289,90 @@ body{overflow:hidden}
      le panneau avait donc l'air vivant et ne traçait jamais rien. Aucune
      erreur, aucune trace en console. Trouvé sur une capture, pas à la
      relecture. */
+  /* ── L'ÉCRAN ────────────────────────────────────────────────────────────
+     Avant : quatre traits gris sur fond clair. Ce n'était pas un défaut de
+     code — c'était une grille de papier millimétré, et une grille vide ne
+     dit rien. Un tracé de thorax, on l'a vu sur un MONITEUR : fond noir,
+     quadrillage fin, trait lumineux, et une tête d'écriture qui avance.
+
+     Trois choses font la différence, et aucune n'est décorative :
+       • le FOND SOMBRE — c'est ce qui fait lire le trait comme une mesure
+         plutôt que comme un dessin ;
+       • la TÊTE D'ÉCRITURE, le point vif au bord droit, qui dit où est
+         « maintenant » : sans lui on ne sait pas dans quel sens ça défile ;
+       • le tracé QUI RESTE quand rien ne joue — une ligne plate au repos.
+         Un écran vide se lit comme un écran éteint ; une ligne plate se lit
+         comme « pas de signal », ce qui est justement le propos.
+
+     Le halo est rendu par `shadowBlur` sur le trait lui-même. Dessiner deux
+     fois le tracé, une fois flou et une fois net, coûtait le double pour un
+     résultat plus sale aux inflexions.                                    */
+  var ECRAN  = '#0B0D0F';
+  var GRILLE = 'rgba(255,255,255,.085)';
+  var GRILLE_F = 'rgba(255,255,255,.19)';
+  var TRAIT  = '#F5B544';   /* l'ambre de la marque, remonté pour le fond noir */
+
+  function fond(L, H) {
+    cx.fillStyle = ECRAN; cx.fillRect(0, 0, L, H);
+    /* Quadrillage calé sur le TEMPS : un carreau fort par seconde, subdivisé
+       en deux. Le premier jet subdivisait en cinq — 9 px de canevas, soit
+       5 px à l'écran une fois le canevas ramené à sa largeur réelle : les
+       lignes fines disparaissaient sous le pixel et il ne restait que les
+       fortes. Une grille dont on ne voit qu'un trait sur cinq n'est plus une
+       grille, c'est une rayure. Le pas se juge à la taille d'affichage, pas
+       dans le système de coordonnées du canevas. */
+    var seconde = L / (FENETRE / 1000);          // un carreau fort = 1 s
+    var pas = seconde / 2;
+    cx.lineWidth = 1;
+    for (var i = 0, x = 0; x <= L + 0.5; i++, x = i * pas) {
+      cx.strokeStyle = (i % 2 === 0) ? GRILLE_F : GRILLE;
+      cx.beginPath(); cx.moveTo(Math.round(x) + .5, 0); cx.lineTo(Math.round(x) + .5, H); cx.stroke();
+    }
+    for (var j = 0, y = H; y >= -0.5; j++, y = H - j * pas) {
+      cx.strokeStyle = (j % 2 === 0) ? GRILLE_F : GRILLE;
+      cx.beginPath(); cx.moveTo(0, Math.round(y) + .5); cx.lineTo(L, Math.round(y) + .5); cx.stroke();
+    }
+  }
+
+  function hauteur(v, H) { return H - v * (H - 34) - 17; }
+
   var boucle = 0;
   function dessiner() {
     var L = cv.width, H = cv.height;
-    var css = getComputedStyle(document.documentElement);
-    cx.clearRect(0, 0, L, H);
-    cx.strokeStyle = css.getPropertyValue('--bord') || '#E4E4E7';
-    cx.lineWidth = 1;
-    for (var g = 1; g < 4; g++) {
-      cx.beginPath(); cx.moveTo(0, (H / 4) * g); cx.lineTo(L, (H / 4) * g); cx.stroke();
+    fond(L, H);
+
+    /* Au repos : la ligne plate. L'écran est allumé, il ne reçoit rien. */
+    if (modeSouffle === null) {
+      cx.save();
+      cx.strokeStyle = 'rgba(245,181,68,.42)'; cx.lineWidth = 2;
+      cx.setLineDash([]); cx.beginPath();
+      cx.moveTo(0, hauteur(0.5, H)); cx.lineTo(L, hauteur(0.5, H)); cx.stroke();
+      cx.restore();
+      return;
     }
-    if (modeSouffle === null) return;
+
     var ecoule = performance.now() - t0;
+    cx.save();
+    cx.lineJoin = 'round'; cx.lineCap = 'round';
+    cx.shadowColor = 'rgba(245,181,68,.55)'; cx.shadowBlur = 9;
+    cx.strokeStyle = TRAIT; cx.lineWidth = 2.5;
     cx.beginPath();
-    cx.lineWidth = 2.5;
-    cx.strokeStyle = css.getPropertyValue('--encre') || '#09090B';
+    var yFin = 0;
     for (var x = 0; x <= L; x++) {
       // Le bord droit est « maintenant » ; le tracé défile vers la gauche.
       var ms = ecoule - (1 - x / L) * FENETRE;
-      var y = H - amplitude(modeSouffle, ms) * (H - 24) - 12;
+      var y = hauteur(amplitude(modeSouffle, ms), H);
       x === 0 ? cx.moveTo(x, y) : cx.lineTo(x, y);
+      yFin = y;
     }
     cx.stroke();
+
+    /* La tête d'écriture : le point vif à l'instant présent. */
+    cx.shadowBlur = 14;
+    cx.fillStyle = '#FFF3DE';
+    cx.beginPath(); cx.arc(L - 1.5, yFin, 3.4, 0, Math.PI * 2); cx.fill();
+    cx.restore();
+
     boucle = requestAnimationFrame(dessiner);
   }
   dessiner();   // la grille seule, tant que rien n'est choisi
