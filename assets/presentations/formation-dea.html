@@ -842,6 +842,32 @@ a.btn, a.btn:hover, a.btn:visited { text-decoration: none; }
   --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 }
 
+/* ══ LA COULEUR : AMBRE, PAS VERT ══════════════════════════════════════════
+   Demandé : quelle couleur dit « défibrillateur », autre que le vert ?
+   Le vert est celui du PANNEAU — le pictogramme normalisé ISO 7010 qui
+   signale où l'appareil est accroché. Il dit « c'est ici », pas « c'est
+   ça ». La MACHINE, elle, est jaune : Philips HeartStart, ZOLL AED Plus,
+   Cardiac Science Powerheart. C'est la couleur qu'on cherche des yeux dans
+   un hall, et celle qu'on a dans les mains.
+
+   Le rouge était le troisième candidat, et il est écarté pour deux raisons :
+   le système le réserve à l'audio et à l'erreur, et dans un immeuble le
+   rouge est déjà pris par l'extincteur.
+
+   Les jetons ambrés existent déjà (`--ambre-700`, `--ambre-100`). On ne
+   touche PAS aux couleurs de rétroaction : le juste reste vert, le faux
+   reste rouge. Une bonne réponse qui change de couleur avec la marque
+   devient illisible.                                                       */
+:root{
+  --accent:      var(--ambre-700);   /* #B45309 — 4,9:1 sur blanc */
+  --accent-soft: var(--ambre-100);   /* #FBEEDC */
+  --accent-ink:  var(--warn-ink);    /* #8A5206 — 6,2:1 sur blanc */
+  --text-accent: var(--warn-ink);
+  --link:        var(--ambre-700);
+  --link-hover:  var(--warn-ink);
+  --focus-ring:  var(--ambre-700);
+}
+
 /* ══ COUCHE DE COMPATIBILITÉ ═══════════════════════════════════════════════
    Trois cents lignes de CSS réglées au fil des relectures, et du JS qui
    injecte `var(--fond-3)` dans du SVG, parlaient le vocabulaire de braise.
@@ -905,142 +931,113 @@ ul,ol{margin:0;padding-left:1.25rem;line-height:var(--lh-loose)}
 li+li{margin-top:var(--sp-2)}
 sup{font-size:.7em;line-height:0}
 
-/* ── 1 · Le bandeau d'en-tête ──────────────────────────────────────────────
-   Il reste en haut de la page et ne défile pas avec le contenu. La maquette
-   le veut permanent : le titre du module est l'argument du module, et le
-   perdre au deuxième écran c'est perdre la raison d'être là.               */
-.band{background:var(--surface-band);border-bottom:1px solid var(--border-tint);
-      padding:var(--sp-8) 0 var(--sp-6)}
-.band__eyebrow{display:flex;align-items:center;gap:var(--sp-2);
+/* ── 1 · L'ÉCRAN D'OUVERTURE ───────────────────────────────────────────────
+   Le bandeau permanent est devenu un panneau comme les autres, le premier.
+   Mesuré : il coûtait 320 px sur chacun des 39 écrans pour redire la même
+   phrase. Ici il la dit une fois, en grand, et s'en va.                    */
+.panneau--ouverture{max-width:44rem}
+.surtitre{display:flex;align-items:center;gap:var(--sp-2);
       font-size:var(--fs-label);font-weight:var(--fw-bold);
       letter-spacing:var(--ls-label);text-transform:uppercase;color:var(--text-accent)}
-.band__eyebrow::before{content:"";width:8px;height:8px;border-radius:50%;
+.surtitre::before{content:"";width:8px;height:8px;border-radius:50%;
       background:var(--accent);flex-shrink:0}
-.band h1{margin-top:var(--sp-4);max-width:18ch}
-.band__lead{max-width:56ch;margin-top:var(--sp-4);font-size:var(--fs-lead);
-      font-weight:var(--fw-medium);color:var(--ink-500)}
-/* Sur téléphone le bandeau prenait l'écran entier : 40 px de titre sur trois
-   lignes, plus le chapeau, et le module commençait sous le pli. Il reste — il
-   porte l'argument —, mais à la taille d'un en-tête, pas d'une affiche. */
-@media (max-width:52rem){
-  .band{padding:var(--sp-5) 0 var(--sp-4)}
-  .band h1{font-size:28px;line-height:1.12;margin-top:var(--sp-2);max-width:none}
-  .band__lead{margin-top:var(--sp-3);font-size:var(--fs-body-sm)}
-}
-/* Mesuré à 375 px : bandeau 267 + barre 69 + colonne du temps 314, soit 650
-   pixels d'en-tête sur un écran de 812 — le cours commençait sous le pli. On
-   ne retire rien, on resserre : le titre à 24, le chapeau en petit corps, et
-   le bouton de remise à zéro passe sous la note au lieu de garder sa ligne. */
-@media (max-width:30rem){
-  .band{padding:var(--sp-4) 0 var(--sp-3)}
-  .band h1{font-size:24px}
-  .band__lead{margin-top:var(--sp-2);font-size:var(--fs-ui-sm);line-height:1.45}
-}
+.panneau--ouverture h1{margin-top:var(--sp-4);font-size:clamp(34px,5.2vw,54px)}
+.panneau--ouverture h1 i{font-style:normal;color:var(--accent-ink)}
+.avant{margin-top:var(--sp-5);font-size:var(--fs-lead);font-weight:var(--fw-medium);
+      color:var(--ink-500);max-width:52ch}
+/* En `ch` et à 12 px, 52 caractères font 330 px : le paragraphe se retrouvait
+   en colonne de journal. La mesure de lecture se donne en rem quand le corps
+   est petit — le `ch` suit la taille de la police et se retourne contre soi. */
+.panneau--ouverture .mini{margin-top:var(--sp-5);max-width:34rem;line-height:1.55}
 
-/* ── 2 · La barre de parcours ──────────────────────────────────────────────
-   Des pastilles NOMMÉES. Le rail d'avant ne portait que des numéros : il
-   fallait survoler pour savoir où l'on allait, ce qui revient à ne rien
-   afficher. La jauge d'avancement passe en filet au bas de la barre.      */
+/* ── 2 · LA BARRE : le parcours ET le temps ────────────────────────────────
+   La colonne de droite a disparu ; le chronomètre et les chances restantes
+   tiennent en deux nombres, et deux nombres n'ont pas besoin de 260 px de
+   colonne. Posés au bout de la barre, ils restent visibles en permanence —
+   ce qui était tout leur intérêt — et rendent la largeur au cours.
+
+   LES PASTILLES ONT MAIGRI. Elles faisaient 44 px de haut, le plancher
+   tactile du système : sur dix chapitres, cela faisait une barre de 69 px qui
+   avait l'air d'un rang de boutons. Elles descendent à 28 px À LA SOURIS
+   seulement ; sous un doigt — `pointer:coarse` — elles reprennent leurs 44 px.
+   La règle des 44 px protège les doigts, pas les curseurs : l'appliquer à un
+   portable était la suivre à la lettre contre son intention.               */
 .steps{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.94);
        backdrop-filter:blur(8px);border-bottom:1px solid var(--border)}
-/* `flex-wrap:nowrap` est EXPLICITE : le composant du système pose `wrap`, et
-   sans cette ligne les dix pastilles s'empilaient sur cinq rangées — deux
-   cent cinquante pixels de barre collante sur un écran de téléphone, avant
-   d'avoir lu un mot. Ici elles défilent latéralement. */
 .steps__inner{max-width:var(--content-max);margin:0 auto;
-       padding:var(--sp-3) var(--gutter);display:flex;flex-wrap:nowrap;gap:var(--sp-2);
-       align-items:center;overflow-x:auto;scrollbar-width:none;
-       scroll-snap-type:x proximity}
-.step{scroll-snap-align:start}
-.steps__inner::-webkit-scrollbar{display:none}
-.step{flex:0 0 auto;display:inline-flex;align-items:center;gap:var(--sp-2);
-      min-height:var(--tap-min);padding:0 var(--sp-4);
+       padding:var(--sp-2) var(--gutter);display:flex;flex-wrap:nowrap;
+       gap:var(--sp-3);align-items:center}
+.marque{flex:0 0 auto;font-size:var(--fs-ui-sm);font-weight:var(--fw-black);
+       letter-spacing:-.01em;color:var(--text-strong);white-space:nowrap}
+.marque i{font-style:normal;color:var(--accent-ink)}
+.rail{flex:1 1 auto;min-width:0;display:flex;gap:6px;align-items:center;
+       overflow-x:auto;scrollbar-width:none;scroll-snap-type:x proximity;
+       padding:2px 0}
+.rail::-webkit-scrollbar{display:none}
+.step{flex:0 0 auto;scroll-snap-align:start;display:inline-flex;align-items:center;
+      gap:6px;min-height:28px;padding:0 10px;
       border:1px solid var(--border);border-radius:var(--r-pill);
       background:var(--surface-card);color:var(--text-body);
-      font-family:var(--font-sans);font-size:var(--fs-ui-sm);font-weight:var(--fw-bold);
+      font-family:var(--font-sans);font-size:var(--fs-meta);font-weight:var(--fw-bold);
       white-space:nowrap;cursor:pointer;
       transition:background var(--dur) var(--ease),border-color var(--dur) var(--ease)}
-.step__dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;background:currentColor}
+.step__dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;background:currentColor}
 .step:hover:not([disabled]){background:var(--paper-50);border-color:var(--ink-900)}
-.step[disabled]{opacity:.45;cursor:default}
+.step[disabled]{opacity:.42;cursor:default}
 .step[data-vu]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent-ink)}
 .step[aria-current="true"]{background:var(--ink-900);border-color:var(--ink-900);color:#fff}
-.jauge{position:absolute;left:0;bottom:-1px;height:3px;background:var(--accent);
-       width:0;transition:width 240ms var(--ease)}
+/* Sous un doigt, le plancher tactile revient. */
+@media (pointer:coarse){
+  .step{min-height:var(--tap-min);padding:0 var(--sp-4);font-size:var(--fs-ui-sm)}
+  .step__dot{width:9px;height:9px}
+}
 .chapTitre{display:none}
 
-/* ── 3 · La grille : le module, et la colonne du temps ────────────────────
-   260 px à droite, collants. Sous 900 px la colonne repasse au-dessus du
-   module : le compteur doit rester visible, c'est lui qui presse.         */
-.dea-grille{display:grid;grid-template-columns:minmax(0,1fr) 260px;
-      gap:var(--sp-12);align-items:start;padding:var(--sp-6) 0 7rem}
-/* Sur écran étroit la colonne repasse AU-DESSUS du module — le compteur doit
-   rester visible, c'est lui qui presse — mais en BANDEAU et non en carte : en
-   pile, elle prenait un écran entier avant la première ligne du cours.
+/* Le temps, au bout de la barre. */
+.chrono{flex:0 0 auto;display:flex;align-items:center;gap:var(--sp-2);
+      padding-left:var(--sp-3);border-left:1px solid var(--border)}
+.chrono__t,.chrono__s{font-variant-numeric:tabular-nums;font-size:var(--fs-ui-sm);
+      font-weight:var(--fw-black);letter-spacing:-.01em;white-space:nowrap}
+.chrono__s{color:var(--accent-ink)}
+.chrono__coeur{width:8px;height:8px;border-radius:50%;background:var(--accent);
+      animation:battre 1.1s var(--ease) infinite}
+@keyframes battre{0%,100%{transform:scale(1)}12%{transform:scale(1.35)}26%{transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){ .chrono__coeur{animation:none} }
+.chrono__z{width:26px;height:26px;flex-shrink:0;display:inline-flex;align-items:center;
+      justify-content:center;border:1px solid var(--border);border-radius:50%;
+      background:var(--surface-card);color:var(--text-muted);cursor:pointer;
+      font-family:var(--font-sans);font-size:14px;line-height:1;padding:0}
+.chrono__z:hover{border-color:var(--ink-900);color:var(--text-strong)}
+@media (pointer:coarse){ .chrono__z{width:var(--tap-min);height:var(--tap-min)} }
+/* La jauge de survie : un filet plein largeur sous la barre. Elle recule, et
+   c'est le sens du module — on ne la donne pas en pourcentage seulement. */
+.chrono__barre{height:2px;background:var(--paper-200)}
+.chrono__barre>div{height:100%;width:100%;background:var(--accent);
+      transition:width 200ms linear}
+.jauge{position:absolute;left:0;bottom:-1px;height:2px;background:var(--ink-900);
+      width:0;transition:width 240ms var(--ease)}
+/* Sur écran étroit la marque s'efface : le parcours et le temps priment. */
+@media (max-width:52rem){ .marque{display:none} }
+@media (max-width:30rem){ .chrono__s{display:none} }
 
-   Deux rangées « libellé | valeur », la jauge en travers, la note dessous.
-   Un premier essai mettait les deux chiffres CÔTE À CÔTE : à 375 px, « 0 min
-   07 s » et « 99 % » se cassaient chacun en deux lignes. Un chiffre qui passe
-   à la ligne ne se lit plus d'un coup d'œil, et c'est tout ce qu'on lui
-   demande.
+/* ── 3 · LE PANNEAU TIENT SA HAUTEUR ──────────────────────────────────────
+   Le module montre UN panneau à la fois : il peut donc se donner la hauteur
+   qui reste entre la barre et le pied, au lieu de la subir. Ce qui déborde
+   défile DANS le panneau — la barre et le pied ne bougent jamais.
 
-   Le placement passe par `nth-child` parce que la colonne est du HTML plat :
-   deux libellés, deux valeurs, une jauge, deux notes, un bouton. */
-@media (max-width:56rem){
-  .dea-grille{grid-template-columns:minmax(0,1fr);gap:var(--sp-5);padding-top:var(--sp-5)}
-  .dea-rail{position:static;order:-1;display:grid;
-      grid-template-columns:minmax(0,1fr) auto;
-      column-gap:var(--sp-4);row-gap:var(--sp-2);align-items:baseline;
-      padding:var(--sp-4) var(--sp-5)}
-  .dea-rail>*{margin-top:0 !important}
-  .dea-rail>:nth-child(1){grid-area:1/1}
-  .dea-rail>:nth-child(2){grid-area:1/2}
-  .dea-rail>:nth-child(3){grid-area:2/1}
-  .dea-rail>:nth-child(4){grid-area:2/2}
-  .dea-rail>:nth-child(5){grid-area:3/1/auto/-1;margin-top:var(--sp-2) !important}
-  .dea-rail>:nth-child(6){grid-area:4/1/auto/-1;margin-top:var(--sp-2) !important}
-  .dea-rail>:nth-child(7){display:none}
-  .dea-rail>:nth-child(8){grid-area:5/1/auto/-1;justify-self:start;
-      margin-top:var(--sp-3) !important;min-height:var(--tap-min);
-      padding:0 var(--sp-4);font-size:var(--fs-ui-sm)}
-  .dea-rail__chrono,.dea-rail__n{font-size:26px;white-space:nowrap}
-  .dea-rail__note{font-size:var(--fs-meta);font-weight:var(--fw-bold);color:var(--text-muted)}
-}
-/* Ces trois lignes sont posées APRÈS le bloc 56 rem, pas avant : à
-   spécificité égale, c'est la dernière déclaration qui l'emporte, et placées
-   plus haut elles étaient simplement perdues. Un réglage sans effet ne se
-   signale pas — il faut le mesurer pour s'en apercevoir. */
-@media (max-width:30rem){
-  .dea-rail{padding:var(--sp-3) var(--sp-4)}
-  .dea-rail__chrono,.dea-rail__n{font-size:22px}
-  .dea-rail>:nth-child(8){min-height:36px;font-size:var(--fs-meta);
-      margin-top:var(--sp-2) !important}
-}
+   Ce n'est pas qu'une question de confort : tant que la page entière
+   défilait, un panneau trop long se confondait avec un panneau normal. Ici
+   il se signale tout seul, par une barre de défilement qui n'a pas lieu
+   d'être. Le format devient un contrôle.                                  */
+.dea-grille{display:block}
+.page{min-width:0;padding:0;max-width:52rem;margin:0 auto;
+      height:calc(100dvh - var(--barre,3.25rem) - var(--pied,4.25rem));
+      overflow-y:auto;overscroll-behavior:contain;
+      display:flex;flex-direction:column;
+      padding:var(--sp-6) 0 var(--sp-6);scrollbar-width:thin}
+.panneau{margin:auto 0;width:100%}
+@media (max-width:52rem){ .page{padding:var(--sp-5) 0} }
 
-
-.dea-rail{position:sticky;top:5.5rem;border:1px solid var(--border);
-      border-radius:var(--r-lg);padding:var(--sp-5);background:var(--surface-sunken)}
-.dea-rail__t{font-size:var(--fs-label);font-weight:var(--fw-black);
-      letter-spacing:var(--ls-label);text-transform:uppercase;color:var(--text-muted)}
-.dea-rail__chrono{font-variant-numeric:tabular-nums;font-size:40px;
-      font-weight:var(--fw-black);letter-spacing:-.03em;line-height:1.1;
-      margin-top:var(--sp-2)}
-.dea-rail__survie{display:flex;align-items:center;gap:var(--sp-3);margin-top:var(--sp-2)}
-.dea-rail__coeur{display:inline-block;width:12px;height:12px;border-radius:50%;
-      background:var(--ink-900);animation:battre 1.1s var(--ease) infinite}
-@keyframes battre{0%,100%{transform:scale(1)}12%{transform:scale(1.14)}26%{transform:scale(1)}}
-@media (prefers-reduced-motion:reduce){ .dea-rail__coeur{animation:none} }
-.dea-rail__n{font-variant-numeric:tabular-nums;font-size:30px;
-      font-weight:var(--fw-black);color:var(--text-strong)}
-.dea-rail__barre{height:10px;margin-top:var(--sp-3);border-radius:var(--r-pill);
-      background:var(--paper-200);overflow:hidden}
-.dea-rail__barre>div{height:100%;background:var(--ink-900);
-      transition:width 200ms linear;width:100%}
-.dea-rail__note{margin-top:var(--sp-4);font-size:var(--fs-ui-sm);
-      font-weight:var(--fw-semi);color:var(--text-body)}
-.dea-rail__src{margin-top:var(--sp-3);font-size:var(--fs-meta);
-      font-weight:var(--fw-bold);color:var(--text-muted)}
-.dea-rail .b{margin-top:var(--sp-4)}
 
 /* ── L'en-tête d'exercice ─────────────────────────────────────────────────
    La pastille numérotée et le sur-titre coloré du système, à la place du
@@ -1058,10 +1055,14 @@ section{border-top:1px solid var(--border);padding:var(--sp-8) 0;scroll-margin-t
    La maquette les pose en lignes : le chiffre cadré à droite sur 120 px, la
    phrase à côté. En colonnes, quatre chiffres de longueurs différentes ne
    s'alignent sur rien.                                                     */
-.faits{display:flex;flex-direction:column;margin-top:var(--sp-5)}
-.fait{display:grid;grid-template-columns:120px minmax(0,1fr);gap:var(--sp-5);
-      align-items:baseline;padding:var(--sp-4) 0;border-bottom:1px solid var(--border)}
-.fait b{font-size:34px;font-weight:var(--fw-black);letter-spacing:-.02em;
+/* Resserré de 16 à 10 px par ligne. Mesuré : c'est le seul panneau des
+   quarante qui débordait encore, de 78 px, et quatre lignes de liste en
+   rendent 48 sans qu'on touche à une phrase. Le reste vient de l'encadré.
+   On récupère sur la typographie avant de récupérer sur le cours. */
+.faits{display:flex;flex-direction:column;margin-top:var(--sp-4)}
+.fait{display:grid;grid-template-columns:110px minmax(0,1fr);gap:var(--sp-5);
+      align-items:baseline;padding:10px 0;border-bottom:1px solid var(--border)}
+.fait b{font-size:30px;font-weight:var(--fw-black);letter-spacing:-.02em;
         color:var(--text-strong);text-align:right}
 .fait span{font-size:var(--fs-body-sm);font-weight:var(--fw-semi);color:var(--text-body);
         text-transform:none;letter-spacing:0}
@@ -1076,7 +1077,7 @@ section{border-top:1px solid var(--border);padding:var(--sp-8) 0;scroll-margin-t
    système — le seul endroit du module qui en porte un.                     */
 .cadre{background:var(--surface-card);border:1px solid var(--border);
        border-left:4px solid var(--accent);border-radius:var(--r-lg);
-       padding:var(--sp-5) var(--sp-6);margin-top:var(--sp-5);
+       padding:var(--sp-4) var(--sp-5);margin-top:var(--sp-4);
        box-shadow:var(--sh-card);max-width:44rem}
 .cadre p:first-child{font-size:var(--fs-lead);font-weight:var(--fw-semi)}
 .cadre p+p{margin-top:var(--sp-3)}
@@ -1304,9 +1305,10 @@ footer a{color:var(--link)}
    se lisent en diagonale, et une formation lue en diagonale n'installe rien.
    Le contenu n'a pas bougé d'une phrase ; c'est le RYTHME qui change. Un
    panneau tient dans un écran, on le termine, on avance. */
-body{padding-bottom:5.5rem}                /* la barre du bas est fixe */
-.page{display:flex;flex-direction:column;min-height:26rem}
-.panneau{margin:auto 0;width:100%}
+/* La page ne défile plus : c'est le panneau qui défile, dans sa boîte. Le
+   `padding-bottom` du corps n'a donc plus lieu d'être — il ajoutait 5,5 rem
+   de vide sous un document qui tient déjà dans l'écran. */
+body{overflow:hidden}
 .panneau{animation:entrer 420ms cubic-bezier(.22,.85,.28,1) both}
 .panneau[data-part]{animation:sortir 190ms ease-in both}
 @keyframes entrer{from{opacity:0;transform:translate3d(26px,0,0)}to{opacity:1;transform:none}}
@@ -1354,42 +1356,53 @@ body{padding-bottom:5.5rem}                /* la barre du bas est fixe */
       margin-bottom:var(--sp-5);font-size:var(--fs-ui-sm);font-weight:var(--fw-semi)}
 </style>
 
-<header class="band">
-  <div class="container">
-    <div class="band__eyebrow">Formation · 25 à 30 minutes</div>
-    <h1>Chaque minute coûte 10 %.</h1>
-    <p class="band__lead">Quelqu'un s'effondre dans l'immeuble. Le compteur part à
-      cet instant — et il ne s'arrête pas parce que vous hésitez. Vous n'êtes pas
-      soignant : vous êtes la personne la plus proche.</p>
-  </div>
-</header>
-
+<!-- ═══ LA BARRE ═══════════════════════════════════════════════════════════
+     Elle porte TOUT ce qui doit rester visible : où l'on est, où l'on va, et
+     le temps qui passe. Le bandeau d'en-tête a disparu — il coûtait 320 px à
+     chaque écran pour répéter la même phrase, qu'on cesse de lire au
+     deuxième. Ce qu'il disait est devenu le premier écran.            -->
 <nav class="steps" aria-label="Parcours du module">
   <div class="steps__inner">
-    <div class="rail" id="rail" style="display:contents"></div>
+    <span class="marque">Quelqu'un s'effondre <i>au travail.</i></span>
+    <div class="rail" id="rail"></div>
     <span class="chapTitre" id="chapTitre"></span>
+    <div class="chrono" aria-label="Le temps depuis l'effondrement">
+      <span class="chrono__t" id="chrono">0:00</span>
+      <span class="chrono__coeur" aria-hidden="true"></span>
+      <span class="chrono__s" id="survie">100 %</span>
+      <button class="chrono__z" type="button" id="remettre"
+              title="Remettre le compteur à zéro" aria-label="Remettre le compteur à zéro">↺</button>
+    </div>
   </div>
+  <div class="chrono__barre"><div id="survieBarre"></div></div>
   <div class="jauge" id="jauge"></div>
 </nav>
 
 <div class="container">
-<div class="dea-grille">
-
 <main class="page" id="scene">
 
-<!-- ═══ 0 ═══ Le panneau de couverture a disparu : son titre est passé dans
-     le bandeau, qui reste en haut de tous les écrans. Le garder aurait fait
-     dire deux fois la même chose, une fois au-dessus de l'autre. Ce qu'il
-     portait d'unique — les quatre chiffres — rejoint la portée.          -->
-<article class="panneau" data-chap="s0">
+<!-- ═══ 0 ═══ L'ÉCRAN D'OUVERTURE, et il ne revient pas.
+     Le bandeau permanent est devenu ce panneau-ci. Il dit son titre une fois,
+     pose le compteur, et laisse la place. Le titre est celui de la situation
+     — « quelqu'un s'effondre » — et non la statistique : une statistique
+     répétée à chaque écran cesse d'être lue, et ce n'est pas elle qu'on doit
+     reconnaître le jour venu.                                            -->
+<article class="panneau panneau--ouverture" data-chap="s0">
+  <div class="surtitre">Formation · 25 à 30 minutes</div>
+  <h1>Quelqu'un s'effondre <i>au travail.</i></h1>
+  <p class="avant">Vous n'êtes pas soignant. Vous n'avez aucune formation médicale.
+    Dans les dix premières secondes, vous êtes pourtant la seule chose qui puisse
+    changer l'issue. Cette formation existe pour que vous osiez agir — et pour que
+    vous sachiez exactement quoi faire.</p>
+  <p class="mini">Le compteur en haut de l'écran part maintenant. Sans réanimation,
+    la probabilité de survie baisse d'environ 10 % par minute — il tourne pendant
+    que vous lisez, comme il tournerait pendant qu'on hésite. Chiffre : Cœur + AVC
+    (Canada) ; compteur de démonstration.</p>
+</article>
+
+<article class="panneau" data-chap="s0" hidden>
   <div class="num"><b>00</b><span>Avant de commencer</span></div>
   <h2>Une seule situation.</h2>
-  <div class="lire">
-    <p class="doux">Vous n'êtes pas soignant. Vous n'avez aucune formation
-      médicale. Dans les dix premières secondes, vous êtes pourtant la seule
-      chose qui puisse changer l'issue. Cette formation existe pour que vous
-      osiez agir — et pour que vous sachiez exactement quoi faire.</p>
-  </div>
   <div class="cadre">
     <p><b>Ce que cette formation couvre, et rien d'autre.</b> Une seule situation :
       une personne s'effondre ou est trouvée inanimée dans l'immeuble. Elle ne
@@ -1948,27 +1961,6 @@ body{padding-bottom:5.5rem}                /* la barre du bas est fixe */
 
 </main>
 
-<!-- ═══ La colonne du temps ═══════════════════════════════════════════════
-     La pièce que la maquette ajoute, et celle qui porte l'argument : le
-     compteur tourne pendant qu'on lit. Il ne mesure pas la formation — il
-     mesure ce qu'un arrêt cardiaque coûte pendant qu'on hésite. C'est pour
-     cela qu'il démarre au chargement et non au premier clic.            -->
-<aside class="dea-rail" aria-label="Le temps qui passe">
-  <div class="dea-rail__t">Depuis l'effondrement</div>
-  <div class="dea-rail__chrono" id="chrono">0 min 00 s</div>
-  <div class="dea-rail__t" style="margin-top:var(--sp-5)">Chances restantes</div>
-  <div class="dea-rail__survie">
-    <span class="dea-rail__coeur" aria-hidden="true"></span>
-    <span class="dea-rail__n" id="survie">100 %</span>
-  </div>
-  <div class="dea-rail__barre"><div id="survieBarre"></div></div>
-  <p class="dea-rail__note">Sans réanimation, la probabilité de survie baisse
-    d'environ 10 % par minute.</p>
-  <p class="dea-rail__src">Chiffre : Cœur + AVC (Canada). Compteur de démonstration.</p>
-  <button class="b" type="button" id="remettre">Remettre à zéro</button>
-</aside>
-
-</div><!-- .dea-grille -->
 </div><!-- .container -->
 
 <div class="pied">
@@ -2009,12 +2001,34 @@ body{padding-bottom:5.5rem}                /* la barre du bas est fixe */
     function battre() {
       var s = (performance.now() - depart) / 1000;
       var mm = Math.floor(s / 60), ss = Math.floor(s % 60);
-      vChrono.textContent = mm + ' min ' + (ss < 10 ? '0' : '') + ss + ' s';
+      /* Format court : le compteur vit maintenant dans la barre, entre les
+         pastilles et le bord. « 0 min 42 s » y tenait deux fois la place de
+         « 0:42 » pour la même information. */
+      vChrono.textContent = mm + ':' + (ss < 10 ? '0' : '') + ss;
       var reste = Math.max(0, 100 - (s / 60) * 10);
       vSurvie.textContent = Math.round(reste) + ' %';
       vBarre.style.width = reste + '%';
     }
     setInterval(battre, 200); battre();
+
+    /* LA HAUTEUR DU PANNEAU. Le CSS part de deux valeurs de secours en rem ;
+       ici on mesure la barre et le pied pour de vrai. Une constante en rem
+       est fausse dès qu'une pastille passe à la ligne ou qu'un libellé
+       s'allonge — et elle est fausse en silence : le panneau déborde de
+       quelques pixels, ce qui donne une barre de défilement qu'on prend pour
+       un panneau trop long. */
+    var poser = function () {
+      var b = document.querySelector('.steps'), p = document.querySelector('.pied');
+      var r = document.documentElement.style;
+      if (b) r.setProperty('--barre', b.getBoundingClientRect().height + 'px');
+      if (p) r.setProperty('--pied', p.getBoundingClientRect().height + 'px');
+    };
+    poser(); window.addEventListener('resize', poser);
+    if (window.ResizeObserver) {
+      var ro = new ResizeObserver(poser);
+      ro.observe(document.querySelector('.steps'));
+      ro.observe(document.querySelector('.pied'));
+    }
     el('remettre').addEventListener('click', function () { depart = performance.now(); battre(); });
   }());
 
