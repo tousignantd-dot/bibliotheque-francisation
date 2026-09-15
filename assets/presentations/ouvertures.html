@@ -836,44 +836,51 @@ body{background:#F4F4F1;margin:0;font-family:var(--font-sans,system-ui)}
 .pips{display:flex;gap:6px;align-items:center}
 b{font-weight:900}
 
-/* ══ A · LE MODULE ══ blanc, ambre, la plaque de mots sur le dessin ══ */
+/* ══ A · LE MODULE ══ blanc, ambre, la plaque de mots sur le dessin ══
+   TYPOGRAPHIE : celle de v2, demandée le 15 septembre 2026. Nunito est la
+   police de la francisation — un module de secourisme en entreprise n'a pas
+   à en hériter. Archivo a des capitales plus étroites et une graisse 900 que
+   Nunito n'a pas : c'est ce qui permet aux phrases courtes de tenir gros sans
+   passer à la ligne. Le mono n'est pas décoratif — il tient les chiffres en
+   colonnes (horodatage, minutes, chronomètre). */
+.v-module .cadre{font-family:Archivo,system-ui}
 .v-module .cadre,.v-module{background:#fff}
 .v-module .haut{display:flex;align-items:center;gap:.75rem;padding:.7rem 1.1rem;
   border-bottom:1px solid var(--border)}
-.v-module .marque{font-weight:800;font-size:.95rem}
+.v-module .marque{font:900 .95rem Archivo;letter-spacing:-.01em}
 .v-module .rub{display:flex;gap:4px;flex:1;max-width:22rem}
 .v-module .rub i{height:4px;flex:1;border-radius:2px;background:#E4E4E0;cursor:pointer}
 .v-module .rub i.faite{background:var(--amb)}
 .v-module .rub i.ici{background:var(--amb);flex:2}
-.v-module .chrono{margin-left:auto;font:700 .8rem/1 ui-monospace,monospace;color:var(--text-muted)}
+.v-module .chrono{margin-left:auto;font:700 .8rem/1 'JetBrains Mono',ui-monospace,monospace;
+  color:var(--text-muted);font-variant-numeric:tabular-nums}
 .v-module .sc{position:absolute;inset:0;display:grid;padding:clamp(14px,2.4vw,30px)}
 .v-module .img{position:relative;display:grid;place-items:center;min-height:0}
 .v-module .img img{max-width:100%;max-height:100%;object-fit:contain}
 .v-module .plaque{position:absolute;left:6%;bottom:8%;background:#fff;
   border-left:4px solid var(--amb);padding:.7rem 1rem;max-width:26ch;
-  box-shadow:0 8px 28px rgba(0,0,0,.12);font-weight:800;
-  font-size:clamp(17px,2.1vw,27px);line-height:1.18}
-.v-module .titre{font-size:clamp(22px,3.6vw,46px);font-weight:800;line-height:1.08;
-  letter-spacing:-.02em;max-width:22ch}
-.v-module .sous{margin-top:.6rem;font-size:clamp(15px,1.5vw,18px);font-weight:600;
-  color:var(--ink-500);max-width:52ch;line-height:1.45}
+  box-shadow:0 8px 28px rgba(0,0,0,.12);
+  font:900 clamp(17px,2.2vw,29px)/1.14 Archivo;letter-spacing:-.02em}
+.v-module .titre{font:900 clamp(22px,3.8vw,50px)/1.02 Archivo;letter-spacing:-.03em;max-width:22ch}
+.v-module .sous{margin-top:.6rem;font:600 clamp(15px,1.5vw,18px)/1.45 Archivo;
+  color:var(--ink-500);max-width:52ch}
 .v-module .bas{display:flex;align-items:center;gap:.75rem;padding:.7rem 1.1rem;
   border-top:1px solid var(--border)}
 .v-module .pip{background:#E4E4E0}
 .v-module .pip.on{background:var(--amb)}
-.v-module .nom{font:700 .78rem/1 ui-monospace,monospace;letter-spacing:.12em;
+.v-module .nom{font:700 .78rem/1 'JetBrains Mono',ui-monospace,monospace;letter-spacing:.14em;
   text-transform:uppercase;color:var(--text-muted)}
 .v-module .go{margin-left:auto;background:var(--amb);color:#fff;border:0;
-  border-radius:var(--r-pill);padding:0 1.3rem;min-height:44px;font:800 .9rem var(--font-sans);cursor:pointer}
+  border-radius:var(--r-pill);padding:0 1.3rem;min-height:44px;font:900 .9rem Archivo;cursor:pointer}
 .v-module .ret{background:#fff;border:1px solid var(--border);border-radius:var(--r-pill);
-  padding:0 1rem;min-height:40px;font:700 .85rem var(--font-sans);cursor:pointer;color:var(--text-strong)}
+  padding:0 1rem;min-height:40px;font:700 .85rem Archivo;cursor:pointer;color:var(--text-strong)}
 .v-module .lignes{display:grid;gap:.5rem;align-content:center}
 .v-module .lg{display:flex;align-items:center;gap:1rem;padding:.7rem .2rem;
   border-top:2px solid var(--border)}
-.v-module .lg .n{font:700 .8rem ui-monospace,monospace;color:var(--amb)}
-.v-module .lg .t{font-weight:800;font-size:clamp(16px,2vw,25px);line-height:1.1}
-.v-module .lg .g{margin-left:auto;text-align:right;font-size:clamp(14px,1.3vw,16px);
-  font-weight:600;color:var(--ink-500);max-width:34ch}
+.v-module .lg .n{font:700 .8rem 'JetBrains Mono',ui-monospace,monospace;color:var(--amb)}
+.v-module .lg .t{font:900 clamp(16px,2.1vw,27px)/1.08 Archivo;letter-spacing:-.02em}
+.v-module .lg .g{margin-left:auto;text-align:right;font:600 clamp(14px,1.3vw,16px) Archivo;
+  color:var(--ink-500);max-width:34ch}
 .v-module .lg.fin{background:var(--amb);border-radius:10px;border-top:0;padding:.7rem 1rem}
 .v-module .lg.fin .n,.v-module .lg.fin .t{color:#fff}
 .v-module .lg.fin .g{color:rgba(255,255,255,.92)}
@@ -1038,7 +1045,7 @@ b{font-weight:900}
   la plaque et le temps où vous êtes, c'est la seule façon de comparer autre chose qu'une
   première impression.</p>
   <div class="choix" id="choix">
-    <button class="ch" data-v="module" type="button">A · Le module <i>ce qui existe</i></button>
+    <button class="ch" data-v="module" type="button">A · Le module <i>ce qui existe, en Archivo</i></button>
     <button class="ch" data-v="v2" type="button">B · v2 <i>châssis noir, le graphique en fond</i></button>
     <button class="ch" data-v="v6" type="button">C · v6 <i>tableau de bord clair</i></button>
     <span class="note">← → pour avancer · le vert de marque est devenu ambre</span>
@@ -1113,7 +1120,7 @@ function rModule(p, k){
         + 'background:'+(mort?(i<5?'var(--perdu1)':i<8?'var(--perdu2)':'var(--perdu3)'):'var(--vit)')+';'
         + 'transition:background .45s ease '+(i*45)+'ms;position:relative">'
         + '<span style="position:absolute;bottom:6px;left:0;right:0;text-align:center;'
-        + 'font:700 12px ui-monospace,monospace;color:#fff">'+i+'</span></div>';
+        + 'font:700 12px \'JetBrains Mono\',monospace;color:#fff">'+i+'</span></div>';
     }
     h += '</div>' + (t.pilule ? '<div class="sous" style="font-weight:800;color:var(--amb-encre)">'+t.pilule+'</div>' : '');
     return h + '</div>';
