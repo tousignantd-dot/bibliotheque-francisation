@@ -292,10 +292,25 @@ body{background:#FFFFFF;color:#09090B;font-family:var(--police,Inter,system-ui,s
 /* ── Les compressions ──────────────────────────────────────────────────────
    Montée lente, chute brutale. Rien ne dit quoi faire : donner la cadence et
    mesurer si on la tient ne peuvent pas tenir dans le même écran. */
-.rail{position:absolute;left:0;right:0;bottom:0;height:2.5rem;border:2px solid #09090B;
-      background:#FFFFFF;overflow:hidden}
-.rail i{position:absolute;top:0;bottom:0;width:2px;background:#09090B;left:60%;opacity:.35}
-.jauge{height:100%;background:#09090B;width:0}
+/* ── LA BARRE DE CADENCE ───────────────────────────────────────────────────
+   Signalée comme « affichée sous l'image ». Mesurée : elle ne l'est pas. Le
+   plan va de 179 à 717, la barre de 678 à 718 — elle est au bas du plan, à un
+   pixel près. Ce sont LES CROQUIS qui s'estompent en blanc sur leurs bords :
+   le dessin paraît finir avant sa boîte, et tout ce qui se pose au ras du bas
+   semble flotter dessous.
+
+   Le défaut est donc réel mais il n'est pas géométrique. Il se corrige en
+   faisant lire la barre comme un objet POSÉ SUR la scène : on la rentre de
+   quelques rem des bords, on lui donne un coin arrondi et une ombre portée.
+   La même logique que les plaques blanches des diapositives — un élément qui
+   flotte sur un dessin au crayon a besoin de son propre fond et de son propre
+   bord, sinon le dessin le reprend. */
+.rail{position:absolute;left:1.75rem;right:1.75rem;bottom:1.25rem;height:2.25rem;
+      border:2px solid #09090B;border-radius:1.25rem;background:#FFFFFF;overflow:hidden;
+      box-shadow:0 6px 20px -6px rgba(15,23,32,.45)}
+.rail i{position:absolute;top:0;bottom:0;width:2px;background:#09090B;left:60%;opacity:.35;
+      z-index:1}
+.jauge{height:100%;background:#09090B;width:0;border-radius:1.25rem 0 0 1.25rem}
 .pouls{position:absolute;left:0;top:0;width:16px;height:16px;border-radius:50%;
        background:#09090B;opacity:.2}
 .pouls.bat{animation:bat 220ms ease-out both}
