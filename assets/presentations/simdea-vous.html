@@ -997,6 +997,24 @@ function appelBeat(){
   setTimeout(choix, 2600);
   gestes([{ consigne: 'Vous vous redressez. Ils sont cinq autour.' }]);
 }
+/* SA VOIX — AU PREMIER NIVEAU, et c'est tout l'objet de ce commentaire.
+   Elle avait été posée à l'intérieur de `appelOuvrir`, à côté de `bulle` et
+   `enoncer` qui y vivent légitimement parce qu'elles écrivent dans le fil.
+   Mais `moiDit` est appelée AILLEURS : depuis les choix de désignation, hors
+   de l'appel. Elle y était donc introuvable, et l'erreur ne s'arrêtait pas
+   là — une exception dans un écouteur de clic emporte tout ce qui suit, et
+   « Appeler le 911 » ne faisait plus rien du tout. Une fonction se déclare à
+   la portée de ce qui l'appelle, pas à celle de ce qui l'a inspirée.
+
+   Elle coupe la précédente : on ne se parle pas par-dessus soi-même. Elle ne
+   coupe PAS le répartiteur — ce chevauchement-là est vrai, il arrive pour de
+   bon quand on est pressé. */
+function moiDit(id){
+  if (!A.moi || !A.moi[id]) return;
+  if (window.__moi) { try { window.__moi.pause(); } catch(e) {} }
+  window.__moi = jouer(A.moi[id], 1);
+}
+
 function appelOuvrir(p, retour){
   var tel = document.createElement('div'); tel.className = 'tel';
   /* Le nom du correspondant AU-DESSUS de l'état de la ligne : c'est l'ordre
@@ -1010,15 +1028,6 @@ function appelOuvrir(p, retour){
   var debutAppel = t();
   function bulle(cls, txt, pivot){ var b = document.createElement('p'); b.className = 'bulle bulle--'+cls+(pivot?' bulle--pivot':''); b.textContent = txt; fil.appendChild(b); fil.scrollTop = 1e6; }
   function enoncer(id){ if (voix) voix.pause(); voix = jouer(A.rep[id], 1); }
-  /* SA VOIX. Elle coupe la précédente : on ne se parle pas par-dessus
-     soi-même, et deux répliques qui se chevauchent ne s'entendent plus. Elle
-     ne coupe PAS le répartiteur — c'est un vrai chevauchement de
-     conversation, et il arrive pour de bon quand on est pressé. */
-  function moiDit(id){
-    if (!A.moi || !A.moi[id]) return;
-    if (window.__moi) { try { window.__moi.pause(); } catch(e) {} }
-    window.__moi = jouer(A.moi[id], 1);
-  }
   function aller(id){
     var premiere = !vus[id]; vus[id] = true;
     if (premiere) { bulle('rep', T.noeuds[id], id==='respiration'||id==='respirationApres'); enoncer(id); }
