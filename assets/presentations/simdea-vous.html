@@ -331,52 +331,88 @@ body{background:#FFFFFF;color:#09090B;font-family:var(--police,Inter,system-ui,s
    La coque reprend celle du simulateur : pâle, très arrondie, quatre vis,
    écran sombre quadrillé, gros bouton rond. C'est ce que l'élève vient de voir
    au sol dans les croquis — sinon la bascule casse l'apprentissage. */
-.sim{display:grid;grid-template-columns:22rem minmax(0,1fr);gap:1.5rem;align-items:center;
-     width:min(100%,64rem)}
-.aed{position:relative;padding:1.75rem 1.5rem 1.5rem;border-radius:2rem;
-     background:linear-gradient(168deg,#fff 0%,#f6f8fa 36%,#e9edf1 74%,#dde3e9 100%);
-     box-shadow:0 30px 60px -24px rgba(30,40,55,.34),0 0 0 1px #cfd6dd;
-     display:flex;flex-direction:column;gap:1rem}
-.aed::before{content:"";position:absolute;inset:5px;border-radius:1.75rem;pointer-events:none;
-     background:linear-gradient(200deg,rgba(255,255,255,.85),rgba(255,255,255,0) 34%)}
-.aed__vis{position:absolute;width:9px;height:9px;border-radius:50%;background:#c3cbd3;
-     box-shadow:0 0 0 1px #aab3bc}
-.aed__vis::after{content:"";position:absolute;inset:0;border-top:1.5px solid #8b949d;
-     transform:rotate(35deg)}
-.aed__poignee{position:absolute;left:50%;top:-14px;transform:translateX(-50%);width:9rem;
-     height:16px;border-radius:14px 14px 0 0;background:#dde3e9;box-shadow:0 0 0 1px #cfd6dd}
-.aed__cadre{border-radius:1rem;padding:11px;background:linear-gradient(180deg,#e3e8ed,#f3f6f9);
-     position:relative;z-index:1}
-.aed__ecran{position:relative;height:8rem;border-radius:9px;overflow:hidden;background:#0b1410}
-.aed__quadrillage{position:absolute;inset:0;background-image:
-     linear-gradient(to right,rgba(120,220,170,.14) 1px,transparent 1px),
-     linear-gradient(to bottom,rgba(120,220,170,.14) 1px,transparent 1px);
-     background-size:20px 20px}
-.aed__trace{position:absolute;inset:0}
-.aed__trace path{fill:none;stroke:#4ADE80;stroke-width:2;stroke-linejoin:round}
-.aed__dit{position:relative;z-index:1;font-size:.9375rem;font-weight:600;color:#09090B;
-     min-height:2.6em;line-height:1.35;text-align:center}
-.aed__choc{position:relative;z-index:1;align-self:center;width:5.25rem;height:5.25rem;
-     border-radius:50%;border:none;cursor:pointer;font:inherit;
-     background:radial-gradient(circle at 50% 26%,#f0e5dc,#d8cabf 80%);color:#9b8b7e;
-     box-shadow:0 8px 16px -8px rgba(60,45,35,.5),0 1px 0 rgba(255,255,255,.85) inset;
-     display:grid;place-items:center}
-.aed__choc[data-arme]{background:radial-gradient(circle at 50% 26%,#FB923C,#EA580C 80%);
-     color:#fff;animation:arme 900ms ease-in-out infinite;cursor:pointer}
-.aed__choc[disabled]{cursor:default}
-.aed__choc svg{width:2.25rem;height:2.25rem;fill:currentColor}
-@keyframes arme{0%,100%{box-shadow:0 8px 16px -8px rgba(234,88,12,.7),0 0 0 0 rgba(234,88,12,.5)}
-                50%{box-shadow:0 8px 16px -8px rgba(234,88,12,.7),0 0 0 14px rgba(234,88,12,0)}}
-.aed__hp{display:grid;grid-template-columns:repeat(14,1fr);gap:3px;position:relative;z-index:1;
-     padding:0 1.5rem}
-.aed__hp i{height:14px;border-radius:2px;background:#cfd6dd}
+.sim{display:grid;grid-template-columns:20rem minmax(0,1fr);gap:1.5rem;align-items:center;
+     width:100%}
+@media (max-width:52rem){ .sim{grid-template-columns:minmax(0,1fr)} }
 
-/* La surface de pose. Les cibles sont relevées SUR ce dessin — voir ZONES. */
-/* LA SURFACE DE POSE. Son rapport est celui de `poitrine.png` et non 16/9,
-   et l'image la remplit exactement. Ce n'est pas cosmétique : les cibles
-   (ZONES) sont en POURCENTAGE DU CONTENEUR, et `.pads` est calé sur lui. Une
-   image centrée avec des bandes décalerait les pourcentages par rapport à
-   l'anatomie — on mesurerait un écart à une cible qui n'est pas sous elle. */
+/* ── L'APPAREIL, D'APRÈS LE DESSIN ─────────────────────────────────────────
+   Comparé au croquis sur un banc isolé (banc-appareil.html), le composant
+   s'en écartait sur cinq points, et chacun se voyait :
+
+     • le FORMAT — il était large et plat ; le dessin est presque carré, un peu
+       plus haut que large. C'est ce qui lui donne l'air d'une valise et non
+       d'une tablette ;
+     • l'ÉCRAN prenait toute la largeur ; dans le dessin il est en 3/2, encastré
+       dans un cadre qui laisse de la coque autour ;
+     • la POIGNÉE était une barre grise à peine visible ; c'est une arche
+       creuse, large, posée sur le dessus ;
+     • le BOUTON était orange en permanence. Au repos il est gris, encastré
+       dans un anneau. L'orange est un ÉTAT — « appuyez » — et un bouton
+       toujours orange ne dit plus rien quand il faut appuyer ;
+     • le HAUT-PARLEUR était une rangée de quatorze traits sous le bouton ;
+       dans le dessin ce sont CINQ fentes verticales, À CÔTÉ du bouton.
+
+   Pourquoi cela compte plus qu'une ressemblance : l'élève voit l'appareil
+   dessiné pendant sept minutes de séquence, puis doit s'en servir. Si celui
+   qu'on lui met dans les mains n'est pas le même objet, le simulateur cesse
+   d'être la suite de l'histoire et redevient un exercice. */
+.aed{position:relative;width:min(100%,20rem);aspect-ratio:1/1.08;margin:0 auto;
+     padding:1.5rem 1.1rem 1.1rem;border-radius:1.6rem;
+     display:flex;flex-direction:column;gap:.75rem;
+     background:linear-gradient(158deg,#f7f9fb,#e2e7ec 58%,#ccd3da);
+     box-shadow:0 22px 40px -26px rgba(15,23,32,.55),inset 0 2px 0 rgba(255,255,255,.9),
+                inset 0 -3px 6px rgba(15,23,32,.12)}
+.aed::before{content:"";position:absolute;inset:6px;border-radius:1.3rem;pointer-events:none;
+     border:1px solid rgba(255,255,255,.75)}
+/* Les quatre vis. Elles ne décorent pas : ce sont elles qui disent « boîtier »
+   plutôt que « écran ». */
+.aed__vis{position:absolute;width:11px;height:11px;border-radius:50%;
+     background:radial-gradient(circle at 36% 30%,#eef2f5,#aab3bc);
+     box-shadow:inset 0 0 0 1px rgba(90,100,110,.5)}
+.aed__vis::after{content:"";position:absolute;inset:3px;border-top:1.5px solid #79838d;
+     transform:rotate(38deg)}
+/* La poignée : une arche CREUSE. C'est le trou qui la fait lire comme une
+   poignée — une barre pleine se lit comme une charnière. */
+.aed__poignee{position:absolute;left:50%;top:-20px;transform:translateX(-50%);
+     width:10rem;height:2.4rem;border-radius:1.2rem 1.2rem 0 0;
+     background:linear-gradient(180deg,#eef2f5,#cfd6dd);
+     box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.aed__poignee::after{content:"";position:absolute;left:50%;top:.85rem;transform:translateX(-50%);
+     width:7rem;height:2.2rem;border-radius:.8rem .8rem 0 0;background:#FFFFFF}
+.aed__cadre{border-radius:.8rem;padding:9px;
+     background:linear-gradient(180deg,#d9e0e6,#eef2f5);
+     box-shadow:inset 0 2px 5px rgba(15,23,32,.28)}
+.aed__ecran{position:relative;aspect-ratio:1.62;border-radius:.45rem;overflow:hidden;
+     background:#0b1410;box-shadow:inset 0 0 14px rgba(0,0,0,.8)}
+.aed__quadrillage{position:absolute;inset:0;background-image:
+     linear-gradient(rgba(120,180,140,.16) 1px,transparent 1px),
+     linear-gradient(90deg,rgba(120,180,140,.16) 1px,transparent 1px);
+     background-size:11px 11px}
+.aed__trace{position:absolute;inset:0}
+.aed__trace path{fill:none;stroke:#d8e6da;stroke-width:2;stroke-linejoin:round}
+.aed__dit{margin:0;font-size:.8125rem;font-weight:600;color:#09090B;line-height:1.35;
+     min-height:2.2rem;text-align:center}
+/* Le bouton et les fentes, SUR UNE MÊME LIGNE, comme sur le dessin. */
+.aed__bas{display:flex;align-items:center;justify-content:center;gap:1.1rem;margin-top:auto}
+.aed__choc{position:relative;width:5rem;height:5rem;border-radius:50%;flex-shrink:0;
+     border:0;cursor:pointer;display:grid;place-items:center;color:#4a545e;
+     background:radial-gradient(circle at 50% 30%,#f2f5f8,#c8d0d8 78%);
+     box-shadow:0 0 0 5px #e6ebef,0 0 0 6px rgba(120,132,144,.45),
+                inset 0 2px 3px rgba(255,255,255,.9),inset 0 -3px 5px rgba(15,23,32,.18);
+     transition:background .18s,color .18s,box-shadow .18s}
+.aed__choc[data-arme]{background:radial-gradient(circle at 50% 28%,#FB923C,#EA580C 80%);
+     color:#FFFFFF;animation:arme 1s ease-in-out infinite}
+.aed__choc[disabled]{cursor:default}
+.aed__choc svg{width:2.3rem;height:2.3rem;fill:currentColor}
+@keyframes arme{0%,100%{box-shadow:0 0 0 5px #fde3cd,0 0 0 6px rgba(234,88,12,.5),
+                        0 8px 16px -8px rgba(234,88,12,.7)}
+                50%{box-shadow:0 0 0 9px rgba(253,227,205,.55),0 0 0 10px rgba(234,88,12,.25),
+                        0 8px 16px -8px rgba(234,88,12,.7)}}
+/* Cinq fentes verticales, pas quatorze traits horizontaux. */
+.aed__hp{display:flex;gap:7px;align-items:center;flex-shrink:0}
+.aed__hp i{width:6px;height:3.1rem;border-radius:3px;background:#b9c2ca;
+     box-shadow:inset 0 0 0 1px rgba(255,255,255,.55)}
+
 .torse{position:relative;width:100%;aspect-ratio:1672/941;background:#fff}
 .torse img{width:100%;height:100%;object-fit:fill;display:block}
 .pads{position:absolute;inset:0;touch-action:none}
@@ -1035,16 +1071,19 @@ function chemise(){
 function aedHTML(){
   var vis = ['top:14px;left:14px','top:14px;right:14px','bottom:14px;left:14px','bottom:14px;right:14px']
     .map(function(s){ return '<span class="aed__vis" style="'+s+'"></span>'; }).join('');
-  var hp = new Array(14).join('<i></i>') + '<i></i>';
+  /* Cinq fentes : c'est ce que montre le dessin. Quatorze traits faisaient
+     une grille de haut-parleur d'enceinte, pas la fente d'un boîtier. */
+  var hp = new Array(5).join('<i></i>') + '<i></i>';
   return '<div class="aed">' + vis + '<span class="aed__poignee"></span>'
     + '<div class="aed__cadre"><div class="aed__ecran"><div class="aed__quadrillage"></div>'
     + '<svg class="aed__trace" viewBox="0 0 300 120" preserveAspectRatio="none">'
     + '<path id="trace" d=""></path></svg></div></div>'
     + '<p class="aed__dit" id="aedDit"></p>'
+    + '<div class="aed__bas">'
     + '<button class="aed__choc" id="choc" disabled aria-label="Bouton de choc">'
     + '<svg viewBox="0 0 24 24"><path d="M12 21s-7-4.5-9-9a5 5 0 0 1 9-3 5 5 0 0 1 9 3c-2 4.5-9 9-9 9z"/>'
-    + '<path d="M13 6l-4 6h3l-1 5 4-6h-3z" fill="#fff"/></svg></button>'
-    + '<div class="aed__hp">' + hp + '</div></div>';
+    + '<path d="M13 6.2l-4.4 6.6h3.3l-1.1 5.4 4.4-6.6h-3.3z" fill="#fff"/></svg></button>'
+    + '<div class="aed__hp">' + hp + '</div></div></div>';
 }
 
 /* Le tracé. Trois rythmes, dessinés et non enregistrés : la fibrillation qui
