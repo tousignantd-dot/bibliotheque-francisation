@@ -334,25 +334,45 @@ body{background:#FFFFFF;color:#09090B;font-family:var(--police,Inter,system-ui,s
 /* ── Les compressions ──────────────────────────────────────────────────────
    Montée lente, chute brutale. Rien ne dit quoi faire : donner la cadence et
    mesurer si on la tient ne peuvent pas tenir dans le même écran. */
-/* ── LA BARRE DE CADENCE ───────────────────────────────────────────────────
-   Signalée comme « affichée sous l'image ». Mesurée : elle ne l'est pas. Le
-   plan va de 179 à 717, la barre de 678 à 718 — elle est au bas du plan, à un
-   pixel près. Ce sont LES CROQUIS qui s'estompent en blanc sur leurs bords :
-   le dessin paraît finir avant sa boîte, et tout ce qui se pose au ras du bas
-   semble flotter dessous.
+/* ── LA CADENCE : UN CHIFFRE, PAS UNE BARRE ────────────────────────────────
+   Il n'y avait qu'une barre qui se remplissait. Elle mesurait un « débit » —
+   une réserve qui monte à chaque frappe et retombe quand on s'arrête — ce qui
+   dit « continuez » mais ne dit JAMAIS à quelle vitesse on va. Or c'est la
+   seule chose que l'exercice enseigne : cent à cent vingt par minute.
 
-   Le défaut est donc réel mais il n'est pas géométrique. Il se corrige en
-   faisant lire la barre comme un objet POSÉ SUR la scène : on la rentre de
-   quelques rem des bords, on lui donne un coin arrondi et une ombre portée.
-   La même logique que les plaques blanches des diapositives — un élément qui
-   flotte sur un dessin au crayon a besoin de son propre fond et de son propre
-   bord, sinon le dessin le reprend. */
-.rail{position:absolute;left:1.75rem;right:1.75rem;bottom:1.25rem;height:2.25rem;
-      border:2px solid #09090B;border-radius:1.25rem;background:#FFFFFF;overflow:hidden;
+   Elle affiche donc le nombre, mesuré sur la MÉDIANE des neuf derniers
+   intervalles. La médiane et non la moyenne : une frappe manquée double un
+   intervalle, et une moyenne s'en trouve emportée pendant dix coups alors que
+   la médiane l'ignore. C'est le même calcul que le cadran du module.
+
+   Et une piste, parce qu'un nombre seul ne dit pas s'il est bon : la plage
+   100-120 y est dessinée à sa vraie place sur une échelle de 60 à 160, et
+   l'aiguille s'y pose. On voit qu'on est dedans avant d'avoir lu le chiffre.
+
+   Elle reste posée SUR la scène — rentrée des bords, coin arrondi, ombre —
+   parce que les croquis s'estompent en blanc et qu'un élément au ras du bord
+   paraît flotter sous le dessin. */
+.rail{position:absolute;left:1.75rem;right:1.75rem;bottom:1.25rem;
+      display:flex;align-items:center;gap:1rem;
+      padding:.6rem 1.1rem;border:2px solid #09090B;border-radius:1rem;background:#FFFFFF;
       box-shadow:0 6px 20px -6px rgba(15,23,32,.45)}
-.rail i{position:absolute;top:0;bottom:0;width:2px;background:#09090B;left:60%;opacity:.35;
-      z-index:1}
-.jauge{height:100%;background:#09090B;width:0;border-radius:1.25rem 0 0 1.25rem}
+.rail b{font-family:var(--police-mono,ui-monospace,monospace);font-size:2.1rem;
+      font-weight:700;font-variant-numeric:tabular-nums;line-height:1;letter-spacing:-.04em;
+      min-width:3.4ch;text-align:right}
+.rail small{font-size:.75rem;line-height:1.25;color:#52525B;font-weight:600;
+      white-space:nowrap}
+.piste{position:relative;flex:1;height:14px;border-radius:7px;background:#E4E4E7;
+      overflow:hidden}
+/* La plage recommandée, à sa VRAIE place : de 100 à 120 sur une échelle de
+   60 à 160, soit de 40 % à 60 %. Répartie « au milieu » elle mentirait. */
+.piste__plage{position:absolute;top:0;bottom:0;left:40%;width:20%;background:#09090B;
+      opacity:.16}
+.piste__aig{position:absolute;top:-4px;bottom:-4px;width:4px;border-radius:2px;
+      background:#09090B;left:0;opacity:0;transition:left 140ms linear,opacity .2s}
+.piste__aig.vue{opacity:1}
+.rail[data-dans] b{color:#09090B}
+.rail[data-dehors] b{color:#B91C1C}
+
 .pouls{position:absolute;left:0;top:0;width:16px;height:16px;border-radius:50%;
        background:#09090B;opacity:.2}
 .pouls.bat{animation:bat 220ms ease-out both}
@@ -988,7 +1008,14 @@ function appelBeat(){
     couperSuite();
     gestes([
       { consigne: 'Quelqu\'un doit appeler. Quelqu\'un doit aller chercher l\'appareil. Et lui, pendant ce temps.' },
-      { texte: 'Appeler le 911', fait: J.ordres.appel, inactif: J.ordres.appel, sur: function(){ note('appeler'); moiDit('ordreAppel'); appelOuvrir(p, choix); } },
+      /* LE TÉLÉPHONE ARRIVE APRÈS LA PHRASE, pas pendant. Signalé par
+        l'utilisateur : on entendait « j'appelle le 911 » par-dessus un fil de
+        messages déjà ouvert. L'ordre des choses était inversé — on décide, on
+        annonce, PUIS on compose. Une seconde d'écart suffit à rétablir la
+        causalité ; `jouer` rappelle sur la fin du clip, et rappelle quand même
+        après 1,2 s si le son est coupé, sinon le bouton serait mort en mode
+        muet. */
+      { texte: 'Appeler le 911', fait: J.ordres.appel, inactif: J.ordres.appel, sur: function(b){ note('appeler'); b.disabled = true; moiDit('ordreAppel', function(){ appelOuvrir(p, choix); }); } },
       { texte: '« Vous, allez chercher le défibrillateur »', fait: J.ordres.envoi, inactif: J.ordres.envoi, sur: function(){ J.ordres.envoi = true; note('envoyer'); moiDit('ordreDEA'); choix(); } },
       { texte: 'Aller le chercher moi-même', sur: function(b){ note('chercherSoiMeme', {faute:true}); b.disabled = true; } },
       { texte: 'Commencer les compressions', sur: function(){ mains(); } },
@@ -1009,10 +1036,10 @@ function appelBeat(){
    Elle coupe la précédente : on ne se parle pas par-dessus soi-même. Elle ne
    coupe PAS le répartiteur — ce chevauchement-là est vrai, il arrive pour de
    bon quand on est pressé. */
-function moiDit(id){
-  if (!A.moi || !A.moi[id]) return;
+function moiDit(id, fin){
+  if (!A.moi || !A.moi[id]) { if (fin) setTimeout(fin, 300); return; }
   if (window.__moi) { try { window.__moi.pause(); } catch(e) {} }
-  window.__moi = jouer(A.moi[id], 1);
+  window.__moi = jouer(A.moi[id], 1, fin);
 }
 
 function appelOuvrir(p, retour){
@@ -1102,7 +1129,10 @@ function mains(suivant, duree){
      de la boucler qui était faux. */
   var intro = A.suites.mainsIntro, i = 0;
   var p = plan('<img src="'+intro[0]+'" alt=""><span class="pouls" id="pouls"></span>'
-             + '<div class="rail"><i></i><div class="jauge" id="jauge"></div></div>'
+             + '<div class="rail" id="rail"><b id="bpm">—</b>'
+             + '<small>par minute<br>cible 100–120</small>'
+             + '<div class="piste"><i class="piste__plage"></i>'
+             + '<i class="piste__aig" id="aiguille"></i></div></div>'
              + '<div class="champ" id="champ"></div>', 'plan--rcp');
   var im = p.querySelector('img');
   (function avance(){
@@ -1119,7 +1149,7 @@ function mains(suivant, duree){
   var RCP_HAUT = A.suites.rcp[0], RCP_BAS = A.suites.rcp[1] || A.suites.rcp[0];
   (new Image()).src = RCP_BAS;
   var relache = null;
-  var debit = 0, dernierCoup = -1e9, dernier = now(), fini = false;
+  var debit = 0, dernierCoup = -1e9, dernier = now(), fini = false, frappes = [];
   var arrivee = duree || (J.ordres.envoi ? 90000 : 150000);
   var t0 = t();
   function coup(){
@@ -1127,6 +1157,29 @@ function mains(suivant, duree){
     if (n - dernierCoup < R.MINI) return; dernierCoup = n;
     J.coups.push(Math.round(t()));
     debit = Math.min(100, debit + R.MONTEE);
+    /* LA CADENCE MESURÉE. On garde les neuf dernières frappes et on prend la
+       MÉDIANE de leurs intervalles : une frappe manquée double un intervalle,
+       et une moyenne s'en trouve emportée pendant dix coups alors que la
+       médiane l'ignore. Quatre frappes suffisent pour un premier chiffre —
+       en dessous, on afficherait du bruit. */
+    frappes.push(n); if (frappes.length > 9) frappes.shift();
+    if (frappes.length >= 4) {
+      var ecarts = [];
+      for (var k = 1; k < frappes.length; k++) ecarts.push(frappes[k] - frappes[k-1]);
+      ecarts.sort(function(a,b){ return a-b; });
+      var mi = ecarts.length >> 1;
+      var med = ecarts.length % 2 ? ecarts[mi] : (ecarts[mi-1] + ecarts[mi]) / 2;
+      var bpm = Math.round(60000 / med);
+      var eb = el('bpm'), ea = el('aiguille'), er = el('rail');
+      if (eb) eb.textContent = bpm;
+      if (ea) { ea.classList.add('vue');
+        ea.style.left = Math.max(0, Math.min(100, (bpm - 60) / 100 * 100)) + '%'; }
+      if (er) {
+        var dans = bpm >= 100 && bpm <= 120;
+        er.setAttribute(dans ? 'data-dans' : 'data-dehors', '');
+        er.removeAttribute(dans ? 'data-dehors' : 'data-dans');
+      }
+    }
     /* La poitrine s'enfonce, et remonte 190 ms plus tard. La remontée est
        ce qui remplit le cœur : elle doit être VUE, pas seulement dite. Le
        minuteur est remis à chaque coup pour qu'une cadence rapide ne laisse
@@ -1142,7 +1195,17 @@ function mains(suivant, duree){
     if (fini) return;
     var n = now(), dt = (n-dernier)/1000; dernier = n;
     if (n - dernierCoup > R.GRACE) debit = Math.max(0, debit - R.CHUTE*dt);
-    var j = el('jauge'); if (j) j.style.width = debit.toFixed(1)+'%';
+    /* ARRÊTÉ PLUS DE TROIS SECONDES : le chiffre s'efface. Laisser « 112 »
+       affiché pendant qu'on ne comprime plus dirait exactement le contraire
+       de ce qui se passe — et c'est le moment où l'écran doit alerter, pas
+       rassurer. */
+    if (n - dernierCoup > 3000) {
+      frappes.length = 0;
+      var eb2 = el('bpm'), ea2 = el('aiguille'), er2 = el('rail');
+      if (eb2) eb2.textContent = '—';
+      if (ea2) ea2.classList.remove('vue');
+      if (er2) { er2.removeAttribute('data-dans'); er2.removeAttribute('data-dehors'); }
+    }
     if (t() - t0 >= arrivee) { fini = true; couperSuite(); clearTimeout(relache);
       window.removeEventListener('keydown', surTouche);
       (suivant || arriveeBeat)(); return; }
