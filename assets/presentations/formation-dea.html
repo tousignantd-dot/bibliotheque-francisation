@@ -3586,6 +3586,19 @@ var RETOURS = {"souffle-agonal": "medias/formation-dea/ret-souffle-agonal.mp3", 
      propre horloge : la laisser tourner derrière soi, c'est le même bruit
      inexplicable que le souffle, en plus long. Elle n'a pas de reprise — on la
      relance d'un bouton, et c'est une séquence qui se fait d'un trait. */
+  /* LA SCÈNE EST DÉPLACÉE À LA RACINE DE LA PAGE, une fois pour toutes.
+     Elle était écrite dans le panneau de la partie 8, et un élément en
+     `position:fixed` n'est fixe QUE si aucun de ses parents ne porte de
+     transformation. Le panneau en porte une — l'animation d'entrée du module
+     anime `transform`. Selon le moment où l'on ouvre, la scène se trouvait
+     donc calée sur le panneau au lieu de la fenêtre : un cadre posé ENTRE la
+     barre du haut et le pied, au lieu de les recouvrir.
+     On ne peut pas régler ça par le CSS — c'est la position dans l'arbre qui
+     décide. On la sort du panneau ; le reste du code ne voit pas la
+     différence, à condition de retenir le panneau AVANT de déplacer. */
+  var panSim = el('cadre-sim').closest('.panneau');
+  document.body.appendChild(el('cadre-sim'));
+
   function fermerSim() {
     if (el('cadre-sim').hidden) return;
     el('sim').src = 'about:blank';
@@ -3602,7 +3615,7 @@ var RETOURS = {"souffle-agonal": "medias/formation-dea/ret-souffle-agonal.mp3", 
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') fermerSim();
   });
-  el('cadre-sim').closest('.panneau').addEventListener('panneau:quitte', function () {
+  panSim.addEventListener('panneau:quitte', function () {
     if (el('cadre-sim').hidden) return;
     el('sim').src = 'about:blank';
     el('cadre-sim').hidden = true;
