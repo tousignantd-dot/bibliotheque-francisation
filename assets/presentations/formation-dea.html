@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Formation au défibrillateur et à la RCP en milieu de travail : 25 minutes, une seule situation, un simulateur.">
+<meta name="description" content="Formation au défibrillateur en milieu de travail">
 <title>Quelqu'un s'effondre au travail</title>
 <style>html{color-scheme:light dark}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 </head>
@@ -1108,11 +1108,21 @@ section{border-top:1px solid var(--border);padding:var(--sp-8) 0;scroll-margin-t
 /* Les phrases déjà dites reculent par la COULEUR et la taille, pas par
    l'opacité : une plaque translucide laisserait le dessin repasser dessous,
    et on reviendrait au défaut qu'on vient de corriger. */
-.diapo__mots p.passe{font-size:clamp(14px,1.55vw,18px);color:var(--text-muted);
+/* CES TROIS RÈGLES SONT CELLES DE LA PLAQUE DE MOTS SUR UN DESSIN — plaque
+   blanche, pastille ambrée, phrase passée qui rapetisse. Elles sont donc
+   EXCLUES de l'ouverture (`:not(.diapo--ouv)`) plutôt que contredites une par
+   une là-bas. Les contrer demandait de redéclarer background, box-shadow,
+   border-radius, taille et couleur à chaque plaque — cinq occasions de
+   manquer la sixième, et c'est exactement ce qui est arrivé : la première
+   rangée de la promesse gardait sa plaque blanche et son gris sur un fond
+   ambré. Une règle qui ne devrait pas s'appliquer se désarme à la source. */
+.diapo:not(.diapo--ouv) .diapo__mots p.passe{font-size:clamp(14px,1.55vw,18px);
+       color:var(--text-muted);
        background:rgba(255,255,255,.94);box-shadow:0 1px 6px rgba(20,20,20,.1)}
-.diapo__mots p.vu::before{content:"";display:inline-block;width:11px;height:11px;
+.diapo:not(.diapo--ouv) .diapo__mots p.vu::before{content:"";display:inline-block;
+       width:11px;height:11px;
        border-radius:50%;background:var(--accent);margin-right:.5em;vertical-align:.06em}
-.diapo__mots p.passe::before{width:7px;height:7px;background:var(--line-300)}
+.diapo:not(.diapo--ouv) .diapo__mots p.passe::before{width:7px;height:7px;background:var(--line-300)}
 
 /* ── LA DIAPOSITIVE SANS IMAGE ─────────────────────────────────────────────
    Même moteur, rien à regarder. Les mots ne sont plus posés SUR quelque
@@ -1137,66 +1147,190 @@ section{border-top:1px solid var(--border);padding:var(--sp-8) 0;scroll-margin-t
 .diapo--blanc .diapo__cmd .bt{background:var(--surface-card)}
 .diapo--blanc .diapo__dit{background:var(--surface-sunken);border:1px solid var(--border)}
 
-/* ── LES DIX MARQUES ───────────────────────────────────────────────────────
-   « Environ 10 % par minute » est un chiffre, et un chiffre ne serre pas la
-   gorge. Dix marques qui s'éteignent l'une après l'autre, au rythme du
-   chronomètre du module, c'est la même information devenue une HORLOGE.
+/* ── L'OUVERTURE : QUATRE PLAQUES À CARTES ─────────────────────────────────
+   Décidé le 15 septembre 2026 sur trois ouvertures montées côte à côte avec
+   le même contenu (ouvertures.html). Le châssis vient de la remise « v6 » :
+   des cartes blanches à grands rayons sur un fond clair. Les plaques 3 et 4
+   viennent de la remise « v2 », qui est à fond perdu — elles deviennent ici
+   UNE carte occupant toute la scène : composition de v2, découpe de v6.
 
-   (Ce bloc avait disparu : il vivait dans une région de la feuille que j'ai
-   remplacée d'un coup en posant les plaques blanches. Les marques ont
-   continué d'exister, sans style — un défaut qui ne casse rien et ne se voit
-   qu'en regardant la bonne diapositive. Remis, et posé ailleurs.) */
-/* LA MISE EN PAGE DU COMPTEUR : le nombre D'ABORD, la phrase ensuite.
-   Demandé le 15 septembre 2026 — « qu'ils saisissent l'urgence », même sans
-   lire. Un écran se juge en une demi-seconde : ce qu'on doit y voir dans ce
-   temps-là, c'est un grand nombre qui DESCEND et des marques qui s'éteignent.
-   Les phrases viennent après, pour ceux qui restent. */
-.diapo--compteur{flex-direction:column;justify-content:center;gap:var(--sp-8)}
-.compteur{width:100%;max-width:46rem;margin:0 auto;padding:0 var(--sp-6)}
-.compteur__t{font-size:var(--fs-label);font-weight:var(--fw-black);
-      letter-spacing:var(--ls-label);text-transform:uppercase;color:var(--text-muted)}
-.compteur__pc{display:flex;align-items:baseline;gap:var(--sp-4);margin-top:var(--sp-1)}
-.compteur__pc b{font-variant-numeric:tabular-nums;font-size:clamp(64px,11vw,132px);
-      font-weight:var(--fw-black);letter-spacing:-.05em;line-height:.92;
-      color:var(--accent-ink)}
-.compteur__pc span{font-size:var(--fs-body-sm);font-weight:var(--fw-bold);
-      color:var(--text-muted);max-width:14rem;line-height:1.35}
-.minutes{display:flex;gap:6px;margin:var(--sp-5) 0 0}
-.minutes span{flex:1;height:18px;border-radius:var(--r-pill);background:var(--accent);
-      transition:background 500ms var(--ease)}
-.minutes span.eteint{background:var(--paper-200)}
-.diapo--compteur .diapo__mots{max-width:46rem;padding:0 var(--sp-6);gap:var(--sp-3)}
-.diapo--compteur .diapo__mots p{font-size:clamp(18px,2.1vw,26px)}
-.diapo--compteur .diapo__mots p.passe{font-size:clamp(14px,1.5vw,17px)}
+   POURQUOI CES CARTES N'ONT PAS D'OMBRE. La séparation vient du fond gris et
+   du rayon, comme dans la remise. Une ombre en plus ferait flotter des
+   objets qui sont posés à plat, et le module n'en porte nulle part ailleurs.
 
-/* ── LE PANNEAU DEA ────────────────────────────────────────────────────────
-   Dessiné, pas photographié : net à toute taille, quelques centaines
-   d'octets. C'est le panneau RÉEL de l'immeuble — vert pâle, filet rouge,
-   cœur rouge à l'éclair blanc — et non le pictogramme ISO blanc sur vert. On
-   apprend à reconnaître celui qu'on croisera, pas celui des normes.
+   CES RÈGLES NE VALENT QUE POUR L'OUVERTURE — `.diapo--ouv`. Les seize
+   autres plaques gardent leur dessin plein cadre et leurs plaques de mots :
+   ce sont des gestes montrés de près, pas des écrans de situation.        */
+.diapo--ouv{background:var(--surface-sunken);padding:var(--sp-3);gap:var(--sp-3);
+      display:grid;align-items:stretch}
+.diapo--ouv .carte{background:var(--surface-card);border-radius:var(--r-lg);
+      padding:clamp(14px,2.2vw,30px);display:flex;flex-direction:column;
+      justify-content:center;gap:var(--sp-3);min-height:0;min-width:0}
+.diapo--ouv .ouv__col{display:grid;grid-template-rows:minmax(0,1fr) auto;
+      gap:var(--sp-3);min-height:0;min-width:0}
+.diapo--ouv .diapo__mots{position:static;padding:0;background:none;gap:var(--sp-3)}
+.diapo--ouv .diapo__mots p{background:none;box-shadow:none;padding:0;border-radius:0}
+.diapo--ouv .diapo__cmd .bt{background:var(--surface-card)}
+.diapo--ouv .diapo__dit{background:var(--surface-card);border:1px solid var(--border)}
+.carte__st{margin:0;font-size:var(--fs-label);font-weight:var(--fw-black);
+      letter-spacing:var(--ls-label);text-transform:uppercase;color:var(--accent-ink)}
+.carte__leg{margin:0;font-size:var(--fs-body-sm);font-weight:var(--fw-semi);
+      color:var(--text-muted);line-height:1.4}
 
-   C'EST LE SEUL ROUGE DU MODULE, et l'exception est assumée : le système le
-   réserve à l'audio et à l'erreur. Ici le rouge n'est pas un état
-   d'interface, c'est la couleur d'un objet du monde — et c'est justement à
-   elle qu'on repère le panneau dans un hall. */
-.panneau--titre .diapo{background:#fff;display:grid;place-items:center;
-      grid-template-rows:auto auto;gap:var(--sp-8);padding:var(--sp-6)}
-.signe{width:min(32vh,260px);aspect-ratio:1}
+/* 01 · LE PANNEAU. À gauche l'objet et trois chiffres, à droite la parole.
+   La carte d'accent est ambrée parce que c'est la couleur de la MACHINE ;
+   le panneau, lui, reste vert et rouge — c'est un objet du monde, et on
+   apprend à reconnaître celui qu'on croisera. */
+.diapo--ouv1{grid-template-columns:minmax(0,1fr) minmax(0,1.5fr)}
+.carte--signe{align-items:center;text-align:center}
+.signe{width:min(22vh,180px);aspect-ratio:1}
 .signe rect.fond{fill:#DCEBD8}
 .signe rect.filet{fill:none;stroke:#C62128;stroke-width:9}
 .signe path.coeur{fill:#C62128}
 .signe path.eclair{fill:#fff}
 .signe text{fill:#14211C;font-family:var(--font-sans);font-weight:900;
       text-anchor:middle;letter-spacing:.02em}
-.panneau--titre .diapo__mots{position:static;background:none;padding:0;
-      gap:var(--sp-4);max-width:42rem;text-align:center;align-items:center}
-.panneau--titre .diapo__mots p{background:none;box-shadow:none;padding:0;
-      color:var(--accent-ink);font-size:clamp(22px,3vw,38px);line-height:1.14}
-.panneau--titre .diapo__mots p.passe{opacity:1;color:var(--text-muted);background:none;
-      box-shadow:none;font-weight:var(--fw-bold);font-size:clamp(15px,1.7vw,20px)}
-.panneau--titre .diapo__mots p.passe::before{background:var(--line-300)}
-.panneau--titre .diapo__cmd .bt{background:var(--surface-card)}
-.panneau--titre .diapo__dit{background:var(--surface-sunken);border:1px solid var(--border)}
+.tuiles{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-3)}
+.tuile{background:var(--surface-card);border-radius:var(--r-md);padding:var(--sp-3);
+      text-align:center}
+.tuile b{display:block;font-size:clamp(18px,2.2vw,28px);font-weight:var(--fw-black);
+      letter-spacing:-.03em;color:var(--text-strong)}
+.tuile span{font-size:var(--fs-meta);font-weight:var(--fw-semi);color:var(--text-muted)}
+/* LA CARTE D'ACCENT DOIT ÊTRE PLUS SPÉCIFIQUE QUE LA CARTE TOUT COURT.
+   Écrite `.carte--accent`, elle perdait contre `.diapo--ouv .carte` — un
+   sélecteur de plus. La carte restait blanche, et comme son texte est blanc,
+   la première plaque du module s'ouvrait sur un rectangle vide. Le troisième
+   accident de cascade de cette refonte, et toujours le même signalement :
+   aucun. */
+.diapo--ouv1 .carte--accent{background:var(--accent-ink)}
+.diapo--ouv1 .diapo__mots p{color:#fff;font-size:clamp(20px,2.8vw,40px);line-height:1.06}
+.diapo--ouv1 .diapo__mots p.passe{font-size:clamp(15px,1.7vw,21px);line-height:1.35;
+      color:rgba(255,255,255,.88);font-weight:var(--fw-bold)}
+.diapo--ouv1 .diapo__mots p b{font-weight:var(--fw-black);color:#fff}
+.diapo--ouv1 .diapo__mots p .m{font-size:inherit;font-weight:inherit;color:inherit}
+.diapo--ouv2 .diapo__mots p .m,.diapo--ouv3 .diapo__mots p .m{
+      font-size:inherit;font-weight:inherit;color:inherit}
+
+/* 02 · MIDI. Le récit à gauche, le dessin et le déroulé à droite. C'est ici
+   que les deux remises se trompaient : elles remplaçaient la scène par un
+   indicateur. On garde le dessin, et c'est le déroulé qui porte la trace des
+   temps passés — donc les phrases déjà dites disparaissent au lieu de
+   s'empiler, elles sont déjà dans la liste à côté. */
+.diapo--ouv2{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr)}
+.diapo--ouv2 .ouv__col{grid-template-rows:auto auto;align-content:center}
+.diapo--ouv2 .diapo__mots p{font-size:clamp(22px,3.2vw,46px);line-height:1.04;
+      color:var(--text-strong)}
+.diapo--ouv2 .diapo__mots p b{color:var(--erreur,#D3160B);font-weight:var(--fw-black)}
+.diapo--ouv2 .diapo__mots p.passe{display:none}
+/* LES PHRASES QUI SE REMPLACENT OCCUPENT LA MÊME CASE. Empilées, les quatre
+   phrases prenaient leur place même invisibles (`opacity:0` n'enlève rien à
+   la mise en page) : la colonne faisait 1457 px de haut dans une carte de
+   690, et le grand pourcentage était poussé hors de l'écran. Un défaut qui ne
+   lève aucune erreur et qu'aucun coup d'œil ne montre — c'est la mesure qui
+   l'a donné. Les plaques 01 et 04, où les phrases s'ACCUMULENT, gardent leur
+   colonne. */
+.diapo--ouv2 .diapo__mots,.diapo--ouv3 .diapo__mots{display:grid}
+.diapo--ouv2 .diapo__mots>p,.diapo--ouv3 .diapo__mots>p{grid-area:1/1}
+.pastille-h{margin:0;align-self:flex-start;padding:.4em .9em;border-radius:var(--r-pill);
+      background:var(--accent-soft);color:var(--accent-ink);
+      font-size:var(--fs-meta);font-weight:var(--fw-black)}
+.pastille-h:empty{display:none}
+.carte__sous{margin:0;font-size:var(--fs-body-sm);font-weight:var(--fw-semi);
+      color:var(--text-muted);line-height:1.45;max-width:56ch}
+.carte__sous:empty{display:none}
+/* LE DESSIN GARDE SON FORMAT. Il est dessiné en 4:3 — pour cette case, et
+   pas l'inverse. Laissé s'étirer à la hauteur disponible, `object-fit:cover`
+   lui rognait les côtés, c'est-à-dire la salle : il ne restait que deux
+   personnes dans le vide, et la cafétéria est ce qui rend la scène banale. */
+.carte--dessin{padding:0;overflow:hidden;position:relative;aspect-ratio:4/3}
+.carte--dessin img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.carte--deroule{gap:var(--sp-2);padding:var(--sp-4)}
+.carte--deroule p{margin:0;display:flex;align-items:center;gap:.6em;
+      font-size:var(--fs-body-sm);font-weight:var(--fw-bold);color:var(--text-muted)}
+.carte--deroule p::before{content:"";width:10px;height:10px;border-radius:50%;
+      background:var(--line-300);flex:0 0 auto;transition:background 300ms var(--ease)}
+.carte--deroule p.faite{color:var(--text-strong)}
+.carte--deroule p.faite::before{background:var(--accent)}
+.carte--deroule p.faite:last-child::before{background:#D3160B}
+
+/* 03 · LE COMPTE. Le graphique EST le fond — c'est ce que la remise v2
+   apportait, et c'est ce qui se comprend sans lire. Les dix marques restent
+   pilotées par le chronomètre du module : elles ne s'éteignent pas au rythme
+   des phrases mais au rythme du temps qui passe, et c'est toute la leçon.
+   LE ROUGE RESTE ROUGE : les trois paliers descendaient jusqu'au bordeaux,
+   où l'on ne lit plus une alarme mais une couleur de décoration. */
+.diapo--ouv3 .carte--pleine{padding:0;overflow:hidden;position:relative;
+      background:var(--surface-card)}
+.minutes{position:absolute;inset:0;display:flex;margin:0}
+.minutes span{flex:1;height:auto;border-radius:0;background:#00703C;position:relative;
+      transition:background 450ms var(--ease)}
+.minutes span+span{border-left:1px solid rgba(0,0,0,.22)}
+.minutes span::after{content:attr(data-n);position:absolute;bottom:10px;left:0;right:0;
+      text-align:center;font-size:var(--fs-meta);font-weight:var(--fw-black);color:#fff;
+      font-variant-numeric:tabular-nums}
+.minutes span.eteint{background:#E8190A}
+.minutes span.eteint:nth-child(n+5){background:#CC1308}
+.minutes span.eteint:nth-child(n+8){background:#AE0F05}
+.ouv__sur{position:absolute;inset:0;display:grid;grid-template-rows:auto 1fr auto;
+      padding:clamp(16px,2.6vw,36px);pointer-events:none}
+.ouv__st{margin:0;font-size:var(--fs-label);font-weight:var(--fw-black);
+      letter-spacing:var(--ls-label);text-transform:uppercase;color:#fff}
+.diapo--ouv3 .diapo__mots{align-self:center;max-width:20ch}
+.diapo--ouv3 .diapo__mots p{color:#fff;font-size:clamp(24px,4.2vw,58px);line-height:.98;
+      letter-spacing:-.03em;text-transform:uppercase}
+.diapo--ouv3 .diapo__mots p.passe{display:none}
+.ouv__pc{margin:0;justify-self:start;padding:.3em .7em;border-radius:var(--r-pill);
+      background:#fff}
+.ouv__pc b{font-variant-numeric:tabular-nums;font-size:clamp(22px,3vw,40px);
+      font-weight:var(--fw-black);letter-spacing:-.04em;color:var(--text-strong)}
+
+/* 04 · LA PROMESSE. Quatre rangées sur fond ambré, la dernière inversée —
+   c'est la phrase qui débloque, et elle ne doit pas ressembler aux trois
+   autres. */
+.diapo--ouv4 .carte--promesse{background:var(--accent-ink);
+      display:grid;grid-template-rows:auto minmax(0,1fr);gap:var(--sp-3)}
+.promesse__tete{display:flex;align-items:baseline;gap:var(--sp-4)}
+.promesse__tete h4{margin:0;font-size:clamp(20px,3.2vw,44px);font-weight:var(--fw-black);
+      letter-spacing:-.03em;color:#fff;line-height:1}
+.promesse__tete span{margin-left:auto;text-align:right;font-size:var(--fs-meta);
+      font-weight:var(--fw-black);letter-spacing:var(--ls-label);text-transform:uppercase;
+      color:#fff}
+.diapo--ouv4 .diapo__mots{display:grid;grid-template-rows:repeat(4,1fr);gap:var(--sp-2);
+      min-height:0}
+.diapo--ouv4 .diapo__mots p{display:flex;align-items:center;gap:var(--sp-4);
+      padding:0 var(--sp-4);border-top:2px solid rgba(255,255,255,.35);color:#fff;
+      font-size:clamp(15px,2.1vw,30px);font-weight:var(--fw-black);letter-spacing:-.02em;
+      line-height:1.06;transition:opacity 420ms var(--ease),transform 420ms var(--ease)}
+.diapo--ouv4 .diapo__mots p.passe{font-size:clamp(15px,2.1vw,30px);color:#fff;
+      font-weight:var(--fw-black)}
+/* LA TYPOGRAPHIE EST DÉCLARÉE SUR LES SPANS, PAS HÉRITÉE DU PARAGRAPHE.
+   Mesuré : le `<p>` calculait 29,4 px et son propre `<span>` 14 px, sans
+   qu'AUCUNE règle de la feuille ne le vise — vérifié en parcourant toutes les
+   feuilles de style à l'exécution — et sans style en ligne. Je n'ai pas
+   identifié la cause. Ce qui est sûr, c'est qu'une valeur héritée n'était pas
+   fiable ici ; une valeur déclarée l'est. On ne bâtit pas une mise en page
+   sur un héritage qu'on n'arrive pas à expliquer. */
+.diapo--ouv4 .diapo__mots p .m{font-size:clamp(15px,2.1vw,30px);
+      font-weight:var(--fw-black);letter-spacing:-.02em;line-height:1.06;color:#fff}
+.diapo--ouv4 .diapo__mots p:last-child .m{color:var(--text-strong)}
+.diapo--ouv4 .diapo__mots p .n{font-size:var(--fs-meta);font-weight:var(--fw-bold);
+      letter-spacing:.06em;opacity:.85;flex:0 0 auto;color:#fff}
+.diapo--ouv4 .diapo__mots p:last-child .n{color:var(--text-strong)}
+.diapo--ouv4 .diapo__mots p .g{margin-left:auto;text-align:right;color:#fff;
+      font-size:var(--fs-body-sm);font-weight:var(--fw-semi);max-width:32ch;line-height:1.3}
+.diapo--ouv4 .diapo__mots p:last-child{background:#fff;border-top:0;
+      border-radius:var(--r-md);color:var(--text-strong)}
+.diapo--ouv4 .diapo__mots p:last-child .g{color:var(--text-muted)}
+
+@media (max-width:52rem){
+  /* Sur un écran étroit, deux colonnes de cartes donnent deux colonnes trop
+     minces pour les phrases. On empile — et le dessin garde sa place, parce
+     que c'est lui qu'on est venu voir. */
+  .diapo--ouv1,.diapo--ouv2{grid-template-columns:minmax(0,1fr);
+        grid-template-rows:minmax(0,1fr) auto}
+  .diapo--ouv1 .ouv__col,.diapo--ouv2 .ouv__col{grid-template-rows:auto auto}
+  .carte--dessin{aspect-ratio:4/3}
+}
 
 .diapo__cmd{position:absolute;top:var(--sp-4);right:var(--sp-4);display:flex;gap:var(--sp-2)}
 .diapo__cmd .bt{background:rgba(255,255,255,.92);backdrop-filter:blur(6px)}
@@ -1550,8 +1684,11 @@ body{overflow:hidden}
      une seconde — et c'est le panneau réel, celui qu'on cherche des yeux dans
      un hall, pas le pictogramme des normes.                              -->
 <article class="panneau panneau--diapo panneau--titre" data-chap="s0" data-diapo="titre">
-  <div class="diapo">
-    <svg class="signe" viewBox="0 0 200 200" role="img" aria-label="Panneau DEA — défibrillateur externe automatisé">
+  <div class="diapo diapo--ouv diapo--ouv1">
+    <div class="ouv__col">
+      <div class="carte carte--signe">
+        <p class="carte__st">Votre appareil</p>
+        <svg class="signe" viewBox="0 0 200 200" role="img" aria-label="Panneau DEA — défibrillateur externe automatisé">
       <rect class="fond" x="0" y="0" width="200" height="200" rx="6"/>
       <rect class="filet" x="12" y="12" width="176" height="176" rx="5"/>
       <text x="100" y="54" font-size="36">DEA</text>
@@ -1561,7 +1698,16 @@ body{overflow:hidden}
       <path class="eclair" d="M105 79 L87 107 L99 107 L93 133 L115 101 L102 101 Z"/>
       <text x="100" y="188" font-size="36">AED</text>
     </svg>
-    <div class="diapo__mots"></div>
+        <p class="carte__leg">Hall d'entrée, à droite, près de la réception.
+        C'est le seul appareil de l'immeuble.</p>
+      </div>
+      <div class="tuiles">
+        <div class="tuile"><b>1</b><span>situation</span></div>
+        <div class="tuile"><b>2</b><span>signes</span></div>
+        <div class="tuile"><b>4</b><span>parties</span></div>
+      </div>
+    </div>
+    <div class="carte carte--accent"><div class="diapo__mots"></div></div>
     <div class="diapo__cmd">
       <button class="bt" type="button" data-jouer>▶ Écouter</button>
       <button class="bt" type="button" data-texte aria-expanded="false">Lire le texte</button>
@@ -1571,21 +1717,31 @@ body{overflow:hidden}
   <h1 class="u-visually-hidden">Défibrillateur — formation en milieu de travail</h1>
 </article>
 
-<!-- ═══ 0 ═══ L'OUVERTURE, EN TROIS TEMPS ═══════════════════════════════════
-     Le module s'ouvrait sur un titre composé : « Quelqu'un s'effondre au
-     travail. » C'est une phrase SUR un effondrement, pas un effondrement. Elle
-     informe ; elle ne saisit pas. Trois diapositives à la place :
+<!-- ═══ 0 ═══ L'OUVERTURE, EN QUATRE PLAQUES ════════════════════════════════
+     Refaite le 15 septembre 2026 à partir de deux remises de design montées
+     côte à côte sur le même contenu (voir ouvertures.html). La décision :
+     le CHÂSSIS À CARTES de la remise v6 — cases blanches à grands rayons sur
+     fond clair — et, pour les plaques 3 et 4, la COMPOSITION de la remise v2,
+     qui est à fond perdu. Les deux grammaires se marient d'une seule façon
+     honnête : les plaques de v2 deviennent UNE carte qui occupe toute la
+     scène, coins arrondis compris. Composition de l'une, découpe de l'autre,
+     et le cadre ne change pas de langue d'une plaque à l'autre.
 
-       1 · on le voit tomber, dans l'ordre où ça arrive ;
-       2 · le compteur cesse d'être un chiffre et devient une horloge ;
-       3 · on promet ce qu'on va apprendre — dont la phrase qui débloque.
-
-     Le titre n'est plus annoncé, il est constaté : il arrive sur la dernière
-     image, quand l'homme est au sol.                                      -->
+     CE QUE LES DEUX REMISES PROPOSAIENT ET QU'ON N'A PAS PRIS : remplacer la
+     scène de l'effondrement par un indicateur — un disque qui bat chez v6, un
+     marqueur qui grossit chez v2. On y LIT que le cœur s'est arrêté ; on n'y
+     voit pas un homme tomber. Le dessin reste.                            -->
 <article class="panneau panneau--diapo" data-chap="s0" data-diapo="effondrement" hidden>
-  <div class="diapo">
-    <img alt=""><img alt="">
-    <div class="diapo__mots"></div>
+  <div class="diapo diapo--ouv diapo--ouv2">
+    <div class="carte carte--recit">
+      <p class="pastille-h" data-heure></p>
+      <div class="diapo__mots"></div>
+      <p class="carte__sous" data-sous></p>
+    </div>
+    <div class="ouv__col">
+      <div class="carte carte--dessin"><img alt=""><img alt=""></div>
+      <div class="carte carte--deroule" data-jalons></div>
+    </div>
     <div class="diapo__cmd">
       <button class="bt" type="button" data-jouer>▶ Écouter</button>
       <button class="bt" type="button" data-texte aria-expanded="false">Lire le texte</button>
@@ -1596,8 +1752,15 @@ body{overflow:hidden}
 </article>
 
 <article class="panneau panneau--diapo" data-chap="s0" data-diapo="compteur" hidden>
-  <div class="diapo diapo--blanc">
-    <div class="diapo__mots"></div>
+  <div class="diapo diapo--ouv diapo--ouv3">
+    <div class="carte carte--pleine">
+      <div class="minutes" id="minutes"></div>
+      <div class="ouv__sur">
+        <p class="ouv__st">Minutes depuis l'arrêt · chances restantes</p>
+        <div class="diapo__mots"></div>
+        <p class="ouv__pc"><b id="minutesPc">100 %</b></p>
+      </div>
+    </div>
     <div class="diapo__cmd">
       <button class="bt" type="button" data-jouer>▶ Écouter</button>
       <button class="bt" type="button" data-texte aria-expanded="false">Lire le texte</button>
@@ -1608,8 +1771,14 @@ body{overflow:hidden}
 </article>
 
 <article class="panneau panneau--diapo" data-chap="s0" data-diapo="promesse" hidden>
-  <div class="diapo diapo--blanc">
-    <div class="diapo__mots"></div>
+  <div class="diapo diapo--ouv diapo--ouv4">
+    <div class="carte carte--promesse">
+      <div class="promesse__tete">
+        <h4>Quatre choses. Pas plus.</h4>
+        <span>Ce que vous<br>allez apprendre</span>
+      </div>
+      <div class="diapo__mots"></div>
+    </div>
     <div class="diapo__cmd">
       <button class="bt" type="button" data-jouer>▶ Écouter</button>
       <button class="bt" type="button" data-texte aria-expanded="false">Lire le texte</button>
@@ -1617,28 +1786,6 @@ body{overflow:hidden}
     <div class="diapo__dit" hidden></div>
   </div>
   <h3 class="u-visually-hidden">Ce que vous allez apprendre</h3>
-</article>
-
-<article class="panneau" data-chap="s0" hidden>
-  <div class="num"><b>00</b><span>Avant de commencer</span></div>
-  <h2>Une seule situation.</h2>
-  <div class="cadre">
-    <p><b>Ce que cette formation couvre, et rien d'autre.</b> Une seule situation :
-      une personne s'effondre ou est trouvée inanimée dans l'immeuble. Elle ne
-      couvre pas l'étouffement, ni les saignements, ni les autres premiers soins.
-      Si vous cherchez ceux-là, il vous faut un cours de secourisme complet — nous
-      vous disons à la fin où le suivre.</p>
-    <p class="mini">Vous pouvez tout parcourir en vingt-cinq minutes. La partie 8
-      vous fait vivre la séquence entière dans un simulateur ; prévoyez d'y rester
-      un peu.</p>
-  </div>
-
-  <div class="faits">
-    <div class="fait"><b>~10 %</b><span>de chances de survie perdues par minute sans réanimation</span></div>
-    <div class="fait"><b>2</b><span>signes à reconnaître, et deux seulement</span></div>
-    <div class="fait"><b>2</b><span>personnes à désigner nommément</span></div>
-    <div class="fait"><b>2 min</b><span>pour descendre chercher le DEA et remonter</span></div>
-  </div>
 </article>
 
 <!-- ═══ 1 ═══ L'emplacement, avant tout le reste. Le brief est catégorique :
@@ -2234,7 +2381,7 @@ body{overflow:hidden}
 </div>
 
 
-<script>var DIAPOS = {"titre": [{"img": null, "son": "medias/formation-dea/y0-ceci.mp3", "mot": "Ceci est un défibrillateur.", "dit": "Ceci est un défibrillateur. Ce panneau-là, vous l'avez peut-être déjà croisé sans le regarder."}, {"img": null, "son": "medias/formation-dea/y0-immeuble.mp3", "mot": "Il y en a un dans votre immeuble.", "dit": "Il y en a un dans votre immeuble."}, {"img": null, "son": "medias/formation-dea/y0-parle.mp3", "mot": "Vous n'avez pas besoin de savoir vous en servir : il vous parle.", "dit": "Et vous n'avez pas besoin de savoir vous en servir. Il s'allume tout seul, il vous parle, et il décide à votre place. En vingt-cinq minutes, vous saurez quoi faire avant qu'il arrive."}], "effondrement": [{"img": "medias/formation-dea/1.jpg", "son": "medias/formation-dea/o1-midi.mp3", "mot": "Midi. La cafétéria de votre immeuble.", "dit": "Il est midi. La cafétéria de votre immeuble. Six personnes à la même table."}, {"img": "medias/formation-dea/2.jpg", "son": "medias/formation-dea/o1-arrete.mp3", "mot": "Un collègue s'arrête de parler.", "dit": "Un collègue s'arrête de parler, au milieu d'une phrase."}, {"img": "medias/formation-dea/3.jpg", "son": "medias/formation-dea/o1-glisse.mp3", "mot": "Il ne se rattrape pas.", "dit": "Il glisse de sa chaise. Il ne se rattrape pas."}, {"img": "medias/formation-dea/6.jpg", "son": "medias/formation-dea/o1-proche.mp3", "mot": "Vous êtes la personne la plus proche.", "dit": "En quelques secondes, il est au sol. Vous n'êtes pas soignant, vous n'avez aucune formation médicale. Vous êtes la personne la plus proche."}], "compteur": [{"img": null, "son": "medias/formation-dea/o2-chaque.mp3", "mot": "Chaque minute coûte environ 10 % de ses chances.", "dit": "À partir de l'instant où son cœur s'arrête, chaque minute sans réanimation lui coûte environ dix pour cent de ses chances de survie."}, {"img": null, "son": "medias/formation-dea/o2-dix.mp3", "mot": "Dix minutes, et il n'en reste plus.", "dit": "Au bout de dix minutes, il n'en reste plus."}, {"img": null, "son": "medias/formation-dea/o2-secours.mp3", "mot": "Les secours mettent huit à dix minutes.", "dit": "Les secours mettent en moyenne huit à dix minutes à arriver. Faites le calcul : quand ils franchissent la porte, presque tout s'est déjà joué."}, {"img": null, "son": "medias/formation-dea/o2-vous.mp3", "mot": "Ce qui se passe avant, c'est vous.", "dit": "Ce qui se passe avant leur arrivée, c'est vous."}], "promesse": [{"img": null, "son": "medias/formation-dea/o3-signes.mp3", "mot": "Deux signes à reconnaître.", "dit": "Vous n'avez que deux choses à reconnaître. Deux, pas trois."}, {"img": null, "son": "medias/formation-dea/o3-personnes.mp3", "mot": "Deux personnes à désigner.", "dit": "Deux personnes à désigner nommément : une pour appeler, une pour aller chercher le défibrillateur."}, {"img": null, "son": "medias/formation-dea/o3-cadence.mp3", "mot": "Une cadence à tenir.", "dit": "Une cadence à tenir avec vos mains, au milieu de sa poitrine."}, {"img": null, "son": "medias/formation-dea/o3-appareil.mp3", "mot": "Le reste, l'appareil le fait.", "dit": "Et pour le reste, l'appareil le fait. Il analyse, il décide, il vous parle. Il ne délivrera jamais un choc à quelqu'un qui n'en a pas besoin : vous ne pouvez pas vous tromper avec lui."}], "reconnaitre": [{"img": "medias/formation-dea/d1-epaules.jpg", "son": "medias/formation-dea/9-epaules.mp3", "mot": "Secouez-lui les épaules.", "dit": "D'abord, secouez-lui doucement les épaules."}, {"img": "medias/formation-dea/d1-appel.jpg", "son": "medias/formation-dea/9-appel.mp3", "mot": "Appelez-le fort.", "dit": "Appelez-le fort, tout près du visage. Monsieur ! Vous m'entendez ?"}, {"img": "medias/formation-dea/d1-signe1.jpg", "son": "medias/formation-dea/9-signe1.mp3", "mot": "Rien. Premier signe.", "dit": "Il ne répond pas, ne bouge pas, n'ouvre pas les yeux. C'est le premier des deux signes."}], "poitrine": [{"img": "medias/formation-dea/d2-regarder.jpg", "son": "medias/formation-dea/11-regarder.mp3", "mot": "Dix secondes. Pas plus.", "dit": "Maintenant, regardez sa poitrine. Dix secondes, pas plus."}, {"img": "medias/formation-dea/d2-thorax.jpg", "son": "medias/formation-dea/11-thorax.mp3", "mot": "Elle ne se soulève pas.", "dit": "Elle ne se soulève pas normalement."}, {"img": "medias/formation-dea/d2-agonal.jpg", "son": "medias/formation-dea/11-agonal.mp3", "mot": "Un halètement n'est pas une respiration.", "dit": "S'il halète, s'il râle, s'il ronfle : ce n'est pas une respiration. C'est le deuxième signe, et c'est celui qui trompe tout le monde."}, {"img": "medias/formation-dea/d2-regarder.jpg", "son": "medias/formation-dea/11-suffisent.mp3", "mot": "Ces deux signes suffisent.", "dit": "Ces deux signes suffisent. Vous n'avez rien d'autre à vérifier avant d'agir."}], "agonal-piege": [{"img": null, "son": "medias/formation-dea/p2-beaucoup.mp3", "mot": "Beaucoup de personnes halètent, au début.", "dit": "Dans les premières minutes d'un arrêt cardiaque, beaucoup de personnes émettent des halètements bruyants et irréguliers."}, {"img": null, "son": "medias/formation-dea/p2-ressemble.mp3", "mot": "Ça ressemble à un ronflement, à un râle.", "dit": "Ça ressemble à un ronflement, à un hoquet, à un râle."}, {"img": null, "son": "medias/formation-dea/p2-nonrespi.mp3", "mot": "Ce n'est pas une respiration.", "dit": "Ce n'est pas une respiration."}, {"img": null, "son": "medias/formation-dea/p2-erreur.mp3", "mot": "C'est l'erreur qui coûte le plus cher.", "dit": "C'est l'erreur qui coûte le plus cher : les témoins voient bouger, entendent du bruit, et concluent qu'elle respire encore. Ils attendent. Les minutes passent."}], "pouls": [{"img": null, "son": "medias/formation-dea/p2-pasdepouls.mp3", "mot": "On ne cherche pas le pouls.", "dit": "Et le pouls ? On ne le cherche pas. Les protocoles destinés au public l'ont retiré."}, {"img": null, "son": "medias/formation-dea/p2-fiable.mp3", "mot": "Long à trouver, peu fiable.", "dit": "Il est long à trouver et peu fiable : les soignants eux-mêmes s'y trompent."}, {"img": null, "son": "medias/formation-dea/p2-seconde.mp3", "mot": "Chaque seconde à le chercher est une seconde sans compression.", "dit": "Et chaque seconde passée à le chercher est une seconde sans compression. Si vous vous attendiez à en entendre parler, c'est normal : on l'a enseigné pendant des décennies. Son retrait sauve des vies plutôt que d'en coûter."}], "reconnaitre-blanche": [{"img": null, "son": "medias/formation-dea/b1-secouer.mp3", "mot": "Secouez-lui doucement les épaules.", "dit": "D'abord, secouez-lui doucement les épaules. Doucement : on cherche une réaction, on ne le réveille pas."}, {"img": null, "son": "medias/formation-dea/b1-appeler.mp3", "mot": "Appelez-le fort, tout près : « Vous m'entendez ? »", "dit": "Puis appelez-le fort, tout près du visage. Monsieur ! Madame ! Vous m'entendez ?"}, {"img": null, "son": "medias/formation-dea/b1-rien.mp3", "mot": "Rien. Il ne bouge pas, il n'ouvre pas les yeux.", "dit": "Rien. Il ne répond pas, il ne bouge pas, il n'ouvre pas les yeux."}, {"img": null, "son": "medias/formation-dea/b1-premier.mp3", "mot": "Premier signe sur deux.", "dit": "C'est le premier des deux signes. Il en reste un à vérifier, et un seul."}], "poitrine-blanche": [{"img": null, "son": "medias/formation-dea/b2-dix.mp3", "mot": "Dix secondes. Pas plus.", "dit": "Regardez sa poitrine. Dix secondes, pas plus : au-delà, vous perdez du temps sans rien apprendre de plus."}, {"img": null, "son": "medias/formation-dea/b2-souleve.mp3", "mot": "Une poitrine qui respire se soulève, et retombe.", "dit": "Une poitrine qui respire se soulève et retombe, régulièrement, plus d'une dizaine de fois par minute. La sienne ne bouge pas."}, {"img": null, "son": "medias/formation-dea/b2-halete.mp3", "mot": "Un halètement n'est pas une respiration.", "dit": "S'il halète, s'il râle, s'il ronfle par à-coups, avec de longs silences entre deux : ce n'est pas une respiration. C'est le piège qui coûte le plus cher."}, {"img": null, "son": "medias/formation-dea/b2-deux.mp3", "mot": "Deux signes. Vous agissez.", "dit": "Il ne répond pas, il ne respire pas normalement. Vous avez vos deux signes, et vous n'avez rien d'autre à vérifier."}], "comprimer": [{"img": "medias/formation-dea/d4-mains.jpg", "son": "medias/formation-dea/c4-milieu.mp3", "mot": "Au milieu de la poitrine.", "dit": "Le talon de votre main au milieu de sa poitrine, sur l'os, à hauteur des mamelons. Pas sur le ventre."}, {"img": "medias/formation-dea/d4-bras.jpg", "son": "medias/formation-dea/c4-bras.mp3", "mot": "Bras tendus, épaules au-dessus des mains.", "dit": "Les deux bras tendus, verrouillés, les épaules à la verticale de vos mains. C'est votre poids qui appuie, pas vos bras."}, {"img": "medias/formation-dea/d4-profond.jpg", "son": "medias/formation-dea/c4-profond.mp3", "mot": "Au moins cinq centimètres.", "dit": "Au moins cinq centimètres de profondeur. C'est plus fort que vous ne le croyez, et c'est normal."}, {"img": "medias/formation-dea/d4-remonte.jpg", "son": "medias/formation-dea/c4-remonte.mp3", "mot": "Laissez la poitrine remonter, sans lever les mains.", "dit": "Entre deux compressions, laissez la poitrine remonter complètement, sans jamais décoller vos mains : c'est la remontée qui remplit le cœur."}], "appareil": [{"img": null, "son": "medias/formation-dea/a5-ouvrir.mp3", "mot": "Ouvrez la mallette. Il se met en marche tout seul.", "dit": "Ouvrez la mallette. L'appareil se met en marche tout seul, et il vous parle. Faites ce qu'il dit, dans l'ordre où il le dit."}, {"img": null, "son": "medias/formation-dea/a5-coller.mp3", "mot": "Collez les électrodes sur la peau nue.", "dit": "Dénudez-lui la poitrine, et collez les deux électrodes en suivant le dessin imprimé dessus. Sur la peau nue, jamais sur le tissu."}, {"img": null, "son": "medias/formation-dea/a5-analyse.mp3", "mot": "« Il analyse » : personne ne touche.", "dit": "Quand il annonce l'analyse, ne touchez plus la personne — et dites-le fort autour de vous, parce que les autres ne l'ont peut-être pas entendu."}, {"img": null, "son": "medias/formation-dea/a5-ecartez.mp3", "mot": "« Écartez-vous, personne ne touche ! »", "dit": "S'il conseille un choc, il fait clignoter le bouton. Criez : écartez-vous, personne ne touche. Et regardez : une main, un pied posé sur elle, ça suffit."}, {"img": null, "son": "medias/formation-dea/a5-appuyez.mp3", "mot": "Puis vous appuyez.", "dit": "Puis vous appuyez sur le bouton."}, {"img": null, "son": "medias/formation-dea/a5-reprenez.mp3", "mot": "Et vous reprenez tout de suite.", "dit": "Et vous reprenez les compressions immédiatement après le choc, sans attendre, sans rien vérifier. L'appareil vous redemandera de vous écarter dans deux minutes."}], "ordres-exacts": [{"img": null, "son": "medias/formation-dea/t3-ordre1.mp3", "mot": "« Vous, en bleu, appelez le 911 et revenez me le dire. »", "dit": "Le premier ordre, mot pour mot : vous, en bleu, appelez le neuf un un et revenez me le dire."}, {"img": null, "son": "medias/formation-dea/t3-revenez.mp3", "mot": "Le « revenez me le dire » compte.", "dit": "Le revenez me le dire n'est pas une politesse : c'est ce qui vous confirme que l'appel a bien été fait."}, {"img": null, "son": "medias/formation-dea/t3-ordre2.mp3", "mot": "« Le DEA est dans le hall, à droite. Courez. »", "dit": "Le deuxième : vous, le défibrillateur est dans le hall d'entrée, à droite, près de la réception. Allez le chercher, courez."}, {"img": null, "son": "medias/formation-dea/t3-emplacement.mp3", "mot": "L'emplacement est dans l'ordre lui-même.", "dit": "L'emplacement fait partie de l'ordre. La personne à qui vous parlez ne le connaît peut-être pas."}], "seul": [{"img": null, "son": "medias/formation-dea/t3-hautparleur.mp3", "mot": "Seul ? Le 911, haut-parleur, par terre.", "dit": "Et si vous êtes seul ? Composez le neuf un un, mettez le haut-parleur, posez le téléphone par terre à côté de vous."}, {"img": null, "son": "medias/formation-dea/t3-pendant.mp3", "mot": "Comprimez pendant que vous parlez.", "dit": "Et commencez les compressions pendant que vous parlez. La répartitrice vous entendra très bien."}, {"img": null, "son": "medias/formation-dea/t3-tranche.mp3", "mot": "C'est elle qui tranche s'il faut partir.", "dit": "Si vous êtes vraiment seul et loin du hall, ne décidez pas tout seul de partir : dites-lui où vous êtes, et suivez ce qu'elle vous dit. C'est elle qui tranche s'il faut quitter la personne."}], "compressions-seules": [{"img": null, "son": "medias/formation-dea/t4-pasdebouche.mp3", "mot": "Pas de bouche-à-bouche.", "dit": "Pas de bouche-à-bouche. Pour un adulte, dans le grand public, les compressions seules sont ce qui est recommandé."}, {"img": null, "son": "medias/formation-dea/t4-oxygene.mp3", "mot": "Le sang contient encore de l'oxygène.", "dit": "Pendant les premières minutes, le sang en contient encore."}, {"img": null, "son": "medias/formation-dea/t4-circuler.mp3", "mot": "Ce qui manque, c'est de le faire circuler.", "dit": "Ce qui manque, ce n'est pas de l'air : c'est quelque chose pour le faire circuler. C'est exactement ce que font vos mains."}], "electrodes": [{"img": null, "son": "medias/formation-dea/t5-peau.mp3", "mot": "Peau contre peau.", "dit": "Dénudez-lui la poitrine. Le contact doit être peau contre peau : les électrodes ne fonctionnent pas à travers un vêtement."}, {"img": null, "son": "medias/formation-dea/t5-essuyer.mp3", "mot": "Mouillée ? Essuyez.", "dit": "Si la peau est mouillée, essuyez-la, avec n'importe quel tissu sec."}, {"img": null, "son": "medias/formation-dea/t5-ecarter.mp3", "mot": "Chaîne, armature, timbre : écartez.", "dit": "Écartez de la zone des électrodes ce qui gêne : une chaîne, un soutien-gorge à armature, un timbre de médicament collé sur la peau."}, {"img": null, "son": "medias/formation-dea/t5-dessin.mp3", "mot": "Suivez le dessin imprimé dessus.", "dit": "Collez les deux électrodes en suivant le dessin imprimé dessus : il montre exactement où les poser. Appuyez bien, pour chasser l'air."}], "ce-qu-il-fait": [{"img": null, "son": "medias/formation-dea/t5-deuxrythmes.mp3", "mot": "Il ne choque que deux rythmes.", "dit": "L'appareil lit le rythme du cœur, et il ne choque que deux rythmes précis : la fibrillation ventriculaire, et la tachycardie ventriculaire sans pouls."}, {"img": null, "son": "medias/formation-dea/t5-tremble.mp3", "mot": "Le cœur ne bat pas : il tremble, ou il s'emballe à vide.", "dit": "Dans ces deux cas, le cœur ne bat pas. Il tremble, ou il s'emballe à vide."}, {"img": null, "son": "medias/formation-dea/t5-remisezero.mp3", "mot": "Le choc n'est pas un coup de fouet, c'est une remise à zéro.", "dit": "Le choc ne redémarre pas un cœur arrêté à plat. Il fait le contraire : il arrête tout une fraction de seconde, pour que le cœur reparte de lui-même avec un rythme ordonné."}, {"img": null, "son": "medias/formation-dea/t5-aucunchoc.mp3", "mot": "« Aucun choc conseillé » ne veut pas dire « c'est fini ».", "dit": "Donc aucun choc conseillé ne veut jamais dire c'est fini. Ça veut dire que le choc ne sert à rien sur ce rythme-là. Vous reprenez les compressions immédiatement."}], "passation": [{"img": null, "son": "medias/formation-dea/t6-vu.mp3", "mot": "Ce que vous avez vu.", "dit": "Quand ils arrivent, dites-leur ce que vous avez vu. Elle s'est effondrée, elle ne répondait pas, elle ne respirait pas normalement. Et depuis combien de temps, à peu près."}, {"img": null, "son": "medias/formation-dea/t6-fait.mp3", "mot": "Ce que vous avez fait.", "dit": "Puis ce que vous avez fait. Compressions depuis environ six minutes, le défibrillateur a donné un choc."}, {"img": null, "son": "medias/formation-dea/t6-retirez.mp3", "mot": "Puis retirez-vous. Vous n'avez pas à rester.", "dit": "Puis retirez-vous. Vous n'avez pas à rester."}], "retenir": [{"img": null, "son": "medias/formation-dea/z9-dea.mp3", "mot": "Le DEA est au hall, à droite, près de la réception.", "dit": "Six lignes à retenir. Un : le défibrillateur est au hall d'entrée, à droite, près de la réception."}, {"img": null, "son": "medias/formation-dea/z9-signes.mp3", "mot": "Deux signes : elle ne répond pas, elle ne respire pas normalement.", "dit": "Deux : deux signes. Elle ne répond pas, elle ne respire pas normalement. Les halètements ne sont pas une respiration."}, {"img": null, "son": "medias/formation-dea/z9-deuxpers.mp3", "mot": "Deux personnes désignées, nommément.", "dit": "Trois : deux personnes désignées. Vous, appelez le neuf un un et revenez me le dire. Vous, le défibrillateur est au hall à droite, courez."}, {"img": null, "son": "medias/formation-dea/z9-comprimer.mp3", "mot": "Au milieu de la poitrine, 5 cm, 100 à 120 par minute.", "dit": "Quatre : comprimez au milieu de la poitrine, au moins cinq centimètres, cent à cent vingt fois par minute, sans bouche-à-bouche."}, {"img": null, "son": "medias/formation-dea/z9-ecoutez.mp3", "mot": "L'appareil parle : faites ce qu'il dit.", "dit": "Cinq : l'appareil parle, faites ce qu'il dit. Écartez-vous pour l'analyse et pour le choc."}, {"img": null, "son": "medias/formation-dea/z9-aucunchoc.mp3", "mot": "« Aucun choc conseillé » = reprenez tout de suite.", "dit": "Six : aucun choc conseillé veut dire reprenez les compressions tout de suite."}], "pour-finir": [{"img": null, "son": "medias/formation-dea/z9-remplace.mp3", "mot": "Ceci ne remplace pas une certification en RCR.", "dit": "Pour finir : cette formation ne remplace pas une certification en réanimation cardio-respiratoire."}, {"img": null, "son": "medias/formation-dea/z9-mannequin.mp3", "mot": "Quatre choses s'apprennent seulement sur un mannequin.", "dit": "Quatre choses s'apprennent seulement sur un mannequin, avec quelqu'un qui corrige : la profondeur réelle, le relâchement complet, la position exacte des mains, et ce que fait la fatigue à votre technique."}, {"img": null, "son": "medias/formation-dea/z9-uneheure.mp3", "mot": "Une heure y suffit. Demandez à votre employeur.", "dit": "Une heure y suffit. Côté travail, ces places sont souvent déjà budgétées : demandez à votre employeur."}], "apres": [{"img": null, "son": "medias/formation-dea/t6-secoue.mp3", "mot": "Vous avez le droit d'être secoué après.", "dit": "Un dernier point, et il compte autant que le reste. Vous avez le droit d'être secoué après."}, {"img": null, "son": "medias/formation-dea/t6-ordinaire.mp3", "mot": "C'est une réaction ordinaire à une chose qui ne l'est pas.", "dit": "Les mains qui tremblent, la nuit blanche, le fait d'y repenser pendant des jours : c'est une réaction ordinaire à une chose qui ne l'est pas. Parlez-en à quelqu'un. Si votre employeur a un programme d'aide, il est fait exactement pour ça."}, {"img": null, "son": "medias/formation-dea/t6-echoue.mp3", "mot": "Même bien faite, une réanimation échoue souvent.", "dit": "Et sachez-le d'avance : même bien faite, une réanimation échoue souvent. Cela ne veut pas dire que vous avez mal fait."}, {"img": null, "son": "medias/formation-dea/t6-chance.mp3", "mot": "Sans vous, il n'y avait aucune chance.", "dit": "Sans vous, il n'y avait aucune chance. Avec vous, il y en avait une."}], "relais": [{"img": null, "son": "medias/formation-dea/r6-continuer.mp3", "mot": "Vous continuez.", "dit": "Vous continuez. Vous ne vous arrêtez pas pour vérifier, vous ne vous arrêtez pas pour réfléchir."}, {"img": null, "son": "medias/formation-dea/r6-jusqu.mp3", "mot": "Jusqu'à ce qu'il bouge, ou qu'on vous remplace.", "dit": "Jusqu'à ce qu'il se remette à bouger ou à respirer normalement, ou jusqu'à ce que les secours vous remplacent."}, {"img": null, "son": "medias/formation-dea/r6-deux.mp3", "mot": "À deux, changez aux deux minutes.", "dit": "Si quelqu'un d'autre peut comprimer, relayez-vous toutes les deux minutes."}, {"img": null, "son": "medias/formation-dea/r6-fatigue.mp3", "mot": "Fatigué, on comprime moins fort sans le savoir.", "dit": "C'est mesuré : au bout de deux minutes, la fatigue fait perdre de la profondeur, et celui qui comprime ne s'en aperçoit pas."}], "designer-blanche": [{"img": null, "son": "medias/formation-dea/b3-jamais.mp3", "mot": "Ne dites jamais : « que quelqu'un appelle le 911 ».", "dit": "Ne dites jamais : que quelqu'un appelle le neuf un un. Dans un groupe, un ordre adressé à tout le monde n'est exécuté par personne."}, {"img": null, "son": "medias/formation-dea/b3-choisir.mp3", "mot": "Choisissez une personne. Regardez-la dans les yeux.", "dit": "Choisissez une personne, une seule, et regardez-la dans les yeux."}, {"img": null, "son": "medias/formation-dea/b3-doigt.mp3", "mot": "Désignez-la du doigt.", "dit": "Désignez-la du doigt, pour que tout le monde autour sache que c'est elle."}, {"img": null, "son": "medias/formation-dea/b3-ordre.mp3", "mot": "« Vous, appelez le 911, et revenez me le dire. »", "dit": "Et donnez-lui une tâche unique. Vous, appelez le neuf un un, et revenez me le dire. Puis la deuxième personne, pour le défibrillateur."}], "designer": [{"img": "medias/formation-dea/d3-choisir.jpg", "son": "medias/formation-dea/19-choisir.mp3", "mot": "Choisissez une personne.", "dit": "Ne dites jamais : que quelqu'un appelle le neuf un un. Choisissez une personne."}, {"img": "medias/formation-dea/d3-designer.jpg", "son": "medias/formation-dea/19-designer.mp3", "mot": "Désignez-la du doigt.", "dit": "Regardez-la dans les yeux, et désignez-la du doigt."}, {"img": "medias/formation-dea/d3-ordre.jpg", "son": "medias/formation-dea/19-ordre.mp3", "mot": "« Vous, appelez le 911. »", "dit": "Vous, appelez le neuf un un, et revenez me le dire. Une personne, une tâche."}, {"img": "medias/formation-dea/d3-choisir.jpg", "son": "medias/formation-dea/19-deuxieme.mp3", "mot": "Puis la deuxième, pour l'appareil.", "dit": "Puis vous en désignez une deuxième, pour aller chercher le défibrillateur."}]};
+<script>var DIAPOS = {"titre": [{"img": null, "son": "medias/formation-dea/y0-ceci.mp3", "mot": "Ceci est un défibrillateur.", "dit": "Ceci est un défibrillateur. Ce panneau-là, vous l'avez peut-être déjà croisé sans le regarder."}, {"img": null, "son": "medias/formation-dea/y0-immeuble.mp3", "mot": "Il y en a un dans votre immeuble.", "dit": "Il y en a un dans votre immeuble."}, {"img": null, "son": "medias/formation-dea/y0-parle.mp3", "mot": "Vous n'avez pas besoin de savoir vous en servir : il vous parle.", "dit": "Et vous n'avez pas besoin de savoir vous en servir. Il s'allume tout seul, il vous parle, et il décide à votre place. En vingt-cinq minutes, vous saurez quoi faire avant qu'il arrive."}], "effondrement": [{"img": "medias/formation-dea/t1.jpg", "son": "medias/formation-dea/o1-midi.mp3", "mot": "Midi. La cafétéria de votre immeuble.", "dit": "Il est midi. La cafétéria de votre immeuble. Deux collègues à la même table.", "heure": "12:04:02", "jalon": "Deux personnes à table"}, {"img": "medias/formation-dea/t2.jpg", "son": "medias/formation-dea/o1-arrete.mp3", "mot": "Un collègue s'arrête de parler.", "dit": "Un collègue s'arrête de parler, au milieu d'une phrase.", "heure": "12:04:17", "jalon": "Il s'interrompt"}, {"img": "medias/formation-dea/t3.jpg", "son": "medias/formation-dea/o1-glisse.mp3", "mot": "Il ne se rattrape pas.", "dit": "Il glisse de sa chaise. Il ne se rattrape pas.", "heure": "12:04:21", "jalon": "Il glisse de sa chaise"}, {"img": "medias/formation-dea/t4.jpg", "son": "medias/formation-dea/o1-proche.mp3", "mot": "Vous êtes la personne <b>la plus proche.</b>", "dit": "En quelques secondes, il est au sol. Vous n'êtes pas soignant, vous n'avez aucune formation médicale. Vous êtes la personne la plus proche.", "heure": "12:04:26", "jalon": "Il est au sol", "sous": "Vous n'êtes pas soignant. Vous n'avez aucune formation médicale. Le compteur, lui, vient de partir."}], "compteur": [{"img": null, "son": "medias/formation-dea/o2-chaque.mp3", "mot": "Chaque minute coûte environ 10 % de ses chances.", "dit": "À partir de l'instant où son cœur s'arrête, chaque minute sans réanimation lui coûte environ dix pour cent de ses chances de survie."}, {"img": null, "son": "medias/formation-dea/o2-dix.mp3", "mot": "Dix minutes, et il n'en reste plus.", "dit": "Au bout de dix minutes, il n'en reste plus."}, {"img": null, "son": "medias/formation-dea/o2-secours.mp3", "mot": "Les secours mettent huit à dix minutes.", "dit": "Les secours mettent en moyenne huit à dix minutes à arriver. Faites le calcul : quand ils franchissent la porte, presque tout s'est déjà joué."}, {"img": null, "son": "medias/formation-dea/o2-vous.mp3", "mot": "Ce qui se passe avant, c'est vous.", "dit": "Ce qui se passe avant leur arrivée, c'est vous."}], "promesse": [{"img": null, "son": "medias/formation-dea/o3-signes.mp3", "mot": "Deux signes à reconnaître.", "dit": "Vous n'avez que deux choses à reconnaître. Deux, pas trois.", "num": "01", "glose": "Deux, pas trois."}, {"img": null, "son": "medias/formation-dea/o3-personnes.mp3", "mot": "Deux personnes à désigner.", "dit": "Deux personnes à désigner nommément : une pour appeler, une pour aller chercher le défibrillateur.", "num": "02", "glose": "Une appelle le 911, une court chercher l'appareil."}, {"img": null, "son": "medias/formation-dea/o3-cadence.mp3", "mot": "Une cadence à tenir.", "dit": "Une cadence à tenir avec vos mains, au milieu de sa poitrine.", "num": "03", "glose": "Vos mains, au milieu de sa poitrine."}, {"img": null, "son": "medias/formation-dea/o3-appareil.mp3", "mot": "Le reste, l'appareil le fait.", "dit": "Et pour le reste, l'appareil le fait. Il analyse, il décide, il vous parle. Il ne délivrera jamais un choc à quelqu'un qui n'en a pas besoin : vous ne pouvez pas vous tromper avec lui.", "num": "04", "glose": "Il ne choque jamais quelqu'un qui n'en a pas besoin."}], "reconnaitre": [{"img": "medias/formation-dea/d1-epaules.jpg", "son": "medias/formation-dea/9-epaules.mp3", "mot": "Secouez-lui les épaules.", "dit": "D'abord, secouez-lui doucement les épaules."}, {"img": "medias/formation-dea/d1-appel.jpg", "son": "medias/formation-dea/9-appel.mp3", "mot": "Appelez-le fort.", "dit": "Appelez-le fort, tout près du visage. Monsieur ! Vous m'entendez ?"}, {"img": "medias/formation-dea/d1-signe1.jpg", "son": "medias/formation-dea/9-signe1.mp3", "mot": "Rien. Premier signe.", "dit": "Il ne répond pas, ne bouge pas, n'ouvre pas les yeux. C'est le premier des deux signes."}], "poitrine": [{"img": "medias/formation-dea/d2-regarder.jpg", "son": "medias/formation-dea/11-regarder.mp3", "mot": "Dix secondes. Pas plus.", "dit": "Maintenant, regardez sa poitrine. Dix secondes, pas plus."}, {"img": "medias/formation-dea/d2-thorax.jpg", "son": "medias/formation-dea/11-thorax.mp3", "mot": "Elle ne se soulève pas.", "dit": "Elle ne se soulève pas normalement."}, {"img": "medias/formation-dea/d2-agonal.jpg", "son": "medias/formation-dea/11-agonal.mp3", "mot": "Un halètement n'est pas une respiration.", "dit": "S'il halète, s'il râle, s'il ronfle : ce n'est pas une respiration. C'est le deuxième signe, et c'est celui qui trompe tout le monde."}, {"img": "medias/formation-dea/d2-regarder.jpg", "son": "medias/formation-dea/11-suffisent.mp3", "mot": "Ces deux signes suffisent.", "dit": "Ces deux signes suffisent. Vous n'avez rien d'autre à vérifier avant d'agir."}], "agonal-piege": [{"img": null, "son": "medias/formation-dea/p2-beaucoup.mp3", "mot": "Beaucoup de personnes halètent, au début.", "dit": "Dans les premières minutes d'un arrêt cardiaque, beaucoup de personnes émettent des halètements bruyants et irréguliers."}, {"img": null, "son": "medias/formation-dea/p2-ressemble.mp3", "mot": "Ça ressemble à un ronflement, à un râle.", "dit": "Ça ressemble à un ronflement, à un hoquet, à un râle."}, {"img": null, "son": "medias/formation-dea/p2-nonrespi.mp3", "mot": "Ce n'est pas une respiration.", "dit": "Ce n'est pas une respiration."}, {"img": null, "son": "medias/formation-dea/p2-erreur.mp3", "mot": "C'est l'erreur qui coûte le plus cher.", "dit": "C'est l'erreur qui coûte le plus cher : les témoins voient bouger, entendent du bruit, et concluent qu'elle respire encore. Ils attendent. Les minutes passent."}], "pouls": [{"img": null, "son": "medias/formation-dea/p2-pasdepouls.mp3", "mot": "On ne cherche pas le pouls.", "dit": "Et le pouls ? On ne le cherche pas. Les protocoles destinés au public l'ont retiré."}, {"img": null, "son": "medias/formation-dea/p2-fiable.mp3", "mot": "Long à trouver, peu fiable.", "dit": "Il est long à trouver et peu fiable : les soignants eux-mêmes s'y trompent."}, {"img": null, "son": "medias/formation-dea/p2-seconde.mp3", "mot": "Chaque seconde à le chercher est une seconde sans compression.", "dit": "Et chaque seconde passée à le chercher est une seconde sans compression. Si vous vous attendiez à en entendre parler, c'est normal : on l'a enseigné pendant des décennies. Son retrait sauve des vies plutôt que d'en coûter."}], "reconnaitre-blanche": [{"img": null, "son": "medias/formation-dea/b1-secouer.mp3", "mot": "Secouez-lui doucement les épaules.", "dit": "D'abord, secouez-lui doucement les épaules. Doucement : on cherche une réaction, on ne le réveille pas."}, {"img": null, "son": "medias/formation-dea/b1-appeler.mp3", "mot": "Appelez-le fort, tout près : « Vous m'entendez ? »", "dit": "Puis appelez-le fort, tout près du visage. Monsieur ! Madame ! Vous m'entendez ?"}, {"img": null, "son": "medias/formation-dea/b1-rien.mp3", "mot": "Rien. Il ne bouge pas, il n'ouvre pas les yeux.", "dit": "Rien. Il ne répond pas, il ne bouge pas, il n'ouvre pas les yeux."}, {"img": null, "son": "medias/formation-dea/b1-premier.mp3", "mot": "Premier signe sur deux.", "dit": "C'est le premier des deux signes. Il en reste un à vérifier, et un seul."}], "poitrine-blanche": [{"img": null, "son": "medias/formation-dea/b2-dix.mp3", "mot": "Dix secondes. Pas plus.", "dit": "Regardez sa poitrine. Dix secondes, pas plus : au-delà, vous perdez du temps sans rien apprendre de plus."}, {"img": null, "son": "medias/formation-dea/b2-souleve.mp3", "mot": "Une poitrine qui respire se soulève, et retombe.", "dit": "Une poitrine qui respire se soulève et retombe, régulièrement, plus d'une dizaine de fois par minute. La sienne ne bouge pas."}, {"img": null, "son": "medias/formation-dea/b2-halete.mp3", "mot": "Un halètement n'est pas une respiration.", "dit": "S'il halète, s'il râle, s'il ronfle par à-coups, avec de longs silences entre deux : ce n'est pas une respiration. C'est le piège qui coûte le plus cher."}, {"img": null, "son": "medias/formation-dea/b2-deux.mp3", "mot": "Deux signes. Vous agissez.", "dit": "Il ne répond pas, il ne respire pas normalement. Vous avez vos deux signes, et vous n'avez rien d'autre à vérifier."}], "comprimer": [{"img": "medias/formation-dea/d4-mains.jpg", "son": "medias/formation-dea/c4-milieu.mp3", "mot": "Au milieu de la poitrine.", "dit": "Le talon de votre main au milieu de sa poitrine, sur l'os, à hauteur des mamelons. Pas sur le ventre."}, {"img": "medias/formation-dea/d4-bras.jpg", "son": "medias/formation-dea/c4-bras.mp3", "mot": "Bras tendus, épaules au-dessus des mains.", "dit": "Les deux bras tendus, verrouillés, les épaules à la verticale de vos mains. C'est votre poids qui appuie, pas vos bras."}, {"img": "medias/formation-dea/d4-profond.jpg", "son": "medias/formation-dea/c4-profond.mp3", "mot": "Au moins cinq centimètres.", "dit": "Au moins cinq centimètres de profondeur. C'est plus fort que vous ne le croyez, et c'est normal."}, {"img": "medias/formation-dea/d4-remonte.jpg", "son": "medias/formation-dea/c4-remonte.mp3", "mot": "Laissez la poitrine remonter, sans lever les mains.", "dit": "Entre deux compressions, laissez la poitrine remonter complètement, sans jamais décoller vos mains : c'est la remontée qui remplit le cœur."}], "appareil": [{"img": null, "son": "medias/formation-dea/a5-ouvrir.mp3", "mot": "Ouvrez la mallette. Il se met en marche tout seul.", "dit": "Ouvrez la mallette. L'appareil se met en marche tout seul, et il vous parle. Faites ce qu'il dit, dans l'ordre où il le dit."}, {"img": null, "son": "medias/formation-dea/a5-coller.mp3", "mot": "Collez les électrodes sur la peau nue.", "dit": "Dénudez-lui la poitrine, et collez les deux électrodes en suivant le dessin imprimé dessus. Sur la peau nue, jamais sur le tissu."}, {"img": null, "son": "medias/formation-dea/a5-analyse.mp3", "mot": "« Il analyse » : personne ne touche.", "dit": "Quand il annonce l'analyse, ne touchez plus la personne — et dites-le fort autour de vous, parce que les autres ne l'ont peut-être pas entendu."}, {"img": null, "son": "medias/formation-dea/a5-ecartez.mp3", "mot": "« Écartez-vous, personne ne touche ! »", "dit": "S'il conseille un choc, il fait clignoter le bouton. Criez : écartez-vous, personne ne touche. Et regardez : une main, un pied posé sur elle, ça suffit."}, {"img": null, "son": "medias/formation-dea/a5-appuyez.mp3", "mot": "Puis vous appuyez.", "dit": "Puis vous appuyez sur le bouton."}, {"img": null, "son": "medias/formation-dea/a5-reprenez.mp3", "mot": "Et vous reprenez tout de suite.", "dit": "Et vous reprenez les compressions immédiatement après le choc, sans attendre, sans rien vérifier. L'appareil vous redemandera de vous écarter dans deux minutes."}], "ordres-exacts": [{"img": null, "son": "medias/formation-dea/t3-ordre1.mp3", "mot": "« Vous, en bleu, appelez le 911 et revenez me le dire. »", "dit": "Le premier ordre, mot pour mot : vous, en bleu, appelez le neuf un un et revenez me le dire."}, {"img": null, "son": "medias/formation-dea/t3-revenez.mp3", "mot": "Le « revenez me le dire » compte.", "dit": "Le revenez me le dire n'est pas une politesse : c'est ce qui vous confirme que l'appel a bien été fait."}, {"img": null, "son": "medias/formation-dea/t3-ordre2.mp3", "mot": "« Le DEA est dans le hall, à droite. Courez. »", "dit": "Le deuxième : vous, le défibrillateur est dans le hall d'entrée, à droite, près de la réception. Allez le chercher, courez."}, {"img": null, "son": "medias/formation-dea/t3-emplacement.mp3", "mot": "L'emplacement est dans l'ordre lui-même.", "dit": "L'emplacement fait partie de l'ordre. La personne à qui vous parlez ne le connaît peut-être pas."}], "seul": [{"img": null, "son": "medias/formation-dea/t3-hautparleur.mp3", "mot": "Seul ? Le 911, haut-parleur, par terre.", "dit": "Et si vous êtes seul ? Composez le neuf un un, mettez le haut-parleur, posez le téléphone par terre à côté de vous."}, {"img": null, "son": "medias/formation-dea/t3-pendant.mp3", "mot": "Comprimez pendant que vous parlez.", "dit": "Et commencez les compressions pendant que vous parlez. La répartitrice vous entendra très bien."}, {"img": null, "son": "medias/formation-dea/t3-tranche.mp3", "mot": "C'est elle qui tranche s'il faut partir.", "dit": "Si vous êtes vraiment seul et loin du hall, ne décidez pas tout seul de partir : dites-lui où vous êtes, et suivez ce qu'elle vous dit. C'est elle qui tranche s'il faut quitter la personne."}], "compressions-seules": [{"img": null, "son": "medias/formation-dea/t4-pasdebouche.mp3", "mot": "Pas de bouche-à-bouche.", "dit": "Pas de bouche-à-bouche. Pour un adulte, dans le grand public, les compressions seules sont ce qui est recommandé."}, {"img": null, "son": "medias/formation-dea/t4-oxygene.mp3", "mot": "Le sang contient encore de l'oxygène.", "dit": "Pendant les premières minutes, le sang en contient encore."}, {"img": null, "son": "medias/formation-dea/t4-circuler.mp3", "mot": "Ce qui manque, c'est de le faire circuler.", "dit": "Ce qui manque, ce n'est pas de l'air : c'est quelque chose pour le faire circuler. C'est exactement ce que font vos mains."}], "electrodes": [{"img": null, "son": "medias/formation-dea/t5-peau.mp3", "mot": "Peau contre peau.", "dit": "Dénudez-lui la poitrine. Le contact doit être peau contre peau : les électrodes ne fonctionnent pas à travers un vêtement."}, {"img": null, "son": "medias/formation-dea/t5-essuyer.mp3", "mot": "Mouillée ? Essuyez.", "dit": "Si la peau est mouillée, essuyez-la, avec n'importe quel tissu sec."}, {"img": null, "son": "medias/formation-dea/t5-ecarter.mp3", "mot": "Chaîne, armature, timbre : écartez.", "dit": "Écartez de la zone des électrodes ce qui gêne : une chaîne, un soutien-gorge à armature, un timbre de médicament collé sur la peau."}, {"img": null, "son": "medias/formation-dea/t5-dessin.mp3", "mot": "Suivez le dessin imprimé dessus.", "dit": "Collez les deux électrodes en suivant le dessin imprimé dessus : il montre exactement où les poser. Appuyez bien, pour chasser l'air."}], "ce-qu-il-fait": [{"img": null, "son": "medias/formation-dea/t5-deuxrythmes.mp3", "mot": "Il ne choque que deux rythmes.", "dit": "L'appareil lit le rythme du cœur, et il ne choque que deux rythmes précis : la fibrillation ventriculaire, et la tachycardie ventriculaire sans pouls."}, {"img": null, "son": "medias/formation-dea/t5-tremble.mp3", "mot": "Le cœur ne bat pas : il tremble, ou il s'emballe à vide.", "dit": "Dans ces deux cas, le cœur ne bat pas. Il tremble, ou il s'emballe à vide."}, {"img": null, "son": "medias/formation-dea/t5-remisezero.mp3", "mot": "Le choc n'est pas un coup de fouet, c'est une remise à zéro.", "dit": "Le choc ne redémarre pas un cœur arrêté à plat. Il fait le contraire : il arrête tout une fraction de seconde, pour que le cœur reparte de lui-même avec un rythme ordonné."}, {"img": null, "son": "medias/formation-dea/t5-aucunchoc.mp3", "mot": "« Aucun choc conseillé » ne veut pas dire « c'est fini ».", "dit": "Donc aucun choc conseillé ne veut jamais dire c'est fini. Ça veut dire que le choc ne sert à rien sur ce rythme-là. Vous reprenez les compressions immédiatement."}], "passation": [{"img": null, "son": "medias/formation-dea/t6-vu.mp3", "mot": "Ce que vous avez vu.", "dit": "Quand ils arrivent, dites-leur ce que vous avez vu. Elle s'est effondrée, elle ne répondait pas, elle ne respirait pas normalement. Et depuis combien de temps, à peu près."}, {"img": null, "son": "medias/formation-dea/t6-fait.mp3", "mot": "Ce que vous avez fait.", "dit": "Puis ce que vous avez fait. Compressions depuis environ six minutes, le défibrillateur a donné un choc."}, {"img": null, "son": "medias/formation-dea/t6-retirez.mp3", "mot": "Puis retirez-vous. Vous n'avez pas à rester.", "dit": "Puis retirez-vous. Vous n'avez pas à rester."}], "retenir": [{"img": null, "son": "medias/formation-dea/z9-dea.mp3", "mot": "Le DEA est au hall, à droite, près de la réception.", "dit": "Six lignes à retenir. Un : le défibrillateur est au hall d'entrée, à droite, près de la réception."}, {"img": null, "son": "medias/formation-dea/z9-signes.mp3", "mot": "Deux signes : elle ne répond pas, elle ne respire pas normalement.", "dit": "Deux : deux signes. Elle ne répond pas, elle ne respire pas normalement. Les halètements ne sont pas une respiration."}, {"img": null, "son": "medias/formation-dea/z9-deuxpers.mp3", "mot": "Deux personnes désignées, nommément.", "dit": "Trois : deux personnes désignées. Vous, appelez le neuf un un et revenez me le dire. Vous, le défibrillateur est au hall à droite, courez."}, {"img": null, "son": "medias/formation-dea/z9-comprimer.mp3", "mot": "Au milieu de la poitrine, 5 cm, 100 à 120 par minute.", "dit": "Quatre : comprimez au milieu de la poitrine, au moins cinq centimètres, cent à cent vingt fois par minute, sans bouche-à-bouche."}, {"img": null, "son": "medias/formation-dea/z9-ecoutez.mp3", "mot": "L'appareil parle : faites ce qu'il dit.", "dit": "Cinq : l'appareil parle, faites ce qu'il dit. Écartez-vous pour l'analyse et pour le choc."}, {"img": null, "son": "medias/formation-dea/z9-aucunchoc.mp3", "mot": "« Aucun choc conseillé » = reprenez tout de suite.", "dit": "Six : aucun choc conseillé veut dire reprenez les compressions tout de suite."}], "pour-finir": [{"img": null, "son": "medias/formation-dea/z9-remplace.mp3", "mot": "Ceci ne remplace pas une certification en RCR.", "dit": "Pour finir : cette formation ne remplace pas une certification en réanimation cardio-respiratoire."}, {"img": null, "son": "medias/formation-dea/z9-mannequin.mp3", "mot": "Quatre choses s'apprennent seulement sur un mannequin.", "dit": "Quatre choses s'apprennent seulement sur un mannequin, avec quelqu'un qui corrige : la profondeur réelle, le relâchement complet, la position exacte des mains, et ce que fait la fatigue à votre technique."}, {"img": null, "son": "medias/formation-dea/z9-uneheure.mp3", "mot": "Une heure y suffit. Demandez à votre employeur.", "dit": "Une heure y suffit. Côté travail, ces places sont souvent déjà budgétées : demandez à votre employeur."}], "apres": [{"img": null, "son": "medias/formation-dea/t6-secoue.mp3", "mot": "Vous avez le droit d'être secoué après.", "dit": "Un dernier point, et il compte autant que le reste. Vous avez le droit d'être secoué après."}, {"img": null, "son": "medias/formation-dea/t6-ordinaire.mp3", "mot": "C'est une réaction ordinaire à une chose qui ne l'est pas.", "dit": "Les mains qui tremblent, la nuit blanche, le fait d'y repenser pendant des jours : c'est une réaction ordinaire à une chose qui ne l'est pas. Parlez-en à quelqu'un. Si votre employeur a un programme d'aide, il est fait exactement pour ça."}, {"img": null, "son": "medias/formation-dea/t6-echoue.mp3", "mot": "Même bien faite, une réanimation échoue souvent.", "dit": "Et sachez-le d'avance : même bien faite, une réanimation échoue souvent. Cela ne veut pas dire que vous avez mal fait."}, {"img": null, "son": "medias/formation-dea/t6-chance.mp3", "mot": "Sans vous, il n'y avait aucune chance.", "dit": "Sans vous, il n'y avait aucune chance. Avec vous, il y en avait une."}], "relais": [{"img": null, "son": "medias/formation-dea/r6-continuer.mp3", "mot": "Vous continuez.", "dit": "Vous continuez. Vous ne vous arrêtez pas pour vérifier, vous ne vous arrêtez pas pour réfléchir."}, {"img": null, "son": "medias/formation-dea/r6-jusqu.mp3", "mot": "Jusqu'à ce qu'il bouge, ou qu'on vous remplace.", "dit": "Jusqu'à ce qu'il se remette à bouger ou à respirer normalement, ou jusqu'à ce que les secours vous remplacent."}, {"img": null, "son": "medias/formation-dea/r6-deux.mp3", "mot": "À deux, changez aux deux minutes.", "dit": "Si quelqu'un d'autre peut comprimer, relayez-vous toutes les deux minutes."}, {"img": null, "son": "medias/formation-dea/r6-fatigue.mp3", "mot": "Fatigué, on comprime moins fort sans le savoir.", "dit": "C'est mesuré : au bout de deux minutes, la fatigue fait perdre de la profondeur, et celui qui comprime ne s'en aperçoit pas."}], "designer-blanche": [{"img": null, "son": "medias/formation-dea/b3-jamais.mp3", "mot": "Ne dites jamais : « que quelqu'un appelle le 911 ».", "dit": "Ne dites jamais : que quelqu'un appelle le neuf un un. Dans un groupe, un ordre adressé à tout le monde n'est exécuté par personne."}, {"img": null, "son": "medias/formation-dea/b3-choisir.mp3", "mot": "Choisissez une personne. Regardez-la dans les yeux.", "dit": "Choisissez une personne, une seule, et regardez-la dans les yeux."}, {"img": null, "son": "medias/formation-dea/b3-doigt.mp3", "mot": "Désignez-la du doigt.", "dit": "Désignez-la du doigt, pour que tout le monde autour sache que c'est elle."}, {"img": null, "son": "medias/formation-dea/b3-ordre.mp3", "mot": "« Vous, appelez le 911, et revenez me le dire. »", "dit": "Et donnez-lui une tâche unique. Vous, appelez le neuf un un, et revenez me le dire. Puis la deuxième personne, pour le défibrillateur."}], "designer": [{"img": "medias/formation-dea/d3-choisir.jpg", "son": "medias/formation-dea/19-choisir.mp3", "mot": "Choisissez une personne.", "dit": "Ne dites jamais : que quelqu'un appelle le neuf un un. Choisissez une personne."}, {"img": "medias/formation-dea/d3-designer.jpg", "son": "medias/formation-dea/19-designer.mp3", "mot": "Désignez-la du doigt.", "dit": "Regardez-la dans les yeux, et désignez-la du doigt."}, {"img": "medias/formation-dea/d3-ordre.jpg", "son": "medias/formation-dea/19-ordre.mp3", "mot": "« Vous, appelez le 911. »", "dit": "Vous, appelez le neuf un un, et revenez me le dire. Une personne, une tâche."}, {"img": "medias/formation-dea/d3-choisir.jpg", "son": "medias/formation-dea/19-deuxieme.mp3", "mot": "Puis la deuxième, pour l'appareil.", "dit": "Puis vous en désignez une deuxième, pour aller chercher le défibrillateur."}]};
 var RETOURS = {"plan": "medias/formation-dea/ret-plan.mp3", "souffle-agonal": "medias/formation-dea/ret-souffle-agonal.mp3", "souffle-normal": "medias/formation-dea/ret-souffle-normal.mp3", "ordre-0": "medias/formation-dea/ret-ordre-0.mp3", "ordre-1": "medias/formation-dea/ret-ordre-1.mp3", "ordre-2": "medias/formation-dea/ret-ordre-2.mp3", "tempo-ok": "medias/formation-dea/ret-tempo-ok.mp3", "tempo-lent": "medias/formation-dea/ret-tempo-lent.mp3", "tempo-vite": "medias/formation-dea/ret-tempo-vite.mp3", "sequence": "medias/formation-dea/ret-sequence.mp3", "quiz-0": "medias/formation-dea/ret-quiz-0.mp3", "quiz-1": "medias/formation-dea/ret-quiz-1.mp3", "quiz-2": "medias/formation-dea/ret-quiz-2.mp3", "quiz-3": "medias/formation-dea/ret-quiz-3.mp3", "quiz-4": "medias/formation-dea/ret-quiz-4.mp3", "quiz-5": "medias/formation-dea/ret-quiz-5.mp3", "quiz-6": "medias/formation-dea/ret-quiz-6.mp3", "quiz-7": "medias/formation-dea/ret-quiz-7.mp3"};</script>
 
 <script>
@@ -2280,29 +2427,40 @@ var RETOURS = {"plan": "medias/formation-dea/ret-plan.mp3", "souffle-agonal": "m
       var bTexte = pan.querySelector('[data-texte]');
       var i = -1, joue = false, dessus = 0, attente = 0;
 
-      /* Les dix marques, au-dessus des mots de la diapositive du compteur.
-         Elles sont posées ICI et non dans le HTML : c'est la seule
-         diapositive qui en porte, et dix `<span>` écrits à la main dans la
-         source seraient dix occasions de se tromper de compte. */
-      /* Le compteur : un grand nombre, dix marques, puis les phrases. Posé
-         ICI et non dans le HTML — dix `<span>` écrits à la main seraient dix
-         occasions de se tromper de compte, et le nombre doit exister avant
-         que le chronomètre cherche à l'écrire. */
+      /* Les dix marques du compteur sont posées ICI et non dans le HTML : dix
+         `<span>` écrits à la main seraient dix occasions de se tromper de
+         compte, et elles doivent exister avant que le chronomètre cherche à
+         les éteindre. Elles portent leur numéro en `data-n` — le CSS l'écrit,
+         donc le chiffre ne peut pas se désaccorder de la marque. */
       if (pan.dataset.diapo === 'compteur') {
-        pan.querySelector('.diapo').classList.add('diapo--compteur');
-        var boite = document.createElement('div');
-        boite.className = 'compteur';
-        boite.innerHTML = '<div class="compteur__t">Ses chances de survie, maintenant</div>'
-          + '<div class="compteur__pc"><b id="minutesPc">100 %</b>'
-          + '<span>Le compteur tourne depuis qu\'il est tombé. Il n\'attend pas que '
-          + 'vous ayez fini de lire.</span></div>'
-          + '<div class="minutes" id="minutes"></div>';
-        for (var k = 0; k < 10; k++) boite.querySelector('.minutes').appendChild(document.createElement('span'));
-        mots.parentNode.insertBefore(boite, mots);
+        var boite = pan.querySelector('#minutes');
+        for (var k = 0; k < 10; k++) {
+          var marque = document.createElement('span');
+          marque.setAttribute('data-n', k + 1);
+          boite.appendChild(marque);
+        }
       }
+
+      /* LES À-CÔTÉS DE L'OUVERTURE — heure, déroulé, glose — viennent des
+         données et non du HTML : ils changent avec le texte, et une valeur de
+         contenu écrite dans la mise en page finit toujours par contredire
+         celle de la voix. Les panneaux qui n'en ont pas n'ont pas les
+         éléments : les trois recherches rendent null, et tout le reste du
+         module continue de fonctionner sans savoir que ça existe. */
+      var eHeure = pan.querySelector('[data-heure]');
+      var eSous = pan.querySelector('[data-sous]');
+      var eJalons = pan.querySelector('[data-jalons]');
+
       temps.forEach(function (x) {
-        var p = document.createElement('p'); p.textContent = x.mot; mots.appendChild(p);
+        var p = document.createElement('p');
+        p.innerHTML = (x.num ? '<span class="n">' + x.num + '</span>' : '')
+                    + '<span class="m">' + x.mot + '</span>'
+                    + (x.glose ? '<span class="g">' + x.glose + '</span>' : '');
+        mots.appendChild(p);
         var q = document.createElement('p'); q.innerHTML = x.dit; dit.appendChild(q);
+        if (eJalons && x.jalon) {
+          var j = document.createElement('p'); j.textContent = x.jalon; eJalons.appendChild(j);
+        }
       });
 
       /* Le plan entrant va sur la couche LIBRE, puis les opacités s'échangent :
@@ -2331,6 +2489,27 @@ var RETOURS = {"plan": "medias/formation-dea/ret-plan.mp3", "souffle-agonal": "m
           p.classList.toggle('vu', k <= n);
           p.classList.toggle('passe', k < n);
         });
+        if (eHeure) eHeure.textContent = temps[n].heure ? temps[n].heure + ' · cafétéria' : '';
+        if (eSous) eSous.textContent = temps[n].sous || '';
+        if (eJalons) [].forEach.call(eJalons.children, function (j, k) {
+          j.classList.toggle('faite', k <= n);
+        });
+        /* LES DIX BANDES SUIVENT LA DÉMONSTRATION, PAS LE CHRONOMÈTRE — et
+           c'est un revirement qu'il faut expliquer. Câblées sur le seul
+           chronomètre du module, elles étaient TOUTES VERTES sur cette
+           plaque : l'élève y arrive à sa première minute, et la diapositive
+           qui enseigne « dix minutes et il n'en reste plus » ne montrait
+           aucune minute perdue. Elle disait le contraire de sa phrase.
+           La première phrase perd la minute 1, les suivantes les perdent
+           toutes. Le chronomètre garde le dernier mot : `battre()` ne
+           descend jamais en dessous du temps réellement écoulé, donc les
+           bandes qu'on a vues s'éteindre ne se rallument pas. Le grand
+           pourcentage, lui, reste sur l'horloge — c'est le seul chiffre de
+           l'écran qui soit vrai. */
+        if (pan.dataset.diapo === 'compteur') {
+          window.__marquesDemo = (n === 0) ? 1 : 10;
+          if (window.__battre) window.__battre();
+        }
         if (!joue) return;
         clearTimeout(attente);
         var auMinuteur = function () {
@@ -2431,15 +2610,20 @@ var RETOURS = {"plan": "medias/formation-dea/ret-plan.mp3", "souffle-agonal": "m
          Un minuteur à elles aurait recommencé à zéro en arrivant sur la
          diapositive — et aurait dit le contraire de ce qu'elle enseigne : le
          temps ne repart pas parce qu'on arrive. */
-      var pc = document.getElementById('minutesPc');
-      if (pc) pc.textContent = Math.round(reste) + ' %';
       var m = document.getElementById('minutes');
-      if (m) {
-        var eteintes = Math.floor(s / 60);
-        for (var k = 0; k < m.children.length; k++)
-          m.children[k].classList.toggle('eteint', k < eteintes);
-      }
+      var eteintes = Math.max(Math.floor(s / 60), window.__marquesDemo || 0);
+      if (m) for (var k = 0; k < m.children.length; k++)
+        m.children[k].classList.toggle('eteint', k < eteintes);
+      /* LE NOMBRE DIT LA MÊME CHOSE QUE LES BANDES, et c'est une correction.
+         Il affichait le pourcentage du chronomètre du module : on lisait donc
+         « dix minutes, et il n'en reste plus » au-dessus de dix bandes rouges,
+         avec « 99 % » écrit dessous. Deux horloges sur un écran en font une
+         fausse. Le compte réel de l'élève n'a pas disparu pour autant — il est
+         dans la barre du haut, en permanence, depuis le premier panneau. */
+      var pc = document.getElementById('minutesPc');
+      if (pc) pc.textContent = Math.max(0, 100 - eteintes * 10) + ' %';
     }
+    window.__battre = battre;
     setInterval(battre, 200); battre();
 
     /* LA HAUTEUR DU PANNEAU. Le CSS part de deux valeurs de secours en rem ;
