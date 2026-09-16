@@ -1556,6 +1556,9 @@ section{border-top:1px solid var(--border);padding:var(--sp-8) 0;scroll-margin-t
 /* Le panneau qui montre un APPAREIL — le tracé du thorax. Pas de rembourrage :
    le bandeau, l'écran et les commandes se touchent, comme sur un moniteur. */
 .jeu--appareil{padding:0;overflow:hidden;background:var(--surface-card)}
+.jeu__intro{margin:0;padding:var(--sp-4) var(--sp-5);font-size:var(--fs-body-sm);
+   font-weight:var(--fw-semi);color:var(--text-body);line-height:1.45;max-width:64ch}
+@media (max-height:660px){ .jeu__intro{padding:var(--sp-3) var(--sp-4)} }
 .jeu--appareil .rangee--pied{padding:var(--sp-4) var(--sp-5);
    border-top:1px solid var(--border)}
 .jeu--appareil .mini--pied{padding:0 var(--sp-5) var(--sp-4);margin:0}
@@ -1570,6 +1573,12 @@ section{border-top:1px solid var(--border);padding:var(--sp-8) 0;scroll-margin-t
   .jeu--appareil .rangee--pied{padding:var(--sp-3) var(--sp-4)}
   .souffle{padding:var(--sp-2) var(--sp-4)}
   .jeu--appareil .verdict--pied{padding:var(--sp-3) var(--sp-4)}
+  /* La phrase d'introduction coûte une ligne, et elle la vaut : c'est elle
+     qui dit qu'on compare. C'est encore le tracé qui la paye — mesuré, le
+     verdict retombait sous la ligne de flottaison à 620 px de fenêtre. */
+  .trace{height:56px}
+  .jeu__intro{padding:var(--sp-2) var(--sp-4);font-size:var(--fs-meta);line-height:1.4}
+  .jeu--appareil .verdict--pied{font-size:var(--fs-ui-sm)}
 }
 .jeu--appareil .verdict--pied{margin:0;border-radius:0;border-top:1px solid var(--border)}
 .souffle__t{text-transform:uppercase;letter-spacing:var(--ls-label)}
@@ -2123,6 +2132,13 @@ body{background:var(--paper-100)}
 
 <article class="panneau" data-chap="s2" data-verrou="1" hidden>
 <div class="jeu jeu--appareil">
+    <!-- CE QU'ON VA ENTENDRE, DIT AVANT DE L'ENTENDRE. L'exercice s'ouvrait
+         sur un appareil noir et deux boutons : on cliquait pour voir ce que
+         ça faisait. Or comparer deux sons demande de savoir qu'on compare —
+         sans ça, le premier tracé n'est qu'un bruit, et c'est seulement au
+         second qu'on comprend l'exercice, trop tard pour le premier. -->
+    <p class="jeu__intro">Vous allez entendre la différence entre une respiration
+      normale et ce qu'on entend dans un arrêt cardiaque. Écoutez les deux.</p>
     <div class="souffle">
       <span class="souffle__t">Regardez la poitrine, et écoutez · dix secondes</span>
       <span id="souffle-etat">Choisissez un tracé. Montez le son.</span>
