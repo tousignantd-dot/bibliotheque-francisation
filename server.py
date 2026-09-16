@@ -16411,6 +16411,33 @@ def jeu_de_role_messages(historique, role_eleve, scenario_id="louer"):
 
 # ── Gestionnaire HTTP ────────────────────────────────────────────────────────
 
+
+# ── L'encodage annoncé, une fois pour toutes ────────────────────────────────
+#
+# `mimetypes.guess_type` rend « text/html » tout court. Servi tel quel, le
+# navigateur n'a rien qui lui dise comment lire les octets et retombe sur son
+# encodage hérité : un fichier UTF-8 sort alors en « Ã© ».
+#
+# Les pages du dépôt s'en sortaient parce qu'elles déclarent toutes un
+# `<meta charset>`. Celles qui l'oublient, non — c'est arrivé le 16 septembre
+# 2026 sur six pages d'activité déposées d'un coup, et le défaut ne se voit
+# ni dans le fichier ni dans les tests de chemins : seulement à l'écran.
+#
+# L'en-tête HTTP prime sur la balise, donc l'annoncer ici protège aussi les
+# fichiers futurs de ceux qui l'oublieront.
+_TEXTE_UTF8 = ("application/javascript", "application/json", "image/svg+xml",
+               "application/xml")
+
+
+def avec_charset(mime):
+    """Le type MIME, avec `charset=utf-8` quand c'est du texte."""
+    if not mime or "charset=" in mime:
+        return mime
+    if mime.startswith("text/") or mime in _TEXTE_UTF8:
+        return mime + "; charset=utf-8"
+    return mime
+
+
 class Handler(http.server.SimpleHTTPRequestHandler):
 
     def __init__(self, *args, **kwargs):
@@ -16418,6 +16445,11 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 
     def log_message(self, format, *args):
         pass  # silencieux
+
+    def guess_type(self, path):
+        # Tout ce que sert la classe de base passe par ici : c'est le seul
+        # endroit à tenir pour que l'encodage soit annoncé partout.
+        return avec_charset(super().guess_type(path))
 
     def end_headers(self):
         # Les pages HTML (activités, portail élève, admin) changent à chaque
@@ -16828,7 +16860,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if not file_path.exists() or not file_path.is_file():
             self.send_error(404)
             return
-        mime = mimetypes.guess_type(str(file_path))[0] or "application/octet-stream"
+        mime = avec_charset(
+            mimetypes.guess_type(str(file_path))[0] or "application/octet-stream")
         data = file_path.read_bytes()
         self.send_response(200)
         self.send_header("Content-Type", mime)
