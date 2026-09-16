@@ -1521,6 +1521,8 @@ section{border-top:1px solid var(--border);padding:var(--sp-8) 0;scroll-margin-t
          color:var(--text-body)}
 .verdict[data-etat="no"] b{color:var(--no-ink)}
 .verdict b{display:block;margin-bottom:var(--sp-1);font-weight:var(--fw-bold)}
+/* Un verdict sans texte ne laisse pas un cadre coloré vide. */
+.verdict:empty{display:none}
 
 /* ── Le tracé de la respiration ───────────────────────────────────────────
    La maquette l'encadre : bandeau encre en haut, tracé au milieu, commandes
@@ -3453,14 +3455,20 @@ var RETOURS = {"souffle-agonal": "medias/formation-dea/ret-souffle-agonal.mp3", 
     el('aiguille').style.left = Math.max(0, Math.min(100, pc(bpm))) + '%';
     if (frappes.length === 9) {
       if (bpm >= 100 && bpm <= 120) {
-        /* AUCUNE VOIX SUR CETTE PLAQUE, et c'est la seule du module dans ce
-           cas. Les trois rétroactions avaient leur clip : une voix qui se
-           superpose au métronome, sur le seul exercice dont tout l'objet est
-           d'ENTENDRE un rythme. On écoute le clic, ou on écoute quelqu'un
-           parler du clic — pas les deux. Le texte reste, court, à lire. */
-        verdict('v-tempo', 'ok', 'Dans la plage.',
-          ' C’est le rythme. Retenez la sensation plutôt que le chiffre : le jour ' +
-          'où vous comprimerez, il n’y aura pas de cadran.');
+        /* RIEN À DIRE QUAND C'EST JUSTE. Le repère est dans la cible, on le
+           voit : un message pour l'annoncer double une information déjà
+           lisible, et il arrive au pire moment — pendant qu'on frappe.
+           On ne félicite pas non plus : la cadence n'est pas une note.
+           MAIS LE VERROU DOIT SE LEVER. Il se lève sur l'apparition d'un
+           `data-etat`, observé par le contrôleur ; on pose donc l'attribut
+           sur un verdict VIDE, et le CSS efface les verdicts vides. Le
+           mécanisme reste intact, il ne rend simplement plus rien à voir.
+           AUCUNE VOIX NON PLUS, ici ni dans les deux cas suivants : une voix
+           qui se superpose au métronome, sur le seul exercice dont tout
+           l'objet est d'entendre un rythme. */
+        var vT = el('v-tempo');
+        vT.innerHTML = '';
+        vT.setAttribute('data-etat', 'ok');
       } else {
         verdict('v-tempo', 'no', bpm < 100 ? 'Trop lent.' : 'Trop rapide.',
           bpm < 100
