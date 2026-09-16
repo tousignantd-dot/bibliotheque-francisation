@@ -1526,7 +1526,17 @@ section{border-top:1px solid var(--border);padding:var(--sp-8) 0;scroll-margin-t
    La maquette l'encadre : bandeau encre en haut, tracé au milieu, commandes
    en bas, le tout dans une seule boîte. Un tracé posé nu au milieu d'une
    page ne se lit pas comme un appareil.                                   */
-.trace{width:100%;height:170px;display:block;background:#0B0D0F;border:0;border-radius:0}
+/* LE TRACÉ CÈDE LA HAUTEUR, PAS LES BOUTONS. À 170 px fixes, l'exercice
+   dépassait du panneau sur un portable : le tracé et son bandeau tenaient,
+   les réponses partaient sous la ligne de flottaison. Or on ne peut pas
+   répondre à ce qu'on ne voit pas, et rien ne dit qu'il faut faire défiler
+   une carte.
+   C'est le tracé qui rétrécit parce que c'est lui qui peut : ce qu'il faut y
+   reconnaître n'est pas une amplitude mais un RYTHME — l'espacement entre les
+   secousses, leur brusquerie. Un tracé moins haut dit la même chose ; un
+   bouton hors de l'écran ne dit plus rien. */
+.trace{width:100%;height:clamp(78px,14vh,160px);display:block;background:#0B0D0F;
+       border:0;border-radius:0}
 .souffle{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-4);
        flex-wrap:wrap;padding:var(--sp-3) var(--sp-5);background:var(--ink-900);color:#fff;
        font-size:var(--fs-label);font-weight:var(--fw-black);
@@ -1547,6 +1557,18 @@ section{border-top:1px solid var(--border);padding:var(--sp-8) 0;scroll-margin-t
 .jeu--appareil .rangee--pied{padding:var(--sp-4) var(--sp-5);
    border-top:1px solid var(--border)}
 .jeu--appareil .mini--pied{padding:0 var(--sp-5) var(--sp-4);margin:0}
+/* Sur un écran court, la note sur le son synthétisé s'efface : elle explique
+   la fabrication, elle n'aide pas à répondre. */
+@media (max-height:720px){ .jeu--appareil .mini--pied{display:none} }
+/* Et sur les écrans vraiment courts, tout se resserre d'un cran. La mesure
+   qui a décidé ces valeurs : la RÉTROACTION arrive APRÈS la réponse et ajoute
+   sa propre hauteur — un exercice qui tient juste avant de répondre déborde
+   au moment où il explique pourquoi. On laisse la place du verdict. */
+@media (max-height:660px){
+  .jeu--appareil .rangee--pied{padding:var(--sp-3) var(--sp-4)}
+  .souffle{padding:var(--sp-2) var(--sp-4)}
+  .jeu--appareil .verdict--pied{padding:var(--sp-3) var(--sp-4)}
+}
 .jeu--appareil .verdict--pied{margin:0;border-radius:0;border-top:1px solid var(--border)}
 .souffle__t{text-transform:uppercase;letter-spacing:var(--ls-label)}
 
@@ -2943,7 +2965,12 @@ var RETOURS = {"souffle-agonal": "medias/formation-dea/ret-souffle-agonal.mp3", 
     taireLeReste();
     voixRetour.src = src;
     var p = voixRetour.play();
-    if (p && p.catch) p.catch(function () { b.textContent = '▶ Écouter'; });
+    /* Si la lecture est refusée — onglet sans geste, son coupé — le bouton
+       dit « Réécouter » et non « Écouter » : c'est le MÊME bouton que celui
+       des diapositives, à côté, qui dit « Écouter ». Deux boutons au libellé
+       identique dans la même barre, commandant deux sons différents, c'est
+       une seule façon de se tromper de trop. */
+    if (p && p.catch) p.catch(function () { b.textContent = '▶ Réécouter'; });
   }
 
   /* ═══ 2 · Le tracé de la respiration ═══════════════════════════════════
