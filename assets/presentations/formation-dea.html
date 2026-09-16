@@ -1634,14 +1634,31 @@ section{border-top:1px solid var(--border);padding:var(--sp-8) 0;scroll-margin-t
 .obj__c p+p{margin-top:var(--sp-3)}
 
 /* ── Le simulateur en encart ──────────────────────────────────────────── */
-.cadre-sim{border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;
-           background:var(--surface-sunken);margin-top:var(--sp-5)}
-.cadre-sim iframe{display:block;width:100%;height:min(70vh,720px);border:0;
+/* LA SIMULATION PREND TOUT L'ÉCRAN. Elle vivait dans un cadre de 70 % de la
+   hauteur, au milieu du panneau, avec la barre du module au-dessus et le pied
+   en dessous : on jouait une urgence dans une fenêtre, entouré d'un
+   chronomètre, d'un menu et d'un bouton « Continuer ». Trois façons de sortir
+   d'une scène dont tout l'intérêt est qu'on n'en sorte pas.
+   ELLE N'A QU'UNE SORTIE, ET ELLE EST PÂLE. Un bouton « Fermer » discret en
+   bas à droite : il doit être trouvable, pas tentant. Rien d'autre ne
+   subsiste du module pendant qu'on joue. */
+.cadre-sim{position:fixed;inset:0;z-index:200;background:var(--surface-card);
+           display:flex;flex-direction:column}
+.cadre-sim iframe{display:block;flex:1;width:100%;height:100%;border:0;
            background:var(--surface-card)}
-.cadre-sim__bas{padding:var(--sp-3) var(--sp-5);font-size:var(--fs-ui-sm);
-           font-weight:var(--fw-semi);color:var(--text-muted);
-           border-top:1px solid var(--border);display:flex;gap:var(--sp-4);
-           align-items:center;flex-wrap:wrap}
+.cadre-sim__bas{position:absolute;right:var(--sp-5);bottom:var(--sp-5);
+           display:flex;gap:var(--sp-3);align-items:center;z-index:2}
+.cadre-sim__quoi{font-size:var(--fs-meta);font-weight:var(--fw-semi);
+           color:var(--text-muted);background:rgba(255,255,255,.88);
+           padding:.35em .8em;border-radius:var(--r-pill)}
+@media (max-width:52rem){ .cadre-sim__quoi{display:none} }
+.fermer-sim{border:1px solid var(--border);border-radius:var(--r-pill);
+           background:rgba(255,255,255,.88);color:var(--text-muted);
+           font-family:var(--font-sans);font-size:var(--fs-ui-sm);
+           font-weight:var(--fw-bold);padding:.5em 1.1em;min-height:var(--tap-min);
+           cursor:pointer;transition:var(--transition)}
+.fermer-sim:hover{color:var(--text-strong);border-color:var(--ink-900);
+           background:var(--surface-card)}
 .passages{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));
           gap:var(--sp-3);margin:var(--sp-5) 0}
 .passe{text-align:left;padding:var(--sp-4) var(--sp-5);border-radius:var(--r-md);
@@ -2442,10 +2459,8 @@ body{background:var(--paper-100)}
     <iframe id="sim" title="Simulateur de défibrillateur"
             allow="microphone; autoplay"></iframe>
     <div class="cadre-sim__bas">
-      <span id="sim-quoi"></span>
-      <span class="barre__vide" style="flex:1"></span>
-      <a class="bt" id="sim-neuf" href="simdea-vous.html" target="_blank"
-         rel="noopener">Ouvrir en pleine page ↗</a>
+      <span class="cadre-sim__quoi" id="sim-quoi"></span>
+      <button class="fermer-sim" type="button" id="sim-fermer">Fermer</button>
     </div>
   </div>
 </article>
@@ -3519,8 +3534,11 @@ var RETOURS = {"souffle-agonal": "medias/formation-dea/ret-souffle-agonal.mp3", 
       el('sim').src = 'about:blank';
       setTimeout(function () { el('sim').src = PIECE; }, 30);
       el('sim-quoi').textContent = QUOI[id];
-      el('sim-neuf').href = PIECE;
-      el('cadre-sim').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      /* Plus de `scrollIntoView` : la scène est en plein écran, il n'y a plus
+         nulle part où aller. En revanche on EMPÊCHE la page dessous de
+         défiler pendant qu'on joue — sinon un glissement de doigt déplace un
+         module qu'on ne voit pas. */
+      document.body.style.overflow = 'hidden';
       faite(8);
     });
   });
@@ -3529,10 +3547,27 @@ var RETOURS = {"souffle-agonal": "medias/formation-dea/ret-souffle-agonal.mp3", 
      propre horloge : la laisser tourner derrière soi, c'est le même bruit
      inexplicable que le souffle, en plus long. Elle n'a pas de reprise — on la
      relance d'un bouton, et c'est une séquence qui se fait d'un trait. */
+  function fermerSim() {
+    if (el('cadre-sim').hidden) return;
+    el('sim').src = 'about:blank';
+    el('cadre-sim').hidden = true;
+    document.body.style.overflow = '';
+    Array.prototype.forEach.call(document.querySelectorAll('[data-sim]'), function (x) {
+      x.setAttribute('aria-pressed', 'false');
+    });
+  }
+  el('sim-fermer').addEventListener('click', fermerSim);
+  /* Échap ferme aussi : c'est le geste qu'on fait sans réfléchir devant une
+     chose qui remplit l'écran, et ne pas l'écouter donne l'impression d'être
+     coincé. */
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') fermerSim();
+  });
   el('cadre-sim').closest('.panneau').addEventListener('panneau:quitte', function () {
     if (el('cadre-sim').hidden) return;
     el('sim').src = 'about:blank';
     el('cadre-sim').hidden = true;
+    document.body.style.overflow = '';
     Array.prototype.forEach.call(document.querySelectorAll('[data-sim]'), function (x) {
       x.setAttribute('aria-pressed', 'false');
     });
