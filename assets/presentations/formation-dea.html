@@ -1893,6 +1893,12 @@ body{background:var(--paper-100)}
     <div class="cmdBarre" id="cmdBarre" hidden>
       <button class="bt" type="button" id="jouerG">▶ Écouter</button>
       <button class="bt" type="button" id="texteG" aria-expanded="false">Lire le texte</button>
+      <!-- La réécoute d'une rétroaction. Elle vivait DANS la carte de
+           rétroaction, sous le texte : le bouton poussait la carte vers le
+           bas et repoussait le reste de l'exercice. Toutes les commandes de
+           son du module sont ici, à côté du menu — il n'y a plus de raison
+           qu'une seule vive ailleurs. -->
+      <button class="bt" type="button" id="retourG" hidden>▶ Réécouter</button>
     </div>
     <div class="chrono" aria-label="Le temps depuis l'effondrement">
       <span class="chrono__t" id="chrono">0:00</span>
@@ -2572,7 +2578,15 @@ var RETOURS = {"souffle-agonal": "medias/formation-dea/ret-souffle-agonal.mp3", 
        par-dessus le « ❚❚ Pause » de celui qui arrive. */
     var bJouer = document.getElementById('jouerG');
     var bTexte = document.getElementById('texteG');
+    /* CE SONT LES BOUTONS QUI SE CACHENT, PAS LA BARRE. Elle porte maintenant
+       aussi la réécoute des rétroactions, qui apparaît sur des panneaux où il
+       n'y a pas de diapositive : cacher le conteneur aurait emporté l'un avec
+       l'autre. Un conteneur en `flex` dont tous les enfants sont cachés
+       n'occupe rien. */
     var cmdBarre = document.getElementById('cmdBarre');
+    cmdBarre.hidden = false;
+    function montrerLecture(oui) { bJouer.hidden = !oui; bTexte.hidden = !oui; }
+    montrerLecture(false);
     var actif = null;
     bJouer.addEventListener('click', function () { if (actif) actif.jouer(); });
     bTexte.addEventListener('click', function () { if (actif) actif.texte(); });
@@ -2750,7 +2764,7 @@ var RETOURS = {"souffle-agonal": "medias/formation-dea/ret-souffle-agonal.mp3", 
 
       pan.addEventListener('panneau:entre', function () {
         precharger();
-        actif = moi; cmdBarre.hidden = false;
+        actif = moi; montrerLecture(true);
         i = -1; dit.hidden = true;
         bTexte.setAttribute('aria-expanded', 'false'); bTexte.textContent = 'Lire le texte';
         [].forEach.call(mots.children, function (p) { p.className = ''; });
@@ -2764,7 +2778,7 @@ var RETOURS = {"souffle-agonal": "medias/formation-dea/ret-souffle-agonal.mp3", 
         /* La barre perd ses commandes en sortant d'une diapositive : sur un
            panneau de texte ou un exercice, « Écouter » ne commanderait rien
            et un bouton qui ne fait rien est pire qu'un bouton absent. */
-        if (aMoi()) { actif = null; cmdBarre.hidden = true; }
+        if (aMoi()) { actif = null; montrerLecture(false); }
       });
 
       /* LE PREMIER PANNEAU N'EST JAMAIS « ENTRÉ » : il est là au chargement,
@@ -2780,7 +2794,7 @@ var RETOURS = {"souffle-agonal": "medias/formation-dea/ret-souffle-agonal.mp3", 
           mots.children[0].classList.add('vu'); i = 0;
           /* Le premier panneau n'entre jamais : il faut lui donner la barre
              à la main, sinon le module s'ouvre sans bouton pour écouter. */
-          actif = moi; cmdBarre.hidden = false;
+          actif = moi; montrerLecture(true);
         }
       }
     });
@@ -2880,17 +2894,19 @@ var RETOURS = {"souffle-agonal": "medias/formation-dea/ret-souffle-agonal.mp3", 
     v.innerHTML = '<b>' + titre + '</b>' + corps;
     var src = (typeof RETOURS !== 'undefined' && quoi) ? RETOURS[quoi] : null;
     if (!src) return;
-    /* Un bouton pour réécouter, et pour couper : la rétroaction se lit aussi,
-       et quelqu'un qui préfère lire doit pouvoir arrêter la voix. */
-    var b = document.createElement('button');
-    b.type = 'button'; b.className = 'bt'; b.style.marginTop = '.75rem';
+    /* Le bouton de réécoute est celui de la BARRE. Créé dans la carte, il
+       s'ajoutait sous le texte, allongeait la carte et repoussait la suite de
+       l'exercice — et il changeait de place à chaque rétroaction. Là-haut,
+       il est toujours au même endroit, et la carte ne contient plus que ce
+       qu'on doit lire. */
+    var b = document.getElementById('retourG');
+    b.hidden = false;
     b.textContent = '❚❚ Arrêter';
-    b.addEventListener('click', function () {
+    b.onclick = function () {
       if (voixRetour.paused) { voixRetour.play(); b.textContent = '❚❚ Arrêter'; }
       else { voixRetour.pause(); b.textContent = '▶ Réécouter'; }
-    });
+    };
     voixRetour.onended = function () { b.textContent = '▶ Réécouter'; };
-    v.appendChild(b);
     taireLeReste();
     voixRetour.src = src;
     var p = voixRetour.play();
@@ -3261,17 +3277,18 @@ var RETOURS = {"souffle-agonal": "medias/formation-dea/ret-souffle-agonal.mp3", 
       if (reponseAttendue === 'agonal') {
         verdict('v-souffle', juste ? 'ok' : 'no',
           juste ? 'Oui — ce n’était pas une respiration.' : 'Non. Ce n’était pas une respiration.',
-          ' Deux ou trois soubresauts en vingt secondes, avec de longs silences entre ' +
-          'eux : c’est de la respiration agonale. Une personne qui respire vraiment ' +
-          'le fait douze à vingt fois par minute, régulièrement. Ici, vous appelez le ' +
-          '911 et vous comprimez.', 'souffle-agonal');
+          /* L'ÉCRAN RÉSUME, LA VOIX DÉVELOPPE. Le texte affiché reprenait mot
+             pour mot celui du clip : quatre lignes sous un tracé, à lire
+             pendant qu'on les entend. On garde à l'écran ce qui doit rester
+             sous les yeux — le chiffre et la conduite — et la voix garde
+             l'explication. */
+          ' Deux ou trois soubresauts en vingt secondes. Une vraie respiration : ' +
+          'douze à vingt fois par minute, régulièrement.', 'souffle-agonal');
       } else {
         verdict('v-souffle', juste ? 'ok' : 'no',
           juste ? 'Oui — elle respirait.' : 'Non, elle respirait.',
-          ' Un mouvement régulier, sans à-coups, plus d’une dizaine de fois par ' +
-          'minute. Cette personne-là n’a pas besoin de compressions : mettez-la sur ' +
-          'le côté, restez avec elle et appelez le 911. Le doute se tranche sur la ' +
-          'RÉGULARITÉ, pas sur le bruit.', 'souffle-normal');
+          ' Régulier, sans à-coups. Pas de compressions : sur le côté, ' +
+          'restez avec elle, appelez le 911.', 'souffle-normal');
       }
       faite(2);
     });
@@ -3776,6 +3793,12 @@ var RETOURS = {"souffle-agonal": "medias/formation-dea/ret-souffle-agonal.mp3", 
       entrant.setAttribute('data-sens', arriere ? 'arriere' : 'avant');
       courant = n;
       vus[entrant.dataset.chap] = true;
+      /* La réécoute d'une rétroaction ne suit pas d'un panneau à l'autre :
+         elle appartient à la réponse qu'on vient de donner. Sans ça, le
+         bouton restait dans la barre sur l'écran suivant et rejouait une
+         explication qui ne concernait plus rien. */
+      var bRet = el('retourG');
+      if (bRet) { bRet.hidden = true; bRet.onclick = null; }
       try { localStorage.setItem(CLE, String(n)); } catch (e) {}
       majRail(); majPied();
       window.scrollTo(0, 0);
