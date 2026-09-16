@@ -1,0 +1,304 @@
+<title>Énigme — La laveuse numéro 3</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;0,800;0,900;1,600&display=swap">
+<style>
+  /* Jetons du système de design Francisation (ds-bundle).
+     Impression noir et blanc, 8,5 x 11, une feuille autonome par page. */
+  :root{
+    --font-sans:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --white:#FFFFFF; --paper-50:#FBFBFA; --paper-100:#F7F7F5;
+    --line-100:#EAEAE8; --line-300:#D6D6D2;
+    --ink-900:#17181A; --ink-700:#3A3D40; --ink-400:#6E7175;
+    --green-800:#07734A; --green-600:#0A8F5B; --green-100:#E6F5EE;
+    --warn-bg:#FEF6E7; --warn-line:#D9880B; --warn-ink:#8A5206;
+    --surface-page:var(--paper-100); --surface-card:var(--white);
+    --surface-sunken:var(--paper-50);
+    --text-strong:var(--ink-900); --text-body:var(--ink-700); --text-muted:var(--ink-400);
+    --border:var(--line-100); --accent:var(--green-600); --accent-ink:var(--green-800);
+    --sec:var(--green-600);
+    --ls-label:0.12em; --ls-title:-0.015em;
+    --fw-medium:600; --fw-semi:700; --fw-bold:800; --fw-black:900;
+    --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:20px; --sp-6:24px; --sp-8:32px;
+    --r-sm:10px; --r-pill:999px;
+  }
+  body{background:var(--surface-page); color:var(--text-strong);
+       font-family:var(--font-sans); font-weight:var(--fw-medium);
+       line-height:1.5; margin:0; -webkit-font-smoothing:antialiased;}
+  p{margin:0;}
+  h2{margin:0; font-size:23px; font-weight:var(--fw-black); letter-spacing:var(--ls-title);}
+  h3{margin:0; font-size:11px; font-weight:var(--fw-bold);
+     letter-spacing:var(--ls-label); text-transform:uppercase; color:var(--text-muted);}
+
+  .feuille{
+    background:var(--surface-card); width:7.5in; max-width:100%;
+    margin:0 auto var(--sp-8); padding:var(--sp-6);
+    display:flex; flex-direction:column; gap:10px;
+  }
+  header{border-bottom:2px solid var(--sec); padding-bottom:var(--sp-2);
+         display:flex; align-items:flex-end; justify-content:space-between; gap:var(--sp-4);}
+  .surtitre{margin:0; font-size:10.5px; font-weight:var(--fw-bold);
+            letter-spacing:var(--ls-label); text-transform:uppercase; color:var(--sec);}
+  .role{font-size:11px; font-weight:var(--fw-bold); letter-spacing:var(--ls-label);
+        text-transform:uppercase; border:2px solid var(--sec); color:var(--sec);
+        padding:2px 10px; border-radius:var(--r-pill); white-space:nowrap;}
+  .consigne{font-size:12px; color:var(--text-body);}
+  .protocole{font-size:10.5px; color:var(--text-muted);}
+
+  .bloc{border:1px solid var(--border); border-radius:var(--r-sm); padding:10px var(--sp-3);
+        display:flex; flex-direction:column; gap:var(--sp-2); break-inside:avoid;}
+  .bloc.plein{background:var(--surface-sunken);}
+  .grille2{display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-3);}
+  .grille3{display:grid; grid-template-columns:repeat(3,1fr); gap:var(--sp-3);}
+
+  ul{list-style:none; margin:0; padding:0;}
+  ul.mots{display:flex; flex-wrap:wrap; gap:5px;}
+  ul.mots li{font-size:14px; font-weight:var(--fw-semi); line-height:1.45;
+             background:var(--white); border:1px solid var(--border);
+             border-radius:var(--r-pill); padding:1px 9px;}
+  ul.phrases{display:flex; flex-direction:column; gap:4px; font-size:13px; color:var(--text-body);}
+  ul.phrases li{position:relative; padding-left:14px; line-height:1.4;}
+  ul.phrases li::before{content:"»"; position:absolute; left:0; color:var(--sec); font-weight:var(--fw-bold);}
+  ul.phrases em, .dial em{font-style:italic; font-weight:var(--fw-semi); color:var(--text-strong);}
+
+  .fiche-perso{font-size:12.5px; display:flex; flex-direction:column; gap:3px;}
+  .fiche-perso b{font-size:14px; font-weight:var(--fw-black);}
+  .fiche-perso span{color:var(--text-body);}
+
+  table{border-collapse:collapse; width:100%; font-size:12.5px;}
+  th{text-align:left; font-size:10.5px; letter-spacing:var(--ls-label);
+     text-transform:uppercase; color:var(--text-muted); font-weight:var(--fw-bold);
+     border-bottom:1px solid var(--border); padding:3px 6px 3px 0;}
+  td{padding:3px 6px 3px 0; border-bottom:1px solid var(--border); vertical-align:top;}
+  td b{font-weight:var(--fw-bold);}
+  /* Tableaux que l'élève remplit à la main : il lui faut de la hauteur. */
+  table.ecrire td{padding-top:6px; padding-bottom:6px;}
+
+  .trou{display:inline-block; min-width:1.5in; border-bottom:1px solid var(--ink-400);}
+  .trou.court{min-width:0.9in;}
+  .dial{font-size:12.5px; color:var(--text-body); display:flex; flex-direction:column; gap:3px;}
+  .dial b{color:var(--text-strong); font-weight:var(--fw-bold);}
+
+  .avis{background:var(--warn-bg); border:1px solid var(--warn-line); border-radius:var(--r-sm);
+        padding:6px var(--sp-3); font-size:11.5px; color:var(--warn-ink);}
+  .avis b{font-weight:var(--fw-bold);}
+  .secours{border-top:1px solid var(--border); padding-top:6px;
+           display:flex; flex-direction:column; gap:4px; margin-top:auto;}
+  .secours h3{color:var(--accent-ink);}
+  .secours p{display:flex; flex-wrap:wrap; gap:2px var(--sp-3); font-size:11.5px; color:var(--text-body);}
+  .secours span{white-space:nowrap;}
+  .secours span::after{content:" ·"; color:var(--text-muted);}
+  .secours span:last-child::after{content:"";}
+
+  .corrige header{border-bottom-width:4px;}
+  .corrige .role{border-width:3px;}
+  .note{font-size:12px; color:var(--text-body);}
+  .note b{font-weight:var(--fw-bold); color:var(--text-strong);}
+
+  @media print{
+    @page{ size:8.5in 11in portrait; margin:0.45in 0.5in; }
+    :root{
+      --surface-page:#FFFFFF; --surface-card:#FFFFFF; --surface-sunken:#FFFFFF;
+      --sec:#000000; --accent:#000000; --accent-ink:#000000;
+      --text-strong:#000000; --text-body:#1A1A1A; --text-muted:#4A4A4A;
+      --border:#B4B4B4; --line-300:#8C8C8C;
+      --warn-bg:#FFFFFF; --warn-line:#000000; --warn-ink:#000000;
+    }
+    .feuille{width:auto; padding:0; margin:0; break-after:page; page-break-after:always;}
+    .feuille:last-child{break-after:auto; page-break-after:auto;}
+  }
+</style>
+
+<div class="feuille">
+  <header>
+    <div>
+      <p class="surtitre">Énigme · L'immeuble · Décrire une personne</p>
+      <h2>La laveuse numéro 3</h2>
+    </div>
+    <span class="role">Élève A — l'immeuble</span>
+  </header>
+  <p class="consigne">Un sac de linge est resté dans la buanderie de l'immeuble. Une note est
+    collée sur la porte. À qui est le sac? Vous connaissez l'<b>immeuble</b> : les appartements,
+    les jours de lavage et les animaux. Votre partenaire connaît le <b>travail</b> des voisins.
+    Ni vous ni lui ne pouvez trouver seuls.</p>
+  <p class="protocole">À deux, sans se montrer les feuilles. Posez des questions, éliminez les
+    voisins un à un, et écrivez le nom à la fin.</p>
+
+  <div class="bloc plein">
+    <h3>La note sur la porte — vous avez la même tous les deux</h3>
+    <div class="dial">
+      <p><b>Bonjour!</b></p>
+      <p>J'ai oublié mon sac de linge dans la <b>laveuse numéro 3</b>, <b>mardi soir</b>.</p>
+      <p>Dans le sac, il y a un <b>chandail de travail bleu</b> et une <b>couverture pour mon chien</b>.</p>
+      <p>Je travaille <b>la nuit</b>. Je vais passer le chercher après mon quart, vers minuit.</p>
+      <p>Merci beaucoup! — Votre voisin ou votre voisine</p>
+    </div>
+  </div>
+
+  <div class="bloc">
+    <h3>L'immeuble — cinq voisins</h3>
+    <table>
+      <tr><th style="width:26%">Voisin</th><th style="width:30%">Appartement</th><th style="width:22%">Jour de lavage</th><th>Animal</th></tr>
+      <tr><td><b>M. Duval</b></td><td>app. 2, rez-de-chaussée</td><td>le lundi</td><td>aucun</td></tr>
+      <tr><td><b>M. Bah</b></td><td>app. 3, premier étage</td><td>le samedi</td><td>un chien</td></tr>
+      <tr><td><b>Mme Ortega</b></td><td>app. 5, deuxième étage</td><td>le mardi</td><td>un chien</td></tr>
+      <tr><td><b>M. Tremblay</b></td><td>app. 7, troisième étage</td><td>le mardi</td><td>un chat</td></tr>
+      <tr><td><b>Mme Nguyen</b></td><td>app. 8, troisième étage</td><td>le mardi</td><td>un chien</td></tr>
+    </table>
+  </div>
+
+  <div class="bloc">
+    <h3>Votre enquête</h3>
+    <table class="ecrire">
+      <tr><th style="width:26%">Voisin</th><th>Pourquoi ce n'est pas lui / elle</th></tr>
+      <tr><td>M. Duval</td><td></td></tr>
+      <tr><td>M. Bah</td><td></td></tr>
+      <tr><td>Mme Ortega</td><td></td></tr>
+      <tr><td>M. Tremblay</td><td></td></tr>
+      <tr><td>Mme Nguyen</td><td></td></tr>
+      <tr><td><b>Le sac est à</b></td><td></td></tr>
+    </table>
+  </div>
+
+  <div class="bloc">
+    <h3>Pour parler</h3>
+    <ul class="mots">
+      <li>Il lave son linge quel jour?</li><li>Est-ce qu'elle a un chien?</li>
+      <li>Il habite à quel étage?</li><li>au rez-de-chaussée</li><li>au premier étage</li>
+      <li>au deuxième</li><li>au troisième</li><li>Il n'a pas d'animal</li>
+      <li>Ce n'est pas lui, parce que…</li><li>C'est impossible</li><li>Alors, c'est…</li>
+      <li>toujours</li><li>seulement</li><li>jamais</li>
+    </ul>
+  </div>
+
+  <div class="secours">
+    <h3>Quand ça bloque</h3>
+    <p><span>Peux-tu répéter, s'il te plaît?</span><span>Plus lentement.</span><span>Comment ça
+      s'écrit?</span><span>C'est quel étage?</span><span>Je recommence.</span></p>
+  </div>
+</div>
+
+<div class="feuille">
+  <header>
+    <div>
+      <p class="surtitre">Énigme · Le travail · Décrire une personne</p>
+      <h2>La laveuse numéro 3</h2>
+    </div>
+    <span class="role">Élève B — le travail</span>
+  </header>
+  <p class="consigne">Un sac de linge est resté dans la buanderie de l'immeuble. Une note est
+    collée sur la porte. À qui est le sac? Vous connaissez le <b>travail</b> des cinq voisins.
+    Votre partenaire connaît l'<b>immeuble</b>. Ni vous ni lui ne pouvez trouver seuls.</p>
+  <p class="protocole">À deux, sans se montrer les feuilles. Posez des questions, éliminez les
+    voisins un à un, et écrivez le nom à la fin.</p>
+
+  <div class="bloc plein">
+    <h3>La note sur la porte — vous avez la même tous les deux</h3>
+    <div class="dial">
+      <p><b>Bonjour!</b></p>
+      <p>J'ai oublié mon sac de linge dans la <b>laveuse numéro 3</b>, <b>mardi soir</b>.</p>
+      <p>Dans le sac, il y a un <b>chandail de travail bleu</b> et une <b>couverture pour mon chien</b>.</p>
+      <p>Je travaille <b>la nuit</b>. Je vais passer le chercher après mon quart, vers minuit.</p>
+      <p>Merci beaucoup! — Votre voisin ou votre voisine</p>
+    </div>
+  </div>
+
+  <div class="bloc">
+    <h3>Le travail des cinq voisins</h3>
+    <table>
+      <tr><th style="width:26%">Voisin</th><th style="width:30%">Métier</th><th style="width:22%">Horaire</th><th>Vêtement de travail</th></tr>
+      <tr><td><b>M. Duval</b></td><td>retraité</td><td>il ne travaille pas</td><td>aucun</td></tr>
+      <tr><td><b>M. Bah</b></td><td>chauffeur d'autobus</td><td>la nuit</td><td>un chandail bleu</td></tr>
+      <tr><td><b>Mme Ortega</b></td><td>infirmière</td><td>le jour</td><td>un uniforme blanc</td></tr>
+      <tr><td><b>M. Tremblay</b></td><td>mécanicien</td><td>la nuit</td><td>un chandail bleu</td></tr>
+      <tr><td><b>Mme Nguyen</b></td><td>préposée à l'entretien</td><td>la nuit</td><td>un chandail bleu</td></tr>
+    </table>
+  </div>
+
+  <div class="bloc">
+    <h3>Votre enquête</h3>
+    <table class="ecrire">
+      <tr><th style="width:26%">Voisin</th><th>Pourquoi ce n'est pas lui / elle</th></tr>
+      <tr><td>M. Duval</td><td></td></tr>
+      <tr><td>M. Bah</td><td></td></tr>
+      <tr><td>Mme Ortega</td><td></td></tr>
+      <tr><td>M. Tremblay</td><td></td></tr>
+      <tr><td>Mme Nguyen</td><td></td></tr>
+      <tr><td><b>Le sac est à</b></td><td></td></tr>
+    </table>
+  </div>
+
+  <div class="bloc">
+    <h3>Pour parler</h3>
+    <ul class="mots">
+      <li>Qu'est-ce qu'il fait?</li><li>Elle travaille le jour ou la nuit?</li>
+      <li>Il porte quoi pour travailler?</li><li>un chandail bleu</li><li>un uniforme blanc</li>
+      <li>retraité</li><li>un quart de nuit</li><li>Elle ne travaille pas la nuit</li>
+      <li>Ce n'est pas elle, parce que…</li><li>C'est impossible</li><li>Alors, c'est…</li>
+    </ul>
+  </div>
+
+  <div class="secours">
+    <h3>Quand ça bloque</h3>
+    <p><span>Peux-tu répéter, s'il te plaît?</span><span>Plus lentement.</span><span>Comment ça
+      s'écrit?</span><span>Il fait quoi, déjà?</span><span>Je recommence.</span></p>
+  </div>
+</div>
+
+<div class="feuille corrige">
+  <header>
+    <div>
+      <p class="surtitre">Énigme · Niveau 3 · LAN-3039-6</p>
+      <h2>La laveuse numéro 3</h2>
+    </div>
+    <span class="role">Corrigé</span>
+  </header>
+
+  <div class="bloc plein">
+    <h3>Le sac est à Mme Nguyen, appartement 8</h3>
+    <p class="note">Quatre indices dans la note : <b>mardi</b>, <b>un chien</b>, <b>un chandail bleu</b>,
+      <b>la nuit</b>. Les deux premiers sont sur la feuille A, les deux autres sur la feuille B.</p>
+    <table>
+      <tr><th style="width:22%">Voisin</th><th style="width:48%">Ce qui l'élimine</th><th>Feuille</th></tr>
+      <tr><td><b>M. Duval</b></td><td>il lave son linge <b>le lundi</b>, pas le mardi — et il est retraité</td><td>A</td></tr>
+      <tr><td><b>M. Bah</b></td><td>chien, nuit et chandail bleu, oui — mais il lave <b>le samedi</b></td><td>A</td></tr>
+      <tr><td><b>Mme Ortega</b></td><td>mardi et un chien, oui — mais <b>uniforme blanc</b> et elle travaille <b>le jour</b></td><td>B</td></tr>
+      <tr><td><b>M. Tremblay</b></td><td>mardi, nuit et chandail bleu, oui — mais il a <b>un chat</b></td><td>A</td></tr>
+      <tr><td><b>Mme Nguyen</b></td><td>mardi · un chien · chandail bleu · elle travaille la nuit</td><td><b>les deux</b></td></tr>
+    </table>
+  </div>
+
+  <div class="bloc">
+    <h3>Pourquoi personne ne peut trouver seul</h3>
+    <ul class="phrases">
+      <li>Avec la <em>feuille A seule</em> : mardi + un chien laisse <em>Mme Ortega et Mme Nguyen</em>. Deux réponses possibles.</li>
+      <li>Avec la <em>feuille B seule</em> : chandail bleu + la nuit laisse <em>M. Bah, M. Tremblay et Mme Nguyen</em>. Trois réponses possibles.</li>
+      <li>Ensemble, il ne reste que <em>Mme Nguyen</em>. C'est le croisement des deux moitiés qui tranche — donc il faut se parler.</li>
+    </ul>
+  </div>
+
+  <div class="bloc">
+    <h3>Ce qu'on écoute — intentions du programme</h3>
+    <ul class="phrases">
+      <li><em>Décrire une personne ou un objet</em> et <em>comprendre cette description</em> — Relations sociales.</li>
+      <li><em>Prendre en note une information simple</em> — la note de la buanderie, situation Emploi.</li>
+      <li>Le lexique des <em>professions</em> et de la <em>routine quotidienne</em>, prescrit au niveau 3.</li>
+      <li>Les <em>étages</em> et les nombres ordinaux : rez-de-chaussée, premier, deuxième, troisième.</li>
+    </ul>
+  </div>
+
+  <div class="bloc">
+    <h3>Erreur prévisible</h3>
+    <p class="note">« Il travaille <b>dans</b> la nuit », calque fréquent. La forme attendue est
+      <b>la nuit</b>, <b>le jour</b>, sans préposition — et elle revient à chaque élimination,
+      donc l'atelier la fait entendre dix fois.</p>
+    <p class="note">Deuxième piège : M. Bah coche trois indices sur quatre. Les dyades pressées
+      s'arrêtent sur lui. Leur faire relire la note ligne par ligne — <b>mardi soir</b> est écrit
+      dès la première phrase.</p>
+  </div>
+
+  <div class="bloc">
+    <h3>Si vous enchaînez avec « Le sac rouge »</h3>
+    <p class="note">Même mécanique, deux moitiés qui ne suffisent pas l'une sans l'autre. Faites
+      celle-ci <b>en deuxième</b> : elle demande une élimination de plus et le vocabulaire du
+      travail, qui est moins familier que celui des loisirs.</p>
+  </div>
+</div>
