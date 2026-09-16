@@ -1573,66 +1573,47 @@ section{border-top:1px solid var(--border);padding:var(--sp-8) 0;scroll-margin-t
    et une zone de frappe en timbre-poste. La maquette empile : le cadran
    d'abord, la zone de frappe en pleine largeur dessous. Elle a raison même
    sans la contrainte : on frappe en regardant le cadran, pas à côté. */
-.tempo{display:grid;grid-template-columns:1fr;gap:var(--sp-5)}
-.tempo .rangee{margin-bottom:var(--sp-3)}
-/* Le cadran passe EN PREMIER. On frappe en le regardant : le mettre sous la
-   zone de frappe obligeait à baisser les yeux entre deux coups, ce qui est
-   exactement ce que l'exercice demande de ne pas faire. */
-.tempo>div:last-child{order:-1}
-/* 120 px, pas 96 : à 96 la valeur centrale et la graduation du bas se
-   chevauchaient — « par minute » passait par-dessus « 100 » et « 120 ». */
-/* LE CADRAN EST UNE CARTE, comme celles de l'ouverture — fond creusé, grand
-   rayon, pas de filet. Il flottait dans un rectangle blanc sur un panneau
-   blanc : on ne voyait que ses graduations, et la plage verte semblait posée
-   sur rien.
-   LA PLAGE PREND LE VERT DU PANNEAU, en teinte. C'est la même couleur que
-   « cette minute est encore vivante » sur la plaque du compte, et elle dit ici
-   la même chose : tant qu'on est dans cette bande, on tient la cadence. Deux
-   couleurs dans le module, et celle-ci est à sa place. */
-.cadran{position:relative;height:140px;border-radius:var(--r-lg);
-        background:var(--paper-100);border:0;overflow:hidden}
-.cadran__plage{position:absolute;top:0;bottom:0;background:var(--dea-vert-pale);
-               border-left:2px solid var(--dea-vert);border-right:2px solid var(--dea-vert)}
-.cadran__aig{position:absolute;top:0;bottom:0;width:3px;background:var(--dea-rouge);
-             left:0;transition:left 120ms linear;opacity:0}
-.cadran__aig.vue{opacity:1}
-/* Les graduations sont posées à leur VRAIE position, pas réparties : avec un
-   simple space-between, « 100 » et « 120 » tombaient loin des bords de la plage
-   recommandée, et le cadran affirmait le contraire de ce qu'il montrait. */
-/* Les graduations sont posées à leur VRAIE position. Les deux du bout se
-   calent sur le bord au lieu d'être centrées : à 0 % et 100 %, un
-   `translateX(-50%)` en met la moitié hors du cadran, et le cadre étant en
-   `overflow:hidden`, « 160 » se retrouvait coupé en deux. */
-.cadran__ech span{position:absolute;bottom:4px;font-size:var(--fs-meta);
-                  font-weight:var(--fw-bold);color:var(--text-muted);
-                  transform:translateX(-50%)}
-.cadran__ech span:first-child{transform:none}
-.cadran__ech span:last-child{transform:translateX(-100%)}
-.cadran__val{position:absolute;top:50%;left:50%;transform:translate(-50%,-62%);
-             font-variant-numeric:tabular-nums;font-size:40px;
-             font-weight:var(--fw-black);letter-spacing:-.03em;color:var(--text-strong)}
-.cadran__val small{font-size:var(--fs-meta);display:block;text-align:center;
-                   color:var(--text-muted);font-weight:var(--fw-bold);
-                   letter-spacing:var(--ls-label);text-transform:uppercase}
-/* LA ZONE DE FRAPPE EST UNE CIBLE. C'était un rectangle en pointillé gris,
-   dans les tons du fond : la chose sur laquelle tout l'exercice repose se
-   lisait comme un emplacement vide. Elle devient un aplat VERT — celui du
-   panneau — parce que c'est le geste qui garde la personne du côté vivant,
-   et parce que ce vert n'existe nulle part ailleurs sur ce panneau : on ne
-   peut pas se tromper de cible.
-   ELLE NE PORTE PAS DE PETIT TEXTE : le blanc sur ce vert ne mesure que
-   3,54:1. Son libellé est en gros et en gras, au-dessus du plancher où le
-   contraste compte. */
-.frappe{width:100%;min-height:170px;padding:var(--sp-6);
-        font-size:clamp(17px,2vw,24px);font-weight:var(--fw-black);
-        letter-spacing:-.01em;border-radius:var(--r-lg);border:0;
-        background:var(--dea-vert);color:#FBEEDC;cursor:pointer;
+/* ── La cadence ───────────────────────────────────────────────────────────
+   Une colonne, dans l'ordre où l'on s'en sert : ce qu'on obtient, où ça tombe,
+   comment l'entendre, où frapper. Le cadran était à droite et la zone de
+   frappe à gauche — il fallait traverser l'écran des yeux entre deux coups,
+   ce que l'exercice demande justement de ne pas faire.                      */
+.tempo{display:flex;flex-direction:column;gap:var(--sp-4)}
+.cadence{display:flex;align-items:baseline;gap:var(--sp-3);flex-wrap:wrap}
+.cadence__n{font-variant-numeric:tabular-nums;font-size:clamp(46px,7vw,78px);
+      font-weight:var(--fw-black);letter-spacing:-.05em;line-height:.85;
+      color:var(--text-strong)}
+.cadence__l{font-size:var(--fs-body-sm);font-weight:var(--fw-bold);color:var(--text-muted)}
+
+/* LA PISTE. Un rail creusé, la cible en pastille verte posée dessus, le
+   repère en trait sombre. La cible n'est pas une zone colorée dans un cadre :
+   c'est un OBJET sur le rail, et on voit tout de suite si le trait est dedans
+   ou dehors. */
+.piste{position:relative;height:14px;border-radius:var(--r-pill);
+      background:var(--paper-100);margin:var(--sp-1) 0}
+.piste__cible{position:absolute;top:-3px;bottom:-3px;border-radius:var(--r-pill);
+      background:var(--dea-vert-pale);border:1.5px solid var(--dea-vert)}
+.piste__aig{position:absolute;top:-6px;bottom:-6px;width:4px;border-radius:2px;
+      background:var(--ink-900);left:0;opacity:0;transition:left 120ms linear}
+.piste__aig.vue{opacity:1}
+.cadran__ech{display:none}
+
+/* LA ZONE DE FRAPPE. Elle reste un cadre en pointillé et non un aplat : c'est
+   une SURFACE À FRAPPER, pas un bouton à presser une fois, et un aplat de
+   couleur au milieu d'un panneau blanc tirait l'œil pendant qu'on doit
+   regarder le nombre. Elle est grande — la cible, ici, c'est sa taille. */
+.frappe{width:100%;min-height:150px;padding:var(--sp-6);
+        font-size:clamp(16px,1.8vw,20px);font-weight:var(--fw-black);
+        border-radius:var(--r-lg);border:2px dashed var(--line-300);
+        background:var(--paper-100);color:var(--text-muted);cursor:pointer;
         font-family:var(--font-sans);user-select:none;
-        transition:transform 90ms var(--ease),filter var(--transition)}
-.frappe:hover{filter:brightness(1.06)}
-/* Le retour au doigt : elle s'enfonce. Un changement de couleur seul se voit
-   mal quand on frappe deux fois par seconde en regardant le cadran. */
-.frappe:active{transform:scale(.985);filter:brightness(.92)}
+        transition:transform 90ms var(--ease),border-color var(--transition),
+                   color var(--transition),background var(--transition)}
+.frappe:hover{border-color:var(--dea-vert);color:var(--text-strong)}
+/* Le retour au doigt : elle s'enfonce ET se teinte. Un seul des deux se voit
+   mal quand on frappe deux fois par seconde en regardant ailleurs. */
+.frappe:active{transform:scale(.99);border-color:var(--dea-vert);
+        background:var(--dea-vert-pale);color:var(--text-strong)}
 @media (prefers-reduced-motion:reduce){ .frappe:active{transform:none} }
 
 /* ── L'ordre des gestes ───────────────────────────────────────────────── */
@@ -2200,28 +2181,31 @@ body{background:var(--paper-100)}
 
 <article class="panneau" data-chap="s4" data-verrou="1" hidden>
 <div class="jeu">
-    <div class="jeu__t">Le rythme · 100 à 120 par minute</div>
+    <div class="jeu__t">Le rythme</div>
+    <!-- LA MESURE EN UNE LIGNE, PUIS UNE PISTE. Le cadran était une boîte de
+         140 px avec sa valeur au centre et quatre graduations : on lisait un
+         appareil de mesure au lieu de lire un chiffre. Ce qu'on doit voir en
+         frappant tient en deux choses — le nombre, et si le repère est dans
+         la cible. Les graduations sont remplacées par le libellé qui les
+         résume : « cible 100–120 ». -->
     <div class="tempo">
-      <div>
-        <div class="rangee">
-          <button class="b b--plein" type="button" id="metro">▶ Entendre la cadence</button>
-          <button class="b" type="button" id="metro-stop" disabled>Arrêter</button>
-        </div>
-        <p class="mini" style="margin-top:.75rem">Un clic à 110 par minute — le milieu
-          de la plage. Écoutez-le une fois, puis frappez avec, à droite, sans le
-          regarder.</p>
-        <button class="frappe" id="frappe" type="button">Frappez ici,<br>avec le rythme</button>
+      <div class="cadence">
+        <span class="cadence__n" id="bpm">—</span>
+        <span class="cadence__l">par minute · cible 100–120</span>
       </div>
-      <div>
-        <p class="carte__st" style="margin:0 0 var(--sp-2)">Votre cadence</p>
-        <div class="cadran" id="cadran">
-          <div class="cadran__plage" id="plage"></div>
-          <div class="cadran__aig" id="aiguille"></div>
-          <div class="cadran__val"><span id="bpm">—</span><small>par minute</small></div>
-          <div class="cadran__ech" id="ech"></div>
-        </div>
-        <div class="verdict" id="v-tempo"></div>
+      <div class="piste" id="cadran">
+        <div class="piste__cible" id="plage"></div>
+        <div class="piste__aig" id="aiguille"></div>
+        <div class="cadran__ech" id="ech" hidden></div>
       </div>
+      <div class="rangee">
+        <button class="b b--plein" type="button" id="metro">▶ Entendre la cadence</button>
+        <button class="b" type="button" id="metro-stop" disabled>Arrêter</button>
+      </div>
+      <button class="frappe" id="frappe" type="button">Frappez ici avec le rythme</button>
+      <p class="mini">Un clic à 110 par minute — le milieu de la plage. Écoutez-le une
+        fois, puis frappez avec, sans le regarder.</p>
+      <div class="verdict" id="v-tempo"></div>
     </div>
   </div>
 
