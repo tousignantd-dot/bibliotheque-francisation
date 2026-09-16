@@ -1358,6 +1358,18 @@ section{border-top:1px solid var(--border);padding:var(--sp-8) 0;scroll-margin-t
 .minutes span.eteint{background:var(--dea-rouge)}
 .minutes span.eteint:nth-child(n+5){background:#CC1308}
 .minutes span.eteint:nth-child(n+8){background:#AE0F05}
+/* LE REPÈRE DES SECOURS. Un filet pointillé crème au DÉBUT de la huitième
+   minute — pas au milieu de la bande : ce qu'il marque est un INSTANT, celui
+   où l'ambulance franchit la porte, et un instant tombe entre deux minutes.
+   Il apparaît pendant que le front avance encore : on voit donc la perte
+   passer devant lui, ce qui est exactement l'argument de la plaque. */
+.secours{position:absolute;top:0;bottom:0;left:70%;width:0;
+      border-left:3px dashed #FBEEDC;z-index:2;pointer-events:none;
+      opacity:0;transition:opacity 500ms var(--ease)}
+.secours[data-vu="1"]{opacity:1}
+.secours b{position:absolute;top:var(--sp-5);left:8px;white-space:nowrap;
+      padding:.25em .6em;border-radius:var(--r-pill);background:#FBEEDC;
+      color:var(--dea-rouge-encre);font-size:var(--fs-meta);font-weight:var(--fw-black)}
 .ouv__sur{position:absolute;inset:0;display:grid;grid-template-rows:auto 1fr auto;
       padding:clamp(16px,2.6vw,36px);pointer-events:none}
 .ouv__st{margin:0;font-size:var(--fs-label);font-weight:var(--fw-black);
@@ -2578,6 +2590,7 @@ var RETOURS = {"souffle-agonal": "medias/formation-dea/ret-souffle-agonal.mp3", 
          compte, et elles doivent exister avant que le chronomètre cherche à
          les éteindre. Elles portent leur numéro en `data-n` — le CSS l'écrit,
          donc le chiffre ne peut pas se désaccorder de la marque. */
+      var secours = null, balayage = null, front = 1;
       if (pan.dataset.diapo === 'compteur') {
         var boite = pan.querySelector('#minutes');
         for (var k = 0; k < 10; k++) {
@@ -2585,6 +2598,34 @@ var RETOURS = {"souffle-agonal": "medias/formation-dea/ret-souffle-agonal.mp3", 
           marque.setAttribute('data-n', k + 1);
           boite.appendChild(marque);
         }
+        secours = document.createElement('div');
+        secours.className = 'secours';
+        secours.innerHTML = '<b>Les secours arrivent ici</b>';
+        boite.parentNode.appendChild(secours);
+      }
+
+      /* LE FRONT AVANCE, IL NE SAUTE PLUS. Les dix minutes se perdaient d'un
+         coup à la deuxième phrase : on lisait le résultat, on ne voyait pas
+         la perte. Une minute toutes les six cents millisecondes — six
+         secondes pour les neuf qui restent — c'est assez lent pour qu'on
+         suive le bord rouge des yeux, assez court pour ne pas attendre.
+         Le balayage ne s'arrête PAS quand la phrase suivante arrive : il
+         continue pendant qu'on dit « les secours mettent huit à dix
+         minutes », et le front passe devant le repère pointillé. C'est la
+         seule façon de montrer que l'un arrive après l'autre. */
+      function poserFront(v) {
+        window.__marquesDemo = v;
+        if (window.__battre) window.__battre();
+      }
+      function balayer() {
+        if (balayage || front >= 10) return;
+        balayage = setInterval(function () {
+          front++; poserFront(front);
+          if (front >= 10) { clearInterval(balayage); balayage = null; }
+        }, 600);
+      }
+      function arreterBalayage() {
+        if (balayage) { clearInterval(balayage); balayage = null; }
       }
 
       /* LES À-CÔTÉS DE L'OUVERTURE — heure, déroulé, glose — viennent des
@@ -2653,8 +2694,12 @@ var RETOURS = {"souffle-agonal": "medias/formation-dea/ret-souffle-agonal.mp3", 
            pourcentage, lui, reste sur l'horloge — c'est le seul chiffre de
            l'écran qui soit vrai. */
         if (pan.dataset.diapo === 'compteur') {
-          window.__marquesDemo = (n === 0) ? 1 : 10;
-          if (window.__battre) window.__battre();
+          if (n === 0) { arreterBalayage(); front = 1; poserFront(1); }
+          else balayer();
+          /* Le repère paraît à la troisième phrase, celle qui parle des
+             secours — pas avant : un pointillé sans explication n'est qu'un
+             trait. */
+          if (secours) secours.setAttribute('data-vu', n >= 2 ? '1' : '0');
         }
         if (!joue) return;
         clearTimeout(attente);
@@ -2715,6 +2760,7 @@ var RETOURS = {"souffle-agonal": "medias/formation-dea/ret-souffle-agonal.mp3", 
       });
       pan.addEventListener('panneau:quitte', function () {
         arreter();
+        arreterBalayage();
         /* La barre perd ses commandes en sortant d'une diapositive : sur un
            panneau de texte ou un exercice, « Écouter » ne commanderait rien
            et un bouton qui ne fait rien est pire qu'un bouton absent. */
