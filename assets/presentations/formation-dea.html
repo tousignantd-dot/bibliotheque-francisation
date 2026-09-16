@@ -888,7 +888,8 @@ a.btn, a.btn:hover, a.btn:visited { text-decoration: none; }
          jamais de petit texte blanc : il est réservé au panneau et aux
          aplats de mesure, où les lettres sont énormes ou absentes. */
   --dea-vert:        #3E9B5F;
-  --dea-vert-pale:   #E7F3EB;   /* la teinte du vert, autorisée le 15 sept. */
+  --dea-vert-pale:   #E7F3EB;
+  --dea-vert-encre:  #2E7A49;   /* 5,3:1 sur blanc — le vert qui porte du texte */   /* la teinte du vert, autorisée le 15 sept. */
   --dea-rouge:       #E8190A;
   --dea-rouge-encre: #C51308;
   --dea-rouge-pale:  #FDE9E7;
@@ -1237,54 +1238,46 @@ section{border-top:1px solid var(--border);padding:var(--sp-8) 0;scroll-margin-t
 .carte__leg{margin:0;font-size:var(--fs-body-sm);font-weight:var(--fw-semi);
       color:var(--text-muted);line-height:1.4}
 
-/* 01 · LE PANNEAU. À gauche l'objet et trois chiffres, à droite la parole.
-   La carte d'accent est ambrée parce que c'est la couleur de la MACHINE ;
-   le panneau, lui, reste vert et rouge — c'est un objet du monde, et on
-   apprend à reconnaître celui qu'on croisera. */
-/* LES DEUX CARTES SONT ÉGALES. La colonne de droite valait une fois et
-   demie celle de gauche, héritage de la maquette où la gauche portait aussi
-   trois tuiles de chiffres. Elles sont parties, le panneau est seul : deux
-   objets de même poids demandent deux cases de même taille. */
-.diapo--ouv1{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
-/* LE PANNEAU EST VERT, ET IL EST GRAND. Deux corrections d'un coup, le
-   15 septembre 2026.
-   LA COULEUR : la version précédente était le panneau pâle à filet rouge.
-   Celui qu'on croise réellement est VERT PLEIN, lettres et cœur crème, cadre
-   blanc. C'est le seul objet vert du module, et c'est justement pour ça qu'il
-   l'est : le vert dit « c'est accroché ici », l'ambre dit « c'est ça ».
-   LA TAILLE : les trois tuiles de chiffres sont retirées. Elles annonçaient
-   « 1 situation · 2 signes · 4 parties » — un sommaire, sur l'écran dont le
-   seul travail est de faire RECONNAÎTRE un objet. Elles prenaient le tiers de
-   la colonne à la seule chose qu'on est venu regarder. La carte descend
-   maintenant jusqu'en bas, et le panneau y tient la place qu'il mérite. */
-.carte--signe{align-items:center;text-align:center;justify-content:center;
-      gap:var(--sp-5)}
-/* IL RÉTRÉCIT AVEC SA CARTE. Posé à une largeur fixe dans une colonne
-   flexible, le panneau gardait ses 340 px et se faisait couper en bas :
-   « AED » disparaissait, c'est-à-dire la moitié de ce qu'on doit
-   reconnaître. `flex:0 1 auto` + `min-height:0` l'autorisent à céder. */
-.signe{width:min(46vh,340px);max-width:100%;max-height:100%;aspect-ratio:1;
-      flex:0 1 auto;min-height:0}
+/* 01 · LE PANNEAU. Le nom à gauche, l'objet à droite, sur du blanc — refait
+   le 15 septembre 2026 d'après une maquette. Rien d'autre sur l'écran : son
+   seul travail est de faire reconnaître une chose et de la nommer.
+   LE SUR-TITRE EST VERT, MAIS PAS DU VERT DU PANNEAU. Sur blanc, #3E9B5F ne
+   mesure que 3,5:1 — assez pour un aplat de 340 px, pas pour des capitales de
+   13 px. Il prend une encre verte plus sombre, à 5,3:1. Même couleur, deux
+   valeurs, selon ce qu'elle doit porter.
+   LE HALO remplace l'ombre portée. Une ombre poserait le panneau sur une
+   surface ; ici il n'y en a pas, il est seul sur du papier. Le halo dit
+   « ça éclaire » au lieu de « c'est posé ».                                */
+.diapo--ouv1{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);
+      align-items:center;gap:clamp(20px,4vw,64px);padding:clamp(16px,3vw,48px)}
+.ouv1__mot{display:flex;flex-direction:column;gap:var(--sp-4);min-width:0}
+.ouv1__st{margin:0;font-family:var(--mono,ui-monospace),monospace;
+      font-size:var(--fs-meta);font-weight:var(--fw-black);letter-spacing:.16em;
+      text-transform:uppercase;color:var(--dea-vert-encre)}
+/* LES PHRASES PAS ENCORE DITES NE PRENNENT PAS DE PLACE. Elles sont là,
+   invisibles — `opacity:0` n'enlève rien à la mise en page — et les trois
+   réservaient 600 px de haut : le bloc de texte occupait toute la scène et
+   sa première phrase se retrouvait collée en haut, loin du centre où le
+   panneau, lui, est centré. Ici elles apparaissent l'une après l'autre : le
+   bloc grandit, et il reste centré à chaque étape. */
+.diapo--ouv1 .diapo__mots{gap:var(--sp-4)}
+.diapo--ouv1 .diapo__mots p:not(.vu){display:none}
+.diapo--ouv1 .diapo__mots p{color:var(--text-strong);
+      font-size:clamp(28px,4.4vw,58px);line-height:1.02;letter-spacing:-.03em}
+.diapo--ouv1 .diapo__mots p.dite{font-size:clamp(16px,1.8vw,22px);line-height:1.35;
+      color:var(--text-muted);font-weight:var(--fw-bold);letter-spacing:0}
+.diapo--ouv1 .diapo__mots p b{font-weight:var(--fw-black);color:var(--dea-vert-encre)}
+.ouv1__signe{position:relative;display:grid;place-items:center;min-width:0}
+.ouv1__signe::before{content:"";position:absolute;width:min(90%,420px);aspect-ratio:1;
+      border-radius:50%;background:radial-gradient(circle,rgba(62,155,95,.22),transparent 70%)}
+.signe{position:relative;width:min(52vh,380px);max-width:100%;max-height:100%;
+      aspect-ratio:1;flex:0 1 auto;min-height:0;border-radius:12px}
 .signe rect.fond{fill:var(--dea-vert)}
-.signe rect.filet{fill:none;stroke:#FBEEDC;stroke-width:8}
-.signe path.coeur{fill:#FBEEDC}
+.signe rect.filet{fill:none;stroke:#fff;stroke-width:8}
+.signe path.coeur{fill:#fff}
 .signe path.eclair{fill:var(--dea-vert)}
-.signe text{fill:#FBEEDC;font-family:var(--font-sans);font-weight:900;
+.signe text{fill:#fff;font-family:var(--font-sans);font-weight:900;
       text-anchor:middle;letter-spacing:.02em}
-/* LA CARTE D'ACCENT DOIT ÊTRE PLUS SPÉCIFIQUE QUE LA CARTE TOUT COURT.
-   Écrite `.carte--accent`, elle perdait contre `.diapo--ouv .carte` — un
-   sélecteur de plus. La carte restait blanche, et comme son texte est blanc,
-   la première plaque du module s'ouvrait sur un rectangle vide. Le troisième
-   accident de cascade de cette refonte, et toujours le même signalement :
-   aucun. */
-.diapo--ouv1 .carte--accent{background:var(--accent-ink)}
-.diapo--ouv1 .diapo__mots p{color:#fff;font-size:clamp(20px,2.8vw,40px);line-height:1.06}
-.diapo--ouv1 .diapo__mots p.dite{font-size:clamp(15px,1.7vw,21px);line-height:1.35;
-      color:rgba(255,255,255,.88);font-weight:var(--fw-bold)}
-.diapo--ouv1 .diapo__mots p b{font-weight:var(--fw-black);color:#fff}
-.diapo--ouv1 .diapo__mots p .m{font-size:inherit;font-weight:inherit;color:inherit}
-.diapo--ouv2 .diapo__mots p .m,.diapo--ouv3 .diapo__mots p .m{
-      font-size:inherit;font-weight:inherit;color:inherit}
 
 /* 02 · MIDI. Le récit à gauche, le dessin et le déroulé à droite. C'est ici
    que les deux remises se trompaient : elles remplaçaient la scène par un
@@ -1930,7 +1923,16 @@ body{background:var(--paper-100)}
          2026 : l'écran a un seul travail, faire reconnaître un objet, et deux
          lignes de texte à côté invitent à lire au lieu de regarder. L'endroit
          où il est accroché est enseigné plus loin, à sa place. -->
-    <div class="carte carte--signe">
+    <!-- LE TEXTE À GAUCHE, LE PANNEAU À DROITE, ET PLUS DE CARTES. Cette
+         plaque ne montre qu'UNE chose : un objet, et son nom. Deux cartes
+         posées côte à côte y mettaient deux cadres autour de rien — la
+         grammaire à cartes sert quand il y a plusieurs contenus à séparer,
+         et il n'y en a qu'un ici. -->
+    <div class="ouv1__mot">
+      <p class="ouv1__st">Avant de commencer · 25 min</p>
+      <div class="diapo__mots"></div>
+    </div>
+    <div class="ouv1__signe">
       <svg class="signe" viewBox="0 0 200 200" role="img" aria-label="Panneau DEA — défibrillateur externe automatisé">
     <rect class="fond" x="0" y="0" width="200" height="200" rx="6"/>
     <rect class="filet" x="14" y="14" width="172" height="172" rx="6"/>
@@ -1949,7 +1951,6 @@ body{background:var(--paper-100)}
     <text x="100" y="172" font-size="34">AED</text>
   </svg>
     </div>
-    <div class="carte carte--accent"><div class="diapo__mots"></div></div>
     <div class="diapo__dit" hidden></div>
   </div>
   <h1 class="u-visually-hidden">Défibrillateur — formation en milieu de travail</h1>
