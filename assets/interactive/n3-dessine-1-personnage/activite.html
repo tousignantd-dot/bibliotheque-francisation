@@ -178,6 +178,7 @@
     section{border-left-color:#000000 !important;}
 
   }
+  .onglets{display:none;}
 </style>
 
 <div class="container">
@@ -277,7 +278,7 @@ const SCHEMAS = {
  *  Les cinq fiches. Libellés français repris des fiches sources.
  * ------------------------------------------------------------------ */
 const FICHES = [
-  {
+{
     id:"personnage", onglet:"Le personnage", titre:"Le personnage",
     surtitre:"Vêtements · couleurs · porter",
     groupes:[
@@ -313,136 +314,6 @@ const FICHES = [
       "Ses cheveux sont <em>courts et bruns</em>.",
       "<em>Dans sa main droite</em>, il tient un parapluie.",
       "Il ne porte pas de souliers : il porte <em>des bottes</em>."
-    ]
-  },
-  {
-    id:"paysage", onglet:"Le paysage", titre:"Le paysage",
-    surtitre:"Il y a · prépositions de lieu",
-    groupes:[
-      {titre:"Dans le ciel", sec:"acier-600", soft:"acier-100", type:"img", items:[
-        ["le soleil","le-soleil"],["un nuage","un-nuage"],["la lune","la-lune"],
-        ["un oiseau","un-oiseau"],["un avion","un-avion"],["un arc-en-ciel","un-arc-en-ciel"],
-        ["la pluie","la-pluie"]
-      ]},
-      {titre:"Sur la terre", sec:"violet-600", soft:"violet-100", type:"img", items:[
-        ["une montagne","une-montagne"],["une colline","une-colline"],["un arbre","un-arbre"],
-        ["un sapin","un-sapin"],["une maison","une-maison"],["une grange","une-grange"],
-        ["une clôture","une-cloture"],["une rivière","une-riviere"],["un pont","un-pont"],
-        ["un lac","un-lac"],["une barque","une-barque"],["une vache","une-vache"],
-        ["un cheval","un-cheval"],["un tracteur","un-tracteur"],["des fleurs","des-fleurs"],
-        ["une roche","une-roche"]
-      ]},
-      {titre:"Où? — prépositions", sec:"ambre-700", soft:"ambre-100", type:"svg", items:[
-        ["à gauche de","gauche"],["à droite de","droite"],["au-dessus de","dessus"],
-        ["en dessous de","dessous"],["devant","devant"],["derrière","derriere"],
-        ["entre","entre"],["à côté de","cote"],["près de","pres"],["loin de","loin"],
-        ["au milieu","milieu"],["dans le coin","coin"],["sur","sur"],["sous","sous"],
-        ["au bord de","bord"]
-      ]}
-    ],
-    phrases:[
-      "<em>Il y a</em> une grande montagne <em>à gauche</em>, derrière la maison.",
-      "Le soleil est <em>dans le coin, en haut à droite</em>.",
-      "<em>Entre</em> l'arbre et la clôture, il y a deux vaches.",
-      "Le chemin passe <em>devant</em> la maison et va <em>vers</em> le pont.",
-      "Mon arbre est <em>plus grand que</em> la maison."
-    ]
-  },
-  {
-    id:"logement", onglet:"Le logement", titre:"Le logement",
-    surtitre:"Meubles · sur, sous, contre le mur",
-    groupes:[
-      {titre:"Les meubles", sec:"acier-600", soft:"acier-100", type:"img", items:[
-        ["un lit","un-lit"],["un divan","un-divan"],["un fauteuil","un-fauteuil"],
-        ["une table","une-table"],["une chaise","une-chaise"],["une commode","une-commode"],
-        ["une table de chevet","une-table-de-chevet"],["une étagère","une-etagere"],
-        ["une lampe","une-lampe"],["un tapis","un-tapis"],["des rideaux","des-rideaux"]
-      ]},
-      {titre:"Les objets", sec:"violet-600", soft:"violet-100", type:"img", items:[
-        ["un cadre","un-cadre"],["un miroir","un-miroir"],["une horloge","une-horloge"],
-        ["une plante","une-plante"],["un téléviseur","un-televiseur"],["un ordinateur","un-ordinateur"],
-        ["des livres","des-livres"],["une poubelle","une-poubelle"],["un oreiller","un-oreiller"],
-        ["une couverture","une-couverture"],["un chat","un-chat"]
-      ]},
-      {titre:"Où? — prépositions", sec:"ambre-700", soft:"ambre-100", type:"svg", items:[
-        ["sur","sur"],["sous","sous"],["dans","dans"],["contre le mur","mur"],
-        ["au plafond","plafond"],["par terre","terre"],["dans le coin","coin"],
-        ["à côté de","cote"],["en face de","face"],["entre","entre"],
-        ["au-dessus de","dessus"],["à gauche de la porte","porte"]
-      ]}
-    ],
-    phrases:[
-      "Le lit est <em>contre le mur</em>, <em>sous</em> la fenêtre.",
-      "<em>Sur</em> la table de chevet, il y a une lampe et un livre.",
-      "Le tapis est <em>au milieu</em> de la pièce, <em>devant</em> le divan.",
-      "Qu'est-ce qu'il y a <em>à gauche de</em> la porte?",
-      "Le chat dort <em>sous</em> la table, pas <em>sur</em> la table."
-    ]
-  },
-  {
-    id:"repas", onglet:"Le repas", titre:"Le repas",
-    surtitre:"Aliments · quantités · mettre la table",
-    groupes:[
-      {titre:"Sur la table", sec:"acier-600", soft:"acier-100", type:"img", items:[
-        ["une assiette","une-assiette"],["un bol","un-bol"],["un verre","un-verre"],
-        ["une tasse","une-tasse"],["une fourchette","une-fourchette"],["un couteau","un-couteau"],
-        ["une cuillère","une-cuillere"],["une serviette","une-serviette"],["une nappe","une-nappe"],
-        ["une bouteille","une-bouteille"],["un pot","un-pot"],["une chandelle","une-chandelle"]
-      ]},
-      {titre:"Les aliments", sec:"violet-600", soft:"violet-100", type:"img", items:[
-        ["du pain","du-pain"],["du fromage","du-fromage"],["de la soupe","de-la-soupe"],
-        ["une salade","une-salade"],["du poulet","du-poulet"],["du poisson","du-poisson"],
-        ["des patates","des-patates"],["du riz","du-riz"],["des carottes","des-carottes"],
-        ["une pomme","une-pomme"],["une banane","une-banane"],["des fraises","des-fraises"],
-        ["un gâteau","un-gateau"],["du café","du-cafe"],["du lait","du-lait"],["du jus","du-jus"]
-      ]},
-      {titre:"Combien? — quantités", sec:"ambre-700", soft:"ambre-100", type:"img", items:[
-        ["une tranche de","une-tranche-de"],["un morceau de","un-morceau-de"],
-        ["un verre de","un-verre-de"],["une tasse de","une-tasse-de"],
-        ["une assiette de","une-assiette-de"],["un pot de","un-pot-de"],
-        ["beaucoup de","beaucoup-de"],["un peu de","un-peu-de"],
-        ["trois","trois"],["une demi-","une-demi"]
-      ]}
-    ],
-    phrases:[
-      "<em>Au milieu de</em> la table, il y a une assiette de soupe.",
-      "La fourchette est <em>à gauche de</em> l'assiette, le couteau <em>à droite</em>.",
-      "J'ai dessiné <em>deux tranches de</em> pain <em>à côté du</em> bol.",
-      "Il y a <em>un peu de</em> fromage, pas beaucoup.",
-      "Le verre est <em>devant</em> l'assiette ou <em>derrière</em>?"
-    ]
-  },
-  {
-    id:"rue", onglet:"La rue", titre:"La rue",
-    surtitre:"Commerces · se situer · ordre",
-    groupes:[
-      {titre:"Les commerces", sec:"acier-600", soft:"acier-100", type:"img", items:[
-        ["une épicerie","une-epicerie"],["un dépanneur","un-depanneur"],["une pharmacie","une-pharmacie"],
-        ["une boulangerie","une-boulangerie"],["une banque","une-banque"],["un restaurant","un-restaurant"],
-        ["un café","un-cafe"],["une librairie","une-librairie"],
-        ["un salon de coiffure","un-salon-de-coiffure"],["une quincaillerie","une-quincaillerie"],
-        ["une buanderie","une-buanderie"],["un bureau de poste","un-bureau-de-poste"]
-      ]},
-      {titre:"Sur le trottoir", sec:"violet-600", soft:"violet-100", type:"img", items:[
-        ["un arrêt d'autobus","un-arret-d-autobus"],["un banc","un-banc"],
-        ["un lampadaire","un-lampadaire"],["une poubelle","une-poubelle-de-rue"],
-        ["un arbre","un-arbre-de-rue"],["un vélo","un-velo"],["une auto","une-auto"],
-        ["un chien","un-chien"],["une boîte aux lettres","une-boite-aux-lettres"],
-        ["un parcomètre","un-parcometre"]
-      ]},
-      {titre:"Se situer", sec:"ambre-700", soft:"ambre-100", type:"svg", items:[
-        ["le premier","ord1"],["le deuxième","ord2"],["le troisième","ord3"],["le dernier","ord4"],
-        ["à gauche de","gauche"],["à droite de","droite"],["entre","entre"],["à côté de","cote"],
-        ["au coin","aucoin"],["au bout de la rue","bout"],["en face de","face"],
-        ["au-dessus de","dessus"]
-      ]}
-    ],
-    phrases:[
-      "<em>Le premier bâtiment à gauche</em>, c'est une pharmacie.",
-      "La boulangerie est <em>entre</em> le dépanneur et la banque.",
-      "<em>Dans la vitrine</em> du restaurant, j'ai dessiné une pizza et une plante.",
-      "<em>Devant</em> le troisième commerce, il y a un arrêt d'autobus.",
-      "Comment ça s'écrit, « quincaillerie »? Q-U-I-N…"
     ]
   }
 ];

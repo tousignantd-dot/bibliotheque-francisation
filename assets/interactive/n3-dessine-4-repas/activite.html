@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="fr">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cinq lexiques en images</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap">
+<style>
+  /* Jetons du système de design Francisation (ds-bundle) : fond neutre chaud,
+     cartes blanches, un seul vert d'accent. Corps jamais sous 17 px. */
+  :root{
+    --font-sans:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --paper-50:#FBFBFA; --paper-100:#F7F7F5; --white:#FFFFFF;
+    --line-100:#EAEAE8; --line-200:#D8E8DF; --line-300:#D6D6D2;
+    --ink-900:#17181A; --ink-700:#3A3D40; --ink-500:#4B4F52; --ink-400:#6E7175;
+    --green-800:#07734A; --green-600:#0A8F5B; --green-100:#E6F5EE; --green-050:#EDF6F1;
+    --acier-600:#1D6B8F; --acier-100:#E7F0F6;
+    --violet-600:#6B4FBB; --violet-100:#EFEAFA;
+    --ambre-700:#92400E; --ambre-100:#FAEDE1;
+    --teal-700:#0E6E78; --teal-100:#E2F1F3;
+    --foret-700:#166534; --foret-100:#E3F1E7;
+    --surface-page:var(--paper-100); --surface-card:var(--white); --surface-sunken:var(--paper-50);
+    --text-strong:var(--ink-900); --text-body:var(--ink-700); --text-muted:var(--ink-400);
+    --border:var(--line-100); --accent:var(--green-600); --accent-ink:var(--green-800);
+    --sel-bg:#17181A; --sel-ink:#FFFFFF;
+    --fs-h2:30px; --fs-h3:24px; --fs-lead:19px; --fs-body:18px; --fs-body-sm:17px;
+    --fs-ui:15px; --fs-label:13px;
+    --ls-label:0.12em; --ls-title:-0.015em;
+    --fw-medium:600; --fw-semi:700; --fw-bold:800; --fw-black:900;
+    --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:20px; --sp-6:24px; --sp-8:32px; --sp-12:48px;
+    --r-sm:10px; --r-md:14px; --r-lg:18px; --r-pill:999px;
+    --sh-card:0 1px 2px rgba(20,20,20,.04);
+    --sec:var(--accent); --sec-soft:var(--green-100);
+    /* Schémas : un repère gris clair, un objet noir. */
+    --schema-repere:#E6E6E2; --schema-trait:#AEAEA8; --schema-objet:var(--ink-900);
+  }
+  body{
+    background:var(--surface-page); color:var(--text-strong);
+    font-family:var(--font-sans); font-size:var(--fs-body); font-weight:var(--fw-medium);
+    line-height:1.5; margin:0; -webkit-font-smoothing:antialiased;
+  }
+  h1,h2{margin:0; letter-spacing:var(--ls-title); line-height:1.2;}
+  h1{font-size:clamp(30px,5vw,44px); font-weight:var(--fw-black);}
+  h2{font-size:var(--fs-h3); font-weight:var(--fw-black);}
+  p{margin:0;}
+  img{max-width:100%;}
+  :focus-visible{outline:3px solid var(--accent); outline-offset:2px; border-radius:var(--r-sm);}
+
+  .container{max-width:1000px; margin:0 auto; padding-inline:var(--sp-8);
+             padding-block:var(--sp-12); display:flex; flex-direction:column; gap:var(--sp-8);}
+  @media (max-width:620px){ .container{padding-inline:var(--sp-4);} }
+
+  .bande{background:var(--green-050); border:1px solid var(--line-200); border-radius:var(--r-lg);
+         padding:var(--sp-8); display:flex; flex-direction:column; gap:var(--sp-4);}
+  .surtitre{font-size:var(--fs-label); font-weight:var(--fw-bold); letter-spacing:var(--ls-label);
+            text-transform:uppercase; color:var(--sec);}
+  .bande .surtitre{color:var(--accent-ink);}
+  .chapeau{font-size:var(--fs-lead); color:var(--ink-500); max-width:62ch;}
+
+  .barre{display:flex; flex-wrap:wrap; gap:var(--sp-3); align-items:center;}
+  button{
+    font-family:inherit; font-size:var(--fs-ui); font-weight:var(--fw-bold);
+    min-height:44px; padding:0 var(--sp-5); border-radius:var(--r-pill);
+    border:2px solid var(--accent); background:var(--white); color:var(--accent-ink);
+    cursor:pointer; transition:background 140ms, color 140ms;
+  }
+  button:hover{background:var(--green-100);}
+  button[aria-pressed="true"]{background:var(--sel-bg); border-color:var(--sel-bg); color:var(--sel-ink);}
+  .aide{font-size:var(--fs-ui); color:var(--text-muted);}
+
+  /* Le sélecteur de fiche : cinq onglets, une seule fiche visible. */
+  .onglets{display:flex; flex-wrap:wrap; gap:var(--sp-2);}
+  .onglets button{font-size:var(--fs-body-sm);}
+  .fiche[hidden]{display:none;}
+  .fiche{display:flex; flex-direction:column; gap:var(--sp-8);}
+  .titre-fiche{display:flex; flex-direction:column; gap:var(--sp-1);}
+
+  section{background:var(--surface-card); border:1px solid var(--border);
+          border-left:4px solid var(--sec); border-radius:var(--r-lg);
+          box-shadow:var(--sh-card); padding:var(--sp-6) var(--sp-8);
+          display:flex; flex-direction:column; gap:var(--sp-5);}
+  @media (max-width:620px){ section{padding:var(--sp-5);} }
+  .entete-sec{display:flex; flex-direction:column; gap:2px;}
+
+  .grille{display:grid; grid-template-columns:repeat(auto-fill,minmax(132px,1fr)); gap:var(--sp-4);}
+  .mot{
+    display:flex; flex-direction:column; align-items:center; gap:var(--sp-2);
+    background:var(--surface-sunken); border:1px solid var(--border);
+    border-radius:var(--r-md); padding:var(--sp-3);
+    font:inherit; text-align:center; cursor:pointer; min-height:44px;
+  }
+  .mot img,.mot svg.schema{width:100%; aspect-ratio:1; object-fit:contain;
+                           border-radius:6px; background:var(--white); display:block;}
+  .mot .etiquette{font-size:var(--fs-body-sm); font-weight:var(--fw-semi); color:var(--text-strong);}
+  .mot .etiquette .cache{visibility:hidden;}
+  .mot[data-devoile="oui"] .etiquette .cache{visibility:visible;}
+  .muet .mot .etiquette{color:var(--text-muted);}
+
+  /* Les schémas de position : dessinés, jamais photographiés. */
+  svg.schema .rp{fill:var(--schema-repere); stroke:var(--schema-trait); stroke-width:2;}
+  svg.schema .ob{fill:var(--schema-objet);}
+  svg.schema .gd{fill:none; stroke:var(--schema-trait); stroke-width:2; stroke-dasharray:5 4;}
+  svg.schema .ln{fill:none; stroke:var(--schema-trait); stroke-width:2;}
+
+  /* Les couleurs : une pastille vaut mieux qu'un dessin. */
+  .couleurs{display:grid; grid-template-columns:repeat(auto-fill,minmax(112px,1fr)); gap:var(--sp-3);}
+  .couleur{display:flex; align-items:center; gap:var(--sp-2);
+           background:var(--surface-sunken); border:1px solid var(--border);
+           border-radius:var(--r-pill); padding:5px var(--sp-3);
+           font-size:var(--fs-body-sm); font-weight:var(--fw-semi);}
+  .pastille{width:26px; height:26px; border-radius:50%; border:1px solid var(--line-300); flex:0 0 auto;}
+
+  ul.phrases{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:var(--sp-2);
+             font-size:var(--fs-body-sm); color:var(--text-body);}
+  ul.phrases li{position:relative; padding-left:var(--sp-5);}
+  ul.phrases li::before{content:"»"; position:absolute; left:0; color:var(--sec); font-weight:var(--fw-bold);}
+  ul.phrases em{font-style:italic; font-weight:var(--fw-semi); color:var(--text-strong);}
+
+  footer{font-size:var(--fs-ui); color:var(--text-muted); border-top:1px solid var(--border);
+         padding-top:var(--sp-4);}
+
+  /* ── Version imprimable : les cinq fiches à la suite, une par feuille.
+     Noir et blanc, parce que la photocopieuse de centre l'est. ── */
+  @media print{
+    @page{ size:8.5in 11in portrait; margin:0.45in 0.5in; }
+    :root{
+      --surface-page:#FFFFFF; --surface-card:#FFFFFF; --surface-sunken:#FFFFFF;
+      --sec:#000000; --accent:#000000; --accent-ink:#000000;
+      --text-strong:#000000; --text-body:#1A1A1A; --text-muted:#3A3A3A;
+      --border:#B4B4B4; --line-300:#8C8C8C;
+    }
+    .container{max-width:none; padding:0; gap:0;}
+    .bande, .onglets, .barre, #bascule, .aide, footer{display:none !important;}
+    /* Toutes les fiches sortent, y compris celles que l'écran masque. */
+    .fiche[hidden]{display:flex !important;}
+    .fiche{gap:var(--sp-4); break-before:page; page-break-before:always;}
+    .fiche:first-of-type{break-before:auto; page-break-before:auto;}
+    .titre-fiche h2{font-size:19px;}
+    section{padding:var(--sp-2) 0; border:0; border-top:1px solid var(--border);
+            border-radius:0; box-shadow:none; gap:var(--sp-2);
+            break-inside:avoid; page-break-inside:avoid;}
+    .entete-sec{flex-direction:row; align-items:baseline; gap:var(--sp-3);}
+    .entete-sec h2{font-size:15px;}
+    /* Plus de colonnes, des cartes plus petites : un lexique se balaie. */
+    .grille{grid-template-columns:repeat(8,1fr); gap:4px;}
+    .mot{background:#FFF; border-color:#CCC; padding:3px; gap:1px; min-height:0;}
+    .mot img, .mot svg.schema{height:0.52in; width:auto; max-width:100%; aspect-ratio:1;}
+    .mot .etiquette{font-size:8.5px; line-height:1.15;}
+    /* À l'impression, les mots sont toujours là : une feuille muette ne sert à rien. */
+    .mot .etiquette .cache{visibility:visible !important;}
+    body.muet .mot .etiquette{color:#000 !important;}
+    .couleurs{grid-template-columns:repeat(5,1fr); gap:5px;}
+    .couleur{font-size:10px; padding:2px 6px;}
+    /* Une pastille grise ne dit pas « rouge » : on l'imprime vide. */
+    .pastille{background:#FFF !important; border:1px solid #000; width:14px; height:14px;}
+    ul.phrases{font-size:10.5px; gap:3px;}
+
+  
+    /* ── Les schémas à l'impression : tout en noir plein. ──
+       Le pointillé gris fin, lisible à l'écran, s'efface à la photocopie.
+       On garde la distinction objet / scène autrement : l'objet est un carré
+       plein cerné de noir, la scène est un cadre fin qui occupe toute la case. */
+    :root{
+      --schema-repere:#FFFFFF; --schema-trait:#000000; --schema-objet:#000000;
+    }
+    svg.schema .rp{fill:#FFFFFF; stroke:#000000; stroke-width:3;}
+    svg.schema .ob{fill:#000000; stroke:#000000; stroke-width:1;}
+    svg.schema .gd{stroke:#000000; stroke-width:2; stroke-dasharray:none;}
+    svg.schema .ln{stroke:#000000; stroke-width:3; stroke-dasharray:none;}
+    svg.schema line, svg.schema path, svg.schema rect, svg.schema circle{
+      stroke-dasharray:none;
+    }
+    /* Le cadre d'une case : un filet noir continu, jamais pointillé. */
+    .mot{border:1px solid #000 !important;}
+    /* Les couleurs de section sont posées en style en ligne, qui bat :root.
+       À l'impression, elles doivent céder : il n'y a plus qu'une encre. */
+    section[style]{--sec:#000000 !important; --sec-soft:#FFFFFF !important;}
+    .surtitre{color:#000000 !important;}
+    section{border-left-color:#000000 !important;}
+
+  }
+  .onglets{display:none;}
+</style>
+
+<div class="container">
+
+  <header class="bande">
+    <p class="surtitre">Francisation · Niveau 3 · Dessine ce que j'explique</p>
+    <h1>Cinq lexiques en images</h1>
+    <p class="chapeau">Le vocabulaire des cinq fiches, illustré. Choisissez une fiche, projetez-la
+      avant l'atelier, ou gardez-la ouverte pendant que les dyades travaillent.</p>
+    <div class="barre onglets" id="onglets" role="group" aria-label="Choisir une fiche"></div>
+    <div class="barre">
+      <button id="bascule" type="button" aria-pressed="false">Cacher les mots</button>
+      <p class="aide" id="aide">Cachez les mots, puis demandez à la classe de nommer chaque image.
+        Touchez une image pour révéler son mot.</p>
+    </div>
+  </header>
+
+  <main id="fiches"></main>
+
+  <footer>Les images sont des dessins au trait. Les positions et les prépositions sont des schémas :
+    un carré gris est le repère, le disque noir est l'objet dont vous parlez.</footer>
+</div>
+
+<script>
+/* ------------------------------------------------------------------ *
+ *  Les schémas de position, en SVG. Repère commun : cadre 120 × 84,
+ *  posé au centre d'un carré 120 × 120. Carré gris = le repère,
+ *  disque noir = l'objet. Le même mot reçoit toujours le même schéma.
+ * ------------------------------------------------------------------ */
+const CARRE = 'width="28" height="28" rx="3"';
+function maison(x, plein){
+  const d = `M${x},70 L${x},44 L${x+11},30 L${x+22},44 L${x+22},70 Z`;
+  return `<path class="${plein ? "ob" : "rp"}" d="${d}"/>`;
+}
+function rang(n){ return [6,34,62,90].map((x,i)=>maison(x, i===n)).join(""); }
+
+const SCHEMAS = {
+  "gauche":   `<line class="gd" x1="64" y1="42" x2="44" y2="42"/>
+               <rect class="rp" x="66" y="28" ${CARRE}/><circle class="ob" cx="30" cy="42" r="11"/>`,
+  "droite":   `<line class="gd" x1="56" y1="42" x2="76" y2="42"/>
+               <rect class="rp" x="26" y="28" ${CARRE}/><circle class="ob" cx="90" cy="42" r="11"/>`,
+  "dessus":   `<line class="gd" x1="60" y1="48" x2="60" y2="29"/>
+               <rect class="rp" x="46" y="48" ${CARRE}/><circle class="ob" cx="60" cy="18" r="11"/>`,
+  "dessous":  `<line class="gd" x1="60" y1="36" x2="60" y2="55"/>
+               <rect class="rp" x="46" y="8" ${CARRE}/><circle class="ob" cx="60" cy="66" r="11"/>`,
+  /* devant / derrière : seul l'ordre de superposition change. */
+  "devant":   `<rect class="rp" x="38" y="20" width="32" height="32" rx="3"/>
+               <circle class="ob" cx="68" cy="50" r="12"/>`,
+  "derriere": `<circle class="ob" cx="68" cy="50" r="12"/>
+               <rect class="rp" x="38" y="20" width="32" height="32" rx="3"/>`,
+  "entre":    `<rect class="rp" x="8" y="28" width="26" height="28" rx="3"/>
+               <rect class="rp" x="86" y="28" width="26" height="28" rx="3"/>
+               <circle class="ob" cx="60" cy="42" r="12"/>`,
+  "cote":     `<line class="ln" x1="12" y1="62" x2="108" y2="62"/>
+               <rect class="rp" x="30" y="34" ${CARRE}/><circle class="ob" cx="80" cy="51" r="11"/>`,
+  "pres":     `<line class="gd" x1="63" y1="42" x2="69" y2="42"/>
+               <rect class="rp" x="34" y="28" ${CARRE}/><circle class="ob" cx="80" cy="42" r="11"/>`,
+  "loin":     `<line class="gd" x1="38" y1="42" x2="91" y2="42"/>
+               <rect class="rp" x="8" y="28" ${CARRE}/><circle class="ob" cx="104" cy="42" r="11"/>`,
+  "milieu":   `<rect class="gd" x="10" y="8" width="100" height="68" rx="4"/>
+               <circle class="ob" cx="60" cy="42" r="12"/>`,
+  "coin":     `<rect class="gd" x="10" y="8" width="100" height="68" rx="4"/>
+               <circle class="ob" cx="89" cy="29" r="12"/>`,
+  /* sur / sous : même tablette, l'objet passe dessus ou dessous. */
+  "sur":      `<rect class="rp" x="24" y="36" width="72" height="14" rx="3"/>
+               <circle class="ob" cx="60" cy="25" r="11"/>`,
+  "sous":     `<rect class="rp" x="24" y="36" width="72" height="14" rx="3"/>
+               <circle class="ob" cx="60" cy="61" r="11"/>`,
+  "bord":     `<rect class="rp" x="16" y="18" width="52" height="48" rx="4"/>
+               <circle class="ob" cx="68" cy="42" r="11"/>`,
+  "dans":     `<rect class="rp" x="30" y="12" width="60" height="60" rx="4"/>
+               <circle class="ob" cx="60" cy="42" r="12"/>`,
+  "mur":      `<rect class="rp" x="0" y="0" width="18" height="84"/>
+               <circle class="ob" cx="30" cy="42" r="11"/>`,
+  "plafond":  `<rect class="rp" x="0" y="0" width="120" height="16"/>
+               <circle class="ob" cx="60" cy="27" r="11"/>`,
+  "terre":    `<rect class="rp" x="0" y="68" width="120" height="16"/>
+               <circle class="ob" cx="60" cy="57" r="11"/>`,
+  "face":     `<line class="gd" x1="60" y1="8" x2="60" y2="76"/>
+               <rect class="rp" x="12" y="28" ${CARRE}/><circle class="ob" cx="94" cy="42" r="11"/>`,
+  "porte":    `<line class="ln" x1="10" y1="70" x2="110" y2="70"/>
+               <rect class="rp" x="56" y="22" width="30" height="48" rx="2"/>
+               <circle cx="63" cy="47" r="3" fill="#AEAEA8"/>
+               <circle class="ob" cx="32" cy="59" r="11"/>`,
+  "aucoin":   `<rect class="rp" x="0" y="50" width="78" height="18"/>
+               <rect class="rp" x="60" y="0" width="18" height="68"/>
+               <circle class="ob" cx="44" cy="32" r="12"/>`,
+  "bout":     `<line class="ln" x1="0" y1="20" x2="104" y2="20"/>
+               <line class="ln" x1="0" y1="64" x2="104" y2="64"/>
+               <line class="gd" x1="6" y1="42" x2="62" y2="42"/>
+               <rect class="rp" x="104" y="14" width="16" height="56"/>
+               <circle class="ob" cx="88" cy="42" r="11"/>`,
+  "ord1": rang(0), "ord2": rang(1), "ord3": rang(2), "ord4": rang(3)
+};
+
+/* ------------------------------------------------------------------ *
+ *  Les cinq fiches. Libellés français repris des fiches sources.
+ * ------------------------------------------------------------------ */
+const FICHES = [
+{
+    id:"repas", onglet:"Le repas", titre:"Le repas",
+    surtitre:"Aliments · quantités · mettre la table",
+    groupes:[
+      {titre:"Sur la table", sec:"acier-600", soft:"acier-100", type:"img", items:[
+        ["une assiette","une-assiette"],["un bol","un-bol"],["un verre","un-verre"],
+        ["une tasse","une-tasse"],["une fourchette","une-fourchette"],["un couteau","un-couteau"],
+        ["une cuillère","une-cuillere"],["une serviette","une-serviette"],["une nappe","une-nappe"],
+        ["une bouteille","une-bouteille"],["un pot","un-pot"],["une chandelle","une-chandelle"]
+      ]},
+      {titre:"Les aliments", sec:"violet-600", soft:"violet-100", type:"img", items:[
+        ["du pain","du-pain"],["du fromage","du-fromage"],["de la soupe","de-la-soupe"],
+        ["une salade","une-salade"],["du poulet","du-poulet"],["du poisson","du-poisson"],
+        ["des patates","des-patates"],["du riz","du-riz"],["des carottes","des-carottes"],
+        ["une pomme","une-pomme"],["une banane","une-banane"],["des fraises","des-fraises"],
+        ["un gâteau","un-gateau"],["du café","du-cafe"],["du lait","du-lait"],["du jus","du-jus"]
+      ]},
+      {titre:"Combien? — quantités", sec:"ambre-700", soft:"ambre-100", type:"img", items:[
+        ["une tranche de","une-tranche-de"],["un morceau de","un-morceau-de"],
+        ["un verre de","un-verre-de"],["une tasse de","une-tasse-de"],
+        ["une assiette de","une-assiette-de"],["un pot de","un-pot-de"],
+        ["beaucoup de","beaucoup-de"],["un peu de","un-peu-de"],
+        ["trois","trois"],["une demi-","une-demi"]
+      ]}
+    ],
+    phrases:[
+      "<em>Au milieu de</em> la table, il y a une assiette de soupe.",
+      "La fourchette est <em>à gauche de</em> l'assiette, le couteau <em>à droite</em>.",
+      "J'ai dessiné <em>deux tranches de</em> pain <em>à côté du</em> bol.",
+      "Il y a <em>un peu de</em> fromage, pas beaucoup.",
+      "Le verre est <em>devant</em> l'assiette ou <em>derrière</em>?"
+    ]
+  }
+];
+
+/* ------------------------------------------------------------------ *
+ *  Rendu
+ * ------------------------------------------------------------------ */
+function carteImage([mot, fichier]){
+  return `<button class="mot" type="button" data-devoile="oui">
+      <img src="lexique/${fichier}.jpg" alt="${mot}" loading="lazy">
+      <span class="etiquette"><span class="cache">${mot}</span></span>
+    </button>`;
+}
+function carteSchema([mot, cle]){
+  return `<button class="mot" type="button" data-devoile="oui">
+      <svg class="schema" viewBox="0 0 120 120" role="img" aria-label="${mot}">
+        <g transform="translate(0,18)">${SCHEMAS[cle]}</g>
+      </svg>
+      <span class="etiquette"><span class="cache">${mot}</span></span>
+    </button>`;
+}
+function pastille([nom, hex]){
+  return `<span class="couleur"><span class="pastille" style="background:${hex}"></span>${nom}</span>`;
+}
+function corpsGroupe(g){
+  if (g.type === "couleur") return `<div class="couleurs">${g.items.map(pastille).join("")}</div>`;
+  const carte = g.type === "svg" ? carteSchema : carteImage;
+  return `<div class="grille">${g.items.map(carte).join("")}</div>`;
+}
+function blocGroupe(g){
+  const n = g.items.length;
+  const style = g.sec ? ` style="--sec:var(--${g.sec}); --sec-soft:var(--${g.soft});"` : "";
+  let inter = "";
+  if (g.apres){
+    inter = `<div class="entete-sec"><p class="surtitre">${g.apres.items.length} mots</p>
+        <h2>${g.apres.titre}</h2></div>${corpsGroupe(g.apres)}`;
+  }
+  return `<section${style}>
+      <div class="entete-sec"><p class="surtitre">${n} mot${n > 1 ? "s" : ""}</p><h2>${g.titre}</h2></div>
+      ${corpsGroupe(g)}
+      ${inter}
+    </section>`;
+}
+function blocFiche(f){
+  return `<div class="fiche" id="fiche-${f.id}" hidden>
+      <div class="titre-fiche">
+        <p class="surtitre">${f.surtitre}</p>
+        <h1>${f.titre}</h1>
+      </div>
+      ${f.groupes.map(blocGroupe).join("")}
+      <section>
+        <div class="entete-sec"><p class="surtitre">Pour décrire</p><h2>Les phrases de l'atelier</h2></div>
+        <ul class="phrases">${f.phrases.map(p => `<li>${p}</li>`).join("")}</ul>
+      </section>
+    </div>`;
+}
+
+document.getElementById("fiches").innerHTML = FICHES.map(blocFiche).join("");
+document.getElementById("onglets").innerHTML = FICHES.map((f, i) => `
+  <button type="button" class="onglet" data-fiche="${f.id}"
+          aria-pressed="${i === 0 ? "true" : "false"}">${f.onglet}</button>`).join("");
+
+function montrer(id){
+  document.querySelectorAll(".fiche").forEach(d => { d.hidden = (d.id !== "fiche-" + id); });
+  document.querySelectorAll(".onglet").forEach(b => {
+    b.setAttribute("aria-pressed", b.dataset.fiche === id ? "true" : "false");
+  });
+}
+document.getElementById("onglets").addEventListener("click", e => {
+  const b = e.target.closest(".onglet");
+  if (b) montrer(b.dataset.fiche);
+});
+
+/* Au chargement : « Le personnage », mots visibles. La page se lit toute seule. */
+montrer("personnage");
+
+const bascule = document.getElementById("bascule");
+const aide = document.getElementById("aide");
+bascule.addEventListener("click", () => {
+  const onCache = bascule.getAttribute("aria-pressed") !== "true";
+  bascule.setAttribute("aria-pressed", onCache ? "true" : "false");
+  bascule.textContent = onCache ? "Montrer les mots" : "Cacher les mots";
+  document.body.classList.toggle("muet", onCache);
+  document.querySelectorAll(".mot").forEach(b => b.dataset.devoile = onCache ? "non" : "oui");
+  aide.textContent = onCache
+    ? "Les mots sont cachés. Touchez une image pour révéler son mot."
+    : "Cachez les mots, puis demandez à la classe de nommer chaque image.";
+});
+document.addEventListener("click", e => {
+  const carte = e.target.closest(".mot");
+  if (!carte) return;
+  carte.dataset.devoile = carte.dataset.devoile === "oui" ? "non" : "oui";
+});
+</script>
+</html>
