@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="fr">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Écoute et dessine — Le personnage</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap">
+<style>
+  /* Jetons du système de design Francisation (ds-bundle).
+     Un seul vert d'accent. Le rouge est réservé à l'audio.
+     Sélectionné = plaque encre. Corps jamais sous 17 px. */
+  :root{
+    --font-sans:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --paper-50:#FBFBFA; --paper-100:#F7F7F5; --paper-200:#F0F0EE; --white:#FFFFFF;
+    --line-100:#EAEAE8; --line-200:#D8E8DF; --line-300:#D6D6D2;
+    --ink-900:#17181A; --ink-700:#3A3D40; --ink-500:#4B4F52; --ink-400:#6E7175;
+    --green-800:#07734A; --green-600:#0A8F5B; --green-100:#E6F5EE; --green-050:#EDF6F1;
+    --acier-600:#1D6B8F; --acier-100:#E7F0F6;
+    --violet-600:#6B4FBB; --violet-100:#EFEAFA;
+    --ambre-700:#B45309; --ambre-100:#FBEEDC;
+    --teal-700:#0D7A6F; --teal-100:#DCF2EF;
+    --foret-700:#166534; --foret-100:#E3F1E7;
+    --audio:#DC2626; --audio-hover:#B91C1C;
+    --ok-bg:#E6F5EE; --ok-line:#0A8F5B; --ok-ink:#07734A;
+    --no-bg:#FFF6F5; --no-line:#DC2626; --no-ink:#B91C1C;
+    --sel-bg:#17181A; --sel-line:#17181A; --sel-ink:#FFFFFF;
+    --drop-bg:#FBFBFA; --drop-line:#D6D6D2;
+    --surface-page:var(--paper-100); --surface-card:var(--white);
+    --surface-sunken:var(--paper-50); --surface-band:var(--green-050);
+    --text-strong:var(--ink-900); --text-body:var(--ink-700); --text-muted:var(--ink-400);
+    --border:var(--line-100); --border-tint:var(--line-200);
+    --accent:var(--green-600); --accent-soft:var(--green-100); --accent-ink:var(--green-800);
+    --fs-hero:clamp(32px,5vw,50px); --fs-h2:30px; --fs-h3:24px; --fs-lead:19px;
+    --fs-body:18px; --fs-body-sm:17px; --fs-ui:15px; --fs-label:13px;
+    --ls-label:0.12em; --ls-title:-0.015em;
+    --fw-medium:600; --fw-semi:700; --fw-bold:800; --fw-black:900;
+    --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:20px;
+    --sp-6:24px; --sp-8:32px; --sp-12:48px;
+    --r-sm:10px; --r-md:14px; --r-lg:18px; --r-pill:999px;
+    --tap-min:44px; --tap-comfort:48px;
+    --sh-card:0 1px 2px rgba(20,20,20,.04);
+    --sec:var(--accent); --sec-soft:var(--accent-soft);
+  }
+  *,*::before,*::after{box-sizing:border-box;}
+  body{margin:0; background:var(--surface-page); color:var(--text-strong);
+       font-family:var(--font-sans); font-size:var(--fs-body);
+       font-weight:var(--fw-medium); line-height:1.5; -webkit-font-smoothing:antialiased;}
+  h1,h2,h3{margin:0; letter-spacing:var(--ls-title); line-height:1.2;}
+  h1{font-size:var(--fs-hero); font-weight:var(--fw-black);}
+  h2{font-size:var(--fs-h2); font-weight:var(--fw-black);}
+  h3{font-size:var(--fs-h3); font-weight:var(--fw-black);}
+  p{margin:0;} img{max-width:100%;}
+  :focus-visible{outline:3px solid var(--accent); outline-offset:2px; border-radius:var(--r-sm);}
+
+  .container{max-width:1000px; margin:0 auto; padding-inline:var(--sp-8);
+             padding-block:var(--sp-8) var(--sp-12);
+             display:flex; flex-direction:column; gap:var(--sp-8);}
+  @media (max-width:620px){ .container{padding-inline:var(--sp-4);} }
+
+  .bande{background:var(--surface-band); border:1px solid var(--border-tint);
+         border-radius:var(--r-lg); padding:var(--sp-8);
+         display:flex; flex-direction:column; gap:var(--sp-3);}
+  .surtitre{font-size:var(--fs-label); font-weight:var(--fw-bold);
+            letter-spacing:var(--ls-label); text-transform:uppercase; color:var(--sec);}
+  .bande .surtitre{color:var(--accent-ink);}
+  .chapeau{font-size:var(--fs-lead); color:var(--ink-500); max-width:62ch;}
+
+  /* La barre de parcours, collante. */
+  .parcours{position:sticky; top:0; z-index:20; background:var(--surface-page);
+            border-bottom:1px solid var(--border); padding:var(--sp-2) 0;
+            display:flex; gap:var(--sp-2); flex-wrap:wrap; align-items:center;}
+  .etape{display:flex; align-items:center; gap:var(--sp-2); border:0; background:none;
+         font:inherit; font-size:var(--fs-ui); font-weight:var(--fw-bold);
+         color:var(--text-muted); cursor:pointer; padding:var(--sp-2) var(--sp-3);
+         border-radius:var(--r-pill); min-height:var(--tap-min);}
+  .etape:hover{background:var(--paper-200);}
+  .etape .point{width:12px; height:12px; border-radius:50%;
+                background:var(--drop-line); flex:0 0 auto;}
+  .etape[data-fait="oui"] .point{background:var(--sec);}
+  .etape[aria-current="step"]{background:var(--sel-bg); color:var(--sel-ink);}
+  .etape[aria-current="step"] .point{background:var(--sel-ink);}
+
+  .exercice{background:var(--surface-card); border:1px solid var(--border);
+            border-left:4px solid var(--sec); border-radius:var(--r-lg);
+            box-shadow:var(--sh-card); padding:var(--sp-8);
+            display:flex; flex-direction:column; gap:var(--sp-5); scroll-margin-top:72px;}
+  @media (max-width:620px){ .exercice{padding:var(--sp-5);} }
+  .exercice > header{display:flex; align-items:flex-start; gap:var(--sp-4); flex-wrap:wrap;}
+  .pastille{flex:0 0 auto; width:48px; height:48px; border-radius:var(--r-md);
+            background:var(--sec-soft); color:var(--sec); display:grid; place-items:center;
+            font-size:var(--fs-h3); font-weight:var(--fw-black); font-variant-numeric:tabular-nums;}
+  .titrage{display:flex; flex-direction:column; gap:2px; flex:1 1 240px;}
+  .score{margin-left:auto; font-size:var(--fs-ui); font-weight:var(--fw-bold);
+         color:var(--text-muted); background:var(--surface-sunken);
+         border:1px solid var(--border); border-radius:var(--r-pill);
+         padding:6px var(--sp-4); white-space:nowrap; font-variant-numeric:tabular-nums;}
+  .consigne{font-size:var(--fs-body-sm); color:var(--text-body); max-width:66ch;}
+
+  /* ── La théorie : un résumé qu'on déplie, en tête de l'exercice.
+     Dépliable et non en panneau latéral : cette page se projette, et un
+     panneau qui glisse cacherait l'exercice dont il parle. ── */
+  details.lecon{border:1px solid var(--sec); border-radius:var(--r-md);
+                background:var(--white); overflow:hidden;}
+  details.lecon > summary{list-style:none; cursor:pointer; min-height:var(--tap-min);
+    display:flex; align-items:center; gap:var(--sp-3); padding:var(--sp-3) var(--sp-4);
+    font-size:var(--fs-body-sm); font-weight:var(--fw-bold); color:var(--sec);
+    background:var(--sec-soft);}
+  details.lecon > summary::-webkit-details-marker{display:none;}
+  details.lecon > summary::before{content:"▸"; font-size:14px; transition:transform 140ms;}
+  details.lecon[open] > summary::before{transform:rotate(90deg);}
+  details.lecon > summary .quoi{font-weight:var(--fw-medium); color:var(--text-muted);
+    margin-left:auto; font-size:var(--fs-ui);}
+  .lecon-corps{padding:var(--sp-4); display:flex; flex-direction:column; gap:var(--sp-4);}
+  .lecon-point{display:flex; flex-direction:column; gap:3px;}
+  .lecon-point .t{font-size:var(--fs-label); font-weight:var(--fw-bold);
+            letter-spacing:var(--ls-label); text-transform:uppercase; color:var(--text-muted);}
+  .lecon-point .p{font-size:var(--fs-body-sm); color:var(--text-body);}
+  .lecon-point .p b{font-weight:var(--fw-bold); color:var(--text-strong);}
+  .lecon-point .p em{font-style:italic; font-weight:var(--fw-semi); color:var(--text-strong);}
+  .schemas{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:var(--sp-3);}
+  @media (max-width:560px){ .schemas{grid-template-columns:repeat(2,minmax(0,1fr));} }
+  .schema{display:flex; flex-direction:column; align-items:center; gap:4px;
+          border:1px solid var(--border); border-radius:var(--r-sm); padding:var(--sp-2);}
+  .schema svg{width:100%; aspect-ratio:1;}
+  .schema .mot{font-size:var(--fs-body-sm); font-weight:var(--fw-semi);}
+  .schema .rp{fill:#FFF; stroke:var(--ink-900); stroke-width:4;}
+  .schema .ob{fill:var(--ink-900);}
+
+  .carte{background:var(--surface-sunken); border:1px solid var(--border);
+         border-radius:var(--r-md); padding:var(--sp-4);
+         display:flex; flex-direction:column; gap:var(--sp-3);}
+
+  /* Boutons. Le rouge appartient à l'audio, et à rien d'autre. */
+  button{font-family:inherit;}
+  .btn{font-size:var(--fs-ui); font-weight:var(--fw-bold); min-height:var(--tap-min);
+       padding:0 var(--sp-5); border-radius:var(--r-pill); border:2px solid var(--accent);
+       background:var(--white); color:var(--accent-ink); cursor:pointer;}
+  .btn:hover{background:var(--accent-soft);}
+  .btn-audio{display:inline-flex; align-items:center; justify-content:center; gap:var(--sp-2);
+             min-height:var(--tap-min); min-width:var(--tap-min);
+             padding:0 var(--sp-4); border-radius:var(--r-pill);
+             border:2px solid var(--audio); background:var(--white); color:var(--audio);
+             font-size:var(--fs-ui); font-weight:var(--fw-bold); cursor:pointer;}
+  .btn-audio:hover{background:var(--audio); color:#fff;}
+  .btn-audio[aria-pressed="true"]{background:var(--audio); color:#fff;}
+  .btn-audio .hp{font-size:18px; line-height:1;}
+
+  /* Jetons cliquables : clic-clic, jamais de glisser-déposer —
+     tout ce qui se fait à la souris doit se faire au clavier. */
+  .jetons{display:flex; flex-wrap:wrap; gap:var(--sp-2);}
+  .jeton{font-size:var(--fs-body-sm); font-weight:var(--fw-semi);
+         min-height:var(--tap-min); padding:0 var(--sp-4); border-radius:var(--r-pill);
+         border:1px solid var(--border); background:var(--white); color:var(--text-strong);
+         cursor:pointer;}
+  .jeton:hover{border-color:var(--sel-bg);}
+  .jeton[aria-pressed="true"]{background:var(--sel-bg); border-color:var(--sel-line);
+                              color:var(--sel-ink);}
+  .trou{min-width:132px; min-height:var(--tap-min); padding:0 var(--sp-3);
+        border:2px dashed var(--drop-line); background:var(--drop-bg);
+        border-radius:var(--r-sm); font:inherit; font-size:var(--fs-body-sm);
+        font-weight:var(--fw-semi); color:var(--text-muted); cursor:pointer;}
+  .trou[data-etat="plein"]{border-style:solid; border-color:var(--sel-bg);
+                           color:var(--text-strong); background:var(--white);}
+  .trou[data-etat="juste"]{border-color:var(--ok-line); background:var(--ok-bg); color:var(--ok-ink);}
+  .trou[data-etat="faux"]{border-color:var(--no-line); background:var(--no-bg); color:var(--no-ink);}
+
+  .ligne{display:flex; flex-wrap:wrap; align-items:center; gap:var(--sp-2);
+         font-size:var(--fs-body-sm); padding:var(--sp-2) 0;
+         border-bottom:1px solid var(--paper-200);}
+  .ligne:last-child{border-bottom:0;}
+
+  input[type="text"]{font:inherit; font-size:var(--fs-body-sm); min-height:var(--tap-min);
+                     padding:0 var(--sp-3); border:1px solid var(--border-tint);
+                     border-radius:var(--r-sm); background:var(--white); color:var(--text-strong);
+                     flex:1 1 260px;}
+  input[data-etat="juste"]{border:2px solid var(--ok-line); background:var(--ok-bg);}
+  input[data-etat="faux"]{border:2px solid var(--no-line); background:var(--no-bg);}
+
+  .verdict{font-size:var(--fs-body-sm); font-weight:var(--fw-semi); border-radius:var(--r-sm);
+           padding:var(--sp-2) var(--sp-3);}
+  .verdict[data-r="ok"]{background:var(--ok-bg); border:1px solid var(--ok-line); color:var(--ok-ink);}
+  .verdict[data-r="no"]{background:var(--no-bg); border:1px solid var(--no-line); color:var(--no-ink);}
+
+  .dial{display:flex; flex-direction:column; gap:var(--sp-2);}
+  .replique{display:flex; gap:var(--sp-3); align-items:flex-start;
+            padding:var(--sp-2); border-radius:var(--r-sm);}
+  .replique.actif{background:var(--accent-soft);}
+  .qui{font-size:var(--fs-label); font-weight:var(--fw-bold); letter-spacing:var(--ls-label);
+       text-transform:uppercase; color:var(--text-muted); min-width:94px; padding-top:12px;}
+  .replique p{font-size:var(--fs-body-sm); padding-top:10px;}
+
+  .grille-objets{display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr));
+                 gap:var(--sp-3);}
+  .objet{display:flex; flex-direction:column; align-items:center; gap:var(--sp-2);
+         background:var(--white); border:1px solid var(--border); border-radius:var(--r-md);
+         padding:var(--sp-3);}
+  .objet img{width:100%; aspect-ratio:1; object-fit:contain;}
+  .objet .nom{font-size:var(--fs-body-sm); font-weight:var(--fw-semi); text-align:center;}
+  body.muet .objet .nom{visibility:hidden;}
+  .objet.devoile .nom{visibility:visible !important;}
+  .objet.cible{outline:3px solid var(--sec); outline-offset:2px;}
+
+  figure.scene{margin:0; border:1px solid var(--border); border-radius:var(--r-md);
+               background:var(--white); padding:var(--sp-2);}
+  figure.scene img{display:block; width:100%; height:auto; border-radius:6px;}
+  .deux-col{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);
+            gap:var(--sp-4); align-items:start;}
+  @media (max-width:760px){ .deux-col{grid-template-columns:1fr;} }
+  figure.scene figcaption{font-size:var(--fs-ui); color:var(--text-muted);
+                          padding:var(--sp-2) 0 0;}
+  .note{font-size:var(--fs-ui); color:var(--text-muted);}
+  .couleurs{display:grid; grid-template-columns:repeat(auto-fill,minmax(110px,1fr));
+            gap:var(--sp-2);}
+  .couleur{display:flex; align-items:center; gap:var(--sp-2); min-height:var(--tap-min);
+           background:var(--white); border:1px solid var(--border);
+           border-radius:var(--r-pill); padding:4px var(--sp-3); cursor:pointer;
+           font:inherit; font-size:var(--fs-body-sm); font-weight:var(--fw-semi);
+           color:var(--text-strong);}
+  .couleur:hover{border-color:var(--sel-bg);}
+  .pastille{width:26px; height:26px; border-radius:50%; border:1px solid var(--line-300);
+            flex:0 0 auto;}
+  .paire{display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-3); align-items:center;}
+  @media (max-width:620px){ .paire{grid-template-columns:1fr;} }
+  .forme{display:flex; flex-direction:column; gap:var(--sp-2);
+         background:var(--white); border:1px solid var(--border);
+         border-radius:var(--r-sm); padding:var(--sp-3);}
+  .forme .quoi{font-size:var(--fs-label); font-weight:var(--fw-bold);
+               letter-spacing:var(--ls-label); text-transform:uppercase; color:var(--text-muted);}
+  .forme .txt{font-size:var(--fs-body); font-weight:var(--fw-semi);}
+
+  footer.fin{border-top:1px solid var(--border); padding-top:var(--sp-5);
+             font-size:var(--fs-ui); color:var(--text-muted);
+             display:flex; flex-direction:column; gap:var(--sp-2);}
+  .u-vh{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0);
+        white-space:nowrap;}
+</style>
+<div class="container">
+  <header class="bande">
+    <p class="surtitre">Francisation · Niveau 2 · Écoute et dessine · seul</p>
+    <h1>Le personnage</h1>
+    <p class="chapeau">Quatre temps : on regarde les mots, on écoute et on dessine, on
+      montre le dessin décrit, puis on vérifie. Vous pouvez tout réécouter autant de fois
+      que vous voulez.</p>
+  </header>
+
+  <section class="exercice" style="--sec:var(--acier-600); --sec-soft:var(--acier-100);">
+    <header><span class="pastille">1</span>
+      <div class="titrage"><p class="surtitre">Avant d'écouter</p><h2>Les mots</h2></div></header>
+    <p class="consigne">Touchez une image pour entendre le mot. Touchez une couleur pour
+      l'entendre.</p>
+    <div class="grille-objets" id="lexique"></div>
+    <p class="surtitre" style="color:var(--text-muted)">Les couleurs</p>
+    <div class="couleurs" id="couleurs"></div>
+  </section>
+
+  <section class="exercice" style="--sec:var(--foret-700); --sec-soft:var(--foret-100);">
+    <header><span class="pastille">2</span>
+      <div class="titrage"><p class="surtitre">Écouter</p><h2>Écoutez et dessinez</h2></div></header>
+    <p class="consigne">Prenez une feuille et un crayon. Copiez le dessin ci-dessous, ou
+      imprimez-le. Écoutez, et dessinez pendant que vous écoutez.</p>
+    <div class="deux-col">
+      <figure class="scene"><img id="base" alt="">
+        <figcaption>Votre point de départ</figcaption></figure>
+      <div class="carte">
+        <p class="surtitre" style="color:var(--text-muted)">La description</p>
+        <div class="jetons" id="lecture"></div>
+        <p class="note" id="note">Écoutez d'un trait, ou une phrase à la fois par son numéro.</p>
+        <div id="phrases"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="exercice" style="--sec:var(--ambre-700); --sec-soft:var(--ambre-100);">
+    <header><span class="pastille">3</span>
+      <div class="titrage"><p class="surtitre">Comparer</p><h2>Le dessin décrit</h2></div></header>
+    <p class="consigne">Quand vous avez fini de dessiner, montrez le dessin et comparez.</p>
+    <div class="jetons">
+      <button class="btn" type="button" id="montrer" aria-expanded="false">Montrer le dessin décrit</button>
+    </div>
+    <figure class="scene" id="zoneReveal" hidden><img id="reveal" alt="">
+      <figcaption>Qu'est-ce qui est pareil? Qu'est-ce qui est différent?</figcaption></figure>
+  </section>
+
+  <section class="exercice" style="--sec:var(--violet-600); --sec-soft:var(--violet-100);">
+    <header><span class="pastille">4</span>
+      <div class="titrage"><p class="surtitre">Vérifier</p><h2>Six questions</h2></div>
+      <span class="score" id="score">0 / 6</span></header>
+    <div id="questions"></div>
+  </section>
+</div>
+<div class="u-vh" id="annonce" role="status" aria-live="polite"></div>
+
+<script>
+const SLUG="n2-dessine-1-personnage", TITRE="Le personnage";
+const D={"base": "img/personnage.jpg", "reveal": "reveal/personnage-decrit.jpg", "revealAlt": "Le dessin décrit : le personnage", "normal": "audio/description-normal.mp3", "lent": "audio/description-lent.mp3", "phrases": [{"texte": "Écoutez bien. Je vais décrire une personne. Vous dessinez sur votre feuille.", "audio": "audio/desc-01.mp3"}, {"texte": "Sur sa tête, il y a une casquette bleue.", "audio": "audio/desc-02.mp3"}, {"texte": "Ses cheveux sont courts et bruns.", "audio": "audio/desc-03.mp3"}, {"texte": "Il porte des lunettes. Il sourit.", "audio": "audio/desc-04.mp3"}, {"texte": "Il porte un manteau rouge. Le manteau est ouvert.", "audio": "audio/desc-05.mp3"}, {"texte": "Sous le manteau, il y a un chandail blanc.", "audio": "audio/desc-06.mp3"}, {"texte": "Il porte des pantalons bleus.", "audio": "audio/desc-07.mp3"}, {"texte": "Ses souliers sont noirs.", "audio": "audio/desc-08.mp3"}, {"texte": "Il a une montre au poignet.", "audio": "audio/desc-09.mp3"}, {"texte": "Et dans son dos, il y a un sac à dos vert.", "audio": "audio/desc-10.mp3"}, {"texte": "C'est fini. Regardez votre dessin.", "audio": "audio/desc-11.mp3"}], "lexique": [{"mot": "une casquette", "img": "lexique/une-casquette.jpg", "audio": "audio/mot-une-casquette.mp3"}, {"mot": "des cheveux courts", "img": "lexique/cheveux-courts.jpg", "audio": "audio/mot-des-cheveux-courts.mp3"}, {"mot": "des lunettes", "img": "lexique/des-lunettes.jpg", "audio": "audio/mot-des-lunettes.mp3"}, {"mot": "un manteau", "img": "lexique/un-manteau.jpg", "audio": "audio/mot-un-manteau.mp3"}, {"mot": "un chandail", "img": "lexique/un-chandail.jpg", "audio": "audio/mot-un-chandail.mp3"}, {"mot": "des pantalons", "img": "lexique/des-pantalons.jpg", "audio": "audio/mot-des-pantalons.mp3"}, {"mot": "des souliers", "img": "lexique/des-souliers.jpg", "audio": "audio/mot-des-souliers.mp3"}, {"mot": "une montre", "img": "lexique/une-montre.jpg", "audio": "audio/mot-une-montre.mp3"}, {"mot": "un sac à dos", "img": "lexique/un-sac-a-dos.jpg", "audio": "audio/mot-un-sac-a-dos.mp3"}], "couleurs": [{"mot": "bleu", "hex": "#1565C0", "audio": "audio/couleur-bleu.mp3"}, {"mot": "rouge", "hex": "#D32F2F", "audio": "audio/couleur-rouge.mp3"}, {"mot": "vert", "hex": "#2E7D32", "audio": "audio/couleur-vert.mp3"}, {"mot": "jaune", "hex": "#F2C200", "audio": "audio/couleur-jaune.mp3"}, {"mot": "noir", "hex": "#17181A", "audio": "audio/couleur-noir.mp3"}, {"mot": "blanc", "hex": "#FFFFFF", "audio": "audio/couleur-blanc.mp3"}, {"mot": "brun", "hex": "#6D4C33", "audio": "audio/couleur-brun.mp3"}, {"mot": "gris", "hex": "#8A8F94", "audio": "audio/couleur-gris.mp3"}, {"mot": "orange", "hex": "#E8720C", "audio": "audio/couleur-orange.mp3"}], "questions": [{"q": "De quelle couleur est le manteau?", "choix": ["bleu", "rouge", "vert"], "bon": 1}, {"q": "Qu'est-ce qu'il a sur la tête?", "choix": ["une casquette bleue", "un chapeau noir", "rien"], "bon": 0}, {"q": "De quelle couleur sont les pantalons?", "choix": ["noirs", "rouges", "bleus"], "bon": 2}, {"q": "De quelle couleur est le sac à dos?", "choix": ["vert", "rouge", "bleu"], "bon": 0}, {"q": "Est-ce qu'il porte des lunettes?", "choix": ["oui", "non"], "bon": 0}, {"q": "De quelle couleur sont les souliers?", "choix": ["bruns", "noirs", "blancs"], "bon": 1}]};
+
+"use strict";
+const $=s=>document.querySelector(s), el=(t,c,x)=>{const n=document.createElement(t);
+  if(c)n.className=c; if(x!=null)n.textContent=x; return n;};
+const dis=m=>{$("#annonce").textContent=m;};
+let lecteur=null, actif=null;
+function joue(src,b){ if(lecteur)lecteur.pause();
+  if(actif)actif.setAttribute("aria-pressed","false");
+  lecteur=new Audio(src); actif=b||null; if(b)b.setAttribute("aria-pressed","true");
+  lecteur.addEventListener("ended",()=>{ if(b)b.setAttribute("aria-pressed","false"); });
+  lecteur.play().catch(()=>{ if(b)b.setAttribute("aria-pressed","false");
+    dis("L'enregistrement n'a pas pu démarrer."); }); }
+function btnAudio(src,lib){ const b=el("button","btn-audio"); b.type="button";
+  b.setAttribute("aria-pressed","false");
+  b.append(el("span","hp","▶"), el("span",null,lib||"Écouter"));
+  b.addEventListener("click",()=>joue(src,b)); return b; }
+
+/* Le direct de la classe, même contrat que les ateliers de la banque. */
+const CONTENU={slug:SLUG, titre:TITRE, mode:"ecoute-et-dessine"};
+function lmsTrack(ev,data){
+  try{window.parent.postMessage(Object.assign({lms:true,event:ev},data||{}),"*");}catch(e){}
+  try{const up=new URLSearchParams(window.parent.location.search);
+    const code=up.get("code"), id=parseInt(up.get("activityId"))||null;
+    if(code&&id) fetch("/api/student/progress",{method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify(Object.assign({code,activityId:id,activityTitle:CONTENU.titre,event:ev},data||{}))
+    }).catch(()=>{});}catch(e){}}
+var DZ={};
+function directZone(z){ if(!z||!z.slug)return; const f=DZ[z.slug]||0;
+  lmsTrack("zone_repondue",{zone:String(z.slug),exo:CONTENU.slug,exoTitre:CONTENU.titre,
+    type:CONTENU.mode,enonce:String(z.enonce||"").slice(0,400),bonne:String(z.bonne||""),
+    reponse:String(z.reponse||""),ok:!!z.ok,essais:f});
+  if(!z.ok)DZ[z.slug]=f+1; }
+
+const reussi=new Set();
+function majScore(){ $("#score").textContent=reussi.size+" / "+D.questions.length; }
+
+/* 1 · les mots */
+D.lexique.forEach(m=>{ const b=el("button","objet"); b.type="button";
+  const i=el("img"); i.src=m.img; i.alt=m.mot;
+  b.append(i, el("span","nom",m.mot));
+  b.addEventListener("click",()=>joue(m.audio,null)); $("#lexique").append(b); });
+D.couleurs.forEach(c=>{ const b=el("button","couleur"); b.type="button";
+  const p=el("span","pastille"); p.style.background=c.hex;
+  b.append(p, el("span",null,c.mot));
+  b.addEventListener("click",()=>joue(c.audio,null)); $("#couleurs").append(b); });
+
+/* 2 · l'écoute */
+$("#base").src=D.base; $("#base").alt="Le point de départ, à copier";
+$("#lecture").append(btnAudio(D.normal,"Tout écouter"), btnAudio(D.lent,"Plus lentement"));
+D.phrases.forEach((p,i)=>{ const l=el("div","ligne");
+  l.append(btnAudio(p.audio,String(i+1)));
+  const t=el("span",null,p.texte); t.style.fontSize="var(--fs-ui)"; t.hidden=true;
+  l.append(t); $("#phrases").append(l); });
+
+/* 3 · la révélation */
+$("#reveal").src=D.reveal; $("#reveal").alt=D.revealAlt;
+$("#montrer").addEventListener("click",()=>{ const z=$("#zoneReveal"), b=$("#montrer");
+  const montre=z.hidden; z.hidden=!montre;
+  b.setAttribute("aria-expanded",montre?"true":"false");
+  b.textContent=montre?"Cacher le dessin":"Montrer le dessin décrit";
+  if(montre){ $("#phrases").querySelectorAll(".ligne > span").forEach(x=>{x.hidden=false;});
+    $("#note").textContent="Le texte de la description est maintenant visible.";
+    z.scrollIntoView({behavior:"smooth",block:"nearest"}); dis("Le dessin est affiché."); } });
+
+/* 4 · les questions */
+D.questions.forEach((it,i)=>{ const c=el("div","carte");
+  const p=el("p",null,it.q); p.style.fontSize="var(--fs-body-sm)"; c.append(p);
+  const jet=el("div","jetons"), v=el("div","verdict"); v.hidden=true;
+  it.choix.forEach((ch,ci)=>{ const b=el("button","jeton",ch); b.type="button";
+    b.setAttribute("aria-pressed","false");
+    b.addEventListener("click",()=>{
+      jet.querySelectorAll(".jeton").forEach(x=>x.setAttribute("aria-pressed","false"));
+      b.setAttribute("aria-pressed","true");
+      const bon=ci===it.bon;
+      directZone({slug:"q"+(i+1),ok:bon,enonce:it.q,bonne:it.choix[it.bon],reponse:ch});
+      v.hidden=false; v.dataset.r=bon?"ok":"no";
+      v.textContent=bon?"C'est ça.":"Non. Réécoutez, ou regardez le dessin.";
+      if(bon){reussi.add(i); majScore();} });
+    jet.append(b); });
+  c.append(jet,v); $("#questions").append(c); });
+majScore();
+
+</script>
