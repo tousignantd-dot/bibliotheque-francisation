@@ -329,6 +329,69 @@
     <div><button class="btn" type="button" id="verifOn">Vérifier</button></div>
   </section>
 
+
+  <section class="exercice" id="ex7" style="--sec:var(--ambre-700); --sec-soft:var(--ambre-100);">
+    <header><span class="pastille">7</span>
+      <div class="titrage"><p class="surtitre">Production écrite</p><h2>La dictée du soir</h2></div>
+      <span class="score" id="score7">0 / 8</span></header>
+    <div class="theorie" data-pour="ex7"></div>
+    <p class="consigne">Une deuxième dictée, plus longue. Elle reprend le temps qu'il fait,
+      l'heure et le chemin pour venir à l'école.</p>
+    <div id="dictee2"></div>
+    <div class="jetons">
+      <button class="btn" type="button" id="verifDictee2">Vérifier</button>
+      <button class="btn" type="button" id="montrerDictee2">Montrer le texte</button>
+    </div>
+  </section>
+
+  <section class="exercice" id="ex8" style="--sec:var(--acier-600); --sec-soft:var(--acier-100);">
+    <header><span class="pastille">8</span>
+      <div class="titrage"><p class="surtitre">Compréhension orale</p><h2>Vrai ou faux</h2></div>
+      <span class="score" id="score8">0 / 8</span></header>
+    <div class="theorie" data-pour="ex8"></div>
+    <p class="consigne">Regardez la classe. Écoutez la phrase, puis répondez vrai ou faux.
+      Quand c'est faux, dites la phrase juste à voix haute.</p>
+    <figure class="scene"><img id="sceneVF" alt=""></figure>
+    <div id="vraiFaux"></div>
+  </section>
+
+  <section class="exercice" id="ex9" style="--sec:var(--violet-600); --sec-soft:var(--violet-100);">
+    <header><span class="pastille">9</span>
+      <div class="titrage"><p class="surtitre">Comprendre une directive</p><h2>Les consignes</h2></div>
+      <span class="score" id="score9">0 / 6</span></header>
+    <div class="theorie" data-pour="ex9"></div>
+    <p class="consigne">Écoutez la consigne. Qu'est-ce que vous faites?</p>
+    <div id="consignes"></div>
+  </section>
+
+  <section class="exercice" id="ex10" style="--sec:var(--foret-700); --sec-soft:var(--foret-100);">
+    <header><span class="pastille">10</span>
+      <div class="titrage"><p class="surtitre">Les prix</p><h2>Combien ça coûte</h2></div>
+      <span class="score" id="score10">0 / 6</span></header>
+    <div class="theorie" data-pour="ex10"></div>
+    <p class="consigne">Écoutez le prix, puis touchez le bon montant.</p>
+    <div id="prix"></div>
+  </section>
+
+  <section class="exercice" id="ex11" style="--sec:var(--teal-700); --sec-soft:var(--teal-100);">
+    <header><span class="pastille">11</span>
+      <div class="titrage"><p class="surtitre">Compréhension écrite</p><h2>L'avis du centre</h2></div>
+      <span class="score" id="score11">0 / 4</span></header>
+    <div class="theorie" data-pour="ex11"></div>
+    <p class="consigne">Lisez l'avis. Vous pouvez aussi l'écouter. Ensuite, répondez.</p>
+    <div class="carte" id="avis"></div>
+    <div id="avisQ"></div>
+  </section>
+
+  <section class="exercice" id="ex12">
+    <header><span class="pastille">12</span>
+      <div class="titrage"><p class="surtitre">Relations sociales</p><h2>Ma journée</h2></div>
+      <span class="score" id="score12">0 / 6</span></header>
+    <div class="theorie" data-pour="ex12"></div>
+    <p class="consigne">Écoutez la phrase. C'est le matin, l'après-midi ou le soir?</p>
+    <div id="journee"></div>
+  </section>
+
   <footer class="fin">
     <p id="bilan">Votre avancement s'affiche dans la barre, en haut.</p>
     <p>Voix de synthèse Azure, fr-CA. Dessins au trait. Les textes viennent de
@@ -336,7 +399,7 @@
   </footer>
 </div>
 <div class="u-vh" id="annonce" role="status" aria-live="polite"></div>
-<script>const D = {"dialogue": [{"qui": "f", "texte": "Bonjour tout le monde! Ouvrez votre cahier à la page trente-deux.", "audio": "audio/dialogue-01.mp3"}, {"qui": "m", "texte": "Excusez-moi, je n'ai pas mon cahier.", "audio": "audio/dialogue-02.mp3"}, {"qui": "f", "texte": "Ce n'est pas grave. Regardez avec Mélanie, s'il vous plaît.", "audio": "audio/dialogue-03.mp3"}, {"qui": "m", "texte": "D'accord. Et mon stylo? Je ne trouve pas mon stylo.", "audio": "audio/dialogue-04.mp3"}, {"qui": "f", "texte": "Regardez sous la table. Il est peut-être par terre.", "audio": "audio/dialogue-05.mp3"}, {"qui": "m", "texte": "Ah oui! Il est sous ma chaise. Merci!", "audio": "audio/dialogue-06.mp3"}, {"qui": "f", "texte": "Maintenant, fermez la porte et écoutez bien.", "audio": "audio/dialogue-07.mp3"}, {"qui": "m", "texte": "Madame, est-ce que je peux aller aux toilettes?", "audio": "audio/dialogue-08.mp3"}, {"qui": "f", "texte": "Oui, mais après l'exercice. La pause est à huit heures.", "audio": "audio/dialogue-09.mp3"}, {"qui": "m", "texte": "Parfait. Merci beaucoup!", "audio": "audio/dialogue-10.mp3"}], "questions": [{"q": "Quelle page ouvre la classe?", "choix": ["la page 12", "la page 32", "la page 42"], "bon": 1}, {"q": "Où est le stylo?", "choix": ["sur la table", "dans le sac", "sous la chaise"], "bon": 2}, {"q": "Qu'est-ce que l'enseignante demande de fermer?", "choix": ["la fenêtre", "la porte", "le cahier"], "bon": 1}, {"q": "La pause est à quelle heure?", "choix": ["à sept heures", "à huit heures", "à neuf heures"], "bon": 1}], "objets": [{"mot": "une horloge", "img": "lexique/une-horloge.jpg", "audio": "audio/objet-une-horloge.mp3"}, {"mot": "un calendrier", "img": "lexique/un-calendrier.jpg", "audio": "audio/objet-un-calendrier.mp3"}, {"mot": "une poubelle", "img": "lexique/une-poubelle.jpg", "audio": "audio/objet-une-poubelle.mp3"}, {"mot": "un bac à recyclage", "img": "lexique/un-bac-a-recyclage.jpg", "audio": "audio/objet-un-bac-a-recyclage.mp3"}, {"mot": "un tableau", "img": "lexique/un-tableau.jpg", "audio": "audio/objet-un-tableau.mp3"}, {"mot": "un bureau", "img": "lexique/un-bureau-de-classe.jpg", "audio": "audio/objet-un-bureau-de-classe.mp3"}, {"mot": "une chaise", "img": "lexique/une-chaise.jpg", "audio": "audio/objet-une-chaise.mp3"}, {"mot": "une lampe", "img": "lexique/une-lampe.jpg", "audio": "audio/objet-une-lampe.mp3"}, {"mot": "une affiche", "img": "lexique/une-affiche.jpg", "audio": "audio/objet-une-affiche.mp3"}, {"mot": "une plante", "img": "lexique/une-plante.jpg", "audio": "audio/objet-une-plante.mp3"}, {"mot": "une porte", "img": "lexique/une-porte.jpg", "audio": "audio/objet-une-porte.mp3"}, {"mot": "une fenêtre", "img": "lexique/une-fenetre.jpg", "audio": "audio/objet-une-fenetre.mp3"}, {"mot": "un ordinateur", "img": "lexique/un-ordinateur.jpg", "audio": "audio/objet-un-ordinateur.mp3"}, {"mot": "une imprimante", "img": "lexique/une-imprimante.jpg", "audio": "audio/objet-une-imprimante.mp3"}, {"mot": "une souris", "img": "lexique/une-souris.jpg", "audio": "audio/objet-une-souris.mp3"}, {"mot": "un parapluie", "img": "lexique/un-parapluie.jpg", "audio": "audio/objet-un-parapluie.mp3"}, {"mot": "des clés", "img": "lexique/des-cles.jpg", "audio": "audio/objet-des-cles.mp3"}, {"mot": "des livres", "img": "lexique/des-livres.jpg", "audio": "audio/objet-des-livres.mp3"}, {"mot": "un manteau", "img": "lexique/un-manteau.jpg", "audio": "audio/objet-un-manteau.mp3"}, {"mot": "des souliers", "img": "lexique/des-souliers.jpg", "audio": "audio/objet-des-souliers.mp3"}, {"mot": "un sac à dos", "img": "lexique/un-sac-a-dos.jpg", "audio": "audio/objet-un-sac-a-dos.mp3"}, {"mot": "un sac à main", "img": "lexique/un-sac-a-main.jpg", "audio": "audio/objet-un-sac-a-main.mp3"}, {"mot": "des lunettes", "img": "lexique/des-lunettes.jpg", "audio": "audio/objet-des-lunettes.mp3"}, {"mot": "un cellulaire", "img": "lexique/un-cellulaire.jpg", "audio": "audio/objet-un-cellulaire.mp3"}, {"mot": "une tablette électronique", "img": "lexique/une-tablette-electronique.jpg", "audio": "audio/objet-une-tablette-electronique.mp3"}, {"mot": "une étagère", "img": "lexique/une-etagere.jpg", "audio": "audio/objet-une-etagere.mp3"}, {"mot": "une table", "img": "lexique/une-table.jpg", "audio": "audio/objet-une-table.mp3"}, {"mot": "un étui à crayons", "img": "lexique/un-etui-a-crayons.jpg", "audio": "audio/objet-un-etui-a-crayons.mp3"}, {"mot": "un stylo", "img": "lexique/un-stylo.jpg", "audio": "audio/objet-un-stylo.mp3"}, {"mot": "des crayons", "img": "lexique/des-crayons.jpg", "audio": "audio/objet-des-crayons.mp3"}, {"mot": "une efface", "img": "lexique/une-efface.jpg", "audio": "audio/objet-une-efface.mp3"}, {"mot": "un cahier", "img": "lexique/un-cahier.jpg", "audio": "audio/objet-un-cahier.mp3"}, {"mot": "un dictionnaire", "img": "lexique/un-dictionnaire.jpg", "audio": "audio/objet-un-dictionnaire.mp3"}, {"mot": "des feuilles", "img": "lexique/des-feuilles.jpg", "audio": "audio/objet-des-feuilles.mp3"}, {"mot": "une montre", "img": "lexique/une-montre.jpg", "audio": "audio/objet-une-montre.mp3"}], "petitsMots": [{"mot": "je", "audio": "audio/petitmot-1.mp3"}, {"mot": "le", "audio": "audio/petitmot-2.mp3"}, {"mot": "me", "audio": "audio/petitmot-3.mp3"}, {"mot": "se", "audio": "audio/petitmot-4.mp3"}, {"mot": "de", "audio": "audio/petitmot-5.mp3"}, {"mot": "ce", "audio": "audio/petitmot-6.mp3"}, {"mot": "te", "audio": "audio/petitmot-7.mp3"}, {"mot": "que", "audio": "audio/petitmot-8.mp3"}], "sonE": [{"ecrit": "Je te le donne.", "oral": "J'te l'donne.", "audioEcrit": "audio/sone-1-ecrit.mp3", "audioOral": "audio/sone-1-oral.mp3", "combien": 2}, {"ecrit": "Ce matin, je range la classe.", "oral": "C'matin, j'range la classe.", "audioEcrit": "audio/sone-2-ecrit.mp3", "audioOral": "audio/sone-2-oral.mp3", "combien": 2}, {"ecrit": "Qu'est-ce que c'est?", "oral": "Qu'est-c'que c'est?", "audioEcrit": "audio/sone-3-ecrit.mp3", "audioOral": "audio/sone-3-oral.mp3", "combien": 1}, {"ecrit": "La porte se ferme.", "oral": "La porte s'ferme.", "audioEcrit": "audio/sone-4-ecrit.mp3", "audioOral": "audio/sone-4-oral.mp3", "combien": 1}, {"ecrit": "Je me lève à sept heures.", "oral": "J'me lève à sept heures.", "audioEcrit": "audio/sone-5-ecrit.mp3", "audioOral": "audio/sone-5-oral.mp3", "combien": 1}], "prepositions": [{"phrase": "Le cahier est sur la table.", "bon": "sur", "audio": "audio/prep-1.mp3"}, {"phrase": "Le sac à dos est sous la chaise.", "bon": "sous", "audio": "audio/prep-2.mp3"}, {"phrase": "Les crayons sont dans l'étui.", "bon": "dans", "audio": "audio/prep-3.mp3"}, {"phrase": "Le tableau est devant les tables.", "bon": "devant", "audio": "audio/prep-4.mp3"}, {"phrase": "La poubelle est derrière la porte.", "bon": "derrière", "audio": "audio/prep-5.mp3"}, {"phrase": "La plante est entre la fenêtre et l'étagère.", "bon": "entre", "audio": "audio/prep-6.mp3"}], "choixPrep": ["sur", "sous", "dans", "devant", "derrière", "entre"], "dictee": [{"texte": "Ce matin, je range la classe.", "audio": "audio/dictee-1.mp3"}, {"texte": "Le tableau vert est devant les tables.", "audio": "audio/dictee-2.mp3"}, {"texte": "Sur le bureau, il y a un cahier, un stylo et une efface.", "audio": "audio/dictee-3.mp3"}, {"texte": "Mon sac à dos est sous la chaise.", "audio": "audio/dictee-4.mp3"}, {"texte": "La plante est entre la fenêtre et l'étagère.", "audio": "audio/dictee-5.mp3"}, {"texte": "Le professeur me donne une feuille.", "audio": "audio/dictee-6.mp3"}, {"texte": "C'est le dictionnaire de Mélanie. Je te le donne.", "audio": "audio/dictee-7.mp3"}, {"texte": "La porte se ferme. Le cours commence.", "audio": "audio/dictee-8.mp3"}], "pronomOn": [{"on": "On ouvre le cahier.", "nous": "Nous ouvrons le cahier.", "audioOn": "audio/on-1-on.mp3", "audioNous": "audio/on-1-nous.mp3"}, {"on": "On écoute l'enseignante.", "nous": "Nous écoutons l'enseignante.", "audioOn": "audio/on-2-on.mp3", "audioNous": "audio/on-2-nous.mp3"}, {"on": "On range les feuilles.", "nous": "Nous rangeons les feuilles.", "audioOn": "audio/on-3-on.mp3", "audioNous": "audio/on-3-nous.mp3"}, {"on": "On ferme la porte.", "nous": "Nous fermons la porte.", "audioOn": "audio/on-4-on.mp3", "audioNous": "audio/on-4-nous.mp3"}, {"on": "On prend une pause.", "nous": "Nous prenons une pause.", "audioOn": "audio/on-5-on.mp3", "audioNous": "audio/on-5-nous.mp3"}, {"on": "On travaille à deux.", "nous": "Nous travaillons à deux.", "audioOn": "audio/on-6-on.mp3", "audioNous": "audio/on-6-nous.mp3"}], "scene": {"img": "scene-classe.jpg", "alt": "Une salle de classe : un tableau au mur du fond, l'enseignant debout devant le tableau, un bureau avec un ordinateur portable, deux tables avec des livres, un sac à dos par terre à côté de la table de gauche, une porte, une horloge au-dessus de la porte, une fenêtre à droite."}, "p47a": [{"avant": "Le tableau est", "apres": "l'enseignant.", "bon": "derrière"}, {"avant": "L'ordinateur est", "apres": "l'enseignant.", "bon": "devant"}, {"avant": "Les livres sont", "apres": "les tables.", "bon": "sur"}, {"avant": "L'enseignant est", "apres": "son bureau.", "bon": "derrière"}, {"avant": "L'horloge est", "apres": "la porte.", "bon": "au-dessus de"}, {"avant": "Le sac à dos est", "apres": "la table.", "bon": "à côté de"}], "p47b": [{"avant": "Je range les feuilles", "apres": "le cartable.", "bon": "dans"}, {"avant": "Elle laisse le dictionnaire", "apres": "la table.", "bon": "sur"}, {"avant": "On doit garder les cellulaires", "apres": "les sacs.", "bon": "dans"}, {"avant": "Écris ton nom", "apres": "la feuille.", "bon": "sur"}, {"avant": "Pouvez-vous replacer les dictionnaires", "apres": "l'armoire?", "bon": "dans"}], "theorie": [{"titre": "Donner une directive", "bloc": "ex1", "points": [{"titre": "L'impératif", "texte": "Pour dire à la classe quoi faire, on enlève le pronom : <b>Ouvrez</b> votre cahier. <b>Regardez</b> le tableau. <b>Fermez</b> la porte. <b>Écoutez</b> bien."}, {"titre": "Le « vous » de la classe", "texte": "L'enseignante dit <em>vous</em> à tout le monde, même à une seule personne. C'est poli, et c'est ce qu'on entend à l'école."}, {"titre": "Demander la permission", "texte": "<b>Est-ce que je peux</b> aller aux toilettes? — <b>Est-ce que je peux</b> ouvrir la fenêtre? La réponse commence par <em>Oui, mais…</em> ou <em>Non, pas maintenant.</em>"}]}, {"titre": "Un, une, des", "bloc": "ex2", "points": [{"titre": "Le mot vient avec son article", "texte": "On n'apprend pas <em>stylo</em>, on apprend <b>un</b> stylo. Le genre ne s'entend presque jamais : c'est l'article qui le dit."}, {"titre": "Au pluriel", "texte": "<b>des</b> crayons, <b>des</b> feuilles, <b>des</b> livres. Le <em>s</em> s'écrit, il ne se prononce pas."}, {"titre": "Les couleurs de la classe", "texte": "rouge · bleu · jaune · vert · noir. La couleur se met <b>après</b> le nom : un cahier <b>bleu</b>, une porte <b>verte</b>."}]}, {"titre": "Le e qui tombe", "bloc": "ex3", "points": [{"titre": "Ce qu'on écrit", "texte": "Huit petits mots s'écrivent avec un <b>e</b> : <em>ce, je, le, de, me, te, se, que</em>."}, {"titre": "Ce qu'on entend", "texte": "À l'oral, ce <b>e</b> disparaît très souvent. On écrit « Je te le donne », et on entend <em>J'te l'donne</em>."}, {"titre": "Ce qu'il faut retenir", "texte": "Le <b>e</b> s'écrit toujours, même quand on ne l'entend pas. C'est pour ça qu'il faut connaître ces huit mots par cœur."}]}, {"titre": "Les prépositions de lieu", "bloc": "ex4", "schemas": true, "points": [{"titre": "À quoi elles servent", "texte": "Une préposition dit <b>où</b> est une chose. Sans elle, la phrase ne tient pas : « Le cahier ___ la table »."}, {"titre": "De + le = du", "texte": "On ne dit pas <em>à côté de le</em> bureau, mais <b>à côté du</b> bureau. Et <em>de la</em> ne change pas : à côté <b>de la</b> porte."}, {"titre": "Devant ou derrière", "texte": "<b>Devant</b> : je le vois en premier. <b>Derrière</b> : il est caché par l'autre."}]}, {"titre": "Écrire ce qu'on entend", "bloc": "ex5", "points": [{"titre": "ce ou se", "texte": "<b>Ce</b> matin, <b>ce</b> cahier — il montre une chose. La porte <b>se</b> ferme, il <b>se</b> lève — il va avec le verbe."}, {"titre": "Deux petits mots à la file", "texte": "Je <b>te le</b> donne. Il <b>me la</b> montre. Ils se placent <b>avant</b> le verbe, et on les écrit séparés."}, {"titre": "La phrase", "texte": "Une majuscule au début, un point à la fin. Un nom de personne prend aussi une majuscule : <em>Mélanie</em>."}]}, {"titre": "Le pronom ON", "bloc": "ex6", "points": [{"titre": "On veut dire nous", "texte": "<b>On</b> ouvre le cahier = <b>Nous</b> ouvrons le cahier. À l'oral, on dit presque toujours <em>on</em>."}, {"titre": "Le verbe", "texte": "Après <b>on</b>, le verbe se termine comme avec <em>il</em> ou <em>elle</em> : on ouvr<b>e</b>, on écout<b>e</b>, on prend."}, {"titre": "Avec nous", "texte": "Avec <b>nous</b>, le verbe se termine par <b>-ons</b> : nous ouvr<b>ons</b>, nous écout<b>ons</b>, nous pren<b>ons</b>."}]}], "schemas": ["sur", "sous", "dans", "devant", "derrière", "entre", "à côté de", "au-dessus de"], "banqueP47": ["sur", "sous", "dans", "devant", "derrière", "à côté de", "au-dessus de"]};</script>
+<script>const D = {"dialogue": [{"qui": "f", "texte": "Bonjour tout le monde! Ouvrez votre cahier à la page trente-deux.", "audio": "audio/dialogue-01.mp3"}, {"qui": "m", "texte": "Excusez-moi, je n'ai pas mon cahier.", "audio": "audio/dialogue-02.mp3"}, {"qui": "f", "texte": "Ce n'est pas grave. Regardez avec Mélanie, s'il vous plaît.", "audio": "audio/dialogue-03.mp3"}, {"qui": "m", "texte": "D'accord. Et mon stylo? Je ne trouve pas mon stylo.", "audio": "audio/dialogue-04.mp3"}, {"qui": "f", "texte": "Regardez sous la table. Il est peut-être par terre.", "audio": "audio/dialogue-05.mp3"}, {"qui": "m", "texte": "Ah oui! Il est sous ma chaise. Merci!", "audio": "audio/dialogue-06.mp3"}, {"qui": "f", "texte": "Maintenant, fermez la porte et écoutez bien.", "audio": "audio/dialogue-07.mp3"}, {"qui": "m", "texte": "Madame, est-ce que je peux aller aux toilettes?", "audio": "audio/dialogue-08.mp3"}, {"qui": "f", "texte": "Oui, mais après l'exercice. La pause est à huit heures.", "audio": "audio/dialogue-09.mp3"}, {"qui": "m", "texte": "Parfait. Merci beaucoup!", "audio": "audio/dialogue-10.mp3"}], "questions": [{"q": "Quelle page ouvre la classe?", "choix": ["la page 12", "la page 32", "la page 42"], "bon": 1}, {"q": "Où est le stylo?", "choix": ["sur la table", "dans le sac", "sous la chaise"], "bon": 2}, {"q": "Qu'est-ce que l'enseignante demande de fermer?", "choix": ["la fenêtre", "la porte", "le cahier"], "bon": 1}, {"q": "La pause est à quelle heure?", "choix": ["à sept heures", "à huit heures", "à neuf heures"], "bon": 1}], "objets": [{"mot": "une horloge", "img": "lexique/une-horloge.jpg", "audio": "audio/objet-une-horloge.mp3"}, {"mot": "un calendrier", "img": "lexique/un-calendrier.jpg", "audio": "audio/objet-un-calendrier.mp3"}, {"mot": "une poubelle", "img": "lexique/une-poubelle.jpg", "audio": "audio/objet-une-poubelle.mp3"}, {"mot": "un bac à recyclage", "img": "lexique/un-bac-a-recyclage.jpg", "audio": "audio/objet-un-bac-a-recyclage.mp3"}, {"mot": "un tableau", "img": "lexique/un-tableau.jpg", "audio": "audio/objet-un-tableau.mp3"}, {"mot": "un bureau", "img": "lexique/un-bureau-de-classe.jpg", "audio": "audio/objet-un-bureau-de-classe.mp3"}, {"mot": "une chaise", "img": "lexique/une-chaise.jpg", "audio": "audio/objet-une-chaise.mp3"}, {"mot": "une lampe", "img": "lexique/une-lampe.jpg", "audio": "audio/objet-une-lampe.mp3"}, {"mot": "une affiche", "img": "lexique/une-affiche.jpg", "audio": "audio/objet-une-affiche.mp3"}, {"mot": "une plante", "img": "lexique/une-plante.jpg", "audio": "audio/objet-une-plante.mp3"}, {"mot": "une porte", "img": "lexique/une-porte.jpg", "audio": "audio/objet-une-porte.mp3"}, {"mot": "une fenêtre", "img": "lexique/une-fenetre.jpg", "audio": "audio/objet-une-fenetre.mp3"}, {"mot": "un ordinateur", "img": "lexique/un-ordinateur.jpg", "audio": "audio/objet-un-ordinateur.mp3"}, {"mot": "une imprimante", "img": "lexique/une-imprimante.jpg", "audio": "audio/objet-une-imprimante.mp3"}, {"mot": "une souris", "img": "lexique/une-souris.jpg", "audio": "audio/objet-une-souris.mp3"}, {"mot": "un parapluie", "img": "lexique/un-parapluie.jpg", "audio": "audio/objet-un-parapluie.mp3"}, {"mot": "des clés", "img": "lexique/des-cles.jpg", "audio": "audio/objet-des-cles.mp3"}, {"mot": "des livres", "img": "lexique/des-livres.jpg", "audio": "audio/objet-des-livres.mp3"}, {"mot": "un manteau", "img": "lexique/un-manteau.jpg", "audio": "audio/objet-un-manteau.mp3"}, {"mot": "des souliers", "img": "lexique/des-souliers.jpg", "audio": "audio/objet-des-souliers.mp3"}, {"mot": "un sac à dos", "img": "lexique/un-sac-a-dos.jpg", "audio": "audio/objet-un-sac-a-dos.mp3"}, {"mot": "un sac à main", "img": "lexique/un-sac-a-main.jpg", "audio": "audio/objet-un-sac-a-main.mp3"}, {"mot": "des lunettes", "img": "lexique/des-lunettes.jpg", "audio": "audio/objet-des-lunettes.mp3"}, {"mot": "un cellulaire", "img": "lexique/un-cellulaire.jpg", "audio": "audio/objet-un-cellulaire.mp3"}, {"mot": "une tablette électronique", "img": "lexique/une-tablette-electronique.jpg", "audio": "audio/objet-une-tablette-electronique.mp3"}, {"mot": "une étagère", "img": "lexique/une-etagere.jpg", "audio": "audio/objet-une-etagere.mp3"}, {"mot": "une table", "img": "lexique/une-table.jpg", "audio": "audio/objet-une-table.mp3"}, {"mot": "un étui à crayons", "img": "lexique/un-etui-a-crayons.jpg", "audio": "audio/objet-un-etui-a-crayons.mp3"}, {"mot": "un stylo", "img": "lexique/un-stylo.jpg", "audio": "audio/objet-un-stylo.mp3"}, {"mot": "des crayons", "img": "lexique/des-crayons.jpg", "audio": "audio/objet-des-crayons.mp3"}, {"mot": "une efface", "img": "lexique/une-efface.jpg", "audio": "audio/objet-une-efface.mp3"}, {"mot": "un cahier", "img": "lexique/un-cahier.jpg", "audio": "audio/objet-un-cahier.mp3"}, {"mot": "un dictionnaire", "img": "lexique/un-dictionnaire.jpg", "audio": "audio/objet-un-dictionnaire.mp3"}, {"mot": "des feuilles", "img": "lexique/des-feuilles.jpg", "audio": "audio/objet-des-feuilles.mp3"}, {"mot": "une montre", "img": "lexique/une-montre.jpg", "audio": "audio/objet-une-montre.mp3"}], "petitsMots": [{"mot": "je", "audio": "audio/petitmot-1.mp3"}, {"mot": "le", "audio": "audio/petitmot-2.mp3"}, {"mot": "me", "audio": "audio/petitmot-3.mp3"}, {"mot": "se", "audio": "audio/petitmot-4.mp3"}, {"mot": "de", "audio": "audio/petitmot-5.mp3"}, {"mot": "ce", "audio": "audio/petitmot-6.mp3"}, {"mot": "te", "audio": "audio/petitmot-7.mp3"}, {"mot": "que", "audio": "audio/petitmot-8.mp3"}], "sonE": [{"ecrit": "Je te le donne.", "oral": "J'te l'donne.", "audioEcrit": "audio/sone-1-ecrit.mp3", "audioOral": "audio/sone-1-oral.mp3", "combien": 2}, {"ecrit": "Ce matin, je range la classe.", "oral": "C'matin, j'range la classe.", "audioEcrit": "audio/sone-2-ecrit.mp3", "audioOral": "audio/sone-2-oral.mp3", "combien": 2}, {"ecrit": "Qu'est-ce que c'est?", "oral": "Qu'est-c'que c'est?", "audioEcrit": "audio/sone-3-ecrit.mp3", "audioOral": "audio/sone-3-oral.mp3", "combien": 1}, {"ecrit": "La porte se ferme.", "oral": "La porte s'ferme.", "audioEcrit": "audio/sone-4-ecrit.mp3", "audioOral": "audio/sone-4-oral.mp3", "combien": 1}, {"ecrit": "Je me lève à sept heures.", "oral": "J'me lève à sept heures.", "audioEcrit": "audio/sone-5-ecrit.mp3", "audioOral": "audio/sone-5-oral.mp3", "combien": 1}], "prepositions": [{"phrase": "Le cahier est sur la table.", "bon": "sur", "audio": "audio/prep-1.mp3"}, {"phrase": "Le sac à dos est sous la chaise.", "bon": "sous", "audio": "audio/prep-2.mp3"}, {"phrase": "Les crayons sont dans l'étui.", "bon": "dans", "audio": "audio/prep-3.mp3"}, {"phrase": "Le tableau est devant les tables.", "bon": "devant", "audio": "audio/prep-4.mp3"}, {"phrase": "La poubelle est derrière la porte.", "bon": "derrière", "audio": "audio/prep-5.mp3"}, {"phrase": "La plante est entre la fenêtre et l'étagère.", "bon": "entre", "audio": "audio/prep-6.mp3"}], "choixPrep": ["sur", "sous", "dans", "devant", "derrière", "entre"], "dictee": [{"texte": "Ce matin, je range la classe.", "audio": "audio/dictee-1.mp3"}, {"texte": "Le tableau vert est devant les tables.", "audio": "audio/dictee-2.mp3"}, {"texte": "Sur le bureau, il y a un cahier, un stylo et une efface.", "audio": "audio/dictee-3.mp3"}, {"texte": "Mon sac à dos est sous la chaise.", "audio": "audio/dictee-4.mp3"}, {"texte": "La plante est entre la fenêtre et l'étagère.", "audio": "audio/dictee-5.mp3"}, {"texte": "Le professeur me donne une feuille.", "audio": "audio/dictee-6.mp3"}, {"texte": "C'est le dictionnaire de Mélanie. Je te le donne.", "audio": "audio/dictee-7.mp3"}, {"texte": "La porte se ferme. Le cours commence.", "audio": "audio/dictee-8.mp3"}], "pronomOn": [{"on": "On ouvre le cahier.", "nous": "Nous ouvrons le cahier.", "audioOn": "audio/on-1-on.mp3", "audioNous": "audio/on-1-nous.mp3"}, {"on": "On écoute l'enseignante.", "nous": "Nous écoutons l'enseignante.", "audioOn": "audio/on-2-on.mp3", "audioNous": "audio/on-2-nous.mp3"}, {"on": "On range les feuilles.", "nous": "Nous rangeons les feuilles.", "audioOn": "audio/on-3-on.mp3", "audioNous": "audio/on-3-nous.mp3"}, {"on": "On ferme la porte.", "nous": "Nous fermons la porte.", "audioOn": "audio/on-4-on.mp3", "audioNous": "audio/on-4-nous.mp3"}, {"on": "On prend une pause.", "nous": "Nous prenons une pause.", "audioOn": "audio/on-5-on.mp3", "audioNous": "audio/on-5-nous.mp3"}, {"on": "On travaille à deux.", "nous": "Nous travaillons à deux.", "audioOn": "audio/on-6-on.mp3", "audioNous": "audio/on-6-nous.mp3"}], "scene": {"img": "scene-classe.jpg", "alt": "Une salle de classe : un tableau au mur du fond, l'enseignant debout devant le tableau, un bureau avec un ordinateur portable, deux tables avec des livres, un sac à dos par terre à côté de la table de gauche, une porte, une horloge au-dessus de la porte, une fenêtre à droite."}, "p47a": [{"avant": "Le tableau est", "apres": "l'enseignant.", "bon": "derrière"}, {"avant": "L'ordinateur est", "apres": "l'enseignant.", "bon": "devant"}, {"avant": "Les livres sont", "apres": "les tables.", "bon": "sur"}, {"avant": "L'enseignant est", "apres": "son bureau.", "bon": "derrière"}, {"avant": "L'horloge est", "apres": "la porte.", "bon": "au-dessus de"}, {"avant": "Le sac à dos est", "apres": "la table.", "bon": "à côté de"}], "p47b": [{"avant": "Je range les feuilles", "apres": "le cartable.", "bon": "dans"}, {"avant": "Elle laisse le dictionnaire", "apres": "la table.", "bon": "sur"}, {"avant": "On doit garder les cellulaires", "apres": "les sacs.", "bon": "dans"}, {"avant": "Écris ton nom", "apres": "la feuille.", "bon": "sur"}, {"avant": "Pouvez-vous replacer les dictionnaires", "apres": "l'armoire?", "bon": "dans"}], "dictee2": [{"texte": "Ce matin, il fait froid et il neige.", "audio": "audio/dictee2-1.mp3"}, {"texte": "Je prends l'autobus pour aller à l'école.", "audio": "audio/dictee2-2.mp3"}, {"texte": "Le cours commence à six heures et demie.", "audio": "audio/dictee2-3.mp3"}, {"texte": "Mon cahier est dans mon sac à dos.", "audio": "audio/dictee2-4.mp3"}, {"texte": "L'enseignante ferme la porte.", "audio": "audio/dictee2-5.mp3"}, {"texte": "On travaille à deux, avec un dictionnaire.", "audio": "audio/dictee2-6.mp3"}, {"texte": "La pause est à sept heures et quart.", "audio": "audio/dictee2-7.mp3"}, {"texte": "Je range mes feuilles et je pars.", "audio": "audio/dictee2-8.mp3"}], "vraiFaux": [{"texte": "Le tableau est derrière l'enseignant.", "vrai": true, "audio": "audio/vf-1.mp3"}, {"texte": "L'ordinateur est sous la table.", "vrai": false, "audio": "audio/vf-2.mp3"}, {"texte": "Il y a des livres sur les tables.", "vrai": true, "audio": "audio/vf-3.mp3"}, {"texte": "L'horloge est à côté de la fenêtre.", "vrai": false, "audio": "audio/vf-4.mp3"}, {"texte": "Le sac à dos est par terre.", "vrai": true, "audio": "audio/vf-5.mp3"}, {"texte": "L'enseignant est devant son bureau.", "vrai": false, "audio": "audio/vf-6.mp3"}, {"texte": "Il y a deux tables d'élèves.", "vrai": true, "audio": "audio/vf-7.mp3"}, {"texte": "La porte est ouverte.", "vrai": false, "audio": "audio/vf-8.mp3"}], "consignes": [{"texte": "Ouvrez votre cahier à la page trente-deux.", "choix": ["Je prends mon cahier.", "Je ferme la porte.", "Je sors."], "bon": 0, "audio": "audio/consigne-1.mp3"}, {"texte": "Fermez la porte, s'il vous plaît.", "choix": ["J'ouvre la fenêtre.", "Je vais à la porte.", "J'écris mon nom."], "bon": 1, "audio": "audio/consigne-2.mp3"}, {"texte": "Écrivez votre nom sur la feuille.", "choix": ["Je prends un stylo.", "Je regarde l'horloge.", "Je range mon sac."], "bon": 0, "audio": "audio/consigne-3.mp3"}, {"texte": "Regardez le tableau.", "choix": ["Je lis mon cahier.", "Je lève les yeux.", "Je parle à mon voisin."], "bon": 1, "audio": "audio/consigne-4.mp3"}, {"texte": "Rangez vos affaires, c'est la pause.", "choix": ["Je mets tout dans mon sac.", "Je commence l'exercice.", "J'ouvre le dictionnaire."], "bon": 0, "audio": "audio/consigne-5.mp3"}, {"texte": "Travaillez à deux.", "choix": ["Je travaille seul.", "Je sors de la classe.", "Je parle avec mon voisin."], "bon": 2, "audio": "audio/consigne-6.mp3"}], "prix": [{"dit": "deux dollars", "choix": ["2,00 $", "12,00 $", "2,20 $"], "bon": 0, "audio": "audio/prix-1.mp3"}, {"dit": "trois dollars cinquante", "choix": ["3,15 $", "3,50 $", "13,50 $"], "bon": 1, "audio": "audio/prix-2.mp3"}, {"dit": "cinq dollars", "choix": ["5,00 $", "15,00 $", "0,50 $"], "bon": 0, "audio": "audio/prix-3.mp3"}, {"dit": "un dollar vingt-cinq", "choix": ["1,25 $", "1,00 $", "12,50 $"], "bon": 0, "audio": "audio/prix-4.mp3"}, {"dit": "dix dollars", "choix": ["10,00 $", "2,00 $", "1,00 $"], "bon": 0, "audio": "audio/prix-5.mp3"}, {"dit": "quinze dollars quatre-vingt-dix", "choix": ["15,04 $", "50,90 $", "15,90 $"], "bon": 2, "audio": "audio/prix-6.mp3"}], "avis": {"texte": "Avis aux élèves. Lundi le vingt-deux septembre, il n'y a pas de cours. C'est un congé. Les cours recommencent mardi le vingt-trois septembre, à six heures. La pause est à sept heures. Merci.", "audio": "audio/avis.mp3", "questions": [{"q": "Quel jour il n'y a pas de cours?", "choix": ["lundi", "mardi", "samedi"], "bon": 0}, {"q": "Pourquoi il n'y a pas de cours?", "choix": ["c'est une pause", "c'est un congé", "c'est fermé"], "bon": 1}, {"q": "Les cours recommencent à quelle heure?", "choix": ["à six heures", "à sept heures", "à cinq heures"], "bon": 0}, {"q": "La pause est à quelle heure?", "choix": ["à six heures", "à sept heures", "à huit heures"], "bon": 1}]}, "journee": [{"texte": "Je me lève à six heures.", "bon": "le matin", "audio": "audio/journee-1.mp3"}, {"texte": "Je prends l'autobus à sept heures et quart.", "bon": "le matin", "audio": "audio/journee-2.mp3"}, {"texte": "Je travaille à la pharmacie.", "bon": "l'après-midi", "audio": "audio/journee-3.mp3"}, {"texte": "Je vais à l'école à six heures.", "bon": "le soir", "audio": "audio/journee-4.mp3"}, {"texte": "Je soupe avec ma famille.", "bon": "le soir", "audio": "audio/journee-5.mp3"}, {"texte": "Je fais mes devoirs après le cours.", "bon": "le soir", "audio": "audio/journee-6.mp3"}], "moments": ["le matin", "l'après-midi", "le soir"], "theorie": [{"titre": "Donner une directive", "bloc": "ex1", "points": [{"titre": "L'impératif", "texte": "Pour dire à la classe quoi faire, on enlève le pronom : <b>Ouvrez</b> votre cahier. <b>Regardez</b> le tableau. <b>Fermez</b> la porte. <b>Écoutez</b> bien."}, {"titre": "Le « vous » de la classe", "texte": "L'enseignante dit <em>vous</em> à tout le monde, même à une seule personne. C'est poli, et c'est ce qu'on entend à l'école."}, {"titre": "Demander la permission", "texte": "<b>Est-ce que je peux</b> aller aux toilettes? — <b>Est-ce que je peux</b> ouvrir la fenêtre? La réponse commence par <em>Oui, mais…</em> ou <em>Non, pas maintenant.</em>"}]}, {"titre": "Un, une, des", "bloc": "ex2", "points": [{"titre": "Le mot vient avec son article", "texte": "On n'apprend pas <em>stylo</em>, on apprend <b>un</b> stylo. Le genre ne s'entend presque jamais : c'est l'article qui le dit."}, {"titre": "Au pluriel", "texte": "<b>des</b> crayons, <b>des</b> feuilles, <b>des</b> livres. Le <em>s</em> s'écrit, il ne se prononce pas."}, {"titre": "Les couleurs de la classe", "texte": "rouge · bleu · jaune · vert · noir. La couleur se met <b>après</b> le nom : un cahier <b>bleu</b>, une porte <b>verte</b>."}]}, {"titre": "Le e qui tombe", "bloc": "ex3", "points": [{"titre": "Ce qu'on écrit", "texte": "Huit petits mots s'écrivent avec un <b>e</b> : <em>ce, je, le, de, me, te, se, que</em>."}, {"titre": "Ce qu'on entend", "texte": "À l'oral, ce <b>e</b> disparaît très souvent. On écrit « Je te le donne », et on entend <em>J'te l'donne</em>."}, {"titre": "Ce qu'il faut retenir", "texte": "Le <b>e</b> s'écrit toujours, même quand on ne l'entend pas. C'est pour ça qu'il faut connaître ces huit mots par cœur."}]}, {"titre": "Les prépositions de lieu", "bloc": "ex4", "schemas": true, "points": [{"titre": "À quoi elles servent", "texte": "Une préposition dit <b>où</b> est une chose. Sans elle, la phrase ne tient pas : « Le cahier ___ la table »."}, {"titre": "De + le = du", "texte": "On ne dit pas <em>à côté de le</em> bureau, mais <b>à côté du</b> bureau. Et <em>de la</em> ne change pas : à côté <b>de la</b> porte."}, {"titre": "Devant ou derrière", "texte": "<b>Devant</b> : je le vois en premier. <b>Derrière</b> : il est caché par l'autre."}]}, {"titre": "Écrire ce qu'on entend", "bloc": "ex5", "points": [{"titre": "ce ou se", "texte": "<b>Ce</b> matin, <b>ce</b> cahier — il montre une chose. La porte <b>se</b> ferme, il <b>se</b> lève — il va avec le verbe."}, {"titre": "Deux petits mots à la file", "texte": "Je <b>te le</b> donne. Il <b>me la</b> montre. Ils se placent <b>avant</b> le verbe, et on les écrit séparés."}, {"titre": "La phrase", "texte": "Une majuscule au début, un point à la fin. Un nom de personne prend aussi une majuscule : <em>Mélanie</em>."}]}, {"titre": "Le pronom ON", "bloc": "ex6", "points": [{"titre": "On veut dire nous", "texte": "<b>On</b> ouvre le cahier = <b>Nous</b> ouvrons le cahier. À l'oral, on dit presque toujours <em>on</em>."}, {"titre": "Le verbe", "texte": "Après <b>on</b>, le verbe se termine comme avec <em>il</em> ou <em>elle</em> : on ouvr<b>e</b>, on écout<b>e</b>, on prend."}, {"titre": "Avec nous", "texte": "Avec <b>nous</b>, le verbe se termine par <b>-ons</b> : nous ouvr<b>ons</b>, nous écout<b>ons</b>, nous pren<b>ons</b>."}]}, {"titre": "Écrire l'heure et la date", "bloc": "ex7", "points": [{"titre": "L'heure", "texte": "<b>six heures</b>, <b>six heures et quart</b>, <b>six heures et demie</b>, <b>sept heures moins quart</b>. On écrit le mot, pas le chiffre, dans une dictée."}, {"titre": "Aller à", "texte": "Je vais <b>à</b> l'école, <b>à</b> la pharmacie, <b>au</b> travail. <em>à + le</em> devient <b>au</b>."}, {"titre": "Le verbe prendre", "texte": "Je <b>prends</b> l'autobus. Tu <b>prends</b>. Il <b>prend</b>. Le <em>d</em> ne s'entend pas, il s'écrit."}]}, {"titre": "Vrai ou faux", "bloc": "ex8", "points": [{"titre": "Regarder avant de répondre", "texte": "L'image décide, pas la mémoire. Si la phrase dit <em>sous</em> et que l'image montre <em>sur</em>, c'est faux."}, {"titre": "Dire pourquoi", "texte": "Quand c'est faux, dites la phrase juste : « Non, l'ordinateur est <b>sur</b> le bureau. »"}]}, {"titre": "Comprendre une consigne", "bloc": "ex9", "points": [{"titre": "Le verbe est au début", "texte": "<b>Ouvrez</b>… <b>Fermez</b>… <b>Écrivez</b>… Le premier mot dit ce qu'il faut faire : c'est lui qu'on écoute."}, {"titre": "S'il vous plaît", "texte": "On l'ajoute pour être poli. Il ne change pas la consigne."}, {"titre": "Je n'ai pas compris", "texte": "Dites-le : « Pouvez-vous répéter, s'il vous plaît? » C'est une phrase de classe, pas une faute."}]}, {"titre": "Lire un prix", "bloc": "ex10", "points": [{"titre": "La virgule", "texte": "<b>3,50 $</b> se dit <em>trois dollars cinquante</em>. La virgule sépare les dollars des sous."}, {"titre": "Attention aux dizaines", "texte": "<em>quinze</em> (15) et <em>cinquante</em> (50) se ressemblent à l'oreille. <em>Deux</em> (2) et <em>douze</em> (12) aussi."}]}, {"titre": "Lire un avis", "bloc": "ex11", "points": [{"titre": "Les mots à chercher", "texte": "Un avis dit toujours <b>quand</b> et <b>quoi</b> : un jour, une heure, et ce qui change — <em>congé</em>, <em>pause</em>, <em>fermé</em>."}, {"titre": "Congé ou pause", "texte": "Un <b>congé</b>, c'est une journée sans cours. Une <b>pause</b>, c'est quelques minutes pendant le cours."}]}, {"titre": "Les moments de la journée", "bloc": "ex12", "points": [{"titre": "Trois moments", "texte": "<b>le matin</b> · <b>l'après-midi</b> · <b>le soir</b>. On dit <em>le</em> matin pour parler de tous les matins."}, {"titre": "Les verbes de la journée", "texte": "je me lève · je déjeune · je dîne · je soupe · je travaille · je vais à l'école"}]}], "schemas": ["sur", "sous", "dans", "devant", "derrière", "entre", "à côté de", "au-dessus de"], "banqueP47": ["sur", "sous", "dans", "devant", "derrière", "à côté de", "au-dessus de"]};</script>
 <script>
 "use strict";
 
@@ -420,9 +483,15 @@ const ETAPES = [
   {id:"ex4", nom:"Où est-ce?",  total:17},
   {id:"ex5", nom:"La dictée",   total:8},
   {id:"ex6", nom:"Le pronom ON",total:6},
+  {id:"ex7", nom:"Dictée du soir", total:8},
+  {id:"ex8", nom:"Vrai ou faux",   total:8},
+  {id:"ex9", nom:"Les consignes",  total:6},
+  {id:"ex10",nom:"Les prix",       total:6},
+  {id:"ex11",nom:"L'avis",         total:4},
+  {id:"ex12",nom:"Ma journée",     total:6},
 ];
-const points = {ex1:new Set(), ex2:new Set(), ex3:new Set(), ex4:new Set(),
-                ex5:new Set(), ex6:new Set()};
+const points = {};
+ETAPES.forEach(e => { points[e.id] = new Set(); });
 function marque(sec, cle) { points[sec].add(cle); majScores(); }
 function majScores() {
   ETAPES.forEach((e, i) => {
@@ -782,7 +851,155 @@ function bariPronomOn() {
   });
 }
 
+
+/* ── 7 à 12 · les exercices supplémentaires ─────────────────────────────────
+   Trois mécaniques déjà éprouvées plus haut — saisie corrigée, choix unique,
+   vrai/faux — plutôt qu'une quatrième à apprendre en pleine séance. */
+
+function champsDictee(liste, zone, prefixe, sec) {
+  liste.forEach((p, i) => {
+    const c = el("div", "carte");
+    const haut = el("div", "jetons"); haut.append(btnAudio(p.audio, "Phrase " + (i + 1)));
+    const champ = el("input"); champ.type = "text"; champ.id = prefixe + i;
+    champ.setAttribute("aria-label", "Phrase " + (i + 1)); champ.autocomplete = "off";
+    champ.spellcheck = false;
+    const l = el("div", "ligne"); l.append(champ);
+    const modele = el("p", "verdict"); modele.hidden = true; modele.dataset.r = "ok";
+    modele.textContent = p.texte;
+    c.append(haut, l, modele); zone.append(c);
+  });
+}
+function bariDictee2() {
+  champsDictee(D.dictee2, $("#dictee2"), "d2_", "ex7");
+  $("#verifDictee2").addEventListener("click", () => {
+    D.dictee2.forEach((p, i) => {
+      const champ = $("#d2_" + i);
+      if (!champ.value.trim()) { champ.dataset.etat = ""; return; }
+      const bon = nettoie(champ.value) === nettoie(p.texte);
+      directZone({slug:"dictee2-" + (i + 1), ok:bon, enonce:"Phrase " + (i + 1),
+                  bonne:p.texte, reponse:champ.value});
+      champ.dataset.etat = bon ? "juste" : "faux";
+      if (bon) marque("ex7", i);
+    });
+    dis("Dictée vérifiée.");
+  });
+  $("#montrerDictee2").addEventListener("click", () => {
+    const b = $("#montrerDictee2"), on = b.textContent.indexOf("Montrer") === 0;
+    $("#dictee2").querySelectorAll(".verdict").forEach(v => { v.hidden = !on; });
+    b.textContent = on ? "Cacher le texte" : "Montrer le texte";
+  });
+}
+
+/* Un exercice à choix unique : le même moule pour les consignes, les prix,
+   les questions de l'avis et les moments de la journée. */
+function choixUnique(zone, items, sec, slug, avant) {
+  items.forEach((it, i) => {
+    const c = el("div", "carte");
+    if (avant) avant(c, it, i);
+    const jet = el("div", "jetons");
+    const verdict = el("div", "verdict"); verdict.hidden = true;
+    it.choix.forEach((ch, ci) => {
+      const b = el("button", "jeton", ch);
+      b.type = "button"; b.setAttribute("aria-pressed", "false");
+      b.addEventListener("click", () => {
+        jet.querySelectorAll(".jeton").forEach(x => x.setAttribute("aria-pressed", "false"));
+        b.setAttribute("aria-pressed", "true");
+        const bon = ci === it.bon;
+        directZone({slug:slug + "-" + (i + 1), ok:bon, enonce:it.enonce || it.q || it.dit || "",
+                    bonne:it.choix[it.bon], reponse:ch});
+        verdict.hidden = false; verdict.dataset.r = bon ? "ok" : "no";
+        verdict.textContent = bon ? "C'est ça." : "Non. Réécoutez ou relisez.";
+        if (bon) marque(sec, i);
+      });
+      jet.append(b);
+    });
+    c.append(jet, verdict); zone.append(c);
+  });
+}
+
+function bariVraiFaux() {
+  const img = $("#sceneVF");
+  if (img && D.scene) { img.src = D.scene.img; img.alt = D.scene.alt; }
+  const z = $("#vraiFaux");
+  D.vraiFaux.forEach((p, i) => {
+    const c = el("div", "carte");
+    const haut = el("div", "jetons"); haut.append(btnAudio(p.audio, "Phrase " + (i + 1)));
+    const jet = el("div", "jetons");
+    const verdict = el("div", "verdict"); verdict.hidden = true;
+    [["Vrai", true], ["Faux", false]].forEach(([nom, val]) => {
+      const b = el("button", "jeton", nom);
+      b.type = "button"; b.setAttribute("aria-pressed", "false");
+      b.addEventListener("click", () => {
+        jet.querySelectorAll(".jeton").forEach(x => x.setAttribute("aria-pressed", "false"));
+        b.setAttribute("aria-pressed", "true");
+        const bon = val === p.vrai;
+        directZone({slug:"vf-" + (i + 1), ok:bon, enonce:p.texte,
+                    bonne:p.vrai ? "Vrai" : "Faux", reponse:nom});
+        verdict.hidden = false; verdict.dataset.r = bon ? "ok" : "no";
+        verdict.textContent = bon ? p.texte + (p.vrai ? " — c'est vrai." : " — c'est faux.")
+                                  : "Non. Regardez le dessin encore une fois.";
+        if (bon) marque("ex8", i);
+      });
+      jet.append(b);
+    });
+    c.append(haut, jet, verdict); z.append(c);
+  });
+}
+
+function bariConsignes() {
+  choixUnique($("#consignes"), D.consignes.map(x => Object.assign({enonce:x.texte}, x)),
+    "ex9", "consigne", (c, it, i) => {
+      const haut = el("div", "jetons");
+      haut.append(btnAudio(it.audio, "Consigne " + (i + 1)));
+      c.append(haut);
+    });
+}
+function bariPrix() {
+  choixUnique($("#prix"), D.prix.map(x => Object.assign({enonce:x.dit}, x)),
+    "ex10", "prix", (c, it, i) => {
+      const haut = el("div", "jetons"); haut.append(btnAudio(it.audio, "Prix " + (i + 1)));
+      c.append(haut);
+    });
+}
+function bariAvis() {
+  const a = $("#avis");
+  a.append(el("p", "surtitre", "Avis"), el("p", null, D.avis.texte));
+  a.querySelector("p:last-child").style.fontSize = "var(--fs-body-sm)";
+  const h = el("div", "jetons"); h.append(btnAudio(D.avis.audio, "Écouter l'avis"));
+  a.append(h);
+  choixUnique($("#avisQ"), D.avis.questions.map(x => Object.assign({enonce:x.q}, x)),
+    "ex11", "avis", (c, it) => {
+      const p = el("p", null, it.q); p.style.fontSize = "var(--fs-body-sm)"; c.append(p);
+    });
+}
+function bariJournee() {
+  const z = $("#journee");
+  D.journee.forEach((p, i) => {
+    const c = el("div", "carte");
+    const haut = el("div", "jetons"); haut.append(btnAudio(p.audio, "Phrase " + (i + 1)));
+    const jet = el("div", "jetons");
+    const verdict = el("div", "verdict"); verdict.hidden = true;
+    D.moments.forEach(m => {
+      const b = el("button", "jeton", m);
+      b.type = "button"; b.setAttribute("aria-pressed", "false");
+      b.addEventListener("click", () => {
+        jet.querySelectorAll(".jeton").forEach(x => x.setAttribute("aria-pressed", "false"));
+        b.setAttribute("aria-pressed", "true");
+        const bon = m === p.bon;
+        directZone({slug:"journee-" + (i + 1), ok:bon, enonce:p.texte, bonne:p.bon, reponse:m});
+        verdict.hidden = false; verdict.dataset.r = bon ? "ok" : "no";
+        verdict.textContent = bon ? p.texte : "Non. Réécoutez.";
+        if (bon) marque("ex12", i);
+      });
+      jet.append(b);
+    });
+    c.append(haut, jet, verdict); z.append(c);
+  });
+}
+
 bariParcours(); bariLecons(); bariDialogue(); bariObjets(); bariSonE();
-bariPrepositions(); bariDictee(); bariPronomOn(); majScores();
+bariPrepositions(); bariDictee(); bariPronomOn();
+bariDictee2(); bariVraiFaux(); bariConsignes(); bariPrix(); bariAvis(); bariJournee();
+majScores();
 
 </script>
