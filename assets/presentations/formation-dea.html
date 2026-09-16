@@ -1161,7 +1161,7 @@ section{border-top:1px solid var(--border);padding:var(--sp-8) 0;scroll-margin-t
    CES RÈGLES NE VALENT QUE POUR L'OUVERTURE — `.diapo--ouv`. Les seize
    autres plaques gardent leur dessin plein cadre et leurs plaques de mots :
    ce sont des gestes montrés de près, pas des écrans de situation.        */
-.diapo--ouv{background:var(--surface-sunken);padding:var(--sp-3);gap:var(--sp-3);
+.diapo--ouv{background:none;padding:0;gap:var(--sp-3);
       display:grid;align-items:stretch}
 .diapo--ouv .carte{background:var(--surface-card);border-radius:var(--r-lg);
       padding:clamp(14px,2.2vw,30px);display:flex;flex-direction:column;
@@ -1182,20 +1182,31 @@ section{border-top:1px solid var(--border);padding:var(--sp-8) 0;scroll-margin-t
    le panneau, lui, reste vert et rouge — c'est un objet du monde, et on
    apprend à reconnaître celui qu'on croisera. */
 .diapo--ouv1{grid-template-columns:minmax(0,1fr) minmax(0,1.5fr)}
-.carte--signe{align-items:center;text-align:center}
-.signe{width:min(22vh,180px);aspect-ratio:1}
-.signe rect.fond{fill:#DCEBD8}
-.signe rect.filet{fill:none;stroke:#C62128;stroke-width:9}
-.signe path.coeur{fill:#C62128}
-.signe path.eclair{fill:#fff}
-.signe text{fill:#14211C;font-family:var(--font-sans);font-weight:900;
+/* LE PANNEAU EST VERT, ET IL EST GRAND. Deux corrections d'un coup, le
+   15 septembre 2026.
+   LA COULEUR : la version précédente était le panneau pâle à filet rouge.
+   Celui qu'on croise réellement est VERT PLEIN, lettres et cœur crème, cadre
+   blanc. C'est le seul objet vert du module, et c'est justement pour ça qu'il
+   l'est : le vert dit « c'est accroché ici », l'ambre dit « c'est ça ».
+   LA TAILLE : les trois tuiles de chiffres sont retirées. Elles annonçaient
+   « 1 situation · 2 signes · 4 parties » — un sommaire, sur l'écran dont le
+   seul travail est de faire RECONNAÎTRE un objet. Elles prenaient le tiers de
+   la colonne à la seule chose qu'on est venu regarder. La carte descend
+   maintenant jusqu'en bas, et le panneau y tient la place qu'il mérite. */
+.carte--signe{align-items:center;text-align:center;justify-content:center;
+      gap:var(--sp-5)}
+/* IL RÉTRÉCIT AVEC SA CARTE. Posé à une largeur fixe dans une colonne
+   flexible, le panneau gardait ses 340 px et se faisait couper en bas :
+   « AED » disparaissait, c'est-à-dire la moitié de ce qu'on doit
+   reconnaître. `flex:0 1 auto` + `min-height:0` l'autorisent à céder. */
+.signe{width:min(46vh,340px);max-width:100%;max-height:100%;aspect-ratio:1;
+      flex:0 1 auto;min-height:0}
+.signe rect.fond{fill:#3E9B5F}
+.signe rect.filet{fill:none;stroke:#FBEEDC;stroke-width:8}
+.signe path.coeur{fill:#FBEEDC}
+.signe path.eclair{fill:#3E9B5F}
+.signe text{fill:#FBEEDC;font-family:var(--font-sans);font-weight:900;
       text-anchor:middle;letter-spacing:.02em}
-.tuiles{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-3)}
-.tuile{background:var(--surface-card);border-radius:var(--r-md);padding:var(--sp-3);
-      text-align:center}
-.tuile b{display:block;font-size:clamp(18px,2.2vw,28px);font-weight:var(--fw-black);
-      letter-spacing:-.03em;color:var(--text-strong)}
-.tuile span{font-size:var(--fs-meta);font-weight:var(--fw-semi);color:var(--text-muted)}
 /* LA CARTE D'ACCENT DOIT ÊTRE PLUS SPÉCIFIQUE QUE LA CARTE TOUT COURT.
    Écrite `.carte--accent`, elle perdait contre `.diapo--ouv .carte` — un
    sélecteur de plus. La carte restait blanche, et comme son texte est blanc,
@@ -1651,6 +1662,116 @@ body{overflow:hidden}
       background:var(--accent-soft);border:1px solid var(--accent);
       border-radius:var(--r-md);padding:var(--sp-3) var(--sp-4);
       margin-bottom:var(--sp-5);font-size:var(--fs-ui-sm);font-weight:var(--fw-semi)}
+/* ══ LE CHÂSSIS À CARTES ═══════════════════════════════════════════════════
+   Demandé le 15 septembre 2026 : « le design du haut et du bas doit
+   ressembler à celui-ci » — la maquette v6. Le module passait d'un bandeau
+   blanc collé en haut et d'un pied barré d'un filet à DEUX CARTES EN PILULE
+   posées sur un fond clair. C'est la même grammaire que l'ouverture : plus
+   rien ne touche le bord de l'écran, tout est objet.
+
+   CE BLOC EST LE DERNIER DE LA FEUILLE, ET C'EST DÉLIBÉRÉ. Quatre accidents
+   de cascade dans la refonte précédente m'ont appris la leçon à mes frais :
+   `.carte--accent` battue par `.diapo--ouv .carte`, `.tb .prom4` battue par
+   `.tb .carte` — à spécificité égale, la dernière déclaration gagne, et une
+   règle perdue ne lève AUCUNE erreur. Ce qui redéfinit un châssis existant
+   se déclare après lui, pas au milieu.
+
+   LE BRUN DISPARAÎT. `--accent-ink` (#8A5206) est une ENCRE : elle est faite
+   pour être lue sur blanc, à 6,2:1. Employée en aplat sur de grandes
+   surfaces, elle donne un brun de meuble. Les aplats prennent `--accent`
+   (#B45309), qui est la couleur de la machine — celle des boîtiers Philips,
+   ZOLL, Cardiac Science — et qui tient 4,9:1 en blanc dessus. L'encre reste
+   l'encre, l'aplat devient l'aplat.                                        */
+/* LE FOND EST PLUS SOMBRE QUE LES CARTES, sinon il n'y a pas de cartes.
+   Premier essai avec `--surface-sunken` (#FBFBFA) : à un point de luminosité
+   du blanc, les pilules et les panneaux se confondaient avec le fond et le
+   châssis n'existait pas. `--paper-100` est le jeton « fond de page » du
+   système, et c'est exactement ce rôle-là. */
+body{background:var(--paper-100)}
+
+/* LES TROIS LARGEURS SONT LA MÊME. La barre et le pied se donnaient 1000 px
+   (`--content-max`) pendant que le panneau, lui, tient dans 52 rem : les deux
+   pilules dépassaient des cartes qu'elles encadrent, de 80 px de chaque côté.
+   Un châssis qui ne s'aligne pas sur son contenu se voit immédiatement, et
+   rien ne le signale. */
+.steps__inner,.pied__int{max-width:52rem}
+
+/* LA SCÈNE N'EST PAS UNE CARTE, elle est le fond sur lequel les cartes sont
+   posées. `.page` vient du système de design, qui lui donne un fond blanc :
+   on avait donc un grand rectangle blanc derrière des cartes blanches, et
+   plus aucune séparation. Rien dans CETTE feuille ne le déclarait — c'est
+   l'inconvénient d'hériter d'un système, et la raison de vérifier à l'écran
+   plutôt que dans le fichier. */
+.page{background:none}
+
+/* LE RAIL DÉFILE, ET ÇA DOIT SE VOIR. Dix chapitres ne tiennent pas dans une
+   pilule : le dernier libellé se faisait couper net contre la pastille du
+   temps, ce qui se lit comme un défaut et non comme un défilement. Le dégradé
+   au bord dit « ça continue ». */
+.rail{mask-image:linear-gradient(to right,#000 calc(100% - 28px),transparent);
+      -webkit-mask-image:linear-gradient(to right,#000 calc(100% - 28px),transparent)}
+
+/* LES DEUX FILETS DU HAUT. Ils étaient dans la barre ; une pilule ne peut pas
+   porter un filet pleine largeur sans cesser d'être une pilule. Ils remontent
+   donc au bord de l'écran, où ils sont plus justes : la survie qui recule et
+   l'avancement qui progresse ne sont pas des éléments de navigation, ce sont
+   deux mesures qui courent sous tout le module. */
+.chrono__barre{position:fixed;top:0;left:0;right:0;z-index:80;height:3px}
+.jauge{position:fixed;top:3px;left:0;right:0;bottom:auto;z-index:80;height:3px}
+
+.steps{position:sticky;top:0;z-index:60;background:none;backdrop-filter:none;
+      border-bottom:0;padding:var(--sp-3) var(--gutter) 0}
+.steps__inner{background:var(--surface-card);border-radius:var(--r-pill);
+      padding:var(--sp-2) var(--sp-3) var(--sp-2) var(--sp-5);gap:var(--sp-3)}
+.marque{font-weight:var(--fw-black)}
+/* Le groupe d'onglets : un creux gris dans la carte blanche, et la pastille
+   courante en plein noir. C'est ce qui donne l'impression d'un interrupteur
+   plutôt que d'une rangée de boutons. */
+/* Le rail garde le droit de défiler : dix chapitres dans une pilule ne
+   tiennent pas sur un portable, et les tronquer sans défilement rendrait
+   les derniers inatteignables. */
+.rail{background:var(--paper-100);border-radius:var(--r-pill);
+      padding:4px;gap:4px;flex:1 1 auto;min-width:0}
+.step{border:0;background:none;color:var(--text-muted);min-height:32px;padding:0 12px;
+      font-size:var(--fs-ui-sm)}
+.step:hover:not([disabled]){background:var(--surface-card);border:0}
+.step[data-vu]{background:none;border:0;color:var(--accent-ink)}
+.step[aria-current="true"]{background:var(--ink-900);border:0;color:#fff}
+.step__dot{display:none}
+@media (pointer:coarse){ .step{min-height:var(--tap-min)} }
+/* Le temps devient une pastille, comme « 25 minutes · étape 1 / 4 » chez v6 :
+   il ne s'accroche plus à un filet vertical, il est posé. */
+.chrono{margin-left:auto;background:var(--paper-100);border-radius:var(--r-pill);
+      padding:var(--sp-2) var(--sp-3);border-left:0;gap:var(--sp-2)}
+
+/* LE PIED, MÊME CARTE. Il flottait contre le bas de l'écran avec un filet
+   au-dessus ; il devient une pilule posée, à la même distance des bords que
+   la barre. */
+.pied{background:none;border-top:0;padding:0 var(--gutter) var(--sp-3)}
+.pied__int{background:var(--surface-card);border-radius:var(--r-pill);
+      padding:var(--sp-2) var(--sp-2) var(--sp-2) var(--sp-3)}
+.b{border-radius:var(--r-pill)}
+/* L'action principale est ROUGE et non noire : c'est le bouton de la
+   maquette, et c'est la couleur de l'appareil. */
+.b--plein{background:var(--accent);border-color:var(--accent);color:#fff}
+.b--plein:hover:not([disabled]){background:var(--accent-ink);border-color:var(--accent-ink)}
+
+/* LES PANNEAUX QUI NE SONT PAS DES DIAPOSITIVES deviennent des cartes eux
+   aussi — sinon ils flottent en noir sur gris, et le module aurait deux
+   allures selon l'écran où l'on tombe. Les diapositives, elles, sont déjà des
+   cartes : leur dessin remplit un cadre à coins arrondis depuis le début. */
+.panneau:not(.panneau--diapo){background:var(--surface-card);border-radius:var(--r-lg);
+      padding:var(--sp-6) var(--sp-6);overflow:auto;max-height:100%}
+@media (max-width:52rem){
+  .panneau:not(.panneau--diapo){padding:var(--sp-5) var(--sp-4)}
+}
+
+/* LES APLATS DE L'OUVERTURE PRENNENT LE ROUGE. */
+.diapo--ouv1 .carte--accent{background:var(--accent)}
+.diapo--ouv4 .carte--promesse{background:var(--accent)}
+/* Sur ce rouge-là, le blanc tient à 4,9:1 — mais le gris de `--text-muted`
+   n'y tiendrait pas. La glose de la rangée inversée reste sur fond blanc. */
+.diapo--ouv .diapo__dit{background:var(--surface-card)}
 </style>
 
 <!-- ═══ LA BARRE ═══════════════════════════════════════════════════════════
@@ -1685,27 +1806,27 @@ body{overflow:hidden}
      un hall, pas le pictogramme des normes.                              -->
 <article class="panneau panneau--diapo panneau--titre" data-chap="s0" data-diapo="titre">
   <div class="diapo diapo--ouv diapo--ouv1">
-    <div class="ouv__col">
-      <div class="carte carte--signe">
-        <p class="carte__st">Votre appareil</p>
-        <svg class="signe" viewBox="0 0 200 200" role="img" aria-label="Panneau DEA — défibrillateur externe automatisé">
-      <rect class="fond" x="0" y="0" width="200" height="200" rx="6"/>
-      <rect class="filet" x="12" y="12" width="176" height="176" rx="5"/>
-      <text x="100" y="54" font-size="36">DEA</text>
+    <div class="carte carte--signe">
+      <p class="carte__st">Votre appareil</p>
+      <svg class="signe" viewBox="0 0 200 200" role="img" aria-label="Panneau DEA — défibrillateur externe automatisé">
+    <rect class="fond" x="0" y="0" width="200" height="200" rx="6"/>
+    <rect class="filet" x="14" y="14" width="172" height="172" rx="6"/>
+    <!-- Les deux mots reculent vers l'intérieur. Posés à y=54 et y=188, ils
+         venaient buter contre le cadre ; et comme le cadre est de la même
+         crème qu'eux, « AED » s'y fondait et paraissait coupé en deux. -->
+    <text x="100" y="66" font-size="34">DEA</text>
+    <!-- Le cœur est réduit d'un tiers autour de son centre : à sa taille
+         d'origine il remplissait toute la hauteur laissée par les deux mots. -->
+    <g transform="translate(100 114) scale(.66) translate(-100 -110.5)">
       <path class="coeur" d="M100 156 C 71 131 46 112 46 91 C 46 76 57 65 70 65
                C 81 65 93 72 100 82 C 107 72 119 65 130 65 C 143 65 154 76 154 91
                C 154 112 129 131 100 156 Z"/>
       <path class="eclair" d="M105 79 L87 107 L99 107 L93 133 L115 101 L102 101 Z"/>
-      <text x="100" y="188" font-size="36">AED</text>
-    </svg>
-        <p class="carte__leg">Hall d'entrée, à droite, près de la réception.
-        C'est le seul appareil de l'immeuble.</p>
-      </div>
-      <div class="tuiles">
-        <div class="tuile"><b>1</b><span>situation</span></div>
-        <div class="tuile"><b>2</b><span>signes</span></div>
-        <div class="tuile"><b>4</b><span>parties</span></div>
-      </div>
+    </g>
+    <text x="100" y="172" font-size="34">AED</text>
+  </svg>
+      <p class="carte__leg">Hall d'entrée, à droite, près de la réception.
+      C'est le seul appareil de l'immeuble.</p>
     </div>
     <div class="carte carte--accent"><div class="diapo__mots"></div></div>
     <div class="diapo__cmd">
