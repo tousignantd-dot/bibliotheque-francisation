@@ -154,6 +154,29 @@
     .pastille{background:#FFF !important; border:1px solid #000; width:14px; height:14px;}
     ul.phrases{font-size:10.5px; gap:3px;}
 
+  
+    /* ── Les schémas à l'impression : tout en noir plein. ──
+       Le pointillé gris fin, lisible à l'écran, s'efface à la photocopie.
+       On garde la distinction objet / scène autrement : l'objet est un carré
+       plein cerné de noir, la scène est un cadre fin qui occupe toute la case. */
+    :root{
+      --schema-repere:#FFFFFF; --schema-trait:#000000; --schema-objet:#000000;
+    }
+    svg.schema .rp{fill:#FFFFFF; stroke:#000000; stroke-width:3;}
+    svg.schema .ob{fill:#000000; stroke:#000000; stroke-width:1;}
+    svg.schema .gd{stroke:#000000; stroke-width:2; stroke-dasharray:none;}
+    svg.schema .ln{stroke:#000000; stroke-width:3; stroke-dasharray:none;}
+    svg.schema line, svg.schema path, svg.schema rect, svg.schema circle{
+      stroke-dasharray:none;
+    }
+    /* Le cadre d'une case : un filet noir continu, jamais pointillé. */
+    .mot{border:1px solid #000 !important;}
+    /* Les couleurs de section sont posées en style en ligne, qui bat :root.
+       À l'impression, elles doivent céder : il n'y a plus qu'une encre. */
+    section[style]{--sec:#000000 !important; --sec-soft:#FFFFFF !important;}
+    .surtitre{color:#000000 !important;}
+    section{border-left-color:#000000 !important;}
+
   }
 </style>
 

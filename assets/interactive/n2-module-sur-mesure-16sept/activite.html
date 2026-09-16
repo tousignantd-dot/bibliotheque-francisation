@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="fr">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module sur mesure — 16 septembre</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap">
+<style>
+  /* Jetons du système de design Francisation (ds-bundle).
+     Un seul vert d'accent. Le rouge est réservé à l'audio.
+     Sélectionné = plaque encre. Corps jamais sous 17 px. */
+  :root{
+    --font-sans:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --paper-50:#FBFBFA; --paper-100:#F7F7F5; --paper-200:#F0F0EE; --white:#FFFFFF;
+    --line-100:#EAEAE8; --line-200:#D8E8DF; --line-300:#D6D6D2;
+    --ink-900:#17181A; --ink-700:#3A3D40; --ink-500:#4B4F52; --ink-400:#6E7175;
+    --green-800:#07734A; --green-600:#0A8F5B; --green-100:#E6F5EE; --green-050:#EDF6F1;
+    --acier-600:#1D6B8F; --acier-100:#E7F0F6;
+    --violet-600:#6B4FBB; --violet-100:#EFEAFA;
+    --ambre-700:#B45309; --ambre-100:#FBEEDC;
+    --teal-700:#0D7A6F; --teal-100:#DCF2EF;
+    --foret-700:#166534; --foret-100:#E3F1E7;
+    --audio:#DC2626; --audio-hover:#B91C1C;
+    --ok-bg:#E6F5EE; --ok-line:#0A8F5B; --ok-ink:#07734A;
+    --no-bg:#FFF6F5; --no-line:#DC2626; --no-ink:#B91C1C;
+    --sel-bg:#17181A; --sel-line:#17181A; --sel-ink:#FFFFFF;
+    --drop-bg:#FBFBFA; --drop-line:#D6D6D2;
+    --surface-page:var(--paper-100); --surface-card:var(--white);
+    --surface-sunken:var(--paper-50); --surface-band:var(--green-050);
+    --text-strong:var(--ink-900); --text-body:var(--ink-700); --text-muted:var(--ink-400);
+    --border:var(--line-100); --border-tint:var(--line-200);
+    --accent:var(--green-600); --accent-soft:var(--green-100); --accent-ink:var(--green-800);
+    --fs-hero:clamp(32px,5vw,50px); --fs-h2:30px; --fs-h3:24px; --fs-lead:19px;
+    --fs-body:18px; --fs-body-sm:17px; --fs-ui:15px; --fs-label:13px;
+    --ls-label:0.12em; --ls-title:-0.015em;
+    --fw-medium:600; --fw-semi:700; --fw-bold:800; --fw-black:900;
+    --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:20px;
+    --sp-6:24px; --sp-8:32px; --sp-12:48px;
+    --r-sm:10px; --r-md:14px; --r-lg:18px; --r-pill:999px;
+    --tap-min:44px; --tap-comfort:48px;
+    --sh-card:0 1px 2px rgba(20,20,20,.04);
+    --sec:var(--accent); --sec-soft:var(--accent-soft);
+  }
+  *,*::before,*::after{box-sizing:border-box;}
+  body{margin:0; background:var(--surface-page); color:var(--text-strong);
+       font-family:var(--font-sans); font-size:var(--fs-body);
+       font-weight:var(--fw-medium); line-height:1.5; -webkit-font-smoothing:antialiased;}
+  h1,h2,h3{margin:0; letter-spacing:var(--ls-title); line-height:1.2;}
+  h1{font-size:var(--fs-hero); font-weight:var(--fw-black);}
+  h2{font-size:var(--fs-h2); font-weight:var(--fw-black);}
+  h3{font-size:var(--fs-h3); font-weight:var(--fw-black);}
+  p{margin:0;} img{max-width:100%;}
+  :focus-visible{outline:3px solid var(--accent); outline-offset:2px; border-radius:var(--r-sm);}
+
+  .container{max-width:1000px; margin:0 auto; padding-inline:var(--sp-8);
+             padding-block:var(--sp-8) var(--sp-12);
+             display:flex; flex-direction:column; gap:var(--sp-8);}
+  @media (max-width:620px){ .container{padding-inline:var(--sp-4);} }
+
+  .bande{background:var(--surface-band); border:1px solid var(--border-tint);
+         border-radius:var(--r-lg); padding:var(--sp-8);
+         display:flex; flex-direction:column; gap:var(--sp-3);}
+  .surtitre{font-size:var(--fs-label); font-weight:var(--fw-bold);
+            letter-spacing:var(--ls-label); text-transform:uppercase; color:var(--sec);}
+  .bande .surtitre{color:var(--accent-ink);}
+  .chapeau{font-size:var(--fs-lead); color:var(--ink-500); max-width:62ch;}
+
+  /* La barre de parcours, collante. */
+  .parcours{position:sticky; top:0; z-index:20; background:var(--surface-page);
+            border-bottom:1px solid var(--border); padding:var(--sp-2) 0;
+            display:flex; gap:var(--sp-2); flex-wrap:wrap; align-items:center;}
+  .etape{display:flex; align-items:center; gap:var(--sp-2); border:0; background:none;
+         font:inherit; font-size:var(--fs-ui); font-weight:var(--fw-bold);
+         color:var(--text-muted); cursor:pointer; padding:var(--sp-2) var(--sp-3);
+         border-radius:var(--r-pill); min-height:var(--tap-min);}
+  .etape:hover{background:var(--paper-200);}
+  .etape .point{width:12px; height:12px; border-radius:50%;
+                background:var(--drop-line); flex:0 0 auto;}
+  .etape[data-fait="oui"] .point{background:var(--sec);}
+  .etape[aria-current="step"]{background:var(--sel-bg); color:var(--sel-ink);}
+  .etape[aria-current="step"] .point{background:var(--sel-ink);}
+
+  .exercice{background:var(--surface-card); border:1px solid var(--border);
+            border-left:4px solid var(--sec); border-radius:var(--r-lg);
+            box-shadow:var(--sh-card); padding:var(--sp-8);
+            display:flex; flex-direction:column; gap:var(--sp-5); scroll-margin-top:72px;}
+  @media (max-width:620px){ .exercice{padding:var(--sp-5);} }
+  .exercice > header{display:flex; align-items:flex-start; gap:var(--sp-4); flex-wrap:wrap;}
+  .pastille{flex:0 0 auto; width:48px; height:48px; border-radius:var(--r-md);
+            background:var(--sec-soft); color:var(--sec); display:grid; place-items:center;
+            font-size:var(--fs-h3); font-weight:var(--fw-black); font-variant-numeric:tabular-nums;}
+  .titrage{display:flex; flex-direction:column; gap:2px; flex:1 1 240px;}
+  .score{margin-left:auto; font-size:var(--fs-ui); font-weight:var(--fw-bold);
+         color:var(--text-muted); background:var(--surface-sunken);
+         border:1px solid var(--border); border-radius:var(--r-pill);
+         padding:6px var(--sp-4); white-space:nowrap; font-variant-numeric:tabular-nums;}
+  .consigne{font-size:var(--fs-body-sm); color:var(--text-body); max-width:66ch;}
+
+  .carte{background:var(--surface-sunken); border:1px solid var(--border);
+         border-radius:var(--r-md); padding:var(--sp-4);
+         display:flex; flex-direction:column; gap:var(--sp-3);}
+
+  /* Boutons. Le rouge appartient à l'audio, et à rien d'autre. */
+  button{font-family:inherit;}
+  .btn{font-size:var(--fs-ui); font-weight:var(--fw-bold); min-height:var(--tap-min);
+       padding:0 var(--sp-5); border-radius:var(--r-pill); border:2px solid var(--accent);
+       background:var(--white); color:var(--accent-ink); cursor:pointer;}
+  .btn:hover{background:var(--accent-soft);}
+  .btn-audio{display:inline-flex; align-items:center; justify-content:center; gap:var(--sp-2);
+             min-height:var(--tap-min); min-width:var(--tap-min);
+             padding:0 var(--sp-4); border-radius:var(--r-pill);
+             border:2px solid var(--audio); background:var(--white); color:var(--audio);
+             font-size:var(--fs-ui); font-weight:var(--fw-bold); cursor:pointer;}
+  .btn-audio:hover{background:var(--audio); color:#fff;}
+  .btn-audio[aria-pressed="true"]{background:var(--audio); color:#fff;}
+  .btn-audio .hp{font-size:18px; line-height:1;}
+
+  /* Jetons cliquables : clic-clic, jamais de glisser-déposer —
+     tout ce qui se fait à la souris doit se faire au clavier. */
+  .jetons{display:flex; flex-wrap:wrap; gap:var(--sp-2);}
+  .jeton{font-size:var(--fs-body-sm); font-weight:var(--fw-semi);
+         min-height:var(--tap-min); padding:0 var(--sp-4); border-radius:var(--r-pill);
+         border:1px solid var(--border); background:var(--white); color:var(--text-strong);
+         cursor:pointer;}
+  .jeton:hover{border-color:var(--sel-bg);}
+  .jeton[aria-pressed="true"]{background:var(--sel-bg); border-color:var(--sel-line);
+                              color:var(--sel-ink);}
+  .trou{min-width:132px; min-height:var(--tap-min); padding:0 var(--sp-3);
+        border:2px dashed var(--drop-line); background:var(--drop-bg);
+        border-radius:var(--r-sm); font:inherit; font-size:var(--fs-body-sm);
+        font-weight:var(--fw-semi); color:var(--text-muted); cursor:pointer;}
+  .trou[data-etat="plein"]{border-style:solid; border-color:var(--sel-bg);
+                           color:var(--text-strong); background:var(--white);}
+  .trou[data-etat="juste"]{border-color:var(--ok-line); background:var(--ok-bg); color:var(--ok-ink);}
+  .trou[data-etat="faux"]{border-color:var(--no-line); background:var(--no-bg); color:var(--no-ink);}
+
+  .ligne{display:flex; flex-wrap:wrap; align-items:center; gap:var(--sp-2);
+         font-size:var(--fs-body-sm); padding:var(--sp-2) 0;
+         border-bottom:1px solid var(--paper-200);}
+  .ligne:last-child{border-bottom:0;}
+
+  input[type="text"]{font:inherit; font-size:var(--fs-body-sm); min-height:var(--tap-min);
+                     padding:0 var(--sp-3); border:1px solid var(--border-tint);
+                     border-radius:var(--r-sm); background:var(--white); color:var(--text-strong);
+                     flex:1 1 260px;}
+  input[data-etat="juste"]{border:2px solid var(--ok-line); background:var(--ok-bg);}
+  input[data-etat="faux"]{border:2px solid var(--no-line); background:var(--no-bg);}
+
+  .verdict{font-size:var(--fs-body-sm); font-weight:var(--fw-semi); border-radius:var(--r-sm);
+           padding:var(--sp-2) var(--sp-3);}
+  .verdict[data-r="ok"]{background:var(--ok-bg); border:1px solid var(--ok-line); color:var(--ok-ink);}
+  .verdict[data-r="no"]{background:var(--no-bg); border:1px solid var(--no-line); color:var(--no-ink);}
+
+  .dial{display:flex; flex-direction:column; gap:var(--sp-2);}
+  .replique{display:flex; gap:var(--sp-3); align-items:flex-start;
+            padding:var(--sp-2); border-radius:var(--r-sm);}
+  .replique.actif{background:var(--accent-soft);}
+  .qui{font-size:var(--fs-label); font-weight:var(--fw-bold); letter-spacing:var(--ls-label);
+       text-transform:uppercase; color:var(--text-muted); min-width:94px; padding-top:12px;}
+  .replique p{font-size:var(--fs-body-sm); padding-top:10px;}
+
+  .grille-objets{display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr));
+                 gap:var(--sp-3);}
+  .objet{display:flex; flex-direction:column; align-items:center; gap:var(--sp-2);
+         background:var(--white); border:1px solid var(--border); border-radius:var(--r-md);
+         padding:var(--sp-3);}
+  .objet img{width:100%; aspect-ratio:1; object-fit:contain;}
+  .objet .nom{font-size:var(--fs-body-sm); font-weight:var(--fw-semi); text-align:center;}
+  body.muet .objet .nom{visibility:hidden;}
+  .objet.devoile .nom{visibility:visible !important;}
+  .objet.cible{outline:3px solid var(--sec); outline-offset:2px;}
+
+  .paire{display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-3); align-items:center;}
+  @media (max-width:620px){ .paire{grid-template-columns:1fr;} }
+  .forme{display:flex; flex-direction:column; gap:var(--sp-2);
+         background:var(--white); border:1px solid var(--border);
+         border-radius:var(--r-sm); padding:var(--sp-3);}
+  .forme .quoi{font-size:var(--fs-label); font-weight:var(--fw-bold);
+               letter-spacing:var(--ls-label); text-transform:uppercase; color:var(--text-muted);}
+  .forme .txt{font-size:var(--fs-body); font-weight:var(--fw-semi);}
+
+  footer.fin{border-top:1px solid var(--border); padding-top:var(--sp-5);
+             font-size:var(--fs-ui); color:var(--text-muted);
+             display:flex; flex-direction:column; gap:var(--sp-2);}
+  .u-vh{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0);
+        white-space:nowrap;}
+</style>
+
+<div class="container">
+  <header class="bande">
+    <p class="surtitre">Francisation · Niveau 2 · LAN-2029-4 · Salle de classe</p>
+    <h1>Module sur mesure — 16 septembre</h1>
+    <p class="chapeau">Six étapes, dans l'ordre du cours : on écoute la classe, on nomme
+      les objets, on entend le son E, on dit où sont les choses, on écrit sous la dictée,
+      et on termine par le pronom « on ». Chaque enregistrement se réécoute autant de fois
+      que vous voulez.</p>
+  </header>
+
+  <nav class="parcours" id="parcours" aria-label="Les étapes du module"></nav>
+
+  <section class="exercice" id="ex1" style="--sec:var(--acier-600); --sec-soft:var(--acier-100);">
+    <header>
+      <span class="pastille">1</span>
+      <div class="titrage"><p class="surtitre">Compréhension orale</p><h2>J'écoute la classe</h2></div>
+      <span class="score" id="score1">0 / 4</span>
+    </header>
+    <p class="consigne">Écoutez le dialogue. Vous pouvez écouter tout d'un coup, ou une réplique
+      à la fois. Ensuite, répondez aux quatre questions.</p>
+    <div class="carte"><div class="dial" id="dialogue"></div>
+      <div><button class="btn" type="button" id="toutEcouter">Écouter tout le dialogue</button></div>
+    </div>
+    <div id="questions"></div>
+  </section>
+
+  <section class="exercice" id="ex2" style="--sec:var(--foret-700); --sec-soft:var(--foret-100);">
+    <header>
+      <span class="pastille">2</span>
+      <div class="titrage"><p class="surtitre">Vocabulaire · 35 mots</p><h2>Les objets de la classe</h2></div>
+      <span class="score" id="score2">0 / 8</span>
+    </header>
+    <p class="consigne">Touchez une image pour entendre le mot. Quand vous êtes prêt, cachez
+      les mots et faites l'exercice d'écoute.</p>
+    <div class="jetons">
+      <button class="btn" type="button" id="cacherMots" aria-pressed="false">Cacher les mots</button>
+      <button class="btn" type="button" id="lancerEcoute">Écoutez et trouvez l'objet</button>
+    </div>
+    <div id="consigneEcoute" class="verdict" data-r="ok" hidden></div>
+    <div class="grille-objets" id="objets"></div>
+  </section>
+
+  <section class="exercice" id="ex3" style="--sec:var(--violet-600); --sec-soft:var(--violet-100);">
+    <header>
+      <span class="pastille">3</span>
+      <div class="titrage"><p class="surtitre">Graphie-phonie</p><h2>Le son E</h2></div>
+      <span class="score" id="score3">0 / 5</span>
+    </header>
+    <p class="consigne">Ces huit petits mots s'écrivent avec un <b>e</b>. À l'oral, ce
+      <b>e</b> tombe souvent. Écoutez les deux façons de dire la même phrase, puis répondez.</p>
+    <div class="carte">
+      <p class="surtitre" style="color:var(--text-muted)">Les huit petits mots</p>
+      <div class="jetons" id="petitsMots"></div>
+    </div>
+    <div id="sonE"></div>
+  </section>
+
+  <section class="exercice" id="ex4" style="--sec:var(--teal-700); --sec-soft:var(--teal-100);">
+    <header>
+      <span class="pastille">4</span>
+      <div class="titrage"><p class="surtitre">Prépositions de lieu</p><h2>Où est-ce?</h2></div>
+      <span class="score" id="score4">0 / 15</span>
+    </header>
+    <p class="consigne">Écoutez la phrase, puis touchez la bonne préposition. Ensuite,
+      complétez les deux exercices de la page 47 : touchez un mot, puis touchez le trou.</p>
+    <div id="prepEcoute"></div>
+    <div class="carte">
+      <p class="surtitre" style="color:var(--text-muted)">La banque de mots</p>
+      <div class="jetons" id="banqueP47"></div>
+      <p class="surtitre" style="color:var(--text-muted)">Exercice 8 — observez l'image de la classe</p>
+      <div id="p47a"></div>
+      <p class="surtitre" style="color:var(--text-muted)">Exercice 9 — la préposition logique</p>
+      <div id="p47b"></div>
+      <div><button class="btn" type="button" id="verifP47">Vérifier</button></div>
+    </div>
+  </section>
+
+  <section class="exercice" id="ex5" style="--sec:var(--ambre-700); --sec-soft:var(--ambre-100);">
+    <header>
+      <span class="pastille">5</span>
+      <div class="titrage"><p class="surtitre">Production écrite</p><h2>La dictée</h2></div>
+      <span class="score" id="score5">0 / 8</span>
+    </header>
+    <p class="consigne">Écoutez chaque phrase, puis écrivez-la. Réécoutez autant de fois que
+      vous voulez. Vérifiez quand vous avez fini.</p>
+    <div id="dictee"></div>
+    <div class="jetons">
+      <button class="btn" type="button" id="verifDictee">Vérifier ma dictée</button>
+      <button class="btn" type="button" id="montrerDictee">Montrer le texte</button>
+    </div>
+  </section>
+
+  <section class="exercice" id="ex6">
+    <header>
+      <span class="pastille">6</span>
+      <div class="titrage"><p class="surtitre">Grammaire</p><h2>Le pronom ON</h2></div>
+      <span class="score" id="score6">0 / 6</span>
+    </header>
+    <p class="consigne">« On » veut dire « nous ». Écoutez la phrase avec <b>on</b>, puis
+      écrivez la même phrase avec <b>nous</b>. Attention à la fin du verbe.</p>
+    <div id="pronomOn"></div>
+    <div><button class="btn" type="button" id="verifOn">Vérifier</button></div>
+  </section>
+
+  <footer class="fin">
+    <p id="bilan">Votre avancement s'affiche dans la barre, en haut.</p>
+    <p>Voix de synthèse Azure, fr-CA. Dessins au trait. Les textes viennent de
+      <i>Par Ici</i> p. 32-34, du cahier des sons p. 5 et de l'exercice de prépositions p. 47.</p>
+  </footer>
+</div>
+<div class="u-vh" id="annonce" role="status" aria-live="polite"></div>
+<script>const D = {"dialogue": [{"qui": "f", "texte": "Bonjour tout le monde! Ouvrez votre cahier à la page trente-deux.", "audio": "audio/dialogue-01.mp3"}, {"qui": "m", "texte": "Excusez-moi, je n'ai pas mon cahier.", "audio": "audio/dialogue-02.mp3"}, {"qui": "f", "texte": "Ce n'est pas grave. Regardez avec Mélanie, s'il vous plaît.", "audio": "audio/dialogue-03.mp3"}, {"qui": "m", "texte": "D'accord. Et mon stylo? Je ne trouve pas mon stylo.", "audio": "audio/dialogue-04.mp3"}, {"qui": "f", "texte": "Regardez sous la table. Il est peut-être par terre.", "audio": "audio/dialogue-05.mp3"}, {"qui": "m", "texte": "Ah oui! Il est sous ma chaise. Merci!", "audio": "audio/dialogue-06.mp3"}, {"qui": "f", "texte": "Maintenant, fermez la porte et écoutez bien.", "audio": "audio/dialogue-07.mp3"}, {"qui": "m", "texte": "Madame, est-ce que je peux aller aux toilettes?", "audio": "audio/dialogue-08.mp3"}, {"qui": "f", "texte": "Oui, mais après l'exercice. La pause est à huit heures.", "audio": "audio/dialogue-09.mp3"}, {"qui": "m", "texte": "Parfait. Merci beaucoup!", "audio": "audio/dialogue-10.mp3"}], "questions": [{"q": "Quelle page ouvre la classe?", "choix": ["la page 12", "la page 32", "la page 42"], "bon": 1}, {"q": "Où est le stylo?", "choix": ["sur la table", "dans le sac", "sous la chaise"], "bon": 2}, {"q": "Qu'est-ce que l'enseignante demande de fermer?", "choix": ["la fenêtre", "la porte", "le cahier"], "bon": 1}, {"q": "La pause est à quelle heure?", "choix": ["à sept heures", "à huit heures", "à neuf heures"], "bon": 1}], "objets": [{"mot": "une horloge", "img": "lexique/une-horloge.jpg", "audio": "audio/objet-une-horloge.mp3"}, {"mot": "un calendrier", "img": "lexique/un-calendrier.jpg", "audio": "audio/objet-un-calendrier.mp3"}, {"mot": "une poubelle", "img": "lexique/une-poubelle.jpg", "audio": "audio/objet-une-poubelle.mp3"}, {"mot": "un bac à recyclage", "img": "lexique/un-bac-a-recyclage.jpg", "audio": "audio/objet-un-bac-a-recyclage.mp3"}, {"mot": "un tableau", "img": "lexique/un-tableau.jpg", "audio": "audio/objet-un-tableau.mp3"}, {"mot": "un bureau", "img": "lexique/un-bureau-de-classe.jpg", "audio": "audio/objet-un-bureau-de-classe.mp3"}, {"mot": "une chaise", "img": "lexique/une-chaise.jpg", "audio": "audio/objet-une-chaise.mp3"}, {"mot": "une lampe", "img": "lexique/une-lampe.jpg", "audio": "audio/objet-une-lampe.mp3"}, {"mot": "une affiche", "img": "lexique/une-affiche.jpg", "audio": "audio/objet-une-affiche.mp3"}, {"mot": "une plante", "img": "lexique/une-plante.jpg", "audio": "audio/objet-une-plante.mp3"}, {"mot": "une porte", "img": "lexique/une-porte.jpg", "audio": "audio/objet-une-porte.mp3"}, {"mot": "une fenêtre", "img": "lexique/une-fenetre.jpg", "audio": "audio/objet-une-fenetre.mp3"}, {"mot": "un ordinateur", "img": "lexique/un-ordinateur.jpg", "audio": "audio/objet-un-ordinateur.mp3"}, {"mot": "une imprimante", "img": "lexique/une-imprimante.jpg", "audio": "audio/objet-une-imprimante.mp3"}, {"mot": "une souris", "img": "lexique/une-souris.jpg", "audio": "audio/objet-une-souris.mp3"}, {"mot": "un parapluie", "img": "lexique/un-parapluie.jpg", "audio": "audio/objet-un-parapluie.mp3"}, {"mot": "des clés", "img": "lexique/des-cles.jpg", "audio": "audio/objet-des-cles.mp3"}, {"mot": "des livres", "img": "lexique/des-livres.jpg", "audio": "audio/objet-des-livres.mp3"}, {"mot": "un manteau", "img": "lexique/un-manteau.jpg", "audio": "audio/objet-un-manteau.mp3"}, {"mot": "des souliers", "img": "lexique/des-souliers.jpg", "audio": "audio/objet-des-souliers.mp3"}, {"mot": "un sac à dos", "img": "lexique/un-sac-a-dos.jpg", "audio": "audio/objet-un-sac-a-dos.mp3"}, {"mot": "un sac à main", "img": "lexique/un-sac-a-main.jpg", "audio": "audio/objet-un-sac-a-main.mp3"}, {"mot": "des lunettes", "img": "lexique/des-lunettes.jpg", "audio": "audio/objet-des-lunettes.mp3"}, {"mot": "un cellulaire", "img": "lexique/un-cellulaire.jpg", "audio": "audio/objet-un-cellulaire.mp3"}, {"mot": "une tablette électronique", "img": "lexique/une-tablette-electronique.jpg", "audio": "audio/objet-une-tablette-electronique.mp3"}, {"mot": "une étagère", "img": "lexique/une-etagere.jpg", "audio": "audio/objet-une-etagere.mp3"}, {"mot": "une table", "img": "lexique/une-table.jpg", "audio": "audio/objet-une-table.mp3"}, {"mot": "un étui à crayons", "img": "lexique/un-etui-a-crayons.jpg", "audio": "audio/objet-un-etui-a-crayons.mp3"}, {"mot": "un stylo", "img": "lexique/un-stylo.jpg", "audio": "audio/objet-un-stylo.mp3"}, {"mot": "des crayons", "img": "lexique/des-crayons.jpg", "audio": "audio/objet-des-crayons.mp3"}, {"mot": "une efface", "img": "lexique/une-efface.jpg", "audio": "audio/objet-une-efface.mp3"}, {"mot": "un cahier", "img": "lexique/un-cahier.jpg", "audio": "audio/objet-un-cahier.mp3"}, {"mot": "un dictionnaire", "img": "lexique/un-dictionnaire.jpg", "audio": "audio/objet-un-dictionnaire.mp3"}, {"mot": "des feuilles", "img": "lexique/des-feuilles.jpg", "audio": "audio/objet-des-feuilles.mp3"}, {"mot": "une montre", "img": "lexique/une-montre.jpg", "audio": "audio/objet-une-montre.mp3"}], "petitsMots": [{"mot": "je", "audio": "audio/petitmot-1.mp3"}, {"mot": "le", "audio": "audio/petitmot-2.mp3"}, {"mot": "me", "audio": "audio/petitmot-3.mp3"}, {"mot": "se", "audio": "audio/petitmot-4.mp3"}, {"mot": "de", "audio": "audio/petitmot-5.mp3"}, {"mot": "ce", "audio": "audio/petitmot-6.mp3"}, {"mot": "te", "audio": "audio/petitmot-7.mp3"}, {"mot": "que", "audio": "audio/petitmot-8.mp3"}], "sonE": [{"ecrit": "Je te le donne.", "oral": "J'te l'donne.", "audioEcrit": "audio/sone-1-ecrit.mp3", "audioOral": "audio/sone-1-oral.mp3", "combien": 2}, {"ecrit": "Ce matin, je range la classe.", "oral": "C'matin, j'range la classe.", "audioEcrit": "audio/sone-2-ecrit.mp3", "audioOral": "audio/sone-2-oral.mp3", "combien": 2}, {"ecrit": "Qu'est-ce que c'est?", "oral": "Qu'est-c'que c'est?", "audioEcrit": "audio/sone-3-ecrit.mp3", "audioOral": "audio/sone-3-oral.mp3", "combien": 1}, {"ecrit": "La porte se ferme.", "oral": "La porte s'ferme.", "audioEcrit": "audio/sone-4-ecrit.mp3", "audioOral": "audio/sone-4-oral.mp3", "combien": 1}, {"ecrit": "Je me lève à sept heures.", "oral": "J'me lève à sept heures.", "audioEcrit": "audio/sone-5-ecrit.mp3", "audioOral": "audio/sone-5-oral.mp3", "combien": 1}], "prepositions": [{"phrase": "Le cahier est sur la table.", "bon": "sur", "audio": "audio/prep-1.mp3"}, {"phrase": "Le sac à dos est sous la chaise.", "bon": "sous", "audio": "audio/prep-2.mp3"}, {"phrase": "Les crayons sont dans l'étui.", "bon": "dans", "audio": "audio/prep-3.mp3"}, {"phrase": "Le tableau est devant les tables.", "bon": "devant", "audio": "audio/prep-4.mp3"}, {"phrase": "La poubelle est derrière la porte.", "bon": "derrière", "audio": "audio/prep-5.mp3"}, {"phrase": "La plante est entre la fenêtre et l'étagère.", "bon": "entre", "audio": "audio/prep-6.mp3"}], "choixPrep": ["sur", "sous", "dans", "devant", "derrière", "entre"], "dictee": [{"texte": "Ce matin, je range la classe.", "audio": "audio/dictee-1.mp3"}, {"texte": "Le tableau vert est devant les tables.", "audio": "audio/dictee-2.mp3"}, {"texte": "Sur le bureau, il y a un cahier, un stylo et une efface.", "audio": "audio/dictee-3.mp3"}, {"texte": "Mon sac à dos est sous la chaise.", "audio": "audio/dictee-4.mp3"}, {"texte": "La plante est entre la fenêtre et l'étagère.", "audio": "audio/dictee-5.mp3"}, {"texte": "Le professeur me donne une feuille.", "audio": "audio/dictee-6.mp3"}, {"texte": "C'est le dictionnaire de Mélanie. Je te le donne.", "audio": "audio/dictee-7.mp3"}, {"texte": "La porte se ferme. Le cours commence.", "audio": "audio/dictee-8.mp3"}], "pronomOn": [{"on": "On ouvre le cahier.", "nous": "Nous ouvrons le cahier.", "audioOn": "audio/on-1-on.mp3", "audioNous": "audio/on-1-nous.mp3"}, {"on": "On écoute l'enseignante.", "nous": "Nous écoutons l'enseignante.", "audioOn": "audio/on-2-on.mp3", "audioNous": "audio/on-2-nous.mp3"}, {"on": "On range les feuilles.", "nous": "Nous rangeons les feuilles.", "audioOn": "audio/on-3-on.mp3", "audioNous": "audio/on-3-nous.mp3"}, {"on": "On ferme la porte.", "nous": "Nous fermons la porte.", "audioOn": "audio/on-4-on.mp3", "audioNous": "audio/on-4-nous.mp3"}, {"on": "On prend une pause.", "nous": "Nous prenons une pause.", "audioOn": "audio/on-5-on.mp3", "audioNous": "audio/on-5-nous.mp3"}, {"on": "On travaille à deux.", "nous": "Nous travaillons à deux.", "audioOn": "audio/on-6-on.mp3", "audioNous": "audio/on-6-nous.mp3"}], "p47a": [{"avant": "Le tableau vert est", "apres": "l'enseignant.", "bon": "derrière"}, {"avant": "L'ordinateur est", "apres": "l'enseignant.", "bon": "devant"}, {"avant": "Les livres sont", "apres": "les tables.", "bon": "sur"}, {"avant": "L'enseignant est", "apres": "son bureau.", "bon": "à côté de"}], "p47b": [{"avant": "Je range les feuilles", "apres": "le cartable.", "bon": "dans"}, {"avant": "Elle laisse le dictionnaire", "apres": "la table.", "bon": "sur"}, {"avant": "On doit garder les cellulaires", "apres": "les sacs.", "bon": "dans"}, {"avant": "Écris ton nom", "apres": "la feuille.", "bon": "sur"}, {"avant": "Pouvez-vous replacer les dictionnaires", "apres": "l'armoire?", "bon": "dans"}], "banqueP47": ["sur", "sous", "dans", "devant", "derrière", "à côté de"]};</script>
+<script>
+"use strict";
+const $ = s => document.querySelector(s);
+const el = (t, c, txt) => { const n = document.createElement(t);
+  if (c) n.className = c; if (txt != null) n.textContent = txt; return n; };
+const dis = m => { $("#annonce").textContent = m; };
+
+/* ── L'audio : un seul lecteur, pour qu'un extrait coupe le précédent ── */
+let lecteur = null, boutonActif = null;
+function joue(src, bouton, fin) {
+  if (lecteur) { lecteur.pause(); }
+  if (boutonActif) { boutonActif.setAttribute("aria-pressed", "false"); }
+  lecteur = new Audio(src);
+  boutonActif = bouton || null;
+  if (bouton) bouton.setAttribute("aria-pressed", "true");
+  lecteur.addEventListener("ended", () => {
+    if (bouton) bouton.setAttribute("aria-pressed", "false");
+    if (fin) fin();
+  });
+  lecteur.play().catch(() => {
+    if (bouton) bouton.setAttribute("aria-pressed", "false");
+    dis("L'enregistrement n'a pas pu démarrer.");
+  });
+}
+function btnAudio(src, libelle) {
+  const b = el("button", "btn-audio");
+  b.type = "button";
+  b.setAttribute("aria-pressed", "false");
+  b.append(el("span", "hp", "▶"), el("span", null, libelle || "Écouter"));
+  b.addEventListener("click", () => joue(src, b));
+  return b;
+}
+
+/* ── Les scores, et la barre de parcours ── */
+const ETAPES = [
+  {id:"ex1", nom:"Écouter",     total:4},
+  {id:"ex2", nom:"Les objets",  total:8},
+  {id:"ex3", nom:"Le son E",    total:5},
+  {id:"ex4", nom:"Où est-ce?",  total:15},
+  {id:"ex5", nom:"La dictée",   total:8},
+  {id:"ex6", nom:"Le pronom ON",total:6},
+];
+const points = {ex1:new Set(), ex2:new Set(), ex3:new Set(), ex4:new Set(),
+                ex5:new Set(), ex6:new Set()};
+function marque(sec, cle) { points[sec].add(cle); majScores(); }
+function majScores() {
+  ETAPES.forEach((e, i) => {
+    const n = points[e.id].size;
+    $("#score" + (i + 1)).textContent = n + " / " + e.total;
+    const b = document.querySelector('.etape[data-cible="' + e.id + '"]');
+    if (b) b.dataset.fait = n >= e.total ? "oui" : "non";
+  });
+  const faits = ETAPES.reduce((s, e) => s + points[e.id].size, 0);
+  const tous = ETAPES.reduce((s, e) => s + e.total, 0);
+  $("#bilan").textContent = "Vous avez réussi " + faits + " réponses sur " + tous + ".";
+}
+function bariParcours() {
+  const nav = $("#parcours");
+  ETAPES.forEach((e, i) => {
+    const b = el("button", "etape");
+    b.type = "button"; b.dataset.cible = e.id; b.dataset.fait = "non";
+    b.append(el("span", "point"), el("span", null, (i + 1) + ". " + e.nom));
+    b.addEventListener("click", () => {
+      $("#" + e.id).scrollIntoView({behavior: "smooth", block: "start"});
+      nav.querySelectorAll(".etape").forEach(x => x.removeAttribute("aria-current"));
+      b.setAttribute("aria-current", "step");
+    });
+    nav.append(b);
+  });
+}
+
+/* ── 1 · Le dialogue ── */
+function bariDialogue() {
+  const d = $("#dialogue");
+  D.dialogue.forEach((r, i) => {
+    const li = el("div", "replique");
+    li.dataset.i = i;
+    li.append(el("span", "qui", r.qui === "f" ? "Enseignante" : "Un élève"));
+    li.append(btnAudio(r.audio, "Écouter"));
+    li.append(el("p", null, r.texte));
+    d.append(li);
+  });
+  $("#toutEcouter").addEventListener("click", () => {
+    let i = 0;
+    const suite = () => {
+      d.querySelectorAll(".replique").forEach(x => x.classList.remove("actif"));
+      if (i >= D.dialogue.length) return;
+      const ligne = d.querySelector('.replique[data-i="' + i + '"]');
+      ligne.classList.add("actif");
+      ligne.scrollIntoView({block: "nearest"});
+      joue(D.dialogue[i].audio, null, () => { i++; suite(); });
+    };
+    suite();
+  });
+  const q = $("#questions");
+  D.questions.forEach((item, qi) => {
+    const c = el("div", "carte");
+    c.append(el("p", null, (qi + 1) + ". " + item.q));
+    const jet = el("div", "jetons");
+    const verdict = el("div", "verdict");
+    verdict.hidden = true;
+    item.choix.forEach((ch, ci) => {
+      const b = el("button", "jeton", ch);
+      b.type = "button"; b.setAttribute("aria-pressed", "false");
+      b.addEventListener("click", () => {
+        jet.querySelectorAll(".jeton").forEach(x => x.setAttribute("aria-pressed", "false"));
+        b.setAttribute("aria-pressed", "true");
+        const bon = ci === item.bon;
+        verdict.hidden = false;
+        verdict.dataset.r = bon ? "ok" : "no";
+        verdict.textContent = bon ? "C'est ça." : "Non. Réécoutez le dialogue.";
+        if (bon) marque("ex1", qi);
+      });
+      jet.append(b);
+    });
+    c.append(jet, verdict); q.append(c);
+  });
+}
+
+/* ── 2 · Les objets ── */
+let cible = null, tourEcoute = 0;
+function bariObjets() {
+  const g = $("#objets");
+  D.objets.forEach((o, i) => {
+    const b = el("button", "objet");
+    b.type = "button"; b.dataset.i = i;
+    const img = el("img"); img.src = o.img; img.alt = o.mot;
+    b.append(img, el("span", "nom", o.mot));
+    b.addEventListener("click", () => {
+      if (cible !== null) { repondEcoute(i, b); return; }
+      b.classList.add("devoile");
+      joue(o.audio, null);
+    });
+    g.append(b);
+  });
+  $("#cacherMots").addEventListener("click", () => {
+    const b = $("#cacherMots");
+    const on = b.getAttribute("aria-pressed") !== "true";
+    b.setAttribute("aria-pressed", on ? "true" : "false");
+    b.textContent = on ? "Montrer les mots" : "Cacher les mots";
+    document.body.classList.toggle("muet", on);
+    g.querySelectorAll(".objet").forEach(x => x.classList.remove("devoile"));
+  });
+  $("#lancerEcoute").addEventListener("click", () => { tourEcoute = 0; tourSuivant(); });
+}
+function tourSuivant() {
+  const c = $("#consigneEcoute");
+  if (tourEcoute >= 8) {
+    cible = null; c.dataset.r = "ok";
+    c.textContent = "Exercice terminé. Touchez « Écoutez et trouvez l'objet » pour recommencer.";
+    return;
+  }
+  cible = Math.floor(Math.random() * D.objets.length);
+  c.hidden = false; c.dataset.r = "ok";
+  c.textContent = "Tour " + (tourEcoute + 1) + " sur 8 — écoutez, puis touchez le bon objet.";
+  joue(D.objets[cible].audio, null);
+}
+function repondEcoute(i, bouton) {
+  const c = $("#consigneEcoute");
+  if (i === cible) {
+    marque("ex2", tourEcoute);
+    c.dataset.r = "ok"; c.textContent = "Oui : " + D.objets[cible].mot + ".";
+    tourEcoute++;
+    setTimeout(tourSuivant, 900);
+  } else {
+    c.dataset.r = "no";
+    c.textContent = "Non, ça c'est « " + D.objets[i].mot + " ». Réécoutez.";
+    joue(D.objets[cible].audio, null);
+  }
+}
+
+/* ── 3 · Le son E ── */
+function bariSonE() {
+  const j = $("#petitsMots");
+  D.petitsMots.forEach(m => {
+    const b = el("button", "jeton", m.mot);
+    b.type = "button";
+    b.addEventListener("click", () => joue(m.audio, null));
+    j.append(b);
+  });
+  const z = $("#sonE");
+  D.sonE.forEach((p, i) => {
+    const c = el("div", "carte");
+    const paire = el("div", "paire");
+    const g = el("div", "forme");
+    g.append(el("span", "quoi", "Ce qu'on écrit"), el("span", "txt", p.ecrit),
+             btnAudio(p.audioEcrit, "Bien articulé"));
+    const d = el("div", "forme");
+    const txtOral = el("span", "txt", "· · ·");
+    d.append(el("span", "quoi", "Ce qu'on entend"), txtOral,
+             btnAudio(p.audioOral, "Comme on parle"));
+    paire.append(g, d); c.append(paire);
+    const q = el("p", null, "Combien de « e » tombent?");
+    q.style.fontSize = "var(--fs-body-sm)";
+    const jet = el("div", "jetons");
+    const verdict = el("div", "verdict"); verdict.hidden = true;
+    [1, 2, 3].forEach(n => {
+      const b = el("button", "jeton", String(n));
+      b.type = "button"; b.setAttribute("aria-pressed", "false");
+      b.addEventListener("click", () => {
+        jet.querySelectorAll(".jeton").forEach(x => x.setAttribute("aria-pressed", "false"));
+        b.setAttribute("aria-pressed", "true");
+        const bon = n === p.combien;
+        verdict.hidden = false; verdict.dataset.r = bon ? "ok" : "no";
+        verdict.textContent = bon ? "Oui. On dit : " + p.oral
+                                  : "Non. Réécoutez les deux enregistrements.";
+        if (bon) { txtOral.textContent = p.oral; marque("ex3", i); }
+      });
+      jet.append(b);
+    });
+    c.append(q, jet, verdict); z.append(c);
+  });
+}
+
+/* ── 4 · Les prépositions ── */
+let motChoisi = null;
+function bariPrepositions() {
+  const z = $("#prepEcoute");
+  D.prepositions.forEach((p, i) => {
+    const c = el("div", "carte");
+    const haut = el("div", "jetons");
+    haut.append(btnAudio(p.audio, "Écouter la phrase " + (i + 1)));
+    const jet = el("div", "jetons");
+    const verdict = el("div", "verdict"); verdict.hidden = true;
+    D.choixPrep.forEach(mot => {
+      const b = el("button", "jeton", mot);
+      b.type = "button"; b.setAttribute("aria-pressed", "false");
+      b.addEventListener("click", () => {
+        jet.querySelectorAll(".jeton").forEach(x => x.setAttribute("aria-pressed", "false"));
+        b.setAttribute("aria-pressed", "true");
+        const bon = mot === p.bon;
+        verdict.hidden = false; verdict.dataset.r = bon ? "ok" : "no";
+        verdict.textContent = bon ? p.phrase : "Non. Réécoutez.";
+        if (bon) marque("ex4", "e" + i);
+      });
+      jet.append(b);
+    });
+    c.append(haut, jet, verdict); z.append(c);
+  });
+
+  const banque = $("#banqueP47");
+  D.banqueP47.forEach(mot => {
+    const b = el("button", "jeton", mot);
+    b.type = "button"; b.setAttribute("aria-pressed", "false");
+    b.addEventListener("click", () => {
+      const deja = b.getAttribute("aria-pressed") === "true";
+      banque.querySelectorAll(".jeton").forEach(x => x.setAttribute("aria-pressed", "false"));
+      if (deja) { motChoisi = null; dis("Aucun mot choisi."); return; }
+      b.setAttribute("aria-pressed", "true");
+      motChoisi = mot;
+      dis("Mot choisi : " + mot + ". Touchez maintenant un trou.");
+    });
+    banque.append(b);
+  });
+
+  const fait = (cle, liste, cible) => {
+    liste.forEach((item, i) => {
+      const l = el("div", "ligne");
+      l.append(el("span", null, (i + 1) + ". " + item.avant));
+      const t = el("button", "trou", "____");
+      t.type = "button"; t.dataset.etat = "vide"; t.dataset.bon = item.bon;
+      t.dataset.cle = cle + i;
+      t.addEventListener("click", () => {
+        if (!motChoisi) { dis("Touchez d'abord un mot dans la banque."); return; }
+        t.textContent = motChoisi; t.dataset.etat = "plein";
+      });
+      l.append(t, el("span", null, item.apres));
+      cible.append(l);
+    });
+  };
+  fait("a", D.p47a, $("#p47a"));
+  fait("b", D.p47b, $("#p47b"));
+
+  $("#verifP47").addEventListener("click", () => {
+    document.querySelectorAll("#p47a .trou, #p47b .trou").forEach(t => {
+      if (t.dataset.etat === "vide") return;
+      const bon = t.textContent.trim() === t.dataset.bon;
+      t.dataset.etat = bon ? "juste" : "faux";
+      if (bon) marque("ex4", t.dataset.cle);
+    });
+    dis("Correction faite.");
+  });
+}
+
+/* ── 5 et 6 · ce qu'on écrit ── */
+const nettoie = s => s.toLowerCase().normalize("NFC")
+  .replace(/[’']/g, "'").replace(/[.,;:!?—–-]/g, " ")
+  .replace(/\s+/g, " ").trim();
+
+function bariDictee() {
+  const z = $("#dictee");
+  D.dictee.forEach((p, i) => {
+    const c = el("div", "carte");
+    const haut = el("div", "jetons");
+    haut.append(btnAudio(p.audio, "Phrase " + (i + 1)));
+    const champ = el("input"); champ.type = "text"; champ.id = "d" + i;
+    champ.setAttribute("aria-label", "Phrase " + (i + 1) + " de la dictée");
+    champ.autocomplete = "off"; champ.spellcheck = false;
+    const l = el("div", "ligne"); l.append(champ);
+    const modele = el("p", "verdict"); modele.hidden = true; modele.dataset.r = "ok";
+    modele.textContent = p.texte;
+    c.append(haut, l, modele); z.append(c);
+  });
+  $("#verifDictee").addEventListener("click", () => {
+    D.dictee.forEach((p, i) => {
+      const champ = $("#d" + i);
+      if (!champ.value.trim()) { champ.dataset.etat = ""; return; }
+      const bon = nettoie(champ.value) === nettoie(p.texte);
+      champ.dataset.etat = bon ? "juste" : "faux";
+      if (bon) marque("ex5", i);
+    });
+    dis("Dictée vérifiée.");
+  });
+  $("#montrerDictee").addEventListener("click", () => {
+    const b = $("#montrerDictee");
+    const on = b.textContent.indexOf("Montrer") === 0;
+    z.querySelectorAll(".verdict").forEach(v => { v.hidden = !on; });
+    b.textContent = on ? "Cacher le texte" : "Montrer le texte";
+  });
+}
+
+function bariPronomOn() {
+  const z = $("#pronomOn");
+  D.pronomOn.forEach((p, i) => {
+    const c = el("div", "carte");
+    const haut = el("div", "jetons");
+    haut.append(btnAudio(p.audioOn, "Avec « on »"));
+    const phrase = el("p", null, p.on);
+    phrase.style.fontSize = "var(--fs-body-sm)";
+    const champ = el("input"); champ.type = "text"; champ.id = "o" + i;
+    champ.placeholder = "Nous…";
+    champ.setAttribute("aria-label", "Phrase " + (i + 1) + " avec nous");
+    champ.autocomplete = "off"; champ.spellcheck = false;
+    const l = el("div", "ligne"); l.append(champ);
+    const rep = el("div", "jetons"); rep.hidden = true;
+    rep.append(btnAudio(p.audioNous, "Écouter la réponse"));
+    c.append(haut, phrase, l, rep); z.append(c);
+  });
+  $("#verifOn").addEventListener("click", () => {
+    D.pronomOn.forEach((p, i) => {
+      const champ = $("#o" + i);
+      if (!champ.value.trim()) { champ.dataset.etat = ""; return; }
+      const bon = nettoie(champ.value) === nettoie(p.nous);
+      champ.dataset.etat = bon ? "juste" : "faux";
+      champ.closest(".carte").querySelector(".jetons:last-of-type").hidden = false;
+      if (bon) marque("ex6", i);
+    });
+    dis("Vérifié.");
+  });
+}
+
+bariParcours(); bariDialogue(); bariObjets(); bariSonE();
+bariPrepositions(); bariDictee(); bariPronomOn(); majScores();
+
+</script>
