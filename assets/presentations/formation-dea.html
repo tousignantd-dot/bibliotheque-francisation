@@ -1026,7 +1026,7 @@ sup{font-size:.7em;line-height:0}
   .step{min-height:var(--tap-min);padding:0 var(--sp-4);font-size:var(--fs-ui-sm)}
   .step__dot{width:9px;height:9px}
 }
-.chapTitre{display:none}
+
 
 /* Le temps, au bout de la barre. */
 .chrono{flex:0 0 auto;display:flex;align-items:center;gap:var(--sp-2);
@@ -1179,7 +1179,6 @@ section{border-top:1px solid var(--border);padding:var(--sp-8) 0;scroll-margin-t
 .diapo--blanc .diapo__mots p.passe{opacity:1;color:var(--text-muted);background:none;
        box-shadow:none;font-weight:var(--fw-bold);font-size:clamp(16px,1.8vw,21px)}
 .diapo--blanc .diapo__mots p.passe::before{background:var(--line-300)}
-.diapo--blanc .diapo__cmd .bt{background:var(--surface-card)}
 .diapo--blanc .diapo__dit{background:var(--surface-sunken);border:1px solid var(--border)}
 
 /* ── L'OUVERTURE : QUATRE PLAQUES À CARTES ─────────────────────────────────
@@ -1205,7 +1204,6 @@ section{border-top:1px solid var(--border);padding:var(--sp-8) 0;scroll-margin-t
       gap:var(--sp-3);min-height:0;min-width:0}
 .diapo--ouv .diapo__mots{position:static;padding:0;background:none;gap:var(--sp-3)}
 .diapo--ouv .diapo__mots p{background:none;box-shadow:none;padding:0;border-radius:0}
-.diapo--ouv .diapo__cmd .bt{background:var(--surface-card)}
 .diapo--ouv .diapo__dit{background:var(--surface-card);border:1px solid var(--border)}
 .carte__st{margin:0;font-size:var(--fs-label);font-weight:var(--fw-black);
       letter-spacing:var(--ls-label);text-transform:uppercase;color:var(--accent-ink)}
@@ -1216,7 +1214,11 @@ section{border-top:1px solid var(--border);padding:var(--sp-8) 0;scroll-margin-t
    La carte d'accent est ambrée parce que c'est la couleur de la MACHINE ;
    le panneau, lui, reste vert et rouge — c'est un objet du monde, et on
    apprend à reconnaître celui qu'on croisera. */
-.diapo--ouv1{grid-template-columns:minmax(0,1fr) minmax(0,1.5fr)}
+/* LES DEUX CARTES SONT ÉGALES. La colonne de droite valait une fois et
+   demie celle de gauche, héritage de la maquette où la gauche portait aussi
+   trois tuiles de chiffres. Elles sont parties, le panneau est seul : deux
+   objets de même poids demandent deux cases de même taille. */
+.diapo--ouv1{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
 /* LE PANNEAU EST VERT, ET IL EST GRAND. Deux corrections d'un coup, le
    15 septembre 2026.
    LA COULEUR : la version précédente était le panneau pâle à filet rouge.
@@ -1262,8 +1264,17 @@ section{border-top:1px solid var(--border);padding:var(--sp-8) 0;scroll-margin-t
    indicateur. On garde le dessin, et c'est le déroulé qui porte la trace des
    temps passés — donc les phrases déjà dites disparaissent au lieu de
    s'empiler, elles sont déjà dans la liste à côté. */
-.diapo--ouv2{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr)}
-.diapo--ouv2 .ouv__col{grid-template-rows:auto auto;align-content:center}
+/* LES DEUX CÔTÉS ONT LA MÊME HAUTEUR, ET C'EST LA COLONNE DE DROITE QUI LA
+   DONNE. Le récit occupait toute la scène pendant que le dessin et le déroulé
+   se centraient au milieu d'elle : deux cartes de tailles différentes pour
+   deux moitiés du même instant.
+   La rangée est donc dimensionnée par son CONTENU (`grid-template-rows:auto`)
+   et centrée dans la scène ; les deux colonnes s'étirent alors à la hauteur
+   de la plus haute — le dessin plus sa liste. Le récit suit, au lieu de
+   commander. */
+.diapo--ouv2{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);
+      grid-template-rows:auto;align-content:center}
+.diapo--ouv2 .ouv__col{grid-template-rows:auto auto;align-content:start}
 .diapo--ouv2 .diapo__mots p{font-size:clamp(22px,3.2vw,46px);line-height:1.04;
       color:var(--text-strong)}
 .diapo--ouv2 .diapo__mots p b{color:var(--dea-rouge);font-weight:var(--fw-black)}
@@ -1378,8 +1389,6 @@ section{border-top:1px solid var(--border);padding:var(--sp-8) 0;scroll-margin-t
   .carte--dessin{aspect-ratio:4/3}
 }
 
-.diapo__cmd{position:absolute;top:var(--sp-4);right:var(--sp-4);display:flex;gap:var(--sp-2)}
-.diapo__cmd .bt{background:rgba(255,255,255,.92);backdrop-filter:blur(6px)}
 /* Le texte intégral, sous le bouton. Il est FERMÉ par défaut : ouvert, on le
    lirait au lieu d'écouter, et on regarderait le dessin en diagonale. Mais il
    doit exister — le son coupé dans un bureau ouvert est la norme. */
@@ -1392,7 +1401,6 @@ section{border-top:1px solid var(--border);padding:var(--sp-8) 0;scroll-margin-t
 .diapo__dit b{color:var(--text-strong)}
 @media (max-width:40rem){
   .diapo__mots{padding:var(--sp-8) var(--sp-4) var(--sp-4)}
-  .diapo__cmd{top:var(--sp-2);right:var(--sp-2)}
 }
 
 /* ── Les faits d'ouverture ────────────────────────────────────────────────
@@ -1724,12 +1732,7 @@ body{background:var(--paper-100)}
    plutôt que dans le fichier. */
 .page{background:none}
 
-/* LE RAIL DÉFILE, ET ÇA DOIT SE VOIR. Dix chapitres ne tiennent pas dans une
-   pilule : le dernier libellé se faisait couper net contre la pastille du
-   temps, ce qui se lit comme un défaut et non comme un défilement. Le dégradé
-   au bord dit « ça continue ». */
-.rail{mask-image:linear-gradient(to right,#000 calc(100% - 28px),transparent);
-      -webkit-mask-image:linear-gradient(to right,#000 calc(100% - 28px),transparent)}
+
 
 /* LES DEUX FILETS DU HAUT. Ils étaient dans la barre ; une pilule ne peut pas
    porter un filet pleine largeur sans cesser d'être une pilule. Ils remontent
@@ -1750,15 +1753,46 @@ body{background:var(--paper-100)}
 /* Le rail garde le droit de défiler : dix chapitres dans une pilule ne
    tiennent pas sur un portable, et les tronquer sans défilement rendrait
    les derniers inatteignables. */
-.rail{background:var(--paper-100);border-radius:var(--r-pill);
-      padding:4px;gap:4px;flex:1 1 auto;min-width:0}
-.step{border:0;background:none;color:var(--text-muted);min-height:32px;padding:0 12px;
-      font-size:var(--fs-ui-sm)}
-.step:hover:not([disabled]){background:var(--surface-card);border:0}
-.step[data-vu]{background:none;border:0;color:var(--accent-ink)}
-.step[aria-current="true"]{background:var(--ink-900);border:0;color:#fff}
+/* LE PARCOURS DEVIENT UN MENU DÉROULANT. Neuf pastilles côte à côte ne
+   tiennent pas dans une pilule : la dernière se faisait couper, et il fallait
+   faire défiler un rail pour voir où l'on allait. Or à tout instant une seule
+   information compte — DANS QUELLE SECTION SUIS-JE. Les huit autres sont un
+   moyen de navigation, pas un affichage permanent : elles se replient.
+   Ce qui ne change pas : on ne saute qu'à un chapitre DÉJÀ ATTEINT. Un module
+   qui laisse aller n'importe où n'est plus un parcours. */
+.menuChap{position:relative;flex:0 0 auto}
+.chapBt{display:inline-flex;align-items:center;gap:var(--sp-2);min-height:32px;
+      padding:0 var(--sp-3);border:0;border-radius:var(--r-pill);
+      background:var(--ink-900);color:#fff;cursor:pointer;
+      font-family:var(--font-sans);font-size:var(--fs-ui-sm);font-weight:var(--fw-bold);
+      white-space:nowrap;max-width:48vw;overflow:hidden;text-overflow:ellipsis}
+.chapBt i{font-style:normal;font-size:10px;opacity:.8;transition:transform var(--transition)}
+.chapBt[aria-expanded="true"] i{transform:rotate(180deg)}
+@media (pointer:coarse){ .chapBt{min-height:var(--tap-min)} }
+.rail{position:absolute;top:calc(100% + 6px);left:0;z-index:90;min-width:14rem;
+      display:flex;flex-direction:column;gap:2px;padding:6px;
+      background:var(--surface-card);border:1px solid var(--border);
+      border-radius:var(--r-md);box-shadow:var(--sh-raise)}
+.step{border:0;background:none;color:var(--text-muted);min-height:34px;padding:0 10px;
+      font-size:var(--fs-ui-sm);border-radius:var(--r-sm);justify-content:flex-start;
+      width:100%;text-align:left}
+.step:hover:not([disabled]){background:var(--paper-100);border:0}
+.step[data-vu]{background:none;border:0;color:var(--text-strong)}
+.step[aria-current="true"]{background:var(--paper-100);border:0;color:var(--accent-ink)}
 .step__dot{display:none}
 @media (pointer:coarse){ .step{min-height:var(--tap-min)} }
+
+/* LES DEUX COMMANDES, DANS LA BARRE. Elles étaient posées sur le dessin, en
+   haut à droite — exactement le coin qu'elles cachaient. Ici elles sont à
+   côté du chronomètre, au même endroit d'un bout à l'autre du module, et
+   elles disparaissent quand le panneau n'a rien à dire. */
+.cmdBarre{display:flex;gap:var(--sp-2);flex:0 0 auto}
+.cmdBarre .bt{background:var(--paper-100);border-color:transparent}
+@media (max-width:52rem){
+  /* Sur un écran étroit, le libellé du texte s'efface : le bouton d'écoute
+     est le seul des deux qu'on cherche en urgence. */
+  #texteG{display:none}
+}
 /* Le temps devient une pastille, comme « 25 minutes · étape 1 / 4 » chez v6 :
    il ne s'accroche plus à un filet vertical, il est posé. */
 .chrono{margin-left:auto;background:var(--paper-100);border-radius:var(--r-pill);
@@ -1802,8 +1836,15 @@ body{background:var(--paper-100)}
 <nav class="steps" aria-label="Parcours du module">
   <div class="steps__inner">
     <span class="marque">Quelqu'un s'effondre <i>au travail.</i></span>
-    <div class="rail" id="rail"></div>
-    <span class="chapTitre" id="chapTitre"></span>
+    <div class="menuChap">
+      <button class="chapBt" type="button" id="chapBt" aria-expanded="false"
+              aria-haspopup="listbox"><span id="chapTitre"></span><i aria-hidden="true">▾</i></button>
+      <div class="rail" id="rail" role="listbox" hidden></div>
+    </div>
+    <div class="cmdBarre" id="cmdBarre" hidden>
+      <button class="bt" type="button" id="jouerG">▶ Écouter</button>
+      <button class="bt" type="button" id="texteG" aria-expanded="false">Lire le texte</button>
+    </div>
     <div class="chrono" aria-label="Le temps depuis l'effondrement">
       <span class="chrono__t" id="chrono">0:00</span>
       <span class="chrono__coeur" aria-hidden="true"></span>
@@ -1826,8 +1867,12 @@ body{background:var(--paper-100)}
      un hall, pas le pictogramme des normes.                              -->
 <article class="panneau panneau--diapo panneau--titre" data-chap="s0" data-diapo="titre">
   <div class="diapo diapo--ouv diapo--ouv1">
+    <!-- La carte ne porte plus QUE le panneau. Le sur-titre « Votre appareil »
+         et la phrase « hall d'entrée, à droite… » sont retirés le 15 septembre
+         2026 : l'écran a un seul travail, faire reconnaître un objet, et deux
+         lignes de texte à côté invitent à lire au lieu de regarder. L'endroit
+         où il est accroché est enseigné plus loin, à sa place. -->
     <div class="carte carte--signe">
-      <p class="carte__st">Votre appareil</p>
       <svg class="signe" viewBox="0 0 200 200" role="img" aria-label="Panneau DEA — défibrillateur externe automatisé">
     <rect class="fond" x="0" y="0" width="200" height="200" rx="6"/>
     <rect class="filet" x="14" y="14" width="172" height="172" rx="6"/>
@@ -1845,14 +1890,8 @@ body{background:var(--paper-100)}
     </g>
     <text x="100" y="172" font-size="34">AED</text>
   </svg>
-      <p class="carte__leg">Hall d'entrée, à droite, près de la réception.
-      C'est le seul appareil de l'immeuble.</p>
     </div>
     <div class="carte carte--accent"><div class="diapo__mots"></div></div>
-    <div class="diapo__cmd">
-      <button class="bt" type="button" data-jouer>▶ Écouter</button>
-      <button class="bt" type="button" data-texte aria-expanded="false">Lire le texte</button>
-    </div>
     <div class="diapo__dit" hidden></div>
   </div>
   <h1 class="u-visually-hidden">Défibrillateur — formation en milieu de travail</h1>
@@ -1883,10 +1922,6 @@ body{background:var(--paper-100)}
       <div class="carte carte--dessin"><img alt=""><img alt=""></div>
       <div class="carte carte--deroule" data-jalons></div>
     </div>
-    <div class="diapo__cmd">
-      <button class="bt" type="button" data-jouer>▶ Écouter</button>
-      <button class="bt" type="button" data-texte aria-expanded="false">Lire le texte</button>
-    </div>
     <div class="diapo__dit" hidden></div>
   </div>
   <h2 class="u-visually-hidden">Quelqu'un s'effondre au travail</h2>
@@ -1902,10 +1937,6 @@ body{background:var(--paper-100)}
         <p class="ouv__pc"><b id="minutesPc">100 %</b></p>
       </div>
     </div>
-    <div class="diapo__cmd">
-      <button class="bt" type="button" data-jouer>▶ Écouter</button>
-      <button class="bt" type="button" data-texte aria-expanded="false">Lire le texte</button>
-    </div>
     <div class="diapo__dit" hidden></div>
   </div>
   <h3 class="u-visually-hidden">Ce que coûte chaque minute</h3>
@@ -1919,10 +1950,6 @@ body{background:var(--paper-100)}
         <span>Ce que vous<br>allez apprendre</span>
       </div>
       <div class="diapo__mots"></div>
-    </div>
-    <div class="diapo__cmd">
-      <button class="bt" type="button" data-jouer>▶ Écouter</button>
-      <button class="bt" type="button" data-texte aria-expanded="false">Lire le texte</button>
     </div>
     <div class="diapo__dit" hidden></div>
   </div>
@@ -1948,10 +1975,6 @@ body{background:var(--paper-100)}
   <div class="diapo">
     <img alt=""><img alt="">
     <div class="diapo__mots"></div>
-    <div class="diapo__cmd">
-      <button class="bt" type="button" data-jouer>▶ Écouter</button>
-      <button class="bt" type="button" data-texte aria-expanded="false">Lire le texte</button>
-    </div>
     <div class="diapo__dit" hidden></div>
   </div>
   <h3 class="u-visually-hidden">Le premier signe, montré</h3>
@@ -1966,10 +1989,6 @@ body{background:var(--paper-100)}
   <div class="diapo">
     <img alt=""><img alt="">
     <div class="diapo__mots"></div>
-    <div class="diapo__cmd">
-      <button class="bt" type="button" data-jouer>▶ Écouter</button>
-      <button class="bt" type="button" data-texte aria-expanded="false">Lire le texte</button>
-    </div>
     <div class="diapo__dit" hidden></div>
   </div>
   <h3 class="u-visually-hidden">Regarder la poitrine, montré</h3>
@@ -1981,10 +2000,6 @@ body{background:var(--paper-100)}
 <article class="panneau panneau--diapo" data-chap="s2" data-diapo="agonal-piege" hidden>
   <div class="diapo diapo--blanc">
     <div class="diapo__mots"></div>
-    <div class="diapo__cmd">
-      <button class="bt" type="button" data-jouer>▶ Écouter</button>
-      <button class="bt" type="button" data-texte aria-expanded="false">Lire le texte</button>
-    </div>
     <div class="diapo__dit" hidden></div>
   </div>
   <h3 class="u-visually-hidden">Le piège de la respiration agonale</h3>
@@ -1996,10 +2011,6 @@ body{background:var(--paper-100)}
 <article class="panneau panneau--diapo" data-chap="s2" data-diapo="pouls" hidden>
   <div class="diapo diapo--blanc">
     <div class="diapo__mots"></div>
-    <div class="diapo__cmd">
-      <button class="bt" type="button" data-jouer>▶ Écouter</button>
-      <button class="bt" type="button" data-texte aria-expanded="false">Lire le texte</button>
-    </div>
     <div class="diapo__dit" hidden></div>
   </div>
   <h3 class="u-visually-hidden">Et le pouls ?</h3>
@@ -2040,10 +2051,6 @@ body{background:var(--paper-100)}
   <div class="diapo">
     <img alt=""><img alt="">
     <div class="diapo__mots"></div>
-    <div class="diapo__cmd">
-      <button class="bt" type="button" data-jouer>▶ Écouter</button>
-      <button class="bt" type="button" data-texte aria-expanded="false">Lire le texte</button>
-    </div>
     <div class="diapo__dit" hidden></div>
   </div>
   <h3 class="u-visually-hidden">Désigner quelqu'un, montré</h3>
@@ -2073,10 +2080,6 @@ body{background:var(--paper-100)}
 <article class="panneau panneau--diapo" data-chap="s3" data-diapo="ordres-exacts" hidden>
   <div class="diapo diapo--blanc">
     <div class="diapo__mots"></div>
-    <div class="diapo__cmd">
-      <button class="bt" type="button" data-jouer>▶ Écouter</button>
-      <button class="bt" type="button" data-texte aria-expanded="false">Lire le texte</button>
-    </div>
     <div class="diapo__dit" hidden></div>
   </div>
   <h3 class="u-visually-hidden">Les deux ordres, mot pour mot</h3>
@@ -2087,10 +2090,6 @@ body{background:var(--paper-100)}
 <article class="panneau panneau--diapo" data-chap="s3" data-diapo="seul" hidden>
   <div class="diapo diapo--blanc">
     <div class="diapo__mots"></div>
-    <div class="diapo__cmd">
-      <button class="bt" type="button" data-jouer>▶ Écouter</button>
-      <button class="bt" type="button" data-texte aria-expanded="false">Lire le texte</button>
-    </div>
     <div class="diapo__dit" hidden></div>
   </div>
   <h3 class="u-visually-hidden">Et si vous êtes seul ?</h3>
@@ -2104,10 +2103,6 @@ body{background:var(--paper-100)}
   <div class="diapo">
     <img alt=""><img alt="">
     <div class="diapo__mots"></div>
-    <div class="diapo__cmd">
-      <button class="bt" type="button" data-jouer>▶ Écouter</button>
-      <button class="bt" type="button" data-texte aria-expanded="false">Lire le texte</button>
-    </div>
     <div class="diapo__dit" hidden></div>
   </div>
   <h3 class="u-visually-hidden">Comprimer, montré</h3>
@@ -2120,10 +2115,6 @@ body{background:var(--paper-100)}
 <article class="panneau panneau--diapo" data-chap="s4" data-diapo="compressions-seules" hidden>
   <div class="diapo diapo--blanc">
     <div class="diapo__mots"></div>
-    <div class="diapo__cmd">
-      <button class="bt" type="button" data-jouer>▶ Écouter</button>
-      <button class="bt" type="button" data-texte aria-expanded="false">Lire le texte</button>
-    </div>
     <div class="diapo__dit" hidden></div>
   </div>
   <h3 class="u-visually-hidden">Les compressions seules</h3>
@@ -2167,10 +2158,6 @@ body{background:var(--paper-100)}
 <article class="panneau panneau--diapo" data-chap="s5" data-diapo="appareil" hidden>
   <div class="diapo diapo--blanc">
     <div class="diapo__mots"></div>
-    <div class="diapo__cmd">
-      <button class="bt" type="button" data-jouer>▶ Écouter</button>
-      <button class="bt" type="button" data-texte aria-expanded="false">Lire le texte</button>
-    </div>
     <div class="diapo__dit" hidden></div>
   </div>
   <h3 class="u-visually-hidden">L'appareil, dit</h3>
@@ -2182,10 +2169,6 @@ body{background:var(--paper-100)}
 <article class="panneau panneau--diapo" data-chap="s5" data-diapo="electrodes" hidden>
   <div class="diapo diapo--blanc">
     <div class="diapo__mots"></div>
-    <div class="diapo__cmd">
-      <button class="bt" type="button" data-jouer>▶ Écouter</button>
-      <button class="bt" type="button" data-texte aria-expanded="false">Lire le texte</button>
-    </div>
     <div class="diapo__dit" hidden></div>
   </div>
   <h3 class="u-visually-hidden">Ce que vous faites de vos mains</h3>
@@ -2210,10 +2193,6 @@ body{background:var(--paper-100)}
 <article class="panneau panneau--diapo" data-chap="s5" data-diapo="ce-qu-il-fait" hidden>
   <div class="diapo diapo--blanc">
     <div class="diapo__mots"></div>
-    <div class="diapo__cmd">
-      <button class="bt" type="button" data-jouer>▶ Écouter</button>
-      <button class="bt" type="button" data-texte aria-expanded="false">Lire le texte</button>
-    </div>
     <div class="diapo__dit" hidden></div>
   </div>
   <h3 class="u-visually-hidden">Ce que l'appareil fait</h3>
@@ -2240,10 +2219,6 @@ body{background:var(--paper-100)}
 <article class="panneau panneau--diapo" data-chap="s6" data-diapo="relais" hidden>
   <div class="diapo diapo--blanc">
     <div class="diapo__mots"></div>
-    <div class="diapo__cmd">
-      <button class="bt" type="button" data-jouer>▶ Écouter</button>
-      <button class="bt" type="button" data-texte aria-expanded="false">Lire le texte</button>
-    </div>
     <div class="diapo__dit" hidden></div>
   </div>
   <h3 class="u-visually-hidden">Le relais, dit</h3>
@@ -2255,10 +2230,6 @@ body{background:var(--paper-100)}
 <article class="panneau panneau--diapo" data-chap="s6" data-diapo="passation" hidden>
   <div class="diapo diapo--blanc">
     <div class="diapo__mots"></div>
-    <div class="diapo__cmd">
-      <button class="bt" type="button" data-jouer>▶ Écouter</button>
-      <button class="bt" type="button" data-texte aria-expanded="false">Lire le texte</button>
-    </div>
     <div class="diapo__dit" hidden></div>
   </div>
   <h3 class="u-visually-hidden">La passation</h3>
@@ -2270,10 +2241,6 @@ body{background:var(--paper-100)}
 <article class="panneau panneau--diapo" data-chap="s6" data-diapo="apres" hidden>
   <div class="diapo diapo--blanc">
     <div class="diapo__mots"></div>
-    <div class="diapo__cmd">
-      <button class="bt" type="button" data-jouer>▶ Écouter</button>
-      <button class="bt" type="button" data-texte aria-expanded="false">Lire le texte</button>
-    </div>
     <div class="diapo__dit" hidden></div>
   </div>
   <h3 class="u-visually-hidden">Après</h3>
@@ -2457,10 +2424,6 @@ body{background:var(--paper-100)}
 <article class="panneau panneau--diapo" data-chap="s9" data-diapo="pour-finir" hidden>
   <div class="diapo diapo--blanc">
     <div class="diapo__mots"></div>
-    <div class="diapo__cmd">
-      <button class="bt" type="button" data-jouer>▶ Écouter</button>
-      <button class="bt" type="button" data-texte aria-expanded="false">Lire le texte</button>
-    </div>
     <div class="diapo__dit" hidden></div>
   </div>
   <h3 class="u-visually-hidden">Pour finir</h3>
@@ -2544,14 +2507,30 @@ var RETOURS = {"souffle-agonal": "medias/formation-dea/ret-souffle-agonal.mp3", 
   (function diapositives() {
     if (typeof DIAPOS === 'undefined') return;
     var voix = new Audio();
+    /* LES DEUX COMMANDES ONT QUITTÉ LA DIAPOSITIVE POUR LA BARRE. Elles
+       flottaient sur le dessin, en haut à droite, et elles y masquaient
+       justement le coin qu'on regarde. Il n'y en a plus qu'UNE paire pour
+       tout le module, à côté du chronomètre.
+       Ce qui suit est la conséquence : une paire unique ne peut pas être
+       branchée dans chaque panneau, il faut qu'elle s'adresse au panneau
+       COURANT. D'où le registre `actif` — mis à jour à l'entrée, vidé à la
+       sortie — et les gardes `si c'est moi l'actif` avant d'écrire un
+       libellé : sans elles, le panneau qu'on quitte réécrit « ▶ Écouter »
+       par-dessus le « ❚❚ Pause » de celui qui arrive. */
+    var bJouer = document.getElementById('jouerG');
+    var bTexte = document.getElementById('texteG');
+    var cmdBarre = document.getElementById('cmdBarre');
+    var actif = null;
+    bJouer.addEventListener('click', function () { if (actif) actif.jouer(); });
+    bTexte.addEventListener('click', function () { if (actif) actif.texte(); });
     [].forEach.call(document.querySelectorAll('.panneau--diapo'), function (pan) {
       var temps = DIAPOS[pan.dataset.diapo] || [];
       var couches = pan.querySelectorAll('.diapo img');
       var mots = pan.querySelector('.diapo__mots');
       var dit = pan.querySelector('.diapo__dit');
-      var bJouer = pan.querySelector('[data-jouer]');
-      var bTexte = pan.querySelector('[data-texte]');
       var i = -1, joue = false, dessus = 0, attente = 0;
+      var moi = { jouer: basculerJouer, texte: basculerTexte };
+      function aMoi() { return actif === moi; }
 
       /* Les dix marques du compteur sont posées ICI et non dans le HTML : dix
          `<span>` écrits à la main seraient dix occasions de se tromper de
@@ -2604,7 +2583,7 @@ var RETOURS = {"souffle-agonal": "medias/formation-dea/ret-souffle-agonal.mp3", 
       function arreter() {
         joue = false; clearTimeout(attente);
         try { voix.pause(); } catch (e) {}
-        bJouer.textContent = '▶ Écouter';
+        if (aMoi()) bJouer.textContent = '▶ Écouter';
       }
 
       function montrer(n) {
@@ -2660,17 +2639,17 @@ var RETOURS = {"souffle-agonal": "medias/formation-dea/ret-souffle-agonal.mp3", 
         if (joue && pan.hidden === false) montrer(i + 1);
       });
 
-      bJouer.addEventListener('click', function () {
+      function basculerJouer() {
         if (joue) { arreter(); return; }
         joue = true; bJouer.textContent = '❚❚ Pause';
         montrer(i + 1 >= temps.length ? 0 : Math.max(0, i));
-      });
-      bTexte.addEventListener('click', function () {
+      }
+      function basculerTexte() {
         var ouvert = dit.hidden;
         dit.hidden = !ouvert;
         bTexte.setAttribute('aria-expanded', String(ouvert));
         bTexte.textContent = ouvert ? 'Masquer le texte' : 'Lire le texte';
-      });
+      }
 
       /* PRÉCHARGEMENT. Les médias vivent maintenant à côté de la page, et non
          plus dedans : le module s'ouvre en un instant, mais chaque dessin
@@ -2685,6 +2664,7 @@ var RETOURS = {"souffle-agonal": "medias/formation-dea/ret-souffle-agonal.mp3", 
 
       pan.addEventListener('panneau:entre', function () {
         precharger();
+        actif = moi; cmdBarre.hidden = false;
         i = -1; dit.hidden = true;
         bTexte.setAttribute('aria-expanded', 'false'); bTexte.textContent = 'Lire le texte';
         [].forEach.call(mots.children, function (p) { p.className = ''; });
@@ -2692,7 +2672,13 @@ var RETOURS = {"souffle-agonal": "medias/formation-dea/ret-souffle-agonal.mp3", 
         joue = true; bJouer.textContent = '❚❚ Pause';
         montrer(0);
       });
-      pan.addEventListener('panneau:quitte', arreter);
+      pan.addEventListener('panneau:quitte', function () {
+        arreter();
+        /* La barre perd ses commandes en sortant d'une diapositive : sur un
+           panneau de texte ou un exercice, « Écouter » ne commanderait rien
+           et un bouton qui ne fait rien est pire qu'un bouton absent. */
+        if (aMoi()) { actif = null; cmdBarre.hidden = true; }
+      });
 
       /* LE PREMIER PANNEAU N'EST JAMAIS « ENTRÉ » : il est là au chargement,
          on n'y navigue pas, donc `panneau:entre` ne se déclenche pas — et de
@@ -2705,6 +2691,9 @@ var RETOURS = {"souffle-agonal": "medias/formation-dea/ret-souffle-agonal.mp3", 
         poserPlan(temps[0].img, true);
         if (!pan.hidden && mots.children[0]) {
           mots.children[0].classList.add('vu'); i = 0;
+          /* Le premier panneau n'entre jamais : il faut lui donner la barre
+             à la main, sinon le module s'ouvre sans bouton pour écouter. */
+          actif = moi; cmdBarre.hidden = false;
         }
       }
     });
@@ -3608,12 +3597,33 @@ var RETOURS = {"souffle-agonal": "medias/formation-dea/ret-souffle-agonal.mp3", 
     b.innerHTML = '<span class="step__dot"></span>' + CHAPS[c];
     b.setAttribute('aria-label', (i + 1) + '. ' + CHAPS[c]);
     b.disabled = true;
+    b.setAttribute('role', 'option');
     b.addEventListener('click', function () {
+      fermerMenu();
       for (var k = 0; k < panneaux.length; k++) {
         if (panneaux[k].dataset.chap === c) { aller(k); return; }
       }
     });
     rail.appendChild(b);
+  });
+
+  /* L'OUVERTURE ET LA FERMETURE DU MENU. Trois façons de le fermer, et les
+     trois comptent : rechoisir le bouton, cliquer ailleurs, Échap. Un menu
+     qui ne se ferme qu'en rechoisissant le bouton piège au clavier, et un
+     menu sans clic-ailleurs reste ouvert par-dessus le module pendant qu'on
+     essaie de lire. */
+  var chapBt = el('chapBt');
+  function fermerMenu() { rail.hidden = true; chapBt.setAttribute('aria-expanded', 'false'); }
+  function ouvrirMenu() { rail.hidden = false; chapBt.setAttribute('aria-expanded', 'true'); }
+  chapBt.addEventListener('click', function (e) {
+    e.stopPropagation();
+    if (rail.hidden) ouvrirMenu(); else fermerMenu();
+  });
+  document.addEventListener('click', function (e) {
+    if (!rail.hidden && !rail.contains(e.target)) fermerMenu();
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && !rail.hidden) { fermerMenu(); chapBt.focus(); }
   });
 
   function majRail() {
@@ -3623,7 +3633,10 @@ var RETOURS = {"souffle-agonal": "medias/formation-dea/ret-souffle-agonal.mp3", 
       b.setAttribute('aria-current', c === chapCourant ? 'true' : 'false');
       if (vus[c]) { b.dataset.vu = '1'; b.disabled = false; }
     });
-    el('chapTitre').textContent = CHAPS[chapCourant] || '';
+    /* Le bouton du menu PORTE le chapitre courant : c'est la seule chose que
+       la barre doit dire en permanence. Il était caché (`display:none`) au
+       temps du rail, où la pastille noire faisait le travail. */
+    el('chapTitre').textContent = CHAPS[chapCourant] || 'Avant de commencer';
   }
 
   /** Le panneau est-il franchissable ? Un panneau à verrou attend qu'un
