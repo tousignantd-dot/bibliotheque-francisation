@@ -54,7 +54,7 @@ SCENES = {
   # une chaise derrière le bureau doit être plus petite que le sac devant,
   # sinon « devant » et « derrière » ne se voient pas.
   zones=[
-   ("fond",    "sur le mur du fond",     0.310,0.290, 0.430,0.500),
+   ("fond",    "au fond de la classe",   0.300,0.420, 0.440,0.540),
    ("fenetre", "à côté de la fenêtre",   0.580,0.300, 0.690,0.480),
    ("derriere","derrière le bureau",     0.415,0.585, 0.545,0.690, 0.72),
    ("gauche",  "à gauche",               0.130,0.640, 0.300,0.830),
@@ -68,7 +68,7 @@ SCENES = {
          ("un-sac-a-dos","devant","rouge")],
   phrases=[
    "Écoutez bien. Je décris une classe. Placez les objets sur l'image.",
-   "Sur le mur du fond, il y a un tableau vert.",
+   "Au fond de la classe, il y a un tableau vert.",
    "À côté de la fenêtre, il y a une horloge blanche.",
    "Au milieu de la classe, il y a un bureau brun.",
    "Derrière le bureau, il y a une chaise noire.",
