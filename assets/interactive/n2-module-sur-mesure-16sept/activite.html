@@ -654,13 +654,71 @@ function lmsTrack(event, data) {
     }
   } catch (e2) {}
 }
+/* ── Le découpage du module ───────────────────────────────────────────────
+   Lu tel quel par `build/sections.py`, qui produit `data/sections.json` : la
+   mise en forme compte — `const SECTIONS = [`, une entrée par ligne à deux
+   espaces d'indentation commençant par `{id:'`, et un `];` pour fermer.
+   Sans cette constante, le portail traite le module comme un bloc unique :
+   le suivi de classe aligne alors les dix-sept exercices d'affilée, sans
+   moyen de sauter à celui qu'on regarde. C'est ce qui s'est passé le
+   16 septembre. */
+const SECTIONS = [
+  {id:'ecouter', no:'1', title:"On écoute la classe",
+   lead:"Comprendre un échange en classe et nommer les objets qui s'y trouvent."},
+  {id:'sons', no:'2', title:"Les sons et la place des choses",
+   lead:"Entendre le e qui tombe, et dire où sont les objets."},
+  {id:'dictees', no:'3', title:"On écrit sous la dictée",
+   lead:"Écrire des phrases entendues, et reconnaître le pronom on."},
+  {id:'comprendre', no:'4', title:"On comprend ce qu'on entend",
+   lead:"Consignes, prix, avis affiché et moments de la journée."},
+  {id:'dessiner', no:'5', title:"Écoute et dessine",
+   lead:"Écouter une description, dessiner, puis comparer avec l'image."},
+];
+
+/* À quel exercice appartient une zone de réponse, et dans quelle section.
+   Le suivi de classe groupe par `section` puis par `exo` : sans eux, tout
+   retombait dans un seul panier portant le nom du module entier.
+   Les préfixes se lisent du plus long au plus court — « ecoute-ex14- » doit
+   passer avant « ecoute- », sinon les quatre dernières écoutes seraient
+   comptées dans la première. */
+const EXOS = [
+  ["ecoute-ex17-", "ex17", "17", "Dessine ce que j'entends — La rue",        "dessiner"],
+  ["ecoute-ex16-", "ex16", "16", "Dessine ce que j'entends — La table",      "dessiner"],
+  ["ecoute-ex15-", "ex15", "15", "Dessine ce que j'entends — La météo",      "dessiner"],
+  ["ecoute-ex14-", "ex14", "14", "Dessine ce que j'entends — La classe",     "dessiner"],
+  ["ecoute-",      "ex13", "13", "Dessine ce que j'entends",                 "dessiner"],
+  ["journee-",     "ex12", "12", "Ma journée",                               "comprendre"],
+  ["avis-",        "ex11", "11", "L'avis du centre",                         "comprendre"],
+  ["prix-",        "ex10", "10", "Combien ça coûte",                         "comprendre"],
+  ["consigne-",    "ex9",  "9",  "Les consignes",                            "comprendre"],
+  ["vf-",          "ex8",  "8",  "Vrai ou faux",                             "comprendre"],
+  ["dictee2-",     "ex7",  "7",  "La dictée du soir",                        "dictees"],
+  ["on-",          "ex6",  "6",  "Le pronom ON",                             "dictees"],
+  ["dictee-",      "ex5",  "5",  "La dictée",                                "dictees"],
+  ["p47-",         "ex4",  "4",  "Où est-ce?",                               "sons"],
+  ["prep-",        "ex4",  "4",  "Où est-ce?",                               "sons"],
+  ["sone-",        "ex3",  "3",  "Le son E",                                 "sons"],
+  ["objet-",       "ex2",  "2",  "Les objets de la classe",                  "ecouter"],
+  ["q",            "ex1",  "1",  "J'écoute la classe",                       "ecouter"],
+];
+function exoDe(slug) {
+  for (var i = 0; i < EXOS.length; i++) {
+    if (String(slug).indexOf(EXOS[i][0]) === 0) return EXOS[i];
+  }
+  return null;
+}
 var DZ_ESSAIS = {};
 function directZone(z) {
   if (!z || !z.slug) return;
   var faits = DZ_ESSAIS[z.slug] || 0;
+  var e = exoDe(z.slug);
   lmsTrack("zone_repondue", {
     zone: String(z.slug),
-    exo: CONTENU.slug, exoTitre: CONTENU.titre, type: CONTENU.mode,
+    exo: e ? e[1] : CONTENU.slug,
+    exoNum: e ? e[2] : "",
+    exoTitre: e ? e[3] : CONTENU.titre,
+    section: e ? e[4] : "",
+    type: CONTENU.mode,
     enonce: String(z.enonce == null ? "" : z.enonce).slice(0, 400),
     bonne: String(z.bonne == null ? "" : z.bonne),
     reponse: String(z.reponse == null ? "" : z.reponse),
