@@ -81,6 +81,15 @@
  .pose{position:absolute; transform:translate(-50%,-50%); pointer-events:auto;
        width:15%; aspect-ratio:1; background:none; border:0; padding:0;
        cursor:pointer; filter:drop-shadow(0 1px 2px rgba(0,0,0,.18));}
+ .pose--zone{transform:none; width:auto; height:auto; aspect-ratio:auto;}
+ /* Une enseigne de magasin porte un NOM. Elle remplit le bandeau de la
+    façade, et sa couleur est celle qu'on a choisie — c'est elle qu'on
+    corrige, elle doit donc se voir franchement. */
+ .pose--enseigne{transform:none; aspect-ratio:auto; display:flex;
+   align-items:center; justify-content:center; border-radius:4px;
+   border:2px solid rgba(0,0,0,.55); overflow:hidden;}
+ .pose--enseigne span{flex:0 0 auto; font-weight:900; letter-spacing:.06em;
+   text-transform:uppercase; line-height:1; white-space:nowrap; padding:0 4px;}
  .pose:focus-visible{outline:3px solid var(--sec); outline-offset:2px; border-radius:8px}
  .zone.occupee .etiq{opacity:0}
 
@@ -170,7 +179,7 @@
 
   <div aria-live="polite" class="cache" id="annonce"></div>
 </div>
-<script>const D = {"titre": "Place ce que j'entends — 5 · La rue", "zones": [{"id": "m1", "lib": "le premier magasin", "x1": 0.075, "y1": 0.435, "x2": 0.2, "y2": 0.56}, {"id": "m2", "lib": "le deuxième magasin", "x1": 0.36, "y1": 0.435, "x2": 0.485, "y2": 0.56}, {"id": "m3", "lib": "le troisième magasin", "x1": 0.52, "y1": 0.435, "x2": 0.64, "y2": 0.56}, {"id": "m4", "lib": "le quatrième magasin", "x1": 0.74, "y1": 0.435, "x2": 0.865, "y2": 0.56}, {"id": "trottoir", "lib": "sur le trottoir", "x1": 0.24, "y1": 0.7, "x2": 0.38, "y2": 0.83}, {"id": "rue", "lib": "dans la rue", "x1": 0.56, "y1": 0.84, "x2": 0.76, "y2": 0.975}], "couleurs": [{"nom": "bleu", "hex": "#1565C0", "f": "bleue", "mp": "bleus", "fp": "bleues", "audio": "audio/couleur-bleu.mp3"}, {"nom": "rouge", "hex": "#D32F2F", "f": "rouge", "mp": "rouges", "fp": "rouges", "audio": "audio/couleur-rouge.mp3"}, {"nom": "vert", "hex": "#2E7D32", "f": "verte", "mp": "verts", "fp": "vertes", "audio": "audio/couleur-vert.mp3"}, {"nom": "jaune", "hex": "#F2C200", "f": "jaune", "mp": "jaunes", "fp": "jaunes", "audio": "audio/couleur-jaune.mp3"}, {"nom": "noir", "hex": "#17181A", "f": "noire", "mp": "noirs", "fp": "noires", "audio": "audio/couleur-noir.mp3"}, {"nom": "blanc", "hex": "#FFFFFF", "f": "blanche", "mp": "blancs", "fp": "blanches", "audio": "audio/couleur-blanc.mp3"}, {"nom": "brun", "hex": "#6D4C33", "f": "brune", "mp": "bruns", "fp": "brunes", "audio": "audio/couleur-brun.mp3"}, {"nom": "orange", "hex": "#E8720C", "f": "orange", "mp": "orange", "fp": "orange", "audio": "audio/couleur-orange.mp3"}], "banque": [{"mot": "une boulangerie", "slug": "une-boulangerie", "genre": "f", "masque": "masques/une-boulangerie.png", "trait": "traits/une-boulangerie.png", "audio": "audio/mot-une-boulangerie.mp3"}, {"mot": "une pharmacie", "slug": "une-pharmacie", "genre": "f", "masque": "masques/une-pharmacie.png", "trait": "traits/une-pharmacie.png", "audio": "audio/mot-une-pharmacie.mp3"}, {"mot": "une banque", "slug": "une-banque", "genre": "f", "masque": "masques/une-banque.png", "trait": "traits/une-banque.png", "audio": "audio/mot-une-banque.mp3"}, {"mot": "une épicerie", "slug": "une-epicerie", "genre": "f", "masque": "masques/une-epicerie.png", "trait": "traits/une-epicerie.png", "audio": "audio/mot-une-epicerie.mp3"}, {"mot": "un chien", "slug": "un-chien", "genre": "m", "masque": "masques/un-chien.png", "trait": "traits/un-chien.png", "audio": "audio/mot-un-chien.mp3"}, {"mot": "une auto", "slug": "une-auto", "genre": "f", "masque": "masques/une-auto.png", "trait": "traits/une-auto.png", "audio": "audio/mot-une-auto.mp3"}, {"mot": "une librairie", "slug": "une-librairie", "genre": "f", "masque": "masques/une-librairie.png", "trait": "traits/une-librairie.png", "audio": "audio/mot-une-librairie.mp3"}, {"mot": "un autobus", "slug": "un-autobus", "genre": "m", "masque": "masques/un-autobus.png", "trait": "traits/un-autobus.png", "audio": "audio/mot-un-autobus.mp3"}, {"mot": "un vélo", "slug": "un-velo", "genre": "m", "masque": "masques/un-velo.png", "trait": "traits/un-velo.png", "audio": "audio/mot-un-velo.mp3"}, {"mot": "un banc", "slug": "un-banc", "genre": "m", "masque": "masques/un-banc.png", "trait": "traits/un-banc.png", "audio": "audio/mot-un-banc.mp3"}], "scene": [{"obj": "une-boulangerie", "zone": "m1", "coul": "brun"}, {"obj": "une-pharmacie", "zone": "m2", "coul": "vert"}, {"obj": "une-banque", "zone": "m3", "coul": "bleu"}, {"obj": "une-epicerie", "zone": "m4", "coul": "orange"}, {"obj": "un-chien", "zone": "trottoir", "coul": "noir"}, {"obj": "une-auto", "zone": "rue", "coul": "rouge"}], "phrases": [{"t": "Écoutez bien. Je décris une rue. Placez les images.", "audio": "audio/desc-01.mp3"}, {"t": "Le premier magasin, c'est une boulangerie brune.", "audio": "audio/desc-02.mp3"}, {"t": "Le deuxième magasin, c'est une pharmacie verte.", "audio": "audio/desc-03.mp3"}, {"t": "Le troisième magasin, c'est une banque bleue.", "audio": "audio/desc-04.mp3"}, {"t": "Le quatrième magasin, c'est une épicerie orange.", "audio": "audio/desc-05.mp3"}, {"t": "Sur le trottoir, il y a un chien noir.", "audio": "audio/desc-06.mp3"}, {"t": "Dans la rue, il y a une auto rouge.", "audio": "audio/desc-07.mp3"}, {"t": "C'est fini. Touchez « Vérifier ».", "audio": "audio/desc-08.mp3"}], "lent": "audio/description-lent.mp3", "normal": "audio/description-normal.mp3", "base": "img/rue.jpg", "reveal": "reveal/rue.jpg"};</script>
+<script>const D = {"titre": "Place ce que j'entends — 5 · La rue", "zones": [{"id": "m1", "lib": "le premier magasin", "x1": 0.072, "y1": 0.428, "x2": 0.258, "y2": 0.492, "echelle": 1.0, "enseigne": true}, {"id": "m2", "lib": "le deuxième magasin", "x1": 0.298, "y1": 0.428, "x2": 0.484, "y2": 0.492, "echelle": 1.0, "enseigne": true}, {"id": "m3", "lib": "le troisième magasin", "x1": 0.516, "y1": 0.428, "x2": 0.702, "y2": 0.492, "echelle": 1.0, "enseigne": true}, {"id": "m4", "lib": "le quatrième magasin", "x1": 0.738, "y1": 0.428, "x2": 0.924, "y2": 0.492, "echelle": 1.0, "enseigne": true}, {"id": "trottoir", "lib": "sur le trottoir", "x1": 0.24, "y1": 0.7, "x2": 0.38, "y2": 0.83, "echelle": 1.0, "enseigne": false}, {"id": "rue", "lib": "dans la rue", "x1": 0.56, "y1": 0.84, "x2": 0.76, "y2": 0.975, "echelle": 1.0, "enseigne": false}], "couleurs": [{"nom": "bleu", "hex": "#1565C0", "f": "bleue", "mp": "bleus", "fp": "bleues", "audio": "audio/couleur-bleu.mp3"}, {"nom": "rouge", "hex": "#D32F2F", "f": "rouge", "mp": "rouges", "fp": "rouges", "audio": "audio/couleur-rouge.mp3"}, {"nom": "vert", "hex": "#2E7D32", "f": "verte", "mp": "verts", "fp": "vertes", "audio": "audio/couleur-vert.mp3"}, {"nom": "jaune", "hex": "#F2C200", "f": "jaune", "mp": "jaunes", "fp": "jaunes", "audio": "audio/couleur-jaune.mp3"}, {"nom": "noir", "hex": "#17181A", "f": "noire", "mp": "noirs", "fp": "noires", "audio": "audio/couleur-noir.mp3"}, {"nom": "blanc", "hex": "#FFFFFF", "f": "blanche", "mp": "blancs", "fp": "blanches", "audio": "audio/couleur-blanc.mp3"}, {"nom": "brun", "hex": "#6D4C33", "f": "brune", "mp": "bruns", "fp": "brunes", "audio": "audio/couleur-brun.mp3"}, {"nom": "orange", "hex": "#E8720C", "f": "orange", "mp": "orange", "fp": "orange", "audio": "audio/couleur-orange.mp3"}], "banque": [{"mot": "une boulangerie", "slug": "une-boulangerie", "genre": "f", "masque": "masques/une-boulangerie.png", "trait": "traits/une-boulangerie.png", "audio": "audio/mot-une-boulangerie.mp3", "taille": 1.0}, {"mot": "une pharmacie", "slug": "une-pharmacie", "genre": "f", "masque": "masques/une-pharmacie.png", "trait": "traits/une-pharmacie.png", "audio": "audio/mot-une-pharmacie.mp3", "taille": 1.0}, {"mot": "une banque", "slug": "une-banque", "genre": "f", "masque": "masques/une-banque.png", "trait": "traits/une-banque.png", "audio": "audio/mot-une-banque.mp3", "taille": 1.0}, {"mot": "une épicerie", "slug": "une-epicerie", "genre": "f", "masque": "masques/une-epicerie.png", "trait": "traits/une-epicerie.png", "audio": "audio/mot-une-epicerie.mp3", "taille": 1.0}, {"mot": "un chien", "slug": "un-chien", "genre": "m", "masque": "masques/un-chien.png", "trait": "traits/un-chien.png", "audio": "audio/mot-un-chien.mp3", "taille": 0.7}, {"mot": "une auto", "slug": "une-auto", "genre": "f", "masque": "masques/une-auto.png", "trait": "traits/une-auto.png", "audio": "audio/mot-une-auto.mp3", "taille": 1.35}, {"mot": "une librairie", "slug": "une-librairie", "genre": "f", "masque": "masques/une-librairie.png", "trait": "traits/une-librairie.png", "audio": "audio/mot-une-librairie.mp3", "taille": 1.0}, {"mot": "un autobus", "slug": "un-autobus", "genre": "m", "masque": "masques/un-autobus.png", "trait": "traits/un-autobus.png", "audio": "audio/mot-un-autobus.mp3", "taille": 1.35}, {"mot": "un vélo", "slug": "un-velo", "genre": "m", "masque": "masques/un-velo.png", "trait": "traits/un-velo.png", "audio": "audio/mot-un-velo.mp3", "taille": 1.0}, {"mot": "un banc", "slug": "un-banc", "genre": "m", "masque": "masques/un-banc.png", "trait": "traits/un-banc.png", "audio": "audio/mot-un-banc.mp3", "taille": 1.0}], "scene": [{"obj": "une-boulangerie", "zone": "m1", "coul": "brun"}, {"obj": "une-pharmacie", "zone": "m2", "coul": "vert"}, {"obj": "une-banque", "zone": "m3", "coul": "bleu"}, {"obj": "une-epicerie", "zone": "m4", "coul": "orange"}, {"obj": "un-chien", "zone": "trottoir", "coul": "noir"}, {"obj": "une-auto", "zone": "rue", "coul": "rouge"}], "phrases": [{"t": "Écoutez bien. Je décris une rue. Placez les images.", "audio": "audio/desc-01.mp3"}, {"t": "Le premier magasin, c'est une boulangerie brune.", "audio": "audio/desc-02.mp3"}, {"t": "Le deuxième magasin, c'est une pharmacie verte.", "audio": "audio/desc-03.mp3"}, {"t": "Le troisième magasin, c'est une banque bleue.", "audio": "audio/desc-04.mp3"}, {"t": "Le quatrième magasin, c'est une épicerie orange.", "audio": "audio/desc-05.mp3"}, {"t": "Sur le trottoir, il y a un chien noir.", "audio": "audio/desc-06.mp3"}, {"t": "Dans la rue, il y a une auto rouge.", "audio": "audio/desc-07.mp3"}, {"t": "C'est fini. Touchez « Vérifier ».", "audio": "audio/desc-08.mp3"}], "lent": "audio/description-lent.mp3", "normal": "audio/description-normal.mp3", "base": "img/rue.jpg", "reveal": "reveal/rue.jpg", "ajuste": "fixe"};</script>
 <script>
 
 "use strict";
@@ -317,9 +326,56 @@ function redessine(){
     b.classList.toggle("occupee", !!p);
     if(!p) return;
     var s=el("button","pose"); s.type="button";
-    /* Au centre de la case, mais dimensionné sur l'image. */
-    s.style.left=((z.x1+z.x2)/2*100)+"%";
-    s.style.top =((z.y1+z.y2)/2*100)+"%";
+    if(z.enseigne){
+      /* Pas d'image : le nom du commerce, sans son article. */
+      s.classList.add("pose--enseigne");
+      s.style.left=(z.x1*100)+"%";  s.style.top=(z.y1*100)+"%";
+      s.style.width=((z.x2-z.x1)*100)+"%"; s.style.height=((z.y2-z.y1)*100)+"%";
+      var c=coulDe[p.coul];
+      s.style.background=c.hex;
+      /* Le texte se lit sur la couleur : clair sur foncé, encre sur clair. */
+      var rgb=c.hex.replace("#",""),
+          L=(parseInt(rgb.substr(0,2),16)*0.299 + parseInt(rgb.substr(2,2),16)*0.587
+             + parseInt(rgb.substr(4,2),16)*0.114);
+      var mot=objDe[p.obj].mot.replace(/^(une|un|des|le|la|l’|de la|du)\s+/i,"");
+      var t=el("span",null,mot);
+      t.style.color = L > 150 ? "#17181A" : "#FFFFFF";
+      s.append(t);
+      s.setAttribute("aria-label","Enlever "+nomme(p.obj,p.coul));
+      s.addEventListener("click",function(e){e.stopPropagation(); enleve(z.id)});
+      $("#poses").append(s);
+      /* La taille du texte suit celle de l'enseigne ; on la pose après
+         insertion, quand la boîte a ses dimensions réelles. */
+      var h=s.getBoundingClientRect().height;
+      var taille=Math.max(9, h*0.45);
+      t.style.fontSize=taille+"px";
+      /* Un nom long déborde : « BOULANGERIE » sortait de son bandeau et se
+         faisait rogner. On mesure et on rétrécit jusqu'à ce qu'il tienne,
+         plutôt que de deviner une taille qui marcherait pour tous les mots. */
+      var large=s.clientWidth - 6;
+      var voulu=t.getBoundingClientRect().width;
+      if(voulu > large){
+        taille=Math.max(7, taille * large / voulu);
+        t.style.fontSize=taille+"px";
+      }
+      return;
+    }
+    if(D.ajuste==="zone"){
+      /* La case dit où l'objet va ET quelle place il prend : un vêtement doit
+         habiller, pas flotter au milieu du membre. L'objet garde ses
+         proportions (`contain`), il remplit seulement le cadre offert. */
+      s.classList.add("pose--zone");
+      s.style.left=(z.x1*100)+"%";  s.style.top=(z.y1*100)+"%";
+      s.style.width=((z.x2-z.x1)*100)+"%"; s.style.height=((z.y2-z.y1)*100)+"%";
+    } else {
+      /* Ailleurs, la taille se mesure sur l'image : une pomme garde la même
+         taille quelle que soit la case où on la pose. Chaque objet porte son
+         propre facteur — un tableau et un crayon n'ont pas la même taille
+         dans une classe. */
+      s.style.left=((z.x1+z.x2)/2*100)+"%";
+      s.style.top =((z.y1+z.y2)/2*100)+"%";
+      s.style.width=(15*(objDe[p.obj].taille||1)*(z.echelle||1))+"%";
+    }
     s.append(dessine(objDe[p.obj], coulDe[p.coul].hex));
     s.setAttribute("aria-label","Enlever "+nomme(p.obj,p.coul));
     s.addEventListener("click",function(e){e.stopPropagation(); enleve(z.id)});
@@ -381,5 +437,11 @@ $("#recommencer").addEventListener("click",function(){
   dis("Tout est enlevé. Recommencez.");
 });
 marqueBanque();
+/* Les enseignes portent une taille de texte calculée en pixels : elle doit
+   être refaite quand la fenêtre change de largeur. */
+var minuterie=null;
+window.addEventListener("resize", function(){
+  clearTimeout(minuterie); minuterie=setTimeout(redessine, 120);
+});
 
 </script>

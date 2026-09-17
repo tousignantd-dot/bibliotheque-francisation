@@ -142,11 +142,14 @@ SCENES = {
   source="n2-dessine-5-rue", base="img/rue.jpg", reveal="reveal/rue.jpg",
   domaine="Consommation et environnement",
   alt="Une rue avec quatre magasins vides, un banc et un lampadaire",
+  # Les quatre premières portent une ENSEIGNE : sur une devanture, on lit un
+  # nom, pas un pictogramme. L'icône reste dans la banque, où elle apprend le
+  # mot. Les cases épousent le bandeau vide de chaque façade.
   zones=[
-   ("m1", "le premier magasin",   0.075,0.435, 0.200,0.560),
-   ("m2", "le deuxième magasin",  0.360,0.435, 0.485,0.560),
-   ("m3", "le troisième magasin", 0.520,0.435, 0.640,0.560),
-   ("m4", "le quatrième magasin", 0.740,0.435, 0.865,0.560),
+   ("m1", "le premier magasin",   0.072,0.428, 0.258,0.492, 1.0, True),
+   ("m2", "le deuxième magasin",  0.298,0.428, 0.484,0.492, 1.0, True),
+   ("m3", "le troisième magasin", 0.516,0.428, 0.702,0.492, 1.0, True),
+   ("m4", "le quatrième magasin", 0.738,0.428, 0.924,0.492, 1.0, True),
    ("trottoir", "sur le trottoir", 0.240,0.700, 0.380,0.830),
    ("rue", "dans la rue",          0.560,0.840, 0.760,0.975),
   ],
@@ -204,10 +207,11 @@ BANQUES = {
  ("du lait","du-lait","m"),
  ("des carottes","des-carottes","fp"),
 ],
+# Tailles dictées par l'enseignant, 17 septembre 2026.
 "n2-place-5-rue": [
- ("une boulangerie","une-boulangerie","f"), ("une pharmacie","une-pharmacie","f"),
- ("une banque","une-banque","f"),       ("une épicerie","une-epicerie","f"),
- ("un chien","un-chien","m"),           ("une auto","une-auto","f"),
- ("une librairie","une-librairie","f"), ("un autobus","un-autobus","m"),
- ("un vélo","un-velo","m"),             ("un banc","un-banc","m")],
+ ("une boulangerie","une-boulangerie","f",1.0), ("une pharmacie","une-pharmacie","f",1.0),
+ ("une banque","une-banque","f",1.0),       ("une épicerie","une-epicerie","f",1.0),
+ ("un chien","un-chien","m",0.7),           ("une auto","une-auto","f",1.35),
+ ("une librairie","une-librairie","f",1.0), ("un autobus","un-autobus","m",1.35),
+ ("un vélo","un-velo","m",1.0),             ("un banc","un-banc","m",1.0)],
 }

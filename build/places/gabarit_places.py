@@ -90,6 +90,14 @@ HTML = """<!DOCTYPE html>
        width:15%; aspect-ratio:1; background:none; border:0; padding:0;
        cursor:pointer; filter:drop-shadow(0 1px 2px rgba(0,0,0,.18));}
  .pose--zone{transform:none; width:auto; height:auto; aspect-ratio:auto;}
+ /* Une enseigne de magasin porte un NOM. Elle remplit le bandeau de la
+    façade, et sa couleur est celle qu'on a choisie — c'est elle qu'on
+    corrige, elle doit donc se voir franchement. */
+ .pose--enseigne{transform:none; aspect-ratio:auto; display:flex;
+   align-items:center; justify-content:center; border-radius:4px;
+   border:2px solid rgba(0,0,0,.55); overflow:hidden;}
+ .pose--enseigne span{flex:0 0 auto; font-weight:900; letter-spacing:.06em;
+   text-transform:uppercase; line-height:1; white-space:nowrap; padding:0 4px;}
  .pose:focus-visible{outline:3px solid var(--sec); outline-offset:2px; border-radius:8px}
  .zone.occupee .etiq{opacity:0}
 
@@ -330,6 +338,40 @@ function redessine(){
     b.classList.toggle("occupee", !!p);
     if(!p) return;
     var s=el("button","pose"); s.type="button";
+    if(z.enseigne){
+      /* Pas d'image : le nom du commerce, sans son article. */
+      s.classList.add("pose--enseigne");
+      s.style.left=(z.x1*100)+"%";  s.style.top=(z.y1*100)+"%";
+      s.style.width=((z.x2-z.x1)*100)+"%"; s.style.height=((z.y2-z.y1)*100)+"%";
+      var c=coulDe[p.coul];
+      s.style.background=c.hex;
+      /* Le texte se lit sur la couleur : clair sur foncé, encre sur clair. */
+      var rgb=c.hex.replace("#",""),
+          L=(parseInt(rgb.substr(0,2),16)*0.299 + parseInt(rgb.substr(2,2),16)*0.587
+             + parseInt(rgb.substr(4,2),16)*0.114);
+      var mot=objDe[p.obj].mot.replace(/^(une|un|des|le|la|l’|de la|du)\s+/i,"");
+      var t=el("span",null,mot);
+      t.style.color = L > 150 ? "#17181A" : "#FFFFFF";
+      s.append(t);
+      s.setAttribute("aria-label","Enlever "+nomme(p.obj,p.coul));
+      s.addEventListener("click",function(e){e.stopPropagation(); enleve(z.id)});
+      $("#poses").append(s);
+      /* La taille du texte suit celle de l'enseigne ; on la pose après
+         insertion, quand la boîte a ses dimensions réelles. */
+      var h=s.getBoundingClientRect().height;
+      var taille=Math.max(9, h*0.45);
+      t.style.fontSize=taille+"px";
+      /* Un nom long déborde : « BOULANGERIE » sortait de son bandeau et se
+         faisait rogner. On mesure et on rétrécit jusqu'à ce qu'il tienne,
+         plutôt que de deviner une taille qui marcherait pour tous les mots. */
+      var large=s.clientWidth - 6;
+      var voulu=t.getBoundingClientRect().width;
+      if(voulu > large){
+        taille=Math.max(7, taille * large / voulu);
+        t.style.fontSize=taille+"px";
+      }
+      return;
+    }
     if(D.ajuste==="zone"){
       /* La case dit où l'objet va ET quelle place il prend : un vêtement doit
          habiller, pas flotter au milieu du membre. L'objet garde ses
@@ -407,4 +449,10 @@ $("#recommencer").addEventListener("click",function(){
   dis("Tout est enlevé. Recommencez.");
 });
 marqueBanque();
+/* Les enseignes portent une taille de texte calculée en pixels : elle doit
+   être refaite quand la fenêtre change de largeur. */
+var minuterie=null;
+window.addEventListener("resize", function(){
+  clearTimeout(minuterie); minuterie=setTimeout(redessine, 120);
+});
 """

@@ -50,6 +50,16 @@ la plinthe est la plus basse — puis placer le centre de la case à
 `plancher − hauteur_du_dessin / 2`. Estimée à l'œil, cette ligne a été fausse
 de dix points et le tableau flottait.
 
+**Une case peut porter une ENSEIGNE** plutôt qu'une image : huitième valeur à
+`True`. Sur une devanture on lit un nom, pas un pictogramme. Le bandeau prend
+la couleur choisie, le nom s'écrit dessus, et la teinte du texte suit le
+contraste. L'icône reste dans la banque, où elle apprend le mot.
+
+Le nom long doit **rétrécir pour tenir** : mesurer la largeur réelle du texte
+et réduire la police au besoin. Attention, le texte doit porter `flex:0 0 auto`
+— sans ça il se laisse comprimer par le flex, rapporte la largeur du bandeau au
+lieu de la sienne, et le débordement reste invisible à la mesure.
+
 **`ajuste`** vaut `"zone"` quand l'objet doit *couvrir* (un vêtement sur un
 personnage : l'objet remplit sa case) et `"fixe"` ailleurs, où un objet garde
 la même taille d'une case à l'autre.

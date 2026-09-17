@@ -86,7 +86,8 @@ for slug, S in SCENES.items():
     D = {
      "titre": S["titre"],
      "zones": [{"id":z[0],"lib":z[1],"x1":z[2],"y1":z[3],"x2":z[4],"y2":z[5],
-                "echelle": z[6] if len(z) > 6 else 1.0} for z in S["zones"]],
+                "echelle": z[6] if len(z) > 6 else 1.0,
+                "enseigne": bool(z[7]) if len(z) > 7 else False} for z in S["zones"]],
      "couleurs": [{"nom":c[0],"hex":c[1],"f":c[2],"mp":c[3],"fp":c[4],
                    "audio":"audio/couleur-%s.mp3"%c[0]} for c in COULEURS],
      "banque": [{"mot":m,"slug":sl,"genre":g,
