@@ -150,19 +150,27 @@ SCENES = {
    ("m2", "le deuxième magasin",  0.298,0.428, 0.484,0.492, 1.0, True),
    ("m3", "le troisième magasin", 0.516,0.428, 0.702,0.492, 1.0, True),
    ("m4", "le quatrième magasin", 0.738,0.428, 0.924,0.492, 1.0, True),
-   ("trottoir", "sur le trottoir", 0.240,0.700, 0.380,0.830),
-   ("rue", "dans la rue",          0.560,0.840, 0.760,0.975),
+   # Le banc appartient à l'image de FOND : rien ne peut être dessiné derrière
+   # lui. « Derrière » se dit donc par la position seule — l'objet se place
+   # entièrement au-dessus du banc (mesuré : y 0,703 à 0,795), plus petit.
+   # « Devant », lui, recouvre vraiment le banc, et c'est ce contraste qui
+   # rend la paire lisible.
+   ("derriere","derrière le banc", 0.500,0.560, 0.655,0.665, 0.75),
+   ("devant",  "devant le banc",   0.490,0.775, 0.665,0.880, 1.00),
+   ("rue",     "dans la rue",      0.180,0.860, 0.420,0.975),
   ],
   scene=[("une-boulangerie","m1","brun"), ("une-pharmacie","m2","vert"),
          ("une-banque","m3","bleu"),      ("une-epicerie","m4","orange"),
-         ("un-chien","trottoir","noir"),  ("une-auto","rue","rouge")],
+         ("un-velo","derriere","jaune"),  ("un-chien","devant","noir"),
+         ("une-auto","rue","rouge")],
   phrases=[
    "Écoutez bien. Je décris une rue. Placez les images.",
    "Le premier magasin, c'est une boulangerie brune.",
    "Le deuxième magasin, c'est une pharmacie verte.",
    "Le troisième magasin, c'est une banque bleue.",
    "Le quatrième magasin, c'est une épicerie orange.",
-   "Sur le trottoir, il y a un chien noir.",
+   "Derrière le banc, il y a un vélo jaune.",
+   "Devant le banc, il y a un chien noir.",
    "Dans la rue, il y a une auto rouge.",
    "C'est fini. Touchez « Vérifier ».",
   ]),

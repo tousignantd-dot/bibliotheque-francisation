@@ -60,6 +60,15 @@ et réduire la police au besoin. Attention, le texte doit porter `flex:0 0 auto`
 — sans ça il se laisse comprimer par le flex, rapporte la largeur du bandeau au
 lieu de la sienne, et le débordement reste invisible à la mesure.
 
+**Rien ne peut passer derrière le décor.** Les objets déjà dessinés dans
+l'image de fond — un banc, une chaise — sont sous tous les objets posés :
+aucun ordre de dessin ne peut les recouvrir. « Derrière » se dit alors par la
+**position seule**, l'objet se plaçant entièrement au-dessus du repère, plus
+petit ; « devant », lui, le recouvre vraiment. C'est ce contraste qui rend la
+paire lisible. Mesurer le repère dans l'image avant de poser les deux cases,
+et laisser une bande de décor visible entre elles — un banc entièrement caché
+ne sert plus de repère.
+
 **`ajuste`** vaut `"zone"` quand l'objet doit *couvrir* (un vêtement sur un
 personnage : l'objet remplit sa case) et `"fixe"` ailleurs, où un objet garde
 la même taille d'une case à l'autre.
