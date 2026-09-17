@@ -1,0 +1,308 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Énigme — Le mystère de la classe</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;0,800;0,900;1,600&display=swap">
+<style>
+  /* Jetons du système de design Francisation (ds-bundle).
+     Impression noir et blanc, 8,5 x 11, une feuille autonome par page. */
+  :root{
+    --font-sans:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --white:#FFFFFF; --paper-50:#FBFBFA; --paper-100:#F7F7F5;
+    --line-100:#EAEAE8; --line-300:#D6D6D2;
+    --ink-900:#17181A; --ink-700:#3A3D40; --ink-400:#6E7175;
+    --green-800:#07734A; --green-600:#0A8F5B; --green-100:#E6F5EE;
+    --warn-bg:#FEF6E7; --warn-line:#D9880B; --warn-ink:#8A5206;
+    --surface-page:var(--paper-100); --surface-card:var(--white);
+    --surface-sunken:var(--paper-50);
+    --text-strong:var(--ink-900); --text-body:var(--ink-700); --text-muted:var(--ink-400);
+    --border:var(--line-100); --accent:var(--green-600); --accent-ink:var(--green-800);
+    --sec:var(--green-600);
+    --ls-label:0.12em; --ls-title:-0.015em;
+    --fw-medium:600; --fw-semi:700; --fw-bold:800; --fw-black:900;
+    --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:20px; --sp-6:24px; --sp-8:32px;
+    --r-sm:10px; --r-pill:999px;
+  }
+  body{background:var(--surface-page); color:var(--text-strong);
+       font-family:var(--font-sans); font-weight:var(--fw-medium);
+       line-height:1.5; margin:0; -webkit-font-smoothing:antialiased;}
+  p{margin:0;}
+  h2{margin:0; font-size:23px; font-weight:var(--fw-black); letter-spacing:var(--ls-title);}
+  h3{margin:0; font-size:11px; font-weight:var(--fw-bold);
+     letter-spacing:var(--ls-label); text-transform:uppercase; color:var(--text-muted);}
+
+  .feuille{
+    background:var(--surface-card); width:7.5in; max-width:100%;
+    margin:0 auto var(--sp-8); padding:var(--sp-6);
+    display:flex; flex-direction:column; gap:10px;
+  }
+  header{border-bottom:2px solid var(--sec); padding-bottom:var(--sp-2);
+         display:flex; align-items:flex-end; justify-content:space-between; gap:var(--sp-4);}
+  .surtitre{margin:0; font-size:10.5px; font-weight:var(--fw-bold);
+            letter-spacing:var(--ls-label); text-transform:uppercase; color:var(--sec);}
+  .role{font-size:11px; font-weight:var(--fw-bold); letter-spacing:var(--ls-label);
+        text-transform:uppercase; border:2px solid var(--sec); color:var(--sec);
+        padding:2px 10px; border-radius:var(--r-pill); white-space:nowrap;}
+  .consigne{font-size:12px; color:var(--text-body);}
+  .protocole{font-size:10.5px; color:var(--text-muted);}
+
+  .bloc{border:1px solid var(--border); border-radius:var(--r-sm); padding:10px var(--sp-3);
+        display:flex; flex-direction:column; gap:var(--sp-2); break-inside:avoid;}
+  .bloc.plein{background:var(--surface-sunken);}
+  .grille2{display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-3);}
+  .grille3{display:grid; grid-template-columns:repeat(3,1fr); gap:var(--sp-3);}
+
+  ul{list-style:none; margin:0; padding:0;}
+  ul.mots{display:flex; flex-wrap:wrap; gap:5px;}
+  ul.mots li{font-size:14px; font-weight:var(--fw-semi); line-height:1.45;
+             background:var(--white); border:1px solid var(--border);
+             border-radius:var(--r-pill); padding:1px 9px;}
+  ul.phrases{display:flex; flex-direction:column; gap:4px; font-size:13px; color:var(--text-body);}
+  ul.phrases li{position:relative; padding-left:14px; line-height:1.4;}
+  ul.phrases li::before{content:"»"; position:absolute; left:0; color:var(--sec); font-weight:var(--fw-bold);}
+  ul.phrases em, .dial em{font-style:italic; font-weight:var(--fw-semi); color:var(--text-strong);}
+
+  .fiche-perso{font-size:12.5px; display:flex; flex-direction:column; gap:3px;}
+  .fiche-perso b{font-size:14px; font-weight:var(--fw-black);}
+  .fiche-perso span{color:var(--text-body);}
+
+  table{border-collapse:collapse; width:100%; font-size:12.5px;}
+  th{text-align:left; font-size:10.5px; letter-spacing:var(--ls-label);
+     text-transform:uppercase; color:var(--text-muted); font-weight:var(--fw-bold);
+     border-bottom:1px solid var(--border); padding:3px 6px 3px 0;}
+  td{padding:3px 6px 3px 0; border-bottom:1px solid var(--border); vertical-align:top;}
+  td b{font-weight:var(--fw-bold);}
+  /* Tableaux que l'élève remplit à la main : il lui faut de la hauteur. */
+  table.ecrire td{padding-top:6px; padding-bottom:6px;}
+
+  .trou{display:inline-block; min-width:1.5in; border-bottom:1px solid var(--ink-400);}
+  .trou.court{min-width:0.9in;}
+  .dial{font-size:12.5px; color:var(--text-body); display:flex; flex-direction:column; gap:3px;}
+  .dial b{color:var(--text-strong); font-weight:var(--fw-bold);}
+
+  .avis{background:var(--warn-bg); border:1px solid var(--warn-line); border-radius:var(--r-sm);
+        padding:6px var(--sp-3); font-size:11.5px; color:var(--warn-ink);}
+  .avis b{font-weight:var(--fw-bold);}
+  .secours{border-top:1px solid var(--border); padding-top:6px;
+           display:flex; flex-direction:column; gap:4px; margin-top:auto;}
+  .secours h3{color:var(--accent-ink);}
+  .secours p{display:flex; flex-wrap:wrap; gap:2px var(--sp-3); font-size:11.5px; color:var(--text-body);}
+  .secours span{white-space:nowrap;}
+  .secours span::after{content:" ·"; color:var(--text-muted);}
+  .secours span:last-child::after{content:"";}
+
+  .corrige header{border-bottom-width:4px;}
+  .corrige .role{border-width:3px;}
+  .note{font-size:12px; color:var(--text-body);}
+  .note b{font-weight:var(--fw-bold); color:var(--text-strong);}
+
+  @media print{
+    @page{ size:8.5in 11in portrait; margin:0.45in 0.5in; }
+    :root{
+      --surface-page:#FFFFFF; --surface-card:#FFFFFF; --surface-sunken:#FFFFFF;
+      --sec:#000000; --accent:#000000; --accent-ink:#000000;
+      --text-strong:#000000; --text-body:#1A1A1A; --text-muted:#4A4A4A;
+      --border:#B4B4B4; --line-300:#8C8C8C;
+      --warn-bg:#FFFFFF; --warn-line:#000000; --warn-ink:#000000;
+    }
+    .feuille{width:auto; padding:0; margin:0; break-after:page; page-break-after:always;}
+    .feuille:last-child{break-after:auto; page-break-after:auto;}
+  }
+</style>
+
+<div class="feuille">
+  <header>
+    <div>
+      <p class="surtitre">Énigme · Le matin · Décrire une personne</p>
+      <h2>Le mystère de la classe</h2>
+    </div>
+    <span class="role">Élève A — le matin</span>
+  </header>
+  <p class="consigne">Chaque matin, quelqu'un laisse un cadeau sur le bureau du professeur, qui a
+    écrit un mot au tableau. Qui est-ce? Vous connaissez le <b>matin</b> : l'heure d'arrivée et le
+    chemin de chacun. Votre partenaire connaît les <b>goûts</b>. Ni vous ni lui ne pouvez trouver seuls.</p>
+  <p class="protocole">À deux, sans se montrer les feuilles. Posez des questions, éliminez les
+    élèves un à un, et écrivez le nom à la fin.</p>
+
+  <div class="bloc plein">
+    <h3>Le mot au tableau — vous avez le même tous les deux</h3>
+    <div class="dial">
+      <p><b>Merci beaucoup!</b></p>
+      <p>Depuis lundi, il y a un petit cadeau sur mon bureau chaque matin.</p>
+      <p>Moi, j'arrive à <b>huit heures</b>, et le cadeau est <b>déjà là</b>.</p>
+      <p>Mon bureau est <b>au fond de la classe</b>.</p>
+      <p>Ce matin, <b>un foulard</b> était oublié à côté du cadeau. Hier, c'était <b>des fleurs</b>.</p>
+      <p>Qui est-ce? Je veux dire merci! — Votre professeur</p>
+    </div>
+  </div>
+
+  <div class="bloc">
+    <h3>Le matin — cinq élèves</h3>
+    <table>
+      <tr><th style="width:24%">Élève</th><th style="width:30%">Heure d'arrivée</th><th>Chemin dans la classe</th></tr>
+      <tr><td><b>Amina</b></td><td>sept heures quarante</td><td>elle passe près du bureau</td></tr>
+      <tr><td><b>Hugo</b></td><td>huit heures moins cinq</td><td>il passe près du bureau</td></tr>
+      <tr><td><b>Nadia</b></td><td>sept heures cinquante</td><td>elle reste près de la porte</td></tr>
+      <tr><td><b>Sofia</b></td><td>huit heures et quart</td><td>elle passe près du bureau</td></tr>
+      <tr><td><b>Léo</b></td><td>huit heures et demie</td><td>il reste près de la porte</td></tr>
+    </table>
+  </div>
+
+  <div class="bloc">
+    <h3>Votre enquête</h3>
+    <table class="ecrire">
+      <tr><th style="width:24%">Élève</th><th>Pourquoi ce n'est pas lui / elle</th></tr>
+      <tr><td>Amina</td><td></td></tr>
+      <tr><td>Hugo</td><td></td></tr>
+      <tr><td>Nadia</td><td></td></tr>
+      <tr><td>Sofia</td><td></td></tr>
+      <tr><td>Léo</td><td></td></tr>
+      <tr><td><b>Le cadeau est de</b></td><td></td></tr>
+    </table>
+  </div>
+
+  <div class="bloc">
+    <h3>Pour parler</h3>
+    <ul class="mots">
+      <li>Elle arrive à quelle heure?</li><li>Est-ce qu'il arrive avant huit heures?</li>
+      <li>Il passe près du bureau?</li><li>huit heures moins cinq</li><li>huit heures et quart</li>
+      <li>avant</li><li>après</li>
+      <li>Elle reste près de la porte</li><li>Ce n'est pas elle, parce que…</li>
+      <li>Alors, c'est…</li>
+    </ul>
+  </div>
+
+  <div class="secours">
+    <h3>Quand ça bloque</h3>
+    <p><span>Peux-tu répéter, s'il te plaît?</span><span>Plus lentement.</span><span>Comment ça
+      s'écrit?</span><span>C'est quelle heure, déjà?</span><span>Je recommence.</span></p>
+  </div>
+</div>
+
+<div class="feuille">
+  <header>
+    <div>
+      <p class="surtitre">Énigme · Les goûts · Décrire une personne</p>
+      <h2>Le mystère de la classe</h2>
+    </div>
+    <span class="role">Élève B — les goûts</span>
+  </header>
+  <p class="consigne">Chaque matin, quelqu'un laisse un cadeau sur le bureau du professeur, qui a
+    écrit un mot au tableau. Qui est-ce? Vous connaissez les <b>goûts</b> et les <b>vêtements</b> de
+    chacun. Votre partenaire connaît le <b>matin</b>. Ni vous ni lui ne pouvez trouver seuls.</p>
+  <p class="protocole">À deux, sans se montrer les feuilles. Posez des questions, éliminez les
+    élèves un à un, et écrivez le nom à la fin.</p>
+
+  <div class="bloc plein">
+    <h3>Le mot au tableau — vous avez le même tous les deux</h3>
+    <div class="dial">
+      <p><b>Merci beaucoup!</b></p>
+      <p>Depuis lundi, il y a un petit cadeau sur mon bureau chaque matin.</p>
+      <p>Moi, j'arrive à <b>huit heures</b>, et le cadeau est <b>déjà là</b>.</p>
+      <p>Mon bureau est <b>au fond de la classe</b>.</p>
+      <p>Ce matin, <b>un foulard</b> était oublié à côté du cadeau. Hier, c'était <b>des fleurs</b>.</p>
+      <p>Qui est-ce? Je veux dire merci! — Votre professeur</p>
+    </div>
+  </div>
+
+  <div class="bloc">
+    <h3>Les goûts — cinq élèves</h3>
+    <table>
+      <tr><th style="width:24%">Élève</th><th style="width:34%">Ce qu'il ou elle aime</th><th>Vêtement</th></tr>
+      <tr><td><b>Amina</b></td><td>les fleurs</td><td>un foulard coloré</td></tr>
+      <tr><td><b>Hugo</b></td><td>le dessin</td><td>des lunettes</td></tr>
+      <tr><td><b>Nadia</b></td><td>les fleurs</td><td>un foulard bleu</td></tr>
+      <tr><td><b>Sofia</b></td><td>les bonbons</td><td>un chandail rose</td></tr>
+      <tr><td><b>Léo</b></td><td>le sport</td><td>un survêtement</td></tr>
+    </table>
+  </div>
+
+  <div class="bloc">
+    <h3>Votre enquête</h3>
+    <table class="ecrire">
+      <tr><th style="width:24%">Élève</th><th>Pourquoi ce n'est pas lui / elle</th></tr>
+      <tr><td>Amina</td><td></td></tr>
+      <tr><td>Hugo</td><td></td></tr>
+      <tr><td>Nadia</td><td></td></tr>
+      <tr><td>Sofia</td><td></td></tr>
+      <tr><td>Léo</td><td></td></tr>
+      <tr><td><b>Le cadeau est de</b></td><td></td></tr>
+    </table>
+  </div>
+
+  <div class="bloc">
+    <h3>Pour parler</h3>
+    <ul class="mots">
+      <li>Qu'est-ce qu'elle aime?</li><li>Est-ce qu'il aime les fleurs?</li>
+      <li>Elle porte quoi?</li><li>un foulard</li><li>des lunettes</li><li>un survêtement</li><li>Il n'aime pas les fleurs</li>
+      <li>Ce n'est pas lui, parce que…</li><li>Alors, c'est…</li>
+      <li>beaucoup</li><li>pas du tout</li>
+    </ul>
+  </div>
+
+  <div class="secours">
+    <h3>Quand ça bloque</h3>
+    <p><span>Peux-tu répéter, s'il te plaît?</span><span>Plus lentement.</span><span>Comment ça
+      s'écrit?</span><span>Elle aime quoi, déjà?</span><span>Je recommence.</span></p>
+  </div>
+</div>
+
+<div class="feuille corrige">
+  <header>
+    <div>
+      <p class="surtitre">Énigme · Niveau 3 · LAN-3039-6</p>
+      <h2>Le mystère de la classe</h2>
+    </div>
+    <span class="role">Corrigé</span>
+  </header>
+
+  <div class="bloc plein">
+    <h3>Le cadeau est d'Amina</h3>
+    <p class="note">Quatre indices dans le mot du professeur : <b>avant huit heures</b>,
+      <b>le bureau est au fond</b>, <b>un foulard</b>, <b>des fleurs</b>. Les deux premiers sont
+      sur la feuille A, les deux autres sur la feuille B.</p>
+    <table>
+      <tr><th style="width:20%">Élève</th><th style="width:50%">Ce qui l'élimine</th><th>Feuille</th></tr>
+      <tr><td><b>Hugo</b></td><td>il arrive avant huit heures et il passe près du bureau, oui — mais il aime <b>le dessin</b> et il porte <b>des lunettes</b></td><td>B</td></tr>
+      <tr><td><b>Nadia</b></td><td>les fleurs et un foulard, oui — mais elle <b>reste près de la porte</b></td><td>A</td></tr>
+      <tr><td><b>Sofia</b></td><td>elle arrive <b>à huit heures et quart</b>, après le professeur — et elle aime les bonbons</td><td>A</td></tr>
+      <tr><td><b>Léo</b></td><td>il arrive <b>à huit heures et demie</b> et il reste près de la porte</td><td>A</td></tr>
+      <tr><td><b>Amina</b></td><td>avant huit heures · elle passe près du bureau · un foulard · les fleurs</td><td><b>les deux</b></td></tr>
+    </table>
+  </div>
+
+  <div class="bloc">
+    <h3>Pourquoi personne ne peut trouver seul</h3>
+    <ul class="phrases">
+      <li>Avec la <em>feuille A seule</em> : avant huit heures + passe près du bureau laisse <em>Amina et Hugo</em>. Deux réponses possibles.</li>
+      <li>Avec la <em>feuille B seule</em> : les fleurs + un foulard laisse <em>Amina et Nadia</em>. Deux réponses possibles.</li>
+      <li>Ensemble, il ne reste qu'<em>Amina</em>. C'est le croisement des deux moitiés qui tranche — donc il faut se parler.</li>
+    </ul>
+  </div>
+
+  <div class="bloc">
+    <h3>Ce qu'on écoute — intentions du programme</h3>
+    <ul class="phrases">
+      <li><em>Décrire une personne</em> et <em>comprendre la description d'une personne</em> — Relations sociales, niveau 3.</li>
+      <li><em>Lire la description d'un objet, d'une personne ou d'un problème</em> — le mot au tableau.</li>
+      <li>Le lexique des <em>caractéristiques physiques</em>, des <em>vêtements</em> et de la <em>routine quotidienne</em>, prescrit au niveau 3.</li>
+      <li>L'heure : <em>moins cinq</em>, <em>et quart</em>, <em>et demie</em> — et les repères <em>avant</em> / <em>après</em>.</li>
+    </ul>
+  </div>
+
+  <div class="bloc">
+    <h3>Erreur prévisible</h3>
+    <p class="note">L'heure se dit et ne se lit pas : <b>huit heures moins cinq</b> et <b>huit heures
+      et quart</b> reviennent à chaque élimination. Les dyades qui disent « sept heures cinquante-cinq »
+      se font comprendre — les laisser finir, puis redonner la forme usuelle au retour en groupe.</p>
+    <p class="note">Le piège : Hugo coche deux indices sur quatre, et c'est lui qui <em>dessine</em> —
+      or un des cadeaux était un dessin, dans l'énigme d'origine. Les dyades pressées s'arrêtent sur lui.
+      Leur faire relire le mot : hier, c'était <b>des fleurs</b>, et il y avait <b>un foulard</b>.</p>
+  </div>
+
+  <div class="bloc">
+    <h3>Si vous enchaînez avec « Le voleur de la cafétéria »</h3>
+    <p class="note">Même mécanique, deux moitiés qui ne suffisent pas l'une sans l'autre. Faites
+      celle-ci <b>en premier</b> : elle demande l'heure et la description, plus familières que la
+      négation <em>ne… jamais</em>, qui porte toute l'autre énigme.</p>
+  </div>
+</div>
