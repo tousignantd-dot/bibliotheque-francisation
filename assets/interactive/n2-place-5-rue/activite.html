@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="fr">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Place ce que j'entends — 5 · La rue</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap">
+<style>
+ :root{
+  --font:"Nunito",system-ui,sans-serif;
+  --paper:#F7F7F5; --carte:#FFFFFF; --creux:#FBFBFA;
+  --ligne:#EAEAE8; --ligne3:#D6D6D2;
+  --encre:#17181A; --corps:#3A3D40; --faible:#6E7175;
+  --vert:#0A8F5B; --vert-doux:#E6F5EE; --vert-fonce:#07734A;
+  --rouge:#C62828;
+  --sec:#1D6B8F; --sec-doux:#E7F0F6;
+  --r:12px; --r-pill:999px;
+ }
+ *{box-sizing:border-box}
+ body{margin:0; background:var(--paper); color:var(--encre); font-family:var(--font);
+      font-weight:600; font-size:17px; line-height:1.5;}
+ .page{max-width:1080px; margin:0 auto; padding:20px 16px 64px;}
+ h1{font-size:30px; font-weight:900; margin:0 0 4px; letter-spacing:-.015em}
+ h2{font-size:21px; font-weight:900; margin:0}
+ h3{font-size:11px; font-weight:800; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--faible); margin:0 0 10px}
+ p{margin:0}
+ .surtitre{font-size:11px; font-weight:800; letter-spacing:.12em; text-transform:uppercase;
+           color:var(--sec); margin:0 0 2px}
+ .bloc{background:var(--carte); border:1px solid var(--ligne); border-radius:var(--r);
+       padding:18px; margin:0 0 18px; border-left:4px solid var(--sec);}
+ .chapeau{background:var(--vert-doux); border:none; border-left:4px solid var(--vert);}
+ .exo-num{flex-shrink:0; width:32px; height:32px; border-radius:10px; display:flex;
+          align-items:center; justify-content:center; background:var(--sec-doux);
+          color:var(--sec); font-size:14px; font-weight:900;}
+ header.tete{display:flex; align-items:center; gap:12px; margin:0 0 12px}
+
+ /* ── Le lexique, avant l'exercice ── */
+ .lexique{display:grid; grid-template-columns:repeat(auto-fill,minmax(110px,1fr)); gap:10px}
+ .lex{background:var(--creux); border:1px solid var(--ligne); border-radius:10px;
+      padding:8px; text-align:center; font-size:14px; font-weight:700;}
+ .lex .vignette{width:100%; aspect-ratio:1; display:block}
+ .lex img{width:100%; height:100%; object-fit:contain}
+ .lex button{margin-top:6px}
+
+ /* ── La palette ── */
+ .palette{display:flex; flex-wrap:wrap; gap:10px}
+ .coul{display:flex; align-items:center; gap:8px; background:var(--carte);
+       border:2px solid var(--ligne3); border-radius:var(--r-pill);
+       padding:6px 14px 6px 8px; font:inherit; font-size:15px; font-weight:700;
+       cursor:pointer; min-height:44px;}
+ .coul .pastille{width:26px; height:26px; border-radius:50%; border:1px solid var(--ligne3);
+                 flex:0 0 auto;}
+ .coul[aria-pressed="true"]{background:var(--encre); color:#FFF; border-color:var(--encre)}
+
+ /* ── L'image et ses zones ── */
+ .scene{position:relative; background:var(--carte); border:1px solid var(--ligne);
+        border-radius:var(--r); overflow:hidden}
+ .scene > img{display:block; width:100%; height:auto}
+ .zone{position:absolute; border:2px dashed var(--ligne3); border-radius:10px;
+       background:transparent; cursor:pointer; padding:0; display:flex;
+       align-items:center; justify-content:center; gap:4px;}
+ .zone:hover, .zone:focus-visible{border-color:var(--sec); background:rgba(29,107,143,.08)}
+ .zone.vise{border-color:var(--vert); background:rgba(10,143,91,.14); border-style:solid}
+ .zone .etiq{position:absolute; left:4px; top:4px; font-size:10px; font-weight:800;
+             letter-spacing:.06em; text-transform:uppercase; color:var(--faible);
+             background:rgba(255,255,255,.85); border-radius:5px; padding:1px 5px;}
+ .zone.juste{border-color:var(--vert); border-style:solid; background:rgba(10,143,91,.12)}
+ .zone.faux{border-color:var(--rouge); border-style:solid; background:rgba(198,40,40,.10)}
+
+ /* ── Un objet, colorable ── */
+ .obj{position:relative; display:block; width:100%; height:100%;}
+ .obj .teinte{position:absolute; inset:0; background:var(--c,transparent);
+   -webkit-mask:var(--m) center/contain no-repeat; mask:var(--m) center/contain no-repeat;}
+ .obj .trait{position:absolute; inset:0; width:100%; height:100%; object-fit:contain}
+ /* Les objets posés vivent sur leur propre couche, au-dessus des zones : leur
+    taille se mesure sur L'IMAGE et non sur la zone. Sinon un objet déposé
+    dans une petite case paraissait minuscule, et deux objets identiques
+    changeaient de taille selon l'endroit. Ils peuvent déborder leur case —
+    une case est une cible, pas un cadre. */
+ .poses{position:absolute; inset:0; pointer-events:none}
+ .pose{position:absolute; transform:translate(-50%,-50%); pointer-events:auto;
+       width:15%; aspect-ratio:1; background:none; border:0; padding:0;
+       cursor:pointer; filter:drop-shadow(0 1px 2px rgba(0,0,0,.18));}
+ .pose:focus-visible{outline:3px solid var(--sec); outline-offset:2px; border-radius:8px}
+ .zone.occupee .etiq{opacity:0}
+
+ /* ── La banque ── */
+ .banque{display:grid; grid-template-columns:repeat(auto-fill,minmax(104px,1fr)); gap:10px}
+ .jeton-obj{background:var(--creux); border:2px solid var(--ligne3); border-radius:10px;
+            padding:8px; font:inherit; font-size:13px; font-weight:700; cursor:grab;
+            text-align:center; min-height:44px;}
+ .jeton-obj .vignette{width:100%; aspect-ratio:1; display:block; position:relative}
+ /* Sélectionné : un contour franc, pas une plaque encre. Le dessin est au
+    trait NOIR — sur un fond encre, l'objet disparaissait purement et
+    simplement. La convention « sélectionné = plaque encre » vaut pour du
+    texte, pas pour une image au trait. */
+ .jeton-obj[aria-pressed="true"]{border-color:var(--encre); background:var(--carte);
+   box-shadow:0 0 0 4px rgba(23,24,26,.16); color:var(--encre);}
+ .jeton-obj[aria-pressed="true"] .vignette::after{content:"✓"; position:absolute;
+   right:-2px; top:-6px; width:22px; height:22px; border-radius:50%;
+   background:var(--encre); color:#FFF; font-size:13px; font-weight:900;
+   display:grid; place-items:center;}
+ .jeton-obj.placee{opacity:.35}
+
+ .btn{font:inherit; font-weight:800; font-size:16px; border-radius:var(--r-pill);
+      padding:12px 22px; min-height:44px; cursor:pointer; border:2px solid var(--vert);
+      background:var(--vert); color:#FFF;}
+ .btn--doux{background:var(--carte); color:var(--vert-fonce)}
+ .btn-audio{font:inherit; font-size:13px; font-weight:800; border-radius:var(--r-pill);
+   border:2px solid var(--rouge); background:#FFF; color:var(--rouge);
+   padding:5px 12px; min-height:34px; cursor:pointer}
+ .rangee{display:flex; flex-wrap:wrap; gap:10px; align-items:center}
+ .dit{margin-top:12px; font-size:15px; font-weight:700; color:var(--corps);
+      background:var(--creux); border:1px solid var(--ligne); border-radius:10px;
+      padding:10px 12px; min-height:44px}
+ .dit[data-r="ok"]{background:var(--vert-doux); color:var(--vert-fonce); border-color:var(--vert)}
+ .dit[data-r="no"]{background:#FDECEC; color:var(--rouge); border-color:var(--rouge)}
+ .score{margin-left:auto; font-size:15px; font-weight:900; color:var(--faible)}
+ .cache{display:none}
+ @media (max-width:640px){ h1{font-size:25px} .page{padding:16px 12px 56px} }
+</style>
+<div class="page">
+  <p class="surtitre">Francisation · Niveau 2 · Compréhension orale</p>
+  <h1>Place ce que j'entends — 5 · La rue</h1>
+
+  <div class="bloc chapeau">
+    <p>Écoutez la description. Placez chaque objet au bon endroit, <b>et de la bonne
+    couleur</b>. Choisissez d'abord une couleur, puis déposez l'objet — ou touchez
+    l'objet, puis l'endroit. À la fin, touchez « Vérifier ».</p>
+  </div>
+
+  <div class="bloc">
+    <header class="tete"><span class="exo-num">1</span><div>
+      <p class="surtitre">Avant de commencer</p><h2>Les mots</h2></div></header>
+    <div class="lexique" id="lexique"></div>
+  </div>
+
+  <div class="bloc">
+    <header class="tete"><span class="exo-num">2</span><div>
+      <p class="surtitre">Écoute</p><h2>La description</h2></div></header>
+    <div class="rangee" id="lecture"></div>
+    <div class="dit" id="dit">Choisissez une couleur, puis placez un objet.</div>
+  </div>
+
+  <div class="bloc">
+    <header class="tete"><span class="exo-num">3</span><div>
+      <p class="surtitre">La couleur</p><h2>Choisissez la couleur</h2></div></header>
+    <div class="palette" id="palette" role="group" aria-label="Les couleurs"></div>
+  </div>
+
+  <div class="bloc">
+    <header class="tete"><span class="exo-num">4</span><div>
+      <p class="surtitre">Placez</p><h2>L'image</h2></div></header>
+    <div class="scene" id="scene"><img id="fond" alt="Une rue avec quatre magasins vides, un banc et un lampadaire">
+    <div class="poses" id="poses"></div></div>
+    <h3 style="margin-top:16px">Les objets</h3>
+    <div class="banque" id="banque"></div>
+    <div class="rangee" style="margin-top:16px">
+      <button class="btn" id="verifier" type="button">Vérifier</button>
+      <button class="btn btn--doux" id="recommencer" type="button">Tout enlever</button>
+      <span class="score" id="score">0 / 6</span>
+    </div>
+  </div>
+
+  <div class="bloc cache" id="blocReveal">
+    <header class="tete"><span class="exo-num">5</span><div>
+      <p class="surtitre">Comparez</p><h2>L'image décrite</h2></div></header>
+    <img id="reveal" style="width:100%;border-radius:10px" alt="La table décrite, avec ses objets">
+  </div>
+
+  <div aria-live="polite" class="cache" id="annonce"></div>
+</div>
+<script>const D = {"titre": "Place ce que j'entends — 5 · La rue", "zones": [{"id": "m1", "lib": "le premier magasin", "x1": 0.075, "y1": 0.435, "x2": 0.2, "y2": 0.56}, {"id": "m2", "lib": "le deuxième magasin", "x1": 0.36, "y1": 0.435, "x2": 0.485, "y2": 0.56}, {"id": "m3", "lib": "le troisième magasin", "x1": 0.52, "y1": 0.435, "x2": 0.64, "y2": 0.56}, {"id": "m4", "lib": "le quatrième magasin", "x1": 0.74, "y1": 0.435, "x2": 0.865, "y2": 0.56}, {"id": "trottoir", "lib": "sur le trottoir", "x1": 0.24, "y1": 0.7, "x2": 0.38, "y2": 0.83}, {"id": "rue", "lib": "dans la rue", "x1": 0.56, "y1": 0.84, "x2": 0.76, "y2": 0.975}], "couleurs": [{"nom": "bleu", "hex": "#1565C0", "f": "bleue", "mp": "bleus", "fp": "bleues", "audio": "audio/couleur-bleu.mp3"}, {"nom": "rouge", "hex": "#D32F2F", "f": "rouge", "mp": "rouges", "fp": "rouges", "audio": "audio/couleur-rouge.mp3"}, {"nom": "vert", "hex": "#2E7D32", "f": "verte", "mp": "verts", "fp": "vertes", "audio": "audio/couleur-vert.mp3"}, {"nom": "jaune", "hex": "#F2C200", "f": "jaune", "mp": "jaunes", "fp": "jaunes", "audio": "audio/couleur-jaune.mp3"}, {"nom": "noir", "hex": "#17181A", "f": "noire", "mp": "noirs", "fp": "noires", "audio": "audio/couleur-noir.mp3"}, {"nom": "blanc", "hex": "#FFFFFF", "f": "blanche", "mp": "blancs", "fp": "blanches", "audio": "audio/couleur-blanc.mp3"}, {"nom": "brun", "hex": "#6D4C33", "f": "brune", "mp": "bruns", "fp": "brunes", "audio": "audio/couleur-brun.mp3"}, {"nom": "orange", "hex": "#E8720C", "f": "orange", "mp": "orange", "fp": "orange", "audio": "audio/couleur-orange.mp3"}], "banque": [{"mot": "une boulangerie", "slug": "une-boulangerie", "genre": "f", "masque": "masques/une-boulangerie.png", "trait": "traits/une-boulangerie.png", "audio": "audio/mot-une-boulangerie.mp3"}, {"mot": "une pharmacie", "slug": "une-pharmacie", "genre": "f", "masque": "masques/une-pharmacie.png", "trait": "traits/une-pharmacie.png", "audio": "audio/mot-une-pharmacie.mp3"}, {"mot": "une banque", "slug": "une-banque", "genre": "f", "masque": "masques/une-banque.png", "trait": "traits/une-banque.png", "audio": "audio/mot-une-banque.mp3"}, {"mot": "une épicerie", "slug": "une-epicerie", "genre": "f", "masque": "masques/une-epicerie.png", "trait": "traits/une-epicerie.png", "audio": "audio/mot-une-epicerie.mp3"}, {"mot": "un chien", "slug": "un-chien", "genre": "m", "masque": "masques/un-chien.png", "trait": "traits/un-chien.png", "audio": "audio/mot-un-chien.mp3"}, {"mot": "une auto", "slug": "une-auto", "genre": "f", "masque": "masques/une-auto.png", "trait": "traits/une-auto.png", "audio": "audio/mot-une-auto.mp3"}, {"mot": "une librairie", "slug": "une-librairie", "genre": "f", "masque": "masques/une-librairie.png", "trait": "traits/une-librairie.png", "audio": "audio/mot-une-librairie.mp3"}, {"mot": "un autobus", "slug": "un-autobus", "genre": "m", "masque": "masques/un-autobus.png", "trait": "traits/un-autobus.png", "audio": "audio/mot-un-autobus.mp3"}, {"mot": "un vélo", "slug": "un-velo", "genre": "m", "masque": "masques/un-velo.png", "trait": "traits/un-velo.png", "audio": "audio/mot-un-velo.mp3"}, {"mot": "un banc", "slug": "un-banc", "genre": "m", "masque": "masques/un-banc.png", "trait": "traits/un-banc.png", "audio": "audio/mot-un-banc.mp3"}], "scene": [{"obj": "une-boulangerie", "zone": "m1", "coul": "brun"}, {"obj": "une-pharmacie", "zone": "m2", "coul": "vert"}, {"obj": "une-banque", "zone": "m3", "coul": "bleu"}, {"obj": "une-epicerie", "zone": "m4", "coul": "orange"}, {"obj": "un-chien", "zone": "trottoir", "coul": "noir"}, {"obj": "une-auto", "zone": "rue", "coul": "rouge"}], "phrases": [{"t": "Écoutez bien. Je décris une rue. Placez les images.", "audio": "audio/desc-01.mp3"}, {"t": "Le premier magasin, c'est une boulangerie brune.", "audio": "audio/desc-02.mp3"}, {"t": "Le deuxième magasin, c'est une pharmacie verte.", "audio": "audio/desc-03.mp3"}, {"t": "Le troisième magasin, c'est une banque bleue.", "audio": "audio/desc-04.mp3"}, {"t": "Le quatrième magasin, c'est une épicerie orange.", "audio": "audio/desc-05.mp3"}, {"t": "Sur le trottoir, il y a un chien noir.", "audio": "audio/desc-06.mp3"}, {"t": "Dans la rue, il y a une auto rouge.", "audio": "audio/desc-07.mp3"}, {"t": "C'est fini. Touchez « Vérifier ».", "audio": "audio/desc-08.mp3"}], "lent": "audio/description-lent.mp3", "normal": "audio/description-normal.mp3", "base": "img/rue.jpg", "reveal": "reveal/rue.jpg"};</script>
+<script>
+
+"use strict";
+/* Le direct de la classe : même contrat que les modules de la banque. */
+var CONTENU = {slug:"n2-place-5-rue", titre:"Place ce que j'entends — 5 · La rue",
+               mode:"placement", section:"placer", num:"1"};
+function lmsTrack(event, data){
+  try{ window.parent.postMessage(Object.assign({lms:true,event:event}, data||{}), "*"); }catch(e){}
+  try{
+    var up=new URLSearchParams(window.parent.location.search);
+    var code=up.get("code"), id=parseInt(up.get("activityId"))||null;
+    if(code&&id) fetch("/api/student/progress",{method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify(Object.assign({code:code,activityId:id,
+        activityTitle:up.get("title")||CONTENU.titre,event:event}, data||{}))}).catch(function(){});
+  }catch(e){}
+}
+var ESSAIS={};
+function directZone(z){
+  var n=ESSAIS[z.slug]||0;
+  lmsTrack("zone_repondue",{zone:String(z.slug), exo:CONTENU.slug, exoNum:CONTENU.num,
+    exoTitre:CONTENU.titre, section:CONTENU.section, type:CONTENU.mode,
+    enonce:String(z.enonce||"").slice(0,400), bonne:String(z.bonne||""),
+    reponse:String(z.reponse||""), ok:!!z.ok, essais:n});
+  if(!z.ok) ESSAIS[z.slug]=n+1;
+}
+var $=function(s){return document.querySelector(s)};
+function el(t,c,x){var n=document.createElement(t); if(c)n.className=c;
+  if(x!=null)n.textContent=x; return n;}
+function dis(m,r){var d=$("#dit"); d.textContent=m; if(r)d.dataset.r=r; else delete d.dataset.r;
+  $("#annonce").textContent=m;}
+
+var son=null;
+function joue(src){ try{ if(son){son.pause();} son=new Audio(src); son.play(); }catch(e){} }
+function btnAudio(src,lib){ var b=el("button","btn-audio",lib||"Écouter");
+  b.type="button"; b.addEventListener("click",function(){joue(src)}); return b; }
+
+/* Un objet dessiné : aplat de couleur découpé par le masque, trait par-dessus. */
+function dessine(o, coulHex){
+  var w=el("span","obj");
+  var t=el("span","teinte");
+  t.style.setProperty("--m","url("+o.masque+")");
+  t.style.setProperty("--c", coulHex||"transparent");
+  var i=document.createElement("img"); i.className="trait"; i.src=o.trait; i.alt="";
+  w.append(t,i); return w;
+}
+
+var couleur=null, choisi=null, poses={};   /* zoneId -> {obj, coul} */
+var objDe={}; D.banque.forEach(function(o){objDe[o.slug]=o});
+var coulDe={}; D.couleurs.forEach(function(c){coulDe[c.nom]=c});
+/* « une tasse bleue », jamais « une tasse bleu » : la couleur s'accorde avec
+   l'objet. Un accord fautif affiché dans un cours de français enseigne la
+   faute. */
+function accorde(coulNom, genre){
+  var c=coulDe[coulNom]; if(!c) return coulNom;
+  if(genre==="f")  return c.f;
+  if(genre==="fp") return c.fp;
+  if(genre==="mp") return c.mp;
+  return c.nom;
+}
+function nomme(slug, coulNom){
+  var o=objDe[slug]; return o.mot+" "+accorde(coulNom, o.genre);
+}
+var attendu={}; D.scene.forEach(function(s){attendu[s.zone]=s});
+
+/* ── 1 · le lexique ── */
+D.banque.forEach(function(o){
+  var c=el("div","lex");
+  var v=el("span","vignette"); v.append(dessine(o,null)); c.append(v);
+  c.append(el("span",null,o.mot), btnAudio(o.audio,"Le mot"));
+  $("#lexique").append(c);
+});
+
+/* ── 2 · l'écoute ── */
+$("#lecture").append(btnAudio(D.lent,"Tout écouter, lentement"),
+                     btnAudio(D.normal,"Tout écouter"));
+D.phrases.forEach(function(p,i){
+  if(i===0||i===D.phrases.length-1) return;
+  $("#lecture").append(btnAudio(p.audio,"Phrase "+i));
+});
+
+/* ── 3 · la palette ── */
+D.couleurs.forEach(function(c){
+  var b=el("button","coul"); b.type="button"; b.setAttribute("aria-pressed","false");
+  var p=el("span","pastille"); p.style.background=c.hex;
+  b.append(p, el("span",null,c.nom));
+  b.addEventListener("click",function(){
+    couleur=(couleur===c.nom)?null:c.nom;
+    $("#palette").querySelectorAll(".coul").forEach(function(x){
+      x.setAttribute("aria-pressed","false")});
+    if(couleur){ b.setAttribute("aria-pressed","true");
+      dis("Couleur choisie : "+c.nom+". Maintenant, placez un objet."); joue(c.audio); }
+    else dis("Choisissez une couleur.");
+  });
+  $("#palette").append(b);
+});
+
+/* ── 4 · l'image, ses zones, la banque ── */
+$("#fond").src=D.base; $("#reveal").src=D.reveal;
+D.zones.forEach(function(z){
+  var b=el("button","zone"); b.type="button"; b.dataset.zone=z.id;
+  b.style.left=(z.x1*100)+"%"; b.style.top=(z.y1*100)+"%";
+  b.style.width=((z.x2-z.x1)*100)+"%"; b.style.height=((z.y2-z.y1)*100)+"%";
+  b.setAttribute("aria-label","Placer "+z.lib);
+  b.append(el("span","etiq",z.lib));
+  /* Glisser-déposer, comme demandé. */
+  b.addEventListener("dragover",function(e){e.preventDefault(); b.classList.add("vise")});
+  b.addEventListener("dragleave",function(){b.classList.remove("vise")});
+  b.addEventListener("drop",function(e){
+    e.preventDefault(); b.classList.remove("vise");
+    var slug=e.dataTransfer.getData("text/plain"); if(slug) pose(z.id,slug);
+  });
+  /* Clic-clic : le même geste au clavier et au doigt, car le glisser
+     HTML5 n'existe pas sur tablette ni sur téléphone. */
+  b.addEventListener("click",function(){
+    if(choisi) pose(z.id,choisi);
+    else if(poses[z.id]) enleve(z.id);
+    else dis("Touchez d'abord un objet, en bas.");
+  });
+  $("#scene").append(b);
+});
+
+function pose(zoneId,slug){
+  if(!couleur){ dis("Choisissez d'abord une couleur.","no"); return; }
+  var o=objDe[slug]; if(!o) return;
+  for(var z in poses){ if(poses[z].obj===slug) enleve(z); }
+  poses[zoneId]={obj:slug, coul:couleur};
+  redessine(); 
+  var lib=D.zones.filter(function(z){return z.id===zoneId})[0].lib;
+  dis(nomme(slug,couleur)+", "+lib+".");
+  choisi=null; marqueBanque();
+}
+function enleve(zoneId){
+  var o=poses[zoneId]; if(!o) return;
+  delete poses[zoneId]; redessine(); marqueBanque();
+  dis(objDe[o.obj].mot+" : enlevé.");
+}
+function redessine(){
+  $("#poses").textContent="";
+  D.zones.forEach(function(z){
+    var b=$('.zone[data-zone="'+z.id+'"]');
+    b.classList.remove("juste","faux");
+    var p=poses[z.id];
+    b.classList.toggle("occupee", !!p);
+    if(!p) return;
+    var s=el("button","pose"); s.type="button";
+    /* Au centre de la case, mais dimensionné sur l'image. */
+    s.style.left=((z.x1+z.x2)/2*100)+"%";
+    s.style.top =((z.y1+z.y2)/2*100)+"%";
+    s.append(dessine(objDe[p.obj], coulDe[p.coul].hex));
+    s.setAttribute("aria-label","Enlever "+nomme(p.obj,p.coul));
+    s.addEventListener("click",function(e){e.stopPropagation(); enleve(z.id)});
+    $("#poses").append(s);
+  });
+}
+function marqueBanque(){
+  var pris={}; for(var z in poses) pris[poses[z].obj]=1;
+  $("#banque").querySelectorAll(".jeton-obj").forEach(function(b){
+    b.classList.toggle("placee", !!pris[b.dataset.slug]);
+    b.setAttribute("aria-pressed", choisi===b.dataset.slug ? "true":"false");
+  });
+}
+D.banque.forEach(function(o){
+  var b=el("button","jeton-obj"); b.type="button"; b.dataset.slug=o.slug;
+  b.draggable=true; b.setAttribute("aria-pressed","false");
+  var v=el("span","vignette"); v.append(dessine(o,null));
+  b.append(v, el("span",null,o.mot));
+  b.addEventListener("dragstart",function(e){
+    if(!couleur){ e.preventDefault(); dis("Choisissez d'abord une couleur.","no"); return; }
+    e.dataTransfer.setData("text/plain",o.slug); e.dataTransfer.effectAllowed="copy";
+  });
+  b.addEventListener("click",function(){
+    choisi=(choisi===o.slug)?null:o.slug; marqueBanque();
+    dis(choisi ? o.mot+" : touchez maintenant l'endroit sur l'image."
+              : "Objet désélectionné.");
+    if(choisi) joue(o.audio);
+  });
+  $("#banque").append(b);
+});
+
+/* ── 5 · la vérification ── */
+$("#verifier").addEventListener("click",function(){
+  var bons=0;
+  D.zones.forEach(function(z){
+    var b=$('.zone[data-zone="'+z.id+'"]');
+    var att=attendu[z.id], mis=poses[z.id];
+    if(!att && !mis) return;                       /* zone vide, rien attendu */
+    var okObj = att && mis && mis.obj===att.obj;
+    var okCoul= att && mis && mis.coul===att.coul;
+    var ok = !!(okObj && okCoul);
+    if(ok) bons++;
+    b.classList.toggle("juste", ok); b.classList.toggle("faux", !ok);
+    directZone({slug:"zone-"+z.id, ok:ok, enonce:z.lib,
+      bonne: att ? nomme(att.obj, att.coul) : "rien",
+      reponse: mis ? nomme(mis.obj, mis.coul) : "rien"});
+  });
+  $("#score").textContent=bons+" / "+D.scene.length;
+  var reste=D.scene.length-bons;
+  dis(reste===0 ? "Tout est juste. Regardez l'image décrite."
+      : reste+(reste>1?" objets ne sont pas justes.":" objet n'est pas juste.")
+        +" Vérifiez l'endroit et la couleur.", reste===0?"ok":"no");
+  if(reste===0) $("#blocReveal").classList.remove("cache");
+});
+$("#recommencer").addEventListener("click",function(){
+  poses={}; choisi=null; redessine(); marqueBanque();
+  $("#score").textContent="0 / "+D.scene.length;
+  $("#blocReveal").classList.add("cache");
+  dis("Tout est enlevé. Recommencez.");
+});
+marqueBanque();
+
+</script>
