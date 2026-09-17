@@ -85,9 +85,13 @@
             display:flex; flex-direction:column; gap:var(--sp-5); scroll-margin-top:72px;}
   @media (max-width:620px){ .exercice{padding:var(--sp-5);} }
   .exercice > header{display:flex; align-items:flex-start; gap:var(--sp-4); flex-wrap:wrap;}
-  .pastille{flex:0 0 auto; width:48px; height:48px; border-radius:var(--r-md);
-            background:var(--sec-soft); color:var(--sec); display:grid; place-items:center;
-            font-size:var(--fs-h3); font-weight:var(--fw-black); font-variant-numeric:tabular-nums;}
+  /* Le numéro d'exercice : la règle de la maison, identique dans les 87 autres
+     pages de la bibliothèque. Ne pas la réinventer ni la « corriger »
+     optiquement — Nunito centre ses chiffres à un demi-pixel près. */
+  .exo-num{flex-shrink:0; width:32px; height:32px; border-radius:10px;
+           display:flex; align-items:center; justify-content:center;
+           background:var(--sec-soft); color:var(--sec);
+           font-size:14px; font-weight:900;}
   .titrage{display:flex; flex-direction:column; gap:2px; flex:1 1 240px;}
   .score{margin-left:auto; font-size:var(--fs-ui); font-weight:var(--fw-bold);
          color:var(--text-muted); background:var(--surface-sunken);
@@ -216,8 +220,11 @@
            font:inherit; font-size:var(--fs-body-sm); font-weight:var(--fw-semi);
            color:var(--text-strong);}
   .couleur:hover{border-color:var(--sel-bg);}
-  .pastille{width:26px; height:26px; border-radius:50%; border:1px solid var(--line-300);
-            flex:0 0 auto;}
+  /* La pastille, c'est l'échantillon de couleur, et rien d'autre : le numéro
+     d'exercice, lui, s'appelle .exo-num. Les deux ont déjà porté le même nom,
+     et celle-ci, déclarée plus bas, écrasait l'autre. */
+  .pastille{width:26px; height:26px; border-radius:50%;
+            border:1px solid var(--line-300); flex:0 0 auto;}
   .paire{display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-3); align-items:center;}
   @media (max-width:620px){ .paire{grid-template-columns:1fr;} }
   .forme{display:flex; flex-direction:column; gap:var(--sp-2);
@@ -243,7 +250,7 @@
   </header>
 
   <section class="exercice" style="--sec:var(--acier-600); --sec-soft:var(--acier-100);">
-    <header><span class="pastille">1</span>
+    <header><span class="exo-num">1</span>
       <div class="titrage"><p class="surtitre">Avant d'écouter</p><h2>Les mots</h2></div></header>
     <p class="consigne">Touchez une image pour entendre le mot. Touchez une couleur pour
       l'entendre.</p>
@@ -253,7 +260,7 @@
   </section>
 
   <section class="exercice" style="--sec:var(--foret-700); --sec-soft:var(--foret-100);">
-    <header><span class="pastille">2</span>
+    <header><span class="exo-num">2</span>
       <div class="titrage"><p class="surtitre">Écouter</p><h2>Écoutez et dessinez</h2></div></header>
     <p class="consigne">Prenez une feuille et un crayon. Copiez le dessin ci-dessous, ou
       imprimez-le. Écoutez, et dessinez pendant que vous écoutez.</p>
@@ -270,7 +277,7 @@
   </section>
 
   <section class="exercice" style="--sec:var(--ambre-700); --sec-soft:var(--ambre-100);">
-    <header><span class="pastille">3</span>
+    <header><span class="exo-num">3</span>
       <div class="titrage"><p class="surtitre">Comparer</p><h2>Le dessin décrit</h2></div></header>
     <p class="consigne">Quand vous avez fini de dessiner, montrez le dessin et comparez.</p>
     <div class="jetons">
@@ -281,7 +288,7 @@
   </section>
 
   <section class="exercice" style="--sec:var(--violet-600); --sec-soft:var(--violet-100);">
-    <header><span class="pastille">4</span>
+    <header><span class="exo-num">4</span>
       <div class="titrage"><p class="surtitre">Vérifier</p><h2>Six questions</h2></div>
       <span class="score" id="score">0 / 6</span></header>
     <div id="questions"></div>

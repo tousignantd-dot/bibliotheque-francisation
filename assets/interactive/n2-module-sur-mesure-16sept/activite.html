@@ -85,9 +85,13 @@
             display:flex; flex-direction:column; gap:var(--sp-5); scroll-margin-top:72px;}
   @media (max-width:620px){ .exercice{padding:var(--sp-5);} }
   .exercice > header{display:flex; align-items:flex-start; gap:var(--sp-4); flex-wrap:wrap;}
-  .pastille{flex:0 0 auto; width:48px; height:48px; border-radius:var(--r-md);
-            background:var(--sec-soft); color:var(--sec); display:grid; place-items:center;
-            font-size:var(--fs-h3); font-weight:var(--fw-black); font-variant-numeric:tabular-nums;}
+  /* Le numéro d'exercice : la règle de la maison, identique dans les 87 autres
+     pages de la bibliothèque. Ne pas la réinventer ni la « corriger »
+     optiquement — Nunito centre ses chiffres à un demi-pixel près. */
+  .exo-num{flex-shrink:0; width:32px; height:32px; border-radius:10px;
+           display:flex; align-items:center; justify-content:center;
+           background:var(--sec-soft); color:var(--sec);
+           font-size:14px; font-weight:900;}
   .titrage{display:flex; flex-direction:column; gap:2px; flex:1 1 240px;}
   .score{margin-left:auto; font-size:var(--fs-ui); font-weight:var(--fw-bold);
          color:var(--text-muted); background:var(--surface-sunken);
@@ -216,8 +220,11 @@
            font:inherit; font-size:var(--fs-body-sm); font-weight:var(--fw-semi);
            color:var(--text-strong);}
   .couleur:hover{border-color:var(--sel-bg);}
-  .pastille{width:26px; height:26px; border-radius:50%; border:1px solid var(--line-300);
-            flex:0 0 auto;}
+  /* La pastille, c'est l'échantillon de couleur, et rien d'autre : le numéro
+     d'exercice, lui, s'appelle .exo-num. Les deux ont déjà porté le même nom,
+     et celle-ci, déclarée plus bas, écrasait l'autre. */
+  .pastille{width:26px; height:26px; border-radius:50%;
+            border:1px solid var(--line-300); flex:0 0 auto;}
   .paire{display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-3); align-items:center;}
   @media (max-width:620px){ .paire{grid-template-columns:1fr;} }
   .forme{display:flex; flex-direction:column; gap:var(--sp-2);
@@ -251,7 +258,7 @@
 
   <section class="exercice" id="ex1" style="--sec:var(--acier-600); --sec-soft:var(--acier-100);">
     <header>
-      <span class="pastille">1</span>
+      <span class="exo-num">1</span>
       <div class="titrage"><p class="surtitre">Compréhension orale</p><h2>J'écoute la classe</h2></div>
       <span class="score" id="score1">0 / 4</span>
     </header>
@@ -266,7 +273,7 @@
 
   <section class="exercice" id="ex2" style="--sec:var(--foret-700); --sec-soft:var(--foret-100);">
     <header>
-      <span class="pastille">2</span>
+      <span class="exo-num">2</span>
       <div class="titrage"><p class="surtitre">Vocabulaire · 35 mots</p><h2>Les objets de la classe</h2></div>
       <span class="score" id="score2">0 / 8</span>
     </header>
@@ -283,7 +290,7 @@
 
   <section class="exercice" id="ex3" style="--sec:var(--violet-600); --sec-soft:var(--violet-100);">
     <header>
-      <span class="pastille">3</span>
+      <span class="exo-num">3</span>
       <div class="titrage"><p class="surtitre">Graphie-phonie</p><h2>Le son E</h2></div>
       <span class="score" id="score3">0 / 5</span>
     </header>
@@ -299,7 +306,7 @@
 
   <section class="exercice" id="ex4" style="--sec:var(--teal-700); --sec-soft:var(--teal-100);">
     <header>
-      <span class="pastille">4</span>
+      <span class="exo-num">4</span>
       <div class="titrage"><p class="surtitre">Prépositions de lieu</p><h2>Où est-ce?</h2></div>
       <span class="score" id="score4">0 / 17</span>
     </header>
@@ -321,7 +328,7 @@
 
   <section class="exercice" id="ex5" style="--sec:var(--ambre-700); --sec-soft:var(--ambre-100);">
     <header>
-      <span class="pastille">5</span>
+      <span class="exo-num">5</span>
       <div class="titrage"><p class="surtitre">Production écrite</p><h2>La dictée</h2></div>
       <span class="score" id="score5">0 / 8</span>
     </header>
@@ -337,7 +344,7 @@
 
   <section class="exercice" id="ex6">
     <header>
-      <span class="pastille">6</span>
+      <span class="exo-num">6</span>
       <div class="titrage"><p class="surtitre">Grammaire</p><h2>Le pronom ON</h2></div>
       <span class="score" id="score6">0 / 6</span>
     </header>
@@ -350,7 +357,7 @@
 
 
   <section class="exercice" id="ex7" style="--sec:var(--ambre-700); --sec-soft:var(--ambre-100);">
-    <header><span class="pastille">7</span>
+    <header><span class="exo-num">7</span>
       <div class="titrage"><p class="surtitre">Production écrite</p><h2>La dictée du soir</h2></div>
       <span class="score" id="score7">0 / 8</span></header>
     <div class="theorie" data-pour="ex7"></div>
@@ -364,7 +371,7 @@
   </section>
 
   <section class="exercice" id="ex8" style="--sec:var(--acier-600); --sec-soft:var(--acier-100);">
-    <header><span class="pastille">8</span>
+    <header><span class="exo-num">8</span>
       <div class="titrage"><p class="surtitre">Compréhension orale</p><h2>Vrai ou faux</h2></div>
       <span class="score" id="score8">0 / 8</span></header>
     <div class="theorie" data-pour="ex8"></div>
@@ -375,7 +382,7 @@
   </section>
 
   <section class="exercice" id="ex9" style="--sec:var(--violet-600); --sec-soft:var(--violet-100);">
-    <header><span class="pastille">9</span>
+    <header><span class="exo-num">9</span>
       <div class="titrage"><p class="surtitre">Comprendre une directive</p><h2>Les consignes</h2></div>
       <span class="score" id="score9">0 / 6</span></header>
     <div class="theorie" data-pour="ex9"></div>
@@ -384,7 +391,7 @@
   </section>
 
   <section class="exercice" id="ex10" style="--sec:var(--foret-700); --sec-soft:var(--foret-100);">
-    <header><span class="pastille">10</span>
+    <header><span class="exo-num">10</span>
       <div class="titrage"><p class="surtitre">Les prix</p><h2>Combien ça coûte</h2></div>
       <span class="score" id="score10">0 / 6</span></header>
     <div class="theorie" data-pour="ex10"></div>
@@ -393,7 +400,7 @@
   </section>
 
   <section class="exercice" id="ex11" style="--sec:var(--teal-700); --sec-soft:var(--teal-100);">
-    <header><span class="pastille">11</span>
+    <header><span class="exo-num">11</span>
       <div class="titrage"><p class="surtitre">Compréhension écrite</p><h2>L'avis du centre</h2></div>
       <span class="score" id="score11">0 / 4</span></header>
     <div class="theorie" data-pour="ex11"></div>
@@ -403,7 +410,7 @@
   </section>
 
   <section class="exercice" id="ex12">
-    <header><span class="pastille">12</span>
+    <header><span class="exo-num">12</span>
       <div class="titrage"><p class="surtitre">Relations sociales</p><h2>Ma journée</h2></div>
       <span class="score" id="score12">0 / 6</span></header>
     <div class="theorie" data-pour="ex12"></div>
@@ -413,7 +420,7 @@
 
 
   <section class="exercice" id="ex13" style="--sec:var(--acier-600); --sec-soft:var(--acier-100);">
-    <header><span class="pastille">13</span>
+    <header><span class="exo-num">13</span>
       <div class="titrage"><p class="surtitre">Écouter et dessiner · seul</p>
         <h2>Dessine ce que j'entends</h2></div>
       <span class="score" id="score13">0 / 6</span></header>
@@ -463,7 +470,7 @@
 
 
   <section class="exercice" id="ex14" style="--sec:var(--foret-700); --sec-soft:var(--foret-100);">
-    <header><span class="pastille">14</span>
+    <header><span class="exo-num">14</span>
       <div class="titrage"><p class="surtitre">Écouter et dessiner · seul</p>
         <h2>Dessine ce que j'entends — La classe</h2></div>
       <span class="score" id="score14">0 / 6</span></header>
@@ -500,7 +507,7 @@
   </section>
 
   <section class="exercice" id="ex15" style="--sec:var(--teal-700); --sec-soft:var(--teal-100);">
-    <header><span class="pastille">15</span>
+    <header><span class="exo-num">15</span>
       <div class="titrage"><p class="surtitre">Écouter et dessiner · seul</p>
         <h2>Dessine ce que j'entends — La météo</h2></div>
       <span class="score" id="score15">0 / 6</span></header>
@@ -537,7 +544,7 @@
   </section>
 
   <section class="exercice" id="ex16" style="--sec:var(--ambre-700); --sec-soft:var(--ambre-100);">
-    <header><span class="pastille">16</span>
+    <header><span class="exo-num">16</span>
       <div class="titrage"><p class="surtitre">Écouter et dessiner · seul</p>
         <h2>Dessine ce que j'entends — La table</h2></div>
       <span class="score" id="score16">0 / 6</span></header>
@@ -574,7 +581,7 @@
   </section>
 
   <section class="exercice" id="ex17" style="--sec:var(--violet-600); --sec-soft:var(--violet-100);">
-    <header><span class="pastille">17</span>
+    <header><span class="exo-num">17</span>
       <div class="titrage"><p class="surtitre">Écouter et dessiner · seul</p>
         <h2>Dessine ce que j'entends — La rue</h2></div>
       <span class="score" id="score17">0 / 6</span></header>
