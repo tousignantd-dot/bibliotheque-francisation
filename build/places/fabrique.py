@@ -2,11 +2,11 @@
 """Fabrique les quatre autres « Place ce que j'entends » (niveau 2)."""
 import collections, json, pathlib, shutil, sys
 from PIL import Image
-sys.path.insert(0, str(pathlib.Path.home()/"Claude/bibliotheque-francisation/build"))
+sys.path.append(str(pathlib.Path.home()/"Claude/bibliotheque-francisation/build"))
 from azure_voix import parle
 from scenes import SCENES, BANQUES
 from couleurs import COULEURS
-import gabarit
+import gabarit_places
 
 BASE = pathlib.Path.home()/"Claude/bibliotheque-francisation/assets/interactive"
 SEUIL = 150
@@ -49,7 +49,7 @@ for slug, S in SCENES.items():
 
     # ── images : masque + trait, recadrés ──
     fin = []
-    for mot, sl, genre in BANQUES[slug]:
+    for mot, sl, genre, *_ in BANQUES[slug]:
         # Les « piece-… » sont découpées dans la scène elle-même par
         # `pieces_corps.py` : elles ne viennent pas du lexique.
         if sl.startswith("piece-"): continue
@@ -62,11 +62,11 @@ for slug, S in SCENES.items():
     repris = 0
     for f in (SRC/"audio").glob("couleur-*.mp3"):
         shutil.copy(f, OUT/"audio"/f.name); repris += 1
-    for mot, sl, genre in BANQUES[slug]:
+    for mot, sl, genre, *_ in BANQUES[slug]:
         src = SRC/"audio"/("mot-%s.mp3" % sl)
         if src.exists(): shutil.copy(src, OUT/"audio"/src.name); repris += 1
     neufs = 0
-    for mot, sl, genre in BANQUES[slug]:
+    for mot, sl, genre, *_ in BANQUES[slug]:
         d = OUT/"audio"/("mot-%s.mp3" % sl)
         if not d.exists(): parle(mot, "hd_feminin", d, palier="lent"); neufs += 1
     for c in COULEURS:
@@ -85,7 +85,8 @@ for slug, S in SCENES.items():
     # ── la page ──
     D = {
      "titre": S["titre"],
-     "zones": [{"id":z[0],"lib":z[1],"x1":z[2],"y1":z[3],"x2":z[4],"y2":z[5]} for z in S["zones"]],
+     "zones": [{"id":z[0],"lib":z[1],"x1":z[2],"y1":z[3],"x2":z[4],"y2":z[5],
+                "echelle": z[6] if len(z) > 6 else 1.0} for z in S["zones"]],
      "couleurs": [{"nom":c[0],"hex":c[1],"f":c[2],"mp":c[3],"fp":c[4],
                    "audio":"audio/couleur-%s.mp3"%c[0]} for c in COULEURS],
      "banque": [{"mot":m,"slug":sl,"genre":g,
@@ -93,8 +94,9 @@ for slug, S in SCENES.items():
                            else "masques/%s.png"%sl,
                  "trait":  ("pieces/trait-%s.png" % sl[6:]) if sl.startswith("piece-")
                            else "traits/%s.png"%sl,
-                 "audio":"audio/mot-%s.mp3"%sl}
-                for m,sl,g in BANQUES[slug]],
+                 "audio":"audio/mot-%s.mp3"%sl,
+                 "taille": t[0] if t else 1.0}
+                for m,sl,g,*t in BANQUES[slug]],
      "scene": [{"obj":o,"zone":z,"coul":c} for o,z,c in S["scene"]],
      "phrases": [{"t":p,"audio":"audio/desc-%02d.mp3"%(i+1)} for i,p in enumerate(S["phrases"])],
      "lent":"audio/description-lent.mp3", "normal":"audio/description-normal.mp3",
@@ -109,12 +111,12 @@ for slug, S in SCENES.items():
         if not (OUT/D[k]).exists(): manquants.append(D[k])
     assert not manquants, (slug, "médias absents", manquants[:5])
 
-    page = (gabarit.HTML
+    page = (gabarit_places.HTML
             .replace("__TITRE__", S["titre"])
             .replace("__N__", str(len(S["scene"])))
             .replace("Une table avec une nappe et une chaise", S["alt"])
             .replace("/*DONNEES*/", json.dumps(D, ensure_ascii=False))
-            .replace("__SCRIPT__", gabarit.SCRIPT
+            .replace("__SCRIPT__", gabarit_places.SCRIPT
                      .replace('slug:"n2-place-4-table"', 'slug:"%s"' % slug)
                      .replace('titre:"Place ce que j\'entends — La table"',
                               'titre:%s' % json.dumps(S["titre"], ensure_ascii=False))))

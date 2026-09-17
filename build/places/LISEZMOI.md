@@ -17,7 +17,7 @@ l'enseignant, 17 septembre 2026).
 |---|---|
 | `scenes.py`   | zones, banques et réponses des cinq scènes. **C'est le seul fichier à modifier** pour changer une tenue, une couleur ou une case. |
 | `couleurs.py` | la palette et ses accords — « une tasse bleue », jamais « une tasse bleu ». |
-| `gabarit.py`  | le HTML et le JavaScript, **communs aux cinq**. Une correction ici les corrige toutes. |
+| `gabarit_places.py` | le HTML et le JavaScript, **communs aux cinq**. Le nom porte son suffixe : `build/gabarit.py` existe déjà, sans rapport. Une correction ici les corrige toutes. |
 | `fabrique.py` | masques, audio, assemblage. |
 
 ## Ce qu'il faut savoir avant d'y toucher
@@ -33,6 +33,16 @@ les **bords de l'image** — ce qu'on atteint est le dehors.
 
 **Les dessins sont recadrés sur leur encre.** Sans ça, la taille apparente
 dépend du cadrage : la fourchette occupe 15 % de son image, la tasse 71 %.
+
+**La taille se règle par objet.** Quatrième valeur d'une entrée de banque, en
+multiple de la taille de base : un tableau et un crayon n'ont pas la même
+taille dans une classe. Absente, elle vaut 1.
+
+**La profondeur tient dans l'ORDRE des cases.** Elles se dessinent de l'arrière
+vers l'avant, donc ce qui est devant masque ce qui est derrière — c'est ce qui
+rend *devant* et *derrière* lisibles. Ne pas réordonner une liste de cases sans
+y penser. La septième valeur d'une case, facultative, met l'objet à l'échelle
+de sa distance : 0,72 derrière, 1,25 devant.
 
 **`ajuste`** vaut `"zone"` quand l'objet doit *couvrir* (un vêtement sur un
 personnage : l'objet remplit sa case) et `"fixe"` ailleurs, où un objet garde

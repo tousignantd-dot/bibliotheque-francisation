@@ -339,9 +339,12 @@ function redessine(){
       s.style.width=((z.x2-z.x1)*100)+"%"; s.style.height=((z.y2-z.y1)*100)+"%";
     } else {
       /* Ailleurs, la taille se mesure sur l'image : une pomme garde la même
-         taille quelle que soit la case où on la pose. */
+         taille quelle que soit la case où on la pose. Chaque objet porte son
+         propre facteur — un tableau et un crayon n'ont pas la même taille
+         dans une classe. */
       s.style.left=((z.x1+z.x2)/2*100)+"%";
       s.style.top =((z.y1+z.y2)/2*100)+"%";
+      s.style.width=(15*(objDe[p.obj].taille||1)*(z.echelle||1))+"%";
     }
     s.append(dessine(objDe[p.obj], coulDe[p.coul].hex));
     s.setAttribute("aria-label","Enlever "+nomme(p.obj,p.coul));

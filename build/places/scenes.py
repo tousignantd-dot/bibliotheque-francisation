@@ -47,25 +47,34 @@ SCENES = {
   source="n2-dessine-2-classe", base="img/classe-vide.jpg", reveal="reveal/classe.jpg",
   domaine="Éducation et monde du travail",
   alt="Une classe vide, avec une fenêtre au fond et une porte à droite",
+  # L'ORDRE DES CASES PORTE LA PROFONDEUR : elles se dessinent de l'arrière
+  # vers l'avant, donc ce qui est devant masque ce qui est derrière. Ne pas
+  # les réordonner sans y penser.
+  # La septième valeur, facultative, met l'objet à l'échelle de sa distance :
+  # une chaise derrière le bureau doit être plus petite que le sac devant,
+  # sinon « devant » et « derrière » ne se voient pas.
   zones=[
-   ("fond",   "sur le mur du fond",    0.310,0.290, 0.430,0.500),
-   ("fenetre","à côté de la fenêtre",  0.580,0.300, 0.690,0.480),
-   ("milieu", "au milieu de la classe",0.400,0.660, 0.560,0.830),
-   ("gauche", "à gauche",              0.130,0.640, 0.300,0.830),
-   ("droite", "à droite",              0.690,0.640, 0.850,0.830),
-   ("porte",  "devant la porte",       0.860,0.660, 0.975,0.840),
+   ("fond",    "sur le mur du fond",     0.310,0.290, 0.430,0.500),
+   ("fenetre", "à côté de la fenêtre",   0.580,0.300, 0.690,0.480),
+   ("derriere","derrière le bureau",     0.415,0.585, 0.545,0.690, 0.72),
+   ("gauche",  "à gauche",               0.130,0.640, 0.300,0.830),
+   ("droite",  "à droite",               0.690,0.640, 0.850,0.830),
+   ("milieu",  "au milieu de la classe", 0.400,0.660, 0.560,0.830),
+   ("devant",  "devant le bureau",       0.375,0.820, 0.585,0.955, 1.25),
   ],
-  scene=[("un-tableau","fond","vert"),   ("une-horloge","fenetre","blanc"),
-         ("un-bureau-de-classe","milieu","brun"), ("une-table","gauche","jaune"),
-         ("une-poubelle","droite","bleu"), ("un-sac-a-dos","porte","rouge")],
+  scene=[("un-tableau","fond","vert"),      ("une-horloge","fenetre","blanc"),
+         ("une-chaise","derriere","noir"),  ("une-table","gauche","jaune"),
+         ("une-poubelle","droite","bleu"),  ("un-bureau-de-classe","milieu","brun"),
+         ("un-sac-a-dos","devant","rouge")],
   phrases=[
    "Écoutez bien. Je décris une classe. Placez les objets sur l'image.",
    "Sur le mur du fond, il y a un tableau vert.",
    "À côté de la fenêtre, il y a une horloge blanche.",
    "Au milieu de la classe, il y a un bureau brun.",
+   "Derrière le bureau, il y a une chaise noire.",
+   "Devant le bureau, il y a un sac à dos rouge.",
    "À gauche, il y a une table jaune.",
    "À droite, il y a une poubelle bleue.",
-   "Devant la porte, il y a un sac à dos rouge.",
    "C'est fini. Touchez « Vérifier ».",
   ]),
 
@@ -165,12 +174,16 @@ BANQUES = {
  ("un parapluie","un-parapluie","m"),   ("un sac à dos","un-sac-a-dos","m"),
  ("un chandail","un-chandail","m"),     ("des bottes","des-bottes","fp"),
  ("des lunettes","des-lunettes","fp"),  ("une montre","une-montre","f")],
+# Quatrième valeur : la taille de l'objet posé, en multiple de la taille de
+# base. Un tableau et un crayon n'ont pas la même taille dans une classe ;
+# une seule taille pour tous donnait une horloge aussi grande qu'un bureau.
+# Réglages dictés par l'enseignant, 17 septembre 2026.
 "n2-place-2-classe": [
- ("un tableau","un-tableau","m"),       ("une horloge","une-horloge","f"),
- ("un bureau","un-bureau-de-classe","m"),("une table","une-table","f"),
- ("une poubelle","une-poubelle","f"),   ("un sac à dos","un-sac-a-dos","m"),
- ("une chaise","une-chaise","f"),       ("un cahier","un-cahier","m"),
- ("des crayons","des-crayons","mp"),    ("un stylo","un-stylo","m")],
+ ("un tableau","un-tableau","m",1.0),        ("une horloge","une-horloge","f",0.55),
+ ("un bureau","un-bureau-de-classe","m",1.6),("une table","une-table","f",1.45),
+ ("une poubelle","une-poubelle","f",0.65),   ("un sac à dos","un-sac-a-dos","m",0.65),
+ ("une chaise","une-chaise","f",1.0),        ("un cahier","un-cahier","m",0.75),
+ ("des crayons","des-crayons","mp",0.7),     ("un stylo","un-stylo","m",0.7)],
 "n2-place-3-meteo": [
  ("un nuage","un-nuage","m"),           ("le soleil","le-soleil","m"),
  ("la neige","la-neige","f"),           ("une maison","une-maison","f"),
