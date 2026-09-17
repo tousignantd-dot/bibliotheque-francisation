@@ -1,8 +1,16 @@
-<!DOCTYPE html>
+# -*- coding: utf-8 -*-
+"""Le gabarit commun des « Place ce que j'entends ».
+
+Un seul exemplaire pour les cinq scènes : une correction faite ici les
+corrige toutes. C'est ce qui a manqué aux exercices de dessin, recopiés
+cinq fois puis rattrapés cinq fois.
+"""
+
+HTML = """<!DOCTYPE html>
 <html lang="fr">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Place ce que j'entends — 4 · La table</title>
+<title>__TITRE__</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap">
 <style>
  :root{
@@ -122,7 +130,7 @@
 </style>
 <div class="page">
   <p class="surtitre">Francisation · Niveau 2 · Compréhension orale</p>
-  <h1>Place ce que j'entends — 4 · La table</h1>
+  <h1>__TITRE__</h1>
 
   <div class="bloc chapeau">
     <p>Écoutez la description. Placez chaque objet au bon endroit, <b>et de la bonne
@@ -159,7 +167,7 @@
     <div class="rangee" style="margin-top:16px">
       <button class="btn" id="verifier" type="button">Vérifier</button>
       <button class="btn btn--doux" id="recommencer" type="button">Tout enlever</button>
-      <span class="score" id="score">0 / 6</span>
+      <span class="score" id="score">0 / __N__</span>
     </div>
   </div>
 
@@ -171,12 +179,16 @@
 
   <div aria-live="polite" class="cache" id="annonce"></div>
 </div>
-<script>const D = {"titre": "Place ce que j'entends — 4 · La table", "zones": [{"id": "gauche", "lib": "sur la table, à gauche", "x1": 0.255, "y1": 0.335, "x2": 0.395, "y2": 0.435}, {"id": "milieu", "lib": "sur la table, au milieu", "x1": 0.425, "y1": 0.295, "x2": 0.565, "y2": 0.4}, {"id": "droite", "lib": "sur la table, à droite", "x1": 0.6, "y1": 0.32, "x2": 0.745, "y2": 0.425}, {"id": "sous", "lib": "sous la table", "x1": 0.33, "y1": 0.665, "x2": 0.7, "y2": 0.79}, {"id": "chaise", "lib": "sur la chaise", "x1": 0.605, "y1": 0.115, "x2": 0.74, "y2": 0.25}, {"id": "acote", "lib": "à côté de la table", "x1": 0.04, "y1": 0.58, "x2": 0.175, "y2": 0.79}], "couleurs": [{"nom": "bleu", "hex": "#1565C0", "f": "bleue", "mp": "bleus", "fp": "bleues", "audio": "audio/couleur-bleu.mp3"}, {"nom": "rouge", "hex": "#D32F2F", "f": "rouge", "mp": "rouges", "fp": "rouges", "audio": "audio/couleur-rouge.mp3"}, {"nom": "vert", "hex": "#2E7D32", "f": "verte", "mp": "verts", "fp": "vertes", "audio": "audio/couleur-vert.mp3"}, {"nom": "jaune", "hex": "#F2C200", "f": "jaune", "mp": "jaunes", "fp": "jaunes", "audio": "audio/couleur-jaune.mp3"}, {"nom": "noir", "hex": "#17181A", "f": "noire", "mp": "noirs", "fp": "noires", "audio": "audio/couleur-noir.mp3"}, {"nom": "blanc", "hex": "#FFFFFF", "f": "blanche", "mp": "blancs", "fp": "blanches", "audio": "audio/couleur-blanc.mp3"}, {"nom": "brun", "hex": "#6D4C33", "f": "brune", "mp": "bruns", "fp": "brunes", "audio": "audio/couleur-brun.mp3"}, {"nom": "orange", "hex": "#E8720C", "f": "orange", "mp": "orange", "fp": "orange", "audio": "audio/couleur-orange.mp3"}], "banque": [{"mot": "une assiette", "slug": "une-assiette", "genre": "f", "masque": "masques/une-assiette.png", "trait": "traits/une-assiette.png", "audio": "audio/mot-une-assiette.mp3"}, {"mot": "une fourchette", "slug": "une-fourchette", "genre": "f", "masque": "masques/une-fourchette.png", "trait": "traits/une-fourchette.png", "audio": "audio/mot-une-fourchette.mp3"}, {"mot": "un couteau", "slug": "un-couteau", "genre": "m", "masque": "masques/un-couteau.png", "trait": "traits/un-couteau.png", "audio": "audio/mot-un-couteau.mp3"}, {"mot": "un verre", "slug": "un-verre", "genre": "m", "masque": "masques/un-verre.png", "trait": "traits/un-verre.png", "audio": "audio/mot-un-verre.mp3"}, {"mot": "une pomme", "slug": "une-pomme", "genre": "f", "masque": "masques/une-pomme.png", "trait": "traits/une-pomme.png", "audio": "audio/mot-une-pomme.mp3"}, {"mot": "une banane", "slug": "une-banane", "genre": "f", "masque": "masques/une-banane.png", "trait": "traits/une-banane.png", "audio": "audio/mot-une-banane.mp3"}, {"mot": "une bouteille", "slug": "une-bouteille", "genre": "f", "masque": "masques/une-bouteille.png", "trait": "traits/une-bouteille.png", "audio": "audio/mot-une-bouteille.mp3"}, {"mot": "une tasse", "slug": "une-tasse", "genre": "f", "masque": "masques/une-tasse.png", "trait": "traits/une-tasse.png", "audio": "audio/mot-une-tasse.mp3"}, {"mot": "du pain", "slug": "du-pain", "genre": "m", "masque": "masques/du-pain.png", "trait": "traits/du-pain.png", "audio": "audio/mot-du-pain.mp3"}, {"mot": "du fromage", "slug": "du-fromage", "genre": "m", "masque": "masques/du-fromage.png", "trait": "traits/du-fromage.png", "audio": "audio/mot-du-fromage.mp3"}, {"mot": "du lait", "slug": "du-lait", "genre": "m", "masque": "masques/du-lait.png", "trait": "traits/du-lait.png", "audio": "audio/mot-du-lait.mp3"}, {"mot": "des carottes", "slug": "des-carottes", "genre": "fp", "masque": "masques/des-carottes.png", "trait": "traits/des-carottes.png", "audio": "audio/mot-des-carottes.mp3"}], "scene": [{"obj": "une-assiette", "zone": "milieu", "coul": "blanc"}, {"obj": "une-fourchette", "zone": "gauche", "coul": "noir"}, {"obj": "une-pomme", "zone": "droite", "coul": "rouge"}, {"obj": "une-bouteille", "zone": "sous", "coul": "vert"}, {"obj": "une-banane", "zone": "chaise", "coul": "jaune"}, {"obj": "une-tasse", "zone": "acote", "coul": "bleu"}], "phrases": [{"t": "Écoutez bien. Je décris une table. Placez les objets sur l'image.", "audio": "audio/desc-01.mp3"}, {"t": "Sur la table, au milieu, il y a une assiette blanche.", "audio": "audio/desc-02.mp3"}, {"t": "Sur la table, à gauche, il y a une fourchette noire.", "audio": "audio/desc-03.mp3"}, {"t": "Sur la table, à droite, il y a une pomme rouge.", "audio": "audio/desc-04.mp3"}, {"t": "Sous la table, il y a une bouteille verte.", "audio": "audio/desc-05.mp3"}, {"t": "Sur la chaise, il y a une banane jaune.", "audio": "audio/desc-06.mp3"}, {"t": "À côté de la table, il y a une tasse bleue.", "audio": "audio/desc-07.mp3"}, {"t": "C'est fini. Touchez « Vérifier ».", "audio": "audio/desc-08.mp3"}], "lent": "audio/description-lent.mp3", "normal": "audio/description-normal.mp3", "base": "img/table.jpg", "reveal": "reveal/table.jpg", "ajuste": "fixe"};</script>
+<script>const D = /*DONNEES*/;</script>
 <script>
+__SCRIPT__
+</script>
+"""
 
+SCRIPT = r"""
 "use strict";
 /* Le direct de la classe : même contrat que les modules de la banque. */
-var CONTENU = {slug:"n2-place-4-table", titre:"Place ce que j'entends — 4 · La table",
+var CONTENU = {slug:"n2-place-4-table", titre:"Place ce que j'entends — La table",
                mode:"placement", section:"placer", num:"1"};
 function lmsTrack(event, data){
   try{ window.parent.postMessage(Object.assign({lms:true,event:event}, data||{}), "*"); }catch(e){}
@@ -392,5 +404,4 @@ $("#recommencer").addEventListener("click",function(){
   dis("Tout est enlevé. Recommencez.");
 });
 marqueBanque();
-
-</script>
+"""
