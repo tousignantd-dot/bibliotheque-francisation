@@ -44,6 +44,12 @@ rend *devant* et *derrière* lisibles. Ne pas réordonner une liste de cases san
 y penser. La septième valeur d'une case, facultative, met l'objet à l'échelle
 de sa distance : 0,72 derrière, 1,25 devant.
 
+**Un objet qui se tient au sol se pose par calcul, pas à l'estime.** Mesurer
+la ligne du plancher dans l'image — chercher les lignes horizontales franches,
+la plinthe est la plus basse — puis placer le centre de la case à
+`plancher − hauteur_du_dessin / 2`. Estimée à l'œil, cette ligne a été fausse
+de dix points et le tableau flottait.
+
 **`ajuste`** vaut `"zone"` quand l'objet doit *couvrir* (un vêtement sur un
 personnage : l'objet remplit sa case) et `"fixe"` ailleurs, où un objet garde
 la même taille d'une case à l'autre.
