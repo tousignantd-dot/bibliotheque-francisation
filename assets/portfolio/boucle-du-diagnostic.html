@@ -123,6 +123,14 @@
   --transition: 140ms cubic-bezier(.4,0,.2,1);
 }
 
+/* ── Composition dans les figures ───────────────────────────────────
+   SVG et canevas ne peuvent pas porter la police en attribut de
+   présentation : `var()` n'y est pas résolu. Ces deux classes sont le
+   seul chemin par lequel une figure atteint les jetons — un attribut
+   `font-family=` en dur sur un <text> est un orphelin, pas un choix. ── */
+.f-mono{font-family:var(--police-mono)}
+.f-sans{font-family:var(--police)}
+
 /* ── Variante de surface : fond blanc ──────────────────────────────
    Les fonds alternés disparaissent et la séparation passe entièrement
    aux bordures. Pour une page imprimée, projetée, ou posée dans un site
@@ -289,7 +297,7 @@ em{font-style:italic}
 #rail .tick{display:block;width:16px;height:2px;background:var(--regle2);transition:width .22s,background .22s}
 #rail a:nth-child(odd) .tick{width:11px}
 #rail .lab{
-  font-family:"Roboto Mono",monospace;font-size:9.5px;letter-spacing:.09em;
+  font-family:var(--police-mono);font-size:9.5px;letter-spacing:.09em;
   text-transform:uppercase; opacity:0; transform:translateX(-4px);
   transition:opacity .22s,transform .22s; white-space:nowrap;
 }
@@ -325,7 +333,7 @@ em{font-style:italic}
   background:var(--pan); color:var(--enc);
   border:1px solid var(--regle2); border-radius:var(--r-1);
   padding:9px 13px 9px 11px; cursor:pointer;
-  font-family:"Roboto Mono",monospace; font-size:11px;
+  font-family:var(--police-mono); font-size:11px;
   letter-spacing:.06em; text-transform:uppercase;
   box-shadow:0 2px 10px rgba(0,0,0,.10);
 }
@@ -345,7 +353,7 @@ body.traces #tampon .voyant{background:var(--signal-encre);border-color:var(--si
 
 /* ═══════════════ apparat : les traces ═══════════════ */
 .trace{
-  display:none; font-family:"Roboto Mono",monospace;
+  display:none; font-family:var(--police-mono);
   font-size:11.5px; line-height:1.52; color:var(--sig);
   border-top:1.5px solid var(--sig); padding-top:8px; margin:.2rem 0 1.6rem;
 }
@@ -363,7 +371,7 @@ body.traces .ajout{display:inline;color:var(--sig);border-bottom:1.5px solid var
 /* ═══════════════ ouverture ═══════════════ */
 #ouverture{padding-block:clamp(3.5rem,11vh,8rem) 1rem}
 .cote-haut{
-  font-family:"Roboto Mono",monospace;font-size:10.5px;letter-spacing:.16em;
+  font-family:var(--police-mono);font-size:10.5px;letter-spacing:.16em;
   text-transform:uppercase;color:var(--enc2);
   display:flex;flex-wrap:wrap;gap:.4rem 1.4rem;
   border-bottom:1px solid var(--regle);padding-bottom:.8rem;margin-bottom:2.6rem;
@@ -377,7 +385,7 @@ h1 .fin{display:block;color:var(--encre-3);font-weight:400;
   font-size:clamp(1.02rem,2.1vw,1.35rem);line-height:1.25;letter-spacing:0;margin-top:1.1rem;max-width:26rem}
 .chapeau{font-size:var(--t-avant);line-height:1.5;color:var(--encre-2);max-width:var(--largeur-accroche)}
 .chapeau .lettrine{
-  float:left;font-family:"Archivo",sans-serif;font-weight:800;
+  float:left;font-family:var(--police);font-weight:800;
   font-size:3.4rem;line-height:.8;padding:.09em .12em 0 0;color:var(--encre);
 }
 .sous-chapeau{color:var(--encre-3);font-size:var(--t-corps);max-width:var(--largeur-accroche);margin-top:var(--e-5)}
@@ -430,7 +438,7 @@ ol.liste>li::before{
 /* figures */
 figure{margin:2.2rem 0}
 figcaption{
-  font-family:"Roboto Mono",monospace;font-size:10.5px;line-height:1.5;
+  font-family:var(--police-mono);font-size:10.5px;line-height:1.5;
   letter-spacing:.04em;color:var(--enc2);margin-top:.7rem;
   padding-top:.55rem;border-top:1px solid var(--regle);
 }
@@ -459,15 +467,15 @@ figcaption b{color:var(--encre);font-weight:var(--g-fort);letter-spacing:.08em;t
 .fiche{background:var(--pan);padding:1.15rem 1.25rem;display:grid;gap:.55rem}
 .fiche.off{display:none}
 .fiche-tete{display:flex;align-items:baseline;justify-content:space-between;gap:1rem}
-.fiche-nom{font-family:"Libre Franklin",sans-serif;font-weight:600;font-size:1.06rem;letter-spacing:-.012em;line-height:1.18}
-.fiche-src{font-family:"Roboto Mono",monospace;font-size:10px;color:var(--enc3);white-space:nowrap;letter-spacing:.03em}
+.fiche-nom{font-family:var(--police);font-weight:600;font-size:1.06rem;letter-spacing:-.012em;line-height:1.18}
+.fiche-src{font-family:var(--police-mono);font-size:10px;color:var(--enc3);white-space:nowrap;letter-spacing:.03em}
 .fiche dl{margin:0;display:grid;grid-template-columns:5.6rem 1fr;gap:.3rem .9rem;font-size:.92rem;line-height:1.5}
-.fiche dt{font-family:"Roboto Mono",monospace;font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--enc3);padding-top:.42em}
+.fiche dt{font-family:var(--police-mono);font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--enc3);padding-top:.42em}
 .fiche dd{margin:0}
 .fiche dd.exemple{color:var(--encre-2);border-left:2px solid var(--bord-fort);padding-left:.75rem}
 .fiche dd.limite{color:var(--enc2)}
 .fiche dd.test{color:var(--encre)}
-.compteur{font-family:"Roboto Mono",monospace;font-size:10.5px;color:var(--enc2);letter-spacing:.06em;margin-bottom:.9rem}
+.compteur{font-family:var(--police-mono);font-size:10.5px;color:var(--enc2);letter-spacing:.06em;margin-bottom:.9rem}
 /* ⟦css-planches⟧ */
 /* ═══════════════ planches — l'exemple et son contraire ═══════════════
    Ajouté le 9 septembre 2026. Le champ « Exemple » des fiches décrivait un
@@ -478,7 +486,7 @@ figcaption b{color:var(--encre);font-weight:var(--g-fort);letter-spacing:.08em;t
    rouge (§ 5). Il se reconnaît à sa forme — cadre tireté, filigrane oblique,
    étiquettes qui débordent. */
 .pl-btn{
-  font-family:"Roboto Mono",monospace;font-size:9.5px;letter-spacing:.11em;
+  font-family:var(--police-mono);font-size:9.5px;letter-spacing:.11em;
   text-transform:uppercase;color:var(--enc2);background:none;border:0;
   border-bottom:1px solid var(--regle2);padding:.15rem 0;cursor:pointer;
   justify-self:start;
@@ -495,7 +503,7 @@ figcaption b{color:var(--encre);font-weight:var(--g-fort);letter-spacing:.08em;t
 @media(max-width:660px){.pl-grille{grid-template-columns:1fr}}
 .pl-vol{background:var(--fond);padding:.8rem .85rem;display:grid;gap:.5rem;align-content:start}
 .pl-tete{
-  font-family:"Roboto Mono",monospace;font-size:9px;letter-spacing:.12em;
+  font-family:var(--police-mono);font-size:9px;letter-spacing:.12em;
   text-transform:uppercase;color:var(--enc3);display:flex;align-items:center;gap:.4rem;
 }
 .pl-tete::before{content:"";width:.5rem;height:.5rem;flex:none}
@@ -517,7 +525,7 @@ figcaption b{color:var(--encre);font-weight:var(--g-fort);letter-spacing:.08em;t
   align-content:start;
 }
 .pl-vol.avant .sc{border-style:dashed}
-.sc-t{font-family:"Roboto Mono",monospace;font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--enc4)}
+.sc-t{font-family:var(--police-mono);font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--enc4)}
 .sc-l{height:4px;border-radius:2px;background:var(--bord-fort)}
 .sc-l.fort{background:var(--enc3);height:5px}
 .sc-l.pale{background:var(--bord)}
@@ -532,27 +540,27 @@ figcaption b{color:var(--encre);font-weight:var(--g-fort);letter-spacing:.08em;t
 .sc-fig::before{content:"";position:absolute;inset:22%;border:1px solid var(--bord-fort);border-radius:1px}
 .sc-fig::after{content:"";position:absolute;left:30%;right:30%;top:52%;border-top:1px solid var(--bord-fort);transform:rotate(-7deg)}
 .sc-etq{
-  font-family:"Roboto Mono",monospace;font-size:8px;line-height:1.3;
+  font-family:var(--police-mono);font-size:8px;line-height:1.3;
   background:var(--fond);border:1px solid var(--bord-fort);border-radius:2px;
   padding:1px 4px;color:var(--enc2);white-space:nowrap;justify-self:start;
 }
 .sc-etq.dedans{position:absolute;z-index:2}
 .sc-etq.noir{background:var(--action);border-color:var(--action);color:var(--action-encre)}
 .sc-btn{
-  font-family:"Roboto Mono",monospace;font-size:8px;background:var(--action);
+  font-family:var(--police-mono);font-size:8px;background:var(--action);
   color:var(--action-encre);border-radius:2px;padding:2px 7px;justify-self:start;letter-spacing:.06em;
 }
 .sc-champ{background:var(--fond);border:1px solid var(--bord-fort);border-radius:2px;height:1.15rem}
-.sc-note{font-family:"Roboto Mono",monospace;font-size:8.5px;color:var(--enc3);line-height:1.4}
+.sc-note{font-family:var(--police-mono);font-size:8.5px;color:var(--enc3);line-height:1.4}
 .sc-va{
-  font-family:"Roboto Mono",monospace;font-size:8.5px;color:var(--enc3);
+  font-family:var(--police-mono);font-size:8.5px;color:var(--enc3);
   display:flex;align-items:center;gap:.3rem;
 }
 .sc-va::before{content:"";flex:none;width:1.6rem;border-top:1px dashed var(--enc4)}
 .sc-frise{display:flex;gap:2px}
 .sc-bloc{
   flex:1;height:1.2rem;border:1px solid var(--bord-fort);background:var(--fond);
-  display:grid;place-items:center;font-family:"Roboto Mono",monospace;font-size:8px;
+  display:grid;place-items:center;font-family:var(--police-mono);font-size:8px;
   color:var(--enc2);border-radius:1px;
 }
 .sc-bloc.plein{background:var(--action);color:var(--action-encre);border-color:var(--action)}
@@ -638,7 +646,7 @@ figcaption b{color:var(--encre);font-weight:var(--g-fort);letter-spacing:.08em;t
 /* ═══════════════ pupitre des tensions ═══════════════ */
 .tension{border-top:1px solid var(--regle);padding:1.5rem 0 1.7rem}
 .tension:last-child{border-bottom:1px solid var(--regle)}
-.tension-tete{display:flex;justify-content:space-between;gap:1rem;font-family:"Libre Franklin",sans-serif;font-weight:600;font-size:.99rem;letter-spacing:-.01em}
+.tension-tete{display:flex;justify-content:space-between;gap:1rem;font-family:var(--police);font-weight:600;font-size:.99rem;letter-spacing:-.01em}
 .tension-tete span:last-child{text-align:right}
 .rail-boite{position:relative;margin:.9rem 0 1rem}
 .rail-graduations{position:absolute;inset:0;display:flex;justify-content:space-between;align-items:center;pointer-events:none}
@@ -654,7 +662,7 @@ input[type=range].rail::-webkit-slider-thumb{
 }
 input[type=range].rail::-moz-range-thumb{width:14px;height:22px;background:var(--str);border:none;border-radius:1px}
 .tension-lecture{display:grid;grid-template-columns:1fr 1fr;gap:.9rem 1.4rem;font-size:.9rem;line-height:1.48}
-.tension-lecture .bloc b{font-family:"Roboto Mono",monospace;font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;display:block;margin-bottom:.25rem;color:var(--enc3);font-weight:500}
+.tension-lecture .bloc b{font-family:var(--police-mono);font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;display:block;margin-bottom:.25rem;color:var(--enc3);font-weight:500}
 .tension-lecture .gain b{color:var(--encre)}
 .tension-lecture .cout b{color:var(--faux)}
 .moderateur{grid-column:1 / -1;border-top:1px dashed var(--regle2);padding-top:.7rem;color:var(--enc2);font-size:.88rem}
@@ -666,12 +674,12 @@ input[type=range].rail::-moz-range-thumb{width:14px;height:22px;background:var(-
 .banc-tete{
   display:flex;align-items:center;justify-content:space-between;gap:1rem;
   padding:.7rem 1.1rem;border-bottom:1px solid var(--regle);
-  font-family:"Roboto Mono",monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--enc2);
+  font-family:var(--police-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--enc2);
   background:var(--pan2);
 }
 .banc-corps{padding:1.3rem 1.3rem 1.5rem}
 .symptome{font-size:1.04rem;line-height:1.5;margin:0 0 .3rem}
-.symptome .obs{font-family:"Roboto Mono",monospace;font-size:.86em;color:var(--str)}
+.symptome .obs{font-family:var(--police-mono);font-size:.86em;color:var(--str)}
 .consigne-banc{color:var(--enc2);font-size:.9rem;margin:.9rem 0 1rem}
 .options{display:grid;gap:.5rem}
 .opt{
@@ -679,13 +687,13 @@ input[type=range].rail::-moz-range-thumb{width:14px;height:22px;background:var(-
   padding:.75rem .9rem;font:inherit;font-size:.94rem;line-height:1.42;color:var(--enc);cursor:pointer;transition:.14s;
   display:grid;grid-template-columns:1.6rem 1fr;gap:.6rem;align-items:start;
 }
-.opt .k{font-family:"Roboto Mono",monospace;font-size:11px;color:var(--enc3);padding-top:.18em}
+.opt .k{font-family:var(--police-mono);font-size:11px;color:var(--enc3);padding-top:.18em}
 .opt:hover:not(:disabled){border-color:var(--str)}
 .opt:disabled{cursor:default;opacity:.55}
 .opt.choisi{opacity:1;border-color:var(--enc3);background:var(--pan2)}
 .verdict{margin-top:1.1rem;border-top:1px solid var(--regle);padding-top:1rem;display:none}
 .verdict.on{display:block;animation:entre .3s ease both}
-.verdict-cote{font-family:"Roboto Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;display:inline-block;padding:.2rem .5rem;border:1px solid currentColor;border-radius:var(--r-1);margin-bottom:.7rem}
+.verdict-cote{font-family:var(--police-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;display:inline-block;padding:.2rem .5rem;border:1px solid currentColor;border-radius:var(--r-1);margin-bottom:.7rem}
 /* Aucune couleur ici : le bleu n'appartient qu'à ce qu'une machine a calculé,
    et l'orange à ce qui est daté. Un verdict est un jugement — il se rend dans
    l'échelle des encres, du plein au filigrane. */
@@ -712,8 +720,8 @@ input[type=range].rail::-moz-range-thumb{width:14px;height:22px;background:var(-
 .planche{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1px;background:var(--regle);border:1px solid var(--regle)}
 .specimen{background:var(--pan);padding:1.1rem 1.15rem 1.2rem;display:grid;gap:.5rem;align-content:start}
 .specimen svg{width:100%;height:64px;display:block;overflow:visible}
-.specimen .nom{font-family:"Libre Franklin",sans-serif;font-weight:600;font-size:.98rem;line-height:1.18;letter-spacing:-.012em}
-.specimen .lat{font-family:"Roboto Mono",monospace;font-size:9.5px;letter-spacing:.06em;color:var(--enc3);font-style:normal}
+.specimen .nom{font-family:var(--police);font-weight:600;font-size:.98rem;line-height:1.18;letter-spacing:-.012em}
+.specimen .lat{font-family:var(--police-mono);font-size:9.5px;letter-spacing:.06em;color:var(--enc3);font-style:normal}
 .specimen p{font-size:.87rem;line-height:1.45;color:var(--enc2);margin:0}
 .specimen .signe{font-size:.85rem;color:var(--encre);border-top:1px dashed var(--regle2);padding-top:.5rem;margin-top:.2rem}
 
@@ -722,11 +730,11 @@ input[type=range].rail::-moz-range-thumb{width:14px;height:22px;background:var(-
 table.journal{border-collapse:collapse;width:100%;min-width:640px;font-size:.88rem}
 table.journal th,table.journal td{text-align:left;vertical-align:top;padding:.7rem .85rem;border-bottom:1px solid var(--regle)}
 table.journal th{
-  font-family:"Roboto Mono",monospace;font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;
+  font-family:var(--police-mono);font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;
   color:var(--enc2);font-weight:500;background:var(--pan2);position:sticky;top:0;
 }
 table.journal tr:last-child td{border-bottom:none}
-table.journal td.d{font-family:"Roboto Mono",monospace;font-size:11px;color:var(--enc3);white-space:nowrap}
+table.journal td.d{font-family:var(--police-mono);font-size:11px;color:var(--enc3);white-space:nowrap}
 table.journal td.dec{color:var(--str)}
 
 /* ═══════════════ liste raisonnée ═══════════════ */
@@ -736,13 +744,13 @@ details.critere>summary{
   grid-template-columns:2.2rem 1fr 1.1rem;gap:.8rem;align-items:baseline;
 }
 details.critere>summary::-webkit-details-marker{display:none}
-details.critere .no{font-family:"Roboto Mono",monospace;font-size:11px;color:var(--str)}
+details.critere .no{font-family:var(--police-mono);font-size:11px;color:var(--str)}
 details.critere .q{font-size:1rem;line-height:1.35}
-details.critere .chev{justify-self:end;color:var(--enc3);font-family:"Roboto Mono",monospace;font-size:13px;transition:transform .2s}
+details.critere .chev{justify-self:end;color:var(--enc3);font-family:var(--police-mono);font-size:13px;transition:transform .2s}
 details.critere[open] .chev{transform:rotate(90deg)}
 details.critere .dedans{padding:0 0 1.1rem 3rem;display:grid;gap:.6rem;font-size:.92rem;line-height:1.5}
 details.critere .dedans .l{display:grid;grid-template-columns:5.2rem 1fr;gap:.8rem}
-details.critere .dedans .l b{font-family:"Roboto Mono",monospace;font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--enc3);font-weight:500;padding-top:.35em}
+details.critere .dedans .l b{font-family:var(--police-mono);font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--enc3);font-weight:500;padding-top:.35em}
 @media (max-width:520px){
   details.critere .dedans{padding-left:0}
   details.critere .dedans .l{grid-template-columns:1fr;gap:.15rem}
@@ -756,7 +764,7 @@ ol.biblio li{
 }
 ol.biblio li::before{
   content:counter(b);position:absolute;left:0;top:.15em;
-  font-family:"Roboto Mono",monospace;font-size:10.5px;color:var(--str);
+  font-family:var(--police-mono);font-size:10.5px;color:var(--str);
 }
 ol.biblio li:target{color:var(--enc)}
 ol.biblio li:target::before{background:var(--action);color:var(--action-encre);padding:0 .3em}
@@ -764,7 +772,7 @@ ol.biblio li:target::before{background:var(--action);color:var(--action-encre);p
 /* ═══════════════ colophon ═══════════════ */
 #colophon{border-top:2px solid var(--enc);margin-top:3rem;padding-block:2rem 5rem}
 .colo-grille{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:1.6rem;font-size:.87rem;line-height:1.5;color:var(--enc2)}
-.colo-grille b{display:block;font-family:"Roboto Mono",monospace;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--enc);margin-bottom:.35rem;font-weight:500}
+.colo-grille b{display:block;font-family:var(--police-mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--enc);margin-bottom:.35rem;font-weight:500}
 
 /* ═══════════════ mouvement ═══════════════ */
 @media (prefers-reduced-motion:reduce){
@@ -787,7 +795,7 @@ ol.biblio li:target::before{background:var(--action);color:var(--action-encre);p
   .braise{background:none;color:var(--encre);-webkit-text-fill-color:var(--encre)}
   body{background:#fff;color:#000;font-size:10.4pt;background-image:none}
   .note-papier{display:block;border:1px solid var(--regle2);padding:.6rem .8rem;margin-bottom:1.4rem;
-    font-family:"Roboto Mono",monospace;font-size:8.5pt;line-height:1.5;color:var(--enc2)}
+    font-family:var(--police-mono);font-size:8.5pt;line-height:1.5;color:var(--enc2)}
   #d-ordre,#d-tri,#d-redaction,#d-entretien,#d-calc,#d-echant,#cmp,#cmp+*,.banc,#pupitre,
   .duo .choix,#rep-maquette+.releve+.banc-pied{display:none!important}
   .releve li{opacity:1!important}
@@ -811,7 +819,7 @@ ol.biblio li:target::before{background:var(--action);color:var(--action-encre);p
 .disp-tete{
   display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;
   padding:.7rem 1.1rem;border-bottom:1px solid var(--regle);background:var(--pan2);
-  font-family:"Roboto Mono",monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--enc2);
+  font-family:var(--police-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--enc2);
 }
 .disp-tete .droite{color:var(--encre)}
 .disp-corps{padding:1.25rem}
@@ -829,12 +837,12 @@ ol.biblio li:target::before{background:var(--action);color:var(--action-encre);p
 .ordre li:active{cursor:grabbing}
 .ordre li.porte{opacity:.35}
 .ordre li.survol{border-color:var(--str);border-style:dashed}
-.ordre .poignee{color:var(--enc3);font-family:"Roboto Mono",monospace;font-size:13px;letter-spacing:-2px;user-select:none}
-.ordre .rang{font-family:"Roboto Mono",monospace;font-size:11px;color:var(--enc3)}
+.ordre .poignee{color:var(--enc3);font-family:var(--police-mono);font-size:13px;letter-spacing:-2px;user-select:none}
+.ordre .rang{font-family:var(--police-mono);font-size:11px;color:var(--enc3)}
 .ordre .fleches{display:flex;gap:.2rem}
 .ordre .fleches button{
   background:transparent;border:1px solid var(--regle2);border-radius:var(--r-1);color:var(--enc2);
-  font-family:"Roboto Mono",monospace;font-size:11px;line-height:1;padding:.25rem .38rem;cursor:pointer;
+  font-family:var(--police-mono);font-size:11px;line-height:1;padding:.25rem .38rem;cursor:pointer;
 }
 .ordre .fleches button:hover{border-color:var(--str);color:var(--enc)}
 .ordre li.juste{border-color:var(--str)}
@@ -854,7 +862,7 @@ ol.biblio li:target::before{background:var(--action);color:var(--action-encre);p
 .jeton:active{cursor:grabbing}
 .jeton.porte{opacity:.35}
 .jeton.actif{border-color:var(--str);box-shadow:0 0 0 2px var(--str-pale)}
-.jeton .num{font-family:"Roboto Mono",monospace;font-size:10px;color:var(--enc3)}
+.jeton .num{font-family:var(--police-mono);font-size:10px;color:var(--enc3)}
 .jeton.bon{border-color:var(--str)}
 .jeton.mauvais{border-color:var(--bord-fort);border-style:dashed}
 .bacs{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:.7rem}
@@ -864,10 +872,10 @@ ol.biblio li:target::before{background:var(--action);color:var(--action-encre);p
 }
 .bac.survol{border-color:var(--str);border-style:dashed;background:var(--str-pale)}
 .bac h5{
-  margin:0;font-family:"Roboto Mono",monospace;font-size:9.5px;letter-spacing:.1em;
+  margin:0;font-family:var(--police-mono);font-size:9.5px;letter-spacing:.1em;
   text-transform:uppercase;color:var(--enc2);font-weight:500;
 }
-.bac h5 em{display:block;font-style:normal;font-family:"Libre Franklin",sans-serif;font-size:11.5px;letter-spacing:0;text-transform:none;color:var(--enc3);margin-top:.2rem}
+.bac h5 em{display:block;font-style:normal;font-family:var(--police);font-size:11.5px;letter-spacing:0;text-transform:none;color:var(--enc3);margin-top:.2rem}
 
 /* ═══════════════ C · rédaction ═══════════════ */
 textarea.champ{
@@ -879,18 +887,18 @@ textarea.champ:focus{outline:2px solid var(--str);outline-offset:2px}
 .grille-controle li{display:grid;grid-template-columns:1.3rem 1fr;gap:.6rem;font-size:.9rem;line-height:1.45}
 .grille-controle input{margin:.3rem 0 0;accent-color:var(--str);width:15px;height:15px}
 .modele{margin-top:1rem;border-top:1px solid var(--regle);padding-top:.9rem}
-.modele summary{cursor:pointer;font-family:"Roboto Mono",monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--str)}
+.modele summary{cursor:pointer;font-family:var(--police-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--str)}
 .modele p{margin:.8rem 0 0;font-size:.92rem}
 
 /* ═══════════════ D · entretien ═══════════════ */
 .fil{display:grid;gap:.7rem;margin-bottom:1.1rem}
 .replique{display:grid;grid-template-columns:5.2rem 1fr;gap:.9rem;align-items:start;animation:entre .3s ease both}
-.replique .qui{font-family:"Roboto Mono",monospace;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--enc3);padding-top:.35em;text-align:right}
+.replique .qui{font-family:var(--police-mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--enc3);padding-top:.35em;text-align:right}
 .replique .quoi{font-size:.95rem;line-height:1.5}
 .replique.moi .quoi{border-left:2px solid var(--str);padding-left:.8rem}
 .replique.eleve .quoi{border-left:2px solid var(--regle2);padding-left:.8rem;color:var(--enc2);font-style:italic}
-.replique.note .quoi{font-family:"Roboto Mono",monospace;font-size:11.5px;line-height:1.5;color:var(--sig);border-left:2px solid var(--sig);padding-left:.8rem}
-.mesure{display:flex;align-items:center;gap:.6rem;font-family:"Roboto Mono",monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--enc2)}
+.replique.note .quoi{font-family:var(--police-mono);font-size:11.5px;line-height:1.5;color:var(--sig);border-left:2px solid var(--sig);padding-left:.8rem}
+.mesure{display:flex;align-items:center;gap:.6rem;font-family:var(--police-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--enc2)}
 .mesure .barre{width:96px;height:4px;background:var(--regle2);border-radius:var(--r-1);overflow:hidden}
 .mesure .barre i{display:block;height:100%;background:var(--mesure);transition:width .4s ease}
 
@@ -899,12 +907,12 @@ textarea.champ:focus{outline:2px solid var(--str);outline-offset:2px}
 @media (max-width:640px){.calc{grid-template-columns:1fr}}
 .calc table{border-collapse:collapse;width:100%;font-size:.85rem}
 .calc th,.calc td{padding:.35rem .4rem;border-bottom:1px solid var(--regle);text-align:center}
-.calc th{font-family:"Roboto Mono",monospace;font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--enc2);font-weight:500}
+.calc th{font-family:var(--police-mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--enc2);font-weight:500}
 .calc th:first-child,.calc td:first-child{text-align:left}
 .calc input[type=checkbox]{accent-color:var(--str);width:16px;height:16px}
 .sorties{display:grid;gap:.85rem;align-content:start}
 .sortie{border:1px solid var(--regle2);border-radius:var(--r-1);padding:.7rem .85rem;background:var(--fond)}
-.sortie b{display:block;font-family:"Roboto Mono",monospace;font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--enc3);font-weight:500;margin-bottom:.3rem}
+.sortie b{display:block;font-family:var(--police-mono);font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--enc3);font-weight:500;margin-bottom:.3rem}
 .sortie .val{display:block;font-family:var(--police-mono);font-size:1.5rem;line-height:1;color:var(--mesure)}
 .sortie .val.alerte{color:var(--mesure-2)}
 .sortie .dit{display:block;font-size:.85rem;line-height:1.42;color:var(--enc2);margin-top:.45rem}
@@ -914,7 +922,7 @@ textarea.champ:focus{outline:2px solid var(--str);outline-offset:2px}
 @media (max-width:640px){.echant{grid-template-columns:1fr}}
 .echant canvas{width:100%;height:auto;display:block;border:1px solid var(--regle);border-radius:var(--r-1);background:var(--fond)}
 .reglage{margin-bottom:1rem}
-.reglage label{display:flex;justify-content:space-between;font-family:"Roboto Mono",monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--enc2);margin-bottom:.3rem}
+.reglage label{display:flex;justify-content:space-between;font-family:var(--police-mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--enc2);margin-bottom:.3rem}
 .reglage label b{color:var(--mesure);font-weight:var(--g-moyen)}
 
 /* ═══════════════ G · repérage sur maquette ═══════════════ */
@@ -924,12 +932,12 @@ textarea.champ:focus{outline:2px solid var(--str);outline-offset:2px}
 .zone{cursor:crosshair;fill:transparent;stroke:transparent;stroke-width:1.5;transition:fill .18s,stroke .18s}
 .zone:hover{fill:var(--str-pale);fill-opacity:.5;stroke:var(--str)}
 .zone.trouve{fill:var(--sig);fill-opacity:.10;stroke:var(--sig);stroke-dasharray:4 3;cursor:default}
-.marqueur{font-family:"Roboto Mono",monospace;font-size:11px;fill:var(--sig);opacity:0;transition:opacity .3s}
+.marqueur{font-family:var(--police-mono);font-size:11px;fill:var(--sig);opacity:0;transition:opacity .3s}
 .marqueur.on{opacity:1}
 .releve{list-style:none;margin:1rem 0 0;padding:0;display:grid;gap:.6rem}
 .releve li{display:grid;grid-template-columns:1.6rem 1fr;gap:.7rem;font-size:.9rem;line-height:1.45;opacity:.28;transition:opacity .3s}
 .releve li.on{opacity:1}
-.releve li .n{font-family:"Roboto Mono",monospace;font-size:11px;color:var(--sig)}
+.releve li .n{font-family:var(--police-mono);font-size:11px;color:var(--sig)}
 .releve li b{display:block;font-weight:600}
 .releve li span{color:var(--enc2)}
 
@@ -940,7 +948,7 @@ textarea.champ:focus{outline:2px solid var(--str);outline-offset:2px}
 .duo figure{margin:0;display:grid;gap:.6rem}
 .duo img{width:100%;height:auto;display:block;border:1px solid var(--regle2);border-radius:var(--r-1)}
 .duo .choix{
-  font-family:"Roboto Mono",monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+  font-family:var(--police-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;
   background:transparent;color:var(--enc2);border:1px solid var(--regle2);border-radius:var(--r-1);
   padding:.55rem;cursor:pointer;width:100%;transition:.15s;
 }
@@ -951,7 +959,7 @@ textarea.champ:focus{outline:2px solid var(--str);outline-offset:2px}
 .duo figure.retenue .choix{border-color:var(--action);color:var(--encre);font-weight:var(--g-fort)}
 .comparatif{width:100%;border-collapse:collapse;margin-top:1rem;font-size:.89rem}
 .comparatif th,.comparatif td{text-align:left;vertical-align:top;padding:.55rem .7rem;border-bottom:1px solid var(--regle)}
-.comparatif th{font-family:"Roboto Mono",monospace;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--enc2);font-weight:500}
+.comparatif th{font-family:var(--police-mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--enc2);font-weight:500}
 .comparatif td.non{color:var(--faux)}
 .comparatif td.oui{color:var(--encre)}
 
@@ -961,7 +969,7 @@ textarea.champ:focus{outline:2px solid var(--str);outline-offset:2px}
 .compare .couche{position:absolute;inset:0}
 .compare svg{display:block;width:100%;height:auto}
 .compare .etiq-av,.compare .etiq-ap{
-  position:absolute;top:8px;font-family:"Roboto Mono",monospace;font-size:9.5px;letter-spacing:.1em;
+  position:absolute;top:8px;font-family:var(--police-mono);font-size:9.5px;letter-spacing:.1em;
   text-transform:uppercase;padding:.2rem .45rem;border:1px solid currentColor;border-radius:var(--r-1);background:var(--pan);
 }
 .compare .etiq-av{left:8px;color:var(--faux)}
@@ -1057,7 +1065,7 @@ textarea.champ:focus{outline:2px solid var(--str);outline-offset:2px}
         <circle cx="143" cy="60" r="3.2"></circle><circle cx="263" cy="56" r="3.2"></circle>
         <circle cx="383" cy="53" r="3.2"></circle><circle cx="503" cy="50" r="3.2"></circle>
       </g>
-      <g font-family="Roboto Mono, monospace" font-size="10" fill="var(--enc2)" letter-spacing="1">
+      <g class="f-mono" font-size="10" fill="var(--enc2)" letter-spacing="1">
         <text x="60" y="216">PREMIER JET</text>
         <text x="612" y="216" text-anchor="end">MISE EN SERVICE</text>
         <text x="62" y="26" fill="var(--enc)">CE QU'ON A VOULU ENSEIGNER</text>
@@ -1466,12 +1474,12 @@ textarea.champ:focus{outline:2px solid var(--str);outline-offset:2px}
         <svg id="mock-av" class="fond-maquette" viewBox="0 0 720 440" role="img" aria-label="Maquette d'une activité comportant cinq défauts de conception">
   <rect x="6" y="6" width="708" height="428" fill="var(--pan)" stroke="var(--regle)"/>
   <rect x="6" y="6" width="708" height="36" fill="var(--pan2)"/>
-  <text x="24" y="29" font-family="Roboto Mono, monospace" font-size="10.5" letter-spacing="1.2" fill="var(--enc2)">ACTIVITÉ 4 — LES PRÉPOSITIONS DE LIEU</text>
+  <text x="24" y="29" class="f-mono" font-size="10.5" letter-spacing="1.2" fill="var(--enc2)">ACTIVITÉ 4 — LES PRÉPOSITIONS DE LIEU</text>
   <g id="av-img"><rect x="466" y="60" width="228" height="132" fill="var(--pan2)" stroke="var(--regle)"/>
     <circle cx="512" cy="100" r="15" fill="var(--enc3)" opacity=".28"/>
     <path d="M482,178 L544,112 L598,178 Z" fill="var(--enc3)" opacity=".3"/>
     <path d="M566,178 L618,130 L672,178 Z" fill="var(--enc3)" opacity=".2"/></g>
-  <g font-family="Libre Franklin, Helvetica, sans-serif" font-size="12.5" fill="var(--enc2)">
+  <g class="f-sans" font-size="12.5" fill="var(--enc2)">
     <text x="24" y="86">Dans le cadre de cette activité d'apprentissage, vous serez amené à</text>
     <text x="24" y="106">compléter une série de phrases dans lesquelles il vous faudra choisir,</text>
     <text x="24" y="126">parmi les prépositions de lieu présentées précédemment dans le module,</text>
@@ -1479,16 +1487,16 @@ textarea.champ:focus{outline:2px solid var(--str);outline-offset:2px}
     <text x="24" y="166">sens général de la phrase et de la position respective des objets.</text>
   </g>
   <rect x="24" y="196" width="416" height="42" fill="var(--fond)" stroke="var(--regle)"/>
-  <text x="38" y="223" font-family="Libre Franklin, Helvetica, sans-serif" font-size="13" fill="var(--enc)">Exemple : Le crayon est <tspan fill="var(--str)" font-weight="600">sur</tspan> la table.</text>
-  <text x="24" y="274" font-family="Libre Franklin, Helvetica, sans-serif" font-size="13.5" fill="var(--enc)">1. Le crayon est ________ la table.</text>
+  <text x="38" y="223" class="f-sans" font-size="13" fill="var(--enc)">Exemple : Le crayon est <tspan fill="var(--str)" font-weight="600">sur</tspan> la table.</text>
+  <text x="24" y="274" class="f-sans" font-size="13.5" fill="var(--enc)">1. Le crayon est ________ la table.</text>
   <rect x="24" y="288" width="300" height="34" fill="var(--fond)" stroke="var(--regle2)"/>
-  <text x="36" y="310" font-family="Libre Franklin, Helvetica, sans-serif" font-size="12.5" fill="var(--enc3)">votre réponse</text>
-  <text x="24" y="342" font-family="Libre Franklin, Helvetica, sans-serif" font-size="10" fill="var(--enc3)">Écrivez la préposition qui convient dans la case ci-dessus.</text>
+  <text x="36" y="310" class="f-sans" font-size="12.5" fill="var(--enc3)">votre réponse</text>
+  <text x="24" y="342" class="f-sans" font-size="10" fill="var(--enc3)">Écrivez la préposition qui convient dans la case ci-dessus.</text>
   <rect x="24" y="356" width="416" height="46" fill="var(--str-pale)" stroke="var(--str)"/>
   <path d="M44,380 L52,388 L68,370" fill="none" stroke="var(--str)" stroke-width="2.4"/>
-  <text x="84" y="386" font-family="Archivo, sans-serif" font-weight="600" font-size="17" fill="var(--str)">Bravo !</text>
+  <text x="84" y="386" class="f-sans" font-weight="600" font-size="17" fill="var(--str)">Bravo !</text>
   <rect x="560" y="356" width="134" height="46" fill="var(--str)"/>
-  <text x="627" y="384" text-anchor="middle" font-family="Roboto Mono, monospace" font-size="11" letter-spacing="1" fill="var(--pan)">SUIVANT</text>
+  <text x="627" y="384" text-anchor="middle" class="f-mono" font-size="11" letter-spacing="1" fill="var(--pan)">SUIVANT</text>
 </svg>
         <svg viewBox="0 0 720 440" style="position:absolute;inset:0;width:100%;height:100%">
           <g id="rep-zones">
@@ -1522,34 +1530,34 @@ textarea.champ:focus{outline:2px solid var(--str);outline-offset:2px}
     <svg id="mock-ap" viewBox="0 0 720 440" role="img" aria-label="La même activité, corrigée">
   <rect x="6" y="6" width="708" height="428" fill="var(--pan)" stroke="var(--regle)"/>
   <rect x="6" y="6" width="708" height="36" fill="var(--pan2)"/>
-  <text x="24" y="29" font-family="Roboto Mono, monospace" font-size="10.5" letter-spacing="1.2" fill="var(--enc2)">ACTIVITÉ 4 — LES PRÉPOSITIONS DE LIEU</text>
+  <text x="24" y="29" class="f-mono" font-size="10.5" letter-spacing="1.2" fill="var(--enc2)">ACTIVITÉ 4 — LES PRÉPOSITIONS DE LIEU</text>
   <rect x="560" y="20" width="110" height="4" fill="var(--regle2)"/><rect x="560" y="20" width="41" height="4" fill="var(--str)"/>
-  <text x="680" y="27" text-anchor="end" font-family="Roboto Mono, monospace" font-size="9.5" fill="var(--enc2)">3 / 8</text>
-  <text x="24" y="82" font-family="Libre Franklin, Helvetica, sans-serif" font-size="14" font-weight="600" fill="var(--enc)">Écrivez la préposition qui convient.</text>
+  <text x="680" y="27" text-anchor="end" class="f-mono" font-size="9.5" fill="var(--enc2)">3 / 8</text>
+  <text x="24" y="82" class="f-sans" font-size="14" font-weight="600" fill="var(--enc)">Écrivez la préposition qui convient.</text>
   <g id="ap-schema"><rect x="466" y="60" width="228" height="132" fill="var(--fond)" stroke="var(--regle)"/>
     <g stroke="var(--enc2)" stroke-width="1.4" fill="none">
       <rect x="486" y="92" width="44" height="34"/><rect x="558" y="92" width="44" height="34"/><rect x="630" y="92" width="44" height="34"/>
     </g>
     <circle cx="508" cy="109" r="6" fill="var(--str)"/><circle cx="580" cy="84" r="6" fill="var(--str)"/><circle cx="652" cy="134" r="6" fill="var(--str)"/>
-    <g font-family="Roboto Mono, monospace" font-size="10" fill="var(--enc2)" text-anchor="middle">
+    <g class="f-mono" font-size="10" fill="var(--enc2)" text-anchor="middle">
       <text x="508" y="152">dans</text><text x="580" y="152">sur</text><text x="652" y="152">sous</text></g>
-    <text x="580" y="176" text-anchor="middle" font-family="Libre Franklin, Helvetica, sans-serif" font-size="10.5" fill="var(--enc3)">La position de l'objet commande la préposition.</text>
+    <text x="580" y="176" text-anchor="middle" class="f-sans" font-size="10.5" fill="var(--enc3)">La position de l'objet commande la préposition.</text>
   </g>
   <rect x="24" y="100" width="416" height="42" fill="var(--fond)" stroke="var(--regle)"/>
-  <text x="38" y="127" font-family="Libre Franklin, Helvetica, sans-serif" font-size="13" fill="var(--enc)">Exemple : Le chat est <tspan fill="var(--str)" font-weight="600">sous</tspan> la chaise.</text>
-  <text x="24" y="192" font-family="Libre Franklin, Helvetica, sans-serif" font-size="13.5" fill="var(--enc)">1. Le crayon est ________ le sac.</text>
+  <text x="38" y="127" class="f-sans" font-size="13" fill="var(--enc)">Exemple : Le chat est <tspan fill="var(--str)" font-weight="600">sous</tspan> la chaise.</text>
+  <text x="24" y="192" class="f-sans" font-size="13.5" fill="var(--enc)">1. Le crayon est ________ le sac.</text>
   <rect x="24" y="206" width="300" height="34" fill="var(--fond)" stroke="var(--regle2)"/>
-  <text x="36" y="228" font-family="Libre Franklin, Helvetica, sans-serif" font-size="12.5" fill="var(--enc)">sur</text>
+  <text x="36" y="228" class="f-sans" font-size="12.5" fill="var(--enc)">sur</text>
   <rect x="24" y="264" width="416" height="82" fill="var(--fond)" stroke="var(--sig)"/>
-  <g font-family="Libre Franklin, Helvetica, sans-serif" font-size="12" fill="var(--enc)">
+  <g class="f-sans" font-size="12" fill="var(--enc)">
     <text x="38" y="290">Vous avez écrit « sur ». Ici, le crayon se trouve à</text>
     <text x="38" y="308">l'intérieur du sac : cherchez la préposition qui marque</text>
     <text x="38" y="326">l'intérieur. Regardez le premier dessin, puis reprenez.</text>
   </g>
   <rect x="24" y="362" width="150" height="42" fill="none" stroke="var(--str)"/>
-  <text x="99" y="389" text-anchor="middle" font-family="Roboto Mono, monospace" font-size="11" letter-spacing="1" fill="var(--str)">RÉESSAYER</text>
+  <text x="99" y="389" text-anchor="middle" class="f-mono" font-size="11" letter-spacing="1" fill="var(--str)">RÉESSAYER</text>
   <rect x="190" y="362" width="150" height="42" fill="none" stroke="var(--regle2)"/>
-  <text x="265" y="389" text-anchor="middle" font-family="Roboto Mono, monospace" font-size="11" letter-spacing="1" fill="var(--enc3)">VOIR L'AIDE</text>
+  <text x="265" y="389" text-anchor="middle" class="f-mono" font-size="11" letter-spacing="1" fill="var(--enc3)">VOIR L'AIDE</text>
 </svg>
     <div class="couche" id="cmp-couche"></div>
     <div class="trait-wipe" id="cmp-trait" style="left:50%"></div>
@@ -2340,7 +2348,7 @@ const SPECIMENS = [
 {nom:`L'illusion de fluidité`, lat:`facilitas fallax`,
  d:`Tout se déroule bien, tout le monde suit, la séance est agréable. Deux semaines plus tard il ne reste rien : l'aisance du moment était le symptôme, pas la preuve.`,
  s:`Excellents résultats en fin de séance, effondrement à quatorze jours.`,
- g:`<path d="M8,44 C30,44 40,20 60,20 C80,20 90,20 112,20" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M60,20 C74,20 84,42 112,46" fill="none" stroke="var(--sig)" stroke-width="1.6" stroke-dasharray="4 3"/><circle cx="60" cy="20" r="3" fill="currentColor"/><text x="88" y="14" font-family="Roboto Mono,monospace" font-size="8" fill="currentColor" opacity=".6">J+14</text>`},
+ g:`<path d="M8,44 C30,44 40,20 60,20 C80,20 90,20 112,20" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M60,20 C74,20 84,42 112,46" fill="none" stroke="var(--sig)" stroke-width="1.6" stroke-dasharray="4 3"/><circle cx="60" cy="20" r="3" fill="currentColor"/><text x="88" y="14" class="f-mono" font-size="8" fill="currentColor" opacity=".6">J+14</text>`},
 {nom:`L'énoncé plus dur que la notion`, lat:`velum verborum`,
  d:`L'item mesure la capacité à décoder une phrase longue plutôt que la compétence visée. On croit évaluer un savoir, on évalue la lecture.`,
  s:`La réussite corrèle avec la longueur de l'énoncé, et l'apprenant réussit la même notion posée oralement.`,
@@ -2356,7 +2364,7 @@ const SPECIMENS = [
 {nom:`Le tout-couvrir`, lat:`programma integrum`,
  d:`Le référentiel est traité case par case, à durée constante. La quantité de contenu fixe le calendrier, et le temps de pratique reçoit ce qui reste — c'est-à-dire rien.`,
  s:`On peut dire combien de notions sont couvertes, mais pas combien de fois chacune a été pratiquée.`,
- g:`<g stroke="currentColor" stroke-width="1.3" fill="none"><rect x="10" y="12" width="18" height="12"/><rect x="32" y="12" width="18" height="12"/><rect x="54" y="12" width="18" height="12"/><rect x="76" y="12" width="18" height="12"/><rect x="98" y="12" width="12" height="12"/><rect x="10" y="28" width="18" height="12"/><rect x="32" y="28" width="18" height="12"/><rect x="54" y="28" width="18" height="12"/><rect x="76" y="28" width="18" height="12"/><rect x="98" y="28" width="12" height="12"/></g><line x1="10" y1="50" x2="24" y2="50" stroke="var(--sig)" stroke-width="3"/><text x="30" y="53" font-family="Roboto Mono,monospace" font-size="8" fill="var(--sig)">pratique</text>`}
+ g:`<g stroke="currentColor" stroke-width="1.3" fill="none"><rect x="10" y="12" width="18" height="12"/><rect x="32" y="12" width="18" height="12"/><rect x="54" y="12" width="18" height="12"/><rect x="76" y="12" width="18" height="12"/><rect x="98" y="12" width="12" height="12"/><rect x="10" y="28" width="18" height="12"/><rect x="32" y="28" width="18" height="12"/><rect x="54" y="28" width="18" height="12"/><rect x="76" y="28" width="18" height="12"/><rect x="98" y="28" width="12" height="12"/></g><line x1="10" y1="50" x2="24" y2="50" stroke="var(--sig)" stroke-width="3"/><text x="30" y="53" class="f-mono" font-size="8" fill="var(--sig)">pratique</text>`}
 ];
 </script>
 
@@ -2441,7 +2449,7 @@ const SPECIMENS = [
       '<div class="tension-lecture">'+
         '<div class="bloc gain"><b>Ce que vous gagnez</b><span class="g"></span></div>'+
         '<div class="bloc cout"><b>Ce que vous payez</b><span class="c"></span></div>'+
-        '<div class="moderateur"><b style="font-family:Roboto Mono,monospace;font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--enc3);font-weight:500;display:block;margin-bottom:.25rem">La variable qui décide</b>'+t.m+'</div>'+
+        '<div class="moderateur"><b style="font-family:var(--police-mono);font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--enc3);font-weight:500;display:block;margin-bottom:.25rem">La variable qui décide</b>'+t.m+'</div>'+
       '</div>';
     const r=$("input",d), g=$(".g",d), c=$(".c",d);
     const maj=()=>{ const v=+r.value, z = v<34?0 : v<67?1 : 2; g.textContent=t.z[z].gain; c.textContent=t.z[z].cout; };
@@ -2502,15 +2510,15 @@ const SPECIMENS = [
       c.setAttribute("fill","var(--fond)"); c.setAttribute("stroke","var(--sig)"); c.setAttribute("stroke-width","1.8");
       const t=document.createElementNS(NS,"text");
       t.setAttribute("x",cx); t.setAttribute("y",y+3.2); t.setAttribute("text-anchor","middle");
-      t.setAttribute("font-family","Roboto Mono, monospace"); t.setAttribute("font-size","8.5");
+      t.setAttribute("class","f-mono"); t.setAttribute("font-size","8.5");
       t.setAttribute("fill","var(--sig)"); t.textContent=String(5-k);
       st.appendChild(c); st.appendChild(t);
     }
     const ax=document.createElementNS(NS,"g");
     ax.innerHTML='<line x1="'+(cx+188)+'" y1="'+(cy-170)+'" x2="'+(cx+188)+'" y2="'+(cy-10)+'" stroke="var(--enc3)" stroke-width="1"/>'+
       '<path d="M'+(cx+184)+','+(cy-164)+' L'+(cx+188)+','+(cy-172)+' L'+(cx+192)+','+(cy-164)+'" fill="none" stroke="var(--enc3)" stroke-width="1"/>'+
-      '<text x="'+(cx+180)+'" y="'+(cy-90)+'" text-anchor="middle" transform="rotate(-90 '+(cx+180)+' '+(cy-90)+')" font-family="Roboto Mono, monospace" font-size="9.5" letter-spacing="1.4" fill="var(--enc2)">INCERTITUDE</text>'+
-      '<text x="'+(cx+14)+'" y="'+(cy+3.5)+'" font-family="Roboto Mono, monospace" font-size="9.5" letter-spacing="1.2" fill="var(--str)" stroke="var(--fond)" stroke-width="3.5" paint-order="stroke" stroke-linejoin="round">MISE EN SERVICE</text>';
+      '<text x="'+(cx+180)+'" y="'+(cy-90)+'" text-anchor="middle" transform="rotate(-90 '+(cx+180)+' '+(cy-90)+')" class="f-mono" font-size="9.5" letter-spacing="1.4" fill="var(--enc2)">INCERTITUDE</text>'+
+      '<text x="'+(cx+14)+'" y="'+(cy+3.5)+'" class="f-mono" font-size="9.5" letter-spacing="1.2" fill="var(--str)" stroke="var(--fond)" stroke-width="3.5" paint-order="stroke" stroke-linejoin="round">MISE EN SERVICE</text>';
     svg.appendChild(ax);
   })();
 
@@ -2527,8 +2535,8 @@ const SPECIMENS = [
     box.style.cssText="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem 1.4rem;margin-top:1.1rem";
     L.forEach(([n,t,d])=>{
       box.appendChild(el("div",null,
-        '<div style="font-family:Roboto Mono,monospace;font-size:9.5px;letter-spacing:.12em;color:var(--sig);margin-bottom:.25rem">'+n+'</div>'+
-        '<div style="font-family:Libre Franklin,sans-serif;font-weight:600;font-size:.92rem;margin-bottom:.2rem">'+t+'</div>'+
+        '<div style="font-family:var(--police-mono);font-size:9.5px;letter-spacing:.12em;color:var(--sig);margin-bottom:.25rem">'+n+'</div>'+
+        '<div style="font-family:var(--police);font-weight:600;font-size:.92rem;margin-bottom:.2rem">'+t+'</div>'+
         '<div style="font-size:.82rem;line-height:1.42;color:var(--enc2)">'+d+'</div>'));
     });
     fig.parentNode.insertBefore(box, fig.nextSibling);
@@ -2634,7 +2642,7 @@ const SPECIMENS = [
         const li=el("li",null,
           '<span class="poignee" aria-hidden="true">⣿</span>'+
           '<span class="rang">'+(pos+1)+'</span>'+
-          '<span><b style="font-family:Libre Franklin,sans-serif;font-weight:600">'+n.t+'</b> — <span style="color:var(--enc2)">'+n.d+'</span></span>'+
+          '<span><b style="font-family:var(--police);font-weight:600">'+n.t+'</b> — <span style="color:var(--enc2)">'+n.d+'</span></span>'+
           '<span class="fleches"><button type="button" data-m="-1" aria-label="Monter">▲</button><button type="button" data-m="1" aria-label="Descendre">▼</button></span>');
         li.draggable=true; li.dataset.pos=pos;
         li.addEventListener("dragstart",e=>{e.dataTransfer.setData("text/plain",pos); li.classList.add("porte");});
@@ -2734,7 +2742,7 @@ const SPECIMENS = [
       $$(".bac").forEach(b=>$$(".jeton",b).forEach(j=>{
         const o=OBS[+j.dataset.i], ok=o.k===b.dataset.k;
         j.classList.add(ok?"bon":"mauvais"); if(ok)bons++;
-        lignes.push('<p style="margin-bottom:.6rem"><span style="font-family:Roboto Mono,monospace;font-size:10.5px;color:'+(ok?"var(--encre)":"var(--faux)")+'">'+String(+j.dataset.i+1).padStart(2,"0")+' · '+(ok?"juste":"à revoir")+'</span><br>'+o.p+'</p>');
+        lignes.push('<p style="margin-bottom:.6rem"><span style="font-family:var(--police-mono);font-size:10.5px;color:'+(ok?"var(--encre)":"var(--faux)")+'">'+String(+j.dataset.i+1).padStart(2,"0")+' · '+(ok?"juste":"à revoir")+'</span><br>'+o.p+'</p>');
       }));
       const nonClassees=$$(".jeton",res).length;
       const v=$("#tri-verdict"); v.className="disp-verdict on";
@@ -2840,7 +2848,7 @@ const SPECIMENS = [
     const NOMS=["Amira","Bao","Carlos","Dmytro","Elena","Farid","Grace","Hyun","Ines","Jonas","Keiko","Luis"];
     const corps=$("tbody",tb);
     NOMS.forEach((n,i)=>{
-      const tr=el("tr",null,'<td>'+n+'</td><td style="font-family:Roboto Mono,monospace;font-size:11px;color:var(--enc3)">'+(i+1)+'</td>'+
+      const tr=el("tr",null,'<td>'+n+'</td><td style="font-family:var(--police-mono);font-size:11px;color:var(--enc3)">'+(i+1)+'</td>'+
         '<td><input type="checkbox" aria-label="Réussite de '+n+'"></td>');
       corps.appendChild(tr);
     });
@@ -2887,7 +2895,7 @@ const SPECIMENS = [
       const mg={g:48,d:18,h:18,b:38}, w=W-mg.g-mg.d, h=H-mg.h-mg.b;
       const X=i=>mg.g+(i-1)/19*w, Y=v=>mg.h+(1-v)*h;
       ctx.clearRect(0,0,W,H); ctx.fillStyle=fond; ctx.fillRect(0,0,W,H);
-      ctx.strokeStyle=reg; ctx.lineWidth=1; ctx.font="11px 'Roboto Mono', monospace"; ctx.fillStyle=enc2;
+      ctx.strokeStyle=reg; ctx.lineWidth=1; ctx.font="11px "+jeton("--police-mono"); ctx.fillStyle=enc2;
       [0,.25,.5,.75,1].forEach(v=>{
         ctx.beginPath(); ctx.moveTo(mg.g,Y(v)+.5); ctx.lineTo(W-mg.d,Y(v)+.5); ctx.stroke();
         ctx.textAlign="right"; ctx.fillText(Math.round(v*100)+"%",mg.g-8,Y(v)+4);
@@ -2902,7 +2910,7 @@ const SPECIMENS = [
       ctx.setLineDash([3,3]); ctx.strokeStyle=sig; ctx.lineWidth=1.2;
       ctx.beginPath(); ctx.moveTo(X(n),H-mg.b); ctx.lineTo(X(n),Y(v)); ctx.lineTo(mg.g,Y(v)); ctx.stroke(); ctx.setLineDash([]);
       ctx.beginPath(); ctx.arc(X(n),Y(v),5,0,7); ctx.fillStyle=sig; ctx.fill();
-      ctx.fillStyle=enc; ctx.font="600 13px 'Roboto Mono', monospace"; ctx.textAlign="left";
+      ctx.fillStyle=enc; ctx.font="600 13px "+jeton("--police-mono"); ctx.textAlign="left";
       ctx.fillText(Math.round(v*100)+" %", X(n)+10, Y(v)-8);
       $("#ech-p").textContent=Math.round(p*100)+" %";
       $("#ech-n").textContent=n;
@@ -2942,7 +2950,7 @@ const SPECIMENS = [
       c.setAttribute("fill","var(--fond)"); c.setAttribute("stroke","var(--sig)"); c.setAttribute("stroke-width","1.5");
       const t=document.createElementNS(NS,"text");
       t.setAttribute("x",d.x); t.setAttribute("y",d.y+3.5); t.setAttribute("text-anchor","middle");
-      t.setAttribute("font-family","Roboto Mono, monospace"); t.setAttribute("font-size","10"); t.setAttribute("fill","var(--sig)");
+      t.setAttribute("class","f-mono"); t.setAttribute("font-size","10"); t.setAttribute("fill","var(--sig)");
       t.textContent=i+1;
       g.appendChild(c); g.appendChild(t); marq.appendChild(g);
     }
