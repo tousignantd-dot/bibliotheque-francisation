@@ -3927,6 +3927,35 @@
 
   q.addEventListener('input', appliquer);
 
+/*<<LIEN-ONGLET>>*/
+  // ── Lien direct vers un onglet ──────────────────────────────────────
+  // Le hash désigne la famille : #defibrillateur, #entreprise, #portfolio…
+  // On réutilise le clic plutôt que de refaire le filtrage : une seconde
+  // implémentation du même choix finit toujours par diverger de la première.
+  (function () {
+    function onglet(nom) {
+      for (var i = 0; i < onglets.length; i++) {
+        if (onglets[i].dataset.f === nom) return onglets[i];
+      }
+      return null;
+    }
+    function suivre() {
+      var b = onglet((location.hash || '').replace(/^#/, ''));
+      if (b && b.getAttribute('aria-pressed') !== 'true') b.click();
+    }
+    onglets.forEach(function (b) {
+      b.addEventListener('click', function () {
+        // history.replaceState : on ne veut pas empiler une entrée par clic,
+        // sinon « retour » redéfile tous les onglets visités un par un.
+        var h = b.dataset.f === 'tout' ? location.pathname : '#' + b.dataset.f;
+        try { history.replaceState(null, '', h); } catch (e) {}
+      });
+    });
+    addEventListener('hashchange', suivre);
+    suivre();
+  }());
+/*<</LIEN-ONGLET>>*/
+
   // ── La bascule fiches / tableau ────────────────────────────────────
   // `cleDate` est déclarée plus bas : une déclaration de fonction est
   // hissée, donc bâtirIndex peut l'appeler ici sans que l'ordre compte.
