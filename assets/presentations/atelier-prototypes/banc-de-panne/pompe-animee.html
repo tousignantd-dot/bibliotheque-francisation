@@ -1,0 +1,358 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>La pompe, en coupe et en marche</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --police: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --police-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --pap:#FFFFFF; --pan:#FAFAFA; --pan2:#F4F4F5; --pan3:#E4E4E7;
+  --enc:#09090B; --enc2:#52525B; --enc3:#71717A;
+  --regle:#E4E4E7; --regle2:#D4D4D8;
+  --bleu:#2B4E9B; --bleu2:#5C7EBF; --bleu-pale:#EAEFFA; --bleu-voile:rgba(43,78,155,.07);
+  --verm:#F5652E; --verm2:#D9541F; --verm-pale:#FEF1EA; --verm-voile:rgba(245,101,46,.09);
+  --grille:transparent;
+  --om:0 1px 2px rgba(9,9,11,.06);
+  --om2:0 4px 12px rgba(9,9,11,.08);
+}
+:root:not([data-theme="light"]){ color-scheme:light dark; }
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --pap:#09090B; --pan:#0F0F11; --pan2:#18181B; --pan3:#27272A;
+  --enc:#FAFAFA; --enc2:#D4D4D8; --enc3:#A1A1AA;
+  --regle:#27272A; --regle2:#3F3F46;
+  --bleu:#8FB2F0; --bleu2:#6E8FCB; --bleu-pale:#18213A; --bleu-voile:rgba(143,178,240,.13);
+  --verm:#FF7A45; --verm2:#E0673A; --verm-pale:#2A1610; --verm-voile:rgba(255,122,69,.14);
+  --grille:transparent;
+  --om:0 1px 2px rgba(0,0,0,.5);
+  --om2:0 4px 16px rgba(0,0,0,.55);
+}}
+:root[data-theme="dark"]{ color-scheme:dark;
+  --pap:#09090B; --pan:#0F0F11; --pan2:#18181B; --pan3:#27272A;
+  --enc:#FAFAFA; --enc2:#D4D4D8; --enc3:#A1A1AA;
+  --regle:#27272A; --regle2:#3F3F46;
+  --bleu:#8FB2F0; --bleu2:#6E8FCB; --bleu-pale:#18213A; --bleu-voile:rgba(143,178,240,.13);
+  --verm:#FF7A45; --verm2:#E0673A; --verm-pale:#2A1610; --verm-voile:rgba(255,122,69,.14);
+  --grille:transparent;
+  --om:0 1px 2px rgba(0,0,0,.5);
+  --om2:0 4px 16px rgba(0,0,0,.55);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pan);color:var(--enc);font-family:var(--police)}
+.tete{max-width:62rem;margin:0 auto;padding:3rem 1.5rem .5rem}
+.sur{font-size:.74rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--bleu);margin:0}
+h1{font-size:1.9rem;font-weight:800;letter-spacing:-.02em;margin:.2rem 0 .6rem}
+.chapeau{color:var(--enc2);max-width:40rem;line-height:1.6;margin:0}
+main{max-width:62rem;margin:0 auto;padding:1rem 1.5rem 4rem}
+.cmd{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;margin:1.5rem 0 1rem}
+.bt{appearance:none;border:1px solid var(--bleu);background:transparent;color:var(--bleu);font:inherit;
+ font-size:.88rem;font-weight:600;padding:.5rem 1.1rem;border-radius:999px;cursor:pointer}
+.bt[aria-pressed=true]{background:var(--bleu);color:var(--pan)}
+.bt.sec{border-color:var(--regle);color:var(--enc3)}
+.bt.sec[aria-pressed=true]{background:var(--enc3);color:var(--pan);border-color:var(--enc3)}
+.scene{background:var(--pan2);border:1px solid var(--regle);border-radius:4px;padding:.5rem}
+svg.pl{display:block;width:100%;height:auto}
+.metal{fill:none;stroke:var(--bleu);stroke-width:2;stroke-linejoin:round}
+.fin{fill:none;stroke:var(--bleu);stroke-width:1.1}
+.hach{stroke:var(--bleu);stroke-width:.9;opacity:.5}
+.plein{fill:var(--bleu);opacity:.07}
+.fer{fill:var(--bleu);opacity:.26}
+.eau{fill:var(--bleu);opacity:.11}
+.flux{fill:none;stroke:var(--bleu);stroke-width:3;stroke-linecap:round;stroke-dasharray:9 13}
+.mal{stroke:var(--verm)!important;fill:var(--verm)}
+.etiq{font-family:var(--police);font-size:12px;fill:var(--enc3);font-weight:600;
+ letter-spacing:.06em;text-transform:uppercase}
+.amen{fill:none;stroke:var(--enc3);stroke-width:.8;opacity:.6}
+.grad{stroke:var(--enc3);stroke-width:1.2}
+.chif{font-family:var(--police);font-size:11px;fill:var(--enc3);text-anchor:middle}
+.zone{fill:none;stroke:var(--verm);stroke-width:5;opacity:.35}
+.lect{display:grid;grid-template-columns:repeat(auto-fit,minmax(11rem,1fr));gap:1px;
+ background:var(--regle);border:1px solid var(--regle);margin-top:1.2rem}
+.lect div{background:var(--pan);padding:.9rem 1rem}
+.lect dt{font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--enc3);margin:0 0 .3rem}
+.lect dd{margin:0;font-size:1.5rem;font-weight:700;font-variant-numeric:tabular-nums}
+.lect dd small{font-size:.8rem;font-weight:500;color:var(--enc3)}
+.lect .hs dd{color:var(--verm)}
+.note{color:var(--enc3);font-size:.85rem;margin:1rem 0 0;max-width:40rem;line-height:1.6}
+.sig{margin:2rem 0 0;padding:1.4rem 0 0;border-top:1px solid var(--regle);list-style:none;font-size:.9rem}
+.sig li{display:flex;gap:.7rem;padding:.4rem 0;color:var(--enc2)}
+.sig b{color:var(--enc);font-weight:600}
+.sig .min{font-family:var(--police-mono,ui-monospace,monospace);font-size:.78rem;color:var(--verm);white-space:nowrap}
+.pied{max-width:62rem;margin:0 auto;padding:1.5rem 1.5rem 4rem;color:var(--enc3);font-size:.85rem}
+.pied a{color:var(--bleu)}
+</style></head><body>
+<!--<<HORS-ENCART>>--><header class="tete">
+<p class="sur">Banc de panne · la pompe</p>
+<h1>La pompe, en coupe et en marche</h1>
+<p class="chapeau">Le même mécanisme, deux fois. Un seul nombre change d'un état à l'autre :
+la longueur de la course. Tout ce que vous voyez bouger en découle — le volume par coup,
+les clapets, et l'aiguille.</p>
+</header><!--<</HORS-ENCART>>-->
+<main>
+<div class="cmd">
+  <button class="bt" id="bSaine"  aria-pressed="true">Pompe saine</button>
+  <button class="bt" id="bFaible" aria-pressed="false">Pompe qui faiblit</button>
+  <button class="bt sec" id="bPause" aria-pressed="false">Arrêter</button>
+  <button class="bt sec" id="bCoup">Un coup</button>
+  <button class="bt sec" id="bRal" aria-pressed="false">Ralenti</button>
+</div>
+
+<div class="scene">
+<svg class="pl" viewBox="0 0 1000 470" role="img"
+     aria-label="Coupe d'une pompe vibratoire en fonctionnement">
+  <!-- ADMISSION : la conduite qui monte vers la tête -->
+  <path class="metal" d="M644 470 L644 306"/>
+  <path class="metal" d="M676 470 L676 306"/>
+  <path class="flux" id="fluxIn" d="M660 466 L660 292"/>
+
+  <!-- CORPS : le cylindre en coupe -->
+  <rect class="metal plein" x="120" y="150" width="520" height="170" rx="6"/>
+  <rect class="fin" x="120" y="190" width="590" height="90"/>
+  <g id="bobine">
+    <rect class="fin" x="200" y="154" width="160" height="34"/>
+    <rect class="fin" x="200" y="282" width="160" height="34"/>
+    <g class="hach" id="hachBob"></g>
+  </g>
+
+  <!-- EAU : la chambre, entre la face droite du piston et les clapets -->
+  <rect class="eau" id="chambre" x="390" y="192" width="294" height="86"/>
+
+  <!-- RESSORT, du fond fixe à la face gauche du piston -->
+  <polyline class="fin" id="ressort" points=""/>
+  <line class="metal" x1="122" y1="192" x2="122" y2="278"/>
+
+  <!-- PISTON -->
+  <g id="piston">
+    <rect class="metal fer" x="0" y="192" width="130" height="86" rx="3"/>
+    <line class="fin" x1="16" y1="192" x2="16" y2="278"/>
+    <line class="fin" x1="114" y1="192" x2="114" y2="278"/>
+  </g>
+
+  <!-- TÊTE : les deux clapets -->
+  <path class="metal" d="M640 150 L710 150 L710 320 L640 320"/>
+  <!-- admission : la portée, puis le battant sur sa charnière -->
+  <path class="fin" d="M676 302 L692 302"/>
+  <g id="clapetA" transform="rotate(0,640,302)">
+    <path class="metal" d="M640 302 L678 302"/>
+    <path class="fin"   d="M643 307 L677 307"/>
+  </g>
+  <circle cx="640" cy="302" r="3.6" fill="var(--bleu)"/>
+  <!-- refoulement : le même, couché dans le sens de la conduite -->
+  <path class="fin" d="M684 194 L684 214 M684 256 L684 276"/>
+  <g id="clapetR" transform="rotate(0,684,214)">
+    <path class="metal" d="M684 214 L684 256"/>
+    <path class="fin"   d="M689 217 L689 255"/>
+  </g>
+  <circle cx="684" cy="214" r="3.6" fill="var(--bleu)"/>
+
+  <!-- REFOULEMENT vers le manomètre et le groupe -->
+  <path class="metal" d="M710 217 L1000 217 M710 253 L1000 253"/>
+  <path class="metal" d="M814 217 L814 172 M846 217 L846 172"/>
+  <path class="flux" id="fluxOut" d="M714 235 L1000 235"/>
+
+  <!-- MANOMÈTRE -->
+  <g id="mano" transform="translate(830,100)">
+    <circle class="metal" cx="0" cy="0" r="72"/>
+    <circle class="fin" cx="0" cy="0" r="62"/>
+    <path class="zone" id="cible" d=""/>
+    <g id="grads"></g>
+    <line class="grad" id="aiguille" x1="0" y1="8" x2="0" y2="-52" stroke-width="3"/>
+    <circle cx="0" cy="0" r="5" fill="var(--verm)"/>
+    <text class="chif" y="44" id="barTxt" style="font-size:15px;font-weight:700">—</text>
+  </g>
+
+  <!-- ÉTIQUETTES : toutes les amenées sortent par le haut ou par le bas,
+       jamais au travers d'un organe. -->
+  <g class="amen">
+    <path d="M180 190 L180 132"/>
+    <path d="M280 154 L280 120"/>
+    <path d="M400 282 L400 356"/>
+    <path d="M660 312 L660 412 L600 412"/>
+    <path d="M690 250 L690 412 L760 412"/>
+  </g>
+  <text class="etiq" x="180" y="124" text-anchor="middle">ressort</text>
+  <text class="etiq" x="280" y="112" text-anchor="middle">bobine</text>
+  <text class="etiq" x="400" y="372" text-anchor="middle">piston</text>
+  <text class="etiq" x="594" y="416" text-anchor="end">clapet d'admission</text>
+  <text class="etiq" x="766" y="416">clapet de refoulement</text>
+</svg>
+</div>
+
+<dl class="lect" id="lect">
+  <div><dt>Course</dt><dd id="vCourse">—</dd></div>
+  <div><dt>Volume par coup</dt><dd id="vVol">—</dd></div>
+  <div><dt>Pression</dt><dd id="vBar">—</dd></div>
+  <div><dt>Cadence</dt><dd id="vHz">—</dd></div>
+</dl>
+
+<p class="note" id="note"></p>
+
+<!--<<HORS-ENCART>>--><ul class="sig" id="sig"></ul><!--<</HORS-ENCART>>-->
+</main>
+<!--<<HORS-ENCART>>--><footer class="pied">La planche fixe de la pompe est dans
+<a href="planche-coupes.html">les cinq planches</a> ; la leçon complète est
+<a href="avant-le-banc.html">Avant le banc</a>.</footer><!--<</HORS-ENCART>>-->
+
+<script>
+var ETATS = {"saine": {"amp": 1.0, "chasse": 0.0, "nom": "Pompe saine"}, "faible": {"amp": 0.5811, "chasse": 0.03, "nom": "Pompe qui faiblit"}}, SIGNES = [{"geste": "Faire couler le groupe à vide, sans porte-filtre", "cout": 1, "dit": "Le débit est faible, mais parfaitement symétrique."}, {"geste": "Lire le manomètre pendant une extraction", "cout": 1, "dit": "5,5 bar. Elle ne monte pas plus haut."}, {"geste": "Écouter la pompe pendant une extraction", "cout": 1, "dit": "Elle force. Le ton monte et redescend, comme si elle cherchait sa pression."}, {"geste": "Chronométrer une extraction (25 g pour 36 g)", "cout": 2, "dit": "38 secondes. Le filet est régulier, mais il n'a pas de nerf."}], BAR_PLEIN = 9.0, RALENTI = 24;
+var HZ_REEL = 60, COURSE_MAX = 120, X_RETRAIT = 190, CM3_PLEIN = 1.4;
+
+function el(i){ return document.getElementById(i); }
+
+/* ── hachures du bobinage : dessinées, pas peintes ─────────────────── */
+(function(){
+  var d = "";
+  for (var x = 206; x < 358; x += 7) {
+    d += '<line x1="' + x + '" y1="186" x2="' + (x - 10) + '" y2="156"/>';
+    d += '<line x1="' + x + '" y1="314" x2="' + (x - 10) + '" y2="284"/>';
+  }
+  el("hachBob").innerHTML = d;
+})();
+
+/* ── cadran : 0 à 12 bar sur 270°, zone de service en vermillon ────── */
+function ang(bar){ return -135 + (bar / 12) * 270; }
+function pt(a, r){ var t = (a - 90) * Math.PI / 180; return [r*Math.cos(t), r*Math.sin(t)]; }
+(function(){
+  var g = "";
+  for (var b = 0; b <= 12; b++) {
+    var a = ang(b), i = pt(a, b % 2 ? 52 : 46), o = pt(a, 58);
+    g += '<line class="grad" x1="'+i[0].toFixed(1)+'" y1="'+i[1].toFixed(1)
+       + '" x2="'+o[0].toFixed(1)+'" y2="'+o[1].toFixed(1)+'"/>';
+    if (b % 2 === 0) {
+      var c = pt(a, 36);
+      g += '<text class="chif" x="'+c[0].toFixed(1)+'" y="'+(c[1]+4).toFixed(1)+'">'+b+'</text>';
+    }
+  }
+  el("grads").innerHTML = g;
+  var a1 = ang(8.5), a2 = ang(9.5), p1 = pt(a1, 58), p2 = pt(a2, 58);
+  el("cible").setAttribute("d", 'M'+p1[0].toFixed(1)+' '+p1[1].toFixed(1)
+    + ' A 58 58 0 0 1 '+p2[0].toFixed(1)+' '+p2[1].toFixed(1));
+})();
+
+/* ── le ressort : ses spires se serrent quand le piston recule ─────── */
+function ressort(xPiston){
+  var x0 = 124, n = 9, pas = (xPiston - x0) / n, p = [x0 + ',235'];
+  for (var i = 0; i < n; i++) {
+    p.push((x0 + pas * (i + .5)).toFixed(1) + ',' + (i % 2 ? 272 : 198));
+  }
+  p.push(xPiston.toFixed(1) + ',235');
+  el("ressort").setAttribute("points", p.join(" "));
+}
+
+/* ── l'état courant ────────────────────────────────────────────────── */
+var etat = "saine", t0 = performance.now(), pause = false, unCoup = 0, phase = 0;
+var ralenti = RALENTI, xPrec = null, parIn = 0, parOut = 0;
+
+function amplitude(ms){
+  var e = ETATS[etat];
+  /* la chasse : l'amplitude elle-même ondule, sur ~2,6 s.
+     C'est ça, « le ton qui monte et redescend ». */
+  return e.amp + e.chasse * Math.sin(ms / 2600 * 2 * Math.PI);
+}
+
+function dessiner(ms){
+  var amp = amplitude(ms);
+  var course = COURSE_MAX * amp;
+  /* phase 0 → piston au repos à droite (fin de refoulement)
+     le solénoïde le tire à gauche sur la première moitié : aspiration
+     le ressort le repousse à droite sur la seconde : refoulement */
+  var u = phase;
+  var recul = (1 - Math.cos(2 * Math.PI * u)) / 2;      /* 0 → 1 → 0 */
+  var x = X_RETRAIT + course * (1 - recul);
+  var versGauche = u < .5;
+
+  el("piston").setAttribute("transform", "translate(" + x.toFixed(1) + ",0)");
+  ressort(x);
+  el("chambre").setAttribute("x", (x + 130).toFixed(1));
+  el("chambre").setAttribute("width", Math.max(0, 684 - (x + 130)).toFixed(1));
+
+  /* les clapets : l'admission s'ouvre en aspiration, le refoulement en poussée.
+     Ils ne s'ouvrent que si le piston bouge vraiment — au point mort, tout est fermé. */
+  var vitesse = Math.abs(Math.sin(2 * Math.PI * u)) * amp;
+  var ouvertA = versGauche && vitesse > .12, ouvertR = !versGauche && vitesse > .12;
+  var oA = ouvertA ? Math.min(1, vitesse / .45) : 0;
+  var oR = ouvertR ? Math.min(1, vitesse / .45) : 0;
+  el("clapetA").setAttribute("transform", "rotate(" + (-38 * oA).toFixed(1) + ",640,302)");
+  el("clapetR").setAttribute("transform", "rotate(" + (-38 * oR).toFixed(1) + ",684,214)");
+  el("fluxIn").style.opacity  = ouvertA ? .9 : .14;
+  el("fluxOut").style.opacity = ouvertR ? .9 : .14;
+  /* ce qui avance, c'est le volume déplacé — pas le temps qui passe */
+  var dep = xPrec === null ? 0 : Math.abs(x - xPrec); xPrec = x;
+  if (ouvertA) parIn  += dep;
+  if (ouvertR) parOut += dep * 1.6;   /* la conduite est plus étroite : ça file */
+  el("fluxIn").style.strokeDashoffset  = (-parIn).toFixed(1);
+  el("fluxOut").style.strokeDashoffset = (-parOut).toFixed(1);
+  el("bobine").style.opacity = versGauche ? 1 : .42;
+
+  var bar = BAR_PLEIN * amp;
+  el("aiguille").setAttribute("transform", "rotate(" + ang(bar).toFixed(2) + ")");
+  el("barTxt").textContent = bar.toFixed(1).replace(".", ",") + " bar";
+
+  var faible = bar < 8.5;
+  el("aiguille").classList.toggle("mal", faible);
+  el("barTxt").style.fill = faible ? "var(--verm)" : "var(--bleu)";
+  el("vCourse").textContent = Math.round(amp * 100) + " %";
+  el("vVol").innerHTML = (CM3_PLEIN * amp).toFixed(2).replace(".", ",") + " <small>cm³</small>";
+  el("vBar").innerHTML = bar.toFixed(1).replace(".", ",") + " <small>bar</small>";
+  el("vHz").innerHTML = HZ_REEL + " <small>Hz — montré " + ralenti + " fois plus lent</small>";
+  el("lect").querySelectorAll("div")[2].classList.toggle("hs", faible);
+  el("lect").querySelectorAll("div")[0].classList.toggle("hs", amp < .9);
+}
+
+var NOTES = {
+ saine: "À course pleine, chaque aller-retour chasse 1,4 cm³ et l'aiguille se cale dans la "
+      + "bande de service. Le clapet d'admission s'ouvre pendant que la bobine tire le piston ; "
+      + "celui de refoulement s'ouvre quand le ressort le repousse. Rien d'autre ne se passe.",
+ faible: "Le ressort a perdu sa raideur : le piston ne va plus au bout. La course tombe à "
+      + "six dixièmes, le volume par coup avec elle, et la pression ne dépasse plus 5,5 bar. "
+      + "Regardez l'aiguille : elle ne descend pas, elle CHERCHE — c'est l'amplitude elle-même "
+      + "qui ondule, et c'est ce que l'oreille entend quand le ton monte et redescend. "
+      + "Le débit, lui, reste parfaitement régulier. C'est ce qui trompe."
+};
+
+function poser(e){
+  etat = e;
+  el("bSaine").setAttribute("aria-pressed", e === "saine");
+  el("bFaible").setAttribute("aria-pressed", e === "faible");
+  el("note").textContent = NOTES[e];
+}
+
+var dernier = null;
+function boucle(ms){
+  if (dernier === null) dernier = ms;
+  var dt = ms - dernier; dernier = ms;
+  if (!pause || unCoup > 0) {
+    var d = (dt / 1000) * (HZ_REEL / ralenti);
+    if (unCoup > 0) { d = Math.min(d, unCoup); unCoup -= d; }
+    phase = (phase + d) % 1;
+  }
+  dessiner(ms);
+  requestAnimationFrame(boucle);
+}
+
+el("bSaine").addEventListener("click", function(){ poser("saine"); });
+el("bFaible").addEventListener("click", function(){ poser("faible"); });
+el("bPause").addEventListener("click", function(){
+  pause = !pause;
+  this.setAttribute("aria-pressed", pause);
+  this.textContent = pause ? "Reprendre" : "Arrêter";
+});
+el("bRal").addEventListener("click", function(){
+  ralenti = ralenti === RALENTI ? RALENTI * 4 : RALENTI;
+  this.setAttribute("aria-pressed", ralenti !== RALENTI);
+});
+el("bCoup").addEventListener("click", function(){
+  if (!pause) { pause = true; el("bPause").setAttribute("aria-pressed", true);
+                el("bPause").textContent = "Reprendre"; }
+  xPrec = null;   /* on repart d'un piston neuf : pas de saut d'eau */
+  unCoup = 1;
+});
+
+var lst = el("sig"); if (lst) lst.innerHTML = SIGNES.map(function(s){
+  return '<li><span class="min">' + s.cout + ' min</span><span><b>' + s.geste
+    + '</b> — ' + s.dit + '</span></li>'; }).join("");
+
+poser("saine");
+requestAnimationFrame(boucle);
+</script></body></html>
