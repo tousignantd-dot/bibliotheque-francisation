@@ -1,0 +1,345 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Le joint de groupe, en coupe et en marche</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --police: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --police-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --pap:#FFFFFF; --pan:#FAFAFA; --pan2:#F4F4F5; --pan3:#E4E4E7;
+  --enc:#09090B; --enc2:#52525B; --enc3:#71717A;
+  --regle:#E4E4E7; --regle2:#D4D4D8;
+  --bleu:#2B4E9B; --bleu2:#5C7EBF; --bleu-pale:#EAEFFA; --bleu-voile:rgba(43,78,155,.07);
+  --verm:#F5652E; --verm2:#D9541F; --verm-pale:#FEF1EA; --verm-voile:rgba(245,101,46,.09);
+  --grille:transparent;
+  --om:0 1px 2px rgba(9,9,11,.06);
+  --om2:0 4px 12px rgba(9,9,11,.08);
+}
+:root:not([data-theme="light"]){ color-scheme:light dark; }
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --pap:#09090B; --pan:#0F0F11; --pan2:#18181B; --pan3:#27272A;
+  --enc:#FAFAFA; --enc2:#D4D4D8; --enc3:#A1A1AA;
+  --regle:#27272A; --regle2:#3F3F46;
+  --bleu:#8FB2F0; --bleu2:#6E8FCB; --bleu-pale:#18213A; --bleu-voile:rgba(143,178,240,.13);
+  --verm:#FF7A45; --verm2:#E0673A; --verm-pale:#2A1610; --verm-voile:rgba(255,122,69,.14);
+  --grille:transparent;
+  --om:0 1px 2px rgba(0,0,0,.5);
+  --om2:0 4px 16px rgba(0,0,0,.55);
+}}
+:root[data-theme="dark"]{ color-scheme:dark;
+  --pap:#09090B; --pan:#0F0F11; --pan2:#18181B; --pan3:#27272A;
+  --enc:#FAFAFA; --enc2:#D4D4D8; --enc3:#A1A1AA;
+  --regle:#27272A; --regle2:#3F3F46;
+  --bleu:#8FB2F0; --bleu2:#6E8FCB; --bleu-pale:#18213A; --bleu-voile:rgba(143,178,240,.13);
+  --verm:#FF7A45; --verm2:#E0673A; --verm-pale:#2A1610; --verm-voile:rgba(255,122,69,.14);
+  --grille:transparent;
+  --om:0 1px 2px rgba(0,0,0,.5);
+  --om2:0 4px 16px rgba(0,0,0,.55);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pan);color:var(--enc);font-family:var(--police)}
+.tete{max-width:62rem;margin:0 auto;padding:3rem 1.5rem .5rem}
+.sur{font-size:.74rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--bleu);margin:0}
+h1{font-size:1.9rem;font-weight:800;letter-spacing:-.02em;margin:.2rem 0 .6rem}
+.chapeau{color:var(--enc2);max-width:42rem;line-height:1.6;margin:0}
+main{max-width:62rem;margin:0 auto;padding:1rem 1.5rem 4rem}
+.cmd{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;margin:1.5rem 0 1rem}
+.bt{appearance:none;border:1px solid var(--bleu);background:transparent;color:var(--bleu);font:inherit;
+ font-size:.88rem;font-weight:600;padding:.5rem 1.1rem;border-radius:999px;cursor:pointer}
+.bt[aria-pressed=true]{background:var(--bleu);color:var(--pan)}
+.bt.sec{border-color:var(--regle);color:var(--enc3)}
+.scene{background:var(--pan2);border:1px solid var(--regle);border-radius:4px;padding:.5rem}
+svg.pl{display:block;width:100%;height:auto}
+.metal{fill:none;stroke:var(--bleu);stroke-width:2;stroke-linejoin:round}
+.fin{fill:none;stroke:var(--bleu);stroke-width:1.1}
+.eau{fill:var(--bleu);opacity:.16}
+.flux{fill:none;stroke:var(--bleu);stroke-linecap:round;stroke-dasharray:7 11}
+.mal{stroke:var(--verm)}
+.etiq{font-family:var(--police);font-size:12px;fill:var(--enc3);font-weight:600;
+ letter-spacing:.06em;text-transform:uppercase}
+.etiq.m{fill:var(--verm)}
+.amen{fill:none;stroke:var(--enc3);stroke-width:.8;opacity:.6}
+.grad{stroke:var(--enc3);stroke-width:1.2}
+.chif{font-family:var(--police);font-size:11px;fill:var(--enc3);text-anchor:middle}
+.zone{fill:none;stroke:var(--verm);stroke-width:5;opacity:.35}
+/* LA TRACE DU MANOMÈTRE — c'est elle, le sujet de la page. */
+.trace{fill:none;stroke:var(--verm);stroke-width:2.4;stroke-linejoin:round}
+.trace.bon{stroke:var(--bleu)}
+.cadre{fill:none;stroke:var(--regle);stroke-width:1}
+.lect{display:grid;grid-template-columns:repeat(auto-fit,minmax(10rem,1fr));gap:1px;
+ background:var(--regle);border:1px solid var(--regle);margin-top:1.2rem}
+.lect div{background:var(--pan);padding:.9rem 1rem}
+.lect dt{font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--enc3);margin:0 0 .3rem}
+.lect dd{margin:0;font-size:1.5rem;font-weight:700;font-variant-numeric:tabular-nums}
+.lect dd small{font-size:.8rem;font-weight:500;color:var(--enc3)}
+.lect .hs dd{color:var(--verm)}
+.verdict{margin-top:1rem;padding:.9rem 1.1rem;border-left:3px solid var(--bleu);
+ background:var(--pan2);font-size:.95rem;min-height:3.2rem}
+.verdict.mal{border-left-color:var(--verm)}
+.verdict b{font-weight:700}
+.note{color:var(--enc3);font-size:.85rem;margin:1rem 0 0;max-width:42rem;line-height:1.6}
+.sig{margin:2rem 0 0;padding:1.4rem 0 0;border-top:1px solid var(--regle);list-style:none;font-size:.9rem}
+.sig li{display:flex;gap:.7rem;padding:.4rem 0;color:var(--enc2)}
+.sig b{color:var(--enc);font-weight:600}
+.sig .min{font-family:var(--police-mono,ui-monospace,monospace);font-size:.78rem;color:var(--verm);white-space:nowrap}
+.pied{max-width:62rem;margin:0 auto;padding:1.5rem 1.5rem 4rem;color:var(--enc3);font-size:.85rem}
+.pied a{color:var(--bleu)}
+</style></head><body>
+<!--<<HORS-ENCART>>--><header class="tete">
+<p class="sur">Banc de panne · le joint de groupe</p>
+<h1>Le joint de groupe, en coupe et en marche</h1>
+<p class="chapeau">Deux pannes se lisent au manomètre, et un coup d'œil ne les sépare pas :
+l'aiguille est basse dans les deux cas. C'est son mouvement qui les distingue. Regardez-la
+pendant toute l'extraction.</p>
+</header><!--<</HORS-ENCART>>-->
+<main>
+<div class="cmd">
+  <button class="bt" id="bNeuf"  aria-pressed="true">Joint neuf</button>
+  <button class="bt" id="bDurci" aria-pressed="false">Joint durci</button>
+  <button class="bt sec" id="bRe">Relancer l'extraction</button>
+</div>
+
+<div class="scene">
+<svg class="pl" viewBox="0 0 1000 480" role="img"
+     aria-label="Coupe d'un groupe et de son porte-filtre pendant l'extraction">
+  <!-- LE GROUPE -->
+  <path class="metal" d="M300 40 L700 40 L700 150 L300 150 Z"/>
+  <rect class="eau" x="304" y="60" width="392" height="88"/>
+  <path class="metal" d="M320 150 L680 150"/>
+
+  <!-- LE JOINT, de part et d'autre de l'ouverture -->
+  <rect class="fin" id="jointG" x="298" y="150" width="46" height="12"/>
+  <rect class="fin" x="656" y="150" width="46" height="12"/>
+  <g id="fissures" opacity="0" stroke="var(--verm)" stroke-width="1.6" fill="none">
+    <path d="M304 152 L308 156 L304 160 M316 152 L320 156 L316 160
+             M328 152 L332 156 L328 160 M662 152 L666 156 L662 160
+             M676 152 L680 156 L676 160 M690 152 L694 156 L690 160"/>
+  </g>
+  <!-- la fente : elle s'ouvre, elle ne clignote pas -->
+  <rect id="fente" x="300" y="156" width="44" height="0" fill="var(--verm)" opacity=".6"/>
+
+  <!-- LE PORTE-FILTRE -->
+  <path class="metal" d="M288 162 L344 162 L344 174 L288 174 Z"/>
+  <path class="metal" d="M656 162 L712 162 L712 174 L656 174 Z"/>
+  <path class="metal" d="M344 162 L344 300 L456 360 L544 360 L656 300 L656 162"/>
+  <path class="metal" d="M456 360 L456 392 L544 392 L544 360"/>
+  <path class="fin" d="M712 174 L742 200"/>
+
+  <!-- LE LIT DE CAFÉ -->
+  <rect x="358" y="176" width="284" height="104" fill="var(--bleu)" opacity=".10"/>
+  <rect class="eau" id="litEau" x="358" y="176" width="284" height="104" opacity="0"/>
+  <rect class="fin" x="358" y="176" width="284" height="104"/>
+
+  <!-- LES FILETS -->
+  <path class="flux" id="fluxBed" d="M500 152 L500 176" stroke-width="5"/>
+  <path class="flux mal" id="fluxFuite" d="M322 164 L300 176 L246 214 L196 258" stroke-width="0"/>
+  <path class="flux" id="filet" d="M500 394 L500 470" stroke-width="6"/>
+
+  <!-- LE MANOMÈTRE -->
+  <g transform="translate(852,112)">
+    <circle class="metal" cx="0" cy="0" r="74"/>
+    <circle class="fin" cx="0" cy="0" r="64"/>
+    <path class="zone" id="cible" d=""/>
+    <g id="grads"></g>
+    <line class="grad" id="aiguille" x1="0" y1="8" x2="0" y2="-54" stroke-width="3"/>
+    <circle cx="0" cy="0" r="5" fill="var(--verm)"/>
+    <text class="chif" y="46" id="barTxt" style="font-size:15px;font-weight:700">—</text>
+  </g>
+
+  <!-- LA TRACE : la pression depuis le début de l'extraction -->
+  <g transform="translate(704,252)">
+    <rect class="cadre" x="0" y="0" width="212" height="92"/>
+    <path class="fin" d="M0 30 L212 30" opacity=".5"/>
+    <text class="chif" x="-7" y="34" text-anchor="end">9</text>
+    <text class="chif" x="-7" y="96" text-anchor="end">0</text>
+    <text class="etiq" x="0" y="-8">la pression, seconde par seconde</text>
+    <polyline class="trace" id="trace" points=""/>
+  </g>
+
+  <!-- ÉTIQUETTES -->
+  <g class="amen">
+    <path d="M292 156 L240 120 L196 120"/>
+    <path d="M636 218 L700 196 L724 196"/>
+  </g>
+  <text class="etiq" x="190" y="124" text-anchor="end">joint de groupe</text>
+  <text class="etiq" x="730" y="200">lit de café</text>
+  <g id="etiqFuite" opacity="0">
+    <path class="amen" d="M216 248 L196 288 L176 288"/>
+    <text class="etiq m" x="170" y="292" text-anchor="end">la fuite, qui siffle</text>
+  </g>
+</svg>
+</div>
+
+<dl class="lect" id="lect">
+  <div><dt>Pression</dt><dd id="vBar">—</dd></div>
+  <div><dt>Part qui fuit</dt><dd id="vFuite">—</dd></div>
+  <div><dt>Lit extrait</dt><dd id="vExt">—</dd></div>
+  <div><dt>Dans la tasse</dt><dd id="vG">—</dd></div>
+  <div><dt>Temps</dt><dd id="vT">—</dd></div>
+</dl>
+
+<p class="verdict" id="verdict">L'extraction est en cours.</p>
+<p class="note" id="note"></p>
+<!--<<HORS-ENCART>>--><ul class="sig" id="sig"></ul><!--<</HORS-ENCART>>-->
+</main>
+<!--<<HORS-ENCART>>--><footer class="pied">Les deux autres mécanismes :
+<a href="pompe-animee.html">la pompe</a> et <a href="douchette-animee.html">la douchette</a>.
+Les planches fixes sont dans <a href="planche-coupes.html">les cinq planches</a>.</footer><!--<</HORS-ENCART>>-->
+
+<script>
+var ETATS = {"neuf": {"cede": 0.0, "nom": "Joint neuf"}, "durci": {"cede": 0.38, "nom": "Joint durci"}}, SIGNES = [{"geste": "Lire le manomètre pendant une extraction", "cout": 1, "dit": "7 bar, et ça retombe pendant l'extraction."}, {"geste": "Regarder le pourtour du porte-filtre pendant l'extraction", "cout": 1, "dit": "Un jet mince s'échappe sur le côté gauche, avec un sifflement."}, {"geste": "Démonter la douchette et inspecter le panier", "cout": 4, "dit": "Douchette propre. Par contre le joint est dur, fendillé sur tout le pourtour."}], BAR_PLEIN = 9.0,
+    T_CEDE = 7.0, CIBLE_G = 36.0, T_REF = 26.0, VITESSE = 3;
+
+function el(i){ return document.getElementById(i); }
+
+/* ── cadran : 0 à 12 bar sur 270° ─────────────────────────────────── */
+function ang(bar){ return -135 + (bar / 12) * 270; }
+function pt(a, r){ var t = (a - 90) * Math.PI / 180; return [r*Math.cos(t), r*Math.sin(t)]; }
+(function(){
+  var g = "";
+  for (var b = 0; b <= 12; b++) {
+    var a = ang(b), i = pt(a, b % 2 ? 52 : 46), o = pt(a, 58);
+    g += '<line class="grad" x1="'+i[0].toFixed(1)+'" y1="'+i[1].toFixed(1)
+       + '" x2="'+o[0].toFixed(1)+'" y2="'+o[1].toFixed(1)+'"/>';
+    if (b % 2 === 0) { var c = pt(a, 36);
+      g += '<text class="chif" x="'+c[0].toFixed(1)+'" y="'+(c[1]+4).toFixed(1)+'">'+b+'</text>'; }
+  }
+  el("grads").innerHTML = g;
+  var p1 = pt(ang(8.5), 58), p2 = pt(ang(9.5), 58);
+  el("cible").setAttribute("d", 'M'+p1[0].toFixed(1)+' '+p1[1].toFixed(1)
+    + ' A 58 58 0 0 1 '+p2[0].toFixed(1)+' '+p2[1].toFixed(1));
+})();
+
+/* ── l'extraction ─────────────────────────────────────────────────── */
+var etat = "neuf", ts = 0, g = 0, ext = 0, fini = false, finA = null, trace = [];
+
+function remettre(){
+  ts = 0; g = 0; ext = 0; fini = false; finA = null; trace = [];
+  el("verdict").textContent = "L'extraction est en cours.";
+  el("verdict").classList.remove("mal");
+  el("fissures").style.opacity = ETATS[etat].cede ? 1 : 0;
+  el("trace").classList.toggle("bon", !ETATS[etat].cede);
+}
+
+/* La lèvre ne cède pas d'un coup : elle s'écrase à mesure qu'elle chauffe.
+   Une fonction qui monte puis se tasse — pas un interrupteur. */
+function part(t){
+  var c = ETATS[etat].cede;
+  return c ? c * (1 - Math.exp(-t / (T_CEDE / 2.2))) : 0;
+}
+
+function pas(dt){
+  var f = part(ts);
+  /* Ce qui s'échappe ne pousse plus sur le café : la pression tombe d'autant. */
+  var bar = BAR_PLEIN * (1 - f * 0.84);
+  /* Le lit mal plaqué oppose moins de résistance — d'où un shot COURT, que le
+     chronomètre du banc annonce, et qui masque la panne au lieu de la dire. */
+  var debit = (CIBLE_G / T_REF) * (1 + f * 1.05);
+  /* Mais il s'extrait mal : moins de pression, un contact qui se défait. */
+  ext += (bar / BAR_PLEIN) * dt / T_REF;
+  g += debit * dt;
+  ts += dt;
+  if (trace.length === 0 || ts - trace[trace.length-1][0] > .25) trace.push([ts, bar]);
+  if (g >= CIBLE_G) { g = CIBLE_G; fini = true; conclure(); }
+}
+
+function dessiner(){
+  var f = part(ts), bar = BAR_PLEIN * (1 - f * 0.84);
+
+  el("fente").setAttribute("height", (f / .38 * 7).toFixed(2));
+  el("fente").setAttribute("y", (156 - f / .38 * 3.5).toFixed(2));
+  el("fluxFuite").setAttribute("stroke-width", (f * 16).toFixed(2));
+  el("fluxFuite").style.opacity = fini ? .2 : 1;
+  el("etiqFuite").style.opacity = f > .06 ? 1 : 0;
+  el("fluxBed").setAttribute("stroke-width", (5 * (1 - f * .5)).toFixed(2));
+  el("fluxBed").style.opacity = fini ? .2 : .95;
+  el("filet").setAttribute("stroke-width", (6 * (1 + f * .5)).toFixed(2));
+  el("filet").style.opacity = ts > .4 && !fini ? .9 : .2;
+  var dec = (-ts * 46).toFixed(1);
+  el("fluxBed").style.strokeDashoffset = dec;
+  el("filet").style.strokeDashoffset = dec;
+  el("fluxFuite").style.strokeDashoffset = dec;
+  el("litEau").style.opacity = Math.min(1, ext * 1.1).toFixed(3);
+
+  el("aiguille").setAttribute("transform", "rotate(" + ang(bar).toFixed(2) + ")");
+  el("aiguille").classList.toggle("mal", bar < 8.5);
+  el("barTxt").textContent = bar.toFixed(1).replace(".", ",") + " bar";
+  el("barTxt").style.fill = bar < 8.5 ? "var(--verm)" : "var(--bleu)";
+
+  /* la trace : 30 s de large, 9 bar de haut */
+  el("trace").setAttribute("points", trace.map(function(p){
+    return (Math.min(212, p[0] / 30 * 212)).toFixed(1) + "," +
+           (92 - p[1] / 9 * 62).toFixed(1); }).join(" "));
+
+  el("vBar").innerHTML = bar.toFixed(1).replace(".", ",") + ' <small>bar</small>';
+  el("vFuite").textContent = Math.round(f * 100) + " %";
+  el("vExt").textContent = Math.round(Math.min(1, ext) * 100) + " %";
+  el("vG").innerHTML = g.toFixed(1).replace(".", ",") + ' <small>g</small>';
+  el("vT").innerHTML = ts.toFixed(1).replace(".", ",") + ' <small>s</small>';
+  var d = el("lect").querySelectorAll("div");
+  d[0].classList.toggle("hs", bar < 8.5);
+  d[1].classList.toggle("hs", f > .02);
+  d[2].classList.toggle("hs", fini && ext < .92);
+  d[4].classList.toggle("hs", fini && ts < 30 && f > .02);
+}
+
+function conclure(){
+  var f = part(ts), v = el("verdict");
+  if (f < .02) {
+    v.classList.remove("mal");
+    v.innerHTML = "<b>" + CIBLE_G.toFixed(0) + " g en " + ts.toFixed(0) + " s.</b> "
+      + "Neuf bar tenus du début à la fin, le pourtour est sec, le lit est extrait. "
+      + "La trace est plate : c'est à ça que ressemble une pression qui tient.";
+  } else {
+    v.classList.add("mal");
+    v.innerHTML = "<b>" + CIBLE_G.toFixed(0) + " g en " + ts.toFixed(0) + " s — court.</b> "
+      + "Et c'est le piège : le chronomètre annonce un temps normal, voire court, "
+      + "alors que " + Math.round(f * 100) + " % de l'eau n'est jamais passée par le café "
+      + "et que le lit n'est extrait qu'à " + Math.round(ext * 100) + " %. "
+      + "Regardez la trace : partie haut, elle retombe. La pompe, elle, n'était jamais montée.";
+  }
+}
+
+var NOTES = {
+ neuf: "La lèvre du joint s'écrase entre les deux faces et ferme. Toute l'eau passe par "
+     + "le café, l'aiguille se cale dans la bande de service et n'en bouge plus.",
+ durci: "Le caoutchouc durci ne s'écrase plus : il se fend, et la fente s'ouvre à mesure "
+      + "qu'il chauffe. Une partie de l'eau s'échappe sur le côté — on la voit et on "
+      + "l'entend siffler — et ce qui s'échappe ne pousse plus sur le café. "
+      + "NE CONFONDEZ PAS LES DEUX MANOMÈTRES : la pompe reste basse et cherche sa "
+      + "pression ; le joint part haut et redescend. C'est la seule différence entre "
+      + "les deux, et elle ne se voit qu'en regardant l'aiguille pendant toute l'extraction."
+};
+
+function poser(k){
+  etat = k;
+  el("bNeuf").setAttribute("aria-pressed", k === "neuf");
+  el("bDurci").setAttribute("aria-pressed", k === "durci");
+  el("note").textContent = NOTES[k];
+  remettre();
+}
+
+var dernier = null, RELANCE = 3000;
+function boucle(ms){
+  if (dernier === null) dernier = ms;
+  var dt = Math.min(.05, (ms - dernier) / 1000) * VITESSE; dernier = ms;
+  if (!fini) pas(dt);
+  else if (finA === null) finA = ms;
+  else if (ms - finA > RELANCE) remettre();
+  dessiner();
+  requestAnimationFrame(boucle);
+}
+
+el("bNeuf").addEventListener("click", function(){ poser("neuf"); });
+el("bDurci").addEventListener("click", function(){ poser("durci"); });
+el("bRe").addEventListener("click", remettre);
+
+var lst = el("sig"); if (lst) lst.innerHTML = SIGNES.map(function(s){
+  return '<li><span class="min">' + s.cout + ' min</span><span><b>' + s.geste
+    + '</b> — ' + s.dit + '</span></li>'; }).join("");
+
+poser("neuf");
+requestAnimationFrame(boucle);
+</script></body></html>
