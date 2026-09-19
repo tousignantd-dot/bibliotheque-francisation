@@ -205,7 +205,13 @@ tr.sterile td.n{color:var(--verm)}
  background:transparent;font:inherit;font-size:.88rem;font-weight:600;
  padding:.45rem 1rem;border-radius:2px;text-decoration:none}
 .retour a:hover{background:var(--bleu);color:var(--pan)}
-.retour a.plein{background:var(--bleu);color:var(--pan)}
+.retour a.dabord{background:var(--bleu);color:var(--pan)}
+/* UNE CLASSE EST UNE ADRESSE. « plein » existait déjà dans cette page — c'est
+   le remplissage du plan SVG de la machine, `.plein{fill:var(--bleu);
+   opacity:.09}` — et la règle nue attrapait aussi mon bouton, qui sortait à
+   9 % d'opacité. Les styles calculés disaient pourtant « blanc sur bleu » :
+   j'avais relevé la couleur et le fond, PAS l'opacité. Aucune spécificité ne
+   répare une collision de nom ; on renomme. */
 /*<</RETOUR-CSS>>*/
 </style>
 </head>
@@ -582,11 +588,12 @@ function engager(){
      return '<div class="retour">'
        + '<p>Les cinq coupes techniques disent ce qui se passe dans la machine. '
        + 'Vous venez de payer pour savoir à quoi elles servent.</p>'
-       + '<a class="plein" href="banc-de-panne/avant-le-banc.html">Revoir les cinq pannes</a>'
+       + '<a class="dabord" href="banc-de-panne/avant-le-banc.html">Revoir les cinq pannes</a>'
        + (f ? '<a href="banc-de-panne/' + f + '">Voir ' + nom + ' en marche</a>' : '')
        + '</div>';
    })()
-/*<</RETOUR-JS>>*/;
+/*<</RETOUR-JS>>*/
+;
  rendu();
  d.scrollIntoView({block:"start",behavior:"smooth"});
 }
