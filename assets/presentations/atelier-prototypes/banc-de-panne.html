@@ -196,7 +196,6 @@ tr.sterile td.n{color:var(--verm)}
 #ouverture .passer{background:none;border:0;color:var(--enc3);font:inherit;font-size:.85rem;
  text-decoration:underline;cursor:pointer;padding:.4rem}
 /*<</OUVERTURE-CSS>>*/
-
 /*<<RETOUR-CSS>>*/
 .retour{margin-top:1.6rem;padding-top:1.2rem;border-top:1px solid var(--regle);
  display:flex;gap:.7rem;align-items:center;flex-wrap:wrap}
@@ -206,6 +205,21 @@ tr.sterile td.n{color:var(--verm)}
  padding:.45rem 1rem;border-radius:2px;text-decoration:none}
 .retour a:hover{background:var(--bleu);color:var(--pan)}
 .retour a.dabord{background:var(--bleu);color:var(--pan)}
+
+/* ── LE PANNEAU DE LA MACHINE COUVRAIT LE DÉBRIEFING ──────────────────
+   `.machine` est en position:sticky : pendant la partie il suit le joueur,
+   ce qui est juste. Mais il fait 416 px de large et reste peint par-dessus
+   le débriefing, qui occupe toute la largeur de la grille — donc tout ce
+   qui s'y trouve à moins de 416 px du bord gauche est INCLIQUABLE.
+
+   Ce n'est pas ma greffe qui l'a introduit : « Une autre panne », qui
+   existait bien avant, est couvert de la même façon. Mes deux boutons ont
+   simplement atterri dans la même zone morte, et l'ont rendue visible.
+
+   Le remède dit la vérité du moment : une fois la partie finie, la machine
+   n'a plus à suivre personne. `:has()` le fait sans une ligne de script et
+   sans dépendre d'un point d'accroche. */
+.enveloppe:has(#debrief:not([hidden])) .machine{position:static}
 /* UNE CLASSE EST UNE ADRESSE. « plein » existait déjà dans cette page — c'est
    le remplissage du plan SVG de la machine, `.plein{fill:var(--bleu);
    opacity:.09}` — et la règle nue attrapait aussi mon bouton, qui sortait à
