@@ -1,0 +1,290 @@
+#!/usr/bin/env python3
+"""La fiche de cadrage de « Neuf fois sur dix » — la consignation d'une machine.
+
+PHASE 1 DE LA COMPÉTENCE, ET RIEN DE PLUS. Aucune production : une page qui
+deviendra l'arbitre de toutes les discussions de détail. Dix minutes ici valent
+une journée plus loin, parce qu'un dessin engendré est payé qu'on le garde ou
+non.
+
+LA LIGNE QUI COMMANDE LES AUTRES EST « MESURES ». Un objectif qui ne se
+rattache à aucune trace que la partie jouée enregistre est décoratif — et
+l'instrumentation greffée après coup se greffe mal. On la décide avant de
+coder, jamais après.
+
+CE QUI EST SUPPOSÉ EST MARQUÉ COMME TEL. Le brief — problématique, clientèle,
+objectifs — vient normalement du client. Ici il n'y en a pas : les lignes que
+j'ai remplies à sa place portent une marque, et elles se défont sans rien
+coûter tant qu'aucun dessin n'est engendré.
+
+    python3 build/consignation_cadrage.py
+"""
+import pathlib
+
+ICI = pathlib.Path(__file__).resolve().parent.parent
+SRC = ICI / "assets" / "presentations" / "loi-25-entreprises.html"
+DEST = ICI / "assets" / "presentations" / "consignation-cadrage.html"
+
+
+def jetons():
+    s = SRC.read_text(encoding="utf-8")
+    d = s.index(":root{")
+    bloc = s[d:s.index("*{", d)].rstrip()
+    for j in ("--ink:", "--acier:", "--risq:", "--ground:"):
+        if j not in bloc:
+            raise SystemExit(f"les jetons de {SRC.name} n'ont plus la forme attendue : {j}")
+    return bloc
+
+
+# ── LES HUIT LIGNES ────────────────────────────────────────────────────────
+# `sup` = supposé par moi faute de client. Se défait sans rien coûter.
+FICHE = [
+ ("Capacité", False,
+  "Exécuter la séquence de consignation <b>complète, essai de démarrage compris</b>, "
+  "au dixième quart de travail comme au premier.",
+  "Le verbe est « exécuter », pas « comprendre ». Et « au dixième comme au premier » "
+  "n'est pas un ornement : c'est toute la pièce. Une formation qui obtient le geste "
+  "juste le premier jour et le perd le troisième n'a rien obtenu."),
+ ("Empêchement", False,
+  "Ce n'est pas l'ignorance. <b>C'est que sauter l'étape fonctionne.</b>",
+  "Deux minutes gagnées, un superviseur content, et rien ne se passe. Neuf fois sur "
+  "dix, celui qui saute a eu raison — et il le sait, parce qu'il l'a vérifié lui-même. "
+  "La bonne pratique est celle qui coûte&nbsp;; la mauvaise est celle qui paie. "
+  "Aucune affiche murale ne renverse ça."),
+ ("Public", True,
+  "Travailleurs de plancher en manufacture, quart de travail, français langue "
+  "seconde fréquent. <b>Vouvoiement.</b>",
+  "Le vouvoiement se tranche ICI, pas plus tard : le changer oblige à resynthétiser "
+  "chaque clip. C'est la pièce qui s'adresse à l'apprenant, pas un collègue qui "
+  "parle à un autre — et les deux registres ne se mélangent pas."),
+ ("Gestes", False,
+  "Arrêter · purger l'air · vidanger la pression · <b>descendre le vérin</b> · poser "
+  "le cadenas · <b>essayer de redémarrer</b>.",
+  "Ils vont au récit ET à la partie jouée. Les deux en gras sont ceux qu'on saute "
+  "dans la vraie vie, et ce sont donc eux qui portent la pièce."),
+ ("Décisions", False,
+  "À chaque quart : quelles énergies consigner, dans quel ordre, et <b>si on fait "
+  "l'essai</b> — pendant que la ligne est arrêtée et que le superviseur écrit.",
+  "Elles vont à la partie jouée. Le récit les prépare et s'efface : la stratégie ne "
+  "s'enseigne pas, elle se paie."),
+ ("Objections", False,
+  "« Ça prend dix minutes et la ligne est arrêtée. » · « Je connais ma machine. » · "
+  "« Le superviseur me regarde. » · <b>« Je suis seul, personne ne va la repartir. »</b>",
+  "La dernière est la vraie, et c'est la seule que l'essai de démarrage réfute — "
+  "parce qu'il ne protège pas de quelqu'un d'autre, il protège de l'énergie qui "
+  "reste. Elle est le cœur du récit."),
+ ("Interdits", False,
+  "Aucun sang, aucune blessure. · Aucun plan ne montre l'accident <b>avant</b> qu'il "
+  "arrive. · Aucun plan du récit ne montre quelqu'un sauter une étape. · Un seul "
+  "modèle de cadenas, une seule couleur, partout.",
+  "Le troisième est le moins évident et le plus important : le récit enseigne "
+  "l'espace des hypothèses — les cinq énergies — et RIEN de la stratégie. Montrer "
+  "quelqu'un sauter une étape dans le récit donnerait la réponse du jeu. "
+  "Le quatrième tient à la reconnaissance : l'apprenant doit retrouver ce cadenas-là "
+  "sur son plancher."),
+]
+
+MESURES = [
+ ("Exécuter la séquence complète au dixième quart comme au premier",
+  "La pièce enregistre, pour chacun des dix quarts, <b>quelles étapes ont été "
+  "faites</b>. Le débriefing en tire la courbe de dérive et nomme le quart où "
+  "l'essai a été sauté pour la première fois.",
+  "la courbe de dérive"),
+ ("Savoir quelle énergie reste après la coupure électrique",
+  "Le joueur choisit quoi purger. La pièce compte <b>les énergies oubliées</b>, "
+  "quart par quart, et distingue celles qu'il a purgées par habitude de celles "
+  "qu'il a purgées parce que cette machine-là les avait.",
+  "les énergies oubliées"),
+ ("Tenir la séquence sous la pression du superviseur",
+  "Chaque message du superviseur porte un horodatage. La pièce mesure <b>le taux "
+  "d'abandon d'étape dans les trente secondes qui suivent un message</b>, et le "
+  "compare au taux hors pression.",
+  "l'effet du superviseur, chiffré"),
+ ("Et la mesure qu'on montre à un acheteur",
+  "Ni le score du premier quart ni celui du dixième : <b>l'écart entre les deux</b>, "
+  "et le nombre de minutes gagnées avant l'accident. C'est le seul chiffre qui dit "
+  "que la pièce a enseigné plutôt que trié.",
+  "l'écart"),
+]
+
+DEVIS = [
+ ("Ça bouge — dessins denses", True, [
+  ("la purge pneumatique, le sifflement qui tombe", 5),
+  ("le vérin qui descend tout seul, par gravité", 4),
+  ("la pose du cadenas et de l'étiquette", 6),
+  ("l'essai de démarrage — le bouton, et rien", 3),
+  ("le dixième quart", 6),
+ ]),
+ ("Ça se dit — une image tenue, ou aucune", False, [
+  ("les cinq énergies, en coupe technique", 5),
+  ("les objections, et les chiffres", 2),
+ ]),
+]
+
+PARTIS = [
+ ("Le registre d'image", "Semi-réaliste, et les énergies en coupe technique.",
+  "La règle de la compétence tranche seule : <b>plus l'apprenant devra reconnaître "
+  "la chose dans la vraie vie, plus on va vers le réalisme.</b> Un cadenas, une "
+  "vanne d'isolement, un sectionneur — il doit les retrouver sur son plancher. Mais "
+  "la scène n'est ni humaine ni difficile, donc on ne va pas jusqu'au photoréalisme. "
+  "Les cinq énergies, elles, sont l'intérieur d'un mécanisme : coupe technique, "
+  "second registre — celui qui vient d'être éprouvé sur le banc de panne."),
+ ("La couleur", "Noir et blanc, <b>un seul accent</b> : le cadenas.",
+  "La question est : si je la retire, est-ce que je perds une information&nbsp;? "
+  "Ici oui, et une seule fois. Le cadenas doit être reconnu. Deux accents, et le "
+  "procédé s'effondre — l'œil ne sait plus lequel compte."),
+ ("La voix", "Un pair du métier, pas un narrateur extérieur.",
+  "Le critère est <b>qui parle</b>. Quelqu'un qui a déjà consigné une machine peut "
+  "dire « je suis seul, personne ne va la repartir » et le réfuter&nbsp;; un "
+  "narrateur institutionnel qui le dit sonne comme une affiche. À trancher sur un "
+  "banc de voix, sur le passage le plus difficile — pas en mots."),
+]
+
+GABARIT = r"""<!doctype html><html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Neuf fois sur dix — fiche de cadrage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/*§JETONS§*/
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--body);
+ font-family:"Inter",ui-sans-serif,system-ui,sans-serif;line-height:1.6}
+.enrobe{max-width:52rem;margin:0 auto;padding:3rem 1.5rem 5rem}
+.eyebrow{font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+ color:var(--acier);margin:0}
+h1{font-size:2.1rem;font-weight:800;letter-spacing:-.028em;margin:.3rem 0 .6rem;color:var(--ink)}
+.sous{font-size:1.05rem;margin:0 0 .5rem}
+.phase{font-family:var(--mono);font-size:.78rem;color:var(--muted);margin:0 0 2rem}
+h2{font-size:1.25rem;font-weight:700;letter-spacing:-.02em;color:var(--ink);
+ margin:2.6rem 0 .5rem;padding-top:1.3rem;border-top:1px solid var(--line)}
+p{margin:.55rem 0}
+.ligne{background:var(--card);border:1px solid var(--line);margin:.7rem 0;padding:1rem 1.2rem}
+.ligne .cle{font-family:var(--mono);font-size:.72rem;font-weight:700;letter-spacing:.1em;
+ text-transform:uppercase;color:var(--acier)}
+.ligne .sup{font-family:var(--mono);font-size:.66rem;color:var(--dec);
+ border:1px solid var(--dec);padding:.05rem .35rem;margin-left:.5rem;border-radius:2px}
+.ligne .val{font-size:1.02rem;color:var(--ink);margin:.35rem 0 .5rem}
+.ligne .pq{font-size:.9rem;color:var(--muted);margin:0;padding-left:.9rem;
+ border-left:2px solid var(--line-fort)}
+.mes{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--ok);
+ margin:.7rem 0;padding:1rem 1.2rem}
+.mes .obj{font-weight:700;color:var(--ink);margin:0 0 .3rem}
+.mes .trace{font-size:.93rem;margin:0}
+.mes .nom{display:inline-block;font-family:var(--mono);font-size:.7rem;color:var(--ok);
+ background:var(--ok-bg);padding:.1rem .45rem;margin-top:.45rem;border-radius:2px}
+table{border-collapse:collapse;width:100%;margin:.8rem 0;font-size:.93rem}
+th,td{text-align:left;padding:.45rem .6rem;border-bottom:1px solid var(--line)}
+thead th{font-size:.68rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+tfoot td{font-weight:700;color:var(--ink);border-top:1px solid var(--line-fort);border-bottom:0}
+.pari{background:var(--card);border:1px solid var(--line);margin:.7rem 0;padding:1rem 1.2rem}
+.pari h3{margin:0;font-size:.95rem;color:var(--ink)}
+.pari .quoi{color:var(--acier);font-weight:700;margin:.15rem 0 .4rem}
+.pari p{font-size:.9rem;color:var(--muted);margin:0}
+.arret{background:var(--dec-bg);border-left:3px solid var(--dec);padding:1rem 1.2rem;margin:1.2rem 0}
+.arret ol{margin:.4rem 0;padding-left:1.2rem}
+.arret li{margin:.4rem 0}
+.mur{background:var(--risq-bg);border-left:3px solid var(--risq);padding:1rem 1.2rem;margin:1.2rem 0}
+.pied{margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--line);
+ font-size:.85rem;color:var(--muted)}
+a{color:var(--acier)}
+</style></head><body><div class="enrobe">
+<p class="eyebrow">Prototype · fiche de cadrage</p>
+<h1>Neuf fois sur dix</h1>
+<p class="sous">La consignation d'une machine — et pourquoi l'étape qu'on saute
+est celle qui ne punit jamais.</p>
+<p class="phase">Phase 1 sur 5 · aucune production engagée · tout se défait sans coûter</p>
+
+<div class="mur"><p><b>Ce que cette pièce enseigne n'est pas une procédure.</b>
+La procédure est affichée sur le mur de toutes les usines du Québec, et elle est
+sautée quand même. Ce qui s'enseigne ici, c'est de tenir la procédure <b>quand rien
+ne vous y oblige et que la sauter a marché neuf fois</b>.</p></div>
+
+<h2>La fiche</h2>
+§FICHE§
+
+<h2>Les mesures — la ligne qui commande les autres</h2>
+<p>Un objectif qui ne se rattache à aucune trace enregistrée par la partie jouée est
+décoratif. On les décide maintenant, parce qu'une instrumentation greffée après coup
+se greffe mal.</p>
+§MESURES§
+
+<h2>Le devis — il se calcule, il ne s'estime pas</h2>
+<p>Un plan par seconde là où le geste se transforme&nbsp;; une image tenue là où
+c'est un état. Au tarif mesuré de <b>0,10&nbsp;$ le dessin gardé</b>.</p>
+§DEVIS§
+
+<h2>Les trois partis pris — chers à défaire</h2>
+§PARTIS§
+
+<h2>Le risque, écrit avant qu'on le découvre</h2>
+<div class="mur"><p><b>Pendant neuf quarts, la pièce montre quelqu'un qui saute une
+étape et s'en tire.</b> Un chemin fautif qui reste muet enseigne le mauvais geste —
+c'est une règle du dépôt, et elle a coûté cher ailleurs.</p>
+<p>Ici le mutisme <em>est</em> la leçon, et le débriefing le brise. Mais ça doit être
+<b>construit exprès et défendu par écrit</b> : une mutuelle de prévention posera la
+question à la première rencontre, et « c'est voulu » n'est pas une réponse. Il faut
+pouvoir montrer que le joueur ne peut pas quitter la pièce sans avoir vu sa propre
+courbe.</p></div>
+
+<h2>Le point d'arrêt — ce que vous tranchez avant qu'on produise</h2>
+<div class="arret"><ol>
+<li><b>Les lignes marquées « supposé ».</b> Le public et le vouvoiement, surtout :
+les changer après oblige à resynthétiser chaque clip.</li>
+<li><b>Le nombre de quarts.</b> Dix est un chiffre de récit, pas une mesure. Huit
+suffiraient peut-être&nbsp;; douze lasseraient. Ça se tranche sur le témoin.</li>
+<li><b>La référence réglementaire.</b> La consignation est encadrée au Québec, mais
+<b>je n'ai pas vérifié l'article</b> et je ne le citerai pas de mémoire. Une
+référence fausse démolit un pitch devant une mutuelle. À relever avant toute
+rencontre, comme l'a été l'analyse de marché.</li>
+<li><b>Le témoin.</b> Une minute complète — dessins, voix, interaction — prise dans
+le passage le plus difficile, pour environ 0,60&nbsp;$. C'est là que le registre se
+juge. S'il faut en changer, on jette six dessins au lieu de trente-et-un.</li>
+</ol></div>
+
+<p class="pied">Fiche montée le 18 septembre 2026 selon la compétence
+<code>piece-apprentissage</code>, phase 1 sur 5. Les phases suivantes —
+partis pris, témoin, production, essai — ne s'ouvrent qu'après le point d'arrêt
+ci-dessus. L'atelier&nbsp;: <a href="atelier-prototypes/index.html">les prototypes
+construits</a>.</p>
+</div></body></html>
+"""
+
+fiche = "".join(
+    f'<div class="ligne"><span class="cle">{c}</span>'
+    + ('<span class="sup">supposé</span>' if sup else "")
+    + f'<p class="val">{v}</p><p class="pq">{p}</p></div>'
+    for c, sup, v, p in FICHE)
+
+mesures = "".join(
+    f'<div class="mes"><p class="obj">{o}</p><p class="trace">{t}</p>'
+    f'<span class="nom">{n}</span></div>'
+    for o, t, n in MESURES)
+
+total = 0
+lignes = ""
+for titre, dense, items in DEVIS:
+    lignes += f'<tr><td colspan="2"><b>{titre}</b></td></tr>'
+    for quoi, n in items:
+        total += n
+        lignes += f'<tr><td>{quoi}</td><td class="n">{n}</td></tr>'
+devis = ('<table><thead><tr><th>Ce qu\'on dessine</th><th class="n">Plans</th></tr></thead>'
+         f'<tbody>{lignes}</tbody><tfoot><tr><td>Total, reprises non comprises</td>'
+         f'<td class="n">{total} · {total * 0.10:.2f} $</td></tr></tfoot></table>'
+         '<p style="font-size:.88rem;color:var(--muted)">Les reprises se comptent : '
+         'sur le projet du défibrillateur, 101 appels ont donné 77 dessins gardés. '
+         f'Au même taux, ces {total} plans coûteraient environ '
+         f'<b>{total / 0.762 * 0.08:.2f} $</b> en tout.</p>')
+
+partis = "".join(
+    f'<div class="pari"><h3>{t}</h3><p class="quoi">{q}</p><p>{p}</p></div>'
+    for t, q, p in PARTIS)
+
+page = (GABARIT.replace("/*§JETONS§*/", jetons())
+               .replace("§FICHE§", fiche)
+               .replace("§MESURES§", mesures)
+               .replace("§DEVIS§", devis)
+               .replace("§PARTIS§", partis))
+DEST.write_text(page, encoding="utf-8")
+print(f"{DEST.name} — {DEST.stat().st_size/1024:.0f} Ko — "
+      f"{len(FICHE)} lignes · {len(MESURES)} mesures · {total} plans")
