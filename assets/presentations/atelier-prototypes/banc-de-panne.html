@@ -196,6 +196,17 @@ tr.sterile td.n{color:var(--verm)}
 #ouverture .passer{background:none;border:0;color:var(--enc3);font:inherit;font-size:.85rem;
  text-decoration:underline;cursor:pointer;padding:.4rem}
 /*<</OUVERTURE-CSS>>*/
+
+/*<<RETOUR-CSS>>*/
+.retour{margin-top:1.6rem;padding-top:1.2rem;border-top:1px solid var(--regle);
+ display:flex;gap:.7rem;align-items:center;flex-wrap:wrap}
+.retour p{margin:0 0 .5rem;color:var(--enc2);font-size:.92rem;flex-basis:100%}
+.retour a{display:inline-block;border:1px solid var(--bleu);color:var(--bleu);
+ background:transparent;font:inherit;font-size:.88rem;font-weight:600;
+ padding:.45rem 1rem;border-radius:2px;text-decoration:none}
+.retour a:hover{background:var(--bleu);color:var(--pan)}
+.retour a.plein{background:var(--bleu);color:var(--pan)}
+/*<</RETOUR-CSS>>*/
 </style>
 </head>
 <body>
@@ -561,7 +572,21 @@ function engager(){
   +'<div class="constat"><h3>Note de conception</h3>'
    +'<p>Le modèle tient dans une table de cinq pannes sur neuf gestes. Tout le reste — les probabilités, le gain d\'information, le chemin optimal, le verdict « eu raison / avoir su » — en est <em>calculé</em>, jamais écrit à la main. Ajouter une dixième vérification, c\'est ajouter une ligne&nbsp;; le débriefing la tient compte le jour même.</p>'
    +'<p>C\'est ce qui distingue un simulateur d\'un questionnaire déguisé en simulateur&nbsp;: ici, aucune rétroaction n\'a été rédigée pour une trajectoire particulière. Elles le sont toutes, pour toutes les trajectoires, parce qu\'elles sont dérivées de l\'état du modèle.</p>'
-   +'<p><button class="cmd" onclick="neuf();window.scrollTo({top:0,behavior:\'smooth\'})">Une autre panne</button></p></div>';
+   +'<p><button class="cmd" onclick="neuf();window.scrollTo({top:0,behavior:\'smooth\'})">Une autre panne</button></p></div>'
+/*<<RETOUR-JS>>*/
+  +(function(){
+     /* Le mécanisme de LA panne qu'on vient de traiter, jamais la liste des
+        cinq : elle rendrait la table des hypothèses avant la partie suivante. */
+     var ANIM = {"mouture": "mouture-animee.html", "douchette": "douchette-animee.html", "pompe": "pompe-animee.html", "chaudiere": "chaudiere-animee.html", "joint": "joint-animee.html"}, f = (E.verite && ANIM[E.verite]) ? ANIM[E.verite] : null;
+     var nom = {"mouture": "le moulin", "douchette": "la douchette et le panier", "pompe": "la pompe", "chaudiere": "la chaudière", "joint": "le joint de groupe"}[E.verite] || "le mécanisme";
+     return '<div class="retour">'
+       + '<p>Les cinq coupes techniques disent ce qui se passe dans la machine. '
+       + 'Vous venez de payer pour savoir à quoi elles servent.</p>'
+       + '<a class="plein" href="banc-de-panne/avant-le-banc.html">Revoir les cinq pannes</a>'
+       + (f ? '<a href="banc-de-panne/' + f + '">Voir ' + nom + ' en marche</a>' : '')
+       + '</div>';
+   })()
+/*<</RETOUR-JS>>*/;
  rendu();
  d.scrollIntoView({block:"start",behavior:"smooth"});
 }
