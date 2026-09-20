@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Le banc de panne : trois façons d'entrer par les mécanismes plutôt que par la scène du café.">
+<title>Le banc — par où on entre</title>
+<style>html{color-scheme:light dark}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>Le banc — par où on entre</title>
+<style>/* ═══ Jetons « Braise », recopiés — jamais importés (un @import en file://
+   échoue sans rien dire). --mesure-l porte la largeur de lecture : dans la
+   source du système, --mesure porte à la fois une couleur et une longueur
+   dans le même :root, et la seconde écrase la première.                    */
+:root{
+  --fond:#FFFFFF; --fond-2:#FAFAFA; --fond-3:#F4F4F5;
+  --encre:#09090B; --encre-2:#52525B; --encre-3:#71717A; --encre-4:#A1A1AA;
+  --bord:#E4E4E7; --bord-fort:#D4D4D8;
+  --marque-rose:#F0359F; --marque-corail:#F5533D;
+  --marque-degrade:linear-gradient(100deg,var(--marque-rose) 0%,var(--marque-corail) 100%);
+  --signal:#F5652E; --signal-encre:#FFFFFF; --signal-voile:#FEF1EA;
+  --mesure:#2B4E9B; --mesure-2:#5C7EBF; --mesure-voile:#EAEFFA;
+  --action:#18181B; --action-survol:#27272A; --action-encre:#FAFAFA;
+  --police:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --police-mono:ui-monospace,"SF Mono","Menlo","Consolas",monospace;
+  --t-affiche:clamp(2.5rem,7.4vw,4.75rem); --t-titre-1:clamp(1.75rem,4vw,2.75rem);
+  --t-titre-2:clamp(1.375rem,2.6vw,1.75rem); --t-titre-3:1.1875rem;
+  --t-avant:1.1875rem; --t-petit:.875rem; --t-menu:.8125rem;
+  --g-moyen:500; --g-fort:600; --g-noir:800;
+  --i-serre:.98; --i-titre:1.15; --i-corps:1.62;
+  --l-serre:-.035em; --l-titre:-.02em;
+  --e-1:.25rem; --e-2:.5rem; --e-3:.75rem; --e-4:1rem; --e-5:1.5rem;
+  --e-6:2rem; --e-7:3rem; --e-8:4rem; --e-9:6rem;
+  --mesure-l:42rem; --contenu:74rem;
+  --r-1:.375rem; --r-2:.5rem; --r-3:.75rem; --r-4:1rem; --r-plein:9999px;
+  --o-1:0 1px 2px rgba(9,9,11,.06);
+  --o-2:0 1px 3px rgba(9,9,11,.08),0 1px 2px rgba(9,9,11,.04);
+  --o-3:0 4px 12px rgba(9,9,11,.08);
+  --transition:140ms cubic-bezier(.4,0,.2,1);
+}
+:root[data-theme="sombre"]{
+  --fond:#09090B; --fond-2:#0F0F11; --fond-3:#18181B;
+  --encre:#FAFAFA; --encre-2:#D4D4D8; --encre-3:#A1A1AA; --encre-4:#52525B;
+  --bord:#27272A; --bord-fort:#3F3F46;
+  --marque-rose:#FF4FB0; --marque-corail:#FF6A50;
+  --signal:#FF7A45; --signal-encre:#1A0C05; --signal-voile:#2A1610;
+  --mesure:#8FB2F0; --mesure-2:#6E8FCB; --mesure-voile:#18213A;
+  --action:#FAFAFA; --action-survol:#E4E4E7; --action-encre:#18181B;
+  --o-1:0 1px 2px rgba(0,0,0,.5); --o-2:0 1px 3px rgba(0,0,0,.6);
+  --o-3:0 4px 14px rgba(0,0,0,.6);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="clair"]){
+    --fond:#09090B; --fond-2:#0F0F11; --fond-3:#18181B;
+    --encre:#FAFAFA; --encre-2:#D4D4D8; --encre-3:#A1A1AA; --encre-4:#52525B;
+    --bord:#27272A; --bord-fort:#3F3F46;
+    --marque-rose:#FF4FB0; --marque-corail:#FF6A50;
+    --signal:#FF7A45; --signal-encre:#1A0C05; --signal-voile:#2A1610;
+    --mesure:#8FB2F0; --mesure-2:#6E8FCB; --mesure-voile:#18213A;
+    --action:#FAFAFA; --action-survol:#E4E4E7; --action-encre:#18181B;
+    --o-1:0 1px 2px rgba(0,0,0,.5); --o-2:0 1px 3px rgba(0,0,0,.6);
+    --o-3:0 4px 14px rgba(0,0,0,.6);
+  }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--fond);color:var(--encre-2);font-family:var(--police);
+     font-size:1rem;line-height:var(--i-corps);-webkit-font-smoothing:antialiased}
+.enveloppe{max-width:var(--contenu);margin:0 auto;padding:0 var(--e-5)}
+h1,h2,h3,h4{color:var(--encre);letter-spacing:var(--l-titre);line-height:var(--i-titre);
+            font-weight:var(--g-fort);margin:0;text-wrap:balance}
+p{margin:0 0 var(--e-4)}
+b,strong{color:var(--encre);font-weight:var(--g-fort)}
+code{font-family:var(--police-mono);font-size:.9em;background:var(--fond-3);
+     padding:.1em .35em;border-radius:var(--r-1);color:var(--encre)}
+.lire{max-width:var(--mesure-l)}
+.masque{display:none}
+.barre{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--fond) 88%,transparent);
+       backdrop-filter:blur(12px);border-bottom:1px solid var(--bord)}
+.barre__int{max-width:var(--contenu);margin:0 auto;padding:var(--e-3) var(--e-5);
+            display:flex;align-items:center;gap:var(--e-3);flex-wrap:wrap}
+.marque{font-weight:var(--g-noir);letter-spacing:var(--l-serre);color:var(--encre);font-size:1.0625rem}
+.marque i{font-style:normal;background:var(--marque-degrade);
+          -webkit-background-clip:text;background-clip:text;color:transparent}
+.barre__vide{flex:1}
+.bt{border:1px solid var(--bord-fort);background:var(--fond);color:var(--encre-2);font:inherit;
+    font-size:var(--t-menu);font-weight:var(--g-moyen);padding:var(--e-1) var(--e-3);
+    border-radius:var(--r-plein);cursor:pointer;transition:var(--transition)}
+.bt:hover{border-color:var(--encre-4);color:var(--encre)}
+.bt[aria-pressed="true"]{background:var(--mesure);border-color:var(--mesure);color:#fff}
+:root[data-theme="sombre"] .bt[aria-pressed="true"]{color:#09090B}
+.heros{padding:var(--e-8) 0 var(--e-6)}
+.pastille{display:inline-flex;align-items:center;gap:var(--e-2);font-size:var(--t-petit);
+          font-weight:var(--g-moyen);color:var(--signal);background:var(--signal-voile);
+          border-radius:var(--r-plein);padding:var(--e-1) var(--e-3);margin-bottom:var(--e-5)}
+.pastille::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--signal)}
+.heros h1{font-size:var(--t-affiche);font-weight:var(--g-noir);letter-spacing:var(--l-serre);
+          line-height:var(--i-serre);max-width:17ch}
+.heros h1 i{font-style:normal;background:var(--marque-degrade);
+            -webkit-background-clip:text;background-clip:text;color:transparent}
+.heros .avant{font-size:var(--t-avant);color:var(--encre-3);max-width:var(--mesure-l);
+              margin-top:var(--e-5);text-wrap:pretty}
+section{padding:var(--e-7) 0;border-top:1px solid var(--bord);scroll-margin-top:4.5rem}
+.oeil{font-size:var(--t-menu);text-transform:uppercase;letter-spacing:.14em;
+      color:var(--encre-4);font-weight:var(--g-fort);margin-bottom:var(--e-3)}
+section>.enveloppe>h2{font-size:var(--t-titre-1);margin-bottom:var(--e-5)}
+.gros{display:inline-block;padding:var(--e-3) var(--e-6);border-radius:var(--r-2);
+      background:var(--action);color:var(--action-encre);border:0;font:inherit;
+      font-weight:var(--g-fort);font-size:1rem;cursor:pointer;text-decoration:none}
+.gros[disabled]{opacity:.4;cursor:default}
+.capot{display:none;margin-top:var(--e-6);border-top:1px dashed var(--bord-fort);padding-top:var(--e-5)}
+body.conception .capot{display:block}
+.capot h4{color:var(--mesure);font-size:var(--t-menu);text-transform:uppercase;
+          letter-spacing:.1em;margin-bottom:var(--e-3)}
+.preuve{background:var(--fond-3);border-radius:var(--r-2);padding:var(--e-4) var(--e-5);font-size:.9375rem}
+.preuve p:last-child{margin-bottom:0}
+.enrob{overflow-x:auto}
+.tab{width:100%;border-collapse:collapse;font-size:.9375rem;margin-top:var(--e-4)}
+.tab th,.tab td{text-align:left;padding:var(--e-2) var(--e-3);border-bottom:1px solid var(--bord);
+                vertical-align:top}
+.tab th{font-size:var(--t-menu);text-transform:uppercase;letter-spacing:.1em;
+        color:var(--encre-4);font-weight:var(--g-fort)}
+.tab tr:last-child td{border-bottom:0}
+.garde{background:var(--fond-3);border-radius:var(--r-3);padding:var(--e-5) var(--e-6)}
+.garde ul{margin:0;padding-left:1.1em}
+.garde li{margin-bottom:var(--e-2)}
+.garde li:last-child{margin-bottom:0}
+.chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;
+          background:var(--bord);border:1px solid var(--bord);border-radius:var(--r-3);
+          overflow:hidden;margin-top:var(--e-5)}
+.ch{background:var(--fond);padding:var(--e-4) var(--e-5)}
+.ch__v{font-family:var(--police-mono);font-size:1.5rem;color:var(--encre);
+       font-variant-numeric:tabular-nums}
+.ch__v--m{color:var(--mesure)}
+.ch__v--s{color:var(--signal)}
+.ch__c{font-size:.75rem;color:var(--encre-4);text-transform:uppercase;
+       letter-spacing:.1em;margin-top:var(--e-1)}
+footer{padding:var(--e-8) 0 var(--e-9);color:var(--encre-4);font-size:var(--t-petit)}
+@media print{
+  :root{--fond:#FFF;--fond-2:#FFF;--fond-3:#F4F4F5;--encre:#09090B;--encre-2:#3F3F46;
+        --encre-3:#52525B;--encre-4:#71717A;--bord:#D4D4D8;--bord-fort:#A1A1AA;
+        --o-1:none;--o-2:none;--o-3:none}
+  @page{margin:14mm 12mm}
+  .barre{display:none}
+  .heros{padding-top:0}
+  .capot{display:block}
+  body{font-size:10.5pt}
+  .tab tr,.preuve,.garde{break-inside:avoid}
+  h1,h2,h3{break-after:avoid}
+  .enveloppe{padding:0}
+}
+
+  body{margin:0;background:var(--pap,#FAFAF9);color:var(--enc,#1B1A17);
+    font:16px/1.6 "Work Sans",-apple-system,BlinkMacSystemFont,system-ui,sans-serif}
+  .w{max-width:52rem;margin:0 auto;padding:3rem 1.25rem 5rem}
+  h1{font-family:"Newsreader",Georgia,serif;font-size:clamp(1.9rem,4.5vw,2.6rem);
+    font-weight:600;letter-spacing:-.02em;line-height:1.15;margin:0 0 .4rem}
+  .surtitre{font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--enc3,#767268);margin:0 0 1.5rem;font-weight:600}
+  h2{font-family:"Newsreader",Georgia,serif;font-size:1.45rem;font-weight:600;
+    letter-spacing:-.015em;margin:2.8rem 0 .7rem}
+  h3{font-size:1.0625rem;font-weight:600;margin:0 0 .4rem;letter-spacing:-.005em}
+  p{margin:0 0 .9em}
+  .chapeau{font-size:1.125rem;color:var(--enc2,#4F4C45)}
+  .note{color:var(--enc2,#4F4C45);font-size:.9375rem}
+  b,strong{font-weight:600}
+  .carte{background:var(--pan,#fff);border:1px solid var(--regle,#DDD9CE);
+    border-radius:10px;padding:1.15rem 1.3rem;margin:.8rem 0}
+  .carte--fort{border-color:var(--sig,#C2400F);border-width:2px}
+  .eti{display:inline-block;font-size:.6875rem;letter-spacing:.11em;
+    text-transform:uppercase;font-weight:700;padding:.2rem .5rem;border-radius:3px;
+    background:var(--sig-voile,rgba(194,64,15,.1));color:var(--sig,#C2400F);
+    margin-bottom:.55rem}
+  .eti--calme{background:rgba(47,84,104,.09);color:var(--mes,#2F5468)}
+  table{width:100%;border-collapse:collapse;margin:.9rem 0;font-size:.9375rem}
+  th,td{text-align:left;padding:.55rem .7rem;border-bottom:1px solid var(--regle,#DDD9CE);
+    vertical-align:top}
+  th{font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--enc3,#767268);font-weight:700}
+  td:first-child{white-space:nowrap;font-weight:600}
+  ul{margin:.3rem 0 .9rem;padding-left:1.15rem}
+  li{margin:.3rem 0}
+  .rappel{border-left:3px solid var(--sig,#C2400F);padding:.1rem 0 .1rem 1rem;
+    margin:1.2rem 0;color:var(--enc2,#4F4C45)}
+  .fin{margin-top:3rem;padding-top:1.4rem;border-top:1px solid var(--regle,#DDD9CE);
+    color:var(--enc3,#767268);font-size:.875rem}
+  a{color:var(--sig,#C2400F)}
+</style>
+<div class="w">
+
+<p class="surtitre">Banc de panne · décision du 20 septembre 2026</p>
+<h1>Par où on entre</h1>
+
+<p class="chapeau">Vous demandez trois choses : que ce soit <b>un jeu</b> ; que la première
+chose vue et entendue soit <b>les mécanismes animés</b> ; et qu'on laisse tomber l'arrivée
+au café. Voici ce que ça change, et trois façons de le faire.</p>
+
+<h2>Ce qui existe déjà, et qui est mal placé</h2>
+
+<p>La bonne nouvelle d'abord : <b>la première étape que vous décrivez est construite.</b>
+<i>Avant le banc</i> montre les cinq organes, chacun avec sa coupe, sa narration et son
+mécanisme en marche. Deux boutons par panne : « Écouter la coupe » et « Voir le mécanisme
+en marche ». C'est exactement l'atelier que vous voulez en ouverture.</p>
+
+<p>Elle est simplement <b>au mauvais bout du parcours</b> : on n'y accède qu'après avoir
+joué, depuis le débriefing. Et l'entrée, aujourd'hui, c'est l'arrivée au café —
+cinq plans, quarante secondes.</p>
+
+<div class="rappel">
+<p style="margin:0"><b>Mais on ne peut pas la déplacer telle quelle</b>, et c'est le seul
+vrai piège de ce changement. La leçon a quatre parties, et les deux dernières
+donnent la tactique.</p>
+</div>
+
+<table>
+<tr><th>partie</th><th>ce qu'elle porte</th><th>où elle doit aller</th></tr>
+<tr><td>1 · Ce qui peut mal aller</td><td>les cinq organes, les cinq mécanismes — le vocabulaire</td><td><b>avant</b></td></tr>
+<tr><td>2 · Comment on reconnaît laquelle</td><td>le geste, l'observation, ce qu'elle écarte</td><td><b>avant</b></td></tr>
+<tr><td>3 · L'ordre qui gagne</td><td>la stratégie, l'enchaînement qui tranche</td><td><b>après</b></td></tr>
+<tr><td>4 · Le chronomètre</td><td>le record, ce qu'il faut battre</td><td><b>après</b></td></tr>
+</table>
+
+<p>Le vocabulaire est public, la tactique se découvre. Un joueur d'échecs connaît le
+déplacement des pièces avant sa première partie ; c'est la partie qui lui apprend à jouer.
+Donner l'ordre gagnant avant, c'est transformer le jeu en test de mémoire — et c'est
+l'erreur qui a déjà coûté une journée sur cette pièce, dans l'autre sens.</p>
+
+<h2>Trois façons d'entrer</h2>
+
+<div class="carte carte--fort">
+<span class="eti">Proposition A · recommandée</span>
+<h3>L'atelier, puis le banc</h3>
+<p>On ouvre sur <i>Avant le banc</i>, amputé de ses parties 3 et 4. Cinq organes, cinq
+mécanismes qui tournent, cinq voix. En bas : <b>« Au banc »</b>. Le jeu suit, et son
+débriefing renvoie aux parties 3 et 4, qui deviennent une page à part — <i>l'ordre qui
+gagne</i>.</p>
+<p class="note"><b>Ce que ça coûte :</b> découper la leçon en deux sorties du même gabarit,
+et retourner la greffe de retour. Une demi-journée. <b>Ce que ça donne :</b> le parcours
+que vous décrivez, sans rien réécrire — tout le contenu existe.
+<b>Le risque :</b> deux pages à charger avant de jouer, alors que le banc est déjà lourd.</p>
+</div>
+
+<div class="carte">
+<span class="eti eti--calme">Proposition B</span>
+<h3>Le mur des cinq organes</h3>
+<p>Pas de leçon linéaire. Une seule page d'entrée : cinq cartes côte à côte, une par organe.
+On clique, la coupe s'ouvre <b>sur place</b> et tourne, la voix dit ce qui se passe. Aucun
+ordre imposé, aucun défilement. Le bouton <b>« Je connais la machine »</b> s'allume quand
+les cinq ont été ouvertes — sans jamais bloquer celui qui veut sauter.</p>
+<p class="note"><b>Ce que ça coûte :</b> une page neuve, mais qui réutilise les cinq encarts
+tels quels. Un jour. <b>Ce que ça donne :</b> une entrée qui ressemble déjà au jeu — le
+tableau des suspects du banc est fait de cinq cartes, exactement. On apprend la grammaire
+de l'interface avant d'en avoir besoin. <b>Le risque :</b> sans texte liant, la partie 2
+(comment on reconnaît laquelle) n'a plus où vivre.</p>
+</div>
+
+<div class="carte">
+<span class="eti eti--calme">Proposition C</span>
+<h3>La machine ouverte</h3>
+<p>On n'entre pas par une leçon mais <b>par la machine elle-même</b>, en coupe, entière.
+Les cinq organes y sont à leur place ; on clique l'un après l'autre, chacun s'anime sans
+qu'on quitte le plan. Puis la machine se met en panne <b>dans le même décor</b>, et le
+tableau des suspects se lève par-dessus. Aucun changement de lieu du début à la fin.</p>
+<p class="note"><b>Ce que ça coûte :</b> un dessin d'ensemble qui n'existe pas, et
+raccorder cinq coupes de tailles différentes dans un seul plan. Deux à trois jours, avec
+un risque de dessin. <b>Ce que ça donne :</b> la plus forte des trois — on comprend
+<i>où</i> est chaque organe, pas seulement ce qu'il fait. <b>Le risque :</b> c'est la seule
+des trois qui peut échouer sur un dessin.</p>
+</div>
+
+<h2>Ce que « un jeu » demande en plus</h2>
+
+<p>Le mot compte, et il ne suit d'aucune des trois propositions tout seul. Ce qui rend
+la chose jouable plutôt que scolaire :</p>
+
+<ul>
+<li><b>Un record à battre.</b> La partie 4 le prévoit déjà — « et le chronomètre, pour le
+plaisir ». Il doit sortir du fond de la leçon et devenir la ligne d'arrivée : votre
+meilleur temps, et le temps optimal, côte à côte.</li>
+<li><b>Rejouer sans relire.</b> « Nouvelle panne » existe. Il faut qu'il soit le geste le
+plus facile de la page après le débriefing, pas un lien parmi d'autres.</li>
+<li><b>Les cinq pannes tirées au sort</b>, et le joueur qui ne le sait pas. Sinon la
+deuxième partie se joue de mémoire.</li>
+</ul>
+
+<h2>Ce que je laisse tomber, comme demandé</h2>
+
+<p>L'ouverture au café — cinq plans, quarante secondes, le barista qui arrive et la machine
+qui ne donne rien. Elle reste dans le dépôt et se remet d'une commande ;
+<b>rien n'est perdu</b>. Je note quand même ce qu'elle faisait, pour qu'on sache ce qu'on
+retire : elle donnait l'<i>enjeu</i> — le café ouvre dans un quart d'heure. Si l'entrée
+devient un atelier, il faudra que le compte à rebours se dise ailleurs, au moment où le
+jeu commence.</p>
+
+<h2>Ce que je ne peux pas trancher à votre place</h2>
+
+<ul>
+<li><b>Le chemin est-il imposé ou libre ?</b> A conduit, B laisse choisir. Pour une
+formation en entreprise, conduire rassure ; pour un jeu, choisir engage.</li>
+<li><b>La partie 2 survit-elle ?</b> « Comment on reconnaît laquelle » est à la frontière :
+c'est du vocabulaire, mais elle donne déjà la moitié du travail de déduction.
+Mon avis : elle reste avant, parce que sans elle on ne joue pas, on devine.</li>
+<li><b>Une seule page ou deux ?</b> Fondre l'atelier dans le banc éviterait un chargement,
+mais ferait une page de plus de cinq mégaoctets.</li>
+</ul>
+
+<p class="fin">Le contenu des cinq mécanismes est déjà produit et vérifié : cinq coupes,
+cinq narrations, cinq animations. Aucune des trois propositions ne demande d'en refaire.
+Ce qui se décide ici, c'est uniquement l'ordre et le cadre.</p>
+
+</div>
+
+</body>
+</html>
