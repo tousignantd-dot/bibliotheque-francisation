@@ -5,38 +5,118 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --police: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --police-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-
-  --pap:#FFFFFF; --pan:#FAFAFA; --pan2:#F4F4F5; --pan3:#E4E4E7;
-  --enc:#09090B; --enc2:#52525B; --enc3:#71717A;
-  --regle:#E4E4E7; --regle2:#D4D4D8;
-  --bleu:#2B4E9B; --bleu2:#5C7EBF; --bleu-pale:#EAEFFA; --bleu-voile:rgba(43,78,155,.07);
-  --verm:#F5652E; --verm2:#D9541F; --verm-pale:#FEF1EA; --verm-voile:rgba(245,101,46,.09);
-  --grille:transparent;
-  --om:0 1px 2px rgba(9,9,11,.06);
-  --om2:0 4px 12px rgba(9,9,11,.08);
+  --police:"Barlow",system-ui,sans-serif;
+  --police-titre:"Barlow Condensed",system-ui,sans-serif;
+  --police-mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  --poids-titre:800; --serre:.01em; --maj:uppercase; --rad:0px; --bord:solid;
+  --tex:repeating-linear-gradient(0deg,transparent 0 23px,rgba(27,26,23,.05) 23px 24px);
+  --tex-taille:auto;
+  --pap:#E6E3DB; --pan:#F3F1EB; --pan2:#D9D5CA; --pan3:#D9D5CA;
+  --enc:#1B1A17; --enc2:#4F4C45; --enc3:#67645B;
+  --regle:#C6C1B4; --regle2:#A19B8D;
+  --sig:#C2400F; --sig2:#9E3209; --sig-voile:rgba(194,64,15,.10);
+  --mes:#2F5468; --mes-voile:rgba(47,84,104,.08);
+  --grp3:#6B4BA8; --grp4:#2E7A52;
+  --om:0 1px 0 rgba(27,26,23,.08); --om2:0 2px 12px rgba(27,26,23,.14);
 }
-:root:not([data-theme="light"]){ color-scheme:light dark; }
-@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
-  --pap:#09090B; --pan:#0F0F11; --pan2:#18181B; --pan3:#27272A;
-  --enc:#FAFAFA; --enc2:#D4D4D8; --enc3:#A1A1AA;
-  --regle:#27272A; --regle2:#3F3F46;
-  --bleu:#8FB2F0; --bleu2:#6E8FCB; --bleu-pale:#18213A; --bleu-voile:rgba(143,178,240,.13);
-  --verm:#FF7A45; --verm2:#E0673A; --verm-pale:#2A1610; --verm-voile:rgba(255,122,69,.14);
+html[data-theme="sombre"]{ color-scheme:dark;
+  --tex:repeating-linear-gradient(0deg,transparent 0 23px,rgba(255,255,255,.035) 23px 24px);
+  --pap:#1A1B1A; --pan:#232523; --pan2:#2D302D; --pan3:#2D302D;
+  --enc:#EEECE6; --enc2:#BDB9AF; --enc3:#908C82;
+  --regle:#343733; --regle2:#4B4F49;
+  --sig:#F2703F; --sig2:#FF8B5E; --sig-voile:rgba(242,112,63,.14);
+  --mes:#8FB6DD; --mes-voile:rgba(143,182,221,.12);
+  --grp3:#C4A0FF; --grp4:#7FE0A8;
+  --om:0 1px 0 rgba(0,0,0,.5); --om2:0 2px 14px rgba(0,0,0,.6);
+}
+html[data-dir="a"][data-teinte="bleu"]{--sig:#1D4E89;--sig2:#16406F;--sig-voile:rgba(29,78,137,.10);--mes:#8A5B2B;--mes-voile:rgba(138,91,43,.08);--grp3:#7A3E8C;--grp4:#2E7A52}
+html[data-dir="a"][data-teinte="bleu"][data-theme="sombre"]{--sig:#7FB2E8;--sig2:#A3C9F2;--sig-voile:rgba(127,178,232,.13);--mes:#D6A268;--mes-voile:rgba(214,162,104,.12);--grp3:#C4A0FF;--grp4:#7FE0A8}
+html[data-dir="a"][data-teinte="vert"]{--sig:#2F6B4A;--sig2:#245439;--sig-voile:rgba(47,107,74,.10);--mes:#8A5B2B;--mes-voile:rgba(138,91,43,.08);--grp3:#6B4BA8;--grp4:#9A5C1F}
+html[data-dir="a"][data-teinte="vert"][data-theme="sombre"]{--sig:#79C79A;--sig2:#9BDDB6;--sig-voile:rgba(121,199,154,.13);--mes:#D6A268;--mes-voile:rgba(214,162,104,.12);--grp3:#C4A0FF;--grp4:#F0C46A}
+html[data-dir="a"][data-teinte="prune"]{--sig:#7A2F5B;--sig2:#5F2447;--sig-voile:rgba(122,47,91,.09);--mes:#3F6151;--mes-voile:rgba(63,97,81,.08);--grp3:#1D4E89;--grp4:#9A5C1F}
+html[data-dir="a"][data-teinte="prune"][data-theme="sombre"]{--sig:#E092BE;--sig2:#F0AED2;--sig-voile:rgba(224,146,190,.13);--mes:#8FC4A9;--mes-voile:rgba(143,196,169,.11);--grp3:#8FB6DD;--grp4:#F0C46A}
+html[data-dir="b"]{
+  --police:"Work Sans",system-ui,sans-serif; --police-titre:"Newsreader",Georgia,serif;
+  --police-mono:"Courier Prime",ui-monospace,monospace;
+  --poids-titre:500; --serre:-.015em; --maj:none; --rad:6px; --bord:solid;
+  --tex:radial-gradient(ellipse 90% 60% at 50% 0%,rgba(255,250,238,.9),transparent 70%);
+  --pap:#EFE4D2; --pan:#FBF6EC; --pan2:#E6D9C2; --pan3:#E6D9C2;
+  --enc:#2B1D12; --enc2:#5C4630; --enc3:#766245; --regle:#D9CAAE; --regle2:#BFA987;
+  --sig:#A6461C; --sig2:#853613; --sig-voile:rgba(166,70,28,.10);
+  --mes:#4E6B4A; --mes-voile:rgba(78,107,74,.09);
+  --grp3:#7A4E8C; --grp4:#2F5D8A;
+  --om:0 1px 0 rgba(43,29,18,.08); --om2:0 4px 18px rgba(43,29,18,.14);
+}
+html[data-dir="b"][data-theme="sombre"]{
+  --tex:radial-gradient(ellipse 90% 60% at 50% 0%,rgba(80,55,30,.35),transparent 70%);
+  --pap:#1E150E; --pan:#291D14; --pan2:#35271B; --pan3:#35271B;
+  --enc:#F2E8D8; --enc2:#CBB89E; --enc3:#9C8668; --regle:#3D2D1F; --regle2:#574331;
+  --sig:#E08A5B; --sig2:#F0A67C; --sig-voile:rgba(224,138,91,.14);
+  --mes:#A3C29B; --mes-voile:rgba(163,194,155,.12);
+  --grp3:#C9A6DC; --grp4:#8FB6DD;
+  --om:0 1px 0 rgba(0,0,0,.5); --om2:0 4px 18px rgba(0,0,0,.6);
+}
+html[data-dir="c"]{
+  --police:"IBM Plex Sans",system-ui,sans-serif; --police-titre:"IBM Plex Mono",ui-monospace,monospace;
+  --police-mono:"IBM Plex Mono",ui-monospace,monospace;
+  --poids-titre:600; --serre:-.03em; --maj:none; --rad:0px; --bord:dashed;
+  --tex:linear-gradient(rgba(60,90,120,.11) 1px,transparent 1px),linear-gradient(90deg,rgba(60,90,120,.11) 1px,transparent 1px);
+  --tex-taille:24px 24px;
+  --pap:#F5F7F5; --pan:#FFFFFF; --pan2:#EAEEEE; --pan3:#EAEEEE;
+  --enc:#14202B; --enc2:#46545F; --enc3:#64717A; --regle:#CFD8DE; --regle2:#A9B6C0;
+  --sig:#D1232A; --sig2:#A81A20; --sig-voile:rgba(209,35,42,.09);
+  --mes:#1F5FA0; --mes-voile:rgba(31,95,160,.08);
+  --grp3:#6B4BA8; --grp4:#2E7A52;
+  --om:0 1px 0 rgba(20,32,43,.06); --om2:0 2px 12px rgba(20,32,43,.12);
+}
+html[data-dir="c"][data-theme="sombre"]{
+  --tex:linear-gradient(rgba(255,255,255,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.055) 1px,transparent 1px);
+  --pap:#0F141A; --pan:#161D25; --pan2:#202932; --pan3:#202932;
+  --enc:#E6EDF3; --enc2:#AEBAC6; --enc3:#7B8896; --regle:#27323D; --regle2:#3C4956;
+  --sig:#FF6B70; --sig2:#FF8A8E; --sig-voile:rgba(255,107,112,.14);
+  --mes:#7FB2E8; --mes-voile:rgba(127,178,232,.12);
+  --grp3:#C4A0FF; --grp4:#7FE0A8;
+  --om:0 1px 0 rgba(0,0,0,.5); --om2:0 2px 14px rgba(0,0,0,.6);
+}
+@media (prefers-color-scheme:dark){
+html:not([data-theme="clair"]){ color-scheme:dark;
+  --tex:repeating-linear-gradient(0deg,transparent 0 23px,rgba(255,255,255,.035) 23px 24px);
+  --pap:#1A1B1A; --pan:#232523; --pan2:#2D302D; --pan3:#2D302D;
+  --enc:#EEECE6; --enc2:#BDB9AF; --enc3:#908C82;
+  --regle:#343733; --regle2:#4B4F49;
+  --sig:#F2703F; --sig2:#FF8B5E; --sig-voile:rgba(242,112,63,.14);
+  --mes:#8FB6DD; --mes-voile:rgba(143,182,221,.12);
+  --grp3:#C4A0FF; --grp4:#7FE0A8;
+  --om:0 1px 0 rgba(0,0,0,.5); --om2:0 2px 14px rgba(0,0,0,.6);
+}
+html[data-dir="a"][data-teinte="bleu"]:not([data-theme="clair"]){--sig:#7FB2E8;--sig2:#A3C9F2;--sig-voile:rgba(127,178,232,.13);--mes:#D6A268;--mes-voile:rgba(214,162,104,.12);--grp3:#C4A0FF;--grp4:#7FE0A8}
+html[data-dir="a"][data-teinte="vert"]:not([data-theme="clair"]){--sig:#79C79A;--sig2:#9BDDB6;--sig-voile:rgba(121,199,154,.13);--mes:#D6A268;--mes-voile:rgba(214,162,104,.12);--grp3:#C4A0FF;--grp4:#F0C46A}
+html[data-dir="a"][data-teinte="prune"]:not([data-theme="clair"]){--sig:#E092BE;--sig2:#F0AED2;--sig-voile:rgba(224,146,190,.13);--mes:#8FC4A9;--mes-voile:rgba(143,196,169,.11);--grp3:#8FB6DD;--grp4:#F0C46A}
+html[data-dir="b"]:not([data-theme="clair"]){
+  --tex:radial-gradient(ellipse 90% 60% at 50% 0%,rgba(80,55,30,.35),transparent 70%);
+  --pap:#1E150E; --pan:#291D14; --pan2:#35271B; --pan3:#35271B;
+  --enc:#F2E8D8; --enc2:#CBB89E; --enc3:#9C8668; --regle:#3D2D1F; --regle2:#574331;
+  --sig:#E08A5B; --sig2:#F0A67C; --sig-voile:rgba(224,138,91,.14);
+  --mes:#A3C29B; --mes-voile:rgba(163,194,155,.12);
+  --grp3:#C9A6DC; --grp4:#8FB6DD;
+  --om:0 1px 0 rgba(0,0,0,.5); --om2:0 4px 18px rgba(0,0,0,.6);
+}
+html[data-dir="c"]:not([data-theme="clair"]){
+  --tex:linear-gradient(rgba(255,255,255,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.055) 1px,transparent 1px);
+  --pap:#0F141A; --pan:#161D25; --pan2:#202932; --pan3:#202932;
+  --enc:#E6EDF3; --enc2:#AEBAC6; --enc3:#7B8896; --regle:#27323D; --regle2:#3C4956;
+  --sig:#FF6B70; --sig2:#FF8A8E; --sig-voile:rgba(255,107,112,.14);
+  --mes:#7FB2E8; --mes-voile:rgba(127,178,232,.12);
+  --grp3:#C4A0FF; --grp4:#7FE0A8;
+  --om:0 1px 0 rgba(0,0,0,.5); --om2:0 2px 14px rgba(0,0,0,.6);
+}
+}
+/* ALIAS BRAISE — la leçon importe ce bloc et parle encore --verm / --bleu.
+   Ce sont des renvois, pas des copies : la teinte change, ils suivent. */
+:root,html{
+  --verm:var(--sig); --verm2:var(--sig2); --verm-voile:var(--sig-voile); --verm-pale:var(--sig-voile);
+  --bleu:var(--mes); --bleu2:var(--mes); --bleu-voile:var(--mes-voile); --bleu-pale:var(--mes-voile);
   --grille:transparent;
-  --om:0 1px 2px rgba(0,0,0,.5);
-  --om2:0 4px 16px rgba(0,0,0,.55);
-}}
-:root[data-theme="dark"]{ color-scheme:dark;
-  --pap:#09090B; --pan:#0F0F11; --pan2:#18181B; --pan3:#27272A;
-  --enc:#FAFAFA; --enc2:#D4D4D8; --enc3:#A1A1AA;
-  --regle:#27272A; --regle2:#3F3F46;
-  --bleu:#8FB2F0; --bleu2:#6E8FCB; --bleu-pale:#18213A; --bleu-voile:rgba(143,178,240,.13);
-  --verm:#FF7A45; --verm2:#E0673A; --verm-pale:#2A1610; --verm-voile:rgba(255,122,69,.14);
-  --grille:transparent;
-  --om:0 1px 2px rgba(0,0,0,.5);
-  --om2:0 4px 16px rgba(0,0,0,.55);
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--pan);color:var(--enc);font-family:var(--police)}
@@ -242,17 +322,23 @@ function ressort(xPiston){
 
 /* ── l'état courant ────────────────────────────────────────────────── */
 var etat = "saine", t0 = performance.now(), pause = false, unCoup = 0, phase = 0;
-var ralenti = RALENTI, xPrec = null, parIn = 0, parOut = 0;
+var ralenti = RALENTI, xPrec = null, parIn = 0, parOut = 0, courses = 0;
 
-function amplitude(ms){
+/* La chasse se compte en COURSES DE PISTON, jamais en millisecondes.
+   Branchée sur l'horloge, elle ignorait le ralenti et continuait à l'arrêt —
+   or c'est elle, le phénomène que la page enseigne : « elle ne descend pas,
+   elle CHERCHE ». On regardait donc la seule chose qui ne ralentissait pas.
+   6,5 courses = 2,6 s à la vitesse normale : le rendu d'origine est conservé,
+   et il suit maintenant le ralenti et l'arrêt. */
+var CHASSE_COURSES = 6.5;
+
+function amplitude(){
   var e = ETATS[etat];
-  /* la chasse : l'amplitude elle-même ondule, sur ~2,6 s.
-     C'est ça, « le ton qui monte et redescend ». */
-  return e.amp + e.chasse * Math.sin(ms / 2600 * 2 * Math.PI);
+  return e.amp + e.chasse * Math.sin(courses / CHASSE_COURSES * 2 * Math.PI);
 }
 
-function dessiner(ms){
-  var amp = amplitude(ms);
+function dessiner(){
+  var amp = amplitude();
   var course = COURSE_MAX * amp;
   /* phase 0 → piston au repos à droite (fin de refoulement)
      le solénoïde le tire à gauche sur la première moitié : aspiration
@@ -326,8 +412,9 @@ function boucle(ms){
     var d = (dt / 1000) * (HZ_REEL / ralenti);
     if (unCoup > 0) { d = Math.min(d, unCoup); unCoup -= d; }
     phase = (phase + d) % 1;
+    courses += d;          /* ce qui fait onduler l'amplitude, c'est la pompe */
   }
-  dessiner(ms);
+  dessiner();
   requestAnimationFrame(boucle);
 }
 
