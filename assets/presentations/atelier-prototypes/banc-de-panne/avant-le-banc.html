@@ -1,7 +1,7 @@
 <!doctype html><html lang="fr"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="Les cinq pannes qui rendent un espresso mauvais : le mécanisme en coupe, le signe qui désigne chacune, et l'ordre de vérification qui les trouve à tout coup.">
-<title>Avant le banc — cinq hypothèses</title>
+<title>Avant le banc — les cinq mécanismes</title>
 <!-- La leçon importe les JETONS du banc, donc ses polices aussi. Sans ce
      lien, --police valait "Barlow" et retombait en silence sur la police
      système : la leçon et le jeu ne se ressemblaient plus qu'à la couleur. -->
@@ -266,9 +266,9 @@ a.bouton:hover{background:var(--verm2)}
      <span>Formation barista</span></p>
   <h1>Cinq choses peuvent rendre le café mauvais.</h1>
   <p class="chapeau">Aucune ne s'annonce, et toutes donnent le même symptôme : un
-  shot qui n'est pas bon. Ce qui suit dit ce qui se passe dans la machine et
-  <b>à quoi chacune se reconnaît</b> — le geste à faire, ce qu'on observe, et ce
-  que cette observation permet d'écarter.</p>
+  shot qui n'est pas bon. Regardez d'abord ce qui se passe dans la machine —
+  chaque organe tourne, et une voix dit ce qu'on y voit. Ensuite, la panne sera
+  à vous de trouver.</p>
 </header>
 
 <main>
@@ -285,25 +285,9 @@ apprend rien, même s'il vous rassure. À droite de chaque observation :
 <b>ce qu'il vous reste comme hypothèses</b>.</p>
 <div id="lecture"></div>
 
-<h2><span class="no">3</span>L'ordre qui gagne</h2>
-<p class="intro">Il existe un chemin qui trouve la panne <b>à tout coup</b>,
-quelle qu'elle soit, en trois gestes — et sans rien démonter.</p>
-<div class="arbre" id="arbre"></div>
-<div class="total" id="total"></div>
-
-<h2><span class="no">4</span>Et le chronomètre, pour le plaisir</h2>
-<p class="intro">Le café ouvre, et chaque geste prend du temps. Mais la leçon du
-tableau n'est pas qu'il faut courir : <b>presque tous les bons chemins valent
-trois minutes</b>. Ce qui coûte cher, ce n'est pas la lenteur — c'est de faire un
-geste qui n'écarte rien.</p>
-<table class="cout"><thead><tr><th>Le geste</th><th class="n">Prend</th>
-<th>Sépare</th><th class="n">Trouvé au pire en</th></tr></thead>
-<tbody id="table"></tbody></table>
-<p class="leg" id="leg"></p>
-
 <div class="porte">
-  <p>Maintenant, la machine est en panne et l'horloge tourne.</p>
-  <a class="bouton" href="../banc-de-panne.html">Ouvrir le banc d'essai</a>
+  <p>Vous connaissez la machine. Maintenant elle est en panne, et l'horloge tourne.</p>
+  <a class="bouton" href="../banc-de-panne.html">Au banc</a>
 </div>
 </main>
 
@@ -368,35 +352,6 @@ document.getElementById("lecture").innerHTML = D.lecture.map(g => {
        Ce geste ne réduit jamais la liste.</p>`}
     <table class="lect"><tbody>${lignes}</tbody></table></div>`;
 }).join("");
-
-/* ── 3 · l'arbre ── */
-function noeud(n) {
-  if (n.panne) return `<div class="fin">→ ${esc(n.nom)}</div>`;
-  return `<div class="noeud"><div class="g">${esc(n.nom)}
-    <span class="c">${min(n.cout)}</span></div>` +
-    /* Guillemets SEULEMENT quand c'est vraiment une phrase du jeu. Une branche
-       qui recouvre plusieurs pannes porte une étiquette de catégorie ; la citer
-       laisserait croire que la machine dira ces mots-là. */
-    n.branches.map(b => `<div class="br"><div class="dit${b.seul ? "" : " categorie"}">${
-      b.seul ? "« " + esc(b.dit) + " »" : esc(b.dit)}</div>${noeud(b.suite)}</div>`).join("") +
-    `</div>`;
-}
-document.getElementById("arbre").innerHTML = noeud(D.arbre);
-document.getElementById("total").innerHTML =
-  `Au pire : <b class="mo">${D.minimum} minutes</b>. Jamais plus, quelle que soit
-   la panne — et sans jamais démonter quoi que ce soit.`;
-
-/* ── 4 · le chronomètre ── */
-document.getElementById("table").innerHTML = D.table.map(r => `<tr class="${
-  r.total ? "" : "mort"}">
-  <td>${esc(r.nom)}</td><td class="n">${r.cout} min</td>
-  <td><span class="sep">${r.sepa.map(g => g.map(x => court[x][0].toUpperCase())
-    .join("")).join(" | ")}</span></td>
-  <td class="n ${r.total ? "" : "verdict"}">${r.total ? r.total + " min" : "jamais"}</td>
-  </tr>`).join("");
-document.getElementById("leg").innerHTML =
-  "M mouture · D douchette · P pompe · C chaudière · J joint — un seul groupe " +
-  "veut dire que le geste n'écarte rien.";
 
 /* ── la loupe ── */
 /* ── le mécanisme en marche ──

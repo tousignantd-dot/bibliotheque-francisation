@@ -1,0 +1,403 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Les cinq pannes qui rendent un espresso mauvais : le mécanisme en coupe, le signe qui désigne chacune, et l'ordre de vérification qui les trouve à tout coup.">
+<title>L'ordre qui gagne — après la partie</title>
+<!-- La leçon importe les JETONS du banc, donc ses polices aussi. Sans ce
+     lien, --police valait "Barlow" et retombait en silence sur la police
+     système : la leçon et le jeu ne se ressemblaient plus qu'à la couleur. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* ═══ Les jetons viennent du banc, recopiés à la construction ═══
+   Braise se recopie, il ne s'importe pas : un @import en file:// échoue en
+   silence. --bleu = ce qu'une machine calcule ; --verm = ce qu'on décide. */
+:root{
+  --police:"Barlow",system-ui,sans-serif;
+  --police-titre:"Barlow Condensed",system-ui,sans-serif;
+  --police-mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  --poids-titre:800; --serre:.01em; --maj:uppercase; --rad:0px; --bord:solid;
+  --tex:repeating-linear-gradient(0deg,transparent 0 23px,rgba(27,26,23,.05) 23px 24px);
+  --tex-taille:auto;
+  --pap:#E6E3DB; --pan:#F3F1EB; --pan2:#D9D5CA; --pan3:#D9D5CA;
+  --enc:#1B1A17; --enc2:#4F4C45; --enc3:#67645B;
+  --regle:#C6C1B4; --regle2:#A19B8D;
+  --sig:#C2400F; --sig2:#9E3209; --sig-voile:rgba(194,64,15,.10);
+  --mes:#2F5468; --mes-voile:rgba(47,84,104,.08);
+  --grp3:#6B4BA8; --grp4:#2E7A52;
+  --om:0 1px 0 rgba(27,26,23,.08); --om2:0 2px 12px rgba(27,26,23,.14);
+}
+html[data-theme="sombre"]{ color-scheme:dark;
+  --tex:repeating-linear-gradient(0deg,transparent 0 23px,rgba(255,255,255,.035) 23px 24px);
+  --pap:#1A1B1A; --pan:#232523; --pan2:#2D302D; --pan3:#2D302D;
+  --enc:#EEECE6; --enc2:#BDB9AF; --enc3:#908C82;
+  --regle:#343733; --regle2:#4B4F49;
+  --sig:#F2703F; --sig2:#FF8B5E; --sig-voile:rgba(242,112,63,.14);
+  --mes:#8FB6DD; --mes-voile:rgba(143,182,221,.12);
+  --grp3:#C4A0FF; --grp4:#7FE0A8;
+  --om:0 1px 0 rgba(0,0,0,.5); --om2:0 2px 14px rgba(0,0,0,.6);
+}
+html[data-dir="a"][data-teinte="bleu"]{--sig:#1D4E89;--sig2:#16406F;--sig-voile:rgba(29,78,137,.10);--mes:#8A5B2B;--mes-voile:rgba(138,91,43,.08);--grp3:#7A3E8C;--grp4:#2E7A52}
+html[data-dir="a"][data-teinte="bleu"][data-theme="sombre"]{--sig:#7FB2E8;--sig2:#A3C9F2;--sig-voile:rgba(127,178,232,.13);--mes:#D6A268;--mes-voile:rgba(214,162,104,.12);--grp3:#C4A0FF;--grp4:#7FE0A8}
+html[data-dir="a"][data-teinte="vert"]{--sig:#2F6B4A;--sig2:#245439;--sig-voile:rgba(47,107,74,.10);--mes:#8A5B2B;--mes-voile:rgba(138,91,43,.08);--grp3:#6B4BA8;--grp4:#9A5C1F}
+html[data-dir="a"][data-teinte="vert"][data-theme="sombre"]{--sig:#79C79A;--sig2:#9BDDB6;--sig-voile:rgba(121,199,154,.13);--mes:#D6A268;--mes-voile:rgba(214,162,104,.12);--grp3:#C4A0FF;--grp4:#F0C46A}
+html[data-dir="a"][data-teinte="prune"]{--sig:#7A2F5B;--sig2:#5F2447;--sig-voile:rgba(122,47,91,.09);--mes:#3F6151;--mes-voile:rgba(63,97,81,.08);--grp3:#1D4E89;--grp4:#9A5C1F}
+html[data-dir="a"][data-teinte="prune"][data-theme="sombre"]{--sig:#E092BE;--sig2:#F0AED2;--sig-voile:rgba(224,146,190,.13);--mes:#8FC4A9;--mes-voile:rgba(143,196,169,.11);--grp3:#8FB6DD;--grp4:#F0C46A}
+html[data-dir="b"]{
+  --police:"Work Sans",system-ui,sans-serif; --police-titre:"Newsreader",Georgia,serif;
+  --police-mono:"Courier Prime",ui-monospace,monospace;
+  --poids-titre:500; --serre:-.015em; --maj:none; --rad:6px; --bord:solid;
+  --tex:radial-gradient(ellipse 90% 60% at 50% 0%,rgba(255,250,238,.9),transparent 70%);
+  --pap:#EFE4D2; --pan:#FBF6EC; --pan2:#E6D9C2; --pan3:#E6D9C2;
+  --enc:#2B1D12; --enc2:#5C4630; --enc3:#766245; --regle:#D9CAAE; --regle2:#BFA987;
+  --sig:#A6461C; --sig2:#853613; --sig-voile:rgba(166,70,28,.10);
+  --mes:#4E6B4A; --mes-voile:rgba(78,107,74,.09);
+  --grp3:#7A4E8C; --grp4:#2F5D8A;
+  --om:0 1px 0 rgba(43,29,18,.08); --om2:0 4px 18px rgba(43,29,18,.14);
+}
+html[data-dir="b"][data-theme="sombre"]{
+  --tex:radial-gradient(ellipse 90% 60% at 50% 0%,rgba(80,55,30,.35),transparent 70%);
+  --pap:#1E150E; --pan:#291D14; --pan2:#35271B; --pan3:#35271B;
+  --enc:#F2E8D8; --enc2:#CBB89E; --enc3:#9C8668; --regle:#3D2D1F; --regle2:#574331;
+  --sig:#E08A5B; --sig2:#F0A67C; --sig-voile:rgba(224,138,91,.14);
+  --mes:#A3C29B; --mes-voile:rgba(163,194,155,.12);
+  --grp3:#C9A6DC; --grp4:#8FB6DD;
+  --om:0 1px 0 rgba(0,0,0,.5); --om2:0 4px 18px rgba(0,0,0,.6);
+}
+html[data-dir="c"]{
+  --police:"IBM Plex Sans",system-ui,sans-serif; --police-titre:"IBM Plex Mono",ui-monospace,monospace;
+  --police-mono:"IBM Plex Mono",ui-monospace,monospace;
+  --poids-titre:600; --serre:-.03em; --maj:none; --rad:0px; --bord:dashed;
+  --tex:linear-gradient(rgba(60,90,120,.11) 1px,transparent 1px),linear-gradient(90deg,rgba(60,90,120,.11) 1px,transparent 1px);
+  --tex-taille:24px 24px;
+  --pap:#F5F7F5; --pan:#FFFFFF; --pan2:#EAEEEE; --pan3:#EAEEEE;
+  --enc:#14202B; --enc2:#46545F; --enc3:#64717A; --regle:#CFD8DE; --regle2:#A9B6C0;
+  --sig:#D1232A; --sig2:#A81A20; --sig-voile:rgba(209,35,42,.09);
+  --mes:#1F5FA0; --mes-voile:rgba(31,95,160,.08);
+  --grp3:#6B4BA8; --grp4:#2E7A52;
+  --om:0 1px 0 rgba(20,32,43,.06); --om2:0 2px 12px rgba(20,32,43,.12);
+}
+html[data-dir="c"][data-theme="sombre"]{
+  --tex:linear-gradient(rgba(255,255,255,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.055) 1px,transparent 1px);
+  --pap:#0F141A; --pan:#161D25; --pan2:#202932; --pan3:#202932;
+  --enc:#E6EDF3; --enc2:#AEBAC6; --enc3:#7B8896; --regle:#27323D; --regle2:#3C4956;
+  --sig:#FF6B70; --sig2:#FF8A8E; --sig-voile:rgba(255,107,112,.14);
+  --mes:#7FB2E8; --mes-voile:rgba(127,178,232,.12);
+  --grp3:#C4A0FF; --grp4:#7FE0A8;
+  --om:0 1px 0 rgba(0,0,0,.5); --om2:0 2px 14px rgba(0,0,0,.6);
+}
+@media (prefers-color-scheme:dark){
+html:not([data-theme="clair"]){ color-scheme:dark;
+  --tex:repeating-linear-gradient(0deg,transparent 0 23px,rgba(255,255,255,.035) 23px 24px);
+  --pap:#1A1B1A; --pan:#232523; --pan2:#2D302D; --pan3:#2D302D;
+  --enc:#EEECE6; --enc2:#BDB9AF; --enc3:#908C82;
+  --regle:#343733; --regle2:#4B4F49;
+  --sig:#F2703F; --sig2:#FF8B5E; --sig-voile:rgba(242,112,63,.14);
+  --mes:#8FB6DD; --mes-voile:rgba(143,182,221,.12);
+  --grp3:#C4A0FF; --grp4:#7FE0A8;
+  --om:0 1px 0 rgba(0,0,0,.5); --om2:0 2px 14px rgba(0,0,0,.6);
+}
+html[data-dir="a"][data-teinte="bleu"]:not([data-theme="clair"]){--sig:#7FB2E8;--sig2:#A3C9F2;--sig-voile:rgba(127,178,232,.13);--mes:#D6A268;--mes-voile:rgba(214,162,104,.12);--grp3:#C4A0FF;--grp4:#7FE0A8}
+html[data-dir="a"][data-teinte="vert"]:not([data-theme="clair"]){--sig:#79C79A;--sig2:#9BDDB6;--sig-voile:rgba(121,199,154,.13);--mes:#D6A268;--mes-voile:rgba(214,162,104,.12);--grp3:#C4A0FF;--grp4:#F0C46A}
+html[data-dir="a"][data-teinte="prune"]:not([data-theme="clair"]){--sig:#E092BE;--sig2:#F0AED2;--sig-voile:rgba(224,146,190,.13);--mes:#8FC4A9;--mes-voile:rgba(143,196,169,.11);--grp3:#8FB6DD;--grp4:#F0C46A}
+html[data-dir="b"]:not([data-theme="clair"]){
+  --tex:radial-gradient(ellipse 90% 60% at 50% 0%,rgba(80,55,30,.35),transparent 70%);
+  --pap:#1E150E; --pan:#291D14; --pan2:#35271B; --pan3:#35271B;
+  --enc:#F2E8D8; --enc2:#CBB89E; --enc3:#9C8668; --regle:#3D2D1F; --regle2:#574331;
+  --sig:#E08A5B; --sig2:#F0A67C; --sig-voile:rgba(224,138,91,.14);
+  --mes:#A3C29B; --mes-voile:rgba(163,194,155,.12);
+  --grp3:#C9A6DC; --grp4:#8FB6DD;
+  --om:0 1px 0 rgba(0,0,0,.5); --om2:0 4px 18px rgba(0,0,0,.6);
+}
+html[data-dir="c"]:not([data-theme="clair"]){
+  --tex:linear-gradient(rgba(255,255,255,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.055) 1px,transparent 1px);
+  --pap:#0F141A; --pan:#161D25; --pan2:#202932; --pan3:#202932;
+  --enc:#E6EDF3; --enc2:#AEBAC6; --enc3:#7B8896; --regle:#27323D; --regle2:#3C4956;
+  --sig:#FF6B70; --sig2:#FF8A8E; --sig-voile:rgba(255,107,112,.14);
+  --mes:#7FB2E8; --mes-voile:rgba(127,178,232,.12);
+  --grp3:#C4A0FF; --grp4:#7FE0A8;
+  --om:0 1px 0 rgba(0,0,0,.5); --om2:0 2px 14px rgba(0,0,0,.6);
+}
+}
+/* ALIAS BRAISE — la leçon importe ce bloc et parle encore --verm / --bleu.
+   Ce sont des renvois, pas des copies : la teinte change, ils suivent. */
+:root,html{
+  --verm:var(--sig); --verm2:var(--sig2); --verm-voile:var(--sig-voile); --verm-pale:var(--sig-voile);
+  --bleu:var(--mes); --bleu2:var(--mes); --bleu-voile:var(--mes-voile); --bleu-pale:var(--mes-voile);
+  --grille:transparent;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pap);color:var(--enc);font-family:var(--police);
+ font-size:17px;line-height:1.58;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--police-titre);font-weight:var(--poids-titre);text-wrap:balance;letter-spacing:var(--serre)}
+.mo{font-family:var(--police-mono);font-variant-numeric:tabular-nums;letter-spacing:-.04em}
+p{margin:0 0 .9em}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--verm);outline-offset:3px}
+button{font:inherit;color:inherit}
+
+.tete{max-width:60rem;margin:0 auto;padding:2.6rem 1.5rem 1.2rem}
+.fil{display:flex;flex-wrap:wrap;gap:.9rem;align-items:baseline;font-size:.66rem;
+ text-transform:uppercase;letter-spacing:.16em;color:var(--enc3)}
+.fil .no{color:var(--verm)}
+h1{font-size:clamp(2rem,4.6vw,3rem);line-height:1.04;margin:.5rem 0 .7rem;
+ font-weight:800;letter-spacing:-.035em}
+.chapeau{max-width:38rem;font-size:1.04rem;color:var(--enc2)}
+.chapeau b{color:var(--enc);font-weight:600}
+
+main{max-width:60rem;margin:0 auto;padding:0 1.5rem 5rem}
+h2{font-size:.68rem;text-transform:uppercase;letter-spacing:.14em;color:var(--enc3);
+ font-weight:600;margin:3.4rem 0 .5rem;padding-top:1.4rem;border-top:1px solid var(--regle)}
+h2 .no{color:var(--verm);margin-right:.5rem}
+.intro{max-width:40rem;color:var(--enc2);margin-bottom:1.6rem}
+.intro b{color:var(--enc);font-weight:600}
+
+/* ── 1 · les hypothèses ── */
+.panne{display:grid;grid-template-columns:minmax(0,17rem) minmax(0,1fr);gap:1.6rem;
+ align-items:start;background:var(--pan);border:1px solid var(--regle);
+ box-shadow:var(--om);padding:1.1rem;margin-bottom:1rem}
+.vue{position:relative;aspect-ratio:4/3;background:var(--pan2);border:1px solid var(--regle)}
+/* LE TRAIT EST UN MASQUE : c'est le CSS qui le colore, donc il suit le thème.
+   Une image plate deviendrait un rectangle blanc sur fond sombre. */
+.coupe{position:absolute;inset:.4rem;background:var(--bleu);
+ -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+ -webkit-mask-position:center;mask-position:center;
+ -webkit-mask-size:contain;mask-size:contain}
+.vue svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+/* En marche, le cadre cesse d'être une boîte au format fixe : l'encart dit
+   lui-même sa hauteur, et une image figée n'a plus rien à y tenir. */
+.panne.enmarche{grid-template-columns:minmax(0,1fr)}
+.vue.vivant{aspect-ratio:auto;background:transparent;border:0;cursor:default}
+.vue.vivant svg{position:static}
+iframe.anim{display:block;width:100%;border:0;min-height:19rem}
+.marche{margin-top:.4rem}
+.vue circle{fill:var(--verm-voile);stroke:var(--verm);stroke-width:1.4;
+ vector-effect:non-scaling-stroke}
+.organe{font-family:var(--police-mono);font-size:.62rem;color:var(--bleu);
+ letter-spacing:-.03em;margin:.5rem 0 0}
+.ecoute,.marche{display:inline-flex;align-items:center;gap:.5rem;background:none;
+ border:1px solid var(--regle2);border-radius:2px;padding:.4rem .7rem;margin-top:.5rem;
+ font-size:.76rem;cursor:pointer;color:var(--enc2)}
+.ecoute:hover,.marche:hover{border-color:var(--verm);color:var(--enc);background:var(--verm-voile)}
+.ecoute[aria-pressed="true"],.marche[aria-pressed="true"]{background:var(--verm);border-color:var(--verm);color:#fff}
+.ecoute .pic{width:.55rem;height:.7rem;background:currentColor;
+ clip-path:polygon(0 0,100% 50%,0 100%)}
+.ecoute[aria-pressed="true"] .pic{clip-path:none;width:.5rem;height:.6rem;
+ box-shadow:inset 0 0 0 .16rem currentColor}
+.panne h3{font-size:1.24rem;margin:0 0 .25rem;font-weight:700;letter-spacing:-.02em}
+.mecanique{font-weight:600;color:var(--bleu);margin:0 0 .5rem}
+.panne .quoi{color:var(--enc2);margin:0 0 .8rem}
+
+.signe{border-left:3px solid var(--verm);background:var(--verm-voile);
+ padding:.6rem .85rem}
+.signe .lab{display:block;font-size:.62rem;text-transform:uppercase;
+ letter-spacing:.12em;color:var(--enc3);font-weight:600;margin-bottom:.2rem}
+.signe .lab b{color:var(--verm)}
+.signe .dit{font-style:italic;color:var(--enc)}
+.signe.seul{border-left-color:var(--bleu);background:var(--bleu-voile)}
+.signe.seul .lab b{color:var(--bleu)}
+
+/* ── 2 · la table de lecture ── */
+.geste{border:1px solid var(--regle);background:var(--pan);box-shadow:var(--om);
+ padding:.85rem 1rem;margin-bottom:.5rem}
+.gtete{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;
+ margin-bottom:.5rem}
+.gtete .nom{font-weight:600;font-size:1rem}
+.gtete .cout{font-family:var(--police-mono);font-size:.64rem;color:var(--enc3);
+ white-space:nowrap}
+table.lect{width:100%;border-collapse:collapse;font-size:.92rem}
+table.lect td{padding:.42rem .6rem .42rem 0;border-top:1px solid var(--regle);
+ vertical-align:baseline}
+table.lect tr:first-child td{border-top:0}
+td.obs{color:var(--enc2);width:58%}
+td.reste{text-align:right}
+.p{display:inline-block;border:1px solid var(--regle2);border-radius:2px;
+ padding:.1rem .45rem;margin:.1rem 0 .1rem .3rem;font-size:.72rem;color:var(--enc3)}
+.p.un{border-color:var(--bleu);background:var(--bleu-pale);color:var(--bleu);font-weight:600}
+.rien{color:var(--verm);font-weight:600;font-size:.78rem}
+.sterile{opacity:.72}
+.sterile .gtete .nom{text-decoration:line-through;color:var(--enc3)}
+.avert{margin:0 0 .5rem;font-size:.8rem;color:var(--verm)}
+
+/* ── 3 · l'arbre ── */
+.arbre{font-size:.95rem}
+.noeud{border-left:1px solid var(--regle2);padding-left:1rem;margin-left:.2rem}
+.g{font-weight:600}
+.g .c{font-family:var(--police-mono);font-weight:400;font-size:.66rem;color:var(--enc3)}
+.br{margin-top:.5rem}
+.br>.dit{font-style:italic;color:var(--enc2)}
+.br>.categorie{font-style:normal;font-size:.82rem;color:var(--enc3)}
+.fin{font-weight:700;color:var(--verm)}
+.total{margin-top:1.2rem;padding:.9rem 1.1rem;background:var(--bleu-pale);
+ border-left:3px solid var(--bleu)}
+.total b{font-size:1.5rem;font-family:var(--police-mono);letter-spacing:-.04em}
+
+/* ── le chronomètre ── */
+table.cout{width:100%;border-collapse:collapse;font-size:.92rem}
+table.cout th{text-align:left;font-size:.62rem;text-transform:uppercase;
+ letter-spacing:.1em;color:var(--enc3);font-weight:600;
+ padding:0 .6rem .5rem 0;border-bottom:1px solid var(--regle2)}
+table.cout td{padding:.5rem .6rem .5rem 0;border-bottom:1px solid var(--regle)}
+table.cout td.n{text-align:right;font-family:var(--police-mono);font-size:.82rem;
+ white-space:nowrap}
+tr.mort td{color:var(--enc3)}
+tr.mort .verdict{color:var(--verm);font-weight:600}
+.sep{font-family:var(--police-mono);font-size:.72rem;color:var(--enc3);letter-spacing:-.02em}
+.leg{font-size:.76rem;color:var(--enc3);margin-top:.7rem}
+
+/* ── la porte ── */
+.porte{margin-top:3rem;padding:1.6rem;border:1px solid var(--regle2);
+ background:var(--pan);text-align:center}
+.porte p{color:var(--enc2)}
+a.bouton{display:inline-block;background:var(--verm);color:#fff;text-decoration:none;
+ padding:.75rem 1.5rem;border-radius:2px;font-weight:600;font-size:.95rem}
+a.bouton:hover{background:var(--verm2)}
+
+#loupe{position:fixed;inset:0;background:var(--pap);display:none;align-items:center;
+ justify-content:center;padding:2rem;z-index:9;cursor:zoom-out}
+#loupe .coupe{position:static;width:min(92vw,1100px);aspect-ratio:4/3}
+#loupe.on{display:flex}
+@media(max-width:720px){.panne{grid-template-columns:minmax(0,1fr)}
+ td.obs{width:auto}.tete,main{padding-left:1.1rem;padding-right:1.1rem}}
+</style></head><body>
+
+<header class="tete">
+  <p class="fil"><span class="no">L'ordre qui gagne</span><span>Dépannage espresso</span>
+     <span>Après la partie</span></p>
+  <h1>Il y avait un chemin qui trouvait à tout coup.</h1>
+  <p class="chapeau">Vous venez de jouer, donc ceci se lit maintenant — et pas
+  avant. Un chemin trouve la panne <b>quelle qu'elle soit</b>, en trois gestes et
+  sans rien démonter. Le voici, avec ce que chaque geste coûte et ce qu'il
+  sépare.</p>
+</header>
+
+<main>
+<h2><span class="no">3</span>L'ordre qui gagne</h2>
+<p class="intro">Il existe un chemin qui trouve la panne <b>à tout coup</b>,
+quelle qu'elle soit, en trois gestes — et sans rien démonter.</p>
+<div class="arbre" id="arbre"></div>
+<div class="total" id="total"></div>
+
+<h2><span class="no">4</span>Et le chronomètre, pour le plaisir</h2>
+<p class="intro">Le café ouvre, et chaque geste prend du temps. Mais la leçon du
+tableau n'est pas qu'il faut courir : <b>presque tous les bons chemins valent
+trois minutes</b>. Ce qui coûte cher, ce n'est pas la lenteur — c'est de faire un
+geste qui n'écarte rien.</p>
+<table class="cout"><thead><tr><th>Le geste</th><th class="n">Prend</th>
+<th>Sépare</th><th class="n">Trouvé au pire en</th></tr></thead>
+<tbody id="table"></tbody></table>
+<p class="leg" id="leg"></p>
+
+<div class="porte">
+  <p>Le meilleur chemin ne se retient pas en le lisant. Il se retient en le refaisant.</p>
+  <a class="bouton" href="../banc-de-panne.html">Une autre panne</a>
+</div>
+</main>
+
+<div id="loupe"><div class="coupe"></div></div>
+<audio id="son"></audio>
+<script>
+const D = {"pannes": [{"id": "mouture", "nom": "La mouture est trop fine", "titre": "Le lit de café oppose trop de résistance.", "texte": "Une mouture plus fine, c'est un filtre plus serré. L'eau met cinquante secondes à traverser au lieu de vingt-cinq, et pendant ce temps elle continue de dissoudre ce qu'il ne fallait pas : le shot sort mince, sombre et amer.", "organe": "le moulin", "signes": [{"geste": "Prendre la mouture entre les doigts et vérifier le cran du moulin", "cout": 1, "dit": "Ça colle aux doigts, c'est de la farine. Et le moulin est exactement au cran d'hier."}]}, {"id": "douchette", "nom": "La douchette et le panier sont encrassés", "titre": "L'eau n'arrose plus tout le lit.", "texte": "Les trous bouchés laissent l'eau sortir d'un seul côté. Elle s'y creuse un chemin et traverse presque sans rien extraire, pendant que l'autre moitié du café reste sèche. Une partie sur-extraite, une partie pas extraite du tout.", "organe": "la douchette et le panier", "signes": [{"geste": "Faire couler le groupe à vide, sans porte-filtre", "cout": 1, "dit": "Le débit est faible et tout part d'un seul côté de la douchette."}, {"geste": "Démonter la douchette et inspecter le panier", "cout": 4, "dit": "Un tiers des trous sont bouchés et le panier est gras au toucher."}]}, {"id": "pompe", "nom": "La pompe faiblit", "titre": "La pression ne monte plus à neuf bar.", "texte": "Sous cinq bar et demi, l'eau traverse sans forcer : elle ne met plus les huiles en émulsion. Le débit reste régulier — c'est ce qui trompe — mais il n'a pas de nerf, et il n'y a pas de crème.", "organe": "la pompe", "signes": [{"geste": "Faire couler le groupe à vide, sans porte-filtre", "cout": 1, "dit": "Le débit est faible, mais parfaitement symétrique."}, {"geste": "Lire le manomètre pendant une extraction", "cout": 1, "dit": "5,5 bar. Elle ne monte pas plus haut."}, {"geste": "Écouter la pompe pendant une extraction", "cout": 1, "dit": "Elle force. Le ton monte et redescend, comme si elle cherchait sa pression."}, {"geste": "Chronométrer une extraction (25 g pour 36 g)", "cout": 2, "dit": "38 secondes. Le filet est régulier, mais il n'a pas de nerf."}]}, {"id": "chaudiere", "nom": "L'eau est trop froide", "titre": "L'eau est quatorze degrés trop froide.", "texte": "À soixante-dix-huit degrés, les acides sortent et le reste non. L'extraction s'arrête à mi-chemin : à l'œil le shot est normal, au goût il est blond et vert. C'est la seule panne qui ne se voit pas.", "organe": "la chaudière", "signes": [{"geste": "Sortir le thermomètre et mesurer l'eau au groupe", "cout": 3, "dit": "78 °C. Il en manque quatorze."}]}, {"id": "joint", "nom": "Le joint de groupe est usé", "titre": "Une partie de l'eau ne passe plus par le café.", "texte": "Le joint durci ne ferme plus autour du porte-filtre. L'eau prend la fuite sur le côté — on la voit et on l'entend. Ce qui reste traverse le lit trop vite, et la pression retombe pendant l'extraction.", "organe": "le joint de groupe", "signes": [{"geste": "Lire le manomètre pendant une extraction", "cout": 1, "dit": "7 bar, et ça retombe pendant l'extraction."}, {"geste": "Regarder le pourtour du porte-filtre pendant l'extraction", "cout": 1, "dit": "Un jet mince s'échappe sur le côté gauche, avec un sifflement."}, {"geste": "Démonter la douchette et inspecter le panier", "cout": 4, "dit": "Douchette propre. Par contre le joint est dur, fendillé sur tout le pourtour."}]}], "table": [{"id": "avide", "nom": "Faire couler le groupe à vide, sans porte-filtre", "cout": 1, "groupes": 3, "bits": 1.37, "total": 3, "sepa": [["mouture", "chaudiere", "joint"], ["douchette"], ["pompe"]]}, {"id": "mano", "nom": "Lire le manomètre pendant une extraction", "cout": 1, "groupes": 3, "bits": 1.37, "total": 3, "sepa": [["mouture", "douchette", "chaudiere"], ["pompe"], ["joint"]]}, {"id": "pourtour", "nom": "Regarder le pourtour du porte-filtre pendant l'extraction", "cout": 1, "groupes": 2, "bits": 0.72, "total": 3, "sepa": [["mouture", "douchette", "pompe", "chaudiere"], ["joint"]]}, {"id": "mouture_t", "nom": "Prendre la mouture entre les doigts et vérifier le cran du moulin", "cout": 1, "groupes": 2, "bits": 0.72, "total": 3, "sepa": [["mouture"], ["douchette", "pompe", "chaudiere", "joint"]]}, {"id": "chrono", "nom": "Chronométrer une extraction (25 g pour 36 g)", "cout": 2, "groupes": 3, "bits": 1.52, "total": 3, "sepa": [["mouture", "douchette"], ["pompe"], ["chaudiere", "joint"]]}, {"id": "bruit", "nom": "Écouter la pompe pendant une extraction", "cout": 1, "groupes": 2, "bits": 0.72, "total": 4, "sepa": [["mouture", "douchette", "chaudiere", "joint"], ["pompe"]]}, {"id": "thermo", "nom": "Sortir le thermomètre et mesurer l'eau au groupe", "cout": 3, "groupes": 2, "bits": 0.72, "total": 5, "sepa": [["mouture", "douchette", "pompe", "joint"], ["chaudiere"]]}, {"id": "douche", "nom": "Démonter la douchette et inspecter le panier", "cout": 4, "groupes": 3, "bits": 1.37, "total": 6, "sepa": [["mouture", "pompe", "chaudiere"], ["douchette"], ["joint"]]}, {"id": "barista", "nom": "Demander à Kim ce qui a changé depuis hier", "cout": 1, "groupes": 1, "bits": -0.0, "total": null, "sepa": [["mouture", "douchette", "pompe", "chaudiere", "joint"]]}], "lecture": [{"id": "avide", "nom": "Faire couler le groupe à vide, sans porte-filtre", "cout": 1, "lignes": [{"dit": "Le débit est faible et tout part d'un seul côté de la douchette.", "reste": ["douchette"], "ecarte": ["mouture", "pompe", "chaudiere", "joint"]}, {"dit": "Le débit est faible, mais parfaitement symétrique.", "reste": ["pompe"], "ecarte": ["mouture", "douchette", "chaudiere", "joint"]}, {"dit": "Débit franc, des deux côtés.", "reste": ["mouture", "chaudiere", "joint"], "ecarte": ["douchette", "pompe"]}], "utile": true}, {"id": "mano", "nom": "Lire le manomètre pendant une extraction", "cout": 1, "lignes": [{"dit": "5,5 bar. Elle ne monte pas plus haut.", "reste": ["pompe"], "ecarte": ["mouture", "douchette", "chaudiere", "joint"]}, {"dit": "7 bar, et ça retombe pendant l'extraction.", "reste": ["joint"], "ecarte": ["mouture", "douchette", "pompe", "chaudiere"]}, {"dit": "9 bar, l'aiguille tient.", "reste": ["mouture", "douchette", "chaudiere"], "ecarte": ["pompe", "joint"]}], "utile": true}, {"id": "chrono", "nom": "Chronométrer une extraction (25 g pour 36 g)", "cout": 2, "lignes": [{"dit": "38 secondes. Le filet est régulier, mais il n'a pas de nerf.", "reste": ["pompe"], "ecarte": ["mouture", "douchette", "chaudiere", "joint"]}, {"dit": "Long — autour de cinquante secondes.", "reste": ["mouture", "douchette"], "ecarte": ["pompe", "chaudiere", "joint"]}, {"dit": "Court — moins de trente secondes.", "reste": ["chaudiere", "joint"], "ecarte": ["mouture", "douchette", "pompe"]}], "utile": true}, {"id": "pourtour", "nom": "Regarder le pourtour du porte-filtre pendant l'extraction", "cout": 1, "lignes": [{"dit": "Un jet mince s'échappe sur le côté gauche, avec un sifflement.", "reste": ["joint"], "ecarte": ["mouture", "douchette", "pompe", "chaudiere"]}, {"dit": "Rien. Le pourtour est sec.", "reste": ["mouture", "douchette", "pompe", "chaudiere"], "ecarte": ["joint"]}], "utile": true}, {"id": "mouture_t", "nom": "Prendre la mouture entre les doigts et vérifier le cran du moulin", "cout": 1, "lignes": [{"dit": "Ça colle aux doigts, c'est de la farine. Et le moulin est exactement au cran d'hier.", "reste": ["mouture"], "ecarte": ["douchette", "pompe", "chaudiere", "joint"]}, {"dit": "Mouture normale, cran inchangé.", "reste": ["douchette", "pompe", "chaudiere", "joint"], "ecarte": ["mouture"]}], "utile": true}, {"id": "bruit", "nom": "Écouter la pompe pendant une extraction", "cout": 1, "lignes": [{"dit": "Elle force. Le ton monte et redescend, comme si elle cherchait sa pression.", "reste": ["pompe"], "ecarte": ["mouture", "douchette", "chaudiere", "joint"]}, {"dit": "Le ronronnement habituel.", "reste": ["mouture", "douchette", "chaudiere", "joint"], "ecarte": ["pompe"]}], "utile": true}, {"id": "barista", "nom": "Demander à Kim ce qui a changé depuis hier", "cout": 1, "lignes": [{"dit": "La même réponse, quelle que soit la panne.", "reste": ["mouture", "douchette", "pompe", "chaudiere", "joint"], "ecarte": []}], "utile": false}, {"id": "thermo", "nom": "Sortir le thermomètre et mesurer l'eau au groupe", "cout": 3, "lignes": [{"dit": "78 °C. Il en manque quatorze.", "reste": ["chaudiere"], "ecarte": ["mouture", "douchette", "pompe", "joint"]}, {"dit": "92 °C. Normal.", "reste": ["mouture", "douchette", "pompe", "joint"], "ecarte": ["chaudiere"]}], "utile": true}, {"id": "douche", "nom": "Démonter la douchette et inspecter le panier", "cout": 4, "lignes": [{"dit": "Un tiers des trous sont bouchés et le panier est gras au toucher.", "reste": ["douchette"], "ecarte": ["mouture", "pompe", "chaudiere", "joint"]}, {"dit": "Douchette propre. Par contre le joint est dur, fendillé sur tout le pourtour.", "reste": ["joint"], "ecarte": ["mouture", "douchette", "pompe", "chaudiere"]}, {"dit": "Douchette propre, panier correct.", "reste": ["mouture", "pompe", "chaudiere"], "ecarte": ["douchette", "joint"]}], "utile": true}], "arbre": {"geste": "avide", "nom": "Faire couler le groupe à vide, sans porte-filtre", "cout": 1, "branches": [{"dit": "Débit franc, des deux côtés.", "seul": false, "suite": {"geste": "mano", "nom": "Lire le manomètre pendant une extraction", "cout": 1, "branches": [{"dit": "9 bar, l'aiguille tient.", "seul": false, "suite": {"geste": "mouture_t", "nom": "Prendre la mouture entre les doigts et vérifier le cran du moulin", "cout": 1, "branches": [{"dit": "Mouture normale, elle s'effrite bien. Cran inchangé.", "seul": true, "suite": {"panne": "chaudiere", "nom": "L'eau est trop froide"}}, {"dit": "Ça colle aux doigts, c'est de la farine. Et le moulin est exactement au cran d'hier.", "seul": true, "suite": {"panne": "mouture", "nom": "La mouture est trop fine"}}]}}, {"dit": "7 bar, et ça retombe pendant l'extraction.", "seul": true, "suite": {"panne": "joint", "nom": "Le joint de groupe est usé"}}]}}, {"dit": "Le débit est faible et tout part d'un seul côté de la douchette.", "seul": true, "suite": {"panne": "douchette", "nom": "La douchette et le panier sont encrassés"}}, {"dit": "Le débit est faible, mais parfaitement symétrique.", "seul": true, "suite": {"panne": "pompe", "nom": "La pompe faiblit"}}]}, "minimum": 3};
+const esc = s => s.replace(/[<>&]/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]));
+const min = n => n + (n > 1 ? " minutes" : " minute");
+const court = {mouture:"mouture", douchette:"douchette", pompe:"pompe",
+               chaudiere:"chaudière", joint:"joint"};
+
+/* ── 3 · l'arbre ── */
+function noeud(n) {
+  if (n.panne) return `<div class="fin">→ ${esc(n.nom)}</div>`;
+  return `<div class="noeud"><div class="g">${esc(n.nom)}
+    <span class="c">${min(n.cout)}</span></div>` +
+    /* Guillemets SEULEMENT quand c'est vraiment une phrase du jeu. Une branche
+       qui recouvre plusieurs pannes porte une étiquette de catégorie ; la citer
+       laisserait croire que la machine dira ces mots-là. */
+    n.branches.map(b => `<div class="br"><div class="dit${b.seul ? "" : " categorie"}">${
+      b.seul ? "« " + esc(b.dit) + " »" : esc(b.dit)}</div>${noeud(b.suite)}</div>`).join("") +
+    `</div>`;
+}
+document.getElementById("arbre").innerHTML = noeud(D.arbre);
+document.getElementById("total").innerHTML =
+  `Au pire : <b class="mo">${D.minimum} minutes</b>. Jamais plus, quelle que soit
+   la panne — et sans jamais démonter quoi que ce soit.`;
+
+/* ── 4 · le chronomètre ── */
+document.getElementById("table").innerHTML = D.table.map(r => `<tr class="${
+  r.total ? "" : "mort"}">
+  <td>${esc(r.nom)}</td><td class="n">${r.cout} min</td>
+  <td><span class="sep">${r.sepa.map(g => g.map(x => court[x][0].toUpperCase())
+    .join("")).join(" | ")}</span></td>
+  <td class="n ${r.total ? "" : "verdict"}">${r.total ? r.total + " min" : "jamais"}</td>
+  </tr>`).join("");
+document.getElementById("leg").innerHTML =
+  "M mouture · D douchette · P pompe · C chaudière · J joint — un seul groupe " +
+  "veut dire que le geste n'écarte rien.";
+
+/* ── la loupe ── */
+/* ── le mécanisme en marche ──
+   Deux pannes portent une animation. Elle vient EN PLUS de la planche, pas
+   à sa place : la planche tient le repère vermillon et la narration — où
+   regarder, et ce qu'on y voit. L'animation tient ce que l'image fixe ne
+   peut pas tenir : le temps. Le bouton fait l'aller et le retour.
+
+   L'encart est un iframe à contenu embarqué : il porte ses propres jetons,
+   son propre script, et ne peut donc ni salir le CSS de la leçon ni entrer
+   en collision avec son JavaScript. Il annonce sa hauteur par message. */
+const ANIM = Object.fromEntries(D.pannes.filter(p => p.anim).map(p => [p.id, p.anim]));
+addEventListener("message", e => {
+  if (!e.data || !e.data.encart) return;
+  document.querySelectorAll("iframe.anim").forEach(f => {
+    if (f.contentWindow === e.source) f.style.height = e.data.h + "px";
+  });
+});
+document.querySelectorAll(".marche").forEach(b => b.addEventListener("click", ev => {
+  ev.stopPropagation();
+  const k = b.dataset.k, v = document.querySelector(`.vue[data-k="${k}"]`);
+  if (b.getAttribute("aria-pressed") === "true") {
+    v.innerHTML = v.dataset.fixe; v.classList.remove("vivant");
+    v.closest(".panne").classList.remove("enmarche");
+    b.setAttribute("aria-pressed", "false");
+    b.textContent = "Voir le mécanisme en marche";
+    return;
+  }
+  v.dataset.fixe = v.innerHTML;
+  const f = document.createElement("iframe");
+  f.className = "anim"; f.title = "Le mécanisme en marche"; f.srcdoc = ANIM[k];
+  v.innerHTML = ""; v.appendChild(f); v.classList.add("vivant");
+  v.closest(".panne").classList.add("enmarche");
+  /* L'article vient de doubler de hauteur sous le pointeur, et une animation
+     hors écran ne tourne pas : les navigateurs suspendent requestAnimationFrame
+     pour ce qu'on ne regarde pas. On amène l'encart devant les yeux. */
+  v.scrollIntoView({ block: "center", behavior: "smooth" });
+  b.setAttribute("aria-pressed", "true");
+  b.textContent = "Revenir à la coupe";
+}));
+
+/* ── la loupe ── */
+const loupe = document.getElementById("loupe");
+document.querySelectorAll(".vue").forEach(v => v.addEventListener("click", () => {
+  if (v.classList.contains("vivant")) return;   /* en marche : pas de loupe */
+  loupe.firstElementChild.style.webkitMaskImage =
+    loupe.firstElementChild.style.maskImage = v.firstElementChild.style.maskImage;
+  loupe.classList.add("on");
+}));
+loupe.addEventListener("click", () => loupe.classList.remove("on"));
+addEventListener("keydown", e => { if (e.key === "Escape") loupe.classList.remove("on"); });
+
+/* ── la narration ── */
+/* UN SEUL LECTEUR pour les cinq clips : deux <audio> qui jouent ensemble
+   donnent deux voix, et c'est exactement ce qu'on a évité au tirage. */
+const son = document.getElementById("son");
+const voix = Object.fromEntries(D.pannes.filter(p => p.voix).map(p => [p.id, p.voix]));
+function arreter() {
+  son.pause();
+  document.querySelectorAll(".ecoute").forEach(b => b.setAttribute("aria-pressed", "false"));
+}
+document.querySelectorAll(".ecoute").forEach(b => b.addEventListener("click", () => {
+  const joue = b.getAttribute("aria-pressed") === "true";
+  arreter();
+  if (joue) return;
+  son.src = voix[b.dataset.k]; son.currentTime = 0; son.play();
+  b.setAttribute("aria-pressed", "true");
+}));
+son.addEventListener("ended", arreter);
+</script></body></html>
