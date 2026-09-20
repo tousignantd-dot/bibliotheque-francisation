@@ -63,6 +63,12 @@ const ECRANS = [
     menu: 'Il est parti',
     titre: "Yasmine a dit «&nbsp;oui&nbsp;». Que va-t-il arriver&nbsp;?",
     consigne: "Écoutez les trois extraits, puis répondez avec ce que vous savez déjà.",
+    images: [
+      { fichier: 'images/client-sort.jpg',
+        alt: "Vu de l'intérieur du magasin, un homme de dos vient de sortir par la porte "
+           + "vitrée et s'éloigne sur le trottoir.",
+        leg: "Deux minutes plus tard. Personne ne saura ce qu'il cherchait." },
+    ],
     sons: [
       { fichier: 'a1.mp3', qui: 'Un client, en entrant',
         texte: "Bonjour&nbsp;! Écoutez, le soulier brun là, dans la vitrine, vous l'auriez-tu en trente-huit pis en large&nbsp;?" },
@@ -83,6 +89,7 @@ const ECRANS = [
     pourquoi: "À l'usine, une palette encore pleine finit par se voir. Dans un magasin, <b>une vente perdue ne laisse aucune trace</b>. C'est le défaut le plus cher du plancher, et le seul que personne ne signale.",
     attente: "Choisissez une réponse pour continuer.",
     es: {
+      images: [{ leg: "Dos minutos después. Nadie sabrá qué buscaba." }],
       attente: "Elija una respuesta para continuar.",
       titre: "Yasmine dijo « oui ». ¿Qué va a pasar?",
       consigne: "Escuche los tres audios y responda con lo que ya sabe.",
@@ -96,6 +103,7 @@ const ECRANS = [
       pourquoi: "En una fábrica, una paleta llena acaba por verse. En una tienda, <b>una venta perdida no deja ningún rastro</b>. Es el defecto más caro del piso de venta, y el único que nadie señala.",
     },
     en: {
+      images: [{ leg: "Two minutes later. Nobody will know what he was after." }],
       attente: "Choose an answer to continue.",
       titre: "Yasmine said « oui ». What is going to happen?",
       consigne: "Listen to the three clips, then answer with what you already know.",
@@ -175,6 +183,12 @@ const ECRANS = [
       + "impatient.</b> Il a attendu quinze secondes de plus et il est encore dans le magasin — "
       + "ce qui ne serait pas arrivé autrement.",
     ],
+    images: [
+      { fichier: 'images/au-comptoir.jpg',
+        alt: "Par-dessus l'épaule de la vendeuse, un client pose la main sur une boîte "
+           + "de carton posée sur le comptoir.",
+        leg: "Il a attendu quinze secondes de plus, et il est encore là." },
+    ],
     sons: [
       { fichier: 'b1.mp3', qui: 'Le client', texte: "Bonjour&nbsp;! Écoutez, le soulier brun là, dans la vitrine, vous l'auriez-tu en trente-huit pis en large&nbsp;?" },
       { fichier: 'b2.mp3', qui: 'Yasmine', texte: "Un instant, s'il vous plaît. Vous cherchez quel modèle&nbsp;?" },
@@ -188,6 +202,7 @@ const ECRANS = [
     attente: "Écoutez l'échange, puis continuez.",
     es: {
       attente: "Escuche el diálogo y continúe.",
+      images: [{ leg: "Esperó quince segundos más, y sigue aquí." }],
       titre: "Esta es la misma escena, con tres gestos más.",
       paras: [
         "Nada ha cambiado en el cliente: habla igual de rápido. Es Yasmine quien hace tres cosas.",
@@ -198,6 +213,7 @@ const ECRANS = [
     },
     en: {
       attente: "Listen to the exchange, then continue.",
+      images: [{ leg: "He waited fifteen seconds longer, and he is still here." }],
       titre: "Here is the same scene, with three more moves.",
       paras: [
         "Nothing has changed about the customer: he speaks just as fast. It is Yasmine who does three things.",
@@ -268,6 +284,12 @@ const ECRANS = [
     menu: '« Je regarde »',
     titre: "Un client entre et dit&nbsp;: «&nbsp;Non, non, je regarde.&nbsp;»",
     consigne: "Écoutez, puis choisissez ce que vous faites.",
+    images: [
+      { fichier: 'images/je-regarde.jpg',
+        alt: "Un homme seul, de dos, debout devant un mur d'étagères de chaussures, "
+           + "les mains dans les poches.",
+        leg: "Il regarde. Dans trente secondes, il aura une question." },
+    ],
     sons: [
       { fichier: 'd1.mp3', qui: 'Un client', texte: "Non, non, je regarde." },
     ],
@@ -284,6 +306,7 @@ const ECRANS = [
     attente: "Choisissez une réponse pour continuer.",
     es: {
       attente: "Elija una respuesta para continuar.",
+      images: [{ leg: "Está mirando. En treinta segundos tendrá una pregunta." }],
       titre: "Un cliente entra y dice: « Non, non, je regarde. »",
       consigne: "Escuche y elija qué hace usted.",
       options: [
@@ -297,6 +320,7 @@ const ECRANS = [
     },
     en: {
       attente: "Choose an answer to continue.",
+      images: [{ leg: "He is browsing. In thirty seconds he will have a question." }],
       titre: "A customer comes in and says: « Non, non, je regarde. »",
       consigne: "Listen, then choose what you do.",
       options: [
@@ -429,10 +453,17 @@ const ECRANS = [
       + "<b>dites une fois «&nbsp;un instant, s'il vous plaît&nbsp;» à un client qui parle "
       + "trop vite.</b> Une seule fois. Votre gérante le note sur sa fiche.",
     ],
+    images: [
+      { fichier: 'images/tablier.jpg',
+        alt: "Un tablier de travail en toile bleue suspendu à un crochet, une feuille "
+           + "pliée en deux dans la poche ventrale.",
+        leg: "La fiche reste dans la poche. C'est le seul endroit où elle sert." },
+    ],
     retenir: "Un client arrêté poliment reste. Un client à qui on a dit «&nbsp;oui&nbsp;» sort, et personne ne le compte.",
     attente: "Lisez, puis terminez le bloc.",
     es: {
       attente: "Lea y termine el bloque.",
+      images: [{ leg: "La ficha se queda en el bolsillo. Es el único lugar donde sirve." }],
       titre: "Cinco frases para guardar en el bolsillo del delantal.",
       paras: [
         "Las cinco frases quedan en francés: son exactamente lo que hay que decir en el piso de venta.",
@@ -443,6 +474,7 @@ const ECRANS = [
     },
     en: {
       attente: "Read, then finish the block.",
+      images: [{ leg: "The card stays in the pocket. It is the only place where it is any use." }],
       titre: "Five sentences to keep in your apron pocket.",
       paras: [
         "The five sentences stay in French: they are exactly what you have to say on the floor.",
