@@ -1030,32 +1030,19 @@ sup{font-size:.7em;line-height:0}
 }
 
 
-/* Le temps, au bout de la barre. */
-.chrono{flex:0 0 auto;display:flex;align-items:center;gap:var(--sp-2);
-      padding-left:var(--sp-3);border-left:1px solid var(--border)}
-.chrono__t,.chrono__s{font-variant-numeric:tabular-nums;font-size:var(--fs-ui-sm);
-      font-weight:var(--fw-black);letter-spacing:-.01em;white-space:nowrap}
-.chrono__s{color:var(--accent-ink)}
-.chrono__coeur{width:8px;height:8px;border-radius:50%;background:var(--accent);
-      animation:battre 1.1s var(--ease) infinite}
-@keyframes battre{0%,100%{transform:scale(1)}12%{transform:scale(1.35)}26%{transform:scale(1)}}
-@media (prefers-reduced-motion:reduce){ .chrono__coeur{animation:none} }
-.chrono__z{width:26px;height:26px;flex-shrink:0;display:inline-flex;align-items:center;
-      justify-content:center;border:1px solid var(--border);border-radius:50%;
-      background:var(--surface-card);color:var(--text-muted);cursor:pointer;
-      font-family:var(--font-sans);font-size:14px;line-height:1;padding:0}
-.chrono__z:hover{border-color:var(--ink-900);color:var(--text-strong)}
-@media (pointer:coarse){ .chrono__z{width:var(--tap-min);height:var(--tap-min)} }
-/* La jauge de survie : un filet plein largeur sous la barre. Elle recule, et
-   c'est le sens du module — on ne la donne pas en pourcentage seulement. */
-.chrono__barre{height:2px;background:var(--paper-200)}
-.chrono__barre>div{height:100%;width:100%;background:var(--accent);
-      transition:width 200ms linear}
+/* LE CHRONOMÈTRE A ÉTÉ RETIRÉ (20 septembre 2026), et avec lui la jauge de
+   survie qui courait sous la barre. Il comptait le temps depuis le chargement
+   de la page et en déduisait un pourcentage de chances restantes — ce qui
+   revenait à décompter la vie d'un homme pendant qu'on lit une définition.
+   Ce que le module enseigne sur le temps, il l'enseigne où c'est vrai : sur
+   la plaque des dix minutes, qui se joue sous les yeux de l'élève.
+   Les règles retirées : .chrono, .chrono__t/__s/__coeur/__z, @keyframes
+   battre, et .chrono__barre. Reste .jauge, qui mesure l'AVANCEMENT dans le
+   module et n'a jamais rien eu à voir avec la survie. */
 .jauge{position:absolute;left:0;bottom:-1px;height:2px;background:var(--ink-900);
       width:0;transition:width 240ms var(--ease)}
-/* Sur écran étroit la marque s'efface : le parcours et le temps priment. */
+/* Sur écran étroit la marque s'efface : le parcours prime. */
 @media (max-width:52rem){ .marque{display:none} }
-@media (max-width:30rem){ .chrono__s{display:none} }
 
 /* ── 3 · LE PANNEAU TIENT SA HAUTEUR ──────────────────────────────────────
    Le module montre UN panneau à la fois : il peut donc se donner la hauteur
@@ -1311,9 +1298,11 @@ section{border-top:1px solid var(--border);padding:var(--sp-8) 0;scroll-margin-t
    Le rouge redevient un événement en ne servant qu'une fois. */
 
 /* 03 · LE COMPTE. Le graphique EST le fond — c'est ce que la remise v2
-   apportait, et c'est ce qui se comprend sans lire. Les dix marques restent
-   pilotées par le chronomètre du module : elles ne s'éteignent pas au rythme
-   des phrases mais au rythme du temps qui passe, et c'est toute la leçon.
+   apportait, et c'est ce qui se comprend sans lire. Les dix marques
+   s'éteignent au rythme de la DÉMONSTRATION : une minute toutes les six
+   cents millisecondes, assez lent pour qu'on suive le bord rouge des yeux.
+   Elles suivaient le chronomètre du module ; il est parti, et c'est ici que
+   le temps se montre désormais — au seul endroit où on le regarde.
    LE ROUGE RESTE ROUGE : les trois paliers descendaient jusqu'au bordeaux,
    où l'on ne lit plus une alarme mais une couleur de décoration. */
 .diapo--ouv3 .carte--pleine{padding:0;overflow:hidden;position:relative;
@@ -1802,13 +1791,13 @@ body{background:var(--paper-100)}
 
 
 
-/* LES DEUX FILETS DU HAUT. Ils étaient dans la barre ; une pilule ne peut pas
-   porter un filet pleine largeur sans cesser d'être une pilule. Ils remontent
-   donc au bord de l'écran, où ils sont plus justes : la survie qui recule et
-   l'avancement qui progresse ne sont pas des éléments de navigation, ce sont
-   deux mesures qui courent sous tout le module. */
-.chrono__barre{position:fixed;top:0;left:0;right:0;z-index:80;height:3px}
-.jauge{position:fixed;top:3px;left:0;right:0;bottom:auto;z-index:80;height:3px}
+/* LE FILET DU HAUT. Il était dans la barre ; une pilule ne peut pas porter un
+   filet pleine largeur sans cesser d'être une pilule. Il remonte donc au bord
+   de l'écran, où il est plus juste : l'avancement qui progresse n'est pas un
+   élément de navigation, c'est une mesure qui court sous tout le module.
+   Ils étaient DEUX, empilés, et la survie occupait les trois premiers pixels ;
+   elle est partie avec le chronomètre, donc l'avancement remonte à zéro. */
+.jauge{position:fixed;top:0;left:0;right:0;bottom:auto;z-index:80;height:3px}
 
 .steps{position:sticky;top:0;z-index:60;background:none;backdrop-filter:none;
       border-bottom:0;padding:var(--sp-3) var(--gutter) 0}
@@ -1854,17 +1843,17 @@ body{background:var(--paper-100)}
    haut à droite — exactement le coin qu'elles cachaient. Ici elles sont à
    côté du chronomètre, au même endroit d'un bout à l'autre du module, et
    elles disparaissent quand le panneau n'a rien à dire. */
-.cmdBarre{display:flex;gap:var(--sp-2);flex:0 0 auto}
+.cmdBarre{display:flex;gap:var(--sp-2);flex:0 0 auto;margin-left:auto}
 .cmdBarre .bt{background:var(--paper-100);border-color:transparent}
 @media (max-width:52rem){
   /* Sur un écran étroit, le libellé du texte s'efface : le bouton d'écoute
      est le seul des deux qu'on cherche en urgence. */
   #texteG{display:none}
 }
-/* Le temps devient une pastille, comme « 25 minutes · étape 1 / 4 » chez v6 :
-   il ne s'accroche plus à un filet vertical, il est posé. */
-.chrono{margin-left:auto;background:var(--paper-100);border-radius:var(--r-pill);
-      padding:var(--sp-2) var(--sp-3);border-left:0;gap:var(--sp-2)}
+/* C'EST LA PASTILLE DU TEMPS QUI POUSSAIT LES COMMANDES À DROITE. Elle portait
+   le `margin-left:auto` ; retirée, les deux boutons se collaient au parcours,
+   au milieu de la barre. Le `auto` passe donc à la barre de commandes, qui
+   occupe désormais le coin. */
 
 /* LE PIED, MÊME CARTE. Il flottait contre le bas de l'écran avec un filet
    au-dessus ; il devient une pilule posée, à la même distance des bords que
@@ -1948,15 +1937,7 @@ body.couverture .pied{display:none}
            qu'une seule vive ailleurs. -->
       <button class="bt" type="button" id="retourG" hidden>▶ Réécouter</button>
     </div>
-    <div class="chrono" aria-label="Le temps depuis l'effondrement">
-      <span class="chrono__t" id="chrono">0:00</span>
-      <span class="chrono__coeur" aria-hidden="true"></span>
-      <span class="chrono__s" id="survie">100 %</span>
-      <button class="chrono__z" type="button" id="remettre"
-              title="Remettre le compteur à zéro" aria-label="Remettre le compteur à zéro">↺</button>
-    </div>
   </div>
-  <div class="chrono__barre"><div id="survieBarre"></div></div>
   <div class="jauge" id="jauge"></div>
 </nav>
 
@@ -2655,7 +2636,8 @@ var RETOURS = {"souffle-agonal": "medias/formation-dea/ret-souffle-agonal.mp3?v=
     /* LES DEUX COMMANDES ONT QUITTÉ LA DIAPOSITIVE POUR LA BARRE. Elles
        flottaient sur le dessin, en haut à droite, et elles y masquaient
        justement le coin qu'on regarde. Il n'y en a plus qu'UNE paire pour
-       tout le module, à côté du chronomètre.
+       tout le module, au bout de la barre — le coin que le chronomètre
+       occupait avant son retrait.
        Ce qui suit est la conséquence : une paire unique ne peut pas être
        branchée dans chaque panneau, il faut qu'elle s'adresse au panneau
        COURANT. D'où le registre `actif` — mis à jour à l'entrée, vidé à la
@@ -2687,8 +2669,8 @@ var RETOURS = {"souffle-agonal": "medias/formation-dea/ret-souffle-agonal.mp3?v=
 
       /* Les dix marques du compteur sont posées ICI et non dans le HTML : dix
          `<span>` écrits à la main seraient dix occasions de se tromper de
-         compte, et elles doivent exister avant que le chronomètre cherche à
-         les éteindre. Elles portent leur numéro en `data-n` — le CSS l'écrit,
+         compte, et elles doivent exister avant que la démonstration cherche
+         à les éteindre. Elles portent leur numéro en `data-n` — le CSS l'écrit,
          donc le chiffre ne peut pas se désaccorder de la marque. */
       var secours = null, balayage = null, front = 1;
       if (pan.dataset.diapo === 'compteur') {
@@ -2781,18 +2763,18 @@ var RETOURS = {"souffle-agonal": "medias/formation-dea/ret-souffle-agonal.mp3?v=
         if (eJalons) [].forEach.call(eJalons.children, function (j, k) {
           j.classList.toggle('faite', k <= n);
         });
-        /* LES DIX BANDES SUIVENT LA DÉMONSTRATION, PAS LE CHRONOMÈTRE — et
-           c'est un revirement qu'il faut expliquer. Câblées sur le seul
+        /* LES DIX BANDES SUIVENT LA DÉMONSTRATION. Câblées sur le seul
            chronomètre du module, elles étaient TOUTES VERTES sur cette
            plaque : l'élève y arrive à sa première minute, et la diapositive
            qui enseigne « dix minutes et il n'en reste plus » ne montrait
            aucune minute perdue. Elle disait le contraire de sa phrase.
            La première phrase perd la minute 1, les suivantes les perdent
-           toutes. Le chronomètre garde le dernier mot : `battre()` ne
-           descend jamais en dessous du temps réellement écoulé, donc les
-           bandes qu'on a vues s'éteindre ne se rallument pas. Le grand
-           pourcentage, lui, reste sur l'horloge — c'est le seul chiffre de
-           l'écran qui soit vrai. */
+           toutes — et la plaque se REJOUE, en revenant à la première phrase.
+           Le chronomètre gardait le dernier mot par un `Math.max` sur le
+           temps réel : passé dix minutes de lecture, la plaque arrivait déjà
+           toute rouge et ne pouvait plus rien montrer. Il est parti avec lui.
+           Le grand pourcentage suit les bandes : un seul chiffre, et il dit
+           ce qu'on voit. */
         if (pan.dataset.diapo === 'compteur') {
           if (n === 0) { arreterBalayage(); front = 1; poserFront(1); }
           else balayer();
@@ -2886,47 +2868,40 @@ var RETOURS = {"souffle-agonal": "medias/formation-dea/ret-souffle-agonal.mp3?v=
     });
   }());
 
-  /* ── Le chronomètre ────────────────────────────────────────────────────
-     Il part au CHARGEMENT, pas au premier clic. C'est tout l'argument : le
-     compteur d'un arrêt cardiaque ne démarre pas quand on décide d'agir, il
-     démarre quand la personne tombe. Pendant qu'on lit la portée du module,
-     on perd déjà des points de survie — et on les voit partir.
+  /* ── LES DIX BANDES DE LA PLAQUE DU COMPTEUR ───────────────────────────
+     LE CHRONOMÈTRE EST PARTI (20 septembre 2026). Il comptait le temps depuis
+     le CHARGEMENT de la page et en déduisait un pourcentage de chances
+     restantes : on perdait donc des points de survie en lisant la portée du
+     module. L'argument tenait — un arrêt cardiaque ne démarre pas quand on
+     décide d'agir — mais il faisait tourner une horloge de mort au-dessus
+     d'une formation qu'on suit à son rythme, y compris en la reprenant.
 
-     C'est un compteur de DÉMONSTRATION, et la colonne le dit. La chute de
-     10 % par minute est une moyenne de population, pas la courbe d'une
-     personne ; l'afficher au dixième près serait une fausse précision. */
-  (function chronometre() {
-    var depart = performance.now();
-    var vChrono = el('chrono'), vSurvie = el('survie'), vBarre = el('survieBarre');
+     CE QUI RESTE EST PLUS JUSTE QU'AVANT, et c'est l'effet inattendu du
+     retrait. Les dix bandes suivaient `Math.max(temps réel, démonstration)` :
+     le chronomètre gardait le dernier mot, si bien qu'au bout de dix minutes
+     de lecture la plaque arrivait DÉJÀ toute rouge, avant d'avoir rien dit,
+     et qu'on ne pouvait plus la rejouer. Elle ne suit plus que la
+     démonstration, qui est ce qu'elle enseigne. Le grand pourcentage la suit,
+     comme avant.
+
+     Il reste une fonction parce que la démonstration l'appelle à chaque pas
+     (`poserFront`) ; il n'y a plus de minuteur derrière. */
+  (function plaqueDuCompteur() {
     function battre() {
-      var s = (performance.now() - depart) / 1000;
-      var mm = Math.floor(s / 60), ss = Math.floor(s % 60);
-      /* Format court : le compteur vit maintenant dans la barre, entre les
-         pastilles et le bord. « 0 min 42 s » y tenait deux fois la place de
-         « 0:42 » pour la même information. */
-      vChrono.textContent = mm + ':' + (ss < 10 ? '0' : '') + ss;
-      var reste = Math.max(0, 100 - (s / 60) * 10);
-      vSurvie.textContent = Math.round(reste) + ' %';
-      vBarre.style.width = reste + '%';
-      /* Les dix marques de la diapositive du compteur suivent LE MÊME temps.
-         Un minuteur à elles aurait recommencé à zéro en arrivant sur la
-         diapositive — et aurait dit le contraire de ce qu'elle enseigne : le
-         temps ne repart pas parce qu'on arrive. */
       var m = document.getElementById('minutes');
-      var eteintes = Math.max(Math.floor(s / 60), window.__marquesDemo || 0);
+      var eteintes = window.__marquesDemo || 0;
       if (m) for (var k = 0; k < m.children.length; k++)
         m.children[k].classList.toggle('eteint', k < eteintes);
       /* LE NOMBRE DIT LA MÊME CHOSE QUE LES BANDES, et c'est une correction.
          Il affichait le pourcentage du chronomètre du module : on lisait donc
          « dix minutes, et il n'en reste plus » au-dessus de dix bandes rouges,
          avec « 99 % » écrit dessous. Deux horloges sur un écran en font une
-         fausse. Le compte réel de l'élève n'a pas disparu pour autant — il est
-         dans la barre du haut, en permanence, depuis le premier panneau. */
+         fausse. Il n'y en a plus qu'une, et elle est ici. */
       var pc = document.getElementById('minutesPc');
       if (pc) pc.textContent = Math.max(0, 100 - eteintes * 10) + ' %';
     }
     window.__battre = battre;
-    setInterval(battre, 200); battre();
+    battre();
 
     /* LA HAUTEUR DU PANNEAU. Le CSS part de deux valeurs de secours en rem ;
        ici on mesure la barre et le pied pour de vrai. Une constante en rem
@@ -2946,7 +2921,6 @@ var RETOURS = {"souffle-agonal": "medias/formation-dea/ret-souffle-agonal.mp3?v=
       ro.observe(document.querySelector('.steps'));
       ro.observe(document.querySelector('.pied'));
     }
-    el('remettre').addEventListener('click', function () { depart = performance.now(); battre(); });
   }());
 
   /** Marquait une section au sommaire du temps où la page défilait. Le
