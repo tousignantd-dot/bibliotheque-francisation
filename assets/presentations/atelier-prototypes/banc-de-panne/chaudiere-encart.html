@@ -1,0 +1,309 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>L'eau du groupe, en coupe et en marche</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --police: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --police-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --pap:#FFFFFF; --pan:#FAFAFA; --pan2:#F4F4F5; --pan3:#E4E4E7;
+  --enc:#09090B; --enc2:#52525B; --enc3:#71717A;
+  --regle:#E4E4E7; --regle2:#D4D4D8;
+  --bleu:#2B4E9B; --bleu2:#5C7EBF; --bleu-pale:#EAEFFA; --bleu-voile:rgba(43,78,155,.07);
+  --verm:#F5652E; --verm2:#D9541F; --verm-pale:#FEF1EA; --verm-voile:rgba(245,101,46,.09);
+  --grille:transparent;
+  --om:0 1px 2px rgba(9,9,11,.06);
+  --om2:0 4px 12px rgba(9,9,11,.08);
+}
+:root:not([data-theme="light"]){ color-scheme:light dark; }
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --pap:#09090B; --pan:#0F0F11; --pan2:#18181B; --pan3:#27272A;
+  --enc:#FAFAFA; --enc2:#D4D4D8; --enc3:#A1A1AA;
+  --regle:#27272A; --regle2:#3F3F46;
+  --bleu:#8FB2F0; --bleu2:#6E8FCB; --bleu-pale:#18213A; --bleu-voile:rgba(143,178,240,.13);
+  --verm:#FF7A45; --verm2:#E0673A; --verm-pale:#2A1610; --verm-voile:rgba(255,122,69,.14);
+  --grille:transparent;
+  --om:0 1px 2px rgba(0,0,0,.5);
+  --om2:0 4px 16px rgba(0,0,0,.55);
+}}
+:root[data-theme="dark"]{ color-scheme:dark;
+  --pap:#09090B; --pan:#0F0F11; --pan2:#18181B; --pan3:#27272A;
+  --enc:#FAFAFA; --enc2:#D4D4D8; --enc3:#A1A1AA;
+  --regle:#27272A; --regle2:#3F3F46;
+  --bleu:#8FB2F0; --bleu2:#6E8FCB; --bleu-pale:#18213A; --bleu-voile:rgba(143,178,240,.13);
+  --verm:#FF7A45; --verm2:#E0673A; --verm-pale:#2A1610; --verm-voile:rgba(255,122,69,.14);
+  --grille:transparent;
+  --om:0 1px 2px rgba(0,0,0,.5);
+  --om2:0 4px 16px rgba(0,0,0,.55);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pan);color:var(--enc);font-family:var(--police)}
+.tete{max-width:62rem;margin:0 auto;padding:3rem 1.5rem .5rem}
+.sur{font-size:.74rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--bleu);margin:0}
+h1{font-size:1.9rem;font-weight:800;letter-spacing:-.02em;margin:.2rem 0 .6rem}
+.chapeau{color:var(--enc2);max-width:42rem;line-height:1.6;margin:0}
+main{max-width:62rem;margin:0 auto;padding:1rem 1.5rem 4rem}
+.cmd{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;margin:1.5rem 0 1rem}
+.bt{appearance:none;border:1px solid var(--bleu);background:transparent;color:var(--bleu);font:inherit;
+ font-size:.88rem;font-weight:600;padding:.5rem 1.1rem;border-radius:999px;cursor:pointer}
+.bt[aria-pressed=true]{background:var(--bleu);color:var(--pan)}
+.bt.sec{border-color:var(--regle);color:var(--enc3)}
+.scene{background:var(--pan2);border:1px solid var(--regle);border-radius:4px;padding:.5rem}
+svg.pl{display:block;width:100%;height:auto}
+.metal{fill:none;stroke:var(--bleu);stroke-width:2;stroke-linejoin:round}
+.fin{fill:none;stroke:var(--bleu);stroke-width:1.1}
+.eau{fill:var(--bleu);opacity:.16}
+.flux{fill:none;stroke:var(--bleu);stroke-linecap:round;stroke-dasharray:7 11}
+.etiq{font-family:var(--police);font-size:12px;fill:var(--enc3);font-weight:600;
+ letter-spacing:.06em;text-transform:uppercase}
+.amen{fill:none;stroke:var(--enc3);stroke-width:.8;opacity:.6}
+.chif{font-family:var(--police);font-size:11px;fill:var(--enc3)}
+.cadre{fill:none;stroke:var(--regle);stroke-width:1}
+.pareil{font-family:var(--police);font-size:13px;fill:var(--enc2)}
+.pareil tspan.ok{fill:var(--bleu);font-weight:700}
+.merc{fill:var(--verm)}
+.merc.bon{fill:var(--bleu)}
+.barre{fill:var(--bleu);opacity:.75}
+.barre.bas{fill:var(--verm);opacity:.8}
+.vise{stroke:var(--enc3);stroke-width:1;stroke-dasharray:3 3}
+.lect{display:grid;grid-template-columns:repeat(auto-fit,minmax(9rem,1fr));gap:1px;
+ background:var(--regle);border:1px solid var(--regle);margin-top:1.2rem}
+.lect div{background:var(--pan);padding:.9rem 1rem}
+.lect dt{font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--enc3);margin:0 0 .3rem}
+.lect dd{margin:0;font-size:1.5rem;font-weight:700;font-variant-numeric:tabular-nums}
+.lect dd small{font-size:.8rem;font-weight:500;color:var(--enc3)}
+.lect .hs dd{color:var(--verm)}
+.verdict{margin-top:1rem;padding:.9rem 1.1rem;border-left:3px solid var(--bleu);
+ background:var(--pan2);font-size:.95rem;min-height:3.2rem}
+.verdict.mal{border-left-color:var(--verm)}
+.verdict b{font-weight:700}
+.note{color:var(--enc3);font-size:.85rem;margin:1rem 0 0;max-width:42rem;line-height:1.6}
+.sig{margin:2rem 0 0;padding:1.4rem 0 0;border-top:1px solid var(--regle);list-style:none;font-size:.9rem}
+.sig li{display:flex;gap:.7rem;padding:.4rem 0;color:var(--enc2)}
+.sig b{color:var(--enc);font-weight:600}
+.sig .min{font-family:var(--police-mono,ui-monospace,monospace);font-size:.78rem;color:var(--verm);white-space:nowrap}
+.pied{max-width:62rem;margin:0 auto;padding:1.5rem 1.5rem 4rem;color:var(--enc3);font-size:.85rem}
+.pied a{color:var(--bleu)}
+body{background:transparent}
+main{padding:.1rem 0 0;max-width:none}
+</style></head><body>
+
+<main>
+<div class="cmd">
+  <button class="bt" id="bChaude" aria-pressed="true">Eau à 92 °C</button>
+  <button class="bt" id="bFroide" aria-pressed="false">Eau à 78 °C</button>
+  <button class="bt sec" id="bRe">Relancer l'extraction</button>
+</div>
+
+<div class="scene">
+<svg class="pl" viewBox="0 0 1000 470" role="img"
+     aria-label="Coupe d'un groupe pendant l'extraction, et ce qui s'est dissous">
+  <!-- LE GROUPE ET LE PANIER — rigoureusement identiques d'un état à l'autre -->
+  <path class="metal" d="M110 50 L400 50 L400 140 L110 140 Z"/>
+  <rect class="eau" x="114" y="66" width="282" height="72"/>
+  <path class="metal" d="M130 140 L380 140"/>
+  <path class="metal" d="M118 150 L118 288 L226 336 L284 336 L392 288 L392 150"/>
+  <rect x="132" y="158" width="246" height="96" fill="var(--bleu)" opacity=".12"/>
+  <rect class="fin" x="132" y="158" width="246" height="96"/>
+  <path class="metal" d="M226 336 L226 364 L284 364 L284 336"/>
+  <path class="flux" id="filet" d="M255 366 L255 462" stroke-width="6"/>
+  <g class="amen"><path d="M255 292 L200 316 L168 316"/></g>
+  <text class="etiq" x="162" y="320" text-anchor="end">lit de café</text>
+
+  <!-- LE THERMOMÈTRE — le seul instrument qui répond -->
+  <g transform="translate(452,0)">
+    <rect class="fin" x="-11" y="70" width="22" height="212" rx="11"/>
+    <circle class="fin" cx="0" cy="300" r="20"/>
+    <rect class="merc" id="colonne" x="-6" y="200" width="12" height="102"/>
+    <circle class="merc" id="bulbe" cx="0" cy="300" r="15"/>
+    <g id="grads"></g>
+    <text class="etiq" x="0" y="348" text-anchor="middle">l'eau au groupe</text>
+  </g>
+
+  <!-- CE QUE TOUS LES AUTRES GESTES RAPPORTENT, DANS LES DEUX CAS -->
+  <g transform="translate(560,74)">
+    <text class="etiq" x="0" y="0">ce que voient les autres gestes — dans les deux cas</text>
+    <text class="pareil" x="0" y="26">manomètre <tspan class="ok">9,0 bar, l'aiguille tient</tspan></text>
+    <text class="pareil" x="0" y="48">pourtour du porte-filtre <tspan class="ok">sec</tspan></text>
+    <text class="pareil" x="0" y="70">groupe à vide <tspan class="ok">débit franc, des deux côtés</tspan></text>
+    <text class="pareil" x="0" y="92">mouture au toucher <tspan class="ok">normale, cran inchangé</tspan></text>
+    <text class="pareil" x="0" y="114">la pompe à l'oreille <tspan class="ok">le ronronnement habituel</tspan></text>
+    <text class="pareil" x="0" y="136">chronomètre <tspan class="ok" id="chrono">—</tspan></text>
+  </g>
+
+  <!-- CE QUE LA LANGUE GOÛTE — la seule chose qui change -->
+  <g transform="translate(560,258)">
+    <text class="etiq" x="0" y="0">ce qui est passé dans la tasse</text>
+    <g id="barres"></g>
+  </g>
+</svg>
+</div>
+
+<dl class="lect" id="lect">
+  <div><dt>Température</dt><dd id="vT">—</dd></div>
+  <div><dt>Acides</dt><dd id="vAcides">—</dd></div>
+  <div><dt>Sucres</dt><dd id="vSucres">—</dd></div>
+  <div><dt>Corps</dt><dd id="vCorps">—</dd></div>
+  <div><dt>Temps</dt><dd id="vS">—</dd></div>
+</dl>
+
+<p class="verdict" id="verdict">L'extraction est en cours.</p>
+<p class="note" id="note"></p>
+
+</main>
+
+
+<script>
+var ETATS = {"chaude": {"t": 92, "nom": "Eau à 92 °C"}, "froide": {"t": 78, "nom": "Eau à 78 °C"}}, FAMILLES = [{"cle": "acides", "nom": "les acides", "k": 0.115, "exp": 0.25, "seuil": 0.8}, {"cle": "sucres", "nom": "les sucres", "k": 0.105, "exp": 2.2, "seuil": 0.8}, {"cle": "corps", "nom": "le corps, les huiles", "k": 0.085, "exp": 3.0, "seuil": 0.75}], SIGNES = [{"geste": "Sortir le thermomètre et mesurer l'eau au groupe", "cout": 3, "dit": "78 °C. Il en manque quatorze."}],
+    CIBLE_G = 36.0, T_REF = 26.0, VITESSE = 4;
+var LARG = 300, T0 = 60, T_SERVICE = 92;
+function el(i){ return document.getElementById(i); }
+
+/* ── le cadran du thermomètre, et les barres ───────────────────────── */
+(function(){
+  var g = "";
+  for (var t = 70; t <= 100; t += 5) {
+    var y = 282 - (t - 70) / 30 * 200;
+    g += '<line class="fin" x1="11" y1="'+y.toFixed(1)+'" x2="19" y2="'+y.toFixed(1)+'"/>'
+       + '<text class="chif" x="24" y="'+(y+4).toFixed(1)+'">'+t+'</text>';
+  }
+  el("grads").innerHTML = g;
+  el("barres").innerHTML = FAMILLES.map(function(f, i){
+    var y = 24 + i * 44;
+    return '<text class="chif" x="0" y="'+y+'" style="font-size:12px">'+f.nom+'</text>'
+      + '<rect class="cadre" x="0" y="'+(y+6)+'" width="'+LARG+'" height="18"/>'
+      + '<rect class="barre" id="b_'+f.cle+'" x="0" y="'+(y+6)+'" width="0" height="18"/>'
+      + '<line class="vise" x1="'+(LARG*f.seuil)+'" y1="'+(y+2)+'" x2="'+(LARG*f.seuil)
+      + '" y2="'+(y+28)+'"/>'
+      + '<text class="chif" id="p_'+f.cle+'" x="'+(LARG+8)+'" y="'+(y+20)+'">—</text>';
+  }).join("");
+})();
+
+var etat = "chaude", ts = 0, g = 0, part = {}, fini = false, finA = null;
+
+function chaleur(){ return (ETATS[etat].t - T0) / (T_SERVICE - T0); }
+
+function remettre(){
+  ts = 0; g = 0; fini = false; finA = null; part = {};
+  FAMILLES.forEach(function(f){ part[f.cle] = 0; });
+  el("verdict").textContent = "L'extraction est en cours.";
+  el("verdict").classList.remove("mal");
+}
+
+function pas(dt){
+  var f = chaleur();
+  ts += dt;
+  g = Math.min(CIBLE_G, (CIBLE_G / T_REF) * ts);
+  FAMILLES.forEach(function(fam){
+    /* Chaque famille a sa vitesse, et son exposant dit à quel point la
+       chaleur lui manque. L'exposant est tout le contenu de la page. */
+    var k = fam.k * Math.pow(f, fam.exp);
+    part[fam.cle] = 1 - Math.exp(-k * ts);
+  });
+  if (ts >= T_REF) { ts = T_REF; g = CIBLE_G; fini = true; conclure(); }
+}
+
+function dessiner(){
+  var T = ETATS[etat].t, f = chaleur();
+  var y = 282 - (T - 70) / 30 * 200;
+  el("colonne").setAttribute("y", y.toFixed(1));
+  el("colonne").setAttribute("height", (302 - y).toFixed(1));
+  var bon = T >= 90;
+  el("colonne").classList.toggle("bon", bon);
+  el("bulbe").classList.toggle("bon", bon);
+
+  /* Le filet, lui, est identique : même débit, même dessin. */
+  el("filet").style.opacity = ts > .3 && !fini ? .9 : .25;
+  el("filet").style.strokeDashoffset = (-ts * 46).toFixed(1);
+  el("chrono").textContent = fini ? ts.toFixed(0) + " s — court, comme l'autre"
+                                  : ts.toFixed(1).replace(".", ",") + " s";
+
+  FAMILLES.forEach(function(fam){
+    var v = part[fam.cle];
+    var b = el("b_" + fam.cle);
+    b.setAttribute("width", (v * LARG).toFixed(1));
+    b.classList.toggle("bas", v < fam.seuil);
+    el("p_" + fam.cle).textContent = Math.round(v * 100) + " %";
+  });
+
+  el("vT").innerHTML = T + ' <small>°C</small>';
+  el("vAcides").textContent = Math.round(part.acides * 100) + " %";
+  el("vSucres").textContent = Math.round(part.sucres * 100) + " %";
+  el("vCorps").textContent  = Math.round(part.corps  * 100) + " %";
+  el("vS").innerHTML = ts.toFixed(1).replace(".", ",") + ' <small>s</small>';
+  var d = el("lect").querySelectorAll("div");
+  d[0].classList.toggle("hs", T < 90);
+  FAMILLES.forEach(function(fam, i){
+    d[i + 1].classList.toggle("hs", part[fam.cle] < fam.seuil);
+  });
+}
+
+function conclure(){
+  var v = el("verdict"), a = Math.round(part.acides * 100),
+      s = Math.round(part.sucres * 100), c = Math.round(part.corps * 100);
+  if (ETATS[etat].t >= 90) {
+    v.classList.remove("mal");
+    v.innerHTML = "<b>36 g en " + ts.toFixed(0) + " s.</b> Les acides " + a
+      + " %, les sucres " + s + " %, le corps " + c
+      + " %. Les trois sont là, donc rien ne domine : c'est ça, l'équilibre.";
+  } else {
+    v.classList.add("mal");
+    v.innerHTML = "<b>36 g en " + ts.toFixed(0) + " s — le même temps, la même aiguille, "
+      + "le même filet.</b> Mais les acides sont sortis à " + a
+      + " % et le corps à " + c + " % seulement. Rien à voir, tout à goûter : "
+      + "blond et vert. Voilà pourquoi le thermomètre coûte trois minutes et les "
+      + "vaut — aucun autre geste ne voit cette panne-là.";
+  }
+}
+
+var NOTES = {
+ chaude: "À quatre-vingt-douze degrés, les trois familles se dissolvent à peu près ensemble. "
+       + "Le shot a de l'acidité, du sucre et du corps, et aucun des trois ne prend toute la place.",
+ froide: "Quatorze degrés de moins ne retirent pas un peu de tout : ils retirent CERTAINES "
+       + "choses. Les acides sortent presque aussi bien dans une eau tiède — les sucres et le "
+       + "corps, non, parce qu'ils dépendent beaucoup plus de la chaleur. Le résultat n'est pas "
+       + "un café faible, c'est un café déséquilibré : l'acidité reste seule. Et regardez la "
+       + "colonne de gauche : pas une ligne ne change. C'est pour ça qu'on paie le thermomètre."
+};
+
+function poser(k){
+  etat = k;
+  el("bChaude").setAttribute("aria-pressed", k === "chaude");
+  el("bFroide").setAttribute("aria-pressed", k === "froide");
+  el("note").textContent = NOTES[k];
+  remettre();
+}
+
+var dernier = null, RELANCE = 3000;
+function boucle(ms){
+  if (dernier === null) dernier = ms;
+  var dt = Math.min(.05, (ms - dernier) / 1000) * VITESSE; dernier = ms;
+  if (!fini) pas(dt);
+  else if (finA === null) finA = ms;
+  else if (ms - finA > RELANCE) remettre();
+  dessiner();
+  requestAnimationFrame(boucle);
+}
+
+el("bChaude").addEventListener("click", function(){ poser("chaude"); });
+el("bFroide").addEventListener("click", function(){ poser("froide"); });
+el("bRe").addEventListener("click", remettre);
+var lst = el("sig"); if (lst) lst.innerHTML = SIGNES.map(function(s){
+  return '<li><span class="min">' + s.cout + ' min</span><span><b>' + s.geste
+    + '</b> — ' + s.dit + '</span></li>'; }).join("");
+poser("chaude");
+requestAnimationFrame(boucle);
+
+/* ── L'ENCART DIT SA HAUTEUR ────────────────────────────────────────
+   Un iframe ne se dimensionne pas sur son contenu : personne ne le lui
+   dit. L'encart mesure son propre corps et l'annonce à la page qui le
+   porte, à chaque changement — les compteurs font varier la hauteur. */
+(function(){
+  function dire(){ parent.postMessage({encart: 1, h: document.body.scrollHeight}, "*"); }
+  addEventListener("load", dire);
+  if (window.ResizeObserver) new ResizeObserver(dire).observe(document.body);
+  dire();
+})();
+</script></body></html>

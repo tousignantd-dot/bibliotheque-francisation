@@ -253,7 +253,11 @@ h1,h2,h3{text-wrap:balance}
 .machine{flex:3 1 32rem;min-width:min(100%,19rem);background:var(--pan);
  border:1px var(--bord) var(--regle);border-radius:var(--rad);box-shadow:var(--om);padding:1rem 1.1rem}
 .machine .dedans{display:flex;flex-wrap:wrap;gap:1.2rem}
-.machine .col{flex:1 1 17rem;min-width:min(100%,14rem)}
+/* UNE SEULE COLONNE DEPUIS QUE LES GESTES SONT DESCENDUS. Le plan récupère
+   les 403 px qu'occupait leur colonne — il passait dans 440 px, il en a
+   maintenant le double. C'est un SVG : il grandit sans perdre son trait. */
+.machine .col{flex:1 1 100%;min-width:0}
+.machine .plan svg{width:100%;height:auto}
 .plan svg{display:block;width:100%;height:auto}
 .plan .trait{fill:none;stroke:var(--mes);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 .plan .fin{stroke-width:1;opacity:.55}
@@ -264,22 +268,62 @@ h1,h2,h3{text-wrap:balance}
 .plan .zone:hover,.plan .zone.on{fill:var(--sig-voile);stroke:var(--sig);color:var(--sig)}
 .plan .zone text{font-family:var(--police-mono);font-size:8.5px;letter-spacing:-.04em;
  stroke:none;fill:currentColor}
-.grp{margin-bottom:.8rem;transition:opacity .25s}
-.grp.loin{opacity:.45}
-.grp h3{font-family:var(--police-mono);font-size:.6rem;color:var(--mes);margin:0 0 .3rem;font-weight:400}
-.geste{display:grid;grid-template-columns:1fr auto;gap:.5rem;align-items:baseline;width:100%;
+/* ── LES NEUF GESTES, EN RANGÉE ────────────────────────────────────────
+   `auto-fit` plutôt qu'un nombre de colonnes écrit en dur : à 1400 px les
+   neuf tiennent sur une ligne, plus bas ils se replient d'eux-mêmes. Ce qu'il
+   faut garder, ce n'est pas « neuf de front » — c'est qu'AUCUN ne soit
+   au-dessus d'un autre quand on peut l'éviter, et que la pesée reste latérale.
+   Les six en-têtes de zone ont disparu : le lieu se dit maintenant sur la
+   carte elle-même, en petit, et sur le plan qui s'allume au survol. */
+#gestes{display:grid;grid-template-columns:repeat(3,1fr);gap:.45rem;align-items:stretch}
+/* DES PALIERS, PAS `auto-fit`. Laissé à lui-même, `auto-fit` a rendu 7 + 2 :
+   une rangée pleine et un orphelin, qui se lit comme un reste. On choisit
+   donc des comptes qui tombent juste — 3, puis 5 + 4, puis les neuf de front
+   dès qu'il y a la place. */
+@media(min-width:46rem){#gestes{grid-template-columns:repeat(5,1fr)}}
+@media(min-width:84rem){#gestes{grid-template-columns:repeat(9,1fr)}}
+.geste{display:flex;flex-direction:column;gap:.2rem;align-items:flex-start;width:100%;height:100%;
  text-align:left;background:transparent;border:1px solid var(--regle2);border-radius:var(--rad);
- padding:.5rem .65rem;margin-bottom:.28rem;cursor:pointer;font-family:var(--police);font-size:.88rem;
- line-height:1.3;color:var(--enc)}
+ padding:.5rem .65rem;cursor:pointer;font-family:var(--police);font-size:.82rem;
+ line-height:1.25;color:var(--enc);transition:opacity .25s}
+/* La carte s'estompe quand on en survole une autre — c'est ce que faisait
+   `.grp.loin`, qui portait le groupe entier. Elle porte maintenant sa zone
+   elle-même, donc l'effet tient à la carte. */
+.geste.loin{opacity:.45}
+.geste .ou{font-family:var(--police-mono);font-size:.58rem;color:var(--mes);
+ letter-spacing:-.02em;text-transform:var(--maj)}
+.geste .nom{flex:1 0 auto}
 .geste:hover{border-color:var(--sig)}
 .geste.vise{background:var(--sig-voile);border-color:var(--sig)}
 .geste[disabled]{opacity:.38;cursor:default}
 .geste .cout{font-family:var(--police-mono);font-size:.62rem;color:var(--enc3);white-space:nowrap}
+.rangee{margin-top:1.4rem}
+
+/* ── la rangée des cinq mécanismes ──────────────────────────────────── */
+.mecanismes{margin-bottom:1.4rem}
+.meca{display:grid;grid-template-columns:repeat(2,1fr);gap:.45rem}
+@media(min-width:40rem){.meca{grid-template-columns:repeat(5,1fr)}}
+.meca button{display:flex;flex-direction:column;gap:.15rem;align-items:flex-start;
+ text-align:left;background:transparent;border:1px solid var(--regle2);border-radius:var(--rad);
+ padding:.5rem .65rem;cursor:pointer;font-family:var(--police);font-size:.82rem;
+ line-height:1.25;color:var(--enc)}
+.meca button:hover{border-color:var(--mes)}
+/* LA MESURE, PAS LE SIGNAL. Ouvrir un mécanisme n'est pas un geste du jeu :
+   ça ne coûte rien et ça n'écarte rien. La bordure prend donc --mes, la
+   couleur de ce qu'une machine calcule, jamais --sig, qui est réservé à ce
+   qu'une PERSONNE décide. Les prendre pour des gestes serait le seul vrai
+   risque de cette rangée. */
+.meca button[aria-pressed="true"]{background:var(--mes-voile);border-color:var(--mes)}
+.meca .etat{font-family:var(--police-mono);font-size:.58rem;color:var(--mes);
+ letter-spacing:-.02em;text-transform:var(--maj)}
+.mecaCadre{margin-top:.6rem;border:1px solid var(--regle2);border-radius:var(--rad);
+ background:var(--pan);overflow:hidden}
+.mecaCadre iframe{display:block;width:100%;border:0;height:34rem}
 /* La coupe annoncée est du mono de 9,6 px : --mes nu tombait à 4,07 chez Labo
    et 4,37 chez Café. On ne redéfinit pas le jeton — il tient son rôle ailleurs
    — on le TIRE VERS L'ENCRE pour cet usage-là seulement. La teinte reste
    celle de la mesure ; c'est sa clarté qui bouge. */
-.geste .ann{grid-column:1/-1;font-family:var(--police-mono);font-size:.62rem;
+.geste .ann{font-family:var(--police-mono);font-size:.62rem;
  color:color-mix(in srgb, var(--mes) 74%, var(--enc));margin-top:.15rem}
 .geste .ann.rien{color:var(--enc2)}
 @media(hover:none){.geste{padding:.7rem .65rem}}
@@ -435,12 +479,52 @@ body.conception .bits{display:block}
         lecteur. -->
  <p class="chapeau">La machine ne donne plus rien, et chaque vérification se paie en minutes que vous n'avez pas. Ce qui se note ici n'est pas la panne que vous nommez&nbsp;: c'est <em>ce que vous avez appris avant de la nommer</em>. À la fin, le banc dit lesquels de vos gestes ne pouvaient rien vous apprendre, à quelle minute vous étiez fixé, et si vous avez su — ou seulement eu raison.</p>
 
- <section>
+ <!-- ═══ L'ORDRE DES BLOCS, REFAIT LE 20 SEPTEMBRE 2026 ═══════════════════
+      Le design ne bouge pas : mêmes jetons, mêmes habillages, même trait.
+      Seuls les blocs se déplacent, et pour une raison mesurée.
+
+      AVANT : le tableau des suspects tout en haut, puis la machine à gauche
+      et les neuf gestes empilés dans une colonne du milieu, en six groupes,
+      sur 747 px du premier au dernier.
+
+      Deux défauts, et le même : LA DISPOSITION RACONTAIT UN ORDRE que le jeu
+      ne veut pas.
+      · Les gestes rangés par ENDROIT sur la machine, empilés, se lisaient
+        comme une liste de tâches — et une liste, on la fait dans l'ordre. Or
+        la question est « lequel achète le plus pour le moins de minutes ? »,
+        une question de COMPARAISON : deux gestes qu'on doit peser l'un contre
+        l'autre n'étaient jamais visibles ensemble au même niveau.
+      · Le tableau des suspects est la CONSÉQUENCE du geste, et il était placé
+        avant la cause : après chaque clic, l'œil remontait 400 px.
+
+      MAINTENANT : la machine prend toute la colonne — elle récupère les
+      403 px des gestes, et le plan étant un SVG il grandit sans perdre son
+      trait. Les neuf gestes forment une rangée pleine largeur, tous au même
+      niveau. Le tableau tombe dessous : on choisit, la réponse apparaît sous
+      la main qui vient de choisir. -->
+ <!-- ═══ LES CINQ MÉCANISMES, EN RANGÉE DU HAUT ═══════════════════════════
+      Demandé le 20 septembre 2026 : « place sur la rangée du haut les cinq
+      éléments qui vont nous permettre de voir ce qui se passe quand un des
+      suspects fonctionne bien ou fonctionne mal ».
+
+      Les coupes animées existaient depuis le 18 septembre, et elles portent
+      DÉJÀ les deux états — « Pompe saine / Pompe qui faiblit », « Douchette
+      propre / Douchette encrassée », et ainsi des cinq. Elles n'étaient
+      simplement atteignables qu'au débriefing, et seulement pour la panne
+      qu'on venait de traiter : le joueur les avait vues à l'atelier, puis
+      n'y avait plus accès au moment où il en a besoin.
+
+      ET ÇA NE DONNE RIEN QU'IL N'AIT DÉJÀ. Le mécanisme dit ce que l'organe
+      FAIT, pas quelle panne est présente aujourd'hui. L'atelier les montre
+      tous les cinq avant la partie ; les rouvrir pendant ne révèle rien de
+      plus, ça évite seulement de punir celui qui n'a pas tout retenu. -->
+ <section class="mecanismes">
   <div class="entete">
-   <h2 class="etiq" id="titreSusp">Le tableau des suspects</h2>
-   <p class="indice" id="indice">Survolez un geste&nbsp;: le tableau montre comment il couperait ce qui reste.</p>
+   <h2 class="etiq">Les cinq mécanismes — sain, et en panne</h2>
+   <p class="indice">Ouvrez-en un&nbsp;: la coupe tourne, et un bouton fait passer de l'état normal au défaut.</p>
   </div>
-  <div class="suspects" id="suspects"></div>
+  <div class="meca" id="meca"></div>
+  <div class="mecaCadre" id="mecaCadre" hidden><iframe id="mecaVue" title="Le mécanisme, en coupe animée"></iframe></div>
  </section>
 
  <div class="deuxcol">
@@ -449,10 +533,6 @@ body.conception .bits{display:block}
     <div class="col">
      <h2 class="etiq" style="margin-bottom:.5rem">Le banc</h2>
      <div class="plan" id="plan"></div>
-    </div>
-    <div class="col">
-     <h2 class="etiq" style="margin-bottom:.5rem">Les gestes — survolez pour voir la coupe</h2>
-     <div id="gestes"></div>
     </div>
    </div>
   </section>
@@ -469,6 +549,19 @@ body.conception .bits{display:block}
    <p class="note">Vous pouvez vous engager à n'importe quel moment, y compris tout de suite&nbsp;: le bouton est sur chaque carte, même sur celles que vos observations ont déjà écartées. Le dispositif le note.</p>
   </section>
  </div>
+
+ <section class="rangee">
+  <h2 class="etiq" style="margin-bottom:.5rem">Les gestes — survolez pour voir la coupe</h2>
+  <div id="gestes"></div>
+ </section>
+
+ <section>
+  <div class="entete">
+   <h2 class="etiq" id="titreSusp">Le tableau des suspects</h2>
+   <p class="indice" id="indice">Survolez un geste&nbsp;: le tableau montre comment il couperait ce qui reste.</p>
+  </div>
+  <div class="suspects" id="suspects"></div>
+ </section>
 
  <section class="debrief" id="debrief" hidden></section>
 </div>
@@ -659,6 +752,33 @@ function tirerPanne(precedente){
   return SAC.pop();
 }
 
+/* Le NOM DE L'ORGANE, pas celui de la panne. La rangée du haut montre des
+   MÉCANISMES — ce que la pièce fait quand elle va bien et quand elle va mal.
+   L'étiqueter « la pompe faiblit » y annoncerait un défaut avant qu'on ait
+   rien observé, et les cinq noms de panne alignés se liraient comme le
+   tableau des suspects, qui est un autre objet, plus bas. */
+const ORGANES={mouture:"Le moulin",douchette:"La douchette",pompe:"La pompe",
+               chaudiere:"La chaudière",joint:"Le joint de groupe"};
+
+/* Ouvrir, refermer, changer. Un seul cadre pour les cinq : deux coupes
+   animées côte à côte feraient tourner deux mécanismes à la fois, et on ne
+   saurait plus lequel on regarde. */
+function voirMecanisme(b){
+  const cadre=$("#mecaCadre"), vue=$("#mecaVue"), id=b.dataset.m;
+  const ouvert = b.getAttribute("aria-pressed")==="true";
+  $("#meca").querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed","false"));
+  if(ouvert){ cadre.hidden=true; vue.removeAttribute("src"); return; }
+  b.setAttribute("aria-pressed","true");
+  vue.src="banc-de-panne/"+id+"-encart.html";
+  cadre.hidden=false;
+  cadre.scrollIntoView({block:"nearest",behavior:"smooth"});
+}
+/* L'encart annonce sa hauteur : sans ça le cadre garde 34 rem, et selon la
+   coupe il coupe le bas ou laisse un trou. */
+addEventListener("message",e=>{
+  if(e.data && e.data.encart && $("#mecaVue")) $("#mecaVue").style.height=(e.data.h+8)+"px";
+});
+
 /* ─── état ─── */
 let E={};
 function neuf(){
@@ -773,23 +893,41 @@ function rendu(){
  }).join("");
  $("#suspects").querySelectorAll(".engage").forEach(b=>b.onclick=()=>{E.choix=b.dataset.p;engager()});
 
- /* gestes, groupés par zone */
- const parZone={};
- GESTES.forEach(g=>{(parZone[g.zone]=parZone[g.zone]||[]).push(g)});
- $("#gestes").innerHTML=Object.keys(ZONES).map(z=>{
-   if(!parZone[z])return"";
-   return '<div class="grp'+(E.zone&&E.zone!==z?" loin":"")+'" data-zone="'+z+'"><h3>sur '+ZONES[z]+'</h3>'+parZone[z].map(g=>{
+ /* LES CINQ MÉCANISMES. Ils ne dépendent pas de l'état de la partie — ni des
+    cartes debout, ni des gestes posés — donc ils se posent UNE FOIS et ne se
+    redessinent pas à chaque `rendu()`. Les redessiner rabattrait la coupe
+    ouverte dès qu'on pose un geste, et c'est exactement pendant qu'on réfléchit
+    à un geste qu'on veut la garder ouverte. */
+ if (!$("#meca").children.length) {
+   $("#meca").innerHTML = PANNES.map(p =>
+     '<button type="button" data-m="'+p.id+'" aria-pressed="false">'
+     + '<span class="etat">sain · en panne</span>'
+     + '<span>'+ORGANES[p.id]+'</span></button>').join("");
+   $("#meca").querySelectorAll("button").forEach(b => b.onclick = () => voirMecanisme(b));
+ }
+
+ /* LES GESTES, À PLAT — l'ordre du dépôt, plus le groupement par zone.
+    Ils étaient rangés en six groupes empilés, un par endroit sur la machine.
+    C'est une taxonomie SPATIALE : elle répond à « où est-ce que je vais ? ».
+    Or le jeu demande « lequel achète le plus pour le moins de minutes ? »,
+    une question de COMPARAISON — et empilés, deux gestes qu'on doit peser
+    l'un contre l'autre n'étaient jamais au même niveau.
+    La zone n'est pas perdue : chaque carte la porte, en petit, et le plan
+    l'allume au survol. Elle informe sans ordonner. */
+ $("#gestes").innerHTML=GESTES.map(g=>{
      const fait=E.faits.some(f=>f.id===g.id), off=fait||E.fini;
      const gn=gain(E.C,g), parts=Object.keys(partition(E.C,g)).length;
      const ann = off ? (fait?"déjà posé":"")
        : (E.C.length<2 ? "plus rien à séparer"
        : (parts<2 ? "ne sépare rien — les cartes debout répondent pareil"
        : "coupe les "+E.C.length+" cartes en "+parts+" groupes"));
-     return '<button class="geste'+(E.apercu===g.id?" vise":"")+'" data-g="'+g.id+'"'+(off?" disabled":"")+'>'
-      +'<span>'+g.nom+'</span><span class="cout">'+g.cout+' min</span>'
+     /* `loin` passe du groupe à la carte : c'est elle qui porte sa zone. */
+     const loin = E.zone && E.zone!==g.zone ? " loin" : "";
+     return '<button class="geste'+(E.apercu===g.id?" vise":"")+loin+'" data-g="'+g.id+'" data-zone="'+g.zone+'"'+(off?" disabled":"")+'>'
+      +'<span class="ou">'+ZONES[g.zone]+'</span>'
+      +'<span class="nom">'+g.nom+'</span><span class="cout">'+g.cout+' min</span>'
       +'<span class="ann'+(!off&&parts<2?" rien":"")+'">'+ann
       +'<span class="bits"> · gain attendu '+gn.toFixed(2)+' bit'+(gn>=2?"s":"")+'</span></span></button>';
-   }).join("")+'</div>';
  }).join("");
  $("#gestes").querySelectorAll(".geste").forEach(b=>{
    b.onclick=()=>poser(b.dataset.g);

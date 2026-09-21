@@ -1,0 +1,303 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>La mouture, en coupe et en marche</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --police: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --police-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --pap:#FFFFFF; --pan:#FAFAFA; --pan2:#F4F4F5; --pan3:#E4E4E7;
+  --enc:#09090B; --enc2:#52525B; --enc3:#71717A;
+  --regle:#E4E4E7; --regle2:#D4D4D8;
+  --bleu:#2B4E9B; --bleu2:#5C7EBF; --bleu-pale:#EAEFFA; --bleu-voile:rgba(43,78,155,.07);
+  --verm:#F5652E; --verm2:#D9541F; --verm-pale:#FEF1EA; --verm-voile:rgba(245,101,46,.09);
+  --grille:transparent;
+  --om:0 1px 2px rgba(9,9,11,.06);
+  --om2:0 4px 12px rgba(9,9,11,.08);
+}
+:root:not([data-theme="light"]){ color-scheme:light dark; }
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --pap:#09090B; --pan:#0F0F11; --pan2:#18181B; --pan3:#27272A;
+  --enc:#FAFAFA; --enc2:#D4D4D8; --enc3:#A1A1AA;
+  --regle:#27272A; --regle2:#3F3F46;
+  --bleu:#8FB2F0; --bleu2:#6E8FCB; --bleu-pale:#18213A; --bleu-voile:rgba(143,178,240,.13);
+  --verm:#FF7A45; --verm2:#E0673A; --verm-pale:#2A1610; --verm-voile:rgba(255,122,69,.14);
+  --grille:transparent;
+  --om:0 1px 2px rgba(0,0,0,.5);
+  --om2:0 4px 16px rgba(0,0,0,.55);
+}}
+:root[data-theme="dark"]{ color-scheme:dark;
+  --pap:#09090B; --pan:#0F0F11; --pan2:#18181B; --pan3:#27272A;
+  --enc:#FAFAFA; --enc2:#D4D4D8; --enc3:#A1A1AA;
+  --regle:#27272A; --regle2:#3F3F46;
+  --bleu:#8FB2F0; --bleu2:#6E8FCB; --bleu-pale:#18213A; --bleu-voile:rgba(143,178,240,.13);
+  --verm:#FF7A45; --verm2:#E0673A; --verm-pale:#2A1610; --verm-voile:rgba(255,122,69,.14);
+  --grille:transparent;
+  --om:0 1px 2px rgba(0,0,0,.5);
+  --om2:0 4px 16px rgba(0,0,0,.55);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pan);color:var(--enc);font-family:var(--police)}
+.tete{max-width:62rem;margin:0 auto;padding:3rem 1.5rem .5rem}
+.sur{font-size:.74rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--bleu);margin:0}
+h1{font-size:1.9rem;font-weight:800;letter-spacing:-.02em;margin:.2rem 0 .6rem}
+.chapeau{color:var(--enc2);max-width:42rem;line-height:1.6;margin:0}
+main{max-width:62rem;margin:0 auto;padding:1rem 1.5rem 4rem}
+.cmd{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;margin:1.5rem 0 1rem}
+.bt{appearance:none;border:1px solid var(--bleu);background:transparent;color:var(--bleu);font:inherit;
+ font-size:.88rem;font-weight:600;padding:.5rem 1.1rem;border-radius:999px;cursor:pointer}
+.bt[aria-pressed=true]{background:var(--bleu);color:var(--pan)}
+.bt.sec{border-color:var(--regle);color:var(--enc3)}
+.scene{background:var(--pan2);border:1px solid var(--regle);border-radius:4px;padding:.5rem}
+svg.pl{display:block;width:100%;height:auto}
+.metal{fill:none;stroke:var(--bleu);stroke-width:2;stroke-linejoin:round}
+.fin{fill:none;stroke:var(--bleu);stroke-width:1.1}
+.eau{fill:var(--bleu);opacity:.16}
+.flux{fill:none;stroke:var(--bleu);stroke-linecap:round;stroke-dasharray:7 11}
+.etiq{font-family:var(--police);font-size:12px;fill:var(--enc3);font-weight:600;
+ letter-spacing:.06em;text-transform:uppercase}
+.amen{fill:none;stroke:var(--enc3);stroke-width:.8;opacity:.6}
+.chif{font-family:var(--police);font-size:11px;fill:var(--enc3);text-anchor:middle}
+.bande{fill:var(--bleu);opacity:.16}
+.cadre{fill:none;stroke:var(--regle);stroke-width:1}
+.curseur{stroke:var(--verm);stroke-width:3}
+.curseur.bon{stroke:var(--bleu)}
+.lect{display:grid;grid-template-columns:repeat(auto-fit,minmax(10rem,1fr));gap:1px;
+ background:var(--regle);border:1px solid var(--regle);margin-top:1.2rem}
+.lect div{background:var(--pan);padding:.9rem 1rem}
+.lect dt{font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--enc3);margin:0 0 .3rem}
+.lect dd{margin:0;font-size:1.5rem;font-weight:700;font-variant-numeric:tabular-nums}
+.lect dd small{font-size:.8rem;font-weight:500;color:var(--enc3)}
+.lect .hs dd{color:var(--verm)}
+.verdict{margin-top:1rem;padding:.9rem 1.1rem;border-left:3px solid var(--bleu);
+ background:var(--pan2);font-size:.95rem;min-height:3.2rem}
+.verdict.mal{border-left-color:var(--verm)}
+.verdict b{font-weight:700}
+.note{color:var(--enc3);font-size:.85rem;margin:1rem 0 0;max-width:42rem;line-height:1.6}
+.sig{margin:2rem 0 0;padding:1.4rem 0 0;border-top:1px solid var(--regle);list-style:none;font-size:.9rem}
+.sig li{display:flex;gap:.7rem;padding:.4rem 0;color:var(--enc2)}
+.sig b{color:var(--enc);font-weight:600}
+.sig .min{font-family:var(--police-mono,ui-monospace,monospace);font-size:.78rem;color:var(--verm);white-space:nowrap}
+.pied{max-width:62rem;margin:0 auto;padding:1.5rem 1.5rem 4rem;color:var(--enc3);font-size:.85rem}
+.pied a{color:var(--bleu)}
+body{background:transparent}
+main{padding:.1rem 0 0;max-width:none}
+</style></head><body>
+
+<main>
+<div class="cmd">
+  <button class="bt" id="bReglee" aria-pressed="true">Mouture au cran</button>
+  <button class="bt" id="bFine"   aria-pressed="false">Mouture trop fine</button>
+  <button class="bt sec" id="bRe">Relancer l'extraction</button>
+</div>
+
+<div class="scene">
+<svg class="pl" viewBox="0 0 1000 470" role="img"
+     aria-label="Coupe d'un panier pendant l'extraction, et le rendement atteint">
+  <!-- LA DOUCHETTE ET L'EAU RETENUE -->
+  <path class="metal" d="M110 70 L530 70 L530 100 L110 100 Z"/>
+  <g id="trous"></g>
+  <rect class="eau" id="retenue" x="124" y="104" width="392" height="0"/>
+
+  <!-- LE PANIER -->
+  <path class="metal" d="M110 112 L110 300 L280 352 L360 352 L530 300 L530 112"/>
+  <path class="fin" d="M124 112 L124 286 M516 112 L516 286"/>
+
+  <!-- LE LIT, ET SES GRAINS -->
+  <rect x="124" y="124" width="392" height="156" fill="var(--bleu)" opacity=".08"/>
+  <g id="grains" fill="var(--bleu)" opacity=".42"></g>
+  <rect class="eau" id="litEau" x="124" y="124" width="392" height="156" opacity="0"/>
+  <rect class="fin" x="124" y="124" width="392" height="156"/>
+
+  <!-- LE BEC ET LE FILET -->
+  <path class="metal" d="M280 352 L280 382 L360 382 L360 352"/>
+  <path class="flux" id="filet" d="M320 384 L320 466" stroke-width="6"/>
+
+  <!-- LE RENDEMENT : la seule chose qui explique le goût -->
+  <g transform="translate(610,150)">
+    <text class="etiq" x="0" y="-64">ce qui est passé du café à l'eau</text>
+    <rect class="cadre" x="0" y="-34" width="330" height="44"/>
+    <rect class="bande" id="bandeJuste" x="0" y="-34" width="0" height="44"/>
+    <line class="curseur" id="curseur" x1="0" y1="-44" x2="0" y2="20"/>
+    <text class="chif" x="0" y="30" text-anchor="start">14 %</text>
+    <text class="chif" x="330" y="30" text-anchor="end">26 %</text>
+    <text class="etiq" id="etiqJuste" x="0" y="-42" text-anchor="middle"
+      style="fill:var(--bleu)">la bande juste</text>
+    <text class="chif" id="goutA" x="0" y="66" text-anchor="start" style="font-size:12px">acide, sans corps</text>
+    <text class="chif" id="goutB" x="330" y="66" text-anchor="end" style="font-size:12px">sec et amer</text>
+  </g>
+
+  <!-- CE QUI NE BOUGE PAS, ET QUI TROMPE -->
+  <g transform="translate(610,300)">
+    <text class="etiq" x="0" y="0">ce que les autres gestes rapportent</text>
+    <text class="chif" x="0" y="26" text-anchor="start" style="font-size:13px">9,0 bar · pourtour sec · débit franc à vide</text>
+    <text class="chif" x="0" y="48" text-anchor="start" style="font-size:13px">mouture au toucher : le seul geste qui parle</text>
+  </g>
+
+  <g class="amen"><path d="M200 292 L140 330 L104 330"/></g>
+  <text class="etiq" x="98" y="334" text-anchor="end">lit de café</text>
+</svg>
+</div>
+
+<dl class="lect" id="lect">
+  <div><dt>Grain</dt><dd id="vGrain">—</dd></div>
+  <div><dt>Débit</dt><dd id="vDeb">—</dd></div>
+  <div><dt>Rendement</dt><dd id="vExt">—</dd></div>
+  <div><dt>Dans la tasse</dt><dd id="vG">—</dd></div>
+  <div><dt>Temps</dt><dd id="vT">—</dd></div>
+</dl>
+
+<p class="verdict" id="verdict">L'extraction est en cours.</p>
+<p class="note" id="note"></p>
+
+</main>
+
+
+<script>
+var ETATS = {"reglee": {"grain": 4.6, "resist": 1.0, "tau": 16.0, "nom": "Mouture au cran"}, "fine": {"grain": 1.7, "resist": 2.0, "tau": 16.0, "nom": "Mouture trop fine"}}, SIGNES = [{"geste": "Prendre la mouture entre les doigts et vérifier le cran du moulin", "cout": 1, "dit": "Ça colle aux doigts, c'est de la farine. Et le moulin est exactement au cran d'hier."}], CIBLE_G = 36.0,
+    T_REF = 25.0, E_MAX = 26.0, JUSTE = [18.0, 22.0], VITESSE = 4;
+var BAS = 14, LARG = 330;                 /* l'échelle du rendement : 14 % à 26 % */
+function el(i){ return document.getElementById(i); }
+function px(e){ return (e - BAS) / (E_MAX - BAS) * LARG; }
+
+/* la bande juste, posée une fois — elle ne dépend pas de l'état */
+(function(){
+  el("bandeJuste").setAttribute("x", px(JUSTE[0]).toFixed(1));
+  el("bandeJuste").setAttribute("width", (px(JUSTE[1]) - px(JUSTE[0])).toFixed(1));
+  el("etiqJuste").setAttribute("x", ((px(JUSTE[0]) + px(JUSTE[1])) / 2).toFixed(1));
+  var t = "";
+  for (var x = 134; x < 516; x += 26)
+    t += '<circle class="fin" cx="' + x + '" cy="85" r="4"/>';
+  el("trous").innerHTML = t;
+})();
+
+/* ── le lit, grain par grain ───────────────────────────────────────
+   Le dessin n'illustre pas la résistance : il la DIT. Un grain deux
+   fois plus petit, c'est deux fois plus de rangées dans la même
+   épaisseur — et c'est exactement ce qui ferme le passage. */
+function semer(r){
+  var g = "", pas = r * 2.35, y, x, i = 0;
+  for (y = 128 + r; y < 278; y += pas) {
+    for (x = 128 + r + (i % 2 ? pas / 2 : 0); x < 514; x += pas)
+      g += '<circle cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1)
+         + '" r="' + r.toFixed(2) + '"/>';
+    i++;
+  }
+  el("grains").innerHTML = g;
+}
+
+var etat = "reglee", ts = 0, g = 0, ext = 0, fini = false, finA = null;
+
+function remettre(){
+  ts = 0; g = 0; ext = 0; fini = false; finA = null;
+  el("verdict").textContent = "L'extraction est en cours.";
+  el("verdict").classList.remove("mal");
+  semer(ETATS[etat].grain);
+}
+
+function pas(dt){
+  var E = ETATS[etat];
+  g += (CIBLE_G / T_REF) / E.resist * dt;
+  ts += dt;
+  /* Ce qui se dissout suit le TEMPS DE CONTACT, pas le poids servi.
+     Un lit qui retient deux fois plus longtemps dissout deux fois plus
+     longtemps — et rien ne l'arrête à la bonne valeur. */
+  ext = E_MAX * (1 - Math.exp(-ts / E.tau));
+  if (g >= CIBLE_G) { g = CIBLE_G; fini = true; conclure(); }
+}
+
+function dessiner(){
+  var E = ETATS[etat], deb = (CIBLE_G / T_REF) / E.resist;
+  /* l'eau s'accumule au-dessus d'un lit qui ne la laisse pas passer */
+  var retenue = Math.min(26, (E.resist - 1) * 26 * Math.min(1, ts / 3));
+  el("retenue").setAttribute("height", retenue.toFixed(1));
+  el("retenue").setAttribute("y", (104 - retenue + 26).toFixed(1));
+  el("litEau").style.opacity = Math.min(.9, ts / 4).toFixed(3);
+  el("filet").setAttribute("stroke-width", (2.4 + deb * 3.4).toFixed(2));
+  el("filet").style.opacity = ts > .3 && !fini ? .9 : .2;
+  el("filet").style.strokeDashoffset = (-ts * 34 * deb).toFixed(1);
+
+  var x = Math.max(0, Math.min(LARG, px(ext)));
+  el("curseur").setAttribute("x1", x.toFixed(1));
+  el("curseur").setAttribute("x2", x.toFixed(1));
+  var bon = ext >= JUSTE[0] && ext <= JUSTE[1];
+  el("curseur").classList.toggle("bon", bon);
+
+  el("vGrain").innerHTML = (E.grain * 0.06).toFixed(2).replace(".", ",") + ' <small>mm</small>';
+  el("vDeb").innerHTML = deb.toFixed(2).replace(".", ",") + ' <small>g/s</small>';
+  el("vExt").innerHTML = ext.toFixed(1).replace(".", ",") + ' <small>%</small>';
+  el("vG").innerHTML = g.toFixed(1).replace(".", ",") + ' <small>g</small>';
+  el("vT").innerHTML = ts.toFixed(1).replace(".", ",") + ' <small>s</small>';
+  var d = el("lect").querySelectorAll("div");
+  d[2].classList.toggle("hs", ext > JUSTE[1]);
+  d[4].classList.toggle("hs", ts > 35);
+}
+
+function conclure(){
+  var v = el("verdict");
+  if (ext <= JUSTE[1]) {
+    v.classList.remove("mal");
+    v.innerHTML = "<b>" + CIBLE_G.toFixed(0) + " g en " + ts.toFixed(0) + " s, rendement "
+      + ext.toFixed(1).replace(".", ",") + " %.</b> Le curseur s'arrête dans la bande. "
+      + "L'eau a pris ce qu'il fallait et s'est arrêtée là.";
+  } else {
+    v.classList.add("mal");
+    v.innerHTML = "<b>" + CIBLE_G.toFixed(0) + " g en " + ts.toFixed(0) + " s, rendement "
+      + ext.toFixed(1).replace(".", ",") + " %.</b> Le curseur a traversé la bande juste "
+      + "vers la vingtième seconde et n'a pas pu s'arrêter : l'eau était encore là. "
+      + "Ces " + (ext - JUSTE[1]).toFixed(1).replace(".", ",")
+      + " points de trop, c'est l'amertume — pas de la force, de l'amertume.";
+  }
+}
+
+var NOTES = {
+ reglee: "Le lit laisse passer, l'eau traverse en vingt-cinq secondes, et le rendement "
+       + "s'arrête dans la bande. Neuf bar, pourtour sec : tout est normal, et c'est vrai.",
+ fine: "Une mouture plus fine, c'est un filtre plus serré : deux fois plus de rangées de "
+     + "grains dans la même épaisseur. L'eau s'accumule au-dessus, met cinquante secondes "
+     + "à traverser — et pendant tout ce temps elle continue de dissoudre. Le manomètre, "
+     + "lui, tient ses neuf bar : la pompe pousse aussi fort, c'est le lit qui résiste. "
+     + "C'est pourquoi aucun geste rapide ne la dénonce, sauf le chronomètre et les doigts."
+};
+
+function poser(k){
+  etat = k;
+  el("bReglee").setAttribute("aria-pressed", k === "reglee");
+  el("bFine").setAttribute("aria-pressed", k === "fine");
+  el("note").textContent = NOTES[k];
+  remettre();
+}
+
+var dernier = null, RELANCE = 3000;
+function boucle(ms){
+  if (dernier === null) dernier = ms;
+  var dt = Math.min(.05, (ms - dernier) / 1000) * VITESSE; dernier = ms;
+  if (!fini) pas(dt);
+  else if (finA === null) finA = ms;
+  else if (ms - finA > RELANCE) remettre();
+  dessiner();
+  requestAnimationFrame(boucle);
+}
+
+el("bReglee").addEventListener("click", function(){ poser("reglee"); });
+el("bFine").addEventListener("click", function(){ poser("fine"); });
+el("bRe").addEventListener("click", remettre);
+var lst = el("sig"); if (lst) lst.innerHTML = SIGNES.map(function(s){
+  return '<li><span class="min">' + s.cout + ' min</span><span><b>' + s.geste
+    + '</b> — ' + s.dit + '</span></li>'; }).join("");
+poser("reglee");
+requestAnimationFrame(boucle);
+
+/* ── L'ENCART DIT SA HAUTEUR ────────────────────────────────────────
+   Un iframe ne se dimensionne pas sur son contenu : personne ne le lui
+   dit. L'encart mesure son propre corps et l'annonce à la page qui le
+   porte, à chaque changement — les compteurs font varier la hauteur. */
+(function(){
+  function dire(){ parent.postMessage({encart: 1, h: document.body.scrollHeight}, "*"); }
+  addEventListener("load", dire);
+  if (window.ResizeObserver) new ResizeObserver(dire).observe(document.body);
+  dire();
+})();
+</script></body></html>

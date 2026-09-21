@@ -1,0 +1,339 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>La douchette, en coupe et en marche</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --police: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --police-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --pap:#FFFFFF; --pan:#FAFAFA; --pan2:#F4F4F5; --pan3:#E4E4E7;
+  --enc:#09090B; --enc2:#52525B; --enc3:#71717A;
+  --regle:#E4E4E7; --regle2:#D4D4D8;
+  --bleu:#2B4E9B; --bleu2:#5C7EBF; --bleu-pale:#EAEFFA; --bleu-voile:rgba(43,78,155,.07);
+  --verm:#F5652E; --verm2:#D9541F; --verm-pale:#FEF1EA; --verm-voile:rgba(245,101,46,.09);
+  --grille:transparent;
+  --om:0 1px 2px rgba(9,9,11,.06);
+  --om2:0 4px 12px rgba(9,9,11,.08);
+}
+:root:not([data-theme="light"]){ color-scheme:light dark; }
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --pap:#09090B; --pan:#0F0F11; --pan2:#18181B; --pan3:#27272A;
+  --enc:#FAFAFA; --enc2:#D4D4D8; --enc3:#A1A1AA;
+  --regle:#27272A; --regle2:#3F3F46;
+  --bleu:#8FB2F0; --bleu2:#6E8FCB; --bleu-pale:#18213A; --bleu-voile:rgba(143,178,240,.13);
+  --verm:#FF7A45; --verm2:#E0673A; --verm-pale:#2A1610; --verm-voile:rgba(255,122,69,.14);
+  --grille:transparent;
+  --om:0 1px 2px rgba(0,0,0,.5);
+  --om2:0 4px 16px rgba(0,0,0,.55);
+}}
+:root[data-theme="dark"]{ color-scheme:dark;
+  --pap:#09090B; --pan:#0F0F11; --pan2:#18181B; --pan3:#27272A;
+  --enc:#FAFAFA; --enc2:#D4D4D8; --enc3:#A1A1AA;
+  --regle:#27272A; --regle2:#3F3F46;
+  --bleu:#8FB2F0; --bleu2:#6E8FCB; --bleu-pale:#18213A; --bleu-voile:rgba(143,178,240,.13);
+  --verm:#FF7A45; --verm2:#E0673A; --verm-pale:#2A1610; --verm-voile:rgba(255,122,69,.14);
+  --grille:transparent;
+  --om:0 1px 2px rgba(0,0,0,.5);
+  --om2:0 4px 16px rgba(0,0,0,.55);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pan);color:var(--enc);font-family:var(--police)}
+.tete{max-width:62rem;margin:0 auto;padding:3rem 1.5rem .5rem}
+.sur{font-size:.74rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--bleu);margin:0}
+h1{font-size:1.9rem;font-weight:800;letter-spacing:-.02em;margin:.2rem 0 .6rem}
+.chapeau{color:var(--enc2);max-width:42rem;line-height:1.6;margin:0}
+main{max-width:62rem;margin:0 auto;padding:1rem 1.5rem 4rem}
+.cmd{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;margin:1.5rem 0 1rem}
+.bt{appearance:none;border:1px solid var(--bleu);background:transparent;color:var(--bleu);font:inherit;
+ font-size:.88rem;font-weight:600;padding:.5rem 1.1rem;border-radius:999px;cursor:pointer}
+.bt[aria-pressed=true]{background:var(--bleu);color:var(--pan)}
+.bt.sec{border-color:var(--regle);color:var(--enc3)}
+.bt.sec[aria-pressed=true]{background:var(--enc3);color:var(--pan);border-color:var(--enc3)}
+.scene{background:var(--pan2);border:1px solid var(--regle);border-radius:4px;padding:.5rem}
+svg.pl{display:block;width:100%;height:auto}
+.metal{fill:none;stroke:var(--bleu);stroke-width:2;stroke-linejoin:round}
+.fin{fill:none;stroke:var(--bleu);stroke-width:1.1}
+.eau{fill:var(--bleu);opacity:.16}
+.jet{stroke:var(--bleu);stroke-linecap:round;stroke-dasharray:6 9}
+.bouche{fill:var(--verm);stroke:var(--verm);stroke-width:1}
+.etiq{font-family:var(--police);font-size:12px;fill:var(--enc3);font-weight:600;
+ letter-spacing:.06em;text-transform:uppercase}
+.etiq.m{fill:var(--verm)}
+.amen{fill:none;stroke:var(--enc3);stroke-width:.8;opacity:.6}
+.lect{display:grid;grid-template-columns:repeat(auto-fit,minmax(10rem,1fr));gap:1px;
+ background:var(--regle);border:1px solid var(--regle);margin-top:1.2rem}
+.lect div{background:var(--pan);padding:.9rem 1rem}
+.lect dt{font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--enc3);margin:0 0 .3rem}
+.lect dd{margin:0;font-size:1.5rem;font-weight:700;font-variant-numeric:tabular-nums}
+.lect dd small{font-size:.8rem;font-weight:500;color:var(--enc3)}
+.lect .hs dd{color:var(--verm)}
+.verdict{margin-top:1rem;padding:.9rem 1.1rem;border-left:3px solid var(--bleu);
+ background:var(--pan2);font-size:.95rem;min-height:3.2rem}
+.verdict.mal{border-left-color:var(--verm)}
+.verdict b{font-weight:700}
+.note{color:var(--enc3);font-size:.85rem;margin:1rem 0 0;max-width:42rem;line-height:1.6}
+.sig{margin:2rem 0 0;padding:1.4rem 0 0;border-top:1px solid var(--regle);list-style:none;font-size:.9rem}
+.sig li{display:flex;gap:.7rem;padding:.4rem 0;color:var(--enc2)}
+.sig b{color:var(--enc);font-weight:600}
+.sig .min{font-family:var(--police-mono,ui-monospace,monospace);font-size:.78rem;color:var(--verm);white-space:nowrap}
+.pied{max-width:62rem;margin:0 auto;padding:1.5rem 1.5rem 4rem;color:var(--enc3);font-size:.85rem}
+.pied a{color:var(--bleu)}
+body{background:transparent}
+main{padding:.1rem 0 0;max-width:none}
+</style></head><body>
+
+<main>
+<div class="cmd">
+  <button class="bt" id="bPropre" aria-pressed="true">Douchette propre</button>
+  <button class="bt" id="bSale"   aria-pressed="false">Douchette encrassée</button>
+  <button class="bt sec" id="bRe">Relancer l'extraction</button>
+</div>
+
+<div class="scene">
+<svg class="pl" viewBox="0 0 1000 480" role="img"
+     aria-label="Coupe d'un groupe d'espresso pendant l'extraction">
+  <defs>
+    <pattern id="hSec" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="8" stroke="var(--verm)" stroke-width="2.4" opacity=".55"/>
+    </pattern>
+    <clipPath id="cLit"><rect x="240" y="176" width="528" height="126"/></clipPath>
+  </defs>
+
+  <!-- CHAMBRE DE DIFFUSION -->
+  <path class="metal" d="M214 60 L214 128 M794 60 L794 128"/>
+  <rect class="eau" x="216" y="62" width="576" height="64"/>
+  <path class="metal" d="M214 60 L794 60"/>
+
+  <!-- DOUCHETTE : la plaque et ses trous -->
+  <path class="metal" d="M208 128 L800 128 L800 146 L208 146 Z"/>
+  <g id="trous"></g>
+
+  <!-- LES JETS -->
+  <g id="jets"></g>
+
+  <!-- PANIER -->
+  <path class="metal" d="M224 166 L224 322 L470 378 L538 378 L784 322 L784 166"/>
+  <path class="fin" d="M240 166 L240 302 M768 166 L768 302"/>
+
+  <!-- LE LIT DE CAFÉ, colonne par colonne -->
+  <g clip-path="url(#cLit)">
+    <rect x="240" y="176" width="528" height="126" fill="var(--bleu)" opacity=".10"/>
+    <g id="litEau"></g>
+    <g id="litSur"></g>
+    <g id="litSec"></g>
+  </g>
+  <rect class="fin" x="240" y="176" width="528" height="126"/>
+
+  <!-- BEC ET FILET -->
+  <path class="metal" d="M470 378 L470 404 L538 404 L538 378"/>
+  <path class="jet" id="filet" d="M504 406 L504 476" stroke-width="7"/>
+
+  <!-- ÉTIQUETTES -->
+  <g class="amen">
+    <path d="M820 137 L866 137"/>
+    <path d="M820 239 L866 239"/>
+    <path d="M196 322 L150 322"/>
+  </g>
+  <text class="etiq" x="872" y="141">douchette</text>
+  <text class="etiq" x="872" y="243">lit de café</text>
+  <text class="etiq" x="144" y="326" text-anchor="end">panier</text>
+  <g id="etiqMal" style="opacity:0">
+    <path class="amen" d="M252 152 L198 206 L152 206"/>
+    <text class="etiq m" x="146" y="210" text-anchor="end">trous bouchés</text>
+  </g>
+</svg>
+</div>
+
+<dl class="lect" id="lect">
+  <div><dt>Lit arrosé</dt><dd id="vArr">—</dd></div>
+  <div><dt>Sur-extrait</dt><dd id="vSur">—</dd></div>
+  <div><dt>Jamais touché</dt><dd id="vSec">—</dd></div>
+  <div><dt>Dans la tasse</dt><dd id="vG">—</dd></div>
+  <div><dt>Temps</dt><dd id="vT">—</dd></div>
+</dl>
+
+<p class="verdict" id="verdict">L'extraction est en cours.</p>
+<p class="note" id="note"></p>
+
+</main>
+
+
+<script>
+var N = 22, ETATS = {"propre": {"bouches": [], "nom": "Douchette propre"}, "encrassee": {"bouches": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 13], "nom": "Douchette encrassée"}}, SIGNES = [{"geste": "Faire couler le groupe à vide, sans porte-filtre", "cout": 1, "dit": "Le débit est faible et tout part d'un seul côté de la douchette."}, {"geste": "Démonter la douchette et inspecter le panier", "cout": 4, "dit": "Un tiers des trous sont bouchés et le panier est gras au toucher."}],
+    CIBLE_G = 36.0, T_REF = 26.0, VITESSE = 3, RELANCE = 3000;
+
+var X0 = 240, LARG = 528, COL = LARG / N, Y0 = 176, HAUT = 126;
+function el(i){ return document.getElementById(i); }
+function xcol(i){ return X0 + COL * i; }
+
+/* ── les trous de la douchette ─────────────────────────────────────── */
+function poserTrous(bouches){
+  var t = "", j = "";
+  for (var i = 0; i < N; i++) {
+    var cx = xcol(i) + COL / 2, mal = bouches.indexOf(i) >= 0;
+    t += '<circle class="' + (mal ? "bouche" : "fin") + '" cx="' + cx.toFixed(1)
+       + '" cy="137" r="5"/>';
+    j += '<line class="jet" id="j' + i + '" x1="' + cx.toFixed(1) + '" y1="148" x2="'
+       + cx.toFixed(1) + '" y2="176" stroke-width="3" opacity="0"/>';
+  }
+  el("trous").innerHTML = t; el("jets").innerHTML = j;
+  el("etiqMal").style.opacity = bouches.length ? 1 : 0;
+}
+
+/* ── l'état de l'extraction ────────────────────────────────────────── */
+var etat = "propre", w = [], e = [], g = 0, ts = 0, fini = false, finA = null;
+
+function remettre(){
+  w = []; e = [];
+  for (var i = 0; i < N; i++) { w.push(0); e.push(0); }
+  g = 0; ts = 0; fini = false; finA = null;
+  el("verdict").textContent = "L'extraction est en cours.";
+  el("verdict").classList.remove("mal");
+  poserTrous(ETATS[etat].bouches);
+}
+
+/* ── un pas de temps ───────────────────────────────────────────────── */
+function pas(dt){
+  var b = ETATS[etat].bouches, i;
+
+  /* 1. l'eau descend par les trous ouverts */
+  for (i = 0; i < N; i++) if (b.indexOf(i) < 0) w[i] = Math.min(1, w[i] + dt * 1.8);
+
+  /* 2. elle s'étale un peu latéralement — le lit est tassé, ça ne va pas loin */
+  var d = w.slice();
+  for (i = 0; i < N; i++) {
+    var gche = i > 0 ? d[i-1] : d[i], drte = i < N-1 ? d[i+1] : d[i];
+    w[i] = Math.min(1, w[i] + dt * 0.14 * (gche + drte - 2 * d[i]));
+    if (w[i] < 0) w[i] = 0;
+  }
+
+  /* 3. TOUT le débit passe par ce qui est mouillé, au prorata.
+        C'est d'ici que sort le chemin préférentiel. */
+  var somme = 0; for (i = 0; i < N; i++) somme += w[i];
+  if (somme <= 0) return;
+  var mouille = somme / N;
+  /* moins de lit traversé, moins de résistance : le débit monte */
+  var debit = (CIBLE_G / T_REF) * (1 + 0.6 * (1 - mouille));
+  for (i = 0; i < N; i++) e[i] += (w[i] / somme) * N * dt / T_REF;
+  g += debit * dt;
+  ts += dt;
+  if (g >= CIBLE_G) { g = CIBLE_G; fini = true; conclure(); }
+}
+
+/* ── ce qu'on voit ─────────────────────────────────────────────────── */
+function dessiner(ms){
+  var eau = "", sur = "", sec = "", i, somme = 0;
+  for (i = 0; i < N; i++) somme += w[i];
+  for (i = 0; i < N; i++) {
+    var x = xcol(i).toFixed(1), lg = (COL + .6).toFixed(1);
+    eau += '<rect x="'+x+'" y="'+Y0+'" width="'+lg+'" height="'+HAUT
+         + '" fill="var(--bleu)" opacity="' + (w[i] * .30).toFixed(3) + '"/>';
+    var trop = Math.max(0, e[i] - 1);
+    if (trop > .02)
+      sur += '<rect x="'+x+'" y="'+Y0+'" width="'+lg+'" height="'+HAUT
+           + '" fill="var(--verm)" opacity="' + Math.min(.5, trop * .7).toFixed(3) + '"/>';
+    if (ts > 3 && w[i] < .15)
+      sec += '<rect x="'+x+'" y="'+Y0+'" width="'+lg+'" height="'+HAUT+'" fill="url(#hSec)"/>';
+    /* le jet : son épaisseur dit sa part du débit */
+    var j = el("j" + i); if (!j) continue;
+    var part = somme > 0 ? w[i] / somme : 0;
+    var ouvert = ETATS[etat].bouches.indexOf(i) < 0;
+    j.style.opacity = ouvert && !fini ? .95 : 0;
+    j.setAttribute("stroke-width", (1.6 + part * N * 2.2).toFixed(2));
+    j.style.strokeDashoffset = (-ms / 26).toFixed(1);
+  }
+  el("litEau").innerHTML = eau; el("litSur").innerHTML = sur; el("litSec").innerHTML = sec;
+
+  var f = el("filet");
+  f.style.opacity = ts > .4 && !fini ? .9 : (fini ? .25 : 0);
+  f.setAttribute("stroke-width", (4 + (1 - somme / N) * 8).toFixed(1));
+  f.style.strokeDashoffset = (-ms / 14).toFixed(1);
+
+  var nArr = 0, nSur = 0, nSec = 0;
+  for (i = 0; i < N; i++) {
+    if (w[i] >= .15) { nArr++; if (e[i] > 1.12) nSur++; } else nSec++;
+  }
+  var pc = function(n){ return Math.round(n / N * 100) + " %"; };
+  el("vArr").textContent = pc(nArr);
+  el("vSur").textContent = pc(nSur);
+  el("vSec").textContent = pc(nSec);
+  el("vG").innerHTML = g.toFixed(1).replace(".", ",") + ' <small>g</small>';
+  el("vT").innerHTML = ts.toFixed(1).replace(".", ",") + ' <small>s</small>';
+  var d = el("lect").querySelectorAll("div");
+  d[0].classList.toggle("hs", nArr < N);
+  d[1].classList.toggle("hs", nSur > 0);
+  d[2].classList.toggle("hs", nSec > 0);
+  d[4].classList.toggle("hs", fini && ts < 22);
+}
+
+function conclure(){
+  var nSur = 0, nSec = 0;
+  for (var i = 0; i < N; i++) { if (w[i] < .15) nSec++; else if (e[i] > 1.12) nSur++; }
+  var v = el("verdict");
+  if (!nSec && !nSur) {
+    v.classList.remove("mal");
+    v.innerHTML = "<b>" + CIBLE_G.toFixed(0) + " g en " + ts.toFixed(0)
+      + " s.</b> Tout le lit a reçu l'eau, et personne n'en a reçu deux fois. C'est un shot.";
+  } else {
+    v.classList.add("mal");
+    v.innerHTML = "<b>" + CIBLE_G.toFixed(0) + " g en " + ts.toFixed(0) + " s.</b> "
+      + "Le chronomètre ne dit rien — il est même un peu court. Mais "
+      + Math.round(nSur / N * 100) + " % du lit a été lessivé deux fois, et "
+      + Math.round(nSec / N * 100) + " % n'a jamais été touché. "
+      + "Amer et acide dans la même tasse : c'est la signature.";
+  }
+}
+
+var NOTES = {
+ propre: "Les trous arrosent tout le lit. Chaque colonne reçoit la même part du débit, "
+       + "donc chacune s'extrait au même rythme, et le shot tombe à son heure.",
+ encrassee: "Les trous bouchés ne ferment pas le robinet : l'eau doit passer quand même, "
+       + "et elle passe par ce qui reste. Regardez la teinte vermillon monter là où les jets "
+       + "tombent — c'est du café lessivé deux fois — pendant que les hachures marquent "
+       + "le café que l'eau n'a jamais atteint. Et le chronomètre, lui, ne voit rien : "
+       + "moins de lit traversé, moins de résistance, donc un temps NORMAL, voire court."
+};
+
+function poser(k){
+  etat = k;
+  el("bPropre").setAttribute("aria-pressed", k === "propre");
+  el("bSale").setAttribute("aria-pressed", k === "encrassee");
+  el("note").textContent = NOTES[k];
+  remettre();
+}
+
+var dernier = null;
+function boucle(ms){
+  if (dernier === null) dernier = ms;
+  var dt = Math.min(.05, (ms - dernier) / 1000) * VITESSE; dernier = ms;
+  if (!fini) pas(dt);
+  else if (finA === null) finA = ms;
+  else if (ms - finA > RELANCE) remettre();
+  dessiner(ms);
+  requestAnimationFrame(boucle);
+}
+
+el("bPropre").addEventListener("click", function(){ poser("propre"); });
+el("bSale").addEventListener("click", function(){ poser("encrassee"); });
+el("bRe").addEventListener("click", remettre);
+
+var lst = el("sig"); if (lst) lst.innerHTML = SIGNES.map(function(s){
+  return '<li><span class="min">' + s.cout + ' min</span><span><b>' + s.geste
+    + '</b> — ' + s.dit + '</span></li>'; }).join("");
+
+poser("propre");
+requestAnimationFrame(boucle);
+
+/* ── L'ENCART DIT SA HAUTEUR ────────────────────────────────────────
+   Un iframe ne se dimensionne pas sur son contenu : personne ne le lui
+   dit. L'encart mesure son propre corps et l'annonce à la page qui le
+   porte, à chaque changement — les compteurs font varier la hauteur. */
+(function(){
+  function dire(){ parent.postMessage({encart: 1, h: document.body.scrollHeight}, "*"); }
+  addEventListener("load", dire);
+  if (window.ResizeObserver) new ResizeObserver(dire).observe(document.body);
+  dire();
+})();
+</script></body></html>
