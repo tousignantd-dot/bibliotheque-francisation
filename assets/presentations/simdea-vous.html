@@ -1913,11 +1913,23 @@ function analyse(){
                function(){ setTimeout(chocBeat, 900); });
         }, 600);
       }; }
-      gestes([{ consigne: 'Le bouton clignote. C\'est à vous.' },
+      /* ATTENDRE N'EST PLUS UNE FAUTE (21 septembre 2026). Ça l'était, et la
+         réponse affirmait « il ne délivrera rien tout seul » — ce qui est vrai
+         de CET appareil-ci et faux en général : un DEA entièrement automatique
+         avertit, puis déclenche lui-même. On punissait la conduite juste
+         devant l'autre moitié du parc, et on l'apprenait à quelqu'un qui
+         pourrait un jour avoir les mains sur une poitrine au moment où la
+         machine décharge.
+         Le choix reste — il faut pouvoir se tromper — mais ce qu'il enseigne
+         change : ce n'est pas au joueur de deviner de quel type d'appareil il
+         s'agit, c'est à l'appareil de le dire. La consigne le dit donc
+         explicitement AVANT le choix, pour qu'attendre soit une inattention et
+         non une ignorance. */
+      gestes([{ consigne: 'Il vous demande d\'appuyer : le bouton clignote.' },
               { texte: 'Appuyer sur le bouton', sur: function(){ if (b) b.onclick(); } },
               { texte: 'Attendre que l\'appareil le fasse seul', sur: function(x){
-                  note('attend_choc_automatique', {faute:true}); x.disabled = true;
-                reprise("Il ne délivrera rien tout seul. Le choc attend votre doigt : c'est vous qui appuyez."); } }]);
+                  note('attend_choc_automatique'); x.disabled = true;
+                reprise("Certains appareils choquent seuls, et ils l'annoncent. Celui-ci vous demande d'appuyer — c'est toujours lui qui le dit, jamais vous qui le devinez."); } }]);
     } else {
       note('aucun_choc');
       tracer('attente');
@@ -2085,7 +2097,6 @@ function miroir(){
     appel_raccroche: 'vous avez raccroché avant la fin',
     electrode_sur_timbre: 'une électrode posée sur un timbre de médicament',
     touche_pendant_analyse: 'vous avez touché le patient pendant l\'analyse',
-    attend_choc_automatique: 'vous avez attendu que l\'appareil délivre le choc seul',
     verifie_apres_analyse: 'vous avez revérifié la respiration après l\'analyse',
     verifie_avant_reprise: 'vous avez revérifié avant de reprendre',
     attend_prochaine_analyse: 'vous avez attendu l\'analyse suivante sans comprimer'
