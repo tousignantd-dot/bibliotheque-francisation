@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Le banc de panne : pourquoi la disposition actuelle induit un ordre, et cinq hypothèses pour la refaire.">
+<meta name="description" content="Le banc de panne : pourquoi la disposition actuelle induit un ordre, et cinq hypothèses pour la refaire — design inchangé.">
 <title>Le banc — la disposition</title>
 <style>html{color-scheme:light dark}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 </head>
@@ -100,6 +100,25 @@ h1,h2,h3{color:var(--enc)}
 <p class="chapeau">Vous avez raison, et ça se mesure. Rien n'est changé ici :
 ce sont des hypothèses, pour trancher avant de toucher au moteur.</p>
 
+<h2>Ce qui ne bouge pas</h2>
+
+<p><b>Posé le 20 septembre 2026, et ça borne tout le reste :</b> le design industriel reste
+tel quel. Les jetons, les trois habillages (Atelier, Café, Labo), la typographie condensée,
+les filets, les étiquettes en capitales — rien de la première page ne change. <b>Et on
+continue de voir une machine à espresso</b>, dans le même trait à la plume deux couleurs.</p>
+
+<p>Ce qui se déplace, ce sont <b>les blocs</b>, pas leur habillage. Aucune des hypothèses
+ci-dessous ne demande une nouvelle palette, une nouvelle grille typographique ni un
+nouveau dessin.</p>
+
+<div class="rappel">
+<p style="margin:0"><b>Et la machine y gagne.</b> Sortir les gestes de la colonne du milieu
+libère <b>403 pixels</b> de large au centre de l'écran. Le plan de la machine, aujourd'hui
+à l'étroit dans 440 px, peut prendre cette place : plus grand, plus lisible, les organes
+enfin distinguables au premier coup d'œil. La contrainte que vous posez n'est pas un frein
+— c'est ce que la réorganisation permet.</p>
+</div>
+
 <h2>Ce que la disposition raconte aujourd'hui</h2>
 
 <p>Relevé sur la page servie, en pixels :</p>
@@ -161,8 +180,9 @@ moyen il faudra deux rangées de cinq et quatre, et deux rangées recréent un �
 l'endroit où on le ferait. On clique le manomètre sur le dessin, pas une ligne dans une
 liste. Le coût s'affiche au survol.</p>
 <p class="note"><b>Ce que ça donne :</b> l'ordre de lecture disparaît complètement — la
-position devient de l'anatomie, plus une séquence. Et ça règle votre second point du même
-coup : cliquer un organe peut ouvrir sa coupe animée.
+position devient de l'anatomie, plus une séquence. C'est aussi celle qui donne le plus de
+place à la machine : elle devient l'écran entier, dans le même trait. Et ça règle votre
+second point du même coup : cliquer un organe peut ouvrir sa coupe animée.
 <b>Le risque :</b> neuf points sur un plan de 440 px se marchent dessus, et trois gestes
 n'ont pas de lieu évident (chronométrer une extraction, demander à Kim). Un geste qu'on ne
 trouve pas est un geste qu'on ne fait pas — et le jeu se jouerait alors sans lui,
@@ -179,6 +199,25 @@ ordonnée. Les bons achats se retrouvent en haut à gauche.</p>
 graphique qui a déjà fait la pesée transforme la partie en lecture de graphique. C'est
 exactement ce qu'on vient d'écarter en sortant « L'ordre qui gagne » de l'atelier.</p>
 </div>
+
+<h2>La disposition complète, si on prend A</h2>
+
+<p>Les trois déplacements mis bout à bout, le design inchangé :</p>
+
+<div class="maq maq--haut">
+  <div class="pleine" style="background:#EDEAE4;border-color:#D5D0C4;font-weight:600">
+    LE BANC DE PANNE · 7 h 45 · ouverture dans 15 min</div>
+  <div class="m" style="grid-column:1/3;min-height:5.5rem">LE PLAN DE LA MACHINE<br>
+    <span style="font-weight:600">le même dessin, en plus grand</span><br>
+    <span style="font-size:.9em">— il récupère les 403 px de la colonne des gestes —</span></div>
+  <div class="r">le ruban<br>les minutes</div>
+  <div class="pleine g">LES NEUF GESTES — une rangée, tous au même niveau</div>
+  <div class="t pleine">↓ LE TABLEAU DES SUSPECTS — ce que votre geste vient d'écarter</div>
+</div>
+
+<p class="note">Le haut ne change pas d'un pixel. Le milieu perd une colonne et la donne à
+la machine. Le bas reçoit les deux blocs qui se répondent — on choisit, et la réponse
+apparaît juste en dessous.</p>
 
 <h2>Hypothèses pour le tableau des suspects</h2>
 
@@ -239,9 +278,11 @@ information vraie — où l'on va — mais c'est la seule chose que le plan dit 
 beaucoup au débriefing. Peut-être qu'il ne devrait exister qu'à la fin.</li>
 </ul>
 
-<p class="fin">Aucune de ces hypothèses ne demande de refaire un dessin ou un son. Ce sont
-des déplacements de blocs dans <code>banc.gabarit.html</code> et du CSS ; la table de
-vérité, les coupes et les voix ne bougent pas.</p>
+<p class="fin">Aucune de ces hypothèses ne demande de refaire un dessin, un son, ni une
+seule couleur. Ce sont des déplacements de blocs dans <code>banc.gabarit.html</code> et du
+CSS de grille ; la table de vérité, les coupes, les voix, les jetons et les trois
+habillages ne bougent pas. Le plan de la machine est repris tel quel — un SVG, donc il
+grandit sans perdre son trait.</p>
 
 </div>
 
