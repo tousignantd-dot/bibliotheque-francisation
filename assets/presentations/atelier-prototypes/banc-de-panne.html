@@ -617,10 +617,52 @@ function chemin(C,verite){ /* l'enchaînement optimal pour CETTE panne-là */
 }
 function hhmm(min){const t=465+min,h=Math.floor(t/60),m=t%60;return h+" h "+(m<10?"0":"")+m}
 
+/* ─── LE SAC ────────────────────────────────────────────────────────────
+   LE TIRAGE UNIFORME N'ÉTAIT PAS LE BON HASARD, et ça se mesure. Sur cinq
+   parties d'affilée, `Math.random()` sur cinq pannes donne :
+
+     59 %  qu'une panne revienne IMMÉDIATEMENT après elle-même
+     96 %  qu'une panne ne sorte JAMAIS
+
+   Le second chiffre est le grave. Depuis le 20 septembre 2026 le joueur
+   traverse l'atelier avant de jouer : il vient de voir les cinq mécanismes,
+   un par un, et il a quasiment la certitude de ne jamais rencontrer l'un
+   d'eux. Ce qu'on lui a fait apprendre, le tirage le lui reprend.
+
+   ON TIRE DONC SANS REMISE. Un sac des cinq, mélangé, vidé une panne à la
+   fois : cinq parties = les cinq pannes, dans un ordre qu'on ne prévoit pas.
+   Le sac se remélange quand il est vide, et la couture est surveillée — sans
+   ça, la dernière d'un sac et la première du suivant peuvent être la même, ce
+   qui ramène le seul cas que le joueur remarque vraiment.
+
+   Rien n'est dit au joueur. Il n'a pas à savoir comment le sac est fait ;
+   il doit seulement ne jamais avoir l'impression que la machine triche. */
+const SAC = [];
+function melanger(a){
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function tirerPanne(precedente){
+  if (!SAC.length) {
+    SAC.push(...melanger(IDS.slice()));
+    /* On tire par la FIN. Si la prochaine est celle qu'on vient de jouer, on
+       l'échange avec la première du sac : elle reviendra, mais pas tout de
+       suite. Le sac reste complet — chaque panne sort toujours une fois par
+       tour, c'est seulement l'ordre qui se décale. */
+    if (precedente && SAC[SAC.length - 1] === precedente) {
+      [SAC[0], SAC[SAC.length - 1]] = [SAC[SAC.length - 1], SAC[0]];
+    }
+  }
+  return SAC.pop();
+}
+
 /* ─── état ─── */
 let E={};
 function neuf(){
- E={verite:IDS[Math.floor(Math.random()*IDS.length)],faits:[],temps:0,C:IDS.slice(),
+ E={verite:tirerPanne(E && E.verite),faits:[],temps:0,C:IDS.slice(),
     fini:false,choix:null,apercu:null,zone:null};
  document.getElementById("debrief").hidden=true;
  document.getElementById("debrief").innerHTML="";
