@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Le banc de panne : pourquoi la disposition actuelle induit un ordre, et cinq hypothèses pour la refaire.">
+<title>Le banc — la disposition</title>
+<style>html{color-scheme:light dark}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>Le banc — la disposition</title>
+<style>
+/* LES JETONS DE CETTE PAGE, ET POURQUOI ELLE N'IMPORTE PLUS BRAISE.
+   Défaut trouvé le 20 septembre 2026 à la tombée du jour : les deux pages de
+   décision du banc avaient leurs TITRES BLANCS SUR FOND BLANC. La cause n'est
+   pas une faute de couleur, c'est un partage de responsabilité : j'avais codé
+   le fond en dur (#FAFAF9) et laissé BRAISE fournir la couleur du texte par
+   `h1,h2,h3{color:var(--encre)}`. En clair, les deux s'accordaient par hasard.
+   L'application est passée en thème sombre à 20 h, `--encre` a basculé au
+   clair — et le fond, lui, ne pouvait pas suivre : il était écrit en dur.
+   Le titre a disparu d'une page déjà publiée et poussée, sans que rien le
+   signale, et je ne l'ai vu qu'en la regardant par hasard huit heures après.
+   DEUX SYSTÈMES DE COULEUR DANS UNE PAGE N'EN FONT AUCUN. Celle-ci porte donc
+   ses propres jetons, fond ET encre, et les redéclare pour le sombre. */
+:root{
+  --pap:#FAFAF9; --pan:#FFFFFF; --enc:#1B1A17; --enc2:#4F4C45; --enc3:#767268;
+  --regle:#DDD9CE; --sig:#C2400F; --sig-voile:rgba(194,64,15,.10);
+  --mes:#2F5468; --mes-voile:rgba(47,84,104,.09);
+  --non:#EDEAE4; --non-enc:#6B675E; --non-pan:#FAF8F5;
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --pap:#1A1B1A; --pan:#232523; --enc:#EEECE6; --enc2:#BDB9AF; --enc3:#908C82;
+  --regle:#343733; --sig:#F2703F; --sig-voile:rgba(242,112,63,.14);
+  --mes:#8FB6DD; --mes-voile:rgba(143,182,221,.12);
+  --non:#2D302D; --non-enc:#A1A1AA; --non-pan:#1F211F;
+}}
+:root[data-theme="dark"]{
+  --pap:#1A1B1A; --pan:#232523; --enc:#EEECE6; --enc2:#BDB9AF; --enc3:#908C82;
+  --regle:#343733; --sig:#F2703F; --sig-voile:rgba(242,112,63,.14);
+  --mes:#8FB6DD; --mes-voile:rgba(143,182,221,.12);
+  --non:#2D302D; --non-enc:#A1A1AA; --non-pan:#1F211F;
+}
+h1,h2,h3{color:var(--enc)}
+
+  body{margin:0;background:var(--pap);color:var(--enc);
+    font:16px/1.6 "Work Sans",-apple-system,BlinkMacSystemFont,system-ui,sans-serif}
+  .w{max-width:54rem;margin:0 auto;padding:3rem 1.25rem 5rem}
+  h1{font-family:"Newsreader",Georgia,serif;font-size:clamp(1.9rem,4.5vw,2.6rem);
+    font-weight:600;letter-spacing:-.02em;line-height:1.15;margin:0 0 .4rem}
+  .surtitre{font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--enc3);margin:0 0 1.5rem;font-weight:600}
+  h2{font-family:"Newsreader",Georgia,serif;font-size:1.45rem;font-weight:600;
+    letter-spacing:-.015em;margin:2.8rem 0 .7rem}
+  h3{font-size:1.0625rem;font-weight:600;margin:0 0 .35rem}
+  p{margin:0 0 .9em} .chapeau{font-size:1.125rem;color:var(--enc2)}
+  .note{color:var(--enc2);font-size:.9375rem} b,strong{font-weight:600}
+  .carte{background:var(--pan);border:1px solid var(--regle);border-radius:10px;
+    padding:1.15rem 1.3rem;margin:.9rem 0}
+  .carte--fort{border-color:var(--sig);border-width:2px}
+  .carte--non{background:var(--non-pan);border-style:dashed}
+  .eti{display:inline-block;font-size:.6875rem;letter-spacing:.11em;
+    text-transform:uppercase;font-weight:700;padding:.2rem .5rem;border-radius:3px;
+    background:var(--sig-voile);color:var(--sig);margin-bottom:.55rem}
+  .eti--calme{background:var(--mes-voile);color:var(--mes)}
+  .eti--non{background:var(--non);color:var(--non-enc)}
+  .rappel{border-left:3px solid var(--sig);padding:.1rem 0 .1rem 1rem;margin:1.2rem 0;color:var(--enc2)}
+  ul{margin:.3rem 0 .9rem;padding-left:1.15rem} li{margin:.3rem 0}
+  table{width:100%;border-collapse:collapse;margin:.9rem 0;font-size:.9375rem}
+  th,td{text-align:left;padding:.5rem .7rem;border-bottom:1px solid var(--regle);vertical-align:top}
+  th{font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--enc3);font-weight:700}
+  .fin{margin-top:3rem;padding-top:1.4rem;border-top:1px solid var(--regle);color:var(--enc3);font-size:.875rem}
+
+  /* ── LES MAQUETTES. Des boîtes, pas des captures : ce qui se juge ici est
+     l'ORDRE DE LECTURE, et une capture le noierait sous le détail.
+     ELLES NE SUIVENT PAS LE THÈME, et c'est voulu : un schéma est un dessin
+     sur du papier, pas du chrome. Leurs couleurs sont donc FIXES des deux
+     côtés — fond ET encre. Les laisser à moitié sur les jetons reproduirait
+     exactement le défaut qui a fait disparaître les titres : un fond clair
+     écrit en dur sous une encre qui bascule au sombre. ── */
+  .maq{display:grid;gap:5px;background:#EFECE5;border:1px solid #DDD9CE;
+    border-radius:7px;padding:5px;margin:.8rem 0;font-size:.6875rem;line-height:1.25}
+  .maq div{background:#fff;border:1px solid #D5D0C4;border-radius:4px;
+    padding:.4rem .5rem;color:#4F4C45}
+  .maq .t{background:#F4EEE9;border-color:#E3D2C6;color:#8A4526;font-weight:600}
+  .maq .m{background:#EDF1F3;border-color:#CEDCE2;color:#2F5468}
+  .maq .g{background:#F7F5F0}
+  .maq .r{background:#FBFAF7;color:#767268}
+  .maq--haut{grid-template-columns:1fr 1fr 1fr}
+  .maq--haut .pleine{grid-column:1/-1}
+  .fleche{color:#C2400F;font-weight:700}
+  .rangee{display:grid;grid-template-columns:repeat(9,1fr);gap:4px}
+  .rangee span{background:#F7F5F0;border:1px solid #D5D0C4;border-radius:3px;
+    padding:.45rem .15rem;text-align:center;font-size:.625rem;color:#4F4C45}
+</style>
+<div class="w">
+
+<p class="surtitre">Banc de panne · hypothèses du 20 septembre 2026</p>
+<h1>La disposition induit un ordre</h1>
+
+<p class="chapeau">Vous avez raison, et ça se mesure. Rien n'est changé ici :
+ce sont des hypothèses, pour trancher avant de toucher au moteur.</p>
+
+<h2>Ce que la disposition raconte aujourd'hui</h2>
+
+<p>Relevé sur la page servie, en pixels :</p>
+
+<table>
+<tr><th>bloc</th><th>où</th><th>ce que ça dit</th></tr>
+<tr><td>Le tableau des suspects</td><td>tout en haut, pleine largeur, 341 px de haut</td><td>« commence par lire »</td></tr>
+<tr><td>Le plan de la machine</td><td>colonne de gauche</td><td>« voici le lieu »</td></tr>
+<tr><td>Les gestes</td><td>colonne du milieu, <b>six groupes empilés</b> sur 747 px</td><td>« fais-les dans cet ordre »</td></tr>
+<tr><td>Le ruban</td><td>colonne de droite</td><td>« voici ce que tu as fait »</td></tr>
+</table>
+
+<div class="maq maq--haut">
+  <div class="t pleine">LE TABLEAU DES SUSPECTS — cinq cartes</div>
+  <div class="m">le plan<br>de la machine</div>
+  <div class="g">1 manomètre<br>2 groupe<br>3 porte-filtre<br>4 carrosserie<br>5 moulin<br>6 Kim</div>
+  <div class="r">le ruban</div>
+</div>
+
+<div class="rappel">
+<p style="margin:0"><b>Les neuf gestes sont rangés par ENDROIT sur la machine</b>, en six
+groupes, du haut vers le bas. C'est une taxonomie <i>spatiale</i> : elle répond à « où
+est-ce que je vais ? ». Or la question du jeu est « <b>lequel achète le plus pour le moins
+de minutes ?</b> » — une question de <i>comparaison</i>. Empilés, les gestes se lisent
+comme une liste de tâches ; et une liste, on la fait dans l'ordre.</p>
+</div>
+
+<p class="note">Le chiffre qui le dit : le premier groupe commence à 596 px et le dernier
+finit à 1343 px. <b>747 pixels d'écart vertical</b> entre le premier geste et le dernier.
+Deux gestes qu'on devrait peser l'un contre l'autre ne sont jamais visibles ensemble au
+même niveau.</p>
+
+<h2>Hypothèses pour les gestes</h2>
+
+<div class="carte carte--fort">
+<span class="eti">A · recommandée</span>
+<h3>La rangée</h3>
+<p>Les neuf gestes sur <b>une seule ligne horizontale</b>, cartes de taille identique,
+toutes au même niveau. Sur chacune : le nom, le coût en minutes, et le petit ruban de
+couleurs qui dit en combien de groupes il coupe les suspects. Les six en-têtes de zone
+disparaissent — l'endroit se dit sur le plan, en surlignant l'organe au survol.</p>
+<div class="maq"><div class="rangee">
+ <span>mano<br>1 min</span><span>groupe<br>1 min</span><span>thermo<br>3 min</span>
+ <span>chrono<br>1 min</span><span>pourtour<br>1 min</span><span>mouture<br>1 min</span>
+ <span>pompe<br>1 min</span><span>douchette<br>4 min</span><span>Kim<br>1 min</span>
+</div></div>
+<p class="note"><b>Ce que ça donne :</b> aucun geste n'est « avant » un autre. Le regard
+balaie, il ne descend pas. Et neuf cartes côte à côte rendent la comparaison
+coût / séparation immédiate, ce qui est exactement la compétence enseignée.
+<b>Le risque :</b> neuf cartes sur une rangée font des cartes étroites — sur écran
+moyen il faudra deux rangées de cinq et quatre, et deux rangées recréent un « avant ».
+À vérifier sur trois largeurs avant de trancher.</p>
+</div>
+
+<div class="carte">
+<span class="eti eti--calme">B</span>
+<h3>Les gestes sur le plan</h3>
+<p>Plus de colonne du tout. Chaque geste est un point <b>posé sur la machine</b>, à
+l'endroit où on le ferait. On clique le manomètre sur le dessin, pas une ligne dans une
+liste. Le coût s'affiche au survol.</p>
+<p class="note"><b>Ce que ça donne :</b> l'ordre de lecture disparaît complètement — la
+position devient de l'anatomie, plus une séquence. Et ça règle votre second point du même
+coup : cliquer un organe peut ouvrir sa coupe animée.
+<b>Le risque :</b> neuf points sur un plan de 440 px se marchent dessus, et trois gestes
+n'ont pas de lieu évident (chronométrer une extraction, demander à Kim). Un geste qu'on ne
+trouve pas est un geste qu'on ne fait pas — et le jeu se jouerait alors sans lui,
+silencieusement.</p>
+</div>
+
+<div class="carte carte--non">
+<span class="eti eti--non">C · à refuser, et je dis pourquoi</span>
+<h3>L'éventail par coût et par séparation</h3>
+<p>Placer chaque geste sur deux axes : les minutes en abscisse, ce qu'il sépare en
+ordonnée. Les bons achats se retrouvent en haut à gauche.</p>
+<p class="note">C'est la plus lisible des trois, et c'est pour ça qu'elle est mauvaise :
+<b>elle donne la réponse</b>. Le jeu enseigne à peser le coût contre l'information ; un
+graphique qui a déjà fait la pesée transforme la partie en lecture de graphique. C'est
+exactement ce qu'on vient d'écarter en sortant « L'ordre qui gagne » de l'atelier.</p>
+</div>
+
+<h2>Hypothèses pour le tableau des suspects</h2>
+
+<p>Votre intuition — « peut-être en dessous » — a un argument solide derrière elle :
+<b>le tableau est la CONSÉQUENCE du geste</b>, et il est placé avant la cause. Après chaque
+clic, l'œil doit remonter de 400 pixels pour voir ce que le clic a produit.</p>
+
+<div class="carte carte--fort">
+<span class="eti">D · recommandée</span>
+<h3>Dessous, et il devient le résultat</h3>
+<p>La rangée des gestes en haut, le tableau des suspects juste en dessous. On choisit, et
+la réponse apparaît sous la main qui vient de choisir. La ligne « ce geste les répartirait
+en 3 groupes » passe alors <b>entre les deux</b>, exactement là où le regard se trouve
+déjà.</p>
+<div class="maq maq--haut">
+  <div class="pleine" style="background:#F7F5F0">LES NEUF GESTES — une rangée</div>
+  <div class="t pleine">↓ LE TABLEAU DES SUSPECTS — ce que votre geste vient d'écarter</div>
+  <div class="m">le plan</div><div class="r" style="grid-column:2/-1">le ruban</div>
+</div>
+</div>
+
+<div class="carte">
+<span class="eti eti--calme">E</span>
+<h3>À droite, à la place du ruban</h3>
+<p>Les suspects tiennent la colonne de droite, en permanence, et le ruban passe en bas en
+une ligne. Cause à gauche, conséquence à droite : la lecture reste horizontale.</p>
+<p class="note"><b>Le risque :</b> cinq cartes dans une colonne étroite perdent leurs
+coupes, qui sont ce qui les rend reconnaissables. Et le ruban en une ligne perd le compte
+des minutes, qui est l'autre moitié du jeu.</p>
+</div>
+
+<h2>« Que la démonstration soit accessible dès le départ »</h2>
+
+<p>Aujourd'hui, pendant la partie, <b>aucune animation n'est atteignable</b> : elles ne
+s'ouvrent qu'au débriefing, et seulement celle de la panne qu'on vient de traiter. Le
+joueur a vu les cinq mécanismes dans l'atelier, puis il n'y a plus accès au moment où il
+en aurait besoin.</p>
+
+<p><b>Ce que je propose :</b> chaque carte de suspect porte un bouton <b>« le mécanisme »</b>
+qui ouvre la coupe animée <i>en place</i>, dans la carte. Les encarts existent déjà —
+`*-encart.html`, faits exactement pour être embarqués, et ils annoncent leur hauteur
+tout seuls.</p>
+
+<p><b>Et ça ne donne rien au joueur qu'il n'ait déjà.</b> Le mécanisme dit ce que l'organe
+FAIT, pas quelle panne est présente. L'atelier les montre déjà tous les cinq avant la
+partie ; les rendre consultables pendant ne révèle rien de plus, ça évite seulement de
+punir celui qui n'a pas tout retenu.</p>
+
+<h2>Ce que je ne peux pas trancher</h2>
+
+<ul>
+<li><b>Une rangée ou deux ?</b> Neuf cartes sur une ligne tiennent à 1400 px, pas à
+1000. Deux rangées recréent un « avant » et un « après ». Il faudra mesurer aux trois
+largeurs, pas décider en mots.</li>
+<li><b>Les en-têtes de zone disparaissent-ils tout à fait ?</b> Ils portent une
+information vraie — où l'on va — mais c'est la seule chose que le plan dit déjà.</li>
+<li><b>Le ruban garde-t-il sa colonne ?</b> Il est peu regardé pendant la partie et
+beaucoup au débriefing. Peut-être qu'il ne devrait exister qu'à la fin.</li>
+</ul>
+
+<p class="fin">Aucune de ces hypothèses ne demande de refaire un dessin ou un son. Ce sont
+des déplacements de blocs dans <code>banc.gabarit.html</code> et du CSS ; la table de
+vérité, les coupes et les voix ne bougent pas.</p>
+
+</div>
+
+</body>
+</html>
