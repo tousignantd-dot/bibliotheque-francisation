@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Deux grammaires pour la même rangée</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;800&family=Barlow+Condensed:wght@600;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* LE BANC D'ESSAI, 22 septembre 2026. Une seule question : la grammaire de
+   spade.com apprend-elle mieux que celle du banc ?
+   LA RÈGLE DU BANC : même contenu des deux côtés, même largeur, même police,
+   même papier. UNE seule variable — la forme de la carte. Deux colonnes qui
+   ne diraient pas la même chose ne compareraient rien.
+   Les jetons sont ceux du banc de panne, recopiés tels quels : comparer contre
+   une mauvaise imitation de l'existant truquerait l'épreuve en ma faveur. */
+:root{
+  --police:"Barlow",system-ui,sans-serif;
+  --titre:"Barlow Condensed",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  --pap:#E6E3DB; --pan:#F3F1EB; --pan2:#D9D5CA;
+  --enc:#1B1A17; --enc2:#4F4C45; --enc3:#67645B;
+  --regle:#C6C1B4; --regle2:#A19B8D;
+  --sig:#C2400F; --sig-voile:rgba(194,64,15,.10);
+  --mes:#2F5468; --mes-voile:rgba(47,84,104,.08);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pap);color:var(--enc);font:15px/1.55 var(--police);
+  background-image:repeating-linear-gradient(0deg,transparent 0 23px,rgba(27,26,23,.05) 23px 24px)}
+.w{max-width:82rem;margin:0 auto;padding:2.4rem 1.2rem 5rem}
+h1{font-family:var(--titre);font-weight:800;font-size:clamp(1.9rem,4vw,2.7rem);
+  letter-spacing:.01em;text-transform:uppercase;margin:0 0 .3rem;line-height:1.05}
+.surt{font-family:var(--mono);font-size:.64rem;text-transform:uppercase;
+  letter-spacing:.16em;color:var(--enc3);margin:0 0 .8rem}
+.chapeau{max-width:44rem;color:var(--enc2);margin:0 0 .4rem}
+h2{font-family:var(--titre);font-weight:800;text-transform:uppercase;letter-spacing:.01em;
+  font-size:1.35rem;margin:2.8rem 0 .2rem}
+.dit{max-width:52rem;color:var(--enc2);font-size:.94rem;margin:.2rem 0 1.1rem}
+.regarder{font-family:var(--mono);font-size:.68rem;text-transform:uppercase;
+  letter-spacing:.14em;color:var(--sig);margin:.9rem 0 .5rem}
+
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:1.6rem;align-items:start}
+@media(max-width:900px){.duo{grid-template-columns:1fr}}
+.col{min-width:0}
+.tete{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;
+  border-bottom:1px solid var(--regle2);padding-bottom:.35rem;margin-bottom:.8rem}
+.tete .q{font-family:var(--mono);font-size:.64rem;text-transform:uppercase;
+  letter-spacing:.16em;color:var(--enc3)}
+.tete .n{font-family:var(--titre);font-weight:800;text-transform:uppercase;font-size:1.05rem}
+
+/* ══ COLONNE A — la rangée telle qu'elle est aujourd'hui ═══════════════════
+   Recopiée du banc : bordure fine, rayon nul, étiquette de zone en monospace,
+   le nom en corps de texte, le coût et la coupe en petites lignes grises. */
+.grille{display:grid;grid-template-columns:repeat(2,1fr);gap:.5rem}
+.geste{display:flex;flex-direction:column;gap:.2rem;align-items:flex-start;
+  background:transparent;border:1px solid var(--regle2);border-radius:0;
+  padding:.5rem .65rem;font-family:var(--police);text-align:left;height:100%}
+.geste .ou{font-family:var(--mono);font-size:.58rem;color:var(--mes);
+  letter-spacing:-.02em;text-transform:uppercase}
+.geste .nom{flex:1 0 auto;font-size:.92rem;line-height:1.3}
+.geste .cout{font-family:var(--mono);font-size:.62rem;color:var(--enc3);white-space:nowrap}
+.geste .ann{font-family:var(--mono);font-size:.62rem;margin-top:.15rem;
+  color:color-mix(in srgb, var(--mes) 74%, var(--enc))}
+.geste .ann.rien{color:var(--enc2)}
+
+/* ══ COLONNE B — la grammaire de Spade ════════════════════════════════════
+   CE QU'ON LUI PREND, et rien d'autre : l'enregistrement. Une pastille de
+   zone à gauche, le geste au-dessus de sa catégorie, et à droite le montant
+   en gros. Chez Spade c'est « −12,80 $ » ; ici la monnaie est la MINUTE, et
+   c'est tout l'objet du dispositif — le joueur paie son diagnostic en temps.
+   Le petit ► devant l'étiquette dit « relevé », pas « titre ».
+   CE QU'ON NE LUI PREND PAS : le vert acide (dans un diagnostic la couleur
+   désigne un SIGNE, pas un slogan), les cartes qui flottent, et le relevé
+   illisible en pointillé — chez Spade c'est un argument de vente, ici ce
+   serait un défaut. */
+.enr{display:grid;grid-template-columns:auto 1fr auto;gap:.7rem;align-items:center;
+  background:var(--pan);border:1px solid var(--regle);border-radius:6px;
+  padding:.55rem .7rem;margin-bottom:.4rem;box-shadow:0 1px 0 rgba(27,26,23,.05)}
+.enr .jeton{width:28px;height:28px;border-radius:5px;background:var(--mes-voile);
+  border:1px solid color-mix(in srgb,var(--mes) 30%,transparent);
+  display:grid;place-items:center;font-family:var(--mono);font-size:.62rem;
+  font-weight:700;color:var(--mes)}
+.enr .corps{min-width:0}
+.enr .nom{font-size:.9rem;line-height:1.25;font-weight:500}
+.enr .sous{font-family:var(--mono);font-size:.6rem;color:var(--enc3);
+  letter-spacing:.04em;text-transform:uppercase;margin-top:.12rem}
+.enr .sous b{color:var(--mes);font-weight:700}
+.enr .prix{font-family:var(--titre);font-weight:800;font-size:1.5rem;
+  letter-spacing:.01em;white-space:nowrap;line-height:1}
+.enr .prix small{font-size:.62rem;font-family:var(--mono);font-weight:500;
+  color:var(--enc3);display:block;text-align:right;letter-spacing:.1em;margin-top:.1rem}
+/* UN GESTE QUI COÛTE ET NE SÉPARE RIEN est le piège central du dispositif.
+   Il ne doit pas se lire comme les autres : le prix reste noir — il se paie —
+   mais la ligne de séparation passe en signal. « Demander à Kim » coûte une
+   minute et ne retire aucun suspect ; l'afficher gratuit, comme je l'avais
+   fait par erreur, retournait la leçon. */
+.enr--gratuit{border-color:color-mix(in srgb,var(--sig) 45%,var(--regle))}
+.enr--gratuit .sous b{color:var(--sig)}
+
+/* ══ LE CARNET ════════════════════════════════════════════════════════════ */
+.carnet{background:var(--pan);border:1px solid var(--regle);padding:.9rem 1rem;
+  font-size:.92rem;color:var(--enc2)}
+.carnet p{margin:0 0 .6rem}
+.carnet p:last-child{margin:0}
+.rel{background:var(--pan);border:1px solid var(--regle);border-radius:6px;
+  padding:.6rem .75rem;margin-bottom:.4rem}
+.rel .haut{display:flex;justify-content:space-between;align-items:baseline;gap:.8rem;
+  font-family:var(--mono);font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;
+  color:var(--enc3)}
+.rel .obs{font-size:.9rem;color:var(--enc);margin:.25rem 0 .35rem;line-height:1.3}
+.rel .retire{font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;
+  color:var(--sig);border-top:1px dashed var(--regle2);padding-top:.3rem}
+.rel .retire s{color:var(--enc3);text-decoration-thickness:1px}
+
+/* ══ LES CHIFFRES ═════════════════════════════════════════════════════════ */
+.chiffres{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.ch{border-top:2px solid var(--enc);padding-top:.5rem}
+.ch .v{font-family:var(--titre);font-weight:800;font-size:clamp(2.2rem,5vw,3.4rem);
+  line-height:.95;letter-spacing:.01em}
+.ch .l{font-family:var(--mono);font-size:.6rem;text-transform:uppercase;
+  letter-spacing:.14em;color:var(--enc3);margin-top:.35rem;line-height:1.35}
+.ch--sig .v{color:var(--sig)}
+.bilan{font-family:var(--mono);font-size:.78rem;color:var(--enc2);
+  border-left:3px solid var(--sig);padding-left:.8rem;margin-top:1rem}
+</style></head><body>
+<div class="w">
+<p class="surt">Banc d'essai · simulateur pour barista</p>
+<h1>Deux grammaires pour la même rangée</h1>
+<p class="chapeau">À gauche, le banc tel qu'il est aujourd'hui. À droite, ce que
+la grammaire de <b>spade.com</b> en ferait. <b>Même contenu, même largeur, même
+papier, mêmes polices</b> — une seule variable, la forme de la carte. Deux
+colonnes qui ne diraient pas la même chose ne compareraient rien.</p>
+
+<h2>1 · La rangée des gestes</h2>
+<p class="dit">Neuf gestes, leur zone, leur coût en minutes, et ce que chacun
+sépare. Rien n'est ajouté ni retiré d'un côté à l'autre.</p>
+<p class="regarder">À regarder : où votre œil se pose en premier, dans chaque colonne.</p>
+<div class="duo">
+  <div class="col">
+    <div class="tete"><span class="n">Aujourd'hui</span><span class="q">A · le banc</span></div>
+    <div class="grille" id="a"></div>
+  </div>
+  <div class="col">
+    <div class="tete"><span class="n">Grammaire Spade</span><span class="q">B · l'enregistrement</span></div>
+    <div id="b"></div>
+  </div>
+</div>
+
+<h2>2 · Le carnet, après trois gestes</h2>
+<p class="dit">C'est ici que la grammaire de Spade se justifie ou non. Toute sa
+page d'accueil repose sur une seule figure : un relevé brut et illisible devient
+un enregistrement structuré. Or c'est exactement ce que le banc enseigne —
+« le débit est faible » n'est pas une conclusion, c'est une donnée brute ; ce qui
+compte est ce qu'elle <b>retire</b>.</p>
+<p class="regarder">À regarder : après lecture, savez-vous combien de suspects restent debout ?</p>
+<div class="duo">
+  <div class="col">
+    <div class="tete"><span class="n">Aujourd'hui</span><span class="q">A · en prose</span></div>
+    <div class="carnet" id="ca"></div>
+  </div>
+  <div class="col">
+    <div class="tete"><span class="n">Grammaire Spade</span><span class="q">B · en relevés</span></div>
+    <div id="cb"></div>
+  </div>
+</div>
+
+<h2>3 · Le débriefing, quand l'horloge s'arrête</h2>
+<p class="dit">Spade pose un nombre énorme sous une légende minuscule. Le banc
+n'a pas cet objet — et c'est le moment où il en aurait le plus besoin : votre
+propre loi veut que la leçon ne porte qu'<b>après</b> que le coût a été payé.</p>
+<p class="regarder">À regarder : lequel des deux vous donne envie de recommencer.</p>
+<div class="duo">
+  <div class="col">
+    <div class="tete"><span class="n">Aujourd'hui</span><span class="q">A · en phrases</span></div>
+    <div class="carnet">
+      <p>Vous avez trouvé le joint de groupe en onze minutes. Deux de vos
+      vérifications ne retiraient aucun suspect. En s'y prenant autrement, on
+      pouvait garantir la réponse en trois minutes.</p>
+    </div>
+  </div>
+  <div class="col">
+    <div class="tete"><span class="n">Grammaire Spade</span><span class="q">B · en chiffres</span></div>
+    <div class="chiffres">
+      <div class="ch ch--sig"><p class="v">11</p><p class="l">minutes<br>dépensées</p></div>
+      <div class="ch"><p class="v">3</p><p class="l">minutes<br>suffisaient</p></div>
+      <div class="ch"><p class="v">2</p><p class="l">gestes qui n'ont<br>rien retiré</p></div>
+    </div>
+    <p class="bilan">► JOINT DE GROUPE — trouvé. Aucun signe ne le désignait à
+    moins de trois minutes : il s'obtient par élimination, jamais par observation
+    directe.</p>
+  </div>
+</div>
+</div>
+
+<script>
+/* Les données sont celles du banc, recopiées de sa table GESTES — un banc
+   d'essai nourri d'exemples inventés compare deux maquettes, pas deux
+   grammaires appliquées au vrai contenu. */
+var G = [
+ ["GR","Le groupe","Faire couler le groupe à vide, sans porte-filtre",1,5,3],
+ ["MA","Le manomètre","Lire le manomètre pendant une extraction",1,5,3],
+ ["PF","Le porte-filtre et la tasse","Chronométrer une extraction (25 g pour 36 g)",2,5,3],
+ ["PF","Le porte-filtre et la tasse","Regarder le pourtour du porte-filtre pendant l'extraction",1,5,2],
+ ["MO","Le moulin","Prendre la mouture entre les doigts et vérifier le cran du moulin",1,5,2],
+ ["CA","La carrosserie","Écouter la pompe pendant une extraction",1,5,2],
+ ["KI","Kim","Demander à Kim ce qui a changé depuis hier",1,0,0],
+ ["GR","Le groupe","Sortir le thermomètre et mesurer l'eau au groupe",3,5,2],
+ ["GR","Le groupe","Démonter la douchette et inspecter le panier",4,5,2]
+];
+var a = document.getElementById('a'), b = document.getElementById('b');
+G.forEach(function (g) {
+  var jeton = g[0], zone = g[1], nom = g[2], min = g[3], de = g[4], vers = g[5];
+  var coupe = vers ? 'coupe les ' + de + ' cartes en ' + vers + ' groupes'
+                   : 'ne sépare rien — les cartes debout répondent pareil';
+  a.insertAdjacentHTML('beforeend',
+    '<div class="geste"><p class="ou">' + zone + '</p>'
+    + '<p class="nom">' + nom + '</p>'
+    + '<p class="cout">' + min + ' min</p>'
+    + '<p class="ann' + (vers ? '' : ' rien') + '">' + coupe + '</p></div>');
+  b.insertAdjacentHTML('beforeend',
+    '<div class="enr' + (vers ? '' : ' enr--gratuit') + '">'
+    + '<span class="jeton">' + jeton + '</span>'
+    + '<div class="corps"><p class="nom">' + nom + '</p>'
+    + '<p class="sous">► ' + zone + ' · '
+    + (vers ? 'sépare <b>' + de + ' → ' + vers + '</b>' : 'ne sépare <b>rien</b>')
+    + '</p></div>'
+    + '<p class="prix">−' + min + '<small>min</small></p></div>');
+});
+
+/* Le carnet : les trois mêmes gestes, les deux mêmes observations. */
+var C = [
+ ["7 h 45","Le groupe à vide",1,"Le débit est faible et tout part d'un seul côté de la douchette.",
+  ["mouture","pompe","chaudière"],["douchette","joint"]],
+ ["7 h 46","Le manomètre",1,"7 bar, et ça retombe pendant l'extraction.",
+  ["douchette"],["joint"]],
+ ["7 h 48","Le pourtour du porte-filtre",1,"Un jet mince s'échappe sur le côté gauche, avec un sifflement.",
+  [],["joint"]]
+];
+document.getElementById('ca').innerHTML =
+  '<p>7 h 45 — Vous faites couler le groupe à vide. Le débit est faible et tout '
++ 'part d’un seul côté de la douchette.</p>'
++ '<p>7 h 46 — Vous lisez le manomètre pendant une extraction. 7 bar, et ça '
++ 'retombe pendant l’extraction.</p>'
++ '<p>7 h 48 — Vous regardez le pourtour du porte-filtre. Un jet mince '
++ 's’échappe sur le côté gauche, avec un sifflement.</p>';
+var cb = document.getElementById('cb');
+C.forEach(function (r) {
+  var retire = r[4].length
+      ? 'RETIRE ' + r[4].map(function (x) { return '<s>' + x + '</s>'; }).join(' · ')
+      : 'RETIRE — rien de plus';
+  cb.insertAdjacentHTML('beforeend',
+    '<div class="rel"><p class="haut"><span>► ' + r[0] + ' · ' + r[1] + '</span>'
+    + '<span>−' + r[2] + ' min</span></p>'
+    + '<p class="obs">' + r[3] + '</p>'
+    + '<p class="retire">' + retire + ' &nbsp;·&nbsp; DEBOUT : ' + r[5].join(' · ')
+    + '</p></div>');
+});
+</script>
+</body></html>
