@@ -121,6 +121,55 @@ h2{font-family:var(--titre);font-weight:800;text-transform:uppercase;letter-spac
 .ch--sig .v{color:var(--sig)}
 .bilan{font-family:var(--mono);font-size:.78rem;color:var(--enc2);
   border-left:3px solid var(--sig);padding-left:.8rem;margin-top:1rem}
+
+/* ══ CE QUE L'INTERACTIVITÉ DOIT SERVIR ═══════════════════════════════════
+   Pas l'agrément : le JUGEMENT. Quatre commandes, et chacune répare un biais
+   nommé.
+   1. ÉCHANGER LES COLONNES. Celle de gauche se lit la première et part
+      gagnante. Un banc qui ne peut pas s'inverser mesure autant la position
+      que la grammaire.
+   2. POSER LES GESTES UN À UN. Le carnet se lit EN JOUANT, pas une fois
+      rempli. Pré-rempli des deux côtés, on compare deux pavés ; posé coup par
+      coup, on voit lequel des deux se suit. Les deux colonnes avancent à la
+      MÊME cadence — sinon on aurait deux variables.
+   3. UN VERDICT PAR COMPARAISON, gardé, avec une note dictée. Trois
+      comparaisons peuvent donner trois réponses différentes, et c'est même le
+      résultat attendu.
+   4. COPIER LES VERDICTS, pour qu'ils reviennent dans la conversation sans
+      être retapés.                                                           */
+.barre{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;
+  background:var(--pan);border:1px solid var(--regle);padding:.6rem .7rem;
+  margin:1.4rem 0 .4rem;position:sticky;top:0;z-index:5}
+.cmd{font-family:var(--mono);font-size:.68rem;text-transform:uppercase;
+  letter-spacing:.1em;padding:.42rem .7rem;border:1px solid var(--regle2);
+  background:transparent;color:var(--enc);cursor:pointer;border-radius:4px}
+.cmd:hover{border-color:var(--sig)}
+.cmd[aria-pressed="true"]{background:var(--enc);color:var(--pan);border-color:var(--enc)}
+.cmd--fort{background:var(--sig);color:#fff;border-color:var(--sig)}
+.cmd--fort:hover{background:var(--enc);border-color:var(--enc)}
+.barre .etat{font-family:var(--mono);font-size:.64rem;color:var(--enc3);margin-left:auto}
+
+.duo--inverse .col:first-child{order:2}
+
+/* le relevé qui n'est pas encore posé n'occupe pas la place : on ne veut pas
+   d'un fantôme qui annonce ce qui vient */
+.pas-encore{display:none}
+.attente{font-family:var(--mono);font-size:.64rem;color:var(--enc3);
+  border:1px dashed var(--regle2);padding:.55rem .7rem;border-radius:4px}
+
+/* ══ LE VERDICT ═══════════════════════════════════════════════════════════ */
+.verdict{border-top:2px solid var(--enc);margin-top:1rem;padding-top:.7rem;
+  display:grid;gap:.5rem}
+.verdict .q{font-family:var(--mono);font-size:.64rem;text-transform:uppercase;
+  letter-spacing:.14em;color:var(--enc3)}
+.verdict .choix{display:flex;flex-wrap:wrap;gap:.4rem}
+.verdict textarea{font-family:var(--police);font-size:.9rem;color:var(--enc);
+  background:var(--pan);border:1px solid var(--regle);border-radius:4px;
+  padding:.5rem .6rem;min-height:3.2rem;resize:vertical;width:100%}
+.verdict .ligne2{display:flex;gap:.4rem;align-items:flex-start}
+.micro[aria-pressed="true"]{background:var(--sig);color:#fff;border-color:var(--sig)}
+.sortie{white-space:pre-wrap;font-family:var(--mono);font-size:.74rem;
+  background:var(--pan);border:1px solid var(--regle);padding:.8rem;margin-top:1rem}
 </style></head><body>
 <div class="w">
 <p class="surt">Banc d'essai · simulateur pour barista</p>
@@ -130,11 +179,20 @@ la grammaire de <b>spade.com</b> en ferait. <b>Même contenu, même largeur, mê
 papier, mêmes polices</b> — une seule variable, la forme de la carte. Deux
 colonnes qui ne diraient pas la même chose ne compareraient rien.</p>
 
+
+<div class="barre">
+  <button type="button" class="cmd" id="inverser" aria-pressed="false">Échanger les colonnes</button>
+  <button type="button" class="cmd cmd--fort" id="jouer">Poser les gestes un à un</button>
+  <button type="button" class="cmd" id="tout">Tout montrer</button>
+  <button type="button" class="cmd" id="copier">Copier les verdicts</button>
+  <span class="etat" id="etat">A à gauche · carnet complet</span>
+</div>
+
 <h2>1 · La rangée des gestes</h2>
 <p class="dit">Neuf gestes, leur zone, leur coût en minutes, et ce que chacun
 sépare. Rien n'est ajouté ni retiré d'un côté à l'autre.</p>
 <p class="regarder">À regarder : où votre œil se pose en premier, dans chaque colonne.</p>
-<div class="duo">
+<div class="duo" data-duo="1">
   <div class="col">
     <div class="tete"><span class="n">Aujourd'hui</span><span class="q">A · le banc</span></div>
     <div class="grille" id="a"></div>
@@ -142,6 +200,18 @@ sépare. Rien n'est ajouté ni retiré d'un côté à l'autre.</p>
   <div class="col">
     <div class="tete"><span class="n">Grammaire Spade</span><span class="q">B · l'enregistrement</span></div>
     <div id="b"></div>
+  </div>
+</div>
+<div class="verdict" data-v="1">
+  <p class="q">Pour la rangée des gestes, laquelle se balaie le mieux ?</p>
+  <div class="choix">
+    <button type="button" class="cmd" data-r="A">A — le banc</button>
+    <button type="button" class="cmd" data-r="B">B — l'enregistrement</button>
+    <button type="button" class="cmd" data-r="=">Aucune des deux</button>
+  </div>
+  <div class="ligne2">
+    <textarea placeholder="Pourquoi — une phrase suffit."></textarea>
+    <button type="button" class="cmd micro" title="Dicter">◉ Dicter</button>
   </div>
 </div>
 
@@ -152,7 +222,7 @@ un enregistrement structuré. Or c'est exactement ce que le banc enseigne —
 « le débit est faible » n'est pas une conclusion, c'est une donnée brute ; ce qui
 compte est ce qu'elle <b>retire</b>.</p>
 <p class="regarder">À regarder : après lecture, savez-vous combien de suspects restent debout ?</p>
-<div class="duo">
+<div class="duo" data-duo="2">
   <div class="col">
     <div class="tete"><span class="n">Aujourd'hui</span><span class="q">A · en prose</span></div>
     <div class="carnet" id="ca"></div>
@@ -162,13 +232,25 @@ compte est ce qu'elle <b>retire</b>.</p>
     <div id="cb"></div>
   </div>
 </div>
+<div class="verdict" data-v="2">
+  <p class="q">Pour le carnet, laquelle dit le mieux où on en est ?</p>
+  <div class="choix">
+    <button type="button" class="cmd" data-r="A">A — le banc</button>
+    <button type="button" class="cmd" data-r="B">B — l'enregistrement</button>
+    <button type="button" class="cmd" data-r="=">Aucune des deux</button>
+  </div>
+  <div class="ligne2">
+    <textarea placeholder="Pourquoi — une phrase suffit."></textarea>
+    <button type="button" class="cmd micro" title="Dicter">◉ Dicter</button>
+  </div>
+</div>
 
 <h2>3 · Le débriefing, quand l'horloge s'arrête</h2>
 <p class="dit">Spade pose un nombre énorme sous une légende minuscule. Le banc
 n'a pas cet objet — et c'est le moment où il en aurait le plus besoin : votre
 propre loi veut que la leçon ne porte qu'<b>après</b> que le coût a été payé.</p>
 <p class="regarder">À regarder : lequel des deux vous donne envie de recommencer.</p>
-<div class="duo">
+<div class="duo" data-duo="3">
   <div class="col">
     <div class="tete"><span class="n">Aujourd'hui</span><span class="q">A · en phrases</span></div>
     <div class="carnet">
@@ -187,6 +269,18 @@ propre loi veut que la leçon ne porte qu'<b>après</b> que le coût a été pay
     <p class="bilan">► JOINT DE GROUPE — trouvé. Aucun signe ne le désignait à
     moins de trois minutes : il s'obtient par élimination, jamais par observation
     directe.</p>
+  </div>
+</div>
+<div class="verdict" data-v="3">
+  <p class="q">Pour le débriefing, laquelle donne envie de recommencer ?</p>
+  <div class="choix">
+    <button type="button" class="cmd" data-r="A">A — le banc</button>
+    <button type="button" class="cmd" data-r="B">B — l'enregistrement</button>
+    <button type="button" class="cmd" data-r="=">Aucune des deux</button>
+  </div>
+  <div class="ligne2">
+    <textarea placeholder="Pourquoi — une phrase suffit."></textarea>
+    <button type="button" class="cmd micro" title="Dicter">◉ Dicter</button>
   </div>
 </div>
 </div>
@@ -254,5 +348,126 @@ C.forEach(function (r) {
     + '<p class="retire">' + retire + ' &nbsp;·&nbsp; DEBOUT : ' + r[5].join(' · ')
     + '</p></div>');
 });
+
+/* ══ LES COMMANDES ════════════════════════════════════════════════════════ */
+var duos = [].slice.call(document.querySelectorAll('.duo'));
+var etat = document.getElementById('etat');
+var inverse = false, poses = 3;
+
+function direEtat() {
+  etat.textContent = (inverse ? 'B à gauche' : 'A à gauche')
+    + ' · carnet ' + (poses >= 3 ? 'complet' : poses + ' geste' + (poses > 1 ? 's' : ''));
+}
+
+document.getElementById('inverser').onclick = function () {
+  inverse = !inverse;
+  this.setAttribute('aria-pressed', inverse);
+  duos.forEach(function (d) { d.classList.toggle('duo--inverse', inverse); });
+  direEtat();
+};
+
+/* LE CARNET SE POSE COUP PAR COUP, DES DEUX CÔTÉS À LA MÊME CADENCE. Une
+   colonne qui avancerait plus vite que l'autre ajouterait une seconde
+   variable, et le banc ne mesurerait plus rien. */
+function montrer(n) {
+  poses = n;
+  var pa = document.querySelectorAll('#ca p'), pb = document.querySelectorAll('#cb .rel');
+  [].forEach.call(pa, function (e, i) { e.classList.toggle('pas-encore', i >= n); });
+  [].forEach.call(pb, function (e, i) { e.classList.toggle('pas-encore', i >= n); });
+  var att = document.querySelectorAll('.attente');
+  [].forEach.call(att, function (e) { e.hidden = n >= 3; });
+  direEtat();
+}
+var minuteur = null;
+function arreterJeu() { if (minuteur) { clearInterval(minuteur); minuteur = null; } }
+document.getElementById('jouer').onclick = function () {
+  arreterJeu(); montrer(0);
+  document.querySelector('[data-duo="2"]').scrollIntoView({block: 'center', behavior: 'smooth'});
+  var k = 0;
+  minuteur = setInterval(function () {
+    k++; montrer(k);
+    if (k >= 3) arreterJeu();
+  }, 1600);
+};
+document.getElementById('tout').onclick = function () { arreterJeu(); montrer(3); };
+
+/* deux cadres d'attente, un par colonne : sans eux la page saute de hauteur à
+   chaque pose et l'œil suit le saut au lieu de lire */
+document.getElementById('ca').insertAdjacentHTML('beforeend',
+  '<p class="attente" hidden>En attente du prochain geste…</p>');
+document.getElementById('cb').insertAdjacentHTML('beforeend',
+  '<p class="attente" hidden>En attente du prochain geste…</p>');
+
+/* ══ LES VERDICTS ═════════════════════════════════════════════════════════
+   Gardés dans le navigateur pour survivre à un rechargement. Chaque accès est
+   protégé : en navigation privée, `localStorage` LÈVE au lieu de rendre null,
+   et la page entière tomberait sur une commodité. */
+var CLE = 'banc-spade-verdicts';
+function lire() { try { return JSON.parse(localStorage.getItem(CLE)) || {}; } catch (e) { return {}; } }
+function ecrire(o) { try { localStorage.setItem(CLE, JSON.stringify(o)); } catch (e) {} }
+var V = lire();
+
+document.querySelectorAll('.verdict').forEach(function (bloc) {
+  var n = bloc.dataset.v, ta = bloc.querySelector('textarea');
+  var boutons = [].slice.call(bloc.querySelectorAll('.choix .cmd'));
+  V[n] = V[n] || {r: null, note: ''};
+  ta.value = V[n].note || '';
+  function peindre() {
+    boutons.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.r === V[n].r); });
+  }
+  peindre();
+  boutons.forEach(function (b) {
+    b.onclick = function () {
+      V[n].r = (V[n].r === b.dataset.r) ? null : b.dataset.r;   // recliquer annule
+      peindre(); ecrire(V);
+    };
+  });
+  ta.oninput = function () { V[n].note = ta.value; ecrire(V); };
+
+  /* LE MICRO. Trois règles payées ailleurs, et qu'on ne redéfait pas :
+     1. la lecture s'ARRÊTE quand le micro s'ouvre — sinon le carnet avance
+        sous la remarque et on ne sait plus de quoi elle parlait ;
+     2. on RECALCULE le texte depuis une ligne de coupe, on ne l'accumule
+        pas : un résultat provisoire promu en final garde son index ;
+     3. `abort()`, pas `stop()` — `stop()` ne fait que promettre de rendre le
+        micro ; `stop()` reste en repli dans le catch. */
+  var Rec = window.SpeechRecognition || window.webkitSpeechRecognition;
+  var micro = bloc.querySelector('.micro'), rec = null, coupe = '';
+  if (!Rec) { micro.disabled = true; micro.title = "Dictée non offerte par ce navigateur"; return; }
+  micro.onclick = function () {
+    if (rec) { try { rec.abort(); } catch (e) { try { rec.stop(); } catch (e2) {} } rec = null;
+               micro.setAttribute('aria-pressed', 'false'); return; }
+    arreterJeu();
+    rec = new Rec(); rec.lang = 'fr-CA'; rec.continuous = true; rec.interimResults = true;
+    coupe = ta.value ? ta.value.replace(/\s+$/, '') + ' ' : '';
+    rec.onresult = function (ev) {
+      var t = '';
+      for (var i = 0; i < ev.results.length; i++) t += ev.results[i][0].transcript;
+      ta.value = coupe + t; V[n].note = ta.value; ecrire(V);
+    };
+    rec.onend = function () { rec = null; micro.setAttribute('aria-pressed', 'false'); };
+    try { rec.start(); micro.setAttribute('aria-pressed', 'true'); }
+    catch (e) { rec = null; }
+  };
+});
+
+/* ══ COPIER ═══════════════════════════════════════════════════════════════ */
+var NOMS = {1: 'La rangée des gestes', 2: 'Le carnet', 3: 'Le débriefing'};
+var DITS = {A: 'A — le banc tel quel', B: "B — l'enregistrement", '=': 'aucune des deux'};
+document.getElementById('copier').onclick = function () {
+  var t = ['Banc d’essai « Deux grammaires pour la même rangée » — verdicts', ''];
+  [1, 2, 3].forEach(function (n) {
+    var v = V[n] || {};
+    t.push(n + '. ' + NOMS[n] + ' : ' + (v.r ? DITS[v.r] : '— pas tranché'));
+    if (v.note && v.note.trim()) t.push('   ' + v.note.trim());
+  });
+  var txt = t.join('\n');
+  var vieux = document.querySelector('.sortie'); if (vieux) vieux.remove();
+  var el = document.createElement('pre'); el.className = 'sortie'; el.textContent = txt;
+  this.closest('.barre').insertAdjacentElement('afterend', el);
+  try { navigator.clipboard.writeText(txt); } catch (e) {}
+  el.scrollIntoView({block: 'center', behavior: 'smooth'});
+};
+direEtat();
 </script>
 </body></html>
