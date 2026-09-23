@@ -864,6 +864,11 @@ var PIECE = [['oh',1800],['quoi',4000],['air',6800],['droit',13000],['appelle',1
 var pieceEnCours = false, pieceFile = [], sousTitre = null;
 function direPiece(id, fort){
   if (pieceEnCours) { pieceFile.push([id,fort]); return; }
+  /* Le test se fait AUSSI ICI, au moment d'afficher : une réplique peut
+     attendre dans la file et sortir après que l'appel a commencé. */
+  if (id === 'appelle' && (J.ordres.appel || trouver('appeler'))) {
+    var n0 = pieceFile.shift(); if (n0) direPiece(n0[0], n0[1]); return;
+  }
   pieceEnCours = true;
   montrerDit(id, fort);
   /* LE SON DE LA SALLE EST COUPÉ (14 septembre 2026, à la demande de
@@ -913,7 +918,13 @@ function montrerDit(id, fort){
   setTimeout(function(){ if (st.parentNode) st.remove(); }, fort ? 9000 : Math.max(2800, 95*v.quoi.length));
 }
 function lancerPiece(){
-  PIECE.forEach(function(p){ setTimeout(function(){ direPiece(p[0]); }, p[1]); });
+  /* « Y'A QUELQU'UN QUI APPELLE ? » SE TAIT SI QUELQU'UN APPELLE (audit de la
+     pièce, constat 13). Le chœur part sur des minuteurs fixes et ne sait pas
+     ce que fait l'élève : la réplique tombait pendant qu'elle était au
+     téléphone avec le 911. Elle n'est dite que si personne n'a appelé. */
+  PIECE.forEach(function(p){ setTimeout(function(){
+    if (p[0] === 'appelle' && (J.ordres.appel || trouver('appeler'))) return;
+    direPiece(p[0]); }, p[1]); });
   if (P.designe) setTimeout(function(){ direPression('designe', true); }, 2000);
   if (P.mur)     setTimeout(function(){ direPression('mur'); }, 9500);
 }
@@ -2119,7 +2130,11 @@ function reprise(){
                 mains(secours, dSecours); } },
             { texte: 'Vérifier s\'il respire', sur: function(b){
                 note('verifie_avant_reprise', {faute:true}); b.disabled = true;
-                corriger('On reprend tout de suite après le choc, sans attendre et sans rien vérifier.'); } },
+                /* Les deux issues passent ici (audit, constat 14) : après
+                   « aucun choc conseillé », il n'y a pas eu de choc. */
+                corriger(trouver('aucun_choc')
+                  ? 'On reprend tout de suite, sans attendre et sans rien vérifier.'
+                  : 'On reprend tout de suite après le choc, sans attendre et sans rien vérifier.'); } },
             { texte: 'Attendre la prochaine analyse', sur: function(b){
                 note('attend_prochaine_analyse', {faute:true}); b.disabled = true;
                 corriger("On ne l'attend pas les mains vides. Entre deux analyses, c'est vous qui faites circuler le sang."); } }]);

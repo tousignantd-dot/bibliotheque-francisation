@@ -2043,10 +2043,20 @@ body.couverture .pied{display:none}
 /* 16 · La pastille du pourcentage reste AU-DESSUS des graduations. Sur
    téléphone, elle se posait sur les chiffres 1 à 3 de l'axe des minutes. */
 .ouv__sur{padding-bottom:calc(clamp(16px,2.6vw,36px) + 2.2em)}
-/* 12 · L'étiquette des secours part vers la GAUCHE du pointillé. À 70 % de
-   la largeur, elle finissait à 407 px sur un écran de 375 : 32 px rognés.
-   À gauche, il y a toujours 70 % de place. */
-.secours b{left:auto;right:8px}
+/* 12 · L'étiquette des secours. Premier remède (audit du 22 septembre) : la
+   faire partir vers la GAUCHE du pointillé, parce qu'à droite elle sortait
+   de l'écran d'un téléphone. Elle y chevauchait alors le sur-titre sur un
+   écran moyen — relevé le 23 par l'utilisateur, à ~1000 px. Le coin haut est
+   à lui ; le bas gauche est au pourcentage. Il reste le BAS DROIT, au-dessus
+   des chiffres des minutes : l'étiquette s'y pose, à droite du pointillé,
+   et passe à la ligne dans les 30 % de largeur qui restent. */
+.secours b{top:auto;bottom:2.4rem;left:8px;right:auto;white-space:normal;
+      width:max-content;max-width:calc(30cqw - 16px);line-height:1.25;
+      border-radius:var(--r-md)}
+/* Le pointillé passait PAR-DESSUS le sur-titre quand celui-ci s'étale sur
+   deux lignes (téléphone). Les textes de la plaque passent devant lui. */
+.ouv__sur{z-index:3}
+.diapo--ouv3 .carte--pleine{container-type:inline-size}
 
 /* 9 · La phrase qui tranche est visible sans ouvrir. Le brief veut chaque
    objection « reçue sérieusement puis tranchée en une ou deux phrases

@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<title>Prompts des croquis DEA</title>
+<style>html{color-scheme:light dark}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>Prompts des croquis DEA</title>
+<style>
+/* ═══ Jetons « Braise », recopiés — jamais importés (un @import en file://
+   échoue sans rien dire). --mesure-l porte la largeur de lecture : dans la
+   source du système, --mesure porte à la fois une couleur et une longueur
+   dans le même :root, et la seconde écrase la première.                    */
+:root{
+  --fond:#FFFFFF; --fond-2:#FAFAFA; --fond-3:#F4F4F5;
+  --encre:#09090B; --encre-2:#52525B; --encre-3:#71717A; --encre-4:#A1A1AA;
+  --bord:#E4E4E7; --bord-fort:#D4D4D8;
+  --marque-rose:#F0359F; --marque-corail:#F5533D;
+  --marque-degrade:linear-gradient(100deg,var(--marque-rose) 0%,var(--marque-corail) 100%);
+  --signal:#F5652E; --signal-encre:#FFFFFF; --signal-voile:#FEF1EA;
+  --mesure:#2B4E9B; --mesure-2:#5C7EBF; --mesure-voile:#EAEFFA;
+  --action:#18181B; --action-survol:#27272A; --action-encre:#FAFAFA;
+  --police:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --police-mono:ui-monospace,"SF Mono","Menlo","Consolas",monospace;
+  --t-affiche:clamp(2.5rem,7.4vw,4.75rem); --t-titre-1:clamp(1.75rem,4vw,2.75rem);
+  --t-titre-2:clamp(1.375rem,2.6vw,1.75rem); --t-titre-3:1.1875rem;
+  --t-avant:1.1875rem; --t-petit:.875rem; --t-menu:.8125rem;
+  --g-moyen:500; --g-fort:600; --g-noir:800;
+  --i-serre:.98; --i-titre:1.15; --i-corps:1.62;
+  --l-serre:-.035em; --l-titre:-.02em;
+  --e-1:.25rem; --e-2:.5rem; --e-3:.75rem; --e-4:1rem; --e-5:1.5rem;
+  --e-6:2rem; --e-7:3rem; --e-8:4rem; --e-9:6rem;
+  --mesure-l:42rem; --contenu:74rem;
+  --r-1:.375rem; --r-2:.5rem; --r-3:.75rem; --r-4:1rem; --r-plein:9999px;
+  --o-1:0 1px 2px rgba(9,9,11,.06);
+  --o-2:0 1px 3px rgba(9,9,11,.08),0 1px 2px rgba(9,9,11,.04);
+  --o-3:0 4px 12px rgba(9,9,11,.08);
+  --transition:140ms cubic-bezier(.4,0,.2,1);
+}
+:root[data-theme="sombre"]{
+  --fond:#09090B; --fond-2:#0F0F11; --fond-3:#18181B;
+  --encre:#FAFAFA; --encre-2:#D4D4D8; --encre-3:#A1A1AA; --encre-4:#52525B;
+  --bord:#27272A; --bord-fort:#3F3F46;
+  --marque-rose:#FF4FB0; --marque-corail:#FF6A50;
+  --signal:#FF7A45; --signal-encre:#1A0C05; --signal-voile:#2A1610;
+  --mesure:#8FB2F0; --mesure-2:#6E8FCB; --mesure-voile:#18213A;
+  --action:#FAFAFA; --action-survol:#E4E4E7; --action-encre:#18181B;
+  --o-1:0 1px 2px rgba(0,0,0,.5); --o-2:0 1px 3px rgba(0,0,0,.6);
+  --o-3:0 4px 14px rgba(0,0,0,.6);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="clair"]){
+    --fond:#09090B; --fond-2:#0F0F11; --fond-3:#18181B;
+    --encre:#FAFAFA; --encre-2:#D4D4D8; --encre-3:#A1A1AA; --encre-4:#52525B;
+    --bord:#27272A; --bord-fort:#3F3F46;
+    --marque-rose:#FF4FB0; --marque-corail:#FF6A50;
+    --signal:#FF7A45; --signal-encre:#1A0C05; --signal-voile:#2A1610;
+    --mesure:#8FB2F0; --mesure-2:#6E8FCB; --mesure-voile:#18213A;
+    --action:#FAFAFA; --action-survol:#E4E4E7; --action-encre:#18181B;
+    --o-1:0 1px 2px rgba(0,0,0,.5); --o-2:0 1px 3px rgba(0,0,0,.6);
+    --o-3:0 4px 14px rgba(0,0,0,.6);
+  }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--fond);color:var(--encre-2);font-family:var(--police);
+     font-size:1rem;line-height:var(--i-corps);-webkit-font-smoothing:antialiased}
+.enveloppe{max-width:var(--contenu);margin:0 auto;padding:0 var(--e-5)}
+h1,h2,h3,h4{color:var(--encre);letter-spacing:var(--l-titre);line-height:var(--i-titre);
+            font-weight:var(--g-fort);margin:0;text-wrap:balance}
+p{margin:0 0 var(--e-4)}
+b,strong{color:var(--encre);font-weight:var(--g-fort)}
+code{font-family:var(--police-mono);font-size:.9em;background:var(--fond-3);
+     padding:.1em .35em;border-radius:var(--r-1);color:var(--encre)}
+.lire{max-width:var(--mesure-l)}
+.masque{display:none}
+.barre{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--fond) 88%,transparent);
+       backdrop-filter:blur(12px);border-bottom:1px solid var(--bord)}
+.barre__int{max-width:var(--contenu);margin:0 auto;padding:var(--e-3) var(--e-5);
+            display:flex;align-items:center;gap:var(--e-3);flex-wrap:wrap}
+.marque{font-weight:var(--g-noir);letter-spacing:var(--l-serre);color:var(--encre);font-size:1.0625rem}
+.marque i{font-style:normal;background:var(--marque-degrade);
+          -webkit-background-clip:text;background-clip:text;color:transparent}
+.barre__vide{flex:1}
+.bt{border:1px solid var(--bord-fort);background:var(--fond);color:var(--encre-2);font:inherit;
+    font-size:var(--t-menu);font-weight:var(--g-moyen);padding:var(--e-1) var(--e-3);
+    border-radius:var(--r-plein);cursor:pointer;transition:var(--transition)}
+.bt:hover{border-color:var(--encre-4);color:var(--encre)}
+.bt[aria-pressed="true"]{background:var(--mesure);border-color:var(--mesure);color:#fff}
+:root[data-theme="sombre"] .bt[aria-pressed="true"]{color:#09090B}
+.heros{padding:var(--e-8) 0 var(--e-6)}
+.pastille{display:inline-flex;align-items:center;gap:var(--e-2);font-size:var(--t-petit);
+          font-weight:var(--g-moyen);color:var(--signal);background:var(--signal-voile);
+          border-radius:var(--r-plein);padding:var(--e-1) var(--e-3);margin-bottom:var(--e-5)}
+.pastille::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--signal)}
+.heros h1{font-size:var(--t-affiche);font-weight:var(--g-noir);letter-spacing:var(--l-serre);
+          line-height:var(--i-serre);max-width:17ch}
+.heros h1 i{font-style:normal;background:var(--marque-degrade);
+            -webkit-background-clip:text;background-clip:text;color:transparent}
+.heros .avant{font-size:var(--t-avant);color:var(--encre-3);max-width:var(--mesure-l);
+              margin-top:var(--e-5);text-wrap:pretty}
+section{padding:var(--e-7) 0;border-top:1px solid var(--bord);scroll-margin-top:4.5rem}
+.oeil{font-size:var(--t-menu);text-transform:uppercase;letter-spacing:.14em;
+      color:var(--encre-4);font-weight:var(--g-fort);margin-bottom:var(--e-3)}
+section>.enveloppe>h2{font-size:var(--t-titre-1);margin-bottom:var(--e-5)}
+.gros{display:inline-block;padding:var(--e-3) var(--e-6);border-radius:var(--r-2);
+      background:var(--action);color:var(--action-encre);border:0;font:inherit;
+      font-weight:var(--g-fort);font-size:1rem;cursor:pointer;text-decoration:none}
+.gros[disabled]{opacity:.4;cursor:default}
+.capot{display:none;margin-top:var(--e-6);border-top:1px dashed var(--bord-fort);padding-top:var(--e-5)}
+body.conception .capot{display:block}
+.capot h4{color:var(--mesure);font-size:var(--t-menu);text-transform:uppercase;
+          letter-spacing:.1em;margin-bottom:var(--e-3)}
+.preuve{background:var(--fond-3);border-radius:var(--r-2);padding:var(--e-4) var(--e-5);font-size:.9375rem}
+.preuve p:last-child{margin-bottom:0}
+.enrob{overflow-x:auto}
+.tab{width:100%;border-collapse:collapse;font-size:.9375rem;margin-top:var(--e-4)}
+.tab th,.tab td{text-align:left;padding:var(--e-2) var(--e-3);border-bottom:1px solid var(--bord);
+                vertical-align:top}
+.tab th{font-size:var(--t-menu);text-transform:uppercase;letter-spacing:.1em;
+        color:var(--encre-4);font-weight:var(--g-fort)}
+.tab tr:last-child td{border-bottom:0}
+.garde{background:var(--fond-3);border-radius:var(--r-3);padding:var(--e-5) var(--e-6)}
+.garde ul{margin:0;padding-left:1.1em}
+.garde li{margin-bottom:var(--e-2)}
+.garde li:last-child{margin-bottom:0}
+.chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;
+          background:var(--bord);border:1px solid var(--bord);border-radius:var(--r-3);
+          overflow:hidden;margin-top:var(--e-5)}
+.ch{background:var(--fond);padding:var(--e-4) var(--e-5)}
+.ch__v{font-family:var(--police-mono);font-size:1.5rem;color:var(--encre);
+       font-variant-numeric:tabular-nums}
+.ch__v--m{color:var(--mesure)}
+.ch__v--s{color:var(--signal)}
+.ch__c{font-size:.75rem;color:var(--encre-4);text-transform:uppercase;
+       letter-spacing:.1em;margin-top:var(--e-1)}
+footer{padding:var(--e-8) 0 var(--e-9);color:var(--encre-4);font-size:var(--t-petit)}
+@media print{
+  :root{--fond:#FFF;--fond-2:#FFF;--fond-3:#F4F4F5;--encre:#09090B;--encre-2:#3F3F46;
+        --encre-3:#52525B;--encre-4:#71717A;--bord:#D4D4D8;--bord-fort:#A1A1AA;
+        --o-1:none;--o-2:none;--o-3:none}
+  @page{margin:14mm 12mm}
+  .barre{display:none}
+  .heros{padding-top:0}
+  .capot{display:block}
+  body{font-size:10.5pt}
+  .tab tr,.preuve,.garde{break-inside:avoid}
+  h1,h2,h3{break-after:avoid}
+  .enveloppe{padding:0}
+}
+
+
+/* ═══ Audit de la formation DEA ════════════════════════════════════════════
+   Un audit ne corrige rien : il mesure et il propose. Chaque constat porte
+   sa preuve (ce qui a été mesuré, où, comment) et ce qu'il y a à trancher.
+   La gravité se dit par la FORME — l'épaisseur du filet, l'étiquette —, pas
+   par une couleur d'alarme : Braise n'a pas de rouge.                       */
+*{box-sizing:border-box}
+body{margin:0;background:var(--fond-2);color:var(--encre);font-family:var(--police);
+     font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.page{max-width:780px;margin:0 auto;padding:3.2rem 1.3rem 5rem}
+.sur{font-family:var(--police-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+     color:var(--encre-3);margin:0 0 .8rem}
+h1{font-size:clamp(1.9rem,5vw,2.6rem);line-height:1.08;letter-spacing:-.025em;margin:0 0 1rem}
+.chapeau{font-size:1.1rem;color:var(--encre-2);margin:0 0 2rem}
+.chapeau b{color:var(--encre)}
+h2{font-size:1.35rem;letter-spacing:-.015em;margin:3rem 0 .4rem}
+h2 + .mineur{margin-top:0}
+.mineur{color:var(--encre-2);font-size:.95rem}
+
+/* la synthèse chiffrée */
+.compte{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--bord);
+        border:1px solid var(--bord);border-radius:6px;overflow:hidden;margin:0 0 1.2rem}
+.compte div{background:var(--fond);padding:.9rem 1rem}
+.compte b{display:block;font-size:1.9rem;letter-spacing:-.03em;line-height:1}
+.compte span{font-family:var(--police-mono);font-size:10.5px;letter-spacing:.11em;
+             text-transform:uppercase;color:var(--encre-2)}
+@media(max-width:560px){.compte{grid-template-columns:repeat(2,1fr)}}
+
+.methode{background:var(--fond);border:1px solid var(--bord);border-radius:6px;padding:1rem 1.2rem;
+         font-size:.95rem;color:var(--encre-2)}
+.methode b{color:var(--encre)}
+.methode ul{margin:.4rem 0 0;padding-left:1.1rem}
+
+/* un constat */
+.c{background:var(--fond);border:1px solid var(--bord);border-radius:6px;padding:1.1rem 1.25rem 1.2rem;
+   margin:0 0 .9rem;border-left-style:solid}
+.c.g1{border-left:6px solid var(--encre)}
+.c.g2{border-left:4px solid var(--signal)}
+.c.g3{border-left:2px solid var(--encre-3)}
+.c.g4{border-left:1px dashed var(--encre-3)}
+.c h3{font-size:1.08rem;line-height:1.3;letter-spacing:-.01em;margin:.35rem 0 .6rem}
+.eti{font-family:var(--police-mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
+     color:var(--encre-2);display:flex;gap:.7rem;flex-wrap:wrap}
+.eti .g{color:var(--encre);font-weight:600}
+.c dl{margin:0;display:grid;grid-template-columns:7.2rem 1fr;gap:.45rem .9rem;font-size:.95rem}
+.c dt{font-family:var(--police-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+      color:var(--encre-3);padding-top:.3em}
+.c dd{margin:0}
+.c dd.trancher{color:var(--encre)}
+.c q{font-style:italic;color:var(--encre-2)}
+@media(max-width:560px){.c dl{grid-template-columns:1fr}.c dt{padding-top:.6em}}
+code{font-family:var(--police-mono);font-size:.86em;background:var(--fond-3);padding:.08em .35em;border-radius:3px}
+
+.tient{columns:2;column-gap:2rem;padding-left:1.1rem;font-size:.95rem;color:var(--encre-2)}
+.tient li{break-inside:avoid;margin-bottom:.45rem}
+.tient b{color:var(--encre)}
+@media(max-width:560px){.tient{columns:1}}
+.sources{font-size:.88rem;color:var(--encre-2)}
+.sources a{color:var(--encre)}
+/* le suivi des corrections, ajouté le même jour */
+.suivi{background:var(--fond);border:1px solid var(--bord);border-left:6px solid var(--encre);
+       border-radius:6px;padding:1rem 1.2rem;margin:0 0 1.2rem;font-size:.95rem}
+.suivi h2{margin:0 0 .5rem;font-size:1.1rem}
+.suivi table{width:100%;border-collapse:collapse;font-size:.9rem}
+.suivi td{border-top:1px solid var(--bord);padding:.4rem .5rem .4rem 0;vertical-align:top}
+.suivi td:first-child{font-family:var(--police-mono);font-size:11px;white-space:nowrap;color:var(--encre-2);padding-top:.55rem}
+.suivi p{margin:.6rem 0 0;color:var(--encre-2)}
+.pied{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--bord);font-size:.85rem;color:var(--encre-3)}
+
+.p{background:var(--fond);border:1px solid var(--bord);border-radius:6px;padding:1.1rem 1.25rem;margin:0 0 1.2rem}
+.p h3{margin:.2rem 0 .5rem;font-size:1.1rem}
+.p .ou{font-size:.9rem;color:var(--encre-2);margin:0 0 .7rem}
+.p pre{white-space:pre-wrap;font-family:var(--police-mono);font-size:12.5px;line-height:1.5;background:var(--fond-3);
+       border-radius:4px;padding:.8rem .9rem;margin:.5rem 0 .6rem;max-height:none}
+.copier{font:inherit;font-size:.85rem;font-weight:600;padding:.45rem .9rem;min-height:44px;border-radius:6px;
+        border:1px solid var(--encre);background:var(--fond);color:var(--encre);cursor:pointer}
+.copier.fait{background:var(--encre);color:var(--fond)}
+</style>
+<div class="page">
+  <p class="sur">Prompts · 23 septembre 2026 · séquence de l'appareil</p>
+  <h1>Cinq croquis à refaire ailleurs</h1>
+  <p class="chapeau">Un prompt <b>autonome</b> par image : le style, le décor, les personnes, la caméra
+  et les deux règles qui ont été ratées ici — <b>une seule électrode visible</b>, sous l'aisselle du côté
+  de la caméra, l'autre cachée derrière son épaule droite ; <b>les mains entre les deux mamelons</b>, cinq
+  doigts, bras tendus. En anglais : les modèles d'image y répondent mieux.</p>
+  <div class="methode">
+    <b>Ordre conseillé.</b>
+    <ul>
+      <li>Faire d'abord <b>a5-reprendre</b> : c'est la référence des trois suivants.</li>
+      <li>Puis <b>a5-reprendre-bas</b> en ne lui donnant QUE le nouvel a5-reprendre — la paire doit être
+        identique sauf la poitrine enfoncée.</li>
+      <li><b>b-relais</b> et <b>b-passation</b> avec le nouvel a5-reprendre en référence, pour garder la
+        même femme et le même trait.</li>
+      <li>Format 16:9, crayon clair. Déposer les images retenues dans
+        <code>simulateur-dea/croquis/gros-plans/</code> sous le même nom ; je reconstruis la formation et
+        la simulation.</li>
+    </ul>
+  </div>
+  <article class="p">
+    <div class="eti"><span class="g">1 · a5-analyse.png</span><span>3112 caractères</span></div>
+    <h3>« Il analyse » — personne ne touche</h3>
+    <p class="ou">Formation, chapitre 5 : trois diapositives (l&#x27;analyse, « Écartez-vous », l&#x27;appareil de l&#x27;autre côté).</p>
+    <p class="ou"><b>Images à joindre en référence :</b></p><ul class="ou"><li><code>simulateur-dea/croquis/gros-plans/a5-ecarter.png</code>  (la même scène, pour le décor et les personnes)</li></ul>
+    <pre id="p1">Monochrome graphite pencil drawing on pure white paper, fine cross-hatching and soft smudged shading, light overall tone (mostly white paper, mid-grey lines, no large dark areas), fading softly to white at the edges. No colour anywhere. Realistic proportions, calm and non-dramatic, like a first-aid training illustration. No text, letters, numbers, logos or brand names anywhere — not on the device, not on clothing, not on the electrode pads. 16:9 landscape.
+
+SETTING: a bright, ordinary office-building cafeteria at noon: pale reflective floor, white chairs and small tables on the left, a counter with a coffee machine in the background, tall windows, a few potted plants.
+
+CAMERA: medium shot from slightly above, at the height of a standing adult, from the side of the man lying on the floor. The man lies on his back ACROSS the frame, his feet at the left edge and his head to the RIGHT. We see him from his LEFT side.
+
+THE MAN ON THE FLOOR: about 55 years old, grey hair, clean-shaven, eyes closed, face relaxed (unconscious, not in pain), a pale open-collar work shirt unbuttoned and pulled open so his chest is bare, dark work trousers with a belt, heavy boots. A real middle-aged chest: soft, a little grey hair, not muscular, not young.
+
+THE WOMAN: about 40 years old, mid-length dark hair tied back in a low ponytail, a grey cardigan over a white top, a lanyard with an ID badge. She kneels on the FAR side of his chest, facing us. The defibrillator is analysing, so NOBODY TOUCHES HIM: she sits back on her heels with BOTH HANDS RAISED, palms open, lifted clear of his body, her eyes on the device.
+
+THE DEFIBRILLATOR (AED): a pale, rounded plastic box the size of a small briefcase, with a moulded handle on top, a small dark screen showing a jagged heart-rhythm line, and one large round button below it marked only with a heart crossed by a lightning bolt. It stands upright on the floor on the NEAR side of his body, between him and the viewer, near his waist.
+
+THE ELECTRODE PADS — the most important detail. EXACTLY ONE pad is visible: a large flat white rectangular pad, about the size of a hand, stuck on the SIDE of his chest on the side facing us, HIGH UP, directly below his armpit, on the ribs at the level of the nipple. It is NOT on the front of the chest and NOT on the belly. The SECOND pad is stuck below his RIGHT collarbone, on the FAR side of his chest, so the camera CANNOT see it: do not draw it. All we see of it is a thin cable disappearing over the top of his chest toward his far shoulder. Two thin cables in total run from his chest to the defibrillator. No small round ECG electrodes anywhere.
+
+IN THE BACKGROUND: far away near the counter, a grey-haired man with glasses stands calmly talking on his phone, and a woman stands beside him. Both calm, hands away from their faces. Nobody else near the body.
+
+AVOID: a second visible pad, pads side by side, pads on the belly, six fingers, hands below the nipple line, bent elbows, hands on the victim&#x27;s face or shoulder, bystanders with hands over their mouths, dramatic lighting, heavy black shading, any text or numbers.</pre>
+    <button class="copier" type="button" data-cible="p1">Copier le prompt</button>
+  </article>
+  <article class="p">
+    <div class="eti"><span class="g">2 · a5-reprendre.png</span><span>3520 caractères</span></div>
+    <h3>« Et vous reprenez tout de suite » — diapositive 18</h3>
+    <p class="ou">Formation, diapositive 18 ; et le HAUT de la compression dans la simulation « Vous. », après la pose.</p>
+    <p class="ou"><b>Images à joindre en référence :</b></p><ul class="ou"><li><code>simulateur-dea/croquis/gros-plans/a5-ecarter.png</code>  (décor et personnes)</li><li><code>simulateur-dea/croquis/gros-plans/d4-bras.png</code>  (posture : bras tendus, épaules au-dessus des mains)</li></ul>
+    <pre id="p2">Monochrome graphite pencil drawing on pure white paper, fine cross-hatching and soft smudged shading, light overall tone (mostly white paper, mid-grey lines, no large dark areas), fading softly to white at the edges. No colour anywhere. Realistic proportions, calm and non-dramatic, like a first-aid training illustration. No text, letters, numbers, logos or brand names anywhere — not on the device, not on clothing, not on the electrode pads. 16:9 landscape.
+
+SETTING: a bright, ordinary office-building cafeteria at noon: pale reflective floor, white chairs and small tables on the left, a counter with a coffee machine in the background, tall windows, a few potted plants.
+
+CAMERA: medium shot from slightly above, at the height of a standing adult, from the side of the man lying on the floor. The man lies on his back ACROSS the frame, his feet at the left edge and his head to the RIGHT. We see him from his LEFT side.
+
+THE MAN ON THE FLOOR: about 55 years old, grey hair, clean-shaven, eyes closed, face relaxed (unconscious, not in pain), a pale open-collar work shirt unbuttoned and pulled open so his chest is bare, dark work trousers with a belt, heavy boots. A real middle-aged chest: soft, a little grey hair, not muscular, not young.
+
+THE WOMAN: about 40 years old, mid-length dark hair tied back in a low ponytail, a grey cardigan over a white top, a lanyard with an ID badge. She kneels on the FAR side of his chest, facing us. She is doing chest compressions, kneeling up close to his chest, at the TOP of a compression: his chest at its full natural height.
+
+THE HANDS DOING CHEST COMPRESSIONS: placed on the CENTRE of his chest, on the breastbone, EXACTLY BETWEEN HIS TWO NIPPLES — high on the chest, NOT on the lower breastbone, NOT on the belly. The heel of one hand on the breastbone, the other hand stacked on top, fingers interlaced and lifted off the ribs. Each hand has exactly FIVE fingers (one thumb, four fingers). Arms fully straight and locked at the elbows, shoulders directly above the hands. The hands never rest on the electrode pad.
+
+THE DEFIBRILLATOR (AED): a pale, rounded plastic box the size of a small briefcase, with a moulded handle on top, a small dark screen showing a jagged heart-rhythm line, and one large round button below it marked only with a heart crossed by a lightning bolt. It stands upright on the floor on the NEAR side of his body, between him and the viewer, near his waist.
+
+THE ELECTRODE PADS — the most important detail. EXACTLY ONE pad is visible: a large flat white rectangular pad, about the size of a hand, stuck on the SIDE of his chest on the side facing us, HIGH UP, directly below his armpit, on the ribs at the level of the nipple. It is NOT on the front of the chest and NOT on the belly. The SECOND pad is stuck below his RIGHT collarbone, on the FAR side of his chest, so the camera CANNOT see it: do not draw it. All we see of it is a thin cable disappearing over the top of his chest toward his far shoulder. Two thin cables in total run from his chest to the defibrillator. No small round ECG electrodes anywhere.
+
+IN THE BACKGROUND: far away near the counter, a grey-haired man with glasses talks calmly on his phone, and a woman stands beside him. Nobody else near the body.
+
+AVOID: a second visible pad, pads side by side, pads on the belly, six fingers, hands below the nipple line, bent elbows, hands on the victim&#x27;s face or shoulder, bystanders with hands over their mouths, dramatic lighting, heavy black shading, any text or numbers.</pre>
+    <button class="copier" type="button" data-cible="p2">Copier le prompt</button>
+  </article>
+  <article class="p">
+    <div class="eti"><span class="g">3 · a5-reprendre-bas.png</span><span>1884 caractères</span></div>
+    <h3>Le même instant, poitrine enfoncée</h3>
+    <p class="ou">Simulation « Vous. » : alterne avec a5-reprendre à chaque compression. À faire APRÈS a5-reprendre, en lui donnant a5-reprendre comme seule référence.</p>
+    <p class="ou"><b>Images à joindre en référence :</b></p><ul class="ou"><li><code>simulateur-dea/croquis/gros-plans/a5-reprendre.png</code>  (le NOUVEAU, une fois refait) — à reproduire à l&#x27;identique</li></ul>
+    <pre id="p3">Reproduce the reference image EXACTLY — same camera, same framing, same people in the same places, same faces, same clothes, same device, same single pad, same background, same pencil technique — with ONE change: this is the BOTTOM of the same chest compression, a fraction of a second later. Her arms are still straight and locked, her shoulders a little lower, and his chest is visibly pressed down about five centimetres under the heel of her hand, exactly between his nipples. Nothing else moves.
+
+Monochrome graphite pencil drawing on pure white paper, fine cross-hatching and soft smudged shading, light overall tone (mostly white paper, mid-grey lines, no large dark areas), fading softly to white at the edges. No colour anywhere. Realistic proportions, calm and non-dramatic, like a first-aid training illustration. No text, letters, numbers, logos or brand names anywhere — not on the device, not on clothing, not on the electrode pads. 16:9 landscape.
+
+THE ELECTRODE PADS — the most important detail. EXACTLY ONE pad is visible: a large flat white rectangular pad, about the size of a hand, stuck on the SIDE of his chest on the side facing us, HIGH UP, directly below his armpit, on the ribs at the level of the nipple. It is NOT on the front of the chest and NOT on the belly. The SECOND pad is stuck below his RIGHT collarbone, on the FAR side of his chest, so the camera CANNOT see it: do not draw it. All we see of it is a thin cable disappearing over the top of his chest toward his far shoulder. Two thin cables in total run from his chest to the defibrillator. No small round ECG electrodes anywhere.
+
+AVOID: a second visible pad, pads side by side, pads on the belly, six fingers, hands below the nipple line, bent elbows, hands on the victim&#x27;s face or shoulder, bystanders with hands over their mouths, dramatic lighting, heavy black shading, any text or numbers.</pre>
+    <button class="copier" type="button" data-cible="p3">Copier le prompt</button>
+  </article>
+  <article class="p">
+    <div class="eti"><span class="g">4 · b-relais.png</span><span>3682 caractères</span></div>
+    <h3>Le relais aux deux minutes — diapositive 23</h3>
+    <p class="ou">Formation, diapositive « Le relais », deux dernières phrases.</p>
+    <p class="ou"><b>Images à joindre en référence :</b></p><ul class="ou"><li><code>simulateur-dea/croquis/gros-plans/a5-reprendre.png</code>  (le NOUVEAU : décor, femme, homme au sol, appareil)</li><li><code>simulateur-dea/croquis/gros-plans/d4-bras.png</code>  (posture)</li></ul>
+    <pre id="p4">Monochrome graphite pencil drawing on pure white paper, fine cross-hatching and soft smudged shading, light overall tone (mostly white paper, mid-grey lines, no large dark areas), fading softly to white at the edges. No colour anywhere. Realistic proportions, calm and non-dramatic, like a first-aid training illustration. No text, letters, numbers, logos or brand names anywhere — not on the device, not on clothing, not on the electrode pads. 16:9 landscape.
+
+SETTING: a bright, ordinary office-building cafeteria at noon: pale reflective floor, white chairs and small tables on the left, a counter with a coffee machine in the background, tall windows, a few potted plants.
+
+CAMERA: medium shot from slightly above, at the height of a standing adult, from the side of the man lying on the floor. The man lies on his back ACROSS the frame, his feet at the left edge and his head to the RIGHT. We see him from his LEFT side.
+
+THE MAN ON THE FLOOR: about 55 years old, grey hair, clean-shaven, eyes closed, face relaxed (unconscious, not in pain), a pale open-collar work shirt unbuttoned and pulled open so his chest is bare, dark work trousers with a belt, heavy boots. A real middle-aged chest: soft, a little grey hair, not muscular, not young.
+
+THE HAND-OVER: a grey-haired man of about 60 with glasses, a pale shirt and an ID lanyard, kneels on the FAR side of the victim&#x27;s chest and does the chest compressions. Beside him, a little further toward the victim&#x27;s feet, THE WOMAN (about 40, mid-length dark hair tied back in a low ponytail, grey cardigan over a white top, lanyard with a badge) has just handed over: she sits back on her heels, catching her breath, BOTH HANDS RESTING ON HER OWN KNEES, away from the man on the floor. She touches nobody. She is the SAME woman as in the reference image — same face, same age.
+
+THE HANDS DOING CHEST COMPRESSIONS: placed on the CENTRE of his chest, on the breastbone, EXACTLY BETWEEN HIS TWO NIPPLES — high on the chest, NOT on the lower breastbone, NOT on the belly. The heel of one hand on the breastbone, the other hand stacked on top, fingers interlaced and lifted off the ribs. Each hand has exactly FIVE fingers (one thumb, four fingers). Arms fully straight and locked at the elbows, shoulders directly above the hands. The hands never rest on the electrode pad.
+
+THE DEFIBRILLATOR (AED): a pale, rounded plastic box the size of a small briefcase, with a moulded handle on top, a small dark screen showing a jagged heart-rhythm line, and one large round button below it marked only with a heart crossed by a lightning bolt. It stands upright on the floor on the NEAR side of his body, between him and the viewer, near his waist.
+
+THE ELECTRODE PADS — the most important detail. EXACTLY ONE pad is visible: a large flat white rectangular pad, about the size of a hand, stuck on the SIDE of his chest on the side facing us, HIGH UP, directly below his armpit, on the ribs at the level of the nipple. It is NOT on the front of the chest and NOT on the belly. The SECOND pad is stuck below his RIGHT collarbone, on the FAR side of his chest, so the camera CANNOT see it: do not draw it. All we see of it is a thin cable disappearing over the top of his chest toward his far shoulder. Two thin cables in total run from his chest to the defibrillator. No small round ECG electrodes anywhere.
+
+IN THE BACKGROUND: one woman standing far away near the counter, calm.
+
+AVOID: a second visible pad, pads side by side, pads on the belly, six fingers, hands below the nipple line, bent elbows, hands on the victim&#x27;s face or shoulder, bystanders with hands over their mouths, dramatic lighting, heavy black shading, any text or numbers.</pre>
+    <button class="copier" type="button" data-cible="p4">Copier le prompt</button>
+  </article>
+  <article class="p">
+    <div class="eti"><span class="g">5 · b-passation.png</span><span>3864 caractères</span></div>
+    <h3>La passation aux paramédics — diapositive 24</h3>
+    <p class="ou">Formation, diapositive « Ce que vous avez vu ».</p>
+    <p class="ou"><b>Images à joindre en référence :</b></p><ul class="ou"><li><code>simulateur-dea/croquis/gros-plans/a5-reprendre.png</code>  (le NOUVEAU : décor, femme, homme au sol, appareil)</li></ul>
+    <pre id="p5">Monochrome graphite pencil drawing on pure white paper, fine cross-hatching and soft smudged shading, light overall tone (mostly white paper, mid-grey lines, no large dark areas), fading softly to white at the edges. No colour anywhere. Realistic proportions, calm and non-dramatic, like a first-aid training illustration. No text, letters, numbers, logos or brand names anywhere — not on the device, not on clothing, not on the electrode pads. 16:9 landscape.
+
+SETTING: a bright, ordinary office-building cafeteria at noon: pale reflective floor, white chairs and small tables on the left, a counter with a coffee machine in the background, tall windows, a few potted plants.
+
+CAMERA: medium shot from slightly above, at the height of a standing adult, from the side of the man lying on the floor. The man lies on his back ACROSS the frame, his feet at the left edge and his head to the RIGHT. We see him from his LEFT side.
+
+THE MAN ON THE FLOOR: about 55 years old, grey hair, clean-shaven, eyes closed, face relaxed (unconscious, not in pain), a pale open-collar work shirt unbuttoned and pulled open so his chest is bare, dark work trousers with a belt, heavy boots. A real middle-aged chest: soft, a little grey hair, not muscular, not young.
+
+THE PARAMEDICS HAVE ARRIVED: two paramedics in plain dark-grey uniforms (drawn in the same light pencil, no heavy dark fills), with blank chest patches — no letters, no numbers, no words. One kneels on the FAR side of the victim&#x27;s chest and does the chest compressions; the other kneels near the victim&#x27;s head and opens a large bag on the floor.
+
+THE COMPRESSING PARAMEDIC&#x27;S HANDS: placed on the CENTRE of his chest, on the breastbone, EXACTLY BETWEEN HIS TWO NIPPLES — high on the chest, NOT on the lower breastbone, NOT on the belly. The heel of one hand on the breastbone, the other hand stacked on top, fingers interlaced and lifted off the ribs. Each hand has exactly FIVE fingers (one thumb, four fingers). Arms fully straight and locked at the elbows, shoulders directly above the hands. The hands never rest on the electrode pad.
+
+THE WOMAN (about 40, mid-length dark hair tied back in a low ponytail, grey cardigan over a white top, lanyard with a badge) has stepped back a little: she kneels slightly behind and to the left of the paramedics, hands off the victim, telling the paramedic with the bag what happened; he looks at her and listens. She is the SAME woman as in the reference image — same face, same age.
+
+THE DEFIBRILLATOR (AED): a pale, rounded plastic box the size of a small briefcase, with a moulded handle on top, a small dark screen showing a jagged heart-rhythm line, and one large round button below it marked only with a heart crossed by a lightning bolt. It stands upright on the floor on the NEAR side of his body, between him and the viewer, near his waist.
+
+THE ELECTRODE PADS — the most important detail. EXACTLY ONE pad is visible: a large flat white rectangular pad, about the size of a hand, stuck on the SIDE of his chest on the side facing us, HIGH UP, directly below his armpit, on the ribs at the level of the nipple. It is NOT on the front of the chest and NOT on the belly. The SECOND pad is stuck below his RIGHT collarbone, on the FAR side of his chest, so the camera CANNOT see it: do not draw it. All we see of it is a thin cable disappearing over the top of his chest toward his far shoulder. Two thin cables in total run from his chest to the defibrillator. No small round ECG electrodes anywhere.
+
+IN THE BACKGROUND: a grey-haired man with glasses and a woman stand far away near the counter, calm.
+
+AVOID: a second visible pad, pads side by side, pads on the belly, six fingers, hands below the nipple line, bent elbows, hands on the victim&#x27;s face or shoulder, bystanders with hands over their mouths, dramatic lighting, heavy black shading, any text or numbers.</pre>
+    <button class="copier" type="button" data-cible="p5">Copier le prompt</button>
+  </article>
+  <p class="pied">Les originaux d'avant ces corrections sont gardés à part. Chaque prompt tient dans
+  un seul bloc ; aucun ne dépend d'une conversation.</p>
+</div>
+<script>
+document.querySelectorAll('.copier').forEach(function(b){
+  b.addEventListener('click', function(){
+    var t = document.getElementById(b.dataset.cible).textContent;
+    (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(function(){
+      b.textContent = 'Copié'; b.classList.add('fait');
+      setTimeout(function(){ b.textContent = 'Copier le prompt'; b.classList.remove('fait'); }, 1600);
+    }, function(){
+      var r = document.createRange(); r.selectNodeContents(document.getElementById(b.dataset.cible));
+      var s = getSelection(); s.removeAllRanges(); s.addRange(r); b.textContent = 'Sélectionné — Cmd+C';
+    });
+  });
+});
+</script>
+
+</body>
+</html>
