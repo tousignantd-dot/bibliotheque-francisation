@@ -899,6 +899,105 @@
 .loupe { border-top: 4px solid var(--cq-action); }
 .loupe__fermer { background: var(--cq-action); color: var(--cq-action-ink); }
 
+/* ============================================================
+   MISE EN PAGE « PONT »
+   La variante ne s'arrête pas aux couleurs : la page s'organise comme
+   un poste d'atelier. Toujours la même donnée, le même moteur.
+   · les modules deviennent une barre d'étapes numérotées, en haut ;
+   · la pièce passe en pleine largeur, sous la lampe ; la décision
+     descend dans une bande de commandes, en gros boutons carrés ;
+   · le bon de travail devient un cartouche de fiche d'inspection.
+   ============================================================ */
+
+/* ---------- Barre d'étapes en haut, plus de colonne à gauche ---------- */
+.app--pont .corps { grid-template-columns: minmax(0, 1fr); gap: 18px; max-width: 1180px; }
+.app--pont #navigation {
+  position: sticky; top: 0; z-index: 5; max-height: none;
+  grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 0; overflow-x: auto;
+  background: #0E1113; border: 1px solid var(--cq-filet); border-radius: var(--cq-rayon); padding: 0;
+  counter-reset: etape;
+}
+.app--pont .nav__module {
+  grid-template-columns: auto; justify-items: center; text-align: center; gap: 2px;
+  border-radius: 0; padding: 10px 8px 12px; border-right: 1px solid #2C3237; position: relative;
+}
+.app--pont .nav__module:last-child { border-right: 0; }
+.app--pont .nav__num {
+  grid-row: auto; font-family: var(--cq-police-titre); font-weight: 800; font-size: 1.35rem; line-height: 1;
+  color: var(--cq-sourdine);
+}
+.app--pont .nav__module > span:nth-child(2) { font-family: var(--cq-police-titre); font-weight: 700; text-transform: uppercase; letter-spacing: .04em; font-size: .92rem; }
+.app--pont .nav__module--actif { background: var(--cq-feuille); box-shadow: inset 0 -4px 0 var(--cq-action); }
+.app--pont .nav__module--actif .nav__num { color: var(--cq-action); }
+/* Avant / après garde sa liste de diapos : elle reste une colonne */
+.app--pont .corps:has(.nav__diapo) { grid-template-columns: 260px minmax(0, 1fr); max-width: 1440px; }
+.app--pont .corps:has(.nav__diapo) #navigation { position: sticky; top: 16px; grid-auto-flow: row; grid-auto-columns: auto; background: none; border: 0; }
+
+/* ---------- La pièce en pleine largeur, la décision en dessous ---------- */
+.app--pont .diapo__corps:not(.diapo__corps--pile) { flex-direction: column; gap: 1.6cqw; }
+.app--pont .diapo__corps:not(.diapo__corps--pile) > .diapo__col--etroite { flex: none; }
+.app--pont .diapo__corps:not(.diapo__corps--pile) > .diapo__col--etroite {
+  border-top: 3px solid var(--cq-action); padding-top: 1.4cqw; background: linear-gradient(#0E1113, transparent 70%);
+}
+
+/* La fiche : la photo à gauche, grande ; le cartouche à droite */
+.app--pont .fiche { grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); grid-template-rows: auto; align-items: stretch; padding: 0; overflow: hidden; }
+.app--pont .fiche .planche--photo { border: 0; border-radius: 0; max-height: 62vh; }
+
+/* ---------- Le bon de travail : cartouche d'inspection ---------- */
+.fiche__bon {
+  align-content: start; padding: 1.2cqw 1.4cqw; gap: .6cqw;
+  background:
+    repeating-linear-gradient(0deg, transparent 0 1.7cqw, rgba(242,194,0,.05) 1.7cqw calc(1.7cqw + 1px)),
+    #15191C;
+  border-left: 1px dashed var(--cq-filet);
+}
+.fiche__bon::before {
+  content: "Bon d'inspection · pont 2"; display: block;
+  font: 800 var(--cq-d-micro) var(--cq-police-titre); letter-spacing: .16em; text-transform: uppercase;
+  color: #121518; background: var(--cq-action); padding: .2cqw .6cqw; justify-self: start; margin-bottom: .4cqw;
+}
+.fiche__mesures { flex-direction: column; align-items: stretch; }
+.fiche__mesure { display: block; font-size: var(--cq-d-petit); }
+
+/* ---------- Les décisions : gros boutons carrés, panneau de commande ---------- */
+.app--pont .tri { display: grid; grid-template-columns: repeat(auto-fit, minmax(10em, 1fr)); gap: 1cqw; }
+.app--pont .tri__choix {
+  flex-direction: column; justify-content: center; align-items: center; text-align: center; gap: .6cqw;
+  min-height: 7.5cqw; padding: 1cqw; border-left-width: 1px; border-bottom: 5px solid var(--cq-filet);
+  font-family: var(--cq-police-titre); font-weight: 800; text-transform: uppercase; letter-spacing: .03em; font-size: var(--cq-d-texte);
+}
+.app--pont .tri__choix .verdict { font-size: 1.6em; }
+.app--pont .tri__choix:hover { border-bottom-color: var(--cq-action); }
+.app--pont .tri__choix[aria-pressed="true"] { border-bottom-color: #121518; }
+.app--pont .tri__choix--plein { flex-direction: row; min-height: 0; border-bottom-width: 1px; justify-self: start; }
+.app--pont .indice .tri__choix { min-height: 4.5cqw; font-size: var(--cq-d-petit); }
+
+/* Les questions à choix d'une situation : même panneau, sur deux colonnes */
+.app--pont .diapo__col--etroite .options { grid-template-columns: repeat(auto-fit, minmax(16em, 1fr)); }
+.app--pont .options__choix { border-bottom: 4px solid var(--cq-filet); }
+
+/* ---------- Téléphone : tout s'empile, la barre d'étapes défile ---------- */
+@media (max-width: 900px) {
+  .app--pont #navigation { grid-auto-columns: minmax(96px, 1fr); }
+  .app--pont .corps:has(.nav__diapo) { grid-template-columns: minmax(0, 1fr); }
+  .app--pont .corps:has(.nav__diapo) #navigation { grid-auto-flow: column; position: static; }
+}
+@container (max-width: 760px) {
+  .app--pont .fiche { grid-template-columns: minmax(0, 1fr); }
+  .fiche__bon { border-left: 0; border-top: 1px dashed var(--cq-filet); padding: 12px; }
+  .app--pont .tri { grid-template-columns: minmax(0, 1fr); }
+  .app--pont .tri__choix { min-height: 56px; flex-direction: row; justify-content: flex-start; text-align: left; padding: 10px 14px; }
+  .app--pont .tri__choix .verdict { font-size: 1.2em; }
+}
+/* Barre d'étapes sur téléphone : le nom passe à la ligne au lieu d'être coupé */
+@media (max-width: 900px) {
+  .app--pont .nav__module { white-space: normal; max-width: none; overflow: visible; padding: 8px 6px 10px; }
+  .app--pont .nav__module > span:nth-child(2) { font-size: .78rem; line-height: 1.15; }
+  .app--pont .nav__num { font-size: 1.1rem; }
+}
+.app--pont .diapo__col > .options { grid-template-columns: repeat(auto-fit, minmax(22em, 1fr)); }
+
 </style>
 <style>
   html, body { background: var(--cq-papier); }
@@ -1005,7 +1104,7 @@
   }
 </style>
 
-<div class="app cq">
+<div class="app cq app--pont">
   <header class="tete">
     <div class="tete__nom">
       <h1 class="tete__titre">Le dernier millimètre</h1>
