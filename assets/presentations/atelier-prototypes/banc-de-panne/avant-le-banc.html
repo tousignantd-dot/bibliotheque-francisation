@@ -1,7 +1,7 @@
 <!doctype html><html lang="fr"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="Les cinq pannes qui rendent un espresso mauvais : le mécanisme en coupe, le signe qui désigne chacune, et l'ordre de vérification qui les trouve à tout coup.">
-<title>Avant le banc — les cinq mécanismes</title>
+<title>Ce qui peut lâcher — les cinq mécanismes</title>
 <!-- La leçon importe les JETONS du banc, donc ses polices aussi. Sans ce
      lien, --police valait "Barlow" et retombait en silence sur la police
      système : la leçon et le jeu ne se ressemblaient plus qu'à la couleur. -->
@@ -86,6 +86,42 @@ html[data-dir="c"][data-theme="sombre"]{
   --grp3:#C4A0FF; --grp4:#7FE0A8;
   --om:0 1px 0 rgba(0,0,0,.5); --om2:0 2px 14px rgba(0,0,0,.6);
 }
+html[data-dir="d"]{
+  /* SERRE — quatrième habillage, 22 septembre 2026. Les couleurs sont MESURÉES
+     sur spade.com, pas estimées d'après une capture : #090F05 l'encre,
+     #4A5B38 l'encre tertiaire, #F4FAED le papier, #D8E5CA les panneaux,
+     #3F7308 l'accent, #B2EB76 le vert acide.
+     CE QU'ON EN FAIT, ET OÙ. Chez Spade le vert est un PAPIER et une ENCRE,
+     jamais un signal — c'est pour ça qu'il entre comme habillage et non comme
+     teinte : une teinte ne repeint que --sig, et repeindre le signal en vert
+     sur un papier vert supprimerait le signal.
+     LE VERT ACIDE NE PARAÎT QU'AU SOMBRE. C'est là que Spade s'en sert, et
+     c'est le seul fond sur lequel il tient : posé sur du papier pâle il tombe
+     sous le seuil de lisibilité. Mesuré, pas supposé.
+     LE SIGNAL RESTE CHAUD. Un diagnostic n'a qu'une couleur qui compte, celle
+     qui désigne ce qu'on a payé ; elle doit trancher sur le papier, donc elle
+     ne peut pas être verte ici. */
+  --police:"Barlow",system-ui,sans-serif; --police-titre:"Barlow Condensed",system-ui,sans-serif;
+  --police-mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  --poids-titre:800; --serre:-.01em; --maj:uppercase; --rad:6px; --bord:solid;
+  --tex:linear-gradient(rgba(74,91,56,.10) 1px,transparent 1px),linear-gradient(90deg,rgba(74,91,56,.10) 1px,transparent 1px);
+  --tex-taille:28px 28px;
+  --pap:#F4FAED; --pan:#FFFFFF; --pan2:#D8E5CA; --pan3:#D8E5CA;
+  --enc:#090F05; --enc2:#39472A; --enc3:#566B41; --regle:#D8E5CA; --regle2:#AFC29A;
+  --sig:#A8330E; --sig2:#86270A; --sig-voile:rgba(168,51,14,.09);
+  --mes:#3F7308; --mes-voile:rgba(63,115,8,.09);
+  --grp3:#6B4BA8; --grp4:#8A5B2B;
+  --om:0 1px 0 rgba(9,15,5,.07); --om2:0 2px 12px rgba(9,15,5,.14);
+}
+html[data-dir="d"][data-theme="sombre"]{
+  --tex:linear-gradient(rgba(178,235,118,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(178,235,118,.05) 1px,transparent 1px);
+  --pap:#090F05; --pan:#121B0B; --pan2:#182809; --pan3:#182809;
+  --enc:#F4FAED; --enc2:#C3D3B2; --enc3:#93A87E; --regle:#24331A; --regle2:#3C5029;
+  --sig:#FF8A5E; --sig2:#FFA983; --sig-voile:rgba(255,138,94,.14);
+  --mes:#B2EB76; --mes-voile:rgba(178,235,118,.12);
+  --grp3:#C4A0FF; --grp4:#F0C46A;
+  --om:0 1px 0 rgba(0,0,0,.5); --om2:0 2px 14px rgba(0,0,0,.6);
+}
 @media (prefers-color-scheme:dark){
 html:not([data-theme="clair"]){ color-scheme:dark;
   --tex:repeating-linear-gradient(0deg,transparent 0 23px,rgba(255,255,255,.035) 23px 24px);
@@ -116,6 +152,15 @@ html[data-dir="c"]:not([data-theme="clair"]){
   --sig:#FF6B70; --sig2:#FF8A8E; --sig-voile:rgba(255,107,112,.14);
   --mes:#7FB2E8; --mes-voile:rgba(127,178,232,.12);
   --grp3:#C4A0FF; --grp4:#7FE0A8;
+  --om:0 1px 0 rgba(0,0,0,.5); --om2:0 2px 14px rgba(0,0,0,.6);
+}
+html[data-dir="d"]:not([data-theme="clair"]){
+  --tex:linear-gradient(rgba(178,235,118,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(178,235,118,.05) 1px,transparent 1px);
+  --pap:#090F05; --pan:#121B0B; --pan2:#182809; --pan3:#182809;
+  --enc:#F4FAED; --enc2:#C3D3B2; --enc3:#93A87E; --regle:#24331A; --regle2:#3C5029;
+  --sig:#FF8A5E; --sig2:#FFA983; --sig-voile:rgba(255,138,94,.14);
+  --mes:#B2EB76; --mes-voile:rgba(178,235,118,.12);
+  --grp3:#C4A0FF; --grp4:#F0C46A;
   --om:0 1px 0 rgba(0,0,0,.5); --om2:0 2px 14px rgba(0,0,0,.6);
 }
 }
@@ -262,7 +307,7 @@ a.bouton:hover{background:var(--verm2)}
 </style></head><body>
 
 <header class="tete">
-  <p class="fil"><span class="no">Avant le banc</span><span>Dépannage espresso</span>
+  <p class="fil"><span class="no">Ce qui peut lâcher</span><span>Dépannage espresso</span>
      <span>Formation barista</span></p>
   <h1>Cinq choses peuvent rendre le café mauvais.</h1>
   <p class="chapeau">Aucune ne s'annonce, et toutes donnent le même symptôme : un
