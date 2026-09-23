@@ -1,0 +1,2330 @@
+<!doctype html>
+<html lang="fr">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>[hidden]{display:none!important}</style>
+<title>Le courriel de trop</title>
+<meta name="description" content="Formation « Reconnaître un courriel d'hameçonnage », conçue et révisée avec la boucle didactique : chaque diapositive, avant et après, avec le critère qui justifie le changement.">
+<style>
+/* ============================================================
+   CALQUE — système de design pour formations révisées
+   ------------------------------------------------------------
+   Deux couches, comme sur une table à dessin :
+   · la FEUILLE  — ce que l'apprenant voit (la formation) ;
+   · le CALQUE   — la couche de révision posée par-dessus, tracée
+                   au crayon bleu non photographique : critères,
+                   constats, avant/après. L'apprenant ne la voit
+                   jamais ; le lecteur du portfolio, oui.
+   Et un troisième registre, BROUILLON, qui reproduit fidèlement
+   la diapositive « par défaut » de la version zéro.
+
+   Règles :
+   1. Le bleu calque n'appartient QU'à la couche de révision.
+      Il ne sert jamais à la formation elle-même.
+   2. Les trois verdicts (légitime / à vérifier / frauduleux)
+      portent toujours une forme ET une couleur (G1).
+   3. Toute adresse et tout lien s'affichent en mono : c'est là
+      que se cachent les lettres jumelles (rn/m, l/I, 0/o).
+   ============================================================ */
+
+@import url("https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&family=Schibsted+Grotesk:wght@500;700;800&family=Kalam:wght@400;700&display=swap");
+
+:root {
+  color-scheme: light;
+
+  /* ---------- Feuille (formation) ---------- */
+  --cq-papier:      #EEF1F3;  /* fond de page : gris-bleu d'une boîte de réception */
+  --cq-feuille:     #FFFFFF;  /* la diapositive */
+  --cq-retrait:     #F5F7F8;  /* surface en retrait : en-tête de courriel, encart */
+  --cq-filet:       #D5DCE1;
+  --cq-sourdine:    #5A6873;  /* texte secondaire — 5,7:1 sur blanc */
+  --cq-encre:       #13212C;  /* texte principal — bleu nuit */
+  --cq-action:      #13212C;  /* bouton principal : l'encre elle-même */
+  --cq-action-ink:  #FFFFFF;
+  --cq-focus:       #E8A317;
+  --cq-lien:        #1A5FB4;  /* lien et bouton du courriel simulé — 6,3:1 */
+
+  /* ---------- Verdicts (sémantiques, forme + couleur) ---------- */
+  --cq-sur:         #1D7A4C;  --cq-sur-fond:     #E3F2EA;   /* ✓ légitime   */
+  --cq-doute:       #9A6206;  --cq-doute-fond:   #FBF0D9;   /* ? à vérifier */
+  --cq-fraude:      #B3261E;  --cq-fraude-fond:  #FBE4E1;   /* ✕ frauduleux */
+
+  /* ---------- Calque (révision) ---------- */
+  --cq-calque:      #4C9BD6;  /* bleu non photographique : traits, repères */
+  --cq-calque-ink:  #0B4A7A;  /* texte du calque — 9,2:1 sur blanc */
+  --cq-calque-voile: rgba(76, 155, 214, 0.08);
+  --cq-calque-trame: rgba(76, 155, 214, 0.18);
+
+  /* Gravités du constat d'origine — graduées dans le bleu du calque,
+     pour ne jamais se confondre avec les verdicts de la formation. */
+  --cq-grav-bloquant: #0B4A7A;
+  --cq-grav-majeur:   #2F7EBB;
+  --cq-grav-mineur:   #9CC7E8;
+
+  /* ---------- Brouillon (version zéro) ---------- */
+  --br-fond:   #FFFFFF;
+  --br-titre:  #1F4E9A;
+  --br-texte:  #222222;
+  --br-barre:  #1F4E9A;
+  --br-police: Calibri, Carlito, "Segoe UI", Arial, sans-serif;
+
+  /* ---------- Typographie ---------- */
+  --cq-police-titre: "Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --cq-police-texte: "Atkinson Hyperlegible", Verdana, Tahoma, sans-serif;
+  --cq-police-mono:  "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+  --cq-police-main:  "Kalam", "Segoe Print", "Comic Neue", cursive;
+
+  /* Échelle des diapositives, en unités de conteneur :
+     la diapo est une scène 16:9 ; tout y est proportionnel à sa largeur. */
+  --cq-d-mega:  5.6cqw;
+  --cq-d-titre: 3.6cqw;
+  --cq-d-inter: 2.3cqw;
+  --cq-d-texte: 1.75cqw;
+  --cq-d-petit: 1.35cqw;
+  --cq-d-micro: 1.1cqw;
+  /* Planchers : sous ces tailles, la diapo passe en mode « feuille qui
+     s'allonge » (voir @container plus bas) plutôt que de rapetisser. */
+
+  /* Échelle de l'interface autour (rem) */
+  --cq-t-xl: 2rem;
+  --cq-t-l:  1.375rem;
+  --cq-t-m:  1.0625rem;
+  --cq-t-s:  0.9375rem;
+  --cq-t-xs: 0.8125rem;
+
+  --cq-rayon:   6px;
+  --cq-rayon-l: 12px;
+  --cq-ombre:   0 1px 2px rgba(19,33,44,.06), 0 8px 24px rgba(19,33,44,.08);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --cq-papier:   #0E171E;
+    --cq-feuille:  #16222B;
+    --cq-retrait:  #1C2A34;
+    --cq-filet:    #2B3B47;
+    --cq-sourdine: #9AABB8;
+    --cq-encre:    #E6EDF2;
+    --cq-action:   #E6EDF2;
+    --cq-action-ink: #13212C;
+    --cq-lien: #7DB3F0;
+    --cq-sur:    #5FCB93;  --cq-sur-fond:    #173327;
+    --cq-doute:  #E9B454;  --cq-doute-fond:  #3A2D12;
+    --cq-fraude: #F08A80;  --cq-fraude-fond: #3E1B18;
+    --cq-calque: #6FB6EA;
+    --cq-calque-ink: #9FD0F5;
+    --cq-calque-voile: rgba(111, 182, 234, 0.08);
+    --cq-calque-trame: rgba(111, 182, 234, 0.22);
+    --cq-grav-bloquant: #9FD0F5;
+    --cq-grav-majeur:   #5A9FD4;
+    --cq-grav-mineur:   #2F5C80;
+    --cq-ombre: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --cq-papier:   #0E171E;
+  --cq-feuille:  #16222B;
+  --cq-retrait:  #1C2A34;
+  --cq-filet:    #2B3B47;
+  --cq-sourdine: #9AABB8;
+  --cq-encre:    #E6EDF2;
+  --cq-action:   #E6EDF2;
+  --cq-action-ink: #13212C;
+  --cq-lien: #7DB3F0;
+  --cq-sur:    #5FCB93;  --cq-sur-fond:    #173327;
+  --cq-doute:  #E9B454;  --cq-doute-fond:  #3A2D12;
+  --cq-fraude: #F08A80;  --cq-fraude-fond: #3E1B18;
+  --cq-calque: #6FB6EA;
+  --cq-calque-ink: #9FD0F5;
+  --cq-calque-voile: rgba(111, 182, 234, 0.08);
+  --cq-calque-trame: rgba(111, 182, 234, 0.22);
+  --cq-grav-bloquant: #9FD0F5;
+  --cq-grav-majeur:   #5A9FD4;
+  --cq-grav-mineur:   #2F5C80;
+  --cq-ombre: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+}
+
+/* ============================================================
+   Base
+   ============================================================ */
+.cq, .cq * { box-sizing: border-box; }
+.cq {
+  font-family: var(--cq-police-texte);
+  color: var(--cq-encre);
+  background: var(--cq-papier);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+.cq :focus-visible { outline: 3px solid var(--cq-focus); outline-offset: 2px; border-radius: 3px; }
+.cq-mono { font-family: var(--cq-police-mono); font-size: .95em; letter-spacing: 0; }
+.cq-visuel-cache { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+@media (prefers-reduced-motion: reduce) {
+  .cq *, .cq *::before, .cq *::after { animation: none !important; transition: none !important; }
+}
+
+/* ============================================================
+   Scène — la diapositive 16:9, en unités de conteneur
+   ============================================================ */
+.scene {
+  container-type: inline-size;
+  width: 100%;
+  max-width: 100%;
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--cq-rayon-l);
+  background: var(--cq-feuille);
+  box-shadow: var(--cq-ombre);
+}
+.plateau { position: relative; aspect-ratio: 16 / 9; max-width: 100%; }
+.scene--vide {
+  aspect-ratio: 16 / 9;
+  display: grid; place-items: center;
+  background: repeating-linear-gradient(135deg, var(--cq-calque-voile) 0 10px, transparent 10px 20px), var(--cq-feuille);
+  box-shadow: inset 0 0 0 2px var(--cq-calque-trame);
+}
+.scene--vide p {
+  font-family: var(--cq-police-main); color: var(--cq-calque-ink);
+  font-size: var(--cq-d-inter); margin: 0; text-align: center; max-width: 70%;
+}
+
+/* ============================================================
+   Feuille — composition d'une diapo de formation
+   ============================================================ */
+.diapo {
+  position: absolute; inset: 0;
+  padding: 4.2cqw 5cqw 3.6cqw;
+  display: flex; flex-direction: column; gap: 1.8cqw;
+  font-size: var(--cq-d-texte);
+}
+.diapo__entete {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 2cqw;
+  font-size: var(--cq-d-micro); color: var(--cq-sourdine);
+  letter-spacing: .06em; text-transform: uppercase;
+}
+.diapo__titre {
+  font-family: var(--cq-police-titre); font-weight: 800;
+  font-size: var(--cq-d-titre); line-height: 1.05; letter-spacing: -.02em;
+  margin: 0; text-wrap: balance;
+}
+.diapo__corps { flex: 1; min-height: 0; display: flex; gap: 3cqw; }
+.diapo__corps--pile { flex-direction: column; gap: 1.4cqw; }
+.diapo__col { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1.2cqw; }
+.diapo__col--etroite { flex: 0 0 34%; }
+.diapo p { margin: 0; max-width: 60ch; }
+.diapo__mega {
+  font-family: var(--cq-police-titre); font-weight: 800;
+  font-size: var(--cq-d-mega); line-height: 1; letter-spacing: -.035em; margin: 0; text-wrap: balance;
+}
+.diapo__chapeau { font-size: var(--cq-d-inter); line-height: 1.3; margin: 0; max-width: 34ch; }
+.diapo__pied { font-size: var(--cq-d-petit); color: var(--cq-sourdine); }
+
+/* Diapo d'ouverture de module : fond encre, plein cadre */
+.diapo--ouverture { background: var(--cq-encre); color: var(--cq-feuille); justify-content: flex-end; }
+.diapo--ouverture .diapo__entete { color: color-mix(in srgb, var(--cq-feuille) 70%, transparent); }
+
+/* ---------- Verdict : pastille forme + couleur ---------- */
+.verdict {
+  display: inline-flex; align-items: center; gap: .45em;
+  padding: .2em .7em .2em .35em; border-radius: 999px;
+  font-weight: 700; font-size: .9em; line-height: 1.4; white-space: nowrap;
+}
+.verdict::before {
+  content: ""; width: 1.15em; height: 1.15em; flex: none;
+  display: inline-grid; place-items: center; border-radius: 50%;
+  font-size: .8em; line-height: 1.15em; text-align: center; color: var(--cq-feuille);
+}
+.verdict--sur    { background: var(--cq-sur-fond);    color: var(--cq-sur); }
+.verdict--doute  { background: var(--cq-doute-fond);  color: var(--cq-doute); }
+.verdict--fraude { background: var(--cq-fraude-fond); color: var(--cq-fraude); }
+.verdict--sur::before    { content: "✓"; background: var(--cq-sur); }
+.verdict--doute::before  { content: "?"; background: var(--cq-doute); border-radius: 3px; }
+.verdict--fraude::before { content: "✕"; background: var(--cq-fraude); border-radius: 2px; transform: rotate(0deg); }
+
+/* ---------- Vérification : les trois questions ---------- */
+.verif { display: grid; gap: 1cqw; margin: 0; padding: 0; list-style: none; counter-reset: verif; }
+.verif__item {
+  counter-increment: verif;
+  display: grid; grid-template-columns: 3.2cqw 1fr; gap: .2cqw 1.2cqw; align-items: baseline;
+}
+.verif__item::before {
+  content: counter(verif);
+  grid-row: span 2;
+  font-family: var(--cq-police-titre); font-weight: 800; font-size: var(--cq-d-inter);
+  width: 3.2cqw; height: 3.2cqw; border-radius: 50%;
+  display: grid; place-items: center; border: .2cqw solid currentColor;
+}
+.verif__q { font-weight: 700; font-size: var(--cq-d-inter); line-height: 1.2; }
+.verif__r { color: var(--cq-sourdine); font-size: var(--cq-d-petit); }
+.verif__item[data-actif="false"] { opacity: .35; }
+
+/* ============================================================
+   Courriel simulé — imite un client de messagerie
+   ============================================================ */
+.courriel {
+  background: var(--cq-feuille);
+  border: 1px solid var(--cq-filet);
+  border-radius: var(--cq-rayon);
+  font-size: var(--cq-d-petit);
+  display: flex; flex-direction: column; min-height: 0; position: relative;
+  overflow: hidden;
+}
+.courriel__entete {
+  background: var(--cq-retrait); border-bottom: 1px solid var(--cq-filet);
+  padding: 1.1cqw 1.4cqw; display: grid; gap: .35cqw;
+}
+.courriel__objet { font-weight: 700; font-size: var(--cq-d-texte); line-height: 1.25; }
+.courriel__de { display: flex; flex-wrap: wrap; align-items: center; gap: .3cqw .8cqw; }
+.courriel__avatar {
+  width: 2.4cqw; height: 2.4cqw; border-radius: 50%; flex: none;
+  display: grid; place-items: center; font-weight: 700; font-size: var(--cq-d-micro);
+  background: var(--cq-filet); color: var(--cq-encre);
+}
+.courriel__nom {
+  font-weight: 700; background: none; border: 0; padding: 0; color: inherit; font: inherit; font-weight: 700;
+  cursor: pointer; text-decoration: underline dotted; text-underline-offset: .25em;
+}
+.courriel__adresse { font-family: var(--cq-police-mono); color: var(--cq-sourdine); font-size: .92em; }
+.courriel__adresse[hidden] { display: none; }
+.courriel__meta { color: var(--cq-sourdine); font-size: var(--cq-d-micro); }
+.courriel__corps { padding: 1.3cqw 1.4cqw; display: grid; gap: .8cqw; align-content: start; overflow: auto; }
+.courriel__corps p { margin: 0; }
+.courriel__lien {
+  color: var(--cq-lien); text-decoration: underline; cursor: pointer;
+  background: none; border: 0; padding: 0; font: inherit; text-align: left;
+}
+.courriel__bouton {
+  justify-self: start; background: var(--cq-lien); color: var(--cq-feuille); border: 0; border-radius: 4px;
+  padding: .6cqw 1.4cqw; font: inherit; font-weight: 700; cursor: pointer;
+}
+.courriel__pj {
+  display: inline-flex; gap: .6cqw; align-items: center; justify-self: start;
+  border: 1px solid var(--cq-filet); border-radius: 4px; padding: .5cqw .9cqw;
+  font-family: var(--cq-police-mono); font-size: var(--cq-d-micro);
+}
+/* Barre d'état : là où le client affiche la destination réelle d'un lien */
+.courriel__etat {
+  position: absolute; left: 0; bottom: 0; max-width: 90%;
+  background: var(--cq-encre); color: var(--cq-feuille);
+  font-family: var(--cq-police-mono); font-size: var(--cq-d-micro);
+  padding: .35cqw .9cqw; border-top-right-radius: 4px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.courriel__etat[hidden] { display: none; }
+
+/* Repère : l'endroit à regarder, pointé sur l'objet (C3) */
+.repere {
+  position: relative; border-radius: 3px;
+  box-shadow: 0 0 0 .22cqw var(--cq-focus);
+  background: color-mix(in srgb, var(--cq-focus) 16%, transparent);
+}
+.repere[data-n]::after {
+  content: attr(data-n);
+  position: absolute; top: -1.2cqw; right: -1.2cqw;
+  width: 2cqw; height: 2cqw; border-radius: 50%;
+  background: var(--cq-focus); color: #13212C;
+  font: 800 var(--cq-d-micro)/2cqw var(--cq-police-titre); text-align: center;
+}
+
+/* ============================================================
+   Tri — l'apprenant décide
+   ============================================================ */
+.tri { display: flex; flex-wrap: wrap; gap: .9cqw; }
+.tri__choix {
+  font: inherit; font-weight: 700; font-size: var(--cq-d-petit);
+  border: .15cqw solid var(--cq-filet); background: var(--cq-feuille); color: var(--cq-encre);
+  border-radius: 999px; padding: .7cqw 1.5cqw; cursor: pointer;
+  display: inline-flex; align-items: center; gap: .6cqw;
+  transition: border-color .15s, background .15s;
+}
+.tri__choix:hover { border-color: var(--cq-encre); }
+.tri__choix[aria-pressed="true"] { background: var(--cq-action); color: var(--cq-action-ink); border-color: var(--cq-action); }
+.tri__choix:disabled { cursor: default; }
+.tri__choix:disabled:not([aria-pressed="true"]) { opacity: .45; }
+
+.options { display: grid; gap: .8cqw; }
+.options__choix {
+  font: inherit; font-size: var(--cq-d-petit); text-align: left; cursor: pointer;
+  border: .15cqw solid var(--cq-filet); background: var(--cq-feuille); color: var(--cq-encre);
+  border-radius: var(--cq-rayon); padding: .9cqw 1.2cqw; line-height: 1.35;
+}
+.options__choix:hover { border-color: var(--cq-encre); }
+.options__choix[aria-pressed="true"] { border-color: var(--cq-encre); box-shadow: inset .4cqw 0 0 var(--cq-encre); }
+
+/* ---------- Rétroaction ---------- */
+.retro {
+  border-radius: var(--cq-rayon); padding: 1cqw 1.3cqw;
+  font-size: var(--cq-d-petit); display: grid; gap: .4cqw;
+  border-left: .45cqw solid currentColor;
+}
+.retro[hidden] { display: none; }
+.retro--juste  { background: var(--cq-sur-fond);    color: var(--cq-sur); }
+.retro--rate   { background: var(--cq-fraude-fond); color: var(--cq-fraude); }
+.retro--neutre { background: var(--cq-retrait);     color: var(--cq-encre); }
+.retro__titre { font-weight: 700; }
+.retro__texte { color: var(--cq-encre); }
+
+/* ---------- Aide-mémoire ---------- */
+.memo {
+  border: .2cqw solid var(--cq-encre); border-radius: var(--cq-rayon-l);
+  padding: 1.6cqw 2cqw; display: grid; gap: 1cqw; background: var(--cq-feuille);
+}
+.memo__titre { font-family: var(--cq-police-titre); font-weight: 800; font-size: var(--cq-d-inter); margin: 0; }
+
+/* ---------- Encart consigne ---------- */
+.consigne {
+  display: flex; gap: 1cqw; align-items: baseline;
+  font-size: var(--cq-d-petit); font-weight: 700;
+}
+.consigne::before {
+  content: "À vous"; flex: none;
+  font-size: var(--cq-d-micro); letter-spacing: .08em; text-transform: uppercase;
+  background: var(--cq-encre); color: var(--cq-feuille); border-radius: 3px; padding: .15cqw .6cqw;
+}
+
+/* ============================================================
+   Brouillon — reproduit la diapo par défaut de la version zéro
+   ============================================================ */
+.brouillon {
+  position: absolute; inset: 0; background: var(--br-fond); color: var(--br-texte);
+  font-family: var(--br-police); font-size: 1.9cqw; line-height: 1.3;
+  padding: 3.4cqw 5cqw; display: flex; flex-direction: column; gap: 1.6cqw;
+  color-scheme: light;
+}
+.brouillon::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1.3cqw; background: var(--br-barre);
+}
+.brouillon__titre { color: var(--br-titre); font-size: 3.4cqw; font-weight: 400; margin: 0; line-height: 1.1; }
+.brouillon ul { margin: 0; padding-left: 1.4em; display: grid; gap: .5cqw; }
+.brouillon p { margin: 0; }
+.brouillon__image {
+  flex: 1; min-height: 5cqw; max-height: 18cqw;
+  border: .15cqw dashed #9AA3AD; border-radius: 4px; display: grid; place-items: center;
+  font-size: 1.3cqw; color: #6B7580; font-style: italic; padding: 1cqw; text-align: center;
+  background: repeating-linear-gradient(45deg, #F3F5F7 0 8px, #fff 8px 16px);
+}
+.brouillon__chiffres { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2cqw; margin-top: 1cqw; }
+.brouillon__chiffres b { display: block; color: var(--br-titre); font-size: 4cqw; }
+.brouillon__chiffres span { font-size: 1.4cqw; }
+.brouillon__note { font-style: italic; color: #B00020; }
+.brouillon__grand { font-size: 4.2cqw; color: var(--br-titre); text-align: center; margin-top: 6cqw; }
+.brouillon__quiz { display: grid; gap: .9cqw; font-size: 1.45cqw; }
+.brouillon__quiz ol { padding-left: 1.3em; margin: 0; display: grid; gap: .7cqw; }
+.brouillon__quiz ol ol { list-style: lower-alpha; margin-top: .2cqw; gap: 0; color: #444; }
+.brouillon .courriel { font-size: 1.35cqw; }
+.brouillon__legende { font-size: 1.4cqw; color: #444; font-style: italic; }
+
+/* ============================================================
+   Calque — la couche de révision
+   ============================================================ */
+.critere {
+  display: inline-flex; align-items: baseline; gap: .45em;
+  font-family: var(--cq-police-mono); font-size: var(--cq-t-xs); font-weight: 500;
+  color: var(--cq-calque-ink); background: var(--cq-calque-voile);
+  border: 1px solid var(--cq-calque-trame); border-radius: 3px; padding: .1em .5em;
+  white-space: nowrap;
+}
+.critere__code { font-weight: 500; }
+.critere__nom { font-family: var(--cq-police-texte); font-weight: 400; }
+
+/* Gravité : trois épaisseurs de trait, pas seulement trois teintes */
+.gravite {
+  display: inline-flex; align-items: center; gap: .4em;
+  font-size: var(--cq-t-xs); color: var(--cq-calque-ink); white-space: nowrap;
+}
+.gravite::before { content: ""; width: 1.6em; border-top: 2px solid var(--cq-grav-mineur); }
+.gravite--majeur::before { border-top: 4px solid var(--cq-grav-majeur); }
+.gravite--bloquant::before { border-top: 6px solid var(--cq-grav-bloquant); }
+
+.statut {
+  font-family: var(--cq-police-mono); font-size: var(--cq-t-xs); text-transform: uppercase; letter-spacing: .08em;
+  color: var(--cq-calque-ink); border: 1px dashed var(--cq-calque); border-radius: 3px; padding: .1em .5em;
+}
+.statut--ajoutee  { border-style: solid; }
+.statut--retiree  { text-decoration: line-through; }
+
+.note-marge {
+  font-family: var(--cq-police-main); color: var(--cq-calque-ink);
+  font-size: 1.05rem; line-height: 1.35;
+}
+
+/* Journal de révision d'une diapo */
+.journal { display: grid; gap: .9rem; }
+.journal__ligne {
+  display: grid; gap: .35rem; padding: .8rem .9rem;
+  border-left: 3px solid var(--cq-calque);
+  background: var(--cq-calque-voile); border-radius: 0 var(--cq-rayon) var(--cq-rayon) 0;
+}
+.journal__tete { display: flex; flex-wrap: wrap; gap: .4rem .6rem; align-items: center; }
+.journal__texte { font-size: var(--cq-t-s); margin: 0; }
+
+/* Superposition : le calque posé sur la diapo */
+.surcouche {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    linear-gradient(var(--cq-calque-trame) 1px, transparent 1px),
+    linear-gradient(90deg, var(--cq-calque-trame) 1px, transparent 1px);
+  background-size: 2.5cqw 2.5cqw;
+  mix-blend-mode: multiply; opacity: .5;
+}
+
+/* Étiquette « avant » / « après » sur une scène */
+.marque {
+  position: absolute; top: 1.2cqw; left: 1.2cqw; z-index: 2;
+  font-family: var(--cq-police-mono); font-size: max(10px, var(--cq-d-micro)); letter-spacing: .1em; text-transform: uppercase;
+  padding: .2em .6em; border-radius: 3px;
+  background: var(--cq-calque-ink); color: #fff;
+}
+.marque--avant { background: #6B7580; }
+
+/* ---------- Bilan d'une série ---------- */
+.bilan { overflow: auto; gap: .9cqw; }
+.bilan__cas { border: 1px solid var(--cq-filet); border-radius: var(--cq-rayon); padding: .9cqw 1.1cqw; display: grid; gap: .3cqw; font-size: var(--cq-d-petit); }
+.bilan__tete { display: flex; justify-content: space-between; gap: 1cqw; align-items: baseline; font-weight: 700; }
+.bilan__adresse { color: var(--cq-sourdine); font-size: var(--cq-d-micro); margin: 0; }
+
+/* ---------- Correctifs de composition ---------- */
+.diapo__corps > .diapo__col { overflow: auto; padding: .4cqw; margin: -.4cqw; }  /* place pour le focus et les pastilles de repère */
+.courriel__bouton.repere { background: var(--cq-lien); }
+.lien-discret {
+  font: inherit; font-size: var(--cq-d-micro); background: none; border: 0; padding: 0; cursor: pointer;
+  color: var(--cq-sourdine); text-decoration: underline; text-underline-offset: .2em; align-self: flex-start;
+}
+
+/* Le brouillon reste une diapo claire par défaut, même en thème sombre :
+   il fige les jetons de la feuille pour ses enfants (courriel compris). */
+.brouillon {
+  --cq-feuille: #FFFFFF; --cq-retrait: #F5F7F8; --cq-filet: #D5DCE1;
+  --cq-encre: #13212C; --cq-sourdine: #5A6873; --cq-lien: #1A5FB4;
+}
+
+
+/* ============================================================
+   Mode étroit — la diapo cesse d'être une scène 16:9
+   ------------------------------------------------------------
+   Sous 760 px de large (téléphone, demi-écran), le plateau perd
+   son format fixe, les tailles passent en rem avec un plancher,
+   et les colonnes s'empilent : courriel, décision, rétroaction.
+   Au-dessus, les tailles proportionnelles ont un plancher lisible.
+   ============================================================ */
+.scene {
+  --cq-d-mega:  max(5.6cqw, 30px);
+  --cq-d-titre: max(3.6cqw, 22px);
+  --cq-d-inter: max(2.3cqw, 16px);
+  --cq-d-texte: max(1.75cqw, 15px);
+  --cq-d-petit: max(1.35cqw, 14px);
+  --cq-d-micro: max(1.1cqw, 12px);
+}
+.brouillon { font-size: max(1.9cqw, 13px); }
+.brouillon__titre { font-size: max(3.4cqw, 20px); }
+
+@container (max-width: 760px) {
+  .plateau { aspect-ratio: auto; }
+  .diapo, .brouillon { position: relative; inset: auto; padding: 20px 18px 24px; gap: 14px; }
+  .brouillon { padding-bottom: 36px; }
+  .diapo__corps { flex-direction: column; gap: 16px; }
+  .diapo__col--etroite { flex: none; }
+  .diapo__corps > .diapo__col { overflow: visible; }
+  .diapo__entete { flex-wrap: wrap; }
+  .courriel__entete, .courriel__corps { padding: 12px 14px; gap: 6px; }
+  .courriel__avatar { width: 28px; height: 28px; }
+  .courriel__bouton { padding: 10px 16px; }
+  .courriel__etat { position: static; max-width: none; white-space: normal; word-break: break-all; padding: 6px 10px; border-radius: 0; }
+  .courriel__pj { padding: 6px 10px; }
+  .tri { gap: 8px; }
+  .tri__choix, .options__choix, .courriel__action { min-height: 44px; padding: 10px 16px; }
+  .options { gap: 8px; }
+  .options__choix { padding: 12px 14px; }
+  .retro { padding: 12px 14px; border-left-width: 5px; gap: 4px; }
+  .verif { gap: 12px; }
+  .verif__item { grid-template-columns: 32px 1fr; gap: 2px 12px; }
+  .verif__item::before { width: 32px; height: 32px; border-width: 2px; }
+  .memo { padding: 16px; gap: 10px; }
+  .consigne { gap: 8px; }
+  .consigne::before { padding: 2px 8px; }
+  .repere { box-shadow: 0 0 0 2px var(--cq-focus); }
+  .repere[data-n]::after { width: 20px; height: 20px; top: -11px; right: -11px; line-height: 20px; }
+  .bilan__cas { padding: 12px; gap: 6px; }
+  .lien-discret { min-height: 44px; }
+  .brouillon__chiffres { grid-template-columns: 1fr; gap: 10px; }
+  .brouillon__image { min-height: 60px; max-height: none; font-size: 12px; }
+  .brouillon__quiz { font-size: 13px; }
+}
+
+/* ---------- Barre d'actions du courriel (geste Signaler) ---------- */
+.courriel__actions {
+  display: flex; flex-wrap: wrap; gap: .5cqw; padding: .7cqw 1.1cqw;
+  border-bottom: 1px solid var(--cq-filet); background: var(--cq-feuille);
+}
+.courriel__action {
+  font: inherit; font-size: var(--cq-d-micro); font-weight: 700; cursor: pointer;
+  border: 1px solid var(--cq-filet); background: var(--cq-retrait); color: var(--cq-encre);
+  border-radius: 4px; padding: .4cqw 1cqw;
+}
+.courriel__action:hover { border-color: var(--cq-encre); }
+.courriel__action[aria-pressed="true"] { background: var(--cq-action); color: var(--cq-action-ink); border-color: var(--cq-action); }
+.courriel__action--signaler::before { content: "⚑ "; }
+
+.courriel__etat--alerte { background: var(--cq-fraude); color: #fff; white-space: normal; }
+
+.tri__choix--plein { background: var(--cq-action); color: var(--cq-action-ink); border-color: var(--cq-action); align-self: flex-start; }
+.tri__choix--plein:hover { border-color: var(--cq-action); }
+
+.indice { display: grid; gap: .6cqw; }
+.indice__q { margin: 0; font-weight: 700; font-size: var(--cq-d-petit); }
+
+.regle { display: grid; gap: .9cqw; }
+.regle__ligne { display: grid; grid-template-columns: minmax(8.5em, auto) 1fr; gap: 1.2cqw; align-items: baseline; font-size: var(--cq-d-petit); }
+.regle__ligne .verdict { justify-self: start; }
+
+.bilan__cause { margin: 0; font-weight: 700; font-size: var(--cq-d-micro); color: var(--cq-sourdine); }
+.lien-externe { color: var(--cq-lien); font-weight: 700; font-size: var(--cq-d-petit); }
+
+.journal__ligne--tour2 { border-left-style: dashed; margin-left: 1.2rem; }
+
+</style>
+<style>
+  html, body { background: var(--cq-papier); }
+  body { margin: 0; }
+  .app { min-height: 100vh; display: grid; grid-template-rows: auto 1fr; padding-inline: 16px; }
+
+  .tete {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px;
+    padding-block: 18px 14px; max-width: 1440px; width: 100%; margin-inline: auto;
+    border-bottom: 1px solid var(--cq-filet);
+  }
+  .tete__nom { display: grid; gap: 2px; }
+  .tete__titre { font-family: var(--cq-police-titre); font-weight: 800; font-size: var(--cq-t-l); letter-spacing: -.02em; margin: 0; }
+  .tete__sous { font-size: var(--cq-t-xs); color: var(--cq-sourdine); margin: 0; }
+
+  .onglets { display: flex; gap: 4px; background: var(--cq-feuille); border: 1px solid var(--cq-filet); border-radius: 999px; padding: 4px; flex-wrap: wrap; }
+  .onglets button {
+    font: inherit; font-size: var(--cq-t-s); font-weight: 700; border: 0; border-radius: 999px; padding: 6px 14px; cursor: pointer;
+    background: none; color: var(--cq-sourdine);
+  }
+  .onglets button[aria-selected="true"] { background: var(--cq-encre); color: var(--cq-feuille); }
+  .onglets button[data-vue="comparer"][aria-selected="true"],
+  .onglets button[data-vue="boucle"][aria-selected="true"] { background: var(--cq-calque-ink); color: #fff; }
+  .onglets__calque { font-family: var(--cq-police-main); font-weight: 400; }
+
+  .corps { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 28px; max-width: 1440px; width: 100%; margin-inline: auto; padding-block: 24px 48px; align-items: start; }
+  .corps:has(#navigation[hidden]) { grid-template-columns: minmax(0, 1fr); }
+  #navigation { display: grid; gap: 4px; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 16px); max-height: calc(100vh - 32px); overflow: auto; }
+  .nav__module, .nav__diapo {
+    font: inherit; text-align: left; border: 0; background: none; color: var(--cq-encre); cursor: pointer;
+    border-radius: var(--cq-rayon); padding: 8px 10px; display: grid; gap: 2px 10px; align-items: baseline;
+  }
+  .nav__module { grid-template-columns: auto 1fr; font-size: var(--cq-t-s); }
+  .nav__module:hover, .nav__diapo:hover { background: var(--cq-retrait); }
+  .nav__module--actif { background: var(--cq-feuille); box-shadow: inset 3px 0 0 var(--cq-encre); font-weight: 700; }
+  .nav__num { font-family: var(--cq-police-mono); font-size: var(--cq-t-xs); color: var(--cq-sourdine); grid-row: span 2; }
+  .nav__duree { font-size: var(--cq-t-xs); color: var(--cq-sourdine); font-weight: 400; }
+  .nav__groupe { font-size: var(--cq-t-xs); text-transform: uppercase; letter-spacing: .08em; color: var(--cq-calque-ink); padding: 12px 10px 2px; }
+  .nav__diapo { grid-template-columns: 22px 1fr; font-size: var(--cq-t-xs); padding: 5px 8px; }
+  .nav__diapo .statut { padding: 0; width: 20px; text-align: center; font-size: 10px; }
+  .nav__retiree { text-decoration: line-through; text-decoration-color: var(--cq-calque); color: var(--cq-sourdine); }
+  .nav__diapo--actif { background: var(--cq-calque-voile); box-shadow: inset 3px 0 0 var(--cq-calque); font-weight: 700; }
+
+  .pile { display: grid; gap: 18px; }
+  .barre { display: flex; align-items: center; justify-content: center; gap: 16px; }
+  .barre__pos { font-family: var(--cq-police-mono); font-size: var(--cq-t-xs); color: var(--cq-sourdine); font-variant-numeric: tabular-nums; min-width: 12ch; text-align: center; }
+  .barre__btn {
+    font: inherit; font-size: 1.1rem; width: 44px; height: 44px; border-radius: 50%; cursor: pointer;
+    border: 1px solid var(--cq-filet); background: var(--cq-feuille); color: var(--cq-encre);
+  }
+  .barre__btn:disabled { opacity: .35; cursor: default; }
+
+  .comparer { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .comparer__cote { margin: 0; display: grid; gap: 8px; min-width: 0; }
+  .comparer__legende { font-family: var(--cq-police-mono); font-size: var(--cq-t-xs); letter-spacing: .08em; text-transform: uppercase; color: var(--cq-sourdine); }
+  .comparer__cote--apres .comparer__legende { color: var(--cq-calque-ink); }
+  .comparer__cote--apres .scene { box-shadow: 0 0 0 2px var(--cq-calque), var(--cq-ombre); }
+  .journal { max-width: 76ch; }
+
+  .boucle { display: grid; gap: 40px; max-width: 980px; }
+  .boucle h2 { font-family: var(--cq-police-titre); font-weight: 800; font-size: var(--cq-t-xl); letter-spacing: -.02em; margin: 0 0 12px; }
+  .boucle h3 { font-family: var(--cq-police-titre); font-size: var(--cq-t-m); margin: 20px 0 8px; }
+  .boucle p, .boucle li { max-width: 72ch; }
+  .boucle__bloc { display: grid; gap: 8px; }
+  .objectifs { display: grid; gap: 8px; padding-left: 0; list-style: none; margin: 0; }
+  .objectifs b { font-family: var(--cq-police-mono); color: var(--cq-sourdine); margin-right: 6px; }
+  .defile { overflow-x: auto; }
+  .tableau { border-collapse: collapse; width: 100%; font-size: var(--cq-t-s); min-width: 520px; }
+  .tableau th, .tableau td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--cq-filet); vertical-align: top; }
+  .tableau th { font-size: var(--cq-t-xs); text-transform: uppercase; letter-spacing: .06em; color: var(--cq-sourdine); }
+  .audits { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+  .audit { background: var(--cq-feuille); border: 1px solid var(--cq-filet); border-radius: var(--cq-rayon-l); padding: 16px 18px; display: grid; gap: 6px; align-content: start; }
+  .audit h3 { margin: 0; }
+  .audit__date { margin: 0; font-size: var(--cq-t-xs); color: var(--cq-sourdine); }
+  .audit__chiffres { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 8px 0 0; }
+  .audit__chiffres dt { margin: 0; }
+  .audit__chiffres dd { margin: 0; font-family: var(--cq-police-titre); font-weight: 800; font-size: 2rem; font-variant-numeric: tabular-nums; }
+  .audit__note { font-size: var(--cq-t-s); color: var(--cq-sourdine); margin: 4px 0 0; }
+  .boucle__bilan { font-weight: 700; }
+  .boucle__aide { color: var(--cq-sourdine); font-size: var(--cq-t-s); margin: 0; }
+  .barres { display: grid; gap: 6px; }
+  .barres__ligne { display: grid; grid-template-columns: minmax(0, 260px) 1fr 3ch; gap: 12px; align-items: center; }
+  .barres__ligne .critere { justify-self: start; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+  .barres__piste { height: 10px; background: var(--cq-calque-voile); border-radius: 2px; }
+  .barres__trait { display: block; height: 100%; background: var(--cq-calque); border-radius: 2px; }
+  .barres__n { font-family: var(--cq-police-mono); font-size: var(--cq-t-xs); text-align: right; font-variant-numeric: tabular-nums; }
+  .barres__ligne--nul { opacity: .5; }
+
+  @media (max-width: 900px) {
+    .corps { grid-template-columns: minmax(0, 1fr); }
+    #navigation { position: static; max-height: none; grid-auto-flow: column; grid-auto-columns: max-content; overflow-x: auto; padding-bottom: 4px; }
+    .nav__groupe { display: none; }
+    .nav__duree { display: none; }
+    .nav__module, .nav__diapo { white-space: nowrap; max-width: 70vw; overflow: hidden; text-overflow: ellipsis; }
+    .nav__module { grid-template-columns: auto auto; }
+    .onglets { width: 100%; flex-wrap: nowrap; }
+    .onglets button { flex: 1; padding: 8px 6px; min-height: 40px; }
+    .corps { gap: 12px; padding-block: 12px 40px; }
+    .comparer { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px) {
+    .barres__ligne { grid-template-columns: 1fr 3ch; }
+    .barres__piste { grid-column: 1 / -1; grid-row: 2; }
+  }
+</style>
+
+<div class="app cq">
+  <header class="tete">
+    <div class="tete__nom">
+      <h1 class="tete__titre">Le courriel de trop</h1>
+      <p class="tete__sous">Reconnaître un courriel d'hameçonnage · formation révisée avec la boucle didactique</p>
+    </div>
+    <nav class="onglets" role="tablist" aria-label="Vues">
+      <button type="button" role="tab" data-vue="formation">La formation</button>
+      <button type="button" role="tab" data-vue="comparer">Avant <span class="onglets__calque">/</span> après</button>
+      <button type="button" role="tab" data-vue="boucle">La boucle</button>
+    </nav>
+  </header>
+  <div class="corps">
+    <nav id="navigation" aria-label="Diapositives"></nav>
+    <main id="vue"></main>
+  </div>
+</div>
+
+<script>
+/* Grille de la boucle didactique — version abrégée pour l'affichage.
+   La version complète (signes d'échec, correctifs, sources) est dans
+   la compétence : ~/.claude/skills/boucle-didactique/references/grille.md */
+window.GRILLE = {
+  familles: {
+    A: "Alignement", B: "Entrée en matière", C: "Charge cognitive",
+    D: "Pratique", E: "Rétroaction", F: "Transfert", G: "Accès"
+  },
+  criteres: {
+    A1: { nom: "Objectif observable",        q: "L'objectif décrit-il un comportement visible, dans une situation, avec un seuil ?", src: "Mager, 1962" },
+    A2: { nom: "Écart de performance réel",  q: "Répond-on à ce que les gens font mal en situation, plutôt qu'à ce qu'ils ignorent en théorie ?", src: "Mager et Pipe, 1970" },
+    A3: { nom: "Alignement constructif",     q: "Chaque activité et chaque évaluation servent-elles un objectif, et chaque objectif est-il pratiqué et évalué ?", src: "Biggs, 1996" },
+    B1: { nom: "Tâche d'abord",              q: "Le module s'ouvre-t-il sur une tâche réelle plutôt que sur un exposé ?", src: "Merrill, 2002" },
+    B2: { nom: "Activation des acquis",      q: "Relie-t-on le contenu à ce que l'apprenant a déjà vécu ?", src: "Merrill, 2002" },
+    B3: { nom: "Pertinence et ton",          q: "L'apprenant voit-il pourquoi ça le concerne, sans être menacé ni infantilisé ?", src: "Keller, 1987 ; Witte, 1992" },
+    C1: { nom: "Segmentation",               q: "Une seule idée par écran, au rythme de l'apprenant ?", src: "Mayer, 2009" },
+    C2: { nom: "Cohérence",                  q: "Tout ce qui est à l'écran sert-il l'objectif ?", src: "Mayer, 2009 ; Harp et Mayer, 1998" },
+    C3: { nom: "Contiguïté et signalisation", q: "L'explication est-elle posée sur ce qu'elle explique ?", src: "Mayer, 2009" },
+    C4: { nom: "Exemple travaillé",          q: "Voit-on un expert faire la tâche, pas à pas, avant de la faire soi-même ?", src: "Sweller et Cooper, 1985" },
+    C5: { nom: "Langage clair",              q: "Un non-spécialiste comprend-il chaque phrase à la première lecture ?", src: "ISO 24495-1, 2023" },
+    D1: { nom: "Récupération",               q: "L'apprenant doit-il produire la réponse de mémoire ?", src: "Roediger et Karpicke, 2006" },
+    D2: { nom: "Fidélité à la situation",    q: "La pratique ressemble-t-elle à ce qu'on verra au travail ?", src: "Barnett et Ceci, 2002" },
+    D3: { nom: "Variété et entrelacement",   q: "Les cas varient-ils assez pour apprendre à discriminer ?", src: "Rohrer et Taylor, 2007" },
+    D4: { nom: "Distracteurs plausibles",    q: "Les mauvais choix sont-ils tentants pour une bonne raison ?", src: "Haladyna et coll., 2002" },
+    E1: { nom: "Rétroaction explicative",    q: "Apprend-on pourquoi, en lien avec l'indice précis ?", src: "Shute, 2008" },
+    E2: { nom: "Conséquence visible",        q: "L'erreur a-t-elle une suite plausible, sans blâme ?", src: "Keith et Frese, 2008" },
+    F1: { nom: "Évaluation alignée",         q: "L'évaluation demande-t-elle le comportement de l'objectif, sur des cas nouveaux ?", src: "Biggs, 1996" },
+    F2: { nom: "Soutien au travail",         q: "Repart-on avec un aide-mémoire et un geste précis ?", src: "Rossett et Schafer, 2007" },
+    F3: { nom: "Espacement prévu",           q: "Un rappel est-il prévu après la formation ?", src: "Cepeda et coll., 2006" },
+    G1: { nom: "Accessibilité",              q: "Contraste, clavier, tactile, jamais la couleur seule ?", src: "WCAG 2.2" },
+    G2: { nom: "Durée et contrôle",          q: "La durée est-elle proportionnée, le rythme contrôlé ?", src: "Guo, Kim et Rubin, 2014" }
+  }
+};
+
+</script>
+<script>
+/* ============================================================
+   VERSION ZÉRO — « Sensibilisation à l'hameçonnage »
+   Telle qu'un expert de contenu l'écrirait spontanément :
+   exacte, complète, trop longue. C'est le « avant » de la boucle.
+   Ne pas corriger ce fichier : il est la trace du point de départ.
+   ============================================================ */
+
+window.AVANT = {
+  titre: "Sensibilisation à la cybersécurité : l'hameçonnage",
+  duree: "45 minutes",
+  modules: [
+    {
+      id: "M1",
+      titre: "Introduction à l'hameçonnage",
+      diapos: [
+        {
+          id: "A-M1-1",
+          titre: "Sensibilisation à la cybersécurité : l'hameçonnage",
+          blocs: [
+            { t: "sous-titre", x: "Formation obligatoire — Groupe Norvic, Service des technologies de l'information" },
+            { t: "image", alt: "Illustration : un hameçon planté dans une enveloppe, sur fond de code binaire vert." }
+          ]
+        },
+        {
+          id: "A-M1-2",
+          titre: "Objectifs de la formation",
+          blocs: [
+            { t: "puces", x: [
+              "Comprendre ce qu'est l'hameçonnage",
+              "Connaître les différents types d'hameçonnage",
+              "Être sensibilisé aux risques pour l'organisation",
+              "Adopter de bonnes pratiques de cybersécurité"
+            ] }
+          ]
+        },
+        {
+          id: "A-M1-3",
+          titre: "Qu'est-ce que l'hameçonnage ?",
+          blocs: [
+            { t: "para", x: "L'hameçonnage (en anglais « phishing ») est une technique d'ingénierie sociale utilisée par des cybercriminels pour inciter une victime à divulguer des informations confidentielles (identifiants, mots de passe, numéros de carte de crédit) ou à exécuter une action compromettante (ouvrir une pièce jointe malveillante, effectuer un virement), en se faisant passer pour une entité de confiance comme une banque, un fournisseur, un collègue ou un organisme gouvernemental. L'attaque repose sur l'usurpation d'identité (spoofing) et exploite des leviers psychologiques comme l'urgence, la peur, la curiosité ou l'autorité." }
+          ]
+        },
+        {
+          id: "A-M1-4",
+          titre: "Un peu d'histoire",
+          blocs: [
+            { t: "puces", x: [
+              "1996 : le terme « phishing » apparaît sur les forums d'AOL",
+              "Le « ph » ferait référence au « phreaking », le piratage des lignes téléphoniques",
+              "Années 2000 : explosion des courriels frauduleux imitant les banques",
+              "Aujourd'hui : attaques ciblées, faux sites très réalistes, utilisation de l'IA"
+            ] },
+            { t: "image", alt: "Illustration : pêcheur en capuchon noir devant un écran d'ordinateur." }
+          ]
+        },
+        {
+          id: "A-M1-5",
+          titre: "Quelques statistiques",
+          blocs: [
+            { t: "chiffres", x: [
+              { n: "91 %", l: "des cyberattaques commencent par un courriel d'hameçonnage (PhishMe, 2016)" },
+              { n: "4,88 M$ US", l: "coût moyen d'une brèche de données dans le monde (IBM, 2024)" },
+              { n: "3,4 milliards", l: "de courriels frauduleux envoyés chaque jour" }
+            ] }
+          ]
+        },
+        {
+          id: "A-M1-6",
+          titre: "Les conséquences d'une attaque",
+          blocs: [
+            { t: "puces", x: [
+              "Vol de données personnelles et confidentielles",
+              "Infection par un rançongiciel",
+              "Pertes financières directes (virements frauduleux)",
+              "Atteinte à la réputation de l'organisation",
+              "Poursuites judiciaires et amendes (Loi 25)",
+              "Mesures disciplinaires pouvant aller jusqu'au congédiement pour l'employé fautif"
+            ] },
+            { t: "note", x: "Rappel : l'erreur humaine est la première faille de sécurité." }
+          ]
+        }
+      ]
+    },
+    {
+      id: "M2",
+      titre: "Les types d'hameçonnage",
+      diapos: [
+        {
+          id: "A-M2-1",
+          titre: "L'hameçonnage de masse",
+          blocs: [
+            { t: "para", x: "Des milliers de courriels identiques sont envoyés au hasard. Ils imitent généralement de grandes marques (Microsoft, Postes Canada, Desjardins, Netflix) et comptent sur le volume : même si un très faible pourcentage de destinataires tombe dans le piège, l'attaque est rentable." }
+          ]
+        },
+        {
+          id: "A-M2-2",
+          titre: "Le harponnage (spear phishing)",
+          blocs: [
+            { t: "para", x: "Le harponnage est une attaque ciblée. Le fraudeur recueille d'abord des renseignements sur sa victime (LinkedIn, site de l'entreprise, réseaux sociaux) pour rédiger un message personnalisé, crédible, qui mentionne des collègues, des projets ou des fournisseurs réels." }
+          ]
+        },
+        {
+          id: "A-M2-3",
+          titre: "La fraude du président (BEC)",
+          blocs: [
+            { t: "para", x: "La compromission de courriel d'affaires (Business Email Compromise) consiste à usurper l'identité d'un dirigeant ou d'un fournisseur pour demander un virement urgent ou la modification de coordonnées bancaires. Lorsqu'elle vise un haut dirigeant, on parle de « whaling »." }
+          ]
+        },
+        {
+          id: "A-M2-4",
+          titre: "Smishing et vishing",
+          blocs: [
+            { t: "puces", x: [
+              "Smishing : hameçonnage par texto (SMS)",
+              "Vishing : hameçonnage par appel vocal (voice phishing)",
+              "Exemples : faux colis en attente, faux remboursement de l'ARC, faux appel du soutien technique"
+            ] }
+          ]
+        },
+        {
+          id: "A-M2-5",
+          titre: "Le « quishing » (codes QR)",
+          blocs: [
+            { t: "para", x: "Le quishing utilise un code QR plutôt qu'un lien cliquable, ce qui permet de contourner les filtres antipourriel et d'amener la victime à ouvrir la page frauduleuse sur son téléphone, souvent moins protégé." }
+          ]
+        }
+      ]
+    },
+    {
+      id: "M3",
+      titre: "Comment reconnaître un courriel frauduleux",
+      diapos: [
+        {
+          id: "A-M3-1",
+          titre: "Les 12 signes d'un courriel d'hameçonnage (1/2)",
+          blocs: [
+            { t: "puces", x: [
+              "Adresse de l'expéditeur inhabituelle ou mal orthographiée",
+              "Salutation générique (« Cher client »)",
+              "Ton urgent ou menaçant",
+              "Fautes d'orthographe et de grammaire",
+              "Demande d'informations personnelles",
+              "Liens suspects"
+            ] }
+          ]
+        },
+        {
+          id: "A-M3-2",
+          titre: "Les 12 signes d'un courriel d'hameçonnage (2/2)",
+          blocs: [
+            { t: "puces", x: [
+              "Pièces jointes inattendues",
+              "Offre trop belle pour être vraie",
+              "Logo de mauvaise qualité",
+              "Demande de garder le secret",
+              "Heure d'envoi inhabituelle",
+              "Demande de modification de coordonnées bancaires"
+            ] }
+          ]
+        },
+        {
+          id: "A-M3-3",
+          titre: "Exemple de courriel frauduleux",
+          blocs: [
+            { t: "courriel", nom: "Service Clientele", adresse: "securite@desjardins-verification.info", objet: "URGENT !!! Votre compte a ete suspendu", corps: [
+              "Cher client,",
+              "Nous avons detecter une activiter inhabituel sur votre compte. Votre acces a ete suspendu pour votre securite.",
+              "Vous devez confirmer vos informations dans les 24 heure sinon votre compte sera definitivement fermer.",
+              "Cliquez ici pour réactiver votre compte"
+            ], lien: "http://desjardins-verification.info/login" },
+            { t: "legende", x: "Remarquez les nombreux indices !" }
+          ]
+        },
+        {
+          id: "A-M3-4",
+          titre: "Vérifiez les liens",
+          blocs: [
+            { t: "para", x: "Avant de cliquer, passez votre souris au-dessus du lien pour afficher l'adresse réelle en bas à gauche de votre écran. Si l'adresse ne correspond pas au site attendu, ne cliquez pas." }
+          ]
+        },
+        {
+          id: "A-M3-5",
+          titre: "Les pièces jointes dangereuses",
+          blocs: [
+            { t: "puces", x: [
+              "Fichiers exécutables : .exe, .scr, .bat, .cmd, .msi",
+              "Scripts : .js, .vbs, .ps1",
+              "Documents Office avec macros : .docm, .xlsm, .pptm",
+              "Archives compressées : .zip, .rar, .7z, .iso",
+              "Fichiers HTML joints : .html, .htm"
+            ] }
+          ]
+        }
+      ]
+    },
+    {
+      id: "M4",
+      titre: "Bonnes pratiques et conclusion",
+      diapos: [
+        {
+          id: "A-M4-1",
+          titre: "Les bonnes pratiques",
+          blocs: [
+            { t: "puces", x: [
+              "Utilisez des mots de passe forts et uniques",
+              "Activez l'authentification multifacteur (MFA)",
+              "Installez les mises à jour dès qu'elles sont disponibles",
+              "Ne branchez jamais une clé USB inconnue",
+              "Verrouillez votre poste lorsque vous vous absentez",
+              "Ne partagez pas vos identifiants",
+              "Méfiez-vous des réseaux Wi-Fi publics",
+              "Faites preuve de vigilance en tout temps"
+            ] }
+          ]
+        },
+        {
+          id: "A-M4-2",
+          titre: "Que faire si vous recevez un courriel suspect ?",
+          blocs: [
+            { t: "puces", x: [
+              "Ne cliquez sur aucun lien",
+              "N'ouvrez pas les pièces jointes",
+              "Ne répondez pas à l'expéditeur",
+              "Supprimez le courriel",
+              "Au besoin, contactez le service TI"
+            ] }
+          ]
+        },
+        {
+          id: "A-M4-3",
+          titre: "Quiz",
+          blocs: [
+            { t: "quiz", questions: [
+              { q: "Qu'est-ce que le harponnage ?", choix: ["Un hameçonnage par texto", "Une attaque ciblée et personnalisée", "Un virus informatique", "Un filtre antipourriel"], bonne: 1, retro: { bien: "Bonne réponse !", mal: "Mauvaise réponse." } },
+              { q: "Vrai ou faux : les courriels d'hameçonnage contiennent toujours des fautes d'orthographe.", choix: ["Vrai", "Faux"], bonne: 1, retro: { bien: "Bonne réponse !", mal: "Mauvaise réponse." } },
+              { q: "Laquelle de ces pièces jointes est potentiellement dangereuse ?", choix: [".exe", ".docm", ".zip", "Toutes ces réponses"], bonne: 3, retro: { bien: "Bonne réponse !", mal: "Mauvaise réponse." } },
+              { q: "Que signifie MFA ?", choix: ["Multi-Factor Authentication", "Mail Filter Application", "Malware Free Access", "Mot de passe Fort et Aléatoire"], bonne: 0, retro: { bien: "Bonne réponse !", mal: "Mauvaise réponse." } },
+              { q: "Que devez-vous faire avec un courriel suspect ?", choix: ["Le transférer à vos collègues pour les avertir", "Le supprimer", "Répondre pour demander des précisions", "Cliquer sur le lien pour vérifier"], bonne: 1, retro: { bien: "Bonne réponse !", mal: "Mauvaise réponse." } }
+            ] }
+          ]
+        },
+        {
+          id: "A-M4-4",
+          titre: "Conclusion",
+          blocs: [
+            { t: "grand", x: "La sécurité, c'est l'affaire de tous !" },
+            { t: "sous-titre", x: "Merci de votre attention. Des questions ?" }
+          ]
+        }
+      ]
+    }
+  ]
+};
+
+</script>
+<script>
+/* ============================================================
+   VERSION FINALE — « Le courriel de trop »
+   Issue de la boucle : cadrage → audit 1 → révision → audit 2.
+   Chaque diapo est reliée à la version zéro par contenu/journal.js.
+   Groupe Norvic, ses domaines, ses employés et ses fournisseurs
+   sont fictifs. Canal et postes téléphoniques : à remplacer par
+   ceux de l'organisation qui déploie la formation.
+   ============================================================ */
+
+window.APRES = {
+  titre: "Le courriel de trop",
+  duree: "environ 25 minutes",
+  objectifs: [
+    { id: "O1", x: "Devant un courriel reçu, sur ordinateur ou téléphone, le **classer** comme légitime, à vérifier ou frauduleux **en moins d'une minute**, en nommant l'indice décisif (expéditeur réel, destination du lien ou demande)." },
+    { id: "O2", x: "Devant un courriel frauduleux, le **signaler** avec le bouton Signaler d'Outlook, **sans** cliquer, répondre ni transférer." },
+    { id: "O3", x: "Devant une demande de paiement ou de changement de coordonnées bancaires, la **confirmer par téléphone** au numéro connu **avant** ce courriel." },
+    { id: "O4", x: "Après un clic ou la saisie d'un mot de passe sur une page douteuse, **appeler le soutien TI** (poste 4357) **dans les 5 minutes**." }
+  ],
+  modules: [
+    /* ---------------------------------------------------------- */
+    {
+      id: "M1", titre: "Le courriel de trop", duree: "4 min",
+      diapos: [
+        {
+          id: "M1-1", titre: "Il est 8 h 12. Ce courriel vient d'arriver.", surtitre: "Pour commencer",
+          blocs: [{
+            t: "tri", consigne: "Que faites-vous ?", bonne: "fraude",
+            courriel: {
+              nom: "Microsoft 365", adresse: "no-reply@m365-notifications-center.com", date: "aujourd'hui, 8 h 12",
+              objet: "Votre boîte aux lettres a atteint 98 % de sa capacité",
+              corps: [
+                "Bonjour,",
+                "Votre boîte aux lettres Groupe Norvic a atteint 98 % de sa capacité. Au-delà de 100 %, les nouveaux messages vous seront retournés.",
+                { demande: "Pour éviter toute interruption, confirmez votre compte afin d'obtenir 50 Go d'espace supplémentaire, sans frais." },
+                { bouton: { texte: "Augmenter mon espace", url: "https://m365-notifications-center.com/norvic/login.php" } },
+                { signature: "Microsoft 365 · Centre de notifications" }
+              ]
+            },
+            reperes: { nom: 1, lien: 2, demande: 3 },
+            retro: {
+              sur: "Réponse fréquente : aucune faute, un ton calme. Mais l'adresse réelle (1) n'est pas celle de Microsoft, et le bouton (2) mène à une page qui veut votre mot de passe. La suite vous apprend à le voir.",
+              doute: "Bon réflexe de méfiance. Ici, on peut trancher : l'adresse réelle (1) et la destination du bouton (2) n'appartiennent pas à Microsoft. C'est frauduleux, on le signale. Vous verrez comment en 10 secondes.",
+              fraude: "Oui. Pouvez-vous dire pourquoi ? Trois endroits le prouvent : l'adresse réelle (1), la destination du bouton (2), ce qu'on vous demande (3). La suite vous apprend à les vérifier à chaque fois, pas seulement quand un doute vous vient."
+            }
+          }]
+        },
+        {
+          id: "M1-2", titre: "Dans 25 minutes, vous saurez…",
+          blocs: [
+            { t: "verif", items: [
+              { q: "Trier un courriel en moins d'une minute", r: "Légitime, à vérifier ou frauduleux, et dire pourquoi." },
+              { q: "Le signaler en un geste", r: "Le bouton Signaler d'Outlook, sur ordinateur comme sur téléphone." },
+              { q: "Vérifier une demande d'argent", r: "Un appel, au numéro que vous aviez déjà." },
+              { q: "Réagir si c'est trop tard", r: "Vous avez cliqué ? Un appel, dans les 5 minutes." }
+            ] },
+            { t: "pied", x: "4 modules de 4 à 8 minutes, chacun avec au moins une activité. Vous avancez à votre rythme." }
+          ]
+        },
+        {
+          id: "M1-3", titre: "Ce que le fraudeur veut obtenir de vous",
+          blocs: [
+            { t: "chapeau", x: "Quelqu'un se fait passer pour un expéditeur de confiance pour vous faire faire **une de trois choses** :" },
+            { t: "verif", items: [
+              { q: "Donner un mot de passe", r: "Le plus souvent, celui de Microsoft 365." },
+              { q: "Payer", r: "Une facture, un virement, des cartes-cadeaux." },
+              { q: "Ouvrir un fichier", r: "Qui installe un logiciel malveillant ou ouvre une fausse page de connexion." }
+            ] },
+            { t: "consigne", x: "Pensez au dernier courriel qui vous a fait hésiter. Laquelle des trois choses vous demandait-il ?" }
+          ]
+        },
+        {
+          id: "M1-4", titre: "Ce que ça coûte, ici",
+          blocs: [
+            { t: "chapeau", x: "Un fournisseur habituel écrit : « Nous changeons de compte bancaire. » La facture suivante, **48 000 $**, part chez le fraudeur." },
+            { t: "para", x: "C'est le scénario le plus coûteux pour une entreprise de distribution, et un seul appel l'aurait arrêté. Vous le pratiquerez au module 3." },
+            { t: "para", x: "Et si un jour vous cliquez : **dites-le tout de suite**. Plus c'est rapide, moins c'est grave. Personne ne vous le reprochera." }
+          ]
+        }
+      ]
+    },
+    /* ---------------------------------------------------------- */
+    {
+      id: "M2", titre: "Trois vérifications", duree: "7 min",
+      diapos: [
+        {
+          id: "M2-1", titre: "Trois vérifications, dans cet ordre",
+          blocs: [
+            { t: "verif", items: [
+              { q: "Qui l'envoie **vraiment** ?", r: "L'adresse réelle, pas le nom affiché. Sur téléphone, touchez le nom pour la voir." },
+              { q: "Où mène **vraiment** le lien ?", r: "La destination, pas le texte du lien ni celui du bouton." },
+              { q: "Que me demande-t-on ?", r: "Mot de passe, paiement, coordonnées bancaires, fichier à ouvrir, surtout si c'est urgent ou secret." }
+            ] },
+            { t: "pied", x: "Et les fautes d'orthographe ? Elles ne prouvent rien : les fraudes actuelles n'en font presque plus." }
+          ]
+        },
+        {
+          id: "M2-2", titre: "Des vérifications au verdict : une règle",
+          blocs: [
+            { t: "regle", items: [
+              { v: "fraude", si: "L'adresse **ou** le lien n'est pas le bon, **ou** on vous demande votre mot de passe. → Vous le **signalez**." },
+              { v: "doute", si: "L'adresse et le lien sont bons, **mais** on vous demande de l'argent, des coordonnées bancaires ou quelque chose d'inhabituel. → Vous **appelez** l'expéditeur au numéro que vous aviez déjà." },
+              { v: "sur", si: "Tout concorde et rien de sensible n'est demandé. → Vous le traitez." }
+            ] },
+            { t: "pied", x: "Pourquoi « à vérifier » quand l'adresse est la bonne ? Parce qu'un compte peut être piraté : le courriel part alors de la vraie adresse." }
+          ]
+        },
+        {
+          id: "M2-3", titre: "Regardez-moi faire", surtitre: "Exemple commenté",
+          blocs: [{
+            t: "exemple", verdict: "fraude",
+            courriel: {
+              nom: "Martine Gagnon via SharePoint", adresse: "partage@norvic-sharepoint.com", date: "aujourd'hui, 10 h 03",
+              objet: "Martine Gagnon a partagé « Prix fournisseurs 2027.xlsx » avec vous",
+              corps: [
+                "Martine Gagnon a partagé un fichier avec vous.",
+                { demande: "« Peux-tu valider les prix avant midi ? Merci ! »" },
+                { bouton: { texte: "Ouvrir", url: "https://norvic-sharepoint.com/auth/o365/connexion" } },
+                { signature: "Microsoft SharePoint" }
+              ]
+            },
+            etapes: [
+              { repere: "nom", q: "Qui l'envoie vraiment ?", r: "Le nom affiché dit Martine. L'adresse réelle, `norvic-sharepoint.com`, n'est ni Norvic (`groupenorvic.ca`) ni Microsoft. **Premier signal.**" },
+              { repere: "lien", q: "Où mène le bouton ?", r: "Encore vers `norvic-sharepoint.com`, sur une page de « connexion ». Un vrai partage mène à `groupenorvic.sharepoint.com`. **Deuxième signal.**" },
+              { repere: "demande", q: "Que me demande-t-on ?", r: "D'ouvrir vite, puis de me connecter. L'urgence est plausible, et c'est ce qui la rend efficace." }
+            ],
+            conclusion: "Adresse et lien ne sont pas les bons : selon la règle, je le signale. À retenir : un vrai partage vient de `sharepointonline.com` (Microsoft) et mène à `groupenorvic.sharepoint.com`."
+          }]
+        },
+        {
+          id: "M2-4", titre: "Voir où mène un lien, sans cliquer",
+          blocs: [{
+            t: "colonnes", etroite: "droite",
+            gauche: [{ t: "courriel", courriel: {
+              nom: "Service de la paie", adresse: "paie@groupenorvic.ca", date: "hier, 16 h 30",
+              objet: "Votre relevé de paie du 19 septembre",
+              corps: [
+                "Bonjour,",
+                "Votre relevé de paie est disponible dans le portail des employés.",
+                { lien: { texte: "Consulter mon relevé", url: "https://portail.groupenorvic.ca/paie/releves" } },
+                { signature: "Service de la paie · Groupe Norvic" }
+              ]
+            } }],
+            droite: [
+              { t: "verif", items: [
+                { q: "Ordinateur", r: "Survolez le lien avec la souris, sans cliquer : la destination s'affiche (au bas de la fenêtre ou dans une bulle)." },
+                { q: "Téléphone", r: "Appuyez **longuement** sur le lien : l'adresse s'affiche. Un toucher bref, lui, ouvre la page." },
+                { q: "Clavier", r: "Placez-vous sur le lien avec Tab : dans la plupart des logiciels, la destination s'affiche aussi." }
+              ] },
+              { t: "consigne", x: "Essayez : survolez, appuyez longuement ou tabulez jusqu'au lien. Puis cliquez-le, pour voir ce qu'un clic aurait fait." }
+            ]
+          }]
+        },
+        {
+          id: "M2-5", titre: "Lire une adresse : la fin du nom, avant le premier « / »", surtitre: "Exemple commenté",
+          blocs: [
+            { t: "verif", items: [
+              { q: "`https://portail.groupenorvic.ca/paie/releves`", r: "Avant le premier « / » : `portail.groupenorvic.ca`. La fin est `groupenorvic.ca` : c'est Norvic. ✓ Légitime" },
+              { q: "`https://groupenorvic.ca.portail-paie.net/releves`", r: "La fin est `portail-paie.net`. Le « groupenorvic.ca » du début n'est qu'un déguisement. ✕ Frauduleux" },
+              { q: "`https://groupenorvlc.ca/paie`", r: "Relisez lettre par lettre : norv**l**c, pas norv**i**c. Un nom jumeau, à une lettre près. ✕ Frauduleux" }
+            ] },
+            { t: "pied", x: "La règle : juste avant le premier « / » seul, lisez les **deux derniers morceaux** séparés par un point (`groupenorvic.ca`, `microsoftonline.com`). Ce sont eux qui disent à qui appartient la page." }
+          ]
+        },
+        {
+          id: "M2-6", titre: "À vous : lequel mène vraiment chez Microsoft ?",
+          blocs: [{
+            t: "options", mono: true, q: "Le bouton « Réinitialiser le mot de passe » mène à l'une de ces adresses. Laquelle appartient vraiment à Microsoft ?",
+            choix: [
+              { x: "https://microsoft.com.reset-password.io/common", retro: "Le nom commence par microsoft.com, mais il finit par `reset-password.io`. C'est la fin qui compte." },
+              { x: "https://login.microsoftonline.com/common/reset", juste: true, retro: "Juste avant le premier « / », le nom finit par `microsoftonline.com`, un domaine de Microsoft." },
+              { x: "https://microsoft-login.com/common/reset", retro: "Plausible, mais `microsoft-login.com` n'est pas Microsoft : n'importe qui peut acheter un nom qui contient « microsoft »." },
+              { x: "https://login.micros0ft.com/common/reset", retro: "Regardez le « 0 » : micros0ft, avec un zéro. Un nom jumeau, à un caractère près." }
+            ]
+          }]
+        },
+        {
+          id: "M2-7", titre: "À vous de finir la vérification", surtitre: "Exemple à compléter",
+          blocs: [{
+            t: "tri", consigne: "Vérifications faites : l'adresse (1) et le lien (2) finissent par `groupenorvic.ca`. Faites la troisième, puis appliquez la règle.", bonne: "sur",
+            courriel: {
+              nom: "Service TI Norvic", adresse: "ti@groupenorvic.ca", date: "aujourd'hui, 11 h 40",
+              objet: "Mise à jour obligatoire de votre poste, ce soir",
+              corps: [
+                "Bonjour,",
+                "Une mise à jour de sécurité sera installée ce soir sur tous les postes, entre 22 h et minuit.",
+                { demande: "Laissez votre ordinateur allumé et branché en partant. Vous n'avez rien d'autre à faire." },
+                { lien: { texte: "En savoir plus sur l'intranet", url: "https://intranet.groupenorvic.ca/ti/mises-a-jour" } },
+                { signature: "Service TI · poste 4357" }
+              ]
+            },
+            reperesAvant: { nom: 1, lien: 2 },
+            reperes: { nom: 1, lien: 2, demande: 3 },
+            retro: {
+              sur: "L'adresse (1) et le lien (2) appartiennent bien à Norvic, et la demande (3) ne vous fait rien donner : ni mot de passe, ni paiement, ni fichier. L'urgence seule ne rend pas un courriel frauduleux.",
+              doute: "Prudent, mais inutile ici : l'adresse et le lien sont à Norvic, et on vous demande seulement de laisser l'ordinateur allumé. Trop de doutes vous feraient appeler le soutien pour chaque courriel.",
+              fraude: "Ici, non. « Ce soir » et « obligatoire » ont l'air pressants, mais regardez la demande (3) : ni mot de passe, ni paiement, ni fichier. L'adresse et le lien sont à Norvic. Signaler un vrai courriel n'a rien de grave, mais apprenez à le reconnaître."
+            }
+          }]
+        }
+      ]
+    },
+    /* ---------------------------------------------------------- */
+    {
+      id: "M3", titre: "Trier sa boîte de réception", duree: "8 min",
+      diapos: [
+        {
+          id: "M3-1", titre: "Sans regarder en arrière", surtitre: "Rappel du module 2",
+          blocs: [{
+            t: "options", q: "Sur votre téléphone, un courriel affiche « Julie Tremblay ». Comment savoir qui l'envoie vraiment ?",
+            choix: [
+              { x: "Vérifier que sa signature et le logo sont les bons", retro: "Une signature et un logo se copient en quelques secondes. Ils ne prouvent rien." },
+              { x: "Chercher des fautes d'orthographe dans le message", retro: "Les fraudes actuelles n'en font presque plus. L'absence de fautes ne prouve rien." },
+              { x: "Toucher le nom pour afficher l'adresse réelle", juste: true, retro: "N'importe qui peut écrire le nom affiché. L'adresse réelle, beaucoup plus difficilement." },
+              { x: "Lui répondre pour demander si c'est bien elle", retro: "Votre réponse irait à l'expéditeur, donc au fraudeur s'il y en a un. Vérifiez par un autre moyen." }
+            ]
+          }]
+        },
+        {
+          id: "M3-2", titre: "Un fournisseur change de compte bancaire",
+          blocs: [{
+            t: "tri", consigne: "Vous êtes aux comptes fournisseurs. Que faites-vous ?", bonne: "doute",
+            courriel: {
+              nom: "Transports Beaulac, comptabilité", adresse: "comptabilite@transportsbeaulac.ca", date: "aujourd'hui, 15 h 47",
+              objet: "Changement de nos coordonnées bancaires",
+              corps: [
+                "Bonjour,",
+                "À la suite d'une réorganisation, nos paiements seront désormais versés dans un nouveau compte. Vous trouverez nos nouvelles coordonnées ci-jointes.",
+                { demande: "Merci de mettre votre dossier à jour **avant le paiement de vendredi**. Pour toute question, joignez-moi au 450 555-0187." },
+                { pj: "Coordonnees_bancaires_2026.pdf" },
+                { signature: "Nathalie Roy · Comptabilité · Transports Beaulac" }
+              ]
+            },
+            reperes: { nom: 1, demande: 2 },
+            retro: {
+              sur: "C'est exactement le scénario à 48 000 $. L'adresse est bonne, le ton est normal, mais la demande (2) touche les coordonnées bancaires. Cette demande-là se confirme **toujours** par téléphone, quel que soit l'expéditeur.",
+              doute: "L'adresse (1) est bien celle de Beaulac, mais le compte d'un fournisseur peut être piraté. La demande (2), changer la destination de l'argent, se confirme toujours par téléphone. Reste à savoir quel numéro appeler.",
+              fraude: "Méfiance justifiée, mais appliquez la règle : l'adresse (1) est bien celle de Beaulac, et la demande (2) touche l'argent. C'est « à vérifier » : seul un **appel à Beaulac** dira si le courriel vient d'eux ou d'un compte piraté. Signaler seul ne le dirait pas."
+            }
+          }]
+        },
+        {
+          id: "M3-3", titre: "Quel numéro appelez-vous ?",
+          blocs: [{
+            t: "options", q: "Vous voulez confirmer le changement auprès de Transports Beaulac.",
+            choix: [
+              { x: "Le 450 555-0187, indiqué dans le courriel", retro: "C'est le numéro que le fraudeur vous donne. Il vous répondra : « Oui, c'est bien nous. »" },
+              { x: "Celui du dossier fournisseur, noté avant ce courriel", juste: true, retro: "Un numéro que vous aviez **avant** ce courriel ne peut pas venir du fraudeur." },
+              { x: "Aucun : je réponds au courriel pour demander confirmation", retro: "Si le compte de Beaulac est piraté, le fraudeur lira votre réponse et confirmera lui-même." },
+              { x: "Celui que me donne un collègue qui a reçu le même", retro: "Votre collègue a peut-être pris le numéro dans le même courriel. Passez par le dossier fournisseur." }
+            ]
+          }]
+        },
+        {
+          id: "M3-4", titre: "Votre boîte de réception, ce matin", surtitre: "Pratique : 6 courriels",
+          blocs: [{
+            t: "serie", seuil: 5, indice: true,
+            bilan: { reussi: "Vous êtes prêt pour l'évaluation du module 4.", rate: "Refaites la série avant l'évaluation. Les cas manqués sont repris ci-dessous." },
+            items: [
+              {
+                bonne: "sur", reperes: { nom: 1, lien: 2 },
+                courriel: {
+                  nom: "Ressources humaines", adresse: "rh@groupenorvic.ca", date: "7 h 58",
+                  objet: "Vacances des Fêtes : faites vos choix avant le 15 octobre",
+                  corps: [
+                    "Bonjour,",
+                    "Le formulaire de choix de vacances des Fêtes est ouvert dans l'intranet.",
+                    { lien: { texte: "Remplir le formulaire", url: "https://intranet.groupenorvic.ca/rh/vacances-2026" } },
+                    { signature: "Ressources humaines · Groupe Norvic" }
+                  ]
+                },
+                retro: {
+                  sur: "L'adresse (1) et le lien (2) finissent par `groupenorvic.ca`, et on vous demande de choisir vos vacances, rien de plus.",
+                  doute: "Rien ici n'appelle de vérification : l'adresse (1) et le lien (2) sont à Norvic. Gardez l'appel pour les demandes d'argent ou de coordonnées.",
+                  fraude: "L'adresse (1) et le lien (2) finissent par `groupenorvic.ca`. Signaler par excès n'a rien de grave, mais l'équipe TI devra le reclasser."
+                }
+              },
+              {
+                bonne: "fraude", indices: ["nom", "lien"], reperes: { nom: 1, lien: 2 },
+                courriel: {
+                  nom: "Julie Tremblay", adresse: "julie.tremblay@groupenorvlc.ca", date: "8 h 14",
+                  objet: "Bon de commande 4471 : peux-tu vérifier ?",
+                  corps: [
+                    "Salut,",
+                    "Je suis en réunion avec la Fromagerie Côté jusqu'à 11 h. Peux-tu vérifier les quantités du bon de commande avant que je le signe ?",
+                    { bouton: { texte: "BC-4471.pdf", url: "https://groupenorvlc.ca/partage/BC-4471" } },
+                    { signature: "Julie · Envoyé de mon iPhone" }
+                  ]
+                },
+                retro: {
+                  sur: "Le ton, le prénom, le client : tout sonne vrai, parce que le fraudeur s'est renseigné. Mais relisez l'adresse (1) : `groupenorvlc.ca`, un **l** à la place du **i**.",
+                  doute: "Bon instinct, et ici on peut trancher : l'adresse (1) est un domaine jumeau, `groupenorvlc.ca`, avec un **l** au lieu du **i**. Frauduleux : signalez.",
+                  fraude: "L'adresse (1) et le lien (2) mènent à `groupenorvlc.ca`, avec un **l** au lieu du **i**. C'est un message ciblé : il cite une vraie collègue et un vrai client."
+                }
+              },
+              {
+                bonne: "sur", acceptes: ["sur", "doute"], reperes: { nom: 1, lien: 2 },
+                courriel: {
+                  nom: "Marc Ouellet (SharePoint)", adresse: "no-reply@sharepointonline.com", date: "8 h 31",
+                  objet: "Marc Ouellet a partagé « Horaire des quais, octobre.xlsx » avec vous",
+                  corps: [
+                    "Marc Ouellet a partagé un fichier avec vous.",
+                    "« Voici l'horaire d'octobre, comme on en a parlé. »",
+                    { bouton: { texte: "Ouvrir", url: "https://groupenorvic.sharepoint.com/sites/logistique/horaire-quais-octobre.xlsx" } },
+                    { signature: "Microsoft SharePoint" }
+                  ]
+                },
+                retro: {
+                  sur: "L'adresse (1) est celle des notifications de Microsoft, `sharepointonline.com`, et le bouton (2) mène à `groupenorvic.sharepoint.com`, l'espace de Norvic. Comparez avec le faux partage du module 2.",
+                  doute: "Prudent, et acceptable : vous pouviez confirmer auprès de Marc. Mais l'adresse (1), `sharepointonline.com`, est celle de Microsoft, et le lien (2) mène à `groupenorvic.sharepoint.com` : c'est un vrai partage.",
+                  fraude: "Ce partage est authentique : `sharepointonline.com` (1) appartient à Microsoft et le lien (2) mène à `groupenorvic.sharepoint.com`. Le mot « SharePoint » ne trahit pas un faux : le domaine, oui."
+                }
+              },
+              {
+                bonne: "fraude", indices: ["demande"], reperes: { demande: 1, pj: 2 },
+                courriel: {
+                  nom: "Emballages Rivard, facturation", adresse: "facturation@emballagesrivard.com", date: "9 h 02",
+                  objet: "Facture FAC-20931 échue",
+                  corps: [
+                    "Bonjour,",
+                    "Vous trouverez ci-joint la facture FAC-20931, échue depuis 15 jours.",
+                    { demande: "Le document est protégé : **connectez-vous avec votre compte Microsoft 365** pour l'afficher." },
+                    { pj: "FAC-20931.html" },
+                    { signature: "Service de facturation · Emballages Rivard" }
+                  ]
+                },
+                retro: {
+                  sur: "La facture a l'air normale, mais pas la demande (1) : aucun fournisseur n'a besoin de votre mot de passe Norvic pour vous montrer une facture. Le fichier (2) ouvrirait une fausse page de connexion, et votre mot de passe partirait chez le fraudeur.",
+                  doute: "Selon la règle, une demande de mot de passe suffit : c'est frauduleux. Aucun fournisseur n'a besoin de votre mot de passe Norvic pour vous montrer une facture (1).",
+                  fraude: "La demande (1) trahit tout : une facture n'exige jamais votre mot de passe Norvic. Le fichier (2) ouvrirait une fausse page de connexion."
+                }
+              },
+              {
+                bonne: "doute", indices: ["demande"], reperes: { nom: 1, demande: 2 },
+                courriel: {
+                  nom: "Patrick Lavoie", adresse: "patrick.lavoie@groupenorvic.ca", date: "9 h 20",
+                  objet: "Petit service, urgent",
+                  corps: [
+                    "Salut,",
+                    "Es-tu à ton bureau ? J'ai besoin d'un service rapide.",
+                    { demande: "Peux-tu acheter 5 cartes-cadeaux de 200 $ pour des clients ? Garde ça pour toi, c'est une surprise. Envoie-moi les codes par courriel, je te rembourse demain." },
+                    { signature: "Patrick · Directeur des ventes" }
+                  ]
+                },
+                retro: {
+                  sur: "L'adresse (1) est bien celle de Patrick, mais la demande (2) coche tout : argent, urgence, secret. Son compte est peut-être piraté. Appelez-le avant de faire quoi que ce soit.",
+                  doute: "L'adresse (1) est la vraie, mais la demande (2) est un classique : cartes-cadeaux, urgence, secret. Appelez Patrick à son numéro habituel. Si ce n'est pas lui, signalez : son compte est piraté.",
+                  fraude: "La demande (2) sent la fraude, mais l'adresse (1) est la vraie : selon la règle, c'est « à vérifier ». Appelez Patrick. Si ce n'est pas lui, alors signalez : son compte est piraté."
+                }
+              },
+              {
+                bonne: "sur", reperes: { nom: 1, demande: 2 },
+                courriel: {
+                  nom: "Service TI Norvic", adresse: "ti@groupenorvic.ca", date: "9 h 45",
+                  objet: "URGENT : coupure de courant jeudi à 6 h",
+                  corps: [
+                    "Bonjour à tous,",
+                    "Hydro-Québec coupera le courant à l'entrepôt et aux bureaux jeudi, de 6 h à 8 h.",
+                    { demande: "Enregistrez vos fichiers et éteignez votre poste mercredi en partant." },
+                    { signature: "Service TI · poste 4357" }
+                  ]
+                },
+                retro: {
+                  sur: "« URGENT » en majuscules, et pourtant : l'adresse (1) est celle du service TI, et la demande (2) ne vous fait rien donner. L'urgence seule ne rend pas un courriel frauduleux.",
+                  doute: "Rien à vérifier : l'adresse (1) finit par `groupenorvic.ca`, et on ne vous demande (2) ni mot de passe, ni paiement, ni fichier.",
+                  fraude: "Ce courriel est légitime. L'urgence et les majuscules inquiètent, mais l'adresse (1) est bien celle du service TI et la demande (2) est sans danger."
+                }
+              }
+            ]
+          }]
+        }
+      ]
+    },
+    /* ---------------------------------------------------------- */
+    {
+      id: "M4", titre: "Signaler, et réparer", duree: "7 min",
+      diapos: [
+        {
+          id: "M4-1", titre: "Le geste : **signaler**, pas supprimer",
+          blocs: [{
+            t: "geste", bonne: "signaler",
+            consigne: "Vous avez reconnu ce courriel : il est frauduleux. Que faites-vous ?",
+            courriel: {
+              nom: "Microsoft 365", adresse: "no-reply@m365-notifications-center.com", date: "aujourd'hui, 8 h 12",
+              objet: "Votre boîte aux lettres a atteint 98 % de sa capacité",
+              corps: [
+                "Votre boîte aux lettres Groupe Norvic a atteint 98 % de sa capacité.",
+                { bouton: { texte: "Augmenter mon espace", url: "https://m365-notifications-center.com/norvic/login.php" } }
+              ]
+            },
+            retro: {
+              signaler: "Dans Outlook, choisissez ensuite **Hameçonnage**. Le courriel quitte votre boîte, et l'équipe TI est prévenue : elle peut le retirer des autres boîtes qui l'ont reçu.",
+              supprimer: "Supprimer vous protège, vous. Mais l'équipe TI ne voit rien, et les 139 autres destinataires gardent le piège. Signalez plutôt.",
+              transferer: "L'intention est bonne, mais transférer propage le piège : un collègue pressé cliquera. Signalez plutôt, et l'équipe TI avertira tout le monde.",
+              repondre: "Votre réponse confirme au fraudeur que votre adresse est active, et vous expose à la suite. Ne répondez jamais : signalez."
+            },
+            suite: { t: "verif", items: [
+              { q: "Ordinateur", r: "Onglet Accueil, bouton **Signaler**, puis **Hameçonnage**." },
+              { q: "Téléphone", r: "« ··· » en haut du courriel, puis **Signaler**." }
+            ] }
+          }]
+        },
+        {
+          id: "M4-2", titre: "Et si vous avez cliqué ?",
+          blocs: [{
+            t: "options", q: "Vous avez tapé votre mot de passe sur la page d'un faux courriel. Que faites-vous d'abord ?",
+            choix: [
+              { x: "Je change mon mot de passe moi-même, sans le dire", retro: "Bon réflexe, mais incomplet : le fraudeur est peut-être déjà entré dans votre compte. Seule l'équipe TI peut l'en déconnecter. Appelez le poste 4357." },
+              { x: "J'attends de voir s'il se passe quelque chose", retro: "Chaque minute compte : le fraudeur agit souvent dans l'heure. Appelez le poste 4357 maintenant. Personne ne vous le reprochera." },
+              { x: "Je ferme la page et je supprime le courriel", retro: "Supprimer efface la trace dont l'équipe TI a besoin. Gardez le courriel et appelez le poste 4357." },
+              { x: "J'appelle tout de suite le soutien TI, au poste 4357", juste: true, retro: "Dans les premières minutes, l'équipe TI peut couper l'accès du fraudeur. Le code de confirmation envoyé sur votre téléphone lui complique la tâche, mais ne l'arrête pas toujours : il faut agir vite." }
+            ]
+          }]
+        },
+        {
+          id: "M4-3", titre: "Évaluation : cinq courriels jamais vus", surtitre: "Évaluation",
+          blocs: [{
+            t: "serie", seuil: 4, indice: true, chrono: true, eliminatoire: true, retroImmediate: false,
+            consigne: "Pour chaque courriel : un verdict, puis l'indice qui vous a décidé, en moins d'une minute. Seuil : 4 sur 5, et aucun courriel douteux ou frauduleux traité comme légitime. Les explications viennent à la fin.",
+            bilan: { reussi: "Évaluation réussie. Votre aide-mémoire vous attend à l'écran suivant.", rate: "Pas encore. Relisez les cas manqués, puis passez la série de reprise : cinq autres courriels, jamais vus." },
+            items: [
+              {
+                bonne: "fraude", indices: ["nom", "lien"], reperes: { nom: 1, lien: 2, demande: 3 },
+                courriel: {
+                  nom: "Soutien TI Norvic", adresse: "soutien@groupenorvic-ti.com", date: "8 h 05",
+                  objet: "Votre mot de passe expire aujourd'hui",
+                  corps: [
+                    "Bonjour,",
+                    "Votre mot de passe Norvic expire aujourd'hui à 17 h.",
+                    { demande: "Pour garder l'accès à votre messagerie, renouvelez-le dès maintenant." },
+                    { bouton: { texte: "Conserver mon mot de passe", url: "https://groupenorvic-ti.com/renouveler" } },
+                    { signature: "Soutien TI" }
+                  ]
+                },
+                retro: {
+                  sur: "L'adresse (1) et le lien (2) finissent par `groupenorvic-ti.com`, pas par `groupenorvic.ca`. Et la demande (3) vise votre mot de passe.",
+                  doute: "Selon la règle, une adresse qui n'est pas la bonne suffit : `groupenorvic-ti.com` (1, 2) n'est pas Norvic. C'est frauduleux, on le signale.",
+                  fraude: "`groupenorvic-ti.com` n'est pas Norvic, et la demande vise votre mot de passe."
+                }
+              },
+              {
+                bonne: "sur", reperes: { nom: 1, lien: 2 },
+                courriel: {
+                  nom: "Transports Beaulac", adresse: "expedition@transportsbeaulac.ca", date: "8 h 40",
+                  objet: "Confirmation de ramassage, mardi 14 h",
+                  corps: [
+                    "Bonjour,",
+                    "Nous confirmons le ramassage de 6 palettes à votre quai no 3, mardi à 14 h.",
+                    { lien: { texte: "Suivre l'expédition BL-77214", url: "https://transportsbeaulac.ca/suivi/BL-77214" } },
+                    { signature: "Expédition · Transports Beaulac" }
+                  ]
+                },
+                retro: {
+                  sur: "L'adresse et le lien concordent, et rien n'est demandé.",
+                  doute: "L'adresse (1) et le lien (2) sont ceux de Beaulac, et on ne vous demande rien : il n'y a rien à confirmer.",
+                  fraude: "L'adresse (1) et le lien (2) concordent, et le courriel ne demande rien. C'est une simple confirmation."
+                }
+              },
+              {
+                bonne: "doute", indices: ["demande"], reperes: { nom: 1, demande: 2 },
+                courriel: {
+                  nom: "Sylvie Morin", adresse: "sylvie.morin@groupenorvic.ca", date: "9 h 12",
+                  objet: "Virement à faire aujourd'hui",
+                  corps: [
+                    "Bonjour,",
+                    "Je suis en avion et difficile à joindre.",
+                    { demande: "J'ai besoin que tu fasses aujourd'hui un virement de 18 500 $ à un nouveau fournisseur. Les coordonnées sont en pièce jointe. Merci de ne pas en parler avant l'annonce." },
+                    { pj: "Nouveau_fournisseur.pdf" },
+                    { signature: "Sylvie Morin · Directrice générale · Envoyé de mon iPhone" }
+                  ]
+                },
+                retro: {
+                  sur: "L'adresse (1) est la vraie, mais la demande (2) réunit paiement, urgence et secret. On confirme par téléphone, au numéro connu, avant tout virement. Ce choix est éliminatoire : il aurait coûté 18 500 $.",
+                  doute: "Un virement urgent et secret se confirme par téléphone, même quand l'adresse est la vraie.",
+                  fraude: "La demande (2) sent la fraude, mais l'adresse (1) est la vraie : selon la règle, c'est « à vérifier ». Appelez Sylvie au numéro connu ; si ce n'est pas elle, signalez."
+                }
+              },
+              {
+                bonne: "fraude", indices: ["lien"], reperes: { lien: 1 },
+                courriel: {
+                  nom: "SignaturePro", adresse: "notification@signaturepro.com", date: "10 h 26",
+                  objet: "Contrat de service 2027, Groupe Norvic : signature requise",
+                  corps: [
+                    "Un document vous a été envoyé pour signature électronique.",
+                    "Expéditeur : Services juridiques, Groupe Norvic",
+                    { bouton: { texte: "Consulter le document", url: "https://signaturepro.com.document-view.co/contrat-2027" } },
+                    { signature: "SignaturePro · Signature électronique sécurisée" }
+                  ]
+                },
+                retro: {
+                  sur: "L'adresse d'expédition peut être imitée ; la destination du lien, elle, dit où vous allez vraiment. Le bouton (1) mène à `document-view.co` : le « signaturepro.com » du début n'est qu'un déguisement.",
+                  doute: "Selon la règle, un lien qui n'est pas le bon suffit : le bouton (1) mène à `document-view.co`. C'est frauduleux, on le signale.",
+                  fraude: "Le bouton mène à `document-view.co`, pas à signaturepro.com. L'adresse d'expédition, elle, peut être imitée."
+                }
+              },
+              {
+                bonne: "sur", reperes: { nom: 1, lien: 2 },
+                courriel: {
+                  nom: "Fournitures Laval", adresse: "commandes@fournitureslaval.ca", date: "11 h 03",
+                  objet: "Votre commande 55120 est expédiée",
+                  corps: [
+                    "Bonjour,",
+                    "Votre commande de fournitures de bureau (12 articles) est expédiée. Livraison prévue jeudi.",
+                    { lien: { texte: "Voir la commande 55120", url: "https://fournitureslaval.ca/commandes/55120" } },
+                    { signature: "Fournitures Laval" }
+                  ]
+                },
+                retro: {
+                  sur: "L'adresse et le lien concordent, et rien n'est demandé.",
+                  doute: "L'adresse (1) et le lien (2) finissent tous deux par `fournitureslaval.ca`, et on ne vous demande rien.",
+                  fraude: "L'adresse (1) et le lien (2) concordent, et le courriel ne demande rien. C'est un avis d'expédition ordinaire."
+                }
+              }
+            ],
+            reprise: [
+              {
+                bonne: "sur", reperes: { nom: 1, lien: 2 },
+                courriel: {
+                  nom: "Ressources humaines", adresse: "rh@groupenorvic.ca", date: "13 h 10",
+                  objet: "Nouvelle politique de télétravail",
+                  corps: [
+                    "Bonjour,",
+                    "La politique de télétravail mise à jour est publiée dans l'intranet. Elle entre en vigueur le 1er novembre.",
+                    { lien: { texte: "Lire la politique", url: "https://intranet.groupenorvic.ca/rh/teletravail" } },
+                    { signature: "Ressources humaines · Groupe Norvic" }
+                  ]
+                },
+                retro: {
+                  sur: "L'adresse et le lien concordent, et rien n'est demandé.",
+                  doute: "L'adresse (1) et le lien (2) finissent par `groupenorvic.ca`, et on vous invite seulement à lire : rien à confirmer.",
+                  fraude: "L'adresse (1) et le lien (2) sont bien à Norvic, et rien de sensible n'est demandé."
+                }
+              },
+              {
+                bonne: "doute", indices: ["demande"], reperes: { nom: 1, demande: 2 },
+                courriel: {
+                  nom: "Emballages Rivard", adresse: "comptes@emballagesrivard.com", date: "13 h 42",
+                  objet: "Mise à jour de nos informations de paiement",
+                  corps: [
+                    "Bonjour,",
+                    { demande: "Notre institution financière a changé. Merci d'utiliser les coordonnées ci-jointes pour vos prochains paiements, à compter de la facture FAC-21004." },
+                    { pj: "Nouvelles_coordonnees.pdf" },
+                    { signature: "Comptes clients · Emballages Rivard" }
+                  ]
+                },
+                retro: {
+                  sur: "L'adresse (1) semble être celle de Rivard, mais la demande (2) change la destination de l'argent. Selon la règle, on appelle Rivard au numéro du dossier fournisseur. Ce choix est éliminatoire.",
+                  doute: "Un changement de coordonnées bancaires se confirme par téléphone, au numéro du dossier fournisseur.",
+                  fraude: "La demande (2) est celle d'un fraudeur, mais rien ne dit que l'adresse (1) est fausse : c'est « à vérifier ». Appelez Rivard au numéro du dossier."
+                }
+              },
+              {
+                bonne: "fraude", indices: ["lien"], reperes: { lien: 1 },
+                courriel: {
+                  nom: "Microsoft Teams", adresse: "no-reply@teams.mail.microsoft", date: "14 h 05",
+                  objet: "Vous avez manqué un message de Karine Dubé",
+                  corps: [
+                    "Karine Dubé vous a envoyé un message dans Teams.",
+                    { bouton: { texte: "Répondre dans Teams", url: "https://teams-microsoft.com.chat-view.net/message" } },
+                    { signature: "Microsoft Teams" }
+                  ]
+                },
+                retro: {
+                  sur: "L'avis a l'air authentique, mais le bouton (1) mène à `chat-view.net`. Le « teams-microsoft.com » du début est un déguisement.",
+                  doute: "Selon la règle, un lien qui n'est pas le bon suffit : le bouton (1) mène à `chat-view.net`. C'est frauduleux, on le signale.",
+                  fraude: "Le bouton mène à `chat-view.net`, pas à Microsoft."
+                }
+              },
+              {
+                bonne: "fraude", indices: ["nom"], reperes: { nom: 1 },
+                courriel: {
+                  nom: "Julie Tremblay", adresse: "julie.tremblay@groupe-norvic.ca", date: "14 h 30",
+                  objet: "Réunion déplacée à 15 h",
+                  corps: [
+                    "Salut,",
+                    "La réunion des achats est déplacée à 15 h. Voici l'ordre du jour.",
+                    { pj: "Ordre_du_jour.docx" },
+                    { signature: "Julie" }
+                  ]
+                },
+                retro: {
+                  sur: "Rien ne semble demandé, mais l'adresse (1) est `groupe-norvic.ca`, avec un trait d'union : ce n'est pas `groupenorvic.ca`. La pièce jointe vient donc d'un inconnu.",
+                  doute: "Selon la règle, une adresse qui n'est pas la bonne suffit : `groupe-norvic.ca` (1) n'est pas Norvic. C'est frauduleux, on le signale.",
+                  fraude: "L'adresse est `groupe-norvic.ca`, pas `groupenorvic.ca`."
+                }
+              },
+              {
+                bonne: "sur", reperes: { nom: 1, lien: 2 },
+                courriel: {
+                  nom: "Service TI Norvic", adresse: "ti@groupenorvic.ca", date: "15 h 20",
+                  objet: "Rappel : redémarrez votre poste avant vendredi",
+                  corps: [
+                    "Bonjour,",
+                    "Pour terminer l'installation des mises à jour, redémarrez votre poste avant vendredi.",
+                    { lien: { texte: "Pourquoi redémarrer ?", url: "https://intranet.groupenorvic.ca/ti/redemarrage" } },
+                    { signature: "Service TI · poste 4357" }
+                  ]
+                },
+                retro: {
+                  sur: "L'adresse et le lien concordent, et on vous demande seulement de redémarrer.",
+                  doute: "L'adresse (1) et le lien (2) sont à Norvic, et la demande est sans danger : rien à confirmer.",
+                  fraude: "L'adresse (1) et le lien (2) finissent par `groupenorvic.ca`, et redémarrer ne vous fait rien donner."
+                }
+              }
+            ]
+          }]
+        },
+        {
+          id: "M4-4", titre: "Votre aide-mémoire",
+          blocs: [{
+            t: "colonnes", etroite: "droite",
+            gauche: [{ t: "memo", titre: "Devant un courriel, dans cet ordre", items: [
+              { q: "Qui l'envoie vraiment ?", r: "Touchez ou cliquez le nom : lisez l'adresse." },
+              { q: "Où mène le lien ?", r: "Survol, appui long ou Tab : lisez la fin du nom." },
+              { q: "Que me demande-t-on ?", r: "Mot de passe, argent, coordonnées, fichier : prudence." }
+            ], pied: "Texto, appel, code QR : même réflexe. On vérifie par un autre moyen." }],
+            droite: [
+              { t: "para", x: "**Adresse ou lien faux, ou mot de passe demandé ?** Signaler, puis Hameçonnage." },
+              { t: "para", x: "**Tout est bon, mais on demande de l'argent ?** Appelez au numéro que vous aviez déjà." },
+              { t: "para", x: "**Vous avez cliqué ?** Poste 4357, tout de suite." },
+              { t: "lien", x: "Ouvrir la version d'une page, à imprimer ou à épingler", href: "aide-memoire.html" },
+              { t: "pied", x: "Questions : Karine Dubé, sécurité TI, poste 4312." }
+            ]
+          }]
+        },
+        {
+          id: "M4-5", titre: "Ce n'est pas fini",
+          blocs: [
+            { t: "verif", items: [
+              { q: "Sans prévenir, dans les prochaines semaines", r: "Des courriels d'entraînement arriveront dans votre vraie boîte. Signalez-les comme les autres." },
+              { q: "Dans 7 jours", r: "Une question d'un écran : « Vous venez de cliquer sur un lien douteux. Que faites-vous ? »" },
+              { q: "Dans 30 jours", r: "Cinq courriels à trier, comme l'évaluation : trois minutes." }
+            ] },
+            { t: "pied", x: "Les résultats sont anonymes : ils servent à ajuster la formation, pas à évaluer les personnes." }
+          ]
+        }
+      ]
+    }
+  ]
+};
+
+</script>
+<script>
+/* ============================================================
+   JOURNAL DE RÉVISION — temps 6 de la boucle
+   Une entrée par diapositive : statut, avant, après, critères
+   (avec la gravité du constat d'origine, audit 1), et pourquoi.
+   L'ordre suit la version finale ; les diapositives retirées sont
+   placées là où leur contenu aurait dû servir.
+   ============================================================ */
+window.JOURNAL = {
+  entrees: [
+    /* ----- M1 ----- */
+    { module: "M1", avant: "A-M1-1", apres: "M1-1", statut: "modifiee",
+      tour2: { criteres: [{ code: "G1", grav: "bloquant" }, { code: "G1", grav: "majeur" }, { code: "C1", grav: "mineur" }], pourquoi: "Sur téléphone, la diapo 16:9 réduisait le texte à 6 px : toutes les diapositives passent en mode « feuille qui s'allonge » sous 760 px, avec des cibles tactiles de 44 px. Après chaque réponse, le focus va sur la rétroaction, qu'un lecteur d'écran annonce. La rétroaction « Légitime » passe de 60 à 30 mots." },
+      criteres: [{ code: "B1", grav: "majeur" }, { code: "C2", grav: "mineur" }, { code: "D2", grav: "majeur" }],
+      pourquoi: "La page titre décorée d'un hameçon devient un **courriel à juger** dès le premier écran. L'apprenant se trompe probablement, et c'est voulu : l'exposé qui suit répond à une question qu'il se pose déjà. Le courriel est réaliste (aucune faute, un vrai problème de boîte pleine) parce que c'est ce qu'il verra.",
+      note: "l'échec productif, pas la page titre" },
+    { module: "M1", avant: "A-M1-2", apres: "M1-2", statut: "modifiee",
+      tour2: { criteres: [{ code: "A1", grav: "mineur" }, { code: "G2", grav: "mineur" }], pourquoi: "L'objectif O3 (confirmer par téléphone) manquait à la liste. La durée annoncée passe à 25 minutes, une estimation plus honnête après les ajouts du second tour." },
+      criteres: [{ code: "A1", grav: "bloquant" }, { code: "A3", grav: "mineur" }, { code: "G2", grav: "majeur" }],
+      pourquoi: "« Comprendre », « être sensibilisé » : aucun de ces verbes ne se voit. Trois comportements observables les remplacent, limités au courriel. La durée annoncée passe de 45 à 20 minutes, en 4 modules." },
+    { module: "M1", avant: "A-M1-3", apres: "M1-3", statut: "modifiee",
+      tour2: { criteres: [{ code: "C5", grav: "mineur" }], pourquoi: "« Ce qu'on veut obtenir de vous » se lisait comme les attentes de la formation : le titre nomme maintenant le fraudeur." },
+      criteres: [{ code: "C1", grav: "mineur" }, { code: "C5", grav: "mineur" }, { code: "B2", grav: "mineur" }],
+      pourquoi: "Une définition de 100 mots, remplie de termes comme « ingénierie sociale » et « spoofing », devient une phrase et trois buts nommés comme l'apprenant les vit : **mot de passe, paiement, fichier**. Une question le renvoie à son propre dernier doute." },
+    { module: "M1", avant: "A-M1-4", apres: null, statut: "retiree",
+      criteres: [{ code: "A3", grav: "mineur" }, { code: "C2", grav: "mineur" }],
+      pourquoi: "L'histoire du mot (AOL, 1996, « phreaking ») ne change aucune décision. L'image du pirate en capuchon entretient un stéréotype et ne montre rien d'utile.",
+      note: "détail séduisant, coupé" },
+    { module: "M1", avant: "A-M1-5", apres: null, statut: "retiree",
+      criteres: [{ code: "C2", grav: "mineur" }, { code: "B3", grav: "mineur" }],
+      pourquoi: "Trois chiffres mondiaux, dont un de 2016 et un sans source, ne se rattachent à aucune décision. Ils sont remplacés par une seule conséquence à l'échelle de l'entreprise (M1-4)." },
+    { module: "M1", avant: "A-M1-6", apres: "M1-4", statut: "modifiee",
+      criteres: [{ code: "B3", grav: "majeur" }, { code: "A2", grav: "majeur" }, { code: "C1", grav: "mineur" }],
+      pourquoi: "La menace de congédiement et la phrase « l'erreur humaine est la première faille » poussaient à **cacher** un clic, soit l'inverse de l'objectif O4. Elles sont remplacées par un scénario propre à une entreprise de distribution et par une promesse explicite : le signaler n'entraîne pas de reproche.",
+      note: "la peur fait cacher le clic" },
+
+    /* ----- M2 ----- */
+    { module: "M2", avant: "A-M3-1", apres: "M2-1", statut: "modifiee",
+      criteres: [{ code: "C1", grav: "majeur" }, { code: "A2", grav: "majeur" }],
+      pourquoi: "Douze signes au même rang ne se retiennent pas et ne servent à rien au moment du doute. Il reste **trois vérifications, dans un ordre**. Le mythe des fautes d'orthographe est réfuté explicitement, parce qu'il fait croire qu'un courriel bien écrit est sûr." },
+    { module: "M2", avant: null, apres: "M2-2", statut: "ajoutee", tour: 2,
+      criteres: [{ code: "C4", grav: "majeur" }, { code: "D4", grav: "majeur" }],
+      pourquoi: "Ajoutée au **second tour**. L'audit 2 a montré que les trois vérifications ne disaient pas quel verdict choisir : la même situation (vraie adresse, demande d'argent) était corrigée « frauduleux » ici et « à vérifier » là. Une règle explicite relie maintenant vérifications et verdicts, et toutes les corrections la suivent.",
+      note: "le second audit trouve ce que le premier ne pouvait pas voir" },
+    { module: "M2", avant: "A-M3-2", apres: null, statut: "retiree",
+      criteres: [{ code: "C1", grav: "majeur" }, { code: "C3", grav: "mineur" }],
+      pourquoi: "Seconde moitié de la liste de douze, fusionnée dans M2-1. Le signe le plus coûteux, le changement de coordonnées bancaires, en était le dernier point ; il devient la vérification n° 3 et un cas pratique complet (M3-2)." },
+    { module: "M2", avant: "A-M3-3", apres: "M2-3", statut: "modifiee",
+      tour2: { criteres: [{ code: "D4", grav: "majeur" }], pourquoi: "Le domaine des vrais avis de partage (`sharepointonline.com`) n'était jamais présenté, puis servait de cas « légitime » en M3-4. L'exemple le présente maintenant." },
+      criteres: [{ code: "C4", grav: "majeur" }, { code: "C3", grav: "majeur" }, { code: "D2", grav: "majeur" }],
+      pourquoi: "Le faux courriel bancaire en majuscules, plein de fautes, et sa légende « Remarquez les nombreux indices ! » deviennent un **exemple commenté** : un courriel professionnel sans faute, et les trois vérifications faites à voix haute, chacune pointée sur le courriel lui-même.",
+      note: "montrer où regarder, pas dire de regarder" },
+    { module: "M2", avant: "A-M3-4", apres: "M2-4", statut: "modifiee",
+      tour2: { criteres: [{ code: "D2", grav: "majeur" }, { code: "D2", grav: "mineur" }], pourquoi: "Le premier tour disait « survolez, **touchez** ou tabulez » : sur un vrai téléphone, un toucher bref **ouvre** la page. Le courriel simulé se comporte maintenant comme un vrai : appui long pour voir la destination, clic ou toucher bref pour « ouvrir », avec un avertissement." },
+      criteres: [{ code: "G1", grav: "majeur" }, { code: "D2", grav: "majeur" }],
+      pourquoi: "Seul le survol à la souris était enseigné, alors qu'une bonne partie du public lit ses courriels sur téléphone. Les trois gestes (survol, appui long, clavier) sont donnés, puis essayés sur un courriel simulé." },
+    { module: "M2", avant: null, apres: "M2-5", statut: "ajoutee",
+      tour2: { criteres: [{ code: "C4", grav: "mineur" }, { code: "C5", grav: "mineur" }], pourquoi: "La règle dit maintenant combien lire (les deux derniers morceaux), et « domaine jumeau » devient « nom jumeau, à une lettre près »." },
+      criteres: [{ code: "C4", grav: "majeur" }, { code: "C5", grav: "mineur" }],
+      pourquoi: "« Si l'adresse ne correspond pas au site attendu » supposait qu'on sait lire une adresse web. Un exemple commenté enseigne la seule règle nécessaire (la fin du nom, avant le premier « / ») et les deux pièges courants : le déguisement et le domaine jumeau." },
+    { module: "M2", avant: null, apres: "M2-6", statut: "ajoutee",
+      tour2: { criteres: [{ code: "D4", grav: "mineur" }, { code: "C5", grav: "mineur" }], pourquoi: "« Un nom avec un trait d'union » laissait croire que le trait d'union est un indice ; « police à chasse fixe » est retiré." },
+      criteres: [{ code: "D1", grav: "majeur" }, { code: "D4", grav: "mineur" }, { code: "E1", grav: "majeur" }],
+      pourquoi: "Première question avant la toute fin. Chaque mauvais choix vient d'un vrai piège (déguisement, trait d'union, zéro à la place du o) et reçoit sa propre explication." },
+    { module: "M2", avant: null, apres: "M2-7", statut: "ajoutee",
+      tour2: { criteres: [{ code: "C4", grav: "mineur" }], pourquoi: "La consigne donne le résultat des vérifications 1 et 2, au lieu de seulement dire qu'elles sont faites." },
+      criteres: [{ code: "C4", grav: "majeur" }, { code: "D3", grav: "majeur" }],
+      pourquoi: "Estompage : deux vérifications sont faites, l'apprenant fait la troisième. Le courriel est **légitime** malgré son urgence, pour qu'on n'apprenne pas à tout signaler." },
+    { module: "M2", avant: "A-M3-5", apres: null, statut: "retiree",
+      criteres: [{ code: "A2", grav: "mineur" }, { code: "C5", grav: "mineur" }],
+      pourquoi: "Vingt extensions de fichier, souvent masquées à l'écran, que personne ne retiendra. La règle utile, « un fichier qui demande de vous connecter est un piège », est pratiquée en M3-4 (facture en .html)." },
+
+    /* ----- M3 ----- */
+    { module: "M3", avant: "A-M2-1", apres: null, statut: "retiree",
+      criteres: [{ code: "A3", grav: "majeur" }],
+      pourquoi: "Le module « Les types d'hameçonnage » était une taxonomie : savoir nommer le harponnage ou le « whaling » ne change pas la décision devant un courriel. Le module disparaît ; ses deux idées utiles deviennent des cas pratiqués (M3-2, M3-4).",
+      note: "nommer ≠ reconnaître" },
+    { module: "M3", avant: null, apres: "M3-1", statut: "ajoutee",
+      criteres: [{ code: "D1", grav: "majeur" }, { code: "D4", grav: "mineur" }],
+      pourquoi: "Rappel du module précédent, de mémoire, au début du suivant. Les distracteurs reprennent les croyances de la version zéro (signature, logo, fautes)." },
+    { module: "M3", avant: "A-M2-3", apres: "M3-2", statut: "modifiee",
+      tour2: { criteres: [{ code: "C4", grav: "majeur" }], pourquoi: "La rétroaction s'appuie sur la règle de M2-2 : vraie adresse et demande d'argent, donc « à vérifier »." },
+      criteres: [{ code: "A2", grav: "majeur" }, { code: "C5", grav: "mineur" }, { code: "E1", grav: "majeur" }],
+      pourquoi: "La définition de la « fraude du président (BEC) » devient le cas le plus coûteux pour l'entreprise, à trancher soi-même. L'adresse est **vraie** : l'apprenant découvre que la demande, et non l'expéditeur, décide. Les termes anglais disparaissent." },
+    { module: "M3", avant: null, apres: "M3-3", statut: "ajoutee",
+      criteres: [{ code: "E2", grav: "mineur" }, { code: "D4", grav: "mineur" }],
+      pourquoi: "L'objectif O3 exige un geste précis : appeler le numéro connu **avant** ce courriel. Chaque mauvais choix montre sa conséquence (« Il vous répondra : oui, c'est bien nous »)." },
+    { module: "M3", avant: "A-M2-2", apres: "M3-4", statut: "modifiee",
+      tour2: { criteres: [{ code: "A3", grav: "majeur" }, { code: "C4", grav: "majeur" }, { code: "D4", grav: "majeur" }], pourquoi: "Après chaque verdict, l'apprenant nomme l'indice qui l'a décidé (O1 l'exige). Les corrections suivent la règle, et le partage SharePoint accepte aussi « à vérifier », qui était défendable." },
+      criteres: [{ code: "D3", grav: "majeur" }, { code: "D2", grav: "majeur" }, { code: "A3", grav: "mineur" }, { code: "E2", grav: "mineur" }],
+      pourquoi: "La définition du harponnage devient un courriel ciblé à démasquer, au milieu de six messages entrelacés : trois légitimes, deux frauduleux, un à vérifier, chacun avec un indice décisif différent. Une erreur montre sa suite (« votre mot de passe partirait chez le fraudeur »).",
+      note: "discriminer, pas reconnaître" },
+    { module: "M3", avant: "A-M2-4", apres: null, statut: "retiree",
+      criteres: [{ code: "A3", grav: "mineur" }, { code: "C5", grav: "mineur" }],
+      pourquoi: "« Smishing » et « vishing » sortent du courriel. Il en reste une ligne dans l'aide-mémoire : même réflexe pour un texto ou un appel." },
+    { module: "M3", avant: "A-M2-5", apres: null, statut: "retiree",
+      criteres: [{ code: "C5", grav: "mineur" }],
+      pourquoi: "Le mot « quishing » ne servira à personne. Le code QR est repris dans la même ligne de l'aide-mémoire." },
+
+    /* ----- M4 ----- */
+    { module: "M4", avant: "A-M4-2", apres: "M4-1", statut: "modifiee",
+      tour2: { criteres: [{ code: "A3", grav: "majeur" }, { code: "F2", grav: "mineur" }], pourquoi: "Le geste Signaler était un exposé : il devient un **geste à faire** sur un courriel qui a une barre d'actions (Répondre, Transférer, Supprimer, Signaler), avec une rétroaction pour chaque action. Le distracteur « transférer aux collègues » revient." },
+      criteres: [{ code: "F2", grav: "bloquant" }],
+      pourquoi: "La version zéro enseignait « Supprimez le courriel » : on protège sa propre boîte, et l'équipe TI ne voit rien. Le geste devient **Signaler**, avec son emplacement exact sur ordinateur et sur téléphone, et la raison en une phrase.",
+      note: "le seul bloquant qui enseignait un faux geste" },
+    { module: "M4", avant: "A-M4-1", apres: "M4-2", statut: "modifiee",
+      tour2: { criteres: [{ code: "C5", grav: "mineur" }], pourquoi: "« Fermer ses sessions » et « authentification à deux facteurs » sont dits en mots de tous les jours." },
+      criteres: [{ code: "A3", grav: "mineur" }, { code: "C1", grav: "mineur" }, { code: "F2", grav: "bloquant" }],
+      pourquoi: "Huit bonnes pratiques générales (clé USB, Wi-Fi, mises à jour) sont remplacées par le geste qui manquait entièrement : quoi faire **après** un clic. L'authentification à deux facteurs, seule pratique liée au sujet, est reprise dans la rétroaction." },
+    { module: "M4", avant: "A-M4-3", apres: "M4-3", statut: "modifiee",
+      tour2: { criteres: [{ code: "F1", grav: "majeur" }, { code: "A3", grav: "majeur" }, { code: "F1", grav: "majeur" }, { code: "C3", grav: "mineur" }, { code: "E1", grav: "mineur" }], pourquoi: "Classer « légitime » un virement de 18 500 $ ne faisait pas échouer : c'est maintenant éliminatoire. L'évaluation mesure tout l'objectif O1 (indice nommé, moins d'une minute par courriel). La reprise se fait sur **cinq autres courriels inédits**, et le bilan réaffiche chaque courriel manqué, annoté." },
+      criteres: [{ code: "A3", grav: "bloquant" }, { code: "F1", grav: "majeur" }, { code: "E1", grav: "majeur" }, { code: "F2", grav: "majeur" }, { code: "D4", grav: "mineur" }],
+      pourquoi: "Le quiz de définitions (« Que signifie MFA ? »), avec « Bonne réponse ! » pour seule rétroaction, et dont la question 5 renforçait le mauvais geste, devient une **évaluation du comportement visé** : cinq courriels jamais vus à trier, un seuil annoncé d'avance, une explication par cas manqué.",
+      note: "évaluer le geste, pas le vocabulaire" },
+    { module: "M4", avant: "A-M4-4", apres: "M4-4", statut: "modifiee",
+      tour2: { criteres: [{ code: "F2", grav: "majeur" }], pourquoi: "L'aide-mémoire existe aussi en une page à imprimer ou à épingler, et il reprend la règle des verdicts." },
+      criteres: [{ code: "F2", grav: "majeur" }],
+      pourquoi: "« Merci de votre attention. Des questions ? » ne sert à rien à quelqu'un qui suit la formation seul. L'aide-mémoire tient en un écran : les trois vérifications, les trois gestes, et une personne nommée pour les questions." },
+    { module: "M4", avant: null, apres: "M4-5", statut: "ajoutee",
+      tour2: { criteres: [{ code: "A3", grav: "mineur" }, { code: "D2", grav: "mineur" }], pourquoi: "La question de J+7, qui évalue O4, est écrite. Les courriels d'entraînement ne sont plus annoncés à date fixe : annoncés, ils seraient trop faciles à repérer." },
+      criteres: [{ code: "F3", grav: "majeur" }],
+      pourquoi: "Une formation unique s'oublie. Trois rappels espacés sont annoncés (J+2, J+7, J+30), dont deux courriels d'entraînement dans la vraie boîte de réception. Les résultats sont anonymes, pour ne pas réintroduire la peur retirée en M1-4." }
+  ]
+};
+
+</script>
+<script>
+/* Cadrage (temps 1), résultats des audits (temps 3 et 5), limites. */
+window.BOUCLE = {
+  cadrage: {
+    public: "**Public.** Les 140 employés de bureau du Groupe Norvic, une PME de distribution fictive : acheteurs, comptes fournisseurs, service à la clientèle, logistique. Ils ne sont pas techniciens et reçoivent de 40 à 80 courriels par jour, souvent lus sur téléphone entre deux tâches. Ils suivent la formation seuls, en ligne, à leur rythme.",
+    ecart: "**Écart.** Ce qui va mal en situation, ce n'est pas le vocabulaire : on juge un courriel à son ton et à ses fautes plutôt qu'à son expéditeur réel et à sa destination ; on supprime au lieu de signaler ; on cache un clic par peur ; et on paie un « fournisseur » qui a changé de compte bancaire sans l'appeler."
+  },
+  alignement: [
+    { o: "O1 · Classer", pratique: "M1-1, M2-6, M2-7, M3-4 (6 courriels, verdict + indice)", evalue: "M4-3 : 5 courriels inédits, verdict + indice, moins d'une minute chacun, seuil 4 sur 5 ; reprise sur 5 autres courriels" },
+    { o: "O2 · Signaler", pratique: "M4-1 (le geste, sur un courriel qui a une barre d'actions)", evalue: "Courriels d'entraînement dans la vraie boîte (taux de signalement)" },
+    { o: "O3 · Confirmer par téléphone", pratique: "M3-2, M3-3, M3-4 n° 5", evalue: "M4-3 n° 3 (éliminatoire si traité comme légitime) ; reprise n° 2" },
+    { o: "O4 · Appeler après un clic", pratique: "M4-2", evalue: "Question de J+7 (écrite en M4-5)" }
+  ],
+  audits: [
+    { titre: "Audit 1 · version zéro", sous: "Sous-agent indépendant · 20 diapositives", bloquant: 3, majeur: 20, mineur: 25,
+      note: "Familles les plus touchées : charge cognitive (16 constats) et alignement (15). Le geste visé n'était jamais pratiqué, et le geste final enseigné était faux." },
+    { titre: "Audit 2 · premier tour de révision", sous: "Sous-agent indépendant · 19 diapositives, page servie et mesurée", bloquant: 1, majeur: 9, mineur: 17,
+      note: "Nouveau bloquant : illisible sur téléphone (texte à 6 px). Les majeurs viennent surtout des corrections elles-mêmes : un toucher bref présenté comme sans danger, une règle de verdict absente, un geste Signaler jamais pratiqué." },
+    { titre: "Audit 3 · second tour de révision", sous: "En cours", bloquant: 0, majeur: 0, mineur: 0, note: "" }
+  ],
+  limites: [
+    "**L'exactitude technique** : la grille est didactique. L'emplacement du bouton Signaler et le comportement de l'appui long doivent être vérifiés sur les appareils réels de l'organisation.",
+    "**L'essai auprès d'apprenants** : la boucle prédit, l'essai mesure. Avant la diffusion, au moins cinq employés doivent suivre la formation en pensant à voix haute.",
+    "**L'effet au travail** : il se mesure des semaines plus tard, avec le taux de signalement des courriels d’entraînement envoyés sans prévenir, et le nombre de clics déclarés.",
+    "**Les données de l'organisation** : Groupe Norvic est fictif. Le canal de signalement, le poste 4357 et la personne-ressource sont à remplacer."
+  ]
+};
+
+</script>
+<script>
+/* ============================================================
+   Moteur de la formation — rend les diapositives à partir des
+   données (contenu/*.js) avec les composants du système Calque.
+   Trois vues : la formation (apprenant), avant/après (portfolio),
+   la boucle (cadrage, audits, grille).
+   ============================================================ */
+(function () {
+  "use strict";
+
+  const A = window.APRES, V = window.AVANT, J = window.JOURNAL, G = window.GRILLE, B = window.BOUCLE;
+
+  // ---------- Petits utilitaires ----------
+  function h(tag, attrs, ...enfants) {
+    const el = document.createElement(tag);
+    if (attrs) for (const [k, v] of Object.entries(attrs)) {
+      if (v == null || v === false) continue;
+      if (k === "class") el.className = v;
+      else if (k === "html") el.innerHTML = v;
+      else if (k.startsWith("on")) el.addEventListener(k.slice(2), v);
+      else el.setAttribute(k, v === true ? "" : v);
+    }
+    for (const e of enfants.flat()) if (e != null && e !== false) el.append(e instanceof Node ? e : document.createTextNode(e));
+    return el;
+  }
+  // Texte enrichi minimal : **gras** et `mono`
+  function riche(s) {
+    const esc = String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    return esc.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>").replace(/`(.+?)`/g, '<span class="cq-mono">$1</span>');
+  }
+  const p = (s, cls) => h("p", { class: cls, html: riche(s) });
+
+  // ---------- État des activités (conservé pendant la visite) ----------
+  const etat = new Map();
+  const cle = (diapo, i, sous = "") => `${diapo}:${i}:${sous}`;
+
+  // ============================================================
+  // Courriel simulé
+  // ============================================================
+  const VERDICTS = {
+    sur:    { court: "Légitime",      long: "Légitime : je le traite" },
+    doute:  { court: "À vérifier",    long: "À vérifier : je confirme par un autre moyen" },
+    fraude: { court: "Frauduleux",    long: "Frauduleux : je le signale" }
+  };
+
+  function initiales(nom) {
+    return nom.replace(/[^A-Za-zÀ-ÿ ]/g, "").split(/\s+/).filter(Boolean).slice(0, 2).map(m => m[0]).join("").toUpperCase() || "?";
+  }
+
+  // Après un redessin, le focus va sur la rétroaction ou sur l'élément marqué
+  // data-focus : un lecteur d'écran l'annonce, le clavier ne repart pas du haut (G1).
+  let aFocaliser = false;
+  const demanderFocus = () => { aFocaliser = true; };
+
+  const ACTIONS = { repondre: "Répondre", transferer: "Transférer", supprimer: "Supprimer", signaler: "Signaler" };
+
+  function courriel(c, o = {}) {
+    const reperes = o.reperes || {};
+    const etatBar = h("div", { class: "courriel__etat", hidden: true, role: "status" });
+    const adresse = h("span", { class: "courriel__adresse", hidden: !o.adresseVisible }, `<${c.adresse}>`);
+    const nom = h("button", {
+      class: "courriel__nom" + (reperes.nom ? " repere" : ""), "data-n": reperes.nom || null,
+      type: "button", "aria-expanded": o.adresseVisible ? "true" : "false",
+      title: "Afficher l'adresse réelle",
+      onclick: () => { adresse.hidden = !adresse.hidden; nom.setAttribute("aria-expanded", String(!adresse.hidden)); }
+    }, c.nom);
+    if (reperes.nom) adresse.classList.add("repere");
+
+    let fige = false, dernierToucher = 0;
+    function montrer(txt, alerte) { etatBar.textContent = txt; etatBar.classList.toggle("courriel__etat--alerte", !!alerte); etatBar.hidden = false; }
+    function cacher() { if (!fige) etatBar.hidden = true; }
+
+    // Un lien simulé se comporte comme un vrai : survol, focus clavier ou appui
+    // long montrent la destination ; un clic ou un toucher bref l'« ouvre ».
+    function lien(l, cls) {
+      let minuterie = null, appuiLong = false;
+      return h("button", {
+        class: cls + (reperes.lien ? " repere" : ""), "data-n": reperes.lien || null, type: "button",
+        "aria-label": `${l.texte} (lien simulé)`,
+        onmouseenter: () => montrer(l.url), onmouseleave: cacher,
+        onfocus: () => { if (Date.now() - dernierToucher > 800) montrer(l.url); },
+        onblur: () => { fige = false; cacher(); },
+        onpointerdown: (e) => {
+          if (e.pointerType === "mouse") return;
+          dernierToucher = Date.now(); appuiLong = false;
+          minuterie = setTimeout(() => { appuiLong = true; fige = true; montrer(l.url); }, 450);
+        },
+        onpointerup: () => clearTimeout(minuterie), onpointercancel: () => clearTimeout(minuterie),
+        oncontextmenu: (e) => e.preventDefault(),
+        onclick: (e) => {
+          e.preventDefault();
+          if (appuiLong) { appuiLong = false; return; }
+          fige = true;
+          montrer("Ce clic aurait ouvert la page. Pour voir la destination sans l'ouvrir : survol, appui long ou touche Tab.", true);
+        }
+      }, l.texte);
+    }
+
+    const corps = h("div", { class: "courriel__corps" });
+    for (const ligne of c.corps) {
+      if (typeof ligne === "string") corps.append(p(ligne));
+      else if (ligne.lien) corps.append(h("p", null, lien(ligne.lien, "courriel__lien")));
+      else if (ligne.bouton) corps.append(lien(ligne.bouton, "courriel__bouton"));
+      else if (ligne.pj) corps.append(h("span", { class: "courriel__pj" + (reperes.pj ? " repere" : ""), "data-n": reperes.pj || null }, "📎 ", ligne.pj));
+      else if (ligne.demande) corps.append(h("p", { class: reperes.demande ? "repere" : null, "data-n": reperes.demande || null, html: riche(ligne.demande) }));
+      else if (ligne.signature) corps.append(h("p", { class: "courriel__meta", html: riche(ligne.signature) }));
+    }
+
+    const actions = o.actions ? h("div", { class: "courriel__actions", role: "group", "aria-label": "Actions sur le courriel" },
+      Object.entries(ACTIONS).map(([k, v]) => h("button", {
+        class: "courriel__action" + (k === "signaler" ? " courriel__action--signaler" : ""), type: "button",
+        "aria-pressed": o.actionChoisie === k ? "true" : "false", onclick: () => o.actions(k)
+      }, v))) : null;
+
+    return h("article", { class: "courriel", "aria-label": `Courriel simulé : ${c.objet}` },
+      actions,
+      h("header", { class: "courriel__entete" },
+        h("div", { class: "courriel__objet" }, c.objet),
+        h("div", { class: "courriel__de" }, h("span", { class: "courriel__avatar", "aria-hidden": "true" }, initiales(c.nom)), nom, adresse),
+        h("div", { class: "courriel__meta" }, `À : moi · ${c.date || "aujourd'hui"}`)
+      ),
+      corps, etatBar
+    );
+  }
+
+  // ============================================================
+  // Activités
+  // ============================================================
+  function retroEl(type, titre, texte, ...suite) {
+    return h("div", { class: `retro retro--${type}`, role: "status", "data-focus": "" },
+      h("div", { class: "retro__titre" }, titre), texte ? h("div", { class: "retro__texte", html: riche(texte) }) : null, ...suite);
+  }
+  const boutonPlein = (texte, onclick, focus) => h("button", { class: "tri__choix tri__choix--plein", type: "button", "data-focus": focus ? "" : null, onclick }, texte);
+  const recommencer = (onclick) => h("button", { class: "lien-discret", type: "button", onclick }, "Recommencer");
+
+  function boutonsTri(onChoix, choisi) {
+    return h("div", { class: "tri", role: "group", "aria-label": "Votre verdict" },
+      Object.entries(VERDICTS).map(([k, v]) => h("button", {
+        class: "tri__choix", type: "button", "aria-pressed": choisi === k ? "true" : "false", disabled: !!choisi,
+        onclick: () => onChoix(k)
+      }, h("span", { class: `verdict verdict--${k}`, "aria-hidden": "true", style: "padding:0;background:none" }), v.long))
+    );
+  }
+
+  const INDICES = { nom: "L'expéditeur réel", lien: "La destination du lien", demande: "Ce qu'on me demande" };
+  function boutonsIndice(onChoix, choisi) {
+    return h("div", { class: "indice" },
+      h("p", { class: "indice__q", "data-focus": choisi ? null : "" }, "Qu'est-ce qui vous a décidé ?"),
+      h("div", { class: "tri", role: "group", "aria-label": "Qu'est-ce qui vous a décidé ?" },
+        Object.entries(INDICES).map(([k, v]) => h("button", {
+          class: "tri__choix", type: "button", "aria-pressed": choisi === k ? "true" : "false", disabled: !!choisi, onclick: () => onChoix(k)
+        }, v))));
+  }
+
+  const estJuste = (it, choix) => (it.acceptes || [it.bonne]).includes(choix);
+  const nomsIndices = (it) => (it.indices || []).map(i => INDICES[i].toLowerCase()).join(" ou ");
+
+  // Un courriel, une décision, une rétroaction par choix (D2, E1, E2)
+  function tri(b, k, redessiner) {
+    const choisi = etat.get(k);
+    const reperes = choisi ? (b.reperes || {}) : (b.reperesAvant || {});
+    const mail = courriel(b.courriel, { reperes, adresseVisible: !!reperes.nom });
+    const droite = h("div", { class: "diapo__col diapo__col--etroite" },
+      b.consigne ? h("div", { class: "consigne", html: riche(b.consigne) }) : null,
+      boutonsTri((v) => { etat.set(k, v); demanderFocus(); redessiner(); }, choisi));
+    if (choisi) {
+      const juste = estJuste(b, choisi);
+      droite.append(retroEl(juste ? "juste" : "rate",
+        juste ? `Juste : ${VERDICTS[choisi].court.toLowerCase()}.` : `Ce courriel est ${VERDICTS[b.bonne].court.toLowerCase()}.`,
+        b.retro[choisi]));
+      droite.append(recommencer(() => { etat.delete(k); redessiner(); }));
+    }
+    return h("div", { class: "diapo__corps" }, h("div", { class: "diapo__col" }, mail), droite);
+  }
+
+  // Le geste lui-même : choisir l'action sur le courriel (O2)
+  function geste(b, k, redessiner) {
+    const choisi = etat.get(k);
+    const mail = courriel(b.courriel, { reperes: b.reperes, adresseVisible: true, actionChoisie: choisi,
+      actions: (a) => { etat.set(k, a); demanderFocus(); redessiner(); } });
+    const droite = h("div", { class: "diapo__col diapo__col--etroite" }, b.consigne ? h("div", { class: "consigne", html: riche(b.consigne) }) : null);
+    if (choisi) {
+      const juste = choisi === b.bonne;
+      droite.append(retroEl(juste ? "juste" : "rate", juste ? "C'est le bon geste." : `« ${ACTIONS[choisi]} » : pas tout à fait.`, b.retro[choisi]));
+      if (juste && b.suite) droite.append(bloc(b.suite, k + "s", redessiner));
+      droite.append(recommencer(() => { etat.delete(k); redessiner(); }));
+    }
+    return h("div", { class: "diapo__corps" }, h("div", { class: "diapo__col" }, mail), droite);
+  }
+
+  // Exemple travaillé : les repères s'allument un à un (C3, C4)
+  function exemple(b, k, redessiner) {
+    const n = etat.get(k) || 0;
+    const reperes = {};
+    b.etapes.slice(0, n).forEach((e, i) => { reperes[e.repere] = i + 1; });
+    const mail = courriel(b.courriel, { reperes, adresseVisible: b.etapes.slice(0, n).some(e => e.repere === "nom") });
+    const liste = h("ol", { class: "verif" },
+      b.etapes.map((e, i) => h("li", { class: "verif__item", "data-actif": i < n ? "true" : "false", "data-focus": i === n - 1 && n < b.etapes.length ? "" : null },
+        h("span", { class: "verif__q" }, e.q), h("span", { class: "verif__r", html: i < n ? riche(e.r) : "…" }))));
+    const suite = n < b.etapes.length
+      ? boutonPlein(n === 0 ? "Commencer la vérification" : "Vérification suivante", () => { etat.set(k, n + 1); demanderFocus(); redessiner(); })
+      : retroEl(b.verdict === "fraude" ? "rate" : b.verdict === "sur" ? "juste" : "neutre", `Verdict : ${VERDICTS[b.verdict].long.toLowerCase()}.`, b.conclusion);
+    return h("div", { class: "diapo__corps" }, h("div", { class: "diapo__col" }, mail), h("div", { class: "diapo__col diapo__col--etroite" }, liste, suite));
+  }
+
+  // Question à choix, rétroaction propre à chaque choix
+  function options(b, k, redessiner) {
+    const choisi = etat.get(k);
+    const col = h("div", { class: "diapo__col" },
+      b.q ? p(b.q, "diapo__chapeau") : null,
+      h("div", { class: "options", role: "group", "aria-label": b.q ? b.q.replace(/\*\*/g, "") : "Choix" }, b.choix.map((c, i) => h("button", {
+        class: "options__choix", type: "button", "aria-pressed": choisi === i ? "true" : "false",
+        onclick: () => { etat.set(k, i); demanderFocus(); redessiner(); }
+      }, b.mono ? h("span", { class: "cq-mono" }, c.x) : c.x))));
+    if (choisi != null) {
+      const c = b.choix[choisi];
+      col.append(retroEl(c.juste ? "juste" : "rate", c.juste ? "Oui." : "Pas tout à fait.", c.retro));
+    }
+    return col;
+  }
+
+  // Série : une boîte de réception à trier, un courriel à la fois.
+  // Options : indice (demander ce qui a décidé), chrono (≤ 60 s par courriel),
+  // eliminatoire (un non-légitime traité comme légitime fait échouer),
+  // reprise (jeu de courriels inédits pour la tentative suivante).
+  function serie(b, k, redessiner) {
+    let s = etat.get(k);
+    const neuf = (jeu) => ({ jeu, i: 0, rep: [], ind: [], t: [], debut: Date.now(), voir: {} });
+    if (!s) { s = neuf(0); etat.set(k, s); }
+    const items = s.jeu === 1 && b.reprise ? b.reprise : b.items;
+    const total = items.length;
+    const bonIndice = (it, i) => !b.indice || it.bonne === "sur" || (it.indices || []).includes(s.ind[i]);
+    const reussite = (it, i) => estJuste(it, s.rep[i]) && bonIndice(it, i) && (!b.chrono || s.t[i] <= 60);
+
+    if (s.i >= total) {
+      const bons = items.filter(reussite).length;
+      const legitimeManque = items.some((it, i) => it.bonne !== "sur" && s.rep[i] === "sur");
+      const reussi = bons >= (b.seuil || total) && !(b.eliminatoire && legitimeManque);
+      const rates = items.map((it, i) => ({ it, i })).filter(x => !reussite(x.it, x.i));
+      const tMoy = Math.round(s.t.reduce((a, x) => a + x, 0) / (s.t.length || 1));
+      const autreJeu = () => { etat.set(k, neuf(b.reprise ? (s.jeu + 1) % 2 : 0)); demanderFocus(); redessiner(); };
+      return h("div", { class: "diapo__corps" },
+        h("div", { class: "diapo__col diapo__col--etroite" },
+          h("p", { class: "diapo__mega" }, `${bons} sur ${total}`),
+          b.chrono ? p(`Temps moyen : ${tMoy} s par courriel.`, "diapo__pied") : null,
+          retroEl(reussi ? "juste" : "neutre",
+            reussi ? (b.bilan?.reussi || "Seuil atteint.") : (b.bilan?.rate || "Seuil non atteint : refaites la série."),
+            !reussi && b.eliminatoire && legitimeManque ? "Un courriel qui n'était pas légitime a été traité comme tel : c'est éliminatoire, quel que soit le score." : null),
+          reussi ? recommencer(autreJeu)
+                 : boutonPlein(b.reprise ? "Passer une série de reprise (courriels inédits)" : "Refaire la série", autreJeu)),
+        h("div", { class: "diapo__col bilan" }, rates.length
+          ? rates.map(({ it, i }) => {
+              const causes = [];
+              if (!estJuste(it, s.rep[i])) causes.push(`Votre verdict : ${VERDICTS[s.rep[i]].court.toLowerCase()}.`);
+              else if (!bonIndice(it, i)) causes.push(`Bon verdict, mais l'indice décisif était : ${nomsIndices(it)}.`);
+              if (b.chrono && s.t[i] > 60) causes.push(`Plus d'une minute (${Math.round(s.t[i])} s).`);
+              const voir = !!s.voir[i];
+              return h("div", { class: "bilan__cas" },
+                h("div", { class: "bilan__tete" }, h("span", { class: "bilan__objet" }, it.courriel.objet), h("span", { class: `verdict verdict--${it.bonne}` }, VERDICTS[it.bonne].court)),
+                h("p", { class: "bilan__cause" }, causes.join(" ")),
+                p(it.retro[s.rep[i]]),
+                voir ? courriel(it.courriel, { reperes: it.reperes || {}, adresseVisible: true }) : null,
+                h("button", { class: "lien-discret", type: "button", "aria-expanded": String(voir), onclick: () => { s.voir[i] = !voir; redessiner(); } }, voir ? "Masquer le courriel" : "Revoir le courriel annoté"));
+            })
+          : [p("Aucun cas manqué.", "diapo__chapeau")]));
+    }
+
+    const it = items[s.i];
+    const verdict = s.rep[s.i], indice = s.ind[s.i];
+    const demandeIndice = b.indice && verdict;
+    const fini = verdict && (!b.indice || indice);
+    const montrer = fini && b.retroImmediate !== false;
+    const mail = courriel(it.courriel, { reperes: montrer ? (it.reperes || {}) : {}, adresseVisible: montrer && !!(it.reperes && it.reperes.nom) });
+    const droite = h("div", { class: "diapo__col diapo__col--etroite" },
+      h("div", { class: "diapo__entete", "data-focus": s.i > 0 && !verdict ? "" : null },
+        h("span", null, `Courriel ${s.i + 1} sur ${total}${s.jeu === 1 ? " · reprise" : ""}`)),
+      b.consigne && s.i === 0 && !verdict ? h("p", { class: "diapo__pied", html: riche(b.consigne) }) : null,
+      boutonsTri((v) => { s.rep[s.i] = v; s.t[s.i] = (Date.now() - s.debut) / 1000; demanderFocus(); redessiner(); }, verdict));
+    if (demandeIndice) droite.append(boutonsIndice((x) => { s.ind[s.i] = x; demanderFocus(); redessiner(); }, indice));
+    if (fini) {
+      if (b.retroImmediate !== false) {
+        const juste = estJuste(it, verdict);
+        droite.append(retroEl(juste ? "juste" : "rate",
+          juste ? `Juste : ${VERDICTS[verdict].court.toLowerCase()}.` : `Ce courriel est ${VERDICTS[it.bonne].court.toLowerCase()}.`,
+          it.retro[verdict],
+          juste && !bonIndice(it, s.i) ? h("div", { class: "retro__texte" }, `L'indice décisif était plutôt : ${nomsIndices(it)}.`) : null));
+      }
+      droite.append(boutonPlein(s.i + 1 < total ? "Courriel suivant" : "Voir le bilan",
+        () => { s.i++; s.debut = Date.now(); demanderFocus(); redessiner(); }, b.retroImmediate === false));
+    }
+    return h("div", { class: "diapo__corps" }, h("div", { class: "diapo__col" }, mail), droite);
+  }
+
+  // ============================================================
+  // Blocs de la version finale
+  // ============================================================
+  function bloc(b, k, redessiner) {
+    switch (b.t) {
+      case "mega":     return p(b.x, "diapo__mega");
+      case "chapeau":  return p(b.x, "diapo__chapeau");
+      case "para":     return p(b.x);
+      case "pied":     return p(b.x, "diapo__pied");
+      case "consigne": return h("div", { class: "consigne", html: riche(b.x) });
+      case "lien":     return h("a", { class: "lien-externe", href: b.href, target: "_blank", rel: "noopener" }, b.x);
+      case "regle":    return h("div", { class: "regle" }, b.items.map(r => h("div", { class: "regle__ligne" },
+                         h("span", { class: `verdict verdict--${r.v}` }, VERDICTS[r.v].court), h("span", { class: "regle__si", html: riche(r.si) }))));
+      case "verif":    return h("ol", { class: "verif" }, b.items.map((it, i) => h("li", { class: "verif__item", "data-actif": b.actif && !b.actif.includes(i + 1) ? "false" : "true" },
+                         h("span", { class: "verif__q", html: riche(it.q) }), h("span", { class: "verif__r", html: riche(it.r) }))));
+      case "memo":     return h("div", { class: "memo" }, h("p", { class: "memo__titre" }, b.titre),
+                         h("ol", { class: "verif" }, b.items.map(it => h("li", { class: "verif__item" }, h("span", { class: "verif__q", html: riche(it.q) }), h("span", { class: "verif__r", html: riche(it.r) })))),
+                         b.pied ? p(b.pied, "diapo__pied") : null);
+      case "courriel": return courriel(b.courriel, { reperes: b.reperes, adresseVisible: b.adresseVisible });
+      case "colonnes": return h("div", { class: "diapo__corps" },
+                         h("div", { class: "diapo__col" + (b.etroite === "gauche" ? " diapo__col--etroite" : "") }, b.gauche.map((x, i) => bloc(x, k + "g" + i, redessiner))),
+                         h("div", { class: "diapo__col" + (b.etroite === "droite" ? " diapo__col--etroite" : "") }, b.droite.map((x, i) => bloc(x, k + "d" + i, redessiner))));
+      case "tri":      return tri(b, k, redessiner);
+      case "geste":    return geste(b, k, redessiner);
+      case "exemple":  return exemple(b, k, redessiner);
+      case "options":  return options(b, k, redessiner);
+      case "serie":    return serie(b, k, redessiner);
+      default:         return p(`[bloc inconnu : ${b.t}]`);
+    }
+  }
+
+  function sceneApres(d, module) {
+    const scene = h("div", { class: "scene" });
+    const dessiner = () => {
+      const diapo = h("section", { class: "diapo" + (d.gabarit === "ouverture" ? " diapo--ouverture" : ""), "aria-label": (d.titre || "Diapositive").replace(/\*\*/g, "") },
+        h("div", { class: "diapo__entete" }, h("span", null, `${module.id.replace("M", "Module ")} · ${module.titre}`), h("span", null, d.surtitre || "")),
+        d.titre ? h("h2", { class: "diapo__titre", html: riche(d.titre) }) : null);
+      const corps = d.blocs.length === 1 && ["tri", "geste", "exemple", "serie", "colonnes"].includes(d.blocs[0].t)
+        ? [bloc(d.blocs[0], cle(d.id, 0), dessiner)]
+        : [h("div", { class: "diapo__corps diapo__corps--pile" }, d.blocs.map((b, i) => bloc(b, cle(d.id, i), dessiner)))];
+      diapo.append(...corps);
+      scene.replaceChildren(h("div", { class: "plateau" }, diapo));
+      if (aFocaliser) {
+        aFocaliser = false;
+        const cible = [...scene.querySelectorAll("[data-focus]")].pop();
+        if (cible) { if (!cible.matches("button, a")) cible.tabIndex = -1; cible.focus(); }
+      }
+    };
+    dessiner();
+    return scene;
+  }
+
+  // ============================================================
+  // Version zéro (brouillon)
+  // ============================================================
+  function sceneAvant(d) {
+    const scene = h("div", { class: "scene" });
+    const br = h("section", { class: "brouillon", "aria-label": `Version zéro : ${d.titre}` }, h("h3", { class: "brouillon__titre" }, d.titre));
+    for (const b of d.blocs) {
+      if (b.t === "sous-titre") br.append(h("p", null, b.x));
+      else if (b.t === "para") br.append(h("p", null, b.x));
+      else if (b.t === "puces") br.append(h("ul", null, b.x.map(x => h("li", null, x))));
+      else if (b.t === "image") br.append(h("div", { class: "brouillon__image" }, `[ ${b.alt} ]`));
+      else if (b.t === "chiffres") br.append(h("div", { class: "brouillon__chiffres" }, b.x.map(c => h("div", null, h("b", null, c.n), h("span", null, c.l)))));
+      else if (b.t === "note") br.append(h("p", { class: "brouillon__note" }, b.x));
+      else if (b.t === "grand") br.append(h("p", { class: "brouillon__grand" }, b.x));
+      else if (b.t === "legende") br.append(h("p", { class: "brouillon__legende" }, b.x));
+      else if (b.t === "courriel") br.append(courriel({ nom: b.nom, adresse: b.adresse, objet: b.objet, corps: b.corps.slice(0, -1).concat([{ lien: { texte: b.corps[b.corps.length - 1], url: b.lien } }]) }, { adresseVisible: true }));
+      else if (b.t === "quiz") br.append(h("div", { class: "brouillon__quiz" }, h("ol", null, b.questions.map(q => h("li", null, q.q, h("ol", null, q.choix.map(c => h("li", null, c)))))),
+        h("p", { class: "brouillon__legende" }, `Rétroaction prévue : « ${b.questions[0].retro.bien} » / « ${b.questions[0].retro.mal} »`)));
+    }
+    scene.append(h("div", { class: "plateau" }, br));
+    return scene;
+  }
+
+  // ============================================================
+  // Index : diapos de la version finale, et journal par diapo
+  // ============================================================
+  const diaposApres = [];
+  A.modules.forEach(m => m.diapos.forEach(d => diaposApres.push({ d, m })));
+  const diaposAvant = {};
+  V.modules.forEach(m => m.diapos.forEach(d => { diaposAvant[d.id] = { d, m }; }));
+
+  // Le parcours avant/après suit le journal (il inclut les diapos retirées)
+  const parcours = J.entrees.map(e => ({ e, apres: e.apres ? diaposApres.find(x => x.d.id === e.apres) : null, avant: e.avant ? diaposAvant[e.avant] : null }));
+
+  // ============================================================
+  // Vues
+  // ============================================================
+  const racine = document.getElementById("vue");
+  const nav = document.getElementById("navigation");
+  let vue = "formation", idx = 0;
+
+  function critereEl(code, grav) {
+    const c = G.criteres[code];
+    return h("span", { class: "critere", title: c ? c.q : "" }, h("span", { class: "critere__code" }, code), c ? h("span", { class: "critere__nom" }, c.nom) : null,
+      grav ? h("span", { class: `gravite gravite--${grav}`, "aria-label": `constat ${grav}` }) : null);
+  }
+
+  function lignesJournal(e) {
+    return h("div", { class: "journal" },
+      h("div", { class: "journal__ligne" },
+        h("div", { class: "journal__tete" }, h("span", { class: `statut statut--${e.statut}` }, e.statut === "modifiee" ? "modifiée" : e.statut === "ajoutee" ? (e.tour === 2 ? "ajoutée au 2e tour" : "ajoutée") : e.statut === "retiree" ? "retirée" : "conservée"),
+          e.criteres.map(c => critereEl(c.code, c.grav))),
+        h("p", { class: "journal__texte", html: riche(e.pourquoi) }),
+        e.note ? h("p", { class: "note-marge" }, e.note) : null),
+      e.tour2 ? h("div", { class: "journal__ligne journal__ligne--tour2" },
+        h("div", { class: "journal__tete" }, h("span", { class: "statut" }, "2e tour"), e.tour2.criteres.map(c => critereEl(c.code, c.grav))),
+        h("p", { class: "journal__texte", html: riche(e.tour2.pourquoi) })) : null);
+  }
+
+  function barreNav(max, libelle) {
+    return h("div", { class: "barre" },
+      h("button", { class: "barre__btn", type: "button", disabled: idx === 0, onclick: () => aller(idx - 1), "aria-label": "Diapositive précédente" }, "←"),
+      h("span", { class: "barre__pos" }, libelle),
+      h("button", { class: "barre__btn", type: "button", disabled: idx >= max - 1, onclick: () => aller(idx + 1), "aria-label": "Diapositive suivante" }, "→"));
+  }
+
+  function vueFormation() {
+    const { d, m } = diaposApres[idx];
+    const pos = m.diapos.indexOf(d) + 1;
+    return h("div", { class: "pile" },
+      sceneApres(d, m),
+      barreNav(diaposApres.length, `${m.id} · ${pos} / ${m.diapos.length}`));
+  }
+
+  function vueComparer() {
+    const { e, apres, avant } = parcours[idx];
+    const cote = (titre, scene, cls) => h("figure", { class: "comparer__cote " + cls }, h("figcaption", { class: "comparer__legende" }, titre), scene);
+    const avantScene = avant ? sceneAvant(avant.d) : h("div", { class: "scene scene--vide" }, h("p", null, "Aucune diapositive équivalente dans la version zéro."));
+    const apresScene = apres ? sceneApres(apres.d, apres.m) : h("div", { class: "scene scene--vide" }, h("p", null, "Retirée de la version finale."));
+    const modTitre = apres ? `${apres.m.id} · ${apres.m.titre}` : `Version zéro · ${avant.m.titre}`;
+    return h("div", { class: "pile" },
+      h("div", { class: "comparer" },
+        cote(`Avant${avant ? " · " + avant.d.id.replace("A-", "") : ""}`, avantScene, "comparer__cote--avant"),
+        cote(`Après${apres ? " · " + apres.d.id : ""}`, apresScene, "comparer__cote--apres")),
+      barreNav(parcours.length, `${idx + 1} / ${parcours.length} · ${modTitre}`),
+      lignesJournal(e));
+  }
+
+  function vueBoucle() {
+    const compte = {};
+    J.entrees.forEach(e => e.criteres.forEach(c => { compte[c.code] = (compte[c.code] || 0) + 1; }));
+    const maxc = Math.max(...Object.values(compte), 1);
+    const stat = (k) => J.entrees.filter(e => e.statut === k).length;
+    const audit = (a) => h("div", { class: "audit" },
+      h("h3", null, a.titre), h("p", { class: "audit__date" }, a.sous),
+      h("dl", { class: "audit__chiffres" }, ["bloquant", "majeur", "mineur"].map(g => h("div", null, h("dt", null, h("span", { class: `gravite gravite--${g}` }, g)), h("dd", null, String(a[g]))))),
+      a.note ? p(a.note, "audit__note") : null);
+
+    return h("div", { class: "boucle" },
+      h("section", { class: "boucle__bloc" },
+        h("h2", null, "Cadrage"),
+        p(B.cadrage.public),
+        p(B.cadrage.ecart),
+        h("h3", null, "Objectifs"),
+        h("ol", { class: "objectifs" }, A.objectifs.map(o => h("li", null, h("b", null, o.id), " ", h("span", { html: riche(o.x) })))),
+        h("h3", null, "Alignement"),
+        h("div", { class: "defile" }, h("table", { class: "tableau" },
+          h("thead", null, h("tr", null, h("th", null, "Objectif"), h("th", null, "Pratiqué dans"), h("th", null, "Évalué dans"))),
+          h("tbody", null, B.alignement.map(r => h("tr", null, h("td", null, h("b", null, r.o)), h("td", null, r.pratique), h("td", null, r.evalue))))))),
+      h("section", { class: "boucle__bloc" },
+        h("h2", null, "Les audits"),
+        h("div", { class: "audits" }, B.audits.map(audit)),
+        h("p", { class: "boucle__bilan" }, `${stat("modifiee")} diapositives modifiées, ${stat("ajoutee")} ajoutées, ${stat("retiree")} retirées, ${stat("conservee")} conservées. Durée : ${V.duree} → ${A.duree}.`)),
+      h("section", { class: "boucle__bloc" },
+        h("h2", null, "Critères qui ont motivé les changements"),
+        h("p", { class: "boucle__aide" }, "Nombre de changements qui citent chaque critère de la grille."),
+        h("div", { class: "barres" }, Object.entries(G.criteres).map(([code, c]) => {
+          const n = compte[code] || 0;
+          return h("div", { class: "barres__ligne" + (n ? "" : " barres__ligne--nul") },
+            critereEl(code), h("span", { class: "barres__piste" }, h("span", { class: "barres__trait", style: `width:${(n / maxc) * 100}%` })), h("span", { class: "barres__n" }, String(n)));
+        }))),
+      h("section", { class: "boucle__bloc" },
+        h("h2", null, "Ce que la boucle ne vérifie pas"),
+        h("ul", null, B.limites.map(l => h("li", { html: riche(l) })))));
+  }
+
+  // ---------- Navigation latérale ----------
+  function dessinerNav() {
+    nav.replaceChildren();
+    if (vue === "boucle") { nav.hidden = true; return; }
+    nav.hidden = false;
+    if (vue === "formation") {
+      A.modules.forEach(m => {
+        const premier = diaposApres.findIndex(x => x.m === m);
+        const actif = diaposApres[idx].m === m;
+        nav.append(h("button", { class: "nav__module" + (actif ? " nav__module--actif" : ""), type: "button", "aria-current": actif ? "true" : null, onclick: () => aller(premier) },
+          h("span", { class: "nav__num" }, m.id), h("span", null, m.titre), h("span", { class: "nav__duree" }, m.duree)));
+      });
+    } else {
+      let dernier = null;
+      parcours.forEach((x, i) => {
+        const m = A.modules.find(mm => mm.id === x.e.module);
+        const mod = m ? `${m.id} · ${m.titre}` : x.e.module;
+        if (mod !== dernier) { nav.append(h("div", { class: "nav__groupe" }, mod)); dernier = mod; }
+        nav.append(h("button", { class: "nav__diapo" + (i === idx ? " nav__diapo--actif" : ""), type: "button", "aria-current": i === idx ? "true" : null, onclick: () => aller(i) },
+          h("span", { class: `statut statut--${x.e.statut}`, title: { modifiee: "Modifiée", ajoutee: "Ajoutée", retiree: "Retirée", conservee: "Conservée" }[x.e.statut] }, x.e.statut[0].toUpperCase()),
+          h("span", { class: x.e.statut === "retiree" ? "nav__retiree" : null }, x.apres ? (x.apres.d.titre || x.apres.d.id).replace(/\*\*/g, "") : x.avant.d.titre)));
+      });
+    }
+  }
+
+  function dessiner() {
+    document.querySelectorAll("[data-vue]").forEach(b => b.setAttribute("aria-selected", String(b.dataset.vue === vue)));
+    racine.replaceChildren(vue === "formation" ? vueFormation() : vue === "comparer" ? vueComparer() : vueBoucle());
+    dessinerNav();
+    try { history.replaceState(null, "", "#" + vue); } catch (_) {}
+  }
+  function aller(i) {
+    const max = vue === "formation" ? diaposApres.length : parcours.length;
+    idx = Math.max(0, Math.min(max - 1, i));
+    dessiner();
+  }
+  function changerVue(v) {
+    if (v === vue) return;
+    // Garder la même diapo d'une vue à l'autre quand c'est possible
+    if (v === "comparer" && vue === "formation") { const id = diaposApres[idx].d.id; const j = parcours.findIndex(x => x.apres && x.apres.d.id === id); idx = j < 0 ? 0 : j; }
+    else if (v === "formation" && vue === "comparer") { const x = parcours[idx]; const j = x.apres ? diaposApres.findIndex(y => y.d.id === x.apres.d.id) : 0; idx = j < 0 ? 0 : j; }
+    else idx = 0;
+    vue = v; dessiner();
+  }
+
+  document.querySelectorAll("[data-vue]").forEach(b => b.addEventListener("click", () => changerVue(b.dataset.vue)));
+  document.addEventListener("keydown", (e) => {
+    if (vue === "boucle" || e.target.closest("input, textarea")) return;
+    if (e.key === "ArrowRight" || e.key === "PageDown") { aller(idx + 1); }
+    else if (e.key === "ArrowLeft" || e.key === "PageUp") { aller(idx - 1); }
+  });
+
+  const depart = (location.hash || "").slice(1);
+  if (["formation", "comparer", "boucle"].includes(depart)) vue = depart;
+  dessiner();
+})();
+
+</script>
+
+</html>

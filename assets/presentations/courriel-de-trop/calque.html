@@ -1,0 +1,827 @@
+<!doctype html>
+<html lang="fr">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>[hidden]{display:none!important}</style>
+<title>Calque</title>
+<meta name="description" content="Calque : le système de design des formations révisées avec la boucle didactique. La feuille pour l'apprenant, le calque pour la révision, le brouillon pour la version zéro.">
+<style>
+/* ============================================================
+   CALQUE — système de design pour formations révisées
+   ------------------------------------------------------------
+   Deux couches, comme sur une table à dessin :
+   · la FEUILLE  — ce que l'apprenant voit (la formation) ;
+   · le CALQUE   — la couche de révision posée par-dessus, tracée
+                   au crayon bleu non photographique : critères,
+                   constats, avant/après. L'apprenant ne la voit
+                   jamais ; le lecteur du portfolio, oui.
+   Et un troisième registre, BROUILLON, qui reproduit fidèlement
+   la diapositive « par défaut » de la version zéro.
+
+   Règles :
+   1. Le bleu calque n'appartient QU'à la couche de révision.
+      Il ne sert jamais à la formation elle-même.
+   2. Les trois verdicts (légitime / à vérifier / frauduleux)
+      portent toujours une forme ET une couleur (G1).
+   3. Toute adresse et tout lien s'affichent en mono : c'est là
+      que se cachent les lettres jumelles (rn/m, l/I, 0/o).
+   ============================================================ */
+
+@import url("https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&family=Schibsted+Grotesk:wght@500;700;800&family=Kalam:wght@400;700&display=swap");
+
+:root {
+  color-scheme: light;
+
+  /* ---------- Feuille (formation) ---------- */
+  --cq-papier:      #EEF1F3;  /* fond de page : gris-bleu d'une boîte de réception */
+  --cq-feuille:     #FFFFFF;  /* la diapositive */
+  --cq-retrait:     #F5F7F8;  /* surface en retrait : en-tête de courriel, encart */
+  --cq-filet:       #D5DCE1;
+  --cq-sourdine:    #5A6873;  /* texte secondaire — 5,7:1 sur blanc */
+  --cq-encre:       #13212C;  /* texte principal — bleu nuit */
+  --cq-action:      #13212C;  /* bouton principal : l'encre elle-même */
+  --cq-action-ink:  #FFFFFF;
+  --cq-focus:       #E8A317;
+  --cq-lien:        #1A5FB4;  /* lien et bouton du courriel simulé — 6,3:1 */
+
+  /* ---------- Verdicts (sémantiques, forme + couleur) ---------- */
+  --cq-sur:         #1D7A4C;  --cq-sur-fond:     #E3F2EA;   /* ✓ légitime   */
+  --cq-doute:       #9A6206;  --cq-doute-fond:   #FBF0D9;   /* ? à vérifier */
+  --cq-fraude:      #B3261E;  --cq-fraude-fond:  #FBE4E1;   /* ✕ frauduleux */
+
+  /* ---------- Calque (révision) ---------- */
+  --cq-calque:      #4C9BD6;  /* bleu non photographique : traits, repères */
+  --cq-calque-ink:  #0B4A7A;  /* texte du calque — 9,2:1 sur blanc */
+  --cq-calque-voile: rgba(76, 155, 214, 0.08);
+  --cq-calque-trame: rgba(76, 155, 214, 0.18);
+
+  /* Gravités du constat d'origine — graduées dans le bleu du calque,
+     pour ne jamais se confondre avec les verdicts de la formation. */
+  --cq-grav-bloquant: #0B4A7A;
+  --cq-grav-majeur:   #2F7EBB;
+  --cq-grav-mineur:   #9CC7E8;
+
+  /* ---------- Brouillon (version zéro) ---------- */
+  --br-fond:   #FFFFFF;
+  --br-titre:  #1F4E9A;
+  --br-texte:  #222222;
+  --br-barre:  #1F4E9A;
+  --br-police: Calibri, Carlito, "Segoe UI", Arial, sans-serif;
+
+  /* ---------- Typographie ---------- */
+  --cq-police-titre: "Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --cq-police-texte: "Atkinson Hyperlegible", Verdana, Tahoma, sans-serif;
+  --cq-police-mono:  "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+  --cq-police-main:  "Kalam", "Segoe Print", "Comic Neue", cursive;
+
+  /* Échelle des diapositives, en unités de conteneur :
+     la diapo est une scène 16:9 ; tout y est proportionnel à sa largeur. */
+  --cq-d-mega:  5.6cqw;
+  --cq-d-titre: 3.6cqw;
+  --cq-d-inter: 2.3cqw;
+  --cq-d-texte: 1.75cqw;
+  --cq-d-petit: 1.35cqw;
+  --cq-d-micro: 1.1cqw;
+  /* Planchers : sous ces tailles, la diapo passe en mode « feuille qui
+     s'allonge » (voir @container plus bas) plutôt que de rapetisser. */
+
+  /* Échelle de l'interface autour (rem) */
+  --cq-t-xl: 2rem;
+  --cq-t-l:  1.375rem;
+  --cq-t-m:  1.0625rem;
+  --cq-t-s:  0.9375rem;
+  --cq-t-xs: 0.8125rem;
+
+  --cq-rayon:   6px;
+  --cq-rayon-l: 12px;
+  --cq-ombre:   0 1px 2px rgba(19,33,44,.06), 0 8px 24px rgba(19,33,44,.08);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --cq-papier:   #0E171E;
+    --cq-feuille:  #16222B;
+    --cq-retrait:  #1C2A34;
+    --cq-filet:    #2B3B47;
+    --cq-sourdine: #9AABB8;
+    --cq-encre:    #E6EDF2;
+    --cq-action:   #E6EDF2;
+    --cq-action-ink: #13212C;
+    --cq-lien: #7DB3F0;
+    --cq-sur:    #5FCB93;  --cq-sur-fond:    #173327;
+    --cq-doute:  #E9B454;  --cq-doute-fond:  #3A2D12;
+    --cq-fraude: #F08A80;  --cq-fraude-fond: #3E1B18;
+    --cq-calque: #6FB6EA;
+    --cq-calque-ink: #9FD0F5;
+    --cq-calque-voile: rgba(111, 182, 234, 0.08);
+    --cq-calque-trame: rgba(111, 182, 234, 0.22);
+    --cq-grav-bloquant: #9FD0F5;
+    --cq-grav-majeur:   #5A9FD4;
+    --cq-grav-mineur:   #2F5C80;
+    --cq-ombre: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --cq-papier:   #0E171E;
+  --cq-feuille:  #16222B;
+  --cq-retrait:  #1C2A34;
+  --cq-filet:    #2B3B47;
+  --cq-sourdine: #9AABB8;
+  --cq-encre:    #E6EDF2;
+  --cq-action:   #E6EDF2;
+  --cq-action-ink: #13212C;
+  --cq-lien: #7DB3F0;
+  --cq-sur:    #5FCB93;  --cq-sur-fond:    #173327;
+  --cq-doute:  #E9B454;  --cq-doute-fond:  #3A2D12;
+  --cq-fraude: #F08A80;  --cq-fraude-fond: #3E1B18;
+  --cq-calque: #6FB6EA;
+  --cq-calque-ink: #9FD0F5;
+  --cq-calque-voile: rgba(111, 182, 234, 0.08);
+  --cq-calque-trame: rgba(111, 182, 234, 0.22);
+  --cq-grav-bloquant: #9FD0F5;
+  --cq-grav-majeur:   #5A9FD4;
+  --cq-grav-mineur:   #2F5C80;
+  --cq-ombre: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+}
+
+/* ============================================================
+   Base
+   ============================================================ */
+.cq, .cq * { box-sizing: border-box; }
+.cq {
+  font-family: var(--cq-police-texte);
+  color: var(--cq-encre);
+  background: var(--cq-papier);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+.cq :focus-visible { outline: 3px solid var(--cq-focus); outline-offset: 2px; border-radius: 3px; }
+.cq-mono { font-family: var(--cq-police-mono); font-size: .95em; letter-spacing: 0; }
+.cq-visuel-cache { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+@media (prefers-reduced-motion: reduce) {
+  .cq *, .cq *::before, .cq *::after { animation: none !important; transition: none !important; }
+}
+
+/* ============================================================
+   Scène — la diapositive 16:9, en unités de conteneur
+   ============================================================ */
+.scene {
+  container-type: inline-size;
+  width: 100%;
+  max-width: 100%;
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--cq-rayon-l);
+  background: var(--cq-feuille);
+  box-shadow: var(--cq-ombre);
+}
+.plateau { position: relative; aspect-ratio: 16 / 9; max-width: 100%; }
+.scene--vide {
+  aspect-ratio: 16 / 9;
+  display: grid; place-items: center;
+  background: repeating-linear-gradient(135deg, var(--cq-calque-voile) 0 10px, transparent 10px 20px), var(--cq-feuille);
+  box-shadow: inset 0 0 0 2px var(--cq-calque-trame);
+}
+.scene--vide p {
+  font-family: var(--cq-police-main); color: var(--cq-calque-ink);
+  font-size: var(--cq-d-inter); margin: 0; text-align: center; max-width: 70%;
+}
+
+/* ============================================================
+   Feuille — composition d'une diapo de formation
+   ============================================================ */
+.diapo {
+  position: absolute; inset: 0;
+  padding: 4.2cqw 5cqw 3.6cqw;
+  display: flex; flex-direction: column; gap: 1.8cqw;
+  font-size: var(--cq-d-texte);
+}
+.diapo__entete {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 2cqw;
+  font-size: var(--cq-d-micro); color: var(--cq-sourdine);
+  letter-spacing: .06em; text-transform: uppercase;
+}
+.diapo__titre {
+  font-family: var(--cq-police-titre); font-weight: 800;
+  font-size: var(--cq-d-titre); line-height: 1.05; letter-spacing: -.02em;
+  margin: 0; text-wrap: balance;
+}
+.diapo__corps { flex: 1; min-height: 0; display: flex; gap: 3cqw; }
+.diapo__corps--pile { flex-direction: column; gap: 1.4cqw; }
+.diapo__col { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1.2cqw; }
+.diapo__col--etroite { flex: 0 0 34%; }
+.diapo p { margin: 0; max-width: 60ch; }
+.diapo__mega {
+  font-family: var(--cq-police-titre); font-weight: 800;
+  font-size: var(--cq-d-mega); line-height: 1; letter-spacing: -.035em; margin: 0; text-wrap: balance;
+}
+.diapo__chapeau { font-size: var(--cq-d-inter); line-height: 1.3; margin: 0; max-width: 34ch; }
+.diapo__pied { font-size: var(--cq-d-petit); color: var(--cq-sourdine); }
+
+/* Diapo d'ouverture de module : fond encre, plein cadre */
+.diapo--ouverture { background: var(--cq-encre); color: var(--cq-feuille); justify-content: flex-end; }
+.diapo--ouverture .diapo__entete { color: color-mix(in srgb, var(--cq-feuille) 70%, transparent); }
+
+/* ---------- Verdict : pastille forme + couleur ---------- */
+.verdict {
+  display: inline-flex; align-items: center; gap: .45em;
+  padding: .2em .7em .2em .35em; border-radius: 999px;
+  font-weight: 700; font-size: .9em; line-height: 1.4; white-space: nowrap;
+}
+.verdict::before {
+  content: ""; width: 1.15em; height: 1.15em; flex: none;
+  display: inline-grid; place-items: center; border-radius: 50%;
+  font-size: .8em; line-height: 1.15em; text-align: center; color: var(--cq-feuille);
+}
+.verdict--sur    { background: var(--cq-sur-fond);    color: var(--cq-sur); }
+.verdict--doute  { background: var(--cq-doute-fond);  color: var(--cq-doute); }
+.verdict--fraude { background: var(--cq-fraude-fond); color: var(--cq-fraude); }
+.verdict--sur::before    { content: "✓"; background: var(--cq-sur); }
+.verdict--doute::before  { content: "?"; background: var(--cq-doute); border-radius: 3px; }
+.verdict--fraude::before { content: "✕"; background: var(--cq-fraude); border-radius: 2px; transform: rotate(0deg); }
+
+/* ---------- Vérification : les trois questions ---------- */
+.verif { display: grid; gap: 1cqw; margin: 0; padding: 0; list-style: none; counter-reset: verif; }
+.verif__item {
+  counter-increment: verif;
+  display: grid; grid-template-columns: 3.2cqw 1fr; gap: .2cqw 1.2cqw; align-items: baseline;
+}
+.verif__item::before {
+  content: counter(verif);
+  grid-row: span 2;
+  font-family: var(--cq-police-titre); font-weight: 800; font-size: var(--cq-d-inter);
+  width: 3.2cqw; height: 3.2cqw; border-radius: 50%;
+  display: grid; place-items: center; border: .2cqw solid currentColor;
+}
+.verif__q { font-weight: 700; font-size: var(--cq-d-inter); line-height: 1.2; }
+.verif__r { color: var(--cq-sourdine); font-size: var(--cq-d-petit); }
+.verif__item[data-actif="false"] { opacity: .35; }
+
+/* ============================================================
+   Courriel simulé — imite un client de messagerie
+   ============================================================ */
+.courriel {
+  background: var(--cq-feuille);
+  border: 1px solid var(--cq-filet);
+  border-radius: var(--cq-rayon);
+  font-size: var(--cq-d-petit);
+  display: flex; flex-direction: column; min-height: 0; position: relative;
+  overflow: hidden;
+}
+.courriel__entete {
+  background: var(--cq-retrait); border-bottom: 1px solid var(--cq-filet);
+  padding: 1.1cqw 1.4cqw; display: grid; gap: .35cqw;
+}
+.courriel__objet { font-weight: 700; font-size: var(--cq-d-texte); line-height: 1.25; }
+.courriel__de { display: flex; flex-wrap: wrap; align-items: center; gap: .3cqw .8cqw; }
+.courriel__avatar {
+  width: 2.4cqw; height: 2.4cqw; border-radius: 50%; flex: none;
+  display: grid; place-items: center; font-weight: 700; font-size: var(--cq-d-micro);
+  background: var(--cq-filet); color: var(--cq-encre);
+}
+.courriel__nom {
+  font-weight: 700; background: none; border: 0; padding: 0; color: inherit; font: inherit; font-weight: 700;
+  cursor: pointer; text-decoration: underline dotted; text-underline-offset: .25em;
+}
+.courriel__adresse { font-family: var(--cq-police-mono); color: var(--cq-sourdine); font-size: .92em; }
+.courriel__adresse[hidden] { display: none; }
+.courriel__meta { color: var(--cq-sourdine); font-size: var(--cq-d-micro); }
+.courriel__corps { padding: 1.3cqw 1.4cqw; display: grid; gap: .8cqw; align-content: start; overflow: auto; }
+.courriel__corps p { margin: 0; }
+.courriel__lien {
+  color: var(--cq-lien); text-decoration: underline; cursor: pointer;
+  background: none; border: 0; padding: 0; font: inherit; text-align: left;
+}
+.courriel__bouton {
+  justify-self: start; background: var(--cq-lien); color: var(--cq-feuille); border: 0; border-radius: 4px;
+  padding: .6cqw 1.4cqw; font: inherit; font-weight: 700; cursor: pointer;
+}
+.courriel__pj {
+  display: inline-flex; gap: .6cqw; align-items: center; justify-self: start;
+  border: 1px solid var(--cq-filet); border-radius: 4px; padding: .5cqw .9cqw;
+  font-family: var(--cq-police-mono); font-size: var(--cq-d-micro);
+}
+/* Barre d'état : là où le client affiche la destination réelle d'un lien */
+.courriel__etat {
+  position: absolute; left: 0; bottom: 0; max-width: 90%;
+  background: var(--cq-encre); color: var(--cq-feuille);
+  font-family: var(--cq-police-mono); font-size: var(--cq-d-micro);
+  padding: .35cqw .9cqw; border-top-right-radius: 4px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.courriel__etat[hidden] { display: none; }
+
+/* Repère : l'endroit à regarder, pointé sur l'objet (C3) */
+.repere {
+  position: relative; border-radius: 3px;
+  box-shadow: 0 0 0 .22cqw var(--cq-focus);
+  background: color-mix(in srgb, var(--cq-focus) 16%, transparent);
+}
+.repere[data-n]::after {
+  content: attr(data-n);
+  position: absolute; top: -1.2cqw; right: -1.2cqw;
+  width: 2cqw; height: 2cqw; border-radius: 50%;
+  background: var(--cq-focus); color: #13212C;
+  font: 800 var(--cq-d-micro)/2cqw var(--cq-police-titre); text-align: center;
+}
+
+/* ============================================================
+   Tri — l'apprenant décide
+   ============================================================ */
+.tri { display: flex; flex-wrap: wrap; gap: .9cqw; }
+.tri__choix {
+  font: inherit; font-weight: 700; font-size: var(--cq-d-petit);
+  border: .15cqw solid var(--cq-filet); background: var(--cq-feuille); color: var(--cq-encre);
+  border-radius: 999px; padding: .7cqw 1.5cqw; cursor: pointer;
+  display: inline-flex; align-items: center; gap: .6cqw;
+  transition: border-color .15s, background .15s;
+}
+.tri__choix:hover { border-color: var(--cq-encre); }
+.tri__choix[aria-pressed="true"] { background: var(--cq-action); color: var(--cq-action-ink); border-color: var(--cq-action); }
+.tri__choix:disabled { cursor: default; }
+.tri__choix:disabled:not([aria-pressed="true"]) { opacity: .45; }
+
+.options { display: grid; gap: .8cqw; }
+.options__choix {
+  font: inherit; font-size: var(--cq-d-petit); text-align: left; cursor: pointer;
+  border: .15cqw solid var(--cq-filet); background: var(--cq-feuille); color: var(--cq-encre);
+  border-radius: var(--cq-rayon); padding: .9cqw 1.2cqw; line-height: 1.35;
+}
+.options__choix:hover { border-color: var(--cq-encre); }
+.options__choix[aria-pressed="true"] { border-color: var(--cq-encre); box-shadow: inset .4cqw 0 0 var(--cq-encre); }
+
+/* ---------- Rétroaction ---------- */
+.retro {
+  border-radius: var(--cq-rayon); padding: 1cqw 1.3cqw;
+  font-size: var(--cq-d-petit); display: grid; gap: .4cqw;
+  border-left: .45cqw solid currentColor;
+}
+.retro[hidden] { display: none; }
+.retro--juste  { background: var(--cq-sur-fond);    color: var(--cq-sur); }
+.retro--rate   { background: var(--cq-fraude-fond); color: var(--cq-fraude); }
+.retro--neutre { background: var(--cq-retrait);     color: var(--cq-encre); }
+.retro__titre { font-weight: 700; }
+.retro__texte { color: var(--cq-encre); }
+
+/* ---------- Aide-mémoire ---------- */
+.memo {
+  border: .2cqw solid var(--cq-encre); border-radius: var(--cq-rayon-l);
+  padding: 1.6cqw 2cqw; display: grid; gap: 1cqw; background: var(--cq-feuille);
+}
+.memo__titre { font-family: var(--cq-police-titre); font-weight: 800; font-size: var(--cq-d-inter); margin: 0; }
+
+/* ---------- Encart consigne ---------- */
+.consigne {
+  display: flex; gap: 1cqw; align-items: baseline;
+  font-size: var(--cq-d-petit); font-weight: 700;
+}
+.consigne::before {
+  content: "À vous"; flex: none;
+  font-size: var(--cq-d-micro); letter-spacing: .08em; text-transform: uppercase;
+  background: var(--cq-encre); color: var(--cq-feuille); border-radius: 3px; padding: .15cqw .6cqw;
+}
+
+/* ============================================================
+   Brouillon — reproduit la diapo par défaut de la version zéro
+   ============================================================ */
+.brouillon {
+  position: absolute; inset: 0; background: var(--br-fond); color: var(--br-texte);
+  font-family: var(--br-police); font-size: 1.9cqw; line-height: 1.3;
+  padding: 3.4cqw 5cqw; display: flex; flex-direction: column; gap: 1.6cqw;
+  color-scheme: light;
+}
+.brouillon::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1.3cqw; background: var(--br-barre);
+}
+.brouillon__titre { color: var(--br-titre); font-size: 3.4cqw; font-weight: 400; margin: 0; line-height: 1.1; }
+.brouillon ul { margin: 0; padding-left: 1.4em; display: grid; gap: .5cqw; }
+.brouillon p { margin: 0; }
+.brouillon__image {
+  flex: 1; min-height: 5cqw; max-height: 18cqw;
+  border: .15cqw dashed #9AA3AD; border-radius: 4px; display: grid; place-items: center;
+  font-size: 1.3cqw; color: #6B7580; font-style: italic; padding: 1cqw; text-align: center;
+  background: repeating-linear-gradient(45deg, #F3F5F7 0 8px, #fff 8px 16px);
+}
+.brouillon__chiffres { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2cqw; margin-top: 1cqw; }
+.brouillon__chiffres b { display: block; color: var(--br-titre); font-size: 4cqw; }
+.brouillon__chiffres span { font-size: 1.4cqw; }
+.brouillon__note { font-style: italic; color: #B00020; }
+.brouillon__grand { font-size: 4.2cqw; color: var(--br-titre); text-align: center; margin-top: 6cqw; }
+.brouillon__quiz { display: grid; gap: .9cqw; font-size: 1.45cqw; }
+.brouillon__quiz ol { padding-left: 1.3em; margin: 0; display: grid; gap: .7cqw; }
+.brouillon__quiz ol ol { list-style: lower-alpha; margin-top: .2cqw; gap: 0; color: #444; }
+.brouillon .courriel { font-size: 1.35cqw; }
+.brouillon__legende { font-size: 1.4cqw; color: #444; font-style: italic; }
+
+/* ============================================================
+   Calque — la couche de révision
+   ============================================================ */
+.critere {
+  display: inline-flex; align-items: baseline; gap: .45em;
+  font-family: var(--cq-police-mono); font-size: var(--cq-t-xs); font-weight: 500;
+  color: var(--cq-calque-ink); background: var(--cq-calque-voile);
+  border: 1px solid var(--cq-calque-trame); border-radius: 3px; padding: .1em .5em;
+  white-space: nowrap;
+}
+.critere__code { font-weight: 500; }
+.critere__nom { font-family: var(--cq-police-texte); font-weight: 400; }
+
+/* Gravité : trois épaisseurs de trait, pas seulement trois teintes */
+.gravite {
+  display: inline-flex; align-items: center; gap: .4em;
+  font-size: var(--cq-t-xs); color: var(--cq-calque-ink); white-space: nowrap;
+}
+.gravite::before { content: ""; width: 1.6em; border-top: 2px solid var(--cq-grav-mineur); }
+.gravite--majeur::before { border-top: 4px solid var(--cq-grav-majeur); }
+.gravite--bloquant::before { border-top: 6px solid var(--cq-grav-bloquant); }
+
+.statut {
+  font-family: var(--cq-police-mono); font-size: var(--cq-t-xs); text-transform: uppercase; letter-spacing: .08em;
+  color: var(--cq-calque-ink); border: 1px dashed var(--cq-calque); border-radius: 3px; padding: .1em .5em;
+}
+.statut--ajoutee  { border-style: solid; }
+.statut--retiree  { text-decoration: line-through; }
+
+.note-marge {
+  font-family: var(--cq-police-main); color: var(--cq-calque-ink);
+  font-size: 1.05rem; line-height: 1.35;
+}
+
+/* Journal de révision d'une diapo */
+.journal { display: grid; gap: .9rem; }
+.journal__ligne {
+  display: grid; gap: .35rem; padding: .8rem .9rem;
+  border-left: 3px solid var(--cq-calque);
+  background: var(--cq-calque-voile); border-radius: 0 var(--cq-rayon) var(--cq-rayon) 0;
+}
+.journal__tete { display: flex; flex-wrap: wrap; gap: .4rem .6rem; align-items: center; }
+.journal__texte { font-size: var(--cq-t-s); margin: 0; }
+
+/* Superposition : le calque posé sur la diapo */
+.surcouche {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    linear-gradient(var(--cq-calque-trame) 1px, transparent 1px),
+    linear-gradient(90deg, var(--cq-calque-trame) 1px, transparent 1px);
+  background-size: 2.5cqw 2.5cqw;
+  mix-blend-mode: multiply; opacity: .5;
+}
+
+/* Étiquette « avant » / « après » sur une scène */
+.marque {
+  position: absolute; top: 1.2cqw; left: 1.2cqw; z-index: 2;
+  font-family: var(--cq-police-mono); font-size: max(10px, var(--cq-d-micro)); letter-spacing: .1em; text-transform: uppercase;
+  padding: .2em .6em; border-radius: 3px;
+  background: var(--cq-calque-ink); color: #fff;
+}
+.marque--avant { background: #6B7580; }
+
+/* ---------- Bilan d'une série ---------- */
+.bilan { overflow: auto; gap: .9cqw; }
+.bilan__cas { border: 1px solid var(--cq-filet); border-radius: var(--cq-rayon); padding: .9cqw 1.1cqw; display: grid; gap: .3cqw; font-size: var(--cq-d-petit); }
+.bilan__tete { display: flex; justify-content: space-between; gap: 1cqw; align-items: baseline; font-weight: 700; }
+.bilan__adresse { color: var(--cq-sourdine); font-size: var(--cq-d-micro); margin: 0; }
+
+/* ---------- Correctifs de composition ---------- */
+.diapo__corps > .diapo__col { overflow: auto; padding: .4cqw; margin: -.4cqw; }  /* place pour le focus et les pastilles de repère */
+.courriel__bouton.repere { background: var(--cq-lien); }
+.lien-discret {
+  font: inherit; font-size: var(--cq-d-micro); background: none; border: 0; padding: 0; cursor: pointer;
+  color: var(--cq-sourdine); text-decoration: underline; text-underline-offset: .2em; align-self: flex-start;
+}
+
+/* Le brouillon reste une diapo claire par défaut, même en thème sombre :
+   il fige les jetons de la feuille pour ses enfants (courriel compris). */
+.brouillon {
+  --cq-feuille: #FFFFFF; --cq-retrait: #F5F7F8; --cq-filet: #D5DCE1;
+  --cq-encre: #13212C; --cq-sourdine: #5A6873; --cq-lien: #1A5FB4;
+}
+
+
+/* ============================================================
+   Mode étroit — la diapo cesse d'être une scène 16:9
+   ------------------------------------------------------------
+   Sous 760 px de large (téléphone, demi-écran), le plateau perd
+   son format fixe, les tailles passent en rem avec un plancher,
+   et les colonnes s'empilent : courriel, décision, rétroaction.
+   Au-dessus, les tailles proportionnelles ont un plancher lisible.
+   ============================================================ */
+.scene {
+  --cq-d-mega:  max(5.6cqw, 30px);
+  --cq-d-titre: max(3.6cqw, 22px);
+  --cq-d-inter: max(2.3cqw, 16px);
+  --cq-d-texte: max(1.75cqw, 15px);
+  --cq-d-petit: max(1.35cqw, 14px);
+  --cq-d-micro: max(1.1cqw, 12px);
+}
+.brouillon { font-size: max(1.9cqw, 13px); }
+.brouillon__titre { font-size: max(3.4cqw, 20px); }
+
+@container (max-width: 760px) {
+  .plateau { aspect-ratio: auto; }
+  .diapo, .brouillon { position: relative; inset: auto; padding: 20px 18px 24px; gap: 14px; }
+  .brouillon { padding-bottom: 36px; }
+  .diapo__corps { flex-direction: column; gap: 16px; }
+  .diapo__col--etroite { flex: none; }
+  .diapo__corps > .diapo__col { overflow: visible; }
+  .diapo__entete { flex-wrap: wrap; }
+  .courriel__entete, .courriel__corps { padding: 12px 14px; gap: 6px; }
+  .courriel__avatar { width: 28px; height: 28px; }
+  .courriel__bouton { padding: 10px 16px; }
+  .courriel__etat { position: static; max-width: none; white-space: normal; word-break: break-all; padding: 6px 10px; border-radius: 0; }
+  .courriel__pj { padding: 6px 10px; }
+  .tri { gap: 8px; }
+  .tri__choix, .options__choix, .courriel__action { min-height: 44px; padding: 10px 16px; }
+  .options { gap: 8px; }
+  .options__choix { padding: 12px 14px; }
+  .retro { padding: 12px 14px; border-left-width: 5px; gap: 4px; }
+  .verif { gap: 12px; }
+  .verif__item { grid-template-columns: 32px 1fr; gap: 2px 12px; }
+  .verif__item::before { width: 32px; height: 32px; border-width: 2px; }
+  .memo { padding: 16px; gap: 10px; }
+  .consigne { gap: 8px; }
+  .consigne::before { padding: 2px 8px; }
+  .repere { box-shadow: 0 0 0 2px var(--cq-focus); }
+  .repere[data-n]::after { width: 20px; height: 20px; top: -11px; right: -11px; line-height: 20px; }
+  .bilan__cas { padding: 12px; gap: 6px; }
+  .lien-discret { min-height: 44px; }
+  .brouillon__chiffres { grid-template-columns: 1fr; gap: 10px; }
+  .brouillon__image { min-height: 60px; max-height: none; font-size: 12px; }
+  .brouillon__quiz { font-size: 13px; }
+}
+
+/* ---------- Barre d'actions du courriel (geste Signaler) ---------- */
+.courriel__actions {
+  display: flex; flex-wrap: wrap; gap: .5cqw; padding: .7cqw 1.1cqw;
+  border-bottom: 1px solid var(--cq-filet); background: var(--cq-feuille);
+}
+.courriel__action {
+  font: inherit; font-size: var(--cq-d-micro); font-weight: 700; cursor: pointer;
+  border: 1px solid var(--cq-filet); background: var(--cq-retrait); color: var(--cq-encre);
+  border-radius: 4px; padding: .4cqw 1cqw;
+}
+.courriel__action:hover { border-color: var(--cq-encre); }
+.courriel__action[aria-pressed="true"] { background: var(--cq-action); color: var(--cq-action-ink); border-color: var(--cq-action); }
+.courriel__action--signaler::before { content: "⚑ "; }
+
+.courriel__etat--alerte { background: var(--cq-fraude); color: #fff; white-space: normal; }
+
+.tri__choix--plein { background: var(--cq-action); color: var(--cq-action-ink); border-color: var(--cq-action); align-self: flex-start; }
+.tri__choix--plein:hover { border-color: var(--cq-action); }
+
+.indice { display: grid; gap: .6cqw; }
+.indice__q { margin: 0; font-weight: 700; font-size: var(--cq-d-petit); }
+
+.regle { display: grid; gap: .9cqw; }
+.regle__ligne { display: grid; grid-template-columns: minmax(8.5em, auto) 1fr; gap: 1.2cqw; align-items: baseline; font-size: var(--cq-d-petit); }
+.regle__ligne .verdict { justify-self: start; }
+
+.bilan__cause { margin: 0; font-weight: 700; font-size: var(--cq-d-micro); color: var(--cq-sourdine); }
+.lien-externe { color: var(--cq-lien); font-weight: 700; font-size: var(--cq-d-petit); }
+
+.journal__ligne--tour2 { border-left-style: dashed; margin-left: 1.2rem; }
+
+</style>
+<style>
+  html, body { background: var(--cq-papier); }
+  body { margin: 0; }
+  .g { max-width: 1120px; margin-inline: auto; padding: 40px 16px 80px; display: grid; gap: 64px; }
+  .g h1 { font-family: var(--cq-police-titre); font-weight: 800; font-size: clamp(2.6rem, 7vw, 4.6rem); letter-spacing: -.035em; line-height: .95; margin: 0; }
+  .g h2 { font-family: var(--cq-police-titre); font-weight: 800; font-size: var(--cq-t-xl); letter-spacing: -.02em; margin: 0; }
+  .g h3 { font-family: var(--cq-police-titre); font-size: var(--cq-t-m); margin: 0; }
+  .g p { margin: 0; max-width: 68ch; }
+  .sec { display: grid; gap: 20px; }
+  .chapeau { font-size: 1.2rem; line-height: 1.45; max-width: 60ch; }
+  .sourdine { color: var(--cq-sourdine); font-size: var(--cq-t-s); }
+
+  .couches { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+  .couche { border-radius: var(--cq-rayon-l); padding: 20px; display: grid; gap: 8px; align-content: start; }
+  .couche--feuille { background: var(--cq-feuille); box-shadow: var(--cq-ombre); }
+  .couche--calque { background: var(--cq-calque-voile); border: 1.5px dashed var(--cq-calque); }
+  .couche--brouillon { background: #fff; color: #222; font-family: var(--br-police); border-bottom: 8px solid var(--br-barre); color-scheme: light; }
+  .couche--brouillon h3 { color: var(--br-titre); font-family: var(--br-police); font-weight: 400; font-size: 1.3rem; }
+
+  .nuancier { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+  .pastille { border-radius: var(--cq-rayon); overflow: hidden; border: 1px solid var(--cq-filet); background: var(--cq-feuille); }
+  .pastille__c { height: 64px; }
+  .pastille__t { padding: 8px 10px; display: grid; gap: 2px; font-size: var(--cq-t-xs); }
+  .pastille__t b { font-size: var(--cq-t-s); }
+  .pastille__t code { font-family: var(--cq-police-mono); color: var(--cq-sourdine); }
+
+  .types { display: grid; gap: 14px; }
+  .type { display: grid; grid-template-columns: 200px 1fr; gap: 16px; align-items: baseline; border-top: 1px solid var(--cq-filet); padding-top: 14px; }
+  .type__nom { font-size: var(--cq-t-xs); color: var(--cq-sourdine); display: grid; gap: 2px; }
+  .type__nom b { color: var(--cq-encre); font-size: var(--cq-t-s); }
+
+  .demo { display: grid; gap: 12px; }
+  .demo__cadre { background: var(--cq-feuille); border: 1px solid var(--cq-filet); border-radius: var(--cq-rayon-l); padding: 20px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .demo__cadre--scene { padding: 0; border: 0; background: none; display: block; }
+  .deux { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .regles { display: grid; gap: 12px; counter-reset: r; padding: 0; list-style: none; margin: 0; }
+  .regles li { counter-increment: r; display: grid; grid-template-columns: 2.2rem 1fr; gap: 12px; max-width: 76ch; }
+  .regles li::before { content: counter(r); font-family: var(--cq-police-titre); font-weight: 800; font-size: 1.3rem; color: var(--cq-calque-ink); }
+  .g .courriel, .g .tri__choix, .g .retro, .g .verif, .g .memo, .g .consigne { font-size: 15px; }
+  .g .demo__cadre .courriel { width: 100%; max-width: 560px; }
+  .g .courriel__entete, .g .courriel__corps { padding: 12px 16px; gap: 6px; }
+  .g .courriel__avatar { width: 28px; height: 28px; font-size: 11px; }
+  .g .courriel__etat { font-size: 12px; padding: 4px 10px; }
+  .g .courriel__bouton { padding: 6px 14px; }
+  .g .tri__choix { padding: 8px 16px; gap: 8px; }
+  .g .retro { padding: 12px 14px; border-left-width: 5px; }
+  .g .verif { gap: 10px; }
+  .g .verif__item { grid-template-columns: 34px 1fr; gap: 2px 12px; }
+  .g .verif__item::before { width: 34px; height: 34px; font-size: 16px; border-width: 2px; }
+  .g .verif__q { font-size: 17px; }
+  .g .verif__r { font-size: 14px; }
+  .g .memo { padding: 16px 20px; gap: 10px; border-width: 2px; }
+  .g .memo__titre { font-size: 20px; }
+  .g .consigne::before { font-size: 11px; padding: 2px 8px; }
+  .g .repere { box-shadow: 0 0 0 2px var(--cq-focus); }
+  .g .repere[data-n]::after { width: 20px; height: 20px; top: -11px; right: -11px; font-size: 11px; line-height: 20px; }
+  @media (max-width: 760px) { .deux { grid-template-columns: 1fr; } .type { grid-template-columns: 1fr; gap: 4px; } }
+</style>
+
+<main class="g cq">
+  <header class="sec">
+    <p class="sourdine">Système de design · formations révisées avec la boucle didactique</p>
+    <h1>Calque</h1>
+    <p class="chapeau">Sur une table à dessin, on ne corrige pas l'original : on pose un calque par-dessus et on trace au crayon bleu, celui que la photocopieuse ne reproduit pas. Calque sépare ainsi <strong>ce que l'apprenant voit</strong> de <strong>ce que le concepteur a changé, et pourquoi</strong>.</p>
+  </header>
+
+  <section class="sec">
+    <h2>Trois registres</h2>
+    <div class="couches">
+      <div class="couche couche--feuille">
+        <h3>La feuille</h3>
+        <p>La formation elle-même. Encre bleu nuit sur blanc, une seule idée par écran, et des objets de travail (courriels, adresses) plutôt que des illustrations.</p>
+        <p class="sourdine">Public : l'apprenant.</p>
+      </div>
+      <div class="couche couche--calque">
+        <h3 style="color:var(--cq-calque-ink)">Le calque</h3>
+        <p>La couche de révision : critères, gravités, statut de chaque diapositive, notes en marge. Tout y est en bleu non photographique, et <em>rien d'autre</em> n'utilise ce bleu.</p>
+        <p class="note-marge">une couleur = un registre</p>
+      </div>
+      <div class="couche couche--brouillon">
+        <h3>Le brouillon</h3>
+        <p>La version zéro, rendue telle qu'un gabarit de présentation par défaut l'aurait produite : Calibri, titre bleu, puces, bandeau de pied. Il ne sert qu'à la comparaison.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <h2>Couleurs</h2>
+    <p class="sourdine">Chaque couleur a un rôle et un seul. Les jetons sont redéfinis en thème sombre ; les rapports de contraste indiqués valent pour le thème clair, sur blanc.</p>
+    <h3>Feuille</h3>
+    <div class="nuancier">
+      <div class="pastille"><div class="pastille__c" style="background:var(--cq-encre)"></div><div class="pastille__t"><b>Encre</b><code>--cq-encre</code><span>Texte, action principale · 16,4:1</span></div></div>
+      <div class="pastille"><div class="pastille__c" style="background:var(--cq-sourdine)"></div><div class="pastille__t"><b>Sourdine</b><code>--cq-sourdine</code><span>Texte secondaire · 5,7:1</span></div></div>
+      <div class="pastille"><div class="pastille__c" style="background:var(--cq-papier)"></div><div class="pastille__t"><b>Papier</b><code>--cq-papier</code><span>Fond de page, le gris-bleu d'une boîte de réception</span></div></div>
+      <div class="pastille"><div class="pastille__c" style="background:var(--cq-filet)"></div><div class="pastille__t"><b>Filet</b><code>--cq-filet</code><span>Bordures, séparateurs</span></div></div>
+      <div class="pastille"><div class="pastille__c" style="background:var(--cq-focus)"></div><div class="pastille__t"><b>Repère</b><code>--cq-focus</code><span>Focus clavier, et l'endroit à regarder sur un courriel</span></div></div>
+    </div>
+    <h3>Verdicts</h3>
+    <div class="nuancier">
+      <div class="pastille"><div class="pastille__c" style="background:var(--cq-sur)"></div><div class="pastille__t"><b>Légitime ✓</b><code>--cq-sur</code><span>Cercle et coche</span></div></div>
+      <div class="pastille"><div class="pastille__c" style="background:var(--cq-doute)"></div><div class="pastille__t"><b>À vérifier ?</b><code>--cq-doute</code><span>Carré arrondi et point d'interrogation</span></div></div>
+      <div class="pastille"><div class="pastille__c" style="background:var(--cq-fraude)"></div><div class="pastille__t"><b>Frauduleux ✕</b><code>--cq-fraude</code><span>Carré et croix</span></div></div>
+    </div>
+    <h3>Calque</h3>
+    <div class="nuancier">
+      <div class="pastille"><div class="pastille__c" style="background:var(--cq-calque)"></div><div class="pastille__t"><b>Crayon bleu</b><code>--cq-calque</code><span>Traits, cadres, barres</span></div></div>
+      <div class="pastille"><div class="pastille__c" style="background:var(--cq-calque-ink)"></div><div class="pastille__t"><b>Encre du calque</b><code>--cq-calque-ink</code><span>Texte de révision · 9,2:1</span></div></div>
+      <div class="pastille"><div class="pastille__c" style="background:var(--cq-calque-voile);box-shadow:inset 0 0 0 1px var(--cq-calque-trame)"></div><div class="pastille__t"><b>Voile</b><code>--cq-calque-voile</code><span>Fond d'une note de révision</span></div></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <h2>Caractères</h2>
+    <p class="sourdine">Quatre familles, chacune choisie pour une raison qui tient au sujet.</p>
+    <div class="types">
+      <div class="type"><div class="type__nom"><b>Schibsted Grotesk</b>Titres</div><div style="font-family:var(--cq-police-titre);font-weight:800;font-size:2.2rem;letter-spacing:-.02em;line-height:1.05">Il est 8 h 12. Ce courriel vient d'arriver.</div></div>
+      <div class="type"><div class="type__nom"><b>Atkinson Hyperlegible</b>Texte : dessinée pour distinguer I, l et 1</div><div style="font-size:1.15rem">Il1 · O0 · rn m · Le nom affiché n'est pas l'adresse réelle.</div></div>
+      <div class="type"><div class="type__nom"><b>IBM Plex Mono</b>Adresses et liens, toujours</div><div class="cq-mono" style="font-size:1.1rem">groupenorvic.ca · groupenorvlc.ca · micros0ft.com</div></div>
+      <div class="type"><div class="type__nom"><b>Kalam</b>Notes en marge du calque, avec parcimonie</div><div class="note-marge" style="font-size:1.4rem">montrer où regarder, pas dire de regarder</div></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <h2>Composants de la feuille</h2>
+
+    <div class="demo">
+      <h3>Courriel simulé, avec repères</h3>
+      <p class="sourdine">Il imite un client de messagerie. Cliquez le nom pour voir l'adresse réelle ; survolez le bouton, tabulez jusqu'à lui ou touchez-le pour voir sa destination. Chaque interaction de survol a un équivalent au clavier et au toucher.</p>
+      <div class="demo__cadre">
+        <article class="courriel" aria-label="Courriel simulé">
+          <header class="courriel__entete">
+            <div class="courriel__objet">Votre mot de passe expire aujourd'hui</div>
+            <div class="courriel__de"><span class="courriel__avatar" aria-hidden="true">ST</span><button class="courriel__nom repere" data-n="1" type="button" aria-expanded="true" id="g-nom">Soutien TI Norvic</button><span class="courriel__adresse repere" id="g-adr">&lt;soutien@groupenorvic-ti.com&gt;</span></div>
+            <div class="courriel__meta">À : moi · 8 h 05</div>
+          </header>
+          <div class="courriel__corps">
+            <p>Votre mot de passe Norvic expire aujourd'hui à 17 h.</p>
+            <p class="repere" data-n="3">Pour garder l'accès à votre messagerie, renouvelez-le dès maintenant.</p>
+            <button class="courriel__bouton repere" data-n="2" type="button" id="g-lien" aria-label="Conserver mon mot de passe — destination : https://groupenorvic-ti.com/renouveler">Conserver mon mot de passe</button>
+          </div>
+          <div class="courriel__etat" id="g-etat" hidden>https://groupenorvic-ti.com/renouveler</div>
+        </article>
+      </div>
+    </div>
+
+    <div class="deux">
+      <div class="demo">
+        <h3>Verdicts et tri</h3>
+        <div class="demo__cadre">
+          <span class="verdict verdict--sur">Légitime</span>
+          <span class="verdict verdict--doute">À vérifier</span>
+          <span class="verdict verdict--fraude">Frauduleux</span>
+        </div>
+        <div class="demo__cadre">
+          <div class="tri">
+            <button class="tri__choix" type="button" aria-pressed="false"><span class="verdict verdict--sur" style="padding:0;background:none" aria-hidden="true"></span>Légitime : je le traite</button>
+            <button class="tri__choix" type="button" aria-pressed="true"><span class="verdict verdict--fraude" style="padding:0;background:none" aria-hidden="true"></span>Frauduleux : je le signale</button>
+          </div>
+        </div>
+      </div>
+      <div class="demo">
+        <h3>Rétroaction</h3>
+        <p class="sourdine">Une par choix, jamais « Bravo ! ». Elle nomme l'indice et renvoie au repère numéroté.</p>
+        <div class="retro retro--juste" role="status"><div class="retro__titre">Juste : frauduleux.</div><div class="retro__texte"><span class="cq-mono">groupenorvic-ti.com</span> n'est pas Norvic, et la demande vise votre mot de passe.</div></div>
+        <div class="retro retro--rate" role="status"><div class="retro__titre">Ce courriel est frauduleux.</div><div class="retro__texte">Le fichier (2) ouvrirait une fausse page de connexion : votre mot de passe partirait chez le fraudeur.</div></div>
+      </div>
+    </div>
+
+    <div class="deux">
+      <div class="demo">
+        <h3>Vérification numérotée</h3>
+        <p class="sourdine">Un ordre à suivre, pas une liste à retenir : trois éléments au plus.</p>
+        <div class="demo__cadre" style="display:block">
+          <ol class="verif">
+            <li class="verif__item"><span class="verif__q">Qui l'envoie <strong>vraiment</strong> ?</span><span class="verif__r">L'adresse réelle, pas le nom affiché.</span></li>
+            <li class="verif__item"><span class="verif__q">Où mène <strong>vraiment</strong> le lien ?</span><span class="verif__r">La fin du nom, avant le premier « / ».</span></li>
+            <li class="verif__item" data-actif="false"><span class="verif__q">Que me demande-t-on ?</span><span class="verif__r">…</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="demo">
+        <h3>Consigne et aide-mémoire</h3>
+        <div class="demo__cadre" style="display:grid">
+          <div class="consigne">Pensez au dernier courriel qui vous a fait hésiter.</div>
+          <div class="memo"><p class="memo__titre">Vous avez cliqué ?</p><p>Poste 4357, tout de suite. Personne ne vous le reprochera.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <h2>Composants du calque</h2>
+    <div class="demo">
+      <h3>Critère, gravité, statut</h3>
+      <p class="sourdine">Le code renvoie à la grille de la boucle. La gravité se lit à l'épaisseur du trait (bloquant, majeur, mineur), pas seulement à sa teinte.</p>
+      <div class="demo__cadre">
+        <span class="critere"><span class="critere__code">A1</span><span class="critere__nom">Objectif observable</span><span class="gravite gravite--bloquant"></span></span>
+        <span class="critere"><span class="critere__code">C4</span><span class="critere__nom">Exemple travaillé</span><span class="gravite gravite--majeur"></span></span>
+        <span class="critere"><span class="critere__code">C2</span><span class="critere__nom">Cohérence</span><span class="gravite gravite--mineur"></span></span>
+        <span class="statut">modifiée</span><span class="statut statut--ajoutee">ajoutée</span><span class="statut statut--retiree">retirée</span>
+      </div>
+    </div>
+    <div class="demo">
+      <h3>Ligne de journal</h3>
+      <div class="journal">
+        <div class="journal__ligne">
+          <div class="journal__tete"><span class="statut">modifiée</span><span class="critere"><span class="critere__code">F2</span><span class="critere__nom">Soutien au travail</span><span class="gravite gravite--bloquant"></span></span></div>
+          <p class="journal__texte">La version zéro enseignait « Supprimez le courriel » : on protège sa propre boîte, et l'équipe TI ne voit rien. Le geste devient <strong>Signaler</strong>.</p>
+          <p class="note-marge">le seul bloquant qui enseignait un faux geste</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <h2>Règles</h2>
+    <ol class="regles">
+      <li><p><strong>Le bleu du calque n'appartient qu'à la révision.</strong> S'il apparaît dans la formation, l'apprenant voit des traces de conception qui ne lui sont pas destinées.</p></li>
+      <li><p><strong>Un verdict porte toujours une forme et une couleur.</strong> Cercle et coche, carré arrondi et point d'interrogation, carré et croix. Il se lit aussi en niveaux de gris (G1).</p></li>
+      <li><p><strong>Toute adresse s'écrit en mono.</strong> C'est la chasse fixe qui rend visibles le <span class="cq-mono">l</span> à la place du <span class="cq-mono">i</span>, et le <span class="cq-mono">0</span> à la place du <span class="cq-mono">o</span>.</p></li>
+      <li><p><strong>On pointe sur l'objet, pas à côté.</strong> Le repère numéroté se pose sur l'adresse, le lien ou la demande ; la rétroaction cite son numéro (C3).</p></li>
+      <li><p><strong>Pas d'illustration décorative.</strong> Ni hameçon, ni pirate en capuchon, ni cadenas. L'image d'une diapositive est l'objet de travail lui-même (C2).</p></li>
+      <li><p><strong>La diapositive est une scène 16:9 en unités de conteneur.</strong> Tout y est proportionnel à sa largeur : elle se lit de la même façon en plein écran et en demi-largeur dans la vue avant/après.</p></li>
+    </ol>
+  </section>
+</main>
+
+<script>
+  (function () {
+    var nom = document.getElementById("g-nom"), adr = document.getElementById("g-adr"),
+        lien = document.getElementById("g-lien"), etat = document.getElementById("g-etat"), fige = false;
+    nom.addEventListener("click", function () { adr.hidden = !adr.hidden; nom.setAttribute("aria-expanded", String(!adr.hidden)); });
+    function voir() { etat.hidden = false; } function cacher() { if (!fige) etat.hidden = true; }
+    lien.addEventListener("mouseenter", voir); lien.addEventListener("focus", voir);
+    lien.addEventListener("mouseleave", cacher); lien.addEventListener("blur", cacher);
+    lien.addEventListener("click", function () { fige = !fige; etat.hidden = !fige; });
+  })();
+</script>
+
+</html>
