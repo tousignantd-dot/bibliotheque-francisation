@@ -583,6 +583,23 @@
 
 .journal__ligne--tour2 { border-left-style: dashed; margin-left: 1.2rem; }
 
+/* ---------- Troisième tour ---------- */
+.chrono {
+  font-family: var(--cq-police-mono); font-variant-numeric: tabular-nums;
+  border: 1px solid var(--cq-filet); border-radius: 3px; padding: 0 .5em; color: var(--cq-encre);
+}
+.chrono--depasse { border-color: var(--cq-doute); color: var(--cq-doute); }
+.case { display: flex; gap: .6em; align-items: center; font-size: var(--cq-d-petit); cursor: pointer; }
+.case input { width: 1.2em; height: 1.2em; accent-color: var(--cq-encre); }
+/* L'alerte « ce clic aurait ouvert la page » : fond pâle et encre foncée du
+   verdict, lisibles dans les deux thèmes (l'encre blanche tombait à 2,4:1). */
+.courriel__etat--alerte { background: var(--cq-fraude-fond); color: var(--cq-fraude); box-shadow: inset 0 2px 0 var(--cq-fraude); }
+@container (max-width: 760px) {
+  .courriel__nom { padding-block: 12px; }
+  .courriel__bouton { min-height: 44px; }
+  .case { min-height: 44px; }
+}
+
 </style>
 <style>
   html, body { background: #fff; }
@@ -618,8 +635,8 @@
   <section class="bloc">
     <h2>Trois vérifications, dans cet ordre</h2>
     <ol class="v">
-      <li><b>Qui l'envoie vraiment ?</b><span>Touchez ou cliquez le nom affiché, et lisez l'adresse réelle.</span></li>
-      <li><b>Où mène vraiment le lien ?</b><span>Survol à la souris, appui long au téléphone, ou touche Tab. Lisez les deux derniers morceaux avant le premier « / » : <span class="cq-mono">groupenorvic.ca</span>.</span></li>
+      <li><b>Qui l'envoie vraiment ?</b><span>Touchez ou cliquez le nom affiché, et lisez l'adresse réelle. Comparez avec un courriel déjà reçu de cet expéditeur.</span></li>
+      <li><b>Où mène vraiment le lien ?</b><span>Survol à la souris, appui long au téléphone, ou touche Tab. Lisez la fin du nom, juste avant le premier « / » : <span class="cq-mono">groupenorvic.ca</span>.</span></li>
       <li><b>Que me demande-t-on ?</b><span>Mot de passe, argent, coordonnées bancaires, fichier à ouvrir, surtout si c'est urgent ou secret.</span></li>
     </ol>
   </section>
@@ -627,14 +644,14 @@
   <section>
     <h2>La règle du verdict</h2>
     <div class="regle">
-      <div><span class="verdict verdict--fraude">Frauduleux</span><span>Adresse <strong>ou</strong> lien faux, <strong>ou</strong> mot de passe demandé → <strong>Signaler</strong>, puis « Hameçonnage ».</span></div>
+      <div><span class="verdict verdict--fraude">Frauduleux</span><span>Adresse <strong>ou</strong> lien faux, <strong>ou</strong> connexion réclamée sans que vous l'ayez demandée → <strong>Signaler</strong>, puis « Hameçonnage ».</span></div>
       <div><span class="verdict verdict--doute">À vérifier</span><span>Adresse et lien bons, <strong>mais</strong> argent, coordonnées ou demande inhabituelle → <strong>appelez</strong> au numéro que vous aviez déjà.</span></div>
       <div><span class="verdict verdict--sur">Légitime</span><span>Tout concorde, rien de sensible → vous le traitez.</span></div>
     </div>
   </section>
 
   <section class="gestes">
-    <div class="geste"><b>Signaler</b>Ordinateur : Accueil › Signaler › Hameçonnage.<br>Téléphone : « ··· » › Signaler.</div>
+    <div class="geste"><b>Signaler</b>Ordinateur : Accueil › Signaler › Hameçonnage.<br>Téléphone : « ··· » › Signaler › Hameçonnage.</div>
     <div class="geste"><b>Vous avez cliqué ?</b>Poste <strong>4357</strong>, tout de suite. Personne ne vous le reprochera.</div>
     <div class="geste"><b>Texto, appel, code QR ?</b>Même réflexe : on vérifie par un autre moyen.</div>
   </section>

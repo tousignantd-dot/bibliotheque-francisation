@@ -584,6 +584,23 @@
 
 .journal__ligne--tour2 { border-left-style: dashed; margin-left: 1.2rem; }
 
+/* ---------- Troisième tour ---------- */
+.chrono {
+  font-family: var(--cq-police-mono); font-variant-numeric: tabular-nums;
+  border: 1px solid var(--cq-filet); border-radius: 3px; padding: 0 .5em; color: var(--cq-encre);
+}
+.chrono--depasse { border-color: var(--cq-doute); color: var(--cq-doute); }
+.case { display: flex; gap: .6em; align-items: center; font-size: var(--cq-d-petit); cursor: pointer; }
+.case input { width: 1.2em; height: 1.2em; accent-color: var(--cq-encre); }
+/* L'alerte « ce clic aurait ouvert la page » : fond pâle et encre foncée du
+   verdict, lisibles dans les deux thèmes (l'encre blanche tombait à 2,4:1). */
+.courriel__etat--alerte { background: var(--cq-fraude-fond); color: var(--cq-fraude); box-shadow: inset 0 2px 0 var(--cq-fraude); }
+@container (max-width: 760px) {
+  .courriel__nom { padding-block: 12px; }
+  .courriel__bouton { min-height: 44px; }
+  .case { min-height: 44px; }
+}
+
 </style>
 <style>
   html, body { background: var(--cq-papier); }
@@ -1012,7 +1029,7 @@ window.AVANT = {
 
 window.APRES = {
   titre: "Le courriel de trop",
-  duree: "environ 25 minutes",
+  duree: "25 à 30 minutes",
   objectifs: [
     { id: "O1", x: "Devant un courriel reçu, sur ordinateur ou téléphone, le **classer** comme légitime, à vérifier ou frauduleux **en moins d'une minute**, en nommant l'indice décisif (expéditeur réel, destination du lien ou demande)." },
     { id: "O2", x: "Devant un courriel frauduleux, le **signaler** avec le bouton Signaler d'Outlook, **sans** cliquer, répondre ni transférer." },
@@ -1048,7 +1065,7 @@ window.APRES = {
           }]
         },
         {
-          id: "M1-2", titre: "Dans 25 minutes, vous saurez…",
+          id: "M1-2", titre: "En une demi-heure, vous saurez…",
           blocs: [
             { t: "verif", items: [
               { q: "Trier un courriel en moins d'une minute", r: "Légitime, à vérifier ou frauduleux, et dire pourquoi." },
@@ -1056,7 +1073,7 @@ window.APRES = {
               { q: "Vérifier une demande d'argent", r: "Un appel, au numéro que vous aviez déjà." },
               { q: "Réagir si c'est trop tard", r: "Vous avez cliqué ? Un appel, dans les 5 minutes." }
             ] },
-            { t: "pied", x: "4 modules de 4 à 8 minutes, chacun avec au moins une activité. Vous avancez à votre rythme." }
+            { t: "pied", x: "4 modules de 4 à 9 minutes, chacun avec au moins une activité. Vous avancez à votre rythme." }
           ]
         },
         {
@@ -1089,7 +1106,7 @@ window.APRES = {
           id: "M2-1", titre: "Trois vérifications, dans cet ordre",
           blocs: [
             { t: "verif", items: [
-              { q: "Qui l'envoie **vraiment** ?", r: "L'adresse réelle, pas le nom affiché. Sur téléphone, touchez le nom pour la voir." },
+              { q: "Qui l'envoie **vraiment** ?", r: "L'adresse réelle, pas le nom affiché : touchez ou cliquez le nom. Comparez-la avec un courriel déjà reçu de cet expéditeur, ou avec le dossier fournisseur." },
               { q: "Où mène **vraiment** le lien ?", r: "La destination, pas le texte du lien ni celui du bouton." },
               { q: "Que me demande-t-on ?", r: "Mot de passe, paiement, coordonnées bancaires, fichier à ouvrir, surtout si c'est urgent ou secret." }
             ] },
@@ -1100,7 +1117,7 @@ window.APRES = {
           id: "M2-2", titre: "Des vérifications au verdict : une règle",
           blocs: [
             { t: "regle", items: [
-              { v: "fraude", si: "L'adresse **ou** le lien n'est pas le bon, **ou** on vous demande votre mot de passe. → Vous le **signalez**." },
+              { v: "fraude", si: "L'adresse **ou** le lien n'est pas le bon, **ou** on vous pousse à vous connecter (donner votre mot de passe) alors que vous n'avez rien demandé. → Vous le **signalez**." },
               { v: "doute", si: "L'adresse et le lien sont bons, **mais** on vous demande de l'argent, des coordonnées bancaires ou quelque chose d'inhabituel. → Vous **appelez** l'expéditeur au numéro que vous aviez déjà." },
               { v: "sur", si: "Tout concorde et rien de sensible n'est demandé. → Vous le traitez." }
             ] },
@@ -1161,16 +1178,16 @@ window.APRES = {
               { q: "`https://groupenorvic.ca.portail-paie.net/releves`", r: "La fin est `portail-paie.net`. Le « groupenorvic.ca » du début n'est qu'un déguisement. ✕ Frauduleux" },
               { q: "`https://groupenorvlc.ca/paie`", r: "Relisez lettre par lettre : norv**l**c, pas norv**i**c. Un nom jumeau, à une lettre près. ✕ Frauduleux" }
             ] },
-            { t: "pied", x: "La règle : juste avant le premier « / » seul, lisez les **deux derniers morceaux** séparés par un point (`groupenorvic.ca`, `microsoftonline.com`). Ce sont eux qui disent à qui appartient la page." }
+            { t: "pied", x: "La règle : lisez la **fin** du nom, juste avant le premier « / » seul (`groupenorvic.ca`, `microsoftonline.com`). C'est elle qui dit à qui appartient la page ; le début peut dire n'importe quoi." }
           ]
         },
         {
           id: "M2-6", titre: "À vous : lequel mène vraiment chez Microsoft ?",
           blocs: [{
-            t: "options", mono: true, q: "Le bouton « Réinitialiser le mot de passe » mène à l'une de ces adresses. Laquelle appartient vraiment à Microsoft ?",
+            t: "options", mono: true, q: "Vous venez de demander à réinitialiser votre mot de passe Microsoft. Le bouton du courriel reçu mène à l'une de ces adresses. Laquelle appartient vraiment à Microsoft ?",
             choix: [
               { x: "https://microsoft.com.reset-password.io/common", retro: "Le nom commence par microsoft.com, mais il finit par `reset-password.io`. C'est la fin qui compte." },
-              { x: "https://login.microsoftonline.com/common/reset", juste: true, retro: "Juste avant le premier « / », le nom finit par `microsoftonline.com`, un domaine de Microsoft." },
+              { x: "https://login.microsoftonline.com/common/reset", juste: true, retro: "Juste avant le premier « / », le nom finit par `microsoftonline.com`, un nom qui appartient à Microsoft." },
               { x: "https://microsoft-login.com/common/reset", retro: "Plausible, mais `microsoft-login.com` n'est pas Microsoft : n'importe qui peut acheter un nom qui contient « microsoft »." },
               { x: "https://login.micros0ft.com/common/reset", retro: "Regardez le « 0 » : micros0ft, avec un zéro. Un nom jumeau, à un caractère près." }
             ]
@@ -1195,7 +1212,7 @@ window.APRES = {
             reperes: { nom: 1, lien: 2, demande: 3 },
             retro: {
               sur: "L'adresse (1) et le lien (2) appartiennent bien à Norvic, et la demande (3) ne vous fait rien donner : ni mot de passe, ni paiement, ni fichier. L'urgence seule ne rend pas un courriel frauduleux.",
-              doute: "Prudent, mais inutile ici : l'adresse et le lien sont à Norvic, et on vous demande seulement de laisser l'ordinateur allumé. Trop de doutes vous feraient appeler le soutien pour chaque courriel.",
+              doute: "Prudent, mais inutile ici : l'adresse et le lien sont à Norvic, et on vous demande seulement de laisser l'ordinateur allumé. Selon la règle, on n'appelle l'expéditeur que pour une demande d'argent, de coordonnées ou inhabituelle.",
               fraude: "Ici, non. « Ce soir » et « obligatoire » ont l'air pressants, mais regardez la demande (3) : ni mot de passe, ni paiement, ni fichier. L'adresse et le lien sont à Norvic. Signaler un vrai courriel n'a rien de grave, mais apprenez à le reconnaître."
             }
           }]
@@ -1204,7 +1221,7 @@ window.APRES = {
     },
     /* ---------------------------------------------------------- */
     {
-      id: "M3", titre: "Trier sa boîte de réception", duree: "8 min",
+      id: "M3", titre: "Trier sa boîte de réception", duree: "9 min",
       diapos: [
         {
           id: "M3-1", titre: "Sans regarder en arrière", surtitre: "Rappel du module 2",
@@ -1291,7 +1308,7 @@ window.APRES = {
                 },
                 retro: {
                   sur: "Le ton, le prénom, le client : tout sonne vrai, parce que le fraudeur s'est renseigné. Mais relisez l'adresse (1) : `groupenorvlc.ca`, un **l** à la place du **i**.",
-                  doute: "Bon instinct, et ici on peut trancher : l'adresse (1) est un domaine jumeau, `groupenorvlc.ca`, avec un **l** au lieu du **i**. Frauduleux : signalez.",
+                  doute: "Bon instinct, et ici on peut trancher : l'adresse (1) est un nom jumeau, `groupenorvlc.ca`, avec un **l** au lieu du **i**. Frauduleux : signalez.",
                   fraude: "L'adresse (1) et le lien (2) mènent à `groupenorvlc.ca`, avec un **l** au lieu du **i**. C'est un message ciblé : il cite une vraie collègue et un vrai client."
                 }
               },
@@ -1310,7 +1327,7 @@ window.APRES = {
                 retro: {
                   sur: "L'adresse (1) est celle des notifications de Microsoft, `sharepointonline.com`, et le bouton (2) mène à `groupenorvic.sharepoint.com`, l'espace de Norvic. Comparez avec le faux partage du module 2.",
                   doute: "Prudent, et acceptable : vous pouviez confirmer auprès de Marc. Mais l'adresse (1), `sharepointonline.com`, est celle de Microsoft, et le lien (2) mène à `groupenorvic.sharepoint.com` : c'est un vrai partage.",
-                  fraude: "Ce partage est authentique : `sharepointonline.com` (1) appartient à Microsoft et le lien (2) mène à `groupenorvic.sharepoint.com`. Le mot « SharePoint » ne trahit pas un faux : le domaine, oui."
+                  fraude: "Ce partage est authentique : `sharepointonline.com` (1) appartient à Microsoft et le lien (2) mène à `groupenorvic.sharepoint.com`. Le mot « SharePoint » ne trahit pas un faux : la fin de l'adresse, oui."
                 }
               },
               {
@@ -1375,10 +1392,10 @@ window.APRES = {
     },
     /* ---------------------------------------------------------- */
     {
-      id: "M4", titre: "Signaler, et réparer", duree: "7 min",
+      id: "M4", titre: "Signaler, et réparer", duree: "9 min",
       diapos: [
         {
-          id: "M4-1", titre: "Le geste : **signaler**, pas supprimer",
+          id: "M4-1", titre: "Vous l'avez reconnu. Et maintenant ?",
           blocs: [{
             t: "geste", bonne: "signaler",
             consigne: "Vous avez reconnu ce courriel : il est frauduleux. Que faites-vous ?",
@@ -1398,7 +1415,7 @@ window.APRES = {
             },
             suite: { t: "verif", items: [
               { q: "Ordinateur", r: "Onglet Accueil, bouton **Signaler**, puis **Hameçonnage**." },
-              { q: "Téléphone", r: "« ··· » en haut du courriel, puis **Signaler**." }
+              { q: "Téléphone", r: "« ··· » en haut du courriel, **Signaler**, puis **Hameçonnage**." }
             ] }
           }]
         },
@@ -1418,11 +1435,11 @@ window.APRES = {
           id: "M4-3", titre: "Évaluation : cinq courriels jamais vus", surtitre: "Évaluation",
           blocs: [{
             t: "serie", seuil: 4, indice: true, chrono: true, eliminatoire: true, retroImmediate: false,
-            consigne: "Pour chaque courriel : un verdict, puis l'indice qui vous a décidé, en moins d'une minute. Seuil : 4 sur 5, et aucun courriel douteux ou frauduleux traité comme légitime. Les explications viennent à la fin.",
+            consigne: "Pour chaque courriel : un verdict, puis l'indice qui vous a décidé, en moins d'une minute (un chrono s'affiche ; il se met en pause si vous quittez la diapo, et une case permet de lever la limite). Seuil : 4 sur 5, et aucun courriel douteux ou frauduleux traité comme légitime. Les explications viennent à la fin.",
             bilan: { reussi: "Évaluation réussie. Votre aide-mémoire vous attend à l'écran suivant.", rate: "Pas encore. Relisez les cas manqués, puis passez la série de reprise : cinq autres courriels, jamais vus." },
             items: [
               {
-                bonne: "fraude", indices: ["nom", "lien"], reperes: { nom: 1, lien: 2, demande: 3 },
+                bonne: "fraude", indices: ["nom", "lien", "demande"], reperes: { nom: 1, lien: 2, demande: 3 },
                 courriel: {
                   nom: "Soutien TI Norvic", adresse: "soutien@groupenorvic-ti.com", date: "8 h 05",
                   objet: "Votre mot de passe expire aujourd'hui",
@@ -1617,7 +1634,7 @@ window.APRES = {
               { q: "Que me demande-t-on ?", r: "Mot de passe, argent, coordonnées, fichier : prudence." }
             ], pied: "Texto, appel, code QR : même réflexe. On vérifie par un autre moyen." }],
             droite: [
-              { t: "para", x: "**Adresse ou lien faux, ou mot de passe demandé ?** Signaler, puis Hameçonnage." },
+              { t: "para", x: "**Adresse ou lien faux, ou connexion demandée sans raison ?** Signaler, puis Hameçonnage." },
               { t: "para", x: "**Tout est bon, mais on demande de l'argent ?** Appelez au numéro que vous aviez déjà." },
               { t: "para", x: "**Vous avez cliqué ?** Poste 4357, tout de suite." },
               { t: "lien", x: "Ouvrir la version d'une page, à imprimer ou à épingler", href: "aide-memoire.html" },
@@ -1659,6 +1676,7 @@ window.JOURNAL = {
       pourquoi: "La page titre décorée d'un hameçon devient un **courriel à juger** dès le premier écran. L'apprenant se trompe probablement, et c'est voulu : l'exposé qui suit répond à une question qu'il se pose déjà. Le courriel est réaliste (aucune faute, un vrai problème de boîte pleine) parce que c'est ce qu'il verra.",
       note: "l'échec productif, pas la page titre" },
     { module: "M1", avant: "A-M1-2", apres: "M1-2", statut: "modifiee",
+      tour3: { criteres: [{ code: "G2", grav: "mineur" }], pourquoi: "Troisième tour. Mesurée par l'auditeur, la durée réaliste est de 28 à 32 minutes : l'annonce devient « une demi-heure »." },
       tour2: { criteres: [{ code: "A1", grav: "mineur" }, { code: "G2", grav: "mineur" }], pourquoi: "L'objectif O3 (confirmer par téléphone) manquait à la liste. La durée annoncée passe à 25 minutes, une estimation plus honnête après les ajouts du second tour." },
       criteres: [{ code: "A1", grav: "bloquant" }, { code: "A3", grav: "mineur" }, { code: "G2", grav: "majeur" }],
       pourquoi: "« Comprendre », « être sensibilisé » : aucun de ces verbes ne se voit. Trois comportements observables les remplacent, limités au courriel. La durée annoncée passe de 45 à 20 minutes, en 4 modules." },
@@ -1683,6 +1701,7 @@ window.JOURNAL = {
       criteres: [{ code: "C1", grav: "majeur" }, { code: "A2", grav: "majeur" }],
       pourquoi: "Douze signes au même rang ne se retiennent pas et ne servent à rien au moment du doute. Il reste **trois vérifications, dans un ordre**. Le mythe des fautes d'orthographe est réfuté explicitement, parce qu'il fait croire qu'un courriel bien écrit est sûr." },
     { module: "M2", avant: null, apres: "M2-2", statut: "ajoutee", tour: 2,
+      tour3: { criteres: [{ code: "A2", grav: "mineur" }, { code: "C4", grav: "mineur" }], pourquoi: "Troisième tour. « Mot de passe demandé » contredisait une vraie réinitialisation (M2-6) : la règle dit maintenant « on vous pousse à vous connecter alors que vous n'avez rien demandé »." },
       criteres: [{ code: "C4", grav: "majeur" }, { code: "D4", grav: "majeur" }],
       pourquoi: "Ajoutée au **second tour**. L'audit 2 a montré que les trois vérifications ne disaient pas quel verdict choisir : la même situation (vraie adresse, demande d'argent) était corrigée « frauduleux » ici et « à vérifier » là. Une règle explicite relie maintenant vérifications et verdicts, et toutes les corrections la suivent.",
       note: "le second audit trouve ce que le premier ne pouvait pas voir" },
@@ -1699,6 +1718,7 @@ window.JOURNAL = {
       criteres: [{ code: "G1", grav: "majeur" }, { code: "D2", grav: "majeur" }],
       pourquoi: "Seul le survol à la souris était enseigné, alors qu'une bonne partie du public lit ses courriels sur téléphone. Les trois gestes (survol, appui long, clavier) sont donnés, puis essayés sur un courriel simulé." },
     { module: "M2", avant: null, apres: "M2-5", statut: "ajoutee",
+      tour3: { criteres: [{ code: "C4", grav: "mineur" }], pourquoi: "Troisième tour. « Les deux derniers morceaux » échouait avec des noms réels (`gouv.qc.ca`, `teams.mail.microsoft`) : la règle dit « la fin du nom », et M2-1 ajoute de comparer avec un courriel déjà reçu." },
       tour2: { criteres: [{ code: "C4", grav: "mineur" }, { code: "C5", grav: "mineur" }], pourquoi: "La règle dit maintenant combien lire (les deux derniers morceaux), et « domaine jumeau » devient « nom jumeau, à une lettre près »." },
       criteres: [{ code: "C4", grav: "majeur" }, { code: "C5", grav: "mineur" }],
       pourquoi: "« Si l'adresse ne correspond pas au site attendu » supposait qu'on sait lire une adresse web. Un exemple commenté enseigne la seule règle nécessaire (la fin du nom, avant le premier « / ») et les deux pièges courants : le déguisement et le domaine jumeau." },
@@ -1730,6 +1750,7 @@ window.JOURNAL = {
       criteres: [{ code: "E2", grav: "mineur" }, { code: "D4", grav: "mineur" }],
       pourquoi: "L'objectif O3 exige un geste précis : appeler le numéro connu **avant** ce courriel. Chaque mauvais choix montre sa conséquence (« Il vous répondra : oui, c'est bien nous »)." },
     { module: "M3", avant: "A-M2-2", apres: "M3-4", statut: "modifiee",
+      tour3: { criteres: [{ code: "G1", grav: "majeur" }], pourquoi: "Troisième tour. À 1280 px, « Courriel suivant » glissait sous le bord de la scène après une longue rétroaction : le bouton passe au-dessus de la rétroaction, et les flèches du clavier ne font plus sauter la série." },
       tour2: { criteres: [{ code: "A3", grav: "majeur" }, { code: "C4", grav: "majeur" }, { code: "D4", grav: "majeur" }], pourquoi: "Après chaque verdict, l'apprenant nomme l'indice qui l'a décidé (O1 l'exige). Les corrections suivent la règle, et le partage SharePoint accepte aussi « à vérifier », qui était défendable." },
       criteres: [{ code: "D3", grav: "majeur" }, { code: "D2", grav: "majeur" }, { code: "A3", grav: "mineur" }, { code: "E2", grav: "mineur" }],
       pourquoi: "La définition du harponnage devient un courriel ciblé à démasquer, au milieu de six messages entrelacés : trois légitimes, deux frauduleux, un à vérifier, chacun avec un indice décisif différent. Une erreur montre sa suite (« votre mot de passe partirait chez le fraudeur »).",
@@ -1743,6 +1764,7 @@ window.JOURNAL = {
 
     /* ----- M4 ----- */
     { module: "M4", avant: "A-M4-2", apres: "M4-1", statut: "modifiee",
+      tour3: { criteres: [{ code: "D4", grav: "mineur" }, { code: "F2", grav: "mineur" }], pourquoi: "Troisième tour. Le titre donnait la réponse ; la question passe au-dessus du courriel (elle tombait sous les boutons sur téléphone), et le parcours sur téléphone gagne l'étape « Hameçonnage »." },
       tour2: { criteres: [{ code: "A3", grav: "majeur" }, { code: "F2", grav: "mineur" }], pourquoi: "Le geste Signaler était un exposé : il devient un **geste à faire** sur un courriel qui a une barre d'actions (Répondre, Transférer, Supprimer, Signaler), avec une rétroaction pour chaque action. Le distracteur « transférer aux collègues » revient." },
       criteres: [{ code: "F2", grav: "bloquant" }],
       pourquoi: "La version zéro enseignait « Supprimez le courriel » : on protège sa propre boîte, et l'équipe TI ne voit rien. Le geste devient **Signaler**, avec son emplacement exact sur ordinateur et sur téléphone, et la raison en une phrase.",
@@ -1752,6 +1774,7 @@ window.JOURNAL = {
       criteres: [{ code: "A3", grav: "mineur" }, { code: "C1", grav: "mineur" }, { code: "F2", grav: "bloquant" }],
       pourquoi: "Huit bonnes pratiques générales (clé USB, Wi-Fi, mises à jour) sont remplacées par le geste qui manquait entièrement : quoi faire **après** un clic. L'authentification à deux facteurs, seule pratique liée au sujet, est reprise dans la rétroaction." },
     { module: "M4", avant: "A-M4-3", apres: "M4-3", statut: "modifiee",
+      tour3: { criteres: [{ code: "F1", grav: "majeur" }, { code: "G1", grav: "majeur" }, { code: "F1", grav: "mineur" }], pourquoi: "Troisième tour. L'indice « ce qu'on me demande » était refusé pour un courriel qui réclamait le mot de passe, alors que la règle le juge suffisant : il est accepté. Le chrono est maintenant visible, démarre au bouton « Commencer », se met en pause hors de la diapo, s'arrête à l'indice, et peut être levé (« J'ai besoin de plus de temps »). Une troisième tentative est annoncée pour ce qu'elle est : la série de départ, déjà corrigée." },
       tour2: { criteres: [{ code: "F1", grav: "majeur" }, { code: "A3", grav: "majeur" }, { code: "F1", grav: "majeur" }, { code: "C3", grav: "mineur" }, { code: "E1", grav: "mineur" }], pourquoi: "Classer « légitime » un virement de 18 500 $ ne faisait pas échouer : c'est maintenant éliminatoire. L'évaluation mesure tout l'objectif O1 (indice nommé, moins d'une minute par courriel). La reprise se fait sur **cinq autres courriels inédits**, et le bilan réaffiche chaque courriel manqué, annoté." },
       criteres: [{ code: "A3", grav: "bloquant" }, { code: "F1", grav: "majeur" }, { code: "E1", grav: "majeur" }, { code: "F2", grav: "majeur" }, { code: "D4", grav: "mineur" }],
       pourquoi: "Le quiz de définitions (« Que signifie MFA ? »), avec « Bonne réponse ! » pour seule rétroaction, et dont la question 5 renforçait le mauvais geste, devient une **évaluation du comportement visé** : cinq courriels jamais vus à trier, un seuil annoncé d'avance, une explication par cas manqué.",
@@ -1777,7 +1800,7 @@ window.BOUCLE = {
   },
   alignement: [
     { o: "O1 · Classer", pratique: "M1-1, M2-6, M2-7, M3-4 (6 courriels, verdict + indice)", evalue: "M4-3 : 5 courriels inédits, verdict + indice, moins d'une minute chacun, seuil 4 sur 5 ; reprise sur 5 autres courriels" },
-    { o: "O2 · Signaler", pratique: "M4-1 (le geste, sur un courriel qui a une barre d'actions)", evalue: "Courriels d'entraînement dans la vraie boîte (taux de signalement)" },
+    { o: "O2 · Signaler", pratique: "M4-1 (le geste, sur un courriel qui a une barre d'actions)", evalue: "Hors de la formation seulement : courriels d'entraînement dans la vraie boîte (taux de signalement). Consigné comme mineur à l'audit 3." },
     { o: "O3 · Confirmer par téléphone", pratique: "M3-2, M3-3, M3-4 n° 5", evalue: "M4-3 n° 3 (éliminatoire si traité comme légitime) ; reprise n° 2" },
     { o: "O4 · Appeler après un clic", pratique: "M4-2", evalue: "Question de J+7 (écrite en M4-5)" }
   ],
@@ -1786,12 +1809,16 @@ window.BOUCLE = {
       note: "Familles les plus touchées : charge cognitive (16 constats) et alignement (15). Le geste visé n'était jamais pratiqué, et le geste final enseigné était faux." },
     { titre: "Audit 2 · premier tour de révision", sous: "Sous-agent indépendant · 19 diapositives, page servie et mesurée", bloquant: 1, majeur: 9, mineur: 17,
       note: "Nouveau bloquant : illisible sur téléphone (texte à 6 px). Les majeurs viennent surtout des corrections elles-mêmes : un toucher bref présenté comme sans danger, une règle de verdict absente, un geste Signaler jamais pratiqué." },
-    { titre: "Audit 3 · second tour de révision", sous: "En cours", bloquant: 0, majeur: 0, mineur: 0, note: "" }
+    { titre: "Audit 3 · second tour de révision", sous: "Sous-agent indépendant · page jouée à 375, 1100 et 1280 px, deux thèmes", bloquant: 0, majeur: 3, mineur: 16,
+      note: "Plus de bloquant. Trois majeurs, tous créés par le second tour : un indice juste refusé à l'évaluation, un chrono invisible et sans pause, un bouton caché sous le bord de la scène à 1280 px." },
+    { titre: "Audit 4 · vérification ciblée", sous: "Sous-agent indépendant · page jouée à 375, 1280, 1366 et 1440 px", bloquant: 0, majeur: 0, mineur: 14,
+      note: "Sortie de boucle : zéro bloquant, zéro majeur. Les mineurs restants sont consignés dans audits/audit-4.md ; les moins coûteux sont corrigés dans la foulée." }
   ],
   limites: [
     "**L'exactitude technique** : la grille est didactique. L'emplacement du bouton Signaler et le comportement de l'appui long doivent être vérifiés sur les appareils réels de l'organisation.",
     "**L'essai auprès d'apprenants** : la boucle prédit, l'essai mesure. Avant la diffusion, au moins cinq employés doivent suivre la formation en pensant à voix haute.",
     "**L'effet au travail** : il se mesure des semaines plus tard, avec le taux de signalement des courriels d’entraînement envoyés sans prévenir, et le nombre de clics déclarés.",
+    "**La règle des verdicts** : « connexion réclamée sans raison → frauduleux » est une politique à faire confirmer par l'équipe TI de l'organisation, comme le traitement des pièces jointes.",
     "**Les données de l'organisation** : Groupe Norvic est fictif. Le canal de signalement, le poste 4357 et la personne-ressource sont à remplacer."
   ]
 };
@@ -1807,6 +1834,7 @@ window.BOUCLE = {
 (function () {
   "use strict";
 
+  document.documentElement.lang = "fr";
   const A = window.APRES, V = window.AVANT, J = window.JOURNAL, G = window.GRILLE, B = window.BOUCLE;
 
   // ---------- Petits utilitaires ----------
@@ -1933,7 +1961,7 @@ window.BOUCLE = {
   const recommencer = (onclick) => h("button", { class: "lien-discret", type: "button", onclick }, "Recommencer");
 
   function boutonsTri(onChoix, choisi) {
-    return h("div", { class: "tri", role: "group", "aria-label": "Votre verdict" },
+    return h("div", { class: "tri", role: "group", "aria-label": "Votre verdict", "data-focus": choisi ? null : "" },
       Object.entries(VERDICTS).map(([k, v]) => h("button", {
         class: "tri__choix", type: "button", "aria-pressed": choisi === k ? "true" : "false", disabled: !!choisi,
         onclick: () => onChoix(k)
@@ -1967,7 +1995,7 @@ window.BOUCLE = {
       droite.append(retroEl(juste ? "juste" : "rate",
         juste ? `Juste : ${VERDICTS[choisi].court.toLowerCase()}.` : `Ce courriel est ${VERDICTS[b.bonne].court.toLowerCase()}.`,
         b.retro[choisi]));
-      droite.append(recommencer(() => { etat.delete(k); redessiner(); }));
+      droite.append(recommencer(() => { etat.delete(k); demanderFocus(); redessiner(); }));
     }
     return h("div", { class: "diapo__corps" }, h("div", { class: "diapo__col" }, mail), droite);
   }
@@ -1977,14 +2005,17 @@ window.BOUCLE = {
     const choisi = etat.get(k);
     const mail = courriel(b.courriel, { reperes: b.reperes, adresseVisible: true, actionChoisie: choisi,
       actions: (a) => { etat.set(k, a); demanderFocus(); redessiner(); } });
-    const droite = h("div", { class: "diapo__col diapo__col--etroite" }, b.consigne ? h("div", { class: "consigne", html: riche(b.consigne) }) : null);
+    // La question passe AU-DESSUS du courriel : empilée sur téléphone, elle
+    // tombait sous les boutons qu'elle introduit (audit 3).
+    const gauche = h("div", { class: "diapo__col" }, b.consigne ? h("div", { class: "consigne", html: riche(b.consigne) }) : null, mail);
+    const droite = h("div", { class: "diapo__col diapo__col--etroite" });
     if (choisi) {
       const juste = choisi === b.bonne;
       droite.append(retroEl(juste ? "juste" : "rate", juste ? "C'est le bon geste." : `« ${ACTIONS[choisi]} » : pas tout à fait.`, b.retro[choisi]));
       if (juste && b.suite) droite.append(bloc(b.suite, k + "s", redessiner));
-      droite.append(recommencer(() => { etat.delete(k); redessiner(); }));
+      droite.append(recommencer(() => { etat.delete(k); demanderFocus(); redessiner(); }));
     }
-    return h("div", { class: "diapo__corps" }, h("div", { class: "diapo__col" }, mail), droite);
+    return h("div", { class: "diapo__corps" }, gauche, droite);
   }
 
   // Exemple travaillé : les repères s'allument un à un (C3, C4)
@@ -2019,17 +2050,41 @@ window.BOUCLE = {
   }
 
   // Série : une boîte de réception à trier, un courriel à la fois.
-  // Options : indice (demander ce qui a décidé), chrono (≤ 60 s par courriel),
-  // eliminatoire (un non-légitime traité comme légitime fait échouer),
-  // reprise (jeu de courriels inédits pour la tentative suivante).
+  // Options : indice (demander ce qui a décidé), chrono (≤ 60 s par courriel,
+  // du courriel affiché à l'indice choisi), eliminatoire (un non-légitime traité
+  // comme légitime fait échouer), reprise (jeu de courriels inédits).
+  //
+  // LE CHRONO EST VISIBLE, EN PAUSE HORS DE LA DIAPO, ET DÉSACTIVABLE (WCAG
+  // 2.2.1). Il démarre au bouton « Commencer », pas à l'affichage : lire la
+  // consigne ne compte pas. Quitter la diapo le met en pause (voir pauseChrono).
+  let chronoActif = null;
+  function pauseChrono() {
+    if (chronoActif && chronoActif.debut != null) { chronoActif.cumul += Date.now() - chronoActif.debut; chronoActif.debut = null; }
+    chronoActif = null;
+  }
+  const ecoule = (s) => (s.cumul + (s.debut != null ? Date.now() - s.debut : 0)) / 1000;
+  const minSec = (t) => `${Math.floor(t / 60)}:${String(Math.floor(t % 60)).padStart(2, "0")}`;
+
   function serie(b, k, redessiner) {
     let s = etat.get(k);
-    const neuf = (jeu) => ({ jeu, i: 0, rep: [], ind: [], t: [], debut: Date.now(), voir: {} });
-    if (!s) { s = neuf(0); etat.set(k, s); }
+    const neuf = (jeu, essais) => ({ jeu, essais, i: 0, rep: [], ind: [], t: [], cumul: 0, debut: null, demarre: !b.chrono, sansLimite: false, voir: {} });
+    if (!s) { s = neuf(0, 0); etat.set(k, s); }
     const items = s.jeu === 1 && b.reprise ? b.reprise : b.items;
     const total = items.length;
+    const limite = b.chrono && !s.sansLimite;
     const bonIndice = (it, i) => !b.indice || it.bonne === "sur" || (it.indices || []).includes(s.ind[i]);
-    const reussite = (it, i) => estJuste(it, s.rep[i]) && bonIndice(it, i) && (!b.chrono || s.t[i] <= 60);
+    const reussite = (it, i) => estJuste(it, s.rep[i]) && bonIndice(it, i) && (!limite || s.t[i] <= 60);
+
+    // Écran de départ : la consigne se lit hors chrono.
+    if (!s.demarre) {
+      const case_ = h("input", { type: "checkbox", id: `plus-de-temps-${k.replace(/\W/g, "")}` });
+      return h("div", { class: "diapo__corps diapo__corps--pile" },
+        b.consigne ? p(b.consigne, "diapo__chapeau") : null,
+        h("label", { class: "case", for: case_.id }, case_, " J'ai besoin de plus de temps : pas de limite d'une minute."),
+        boutonPlein(s.jeu === 1 ? "Commencer la reprise" : "Commencer", () => {
+          s.demarre = true; s.sansLimite = case_.checked; s.cumul = 0; s.debut = null; demanderFocus(); redessiner();
+        }, true));
+    }
 
     if (s.i >= total) {
       const bons = items.filter(reussite).length;
@@ -2037,46 +2092,70 @@ window.BOUCLE = {
       const reussi = bons >= (b.seuil || total) && !(b.eliminatoire && legitimeManque);
       const rates = items.map((it, i) => ({ it, i })).filter(x => !reussite(x.it, x.i));
       const tMoy = Math.round(s.t.reduce((a, x) => a + x, 0) / (s.t.length || 1));
-      const autreJeu = () => { etat.set(k, neuf(b.reprise ? (s.jeu + 1) % 2 : 0)); demanderFocus(); redessiner(); };
+      const tMax = Math.round(Math.max(0, ...s.t));
+      const prochain = b.reprise ? (s.jeu + 1) % 2 : 0;
+      const autreJeu = () => { etat.set(k, neuf(prochain, s.essais + 1)); demanderFocus(); redessiner(); };
+      const libelle = !b.reprise ? "Refaire la série"
+        : prochain === 1 ? "Passer la série de reprise (courriels inédits)"
+        : "Refaire la série de départ (déjà corrigée)";
       return h("div", { class: "diapo__corps" },
         h("div", { class: "diapo__col diapo__col--etroite" },
           h("p", { class: "diapo__mega" }, `${bons} sur ${total}`),
-          b.chrono ? p(`Temps moyen : ${tMoy} s par courriel.`, "diapo__pied") : null,
+          b.chrono ? p(`Temps moyen : ${tMoy} s par courriel ; le plus long : ${tMax} s.${s.sansLimite ? " (Sans limite de temps.)" : ""}`, "diapo__pied") : null,
           retroEl(reussi ? "juste" : "neutre",
-            reussi ? (b.bilan?.reussi || "Seuil atteint.") : (b.bilan?.rate || "Seuil non atteint : refaites la série."),
+            reussi ? (b.bilan?.reussi || "Seuil atteint.")
+              : b.reprise && prochain === 0 ? "Pas encore. Relisez les cas manqués ; la série de départ, déjà corrigée, vous attend. Si le doute persiste, écrivez à la personne-ressource de l'aide-mémoire."
+              : (b.bilan?.rate || "Seuil non atteint : refaites la série."),
             !reussi && b.eliminatoire && legitimeManque ? "Un courriel qui n'était pas légitime a été traité comme tel : c'est éliminatoire, quel que soit le score." : null),
-          reussi ? recommencer(autreJeu)
-                 : boutonPlein(b.reprise ? "Passer une série de reprise (courriels inédits)" : "Refaire la série", autreJeu)),
+          reussi ? recommencer(autreJeu) : boutonPlein(libelle, autreJeu)),
         h("div", { class: "diapo__col bilan" }, rates.length
           ? rates.map(({ it, i }) => {
               const causes = [];
               if (!estJuste(it, s.rep[i])) causes.push(`Votre verdict : ${VERDICTS[s.rep[i]].court.toLowerCase()}.`);
               else if (!bonIndice(it, i)) causes.push(`Bon verdict, mais l'indice décisif était : ${nomsIndices(it)}.`);
-              if (b.chrono && s.t[i] > 60) causes.push(`Plus d'une minute (${Math.round(s.t[i])} s).`);
+              if (limite && s.t[i] > 60) causes.push(`Plus d'une minute (${Math.round(s.t[i])} s).`);
               const voir = !!s.voir[i];
               return h("div", { class: "bilan__cas" },
                 h("div", { class: "bilan__tete" }, h("span", { class: "bilan__objet" }, it.courriel.objet), h("span", { class: `verdict verdict--${it.bonne}` }, VERDICTS[it.bonne].court)),
                 h("p", { class: "bilan__cause" }, causes.join(" ")),
                 p(it.retro[s.rep[i]]),
-                voir ? courriel(it.courriel, { reperes: it.reperes || {}, adresseVisible: true }) : null,
-                h("button", { class: "lien-discret", type: "button", "aria-expanded": String(voir), onclick: () => { s.voir[i] = !voir; redessiner(); } }, voir ? "Masquer le courriel" : "Revoir le courriel annoté"));
+                voir ? h("div", { "data-focus": "" }, courriel(it.courriel, { reperes: it.reperes || {}, adresseVisible: true })) : null,
+                h("button", { class: "lien-discret", type: "button", "aria-expanded": String(voir), "data-focus": voir ? "" : null, onclick: () => { s.voir[i] = !voir; demanderFocus(); redessiner(); } }, voir ? "Masquer le courriel" : "Revoir le courriel annoté"));
             })
           : [p("Aucun cas manqué.", "diapo__chapeau")]));
     }
 
     const it = items[s.i];
     const verdict = s.rep[s.i], indice = s.ind[s.i];
-    const demandeIndice = b.indice && verdict;
     const fini = verdict && (!b.indice || indice);
+    if (!fini && b.chrono) { if (s.debut == null) s.debut = Date.now(); chronoActif = s; }
+    const terminer = () => { s.t[s.i] = ecoule(s); s.cumul = 0; s.debut = null; chronoActif = null; };
     const montrer = fini && b.retroImmediate !== false;
     const mail = courriel(it.courriel, { reperes: montrer ? (it.reperes || {}) : {}, adresseVisible: montrer && !!(it.reperes && it.reperes.nom) });
+
+    let horloge = null;
+    if (b.chrono) {
+      horloge = h("span", { class: "chrono", role: "timer", "aria-label": "Temps écoulé" }, minSec(fini ? s.t[s.i] : ecoule(s)));
+      if (!fini) {
+        const tic = setInterval(() => {
+          if (!horloge.isConnected) return clearInterval(tic);
+          const t = ecoule(s);
+          horloge.textContent = minSec(t);
+          horloge.classList.toggle("chrono--depasse", limite && t > 60);
+        }, 500);
+      }
+    }
+    const suivant = () => { s.i++; s.cumul = 0; s.debut = null; demanderFocus(); redessiner(); };
     const droite = h("div", { class: "diapo__col diapo__col--etroite" },
-      h("div", { class: "diapo__entete", "data-focus": s.i > 0 && !verdict ? "" : null },
-        h("span", null, `Courriel ${s.i + 1} sur ${total}${s.jeu === 1 ? " · reprise" : ""}`)),
-      b.consigne && s.i === 0 && !verdict ? h("p", { class: "diapo__pied", html: riche(b.consigne) }) : null,
-      boutonsTri((v) => { s.rep[s.i] = v; s.t[s.i] = (Date.now() - s.debut) / 1000; demanderFocus(); redessiner(); }, verdict));
-    if (demandeIndice) droite.append(boutonsIndice((x) => { s.ind[s.i] = x; demanderFocus(); redessiner(); }, indice));
+      h("div", { class: "diapo__entete", "data-focus": !verdict ? "" : null },
+        h("span", null, `Courriel ${s.i + 1} sur ${total}${s.jeu === 1 ? " · reprise" : ""}`), horloge,
+        b.chrono ? h("span", { class: "cq-visuel-cache" }, limite ? "Limite : une minute par courriel." : "Sans limite de temps.") : null),
+      boutonsTri((v) => { s.rep[s.i] = v; if (!b.indice) terminer(); demanderFocus(); redessiner(); }, verdict));
+    if (verdict && b.indice) droite.append(boutonsIndice((x) => { s.ind[s.i] = x; terminer(); demanderFocus(); redessiner(); }, indice));
     if (fini) {
+      // Le bouton passe AVANT la rétroaction : une rétroaction longue le
+      // poussait sous le bord de la scène, invisible (audit 3).
+      droite.append(boutonPlein(s.i + 1 < total ? "Courriel suivant" : "Voir le bilan", suivant, b.retroImmediate === false));
       if (b.retroImmediate !== false) {
         const juste = estJuste(it, verdict);
         droite.append(retroEl(juste ? "juste" : "rate",
@@ -2084,8 +2163,6 @@ window.BOUCLE = {
           it.retro[verdict],
           juste && !bonIndice(it, s.i) ? h("div", { class: "retro__texte" }, `L'indice décisif était plutôt : ${nomsIndices(it)}.`) : null));
       }
-      droite.append(boutonPlein(s.i + 1 < total ? "Courriel suivant" : "Voir le bilan",
-        () => { s.i++; s.debut = Date.now(); demanderFocus(); redessiner(); }, b.retroImmediate === false));
     }
     return h("div", { class: "diapo__corps" }, h("div", { class: "diapo__col" }, mail), droite);
   }
@@ -2196,9 +2273,9 @@ window.BOUCLE = {
           e.criteres.map(c => critereEl(c.code, c.grav))),
         h("p", { class: "journal__texte", html: riche(e.pourquoi) }),
         e.note ? h("p", { class: "note-marge" }, e.note) : null),
-      e.tour2 ? h("div", { class: "journal__ligne journal__ligne--tour2" },
-        h("div", { class: "journal__tete" }, h("span", { class: "statut" }, "2e tour"), e.tour2.criteres.map(c => critereEl(c.code, c.grav))),
-        h("p", { class: "journal__texte", html: riche(e.tour2.pourquoi) })) : null);
+      [["tour2", "2e tour"], ["tour3", "3e tour"]].map(([cle, lib]) => e[cle] ? h("div", { class: "journal__ligne journal__ligne--tour2" },
+        h("div", { class: "journal__tete" }, h("span", { class: "statut" }, lib), e[cle].criteres.map(c => critereEl(c.code, c.grav))),
+        h("p", { class: "journal__texte", html: riche(e[cle].pourquoi.replace(/^Troisième tour\. /, "")) })) : null));
   }
 
   function barreNav(max, libelle) {
@@ -2294,6 +2371,7 @@ window.BOUCLE = {
   }
 
   function dessiner() {
+    pauseChrono();
     document.querySelectorAll("[data-vue]").forEach(b => b.setAttribute("aria-selected", String(b.dataset.vue === vue)));
     racine.replaceChildren(vue === "formation" ? vueFormation() : vue === "comparer" ? vueComparer() : vueBoucle());
     dessinerNav();
@@ -2315,7 +2393,9 @@ window.BOUCLE = {
 
   document.querySelectorAll("[data-vue]").forEach(b => b.addEventListener("click", () => changerVue(b.dataset.vue)));
   document.addEventListener("keydown", (e) => {
-    if (vue === "boucle" || e.target.closest("input, textarea")) return;
+    // Dans la diapo, les flèches appartiennent à l'activité : elles ne
+    // doivent pas faire sauter une série en cours (audit 3).
+    if (vue === "boucle" || e.target.closest("input, textarea, .scene")) return;
     if (e.key === "ArrowRight" || e.key === "PageDown") { aller(idx + 1); }
     else if (e.key === "ArrowLeft" || e.key === "PageUp") { aller(idx - 1); }
   });
