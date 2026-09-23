@@ -1,0 +1,2286 @@
+<!doctype html>
+<html lang="fr">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>[hidden]{display:none!important}</style>
+<title>À la main d'abord</title>
+<meta name="description" content="Formation « Remplacer les bougies d'allumage », conçue et révisée avec la boucle didactique : chaque diapositive, avant et après, avec le critère qui justifie le changement.">
+<style>
+/* ============================================================
+   CALQUE — système de design pour formations révisées
+   ------------------------------------------------------------
+   Deux couches, comme sur une table à dessin :
+   · la FEUILLE  — ce que l'apprenant voit (la formation) ;
+   · le CALQUE   — la couche de révision posée par-dessus, tracée
+                   au crayon bleu non photographique : critères,
+                   constats, avant/après. L'apprenant ne la voit
+                   jamais ; le lecteur du portfolio, oui.
+   Et un troisième registre, BROUILLON, qui reproduit fidèlement
+   la diapositive « par défaut » de la version zéro.
+
+   Règles :
+   1. Le bleu calque n'appartient QU'à la couche de révision.
+      Il ne sert jamais à la formation elle-même.
+   2. Les trois verdicts (légitime / à vérifier / frauduleux)
+      portent toujours une forme ET une couleur (G1).
+   3. Toute adresse et tout lien s'affichent en mono : c'est là
+      que se cachent les lettres jumelles (rn/m, l/I, 0/o).
+   ============================================================ */
+
+@import url("https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&family=Schibsted+Grotesk:wght@500;700;800&family=Kalam:wght@400;700&display=swap");
+
+:root {
+  color-scheme: light;
+
+  /* ---------- Feuille (formation) ---------- */
+  --cq-papier:      #EEF1F3;  /* fond de page : gris-bleu d'une boîte de réception */
+  --cq-feuille:     #FFFFFF;  /* la diapositive */
+  --cq-retrait:     #F5F7F8;  /* surface en retrait : en-tête de courriel, encart */
+  --cq-filet:       #D5DCE1;
+  --cq-sourdine:    #5A6873;  /* texte secondaire — 5,7:1 sur blanc */
+  --cq-encre:       #13212C;  /* texte principal — bleu nuit */
+  --cq-action:      #13212C;  /* bouton principal : l'encre elle-même */
+  --cq-action-ink:  #FFFFFF;
+  --cq-focus:       #E8A317;
+  --cq-lien:        #1A5FB4;  /* lien et bouton du courriel simulé — 6,3:1 */
+
+  /* ---------- Verdicts (sémantiques, forme + couleur) ---------- */
+  --cq-sur:         #1D7A4C;  --cq-sur-fond:     #E3F2EA;   /* ✓ légitime   */
+  --cq-doute:       #9A6206;  --cq-doute-fond:   #FBF0D9;   /* ? à vérifier */
+  --cq-fraude:      #B3261E;  --cq-fraude-fond:  #FBE4E1;   /* ✕ frauduleux */
+
+  /* ---------- Calque (révision) ---------- */
+  --cq-calque:      #4C9BD6;  /* bleu non photographique : traits, repères */
+  --cq-calque-ink:  #0B4A7A;  /* texte du calque — 9,2:1 sur blanc */
+  --cq-calque-voile: rgba(76, 155, 214, 0.08);
+  --cq-calque-trame: rgba(76, 155, 214, 0.18);
+
+  /* Gravités du constat d'origine — graduées dans le bleu du calque,
+     pour ne jamais se confondre avec les verdicts de la formation. */
+  --cq-grav-bloquant: #0B4A7A;
+  --cq-grav-majeur:   #2F7EBB;
+  --cq-grav-mineur:   #9CC7E8;
+
+  /* ---------- Brouillon (version zéro) ---------- */
+  --br-fond:   #FFFFFF;
+  --br-titre:  #1F4E9A;
+  --br-texte:  #222222;
+  --br-barre:  #1F4E9A;
+  --br-police: Calibri, Carlito, "Segoe UI", Arial, sans-serif;
+
+  /* ---------- Typographie ---------- */
+  --cq-police-titre: "Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --cq-police-texte: "Atkinson Hyperlegible", Verdana, Tahoma, sans-serif;
+  --cq-police-mono:  "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+  --cq-police-main:  "Kalam", "Segoe Print", "Comic Neue", cursive;
+
+  /* Échelle des diapositives, en unités de conteneur :
+     la diapo est une scène 16:9 ; tout y est proportionnel à sa largeur. */
+  --cq-d-mega:  5.6cqw;
+  --cq-d-titre: 3.6cqw;
+  --cq-d-inter: 2.3cqw;
+  --cq-d-texte: 1.75cqw;
+  --cq-d-petit: 1.35cqw;
+  --cq-d-micro: 1.1cqw;
+  /* Planchers : sous ces tailles, la diapo passe en mode « feuille qui
+     s'allonge » (voir @container plus bas) plutôt que de rapetisser. */
+
+  /* Échelle de l'interface autour (rem) */
+  --cq-t-xl: 2rem;
+  --cq-t-l:  1.375rem;
+  --cq-t-m:  1.0625rem;
+  --cq-t-s:  0.9375rem;
+  --cq-t-xs: 0.8125rem;
+
+  --cq-rayon:   6px;
+  --cq-rayon-l: 12px;
+  --cq-ombre:   0 1px 2px rgba(19,33,44,.06), 0 8px 24px rgba(19,33,44,.08);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --cq-papier:   #0E171E;
+    --cq-feuille:  #16222B;
+    --cq-retrait:  #1C2A34;
+    --cq-filet:    #2B3B47;
+    --cq-sourdine: #9AABB8;
+    --cq-encre:    #E6EDF2;
+    --cq-action:   #E6EDF2;
+    --cq-action-ink: #13212C;
+    --cq-lien: #7DB3F0;
+    --cq-sur:    #5FCB93;  --cq-sur-fond:    #173327;
+    --cq-doute:  #E9B454;  --cq-doute-fond:  #3A2D12;
+    --cq-fraude: #F08A80;  --cq-fraude-fond: #3E1B18;
+    --cq-calque: #6FB6EA;
+    --cq-calque-ink: #9FD0F5;
+    --cq-calque-voile: rgba(111, 182, 234, 0.08);
+    --cq-calque-trame: rgba(111, 182, 234, 0.22);
+    --cq-grav-bloquant: #9FD0F5;
+    --cq-grav-majeur:   #5A9FD4;
+    --cq-grav-mineur:   #2F5C80;
+    --cq-ombre: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --cq-papier:   #0E171E;
+  --cq-feuille:  #16222B;
+  --cq-retrait:  #1C2A34;
+  --cq-filet:    #2B3B47;
+  --cq-sourdine: #9AABB8;
+  --cq-encre:    #E6EDF2;
+  --cq-action:   #E6EDF2;
+  --cq-action-ink: #13212C;
+  --cq-lien: #7DB3F0;
+  --cq-sur:    #5FCB93;  --cq-sur-fond:    #173327;
+  --cq-doute:  #E9B454;  --cq-doute-fond:  #3A2D12;
+  --cq-fraude: #F08A80;  --cq-fraude-fond: #3E1B18;
+  --cq-calque: #6FB6EA;
+  --cq-calque-ink: #9FD0F5;
+  --cq-calque-voile: rgba(111, 182, 234, 0.08);
+  --cq-calque-trame: rgba(111, 182, 234, 0.22);
+  --cq-grav-bloquant: #9FD0F5;
+  --cq-grav-majeur:   #5A9FD4;
+  --cq-grav-mineur:   #2F5C80;
+  --cq-ombre: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+}
+
+/* ============================================================
+   Base
+   ============================================================ */
+.cq, .cq * { box-sizing: border-box; }
+.cq {
+  font-family: var(--cq-police-texte);
+  color: var(--cq-encre);
+  background: var(--cq-papier);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+.cq :focus-visible { outline: 3px solid var(--cq-focus); outline-offset: 2px; border-radius: 3px; }
+.cq-mono { font-family: var(--cq-police-mono); font-size: .95em; letter-spacing: 0; }
+.cq-visuel-cache { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+@media (prefers-reduced-motion: reduce) {
+  .cq *, .cq *::before, .cq *::after { animation: none !important; transition: none !important; }
+}
+
+/* ============================================================
+   Scène — la diapositive 16:9, en unités de conteneur
+   ============================================================ */
+.scene {
+  container-type: inline-size;
+  width: 100%;
+  max-width: 100%;
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--cq-rayon-l);
+  background: var(--cq-feuille);
+  box-shadow: var(--cq-ombre);
+}
+.plateau { position: relative; aspect-ratio: 16 / 9; max-width: 100%; }
+.scene--vide {
+  aspect-ratio: 16 / 9;
+  display: grid; place-items: center;
+  background: repeating-linear-gradient(135deg, var(--cq-calque-voile) 0 10px, transparent 10px 20px), var(--cq-feuille);
+  box-shadow: inset 0 0 0 2px var(--cq-calque-trame);
+}
+.scene--vide p {
+  font-family: var(--cq-police-main); color: var(--cq-calque-ink);
+  font-size: var(--cq-d-inter); margin: 0; text-align: center; max-width: 70%;
+}
+
+/* ============================================================
+   Feuille — composition d'une diapo de formation
+   ============================================================ */
+.diapo {
+  position: absolute; inset: 0;
+  padding: 4.2cqw 5cqw 3.6cqw;
+  display: flex; flex-direction: column; gap: 1.8cqw;
+  font-size: var(--cq-d-texte);
+}
+.diapo__entete {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 2cqw;
+  font-size: var(--cq-d-micro); color: var(--cq-sourdine);
+  letter-spacing: .06em; text-transform: uppercase;
+}
+.diapo__titre {
+  font-family: var(--cq-police-titre); font-weight: 800;
+  font-size: var(--cq-d-titre); line-height: 1.05; letter-spacing: -.02em;
+  margin: 0; text-wrap: balance;
+}
+.diapo__corps { flex: 1; min-height: 0; display: flex; gap: 3cqw; }
+.diapo__corps--pile { flex-direction: column; gap: 1.4cqw; }
+.diapo__col { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1.2cqw; }
+.diapo__col--etroite { flex: 0 0 34%; }
+.diapo p { margin: 0; max-width: 60ch; }
+.diapo__mega {
+  font-family: var(--cq-police-titre); font-weight: 800;
+  font-size: var(--cq-d-mega); line-height: 1; letter-spacing: -.035em; margin: 0; text-wrap: balance;
+}
+.diapo__chapeau { font-size: var(--cq-d-inter); line-height: 1.3; margin: 0; max-width: 34ch; }
+.diapo__pied { font-size: var(--cq-d-petit); color: var(--cq-sourdine); }
+
+/* Diapo d'ouverture de module : fond encre, plein cadre */
+.diapo--ouverture { background: var(--cq-encre); color: var(--cq-feuille); justify-content: flex-end; }
+.diapo--ouverture .diapo__entete { color: color-mix(in srgb, var(--cq-feuille) 70%, transparent); }
+
+/* ---------- Verdict : pastille forme + couleur ---------- */
+.verdict {
+  display: inline-flex; align-items: center; gap: .45em;
+  padding: .2em .7em .2em .35em; border-radius: 999px;
+  font-weight: 700; font-size: .9em; line-height: 1.4; white-space: nowrap;
+}
+.verdict::before {
+  content: ""; width: 1.15em; height: 1.15em; flex: none;
+  display: inline-grid; place-items: center; border-radius: 50%;
+  font-size: .8em; line-height: 1.15em; text-align: center; color: var(--cq-feuille);
+}
+.verdict--sur    { background: var(--cq-sur-fond);    color: var(--cq-sur); }
+.verdict--doute  { background: var(--cq-doute-fond);  color: var(--cq-doute); }
+.verdict--fraude { background: var(--cq-fraude-fond); color: var(--cq-fraude); }
+.verdict--sur::before    { content: "✓"; background: var(--cq-sur); }
+.verdict--doute::before  { content: "?"; background: var(--cq-doute); border-radius: 3px; }
+.verdict--fraude::before { content: "✕"; background: var(--cq-fraude); border-radius: 2px; transform: rotate(0deg); }
+
+/* ---------- Vérification : les trois questions ---------- */
+.verif { display: grid; gap: 1cqw; margin: 0; padding: 0; list-style: none; counter-reset: verif; }
+.verif__item {
+  counter-increment: verif;
+  display: grid; grid-template-columns: 3.2cqw 1fr; gap: .2cqw 1.2cqw; align-items: baseline;
+}
+.verif__item::before {
+  content: counter(verif);
+  grid-row: span 2;
+  font-family: var(--cq-police-titre); font-weight: 800; font-size: var(--cq-d-inter);
+  width: 3.2cqw; height: 3.2cqw; border-radius: 50%;
+  display: grid; place-items: center; border: .2cqw solid currentColor;
+}
+.verif__q { font-weight: 700; font-size: var(--cq-d-inter); line-height: 1.2; }
+.verif__r { color: var(--cq-sourdine); font-size: var(--cq-d-petit); }
+.verif__item[data-actif="false"] { opacity: .35; }
+
+/* ============================================================
+   Courriel simulé — imite un client de messagerie
+   ============================================================ */
+.courriel {
+  background: var(--cq-feuille);
+  border: 1px solid var(--cq-filet);
+  border-radius: var(--cq-rayon);
+  font-size: var(--cq-d-petit);
+  display: flex; flex-direction: column; min-height: 0; position: relative;
+  overflow: hidden;
+}
+.courriel__entete {
+  background: var(--cq-retrait); border-bottom: 1px solid var(--cq-filet);
+  padding: 1.1cqw 1.4cqw; display: grid; gap: .35cqw;
+}
+.courriel__objet { font-weight: 700; font-size: var(--cq-d-texte); line-height: 1.25; }
+.courriel__de { display: flex; flex-wrap: wrap; align-items: center; gap: .3cqw .8cqw; }
+.courriel__avatar {
+  width: 2.4cqw; height: 2.4cqw; border-radius: 50%; flex: none;
+  display: grid; place-items: center; font-weight: 700; font-size: var(--cq-d-micro);
+  background: var(--cq-filet); color: var(--cq-encre);
+}
+.courriel__nom {
+  font-weight: 700; background: none; border: 0; padding: 0; color: inherit; font: inherit; font-weight: 700;
+  cursor: pointer; text-decoration: underline dotted; text-underline-offset: .25em;
+}
+.courriel__adresse { font-family: var(--cq-police-mono); color: var(--cq-sourdine); font-size: .92em; }
+.courriel__adresse[hidden] { display: none; }
+.courriel__meta { color: var(--cq-sourdine); font-size: var(--cq-d-micro); }
+.courriel__corps { padding: 1.3cqw 1.4cqw; display: grid; gap: .8cqw; align-content: start; overflow: auto; }
+.courriel__corps p { margin: 0; }
+.courriel__lien {
+  color: var(--cq-lien); text-decoration: underline; cursor: pointer;
+  background: none; border: 0; padding: 0; font: inherit; text-align: left;
+}
+.courriel__bouton {
+  justify-self: start; background: var(--cq-lien); color: var(--cq-feuille); border: 0; border-radius: 4px;
+  padding: .6cqw 1.4cqw; font: inherit; font-weight: 700; cursor: pointer;
+}
+.courriel__pj {
+  display: inline-flex; gap: .6cqw; align-items: center; justify-self: start;
+  border: 1px solid var(--cq-filet); border-radius: 4px; padding: .5cqw .9cqw;
+  font-family: var(--cq-police-mono); font-size: var(--cq-d-micro);
+}
+/* Barre d'état : là où le client affiche la destination réelle d'un lien */
+.courriel__etat {
+  position: absolute; left: 0; bottom: 0; max-width: 90%;
+  background: var(--cq-encre); color: var(--cq-feuille);
+  font-family: var(--cq-police-mono); font-size: var(--cq-d-micro);
+  padding: .35cqw .9cqw; border-top-right-radius: 4px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.courriel__etat[hidden] { display: none; }
+
+/* Repère : l'endroit à regarder, pointé sur l'objet (C3) */
+.repere {
+  position: relative; border-radius: 3px;
+  box-shadow: 0 0 0 .22cqw var(--cq-focus);
+  background: color-mix(in srgb, var(--cq-focus) 16%, transparent);
+}
+.repere[data-n]::after {
+  content: attr(data-n);
+  position: absolute; top: -1.2cqw; right: -1.2cqw;
+  width: 2cqw; height: 2cqw; border-radius: 50%;
+  background: var(--cq-focus); color: #13212C;
+  font: 800 var(--cq-d-micro)/2cqw var(--cq-police-titre); text-align: center;
+}
+
+/* ============================================================
+   Tri — l'apprenant décide
+   ============================================================ */
+.tri { display: flex; flex-wrap: wrap; gap: .9cqw; }
+.tri__choix {
+  font: inherit; font-weight: 700; font-size: var(--cq-d-petit);
+  border: .15cqw solid var(--cq-filet); background: var(--cq-feuille); color: var(--cq-encre);
+  border-radius: 999px; padding: .7cqw 1.5cqw; cursor: pointer;
+  display: inline-flex; align-items: center; gap: .6cqw;
+  transition: border-color .15s, background .15s;
+}
+.tri__choix:hover { border-color: var(--cq-encre); }
+.tri__choix[aria-pressed="true"] { background: var(--cq-action); color: var(--cq-action-ink); border-color: var(--cq-action); }
+.tri__choix:disabled { cursor: default; }
+.tri__choix:disabled:not([aria-pressed="true"]) { opacity: .45; }
+
+.options { display: grid; gap: .8cqw; }
+.options__choix {
+  font: inherit; font-size: var(--cq-d-petit); text-align: left; cursor: pointer;
+  border: .15cqw solid var(--cq-filet); background: var(--cq-feuille); color: var(--cq-encre);
+  border-radius: var(--cq-rayon); padding: .9cqw 1.2cqw; line-height: 1.35;
+}
+.options__choix:hover { border-color: var(--cq-encre); }
+.options__choix[aria-pressed="true"] { border-color: var(--cq-encre); box-shadow: inset .4cqw 0 0 var(--cq-encre); }
+
+/* ---------- Rétroaction ---------- */
+.retro {
+  border-radius: var(--cq-rayon); padding: 1cqw 1.3cqw;
+  font-size: var(--cq-d-petit); display: grid; gap: .4cqw;
+  border-left: .45cqw solid currentColor;
+}
+.retro[hidden] { display: none; }
+.retro--juste  { background: var(--cq-sur-fond);    color: var(--cq-sur); }
+.retro--rate   { background: var(--cq-fraude-fond); color: var(--cq-fraude); }
+.retro--neutre { background: var(--cq-retrait);     color: var(--cq-encre); }
+.retro__titre { font-weight: 700; }
+.retro__texte { color: var(--cq-encre); }
+
+/* ---------- Aide-mémoire ---------- */
+.memo {
+  border: .2cqw solid var(--cq-encre); border-radius: var(--cq-rayon-l);
+  padding: 1.6cqw 2cqw; display: grid; gap: 1cqw; background: var(--cq-feuille);
+}
+.memo__titre { font-family: var(--cq-police-titre); font-weight: 800; font-size: var(--cq-d-inter); margin: 0; }
+
+/* ---------- Encart consigne ---------- */
+.consigne {
+  display: flex; gap: 1cqw; align-items: baseline;
+  font-size: var(--cq-d-petit); font-weight: 700;
+}
+.consigne::before {
+  content: "À vous"; flex: none;
+  font-size: var(--cq-d-micro); letter-spacing: .08em; text-transform: uppercase;
+  background: var(--cq-encre); color: var(--cq-feuille); border-radius: 3px; padding: .15cqw .6cqw;
+}
+
+/* ============================================================
+   Brouillon — reproduit la diapo par défaut de la version zéro
+   ============================================================ */
+.brouillon {
+  position: absolute; inset: 0; background: var(--br-fond); color: var(--br-texte);
+  font-family: var(--br-police); font-size: 1.9cqw; line-height: 1.3;
+  padding: 3.4cqw 5cqw; display: flex; flex-direction: column; gap: 1.6cqw;
+  color-scheme: light;
+}
+.brouillon::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1.3cqw; background: var(--br-barre);
+}
+.brouillon__titre { color: var(--br-titre); font-size: 3.4cqw; font-weight: 400; margin: 0; line-height: 1.1; }
+.brouillon ul { margin: 0; padding-left: 1.4em; display: grid; gap: .5cqw; }
+.brouillon p { margin: 0; }
+.brouillon__image {
+  flex: 1; min-height: 5cqw; max-height: 18cqw;
+  border: .15cqw dashed #9AA3AD; border-radius: 4px; display: grid; place-items: center;
+  font-size: 1.3cqw; color: #6B7580; font-style: italic; padding: 1cqw; text-align: center;
+  background: repeating-linear-gradient(45deg, #F3F5F7 0 8px, #fff 8px 16px);
+}
+.brouillon__chiffres { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2cqw; margin-top: 1cqw; }
+.brouillon__chiffres b { display: block; color: var(--br-titre); font-size: 4cqw; }
+.brouillon__chiffres span { font-size: 1.4cqw; }
+.brouillon__note { font-style: italic; color: #B00020; }
+.brouillon__grand { font-size: 4.2cqw; color: var(--br-titre); text-align: center; margin-top: 6cqw; }
+.brouillon__quiz { display: grid; gap: .9cqw; font-size: 1.45cqw; }
+.brouillon__quiz ol { padding-left: 1.3em; margin: 0; display: grid; gap: .7cqw; }
+.brouillon__quiz ol ol { list-style: lower-alpha; margin-top: .2cqw; gap: 0; color: #444; }
+.brouillon .courriel { font-size: 1.35cqw; }
+.brouillon__legende { font-size: 1.4cqw; color: #444; font-style: italic; }
+
+/* ============================================================
+   Calque — la couche de révision
+   ============================================================ */
+.critere {
+  display: inline-flex; align-items: baseline; gap: .45em;
+  font-family: var(--cq-police-mono); font-size: var(--cq-t-xs); font-weight: 500;
+  color: var(--cq-calque-ink); background: var(--cq-calque-voile);
+  border: 1px solid var(--cq-calque-trame); border-radius: 3px; padding: .1em .5em;
+  white-space: nowrap;
+}
+.critere__code { font-weight: 500; }
+.critere__nom { font-family: var(--cq-police-texte); font-weight: 400; }
+
+/* Gravité : trois épaisseurs de trait, pas seulement trois teintes */
+.gravite {
+  display: inline-flex; align-items: center; gap: .4em;
+  font-size: var(--cq-t-xs); color: var(--cq-calque-ink); white-space: nowrap;
+}
+.gravite::before { content: ""; width: 1.6em; border-top: 2px solid var(--cq-grav-mineur); }
+.gravite--majeur::before { border-top: 4px solid var(--cq-grav-majeur); }
+.gravite--bloquant::before { border-top: 6px solid var(--cq-grav-bloquant); }
+
+.statut {
+  font-family: var(--cq-police-mono); font-size: var(--cq-t-xs); text-transform: uppercase; letter-spacing: .08em;
+  color: var(--cq-calque-ink); border: 1px dashed var(--cq-calque); border-radius: 3px; padding: .1em .5em;
+}
+.statut--ajoutee  { border-style: solid; }
+.statut--retiree  { text-decoration: line-through; }
+
+.note-marge {
+  font-family: var(--cq-police-main); color: var(--cq-calque-ink);
+  font-size: 1.05rem; line-height: 1.35;
+}
+
+/* Journal de révision d'une diapo */
+.journal { display: grid; gap: .9rem; }
+.journal__ligne {
+  display: grid; gap: .35rem; padding: .8rem .9rem;
+  border-left: 3px solid var(--cq-calque);
+  background: var(--cq-calque-voile); border-radius: 0 var(--cq-rayon) var(--cq-rayon) 0;
+}
+.journal__tete { display: flex; flex-wrap: wrap; gap: .4rem .6rem; align-items: center; }
+.journal__texte { font-size: var(--cq-t-s); margin: 0; }
+
+/* Superposition : le calque posé sur la diapo */
+.surcouche {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    linear-gradient(var(--cq-calque-trame) 1px, transparent 1px),
+    linear-gradient(90deg, var(--cq-calque-trame) 1px, transparent 1px);
+  background-size: 2.5cqw 2.5cqw;
+  mix-blend-mode: multiply; opacity: .5;
+}
+
+/* Étiquette « avant » / « après » sur une scène */
+.marque {
+  position: absolute; top: 1.2cqw; left: 1.2cqw; z-index: 2;
+  font-family: var(--cq-police-mono); font-size: max(10px, var(--cq-d-micro)); letter-spacing: .1em; text-transform: uppercase;
+  padding: .2em .6em; border-radius: 3px;
+  background: var(--cq-calque-ink); color: #fff;
+}
+.marque--avant { background: #6B7580; }
+
+/* ---------- Bilan d'une série ---------- */
+.bilan { overflow: auto; gap: .9cqw; }
+.bilan__cas { border: 1px solid var(--cq-filet); border-radius: var(--cq-rayon); padding: .9cqw 1.1cqw; display: grid; gap: .3cqw; font-size: var(--cq-d-petit); }
+.bilan__tete { display: flex; justify-content: space-between; gap: 1cqw; align-items: baseline; font-weight: 700; }
+.bilan__adresse { color: var(--cq-sourdine); font-size: var(--cq-d-micro); margin: 0; }
+
+/* ---------- Correctifs de composition ---------- */
+.diapo__corps > .diapo__col { overflow: auto; padding: .4cqw; margin: -.4cqw; }  /* place pour le focus et les pastilles de repère */
+.courriel__bouton.repere { background: var(--cq-lien); }
+.lien-discret {
+  font: inherit; font-size: var(--cq-d-micro); background: none; border: 0; padding: 0; cursor: pointer;
+  color: var(--cq-sourdine); text-decoration: underline; text-underline-offset: .2em; align-self: flex-start;
+}
+
+/* Le brouillon reste une diapo claire par défaut, même en thème sombre :
+   il fige les jetons de la feuille pour ses enfants (courriel compris). */
+.brouillon {
+  --cq-feuille: #FFFFFF; --cq-retrait: #F5F7F8; --cq-filet: #D5DCE1;
+  --cq-encre: #13212C; --cq-sourdine: #5A6873; --cq-lien: #1A5FB4;
+}
+
+
+/* ============================================================
+   Mode étroit — la diapo cesse d'être une scène 16:9
+   ------------------------------------------------------------
+   Sous 760 px de large (téléphone, demi-écran), le plateau perd
+   son format fixe, les tailles passent en rem avec un plancher,
+   et les colonnes s'empilent : courriel, décision, rétroaction.
+   Au-dessus, les tailles proportionnelles ont un plancher lisible.
+   ============================================================ */
+.scene {
+  --cq-d-mega:  max(5.6cqw, 30px);
+  --cq-d-titre: max(3.6cqw, 22px);
+  --cq-d-inter: max(2.3cqw, 16px);
+  --cq-d-texte: max(1.75cqw, 15px);
+  --cq-d-petit: max(1.35cqw, 14px);
+  --cq-d-micro: max(1.1cqw, 12px);
+}
+.brouillon { font-size: max(1.9cqw, 13px); }
+.brouillon__titre { font-size: max(3.4cqw, 20px); }
+
+@container (max-width: 760px) {
+  .plateau { aspect-ratio: auto; }
+  .diapo, .brouillon { position: relative; inset: auto; padding: 20px 18px 24px; gap: 14px; }
+  .brouillon { padding-bottom: 36px; }
+  .diapo__corps { flex-direction: column; gap: 16px; }
+  .diapo__col--etroite { flex: none; }
+  .diapo__corps > .diapo__col { overflow: visible; }
+  .diapo__entete { flex-wrap: wrap; }
+  .courriel__entete, .courriel__corps { padding: 12px 14px; gap: 6px; }
+  .courriel__avatar { width: 28px; height: 28px; }
+  .courriel__bouton { padding: 10px 16px; }
+  .courriel__etat { position: static; max-width: none; white-space: normal; word-break: break-all; padding: 6px 10px; border-radius: 0; }
+  .courriel__pj { padding: 6px 10px; }
+  .tri { gap: 8px; }
+  .tri__choix, .options__choix, .courriel__action { min-height: 44px; padding: 10px 16px; }
+  .options { gap: 8px; }
+  .options__choix { padding: 12px 14px; }
+  .retro { padding: 12px 14px; border-left-width: 5px; gap: 4px; }
+  .verif { gap: 12px; }
+  .verif__item { grid-template-columns: 32px 1fr; gap: 2px 12px; }
+  .verif__item::before { width: 32px; height: 32px; border-width: 2px; }
+  .memo { padding: 16px; gap: 10px; }
+  .consigne { gap: 8px; }
+  .consigne::before { padding: 2px 8px; }
+  .repere { box-shadow: 0 0 0 2px var(--cq-focus); }
+  .repere[data-n]::after { width: 20px; height: 20px; top: -11px; right: -11px; line-height: 20px; }
+  .bilan__cas { padding: 12px; gap: 6px; }
+  .lien-discret { min-height: 44px; }
+  .brouillon__chiffres { grid-template-columns: 1fr; gap: 10px; }
+  .brouillon__image { min-height: 60px; max-height: none; font-size: 12px; }
+  .brouillon__quiz { font-size: 13px; }
+}
+
+/* ---------- Barre d'actions du courriel (geste Signaler) ---------- */
+.courriel__actions {
+  display: flex; flex-wrap: wrap; gap: .5cqw; padding: .7cqw 1.1cqw;
+  border-bottom: 1px solid var(--cq-filet); background: var(--cq-feuille);
+}
+.courriel__action {
+  font: inherit; font-size: var(--cq-d-micro); font-weight: 700; cursor: pointer;
+  border: 1px solid var(--cq-filet); background: var(--cq-retrait); color: var(--cq-encre);
+  border-radius: 4px; padding: .4cqw 1cqw;
+}
+.courriel__action:hover { border-color: var(--cq-encre); }
+.courriel__action[aria-pressed="true"] { background: var(--cq-action); color: var(--cq-action-ink); border-color: var(--cq-action); }
+.courriel__action--signaler::before { content: "⚑ "; }
+
+.courriel__etat--alerte { background: var(--cq-fraude); color: #fff; white-space: normal; }
+
+.tri__choix--plein { background: var(--cq-action); color: var(--cq-action-ink); border-color: var(--cq-action); align-self: flex-start; }
+.tri__choix--plein:hover { border-color: var(--cq-action); }
+
+.indice { display: grid; gap: .6cqw; }
+.indice__q { margin: 0; font-weight: 700; font-size: var(--cq-d-petit); }
+
+.regle { display: grid; gap: .9cqw; }
+.regle__ligne { display: grid; grid-template-columns: minmax(8.5em, auto) 1fr; gap: 1.2cqw; align-items: baseline; font-size: var(--cq-d-petit); }
+.regle__ligne .verdict { justify-self: start; }
+
+.bilan__cause { margin: 0; font-weight: 700; font-size: var(--cq-d-micro); color: var(--cq-sourdine); }
+.lien-externe { color: var(--cq-lien); font-weight: 700; font-size: var(--cq-d-petit); }
+
+.journal__ligne--tour2 { border-left-style: dashed; margin-left: 1.2rem; }
+
+/* ---------- Troisième tour ---------- */
+.chrono {
+  font-family: var(--cq-police-mono); font-variant-numeric: tabular-nums;
+  border: 1px solid var(--cq-filet); border-radius: 3px; padding: 0 .5em; color: var(--cq-encre);
+}
+.chrono--depasse { border-color: var(--cq-doute); color: var(--cq-doute); }
+.case { display: flex; gap: .6em; align-items: center; font-size: var(--cq-d-petit); cursor: pointer; }
+.case input { width: 1.2em; height: 1.2em; accent-color: var(--cq-encre); }
+/* L'alerte « ce clic aurait ouvert la page » : fond pâle et encre foncée du
+   verdict, lisibles dans les deux thèmes (l'encre blanche tombait à 2,4:1). */
+.courriel__etat--alerte { background: var(--cq-fraude-fond); color: var(--cq-fraude); box-shadow: inset 0 2px 0 var(--cq-fraude); }
+@container (max-width: 760px) {
+  .courriel__nom { padding-block: 12px; }
+  .courriel__bouton { min-height: 44px; }
+  .case { min-height: 44px; }
+}
+
+</style>
+<style>
+/* ============================================================
+   CALQUE · ATELIER — composants des formations en mécanique.
+   S'ajoute à calque.css. Même règles : le bleu calque reste à la
+   révision ; les repères sont ambre (--cq-focus), comme sur le
+   courriel simulé.
+   ============================================================ */
+
+/* ---------- Planche : le dessin technique ----------
+   Toujours claire, comme une page de manuel : les dépôts d'une
+   bougie ont la couleur de la matière, pas celle du thème. */
+.planche {
+  --pl-papier: #FBFAF7; --pl-trait: #2A333B; --pl-metal: #E4E7EA; --pl-ceram: #FAF8F2;
+  color-scheme: light;
+  position: relative; background: var(--pl-papier); color: var(--pl-trait);
+  border: 1px solid #D5DCE1; border-radius: var(--cq-rayon);
+  display: flex; padding: .6cqw; min-height: 0; margin: 0; overflow: hidden; height: 100%;
+}
+.planche svg { flex: 1; min-width: 0; min-height: 0; width: 100%; height: 100%; display: block; }
+.diapo__col > .planche { flex: 1; }
+.pl-trait { stroke: var(--pl-trait); stroke-width: 1.4; stroke-linejoin: round; }
+.pl-fin { stroke-width: .8; fill: none; }
+.pl-metal { fill: var(--pl-metal); }
+.pl-ceram { fill: var(--pl-ceram); }
+.pl-hach { stroke: #8A949C; stroke-width: 1; }
+.pl-masse { fill: none; stroke-width: 12; }
+.pl-reflet { fill: none; stroke: #fff; stroke-width: 2.4; stroke-linecap: round; opacity: .55; }
+.pl-cote { stroke: #8A949C; stroke-width: .8; stroke-dasharray: 3 3; }
+.pl-axe { stroke: #8A949C; stroke-width: .8; stroke-dasharray: 10 3 2 3; }
+.pl-leg { font: 600 9px var(--cq-police-texte); fill: #5A6873; }
+.pl-mesure { font: 600 13px var(--cq-police-mono); fill: var(--pl-trait); }
+.pl-alerte { stroke: #B3261E; stroke-width: 2; fill: none; stroke-linecap: round; }
+.pl-fluide { fill: #9C6B12; }
+
+/* Repère numéroté posé sur le dessin */
+.pl-repere circle { fill: var(--cq-focus); stroke: #13212C; stroke-width: 1.2; }
+.pl-repere text { font: 800 11px var(--cq-police-titre); fill: #13212C; text-anchor: middle; dominant-baseline: central; }
+
+/* ---------- Fiche : une pièce à juger, avec son bon de travail ---------- */
+.fiche {
+  display: grid; grid-template-rows: minmax(0, 1fr) auto; gap: .8cqw; min-height: 0; height: 100%;
+  background: var(--cq-feuille); border: 1px solid var(--cq-filet); border-radius: var(--cq-rayon-l); padding: .9cqw;
+}
+.fiche__bon { display: grid; gap: .25cqw; font-size: var(--cq-d-petit); }
+.fiche__titre { font-weight: 700; font-size: var(--cq-d-texte); margin: 0; }
+.fiche__ligne { margin: 0; color: var(--cq-sourdine); }
+.fiche__mesures { display: flex; flex-wrap: wrap; gap: .4cqw 1.4cqw; margin: .2cqw 0 0; }
+.fiche__mesure { font-family: var(--cq-police-mono); font-size: var(--cq-d-micro); background: var(--cq-retrait); border-radius: 3px; padding: .15cqw .6cqw; }
+.fiche__mesure.repere { background: color-mix(in srgb, var(--cq-focus) 16%, transparent); }
+
+/* ---------- Ordre : remettre les étapes dans l'ordre ---------- */
+.ordre { display: grid; grid-template-columns: 1fr 1fr; gap: 2cqw; min-height: 0; flex: 1; }
+.ordre__col { display: flex; flex-direction: column; gap: .6cqw; min-height: 0; overflow: auto; padding: .3cqw; }
+.ordre__titre { font-size: var(--cq-d-micro); text-transform: uppercase; letter-spacing: .08em; color: var(--cq-sourdine); margin: 0; }
+.ordre__suite { margin: 0; padding: 0; list-style: none; display: grid; gap: .5cqw; counter-reset: ordre; }
+.ordre__suite li { counter-increment: ordre; display: grid; grid-template-columns: 2.4cqw 1fr; gap: .8cqw; align-items: baseline; font-size: var(--cq-d-petit); }
+.ordre__suite li::before { content: counter(ordre); font-family: var(--cq-police-titre); font-weight: 800; color: var(--cq-sur); }
+.ordre__vide { border: .15cqw dashed var(--cq-filet); border-radius: var(--cq-rayon); padding: .8cqw; color: var(--cq-sourdine); font-size: var(--cq-d-petit); }
+
+/* Pastille de l'objet dans le bilan d'une série */
+.bilan__objet { font-weight: 700; }
+
+@container (max-width: 760px) {
+  .planche { padding: 8px; height: auto; aspect-ratio: 4 / 3; max-height: 60vh; }
+  .fiche { padding: 12px; gap: 10px; }
+  .fiche__bon { gap: 4px; }
+  .fiche__mesure { padding: 2px 8px; }
+  .ordre { grid-template-columns: 1fr; gap: 16px; }
+  .ordre__suite li { grid-template-columns: 24px 1fr; gap: 10px; }
+  .ordre__vide { padding: 12px; }
+}
+
+/* Classes des planches de freins */
+.pl-papier { fill: var(--pl-papier); }
+.pl-grave { font: 700 8px var(--cq-police-mono); fill: #4A545C; letter-spacing: .06em; }
+.pl-garn { fill: #7A6A58; }
+.pl-temoin { fill: none; stroke: #2A333B; stroke-width: 1.6; }
+.pl-flexible { fill: none; stroke: #1F2528; stroke-width: 7; stroke-linecap: round; }
+.pl-num { font: 800 15px var(--cq-police-titre); fill: #13212C; text-anchor: middle; dominant-baseline: central; }
+
+/* ============================================================
+   Second tour (audits 2)
+   ============================================================ */
+
+/* La scène garde son format 16:9 comme MINIMUM, et s'allonge quand le
+   contenu dépasse. En 16:9 strict avec overflow:hidden, un exemple
+   travaillé poussait son bouton 82 px sous le bord : invisible, et hors
+   d'atteinte à la souris comme au doigt (audits 2, bloquant G1). */
+.scene .plateau { aspect-ratio: auto; min-height: 56.25cqw; }
+.scene .diapo { position: relative; inset: auto; min-height: 56.25cqw; }
+.scene .diapo__corps > .diapo__col { overflow: visible; }
+.scene .brouillon { position: absolute; inset: 0; }
+@container (max-width: 760px) {
+  .scene .plateau, .scene .diapo { min-height: 0; }
+  .scene .brouillon { position: relative; }
+}
+
+/* Photo : la planche épouse la photo, sans marge de papier */
+.planche--photo { padding: 0; background: #E9ECEE; }
+.planche--photo svg { border-radius: calc(var(--cq-rayon) - 1px); }
+.fiche { height: auto; }
+.fiche .planche { height: auto; aspect-ratio: 4 / 3; }
+.diapo__col > .planche { height: auto; flex: none; }
+.pl-repere circle { stroke-width: 2; }
+
+/* La consigne est UN bloc de texte : en flex, chaque morceau en gras
+   devenait une colonne à part (audit 2, n-19). */
+.consigne { display: block; }
+.consigne::before { display: inline-block; margin-right: .8em; vertical-align: .1em; }
+
+/* Mesures lisibles sur téléphone (audit 2, n-18) */
+.fiche__mesure { font-size: var(--cq-d-petit); }
+
+/* Verdict à icône propre (ex. ↻ « remplacer ») : la forme ne doit pas
+   emprunter le « ? » du doute (audit 2, n-9). */
+.verdict[data-icone]::before { content: attr(data-icone); }
+
+.consigne-situation { display: grid; gap: 1cqw; align-content: start; font-size: var(--cq-d-texte); }
+.consigne-situation .planche { max-width: 100%; }
+
+/* Tablette et écran tactile : cibles de 44 px, pas seulement sur téléphone */
+@media (pointer: coarse) {
+  .tri__choix, .options__choix, .lien-discret, .lien-externe { min-height: 44px; }
+  .lien-externe { display: inline-flex; align-items: center; }
+}
+.corps { align-content: start; }
+
+/* ============================================================
+   Troisième tour (audits 3)
+   ============================================================ */
+.planche--photo { position: relative; max-height: 58vh; margin-inline: auto; width: 100%; }
+.fiche .planche--photo { height: auto; }
+.planche__agrandir {
+  position: absolute; right: 6px; bottom: 6px; font: 700 var(--cq-d-micro) var(--cq-police-texte);
+  background: rgba(19,33,44,.78); color: #fff; border: 0; border-radius: 999px; padding: 4px 10px; cursor: zoom-in;
+}
+.loupe { border: 0; padding: 0; background: #0E171E; max-width: 96vw; max-height: 94vh; width: 96vw; border-radius: 10px; }
+.loupe::backdrop { background: rgba(0,0,0,.72); }
+.loupe svg { display: block; width: 100%; height: auto; max-height: 88vh; }
+.loupe__fermer { position: absolute; top: 8px; right: 8px; font: 700 15px var(--cq-police-texte); background: #fff; color: #13212C; border: 0; border-radius: 999px; padding: 10px 16px; min-height: 44px; cursor: pointer; }
+
+.score { display: grid; gap: .6cqw; }
+.score__ligne { display: grid; grid-template-columns: auto 1fr; gap: 0 1cqw; align-items: baseline; }
+.score__lib { grid-column: 1 / -1; font-size: var(--cq-d-micro); text-transform: uppercase; letter-spacing: .08em; color: var(--cq-sourdine); }
+.score__n { font-family: var(--cq-police-titre); font-weight: 800; font-size: var(--cq-d-titre); line-height: 1; }
+.score__seuil { font-size: var(--cq-d-petit); color: var(--cq-sourdine); }
+.score__elimine { margin: 0; font-family: var(--cq-police-titre); font-weight: 800; font-size: var(--cq-d-titre); color: var(--cq-fraude); }
+.score__elimine::before { content: "✕ "; }
+@container (max-width: 760px) {
+  .planche__agrandir { min-height: 44px; padding: 8px 14px; }
+}
+
+</style>
+<style>
+  html, body { background: var(--cq-papier); }
+  body { margin: 0; }
+  .app { min-height: 100vh; display: grid; grid-template-rows: auto 1fr; padding-inline: 16px; }
+
+  .tete {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px;
+    padding-block: 18px 14px; max-width: 1440px; width: 100%; margin-inline: auto;
+    border-bottom: 1px solid var(--cq-filet);
+  }
+  .tete__nom { display: grid; gap: 2px; }
+  .tete__titre { font-family: var(--cq-police-titre); font-weight: 800; font-size: var(--cq-t-l); letter-spacing: -.02em; margin: 0; }
+  .tete__sous { font-size: var(--cq-t-xs); color: var(--cq-sourdine); margin: 0; }
+
+  .onglets { display: flex; gap: 4px; background: var(--cq-feuille); border: 1px solid var(--cq-filet); border-radius: 999px; padding: 4px; flex-wrap: wrap; }
+  .onglets button {
+    font: inherit; font-size: var(--cq-t-s); font-weight: 700; border: 0; border-radius: 999px; padding: 6px 14px; cursor: pointer;
+    background: none; color: var(--cq-sourdine);
+  }
+  .onglets button[aria-selected="true"] { background: var(--cq-encre); color: var(--cq-feuille); }
+  .onglets button[data-vue="comparer"][aria-selected="true"],
+  .onglets button[data-vue="boucle"][aria-selected="true"] { background: var(--cq-calque-ink); color: #fff; }
+  .onglets__calque { font-family: var(--cq-police-main); font-weight: 400; }
+
+  .corps { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 28px; max-width: 1440px; width: 100%; margin-inline: auto; padding-block: 24px 48px; align-items: start; }
+  .corps:has(#navigation[hidden]) { grid-template-columns: minmax(0, 1fr); }
+  #navigation { display: grid; gap: 4px; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 16px); max-height: calc(100vh - 32px); overflow: auto; }
+  .nav__module, .nav__diapo {
+    font: inherit; text-align: left; border: 0; background: none; color: var(--cq-encre); cursor: pointer;
+    border-radius: var(--cq-rayon); padding: 8px 10px; display: grid; gap: 2px 10px; align-items: baseline;
+  }
+  .nav__module { grid-template-columns: auto 1fr; font-size: var(--cq-t-s); }
+  .nav__module:hover, .nav__diapo:hover { background: var(--cq-retrait); }
+  .nav__module--actif { background: var(--cq-feuille); box-shadow: inset 3px 0 0 var(--cq-encre); font-weight: 700; }
+  .nav__num { font-family: var(--cq-police-mono); font-size: var(--cq-t-xs); color: var(--cq-sourdine); grid-row: span 2; }
+  .nav__duree { font-size: var(--cq-t-xs); color: var(--cq-sourdine); font-weight: 400; }
+  .nav__groupe { font-size: var(--cq-t-xs); text-transform: uppercase; letter-spacing: .08em; color: var(--cq-calque-ink); padding: 12px 10px 2px; }
+  .nav__diapo { grid-template-columns: 22px 1fr; font-size: var(--cq-t-xs); padding: 5px 8px; }
+  .nav__diapo .statut { padding: 0; width: 20px; text-align: center; font-size: 10px; }
+  .nav__retiree { text-decoration: line-through; text-decoration-color: var(--cq-calque); color: var(--cq-sourdine); }
+  .nav__diapo--actif { background: var(--cq-calque-voile); box-shadow: inset 3px 0 0 var(--cq-calque); font-weight: 700; }
+
+  .pile { display: grid; gap: 18px; }
+  .barre { display: flex; align-items: center; justify-content: center; gap: 16px; }
+  .barre__pos { font-family: var(--cq-police-mono); font-size: var(--cq-t-xs); color: var(--cq-sourdine); font-variant-numeric: tabular-nums; min-width: 12ch; text-align: center; }
+  .barre__btn {
+    font: inherit; font-size: 1.1rem; width: 44px; height: 44px; border-radius: 50%; cursor: pointer;
+    border: 1px solid var(--cq-filet); background: var(--cq-feuille); color: var(--cq-encre);
+  }
+  .barre__btn:disabled { opacity: .35; cursor: default; }
+
+  .comparer { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .comparer__cote { margin: 0; display: grid; gap: 8px; min-width: 0; }
+  .comparer__legende { font-family: var(--cq-police-mono); font-size: var(--cq-t-xs); letter-spacing: .08em; text-transform: uppercase; color: var(--cq-sourdine); }
+  .comparer__cote--apres .comparer__legende { color: var(--cq-calque-ink); }
+  .comparer__cote--apres .scene { box-shadow: 0 0 0 2px var(--cq-calque), var(--cq-ombre); }
+  .journal { max-width: 76ch; }
+
+  .boucle { display: grid; gap: 40px; max-width: 980px; }
+  .boucle h2 { font-family: var(--cq-police-titre); font-weight: 800; font-size: var(--cq-t-xl); letter-spacing: -.02em; margin: 0 0 12px; }
+  .boucle h3 { font-family: var(--cq-police-titre); font-size: var(--cq-t-m); margin: 20px 0 8px; }
+  .boucle p, .boucle li { max-width: 72ch; }
+  .boucle__bloc { display: grid; gap: 8px; }
+  .objectifs { display: grid; gap: 8px; padding-left: 0; list-style: none; margin: 0; }
+  .objectifs b { font-family: var(--cq-police-mono); color: var(--cq-sourdine); margin-right: 6px; }
+  .defile { overflow-x: auto; }
+  .tableau { border-collapse: collapse; width: 100%; font-size: var(--cq-t-s); min-width: 520px; }
+  .tableau th, .tableau td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--cq-filet); vertical-align: top; }
+  .tableau th { font-size: var(--cq-t-xs); text-transform: uppercase; letter-spacing: .06em; color: var(--cq-sourdine); }
+  .audits { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+  .audit { background: var(--cq-feuille); border: 1px solid var(--cq-filet); border-radius: var(--cq-rayon-l); padding: 16px 18px; display: grid; gap: 6px; align-content: start; }
+  .audit h3 { margin: 0; }
+  .audit__date { margin: 0; font-size: var(--cq-t-xs); color: var(--cq-sourdine); }
+  .audit__chiffres { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 8px 0 0; }
+  .audit__chiffres dt { margin: 0; }
+  .audit__chiffres dd { margin: 0; font-family: var(--cq-police-titre); font-weight: 800; font-size: 2rem; font-variant-numeric: tabular-nums; }
+  .audit__note { font-size: var(--cq-t-s); color: var(--cq-sourdine); margin: 4px 0 0; }
+  .boucle__bilan { font-weight: 700; }
+  .boucle__aide { color: var(--cq-sourdine); font-size: var(--cq-t-s); margin: 0; }
+  .barres { display: grid; gap: 6px; }
+  .barres__ligne { display: grid; grid-template-columns: minmax(0, 260px) 1fr 3ch; gap: 12px; align-items: center; }
+  .barres__ligne .critere { justify-self: start; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+  .barres__piste { height: 10px; background: var(--cq-calque-voile); border-radius: 2px; }
+  .barres__trait { display: block; height: 100%; background: var(--cq-calque); border-radius: 2px; }
+  .barres__n { font-family: var(--cq-police-mono); font-size: var(--cq-t-xs); text-align: right; font-variant-numeric: tabular-nums; }
+  .barres__ligne--nul { opacity: .5; }
+
+  @media (max-width: 900px) {
+    .corps { grid-template-columns: minmax(0, 1fr); }
+    #navigation { position: static; max-height: none; grid-auto-flow: column; grid-auto-columns: max-content; overflow-x: auto; padding-bottom: 4px; }
+    .nav__groupe { display: none; }
+    .nav__duree { display: none; }
+    .nav__module, .nav__diapo { white-space: nowrap; max-width: 70vw; overflow: hidden; text-overflow: ellipsis; }
+    .nav__module { grid-template-columns: auto auto; }
+    .onglets { width: 100%; flex-wrap: nowrap; }
+    .onglets button { flex: 1; padding: 8px 6px; min-height: 40px; }
+    .corps { gap: 12px; padding-block: 12px 40px; }
+    .comparer { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px) {
+    .barres__ligne { grid-template-columns: 1fr 3ch; }
+    .barres__piste { grid-column: 1 / -1; grid-row: 2; }
+  }
+</style>
+
+<div class="app cq">
+  <header class="tete">
+    <div class="tete__nom">
+      <h1 class="tete__titre">À la main d'abord</h1>
+      <p class="tete__sous">Remplacer les bougies d'allumage · formation révisée avec la boucle didactique</p>
+    </div>
+    <nav class="onglets" role="tablist" aria-label="Vues">
+      <button type="button" role="tab" data-vue="formation">La formation</button>
+      <button type="button" role="tab" data-vue="comparer">Avant <span class="onglets__calque">/</span> après</button>
+      <button type="button" role="tab" data-vue="boucle">La boucle</button>
+    </nav>
+  </header>
+  <div class="corps">
+    <nav id="navigation" aria-label="Diapositives"></nav>
+    <main id="vue"></main>
+  </div>
+</div>
+
+<script>
+/* Grille de la boucle didactique — version abrégée pour l'affichage.
+   La version complète (signes d'échec, correctifs, sources) est dans
+   la compétence : ~/.claude/skills/boucle-didactique/references/grille.md */
+window.GRILLE = {
+  familles: {
+    A: "Alignement", B: "Entrée en matière", C: "Charge cognitive",
+    D: "Pratique", E: "Rétroaction", F: "Transfert", G: "Accès"
+  },
+  criteres: {
+    A1: { nom: "Objectif observable",        q: "L'objectif décrit-il un comportement visible, dans une situation, avec un seuil ?", src: "Mager, 1962" },
+    A2: { nom: "Écart de performance réel",  q: "Répond-on à ce que les gens font mal en situation, plutôt qu'à ce qu'ils ignorent en théorie ?", src: "Mager et Pipe, 1970" },
+    A3: { nom: "Alignement constructif",     q: "Chaque activité et chaque évaluation servent-elles un objectif, et chaque objectif est-il pratiqué et évalué ?", src: "Biggs, 1996" },
+    B1: { nom: "Tâche d'abord",              q: "Le module s'ouvre-t-il sur une tâche réelle plutôt que sur un exposé ?", src: "Merrill, 2002" },
+    B2: { nom: "Activation des acquis",      q: "Relie-t-on le contenu à ce que l'apprenant a déjà vécu ?", src: "Merrill, 2002" },
+    B3: { nom: "Pertinence et ton",          q: "L'apprenant voit-il pourquoi ça le concerne, sans être menacé ni infantilisé ?", src: "Keller, 1987 ; Witte, 1992" },
+    C1: { nom: "Segmentation",               q: "Une seule idée par écran, au rythme de l'apprenant ?", src: "Mayer, 2009" },
+    C2: { nom: "Cohérence",                  q: "Tout ce qui est à l'écran sert-il l'objectif ?", src: "Mayer, 2009 ; Harp et Mayer, 1998" },
+    C3: { nom: "Contiguïté et signalisation", q: "L'explication est-elle posée sur ce qu'elle explique ?", src: "Mayer, 2009" },
+    C4: { nom: "Exemple travaillé",          q: "Voit-on un expert faire la tâche, pas à pas, avant de la faire soi-même ?", src: "Sweller et Cooper, 1985" },
+    C5: { nom: "Langage clair",              q: "Un non-spécialiste comprend-il chaque phrase à la première lecture ?", src: "ISO 24495-1, 2023" },
+    D1: { nom: "Récupération",               q: "L'apprenant doit-il produire la réponse de mémoire ?", src: "Roediger et Karpicke, 2006" },
+    D2: { nom: "Fidélité à la situation",    q: "La pratique ressemble-t-elle à ce qu'on verra au travail ?", src: "Barnett et Ceci, 2002" },
+    D3: { nom: "Variété et entrelacement",   q: "Les cas varient-ils assez pour apprendre à discriminer ?", src: "Rohrer et Taylor, 2007" },
+    D4: { nom: "Distracteurs plausibles",    q: "Les mauvais choix sont-ils tentants pour une bonne raison ?", src: "Haladyna et coll., 2002" },
+    E1: { nom: "Rétroaction explicative",    q: "Apprend-on pourquoi, en lien avec l'indice précis ?", src: "Shute, 2008" },
+    E2: { nom: "Conséquence visible",        q: "L'erreur a-t-elle une suite plausible, sans blâme ?", src: "Keith et Frese, 2008" },
+    F1: { nom: "Évaluation alignée",         q: "L'évaluation demande-t-elle le comportement de l'objectif, sur des cas nouveaux ?", src: "Biggs, 1996" },
+    F2: { nom: "Soutien au travail",         q: "Repart-on avec un aide-mémoire et un geste précis ?", src: "Rossett et Schafer, 2007" },
+    F3: { nom: "Espacement prévu",           q: "Un rappel est-il prévu après la formation ?", src: "Cepeda et coll., 2006" },
+    G1: { nom: "Accessibilité",              q: "Contraste, clavier, tactile, jamais la couleur seule ?", src: "WCAG 2.2" },
+    G2: { nom: "Durée et contrôle",          q: "La durée est-elle proportionnée, le rythme contrôlé ?", src: "Guo, Kim et Rubin, 2014" }
+  }
+};
+
+</script>
+<script>
+/* ============================================================
+   VERSION ZÉRO — « Le remplacement des bougies d'allumage »
+   Telle qu'un enseignant expert l'écrirait spontanément :
+   exacte, complète, trop longue. C'est le « avant » de la boucle.
+   Ne pas corriger ce fichier : il est la trace du point de départ.
+   ============================================================ */
+
+window.AVANT = {
+  titre: "Le remplacement des bougies d'allumage",
+  duree: "50 minutes",
+  modules: [
+    {
+      id: "M1", titre: "Introduction",
+      diapos: [
+        { id: "A-M1-1", titre: "Le remplacement des bougies d'allumage",
+          blocs: [
+            { t: "sous-titre", x: "Mécanique automobile — Module Systèmes d'allumage · Atelier-école du CFP Rivebelle" },
+            { t: "image", alt: "Photo : moteur de voiture sport sous un capot ouvert, éclairage dramatique." }
+          ] },
+        { id: "A-M1-2", titre: "Objectifs du cours",
+          blocs: [
+            { t: "puces", x: [
+              "Comprendre le fonctionnement du système d'allumage",
+              "Connaître les différents types de bougies",
+              "Savoir remplacer des bougies d'allumage",
+              "Être capable d'interpréter l'état d'une bougie",
+              "Respecter les règles de santé et sécurité"
+            ] }
+          ] },
+        { id: "A-M1-3", titre: "Le rôle du système d'allumage",
+          blocs: [
+            { t: "para", x: "Dans un moteur à essence à quatre temps, le mélange air-carburant comprimé dans la chambre de combustion doit être enflammé au moment précis déterminé par le module de commande du groupe motopropulseur (PCM), en fonction du régime, de la charge, de la température et du cliquetis détecté. Le système d'allumage transforme la tension de 12 V de la batterie en une haute tension de 20 000 à 45 000 V grâce à la bobine, qui fonctionne comme un transformateur (enroulements primaire et secondaire). Cette haute tension est acheminée à la bougie, où elle ionise l'espace entre les électrodes et produit l'arc électrique qui amorce la combustion. Les systèmes modernes à bobine individuelle (COP, « coil on plug ») ont remplacé le distributeur et les fils de haute tension." }
+          ] },
+        { id: "A-M1-4", titre: "Historique",
+          blocs: [
+            { t: "puces", x: [
+              "1860 : Étienne Lenoir utilise une bougie dans son moteur à gaz",
+              "1902 : Robert Bosch met au point la magnéto haute tension et la bougie moderne",
+              "Années 1970 : allumage électronique, fin des vis platinées",
+              "Années 1990 : bobines individuelles, bougies à électrodes de platine et d'iridium",
+              "Aujourd'hui : intervalles de remplacement jusqu'à 160 000 km"
+            ] },
+            { t: "image", alt: "Photo d'archive : atelier Bosch, 1902." }
+          ] }
+      ]
+    },
+    {
+      id: "M2", titre: "La bougie d'allumage",
+      diapos: [
+        { id: "A-M2-1", titre: "Anatomie d'une bougie",
+          blocs: [
+            { t: "image", alt: "Schéma en coupe d'une bougie : borne, nervures, isolant en céramique d'alumine, joint, culot, filetage, électrode centrale, électrode de masse, résistance interne, bec de l'isolant." },
+            { t: "legende", x: "Figure 1 — Coupe d'une bougie à résistance. 1. Borne 2. Nervures 3. Isolant 4. Culot hexagonal 5. Joint 6. Filetage 7. Bec de l'isolant 8. Électrode centrale 9. Électrode de masse 10. Résistance" }
+          ] },
+        { id: "A-M2-2", titre: "Les types de bougies",
+          blocs: [
+            { t: "puces", x: [
+              "Cuivre-nickel : conduction excellente, usure rapide, 30 000 à 50 000 km",
+              "Platine simple : électrode centrale en platine, 80 000 à 100 000 km",
+              "Double platine : pour les systèmes à étincelle perdue",
+              "Iridium : électrode très fine (0,4 à 0,6 mm), tension d'amorçage plus faible, jusqu'à 160 000 km",
+              "Électrodes de masse multiples, à décharge semi-glissante, à siège conique ou à joint plat",
+              "Toujours respecter la bougie prescrite par le constructeur"
+            ] }
+          ] },
+        { id: "A-M2-3", titre: "L'indice thermique",
+          blocs: [
+            { t: "para", x: "L'indice thermique indique la capacité d'une bougie à évacuer la chaleur du bec de l'isolant vers la culasse. Une bougie « chaude » a un long bec isolant : elle évacue lentement la chaleur et convient aux moteurs peu sollicités. Une bougie « froide » a un bec court et évacue rapidement la chaleur ; elle convient aux moteurs très sollicités ou suralimentés. La température idéale du bec se situe entre 500 et 850 °C : en dessous, la bougie s'encrasse ; au-dessus, il y a risque de pré-allumage. Attention : la numérotation varie selon les fabricants (chez NGK, plus le chiffre est élevé, plus la bougie est froide)." },
+            { t: "image", alt: "Schéma comparatif : bec long (bougie chaude) et bec court (bougie froide), flèches de chaleur." }
+          ] },
+        { id: "A-M2-4", titre: "L'écartement des électrodes",
+          blocs: [
+            { t: "puces", x: [
+              "L'écartement typique varie de 0,7 à 1,1 mm selon le moteur",
+              "Il se vérifie avec une jauge à fil (et non une jauge à lames, imprécise sur les électrodes usées)",
+              "Les bougies à pointe fine (iridium, platine) sont préréglées : ne pas les régler",
+              "Ne jamais faire levier sur l'électrode centrale",
+              "Un écartement trop grand augmente la tension requise et peut causer des ratés",
+              "Un écartement trop petit donne une étincelle faible"
+            ] }
+          ] }
+      ]
+    },
+    {
+      id: "M3", titre: "Procédure de remplacement",
+      diapos: [
+        { id: "A-M3-1", titre: "Outillage requis",
+          blocs: [
+            { t: "puces", x: [
+              "Clé à cliquet 3/8 po et rallonges",
+              "Douille à bougie (5/8 po ou 16 mm, avec caoutchouc ou aimant)",
+              "Joint universel",
+              "Clé dynamométrique",
+              "Jauge d'écartement à fil",
+              "Soufflette à air comprimé",
+              "Graisse diélectrique",
+              "Lunettes de sécurité"
+            ] },
+            { t: "image", alt: "Photo : outils étalés sur un établi." }
+          ] },
+        { id: "A-M3-2", titre: "Procédure (1 de 2)",
+          blocs: [
+            { t: "puces", x: [
+              "1. Consulter le manuel de réparation du véhicule",
+              "2. S'assurer que le moteur est froid",
+              "3. Retirer le couvre-moteur, s'il y a lieu",
+              "4. Débrancher le connecteur électrique de la première bobine",
+              "5. Retirer le boulon de fixation de la bobine",
+              "6. Retirer la bobine en la tournant légèrement",
+              "7. Souffler l'air comprimé dans le puits de bougie",
+              "8. Dévisser la bougie avec la douille et la rallonge"
+            ] }
+          ] },
+        { id: "A-M3-3", titre: "Procédure (2 de 2)",
+          blocs: [
+            { t: "puces", x: [
+              "9. Vérifier l'écartement de la bougie neuve",
+              "10. Visser la bougie neuve à la main",
+              "11. Serrer au couple prescrit",
+              "12. Appliquer de la graisse diélectrique dans le capuchon de la bobine",
+              "13. Réinstaller la bobine et son boulon",
+              "14. Rebrancher le connecteur",
+              "15. Répéter pour chaque cylindre",
+              "16. Démarrer le moteur et vérifier le fonctionnement"
+            ] }
+          ] },
+        { id: "A-M3-4", titre: "Couples de serrage",
+          blocs: [
+            { t: "puces", x: [
+              "Filetage 10 mm, à joint : 10 à 12 N·m",
+              "Filetage 12 mm, à joint : 15 à 20 N·m",
+              "Filetage 14 mm, à joint, culasse en aluminium : 25 à 30 N·m",
+              "Filetage 14 mm, à siège conique : 10 à 20 N·m",
+              "Sans clé dynamométrique : bougie neuve à joint, 1/2 à 2/3 de tour après le contact",
+              "Valeurs indicatives : consulter le manuel du véhicule"
+            ] }
+          ] },
+        { id: "A-M3-5", titre: "Précautions importantes",
+          blocs: [
+            { t: "puces", x: [
+              "Ne jamais dévisser les bougies d'un moteur chaud (culasse en aluminium)",
+              "Ne pas utiliser d'antigrippant sur les bougies à culot plaqué, sauf indication du fabricant",
+              "Ne pas échapper la bougie : une céramique fêlée ne se voit pas toujours",
+              "Ne pas fausser le filetage",
+              "Ne pas tirer sur les fils",
+              "Porter des lunettes de sécurité"
+            ] },
+            { t: "note", x: "ATTENTION : un filetage faussé dans une culasse en aluminium peut nécessiter une réparation coûteuse, voire le remplacement de la culasse !" }
+          ] }
+      ]
+    },
+    {
+      id: "M4", titre: "Diagnostic et évaluation",
+      diapos: [
+        { id: "A-M4-1", titre: "Lecture des bougies",
+          blocs: [
+            { t: "puces", x: [
+              "Normale : isolant beige clair à gris, peu de dépôts, électrodes peu usées",
+              "Encrassement par le carbone : dépôts noirs, secs et veloutés (mélange riche, filtre à air obstrué, conduite à bas régime, bougie trop froide)",
+              "Encrassement par l'huile : dépôts noirs, humides et luisants (segments, guides de soupapes, joints de tige de soupape usés)",
+              "Surchauffe : isolant blanc, cloqué, électrodes érodées (mélange pauvre, avance excessive, bougie trop chaude, serrage insuffisant)",
+              "Pré-allumage : électrode fondue, isolant endommagé",
+              "Usure normale : écartement agrandi, électrodes arrondies",
+              "Dépôts de cendres : dépôts bruns ou blancs croûteux (additifs d'huile ou de carburant)"
+            ] },
+            { t: "image", alt: "Tableau-photo du fabricant : sept bougies usagées côte à côte." }
+          ] },
+        { id: "A-M4-2", titre: "Quiz",
+          blocs: [
+            { t: "quiz", questions: [
+              { q: "Quelle tension produit une bobine d'allumage ?", choix: ["12 V", "220 V", "20 000 à 45 000 V", "1 000 V"], bonne: 2, retro: { bien: "Bonne réponse !", mal: "Mauvaise réponse." } },
+              { q: "Une bougie « froide » :", choix: ["A un long bec isolant", "A un bec isolant court", "Est une bougie de cuivre", "S'utilise en hiver"], bonne: 1, retro: { bien: "Bonne réponse !", mal: "Mauvaise réponse." } },
+              { q: "En quelle année Bosch a-t-il mis au point la bougie moderne ?", choix: ["1860", "1902", "1950", "1975"], bonne: 1, retro: { bien: "Bonne réponse !", mal: "Mauvaise réponse." } },
+              { q: "Des dépôts noirs, humides et luisants indiquent :", choix: ["Une surchauffe", "Un encrassement par l'huile", "Une usure normale", "Un mélange pauvre"], bonne: 1, retro: { bien: "Bonne réponse !", mal: "Mauvaise réponse." } },
+              { q: "On peut régler l'écartement d'une bougie à l'iridium.", choix: ["Vrai", "Faux"], bonne: 1, retro: { bien: "Bonne réponse !", mal: "Mauvaise réponse." } }
+            ] }
+          ] },
+        { id: "A-M4-3", titre: "Conclusion",
+          blocs: [
+            { t: "grand", x: "Un travail bien fait, c'est un moteur qui tourne rond !" },
+            { t: "sous-titre", x: "Des questions ? Passez au poste de travail 4 pour la pratique." }
+          ] }
+      ]
+    }
+  ]
+};
+
+</script>
+<script>
+/* ============================================================
+   VERSION FINALE — « À la main d'abord »
+   Issue de la boucle : cadrage → audit 1 → révision → audit 2 →
+   second tour. Chaque diapo est reliée à la version zéro par
+   contenu/journal.js. Photos : Nano Banana 2, Google en direct
+   (planches.py) ; leurs repères sont dans pieces.js.
+   Le CFP Rivebelle, le poste 4, son moteur, la bougie RB-12I et
+   ses valeurs (18 N·m, 1,1 mm) sont FICTIFS : sur un vrai véhicule,
+   on prend les valeurs de son information de réparation.
+   ============================================================ */
+
+(function () {
+  // Une bougie retirée, telle qu'on la pose sur le plateau numéroté.
+  // v : 1 entraînement, 2 épreuve, 3 reprise — jamais la même photo.
+  const retiree = (etat, v, cyl, ...lignes) => ({ photo: `${etat}-${v}`, titre: `Cylindre ${cyl} · bougie retirée`, lignes });
+
+  window.APRES = {
+    titre: "À la main d'abord",
+    duree: "35 minutes",
+    verdicts: {
+      normale:  { court: "Normale",    long: "Normale : je pose la neuve",                 ton: "sur" },
+      signaler: { court: "À signaler", long: "À signaler : je pose la neuve et je le note", ton: "doute", icone: "!" },
+      arret:    { court: "J'arrête",   long: "J'arrête : je ne démarre pas, j'appelle",    ton: "fraude" }
+    },
+    // Ce qui DÉCIDE, pas tout ce qu'on voit : une bougie cassée peut aussi
+    // être beige et sèche, mais c'est la cassure qui décide (audits 2 et 3).
+    questionIndice: "Qu'est-ce qui décide ?",
+    indices: { sec: "Beige ou gris, sec", mat: "Noir, mat et sec", luisant: "Noir, humide, luisant", cloques: "Blanc et cloqué", croutes: "Croûtes brun-roux", casse: "Une pièce cassée ou fondue" },
+    objectifs: [
+      { id: "O1", x: "Au poste 4, avant de dévisser une bougie, **préparer le moteur dans l'ordre** : culasse froide au toucher, connecteur, boulon, bobine retirée par son corps, puits soufflé, sans aucune erreur éliminatoire." },
+      { id: "O2", x: "**Poser une bougie neuve sans fausser le filetage** : bougie jamais tombée ni cognée, départ à la main jusqu'au joint, arrêt dès que ça force, serrage à la clé dynamométrique au couple de l'information de réparation, **jamais** à la clé à chocs." },
+      { id: "O3", x: "Devant une bougie retirée, la **classer** (normale, à signaler, j'arrête) **et nommer ce qui décide**, sur au moins 5 bougies sur 6, sans jamais démarrer un moteur dont une bougie est cassée ou fondue." },
+      { id: "O4", x: "Après le remontage, **vérifier le travail** : chaque connecteur enclenché jusqu'au clic, ralenti régulier, voyant moteur éteint ; sinon, lire le code et trouver le cylindre en cause." }
+    ],
+    modules: [
+      /* ---------------------------------------------------------- */
+      {
+        id: "M1", titre: "Poste 4", duree: "3 min",
+        diapos: [
+          {
+            id: "M1-1", titre: "Mardi, poste 4. La bougie du cylindre 3 force au deuxième tour.", surtitre: "Pour commencer",
+            blocs: [{
+              t: "options", q: "Vous la vissiez à la main. Elle n'a pas encore touché son joint. **Que faites-vous ?**",
+              piece: { photo: "depart-main", titre: "Ce que vous sentez", lignes: ["Deux tours faciles, puis ça devient dur."] },
+              pieceApres: { photo: "filetage-biais", titre: "Ce qui se passait dans la culasse", lignes: ["Coupe d'école : la bougie est entrée de biais."] },
+              reperesApres: { biais: 1 },
+              choix: [
+                { x: "Je finis au cliquet, doucement : elle a déjà deux tours.", grave: true, retro: "C'est le geste qui coûte une culasse. Si elle force avant le joint, elle est de biais (1) : ses filets croisent ceux de l'aluminium, et le cliquet les arrache sans que vous le sentiez." },
+                { x: "Je la ressors et je repars à la main, bien droite.", juste: true, retro: "Une bougie neuve tourne à la main, sans effort, jusqu'à son joint. Si ça force avant, elle est de biais (1) : on repart. Deux fois de suite ? On appelle l'enseignant." },
+                { x: "J'ajoute de l'antigrippant (pâte pour filets) et je reprends.", retro: "La pâte ne redresse pas une bougie de biais (1) : elle forcera encore. Et sur cette bougie, le fabricant l'interdit : elle fausse le serrage." },
+                { x: "Je finis à la clé dynamométrique : elle s'arrêtera au couple.", grave: true, retro: "La clé dynamométrique mesure le serrage final, pas le départ. Elle forcera la bougie de biais (1) jusqu'à 18 N·m, et c'est le filetage de la culasse qui cédera." }
+              ]
+            }]
+          },
+          {
+            id: "M1-2", titre: "Dans 35 minutes, vous saurez…",
+            blocs: [
+              { t: "verif", items: [
+                { q: "Préparer le moteur", r: "Culasse froide, bobine retirée, puits soufflé : dans cet ordre." },
+                { q: "Poser la neuve sans fausser le filetage", r: "À la main jusqu'au joint, puis la clé dynamométrique." },
+                { q: "Lire la bougie retirée", r: "Normale, à signaler, ou j'arrête. Et dire ce qui décide." },
+                { q: "Vérifier votre travail", r: "Les connecteurs, le ralenti, le voyant moteur." }
+              ] },
+              { t: "pied", x: "5 modules de 3 à 10 minutes, avec une activité dans chacun. **L'épreuve du module 5 ouvre l'accès au poste 4.**" }
+            ]
+          },
+          {
+            id: "M1-3", titre: "Une bougie, c'est 10 minutes. Une culasse, c'est une semaine.",
+            blocs: [
+              { t: "chapeau", x: "Changer les bougies est un entretien courant, que vous ferez souvent en stage. Presque tout se passe bien, **sauf une erreur** : visser de biais dans l'aluminium." },
+              { t: "para", x: "Un filetage arraché demande une réparation de filet, parfois une culasse neuve. Pour le client, c'est des jours sans voiture. Le geste qui l'évite tient en une phrase : **les premiers tours à la main, et on arrête dès que ça force.**" },
+              { t: "consigne", x: "Avez-vous déjà changé une bougie (voiture, moto, tondeuse) ? Qu'est-ce qui vous a paru délicat ? Le module 3 y revient." }
+            ]
+          }
+        ]
+      },
+      /* ---------------------------------------------------------- */
+      {
+        id: "M2", titre: "Avant de dévisser", duree: "6 min",
+        diapos: [
+          {
+            id: "M2-1", titre: "Les cinq parties que vous toucherez",
+            blocs: [{ t: "colonnes", etroite: "droite",
+              gauche: [{ t: "planche", piece: { photo: "bougie-neuve" }, reperes: { culot: 1, joint: 2, filetage: 3, electrodes: 4, isolant: 5 } }],
+              droite: [
+                { t: "verif", items: [
+                  { q: "Le culot", r: "La douille le prend. Ici : douille mince de 14 mm." },
+                  { q: "Le joint", r: "Il décide du couple. Ici : joint plat." },
+                  { q: "Le filetage", r: "Dans l'aluminium de la culasse : c'est lui qu'on protège." },
+                  { q: "Les électrodes", r: "L'étincelle jaillit entre elles." },
+                  { q: "L'isolant", r: "La céramique. Fêlée, elle peut casser dans le cylindre." }
+                ] }
+              ] }]
+          },
+          {
+            id: "M2-2", titre: "Dominique prépare le cylindre 1",
+            blocs: [{
+              t: "exemple", debut: "Voir la première étape", suivant: "Étape suivante", fin: "Le cylindre 1 est prêt à dévisser.",
+              piece: { photo: "moteur-poste", titre: "Le moteur du poste 4", lignes: ["Quatre bobines crayons, une par cylindre. Sur la photo, Dominique a fini : la bobine du cylindre 1 et son boulon sont posés sur l'établi."] },
+              etapes: [
+                { q: "La main sur la culasse : froide ?", r: "Froide au toucher, sinon on attend. À chaud, le filet de l'aluminium est plus fragile : il peut partir avec la bougie. Et on se brûle." },
+                { q: "Le connecteur", r: "J'enfonce la languette, puis je tire **le connecteur**, jamais le fil.", repere: "connecteur" },
+                { q: "Le boulon", r: "Je retire le boulon qui tient la bobine." },
+                { q: "La bobine", r: "Je la tire **par son corps**, en la tournant un peu. Tirer ou faire levier sous le capuchon le déchire.", repere: "bobine" },
+                { q: "Le puits de bougie", r: "Lunettes, et je souffle l'air comprimé dans le puits. Sinon, le sable qui y dort tombe dans le cylindre dès que la bougie sort.", repere: "puits" },
+                { q: "La bougie", r: "Douille mince de 14 mm, rallonge, clé à cliquet. **Jamais la clé à chocs.** Puis la case **1** du plateau numéroté." }
+              ],
+              conclusion: "Puis un cylindre à la fois : deux bobines débranchées en même temps, c'est deux connecteurs qu'on peut inverser."
+            }]
+          },
+          {
+            id: "M2-3", titre: "À vous : remettez les étapes dans l'ordre",
+            blocs: [{
+              t: "ordre",
+              etapes: [
+                { x: "Vérifier que la culasse est froide au toucher", oui: "On commence toujours par là." },
+                { x: "Débrancher le connecteur (languette enfoncée)", oui: "Le connecteur d'abord.", tot: "On ne touche à rien tant que la culasse n'est pas vérifiée." },
+                { x: "Retirer le boulon de la bobine", oui: "La bobine n'est plus tenue.", tot: "On ne manipule pas une bobine encore branchée." },
+                { x: "Retirer la bobine par son corps, en la tournant", oui: "Par le corps, jamais par le fil ou le capuchon.", tot: "Elle est encore branchée, ou tenue par son boulon." },
+                { x: "Souffler le puits de bougie, avec des lunettes", oui: "Le puits est propre : rien ne tombera dans le cylindre.", tot: "La bobine bouche encore le puits." },
+                { x: "Dévisser la bougie (douille, rallonge, cliquet)", oui: "Le puits est propre, la culasse froide : on peut dévisser.", tot: "Dévisser avant de souffler, c'est faire tomber le sable du puits dans le cylindre." },
+                { x: "Poser la bougie dans sa case du plateau numéroté", oui: "Elle garde son numéro de cylindre pour la lecture.", tot: "La bougie n'est pas encore sortie." }
+              ],
+              melange: [4, 6, 1, 5, 0, 3, 2],
+              bilan: "C'est l'ordre du poste 4. Le soufflage **avant** de dévisser, c'est l'étape que l'on saute le plus souvent."
+            }]
+          },
+          {
+            id: "M2-4", titre: "La bobine du cylindre 2 résiste",
+            blocs: [{
+              t: "options", q: "Le boulon est retiré, le connecteur débranché. La bobine ne vient pas. **Vous…**",
+              choix: [
+                { x: "tirez sur le connecteur pour avoir une meilleure prise.", retro: "Le connecteur n'est pas une poignée : sa languette casse, et ce cylindre fera un raté. On tire par le corps de la bobine." },
+                { x: "tournez-la un peu dans chaque sens, en tirant par le corps.", juste: true, retro: "Le capuchon colle souvent à la bougie : le tourner le décolle sans le déchirer." },
+                { x: "glissez un tournevis sous le capuchon et faites levier.", retro: "Le tournevis déchire le capuchon de caoutchouc : l'étincelle fuira par la déchirure, et c'est une bobine à changer." }
+              ]
+            }]
+          }
+        ]
+      },
+      /* ---------------------------------------------------------- */
+      {
+        id: "M3", titre: "Poser la neuve", duree: "8 min",
+        diapos: [
+          {
+            id: "M3-1", titre: "Avant de visser : trois vérifications",
+            blocs: [
+              { t: "verif", items: [
+                { q: "La référence", r: "La boîte dit **RB-12I**, comme l'information de réparation du poste 4 ? Comparez aussi avec l'ancienne : même longueur de filetage, même joint." },
+                { q: "Elle n'est jamais tombée, ni cognée", r: "Une bougie échappée sur le béton, ou qui a heurté l'établi, va de côté. La fêlure de la céramique ne se voit pas, et le morceau finit dans le cylindre." },
+                { q: "L'écartement, on n'y touche pas", r: "Préréglé en usine à 1,1 mm : on ne le règle pas. Une électrode visiblement tordue ? La bougie va de côté, et on le dit à l'enseignant." }
+              ] },
+              { t: "pied", x: "Les valeurs du poste 4 (RB-12I, 1,1 mm, 18 N·m) sont celles d'un moteur-école fictif. Sur un vrai véhicule, on les prend dans son information de réparation." }
+            ]
+          },
+          {
+            id: "M3-2", titre: "Le départ à la main",
+            blocs: [{ t: "colonnes", etroite: "droite",
+              gauche: [
+                { t: "planche", piece: { photo: "filetage-droit" }, reperes: { droit: 1 } },
+                { t: "pied", x: "(1) Coupe d'école : la bougie entre droite, dans l'axe du trou. Elle tourne sans effort." }
+              ],
+              droite: [
+                { t: "verif", items: [
+                  { q: "Douille, rallonge, sans cliquet", r: "Le caoutchouc de la douille tient la bougie. Vous tournez avec les doigts, sur la rallonge." },
+                  { q: "D'abord un peu à l'envers", r: "Tournez dans le sens du dévissage jusqu'au petit « clic » : le filet est tombé dans le sien." },
+                  { q: "Puis à la main, jusqu'au joint", r: "Deux ou trois tours, **sans effort**. Vous sentez le joint toucher." },
+                  { q: "Ça force avant le joint ?", r: "Vous arrêtez, vous dévissez, vous recommencez. Deux fois de suite : vous appelez l'enseignant." }
+                ] },
+                { t: "pied", x: "Ce qui vous avait paru délicat au module 1, c'était peut-être ce départ." }
+              ] }]
+          },
+          {
+            id: "M3-3", titre: "Le serrage : Dominique trouve le couple",
+            blocs: [{
+              t: "exemple", debut: "Voir la première étape", suivant: "Étape suivante", fin: "La bougie du cylindre 1 est serrée.",
+              intro: "La bougie est au contact de son joint, à la main. Reste à la serrer.",
+              etapes: [
+                { q: "Où est la valeur ?", r: "Tablette du poste 4 › information de réparation › Moteur › Allumage › Bougie : **18 N·m**." },
+                { q: "Je règle la clé dynamométrique", r: "Je tourne la poignée jusqu'à 18 sur l'échelle en **N·m**. Pas sur celle en lb·pi." },
+                { q: "Je serre, d'un geste continu", r: "Jusqu'au **clic** de la clé. Un seul clic : on ne repasse pas « pour être sûr »." },
+                { q: "Et ce que je ne fais pas", r: "Pas de clé à chocs. Pas d'antigrippant sur cette bougie : il ferait dépasser le couple, avec la même lecture sur la clé." }
+              ],
+              conclusion: "La méthode « un angle après le contact », sur certains emballages, sert au dépannage sans clé. À l'atelier, on a la clé : on s'en sert."
+            }]
+          },
+          {
+            id: "M3-4", titre: "À vous : en stage, un autre moteur",
+            blocs: [{
+              t: "options", q: "L'information de réparation du véhicule indique : Bougie · **20 N·m (15 lb·pi)**. Votre clé a deux échelles. **Vous réglez…**",
+              choix: [
+                { x: "20, sur l'échelle en N·m.", juste: true, retro: "Chaque moteur a sa valeur : 20 N·m ici, sur l'échelle en N·m." },
+                { x: "20, sur l'échelle en lb·pi.", retro: "20 lb·pi, c'est environ 27 N·m : un tiers de trop. Le chiffre de la bonne unité seulement." },
+                { x: "18, comme au poste 4.", retro: "18 N·m, c'est la valeur du moteur du poste 4. Sur un autre moteur, on prend la sienne." },
+                { x: "15, sur l'échelle en N·m.", retro: "15, c'est la valeur en lb·pi. Sur l'échelle en N·m, il faut 20." }
+              ]
+            }]
+          },
+          {
+            id: "M3-5", titre: "La clé dynamométrique du poste est prise",
+            blocs: [{
+              t: "options", q: "Il vous reste une bougie à serrer. **Que faites-vous ?**",
+              choix: [
+                { x: "Je la serre à la clé à cliquet, comme d'habitude.", retro: "« Comme d'habitude » varie du simple au double d'une personne à l'autre. Trop peu, la bougie chauffe et se desserre ; trop, le filet de l'aluminium s'étire." },
+                { x: "Je prends la clé à chocs, réglée au plus bas.", grave: true, retro: "Même au plus bas, une clé à chocs frappe bien au-delà de 18 N·m, et en un instant. C'est interdit sur une bougie, pour poser comme pour serrer." },
+                { x: "J'attends la clé, ou j'en emprunte une au poste voisin.", juste: true, retro: "Deux minutes d'attente contre une culasse : le calcul est vite fait." }
+              ]
+            }]
+          },
+          {
+            id: "M3-6", titre: "Remonter, puis écouter le moteur",
+            blocs: [
+              { t: "verif", items: [
+                { q: "La bobine", r: "Un peu de graisse diélectrique (graisse isolante) sur la lèvre intérieure du capuchon, si l'information de réparation le prévoit. Puis la bobine, et son boulon." },
+                { q: "Le connecteur, jusqu'au clic", r: "Puis une petite traction : s'il vient, il n'était pas enclenché." },
+                { q: "Au démarrage", r: "Ralenti régulier, voyant moteur éteint." }
+              ] },
+              { t: "options", q: "Le moteur tremble au ralenti et le voyant moteur **clignote**. **Première chose à faire ?**",
+                choix: [
+                  { x: "Le laisser tourner : ça se stabilise en chauffant.", retro: "Un voyant qui clignote signale des ratés graves, qui abîment le moteur. On le coupe." },
+                  { x: "Couper, lire le code, vérifier ce connecteur-là.", juste: true, retro: "Le lecteur de codes du poste nomme le cylindre (P0302 : le cylindre 2). Le plus souvent, c'est un connecteur sans son clic." },
+                  { x: "Resserrer toutes les bougies d'un cran.", retro: "Elles sont à 18 N·m : les resserrer étire le filet sans rien régler. Le raté vient d'ailleurs, le plus souvent d'un connecteur." }
+                ] }
+            ]
+          }
+        ]
+      },
+      /* ---------------------------------------------------------- */
+      {
+        id: "M4", titre: "Lire la bougie retirée", duree: "8 min",
+        diapos: [
+          {
+            id: "M4-1", titre: "Trois décisions, une règle",
+            blocs: [
+              { t: "chapeau", x: "Regardez l'extrémité dans cet ordre : **d'abord, est-ce que quelque chose manque ? Ensuite, la couleur et la texture.**" },
+              { t: "regle", items: [
+                { v: "arret", si: "**Une pièce manque ou a fondu** : isolant cassé, électrode fondue en goutte. Le morceau peut être dans le cylindre : on ne démarre pas." },
+                { v: "signaler", si: "**Des dépôts anormaux** : noir mat, noir luisant, blanc cloqué, croûtes. On pose la neuve et on inscrit le cylindre et ce qu'on a vu." },
+                { v: "normale", si: "**Beige ou gris, et sec**, même si l'électrode est émoussée et l'écartement agrandi par l'usure : c'est une bougie qui a fait son temps." }
+              ] },
+              { t: "pied", x: "Vous ne cherchez pas la cause : c'est le diagnostic qui la trouvera. Vous décidez **quoi faire maintenant**, et vous nommez ce que vous avez vu." }
+            ]
+          },
+          {
+            id: "M4-2", titre: "Noire : huile ou carbone ? Dominique regarde la texture.",
+            blocs: [{
+              t: "exemple", verdict: "signaler", debut: "Voir le premier point", suivant: "Point suivant",
+              piece: retiree("huile", 1, 3, "Les trois autres bougies : normales."),
+              etapes: [
+                { q: "Rien ne manque ?", r: "Isolant entier, électrodes intactes : pas d'arrêt. On peut démarrer.", repere: "electrodes" },
+                { q: "La couleur", r: "Noire : anormale. Donc **à signaler**.", repere: "depot" },
+                { q: "La texture", r: "**Humide et luisante**, avec des coulures : c'est de l'huile. Le carbone, lui, est **mat et sec**, comme de la suie. La texture ne change pas la décision : elle dit **quoi écrire** au bon de travail." }
+              ],
+              conclusion: "On pose la neuve, et on écrit : « cylindre 3 : noir, humide, luisant ». Un seul cylindre différent des autres, c'est une piste précieuse pour le diagnostic."
+            }]
+          },
+          {
+            id: "M4-3", titre: "Les quatre bougies du plateau",
+            blocs: [{
+              t: "options", ordonne: true, q: "Plateau du poste 4, cases 1 à 4 de gauche à droite. **Laquelle inscrivez-vous au bon de travail ?**",
+              piece: { photo: "plateau", titre: "Le plateau numéroté", lignes: ["Cases 1, 2, 3, 4, de gauche à droite."] },
+              reperesApres: { c3: 3 },
+              choix: [
+                { x: "Case 1", retro: "La case 1 est beige-gris et sèche, comme les cases 2 et 4. Regardez la case 3 (repère)." },
+                { x: "Case 2", retro: "La case 2 est beige-gris et sèche. Celle qui diffère, c'est la case 3 (repère)." },
+                { x: "Case 3", juste: true, retro: "Noire, humide et luisante, quand les trois autres sont beige-gris et sèches. On pose quatre neuves, et on inscrit « cylindre 3 : noir, humide, luisant »." },
+                { x: "Case 4", retro: "La case 4 est beige-gris et sèche. Celle qui diffère, c'est la case 3 (repère)." }
+              ]
+            }]
+          },
+          {
+            id: "M4-4", titre: "À vous : six bougies, six décisions",
+            blocs: [{
+              t: "serie", indice: true, entrainement: true,
+              consigne: "Entraînement : pour chaque bougie, votre décision, puis ce que vous avez vu. La rétroaction arrive tout de suite. **Regardez bien les électrodes** : entières, ou fondues ?",
+              bilan: { fin: "Entraînement terminé. L'épreuve du module 5 vous montrera d'autres bougies." },
+              items: [
+                { piece: retiree("carbone", 1, 1, "Les autres : voir les cas suivants."), bonne: "signaler", indices: ["mat"], reperes: { depot: 1 },
+                  retro: { normale: "Le noir mat (1) n'est pas normal : c'est de la suie. Rien ne manque, donc on continue, mais on le note.", signaler: "Noir, mat et sec (1) : de la suie. On pose la neuve et on inscrit le cylindre 1.", arret: "Rien ne manque ni n'a fondu : on peut démarrer. Le dépôt noir (1) se signale, il n'arrête pas le travail." } },
+                { piece: retiree("usure", 1, 2, "Écartement mesuré : 1,6 mm (neuve : 1,1 mm)."), bonne: "normale", indices: ["sec"], reperes: { electrodes: 1, depot: 2 },
+                  retro: { normale: "Électrode émoussée mais entière (1), dépôt beige et sec (2), écartement agrandi : une bougie en fin de vie, rien de plus.", signaler: "Beige et sec (2) : rien d'anormal. L'électrode émoussée (1), c'est l'usure pour laquelle on les change.", arret: "Rien n'a fondu : l'électrode (1) est émoussée, mais entière. Comparez avec la bougie suivante." } },
+                { piece: retiree("fondue", 1, 3), bonne: "arret", indices: ["casse"], graves: ["normale", "signaler"], reperes: { electrodes: 1 },
+                  retro: { normale: "Ce n'est pas de l'usure : l'électrode centrale a fondu, et le métal a coulé (1). Du métal manque, peut-être dans le cylindre. On ne démarre pas.", signaler: "Noter ne suffit pas : l'électrode a fondu (1). On ne démarre pas, on appelle l'enseignant.", arret: "Du métal fondu (1), coulé sur la céramique : l'électrode a fondu. Comparez avec la précédente, émoussée mais entière." } },
+                { piece: retiree("cendres", 1, 4), bonne: "signaler", indices: ["croutes"], reperes: { depot: 1 },
+                  retro: { normale: "Les croûtes brun-roux (1) ne sont pas normales. On le note.", signaler: "Des croûtes (1). On pose la neuve et on inscrit le cylindre 4.", arret: "Les croûtes (1) sont anormales, mais rien ne manque : on peut démarrer. On le signale." } },
+                { piece: retiree("cassee", 1, 1, "Autre moteur, même poste."), bonne: "arret", indices: ["casse"], graves: ["normale", "signaler"], reperes: { casse: 1 },
+                  retro: { normale: "Regardez l'isolant (1) : un éclat de céramique manque. Il est peut-être dans le cylindre. On ne démarre pas.", signaler: "Noter ne suffit pas : un éclat manque (1). On ne démarre pas, on appelle l'enseignant.", arret: "C'est la céramique cassée (1) qui décide, pas la couleur." } },
+                { piece: retiree("surchauffe", 1, 2, "Autre moteur, même poste."), bonne: "signaler", indices: ["cloques"], reperes: { depot: 1 },
+                  retro: { normale: "Très blanc et cloqué (1) : ce n'est pas la couleur normale. La bougie a trop chauffé ; on le note.", signaler: "Blanc et cloqué (1). Rien ne manque : on pose la neuve et on inscrit le cylindre 2.", arret: "Blanc et cloqué (1), mais rien n'a fondu ni cassé : on peut démarrer. On le signale." } }
+              ]
+            }]
+          }
+        ]
+      },
+      /* ---------------------------------------------------------- */
+      {
+        id: "M5", titre: "L'épreuve", duree: "10 min",
+        diapos: [
+          {
+            id: "M5-1", titre: "L'épreuve du poste 4", surtitre: "Évaluation",
+            blocs: [{
+              t: "serie", indice: true, seuilPieces: 5, seuilSituations: 6, retroImmediate: false, revoir: "M4", libellePieces: "Bougies",
+              consigne: "Treize cas : six bougies à lire (votre décision, puis ce qui décide) et sept situations au poste, **différentes de celles des modules**. **Seuils : 5 bougies sur 6, et 6 situations sur 7.**",
+              annonce: "**Cinq gestes sont éliminatoires**, dans l'épreuve comme dans la reprise : continuer quand la bougie force avant le joint, dévisser sur une culasse chaude, prendre la clé à chocs, poser une bougie tombée ou cognée, et démarrer un moteur dont une bougie est cassée ou fondue. Vous voyez vos résultats à la fin.",
+              bilan: { reussi: "Seuils atteints : le poste 4 vous attend. Gardez la fiche de la diapo suivante sur votre téléphone.", rate: "Pas encore. Relisez les cas manqués ; une reprise sur treize autres cas vous attend.", elimine: "Une réponse éliminatoire a été choisie. Au poste, ce geste coûterait une culasse ou un moteur : on reprend avant d'y aller.", deuxieme: "Deux essais sans atteindre les seuils. Revoyez le module 4, puis écrivez à Dominique Roy avant un troisième essai : on en parlera au poste." },
+              items: [
+                { piece: retiree("surchauffe", 2, 2, "Les trois autres bougies : normales."), bonne: "signaler", indices: ["cloques", "luisant"], reperes: { depot: 1 },
+                  retro: { normale: "Très blanc et cloqué (1) : ce n'est pas normal. On le note.", signaler: "Blanc et cloqué (1). Rien ne manque : on pose la neuve et on l'inscrit.", arret: "Blanc et cloqué (1), mais entier : on peut démarrer. On le signale." } },
+                { titre: "Cylindre 4 · avant de dévisser", situation: "Connecteur, boulon et bobine sont retirés. En éclairant le puits, vous voyez **du sable au fond**, autour de la bougie.", q: "Que faites-vous maintenant ?",
+                  choix: [
+                    { x: "Je dévisse, puis je souffle le trou vide.", retro: "La bougie sortie, le sable tombe dans le cylindre. On souffle AVANT de dévisser." },
+                    { x: "Je souffle le puits, lunettes, puis je dévisse.", juste: true, retro: "Le sable part dehors, pas dans le cylindre." },
+                    { x: "Je dévisse lentement pour ne rien faire tomber.", retro: "Lentement ou pas, le sable tombe dès que la bougie libère le trou." }
+                  ] },
+                { piece: retiree("fondue", 2, 4), bonne: "arret", indices: ["casse"], graves: ["normale", "signaler"], reperes: { electrodes: 1 },
+                  retro: { normale: "L'électrode a fondu (1) : du métal manque, peut-être dans le cylindre. On ne démarre pas.", signaler: "Noter ne suffit pas : l'électrode a fondu (1). On appelle l'enseignant.", arret: "Le métal fondu (1) décide." } },
+                { titre: "Cylindre 2 · pose", situation: "Au troisième tour à la main, la bougie neuve devient dure. Elle **dépasse encore de 5 mm** : le joint ne touche pas.", q: "Que faites-vous ?",
+                  choix: [
+                    { x: "Je finis au cliquet : elle est bien partie.", grave: true, retro: "Elle force avant le joint : elle est de biais. Le cliquet arrache le filet de l'aluminium." },
+                    { x: "Je la ressors et je repars à la main.", juste: true, retro: "Elle force avant le joint : on repart. Deux fois : on appelle." },
+                    { x: "Je pousse plus fort sur la rallonge.", grave: true, retro: "Forcer, avec ou sans outil, c'est croiser les filets de l'aluminium." }
+                  ] },
+                { piece: retiree("usure", 2, 1, "Véhicule : 160 000 km, bougies d'origine. Écartement : 1,7 mm (neuve : 1,1 mm)."), bonne: "normale", indices: ["sec"], reperes: { electrodes: 1, depot: 2 },
+                  retro: { normale: "Émoussée mais entière (1), beige et sec (2) : usure normale.", signaler: "Beige et sec (2) : rien à signaler. L'électrode émoussée (1), c'est l'usure.", arret: "Rien n'a fondu : l'électrode (1) est émoussée, entière." } },
+                { titre: "Arrivée au poste", situation: "Le client attend. Le moteur a été coupé **il y a 40 minutes** ; la culasse est **tiède** au toucher.", q: "Que faites-vous ?",
+                  choix: [
+                    { x: "Tiède, ça ira : je commence.", grave: true, retro: "Tiède n'est pas froid : le filet d'aluminium est encore fragile. On attend." },
+                    { x: "J'attends qu'elle soit froide, en préparant.", juste: true, retro: "Le client attendra dix minutes de plus ; il n'attendra pas une culasse." },
+                    { x: "Je commence par le cylindre le moins chaud.", grave: true, retro: "Tous les cylindres partagent la même culasse d'aluminium. On attend." }
+                  ] },
+                { piece: retiree("carbone", 2, 3, "Les trois autres bougies : normales."), bonne: "signaler", indices: ["mat"], reperes: { depot: 1 },
+                  retro: { normale: "Noir mat (1) : de la suie, pas une couleur normale.", signaler: "Noir, mat et sec (1) : on l'inscrit.", arret: "Rien ne manque : on peut démarrer. Le noir mat (1) se signale." } },
+                { titre: "Cylindre 1 · dépose", situation: "La vieille bougie **refuse de sortir** au cliquet, même en tirant fort.", q: "Que faites-vous ?",
+                  choix: [
+                    { x: "Je passe à la clé à chocs, par petits coups.", grave: true, retro: "Les coups de la clé à chocs arrachent le filet avec la bougie. Interdite sur une bougie." },
+                    { x: "J'arrête et j'appelle l'enseignant.", juste: true, retro: "Une bougie grippée se traite avec méthode, pas avec plus de force." },
+                    { x: "J'allonge le cliquet avec un tuyau.", retro: "Plus de levier, c'est plus de risque d'arracher le filet. On appelle." }
+                  ] },
+                { piece: retiree("huile", 2, 4, "Les trois autres bougies : normales."), bonne: "signaler", indices: ["luisant"], reperes: { depot: 1 },
+                  retro: { normale: "Noir, humide et luisant (1) : de l'huile. Ce n'est pas normal.", signaler: "Noir, humide, luisant (1) : on l'inscrit.", arret: "Rien ne manque : on peut démarrer. L'huile (1) se signale." } },
+                { titre: "Avant la pose", situation: "Pendant que vous réglez la clé, la bougie neuve **roule de l'établi** et tombe au sol.", q: "Que faites-vous ?",
+                  choix: [
+                    { x: "Elle a l'air intacte : je la pose.", grave: true, retro: "Une fêlure de la céramique ne se voit pas. Elle va de côté." },
+                    { x: "Elle va de côté : j'en prends une neuve.", juste: true, retro: "Une bougie tombée ne se pose pas." },
+                    { x: "Je l'examine bien, puis je la pose.", grave: true, retro: "L'examen ne voit pas une fêlure interne. Elle va de côté." }
+                  ] },
+                { piece: retiree("normale", 2, 2), bonne: "normale", indices: ["sec"], reperes: { depot: 1 },
+                  retro: { normale: "Beige-gris et sec (1).", signaler: "Beige-gris et sec (1) : rien d'anormal.", arret: "Tout est entier, beige et sec (1)." } },
+                { titre: "Cylindre 3 · serrage", situation: "La bougie a tourné à la main **jusqu'au joint**, sans effort. En serrant à la clé dynamométrique, elle devient dure : le joint s'écrase.", q: "Que faites-vous ?",
+                  choix: [
+                    { x: "Je continue jusqu'au clic de la clé : c'est normal.", juste: true, retro: "Après le joint, c'est le serrage qui résiste : on va jusqu'au clic, 18 N·m. Seul ce qui force AVANT le joint arrête le travail." },
+                    { x: "Je la ressors et je repars à la main.", retro: "Elle est allée au joint à la main : elle est droite. La résistance, c'est le joint qui s'écrase. On serre jusqu'au clic." },
+                    { x: "Je m'arrête là : elle force, j'appelle.", retro: "Elle force APRÈS le joint : c'est le serrage normal. On va jusqu'au clic de la clé." }
+                  ] },
+                { titre: "Au démarrage", situation: "Tout est remonté. Le ralenti est régulier, mais le voyant moteur **reste allumé, fixe**.", q: "Que faites-vous ?",
+                  choix: [
+                    { x: "Je rends la voiture : le ralenti est bon.", retro: "Un voyant allumé a une raison : on ne rend pas la voiture sans la connaître." },
+                    { x: "Je lis le code au lecteur et je le note.", juste: true, retro: "Le code dit où chercher ; l'enseignant décide de la suite." },
+                    { x: "Je débranche la batterie pour l'effacer.", retro: "Effacer le voyant efface aussi la piste. On lit le code d'abord." }
+                  ] }
+              ],
+              reprise: [
+                { piece: retiree("cassee", 3, 1), bonne: "arret", indices: ["casse"], graves: ["normale", "signaler"], reperes: { casse: 1 },
+                  retro: { normale: "Un éclat de céramique manque (1). On ne démarre pas.", signaler: "Noter ne suffit pas : l'isolant est cassé (1). On appelle.", arret: "La céramique cassée (1) décide." } },
+                { titre: "Cylindre 2 · la suite", situation: "Connecteur débranché, boulon retiré, bobine sortie.", q: "Et maintenant ?",
+                  choix: [
+                    { x: "Souffler le puits, lunettes sur le nez.", juste: true, retro: "Avant de dévisser : le sable part dehors." },
+                    { x: "Dévisser la bougie, douille en main.", retro: "Pas encore : le sable du puits tomberait dans le cylindre." },
+                    { x: "Poser la bobine dans la case 2 du plateau.", retro: "Le plateau est pour les bougies. D'abord souffler le puits." }
+                  ] },
+                { piece: retiree("cendres", 3, 3), bonne: "signaler", indices: ["croutes"], reperes: { depot: 1 },
+                  retro: { normale: "Les croûtes (1) ne sont pas normales.", signaler: "Des croûtes (1) : on l'inscrit.", arret: "Rien ne manque : on peut démarrer. Les croûtes (1) se signalent." } },
+                { titre: "Cylindre 1 · pose", situation: "La bougie neuve tourne à la main, puis **résiste après un tour et demi**.", q: "Que faites-vous ?",
+                  choix: [
+                    { x: "Un quart de tour au cliquet pour passer.", grave: true, retro: "Elle force avant le joint : le cliquet croise les filets." },
+                    { x: "Je la ressors et je la repars droite.", juste: true, retro: "Ça force avant le joint : on repart." },
+                    { x: "Je la tourne plus fort, à deux mains.", grave: true, retro: "Forcer à la main croise aussi les filets." }
+                  ] },
+                { piece: retiree("normale", 3, 4), bonne: "normale", indices: ["sec"], reperes: { depot: 1 },
+                  retro: { normale: "Beige-gris et sec (1).", signaler: "Beige-gris et sec (1) : rien à signaler.", arret: "Tout est entier (1)." } },
+                { titre: "Arrivée au poste", situation: "Le moteur a été coupé **hier soir**. La culasse est froide au toucher ; le puits du cylindre 1 est ouvert.", q: "Votre premier geste sur le cylindre 2 ?",
+                  choix: [
+                    { x: "J'attends encore une heure, par prudence.", retro: "Froide au toucher, c'est la condition : on peut commencer." },
+                    { x: "Je débranche son connecteur, languette enfoncée.", juste: true, retro: "Culasse froide : on commence. Connecteur, puis boulon, puis la bobine par son corps." },
+                    { x: "Je tire la bobine pour la dégager du puits.", retro: "Elle est encore branchée et tenue par son boulon : le connecteur d'abord." }
+                  ] },
+                { titre: "Arrivée au poste", situation: "Un collègue a fait tourner le moteur pour un essai **il y a cinq minutes**.", q: "Que faites-vous ?",
+                  choix: [
+                    { x: "Je dévisse vite, avant qu'il refroidisse.", grave: true, retro: "À chaud, le filet d'aluminium peut partir avec la bougie. On attend." },
+                    { x: "J'attends qu'il soit froid, en préparant.", juste: true, retro: "Le temps de préparer le poste." },
+                    { x: "Je commence, avec des gants épais.", grave: true, retro: "Les gants protègent la main, pas le filet. On attend." }
+                  ] },
+                { piece: retiree("huile", 3, 2), bonne: "signaler", indices: ["luisant"], reperes: { depot: 1 },
+                  retro: { normale: "Noir, humide, luisant (1) : de l'huile.", signaler: "Noir, humide, luisant (1) : on l'inscrit.", arret: "Rien ne manque : on peut démarrer." } },
+                { titre: "Le serrage", situation: "Pour gagner du temps, un collègue vous tend **le pistolet à chocs**, déjà muni d'une douille à bougie.", q: "Que faites-vous ?",
+                  choix: [
+                    { x: "Je serre au pistolet, par un seul coup.", grave: true, retro: "Un seul coup suffit à dépasser 18 N·m. Interdit sur une bougie." },
+                    { x: "Je refuse et je serre à la clé dynamométrique.", juste: true, retro: "À la main jusqu'au joint, puis 18 N·m à la clé." },
+                    { x: "Je l'approche au pistolet, puis je finis à la clé.", grave: true, retro: "La clé ne desserre pas ce que le pistolet a trop serré." }
+                  ] },
+                { piece: retiree("surchauffe", 3, 3), bonne: "signaler", indices: ["cloques"], reperes: { depot: 1 },
+                  retro: { normale: "Blanc et cloqué (1) : pas normal.", signaler: "Blanc et cloqué (1) : on l'inscrit.", arret: "Entier : on peut démarrer. On le signale." } },
+                { titre: "Avant la pose", situation: "En sortant la bougie neuve de sa boîte, elle **glisse et heurte le bord de l'établi**, sans tomber au sol.", q: "Que faites-vous ?",
+                  choix: [
+                    { x: "Je la pose : elle n'est pas tombée au sol.", grave: true, retro: "Un choc sur l'établi fêle la céramique aussi bien que le sol." },
+                    { x: "Elle va de côté : j'en prends une autre.", juste: true, retro: "Une bougie qui a heurté quelque chose ne se pose pas." },
+                    { x: "Je vérifie l'écartement, puis je la pose.", grave: true, retro: "L'écartement peut être bon et la céramique fêlée." }
+                  ] },
+                { piece: retiree("usure", 3, 1, "Écartement : 1,6 mm (neuve : 1,1 mm)."), bonne: "normale", indices: ["sec"], reperes: { electrodes: 1, depot: 2 },
+                  retro: { normale: "Émoussée mais entière (1), beige et sec (2).", signaler: "Beige et sec (2) : l'électrode émoussée (1), c'est l'usure.", arret: "Rien n'a fondu : l'électrode (1) est entière." } },
+                { titre: "Au démarrage", situation: "Le moteur tremble. Le lecteur de codes affiche **P0303**.", q: "Que faites-vous d'abord ?",
+                  choix: [
+                    { x: "Je vérifie le connecteur du cylindre 3.", juste: true, retro: "P0303 : raté au cylindre 3. Le connecteur sans son clic est la cause la plus fréquente." },
+                    { x: "Je remplace la bobine du cylindre 3.", retro: "Peut-être, mais d'abord ce qui ne coûte rien : son connecteur." },
+                    { x: "Je resserre la bougie du cylindre 3.", retro: "Elle est au couple : la resserrer étire le filet." }
+                  ] }
+              ]
+            }]
+          },
+          {
+            id: "M5-2", titre: "La fiche du poste 4",
+            blocs: [
+              { t: "memo", titre: "À la main d'abord", items: [
+                { q: "Avant", r: "Culasse froide · connecteur, boulon, bobine par le corps · lunettes, souffler le puits · dévisser · plateau numéroté." },
+                { q: "Pose", r: "RB-12I, jamais tombée, écartement sans y toucher · **à la main jusqu'au joint ; ça force ? on recommence** · clé dynamométrique 18 N·m, un clic." },
+                { q: "Lecture", r: "Cassée ou fondue : **j'arrête** · noir mat, noir luisant, blanc cloqué, croûtes : **à signaler** · beige-gris et sec : **normale**." },
+                { q: "Fin", r: "Connecteurs jusqu'au clic · ralenti régulier, voyant éteint · sinon : lecteur de codes, cylindre, connecteur." }
+              ], pied: "Jamais la clé à chocs. Questions avant la séance : Dominique Roy, messagerie du CFP. La veille de votre séance, la messagerie vous envoie trois questions courtes, et deux autres un mois plus tard." },
+              { t: "lien", x: "Ouvrir la fiche d'une page (faites-en une capture d'écran)", href: "aide-memoire.html" }
+            ]
+          }
+        ]
+      }
+    ]
+  };
+})();
+
+</script>
+<script>
+/* ============================================================
+   JOURNAL DE RÉVISION — temps 6 de la boucle
+   Une entrée par diapositive : statut, avant, après, critères
+   (avec la gravité du constat d'origine, audit 1), et pourquoi.
+   L'ordre suit la version finale ; les diapositives retirées sont
+   placées là où leur contenu aurait dû servir.
+   ============================================================ */
+window.JOURNAL = {
+  entrees: [
+    {module: "M1", avant: "A-M1-1", apres: "M1-1", statut: "modifiee", criteres: [{code: "B1", grav: "majeur"}, {code: "A2", grav: "majeur"}, {code: "C2", grav: "mineur"}, {code: "E2", grav: "mineur"}], pourquoi: "La photo de voiture sport devient **la situation la plus coûteuse du poste** : une bougie qui force au deuxième tour. L'apprenti décide avant tout exposé ; deux des quatre choix sont les raccourcis qui arrachent un filet, et la rétroaction montre la coupe de la culasse plutôt que de dire « mauvaise réponse ».", note: "le cas d'abord, le titre après", tour2: {criteres: [{code: "D4", grav: "majeur"}, {code: "D2", grav: "mineur"}], pourquoi: "La bonne réponse était la plus longue et la seule nuancée : les quatre choix ont maintenant la même longueur, chacun avec sa raison. Et la coupe de la culasse donnait le diagnostic avant la question ; on voit d'abord la main qui sent la résistance (photo), la coupe seulement dans la rétroaction."}},
+    {module: "M1", avant: "A-M1-2", apres: "M1-2", statut: "modifiee", criteres: [{code: "A1", grav: "bloquant"}, {code: "A3", grav: "mineur"}, {code: "G2", grav: "majeur"}], pourquoi: "« Comprendre », « connaître », « être capable » : rien de visible. Quatre gestes les remplacent, chacun pratiqué puis évalué. La durée passe de 50 à 25 minutes, et l'épreuve de la fin ouvre l'accès au poste 4 : l'apprenti sait à quoi elle sert.", tour2: {criteres: [{code: "A3", grav: "majeur"}], pourquoi: "L'épreuve devient un module à part (M5) et demande l'objectif entier : l'ordre et le soufflage, six bougies pour O3, O4 dans les deux séries. Durée réaliste : une demi-heure."}, tour3: {criteres: [{code: "G2", grav: "mineur"}], pourquoi: "Durée estimée par l'auditeur : 35 à 40 minutes. L'annonce passe à 35 minutes, à confirmer au chronomètre avec cinq apprentis."}},
+    {module: "M1", avant: null, apres: "M1-3", statut: "ajoutee", criteres: [{code: "B3", grav: "mineur"}, {code: "B2", grav: "mineur"}], pourquoi: "La seule conséquence de la version zéro était une note alarmiste en rouge, sans le geste qui l'évite. Ici : ce que coûte un filetage arraché, pour le client, puis **le geste en une phrase**. Et une question qui fait remonter l'expérience des adultes qui ont déjà entretenu un moteur.", tour2: {criteres: [{code: "B2", grav: "mineur"}], pourquoi: "« On y revient » n'était jamais tenu : M3-2 y revient maintenant."}},
+    {module: "M1", avant: "A-M1-3", apres: null, statut: "retiree", criteres: [{code: "A3", grav: "mineur"}, {code: "C1", grav: "mineur"}, {code: "C5", grav: "majeur"}], pourquoi: "PCM, transformateur, ionisation : cent mots qui ne changent aucun geste au poste. La seule idée utile (une bobine posée sur chaque bougie) passe en légende de M2-1.", note: "théorie sans décision, coupée"},
+    {module: "M1", avant: "A-M1-4", apres: null, statut: "retiree", criteres: [{code: "A3", grav: "mineur"}, {code: "C2", grav: "mineur"}], pourquoi: "L'histoire de la bougie alimentait une question sur une date. Elle ne sert aucune décision ; l'audit relève en plus que l'attribution à Bosch est discutée."},
+    {module: "M2", avant: "A-M2-1", apres: "M2-1", statut: "modifiee", criteres: [{code: "C1", grav: "mineur"}, {code: "C3", grav: "mineur"}, {code: "G1", grav: "majeur"}], pourquoi: "Dix repères et une légende séparée deviennent **cinq parties**, celles qu'on touche, chacune avec ce qu'elle décide au poste (la douille prend le culot, le joint décide du couple). Un seul dessin par écran, agrandi sur téléphone.", tour2: {criteres: [{code: "C3", grav: "mineur"}], pourquoi: "Le dessin devient une photo de bougie neuve (Nano Banana 2) ; les cinq repères sont posés à côté des parties, pas dessus."}},
+    {module: "M2", avant: "A-M2-2", apres: null, statut: "retiree", criteres: [{code: "A3", grav: "mineur"}], pourquoi: "Le catalogue cuivre, platine, iridium ne sert pas l'apprenti : la bougie est imposée. Le seul geste utile, **comparer la référence au manuel et à l'ancienne**, passe dans M3-1."},
+    {module: "M2", avant: "A-M2-3", apres: null, statut: "retiree", criteres: [{code: "A3", grav: "mineur"}, {code: "C1", grav: "mineur"}], pourquoi: "Choisir un indice thermique ne revient pas à un apprenti de première année. La lecture de la bougie (M4) garde ce qui compte : ce qu'on voit, pas pourquoi le fabricant l'a choisie."},
+    {module: "M2", avant: "A-M3-2", apres: "M2-2", statut: "modifiee", criteres: [{code: "C4", grav: "majeur"}, {code: "C3", grav: "majeur"}, {code: "A2", grav: "mineur"}], pourquoi: "Huit phrases à lire deviennent **un exemple travaillé** : Dominique fait chaque étape et dit pourquoi, au moment où ça compte (culasse froide pour le filet et pour la main ; souffler avant de dévisser, sinon le sable tombe dans le cylindre). « Ne pas tirer sur les fils » ne valait pas pour ce moteur sans fils : c'est maintenant « la bobine par son corps ».", tour2: {criteres: [{code: "G1", grav: "majeur"}, {code: "C4", grav: "mineur"}], pourquoi: "À 1280 px, le bouton de l'exemple tombait 82 px sous le bord de la scène, hors d'atteinte : la scène garde le 16:9 comme minimum et s'allonge. L'ordre boulon, connecteur est le même partout, et la photo du moteur du poste 4 porte les repères. La raison du « moteur froid » est corrigée : c'est le filet d'aluminium chaud qui est fragile."}, tour3: {criteres: [{code: "C3", grav: "mineur"}], pourquoi: "La légende disait la bobine « déjà sortie » avant que Dominique l'enlève ; les repères pointaient le mauvais connecteur. Légende et repères corrigés ; la photo, qui montre un trou de trop, est à refaire."}, tour4: {criteres: [{code: "C3", grav: "mineur"}], pourquoi: "Photo du moteur refaite (Google, crédit rechargé) : une seule rangée, la bobine du cylindre 1 posée sur l'établi ; repères reposés à côté du puits, du connecteur et de la bobine."}},
+    {module: "M2", avant: null, apres: "M2-3", statut: "ajoutee", criteres: [{code: "D1", grav: "majeur"}, {code: "D2", grav: "majeur"}], pourquoi: "La première pratique arrive au sixième écran, plus au seizième. L'apprenti reconstitue l'ordre de mémoire ; un mauvais choix ne coûte rien, mais il dit **ce qui doit venir avant**, et pourquoi.", tour2: {criteres: [{code: "E1", grav: "mineur"}, {code: "C4", grav: "mineur"}], pourquoi: "Un choix trop tôt disait une raison figée, parfois fausse : la rétroaction nomme maintenant l'étape attendue, puis dit pourquoi celle-ci attend. Le boulon a son étape, et la rétroaction passe au-dessus des étapes restantes."}},
+    {module: "M2", avant: null, apres: "M2-4", statut: "ajoutee", criteres: [{code: "D2", grav: "majeur"}, {code: "D4", grav: "mineur"}, {code: "E1", grav: "majeur"}], pourquoi: "La bobine qui colle est un moment réel du poste. Les deux mauvais choix sont les deux gestes qu'on voit faire (tirer le connecteur, faire levier), et chaque rétroaction dit ce qu'ils cassent.", tour2: {criteres: [{code: "D4", grav: "majeur"}], pourquoi: "La bonne réponse faisait 93 caractères contre 55 : longueurs nivelées."}},
+    {module: "M2", avant: "A-M3-1", apres: null, statut: "retiree", criteres: [{code: "C2", grav: "mineur"}], pourquoi: "La liste d'outils était juste mais sans usage à l'écran. Chaque outil est nommé à l'étape où il sert (douille mince, rallonge, clé dynamométrique), et la liste rejoint la fiche du poste.", note: "déplacée dans l'aide-mémoire"},
+    {module: "M3", avant: "A-M2-4", apres: "M3-1", statut: "modifiee", criteres: [{code: "A2", grav: "mineur"}, {code: "A2", grav: "mineur"}], pourquoi: "La version zéro disait « vérifiez l'écartement » et « ne réglez pas » sans dire quoi faire entre les deux. La règle est maintenant écrite pour ce moteur : hors tolérance, la bougie va de côté. S'y ajoutent la référence à comparer et **la bougie tombée**, qu'on ne pose pas.", tour2: {criteres: [{code: "C5", grav: "mineur"}], pourquoi: "« Sans y toucher » et « hors tolérance » se contredisaient : on ne mesure pas, on ne règle pas ; une électrode visiblement tordue, la bougie va de côté."}, tour3: {criteres: [{code: "F1", grav: "mineur"}], pourquoi: "La reprise éliminait une bougie qui avait heurté l'établi sans tomber : la règle, l'annonce et la fiche disent maintenant « tombée ou cognée »."}},
+    {module: "M3", avant: "A-M3-3", apres: "M3-2", statut: "modifiee", criteres: [{code: "A2", grav: "majeur"}, {code: "C4", grav: "majeur"}], pourquoi: "« Visser la bougie neuve à la main » ne disait ni comment reconnaître une bougie de biais, ni quand s'arrêter. Le geste est montré (douille sans cliquet, un peu à l'envers jusqu'au clic, puis à la main) et **le point d'arrêt est écrit** : ça force avant le joint, on recommence ; deux fois, on appelle.", tour2: {criteres: [{code: "B2", grav: "mineur"}], pourquoi: "La coupe d'école photographiée montre la bougie droite ; la diapo reprend la question du module 1."}},
+    {module: "M3", avant: "A-M3-4", apres: "M3-3", statut: "modifiee", criteres: [{code: "C4", grav: "majeur"}, {code: "A2", grav: "mineur"}], pourquoi: "Un tableau de couples « indicatifs » invitait à prendre une valeur au hasard. Dominique **trouve la valeur** dans l'information de réparation, règle la clé, s'arrête au clic. La méthode à l'angle est ramenée à ce qu'elle est : un dépannage sans clé."},
+    {module: "M3", avant: null, apres: "M3-4", statut: "ajoutee", tour: 2, criteres: [{code: "A3", grav: "mineur"}], pourquoi: "L'apprenti voyait Dominique trouver le couple, sans jamais le faire lui-même. Ici, un autre moteur, une valeur en deux unités : le piège des lb·pi se pratique."},
+    {module: "M3", avant: null, apres: "M3-5", statut: "ajoutee", criteres: [{code: "D2", grav: "majeur"}, {code: "D4", grav: "mineur"}, {code: "E1", grav: "majeur"}], pourquoi: "La tentation réelle n'est pas d'ignorer le couple, c'est de s'en passer quand la clé manque. Quatre choix plausibles, dont la clé à chocs « au plus bas », que la version zéro n'interdisait nulle part.", tour2: {criteres: [{code: "D4", grav: "majeur"}], pourquoi: "Longueurs nivelées ; la méthode à l'angle sort des choix (elle reste dans M3-3)."}},
+    {module: "M3", avant: "A-M3-5", apres: "M3-6", statut: "modifiee", criteres: [{code: "C3", grav: "majeur"}, {code: "A2", grav: "mineur"}, {code: "E2", grav: "mineur"}], pourquoi: "Les précautions regroupées loin des gestes sont redistribuées dans les étapes qu'elles protègent (M2-2, M3-1, M3-2). Il reste ici la fin du travail, que la version zéro résumait en « vérifier le fonctionnement » : le clic du connecteur, le ralenti, le voyant, et **ce qu'on fait s'il clignote**.", tour2: {criteres: [{code: "C5", grav: "mineur"}], pourquoi: "« Catalyseur » et « graisse diélectrique » expliqués ou retirés ; « lire le code » dit avec quel outil."}},
+    {module: "M4", avant: "A-M4-1", apres: "M4-1", statut: "modifiee", criteres: [{code: "C1", grav: "mineur"}, {code: "A3", grav: "mineur"}, {code: "C5", grav: "majeur"}], pourquoi: "Sept états et quinze causes (segments, guides, avance) deviennent **trois décisions et une règle** : j'arrête si une pièce manque, je signale si les dépôts sont anormaux, sinon c'est normal. L'apprenti ne cherche pas la cause ; il décide et nomme ce qu'il a vu.", tour2: {criteres: [{code: "E1", grav: "majeur"}], pourquoi: "La règle et la notation se contredisaient : un apprenti qui nommait la texture, comme M4-2 le lui apprenait, échouait. La question devient « Qu'avez-vous vu ? », avec des descriptions (noir mat, noir luisant, blanc cloqué…) dont une seule est juste par bougie, et la règle les reprend mot pour mot."}, tour3: {criteres: [{code: "E1", grav: "mineur"}, {code: "C4", grav: "mineur"}], pourquoi: "Plusieurs descriptions étaient vraies sur certaines photos (une bougie cassée est aussi beige et sèche) : la question devient « Qu'est-ce qui décide ? ». Et l'ordre de lecture est dit : d'abord, est-ce que quelque chose manque ? Ensuite, la couleur."}},
+    {module: "M4", avant: null, apres: "M4-2", statut: "ajoutee", criteres: [{code: "C4", grav: "majeur"}, {code: "G1", grav: "majeur"}, {code: "D3", grav: "mineur"}], pourquoi: "La paire qu'on confond, huile et carbone, est montrée côte à côte dans le raisonnement : la couleur ne suffit pas, **la texture tranche**. Chaque état porte ainsi un indice de forme en plus de la couleur, ce qu'exigeait l'audit pour les écrans pâles et les apprentis daltoniens.", tour2: {criteres: [{code: "E1", grav: "majeur"}, {code: "C5", grav: "mineur"}], pourquoi: "« La couleur ne suffit pas » était faux pour la décision : noir, c'est à signaler. La texture dit maintenant ce qu'elle fait vraiment : **quoi écrire** au bon de travail."}, tour3: {criteres: [{code: "C4", grav: "mineur"}], pourquoi: "L'exemple décidait sur la couleur avant de vérifier que rien ne manquait : c'est l'ordre qui mène à l'erreur éliminatoire. « Rien ne manque ? » passe en premier."}},
+    {module: "M4", avant: null, apres: "M4-3", statut: "ajoutee", tour: 2, criteres: [{code: "D2", grav: "mineur"}], pourquoi: "« Posez les quatre bougies côte à côte » n'était jamais montré. La photo du plateau le fait : laquelle inscrire au bon de travail ?", tour3: {criteres: [{code: "D4", grav: "mineur"}], pourquoi: "La bonne réponse était la seule qui nommait une case : quatre boutons, un par case."}, tour4: {criteres: [{code: "D4", grav: "mineur"}], pourquoi: "Le mélange désordonnait « Case 1 » à « Case 4 » : ces choix gardent leur ordre naturel."}},
+    {module: "M4", avant: null, apres: "M4-4", statut: "ajoutee", criteres: [{code: "D3", grav: "mineur"}, {code: "D2", grav: "majeur"}, {code: "E1", grav: "majeur"}], pourquoi: "Quatre bougies du même moteur, mêlées, dont une piège : couleur normale mais pointe cassée. La rétroaction pointe l'indice sur le dessin.", tour2: {criteres: [{code: "D3", grav: "majeur"}, {code: "E2", grav: "mineur"}, {code: "D4", grav: "mineur"}], pourquoi: "L'électrode fondue (éliminatoire) apparaissait pour la première fois à l'épreuve, et le dessin de l'usure lui ressemblait. L'entraînement met maintenant l'usée et la fondue l'une après l'autre, en photos, et la rétroaction pointe la différence. L'entraînement ne déclare plus personne « éliminé »."}, tour3: {criteres: [{code: "D2", grav: "majeur"}], pourquoi: "Les photos de l'usure et de la fusion montraient mal leur frontière. En attendant de les refaire (les consignes sont prêtes), chaque photo s'agrandit au toucher, les repères passent à côté de la pointe, et le bon de travail donne l'écartement mesuré de la bougie usée."}, tour4: {criteres: [{code: "D2", grav: "mineur"}], pourquoi: "Photos refaites : l'électrode usée est émoussée mais entière, l'écartement agrandi ; l'électrode fondue est détruite, le métal coulé sur la céramique. La frontière se voit enfin, et les rétroactions la nomment."}},
+    {module: "M5", avant: "A-M4-2", apres: "M5-1", statut: "modifiee", criteres: [{code: "A3", grav: "bloquant"}, {code: "F1", grav: "majeur"}, {code: "E1", grav: "majeur"}, {code: "D4", grav: "mineur"}], pourquoi: "Un quiz sur une tension, une définition et une date devient **l'épreuve du poste** : six cas inédits, bougies et situations, seuil de 5 sur 6. Les trois gestes qui coûtent une culasse ou un moteur sont **éliminatoires, et annoncés avant**. Une reprise sur six autres cas.", note: "on évalue le geste, pas la théorie", tour2: {criteres: [{code: "F1", grav: "majeur"}, {code: "F1", grav: "majeur"}, {code: "A3", grav: "majeur"}, {code: "D4", grav: "majeur"}, {code: "G1", grav: "mineur"}], pourquoi: "Les situations reprenaient la pratique mot pour mot : les douze de l'épreuve et les douze de la reprise sont nouvelles, avec des choix de même longueur, et les photos de bougies aussi (une variante par série). Deux seuils séparés, 5 bougies sur 6 et 5 situations sur 6. Les cinq éliminatoires sont les mêmes dans les deux séries, annoncés une fois, et chacun y a son cas. Après deux échecs, on renvoie à l'enseignant."}, tour3: {criteres: [{code: "D4", grav: "majeur"}, {code: "D3", grav: "mineur"}, {code: "A3", grav: "mineur"}, {code: "F1", grav: "mineur"}, {code: "E2", grav: "mineur"}, {code: "G1", grav: "mineur"}], pourquoi: "La bonne réponse était la deuxième dans les six situations : l'ordre des choix est mélangé, et dans une série, la position de la bonne réponse tourne d'un cas à l'autre (au plus 3 fois sur 7 à la même place). Un contre-exemple par série, où continuer est juste (ça durcit APRÈS le joint ; culasse froide depuis la veille), couvre aussi le serrage et l'ordre de la bobine : 7 situations, seuil 6. Le bilan montre deux chiffres de même taille, « Éliminatoire » quand il le faut, et renvoie au module 4 après deux échecs. Au cas suivant, la page remonte."}, tour4: {criteres: [{code: "A3", grav: "mineur"}, {code: "F1", grav: "mineur"}], pourquoi: "La fusion revient à l'épreuve (photo fondue-2, éliminatoire), comme O3 le promet. Le bilan renvoie au seul module 4, comme son bouton ; les durées des modules font bien 35 minutes."}},
+    {module: "M5", avant: "A-M4-3", apres: "M5-2", statut: "modifiee", criteres: [{code: "F2", grav: "majeur"}, {code: "F3", grav: "mineur"}], pourquoi: "« Des questions ? » à quelqu'un qui suit le module seul : personne ne répond. La fin donne **la fiche du poste 4**, à garder sur le téléphone, le nom de la personne à qui écrire, et deux rappels (la veille de la séance, et un mois plus tard).", tour2: {criteres: [{code: "F3", grav: "mineur"}, {code: "F2", grav: "mineur"}], pourquoi: "Les rappels ont maintenant un contenu (trois questions nommées) et un canal ; la fiche dit comment la garder : une capture d'écran."}, tour3: {criteres: [{code: "F3", grav: "mineur"}], pourquoi: "Nommer d'avance les sujets des rappels en donnait les réponses : la fiche dit « trois questions courtes »."}}
+  ]
+};
+
+</script>
+<script>
+/* Cadrage (temps 1), résultats des audits (temps 3 et 5), limites. */
+window.BOUCLE = {
+  cadrage: {
+    public: "**Public.** Les apprentis de première année du programme de mécanique automobile du CFP Rivebelle, un centre fictif. Ils ont de 17 à 45 ans, et plusieurs lisent difficilement les longs textes. Ils suivent ce module seuls, en ligne, sur tablette ou téléphone, avant leur première séance au poste 4. Ils y remplaceront les bougies d'un moteur quatre cylindres à bobines crayons.",
+    ecart: "**Écart.** Ce qui va mal au poste, ce n'est pas la théorie de l'allumage. On visse de biais et on force à la clé. On dévisse sur une culasse encore chaude. On oublie de souffler le puits, on tire la bobine par son connecteur, on serre « au jugé » ou à la clé à chocs. Et on ne regarde pas la bougie retirée, ou on la regarde sans savoir quoi en faire."
+  },
+  alignement: [
+    { o: "O1 · Préparer dans l'ordre", pratique: "M2-2 (exemple travaillé), M2-3 (remettre dans l'ordre), M2-4", evalue: "M5-1 : « du sable au fond du puits » (ordre, soufflage) et « culasse tiède » (éliminatoire) ; reprise : « et maintenant ? » et « essai il y a 5 minutes » (éliminatoire)" },
+    { o: "O2 · Poser sans fausser", pratique: "M1-1, M3-1, M3-2, M3-3 (exemple travaillé), M3-4 (le couple d'un autre moteur), M3-5", evalue: "M5-1 : « dure au troisième tour », « refuse de sortir » (clé à chocs), « roule de l'établi » : tous éliminatoires ; reprise : trois autres cas des mêmes gestes" },
+    { o: "O3 · Classer la bougie retirée", pratique: "M4-2 (exemple travaillé), M4-3 (le plateau), M4-4 (6 bougies, décision + ce qui décide)", evalue: "M5-1 : 6 bougies inédites (autres photos), seuil 5 sur 6 ; électrode fondue éliminatoire ; reprise : 6 autres bougies, isolant cassé éliminatoire. La fusion (éliminatoire) est évaluée sur la photo fondue-2, refaite" },
+    { o: "O4 · Vérifier le travail", pratique: "M3-6", evalue: "M5-1 : « voyant fixe » ; reprise : « P0303 »" },
+    { o: "Contre-exemples", pratique: "M3-2 (« ça force AVANT le joint »)", evalue: "M5-1 : « dure APRÈS le joint » (on serre jusqu'au clic) ; reprise : « culasse froide depuis la veille » (on commence : connecteur d'abord)" }
+  ],
+  audits: [
+    { titre: "Audit 1 · version zéro", sous: "Sous-agent indépendant · 16 diapositives", bloquant: 2, majeur: 18, mineur: 26,
+      note: "Famille la plus touchée : l'alignement (16 constats). Le remplacement lui-même n'était ni pratiqué ni évalué, et l'erreur qui coûte une culasse n'avait ni point d'arrêt ni conséquence à l'évaluation." },
+    { titre: "Audit 2 · premier tour de révision", sous: "Sous-agent indépendant · 17 diapositives, page jouée à 375, 1180 et 1280 px, deux thèmes", bloquant: 0, majeur: 7, mineur: 17,
+      note: "Plus de bloquant. Six des sept majeurs viennent de l'épreuve ajoutée au premier tour : une notation de l'indice qui contredit la règle, des situations déjà corrigées, la bonne réponse toujours la plus longue, une électrode fondue jamais pratiquée. Le septième : un bouton hors d'atteinte à 1280 px." },
+    { titre: "Audit 3 · second tour de révision", sous: "Sous-agent indépendant · 19 diapositives, page jouée à 375, 820, 1180 et 1280 px, deux thèmes", bloquant: 0, majeur: 2, mineur: 14,
+      note: "Deux majeurs, tous deux créés par le second tour : des photos où l'usure ressemble à la fusion (éliminatoire), et une bonne réponse toujours à la même place. Le troisième tour mélange les choix et fait tourner la position de la bonne réponse ; les photos d'usure et de fusion restent à refaire." },
+    { titre: "Audit 4 · vérification ciblée", sous: "Sous-agent indépendant · page jouée à 375 et 1280 px, photos agrandies, repères tracés", bloquant: 0, majeur: 0, mineur: 13,
+      note: "Sortie de boucle : zéro bloquant, zéro majeur. Les mineurs restants sont consignés dans audits/audit-4.md ; les moins coûteux sont corrigés dans la foulée, et les photos en attente ont été refaites une fois le crédit Google rechargé." }
+  ],
+  limites: [
+    "**L'exactitude technique** : la grille est didactique. Les valeurs du poste 4 (bougie RB-12I, 1,1 mm, 18 N·m) sont fictives. Les gestes (départ à rebours, graisse diélectrique, lecture des dépôts) doivent être validés par un enseignant du programme.",
+    "**L'essai auprès d'apprentis** : la boucle prédit, l'essai mesure. Avant la diffusion, au moins cinq apprentis doivent suivre le module en pensant à voix haute, dont des lecteurs moins à l'aise.",
+    "**L'effet au poste** : il se mesure à l'atelier, au nombre de filetages repris, de bougies serrées sans clé dynamométrique et de connecteurs oubliés.",
+    "**Les photos** sont générées (Nano Banana 2, Google). Elles ont été vérifiées une à une, mais elles restent des images de synthèse : avant la diffusion, un enseignant les compare à de vraies bougies usagées, ou les remplace par des photos d'atelier. La surchauffe classée « à signaler » est à confirmer.",
+    "**Le CFP Rivebelle** est fictif, comme le poste 4, Dominique Roy et la messagerie. Ils sont à remplacer."
+  ]
+};
+
+</script>
+<script>
+/* ============================================================
+   PHOTOS — la table des photos de la formation sur les bougies.
+   Les photos viennent de Nano Banana 2, chez Google en direct
+   (planches.py, commun/images_google.py) ; elles sont dans images/.
+   Pour chacune : ses dimensions, ce qu'une personne voyante y voit
+   (alt, sans l'interpréter), et où poser les repères numérotés, en
+   pixels de la photo. Un repère se pose À CÔTÉ d'un indice fin (pointe
+   d'électrode, goutte, cassure), jamais dessus : il cacherait ce qu'il
+   montre. Sur une large plage de dépôt, il se pose sur son bord.
+   ============================================================ */
+(function () {
+  "use strict";
+  const T = { w: 1200, h: 896 }, L = { w: 1376, h: 768 };
+  const VU = {
+    normale:    "L'isolant est beige-gris, sec, avec des dépôts légers. Électrodes nettes.",
+    usure:      "L'isolant est beige-gris et sec. L'électrode centrale est émoussée, arrondie au bout, mais garde toute sa longueur ; l'écartement est nettement agrandi.",
+    carbone:    "L'isolant, les électrodes et l'intérieur du culot sont couverts d'une suie noire, mate et sèche, poudreuse.",
+    huile:      "L'isolant et l'intérieur du culot sont couverts d'un dépôt noir, humide et luisant, avec des coulures.",
+    surchauffe: "L'isolant est blanc crayeux, couvert de petites cloques ; les électrodes sont amincies, avec un reflet bleuté. Rien ne manque.",
+    cendres:    "L'isolant et les électrodes portent des croûtes brun-roux épaisses et irrégulières. Électrodes entières.",
+    cassee:     "Les dépôts sont clairs, mais un éclat de la céramique de l'isolant manque : la cassure est nette.",
+    fondue:     "L'isolant est blanchâtre. L'électrode centrale a presque disparu : du métal fondu a coulé et s'est figé en éclaboussures brillantes sur la céramique ; l'électrode de masse est rongée.",
+  };
+  const bout = (etat, ancres) => Object.assign({}, T, { ancres, alt: `Extrémité d'une bougie usagée, de profil. ${VU[etat]}` });
+
+  window.PHOTOS = {
+    "normale-2": bout("normale", { depot: [600, 470] }),
+    "normale-3": bout("normale", { depot: [610, 480] }),
+    "usure-1": bout("usure", { electrodes: [200, 560], depot: [560, 560] }),
+    "usure-2": bout("usure", { electrodes: [250, 560], depot: [560, 560] }),
+    "usure-3": bout("usure", { electrodes: [250, 560], depot: [560, 540] }),
+    "carbone-1": bout("carbone", { depot: [560, 530] }),
+    "carbone-2": bout("carbone", { depot: [560, 530] }),
+    "huile-1": bout("huile", { depot: [540, 570], electrodes: [290, 580] }),
+    "huile-2": bout("huile", { depot: [520, 560] }),
+    "huile-3": bout("huile", { depot: [570, 540] }),
+    "surchauffe-1": bout("surchauffe", { depot: [500, 500] }),
+    "surchauffe-2": bout("surchauffe", { depot: [610, 490] }),
+    "surchauffe-3": bout("surchauffe", { depot: [610, 480] }),
+    "cendres-1": bout("cendres", { depot: [470, 540] }),
+    "cendres-3": bout("cendres", { depot: [520, 500] }),
+    "cassee-1": bout("cassee", { casse: [700, 580] }),
+    "cassee-2": bout("cassee", { casse: [470, 600] }),
+    "cassee-3": bout("cassee", { casse: [520, 570] }),
+    "fondue-1": bout("fondue", { electrodes: [330, 620] }),
+    "fondue-2": bout("fondue", { electrodes: [330, 620] }),
+
+    "bougie-neuve": Object.assign({}, L, { ancres: { electrodes: [160, 300], filetage: [370, 220], joint: [540, 240], culot: [700, 210], isolant: [990, 240] },
+      alt: "Bougie d'allumage neuve, couchée : électrodes à gauche, filetage, joint plat, culot hexagonal, isolant blanc à nervures, borne à droite." }),
+    "moteur-poste": Object.assign({}, L, { ancres: { puits: [380, 400], connecteur: [234, 240], bobine: [234, 468] },
+      alt: "Dessus d'un moteur quatre cylindres sur un établi : trois bobines crayons en place, branchées, sur la rangée du couvre-culasse ; au bout de la rangée, un puits de bougie ouvert. La quatrième bobine et son boulon sont posés sur l'établi." }),
+    "depart-main": Object.assign({}, T, { ancres: {},
+      alt: "Des doigts gantés tournent à la main une rallonge munie d'une douille à bougie, dans le puits d'une culasse en aluminium. Aucun cliquet." }),
+    "filetage-biais": Object.assign({}, T, { ancres: { biais: [700, 300] },
+      alt: "Maquette d'école : culasse en aluminium sciée en deux. La bougie entre dans le trou de biais, inclinée ; ses filets mordent ceux de l'aluminium, et des copeaux brillants sont arrachés." }),
+    "filetage-droit": Object.assign({}, T, { ancres: { droit: [720, 420] },
+      alt: "Maquette d'école : culasse en aluminium sciée en deux. La bougie entre bien droite, dans l'axe du trou, et ses filets s'engagent proprement." }),
+    "plateau": Object.assign({}, L, { ancres: { c3: [825, 130] },
+      alt: "Plateau à quatre cases, une bougie usagée dans chacune. Les bougies des cases 1, 2 et 4 sont beige clair et sèches ; celle de la case 3 est noire, humide et luisante." }),
+  };
+})();
+
+</script>
+<script>
+/* ============================================================
+   Moteur des formations d'ATELIER — même mécanique que celui de
+   « Le courriel de trop » (formation-hameconnage/moteur.js), mais
+   l'objet à juger est une PIÈCE dessinée (planche + bon de travail),
+   et les verdicts et indices viennent des données (APRES.verdicts,
+   APRES.indices) plutôt que d'être écrits ici.
+   Trois vues : la formation, avant/après, la boucle.
+   ============================================================ */
+(function () {
+  "use strict";
+
+  document.documentElement.lang = "fr";
+  const A = window.APRES, V = window.AVANT, J = window.JOURNAL, G = window.GRILLE, B = window.BOUCLE, P = window.PIECES || {}, PH = window.PHOTOS || {};
+  const VERDICTS = A.verdicts, INDICES = A.indices || {};
+
+  // ---------- Petits utilitaires ----------
+  function h(tag, attrs, ...enfants) {
+    const el = document.createElement(tag);
+    if (attrs) for (const [k, v] of Object.entries(attrs)) {
+      if (v == null || v === false) continue;
+      if (k === "class") el.className = v;
+      else if (k === "html") el.innerHTML = v;
+      else if (k.startsWith("on")) el.addEventListener(k.slice(2), v);
+      else el.setAttribute(k, v === true ? "" : v);
+    }
+    for (const e of enfants.flat()) if (e != null && e !== false) el.append(e instanceof Node ? e : document.createTextNode(e));
+    return el;
+  }
+  // Texte enrichi minimal : **gras** et `mono`
+  function riche(s) {
+    const esc = String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    return esc.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>").replace(/`(.+?)`/g, '<span class="cq-mono">$1</span>');
+  }
+  const p = (s, cls) => h("p", { class: cls, html: riche(s) });
+  const ton = (v) => VERDICTS[v].ton;
+  const pastille = (v) => h("span", { class: `verdict verdict--${ton(v)}`, "data-icone": VERDICTS[v].icone || null }, VERDICTS[v].court);
+
+  const etat = new Map();
+
+  // L'ordre des choix est MÉLANGÉ, mais toujours de la même façon pour une
+  // question donnée (graine tirée de son texte) : sans mélange, la bonne
+  // réponse était la deuxième dans 14 questions sur 18, et « toujours la
+  // deuxième » réussissait l'épreuve (audit 3). Stable : un redessin ou un
+  // « Recommencer » ne rebat pas les cartes sous les yeux de l'apprenant.
+  // b.ordonne : des choix qui ont un ordre naturel (Case 1 à Case 4) ne se mélangent pas.
+  function melange(n, texte, ordonne) {
+    if (ordonne) return [...Array(n).keys()];
+    let g = 2166136261;
+    for (const c of texte) g = Math.imul(g ^ c.charCodeAt(0), 16777619) >>> 0;
+    const ordre = [...Array(n).keys()];
+    for (let i = n - 1; i > 0; i--) { g = Math.imul(g ^ (g >>> 15), 2246822519) >>> 0; const j = g % (i + 1); [ordre[i], ordre[j]] = [ordre[j], ordre[i]]; }
+    return ordre;
+  }
+
+  // Une photo s'agrandit au toucher : sur téléphone, l'extrémité d'une
+  // électrode ne fait qu'une quinzaine de pixels (audit 3).
+  function agrandir(svg, alt) {
+    const dlg = h("dialog", { class: "loupe", "aria-label": alt });
+    const fermer = () => { dlg.close(); dlg.remove(); };
+    dlg.append(h("button", { class: "loupe__fermer", type: "button", onclick: fermer }, "Fermer"), svg.cloneNode(true));
+    dlg.addEventListener("click", (e) => { if (e.target === dlg) fermer(); });
+    dlg.addEventListener("close", () => dlg.remove());
+    document.body.append(dlg); dlg.showModal();
+  }
+  const cle = (diapo, i, sous = "") => `${diapo}:${i}:${sous}`;
+
+  // Après un redessin, le focus va sur le dernier élément marqué data-focus :
+  // un lecteur d'écran l'annonce, le clavier ne repart pas du haut (G1).
+  let aFocaliser = false, aRemonter = false;
+  const demanderFocus = () => { aFocaliser = true; };
+
+  // ============================================================
+  // Planche et fiche
+  // ============================================================
+  // Le dessin, avec ses repères numérotés posés aux ancres demandées.
+  // Une PHOTO (piece.photo) est posée dans un SVG à ses dimensions : les
+  // repères se placent alors en pixels de la photo, comme sur un dessin.
+  function planche(piece, reperes = {}) {
+    let d;
+    if (piece.photo) {
+      const ph = PH[piece.photo];
+      if (!ph) return h("div", { class: "planche" }, `[photo inconnue : ${piece.photo}]`);
+      d = { ancres: ph.ancres || {}, alt: ph.alt, svg: `<svg viewBox="0 0 ${ph.w} ${ph.h}" aria-hidden="true" class="pl-svg pl-photo"><image href="images/${piece.photo}.jpg" width="${ph.w}" height="${ph.h}"/></svg>` };
+    } else {
+      const f = P[piece.dessin];
+      if (!f) return h("div", { class: "planche" }, `[dessin inconnu : ${piece.dessin}]`);
+      d = f(...(piece.args || []));
+    }
+    const ph = piece.photo ? PH[piece.photo] : null;
+    const el = h("figure", { class: "planche" + (ph ? " planche--photo" : ""), role: "img", "aria-label": piece.alt || d.alt, html: d.svg,
+      style: ph ? `aspect-ratio: ${ph.w} / ${ph.h}` : null });
+    const svg = el.querySelector("svg");
+    for (const [k, num] of Object.entries(reperes)) {
+      const a = d.ancres[k];
+      if (!a || !svg) continue;
+      // Rayon au 26e de la photo : sur téléphone (photo de 280 px), une
+      // pastille d'environ 22 px et un chiffre lisible (audit 3).
+      const r = piece.photo ? Math.round(PH[piece.photo].w / 26) : 9;
+      svg.insertAdjacentHTML("beforeend", `<g class="pl-repere"><circle cx="${a[0]}" cy="${a[1]}" r="${r}"/><text x="${a[0]}" y="${a[1]}" style="font-size:${Math.round(r * 1.25)}px">${num}</text></g>`);
+    }
+    if (ph) el.append(h("button", { class: "planche__agrandir", type: "button", "aria-label": "Agrandir la photo", onclick: () => agrandir(svg, piece.alt || d.alt) }, "⤢ Agrandir"));
+    return el;
+  }
+
+  // Une pièce à juger : la planche, et le bon de travail qui l'accompagne.
+  // Les mesures portent aussi un repère (on pointe la valeur qui décide).
+  function fiche(c, reperes = {}) {
+    return h("article", { class: "fiche", "aria-label": c.titre || "Pièce à examiner" },
+      planche(c, reperes),
+      h("div", { class: "fiche__bon" },
+        c.titre ? h("p", { class: "fiche__titre" }, c.titre) : null,
+        (c.lignes || []).map(l => h("p", { class: "fiche__ligne", html: riche(l) })),
+        c.mesures ? h("div", { class: "fiche__mesures" }, c.mesures.map(m => h("span", {
+          class: "fiche__mesure" + (m.repere && reperes[m.repere] ? " repere" : ""), "data-n": m.repere && reperes[m.repere] ? reperes[m.repere] : null
+        }, `${m.l} : ${m.v}`))) : null));
+  }
+
+  // ============================================================
+  // Activités
+  // ============================================================
+  function retroEl(type, titre, texte, ...suite) {
+    // Le titre dit déjà « Oui. » : le texte ne le répète pas.
+    const mot = String(titre).replace(/[.!:]+$/, "");
+    if (texte && mot.length < 12 && texte.startsWith(mot)) texte = texte.slice(mot.length).replace(/^\s*[.:,]\s*/, "").replace(/^./, c => c.toUpperCase());
+    return h("div", { class: `retro retro--${type}`, role: "status", "data-focus": "" },
+      h("div", { class: "retro__titre" }, titre), texte ? h("div", { class: "retro__texte", html: riche(texte) }) : null, ...suite);
+  }
+  const boutonPlein = (texte, onclick, focus) => h("button", { class: "tri__choix tri__choix--plein", type: "button", "data-focus": focus ? "" : null, onclick }, texte);
+  const recommencer = (onclick) => h("button", { class: "lien-discret", type: "button", onclick }, "Recommencer");
+
+  function boutonsTri(onChoix, choisi, question) {
+    return h("div", { class: "tri", role: "group", "aria-label": question || "Votre décision", "data-focus": choisi ? null : "" },
+      Object.entries(VERDICTS).map(([k, v]) => h("button", {
+        class: "tri__choix", type: "button", "aria-pressed": choisi === k ? "true" : "false", disabled: !!choisi,
+        onclick: () => onChoix(k)
+      }, h("span", { class: `verdict verdict--${v.ton}`, "data-icone": v.icone || null, "aria-hidden": "true", style: "padding:0;background:none" }), v.long)));
+  }
+
+  function boutonsIndice(onChoix, choisi) {
+    return h("div", { class: "indice" },
+      h("p", { class: "indice__q", "data-focus": choisi ? null : "" }, A.questionIndice || "Qu'est-ce qui vous a décidé ?"),
+      h("div", { class: "tri", role: "group", "aria-label": A.questionIndice || "Qu'est-ce qui vous a décidé ?" },
+        Object.entries(INDICES).map(([k, v]) => h("button", {
+          class: "tri__choix", type: "button", "aria-pressed": choisi === k ? "true" : "false", disabled: !!choisi, onclick: () => onChoix(k)
+        }, v))));
+  }
+
+  const estJuste = (it, choix) => (it.acceptes || [it.bonne]).includes(choix);
+  const nomsIndices = (it) => (it.indices || []).map(i => INDICES[i].toLowerCase()).join(" ou ");
+
+  // Une pièce, une décision, une rétroaction par choix (D2, E1, E2)
+  function tri(b, k, redessiner) {
+    const choisi = etat.get(k);
+    const droite = h("div", { class: "diapo__col diapo__col--etroite" },
+      b.consigne ? h("div", { class: "consigne", html: riche(b.consigne) }) : null,
+      boutonsTri((v) => { etat.set(k, v); demanderFocus(); redessiner(); }, choisi));
+    if (choisi) {
+      const juste = estJuste(b, choisi);
+      droite.append(retroEl(juste ? "juste" : "rate",
+        juste ? `Juste : ${VERDICTS[choisi].court.toLowerCase()}.` : `Décision attendue : ${VERDICTS[b.bonne].court.toLowerCase()}.`,
+        b.retro[choisi]));
+      droite.append(recommencer(() => { etat.delete(k); demanderFocus(); redessiner(); }));
+    }
+    return h("div", { class: "diapo__corps" }, h("div", { class: "diapo__col" }, fiche(b.piece, choisi ? (b.reperes || {}) : {})), droite);
+  }
+
+  // Exemple travaillé : les repères s'allument un à un (C3, C4)
+  function exemple(b, k, redessiner) {
+    const n = etat.get(k) || 0;
+    const reperes = {};
+    b.etapes.slice(0, n).forEach((e, i) => { if (e.repere) reperes[e.repere] = i + 1; });
+    const liste = h("ol", { class: "verif" },
+      b.etapes.map((e, i) => h("li", { class: "verif__item", "data-actif": i < n ? "true" : "false", "data-focus": i === n - 1 && n < b.etapes.length ? "" : null },
+        h("span", { class: "verif__q" }, e.q), h("span", { class: "verif__r", html: i < n ? riche(e.r) : "…" }))));
+    const suite = n < b.etapes.length
+      ? boutonPlein(n === 0 ? (b.debut || "Commencer l'examen") : (b.suivant || "Point suivant"), () => { etat.set(k, n + 1); demanderFocus(); redessiner(); })
+      : b.verdict ? retroEl(ton(b.verdict) === "fraude" ? "rate" : ton(b.verdict) === "sur" ? "juste" : "neutre", `Décision : ${VERDICTS[b.verdict].court.toLowerCase()}.`, b.conclusion)
+      : retroEl("neutre", b.fin || "C'est fait.", b.conclusion);
+    if (!b.piece) return h("div", { class: "diapo__corps diapo__corps--pile" }, b.intro ? p(b.intro, "diapo__chapeau") : null, liste, suite);
+    return h("div", { class: "diapo__corps" }, h("div", { class: "diapo__col" }, fiche(b.piece, reperes)), h("div", { class: "diapo__col diapo__col--etroite" }, liste, suite));
+  }
+
+  // Question à choix, rétroaction propre à chaque choix
+  function options(b, k, redessiner) {
+    const choisi = etat.get(k);
+    const col = h("div", { class: "diapo__col" },
+      b.q ? p(b.q, "diapo__chapeau") : null,
+      h("div", { class: "options", role: "group", "aria-label": b.q ? b.q.replace(/\*\*/g, "") : "Choix" }, melange(b.choix.length, b.choix.map(c => c.x).join("|"), b.ordonne).map(i => h("button", {
+        class: "options__choix", type: "button", "aria-pressed": choisi === i ? "true" : "false",
+        onclick: () => { etat.set(k, i); demanderFocus(); redessiner(); }
+      }, b.choix[i].x))));
+    if (choisi != null) {
+      const c = b.choix[choisi];
+      col.append(retroEl(c.juste ? "juste" : "rate", c.juste ? "Oui." : c.grave ? "Danger." : "Pas tout à fait.", c.retro));
+    }
+    if (!b.piece) return col;
+    const piece = choisi != null && b.pieceApres ? b.pieceApres : b.piece;
+    return h("div", { class: "diapo__corps" }, h("div", { class: "diapo__col" }, fiche(piece, choisi != null ? (b.reperesApres || b.reperes || {}) : {})), col);
+  }
+
+  // Remettre les étapes dans l'ordre (D1, D2). L'apprenant choisit l'étape
+  // suivante ; un mauvais choix ne coûte rien, mais il dit QUELLE étape vient
+  // d'abord (l'étape attendue, pas une raison figée), puis pourquoi celle-ci
+  // attend. La rétroaction passe AU-DESSUS des étapes restantes : sur
+  // téléphone, elle tombait sous une liste qu'il fallait remonter (audit 2).
+  // Les étapes sont présentées dans un ordre fixe mélangé (b.melange).
+  function ordre(b, k, redessiner) {
+    let s = etat.get(k);
+    if (!s) { s = { faites: [], erreurs: 0, dernier: null }; etat.set(k, s); }
+    const restantes = b.melange.filter(i => !s.faites.includes(i));
+    const fini = restantes.length === 0;
+    const droite = h("div", { class: "ordre__col" },
+      h("p", { class: "ordre__titre" }, "Votre séquence"),
+      s.faites.length ? h("ol", { class: "ordre__suite", "aria-label": "Votre séquence" }, s.faites.map(i => h("li", null, b.etapes[i].x)))
+        : h("p", { class: "ordre__vide" }, "Choisissez la première étape."));
+    let retro = null;
+    if (s.dernier != null && !fini) {
+      const e = b.etapes[s.dernier];
+      retro = s.dernierJuste ? retroEl("juste", "Oui.", e.oui)
+        : retroEl("rate", `Pas encore : d'abord « ${b.etapes[s.attendue].x.replace(/ \(.*\)$/, "").toLowerCase()} ».`, e.tot);
+    }
+    if (fini) {
+      droite.append(retroEl(s.erreurs === 0 ? "juste" : "neutre", s.erreurs === 0 ? "Séquence complète, sans détour." : `Séquence complète, avec ${s.erreurs} détour${s.erreurs > 1 ? "s" : ""}.`, b.bilan));
+      droite.append(recommencer(() => { etat.delete(k); demanderFocus(); redessiner(); }));
+    }
+    const gauche = h("div", { class: "ordre__col" },
+      h("p", { class: "ordre__titre" }, fini ? "Toutes les étapes sont placées" : `Étape ${s.faites.length + 1} sur ${b.etapes.length} : laquelle vient maintenant ?`),
+      retro,
+      fini ? null : h("div", { class: "options", role: "group", "aria-label": "Étapes restantes" }, restantes.map(i => h("button", {
+        class: "options__choix", type: "button",
+        onclick: () => {
+          const attendue = b.etapes.findIndex((_, j) => !s.faites.includes(j));
+          s.dernier = i; s.attendue = attendue; s.dernierJuste = i === attendue;
+          if (s.dernierJuste) s.faites.push(i); else s.erreurs++;
+          demanderFocus(); redessiner();
+        }
+      }, b.etapes[i].x))));
+    return h("div", { class: "ordre" }, gauche, droite);
+  }
+
+  // Série : l'épreuve, ou un entraînement (b.entrainement). Chaque item est
+  // soit une PIÈCE à juger (décision, puis ce qu'on a vu si l'item porte des
+  // indices), soit une SITUATION à choix. Deux seuils possibles, comptés à
+  // part : b.seuilPieces et b.seuilSituations (sinon b.seuil sur le tout).
+  // Un item peut porter des réponses graves (it.graves, ou choix.grave) : en
+  // choisir une fait échouer, quel que soit le score, et c'est annoncé avant
+  // (voir boucle-didactique : « une erreur coûteuse qui ne fait pas échouer »).
+  // b.reprise : un second jeu INÉDIT, de même composition.
+  function serie(b, k, redessiner) {
+    let s = etat.get(k);
+    const neuf = (jeu, echecs, exercice) => ({ jeu, echecs, exercice: !!exercice, i: 0, rep: [], ind: [], demarre: false, voir: {} });
+    if (!s) { s = neuf(0, 0); etat.set(k, s); }
+    const items = s.jeu === 1 && b.reprise ? b.reprise : b.items;
+    const total = items.length;
+    const aIndice = (it) => b.indice && !it.choix && it.indices;
+    const juste = (it, i) => it.choix ? !!it.choix[s.rep[i]]?.juste : estJuste(it, s.rep[i]);
+    const grave = (it, i) => it.choix ? !!it.choix[s.rep[i]]?.grave : (it.graves || []).includes(s.rep[i]);
+    const bonIndice = (it, i) => !aIndice(it) || it.indices.includes(s.ind[i]);
+    const reussite = (it, i) => juste(it, i) && bonIndice(it, i);
+    const libelleRep = (it, i) => it.choix ? `« ${it.choix[s.rep[i]].x.replace(/[.…]$/, "")} »` : VERDICTS[s.rep[i]].court.toLowerCase();
+
+    if (!s.demarre) {
+      return h("div", { class: "diapo__corps diapo__corps--pile" },
+        b.consigne ? p(b.consigne, "diapo__chapeau") : null,
+        b.annonce ? h("div", { class: "consigne", html: riche(b.annonce) }) : null,
+        boutonPlein(s.jeu === 1 ? "Commencer la reprise" : "Commencer", () => { s.demarre = true; demanderFocus(); redessiner(); }, true));
+    }
+
+    if (s.i >= total) {
+      const idx = items.map((it, i) => ({ it, i }));
+      const pieces = idx.filter(x => !x.it.choix), situations = idx.filter(x => x.it.choix);
+      const bons = (l) => l.filter(x => reussite(x.it, x.i)).length;
+      const elimine = !b.entrainement && items.some(grave);
+      const exercice = s.exercice;
+      const separes = b.seuilPieces != null;
+      const atteint = !elimine && (separes
+        ? bons(pieces) >= b.seuilPieces && bons(situations) >= (b.seuilSituations ?? situations.length)
+        : bons(idx) >= (b.seuil ?? total));
+      const reussi = b.entrainement || exercice || atteint;
+      const rates = idx.filter(x => !reussite(x.it, x.i));
+      const echecs = s.echecs + (reussi ? 0 : 1);
+      const bloque = !reussi && echecs >= 2 && b.revoir;
+      // Après la reprise ratée, on ne renvoie pas à une série déjà corrigée
+      // sans rien dire : on revoit les modules, et on parle à l'enseignant.
+      const prochain = b.reprise ? (s.jeu + 1) % 2 : 0;
+      const autreJeu = () => { etat.set(k, neuf(prochain, echecs, (atteint || exercice) && !b.entrainement)); demanderFocus(); redessiner(); };
+      const libelle = b.entrainement ? "Recommencer l'entraînement" : !b.reprise ? "Refaire l'épreuve"
+        : prochain === 1 ? "Passer l'épreuve de reprise (cas inédits)" : "Refaire l'épreuve de départ";
+      const message = b.entrainement ? (b.bilan?.fin || "Entraînement terminé.")
+        : exercice ? (atteint ? "Exercice réussi, lui aussi." : "Exercice : ces cas vous auraient fait échouer. Relisez-les ; votre réussite reste acquise.")
+        : reussi ? (b.bilan?.reussi || "Seuil atteint.")
+        : echecs >= 2 ? (b.bilan?.deuxieme || "Deux essais sans atteindre le seuil : revoyez les modules, puis parlez-en à votre enseignant avant un troisième essai.")
+        : prochain === 0 && b.reprise ? (b.bilan?.rateReprise || "Pas encore. Relisez les cas manqués, puis refaites l'épreuve de départ.")
+        : (b.bilan?.rate || "Seuil non atteint : refaites l'épreuve.");
+      // Deux chiffres de même taille ; « Éliminatoire » quand un geste grave
+      // a été choisi, plutôt qu'un « 5 sur 6 » en grand qui dit le contraire.
+      const chiffre = (lib, n, sur, seuil) => h("div", { class: "score__ligne" }, h("span", { class: "score__lib" }, lib), h("span", { class: "score__n" }, `${n} sur ${sur}`), seuil != null ? h("span", { class: "score__seuil" }, `seuil ${seuil}`) : null);
+      const score = h("div", { class: "score" },
+        elimine && !exercice ? h("p", { class: "score__elimine" }, "Éliminatoire") : null,
+        separes ? [chiffre(b.libellePieces || "Pièces", bons(pieces), pieces.length, b.seuilPieces), chiffre("Situations", bons(situations), situations.length, b.seuilSituations ?? situations.length)]
+          : chiffre("Réussis", bons(idx), total, b.entrainement ? null : (b.seuil ?? total)));
+      return h("div", { class: "diapo__corps" },
+        h("div", { class: "diapo__col diapo__col--etroite" },
+          score,
+          retroEl(b.entrainement || exercice ? "neutre" : reussi ? "juste" : "neutre", message,
+            elimine && !exercice ? (b.bilan?.elimine || "Une réponse éliminatoire a été choisie : quel que soit le score, on reprend.") : null),
+          // Après deux échecs, on ne relance pas une série déjà corrigée
+          // (elle se réussirait de mémoire) : on renvoie au module et à
+          // l'enseignant, et la série n'est qu'un lien discret.
+          bloque ? [boutonPlein(`Revoir le module ${b.revoir.replace("M", "")}`, () => { const j = diaposApres.findIndex(x => x.m.id === b.revoir); if (vue === "formation" && j >= 0) aller(j); }),
+                    h("button", { class: "lien-discret", type: "button", onclick: autreJeu }, "Refaire l'épreuve quand même")]
+          : reussi && !b.entrainement
+            ? h("button", { class: "lien-discret", type: "button", onclick: autreJeu }, prochain === 1 ? "S'exercer aussi sur la reprise (cas inédits)" : "Refaire l'épreuve de départ, pour m'exercer")
+            : boutonPlein(libelle, autreJeu)),
+        h("div", { class: "diapo__col bilan" }, rates.length
+          ? rates.map(({ it, i }) => {
+              const causes = [];
+              if (!juste(it, i)) causes.push(`Votre réponse : ${libelleRep(it, i)}.${grave(it, i) && !b.entrainement ? " Réponse éliminatoire." : ""}`);
+              else if (!bonIndice(it, i)) causes.push(`Bonne décision, mais ce qu'il fallait voir : ${nomsIndices(it)}.`);
+              const voir = !!s.voir[i];
+              // Numéroté : deux cas manqués pouvaient s'appeler « Disque avant gauche » (audit 3).
+              const titre = `Cas ${i + 1} · ${it.piece?.titre || it.titre || "Situation"}`;
+              return h("div", { class: "bilan__cas" },
+                h("div", { class: "bilan__tete" }, h("span", { class: "bilan__objet" }, titre), it.choix ? null : pastille(it.bonne)),
+                h("p", { class: "bilan__cause" }, causes.join(" ")),
+                p(it.choix ? it.choix[s.rep[i]].retro : it.retro[s.rep[i]]),
+                it.piece ? h("button", { class: "lien-discret", type: "button", "aria-expanded": String(voir), onclick: () => { s.voir[i] = !voir; demanderFocus(); redessiner(); } }, voir ? "Masquer la pièce" : "Revoir la pièce annotée") : null,
+                it.piece && voir ? h("div", { "data-focus": "", class: "bilan__piece" }, fiche(it.piece, it.reperes || {})) : null);
+            })
+          : [p("Aucun cas manqué.", "diapo__chapeau")]));
+    }
+
+    const it = items[s.i];
+    const rep = s.rep[s.i], ind = s.ind[s.i];
+    const fini = rep != null && (!aIndice(it) || ind);
+    const montrer = fini && b.retroImmediate !== false;
+    const suivant = () => { s.i++; aRemonter = true; demanderFocus(); redessiner(); };
+    const droite = h("div", { class: "diapo__col diapo__col--etroite" },
+      h("div", { class: "diapo__entete", "data-focus": rep == null ? "" : null }, h("span", null, `Cas ${s.i + 1} sur ${total}${s.jeu === 1 ? (s.exercice ? " · exercice" : " · reprise") : ""}`)));
+    if (it.choix) {
+      // Dans une série, le hasard seul peut encore grouper la bonne réponse
+      // (5 fois sur 7 en tête, mesuré) : sa position TOURNE d'un cas au
+      // suivant, et le hasard ne range que les autres choix.
+      const ordre = melange(it.choix.length, it.choix.map(c => c.x).join("|"));
+      const bonne = it.choix.findIndex(c => c.juste), cible = (s.i + s.jeu) % it.choix.length;
+      ordre.splice(ordre.indexOf(bonne), 1); ordre.splice(cible, 0, bonne);
+      droite.append(p(it.q, "indice__q"), h("div", { class: "options", role: "group", "aria-label": it.q.replace(/\*\*/g, "") }, ordre.map(j => h("button", {
+        class: "options__choix", type: "button", "aria-pressed": rep === j ? "true" : "false", disabled: rep != null,
+        onclick: () => { s.rep[s.i] = j; demanderFocus(); redessiner(); }
+      }, it.choix[j].x))));
+    } else {
+      const q = it.q || "Votre décision ?";
+      droite.append(p(q, "indice__q"));
+      droite.append(boutonsTri((v) => { s.rep[s.i] = v; demanderFocus(); redessiner(); }, rep, q));
+      if (rep != null && aIndice(it)) droite.append(boutonsIndice((x) => { s.ind[s.i] = x; demanderFocus(); redessiner(); }, ind));
+    }
+    if (fini) {
+      // La rétroaction passe AVANT le bouton : sur téléphone, un toucher
+      // rapide sur « Cas suivant » la sautait (audit 2). La scène s'allonge
+      // maintenant au lieu de couper : le bouton ne tombe plus sous le bord.
+      if (montrer) {
+        const ok = juste(it, s.i);
+        droite.append(retroEl(ok ? "juste" : "rate",
+          ok ? "Juste." : it.choix ? "Pas cette fois." : `Décision attendue : ${VERDICTS[it.bonne].court.toLowerCase()}.`,
+          it.choix ? it.choix[rep].retro : it.retro[rep],
+          ok && !bonIndice(it, s.i) ? h("div", { class: "retro__texte" }, `Ce qu'il fallait voir : ${nomsIndices(it)}.`) : null));
+      }
+      droite.append(boutonPlein(s.i + 1 < total ? "Cas suivant" : "Voir le bilan", suivant, !montrer));
+    }
+    const gauche = it.piece ? fiche(it.piece, montrer ? (it.reperes || {}) : {})
+      : h("div", { class: "consigne-situation" }, it.titre ? h("p", { class: "fiche__titre" }, it.titre) : null, p(it.situation), it.photo ? planche({ photo: it.photo }) : null);
+    return h("div", { class: "diapo__corps" }, h("div", { class: "diapo__col" }, gauche), droite);
+  }
+
+  // ============================================================
+  // Blocs de la version finale
+  // ============================================================
+  function bloc(b, k, redessiner) {
+    switch (b.t) {
+      case "mega":     return p(b.x, "diapo__mega");
+      case "chapeau":  return p(b.x, "diapo__chapeau");
+      case "para":     return p(b.x);
+      case "pied":     return p(b.x, "diapo__pied");
+      case "consigne": return h("div", { class: "consigne", html: riche(b.x) });
+      case "lien":     return h("a", { class: "lien-externe", href: b.href, target: "_blank", rel: "noopener" }, b.x);
+      case "regle":    return h("div", { class: "regle" }, b.items.map(r => h("div", { class: "regle__ligne" }, pastille(r.v), h("span", { class: "regle__si", html: riche(r.si) }))));
+      case "verif":    return h("ol", { class: "verif" }, b.items.map((it, i) => h("li", { class: "verif__item", "data-actif": b.actif && !b.actif.includes(i + 1) ? "false" : "true" },
+                         h("span", { class: "verif__q", html: riche(it.q) }), h("span", { class: "verif__r", html: riche(it.r) }))));
+      case "memo":     return h("div", { class: "memo" }, h("p", { class: "memo__titre" }, b.titre),
+                         h("ol", { class: "verif" }, b.items.map(it => h("li", { class: "verif__item" }, h("span", { class: "verif__q", html: riche(it.q) }), h("span", { class: "verif__r", html: riche(it.r) })))),
+                         b.pied ? p(b.pied, "diapo__pied") : null);
+      case "planche":  return planche(b.piece, b.reperes || {});
+      case "fiche":    return fiche(b.piece, b.reperes || {});
+      case "colonnes": return h("div", { class: "diapo__corps" },
+                         h("div", { class: "diapo__col" + (b.etroite === "gauche" ? " diapo__col--etroite" : "") }, b.gauche.map((x, i) => bloc(x, k + "g" + i, redessiner))),
+                         h("div", { class: "diapo__col" + (b.etroite === "droite" ? " diapo__col--etroite" : "") }, b.droite.map((x, i) => bloc(x, k + "d" + i, redessiner))));
+      case "tri":      return tri(b, k, redessiner);
+      case "exemple":  return exemple(b, k, redessiner);
+      case "options":  return options(b, k, redessiner);
+      case "ordre":    return ordre(b, k, redessiner);
+      case "serie":    return serie(b, k, redessiner);
+      default:         return p(`[bloc inconnu : ${b.t}]`);
+    }
+  }
+
+  const PLEIN_CADRE = ["tri", "exemple", "serie", "colonnes", "ordre"];
+  function sceneApres(d, module) {
+    const scene = h("div", { class: "scene" });
+    const dessiner = () => {
+      const diapo = h("section", { class: "diapo" + (d.gabarit === "ouverture" ? " diapo--ouverture" : ""), "aria-label": (d.titre || "Diapositive").replace(/\*\*/g, "") },
+        h("div", { class: "diapo__entete" }, h("span", null, `${module.id.replace("M", "Module ")} · ${module.titre}`), h("span", null, d.surtitre || "")),
+        d.titre ? h("h2", { class: "diapo__titre", html: riche(d.titre) }) : null);
+      const plein = d.blocs.length === 1 && (PLEIN_CADRE.includes(d.blocs[0].t) || (d.blocs[0].t === "options" && d.blocs[0].piece));
+      diapo.append(plein ? bloc(d.blocs[0], cle(d.id, 0), dessiner)
+        : h("div", { class: "diapo__corps diapo__corps--pile" }, d.blocs.map((b, i) => bloc(b, cle(d.id, i), dessiner))));
+      scene.replaceChildren(h("div", { class: "plateau" }, diapo));
+      if (aFocaliser) {
+        aFocaliser = false;
+        const cible = [...scene.querySelectorAll("[data-focus]")].pop();
+        if (cible) { if (!cible.matches("button, a")) cible.tabIndex = -1; cible.focus({ preventScroll: aRemonter }); }
+      }
+      // Au cas suivant, on remonte au haut de la scène : la photo et la
+      // question d'abord, pas le bas de l'écran précédent (audit 3).
+      if (aRemonter) { aRemonter = false; scene.scrollIntoView({ block: "start" }); }
+    };
+    dessiner();
+    return scene;
+  }
+
+  // ============================================================
+  // Version zéro (brouillon)
+  // ============================================================
+  function sceneAvant(d) {
+    const scene = h("div", { class: "scene" });
+    const br = h("section", { class: "brouillon", "aria-label": `Version zéro : ${d.titre}` }, h("h3", { class: "brouillon__titre" }, d.titre));
+    for (const b of d.blocs) {
+      if (b.t === "sous-titre" || b.t === "para") br.append(h("p", null, b.x));
+      else if (b.t === "puces") br.append(h("ul", null, b.x.map(x => h("li", null, x))));
+      else if (b.t === "image") br.append(h("div", { class: "brouillon__image" }, `[ ${b.alt} ]`));
+      else if (b.t === "chiffres") br.append(h("div", { class: "brouillon__chiffres" }, b.x.map(c => h("div", null, h("b", null, c.n), h("span", null, c.l)))));
+      else if (b.t === "note") br.append(h("p", { class: "brouillon__note" }, b.x));
+      else if (b.t === "grand") br.append(h("p", { class: "brouillon__grand" }, b.x));
+      else if (b.t === "legende") br.append(h("p", { class: "brouillon__legende" }, b.x));
+      else if (b.t === "quiz") br.append(h("div", { class: "brouillon__quiz" }, h("ol", null, b.questions.map(q => h("li", null, q.q, h("ol", null, q.choix.map(c => h("li", null, c)))))),
+        h("p", { class: "brouillon__legende" }, `Rétroaction prévue : « ${b.questions[0].retro.bien} » / « ${b.questions[0].retro.mal} »`)));
+    }
+    scene.append(h("div", { class: "plateau" }, br));
+    return scene;
+  }
+
+  // ============================================================
+  // Index : diapos de la version finale, et journal par diapo
+  // ============================================================
+  const diaposApres = [];
+  A.modules.forEach(m => m.diapos.forEach(d => diaposApres.push({ d, m })));
+  const diaposAvant = {};
+  V.modules.forEach(m => m.diapos.forEach(d => { diaposAvant[d.id] = { d, m }; }));
+  const parcours = J.entrees.map(e => ({ e, apres: e.apres ? diaposApres.find(x => x.d.id === e.apres) : null, avant: e.avant ? diaposAvant[e.avant] : null }));
+
+  // ============================================================
+  // Vues
+  // ============================================================
+  const racine = document.getElementById("vue");
+  const nav = document.getElementById("navigation");
+  let vue = "formation", idx = 0;
+
+  function critereEl(code, grav) {
+    const c = G.criteres[code];
+    return h("span", { class: "critere", title: c ? c.q : "" }, h("span", { class: "critere__code" }, code), c ? h("span", { class: "critere__nom" }, c.nom) : null,
+      grav ? h("span", { class: `gravite gravite--${grav}`, "aria-label": `constat ${grav}` }) : null);
+  }
+
+  const TOURS = [["tour2", "2e tour"], ["tour3", "3e tour"], ["tour4", "4e tour"]];
+  function lignesJournal(e) {
+    const statut = e.statut === "modifiee" ? "modifiée" : e.statut === "ajoutee" ? (e.tour > 1 ? `ajoutée au ${e.tour}e tour` : "ajoutée") : e.statut === "retiree" ? "retirée" : "conservée";
+    return h("div", { class: "journal" },
+      h("div", { class: "journal__ligne" },
+        h("div", { class: "journal__tete" }, h("span", { class: `statut statut--${e.statut}` }, statut), e.criteres.map(c => critereEl(c.code, c.grav))),
+        h("p", { class: "journal__texte", html: riche(e.pourquoi) }),
+        e.note ? h("p", { class: "note-marge" }, e.note) : null),
+      TOURS.map(([c, lib]) => e[c] ? h("div", { class: "journal__ligne journal__ligne--tour2" },
+        h("div", { class: "journal__tete" }, h("span", { class: "statut" }, lib), e[c].criteres.map(x => critereEl(x.code, x.grav))),
+        h("p", { class: "journal__texte", html: riche(e[c].pourquoi) })) : null));
+  }
+
+  function barreNav(max, libelle) {
+    return h("div", { class: "barre" },
+      h("button", { class: "barre__btn", type: "button", disabled: idx === 0, onclick: () => aller(idx - 1), "aria-label": "Diapositive précédente" }, "←"),
+      h("span", { class: "barre__pos" }, libelle),
+      h("button", { class: "barre__btn", type: "button", disabled: idx >= max - 1, onclick: () => aller(idx + 1), "aria-label": "Diapositive suivante" }, "→"));
+  }
+
+  function vueFormation() {
+    const { d, m } = diaposApres[idx];
+    return h("div", { class: "pile" }, sceneApres(d, m), barreNav(diaposApres.length, `${m.id} · ${m.diapos.indexOf(d) + 1} / ${m.diapos.length}`));
+  }
+
+  function vueComparer() {
+    const { e, apres, avant } = parcours[idx];
+    const cote = (titre, scene, cls) => h("figure", { class: "comparer__cote " + cls }, h("figcaption", { class: "comparer__legende" }, titre), scene);
+    const avantScene = avant ? sceneAvant(avant.d) : h("div", { class: "scene scene--vide" }, h("p", null, "Aucune diapositive équivalente dans la version zéro."));
+    const apresScene = apres ? sceneApres(apres.d, apres.m) : h("div", { class: "scene scene--vide" }, h("p", null, "Retirée de la version finale."));
+    const modTitre = apres ? `${apres.m.id} · ${apres.m.titre}` : `Version zéro · ${avant.m.titre}`;
+    return h("div", { class: "pile" },
+      h("div", { class: "comparer" },
+        cote(`Avant${avant ? " · " + avant.d.id.replace("A-", "") : ""}`, avantScene, "comparer__cote--avant"),
+        cote(`Après${apres ? " · " + apres.d.id : ""}`, apresScene, "comparer__cote--apres")),
+      barreNav(parcours.length, `${idx + 1} / ${parcours.length} · ${modTitre}`),
+      lignesJournal(e));
+  }
+
+  function vueBoucle() {
+    const compte = {};
+    J.entrees.forEach(e => [e, ...TOURS.map(([c]) => e[c]).filter(Boolean)].forEach(x => x.criteres.forEach(c => { compte[c.code] = (compte[c.code] || 0) + 1; })));
+    const maxc = Math.max(...Object.values(compte), 1);
+    const stat = (k) => J.entrees.filter(e => e.statut === k).length;
+    const audit = (a) => h("div", { class: "audit" },
+      h("h3", null, a.titre), h("p", { class: "audit__date" }, a.sous),
+      h("dl", { class: "audit__chiffres" }, ["bloquant", "majeur", "mineur"].map(g => h("div", null, h("dt", null, h("span", { class: `gravite gravite--${g}` }, g)), h("dd", null, String(a[g]))))),
+      a.note ? p(a.note, "audit__note") : null);
+    return h("div", { class: "boucle" },
+      h("section", { class: "boucle__bloc" },
+        h("h2", null, "Cadrage"), p(B.cadrage.public), p(B.cadrage.ecart),
+        h("h3", null, "Objectifs"),
+        h("ol", { class: "objectifs" }, A.objectifs.map(o => h("li", null, h("b", null, o.id), " ", h("span", { html: riche(o.x) })))),
+        h("h3", null, "Alignement"),
+        h("div", { class: "defile" }, h("table", { class: "tableau" },
+          h("thead", null, h("tr", null, h("th", null, "Objectif"), h("th", null, "Pratiqué dans"), h("th", null, "Évalué dans"))),
+          h("tbody", null, B.alignement.map(r => h("tr", null, h("td", null, h("b", null, r.o)), h("td", null, r.pratique), h("td", null, r.evalue))))))),
+      h("section", { class: "boucle__bloc" },
+        h("h2", null, "Les audits"),
+        h("div", { class: "audits" }, B.audits.map(audit)),
+        h("p", { class: "boucle__bilan" }, `${stat("modifiee")} diapositives modifiées, ${stat("ajoutee")} ajoutées, ${stat("retiree")} retirées, ${stat("conservee")} conservées. Durée : ${V.duree} → ${A.duree}.`)),
+      h("section", { class: "boucle__bloc" },
+        h("h2", null, "Critères qui ont motivé les changements"),
+        h("p", { class: "boucle__aide" }, "Nombre de changements, tous tours confondus, qui citent chaque critère de la grille."),
+        h("div", { class: "barres" }, Object.entries(G.criteres).map(([code]) => {
+          const n = compte[code] || 0;
+          return h("div", { class: "barres__ligne" + (n ? "" : " barres__ligne--nul") },
+            critereEl(code), h("span", { class: "barres__piste" }, h("span", { class: "barres__trait", style: `width:${(n / maxc) * 100}%` })), h("span", { class: "barres__n" }, String(n)));
+        }))),
+      h("section", { class: "boucle__bloc" },
+        h("h2", null, "Ce que la boucle ne vérifie pas"),
+        h("ul", null, B.limites.map(l => h("li", { html: riche(l) })))));
+  }
+
+  function dessinerNav() {
+    nav.replaceChildren();
+    if (vue === "boucle") { nav.hidden = true; return; }
+    nav.hidden = false;
+    if (vue === "formation") {
+      A.modules.forEach(m => {
+        const premier = diaposApres.findIndex(x => x.m === m);
+        const actif = diaposApres[idx].m === m;
+        nav.append(h("button", { class: "nav__module" + (actif ? " nav__module--actif" : ""), type: "button", "aria-current": actif ? "true" : null, onclick: () => aller(premier) },
+          h("span", { class: "nav__num" }, m.id), h("span", null, m.titre), h("span", { class: "nav__duree" }, m.duree)));
+      });
+    } else {
+      let dernier = null;
+      parcours.forEach((x, i) => {
+        const m = A.modules.find(mm => mm.id === x.e.module);
+        const mod = m ? `${m.id} · ${m.titre}` : x.e.module;
+        if (mod !== dernier) { nav.append(h("div", { class: "nav__groupe" }, mod)); dernier = mod; }
+        nav.append(h("button", { class: "nav__diapo" + (i === idx ? " nav__diapo--actif" : ""), type: "button", "aria-current": i === idx ? "true" : null, onclick: () => aller(i) },
+          h("span", { class: `statut statut--${x.e.statut}`, title: { modifiee: "Modifiée", ajoutee: "Ajoutée", retiree: "Retirée", conservee: "Conservée" }[x.e.statut] }, x.e.statut[0].toUpperCase()),
+          h("span", { class: x.e.statut === "retiree" ? "nav__retiree" : null }, x.apres ? (x.apres.d.titre || x.apres.d.id).replace(/\*\*/g, "") : x.avant.d.titre)));
+      });
+    }
+  }
+
+  function dessiner() {
+    document.querySelectorAll("[data-vue]").forEach(b => b.setAttribute("aria-selected", String(b.dataset.vue === vue)));
+    racine.replaceChildren(vue === "formation" ? vueFormation() : vue === "comparer" ? vueComparer() : vueBoucle());
+    dessinerNav();
+    try { history.replaceState(null, "", "#" + vue); } catch (_) {}
+  }
+  function aller(i) {
+    const max = vue === "formation" ? diaposApres.length : parcours.length;
+    idx = Math.max(0, Math.min(max - 1, i));
+    dessiner();
+  }
+  function changerVue(v) {
+    if (v === vue) return;
+    if (v === "comparer" && vue === "formation") { const id = diaposApres[idx].d.id; const j = parcours.findIndex(x => x.apres && x.apres.d.id === id); idx = j < 0 ? 0 : j; }
+    else if (v === "formation" && vue === "comparer") { const x = parcours[idx]; const j = x.apres ? diaposApres.findIndex(y => y.d.id === x.apres.d.id) : 0; idx = j < 0 ? 0 : j; }
+    else idx = 0;
+    vue = v; dessiner();
+  }
+
+  document.querySelectorAll("[data-vue]").forEach(b => b.addEventListener("click", () => changerVue(b.dataset.vue)));
+  document.addEventListener("keydown", (e) => {
+    // Dans la diapo, les flèches appartiennent à l'activité.
+    if (vue === "boucle" || e.target.closest("input, textarea, .scene")) return;
+    if (e.key === "ArrowRight" || e.key === "PageDown") aller(idx + 1);
+    else if (e.key === "ArrowLeft" || e.key === "PageUp") aller(idx - 1);
+  });
+
+  const depart = (location.hash || "").slice(1);
+  if (["formation", "comparer", "boucle"].includes(depart)) vue = depart;
+  dessiner();
+})();
+
+</script>
+
+</html>

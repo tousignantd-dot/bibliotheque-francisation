@@ -1,0 +1,2199 @@
+<!doctype html>
+<html lang="fr">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>[hidden]{display:none!important}</style>
+<title>Le dernier millimètre</title>
+<meta name="description" content="Formation « Remplacer les plaquettes de frein avant », conçue et révisée avec la boucle didactique : chaque diapositive, avant et après, avec le critère qui justifie le changement.">
+<style>
+/* ============================================================
+   CALQUE — système de design pour formations révisées
+   ------------------------------------------------------------
+   Deux couches, comme sur une table à dessin :
+   · la FEUILLE  — ce que l'apprenant voit (la formation) ;
+   · le CALQUE   — la couche de révision posée par-dessus, tracée
+                   au crayon bleu non photographique : critères,
+                   constats, avant/après. L'apprenant ne la voit
+                   jamais ; le lecteur du portfolio, oui.
+   Et un troisième registre, BROUILLON, qui reproduit fidèlement
+   la diapositive « par défaut » de la version zéro.
+
+   Règles :
+   1. Le bleu calque n'appartient QU'à la couche de révision.
+      Il ne sert jamais à la formation elle-même.
+   2. Les trois verdicts (légitime / à vérifier / frauduleux)
+      portent toujours une forme ET une couleur (G1).
+   3. Toute adresse et tout lien s'affichent en mono : c'est là
+      que se cachent les lettres jumelles (rn/m, l/I, 0/o).
+   ============================================================ */
+
+@import url("https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&family=Schibsted+Grotesk:wght@500;700;800&family=Kalam:wght@400;700&display=swap");
+
+:root {
+  color-scheme: light;
+
+  /* ---------- Feuille (formation) ---------- */
+  --cq-papier:      #EEF1F3;  /* fond de page : gris-bleu d'une boîte de réception */
+  --cq-feuille:     #FFFFFF;  /* la diapositive */
+  --cq-retrait:     #F5F7F8;  /* surface en retrait : en-tête de courriel, encart */
+  --cq-filet:       #D5DCE1;
+  --cq-sourdine:    #5A6873;  /* texte secondaire — 5,7:1 sur blanc */
+  --cq-encre:       #13212C;  /* texte principal — bleu nuit */
+  --cq-action:      #13212C;  /* bouton principal : l'encre elle-même */
+  --cq-action-ink:  #FFFFFF;
+  --cq-focus:       #E8A317;
+  --cq-lien:        #1A5FB4;  /* lien et bouton du courriel simulé — 6,3:1 */
+
+  /* ---------- Verdicts (sémantiques, forme + couleur) ---------- */
+  --cq-sur:         #1D7A4C;  --cq-sur-fond:     #E3F2EA;   /* ✓ légitime   */
+  --cq-doute:       #9A6206;  --cq-doute-fond:   #FBF0D9;   /* ? à vérifier */
+  --cq-fraude:      #B3261E;  --cq-fraude-fond:  #FBE4E1;   /* ✕ frauduleux */
+
+  /* ---------- Calque (révision) ---------- */
+  --cq-calque:      #4C9BD6;  /* bleu non photographique : traits, repères */
+  --cq-calque-ink:  #0B4A7A;  /* texte du calque — 9,2:1 sur blanc */
+  --cq-calque-voile: rgba(76, 155, 214, 0.08);
+  --cq-calque-trame: rgba(76, 155, 214, 0.18);
+
+  /* Gravités du constat d'origine — graduées dans le bleu du calque,
+     pour ne jamais se confondre avec les verdicts de la formation. */
+  --cq-grav-bloquant: #0B4A7A;
+  --cq-grav-majeur:   #2F7EBB;
+  --cq-grav-mineur:   #9CC7E8;
+
+  /* ---------- Brouillon (version zéro) ---------- */
+  --br-fond:   #FFFFFF;
+  --br-titre:  #1F4E9A;
+  --br-texte:  #222222;
+  --br-barre:  #1F4E9A;
+  --br-police: Calibri, Carlito, "Segoe UI", Arial, sans-serif;
+
+  /* ---------- Typographie ---------- */
+  --cq-police-titre: "Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --cq-police-texte: "Atkinson Hyperlegible", Verdana, Tahoma, sans-serif;
+  --cq-police-mono:  "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+  --cq-police-main:  "Kalam", "Segoe Print", "Comic Neue", cursive;
+
+  /* Échelle des diapositives, en unités de conteneur :
+     la diapo est une scène 16:9 ; tout y est proportionnel à sa largeur. */
+  --cq-d-mega:  5.6cqw;
+  --cq-d-titre: 3.6cqw;
+  --cq-d-inter: 2.3cqw;
+  --cq-d-texte: 1.75cqw;
+  --cq-d-petit: 1.35cqw;
+  --cq-d-micro: 1.1cqw;
+  /* Planchers : sous ces tailles, la diapo passe en mode « feuille qui
+     s'allonge » (voir @container plus bas) plutôt que de rapetisser. */
+
+  /* Échelle de l'interface autour (rem) */
+  --cq-t-xl: 2rem;
+  --cq-t-l:  1.375rem;
+  --cq-t-m:  1.0625rem;
+  --cq-t-s:  0.9375rem;
+  --cq-t-xs: 0.8125rem;
+
+  --cq-rayon:   6px;
+  --cq-rayon-l: 12px;
+  --cq-ombre:   0 1px 2px rgba(19,33,44,.06), 0 8px 24px rgba(19,33,44,.08);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --cq-papier:   #0E171E;
+    --cq-feuille:  #16222B;
+    --cq-retrait:  #1C2A34;
+    --cq-filet:    #2B3B47;
+    --cq-sourdine: #9AABB8;
+    --cq-encre:    #E6EDF2;
+    --cq-action:   #E6EDF2;
+    --cq-action-ink: #13212C;
+    --cq-lien: #7DB3F0;
+    --cq-sur:    #5FCB93;  --cq-sur-fond:    #173327;
+    --cq-doute:  #E9B454;  --cq-doute-fond:  #3A2D12;
+    --cq-fraude: #F08A80;  --cq-fraude-fond: #3E1B18;
+    --cq-calque: #6FB6EA;
+    --cq-calque-ink: #9FD0F5;
+    --cq-calque-voile: rgba(111, 182, 234, 0.08);
+    --cq-calque-trame: rgba(111, 182, 234, 0.22);
+    --cq-grav-bloquant: #9FD0F5;
+    --cq-grav-majeur:   #5A9FD4;
+    --cq-grav-mineur:   #2F5C80;
+    --cq-ombre: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --cq-papier:   #0E171E;
+  --cq-feuille:  #16222B;
+  --cq-retrait:  #1C2A34;
+  --cq-filet:    #2B3B47;
+  --cq-sourdine: #9AABB8;
+  --cq-encre:    #E6EDF2;
+  --cq-action:   #E6EDF2;
+  --cq-action-ink: #13212C;
+  --cq-lien: #7DB3F0;
+  --cq-sur:    #5FCB93;  --cq-sur-fond:    #173327;
+  --cq-doute:  #E9B454;  --cq-doute-fond:  #3A2D12;
+  --cq-fraude: #F08A80;  --cq-fraude-fond: #3E1B18;
+  --cq-calque: #6FB6EA;
+  --cq-calque-ink: #9FD0F5;
+  --cq-calque-voile: rgba(111, 182, 234, 0.08);
+  --cq-calque-trame: rgba(111, 182, 234, 0.22);
+  --cq-grav-bloquant: #9FD0F5;
+  --cq-grav-majeur:   #5A9FD4;
+  --cq-grav-mineur:   #2F5C80;
+  --cq-ombre: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+}
+
+/* ============================================================
+   Base
+   ============================================================ */
+.cq, .cq * { box-sizing: border-box; }
+.cq {
+  font-family: var(--cq-police-texte);
+  color: var(--cq-encre);
+  background: var(--cq-papier);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+.cq :focus-visible { outline: 3px solid var(--cq-focus); outline-offset: 2px; border-radius: 3px; }
+.cq-mono { font-family: var(--cq-police-mono); font-size: .95em; letter-spacing: 0; }
+.cq-visuel-cache { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+@media (prefers-reduced-motion: reduce) {
+  .cq *, .cq *::before, .cq *::after { animation: none !important; transition: none !important; }
+}
+
+/* ============================================================
+   Scène — la diapositive 16:9, en unités de conteneur
+   ============================================================ */
+.scene {
+  container-type: inline-size;
+  width: 100%;
+  max-width: 100%;
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--cq-rayon-l);
+  background: var(--cq-feuille);
+  box-shadow: var(--cq-ombre);
+}
+.plateau { position: relative; aspect-ratio: 16 / 9; max-width: 100%; }
+.scene--vide {
+  aspect-ratio: 16 / 9;
+  display: grid; place-items: center;
+  background: repeating-linear-gradient(135deg, var(--cq-calque-voile) 0 10px, transparent 10px 20px), var(--cq-feuille);
+  box-shadow: inset 0 0 0 2px var(--cq-calque-trame);
+}
+.scene--vide p {
+  font-family: var(--cq-police-main); color: var(--cq-calque-ink);
+  font-size: var(--cq-d-inter); margin: 0; text-align: center; max-width: 70%;
+}
+
+/* ============================================================
+   Feuille — composition d'une diapo de formation
+   ============================================================ */
+.diapo {
+  position: absolute; inset: 0;
+  padding: 4.2cqw 5cqw 3.6cqw;
+  display: flex; flex-direction: column; gap: 1.8cqw;
+  font-size: var(--cq-d-texte);
+}
+.diapo__entete {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 2cqw;
+  font-size: var(--cq-d-micro); color: var(--cq-sourdine);
+  letter-spacing: .06em; text-transform: uppercase;
+}
+.diapo__titre {
+  font-family: var(--cq-police-titre); font-weight: 800;
+  font-size: var(--cq-d-titre); line-height: 1.05; letter-spacing: -.02em;
+  margin: 0; text-wrap: balance;
+}
+.diapo__corps { flex: 1; min-height: 0; display: flex; gap: 3cqw; }
+.diapo__corps--pile { flex-direction: column; gap: 1.4cqw; }
+.diapo__col { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1.2cqw; }
+.diapo__col--etroite { flex: 0 0 34%; }
+.diapo p { margin: 0; max-width: 60ch; }
+.diapo__mega {
+  font-family: var(--cq-police-titre); font-weight: 800;
+  font-size: var(--cq-d-mega); line-height: 1; letter-spacing: -.035em; margin: 0; text-wrap: balance;
+}
+.diapo__chapeau { font-size: var(--cq-d-inter); line-height: 1.3; margin: 0; max-width: 34ch; }
+.diapo__pied { font-size: var(--cq-d-petit); color: var(--cq-sourdine); }
+
+/* Diapo d'ouverture de module : fond encre, plein cadre */
+.diapo--ouverture { background: var(--cq-encre); color: var(--cq-feuille); justify-content: flex-end; }
+.diapo--ouverture .diapo__entete { color: color-mix(in srgb, var(--cq-feuille) 70%, transparent); }
+
+/* ---------- Verdict : pastille forme + couleur ---------- */
+.verdict {
+  display: inline-flex; align-items: center; gap: .45em;
+  padding: .2em .7em .2em .35em; border-radius: 999px;
+  font-weight: 700; font-size: .9em; line-height: 1.4; white-space: nowrap;
+}
+.verdict::before {
+  content: ""; width: 1.15em; height: 1.15em; flex: none;
+  display: inline-grid; place-items: center; border-radius: 50%;
+  font-size: .8em; line-height: 1.15em; text-align: center; color: var(--cq-feuille);
+}
+.verdict--sur    { background: var(--cq-sur-fond);    color: var(--cq-sur); }
+.verdict--doute  { background: var(--cq-doute-fond);  color: var(--cq-doute); }
+.verdict--fraude { background: var(--cq-fraude-fond); color: var(--cq-fraude); }
+.verdict--sur::before    { content: "✓"; background: var(--cq-sur); }
+.verdict--doute::before  { content: "?"; background: var(--cq-doute); border-radius: 3px; }
+.verdict--fraude::before { content: "✕"; background: var(--cq-fraude); border-radius: 2px; transform: rotate(0deg); }
+
+/* ---------- Vérification : les trois questions ---------- */
+.verif { display: grid; gap: 1cqw; margin: 0; padding: 0; list-style: none; counter-reset: verif; }
+.verif__item {
+  counter-increment: verif;
+  display: grid; grid-template-columns: 3.2cqw 1fr; gap: .2cqw 1.2cqw; align-items: baseline;
+}
+.verif__item::before {
+  content: counter(verif);
+  grid-row: span 2;
+  font-family: var(--cq-police-titre); font-weight: 800; font-size: var(--cq-d-inter);
+  width: 3.2cqw; height: 3.2cqw; border-radius: 50%;
+  display: grid; place-items: center; border: .2cqw solid currentColor;
+}
+.verif__q { font-weight: 700; font-size: var(--cq-d-inter); line-height: 1.2; }
+.verif__r { color: var(--cq-sourdine); font-size: var(--cq-d-petit); }
+.verif__item[data-actif="false"] { opacity: .35; }
+
+/* ============================================================
+   Courriel simulé — imite un client de messagerie
+   ============================================================ */
+.courriel {
+  background: var(--cq-feuille);
+  border: 1px solid var(--cq-filet);
+  border-radius: var(--cq-rayon);
+  font-size: var(--cq-d-petit);
+  display: flex; flex-direction: column; min-height: 0; position: relative;
+  overflow: hidden;
+}
+.courriel__entete {
+  background: var(--cq-retrait); border-bottom: 1px solid var(--cq-filet);
+  padding: 1.1cqw 1.4cqw; display: grid; gap: .35cqw;
+}
+.courriel__objet { font-weight: 700; font-size: var(--cq-d-texte); line-height: 1.25; }
+.courriel__de { display: flex; flex-wrap: wrap; align-items: center; gap: .3cqw .8cqw; }
+.courriel__avatar {
+  width: 2.4cqw; height: 2.4cqw; border-radius: 50%; flex: none;
+  display: grid; place-items: center; font-weight: 700; font-size: var(--cq-d-micro);
+  background: var(--cq-filet); color: var(--cq-encre);
+}
+.courriel__nom {
+  font-weight: 700; background: none; border: 0; padding: 0; color: inherit; font: inherit; font-weight: 700;
+  cursor: pointer; text-decoration: underline dotted; text-underline-offset: .25em;
+}
+.courriel__adresse { font-family: var(--cq-police-mono); color: var(--cq-sourdine); font-size: .92em; }
+.courriel__adresse[hidden] { display: none; }
+.courriel__meta { color: var(--cq-sourdine); font-size: var(--cq-d-micro); }
+.courriel__corps { padding: 1.3cqw 1.4cqw; display: grid; gap: .8cqw; align-content: start; overflow: auto; }
+.courriel__corps p { margin: 0; }
+.courriel__lien {
+  color: var(--cq-lien); text-decoration: underline; cursor: pointer;
+  background: none; border: 0; padding: 0; font: inherit; text-align: left;
+}
+.courriel__bouton {
+  justify-self: start; background: var(--cq-lien); color: var(--cq-feuille); border: 0; border-radius: 4px;
+  padding: .6cqw 1.4cqw; font: inherit; font-weight: 700; cursor: pointer;
+}
+.courriel__pj {
+  display: inline-flex; gap: .6cqw; align-items: center; justify-self: start;
+  border: 1px solid var(--cq-filet); border-radius: 4px; padding: .5cqw .9cqw;
+  font-family: var(--cq-police-mono); font-size: var(--cq-d-micro);
+}
+/* Barre d'état : là où le client affiche la destination réelle d'un lien */
+.courriel__etat {
+  position: absolute; left: 0; bottom: 0; max-width: 90%;
+  background: var(--cq-encre); color: var(--cq-feuille);
+  font-family: var(--cq-police-mono); font-size: var(--cq-d-micro);
+  padding: .35cqw .9cqw; border-top-right-radius: 4px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.courriel__etat[hidden] { display: none; }
+
+/* Repère : l'endroit à regarder, pointé sur l'objet (C3) */
+.repere {
+  position: relative; border-radius: 3px;
+  box-shadow: 0 0 0 .22cqw var(--cq-focus);
+  background: color-mix(in srgb, var(--cq-focus) 16%, transparent);
+}
+.repere[data-n]::after {
+  content: attr(data-n);
+  position: absolute; top: -1.2cqw; right: -1.2cqw;
+  width: 2cqw; height: 2cqw; border-radius: 50%;
+  background: var(--cq-focus); color: #13212C;
+  font: 800 var(--cq-d-micro)/2cqw var(--cq-police-titre); text-align: center;
+}
+
+/* ============================================================
+   Tri — l'apprenant décide
+   ============================================================ */
+.tri { display: flex; flex-wrap: wrap; gap: .9cqw; }
+.tri__choix {
+  font: inherit; font-weight: 700; font-size: var(--cq-d-petit);
+  border: .15cqw solid var(--cq-filet); background: var(--cq-feuille); color: var(--cq-encre);
+  border-radius: 999px; padding: .7cqw 1.5cqw; cursor: pointer;
+  display: inline-flex; align-items: center; gap: .6cqw;
+  transition: border-color .15s, background .15s;
+}
+.tri__choix:hover { border-color: var(--cq-encre); }
+.tri__choix[aria-pressed="true"] { background: var(--cq-action); color: var(--cq-action-ink); border-color: var(--cq-action); }
+.tri__choix:disabled { cursor: default; }
+.tri__choix:disabled:not([aria-pressed="true"]) { opacity: .45; }
+
+.options { display: grid; gap: .8cqw; }
+.options__choix {
+  font: inherit; font-size: var(--cq-d-petit); text-align: left; cursor: pointer;
+  border: .15cqw solid var(--cq-filet); background: var(--cq-feuille); color: var(--cq-encre);
+  border-radius: var(--cq-rayon); padding: .9cqw 1.2cqw; line-height: 1.35;
+}
+.options__choix:hover { border-color: var(--cq-encre); }
+.options__choix[aria-pressed="true"] { border-color: var(--cq-encre); box-shadow: inset .4cqw 0 0 var(--cq-encre); }
+
+/* ---------- Rétroaction ---------- */
+.retro {
+  border-radius: var(--cq-rayon); padding: 1cqw 1.3cqw;
+  font-size: var(--cq-d-petit); display: grid; gap: .4cqw;
+  border-left: .45cqw solid currentColor;
+}
+.retro[hidden] { display: none; }
+.retro--juste  { background: var(--cq-sur-fond);    color: var(--cq-sur); }
+.retro--rate   { background: var(--cq-fraude-fond); color: var(--cq-fraude); }
+.retro--neutre { background: var(--cq-retrait);     color: var(--cq-encre); }
+.retro__titre { font-weight: 700; }
+.retro__texte { color: var(--cq-encre); }
+
+/* ---------- Aide-mémoire ---------- */
+.memo {
+  border: .2cqw solid var(--cq-encre); border-radius: var(--cq-rayon-l);
+  padding: 1.6cqw 2cqw; display: grid; gap: 1cqw; background: var(--cq-feuille);
+}
+.memo__titre { font-family: var(--cq-police-titre); font-weight: 800; font-size: var(--cq-d-inter); margin: 0; }
+
+/* ---------- Encart consigne ---------- */
+.consigne {
+  display: flex; gap: 1cqw; align-items: baseline;
+  font-size: var(--cq-d-petit); font-weight: 700;
+}
+.consigne::before {
+  content: "À vous"; flex: none;
+  font-size: var(--cq-d-micro); letter-spacing: .08em; text-transform: uppercase;
+  background: var(--cq-encre); color: var(--cq-feuille); border-radius: 3px; padding: .15cqw .6cqw;
+}
+
+/* ============================================================
+   Brouillon — reproduit la diapo par défaut de la version zéro
+   ============================================================ */
+.brouillon {
+  position: absolute; inset: 0; background: var(--br-fond); color: var(--br-texte);
+  font-family: var(--br-police); font-size: 1.9cqw; line-height: 1.3;
+  padding: 3.4cqw 5cqw; display: flex; flex-direction: column; gap: 1.6cqw;
+  color-scheme: light;
+}
+.brouillon::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1.3cqw; background: var(--br-barre);
+}
+.brouillon__titre { color: var(--br-titre); font-size: 3.4cqw; font-weight: 400; margin: 0; line-height: 1.1; }
+.brouillon ul { margin: 0; padding-left: 1.4em; display: grid; gap: .5cqw; }
+.brouillon p { margin: 0; }
+.brouillon__image {
+  flex: 1; min-height: 5cqw; max-height: 18cqw;
+  border: .15cqw dashed #9AA3AD; border-radius: 4px; display: grid; place-items: center;
+  font-size: 1.3cqw; color: #6B7580; font-style: italic; padding: 1cqw; text-align: center;
+  background: repeating-linear-gradient(45deg, #F3F5F7 0 8px, #fff 8px 16px);
+}
+.brouillon__chiffres { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2cqw; margin-top: 1cqw; }
+.brouillon__chiffres b { display: block; color: var(--br-titre); font-size: 4cqw; }
+.brouillon__chiffres span { font-size: 1.4cqw; }
+.brouillon__note { font-style: italic; color: #B00020; }
+.brouillon__grand { font-size: 4.2cqw; color: var(--br-titre); text-align: center; margin-top: 6cqw; }
+.brouillon__quiz { display: grid; gap: .9cqw; font-size: 1.45cqw; }
+.brouillon__quiz ol { padding-left: 1.3em; margin: 0; display: grid; gap: .7cqw; }
+.brouillon__quiz ol ol { list-style: lower-alpha; margin-top: .2cqw; gap: 0; color: #444; }
+.brouillon .courriel { font-size: 1.35cqw; }
+.brouillon__legende { font-size: 1.4cqw; color: #444; font-style: italic; }
+
+/* ============================================================
+   Calque — la couche de révision
+   ============================================================ */
+.critere {
+  display: inline-flex; align-items: baseline; gap: .45em;
+  font-family: var(--cq-police-mono); font-size: var(--cq-t-xs); font-weight: 500;
+  color: var(--cq-calque-ink); background: var(--cq-calque-voile);
+  border: 1px solid var(--cq-calque-trame); border-radius: 3px; padding: .1em .5em;
+  white-space: nowrap;
+}
+.critere__code { font-weight: 500; }
+.critere__nom { font-family: var(--cq-police-texte); font-weight: 400; }
+
+/* Gravité : trois épaisseurs de trait, pas seulement trois teintes */
+.gravite {
+  display: inline-flex; align-items: center; gap: .4em;
+  font-size: var(--cq-t-xs); color: var(--cq-calque-ink); white-space: nowrap;
+}
+.gravite::before { content: ""; width: 1.6em; border-top: 2px solid var(--cq-grav-mineur); }
+.gravite--majeur::before { border-top: 4px solid var(--cq-grav-majeur); }
+.gravite--bloquant::before { border-top: 6px solid var(--cq-grav-bloquant); }
+
+.statut {
+  font-family: var(--cq-police-mono); font-size: var(--cq-t-xs); text-transform: uppercase; letter-spacing: .08em;
+  color: var(--cq-calque-ink); border: 1px dashed var(--cq-calque); border-radius: 3px; padding: .1em .5em;
+}
+.statut--ajoutee  { border-style: solid; }
+.statut--retiree  { text-decoration: line-through; }
+
+.note-marge {
+  font-family: var(--cq-police-main); color: var(--cq-calque-ink);
+  font-size: 1.05rem; line-height: 1.35;
+}
+
+/* Journal de révision d'une diapo */
+.journal { display: grid; gap: .9rem; }
+.journal__ligne {
+  display: grid; gap: .35rem; padding: .8rem .9rem;
+  border-left: 3px solid var(--cq-calque);
+  background: var(--cq-calque-voile); border-radius: 0 var(--cq-rayon) var(--cq-rayon) 0;
+}
+.journal__tete { display: flex; flex-wrap: wrap; gap: .4rem .6rem; align-items: center; }
+.journal__texte { font-size: var(--cq-t-s); margin: 0; }
+
+/* Superposition : le calque posé sur la diapo */
+.surcouche {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    linear-gradient(var(--cq-calque-trame) 1px, transparent 1px),
+    linear-gradient(90deg, var(--cq-calque-trame) 1px, transparent 1px);
+  background-size: 2.5cqw 2.5cqw;
+  mix-blend-mode: multiply; opacity: .5;
+}
+
+/* Étiquette « avant » / « après » sur une scène */
+.marque {
+  position: absolute; top: 1.2cqw; left: 1.2cqw; z-index: 2;
+  font-family: var(--cq-police-mono); font-size: max(10px, var(--cq-d-micro)); letter-spacing: .1em; text-transform: uppercase;
+  padding: .2em .6em; border-radius: 3px;
+  background: var(--cq-calque-ink); color: #fff;
+}
+.marque--avant { background: #6B7580; }
+
+/* ---------- Bilan d'une série ---------- */
+.bilan { overflow: auto; gap: .9cqw; }
+.bilan__cas { border: 1px solid var(--cq-filet); border-radius: var(--cq-rayon); padding: .9cqw 1.1cqw; display: grid; gap: .3cqw; font-size: var(--cq-d-petit); }
+.bilan__tete { display: flex; justify-content: space-between; gap: 1cqw; align-items: baseline; font-weight: 700; }
+.bilan__adresse { color: var(--cq-sourdine); font-size: var(--cq-d-micro); margin: 0; }
+
+/* ---------- Correctifs de composition ---------- */
+.diapo__corps > .diapo__col { overflow: auto; padding: .4cqw; margin: -.4cqw; }  /* place pour le focus et les pastilles de repère */
+.courriel__bouton.repere { background: var(--cq-lien); }
+.lien-discret {
+  font: inherit; font-size: var(--cq-d-micro); background: none; border: 0; padding: 0; cursor: pointer;
+  color: var(--cq-sourdine); text-decoration: underline; text-underline-offset: .2em; align-self: flex-start;
+}
+
+/* Le brouillon reste une diapo claire par défaut, même en thème sombre :
+   il fige les jetons de la feuille pour ses enfants (courriel compris). */
+.brouillon {
+  --cq-feuille: #FFFFFF; --cq-retrait: #F5F7F8; --cq-filet: #D5DCE1;
+  --cq-encre: #13212C; --cq-sourdine: #5A6873; --cq-lien: #1A5FB4;
+}
+
+
+/* ============================================================
+   Mode étroit — la diapo cesse d'être une scène 16:9
+   ------------------------------------------------------------
+   Sous 760 px de large (téléphone, demi-écran), le plateau perd
+   son format fixe, les tailles passent en rem avec un plancher,
+   et les colonnes s'empilent : courriel, décision, rétroaction.
+   Au-dessus, les tailles proportionnelles ont un plancher lisible.
+   ============================================================ */
+.scene {
+  --cq-d-mega:  max(5.6cqw, 30px);
+  --cq-d-titre: max(3.6cqw, 22px);
+  --cq-d-inter: max(2.3cqw, 16px);
+  --cq-d-texte: max(1.75cqw, 15px);
+  --cq-d-petit: max(1.35cqw, 14px);
+  --cq-d-micro: max(1.1cqw, 12px);
+}
+.brouillon { font-size: max(1.9cqw, 13px); }
+.brouillon__titre { font-size: max(3.4cqw, 20px); }
+
+@container (max-width: 760px) {
+  .plateau { aspect-ratio: auto; }
+  .diapo, .brouillon { position: relative; inset: auto; padding: 20px 18px 24px; gap: 14px; }
+  .brouillon { padding-bottom: 36px; }
+  .diapo__corps { flex-direction: column; gap: 16px; }
+  .diapo__col--etroite { flex: none; }
+  .diapo__corps > .diapo__col { overflow: visible; }
+  .diapo__entete { flex-wrap: wrap; }
+  .courriel__entete, .courriel__corps { padding: 12px 14px; gap: 6px; }
+  .courriel__avatar { width: 28px; height: 28px; }
+  .courriel__bouton { padding: 10px 16px; }
+  .courriel__etat { position: static; max-width: none; white-space: normal; word-break: break-all; padding: 6px 10px; border-radius: 0; }
+  .courriel__pj { padding: 6px 10px; }
+  .tri { gap: 8px; }
+  .tri__choix, .options__choix, .courriel__action { min-height: 44px; padding: 10px 16px; }
+  .options { gap: 8px; }
+  .options__choix { padding: 12px 14px; }
+  .retro { padding: 12px 14px; border-left-width: 5px; gap: 4px; }
+  .verif { gap: 12px; }
+  .verif__item { grid-template-columns: 32px 1fr; gap: 2px 12px; }
+  .verif__item::before { width: 32px; height: 32px; border-width: 2px; }
+  .memo { padding: 16px; gap: 10px; }
+  .consigne { gap: 8px; }
+  .consigne::before { padding: 2px 8px; }
+  .repere { box-shadow: 0 0 0 2px var(--cq-focus); }
+  .repere[data-n]::after { width: 20px; height: 20px; top: -11px; right: -11px; line-height: 20px; }
+  .bilan__cas { padding: 12px; gap: 6px; }
+  .lien-discret { min-height: 44px; }
+  .brouillon__chiffres { grid-template-columns: 1fr; gap: 10px; }
+  .brouillon__image { min-height: 60px; max-height: none; font-size: 12px; }
+  .brouillon__quiz { font-size: 13px; }
+}
+
+/* ---------- Barre d'actions du courriel (geste Signaler) ---------- */
+.courriel__actions {
+  display: flex; flex-wrap: wrap; gap: .5cqw; padding: .7cqw 1.1cqw;
+  border-bottom: 1px solid var(--cq-filet); background: var(--cq-feuille);
+}
+.courriel__action {
+  font: inherit; font-size: var(--cq-d-micro); font-weight: 700; cursor: pointer;
+  border: 1px solid var(--cq-filet); background: var(--cq-retrait); color: var(--cq-encre);
+  border-radius: 4px; padding: .4cqw 1cqw;
+}
+.courriel__action:hover { border-color: var(--cq-encre); }
+.courriel__action[aria-pressed="true"] { background: var(--cq-action); color: var(--cq-action-ink); border-color: var(--cq-action); }
+.courriel__action--signaler::before { content: "⚑ "; }
+
+.courriel__etat--alerte { background: var(--cq-fraude); color: #fff; white-space: normal; }
+
+.tri__choix--plein { background: var(--cq-action); color: var(--cq-action-ink); border-color: var(--cq-action); align-self: flex-start; }
+.tri__choix--plein:hover { border-color: var(--cq-action); }
+
+.indice { display: grid; gap: .6cqw; }
+.indice__q { margin: 0; font-weight: 700; font-size: var(--cq-d-petit); }
+
+.regle { display: grid; gap: .9cqw; }
+.regle__ligne { display: grid; grid-template-columns: minmax(8.5em, auto) 1fr; gap: 1.2cqw; align-items: baseline; font-size: var(--cq-d-petit); }
+.regle__ligne .verdict { justify-self: start; }
+
+.bilan__cause { margin: 0; font-weight: 700; font-size: var(--cq-d-micro); color: var(--cq-sourdine); }
+.lien-externe { color: var(--cq-lien); font-weight: 700; font-size: var(--cq-d-petit); }
+
+.journal__ligne--tour2 { border-left-style: dashed; margin-left: 1.2rem; }
+
+/* ---------- Troisième tour ---------- */
+.chrono {
+  font-family: var(--cq-police-mono); font-variant-numeric: tabular-nums;
+  border: 1px solid var(--cq-filet); border-radius: 3px; padding: 0 .5em; color: var(--cq-encre);
+}
+.chrono--depasse { border-color: var(--cq-doute); color: var(--cq-doute); }
+.case { display: flex; gap: .6em; align-items: center; font-size: var(--cq-d-petit); cursor: pointer; }
+.case input { width: 1.2em; height: 1.2em; accent-color: var(--cq-encre); }
+/* L'alerte « ce clic aurait ouvert la page » : fond pâle et encre foncée du
+   verdict, lisibles dans les deux thèmes (l'encre blanche tombait à 2,4:1). */
+.courriel__etat--alerte { background: var(--cq-fraude-fond); color: var(--cq-fraude); box-shadow: inset 0 2px 0 var(--cq-fraude); }
+@container (max-width: 760px) {
+  .courriel__nom { padding-block: 12px; }
+  .courriel__bouton { min-height: 44px; }
+  .case { min-height: 44px; }
+}
+
+</style>
+<style>
+/* ============================================================
+   CALQUE · ATELIER — composants des formations en mécanique.
+   S'ajoute à calque.css. Même règles : le bleu calque reste à la
+   révision ; les repères sont ambre (--cq-focus), comme sur le
+   courriel simulé.
+   ============================================================ */
+
+/* ---------- Planche : le dessin technique ----------
+   Toujours claire, comme une page de manuel : les dépôts d'une
+   bougie ont la couleur de la matière, pas celle du thème. */
+.planche {
+  --pl-papier: #FBFAF7; --pl-trait: #2A333B; --pl-metal: #E4E7EA; --pl-ceram: #FAF8F2;
+  color-scheme: light;
+  position: relative; background: var(--pl-papier); color: var(--pl-trait);
+  border: 1px solid #D5DCE1; border-radius: var(--cq-rayon);
+  display: flex; padding: .6cqw; min-height: 0; margin: 0; overflow: hidden; height: 100%;
+}
+.planche svg { flex: 1; min-width: 0; min-height: 0; width: 100%; height: 100%; display: block; }
+.diapo__col > .planche { flex: 1; }
+.pl-trait { stroke: var(--pl-trait); stroke-width: 1.4; stroke-linejoin: round; }
+.pl-fin { stroke-width: .8; fill: none; }
+.pl-metal { fill: var(--pl-metal); }
+.pl-ceram { fill: var(--pl-ceram); }
+.pl-hach { stroke: #8A949C; stroke-width: 1; }
+.pl-masse { fill: none; stroke-width: 12; }
+.pl-reflet { fill: none; stroke: #fff; stroke-width: 2.4; stroke-linecap: round; opacity: .55; }
+.pl-cote { stroke: #8A949C; stroke-width: .8; stroke-dasharray: 3 3; }
+.pl-axe { stroke: #8A949C; stroke-width: .8; stroke-dasharray: 10 3 2 3; }
+.pl-leg { font: 600 9px var(--cq-police-texte); fill: #5A6873; }
+.pl-mesure { font: 600 13px var(--cq-police-mono); fill: var(--pl-trait); }
+.pl-alerte { stroke: #B3261E; stroke-width: 2; fill: none; stroke-linecap: round; }
+.pl-fluide { fill: #9C6B12; }
+
+/* Repère numéroté posé sur le dessin */
+.pl-repere circle { fill: var(--cq-focus); stroke: #13212C; stroke-width: 1.2; }
+.pl-repere text { font: 800 11px var(--cq-police-titre); fill: #13212C; text-anchor: middle; dominant-baseline: central; }
+
+/* ---------- Fiche : une pièce à juger, avec son bon de travail ---------- */
+.fiche {
+  display: grid; grid-template-rows: minmax(0, 1fr) auto; gap: .8cqw; min-height: 0; height: 100%;
+  background: var(--cq-feuille); border: 1px solid var(--cq-filet); border-radius: var(--cq-rayon-l); padding: .9cqw;
+}
+.fiche__bon { display: grid; gap: .25cqw; font-size: var(--cq-d-petit); }
+.fiche__titre { font-weight: 700; font-size: var(--cq-d-texte); margin: 0; }
+.fiche__ligne { margin: 0; color: var(--cq-sourdine); }
+.fiche__mesures { display: flex; flex-wrap: wrap; gap: .4cqw 1.4cqw; margin: .2cqw 0 0; }
+.fiche__mesure { font-family: var(--cq-police-mono); font-size: var(--cq-d-micro); background: var(--cq-retrait); border-radius: 3px; padding: .15cqw .6cqw; }
+.fiche__mesure.repere { background: color-mix(in srgb, var(--cq-focus) 16%, transparent); }
+
+/* ---------- Ordre : remettre les étapes dans l'ordre ---------- */
+.ordre { display: grid; grid-template-columns: 1fr 1fr; gap: 2cqw; min-height: 0; flex: 1; }
+.ordre__col { display: flex; flex-direction: column; gap: .6cqw; min-height: 0; overflow: auto; padding: .3cqw; }
+.ordre__titre { font-size: var(--cq-d-micro); text-transform: uppercase; letter-spacing: .08em; color: var(--cq-sourdine); margin: 0; }
+.ordre__suite { margin: 0; padding: 0; list-style: none; display: grid; gap: .5cqw; counter-reset: ordre; }
+.ordre__suite li { counter-increment: ordre; display: grid; grid-template-columns: 2.4cqw 1fr; gap: .8cqw; align-items: baseline; font-size: var(--cq-d-petit); }
+.ordre__suite li::before { content: counter(ordre); font-family: var(--cq-police-titre); font-weight: 800; color: var(--cq-sur); }
+.ordre__vide { border: .15cqw dashed var(--cq-filet); border-radius: var(--cq-rayon); padding: .8cqw; color: var(--cq-sourdine); font-size: var(--cq-d-petit); }
+
+/* Pastille de l'objet dans le bilan d'une série */
+.bilan__objet { font-weight: 700; }
+
+@container (max-width: 760px) {
+  .planche { padding: 8px; height: auto; aspect-ratio: 4 / 3; max-height: 60vh; }
+  .fiche { padding: 12px; gap: 10px; }
+  .fiche__bon { gap: 4px; }
+  .fiche__mesure { padding: 2px 8px; }
+  .ordre { grid-template-columns: 1fr; gap: 16px; }
+  .ordre__suite li { grid-template-columns: 24px 1fr; gap: 10px; }
+  .ordre__vide { padding: 12px; }
+}
+
+/* Classes des planches de freins */
+.pl-papier { fill: var(--pl-papier); }
+.pl-grave { font: 700 8px var(--cq-police-mono); fill: #4A545C; letter-spacing: .06em; }
+.pl-garn { fill: #7A6A58; }
+.pl-temoin { fill: none; stroke: #2A333B; stroke-width: 1.6; }
+.pl-flexible { fill: none; stroke: #1F2528; stroke-width: 7; stroke-linecap: round; }
+.pl-num { font: 800 15px var(--cq-police-titre); fill: #13212C; text-anchor: middle; dominant-baseline: central; }
+
+/* ============================================================
+   Second tour (audits 2)
+   ============================================================ */
+
+/* La scène garde son format 16:9 comme MINIMUM, et s'allonge quand le
+   contenu dépasse. En 16:9 strict avec overflow:hidden, un exemple
+   travaillé poussait son bouton 82 px sous le bord : invisible, et hors
+   d'atteinte à la souris comme au doigt (audits 2, bloquant G1). */
+.scene .plateau { aspect-ratio: auto; min-height: 56.25cqw; }
+.scene .diapo { position: relative; inset: auto; min-height: 56.25cqw; }
+.scene .diapo__corps > .diapo__col { overflow: visible; }
+.scene .brouillon { position: absolute; inset: 0; }
+@container (max-width: 760px) {
+  .scene .plateau, .scene .diapo { min-height: 0; }
+  .scene .brouillon { position: relative; }
+}
+
+/* Photo : la planche épouse la photo, sans marge de papier */
+.planche--photo { padding: 0; background: #E9ECEE; }
+.planche--photo svg { border-radius: calc(var(--cq-rayon) - 1px); }
+.fiche { height: auto; }
+.fiche .planche { height: auto; aspect-ratio: 4 / 3; }
+.diapo__col > .planche { height: auto; flex: none; }
+.pl-repere circle { stroke-width: 2; }
+
+/* La consigne est UN bloc de texte : en flex, chaque morceau en gras
+   devenait une colonne à part (audit 2, n-19). */
+.consigne { display: block; }
+.consigne::before { display: inline-block; margin-right: .8em; vertical-align: .1em; }
+
+/* Mesures lisibles sur téléphone (audit 2, n-18) */
+.fiche__mesure { font-size: var(--cq-d-petit); }
+
+/* Verdict à icône propre (ex. ↻ « remplacer ») : la forme ne doit pas
+   emprunter le « ? » du doute (audit 2, n-9). */
+.verdict[data-icone]::before { content: attr(data-icone); }
+
+.consigne-situation { display: grid; gap: 1cqw; align-content: start; font-size: var(--cq-d-texte); }
+.consigne-situation .planche { max-width: 100%; }
+
+/* Tablette et écran tactile : cibles de 44 px, pas seulement sur téléphone */
+@media (pointer: coarse) {
+  .tri__choix, .options__choix, .lien-discret, .lien-externe { min-height: 44px; }
+  .lien-externe { display: inline-flex; align-items: center; }
+}
+.corps { align-content: start; }
+
+/* ============================================================
+   Troisième tour (audits 3)
+   ============================================================ */
+.planche--photo { position: relative; max-height: 58vh; margin-inline: auto; width: 100%; }
+.fiche .planche--photo { height: auto; }
+.planche__agrandir {
+  position: absolute; right: 6px; bottom: 6px; font: 700 var(--cq-d-micro) var(--cq-police-texte);
+  background: rgba(19,33,44,.78); color: #fff; border: 0; border-radius: 999px; padding: 4px 10px; cursor: zoom-in;
+}
+.loupe { border: 0; padding: 0; background: #0E171E; max-width: 96vw; max-height: 94vh; width: 96vw; border-radius: 10px; }
+.loupe::backdrop { background: rgba(0,0,0,.72); }
+.loupe svg { display: block; width: 100%; height: auto; max-height: 88vh; }
+.loupe__fermer { position: absolute; top: 8px; right: 8px; font: 700 15px var(--cq-police-texte); background: #fff; color: #13212C; border: 0; border-radius: 999px; padding: 10px 16px; min-height: 44px; cursor: pointer; }
+
+.score { display: grid; gap: .6cqw; }
+.score__ligne { display: grid; grid-template-columns: auto 1fr; gap: 0 1cqw; align-items: baseline; }
+.score__lib { grid-column: 1 / -1; font-size: var(--cq-d-micro); text-transform: uppercase; letter-spacing: .08em; color: var(--cq-sourdine); }
+.score__n { font-family: var(--cq-police-titre); font-weight: 800; font-size: var(--cq-d-titre); line-height: 1; }
+.score__seuil { font-size: var(--cq-d-petit); color: var(--cq-sourdine); }
+.score__elimine { margin: 0; font-family: var(--cq-police-titre); font-weight: 800; font-size: var(--cq-d-titre); color: var(--cq-fraude); }
+.score__elimine::before { content: "✕ "; }
+@container (max-width: 760px) {
+  .planche__agrandir { min-height: 44px; padding: 8px 14px; }
+}
+
+</style>
+<style>
+  html, body { background: var(--cq-papier); }
+  body { margin: 0; }
+  .app { min-height: 100vh; display: grid; grid-template-rows: auto 1fr; padding-inline: 16px; }
+
+  .tete {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px;
+    padding-block: 18px 14px; max-width: 1440px; width: 100%; margin-inline: auto;
+    border-bottom: 1px solid var(--cq-filet);
+  }
+  .tete__nom { display: grid; gap: 2px; }
+  .tete__titre { font-family: var(--cq-police-titre); font-weight: 800; font-size: var(--cq-t-l); letter-spacing: -.02em; margin: 0; }
+  .tete__sous { font-size: var(--cq-t-xs); color: var(--cq-sourdine); margin: 0; }
+
+  .onglets { display: flex; gap: 4px; background: var(--cq-feuille); border: 1px solid var(--cq-filet); border-radius: 999px; padding: 4px; flex-wrap: wrap; }
+  .onglets button {
+    font: inherit; font-size: var(--cq-t-s); font-weight: 700; border: 0; border-radius: 999px; padding: 6px 14px; cursor: pointer;
+    background: none; color: var(--cq-sourdine);
+  }
+  .onglets button[aria-selected="true"] { background: var(--cq-encre); color: var(--cq-feuille); }
+  .onglets button[data-vue="comparer"][aria-selected="true"],
+  .onglets button[data-vue="boucle"][aria-selected="true"] { background: var(--cq-calque-ink); color: #fff; }
+  .onglets__calque { font-family: var(--cq-police-main); font-weight: 400; }
+
+  .corps { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 28px; max-width: 1440px; width: 100%; margin-inline: auto; padding-block: 24px 48px; align-items: start; }
+  .corps:has(#navigation[hidden]) { grid-template-columns: minmax(0, 1fr); }
+  #navigation { display: grid; gap: 4px; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 16px); max-height: calc(100vh - 32px); overflow: auto; }
+  .nav__module, .nav__diapo {
+    font: inherit; text-align: left; border: 0; background: none; color: var(--cq-encre); cursor: pointer;
+    border-radius: var(--cq-rayon); padding: 8px 10px; display: grid; gap: 2px 10px; align-items: baseline;
+  }
+  .nav__module { grid-template-columns: auto 1fr; font-size: var(--cq-t-s); }
+  .nav__module:hover, .nav__diapo:hover { background: var(--cq-retrait); }
+  .nav__module--actif { background: var(--cq-feuille); box-shadow: inset 3px 0 0 var(--cq-encre); font-weight: 700; }
+  .nav__num { font-family: var(--cq-police-mono); font-size: var(--cq-t-xs); color: var(--cq-sourdine); grid-row: span 2; }
+  .nav__duree { font-size: var(--cq-t-xs); color: var(--cq-sourdine); font-weight: 400; }
+  .nav__groupe { font-size: var(--cq-t-xs); text-transform: uppercase; letter-spacing: .08em; color: var(--cq-calque-ink); padding: 12px 10px 2px; }
+  .nav__diapo { grid-template-columns: 22px 1fr; font-size: var(--cq-t-xs); padding: 5px 8px; }
+  .nav__diapo .statut { padding: 0; width: 20px; text-align: center; font-size: 10px; }
+  .nav__retiree { text-decoration: line-through; text-decoration-color: var(--cq-calque); color: var(--cq-sourdine); }
+  .nav__diapo--actif { background: var(--cq-calque-voile); box-shadow: inset 3px 0 0 var(--cq-calque); font-weight: 700; }
+
+  .pile { display: grid; gap: 18px; }
+  .barre { display: flex; align-items: center; justify-content: center; gap: 16px; }
+  .barre__pos { font-family: var(--cq-police-mono); font-size: var(--cq-t-xs); color: var(--cq-sourdine); font-variant-numeric: tabular-nums; min-width: 12ch; text-align: center; }
+  .barre__btn {
+    font: inherit; font-size: 1.1rem; width: 44px; height: 44px; border-radius: 50%; cursor: pointer;
+    border: 1px solid var(--cq-filet); background: var(--cq-feuille); color: var(--cq-encre);
+  }
+  .barre__btn:disabled { opacity: .35; cursor: default; }
+
+  .comparer { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .comparer__cote { margin: 0; display: grid; gap: 8px; min-width: 0; }
+  .comparer__legende { font-family: var(--cq-police-mono); font-size: var(--cq-t-xs); letter-spacing: .08em; text-transform: uppercase; color: var(--cq-sourdine); }
+  .comparer__cote--apres .comparer__legende { color: var(--cq-calque-ink); }
+  .comparer__cote--apres .scene { box-shadow: 0 0 0 2px var(--cq-calque), var(--cq-ombre); }
+  .journal { max-width: 76ch; }
+
+  .boucle { display: grid; gap: 40px; max-width: 980px; }
+  .boucle h2 { font-family: var(--cq-police-titre); font-weight: 800; font-size: var(--cq-t-xl); letter-spacing: -.02em; margin: 0 0 12px; }
+  .boucle h3 { font-family: var(--cq-police-titre); font-size: var(--cq-t-m); margin: 20px 0 8px; }
+  .boucle p, .boucle li { max-width: 72ch; }
+  .boucle__bloc { display: grid; gap: 8px; }
+  .objectifs { display: grid; gap: 8px; padding-left: 0; list-style: none; margin: 0; }
+  .objectifs b { font-family: var(--cq-police-mono); color: var(--cq-sourdine); margin-right: 6px; }
+  .defile { overflow-x: auto; }
+  .tableau { border-collapse: collapse; width: 100%; font-size: var(--cq-t-s); min-width: 520px; }
+  .tableau th, .tableau td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--cq-filet); vertical-align: top; }
+  .tableau th { font-size: var(--cq-t-xs); text-transform: uppercase; letter-spacing: .06em; color: var(--cq-sourdine); }
+  .audits { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+  .audit { background: var(--cq-feuille); border: 1px solid var(--cq-filet); border-radius: var(--cq-rayon-l); padding: 16px 18px; display: grid; gap: 6px; align-content: start; }
+  .audit h3 { margin: 0; }
+  .audit__date { margin: 0; font-size: var(--cq-t-xs); color: var(--cq-sourdine); }
+  .audit__chiffres { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 8px 0 0; }
+  .audit__chiffres dt { margin: 0; }
+  .audit__chiffres dd { margin: 0; font-family: var(--cq-police-titre); font-weight: 800; font-size: 2rem; font-variant-numeric: tabular-nums; }
+  .audit__note { font-size: var(--cq-t-s); color: var(--cq-sourdine); margin: 4px 0 0; }
+  .boucle__bilan { font-weight: 700; }
+  .boucle__aide { color: var(--cq-sourdine); font-size: var(--cq-t-s); margin: 0; }
+  .barres { display: grid; gap: 6px; }
+  .barres__ligne { display: grid; grid-template-columns: minmax(0, 260px) 1fr 3ch; gap: 12px; align-items: center; }
+  .barres__ligne .critere { justify-self: start; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+  .barres__piste { height: 10px; background: var(--cq-calque-voile); border-radius: 2px; }
+  .barres__trait { display: block; height: 100%; background: var(--cq-calque); border-radius: 2px; }
+  .barres__n { font-family: var(--cq-police-mono); font-size: var(--cq-t-xs); text-align: right; font-variant-numeric: tabular-nums; }
+  .barres__ligne--nul { opacity: .5; }
+
+  @media (max-width: 900px) {
+    .corps { grid-template-columns: minmax(0, 1fr); }
+    #navigation { position: static; max-height: none; grid-auto-flow: column; grid-auto-columns: max-content; overflow-x: auto; padding-bottom: 4px; }
+    .nav__groupe { display: none; }
+    .nav__duree { display: none; }
+    .nav__module, .nav__diapo { white-space: nowrap; max-width: 70vw; overflow: hidden; text-overflow: ellipsis; }
+    .nav__module { grid-template-columns: auto auto; }
+    .onglets { width: 100%; flex-wrap: nowrap; }
+    .onglets button { flex: 1; padding: 8px 6px; min-height: 40px; }
+    .corps { gap: 12px; padding-block: 12px 40px; }
+    .comparer { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px) {
+    .barres__ligne { grid-template-columns: 1fr 3ch; }
+    .barres__piste { grid-column: 1 / -1; grid-row: 2; }
+  }
+</style>
+
+<div class="app cq">
+  <header class="tete">
+    <div class="tete__nom">
+      <h1 class="tete__titre">Le dernier millimètre</h1>
+      <p class="tete__sous">Remplacer les plaquettes de frein avant · formation révisée avec la boucle didactique</p>
+    </div>
+    <nav class="onglets" role="tablist" aria-label="Vues">
+      <button type="button" role="tab" data-vue="formation">La formation</button>
+      <button type="button" role="tab" data-vue="comparer">Avant <span class="onglets__calque">/</span> après</button>
+      <button type="button" role="tab" data-vue="boucle">La boucle</button>
+    </nav>
+  </header>
+  <div class="corps">
+    <nav id="navigation" aria-label="Diapositives"></nav>
+    <main id="vue"></main>
+  </div>
+</div>
+
+<script>
+/* Grille de la boucle didactique — version abrégée pour l'affichage.
+   La version complète (signes d'échec, correctifs, sources) est dans
+   la compétence : ~/.claude/skills/boucle-didactique/references/grille.md */
+window.GRILLE = {
+  familles: {
+    A: "Alignement", B: "Entrée en matière", C: "Charge cognitive",
+    D: "Pratique", E: "Rétroaction", F: "Transfert", G: "Accès"
+  },
+  criteres: {
+    A1: { nom: "Objectif observable",        q: "L'objectif décrit-il un comportement visible, dans une situation, avec un seuil ?", src: "Mager, 1962" },
+    A2: { nom: "Écart de performance réel",  q: "Répond-on à ce que les gens font mal en situation, plutôt qu'à ce qu'ils ignorent en théorie ?", src: "Mager et Pipe, 1970" },
+    A3: { nom: "Alignement constructif",     q: "Chaque activité et chaque évaluation servent-elles un objectif, et chaque objectif est-il pratiqué et évalué ?", src: "Biggs, 1996" },
+    B1: { nom: "Tâche d'abord",              q: "Le module s'ouvre-t-il sur une tâche réelle plutôt que sur un exposé ?", src: "Merrill, 2002" },
+    B2: { nom: "Activation des acquis",      q: "Relie-t-on le contenu à ce que l'apprenant a déjà vécu ?", src: "Merrill, 2002" },
+    B3: { nom: "Pertinence et ton",          q: "L'apprenant voit-il pourquoi ça le concerne, sans être menacé ni infantilisé ?", src: "Keller, 1987 ; Witte, 1992" },
+    C1: { nom: "Segmentation",               q: "Une seule idée par écran, au rythme de l'apprenant ?", src: "Mayer, 2009" },
+    C2: { nom: "Cohérence",                  q: "Tout ce qui est à l'écran sert-il l'objectif ?", src: "Mayer, 2009 ; Harp et Mayer, 1998" },
+    C3: { nom: "Contiguïté et signalisation", q: "L'explication est-elle posée sur ce qu'elle explique ?", src: "Mayer, 2009" },
+    C4: { nom: "Exemple travaillé",          q: "Voit-on un expert faire la tâche, pas à pas, avant de la faire soi-même ?", src: "Sweller et Cooper, 1985" },
+    C5: { nom: "Langage clair",              q: "Un non-spécialiste comprend-il chaque phrase à la première lecture ?", src: "ISO 24495-1, 2023" },
+    D1: { nom: "Récupération",               q: "L'apprenant doit-il produire la réponse de mémoire ?", src: "Roediger et Karpicke, 2006" },
+    D2: { nom: "Fidélité à la situation",    q: "La pratique ressemble-t-elle à ce qu'on verra au travail ?", src: "Barnett et Ceci, 2002" },
+    D3: { nom: "Variété et entrelacement",   q: "Les cas varient-ils assez pour apprendre à discriminer ?", src: "Rohrer et Taylor, 2007" },
+    D4: { nom: "Distracteurs plausibles",    q: "Les mauvais choix sont-ils tentants pour une bonne raison ?", src: "Haladyna et coll., 2002" },
+    E1: { nom: "Rétroaction explicative",    q: "Apprend-on pourquoi, en lien avec l'indice précis ?", src: "Shute, 2008" },
+    E2: { nom: "Conséquence visible",        q: "L'erreur a-t-elle une suite plausible, sans blâme ?", src: "Keith et Frese, 2008" },
+    F1: { nom: "Évaluation alignée",         q: "L'évaluation demande-t-elle le comportement de l'objectif, sur des cas nouveaux ?", src: "Biggs, 1996" },
+    F2: { nom: "Soutien au travail",         q: "Repart-on avec un aide-mémoire et un geste précis ?", src: "Rossett et Schafer, 2007" },
+    F3: { nom: "Espacement prévu",           q: "Un rappel est-il prévu après la formation ?", src: "Cepeda et coll., 2006" },
+    G1: { nom: "Accessibilité",              q: "Contraste, clavier, tactile, jamais la couleur seule ?", src: "WCAG 2.2" },
+    G2: { nom: "Durée et contrôle",          q: "La durée est-elle proportionnée, le rythme contrôlé ?", src: "Guo, Kim et Rubin, 2014" }
+  }
+};
+
+</script>
+<script>
+/* ============================================================
+   VERSION ZÉRO — « Remplacement des plaquettes de frein avant »
+   Telle qu'un enseignant expert l'écrirait spontanément :
+   exacte, complète, trop longue. C'est le « avant » de la boucle.
+   Ne pas corriger ce fichier : il est la trace du point de départ.
+   ============================================================ */
+
+window.AVANT = {
+  titre: "Remplacement des plaquettes de frein avant",
+  duree: "55 minutes",
+  modules: [
+    {
+      id: "M1", titre: "Introduction",
+      diapos: [
+        { id: "A-M1-1", titre: "Remplacement des plaquettes de frein avant",
+          blocs: [
+            { t: "sous-titre", x: "Mécanique automobile — Module Systèmes de freinage · Atelier-école du CFP Rivebelle" },
+            { t: "image", alt: "Photo : disque de frein rougeoyant sur une voiture de course, vue en gros plan." }
+          ] },
+        { id: "A-M1-2", titre: "Objectifs",
+          blocs: [
+            { t: "puces", x: [
+              "Comprendre le principe du freinage hydraulique",
+              "Connaître les composantes d'un frein à disque",
+              "Connaître les types de plaquettes",
+              "Savoir effectuer le remplacement des plaquettes avant",
+              "Être sensibilisé à l'importance de la sécurité"
+            ] }
+          ] },
+        { id: "A-M1-3", titre: "Le principe du freinage hydraulique",
+          blocs: [
+            { t: "para", x: "Le freinage repose sur la transformation de l'énergie cinétique du véhicule en chaleur par friction. Lorsque le conducteur appuie sur la pédale, le servofrein amplifie l'effort, et le maître-cylindre convertit cette force mécanique en pression hydraulique. Selon le principe de Pascal, la pression exercée sur un liquide incompressible se transmet intégralement dans toutes les directions : elle est donc acheminée par les conduites et les flexibles jusqu'aux étriers, où elle pousse le ou les pistons. Ceux-ci appliquent les plaquettes contre le disque solidaire de la roue. Le rapport entre la surface du piston de l'étrier et celle du piston du maître-cylindre multiplie la force appliquée." },
+            { t: "image", alt: "Schéma du circuit de freinage : pédale, servofrein, maître-cylindre, conduites, étriers." }
+          ] },
+        { id: "A-M1-4", titre: "Statistiques",
+          blocs: [
+            { t: "chiffres", x: [
+              { n: "?? %", l: "des véhicules inspectés présentent une défectuosité des freins [chiffre SAAQ à insérer]" },
+              { n: "?? %", l: "des accidents avec défaut mécanique touchent les freins [source à trouver]" },
+              { n: "?? km", l: "durée de vie moyenne des plaquettes avant [à vérifier]" }
+            ] }
+          ] }
+      ]
+    },
+    {
+      id: "M2", titre: "Le frein à disque",
+      diapos: [
+        { id: "A-M2-1", titre: "Composantes du frein à disque",
+          blocs: [
+            { t: "image", alt: "Vue éclatée d'un frein à disque flottant : disque, étrier, piston, joint de piston, cache-poussière, support d'étrier, glissières, soufflets, plaquettes, cales antibruit, agrafes, témoin d'usure, vis de purge, flexible." },
+            { t: "legende", x: "Figure 1 — Frein à disque à étrier flottant (15 composantes)" }
+          ] },
+        { id: "A-M2-2", titre: "Types de plaquettes",
+          blocs: [
+            { t: "puces", x: [
+              "Organiques (NAO) : silencieuses, peu de poussière, usure rapide",
+              "Semi-métalliques : 30 à 65 % de métal, bonne dissipation, plus bruyantes",
+              "Céramiques : durables, peu de poussière, plus coûteuses",
+              "Coefficient de friction indiqué par le code de bord (ex. FF)",
+              "Toujours respecter les recommandations du fabricant"
+            ] }
+          ] },
+        { id: "A-M2-3", titre: "Les disques",
+          blocs: [
+            { t: "puces", x: [
+              "Disques pleins ou ventilés",
+              "Disques percés ou rainurés (performance)",
+              "Épaisseur minimale gravée sur le disque (MIN TH)",
+              "Mesures : épaisseur au micromètre, faux-rond au comparateur à cadran, variation d'épaisseur (parallélisme)",
+              "Un faux-rond excessif cause une pulsation de la pédale",
+              "Le disque peut être usiné s'il reste au-dessus de l'épaisseur minimale après usinage",
+              "Remplacer les disques par paire sur un même essieu"
+            ] }
+          ] },
+        { id: "A-M2-4", titre: "Signes d'usure",
+          blocs: [
+            { t: "puces", x: [
+              "Grincement aigu (témoin d'usure mécanique)",
+              "Témoin lumineux au tableau de bord (capteur électrique)",
+              "Grondement métal contre métal",
+              "Pulsation dans la pédale",
+              "Véhicule qui tire d'un côté au freinage",
+              "Pédale molle ou spongieuse",
+              "Course de pédale allongée"
+            ] }
+          ] }
+      ]
+    },
+    {
+      id: "M3", titre: "Procédure de remplacement",
+      diapos: [
+        { id: "A-M3-1", titre: "Outillage et équipement",
+          blocs: [
+            { t: "puces", x: [
+              "Pont élévateur ou cric rouleur et chandelles",
+              "Clé à chocs et douilles",
+              "Clé dynamométrique",
+              "Compresseur de piston ou serre-joint en C",
+              "Micromètre, pied à coulisse",
+              "Nettoyant pour freins, brosse métallique",
+              "Graisse pour freins haute température",
+              "Crochet ou fil pour suspendre l'étrier",
+              "Gants et lunettes de sécurité, masque anti-poussière"
+            ] }
+          ] },
+        { id: "A-M3-2", titre: "Procédure",
+          blocs: [
+            { t: "puces", x: [
+              "1. Soulever le véhicule et retirer la roue",
+              "2. Inspecter le flexible, l'étrier et le disque",
+              "3. Retirer les boulons de glissière et soulever l'étrier",
+              "4. Suspendre l'étrier",
+              "5. Retirer les plaquettes et les agrafes",
+              "6. Mesurer le disque ; remplacer ou usiner au besoin",
+              "7. Nettoyer le support et les glissières ; lubrifier",
+              "8. Repousser le piston",
+              "9. Installer les agrafes neuves et les plaquettes",
+              "10. Réinstaller l'étrier ; serrer au couple",
+              "11. Reposer la roue ; serrer au couple en étoile",
+              "12. Pomper la pédale ; vérifier le niveau de liquide",
+              "13. Effectuer le rodage et un essai routier"
+            ] }
+          ] },
+        { id: "A-M3-3", titre: "Couples de serrage (véhicule-école)",
+          blocs: [
+            { t: "puces", x: [
+              "Boulons de glissière d'étrier : 27 N·m",
+              "Boulons du support d'étrier : 115 N·m",
+              "Écrous de roue : 140 N·m",
+              "Vis de purge : 9 N·m",
+              "Valeurs du véhicule-école seulement : toujours consulter le manuel"
+            ] }
+          ] },
+        { id: "A-M3-4", titre: "Consignes de sécurité",
+          blocs: [
+            { t: "puces", x: [
+              "Ne jamais travailler sous un véhicule soutenu seulement par un cric",
+              "Utiliser les points de levage du fabricant",
+              "Ne jamais laisser pendre l'étrier par le flexible",
+              "Ne pas souffler la poussière de frein à l'air comprimé",
+              "Le liquide de frein endommage la peinture",
+              "Ne pas contaminer les plaquettes avec de la graisse",
+              "Pomper la pédale avant de déplacer le véhicule"
+            ] },
+            { t: "note", x: "IMPORTANT : après avoir repoussé les pistons, la première pression sur la pédale descend jusqu'au plancher !" }
+          ] },
+        { id: "A-M3-5", titre: "Le rodage",
+          blocs: [
+            { t: "para", x: "Le rodage permet de déposer une couche uniforme de matériau de friction sur le disque. Procédure typique : une dizaine de freinages modérés de 60 à 10 km/h, sans immobiliser complètement le véhicule, puis rouler quelques minutes pour laisser refroidir les freins. Éviter les freinages brusques pendant les 300 premiers kilomètres. Suivre la procédure du fabricant des plaquettes." }
+          ] }
+      ]
+    },
+    {
+      id: "M4", titre: "Évaluation",
+      diapos: [
+        { id: "A-M4-1", titre: "Quiz",
+          blocs: [
+            { t: "quiz", questions: [
+              { q: "Selon quel principe la pression se transmet-elle dans le circuit de freinage ?", choix: ["Principe d'Archimède", "Principe de Pascal", "Loi d'Ohm", "Loi de Boyle"], bonne: 1, retro: { bien: "Bonne réponse !", mal: "Mauvaise réponse." } },
+              { q: "Quel type de plaquette contient de 30 à 65 % de métal ?", choix: ["Organique", "Céramique", "Semi-métallique", "Aucune de ces réponses"], bonne: 2, retro: { bien: "Bonne réponse !", mal: "Mauvaise réponse." } },
+              { q: "Où trouve-t-on l'épaisseur minimale d'un disque ?", choix: ["Sur la plaquette", "Gravée sur le disque", "Sur l'étrier", "Sur le pneu"], bonne: 1, retro: { bien: "Bonne réponse !", mal: "Mauvaise réponse." } },
+              { q: "Une pulsation dans la pédale indique généralement :", choix: ["Des plaquettes usées", "Un faux-rond ou une variation d'épaisseur du disque", "De l'air dans le circuit", "Un flexible fissuré"], bonne: 1, retro: { bien: "Bonne réponse !", mal: "Mauvaise réponse." } },
+              { q: "On peut souffler la poussière de frein à l'air comprimé.", choix: ["Vrai", "Faux"], bonne: 1, retro: { bien: "Bonne réponse !", mal: "Mauvaise réponse." } }
+            ] }
+          ] },
+        { id: "A-M4-2", titre: "Conclusion",
+          blocs: [
+            { t: "grand", x: "Les freins : votre sécurité et celle des autres !" },
+            { t: "sous-titre", x: "Merci ! Rendez-vous au pont 2 pour la démonstration." }
+          ] }
+      ]
+    }
+  ]
+};
+
+</script>
+<script>
+/* ============================================================
+   VERSION FINALE — « Le dernier millimètre »
+   Issue de la boucle : cadrage → audit 1 → révision → audit 2 →
+   second tour. Chaque diapo est reliée à la version zéro par
+   contenu/journal.js. Photos : Nano Banana 2, Google en direct
+   (planches.py) ; leurs repères sont dans pieces.js.
+   Le CFP Rivebelle, le pont 2, ses véhicules et leurs valeurs
+   (27, 115 et 140 N·m ; MIN TH 26,0 mm) sont FICTIFS : sur un vrai
+   véhicule, on les prend dans son information de réparation.
+   ============================================================ */
+
+(function () {
+  // Un disque : la photo montre la SURFACE ; les quatre lectures au
+  // micromètre et la cote gravée sont au bon de travail (un chiffre
+  // généré dans une photo serait illisible ou faux).
+  const disque = (photo, lectures, titre, ...lignes) => ({ photo, titre, lignes,
+    mesures: [{ l: "Lectures au micromètre", v: lectures, repere: "mesure" }, { l: "Gravé sur le chapeau", v: "MIN TH 26,0 mm", repere: "min" }] });
+  const piece = (photo, titre, ...lignes) => ({ photo, titre, lignes });
+  const plaq = (photo, titre, int, ext, ...lignes) => ({ photo, titre, lignes,
+    mesures: [{ l: "Intérieure", v: int, repere: "interieure" }, { l: "Extérieure", v: ext, repere: "exterieure" }] });
+
+  window.APRES = {
+    titre: "Le dernier millimètre",
+    duree: "35 minutes",
+    verdicts: {
+      continuer: { court: "Je continue",        long: "Je continue : le disque reste",     ton: "sur" },
+      remplacer: { court: "Disques à remplacer", long: "Je remplace les deux disques",      ton: "doute", icone: "↻" },
+      arret:     { court: "J'arrête",           long: "J'arrête : j'appelle l'enseignant", ton: "fraude" }
+    },
+    questionIndice: "Qu'est-ce qui décide ?",
+    indices: { cote: "Sous la cote gravée", surface: "Une rainure ou une fissure", etrier: "L'étrier ou le flexible", plaquettes: "Les vieilles plaquettes", rien: "Tout est bon" },
+    objectifs: [
+      { id: "O1", x: "Au pont 2, **travailler en sécurité**, sans aucune erreur éliminatoire : véhicule levé à ses points de levage, pont verrouillé ou chandelles, étrier déposé **suspendu au crochet, jamais au flexible** ; et, sans être éliminatoire, pédale jamais enfoncée quand un étrier est déposé." },
+      { id: "O2", x: "Étrier déposé, **décider** : je continue, je remplace les deux disques, ou j'arrête et j'appelle, **en nommant ce qui décide** (la plus petite lecture comparée à la cote gravée, la surface, l'étrier, le flexible, les vieilles plaquettes), sur au moins 5 pièces sur 6." },
+      { id: "O3", x: "**Remonter**, sans aucune erreur éliminatoire : graisse du pont sur les glissières et les agrafes seulement, jamais sur la garniture ; serrage à la clé dynamométrique au couple de l'information de réparation, **jamais au pistolet à chocs** ; les deux côtés." },
+      { id: "O4", x: "Avant de démarrer ou de déplacer le véhicule, **pomper la pédale jusqu'à ce qu'elle soit ferme**, puis mettre le liquide au niveau MAX." }
+    ],
+    modules: [
+      /* ---------------------------------------------------------- */
+      {
+        id: "M1", titre: "Pont 2", duree: "3 min",
+        diapos: [
+          {
+            id: "M1-1", titre: "Mardi, pont 2. L'étrier avant gauche est déposé.", surtitre: "Pour commencer",
+            blocs: [{
+              t: "options", q: "Votre coéquipier l'a laissé comme ça, le temps d'aller chercher les plaquettes. **Que faites-vous ?**",
+              piece: piece("etrier-pend", "Pont 2, côté gauche", "Déposé depuis deux minutes."),
+              pieceApres: piece("etrier-crochet", "Le bon geste", "Le crochet (2) tient l'ÉTRIER ; le flexible (1) forme une boucle lâche et ne porte rien."),
+              reperesApres: { flexible: 1, crochet: 2 },
+              choix: [
+                { x: "Rien : il revient dans deux minutes.", grave: true, retro: "Le poids de l'étrier tire sur le flexible. Il peut se déchirer **à l'intérieur**, sans rien montrer dehors, et lâcher au premier freinage fort du client. Voici le bon geste : le crochet, flexible détendu (1)." },
+                { x: "Je le suspends au crochet, flexible détendu.", juste: true, retro: "Un crochet de fil, et le flexible (1) forme une boucle lâche : il ne porte plus rien." },
+                { x: "Je le pose sur le bras de suspension.", retro: "Mieux que dans le vide, s'il y tient sans glisser. Mais au pont 2, la règle est simple : le crochet, flexible détendu (1)." },
+                { x: "Je débranche le flexible, pour être tranquille.", retro: "Ouvrir le circuit fait entrer de l'air : il faudrait purger les freins. Le flexible reste branché ; on le soulage avec le crochet (1)." }
+              ]
+            }]
+          },
+          {
+            id: "M1-2", titre: "Dans 35 minutes, vous saurez…",
+            blocs: [
+              { t: "verif", items: [
+                { q: "Travailler en sécurité au pont", r: "Points de levage, crochet, pédale." },
+                { q: "Décider du sort des disques", r: "Je continue, je remplace, ou j'arrête. Et dire ce qui décide." },
+                { q: "Remonter", r: "La bonne graisse au bon endroit, le bon couple, les deux côtés." },
+                { q: "Finir", r: "La pédale ferme avant que la voiture bouge." }
+              ] },
+              { t: "pied", x: "5 modules de 3 à 10 minutes, avec une activité dans chacun. **L'épreuve du module 5 ouvre l'accès au pont 2.**" }
+            ]
+          },
+          {
+            id: "M1-3", titre: "Quelqu'un conduira cette voiture ce soir",
+            blocs: [
+              { t: "chapeau", x: "Des plaquettes, c'est un travail courant. Mais c'est **le seul** que le client teste à 100 km/h." },
+              { t: "para", x: "Presque tout se rattrape, sauf six gestes : travailler sous une voiture mal tenue, laisser l'étrier pendre au flexible, graisser la garniture, serrer au pistolet à chocs, remonter un étrier, un flexible ou des plaquettes défectueux, et déplacer la voiture sans pédale ferme. Vous les verrez tous, et l'épreuve les rend **éliminatoires**." },
+              { t: "consigne", x: "Avez-vous déjà changé des plaquettes, chez vous ou ailleurs ? Qu'avez-vous fait de l'étrier pendant ce temps ? Le module 2 y revient." }
+            ]
+          }
+        ]
+      },
+      /* ---------------------------------------------------------- */
+      {
+        id: "M2", titre: "Lever et déposer", duree: "6 min",
+        diapos: [
+          {
+            id: "M2-1", titre: "Ce que vous toucherez",
+            blocs: [{ t: "colonnes", etroite: "droite",
+              gauche: [{ t: "planche", piece: { photo: "etrier-sain" }, reperes: { flexible: 1, corps: 2 } }],
+              droite: [
+                { t: "verif", items: [
+                  { q: "Le flexible", r: "Il amène le liquide. On ne le tire pas, on ne le tord pas, on ne l'ouvre pas." },
+                  { q: "L'étrier", r: "Il coulisse sur deux **glissières**, tenues par deux boulons : 27 N·m." },
+                  { q: "Le piston et son soufflet", r: "Côté intérieur, caché ici : le piston pousse la plaquette ; son soufflet de caoutchouc doit être entier et sec." }
+                ] },
+                { t: "pied", x: "Le **support** de l'étrier reste sur le moyeu. Il ne sort que si les disques sont remplacés : ses boulons, 115 N·m." }
+              ] }]
+          },
+          {
+            id: "M2-2", titre: "Dominique dépose l'étrier avant gauche",
+            blocs: [{
+              t: "exemple", debut: "Voir la première étape", suivant: "Étape suivante", fin: "Le côté gauche est ouvert.",
+              piece: piece("etrier-crochet", "Lundi, pont 2 : un VUS gris", "Étrier gauche déposé : le crochet tient l'étrier, pas le flexible."),
+              etapes: [
+                { q: "Lever", r: "Bras du pont sous les **points de levage** de l'information de réparation, puis le verrou du pont enclenché. Jamais sous une voiture qui ne tient que sur un cric." },
+                { q: "La roue", r: "Le pistolet à chocs **desserre** les écrous : c'est permis. Pour serrer, jamais." },
+                { q: "La poussière", r: "Nettoyant pour freins en vaporisateur, bac dessous. **Pas de soufflette** : la poussière de garniture ne se respire pas." },
+                { q: "L'étrier", r: "Je retire les deux boulons de glissière, je soulève l'étrier, et je le **suspends au crochet**, flexible détendu. Et vous, chez vous, où l'aviez-vous mis ?", repere: "flexible" },
+                { q: "La pédale", r: "Personne n'y touche tant qu'un étrier est déposé : le piston sortirait de son logement. Je mets le couvre-pédale." },
+                { q: "Les plaquettes", r: "Je les retire avec leurs agrafes, et je compare aux neuves : même forme, témoin d'usure **au même endroit** que sur l'ancienne." }
+              ],
+              conclusion: "Et je garde les anciennes plaquettes dans l'ordre (intérieure, extérieure) : leur usure va parler au module 3."
+            }]
+          },
+          {
+            id: "M2-3", titre: "À vous : remettez les étapes dans l'ordre",
+            blocs: [{
+              t: "ordre",
+              etapes: [
+                { x: "Lever le véhicule par ses points de levage, pont verrouillé", oui: "Une voiture stable, à la bonne hauteur." },
+                { x: "Desserrer et retirer la roue", oui: "Le pistolet desserre : c'est son seul rôle ici.", tot: "On ne desserre pas une roue sur une voiture qui n'est pas levée et verrouillée." },
+                { x: "Nettoyer la poussière au nettoyant pour freins", oui: "Sans soufflette : le bac récupère tout.", tot: "La roue cache encore l'étrier." },
+                { x: "Retirer les boulons de glissière et soulever l'étrier", oui: "Les boulons de glissière seulement : le support reste.", tot: "Ouvrir avant de nettoyer fait tomber la poussière dans les glissières." },
+                { x: "Suspendre l'étrier au crochet", oui: "Le flexible ne porte plus rien.", tot: "L'étrier n'est pas encore déposé." },
+                { x: "Retirer les plaquettes et les comparer aux neuves", oui: "Et on les garde dans l'ordre pour la lecture.", tot: "L'étrier pendrait au flexible pendant que vous travaillez." }
+              ],
+              melange: [4, 1, 5, 0, 3, 2],
+              bilan: "C'est l'ordre du pont 2. Le crochet **avant** de toucher aux plaquettes : c'est le réflexe à prendre."
+            }]
+          },
+          {
+            id: "M2-4", titre: "La roue est enlevée. L'étrier est gris de poussière.",
+            blocs: [{
+              t: "options", q: "**Vous…**",
+              choix: [
+                { x: "soufflez la poussière à la soufflette, lunettes sur le nez.", retro: "Les lunettes protègent les yeux, pas les poumons. La poussière de garniture reste en l'air dans l'atelier." },
+                { x: "vaporisez du nettoyant pour freins, un bac en dessous.", juste: true, retro: "La poussière reste mouillée et tombe dans le bac." },
+                { x: "l'essuyez avec le chiffon que vous avez en poche.", retro: "Le chiffon la soulève, puis vous la gardez sur vous. Le nettoyant et le bac, puis un chiffon jetable." }
+              ]
+            }]
+          }
+        ]
+      },
+      /* ---------------------------------------------------------- */
+      {
+        id: "M3", titre: "Mesurer et décider", duree: "8 min",
+        diapos: [
+          {
+            id: "M3-1", titre: "Trois décisions, une règle",
+            blocs: [
+              { t: "chapeau", x: "L'étrier est déposé. Avant de poser les neuves, vous regardez **trois choses** : la mesure du disque, sa surface, et l'étrier avec son flexible et les vieilles plaquettes." },
+              { t: "regle", items: [
+                { v: "arret", si: "**L'étrier, le flexible ou les plaquettes sont en cause** : fuite de liquide, flexible craquelé ou gonflé, piston qui ne recule pas, garnitures tachées, ou usées avec plus de 3 mm d'écart. On ne remonte pas." },
+                { v: "remplacer", si: "**La plus petite lecture est sous la cote** gravée (MIN TH), ou le disque est fissuré, ou creusé d'une rainure profonde. Les deux disques de l'essieu." },
+                { v: "continuer", si: "**Tout est bon** : au-dessus de la cote, surface lisse ou à fines stries, étrier sec, plaquettes usées également. Le disque reste." }
+              ] },
+              { t: "pied", x: "Au pont 2, on ne rectifie pas les disques : on les remplace. L'essai routier et le rodage des plaquettes neuves, c'est l'enseignant qui les fait." }
+            ]
+          },
+          {
+            id: "M3-2", titre: "Lundi, le VUS gris : Dominique mesure le disque gauche",
+            blocs: [{
+              t: "exemple", verdict: "continuer", debut: "Voir le premier point", suivant: "Point suivant",
+              piece: disque("disque-stries", "26,6 · 26,4 · 26,5 · 26,7 mm", "Lundi · VUS gris · disque avant gauche", "Plaquettes : usure égale des deux côtés. Étrier sec."),
+              etapes: [
+                { q: "La cote", r: "Gravée sur le chapeau du disque : **MIN TH 26,0 mm**. En dessous, le disque ne se garde pas.", repere: "min" },
+                { q: "Les lectures", r: "Micromètre à un doigt du bord, à quatre endroits autour du disque. Je garde **la plus petite : 26,4 mm**.", repere: "mesure" },
+                { q: "La comparaison", r: "26,4 contre 26,0 : il reste 0,4 mm. **Au-dessus** de la cote." },
+                { q: "La surface", r: "De fines stries circulaires : c'est l'usure normale. Pas de fissure, pas de rainure profonde.", repere: "surface" },
+                { q: "L'étrier et les plaquettes", r: "Soufflet sec, flexible souple, plaquettes usées également : rien ne cloche." }
+              ],
+              conclusion: "Tout est bon : le disque reste. Le droit, mesuré de la même façon, donne 26,8 : les deux disques de ce VUS restent."
+            }]
+          },
+          {
+            id: "M3-3", titre: "À vous : mardi, une autre voiture",
+            blocs: [{
+              t: "tri", consigne: "Surface lisse, étrier sec, plaquettes usées également. **Votre décision ?**", bonne: "remplacer",
+              piece: disque("disque-lisse-2", "26,2 · 26,0 · 25,7 · 26,1 mm", "Mardi · berline bleue · disque avant droit", "Plaquettes : usure égale. Étrier sec."),
+              reperes: { mesure: 1, min: 2 },
+              retro: {
+                continuer: "La surface est belle, et trois lectures passent. Mais on garde la plus petite (1) : 25,7 mm, sous la cote de 26,0 (2). Un disque trop mince chauffe plus vite, et freine moins bien.",
+                remplacer: "La plus petite lecture (1), 25,7 mm, est sous la cote de 26,0 (2). Et on remplace **les deux** disques de l'essieu, pour que la voiture freine droit.",
+                arret: "Rien ne cloche du côté de l'étrier. Le disque est sous sa cote (1, 2) : on remplace les deux disques, et on continue le travail."
+              }
+            }]
+          },
+          {
+            id: "M3-4", titre: "Mercredi, une troisième voiture : les plaquettes parlent",
+            blocs: [{
+              t: "tri", consigne: "Le disque est au-dessus de sa cote, surface lisse. Voici les plaquettes retirées. **Votre décision ?**", bonne: "arret",
+              piece: plaq("plaquettes-inegales", "Mercredi · fourgonnette · plaquettes avant droites", "1,5 mm", "7,0 mm", "Disque : 27,1 mm, surface lisse."),
+              reperes: { interieure: 1, exterieure: 2 },
+              retro: {
+                continuer: "Le disque va bien, mais les plaquettes ne s'usent pas pareil : l'intérieure est à 1,5 mm (1), l'extérieure à 7 (2). L'étrier coulisse mal : des neuves s'useraient de la même façon. Au pont, remonter ainsi est éliminatoire.",
+                remplacer: "Le disque est au-dessus de sa cote. Ce qui cloche, c'est l'écart entre l'intérieure (1) et l'extérieure (2) : l'étrier coulisse mal. On appelle l'enseignant.",
+                arret: "L'intérieure (1) presque à zéro, l'extérieure encore épaisse (2) : 5,5 mm d'écart. Glissière grippée ou piston qui recule mal : l'enseignant décide de la suite."
+              }
+            }]
+          }
+        ]
+      },
+      /* ---------------------------------------------------------- */
+      {
+        id: "M4", titre: "Remonter et finir", duree: "8 min",
+        diapos: [
+          {
+            id: "M4-1", titre: "Retour au VUS gris : Dominique remonte",
+            blocs: [{
+              t: "exemple", debut: "Voir la première étape", suivant: "Étape suivante", fin: "Le VUS est remonté des deux côtés.",
+              intro: "Lundi, les deux disques du VUS gris sont restés (M3-2). Plaquettes neuves. Chaque serrage a sa valeur, dans l'information de réparation du pont 2.",
+              etapes: [
+                { q: "Nettoyer", r: "Support et glissières au nettoyant. Les agrafes neuves en place." },
+                { q: "Graisser", r: "La graisse du pont 2, faite pour le caoutchouc des soufflets : sur les glissières et les points de contact des agrafes. **Jamais sur la garniture ni sur le disque.** Puis je change de gants." },
+                { q: "Repousser le piston", r: "Je surveille le réservoir, bouchon retiré, chiffon autour : le liquide remonte, et il attaque la peinture." },
+                { q: "L'étrier", r: "Plaquettes neuves, étrier en place, boulons de glissière à la clé dynamométrique : **27 N·m**." },
+                { q: "La roue", r: "Écrous à la main, puis **140 N·m** à la clé dynamométrique, en étoile. Le pistolet reste accroché." },
+                { q: "Et l'autre côté", r: "Même travail à droite : on change **toujours** les deux côtés de l'essieu." }
+              ],
+              conclusion: "Si les disques avaient été remplacés, l'enseignant aurait déposé le support avec vous (ses boulons : 115 N·m). Et rien ne bouge encore : la pédale n'a pas été pompée."
+            }]
+          },
+          {
+            id: "M4-2", titre: "Il reste une roue à serrer",
+            blocs: [{ t: "colonnes", etroite: "droite",
+              gauche: [{ t: "planche", piece: { photo: "moyeu-ecrous" }, reperes: { e1: 1, e2: 2, e3: 3, e4: 4, e5: 5 } }],
+              droite: [
+                { t: "options", q: "Le pistolet à chocs du pont a un réglage « bas ». **Vous…**",
+                  choix: [
+                    { x: "serrez à 140 N·m au pistolet, puis vérifiez à la clé.", grave: true, retro: "Le pistolet, même bas, peut dépasser 140 N·m dès le premier coup, et la clé ne desserre pas ce qui est trop serré. Écrous à la main, puis la clé." },
+                    { x: "vissez à la main, puis serrez à la clé, en étoile.", juste: true, retro: "L'ordre en étoile (1 à 5 sur la photo) plaque la roue bien à plat : sinon, le disque se voile et la pédale vibre." },
+                    { x: "serrez au pistolet réglé bas, en étoile lui aussi.", grave: true, retro: "Un écrou trop serré étire le goujon ; pas assez serré, il laisse partir la roue. Au pont 2, le pistolet ne serre jamais." }
+                  ] }
+              ] }]
+          },
+          {
+            id: "M4-3", titre: "Les deux côtés sont remontés. La voiture doit sortir du pont.",
+            blocs: [{
+              t: "options", q: "**Première chose à faire ?**",
+              choix: [
+                { x: "Démarrer et reculer tout doucement.", grave: true, retro: "Les pistons sont repoussés au fond : les premières pressions sur la pédale vont **jusqu'au plancher**, sans freiner. La voiture recule dans le mur de l'atelier." },
+                { x: "Pomper jusqu'à pédale ferme, puis le niveau.", juste: true, retro: "Il faut plusieurs coups de pédale pour ramener les pistons contre les plaquettes. Ferme d'abord, le niveau ensuite." },
+                { x: "Vérifier le niveau de liquide, puis sortir.", retro: "Le niveau, oui, mais après avoir pompé : pomper change le niveau. Et sans pédale ferme, la voiture ne freine pas." }
+              ]
+            }]
+          }
+        ]
+      },
+      /* ---------------------------------------------------------- */
+      {
+        id: "M5", titre: "L'épreuve", duree: "10 min",
+        diapos: [
+          {
+            id: "M5-1", titre: "L'épreuve du pont 2", surtitre: "Évaluation",
+            blocs: [{
+              t: "serie", indice: true, seuilPieces: 5, seuilSituations: 6, retroImmediate: false, revoir: "M3",
+              consigne: "Treize cas, chacun sur une voiture différente : six pièces à juger (votre décision, puis ce qui décide) et sept situations au pont, **différentes de celles des modules**. **Seuils : 5 pièces sur 6, et 6 situations sur 7.**",
+              annonce: "**Six gestes sont éliminatoires**, dans l'épreuve comme dans la reprise : travailler sous une voiture mal tenue, laisser l'étrier pendre au flexible, graisser la garniture, serrer au pistolet à chocs, remonter un étrier, un flexible ou des plaquettes défectueux, et déplacer la voiture sans pédale ferme. Vous voyez vos résultats à la fin.",
+              bilan: { reussi: "Seuils atteints : le pont 2 vous attend. Gardez la fiche de la diapo suivante sur votre téléphone.", rate: "Pas encore. Relisez les cas manqués ; une reprise sur treize autres cas vous attend.", elimine: "Une réponse éliminatoire a été choisie. Au pont, ce geste mettrait quelqu'un en danger sur la route : on reprend avant d'y aller.", deuxieme: "Deux essais sans atteindre les seuils. Revoyez le module 3, puis écrivez à Dominique Roy avant un troisième essai : on en parlera au pont." },
+              items: [
+                { piece: disque("disque-rainure", "26,9 · 26,8 · 27,0 · 26,9 mm", "Disque avant gauche", "Au doigt, on sent une marche sur la piste. Étrier sec, plaquettes usées également."), bonne: "remplacer", indices: ["surface"], reperes: { surface: 1, mesure: 2 },
+                  retro: { continuer: "Les lectures (2) passent, mais la rainure profonde (1) creuse les plaquettes neuves et réduit le freinage.", remplacer: "Au-dessus de la cote (2), mais creusé d'une rainure profonde (1) : les deux disques.", arret: "L'étrier est sain : c'est le disque (1) qu'on remplace." } },
+                { titre: "Lever", situation: "Le pont 2 est pris. Un collègue propose de lever la voiture **au cric rouleur**, pour gagner du temps.", q: "Que faites-vous ?",
+                  choix: [
+                    { x: "Au cric, en travaillant vite et prudemment.", grave: true, retro: "Un cric peut descendre ou glisser. Jamais de bras ni de tête sous une voiture qui ne tient que sur lui." },
+                    { x: "Cric, puis deux chandelles aux points de levage.", juste: true, retro: "Le cric lève, les chandelles tiennent." },
+                    { x: "Au cric, la roue glissée dessous en sécurité.", grave: true, retro: "La roue freine la chute, elle ne la remplace pas. Sans chandelles, la voiture ne tient que sur le cric : jamais dessous." }
+                  ] },
+                { piece: piece("etrier-fuite", "Étrier avant droit", "Disque : lectures au-dessus de la cote, surface lisse."), bonne: "arret", indices: ["etrier"], graves: ["continuer", "remplacer"], reperes: { piston: 1 },
+                  retro: { continuer: "Sur l'étrier (1), une coulée luisante de liquide : il fuit. Remonté, il perdra du liquide, et du freinage.", remplacer: "Le disque va bien. C'est l'étrier qui fuit (1) : on ne remonte pas, on appelle.", arret: "La fuite de l'étrier (1) décide." } },
+                { titre: "Pendant le travail", situation: "L'étrier droit est déposé. Il vous faut **vos deux mains** pour retirer une agrafe coincée.", q: "Que faites-vous de l'étrier ?",
+                  choix: [
+                    { x: "Je le laisse pendre quelques secondes.", grave: true, retro: "Quelques secondes suffisent pour abîmer l'intérieur du flexible." },
+                    { x: "Je le suspends au crochet d'abord.", juste: true, retro: "Le crochet libère vos deux mains." },
+                    { x: "Je le fais tenir par le flexible à quelqu'un.", grave: true, retro: "Tenu par le flexible, il tire dessus autant qu'en pendant." }
+                  ] },
+                { piece: disque("disque-lisse", "26,3 · 26,1 · 25,9 · 26,2 mm", "Disque avant droit", "Étrier sec, plaquettes usées également."), bonne: "remplacer", indices: ["cote"], reperes: { mesure: 1, min: 2 },
+                  retro: { continuer: "Trois lectures passent, mais on garde la plus petite (1) : 25,9, sous 26,0 (2).", remplacer: "La plus petite lecture (1), 25,9 mm, est sous la cote (2) : les deux disques.", arret: "L'étrier est sain. C'est la cote (1, 2) qui décide : on remplace." } },
+                { titre: "Au remontage", situation: "Vous graissez les glissières. Un peu de graisse a touché **la garniture** d'une plaquette neuve.", q: "Que faites-vous ?",
+                  choix: [
+                    { x: "Je l'essuie bien au chiffon et je la pose.", grave: true, retro: "La garniture est poreuse : la graisse y reste. Elle freinera mal, d'un seul côté." },
+                    { x: "Je la mets de côté et je le dis à l'enseignant.", juste: true, retro: "Une plaquette graissée ne se récupère pas." },
+                    { x: "Je la nettoie au nettoyant, puis je la pose.", grave: true, retro: "Le nettoyant ne ressort pas la graisse de la garniture." }
+                  ] },
+                { piece: plaq("plaquettes-contaminees", "Plaquettes avant gauches, déposées", "6,0 mm", "6,5 mm", "Disque : lectures au-dessus de la cote, surface lisse."), bonne: "arret", indices: ["plaquettes"], graves: ["continuer", "remplacer"], reperes: { garniture: 1 },
+                  retro: { continuer: "Les garnitures sont tachées de coulures luisantes (1) : du liquide ou de la graisse vient de quelque part. On cherche d'où avant de remonter.", remplacer: "Le disque va bien. Les taches (1) trahissent une fuite : on appelle.", arret: "Des garnitures tachées (1) trahissent une fuite." } },
+                { titre: "Au serrage", situation: "Le collègue du pont 1 vous prête son pistolet à chocs : son afficheur indique **140 N·m**.", q: "Que faites-vous ?",
+                  choix: [
+                    { x: "Je serre au pistolet : il affiche le couple.", grave: true, retro: "L'afficheur d'un pistolet n'est pas une mesure de serrage fiable. Au pont 2, il ne serre jamais." },
+                    { x: "À la main, puis 140 N·m à la clé, en étoile.", juste: true, retro: "La clé dynamométrique, dans l'ordre en étoile." },
+                    { x: "Au pistolet, puis je vérifie à la clé.", grave: true, retro: "La clé ne desserre pas ce que le pistolet a trop serré." }
+                  ] },
+                { piece: disque("disque-stries-3", "26,4 · 26,2 · 26,3 · 26,5 mm", "Disque avant gauche", "Étrier sec, plaquettes usées également."), bonne: "continuer", indices: ["rien"], reperes: { mesure: 1, min: 2, surface: 3 },
+                  retro: { continuer: "La plus petite lecture (1), 26,2, reste au-dessus de 26,0 (2). Fines stries (3) : tout est bon.", remplacer: "26,2 (1) contre 26,0 (2) : c'est juste, mais au-dessus. Stries fines (3) : le disque reste.", arret: "Rien ne cloche : lectures au-dessus de la cote (1, 2), étrier sec." } },
+                { titre: "Fin de journée", situation: "Le côté gauche est fait. Il est 15 h 50 ; on vous propose de **rendre la voiture ce soir** et de faire le droit une autre fois.", q: "Que faites-vous ?",
+                  choix: [
+                    { x: "Je rends la voiture : le gauche était le plus usé.", retro: "Un côté neuf, un côté usé : la voiture tire au freinage. On change toujours les deux côtés de l'essieu." },
+                    { x: "La voiture attend : le droit se fait avant de la rendre.", juste: true, retro: "Les deux côtés de l'essieu, toujours, avant que la voiture reparte." },
+                    { x: "Je remonte le droit tel quel, puis je le note.", retro: "Noter ne change rien au freinage : la voiture tirerait d'un côté. Les deux côtés." }
+                  ] },
+                { titre: "Pendant le travail", situation: "Un collègue s'installe au volant pour déplacer la voiture et **appuie sur la pédale** par réflexe. Votre étrier gauche est déposé.", q: "Que faites-vous ?",
+                  choix: [
+                    { x: "Rien : le piston se repoussera au remontage.", retro: "Étrier déposé, le piston a pu sortir de son logement. C'est à vérifier avant de continuer." },
+                    { x: "Stop, et j'appelle l'enseignant pour le piston.", juste: true, retro: "Et le couvre-pédale, la prochaine fois." },
+                    { x: "Je repousse le piston et je continue le travail.", retro: "Il a peut-être perdu son joint : c'est à l'enseignant de le vérifier." }
+                  ] },
+                { piece: plaq("plaquettes-usees", "Plaquettes avant droites, déposées", "3,0 mm", "3,5 mm", "Disque : 27,2 mm au plus petit, surface lisse. Étrier sec."), bonne: "continuer", indices: ["rien"], reperes: { garniture: 1 },
+                  retro: { continuer: "Usées également (1), 0,5 mm d'écart : c'est l'usure normale. Disque et étrier bons : tout est bon.", remplacer: "Le disque est au-dessus de sa cote : il reste. Les plaquettes (1) s'usent également.", arret: "0,5 mm d'écart (1), c'est normal. Rien ne justifie d'arrêter." } },
+                { titre: "Fin du travail", situation: "Les deux côtés sont remontés. On vous demande de **descendre le pont et d'avancer la voiture** jusqu'à la porte.", q: "Que faites-vous ?",
+                  choix: [
+                    { x: "Je descends le pont et j'avance lentement.", grave: true, retro: "La pédale irait au plancher : les pistons sont encore au fond." },
+                    { x: "Je pompe jusqu'à pédale ferme, puis j'avance.", juste: true, retro: "Ferme d'abord, le niveau ensuite, puis on bouge." },
+                    { x: "J'avance en retenant au frein de stationnement.", grave: true, retro: "Le frein de stationnement ne remplace pas la pédale : on pompe d'abord." }
+                  ] }
+              ],
+              reprise: [
+                { piece: disque("disque-fissure", "27,0 · 26,9 · 27,1 · 27,0 mm", "Disque avant droit", "Étrier sec."), bonne: "remplacer", indices: ["surface"], reperes: { surface: 1 },
+                  retro: { continuer: "Les lectures passent, mais la fissure (1) peut s'ouvrir sous la chaleur.", remplacer: "La fissure (1) décide, quelles que soient les lectures.", arret: "L'étrier va bien : c'est le disque fissuré (1) qu'on remplace." } },
+                { titre: "Lever", situation: "La voiture est au pont, levée. Vous voyez que **le verrou de sécurité du pont n'est pas enclenché**.", q: "Que faites-vous ?",
+                  choix: [
+                    { x: "Je travaille : le pont tient tout seul.", grave: true, retro: "Le verrou empêche la descente si le circuit du pont lâche. Jamais dessous sans lui." },
+                    { x: "J'enclenche le verrou avant d'aller dessous.", juste: true, retro: "Le verrou d'abord, puis le travail." },
+                    { x: "Je reste sur le côté, jamais dessous.", retro: "On travaille aux roues, mais on passe dessous tôt ou tard : le verrou d'abord." }
+                  ] },
+                { piece: piece("flexible-craquele", "Flexible avant gauche", "Disque : lectures au-dessus de la cote, surface lisse."), bonne: "arret", indices: ["etrier"], graves: ["continuer", "remplacer"], reperes: { flexible: 1 },
+                  retro: { continuer: "Le flexible (1) est craquelé et gonflé : il peut éclater au freinage.", remplacer: "Le disque va bien ; c'est le flexible (1) qui est dangereux.", arret: "Craquelures et renflement (1) sur le flexible." } },
+                { titre: "Pendant le travail", situation: "Étrier déposé, vous devez aller chercher **une agrafe au magasin**, à l'autre bout de l'atelier.", q: "Avant de partir ?",
+                  choix: [
+                    { x: "Je le pose sur le disque, il tiendra bien.", grave: true, retro: "Posé en équilibre, il glisse et finit au bout du flexible." },
+                    { x: "Je le suspends au crochet, flexible détendu.", juste: true, retro: "Au crochet, vous pouvez partir tranquille." },
+                    { x: "Je le laisse pendre : je reviens vite.", grave: true, retro: "Même une minute suffit pour abîmer le flexible." }
+                  ] },
+                { piece: disque("micrometre", "26,1 · 25,9 · 26,0 · 26,1 mm", "Disque avant gauche, au micromètre", "Étrier sec, plaquettes usées également."), bonne: "remplacer", indices: ["cote"], reperes: { mesure: 1, min: 2 },
+                  retro: { continuer: "La plus petite lecture (1), 25,9, est sous 26,0 (2).", remplacer: "25,9 (1) sous 26,0 (2) : les deux disques.", arret: "L'étrier est sain : c'est la cote qui décide." } },
+                { titre: "Au remontage", situation: "Vos gants sont **pleins de graisse de glissière**. Il reste à poser les plaquettes neuves.", q: "Que faites-vous ?",
+                  choix: [
+                    { x: "Je les pose en les tenant par les bords.", grave: true, retro: "Les bords touchent aussi la garniture. Des gants propres d'abord." },
+                    { x: "Je change de gants, puis je les pose.", juste: true, retro: "Des gants propres : la garniture reste sèche." },
+                    { x: "J'essuie mes gants sur un chiffon, puis je pose.", grave: true, retro: "Un gant essuyé reste gras. On change de gants." }
+                  ] },
+                { piece: plaq("plaquettes-inegales-2", "Plaquettes avant gauches, déposées", "1,0 mm", "6,5 mm", "Disque : au-dessus de la cote, surface lisse."), bonne: "arret", indices: ["plaquettes"], graves: ["continuer", "remplacer"], reperes: { interieure: 1, exterieure: 2 },
+                  retro: { continuer: "5,5 mm d'écart entre l'intérieure (1) et l'extérieure (2) : l'étrier coulisse mal.", remplacer: "Le disque va bien ; c'est l'écart (1, 2) qui cloche. On appelle.", arret: "1 mm (1) contre 6,5 (2) : l'étrier est en cause." } },
+                { titre: "Au serrage", situation: "Il reste la roue gauche à serrer. **La clé dynamométrique est au pont 3.**", q: "Que faites-vous ?",
+                  choix: [
+                    { x: "Je serre au pistolet, réglé au plus bas.", grave: true, retro: "Le pistolet ne serre jamais au pont 2." },
+                    { x: "À la main, puis je vais chercher la clé.", juste: true, retro: "À la main, puis 140 N·m en étoile." },
+                    { x: "Je serre fort à la clé en croix, sans mesurer.", retro: "« Fort » n'est pas une valeur : on attend la clé." }
+                  ] },
+                { piece: disque("disque-stries-2", "26,3 · 26,1 · 26,2 · 26,4 mm", "Disque avant droit", "Étrier sec, plaquettes usées également."), bonne: "continuer", indices: ["rien"], reperes: { mesure: 1, min: 2 },
+                  retro: { continuer: "26,1 au plus petit (1) : juste au-dessus de 26,0 (2). Tout est bon.", remplacer: "26,1 (1) contre 26,0 (2) : c'est serré, mais au-dessus. Le disque reste.", arret: "Rien ne cloche : on continue." } },
+                { titre: "Fin du travail", situation: "On vous demande de **pousser la voiture au point mort**, moteur coupé, pour la sortir du pont.", q: "Avant de pousser ?",
+                  choix: [
+                    { x: "Rien : moteur coupé, on ne freine pas.", grave: true, retro: "Poussée, elle roule quand même : sans pédale ferme, rien ne l'arrête." },
+                    { x: "Je pompe jusqu'à pédale ferme, puis on pousse.", juste: true, retro: "Même poussée, une voiture doit pouvoir freiner." },
+                    { x: "Je garde le frein de stationnement à portée.", grave: true, retro: "Le frein de stationnement ne remplace pas la pédale : on pompe d'abord." }
+                  ] },
+                { titre: "Deux côtés", situation: "Côté droit, les plaquettes ont encore **5 mm**. Le client demande de ne changer que le côté gauche, pour payer moins.", q: "Que répondez-vous ?",
+                  choix: [
+                    { x: "D'accord : le droit a encore de la marge.", retro: "Neuves d'un côté, usées de l'autre : la voiture tire au freinage. Les deux côtés." },
+                    { x: "On change les deux côtés de l'essieu, toujours.", juste: true, retro: "C'est une règle de sécurité, pas une vente de plus." },
+                    { x: "Je change le gauche et je note le droit.", retro: "La voiture tirerait d'un côté dès demain. Les deux côtés." }
+                  ] },
+                { piece: disque("disque-lisse-3", "27,4 · 27,3 · 27,5 · 27,4 mm", "Disque avant gauche", "Étrier sec, flexible souple, plaquettes usées également."), bonne: "continuer", indices: ["rien"], reperes: { mesure: 1, surface: 2 },
+                  retro: { continuer: "27,3 au plus petit (1), surface lisse (2) : tout est bon.", remplacer: "Bien au-dessus de la cote (1), surface lisse (2) : le disque reste.", arret: "Rien ne cloche : on continue." } },
+                { titre: "Fin du travail", situation: "La pédale est ferme. Le niveau de liquide est **au-dessus du maximum**.", q: "Que faites-vous ?",
+                  choix: [
+                    { x: "Rien : trop, c'est mieux que pas assez.", retro: "Trop plein, le liquide déborde quand il chauffe, et il attaque la peinture." },
+                    { x: "Je retire l'excédent jusqu'au MAX, à la seringue.", juste: true, retro: "Au niveau MAX, pas plus." },
+                    { x: "J'ouvre une vis de purge pour faire baisser.", retro: "Ouvrir la purge peut faire entrer de l'air. La seringue, dans le réservoir." }
+                  ] }
+              ]
+            }]
+          },
+          {
+            id: "M5-2", titre: "La fiche du pont 2",
+            blocs: [
+              { t: "memo", titre: "Le dernier millimètre", items: [
+                { q: "Déposer", r: "Points de levage, verrou du pont · roue (le pistolet desserre, il ne serre jamais) · nettoyant, pas de soufflette · **l'étrier au crochet** · couvre-pédale." },
+                { q: "Décider", r: "Fuite, flexible abîmé, plaquettes tachées ou à plus de 3 mm d'écart : **j'arrête** · plus petite lecture sous MIN TH, fissure, rainure : **les deux disques** · sinon : je continue." },
+                { q: "Remonter", r: "Graisse du pont 2 sur glissières et agrafes, **jamais sur la garniture** · glissières 27 N·m · support 115 N·m · roue 140 N·m en étoile · les deux côtés." },
+                { q: "Finir", r: "**Pédale ferme avant de bouger** · puis niveau au MAX · l'essai routier et le rodage, c'est l'enseignant." },
+                { q: "Éliminatoire", r: "Travailler sous une voiture mal tenue, laisser l'étrier pendre au flexible, graisser la garniture, serrer au pistolet à chocs, remonter un étrier, un flexible ou des plaquettes défectueux, et déplacer la voiture sans pédale ferme." }
+              ], pied: "Questions avant la séance : Dominique Roy, messagerie du CFP. La veille de votre séance, la messagerie vous envoie trois questions courtes, et deux autres un mois plus tard." },
+              { t: "lien", x: "Ouvrir la fiche d'une page (faites-en une capture d'écran)", href: "aide-memoire.html" }
+            ]
+          }
+        ]
+      }
+    ]
+  };
+})();
+
+</script>
+<script>
+/* ============================================================
+   JOURNAL DE RÉVISION — temps 6 de la boucle
+   Une entrée par diapositive : statut, avant, après, critères
+   (avec la gravité du constat d'origine, audit 1), et pourquoi.
+   L'ordre suit la version finale ; les diapositives retirées sont
+   placées là où leur contenu aurait dû servir.
+   ============================================================ */
+window.JOURNAL = {
+  entrees: [
+    {module: "M1", avant: "A-M1-1", apres: "M1-1", statut: "modifiee", criteres: [{code: "B1", grav: "majeur"}, {code: "A2", grav: "majeur"}, {code: "C2", grav: "mineur"}, {code: "E2", grav: "mineur"}], pourquoi: "Le disque rougeoyant d'une voiture de course devient **l'erreur la plus fréquente au pont** : un étrier qui pend au bout de son flexible. L'apprenti décide avant tout exposé, et la rétroaction dit ce que ça fait au flexible, sans blâme.", note: "le cas d'abord, le titre après", tour2: {criteres: [{code: "D4", grav: "mineur"}, {code: "C4", grav: "mineur"}], pourquoi: "Le dessin posait une croix rouge sur le flexible avant la réponse : la photo montre l'étrier qui pend, sans rien dire. Après la réponse, on voit enfin le bon geste, l'étrier au crochet."}, tour3: {criteres: [{code: "D2", grav: "bloquant"}], pourquoi: "La photo du « bon geste », agrandie, montrait le crochet passé autour du FLEXIBLE, et l'étrier qui pendait à lui : le geste éliminatoire lui-même. En attendant une photo juste, c'est le dessin technique qui montre le bon geste : le crochet tient l'étrier."}, tour4: {criteres: [{code: "D2", grav: "mineur"}], pourquoi: "Photo de l'étrier au crochet refaite et vérifiée agrandie : le crochet passe dans le corps de l'étrier (2), le flexible pend à part en boucle lâche (1). Elle remplace le dessin provisoire ; la photo fautive est écartée (.rejetee.jpg) et ne part plus au classeur."}},
+    {module: "M1", avant: "A-M1-2", apres: "M1-2", statut: "modifiee", criteres: [{code: "A1", grav: "bloquant"}, {code: "A3", grav: "mineur"}, {code: "G2", grav: "majeur"}], pourquoi: "« Comprendre », « connaître », « être sensibilisé » : rien de visible. Quatre gestes les remplacent, chacun pratiqué puis évalué. La durée passe de 55 à 25 minutes, et l'épreuve de la fin ouvre l'accès au pont 2.", tour2: {criteres: [{code: "A3", grav: "majeur"}, {code: "G2", grav: "mineur"}], pourquoi: "L'épreuve devient un module à part (M5) et évalue O2 sur six pièces, dont un disque sous sa cote. Durée réaliste : une demi-heure."}},
+    {module: "M1", avant: "A-M1-4", apres: "M1-3", statut: "modifiee", criteres: [{code: "C2", grav: "mineur"}, {code: "B3", grav: "mineur"}, {code: "B2", grav: "mineur"}], pourquoi: "Trois statistiques sans source deviennent **une seule conséquence**, celle qui concerne l'apprenti : quelqu'un conduira cette voiture ce soir. Les quatre gestes qui ne se rattrapent pas sont nommés dès ici, et une question fait remonter les habitudes prises au garage, pour les confronter ensuite.", tour2: {criteres: [{code: "B2", grav: "mineur"}, {code: "F1", grav: "majeur"}], pourquoi: "La question sur l'étrier « chez vous » revient en M2-2. La liste des gestes éliminatoires est la même ici, dans l'annonce de l'épreuve et dans la fiche."}, tour3: {criteres: [{code: "F1", grav: "mineur"}], pourquoi: "Une seule liste de six gestes éliminatoires, copiée à l'identique ici, dans l'annonce de l'épreuve, dans la fiche M5-2 et dans l'aide-mémoire."}},
+    {module: "M1", avant: "A-M1-3", apres: null, statut: "retiree", criteres: [{code: "A3", grav: "mineur"}, {code: "C1", grav: "mineur"}, {code: "C5", grav: "mineur"}], pourquoi: "Pascal et l'énergie cinétique ne servent aucune étape. Le seul lien utile au pont (repousser le piston crée un jeu, et la pédale va au plancher) est dit **à l'étape où il compte**, en M4-3.", note: "théorie sans décision, coupée"},
+    {module: "M2", avant: "A-M2-1", apres: "M2-1", statut: "modifiee", criteres: [{code: "C3", grav: "majeur"}, {code: "G1", grav: "majeur"}], pourquoi: "Une vue éclatée à quinze composantes devient **trois repères** sur l'étrier, ceux qu'on manipule, chacun avec sa règle (le flexible ne se tire pas ; le soufflet doit être sec ; 27 N·m). Un seul dessin par écran, lisible sur téléphone.", tour2: {criteres: [{code: "C5", grav: "mineur"}], pourquoi: "Photo de l'étrier en place ; les glissières sont nommées."}, tour3: {criteres: [{code: "C3", grav: "mineur"}], pourquoi: "Les repères pointaient un tuyau voisin et un piston invisible : ils sont reposés sur la photo agrandie, avec une planche de contrôle (commun/controle_reperes.py)."}},
+    {module: "M2", avant: "A-M2-2", apres: null, statut: "retiree", criteres: [{code: "A3", grav: "mineur"}, {code: "C5", grav: "mineur"}], pourquoi: "Organiques, semi-métalliques, céramiques : au pont, les plaquettes sont fournies. Le geste utile, **comparer les neuves aux anciennes**, passe à l'étape où on les retire (M2-2)."},
+    {module: "M2", avant: "A-M3-2", apres: "M2-2", statut: "modifiee", criteres: [{code: "C4", grav: "majeur"}, {code: "C1", grav: "majeur"}], pourquoi: "Treize étapes sur un écran deviennent **quatre phases**, dont la première est ici en exemple travaillé : Dominique fait chaque étape et dit pourquoi (le pistolet desserre mais ne serre jamais ; pas de soufflette ; le crochet ; le couvre-pédale). La suite de la procédure est en M3-2 et M4-1.", tour2: {criteres: [{code: "G1", grav: "bloquant"}, {code: "C4", grav: "mineur"}], pourquoi: "Dès 820 px, le bouton de l'exemple était coupé et ne répondait plus : la scène garde le 16:9 comme minimum et s'allonge. L'exemple montre enfin le bon geste (photo de l'étrier au crochet) et le verrou du pont."}, tour3: {criteres: [{code: "D2", grav: "bloquant"}], pourquoi: "Même photo fautive qu'en M1-1 : remplacée par le dessin de l'étrier au crochet."}, tour4: {criteres: [{code: "D2", grav: "mineur"}], pourquoi: "Même photo juste que M1-1."}},
+    {module: "M2", avant: null, apres: "M2-3", statut: "ajoutee", criteres: [{code: "D1", grav: "majeur"}, {code: "D2", grav: "majeur"}], pourquoi: "La première pratique arrive au sixième écran, plus au quatorzième. L'apprenti reconstitue l'ordre de mémoire ; un mauvais choix dit **ce qui doit venir avant**, et pourquoi.", tour2: {criteres: [{code: "E1", grav: "mineur"}], pourquoi: "La rétroaction « trop tôt » nomme l'étape attendue, puis la raison propre au choix, et passe au-dessus des étapes restantes."}},
+    {module: "M2", avant: null, apres: "M2-4", statut: "ajoutee", criteres: [{code: "D2", grav: "majeur"}, {code: "B3", grav: "mineur"}, {code: "E1", grav: "majeur"}], pourquoi: "La soufflette est l'habitude de garage que l'audit voulait voir délogée. Ici, elle se juge devant un étrier poussiéreux, et chaque choix apprend ce qu'il fait de la poussière."},
+    {module: "M2", avant: "A-M3-1", apres: null, statut: "retiree", criteres: [{code: "A2", grav: "mineur"}, {code: "C1", grav: "mineur"}], pourquoi: "La liste d'outils n'interdisait pas la clé à chocs au serrage. Chaque outil est maintenant nommé **à l'étape où il sert, avec sa règle**, et la liste rejoint la fiche du pont.", note: "déplacée dans l'aide-mémoire"},
+    {module: "M3", avant: "A-M2-4", apres: "M3-1", statut: "modifiee", criteres: [{code: "A2", grav: "mineur"}, {code: "D3", grav: "mineur"}], pourquoi: "La liste des signes d'usure mêlait ce que des plaquettes neuves règlent et ce qu'elles ne règlent pas. Elle devient **une règle à trois décisions** : j'arrête si l'étrier ou le flexible est en cause, je remplace si le disque est sous sa cote, sinon je continue.", tour2: {criteres: [{code: "E1", grav: "majeur"}], pourquoi: "Pour « je continue », aucun indice n'est décisif à lui seul : la règle dit « tout est bon », et c'est la réponse attendue. Le seuil « très différemment » devient « plus de 3 mm d'écart »."}},
+    {module: "M3", avant: "A-M2-3", apres: "M3-2", statut: "modifiee", criteres: [{code: "C4", grav: "majeur"}, {code: "C1", grav: "mineur"}], pourquoi: "« Épaisseur minimale gravée » devient **un micromètre lu** : où mesurer, quelle valeur garder, la comparaison à la cote, puis la surface et l'étrier. Le cas est choisi près de la limite (26,4 contre 26,0), là où l'on hésite.", tour2: {criteres: [{code: "C4", grav: "majeur"}, {code: "D2", grav: "mineur"}], pourquoi: "Chaque cas est une voiture nommée (lundi, le VUS gris) : l'état ne change plus d'un écran à l'autre. Le bon donne quatre lectures, et l'on garde la plus petite."}},
+    {module: "M3", avant: null, apres: "M3-3", statut: "ajoutee", criteres: [{code: "D2", grav: "majeur"}, {code: "D3", grav: "mineur"}, {code: "E1", grav: "majeur"}], pourquoi: "Le premier cas à juger seul est un piège honnête : une surface parfaite, mais 0,3 mm sous la cote. La rétroaction pointe la mesure et la cote sur le dessin.", tour2: {criteres: [{code: "C4", grav: "majeur"}, {code: "D2", grav: "mineur"}], pourquoi: "Mardi, une autre voiture : fini le « disque droit » à 25,7 puis à 27,1. Quatre lectures, la plus petite sous la cote."}, tour3: {criteres: [{code: "D1", grav: "mineur"}], pourquoi: "Les quatre lectures étaient toutes sous la cote : n'importe laquelle donnait la réponse. Trois passent maintenant, une seule est sous la cote : l'apprenti garde lui-même la plus petite."}},
+    {module: "M3", avant: null, apres: "M3-4", statut: "ajoutee", criteres: [{code: "D3", grav: "mineur"}, {code: "E2", grav: "mineur"}], pourquoi: "Un disque parfait, mais des plaquettes usées très différemment. La version zéro ne proposait **aucun cas où l'on s'arrête** : celui-ci apprend que les vieilles plaquettes se lisent, elles aussi.", tour2: {criteres: [{code: "C4", grav: "majeur"}, {code: "C5", grav: "mineur"}], pourquoi: "Mercredi, une troisième voiture. Les épaisseurs mesurées, intérieure et extérieure, sont au bon de travail, en plus de la photo."}, tour3: {criteres: [{code: "F1", grav: "mineur"}], pourquoi: "La rétroaction dit que remonter ces plaquettes est éliminatoire au pont, comme à l'épreuve."}},
+    {module: "M4", avant: "A-M3-3", apres: "M4-1", statut: "modifiee", criteres: [{code: "A2", grav: "majeur"}, {code: "C3", grav: "mineur"}, {code: "F2", grav: "mineur"}], pourquoi: "Les étapes muettes de la version zéro (« lubrifier », « repousser le piston ») disent maintenant **quoi, où, et ce qu'on évite** : jamais de graisse sur la garniture, le réservoir surveillé, les deux côtés. Chaque couple est posé à l'étape où l'on serre, avec la source où le lire.", tour2: {criteres: [{code: "C4", grav: "majeur"}, {code: "A2", grav: "mineur"}, {code: "C5", grav: "mineur"}], pourquoi: "Le remontage revient au VUS de lundi, dont les deux disques sont restés : il ne contredit plus « les deux disques ». La branche « disques remplacés » (support, 115 N·m) est dite, et la phrase fausse sur « la dernière diapositive » est retirée."}},
+    {module: "M4", avant: null, apres: "M4-2", statut: "ajoutee", criteres: [{code: "D2", grav: "majeur"}, {code: "D4", grav: "mineur"}, {code: "E2", grav: "mineur"}], pourquoi: "Le « réglage bas » du pistolet est la tentation réelle. Le distracteur « pistolet, puis clé dynamométrique » a l'air prudent, et la rétroaction explique pourquoi il ne l'est pas : une clé ne desserre pas ce qui est trop serré.", tour2: {criteres: [{code: "D4", grav: "mineur"}, {code: "E1", grav: "mineur"}], pourquoi: "Le titre donnait la réponse : il devient neutre. La photo du moyeu numérote l'ordre en étoile, et « pistolet puis clé » est marqué comme le danger qu'il est."}, tour3: {criteres: [{code: "D4", grav: "mineur"}], pourquoi: "Longueurs égales, et un distracteur chiffré (« 140 N·m au pistolet ») : la bonne réponse n'est plus la seule qui porte un chiffre."}},
+    {module: "M4", avant: "A-M3-4", apres: "M4-3", statut: "modifiee", criteres: [{code: "C3", grav: "majeur"}, {code: "B3", grav: "mineur"}], pourquoi: "La note « la pédale descend jusqu'au plancher ! », perdue en bas d'une liste de sept règles, devient **la dernière décision avant de bouger la voiture**, avec sa conséquence : la voiture qui recule dans le mur. Les autres règles sont redistribuées dans les étapes qu'elles protègent."},
+    {module: "M4", avant: "A-M3-5", apres: null, statut: "retiree", criteres: [{code: "C1", grav: "mineur"}], pourquoi: "Le rodage et l'essai routier ne reviennent pas à l'apprenti de première année : c'est l'enseignant qui les fait. La fiche le dit en une ligne."},
+    {module: "M5", avant: "A-M4-1", apres: "M5-1", statut: "modifiee", criteres: [{code: "A3", grav: "bloquant"}, {code: "F1", grav: "bloquant"}, {code: "E1", grav: "majeur"}, {code: "D4", grav: "mineur"}], pourquoi: "Un quiz sur Pascal et le pourcentage de métal devient **l'épreuve du pont** : six cas inédits, pièces et situations, seuil de 5 sur 6. Les gestes qui mettent quelqu'un en danger sur la route sont **éliminatoires, et annoncés avant**. Une reprise sur six autres cas.", note: "on évalue le geste, pas la théorie", tour2: {criteres: [{code: "A3", grav: "majeur"}, {code: "F1", grav: "majeur"}, {code: "E1", grav: "majeur"}, {code: "D2", grav: "majeur"}, {code: "A3", grav: "mineur"}], pourquoi: "O2 s'évalue sur six pièces par série, dont un disque sous sa cote par 0,1 mm, un juste au-dessus et un cas « tout est bon ». Chaque geste éliminatoire a son cas dans chaque série (y compris le levage), les plaquettes tachées remontées éliminent, et le flexible craquelé se voit enfin (photo). Deux seuils séparés, cas nouveaux, et renvoi à l'enseignant après deux échecs."}, tour3: {criteres: [{code: "F1", grav: "majeur"}, {code: "A3", grav: "mineur"}, {code: "F1", grav: "mineur"}, {code: "D4", grav: "mineur"}, {code: "E1", grav: "mineur"}], pourquoi: "« Au cric, la roue glissée dessous » laissait réussir l'erreur qui écrase quelqu'un : elle est éliminatoire. « Les deux côtés » a sa situation dans chaque série (7 situations, seuil 6). Chaque pièce a sa propre photo, la reprise a son disque juste au-dessus de la cote et une situation O4 nouvelle. Les indices séparent l'étrier des vieilles plaquettes ; la question devient « Qu'est-ce qui décide ? ». Choix mélangés, bonne réponse qui tourne d'une place à l'autre, cas manqués numérotés, deux chiffres de même taille, et renvoi au module 3 après deux échecs."}, tour4: {criteres: [{code: "F1", grav: "mineur"}, {code: "C3", grav: "mineur"}], pourquoi: "Le bilan renvoie au seul module 3, comme son bouton ; les durées des modules font bien 35 minutes ; le repère de la fuite est posé à côté de la coulée ; O1 ne range plus la pédale parmi les éliminatoires, comme l'épreuve."}},
+    {module: "M5", avant: "A-M4-2", apres: "M5-2", statut: "modifiee", criteres: [{code: "F2", grav: "majeur"}, {code: "F3", grav: "mineur"}], pourquoi: "« Merci ! » devient **la fiche du pont 2** : les quatre phases, les couples, les gestes éliminatoires, la personne à qui écrire et deux rappels (la veille de la séance, un mois plus tard).", tour2: {criteres: [{code: "F3", grav: "mineur"}], pourquoi: "Les rappels ont un contenu et un canal ; la fiche dit de la garder en capture d'écran."}, tour3: {criteres: [{code: "F1", grav: "mineur"}, {code: "F3", grav: "mineur"}], pourquoi: "La fiche nomme les six gestes éliminatoires ; les rappels ne dévoilent plus leurs sujets."}}
+  ]
+};
+
+</script>
+<script>
+/* Cadrage (temps 1), résultats des audits (temps 3 et 5), limites. */
+window.BOUCLE = {
+  cadrage: {
+    public: "**Public.** Les apprentis de première année du programme de mécanique automobile du CFP Rivebelle, un centre fictif. Ils ont de 17 à 45 ans, et plusieurs lisent difficilement les longs textes. Ils suivent ce module seuls, en ligne, sur tablette ou téléphone, avant leur première séance au pont 2, où ils remplaceront les plaquettes avant du véhicule-école.",
+    ecart: "**Écart.** Ce qui va mal au pont, ce n'est pas le principe de Pascal. On laisse l'étrier pendre au flexible, on souffle la poussière, on graisse la garniture, on serre les roues au pistolet. On juge un disque à l'œil, sans le comparer à sa cote. Et on sort la voiture du pont avant d'avoir pompé la pédale."
+  },
+  alignement: [
+    { o: "O1 · Sécurité au pont", pratique: "M1-1, M2-2 (exemple travaillé), M2-3 (remettre dans l'ordre), M2-4", evalue: "M5-1 : « cric rouleur », « deux mains pour l'agrafe », « la pédale enfoncée » ; reprise : « verrou du pont », « l'agrafe au magasin » (éliminatoires sauf la pédale)" },
+    { o: "O2 · Décider", pratique: "M3-2 (exemple travaillé), M3-3, M3-4", evalue: "M5-1 : 6 pièces (dont un disque sous sa cote par 0,1 mm et deux « tout est bon »), seuil 5 sur 6 ; étrier qui fuit et plaquettes tachées éliminatoires ; reprise : 6 autres pièces, même composition" },
+    { o: "O3 · Remonter", pratique: "M4-1 (exemple travaillé), M4-2", evalue: "M5-1 : « graisse sur la garniture », « pistolet qui affiche 140 N·m » (éliminatoires), « finir le droit une autre fois » ; reprise : « gants pleins de graisse », « clé au pont 3 », « ne changer que le gauche »" },
+    { o: "O4 · Pédale ferme", pratique: "M4-3", evalue: "M5-1 : « avancer jusqu'à la porte » (éliminatoire) ; reprise : « pousser au point mort » (éliminatoire), « niveau au-dessus du MAX »" }
+  ],
+  audits: [
+    { titre: "Audit 1 · version zéro", sous: "Sous-agent indépendant · 15 diapositives", bloquant: 3, majeur: 14, mineur: 23,
+      note: "Trois bloquants : des objectifs invisibles, un geste jamais pratiqué, et une évaluation qu'on réussit en ignorant qu'il faut pomper la pédale. La règle de sécurité la plus importante était une note en bas d'écran." },
+    { titre: "Audit 2 · premier tour de révision", sous: "Sous-agent indépendant · 16 diapositives, page jouée à 375, 820, 1180 et 1280 px, deux thèmes", bloquant: 1, majeur: 5, mineur: 22,
+      note: "Nouveau bloquant : dès 820 px, la diapo 16:9 coupait les exemples travaillés, dont le bouton ne répondait plus. Les majeurs viennent de l'épreuve (aucun disque sous sa cote, éliminatoires incomplets, un indice refusé à tort) et d'un véhicule dont l'état changeait d'un écran à l'autre." },
+    { titre: "Audit 3 · second tour de révision", sous: "Sous-agent indépendant · 18 diapositives, page jouée à 375, 820, 1180 et 1280 px, photos agrandies", bloquant: 1, majeur: 1, mineur: 16,
+      note: "Le bloquant vient des photos : l'image du « bon geste », agrandie, montrait l'erreur éliminatoire. Le majeur : le cric seul ne faisait pas échouer. Le troisième tour remet un dessin juste à la place de la photo, rend le cric éliminatoire, et repose les repères sur une planche de contrôle." },
+    { titre: "Audit 4 · vérification ciblée", sous: "Sous-agent indépendant · page jouée à 375 et 1280 px, photos agrandies, repères tracés", bloquant: 0, majeur: 0, mineur: 11,
+      note: "Sortie de boucle : zéro bloquant, zéro majeur. Les mineurs restants sont consignés dans audits/audit-4.md ; les moins coûteux sont corrigés dans la foulée, et les photos en attente ont été refaites une fois le crédit Google rechargé." }
+  ],
+  limites: [
+    "**L'exactitude technique** : la grille est didactique. Les valeurs du pont 2 (27, 115 et 140 N·m ; MIN TH 26,0 mm) sont fictives. Les gestes (graisse, piston, niveau, remplacement par paire) doivent être validés par un enseignant du programme.",
+    "**La politique de l'atelier** : « on ne rectifie pas les disques », « l'essai routier, c'est l'enseignant » et la gestion du liquide en repoussant le piston sont des choix d'atelier. Ils sont à confirmer.",
+    "**Les photos** sont générées (Nano Banana 2, Google) et vérifiées une à une, agrandies ; celle de l'étrier au crochet enseignait le mauvais geste : elle a été écartée et refaite ; les mesures sont au bon de travail, jamais dans l'image. Avant la diffusion, un enseignant les compare à de vraies pièces, ou les remplace par des photos d'atelier.",
+    "**L'essai auprès d'apprentis** : la boucle prédit, l'essai mesure. Avant la diffusion, au moins cinq apprentis doivent suivre le module en pensant à voix haute.",
+    "**L'effet au pont** : il s'observe à l'atelier, en notant les gestes éliminatoires commis ou évités.",
+    "**Le CFP Rivebelle** est fictif, comme le pont 2, Dominique Roy et la messagerie. Ils sont à remplacer."
+  ]
+};
+
+</script>
+<script>
+/* ============================================================
+   PHOTOS — la table des photos de la formation sur les plaquettes.
+   Nano Banana 2, chez Google en direct (planches.py). Pour chacune :
+   dimensions, description (alt) et repères en pixels de la photo,
+   posés À CÔTÉ de l'indice pour ne pas le cacher.
+   La mesure du disque et sa cote ne sont PAS dans la photo (un chiffre
+   généré serait illisible ou faux) : elles sont au bon de travail.
+   ============================================================ */
+(function () {
+  "use strict";
+  const T = { w: 1200, h: 896 };
+  const photo = (ancres, alt) => Object.assign({}, T, { ancres, alt });
+  const DISQUE = "Disque de frein avant, sur son moyeu, roue et étrier déposés.";
+
+  window.PHOTOS = {
+    "disque-lisse":   photo({ surface: [400, 240] }, `${DISQUE} La piste de freinage est lisse, grise et uniforme.`),
+    "disque-lisse-2": photo({ surface: [400, 250] }, `${DISQUE} La piste de freinage est lisse et uniforme.`),
+    "disque-stries":  photo({ surface: [400, 240] }, `${DISQUE} La piste porte de fines stries circulaires, peu profondes.`),
+    "disque-stries-2":photo({ surface: [400, 240] }, `${DISQUE} La piste porte de fines stries circulaires, peu profondes.`),
+    "disque-rainure": photo({ surface: [375, 225] }, `${DISQUE} Une rainure circulaire profonde fait le tour de la piste.`),
+    "disque-fissure": photo({ surface: [570, 170] }, `${DISQUE} Une fissure sombre part du bord extérieur et s'avance sur la piste.`),
+    "disque-lisse-3": photo({ surface: [400, 240] }, `${DISQUE} La piste de freinage est lisse et uniforme.`),
+    "disque-stries-3":photo({ surface: [450, 270] }, `${DISQUE} La piste porte de fines stries circulaires, peu profondes.`),
+    "plaquettes-inegales-2": photo({ interieure: [480, 120], exterieure: [705, 120] }, "Deux plaquettes usagées, debout, vues de face : l'épaisseur ne se lit pas sur la photo ; elle est au bon de travail."),
+    "micrometre":     photo({}, "Des mains gantées mesurent l'épaisseur d'un disque de frein avec un micromètre, à un doigt du bord."),
+    "etrier-sain":    photo({ flexible: [690, 300], corps: [620, 520] }, "Étrier de frein en place sur le disque ; le flexible de caoutchouc, souple et propre, fait une boucle vers le châssis."),
+    "etrier-fuite":   photo({ piston: [540, 330] }, "Étrier de frein en place ; sur sa face, une coulée brun-jaune et luisante de liquide, qui descend vers le bas."),
+    "flexible-craquele": photo({ flexible: [440, 320] }, "Gros plan d'un flexible de frein en caoutchouc noir : la surface est couverte de craquelures, et près de l'étrier le tuyau forme un renflement."),
+    "etrier-pend":    photo({ flexible: [520, 300] }, "Étrier de frein déposé qui pend sous le moyeu, retenu seulement par son flexible, tendu."),
+    "etrier-crochet": photo({ flexible: [250, 470], crochet: [760, 200] }, "Étrier de frein déposé, suspendu à un crochet de fil passé dans son corps et accroché au ressort ; le flexible, à part, pend en boucle lâche et ne porte rien."),
+    "plaquettes-usees": photo({ garniture: [600, 280] }, "Deux plaquettes usagées côte à côte : les deux garnitures sont minces et d'épaisseur égale."),
+    "plaquettes-inegales": photo({ interieure: [510, 110], exterieure: [700, 110] }, "Deux plaquettes usagées, de profil : à gauche, la garniture est presque à zéro sur la plaque d'acier ; à droite, elle est encore épaisse."),
+    "plaquettes-contaminees": photo({ garniture: [360, 300] }, "Deux plaquettes aux garnitures encore épaisses, tachées de coulures sombres, humides et luisantes."),
+    "moyeu-ecrous": { w: 1024, h: 1024, ancres: { e1: [507, 320], e4: [700, 450], e2: [630, 690], e5: [400, 690], e3: [330, 450] },
+      alt: "Roue en alliage sur son moyeu, cinq écrous en cercle, numérotés dans l'ordre du serrage en étoile : on saute toujours un écrou." },
+  };
+})();
+
+</script>
+<script>
+/* ============================================================
+   Moteur des formations d'ATELIER — même mécanique que celui de
+   « Le courriel de trop » (formation-hameconnage/moteur.js), mais
+   l'objet à juger est une PIÈCE dessinée (planche + bon de travail),
+   et les verdicts et indices viennent des données (APRES.verdicts,
+   APRES.indices) plutôt que d'être écrits ici.
+   Trois vues : la formation, avant/après, la boucle.
+   ============================================================ */
+(function () {
+  "use strict";
+
+  document.documentElement.lang = "fr";
+  const A = window.APRES, V = window.AVANT, J = window.JOURNAL, G = window.GRILLE, B = window.BOUCLE, P = window.PIECES || {}, PH = window.PHOTOS || {};
+  const VERDICTS = A.verdicts, INDICES = A.indices || {};
+
+  // ---------- Petits utilitaires ----------
+  function h(tag, attrs, ...enfants) {
+    const el = document.createElement(tag);
+    if (attrs) for (const [k, v] of Object.entries(attrs)) {
+      if (v == null || v === false) continue;
+      if (k === "class") el.className = v;
+      else if (k === "html") el.innerHTML = v;
+      else if (k.startsWith("on")) el.addEventListener(k.slice(2), v);
+      else el.setAttribute(k, v === true ? "" : v);
+    }
+    for (const e of enfants.flat()) if (e != null && e !== false) el.append(e instanceof Node ? e : document.createTextNode(e));
+    return el;
+  }
+  // Texte enrichi minimal : **gras** et `mono`
+  function riche(s) {
+    const esc = String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    return esc.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>").replace(/`(.+?)`/g, '<span class="cq-mono">$1</span>');
+  }
+  const p = (s, cls) => h("p", { class: cls, html: riche(s) });
+  const ton = (v) => VERDICTS[v].ton;
+  const pastille = (v) => h("span", { class: `verdict verdict--${ton(v)}`, "data-icone": VERDICTS[v].icone || null }, VERDICTS[v].court);
+
+  const etat = new Map();
+
+  // L'ordre des choix est MÉLANGÉ, mais toujours de la même façon pour une
+  // question donnée (graine tirée de son texte) : sans mélange, la bonne
+  // réponse était la deuxième dans 14 questions sur 18, et « toujours la
+  // deuxième » réussissait l'épreuve (audit 3). Stable : un redessin ou un
+  // « Recommencer » ne rebat pas les cartes sous les yeux de l'apprenant.
+  // b.ordonne : des choix qui ont un ordre naturel (Case 1 à Case 4) ne se mélangent pas.
+  function melange(n, texte, ordonne) {
+    if (ordonne) return [...Array(n).keys()];
+    let g = 2166136261;
+    for (const c of texte) g = Math.imul(g ^ c.charCodeAt(0), 16777619) >>> 0;
+    const ordre = [...Array(n).keys()];
+    for (let i = n - 1; i > 0; i--) { g = Math.imul(g ^ (g >>> 15), 2246822519) >>> 0; const j = g % (i + 1); [ordre[i], ordre[j]] = [ordre[j], ordre[i]]; }
+    return ordre;
+  }
+
+  // Une photo s'agrandit au toucher : sur téléphone, l'extrémité d'une
+  // électrode ne fait qu'une quinzaine de pixels (audit 3).
+  function agrandir(svg, alt) {
+    const dlg = h("dialog", { class: "loupe", "aria-label": alt });
+    const fermer = () => { dlg.close(); dlg.remove(); };
+    dlg.append(h("button", { class: "loupe__fermer", type: "button", onclick: fermer }, "Fermer"), svg.cloneNode(true));
+    dlg.addEventListener("click", (e) => { if (e.target === dlg) fermer(); });
+    dlg.addEventListener("close", () => dlg.remove());
+    document.body.append(dlg); dlg.showModal();
+  }
+  const cle = (diapo, i, sous = "") => `${diapo}:${i}:${sous}`;
+
+  // Après un redessin, le focus va sur le dernier élément marqué data-focus :
+  // un lecteur d'écran l'annonce, le clavier ne repart pas du haut (G1).
+  let aFocaliser = false, aRemonter = false;
+  const demanderFocus = () => { aFocaliser = true; };
+
+  // ============================================================
+  // Planche et fiche
+  // ============================================================
+  // Le dessin, avec ses repères numérotés posés aux ancres demandées.
+  // Une PHOTO (piece.photo) est posée dans un SVG à ses dimensions : les
+  // repères se placent alors en pixels de la photo, comme sur un dessin.
+  function planche(piece, reperes = {}) {
+    let d;
+    if (piece.photo) {
+      const ph = PH[piece.photo];
+      if (!ph) return h("div", { class: "planche" }, `[photo inconnue : ${piece.photo}]`);
+      d = { ancres: ph.ancres || {}, alt: ph.alt, svg: `<svg viewBox="0 0 ${ph.w} ${ph.h}" aria-hidden="true" class="pl-svg pl-photo"><image href="images/${piece.photo}.jpg" width="${ph.w}" height="${ph.h}"/></svg>` };
+    } else {
+      const f = P[piece.dessin];
+      if (!f) return h("div", { class: "planche" }, `[dessin inconnu : ${piece.dessin}]`);
+      d = f(...(piece.args || []));
+    }
+    const ph = piece.photo ? PH[piece.photo] : null;
+    const el = h("figure", { class: "planche" + (ph ? " planche--photo" : ""), role: "img", "aria-label": piece.alt || d.alt, html: d.svg,
+      style: ph ? `aspect-ratio: ${ph.w} / ${ph.h}` : null });
+    const svg = el.querySelector("svg");
+    for (const [k, num] of Object.entries(reperes)) {
+      const a = d.ancres[k];
+      if (!a || !svg) continue;
+      // Rayon au 26e de la photo : sur téléphone (photo de 280 px), une
+      // pastille d'environ 22 px et un chiffre lisible (audit 3).
+      const r = piece.photo ? Math.round(PH[piece.photo].w / 26) : 9;
+      svg.insertAdjacentHTML("beforeend", `<g class="pl-repere"><circle cx="${a[0]}" cy="${a[1]}" r="${r}"/><text x="${a[0]}" y="${a[1]}" style="font-size:${Math.round(r * 1.25)}px">${num}</text></g>`);
+    }
+    if (ph) el.append(h("button", { class: "planche__agrandir", type: "button", "aria-label": "Agrandir la photo", onclick: () => agrandir(svg, piece.alt || d.alt) }, "⤢ Agrandir"));
+    return el;
+  }
+
+  // Une pièce à juger : la planche, et le bon de travail qui l'accompagne.
+  // Les mesures portent aussi un repère (on pointe la valeur qui décide).
+  function fiche(c, reperes = {}) {
+    return h("article", { class: "fiche", "aria-label": c.titre || "Pièce à examiner" },
+      planche(c, reperes),
+      h("div", { class: "fiche__bon" },
+        c.titre ? h("p", { class: "fiche__titre" }, c.titre) : null,
+        (c.lignes || []).map(l => h("p", { class: "fiche__ligne", html: riche(l) })),
+        c.mesures ? h("div", { class: "fiche__mesures" }, c.mesures.map(m => h("span", {
+          class: "fiche__mesure" + (m.repere && reperes[m.repere] ? " repere" : ""), "data-n": m.repere && reperes[m.repere] ? reperes[m.repere] : null
+        }, `${m.l} : ${m.v}`))) : null));
+  }
+
+  // ============================================================
+  // Activités
+  // ============================================================
+  function retroEl(type, titre, texte, ...suite) {
+    // Le titre dit déjà « Oui. » : le texte ne le répète pas.
+    const mot = String(titre).replace(/[.!:]+$/, "");
+    if (texte && mot.length < 12 && texte.startsWith(mot)) texte = texte.slice(mot.length).replace(/^\s*[.:,]\s*/, "").replace(/^./, c => c.toUpperCase());
+    return h("div", { class: `retro retro--${type}`, role: "status", "data-focus": "" },
+      h("div", { class: "retro__titre" }, titre), texte ? h("div", { class: "retro__texte", html: riche(texte) }) : null, ...suite);
+  }
+  const boutonPlein = (texte, onclick, focus) => h("button", { class: "tri__choix tri__choix--plein", type: "button", "data-focus": focus ? "" : null, onclick }, texte);
+  const recommencer = (onclick) => h("button", { class: "lien-discret", type: "button", onclick }, "Recommencer");
+
+  function boutonsTri(onChoix, choisi, question) {
+    return h("div", { class: "tri", role: "group", "aria-label": question || "Votre décision", "data-focus": choisi ? null : "" },
+      Object.entries(VERDICTS).map(([k, v]) => h("button", {
+        class: "tri__choix", type: "button", "aria-pressed": choisi === k ? "true" : "false", disabled: !!choisi,
+        onclick: () => onChoix(k)
+      }, h("span", { class: `verdict verdict--${v.ton}`, "data-icone": v.icone || null, "aria-hidden": "true", style: "padding:0;background:none" }), v.long)));
+  }
+
+  function boutonsIndice(onChoix, choisi) {
+    return h("div", { class: "indice" },
+      h("p", { class: "indice__q", "data-focus": choisi ? null : "" }, A.questionIndice || "Qu'est-ce qui vous a décidé ?"),
+      h("div", { class: "tri", role: "group", "aria-label": A.questionIndice || "Qu'est-ce qui vous a décidé ?" },
+        Object.entries(INDICES).map(([k, v]) => h("button", {
+          class: "tri__choix", type: "button", "aria-pressed": choisi === k ? "true" : "false", disabled: !!choisi, onclick: () => onChoix(k)
+        }, v))));
+  }
+
+  const estJuste = (it, choix) => (it.acceptes || [it.bonne]).includes(choix);
+  const nomsIndices = (it) => (it.indices || []).map(i => INDICES[i].toLowerCase()).join(" ou ");
+
+  // Une pièce, une décision, une rétroaction par choix (D2, E1, E2)
+  function tri(b, k, redessiner) {
+    const choisi = etat.get(k);
+    const droite = h("div", { class: "diapo__col diapo__col--etroite" },
+      b.consigne ? h("div", { class: "consigne", html: riche(b.consigne) }) : null,
+      boutonsTri((v) => { etat.set(k, v); demanderFocus(); redessiner(); }, choisi));
+    if (choisi) {
+      const juste = estJuste(b, choisi);
+      droite.append(retroEl(juste ? "juste" : "rate",
+        juste ? `Juste : ${VERDICTS[choisi].court.toLowerCase()}.` : `Décision attendue : ${VERDICTS[b.bonne].court.toLowerCase()}.`,
+        b.retro[choisi]));
+      droite.append(recommencer(() => { etat.delete(k); demanderFocus(); redessiner(); }));
+    }
+    return h("div", { class: "diapo__corps" }, h("div", { class: "diapo__col" }, fiche(b.piece, choisi ? (b.reperes || {}) : {})), droite);
+  }
+
+  // Exemple travaillé : les repères s'allument un à un (C3, C4)
+  function exemple(b, k, redessiner) {
+    const n = etat.get(k) || 0;
+    const reperes = {};
+    b.etapes.slice(0, n).forEach((e, i) => { if (e.repere) reperes[e.repere] = i + 1; });
+    const liste = h("ol", { class: "verif" },
+      b.etapes.map((e, i) => h("li", { class: "verif__item", "data-actif": i < n ? "true" : "false", "data-focus": i === n - 1 && n < b.etapes.length ? "" : null },
+        h("span", { class: "verif__q" }, e.q), h("span", { class: "verif__r", html: i < n ? riche(e.r) : "…" }))));
+    const suite = n < b.etapes.length
+      ? boutonPlein(n === 0 ? (b.debut || "Commencer l'examen") : (b.suivant || "Point suivant"), () => { etat.set(k, n + 1); demanderFocus(); redessiner(); })
+      : b.verdict ? retroEl(ton(b.verdict) === "fraude" ? "rate" : ton(b.verdict) === "sur" ? "juste" : "neutre", `Décision : ${VERDICTS[b.verdict].court.toLowerCase()}.`, b.conclusion)
+      : retroEl("neutre", b.fin || "C'est fait.", b.conclusion);
+    if (!b.piece) return h("div", { class: "diapo__corps diapo__corps--pile" }, b.intro ? p(b.intro, "diapo__chapeau") : null, liste, suite);
+    return h("div", { class: "diapo__corps" }, h("div", { class: "diapo__col" }, fiche(b.piece, reperes)), h("div", { class: "diapo__col diapo__col--etroite" }, liste, suite));
+  }
+
+  // Question à choix, rétroaction propre à chaque choix
+  function options(b, k, redessiner) {
+    const choisi = etat.get(k);
+    const col = h("div", { class: "diapo__col" },
+      b.q ? p(b.q, "diapo__chapeau") : null,
+      h("div", { class: "options", role: "group", "aria-label": b.q ? b.q.replace(/\*\*/g, "") : "Choix" }, melange(b.choix.length, b.choix.map(c => c.x).join("|"), b.ordonne).map(i => h("button", {
+        class: "options__choix", type: "button", "aria-pressed": choisi === i ? "true" : "false",
+        onclick: () => { etat.set(k, i); demanderFocus(); redessiner(); }
+      }, b.choix[i].x))));
+    if (choisi != null) {
+      const c = b.choix[choisi];
+      col.append(retroEl(c.juste ? "juste" : "rate", c.juste ? "Oui." : c.grave ? "Danger." : "Pas tout à fait.", c.retro));
+    }
+    if (!b.piece) return col;
+    const piece = choisi != null && b.pieceApres ? b.pieceApres : b.piece;
+    return h("div", { class: "diapo__corps" }, h("div", { class: "diapo__col" }, fiche(piece, choisi != null ? (b.reperesApres || b.reperes || {}) : {})), col);
+  }
+
+  // Remettre les étapes dans l'ordre (D1, D2). L'apprenant choisit l'étape
+  // suivante ; un mauvais choix ne coûte rien, mais il dit QUELLE étape vient
+  // d'abord (l'étape attendue, pas une raison figée), puis pourquoi celle-ci
+  // attend. La rétroaction passe AU-DESSUS des étapes restantes : sur
+  // téléphone, elle tombait sous une liste qu'il fallait remonter (audit 2).
+  // Les étapes sont présentées dans un ordre fixe mélangé (b.melange).
+  function ordre(b, k, redessiner) {
+    let s = etat.get(k);
+    if (!s) { s = { faites: [], erreurs: 0, dernier: null }; etat.set(k, s); }
+    const restantes = b.melange.filter(i => !s.faites.includes(i));
+    const fini = restantes.length === 0;
+    const droite = h("div", { class: "ordre__col" },
+      h("p", { class: "ordre__titre" }, "Votre séquence"),
+      s.faites.length ? h("ol", { class: "ordre__suite", "aria-label": "Votre séquence" }, s.faites.map(i => h("li", null, b.etapes[i].x)))
+        : h("p", { class: "ordre__vide" }, "Choisissez la première étape."));
+    let retro = null;
+    if (s.dernier != null && !fini) {
+      const e = b.etapes[s.dernier];
+      retro = s.dernierJuste ? retroEl("juste", "Oui.", e.oui)
+        : retroEl("rate", `Pas encore : d'abord « ${b.etapes[s.attendue].x.replace(/ \(.*\)$/, "").toLowerCase()} ».`, e.tot);
+    }
+    if (fini) {
+      droite.append(retroEl(s.erreurs === 0 ? "juste" : "neutre", s.erreurs === 0 ? "Séquence complète, sans détour." : `Séquence complète, avec ${s.erreurs} détour${s.erreurs > 1 ? "s" : ""}.`, b.bilan));
+      droite.append(recommencer(() => { etat.delete(k); demanderFocus(); redessiner(); }));
+    }
+    const gauche = h("div", { class: "ordre__col" },
+      h("p", { class: "ordre__titre" }, fini ? "Toutes les étapes sont placées" : `Étape ${s.faites.length + 1} sur ${b.etapes.length} : laquelle vient maintenant ?`),
+      retro,
+      fini ? null : h("div", { class: "options", role: "group", "aria-label": "Étapes restantes" }, restantes.map(i => h("button", {
+        class: "options__choix", type: "button",
+        onclick: () => {
+          const attendue = b.etapes.findIndex((_, j) => !s.faites.includes(j));
+          s.dernier = i; s.attendue = attendue; s.dernierJuste = i === attendue;
+          if (s.dernierJuste) s.faites.push(i); else s.erreurs++;
+          demanderFocus(); redessiner();
+        }
+      }, b.etapes[i].x))));
+    return h("div", { class: "ordre" }, gauche, droite);
+  }
+
+  // Série : l'épreuve, ou un entraînement (b.entrainement). Chaque item est
+  // soit une PIÈCE à juger (décision, puis ce qu'on a vu si l'item porte des
+  // indices), soit une SITUATION à choix. Deux seuils possibles, comptés à
+  // part : b.seuilPieces et b.seuilSituations (sinon b.seuil sur le tout).
+  // Un item peut porter des réponses graves (it.graves, ou choix.grave) : en
+  // choisir une fait échouer, quel que soit le score, et c'est annoncé avant
+  // (voir boucle-didactique : « une erreur coûteuse qui ne fait pas échouer »).
+  // b.reprise : un second jeu INÉDIT, de même composition.
+  function serie(b, k, redessiner) {
+    let s = etat.get(k);
+    const neuf = (jeu, echecs, exercice) => ({ jeu, echecs, exercice: !!exercice, i: 0, rep: [], ind: [], demarre: false, voir: {} });
+    if (!s) { s = neuf(0, 0); etat.set(k, s); }
+    const items = s.jeu === 1 && b.reprise ? b.reprise : b.items;
+    const total = items.length;
+    const aIndice = (it) => b.indice && !it.choix && it.indices;
+    const juste = (it, i) => it.choix ? !!it.choix[s.rep[i]]?.juste : estJuste(it, s.rep[i]);
+    const grave = (it, i) => it.choix ? !!it.choix[s.rep[i]]?.grave : (it.graves || []).includes(s.rep[i]);
+    const bonIndice = (it, i) => !aIndice(it) || it.indices.includes(s.ind[i]);
+    const reussite = (it, i) => juste(it, i) && bonIndice(it, i);
+    const libelleRep = (it, i) => it.choix ? `« ${it.choix[s.rep[i]].x.replace(/[.…]$/, "")} »` : VERDICTS[s.rep[i]].court.toLowerCase();
+
+    if (!s.demarre) {
+      return h("div", { class: "diapo__corps diapo__corps--pile" },
+        b.consigne ? p(b.consigne, "diapo__chapeau") : null,
+        b.annonce ? h("div", { class: "consigne", html: riche(b.annonce) }) : null,
+        boutonPlein(s.jeu === 1 ? "Commencer la reprise" : "Commencer", () => { s.demarre = true; demanderFocus(); redessiner(); }, true));
+    }
+
+    if (s.i >= total) {
+      const idx = items.map((it, i) => ({ it, i }));
+      const pieces = idx.filter(x => !x.it.choix), situations = idx.filter(x => x.it.choix);
+      const bons = (l) => l.filter(x => reussite(x.it, x.i)).length;
+      const elimine = !b.entrainement && items.some(grave);
+      const exercice = s.exercice;
+      const separes = b.seuilPieces != null;
+      const atteint = !elimine && (separes
+        ? bons(pieces) >= b.seuilPieces && bons(situations) >= (b.seuilSituations ?? situations.length)
+        : bons(idx) >= (b.seuil ?? total));
+      const reussi = b.entrainement || exercice || atteint;
+      const rates = idx.filter(x => !reussite(x.it, x.i));
+      const echecs = s.echecs + (reussi ? 0 : 1);
+      const bloque = !reussi && echecs >= 2 && b.revoir;
+      // Après la reprise ratée, on ne renvoie pas à une série déjà corrigée
+      // sans rien dire : on revoit les modules, et on parle à l'enseignant.
+      const prochain = b.reprise ? (s.jeu + 1) % 2 : 0;
+      const autreJeu = () => { etat.set(k, neuf(prochain, echecs, (atteint || exercice) && !b.entrainement)); demanderFocus(); redessiner(); };
+      const libelle = b.entrainement ? "Recommencer l'entraînement" : !b.reprise ? "Refaire l'épreuve"
+        : prochain === 1 ? "Passer l'épreuve de reprise (cas inédits)" : "Refaire l'épreuve de départ";
+      const message = b.entrainement ? (b.bilan?.fin || "Entraînement terminé.")
+        : exercice ? (atteint ? "Exercice réussi, lui aussi." : "Exercice : ces cas vous auraient fait échouer. Relisez-les ; votre réussite reste acquise.")
+        : reussi ? (b.bilan?.reussi || "Seuil atteint.")
+        : echecs >= 2 ? (b.bilan?.deuxieme || "Deux essais sans atteindre le seuil : revoyez les modules, puis parlez-en à votre enseignant avant un troisième essai.")
+        : prochain === 0 && b.reprise ? (b.bilan?.rateReprise || "Pas encore. Relisez les cas manqués, puis refaites l'épreuve de départ.")
+        : (b.bilan?.rate || "Seuil non atteint : refaites l'épreuve.");
+      // Deux chiffres de même taille ; « Éliminatoire » quand un geste grave
+      // a été choisi, plutôt qu'un « 5 sur 6 » en grand qui dit le contraire.
+      const chiffre = (lib, n, sur, seuil) => h("div", { class: "score__ligne" }, h("span", { class: "score__lib" }, lib), h("span", { class: "score__n" }, `${n} sur ${sur}`), seuil != null ? h("span", { class: "score__seuil" }, `seuil ${seuil}`) : null);
+      const score = h("div", { class: "score" },
+        elimine && !exercice ? h("p", { class: "score__elimine" }, "Éliminatoire") : null,
+        separes ? [chiffre(b.libellePieces || "Pièces", bons(pieces), pieces.length, b.seuilPieces), chiffre("Situations", bons(situations), situations.length, b.seuilSituations ?? situations.length)]
+          : chiffre("Réussis", bons(idx), total, b.entrainement ? null : (b.seuil ?? total)));
+      return h("div", { class: "diapo__corps" },
+        h("div", { class: "diapo__col diapo__col--etroite" },
+          score,
+          retroEl(b.entrainement || exercice ? "neutre" : reussi ? "juste" : "neutre", message,
+            elimine && !exercice ? (b.bilan?.elimine || "Une réponse éliminatoire a été choisie : quel que soit le score, on reprend.") : null),
+          // Après deux échecs, on ne relance pas une série déjà corrigée
+          // (elle se réussirait de mémoire) : on renvoie au module et à
+          // l'enseignant, et la série n'est qu'un lien discret.
+          bloque ? [boutonPlein(`Revoir le module ${b.revoir.replace("M", "")}`, () => { const j = diaposApres.findIndex(x => x.m.id === b.revoir); if (vue === "formation" && j >= 0) aller(j); }),
+                    h("button", { class: "lien-discret", type: "button", onclick: autreJeu }, "Refaire l'épreuve quand même")]
+          : reussi && !b.entrainement
+            ? h("button", { class: "lien-discret", type: "button", onclick: autreJeu }, prochain === 1 ? "S'exercer aussi sur la reprise (cas inédits)" : "Refaire l'épreuve de départ, pour m'exercer")
+            : boutonPlein(libelle, autreJeu)),
+        h("div", { class: "diapo__col bilan" }, rates.length
+          ? rates.map(({ it, i }) => {
+              const causes = [];
+              if (!juste(it, i)) causes.push(`Votre réponse : ${libelleRep(it, i)}.${grave(it, i) && !b.entrainement ? " Réponse éliminatoire." : ""}`);
+              else if (!bonIndice(it, i)) causes.push(`Bonne décision, mais ce qu'il fallait voir : ${nomsIndices(it)}.`);
+              const voir = !!s.voir[i];
+              // Numéroté : deux cas manqués pouvaient s'appeler « Disque avant gauche » (audit 3).
+              const titre = `Cas ${i + 1} · ${it.piece?.titre || it.titre || "Situation"}`;
+              return h("div", { class: "bilan__cas" },
+                h("div", { class: "bilan__tete" }, h("span", { class: "bilan__objet" }, titre), it.choix ? null : pastille(it.bonne)),
+                h("p", { class: "bilan__cause" }, causes.join(" ")),
+                p(it.choix ? it.choix[s.rep[i]].retro : it.retro[s.rep[i]]),
+                it.piece ? h("button", { class: "lien-discret", type: "button", "aria-expanded": String(voir), onclick: () => { s.voir[i] = !voir; demanderFocus(); redessiner(); } }, voir ? "Masquer la pièce" : "Revoir la pièce annotée") : null,
+                it.piece && voir ? h("div", { "data-focus": "", class: "bilan__piece" }, fiche(it.piece, it.reperes || {})) : null);
+            })
+          : [p("Aucun cas manqué.", "diapo__chapeau")]));
+    }
+
+    const it = items[s.i];
+    const rep = s.rep[s.i], ind = s.ind[s.i];
+    const fini = rep != null && (!aIndice(it) || ind);
+    const montrer = fini && b.retroImmediate !== false;
+    const suivant = () => { s.i++; aRemonter = true; demanderFocus(); redessiner(); };
+    const droite = h("div", { class: "diapo__col diapo__col--etroite" },
+      h("div", { class: "diapo__entete", "data-focus": rep == null ? "" : null }, h("span", null, `Cas ${s.i + 1} sur ${total}${s.jeu === 1 ? (s.exercice ? " · exercice" : " · reprise") : ""}`)));
+    if (it.choix) {
+      // Dans une série, le hasard seul peut encore grouper la bonne réponse
+      // (5 fois sur 7 en tête, mesuré) : sa position TOURNE d'un cas au
+      // suivant, et le hasard ne range que les autres choix.
+      const ordre = melange(it.choix.length, it.choix.map(c => c.x).join("|"));
+      const bonne = it.choix.findIndex(c => c.juste), cible = (s.i + s.jeu) % it.choix.length;
+      ordre.splice(ordre.indexOf(bonne), 1); ordre.splice(cible, 0, bonne);
+      droite.append(p(it.q, "indice__q"), h("div", { class: "options", role: "group", "aria-label": it.q.replace(/\*\*/g, "") }, ordre.map(j => h("button", {
+        class: "options__choix", type: "button", "aria-pressed": rep === j ? "true" : "false", disabled: rep != null,
+        onclick: () => { s.rep[s.i] = j; demanderFocus(); redessiner(); }
+      }, it.choix[j].x))));
+    } else {
+      const q = it.q || "Votre décision ?";
+      droite.append(p(q, "indice__q"));
+      droite.append(boutonsTri((v) => { s.rep[s.i] = v; demanderFocus(); redessiner(); }, rep, q));
+      if (rep != null && aIndice(it)) droite.append(boutonsIndice((x) => { s.ind[s.i] = x; demanderFocus(); redessiner(); }, ind));
+    }
+    if (fini) {
+      // La rétroaction passe AVANT le bouton : sur téléphone, un toucher
+      // rapide sur « Cas suivant » la sautait (audit 2). La scène s'allonge
+      // maintenant au lieu de couper : le bouton ne tombe plus sous le bord.
+      if (montrer) {
+        const ok = juste(it, s.i);
+        droite.append(retroEl(ok ? "juste" : "rate",
+          ok ? "Juste." : it.choix ? "Pas cette fois." : `Décision attendue : ${VERDICTS[it.bonne].court.toLowerCase()}.`,
+          it.choix ? it.choix[rep].retro : it.retro[rep],
+          ok && !bonIndice(it, s.i) ? h("div", { class: "retro__texte" }, `Ce qu'il fallait voir : ${nomsIndices(it)}.`) : null));
+      }
+      droite.append(boutonPlein(s.i + 1 < total ? "Cas suivant" : "Voir le bilan", suivant, !montrer));
+    }
+    const gauche = it.piece ? fiche(it.piece, montrer ? (it.reperes || {}) : {})
+      : h("div", { class: "consigne-situation" }, it.titre ? h("p", { class: "fiche__titre" }, it.titre) : null, p(it.situation), it.photo ? planche({ photo: it.photo }) : null);
+    return h("div", { class: "diapo__corps" }, h("div", { class: "diapo__col" }, gauche), droite);
+  }
+
+  // ============================================================
+  // Blocs de la version finale
+  // ============================================================
+  function bloc(b, k, redessiner) {
+    switch (b.t) {
+      case "mega":     return p(b.x, "diapo__mega");
+      case "chapeau":  return p(b.x, "diapo__chapeau");
+      case "para":     return p(b.x);
+      case "pied":     return p(b.x, "diapo__pied");
+      case "consigne": return h("div", { class: "consigne", html: riche(b.x) });
+      case "lien":     return h("a", { class: "lien-externe", href: b.href, target: "_blank", rel: "noopener" }, b.x);
+      case "regle":    return h("div", { class: "regle" }, b.items.map(r => h("div", { class: "regle__ligne" }, pastille(r.v), h("span", { class: "regle__si", html: riche(r.si) }))));
+      case "verif":    return h("ol", { class: "verif" }, b.items.map((it, i) => h("li", { class: "verif__item", "data-actif": b.actif && !b.actif.includes(i + 1) ? "false" : "true" },
+                         h("span", { class: "verif__q", html: riche(it.q) }), h("span", { class: "verif__r", html: riche(it.r) }))));
+      case "memo":     return h("div", { class: "memo" }, h("p", { class: "memo__titre" }, b.titre),
+                         h("ol", { class: "verif" }, b.items.map(it => h("li", { class: "verif__item" }, h("span", { class: "verif__q", html: riche(it.q) }), h("span", { class: "verif__r", html: riche(it.r) })))),
+                         b.pied ? p(b.pied, "diapo__pied") : null);
+      case "planche":  return planche(b.piece, b.reperes || {});
+      case "fiche":    return fiche(b.piece, b.reperes || {});
+      case "colonnes": return h("div", { class: "diapo__corps" },
+                         h("div", { class: "diapo__col" + (b.etroite === "gauche" ? " diapo__col--etroite" : "") }, b.gauche.map((x, i) => bloc(x, k + "g" + i, redessiner))),
+                         h("div", { class: "diapo__col" + (b.etroite === "droite" ? " diapo__col--etroite" : "") }, b.droite.map((x, i) => bloc(x, k + "d" + i, redessiner))));
+      case "tri":      return tri(b, k, redessiner);
+      case "exemple":  return exemple(b, k, redessiner);
+      case "options":  return options(b, k, redessiner);
+      case "ordre":    return ordre(b, k, redessiner);
+      case "serie":    return serie(b, k, redessiner);
+      default:         return p(`[bloc inconnu : ${b.t}]`);
+    }
+  }
+
+  const PLEIN_CADRE = ["tri", "exemple", "serie", "colonnes", "ordre"];
+  function sceneApres(d, module) {
+    const scene = h("div", { class: "scene" });
+    const dessiner = () => {
+      const diapo = h("section", { class: "diapo" + (d.gabarit === "ouverture" ? " diapo--ouverture" : ""), "aria-label": (d.titre || "Diapositive").replace(/\*\*/g, "") },
+        h("div", { class: "diapo__entete" }, h("span", null, `${module.id.replace("M", "Module ")} · ${module.titre}`), h("span", null, d.surtitre || "")),
+        d.titre ? h("h2", { class: "diapo__titre", html: riche(d.titre) }) : null);
+      const plein = d.blocs.length === 1 && (PLEIN_CADRE.includes(d.blocs[0].t) || (d.blocs[0].t === "options" && d.blocs[0].piece));
+      diapo.append(plein ? bloc(d.blocs[0], cle(d.id, 0), dessiner)
+        : h("div", { class: "diapo__corps diapo__corps--pile" }, d.blocs.map((b, i) => bloc(b, cle(d.id, i), dessiner))));
+      scene.replaceChildren(h("div", { class: "plateau" }, diapo));
+      if (aFocaliser) {
+        aFocaliser = false;
+        const cible = [...scene.querySelectorAll("[data-focus]")].pop();
+        if (cible) { if (!cible.matches("button, a")) cible.tabIndex = -1; cible.focus({ preventScroll: aRemonter }); }
+      }
+      // Au cas suivant, on remonte au haut de la scène : la photo et la
+      // question d'abord, pas le bas de l'écran précédent (audit 3).
+      if (aRemonter) { aRemonter = false; scene.scrollIntoView({ block: "start" }); }
+    };
+    dessiner();
+    return scene;
+  }
+
+  // ============================================================
+  // Version zéro (brouillon)
+  // ============================================================
+  function sceneAvant(d) {
+    const scene = h("div", { class: "scene" });
+    const br = h("section", { class: "brouillon", "aria-label": `Version zéro : ${d.titre}` }, h("h3", { class: "brouillon__titre" }, d.titre));
+    for (const b of d.blocs) {
+      if (b.t === "sous-titre" || b.t === "para") br.append(h("p", null, b.x));
+      else if (b.t === "puces") br.append(h("ul", null, b.x.map(x => h("li", null, x))));
+      else if (b.t === "image") br.append(h("div", { class: "brouillon__image" }, `[ ${b.alt} ]`));
+      else if (b.t === "chiffres") br.append(h("div", { class: "brouillon__chiffres" }, b.x.map(c => h("div", null, h("b", null, c.n), h("span", null, c.l)))));
+      else if (b.t === "note") br.append(h("p", { class: "brouillon__note" }, b.x));
+      else if (b.t === "grand") br.append(h("p", { class: "brouillon__grand" }, b.x));
+      else if (b.t === "legende") br.append(h("p", { class: "brouillon__legende" }, b.x));
+      else if (b.t === "quiz") br.append(h("div", { class: "brouillon__quiz" }, h("ol", null, b.questions.map(q => h("li", null, q.q, h("ol", null, q.choix.map(c => h("li", null, c)))))),
+        h("p", { class: "brouillon__legende" }, `Rétroaction prévue : « ${b.questions[0].retro.bien} » / « ${b.questions[0].retro.mal} »`)));
+    }
+    scene.append(h("div", { class: "plateau" }, br));
+    return scene;
+  }
+
+  // ============================================================
+  // Index : diapos de la version finale, et journal par diapo
+  // ============================================================
+  const diaposApres = [];
+  A.modules.forEach(m => m.diapos.forEach(d => diaposApres.push({ d, m })));
+  const diaposAvant = {};
+  V.modules.forEach(m => m.diapos.forEach(d => { diaposAvant[d.id] = { d, m }; }));
+  const parcours = J.entrees.map(e => ({ e, apres: e.apres ? diaposApres.find(x => x.d.id === e.apres) : null, avant: e.avant ? diaposAvant[e.avant] : null }));
+
+  // ============================================================
+  // Vues
+  // ============================================================
+  const racine = document.getElementById("vue");
+  const nav = document.getElementById("navigation");
+  let vue = "formation", idx = 0;
+
+  function critereEl(code, grav) {
+    const c = G.criteres[code];
+    return h("span", { class: "critere", title: c ? c.q : "" }, h("span", { class: "critere__code" }, code), c ? h("span", { class: "critere__nom" }, c.nom) : null,
+      grav ? h("span", { class: `gravite gravite--${grav}`, "aria-label": `constat ${grav}` }) : null);
+  }
+
+  const TOURS = [["tour2", "2e tour"], ["tour3", "3e tour"], ["tour4", "4e tour"]];
+  function lignesJournal(e) {
+    const statut = e.statut === "modifiee" ? "modifiée" : e.statut === "ajoutee" ? (e.tour > 1 ? `ajoutée au ${e.tour}e tour` : "ajoutée") : e.statut === "retiree" ? "retirée" : "conservée";
+    return h("div", { class: "journal" },
+      h("div", { class: "journal__ligne" },
+        h("div", { class: "journal__tete" }, h("span", { class: `statut statut--${e.statut}` }, statut), e.criteres.map(c => critereEl(c.code, c.grav))),
+        h("p", { class: "journal__texte", html: riche(e.pourquoi) }),
+        e.note ? h("p", { class: "note-marge" }, e.note) : null),
+      TOURS.map(([c, lib]) => e[c] ? h("div", { class: "journal__ligne journal__ligne--tour2" },
+        h("div", { class: "journal__tete" }, h("span", { class: "statut" }, lib), e[c].criteres.map(x => critereEl(x.code, x.grav))),
+        h("p", { class: "journal__texte", html: riche(e[c].pourquoi) })) : null));
+  }
+
+  function barreNav(max, libelle) {
+    return h("div", { class: "barre" },
+      h("button", { class: "barre__btn", type: "button", disabled: idx === 0, onclick: () => aller(idx - 1), "aria-label": "Diapositive précédente" }, "←"),
+      h("span", { class: "barre__pos" }, libelle),
+      h("button", { class: "barre__btn", type: "button", disabled: idx >= max - 1, onclick: () => aller(idx + 1), "aria-label": "Diapositive suivante" }, "→"));
+  }
+
+  function vueFormation() {
+    const { d, m } = diaposApres[idx];
+    return h("div", { class: "pile" }, sceneApres(d, m), barreNav(diaposApres.length, `${m.id} · ${m.diapos.indexOf(d) + 1} / ${m.diapos.length}`));
+  }
+
+  function vueComparer() {
+    const { e, apres, avant } = parcours[idx];
+    const cote = (titre, scene, cls) => h("figure", { class: "comparer__cote " + cls }, h("figcaption", { class: "comparer__legende" }, titre), scene);
+    const avantScene = avant ? sceneAvant(avant.d) : h("div", { class: "scene scene--vide" }, h("p", null, "Aucune diapositive équivalente dans la version zéro."));
+    const apresScene = apres ? sceneApres(apres.d, apres.m) : h("div", { class: "scene scene--vide" }, h("p", null, "Retirée de la version finale."));
+    const modTitre = apres ? `${apres.m.id} · ${apres.m.titre}` : `Version zéro · ${avant.m.titre}`;
+    return h("div", { class: "pile" },
+      h("div", { class: "comparer" },
+        cote(`Avant${avant ? " · " + avant.d.id.replace("A-", "") : ""}`, avantScene, "comparer__cote--avant"),
+        cote(`Après${apres ? " · " + apres.d.id : ""}`, apresScene, "comparer__cote--apres")),
+      barreNav(parcours.length, `${idx + 1} / ${parcours.length} · ${modTitre}`),
+      lignesJournal(e));
+  }
+
+  function vueBoucle() {
+    const compte = {};
+    J.entrees.forEach(e => [e, ...TOURS.map(([c]) => e[c]).filter(Boolean)].forEach(x => x.criteres.forEach(c => { compte[c.code] = (compte[c.code] || 0) + 1; })));
+    const maxc = Math.max(...Object.values(compte), 1);
+    const stat = (k) => J.entrees.filter(e => e.statut === k).length;
+    const audit = (a) => h("div", { class: "audit" },
+      h("h3", null, a.titre), h("p", { class: "audit__date" }, a.sous),
+      h("dl", { class: "audit__chiffres" }, ["bloquant", "majeur", "mineur"].map(g => h("div", null, h("dt", null, h("span", { class: `gravite gravite--${g}` }, g)), h("dd", null, String(a[g]))))),
+      a.note ? p(a.note, "audit__note") : null);
+    return h("div", { class: "boucle" },
+      h("section", { class: "boucle__bloc" },
+        h("h2", null, "Cadrage"), p(B.cadrage.public), p(B.cadrage.ecart),
+        h("h3", null, "Objectifs"),
+        h("ol", { class: "objectifs" }, A.objectifs.map(o => h("li", null, h("b", null, o.id), " ", h("span", { html: riche(o.x) })))),
+        h("h3", null, "Alignement"),
+        h("div", { class: "defile" }, h("table", { class: "tableau" },
+          h("thead", null, h("tr", null, h("th", null, "Objectif"), h("th", null, "Pratiqué dans"), h("th", null, "Évalué dans"))),
+          h("tbody", null, B.alignement.map(r => h("tr", null, h("td", null, h("b", null, r.o)), h("td", null, r.pratique), h("td", null, r.evalue))))))),
+      h("section", { class: "boucle__bloc" },
+        h("h2", null, "Les audits"),
+        h("div", { class: "audits" }, B.audits.map(audit)),
+        h("p", { class: "boucle__bilan" }, `${stat("modifiee")} diapositives modifiées, ${stat("ajoutee")} ajoutées, ${stat("retiree")} retirées, ${stat("conservee")} conservées. Durée : ${V.duree} → ${A.duree}.`)),
+      h("section", { class: "boucle__bloc" },
+        h("h2", null, "Critères qui ont motivé les changements"),
+        h("p", { class: "boucle__aide" }, "Nombre de changements, tous tours confondus, qui citent chaque critère de la grille."),
+        h("div", { class: "barres" }, Object.entries(G.criteres).map(([code]) => {
+          const n = compte[code] || 0;
+          return h("div", { class: "barres__ligne" + (n ? "" : " barres__ligne--nul") },
+            critereEl(code), h("span", { class: "barres__piste" }, h("span", { class: "barres__trait", style: `width:${(n / maxc) * 100}%` })), h("span", { class: "barres__n" }, String(n)));
+        }))),
+      h("section", { class: "boucle__bloc" },
+        h("h2", null, "Ce que la boucle ne vérifie pas"),
+        h("ul", null, B.limites.map(l => h("li", { html: riche(l) })))));
+  }
+
+  function dessinerNav() {
+    nav.replaceChildren();
+    if (vue === "boucle") { nav.hidden = true; return; }
+    nav.hidden = false;
+    if (vue === "formation") {
+      A.modules.forEach(m => {
+        const premier = diaposApres.findIndex(x => x.m === m);
+        const actif = diaposApres[idx].m === m;
+        nav.append(h("button", { class: "nav__module" + (actif ? " nav__module--actif" : ""), type: "button", "aria-current": actif ? "true" : null, onclick: () => aller(premier) },
+          h("span", { class: "nav__num" }, m.id), h("span", null, m.titre), h("span", { class: "nav__duree" }, m.duree)));
+      });
+    } else {
+      let dernier = null;
+      parcours.forEach((x, i) => {
+        const m = A.modules.find(mm => mm.id === x.e.module);
+        const mod = m ? `${m.id} · ${m.titre}` : x.e.module;
+        if (mod !== dernier) { nav.append(h("div", { class: "nav__groupe" }, mod)); dernier = mod; }
+        nav.append(h("button", { class: "nav__diapo" + (i === idx ? " nav__diapo--actif" : ""), type: "button", "aria-current": i === idx ? "true" : null, onclick: () => aller(i) },
+          h("span", { class: `statut statut--${x.e.statut}`, title: { modifiee: "Modifiée", ajoutee: "Ajoutée", retiree: "Retirée", conservee: "Conservée" }[x.e.statut] }, x.e.statut[0].toUpperCase()),
+          h("span", { class: x.e.statut === "retiree" ? "nav__retiree" : null }, x.apres ? (x.apres.d.titre || x.apres.d.id).replace(/\*\*/g, "") : x.avant.d.titre)));
+      });
+    }
+  }
+
+  function dessiner() {
+    document.querySelectorAll("[data-vue]").forEach(b => b.setAttribute("aria-selected", String(b.dataset.vue === vue)));
+    racine.replaceChildren(vue === "formation" ? vueFormation() : vue === "comparer" ? vueComparer() : vueBoucle());
+    dessinerNav();
+    try { history.replaceState(null, "", "#" + vue); } catch (_) {}
+  }
+  function aller(i) {
+    const max = vue === "formation" ? diaposApres.length : parcours.length;
+    idx = Math.max(0, Math.min(max - 1, i));
+    dessiner();
+  }
+  function changerVue(v) {
+    if (v === vue) return;
+    if (v === "comparer" && vue === "formation") { const id = diaposApres[idx].d.id; const j = parcours.findIndex(x => x.apres && x.apres.d.id === id); idx = j < 0 ? 0 : j; }
+    else if (v === "formation" && vue === "comparer") { const x = parcours[idx]; const j = x.apres ? diaposApres.findIndex(y => y.d.id === x.apres.d.id) : 0; idx = j < 0 ? 0 : j; }
+    else idx = 0;
+    vue = v; dessiner();
+  }
+
+  document.querySelectorAll("[data-vue]").forEach(b => b.addEventListener("click", () => changerVue(b.dataset.vue)));
+  document.addEventListener("keydown", (e) => {
+    // Dans la diapo, les flèches appartiennent à l'activité.
+    if (vue === "boucle" || e.target.closest("input, textarea, .scene")) return;
+    if (e.key === "ArrowRight" || e.key === "PageDown") aller(idx + 1);
+    else if (e.key === "ArrowLeft" || e.key === "PageUp") aller(idx - 1);
+  });
+
+  const depart = (location.hash || "").slice(1);
+  if (["formation", "comparer", "boucle"].includes(depart)) vue = depart;
+  dessiner();
+})();
+
+</script>
+
+</html>
