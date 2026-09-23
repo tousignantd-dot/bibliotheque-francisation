@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<title>Prompts de remplacement</title>
+<style>html{color-scheme:light dark}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>Prompts de remplacement</title>
+<style>
+/* ═══ Jetons « Braise », recopiés — jamais importés (un @import en file://
+   échoue sans rien dire). --mesure-l porte la largeur de lecture : dans la
+   source du système, --mesure porte à la fois une couleur et une longueur
+   dans le même :root, et la seconde écrase la première.                    */
+:root{
+  --fond:#FFFFFF; --fond-2:#FAFAFA; --fond-3:#F4F4F5;
+  --encre:#09090B; --encre-2:#52525B; --encre-3:#71717A; --encre-4:#A1A1AA;
+  --bord:#E4E4E7; --bord-fort:#D4D4D8;
+  --marque-rose:#F0359F; --marque-corail:#F5533D;
+  --marque-degrade:linear-gradient(100deg,var(--marque-rose) 0%,var(--marque-corail) 100%);
+  --signal:#F5652E; --signal-encre:#FFFFFF; --signal-voile:#FEF1EA;
+  --mesure:#2B4E9B; --mesure-2:#5C7EBF; --mesure-voile:#EAEFFA;
+  --action:#18181B; --action-survol:#27272A; --action-encre:#FAFAFA;
+  --police:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --police-mono:ui-monospace,"SF Mono","Menlo","Consolas",monospace;
+  --t-affiche:clamp(2.5rem,7.4vw,4.75rem); --t-titre-1:clamp(1.75rem,4vw,2.75rem);
+  --t-titre-2:clamp(1.375rem,2.6vw,1.75rem); --t-titre-3:1.1875rem;
+  --t-avant:1.1875rem; --t-petit:.875rem; --t-menu:.8125rem;
+  --g-moyen:500; --g-fort:600; --g-noir:800;
+  --i-serre:.98; --i-titre:1.15; --i-corps:1.62;
+  --l-serre:-.035em; --l-titre:-.02em;
+  --e-1:.25rem; --e-2:.5rem; --e-3:.75rem; --e-4:1rem; --e-5:1.5rem;
+  --e-6:2rem; --e-7:3rem; --e-8:4rem; --e-9:6rem;
+  --mesure-l:42rem; --contenu:74rem;
+  --r-1:.375rem; --r-2:.5rem; --r-3:.75rem; --r-4:1rem; --r-plein:9999px;
+  --o-1:0 1px 2px rgba(9,9,11,.06);
+  --o-2:0 1px 3px rgba(9,9,11,.08),0 1px 2px rgba(9,9,11,.04);
+  --o-3:0 4px 12px rgba(9,9,11,.08);
+  --transition:140ms cubic-bezier(.4,0,.2,1);
+}
+:root[data-theme="sombre"]{
+  --fond:#09090B; --fond-2:#0F0F11; --fond-3:#18181B;
+  --encre:#FAFAFA; --encre-2:#D4D4D8; --encre-3:#A1A1AA; --encre-4:#52525B;
+  --bord:#27272A; --bord-fort:#3F3F46;
+  --marque-rose:#FF4FB0; --marque-corail:#FF6A50;
+  --signal:#FF7A45; --signal-encre:#1A0C05; --signal-voile:#2A1610;
+  --mesure:#8FB2F0; --mesure-2:#6E8FCB; --mesure-voile:#18213A;
+  --action:#FAFAFA; --action-survol:#E4E4E7; --action-encre:#18181B;
+  --o-1:0 1px 2px rgba(0,0,0,.5); --o-2:0 1px 3px rgba(0,0,0,.6);
+  --o-3:0 4px 14px rgba(0,0,0,.6);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="clair"]){
+    --fond:#09090B; --fond-2:#0F0F11; --fond-3:#18181B;
+    --encre:#FAFAFA; --encre-2:#D4D4D8; --encre-3:#A1A1AA; --encre-4:#52525B;
+    --bord:#27272A; --bord-fort:#3F3F46;
+    --marque-rose:#FF4FB0; --marque-corail:#FF6A50;
+    --signal:#FF7A45; --signal-encre:#1A0C05; --signal-voile:#2A1610;
+    --mesure:#8FB2F0; --mesure-2:#6E8FCB; --mesure-voile:#18213A;
+    --action:#FAFAFA; --action-survol:#E4E4E7; --action-encre:#18181B;
+    --o-1:0 1px 2px rgba(0,0,0,.5); --o-2:0 1px 3px rgba(0,0,0,.6);
+    --o-3:0 4px 14px rgba(0,0,0,.6);
+  }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--fond);color:var(--encre-2);font-family:var(--police);
+     font-size:1rem;line-height:var(--i-corps);-webkit-font-smoothing:antialiased}
+.enveloppe{max-width:var(--contenu);margin:0 auto;padding:0 var(--e-5)}
+h1,h2,h3,h4{color:var(--encre);letter-spacing:var(--l-titre);line-height:var(--i-titre);
+            font-weight:var(--g-fort);margin:0;text-wrap:balance}
+p{margin:0 0 var(--e-4)}
+b,strong{color:var(--encre);font-weight:var(--g-fort)}
+code{font-family:var(--police-mono);font-size:.9em;background:var(--fond-3);
+     padding:.1em .35em;border-radius:var(--r-1);color:var(--encre)}
+.lire{max-width:var(--mesure-l)}
+.masque{display:none}
+.barre{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--fond) 88%,transparent);
+       backdrop-filter:blur(12px);border-bottom:1px solid var(--bord)}
+.barre__int{max-width:var(--contenu);margin:0 auto;padding:var(--e-3) var(--e-5);
+            display:flex;align-items:center;gap:var(--e-3);flex-wrap:wrap}
+.marque{font-weight:var(--g-noir);letter-spacing:var(--l-serre);color:var(--encre);font-size:1.0625rem}
+.marque i{font-style:normal;background:var(--marque-degrade);
+          -webkit-background-clip:text;background-clip:text;color:transparent}
+.barre__vide{flex:1}
+.bt{border:1px solid var(--bord-fort);background:var(--fond);color:var(--encre-2);font:inherit;
+    font-size:var(--t-menu);font-weight:var(--g-moyen);padding:var(--e-1) var(--e-3);
+    border-radius:var(--r-plein);cursor:pointer;transition:var(--transition)}
+.bt:hover{border-color:var(--encre-4);color:var(--encre)}
+.bt[aria-pressed="true"]{background:var(--mesure);border-color:var(--mesure);color:#fff}
+:root[data-theme="sombre"] .bt[aria-pressed="true"]{color:#09090B}
+.heros{padding:var(--e-8) 0 var(--e-6)}
+.pastille{display:inline-flex;align-items:center;gap:var(--e-2);font-size:var(--t-petit);
+          font-weight:var(--g-moyen);color:var(--signal);background:var(--signal-voile);
+          border-radius:var(--r-plein);padding:var(--e-1) var(--e-3);margin-bottom:var(--e-5)}
+.pastille::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--signal)}
+.heros h1{font-size:var(--t-affiche);font-weight:var(--g-noir);letter-spacing:var(--l-serre);
+          line-height:var(--i-serre);max-width:17ch}
+.heros h1 i{font-style:normal;background:var(--marque-degrade);
+            -webkit-background-clip:text;background-clip:text;color:transparent}
+.heros .avant{font-size:var(--t-avant);color:var(--encre-3);max-width:var(--mesure-l);
+              margin-top:var(--e-5);text-wrap:pretty}
+section{padding:var(--e-7) 0;border-top:1px solid var(--bord);scroll-margin-top:4.5rem}
+.oeil{font-size:var(--t-menu);text-transform:uppercase;letter-spacing:.14em;
+      color:var(--encre-4);font-weight:var(--g-fort);margin-bottom:var(--e-3)}
+section>.enveloppe>h2{font-size:var(--t-titre-1);margin-bottom:var(--e-5)}
+.gros{display:inline-block;padding:var(--e-3) var(--e-6);border-radius:var(--r-2);
+      background:var(--action);color:var(--action-encre);border:0;font:inherit;
+      font-weight:var(--g-fort);font-size:1rem;cursor:pointer;text-decoration:none}
+.gros[disabled]{opacity:.4;cursor:default}
+.capot{display:none;margin-top:var(--e-6);border-top:1px dashed var(--bord-fort);padding-top:var(--e-5)}
+body.conception .capot{display:block}
+.capot h4{color:var(--mesure);font-size:var(--t-menu);text-transform:uppercase;
+          letter-spacing:.1em;margin-bottom:var(--e-3)}
+.preuve{background:var(--fond-3);border-radius:var(--r-2);padding:var(--e-4) var(--e-5);font-size:.9375rem}
+.preuve p:last-child{margin-bottom:0}
+.enrob{overflow-x:auto}
+.tab{width:100%;border-collapse:collapse;font-size:.9375rem;margin-top:var(--e-4)}
+.tab th,.tab td{text-align:left;padding:var(--e-2) var(--e-3);border-bottom:1px solid var(--bord);
+                vertical-align:top}
+.tab th{font-size:var(--t-menu);text-transform:uppercase;letter-spacing:.1em;
+        color:var(--encre-4);font-weight:var(--g-fort)}
+.tab tr:last-child td{border-bottom:0}
+.garde{background:var(--fond-3);border-radius:var(--r-3);padding:var(--e-5) var(--e-6)}
+.garde ul{margin:0;padding-left:1.1em}
+.garde li{margin-bottom:var(--e-2)}
+.garde li:last-child{margin-bottom:0}
+.chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;
+          background:var(--bord);border:1px solid var(--bord);border-radius:var(--r-3);
+          overflow:hidden;margin-top:var(--e-5)}
+.ch{background:var(--fond);padding:var(--e-4) var(--e-5)}
+.ch__v{font-family:var(--police-mono);font-size:1.5rem;color:var(--encre);
+       font-variant-numeric:tabular-nums}
+.ch__v--m{color:var(--mesure)}
+.ch__v--s{color:var(--signal)}
+.ch__c{font-size:.75rem;color:var(--encre-4);text-transform:uppercase;
+       letter-spacing:.1em;margin-top:var(--e-1)}
+footer{padding:var(--e-8) 0 var(--e-9);color:var(--encre-4);font-size:var(--t-petit)}
+@media print{
+  :root{--fond:#FFF;--fond-2:#FFF;--fond-3:#F4F4F5;--encre:#09090B;--encre-2:#3F3F46;
+        --encre-3:#52525B;--encre-4:#71717A;--bord:#D4D4D8;--bord-fort:#A1A1AA;
+        --o-1:none;--o-2:none;--o-3:none}
+  @page{margin:14mm 12mm}
+  .barre{display:none}
+  .heros{padding-top:0}
+  .capot{display:block}
+  body{font-size:10.5pt}
+  .tab tr,.preuve,.garde{break-inside:avoid}
+  h1,h2,h3{break-after:avoid}
+  .enveloppe{padding:0}
+}
+
+
+/* ═══ Audit de la formation DEA ════════════════════════════════════════════
+   Un audit ne corrige rien : il mesure et il propose. Chaque constat porte
+   sa preuve (ce qui a été mesuré, où, comment) et ce qu'il y a à trancher.
+   La gravité se dit par la FORME — l'épaisseur du filet, l'étiquette —, pas
+   par une couleur d'alarme : Braise n'a pas de rouge.                       */
+*{box-sizing:border-box}
+body{margin:0;background:var(--fond-2);color:var(--encre);font-family:var(--police);
+     font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.page{max-width:780px;margin:0 auto;padding:3.2rem 1.3rem 5rem}
+.sur{font-family:var(--police-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+     color:var(--encre-3);margin:0 0 .8rem}
+h1{font-size:clamp(1.9rem,5vw,2.6rem);line-height:1.08;letter-spacing:-.025em;margin:0 0 1rem}
+.chapeau{font-size:1.1rem;color:var(--encre-2);margin:0 0 2rem}
+.chapeau b{color:var(--encre)}
+h2{font-size:1.35rem;letter-spacing:-.015em;margin:3rem 0 .4rem}
+h2 + .mineur{margin-top:0}
+.mineur{color:var(--encre-2);font-size:.95rem}
+
+/* la synthèse chiffrée */
+.compte{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--bord);
+        border:1px solid var(--bord);border-radius:6px;overflow:hidden;margin:0 0 1.2rem}
+.compte div{background:var(--fond);padding:.9rem 1rem}
+.compte b{display:block;font-size:1.9rem;letter-spacing:-.03em;line-height:1}
+.compte span{font-family:var(--police-mono);font-size:10.5px;letter-spacing:.11em;
+             text-transform:uppercase;color:var(--encre-2)}
+@media(max-width:560px){.compte{grid-template-columns:repeat(2,1fr)}}
+
+.methode{background:var(--fond);border:1px solid var(--bord);border-radius:6px;padding:1rem 1.2rem;
+         font-size:.95rem;color:var(--encre-2)}
+.methode b{color:var(--encre)}
+.methode ul{margin:.4rem 0 0;padding-left:1.1rem}
+
+/* un constat */
+.c{background:var(--fond);border:1px solid var(--bord);border-radius:6px;padding:1.1rem 1.25rem 1.2rem;
+   margin:0 0 .9rem;border-left-style:solid}
+.c.g1{border-left:6px solid var(--encre)}
+.c.g2{border-left:4px solid var(--signal)}
+.c.g3{border-left:2px solid var(--encre-3)}
+.c.g4{border-left:1px dashed var(--encre-3)}
+.c h3{font-size:1.08rem;line-height:1.3;letter-spacing:-.01em;margin:.35rem 0 .6rem}
+.eti{font-family:var(--police-mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
+     color:var(--encre-2);display:flex;gap:.7rem;flex-wrap:wrap}
+.eti .g{color:var(--encre);font-weight:600}
+.c dl{margin:0;display:grid;grid-template-columns:7.2rem 1fr;gap:.45rem .9rem;font-size:.95rem}
+.c dt{font-family:var(--police-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+      color:var(--encre-3);padding-top:.3em}
+.c dd{margin:0}
+.c dd.trancher{color:var(--encre)}
+.c q{font-style:italic;color:var(--encre-2)}
+@media(max-width:560px){.c dl{grid-template-columns:1fr}.c dt{padding-top:.6em}}
+code{font-family:var(--police-mono);font-size:.86em;background:var(--fond-3);padding:.08em .35em;border-radius:3px}
+
+.tient{columns:2;column-gap:2rem;padding-left:1.1rem;font-size:.95rem;color:var(--encre-2)}
+.tient li{break-inside:avoid;margin-bottom:.45rem}
+.tient b{color:var(--encre)}
+@media(max-width:560px){.tient{columns:1}}
+.sources{font-size:.88rem;color:var(--encre-2)}
+.sources a{color:var(--encre)}
+/* le suivi des corrections, ajouté le même jour */
+.suivi{background:var(--fond);border:1px solid var(--bord);border-left:6px solid var(--encre);
+       border-radius:6px;padding:1rem 1.2rem;margin:0 0 1.2rem;font-size:.95rem}
+.suivi h2{margin:0 0 .5rem;font-size:1.1rem}
+.suivi table{width:100%;border-collapse:collapse;font-size:.9rem}
+.suivi td{border-top:1px solid var(--bord);padding:.4rem .5rem .4rem 0;vertical-align:top}
+.suivi td:first-child{font-family:var(--police-mono);font-size:11px;white-space:nowrap;color:var(--encre-2);padding-top:.55rem}
+.suivi p{margin:.6rem 0 0;color:var(--encre-2)}
+.pied{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--bord);font-size:.85rem;color:var(--encre-3)}
+
+.p{background:var(--fond);border:1px solid var(--bord);border-radius:6px;padding:1.1rem 1.25rem;margin:0 0 1.2rem}
+.p h3{margin:.2rem 0 .5rem;font-size:1.1rem}
+.p .ou{font-size:.92rem;color:var(--encre-2);margin:.2rem 0}
+.p pre{white-space:pre-wrap;font-family:var(--police-mono);font-size:12.5px;line-height:1.5;background:var(--fond-3);
+       border-radius:4px;padding:.8rem .9rem;margin:.6rem 0}
+.copier{font:inherit;font-size:.85rem;font-weight:600;padding:.45rem .9rem;min-height:44px;border-radius:6px;
+        border:1px solid var(--encre);background:var(--fond);color:var(--encre);cursor:pointer}
+</style>
+<div class="page">
+  <p class="sur">Prompts · 23 septembre 2026 · les sept images cochées</p>
+  <h1>Sept images à refaire</h1>
+  <p class="chapeau">Un prompt de <b>correction</b> par image cochée sur la planche : on joint l'image
+  actuelle (<b>A</b>) et, pour les personnages, <b>B</b> — <code>d4-bras</code>, la femme telle qu'elle doit
+  être et la bonne posture des mains. Chaque prompt reprend votre note, en consignes que les modèles
+  exécutent : un geste (« montez les mains d'une longueur de main »), pas une position ; et ce qu'on
+  supprime, nommé, parce qu'un modèle ajoute sans retirer.</p>
+  <div class="methode"><b>Ordre.</b> Faire <b>a5-reprendre</b> avant <b>a5-reprendre-bas</b> : le second
+  se fait à partir du premier. Déposer les images retenues sous le même nom dans
+  <code>simulateur-dea/croquis/gros-plans/</code> ; je reconstruis la formation et la simulation.</div>
+  <article class="p">
+    <div class="eti"><span class="g">1 · b-seul</span><span>889 caractères</span></div>
+    <h3>Formation · panneau 13 — « Seul ? Le 911, haut-parleur, par terre. »</h3>
+    <p class="ou"><b>Votre note :</b> Trop de doigts, mains trop basses.</p>
+    <p class="ou"><b>À joindre :</b> <b>A</b> : <code>portfolio-conception/medias/formation-dea/b-seul.jpg</code> · <b>B</b> : <code>portfolio-conception/medias/formation-dea/d4-bras.jpg</code></p>
+    <pre id="p1">Edit image A. Keep EVERYTHING in image A exactly as it is — the camera position and framing, the cafeteria, every person&#x27;s place and pose, the clothes, the defibrillator, the light pencil technique on white paper — and change ONLY what is listed below. Monochrome graphite pencil, light tone, no colour, no text or numbers anywhere, 16:9.
+
+THE HANDS: slide the stacked hands UP along his breastbone, toward his head, by about one hand-length, so that the heel of the lower hand sits EXACTLY BETWEEN HIS TWO NIPPLES — the position shown in image B. One hand flat, the other stacked on top, fingers interlaced. Each hand has EXACTLY FIVE fingers: one thumb and four fingers — count them. Arms straight, shoulders above the hands.
+
+She is alone; the phone stays on the floor next to her knee, screen up.
+
+Nothing else changes. No extra hands, no extra fingers, no second visible pad, no text.</pre>
+    <button class="copier" type="button" data-cible="p1">Copier le prompt</button>
+  </article>
+  <article class="p">
+    <div class="eti"><span class="g">2 · d4-mains</span><span>753 caractères</span></div>
+    <h3>Formation · panneau 14 — « Au milieu de la poitrine. »</h3>
+    <p class="ou"><b>Votre note :</b> Il manque un doigt sur la main du dessus.</p>
+    <p class="ou"><b>À joindre :</b> <b>A</b> : <code>portfolio-conception/medias/formation-dea/d4-mains.jpg</code></p>
+    <pre id="p2">Edit image A. Keep EVERYTHING in image A exactly as it is — the camera position and framing, the cafeteria, every person&#x27;s place and pose, the clothes, the defibrillator, the light pencil technique on white paper — and change ONLY what is listed below. Monochrome graphite pencil, light tone, no colour, no text or numbers anywhere, 16:9.
+
+THE HANDS: this is a close-up of two stacked hands on the centre of a chest. The UPPER hand is missing a finger. Redraw it with EXACTLY FIVE fingers — one thumb and four fingers — interlaced with the fingers of the lower hand. The lower hand also has exactly five fingers. Same position, same arms, same shirt, same framing.
+
+Nothing else changes. No extra hands, no extra fingers, no second visible pad, no text.</pre>
+    <button class="copier" type="button" data-cible="p2">Copier le prompt</button>
+  </article>
+  <article class="p">
+    <div class="eti"><span class="g">3 · a5-analyse</span><span>1104 caractères</span></div>
+    <h3>Formation · panneau 18 — « “Il analyse” : personne ne touche. »</h3>
+    <p class="ou"><b>Votre note :</b> Électrode au-dessus du mamelon à la mauvaise place : elle est de l&#x27;autre côté, donc invisible ; seul un fil part de l&#x27;autre côté.</p>
+    <p class="ou"><b>À joindre :</b> <b>A</b> : <code>portfolio-conception/medias/formation-dea/a5-analyse.jpg</code></p>
+    <pre id="p3">Edit image A. Keep EVERYTHING in image A exactly as it is — the camera position and framing, the cafeteria, every person&#x27;s place and pose, the clothes, the defibrillator, the light pencil technique on white paper — and change ONLY what is listed below. Monochrome graphite pencil, light tone, no colour, no text or numbers anywhere, 16:9.
+
+THE ELECTRODES: there is a pad on the UPPER chest, above the nipple — it is in the wrong place. DELETE it completely, leaving bare skin (no outline, no shadow, no mark). The second electrode is really stuck below his RIGHT collarbone, on the FAR side of his chest, which this camera cannot see: do not draw it. In its place, draw only a thin cable that leaves the defibrillator, runs over the top of his chest and disappears toward his FAR shoulder. KEEP the other pad exactly where it is — on the side of his ribs, just below the armpit on the side facing us — with its own cable. In the end: ONE visible pad, TWO cables.
+
+The woman keeps both hands raised, touching nobody.
+
+Nothing else changes. No extra hands, no extra fingers, no second visible pad, no text.</pre>
+    <button class="copier" type="button" data-cible="p3">Copier le prompt</button>
+  </article>
+  <article class="p">
+    <div class="eti"><span class="g">4 · a5-reprendre</span><span>1765 caractères</span></div>
+    <h3>Formation · panneau 18 — « Et vous reprenez tout de suite. » ; simulation, haut de la compression</h3>
+    <p class="ou"><b>Votre note :</b> Électrode à la mauvaise place ; la femme a changé de visage.</p>
+    <p class="ou"><b>À joindre :</b> <b>A</b> : <code>portfolio-conception/medias/formation-dea/a5-reprendre.jpg</code> · <b>B</b> : <code>portfolio-conception/medias/formation-dea/d4-bras.jpg</code></p>
+    <pre id="p4">Edit image A. Keep EVERYTHING in image A exactly as it is — the camera position and framing, the cafeteria, every person&#x27;s place and pose, the clothes, the defibrillator, the light pencil technique on white paper — and change ONLY what is listed below. Monochrome graphite pencil, light tone, no colour, no text or numbers anywhere, 16:9.
+
+THE ELECTRODES: there is a pad on the UPPER chest, above the nipple — it is in the wrong place. DELETE it completely, leaving bare skin (no outline, no shadow, no mark). The second electrode is really stuck below his RIGHT collarbone, on the FAR side of his chest, which this camera cannot see: do not draw it. In its place, draw only a thin cable that leaves the defibrillator, runs over the top of his chest and disappears toward his FAR shoulder. KEEP the other pad exactly where it is — on the side of his ribs, just below the armpit on the side facing us — with its own cable. In the end: ONE visible pad, TWO cables.
+
+THE WOMAN (grey cardigan, white top, lanyard, dark hair tied back): her face must be the face of the woman in image B — same facial features, same ethnicity, same age (about 40). She has drifted into a different-looking person; bring her back to the woman of image B. Do not change her clothes or pose beyond what is asked.
+
+THE HANDS: slide the stacked hands UP along his breastbone, toward his head, by about one hand-length, so that the heel of the lower hand sits EXACTLY BETWEEN HIS TWO NIPPLES — the position shown in image B. One hand flat, the other stacked on top, fingers interlaced. Each hand has EXACTLY FIVE fingers: one thumb and four fingers — count them. Arms straight, shoulders above the hands.
+
+Nothing else changes. No extra hands, no extra fingers, no second visible pad, no text.</pre>
+    <button class="copier" type="button" data-cible="p4">Copier le prompt</button>
+  </article>
+  <article class="p">
+    <div class="eti"><span class="g">5 · a5-reprendre-bas</span><span>594 caractères</span></div>
+    <h3>Simulation · la compression enfoncée (alterne avec a5-reprendre)</h3>
+    <p class="ou"><b>Votre note :</b> Électrode à la mauvaise place ; la femme a changé de visage. À faire APRÈS a5-reprendre.</p>
+    <p class="ou"><b>À joindre :</b> <b>A</b> : <code>le NOUVEL a5-reprendre (celui que vous venez de faire)</code></p>
+    <pre id="p5">Image A is the NEW a5-reprendre you just made. Reproduce it EXACTLY — same camera, framing, people, face, clothes, device, the single visible pad and the two cables, same pencil technique — with ONE change: this is the BOTTOM of the same chest compression, a fraction of a second later. Her arms stay straight and locked, her shoulders a little lower, and his chest is visibly pressed down about five centimetres under her hands, which stay exactly between his nipples. Each hand has exactly five fingers.
+
+Nothing else changes. No extra hands, no extra fingers, no second visible pad, no text.</pre>
+    <button class="copier" type="button" data-cible="p5">Copier le prompt</button>
+  </article>
+  <article class="p">
+    <div class="eti"><span class="g">6 · b-relais</span><span>1875 caractères</span></div>
+    <h3>Formation · panneau 23 — « À deux, changez aux deux minutes. »</h3>
+    <p class="ou"><b>Votre note :</b> Électrode à la mauvaise place ; la femme a changé de visage.</p>
+    <p class="ou"><b>À joindre :</b> <b>A</b> : <code>portfolio-conception/medias/formation-dea/b-relais.jpg</code> · <b>B</b> : <code>portfolio-conception/medias/formation-dea/d4-bras.jpg</code></p>
+    <pre id="p6">Edit image A. Keep EVERYTHING in image A exactly as it is — the camera position and framing, the cafeteria, every person&#x27;s place and pose, the clothes, the defibrillator, the light pencil technique on white paper — and change ONLY what is listed below. Monochrome graphite pencil, light tone, no colour, no text or numbers anywhere, 16:9.
+
+THE ELECTRODES: there is a pad on the UPPER chest, above the nipple — it is in the wrong place. DELETE it completely, leaving bare skin (no outline, no shadow, no mark). The second electrode is really stuck below his RIGHT collarbone, on the FAR side of his chest, which this camera cannot see: do not draw it. In its place, draw only a thin cable that leaves the defibrillator, runs over the top of his chest and disappears toward his FAR shoulder. KEEP the other pad exactly where it is — on the side of his ribs, just below the armpit on the side facing us — with its own cable. In the end: ONE visible pad, TWO cables.
+
+THE WOMAN (grey cardigan, white top, lanyard, dark hair tied back): her face must be the face of the woman in image B — same facial features, same ethnicity, same age (about 40). She has drifted into a different-looking person; bring her back to the woman of image B. Do not change her clothes or pose beyond what is asked.
+
+THE GREY-HAIRED MAN&#x27;S HANDS (he is the one compressing): slide the stacked hands UP along his breastbone, toward his head, by about one hand-length, so that the heel of the lower hand sits EXACTLY BETWEEN HIS TWO NIPPLES — the position shown in image B. One hand flat, the other stacked on top, fingers interlaced. Each hand has EXACTLY FIVE fingers: one thumb and four fingers — count them. Arms straight, shoulders above the hands.
+
+The woman rests her hands on her own knees and touches nobody.
+
+Nothing else changes. No extra hands, no extra fingers, no second visible pad, no text.</pre>
+    <button class="copier" type="button" data-cible="p6">Copier le prompt</button>
+  </article>
+  <article class="p">
+    <div class="eti"><span class="g">7 · b-passation</span><span>1857 caractères</span></div>
+    <h3>Formation · panneau 24 — « Ce que vous avez vu. »</h3>
+    <p class="ou"><b>Votre note :</b> Électrode à la mauvaise place ; la femme a changé de visage.</p>
+    <p class="ou"><b>À joindre :</b> <b>A</b> : <code>portfolio-conception/medias/formation-dea/b-passation.jpg</code> · <b>B</b> : <code>portfolio-conception/medias/formation-dea/d4-bras.jpg</code></p>
+    <pre id="p7">Edit image A. Keep EVERYTHING in image A exactly as it is — the camera position and framing, the cafeteria, every person&#x27;s place and pose, the clothes, the defibrillator, the light pencil technique on white paper — and change ONLY what is listed below. Monochrome graphite pencil, light tone, no colour, no text or numbers anywhere, 16:9.
+
+THE ELECTRODES: there is a pad on the UPPER chest, above the nipple — it is in the wrong place. DELETE it completely, leaving bare skin (no outline, no shadow, no mark). The second electrode is really stuck below his RIGHT collarbone, on the FAR side of his chest, which this camera cannot see: do not draw it. In its place, draw only a thin cable that leaves the defibrillator, runs over the top of his chest and disappears toward his FAR shoulder. KEEP the other pad exactly where it is — on the side of his ribs, just below the armpit on the side facing us — with its own cable. In the end: ONE visible pad, TWO cables.
+
+THE WOMAN (grey cardigan, white top, lanyard, dark hair tied back): her face must be the face of the woman in image B — same facial features, same ethnicity, same age (about 40). She has drifted into a different-looking person; bring her back to the woman of image B. Do not change her clothes or pose beyond what is asked.
+
+THE COMPRESSING PARAMEDIC&#x27;S HANDS: slide the stacked hands UP along his breastbone, toward his head, by about one hand-length, so that the heel of the lower hand sits EXACTLY BETWEEN HIS TWO NIPPLES — the position shown in image B. One hand flat, the other stacked on top, fingers interlaced. Each hand has EXACTLY FIVE fingers: one thumb and four fingers — count them. Arms straight, shoulders above the hands.
+
+The paramedics&#x27; chest patches stay blank — no letters, no numbers.
+
+Nothing else changes. No extra hands, no extra fingers, no second visible pad, no text.</pre>
+    <button class="copier" type="button" data-cible="p7">Copier le prompt</button>
+  </article>
+</div>
+<script>
+document.querySelectorAll('.copier').forEach(function(b){ b.addEventListener('click', function(){
+  var t = document.getElementById(b.dataset.cible).textContent;
+  var ok = function(){ b.textContent = 'Copié'; setTimeout(function(){ b.textContent = 'Copier le prompt'; }, 1500); };
+  if (navigator.clipboard) navigator.clipboard.writeText(t).then(ok, ok); else ok();
+}); });
+</script>
+
+</body>
+</html>
