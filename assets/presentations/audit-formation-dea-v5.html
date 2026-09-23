@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Deuxième audit de la formation au défibrillateur, sur la v5 : fond, page jouée et médias.">
+<title>Audit de la formation DEA v5</title>
+<style>html{color-scheme:light dark}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>Audit de la formation DEA v5</title>
+<style>
+/* ═══ Jetons « Braise », recopiés — jamais importés (un @import en file://
+   échoue sans rien dire). --mesure-l porte la largeur de lecture : dans la
+   source du système, --mesure porte à la fois une couleur et une longueur
+   dans le même :root, et la seconde écrase la première.                    */
+:root{
+  --fond:#FFFFFF; --fond-2:#FAFAFA; --fond-3:#F4F4F5;
+  --encre:#09090B; --encre-2:#52525B; --encre-3:#71717A; --encre-4:#A1A1AA;
+  --bord:#E4E4E7; --bord-fort:#D4D4D8;
+  --marque-rose:#F0359F; --marque-corail:#F5533D;
+  --marque-degrade:linear-gradient(100deg,var(--marque-rose) 0%,var(--marque-corail) 100%);
+  --signal:#F5652E; --signal-encre:#FFFFFF; --signal-voile:#FEF1EA;
+  --mesure:#2B4E9B; --mesure-2:#5C7EBF; --mesure-voile:#EAEFFA;
+  --action:#18181B; --action-survol:#27272A; --action-encre:#FAFAFA;
+  --police:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --police-mono:ui-monospace,"SF Mono","Menlo","Consolas",monospace;
+  --t-affiche:clamp(2.5rem,7.4vw,4.75rem); --t-titre-1:clamp(1.75rem,4vw,2.75rem);
+  --t-titre-2:clamp(1.375rem,2.6vw,1.75rem); --t-titre-3:1.1875rem;
+  --t-avant:1.1875rem; --t-petit:.875rem; --t-menu:.8125rem;
+  --g-moyen:500; --g-fort:600; --g-noir:800;
+  --i-serre:.98; --i-titre:1.15; --i-corps:1.62;
+  --l-serre:-.035em; --l-titre:-.02em;
+  --e-1:.25rem; --e-2:.5rem; --e-3:.75rem; --e-4:1rem; --e-5:1.5rem;
+  --e-6:2rem; --e-7:3rem; --e-8:4rem; --e-9:6rem;
+  --mesure-l:42rem; --contenu:74rem;
+  --r-1:.375rem; --r-2:.5rem; --r-3:.75rem; --r-4:1rem; --r-plein:9999px;
+  --o-1:0 1px 2px rgba(9,9,11,.06);
+  --o-2:0 1px 3px rgba(9,9,11,.08),0 1px 2px rgba(9,9,11,.04);
+  --o-3:0 4px 12px rgba(9,9,11,.08);
+  --transition:140ms cubic-bezier(.4,0,.2,1);
+}
+:root[data-theme="sombre"]{
+  --fond:#09090B; --fond-2:#0F0F11; --fond-3:#18181B;
+  --encre:#FAFAFA; --encre-2:#D4D4D8; --encre-3:#A1A1AA; --encre-4:#52525B;
+  --bord:#27272A; --bord-fort:#3F3F46;
+  --marque-rose:#FF4FB0; --marque-corail:#FF6A50;
+  --signal:#FF7A45; --signal-encre:#1A0C05; --signal-voile:#2A1610;
+  --mesure:#8FB2F0; --mesure-2:#6E8FCB; --mesure-voile:#18213A;
+  --action:#FAFAFA; --action-survol:#E4E4E7; --action-encre:#18181B;
+  --o-1:0 1px 2px rgba(0,0,0,.5); --o-2:0 1px 3px rgba(0,0,0,.6);
+  --o-3:0 4px 14px rgba(0,0,0,.6);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="clair"]){
+    --fond:#09090B; --fond-2:#0F0F11; --fond-3:#18181B;
+    --encre:#FAFAFA; --encre-2:#D4D4D8; --encre-3:#A1A1AA; --encre-4:#52525B;
+    --bord:#27272A; --bord-fort:#3F3F46;
+    --marque-rose:#FF4FB0; --marque-corail:#FF6A50;
+    --signal:#FF7A45; --signal-encre:#1A0C05; --signal-voile:#2A1610;
+    --mesure:#8FB2F0; --mesure-2:#6E8FCB; --mesure-voile:#18213A;
+    --action:#FAFAFA; --action-survol:#E4E4E7; --action-encre:#18181B;
+    --o-1:0 1px 2px rgba(0,0,0,.5); --o-2:0 1px 3px rgba(0,0,0,.6);
+    --o-3:0 4px 14px rgba(0,0,0,.6);
+  }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--fond);color:var(--encre-2);font-family:var(--police);
+     font-size:1rem;line-height:var(--i-corps);-webkit-font-smoothing:antialiased}
+.enveloppe{max-width:var(--contenu);margin:0 auto;padding:0 var(--e-5)}
+h1,h2,h3,h4{color:var(--encre);letter-spacing:var(--l-titre);line-height:var(--i-titre);
+            font-weight:var(--g-fort);margin:0;text-wrap:balance}
+p{margin:0 0 var(--e-4)}
+b,strong{color:var(--encre);font-weight:var(--g-fort)}
+code{font-family:var(--police-mono);font-size:.9em;background:var(--fond-3);
+     padding:.1em .35em;border-radius:var(--r-1);color:var(--encre)}
+.lire{max-width:var(--mesure-l)}
+.masque{display:none}
+.barre{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--fond) 88%,transparent);
+       backdrop-filter:blur(12px);border-bottom:1px solid var(--bord)}
+.barre__int{max-width:var(--contenu);margin:0 auto;padding:var(--e-3) var(--e-5);
+            display:flex;align-items:center;gap:var(--e-3);flex-wrap:wrap}
+.marque{font-weight:var(--g-noir);letter-spacing:var(--l-serre);color:var(--encre);font-size:1.0625rem}
+.marque i{font-style:normal;background:var(--marque-degrade);
+          -webkit-background-clip:text;background-clip:text;color:transparent}
+.barre__vide{flex:1}
+.bt{border:1px solid var(--bord-fort);background:var(--fond);color:var(--encre-2);font:inherit;
+    font-size:var(--t-menu);font-weight:var(--g-moyen);padding:var(--e-1) var(--e-3);
+    border-radius:var(--r-plein);cursor:pointer;transition:var(--transition)}
+.bt:hover{border-color:var(--encre-4);color:var(--encre)}
+.bt[aria-pressed="true"]{background:var(--mesure);border-color:var(--mesure);color:#fff}
+:root[data-theme="sombre"] .bt[aria-pressed="true"]{color:#09090B}
+.heros{padding:var(--e-8) 0 var(--e-6)}
+.pastille{display:inline-flex;align-items:center;gap:var(--e-2);font-size:var(--t-petit);
+          font-weight:var(--g-moyen);color:var(--signal);background:var(--signal-voile);
+          border-radius:var(--r-plein);padding:var(--e-1) var(--e-3);margin-bottom:var(--e-5)}
+.pastille::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--signal)}
+.heros h1{font-size:var(--t-affiche);font-weight:var(--g-noir);letter-spacing:var(--l-serre);
+          line-height:var(--i-serre);max-width:17ch}
+.heros h1 i{font-style:normal;background:var(--marque-degrade);
+            -webkit-background-clip:text;background-clip:text;color:transparent}
+.heros .avant{font-size:var(--t-avant);color:var(--encre-3);max-width:var(--mesure-l);
+              margin-top:var(--e-5);text-wrap:pretty}
+section{padding:var(--e-7) 0;border-top:1px solid var(--bord);scroll-margin-top:4.5rem}
+.oeil{font-size:var(--t-menu);text-transform:uppercase;letter-spacing:.14em;
+      color:var(--encre-4);font-weight:var(--g-fort);margin-bottom:var(--e-3)}
+section>.enveloppe>h2{font-size:var(--t-titre-1);margin-bottom:var(--e-5)}
+.gros{display:inline-block;padding:var(--e-3) var(--e-6);border-radius:var(--r-2);
+      background:var(--action);color:var(--action-encre);border:0;font:inherit;
+      font-weight:var(--g-fort);font-size:1rem;cursor:pointer;text-decoration:none}
+.gros[disabled]{opacity:.4;cursor:default}
+.capot{display:none;margin-top:var(--e-6);border-top:1px dashed var(--bord-fort);padding-top:var(--e-5)}
+body.conception .capot{display:block}
+.capot h4{color:var(--mesure);font-size:var(--t-menu);text-transform:uppercase;
+          letter-spacing:.1em;margin-bottom:var(--e-3)}
+.preuve{background:var(--fond-3);border-radius:var(--r-2);padding:var(--e-4) var(--e-5);font-size:.9375rem}
+.preuve p:last-child{margin-bottom:0}
+.enrob{overflow-x:auto}
+.tab{width:100%;border-collapse:collapse;font-size:.9375rem;margin-top:var(--e-4)}
+.tab th,.tab td{text-align:left;padding:var(--e-2) var(--e-3);border-bottom:1px solid var(--bord);
+                vertical-align:top}
+.tab th{font-size:var(--t-menu);text-transform:uppercase;letter-spacing:.1em;
+        color:var(--encre-4);font-weight:var(--g-fort)}
+.tab tr:last-child td{border-bottom:0}
+.garde{background:var(--fond-3);border-radius:var(--r-3);padding:var(--e-5) var(--e-6)}
+.garde ul{margin:0;padding-left:1.1em}
+.garde li{margin-bottom:var(--e-2)}
+.garde li:last-child{margin-bottom:0}
+.chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;
+          background:var(--bord);border:1px solid var(--bord);border-radius:var(--r-3);
+          overflow:hidden;margin-top:var(--e-5)}
+.ch{background:var(--fond);padding:var(--e-4) var(--e-5)}
+.ch__v{font-family:var(--police-mono);font-size:1.5rem;color:var(--encre);
+       font-variant-numeric:tabular-nums}
+.ch__v--m{color:var(--mesure)}
+.ch__v--s{color:var(--signal)}
+.ch__c{font-size:.75rem;color:var(--encre-4);text-transform:uppercase;
+       letter-spacing:.1em;margin-top:var(--e-1)}
+footer{padding:var(--e-8) 0 var(--e-9);color:var(--encre-4);font-size:var(--t-petit)}
+@media print{
+  :root{--fond:#FFF;--fond-2:#FFF;--fond-3:#F4F4F5;--encre:#09090B;--encre-2:#3F3F46;
+        --encre-3:#52525B;--encre-4:#71717A;--bord:#D4D4D8;--bord-fort:#A1A1AA;
+        --o-1:none;--o-2:none;--o-3:none}
+  @page{margin:14mm 12mm}
+  .barre{display:none}
+  .heros{padding-top:0}
+  .capot{display:block}
+  body{font-size:10.5pt}
+  .tab tr,.preuve,.garde{break-inside:avoid}
+  h1,h2,h3{break-after:avoid}
+  .enveloppe{padding:0}
+}
+
+
+/* ═══ Audit de la formation DEA ════════════════════════════════════════════
+   Un audit ne corrige rien : il mesure et il propose. Chaque constat porte
+   sa preuve (ce qui a été mesuré, où, comment) et ce qu'il y a à trancher.
+   La gravité se dit par la FORME — l'épaisseur du filet, l'étiquette —, pas
+   par une couleur d'alarme : Braise n'a pas de rouge.                       */
+*{box-sizing:border-box}
+body{margin:0;background:var(--fond-2);color:var(--encre);font-family:var(--police);
+     font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.page{max-width:780px;margin:0 auto;padding:3.2rem 1.3rem 5rem}
+.sur{font-family:var(--police-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+     color:var(--encre-3);margin:0 0 .8rem}
+h1{font-size:clamp(1.9rem,5vw,2.6rem);line-height:1.08;letter-spacing:-.025em;margin:0 0 1rem}
+.chapeau{font-size:1.1rem;color:var(--encre-2);margin:0 0 2rem}
+.chapeau b{color:var(--encre)}
+h2{font-size:1.35rem;letter-spacing:-.015em;margin:3rem 0 .4rem}
+h2 + .mineur{margin-top:0}
+.mineur{color:var(--encre-2);font-size:.95rem}
+
+/* la synthèse chiffrée */
+.compte{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--bord);
+        border:1px solid var(--bord);border-radius:6px;overflow:hidden;margin:0 0 1.2rem}
+.compte div{background:var(--fond);padding:.9rem 1rem}
+.compte b{display:block;font-size:1.9rem;letter-spacing:-.03em;line-height:1}
+.compte span{font-family:var(--police-mono);font-size:10.5px;letter-spacing:.11em;
+             text-transform:uppercase;color:var(--encre-2)}
+@media(max-width:560px){.compte{grid-template-columns:repeat(2,1fr)}}
+
+.methode{background:var(--fond);border:1px solid var(--bord);border-radius:6px;padding:1rem 1.2rem;
+         font-size:.95rem;color:var(--encre-2)}
+.methode b{color:var(--encre)}
+.methode ul{margin:.4rem 0 0;padding-left:1.1rem}
+
+/* un constat */
+.c{background:var(--fond);border:1px solid var(--bord);border-radius:6px;padding:1.1rem 1.25rem 1.2rem;
+   margin:0 0 .9rem;border-left-style:solid}
+.c.g1{border-left:6px solid var(--encre)}
+.c.g2{border-left:4px solid var(--signal)}
+.c.g3{border-left:2px solid var(--encre-3)}
+.c.g4{border-left:1px dashed var(--encre-3)}
+.c h3{font-size:1.08rem;line-height:1.3;letter-spacing:-.01em;margin:.35rem 0 .6rem}
+.eti{font-family:var(--police-mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
+     color:var(--encre-2);display:flex;gap:.7rem;flex-wrap:wrap}
+.eti .g{color:var(--encre);font-weight:600}
+.c dl{margin:0;display:grid;grid-template-columns:7.2rem 1fr;gap:.45rem .9rem;font-size:.95rem}
+.c dt{font-family:var(--police-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+      color:var(--encre-3);padding-top:.3em}
+.c dd{margin:0}
+.c dd.trancher{color:var(--encre)}
+.c q{font-style:italic;color:var(--encre-2)}
+@media(max-width:560px){.c dl{grid-template-columns:1fr}.c dt{padding-top:.6em}}
+code{font-family:var(--police-mono);font-size:.86em;background:var(--fond-3);padding:.08em .35em;border-radius:3px}
+
+.tient{columns:2;column-gap:2rem;padding-left:1.1rem;font-size:.95rem;color:var(--encre-2)}
+.tient li{break-inside:avoid;margin-bottom:.45rem}
+.tient b{color:var(--encre)}
+@media(max-width:560px){.tient{columns:1}}
+.sources{font-size:.88rem;color:var(--encre-2)}
+.sources a{color:var(--encre)}
+/* le suivi des corrections, ajouté le même jour */
+.suivi{background:var(--fond);border:1px solid var(--bord);border-left:6px solid var(--encre);
+       border-radius:6px;padding:1rem 1.2rem;margin:0 0 1.2rem;font-size:.95rem}
+.suivi h2{margin:0 0 .5rem;font-size:1.1rem}
+.suivi table{width:100%;border-collapse:collapse;font-size:.9rem}
+.suivi td{border-top:1px solid var(--bord);padding:.4rem .5rem .4rem 0;vertical-align:top}
+.suivi td:first-child{font-family:var(--police-mono);font-size:11px;white-space:nowrap;color:var(--encre-2);padding-top:.55rem}
+.suivi p{margin:.6rem 0 0;color:var(--encre-2)}
+.pied{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--bord);font-size:.85rem;color:var(--encre-3)}
+.mineurs{{padding-left:1.3rem;line-height:1.5}}.mineurs li{{margin:.35rem 0}}</style>
+
+<div class="page">
+  <p class="sur">Audit · 23 septembre 2026 · formation DEA v5 · fond, page jouée, médias</p>
+  <h1>La v5, un jour après les corrections</h1>
+  <p class="chapeau">Aucune erreur de secourisme dangereuse, la voix joue proprement et la
+  simulation se termine dans ses deux issues. Mais <b>l'emplacement du défibrillateur a de nouveau
+  disparu de la couverture</b> — la régression du premier constat d'hier. Et les dessins posent
+  deux problèmes de fond : <b>la victime change de visage</b> depuis que huit dessins neufs côtoient
+  les anciens, et <b>les deux images qui enseignent un geste le montrent faux</b>. Sur téléphone,
+  les gros plans perdent leur sujet et la transcription disparaît.</p>
+
+  <div class="compte">
+    <div><b>3</b><span>critiques</span></div>
+    <div><b>8</b><span>majeurs</span></div>
+    <div><b>18</b><span>moyens</span></div>
+    <div><b>20</b><span>mineurs</span></div>
+  </div>
+
+  <div class="suivi">
+    <h2>Corrigé le 23 septembre 2026 — les critiques et les majeurs de texte et de page</h2>
+    <table>
+      <tr><td>C 1</td><td>La couverture montre ses quatre phrases d'emblée — le hall en vert, en premier — et porte son propre « ▶ Écouter » ; elles restent affichées pendant la voix. Mesuré aux quatre largeurs : opacité 1, la première réplique joue.</td></tr>
+      <tr><td>C 2, C 3</td><td><b>Non corrigés — à trancher.</b> Les dessins (victime qui change de visage, électrode et mains) : revenir aux anciens pour les huit neufs, ou refaire depuis la bible.</td></tr>
+      <tr><td>M 1</td><td>La portée est dite et écrite sur la couverture : « Une seule situation : quelqu'un s'effondre. » La voix nomme l'étouffement et les blessures comme hors du champ.</td></tr>
+      <tr><td>M 2</td><td>« Ouvrez-le. S'il ne parle pas, appuyez sur le bouton vert. » ; « il s'allume tout seul » retiré de la couverture.</td></tr>
+      <tr><td>M 3</td><td>« Posez l'appareil de votre côté, près de sa tête. Vous l'atteignez sans jamais passer par-dessus lui. » La consigne du penché est retirée.</td></tr>
+      <tr><td>M 4</td><td>« Et changez vite : pas plus de quelques secondes sans compressions. »</td></tr>
+      <tr><td>M 5</td><td>En portrait étroit, le gros plan se montre entier, sur blanc : « Désignez-la du doigt » montre la femme qui désigne.</td></tr>
+      <tr><td>M 6</td><td>Le bouton de transcription reste sous 832 px, en libellé court « Texte » (70 × 44).</td></tr>
+      <tr><td>M 7</td><td>Un plancher sous chaque texte de la planche des cœurs : 13 px au moins à 768, 1280 et 1440 ; aucun débordement.</td></tr>
+      <tr><td>M 8</td><td><b>Non corrigé</b> — dessins (a5-ouvre, d3-designer), avec C 2 et C 3.</td></tr>
+    </table>
+    <p>Cinq répliques neuves, même voix que le reste du module, sous des clés neuves ; trois
+      finissaient sur une amorce (un son de trop après la phrase), rognée dans le silence.
+      Vérifié en pilotant la page publiée à 375, 768, 1280 et 1440 px : aucune erreur (hors
+      l'icône d'onglet). Les constats ci-dessous sont gardés tels qu'ils ont été relevés.</p>
+  </div>
+  <div class="methode">
+    <b>Comment l'audit a été fait.</b> Trois volets menés en parallèle, en lecture seule ; rien
+    n'a été corrigé, sauf une voix (voir le moyen 18).
+    <ul>
+      <li><b>Le fond</b> — lu contre le brief et ses « Écarts assumés », contre le premier audit, et
+        contre les sources (Cœur + AVC, AHA et ILCOR 2025, CNESST).</li>
+      <li><b>La page jouée</b> — les 41 panneaux jusqu'au bout, à 375 × 812, 768 × 1024, 1280 × 720 et
+        1440 × 900, quiz juste et faux, les deux passages de « Vous. », reprise et clavier ; tout
+        mesuré (débordements, tailles, contraste sur le vrai fond, lecture des clips).</li>
+      <li><b>Les médias</b> — planche de contact des 32 dessins dans l'ordre, mesures par image,
+        agrandissements ; 114 clips mesurés (niveau, bords, débit).</li>
+    </ul>
+  </div>
+
+<h2>Critiques</h2>
+<article class="c g1"><div class="eti"><span class="g">Critique · 1</span><span>Page · régression du constat 1</span></div><h3>L'emplacement du défibrillateur a de nouveau disparu de la couverture.</h3><dl><dt>Mesuré</dt><dd>À 375, 768, 1280 et 1440 px, la couverture n'affiche que <q>Ceci est un défibrillateur. Il peut sauver une vie.</q> La ligne <q>Il y en a un au hall d'entrée, à droite, près de la réception</q> est dans la page, mais à <b>opacité 0 et 0 × 0 px</b>. Le bouton « Écouter » vit dans la barre du haut, que <code>body.couverture .steps{display:none}</code> cache : aucun clip ne joue. Revérifié à la main.</dd><dt>Pourquoi</dt><dd>« Hall » paraît pour la première fois au panneau 12 sur 41 — exactement la situation que le premier audit avait classée critique. La rétroaction de la question 1 (<q>on commence et on finit par elle</q>) redevient fausse.</dd><dt>À trancher</dt><dd class="trancher">Dans le bloc « Le premier panneau n'est jamais entré » de <code>formation-dea.src.html</code>, poser la classe <code>vu</code> sur les phrases de la couverture, ou y montrer un bouton Écouter. Ajouter l'essai au contrôle de la page : la phrase du hall doit être visible sur la couverture.</dd></dl></article>
+<article class="c g1"><div class="eti"><span class="g">Critique · 2</span><span>Images · cohérence</span></div><h3>La victime change de visage dès l'ouverture.</h3><dl><dt>Mesuré</dt><dd>Les 8 dessins refaits le 23 septembre (t1-t4, d1-signe1, d2-regarder, d2-thorax, d2-agonal) montrent l'homme brun de la bible ; tous les anciens montrent un homme poivre et sel, plus âgé. L'apprenant voit trois hommes différents entre l'écran 4 et l'écran 12 : t4 (brun) → d1-epaules (châtain) → d1-appel (gris) → d1-signe1 (brun) → d3-designer et toute la suite (poivre et sel).</dd><dt>Pourquoi</dt><dd>Le récit repose sur « le même collègue ». C'est une conséquence du choix d'hier : remplacer une partie de la série seulement. Les 8 nouveaux forment aussi une famille plus sombre (luminosité 180-208 contre ≈ 215, part de blanc 24-41 % contre ≈ 54 %).</dd><dt>À trancher</dt><dd class="trancher">Deux voies : revenir aux anciens dessins pour ces 8 (série cohérente, anciens défauts) ; ou refaire depuis la bible tous les dessins où la victime est visible — d1-epaules, d1-appel, d3-designer, d4-bras, d4-profond, d4-remonte, a5-ecarter en priorité. Les dessins d'appareil restent le point faible du modèle.</dd></dl></article>
+<article class="c g1"><div class="eti"><span class="g">Critique · 3</span><span>Images · geste faux</span></div><h3>Les deux dessins qui enseignent un geste le montrent faux.</h3><dl><dt>Mesuré</dt><dd><b>a5-pose</b> (« Collez les électrodes ») : la seconde électrode est sous le pectoral gauche, près du bas du sternum, pas sous l'aisselle ; torse jeune et athlétique. <b>d4-mains</b> (« Au milieu de la poitrine ») et <b>d4-remonte</b> : les mains sont sur la poche de chemise, à côté de la patte de boutonnage — hors du sternum.</dd><dt>Pourquoi</dt><dd>Ce sont les images que l'apprenant reproduira. Elles contredisent la phrase qu'elles illustrent et la règle posée : électrodes sous la clavicule droite et sous l'aisselle gauche, mains entre les deux mamelons.</dd><dt>À trancher</dt><dd class="trancher">À joindre aux six images que vous refaites dans votre autre logiciel (prompts de remplacement au classeur).</dd></dl></article>
+<h2>Majeurs</h2>
+<article class="c g2"><div class="eti"><span class="g">Majeur · 1</span><span>Contenu · écart au brief</span></div><h3>La portée de la formation n'est jamais annoncée.</h3><dl><dt>Le contrat</dt><dd><q>Elle ne couvre pas l'étouffement, l'hémorragie, ni les autres premiers soins. Dis-le explicitement.</q> (brief, l. 36-38)</dd><dt>Mesuré</dt><dd>Aucune occurrence d'« étouffement » ni d'« hémorragie » dans la page ni dans les voix. L'écart n'est pas dans « Écarts assumés ».</dd><dt>À trancher</dt><dd class="trancher">Une phrase à la promesse : <q>Une seule situation : quelqu'un s'effondre. Pas l'étouffement, pas les blessures.</q></dd></dl></article>
+<article class="c g2"><div class="eti"><span class="g">Majeur · 2</span><span>Contenu · contradiction</span></div><h3>Deux diapositives voisines se contredisent sur la mise en marche.</h3><dl><dt>Mesuré</dt><dd><code>a5-varietes</code> : <q>Certains s'allument quand on ouvre le couvercle ; les autres ont un bouton vert.</q> La diapositive suivante, <code>a5-ouvre</code> : <q>L'appareil se met en marche tout seul.</q> Et <code>y0-parle</code> : <q>Il s'allume tout seul.</q></dd><dt>Pourquoi</dt><dd>Devant un appareil à bouton, on attendra qu'il démarre. Le brief et l'exercice d'ordre disent « ouvrir le boîtier et mettre en marche ».</dd><dt>À trancher</dt><dd class="trancher"><code>a5-ouvre</code> : <q>Ouvrez-le. S'il ne parle pas, appuyez sur le bouton vert.</q> Retirer « Il s'allume tout seul » de <code>y0-parle</code>. Deux clips à refaire.</dd></dl></article>
+<article class="c g2"><div class="eti"><span class="g">Majeur · 3</span><span>Contenu · sécurité</span></div><h3>La formation enseigne de se pencher par-dessus la victime pour appuyer.</h3><dl><dt>Mesuré</dt><dd><code>a5-penche</code> : <q>Vous vous penchez par-dessus lui, une main au sol, sans jamais le toucher.</q></dd><dt>Pourquoi</dt><dd>C'est le geste qui rend le contact probable au moment du choc. La contrainte venait du dessin (l'appareil de l'autre côté du corps) et est devenue une consigne. <i>Supposé</i> : l'usage des cours est de poser l'appareil de son côté, près de la tête — la source AHA n'a pu être lue (403).</dd><dt>À trancher</dt><dd class="trancher">Enseigner à l'arrivée de l'appareil : <q>Posez-le de votre côté, près de sa tête.</q> Et retirer la phrase du penché.</dd></dl></article>
+<article class="c g2"><div class="eti"><span class="g">Majeur · 4</span><span>Contenu · écart au brief</span></div><h3>Le relais n'enseigne pas sa condition : changer sans interrompre.</h3><dl><dt>Le contrat</dt><dd><q>… qu'on se relaie […] sans interrompre plus de quelques secondes.</q> (brief, l. 71-72)</dd><dt>Mesuré</dt><dd>Ni « secondes » ni « interrompre » dans le panneau <code>relais</code>.</dd><dt>À trancher</dt><dd class="trancher">Ajouter à <code>r6-deux</code> : <q>Changez en moins de dix secondes.</q></dd></dl></article>
+<article class="c g2"><div class="eti"><span class="g">Majeur · 5</span><span>Page · téléphone</span></div><h3>Sur téléphone, les gros plans perdent leur sujet.</h3><dl><dt>Mesuré</dt><dd>À 375 px, une image 16:9 remplit une case d'environ 312 × 626 en <code>object-fit: cover</code> centré : on voit <b>28 %</b> de sa largeur (47 % à 768). Au panneau 10, « Désignez-la du doigt » montre une manche, sans doigt ni personne. Même perte pour d1-appel, d2-regarder, d4-profond, a5-analyse, a5-ecarter, b-passation, d3-ordre.</dd><dt>À trancher</dt><dd class="trancher">Un <code>foyer</code> par image dans <code>diapos_media.py</code>, comme b-seul l'a déjà — ou <code>contain</code> sous 52rem.</dd></dl></article>
+<article class="c g2"><div class="eti"><span class="g">Majeur · 6</span><span>Page · accès</span></div><h3>Pas de transcription de la voix sous 832 px.</h3><dl><dt>Mesuré</dt><dd>« Lire le texte » (<code>#texteG</code>) fait 0 × 0 à 375 et à 768 : <code>@media (max-width:52rem){#texteG{display:none}}</code>.</dd><dt>Pourquoi</dt><dd>Les phrases à l'écran résument ce qui est dit. Sans le son — au bureau, en transport — il manque le contenu.</dd><dt>À trancher</dt><dd class="trancher">Retirer la règle, ou raccourcir le libellé en « Texte ».</dd></dl></article>
+<article class="c g2"><div class="eti"><span class="g">Majeur · 7</span><span>Page · lisibilité</span></div><h3>La planche des cœurs repasse sous 12 px dès 768 px de large.</h3><dl><dt>Mesuré</dt><dd>« Trouble du rythme », « Ce que l'appareil lit », « quatre secondes » : 7,4 px à 768, 8,75 px à 1280 et 1440 ; « Choc requis » 8,8-10,4 px. À 375 tout est à 12-13 px : la correction 10 ne tient que sur téléphone.</dd><dt>À trancher</dt><dd class="trancher">Une taille plancher pour les textes de <code>.planche</code> (<code>max(14px, …)</code>), au lieu de réduire toute la planche.</dd></dl></article>
+<article class="c g2"><div class="eti"><span class="g">Majeur · 8</span><span>Images · contradiction</span></div><h3>Deux dessins contredisent ce qui est dit.</h3><dl><dt>Mesuré</dt><dd><b>a5-ouvre</b> (« Ouvrez la mallette ») : c'est un homme aux cheveux gris en chemise blanche qui l'ouvre, pas la femme — le « vous » du module. <b>d3-designer</b>, qui revient trois fois : la victime a <b>les yeux grands ouverts</b>, alors que « il n'ouvre pas les yeux » est le premier signe.</dd><dt>À trancher</dt><dd class="trancher">Les ajouter à la liste à refaire.</dd></dl></article>
+<h2>Moyens</h2>
+<article class="c g3"><div class="eti"><span class="g">Moyen · 1</span><span>Contenu</span></div><h3>Un pronom à l'oreille ne renvoie à rien.</h3><dl><dt>Mesuré</dt><dd><code>t4-oxygene</code> : l'écran dit <q>le sang contient encore de l'oxygène</q>, la voix <q>le sang en contient encore</q> — « oxygène » n'a pas été dit avant.</dd><dt>À trancher</dt><dd class="trancher">Dire le mot ; clip à refaire.</dd></dl></article>
+<article class="c g3"><div class="eti"><span class="g">Moyen · 2</span><span>Contenu · régression</span></div><h3>La planche des cœurs dit de nouveau « appuyez sur le bouton ».</h3><dl><dt>Mesuré</dt><dd>Champ <code>geste</code> : <q>Écartez-vous, puis appuyez sur le bouton.</q> Défait la correction du 21 septembre (« faites ce qu'il dit »), qui tenait compte des appareils automatiques.</dd><dt>À trancher</dt><dd class="trancher"><q>Écartez-vous. Faites ce qu'il dit.</q></dd></dl></article>
+<article class="c g3"><div class="eti"><span class="g">Moyen · 3</span><span>Contenu</span></div><h3>L'ordre « mot pour mot » a quatre formulations.</h3><dl><dt>Mesuré</dt><dd><code>t3-ordre2</code> dit, <code>t3-ordre2</code> écrit, le rappel et la pièce « Vous. » donnent quatre versions de « le DEA est au hall ».</dd><dt>À trancher</dt><dd class="trancher">Une seule formulation, celle du brief, partout.</dd></dl></article>
+<article class="c g3"><div class="eti"><span class="g">Moyen · 4</span><span>Contenu</span></div><h3>La rétroaction de Q1 décrit un boîtier que la formation ne montre pas.</h3><dl><dt>Mesuré</dt><dd><q>un boîtier blanc à cœur vert</q> ; la couverture montre l'inverse, un panneau vert à cœur blanc.</dd><dt>À trancher</dt><dd class="trancher">Retirer la description, ou montrer le boîtier.</dd></dl></article>
+<article class="c g3"><div class="eti"><span class="g">Moyen · 5</span><span>Contenu · évaluation</span></div><h3>Le quiz ne vérifie pas la seule consigne de sécurité.</h3><dl><dt>Mesuré</dt><dd>Aucune des huit questions ne porte sur s'écarter pendant l'analyse et le choc ; ni la position des mains, ni le relais.</dd><dt>À trancher</dt><dd class="trancher">Une question : « L'appareil dit : analyse en cours. Votre collègue garde la main sur son épaule. »</dd></dl></article>
+<article class="c g3"><div class="eti"><span class="g">Moyen · 6</span><span>Contenu · chiffre</span></div><h3>Q7 affirme une cause unique.</h3><dl><dt>Mesuré</dt><dd><q>… et cette hésitation-là en est la raison.</q> Les causes de l'écart hommes-femmes sont multiples (AHA 2025 : barrière « contributive »).</dd><dt>À trancher</dt><dd class="trancher">« … une des raisons. » ; ajouter la ligne au tableau des chiffres du brief.</dd></dl></article>
+<article class="c g3"><div class="eti"><span class="g">Moyen · 7</span><span>Contenu · régression</span></div><h3>La victime redevient « elle » dans l'exercice du souffle.</h3><dl><dt>Mesuré</dt><dd><q>Elle respire normalement</q>, <q>restez avec elle</q> ; <code>RETOURS['souffle-normal']</code>. Le constat 8 n'avait pas couvert ce panneau.</dd><dt>À trancher</dt><dd class="trancher">« Il » ; clip <code>ret-souffle-normal</code> à refaire.</dd></dl></article>
+<article class="c g3"><div class="eti"><span class="g">Moyen · 8</span><span>Contenu</span></div><h3>« Dix secondes, pas plus », mais l'exercice juge sur vingt.</h3><dl><dt>Mesuré</dt><dd><q>Deux ou trois soubresauts en vingt secondes.</q> (exercice, rétroaction, quiz)</dd><dt>À trancher</dt><dd class="trancher">Raisonner sur dix secondes, ou ne garder que la régularité.</dd></dl></article>
+<article class="c g3"><div class="eti"><span class="g">Moyen · 9</span><span>Contenu</span></div><h3>« L'autre main par-dessus, doigts croisés » n'est dit nulle part.</h3><dl><dt>Mesuré</dt><dd>Le panneau <code>comprimer</code> nomme le talon et les bras tendus, pas la seconde main.</dd><dt>À trancher</dt><dd class="trancher">Ajouter la phrase à <code>c4-milieu</code>.</dd></dl></article>
+<article class="c g3"><div class="eti"><span class="g">Moyen · 10</span><span>Contenu · simulation</span></div><h3>La pièce « Vous. » saute trois gestes que la formation enseigne.</h3><dl><dt>Mesuré</dt><dd>Pas de mise en marche entre « Ouvrir le boîtier » et « Dénudez » ; la passation (Q8) n'est jamais jouée ; le cas « seul, haut-parleur au sol » (Q2) non plus.</dd><dt>À trancher</dt><dd class="trancher">Un geste « Allumer » ; un choix de passation avant la fin.</dd></dl></article>
+<article class="c g3"><div class="eti"><span class="g">Moyen · 11</span><span>Images</span></div><h3>d3-ordre détonne, et ne peut pas montrer « en bleu ».</h3><dl><dt>Mesuré</dt><dd>Fond crème, contraste 34 contre 41-65 ailleurs ; la voix dit « Vous, en bleu », l'homme porte une chemise blanche au graphite.</dd><dt>À trancher</dt><dd class="trancher">Fond blanc ; « vous, avec les lunettes ».</dd></dl></article>
+<article class="c g3"><div class="eti"><span class="g">Moyen · 12</span><span>Images</span></div><h3>La table disparaît entre t3 et t4.</h3><dl><dt>Mesuré</dt><dd>La victime est couchée là où était la table ; les convives mangent encore ; d2-regarder ajoute une témoin jamais vue.</dd><dt>À trancher</dt><dd class="trancher">Refaire t4 en gardant la table, la chaise renversée.</dd></dl></article>
+<article class="c g3"><div class="eti"><span class="g">Moyen · 13</span><span>Images · ordre</span></div><h3>Les électrodes reviennent au sol après avoir été collées.</h3><dl><dt>Mesuré</dt><dd>a5-ecarter les montre dans leur emballage, deux diapositives après a5-pose qui les montre collées. <i>Supposé</i> : c'est l'ordre du texte qui est inversé (essuyer et écarter avant de coller).</dd><dt>À trancher</dt><dd class="trancher">Mettre « essuyer » et « écarter » avant « coller ».</dd></dl></article>
+<article class="c g3"><div class="eti"><span class="g">Moyen · 14</span><span>Page</span></div><h3>La bonne réponse surlignée devient illisible une fois répondue.</h3><dl><dt>Mesuré</dt><dd>2,22:1 mesuré : <code>.b[disabled]{opacity:.5}</code> s'applique aussi à <code>.b--ok</code> et <code>.b--no</code>. Idem pour la séquence remise en ordre (2,16:1).</dd><dt>À trancher</dt><dd class="trancher"><code>.b--ok[disabled],.b--no[disabled]{opacity:1}</code></dd></dl></article>
+<article class="c g3"><div class="eti"><span class="g">Moyen · 15</span><span>Page · téléphone</span></div><h3>Le message du score final sort de l'écran.</h3><dl><dt>Mesuré</dt><dd>À 375 : « Reprenez les parties concernées… » s'étend jusqu'à 828 px dans une boîte de 327 (<code>white-space: nowrap</code> hérité).</dd><dt>À trancher</dt><dd class="trancher"><code>white-space:normal</code> sur <code>.score</code>.</dd></dl></article>
+<article class="c g3"><div class="eti"><span class="g">Moyen · 16</span><span>Page · accès</span></div><h3>Aux panneaux du souffle et du quiz, le focus tombe sur la page.</h3><dl><dt>Mesuré</dt><dd><code>aller()</code> cherche <code>h1, h2, h3, .jeu__t</code>, absents de ces panneaux : un lecteur d'écran n'annonce pas la question.</dd><dt>À trancher</dt><dd class="trancher">Ajouter <code>.q__t, .souffle__t</code> au sélecteur.</dd></dl></article>
+<article class="c g3"><div class="eti"><span class="g">Moyen · 17</span><span>Page</span></div><h3>Les six lignes à retenir ne sont pas narrées.</h3><dl><dt>Mesuré</dt><dd>La diapositive <code>retenir</code> (six clips z9 enregistrés le 22) n'est rattachée à aucun panneau ; le panneau est du texte seul.</dd><dt>À trancher</dt><dd class="trancher">La brancher, ou retirer les données.</dd></dl></article>
+<article class="c g3"><div class="eti"><span class="g">Moyen · 18</span><span>Voix · outil</span></div><h3>Le nettoyage des voix avait effacé un mot.</h3><dl><dt>Mesuré</dt><dd>z9-comprimer avait perdu « Quatre » (îlot voisé à −0,7 dB classé « souffle »). <b>Restauré le 23 septembre</b> depuis l'original. Le même outil prend « courez » (t3-ordre2) et « pas » (o1-glisse) pour du bruit — ceux-là n'ont pas été nettoyés.</dd><dt>À trancher</dt><dd class="trancher">Règle : ne jamais retirer un îlot à plus de −20 dB sous la crête.</dd></dl></article>
+<h2>Mineurs</h2>
+<ol class="mineurs"><li>Bouton des chapitres : 32 px de haut, sous les 44 visés.</li><li>Consignes à 12 px sur grand écran (« Un clic à 110… », « Cliquez les gestes… ») ; mentions légales à 12-13 px partout.</li><li>« Trouble du rythme » : contraste 3,34:1 sur un petit texte.</li><li>Q8 : <q>Je reste comprimer</q> → « je continue à comprimer » ; Q7 et Q8 ne sont pas formulées en questions.</li><li>« À droite, le signal… » (<code>t5-r1-reference</code>) est faux en portrait : le tracé passe dessous.</li><li>La tachycardie sans pouls : <q>le cœur bat fort</q> → « bat vite » (il bat à vide).</li><li>Q6 : <q>La personne est toujours en arrêt</q> → « probablement » (un retour de circulation donne aussi « aucun choc »).</li><li>Promesse : <q>vous ne pouvez pas vous tromper avec lui</q> — le même excès que le constat 6, corrigé ailleurs.</li><li><q>Les premiers secours visent huit minutes</q> → « les premiers répondants, à Montréal ».</li><li><q>Vous ne savez pas lequel vous trouverez</q> heurte la situation d'un appareil connu → « Ailleurs qu'ici… ».</li><li>Le timbre de médicament est « écarté » → « retirez-le et essuyez ».</li><li>Pas de limite haute à la profondeur (AHA 2025 : 5 à 6 cm) — conforme à Cœur + AVC, à trancher.</li><li><q>Nommément</q> ne correspond pas à la méthode (on désigne du doigt).</li><li>La fin est dite deux fois de suite (diapositive <code>pour-finir</code> puis panneau texte).</li><li><code>y0-ceci</code> : « Ceci est un défibrillateur » en montrant un panneau → « Ce panneau signale… ».</li><li>Données mortes : les diapositives <code>*-blanche</code> et <code>retenir</code> ; <code>b2-souleve</code> y dit « une dizaine » contre « douze à vingt ».</li><li>Le score renvoie aux « six lignes ci-dessous » qui sont au panneau suivant ; après une reprise en plein quiz, il ne compte que les questions répondues depuis.</li><li>Le panneau 29 ne porte que l'avis sur le microphone, après les boutons qui lancent la simulation.</li><li>d3-choisir : de la victime, on ne voit qu'une paire de chaussures, détachée.</li><li>Silence de fin des voix de 0,02 à 0,82 s selon le clip ; t3-ordre2 démarre sans marge.</li></ol>
+
+  <h2>Ce qui tient</h2>
+  <ul class="tient"><li><b>Aucune erreur de secourisme dangereuse</b> ; 10 % par minute vérifié à la source Cœur + AVC.</li><li><b>Les gestes</b> : 100 à 120, au moins 5 cm, compressions seules, remontée complète, relais aux deux minutes, dix secondes pour la respiration.</li><li><b>Aucune prise de pouls</b>, et le piège agonal est enseigné, entendu et testé.</li><li><b>La voix</b> : 21 diapositives jouent leurs clips dans l'ordre, sans 404 ni erreur ; la phrase affichée suit le clip ; la progression attend la fin du son.</li><li><b>Niveaux sonores homogènes</b> : −22,6 à −25,8 LUFS, au plus 2,1 LU entre voisins, aucune fin coupée ; les 30 clips nettoyés utilisés sont bien publiés.</li><li><b>Les deux passages de « Vous. »</b> se jouent jusqu'au bout à 1280 et à 375 : choc conseillé, puis aucun choc.</li><li><b>Reprise</b>, clavier, focus visible, menu des chapitres au clavier : tout répond.</li><li><b>Aucun défilement horizontal</b>, aucune image cassée, aux quatre largeurs.</li><li><b>Les corrections 2 à 7, 9 et 11 à 17</b> du premier audit tiennent.</li><li><b>La femme</b> reste reconnaissable d'un panneau à l'autre ; aucune lettre dessinée.</li></ul>
+
+  <h2>Ce que cet audit n'a pas couvert</h2>
+  <p class="mineur">Le contenu des MP3 n'a pas été transcrit : la concordance voix-texte est
+  déduite des débits. Rien hors de Chrome (Safari sur iPhone, vrai lecteur d'écran, vrai
+  microphone). Les six dessins déjà en cours de remplacement (b-seul, a5-analyse, a5-reprendre,
+  a5-reprendre-bas, b-relais, b-passation) n'ont pas été redécortiqués.</p>
+
+  <h2>Sources</h2>
+  <p class="sources">
+    <a href="https://www.coeuretavc.ca/maladies-du-coeur/problemes-de-sante/arret-cardiaque">Cœur + AVC — Arrêt cardiaque</a> ·
+    <a href="https://www.ahajournals.org/doi/10.1161/CIR.0000000000001369">AHA 2025 — Adult Basic Life Support</a> ·
+    <a href="https://ilcor.org/uploads/BLS-2025-COSTR-Full-Chapter.pdf">ILCOR 2025 — BLS CoSTR</a> ·
+    <a href="https://www.cnesst.gouv.qc.ca/en/prevention-and-safety/first-aid-workplace/first-aid-workplace-training">CNESST — secourisme en milieu de travail</a>
+  </p>
+
+  <p class="pied">Audité sur la page servie le 23 septembre 2026
+  (<code>formation-dea-v5.html</code>, source <code>portfolio-conception/formation-dea.src.html</code>).
+  Premier audit : <code>audit-formation-dea.html</code>.</p>
+</div>
+
+</body>
+</html>
