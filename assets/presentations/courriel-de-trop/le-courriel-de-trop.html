@@ -603,6 +603,489 @@
 
 </style>
 <style>
+/* ============================================================
+   CALQUE · PONT — la variante « atelier industriel »
+   ------------------------------------------------------------
+   Une COUCHE posée sur calque.css et atelier.css : mêmes composants,
+   même contenu, mêmes photos. Elle ne change que les jetons et
+   l'habillage :
+   · graphite, comme l'atelier sous le pont élévateur ;
+   · jaune de sécurité pour ce qui se fait (l'action, le repère) ;
+   · titres condensés en capitales, comme une signalétique.
+   Les règles de Calque tiennent :
+   1. le bleu calque reste à la couche de révision (avant/après,
+      la boucle), jamais à la formation ;
+   2. chaque décision garde une forme ET une couleur ;
+   3. le brouillon de la version zéro reste une diapo claire.
+   Le thème est sombre dans les deux préférences : c'est son identité.
+   
+   ============================================================ */
+
+@import url("https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap");
+
+/* Toute la couche est IMBRIQUÉE sous :root[data-identite="pont"] : les trois
+   identités vivent dans la même page, et seule celle que l'attribut nomme
+   s'applique (commun/identites.js fait la bascule). */
+:root[data-identite="pont"] {
+
+& {
+  color-scheme: dark;
+  /* Feuille — graphite. Contrastes mesurés sur --cq-feuille (#1B1F22) :
+     encre 14,4:1 · sourdine 7,3:1 · jaune 9,9:1 · encre noire sur jaune 10,9:1.
+     Le filet borde les boutons : 3,5:1 sur la feuille, 3,1:1 sur le retrait
+     (WCAG 1.4.11, contour d'un composant ≥ 3:1). */
+  --cq-papier:   #121518;
+  --cq-feuille:  #1B1F22;
+  --cq-retrait:  #24292D;
+  --cq-filet:    #6A747C;
+  --cq-sourdine: #A3ADB5;
+  --cq-encre:    #ECEFF1;
+  --cq-action:   #F2C200;
+  --cq-action-ink: #121518;
+  --cq-focus:    #F2C200;
+  --cq-lien:     #F2C200;
+
+  /* Décisions : vert, orange, rouge — l'orange du « remplacer » ne se
+     confond pas avec le jaune de l'action */
+  --cq-sur:    #62D39A;  --cq-sur-fond:    #132B1F;
+  --cq-doute:  #FF9F43;  --cq-doute-fond:  #33220F;
+  --cq-fraude: #FF6B5E;  --cq-fraude-fond: #3A1512;
+
+  /* Couche de révision : le bleu calque, version sombre */
+  --cq-calque: #6FB6EA;
+  --cq-calque-ink: #9FD0F5;
+  --cq-calque-voile: rgba(111, 182, 234, 0.08);
+  --cq-calque-trame: rgba(111, 182, 234, 0.22);
+  --cq-grav-bloquant: #9FD0F5;
+  --cq-grav-majeur:   #5A9FD4;
+  --cq-grav-mineur:   #2F5C80;
+
+  --cq-police-titre: "Barlow Condensed", "Arial Narrow", "Helvetica Neue", sans-serif;
+  --cq-police-texte: "Barlow", "Helvetica Neue", Arial, sans-serif;
+  --cq-police-mono:  "JetBrains Mono", ui-monospace, Menlo, monospace;
+
+  --cq-rayon:   2px;
+  --cq-rayon-l: 3px;
+  --cq-ombre:   0 0 0 1px #2C3237, 0 12px 32px rgba(0,0,0,.45);
+}
+
+/* ---------- La scène : une plaque d'atelier ---------- */
+/* Le bandeau jaune est à la FORMATION seulement : ni la case vide ni le
+   brouillon de la version zéro (couche de révision) ne le portent. */
+.scene:has(> .plateau > .diapo) { border-top: 4px solid var(--cq-action); }
+.diapo__entete {
+  font-family: var(--cq-police-titre); font-weight: 700; letter-spacing: .14em; color: var(--cq-action);
+}
+.diapo__titre {
+  font-weight: 800; text-transform: uppercase; letter-spacing: .01em; line-height: 1;
+  font-size: calc(var(--cq-d-titre) * 1.08);
+}
+.diapo__titre::after {
+  content: ""; display: block; width: 4.5em; height: .14em; margin-top: .28em;
+  background: repeating-linear-gradient(135deg, var(--cq-action) 0 .35em, #121518 .35em .7em);
+}
+.diapo__mega { text-transform: uppercase; font-weight: 800; }
+.diapo__chapeau { font-weight: 600; }
+
+/* Diapo d'ouverture : bande de danger en haut */
+.diapo--ouverture { background: #0E1113; color: var(--cq-encre); }
+
+/* ---------- Choix : plaques à barre latérale ---------- */
+.tri__choix, .options__choix {
+  border-radius: var(--cq-rayon); border-width: 1px; border-left-width: 4px; border-left-color: var(--cq-filet);
+  background: var(--cq-retrait); font-weight: 600;
+}
+.tri__choix:hover, .options__choix:hover { border-color: var(--cq-sourdine); border-left-color: var(--cq-action); }
+.tri__choix[aria-pressed="true"] { background: var(--cq-action); color: var(--cq-action-ink); border-color: var(--cq-action); }
+.options__choix[aria-pressed="true"] { border-color: var(--cq-action); box-shadow: inset .35cqw 0 0 var(--cq-action); }
+.tri__choix--plein {
+  background: var(--cq-action); color: var(--cq-action-ink); border-color: var(--cq-action);
+  font-family: var(--cq-police-titre); font-weight: 800; text-transform: uppercase; letter-spacing: .06em;
+}
+.tri__choix--plein:hover { border-left-color: #121518; }
+
+/* ---------- Décisions et rétroaction ---------- */
+.verdict { border-radius: 2px; text-transform: uppercase; font-family: var(--cq-police-titre); letter-spacing: .05em; }
+.verdict::before { border-radius: 1px; color: #121518; }
+.retro { border-radius: var(--cq-rayon); border-left-width: .6cqw; }
+.retro__titre { font-family: var(--cq-police-titre); text-transform: uppercase; letter-spacing: .04em; font-size: 1.1em; }
+.retro__texte { color: var(--cq-encre); }
+
+.consigne::before { background: var(--cq-action); color: var(--cq-action-ink); font-family: var(--cq-police-titre); font-weight: 800; border-radius: 1px; }
+
+/* ---------- Listes numérotées : pastilles carrées ---------- */
+.verif__item::before { border-radius: 2px; background: var(--cq-retrait); border-color: var(--cq-action); color: var(--cq-action); font-family: var(--cq-police-titre); }
+.verif__q { font-family: var(--cq-police-titre); font-weight: 700; text-transform: uppercase; letter-spacing: .02em; }
+
+/* ---------- Pièces, fiches, bilans ---------- */
+.fiche { background: var(--cq-retrait); border-color: var(--cq-filet); }
+.fiche__titre { font-family: var(--cq-police-titre); text-transform: uppercase; letter-spacing: .04em; }
+.fiche__mesure { background: #121518; color: var(--cq-action); border: 1px solid var(--cq-filet); }
+.planche--photo { background: #0E1113; border-color: var(--cq-filet); }
+.planche__agrandir { background: var(--cq-action); color: var(--cq-action-ink); font-weight: 800; }
+.memo { border-color: var(--cq-action); border-radius: var(--cq-rayon); }
+.memo__titre { text-transform: uppercase; color: var(--cq-action); }
+.score__n, .score__elimine { font-family: var(--cq-police-titre); }
+.bilan__cas { background: var(--cq-retrait); border-radius: var(--cq-rayon); }
+.ordre__suite li::before { color: var(--cq-action); }
+.ordre__vide { border-color: var(--cq-filet); }
+.lien-discret { color: var(--cq-sourdine); }
+.lien-externe { color: var(--cq-action); }
+
+/* ---------- Autour de la scène (index.html) ---------- */
+.tete__titre { font-family: var(--cq-police-titre); text-transform: uppercase; letter-spacing: .02em; }
+.onglets { border-radius: var(--cq-rayon); }
+.onglets button { border-radius: var(--cq-rayon); }
+/* La page déclare ses onglets APRÈS le thème : on passe devant par la
+   spécificité. « Avant / après » et « La boucle » gardent le bleu calque. */
+.app .onglets button[aria-selected="true"]:not([data-vue="comparer"]):not([data-vue="boucle"]) { background: var(--cq-action); color: var(--cq-action-ink); }
+.nav__module--actif { box-shadow: inset 4px 0 0 var(--cq-action); }
+.barre__btn { border-radius: var(--cq-rayon); }
+
+/* ---------- La loupe ---------- */
+.loupe { border-top: 4px solid var(--cq-action); }
+.loupe__fermer { background: var(--cq-action); color: var(--cq-action-ink); }
+
+/* ============================================================
+   MISE EN PAGE « PONT »
+   La variante ne s'arrête pas aux couleurs : la page s'organise comme
+   un poste d'atelier. Toujours la même donnée, le même moteur.
+   · les modules deviennent une barre d'étapes numérotées, en haut ;
+   · la pièce passe en pleine largeur, sous la lampe ; la décision
+     descend dans une bande de commandes, en gros boutons carrés ;
+   · le bon de travail devient un cartouche de fiche d'inspection.
+   ============================================================ */
+
+/* ---------- Barre d'étapes en haut, plus de colonne à gauche ---------- */
+.app .corps { grid-template-columns: minmax(0, 1fr); gap: 18px; max-width: 1180px; }
+.app #navigation {
+  position: sticky; top: 0; z-index: 5; max-height: none;
+  grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 0; overflow-x: auto;
+  background: #0E1113; border: 1px solid var(--cq-filet); border-radius: var(--cq-rayon); padding: 0;
+  counter-reset: etape;
+}
+.app .nav__module {
+  grid-template-columns: auto; justify-items: center; text-align: center; gap: 2px;
+  border-radius: 0; padding: 10px 8px 12px; border-right: 1px solid #2C3237; position: relative;
+}
+.app .nav__module:last-child { border-right: 0; }
+.app .nav__num {
+  grid-row: auto; font-family: var(--cq-police-titre); font-weight: 800; font-size: 1.35rem; line-height: 1;
+  color: var(--cq-sourdine);
+}
+.app .nav__module > span:nth-child(2) { font-family: var(--cq-police-titre); font-weight: 700; text-transform: uppercase; letter-spacing: .04em; font-size: .92rem; }
+.app .nav__module--actif { background: var(--cq-feuille); box-shadow: inset 0 -4px 0 var(--cq-action); }
+.app .nav__module--actif .nav__num { color: var(--cq-action); }
+/* Avant / après garde sa liste de diapos : elle reste une colonne */
+.app .corps:has(.nav__diapo) { grid-template-columns: 260px minmax(0, 1fr); max-width: 1440px; }
+.app .corps:has(.nav__diapo) #navigation { position: sticky; top: 16px; grid-auto-flow: row; grid-auto-columns: auto; background: none; border: 0; }
+
+/* ---------- La pièce en pleine largeur, la décision en dessous ---------- */
+.app .diapo__corps:not(.diapo__corps--pile) { flex-direction: column; gap: 1.6cqw; }
+.app .diapo__corps:not(.diapo__corps--pile) > .diapo__col--etroite { flex: none; }
+.app .diapo__corps:not(.diapo__corps--pile) > .diapo__col--etroite {
+  border-top: 3px solid var(--cq-action); padding-top: 1.4cqw; background: linear-gradient(#0E1113, transparent 70%);
+}
+
+/* La fiche : la photo à gauche, grande ; le cartouche à droite */
+.app .fiche { grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); grid-template-rows: auto; align-items: stretch; padding: 0; overflow: hidden; }
+.app .fiche .planche--photo { border: 0; border-radius: 0; max-height: 62vh; }
+
+/* ---------- Le bon de travail : cartouche d'inspection ---------- */
+.fiche__bon {
+  align-content: start; padding: 1.2cqw 1.4cqw; gap: .6cqw;
+  background:
+    repeating-linear-gradient(0deg, transparent 0 1.7cqw, rgba(242,194,0,.05) 1.7cqw calc(1.7cqw + 1px)),
+    #15191C;
+  border-left: 1px dashed var(--cq-filet);
+}
+.fiche__bon::before {
+  content: "Bon d'inspection"; display: block;
+  font: 800 var(--cq-d-micro) var(--cq-police-titre); letter-spacing: .16em; text-transform: uppercase;
+  color: #121518; background: var(--cq-action); padding: .2cqw .6cqw; justify-self: start; margin-bottom: .4cqw;
+}
+.fiche__mesures { flex-direction: column; align-items: stretch; }
+.fiche__mesure { display: block; font-size: var(--cq-d-petit); }
+
+/* ---------- Les décisions : gros boutons carrés, panneau de commande ---------- */
+.app .tri { display: grid; grid-template-columns: repeat(auto-fit, minmax(10em, 1fr)); gap: 1cqw; }
+.app .tri__choix {
+  flex-direction: column; justify-content: center; align-items: center; text-align: center; gap: .6cqw;
+  min-height: 7.5cqw; padding: 1cqw; border-left-width: 1px; border-bottom: 5px solid var(--cq-filet);
+  font-family: var(--cq-police-titre); font-weight: 800; text-transform: uppercase; letter-spacing: .03em; font-size: var(--cq-d-texte);
+}
+.app .tri__choix .verdict { font-size: 1.6em; }
+.app .tri__choix:hover { border-bottom-color: var(--cq-action); }
+.app .tri__choix[aria-pressed="true"] { border-bottom-color: #121518; }
+.app .tri__choix--plein { flex-direction: row; min-height: 0; border-bottom-width: 1px; justify-self: start; }
+.app .indice .tri__choix { min-height: 4.5cqw; font-size: var(--cq-d-petit); }
+
+/* Les questions à choix d'une situation : même panneau, sur deux colonnes */
+.app .diapo__col--etroite .options { grid-template-columns: repeat(auto-fit, minmax(16em, 1fr)); }
+.app .options__choix { border-bottom: 4px solid var(--cq-filet); }
+
+/* ---------- Téléphone : tout s'empile, la barre d'étapes défile ---------- */
+@media (max-width: 900px) {
+  .app #navigation { grid-auto-columns: minmax(96px, 1fr); }
+  .app .corps:has(.nav__diapo) { grid-template-columns: minmax(0, 1fr); }
+  .app .corps:has(.nav__diapo) #navigation { grid-auto-flow: column; position: static; }
+}
+@container (max-width: 760px) {
+  .app .fiche { grid-template-columns: minmax(0, 1fr); }
+  .fiche__bon { border-left: 0; border-top: 1px dashed var(--cq-filet); padding: 12px; }
+  .app .tri { grid-template-columns: minmax(0, 1fr); }
+  .app .tri__choix { min-height: 56px; flex-direction: row; justify-content: flex-start; text-align: left; padding: 10px 14px; }
+  .app .tri__choix .verdict { font-size: 1.2em; }
+}
+/* Barre d'étapes sur téléphone : le nom passe à la ligne au lieu d'être coupé */
+@media (max-width: 900px) {
+  .app .nav__module { white-space: normal; max-width: none; overflow: visible; padding: 8px 6px 10px; }
+  .app .nav__module > span:nth-child(2) { font-size: .78rem; line-height: 1.15; }
+  .app .nav__num { font-size: 1.1rem; }
+}
+.app .diapo__col > .options { grid-template-columns: repeat(auto-fit, minmax(22em, 1fr)); }
+
+}
+
+</style>
+<style>
+/* ============================================================
+   CALQUE · CARNET — l'identité de « À la main d'abord »
+   ------------------------------------------------------------
+   Une COUCHE posée sur calque.css et atelier.css, comme « Pont » :
+   mêmes composants, même contenu, mêmes photos. Le cahier de
+   l'apprenti :
+   · papier crème ligné, encre brune, orange brûlé ;
+   · titres à empattements (Zilla Slab), mesures à la machine à
+     écrire (Courier Prime) ;
+   · photos épinglées de travers, boutons à ombre portée, tampons.
+   Les règles de Calque tiennent : le bleu calque reste à la couche
+   de révision ; chaque décision garde forme ET couleur ; la version
+   zéro reste une diapo par défaut.
+   Le thème est clair dans les deux préférences : c'est son identité.
+   Contrastes mesurés sur --cq-feuille (#F4EDE0) : encre 13,5:1 ·
+   sourdine 5,7:1 · orange 4,8:1 · blanc sur orange 5,6:1 · décisions
+   sur leur fond 5,4 à 5,9:1 · filet (contour des boutons) 3,5:1.
+   ============================================================ */
+
+@import url("https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=Courier+Prime:wght@400;700&display=swap");
+
+/* Toute la couche est IMBRIQUÉE sous :root[data-identite="carnet"] : les trois
+   identités vivent dans la même page, et seule celle que l'attribut nomme
+   s'applique (commun/identites.js fait la bascule). */
+:root[data-identite="carnet"] {
+
+& {
+  color-scheme: light;
+  --cq-papier:   #E6DCCB;
+  --cq-feuille:  #F4EDE0;
+  --cq-retrait:  #FFFBF3;
+  --cq-filet:    #8C7B69;
+  --cq-sourdine: #6B5A4B;
+  --cq-encre:    #2B211A;
+  --cq-action:   #B4441A;
+  --cq-action-ink: #FFFFFF;
+  --cq-focus:    #B4441A;
+  --cq-lien:     #B4441A;
+
+  --cq-sur:    #1F6B4A;  --cq-sur-fond:    #E3EFE6;
+  --cq-doute:  #8A5200;  --cq-doute-fond:  #F9EBCF;
+  --cq-fraude: #A61B1B;  --cq-fraude-fond: #F7DEDA;
+
+  /* Couche de révision : le bleu calque, version claire */
+  --cq-calque: #4C9BD6;
+  --cq-calque-ink: #0B4A7A;
+  --cq-calque-voile: rgba(76, 155, 214, 0.08);
+  --cq-calque-trame: rgba(76, 155, 214, 0.18);
+  --cq-grav-bloquant: #0B4A7A;
+  --cq-grav-majeur:   #2F7EBB;
+  --cq-grav-mineur:   #9CC7E8;
+
+  --cq-police-titre: "Zilla Slab", Rockwell, "Courier New", serif;
+  --cq-police-texte: "Source Sans 3", "Segoe UI", Arial, sans-serif;
+  --cq-police-mono:  "Courier Prime", "Courier New", monospace;
+
+  --cq-rayon:   3px;
+  --cq-rayon-l: 4px;
+  --cq-ombre:   0 2px 0 #D2C4AE, 0 10px 26px rgba(60, 40, 20, .14);
+}
+
+/* ---------- La scène : une page du carnet ---------- */
+.scene:has(> .plateau > .diapo) {
+  background-color: var(--cq-feuille);
+  background-image:
+    linear-gradient(90deg, transparent 3.2cqw, rgba(180, 68, 26, .28) 3.2cqw, rgba(180, 68, 26, .28) calc(3.2cqw + 1px), transparent calc(3.2cqw + 1px)),
+    linear-gradient(#E3D8C4 1px, transparent 1px);
+  background-size: 100% 100%, 100% 2.1cqw;
+}
+.diapo__entete {
+  font-family: var(--cq-police-texte); font-weight: 700; letter-spacing: .12em; color: var(--cq-action);
+}
+.diapo__entete > span:last-child:not(:empty) {
+  font-family: var(--cq-police-titre); color: var(--cq-action); border: 2px solid var(--cq-action);
+  padding: .1em .6em; transform: rotate(3deg); letter-spacing: .14em;
+}
+.diapo__titre { font-weight: 700; letter-spacing: -.01em; line-height: 1.05; }
+.diapo__mega { font-weight: 700; }
+.diapo--ouverture { background: var(--cq-encre); color: var(--cq-feuille); }
+
+/* ---------- Les photos, épinglées de travers ---------- */
+.planche--photo {
+  background: #fff; padding: 6px; border: 0; border-radius: 2px;
+  box-shadow: 0 4px 12px rgba(60, 40, 20, .25); transform: rotate(-1deg);
+}
+.planche--photo svg { border-radius: 0; }
+.diapo__col > .planche--photo:nth-of-type(2n) { transform: rotate(1.2deg); }
+.planche__agrandir { background: var(--cq-encre); color: #fff; border-radius: 2px; }
+.fiche { background: transparent; border: 0; padding: 0; }
+.fiche__bon { padding: .4cqw .2cqw 0; }
+.fiche__titre { font-family: var(--cq-police-titre); font-weight: 700; }
+.fiche__mesure { background: var(--cq-retrait); border: 1px dashed var(--cq-filet); color: var(--cq-encre); font-family: var(--cq-police-mono); }
+
+/* ---------- Les choix : étiquettes à ombre portée ---------- */
+.tri__choix, .options__choix {
+  background: var(--cq-retrait); color: var(--cq-encre);
+  border: 1.5px solid var(--cq-encre); border-radius: var(--cq-rayon);
+  box-shadow: 3px 3px 0 var(--cq-encre); font-weight: 600;
+  transition: transform .08s, box-shadow .08s;
+}
+.tri__choix:hover, .options__choix:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--cq-encre); border-color: var(--cq-encre); }
+.tri__choix[aria-pressed="true"], .options__choix[aria-pressed="true"] {
+  background: var(--cq-action); color: var(--cq-action-ink); border-color: var(--cq-encre);
+  box-shadow: 1px 1px 0 var(--cq-encre); transform: translate(2px, 2px);
+}
+.tri__choix:disabled:not([aria-pressed="true"]) { opacity: .5; box-shadow: none; }
+.tri__choix--plein { background: var(--cq-encre); color: var(--cq-feuille); border-color: var(--cq-encre); font-family: var(--cq-police-titre); font-weight: 700; }
+.tri__choix--plein:hover { border-color: var(--cq-encre); }
+
+/* ---------- Rétroaction : note au crayon, en pointillé ---------- */
+.retro { background: var(--cq-retrait); border: 1.5px dashed currentColor; border-left-width: 1.5px; border-radius: var(--cq-rayon); }
+.retro--juste  { color: var(--cq-sur); }
+.retro--rate   { color: var(--cq-fraude); }
+.retro--neutre { color: var(--cq-encre); }
+.retro__titre { font-family: var(--cq-police-titre); font-weight: 700; font-size: 1.08em; }
+
+.verdict { border-radius: 2px; }
+.consigne::before { background: var(--cq-action); color: #fff; border-radius: 2px; font-family: var(--cq-police-titre); }
+
+/* ---------- Listes : numéros cerclés à l'encre ---------- */
+.verif__item::before { border-width: .18cqw; font-family: var(--cq-police-titre); background: var(--cq-retrait); }
+.verif__q { font-family: var(--cq-police-titre); font-weight: 700; }
+
+/* ---------- Fiche du poste : une fiche bristol ---------- */
+.memo {
+  background: #FFFDF8; border: 0; border-radius: 2px; box-shadow: 0 3px 10px rgba(60, 40, 20, .18);
+  background-image: linear-gradient(90deg, transparent 2.4cqw, rgba(166, 27, 27, .35) 2.4cqw, rgba(166, 27, 27, .35) calc(2.4cqw + 1px), transparent calc(2.4cqw + 1px));
+}
+.memo__titre { color: var(--cq-action); }
+
+/* ---------- Bilans, ordre, liens ---------- */
+.bilan__cas { background: var(--cq-retrait); border: 1px dashed var(--cq-filet); }
+.score__n, .score__elimine { font-family: var(--cq-police-titre); }
+.ordre__suite li::before { color: var(--cq-action); font-family: var(--cq-police-titre); }
+.ordre__vide { border-color: var(--cq-filet); background: var(--cq-retrait); }
+.lien-externe { color: var(--cq-action); }
+
+/* ---------- Autour de la scène : les onglets du carnet ---------- */
+.tete__titre { font-family: var(--cq-police-titre); font-weight: 700; }
+.app .onglets { border-radius: var(--cq-rayon); background: var(--cq-retrait); }
+.app .onglets button { border-radius: 2px; }
+.app .onglets button[aria-selected="true"]:not([data-vue="comparer"]):not([data-vue="boucle"]) { background: var(--cq-action); color: #fff; }
+.app .nav__module { border-radius: 0 var(--cq-rayon) var(--cq-rayon) 0; }
+.app .nav__module--actif { background: var(--cq-feuille); box-shadow: inset 4px 0 0 var(--cq-action), 0 1px 0 #D2C4AE; }
+.app .nav__num { font-family: var(--cq-police-titre); font-weight: 700; color: var(--cq-action); }
+.barre__btn { background: var(--cq-retrait); border-color: var(--cq-filet); }
+
+/* ---------- La loupe ---------- */
+.loupe { background: #2B211A; }
+.loupe__fermer { background: var(--cq-action); color: #fff; }
+
+/* Téléphone : on redresse les photos, la place est comptée */
+@container (max-width: 760px) {
+  .planche--photo { transform: none; padding: 4px; }
+  .tri__choix, .options__choix { box-shadow: 2px 2px 0 var(--cq-encre); }
+}
+
+}
+
+</style>
+<style>
+/* Le sélecteur d'apparence (commun/identites.js). Discret, dans l'en-tête ;
+   il prend les jetons de l'identité en cours. Cibles de 36 px, 44 au toucher. */
+.identites { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; font-size: var(--cq-t-xs); }
+.identites__lib { color: var(--cq-sourdine); margin-right: 4px; letter-spacing: .06em; text-transform: uppercase; }
+.identites button {
+  font: inherit; font-weight: 700; min-height: 36px; padding: 6px 12px; cursor: pointer;
+  border: 1px solid var(--cq-filet); border-radius: var(--cq-rayon); background: var(--cq-feuille); color: var(--cq-encre);
+}
+.identites button[aria-pressed="true"] { background: var(--cq-encre); color: var(--cq-feuille); border-color: var(--cq-encre); }
+@media (pointer: coarse) { .identites button { min-height: 44px; } }
+@media (max-width: 900px) { .identites { width: 100%; } }
+
+</style>
+<meta name="identite" content="calque">
+<script>
+/* ============================================================
+   IDENTITÉS — le sélecteur d'apparence des formations.
+   Trois identités sur le même moteur : Calque (la base), Pont et
+   Carnet (commun/themes/*.css, imbriquées sous :root[data-identite]).
+   Chaque formation déclare la sienne par défaut :
+       <meta name="identite" content="pont">
+   Le sélecteur, dans l'en-tête, permet de passer de l'une à l'autre ;
+   le choix est retenu pour cette page dans ce navigateur (commodité
+   seulement : sans stockage, on retombe sur l'identité par défaut).
+   Chargé dans l'en-tête : l'attribut est posé AVANT le premier rendu,
+   la page ne clignote pas d'une identité à l'autre.
+   ============================================================ */
+(function () {
+  "use strict";
+  const IDENTITES = [
+    ["calque", "Calque", "Clair et sobre, comme une boîte de réception"],
+    ["pont", "Pont", "Graphite et jaune de sécurité, mise en page d'atelier"],
+    ["carnet", "Carnet", "Le cahier de l'apprenti, papier ligné"]
+  ];
+  const racine = document.documentElement;
+  const meta = document.querySelector('meta[name="identite"]');
+  const defaut = meta ? meta.content : "calque";
+  const cle = "identite:" + location.pathname;
+  let choisie = defaut;
+  try { const g = localStorage.getItem(cle); if (IDENTITES.some(i => i[0] === g)) choisie = g; } catch (_) {}
+
+  function appliquer(id) {
+    choisie = id;
+    racine.setAttribute("data-identite", id);
+    document.querySelectorAll(".identites button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.identite === id)));
+    try { if (id === defaut) localStorage.removeItem(cle); else localStorage.setItem(cle, id); } catch (_) {}
+  }
+  racine.setAttribute("data-identite", choisie);
+
+  function monter() {
+    const tete = document.querySelector(".tete");
+    if (!tete || tete.querySelector(".identites")) return;
+    const groupe = document.createElement("div");
+    groupe.className = "identites";
+    groupe.setAttribute("role", "group");
+    groupe.setAttribute("aria-label", "Apparence de la formation");
+    const lib = document.createElement("span");
+    lib.className = "identites__lib";
+    lib.textContent = "Apparence";
+    groupe.append(lib);
+    for (const [id, nom, desc] of IDENTITES) {
+      const b = document.createElement("button");
+      b.type = "button"; b.dataset.identite = id; b.title = desc;
+      b.textContent = nom + (id === defaut ? " ·" : "");
+      b.setAttribute("aria-label", `${nom}${id === defaut ? " (par défaut)" : ""} : ${desc}`);
+      b.addEventListener("click", () => appliquer(id));
+      groupe.append(b);
+    }
+    tete.append(groupe);
+    appliquer(choisie);
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", monter); else monter();
+})();
+
+</script>
+<style>
   html, body { background: var(--cq-papier); }
   body { margin: 0; }
   .app { min-height: 100vh; display: grid; grid-template-rows: auto 1fr; padding-inline: 16px; }
