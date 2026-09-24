@@ -43,10 +43,16 @@ A_CRAN3 = [
 ]
 
 # ── B · le client ────────────────────────────────────────────────────────
-# (id, cran, voix, phrase, bonne, distracteurs)
-# bonne et distracteurs : (article, couleur, taille). Aux crans 1 et 2 les
-# distracteurs sont DÉDUITS (None) ; au cran 3 ils sont écrits : la phrase se
-# reprend, nie, compare, et le distracteur est ce qu'elle a écarté.
+# (id, cran, voix, phrase, bonne, ecartes)
+# bonne : (article, couleur, taille). Aux crans 1 et 2, les autres cartes sont
+# DÉDUITES (None). Au cran 3, on écrit les valeurs que la phrase ÉCARTE —
+# (article′, couleur′, taille′) : ce qu'elle nie, reprend ou compare.
+#
+# LES QUATRE CARTES SE DISPOSENT EN CARRÉ LATIN (audit de la boucle
+# didactique, 24 septembre 2026, bloquant) : (A,C,T) (A,C′,T′) (A′,C,T′)
+# (A′,C′,T). Chaque valeur paraît exactement deux fois. L'ancienne règle — trois
+# distracteurs qui changent chacun UN trait — faisait de la bonne carte la
+# majoritaire sur chaque trait : 9 items sur 14 se réussissaient sans écouter.
 B = [
     ("b11", 1, "feminin_2",  "Je cherche une tuque.",                ("tuque", "gris", None),     None),
     ("b12", 1, "masculin_1", "Avez-vous des gants ?",                ("gants", "gris", None),     None),
@@ -60,22 +66,18 @@ B = [
     ("b25", 2, "masculin_1", "Il me faudrait un polo blanc, en très grand.", ("polo", "blanc", "tg"), None),
     ("b31", 3, "masculin_1",
      "Je cherche un chandail… non, pas un chandail, un coton ouaté. Gris. En grand.",
-     ("coton-ouate", "gris", "g"),
-     [("chandail", "gris", "g"), ("coton-ouate", "gris", "m"), ("coton-ouate", "noir", "g")]),
+     ("coton-ouate", "gris", "g"), ("chandail", "noir", "m")),
     ("b32", 3, "feminin_2",
      "C'est pour ma fille. Elle fait du petit, pis le rose, elle haït ça. "
      "Auriez-vous la même robe en bleu ?",
-     ("robe", "bleu", "p"),
-     [("robe", "rose", "p"), ("robe", "bleu", "m"), ("jupe", "bleu", "p")]),
+     ("robe", "bleu", "p"), ("jupe", "rose", "m")),
     ("b33", 3, "narrateur",
      "Mon garçon a grandi : le moyen, c'est rendu trop serré. "
      "Avez-vous le même kangourou, une taille plus grande ? En noir.",
-     ("kangourou", "noir", "g"),
-     [("kangourou", "noir", "m"), ("kangourou", "noir", "tg"), ("coton-ouate", "noir", "g")]),
+     ("kangourou", "noir", "g"), ("coton-ouate", "gris", "m")),
     ("b34", 3, "feminin_2",
      "Je le veux pas en noir, j'en ai déjà un. Le manteau, là, vous l'avez-tu en rouge ? En moyen.",
-     ("manteau", "rouge", "m"),
-     [("manteau", "noir", "m"), ("manteau", "rouge", "g"), ("impermeable", "rouge", "m")]),
+     ("manteau", "rouge", "m"), ("impermeable", "noir", "g")),
 ]
 
 # ── C · la gérante ───────────────────────────────────────────────────────

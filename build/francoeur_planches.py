@@ -96,6 +96,7 @@ def demandes(mots):
         assert art in par_id and "img" in par_id[art], f"{ident} : {art} sans croquis"
         assert coul in TEINTES, f"{ident} : couleur {coul} inconnue"
         v = variantes(ident, art, coul, taille, par_id, planche)
+        assert not devinable(v), f"{ident} : la bonne carte se devine sans écouter"
         sortie.append({"id": ident, "phrase": phrase,
                        "son": f"/assets/interactive/francoeur/sons/demandes/{ident}.mp3?v={MEDIA_V}",
                        "v": cartes(v, par_id)})
@@ -103,25 +104,45 @@ def demandes(mots):
 
 
 def variantes(graine, art, coul, taille, par_id, planche, article_seul=False):
-    """La bonne réponse d'abord, puis trois distracteurs qui ne changent chacun
-    qu'UN attribut. `article_seul` : les trois changent l'article (cran 1 du
-    test, où la phrase ne dit ni couleur ni taille)."""
+    """La bonne réponse d'abord, puis trois autres cartes.
+
+    EN CARRÉ LATIN (audit de la boucle didactique, 24 septembre 2026 — bloquant) :
+    (A,C,T) (A,C′,T′) (A′,C,T′) (A′,C′,T). Chaque article, chaque couleur,
+    chaque taille paraît exactement DEUX fois : aucune carte n'est majoritaire,
+    et seule la phrase entendue désigne la bonne. L'ancienne règle — trois
+    distracteurs qui changeaient chacun un seul trait — rendait la bonne carte
+    majoritaire sur chaque trait : les 20 demandes se réussissaient sans écouter.
+    Sans taille, le carré se fait sur deux traits : (A,C) (A,C′) (A′,C) (A′,C′).
+    `article_seul` : trois autres articles, même couleur (cran 1 du test, où la
+    phrase ne dit ni couleur ni taille)."""
     r = random.Random(graine)
     voisins = [e[0] for e in LEXIQUE if e[1] == planche[art] and e[0] != art
                and "img" in par_id[e[0]]]
-    v = [(art, coul, taille)]
     if article_seul:
-        return v + [(a, coul, taille) for a in r.sample(voisins, 3)]
-    autres_c = [c for c in COULEURS_DISTRACTRICES if c != coul]
-    v.append((art, r.choice(autres_c), taille))                     # la couleur change
+        return [(art, coul, taille)] + [(a, coul, taille) for a in r.sample(voisins, 3)]
+    a2 = r.choice(voisins)
+    c2 = r.choice([c for c in COULEURS_DISTRACTRICES if c != coul])
+    t2 = None
     if taille:
         i = TAILLES.index(taille)
-        proches = [TAILLES[j] for j in (i - 1, i + 1) if 0 <= j < len(TAILLES)]
-        v.append((art, coul, r.choice(proches)))                    # la taille change
-    else:
-        v.append((art, r.choice([c for c in autres_c if c != v[1][1]]), None))
-    v.append((r.choice(voisins), coul, taille))                     # l'article change
-    return v
+        t2 = r.choice([TAILLES[j] for j in (i - 1, i + 1) if 0 <= j < len(TAILLES)])
+    return carre(art, coul, taille, a2, c2, t2)
+
+
+def carre(a, c, t, a2, c2, t2):
+    """Le carré latin : la bonne carte d'abord."""
+    if t is None:
+        return [(a, c, None), (a, c2, None), (a2, c, None), (a2, c2, None)]
+    return [(a, c, t), (a, c2, t2), (a2, c, t2), (a2, c2, t)]
+
+
+def devinable(v):
+    """Vrai si la bonne carte (la première) se trouve sans écouter : elle est la
+    seule à réunir les valeurs les plus fréquentes. Le contrôle qui a manqué."""
+    from collections import Counter
+    comptes = [Counter(x[k] for x in v) for k in range(3)]
+    score = [sum(comptes[k][x[k]] for k in range(3)) for x in v]
+    return score[0] == max(score) and score.count(max(score)) == 1
 
 
 def cartes(v, par_id):
@@ -151,8 +172,10 @@ def le_test(mots):
     for cible, pieges in TEST.A_CRAN3:
         A[3].append({"id": cible, "son": par_id[cible]["son"], "o": [cible] + pieges})
     B = {1: [], 2: [], 3: []}
-    for ident, cran, _v, phrase, bonne, distr in TEST.B:
-        v = [bonne] + distr if distr else variantes(ident, *bonne, par_id, planche, article_seul=(cran == 1))
+    for ident, cran, _v, phrase, bonne, ecartes in TEST.B:
+        v = (carre(*bonne, *ecartes) if ecartes
+             else variantes(ident, *bonne, par_id, planche, article_seul=(cran == 1)))
+        assert not devinable(v), f"{ident} : la bonne carte se devine sans écouter"
         B[cran].append({"id": ident, "son": son(ident), "phrase": phrase, "v": cartes(v, par_id)})
     C = {1: [], 2: [], 3: []}
     for ident, cran, phrase, question, bonne, distr in TEST.C:
