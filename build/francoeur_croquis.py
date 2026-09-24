@@ -22,6 +22,8 @@ fond blanc, `object-fit: contain` dans une tuile 3:2 ne coupe rien.
     python3 build/francoeur_croquis.py --essai          # prompts, longueurs, sans appel
     python3 build/francoeur_croquis.py chandail parka   # ces entrées
     python3 build/francoeur_croquis.py --temoins        # les trois croquis d'essai
+    python3 build/francoeur_croquis.py --tous           # tout ce qui manque sur le disque
+    python3 build/francoeur_croquis.py --servir         # refait les .jpg depuis les .png, gratuit
 """
 import base64, io, json, pathlib, sys, time, urllib.request
 from PIL import Image
@@ -49,28 +51,37 @@ REGISTRE = (
     "shading, no shadow on the background, no 3D rendering, no photograph.\n"
     "NOTHING ELSE IN THE FRAME: no person, no body, no mannequin, no hanger, no hand, no "
     "background object. No text, no letters, no numbers, no logo, no brand name, no size label, "
-    "no price tag, no clothing tag anywhere.\n\n"
+    "no price tag, no clothing tag anywhere. No frame, no border, no box around the drawing.\n\n"
     "THE GARMENT: "
 )
 
-# Ce que chaque croquis montre. Décrire la FORME, pas le mot — un mot
-# polysémique se dessine selon son autre sens (le « courrier des lecteurs »
-# est revenu en carnet d'alphabet).
-SUJETS = {
-    "chandail": "a long-sleeved crew-neck knit sweater with ribbed cuffs, ribbed hem and ribbed "
-                "round neckline. HORIZONTAL STRIPES all over: navy blue stripes alternating with "
-                "off-white stripes of equal width, the stripes running straight across the body "
-                "and around the sleeves.",
-    "parka":    "a long hooded winter parka reaching mid-thigh, in solid dark forest "
-                "green. A hood with a faux-fur trim around the face opening, a central front "
-                "zipper covered by a snap-button placket, two large flap pockets at the hips, "
-                "two chest pockets, and elastic storm cuffs at the wrists. The hood is up and "
-                "empty, seen from the front.",
-    "espadrilles": "ONE PAIR of casual lace-up athletic sneakers, the two shoes side by side, "
-                "seen from the outer side in profile, toes pointing left: white rubber sole, "
-                "light grey upper, white laces, a small padded collar at the heel. Plain, "
-                "without any stripes or logo on the side.",
-}
+# Ce que chaque croquis montre vit dans le CONTENU, pas ici :
+# build/contenu/entreprise-francoeur/sujets.py — (famille, description).
+from sujets import SUJETS  # noqa: E402
+
+# Le détail : le vêtement entier en gris pâle, seule la partie nommée en
+# couleur. Même trait, même cadre que les autres croquis.
+DETAIL = REGISTRE.replace(
+    "COLOUR: one flat, soft, slightly muted fill of the colour named below, inside the outline "
+    "only, with at most one lighter tone for the inside of a collar or a lining.",
+    "COLOUR: the whole garment is filled in ONE flat, very pale neutral grey, EXCEPT the one part "
+    "named below, which is filled in the bright colour named. That coloured part is the whole "
+    "point of the drawing: it must stand out at a glance.")
+
+# L'objet du magasin : même trait, même aplat, sans la phrase qui exclut les
+# cintres et les mannequins — certains objets en SONT.
+OBJET = (
+    "A clean flat illustration in the style of a fashion flat sketch: the object ALONE, seen "
+    "straight on or at a slight three-quarter angle, centred, filling about 70 % of a square "
+    "frame, on a pure white background.\n"
+    "LINE: crisp black ink outline of even weight, with thin inner lines for details. No sketchy "
+    "strokes, no hatching, no pencil texture.\n"
+    "COLOUR: flat, soft, slightly muted fills of the colours named below, inside the outlines "
+    "only. No gradient, no shading, no shadow on the background, no 3D rendering, no photograph.\n"
+    "NOTHING ELSE IN THE FRAME: no person, no hand, no background scene beyond what is named. No "
+    "text, no letters, no numbers, no logo, no brand name, no sign anywhere. No frame, no border, no box around the drawing.\n\n"
+    "THE OBJECT: ")
+PREAMBULES = {"vetement": REGISTRE, "detail": DETAIL, "objet": OBJET}
 TEMOINS = ["chandail", "parka", "espadrilles"]
 
 
@@ -82,8 +93,33 @@ def cle(nom):
 
 def consigne(ident):
     if ident not in SUJETS:
-        raise SystemExit(f"{ident} : aucun sujet décrit dans SUJETS")
-    return REGISTRE + SUJETS[ident]
+        raise SystemExit(f"{ident} : aucun sujet décrit dans sujets.py")
+    famille, quoi = SUJETS[ident]
+    return PREAMBULES[famille] + quoi
+
+
+def blanchir(im):
+    """Le fond rendu est souvent un blanc cassé (≈ 248) : sur la planche, chaque
+    carte montrait alors son rectangle. On pousse au blanc pur ce qui est déjà
+    presque blanc — au-dessus de 243 sur les trois canaux, ce qui laisse
+    intacts le crème des rayures (≈ 232) et les aplats pâles."""
+    import numpy as np
+    a = np.asarray(im).copy()
+    a[(a >= 243).all(axis=2)] = 255
+    # Et une marge de 1,5 % remise à blanc : six croquis sur cent cinq sont
+    # sortis avec un filet de cadre collé au bord, malgré « no frame ». Le
+    # dessin occupe ~70 % du cadre, la marge ne touche jamais le vêtement.
+    m = max(2, round(a.shape[0] * 0.015))
+    a[:m], a[-m:], a[:, :m], a[:, -m:] = 255, 255, 255, 255
+    return Image.fromarray(a)
+
+
+def servir(ident):
+    """La version servie, refaite depuis la source : 800 px, JPEG 82 — la règle
+    des images de vocabulaire — et le fond blanchi."""
+    im = blanchir(Image.open(DEST / f"{ident}.png").convert("RGB"))
+    im.resize((800, round(im.height * 800 / im.width)), Image.LANCZOS).save(
+        DEST / f"{ident}.jpg", "JPEG", quality=82)
 
 
 def journal(ident, statut, note):
@@ -132,25 +168,48 @@ def generer(ident):
         cible.rename(orig)
     im = Image.open(io.BytesIO(donnees)).convert("RGB")
     im.save(cible)
-    # La version servie : 800 px, JPEG 82 — la règle des images de vocabulaire.
-    im.resize((800, round(im.height * 800 / im.width)), Image.LANCZOS).save(
-        DEST / f"{ident}.jpg", "JPEG", quality=82)
+    servir(ident)
     journal(ident, "ok", "1:1")
     print(f"  {ident:14} {len(donnees)/1024:5.0f} ko  {time.time()-t0:4.1f} s", flush=True)
 
 
 if __name__ == "__main__":
+    from concurrent.futures import ThreadPoolExecutor
     args = sys.argv[1:]
     essai = "--essai" in args
     cibles = [a for a in args if not a.startswith("--")]
-    if "--temoins" in args or not cibles:
-        cibles = cibles or TEMOINS
+    a_dessiner = [e[0] for e in LEXIQUE if e[4] == "croquis"]
+    if "--servir" in args:
+        # Refait tous les .jpg depuis les .png, sans aucun appel payé.
+        for e in LEXIQUE:
+            if e[4] == "croquis" and (DEST / f"{e[0]}.png").exists():
+                servir(e[0])
+        print("versions servies refaites"); sys.exit(0)
+    if "--manquants" in args:
+        manque = [i for i in a_dessiner if i not in SUJETS]
+        print(f"{len(a_dessiner)} croquis au lexique, {len(manque)} sans sujet : {manque}")
+        sys.exit(1 if manque else 0)
+    if "--tous" in args:
+        # Ce qui est déjà sur le disque ne se repaie pas.
+        cibles = [i for i in a_dessiner if not (DEST / f"{i}.png").exists()]
+    elif not cibles:
+        cibles = TEMOINS
     connus = {e[0] for e in LEXIQUE}
     for c in cibles:
         if c not in connus:
             raise SystemExit(f"{c} : absent du lexique")
-    for c in cibles:
-        if essai:
-            print(f"  {c:14} {len(consigne(c)):5} car.")
-        else:
+        consigne(c)  # refuse tôt un sujet manquant, avant le premier appel payé
+    if essai:
+        for c in cibles:
+            print(f"  {c:16} {SUJETS[c][0]:8} {len(consigne(c)):5} car.")
+        print(f"{len(cibles)} croquis, ≈ {len(cibles) * 0.067:.2f} $")
+        sys.exit(0)
+    echecs = []
+    def un(c):
+        try:
             generer(c)
+        except Exception as e:
+            echecs.append(c); print(f"  {c:16} ÉCHEC {e}", flush=True)
+    with ThreadPoolExecutor(4) as pool:
+        list(pool.map(un, cibles))
+    print(f"{len(cibles) - len(echecs)} produits, {len(echecs)} échecs {echecs or ''}")
