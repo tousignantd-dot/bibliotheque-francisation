@@ -215,13 +215,15 @@ INTERFACE = {
 
 
 def traduire_interface(code, nom):
-    """Par deux moitiés, comme le lexique par tranches : le tigrigna voyait la
+    """Par lots, comme le lexique par tranches : le tigrigna voyait la
     connexion se fermer sur la réponse entière."""
     tous = textes_interface()
     cles = list(tous)
     rendu = {}
-    for moitie in (cles[:len(cles) // 2], cles[len(cles) // 2:]):
-        rendu.update(traduire_textes(code, nom, {k: tous[k] for k in moitie}))
+    # Par lots de 25 : à cent textes, deux moitiés ne suffisaient plus au
+    # tigrigna, dont l'écriture rend les réponses les plus longues.
+    for i in range(0, len(cles), 25):
+        rendu.update(traduire_textes(code, nom, {k: tous[k] for k in cles[i:i + 25]}))
     print(f"  {code}  interface, {len(rendu)} textes", flush=True)
     return rendu
 
