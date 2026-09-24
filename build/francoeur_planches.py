@@ -42,7 +42,7 @@ SORTIE = RACINE / "modules-autonomes" / "francoeur-planches" / "index.html"
 
 # Incrémenter après toute image ou tout son refait : même nom, même adresse,
 # le navigateur servirait l'ancien sans rien dire.
-MEDIA_V = "1"
+MEDIA_V = "2"   # 2 : les 197 voix refaites en Azure HD, 24 septembre 2026
 
 
 def donnees():
@@ -429,7 +429,7 @@ const FR = {choisir:"Choisissez votre langue", choisir_sous:"Les mots restent en
   fini:"J'ai fini", attente_client:"Le client réfléchit…", vous:"Vous",
   bilan_titre:"Le bilan", client_part:"Le client est parti", vos_phrases:"Vos phrases, corrigées",
   gestes_titre:"Les gestes du vendeur — lesquels avez-vous faits ?", autre_client:"Un autre client",
-  code_refuse:"Ce code n'est pas reconnu.", erreur_reseau:"Impossible de joindre le serveur."};
+  code_refuse:"Ce code n'est pas reconnu.", voix_indispo:"La voix n'est pas disponible pour le moment. Lisez la réplique.", erreur_reseau:"Impossible de joindre le serveur."};
 const T = k => dit(k, FR[k]);
 const app = document.getElementById('app');
 let audio = null;
@@ -641,8 +641,10 @@ function question() {
       document.getElementById('revele').innerHTML = '<p class="gros">' + esc(it.mot) + '</p>'
         + '<div class="ecoute"><button type="button" class="mf-btn mf-btn--pri" id="savais"><span>' + T('savais') + '</span></button>'
         + '<button type="button" class="mf-btn" id="arevoir"><span>' + T('a_revoir') + '</span></button></div>';
-      document.getElementById('savais').onclick = () => { J.premier++; revoir.delete(it.id); garderRevoir(); J.i++; question(); };
-      document.getElementById('arevoir').onclick = () => { revoir.add(it.id); garderRevoir(); J.i++; question(); };
+      const auto = ok => rapporter({zone: 'ex-rappel-' + it.id, exo: 'ex-rappel', exoNum: 'Exercice 3', exoTitre: FR.ex_rappel,
+        section: 'exercices', type: 'rappel', enonce: it.mot, bonne: '', reponse: '', ok, essais: 1});
+      document.getElementById('savais').onclick = () => { auto(true); J.premier++; revoir.delete(it.id); garderRevoir(); J.i++; question(); };
+      document.getElementById('arevoir').onclick = () => { auto(false); revoir.add(it.id); garderRevoir(); J.i++; question(); };
     };
     return;
   } else if (J.k === 'client') {
@@ -679,6 +681,14 @@ function repondre(b) {
   }
 }
 function finQuestion() {
+  const it = J.items[J.i], juste = !!app.querySelector('.opt.juste:not(.faux)') && J.essais < 2;
+  const fautif = app.querySelector('.opt.faux');
+  const libelle = o => J.k === 'client' ? carteTexte(J.options.find(v => String(v.n) === String(o)))
+    : J.k === 'rayon' ? (D.planches.find(p => p.k === o) || {}).t : etiquette(o);
+  rapporter({zone: 'ex-' + J.k + '-' + it.id, exo: 'ex-' + J.k, exoNum: 'Exercice ' + (EXOS.find(x => x.k === J.k).n),
+    exoTitre: FR['ex_' + J.k], section: 'exercices', type: J.k,
+    enonce: J.k === 'client' ? it.phrase : it.mot, bonne: libelle(J.bonne),
+    reponse: juste ? libelle(J.bonne) : (fautif ? libelle(fautif.dataset.o) : ''), ok: juste, essais: J.essais + 1});
   app.querySelectorAll('[data-o]').forEach(x => x.disabled = true);
   const s = document.getElementById('suite');
   s.innerHTML = '<button type="button" class="mf-btn mf-btn--pri" id="apres"><span>' + T('suivant') + '</span>' + ICO.suiv + '</button>';
@@ -686,6 +696,7 @@ function finQuestion() {
 }
 function bilan() {
   J.fini = true;
+  rapporterSerie(J.items.length, J.premier);
   app.innerHTML = tete(T('ex_' + J.k), '', true, 'exercices')
     + '<div class="bilan"><p style="font-weight:800;margin:0">' + T('fin') + '</p><p class="score">' + J.premier + ' / ' + J.items.length + '</p>'
     + '<p style="margin:0 0 16px">' + T('premier_coup') + '</p>'
@@ -766,6 +777,11 @@ function repondreTest(juste) {
   // Aucune rétroaction : on passe à la suite, c'est tout.
   if (audio) audio.pause();
   X.reponses.push({p: X.parties[X.p], cran: X.cran, id: X.item.id, juste});
+  { const P = X.parties[X.p], it = X.item;
+    rapporter({zone: 'test-' + P + '-' + it.id, exo: 'test-' + P, exoNum: 'Test · cran ' + X.cran,
+      exoTitre: FR['partie_' + P.toLowerCase()], section: 'test', type: 'test',
+      enonce: P === 'A' ? etiquette(it.id) : P === 'B' ? it.phrase : it.phrase + ' — ' + it.q,
+      bonne: P === 'B' ? carteTexte(it.v[0]) : etiquette(P === 'A' ? it.id : it.o[0]), reponse: '', ok: juste, essais: 1}); }
   if (juste) {
     X.bons++;
     if (X.bons >= 3) {
@@ -969,12 +985,13 @@ async function dire(t) {
     if (palier && !r.headers.get('X-Palier')) { audio.preservesPitch = true; audio.playbackRate = 0.8; }
     audio.play().catch(() => {});
   } catch(e) {
-    // Repli : la voix du navigateur, jamais le silence.
-    try { const u = new SpeechSynthesisUtterance(t); u.lang = 'fr-CA'; speechSynthesis.speak(u); } catch(x) {}
+    // Pas de repli sur la voix du navigateur : toutes les voix de la trousse
+    // sont d'Azure (décision de Daniel, 24 septembre 2026). Une panne se dit.
+    const err = document.getElementById('err'); if (err) err.textContent = FR.voix_indispo;
   }
 }
 let reco = null;
-function arreterTout() { if (audio) audio.pause(); try { speechSynthesis.cancel(); } catch(e) {} if (reco) { try { reco.abort(); } catch(e) {} reco = null; } }
+function arreterTout() { if (audio) audio.pause(); if (reco) { try { reco.abort(); } catch(e) {} reco = null; } }
 function micro() {
   const R = window.SpeechRecognition || window.webkitSpeechRecognition;
   const b = document.getElementById('micro');
@@ -990,6 +1007,9 @@ function micro() {
 }
 async function bilanMagasin() {
   arreterTout();
+  rapporter({zone: 'mag-' + S.c.id + '-' + niveauJeu, exo: 'magasin', exoNum: 'Magasin · ' + niveauJeu,
+    exoTitre: 'Le magasin', section: 'magasin', type: 'magasin', enonce: 'Visite : ' + S.c.nom,
+    bonne: '', reponse: '', ok: S.humeur === 'contente', essais: S.hist.filter(m => m.role === 'user').length});
   const mes = S.hist.filter(m => m.role === 'user').map(m => m.contenu).slice(1);   // l'accueil n'est pas de l'employé
   const partiContent = S.humeur === 'contente';
   app.innerHTML = tete(T('bilan_titre'), '', true, 'magasin')
@@ -1015,6 +1035,43 @@ async function bilanMagasin() {
   } catch(e) { corr.innerHTML = '<p>' + esc(FR.erreur_reseau) + '</p>'; }
 }
 window.__francoeur.magasin = () => S;
+/* ── Le rapport au portail (étape 5, le pilote) ────────────────────────
+   Ouverte depuis le portail ou une séance sans compte, la page connaît le code
+   (dans sa propre adresse, relayé par viewer.html) et le numéro d'activité
+   (dans l'adresse du visualiseur). Elle rapporte alors chaque réponse FERMÉE au
+   direct de la classe — l'événement `zone_repondue` que les modules envoient
+   déjà, sur /api/student/progress. Rien d'autre : ni les phrases libres du
+   magasin, ni l'oral, ni la langue choisie. Ouverte hors du portail, elle ne
+   rapporte rien et marche pareil. Le diagnostic didactique lit ces traces :
+   un item raté par la moitié du groupe accuse l'item, pas le groupe. */
+const CTX = (function () {
+  try {
+    const moi = new URLSearchParams(location.search);
+    let parent = new URLSearchParams('');
+    try { parent = new URLSearchParams(window.parent.location.search); } catch (e) {}
+    const code = moi.get('code') || parent.get('code');
+    const id = parseInt(moi.get('activityId') || parent.get('activityId'), 10);
+    return code && id ? {code, activityId: id} : null;
+  } catch (e) { return null; }
+})();
+if (CTX && !codeAcces) codeAcces = CTX.code;
+function rapporter(o) {
+  if (!CTX) return;
+  const corps = Object.assign({code: CTX.code, activityId: CTX.activityId,
+    activityTitle: 'Maison Francœur', event: 'zone_repondue'}, o);
+  fetch('/api/student/progress', {method: 'POST', headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(corps)}).catch(() => {});
+}
+function rapporterSerie(zones, premier) {
+  if (!CTX) return;
+  fetch('/api/student/progress', {method: 'POST', headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({code: CTX.code, activityId: CTX.activityId, event: 'exercise_completed',
+      zones, zonesDone: zones, firstTry: premier, totalErrors: zones - premier})}).catch(() => {});
+}
+const etiquette = id => { const m = D.mots.find(x => x.id === id); return m ? m.mot : String(id); };
+const carteTexte = v => v ? (v.mot + ' · ' + v.cmot + (v.t ? ' · ' + v.t : '')) : '';
+window.__francoeur.ctx = () => CTX;
+
 window.__francoeur.lireHumeur = lireHumeur;
 
 

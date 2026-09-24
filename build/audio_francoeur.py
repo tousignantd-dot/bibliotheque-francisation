@@ -8,8 +8,8 @@
 Feu vert de Daniel pour ces voix neuves le 24 septembre 2026 (le gel des MP3
 porte sur la RÉGÉNÉRATION des modules existants, pas sur celles-ci).
 
-UNE VOIX, UN DÉBIT : `enseignante` (Sylvie, neurale — reproductible, à la
-différence des voix HD) au taux de la famille des sons, TAUX_SONS. Un mot que
+UNE VOIX, UN DÉBIT : Sylvie HD (voir HD plus bas) au taux de la famille des
+sons, TAUX_SONS. Un mot que
 l'employé doit imiter gagne à être plus posé que la parole courante ; c'est le
 client, au jeu de rôle, qui parlera vite.
 
@@ -42,6 +42,21 @@ import test as TEST  # noqa: E402
 
 SORTIE = RACINE / "assets" / "interactive" / "francoeur" / "sons"
 
+# AZURE HD PARTOUT — décision de Daniel, 24 septembre 2026. Il n'y a que deux
+# voix HD fr-CA : Sylvie et Thierry. Les rôles écrits dans le contenu
+# (demandes.py, test.py) gardent leurs noms de personnages ; c'est ici qu'ils
+# tombent sur une voix HD. Deux clients du même genre partagent donc une voix,
+# ce qui est permis : ils ne se répondent jamais dans un même extrait.
+#
+# Deux choses à savoir sur la HD (mémoire voix-hd-langue-et-hasard) : elle
+# choisit la langue MOT À MOT — `ssml()` enveloppe tout le corps dans <lang>,
+# c'est la seule parade qui porte — et elle n'est pas déterministe : deux
+# tirages du même texte ne sonnent pas pareil. D'où le contrôle par
+# retranscription, build/francoeur_ecoute.py, à passer après chaque tirage.
+HD = {"enseignante": "hd_feminin", "feminin_2": "hd_feminin",
+      "masculin_1": "hd_masculin", "narrateur": "hd_masculin"}
+VOIX_MOTS = "hd_feminin"
+
 
 def main():
     ap = argparse.ArgumentParser()
@@ -59,7 +74,7 @@ def main():
     def un(e):
         dest = SORTIE / f"{e[0]}.mp3"
         try:
-            d = azure_voix.parle(e[2], "enseignante", dest, cle=cle, region=region,
+            d = azure_voix.parle(e[2], VOIX_MOTS, dest, cle=cle, region=region,
                                  reference=azure_voix.TAUX_SONS)
             print("  %-16s %4.2f s  %s" % (e[0], d, e[2]), flush=True)
         except Exception as x:
@@ -73,7 +88,7 @@ def main():
 
     def une_demande(d):
         try:
-            duree = azure_voix.parle(d[2], d[1], DEM / f"{d[0]}.mp3", cle=cle, region=region)
+            duree = azure_voix.parle(d[2], HD[d[1]], DEM / f"{d[0]}.mp3", cle=cle, region=region)
             print("  %-5s %-11s %4.2f s  %s" % (d[0], d[1], duree, d[2]), flush=True)
         except Exception as x:
             print("  %-5s ÉCHEC %s" % (d[0], x), flush=True)
@@ -88,7 +103,7 @@ def main():
 
     def un_test(t):
         try:
-            duree = azure_voix.parle(t[2], t[1], TST / f"{t[0]}.mp3", cle=cle, region=region)
+            duree = azure_voix.parle(t[2], HD[t[1]], TST / f"{t[0]}.mp3", cle=cle, region=region)
             print("  %-5s %-11s %4.2f s  %s" % (t[0], t[1], duree, t[2][:60]), flush=True)
         except Exception as x:
             print("  %-5s ÉCHEC %s" % (t[0], x), flush=True)
