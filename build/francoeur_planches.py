@@ -42,7 +42,7 @@ SORTIE = RACINE / "modules-autonomes" / "francoeur-planches" / "index.html"
 
 # Incrémenter après toute image ou tout son refait : même nom, même adresse,
 # le navigateur servirait l'ancien sans rien dire.
-MEDIA_V = "3"   # 3 : lin, polyester, rose refaits à l’oreille, 24 septembre 2026
+MEDIA_V = "4"   # 4 : « le denim » devient « du jeans », 24 septembre 2026
 
 
 def donnees():

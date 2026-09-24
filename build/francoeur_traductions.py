@@ -27,6 +27,7 @@ traduit pas, la consigne qui l'explique, si.
 
     python3 build/francoeur_traductions.py --interface   # l'écran, dans les onze langues
     python3 build/francoeur_traductions.py --fiche       # les « quand » de la fiche de poche
+    python3 build/francoeur_traductions.py --ids denim   # quelques entrées seulement, après un changement
 
 Sortie : build/contenu/entreprise-francoeur/traductions.json
 """
@@ -312,7 +313,32 @@ def main_fiche():
     SORTIE.write_text(json.dumps(tout, ensure_ascii=False, indent=1), encoding="utf-8")
 
 
+def main_ids(ids):
+    """Retraduit seulement quelques entrées du lexique, dans les onze langues —
+    quand un mot change, sans repayer les 149. La langue reste « non relue »."""
+    tout = json.loads(SORTIE.read_text(encoding="utf-8"))
+    entrees = [e for e in LEXIQUE if e[0] in ids]
+    manque = set(ids) - {e[0] for e in entrees}
+    if manque:
+        raise SystemExit(f"absent du lexique : {manque}")
+
+    def un(l):
+        try:
+            return l[0], traduire_tranche(l[0], l[1], entrees)
+        except Exception as e:
+            print(f"  {l[0]}  ÉCHEC {e}", flush=True)
+            return l[0], None
+    with ThreadPoolExecutor(6) as pool:
+        for code, rendu in pool.map(un, [l for l in LANGUES if l[0] in tout]):
+            if rendu:
+                tout[code]["mots"].update(rendu)
+                tout[code]["relu"] = False
+    SORTIE.write_text(json.dumps(tout, ensure_ascii=False, indent=1), encoding="utf-8")
+
+
 def main():
+    if "--ids" in sys.argv:
+        return main_ids(sys.argv[sys.argv.index("--ids") + 1].split(","))
     if "--fiche" in sys.argv:
         return main_fiche()
     if "--interface" in sys.argv:

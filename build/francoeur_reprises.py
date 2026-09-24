@@ -88,9 +88,9 @@ def page():
 <p class="eyebrow">Maison Francœur &middot; voix</p>
 <h1>Reprises de voix — deuxième tour</h1>
 <p class="chapeau">Premier tour posé : <b>le lin</b> (nouvelle prise HD), <b>le polyester</b> (« polyestère »),
-<b>rose</b> (« rôse »). <b>Le denim</b> n'avait aucune bonne version : six nouvelles, avec des graphies sans
-accent ou en « eu », une autre tournure, et la voix neurale. L'écran garde l'orthographe « le denim ».
-<strong>Choisissez celle qui sonne juste</strong>, puis exportez.</p>
+<b>rose</b> (« rôse »). <b>Le denim</b> n'avait aucune bonne version : <b>il est remplacé au lexique par
+« du jeans »</b> (décision de Daniel), dont la voix HD est juste. Les candidats ci-dessous sont gardés pour
+mémoire ; il n'y a plus rien à choisir.</p>
 {blocs}
 <p style="margin-top:1.4rem"><button type="button" class="btn-export" id="exporter">Exporter mes choix</button>
 <span id="etat" class="etat"></span></p>

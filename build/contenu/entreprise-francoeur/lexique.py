@@ -168,7 +168,10 @@ LEXIQUE = [
     ("coton",          "couleurs", "le coton",           "",                    N, ""),
     ("laine",          "couleurs", "la laine",           "",                    N, ""),
     ("polyester",      "couleurs", "le polyester",       "",                    N, ""),
-    ("denim",          "couleurs", "le denim",           "",                    N, "« En jeans » s'entend aussi."),
+    # « Le denim » remplacé par « du jeans » le 24 septembre 2026 (Daniel) : aucune
+    # voix HD ne le disait juste, et c'est le mot qu'on entend au plancher.
+    # L'id reste « denim » : il est la clé des traductions et des traces.
+    ("denim",          "couleurs", "du jeans",           "le denim",            N, "La toile bleue des jeans. On dit aussi « en jeans » : une veste en jeans."),
     ("cuir",           "couleurs", "le cuir",            "",                    N, "Et le similicuir."),
     ("lin",            "couleurs", "le lin",             "",                    N, ""),
     ("polar",          "couleurs", "le polar",           "la laine polaire",    N, ""),
