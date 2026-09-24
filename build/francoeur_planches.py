@@ -1531,19 +1531,50 @@ async function dire(t) {
   }
 }
 let reco = null;
-function arreterTout() { if (audio) audio.pause(); if (reco) { try { reco.abort(); } catch(e) {} reco = null; } }
+function arreterTout() { if (audio) audio.pause(); recoFini = true; clearTimeout(recoMinuterie); if (reco) { const r = reco; reco = null; r.onend = null; try { r.abort(); } catch(e) {} } }
+// Le micro du magasin. Il était réglé pour UNE phrase (continuous: false) :
+// Chrome le fermait à la première pause, au milieu d'une réponse d'apprenant,
+// qui hésite par définition (Daniel, 24 septembre 2026). Désormais il écoute en
+// continu, ACCUMULE ce qui est dit, se relance si le navigateur le coupe, et ne
+// s'arrête que sur « Arrêter » ou après un vrai silence (SILENCE_MS).
+const SILENCE_MS = 4000, SILENCE_DEBUT_MS = 9000;
+let recoFini = true, recoMinuterie = null;
 function micro() {
   const R = window.SpeechRecognition || window.webkitSpeechRecognition;
-  const b = document.getElementById('micro');
+  const b = document.getElementById('micro'), txt = document.getElementById('txt');
   if (!R) { document.getElementById('err').textContent = FR.micro_refuse; return; }
-  if (reco) { reco.stop(); return; }
+  if (reco) { recoFini = true; reco.stop(); return; }
   if (audio) audio.pause();
-  reco = new R(); reco.lang = 'fr-CA'; reco.interimResults = true; reco.continuous = false;
-  let dernier = '';
-  reco.onresult = e => { dernier = [...e.results].map(x => x[0].transcript).join(' '); document.getElementById('txt').value = dernier; };
-  reco.onend = () => { reco = null; b.innerHTML = '<span>' + T('parler') + '</span>'; if (dernier.trim()) envoyer(dernier); };
-  reco.onerror = () => { document.getElementById('err').textContent = FR.micro_refuse; };
-  reco.start(); b.innerHTML = '<span>' + T('arreter') + '</span>';
+  let acquis = '';
+  recoFini = false;
+  const attendre = ms => { clearTimeout(recoMinuterie); recoMinuterie = setTimeout(() => { recoFini = true; if (reco) reco.stop(); }, ms); };
+  const terminer = () => {
+    clearTimeout(recoMinuterie); reco = null; b.innerHTML = '<span>' + T('parler') + '</span>';
+    const dit = txt.value.trim(); if (dit) envoyer(dit);
+  };
+  const demarrer = () => {
+    reco = new R(); reco.lang = 'fr-CA'; reco.interimResults = true; reco.continuous = true;
+    reco.onresult = e => {
+      let provisoire = '';
+      for (let i = e.resultIndex; i < e.results.length; i++) {
+        const t = e.results[i][0].transcript.trim();
+        if (e.results[i].isFinal) acquis = (acquis + ' ' + t).trim(); else provisoire += ' ' + t;
+      }
+      txt.value = (acquis + provisoire).trim();
+      attendre(SILENCE_MS);
+    };
+    // Le navigateur coupe parfois de lui-même (fin de session, pause) : on
+    // reprend, sauf si l'employé a arrêté ou que le silence a duré.
+    reco.onend = () => { if (!recoFini) { try { demarrer(); return; } catch (e) {} } terminer(); };
+    reco.onerror = ev => {
+      if (ev.error === 'no-speech' || ev.error === 'aborted') return;
+      recoFini = true; document.getElementById('err').textContent = FR.micro_refuse;
+    };
+    reco.start();
+  };
+  txt.value = '';
+  demarrer(); attendre(SILENCE_DEBUT_MS);
+  b.innerHTML = '<span>' + T('arreter') + '</span>';
 }
 async function bilanMagasin() {
   arreterTout();
