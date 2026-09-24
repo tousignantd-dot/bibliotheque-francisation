@@ -334,7 +334,7 @@ h1{font-family:var(--titre);font-weight:400;color:var(--acide);margin:0;font-siz
 .bloc-texte p + p{margin-top:.35rem}
 .bloc-texte b{color:var(--f-vert)}
 .bloc-texte .mal{color:var(--f-rouge);font-weight:700}
-.bloc-texte .sur{font:500 .7rem/1 var(--f-mono);letter-spacing:.18em;color:var(--f-vert);margin:0 0 .45rem}
+.bloc-texte .sur{font:700 1.55rem/1.05 var(--f-cond);letter-spacing:.02em;text-transform:uppercase;color:var(--f-vert);margin:0 0 .55rem}
 .bloc-texte .sur.mal{color:var(--f-rouge)}
 .fiche{padding:1rem 1.4rem 1.15rem}
 .f-haut{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem}
@@ -374,6 +374,30 @@ h1{font-family:var(--titre);font-weight:400;color:var(--acide);margin:0;font-siz
 .f-legende{display:flex;align-items:center;gap:.4rem;font:500 .62rem/1 var(--f-mono);color:var(--f-doux);margin:.6rem 0 0}
 .f-normal-mini{display:inline-block;height:.8rem;border-left:2px dashed var(--f-doux)}
 .f-gestes{border-top:1px solid var(--f-trait);margin-top:.9rem;padding-top:.8rem}
+/* le manomètre en cadran : même aiguille que la façade */
+.f-cad-rang{display:flex;align-items:center;gap:.7rem;margin:.1rem 0 .3rem}
+.f-cad-rang .f-leg{padding:0}
+.f-cad-rang .f-ecart{margin-top:.2rem}
+.f-cadran{display:block;overflow:visible}
+.f-cadran.grand{width:138px;flex:none}
+.f-cadran.mini{width:86px}
+.f-cad-piste{fill:none;stroke:var(--f-piste);stroke-width:11;stroke-linecap:round}
+.f-cad-zone{fill:none;stroke:var(--f-vert);stroke-width:11;opacity:.55}
+.f-cad-long{stroke:var(--f-encre);stroke-width:3;stroke-linecap:round}
+.f-cad-court{stroke:var(--f-doux);stroke-width:1.6;stroke-linecap:round}
+.f-cad-chif{font:500 15px var(--f-mono);fill:var(--f-doux);text-anchor:middle}
+.f-aig line{stroke:#E8663A;stroke-width:4.5;stroke-linecap:round}
+.f-aig{transition:transform .08s linear}
+.f-cad-pivot{fill:var(--f-encre)}
+.f-cad-val{font:700 40px var(--f-cond);fill:var(--f-vert);text-anchor:middle;font-variant-numeric:tabular-nums}
+.f-cadran.mini .f-cad-val{font-size:44px}
+.f-mal .f-cad-val{fill:var(--f-rouge)}
+.f-cad-unite{font:700 17px var(--f-cond);fill:var(--f-vert);text-anchor:middle}
+.f-mal .f-cad-unite{fill:var(--f-rouge)}
+.f-gestes-rang{display:flex;gap:.75rem;align-items:center}
+.f-gestes-rang .f-puces{flex:1;min-width:0}
+.f-mano{margin:0;flex:none;text-align:center}
+.f-mano figcaption{font:500 .58rem/1 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--f-doux);margin-top:.15rem}
 .f-gestes .f-sur em{font-style:normal;color:var(--f-vert)}
 .f-gestes .f-sur em.mal{color:var(--f-rouge)}
 .f-puces{display:grid;grid-template-columns:repeat(auto-fit,minmax(88px,1fr));gap:.4rem}
@@ -404,6 +428,19 @@ h1{font-family:var(--titre);font-weight:400;color:var(--acide);margin:0;font-siz
 }
 @media (prefers-reduced-motion:reduce){ .bloc{transition:none} }
 
+
+/* ── LA COUPE EN TRANCHE : faces coupées hachurées, dedans en volume ─────
+   Le style du dessin « Coupe Joint 3D » (Claude Design), commun aux cinq. */
+.coupe .tranche{fill:url(#t-hachure);stroke:#2b2825;stroke-width:1.8;stroke-linejoin:round}
+.coupe .joint-t{fill:url(#t-hachureJoint);stroke:#2b2825;stroke-width:1}
+.coupe .fond{fill:url(#t-cyl)}
+.coupe .fondH{fill:url(#t-cylH)}
+.coupe .arete{fill:none;stroke:#2b2825;stroke-width:1;opacity:.35}
+.coupe .sol{fill:url(#t-sol)}
+.coupe .eau3{fill:url(#t-eau)}
+.coupe .eauDessus{fill:url(#t-eauDessus);stroke:#9fb4b9;stroke-width:.8}
+.coupe .cafeDessus{fill:url(#t-cafeDessus);stroke:#6b4a33;stroke-width:.8}
+.coupe .couvercle{fill:url(#t-couvercle);stroke:#2b2825;stroke-width:1.8;stroke-linejoin:round}
 
 .coupe #grains{fill:var(--cafe);opacity:.75}
 .coupe .chif.g{text-anchor:start}
@@ -503,18 +540,47 @@ h1{font-family:var(--titre);font-weight:400;color:var(--acide);margin:0;font-siz
       <stop offset="0" stop-color="#9A6A3F"/><stop offset=".55" stop-color="#6E4424"/><stop offset="1" stop-color="#4E2F17"/></linearGradient>
     <linearGradient id="g-eau" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0" stop-color="#8CC8DC"/><stop offset="1" stop-color="#3C8FAE"/></linearGradient>
+    <pattern id="t-hachure" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="5" height="5" fill="#E6E0D9"/><line x1="0" y1="0" x2="0" y2="5" stroke="#2b2825" stroke-width=".9" opacity=".5"/></pattern>
+    <pattern id="t-hachureJoint" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><rect width="4" height="4" fill="#6e6460"/><line x1="0" y1="0" x2="0" y2="4" stroke="#2b2825" stroke-width=".7" opacity=".6"/></pattern>
+    <linearGradient id="t-cyl" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#b3a9a1"/><stop offset=".22" stop-color="#ddd6cf"/><stop offset=".6" stop-color="#f4f0ec"/><stop offset=".85" stop-color="#d6cec7"/><stop offset="1" stop-color="#a79d95"/></linearGradient>
+    <linearGradient id="t-cylH" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#b3a9a1"/><stop offset=".25" stop-color="#ddd6cf"/><stop offset=".55" stop-color="#f4f0ec"/><stop offset=".85" stop-color="#d6cec7"/><stop offset="1" stop-color="#a79d95"/></linearGradient>
+    <linearGradient id="t-acierH" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#6f6863"/><stop offset=".35" stop-color="#c9c2bc"/><stop offset=".55" stop-color="#eeeae6"/><stop offset="1" stop-color="#5f5853"/></linearGradient>
+    <linearGradient id="t-cylSombre" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#3a3431"/><stop offset=".55" stop-color="#7a6f6a"/><stop offset="1" stop-color="#3a3431"/></linearGradient>
+    <linearGradient id="t-eau" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#d9e2e3"/><stop offset="1" stop-color="#b9cbcf"/></linearGradient>
+    <linearGradient id="t-eauDessus" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#c9d7da"/><stop offset=".6" stop-color="#eef3f3"/><stop offset="1" stop-color="#c3d2d6"/></linearGradient>
+    <linearGradient id="t-cafeDessus" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#8a603f"/><stop offset=".6" stop-color="#bf916b"/><stop offset="1" stop-color="#865c3c"/></linearGradient>
+    <linearGradient id="t-couvercle" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#e0d9d2"/><stop offset=".55" stop-color="#f8f5f2"/><stop offset="1" stop-color="#d6cec7"/></linearGradient>
+    <linearGradient id="t-ombreBas" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#2b2825" stop-opacity=".22"/><stop offset="1" stop-color="#2b2825" stop-opacity="0"/></linearGradient>
+    <linearGradient id="t-ombreHaut" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#2b2825" stop-opacity="0"/><stop offset="1" stop-color="#2b2825" stop-opacity=".25"/></linearGradient>
+    <linearGradient id="t-verre" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#cfd8da"/><stop offset=".35" stop-color="#ffffff"/><stop offset=".7" stop-color="#e8eef0"/><stop offset="1" stop-color="#b8c4c7"/></linearGradient>
+    <radialGradient id="t-chrome" cx=".4" cy=".35" r=".7"><stop offset="0" stop-color="#ffffff"/><stop offset=".55" stop-color="#d4ccc6"/><stop offset="1" stop-color="#8d8580"/></radialGradient>
+    <radialGradient id="t-sol" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#8a7266" stop-opacity=".25"/><stop offset="1" stop-color="#8a7266" stop-opacity="0"/></radialGradient>
   </defs>
-  <path class="metal" d="M110 70 L530 70 L530 100 L110 100 Z"/>
+  <ellipse class="sol" cx="320" cy="420" rx="250" ry="14"/>
+  <!-- la douchette, tranchée, et son dessus -->
+  <path class="couvercle" d="M110,70 A210,8 0 0 1 530,70 Z"/>
+  <rect class="tranche" x="110" y="70" width="420" height="30"/>
   <g id="trous"></g>
+  <!-- le joint -->
+  <rect x="124" y="100" width="392" height="4" fill="url(#t-cylSombre)"/>
+  <!-- le panier : paroi du fond -->
+  <path class="fond" d="M124,104 L516,104 L516,286 L356,335 L356,382 L284,382 L284,335 L124,286 Z"/>
+  <rect x="124" y="104" width="392" height="20" fill="url(#t-ombreBas)"/>
+  <path d="M124,286 L516,286 L356,335 L356,382 L284,382 L284,335 Z" fill="url(#t-ombreHaut)"/>
+  <path class="arete" d="M124,286 A196,12 0 0 1 516,286"/>
+  <path class="arete" d="M284,335 A36,3 0 0 1 356,335"/>
   <rect class="eau" id="retenue" x="124" y="104" width="392" height="0"/>
-  <path class="metal" d="M110 112 L110 300 L280 352 L360 352 L530 300 L530 112"/>
-  <path class="fin" d="M124 112 L124 286 M516 112 L516 286"/>
+  <!-- le lit : la mouture, grain par grain -->
+  <path class="cafeDessus" d="M124,124 A196,9 0 0 1 516,124 Z" opacity=".55"/>
+  <rect x="124" y="124" width="392" height="156" fill="#E9DCCB"/>
   <g id="grains"></g>
   <rect class="eau" id="litEau" x="124" y="124" width="392" height="156" opacity="0"/>
   <rect class="fin" x="124" y="124" width="392" height="156"/>
-  <path class="metal" d="M280 352 L280 382 L360 382 L360 352"/>
+  <!-- les faces tranchées du panier -->
+  <path class="tranche" d="M96,104 L124,104 L124,286 L284,335 L284,382 L280,382 L280,352 L110,300 L110,116 L96,116 Z"/>
+  <path class="tranche" d="M544,104 L516,104 L516,286 L356,335 L356,382 L360,382 L360,352 L530,300 L530,116 L544,116 Z"/>
   <path class="flux filet" id="filet" d="M320 384 L320 466" stroke-width="6"/>
-  <text class="etiq" x="320" y="306" text-anchor="middle">lit de café</text>
+  <text class="etiq" x="320" y="312" text-anchor="middle">lit de café</text>
 </svg>
 </div>
 <div class="coupe" data-panne="joint">
@@ -525,37 +591,93 @@ h1{font-family:var(--titre);font-weight:400;color:var(--acide);margin:0;font-siz
       <stop offset="0" stop-color="#9A6A3F"/><stop offset=".55" stop-color="#6E4424"/><stop offset="1" stop-color="#4E2F17"/></linearGradient>
     <linearGradient id="g-eau" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0" stop-color="#8CC8DC"/><stop offset="1" stop-color="#3C8FAE"/></linearGradient>
+    <pattern id="t-hachure" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="5" height="5" fill="#E6E0D9"/><line x1="0" y1="0" x2="0" y2="5" stroke="#2b2825" stroke-width=".9" opacity=".5"/></pattern>
+    <pattern id="t-hachureJoint" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><rect width="4" height="4" fill="#6e6460"/><line x1="0" y1="0" x2="0" y2="4" stroke="#2b2825" stroke-width=".7" opacity=".6"/></pattern>
+    <linearGradient id="t-cyl" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#b3a9a1"/><stop offset=".22" stop-color="#ddd6cf"/><stop offset=".6" stop-color="#f4f0ec"/><stop offset=".85" stop-color="#d6cec7"/><stop offset="1" stop-color="#a79d95"/></linearGradient>
+    <linearGradient id="t-cylH" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#b3a9a1"/><stop offset=".25" stop-color="#ddd6cf"/><stop offset=".55" stop-color="#f4f0ec"/><stop offset=".85" stop-color="#d6cec7"/><stop offset="1" stop-color="#a79d95"/></linearGradient>
+    <linearGradient id="t-acierH" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#6f6863"/><stop offset=".35" stop-color="#c9c2bc"/><stop offset=".55" stop-color="#eeeae6"/><stop offset="1" stop-color="#5f5853"/></linearGradient>
+    <linearGradient id="t-cylSombre" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#3a3431"/><stop offset=".55" stop-color="#7a6f6a"/><stop offset="1" stop-color="#3a3431"/></linearGradient>
+    <linearGradient id="t-eau" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#d9e2e3"/><stop offset="1" stop-color="#b9cbcf"/></linearGradient>
+    <linearGradient id="t-eauDessus" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#c9d7da"/><stop offset=".6" stop-color="#eef3f3"/><stop offset="1" stop-color="#c3d2d6"/></linearGradient>
+    <linearGradient id="t-cafeDessus" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#8a603f"/><stop offset=".6" stop-color="#bf916b"/><stop offset="1" stop-color="#865c3c"/></linearGradient>
+    <linearGradient id="t-couvercle" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#e0d9d2"/><stop offset=".55" stop-color="#f8f5f2"/><stop offset="1" stop-color="#d6cec7"/></linearGradient>
+    <linearGradient id="t-ombreBas" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#2b2825" stop-opacity=".22"/><stop offset="1" stop-color="#2b2825" stop-opacity="0"/></linearGradient>
+    <linearGradient id="t-ombreHaut" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#2b2825" stop-opacity="0"/><stop offset="1" stop-color="#2b2825" stop-opacity=".25"/></linearGradient>
+    <linearGradient id="t-verre" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#cfd8da"/><stop offset=".35" stop-color="#ffffff"/><stop offset=".7" stop-color="#e8eef0"/><stop offset="1" stop-color="#b8c4c7"/></linearGradient>
+    <radialGradient id="t-chrome" cx=".4" cy=".35" r=".7"><stop offset="0" stop-color="#ffffff"/><stop offset=".55" stop-color="#d4ccc6"/><stop offset="1" stop-color="#8d8580"/></radialGradient>
+    <radialGradient id="t-sol" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#8a7266" stop-opacity=".25"/><stop offset="1" stop-color="#8a7266" stop-opacity="0"/></radialGradient>
   </defs>
-  <path class="metal" d="M300 40 L700 40 L700 150 L300 150 Z"/>
-  <rect class="eau" x="304" y="60" width="392" height="88"/>
-  <path class="fin" d="M320 150 L680 150"/>
-  <path class="fin" d="M340 146 L660 146" stroke-dasharray="3 5"/>
-  <rect class="fin" x="298" y="150" width="46" height="12"/>
-  <rect class="fin" x="656" y="150" width="46" height="12"/>
-  <g id="fissures" opacity="0" stroke="var(--retard)" stroke-width="1.8" fill="none">
-    <path d="M304 152 L308 156 L304 160 M316 152 L320 156 L316 160
-             M328 152 L332 156 L328 160 M662 152 L666 156 L662 160
-             M676 152 L680 156 L676 160 M690 152 L694 156 L690 160"/>
+  <defs>
+    <pattern id="j-hachure" width="16" height="16" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="16" height="16" fill="#E6E0D9"/><line x1="0" y1="0" x2="0" y2="16" stroke="#2b2825" stroke-width="2.5" opacity=".5"/></pattern>
+    <pattern id="j-hachureRouge" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><rect width="12" height="12" fill="#e07058"/><line x1="0" y1="0" x2="0" y2="12" stroke="#8f2c1a" stroke-width="2" opacity=".55"/></pattern>
+    <pattern id="j-hachureJoint" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><rect width="12" height="12" fill="#6e6460"/><line x1="0" y1="0" x2="0" y2="12" stroke="#2b2825" stroke-width="2" opacity=".6"/></pattern>
+    <linearGradient id="j-cyl" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#b3a9a1"/><stop offset=".22" stop-color="#ddd6cf"/><stop offset=".6" stop-color="#f4f0ec"/><stop offset=".85" stop-color="#d6cec7"/><stop offset="1" stop-color="#a79d95"/></linearGradient>
+    <linearGradient id="j-cylSombre" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#3a3431"/><stop offset=".55" stop-color="#7a6f6a"/><stop offset="1" stop-color="#3a3431"/></linearGradient>
+    <linearGradient id="j-eau" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#d9e2e3"/><stop offset="1" stop-color="#b9cbcf"/></linearGradient>
+    <linearGradient id="j-eauDessus" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#c9d7da"/><stop offset=".6" stop-color="#eef3f3"/><stop offset="1" stop-color="#c3d2d6"/></linearGradient>
+    <linearGradient id="j-cafe" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#a0724c"/><stop offset="1" stop-color="#5a3b26"/></linearGradient>
+    <linearGradient id="j-cafeDessus" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#8a603f"/><stop offset=".6" stop-color="#bf916b"/><stop offset="1" stop-color="#865c3c"/></linearGradient>
+    <linearGradient id="j-couvercle" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#e0d9d2"/><stop offset=".55" stop-color="#f8f5f2"/><stop offset="1" stop-color="#d6cec7"/></linearGradient>
+    <linearGradient id="j-ombreBas" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#2b2825" stop-opacity=".22"/><stop offset="1" stop-color="#2b2825" stop-opacity="0"/></linearGradient>
+    <linearGradient id="j-ombreHaut" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#2b2825" stop-opacity="0"/><stop offset="1" stop-color="#2b2825" stop-opacity=".25"/></linearGradient>
+    <radialGradient id="j-sol" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#8a7266" stop-opacity=".25"/><stop offset="1" stop-color="#8a7266" stop-opacity="0"/></radialGradient>
+  </defs>
+  <!-- Le dessin « en tranche » (Claude Design, Coupe Joint 3D), à l'échelle de
+       l'animation : ses unités × .3, décalées de (388,7 ; −110). -->
+  <g transform="scale(.3) translate(388.7 -110)">
+    <ellipse cx="1278" cy="1470" rx="820" ry="55" fill="url(#j-sol)"/>
+    <!-- la chambre du haut : dessus du couvercle, paroi du fond, l'eau -->
+    <path d="M590,232 A688,56 0 0 1 1965,232 Z" fill="url(#j-couvercle)" stroke="#2b2825" stroke-width="6" stroke-linejoin="round"/>
+    <path d="M640,228 A638,48 0 0 1 1915,228" fill="none" stroke="#fff" stroke-width="3" opacity=".7"/>
+    <rect x="606" y="246" width="1344" height="350" fill="url(#j-cyl)"/>
+    <rect x="606" y="246" width="1344" height="60" fill="url(#j-ombreBas)"/>
+    <path d="M606,330 A672,54 0 0 1 1950,330 Z" fill="url(#j-eauDessus)" opacity=".95"/>
+    <path d="M606,330 A672,54 0 0 1 1950,330" fill="none" stroke="#9fb4b9" stroke-width="2"/>
+    <rect x="606" y="330" width="1344" height="266" fill="url(#j-eau)"/>
+    <line x1="730" y1="588" x2="1810" y2="588" stroke="#6b6f70" stroke-width="4" stroke-dasharray="14 14"/>
+    <path d="M590,232 H1965 V610 H590 Z M606,246 V598 H1950 V246 Z" fill="url(#j-hachure)" fill-rule="evenodd" stroke="#2b2825" stroke-width="6" stroke-linejoin="round"/>
+    <!-- le joint, vu par l'intérieur -->
+    <rect x="742" y="610" width="1072" height="40" fill="url(#j-cylSombre)"/>
+    <!-- le panier : paroi du fond -->
+    <path d="M758,650 H1798 V1113 L1413,1318 V1440 H1143 V1318 L758,1113 Z" fill="url(#j-cyl)"/>
+    <rect x="758" y="650" width="1040" height="90" fill="url(#j-ombreBas)"/>
+    <path d="M758,1113 H1798 L1413,1318 V1440 H1143 V1318 Z" fill="url(#j-ombreHaut)"/>
+    <path d="M758,1113 A520,42 0 0 1 1798,1113" fill="none" stroke="#2b2825" stroke-width="3" opacity=".35"/>
+    <path d="M1143,1318 A135,12 0 0 1 1413,1318" fill="none" stroke="#2b2825" stroke-width="3" opacity=".35"/>
+    <path d="M1143,1440 A135,12 0 0 1 1413,1440" fill="none" stroke="#2b2825" stroke-width="3" opacity=".45"/>
+    <!-- la galette -->
+    <ellipse cx="1278" cy="1062" rx="500" ry="34" fill="#2b2825" opacity=".12"/>
+    <path d="M790,698 A488,39 0 0 1 1766,698 Z" fill="url(#j-cafeDessus)" stroke="#6b4a33" stroke-width="2"/>
+    <rect x="790" y="698" width="976" height="357" fill="url(#j-cafe)" stroke="#5a3b26" stroke-width="2"/>
+    <rect id="litEau" x="790" y="698" width="976" height="357" fill="#8CC8DC" opacity="0"/>
+    <!-- les faces tranchées du porte-filtre -->
+    <path d="M550,650 H758 V1113 L1143,1318 V1440 H1127 V1332 L742,1127 V692 H550 Z" fill="url(#j-hachure)" stroke="#2b2825" stroke-width="6" stroke-linejoin="round"/>
+    <path d="M2006,650 H1798 V1113 L1413,1318 V1440 H1429 V1332 L1814,1127 V692 H2006 Z" fill="url(#j-hachure)" stroke="#2b2825" stroke-width="6" stroke-linejoin="round"/>
+    <!-- le joint tranché : gris quand il est souple ; la lèvre gauche rougit quand il cède -->
+    <rect x="590" y="610" width="152" height="40" fill="url(#j-hachureJoint)" stroke="#2b2825" stroke-width="3"/>
+    <rect x="1814" y="610" width="152" height="40" fill="url(#j-hachureJoint)" stroke="#2b2825" stroke-width="3"/>
+    <g id="fissures" opacity="0">
+      <rect x="590" y="610" width="152" height="40" fill="url(#j-hachureRouge)" stroke="#8f2c1a" stroke-width="3"/>
+      <g fill="none" stroke="#c8432a" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M607,618 L620,631 L607,644"/><path d="M648,618 L661,631 L648,644"/><path d="M689,618 L702,631 L689,644"/>
+        <path d="M1835,618 L1848,631 L1835,644"/><path d="M1883,618 L1896,631 L1883,644"/><path d="M1931,618 L1944,631 L1931,644"/>
+      </g>
+    </g>
+    <!-- les étiquettes -->
+    <polyline points="436,452 490,452 565,630" fill="none" stroke="#aa9c94" stroke-width="3"/>
+    <text x="424" y="470" text-anchor="end" font-family="IBM Plex Mono, monospace" font-weight="600" font-size="44" letter-spacing="6" fill="#6b5f58">JOINT</text>
+    <line x1="1745" y1="877" x2="2016" y2="877" stroke="#aa9c94" stroke-width="3"/>
+    <text x="2030" y="893" font-family="IBM Plex Mono, monospace" font-weight="600" font-size="44" letter-spacing="4" fill="#6b5f58">CAFÉ</text>
+    <g id="etiqFuite" opacity="0">
+      <text x="350" y="1125" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-weight="600" font-size="44" letter-spacing="6" fill="#c8432a">LA FUITE,</text>
+      <text x="350" y="1188" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-weight="600" font-size="44" letter-spacing="6" fill="#c8432a">QUI SIFFLE</text>
+    </g>
   </g>
+  <!-- ce que l'extraction anime, dans les unités de l'animation -->
   <rect id="fente" x="300" y="156" width="44" height="0" fill="var(--retard)" opacity=".75"/>
-  <path class="metal" d="M288 162 L344 162 L344 174 L288 174 Z"/>
-  <path class="metal" d="M656 162 L712 162 L712 174 L656 174 Z"/>
-  <path class="metal" d="M344 162 L344 300 L456 360 L544 360 L656 300 L656 162"/>
-  <path class="metal" d="M456 360 L456 392 L544 392 L544 360"/>
-  <rect class="lit" x="358" y="176" width="284" height="104"/>
-  <rect class="eau" id="litEau" x="358" y="176" width="284" height="104" opacity="0"/>
-  <rect class="fin" x="358" y="176" width="284" height="104"/>
   <path class="flux" id="fluxBed" visibility="hidden" d="M500 152 L500 176" stroke-width="0"/>
   <path class="flux fuite" id="fluxFuite" visibility="hidden" d="M322 164 L300 176 L246 214 L196 258" stroke-width="0"/>
   <path class="flux filet" id="filet" visibility="hidden" d="M500 394 L500 470" stroke-width="0"/>
-  <path class="amen" d="M292 156 L240 120 L196 120"/>
-  <text class="etiq" x="190" y="115" text-anchor="end">joint</text>
-  <path class="amen" d="M636 228 L700 228 L724 228"/>
-  <text class="etiq" x="728" y="232">café</text>
-  <g id="etiqFuite" opacity="0">
-    <text class="etiq m" x="206" y="300" text-anchor="middle">la fuite,</text>
-    <text class="etiq m" x="206" y="318" text-anchor="middle">qui siffle</text>
-  </g>
 </svg>
 </div>
 <div class="coupe" data-panne="douchette">
@@ -566,6 +688,21 @@ h1{font-family:var(--titre);font-weight:400;color:var(--acide);margin:0;font-siz
       <stop offset="0" stop-color="#9A6A3F"/><stop offset=".55" stop-color="#6E4424"/><stop offset="1" stop-color="#4E2F17"/></linearGradient>
     <linearGradient id="g-eau" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0" stop-color="#8CC8DC"/><stop offset="1" stop-color="#3C8FAE"/></linearGradient>
+    <pattern id="t-hachure" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="5" height="5" fill="#E6E0D9"/><line x1="0" y1="0" x2="0" y2="5" stroke="#2b2825" stroke-width=".9" opacity=".5"/></pattern>
+    <pattern id="t-hachureJoint" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><rect width="4" height="4" fill="#6e6460"/><line x1="0" y1="0" x2="0" y2="4" stroke="#2b2825" stroke-width=".7" opacity=".6"/></pattern>
+    <linearGradient id="t-cyl" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#b3a9a1"/><stop offset=".22" stop-color="#ddd6cf"/><stop offset=".6" stop-color="#f4f0ec"/><stop offset=".85" stop-color="#d6cec7"/><stop offset="1" stop-color="#a79d95"/></linearGradient>
+    <linearGradient id="t-cylH" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#b3a9a1"/><stop offset=".25" stop-color="#ddd6cf"/><stop offset=".55" stop-color="#f4f0ec"/><stop offset=".85" stop-color="#d6cec7"/><stop offset="1" stop-color="#a79d95"/></linearGradient>
+    <linearGradient id="t-acierH" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#6f6863"/><stop offset=".35" stop-color="#c9c2bc"/><stop offset=".55" stop-color="#eeeae6"/><stop offset="1" stop-color="#5f5853"/></linearGradient>
+    <linearGradient id="t-cylSombre" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#3a3431"/><stop offset=".55" stop-color="#7a6f6a"/><stop offset="1" stop-color="#3a3431"/></linearGradient>
+    <linearGradient id="t-eau" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#d9e2e3"/><stop offset="1" stop-color="#b9cbcf"/></linearGradient>
+    <linearGradient id="t-eauDessus" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#c9d7da"/><stop offset=".6" stop-color="#eef3f3"/><stop offset="1" stop-color="#c3d2d6"/></linearGradient>
+    <linearGradient id="t-cafeDessus" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#8a603f"/><stop offset=".6" stop-color="#bf916b"/><stop offset="1" stop-color="#865c3c"/></linearGradient>
+    <linearGradient id="t-couvercle" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#e0d9d2"/><stop offset=".55" stop-color="#f8f5f2"/><stop offset="1" stop-color="#d6cec7"/></linearGradient>
+    <linearGradient id="t-ombreBas" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#2b2825" stop-opacity=".22"/><stop offset="1" stop-color="#2b2825" stop-opacity="0"/></linearGradient>
+    <linearGradient id="t-ombreHaut" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#2b2825" stop-opacity="0"/><stop offset="1" stop-color="#2b2825" stop-opacity=".25"/></linearGradient>
+    <linearGradient id="t-verre" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#cfd8da"/><stop offset=".35" stop-color="#ffffff"/><stop offset=".7" stop-color="#e8eef0"/><stop offset="1" stop-color="#b8c4c7"/></linearGradient>
+    <radialGradient id="t-chrome" cx=".4" cy=".35" r=".7"><stop offset="0" stop-color="#ffffff"/><stop offset=".55" stop-color="#d4ccc6"/><stop offset="1" stop-color="#8d8580"/></radialGradient>
+    <radialGradient id="t-sol" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#8a7266" stop-opacity=".25"/><stop offset="1" stop-color="#8a7266" stop-opacity="0"/></radialGradient>
   </defs>
   <defs>
     <pattern id="hSec" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
@@ -573,33 +710,50 @@ h1{font-family:var(--titre);font-weight:400;color:var(--acide);margin:0;font-siz
     </pattern>
     <clipPath id="cLit"><rect x="240" y="176" width="528" height="126"/></clipPath>
   </defs>
-  <path class="metal" d="M214 60 L214 128 M794 60 L794 128 M214 60 L794 60"/>
-  <text class="etiq" x="504" y="100" text-anchor="middle" style="opacity:.8">eau chaude</text>
-  <rect class="eau" x="216" y="62" width="576" height="64"/>
-  <path class="metal" d="M208 128 L800 128 L800 146 L208 146 Z"/>
+  <ellipse class="sol" cx="504" cy="428" rx="330" ry="16"/>
+  <!-- la chambre du groupe : dessus, paroi du fond, l'eau chaude -->
+  <path class="couvercle" d="M208,54 A296,13 0 0 1 800,54 Z"/>
+  <rect class="fond" x="214" y="60" width="580" height="68"/>
+  <rect x="214" y="60" width="580" height="14" fill="url(#t-ombreBas)"/>
+  <path class="eauDessus" d="M214,72 A290,9 0 0 1 794,72 Z"/>
+  <rect class="eau3" x="214" y="72" width="580" height="56"/>
+  <text class="etiq" x="504" y="104" text-anchor="middle" style="opacity:.8">eau chaude</text>
+  <path class="tranche" d="M208,54 H800 V128 H794 V60 H214 V128 H208 Z"/>
+  <!-- la douchette, tranchée : ses trous -->
+  <rect class="tranche" x="208" y="128" width="592" height="18"/>
   <g id="trous"></g>
+  <!-- le joint, entre le groupe et le panier -->
+  <rect x="234" y="146" width="540" height="14" fill="url(#t-cylSombre)"/>
+  <rect class="joint-t" x="208" y="146" width="26" height="14"/>
+  <rect class="joint-t" x="774" y="146" width="26" height="14"/>
+  <!-- le panier : paroi du fond, puis le lit -->
+  <path class="fond" d="M234,160 L774,160 L774,316 L528,371 L528,404 L480,404 L480,371 L234,316 Z"/>
+  <rect x="234" y="160" width="540" height="22" fill="url(#t-ombreBas)"/>
+  <path d="M234,316 L774,316 L528,371 L528,404 L480,404 L480,371 Z" fill="url(#t-ombreHaut)"/>
+  <path class="arete" d="M234,316 A270,16 0 0 1 774,316"/>
+  <path class="arete" d="M480,371 A24,3 0 0 1 528,371"/>
   <g id="jets"></g>
-  <path class="metal" d="M224 166 L224 322 L470 378 L538 378 L784 322 L784 166"/>
-  <path class="fin" d="M240 166 L240 302 M768 166 L768 302"/>
+  <path class="cafeDessus" d="M240,176 A264,11 0 0 1 768,176 Z"/>
   <g clip-path="url(#cLit)">
     <rect class="lit" x="240" y="176" width="528" height="126"/>
     <g id="litEau"></g>
     <g id="litSur"></g>
     <g id="litSec"></g>
   </g>
-  <rect class="fin" x="240" y="176" width="528" height="126"/>
-  <path class="metal" d="M470 378 L470 404 L538 404 L538 378"/>
+  <!-- les faces tranchées du panier -->
+  <path class="tranche" d="M196,160 L234,160 L234,316 L480,371 L480,404 L470,404 L470,379 L224,323 L224,172 L196,172 Z"/>
+  <path class="tranche" d="M812,160 L774,160 L774,316 L528,371 L528,404 L538,404 L538,379 L784,323 L784,172 L812,172 Z"/>
   <path class="jet filet" id="filet" visibility="hidden" d="M504 406 L504 476" stroke-width="0"/>
   <path class="amen" d="M806 137 L826 137"/>
   <text class="etiq" x="832" y="141">douchette</text>
   <path class="amen" d="M774 239 L826 239"/>
   <text class="etiq" x="832" y="243">café</text>
   <g id="etiqMal" style="opacity:0">
-    <path class="amen" d="M236 126 L236 104"/>
-    <text class="etiq m" x="222" y="98">trous bouchés</text>
+    <path class="amen" d="M240 128 L240 104"/>
+    <text class="etiq m" x="226" y="98">trous bouchés</text>
   </g>
-  <g id="etiqSec" style="opacity:0"><text class="etiq m" x="360" y="340" text-anchor="middle">jamais touché</text></g>
-  <g id="etiqSur" style="opacity:0"><text class="etiq m" x="690" y="340" text-anchor="middle">lessivé deux fois</text></g>
+  <g id="etiqSec" style="opacity:0"><text class="etiq m" x="360" y="346" text-anchor="middle">jamais touché</text></g>
+  <g id="etiqSur" style="opacity:0"><text class="etiq m" x="650" y="346" text-anchor="middle">lessivé deux fois</text></g>
 </svg>
 </div>
 <div class="coupe" data-panne="chaudiere">
@@ -610,22 +764,55 @@ h1{font-family:var(--titre);font-weight:400;color:var(--acide);margin:0;font-siz
       <stop offset="0" stop-color="#9A6A3F"/><stop offset=".55" stop-color="#6E4424"/><stop offset="1" stop-color="#4E2F17"/></linearGradient>
     <linearGradient id="g-eau" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0" stop-color="#8CC8DC"/><stop offset="1" stop-color="#3C8FAE"/></linearGradient>
+    <pattern id="t-hachure" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="5" height="5" fill="#E6E0D9"/><line x1="0" y1="0" x2="0" y2="5" stroke="#2b2825" stroke-width=".9" opacity=".5"/></pattern>
+    <pattern id="t-hachureJoint" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><rect width="4" height="4" fill="#6e6460"/><line x1="0" y1="0" x2="0" y2="4" stroke="#2b2825" stroke-width=".7" opacity=".6"/></pattern>
+    <linearGradient id="t-cyl" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#b3a9a1"/><stop offset=".22" stop-color="#ddd6cf"/><stop offset=".6" stop-color="#f4f0ec"/><stop offset=".85" stop-color="#d6cec7"/><stop offset="1" stop-color="#a79d95"/></linearGradient>
+    <linearGradient id="t-cylH" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#b3a9a1"/><stop offset=".25" stop-color="#ddd6cf"/><stop offset=".55" stop-color="#f4f0ec"/><stop offset=".85" stop-color="#d6cec7"/><stop offset="1" stop-color="#a79d95"/></linearGradient>
+    <linearGradient id="t-acierH" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#6f6863"/><stop offset=".35" stop-color="#c9c2bc"/><stop offset=".55" stop-color="#eeeae6"/><stop offset="1" stop-color="#5f5853"/></linearGradient>
+    <linearGradient id="t-cylSombre" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#3a3431"/><stop offset=".55" stop-color="#7a6f6a"/><stop offset="1" stop-color="#3a3431"/></linearGradient>
+    <linearGradient id="t-eau" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#d9e2e3"/><stop offset="1" stop-color="#b9cbcf"/></linearGradient>
+    <linearGradient id="t-eauDessus" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#c9d7da"/><stop offset=".6" stop-color="#eef3f3"/><stop offset="1" stop-color="#c3d2d6"/></linearGradient>
+    <linearGradient id="t-cafeDessus" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#8a603f"/><stop offset=".6" stop-color="#bf916b"/><stop offset="1" stop-color="#865c3c"/></linearGradient>
+    <linearGradient id="t-couvercle" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#e0d9d2"/><stop offset=".55" stop-color="#f8f5f2"/><stop offset="1" stop-color="#d6cec7"/></linearGradient>
+    <linearGradient id="t-ombreBas" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#2b2825" stop-opacity=".22"/><stop offset="1" stop-color="#2b2825" stop-opacity="0"/></linearGradient>
+    <linearGradient id="t-ombreHaut" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#2b2825" stop-opacity="0"/><stop offset="1" stop-color="#2b2825" stop-opacity=".25"/></linearGradient>
+    <linearGradient id="t-verre" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#cfd8da"/><stop offset=".35" stop-color="#ffffff"/><stop offset=".7" stop-color="#e8eef0"/><stop offset="1" stop-color="#b8c4c7"/></linearGradient>
+    <radialGradient id="t-chrome" cx=".4" cy=".35" r=".7"><stop offset="0" stop-color="#ffffff"/><stop offset=".55" stop-color="#d4ccc6"/><stop offset="1" stop-color="#8d8580"/></radialGradient>
+    <radialGradient id="t-sol" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#8a7266" stop-opacity=".25"/><stop offset="1" stop-color="#8a7266" stop-opacity="0"/></radialGradient>
   </defs>
-  <path class="metal" d="M110 50 L400 50 L400 140 L110 140 Z"/>
-  <rect class="eau" x="114" y="66" width="282" height="72"/>
-  <path class="metal" d="M130 140 L380 140"/>
-  <path class="metal" d="M118 150 L118 288 L226 336 L284 336 L392 288 L392 150"/>
+  <ellipse class="sol" cx="255" cy="400" rx="170" ry="11"/>
+  <!-- la chambre du groupe : dessus, paroi du fond, l'eau -->
+  <path class="couvercle" d="M110,50 A145,8 0 0 1 400,50 Z"/>
+  <rect class="fond" x="116" y="56" width="278" height="80"/>
+  <rect x="116" y="56" width="278" height="14" fill="url(#t-ombreBas)"/>
+  <path class="eauDessus" d="M116,68 A139,7 0 0 1 394,68 Z"/>
+  <rect class="eau3" x="116" y="68" width="278" height="66"/>
+  <path class="tranche" d="M110,50 H400 V140 H394 V56 H116 V140 H110 Z"/>
+  <!-- la douchette, puis le joint -->
+  <rect class="tranche" x="116" y="134" width="278" height="8"/>
+  <rect x="128" y="142" width="254" height="8" fill="url(#t-cylSombre)"/>
+  <rect class="joint-t" x="110" y="142" width="18" height="8"/>
+  <rect class="joint-t" x="382" y="142" width="18" height="8"/>
+  <!-- le panier : paroi du fond, le lit -->
+  <path class="fond" d="M128,150 L382,150 L382,282 L280,327 L280,364 L230,364 L230,327 L128,282 Z"/>
+  <rect x="128" y="150" width="254" height="16" fill="url(#t-ombreBas)"/>
+  <path d="M128,282 L382,282 L280,327 L280,364 L230,364 L230,327 Z" fill="url(#t-ombreHaut)"/>
+  <path class="arete" d="M128,282 A127,9 0 0 1 382,282"/>
+  <path class="arete" d="M230,327 A25,2.5 0 0 1 280,327"/>
+  <path class="cafeDessus" d="M132,158 A123,7 0 0 1 378,158 Z"/>
   <rect class="lit" x="132" y="158" width="246" height="96"/>
-  <rect class="fin" x="132" y="158" width="246" height="96"/>
-  <path class="metal" d="M226 336 L226 364 L284 364 L284 336"/>
+  <path class="tranche" d="M104,150 L128,150 L128,282 L230,327 L230,364 L226,364 L226,336 L118,288 L118,160 L104,160 Z"/>
+  <path class="tranche" d="M406,150 L382,150 L382,282 L280,327 L280,364 L284,364 L284,336 L392,288 L392,160 L406,160 Z"/>
   <path class="flux filet" id="filet" visibility="hidden" d="M255 366 L255 462" stroke-width="6"/>
   <g class="amen"><path d="M255 292 L200 316 L168 316"/></g>
   <text class="etiq" x="162" y="320" text-anchor="end">café</text>
+  <!-- le thermomètre : un tube de verre, son réservoir -->
   <g transform="translate(452,0)">
-    <rect class="fin" x="-11" y="70" width="22" height="212" rx="11"/>
-    <circle class="fin" cx="0" cy="300" r="20"/>
+    <rect x="-11" y="70" width="22" height="212" rx="11" fill="url(#t-verre)" stroke="#2b2825" stroke-width="1.4"/>
+    <circle cx="0" cy="300" r="20" fill="url(#t-verre)" stroke="#2b2825" stroke-width="1.4"/>
     <rect class="merc" id="colonne" x="-6" y="200" width="12" height="102"/>
     <circle class="merc" id="bulbe" cx="0" cy="300" r="15"/>
+    <path d="M-6,80 V270" stroke="#fff" stroke-width="2.5" stroke-linecap="round" opacity=".7"/>
     <g id="grads"></g>
     <text class="etiq" x="-4" y="348" text-anchor="middle">eau au groupe</text>
   </g>
@@ -639,26 +826,49 @@ h1{font-family:var(--titre);font-weight:400;color:var(--acide);margin:0;font-siz
       <stop offset="0" stop-color="#9A6A3F"/><stop offset=".55" stop-color="#6E4424"/><stop offset="1" stop-color="#4E2F17"/></linearGradient>
     <linearGradient id="g-eau" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0" stop-color="#8CC8DC"/><stop offset="1" stop-color="#3C8FAE"/></linearGradient>
+    <pattern id="t-hachure" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="5" height="5" fill="#E6E0D9"/><line x1="0" y1="0" x2="0" y2="5" stroke="#2b2825" stroke-width=".9" opacity=".5"/></pattern>
+    <pattern id="t-hachureJoint" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><rect width="4" height="4" fill="#6e6460"/><line x1="0" y1="0" x2="0" y2="4" stroke="#2b2825" stroke-width=".7" opacity=".6"/></pattern>
+    <linearGradient id="t-cyl" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#b3a9a1"/><stop offset=".22" stop-color="#ddd6cf"/><stop offset=".6" stop-color="#f4f0ec"/><stop offset=".85" stop-color="#d6cec7"/><stop offset="1" stop-color="#a79d95"/></linearGradient>
+    <linearGradient id="t-cylH" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#b3a9a1"/><stop offset=".25" stop-color="#ddd6cf"/><stop offset=".55" stop-color="#f4f0ec"/><stop offset=".85" stop-color="#d6cec7"/><stop offset="1" stop-color="#a79d95"/></linearGradient>
+    <linearGradient id="t-acierH" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#6f6863"/><stop offset=".35" stop-color="#c9c2bc"/><stop offset=".55" stop-color="#eeeae6"/><stop offset="1" stop-color="#5f5853"/></linearGradient>
+    <linearGradient id="t-cylSombre" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#3a3431"/><stop offset=".55" stop-color="#7a6f6a"/><stop offset="1" stop-color="#3a3431"/></linearGradient>
+    <linearGradient id="t-eau" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#d9e2e3"/><stop offset="1" stop-color="#b9cbcf"/></linearGradient>
+    <linearGradient id="t-eauDessus" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#c9d7da"/><stop offset=".6" stop-color="#eef3f3"/><stop offset="1" stop-color="#c3d2d6"/></linearGradient>
+    <linearGradient id="t-cafeDessus" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#8a603f"/><stop offset=".6" stop-color="#bf916b"/><stop offset="1" stop-color="#865c3c"/></linearGradient>
+    <linearGradient id="t-couvercle" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#e0d9d2"/><stop offset=".55" stop-color="#f8f5f2"/><stop offset="1" stop-color="#d6cec7"/></linearGradient>
+    <linearGradient id="t-ombreBas" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#2b2825" stop-opacity=".22"/><stop offset="1" stop-color="#2b2825" stop-opacity="0"/></linearGradient>
+    <linearGradient id="t-ombreHaut" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#2b2825" stop-opacity="0"/><stop offset="1" stop-color="#2b2825" stop-opacity=".25"/></linearGradient>
+    <linearGradient id="t-verre" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#cfd8da"/><stop offset=".35" stop-color="#ffffff"/><stop offset=".7" stop-color="#e8eef0"/><stop offset="1" stop-color="#b8c4c7"/></linearGradient>
+    <radialGradient id="t-chrome" cx=".4" cy=".35" r=".7"><stop offset="0" stop-color="#ffffff"/><stop offset=".55" stop-color="#d4ccc6"/><stop offset="1" stop-color="#8d8580"/></radialGradient>
+    <radialGradient id="t-sol" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#8a7266" stop-opacity=".25"/><stop offset="1" stop-color="#8a7266" stop-opacity="0"/></radialGradient>
   </defs>
-  <path class="metal" d="M644 470 L644 306"/>
-  <path class="metal" d="M676 470 L676 306"/>
+  <ellipse class="sol" cx="440" cy="338" rx="360" ry="13"/>
+  <!-- l'arrivée d'eau, par en dessous : le tuyau tranché -->
+  <rect class="fond" x="644" y="306" width="32" height="164"/>
+  <rect class="tranche" x="638" y="320" width="6" height="150"/>
+  <rect class="tranche" x="676" y="320" width="6" height="150"/>
   <path class="flux" id="fluxIn" d="M660 466 L660 292"/>
-  <rect class="metal plein" x="120" y="150" width="520" height="170" rx="6"/>
-  <rect class="fin" x="120" y="190" width="590" height="90"/>
+  <!-- le corps : l'alésage vu par l'intérieur, les parois tranchées -->
+  <rect class="fondH" x="122" y="190" width="588" height="90"/>
+  <rect x="122" y="190" width="588" height="14" fill="url(#t-ombreBas)"/>
+  <rect x="122" y="266" width="588" height="14" fill="url(#t-ombreHaut)"/>
+  <path class="tranche" d="M126,150 H640 V190 H120 V156 Q120,150 126,150 Z"/>
+  <path class="tranche" d="M120,280 H640 V320 H126 Q120,320 120,314 Z"/>
+  <path class="tranche" d="M640,150 H710 V190 H640 Z"/>
+  <path class="tranche" d="M640,280 H644 V320 H640 Z M676,280 H710 V320 H676 Z"/>
   <g id="bobine">
-    <rect class="fin" x="200" y="154" width="160" height="34"/>
-    <rect class="fin" x="200" y="282" width="160" height="34"/>
+    <rect x="200" y="154" width="160" height="34" fill="#E3B38F" stroke="#2b2825" stroke-width="1.2"/>
+    <rect x="200" y="282" width="160" height="34" fill="#E3B38F" stroke="#2b2825" stroke-width="1.2"/>
     <g class="hach" id="hachBob"></g>
   </g>
   <rect class="eau" id="chambre" x="390" y="192" width="294" height="86"/>
   <polyline class="fin" id="ressort" points=""/>
   <line class="metal" x1="122" y1="192" x2="122" y2="278"/>
   <g id="piston">
-    <rect class="metal fer" x="0" y="192" width="130" height="86" rx="3"/>
+    <rect x="0" y="192" width="130" height="86" rx="3" fill="url(#t-acierH)" stroke="#2b2825" stroke-width="1.8"/>
     <line class="fin" x1="16" y1="192" x2="16" y2="278"/>
     <line class="fin" x1="114" y1="192" x2="114" y2="278"/>
   </g>
-  <path class="metal" d="M640 150 L710 150 L710 320 L640 320"/>
   <path class="fin" d="M676 302 L692 302"/>
   <g id="clapetA" transform="rotate(0,640,302)">
     <path class="metal" d="M640 302 L678 302"/>
@@ -671,12 +881,19 @@ h1{font-family:var(--titre);font-weight:400;color:var(--acide);margin:0;font-siz
     <path class="fin" d="M689 217 L689 255"/>
   </g>
   <circle cx="684" cy="214" r="3.6" fill="var(--acide)"/>
-  <path class="metal" d="M710 217 L1000 217 M710 253 L1000 253"/>
-  <path class="metal" d="M814 217 L814 172 M846 217 L846 172"/>
+  <!-- la sortie, et la dérivation du manomètre : tuyaux tranchés -->
+  <rect class="fondH" x="710" y="217" width="290" height="36"/>
+  <rect class="tranche" x="710" y="211" width="104" height="6"/>
+  <rect class="tranche" x="846" y="211" width="154" height="6"/>
+  <rect class="tranche" x="710" y="253" width="290" height="6"/>
+  <rect class="fond" x="814" y="166" width="32" height="51"/>
+  <rect class="tranche" x="808" y="166" width="6" height="45"/>
+  <rect class="tranche" x="846" y="166" width="6" height="45"/>
   <path class="flux" id="fluxOut" d="M714 235 L1000 235"/>
   <g transform="translate(830,100)">
-    <circle class="metal" cx="0" cy="0" r="72"/>
-    <circle class="fin" cx="0" cy="0" r="62"/>
+    <ellipse cx="4" cy="76" rx="70" ry="6" fill="#2b2825" opacity=".12"/>
+    <circle cx="0" cy="0" r="72" fill="url(#t-chrome)" stroke="#2b2825" stroke-width="1.8"/>
+    <circle cx="0" cy="0" r="62" fill="#FBF8F4" stroke="#2b2825" stroke-width="1"/>
     <path class="zone" id="cible" d=""/>
     <g id="grads"></g>
     <line class="grad" id="aiguillePompe" x1="0" y1="8" x2="0" y2="-52" stroke-width="3"/>
@@ -822,7 +1039,11 @@ const ZONES = {mano:"le manomètre",groupe:"le groupe",pf:"le porte-filtre et la
 // de l'étape se pose au-dessus : le moteur l'y met, et le bloc apparaît d'un
 // coup, collé à la coupe.
 //
-// creerFiche(id, spec) → { etat(nom), vedette(v), barre(i, v, mal), trace(pts) }
+// Le manomètre est toujours là, en cadran : grand dans la vedette quand la
+// pression EST l'indice (joint, pompe), petit à côté des gestes sinon. Il suit
+// la même aiguille que la façade : fiche.pression(bar) bouge les deux.
+//
+// creerFiche(id, spec) → { etat(nom), vedette(v), barre(i, v, mal), trace(pts), pression(bar) }
 //   spec.vedette : { sur, libelle, unite, attendu:[a,b], echelle:[min,max], pas,
 //                    zone, decimales, ecart:(v)=>texte|null }
 //   spec.barres  : { titre, legende, items:[{ nom, normal, max, unite, decimales }] }
@@ -831,10 +1052,42 @@ const ZONES = {mano:"le manomètre",groupe:"le groupe",pf:"le porte-filtre et la
 // ═══════════════════════════════════════════════════════════════════════════
 const virgule = (v, d = 0) => v.toFixed(d).replace(".", ",").replace("-", "−");
 
+// Un cadran de 0 à 12 bar sur 240°, centré en (100, 100).
+const BAR_MAX = 12;
+const angBar = b => -120 + Math.max(0, Math.min(BAR_MAX, b)) / BAR_MAX * 240;
+const ptCadran = (a, r) => [100 + r * Math.sin(a * Math.PI / 180), 100 - r * Math.cos(a * Math.PI / 180)]
+  .map(v => v.toFixed(1)).join(",");
+const arcCadran = (b1, b2, r) => {
+  const a1 = angBar(b1), a2 = angBar(b2);
+  return `M${ptCadran(a1, r)} A${r} ${r} 0 ${a2 - a1 > 180 ? 1 : 0} 1 ${ptCadran(a2, r)}`;
+};
+function cadranSVG(grand, zone) {
+  let g = "";
+  for (let b = 0; b <= BAR_MAX; b++) {
+    const long = b % 2 === 0, a = angBar(b);
+    g += `<line class="${long ? "f-cad-long" : "f-cad-court"}" x1="${ptCadran(a, long ? 64 : 70).split(",")[0]}" y1="${ptCadran(a, long ? 64 : 70).split(",")[1]}" x2="${ptCadran(a, 77).split(",")[0]}" y2="${ptCadran(a, 77).split(",")[1]}"/>`;
+    if (long && grand) {
+      const [x, y] = ptCadran(a, grand ? 50 : 48).split(",");
+      g += `<text class="f-cad-chif" x="${x}" y="${(+y + 5).toFixed(1)}">${b}</text>`;
+    }
+  }
+  return `<svg class="f-cadran ${grand ? "grand" : "mini"}" viewBox="0 0 200 ${grand ? 176 : 150}" aria-hidden="true">
+    <path class="f-cad-piste" d="${arcCadran(0, BAR_MAX, 86)}"/>
+    <path class="f-cad-zone" d="${arcCadran(zone[0], zone[1], 86)}"/>
+    ${g}
+    <g class="f-aig" data-r="aig"><line x1="100" y1="108" x2="100" y2="28"/></g>
+    <circle class="f-cad-pivot" cx="100" cy="100" r="7"/>
+    ${grand
+      ? `<text class="f-cad-val" x="100" y="150" data-r="nombre">—</text><text class="f-cad-unite" x="100" y="172">bar</text>`
+      : `<text class="f-cad-val" x="100" y="146" data-r="mval">—</text>`}
+  </svg>`;
+}
+
 function creerFiche(id, spec) {
   const bloc = document.querySelector(`.bloc[data-panne="${id}"]`);
   const V_ = spec.vedette, B_ = spec.barres, T_ = spec.trace;
   const [emin, emax] = V_.echelle;
+  const enCadran = V_.unite === "bar";
   const pc = v => Math.max(0, Math.min(100, (v - emin) / (emax - emin) * 100));
   let graduations = "";
   for (let v = emin; v <= emax + 1e-9; v += V_.pas)
@@ -846,7 +1099,10 @@ function creerFiche(id, spec) {
       <div class="f-haut">
         <section class="f-vedette">
           <p class="f-sur" data-r="vsur">${V_.sur}</p>
-          <div class="f-chiffre">
+          ${enCadran ? `<div class="f-cad-rang">
+            ${cadranSVG(true, V_.attendu)}
+            <span class="f-leg"><b>${V_.libelle}</b><span>attendu ${virgule(V_.attendu[0], V_.decimales ?? 0)} – ${virgule(V_.attendu[1], V_.decimales ?? 0)} ${V_.unite}</span><span class="f-ecart" data-r="ecart"></span></span>
+          </div>` : `<div class="f-chiffre">
             <span class="f-nombre" data-r="nombre">—</span><span class="f-unite">${V_.unite}</span>
             <span class="f-leg"><b>${V_.libelle}</b><span>attendu ${virgule(V_.attendu[0], V_.decimales ?? 0)} – ${virgule(V_.attendu[1], V_.decimales ?? 0)} ${V_.unite}<span class="f-ecart" data-r="ecart"></span></span></span>
           </div>
@@ -855,7 +1111,7 @@ function creerFiche(id, spec) {
             <span class="f-plein" data-r="plein"></span>
             <span class="f-curseur" data-r="curseur"></span>
           </div>
-          <div class="f-grad">${graduations}</div>
+          <div class="f-grad">${graduations}</div>`}
           ${T_ ? `<p class="f-sur f-sur-trace">${T_.titre}</p>
           <svg class="f-trace" viewBox="0 0 300 90" preserveAspectRatio="none" aria-hidden="true">
             <rect class="f-trace-zone" x="0" y="${90 - (T_.zone[1] - T_.echelle[0]) / (T_.echelle[1] - T_.echelle[0]) * 90}"
@@ -876,7 +1132,10 @@ function creerFiche(id, spec) {
       </div>
       <div class="f-gestes">
         <p class="f-sur" data-r="gsur"></p>
-        <div class="f-puces" data-r="puces"></div>
+        <div class="f-gestes-rang">
+          ${enCadran ? "" : `<figure class="f-mano">${cadranSVG(false, [8.5, 9.5])}<figcaption>Manomètre</figcaption></figure>`}
+          <div class="f-puces" data-r="puces"></div>
+        </div>
       </div>
     </div>`;
   const R = k => bloc.querySelector(`[data-r="${k}"]`);
@@ -895,10 +1154,12 @@ function creerFiche(id, spec) {
     vedette(v, mal) {
       R("nombre").textContent = v == null ? "—" : virgule(v, V_.decimales ?? 0);
       bloc.classList.toggle("f-mal", !!mal);
-      R("plein").style.width = (v == null ? 0 : pc(v)) + "%";
-      R("curseur").style.left = (v == null ? 0 : pc(v)) + "%";
+      if (!enCadran) {
+        R("plein").style.width = (v == null ? 0 : pc(v)) + "%";
+        R("curseur").style.left = (v == null ? 0 : pc(v)) + "%";
+      }
       const e = v == null || !V_.ecart ? null : V_.ecart(v);
-      R("ecart").innerHTML = e ? ` · <b>${e}</b>` : "";
+      R("ecart").innerHTML = e ? (enCadran ? `<b>${e}</b>` : ` · <b>${e}</b>`) : "";
     },
     barre(i, v, mal) {
       const b = B_.items[i];
@@ -906,6 +1167,11 @@ function creerFiche(id, spec) {
       R("bv" + i).classList.toggle("mal", !!mal);
       R("bp" + i).style.width = (v == null ? 0 : Math.max(0, Math.min(100, v / b.max * 100))) + "%";
       R("bp" + i).classList.toggle("mal", !!mal);
+    },
+    pression(bar) {
+      posAiguille(bar);
+      R("aig").setAttribute("transform", `rotate(${angBar(bar).toFixed(1)} 100 100)`);
+      if (!enCadran) R("mval").textContent = virgule(bar, 1);
     },
     trace(pts) {
       if (!T_) return;
@@ -1000,7 +1266,7 @@ const PANNES = [];
   }
 
   function peindre() {
-    posAiguille(etat && !fini ? pression(ts) : 0);
+    fiche.pression(etat && !fini ? pression(ts) : 0);
     const E = ETATS[etat || "reglee"], deb = (CIBLE_G / T_REF) / E.resist;
     const retenue = etat ? Math.min(26, (E.resist - 1) * 26 * Math.min(1, ts / 3)) : 0;
     el("retenue").setAttribute("height", retenue.toFixed(1));
@@ -1102,7 +1368,7 @@ const PANNES = [];
     const dec = (-ts * 46).toFixed(1);
     for (const id of ["fluxBed","filet","fluxFuite"]) el(id).style.strokeDashoffset = dec;
     el("litEau").style.opacity = Math.min(.3, ext * .33).toFixed(3);
-    posAiguille(bar);
+    fiche.pression(bar);
     if (!actif) return;
     // tir fini : la fiche garde la dernière lecture au lieu de retomber à zéro
     const lue = fini ? (trace[trace.length - 1]?.[1] ?? 0) : bar;
@@ -1207,7 +1473,7 @@ const PANNES = [];
   }
 
   function peindre(ms) {
-    posAiguille(etat && !fini ? pression(ts) : 0);
+    fiche.pression(etat && !fini ? pression(ts) : 0);
     if (!etat) return;
     let eau = "", sur = "", sec = "", somme = 0, nArr = 0, nSur = 0, nSec = 0;
     for (let i = 0; i < N; i++) somme += w[i];
@@ -1322,7 +1588,7 @@ const PANNES = [];
   }
 
   function peindre() {
-    posAiguille(etat && !fini ? pression(ts) : 0);
+    fiche.pression(etat && !fini ? pression(ts) : 0);
     const T = etat ? ETATS[etat].t : 92;
     const y = 282 - (T - 70) / 30 * 200;
     el("colonne").setAttribute("y", y.toFixed(1));
@@ -1454,7 +1720,7 @@ const PANNES = [];
     el("aiguillePompe").classList.toggle("mal", etat && bar < 8.5);
     el("barTxt").textContent = bar.toFixed(1).replace(".", ",") + " bar";
     el("barTxt").style.fill = etat && bar < 8.5 ? "var(--retard)" : "";
-    posAiguille(bar);                               // la même aiguille, sur la façade
+    fiche.pression(bar);                               // la même aiguille, sur la façade
     if (!etat) return;
     fiche.vedette(bar, bar < 8.5 && montee >= 1);
     fiche.trace(trace);
