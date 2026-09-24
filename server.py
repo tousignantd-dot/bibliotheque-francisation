@@ -16332,7 +16332,26 @@ JEU_DE_ROLE_SCENARIOS = {
 }
 
 
-def jeu_de_role_system(scenario_id, cas_id, role_eleve):
+# Le magasin de la Maison Francœur (trousse de vente au détail, 24 septembre
+# 2026). Le scénario n'est PAS recopié ici : il vit dans
+# build/contenu/entreprise-francoeur/clients.py, que lisent aussi l'écran de
+# l'employé et le générateur des portraits — une seule source. Chargé par son
+# chemin (le dossier porte un tiret, ce n'est pas un paquet), et protégé comme
+# `forge` : un fichier absent ne doit pas faire tomber le serveur, seulement
+# retirer ce scénario-là.
+try:
+    import importlib.util as _ilu
+    _spec = _ilu.spec_from_file_location(
+        "francoeur_clients",
+        os.path.join(BASE_DIR, "build", "contenu", "entreprise-francoeur", "clients.py"))
+    _francoeur = _ilu.module_from_spec(_spec)
+    _spec.loader.exec_module(_francoeur)
+    JEU_DE_ROLE_SCENARIOS["magasin"] = _francoeur.scenario_serveur()
+except Exception as _e:  # pragma: no cover
+    print(f"[WARN] scénario « magasin » non chargé : {_e}", flush=True)
+
+
+def jeu_de_role_system(scenario_id, cas_id, role_eleve, palier=None):
     """Consigne système du personnage joué par l'assistant.
 
     `role_eleve` est le rôle de l'ÉLÈVE ; l'assistant joue l'autre. Le texte
@@ -16376,6 +16395,12 @@ def jeu_de_role_system(scenario_id, cas_id, role_eleve):
         "Les sujets que la conversation doit couvrir : "
         + " · ".join(scenario["sujets"]) + ".\n"
         + scenario["cloture"]
+        # Le palier (scénarios qui en déclarent, le magasin seul pour l'instant) :
+        # il règle la longueur des répliques et la patience, pas le scénario.
+        # Ajouté EN FIN de consigne, pour que le début — le plus long — reste
+        # identique d'un palier à l'autre.
+        + ("\n\n" + scenario["paliers"][palier]
+           if palier and palier in scenario.get("paliers", {}) else "")
     )
 
 
@@ -20990,8 +21015,11 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         messages = jeu_de_role_messages(recu, role, scenario)
         premier_tour = not recu
 
+        # `niveau` : le palier du jeu (débutant · fonctionnel · à l'aise), pour
+        # les scénarios qui en ont. Ignoré ailleurs — les modules n'en envoient pas.
+        palier_jeu = body.get("niveau") if isinstance(body.get("niveau"), str) else None
         texte, err = self._call_anthropic_dialogue(
-            jeu_de_role_system(scenario, cas, role), messages,
+            jeu_de_role_system(scenario, cas, role, palier_jeu), messages,
             route="jeu-de-role", code=code, module=scenario)
         if err:
             json_response(self, {"error": err[0]}, err[1])
@@ -21060,6 +21088,11 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             voix = (VOIX_JEU_DE_ROLE["proprietaire"]
                     if body.get("role") == "locataire"
                     else VOIX_JEU_DE_ROLE["locataire"])
+            # Un scénario à plusieurs personnages (le magasin : huit clients,
+            # femmes et hommes) nomme la voix du personnage. Liste blanche :
+            # seules les deux voix du jeu de rôle sont acceptées.
+            if body.get("personnage") in ("jr_feminin", "jr_masculin"):
+                voix = body["personnage"]
 
         # Le cache passe avant la clé d'API : une classe garde la voix des
         # passages déjà lus même si la clé vient à manquer.

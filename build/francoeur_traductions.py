@@ -194,6 +194,22 @@ INTERFACE = {
     "palier_propose": "Niveau proposé pour le jeu de rôle",
     "pas_examen": "Ce n'est pas une note.",
     "refaire_test": "Refaire le test",
+    "magasin": "Le magasin",
+    "magasin_sous": "Des clients vous parlent. Vous répondez.",
+    "code_acces": "Votre code d'accès",
+    "code_aide": "Le code vous est donné par votre formateur.",
+    "entrer": "Entrer",
+    "niveau_jeu": "Niveau des clients",
+    "faire_test": "Faites d'abord le test « Mon niveau », ou choisissez :",
+    "choisir_client": "Choisissez un client.",
+    "ecouter_sans_lire": "Écouter sans lire",
+    "parler": "Parler",
+    "envoyer": "Envoyer",
+    "fini": "J'ai fini",
+    "bilan_titre": "Le bilan",
+    "vos_phrases": "Vos phrases, corrigées",
+    "gestes_titre": "Les gestes du vendeur — lesquels avez-vous faits ?",
+    "autre_client": "Un autre client",
 }
 
 

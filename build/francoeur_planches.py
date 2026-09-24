@@ -34,6 +34,7 @@ from francoeur_etape0 import TEINTES, MOTIFS  # noqa: E402
 from demandes import DEMANDES, COULEURS_DISTRACTRICES, TAILLES  # noqa: E402
 import random  # noqa: E402
 import test as TEST  # noqa: E402
+import clients as CLI  # noqa: E402
 
 CROQUIS = RACINE / "assets" / "interactive" / "francoeur" / "croquis"
 SONS = RACINE / "assets" / "interactive" / "francoeur" / "sons"
@@ -62,7 +63,23 @@ def donnees():
                 "mots": {k: [t["mot"], t["note"]] for k, t in v["mots"].items()}}
                for c, v in trad.items()]
     return {"planches": [{"k": k, "t": t} for k, t in PLANCHES], "mots": mots,
-            "langues": langues, "demandes": demandes(mots), "test": le_test(mots)}
+            "langues": langues, "demandes": demandes(mots), "test": le_test(mots),
+            "magasin": le_magasin()}
+
+
+def le_magasin():
+    """Les huit clients du jeu de rôle, lus dans clients.py — la même source que
+    le serveur. Un portrait manquant retombe sur le neutre."""
+    base = RACINE / "assets" / "interactive" / "francoeur" / "clients"
+    clients = []
+    for ident, nom, voix, paliers, carte, _portrait, _faits in CLI.CLIENTS:
+        assert (base / f"{ident}-neutre.jpg").exists(), f"portrait neutre manquant : {ident}"
+        clients.append({"id": ident, "nom": nom, "voix": voix, "paliers": paliers, "carte": carte,
+                        "p": {h: f"/assets/interactive/francoeur/clients/{ident}-"
+                                 f"{h if (base / f'{ident}-{h}.jpg').exists() else 'neutre'}.jpg?v={MEDIA_V}"
+                              for h in CLI.HUMEURS}})
+    return {"clients": clients, "gestes": CLI.GESTES, "debit": CLI.DEBIT_JEU,
+            "humeurs": CLI.HUMEURS}
 
 
 ETIQUETTE = {"tp": "TP", "p": "P", "m": "M", "g": "G", "tg": "TG"}
@@ -294,6 +311,30 @@ body{margin:0;background:var(--surface-page);color:var(--text-body);font-family:
 .bilan{text-align:center;padding:20px 0}
 .bilan .score{font-size:44px;font-weight:900;color:var(--text-strong)}
 
+/* Le magasin */
+.code{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:12px}
+.code input{font:inherit;font-size:20px;letter-spacing:.15em;text-transform:uppercase;width:10ch;padding:8px 10px;border-radius:10px;border:1px solid var(--line-300)}
+.clients{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px;margin-top:14px}
+.client{font:inherit;cursor:pointer;text-align:start;border:1px solid var(--line-200);background:var(--surface-card);border-radius:14px;padding:10px;display:flex;flex-direction:column;gap:6px}
+.client:hover{border-color:var(--mf-teinte)}
+.client img{width:100%;aspect-ratio:1/1;object-fit:cover;background:#fff;border-radius:10px}
+.client b{font-size:18px;color:var(--text-strong)}
+.scene{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:16px;margin-top:10px;align-items:start}
+.avatar{background:#fff;border:1px solid var(--line-200);border-radius:16px;padding:8px;position:sticky;top:8px}
+.avatar img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;border-radius:10px;transition:opacity .15s}
+.avatar .nom{text-align:center;font-weight:800;margin:6px 0 0}
+.fil{display:flex;flex-direction:column;gap:8px;min-height:120px}
+.bulle{max-width:88%;padding:10px 12px;border-radius:14px;line-height:1.4}
+.bulle.client{align-self:flex-start;background:var(--surface-card);border:1px solid var(--line-200)}
+.bulle.vous{align-self:flex-end;background:var(--mf-fond);color:var(--text-strong)}
+.bulle .qui{display:block;font-size:12px;font-weight:800;color:var(--text-muted);margin-bottom:2px}
+.fil.cache .bulle.client .txt{filter:blur(6px);user-select:none}
+.saisie{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.saisie input{flex:1;min-width:180px;font:inherit;font-size:17px;padding:10px 12px;border-radius:10px;border:1px solid var(--line-300)}
+.attente{color:var(--text-muted);font-weight:700}
+.bilan-gestes label{display:flex;gap:8px;align-items:flex-start;margin:6px 0}
+@media (max-width:760px){.scene{grid-template-columns:1fr}.avatar{position:static;max-width:260px;margin:0 auto}}
+
 /* Le test */
 .intro{max-width:620px}
 .intro p{margin:0 0 10px}
@@ -379,7 +420,16 @@ const FR = {choisir:"Choisissez votre langue", choisir_sous:"Les mots restent en
   resultat:"Votre résultat", palier_propose:"Niveau proposé pour le jeu de rôle",
   pas_examen:"Ce n'est pas une note.", premiere:"Première passation", aujourdhui:"Aujourd'hui",
   pour_formateur:"Pour le formateur", confirmer_palier:"Confirmer le niveau du jeu de rôle",
-  refaire_test:"Refaire le test"};
+  refaire_test:"Refaire le test",
+  magasin:"Le magasin", magasin_sous:"Des clients vous parlent. Vous répondez.",
+  code_acces:"Votre code d'accès", code_aide:"Le code vous est donné par votre formateur.",
+  entrer:"Entrer", niveau_jeu:"Niveau des clients", faire_test:"Faites d'abord le test « Mon niveau », ou choisissez :",
+  choisir_client:"Choisissez un client.", ecouter_sans_lire:"Écouter sans lire",
+  lire:"Lire", parler:"Parler", envoyer:"Envoyer", ecrire:"Ou écrivez votre réponse…",
+  fini:"J'ai fini", attente_client:"Le client réfléchit…", vous:"Vous",
+  bilan_titre:"Le bilan", client_part:"Le client est parti", vos_phrases:"Vos phrases, corrigées",
+  gestes_titre:"Les gestes du vendeur — lesquels avez-vous faits ?", autre_client:"Un autre client",
+  code_refuse:"Ce code n'est pas reconnu.", erreur_reseau:"Impossible de joindre le serveur."};
 const T = k => dit(k, FR[k]);
 const app = document.getElementById('app');
 let audio = null;
@@ -411,10 +461,12 @@ function ecranAccueil() {
     + '<div class="accueil">'
     + '<button type="button" class="porte" id="aRayons"><b>' + T('apprendre') + '</b><span>' + T('apprendre_sous') + '</span></button>'
     + '<button type="button" class="porte" id="aExos"><b>' + T('exercer') + '</b><span>' + T('exercer_sous') + '</span></button>'
-    + '<button type="button" class="porte" id="aTest"><b>' + T('test') + '</b><span>' + T('test_sous') + '</span></button></div>';
+    + '<button type="button" class="porte" id="aTest"><b>' + T('test') + '</b><span>' + T('test_sous') + '</span></button>'
+    + '<button type="button" class="porte" id="aMag"><b>' + T('magasin') + '</b><span>' + T('magasin_sous') + '</span></button></div>';
   document.getElementById('aRayons').onclick = ecranRayons;
   document.getElementById('aExos').onclick = ecranExercices;
   document.getElementById('aTest').onclick = ecranTest;
+  document.getElementById('aMag').onclick = ecranMagasin;
   document.getElementById('chLangue').onclick = ecranLangue;
   window.scrollTo(0, 0);
 }
@@ -798,6 +850,173 @@ function resultatTest() {
   window.scrollTo(0, 0);
 }
 window.__francoeur.test = () => X;
+/* ── Le magasin (étape 4) ──────────────────────────────────────────────
+   L'employé est le vendeur ; l'avatar est le client. La conversation passe par
+   /api/jeu-de-role (scénario « magasin », source build/contenu/…/clients.py) :
+   il faut un code d'élève ou de séance. Le client ouvre chaque réplique par
+   son humeur entre crochets ; l'écran la retire et change le visage. Le mot
+   FIN à la fin d'une réplique clôt la visite. Micro et voix ne tournent jamais
+   ensemble : ouvert, le micro dégrade la sortie audio de Chrome. */
+const M = D.magasin;
+let codeAcces = new URLSearchParams(location.search).get('code') || '';
+try { codeAcces = codeAcces || localStorage.getItem('francoeur-code') || ''; } catch(e) {}
+let niveauJeu = null;
+function niveauDuTest() { const h = histo(); const d = h[h.length - 1]; return d ? (d.confirme || d.palier) : null; }
+
+function ecranMagasin() {
+  niveauJeu = niveauJeu || niveauDuTest();
+  if (!codeAcces) {
+    app.innerHTML = tete(T('magasin'), T('code_aide'), true, 'accueil')
+      + '<div class="code"><label for="codeIn"><b>' + T('code_acces') + '</b></label><input id="codeIn" maxlength="8" autocomplete="off">'
+      + '<button type="button" class="mf-btn mf-btn--pri" id="codeOk"><span>' + T('entrer') + '</span></button></div>';
+    document.getElementById('codeOk').onclick = () => {
+      codeAcces = document.getElementById('codeIn').value.trim().toUpperCase();
+      if (!codeAcces) return;
+      try { localStorage.setItem('francoeur-code', codeAcces); } catch(e) {}
+      ecranMagasin();
+    };
+  } else {
+    const dispo = M.clients.filter(c => !niveauJeu || c.paliers.includes(niveauJeu));
+    app.innerHTML = tete(T('magasin'), T('choisir_client'), true, 'accueil')
+      + '<p style="margin:10px 0 4px"><b>' + T('niveau_jeu') + '</b>' + (niveauJeu ? '' : ' — ' + T('faire_test')) + '</p>'
+      + '<div class="choisir3" id="niv">' + D.test.paliers.map(p => '<button type="button" class="mf-btn" data-v="' + p.k + '" aria-pressed="' + (p.k === niveauJeu) + '">' + esc(p.t) + '</button>').join('') + '</div>'
+      + '<div class="clients">' + dispo.map(c => '<button type="button" class="client" data-c="' + c.id + '"><img src="' + c.p.neutre + '" alt=""><b>' + esc(c.nom) + '</b><span>' + esc(c.carte) + '</span></button>').join('') + '</div>';
+    app.querySelectorAll('#niv button').forEach(b => b.onclick = () => { niveauJeu = b.dataset.v; ecranMagasin(); });
+    app.querySelectorAll('[data-c]').forEach(b => b.onclick = () => { if (!niveauJeu) niveauJeu = 'debutant'; scene(b.dataset.c); });
+  }
+  document.getElementById('retour').onclick = ecranAccueil;
+  document.getElementById('chLangue').onclick = ecranLangue;
+  window.scrollTo(0, 0);
+}
+
+let S = null;   // la visite en cours
+function scene(id) {
+  const c = M.clients.find(x => x.id === id);
+  S = {c, hist: [], humeur: 'neutre', fini: false, sansLire: false};
+  app.innerHTML = tete(esc(c.nom), esc(c.carte), true, 'magasin')
+    + '<div class="scene"><div class="avatar"><img id="av" src="' + c.p.neutre + '" alt="' + esc(c.nom) + '"><p class="nom" id="hum"></p></div>'
+    + '<div><div class="choisir3"><button type="button" class="mf-btn" id="sansLire" aria-pressed="false"><span>' + T('ecouter_sans_lire') + '</span></button></div>'
+    + '<div class="fil" id="fil" aria-live="polite"></div>'
+    + '<div class="saisie"><button type="button" class="mf-btn rec" id="micro"><span>' + T('parler') + '</span></button>'
+    + '<input id="txt" placeholder="' + esc(FR.ecrire) + '"><button type="button" class="mf-btn mf-btn--pri" id="env"><span>' + T('envoyer') + '</span></button></div>'
+    + '<div class="suite"><button type="button" class="mf-btn" id="fin"><span>' + T('fini') + '</span></button></div>'
+    + '<p class="retro non" id="err"></p></div></div>';
+  document.getElementById('retour').onclick = () => { arreterTout(); ecranMagasin(); };
+  document.getElementById('chLangue').remove();
+  document.getElementById('sansLire').onclick = e => { S.sansLire = !S.sansLire; e.currentTarget.setAttribute('aria-pressed', String(S.sansLire)); document.getElementById('fil').classList.toggle('cache', S.sansLire); };
+  document.getElementById('env').onclick = () => envoyer(document.getElementById('txt').value);
+  document.getElementById('txt').onkeydown = e => { if (e.key === 'Enter') envoyer(e.target.value); };
+  document.getElementById('micro').onclick = micro;
+  document.getElementById('fin').onclick = bilanMagasin;
+  window.scrollTo(0, 0);
+  tour();   // le client parle le premier, après l'accueil
+}
+function bulle(qui, texte) {
+  const fil = document.getElementById('fil'); if (!fil) return;
+  const d = document.createElement('div'); d.className = 'bulle ' + qui;
+  d.innerHTML = '<span class="qui">' + (qui === 'vous' ? esc(FR.vous) : esc(S.c.nom)) + '</span><span class="txt">' + esc(texte) + '</span>';
+  fil.appendChild(d); d.scrollIntoView({block: 'nearest'});
+}
+function lireHumeur(t) {
+  let h = 'neutre', fin = false;
+  const m = t.match(/^\s*\[(neutre|contente?|hesitante?|hésitante?|impatiente?)\]\s*/i);
+  if (m) { h = m[1].toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/e?$/, 'e'); t = t.slice(m[0].length); }
+  if (!M.humeurs.includes(h)) h = 'neutre';
+  t = t.replace(/\[[^\]]*\]/g, '').trim();
+  if (/\bFIN\.?\s*$/.test(t)) { fin = true; t = t.replace(/\s*\bFIN\.?\s*$/, '').trim(); }
+  return {h, t, fin};
+}
+function montrerHumeur(h) { S.humeur = h; const av = document.getElementById('av'); if (av) av.src = S.c.p[h]; }
+async function tour() {
+  const err = document.getElementById('err'); err.textContent = '';
+  const attente = document.createElement('p'); attente.className = 'attente'; attente.textContent = FR.attente_client;
+  document.getElementById('fil').appendChild(attente);
+  try {
+    const r = await fetch('/api/jeu-de-role', {method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({code: codeAcces, scenario: 'magasin', cas: S.c.id, role: 'vendeur', niveau: niveauJeu, historique: S.hist})});
+    const d = await r.json().catch(() => ({}));
+    attente.remove();
+    if (!r.ok) {
+      if (r.status === 401) { codeAcces = ''; try { localStorage.removeItem('francoeur-code'); } catch(e) {} err.textContent = FR.code_refuse; }
+      else err.textContent = d.error || FR.erreur_reseau;
+      return;
+    }
+    if (d.ouverture) { S.hist.push({role: 'user', contenu: d.ouverture}); bulle('vous', d.ouverture); }
+    S.hist.push({role: 'assistant', contenu: d.reponse});
+    const {h, t, fin} = lireHumeur(d.reponse);
+    montrerHumeur(h); bulle('client', t); dire(t);
+    if (fin) { S.fini = true; setTimeout(bilanMagasin, 2500); }
+  } catch(e) { attente.remove(); err.textContent = FR.erreur_reseau; }
+}
+function envoyer(texte) {
+  texte = (texte || '').trim(); if (!texte || S.fini) return;
+  arreterTout();
+  document.getElementById('txt').value = '';
+  S.hist.push({role: 'user', contenu: texte}); bulle('vous', texte);
+  tour();
+}
+async function dire(t) {
+  if (!t) return;
+  try {
+    const palier = M.debit[niveauJeu] || null;
+    const r = await fetch('/api/voix', {method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({code: codeAcces, texte: t, role: 'vendeur', personnage: S.c.voix, palier})});
+    if (!r.ok) throw new Error();
+    const url = URL.createObjectURL(await r.blob());
+    if (audio) audio.pause();
+    audio = new Audio(url);
+    // Le serveur ralentit lui-même quand il le sait (en-tête X-Palier) ; sinon on étire ici.
+    if (palier && !r.headers.get('X-Palier')) { audio.preservesPitch = true; audio.playbackRate = 0.8; }
+    audio.play().catch(() => {});
+  } catch(e) {
+    // Repli : la voix du navigateur, jamais le silence.
+    try { const u = new SpeechSynthesisUtterance(t); u.lang = 'fr-CA'; speechSynthesis.speak(u); } catch(x) {}
+  }
+}
+let reco = null;
+function arreterTout() { if (audio) audio.pause(); try { speechSynthesis.cancel(); } catch(e) {} if (reco) { try { reco.abort(); } catch(e) {} reco = null; } }
+function micro() {
+  const R = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const b = document.getElementById('micro');
+  if (!R) { document.getElementById('err').textContent = FR.micro_refuse; return; }
+  if (reco) { reco.stop(); return; }
+  if (audio) audio.pause();
+  reco = new R(); reco.lang = 'fr-CA'; reco.interimResults = true; reco.continuous = false;
+  let dernier = '';
+  reco.onresult = e => { dernier = [...e.results].map(x => x[0].transcript).join(' '); document.getElementById('txt').value = dernier; };
+  reco.onend = () => { reco = null; b.innerHTML = '<span>' + T('parler') + '</span>'; if (dernier.trim()) envoyer(dernier); };
+  reco.onerror = () => { document.getElementById('err').textContent = FR.micro_refuse; };
+  reco.start(); b.innerHTML = '<span>' + T('arreter') + '</span>';
+}
+async function bilanMagasin() {
+  arreterTout();
+  const mes = S.hist.filter(m => m.role === 'user').map(m => m.contenu).slice(1);   // l'accueil n'est pas de l'employé
+  const partiContent = S.humeur === 'contente';
+  app.innerHTML = tete(T('bilan_titre'), '', true, 'magasin')
+    + '<div class="resultat"><div class="bloc" style="display:flex;gap:14px;align-items:center"><img src="' + S.c.p[S.humeur] + '" alt="" style="width:110px;border-radius:10px;background:#fff">'
+    + '<p style="margin:0">' + esc(FR.client_part) + ' : <b>' + esc(S.c.nom) + '</b></p></div>'
+    + '<div class="bloc"><b>' + T('vos_phrases') + '</b><div id="corr"><p class="attente">…</p></div></div>'
+    + '<div class="bloc bilan-gestes"><b>' + T('gestes_titre') + '</b>'
+    + M.gestes.map((g, i) => '<label><input type="checkbox"> <span>' + esc(g) + '</span></label>').join('') + '</div>'
+    + '<div><button type="button" class="mf-btn mf-btn--pri" id="autre"><span>' + T('autre_client') + '</span></button></div></div>';
+  document.getElementById('autre').onclick = ecranMagasin;
+  document.getElementById('retour').onclick = ecranMagasin;
+  document.getElementById('chLangue').onclick = ecranLangue;
+  const corr = document.getElementById('corr');
+  if (!mes.length) { corr.innerHTML = '<p>—</p>'; return; }
+  try {
+    const r = await fetch('/api/correct-french', {method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({code: codeAcces, text: mes.join(' '),
+        question: "Vous êtes vendeur dans un magasin de vêtements et vous répondez à un client."})});
+    const d = await r.json();
+    if (!r.ok) { corr.innerHTML = '<p>' + esc(d.error || FR.erreur_reseau) + '</p>'; return; }
+    corr.innerHTML = '<p style="font-size:18px;font-weight:700;color:var(--text-strong)">' + esc(d.corrige) + '</p>'
+      + (d.erreurs || []).map(e => '<p style="margin:4px 0">· ' + esc(e.explication) + '</p>').join('');
+  } catch(e) { corr.innerHTML = '<p>' + esc(FR.erreur_reseau) + '</p>'; }
+}
+window.__francoeur.magasin = () => S;
+window.__francoeur.lireHumeur = lireHumeur;
+
 
 
 if (langue) ecranAccueil(); else ecranLangue();
