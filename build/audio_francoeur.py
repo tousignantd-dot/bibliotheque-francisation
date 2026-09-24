@@ -57,6 +57,18 @@ HD = {"enseignante": "hd_feminin", "feminin_2": "hd_feminin",
       "masculin_1": "hd_masculin", "narrateur": "hd_masculin"}
 VOIX_MOTS = "hd_feminin"
 
+# LES PRONONCIATIONS CHOISIES À L'OREILLE (build/francoeur_reprises.py, choix de
+# Daniel du 24 septembre 2026). Le TEXTE ENVOYÉ À LA VOIX peut différer de ce
+# que l'écran affiche : une graphie qui ne peut se lire qu'en français empêche
+# la HD de basculer à l'anglaise. L'écran garde l'orthographe du lexique.
+# {id: (texte dit, rôle)} — un rôle neural (« enseignante ») est permis ici,
+# par exception à « HD partout », si c'est lui qui sonne juste.
+PRONONCIATION = {
+    "lin": ("le lin", "hd_feminin"),              # nouvelle prise HD retenue
+    "polyester": ("le polyestère", "hd_feminin"),
+    "rose": ("rôse", "hd_feminin"),
+}
+
 
 def main():
     ap = argparse.ArgumentParser()
@@ -74,7 +86,8 @@ def main():
     def un(e):
         dest = SORTIE / f"{e[0]}.mp3"
         try:
-            d = azure_voix.parle(e[2], VOIX_MOTS, dest, cle=cle, region=region,
+            texte, role = PRONONCIATION.get(e[0], (e[2], VOIX_MOTS))
+            d = azure_voix.parle(texte, role, dest, cle=cle, region=region,
                                  reference=azure_voix.TAUX_SONS)
             print("  %-16s %4.2f s  %s" % (e[0], d, e[2]), flush=True)
         except Exception as x:

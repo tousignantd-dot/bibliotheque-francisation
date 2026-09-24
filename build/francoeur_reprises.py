@@ -32,25 +32,19 @@ from lexique import LEXIQUE  # noqa: E402
 DEST = RACINE / "assets" / "interactive" / "francoeur" / "sons" / "_candidats"
 PAGE = RACINE / "assets" / "presentations" / "francoeur-reprises.html"
 
-# Signalés « à refaire » par Daniel sur la page d'écoute, le 24 septembre 2026.
+# Tour 1, 24 septembre 2026 — choix de Daniel posés dans audio_francoeur.py
+# (PRONONCIATION) : lin → 1, polyester → 2, rose → 3. Le denim : « aucune ne va ».
+# TOUR 2 : le denim seul, six nouvelles graphies. Les fichiers portent le tour
+# dans leur nom, pour ne pas écraser les candidats du tour 1.
+TOUR = "t2"
 # (id, [(étiquette, texte envoyé à la voix, rôle)])
 REPRISES = [
-    ("lin", [("HD, nouvelle prise", "le lin", "hd_feminin"),
-             ("HD, « du lin »", "du lin", "hd_feminin"),
-             ("HD, graphie « le lain »", "le lain", "hd_feminin"),
-             ("Neurale, Sylvie", "le lin", "enseignante")]),
-    ("polyester", [("HD, nouvelle prise", "le polyester", "hd_feminin"),
-                   ("HD, graphie « le polyestère »", "le polyestère", "hd_feminin"),
-                   ("HD, graphie « le poliestère »", "le poliestère", "hd_feminin"),
-                   ("Neurale, Sylvie", "le polyester", "enseignante")]),
-    ("denim", [("HD, nouvelle prise", "le denim", "hd_feminin"),
-               ("HD, graphie « le dénim »", "le dénim", "hd_feminin"),
-               ("HD, graphie « le dénime »", "le dénime", "hd_feminin"),
-               ("Neurale, Sylvie", "le denim", "enseignante")]),
-    ("rose", [("HD, nouvelle prise", "rose", "hd_feminin"),
-              ("HD, « Rose. »", "Rose.", "hd_feminin"),
-              ("HD, graphie « rôse »", "rôse", "hd_feminin"),
-              ("Neurale, Sylvie", "rose", "enseignante")]),
+    ("denim", [("HD, graphie « le denime »", "le denime", "hd_feminin"),
+               ("HD, graphie « le deunime »", "le deunime", "hd_feminin"),
+               ("HD, graphie « le dénimme »", "le dénimme", "hd_feminin"),
+               ("HD, « du denim »", "du denim", "hd_feminin"),
+               ("Neurale, Sylvie, « le dénim »", "le dénim", "enseignante"),
+               ("Neurale, Sylvie, « le denime »", "le denime", "enseignante")]),
 ]
 
 
@@ -61,7 +55,7 @@ def produire():
 
     def un(x):
         i, n, t, r = x
-        d = azure_voix.parle(t, r, DEST / f"{i}-{n}.mp3", cle=cle, region=region,
+        d = azure_voix.parle(t, r, DEST / f"{i}-{TOUR}-{n}.mp3", cle=cle, region=region,
                              reference=azure_voix.TAUX_SONS)
         print(f"  {i:10} {n}  {d:4.2f} s  {r:12} {t}", flush=True)
 
@@ -85,17 +79,18 @@ def page():
     blocs = "".join(
         f'<div class="mot-r" data-id="{i}"><h2>{E(mots[i])}</h2>'
         + "".join(f'<div class="cand"><label><input type="radio" name="{i}" value="{n}"> {E(e)}</label>'
-                  f'<audio controls preload="none" src="/assets/interactive/francoeur/sons/_candidats/{i}-{n}.mp3?v=1"></audio></div>'
+                  f'<audio controls preload="none" src="/assets/interactive/francoeur/sons/_candidats/{i}-{TOUR}-{n}.mp3?v=1"></audio></div>'
                   for n, (e, _t, _r) in enumerate(c, 1))
         + '<div class="cand"><label><input type="radio" name="' + i + '" value="0"> Aucune ne va — à retravailler</label></div></div>'
         for i, c in REPRISES)
     corps = f"""<body><div class="doc">
 <a class="retour" href="/presentations.html"><span aria-hidden="true">&#8592;</span> Le classeur</a>
 <p class="eyebrow">Maison Francœur &middot; voix</p>
-<h1>Reprises de voix</h1>
-<p class="chapeau">Les quatre mots signalés « à refaire ». Pour chacun, quatre versions : une nouvelle prise HD,
-deux prises HD avec une graphie qui ne peut se lire qu'en français (l'écran garde l'orthographe normale), et la
-voix neurale de Sylvie. <strong>Choisissez celle qui sonne juste</strong>, puis exportez.</p>
+<h1>Reprises de voix — deuxième tour</h1>
+<p class="chapeau">Premier tour posé : <b>le lin</b> (nouvelle prise HD), <b>le polyester</b> (« polyestère »),
+<b>rose</b> (« rôse »). <b>Le denim</b> n'avait aucune bonne version : six nouvelles, avec des graphies sans
+accent ou en « eu », une autre tournure, et la voix neurale. L'écran garde l'orthographe « le denim ».
+<strong>Choisissez celle qui sonne juste</strong>, puis exportez.</p>
 {blocs}
 <p style="margin-top:1.4rem"><button type="button" class="btn-export" id="exporter">Exporter mes choix</button>
 <span id="etat" class="etat"></span></p>
@@ -103,7 +98,7 @@ voix neurale de Sylvie. <strong>Choisissez celle qui sonne juste</strong>, puis 
 </div>
 <script>
 (function(){{
-  var CLE='francoeur-reprises', v={{}};
+  var CLE='francoeur-reprises-t2', v={{}};
   try{{ v=JSON.parse(localStorage.getItem(CLE)||'{{}}'); }}catch(e){{}}
   Object.keys(v).forEach(function(k){{ var r=document.querySelector('input[name="'+k+'"][value="'+v[k]+'"]'); if(r) r.checked=true; }});
   document.addEventListener('change',function(e){{ if(e.target.type!=='radio') return; v[e.target.name]=e.target.value;
