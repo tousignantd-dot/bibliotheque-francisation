@@ -4,7 +4,7 @@ page de démonstration pour l'acheteur.
 
     python3 build/francoeur_emballage.py
       → assets/presentations/francoeur-guide-formateur.html (+ .pdf)
-      → assets/presentations/francoeur-demo.html
+      → assets/vitrine/maison-francoeur.html   (PUBLIQUE, hors du classeur)
 
 Produites, jamais éditées : chaque chiffre est lu dans le contenu, le
 catalogue et le disque. Une page de vente qui annonce « 149 mots » le jour où
@@ -31,7 +31,15 @@ from prix import FORMULES, NOTES  # noqa: E402
 
 PRES = RACINE / "assets" / "presentations"
 GUIDE = PRES / "francoeur-guide-formateur.html"
-DEMO = PRES / "francoeur-demo.html"
+# LA PAGE ACHETEUR EST PUBLIQUE (demande de Daniel, 24 septembre 2026) : tout
+# `assets/presentations/` est derrière le verrou du classeur, et un acheteur à
+# qui on envoie le lien tombait sur un refus. Plutôt que de percer le verrou,
+# la page vit hors du classeur, dans `assets/vitrine/`, avec ses captures. Elle
+# ne renvoie donc ni au classeur ni au code qui la produit.
+VITRINE = RACINE / "assets" / "vitrine"
+DEMO = VITRINE / "maison-francoeur.html"
+CAPTURES_SRC = PRES / "francoeur-captures"
+CAPTURES_DEST = VITRINE / "maison-francoeur"
 CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 APP = "/modules-autonomes/francoeur-planches/index.html"
 E = html.escape
@@ -208,7 +216,7 @@ CAPTURES = [
 
 
 def demo(c):
-    caps = "".join(f'<figure><img src="francoeur-captures/{i}.png" alt="{E(t)}" loading="lazy">'
+    caps = "".join(f'<figure><img src="maison-francoeur/{i}.png" alt="{E(t)}" loading="lazy">'
                    f'<figcaption><b>{E(t)}</b>{E(l)}</figcaption></figure>' for i, t, l in CAPTURES)
     essais = "".join(f'<a href="{APP}?{q}" target="_blank" rel="noopener">{E(t)}</a>' for t, q in [
         ("Le choix de langue", "ecran=langue"), ("Un rayon, en espagnol", "langue=es&ecran=planche&p=exterieur"),
@@ -222,7 +230,6 @@ def demo(c):
         for n, (t, m, u, pq, inc) in enumerate(FORMULES))
     notes = "".join(f"<li>{E(x)}</li>" for x in NOTES)
     corps = f"""<body><div class="doc">
-<a class="retour" href="/presentations.html"><span aria-hidden="true">&#8592;</span> Le classeur</a>
 <p class="eyebrow">Formation au poste &middot; commerce de détail</p>
 <h1>Maison Francœur : le français du plancher</h1>
 <p class="chapeau">Vos employés vendent des vêtements et ne parlent pas encore français. Ce qui leur fait
@@ -280,8 +287,12 @@ les mots du rayon, puis à comprendre le client — et à dire « un instant, s'
   lexique, les croquis et les clients ; le reste suit.</p>
 </section>
 
-<div class="pied"><p>Page produite par <code>build/francoeur_emballage.py</code> — chaque chiffre est lu dans le contenu.</p></div>
+<div class="pied"><p><b>francis</b> — formation au poste. Pour en parler : <a href="mailto:admin@edufrancis.ca">admin@edufrancis.ca</a></p></div>
 </div></body></html>"""
+    import shutil
+    CAPTURES_DEST.mkdir(parents=True, exist_ok=True)
+    for f in CAPTURES_SRC.glob("*.png"):
+        shutil.copy2(f, CAPTURES_DEST / f.name)
     DEMO.write_text(tete("Maison Francœur — le français du plancher") + corps, encoding="utf-8")
 
 
