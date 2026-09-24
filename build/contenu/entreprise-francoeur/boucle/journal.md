@@ -60,10 +60,10 @@ corrections du tour 1 — la seconde forme, l'exercice 7, le compteur d'essais.
 | Mineurs rapides | modifiés | — | traduction blanche sous les boutons rouges ; codes « O1 » retirés de l'écran ; rayon vide → tous les rayons ; porte « La série des pièges » ; rétroaction du rayon au 1er essai ; « Je me souviens » hors seuil ; mot sans image parmi des mots écrits ; article marqué dans la transcription ; explication de la bonne réponse traduisible ; minuteries remplacées par un bouton ; tâche d'accueil sans la réponse au 1er essai ; menu et résumé à 44 px ; texte discret foncé (≥ 4,5:1) ; couleurs confondues jamais opposées ; `espaces()` sans les boutons repliés ; consigne du jeu de rôle réglée au palier ; guide juste sur l'oral et les données | E1, G1, G2, C5, D1, D3, A2 | — |
 
 Voix : 14 nouvelles (Azure HD), retranscrites justes ; 381 en tout, 19 douteuses.
-**Traductions en attente** : l'API Anthropic a atteint la limite d'usage fixée
-au compte (retour le 1er octobre 2026). Les textes nouveaux ou changés restent en
-français sous la langue d'appui ; les sept traductions devenues fausses ont été
-retirées plutôt que laissées. Relancer `python3 build/francoeur_traductions.py
---interface` et `--ids veste` quand l'accès revient.
+**Traductions** : l'API Anthropic a atteint la limite d'usage fixée au compte
+(retour le 1er octobre 2026). Les 25 textes neufs ou changés et la note du piège
+« veste » (réalignée sur le français : elle ajoutait « en France, c'est un
+veston ») ont été traduits dans les onze langues directement dans la session
+Claude Code, hors API. Toujours `relu: false`.
 
 **Reste** : le tour 3 de l'audit, sur toute la grille.
