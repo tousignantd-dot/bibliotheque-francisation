@@ -358,9 +358,20 @@ GABARIT = r"""<!DOCTYPE html>
 <link rel="icon" href="/assets/design-system/marque-francis-favicon.svg">
 <style>
 /* Page produite par build/francoeur_planches.py — ne pas l'éditer. */
-:root{--mf-teinte:var(--acier-600);--mf-fond:var(--acier-100);
+:root{
+  /* La palette DENIM (Daniel, 24 septembre 2026 ; propositions dans
+     francoeur-couleurs.html) : les cours en entreprise ne portent pas le
+     mauve de francis. Bleu jean pour l'action et l'enseigne, orange
+     « surpiqûre » pour la marque et les pièges, fond gris-bleu. Le vert et le
+     rouge de la rétroaction ne bougent pas. Contrastes mesurés ≥ 4,5:1. */
+  --surface-page:#EDF1F5;--surface-card:#FFFFFF;--text-strong:#17212E;--text-body:#17212E;
+  --line-200:#D5DDE6;--line-300:#B9C4D1;--accent:#2B4A78;--marque-600:#C8692A;
+  --warn-bg:#FBE9DC;--warn-line:#C8692A;--warn-ink:#8A3F0F;
+  --mf-teinte:#2B4A78;--mf-fond:#E3EAF2;
   /* 4,25:1 sur le fond acier : on fonce le texte discret (audit, tour 2, G1). */
-  --text-muted:#585B60}
+  --text-muted:#4F5B6A}
+/* Le descripteur de la marque, en petit : l'orange n'y passe pas 4,5:1. */
+.fr-barre .fr-desc{color:var(--mf-teinte)}
 body{margin:0;background:var(--surface-page);color:var(--text-body);font-family:Nunito,system-ui,sans-serif}
 .mf{max-width:1080px;margin:0 auto;padding:18px 16px 60px}
 /* La barre de marque suit la colonne de la page : même largeur, même gouttière,
@@ -531,7 +542,7 @@ body{margin:0;background:var(--surface-page);color:var(--text-body);font-family:
 .modele .dialogue .cli{background:var(--surface-sunken)}
 .modele .dialogue .vend{background:var(--mf-fond);margin-left:auto}
 .modele .qui{display:block;font-size:12px;font-weight:800;color:var(--text-muted)}
-mark{background:#FFE58A;color:#17181A;padding:0 2px;border-radius:3px}
+mark{background:#F6D2B8;color:#17181A;padding:0 2px;border-radius:3px}
 .opt .cmot{font-size:14px;font-weight:700;color:#17181A}
 .opt .motseul{font-size:19px;font-weight:800;padding:10px 4px}
 .opt.phrase{text-align:start;justify-content:flex-start;font-size:17px;font-weight:700}
@@ -550,7 +561,7 @@ mark{background:#FFE58A;color:#17181A;padding:0 2px;border-radius:3px}
 .avatar .nom{font-size:16px}
 /* Contrastes et zones tactiles (audit, mineurs relevés au passage) */
 .mf-btn{min-height:44px}
-.mf-btn--pri{background:#087A4E;border-color:#087A4E}
+.mf-btn--pri{background:var(--accent);border-color:var(--accent)}
 .bulle.client .txt{font-size:17px}
 
 
