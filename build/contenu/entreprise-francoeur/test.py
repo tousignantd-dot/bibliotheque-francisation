@@ -92,7 +92,7 @@ B = [
 # on ne réussit pas en reconnaissant un mot, il faut comprendre ce qu'on en dit.
 # Le trait décisif des demandes à reprise (voir demandes.DECISIF) : celui que
 # la phrase nie. Au cran 2, les items avec taille le prennent à tour de rôle.
-DECISIF = {"b31": "a", "b32": "c", "b33": "t", "b34": "c", "b62": "t", "b63": "a", "b64": "c"}
+DECISIF = {"b31": "a", "b32": "c", "b33": "t", "b34": "c", "b61": "a", "b62": "t", "b63": "a", "b64": "c"}
 
 C = [
     ("c11", 1, "Va chercher des cintres, s'il te plaît.",
@@ -104,11 +104,11 @@ C = [
     ("c14", 1, "Les cabines sont en désordre. Vas-y.",
      "Où la gérante vous envoie-t-elle ?", "cabine", ["caisse", "vitrine", "presentoir"]),
     ("c21", 2, "Quand t'auras fini, mets les jeans sur le présentoir, en avant.",
-     "Où faut-il mettre les jeans ?", "presentoir", ["vitrine", "cabine", "caisse"]),
+     "Où faut-il mettre les jeans ?", "presentoir", ["jeans", "vitrine", "caisse"]),
     ("c22", 2, "Le client, là-bas, cherche des bottes de pluie. Montre-lui le rayon, au fond.",
      "Que cherche le client ?", "bottes-pluie", ["bottes", "espadrilles", "sandales"]),
     ("c23", 2, "Il manque des étiquettes de prix sur les foulards. Va en chercher en arrière.",
-     "Qu'est-ce qu'il faut aller chercher ?", "etiquette-prix", ["recu", "carte-cadeau", "antivol"]),
+     "Qu'est-ce qu'il faut aller chercher ?", "etiquette-prix", ["foulard", "recu", "antivol"]),
     ("c24", 2, "Enlève l'antivol avant de mettre le chandail dans le sac.",
      "Qu'est-ce qu'il faut enlever ?", "antivol", ["etiquette-prix", "cintre", "sac"]),
     ("c31", 3, "Avant de fermer, ramasse les cintres dans les cabines, vide la caisse, "
@@ -122,7 +122,7 @@ C = [
      "Quel article la cliente veut-elle essayer ?", "robe-soiree", ["robe-chambre", "robe", "jaquette"]),
     ("c34", 3, "Si quelqu'un veut faire un retour, envoie-le à la caisse, pas aux cabines, "
                "pis demande-lui son reçu.",
-     "Qu'est-ce qu'il faut demander au client ?", "recu", ["carte-cadeau", "etiquette-prix", "sac"]),
+     "Qu'est-ce qu'il faut demander au client ?", "recu", ["caisse", "cabine", "carte-cadeau"]),
 ]
 VOIX_GERANTE = "enseignante"
 
@@ -135,12 +135,12 @@ VOIX_GERANTE = "enseignante"
 D = [
     ("d1", "masculin_1",
      "Bonjour, oui, je cherche le chandail gris de la vitrine en moyen, pis aussi une tuque, vous avez-tu ça ?",
-     "Faire répéter", "« Un instant, s'il vous plaît. Pouvez-vous répéter plus lentement ? »", True),
+     "Faire répéter", "« Pouvez-vous répéter plus lentement ? » — OU redire exactement la demande, puis vérifier", True),
     ("d2", "feminin_2", "Avez-vous ce chandail-là ?",
      "Faire préciser", "« Quelle taille ? » ou « Quelle couleur ? »", False),
     ("d3", "masculin_1",
-     "Il vous reste-tu ce manteau-là en moyen ? Vous pouvez me le garder jusqu'à samedi, c'est sûr ?",
-     "Vérifier sans promettre", "« Je vais vérifier en arrière. »", False),
+     "Il vous reste-tu ce manteau-là en moyen ? J'en ai besoin pour samedi.",
+     "Vérifier sans promettre", "« Un manteau en moyen. Je vais vérifier en arrière. »", False),
     ("d4", "feminin_2", "Je veux me faire rembourser ce coton ouaté. J'ai pas mon reçu.",
      "Passer le relais", "« Un instant. Je vais chercher la gérante. »", False),
 ]
@@ -152,7 +152,7 @@ D = [
 D2 = [
     ("d5", "feminin_2",
      "Allo, je cherche des bas de laine pour la chasse, gris ou bruns, pis en grand si vous en avez encore.",
-     "Faire répéter", "« Excusez-moi, pouvez-vous répéter lentement ? »", True),
+     "Faire répéter", "« Excusez-moi, pouvez-vous répéter lentement ? » — OU redire exactement la demande, puis vérifier", True),
     ("d6", "masculin_1", "Vous avez-tu des bottes ?",
      "Faire préciser", "« Pour l'hiver ou pour la pluie ? » ou « Quelle pointure ? »", False),
     ("d7", "feminin_2",
@@ -202,12 +202,16 @@ B2 = [
     ("b53", 2, "narrateur",  "Un foulard vert, s'il vous plaît.",        ("foulard", "vert", None), None),
     ("b54", 2, "feminin_2",  "La jupe, l'avez-vous en beige, en petit ?", ("jupe", "beige", "p"), None),
     ("b55", 2, "masculin_1", "Il me faudrait un coton ouaté bleu, en très grand.", ("coton-ouate", "bleu", "tg"), None),
-    ("b61", 3, "masculin_1", "Je cherche des bottes… non, des bottillons. Bruns, pas noirs.",
-     ("bottillons", "brun", None), ("bottes", "noir", None)),
+    # Audit, tour 3 (F1) : la forme 2 était plus courte et b61 sans taille —
+    # le gain entre les passations était gonflé d'avance. Appariés à la forme 1
+    # (longueur, trois traits, même type de reprise), et contrôlés au build.
+    ("b61", 3, "masculin_1",
+     "C'est pour ma femme. Je cherche une chemise… non, pas une chemise : une blouse. Bleue, pas noire. En petit.",
+     ("blouse", "bleu", "p"), ("chemise", "noir", "m")),
     ("b62", 3, "feminin_2",
      "C'est pour mon mari. Il fait du grand, mais le grand, c'est trop serré. Le même polo, une taille plus grande. En bleu.",
      ("polo", "bleu", "tg"), ("t-shirt", "vert", "g")),
-    ("b63", 3, "narrateur",  "Pas la chemise : le polo. En blanc. Moyen.",
+    ("b63", 3, "narrateur",  "Pas la chemise, là : le polo. Celui en blanc, en moyen, s'il vous plaît. C'est pour mon frère.",
      ("polo", "blanc", "m"), ("chemise", "bleu", "g")),
     ("b64", 3, "feminin_2",  "Je l'aime pas en rouge. Vous avez-tu la même robe en vert ? En petit.",
      ("robe", "vert", "p"), ("jupe", "rouge", "m")),
@@ -216,27 +220,27 @@ C2 = [
     ("k11", 1, "Va chercher les tuques en arrière.", "Qu'est-ce qu'il faut aller chercher ?",
      "tuque", ["casquette", "foulard", "mitaines"]),
     ("k12", 1, "Plie les chandails.", "Qu'est-ce qu'il faut plier ?",
-     "chandail", ["chemise", "pantalon", "t-shirt"]),
+     "chandail", ["pantalon", "jupe", "foulard"]),   # t-shirt, chemise : défendables (note de « chandail »)
     ("k13", 1, "Va voir à la vitrine.", "Où faut-il aller ?",
      "vitrine", ["caisse", "cabine", "presentoir"]),
     ("k14", 1, "Apporte des cintres à la cabine deux.", "Qu'est-ce qu'il faut apporter ?",
      "cintre", ["sac", "miroir", "etiquette-prix"]),
-    ("k21", 2, "Mets les foulards sur le présentoir, en avant.", "Qu'est-ce qu'il faut mettre sur le présentoir ?",
-     "foulard", ["tuque", "gants", "cravate"]),
-    ("k22", 2, "La dame, là-bas, cherche des bottes d'hiver. Montre-lui le rayon.", "Que cherche la dame ?",
+    ("k21", 2, "Quand t'as deux minutes, mets les foulards sur le présentoir, en avant.", "Qu'est-ce qu'il faut mettre sur le présentoir ?",
+     "foulard", ["presentoir", "tuque", "gants"]),
+    ("k22", 2, "La dame, là-bas, cherche des bottes d'hiver, pas des bottes de pluie. Montre-lui le rayon.", "Que cherche la dame ?",
      "bottes", ["bottes-pluie", "bottillons", "pantoufles"]),
     ("k23", 2, "Il n'y a plus de sacs à la caisse. Va en chercher.", "Qu'est-ce qui manque ?",
-     "sac", ["recu", "carte-cadeau", "cintre"]),
-    ("k24", 2, "Mets un antivol sur chaque manteau.", "Qu'est-ce qu'il faut mettre sur les manteaux ?",
-     "antivol", ["etiquette-prix", "cintre", "sac"]),
-    ("k31", 3, "Plie les chandails, range les jeans, pis touche pas aux robes : je les change demain.",
+     "sac", ["caisse", "recu", "cintre"]),
+    ("k24", 2, "Mets un antivol sur chaque manteau neuf, pis accroche-les en avant.", "Qu'est-ce qu'il faut mettre sur les manteaux ?",
+     "antivol", ["manteau", "etiquette-prix", "cintre"]),
+    ("k31", 3, "Plie les chandails, range les jeans sur les tablettes, pis touche pas aux robes : je les change demain matin.",
      "Qu'est-ce qu'il ne faut PAS toucher ?", "robe", ["chandail", "jeans", "pantalon"]),
-    ("k32", 3, "On a reçu des bottes pis des souliers. Les bottes, en avant ; les souliers, laisse-les en arrière.",
+    ("k32", 3, "On a reçu des bottes pis des souliers. Les bottes, en avant ; les souliers, laisse-les en arrière jusqu'à mardi.",
      "Qu'est-ce qu'il faut laisser en arrière ?", "souliers", ["bottes", "espadrilles", "sandales"]),
-    ("k33", 3, "Le client veut essayer le veston, pas l'habit au complet. Trouve-lui une cabine.",
+    ("k33", 3, "Le client veut essayer juste le veston, pas l'habit au complet. Trouve-lui une cabine, pis apporte des cintres.",
      "Qu'est-ce que le client veut essayer ?", "veston", ["habit", "tailleur", "chemise"]),
-    ("k34", 3, "Si quelqu'un veut une carte-cadeau, envoie-le à la caisse, pas à moi.",
-     "Où faut-il envoyer le client ?", "caisse", ["cabine", "vitrine", "presentoir"]),
+    ("k34", 3, "Si quelqu'un veut une carte-cadeau, envoie-le à la caisse, pas aux cabines, pis dis-lui qu'on ferme à neuf heures.",
+     "Où faut-il envoyer le client ?", "caisse", ["carte-cadeau", "cabine", "vitrine"]),
 ]
 
 # Les seuils des objectifs (cadrage, O1-O5), affichés au résultat par partie.

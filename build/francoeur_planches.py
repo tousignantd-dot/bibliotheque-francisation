@@ -47,7 +47,7 @@ SORTIE = RACINE / "modules-autonomes" / "francoeur-planches" / "index.html"
 
 # Incrémenter après toute image ou tout son refait : même nom, même adresse,
 # le navigateur servirait l'ancien sans rien dire.
-MEDIA_V = "6"   # 5 : révision des majeurs de l’audit (nouvelles voix, test en deux formes), 24 septembre 2026
+MEDIA_V = "7"   # 7 : révision du tour 3 (formes appariées, gérante, mise de côté), 24 septembre 2026
 
 
 def donnees():
@@ -82,6 +82,21 @@ def s_(chemin):
     return f"/assets/interactive/francoeur/sons/{chemin}?v={MEDIA_V}"
 
 
+def nomme_dans(i, phrase):
+    """Vrai si l'article `i` du lexique est nommé dans la phrase (pluriel compris)."""
+    lex = {e[0]: e for e in LEXIQUE}
+    # La tête du nom suffit : « des bottes d'hiver » est nommé par « bottes ».
+    n = re.sub(r"^(un |une |des |le |la |les |l')", "", lex[i][2]).lower().split(" ")[0]
+    base = n[:-1] if n.endswith(("s", "x")) and len(n) > 4 else n
+    return bool(re.search(r"(?<![\w-])" + re.escape(base) + r"[sx]?(?![\w-])", phrase.lower()))
+
+
+def autre_nomme(phrase, bonne, distr):
+    """Un autre objet NOMMÉ dans la consigne figure-t-il parmi les choix ? Sinon,
+    reconnaître le seul mot connu suffit (audit, tour 3, A3 majeur)."""
+    return any(nomme_dans(d, phrase) for d in distr if d != bonne)
+
+
 def la_gerante(mots):
     """L'exercice 6 : seize consignes d'entraînement (O5), autres que celles du test."""
     avec = {m["id"] for m in mots if "img" in m}
@@ -89,6 +104,8 @@ def la_gerante(mots):
     for i, phrase, q, bonne, distr in GER.CONSIGNES:
         assert all(x in avec for x in [bonne] + distr), f"gérante {i} : image manquante"
         out.append({"id": i, "son": s_(f"gerante/{i}.mp3"), "phrase": phrase, "q": q, "o": [bonne] + distr})
+    n = sum(autre_nomme(p, b, d) for _i, p, _q, b, d in GER.CONSIGNES)
+    assert n * 2 >= len(GER.CONSIGNES), f"gérante : {n} consignes sur {len(GER.CONSIGNES)} mettent un autre objet nommé parmi les choix"
     return out
 
 
@@ -288,6 +305,8 @@ def le_test(mots):
         for ident, cran, phrase, question, bonne, distr in items:
             for i in [bonne] + distr:
                 assert "img" in par_id[i], f"C {ident} : {i} sans croquis"
+            if cran > 1:
+                assert autre_nomme(phrase, bonne, distr), f"C {ident} : aucun autre objet nommé parmi les choix"
             C[cran].append({"id": ident, "son": son(ident), "phrase": phrase, "q": question,
                             "o": [bonne] + distr})
         return C
@@ -296,6 +315,14 @@ def le_test(mots):
         return [{"id": i, "son": son(i), "phrase": p, "geste": g, "attendu": att}
                 for i, _v, p, g, att, _r in items]
 
+    # Audit, tour 3 (F1, majeur) : les deux formes doivent être PARALLÈLES — la
+    # seconde sert après la formation, et une forme plus facile gonfle le gain.
+    # Longueur moyenne des phrases, par partie et par cran : ±2 mots.
+    for nom, f1, f2 in (("B", TEST.B, TEST.B2), ("C", TEST.C, TEST.C2)):
+        k = 3 if nom == "B" else 2
+        for cran in (2, 3):
+            m = [sum(len(x[k].split()) for x in f if x[1] == cran) / max(1, sum(1 for x in f if x[1] == cran)) for f in (f1, f2)]
+            assert abs(m[0] - m[1]) <= 2, f"{nom} cran {cran} : {m[0]:.1f} mots contre {m[1]:.1f} — formes non parallèles"
     return {"formes": [
                 {"A": partie_a(TEST.A_CRAN1, TEST.A_CRAN2, TEST.A_CRAN3, "f1"),
                  "B": partie_b(TEST.B), "C": partie_c(TEST.C), "D": partie_d(TEST.D)},
@@ -479,7 +506,8 @@ body{margin:0;background:var(--surface-page);color:var(--text-body);font-family:
 .saisie input{flex:1;min-width:180px;font:inherit;font-size:17px;padding:10px 12px;border-radius:10px;border:1px solid var(--line-300)}
 .attente{color:var(--text-muted);font-weight:700}
 .bilan-gestes label{display:flex;gap:8px;align-items:flex-start;margin:6px 0}
-@media (max-width:760px){.scene{grid-template-columns:1fr}.avatar{position:static;max-width:260px;margin:0 auto}}
+@media (max-width:760px){.scene{grid-template-columns:1fr}.avatar{position:static;max-width:260px;margin:0 auto}.avatar img{max-height:170px;width:auto;margin:0 auto;display:block}}
+.note-fr{color:var(--text-muted);margin:6px 0 0}
 @media (max-width:640px){.clients{grid-template-columns:repeat(2,minmax(0,1fr))}.client b{font-size:15px}.client span{font-size:13px}}
 
 
@@ -718,12 +746,14 @@ function ouvrir(i) {
     // Le piège se lit TOUJOURS, en français, même quand une langue d'appui est
     // choisie : il ne se cache plus derrière « Voir dans ma langue » (audit C3).
     + notePiege(m)
+    // Une note qui n'est pas un piège se lit aussi en français (audit, tour 3).
+    + (m.note && !m.piege ? '<p class="note-fr">' + esc(m.note) + '</p>' : '')
     + '<div class="gestes">'
     + (m.son ? '<button type="button" class="mf-btn mf-btn--pri" id="ecoute">' + ICO.son + '<span>' + T('ecouter') + '</span></button>' : '')
     + (t ? '<button type="button" class="mf-btn" id="voir" aria-expanded="false">' + ICO.oeil + '<span>' + T('voir') + '</span></button>' : '')
     + '</div>'
     + (t ? '<div class="trad" id="trad" hidden lang="' + l.c + '" dir="' + (l.rtl ? 'rtl' : 'ltr') + '">' + esc(t[0])
-        + (t[1] ? '<small>' + esc(t[1]) + '</small>' : '')
+        + (t[1] && !m.piege ? '<small>' + esc(t[1]) + '</small>' : '')   // le piège est déjà traduit plus haut
         + (l.relu ? '' : '<span class="relu" dir="ltr" lang="fr">' + esc(FR.non_relu) + (l.ui.non_relu ? ' · <span dir="' + (l.rtl ? 'rtl' : 'ltr') + '">' + esc(l.ui.non_relu) + '</span>' : '') + '</span>')
         + '</div>' : '')
     + '<div class="nav"><button type="button" class="mf-btn" id="prec"' + (i ? '' : ' disabled') + '>' + ICO.retour + FR.precedent + '</button>'
@@ -781,7 +811,7 @@ function notePiege(m) {
   if (!m || !m.piege) return '';
   const l = L(), t = l && l.mots[m.id];
   return '<p class="piege">' + esc(m.note.replace(/^PIÈGE\s*:\s*/, ''))
-    + (t && t[1] ? '<span class="appui" dir="' + (l.rtl ? 'rtl' : 'ltr') + '" lang="' + l.c + '">' + esc(t[1].replace(/^[^:]{1,12}:\s*/, '')) + '</span>' : '') + '</p>';
+    + (t && t[1] ? '<span class="appui" dir="' + (l.rtl ? 'rtl' : 'ltr') + '" lang="' + l.c + '">' + esc(t[1].replace(/^[^:：፦]{1,12}[:：፦]\s*/, '')) + '</span>' : '') + '</p>';
 }
 // Une carte « article · couleur · taille » : la couleur est dite EN MOTS sous
 // la pastille — une pastille seule ne suffit pas à un daltonien (audit G1).
@@ -804,7 +834,7 @@ function ecranExercices() {
     + '<button type="button" class="exo-porte" id="xPieges"><span class="rang">!</span><span><b>' + T('serie_pieges') + '</b><span style="display:block;margin-top:4px">' + T('serie_pieges_c') + '</span></span></button></div>';
   document.getElementById('filtre').onchange = e => { filtre = e.target.value; };
   app.querySelectorAll('[data-x]').forEach(b => b.onclick = () => lancer(b.dataset.x));
-  document.getElementById('xPieges').onclick = () => { filtre = 'pieges'; lancer('ecoute'); };
+  document.getElementById('xPieges').onclick = () => { filtre = 'pieges'; lancer('ecoute'); J.titre = 'serie_pieges'; filtre = ''; question(); };
   document.getElementById('retour').onclick = ecranAccueil;
   document.getElementById('chLangue').onclick = ecranLangue;
   window.scrollTo(0, 0);
@@ -838,7 +868,7 @@ function lancer(k, rappel) {
 }
 
 function cadreJeu(corps) {
-  app.innerHTML = tete(T('ex_' + J.k), T('ex_' + J.k + '_c'), true, 'exercices')
+  app.innerHTML = tete(T(J.titre || 'ex_' + J.k), T(J.titre ? J.titre + '_c' : 'ex_' + J.k + '_c'), true, 'exercices')
     + '<div class="jeu"><div class="barre"><i style="width:' + Math.round(100 * J.i / J.items.length) + '%"></i></div>' + corps
     + '<div class="retro" id="retro" aria-live="polite"></div><div class="suite" id="suite"></div></div>';
   document.getElementById('retour').onclick = () => { if (audio) audio.pause(); ecranExercices(); };
@@ -859,7 +889,7 @@ function question() {
   if (J.k === 'ecoute') {
     let autres;
     if (it.contrastes) autres = it.contrastes.slice(1).map(mot);
-    else if (visuel(it)) autres = melange(D.mots.filter(m => m.p === it.p && m.id !== it.id && visuel(m))).slice(0, 5);
+    else if (visuel(it)) autres = melange(D.mots.filter(m => m.p === it.p && m.id !== it.id && visuel(m) && tete_(m) !== tete_(it))).slice(0, 5);
     // Sans image, les autres choix sont écrits aussi : un seul mot écrit parmi
     // des dessins se trouvait sans écouter (audit, tour 2, D4).
     else autres = melange(D.mots.filter(m => m.p === it.p && m.id !== it.id && !visuel(m))).slice(0, 3);
@@ -912,15 +942,20 @@ function question() {
   app.querySelectorAll('[data-o]').forEach(b => b.onclick = () => repondre(b));
 }
 
+// La tête du nom : « un pantalon cargo » et « un pantalon » se confondent à
+// l'oreille, l'un ne sert pas de distracteur à l'autre (audit, tour 3).
+const tete_ = m => m.mot.replace(/^(un |une |des |le |la |les |l')/, '').split(' ')[0].toLowerCase();
 // Ce que la rétroaction dit, par exercice, après un choix faux.
 function pourquoiFaux(it, o) {
   const l = L();
   if (J.k === 'client') {
     const v = J.options.find(x => String(x.n) === String(o)), b = it.v[0], ecarts = [];
-    ecarts.push(v.a === b.a ? FR.bon_article : FR.mauvais_article);
-    ecarts.push(v.c === b.c ? FR.bonne_couleur : FR.mauvaise_couleur);
-    if (b.t) ecarts.push(v.t === b.t ? FR.bonne_taille : FR.mauvaise_taille);
-    return '<p>' + esc(ecarts.join(' · ')) + '</p>';
+    ecarts.push(v.a === b.a ? 'bon_article' : 'mauvais_article');
+    ecarts.push(v.c === b.c ? 'bonne_couleur' : 'mauvaise_couleur');
+    if (b.t) ecarts.push(v.t === b.t ? 'bonne_taille' : 'mauvaise_taille');
+    const tr = l && ecarts.every(k => l.ui[k]) ? ecarts.map(k => l.ui[k]).join(' · ') : '';
+    return '<p>' + esc(ecarts.map(k => FR[k]).join(' · '))
+      + (tr ? '<span class="appui" dir="' + (l.rtl ? 'rtl' : 'ltr') + '">' + esc(tr) + '</span>' : '') + '</p>';
   }
   if (J.k === 'reponse') {
     const x = it.mauvaises[Number(o) - 1];
@@ -933,7 +968,9 @@ function pourquoiFaux(it, o) {
   const m = mot(o);
   if (!m) return '';
   if (m.son) joue(m.son);
-  return '<p>' + esc(FR.ca_cest) + ' <b>' + esc(m.mot) + '</b></p>' + notePiege(m) + notePiege(J.k === 'gerante' ? null : it);
+  // Au premier choix faux : la note du mot CHOISI seulement. Celle de la cible
+  // désignait la bonne réponse (audit, tour 3, D4 majeur) ; elle vient après.
+  return '<p>' + T('ca_cest') + ' <b>' + esc(m.mot) + '</b></p>' + notePiege(m);
 }
 // La phrase entendue, avec les mots qui décident mis en évidence.
 function phraseMarquee(it) {
@@ -1006,7 +1043,7 @@ function bilan() {
   const libSuite = suite === 'gestes' ? T('gestes') : suite === 'magasin' ? T('magasin') : T('ex_' + suite);
   app.innerHTML = tete(T('ex_' + J.k), '', true, 'exercices')
     + '<div class="bilan"><p style="font-weight:800;margin:0">' + T('fin') + '</p><p class="score">' + J.premier + ' / ' + J.items.length + '</p>'
-    + '<p style="margin:0 0 6px">' + T('premier_coup') + '</p>'
+    + (juge ? '<p style="margin:0 0 6px">' + T('premier_coup') + '</p>' : '<p style="margin:0 0 6px">' + T('savais') + '</p>')
     + (!juge ? '' : '<p class="seuil ' + (ok ? 'ok' : 'non') + '">' + esc(FR.objectif) + ' : ' + seuil + ' / ' + J.items.length + ' — ' + (ok ? T('atteint') : T('pas_encore')) + '</p>')
     + (J.rates.length ? '<div class="bloc" style="text-align:start"><b>' + T('a_revoir_liste') + '</b><ul>' + J.rates.map(r => '<li>' + esc(r) + '</li>').join('') + '</ul></div>' : '')
     + '<div class="ecoute"><button type="button" class="mf-btn" id="encore"><span>' + T('recommencer') + '</span></button>'
@@ -1170,7 +1207,9 @@ function ecranTest() {
 }
 function debuterTest() {
   const f = histo().length % 2;   // 0 → forme 1, 1 → forme 2, puis on alterne
-  X = {f, F: D.test.formes[f], parties: ['A', 'B', 'C'], p: 0, cran: 1, bons: 0, faux: 0, niveau: {A: 0, B: 0, C: 0},
+  // L'ordre des situations orales se tire (audit, tour 3, F1) : à la seconde
+  // passation, on ne sait pas d'avance quel geste vient en premier.
+  X = {f, F: D.test.formes[f], D: melange(D.test.formes[f].D), parties: ['A', 'B', 'C'], p: 0, cran: 1, bons: 0, faux: 0, niveau: {A: 0, B: 0, C: 0},
        vus: new Set(), reponses: [], oral: [], blobs: [], fini: false};
   questionTest();
 }
@@ -1202,10 +1241,10 @@ function questionTest() {
   document.getElementById('chLangue').remove();
   document.getElementById('reec').onclick = () => joue(it.son);
   joue(it.son);
-  app.querySelectorAll('[data-o]').forEach(b => b.onclick = () => repondreTest(String(b.dataset.o) === String(X.bonne)));
+  app.querySelectorAll('[data-o]').forEach(b => b.onclick = () => repondreTest(String(b.dataset.o) === String(X.bonne), b.dataset.o));
   window.scrollTo(0, 0);
 }
-function repondreTest(juste) {
+function repondreTest(juste, choix) {
   // Aucune rétroaction : on passe à la suite, c'est tout.
   if (audio) audio.pause();
   X.reponses.push({p: X.parties[X.p], cran: X.cran, id: X.item.id, juste});
@@ -1214,7 +1253,9 @@ function repondreTest(juste) {
     rapporter({zone: 'test' + (X.f + 1) + '-' + P + '-' + it.id, exo: 'test-' + P, exoNum: 'Test · forme ' + (X.f + 1) + ' · cran ' + X.cran,
       exoTitre: FR['partie_' + P.toLowerCase()], section: 'test', type: 'test',
       enonce: P === 'A' ? etiquette(it.id) : P === 'B' ? it.phrase : it.phrase + ' — ' + it.q,
-      bonne: P === 'B' ? carteTexte(it.v[0]) : etiquette(P === 'A' ? it.id : it.o[0]), reponse: '', ok: juste, essais: 0}); }
+      bonne: P === 'B' ? carteTexte(it.v[0]) : etiquette(P === 'A' ? it.id : it.o[0]),
+      // Le choix fait remonte : le pilote lit quel distracteur attire (audit, tour 3).
+      reponse: P === 'B' ? carteTexte(X.options.find(v => String(v.n) === String(choix))) : etiquette(choix), ok: juste, essais: 0}); }
   if (juste) {
     X.bons++;
     if (X.bons >= 3) {
@@ -1229,7 +1270,7 @@ function partieFinie() { X.p++; X.cran = 1; X.bons = 0; X.faux = 0; questionTest
 
 let enreg = null;
 function partieOrale(i) {
-  const DD = X.F.D;
+  const DD = X.D;
   if (i >= DD.length) return resultatTest();
   const it = DD[i];
   app.innerHTML = tete(T('test'), T('cd'), false)
@@ -1274,7 +1315,7 @@ function resultatTest() {
   const taux = {};
   ['A', 'B', 'C'].forEach(P => { const r = X.reponses.filter(x => x.p === P); taux[P] = {j: r.filter(x => x.juste).length, n: r.length}; });
   const entree = {date: new Date().toISOString().slice(0, 10), forme: X.f + 1, a: n.A, b: n.B, c: n.C, taux, palier: pal, confirme: null,
-                  oral: X.F.D.map(() => null)};
+                  oral: X.D.map(() => null)};
   h.push(entree); garderHisto(h);
   const premiere = h.length > 1 ? h[0] : null;
   const ligne = (k, v) => {
@@ -1301,7 +1342,7 @@ function resultatTest() {
     + '<div class="code" style="margin-top:8px"><label for="codeF">' + esc(FR.code_formateur) + '</label><input id="codeF" inputmode="numeric" maxlength="6" autocomplete="off">'
     + '<button type="button" class="mf-btn" id="okF"><span>' + esc(FR.ouvrir) + '</span></button></div><p class="retro non" id="errF" aria-live="polite"></p>'
     + '<div id="zoneF" hidden>'
-    + X.F.D.map((d, i) => '<p style="margin:14px 0 2px">« ' + esc(d.phrase) + ' »</p>'
+    + X.D.map((d, i) => '<p style="margin:14px 0 2px">« ' + esc(d.phrase) + ' »</p>'
         + '<p style="margin:0 0 4px;font-size:15px"><b>' + esc(FR.geste_attendu) + ' :</b> ' + esc(d.geste) + ' — ' + esc(FR.exemple) + ' : ' + esc(d.attendu) + '</p>'
         + (X.blobs[i] ? '<audio controls src="' + X.blobs[i] + '"></audio>' : '<p style="margin:0;color:var(--text-muted)">—</p>')
         + '<div class="choisir3" data-oral="' + i + '">' + D.test.oral.map((o, k) => '<button type="button" class="mf-btn" data-v="' + k + '" aria-pressed="false">' + esc(o) + '</button>').join('') + '</div>').join('')
@@ -1320,8 +1361,8 @@ function resultatTest() {
     const i = +b.parentNode.dataset.oral; entree.oral[i] = +b.dataset.v; maj();
     b.parentNode.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
     // Le geste noté par le formateur remonte au direct (O3, O4 évalués).
-    rapporter({zone: 'test' + (X.f + 1) + '-D-' + X.F.D[i].id, exo: 'test-D', exoNum: 'Test · forme ' + (X.f + 1) + ' · oral', exoTitre: FR.partie_d, section: 'test',
-      type: 'oral', enonce: X.F.D[i].geste, bonne: '', reponse: '', ok: +b.dataset.v === 0, essais: 0}); });
+    rapporter({zone: 'test' + (X.f + 1) + '-D-' + X.D[i].id, exo: 'test-D', exoNum: 'Test · forme ' + (X.f + 1) + ' · oral', exoTitre: FR.partie_d, section: 'test',
+      type: 'oral', enonce: X.D[i].geste, bonne: '', reponse: '', ok: +b.dataset.v === 0, essais: 0}); });
   app.querySelectorAll('[data-conf] button').forEach(b => b.onclick = () => {
     entree.confirme = b.dataset.v; maj();
     b.parentNode.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', String(x === b))); });
@@ -1456,6 +1497,7 @@ async function tour() {
       // Le client a dit au revoir : on laisse la dernière réplique à l'écran,
       // et c'est l'employé qui passe au bilan (audit, tour 2, G2).
       S.fini = true;
+      ['txt', 'env', 'micro'].forEach(id => { const x = document.getElementById(id); if (x) x.disabled = true; });
       const suite = document.querySelector('.scene .suite');
       if (suite) { suite.innerHTML = '<button type="button" class="mf-btn mf-btn--pri" id="versBilan"><span>' + T('voir_bilan') + '</span>' + ICO.suiv + '</button>';
         document.getElementById('versBilan').onclick = bilanMagasin; }
@@ -1527,7 +1569,10 @@ async function bilanMagasin() {
   const nomGeste = id => (M.gestes.find(g => g.id === id) || {nom: id}).nom;
   try {
     const r = await fetch('/api/jeu-de-role', {method: 'POST', headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({code: codeAcces, scenario: 'magasin', cas: S.c.id, role: 'vendeur', niveau: niveauJeu, bilan: true, historique: S.hist})});
+      body: JSON.stringify({code: codeAcces, scenario: 'magasin', cas: S.c.id, role: 'vendeur', niveau: niveauJeu, bilan: true,
+        // La première réplique « vendeur » est l'accueil écrit par la page : le
+        // bilan ne l'attribue pas à l'employé (audit, tour 3).
+        historique: S.hist.slice(1)})});
     const d = await r.json().catch(() => ({}));
     if (!r.ok || !d.bilan) { zone.innerHTML = '<p>' + esc(d.error || FR.erreur_reseau) + '</p>'; }
     else {

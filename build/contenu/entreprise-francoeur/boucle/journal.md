@@ -67,3 +67,23 @@ veston ») ont été traduits dans les onze langues directement dans la session
 Claude Code, hors API. Toujours `relu: false`.
 
 **Reste** : le tour 3 de l'audit, sur toute la grille.
+
+## Tour 3 → révision (24 septembre 2026)
+
+Troisième audit (toute la grille, deux regards neufs) : **0 bloquant, 5 majeurs,
+24 mineurs** (`audit3-*.json`, page `francoeur-audit-3.html`). Les corrections
+du tour 2 tiennent au recompte.
+
+| Élément | Statut | Avant | Après | Critères | Pourquoi |
+|---|---|---|---|---|---|
+| La gérante | modifié | la bonne réponse, souvent seul objet nommé parmi les choix (12/16 à l'entraînement, tout le cran 1 et 5/8 au cran 2 du test) | les autres objets nommés sont parmi les choix : 11 consignes sur 16, tous les items des crans 2 et 3 ; contrôle au build | A3 · majeur | Repérer un mot mesurait O1, pas la consigne. |
+| Formes du test | modifié | forme 2 plus courte (B3 : 19 contre 14 mots ; C3 : 20 contre 15), b61 sans taille, oral dans le même ordre | b61, b63, k21–k34 réécrits et revoisés : moyennes égales à ±1 mot, contrôlées au build ; ordre de l'oral tiré ; « équivalence à confirmer au pilote » dans la démo | F1 · majeur | La seconde forme gonflait le gain d'avance. |
+| Ce que le vendeur décide seul | ajouté | rien d'écrit : la mise de côté recevait trois verdicts | la règle en une ligne (fiche, guide, bilan du magasin) : sans argent, le vendeur ; argent, remboursement, exception, la gérante. d3 réduit à une seule demande ; r11 et r12 la pratiquent des deux côtés | A3 · majeur | Un employé formé avec M. Nguyen échouait à d8. |
+| Note du piège au 1er choix faux | modifié | la note de la CIBLE (« sacoche est le sac à main ») | la note du mot choisi seulement ; celle de la cible vient après | D4 · majeur | Elle donnait la réponse au premier essai. |
+| « Faire répéter » | modifié | r04 marquait faux une reformulation juste ; grille orale sans ce cas | r04 : la reformulation proposée est fausse sur le fond (« plus petit ») ; d1/d5 acceptent « redire exactement la demande, puis vérifier » | E1 · majeur | La notation contredisait la règle enseignée. |
+| Mineurs rapides | modifiés | — | seuils du guide écrits comme à l'écran ; J+30 reprend la forme 1 (le guide le dit) ; distracteur t-shirt retiré (k12) ; distracteurs qui englobent la cible écartés ; traits de la rétroaction traduits ; note traduite une seule fois ; préfixe retiré en chinois et tigrigna ; notes non-piège lisibles en français ; note « denim » corrigée en six langues ; série des pièges titrée, filtre non collant ; « Je me souviens » sans « du premier coup » ; choix du test remonté au portail ; accueil écrit par la page exclu du bilan ; saisie éteinte en fin de visite ; avatar à 170 px au téléphone ; mauve et uni revoisés | A1, D4, C5, C3, F3, G1, G2 | — |
+
+Voix : 16 refaites ou neuves (385 en tout). Traductions des textes neufs faites
+dans la session (API à sa limite jusqu'au 1er oct.), `relu: false`.
+
+**Reste** : le tour 4 de l'audit.

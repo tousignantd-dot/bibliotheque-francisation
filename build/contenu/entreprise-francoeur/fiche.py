@@ -25,6 +25,11 @@ PHRASES = [
     ("repeter", "Un instant, s'il vous plaît. Pouvez-vous répéter plus lentement ?",
      "Quand ça va trop vite. Faire semblant de comprendre fait perdre la vente."),
     ("relais", "Un instant. Je vais chercher la gérante.",
-     "Un retour, une plainte, une promesse que vous ne pouvez pas faire : ce n'est pas un échec."),
+     "Un retour, une plainte, de l'argent (un dépôt), une exception : la gérante. Une mise de côté sans argent, avec le nom et le numéro, vous la faites vous-même."),
 ]
+# Audit, tour 3 (A3, majeur) : ce que le vendeur décide seul n'était écrit
+# nulle part, et la mise de côté recevait trois verdicts. LA RÈGLE, une ligne,
+# reprise par le guide, les clients du magasin et « Ce que je réponds ».
+REGLE_RELAIS = ("Mettre de côté sans argent : vous, avec le nom et le numéro. "
+                "Argent, remboursement, exception : la gérante.")
 DEFI = ("Cette semaine, dites une fois « Je vais vérifier en arrière » au lieu de promettre.",)

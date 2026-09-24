@@ -27,6 +27,7 @@ from lexique import LEXIQUE, PLANCHES  # noqa: E402
 from demandes import DEMANDES  # noqa: E402
 import test as TEST  # noqa: E402
 from clients import CLIENTS, GESTES  # noqa: E402
+from fiche import REGLE_RELAIS  # noqa: E402
 from prix import FORMULES, NOTES  # noqa: E402
 
 PRES = RACINE / "assets" / "presentations"
@@ -110,13 +111,15 @@ casse. L'employé travaille sur son téléphone ; vous travaillez dans le portai
 
 <section class="premier">
   <h2>Ce que l'employé saura faire</h2>
-  <p>Cinq objectifs, chacun avec son seuil. Les bilans des exercices et le résultat du test se lisent contre eux.</p>
+  <p>Cinq objectifs, chacun avec son seuil — écrit ici comme il se lit à l'écran : sur une série de huit dans les
+  exercices, et par le cran validé au test (trois bonnes réponses à ce cran).</p>
   <table class="cmp"><tbody>
-    <tr><td><b>O1</b></td><td>Devant un mot du plancher dit à voix haute, <b>désigner</b> l'article, sans traduction</td><td class="num">8 sur 10</td></tr>
-    <tr><td><b>O2</b></td><td>Devant une demande de client dite vite (article, couleur, taille), <b>choisir</b> l'article exact</td><td class="num">7 sur 10</td></tr>
+    <tr><td><b>O1</b></td><td>Devant un mot du plancher dit à voix haute, <b>désigner</b> l'article, sans traduction</td><td class="num">7 sur 8 en série · cran 3 au test (pièges)</td></tr>
+    <tr><td><b>O2</b></td><td>Devant une demande de client dite vite (article, couleur, taille), <b>choisir</b> l'article exact</td><td class="num">6 sur 8 en série · cran 2 au test</td></tr>
     <tr><td><b>O3</b></td><td>Quand il n'a pas compris, <b>faire répéter</b> ou <b>faire préciser</b> au lieu de deviner</td><td class="num">chaque fois</td></tr>
     <tr><td><b>O4</b></td><td>Devant ce qu'il ne peut pas garantir, <b>vérifier</b> ou <b>passer le relais</b> à la gérante, sans promettre</td><td class="num">chaque fois</td></tr>
-    <tr><td><b>O5</b></td><td>Devant une consigne de la gérante, <b>désigner</b> l'objet ou le lieu visé</td><td class="num">7 sur 10</td></tr>
+    <tr><td><b>O5</b></td><td>Devant une consigne de la gérante, <b>désigner</b> l'objet ou le lieu visé</td><td class="num">6 sur 8 en série · cran 2 au test</td></tr>
+    <tr><td></td><td colspan="2"><b>La règle du relais, la même partout</b> (fiche de poche, exercices, magasin) : {E(REGLE_RELAIS)}</td></tr>
   </tbody></table>
 </section>
 
@@ -158,7 +161,7 @@ casse. L'employé travaille sur son téléphone ; vous travaillez dans le portai
   <table class="cmp"><tbody>
     <tr><td><b>J+2</b></td><td>une série de rappel (huit mots, dont ceux à revoir) et « Ce que le client veut ».</td></tr>
     <tr><td><b>J+7</b></td><td>« Ce que je réponds », puis un client au magasin ; le défi de la semaine de la fiche de poche.</td></tr>
-    <tr><td><b>J+30</b></td><td>le test « Mon niveau », repassé — il prend la seconde forme, et compare avec la première passation.</td></tr>
+    <tr><td><b>J+30</b></td><td>le test « Mon niveau », repassé. Les formes alternent : ce troisième passage reprend la <b>première</b> forme — comparez-le à la passation d'avant la formation, qui avait les mêmes questions à un mois d'écart.</td></tr>
   </tbody></table>
 </section>
 
@@ -287,7 +290,7 @@ les mots du rayon, puis à comprendre le client — et à dire « un instant, s'
     <tr><td><b>Apprendre les mots</b></td><td>{c['croquis']} croquis de catalogue ; le mot d'ici en tête (« chandail »), l'autre dessous (« pull ») ; huit pièges France-Québec signalés.</td></tr>
     <tr><td><b>S'exercer</b></td><td>Sept exercices, dont {c['demandes']} demandes de clients à vitesse réelle, les consignes de la gérante et « Ce que je réponds ».</td></tr>
     <tr><td><b>Voir faire</b></td><td>Cinq dialogues modèles : on entend un vendeur faire chaque geste avant de le faire soi-même.</td></tr>
-    <tr><td><b>Mesurer</b></td><td>Un test de dix minutes, adaptatif, en deux formes parallèles : repassé à la fin sur des questions nouvelles, il montre ce qui a été appris, objectif par objectif.</td></tr>
+    <tr><td><b>Mesurer</b></td><td>Un test de dix minutes, adaptatif, en deux formes parallèles : repassé à la fin sur des questions nouvelles, il montre ce qui a été appris, objectif par objectif — l'équivalence des deux formes reste à confirmer au pilote.</td></tr>
     <tr><td><b>Pratiquer</b></td><td>Un jeu de rôle à voix haute ; le visage du client montre l'effet de ce qu'on lui dit, et le bilan dit quels gestes ont été faits.</td></tr>
     <tr><td><b>Garder en poche</b></td><td>Une fiche imprimable par langue : six phrases du vendeur, les pièges, les tailles, les couleurs.</td></tr>
   </tbody></table>
