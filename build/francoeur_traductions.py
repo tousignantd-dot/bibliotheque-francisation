@@ -176,14 +176,57 @@ INTERFACE = {
     "fin": "Série terminée",
     "premier_coup": "du premier coup",
     "recommencer": "Une autre série",
+    "test": "Mon niveau",
+    "test_sous": "Un test de dix minutes, sans note.",
+    "t_intro": "Ce test dure environ dix minutes. Il sert à choisir le niveau des clients dans le jeu de rôle.",
+    "t_intro2": "Ce n'est pas un examen. L'écran ne dit pas si la réponse est bonne : répondez comme vous pouvez.",
+    "commencer": "Commencer",
+    "ca": "Écoutez. Touchez ce que vous entendez.",
+    "cb": "Écoutez le client. Touchez ce qu'il demande.",
+    "cc": "Écoutez la gérante, puis répondez à la question.",
+    "cd": "Écoutez le client. Répondez à voix haute.",
+    "enregistrer": "Enregistrer ma réponse",
+    "arreter": "Arrêter",
+    "passer": "Passer",
+    "ecoute_micro": "Je vous écoute…",
+    "micro_refuse": "Le micro n'est pas disponible. Vous pouvez passer.",
+    "resultat": "Votre résultat",
+    "palier_propose": "Niveau proposé pour le jeu de rôle",
+    "pas_examen": "Ce n'est pas une note.",
+    "refaire_test": "Refaire le test",
 }
 
 
 def traduire_interface(code, nom):
+    """Par deux moitiés, comme le lexique par tranches : le tigrigna voyait la
+    connexion se fermer sur la réponse entière."""
+    tous = textes_interface()
+    cles = list(tous)
+    rendu = {}
+    for moitie in (cles[:len(cles) // 2], cles[len(cles) // 2:]):
+        rendu.update(traduire_textes(code, nom, {k: tous[k] for k in moitie}))
+    print(f"  {code}  interface, {len(rendu)} textes", flush=True)
+    return rendu
+
+
+def textes_interface():
     textes = dict(INTERFACE)
     textes.update({f"planche_{k}": t for k, t in PLANCHES})
-    schema = {"type": "object", "properties": {k: {"type": "string"} for k in textes},
-              "required": list(textes), "additionalProperties": False}
+    # Les questions de la partie C du test : la CONSIGNE se traduit, la phrase
+    # de la gérante (le contenu à comprendre) jamais.
+    import test as TEST
+    textes.update({f"tq_{c[0]}": c[3] for c in TEST.C})
+    return textes
+
+
+def traduire_textes(code, nom, textes):
+    # Une LISTE de paires, pas un objet à une propriété par clé : passé ~70 clés
+    # obligatoires, l'API refuse le schéma (« compiled grammar is too large »),
+    # vu le 24 septembre 2026 sur le tigrigna. On vérifie les clés après coup.
+    schema = {"type": "object", "properties": {"textes": {"type": "array", "items": {
+        "type": "object", "properties": {"k": {"type": "string"}, "t": {"type": "string"}},
+        "required": ["k", "t"], "additionalProperties": False}}},
+        "required": ["textes"], "additionalProperties": False}
     corps = {"model": MODELE, "max_tokens": 8000,
              "output_config": {"effort": "medium", "format": {"type": "json_schema", "schema": schema}},
              "fallbacks": "default",
@@ -203,8 +246,10 @@ def traduire_interface(code, nom):
     if d.get("stop_reason") != "end_turn":
         raise RuntimeError(f"arrêt : {d.get('stop_reason')} {d.get('stop_details')}")
     texte = "".join(b.get("text", "") for b in d["content"] if b["type"] == "text")
-    rendu = json.loads(texte)
-    print(f"  {code}  interface, {len(rendu)} textes", flush=True)
+    rendu = {x["k"]: x["t"] for x in json.loads(texte)["textes"] if x["k"] in textes}
+    manque = [k for k in textes if k not in rendu]
+    if manque:
+        raise RuntimeError(f"{len(manque)} textes manquants : {manque[:5]}")
     return rendu
 
 
@@ -217,7 +262,8 @@ def main_interface():
             print(f"  {l[0]}  ÉCHEC {e}", flush=True)
             return l[0], None
     with ThreadPoolExecutor(6) as pool:
-        for code, rendu in pool.map(un, [l for l in LANGUES if l[0] in tout]):
+        seules = [a for a in sys.argv[1:] if not a.startswith("--")]
+        for code, rendu in pool.map(un, [l for l in LANGUES if l[0] in tout and (not seules or l[0] in seules)]):
             if rendu:
                 tout[code]["interface"] = rendu
     SORTIE.write_text(json.dumps(tout, ensure_ascii=False, indent=1), encoding="utf-8")

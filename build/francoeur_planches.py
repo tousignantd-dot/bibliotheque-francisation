@@ -33,6 +33,7 @@ from lexique import LEXIQUE, PLANCHES, verifier  # noqa: E402
 from francoeur_etape0 import TEINTES, MOTIFS  # noqa: E402
 from demandes import DEMANDES, COULEURS_DISTRACTRICES, TAILLES  # noqa: E402
 import random  # noqa: E402
+import test as TEST  # noqa: E402
 
 CROQUIS = RACINE / "assets" / "interactive" / "francoeur" / "croquis"
 SONS = RACINE / "assets" / "interactive" / "francoeur" / "sons"
@@ -61,7 +62,7 @@ def donnees():
                 "mots": {k: [t["mot"], t["note"]] for k, t in v["mots"].items()}}
                for c, v in trad.items()]
     return {"planches": [{"k": k, "t": t} for k, t in PLANCHES], "mots": mots,
-            "langues": langues, "demandes": demandes(mots)}
+            "langues": langues, "demandes": demandes(mots), "test": le_test(mots)}
 
 
 ETIQUETTE = {"tp": "TP", "p": "P", "m": "M", "g": "G", "tg": "TG"}
@@ -77,25 +78,76 @@ def demandes(mots):
     for ident, _voix, phrase, art, coul, taille in DEMANDES:
         assert art in par_id and "img" in par_id[art], f"{ident} : {art} sans croquis"
         assert coul in TEINTES, f"{ident} : couleur {coul} inconnue"
-        r = random.Random(ident)
-        autres_c = [c for c in COULEURS_DISTRACTRICES if c != coul]
-        voisins = [e[0] for e in LEXIQUE if e[1] == planche[art] and e[0] != art
-                   and "img" in par_id[e[0]]]
-        v = [(art, coul, taille)]
-        v.append((art, r.choice(autres_c), taille))                 # la couleur change
-        if taille:
-            i = TAILLES.index(taille)
-            proches = [TAILLES[j] for j in (i - 1, i + 1) if 0 <= j < len(TAILLES)]
-            v.append((art, coul, r.choice(proches)))                # la taille change
-        else:
-            v.append((art, r.choice([c for c in autres_c if c != v[1][1]]), None))
-        v.append((r.choice(voisins), coul, taille))                 # l'article change
+        v = variantes(ident, art, coul, taille, par_id, planche)
         sortie.append({"id": ident, "phrase": phrase,
                        "son": f"/assets/interactive/francoeur/sons/demandes/{ident}.mp3?v={MEDIA_V}",
-                       "v": [{"a": a, "img": par_id[a]["img"], "mot": par_id[a]["mot"],
-                              "c": c, "cmot": par_id[c]["mot"], "hex": TEINTES[c],
-                              "t": ETIQUETTE.get(t) if t else None} for a, c, t in v]})
+                       "v": cartes(v, par_id)})
     return sortie
+
+
+def variantes(graine, art, coul, taille, par_id, planche, article_seul=False):
+    """La bonne réponse d'abord, puis trois distracteurs qui ne changent chacun
+    qu'UN attribut. `article_seul` : les trois changent l'article (cran 1 du
+    test, où la phrase ne dit ni couleur ni taille)."""
+    r = random.Random(graine)
+    voisins = [e[0] for e in LEXIQUE if e[1] == planche[art] and e[0] != art
+               and "img" in par_id[e[0]]]
+    v = [(art, coul, taille)]
+    if article_seul:
+        return v + [(a, coul, taille) for a in r.sample(voisins, 3)]
+    autres_c = [c for c in COULEURS_DISTRACTRICES if c != coul]
+    v.append((art, r.choice(autres_c), taille))                     # la couleur change
+    if taille:
+        i = TAILLES.index(taille)
+        proches = [TAILLES[j] for j in (i - 1, i + 1) if 0 <= j < len(TAILLES)]
+        v.append((art, coul, r.choice(proches)))                    # la taille change
+    else:
+        v.append((art, r.choice([c for c in autres_c if c != v[1][1]]), None))
+    v.append((r.choice(voisins), coul, taille))                     # l'article change
+    return v
+
+
+def cartes(v, par_id):
+    return [{"a": a, "img": par_id[a]["img"], "mot": par_id[a]["mot"], "c": c,
+             "cmot": par_id[c]["mot"], "hex": TEINTES[c],
+             "t": ETIQUETTE.get(t) if t else None} for a, c, t in v]
+
+
+def le_test(mots):
+    """Les items du test, par partie et par cran. Distracteurs déduits aux crans
+    1-2, écrits au cran 3 (voir build/contenu/entreprise-francoeur/test.py)."""
+    par_id = {m["id"]: m for m in mots}
+    planche = {e[0]: e[1] for e in LEXIQUE}
+    avec_img = [m["id"] for m in mots if "img" in m]
+    son = lambda i: f"/assets/interactive/francoeur/sons/test/{i}.mp3?v={MEDIA_V}"
+    for i in TEST.A_CRAN1 + TEST.A_CRAN2 + [x for x, _ in TEST.A_CRAN3]:
+        assert i in par_id and "img" in par_id[i] and "son" in par_id[i], f"A : {i}"
+    A = {1: [], 2: [], 3: []}
+    for cible in TEST.A_CRAN1:
+        r = random.Random("A1" + cible)
+        A[1].append({"id": cible, "son": par_id[cible]["son"],
+                     "o": [cible] + r.sample([i for i in avec_img if planche[i] != planche[cible]], 3)})
+    for cible in TEST.A_CRAN2:
+        r = random.Random("A2" + cible)
+        A[2].append({"id": cible, "son": par_id[cible]["son"],
+                     "o": [cible] + r.sample([i for i in avec_img if planche[i] == planche[cible] and i != cible], 3)})
+    for cible, pieges in TEST.A_CRAN3:
+        A[3].append({"id": cible, "son": par_id[cible]["son"], "o": [cible] + pieges})
+    B = {1: [], 2: [], 3: []}
+    for ident, cran, _v, phrase, bonne, distr in TEST.B:
+        v = [bonne] + distr if distr else variantes(ident, *bonne, par_id, planche, article_seul=(cran == 1))
+        B[cran].append({"id": ident, "son": son(ident), "phrase": phrase, "v": cartes(v, par_id)})
+    C = {1: [], 2: [], 3: []}
+    for ident, cran, phrase, question, bonne, distr in TEST.C:
+        for i in [bonne] + distr:
+            assert "img" in par_id[i], f"C {ident} : {i} sans croquis"
+        C[cran].append({"id": ident, "son": son(ident), "phrase": phrase, "q": question,
+                        "o": [bonne] + distr})
+    return {"A": A, "B": B, "C": C,
+            "D": [{"id": i, "son": son(i), "phrase": p} for i, _v, p in TEST.D],
+            "oral": TEST.ORAL, "paliers": [{"k": k, "t": t, "n": n} for k, t, n in TEST.PALIERS],
+            "regle": {"debutant_max": TEST.DEBUTANT_MAX, "aise_min": TEST.AISE_MIN,
+                      "aise_b_min": TEST.AISE_B_MIN}}
 
 
 def main():
@@ -145,6 +197,11 @@ body{margin:0;background:var(--surface-page);color:var(--text-body);font-family:
   border:1px solid var(--line-300);background:var(--surface-card);font-size:20px;font-weight:800;color:var(--text-strong)}
 .langues button:hover,.langues button:focus-visible{border-color:var(--mf-teinte);background:var(--mf-fond)}
 .langues button small{display:block;font-size:13px;font-weight:600;color:var(--text-muted)}
+.sans-trad{font:inherit;cursor:pointer;text-align:start;margin-top:18px;width:100%;max-width:520px;padding:16px 18px;border-radius:12px;
+  border:2px solid var(--mf-teinte);background:var(--mf-fond);font-size:22px;font-weight:900;color:var(--text-strong)}
+.sans-trad small{display:block;font-size:15px;font-weight:700;color:var(--mf-teinte)}
+.ou-langue{margin:18px 0 0;font-weight:700;color:var(--text-muted)}
+.langues button[aria-pressed=true],.sans-trad[aria-pressed=true]{box-shadow:0 0 0 3px var(--mf-teinte)}
 
 /* Les rayons */
 .rayons{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:16px}
@@ -237,6 +294,25 @@ body{margin:0;background:var(--surface-page);color:var(--text-body);font-family:
 .bilan{text-align:center;padding:20px 0}
 .bilan .score{font-size:44px;font-weight:900;color:var(--text-strong)}
 
+/* Le test */
+.intro{max-width:620px}
+.intro p{margin:0 0 10px}
+.partie{font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--mf-teinte);margin:0 0 4px}
+.question{font-size:19px;font-weight:800;color:var(--text-strong);margin:4px 0 12px;text-align:center}
+.oral{display:flex;flex-direction:column;align-items:center;gap:10px;margin:10px 0}
+.oral .etat{font-weight:700;min-height:1.4em}
+.rec{background:var(--audio);border-color:var(--audio);color:#fff}
+.resultat{display:grid;gap:14px;margin-top:14px}
+.bloc{background:var(--surface-card);border:1px solid var(--line-200);border-radius:14px;padding:16px}
+.gros-palier{font-size:34px;font-weight:900;color:var(--text-strong);margin:4px 0}
+.parts{display:grid;gap:8px;margin-top:8px}
+.parts div{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}
+.jauge{grid-column:1/-1;height:8px;border-radius:4px;background:var(--line-200);overflow:hidden}
+.jauge i{display:block;height:100%;background:var(--mf-teinte)}
+.choisir3{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.choisir3 button[aria-pressed=true]{background:var(--ok-bg);border-color:var(--ok-line)}
+.bloc.formateur{border-style:dashed}
+
 @media (max-width:640px){
   .mf h1{font-size:23px}
   .choix{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -290,7 +366,20 @@ const FR = {choisir:"Choisissez votre langue", choisir_sous:"Les mots restent en
   reecouter:"Réécouter", lentement:"Plus lentement", voir_mot:"Voir le mot",
   savais:"Je le savais", a_revoir:"À revoir", bravo:"Bien joué !",
   essaie:"Pas tout à fait. Essayez encore.", reponse:"Voici la bonne réponse.",
-  fin:"Série terminée", premier_coup:"du premier coup", recommencer:"Une autre série"};
+  fin:"Série terminée", premier_coup:"du premier coup", recommencer:"Une autre série",
+  test:"Mon niveau", test_sous:"Un test de dix minutes, sans note.",
+  t_intro:"Ce test dure environ dix minutes. Il sert à choisir le niveau des clients dans le jeu de rôle.",
+  t_intro2:"Ce n'est pas un examen. L'écran ne dit pas si la réponse est bonne : répondez comme vous pouvez.",
+  commencer:"Commencer", derniere:"Dernier résultat",
+  partie_a:"Les mots", partie_b:"Le client", partie_c:"La gérante", partie_d:"Parler",
+  ca:"Écoutez. Touchez ce que vous entendez.", cb:"Écoutez le client. Touchez ce qu'il demande.",
+  cc:"Écoutez la gérante, puis répondez à la question.", cd:"Écoutez le client. Répondez à voix haute.",
+  enregistrer:"Enregistrer ma réponse", arreter:"Arrêter", passer:"Passer", ecoute_micro:"Je vous écoute…",
+  micro_refuse:"Le micro n'est pas disponible. Vous pouvez passer.",
+  resultat:"Votre résultat", palier_propose:"Niveau proposé pour le jeu de rôle",
+  pas_examen:"Ce n'est pas une note.", premiere:"Première passation", aujourdhui:"Aujourd'hui",
+  pour_formateur:"Pour le formateur", confirmer_palier:"Confirmer le niveau du jeu de rôle",
+  refaire_test:"Refaire le test"};
 const T = k => dit(k, FR[k]);
 const app = document.getElementById('app');
 let audio = null;
@@ -305,9 +394,12 @@ function image(m, grand) {
 function ecranLangue() {
   app.innerHTML = '<p class="mf-enseigne">Maison Francœur</p>'
     + '<h1>Choisissez votre langue</h1><p style="margin:6px 0 0">Les mots restent en français. Votre langue vous aide à comprendre.</p>'
-    + '<div class="langues">' + D.langues.map(l => '<button type="button" data-l="' + l.c + '" lang="' + l.c + '" dir="' + (l.rtl ? 'rtl' : 'ltr') + '">'
-        + esc(l.loc) + (l.ui.choisir ? '<small>' + esc(l.ui.choisir) + '</small>' : '') + '</button>').join('')
-    + '<button type="button" data-l="fr">Français<small>Français seulement</small></button></div>';
+    // « Sans traduction » d'abord, et bien en vue : c'est un choix à part entière,
+    // pas un oubli au bout de la liste (demande de Daniel, 24 septembre 2026).
+    + '<button type="button" class="sans-trad" data-l="fr"' + (langue === 'fr' ? ' aria-pressed="true"' : '') + '>Français seulement<small>Sans traduction</small></button>'
+    + '<p class="ou-langue">ou avec l\'aide d\'une langue :</p>'
+    + '<div class="langues">' + D.langues.map(l => '<button type="button" data-l="' + l.c + '" lang="' + l.c + '" dir="' + (l.rtl ? 'rtl' : 'ltr') + '"' + (langue === l.c ? ' aria-pressed="true"' : '') + '>'
+        + esc(l.loc) + (l.ui.choisir ? '<small>' + esc(l.ui.choisir) + '</small>' : '') + '</button>').join('') + '</div>';
   app.querySelectorAll('[data-l]').forEach(b => b.onclick = () => {
     langue = b.dataset.l; try { localStorage.setItem(CLE, langue); } catch(e) {}
     ecranAccueil();
@@ -318,9 +410,11 @@ function ecranAccueil() {
   app.innerHTML = tete('Bienvenue', '', false)
     + '<div class="accueil">'
     + '<button type="button" class="porte" id="aRayons"><b>' + T('apprendre') + '</b><span>' + T('apprendre_sous') + '</span></button>'
-    + '<button type="button" class="porte" id="aExos"><b>' + T('exercer') + '</b><span>' + T('exercer_sous') + '</span></button></div>';
+    + '<button type="button" class="porte" id="aExos"><b>' + T('exercer') + '</b><span>' + T('exercer_sous') + '</span></button>'
+    + '<button type="button" class="porte" id="aTest"><b>' + T('test') + '</b><span>' + T('test_sous') + '</span></button></div>';
   document.getElementById('aRayons').onclick = ecranRayons;
   document.getElementById('aExos').onclick = ecranExercices;
+  document.getElementById('aTest').onclick = ecranTest;
   document.getElementById('chLangue').onclick = ecranLangue;
   window.scrollTo(0, 0);
 }
@@ -549,6 +643,162 @@ function bilan() {
   document.getElementById('chLangue').onclick = ecranLangue;
 }
 window.__francoeur = { etat: () => J, D };
+/* ── Le test de positionnement (étape 3) ───────────────────────────────
+   A (mots), B (client), C (gérante) : adaptatif. À un cran, 3 bonnes le
+   valident et font monter ; 2 erreurs arrêtent la partie. Aucune rétroaction.
+   D (oral) : enregistré sur l'appareil, jamais envoyé, noté par le formateur.
+   Le palier se PROPOSE ; le formateur le confirme. Historique sur l'appareil. */
+const CLE_TEST = 'francoeur-test';
+const histo = () => { try { return JSON.parse(localStorage.getItem(CLE_TEST) || '[]'); } catch(e) { return []; } };
+const garderHisto = h => { try { localStorage.setItem(CLE_TEST, JSON.stringify(h)); } catch(e) {} };
+const nomPalier = k => D.test.paliers.find(p => p.k === k);
+function calculPalier(a, b, c) {
+  const R = D.test.regle, s = a + b + c;
+  if (s <= R.debutant_max || b === 0) return 'debutant';
+  if (s >= R.aise_min && b >= R.aise_b_min) return 'aise';
+  return 'fonctionnel';
+}
+let X = null;   // la passation en cours
+
+function ecranTest() {
+  const h = histo(), der = h[h.length - 1];
+  app.innerHTML = tete(T('test'), '', true, 'accueil')
+    + '<div class="intro"><p>' + T('t_intro') + '</p><p>' + T('t_intro2') + '</p>'
+    + (der ? '<p class="bloc">' + esc(FR.derniere) + ' : <b>' + esc(nomPalier(der.confirme || der.palier).t) + '</b> · ' + der.date + '</p>' : '')
+    + '<button type="button" class="mf-btn mf-btn--pri" id="go"><span>' + T('commencer') + '</span>' + ICO.suiv + '</button></div>';
+  document.getElementById('go').onclick = debuterTest;
+  document.getElementById('retour').onclick = ecranAccueil;
+  document.getElementById('chLangue').onclick = ecranLangue;
+  window.scrollTo(0, 0);
+}
+function debuterTest() {
+  X = {parties: ['A', 'B', 'C'], p: 0, cran: 1, bons: 0, faux: 0, niveau: {A: 0, B: 0, C: 0},
+       vus: new Set(), reponses: [], oral: [], blobs: [], fini: false};
+  questionTest();
+}
+function itemSuivant() {
+  const P = X.parties[X.p], pool = D.test[P][X.cran].filter(it => !X.vus.has(it.id));
+  return pool.length ? melange(pool)[0] : null;
+}
+function questionTest() {
+  if (X.p >= X.parties.length) return partieOrale(0);
+  const P = X.parties[X.p], it = itemSuivant();
+  if (!it) return partieFinie();
+  X.vus.add(it.id); X.item = it;
+  let corps = '';
+  const titre = '<p class="partie">' + esc(FR['partie_' + P.toLowerCase()]) + '</p>';
+  const ecoute = '<div class="ecoute"><button type="button" class="mf-btn mf-btn--pri" id="reec">' + ICO.son + '<span>' + T('reecouter') + '</span></button></div>';
+  if (P === 'A') {
+    X.options = melange(it.o); X.bonne = it.id;
+    corps = ecoute + '<div class="choix">' + X.options.map(id => { const m = D.mots.find(x => x.id === id);
+      return '<button type="button" class="opt" data-o="' + id + '">' + image(m) + '</button>'; }).join('') + '</div>';
+  } else if (P === 'B') {
+    X.options = melange(it.v.map((v, n) => Object.assign({n}, v))); X.bonne = 0;
+    corps = ecoute + '<div class="choix">' + X.options.map(v => '<button type="button" class="opt gris" data-o="' + v.n + '"><img src="' + v.img + '" alt="' + esc(v.mot) + '">'
+      + '<span class="attrs"><span class="chip" style="background:' + v.hex + '" role="img" aria-label="' + esc(v.cmot) + '"></span>'
+      + (v.t ? '<span class="tag">' + v.t + '</span>' : '') + '</span></button>').join('') + '</div>';
+  } else {
+    X.options = melange(it.o); X.bonne = it.o[0];
+    corps = ecoute + '<p class="question">' + dit('tq_' + it.id, it.q) + '</p><div class="choix">' + X.options.map(id => { const m = D.mots.find(x => x.id === id);
+      return '<button type="button" class="opt" data-o="' + id + '">' + image(m) + '<span style="font-weight:800">' + esc(m.mot) + '</span></button>'; }).join('') + '</div>';
+  }
+  app.innerHTML = tete(T('test'), T('c' + P.toLowerCase()), false)
+    + '<div class="jeu">' + titre + corps + '</div>';
+  document.getElementById('chLangue').remove();
+  document.getElementById('reec').onclick = () => joue(it.son);
+  joue(it.son);
+  app.querySelectorAll('[data-o]').forEach(b => b.onclick = () => repondreTest(String(b.dataset.o) === String(X.bonne)));
+  window.scrollTo(0, 0);
+}
+function repondreTest(juste) {
+  // Aucune rétroaction : on passe à la suite, c'est tout.
+  if (audio) audio.pause();
+  X.reponses.push({p: X.parties[X.p], cran: X.cran, id: X.item.id, juste});
+  if (juste) {
+    X.bons++;
+    if (X.bons >= 3) {
+      X.niveau[X.parties[X.p]] = X.cran;
+      if (X.cran === 3) return partieFinie();
+      X.cran++; X.bons = 0; X.faux = 0;
+    }
+  } else if (++X.faux >= 2) return partieFinie();
+  questionTest();
+}
+function partieFinie() { X.p++; X.cran = 1; X.bons = 0; X.faux = 0; questionTest(); }
+
+let enreg = null;
+function partieOrale(i) {
+  if (i >= D.test.D.length) return resultatTest();
+  const it = D.test.D[i];
+  app.innerHTML = tete(T('test'), T('cd'), false)
+    + '<div class="jeu"><p class="partie">' + esc(FR.partie_d) + ' · ' + (i + 1) + ' / ' + D.test.D.length + '</p>'
+    + '<div class="ecoute"><button type="button" class="mf-btn mf-btn--pri" id="reec">' + ICO.son + '<span>' + T('reecouter') + '</span></button></div>'
+    + '<div class="oral"><button type="button" class="mf-btn rec" id="rec"><span>' + T('enregistrer') + '</span></button>'
+    + '<p class="etat" id="etatRec" aria-live="polite"></p><div id="rejouer"></div></div>'
+    + '<div class="suite"><button type="button" class="mf-btn" id="apres"><span>' + T('passer') + '</span>' + ICO.suiv + '</button></div></div>';
+  document.getElementById('chLangue').remove();
+  document.getElementById('reec').onclick = () => joue(it.son);
+  joue(it.son);
+  const rec = document.getElementById('rec'), etat = document.getElementById('etatRec');
+  rec.onclick = async () => {
+    if (enreg && enreg.state === 'recording') { enreg.stop(); return; }
+    if (audio) audio.pause();
+    try {
+      const flux = await navigator.mediaDevices.getUserMedia({audio: true});
+      const morceaux = []; enreg = new MediaRecorder(flux);
+      enreg.ondataavailable = e => morceaux.push(e.data);
+      enreg.onstop = () => {
+        // Le micro se ferme pour de bon : ouvert, il dégrade la sortie audio de Chrome.
+        flux.getTracks().forEach(t => t.stop());
+        const url = URL.createObjectURL(new Blob(morceaux, {type: enreg.mimeType}));
+        X.blobs[i] = url;
+        rec.innerHTML = '<span>' + T('enregistrer') + '</span>'; etat.textContent = '';
+        document.getElementById('rejouer').innerHTML = '<audio controls src="' + url + '"></audio>';
+        document.getElementById('apres').innerHTML = '<span>' + T('suivant') + '</span>' + ICO.suiv;
+      };
+      enreg.start(); rec.innerHTML = '<span>' + T('arreter') + '</span>'; etat.innerHTML = T('ecoute_micro');
+    } catch(e) { etat.innerHTML = T('micro_refuse'); }
+  };
+  document.getElementById('apres').onclick = () => { if (enreg && enreg.state === 'recording') enreg.stop(); partieOrale(i + 1); };
+  window.scrollTo(0, 0);
+}
+
+function resultatTest() {
+  X.fini = true;
+  const n = X.niveau, pal = calculPalier(n.A, n.B, n.C);
+  const h = histo();
+  const entree = {date: new Date().toISOString().slice(0, 10), a: n.A, b: n.B, c: n.C, palier: pal, confirme: null, oral: [null, null]};
+  h.push(entree); garderHisto(h);
+  const premiere = h.length > 1 ? h[0] : null;
+  const jauge = (k, v) => '<div><span>' + esc(FR['partie_' + k]) + '</span><b>' + v + ' / 3</b><span class="jauge"><i style="width:' + Math.round(v / 3 * 100) + '%"></i></span></div>';
+  app.innerHTML = tete(T('resultat'), '', true, 'accueil')
+    + '<div class="resultat"><div class="bloc"><p style="margin:0">' + T('palier_propose') + '</p>'
+    + '<p class="gros-palier">' + esc(nomPalier(pal).t) + '</p><p style="margin:0;color:var(--text-muted)">' + esc(nomPalier(pal).n) + ' · ' + T('pas_examen') + '</p>'
+    + '<div class="parts">' + jauge('a', n.A) + jauge('b', n.B) + jauge('c', n.C) + '</div></div>'
+    + (premiere ? '<div class="bloc"><b>' + esc(FR.premiere) + '</b> (' + premiere.date + ') : ' + esc(nomPalier(premiere.confirme || premiere.palier).t)
+        + ' — A ' + premiere.a + ' · B ' + premiere.b + ' · C ' + premiere.c + '<br><b>' + esc(FR.aujourdhui) + '</b> : ' + esc(nomPalier(pal).t)
+        + ' — A ' + n.A + ' · B ' + n.B + ' · C ' + n.C + '</div>' : '')
+    + '<div class="bloc formateur"><b>' + esc(FR.pour_formateur) + '</b>'
+    + D.test.D.map((d, i) => '<p style="margin:12px 0 4px">« ' + esc(d.phrase) + ' »</p>'
+        + (X.blobs[i] ? '<audio controls src="' + X.blobs[i] + '"></audio>' : '<p style="margin:0;color:var(--text-muted)">—</p>')
+        + '<div class="choisir3" data-oral="' + i + '">' + D.test.oral.map((o, k) => '<button type="button" class="mf-btn" data-v="' + k + '" aria-pressed="false">' + esc(o) + '</button>').join('') + '</div>').join('')
+    + '<p style="margin:16px 0 4px">' + esc(FR.confirmer_palier) + '</p><div class="choisir3" data-conf="1">'
+    + D.test.paliers.map(p => '<button type="button" class="mf-btn" data-v="' + p.k + '" aria-pressed="false">' + esc(p.t) + '</button>').join('') + '</div></div>'
+    + '<div><button type="button" class="mf-btn" id="refaire"><span>' + T('refaire_test') + '</span></button></div></div>';
+  const maj = () => { const hh = histo(); hh[hh.length - 1] = entree; garderHisto(hh); };
+  app.querySelectorAll('[data-oral] button').forEach(b => b.onclick = () => {
+    const i = +b.parentNode.dataset.oral; entree.oral[i] = +b.dataset.v; maj();
+    b.parentNode.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', String(x === b))); });
+  app.querySelectorAll('[data-conf] button').forEach(b => b.onclick = () => {
+    entree.confirme = b.dataset.v; maj();
+    b.parentNode.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', String(x === b))); });
+  document.getElementById('refaire').onclick = ecranTest;
+  document.getElementById('retour').onclick = ecranAccueil;
+  document.getElementById('chLangue').onclick = ecranLangue;
+  window.scrollTo(0, 0);
+}
+window.__francoeur.test = () => X;
+
 
 if (langue) ecranAccueil(); else ecranLangue();
 </script>

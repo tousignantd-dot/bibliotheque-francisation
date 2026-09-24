@@ -24,6 +24,10 @@ LES DEMANDES DES CLIENTS (étape 2, l'exercice « Ce que le client veut ») sont
 dans `demandes.py` : trois voix de clients, au débit NORMAL — TAUX_GLOBAL, sans
 palier lent. Le client parle vite, c'est la leçon ; l'écran offre « Plus
 lentement ». Sortie : sons/demandes/<id>.mp3.
+
+LE TEST (étape 3, `test.py`) : les clients des parties B et D au débit normal,
+la gérante (Sylvie) au débit normal elle aussi — une consigne au travail ne se
+dit pas lentement. Sortie : sons/test/<id>.mp3.
 """
 import argparse, pathlib, sys
 from concurrent.futures import ThreadPoolExecutor
@@ -34,6 +38,7 @@ sys.path.insert(0, str(RACINE / "build" / "contenu" / "entreprise-francoeur"))
 import azure_voix  # noqa: E402
 from lexique import LEXIQUE  # noqa: E402
 from demandes import DEMANDES  # noqa: E402
+import test as TEST  # noqa: E402
 
 SORTIE = RACINE / "assets" / "interactive" / "francoeur" / "sons"
 
@@ -74,10 +79,26 @@ def main():
             print("  %-5s ÉCHEC %s" % (d[0], x), flush=True)
             return d[0]
 
+    # Le test : (id, voix, phrase) pour B, C et D, dans sons/test/.
+    TST = SORTIE / "test"
+    TST.mkdir(exist_ok=True)
+    test = ([(b[0], b[2], b[3]) for b in TEST.B] + [(c[0], TEST.VOIX_GERANTE, c[2]) for c in TEST.C]
+            + [(d[0], d[1], d[2]) for d in TEST.D])
+    test = [t for t in test if a.refaire or not (TST / f"{t[0]}.mp3").exists()]
+
+    def un_test(t):
+        try:
+            duree = azure_voix.parle(t[2], t[1], TST / f"{t[0]}.mp3", cle=cle, region=region)
+            print("  %-5s %-11s %4.2f s  %s" % (t[0], t[1], duree, t[2][:60]), flush=True)
+        except Exception as x:
+            print("  %-5s ÉCHEC %s" % (t[0], x), flush=True)
+            return t[0]
+
     with ThreadPoolExecutor(4) as pool:
         echecs = [r for r in pool.map(un, a_faire) if r]
         echecs += [r for r in pool.map(une_demande, dem) if r]
-    a_faire = a_faire + dem
+        echecs += [r for r in pool.map(un_test, test) if r]
+    a_faire = a_faire + dem + test
     print("%d produits, %d échecs %s → %s" % (len(a_faire) - len(echecs), len(echecs),
                                               echecs or "", SORTIE.relative_to(RACINE)))
 
