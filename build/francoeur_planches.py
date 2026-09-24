@@ -334,6 +334,7 @@ body{margin:0;background:var(--surface-page);color:var(--text-body);font-family:
 .attente{color:var(--text-muted);font-weight:700}
 .bilan-gestes label{display:flex;gap:8px;align-items:flex-start;margin:6px 0}
 @media (max-width:760px){.scene{grid-template-columns:1fr}.avatar{position:static;max-width:260px;margin:0 auto}}
+@media (max-width:640px){.clients{grid-template-columns:repeat(2,minmax(0,1fr))}.client b{font-size:15px}.client span{font-size:13px}}
 
 /* Le test */
 .intro{max-width:620px}
@@ -1076,7 +1077,34 @@ window.__francoeur.lireHumeur = lireHumeur;
 
 
 
-if (langue) ecranAccueil(); else ecranLangue();
+/* ── Ouvrir un état précis par l'adresse ───────────────────────────────
+   Pour la démonstration en rencontre, le guide du formateur et les captures :
+   ?langue=es&ecran=planche&p=hauts&a=veste&voir=1 · ecran=exercice&x=client ·
+   ecran=magasin (la liste des clients, sans code ni appel au serveur). */
+function ouvrirParAdresse() {
+  const q = new URLSearchParams(location.search), e = q.get('ecran');
+  if (q.get('langue')) { langue = q.get('langue'); }
+  if (!e) return false;
+  if (e === 'langue') { ecranLangue(); return true; }
+  if (!langue) langue = 'fr';
+  if (e === 'rayons') ecranRayons();
+  else if (e === 'planche') {
+    ecranPlanche(q.get('p') || 'hauts');
+    const i = courante.findIndex(m => m.id === q.get('a'));
+    if (i >= 0) { ouvrir(i); if (audio) audio.pause(); if (q.get('voir')) document.getElementById('voir')?.click(); }
+  }
+  else if (e === 'exercices') ecranExercices();
+  else if (e === 'exercice') { lancer(q.get('x') || 'client'); if (audio) audio.pause(); }
+  else if (e === 'test') ecranTest();
+  else if (e === 'magasin') {
+    niveauJeu = q.get('niveau') || 'aise';
+    if (!codeAcces) codeAcces = 'DEMO';   // la liste seulement : aucun appel n'est fait ici
+    ecranMagasin();
+  }
+  else ecranAccueil();
+  return true;
+}
+if (!ouvrirParAdresse()) { if (langue) ecranAccueil(); else ecranLangue(); }
 </script>
 </body>
 </html>

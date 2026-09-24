@@ -26,6 +26,7 @@ jamais à sa place (règle des trois couches) — le contenu à apprendre ne se
 traduit pas, la consigne qui l'explique, si.
 
     python3 build/francoeur_traductions.py --interface   # l'écran, dans les onze langues
+    python3 build/francoeur_traductions.py --fiche       # les « quand » de la fiche de poche
 
 Sortie : build/contenu/entreprise-francoeur/traductions.json
 """
@@ -286,7 +287,32 @@ def main_interface():
     print(f"interface → {sum('interface' in v for v in tout.values())}/{len(tout)} langues")
 
 
+def main_fiche():
+    """Les lignes « quand s'en servir » de la fiche de poche, et le défi. Les
+    PHRASES elles-mêmes ne se traduisent pas : elles se disent en français."""
+    from fiche import PHRASES, DEFI
+    tout = json.loads(SORTIE.read_text(encoding="utf-8"))
+    textes = {f"quand_{i}": q for i, _f, q in PHRASES}
+    textes["defi"] = DEFI[0]
+    seules = [a for a in sys.argv[1:] if not a.startswith("--")]
+
+    def un(l):
+        try:
+            return l[0], traduire_textes(l[0], l[1], textes)
+        except Exception as e:
+            print(f"  {l[0]}  ÉCHEC {e}", flush=True)
+            return l[0], None
+    with ThreadPoolExecutor(6) as pool:
+        for code, rendu in pool.map(un, [l for l in LANGUES if l[0] in tout and (not seules or l[0] in seules)]):
+            if rendu:
+                tout[code]["fiche"] = rendu
+                print(f"  {code}  fiche, {len(rendu)} textes", flush=True)
+    SORTIE.write_text(json.dumps(tout, ensure_ascii=False, indent=1), encoding="utf-8")
+
+
 def main():
+    if "--fiche" in sys.argv:
+        return main_fiche()
     if "--interface" in sys.argv:
         return main_interface()
     tout = json.loads(SORTIE.read_text(encoding="utf-8")) if SORTIE.exists() else {}
