@@ -89,7 +89,9 @@ h1{font-family:var(--titre);font-weight:400;color:var(--acide);margin:0;
   vertical-align:middle;margin-right:.6rem}
 .defilez{margin-top:1.4rem;font-size:.85rem;color:var(--tendre)}
 .pas.titre .sous,.pas.titre .sur,.pas.titre .defilez{text-shadow:0 0 14px var(--encre),0 0 4px var(--encre)}
-.queue{height:60vh}
+/* Pas de défilement au-delà de la dernière étape : la carte de fin, et son
+   bouton « Trouver la panne », restent à l'écran. */
+.queue{height:0}
 nav.autres{pointer-events:auto;margin-top:1rem;font-size:.9rem;line-height:1.9}
 nav.autres a{color:var(--acide);margin-right:.9rem}
 nav.autres a[aria-current]{color:var(--papier);text-decoration:none;font-weight:700}
@@ -293,6 +295,8 @@ nav.autres a[aria-current]{color:var(--papier);text-decoration:none;font-weight:
   border-radius:999px;padding:.5rem .85rem}
 #theme:hover,#voix:hover{border-color:var(--acide)}
 #theme:focus-visible,#voix:focus-visible{outline:2px solid var(--acide);outline-offset:2px}
+#voix{display:inline-flex;align-items:center;gap:.45rem}
+#voix[hidden]{display:none}
 #voix[aria-pressed="true"]{background:var(--acide);color:var(--encre);border-color:var(--acide)}
 #voix.parle::after{content:"";display:inline-block;width:6px;height:6px;margin-left:.45rem;border-radius:50%;
   background:currentColor;vertical-align:middle;animation:parle 1s ease-in-out infinite}
@@ -437,7 +441,7 @@ nav.autres a[aria-current]{color:var(--papier);text-decoration:none;font-weight:
 <aside class="bloc" data-panne="douchette" aria-live="off"></aside>
 
 <div class="outils">
-  <button type="button" id="voix" aria-pressed="false" hidden>🔈 Narrateur</button>
+  <button type="button" id="voix" aria-pressed="false" hidden></button>
   <button type="button" id="theme" aria-label="Changer de thème"></button>
 </div>
 <script>
@@ -462,6 +466,13 @@ nav.autres a[aria-current]{color:var(--papier);text-decoration:none;font-weight:
   if (!Object.keys(SONS).length) return;
   b.hidden = false;
   var a = new Audio(), actif = false, joue = -1;
+  // Deux icônes au trait, dessinées dans la couleur du texte : muet, puis parle.
+  var HP = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" '
+         + 'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/>';
+  var MUET = HP + '<path d="m22 9-6 6M16 9l6 6"/></svg>';
+  var PARLE = HP + '<path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></svg>';
+  function etiquette(){ b.innerHTML = (actif ? PARLE : MUET) + '<span>Narrateur</span>'; }
+  etiquette();
   var pas = [].slice.call(document.querySelectorAll(".pas"));
   function cleDe(i){
     var s = pas[i]; if (!s) return null;
@@ -480,7 +491,7 @@ nav.autres a[aria-current]{color:var(--papier);text-decoration:none;font-weight:
   a.addEventListener("ended", function(){ b.classList.remove("parle"); });
   b.addEventListener("click", function(){
     actif = !actif; b.setAttribute("aria-pressed", actif);
-    b.textContent = actif ? "🔊 Narrateur" : "🔈 Narrateur";
+    etiquette();
     if (actif) { joue = -1; suivre(); } else { a.pause(); b.classList.remove("parle"); joue = -1; }
   });
   addEventListener("scroll", function(){ clearTimeout(suivre.t); suivre.t = setTimeout(suivre, 180); }, { passive:true });
@@ -1164,8 +1175,8 @@ const GZ = 31;                          // l'axe des groupes, en profondeur
 // Ce qui change, c'est la pièce autour d'elle — le fond, le comptoir, et le
 // trait qui dessine ses arêtes (clair sur le sombre, encre sur le clair).
 const THEMES = {
-  sombre: { fond:0x090F05, trait:0xF4FAED, traitOp:.30, comptoir:0x1d2219, expo:1.0 },
-  clair:  { fond:0xEEF2E6, trait:0x17200F, traitOp:.38, comptoir:0xd8d2c4, expo:1.1 },
+  sombre: { fond:0x090F05, trait:0xF4FAED, traitOp:.30, comptoir:0x1d2219, expo:1.0, decor:.38 },
+  clair:  { fond:0xEEF2E6, trait:0x17200F, traitOp:.38, comptoir:0xd8d2c4, expo:1.1, decor:1 },
 };
 const themeCourant = () => document.documentElement.dataset.theme === "clair" ? "clair" : "sombre";
 let TH = THEMES[themeCourant()];
@@ -1279,6 +1290,96 @@ const mComptoir = new THREE.MeshStandardMaterial({ color:TH.comptoir, roughness:
   const c = new THREE.Mesh(new THREE.BoxGeometry(320, 4, 120), mComptoir);
   c.position.set(-12, -2, 2); c.receiveShadow = true;
   monde.add(c);
+}
+
+// ── LE DÉCOR : le café derrière le comptoir ───────────────────────────────
+// Un mur de carreaux jusqu'à hauteur d'épaule, peint au-dessus ; deux
+// tablettes de bois avec leurs sacs et leurs tasses ; l'ardoise du menu ; trois
+// suspensions. Assez loin pour que le brouillard l'adoucisse aux gros plans :
+// c'est un fond, il ne doit rien dire. Au thème sombre, il s'éteint (TH.decor).
+const DECOR = [];                       // [matière, couleur d'origine]
+function mDecor(o) { const m = new THREE.MeshStandardMaterial({ roughness:.8, metalness:0, ...o });
+  DECOR.push([m, m.color.clone()]); return m; }
+function toile(l, h, dessiner) {
+  const c = document.createElement("canvas"); c.width = l; c.height = h;
+  dessiner(c.getContext("2d"), l, h);
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 4; return t;
+}
+{
+  const MUR_Z = -64, X0 = -12;
+  // les carreaux de métro, crème, joints gris
+  const carreaux = toile(512, 256, (x, l, h) => {
+    x.fillStyle = "#cfc9bd"; x.fillRect(0, 0, l, h);
+    for (let r = 0; r < 8; r++) for (let c = -1; c < 9; c++) {
+      const dx = (r % 2) * 32, g = 236 + ((r * 7 + c * 13) % 9);
+      x.fillStyle = `rgb(${g},${g - 4},${g - 12})`; x.fillRect(c * 64 + dx + 2, r * 32 + 2, 60, 28);
+    }
+  });
+  carreaux.wrapS = carreaux.wrapT = THREE.RepeatWrapping; carreaux.repeat.set(16, 4);
+  const bas = new THREE.Mesh(new THREE.PlaneGeometry(420, 70), mDecor({ map:carreaux, roughness:.35 }));
+  bas.position.set(X0, 33, MUR_Z); bas.receiveShadow = true; monde.add(bas);
+  const haut = new THREE.Mesh(new THREE.PlaneGeometry(420, 150), mDecor({ color:0x3f5647, roughness:.9 }));
+  haut.position.set(X0, 143, MUR_Z); monde.add(haut);
+  const listel = new THREE.Mesh(new THREE.BoxGeometry(420, 2, 2), mDecor({ color:0x6b4a2e, roughness:.6 }));
+  listel.position.set(X0, 68.5, MUR_Z + 1); monde.add(listel);
+  // le plan de travail du fond, sous les tablettes
+  const bois = mDecor({ color:0x8a6242, roughness:.65 });
+  for (const y of [92, 118]) {
+    const t = new THREE.Mesh(new THREE.BoxGeometry(150, 2.2, 14), bois);
+    t.position.set(-95, y, MUR_Z + 7); t.castShadow = t.receiveShadow = true; monde.add(t);
+    for (const x of [-160, -30]) {
+      const e = new THREE.Mesh(new THREE.BoxGeometry(1.4, 7, 12), mDecor({ color:0x2b2d2f, metalness:.6, roughness:.4 }));
+      e.position.set(x, y - 4.5, MUR_Z + 6); monde.add(e);
+    }
+  }
+  // sur les tablettes : des sacs de grains, des bocaux, des tasses empilées
+  const kraft = mDecor({ color:0xb58a5c, roughness:.9 }), noirSac = mDecor({ color:0x2b2926, roughness:.85 });
+  const porc = mDecor({ color:0xf1eee8, roughness:.3 }), verreB = mDecor({ color:0xd9e4e0, roughness:.1, transparent:true, opacity:.55 });
+  const grainB = mDecor({ color:0x4a2c17, roughness:.7 });
+  [[-155, kraft], [-146, noirSac], [-137, kraft]].forEach(([x, m]) => {
+    const sac = new THREE.Mesh(new THREE.BoxGeometry(7.5, 13, 5), m);
+    sac.position.set(x, 99.6, MUR_Z + 7); sac.castShadow = true; monde.add(sac);
+  });
+  for (const x of [-120, -108, -96]) {
+    const b = new THREE.Mesh(new THREE.CylinderGeometry(3.6, 3.6, 11, 24), verreB); b.position.set(x, 98.6, MUR_Z + 7); monde.add(b);
+    const g = new THREE.Mesh(new THREE.CylinderGeometry(3.3, 3.3, 7, 24), grainB); g.position.set(x, 96.6, MUR_Z + 7); monde.add(g);
+  }
+  for (let i = 0; i < 4; i++) for (let k = 0; k < 3 - (i % 2); k++) {
+    const t = new THREE.Mesh(new THREE.CylinderGeometry(3.4, 2.6, 5, 24), porc);
+    t.position.set(-75 + i * 9, 121.6 + k * 4.2, MUR_Z + 7); t.castShadow = true; monde.add(t);
+  }
+  [[-150, kraft], [-140, kraft], [-130, noirSac]].forEach(([x, m]) => {
+    const sac = new THREE.Mesh(new THREE.BoxGeometry(7, 12, 5), m);
+    sac.position.set(x, 125.1, MUR_Z + 7); monde.add(sac);
+  });
+  // l'ardoise du menu
+  const ardoise = toile(768, 512, (x, l, h) => {
+    x.fillStyle = "#2a2f2b"; x.fillRect(0, 0, l, h);
+    x.strokeStyle = "#8a6242"; x.lineWidth = 26; x.strokeRect(13, 13, l - 26, h - 26);
+    x.fillStyle = "#EDEBE4"; x.textAlign = "center";
+    x.font = "700 64px Georgia, serif"; x.fillText("Menu", l / 2, 104);
+    x.font = "400 36px Georgia, serif"; x.textAlign = "left";
+    [["Espresso", "3,25"], ["Allongé", "3,50"], ["Cortado", "4,25"], ["Cappuccino", "4,75"], ["Latte", "5,00"]]
+      .forEach(([n, prix], i) => {
+        const y = 178 + i * 62;
+        x.fillText(n, 90, y); x.textAlign = "right"; x.fillText(prix, l - 90, y); x.textAlign = "left";
+        x.fillStyle = "rgba(237,235,228,.25)"; x.fillRect(90 + x.measureText(n).width + 14, y - 10, 340 - x.measureText(n).width, 2);
+        x.fillStyle = "#EDEBE4";
+      });
+  });
+  const menu = new THREE.Mesh(new THREE.PlaneGeometry(66, 44), mDecor({ map:ardoise, roughness:.95 }));
+  menu.position.set(70, 112, MUR_Z + .6); monde.add(menu);
+  // trois suspensions au-dessus du comptoir
+  const abat = mDecor({ color:0x2b2d2f, metalness:.7, roughness:.35, side:THREE.DoubleSide });
+  for (const x of [-100, -12, 76]) {
+    const fil = new THREE.Mesh(new THREE.CylinderGeometry(.15, .15, 60, 6), abat);
+    fil.position.set(x, 180, -30); monde.add(fil);
+    const cone = new THREE.Mesh(new THREE.ConeGeometry(9, 10, 32, 1, true), abat);
+    cone.position.set(x, 146, -30); monde.add(cone);
+    const ampoule = new THREE.Mesh(new THREE.SphereGeometry(3, 20, 12),
+      new THREE.MeshStandardMaterial({ color:0xfff4d6, emissive:0xffd89a, emissiveIntensity:1.4 }));
+    ampoule.position.set(x, 141.5, -30); monde.add(ampoule);
+  }
 }
 
 // ── LA MACHINE ─────────────────────────────────────────────────────────────
@@ -1538,6 +1639,7 @@ function appliquerTheme() {
   renderer.setClearColor(TH.fond, 1);
   monde.fog.color.setHex(TH.fond);
   mComptoir.color.setHex(TH.comptoir);
+  for (const [m, c] of DECOR) m.color.copy(c).multiplyScalar(TH.decor);
   renderer.toneMappingExposure = TH.expo;
   for (const m of LIGNES) { m.color.setHex(TH.trait); if (m.userData.opaciteFixe == null) m.opacity = TH.traitOp; }
 }
@@ -1770,7 +1872,9 @@ function demarrer(arg) {
     for (const Q of L) Q.reveler?.(p - (Q.base - 3), maint);
 
     // 7. la lame traverse, et la face coupée devient le dessin
-    const coupeT = lisse(3.5, 4.3, rel) * (1 - lisse(6.45, 7.0, rel));
+    // Elle se referme AVANT l'étape suivante : au bout de la page, le défilement
+    // n'atteint pas tout à fait la dernière étape, et la lame restait visible.
+    const coupeT = lisse(3.5, 4.3, rel) * (1 - lisse(6.3, 6.85, rel));
     const z0 = mixv(P.coupe.zDepart, P.coupe.z, coupeT);
     lame.constant = coupeT > .001 ? z0 : 999;
     lameVis.visible = coupeT > .02 && coupeT < .995;
