@@ -224,7 +224,11 @@ INTERFACE = {
     "tache_titre": "Un client entre",
     "tache": "Un client vous parle. Touchez ce qu'il demande.",
     "tache_ok": "Oui : « une tuque ». Voici par où continuer.",
-    "tache_non": "Écoutez encore : il demande une tuque.",
+    "tache_non": "Pas celui-là. Écoutez encore, puis touchez ce qu'il demande.",
+    "pas_ce_rayon": "ne se range pas dans le rayon",
+    "voir_bilan": "Voir le bilan",
+    "serie_pieges": "La série des pièges",
+    "serie_pieges_c": "Les mots qui ne veulent pas dire la même chose en France et au Québec.",
     "fiche_poche": "Ma fiche de poche",
     "fiche_sous": "Six phrases à dire au plancher.",
     "rappel": "Une série de rappel vous attend.",
@@ -277,6 +281,7 @@ def textes_interface():
     for r in MOD.REPONSES:
         for n, (_t, x) in enumerate(r[4], 1):
             textes[f"rm_{r[0]}_{n}"] = x
+        textes[f"rx_{r[0]}"] = r[5]   # l'explication de la bonne réponse (audit, tour 2, E1)
     return textes
 
 

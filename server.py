@@ -16375,14 +16375,15 @@ def jeu_de_role_system(scenario_id, cas_id, role_eleve, palier=None):
     adresse = scenario.get("adresse", "Vouvoie l'élève.")
 
     return (
-        "Tu joues un rôle dans un exercice oral de francisation au Québec, niveau 4 "
-        "(débutant-intermédiaire). Ton interlocuteur est un adulte immigrant qui apprend "
+        "Tu joues un rôle dans un exercice oral de francisation au Québec, "
+        + scenario.get("niveau", "niveau 4 (débutant-intermédiaire)") + ". "
+        "Ton interlocuteur est un adulte immigrant qui apprend "
         f"le français. La situation est {scenario['cadre']}.\n\n"
         f"{role_def['qui']}\n\n"
         f"{scenario['contexte_label']} :\n{contexte}\n\n"
         f"Ce que tu sais et que l'élève ignore :\n{faits}\n\n"
         "Comment tu parles :\n"
-        "- Deux ou trois phrases maximum par réplique. Jamais de paragraphe.\n"
+        "- " + scenario.get("longueur", "Deux ou trois phrases maximum par réplique.") + " Jamais de paragraphe.\n"
         "- Français québécois courant et simple, phrases courtes, vocabulaire de tous les jours.\n"
         "- " + adresse + "\n"
         "- Reste dans ton personnage quoi qu'il arrive. Si l'élève sort du jeu, ramène-le "

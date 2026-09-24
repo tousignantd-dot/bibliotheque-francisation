@@ -98,7 +98,7 @@ def travaux():
         t.append((f"test/{b[0]}.mp3", b[3], HD[b[2]], None))
     for c in list(TEST.C) + list(TEST.C2):
         t.append((f"test/{c[0]}.mp3", c[2], HD[TEST.VOIX_GERANTE], None))
-    for d in TEST.D:
+    for d in list(TEST.D) + list(TEST.D2):
         t.append((f"test/{d[0]}.mp3", d[2], HD[d[1]], RAPIDE if d[5] else None))
     # La partie A du test dite par une VOIX DE CLIENT, jamais celle des planches
     # (audit F1 : le test rejouait les mêmes MP3 que l'apprentissage).

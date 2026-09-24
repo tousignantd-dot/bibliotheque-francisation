@@ -96,6 +96,7 @@ CSS = """
 def guide(c):
     fiches = "".join(f'<a href="francoeur-fiche/fiche-{code}.pdf">{E(nom)}</a>'
                      for code, nom in [("fr", "Français seulement")] + [(k, v["loc"]) for k, v in c["trad"].items()])
+    code_f = TEST.CODE_FORMATEUR
     clients = "".join(f"<tr><td><b>{E(n)}</b></td><td>{E(carte)}</td><td>{', '.join(dict(debutant='débutant', fonctionnel='fonctionnel', aise='à l’aise')[p] for p in pal)}</td></tr>"
                       for _i, n, _v, pal, carte, _p, _f in CLIENTS)
     gestes = "".join(f"<li><b>{E(g['nom'])}</b> — « {E(g['phrase'])} »</li>" for g in GESTES)
@@ -130,7 +131,8 @@ casse. L'employé travaille sur son téléphone ; vous travaillez dans le portai
       aux consignes de la gérante et à « Ce que je réponds ». Une série « Les pièges » met les faux amis côte à côte.</p></li>
     <li><p><b>Les gestes du vendeur</b> — cinq dialogues modèles : on entend un vendeur faire chaque geste, avant de le faire soi-même.</p></li>
     <li><p><b>Mon niveau</b> — un test de dix minutes qui <b>propose</b> un niveau ; c'est vous qui le confirmez. Deux formes
-      équivalentes : la seconde passation ne reprend pas les questions de la première.</p></li>
+      parallèles : la seconde passation ne reprend pas les questions de la première, et chaque forme porte trois pièges
+      et quatre situations orales qui lui sont propres. Leur équivalence reste à vérifier au pilote.</p></li>
     <li><p><b>Le magasin</b> — {c['clients']} clients, un visage qui réagit, une conversation à voix haute.</p></li>
   </ol>
 </section>
@@ -175,12 +177,14 @@ casse. L'employé travaille sur son téléphone ; vous travaillez dans le portai
 <section>
   <h2>Le test « Mon niveau »</h2>
   <p>Quatre parties — les mots, le client, la gérante, parler. Il s'adapte : trois bonnes réponses montent d'un
-  cran, deux erreurs arrêtent la partie. <b>L'écran ne dit jamais si une réponse est juste.</b> Au résultat, chaque
-  partie est comparée au seuil de son objectif. La partie « Parler » met l'employé devant quatre situations qui
+  cran, deux erreurs arrêtent la partie. <b>L'écran ne dit jamais si une réponse est juste.</b> Au résultat, un
+  objectif est atteint quand le cran qui porte sa tâche est validé : les mots au cran 3 (pièges compris), le client
+  et la gérante au cran 2. La partie « Parler » met l'employé devant quatre situations qui
   exigent chacune un geste — faire répéter, faire préciser, vérifier, passer le relais : vous notez si le geste est
   fait, pas la grammaire.</p>
-  <p>À la fin, sous « Pour le formateur » : écoutez les deux réponses orales avec l'employé, notez-les, et
-  <b>confirmez le niveau</b> — débutant, fonctionnel ou à l'aise. C'est ce niveau qui ouvre les clients du
+  <p>À la fin, sous « Pour le formateur », tapez le code <b>{code_f}</b> — il n'est écrit que dans ce guide :
+  l'employé ne voit ni le geste attendu ni la réponse modèle, et ne peut pas se noter lui-même. Écoutez les quatre
+  réponses orales avec lui, notez-les, et <b>confirmez le niveau</b> — débutant, fonctionnel ou à l'aise. C'est ce niveau qui ouvre les clients du
   magasin. Refaites le test à la dernière séance : l'écran compare avec la première passation.</p>
 </section>
 
@@ -221,8 +225,9 @@ casse. L'employé travaille sur son téléphone ; vous travaillez dans le portai
 <section>
   <h2>Les données</h2>
   <div class="reserve"><p><strong>Rien de nominatif ne quitte la classe.</strong> Pseudonymes ou séance sans
-  compte ; les résultats du test et l'oral restent sur le téléphone ; ce qui remonte au portail, ce sont des
-  réponses à des questions fermées. Ce que l'employeur reçoit, s'il reçoit quelque chose, est un constat sur le
+  compte. Les enregistrements oraux restent sur le téléphone. Ce qui remonte au portail — en séance ou avec un code —,
+  ce sont les réponses aux questions fermées des exercices et du test, et les gestes notés par le formateur ;
+  jamais une voix ni une phrase libre. Ce que l'employeur reçoit, s'il reçoit quelque chose, est un constat sur le
   matériel ou sur le groupe — jamais sur une personne.</p></div>
 </section>
 
@@ -282,7 +287,7 @@ les mots du rayon, puis à comprendre le client — et à dire « un instant, s'
     <tr><td><b>Apprendre les mots</b></td><td>{c['croquis']} croquis de catalogue ; le mot d'ici en tête (« chandail »), l'autre dessous (« pull ») ; huit pièges France-Québec signalés.</td></tr>
     <tr><td><b>S'exercer</b></td><td>Sept exercices, dont {c['demandes']} demandes de clients à vitesse réelle, les consignes de la gérante et « Ce que je réponds ».</td></tr>
     <tr><td><b>Voir faire</b></td><td>Cinq dialogues modèles : on entend un vendeur faire chaque geste avant de le faire soi-même.</td></tr>
-    <tr><td><b>Mesurer</b></td><td>Un test de dix minutes, adaptatif, en deux formes équivalentes : repassé à la fin sur des questions nouvelles, il montre ce qui a été appris, objectif par objectif.</td></tr>
+    <tr><td><b>Mesurer</b></td><td>Un test de dix minutes, adaptatif, en deux formes parallèles : repassé à la fin sur des questions nouvelles, il montre ce qui a été appris, objectif par objectif.</td></tr>
     <tr><td><b>Pratiquer</b></td><td>Un jeu de rôle à voix haute ; le visage du client montre l'effet de ce qu'on lui dit, et le bilan dit quels gestes ont été faits.</td></tr>
     <tr><td><b>Garder en poche</b></td><td>Une fiche imprimable par langue : six phrases du vendeur, les pièges, les tailles, les couleurs.</td></tr>
   </tbody></table>

@@ -40,3 +40,30 @@ Les 29 majeurs, regroupés par chantier. Chaque ligne porte ses codes.
 Voix : 373 enregistrements Azure HD, retranscrits (22 douteux, 4 refaits).
 
 **Reste** : le tour 2 de l'audit, sur TOUTE la grille, page servie et mesurée.
+
+## Tour 2 → révision (24 septembre 2026)
+
+Second audit (toute la grille, deux regards neufs, page servie à 375/1280) :
+**0 bloquant, 8 majeurs, 41 mineurs** (`audit2-contenu.json`, `audit2-page.json`,
+page `francoeur-audit-2.html`). Presque tous les majeurs venaient des
+corrections du tour 1 — la seconde forme, l'exercice 7, le compteur d'essais.
+
+| Élément | Statut | Avant | Après | Critères | Pourquoi |
+|---|---|---|---|---|---|
+| Seuils du test | modifié | taux brut de toutes les réponses contre 80 % / 70 % | objectif atteint quand le cran qui porte sa tâche est validé : A cran 3 (pièges), B et C cran 2 | F1 · majeur | Dans un test adaptatif, le taux dépend de l'ordre des erreurs : « O2 atteint » tombait sur un cran qui ne demande pas la taille. |
+| Pièges dans les deux formes | modifié | six pièges en forme 1, aucun en forme 2 | trois pièges + trois items fins dans chaque forme | F1 · majeur | La passation finale ne mesurait plus les pièges. « Équivalentes » devient « parallèles » dans le guide et la démo, à vérifier au pilote. |
+| Partie orale D | modifié / ajouté | la même aux deux formes, proche des modèles ; clé et grille sur l'écran de l'employé | D2 : quatre situations neuves (bas de chasse, bottes, robe de la vitrine, parka mis de côté) ; clé et notation derrière le code du formateur (dans le guide seulement) | F1 · majeur (deux fois) | L'employé voyait la réponse et pouvait se noter lui-même. |
+| Distracteurs défendables | modifié | kangourou pour coton ouaté, tailleur pour habit | col roulé, veste de laine, t-shirt ; chemise, cravate, manteau ; « un sac » retiré face à la sacoche ; contrôle au build contre les notes du lexique (le sens de France d'un piège reste permis : c'est lui qu'on veut voir tomber) | D4 · majeur | Deux erreurs arrêtent la partie : un item défendable peut la couper. |
+| « Ce que je réponds » | modifié / ajouté | bonne réponse souvent la plus longue ; « Oui. », « Non. » faux partout ; 8 items | longueurs nivelées (seule plus longue : 3 sur 10), mauvaises réponses polies qui font le mauvais geste, deux paires contrastées (dit vite / dit clairement ; sans reçu / avec reçu) | D4 · majeur | On faisait 5 sur 8 sans écouter. |
+| Essais au direct | modifié | 1 au premier coup | 0 au premier coup (échecs antérieurs), comme les modules | A3 · majeur | Aucun « premier coup » ne paraissait au direct : la règle du pilote était illisible. |
+| La taille décide | modifié | carré latin : article + couleur suffisaient toujours | un trait décisif varie seul, les deux autres ensemble ; les reprises nomment le leur ; la taille décide 10 demandes sur 22 (4 sur 4 aux reprises sur la taille) et 3 items sur 8 / 3 sur 7 au test ; contrôlé au build | A3, F1 · majeur | O2 dit article, couleur ET taille. |
+| Mineurs rapides | modifiés | — | traduction blanche sous les boutons rouges ; codes « O1 » retirés de l'écran ; rayon vide → tous les rayons ; porte « La série des pièges » ; rétroaction du rayon au 1er essai ; « Je me souviens » hors seuil ; mot sans image parmi des mots écrits ; article marqué dans la transcription ; explication de la bonne réponse traduisible ; minuteries remplacées par un bouton ; tâche d'accueil sans la réponse au 1er essai ; menu et résumé à 44 px ; texte discret foncé (≥ 4,5:1) ; couleurs confondues jamais opposées ; `espaces()` sans les boutons repliés ; consigne du jeu de rôle réglée au palier ; guide juste sur l'oral et les données | E1, G1, G2, C5, D1, D3, A2 | — |
+
+Voix : 14 nouvelles (Azure HD), retranscrites justes ; 381 en tout, 19 douteuses.
+**Traductions en attente** : l'API Anthropic a atteint la limite d'usage fixée
+au compte (retour le 1er octobre 2026). Les textes nouveaux ou changés restent en
+français sous la langue d'appui ; les sept traductions devenues fausses ont été
+retirées plutôt que laissées. Relancer `python3 build/francoeur_traductions.py
+--interface` et `--ids veste` quand l'accès revient.
+
+**Reste** : le tour 3 de l'audit, sur toute la grille.

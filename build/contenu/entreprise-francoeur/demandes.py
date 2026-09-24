@@ -73,11 +73,26 @@ DEMANDES = [
     ("d27", "narrateur",  "Des mitaines, pas des gants. Noires, pour mon garçon.", "mitaines", "noir", None,
      ("gants", "bleu", None)),
     ("d28", "masculin_1", "Le manteau marine, je le prendrais une taille plus petite. En moyen.",
-     "manteau", "marine", "m", ("parka", "noir", "g")),
+     "manteau", "marine", "m", ("parka", "rouge", "g")),
 ]
+
+# LE TRAIT QUI DÉCIDE (audit de la boucle didactique, tour 2, A3 majeur) : dans
+# le carré latin, deux traits suffisaient toujours, et c'étaient l'article et la
+# couleur — la taille ne décidait jamais, même quand la phrase la reprenait
+# (« pas en petit : en moyen »). Désormais, quand il y a une taille, les quatre
+# cartes s'organisent autour d'UN trait décisif : il varie seul, les deux autres
+# varient ensemble. (A,C,T) (A,C,T′) (A′,C′,T) (A′,C′,T′) quand c'est la taille.
+# Chaque valeur paraît encore deux fois : rien ne se devine à la majorité.
+# Les demandes qui se reprennent nomment leur trait : celui que la phrase nie.
+# Les autres le prennent à tour de rôle (taille, couleur, article).
+DECISIF = {"d21": "c", "d22": "t", "d23": "a", "d25": "t", "d26": "t", "d28": "t"}
 
 # Les couleurs qu'on peut mettre en face d'une autre sans ambiguïté à l'œil :
 # marine contre noir, beige contre blanc se confondent sur un petit écran.
 COULEURS_DISTRACTRICES = ["noir", "blanc", "gris", "bleu", "rouge", "vert", "jaune",
                           "rose", "mauve", "brun", "beige", "kaki", "marine"]
 TAILLES = ["tp", "p", "m", "g", "tg"]
+# Audit, tour 2 (D4) : le commentaire ci-dessus le disait, la liste ne le
+# faisait pas. Une couleur n'est jamais opposée à celle qu'on confond avec elle.
+CONFONDUES = {"marine": {"noir", "bleu"}, "noir": {"marine"}, "bleu": {"marine"},
+              "beige": {"blanc", "brun"}, "blanc": {"beige"}, "brun": {"beige"}}

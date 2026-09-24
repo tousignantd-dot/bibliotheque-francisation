@@ -182,6 +182,10 @@ def scenario_serveur():
         }
     return {
         "cadre": "une conversation au plancher d'un magasin de vêtements, la Maison Francœur",
+        # Audit, tour 2 (A2) : la consigne commune disait « niveau 4 » et « deux
+        # ou trois phrases », contre le palier débutant ajouté à la fin.
+        "niveau": "niveaux 1 à 3 (débutant) ; le palier indiqué à la fin règle ta façon de parler",
+        "longueur": "La longueur de chaque réplique suit le palier indiqué à la fin, et ne dépasse jamais deux phrases.",
         "contexte_label": "La situation",
         "cas": cas,
         "adresse": ("Vouvoie le vendeur, comme un client le fait. Le vendeur te vouvoie aussi."),

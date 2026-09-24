@@ -34,15 +34,17 @@ l'enseignant). Rien de nominatif : le résultat vit sur l'appareil.
 A_CRAN1 = ["t-shirt", "pantalon", "tuque", "souliers", "sac-dos", "robe"]
 A_CRAN2 = ["cardigan", "bermuda", "bottillons", "collants", "cache-cou", "combinaison"]
 A_CRAN3 = [
-    # Pas le veston : « on entend aussi une veste » pour un veston en France,
-    # choisir le veston était défendable (audit, D4). Le manteau en duvet, lui,
-    # a des manches : c'est tout le piège.
+    # Audit, tour 2 (F1, majeur) : les pièges étaient TOUS dans la forme 1 — la
+    # passation finale (forme 2) ne les mesurait plus. Chaque forme en porte
+    # maintenant trois, tirés de la même liste de six, et trois items de
+    # discrimination fine. Aucun distracteur n'est défendable : le build refuse
+    # un distracteur dont la note du lexique nomme la cible, et l'inverse.
     ("veste",           ["manteau-duvet", "coton-ouate", "chemise"]),
-    ("bas-chaussettes", ["pantalon", "collants", "legging"]),
-    ("sacoche",         ["sac-dos", "sac", "portefeuille"]),
-    ("mitaines",        ["gants", "cache-oreilles", "foulard"]),
+    ("sacoche",         ["sac-dos", "ceinture", "portefeuille"]),  # « un sac » : défendable
     ("jaquette",        ["veston", "robe-chambre", "robe"]),
-    ("espadrilles",     ["sandales", "pantoufles", "souliers"]),
+    ("camisole",        ["t-shirt", "haut-court", "brassiere"]),
+    ("robe-chambre",    ["pyjama", "manteau", "robe"]),
+    ("claques",         ["souliers", "bottes-pluie", "pantoufles"]),
 ]
 
 # ── B · le client ────────────────────────────────────────────────────────
@@ -88,6 +90,10 @@ B = [
 # un croquis. La gérante tutoie : c'est ainsi qu'on parle entre collègues.
 # Au cran 3, les distracteurs sont les autres objets NOMMÉS dans la phrase :
 # on ne réussit pas en reconnaissant un mot, il faut comprendre ce qu'on en dit.
+# Le trait décisif des demandes à reprise (voir demandes.DECISIF) : celui que
+# la phrase nie. Au cran 2, les items avec taille le prennent à tour de rôle.
+DECISIF = {"b31": "a", "b32": "c", "b33": "t", "b34": "c", "b62": "t", "b63": "a", "b64": "c"}
+
 C = [
     ("c11", 1, "Va chercher des cintres, s'il te plaît.",
      "Qu'est-ce que la gérante vous demande d'aller chercher ?", "cintre", ["sac", "miroir", "carte-cadeau"]),
@@ -138,6 +144,31 @@ D = [
     ("d4", "feminin_2", "Je veux me faire rembourser ce coton ouaté. J'ai pas mon reçu.",
      "Passer le relais", "« Un instant. Je vais chercher la gérante. »", False),
 ]
+# Audit, tour 2 (F1, majeur) : la partie D était la même aux deux passations et
+# reprenait presque mot pour mot les dialogues modèles (d3 ≈ m3, d4 ≈ m5). D2 :
+# quatre situations NEUVES pour la seconde forme — autres articles, autres
+# raisons (une mise de côté avec dépôt), aucune reprise des modèles ni de
+# « Ce que je réponds ». Les mêmes quatre gestes, dans le même ordre.
+D2 = [
+    ("d5", "feminin_2",
+     "Allo, je cherche des bas de laine pour la chasse, gris ou bruns, pis en grand si vous en avez encore.",
+     "Faire répéter", "« Excusez-moi, pouvez-vous répéter lentement ? »", True),
+    ("d6", "masculin_1", "Vous avez-tu des bottes ?",
+     "Faire préciser", "« Pour l'hiver ou pour la pluie ? » ou « Quelle pointure ? »", False),
+    ("d7", "feminin_2",
+     "La robe noire de la vitrine, il en reste-tu en petit ? Je la veux pour ce soir.",
+     "Vérifier sans promettre", "« Une robe noire en petit. Je regarde en arrière. »", False),
+    ("d8", "masculin_1",
+     "Pouvez-vous me mettre ce parka de côté jusqu'à la semaine prochaine ? Je paierais la moitié tout de suite.",
+     "Passer le relais", "« Je ne peux pas décider ça. Je demande à la gérante. »", False),
+]
+
+# La clé et la grille ne s'affichent PAS à l'employé (audit, tour 2 : il voyait
+# le geste attendu et la réponse modèle, et cochait lui-même « a fait le
+# geste »). Le formateur ouvre « Pour le formateur » avec ce code, imprimé dans
+# le guide du formateur et nulle part sur l'écran de l'employé.
+CODE_FORMATEUR = "2413"
+
 # La grille du formateur, la même pour chaque item : le geste, pas la grammaire.
 ORAL = ["A fait le geste", "A deviné ou promis", "Pas de réponse"]
 
@@ -151,12 +182,14 @@ ORAL = ["A fait le geste", "A deviné ou promis", "Pas de réponse"]
 A2_CRAN1 = ["chemise", "jupe", "casquette", "sandales", "parapluie", "manteau"]
 A2_CRAN2 = ["polo", "salopette", "gougounes", "boxer", "cache-oreilles", "tailleur"]
 A2_CRAN3 = [
-    ("coton-ouate",  ["kangourou", "chandail", "cardigan"]),
-    ("camisole",     ["t-shirt", "haut-court", "brassiere"]),
-    ("habit",        ["veston", "tailleur", "pantalon-habit"]),
-    ("robe-chambre", ["jaquette", "pyjama", "manteau"]),
-    ("claques",      ["souliers", "bottes-pluie", "pantoufles"]),
-    ("habit-neige",  ["combinaison", "manteau-duvet", "parka"]),
+    ("bas-chaussettes", ["pantalon", "collants", "legging"]),
+    ("mitaines",        ["gants", "cache-oreilles", "foulard"]),
+    ("espadrilles",     ["sandales", "pantoufles", "souliers"]),
+    # Audit, tour 2 (D4) : « kangourou » (un coton ouaté à capuchon) et
+    # « tailleur » (un habit de femme) étaient des réponses défendables.
+    ("coton-ouate",     ["col-roule", "cardigan", "t-shirt"]),
+    ("habit",           ["chemise", "cravate", "manteau"]),
+    ("habit-neige",     ["manteau-duvet", "parka", "manteau"]),
 ]
 B2 = [
     ("b41", 1, "masculin_1", "Je cherche une casquette.",        ("casquette", "gris", None), None),
@@ -206,11 +239,17 @@ C2 = [
      "Où faut-il envoyer le client ?", "caisse", ["cabine", "vitrine", "presentoir"]),
 ]
 
-# Les seuils des objectifs (cadrage, O1-O5), affichés au résultat par partie :
-# la part des réponses justes, rapportée au seuil. Audit (F1, A1, majeurs).
-SEUILS = {"A": (0.8, "O1 — reconnaître l'article : 8 sur 10"),
-          "B": (0.7, "O2 — comprendre la demande : 7 sur 10"),
-          "C": (0.7, "O5 — comprendre la consigne : 7 sur 10")}
+# Les seuils des objectifs (cadrage, O1-O5), affichés au résultat par partie.
+# Audit, tour 2 (F1, majeur) : le seuil se lisait sur le taux brut de toutes
+# les réponses, qui dépend de l'ordre des erreurs dans un test adaptatif. Un
+# objectif est maintenant ATTEINT quand le cran qui porte sa tâche est validé :
+#   A · cran 3 — les mots, pièges compris (O1) ;
+#   B · cran 2 — article, couleur ET taille dans la même phrase (O2) ;
+#   C · cran 2 — une consigne de deux éléments (O5).
+# Le libellé est pour l'employé : aucun code « O1 » à l'écran.
+SEUILS = {"A": (3, "Reconnaître le mot, pièges compris"),
+          "B": (2, "Comprendre la demande : article, couleur et taille"),
+          "C": (2, "Comprendre une consigne de la gérante")}
 
 # Le palier, sur la somme des trois parties corrigées (0 à 9). La partie B
 # pèse plus : c'est elle qui décide du jeu de rôle — un employé qui ne comprend

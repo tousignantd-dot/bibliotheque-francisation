@@ -23,6 +23,7 @@ LA PLANCHE EST COMPOSÉE, pas engendrée : chaque croquis est un fichier à lui,
 posé dans une grille numérotée. C'est ce qui permet à un exercice de désigner
 « le numéro 7 », et de corriger un seul dessin sans refaire les onze autres.
 """
+import re
 import html, json, pathlib, sys
 
 RACINE = pathlib.Path(__file__).resolve().parent.parent
@@ -31,7 +32,7 @@ sys.path.insert(0, str(CONTENU))
 sys.path.insert(0, str(RACINE / "build"))
 from lexique import LEXIQUE, PLANCHES, verifier  # noqa: E402
 from francoeur_etape0 import TEINTES, MOTIFS  # noqa: E402
-from demandes import DEMANDES, COULEURS_DISTRACTRICES, TAILLES  # noqa: E402
+from demandes import DEMANDES, COULEURS_DISTRACTRICES, TAILLES, DECISIF, CONFONDUES  # noqa: E402
 import random  # noqa: E402
 import test as TEST  # noqa: E402
 import clients as CLI  # noqa: E402
@@ -46,7 +47,7 @@ SORTIE = RACINE / "modules-autonomes" / "francoeur-planches" / "index.html"
 
 # Incrémenter après toute image ou tout son refait : même nom, même adresse,
 # le navigateur servirait l'ancien sans rien dire.
-MEDIA_V = "5"   # 5 : révision des majeurs de l’audit (nouvelles voix, test en deux formes), 24 septembre 2026
+MEDIA_V = "6"   # 5 : révision des majeurs de l’audit (nouvelles voix, test en deux formes), 24 septembre 2026
 
 
 def donnees():
@@ -136,22 +137,31 @@ def demandes(mots):
     sur l'id, pour que deux constructions rendent la même page."""
     par_id = {m["id"]: m for m in mots}
     planche = {e[0]: e[1] for e in LEXIQUE}
-    sortie = []
+    sortie, n_taille, t_decide = [], 0, 0
     for d in DEMANDES:
         ident, _voix, phrase, art, coul, taille = d[:6]
         ecartes = d[6] if len(d) > 6 else None
         assert art in par_id and "img" in par_id[art], f"{ident} : {art} sans croquis"
         assert coul in TEINTES, f"{ident} : couleur {coul} inconnue"
-        v = (carre(art, coul, taille, *ecartes) if ecartes
-             else variantes(ident, art, coul, taille, par_id, planche))
+        assert not ecartes or ecartes[1] not in CONFONDUES.get(coul, ()), f"{ident} : {ecartes[1]} se confond avec {coul}"
+        dec = decisif_de(ident, n_taille, DECISIF)
+        if taille and not ecartes:
+            n_taille += 1
+        v = (carre(art, coul, taille, *ecartes, decisif=dec) if ecartes
+             else variantes(ident, art, coul, taille, par_id, planche, decisif=dec))
         assert not devinable(v), f"{ident} : la bonne carte se devine sans écouter"
+        if taille:
+            assert trait_necessaire(v, "act".index(dec)), f"{ident} : le trait {dec} ne décide pas"
+            t_decide += trait_necessaire(v, 2)
         sortie.append({"id": ident, "phrase": phrase,
                        "son": f"/assets/interactive/francoeur/sons/demandes/{ident}.mp3?v={MEDIA_V}",
                        "reprise": bool(ecartes), "taille": taille, "v": cartes(v, par_id)})
+    avec_t = sum(1 for d in DEMANDES if d[5])
+    assert t_decide * 3 >= avec_t, f"la taille ne décide que {t_decide} demandes sur {avec_t}"
     return sortie
 
 
-def variantes(graine, art, coul, taille, par_id, planche, article_seul=False):
+def variantes(graine, art, coul, taille, par_id, planche, article_seul=False, decisif="t"):
     """La bonne réponse d'abord, puis trois autres cartes.
 
     EN CARRÉ LATIN (audit de la boucle didactique, 24 septembre 2026 — bloquant) :
@@ -169,19 +179,43 @@ def variantes(graine, art, coul, taille, par_id, planche, article_seul=False):
     if article_seul:
         return [(art, coul, taille)] + [(a, coul, taille) for a in r.sample(voisins, 3)]
     a2 = r.choice(voisins)
-    c2 = r.choice([c for c in COULEURS_DISTRACTRICES if c != coul])
+    c2 = r.choice([c for c in COULEURS_DISTRACTRICES if c != coul and c not in CONFONDUES.get(coul, ())])
     t2 = None
     if taille:
         i = TAILLES.index(taille)
         t2 = r.choice([TAILLES[j] for j in (i - 1, i + 1) if 0 <= j < len(TAILLES)])
-    return carre(art, coul, taille, a2, c2, t2)
+    return carre(art, coul, taille, a2, c2, t2, decisif)
 
 
-def carre(a, c, t, a2, c2, t2):
-    """Le carré latin : la bonne carte d'abord."""
+def carre(a, c, t, a2, c2, t2, decisif="t"):
+    """Les quatre cartes, la bonne d'abord.
+
+    Sans taille : le carré sur deux traits, (A,C) (A,C′) (A′,C) (A′,C′).
+    Avec taille : UN trait décisif varie seul, les deux autres varient ensemble
+    (audit de la boucle didactique, tour 2, A3 majeur : dans le carré latin,
+    l'article et la couleur suffisaient toujours, la taille ne décidait jamais).
+    Chaque valeur paraît deux fois : rien ne se devine à la majorité."""
     if t is None:
         return [(a, c, None), (a, c2, None), (a2, c, None), (a2, c2, None)]
-    return [(a, c, t), (a, c2, t2), (a2, c, t2), (a2, c2, t)]
+    if decisif == "t":
+        return [(a, c, t), (a, c, t2), (a2, c2, t), (a2, c2, t2)]
+    if decisif == "c":
+        return [(a, c, t), (a, c2, t), (a2, c, t2), (a2, c2, t2)]
+    return [(a, c, t), (a2, c, t), (a, c2, t2), (a2, c2, t2)]
+
+
+ROTATION = "tca"   # le trait décisif des items sans reprise, à tour de rôle
+
+
+def decisif_de(ident, n, table):
+    return table.get(ident) or ROTATION[n % 3]
+
+
+def trait_necessaire(v, k):
+    """Vrai si, sans le trait k, la bonne carte (la première) ne se distingue
+    plus d'une autre : c'est ce trait-là qu'il faut avoir entendu."""
+    garde = lambda x: tuple(x[j] for j in range(3) if j != k)
+    return any(garde(x) == garde(v[0]) for x in v[1:])
 
 
 def devinable(v):
@@ -221,16 +255,31 @@ def le_test(mots):
             r = random.Random(graine + "2" + cible)
             A[2].append({"id": cible, "son": son(f"a-{cible}"),
                          "o": [cible] + r.sample([i for i in avec_img if planche[i] == planche[cible] and i != cible], 3)})
+        lex = {e[0]: e for e in LEXIQUE}
+        nu = lambda i: lex[i][2].split(" ", 1)[-1].lower()
         for cible, pieges in c3:
+            for p in pieges:   # audit, tour 2 (D4) : aucun distracteur défendable
+                mot_dans = lambda m, note: re.search(r"(?<![\w-])" + re.escape(m) + r"(?![\w-])", (note or "").lower())
+                # Exception voulue : la note d'un PIÈGE nomme le sens de France,
+                # et ce sens-là est le distracteur qu'on veut voir tomber.
+                piege = (lex[cible][5] or "").startswith("PIÈGE")
+                assert not mot_dans(nu(cible), lex[p][5]) and (piege or not mot_dans(nu(p), lex[cible][5])), \
+                    f"A cran 3 : {p} est défendable pour {cible} (notes du lexique)"
             A[3].append({"id": cible, "son": son(f"a-{cible}"), "o": [cible] + pieges})
         return A
 
     def partie_b(items):
         B = {1: [], 2: [], 3: []}
+        n = 0
         for ident, cran, _v, phrase, bonne, ecartes in items:
-            v = (carre(*bonne, *ecartes) if ecartes
-                 else variantes(ident, *bonne, par_id, planche, article_seul=(cran == 1)))
+            dec = decisif_de(ident, n, TEST.DECISIF)
+            if bonne[2] and not ecartes:
+                n += 1
+            v = (carre(*bonne, *ecartes, decisif=dec) if ecartes
+                 else variantes(ident, *bonne, par_id, planche, article_seul=(cran == 1), decisif=dec))
             assert not devinable(v), f"{ident} : la bonne carte se devine sans écouter"
+            if bonne[2] and cran > 1:
+                assert trait_necessaire(v, "act".index(dec)), f"{ident} : le trait {dec} ne décide pas"
             B[cran].append({"id": ident, "son": son(ident), "phrase": phrase, "v": cartes(v, par_id)})
         return B
 
@@ -243,13 +292,16 @@ def le_test(mots):
                             "o": [bonne] + distr})
         return C
 
+    def partie_d(items):
+        return [{"id": i, "son": son(i), "phrase": p, "geste": g, "attendu": att}
+                for i, _v, p, g, att, _r in items]
+
     return {"formes": [
                 {"A": partie_a(TEST.A_CRAN1, TEST.A_CRAN2, TEST.A_CRAN3, "f1"),
-                 "B": partie_b(TEST.B), "C": partie_c(TEST.C)},
+                 "B": partie_b(TEST.B), "C": partie_c(TEST.C), "D": partie_d(TEST.D)},
                 {"A": partie_a(TEST.A2_CRAN1, TEST.A2_CRAN2, TEST.A2_CRAN3, "f2"),
-                 "B": partie_b(TEST.B2), "C": partie_c(TEST.C2)}],
-            "D": [{"id": i, "son": son(i), "phrase": p, "geste": g, "attendu": att}
-                  for i, _v, p, g, att, _r in TEST.D],
+                 "B": partie_b(TEST.B2), "C": partie_c(TEST.C2), "D": partie_d(TEST.D2)}],
+            "code_formateur": TEST.CODE_FORMATEUR,
             "oral": TEST.ORAL, "paliers": [{"k": k, "t": t, "n": n} for k, t, n in TEST.PALIERS],
             "seuils": {k: {"s": v[0], "t": v[1]} for k, v in TEST.SEUILS.items()},
             "regle": {"debutant_max": TEST.DEBUTANT_MAX, "aise_min": TEST.AISE_MIN,
@@ -279,7 +331,9 @@ GABARIT = r"""<!DOCTYPE html>
 <link rel="icon" href="/assets/design-system/marque-francis-favicon.svg">
 <style>
 /* Page produite par build/francoeur_planches.py — ne pas l'éditer. */
-:root{--mf-teinte:var(--acier-600);--mf-fond:var(--acier-100)}
+:root{--mf-teinte:var(--acier-600);--mf-fond:var(--acier-100);
+  /* 4,25:1 sur le fond acier : on fonce le texte discret (audit, tour 2, G1). */
+  --text-muted:#585B60}
 body{margin:0;background:var(--surface-page);color:var(--text-body);font-family:Nunito,system-ui,sans-serif}
 .mf{max-width:1080px;margin:0 auto;padding:18px 16px 60px}
 /* La barre de marque suit la colonne de la page : même largeur, même gouttière,
@@ -369,7 +423,7 @@ body{margin:0;background:var(--surface-page);color:var(--text-body);font-family:
 .exo-porte b{font-size:18px;color:var(--text-strong)}
 .exo-porte.pont{border-color:var(--mf-teinte);box-shadow:inset 4px 0 0 var(--mf-teinte)}
 .filtre{margin-top:14px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.filtre select{font:inherit;font-size:16px;padding:8px 10px;border-radius:10px;border:1px solid var(--line-300);background:var(--surface-card);color:var(--text-strong)}
+.filtre select{font:inherit;font-size:16px;min-height:44px;padding:8px 10px;border-radius:10px;border:1px solid var(--line-300);background:var(--surface-card);color:var(--text-strong)}
 .jeu{margin-top:12px}
 .jeu .barre{height:6px;border-radius:3px;background:var(--line-200);overflow:hidden;margin-bottom:12px}
 .jeu .barre i{display:block;height:100%;background:var(--accent)}
@@ -490,6 +544,9 @@ mark{background:#FFE58A;color:#17181A;padding:0 2px;border-radius:3px}
 .oral{display:flex;flex-direction:column;align-items:center;gap:10px;margin:10px 0}
 .oral .etat{font-weight:700;min-height:1.4em}
 .rec{background:var(--audio);border-color:var(--audio);color:#fff}
+/* La traduction sous un bouton rouge : blanche, sinon elle disparaît (1,02:1). */
+.rec .appui{color:#fff}
+details.bloc>summary{cursor:pointer;min-height:44px;padding:10px 0;box-sizing:border-box}
 .resultat{display:grid;gap:14px;margin-top:14px}
 .bloc{background:var(--surface-card);border:1px solid var(--line-200);border-radius:14px;padding:16px}
 .gros-palier{font-size:34px;font-weight:900;color:var(--text-strong);margin:4px 0}
@@ -566,7 +623,7 @@ const FR = {choisir:"Choisissez votre langue", choisir_sous:"Les mots restent en
   micro_refuse:"Le micro n'est pas disponible. Vous pouvez passer.",
   resultat:"Votre résultat", palier_propose:"Niveau proposé pour le jeu de rôle",
   pas_examen:"Ce n'est pas une note.", premiere:"Première passation", aujourdhui:"Aujourd'hui",
-  pour_formateur:"Pour le formateur", confirmer_palier:"Confirmer le niveau du jeu de rôle",
+  pour_formateur:"Pour le formateur", pas_ce_rayon:"ne se range pas dans le rayon", code_formateur:"Code du formateur", ouvrir:"Ouvrir", code_faux:"Ce n'est pas le bon code.", confirmer_palier:"Confirmer le niveau du jeu de rôle",
   refaire_test:"Refaire le test",
   magasin:"Le magasin", magasin_sous:"Des clients vous parlent. Vous répondez.",
   code_acces:"Votre code d'accès", code_aide:"Le code vous est donné par votre formateur.",
@@ -577,7 +634,7 @@ const FR = {choisir:"Choisissez votre langue", choisir_sous:"Les mots restent en
   bilan_titre:"Le bilan", client_part:"Le client est parti", vos_phrases:"Vos phrases, corrigées",
   gestes_titre:"Les gestes du vendeur, dans cette visite", autre_client:"Un autre client",
   code_refuse:"Ce code n'est pas reconnu.", voix_indispo:"La voix n'est pas disponible pour le moment. Lisez la réplique.", erreur_reseau:"Impossible de joindre le serveur.",
-  chemin:"Votre chemin", prochaine:"Prochaine étape", fait:"fait", etape_test:"Mon niveau", etape_mots:"Apprendre les mots", etape_exos:"Je m'exerce", etape_gestes:"Les gestes du vendeur", etape_magasin:"Le magasin", tache_titre:"Un client entre", tache:"Un client vous parle. Touchez ce qu'il demande.", tache_ok:"Oui : « une tuque ». Voici par où continuer.", tache_non:"Écoutez encore : il demande une tuque.", fiche_poche:"Ma fiche de poche", fiche_sous:"Six phrases à dire au plancher.", rappel:"Une série de rappel vous attend.", rappel_sous:"Vous avez pratiqué il y a %n jours. Huit mots, dont ceux à revoir.", rappel_go:"Faire la série", gestes:"Les gestes du vendeur", gestes_sous:"Écoutez un vendeur faire chaque geste.", ecouter_dialogue:"Écouter le dialogue", a_vous:"À vous : ce que je réponds", vendeur:"Le vendeur", client:"Le client", ex_gerante:"Ce que la gérante demande", ex_gerante_c:"Écoutez la gérante, puis touchez la réponse.", ex_reponse:"Ce que je réponds", ex_reponse_c:"Écoutez le client. Choisissez ce que dit le vendeur.", pieges:"Les pièges", ca_cest:"Ça, c'est :", bon_article:"Bon article", mauvais_article:"Pas le bon article", bonne_couleur:"bonne couleur", mauvaise_couleur:"pas la bonne couleur", bonne_taille:"bonne taille", mauvaise_taille:"pas la bonne taille", objectif:"Objectif", atteint:"Objectif atteint", pas_encore:"Pas encore : refaites une série.", pas_encore_court:"pas encore", a_revoir_liste:"À revoir", suite:"Ensuite", aller_magasin:"Aller au magasin à ce niveau", mots_a_revoir:"Mes mots à revoir", mes_phrases:"Mes phrases", avant_entrer:"Avant d'entrer : écoutez les gestes du vendeur, et gardez vos phrases sous la main.", humeur_neutre:"écoute.", humeur_contente:"est content.", humeur_contente_f:"est contente.", humeur_hesitante:"hésite.", humeur_impatiente:"s'impatiente.", parti_content:"est reparti content.", parti_content_f:"est repartie contente.", parti_pas:"est reparti sans être satisfait.", parti_pas_f:"est repartie sans être satisfaite.", geste_fait:"fait", geste_manque:"à faire la prochaine fois", geste_inutile:"pas nécessaire ici", bilan_attente:"Relecture de la visite…", reussis_sur:"réussis sur", geste_attendu:"Geste attendu", exemple:"Exemple", forme:"forme"};
+  chemin:"Votre chemin", prochaine:"Prochaine étape", fait:"fait", etape_test:"Mon niveau", etape_mots:"Apprendre les mots", etape_exos:"Je m'exerce", etape_gestes:"Les gestes du vendeur", etape_magasin:"Le magasin", tache_titre:"Un client entre", tache:"Un client vous parle. Touchez ce qu'il demande.", tache_ok:"Oui : « une tuque ». Voici par où continuer.", tache_non:"Pas celui-là. Écoutez encore, puis touchez ce qu'il demande.", voir_bilan:"Voir le bilan", serie_pieges:"La série des pièges", serie_pieges_c:"Les mots qui ne veulent pas dire la même chose en France et au Québec.", fiche_poche:"Ma fiche de poche", fiche_sous:"Six phrases à dire au plancher.", rappel:"Une série de rappel vous attend.", rappel_sous:"Vous avez pratiqué il y a %n jours. Huit mots, dont ceux à revoir.", rappel_go:"Faire la série", gestes:"Les gestes du vendeur", gestes_sous:"Écoutez un vendeur faire chaque geste.", ecouter_dialogue:"Écouter le dialogue", a_vous:"À vous : ce que je réponds", vendeur:"Le vendeur", client:"Le client", ex_gerante:"Ce que la gérante demande", ex_gerante_c:"Écoutez la gérante, puis touchez la réponse.", ex_reponse:"Ce que je réponds", ex_reponse_c:"Écoutez le client. Choisissez ce que dit le vendeur.", pieges:"Les pièges", ca_cest:"Ça, c'est :", bon_article:"Bon article", mauvais_article:"Pas le bon article", bonne_couleur:"bonne couleur", mauvaise_couleur:"pas la bonne couleur", bonne_taille:"bonne taille", mauvaise_taille:"pas la bonne taille", objectif:"Objectif", atteint:"Objectif atteint", pas_encore:"Pas encore : refaites une série.", pas_encore_court:"pas encore", a_revoir_liste:"À revoir", suite:"Ensuite", aller_magasin:"Aller au magasin à ce niveau", mots_a_revoir:"Mes mots à revoir", mes_phrases:"Mes phrases", avant_entrer:"Avant d'entrer : écoutez les gestes du vendeur, et gardez vos phrases sous la main.", humeur_neutre:"écoute.", humeur_contente:"est content.", humeur_contente_f:"est contente.", humeur_hesitante:"hésite.", humeur_impatiente:"s'impatiente.", parti_content:"est reparti content.", parti_content_f:"est repartie contente.", parti_pas:"est reparti sans être satisfait.", parti_pas_f:"est repartie sans être satisfaite.", geste_fait:"fait", geste_manque:"à faire la prochaine fois", geste_inutile:"pas nécessaire ici", bilan_attente:"Relecture de la visite…", reussis_sur:"réussis sur", geste_attendu:"Geste attendu", exemple:"Exemple", forme:"forme"};
 const T = k => dit(k, FR[k]);
 const app = document.getElementById('app');
 let audio = null;
@@ -742,9 +799,12 @@ function ecranExercices() {
     + D.planches.map(p => '<option value="' + p.k + '"' + (filtre === p.k ? ' selected' : '') + '>' + esc(p.t) + '</option>').join('')
     + '</select></div><div class="exos">'
     + EXOS.map(x => '<button type="button" class="exo-porte' + (x.pont ? ' pont' : '') + '" data-x="' + x.k + '"><span class="rang">' + x.n + '</span><span><b>'
-      + T('ex_' + x.k) + '</b><span style="display:block;margin-top:4px">' + T('ex_' + x.k + '_c') + '</span></span></button>').join('') + '</div>';
+      + T('ex_' + x.k) + '</b><span style="display:block;margin-top:4px">' + T('ex_' + x.k + '_c') + '</span></span></button>').join('')
+    // La série des pièges avait une porte cachée dans le filtre (audit, tour 2, D3).
+    + '<button type="button" class="exo-porte" id="xPieges"><span class="rang">!</span><span><b>' + T('serie_pieges') + '</b><span style="display:block;margin-top:4px">' + T('serie_pieges_c') + '</span></span></button></div>';
   document.getElementById('filtre').onchange = e => { filtre = e.target.value; };
   app.querySelectorAll('[data-x]').forEach(b => b.onclick = () => lancer(b.dataset.x));
+  document.getElementById('xPieges').onclick = () => { filtre = 'pieges'; lancer('ecoute'); };
   document.getElementById('retour').onclick = ecranAccueil;
   document.getElementById('chLangue').onclick = ecranLangue;
   window.scrollTo(0, 0);
@@ -769,6 +829,9 @@ function lancer(k, rappel) {
   // échange, remboursement, en arrière…) — ils se choisissent écrits (audit A3).
   else if (k === 'ecoute') items = tirage(D.mots.filter(m => m.son && dansFiltre(m) && m.p !== 'couleurs' || (m.p === 'couleurs' && visuel(m) && dansFiltre(m))));
   else items = tirage(D.mots.filter(m => visuel(m) && m.son && dansFiltre(m)));
+  // Un rayon qui ne donne aucun mot pour cet exercice : on retombe sur tous les
+  // rayons plutôt que d'afficher « 0 / 0 — Objectif atteint » (audit, tour 2).
+  if (!items.length && filtre) { filtre = ''; return lancer(k, rappel); }
   J = {k, items, i: 0, essais: 0, premier: 0, fini: false, rates: [], rappel: !!rappel};
   marquer('exo');
   question();
@@ -797,7 +860,9 @@ function question() {
     let autres;
     if (it.contrastes) autres = it.contrastes.slice(1).map(mot);
     else if (visuel(it)) autres = melange(D.mots.filter(m => m.p === it.p && m.id !== it.id && visuel(m))).slice(0, 5);
-    else autres = melange(D.mots.filter(m => m.p === it.p && m.id !== it.id)).slice(0, 3);
+    // Sans image, les autres choix sont écrits aussi : un seul mot écrit parmi
+    // des dessins se trouvait sans écouter (audit, tour 2, D4).
+    else autres = melange(D.mots.filter(m => m.p === it.p && m.id !== it.id && !visuel(m))).slice(0, 3);
     J.bonne = it.id; J.options = melange([it].concat(autres));
     cadreJeu(boutonsEcoute() + '<div class="choix' + (visuel(it) ? '' : ' mots') + '">' + J.options.map(optMot).join('') + '</div>');
     brancherEcoute(it.son); joue(it.son);
@@ -823,7 +888,7 @@ function question() {
         + '<div class="ecoute"><button type="button" class="mf-btn mf-btn--pri" id="savais"><span>' + T('savais') + '</span></button>'
         + '<button type="button" class="mf-btn" id="arevoir"><span>' + T('a_revoir') + '</span></button></div>';
       const auto = ok => rapporter({zone: 'ex-rappel-' + it.id, exo: 'ex-rappel', exoNum: 'Exercice 3', exoTitre: FR.ex_rappel,
-        section: 'exercices', type: 'rappel', enonce: it.mot, bonne: '', reponse: '', ok, essais: 1});
+        section: 'exercices', type: 'rappel', enonce: it.mot, bonne: '', reponse: '', ok, essais: 0});
       document.getElementById('savais').onclick = () => { auto(true); J.premier++; revoir.delete(it.id); garderRevoir(); J.i++; question(); };
       document.getElementById('arevoir').onclick = () => { auto(false); J.rates.push(it.mot); revoir.add(it.id); garderRevoir(); J.i++; question(); };
     };
@@ -862,7 +927,9 @@ function pourquoiFaux(it, o) {
     const tr = l && l.ui['rm_' + it.id + '_' + o];
     return '<p>' + esc(x.x) + (tr ? '<span class="appui" dir="' + (l.rtl ? 'rtl' : 'ltr') + '">' + esc(tr) + '</span>' : '') + '</p>';
   }
-  if (J.k === 'rayon') return '';
+  // « Range le rayon » : on nomme le rayon choisi (audit, tour 2 — la
+  // rétroaction était vide au premier essai).
+  if (J.k === 'rayon') return '<p><b>' + esc(it.mot) + '</b> — ' + esc(FR.pas_ce_rayon) + ' « ' + esc((D.planches.find(p => p.k === o) || {}).t || '') + ' ».</p>';
   const m = mot(o);
   if (!m) return '';
   if (m.son) joue(m.son);
@@ -872,7 +939,8 @@ function pourquoiFaux(it, o) {
 function phraseMarquee(it) {
   let p = esc(it.phrase);
   if (J.k === 'client') {
-    const b = it.v[0], marques = [b.cmot.replace(/^(le |la |l'|un |une |des )/, '').slice(0, 4)];
+    const b = it.v[0], marques = [b.cmot.replace(/^(le |la |l'|un |une |des )/, '').slice(0, 4),
+      b.mot.replace(/^(le |la |l'|un |une |des )/, '').split(' ')[0].slice(0, 5)];
     if (b.tid) marques.push(D.tailles[b.tid]);
     marques.forEach(w => { if (w) p = p.replace(new RegExp('(' + w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '[a-zé]*)', 'gi'), '<mark>$1</mark>'); });
   }
@@ -888,7 +956,8 @@ function repondre(b) {
     if (J.essais === 0) { J.premier++; if (idMot) { revoir.delete(idMot); garderRevoir(); } }
     retro.className = 'retro ok';
     let plus = '';
-    if (J.k === 'reponse') { plus = '<p>' + esc(it.expl) + '</p>'; joue(it.bonne_son); }
+    if (J.k === 'reponse') { const l = L(), tr = l && l.ui['rx_' + it.id];
+      plus = '<p>' + esc(it.expl) + (tr ? '<span class="appui" dir="' + (l.rtl ? 'rtl' : 'ltr') + '">' + esc(tr) + '</span>' : '') + '</p>'; joue(it.bonne_son); }
     else if (J.k === 'ecoute' || J.k === 'image') { plus = notePiege(it); if (J.k === 'image') joue(it.son); }
     else if (J.k === 'rayon') joue(it.son);
     retro.innerHTML = '<p><b>' + T('bravo') + '</b></p>' + plus;
@@ -902,6 +971,7 @@ function repondre(b) {
       let plus = '';
       if (J.k === 'client' || J.k === 'gerante') { plus = phraseMarquee(it); joue(it.son); }
       else if (J.k === 'reponse') { plus = '<p>« ' + esc(it.bonne) + ' » — ' + esc(it.expl) + '</p>'; joue(it.bonne_son); }
+      else if (J.k === 'rayon') { plus = '<p><b>' + esc(it.mot) + '</b> → ' + esc(D.planches.find(p => p.k === it.p).t) + '</p>'; joue(it.son); }
       else { plus = '<p><b>' + esc(it.mot) + '</b></p>' + notePiege(it); joue(it.son); }
       retro.innerHTML = '<p><b>' + T('reponse') + '</b></p>' + plus;
       J.rates.push(it.mot || it.phrase);
@@ -918,7 +988,7 @@ function finQuestion() {
   rapporter({zone: 'ex-' + J.k + '-' + it.id, exo: 'ex-' + J.k, exoNum: 'Exercice ' + (EXOS.find(x => x.k === J.k).n),
     exoTitre: FR['ex_' + J.k], section: 'exercices', type: J.k,
     enonce: it.phrase || it.mot, bonne: libelle(J.bonne),
-    reponse: juste ? libelle(J.bonne) : (fautif ? libelle(fautif.dataset.o) : ''), ok: juste, essais: J.essais + 1});
+    reponse: juste ? libelle(J.bonne) : (fautif ? libelle(fautif.dataset.o) : ''), ok: juste, essais: J.essais});
   app.querySelectorAll('[data-o]').forEach(x => x.disabled = true);
   const s = document.getElementById('suite');
   s.innerHTML = '<button type="button" class="mf-btn mf-btn--pri" id="apres"><span>' + T('suivant') + '</span>' + ICO.suiv + '</button>';
@@ -929,13 +999,15 @@ const SUITE_EXO = {ecoute: 'image', image: 'rappel', rappel: 'rayon', rayon: 'cl
 function bilan() {
   J.fini = true;
   rapporterSerie(J.items.length, J.premier);
-  const x = EXOS.find(e => e.k === J.k), seuil = Math.min(SEUIL[x.o], J.items.length), ok = J.premier >= seuil;
+  // « Je me souviens » est déclaré par l'employé : il ne se juge pas contre un
+  // seuil (audit, tour 2, D1). Les autres, oui.
+  const x = EXOS.find(e => e.k === J.k), seuil = Math.min(SEUIL[x.o], J.items.length), ok = J.premier >= seuil, juge = J.k !== 'rappel';
   const suite = SUITE_EXO[J.k];
   const libSuite = suite === 'gestes' ? T('gestes') : suite === 'magasin' ? T('magasin') : T('ex_' + suite);
   app.innerHTML = tete(T('ex_' + J.k), '', true, 'exercices')
     + '<div class="bilan"><p style="font-weight:800;margin:0">' + T('fin') + '</p><p class="score">' + J.premier + ' / ' + J.items.length + '</p>'
     + '<p style="margin:0 0 6px">' + T('premier_coup') + '</p>'
-    + '<p class="seuil ' + (ok ? 'ok' : 'non') + '">' + esc(FR.objectif) + ' : ' + seuil + ' / ' + J.items.length + ' — ' + (ok ? T('atteint') : T('pas_encore')) + '</p>'
+    + (!juge ? '' : '<p class="seuil ' + (ok ? 'ok' : 'non') + '">' + esc(FR.objectif) + ' : ' + seuil + ' / ' + J.items.length + ' — ' + (ok ? T('atteint') : T('pas_encore')) + '</p>')
     + (J.rates.length ? '<div class="bloc" style="text-align:start"><b>' + T('a_revoir_liste') + '</b><ul>' + J.rates.map(r => '<li>' + esc(r) + '</li>').join('') + '</ul></div>' : '')
     + '<div class="ecoute"><button type="button" class="mf-btn" id="encore"><span>' + T('recommencer') + '</span></button>'
     + '<button type="button" class="mf-btn mf-btn--pri" id="ensuite"><span>' + esc(FR.suite) + ' : ' + '</span>' + libSuite + '</button></div></div>';
@@ -1001,7 +1073,11 @@ function ecranAccueil() {
         b.classList.add('juste'); r.className = 'retro ok'; r.innerHTML = '<p><b>' + T('tache_ok') + '</b></p>';
         joue(mot('tuque').son);
         const x = suivi(); x.tache = 1; try { localStorage.setItem(CLE_SUIVI, JSON.stringify(x)); } catch(e) {}
-        setTimeout(ecranAccueil, 2200);
+        // Un bouton, pas une minuterie (audit, tour 2, G2) : la rétroaction
+        // reste à l'écran le temps qu'on la lise.
+        r.innerHTML += '<div class="suite"><button type="button" class="mf-btn mf-btn--pri" id="tSuite"><span>' + T('suivant') + '</span>' + ICO.suiv + '</button></div>';
+        app.querySelectorAll('[data-t]').forEach(x => x.disabled = true);
+        document.getElementById('tSuite').onclick = ecranAccueil; document.getElementById('tSuite').focus();
       } else { b.classList.add('faux'); r.className = 'retro non'; r.innerHTML = '<p>' + T('tache_non') + '</p>'; joue(src); }
     });
   }
@@ -1138,7 +1214,7 @@ function repondreTest(juste) {
     rapporter({zone: 'test' + (X.f + 1) + '-' + P + '-' + it.id, exo: 'test-' + P, exoNum: 'Test · forme ' + (X.f + 1) + ' · cran ' + X.cran,
       exoTitre: FR['partie_' + P.toLowerCase()], section: 'test', type: 'test',
       enonce: P === 'A' ? etiquette(it.id) : P === 'B' ? it.phrase : it.phrase + ' — ' + it.q,
-      bonne: P === 'B' ? carteTexte(it.v[0]) : etiquette(P === 'A' ? it.id : it.o[0]), reponse: '', ok: juste, essais: 1}); }
+      bonne: P === 'B' ? carteTexte(it.v[0]) : etiquette(P === 'A' ? it.id : it.o[0]), reponse: '', ok: juste, essais: 0}); }
   if (juste) {
     X.bons++;
     if (X.bons >= 3) {
@@ -1153,10 +1229,11 @@ function partieFinie() { X.p++; X.cran = 1; X.bons = 0; X.faux = 0; questionTest
 
 let enreg = null;
 function partieOrale(i) {
-  if (i >= D.test.D.length) return resultatTest();
-  const it = D.test.D[i];
+  const DD = X.F.D;
+  if (i >= DD.length) return resultatTest();
+  const it = DD[i];
   app.innerHTML = tete(T('test'), T('cd'), false)
-    + '<div class="jeu"><p class="partie">' + esc(FR.partie_d) + ' · ' + (i + 1) + ' / ' + D.test.D.length + '</p>'
+    + '<div class="jeu"><p class="partie">' + esc(FR.partie_d) + ' · ' + (i + 1) + ' / ' + DD.length + '</p>'
     + '<div class="ecoute"><button type="button" class="mf-btn mf-btn--pri" id="reec">' + ICO.son + '<span>' + T('reecouter') + '</span></button></div>'
     + '<div class="oral"><button type="button" class="mf-btn rec" id="rec"><span>' + T('enregistrer') + '</span></button>'
     + '<p class="etat" id="etatRec" aria-live="polite"></p><div id="rejouer"></div></div>'
@@ -1197,11 +1274,14 @@ function resultatTest() {
   const taux = {};
   ['A', 'B', 'C'].forEach(P => { const r = X.reponses.filter(x => x.p === P); taux[P] = {j: r.filter(x => x.juste).length, n: r.length}; });
   const entree = {date: new Date().toISOString().slice(0, 10), forme: X.f + 1, a: n.A, b: n.B, c: n.C, taux, palier: pal, confirme: null,
-                  oral: D.test.D.map(() => null)};
+                  oral: X.F.D.map(() => null)};
   h.push(entree); garderHisto(h);
   const premiere = h.length > 1 ? h[0] : null;
   const ligne = (k, v) => {
-    const t = taux[k.toUpperCase()], s = D.test.seuils[k.toUpperCase()], ok = t.n && t.j / t.n >= s.s;
+    // Audit, tour 2 (F1) : dans un test adaptatif, le taux brut dépend de
+    // l'ordre des erreurs. L'objectif est atteint quand le cran qui porte sa
+    // tâche est VALIDÉ (trois bonnes à ce cran).
+    const t = taux[k.toUpperCase()], s = D.test.seuils[k.toUpperCase()], ok = v >= s.s;
     return '<div><span>' + esc(FR['partie_' + k]) + ' — ' + t.j + ' ' + esc(FR.reussis_sur) + ' ' + t.n + '</span><b>' + v + ' / 3</b>'
       + '<span class="jauge"><i style="width:' + Math.round(v / 3 * 100) + '%"></i></span>'
       + '<small class="seuil ' + (ok ? 'ok' : 'non') + '">' + esc(s.t) + ' — ' + (ok ? esc(FR.atteint) : esc(FR.pas_encore_court)) + '</small></div>'; };
@@ -1214,21 +1294,34 @@ function resultatTest() {
     + (premiere ? '<div class="bloc"><b>' + esc(FR.premiere) + '</b> (' + premiere.date + ') : ' + esc(nomPalier(premiere.confirme || premiere.palier).t)
         + ' — A ' + premiere.a + ' · B ' + premiere.b + ' · C ' + premiere.c + '<br><b>' + esc(FR.aujourdhui) + '</b> (' + esc(FR.forme) + ' ' + (X.f + 1) + ') : ' + esc(nomPalier(pal).t)
         + ' — A ' + n.A + ' · B ' + n.B + ' · C ' + n.C + '</div>' : '')
+    // La clé et la grille, derrière le code du formateur (audit, tour 2, F1) :
+    // l'employé ne voit ni le geste attendu ni la réponse modèle, et ne peut
+    // pas se noter lui-même.
     + '<div class="bloc formateur"><b>' + esc(FR.pour_formateur) + '</b>'
-    + D.test.D.map((d, i) => '<p style="margin:14px 0 2px">« ' + esc(d.phrase) + ' »</p>'
+    + '<div class="code" style="margin-top:8px"><label for="codeF">' + esc(FR.code_formateur) + '</label><input id="codeF" inputmode="numeric" maxlength="6" autocomplete="off">'
+    + '<button type="button" class="mf-btn" id="okF"><span>' + esc(FR.ouvrir) + '</span></button></div><p class="retro non" id="errF" aria-live="polite"></p>'
+    + '<div id="zoneF" hidden>'
+    + X.F.D.map((d, i) => '<p style="margin:14px 0 2px">« ' + esc(d.phrase) + ' »</p>'
         + '<p style="margin:0 0 4px;font-size:15px"><b>' + esc(FR.geste_attendu) + ' :</b> ' + esc(d.geste) + ' — ' + esc(FR.exemple) + ' : ' + esc(d.attendu) + '</p>'
         + (X.blobs[i] ? '<audio controls src="' + X.blobs[i] + '"></audio>' : '<p style="margin:0;color:var(--text-muted)">—</p>')
         + '<div class="choisir3" data-oral="' + i + '">' + D.test.oral.map((o, k) => '<button type="button" class="mf-btn" data-v="' + k + '" aria-pressed="false">' + esc(o) + '</button>').join('') + '</div>').join('')
     + '<p style="margin:16px 0 4px">' + esc(FR.confirmer_palier) + '</p><div class="choisir3" data-conf="1">'
-    + D.test.paliers.map(p => '<button type="button" class="mf-btn" data-v="' + p.k + '" aria-pressed="false">' + esc(p.t) + '</button>').join('') + '</div></div>'
+    + D.test.paliers.map(p => '<button type="button" class="mf-btn" data-v="' + p.k + '" aria-pressed="false">' + esc(p.t) + '</button>').join('') + '</div></div></div>'
     + '<div><button type="button" class="mf-btn" id="refaire"><span>' + T('refaire_test') + '</span></button></div></div>';
   const maj = () => { const hh = histo(); hh[hh.length - 1] = entree; garderHisto(hh); };
+  const ouvrirF = () => {
+    if (document.getElementById('codeF').value.trim() === D.test.code_formateur) {
+      document.getElementById('zoneF').hidden = false; document.getElementById('errF').textContent = '';
+      document.getElementById('codeF').closest('.code').remove();
+    } else document.getElementById('errF').textContent = FR.code_faux; };
+  document.getElementById('okF').onclick = ouvrirF;
+  document.getElementById('codeF').onkeydown = e => { if (e.key === 'Enter') ouvrirF(); };
   app.querySelectorAll('[data-oral] button').forEach(b => b.onclick = () => {
     const i = +b.parentNode.dataset.oral; entree.oral[i] = +b.dataset.v; maj();
     b.parentNode.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
     // Le geste noté par le formateur remonte au direct (O3, O4 évalués).
-    rapporter({zone: 'test-D-' + D.test.D[i].id, exo: 'test-D', exoNum: 'Test · oral', exoTitre: FR.partie_d, section: 'test',
-      type: 'oral', enonce: D.test.D[i].geste, bonne: '', reponse: '', ok: +b.dataset.v === 0, essais: 1}); });
+    rapporter({zone: 'test' + (X.f + 1) + '-D-' + X.F.D[i].id, exo: 'test-D', exoNum: 'Test · forme ' + (X.f + 1) + ' · oral', exoTitre: FR.partie_d, section: 'test',
+      type: 'oral', enonce: X.F.D[i].geste, bonne: '', reponse: '', ok: +b.dataset.v === 0, essais: 0}); });
   app.querySelectorAll('[data-conf] button').forEach(b => b.onclick = () => {
     entree.confirme = b.dataset.v; maj();
     b.parentNode.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', String(x === b))); });
@@ -1359,7 +1452,14 @@ async function tour() {
     S.hist.push({role: 'assistant', contenu: d.reponse});
     const {h, t, fin} = lireHumeur(d.reponse);
     montrerHumeur(h); bulle('client', t); dire(t);
-    if (fin) { S.fini = true; setTimeout(bilanMagasin, 2500); }
+    if (fin) {
+      // Le client a dit au revoir : on laisse la dernière réplique à l'écran,
+      // et c'est l'employé qui passe au bilan (audit, tour 2, G2).
+      S.fini = true;
+      const suite = document.querySelector('.scene .suite');
+      if (suite) { suite.innerHTML = '<button type="button" class="mf-btn mf-btn--pri" id="versBilan"><span>' + T('voir_bilan') + '</span>' + ICO.suiv + '</button>';
+        document.getElementById('versBilan').onclick = bilanMagasin; }
+    }
   } catch(e) { attente.remove(); err.textContent = FR.erreur_reseau; }
 }
 function envoyer(texte) {
@@ -1438,12 +1538,12 @@ async function bilanMagasin() {
           + esc(etat === 'fait' ? FR.geste_fait : etat === 'manque' ? FR.geste_manque : FR.geste_inutile)
           + (g.citation ? '<small>« ' + esc(g.citation) + ' »</small>' : '') + (etat === 'manque' && g.conseil ? '<small>' + esc(g.conseil) + '</small>' : '') + '</span></li>'; }).join('') + '</ul>';
       G.filter(g => g.necessaire).forEach(g => rapporter({zone: 'mag-' + S.c.id + '-' + g.id, exo: 'magasin', exoNum: 'Magasin · ' + niveauJeu,
-        exoTitre: 'Le magasin', section: 'magasin', type: 'geste', enonce: nomGeste(g.id) + ' — ' + S.c.nom, bonne: '', reponse: '', ok: !!g.fait, essais: 1}));
+        exoTitre: 'Le magasin', section: 'magasin', type: 'geste', enonce: nomGeste(g.id) + ' — ' + S.c.nom, bonne: '', reponse: '', ok: !!g.fait, essais: 0}));
     }
   } catch(e) { zone.innerHTML = '<p>' + esc(FR.erreur_reseau) + '</p>'; }
   rapporter({zone: 'mag-' + S.c.id + '-' + niveauJeu, exo: 'magasin', exoNum: 'Magasin · ' + niveauJeu,
     exoTitre: 'Le magasin', section: 'magasin', type: 'magasin', enonce: 'Visite : ' + S.c.nom,
-    bonne: '', reponse: '', ok: content, essais: S.hist.filter(m => m.role === 'user').length});
+    bonne: '', reponse: '', ok: content, essais: 0});
   const corr = document.getElementById('corr');
   try {
     const r = await fetch('/api/correct-french', {method: 'POST', headers: {'Content-Type': 'application/json'},
@@ -1504,7 +1604,8 @@ window.__francoeur.espaces = () => {
   // Une fenêtre ouverte (la fiche d'un article) cache ce qui est dessous : on
   // ne mesure alors que ses propres boutons.
   const racine = !document.getElementById('fiche').hidden ? document.getElementById('fiche') : document;
-  const b = [...racine.querySelectorAll('button, .mf-btn, a.mf-btn')].filter(x => x.offsetParent && x.getBoundingClientRect().width > 0)
+  const b = [...racine.querySelectorAll('button, .mf-btn, a.mf-btn')].filter(x => x.offsetParent && x.getBoundingClientRect().width > 0
+      && !(x.closest('details:not([open])') && !x.closest('summary')))
     .map(x => ({x, r: x.getBoundingClientRect()}));
   const fautes = [];
   for (let i = 0; i < b.length; i++) for (let j = i + 1; j < b.length; j++) {
