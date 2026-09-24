@@ -1453,6 +1453,15 @@ function mDecor(o) {
   poser(cube(W, H, .1), sauge, 0, H / 2, murZ - .05);
   poser(cube(W, 1, .02), brique, 0, .5, murZ + .011);
   poser(cube(W, .05, .05), cheneF, 0, 1.02, murZ + .025);
+  // les deux murs de côté, jusqu'au comptoir : la salle est une pièce, pas un décor
+  for (const sens of [-1, 1]) {
+    const x = X(sens * W / 2), long = -MUR + 140, zc = MUR + long / 2;
+    const cote = (geo, m, y, dx) => { const o = new THREE.Mesh(geo, m);
+      o.rotation.y = -sens * Math.PI / 2; o.position.set(x - sens * dx, y, zc); o.receiveShadow = true; decor.add(o); };
+    cote(new THREE.PlaneGeometry(long, H * 100), sauge, Y(H / 2), 0);
+    cote(new THREE.PlaneGeometry(long, 100), brique, Y(.5), 1.1);
+    cote(new THREE.BoxGeometry(long, 5, 5), cheneF, Y(1.02), 2.5);
+  }
   // les étagères, dans la partie gauche du mur
   const sx0 = -W / 2, sw = 2.9, sd = .26;
   for (const y of [2.25, 1.7]) {
