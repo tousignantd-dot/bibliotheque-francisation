@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Maison Francœur — audit, tour 4</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap">
+<style>
+/* ═══════════════════════════════════════════════════════════
+   UN MODULE POUR LA VENTE DE CHAUSSURES — LE CADRAGE
+   Chantier « formation en entreprise », second secteur :
+   le commerce de détail. Écrite à la main, comme
+   analyse-marche.html — ses chiffres viennent d'ailleurs et
+   doivent vieillir visiblement.
+
+   Vert : ce que le tour de main actuel produit déjà.
+   Ambre : ce qui attend votre décision.
+   Rouge : l'argument de vente qui tient à une obligation légale.
+   L'acier ne fait que la structure.
+   ═══════════════════════════════════════════════════════════ */
+
+:root{
+  --ground:#F7F7F5; --card:#FFFFFF; --sunken:#FBFBFA;
+  --ink:#17181A; --body:#3A3D40; --muted:#6E7175;
+  --line:#E4E4E0; --line-fort:#D2D2CD;
+
+  --fait:#0A8F5B;    --fait-bg:#E6F5EE;
+  --decid:#C07A08;   --decid-bg:#FBF2E2;
+  --loi:#C7302B;     --loi-bg:#FBEDEC;
+  --acier:#1D6B8F;   --acier-bg:#E7F0F6;
+
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#151618; --card:#1D1F22; --sunken:#212326;
+    --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+    --line:#2E3135; --line-fort:#3D4146;
+    --fait:#4BC48D; --fait-bg:#12291F;
+    --decid:#E0A63F; --decid-bg:#2C2213;
+    --loi:#EE7A73; --loi-bg:#2E1917;
+    --acier:#6DAFD2; --acier-bg:#14242C;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#151618; --card:#1D1F22; --sunken:#212326;
+  --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+  --line:#2E3135; --line-fort:#3D4146;
+  --fait:#4BC48D; --fait-bg:#12291F;
+  --decid:#E0A63F; --decid-bg:#2C2213;
+  --loi:#EE7A73; --loi-bg:#2E1917;
+  --acier:#6DAFD2; --acier-bg:#14242C;
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--body);
+  font-family:Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased}
+.doc{max-width:880px;margin:0 auto;padding:56px 24px 96px}
+
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--acier);margin:0 0 14px}
+h1{font-family:Newsreader,Georgia,serif;font-size:clamp(38px,6.4vw,58px);line-height:1.04;
+  font-weight:500;letter-spacing:-.02em;color:var(--ink);margin:0 0 20px;text-wrap:balance}
+.chapeau{font-size:19px;line-height:1.6;color:var(--body);margin:0;max-width:62ch}
+.chapeau strong{color:var(--ink);font-weight:700}
+h2{font-family:Newsreader,Georgia,serif;font-size:29px;line-height:1.2;font-weight:600;
+  letter-spacing:-.01em;color:var(--ink);margin:0 0 4px;text-wrap:balance}
+h3{font-size:15px;font-weight:800;color:var(--ink);margin:0 0 6px}
+p{margin:0;max-width:68ch}
+section{display:flex;flex-direction:column;gap:16px;padding:44px 0 0;margin:44px 0 0;
+  border-top:1px solid var(--line)}
+section.premier{border-top:none;margin-top:0;padding-top:40px}
+code{font-family:var(--mono);font-size:.86em;background:var(--sunken);
+  border:1px solid var(--line);border-radius:4px;padding:1px 5px;color:var(--ink)}
+ul.simple{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px}
+ul.simple li{max-width:66ch} ul.simple li strong{color:var(--ink)}
+em.art{font-style:normal;font-family:var(--mono);font-size:.82em;color:var(--muted);
+  white-space:nowrap}
+
+.these{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--acier);
+  border-radius:3px;padding:26px 28px;display:flex;flex-direction:column;gap:12px}
+.these p{font-size:18px}
+.these .cle{font-family:Newsreader,Georgia,serif;font-size:23px;line-height:1.3;
+  font-weight:500;color:var(--ink);font-style:italic}
+
+/* ── Les décisions ─────────────────────────────────────── */
+.decisions{display:flex;flex-direction:column;gap:2px;counter-reset:d}
+.dec{counter-increment:d;background:var(--card);border:1px solid var(--line);
+  border-left:5px solid var(--decid);border-radius:3px;padding:19px 22px 19px 60px;
+  position:relative;display:flex;flex-direction:column;gap:8px}
+.dec.ok{border-left-color:var(--fait)}
+.dec::before{content:counter(d);position:absolute;left:24px;top:18px;
+  font-family:var(--mono);font-size:14px;color:var(--muted)}
+.dec .ligne{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;
+  justify-content:space-between}
+.dec p{font-size:15.5px}
+.dec .defaut{font-size:13.5px;color:var(--muted);font-style:italic}
+
+.badge{display:inline-block;font-size:11.5px;font-weight:800;letter-spacing:.05em;
+  text-transform:uppercase;padding:3px 9px;border-radius:2px;white-space:nowrap}
+.b-fait{background:var(--fait-bg);color:var(--fait)}
+.b-dec{background:var(--decid-bg);color:var(--decid)}
+.b-loi{background:var(--loi-bg);color:var(--loi)}
+.b-n{background:var(--sunken);color:var(--muted);border:1px solid var(--line)}
+
+/* ── Tableaux ──────────────────────────────────────────── */
+.defile{overflow-x:auto;border:1px solid var(--line);border-radius:3px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:15px;min-width:640px}
+caption{caption-side:top;text-align:left;padding:0 0 10px;font-size:13.5px;color:var(--muted)}
+th,td{padding:12px 15px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{font-size:11.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--muted);background:var(--sunken);white-space:nowrap}
+tbody tr:last-child td{border-bottom:none}
+td.q{font-weight:700;color:var(--ink)}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+td small{display:block;color:var(--muted);font-size:13px;line-height:1.45;margin-top:3px}
+tbody tr td:first-child{border-left:4px solid transparent}
+tr.l td:first-child{border-left-color:var(--loi)}
+tr.d td:first-child{border-left-color:var(--decid)}
+tr.f td:first-child{border-left-color:var(--fait)}
+
+/* ── Chiffres ──────────────────────────────────────────── */
+.chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.ch{background:var(--card);border:1px solid var(--line);border-radius:3px;
+  border-top:3px solid var(--acier);padding:15px 16px}
+.ch .n{font-family:Newsreader,Georgia,serif;font-size:30px;line-height:1;font-weight:500;
+  color:var(--ink);display:block;font-variant-numeric:tabular-nums}
+.ch .q{font-size:12.5px;font-weight:700;color:var(--muted);line-height:1.35;display:block;margin-top:7px}
+
+/* ── Marche à suivre ───────────────────────────────────── */
+ol.actions{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;
+  counter-reset:a}
+ol.actions li{counter-increment:a;background:var(--card);border:1px solid var(--line);
+  border-radius:3px;padding:18px 22px 18px 62px;position:relative;display:flex;
+  flex-direction:column;gap:6px}
+ol.actions li::before{content:counter(a);position:absolute;left:22px;top:17px;
+  font-family:var(--mono);font-size:14px;color:var(--muted)}
+ol.actions li p{font-size:15.5px}
+.qui{font-size:13px;color:var(--muted);font-style:italic}
+
+.reserve{border:1px dashed var(--line-fort);border-radius:3px;padding:20px 24px;
+  font-size:15px;color:var(--muted);display:flex;flex-direction:column;gap:9px}
+.reserve strong{color:var(--body)}
+.avert{background:var(--loi-bg);border:1px solid var(--loi);border-radius:3px;
+  padding:20px 24px;display:flex;flex-direction:column;gap:9px}
+.avert strong{color:var(--ink)}
+.avert p{font-size:15.5px;color:var(--body)}
+.pied{margin-top:52px;padding-top:22px;border-top:1px solid var(--line);font-size:13.5px;
+  color:var(--muted);display:flex;flex-direction:column;gap:5px}
+@media (max-width:620px){ .doc{padding:36px 18px 72px} }
+
+/* ── décisions à boutons (plan magasin de vêtements) ── */
+.dec2{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:12px 0}
+.dq{margin:0 0 10px;font-weight:700;color:var(--ink)}
+.dn{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--decid-bg);color:var(--decid);font-size:13px;margin-right:8px}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opt{font:inherit;font-size:15px;text-align:left;cursor:pointer;background:var(--sunken);color:var(--body);border:1px solid var(--line-fort);border-radius:10px;padding:8px 12px}
+.opt:hover{border-color:var(--acier)}
+.opt[aria-pressed="true"]{background:var(--fait-bg);border-color:var(--fait);color:var(--ink);font-weight:700}
+.opt .tag{font-size:12px;color:var(--decid);font-weight:700;margin-left:4px}
+.dw{margin:10px 0 0;font-size:15px;color:var(--muted)}
+.btn-export{font:inherit;font-weight:700;cursor:pointer;background:var(--acier);color:#fff;border:0;border-radius:10px;padding:10px 16px}
+.etat{margin-left:12px;color:var(--muted);font-size:15px}
+table{display:block;overflow-x:auto}
+
+/* ── étape 0 : planches du lexique ── */
+.doc.large{max-width:1180px}
+.chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.temoins{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:16px 0}
+.temoins figure{margin:0;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px}
+.temoins img{width:100%;display:block}
+.temoins figcaption{text-align:center;font-weight:700;color:#17181A;margin-top:6px}
+.verdict,.choix{display:flex;flex-wrap:wrap;gap:8px}
+.verdict button,.choix button{font:inherit;cursor:pointer;background:var(--sunken);color:var(--body);
+  border:1px solid var(--line-fort);border-radius:10px;padding:8px 12px}
+.choix button{font-size:13px;padding:5px 8px;border-radius:8px}
+button[aria-pressed="true"][data-v="ok"],button[aria-pressed="true"][data-v="garder"]{background:var(--fait-bg);border-color:var(--fait);color:var(--ink);font-weight:700}
+button[aria-pressed="true"][data-v="retirer"]{background:var(--loi-bg);border-color:var(--loi);color:var(--ink);font-weight:700}
+button[aria-pressed="true"][data-v="douteux"],button[aria-pressed="true"][data-v="revoir"]{background:var(--decid-bg);border-color:var(--decid);color:var(--ink);font-weight:700}
+.aide{color:var(--muted);font-size:15px}
+.sommaire{position:sticky;top:0;z-index:2;background:var(--ground);display:flex;flex-wrap:wrap;gap:6px 14px;
+  padding:10px 0;border-bottom:1px solid var(--line);margin:24px 0 8px;font-size:15px}
+.sommaire a{color:var(--acier);text-decoration:none;font-weight:700}
+.planche h2 .compte{font-size:15px;color:var(--muted);font-weight:600;margin-left:6px}
+.grille{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+.mot{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:4px}
+.mot.piege{border-color:var(--decid);box-shadow:inset 0 3px 0 var(--decid)}
+.mot[data-etat="retirer"]{opacity:.45}
+.mot .img{width:100%;aspect-ratio:1/1;object-fit:contain;background:#fff;border-radius:8px}
+.mot .pastille{aspect-ratio:3/2;border:1px solid var(--line-fort)}
+.mot .attente,.mot .rien{display:grid;place-items:center;text-align:center;font-size:13px;color:var(--muted);
+  background:var(--sunken);border:1px dashed var(--line-fort);aspect-ratio:3/2}
+.mot .ici{margin:4px 0 0;font-weight:800;color:var(--ink);font-size:17px;line-height:1.25}
+.mot .autre{margin:0;color:var(--muted);font-size:14px}
+.mot .autre.vide{opacity:.4}
+.mot .note{margin:2px 0;font-size:13px;line-height:1.4;color:var(--body)}
+.mot.piege .note{color:var(--decid);font-weight:700}
+.mot .choix{margin-top:auto;padding-top:6px}
+@media (max-width:640px){
+  .grille{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .sommaire{flex-wrap:nowrap;overflow-x:auto;white-space:nowrap}
+  .mot .ici{font-size:15px}
+}
+textarea{width:100%;font:inherit;font-size:15px;padding:10px;border-radius:10px;border:1px solid var(--line-fort);
+  background:var(--card);color:var(--ink)}
+
+.doc.large{max-width:1100px}
+.obj li{margin:6px 0}
+.filtres{position:sticky;top:0;z-index:2;background:var(--ground);display:flex;flex-wrap:wrap;gap:6px;padding:10px 0;border-bottom:1px solid var(--line);margin:18px 0 8px}
+.filtres button,.choix button{font:inherit;font-size:14px;cursor:pointer;background:var(--sunken);color:var(--body);border:1px solid var(--line-fort);border-radius:9px;padding:6px 10px}
+.filtres button[aria-pressed=true]{background:var(--ink);color:var(--card);border-color:var(--ink)}
+.constat{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--line-fort);border-radius:12px;padding:12px 14px;margin:10px 0}
+.constat.bloquant{border-left-color:var(--loi)}
+.constat.majeur{border-left-color:var(--decid)}
+.constat.mineur{border-left-color:var(--acier)}
+.tete-c{display:flex;flex-wrap:wrap;gap:8px;align-items:baseline}
+.code{font-weight:900;font-size:16px;color:var(--ink)}
+.nomc{font-weight:700;color:var(--ink)}
+.grav{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.08em}
+.constat.bloquant .grav{color:var(--loi)} .constat.majeur .grav{color:var(--decid)} .constat.mineur .grav{color:var(--acier)}
+.src{font-size:12px;color:var(--muted);margin-left:auto}
+.lieu{margin:4px 0 0;font-size:14px;color:var(--muted)}
+.cst{margin:6px 0 0}
+.cor{margin:6px 0 0;font-size:15px}
+.choix{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.choix button[aria-pressed=true][data-v=corriger]{background:var(--loi-bg);border-color:var(--loi);color:var(--ink);font-weight:700}
+.choix button[aria-pressed=true][data-v=garder]{background:var(--fait-bg);border-color:var(--fait);color:var(--ink);font-weight:700}
+.choix button[aria-pressed=true][data-v=discuter]{background:var(--decid-bg);border-color:var(--decid);color:var(--ink);font-weight:700}
+</style>
+<style>
+  .doc{padding-top:26px}
+  .retour{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;
+    color:var(--muted);text-decoration:none;margin-bottom:34px}
+  .retour:hover{color:var(--acier)}
+  table.cmp{width:100%;border-collapse:collapse;font-size:15px;background:var(--card);
+    border:1px solid var(--line);border-radius:3px;overflow:hidden}
+  table.cmp th,table.cmp td{padding:13px 15px;text-align:left;vertical-align:top;
+    border-bottom:1px solid var(--line)}
+  table.cmp thead th{background:var(--sunken);font-size:12px;font-weight:800;
+    letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+  table.cmp tbody tr:last-child td{border-bottom:0}
+  table.cmp td:first-child{font-weight:700;color:var(--ink)}
+  .roule{overflow-x:auto}
+  .voie{background:var(--card);border:1px solid var(--line);border-radius:3px;
+    padding:24px 26px;display:flex;flex-direction:column;gap:11px}
+  .voie.oui{border-color:var(--fait);border-width:2px;padding:23px 25px}
+  .voie.non{border-left:5px solid var(--loi)}
+  .voie h3{font-size:19px;font-family:Newsreader,Georgia,serif;font-weight:600;margin:0}
+  .voie .cout{font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+  .verdict{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+    padding:3px 10px;border-radius:99px;align-self:flex-start}
+  .v-oui{background:var(--fait-bg);color:var(--fait)}
+  .v-peut{background:var(--decid-bg);color:var(--decid)}
+  .v-non{background:var(--loi-bg);color:var(--loi)}
+  .mes{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:2px;
+    background:var(--line);border:1px solid var(--line);border-radius:3px;overflow:hidden}
+  .mes div{background:var(--card);padding:16px 18px}
+  .mes b{display:block;font-family:Newsreader,Georgia,serif;font-size:27px;font-weight:500;
+    color:var(--ink);line-height:1.1}
+  .mes span{font-size:13px;color:var(--muted)}
+  .planche{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+  .planche figure{margin:0;background:var(--card);border:1px solid var(--line);
+    border-radius:3px;overflow:hidden;display:flex;flex-direction:column}
+  .planche figure.large{grid-column:1 / -1}
+  .planche img{display:block;width:100%;height:auto;background:var(--sunken)}
+  .planche figcaption{padding:13px 16px 15px;font-size:14px;line-height:1.5;color:var(--muted);
+    border-top:1px solid var(--line)}
+  .planche figcaption b{display:block;color:var(--ink);font-size:14.5px;margin-bottom:2px}
+  @media (max-width:620px){ .planche{grid-template-columns:1fr} }
+  .doc p a,.doc li a,.doc td a{color:var(--acier);text-decoration:underline;
+    text-underline-offset:2px;text-decoration-thickness:1px}
+  ul.src{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:7px;font-size:14.5px}
+  ul.src li{color:var(--muted)} ul.src .d{font-family:var(--mono);font-size:12.5px}
+  h3.sous{font-family:Newsreader,Georgia,serif;font-size:21px;font-weight:600;
+    letter-spacing:-.01em;color:var(--ink);margin:14px 0 0}
+  @media (max-width:640px){ .doc{padding-left:18px;padding-right:18px} }
+</style>
+</head>
+<body><div class="doc large">
+<a class="retour" href="/presentations.html#francoeur"><span aria-hidden="true">&#8592;</span> Le classeur</a>
+<p class="eyebrow">Maison Francœur &middot; boucle didactique &middot; tour 4</p>
+<h1>L'audit de la trousse</h1>
+<p class="chapeau">La trousse passée à la grille de la boucle didactique — 22 critères, sept familles — par deux
+regards qui n'avaient pas les intentions de l'auteur : l'un a lu le <b>contenu</b>, l'autre a <b>servi et joué
+la page</b> à 375 et à 1280 px. <strong>0 bloquant,
+5 majeurs, 32 mineurs.</strong>
+Sortie de boucle : zéro bloquant, zéro majeur. Tranchez chaque constat, puis exportez : l'export pilote la révision.</p>
+
+<div class="chiffres">
+  <div class="ch"><span class="n">0</span><span class="q">bloquants — l'objectif ne peut pas être atteint, ou on enseigne le mauvais geste</span></div>
+  <div class="ch"><span class="n">5</span><span class="q">majeurs — atteint par une minorité, ou ne tiendra pas une semaine</span></div>
+  <div class="ch"><span class="n">32</span><span class="q">mineurs — friction, consignés</span></div>
+  <div class="ch"><span class="n">A3</span><span class="q">le critère le plus touché — A3 (6), F1 (6), E1 (5), D4 (5), C5 (3)</span></div>
+</div>
+
+<section class="premier"><h2>Les objectifs contre lesquels on juge</h2>
+<p>La trousse n'avait pas d'objectifs observables écrits : ils ont été posés pour l'audit, dans
+<code>build/contenu/entreprise-francoeur/boucle/cadrage.md</code>.</p><ul class="obj"><li><b>O1 — Reconnaître l&#x27;article..</b> Devant un mot du plancher dit à voix haute
+  (mot d&#x27;ici, pièges compris), désigner l&#x27;article correspondant parmi des
+  articles du même rayon, sans traduction, 8 fois sur 10.</li><li><b>O2 — Comprendre la demande..</b> Devant une demande de client dite à débit
+  réel (article + couleur + taille, parfois avec une reprise ou une négation),
+  choisir l&#x27;article exact, au premier essai, 7 fois sur 10.</li><li><b>O3 — Faire répéter, faire préciser..</b> Quand il n&#x27;a pas compris, dire
+  une phrase qui fait répéter ou préciser UNE chose (« Un instant, s&#x27;il vous
+  plaît », « Quelle taille ? ») au lieu de deviner — à chaque visite où
+  c&#x27;est nécessaire.</li><li><b>O4 — Vérifier et passer le relais..</b> Devant ce qu&#x27;il ne peut garantir ou
+  décider, dire qu&#x27;il vérifie ou qu&#x27;il va chercher la gérante, en une
+  phrase, sans promettre — dans chaque visite qui l&#x27;exige.</li><li><b>O5 — Comprendre une consigne..</b> Devant une consigne courte de la gérante
+  dite à débit normal, désigner l&#x27;objet ou le lieu visé, 7 fois sur 10.</li></ul></section>
+
+<nav class="filtres" aria-label="Filtrer les constats"><button type="button" data-fg="tout" aria-pressed="true">Tout</button><button type="button" data-fg="bloquant" aria-pressed="false">Bloquants · 0</button><button type="button" data-fg="majeur" aria-pressed="false">Majeurs · 5</button><button type="button" data-fg="mineur" aria-pressed="false">Mineurs · 32</button><button type="button" data-ff="A" aria-pressed="false">A · Alignement</button><button type="button" data-ff="C" aria-pressed="false">C · Charge cognitive</button><button type="button" data-ff="D" aria-pressed="false">D · Pratique</button><button type="button" data-ff="E" aria-pressed="false">E · Rétroaction</button><button type="button" data-ff="F" aria-pressed="false">F · Transfert</button><button type="button" data-ff="G" aria-pressed="false">G · Accès</button></nav>
+<section class="liste-c"><article class="constat majeur" data-id="t4-01" data-g="majeur" data-f="A"><div class="tete-c"><span class="code">A3</span><span class="nomc">Alignement constructif</span><span class="grav">majeur</span><span class="src">contenu</span></div><p class="lieu">fiche.py PHRASES[&#x27;relais&#x27;] (fiche de poche imprimée et écran « Ma fiche de poche ») ; fiche.py REGLE_RELAIS (imprimée seulement dans francoeur-guide-formateur.html) ; modeles.py r10 ; test.py C c34 ; clients.py BILAN</p><p class="cst">Trois formulations de la même règle, qui ne donnent pas le même verdict. La fiche dit « Un retour, une plainte, de l&#x27;argent (un dépôt), une exception : la gérante ». Le guide dit que la règle est « la même partout » et cite REGLE_RELAIS, qui ne parle ni de retour ni de plainte : « Argent, remboursement, exception : la gérante ». Le bilan du serveur liste « argent, dépôt, remboursement, exception », sans plainte ni retour. Or r10 (« Je voudrais l&#x27;échanger pour un moyen. J&#x27;ai mon reçu. ») note FAUX le choix « Je vais chercher la gérante » (« inutile de déranger la gérante »), et c34 au test fait envoyer un retour « à la caisse ». Un employé qui applique la fiche à la lettre (« un retour : la gérante ») échoue à r10. Le texte de REGLE_RELAIS, lui, n&#x27;est ni sur la fiche ni à l&#x27;écran.</p><p class="cor"><b>Correctif :</b> Écrire UNE règle qui couvre retour avec reçu, retour ou remboursement sans reçu, plainte, dépôt, mise de côté sans argent (par ex. « Avec le reçu : la caisse. Sans reçu, argent, plainte, exception : la gérante. Mise de côté sans argent : vous. »). Imprimer ce texte à la fois sur la fiche, dans quand_relais, dans le guide et dans BILAN, puis vérifier r05, r08, r10, r11, r12, c34, d4, d8, et les clients Lavoie et Pelletier un par un contre cette règle.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat majeur" data-id="t4-02" data-g="majeur" data-f="E"><div class="tete-c"><span class="code">E1</span><span class="nomc">Rétroaction explicative</span><span class="grav">majeur</span><span class="src">contenu</span></div><p class="lieu">build/francoeur_planches.py, pourquoiFaux() pour J.k === &#x27;client&#x27; (exercice 5 « Ce que le client veut »)</p><p class="cst">Après un premier choix faux, la rétroaction dit, pour CHAQUE trait, s&#x27;il est bon ou mauvais (« Bon article · pas la bonne couleur · bonne taille »). Comme les quatre cartes sont en carré latin, chaque carte fausse a une combinaison unique, donc la rétroaction désigne une seule carte. Vérifié par programme sur les 28 demandes : 84 choix faux sur 84 laissent une seule carte compatible, la bonne. Le deuxième essai devient une déduction sans réécoute : c&#x27;est la réponse donnée au premier essai, contre la règle du dépôt (« Réponse après deux essais »).</p><p class="cor"><b>Correctif :</b> Au premier essai faux, nommer seulement le trait faux choisi (« pas la bonne couleur ») sans confirmer les autres, relancer l&#x27;audio et proposer « Plus lentement ». Mieux : dire QUEL mot réécouter (« Écoutez la couleur ») sans dire si l&#x27;article et la taille étaient bons. Vérifier par programme qu&#x27;après la rétroaction il reste au moins deux cartes compatibles.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat majeur" data-id="t4-03" data-g="majeur" data-f="E"><div class="tete-c"><span class="code">E1</span><span class="nomc">Rétroaction explicative</span><span class="grav">majeur</span><span class="src">page</span></div><p class="lieu">Exercice 5 « Ce que le client veut », premier choix faux</p><p class="cst">La rétroaction par trait (« Pas le bon article · bonne couleur · bonne taille ») laisse une seule carte compatible dans 84 cas sur 84 (28 demandes × 3 choix faux, vérifié par programme) : au premier envoi faux, la réponse se déduit sans réécouter. Joué : d23, premier faux → le second essai se trouve par élimination.</p><p class="cor"><b>Correctif :</b> Au premier faux, ne rien trancher sur les traits : « Ça, c&#x27;est : une jupe · noir · L. Réécoutez l&#x27;article. » (nommer UN trait à réécouter, sans dire les autres justes) ; donner la comparaison trait par trait seulement après le second essai, avec la phrase marquée.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat majeur" data-id="t4-04" data-g="majeur" data-f="F"><div class="tete-c"><span class="code">F1</span><span class="nomc">Évaluation alignée</span><span class="grav">majeur</span><span class="src">contenu</span></div><p class="lieu">test.py C c21 ; C2 k21, k24 ; contrôle autre_nomme() dans francoeur_planches.py partie_c</p><p class="cst">Le contrôle du build (« au cran 2, un autre objet nommé figure parmi les choix ») passe sur ces items, mais l&#x27;objet nommé est aussi écrit dans la QUESTION affichée, ce qui l&#x27;écarte d&#x27;office : c21 « Où faut-il mettre les jeans ? » (distracteur jeans), k21 « Qu&#x27;est-ce qu&#x27;il faut mettre sur le présentoir ? » (distracteur présentoir), k24 « … sur les manteaux ? » (distracteur manteau). Il reste alors un seul objet de la consigne parmi les choix : on réussit en reconnaissant un mot, comme au cran 1. Au cran 2, celui qui valide O5, la forme 1 en compte 1 sur 4 et la forme 2 (la passation d&#x27;après la formation) 2 sur 4. Les formes ne sont pas parallèles, et le gain en C est gonflé d&#x27;avance. L&#x27;exercice 6 a la même faille (g03, g08, g15) : 8 consignes réellement discriminantes sur 16, alors que le build en compte 11.</p><p class="cor"><b>Correctif :</b> Dans autre_nomme(), ignorer un distracteur nommé si nomme_dans() le trouve aussi dans la question. Réécrire c21, k21, k24 (ou leur question) pour qu&#x27;un autre objet de la consigne reste un choix plausible, et équilibrer les deux formes au cran 2 (même nombre d&#x27;items où l&#x27;on doit trier deux objets entendus).</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat majeur" data-id="t4-05" data-g="majeur" data-f="F"><div class="tete-c"><span class="code">F1</span><span class="nomc">Évaluation alignée</span><span class="grav">majeur</span><span class="src">page</span></div><p class="lieu">Test « Mon niveau », partie D (oral) et écran « Pour le formateur »</p><p class="cst">Les réponses orales ne vivent qu&#x27;en mémoire (URL blob) et la grille du formateur n&#x27;existe que sur l&#x27;écran de résultat : dès qu&#x27;on touche Accueil, « Aller au magasin » ou « Refaire le test », elles sont perdues et « Mon niveau » n&#x27;affiche plus que « Dernier résultat ». Rien, avant ou pendant la partie D, ne dit à l&#x27;employé d&#x27;appeler le formateur. En libre-service, O3 et O4 ne sont donc pas évalués, sans que personne le sache.</p><p class="cor"><b>Correctif :</b> Annoncer en tête de la partie D que le formateur écoutera les réponses ; rouvrir la grille depuis « Mon niveau » (dernière passation non notée) ; garder les enregistrements sur l&#x27;appareil (IndexedDB) jusqu&#x27;à la notation ; signaler « oral non noté » dans le résultat.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t4-06" data-g="mineur" data-f="A"><div class="tete-c"><span class="code">A1</span><span class="nomc">Objectif observable</span><span class="grav">mineur</span><span class="src">contenu</span></div><p class="lieu">francoeur_planches.py SEUIL = {O3: 6} et EXOS reponse → O3 ; francoeur-guide-formateur.html, O3 et O4 « chaque fois »</p><p class="cst">L&#x27;écran juge « Ce que je réponds » contre un seuil de 6 sur 8 étiqueté O3, alors que le guide ne donne pour O3 et O4 que « chaque fois ». Et 5 items sur 12 (r05, r08, r10, r11, r12) portent sur O4 (le relais), pas sur O3.</p><p class="cor"><b>Correctif :</b> Afficher le seuil 6/8 dans le guide pour l&#x27;exercice 7, et l&#x27;étiqueter O3-O4.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t4-07" data-g="mineur" data-f="A"><div class="tete-c"><span class="code">A2</span><span class="nomc">Écart de performance réel</span><span class="grav">mineur</span><span class="src">contenu</span></div><p class="lieu">clients.py scenario_serveur()[&#x27;longueur&#x27;] contre PALIERS_JEU[&#x27;aise&#x27;]</p><p class="cst">La consigne commune dit « ne dépasse jamais deux phrases », et le palier « à l&#x27;aise », ajouté à la fin, demande « deux ou trois phrases, parfois deux demandes dans la même phrase ». Le modèle reçoit deux ordres contraires ; madame Roy (« tu enchaînes les demandes ») y est la plus exposée.</p><p class="cor"><b>Correctif :</b> Mettre la longueur uniquement dans le palier, ou aligner les deux sur « deux phrases au plus ».</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t4-08" data-g="mineur" data-f="A"><div class="tete-c"><span class="code">A3</span><span class="nomc">Alignement constructif</span><span class="grav">mineur</span><span class="src">contenu</span></div><p class="lieu">clients.py, client « retour » (Monsieur Lavoie), faits</p><p class="cst">Lavoie « accepte la solution si le vendeur te l&#x27;explique clairement, ou s&#x27;il va chercher la gérante ». La politique (échange ou note de crédit, pas de remboursement) n&#x27;est enseignée nulle part. Surtout, le client récompense un vendeur qui règle lui-même un remboursement sans reçu, alors que la règle et le bilan exigent le relais. Le client peut repartir content pendant que le bilan marque « Passer le relais : à faire ».</p><p class="cor"><b>Correctif :</b> Garder une seule issue satisfaisante : le vendeur va chercher la gérante (ou dit qu&#x27;il la demande). Retirer « si le vendeur te l&#x27;explique clairement ».</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t4-09" data-g="mineur" data-f="A"><div class="tete-c"><span class="code">A3</span><span class="nomc">Alignement constructif</span><span class="grav">mineur</span><span class="src">contenu</span></div><p class="lieu">francoeur-guide-formateur.html, séance type (« un rayon par séance ») ; cadrage (2 à 4 séances) ; test.py A</p><p class="cst">Avec 2 à 4 séances et un rayon par séance, on encadre au plus 4 des 11 rayons. Le test repassé à la dernière séance tire ses mots dans au moins 7 rayons (hauts, bas, robes, extérieur, dessous, chaussures, accessoires). L&#x27;écart entre les deux passations mêle ce qui a été enseigné et ce qui ne l&#x27;a pas été.</p><p class="cor"><b>Correctif :</b> Dire dans le guide quels rayons couvrir en séance (ceux du test et des demandes : hauts, bas, extérieur, puis la série des pièges), et renvoyer les autres au libre-service avant le second test.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t4-10" data-g="mineur" data-f="A"><div class="tete-c"><span class="code">A3</span><span class="nomc">Alignement constructif</span><span class="grav">mineur</span><span class="src">contenu</span></div><p class="lieu">francoeur_planches.py lancer() pour la série des pièges (J.k = &#x27;ecoute&#x27;, zone &#x27;ex-ecoute-&lt;id&gt;&#x27;) ; « Je me souviens » (ok déclaré, essais 0)</p><p class="cst">Au portail, la série des pièges et « Je l&#x27;entends » écrivent dans la même zone (ex-ecoute-veste…), alors que les choix diffèrent (contrastes écrits à la main d&#x27;un côté, même rayon de l&#x27;autre) : le diagnostic d&#x27;item les confond. « Je me souviens » est auto-déclaré mais remonte comme une réussite au premier coup (essais 0), ce qui gonfle le taux lu par le pilote.</p><p class="cor"><b>Correctif :</b> Donner à la série des pièges son propre préfixe de zone (ex-pieges-&lt;id&gt;), et envoyer « Je me souviens » avec un type distinct que le direct n&#x27;additionne pas aux réponses fermées.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t4-11" data-g="mineur" data-f="A"><div class="tete-c"><span class="code">A3</span><span class="nomc">Alignement constructif</span><span class="grav">mineur</span><span class="src">contenu</span></div><p class="lieu">francoeur_planches.py EXOS {k:&#x27;rayon&#x27;, o:&#x27;O1&#x27;} (« Range le rayon »)</p><p class="cst">L&#x27;exercice montre l&#x27;image et le mot écrit, fait entendre le mot, puis demande le rayon. Il ne pratique pas O1 (désigner l&#x27;article à partir du mot entendu), mais son bilan est jugé contre le seuil d&#x27;O1 (7 sur 8).</p><p class="cor"><b>Correctif :</b> Le rattacher à la tâche qu&#x27;il sert (orienter un client : « Où sont les robes ? ») sans le seuil d&#x27;O1, ou le transformer : entendre le mot sans le lire, puis toucher le rayon.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t4-12" data-g="mineur" data-f="A"><div class="tete-c"><span class="code">A3</span><span class="nomc">Alignement constructif</span><span class="grav">mineur</span><span class="src">page</span></div><p class="lieu">Test, envoi au portail</p><p class="cst">Chaque réponse du test remonte (choix compris), mais ni le palier proposé ni le palier confirmé par le formateur ne remontent (aucun événement de fin de test) : au portail, le formateur ne voit pas le niveau décidé.</p><p class="cor"><b>Correctif :</b> Envoyer un événement de fin de test (forme, crans A/B/C, palier proposé, palier confirmé).</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t4-13" data-g="mineur" data-f="C"><div class="tete-c"><span class="code">C3</span><span class="nomc">Contiguïté et signalisation</span><span class="grav">mineur</span><span class="src">page</span></div><p class="lieu">Planche « Tailles et coupes »</p><p class="cst">Neuf articles sans image affichent deux lettres tirées du mot : « TR » six fois (très petit, très grand, trop serré, trop grand, trop long, trop court), « PE », « MO », « GR ». Ces lettres ne correspondent pas aux étiquettes S / M / L / XL que portent les cartes de l&#x27;exercice du client et du test (« MO » contre « M »).</p><p class="cor"><b>Correctif :</b> Montrer l&#x27;étiquette réelle (XS, S, M, L, XL) pour les tailles ; un petit croquis (manche trop longue, taille trop serrée) pour les « trop … ».</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t4-14" data-g="mineur" data-f="C"><div class="tete-c"><span class="code">C5</span><span class="nomc">Langage clair</span><span class="grav">mineur</span><span class="src">contenu</span></div><p class="lieu">traductions.json, mots : tg / trop-grand (ar, fa, ur, ti) ; ur tp / trop-court ; zh chapeau / capuchon ; ur veston / manteau ; champ relu = false dans les 11 langues</p><p class="cst">Plusieurs mots différents ont la même traduction. « Très grand » (XL) et « trop grand » sont confondus en arabe, en persan, en ourdou et en tigrigna, alors que très/trop est justement une confusion du plancher. En ourdou, « trop court » est traduit « très petit ». En chinois, chapeau et capuchon donnent tous deux 帽子 ; en ourdou, veston et manteau donnent tous deux « coat ». Aucune des 11 langues n&#x27;est relue. Dans l&#x27;échantillon lu (es, pt, ro, ru, uk, zh, ar), les notes de piège, « Ce que je réponds » (rm_/rx_) et la fiche (quand_relais) disent la même chose que le français.</p><p class="cor"><b>Correctif :</b> Corriger ces paires, ajouter au build un contrôle « deux id, une même traduction » par langue, et faire relire en priorité les langues du groupe pilote.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t4-15" data-g="mineur" data-f="C"><div class="tete-c"><span class="code">C5</span><span class="nomc">Langage clair</span><span class="grav">mineur</span><span class="src">page</span></div><p class="lieu">Notes de piège (fiche, exercices, série)</p><p class="cst">Le préfixe « PIÈGE : » est retiré et rien ne le remplace : la note commence par une minuscule sans étiquette (« en France, une mitaine laisse les doigts à nu. »), y compris après « Bien joué ! ». La clé FR.piege (« Attention ») n&#x27;est jamais affichée.</p><p class="cor"><b>Correctif :</b> Afficher l&#x27;étiquette « Attention : » (et sa traduction) devant la note, avec une majuscule.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t4-16" data-g="mineur" data-f="C"><div class="tete-c"><span class="code">C5</span><span class="nomc">Langage clair</span><span class="grav">mineur</span><span class="src">page</span></div><p class="lieu">Test, écran « Votre résultat »</p><p class="cst">Chaque partie affiche « 2 / 3 » à côté de « 6 réussis sur 8 », sans dire que « 2 / 3 » est le cran validé : deux nombres qui se contredisent en apparence pour un lecteur de niveau 1-3.</p><p class="cor"><b>Correctif :</b> Remplacer « 2 / 3 » par « Niveau 2 sur 3 » ou par la jauge seule.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t4-17" data-g="mineur" data-f="D"><div class="tete-c"><span class="code">D2</span><span class="nomc">Fidélité à la situation</span><span class="grav">mineur</span><span class="src">contenu</span></div><p class="lieu">clients.py, client « cabine » (Monsieur Diallo)</p><p class="cst">Le client parle en tailles numériques de pantalon (« tu portais du 32, il te faut du 34 »), un système que la trousse n&#x27;enseigne nulle part : les planches, les cartes et le test n&#x27;ont que TP-P-M-G-TG et XS-XL. Ce client est pourtant ouvert au palier débutant.</p><p class="cor"><b>Correctif :</b> Soit ajouter les tailles numériques des pantalons au rayon « Tailles », soit faire dire au client « du moyen, il me faut du grand » au palier débutant.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t4-18" data-g="mineur" data-f="D"><div class="tete-c"><span class="code">D2</span><span class="nomc">Fidélité à la situation</span><span class="grav">mineur</span><span class="src">page</span></div><p class="lieu">Magasin sans test : liste des clients</p><p class="cst">Sans résultat de test, les huit clients s&#x27;affichent, dont Mme Pelletier (prévue « À l&#x27;aise » seulement) et Mme Roy / Mme Tremblay (Fonctionnel et plus) ; toucher un client fixe alors le palier « debutant » sans le dire. La cliente est jouée à un palier pour lequel elle n&#x27;est pas prévue.</p><p class="cor"><b>Correctif :</b> Filtrer sur « Débutant » par défaut (comme le palier imposé), ou exiger le choix du niveau avant la liste.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t4-19" data-g="mineur" data-f="D"><div class="tete-c"><span class="code">D3</span><span class="nomc">Variété et entrelacement</span><span class="grav">mineur</span><span class="src">contenu</span></div><p class="lieu">pieges.py (&#x27;jaquette&#x27;, [&#x27;pyjama&#x27;, &#x27;blouse&#x27;, &#x27;robe-soiree&#x27;]) ; test.py A_CRAN3 (&#x27;jaquette&#x27;, [&#x27;veston&#x27;, …])</p><p class="cst">La note du piège dit « en France, une jaquette est un veston long ». Le test (forme 1, cran 3) met « veston » face à « jaquette », mais aucune pratique ne les met côte à côte : la série des pièges n&#x27;oppose la jaquette qu&#x27;à pyjama, blouse et robe de soirée, et « Je l&#x27;entends » ne tire que dans le même rayon (dessous ; le veston est dans « robes »). Le faux ami décisif paraît pour la première fois à l&#x27;évaluation. Les autres pièges du test (bas, mitaines, veste, sacoche, espadrilles) ont leur contraste pratiqué.</p><p class="cor"><b>Correctif :</b> Remplacer un contraste de la jaquette dans pieges.py par « veston ». Le test reste inédit par ses autres distracteurs.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t4-20" data-g="mineur" data-f="D"><div class="tete-c"><span class="code">D3</span><span class="nomc">Variété et entrelacement</span><span class="grav">mineur</span><span class="src">page</span></div><p class="lieu">Bilan de « La série des pièges »</p><p class="cst">Le bilan porte le titre « Je l&#x27;entends, je le trouve » et, sous « Pas encore : refaites une série », le bouton « Une autre série » lance une série ORDINAIRE (lancer(&#x27;ecoute&#x27;) sans le filtre des pièges). « Ensuite » mène à « Le mot et son image ».</p><p class="cor"><b>Correctif :</b> Garder le mode pièges dans J (J.titre et le filtre) pour le titre du bilan et pour « Une autre série ».</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t4-21" data-g="mineur" data-f="D"><div class="tete-c"><span class="code">D4</span><span class="nomc">Distracteurs plausibles</span><span class="grav">mineur</span><span class="src">contenu</span></div><p class="lieu">francoeur_planches.py question(), J.k === &#x27;image&#x27; (« Le mot et son image »)</p><p class="cst">Les deux mots distracteurs viennent du même rayon SANS l&#x27;exclusion par la tête du nom ni la vérification des notes que « Je l&#x27;entends » et le test ont reçues. Voici des réponses défendables marquées fausses : l&#x27;image du t-shirt, du coton ouaté, du col roulé ou du kangourou avec « un chandail » (la note dit que le client dit « chandail » pour tout haut à manches, t-shirt compris) ; le kangourou avec « un coton ouaté » (sa note) ; le cargo, le jogging ou le pantalon habillé avec « un pantalon » ; la robe de soirée avec « une robe » ; le manteau en duvet avec « un manteau » ; les souliers à talons avec « des souliers ». Environ 2 à 3 tirages défendables sur les 123 items. Aux pastilles de couleur, les choix peuvent aussi être des matières (« le coton », « la laine »), ce qui donne des distracteurs absurdes.</p><p class="cor"><b>Correctif :</b> Appliquer à « image » le filtre tete_() et le contrôle par les notes déjà écrits pour le test ; pour les couleurs, tirer les distracteurs parmi les couleurs et motifs seulement.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t4-22" data-g="mineur" data-f="D"><div class="tete-c"><span class="code">D4</span><span class="nomc">Distracteurs plausibles</span><span class="grav">mineur</span><span class="src">contenu</span></div><p class="lieu">francoeur_planches.py question(), J.k === &#x27;ecoute&#x27;, branche « sans image » ; lexique &#x27;sous-vetements&#x27;</p><p class="cst">« Des sous-vêtements » est le seul mot sans image de son rayon (dessous). La branche « sans image » ne trouve aucun autre choix écrit, et l&#x27;item s&#x27;affiche avec UNE seule option, réussie d&#x27;office (vérifié par programme ; c&#x27;est le seul cas).</p><p class="cor"><b>Correctif :</b> Compléter avec des mots écrits d&#x27;autres rayons, ou exclure ce mot de l&#x27;exercice 1.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t4-23" data-g="mineur" data-f="D"><div class="tete-c"><span class="code">D4</span><span class="nomc">Distracteurs plausibles</span><span class="grav">mineur</span><span class="src">contenu</span></div><p class="lieu">francoeur_planches.py variantes() : demande d11 ; test B b24</p><p class="cst">L&#x27;article distracteur est tiré dans le rayon sans vérifier qu&#x27;il se vend en tailles. Deux cartes portent alors une taille absurde : d11 « cache-oreilles » en L et en M, et b24 « cravate » en S et en XS. Ces cartes s&#x27;éliminent sans écouter : il reste une chance sur deux.</p><p class="cor"><b>Correctif :</b> Quand la demande a une taille, tirer l&#x27;article voisin parmi les articles qui en ont une (exclure tuque, foulard, mitaines, gants, cravate, nœud papillon, cache-oreilles, accessoires).</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t4-24" data-g="mineur" data-f="D"><div class="tete-c"><span class="code">D4</span><span class="nomc">Distracteurs plausibles</span><span class="grav">mineur</span><span class="src">page</span></div><p class="lieu">Exercice 7 « Ce que je réponds », r04 contre r09</p><p class="cst">r04 (« Je voudrais la même affaire en plus grand ») exige « Pouvez-vous répéter plus lentement ? » ; r09 (« Le même chandail, en moyen ») déclare cette même phrase fautive parce que le client « a parlé clairement ». La différence ne tient qu&#x27;au débit (57 car. en 2,30 s contre 44 car. en 2,17 s), et r04 n&#x27;offre aucune option « redire puis vérifier » : l&#x27;employé qui a bien compris est forcé de faire répéter.</p><p class="cor"><b>Correctif :</b> Rendre r04 franchement incompréhensible (débit, bruit) ou changer sa bonne réponse en « Faire préciser » (« la même affaire » est vague), et ajouter l&#x27;option « La même, en plus grand. Je vais vérifier. ».</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t4-25" data-g="mineur" data-f="D"><div class="tete-c"><span class="code">D4</span><span class="nomc">Distracteurs plausibles</span><span class="grav">mineur</span><span class="src">page</span></div><p class="lieu">Série des pièges, choix de contraste</p><p class="cst">Pour « une jaquette » (piège : en France, un veston long), les autres choix sont pyjama, blouse, robe de soirée ; pour « une sacoche », ceinture, portefeuille, chapeau. Aucun distracteur ne représente le sens qu&#x27;on confond, le piège ne se joue donc pas.</p><p class="cor"><b>Correctif :</b> Mettre dans les contrastes l&#x27;article du sens trompeur (un veston pour jaquette, un sac à dos ou une besace pour sacoche).</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t4-26" data-g="mineur" data-f="E"><div class="tete-c"><span class="code">E1</span><span class="nomc">Rétroaction explicative</span><span class="grav">mineur</span><span class="src">contenu</span></div><p class="lieu">francoeur_planches.py bilanMagasin() : FR.geste_fait / geste_manque / geste_inutile, nomGeste(), g.conseil</p><p class="cst">Le bilan par geste, qui est la rétroaction principale du magasin, s&#x27;affiche uniquement en français : les noms des gestes, les états et le conseil. Pourtant les traductions des gestes existent (mg_m1 à mg_m5). Au palier débutant (niveaux 1-2), l&#x27;employé ne lit pas ce qu&#x27;il devait faire.</p><p class="cor"><b>Correctif :</b> Passer les états par T() avec la langue d&#x27;appui dessous, reprendre mg_* pour le nom du geste, et garder en français la phrase à dire.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t4-27" data-g="mineur" data-f="E"><div class="tete-c"><span class="code">E1</span><span class="nomc">Rétroaction explicative</span><span class="grav">mineur</span><span class="src">contenu</span></div><p class="lieu">francoeur_planches.py phraseMarquee() (exercices 5 et 6) ; demandes d22</p><p class="cst">Au deuxième échec, la transcription marque les mots décisifs à l&#x27;exercice 5 seulement. À l&#x27;exercice 6 (la gérante), rien n&#x27;est marqué, ni « pas », ni « en dernier », ni l&#x27;objet visé (g10, g12, g16). À d22, la bonne taille (moyen) ne figure pas dans la phrase (« une taille plus grande » que petit) : rien ne la marque et rien ne l&#x27;explique.</p><p class="cor"><b>Correctif :</b> Ajouter à chaque consigne et à chaque demande à comparatif un champ « ce qui décide » (mot ou segment), marqué dans la transcription, avec une ligne d&#x27;explication (« petit → une taille plus grande = moyen »).</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t4-28" data-g="mineur" data-f="E"><div class="tete-c"><span class="code">E1</span><span class="nomc">Rétroaction explicative</span><span class="grav">mineur</span><span class="src">page</span></div><p class="lieu">Série des pièges, item « une culotte » ; fiche « moyen »</p><p class="cst">« culotte » figure dans D.pieges mais n&#x27;a pas de note de piège (piege:false) : la bonne réponse donne « Bien joué ! » sans rien expliquer. À l&#x27;inverse, « moyen » est marqué piège mais n&#x27;entre jamais dans la série.</p><p class="cor"><b>Correctif :</b> Écrire la note de piège de « culotte » (ou la retirer de la série) ; ajouter « moyen / medium » à la série ou lui retirer le statut de piège.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t4-29" data-g="mineur" data-f="E"><div class="tete-c"><span class="code">E2</span><span class="nomc">Conséquence visible</span><span class="grav">mineur</span><span class="src">contenu</span></div><p class="lieu">francoeur_planches.py bilanMagasin() (issue = S.humeur === &#x27;contente&#x27;) ; francoeur-pilote.html, règle « Un client que personne ne fait repartir content »</p><p class="cst">L&#x27;issue affichée et rapportée au portail (ok) ne dépend que de la dernière étiquette d&#x27;humeur. Dans une visite réussie qui finit par « la gérante arrive » (Pelletier, Lavoie), ou quand l&#x27;employé touche « Fini », le client peut rester [neutre] : l&#x27;écran dit alors « est reparti sans être satisfait », et le pilote conclut que le client est trop dur.</p><p class="cor"><b>Correctif :</b> Tirer l&#x27;issue du bilan par geste (tous les gestes nécessaires faits), ou demander au modèle une issue explicite avec FIN ; ne pas lire « neutre » comme un échec.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t4-30" data-g="mineur" data-f="F"><div class="tete-c"><span class="code">F1</span><span class="nomc">Évaluation alignée</span><span class="grav">mineur</span><span class="src">contenu</span></div><p class="lieu">test.py A_CRAN3 / A2_CRAN3 ; francoeur_planches.py itemSuivant() (tirage au hasard dans le cran)</p><p class="cst">O1 et le seuil disent « cran 3, pièges compris ». Or les 6 items du cran 3 (3 pièges, 3 items de discrimination fine) sont tirés au hasard, et trois bonnes réponses valident le cran. On peut donc valider O1 sans avoir rencontré un seul piège (au moins 1 chance sur 20), ou en n&#x27;en rencontrant qu&#x27;un.</p><p class="cor"><b>Correctif :</b> Au cran 3, présenter les pièges d&#x27;abord (ou alterner piège et item fin), et exiger au moins un piège réussi pour valider le cran.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t4-31" data-g="mineur" data-f="F"><div class="tete-c"><span class="code">F1</span><span class="nomc">Évaluation alignée</span><span class="grav">mineur</span><span class="src">contenu</span></div><p class="lieu">test.py D (forme 1) : d3, d4 ; francoeur-guide-formateur.html, rappel J+30</p><p class="cst">La forme 1 de la partie orale reprend presque mot pour mot les modèles et les réponses pratiquées : d3 (« ce manteau-là en moyen ») reprend m3, r03 et la phrase 4 de la fiche ; d4 (« me faire rembourser… pas mon reçu ») reprend m5 et r05. Le guide fait repasser la forme 1 à J+30 et la compare à la première passation : à l&#x27;oral, cette comparaison mesure le souvenir des modèles.</p><p class="cor"><b>Correctif :</b> Écrire des situations neuves pour d3 et d4, comme pour D2 (autre article, autre raison), ou écarter la partie D de la comparaison à J+30.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t4-32" data-g="mineur" data-f="F"><div class="tete-c"><span class="code">F1</span><span class="nomc">Évaluation alignée</span><span class="grav">mineur</span><span class="src">page</span></div><p class="lieu">Test, « Pour le formateur »</p><p class="cst">Le code du formateur (2413) est écrit en clair dans la page (D.test.code_formateur) et le même pour tous : un employé peut ouvrir la grille et se noter lui-même.</p><p class="cor"><b>Correctif :</b> Faire valider le code par le serveur, ou dériver un code par groupe fourni par le portail.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t4-33" data-g="mineur" data-f="F"><div class="tete-c"><span class="code">F1</span><span class="nomc">Évaluation alignée</span><span class="grav">mineur</span><span class="src">page</span></div><p class="lieu">Test, notation orale envoyée au portail</p><p class="cst">« A deviné ou promis » et « Pas de réponse » remontent tous deux ok:false sans autre champ : au portail, on ne distingue pas l&#x27;employé qui promet de celui qui se tait, alors que ce sont deux écarts différents (O4 contre O3).</p><p class="cor"><b>Correctif :</b> Mettre la valeur choisie dans « reponse » (0, 1 ou 2, ou le libellé).</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t4-34" data-g="mineur" data-f="F"><div class="tete-c"><span class="code">F2</span><span class="nomc">Soutien au travail</span><span class="grav">mineur</span><span class="src">contenu</span></div><p class="lieu">francoeur_fiche.py, tableau « Les mots qui piègent » (fiche-*.html), ligne « la taille »</p><p class="cst">Le piège, c&#x27;est le double sens de « la taille » (la ceinture ET la grandeur). La fiche française n&#x27;imprime que « la taille », sans rien à côté, et les fiches traduites donnent un seul sens (es « cintura », etc.). Sur la même fiche, la phrase 3 dit « Quelle taille ? » au sens de la grandeur : l&#x27;aide-mémoire enseigne la moitié du piège, et la contredit. La ligne « moyen / M » ne dit pas non plus que le piège est « medium ».</p><p class="cor"><b>Correctif :</b> Pour les pièges sans « autre », imprimer la note courte (« aussi : la grandeur ») et sa traduction, pas seulement le mot.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t4-35" data-g="mineur" data-f="G"><div class="tete-c"><span class="code">G1</span><span class="nomc">Accessibilité</span><span class="grav">mineur</span><span class="src">page</span></div><p class="lieu">Planches, cartes des articles pièges</p><p class="cst">Sur la planche, un piège n&#x27;est signalé que par un filet orange en haut de la carte (box-shadow) : aucune icône ni mot. Mesuré sur L&#x27;extérieur (mitaines) et Tailles (moyen).</p><p class="cor"><b>Correctif :</b> Ajouter un repère de forme (pastille « ! » ou le mot « Attention ») en plus de la couleur.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t4-36" data-g="mineur" data-f="G"><div class="tete-c"><span class="code">G1</span><span class="nomc">Accessibilité</span><span class="grav">mineur</span><span class="src">page</span></div><p class="lieu">Magasin, écran du code d&#x27;accès</p><p class="cst">Le code saisi n&#x27;est pas vérifié à l&#x27;entrée : « mauvais » ouvre la liste des clients ; le refus (« Ce code n&#x27;est pas reconnu. ») n&#x27;arrive qu&#x27;une fois dans la visite, et il faut revenir en arrière pour ressaisir.</p><p class="cor"><b>Correctif :</b> Vérifier le code en touchant « Entrer » et afficher l&#x27;erreur sur le même écran.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t4-37" data-g="mineur" data-f="G"><div class="tete-c"><span class="code">G1</span><span class="nomc">Accessibilité</span><span class="grav">mineur</span><span class="src">page</span></div><p class="lieu">Magasin, visite terminée (FIN) et « Mes phrases »</p><p class="cst">Après la dernière réplique, le champ, « Parler » (rouge) et « Envoyer » (vert) sont désactivés mais gardent leurs couleurs pleines (aucun style [disabled]) ; le résumé repliable « Mes phrases » a display:flex, ce qui retire le triangle : rien n&#x27;indique qu&#x27;il s&#x27;ouvre.</p><p class="cor"><b>Correctif :</b> Griser les boutons désactivés ; ajouter un chevron au summary.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article></section>
+
+<p style="margin-top:1.4rem"><button type="button" class="btn-export" id="exporter">Exporter mes décisions</button>
+<span id="etat" class="etat"></span></p>
+<div class="pied"><p>Ce que la boucle ne vérifie pas : l'exactitude du contenu (un locuteur et un commerçant doivent
+valider), l'essai auprès de vrais employés (le pilote), l'effet au travail (des semaines après). Page produite par
+<code>build/francoeur_audit_page.py</code> — ne pas l'éditer.</p></div>
+</div>
+<script>
+(function(){
+  var CLE='francoeur-audit-4', v={}, fg='tout', ff=null;
+  try{ v=JSON.parse(localStorage.getItem(CLE)||'{}'); }catch(e){}
+  function peindre(){
+    document.querySelectorAll('.constat').forEach(function(c){
+      c.querySelectorAll('.choix button').forEach(function(b){ b.setAttribute('aria-pressed', v[c.dataset.id]===b.dataset.v?'true':'false'); });
+      c.hidden = !((fg==='tout'||c.dataset.g===fg) && (!ff||c.dataset.f===ff));
+    });
+    var n=Object.keys(v).length, t=document.querySelectorAll('.constat').length;
+    document.getElementById('etat').textContent=n+' constats tranchés sur '+t;
+  }
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('.choix button');
+    if(b){ var id=b.closest('.constat').dataset.id; if(v[id]===b.dataset.v) delete v[id]; else v[id]=b.dataset.v;
+      try{ localStorage.setItem(CLE,JSON.stringify(v)); }catch(x){} peindre(); return; }
+    var f=e.target.closest('.filtres button'); if(!f) return;
+    if(f.dataset.fg){ fg=f.dataset.fg; ff=null; } else { ff = ff===f.dataset.ff ? null : f.dataset.ff; }
+    document.querySelectorAll('.filtres button').forEach(function(x){
+      x.setAttribute('aria-pressed', String((x.dataset.fg&&x.dataset.fg===fg&&!ff) || (x.dataset.ff&&x.dataset.ff===ff))); });
+    peindre();
+  });
+  document.getElementById('exporter').onclick=function(){
+    var out={audit:'francoeur', tour:4, decisions:v};
+    var t=JSON.stringify(out,null,2);
+    if(navigator.clipboard) navigator.clipboard.writeText(t).then(function(){ document.getElementById('etat').textContent='Copié — à recoller dans la séance suivante.'; },function(){prompt('Copiez :',t);}); else prompt('Copiez :',t);
+  };
+  peindre();
+})();
+</script></body></html>
