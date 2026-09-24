@@ -46,7 +46,10 @@ def chiffres():
         "mots": len(LEXIQUE), "rayons": len(PLANCHES),
         "croquis": len(list((RACINE / "assets/interactive/francoeur/croquis").glob("*.jpg"))),
         "portraits": len(list((RACINE / "assets/interactive/francoeur/clients").glob("*.jpg"))),
-        "voix": len(list(sons.rglob("*.mp3"))), "langues": len(trad),
+        # Les candidats des reprises (sons/_candidats/) ne sont pas des voix de la
+        # trousse : les compter faisait annoncer 219 voix au lieu de 197.
+        "voix": len([f for f in sons.rglob("*.mp3") if "_candidats" not in f.parts]),
+        "langues": len(trad),
         "relues": sum(1 for v in trad.values() if v.get("relu")),
         "demandes": len(DEMANDES), "clients": len(CLIENTS),
         "items_test": len(TEST.A_CRAN1) + len(TEST.A_CRAN2) + len(TEST.A_CRAN3) + len(TEST.B) + len(TEST.C),
