@@ -15,8 +15,8 @@ livre lui-même (mémoire chantier-detail-chaussure). Il dit donc aussi quoi fai
 quand ça casse — pas de son, micro refusé, code refusé, centre sans assistance.
 
 LA DÉMO NE PROMET QUE CE QUI EST FAIT : ce qui attend encore (le pilote réel,
-la relecture des langues) y est écrit. Aucun prix : c'est une décision de
-Daniel, pas une donnée.
+la relecture des langues) y est écrit. Les prix viennent de `prix.py`, le seul
+endroit où les changer (ajoutés à la demande de Daniel, 24 septembre 2026).
 """
 import html, json, pathlib, re, subprocess, sys
 
@@ -27,6 +27,7 @@ from lexique import LEXIQUE, PLANCHES  # noqa: E402
 from demandes import DEMANDES  # noqa: E402
 import test as TEST  # noqa: E402
 from clients import CLIENTS, GESTES  # noqa: E402
+from prix import FORMULES, NOTES  # noqa: E402
 
 PRES = RACINE / "assets" / "presentations"
 GUIDE = PRES / "francoeur-guide-formateur.html"
@@ -69,6 +70,16 @@ CSS = """
 .captures figcaption b{display:block;color:var(--ink);font-size:15px}
 .liens{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
 .liens a{font-size:14px;border:1px solid var(--line-fort);border-radius:8px;padding:5px 9px;text-decoration:none;color:var(--ink);background:var(--card)}
+.formules{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin:14px 0}
+.formule{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.formule.entree{border:2px solid var(--acier)}
+.formule h3{margin:0;font-size:18px;color:var(--ink)}
+.formule .montant{font-size:26px;font-weight:800;color:var(--ink);margin:4px 0 0;line-height:1.1}
+.formule .unite{font-size:14px;color:var(--muted);font-weight:700}
+.formule p{margin:0;font-size:15px}
+.formule ul{margin:6px 0 0;padding-left:18px;font-size:14.5px}
+.formule li{margin:3px 0}
+.notes-prix{font-size:14.5px;color:var(--muted)}
 .faq dt{font-weight:800;color:var(--ink);margin-top:12px}
 .faq dd{margin:4px 0 0}
 @media print{
@@ -204,6 +215,12 @@ def demo(c):
         ("Un piège, en arabe", "langue=ar&ecran=planche&p=hauts&a=veste&voir=1"),
         ("Ce que le client veut", "langue=es&ecran=exercice&x=client"),
         ("Les clients du magasin", "langue=fr&ecran=magasin&niveau=aise")])
+    formules = "".join(
+        f'<div class="formule{" entree" if n == 0 else ""}"><h3>{E(t)}</h3>'
+        f'<p class="montant">{E(m)}</p><span class="unite">{E(u)}</span><p>{E(pq)}</p>'
+        f'<ul>{"".join(f"<li>{E(x)}</li>" for x in inc)}</ul></div>'
+        for n, (t, m, u, pq, inc) in enumerate(FORMULES))
+    notes = "".join(f"<li>{E(x)}</li>" for x in NOTES)
     corps = f"""<body><div class="doc">
 <a class="retour" href="/presentations.html"><span aria-hidden="true">&#8592;</span> Le classeur</a>
 <p class="eyebrow">Formation au poste &middot; commerce de détail</p>
@@ -244,6 +261,12 @@ les mots du rayon, puis à comprendre le client — et à dire « un instant, s'
     <li><p><b>Sans données personnelles</b> : aucun nom, l'oral reste sur l'appareil. Ce qui remonte est un
       constat sur le matériel ou sur le groupe, jamais sur une personne (Loi 25).</p></li>
   </ol>
+</section>
+
+<section>
+  <h2>Les prix</h2>
+  <div class="formules">{formules}</div>
+  <ul class="simple notes-prix">{notes}</ul>
 </section>
 
 <section>
