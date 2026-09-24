@@ -1,0 +1,90 @@
+[
+  {
+    "code": "D4",
+    "gravite": "majeur",
+    "lieu": "Exercices 1 « Je l'entends, je le trouve », 2 « Le mot et son image » et « La série des pièges » : rétroaction au PREMIER choix faux (pourquoiFaux → notePiege(it))",
+    "constat": "Au premier choix faux sur un mot piège, la rétroaction affiche la note du mot CIBLE, en français et dans la langue d'appui : joué à 375 px (fr) et à 1280 px (ar), cible « une sacoche », choix « un portefeuille » → « Ça, c'est : un portefeuille | « sacoche » est le sac à main au Québec. » ; même chose dans « Le mot et son image » (image de la sacoche, choix « casquette »). La note désigne la bonne image ou donne le mot : la réponse est livrée au premier envoi, contre la règle des deux essais, et la série des pièges (5 pièges sur 8) perd son effort de discrimination.",
+    "correctif": "Au premier choix faux, ne montrer que la note du mot CHOISI (notePiege(m)), jamais celle de la cible ; garder notePiege(it) pour la rétroaction après le deuxième essai ou après la bonne réponse.",
+    "source": "page"
+  },
+  {
+    "code": "E1",
+    "gravite": "majeur",
+    "lieu": "Exercice 7 « Ce que je réponds », item r04 ; test « Mon niveau », partie D, items d1 et d5 (grille du formateur)",
+    "constat": "La notation contredit la règle que la page enseigne. r09 dit : « Faire répéter, c'est quand on n'a PAS compris » (« Le même chandail, en moyen » → redire et vérifier). Mais r04 (« Je voudrais la même affaire en plus grand si vous l'avez. ») exige « Pouvez-vous répéter plus lentement ? » et marque faux « La même, en plus grand. Je vais vérifier. » (« Vous avez deviné la moitié : il a parlé trop vite »). La phrase est complète ; seul le débit diffère (57 car. en 2,30 s contre 44 en 2,17 s pour r09), et le bouton « Plus lentement » de l'exercice permet justement de la comprendre. L'employé qui a compris et redit correctement est pénalisé. Même défaut à l'oral du test : d1 et d5 n'acceptent que « Faire répéter » ; la grille du formateur n'a que « A fait le geste / A deviné ou promis / Pas de réponse », sans case pour une reformulation juste suivie de « je vais vérifier ».",
+    "correctif": "r04 : accepter la reformulation + vérification comme juste (ou rendre la demande réellement incompréhensible : bruit, coupure, mot inconnu, et retirer « Plus lentement » pour cet item) ; d1/d5 : écrire dans la grille « A fait répéter OU a redit exactement la demande et vérifié » et ajouter ce cas aux réponses acceptées.",
+    "source": "page"
+  },
+  {
+    "code": "C2",
+    "gravite": "mineur",
+    "lieu": "Fiche d'un mot piège (ex. « une veste »), langue d'appui choisie, après « Voir dans ma langue »",
+    "constat": "La traduction de la note de piège s'affiche deux fois : sous la note française (toujours visible) puis de nouveau, préfixée « TRAMPA: » / « انتبه: », dans le bloc de traduction. Mesuré en es et en ar.",
+    "correctif": "Dans le bloc .trad, n'afficher que la traduction du mot (t[0]) quand le mot est un piège ; la note traduite reste sous la note française.",
+    "source": "page"
+  },
+  {
+    "code": "C5",
+    "gravite": "mineur",
+    "lieu": "Fiche et rétroactions des pièges, langues zh et ti",
+    "constat": "Le préfixe « PIÈGE : » traduit est retiré par l'expression /^[^:]{1,12}:\\s*/, qui ne connaît que le deux-points ASCII. En chinois (« 陷阱： », deux-points pleine chasse) et en tigrigna (« ተጠንቀቑ፦ ») il reste en tête de la note ; les autres langues sont nettoyées.",
+    "correctif": "Élargir l'expression à [:：፦] ou, mieux, stocker la note traduite sans préfixe dans les données.",
+    "source": "page"
+  },
+  {
+    "code": "C5",
+    "gravite": "mineur",
+    "lieu": "Rétroactions des exercices 1, 2, 4, 5 et 6 avec une langue d'appui",
+    "constat": "Seule l'amorce est traduite (« Pas tout à fait. Essayez encore. » / « ليس تمامًا… »). Le cœur de la rétroaction reste en français seul : « Ça, c'est : … », « Pas le bon article · pas la bonne couleur · bonne taille », « … ne se range pas dans le rayon « … » ». Pour un employé de niveau 1, c'est la partie qui explique l'erreur.",
+    "correctif": "Passer ces libellés par dit()/T() (ca_cest, bon_article, mauvaise_couleur, pas_ce_rayon…) avec leurs traductions, comme l'amorce.",
+    "source": "page"
+  },
+  {
+    "code": "D3",
+    "gravite": "mineur",
+    "lieu": "« La série des pièges » (bouton ! de l'écran Les exercices)",
+    "constat": "La série s'ouvre sous le titre « Je l'entends, je le trouve » : rien ne dit à l'employé qu'il est dans la série des pièges. Au retour, le filtre reste sur « Les pièges » : un clic ultérieur sur l'exercice 1 relance la série des pièges, et « Ensuite : Le mot et son image » part avec ce filtre.",
+    "correctif": "Titre propre (« La série des pièges ») dans cadreJeu quand filtre === 'pieges' ; remettre filtre à '' à la fin de la série ou au retour.",
+    "source": "page"
+  },
+  {
+    "code": "D1",
+    "gravite": "mineur",
+    "lieu": "Exercice 3 « Je me souviens », bilan",
+    "constat": "Le bilan affiche « 5 / 8 du premier coup » alors que le score est auto-déclaré (« Je le savais ») ; rien n'a été vérifié du premier coup. Le seuil est bien retiré, mais le libellé reste celui des exercices notés.",
+    "correctif": "Libellé propre : « 5 mots sur 8 : je le savais ».",
+    "source": "page"
+  },
+  {
+    "code": "F1",
+    "gravite": "mineur",
+    "lieu": "Test « Mon niveau », partie D (oral) et écran « Pour le formateur »",
+    "constat": "Les enregistrements n'existent qu'en mémoire (blob) : à la seconde passation l'écran formateur affiche « — » pour les réponses non enregistrées, et un rechargement de page les perd toutes. O3 et O4 ne sont donc évalués que si le formateur est à côté de l'employé à la fin du test ; en libre-service, ils ne le sont jamais, sans que l'écran le dise. Par ailleurs le code formateur (2413) est en clair dans les données de la page.",
+    "correctif": "Dire à l'employé, avant la partie D, de montrer l'écran au formateur (ou de la faire en séance) ; garder la notation en attente dans l'historique ; accepter que le code n'est qu'un verrou d'usage et le dire dans le guide du formateur.",
+    "source": "page"
+  },
+  {
+    "code": "A1",
+    "gravite": "mineur",
+    "lieu": "Test « Mon niveau », résultat, partie B",
+    "constat": "O2 inclut les demandes « avec une reprise ou une négation » ; ces demandes sont au cran 3 (« Je le veux pas en noir… », « Pas la chemise : le polo »), mais le seuil de la partie B est le cran 2 (seuils.B.s = 2). L'écran affiche « Comprendre la demande : article, couleur et taille — Objectif atteint » sans que la partie reprise/négation de l'objectif ait été réussie.",
+    "correctif": "Soit exiger le cran 3 pour « Objectif atteint » en B, soit libeller le cran 2 comme une étape (« article, couleur et taille — atteint ; reprises : pas encore »).",
+    "source": "page"
+  },
+  {
+    "code": "G2",
+    "gravite": "mineur",
+    "lieu": "Magasin, scène d'un client, à 375 px",
+    "constat": "À 375 px l'avatar (~330 px de haut) précède le fil ; après trois échanges le champ de saisie est à ~2 900 px physiques du haut, l'avatar et son humeur sortent de l'écran quand on lit la dernière réplique. Après la réplique finale (FIN), « Parler », le champ et « Envoyer » restent actifs, mais un envoi est ignoré sans message.",
+    "correctif": "À moins de 760 px, réduire l'avatar (vignette de ~96 px avec l'humeur écrite à côté) ; après FIN, désactiver ou masquer la zone de saisie.",
+    "source": "page"
+  },
+  {
+    "code": "E1",
+    "gravite": "mineur",
+    "lieu": "Magasin, code d'accès refusé",
+    "constat": "Un code faux (« mauvais ») est accepté par l'écran du code, ouvre la liste puis la scène du client ; c'est seulement là, sous une scène vide, que s'affiche « Ce code n'est pas reconnu. », et il faut revenir au magasin pour retrouver le champ.",
+    "correctif": "Sur 401, revenir directement à l'écran du code avec le message d'erreur sous le champ.",
+    "source": "page"
+  }
+]

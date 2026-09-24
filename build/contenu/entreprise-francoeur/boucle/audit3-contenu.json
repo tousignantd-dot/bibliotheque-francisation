@@ -1,0 +1,146 @@
+[
+ {
+  "code": "A3",
+  "gravite": "majeur",
+  "lieu": "gerante.py (CONSIGNES) et test.py (C, C2), exercice 6 et test partie C",
+  "constat": "Dans « Ce que la gérante demande » et au test, la bonne réponse est très souvent le SEUL objet de la phrase qui figure parmi les choix : reconnaître un mot suffit. Mesuré sur les données produites : 12 consignes d'entraînement sur 16 (seules g10, g12, g13 et g16 proposent un objet nommé qui n'est pas la bonne réponse), 8 sur 8 au cran 1 du test, 5 sur 8 au cran 2 (c21, c23, k21, k23, k24), 2 sur 8 au cran 3 (c34, k34). Or le seuil de l'objectif O5 se lit au cran 2 : on peut l'atteindre en repérant un seul mot, ce qui mesure O1 et pas la compréhension de la consigne. La docstring de gerante.py affirme que « aux consignes à plusieurs objets, les distracteurs sont les autres objets nommés ». C'est faux pour g09 (les foulards ne sont pas proposés), g11 (caisse et cabines absentes, alors que la question porte sur ce qu'il faut rapporter) et g15 (le sac n'est pas proposé).",
+  "correctif": "Dès qu'une consigne nomme deux objets ou plus, mettre les autres objets nommés parmi les choix, et le vérifier au build par un contrôle « un objet nommé autre que la bonne réponse figure parmi les choix », au moins aux crans 2 et 3 et dans la moitié des consignes d'entraînement. Pour une question « où ? », nommer deux lieux dans la phrase (« pas aux cabines, à la caisse »).",
+  "source": "contenu"
+ },
+ {
+  "code": "F1",
+  "gravite": "majeur",
+  "lieu": "test.py (B/B2, C/C2, A_CRAN3/A2_CRAN3, D/D2) ; francoeur-demo.html « Mesurer »",
+  "constat": "Les deux formes ne sont pas parallèles, et l'écart va toujours dans le même sens : la forme 2, celle de la seconde passation, est plus facile. Longueur moyenne des phrases : B cran 3, 19,3 mots (forme 1) contre 14,3 (forme 2) ; C cran 2, 12,0 contre 9,0 ; C cran 3, 20,0 contre 14,8. Au cran 3 de B, b61 et b63 se résolvent avec deux traits seulement (article et couleur ; b61 n'a pas de taille), alors que les quatre items de la forme 1 ont trois traits. Au cran 3 de A, la forme 1 porte « claques », que le lexique dit « plus rare ». À la partie D, les quatre gestes viennent dans le même ordre aux deux formes (répéter, préciser, vérifier, relais) : à la seconde passation, on sait d'avance que le premier item demande de faire répéter. Comme la forme 1 sert avant la formation et la forme 2 après, le gain est gonflé dès la construction. C'est pourtant ce gain que la page de démonstration vend comme preuve (« il montre ce qui a été appris »).",
+  "correctif": "Apparier les items d'une forme à l'autre : même nombre de mots à ±2 près, même nombre de traits, même type de reprise (négation, comparatif, correction d'article), et une rareté comparable pour les pièges. Contrôler les moyennes au build. Tirer l'ordre des items de la partie D au hasard. Dans la démonstration, garder la réserve du guide (« équivalence à vérifier au pilote ») tant que les formes n'ont pas été vérifiées.",
+  "source": "contenu"
+ },
+ {
+  "code": "A3",
+  "gravite": "majeur",
+  "lieu": "clients.py (rupture, M. Nguyen) ; test.py D (d3) et D2 (d8) ; fiche.py (relais) ; modeles.py (REPONSES)",
+  "constat": "La trousse ne dit nulle part ce que le vendeur peut décider seul. Pour une même demande, la mise de côté, elle donne trois verdicts sans règle qui les relie. Au magasin, M. Nguyen repart satisfait si le vendeur prend son nom et son numéro : c'est le vendeur qui met l'article de côté. Au test, d3 (« vous pouvez me le garder jusqu'à samedi, c'est sûr ? ») attend « vérifier sans promettre ». d8 (« mettre ce parka de côté… je paierais la moitié ») attend « passer le relais ». Le détail qui départage (le dépôt d'argent) n'est jamais pratiqué : aucun item de « Ce que je réponds » ne porte sur une mise de côté. La fiche dit seulement « une promesse que vous ne pouvez pas faire ». Un employé qui a appris avec M. Nguyen qu'il peut mettre un article de côté échoue à d8.",
+  "correctif": "Écrire la règle en une ligne dans la fiche, dans le guide et dans la consigne des clients, par exemple « Mettre de côté sans argent : oui, avec le nom. Argent, remboursement, exception : la gérante. » Ajouter deux items à « Ce que je réponds » : une mise de côté simple (le vendeur la fait) et une avec dépôt (la gérante). Réécrire d3 pour qu'il n'y ait qu'une demande à régler.",
+  "source": "contenu"
+ },
+ {
+  "code": "A1",
+  "gravite": "mineur",
+  "lieu": "francoeur_planches.py (const SEUIL, bilan()) ; test.py SEUILS ; guide du formateur « Ce que l'employé saura faire »",
+  "constat": "Les seuils ne se lisent pas pareil partout. Le guide dit 8 sur 10 (O1) et 7 sur 10 (O2, O5), et « chaque fois » pour O3 ; l'écran affiche « Objectif : 7 / 8 » (O1) et « 6 / 8 » (O2, O5, et O3 à l'exercice 7), sans que le guide explique l'arrondi. Au test, O2 est « atteint » au cran 2, qui ne contient ni reprise ni négation, alors que la définition d'O2 les inclut (« parfois avec une reprise ou une négation »).",
+  "correctif": "Écrire dans le guide la correspondance : série de 8, seuil arrondi au-dessus (8/10 donne 7/8, 7/10 donne 6/8). Pour l'exercice 7, afficher un seuil qu'on puisse relier à O3 ou le dire « d'entraînement ». Soit mettre une reprise au cran 2 de B, soit dire que la reprise se mesure au cran 3.",
+  "source": "contenu"
+ },
+ {
+  "code": "A3",
+  "gravite": "mineur",
+  "lieu": "francoeur_planches.py EXOS : exercice 4 « Range le rayon » (o:'O1') et exercice 2 « Le mot et son image »",
+  "constat": "« Range le rayon » est jugé contre le seuil d'O1, mais il montre l'image, écrit le mot, le fait entendre et demande un rayon : la tâche d'O1 (entendre un mot, désigner l'article) n'y est pas. L'exercice 2 se fait à la lecture (image, puis trois mots écrits), sans écoute.",
+  "correctif": "Ne pas juger l'exercice 4 contre O1 (comme « Je me souviens »), ou le retirer du chemin. Si on le garde, masquer le mot écrit et ne faire qu'entendre.",
+  "source": "contenu"
+ },
+ {
+  "code": "D4",
+  "gravite": "mineur",
+  "lieu": "test.py C2, k12 (« Plie les chandails ») ; francoeur_planches.py partie_a (contrôle limité à A cran 3)",
+  "constat": "Le distracteur « t-shirt » de k12 se défend avec la note du lexique : « chandail » couvre presque tout haut à manches, et le client s'en sert aussi pour un t-shirt. L'employé qui a lu cette note (visible dans sa langue) peut tomber sur un item du cran 1, où deux erreurs arrêtent la partie. Le build ne cherche les distracteurs défendables qu'au cran 3 de la partie A ; ni les parties B et C, ni les exercices ne sont contrôlés.",
+  "correctif": "Remplacer « t-shirt » dans k12 (par exemple par « foulard »). Étendre le contrôle des notes du lexique à toutes les options du test et de l'exercice 6.",
+  "source": "contenu"
+ },
+ {
+  "code": "D4",
+  "gravite": "mineur",
+  "lieu": "francoeur_planches.py question() pour 'ecoute' (distracteurs du même rayon) ; test.py B, b24",
+  "constat": "Dans « Je l'entends, je le trouve », les distracteurs sont tirés du même rayon, sans filtre des mots qui englobent la cible. En entendant « un pantalon », on peut voir un pantalon cargo, un pantalon de jogging ou un pantalon habillé ; de même pour « une robe » et la robe de soirée, « un manteau » et le manteau en duvet, « des souliers » et les souliers à talons. Ces réponses se défendent et sont comptées fausses. Au test, b24 montre une « cravate » en S et en XS : une carte absurde, qui ne rend pas l'item devinable, mais qui n'a aucune plausibilité.",
+  "correctif": "Exclure d'une série d'écoute les mots dont le nom contient celui de la cible (le build sait déjà faire ce contrôle). Réserver ces paires à une série « le mot précis » dont la consigne le dit. Dans variantes(), ne tirer comme article voisin qu'un article qui se vend en tailles quand la bonne carte a une taille.",
+  "source": "contenu"
+ },
+ {
+  "code": "E1",
+  "gravite": "mineur",
+  "lieu": "francoeur_planches.py pourquoiFaux() et phraseMarquee() pour 'gerante'",
+  "constat": "Quand on se trompe à l'exercice 6, la rétroaction dit seulement « Ça, c'est : un miroir ». L'employé le savait : il a entendu « miroir ». Aux consignes qui se jouent sur une négation ou un ordre (g10 « mets-les pas dans la vitrine », g12 « oublie le miroir », g13 « pas aux cabines », g16 « laisse faire les cintres »), rien ne pointe le mot qui décide. Après deux erreurs, la phrase s'affiche sans marque : phraseMarquee() ne marque que pour l'exercice « client ».",
+  "correctif": "Ajouter à chaque consigne le mot qui décide, la clé qui écarte chaque distracteur nommé (« pas », « oublie », « ensuite »…) et une rétroaction d'une phrase pour ce distracteur. Le marquer dans la transcription.",
+  "source": "contenu"
+ },
+ {
+  "code": "C5",
+  "gravite": "mineur",
+  "lieu": "traductions.json, mots.denim.note (es, uk, ro, ru, zh, ti) et interface.mg_m5 (en, es, pt, uk…)",
+  "constat": "Les traductions de la note « denim » rendent « une veste en jeans » par un gilet sans manches (es « un chaleco », ru « жилет », uk « безрукавка », zh « 牛仔背心 », ro « vestă », ti « ቬስት »). Or la note du piège « veste », traduite dans les mêmes langues, dit qu'une veste en jeans A des manches (« jacket »). Les deux notes se contredisent sur le piège central. « Passer le relais » (mg_m5) est traduit « à quelqu'un d'autre » ou « à un collègue » (uk « Передати колезі ») : la gérante disparaît.",
+  "correctif": "Refaire la traduction de « denim » (python3 build/francoeur_traductions.py --ids denim) en précisant « veste en jeans = veste à manches (jacket) ». Traduire mg_m5 par « appeler la gérante ».",
+  "source": "contenu"
+ },
+ {
+  "code": "C3",
+  "gravite": "mineur",
+  "lieu": "francoeur_planches.py ouvrir() ; traductions.json mots.veston.note (11 langues)",
+  "constat": "Les notes qui ne sont pas des pièges n'apparaissent jamais en français. On ne les lit que derrière « Voir dans ma langue », donc jamais en mode « Français seulement » : « jeans » au pluriel, « Le client dira « ma facture » », « Ça étire », « la pointure pour les chaussures seulement »… La note de « veston » (« En France, on dit « une veste » »), qui éclaire directement le piège « veste », n'est traduite dans aucune des onze langues. Elle ne s'affiche donc nulle part.",
+  "correctif": "Afficher la note en français sous le mot (comme le piège), la traduction restant masquée. Traduire la note de « veston ».",
+  "source": "contenu"
+ },
+ {
+  "code": "D3",
+  "gravite": "mineur",
+  "lieu": "pieges.py (PIEGES) et lexique.py (culotte, taille-ceinture, m)",
+  "constat": "La série « Les pièges » ne correspond pas aux pièges du lexique. « culotte » y figure alors que sa note n'est pas un PIÈGE : aucune explication ne s'affiche (m.piege est faux). « moyen / medium », signalé PIÈGE, n'y est pas. « la taille » est opposée à poche, jambe et ourlet, jamais à la grandeur, le sens que sa note dit piégeant. La fiche de poche imprime « la taille » sans rien en face.",
+  "correctif": "Soit écrire la note PIÈGE de « culotte » (et dire lequel), soit la retirer de la série. Ajouter « moyen » avec un contraste. Opposer « la taille » à une carte de taille (M), et imprimer sur la fiche « la taille = la grandeur, ou la ceinture ».",
+  "source": "contenu"
+ },
+ {
+  "code": "C5",
+  "gravite": "mineur",
+  "lieu": "francoeur_planches.py FR (bon_article, mauvaise_couleur…, geste_manque, geste_fait, objectif, ca_cest) ; bilan du magasin",
+  "constat": "Plusieurs rétroactions s'affichent en français seul, contre la règle des trois couches (la consigne en français, la langue d'appui dessous). 51 clés de FR n'ont pas de traduction : les traits de l'exercice 5 (« pas la bonne couleur »), l'état des gestes au bilan (« à faire la prochaine fois »), « Ça, c'est : », « Objectif ». Le conseil du bilan du magasin, écrit par le modèle, est en français seul. Pour un employé de niveau 1 ou 2, c'est justement la rétroaction qui explique qui lui échappe.",
+  "correctif": "Traduire ces clés dans traductions.json et les passer par dit(). Au bilan, afficher sous chaque geste le nom traduit (déjà dans mg_*), et demander au serveur le conseil dans la langue d'appui en plus du français.",
+  "source": "contenu"
+ },
+ {
+  "code": "E2",
+  "gravite": "mineur",
+  "lieu": "clients.py scenario_serveur() (longueur, PALIERS_JEU['aise']) ; francoeur_planches.py bilanMagasin()",
+  "constat": "La consigne commune dit « ne dépasse jamais deux phrases », et le palier « à l'aise » dit « deux ou trois phrases ». Le modèle reçoit deux ordres contraires. Le bilan envoie l'historique complet : l'ouverture écrite par le système (« Bonjour, bienvenue à la Maison Francœur ! ») y est attribuée au VENDEUR, et le modèle peut la citer comme un geste de l'employé.",
+  "correctif": "Accorder la longueur à celle du palier. Retirer la première réplique « user » de l'historique envoyé au bilan, ou la marquer comme dite par le système.",
+  "source": "contenu"
+ },
+ {
+  "code": "F1",
+  "gravite": "mineur",
+  "lieu": "guide du formateur (« Le test », « Les rappels ») ; francoeur_planches.py debuterTest() ; test.py D (d3, d4)",
+  "constat": "Le guide se contredit. Il dit « Refaites le test à la dernière séance » (c'est la passation 2, forme 2) puis « J+30 le test repassé — il prend la seconde forme ». En réalité, la troisième passation reprend la forme 1. Celle-ci contient d4, presque mot pour mot le modèle m5 et l'item r05 (« rembourser… j'ai pas mon reçu »), et d3, proche de m3 : après la formation, c'est de la mémoire. De plus, « Refaire le test » juste après une passation consomme la forme 2 avant le post-test.",
+  "correctif": "Dans le guide, placer la passation de J+30 avec une troisième forme, ou dire que c'est la forme 1. Réécrire d3 et d4 loin des modèles. Ne faire alterner la forme qu'une fois le niveau confirmé par le formateur, ou demander le code formateur pour une reprise.",
+  "source": "contenu"
+ },
+ {
+  "code": "C4",
+  "gravite": "mineur",
+  "lieu": "francoeur_planches.py ecranGestes() et lancer('reponse')",
+  "constat": "L'estompage saute une marche. On entend le modèle, on CHOISIT la réponse parmi trois (exercice 7), puis on passe à la conversation libre avec le modèle de langue. O3 et O4 demandent de DIRE la phrase, mais aucune étape ne fait dire la phrase clé dans une situation guidée. Pour un débutant, c'est au magasin qu'il la dit pour la première fois, et le magasin est fermé en mode sans assistance.",
+  "correctif": "Après chaque modèle, ajouter « À vous de le dire » : le client parle, l'employé s'enregistre, puis réentend le vendeur modèle et compare. C'est sans IA, et le micro sert déjà au test.",
+  "source": "contenu"
+ },
+ {
+  "code": "A3",
+  "gravite": "mineur",
+  "lieu": "francoeur_planches.py repondreTest() (reponse: '') ; francoeur-pilote.html « Les règles de décision »",
+  "constat": "Au test, les parties A, B et C remontent au portail avec reponse vide. Le direct ne peut donc pas dire QUEL distracteur a attiré, alors que la règle de décision du pilote en dépend (« distracteur trop proche »). Les exercices, eux, envoient le choix.",
+  "correctif": "Envoyer le libellé du choix fait (etiquette ou carteTexte), comme dans finQuestion(), puisque bonne est connue.",
+  "source": "contenu"
+ },
+ {
+  "code": "D2",
+  "gravite": "mineur",
+  "lieu": "build/contenu/entreprise-francoeur/ecoute.json (sons/mauve.mp3, sons/uni.mp3) ; ces sons servent aux planches et aux exercices",
+  "constat": "La transcription de contrôle de mauve.mp3 est vide. Celle de uni.mp3 contient du texte en trop (« Unis. D'un sens de dire dont indens et 2 mois »). Ce sont deux mots de couleur ou de motif joués dans les exercices, et ils figurent parmi les 19 sons douteux que le pilote renvoie à une écoute humaine, qui n'a pas encore eu lieu.",
+  "correctif": "Écouter ces deux fichiers avant tout, et les refaire au besoin (puis MEDIA_V + 1).",
+  "source": "contenu"
+ },
+ {
+  "code": "G2",
+  "gravite": "mineur",
+  "lieu": "guide du formateur « Une séance type » ; francoeur-pilote.html séance 1",
+  "constat": "La séance prévoit 15 min pour « Mon niveau ». Le test dure 10 à 12 min par personne, et le formateur doit ensuite, avec le code, écouter quatre enregistrements par employé sur chaque téléphone, les noter et confirmer le niveau : 2 à 3 min par employé, soit 15 à 25 min pour 4 à 8 employés. Ce temps n'est prévu nulle part.",
+  "correctif": "Prévoir le temps d'écoute (ou le reporter au début de la séance 2), et le chiffrer dans le guide et le protocole du pilote.",
+  "source": "contenu"
+ }
+]
