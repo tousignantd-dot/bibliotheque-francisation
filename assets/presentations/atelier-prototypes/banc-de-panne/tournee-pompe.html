@@ -1124,7 +1124,8 @@ function coupe(m) { m.clippingPlanes = PLANES; m.clipIntersection = true; m.clip
 
 // ── LES MATIÈRES ────────────────────────────────────────────────────────────
 function matiere(o) {
-  return coupe(new THREE.MeshStandardMaterial({ side:THREE.DoubleSide,
+  const Mat = o.clearcoat ? THREE.MeshPhysicalMaterial : THREE.MeshStandardMaterial;
+  return coupe(new Mat({ side:THREE.DoubleSide,
     polygonOffset:true, polygonOffsetFactor:1, polygonOffsetUnits:1, ...o }));
 }
 const LIGNES = [];                       // tous les traits : ils suivent le thème
@@ -1133,8 +1134,11 @@ function trait(opacite) {
   m.userData.opaciteFixe = opacite; LIGNES.push(m); return m;
 }
 const M = {
-  email:   { color:0x21402a, metalness:.15, roughness:.34 },      // la laque verte
+  laque:   { color:0xbfc3c1, metalness:1,   roughness:.34 },      // la carrosserie, inox brossé
+  email:   { color:0x2a2c2e, metalness:.3,  roughness:.36 },      // le moulin, anthracite
   inox:    { color:0xc4c8c2, metalness:1,   roughness:.3  },
+  miroir:  { color:0xe4e7e2, metalness:1,   roughness:.06 },
+  touches: { color:0x2c3a45, metalness:.2,  roughness:.3  },
   chrome:  { color:0xeef0ec, metalness:1,   roughness:.07 },
   noir:    { color:0x141414, metalness:.2,  roughness:.42 },
   caoutch: { color:0x3a4032, metalness:0,   roughness:.8  },
@@ -1146,8 +1150,8 @@ const M = {
 const mEmail = matiere(M.email), mInox = matiere(M.inox), mChrome = matiere(M.chrome),
       mNoir = matiere(M.noir), mPorcel = matiere(M.porcel);
 // La coque a ses propres matières : c'est elle qui devient verre.
-const mCoque = matiere({ ...M.email, transparent:true }),
-      mFacade = matiere({ ...M.inox, transparent:true }),
+const mCoque = matiere({ ...M.laque, transparent:true }),
+      mFacade = matiere({ ...M.miroir, transparent:true }),
       mDessus = matiere({ ...M.inox, transparent:true });
 const COQUE = [mCoque, mFacade, mDessus];
 const tFin = trait(), tCoque = trait();
@@ -1192,19 +1196,36 @@ const mComptoir = new THREE.MeshStandardMaterial({ color:TH.comptoir, roughness:
 const machine = new THREE.Group();
 monde.add(machine);
 
-for (const [x,z] of [[-35,-22],[35,-22],[-35,22],[35,22]])
-  machine.add(tour([[0,0],[1.9,0],[1.5,3.1],[0,3.1]], x,0,z, mChrome));
-machine.add(arrondi(78,11,52,1.4, 0,8.5,0, mCoque, tCoque));                 // le socle
-machine.add(arrondi(78,36,52,2.4, 0,32,0, mCoque, tCoque));                  // la caisse
-machine.add(arrondi(71,12.4,1.2,.5, 0,43.2,26.2, mFacade, tCoque));          // la façade inox
-machine.add(arrondi(80,1.4,54,.6, 0,50.7,0, mDessus, tCoque));               // la plaque chauffe-tasses
-{ // un filet de lumière sous la façade
-  const f = new THREE.Mesh(new THREE.PlaneGeometry(64, .28), coupe(new THREE.MeshBasicMaterial({ color:C.acide })));
-  f.position.set(0, 36.4, 26.05); machine.add(f);
+// La carrosserie se lit de profil : un socle qui avance sous le bac, une niche
+// ouverte où pendent les groupes, un capot en surplomb dont la face s'incline
+// vers le haut. Deux joues pleines encadrent la niche. Profils en [z, y].
+function profil(pts, larg, x0, r, t) {
+  const f = new THREE.Shape();
+  pts.forEach(([op, ...v], i) => op === "q" ? f.quadraticCurveTo(...v) : (i ? f.lineTo(...v) : f.moveTo(...v)));
+  const geo = new THREE.ExtrudeGeometry(f, { depth:larg, bevelEnabled:true, bevelSize:.6,
+    bevelThickness:.6, bevelSegments:3, curveSegments:18 });
+  geo.rotateY(-Math.PI / 2); geo.translate(x0 + larg / 2, 0, 0);
+  return piece(geo, r, t, 35);
 }
+const JOUE = [["m",-26,3], ["l",33,3], ["q",38.5,3,38.5,9], ["l",38.5,14], ["l",37.6,36.5],
+  ["q",37.6,39,36.4,40.4], ["l",30.6,49], ["q",29.6,50,27.6,50], ["l",-24.5,50],
+  ["q",-26,50,-26,48.5], ["l",-26,3]];
+const NICHE = [["m",-26,3], ["l",33,3], ["q",37,3,37,7], ["l",37,11], ["l",18,11], ["l",18,37.6],
+  ["l",35.4,37.6], ["q",36.6,37.6,36,39], ["l",29.6,49], ["q",29,50,27,50], ["l",-24.5,50],
+  ["q",-26,50,-26,48.5], ["l",-26,3]];
+machine.add(profil(NICHE, 70.6, 0, mCoque, tCoque));                           // le corps et sa niche
+for (const s of [-1, 1]) {
+  machine.add(profil(JOUE, 3.4, s * 37, mCoque, tCoque));                      // les joues
+  // le liseré chromé qui court sur la joue, du capot vers l'arrière
+  machine.add(tube([[s*39.3,48.6,31],[s*39.3,47.4,14],[s*39.3,43,-4],[s*39.3,34,-17],[s*39.3,23,-25]], .16));
+}
+for (const [x,z] of [[-33,-21],[33,-21],[-33,24],[33,24]])                       // les pieds
+  machine.add(tour([[0,0],[2.6,0],[2.2,3.2],[0,3.2]], x,0,z, mNoir, null));
+machine.add(arrondi(69.4,26,.7,.3, 0,24.4,18.5, mFacade, tCoque));              // le fond de niche, inox miroir
+machine.add(arrondi(79,1.4,55,.6, 0,50.7,1.2, mDessus, tCoque));                // la plaque chauffe-tasses
 // le bac d'égouttage et sa grille
-machine.add(arrondi(74,3.4,16,.8, 0,12.3,26, mInox));
-for (let x = -35; x <= 35.1; x += 2.5) machine.add(boite(1,.5,14.6, x,14.2,26, mChrome, null));
+machine.add(arrondi(69.6,3.4,19,.8, 0,12.4,27.8, mInox));
+for (let x = -33.5; x <= 33.6; x += 2.5) machine.add(boite(1,.5,17.4, x,14.3,27.8, mChrome, null));
 // la galerie et les tasses retournées
 {
   const y = 53.8, a = 38, b = 25;
@@ -1234,7 +1255,7 @@ function disqueDouchette() {
 // Les deux groupes. JOINTS, DOUCHETTES et PFS sont indexés par x (-18, 18).
 const JOINTS = {}, DOUCHETTES = {}, PFS = {};
 for (const gx of [-18, 18]) {
-  machine.add(arrondi(13,7,8,1.2, gx,36,28.5, mInox));                       // le support
+  machine.add(cyl(5.3,5.3,4.4, gx,35.5,GZ, mChrome));                        // le col, qui pend du capot
   machine.add(tour([[0,33.4],[5.3,33.4],[6,32.3],[6,30.6],[5.45,29.6],        // la cloche
                     [5.25,27.4],[5.05,26.7],[0,26.7]], gx,0,GZ, mChrome));
   machine.add(cyl(5.1,5.1,.7, gx,26.3,GZ, mChrome));                         // la bague
@@ -1256,20 +1277,35 @@ for (const gx of [-18, 18]) {
   manche.quaternion.setFromUnitVectors(V(0,1,0), dir);
   manche.position.copy(depart);
   pf.add(manche);
-  // le clavier au-dessus du groupe
-  machine.add(arrondi(9.6,3.6,.9,.4, gx,44.3,26.9, mNoir, null));
-  for (let i = 0; i < 4; i++)
-    machine.add(cyl(.62,.62,.5, gx-3.3+i*2.2,44.3,27.4, mChrome, null, 24).rotateX(Math.PI/2));
+}
+// Sur la face inclinée du capot : un pavé de touches par groupe, un au milieu,
+// et les deux manettes de vapeur aux extrémités.
+const PENTE = -Math.atan2(6.4, 10.4);
+const surCapot = (o, x) => { o.rotation.x = PENTE; o.position.set(x, 44.1, 33.4); machine.add(o); return o; };
+for (const [x, n] of [[-18, 5], [0, 3], [18, 5]]) {
+  const pave = new THREE.Group();
+  const mTouches = matiere(M.touches);
+  pave.add(arrondi(n * 2.5 + 1.6, 4.2, .8, .35, 0,0,0, mTouches, null));
+  for (let i = 0; i < n; i++)
+    pave.add(arrondi(1.9,1.9,.5,.3, (i - (n-1)/2) * 2.5, 0, .45, matiere({ color:0x8fa3b2, metalness:.3, roughness:.35 }), null));
+  surCapot(pave, x);
+}
+for (const s of [-1, 1]) {
+  const manette = new THREE.Group();
+  manette.add(cyl(1.5,1.7,1, 0,0,.5, mChrome, null, 32).rotateX(Math.PI/2));
+  const levier = tour([[0,0],[.75,0],[.9,4],[1.05,6.2],[.6,7],[0,7.1]], 0,0,0, mNoir, null, 32);
+  levier.position.z = 1; levier.rotation.x = .55; levier.rotation.z = -s * .35;
+  manette.add(levier);
+  surCapot(manette, s * 32);
 }
 // lances vapeur, robinets, bec d'eau chaude
+// Les lances sortent sous le capot, aux deux bouts, et s'écartent vers l'extérieur.
 for (const s of [-1, 1]) {
-  machine.add(tube([[s*35.5,40,22],[s*36.8,39.3,28],[s*37.4,33,31],[s*37.4,21,31.4]], .55));
-  machine.add(tour([[0,20],[.6,20],[.45,18.8],[0,18.6]], s*37.4,0,31.4, mChrome, null, 20));
-  const bouton = tour([[0,0],[1.9,0],[2.1,1.1],[1.7,2.5],[.4,2.8],[0,2.8]], 0,0,0, mNoir, null, 40);
-  bouton.rotation.x = Math.PI/2; bouton.position.set(s*33, 46.8, 26.8);
-  machine.add(bouton);
+  machine.add(place(new THREE.Mesh(new THREE.SphereGeometry(1.1, 24, 16), mChrome), s*31.5, 37.4, 34.6));
+  machine.add(tube([[s*31.5,37.2,34.8],[s*33,35,37.2],[s*37.5,29,39.2],[s*41,20.5,40]], .5));
+  machine.add(tour([[0,20.6],[.6,20.6],[.45,19.2],[0,19]], s*41,0,40, mChrome, null, 20));
 }
-machine.add(tube([[0,34.2,26],[0,32.2,29],[0,26.5,29]], .5));
+machine.add(tube([[-28.5,37.6,30],[-28.5,35.4,31.6],[-28.5,30.5,31.6]], .55));          // le bec d'eau chaude
 const tasse = new THREE.Group();
 tasse.add(tour([[0,14.5],[4.6,14.5],[4.8,14.9],[0,14.9]], 0,0,0, mPorcel, null));      // la soucoupe
 tasse.add(tour([[0,14.9],[2.3,14.9],[2.9,15.5],[3.35,19.9],[3.1,20],[2.75,15.8],[0,15.8]], 0,0,0, mPorcel, null));
@@ -1298,7 +1334,7 @@ function cadran() {
   const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 4; return t;
 }
 const mano = new THREE.Group();
-mano.position.set(0,43.2,26.9);
+mano.position.set(-29,22.4,18.9);                    // dans la niche, sous le bec, comme au comptoir
 {
   const face = new THREE.Mesh(new THREE.CircleGeometry(4.6,64), new THREE.MeshBasicMaterial({ map:cadran() }));
   face.position.z = .05; mano.add(face);
