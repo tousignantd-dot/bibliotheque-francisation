@@ -1193,8 +1193,8 @@ const GZ = 31;                          // l'axe des groupes, en profondeur
 // Ce qui change, c'est la pièce autour d'elle — le fond, le comptoir, et le
 // trait qui dessine ses arêtes (clair sur le sombre, encre sur le clair).
 const THEMES = {
-  sombre: { fond:0x090F05, trait:0xF4FAED, traitOp:.30, comptoir:0x1d2219, expo:1.0, decor:.38 },
-  clair:  { fond:0xEEF2E6, trait:0x17200F, traitOp:.38, comptoir:0xd8d2c4, expo:1.1, decor:1 },
+  sombre: { fond:0x090F05, trait:0xF4FAED, traitOp:.30, comptoir:0x6a625a, expo:1.0, decor:.38 },
+  clair:  { fond:0xEEF2E6, trait:0x17200F, traitOp:.38, comptoir:0xffffff, expo:1.1, decor:1 },
 };
 const themeCourant = () => document.documentElement.dataset.theme === "clair" ? "clair" : "sombre";
 let TH = THEMES[themeCourant()];
@@ -1303,100 +1303,238 @@ function tube(pts, rayon, r = mChrome, t = null) {
 const propre = (o = M.inox) => [matiere(o), trait(.9)];
 
 // ── LE COMPTOIR ────────────────────────────────────────────────────────────
-const mComptoir = new THREE.MeshStandardMaterial({ color:TH.comptoir, roughness:.85, metalness:0 });
+// Un plan en bloc de chêne pâle : des lattes collées dans la longueur, chacune
+// son ton et son veinage, un vernis satiné. Dessous, un meuble peint, pour que
+// la vue plongeante ne tombe plus dans le vide. TH.comptoir teinte le tout :
+// blanc au thème clair (le bois tel quel), plus sombre au thème sombre.
+function toileBois(l, h, dessiner, srgb = true) {
+  const c = document.createElement("canvas"); c.width = l; c.height = h;
+  dessiner(c.getContext("2d"), l, h);
+  const t = new THREE.CanvasTexture(c); if (srgb) t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8; return t;
+}
+const lattes = relief => (g, w, h) => {
+  const n = 14, lh = h / n, al = (a, b) => a + Math.random() * (b - a);
+  for (let k = 0; k < n; k++) {
+    const y0 = k * lh, ton = al(-14, 14);
+    g.fillStyle = relief ? "#808080" : `rgb(${201 + ton},${162 + ton * .9},${118 + ton * .7})`;
+    g.fillRect(0, y0, w, lh);
+    for (let i = 0; i < 26; i++) {                     // le fil du bois, dans la longueur
+      const y = y0 + al(0, lh);
+      g.strokeStyle = relief ? `rgba(0,0,0,${al(.05, .2)})` : `rgba(110,70,35,${al(.05, .18)})`;
+      g.lineWidth = al(.6, 2.4); g.beginPath(); g.moveTo(0, y);
+      const f = al(80, 260), a = al(.4, 2.2), ph = al(0, 6);
+      for (let x = 0; x <= w; x += 24) g.lineTo(x, y + Math.sin(x / f + ph) * a);
+      g.stroke();
+    }
+    if (!relief && Math.random() < .5) {               // un nœud, parfois
+      const x = al(0, w), y = y0 + lh / 2; g.strokeStyle = "rgba(90,55,25,.22)";
+      for (let r = 1; r < 5; r++) { g.lineWidth = 1; g.beginPath(); g.ellipse(x, y, r * 9, r * 2.4, 0, 0, 7); g.stroke(); }
+    }
+    g.fillStyle = relief ? "#000" : "rgba(70,40,15,.35)"; g.fillRect(0, y0, w, 1.5);   // le joint de colle
+  }
+};
+const mComptoir = new THREE.MeshStandardMaterial({ color:TH.comptoir, roughness:.42, metalness:0,
+  map:toileBois(2048, 768, lattes(false)), bumpMap:toileBois(2048, 768, lattes(true), false), bumpScale:.35 });
+const mChant = new THREE.MeshStandardMaterial({ color:TH.comptoir, roughness:.5, metalness:0,
+  map:toileBois(1024, 64, (g, w, h) => { g.fillStyle = "#b98f64"; g.fillRect(0, 0, w, h);
+    for (let x = 0; x < w; x += 1024 / 14 * .8) { g.fillStyle = `rgba(80,45,15,${.1 + Math.random() * .15})`; g.fillRect(x, 0, 2, h); } }) });
+const mMeuble = new THREE.MeshStandardMaterial({ color:TH.comptoir, roughness:.6, metalness:0,
+  map:toileBois(1024, 512, (g, w, h) => {                  // des portes peintes, anthracite vert
+    g.fillStyle = "#2e3833"; g.fillRect(0, 0, w, h);
+    for (let x = 0; x < w; x += w / 8) {
+      g.strokeStyle = "rgba(0,0,0,.45)"; g.lineWidth = 4; g.strokeRect(x + 6, 10, w / 8 - 12, h - 20);
+      g.strokeStyle = "rgba(255,255,255,.06)"; g.lineWidth = 2; g.strokeRect(x + 20, 26, w / 8 - 40, h - 52);
+      g.fillStyle = "#b8b2a8"; g.fillRect(x + w / 16 - 14, 40, 28, 5);                 // la poignée
+    }
+  }) });
 {
-  const c = new THREE.Mesh(new THREE.BoxGeometry(320, 4, 120), mComptoir);
+  // les six faces : les chants en bout de lattes, le dessus et le dessous en long
+  const c = new THREE.Mesh(new THREE.BoxGeometry(320, 4, 120), [mChant, mChant, mComptoir, mComptoir, mChant, mChant]);
   c.position.set(-12, -2, 2); c.receiveShadow = true;
   monde.add(c);
+  const meuble = new THREE.Mesh(new THREE.BoxGeometry(316, 81, 112), mMeuble);
+  meuble.position.set(-12, -44.5, 0); meuble.receiveShadow = true;
+  monde.add(meuble);
 }
 
 // ── LE DÉCOR : le café derrière le comptoir ───────────────────────────────
-// Un mur de carreaux jusqu'à hauteur d'épaule, peint au-dessus ; deux
-// tablettes de bois avec leurs sacs et leurs tasses ; l'ardoise du menu ; trois
-// suspensions. Assez loin pour que le brouillard l'adoucisse aux gros plans :
-// c'est un fond, il ne doit rien dire. Au thème sombre, il s'éteint (TH.decor).
+// Recréé d'après la maquette « Café 3D » de Claude Design (design_handoff_cafe_3d,
+// 24 septembre 2026) : mur sauge, soubassement de carreaux façon brique, cimaise
+// de chêne, deux étagères (sachets, gobelets, bocaux, une plante), l'ardoise du
+// menu, un petit cadre, trois suspensions. La maquette est en mètres, sol à 0 ;
+// ici on est en centimètres et le dessus du comptoir est à 0 : le comptoir fait
+// 85 cm. Deux écarts voulus : le verre des bocaux est un simple transparent (la
+// transmission referait tout le rendu à chaque image), et les suspensions
+// éclairent sans projeter d'ombres. Au thème sombre, le décor s'éteint (TH.decor).
 const DECOR = [];                       // [matière, couleur d'origine]
-function mDecor(o) { const m = new THREE.MeshStandardMaterial({ roughness:.8, metalness:0, ...o });
-  DECOR.push([m, m.color.clone()]); return m; }
-function toile(l, h, dessiner) {
-  const c = document.createElement("canvas"); c.width = l; c.height = h;
-  dessiner(c.getContext("2d"), l, h);
-  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 4; return t;
+function mDecor(o) {
+  const m = new THREE.MeshStandardMaterial({ roughness:.7, metalness:0, ...o });
+  DECOR.push([m, m.color.clone()]); return m;
 }
 {
-  const MUR_Z = -64, X0 = -12;
-  // les carreaux de métro, crème, joints gris
-  const carreaux = toile(512, 256, (x, l, h) => {
-    x.fillStyle = "#cfc9bd"; x.fillRect(0, 0, l, h);
-    for (let r = 0; r < 8; r++) for (let c = -1; c < 9; c++) {
-      const dx = (r % 2) * 32, g = 236 + ((r * 7 + c * 13) % 9);
-      x.fillStyle = `rgb(${g},${g - 4},${g - 12})`; x.fillRect(c * 64 + dx + 2, r * 32 + 2, 60, 28);
+  // On est DERRIÈRE le comptoir, à la place du barista : devant la machine,
+  // de l'autre côté du comptoir, c'est la salle, et le mur du fond est à ~5 m.
+  const MUR = -520;
+  const X = xm => xm * 100 - 12, Y = ym => (ym - .85) * 100, Z = zm => MUR + (zm + 1.6) * 100;
+  const alea = (a, b) => a + Math.random() * (b - a);
+  function toile(l, h, dessiner, srgb = true, rep = [1, 1]) {
+    const c = document.createElement("canvas"); c.width = l; c.height = h;
+    dessiner(c.getContext("2d"), l, h);
+    const t = new THREE.CanvasTexture(c); if (srgb) t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8;
+    t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(rep[0], rep[1]); return t;
+  }
+  const platre = base => (g, w, h) => {
+    g.fillStyle = base; g.fillRect(0, 0, w, h);
+    for (let i = 0; i < 2600; i++) { g.fillStyle = Math.random() < .5 ? "rgba(255,255,255,.007)" : "rgba(0,0,0,.009)";
+      g.beginPath(); g.arc(alea(0, w), alea(0, h), alea(8, 60), 0, 7); g.fill(); }
+    for (let i = 0; i < 30000; i++) { g.fillStyle = Math.random() < .5 ? "rgba(255,255,255,.05)" : "rgba(0,0,0,.05)";
+      g.fillRect(alea(0, w), alea(0, h), 1.5, 1.5); }
+  };
+  const veines = (base, sombre) => (g, w, h) => {
+    g.fillStyle = base; g.fillRect(0, 0, w, h);
+    for (let i = 0; i < 220; i++) { const y = alea(0, h); g.strokeStyle = `rgba(${sombre},${alea(.04, .16)})`; g.lineWidth = alea(.5, 3);
+      g.beginPath(); g.moveTo(0, y); for (let x = 0; x <= w; x += 32) g.lineTo(x, y + Math.sin(x / alea(60, 200) + i) * alea(1, 5)); g.stroke(); }
+    for (let i = 0; i < 6; i++) { const x = alea(0, w), y = alea(0, h); g.strokeStyle = `rgba(${sombre},.18)`;
+      for (let k = 1; k < 6; k++) { g.lineWidth = 1; g.beginPath(); g.ellipse(x, y, k * 7, k * 2.2, 0, 0, 7); g.stroke(); } }
+  };
+  const kraftT = (g, w, h) => { g.fillStyle = "#d7b98a"; g.fillRect(0, 0, w, h);
+    for (let i = 0; i < 4000; i++) { g.fillStyle = `rgba(120,80,40,${alea(.03, .12)})`; g.fillRect(alea(0, w), alea(0, h), alea(1, 6), 1); }
+    for (let i = 0; i < 8; i++) { g.strokeStyle = "rgba(255,255,255,.12)"; g.lineWidth = 2; g.beginPath(); const x = alea(0, w); g.moveTo(x, 0); g.lineTo(x + alea(-30, 30), h); g.stroke(); } };
+  const briques = couleur => (g, w, h) => {
+    g.fillStyle = couleur ? "#dcd9d2" : "#000"; g.fillRect(0, 0, w, h);
+    const bw = 128, bh = 44;
+    for (let r = 0; r * bh < h; r++) for (let c = -1; c * bw < w; c++) {
+      const x = c * bw + (r % 2 ? bw / 2 : 0), y = r * bh;
+      if (couleur) { const l = alea(228, 246); g.fillStyle = `rgb(${l},${l - 1},${l - 5})`; } else g.fillStyle = "#fff";
+      g.fillRect(x + 4, y + 4, bw - 8, bh - 8);
+      if (couleur) for (let k = 0; k < 40; k++) { g.fillStyle = "rgba(0,0,0,.03)"; g.fillRect(x + alea(4, bw - 8), y + alea(4, bh - 8), 3, 3); }
     }
+    if (!couleur) { g.filter = "blur(2px)"; g.drawImage(g.canvas, 0, 0); }
+  };
+  const sauge  = mDecor({ color:0xffffff, roughness:.92, map:toile(1024, 1024, platre("#5f7f6b"), true, [3, 2]),
+                          bumpMap:toile(1024, 1024, platre("#808080"), false, [3, 2]), bumpScale:1.2 });
+  const chene  = mDecor({ color:0xffffff, roughness:.5, map:toile(1024, 256, veines("#b98a5e", "90,55,30")),
+                          bumpMap:toile(1024, 256, veines("#888", "0,0,0"), false), bumpScale:.6 });
+  const cheneF = mDecor({ color:0xffffff, roughness:.55, map:toile(1024, 256, veines("#7d5638", "40,22,10")) });
+  const kraft  = mDecor({ color:0xffffff, roughness:.9, map:toile(256, 256, kraftT), bumpMap:toile(256, 256, kraftT, false), bumpScale:2 });
+  const charbon = mDecor({ color:0x34312e, roughness:.75 });
+  const fer    = mDecor({ color:0x1d1d1f, roughness:.38, metalness:.6 });
+  const ceram  = mDecor({ color:0xf1efea, roughness:.18, side:THREE.DoubleSide });
+  const verreB = mDecor({ color:0xe8f0ee, roughness:.05, transparent:true, opacity:.28, depthWrite:false });
+  const moulu  = mDecor({ color:0x3b2618, roughness:.95 });
+  const brique = mDecor({ color:0xffffff, roughness:.35, map:toile(1024, 1024, briques(true), true, [5, 1]),
+                          bumpMap:toile(1024, 1024, briques(false), false, [5, 1]), bumpScale:3 });
+  const ardoiseT = toile(1024, 680, (g, w, h) => {
+    g.fillStyle = "#434843"; g.fillRect(0, 0, w, h);
+    g.fillStyle = "#f2efe6"; g.textAlign = "center";
+    g.font = "bold 84px Georgia, serif"; g.fillText("Menu", w / 2, 120);
+    g.font = "44px Georgia, serif";
+    [["Espresso", "3,25"], ["Allongé", "3,50"], ["Cortado", "4,25"], ["Cappuccino", "4,75"], ["Latte", "5,00"]].forEach(([n, prix], i) => {
+      const y = 220 + i * 92;
+      g.textAlign = "left"; g.fillText(n, 90, y); g.textAlign = "right"; g.fillText(prix, w - 90, y);
+      const tw = g.measureText(n).width;
+      g.strokeStyle = "rgba(242,239,230,.35)"; g.lineWidth = 2;
+      g.beginPath(); g.moveTo(90 + 250 + (tw > 250 ? tw - 250 : 0) + 20, y - 12); g.lineTo(w - 230, y - 12); g.stroke();
+    });
+    g.globalAlpha = .05; for (let i = 0; i < 400; i++) { g.fillStyle = "#fff"; g.fillRect(Math.random() * w, Math.random() * h, 40 * Math.random(), 2); }
   });
-  carreaux.wrapS = carreaux.wrapT = THREE.RepeatWrapping; carreaux.repeat.set(16, 4);
-  const bas = new THREE.Mesh(new THREE.PlaneGeometry(420, 70), mDecor({ map:carreaux, roughness:.35 }));
-  bas.position.set(X0, 33, MUR_Z); bas.receiveShadow = true; monde.add(bas);
-  const haut = new THREE.Mesh(new THREE.PlaneGeometry(420, 150), mDecor({ color:0x3f5647, roughness:.9 }));
-  haut.position.set(X0, 143, MUR_Z); monde.add(haut);
-  const listel = new THREE.Mesh(new THREE.BoxGeometry(420, 2, 2), mDecor({ color:0x6b4a2e, roughness:.6 }));
-  listel.position.set(X0, 68.5, MUR_Z + 1); monde.add(listel);
-  // le plan de travail du fond, sous les tablettes
-  const bois = mDecor({ color:0x8a6242, roughness:.65 });
-  for (const y of [92, 118]) {
-    const t = new THREE.Mesh(new THREE.BoxGeometry(150, 2.2, 14), bois);
-    t.position.set(-95, y, MUR_Z + 7); t.castShadow = t.receiveShadow = true; monde.add(t);
-    for (const x of [-160, -30]) {
-      const e = new THREE.Mesh(new THREE.BoxGeometry(1.4, 7, 12), mDecor({ color:0x2b2d2f, metalness:.6, roughness:.4 }));
-      e.position.set(x, y - 4.5, MUR_Z + 6); monde.add(e);
+  const ardoise = mDecor({ color:0xffffff, roughness:.9, map:ardoiseT });
+
+  const decor = new THREE.Group(); monde.add(decor);
+  const poser = (geo, m, xm, ym, zm, ombre = true) => {
+    const o = new THREE.Mesh(geo, m); o.position.set(X(xm), Y(ym), Z(zm));
+    o.castShadow = ombre; o.receiveShadow = true; decor.add(o); return o;
+  };
+  const cube = (w, h, d) => new THREE.BoxGeometry(w * 100, h * 100, d * 100);
+  const W = 6.4, H = 3.4, murZ = -1.6;
+  poser(cube(W, H, .1), sauge, 0, H / 2, murZ - .05);
+  poser(cube(W, 1, .02), brique, 0, .5, murZ + .011);
+  poser(cube(W, .05, .05), cheneF, 0, 1.02, murZ + .025);
+  // les étagères, dans la partie gauche du mur
+  const sx0 = -W / 2, sw = 2.9, sd = .26;
+  for (const y of [2.25, 1.7]) {
+    poser(cube(sw, .04, sd), chene, sx0 + sw / 2, y, murZ + sd / 2);
+    for (const bx of [.25, sw - .25]) {
+      poser(cube(.03, .16, .02), fer, sx0 + bx, y - .1, murZ + .01);
+      poser(cube(.03, .02, sd - .02), fer, sx0 + bx, y - .03, murZ + sd / 2);
     }
   }
-  // sur les tablettes : des sacs de grains, des bocaux, des tasses empilées
-  const kraft = mDecor({ color:0xb58a5c, roughness:.9 }), noirSac = mDecor({ color:0x2b2926, roughness:.85 });
-  const porc = mDecor({ color:0xf1eee8, roughness:.3 }), verreB = mDecor({ color:0xd9e4e0, roughness:.1, transparent:true, opacity:.55 });
-  const grainB = mDecor({ color:0x4a2c17, roughness:.7 });
-  [[-155, kraft], [-146, noirSac], [-137, kraft]].forEach(([x, m]) => {
-    const sac = new THREE.Mesh(new THREE.BoxGeometry(7.5, 13, 5), m);
-    sac.position.set(x, 99.6, MUR_Z + 7); sac.castShadow = true; monde.add(sac);
+  const sachet = (x, y, m, h = .24) => {
+    poser(cube(.16, h, .11), m, x, y + h / 2 + .02, murZ + .12);
+    poser(cube(.165, .025, .115), m === kraft ? cheneF : fer, x, y + h + .005, murZ + .12);
+  };
+  sachet(sx0 + .25, 2.25, kraft); sachet(sx0 + .45, 2.25, kraft); sachet(sx0 + .65, 2.25, charbon);
+  sachet(sx0 + .15, 1.7, kraft); sachet(sx0 + .34, 1.7, charbon); sachet(sx0 + .53, 1.7, kraft);
+  const gobelet = new THREE.LatheGeometry([[.001,0],[.034,0],[.036,.004],[.046,.09],[.048,.092],[.044,.092],[.034,.006],[.001,.006]]
+    .map(([a, b]) => new THREE.Vector2(a * 100, (b - .045) * 100)), 48);
+  [[1.65, 3], [1.83, 2], [2.0, 3], [2.18, 2]].forEach(([x, n]) => {
+    for (let i = 0; i < n; i++) poser(gobelet, ceram, sx0 + x, 2.32 + i * .065, murZ + .13);
   });
-  for (const x of [-120, -108, -96]) {
-    const b = new THREE.Mesh(new THREE.CylinderGeometry(3.6, 3.6, 11, 24), verreB); b.position.set(x, 98.6, MUR_Z + 7); monde.add(b);
-    const g = new THREE.Mesh(new THREE.CylinderGeometry(3.3, 3.3, 7, 24), grainB); g.position.set(x, 96.6, MUR_Z + 7); monde.add(g);
+  for (const x of [1.0, 1.25, 1.5]) {
+    poser(new THREE.CylinderGeometry(7.5, 7.5, 22, 40), verreB, sx0 + x, 1.83, murZ + .13, false);
+    poser(new THREE.CylinderGeometry(7, 7, 13, 40), moulu, sx0 + x, 1.788, murZ + .13);
+    poser(new THREE.CylinderGeometry(7.8, 7.8, 2.5, 40), cheneF, sx0 + x, 1.952, murZ + .13);
   }
-  for (let i = 0; i < 4; i++) for (let k = 0; k < 3 - (i % 2); k++) {
-    const t = new THREE.Mesh(new THREE.CylinderGeometry(3.4, 2.6, 5, 24), porc);
-    t.position.set(-75 + i * 9, 121.6 + k * 4.2, MUR_Z + 7); t.castShadow = true; monde.add(t);
-  }
-  [[-150, kraft], [-140, kraft], [-130, noirSac]].forEach(([x, m]) => {
-    const sac = new THREE.Mesh(new THREE.BoxGeometry(7, 12, 5), m);
-    sac.position.set(x, 125.1, MUR_Z + 7); monde.add(sac);
-  });
-  // l'ardoise du menu
-  const ardoise = toile(768, 512, (x, l, h) => {
-    x.fillStyle = "#2a2f2b"; x.fillRect(0, 0, l, h);
-    x.strokeStyle = "#8a6242"; x.lineWidth = 26; x.strokeRect(13, 13, l - 26, h - 26);
-    x.fillStyle = "#EDEBE4"; x.textAlign = "center";
-    x.font = "700 64px Georgia, serif"; x.fillText("Menu", l / 2, 104);
-    x.font = "400 36px Georgia, serif"; x.textAlign = "left";
-    [["Espresso", "3,25"], ["Allongé", "3,50"], ["Cortado", "4,25"], ["Cappuccino", "4,75"], ["Latte", "5,00"]]
-      .forEach(([n, prix], i) => {
-        const y = 178 + i * 62;
-        x.fillText(n, 90, y); x.textAlign = "right"; x.fillText(prix, l - 90, y); x.textAlign = "left";
-        x.fillStyle = "rgba(237,235,228,.25)"; x.fillRect(90 + x.measureText(n).width + 14, y - 10, 340 - x.measureText(n).width, 2);
-        x.fillStyle = "#EDEBE4";
-      });
-  });
-  const menu = new THREE.Mesh(new THREE.PlaneGeometry(66, 44), mDecor({ map:ardoise, roughness:.95 }));
-  menu.position.set(70, 112, MUR_Z + .6); monde.add(menu);
-  // trois suspensions au-dessus du comptoir
-  const abat = mDecor({ color:0x2b2d2f, metalness:.7, roughness:.35, side:THREE.DoubleSide });
-  for (const x of [-100, -12, 76]) {
-    const fil = new THREE.Mesh(new THREE.CylinderGeometry(.15, .15, 60, 6), abat);
-    fil.position.set(x, 180, -30); monde.add(fil);
-    const cone = new THREE.Mesh(new THREE.ConeGeometry(9, 10, 32, 1, true), abat);
-    cone.position.set(x, 146, -30); monde.add(cone);
-    const ampoule = new THREE.Mesh(new THREE.SphereGeometry(3, 20, 12),
-      new THREE.MeshStandardMaterial({ color:0xfff4d6, emissive:0xffd89a, emissiveIntensity:1.4 }));
-    ampoule.position.set(x, 141.5, -30); monde.add(ampoule);
+  poser(new THREE.CylinderGeometry(7, 5.5, 12, 32), ceram, sx0 + 2.3, 1.78, murZ + .13);
+  poser(new THREE.SphereGeometry(10, 32, 16), mDecor({ color:0x4f7a50, roughness:.8 }), sx0 + 2.3, 1.91, murZ + .13);
+  // l'ardoise du menu, son rebord, la craie ; le petit cadre à côté
+  poser(cube(1.34, .92, .04), chene, 1.6, 2.0, murZ + .02);
+  poser(cube(1.22, .8, .012), ardoise, 1.6, 2.0, murZ + .046);
+  poser(cube(1.4, .03, .08), chene, 1.6, 1.52, murZ + .04);
+  poser(cube(.08, .015, .015), ceram, 1.3, 1.545, murZ + .05);
+  poser(cube(.42, .56, .03), fer, 2.7, 2.05, murZ + .015);
+  poser(cube(.36, .5, .005), ceram, 2.7, 2.05, murZ + .032);
+  poser(new THREE.CircleGeometry(11, 48), mDecor({ color:0xc07a55, roughness:.9 }), 2.7, 2.1, murZ + .036);
+  poser(cube(.22, .04, .002), sauge, 2.7, 1.9, murZ + .036);
+  // la salle : un plancher de lames, trois tables bistro et leurs chaises
+  const lamesT = (g, w, h) => { const pw = w / 4;
+    for (let i = 0; i < 4; i++) { const sub = document.createElement("canvas"); sub.width = pw; sub.height = h;
+      veines("#6e4f38", "30,15,5")(sub.getContext("2d"), pw, h);
+      g.save(); g.translate(i * pw + pw, 0); g.rotate(Math.PI / 2); g.drawImage(sub, 0, 0, h, pw); g.restore();
+      g.fillStyle = `rgba(0,0,0,${alea(0, .12)})`; g.fillRect(i * pw, 0, pw, h);
+      g.fillStyle = "rgba(20,10,5,.6)"; g.fillRect(i * pw, 0, 2, h); } };
+  const plancher = mDecor({ color:0xffffff, roughness:.45, map:toile(1024, 1024, lamesT, true, [6, 4]) });
+  const sol = new THREE.Mesh(new THREE.PlaneGeometry(900, 520), plancher);
+  sol.rotation.x = -Math.PI / 2; sol.position.set(-12, -85, MUR + 250); sol.receiveShadow = true; decor.add(sol);
+  const marbre = mDecor({ color:0xeeebe5, roughness:.25 });
+  const table = (x, z) => {
+    const t = new THREE.Group(); t.position.set(x, -85, z); decor.add(t);
+    const m = (geo, mat, y) => { const o = new THREE.Mesh(geo, mat); o.position.y = y; o.castShadow = o.receiveShadow = true; t.add(o); return o; };
+    m(new THREE.CylinderGeometry(30, 30, 3, 48), marbre, 74);
+    m(new THREE.CylinderGeometry(2, 2, 72, 16), fer, 37);
+    m(new THREE.CylinderGeometry(20, 22, 2, 32), fer, 1);
+    for (const [dx, dz, r] of [[-42, 6, .5], [40, -8, -2.7]]) {         // deux chaises bistro
+      const c = new THREE.Group(); c.position.set(dx, 0, dz); c.rotation.y = r; t.add(c);
+      const cm = (geo, mat, x, y, zz) => { const o = new THREE.Mesh(geo, mat); o.position.set(x, y, zz); o.castShadow = true; c.add(o); };
+      cm(new THREE.CylinderGeometry(19, 19, 3, 32), chene, 0, 46, 0);
+      for (const [lx, lz] of [[-12, -12], [12, -12], [-12, 12], [12, 12]]) cm(new THREE.CylinderGeometry(1.1, 1.1, 45, 8), fer, lx, 22.5, lz);
+      cm(new THREE.BoxGeometry(34, 14, 2), chene, 0, 78, -17);
+      for (const lx of [-15, 15]) cm(new THREE.CylinderGeometry(1, 1, 32, 8), fer, lx, 62, -17);
+    }
+  };
+  table(-190, MUR + 150); table(-20, MUR + 250); table(160, MUR + 160);
+  // le comptoir, côté clients : un rebord surélevé, comme au bar
+  const rebord = new THREE.Mesh(new THREE.BoxGeometry(320, 3, 26), mComptoir);
+  rebord.position.set(-12, 13, -71); rebord.castShadow = rebord.receiveShadow = true; decor.add(rebord);
+  const devant = new THREE.Mesh(new THREE.BoxGeometry(320, 98, 3), mMeuble);
+  devant.position.set(-12, -37, -83); decor.add(devant);
+  const joue = new THREE.Mesh(new THREE.BoxGeometry(320, 12, 2), mChant);
+  joue.position.set(-12, 5.5, -59); decor.add(joue);
+
+  // les trois suspensions, et leur lumière chaude vers le comptoir
+  const interieur = mDecor({ color:0xf5f2ea, roughness:.6, side:THREE.BackSide });
+  const abat = mDecor({ color:0x1d1d1f, roughness:.38, metalness:.6, side:THREE.DoubleSide });
+  const ampoule = new THREE.MeshStandardMaterial({ color:0xfff4dc, roughness:.3, emissive:0xffd9a0, emissiveIntensity:6 });
+  for (const x of [-1.9, 0, 1.9]) {
+    const y = 2.75, z = (-9 - MUR) / 100 - 1.6;          // au-dessus du comptoir, pas du mur
+    poser(new THREE.CylinderGeometry(.4, .4, (H - y) * 100, 8), fer, x, y + (H - y) / 2, z, false);
+    poser(new THREE.ConeGeometry(20, 20, 48, 1, true), abat, x, y, z);
+    poser(new THREE.ConeGeometry(19.5, 19.5, 48, 1, true), interieur, x, y - .002, z, false);
+    poser(new THREE.TorusGeometry(20, .6, 8, 64), charbon, x, y - .1, z, false).rotation.x = Math.PI / 2;
+    poser(new THREE.SphereGeometry(5.5, 32, 16), ampoule, x, y - .1, z, false);
+    const L = new THREE.SpotLight(0xffc98a, 1.1, 0, .95, .6, 0);
+    L.position.set(X(x), Y(y - .08), Z(z)); L.target.position.set(X(x), Y(.85), Z(z - .2));
+    decor.add(L, L.target); DECOR.push([L, L.color.clone()]);
   }
 }
 
@@ -1520,6 +1658,37 @@ tasse.add(tour([[0,14.5],[4.6,14.5],[4.8,14.9],[0,14.9]], 0,0,0, mPorcel, null))
 tasse.add(tour([[0,14.9],[2.3,14.9],[2.9,15.5],[3.35,19.9],[3.1,20],[2.75,15.8],[0,15.8]], 0,0,0, mPorcel, null));
 tasse.position.set(18, 0, GZ);
 machine.add(tasse);
+
+// ── SUR LE COMPTOIR : le pichet, une pile de tasses, le bac à marc ─────────
+// Hors des lignes de vue des caméras de panne (vérifié pour les cinq).
+{
+  // le pichet à lait, en inox, son bec et son anse
+  const pichet = new THREE.Group(); pichet.position.set(54, 0, 24); pichet.rotation.y = -.6;
+  pichet.add(tour([[0,0],[4.1,0],[4.4,.4],[4.6,4],[4.3,8.5],[3.9,11.2],[4.1,11.6],[3.6,11.6],[3.4,8.6],[3.9,4],[0,.4]], 0,0,0, mInox, null, 48));
+  const bec = new THREE.Mesh(new THREE.ConeGeometry(1.1, 3.2, 16, 1, true), mInox);
+  bec.rotation.z = -Math.PI / 2 - .5; bec.position.set(4.6, 10.8, 0); pichet.add(bec);
+  pichet.add(tube([[-3.8,9.6,0],[-6.6,9.2,0],[-6.8,5.2,0],[-4.2,3.6,0]], .45, mInox));
+  monde.add(pichet);
+  // une pile de tasses à cappuccino retournées, sur un linge
+  const linge = new THREE.Mesh(new THREE.BoxGeometry(18, .3, 13), new THREE.MeshStandardMaterial({ color:0xe9e3d6, roughness:.95 }));
+  linge.position.set(66, .15, -4); linge.receiveShadow = true; monde.add(linge);
+  const tasseR = [[0,7],[3.9,7],[4.4,6.2],[4.3,1.8],[3,0],[2.6,0],[3.6,1.8],[3.7,6],[3.2,6.6],[0,6.6]];
+  for (const [x, z, n] of [[62, -6, 3], [70, -2, 2]])
+    for (let k = 0; k < n; k++) monde.add(tour(tasseR, x, .3 + k * 6.2, z, mPorcel, null, 40));
+  // le bac à marc : une boîte noire, sa barre caoutchoutée, les galettes dedans
+  const bac = new THREE.Group(); bac.position.set(-96, 0, 22); bac.rotation.y = .25;
+  bac.add(arrondi(15, 12, 13, 1.2, 0, 6, 0, mNoir));
+  const creux = new THREE.Mesh(new THREE.PlaneGeometry(12.6, 10.6), new THREE.MeshStandardMaterial({ color:0x2a1a0f, roughness:1 }));
+  creux.rotation.x = -Math.PI / 2; creux.position.y = 12.05; bac.add(creux);
+  const barre = new THREE.Mesh(new THREE.CylinderGeometry(1, 1, 14, 20), matiere(M.caoutch));
+  barre.rotation.x = Math.PI / 2; barre.position.set(0, 12.2, 0); bac.add(barre);
+  for (const [dx, dz] of [[-3.5, -2.5], [3.8, 2.8]]) {
+    const g = new THREE.Mesh(new THREE.CylinderGeometry(3.6, 3.6, 2, 24), new THREE.MeshStandardMaterial({ color:0x3b2618, roughness:.95 }));
+    g.position.set(dx, 12, dz); g.rotation.set(.2, 0, -.15); bac.add(g);
+  }
+  bac.traverse(o => { if (o.isMesh) o.castShadow = o.receiveShadow = true; });
+  monde.add(bac);
+}
 
 // ── LE MANOMÈTRE ───────────────────────────────────────────────────────────
 const ang = bar => -135 + (bar / 12) * 270;
@@ -1656,7 +1825,7 @@ function appliquerTheme() {
   TH = THEMES[themeCourant()];
   renderer.setClearColor(TH.fond, 1);
   monde.fog.color.setHex(TH.fond);
-  mComptoir.color.setHex(TH.comptoir);
+  for (const m of [mComptoir, mChant, mMeuble]) m.color.setHex(TH.comptoir);
   for (const [m, c] of DECOR) m.color.copy(c).multiplyScalar(TH.decor);
   renderer.toneMappingExposure = TH.expo;
   for (const m of LIGNES) { m.color.setHex(TH.trait); if (m.userData.opaciteFixe == null) m.opacity = TH.traitOp; }
@@ -1854,7 +2023,7 @@ function demarrer(arg) {
     // jamais la machine. En portrait, la caméra recule loin pour que tout tienne
     // en largeur ; un brouillard fixe l'avalait alors tout entière.
     const d = oeil.distanceTo(vise);
-    monde.fog.near = d + 60; monde.fog.far = d + 200;
+    monde.fog.near = d + 140; monde.fog.far = d + 1100;  // la salle, au loin, s'estompe à peine
     machine.rotation.y = p < 1.2 ? Math.sin(maint / 5200) * .06 * (1.2 - p) : 0;
 
     // 3. la panne en cours — une seule fenêtre de coupe à la fois
