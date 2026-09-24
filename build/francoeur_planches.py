@@ -40,6 +40,7 @@ import gerante as GER  # noqa: E402
 import modeles as MOD  # noqa: E402
 import pieges as PIE  # noqa: E402
 import fiche as FIC  # noqa: E402
+import identite as IDE  # noqa: E402
 
 CROQUIS = RACINE / "assets" / "interactive" / "francoeur" / "croquis"
 SONS = RACINE / "assets" / "interactive" / "francoeur" / "sons"
@@ -340,6 +341,8 @@ def main():
     d = donnees()
     SORTIE.parent.mkdir(parents=True, exist_ok=True)
     page = GABARIT.replace("%%DONNEES%%", json.dumps(d, ensure_ascii=False, separators=(",", ":")))
+    page = (page.replace("%%SURTITRE%%", html.escape(IDE.SURTITRE)).replace("%%SECTEUR%%", html.escape(IDE.SECTEUR))
+                .replace("%%SECTEUR_COURT%%", html.escape(IDE.SECTEUR_COURT)))
     SORTIE.write_text(page, encoding="utf-8")
     n_img = sum("img" in m for m in d["mots"])
     n_son = sum("son" in m for m in d["mots"])
@@ -605,12 +608,20 @@ details.bloc>summary{cursor:pointer;min-height:44px;padding:10px 0;box-sizing:bo
   .langues{grid-template-columns:repeat(2,minmax(0,1fr))}
   .langues button{font-size:17px;padding:12px}
 }
+.secteur{display:flex;flex-direction:column;align-items:flex-end;text-align:right;line-height:1.15}
+.secteur small{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted)}
+.secteur b{font-size:19px;font-weight:900;color:var(--mf-teinte)}
+.secteur .court{display:none}
+@media (max-width:480px){.secteur small{display:none}.secteur b{font-size:16px}.secteur .long{display:none}.secteur .court{display:inline}}
 @media (prefers-reduced-motion:no-preference){.art,.rayon{transition:border-color .15s,box-shadow .15s}}
 </style>
 </head>
 <body>
 <div class="fr-barre"><div class="fr-barre__in">
   <span class="fr-lockup"><span class="fr-nom" role="img" aria-label="francis">franc<span class="fr-i" aria-hidden="true">ı<span class="fr-point"></span></span>s</span><span class="fr-trait" aria-hidden="true"></span><span class="fr-desc">Aide à l'apprentissage du français</span></span>
+  <!-- Le secteur de la trousse, à côté de la marque et jamais dedans : le
+       descripteur de francis ne change pas (build/contenu/…/identite.py). -->
+  <span class="secteur"><small>%%SURTITRE%%</small><b><span class="long">%%SECTEUR%%</span><span class="court">%%SECTEUR_COURT%%</span></b></span>
 </div></div>
 <main class="mf" id="app"></main>
 <div class="fiche" id="fiche" hidden><div class="carte" role="dialog" aria-modal="true" aria-labelledby="ficheMot" id="carte"></div></div>

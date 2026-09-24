@@ -256,12 +256,20 @@ details.bloc>summary{cursor:pointer;min-height:44px;padding:10px 0;box-sizing:bo
   .langues{grid-template-columns:repeat(2,minmax(0,1fr))}
   .langues button{font-size:17px;padding:12px}
 }
+.secteur{display:flex;flex-direction:column;align-items:flex-end;text-align:right;line-height:1.15}
+.secteur small{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted)}
+.secteur b{font-size:19px;font-weight:900;color:var(--mf-teinte)}
+.secteur .court{display:none}
+@media (max-width:480px){.secteur small{display:none}.secteur b{font-size:16px}.secteur .long{display:none}.secteur .court{display:inline}}
 @media (prefers-reduced-motion:no-preference){.art,.rayon{transition:border-color .15s,box-shadow .15s}}
 </style>
 </head>
 <body>
 <div class="fr-barre"><div class="fr-barre__in">
   <span class="fr-lockup"><span class="fr-nom" role="img" aria-label="francis">franc<span class="fr-i" aria-hidden="true">ı<span class="fr-point"></span></span>s</span><span class="fr-trait" aria-hidden="true"></span><span class="fr-desc">Aide à l'apprentissage du français</span></span>
+  <!-- Le secteur de la trousse, à côté de la marque et jamais dedans : le
+       descripteur de francis ne change pas (build/contenu/…/identite.py). -->
+  <span class="secteur"><small>Formation en milieu de travail</small><b><span class="long">Vente au détail · Vêtements</span><span class="court">Vente de vêtements</span></b></span>
 </div></div>
 <main class="mf" id="app"></main>
 <div class="fiche" id="fiche" hidden><div class="carte" role="dialog" aria-modal="true" aria-labelledby="ficheMot" id="carte"></div></div>

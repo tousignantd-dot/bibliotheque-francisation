@@ -21,6 +21,8 @@ from lexique import LEXIQUE  # noqa: E402
 from demandes import DEMANDES  # noqa: E402
 import test as TEST  # noqa: E402
 from clients import CLIENTS, GESTES  # noqa: E402
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+import francoeur_denim as DENIM  # noqa: E402
 
 SORTIE = RACINE / "assets" / "presentations" / "francoeur-pilote.html"
 
@@ -37,7 +39,7 @@ def main():
     tete = (RACINE / "assets" / "presentations" / "magasin-vetements-plan.html").read_text(encoding="utf-8")
     tete = tete[:tete.index("<body")]
     tete = re.sub(r"<title>.*?</title>", "<title>Maison Francœur — le pilote</title>", tete)
-    tete = tete.replace("</style>", CSS + "</style>", 1)
+    tete = tete.replace("</style>", CSS + DENIM.CSS + "</style>", 1)
     gestes = "".join(f"<li>{g['nom']} — « {g['phrase']} »</li>" for g in GESTES)
     clients = " · ".join(c[1] for c in CLIENTS)
 

@@ -28,6 +28,8 @@ from demandes import DEMANDES  # noqa: E402
 import test as TEST  # noqa: E402
 from clients import CLIENTS, GESTES  # noqa: E402
 from fiche import REGLE_RELAIS  # noqa: E402
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+import francoeur_denim as DENIM  # noqa: E402
 from prix import FORMULES, NOTES  # noqa: E402
 
 PRES = RACINE / "assets" / "presentations"
@@ -63,7 +65,7 @@ def chiffres():
 def tete(titre):
     t = (PRES / "magasin-vetements-plan.html").read_text(encoding="utf-8")
     t = t[:t.index("<body")]
-    return re.sub(r"<title>.*?</title>", f"<title>{E(titre)}</title>", t).replace("</style>", CSS + "</style>", 1)
+    return re.sub(r"<title>.*?</title>", f"<title>{E(titre)}</title>", t).replace("</style>", CSS + DENIM.CSS + "</style>", 1)
 
 
 CSS = """
@@ -249,8 +251,13 @@ CAPTURES = [
 ]
 
 
+# Les captures se refont par `node build/francoeur_captures.mjs` ; même nom,
+# même adresse : sans ce numéro, le navigateur montre l'ancienne image.
+CAPTURES_V = "2"   # 2 : palette Denim et secteur dans la barre, 24 septembre 2026
+
+
 def demo(c):
-    caps = "".join(f'<figure><img src="francoeur-captures/{i}.png" alt="{E(t)}" loading="lazy">'
+    caps = "".join(f'<figure><img src="francoeur-captures/{i}.png?v={CAPTURES_V}" alt="{E(t)}" loading="lazy">'
                    f'<figcaption><b>{E(t)}</b>{E(l)}</figcaption></figure>' for i, t, l in CAPTURES)
     essais = "".join(f'<a href="{APP}?{q}" target="_blank" rel="noopener">{E(t)}</a>' for t, q in [
         ("Le choix de langue", "ecran=langue"), ("Un rayon, en espagnol", "langue=es&ecran=planche&p=exterieur"),
