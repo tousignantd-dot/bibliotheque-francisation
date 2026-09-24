@@ -1,0 +1,531 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Magasin de vêtements — le plan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap">
+<style>
+/* ═══════════════════════════════════════════════════════════
+   UN MODULE POUR LA VENTE DE CHAUSSURES — LE CADRAGE
+   Chantier « formation en entreprise », second secteur :
+   le commerce de détail. Écrite à la main, comme
+   analyse-marche.html — ses chiffres viennent d'ailleurs et
+   doivent vieillir visiblement.
+
+   Vert : ce que le tour de main actuel produit déjà.
+   Ambre : ce qui attend votre décision.
+   Rouge : l'argument de vente qui tient à une obligation légale.
+   L'acier ne fait que la structure.
+   ═══════════════════════════════════════════════════════════ */
+
+:root{
+  --ground:#F7F7F5; --card:#FFFFFF; --sunken:#FBFBFA;
+  --ink:#17181A; --body:#3A3D40; --muted:#6E7175;
+  --line:#E4E4E0; --line-fort:#D2D2CD;
+
+  --fait:#0A8F5B;    --fait-bg:#E6F5EE;
+  --decid:#C07A08;   --decid-bg:#FBF2E2;
+  --loi:#C7302B;     --loi-bg:#FBEDEC;
+  --acier:#1D6B8F;   --acier-bg:#E7F0F6;
+
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#151618; --card:#1D1F22; --sunken:#212326;
+    --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+    --line:#2E3135; --line-fort:#3D4146;
+    --fait:#4BC48D; --fait-bg:#12291F;
+    --decid:#E0A63F; --decid-bg:#2C2213;
+    --loi:#EE7A73; --loi-bg:#2E1917;
+    --acier:#6DAFD2; --acier-bg:#14242C;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#151618; --card:#1D1F22; --sunken:#212326;
+  --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+  --line:#2E3135; --line-fort:#3D4146;
+  --fait:#4BC48D; --fait-bg:#12291F;
+  --decid:#E0A63F; --decid-bg:#2C2213;
+  --loi:#EE7A73; --loi-bg:#2E1917;
+  --acier:#6DAFD2; --acier-bg:#14242C;
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--body);
+  font-family:Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased}
+.doc{max-width:880px;margin:0 auto;padding:56px 24px 96px}
+
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--acier);margin:0 0 14px}
+h1{font-family:Newsreader,Georgia,serif;font-size:clamp(38px,6.4vw,58px);line-height:1.04;
+  font-weight:500;letter-spacing:-.02em;color:var(--ink);margin:0 0 20px;text-wrap:balance}
+.chapeau{font-size:19px;line-height:1.6;color:var(--body);margin:0;max-width:62ch}
+.chapeau strong{color:var(--ink);font-weight:700}
+h2{font-family:Newsreader,Georgia,serif;font-size:29px;line-height:1.2;font-weight:600;
+  letter-spacing:-.01em;color:var(--ink);margin:0 0 4px;text-wrap:balance}
+h3{font-size:15px;font-weight:800;color:var(--ink);margin:0 0 6px}
+p{margin:0;max-width:68ch}
+section{display:flex;flex-direction:column;gap:16px;padding:44px 0 0;margin:44px 0 0;
+  border-top:1px solid var(--line)}
+section.premier{border-top:none;margin-top:0;padding-top:40px}
+code{font-family:var(--mono);font-size:.86em;background:var(--sunken);
+  border:1px solid var(--line);border-radius:4px;padding:1px 5px;color:var(--ink)}
+ul.simple{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px}
+ul.simple li{max-width:66ch} ul.simple li strong{color:var(--ink)}
+em.art{font-style:normal;font-family:var(--mono);font-size:.82em;color:var(--muted);
+  white-space:nowrap}
+
+.these{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--acier);
+  border-radius:3px;padding:26px 28px;display:flex;flex-direction:column;gap:12px}
+.these p{font-size:18px}
+.these .cle{font-family:Newsreader,Georgia,serif;font-size:23px;line-height:1.3;
+  font-weight:500;color:var(--ink);font-style:italic}
+
+/* ── Les décisions ─────────────────────────────────────── */
+.decisions{display:flex;flex-direction:column;gap:2px;counter-reset:d}
+.dec{counter-increment:d;background:var(--card);border:1px solid var(--line);
+  border-left:5px solid var(--decid);border-radius:3px;padding:19px 22px 19px 60px;
+  position:relative;display:flex;flex-direction:column;gap:8px}
+.dec.ok{border-left-color:var(--fait)}
+.dec::before{content:counter(d);position:absolute;left:24px;top:18px;
+  font-family:var(--mono);font-size:14px;color:var(--muted)}
+.dec .ligne{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;
+  justify-content:space-between}
+.dec p{font-size:15.5px}
+.dec .defaut{font-size:13.5px;color:var(--muted);font-style:italic}
+
+.badge{display:inline-block;font-size:11.5px;font-weight:800;letter-spacing:.05em;
+  text-transform:uppercase;padding:3px 9px;border-radius:2px;white-space:nowrap}
+.b-fait{background:var(--fait-bg);color:var(--fait)}
+.b-dec{background:var(--decid-bg);color:var(--decid)}
+.b-loi{background:var(--loi-bg);color:var(--loi)}
+.b-n{background:var(--sunken);color:var(--muted);border:1px solid var(--line)}
+
+/* ── Tableaux ──────────────────────────────────────────── */
+.defile{overflow-x:auto;border:1px solid var(--line);border-radius:3px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:15px;min-width:640px}
+caption{caption-side:top;text-align:left;padding:0 0 10px;font-size:13.5px;color:var(--muted)}
+th,td{padding:12px 15px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{font-size:11.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--muted);background:var(--sunken);white-space:nowrap}
+tbody tr:last-child td{border-bottom:none}
+td.q{font-weight:700;color:var(--ink)}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+td small{display:block;color:var(--muted);font-size:13px;line-height:1.45;margin-top:3px}
+tbody tr td:first-child{border-left:4px solid transparent}
+tr.l td:first-child{border-left-color:var(--loi)}
+tr.d td:first-child{border-left-color:var(--decid)}
+tr.f td:first-child{border-left-color:var(--fait)}
+
+/* ── Chiffres ──────────────────────────────────────────── */
+.chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.ch{background:var(--card);border:1px solid var(--line);border-radius:3px;
+  border-top:3px solid var(--acier);padding:15px 16px}
+.ch .n{font-family:Newsreader,Georgia,serif;font-size:30px;line-height:1;font-weight:500;
+  color:var(--ink);display:block;font-variant-numeric:tabular-nums}
+.ch .q{font-size:12.5px;font-weight:700;color:var(--muted);line-height:1.35;display:block;margin-top:7px}
+
+/* ── Marche à suivre ───────────────────────────────────── */
+ol.actions{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;
+  counter-reset:a}
+ol.actions li{counter-increment:a;background:var(--card);border:1px solid var(--line);
+  border-radius:3px;padding:18px 22px 18px 62px;position:relative;display:flex;
+  flex-direction:column;gap:6px}
+ol.actions li::before{content:counter(a);position:absolute;left:22px;top:17px;
+  font-family:var(--mono);font-size:14px;color:var(--muted)}
+ol.actions li p{font-size:15.5px}
+.qui{font-size:13px;color:var(--muted);font-style:italic}
+
+.reserve{border:1px dashed var(--line-fort);border-radius:3px;padding:20px 24px;
+  font-size:15px;color:var(--muted);display:flex;flex-direction:column;gap:9px}
+.reserve strong{color:var(--body)}
+.avert{background:var(--loi-bg);border:1px solid var(--loi);border-radius:3px;
+  padding:20px 24px;display:flex;flex-direction:column;gap:9px}
+.avert strong{color:var(--ink)}
+.avert p{font-size:15.5px;color:var(--body)}
+.pied{margin-top:52px;padding-top:22px;border-top:1px solid var(--line);font-size:13.5px;
+  color:var(--muted);display:flex;flex-direction:column;gap:5px}
+@media (max-width:620px){ .doc{padding:36px 18px 72px} }
+
+/* ── décisions à boutons (plan magasin de vêtements) ── */
+.dec2{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:12px 0}
+.dq{margin:0 0 10px;font-weight:700;color:var(--ink)}
+.dn{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--decid-bg);color:var(--decid);font-size:13px;margin-right:8px}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opt{font:inherit;font-size:15px;text-align:left;cursor:pointer;background:var(--sunken);color:var(--body);border:1px solid var(--line-fort);border-radius:10px;padding:8px 12px}
+.opt:hover{border-color:var(--acier)}
+.opt[aria-pressed="true"]{background:var(--fait-bg);border-color:var(--fait);color:var(--ink);font-weight:700}
+.opt .tag{font-size:12px;color:var(--decid);font-weight:700;margin-left:4px}
+.dw{margin:10px 0 0;font-size:15px;color:var(--muted)}
+.btn-export{font:inherit;font-weight:700;cursor:pointer;background:var(--acier);color:#fff;border:0;border-radius:10px;padding:10px 16px}
+.etat{margin-left:12px;color:var(--muted);font-size:15px}
+table{display:block;overflow-x:auto}
+</style>
+<style>
+  .doc{padding-top:26px}
+  .retour{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;
+    color:var(--muted);text-decoration:none;margin-bottom:34px}
+  .retour:hover{color:var(--acier)}
+  table.cmp{width:100%;border-collapse:collapse;font-size:15px;background:var(--card);
+    border:1px solid var(--line);border-radius:3px;overflow:hidden}
+  table.cmp th,table.cmp td{padding:13px 15px;text-align:left;vertical-align:top;
+    border-bottom:1px solid var(--line)}
+  table.cmp thead th{background:var(--sunken);font-size:12px;font-weight:800;
+    letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+  table.cmp tbody tr:last-child td{border-bottom:0}
+  table.cmp td:first-child{font-weight:700;color:var(--ink)}
+  .roule{overflow-x:auto}
+  .voie{background:var(--card);border:1px solid var(--line);border-radius:3px;
+    padding:24px 26px;display:flex;flex-direction:column;gap:11px}
+  .voie.oui{border-color:var(--fait);border-width:2px;padding:23px 25px}
+  .voie.non{border-left:5px solid var(--loi)}
+  .voie h3{font-size:19px;font-family:Newsreader,Georgia,serif;font-weight:600;margin:0}
+  .voie .cout{font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+  .verdict{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+    padding:3px 10px;border-radius:99px;align-self:flex-start}
+  .v-oui{background:var(--fait-bg);color:var(--fait)}
+  .v-peut{background:var(--decid-bg);color:var(--decid)}
+  .v-non{background:var(--loi-bg);color:var(--loi)}
+  .mes{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:2px;
+    background:var(--line);border:1px solid var(--line);border-radius:3px;overflow:hidden}
+  .mes div{background:var(--card);padding:16px 18px}
+  .mes b{display:block;font-family:Newsreader,Georgia,serif;font-size:27px;font-weight:500;
+    color:var(--ink);line-height:1.1}
+  .mes span{font-size:13px;color:var(--muted)}
+  .planche{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+  .planche figure{margin:0;background:var(--card);border:1px solid var(--line);
+    border-radius:3px;overflow:hidden;display:flex;flex-direction:column}
+  .planche figure.large{grid-column:1 / -1}
+  .planche img{display:block;width:100%;height:auto;background:var(--sunken)}
+  .planche figcaption{padding:13px 16px 15px;font-size:14px;line-height:1.5;color:var(--muted);
+    border-top:1px solid var(--line)}
+  .planche figcaption b{display:block;color:var(--ink);font-size:14.5px;margin-bottom:2px}
+  @media (max-width:620px){ .planche{grid-template-columns:1fr} }
+  .doc p a,.doc li a,.doc td a{color:var(--acier);text-decoration:underline;
+    text-underline-offset:2px;text-decoration-thickness:1px}
+  ul.src{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:7px;font-size:14.5px}
+  ul.src li{color:var(--muted)} ul.src .d{font-family:var(--mono);font-size:12.5px}
+  h3.sous{font-family:Newsreader,Georgia,serif;font-size:21px;font-weight:600;
+    letter-spacing:-.01em;color:var(--ink);margin:14px 0 0}
+  @media (max-width:640px){ .doc{padding-left:18px;padding-right:18px} }
+</style>
+</head>
+<body>
+<div class="doc">
+
+<a class="retour" href="/presentations.html"><span aria-hidden="true">&#8592;</span> Le classeur</a>
+
+<p class="eyebrow">Chantier &mdash; formation en entreprise &middot; détail, deuxième enseigne</p>
+<h1>Vendre des vêtements en français &mdash; le plan</h1>
+<p class="chapeau">Des employés d'un magasin de vêtements qui ne parlent pas encore français.
+Quatre volets, dans l'ordre demandé&nbsp;: <strong>les vêtements</strong> en planches de croquis,
+avec la traduction dans une langue choisie au départ&nbsp;; <strong>des exercices</strong> pour
+les apprendre&nbsp;; <strong>une évaluation</strong> du niveau de français&nbsp;; puis <strong>un
+jeu de rôle</strong> avec un avatar, dans un magasin, face à des clients différents. Voici ce qui
+existe déjà, ce qui reste à bâtir, dans quel ordre, et les sept décisions qui vous reviennent.</p>
+
+<section class="premier">
+  <h2>Ce qu'on ne refait pas</h2>
+  <div class="these">
+    <p class="cle">Près de la moitié du chantier est déjà bâtie ailleurs. Le magasin de vêtements
+    est la deuxième enseigne d'un même châssis &laquo;&nbsp;vendre au détail&nbsp;&raquo;, pas un
+    projet de plus.</p>
+  </div>
+  <table class="cmp">
+    <thead><tr><th>Ce qui existe</th><th>Où</th><th>Ce qu'il donne ici</th></tr></thead>
+    <tbody>
+      <tr class="f"><td><b>Le chantier chaussure</b><small>Chaussures Rivard</small></td>
+        <td><code>vendre-au-comptoir.html</code>, le cadrage, le bloc&nbsp;A jouable, le banc de registres</td>
+        <td>L'analyse du marché, la vente (le client est le réseau, pas la boutique), les <b>cinq
+        gestes</b> du bloc&nbsp;A &mdash; arrêter, faire préciser, redire, laisser la porte ouverte,
+        passer le relais &mdash; qui valent pour tout magasin, tels quels.</td></tr>
+      <tr class="f"><td><b>Deux modules vêtements</b></td>
+        <td><code>module-vetements</code> (niv. 4), <code>module-n3-vetements</code></td>
+        <td>31 mots, 27 images, des dialogues. <b>Mais du côté du client</b>, et en photos. Ils
+        donnent des mots, pas le lexique d'un rayon.</td></tr>
+      <tr class="f"><td><b>La traduction d'un mot</b></td>
+        <td><code>build/gabarit/vocab.js</code>, route <code>/api/vocab/translate</code></td>
+        <td>Onze langues, masquée par défaut, droite-à-gauche géré, clé
+        <code>francisation-langue</code>. C'est l'outil du volet&nbsp;1.</td></tr>
+      <tr class="f"><td><b>La langue d'appui</b></td>
+        <td><code>langues/*.json</code>, moteur des points express</td>
+        <td>Les consignes et les boutons dans la langue de l'élève, <b>par fichier relu</b>, sous le
+        français &mdash; jamais le contenu à apprendre.</td></tr>
+      <tr class="f"><td><b>Les trois exercices de vocabulaire</b></td>
+        <td><code>vocab.js</code> + <code>vocab.css</code></td>
+        <td>Le mot et sa définition, je me souviens du mot, le mot et son image. Nourris par la
+        seule liste <code>FC_CARDS</code>.</td></tr>
+      <tr class="f"><td><b>Le moteur du jeu de rôle</b></td>
+        <td>78 modules, design 4a, micro, voix Azure HD</td>
+        <td>La conversation, la voix, le micro, le bilan. <b>7,8&nbsp;¢ la session, mesuré.</b>
+        Ce qui manque est l'avatar et la multiplicité des clients.</td></tr>
+      <tr class="f"><td><b>La séance sans compte</b></td>
+        <td>code QR, élèves anonymes</td>
+        <td>L'accès en magasin, sans créer de compte à un employé.</td></tr>
+      <tr class="d"><td><b>Un test de classement</b></td>
+        <td>&mdash;</td>
+        <td><b>N'existe nulle part.</b> C'est le seul volet à inventer de bout en bout.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2>Deux corrections à la commande</h2>
+  <div class="avert">
+    <strong>1. Le lexique seul ne fait pas vendre.</strong>
+    <p>Le chantier chaussure l'a établi&nbsp;: ce qui fait rater une vente n'est pas d'ignorer le
+    mot <em>cardigan</em>, c'est de ne pas comprendre la question du client qui le dit vite, avec
+    une taille et une couleur dans la même phrase. On livre donc les planches, <b>et</b> un
+    exercice-pont entre le mot isolé et la phrase entendue &mdash; sinon le jeu de rôle arrive sur
+    un vide.</p>
+  </div>
+  <div class="avert">
+    <strong>2. Des croquis en noir et blanc ne peuvent pas enseigner les couleurs.</strong>
+    <p><em>Rayé, fleuri, marine, beige, carreauté</em> sont du vocabulaire de vente au même titre que
+    <em>chemisier</em>. Les planches prennent donc le trait noir <b>et</b> un aplat de couleur
+    discret&nbsp;; la fiche imprimée, elle, reste en noir et blanc et renvoie les couleurs à
+    l'écran.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Le parcours de l'employé</h2>
+  <ol class="actions">
+    <li><p><b>Choisir sa langue</b>, à la première ouverture. Un écran, des drapeaux évités (une
+      langue n'est pas un pays), le nom de chaque langue écrit dans cette langue. Le choix se garde
+      et se change en un geste.</p><p class="qui">Réutilise la clé <code>francisation-langue</code>.</p></li>
+    <li><p><b>Les planches</b> &mdash; une par rayon, de huit à douze croquis numérotés. Toucher un
+      vêtement&nbsp;: son nom, sa voix, et &laquo;&nbsp;Voir dans ma langue&nbsp;&raquo; en
+      dessous.</p><p class="qui">Volet 1.</p></li>
+    <li><p><b>Les exercices</b>, du plus facile au plus proche du plancher (liste plus bas).</p>
+      <p class="qui">Volet 2.</p></li>
+    <li><p><b>Le test</b> &mdash; dix à douze minutes, qui règle le palier du jeu de rôle.</p>
+      <p class="qui">Volet 3.</p></li>
+    <li><p><b>Le magasin</b> &mdash; l'employé est le vendeur&nbsp;; l'avatar est le client, et il
+      change.</p><p class="qui">Volet 4.</p></li>
+  </ol>
+</section>
+
+<section>
+  <h2>Volet 1 &mdash; les planches</h2>
+  <p>L'inventaire d'un magasin, rangé comme un magasin est rangé. <b>Environ 150 entrées</b>&nbsp;:
+  une centaine de vêtements, une cinquantaine de mots qui les décrivent. Le compte exact sortira
+  d'une visite de plancher, pas de moi.</p>
+  <table class="cmp">
+    <thead><tr><th>Planche</th><th>Exemples</th><th>≈</th></tr></thead>
+    <tbody>
+      <tr><td>Les hauts</td><td>t-shirt, chemise, chemisier, chandail, coton ouaté, cardigan, camisole, polo</td><td class="num">12</td></tr>
+      <tr><td>Les bas</td><td>pantalon, jean, jupe, short, legging, pantalon cargo, salopette</td><td class="num">10</td></tr>
+      <tr><td>Robes et ensembles</td><td>robe, combinaison, tailleur, complet, veston, cravate</td><td class="num">8</td></tr>
+      <tr><td>L'extérieur</td><td>manteau, parka, imperméable, coupe-vent, veste, tuque, foulard, mitaines, gants</td><td class="num">12</td></tr>
+      <tr><td>Dessous et nuit</td><td>bas, collants, soutien-gorge, caleçon, pyjama, robe de chambre</td><td class="num">10</td></tr>
+      <tr><td>Chaussures</td><td>espadrilles, bottes, bottillons, sandales, souliers, pantoufles &mdash; <em>repris de Rivard</em></td><td class="num">10</td></tr>
+      <tr><td>Accessoires</td><td>ceinture, sac à main, casquette, chapeau, lunettes de soleil, bijoux</td><td class="num">12</td></tr>
+      <tr><td>Le vêtement en détail</td><td>manche, col, capuchon, poche, fermeture éclair, bouton, ourlet, doublure</td><td class="num">14</td></tr>
+      <tr><td>Couleurs, motifs, matières</td><td>rayé, carreauté, fleuri, uni&nbsp;; coton, laine, polyester, denim, cuir</td><td class="num">24</td></tr>
+      <tr><td>Tailles et coupes</td><td>très petit à très grand, ajusté, ample, taille haute, trop serré, trop long</td><td class="num">14</td></tr>
+      <tr><td>Le magasin</td><td>cabine d'essayage, cintre, présentoir, étiquette, caisse, réserve, reçu, carte-cadeau</td><td class="num">16</td></tr>
+    </tbody>
+  </table>
+  <div class="reserve">
+    <p><strong>Une décision de fabrication, prise d'avance&nbsp;:</strong> chaque croquis est
+    engendré <b>seul</b>, puis la planche est <b>composée</b> par un script. Une planche engendrée
+    d'un bloc donne douze vêtements qu'aucun exercice ne peut désigner un par un, et qu'on ne peut
+    pas corriger sans tout refaire. Le croquis seul sert trois fois&nbsp;: la planche, la carte, et
+    l'exercice. Registre commun et bornes de cohérence par la compétence <code>croquis-sequence</code>.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Volet 2 &mdash; les exercices</h2>
+  <p>Six, en montant vers le plancher. Les trois premiers existent&nbsp;; les trois derniers sont
+  neufs, et ce sont eux qui préparent le jeu de rôle.</p>
+  <table class="cmp">
+    <thead><tr><th>Exercice</th><th>Ce que l'employé fait</th><th>État</th></tr></thead>
+    <tbody>
+      <tr class="f"><td>Le mot et son image</td><td>Une image, trois mots.</td><td>existe</td></tr>
+      <tr class="f"><td>Je me souviens du mot</td><td>Rappel actif, les ratés repassent devant.</td><td>existe</td></tr>
+      <tr class="f"><td>Le mot et sa définition</td><td>Six mots à la fois.</td><td>existe</td></tr>
+      <tr class="d"><td>Trouve-le sur la planche</td><td>On entend &laquo;&nbsp;le cardigan&nbsp;&raquo;, on le touche sur la planche.</td><td>neuf</td></tr>
+      <tr class="d"><td>Range le rayon</td><td>Glisser chaque vêtement vers son rayon.</td><td>neuf</td></tr>
+      <tr class="d"><td><b>Ce que le client veut</b></td><td>On entend une phrase entière, au débit d'un
+        client &mdash; &laquo;&nbsp;vous l'avez en marine, en moyen&nbsp;?&nbsp;&raquo; &mdash; et on
+        choisit parmi quatre variantes du même vêtement. <b>C'est l'exercice-pont.</b></td><td>neuf</td></tr>
+    </tbody>
+  </table>
+  <p>Pour dire les mots&nbsp;: l'outil &laquo;&nbsp;Prononcer&nbsp;&raquo; qui existe déjà, pas un
+  micro par mot (retirés pour de bonnes raisons).</p>
+</section>
+
+<section>
+  <h2>Volet 3 &mdash; l'évaluation</h2>
+  <p><b>Un test de positionnement court, qui sert à quelque chose de précis&nbsp;:</b> régler le
+  palier du jeu de rôle. Ce n'est pas un examen, et il ne s'annonce pas comme tel.</p>
+  <ul class="simple">
+    <li><b>Quatre parties, dix à douze minutes</b>&nbsp;: comprendre un client (audio, débit
+      réel)&nbsp;; reconnaître les vêtements&nbsp;; comprendre une consigne du gérant&nbsp;; répondre
+      à deux questions au micro.</li>
+    <li><b>Adaptatif simple</b>&nbsp;: trois bonnes réponses montent d'un cran, deux erreurs arrêtent
+      la partie. Personne ne subit vingt questions trop dures.</li>
+    <li><b>Trois paliers</b>, calés sur le programme&nbsp;: <em>débutant</em> (niveaux 1-2),
+      <em>fonctionnel</em> (3), <em>à l'aise</em> (4 et plus).</li>
+    <li><b>Repassé à la fin</b>&nbsp;: l'écart entre les deux passations est la preuve
+      d'apprentissage qu'un acheteur demande (niveau&nbsp;2 de Kirkpatrick).</li>
+  </ul>
+  <div class="reserve">
+    <p><strong>Deux règles déjà posées qui le bornent&nbsp;:</strong> le résultat <b>propose</b> un
+    palier, le formateur le confirme &mdash; le diagnostic reste à l'enseignant. Et rien de nominatif
+    ne remonte à l'employeur&nbsp;: pseudonyme, et un constat sur le groupe, jamais sur une personne
+    (Loi&nbsp;25, côté entreprise).</p>
+  </div>
+</section>
+
+<section>
+  <h2>Volet 4 &mdash; le magasin</h2>
+  <p>Le jeu de rôle qu'on connaît, avec deux choses de plus&nbsp;: <b>un visage</b> et <b>des
+  clients qui ne se ressemblent pas</b>. L'employé est le vendeur, il ne se voit pas&nbsp;;
+  l'avatar est le client, face à lui, comme le banc de registres l'a montré.</p>
+  <table class="cmp">
+    <thead><tr><th>Client</th><th>Ce qu'il exerce</th><th>Paliers</th></tr></thead>
+    <tbody>
+      <tr><td>Celui qui &laquo;&nbsp;regarde seulement&nbsp;&raquo;</td><td>laisser la porte ouverte sans insister</td><td>1 2 3</td></tr>
+      <tr><td>La cliente qui cherche sa taille</td><td>taille, couleur, coupe &mdash; faire préciser une chose à la fois</td><td>1 2 3</td></tr>
+      <tr><td>Le client à la cabine</td><td>&laquo;&nbsp;c'est trop serré&nbsp;&raquo;, proposer autre chose</td><td>1 2 3</td></tr>
+      <tr><td>La cliente pour un cadeau</td><td>questions sur une autre personne, carte-cadeau, reçu-cadeau</td><td>2 3</td></tr>
+      <tr><td>Rupture de stock</td><td>vérifier en réserve, commander, autre succursale &mdash; promettre ou vérifier&nbsp;?</td><td>2 3</td></tr>
+      <tr><td>Le client pressé</td><td>parle vite, sur le palier normal &mdash; faire répéter sans perdre la vente</td><td>2 3</td></tr>
+      <tr><td>Le retour sans reçu</td><td>dire la politique, dire non poliment</td><td>3</td></tr>
+      <tr><td>La cliente mécontente</td><td>tenir, puis <b>passer le relais</b> au gérant</td><td>3</td></tr>
+    </tbody>
+  </table>
+  <p>Le palier règle trois choses sans changer le scénario&nbsp;: le débit de la voix, la longueur
+  des phrases du client, et la patience de l'avatar avant qu'il ne s'impatiente.</p>
+</section>
+
+<section>
+  <h2>Le planning</h2>
+  <p>En séances de travail, pas en semaines&nbsp;: une séance est une conversation, fermée par un
+  commit et une note. Les dates supposent deux séances par semaine&nbsp;; elles glisseront, et la
+  page le dira.</p>
+  <table class="cmp">
+    <thead><tr><th>Étape</th><th>Ce qui sort</th><th>Séances</th><th>Vers</th></tr></thead>
+    <tbody>
+      <tr class="d"><td><b>0. Cadrage</b></td><td>Vos sept décisions (plus bas). L'inventaire de 150 mots arrêté après une visite de plancher. Trois croquis d'essai pour fixer le registre.</td><td class="num">1</td><td>fin sept.</td></tr>
+      <tr><td><b>1. Les planches</b></td><td>150 croquis, onze planches composées, la voix de chaque mot, traductions relues en français, espagnol, anglais. L'écran de choix de langue.</td><td class="num">3</td><td>mi-oct.</td></tr>
+      <tr><td><b>2. Les exercices</b></td><td>Les trois neufs, les trois existants rebranchés, l'accès par QR. <b>Jouable par un collègue ce jour-là.</b></td><td class="num">2</td><td>fin oct.</td></tr>
+      <tr><td><b>3. Le test</b></td><td>La banque d'items, l'audio, la règle adaptative, la fiche du formateur. Étalonné sur quelques personnes dont on connaît le niveau.</td><td class="num">2</td><td>début nov.</td></tr>
+      <tr><td><b>4. Le magasin</b></td><td>Huit clients, leurs croquis à quatre expressions, leurs voix, leurs scénarios en trois paliers, le bilan.</td><td class="num">3</td><td>mi-nov.</td></tr>
+      <tr class="f"><td><b>5. Le pilote</b></td><td>Un petit groupe du public visé joue tout. On lit ce que le matériel a raté &mdash; diagnostic didactique &mdash; et on révise.</td><td class="num">2</td><td>fin nov.</td></tr>
+      <tr><td><b>6. L'emballage</b></td><td>Fiche de poche bilingue, guide du formateur (le produit doit marcher sans nous), fiche au classeur, démo pour l'acheteur.</td><td class="num">1</td><td>début déc.</td></tr>
+    </tbody>
+  </table>
+  <div class="chiffres">
+    <div class="ch"><span class="n">14</span><span class="q">séances de travail</span></div>
+    <div class="ch"><span class="n">≈&nbsp;190</span><span class="q">images&nbsp;: 150 vêtements, 32 visages, décors &mdash; ≈&nbsp;20&nbsp;$</span></div>
+    <div class="ch"><span class="n">≈&nbsp;400</span><span class="q">extraits de voix &mdash; coût Azure à mesurer sur l'étape&nbsp;1</span></div>
+    <div class="ch"><span class="n">7,8&nbsp;¢</span><span class="q">par partie jouée au magasin, mesuré sur le moteur actuel</span></div>
+  </div>
+  <div class="reserve">
+    <p><strong>Deux choses à savoir avant de dire oui&nbsp;:</strong> les voix sont gelées depuis le
+    mois d'août &mdash; il faut votre feu vert pour produire les ≈&nbsp;400 extraits neufs. Et l'étape
+    2 est un point d'arrêt voulu&nbsp;: si les planches et les exercices ne prennent pas chez un vrai
+    employé, les étapes 3 et 4 changent.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Les sept décisions</h2>
+  <p>Chacune a une recommandation&nbsp;; un clic la retient. Le bouton du bas rend un fichier à
+  recoller dans la séance suivante &mdash; c'est lui qui pilote la suite, pas la mémoire de cette
+  conversation.</p>
+  <div id="decisions"></div>
+  <p style="margin-top:1.4rem"><button type="button" class="btn-export" id="exporter">Exporter mes décisions</button>
+  <span id="etat" class="etat"></span></p>
+</section>
+
+<div class="pied">
+  <p>Plan du 23 septembre 2026 · chantier &laquo;&nbsp;formation en entreprise&nbsp;&raquo;, commerce de détail.</p>
+  <p>Réutilisations relevées sur le disque · <code>assets/presentations/magasin-vetements-plan.html</code></p>
+</div>
+
+</div>
+<script>
+(function(){
+  var D = [
+    {k:'lien-rivard', q:'Le magasin de vêtements et Chaussures Rivard',
+     o:[['meme','Même châssis « vendre au détail », deuxième enseigne',true],
+        ['fusion','Un seul magasin : vêtements et chaussures',false],
+        ['distinct','Deux projets séparés',false]],
+     w:'Les cinq gestes du bloc A valent pour tout magasin. Deux enseignes montrent à un réseau que le châssis se transpose.'},
+    {k:'nom', q:'Le nom du magasin fictif',
+     o:[['proposer','Je vous en propose trois',true],['moi','Je le donne moi-même',false]],
+     w:'Comme Belrive et Rivard : fictif, nommé, vérifié contre les enseignes réelles avant usage.'},
+    {k:'place-test', q:"La place de l'évaluation",
+     o:[['avant-jeu','Après les exercices, pour régler le jeu de rôle — et repassée à la fin',true],
+        ['entree','Dès l\'entrée, avant les planches',false],
+        ['fin','À la fin seulement',false]],
+     w:"Votre ordre, avec une seconde passation : l'écart entre les deux est la preuve qu'un acheteur demande."},
+    {k:'quebecismes', q:'Les mots du Québec',
+     o:[['les-deux','Le mot d\'ici en tête, l\'autre en dessous (chandail / pull)',true],
+        ['ici','Le mot d\'ici seulement',false],['standard','Le mot standard seulement',false]],
+     w:"Le client dira « chandail », « bas », « tuque », « coton ouaté ». C'est lui qu'il faut comprendre."},
+    {k:'registre', q:'Le registre des croquis',
+     o:[['trait-aplat','Trait noir et aplat de couleur discret',true],
+        ['trait','Trait noir seul',false],['couleur','Illustration en couleur pleine',false]],
+     w:'Les couleurs et les motifs sont du vocabulaire. La fiche imprimée reste en noir et blanc.'},
+    {k:'avatar', q:"La forme de l'avatar",
+     o:[['expressions','Un croquis par client, quatre expressions',true],
+        ['anime','Visage animé, lèvres synchronisées',false],['sans','Sans visage, la voix seule',false]],
+     w:"Quatre expressions (neutre, contente, hésitante, impatiente) coûtent 32 images. L'animation coûte par partie et ajoute de l'attente à un moteur déjà mesuré."},
+    {k:'langues', q:"Les langues d'appui au départ",
+     o:[['trois','Espagnol et anglais d\'abord, relus ; les autres à la demande',true],
+        ['onze','Les onze langues de l\'outil de traduction dès le départ',false]],
+     w:"Chaque langue d'appui est un fichier relu. Pour le mot seul, les onze langues existent déjà."}
+  ];
+  var CLE='plan-magasin-vetements', choix={};
+  try{ choix=JSON.parse(localStorage.getItem(CLE)||'{}'); }catch(e){}
+  var zone=document.getElementById('decisions');
+  D.forEach(function(d,i){
+    var div=document.createElement('div'); div.className='dec2';
+    var h='<p class="dq"><span class="dn">'+(i+1)+'</span>'+d.q+'</p><div class="opts">';
+    d.o.forEach(function(o){
+      h+='<button type="button" class="opt'+(o[2]?' reco':'')+'" data-k="'+d.k+'" data-v="'+o[0]+'" aria-pressed="false">'
+        +o[1]+(o[2]?' <span class="tag">recommandé</span>':'')+'</button>';
+    });
+    div.innerHTML=h+'</div><p class="dw">'+d.w+'</p>';
+    zone.appendChild(div);
+  });
+  function peindre(){
+    zone.querySelectorAll('.opt').forEach(function(b){
+      b.setAttribute('aria-pressed', choix[b.dataset.k]===b.dataset.v ? 'true':'false');
+    });
+    var n=Object.keys(choix).length;
+    document.getElementById('etat').textContent = n+' décision'+(n>1?'s':'')+' sur '+D.length;
+  }
+  zone.addEventListener('click',function(e){
+    var b=e.target.closest('.opt'); if(!b) return;
+    if(choix[b.dataset.k]===b.dataset.v) delete choix[b.dataset.k]; else choix[b.dataset.k]=b.dataset.v;
+    try{ localStorage.setItem(CLE,JSON.stringify(choix)); }catch(e){}
+    peindre();
+  });
+  document.getElementById('exporter').addEventListener('click',function(){
+    var out={plan:'magasin-vetements', date:new Date().toISOString().slice(0,10), decisions:{}};
+    D.forEach(function(d){
+      var v=choix[d.k]; var o=d.o.filter(function(x){return x[0]===v;})[0];
+      out.decisions[d.k]= o ? o[1] : null;
+    });
+    var t=JSON.stringify(out,null,2);
+    var fin=function(){ document.getElementById('etat').textContent='Copié — à recoller dans la séance suivante.'; };
+    if(navigator.clipboard) navigator.clipboard.writeText(t).then(fin,function(){prompt('Copiez :',t);});
+    else prompt('Copiez :',t);
+  });
+  peindre();
+})();
+</script>
+</body>
+</html>
