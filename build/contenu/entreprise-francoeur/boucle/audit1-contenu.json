@@ -1,0 +1,330 @@
+[
+  {
+    "code": "A1",
+    "gravite": "majeur",
+    "lieu": "guide du formateur (« Ce que fait la trousse ») ; écrans de bilan (bilan(), resultatTest())",
+    "constat": "Les objectifs O1-O5 et leurs seuils (8/10, 7/10, « à chaque visite ») n'existent que dans le cadrage écrit après coup : le guide dit « apprend les mots de son magasin et à comprendre ses clients », le bilan d'exercice affiche « x / 8 du premier coup » sans seuil, et le test rend des crans 0-3 qui ne se traduisent pas en « 8 fois sur 10 ».",
+    "correctif": "Écrire O1-O5 (verbe + condition + critère) en tête du guide ; afficher le seuil dans bilan() (« Réussi : 7 sur 8 ou plus ») ; faire correspondre chaque cran validé du test à un critère explicite (ex. partie A cran 2 validé = O1 atteint).",
+    "source": "contenu"
+  },
+  {
+    "code": "A2",
+    "gravite": "majeur",
+    "lieu": "lexique.py, notes de chandail, culotte, fermeture, recu, tp, habit, extensible, solde ; francoeur_planches.py ouvrir()",
+    "constat": "Les mots que le client dira vraiment (« un zipper », « des bobettes », « ma facture », « extra-small », « un complet », « ça étire », « c'est-tu en spécial ? ») ne vivent que dans le champ `note` : jamais dits par une voix, jamais exercés, et en mode « Français seulement » ouvrir() n'affiche AUCUNE note qui n'est pas un piège (elle n'apparaît que dans la traduction masquée).",
+    "correctif": "Promouvoir ces variantes en `autre` (ou en entrées) avec leur MP3 ; afficher la note en français simple sous le mot dans tous les modes ; les faire entrer dans les distracteurs de « Je l'entends, je le trouve ».",
+    "source": "contenu"
+  },
+  {
+    "code": "A3",
+    "gravite": "majeur",
+    "lieu": "O5 · exercices (EXOS, RAYONS, filtre) ; test.py partie C",
+    "constat": "O5 (comprendre une consigne de la gérante) est évalué par 12 items de la partie C mais n'est pratiqué nulle part : aucun exercice de consignes, et la planche « Le magasin » (cintre, caisse, cabine, présentoir, antivol) est absente du filtre des exercices et de « Range le rayon » ; ses mots ne sortent qu'au hasard sous « Tous les rayons ».",
+    "correctif": "Ajouter un exercice 6 « Ce que la gérante demande » : 16 consignes neuves (tutoiement, voix enseignante, 1 à 3 objets nommés, une négation), distracteurs = autres objets nommés ; ajouter « Le magasin » au filtre.",
+    "source": "contenu"
+  },
+  {
+    "code": "A3",
+    "gravite": "majeur",
+    "lieu": "O4 · clients.py (magasin) ; bilanMagasin()",
+    "constat": "O4 (vérifier, passer le relais) n'a aucune évaluation : ni le test ni les exercices ne le mesurent, et dans bilanMagasin() les cinq cases « gestes » n'ont aucun gestionnaire — ce qui est coché n'est ni gardé ni rapporté.",
+    "correctif": "Évaluer O4 par une partie orale du test (item « retour sans reçu » : réponse attendue = « Je vais chercher la gérante », critère : ne promet pas) ; enregistrer et rapporter les gestes cochés, ou mieux, les faire repérer dans la transcription par le serveur.",
+    "source": "contenu"
+  },
+  {
+    "code": "A3",
+    "gravite": "majeur",
+    "lieu": "clients.py, paliers de 'rupture', 'presse', 'retour', 'mecontente'",
+    "constat": "Les clients qui exigent O4 et O3 sont fermés au palier débutant : 'rupture' et 'presse' ouvrent au palier fonctionnel, 'retour' et 'mecontente' au seul palier à l'aise ; or le débutant correspond aux niveaux 1-2, soit la majeure partie du public visé — ces employés ne pratiquent jamais « vérifier » ni « passer le relais » face à un vrai cas.",
+    "correctif": "Ouvrir 'rupture' et 'retour' au palier débutant avec des faits simplifiés (une phrase, un seul besoin) ; la version difficile reste aux paliers supérieurs.",
+    "source": "contenu"
+  },
+  {
+    "code": "A3",
+    "gravite": "majeur",
+    "lieu": "test.py B cran 3 (b31-b34) vs demandes.py (d01-d20)",
+    "constat": "La partie B au cran 3 mesure la compréhension d'une reprise (« non, pas un chandail »), d'une négation (« le rose, elle haït ça », « Je le veux pas en noir ») et d'un comparatif (« une taille plus grande ») ; aucune des 20 demandes de l'exercice ne contient ces tournures, toutes suivent le patron article + couleur + taille.",
+    "correctif": "Ajouter à demandes.py 6 à 8 demandes avec reprise, négation et « une taille plus grande / plus petite », avec distracteurs écrits = ce que la phrase a écarté.",
+    "source": "contenu"
+  },
+  {
+    "code": "A3",
+    "gravite": "majeur",
+    "lieu": "lexique.py, 26 entrées sans image (tp, p, m, g, tg, pointure, serre, trop-grand, trop-long, trop-court, extensible, coton…polar, reserve, solde, rabais, echange, remboursement, retouches, mise-de-cote, sous-vetements)",
+    "constat": "Les 26 mots sans image sont exclus des cinq exercices (le tirage exige visuel() ou img) et du test ; or « échange », « remboursement », « en arrière », « trop serré » et les tailles sont justement les mots de O2 et O4.",
+    "correctif": "Donner à ces mots un format d'exercice sans croquis : écouter → toucher le mot écrit parmi 4, ou une étiquette de taille dessinée ; les inclure dans « Je me souviens » (phrase-contexte au lieu d'image).",
+    "source": "contenu"
+  },
+  {
+    "code": "A3",
+    "gravite": "mineur",
+    "lieu": "exercice 4 « Range le rayon » (question(), J.k === 'rayon')",
+    "constat": "L'exercice fait classer un article dans les catégories inventées par la trousse (« Les hauts », « Les bas du corps ») : aucun objectif ne le demande, et le mot est affiché et dit, donc il n'exerce ni l'écoute ni la reconnaissance.",
+    "correctif": "Le retirer, ou le remplacer par l'exercice des consignes (O5) ; au minimum ne pas afficher le mot.",
+    "source": "contenu"
+  },
+  {
+    "code": "B1",
+    "gravite": "mineur",
+    "lieu": "accueil (ecranAccueil) ; guide, séance type",
+    "constat": "L'entrée propose d'abord « Apprendre les mots » (une liste de 11 rayons) et la séance type place le magasin en fin de séance : l'employé ne rencontre un client qu'après l'exposé des mots.",
+    "correctif": "Ouvrir chaque séance par une demande de client du rayon du jour (item de l'exercice 5), même ratée, puis la planche qui y répond.",
+    "source": "contenu"
+  },
+  {
+    "code": "B2",
+    "gravite": "mineur",
+    "lieu": "ecranPlanche() ; guide",
+    "constat": "Rien ne fait remonter ce que l'employé entend déjà au travail : la seule question sur le vécu (« Un mot … entendu au travail ? ») arrive à l'entretien de fin du pilote.",
+    "correctif": "En tête de planche : « Touchez les mots que vous avez déjà entendus au magasin », gardé sur l'appareil et repris par le formateur.",
+    "source": "contenu"
+  },
+  {
+    "code": "C1",
+    "gravite": "mineur",
+    "lieu": "lexique.py, planches 'couleurs' (27 entrées) et 'magasin' (20)",
+    "constat": "La planche « Couleurs, motifs, matières » aligne 27 éléments de trois natures sur un seul écran, « Le magasin » 20 objets et services mêlés.",
+    "correctif": "Scinder : « Couleurs » (14), « Motifs et matières » (13) ; « Le magasin : les lieux et objets » / « Le magasin : les services ».",
+    "source": "contenu"
+  },
+  {
+    "code": "C3",
+    "gravite": "majeur",
+    "lieu": "francoeur_planches.py ouvrir() : (m.piege && !(t && t[1]))",
+    "constat": "Dès qu'une langue d'appui est choisie, l'avertissement de piège (veste, bas, mitaines, sacoche, jaquette, espadrilles, taille, moyen) disparaît de la fiche et ne se lit qu'en touchant « Voir dans ma langue », masqué par défaut ; seuls les employés en « Français seulement » le voient d'emblée.",
+    "correctif": "Afficher toujours le bandeau « Attention » en français simple sous le mot, et sa traduction dessous (couche consigne), indépendamment du bouton de traduction du mot.",
+    "source": "contenu"
+  },
+  {
+    "code": "C4",
+    "gravite": "majeur",
+    "lieu": "passage exercices → magasin ; clients.py GESTES ; fiche.py",
+    "constat": "Aucun exemple travaillé : de mots isolés on passe à une conversation libre avec un client simulé, sans jamais entendre un vendeur faire les cinq gestes (faire préciser, redire, vérifier, passer le relais) ni pratiquer ces phrases dans un format guidé.",
+    "correctif": "Pour chaque geste, un court dialogue modèle en audio (client + vendeur) avec la phrase de la fiche mise en évidence ; puis un exercice estompé : situation entendue → choisir ou dire la phrase ; puis le magasin.",
+    "source": "contenu"
+  },
+  {
+    "code": "C5",
+    "gravite": "majeur",
+    "lieu": "magasin : carte des clients (clients.py, 2e champ) ; bilanMagasin() : GESTES ; partie D du test",
+    "constat": "La carte qui présente la situation (« Il entre, il regarde. Il ne veut pas qu'on le pousse. »), les cinq gestes du bilan (12 à 15 mots, deux-points et citations) et les phrases de la partie D ne passent pas par dit() et n'ont aucune traduction dans traductions.json : c'est le seul texte que le débutant doit lire pour savoir quoi faire, et il est en français seul.",
+    "correctif": "Ajouter cartes, gestes et phrases D aux textes de `--interface` ; raccourcir chaque geste à ≤ 8 mots (« Faire préciser : une chose à la fois »).",
+    "source": "contenu"
+  },
+  {
+    "code": "C5",
+    "gravite": "mineur",
+    "lieu": "lexique.py PLANCHES 'bas' (« Les bas du corps ») vs entrée bas-chaussettes (« des bas »)",
+    "constat": "Le titre de rayon « Les bas du corps » emploie « bas » dans le sens même que le piège de « des bas » demande d'écarter, et l'exercice « Range le rayon » propose ce titre comme réponse possible pour « des bas ».",
+    "correctif": "Renommer la planche « Pantalons et jupes ».",
+    "source": "contenu"
+  },
+  {
+    "code": "C5",
+    "gravite": "mineur",
+    "lieu": "traductions.json, les 11 langues (relu: false) ; es.mots.denim",
+    "constat": "Aucune des onze langues n'est relue : chaque fiche porte « Traduction pas encore vérifiée par une personne », et l'espagnol propage l'incohérence de « veste » (note de denim : « un chaleco « en jeans » »).",
+    "correctif": "Faire relire au moins les langues du groupe pilote avant le pilote (déjà prévu), en commençant par les notes de pièges.",
+    "source": "contenu"
+  },
+  {
+    "code": "C2",
+    "gravite": "mineur",
+    "lieu": "francoeur_planches.py image() pour les entrées sans dessin",
+    "constat": "Les mots sans image affichent les deux premières lettres du mot en gros (« TR » pour très petit, « PE » pour petit, « MO » pour moyen, « LA » pour laine) : un repère visuel sans information.",
+    "correctif": "Afficher l'étiquette réelle (« P / S », « M », « G / L ») pour les tailles, une texture pour les matières, rien pour les services.",
+    "source": "contenu"
+  },
+  {
+    "code": "D4",
+    "gravite": "bloquant",
+    "lieu": "exercice 5 « Ce que le client veut » : demandes.py + variantes() (d01-d20)",
+    "constat": "Chaque distracteur ne change qu'UN attribut de la bonne réponse : la bonne carte est donc la seule qui porte la valeur majoritaire sur les trois attributs (ex. d01 : t-shirt noir G / t-shirt brun G / t-shirt noir M / haut-court noir G) — les 20 demandes se réussissent du premier coup sans écouter.",
+    "correctif": "Construire les quatre cartes en carré latin : chaque valeur apparaît exactement deux fois (A-C-T, A-C'-T', A'-C-T', A'-C'-T), de sorte que seule la phrase entendue départage.",
+    "source": "contenu"
+  },
+  {
+    "code": "D4",
+    "gravite": "majeur",
+    "lieu": "test.py A_CRAN3 ('veste') ; lexique.py veste, veston, cardigan, denim",
+    "constat": "Le piège de « veste » (« au Québec, une veste n'a pas de manches ») est contredit par la trousse elle-même : « une veste de laine » (cardigan, d12) et « une veste en jeans » ont des manches, et la fiche de veston affiche « On entend aussi : une veste » ; au cran 3 du test, choisir le veston pour « une veste » est donc défendable mais compté faux.",
+    "correctif": "Nuancer la note (« veste seule = gilet sans manches ; veste de laine, veste en jeans = avec manches ») ; retirer « veston » des distracteurs de l'item ou remplacer l'item par un piège sans ambiguïté.",
+    "source": "contenu"
+  },
+  {
+    "code": "D3",
+    "gravite": "majeur",
+    "lieu": "exercice 1 « Je l'entends, je le trouve » (distracteurs = même planche, au hasard) vs test A cran 3",
+    "constat": "Les paires de pièges que le test mesure ne se rencontrent jamais en pratique : veste/veston (hauts/robes), bas/pantalon (dessous/bas), jaquette/veston (dessous/robes), sacoche/sac (accessoires/magasin) sont dans des planches différentes, donc jamais côte à côte dans l'exercice ; les autres ne s'y croisent qu'au hasard.",
+    "correctif": "Ajouter une série « Les pièges » où chaque mot piège revient avec ses contrastes écrits à la main (autres que ceux du test), entrelacée avec des mots ordinaires.",
+    "source": "contenu"
+  },
+  {
+    "code": "D3",
+    "gravite": "mineur",
+    "lieu": "guide, séance type (« Je m'exerce, filtré sur le rayon du jour »)",
+    "constat": "Le guide prescrit une pratique groupée par rayon ; rien n'entremêle le rayon du jour avec les rayons déjà vus.",
+    "correctif": "Tirage mixte : 5 items du rayon du jour + 3 des rayons précédents ; le filtre devient « rayon du jour + révision ».",
+    "source": "contenu"
+  },
+  {
+    "code": "D4",
+    "gravite": "mineur",
+    "lieu": "exercice 5, distracteur d'article (variantes())",
+    "constat": "Le distracteur d'article est tiré au hasard dans le rayon et tombe souvent hors de propos (d06 robe/cravate, d13 casquette/montre, d04 tuque/parka) : l'attribut « article » se règle d'un coup d'œil.",
+    "correctif": "Écrire pour chaque article une liste de voisins confondables (casquette→chapeau, tuque→cache-oreilles, robe→combinaison) et tirer dedans.",
+    "source": "contenu"
+  },
+  {
+    "code": "D4",
+    "gravite": "mineur",
+    "lieu": "test B b24 ; demandes.py COULEURS_DISTRACTRICES",
+    "constat": "Le commentaire dit que marine/noir et beige/blanc se confondent à l'œil, mais la liste les garde tous ; b24 oppose robe bleue et robe marine (#2f6fc0 / #1f2f56) en pastille de 34 px, avec en plus « robe de soirée » comme distracteur d'une phrase qui dit seulement « la robe ».",
+    "correctif": "Exclure les paires marine/noir, marine/bleu, beige/blanc des tirages ; remplacer robe-soiree par un autre voisin dans b24.",
+    "source": "contenu"
+  },
+  {
+    "code": "D4",
+    "gravite": "mineur",
+    "lieu": "exercice 2 « Le mot et son image » (autres = 2)",
+    "constat": "Trois options seulement : un tiers de chance au premier essai et la réussite quasi assurée au deuxième.",
+    "correctif": "Quatre ou cinq options, dont les voisins confondables du même rayon.",
+    "source": "contenu"
+  },
+  {
+    "code": "D2",
+    "gravite": "mineur",
+    "lieu": "demandes.py / cartes() ETIQUETTE ; clients 'cabine' et 'rupture'",
+    "constat": "Les étiquettes de taille ne montrent que TP/P/M/G/TG alors que les vêtements au Canada portent S/M/L/XL (la note de tp le dit) ; le client 'cabine' parle de tailles 32/34 et le client 'rupture' épelle N-G-U-Y-E-N, deux savoirs que la trousse n'enseigne pas.",
+    "correctif": "Étiquettes bilingues « G / L » ; ajouter les tailles en chiffres et l'alphabet épelé au lexique, ou les retirer des faits aux paliers bas.",
+    "source": "contenu"
+  },
+  {
+    "code": "D2",
+    "gravite": "mineur",
+    "lieu": "planches, exercice 1, test A (même MP3 que la planche)",
+    "constat": "O1 porte sur un mot dit par un client, mais tous les mots isolés sont dits par une seule voix, celle de l'enseignante, en pratique comme au test.",
+    "correctif": "Enregistrer chaque mot dans deux voix de clients et en tirer une au hasard dans l'exercice 1 ; au test A, une voix jamais entendue en pratique.",
+    "source": "contenu"
+  },
+  {
+    "code": "D1",
+    "gravite": "mineur",
+    "lieu": "clients.py scenario_serveur() « ouverture » ; GESTES[0]",
+    "constat": "La réplique d'accueil du vendeur (« Bonjour, bienvenue à la Maison Francœur ! ») est envoyée automatiquement : l'employé ne produit jamais le geste 1, que le bilan lui demande pourtant de cocher.",
+    "correctif": "Laisser l'employé dire l'accueil lui-même, la carte lui rappelant « Commencez par saluer ».",
+    "source": "contenu"
+  },
+  {
+    "code": "D1",
+    "gravite": "mineur",
+    "lieu": "guide, séance type",
+    "constat": "Aucune séance ne commence par un rappel de la précédente : la séance type enchaîne accueil → nouveau rayon.",
+    "correctif": "Remplacer 5 des 10 minutes d'accueil par une série de rappel « À revoir » (déjà gardée sur l'appareil).",
+    "source": "contenu"
+  },
+  {
+    "code": "E1",
+    "gravite": "majeur",
+    "lieu": "exercices : repondre() et finQuestion() (FR.bravo, FR.essaie, FR.reponse)",
+    "constat": "La rétroaction se limite à « Bien joué ! », « Pas tout à fait. Essayez encore. », « Voici la bonne réponse. » : l'écran ne nomme pas ce qu'on a choisi (« ça, c'est un veston »), ne montre pas la note du piège, et à l'exercice 5 ne dit pas quel attribut a été manqué (couleur, taille ou article) — il réaffiche seulement la phrase écrite.",
+    "correctif": "Par choix : dire et afficher le mot choisi ; pour un piège, montrer la note ; à l'exercice 5, marquer l'attribut en écart (« Vous : moyen · Le client : grand ») et rejouer la phrase.",
+    "source": "contenu"
+  },
+  {
+    "code": "E1",
+    "gravite": "majeur",
+    "lieu": "magasin : lireHumeur()/montrerHumeur() et bilanMagasin()",
+    "constat": "Pendant la visite, seule l'expression du visage réagit, sans dire ce qui l'a changée ; le bilan corrige la grammaire des phrases (/api/correct-french, toutes les répliques collées en un texte) mais ne dit rien des gestes, qui sont le but de l'activité (O3, O4).",
+    "correctif": "Bilan par geste, produit par le serveur à partir de la transcription : pour chacun, fait / pas fait, avec la réplique citée et le moment où le client est devenu impatient ; la correction grammaticale passe au second plan.",
+    "source": "contenu"
+  },
+  {
+    "code": "E1",
+    "gravite": "mineur",
+    "lieu": "bilan() des exercices",
+    "constat": "Le bilan de série n'affiche que « x / 8 du premier coup », sans la liste des mots ratés, alors qu'ils sont déjà connus (revoir).",
+    "correctif": "Lister sous le score les mots ratés, avec leur image et un bouton d'écoute.",
+    "source": "contenu"
+  },
+  {
+    "code": "E2",
+    "gravite": "majeur",
+    "lieu": "clients.py PALIERS_JEU['debutant']",
+    "constat": "Au palier débutant, le client « répète avec d'autres mots » de lui-même et « ne s'impatiente presque jamais » : deviner ou faire semblant n'a aucune suite, et l'employé n'a jamais besoin de faire répéter — O3 n'est jamais exigé là où il compte le plus.",
+    "correctif": "Le client débutant attend qu'on lui demande de répéter avant de reformuler ; s'il reçoit une réponse sans rapport, il le montre ([hesitante]) et le dit simplement.",
+    "source": "contenu"
+  },
+  {
+    "code": "F1",
+    "gravite": "bloquant",
+    "lieu": "test.py partie B, crans 2 et 3 (b21-b25, b31-b34)",
+    "constat": "Le défaut de l'exercice 5 se retrouve dans 9 des 14 items de B : la bonne carte est la seule majoritaire sur chaque attribut (b31 : coton ouaté gris G contre chandail gris G, coton ouaté gris M, coton ouaté noir G ; même patron pour b32, b33, b34 et b21-b25) ; comme B décide du palier (B = 0 → débutant, « à l'aise » exige B ≥ 2) et de l'écart avant/après, palier et gain d'apprentissage sont faussés.",
+    "correctif": "Réécrire les distracteurs en carré latin (b31 : coton ouaté gris G / chandail gris M / chandail noir G / coton ouaté noir M) ; ajouter une vérification au build qui refuse tout item dont la bonne réponse est l'option majoritaire sur chaque attribut.",
+    "source": "contenu"
+  },
+  {
+    "code": "F1",
+    "gravite": "majeur",
+    "lieu": "test.py partie D (d1, d2, ORAL) ; calculPalier(), resultatTest()",
+    "constat": "La partie D, seule mesure annoncée de O3, ne l'exige pas : d1 demande où sont les cabines, d2 une disponibilité ; elle est notée sur une échelle générique (« Pas de réponse / Des mots / Une phrase qu'on comprend ») sans lien avec le geste attendu, n'entre pas dans calculPalier() et n'apparaît pas dans la comparaison avant/après.",
+    "correctif": "Trois items ciblés : une demande dite trop vite (attendu : faire répéter), une demande incomplète (attendu : « Quelle taille ? »), une demande impossible (attendu : vérifier sans promettre) ; grille à critère (a fait / a deviné / a promis) ; résultat oral dans la comparaison.",
+    "source": "contenu"
+  },
+  {
+    "code": "F1",
+    "gravite": "majeur",
+    "lieu": "test.py (items fixes) ; pilote, séance 2 « Le test, repassé »",
+    "constat": "Le test repassé une semaine plus tard reprend exactement les mêmes items (A : 18, B : 14, C : 12, D : 2) et la partie A les mêmes MP3 que les planches : le gain mesuré mêle apprentissage et souvenir des items.",
+    "correctif": "Deux formes parallèles (A/B) de même difficulté, tirées une à la première passation et l'autre à la dernière ; partie A dite par une voix de client.",
+    "source": "contenu"
+  },
+  {
+    "code": "F1",
+    "gravite": "mineur",
+    "lieu": "test.py partie C (question écrite, tq_*)",
+    "constat": "La question de la partie C (« Qu'est-ce qu'il faut laisser dans les boîtes ? ») n'est qu'écrite : la partie mesure aussi la lecture, et en « Français seulement » le débutant n'a aucune aide.",
+    "correctif": "Faire dire la question par la voix, ou la remplacer par un pictogramme de l'action (« prendre », « laisser », « demander »).",
+    "source": "contenu"
+  },
+  {
+    "code": "F1",
+    "gravite": "mineur",
+    "lieu": "test.py B cran 1 (b11-b15)",
+    "constat": "Au cran 1 de B, la phrase ne contient qu'un article (« Je cherche une ceinture. ») : c'est la tâche de O1, pas celle de O2 ; le cran compte pourtant dans le niveau « client ».",
+    "correctif": "Soit ranger ces items en partie A, soit leur ajouter un deuxième attribut (couleur) dit lentement.",
+    "source": "contenu"
+  },
+  {
+    "code": "F2",
+    "gravite": "mineur",
+    "lieu": "fiche.py PHRASES ('repeter', 'preciser')",
+    "constat": "La phrase pour faire répéter tient en deux phrases et dix mots (« Un instant, s'il vous plaît. Pouvez-vous répéter plus lentement ? »), lourde pour un niveau 1 ; aucune phrase pour faire montrer l'article (« Pouvez-vous me le montrer ? »), recours le plus simple quand un mot manque.",
+    "correctif": "Ajouter la forme courte « Pardon ? Plus lentement, s'il vous plaît. » et la ligne « Pouvez-vous me le montrer ? ».",
+    "source": "contenu"
+  },
+  {
+    "code": "F3",
+    "gravite": "majeur",
+    "lieu": "guide (2 à 4 séances puis libre-service) ; fiche.py DEFI ; liste « à revoir »",
+    "constat": "Aucun rappel n'est planifié après la formation : un seul défi pour « cette semaine », la liste « à revoir » ne revient que si l'employé relance un exercice, et rien n'est prévu à J+7 ou J+30.",
+    "correctif": "Calendrier écrit dans le guide : série de rappel à J+2, J+7, J+30 (8 items mêlés, dont les ratés), un défi par semaine tiré des cinq gestes, le test repassé à J+30.",
+    "source": "contenu"
+  },
+  {
+    "code": "G1",
+    "gravite": "mineur",
+    "lieu": "image(), options des exercices 1 et 5 et du test A/B ; .art.piege",
+    "constat": "Les options portent le mot comme texte alternatif (alt = mot, aria-label = couleur) : un lecteur d'écran lit la réponse ; les options-pastilles (aria-hidden) n'ont aucun nom accessible ; le repère de piège sur la planche n'est qu'un filet de couleur.",
+    "correctif": "alt vide et aria-label neutre (« choix 1 ») sur les options ; icône + mot « Attention » sur les cartes-pièges.",
+    "source": "contenu"
+  },
+  {
+    "code": "G2",
+    "gravite": "mineur",
+    "lieu": "guide, séance type (« un rayon par séance ») ; pilote",
+    "constat": "Avec deux à quatre séances et un rayon par séance, le formateur couvre au plus 4 des 11 rayons ; les 7 autres sont laissés au libre-service sans plan.",
+    "correctif": "Regrouper les rayons par séance (ex. hauts + bas ; extérieur + chaussures ; …) ou dire lesquels sont prioritaires selon le magasin, et donner un parcours pour le libre-service.",
+    "source": "contenu"
+  }
+]
