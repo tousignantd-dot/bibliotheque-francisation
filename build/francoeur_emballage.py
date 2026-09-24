@@ -98,7 +98,7 @@ def guide(c):
                      for code, nom in [("fr", "Français seulement")] + [(k, v["loc"]) for k, v in c["trad"].items()])
     clients = "".join(f"<tr><td><b>{E(n)}</b></td><td>{E(carte)}</td><td>{', '.join(dict(debutant='débutant', fonctionnel='fonctionnel', aise='à l’aise')[p] for p in pal)}</td></tr>"
                       for _i, n, _v, pal, carte, _p, _f in CLIENTS)
-    gestes = "".join(f"<li>{E(g)}</li>" for g in GESTES)
+    gestes = "".join(f"<li><b>{E(g['nom'])}</b> — « {E(g['phrase'])} »</li>" for g in GESTES)
     corps = f"""<body><div class="doc">
 <a class="retour" href="/presentations.html"><span aria-hidden="true">&#8592;</span> Le classeur</a>
 <p class="eyebrow">Maison Francœur &middot; pour le formateur</p>
@@ -108,14 +108,29 @@ que vous</strong> : la mise en place, une séance type, le test, le magasin, le 
 casse. L'employé travaille sur son téléphone ; vous travaillez dans le portail.</p>
 
 <section class="premier">
+  <h2>Ce que l'employé saura faire</h2>
+  <p>Cinq objectifs, chacun avec son seuil. Les bilans des exercices et le résultat du test se lisent contre eux.</p>
+  <table class="cmp"><tbody>
+    <tr><td><b>O1</b></td><td>Devant un mot du plancher dit à voix haute, <b>désigner</b> l'article, sans traduction</td><td class="num">8 sur 10</td></tr>
+    <tr><td><b>O2</b></td><td>Devant une demande de client dite vite (article, couleur, taille), <b>choisir</b> l'article exact</td><td class="num">7 sur 10</td></tr>
+    <tr><td><b>O3</b></td><td>Quand il n'a pas compris, <b>faire répéter</b> ou <b>faire préciser</b> au lieu de deviner</td><td class="num">chaque fois</td></tr>
+    <tr><td><b>O4</b></td><td>Devant ce qu'il ne peut pas garantir, <b>vérifier</b> ou <b>passer le relais</b> à la gérante, sans promettre</td><td class="num">chaque fois</td></tr>
+    <tr><td><b>O5</b></td><td>Devant une consigne de la gérante, <b>désigner</b> l'objet ou le lieu visé</td><td class="num">7 sur 10</td></tr>
+  </tbody></table>
+</section>
+
+<section>
   <h2>Ce que fait la trousse</h2>
   <p>Un employé qui ne parle pas encore français apprend les mots de son magasin et à comprendre ses clients.
   Il choisit sa langue d'appui — ou aucune — puis avance dans quatre espaces :</p>
   <ol class="actions">
     <li><p><b>Apprendre les mots</b> — {c['rayons']} rayons, {c['mots']} mots, un croquis et une voix pour chacun ; la
       traduction se révèle au toucher, jamais d'emblée.</p></li>
-    <li><p><b>Je m'exerce</b> — cinq exercices, du mot entendu à la demande du client dite à vitesse réelle.</p></li>
-    <li><p><b>Mon niveau</b> — un test de dix minutes qui <b>propose</b> un niveau ; c'est vous qui le confirmez.</p></li>
+    <li><p><b>Je m'exerce</b> — sept exercices, du mot entendu à la demande du client dite à vitesse réelle,
+      aux consignes de la gérante et à « Ce que je réponds ». Une série « Les pièges » met les faux amis côte à côte.</p></li>
+    <li><p><b>Les gestes du vendeur</b> — cinq dialogues modèles : on entend un vendeur faire chaque geste, avant de le faire soi-même.</p></li>
+    <li><p><b>Mon niveau</b> — un test de dix minutes qui <b>propose</b> un niveau ; c'est vous qui le confirmez. Deux formes
+      équivalentes : la seconde passation ne reprend pas les questions de la première.</p></li>
     <li><p><b>Le magasin</b> — {c['clients']} clients, un visage qui réagit, une conversation à voix haute.</p></li>
   </ol>
 </section>
@@ -135,12 +150,24 @@ casse. L'employé travaille sur son téléphone ; vous travaillez dans le portai
 </section>
 
 <section>
+  <h2>Les rappels, après la formation</h2>
+  <p>Un geste appris une fois ne tient pas une semaine. L'écran propose de lui-même une <b>série de rappel</b> quand
+  l'employé revient après deux jours ou plus, avec les mots qu'il a ratés en tête. Prévoyez aussi :</p>
+  <table class="cmp"><tbody>
+    <tr><td><b>J+2</b></td><td>une série de rappel (huit mots, dont ceux à revoir) et « Ce que le client veut ».</td></tr>
+    <tr><td><b>J+7</b></td><td>« Ce que je réponds », puis un client au magasin ; le défi de la semaine de la fiche de poche.</td></tr>
+    <tr><td><b>J+30</b></td><td>le test « Mon niveau », repassé — il prend la seconde forme, et compare avec la première passation.</td></tr>
+  </tbody></table>
+</section>
+
+<section>
   <h2>Une séance type, 90 minutes</h2>
   <table class="cmp"><tbody>
     <tr><td class="num">10</td><td>Accueil. Chacun ouvre la trousse et choisit sa langue d'appui — ou « Français seulement ».</td></tr>
     <tr><td class="num">15</td><td>La première fois : <b>Mon niveau</b>. Ensuite, un rayon par séance dans <b>Apprendre les mots</b>.</td></tr>
-    <tr><td class="num">35</td><td><b>Je m'exerce</b>, filtré sur le rayon du jour. Terminez par « Ce que le client veut ».</td></tr>
-    <tr><td class="num">25</td><td><b>Le magasin</b> : deux clients chacun, au niveau confirmé.</td></tr>
+    <tr><td class="num">35</td><td><b>Je m'exerce</b>, filtré sur le rayon du jour. Terminez par « Ce que le client veut » et « Ce que la gérante demande ».</td></tr>
+    <tr><td class="num">10</td><td><b>Les gestes du vendeur</b> : écouter les dialogues modèles, puis « Ce que je réponds ».</td></tr>
+    <tr><td class="num">15</td><td><b>Le magasin</b> : un ou deux clients chacun, au niveau confirmé. Le bilan dit quels gestes ont été faits.</td></tr>
     <tr><td class="num">5</td><td>Le défi de la semaine, sur la fiche de poche.</td></tr>
   </tbody></table>
 </section>
@@ -148,7 +175,10 @@ casse. L'employé travaille sur son téléphone ; vous travaillez dans le portai
 <section>
   <h2>Le test « Mon niveau »</h2>
   <p>Quatre parties — les mots, le client, la gérante, parler. Il s'adapte : trois bonnes réponses montent d'un
-  cran, deux erreurs arrêtent la partie. <b>L'écran ne dit jamais si une réponse est juste.</b></p>
+  cran, deux erreurs arrêtent la partie. <b>L'écran ne dit jamais si une réponse est juste.</b> Au résultat, chaque
+  partie est comparée au seuil de son objectif. La partie « Parler » met l'employé devant quatre situations qui
+  exigent chacune un geste — faire répéter, faire préciser, vérifier, passer le relais : vous notez si le geste est
+  fait, pas la grammaire.</p>
   <p>À la fin, sous « Pour le formateur » : écoutez les deux réponses orales avec l'employé, notez-les, et
   <b>confirmez le niveau</b> — débutant, fonctionnel ou à l'aise. C'est ce niveau qui ouvre les clients du
   magasin. Refaites le test à la dernière séance : l'écran compare avec la première passation.</p>
@@ -157,8 +187,9 @@ casse. L'employé travaille sur son téléphone ; vous travaillez dans le portai
 <section>
   <h2>Le magasin</h2>
   <table class="cmp"><thead><tr><th>Client</th><th>Ce qui l'attend</th><th>Niveaux</th></tr></thead><tbody>{clients}</tbody></table>
-  <p>Le visage du client change avec son humeur : c'est la rétroaction. Au bout, le bilan corrige les phrases de
-  l'employé et lui fait cocher les gestes qu'il a faits :</p>
+  <p>Le visage du client change avec son humeur, et l'humeur s'écrit dessous. Au bout, le bilan dit, geste par
+  geste, ce qui a été fait et ce qui reste à faire, avec la phrase à dire ; la correction des phrases vient en
+  second. Les cinq gestes :</p>
   <ol class="simple">{gestes}</ol>
 </section>
 
@@ -249,9 +280,10 @@ les mots du rayon, puis à comprendre le client — et à dire « un instant, s'
   </div>
   <table class="cmp"><tbody>
     <tr><td><b>Apprendre les mots</b></td><td>{c['croquis']} croquis de catalogue ; le mot d'ici en tête (« chandail »), l'autre dessous (« pull ») ; huit pièges France-Québec signalés.</td></tr>
-    <tr><td><b>S'exercer</b></td><td>Cinq exercices, dont {c['demandes']} demandes de clients à vitesse réelle.</td></tr>
-    <tr><td><b>Mesurer</b></td><td>Un test de dix minutes, adaptatif, repassé à la fin : l'écart entre les deux passations montre ce qui a été appris.</td></tr>
-    <tr><td><b>Pratiquer</b></td><td>Un jeu de rôle à voix haute ; le visage du client montre l'effet de ce qu'on lui dit.</td></tr>
+    <tr><td><b>S'exercer</b></td><td>Sept exercices, dont {c['demandes']} demandes de clients à vitesse réelle, les consignes de la gérante et « Ce que je réponds ».</td></tr>
+    <tr><td><b>Voir faire</b></td><td>Cinq dialogues modèles : on entend un vendeur faire chaque geste avant de le faire soi-même.</td></tr>
+    <tr><td><b>Mesurer</b></td><td>Un test de dix minutes, adaptatif, en deux formes équivalentes : repassé à la fin sur des questions nouvelles, il montre ce qui a été appris, objectif par objectif.</td></tr>
+    <tr><td><b>Pratiquer</b></td><td>Un jeu de rôle à voix haute ; le visage du client montre l'effet de ce qu'on lui dit, et le bilan dit quels gestes ont été faits.</td></tr>
     <tr><td><b>Garder en poche</b></td><td>Une fiche imprimable par langue : six phrases du vendeur, les pièges, les tailles, les couleurs.</td></tr>
   </tbody></table>
 </section>

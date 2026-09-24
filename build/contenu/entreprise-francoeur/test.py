@@ -34,7 +34,10 @@ l'enseignant). Rien de nominatif : le résultat vit sur l'appareil.
 A_CRAN1 = ["t-shirt", "pantalon", "tuque", "souliers", "sac-dos", "robe"]
 A_CRAN2 = ["cardigan", "bermuda", "bottillons", "collants", "cache-cou", "combinaison"]
 A_CRAN3 = [
-    ("veste",           ["veston", "manteau", "coton-ouate"]),
+    # Pas le veston : « on entend aussi une veste » pour un veston en France,
+    # choisir le veston était défendable (audit, D4). Le manteau en duvet, lui,
+    # a des manches : c'est tout le piège.
+    ("veste",           ["manteau-duvet", "coton-ouate", "chemise"]),
     ("bas-chaussettes", ["pantalon", "collants", "legging"]),
     ("sacoche",         ["sac-dos", "sac", "portefeuille"]),
     ("mitaines",        ["gants", "cache-oreilles", "foulard"]),
@@ -118,14 +121,96 @@ C = [
 VOIX_GERANTE = "enseignante"
 
 # ── D · répondre à voix haute ────────────────────────────────────────────
-# Le client pose sa question, l'employé répond au micro. L'enregistrement reste
-# sur l'appareil ; le formateur l'écoute avec l'employé et note sur trois
-# crans. Rien n'est corrigé par l'écran, rien n'est envoyé.
+# Audit de la boucle didactique, 24 septembre 2026 (F1, majeur) : les deux
+# questions d'avant (« où sont les cabines ? ») n'exigeaient aucun geste. Chaque
+# item exige maintenant UN geste des objectifs O3 et O4. L'enregistrement reste
+# sur l'appareil ; le formateur l'écoute et note contre le geste attendu.
+# (id, voix, phrase du client, geste attendu, exemples de réponse, rapide)
 D = [
-    ("d1", "masculin_1", "Excusez-moi, les cabines d'essayage, c'est où ?"),
-    ("d2", "feminin_2",  "Avez-vous ce chandail-là en moyen ? Je le trouve pas."),
+    ("d1", "masculin_1",
+     "Bonjour, oui, je cherche le chandail gris de la vitrine en moyen, pis aussi une tuque, vous avez-tu ça ?",
+     "Faire répéter", "« Un instant, s'il vous plaît. Pouvez-vous répéter plus lentement ? »", True),
+    ("d2", "feminin_2", "Avez-vous ce chandail-là ?",
+     "Faire préciser", "« Quelle taille ? » ou « Quelle couleur ? »", False),
+    ("d3", "masculin_1",
+     "Il vous reste-tu ce manteau-là en moyen ? Vous pouvez me le garder jusqu'à samedi, c'est sûr ?",
+     "Vérifier sans promettre", "« Je vais vérifier en arrière. »", False),
+    ("d4", "feminin_2", "Je veux me faire rembourser ce coton ouaté. J'ai pas mon reçu.",
+     "Passer le relais", "« Un instant. Je vais chercher la gérante. »", False),
 ]
-ORAL = ["Pas de réponse", "Des mots", "Une phrase qu'on comprend"]
+# La grille du formateur, la même pour chaque item : le geste, pas la grammaire.
+ORAL = ["A fait le geste", "A deviné ou promis", "Pas de réponse"]
+
+# ── La seconde forme, pour la dernière passation ─────────────────────────
+# Audit (F1, majeur) : le test repassé reprenait les MÊMES items, et la partie
+# A les MÊMES MP3 que les planches — l'écart mêlait apprentissage et souvenir.
+# Forme 2 : mêmes crans, même difficulté, items différents. La première
+# passation prend la forme 1, la suivante la forme 2, puis on alterne. La
+# partie A est dite par une voix de client (sons/test/a-<id>.mp3), jamais par
+# la voix des planches.
+A2_CRAN1 = ["chemise", "jupe", "casquette", "sandales", "parapluie", "manteau"]
+A2_CRAN2 = ["polo", "salopette", "gougounes", "boxer", "cache-oreilles", "tailleur"]
+A2_CRAN3 = [
+    ("coton-ouate",  ["kangourou", "chandail", "cardigan"]),
+    ("camisole",     ["t-shirt", "haut-court", "brassiere"]),
+    ("habit",        ["veston", "tailleur", "pantalon-habit"]),
+    ("robe-chambre", ["jaquette", "pyjama", "manteau"]),
+    ("claques",      ["souliers", "bottes-pluie", "pantoufles"]),
+    ("habit-neige",  ["combinaison", "manteau-duvet", "parka"]),
+]
+B2 = [
+    ("b41", 1, "masculin_1", "Je cherche une casquette.",        ("casquette", "gris", None), None),
+    ("b42", 1, "feminin_2",  "Avez-vous des sandales ?",         ("sandales", "gris", None), None),
+    ("b43", 1, "narrateur",  "Je voudrais un imperméable.",      ("impermeable", "gris", None), None),
+    ("b44", 1, "feminin_2",  "Où sont les pyjamas ?",            ("pyjama", "gris", None), None),
+    ("b45", 1, "masculin_1", "Je cherche une cravate.",          ("cravate", "gris", None), None),
+    ("b51", 2, "feminin_2",  "Avez-vous une blouse blanche, en moyen ?", ("blouse", "blanc", "m"), None),
+    ("b52", 2, "masculin_1", "Je cherche des shorts noirs, en grand.",   ("short", "noir", "g"), None),
+    ("b53", 2, "narrateur",  "Un foulard vert, s'il vous plaît.",        ("foulard", "vert", None), None),
+    ("b54", 2, "feminin_2",  "La jupe, l'avez-vous en beige, en petit ?", ("jupe", "beige", "p"), None),
+    ("b55", 2, "masculin_1", "Il me faudrait un coton ouaté bleu, en très grand.", ("coton-ouate", "bleu", "tg"), None),
+    ("b61", 3, "masculin_1", "Je cherche des bottes… non, des bottillons. Bruns, pas noirs.",
+     ("bottillons", "brun", None), ("bottes", "noir", None)),
+    ("b62", 3, "feminin_2",
+     "C'est pour mon mari. Il fait du grand, mais le grand, c'est trop serré. Le même polo, une taille plus grande. En bleu.",
+     ("polo", "bleu", "tg"), ("t-shirt", "vert", "g")),
+    ("b63", 3, "narrateur",  "Pas la chemise : le polo. En blanc. Moyen.",
+     ("polo", "blanc", "m"), ("chemise", "bleu", "g")),
+    ("b64", 3, "feminin_2",  "Je l'aime pas en rouge. Vous avez-tu la même robe en vert ? En petit.",
+     ("robe", "vert", "p"), ("jupe", "rouge", "m")),
+]
+C2 = [
+    ("k11", 1, "Va chercher les tuques en arrière.", "Qu'est-ce qu'il faut aller chercher ?",
+     "tuque", ["casquette", "foulard", "mitaines"]),
+    ("k12", 1, "Plie les chandails.", "Qu'est-ce qu'il faut plier ?",
+     "chandail", ["chemise", "pantalon", "t-shirt"]),
+    ("k13", 1, "Va voir à la vitrine.", "Où faut-il aller ?",
+     "vitrine", ["caisse", "cabine", "presentoir"]),
+    ("k14", 1, "Apporte des cintres à la cabine deux.", "Qu'est-ce qu'il faut apporter ?",
+     "cintre", ["sac", "miroir", "etiquette-prix"]),
+    ("k21", 2, "Mets les foulards sur le présentoir, en avant.", "Qu'est-ce qu'il faut mettre sur le présentoir ?",
+     "foulard", ["tuque", "gants", "cravate"]),
+    ("k22", 2, "La dame, là-bas, cherche des bottes d'hiver. Montre-lui le rayon.", "Que cherche la dame ?",
+     "bottes", ["bottes-pluie", "bottillons", "pantoufles"]),
+    ("k23", 2, "Il n'y a plus de sacs à la caisse. Va en chercher.", "Qu'est-ce qui manque ?",
+     "sac", ["recu", "carte-cadeau", "cintre"]),
+    ("k24", 2, "Mets un antivol sur chaque manteau.", "Qu'est-ce qu'il faut mettre sur les manteaux ?",
+     "antivol", ["etiquette-prix", "cintre", "sac"]),
+    ("k31", 3, "Plie les chandails, range les jeans, pis touche pas aux robes : je les change demain.",
+     "Qu'est-ce qu'il ne faut PAS toucher ?", "robe", ["chandail", "jeans", "pantalon"]),
+    ("k32", 3, "On a reçu des bottes pis des souliers. Les bottes, en avant ; les souliers, laisse-les en arrière.",
+     "Qu'est-ce qu'il faut laisser en arrière ?", "souliers", ["bottes", "espadrilles", "sandales"]),
+    ("k33", 3, "Le client veut essayer le veston, pas l'habit au complet. Trouve-lui une cabine.",
+     "Qu'est-ce que le client veut essayer ?", "veston", ["habit", "tailleur", "chemise"]),
+    ("k34", 3, "Si quelqu'un veut une carte-cadeau, envoie-le à la caisse, pas à moi.",
+     "Où faut-il envoyer le client ?", "caisse", ["cabine", "vitrine", "presentoir"]),
+]
+
+# Les seuils des objectifs (cadrage, O1-O5), affichés au résultat par partie :
+# la part des réponses justes, rapportée au seuil. Audit (F1, A1, majeurs).
+SEUILS = {"A": (0.8, "O1 — reconnaître l'article : 8 sur 10"),
+          "B": (0.7, "O2 — comprendre la demande : 7 sur 10"),
+          "C": (0.7, "O5 — comprendre la consigne : 7 sur 10")}
 
 # Le palier, sur la somme des trois parties corrigées (0 à 9). La partie B
 # pèse plus : c'est elle qui décide du jeu de rôle — un employé qui ne comprend

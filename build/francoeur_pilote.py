@@ -38,7 +38,7 @@ def main():
     tete = tete[:tete.index("<body")]
     tete = re.sub(r"<title>.*?</title>", "<title>Maison Francœur — le pilote</title>", tete)
     tete = tete.replace("</style>", CSS + "</style>", 1)
-    gestes = "".join(f"<li>{g}</li>" for g in GESTES)
+    gestes = "".join(f"<li>{g['nom']} — « {g['phrase']} »</li>" for g in GESTES)
     clients = " · ".join(c[1] for c in CLIENTS)
 
     corps = f"""<body><div class="doc">
@@ -58,10 +58,6 @@ raté par la moitié du groupe accuse l'item ; un item réussi par tous occupe u
     <li><p><b>Essayer le magasin en ligne</b>, avec un code d'élève : le client annonce-t-il son humeur entre
       crochets sans qu'ils s'affichent ? Parle-t-il en phrases courtes au palier débutant ? Dit-il « FIN » ?
       Ce n'a été joué que contre un serveur simulé.</p><p class="qui">Vous. Vingt minutes, deux clients.</p></li>
-    <li><p><b>Recharger le crédit de l'API Anthropic du poste</b>, puis traduire les consignes qui manquent
-      {("(" + ", ".join(langues_sans_ui) + ")") if langues_sans_ui else ""} :
-      <code>python3 build/francoeur_traductions.py --interface</code> puis
-      <code>python3 build/francoeur_planches.py</code>.</p><p class="qui">Vous pour le crédit, moi pour le reste.</p></li>
     <li><p><b>Faire relire les langues du groupe</b> par un locuteur — chaque traduction est marquée « non relue »
       à l'écran tant que personne ne l'a validée.</p><p class="qui">Un employé bilingue, idéalement du pilote.</p></li>
   </ol>
@@ -97,13 +93,13 @@ raté par la moitié du groupe accuse l'item ; un item réussi par tous occupe u
     <tr><td>Accueil, choix de la langue</td><td class="num">10</td><td>Trouvent-ils seuls leur langue, ou « sans traduction » ?</td></tr>
     <tr><td>Le test « Mon niveau »</td><td class="num">15</td><td>{n_test} items possibles, adaptatif. Qui abandonne, où.</td></tr>
     <tr><td>Les planches</td><td class="num">20</td><td>Touchent-ils « Voir dans ma langue » à chaque mot, ou jamais ?</td></tr>
-    <tr><td>Les cinq exercices</td><td class="num">40</td><td>Quel exercice ils refont d'eux-mêmes ; lequel ils fuient.</td></tr>
+    <tr><td>Les exercices (sept, dont les pièges)</td><td class="num">40</td><td>Quel exercice ils refont d'eux-mêmes ; lequel ils fuient.</td></tr>
     <tr><td>Retour à chaud</td><td class="num">5</td><td>Deux questions, plus bas.</td></tr>
   </tbody></table>
   <table class="cmp" style="margin-top:14px"><thead><tr><th>Séance 2</th><th>Min.</th><th>Ce qu'on regarde</th></tr></thead><tbody>
     <tr><td>Exercices, dont « Ce que le client veut »</td><td class="num">20</td><td>{len(DEMANDES)} demandes : lesquelles ratées par tous.</td></tr>
-    <tr><td>Le magasin</td><td class="num">40</td><td>{len(CLIENTS)} clients — {clients}. Qui arrive à faire repartir le client content.</td></tr>
-    <tr><td>Le test, repassé</td><td class="num">15</td><td>L'écart avec la première passation.</td></tr>
+    <tr><td>Les gestes du vendeur, puis le magasin</td><td class="num">40</td><td>Les dialogues modèles, « Ce que je réponds », puis {len(CLIENTS)} clients — {clients}. Qui arrive à faire repartir le client content.</td></tr>
+    <tr><td>Le test, repassé (seconde forme)</td><td class="num">15</td><td>L'écart avec la première passation, sur des questions nouvelles.</td></tr>
     <tr><td>Entretien de groupe</td><td class="num">15</td><td>Les cinq questions, plus bas.</td></tr>
   </tbody></table>
 </section>

@@ -49,7 +49,9 @@ LEXIQUE = [
     ("kangourou",      "hauts", "un kangourou",          "un sweat à capuche",  C, "Le coton ouaté à capuchon et à poche devant."),
     ("cardigan",       "hauts", "une veste de laine",    "un cardigan",         C, ""),
     ("col-roule",      "hauts", "un col roulé",          "",                    C, "Désigne le vêtement ET le col."),
-    ("veste",          "hauts", "une veste",             "un gilet sans manches", C, "PIÈGE : au Québec, une veste n'a pas de manches. En France, c'est un veston."),
+    # Note nuancée (audit, D4) : la trousse disait elle-même « veste de laine »
+    # et « veste en jeans », qui ont des manches. Le piège porte sur le mot SEUL.
+    ("veste",          "hauts", "une veste",             "un gilet sans manches", C, "PIÈGE : au Québec, « une veste » toute seule n'a pas de manches. « Une veste de laine », « une veste en jeans » en ont."),
     ("haut-court",     "hauts", "un haut court",         "un crop top",         C, ""),
 
     # ── Les bas du corps ─────────────────────────────────────────────────
@@ -69,7 +71,7 @@ LEXIQUE = [
     ("robe-soiree",    "robes", "une robe de soirée",    "",                    C, ""),
     ("combinaison",    "robes", "une combinaison",       "",                    C, ""),
     ("habit",          "robes", "un habit",              "un costume",          C, "L'ensemble veston et pantalon. « Complet » s'entend aussi."),
-    ("veston",         "robes", "un veston",             "une veste",           C, ""),
+    ("veston",         "robes", "un veston",             "",                    C, "La veste d'un habit, avec des manches. En France, on dit « une veste »."),
     ("tailleur",       "robes", "un tailleur",           "",                    C, ""),
     ("cravate",        "robes", "une cravate",           "",                    C, ""),
     ("noeud-pap",      "robes", "un nœud papillon",      "",                    C, ""),
@@ -92,7 +94,7 @@ LEXIQUE = [
     ("bas-chaussettes","dessous", "des bas",             "des chaussettes",     C, "PIÈGE : « des bas » ne veut pas dire « le bas du corps »."),
     ("collants",       "dessous", "des collants",        "",                    C, ""),
     ("brassiere",      "dessous", "une brassière",       "un soutien-gorge",    C, ""),
-    ("culotte",        "dessous", "une culotte",         "",                    C, "« Des bobettes » s'entend aussi, familier."),
+    ("culotte",        "dessous", "une culotte",         "des bobettes",        C, "« Des bobettes » : familier, on l'entend souvent."),
     ("boxer",          "dessous", "un boxer",            "un caleçon",          C, ""),
     ("pyjama",         "dessous", "un pyjama",           "",                    C, ""),
     ("jaquette",       "dessous", "une jaquette",        "une chemise de nuit", C, "PIÈGE : en France, une jaquette est un veston long."),
@@ -131,7 +133,7 @@ LEXIQUE = [
     ("col",            "details", "un col",              "",                    C, "Col rond, col en V, col roulé."),
     ("capuchon",       "details", "un capuchon",         "une capuche",         C, ""),
     ("poche",          "details", "une poche",           "",                    C, ""),
-    ("fermeture",      "details", "une fermeture éclair", "un zip",             C, "Le client dira souvent « un zipper »."),
+    ("fermeture",      "details", "une fermeture éclair", "un zipper",          C, "Le client dira souvent « un zipper »."),
     ("bouton",         "details", "un bouton",           "",                    C, ""),
     ("ourlet",         "details", "un ourlet",           "",                    C, "Le mot des retouches : « faire l'ourlet »."),
     ("doublure",       "details", "une doublure",        "",                    C, ""),
@@ -190,7 +192,7 @@ LEXIQUE = [
     ("trop-long",      "tailles", "trop long",           "",                    N, ""),
     ("trop-court",     "tailles", "trop court",          "",                    N, ""),
     ("taille-haute",   "tailles", "taille haute",        "",                    C, ""),
-    ("extensible",     "tailles", "extensible",          "",                    N, "« Ça étire » au Québec."),
+    ("extensible",     "tailles", "extensible",          "ça étire",            N, "« Ça étire » au Québec."),
 
     # ── Le magasin ───────────────────────────────────────────────────────
     ("cabine",         "magasin", "la cabine d'essayage", "",                   C, ""),

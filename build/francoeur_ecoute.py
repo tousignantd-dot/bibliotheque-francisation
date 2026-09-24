@@ -38,11 +38,15 @@ SEUIL_SIMILITUDE, SEUIL_CONFIANCE = 0.75, 0.60
 
 
 def attendus():
-    out = [(f"sons/{e[0]}.mp3", "mot", e[2]) for e in LEXIQUE]
-    out += [(f"sons/demandes/{d[0]}.mp3", "demande", d[2]) for d in DEMANDES]
-    out += [(f"sons/test/{b[0]}.mp3", "test client", b[3]) for b in TEST.B]
-    out += [(f"sons/test/{c[0]}.mp3", "test gérante", c[2]) for c in TEST.C]
-    out += [(f"sons/test/{d[0]}.mp3", "test oral", d[2]) for d in TEST.D]
+    """Tout ce que produit le script des voix — la même liste, une seule source.
+    On compare au texte AFFICHÉ (le lexique), pas à la graphie de prononciation
+    envoyée à la voix (« rôse » se retranscrit « rose »)."""
+    import audio_francoeur as AF
+    affiche = {f"{e[0]}.mp3": e[2] for e in LEXIQUE}
+    out = []
+    for chemin, texte, _role, _taux in AF.travaux():
+        famille = chemin.split("/")[0] if "/" in chemin else "mot"
+        out.append((f"sons/{chemin}", famille, affiche.get(chemin, texte)))
     return out
 
 

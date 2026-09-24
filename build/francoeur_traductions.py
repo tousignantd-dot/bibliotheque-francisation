@@ -210,8 +210,40 @@ INTERFACE = {
     "fini": "J'ai fini",
     "bilan_titre": "Le bilan",
     "vos_phrases": "Vos phrases, corrigées",
-    "gestes_titre": "Les gestes du vendeur — lesquels avez-vous faits ?",
+    "gestes_titre": "Les gestes du vendeur, dans cette visite",
     "autre_client": "Un autre client",
+    # Révision des majeurs de l'audit (24 septembre 2026)
+    "chemin": "Votre chemin",
+    "prochaine": "Prochaine étape",
+    "fait": "fait",
+    "etape_test": "Mon niveau",
+    "etape_mots": "Apprendre les mots",
+    "etape_exos": "Je m'exerce",
+    "etape_gestes": "Les gestes du vendeur",
+    "etape_magasin": "Le magasin",
+    "tache_titre": "Un client entre",
+    "tache": "Un client vous parle. Touchez ce qu'il demande.",
+    "tache_ok": "Oui : « une tuque ». Voici par où continuer.",
+    "tache_non": "Écoutez encore : il demande une tuque.",
+    "fiche_poche": "Ma fiche de poche",
+    "fiche_sous": "Six phrases à dire au plancher.",
+    "rappel": "Une série de rappel vous attend.",
+    "rappel_go": "Faire la série",
+    "gestes": "Les gestes du vendeur",
+    "gestes_sous": "Écoutez un vendeur faire chaque geste.",
+    "ecouter_dialogue": "Écouter le dialogue",
+    "a_vous": "À vous : ce que je réponds",
+    "ex_gerante": "Ce que la gérante demande",
+    "ex_gerante_c": "Écoutez la gérante, puis touchez la réponse.",
+    "ex_reponse": "Ce que je réponds",
+    "ex_reponse_c": "Écoutez le client. Choisissez ce que dit le vendeur.",
+    "atteint": "Objectif atteint",
+    "pas_encore": "Pas encore : refaites une série.",
+    "a_revoir_liste": "À revoir",
+    "aller_magasin": "Aller au magasin à ce niveau",
+    "mots_a_revoir": "Mes mots à revoir",
+    "mes_phrases": "Mes phrases",
+    "avant_entrer": "Avant d'entrer : écoutez les gestes du vendeur, et gardez vos phrases sous la main.",
 }
 
 
@@ -234,8 +266,17 @@ def textes_interface():
     textes.update({f"planche_{k}": t for k, t in PLANCHES})
     # Les questions de la partie C du test : la CONSIGNE se traduit, la phrase
     # de la gérante (le contenu à comprendre) jamais.
-    import test as TEST
-    textes.update({f"tq_{c[0]}": c[3] for c in TEST.C})
+    import test as TEST, clients as CLI, gerante as GER, modeles as MOD
+    textes.update({f"tq_{c[0]}": c[3] for c in list(TEST.C) + list(TEST.C2)})
+    # Les consignes que l'employé doit lire pour agir (audit C5) : les cartes
+    # des clients, les gestes modèles, les questions de la gérante, et ce que
+    # chaque mauvaise réponse aurait provoqué. Jamais les paroles à comprendre.
+    textes.update({f"carte_{c[0]}": c[4] for c in CLI.CLIENTS})
+    textes.update({f"mg_{m[0]}": m[1] for m in MOD.MODELES})
+    textes.update({f"gq_{c[0]}": c[2] for c in GER.CONSIGNES})
+    for r in MOD.REPONSES:
+        for n, (_t, x) in enumerate(r[4], 1):
+            textes[f"rm_{r[0]}_{n}"] = x
     return textes
 
 

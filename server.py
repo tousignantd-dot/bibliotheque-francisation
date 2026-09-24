@@ -21012,6 +21012,33 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             return
 
         recu = body.get("historique")
+
+        # Le bilan d'une visite, geste par geste (le magasin de la Maison
+        # Francœur, audit de la boucle didactique du 24 septembre 2026 : le
+        # bilan corrigeait la grammaire et jamais les gestes, qui sont le but).
+        # Seuls les scénarios qui déclarent une consigne `bilan` l'acceptent.
+        if body.get("bilan"):
+            consigne = JEU_DE_ROLE_SCENARIOS[scenario].get("bilan")
+            if not consigne:
+                json_response(self, {"error": "Pas de bilan pour ce scénario"}, 400)
+                return
+            lignes = []
+            for m in (recu or [])[-40:]:
+                if isinstance(m, dict) and str(m.get("contenu", "")).strip():
+                    qui = "CLIENT" if m.get("role") == "assistant" else "VENDEUR"
+                    lignes.append(f"{qui} : {str(m['contenu']).strip()[:600]}")
+            if not lignes:
+                json_response(self, {"error": "Visite vide"}, 400)
+                return
+            parsed, err = self._call_anthropic_json(
+                consigne, "\n".join(lignes), max_tokens=900,
+                route="jeu-de-role-bilan", code=code, module=scenario)
+            if err:
+                json_response(self, {"error": err[0]}, err[1])
+                return
+            json_response(self, {"bilan": parsed})
+            return
+
         messages = jeu_de_role_messages(recu, role, scenario)
         premier_tour = not recu
 

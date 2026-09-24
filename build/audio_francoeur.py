@@ -70,63 +70,86 @@ PRONONCIATION = {
 }
 
 
+RAPIDE = "+20%"   # le client qui parle trop vite : c'est ce qu'on fait répéter
+VENDEUR = "hd_masculin"   # le vendeur modèle : toujours la même voix (Thierry HD)
+CLIENT_MODELE = "hd_feminin"
+
+
+def mot_dit(ident, texte):
+    """Le texte envoyé à la voix pour un mot du lexique (PRONONCIATION d'abord)."""
+    return PRONONCIATION.get(ident, (texte, VOIX_MOTS))[0]
+
+
+def travaux():
+    """Tout ce qui se synthétise, en une liste : (fichier, texte, rôle, taux).
+    Un seul chemin pour tout, pour que tout se régénère de la même façon."""
+    import gerante as G, modeles as MO, fiche as FI
+    t = []
+    for e in LEXIQUE:
+        texte, role = PRONONCIATION.get(e[0], (e[2], VOIX_MOTS))
+        t.append((f"{e[0]}.mp3", texte, role, azure_voix.TAUX_SONS))
+        # L'autre mot se fait entendre aussi (audit A2 : « des bobettes »,
+        # « un zipper » n'étaient jamais dits). Pas les codes (XS, M…).
+        if e[3] and len(e[3]) > 2:
+            t.append((f"autre/{e[0]}.mp3", e[3], VOIX_MOTS, azure_voix.TAUX_SONS))
+    for d in DEMANDES:
+        t.append((f"demandes/{d[0]}.mp3", d[2], HD[d[1]], None))
+    for b in list(TEST.B) + list(TEST.B2):
+        t.append((f"test/{b[0]}.mp3", b[3], HD[b[2]], None))
+    for c in list(TEST.C) + list(TEST.C2):
+        t.append((f"test/{c[0]}.mp3", c[2], HD[TEST.VOIX_GERANTE], None))
+    for d in TEST.D:
+        t.append((f"test/{d[0]}.mp3", d[2], HD[d[1]], RAPIDE if d[5] else None))
+    # La partie A du test dite par une VOIX DE CLIENT, jamais celle des planches
+    # (audit F1 : le test rejouait les mêmes MP3 que l'apprentissage).
+    lex = {e[0]: e for e in LEXIQUE}
+    cibles = (TEST.A_CRAN1 + TEST.A_CRAN2 + [x for x, _ in TEST.A_CRAN3]
+              + TEST.A2_CRAN1 + TEST.A2_CRAN2 + [x for x, _ in TEST.A2_CRAN3])
+    for i in cibles:
+        t.append((f"test/a-{i}.mp3", mot_dit(i, lex[i][2]), "hd_masculin", azure_voix.TAUX_SONS))
+    for c in G.CONSIGNES:
+        t.append((f"gerante/{c[0]}.mp3", c[1], HD[TEST.VOIX_GERANTE], None))
+    for m in MO.MODELES:
+        for n, (qui, texte) in enumerate(m[2], 1):
+            role = VENDEUR if qui == "vendeur" else CLIENT_MODELE
+            t.append((f"modeles/{m[0]}-{n}.mp3", texte, role, RAPIDE if qui == "client-rapide" else None))
+    for r in MO.REPONSES:
+        t.append((f"reponses/{r[0]}-client.mp3", r[2], CLIENT_MODELE, RAPIDE if r[1] == "client-rapide" else None))
+        t.append((f"reponses/{r[0]}-bonne.mp3", r[3], VENDEUR, None))
+    for i, texte, _q in FI.PHRASES:
+        t.append((f"phrases/{i}.mp3", texte.replace("…", ","), VENDEUR, None))
+    t.append(("accueil.mp3", "Bonjour ! Avez-vous des tuques ?", CLIENT_MODELE, None))
+    return t
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--refaire", action="store_true")
     ap.add_argument("--compter", action="store_true")
+    ap.add_argument("fichiers", nargs="*", help="refaire seulement ces fichiers (chemins sous sons/)")
     a = ap.parse_args()
+    tout = travaux()
     if a.compter:
-        print("%d mots, %d caractères" % (len(LEXIQUE), sum(len(e[2]) for e in LEXIQUE)))
-        print("%d demandes, %d caractères" % (len(DEMANDES), sum(len(d[2]) for d in DEMANDES)))
+        manquent = [x for x in tout if not (SORTIE / x[0]).exists()]
+        print("%d extraits, %d caractères ; %d manquent (%d caractères)"
+              % (len(tout), sum(len(x[1]) for x in tout), len(manquent), sum(len(x[1]) for x in manquent)))
         return
-    SORTIE.mkdir(parents=True, exist_ok=True)
     cle, region = azure_voix.cle_region()
-    a_faire = [e for e in LEXIQUE if a.refaire or not (SORTIE / f"{e[0]}.mp3").exists()]
+    a_faire = [x for x in tout if a.refaire or x[0] in a.fichiers or not (SORTIE / x[0]).exists()]
 
-    def un(e):
-        dest = SORTIE / f"{e[0]}.mp3"
+    def un(x):
+        chemin, texte, role, taux = x
+        dest = SORTIE / chemin
+        dest.parent.mkdir(parents=True, exist_ok=True)
         try:
-            texte, role = PRONONCIATION.get(e[0], (e[2], VOIX_MOTS))
-            d = azure_voix.parle(texte, role, dest, cle=cle, region=region,
-                                 reference=azure_voix.TAUX_SONS)
-            print("  %-16s %4.2f s  %s" % (e[0], d, e[2]), flush=True)
-        except Exception as x:
-            print("  %-16s ÉCHEC %s" % (e[0], x), flush=True)
-            return e[0]
-
-    # Les demandes des clients : voix de client, débit normal (pas de TAUX_SONS).
-    DEM = SORTIE / "demandes"
-    DEM.mkdir(exist_ok=True)
-    dem = [d for d in DEMANDES if a.refaire or not (DEM / f"{d[0]}.mp3").exists()]
-
-    def une_demande(d):
-        try:
-            duree = azure_voix.parle(d[2], HD[d[1]], DEM / f"{d[0]}.mp3", cle=cle, region=region)
-            print("  %-5s %-11s %4.2f s  %s" % (d[0], d[1], duree, d[2]), flush=True)
-        except Exception as x:
-            print("  %-5s ÉCHEC %s" % (d[0], x), flush=True)
-            return d[0]
-
-    # Le test : (id, voix, phrase) pour B, C et D, dans sons/test/.
-    TST = SORTIE / "test"
-    TST.mkdir(exist_ok=True)
-    test = ([(b[0], b[2], b[3]) for b in TEST.B] + [(c[0], TEST.VOIX_GERANTE, c[2]) for c in TEST.C]
-            + [(d[0], d[1], d[2]) for d in TEST.D])
-    test = [t for t in test if a.refaire or not (TST / f"{t[0]}.mp3").exists()]
-
-    def un_test(t):
-        try:
-            duree = azure_voix.parle(t[2], HD[t[1]], TST / f"{t[0]}.mp3", cle=cle, region=region)
-            print("  %-5s %-11s %4.2f s  %s" % (t[0], t[1], duree, t[2][:60]), flush=True)
-        except Exception as x:
-            print("  %-5s ÉCHEC %s" % (t[0], x), flush=True)
-            return t[0]
+            d = azure_voix.parle(texte, role, dest, cle=cle, region=region, reference=taux)
+            print("  %-28s %4.2f s  %s" % (chemin, d, texte[:50]), flush=True)
+        except Exception as e:
+            print("  %-28s ÉCHEC %s" % (chemin, e), flush=True)
+            return chemin
 
     with ThreadPoolExecutor(4) as pool:
         echecs = [r for r in pool.map(un, a_faire) if r]
-        echecs += [r for r in pool.map(une_demande, dem) if r]
-        echecs += [r for r in pool.map(un_test, test) if r]
-    a_faire = a_faire + dem + test
     print("%d produits, %d échecs %s → %s" % (len(a_faire) - len(echecs), len(echecs),
                                               echecs or "", SORTIE.relative_to(RACINE)))
 

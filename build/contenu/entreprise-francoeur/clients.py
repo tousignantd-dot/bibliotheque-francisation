@@ -70,7 +70,8 @@ CLIENTS = [
       "(oui, trente jours, avec le reçu-cadeau).",
       "À la fin, tu demandes une carte-cadeau à la place si le vendeur n'a pas su t'aider."]),
 
-    ("rupture", "Monsieur Nguyen", "jr_masculin", ["fonctionnel", "aise"],
+    # Ouvert au débutant (audit, A3) : c'est lui qui doit apprendre à vérifier.
+    ("rupture", "Monsieur Nguyen", "jr_masculin", ["debutant", "fonctionnel", "aise"],
      "Il veut un article qui n'est plus sur le plancher.",
      "a man in his twenties, straight black hair, a black puffer jacket, a small backpack strap on "
      "one shoulder",
@@ -92,7 +93,8 @@ CLIENTS = [
       "Si le vendeur te demande de répéter poliment, tu répètes plus lentement, sans te fâcher.",
       "Si le vendeur fait semblant de comprendre et se trompe, tu deviens impatiente."]),
 
-    ("retour", "Monsieur Lavoie", "jr_masculin", ["aise"],
+    # Ouvert au débutant (audit, A3) : passer le relais est son geste le plus utile.
+    ("retour", "Monsieur Lavoie", "jr_masculin", ["debutant", "fonctionnel", "aise"],
      "Il veut rapporter un article, mais il n'a pas son reçu.",
      "a man in his forties, receding brown hair, a green fleece jacket, a paper shopping bag "
      "held up at chest height",
@@ -117,10 +119,17 @@ CLIENTS = [
 ]
 
 PALIERS_JEU = {
+    # Audit (E2, majeur) : le client débutant reformulait de lui-même et ne
+    # s'impatientait jamais — deviner ne coûtait rien, et faire répéter (O3)
+    # n'était jamais nécessaire. Il reste simple et patient, mais il ATTEND
+    # qu'on lui demande de répéter, et il montre quand on répond à côté.
     "debutant": ("Palier débutant : l'employé commence à parler français. Tes répliques font UNE "
-                 "phrase courte, avec des mots simples et concrets. Tu attends patiemment. S'il "
-                 "ne comprend pas, tu répètes avec d'autres mots, plus simples, et tu montres "
-                 "l'article avec des mots comme « celui-là ». Tu ne t'impatientes presque jamais."),
+                 "phrase courte, avec des mots simples et concrets. Si ton personnage a plusieurs "
+                 "besoins, n'en garde qu'UN. Tu restes patient, mais tu ne reformules PAS de toi-"
+                 "même : tu répètes plus lentement ou autrement SEULEMENT quand le vendeur te le "
+                 "demande (« Pouvez-vous répéter ? », « Quelle taille ? »). Si le vendeur répond à "
+                 "côté ou fait semblant d'avoir compris, montre-le avec [hesitante] et redis ta "
+                 "demande telle quelle. S'il promet sans vérifier, demande-lui s'il est sûr."),
     "fonctionnel": ("Palier fonctionnel : l'employé se débrouille. Tes répliques font une ou "
                     "deux phrases, en français québécois courant. Tu es patient la première "
                     "fois qu'il te fait répéter, un peu moins la troisième."),
@@ -132,13 +141,33 @@ PALIERS_JEU = {
 # Le débit de la voix, par palier (paliers de /api/voix : None, « lent »).
 DEBIT_JEU = {"debutant": "lent", "fonctionnel": None, "aise": None}
 
+# Les cinq gestes : un nom court (≤ 8 mots, audit C5) et la phrase qui le fait.
+# Le bilan du magasin les juge un par un (serveur, `bilan` ci-dessous).
 GESTES = [
-    "Accueillir, puis laisser la porte ouverte : « Je suis là si vous avez besoin. »",
-    "Faire préciser une seule chose à la fois : la couleur, puis la taille.",
-    "Redire avant d'aller chercher : « Un manteau noir, en moyen. »",
-    "Vérifier plutôt que promettre : « Je vais vérifier en arrière. »",
-    "Passer le relais quand on ne peut pas décider : « Je vais chercher la gérante. »",
+    {"id": "porte",    "nom": "Laisser la porte ouverte",       "phrase": "Je suis là si vous avez besoin."},
+    {"id": "preciser", "nom": "Faire préciser une chose à la fois", "phrase": "Quelle couleur ? Quelle taille ?"},
+    {"id": "repeter",  "nom": "Faire répéter",                   "phrase": "Pouvez-vous répéter plus lentement ?"},
+    {"id": "verifier", "nom": "Redire et vérifier",              "phrase": "Je vais vérifier en arrière."},
+    {"id": "relais",   "nom": "Passer le relais",                "phrase": "Je vais chercher la gérante."},
 ]
+
+# Le bilan de la visite, par geste (audit E1, majeur : le bilan corrigeait la
+# grammaire et jamais les gestes, qui sont le but). Le serveur envoie la
+# transcription au modèle avec cette consigne et rend du JSON.
+BILAN = (
+    "Tu es formateur en vente au détail. Voici la transcription d'une visite dans un magasin de "
+    "vêtements : un CLIENT (joué par un modèle) et un VENDEUR (un employé immigrant qui apprend le "
+    "français). Juge le VENDEUR, geste par geste, sans juger sa grammaire.\n"
+    "Les gestes : porte (laisser la porte ouverte quand le client regarde) · preciser (faire préciser "
+    "UNE chose à la fois) · repeter (faire répéter au lieu de deviner) · verifier (redire la demande "
+    "et vérifier au lieu de promettre) · relais (passer le relais à la gérante pour ce qu'il ne peut "
+    "pas décider).\n"
+    "Pour CHAQUE geste, dis s'il était « necessaire » dans cette visite, s'il a été « fait », cite la "
+    "réplique du vendeur qui le montre (ou vide), et donne un conseil d'une phrase courte et simple, "
+    "en français facile, qui propose la phrase à dire. Ajoute « resume » : une phrase simple sur ce "
+    "qui a marché. Réponds UNIQUEMENT en JSON : {\"gestes\": [{\"id\": \"porte\", \"necessaire\": "
+    "true, \"fait\": false, \"citation\": \"…\", \"conseil\": \"…\"}, …], \"resume\": \"…\"}."
+)
 
 
 def scenario_serveur():
@@ -184,4 +213,5 @@ def scenario_serveur():
             },
         },
         "paliers": PALIERS_JEU,
+        "bilan": BILAN,
     }

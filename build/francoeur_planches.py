@@ -35,6 +35,10 @@ from demandes import DEMANDES, COULEURS_DISTRACTRICES, TAILLES  # noqa: E402
 import random  # noqa: E402
 import test as TEST  # noqa: E402
 import clients as CLI  # noqa: E402
+import gerante as GER  # noqa: E402
+import modeles as MOD  # noqa: E402
+import pieges as PIE  # noqa: E402
+import fiche as FIC  # noqa: E402
 
 CROQUIS = RACINE / "assets" / "interactive" / "francoeur" / "croquis"
 SONS = RACINE / "assets" / "interactive" / "francoeur" / "sons"
@@ -42,7 +46,7 @@ SORTIE = RACINE / "modules-autonomes" / "francoeur-planches" / "index.html"
 
 # Incrémenter après toute image ou tout son refait : même nom, même adresse,
 # le navigateur servirait l'ancien sans rien dire.
-MEDIA_V = "4"   # 4 : « le denim » devient « du jeans », 24 septembre 2026
+MEDIA_V = "5"   # 5 : révision des majeurs de l’audit (nouvelles voix, test en deux formes), 24 septembre 2026
 
 
 def donnees():
@@ -57,14 +61,52 @@ def donnees():
             m["pastille"] = MOTIFS.get(ident) or f"background:{TEINTES[ident]}"
         if (SONS / f"{ident}.mp3").exists():
             m["son"] = f"/assets/interactive/francoeur/sons/{ident}.mp3?v={MEDIA_V}"
+        if (SONS / "autre" / f"{ident}.mp3").exists():
+            m["autre_son"] = f"/assets/interactive/francoeur/sons/autre/{ident}.mp3?v={MEDIA_V}"
         mots.append(m)
     langues = [{"c": c, "loc": v["loc"], "rtl": v["rtl"], "relu": v["relu"],
-                "ui": v.get("interface", {}),
+                "ui": v.get("interface", {}), "fiche": v.get("fiche", {}),
                 "mots": {k: [t["mot"], t["note"]] for k, t in v["mots"].items()}}
                for c, v in trad.items()]
     return {"planches": [{"k": k, "t": t} for k, t in PLANCHES], "mots": mots,
             "langues": langues, "demandes": demandes(mots), "test": le_test(mots),
-            "magasin": le_magasin()}
+            "magasin": le_magasin(), "gerante": la_gerante(mots), "modeles": les_modeles(),
+            "reponses": les_reponses(), "phrases": les_phrases(),
+            "pieges": {"p": [{"id": i, "o": [i] + c} for i, c in PIE.PIEGES], "ordinaires": PIE.ORDINAIRES},
+            "tailles": {"tp": "très petit", "p": "petit", "m": "moyen", "g": "grand", "tg": "très grand"},
+            "accueil": s_("accueil.mp3")}
+
+
+def s_(chemin):
+    return f"/assets/interactive/francoeur/sons/{chemin}?v={MEDIA_V}"
+
+
+def la_gerante(mots):
+    """L'exercice 6 : seize consignes d'entraînement (O5), autres que celles du test."""
+    avec = {m["id"] for m in mots if "img" in m}
+    out = []
+    for i, phrase, q, bonne, distr in GER.CONSIGNES:
+        assert all(x in avec for x in [bonne] + distr), f"gérante {i} : image manquante"
+        out.append({"id": i, "son": s_(f"gerante/{i}.mp3"), "phrase": phrase, "q": q, "o": [bonne] + distr})
+    return out
+
+
+def les_modeles():
+    return [{"id": i, "geste": g, "cle": cle,
+             "lignes": [{"qui": qui, "texte": t, "son": s_(f"modeles/{i}-{n}.mp3")}
+                        for n, (qui, t) in enumerate(lignes, 1)]}
+            for i, g, lignes, cle in MOD.MODELES]
+
+
+def les_reponses():
+    return [{"id": i, "son": s_(f"reponses/{i}-client.mp3"), "phrase": phrase, "bonne": bonne,
+             "bonne_son": s_(f"reponses/{i}-bonne.mp3"), "expl": expl,
+             "mauvaises": [{"t": t, "x": x} for t, x in mauvaises]}
+            for i, _qui, phrase, bonne, mauvaises, expl in MOD.REPONSES]
+
+
+def les_phrases():
+    return [{"id": i, "texte": t, "quand": q, "son": s_(f"phrases/{i}.mp3")} for i, t, q in FIC.PHRASES]
 
 
 def le_magasin():
@@ -82,7 +124,10 @@ def le_magasin():
             "humeurs": CLI.HUMEURS}
 
 
-ETIQUETTE = {"tp": "TP", "p": "P", "m": "M", "g": "G", "tg": "TG"}
+# Un seul système de tailles : celui des étiquettes, que la planche enseigne
+# aussi (très petit = XS…). Audit (D2, majeur) : la planche disait XS/S/M/L/XL
+# et les cartes TP/P/M/G/TG, un système jamais vu.
+ETIQUETTE = {"tp": "XS", "p": "S", "m": "M", "g": "L", "tg": "XL"}
 
 
 def demandes(mots):
@@ -92,14 +137,17 @@ def demandes(mots):
     par_id = {m["id"]: m for m in mots}
     planche = {e[0]: e[1] for e in LEXIQUE}
     sortie = []
-    for ident, _voix, phrase, art, coul, taille in DEMANDES:
+    for d in DEMANDES:
+        ident, _voix, phrase, art, coul, taille = d[:6]
+        ecartes = d[6] if len(d) > 6 else None
         assert art in par_id and "img" in par_id[art], f"{ident} : {art} sans croquis"
         assert coul in TEINTES, f"{ident} : couleur {coul} inconnue"
-        v = variantes(ident, art, coul, taille, par_id, planche)
+        v = (carre(art, coul, taille, *ecartes) if ecartes
+             else variantes(ident, art, coul, taille, par_id, planche))
         assert not devinable(v), f"{ident} : la bonne carte se devine sans écouter"
         sortie.append({"id": ident, "phrase": phrase,
                        "son": f"/assets/interactive/francoeur/sons/demandes/{ident}.mp3?v={MEDIA_V}",
-                       "v": cartes(v, par_id)})
+                       "reprise": bool(ecartes), "taille": taille, "v": cartes(v, par_id)})
     return sortie
 
 
@@ -147,45 +195,63 @@ def devinable(v):
 
 def cartes(v, par_id):
     return [{"a": a, "img": par_id[a]["img"], "mot": par_id[a]["mot"], "c": c,
-             "cmot": par_id[c]["mot"], "hex": TEINTES[c],
+             "cmot": par_id[c]["mot"], "hex": TEINTES[c], "tid": t,
              "t": ETIQUETTE.get(t) if t else None} for a, c, t in v]
 
 
 def le_test(mots):
-    """Les items du test, par partie et par cran. Distracteurs déduits aux crans
-    1-2, écrits au cran 3 (voir build/contenu/entreprise-francoeur/test.py)."""
+    """Les items du test en DEUX FORMES parallèles (audit F1 : le test repassé
+    reprenait les mêmes items). La première passation prend la forme 1, la
+    suivante la forme 2, puis on alterne. La partie A est dite par une voix de
+    client (sons/test/a-<id>.mp3), jamais par la voix des planches."""
     par_id = {m["id"]: m for m in mots}
     planche = {e[0]: e[1] for e in LEXIQUE}
     avec_img = [m["id"] for m in mots if "img" in m]
-    son = lambda i: f"/assets/interactive/francoeur/sons/test/{i}.mp3?v={MEDIA_V}"
-    for i in TEST.A_CRAN1 + TEST.A_CRAN2 + [x for x, _ in TEST.A_CRAN3]:
-        assert i in par_id and "img" in par_id[i] and "son" in par_id[i], f"A : {i}"
-    A = {1: [], 2: [], 3: []}
-    for cible in TEST.A_CRAN1:
-        r = random.Random("A1" + cible)
-        A[1].append({"id": cible, "son": par_id[cible]["son"],
-                     "o": [cible] + r.sample([i for i in avec_img if planche[i] != planche[cible]], 3)})
-    for cible in TEST.A_CRAN2:
-        r = random.Random("A2" + cible)
-        A[2].append({"id": cible, "son": par_id[cible]["son"],
-                     "o": [cible] + r.sample([i for i in avec_img if planche[i] == planche[cible] and i != cible], 3)})
-    for cible, pieges in TEST.A_CRAN3:
-        A[3].append({"id": cible, "son": par_id[cible]["son"], "o": [cible] + pieges})
-    B = {1: [], 2: [], 3: []}
-    for ident, cran, _v, phrase, bonne, ecartes in TEST.B:
-        v = (carre(*bonne, *ecartes) if ecartes
-             else variantes(ident, *bonne, par_id, planche, article_seul=(cran == 1)))
-        assert not devinable(v), f"{ident} : la bonne carte se devine sans écouter"
-        B[cran].append({"id": ident, "son": son(ident), "phrase": phrase, "v": cartes(v, par_id)})
-    C = {1: [], 2: [], 3: []}
-    for ident, cran, phrase, question, bonne, distr in TEST.C:
-        for i in [bonne] + distr:
-            assert "img" in par_id[i], f"C {ident} : {i} sans croquis"
-        C[cran].append({"id": ident, "son": son(ident), "phrase": phrase, "q": question,
-                        "o": [bonne] + distr})
-    return {"A": A, "B": B, "C": C,
-            "D": [{"id": i, "son": son(i), "phrase": p} for i, _v, p in TEST.D],
+    son = lambda i: s_(f"test/{i}.mp3")
+
+    def partie_a(c1, c2, c3, graine):
+        A = {1: [], 2: [], 3: []}
+        for i in c1 + c2 + [x for x, _ in c3]:
+            assert i in par_id and "img" in par_id[i] and (SONS / "test" / f"a-{i}.mp3").exists(), f"A : {i}"
+        for cible in c1:
+            r = random.Random(graine + "1" + cible)
+            A[1].append({"id": cible, "son": son(f"a-{cible}"),
+                         "o": [cible] + r.sample([i for i in avec_img if planche[i] != planche[cible]], 3)})
+        for cible in c2:
+            r = random.Random(graine + "2" + cible)
+            A[2].append({"id": cible, "son": son(f"a-{cible}"),
+                         "o": [cible] + r.sample([i for i in avec_img if planche[i] == planche[cible] and i != cible], 3)})
+        for cible, pieges in c3:
+            A[3].append({"id": cible, "son": son(f"a-{cible}"), "o": [cible] + pieges})
+        return A
+
+    def partie_b(items):
+        B = {1: [], 2: [], 3: []}
+        for ident, cran, _v, phrase, bonne, ecartes in items:
+            v = (carre(*bonne, *ecartes) if ecartes
+                 else variantes(ident, *bonne, par_id, planche, article_seul=(cran == 1)))
+            assert not devinable(v), f"{ident} : la bonne carte se devine sans écouter"
+            B[cran].append({"id": ident, "son": son(ident), "phrase": phrase, "v": cartes(v, par_id)})
+        return B
+
+    def partie_c(items):
+        C = {1: [], 2: [], 3: []}
+        for ident, cran, phrase, question, bonne, distr in items:
+            for i in [bonne] + distr:
+                assert "img" in par_id[i], f"C {ident} : {i} sans croquis"
+            C[cran].append({"id": ident, "son": son(ident), "phrase": phrase, "q": question,
+                            "o": [bonne] + distr})
+        return C
+
+    return {"formes": [
+                {"A": partie_a(TEST.A_CRAN1, TEST.A_CRAN2, TEST.A_CRAN3, "f1"),
+                 "B": partie_b(TEST.B), "C": partie_c(TEST.C)},
+                {"A": partie_a(TEST.A2_CRAN1, TEST.A2_CRAN2, TEST.A2_CRAN3, "f2"),
+                 "B": partie_b(TEST.B2), "C": partie_c(TEST.C2)}],
+            "D": [{"id": i, "son": son(i), "phrase": p, "geste": g, "attendu": att}
+                  for i, _v, p, g, att, _r in TEST.D],
             "oral": TEST.ORAL, "paliers": [{"k": k, "t": t, "n": n} for k, t, n in TEST.PALIERS],
+            "seuils": {k: {"s": v[0], "t": v[1]} for k, v in TEST.SEUILS.items()},
             "regle": {"debutant_max": TEST.DEBUTANT_MAX, "aise_min": TEST.AISE_MIN,
                       "aise_b_min": TEST.AISE_B_MIN}}
 
@@ -216,6 +282,9 @@ GABARIT = r"""<!DOCTYPE html>
 :root{--mf-teinte:var(--acier-600);--mf-fond:var(--acier-100)}
 body{margin:0;background:var(--surface-page);color:var(--text-body);font-family:Nunito,system-ui,sans-serif}
 .mf{max-width:1080px;margin:0 auto;padding:18px 16px 60px}
+/* La barre de marque suit la colonne de la page : même largeur, même gouttière,
+   sinon « francis » se décale du titre qu'il surmonte. */
+.fr-barre .fr-barre__in{max-width:1080px;padding-left:16px;padding-right:16px}
 .mf-tete{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
 .mf-enseigne{font-size:13px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--mf-teinte);margin:0}
 .mf h1{font-size:28px;line-height:1.15;margin:4px 0 0;color:var(--text-strong)}
@@ -277,14 +346,14 @@ body{margin:0;background:var(--surface-page);color:var(--text-body);font-family:
 .carte h2{font-size:30px;margin:12px 0 0;color:var(--text-strong)}
 .carte .autre{margin:2px 0 0;color:var(--text-muted);font-weight:600}
 .carte .autre b{color:var(--text-body)}
-.carte .gestes{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 6px}
+.carte .gestes{display:flex;flex-wrap:wrap;gap:12px;margin:14px 0 6px}
 .carte .trad{margin-top:8px;padding:12px 14px;border-radius:12px;background:var(--mf-fond);font-size:22px;font-weight:800;color:var(--text-strong)}
 .carte .trad[hidden]{display:none}
 .carte .trad small{display:block;font-size:15px;font-weight:600;color:var(--text-body);margin-top:6px}
 .carte .trad .relu{display:block;font-size:12px;font-weight:600;color:var(--text-muted);margin-top:8px}
 .carte .piege{margin-top:10px;padding:10px 12px;border-radius:10px;background:var(--warn-bg);border:1px solid var(--warn-line);
   color:var(--warn-ink);font-size:15px;font-weight:700}
-.carte .nav{display:flex;justify-content:space-between;gap:8px;margin-top:14px}
+.carte .nav{display:flex;justify-content:space-between;gap:12px;margin-top:14px}
 .ferme{float:inline-end}
 /* Accueil et exercices */
 .accueil{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:18px}
@@ -308,7 +377,7 @@ body{margin:0;background:var(--surface-page);color:var(--text-body);font-family:
 .jeu .sujet{background:#fff;border-radius:14px;border:1px solid var(--line-200);display:grid;place-items:center;padding:8px;max-width:320px;margin:0 auto 12px}
 .jeu .sujet img{width:100%;max-width:260px;aspect-ratio:1/1;object-fit:contain}
 .jeu .sujet .past{width:100%;aspect-ratio:3/2;border-radius:10px}
-.jeu .ecoute{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:6px 0 14px}
+.jeu .ecoute{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:6px 0 14px}
 .choix{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
 .choix.mots{grid-template-columns:1fr}
 .opt{font:inherit;cursor:pointer;border:2px solid var(--line-200);background:#fff;border-radius:12px;padding:8px;color:#17181A;
@@ -335,7 +404,7 @@ body{margin:0;background:var(--surface-page);color:var(--text-body);font-family:
 .bilan .score{font-size:44px;font-weight:900;color:var(--text-strong)}
 
 /* Le magasin */
-.code{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:12px}
+.code{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:12px}
 .code input{font:inherit;font-size:20px;letter-spacing:.15em;text-transform:uppercase;width:10ch;padding:8px 10px;border-radius:10px;border:1px solid var(--line-300)}
 .clients{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px;margin-top:14px}
 .client{font:inherit;cursor:pointer;text-align:start;border:1px solid var(--line-200);background:var(--surface-card);border-radius:14px;padding:10px;display:flex;flex-direction:column;gap:6px}
@@ -359,6 +428,60 @@ body{margin:0;background:var(--surface-page);color:var(--text-body);font-family:
 @media (max-width:760px){.scene{grid-template-columns:1fr}.avatar{position:static;max-width:260px;margin:0 auto}}
 @media (max-width:640px){.clients{grid-template-columns:repeat(2,minmax(0,1fr))}.client b{font-size:15px}.client span{font-size:13px}}
 
+
+/* Révision des majeurs de l'audit (24 septembre 2026) */
+.chemin{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:12px}
+.chemin .porte{flex-direction:row;align-items:center;gap:12px;width:100%}
+.chemin .rang{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--mf-fond);color:var(--mf-teinte);font-weight:900}
+.chemin li.fait .rang{background:var(--ok-bg);color:var(--ok-ink)}
+.chemin li.prochaine .porte{border:2px solid var(--mf-teinte)}
+.pastille-p{display:inline-block;margin-left:8px;font-size:12px;font-weight:800;color:#fff;background:var(--mf-teinte);border-radius:99px;padding:2px 8px}
+.etat-f{display:inline-block;margin-left:8px;font-size:13px;color:var(--ok-ink);font-weight:700}
+.bloc.tache,.bloc.rappel,.bloc.avant{background:var(--mf-fond);border-color:var(--mf-teinte)}
+.mes-phrases{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:10px}
+.mes-phrases li{display:flex;gap:10px;align-items:flex-start;background:var(--surface-card);border:1px solid var(--line-200);border-radius:12px;padding:10px 12px}
+.mes-phrases b{display:block;font-size:17px;color:var(--text-strong)}
+.mes-phrases small{display:block;margin-top:3px;font-size:14px;color:var(--text-body)}
+.mf-btn.ph,.mf-btn.mini{padding:8px;min-width:44px;min-height:44px;justify-content:center}
+.phrases-scene summary{cursor:pointer;min-height:44px;display:flex;align-items:center}
+.modele .dialogue{margin:6px 0 10px}
+.modele .dialogue p{margin:4px 0;padding:6px 10px;border-radius:10px;max-width:92%}
+.modele .dialogue .cli{background:var(--surface-sunken)}
+.modele .dialogue .vend{background:var(--mf-fond);margin-left:auto}
+.modele .qui{display:block;font-size:12px;font-weight:800;color:var(--text-muted)}
+mark{background:#FFE58A;color:#17181A;padding:0 2px;border-radius:3px}
+.opt .cmot{font-size:14px;font-weight:700;color:#17181A}
+.opt .motseul{font-size:19px;font-weight:800;padding:10px 4px}
+.opt.phrase{text-align:start;justify-content:flex-start;font-size:17px;font-weight:700}
+.retro p{margin:4px 0}
+.transcrit{font-style:italic}
+.seuil{font-weight:800;margin:0 0 12px}
+.seuil.ok{color:var(--ok-ink)} .seuil.non{color:var(--warn-ink)}
+.parts small.seuil{display:block;grid-column:1/-1;margin:0;font-size:13px}
+.gestes-bilan{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:8px}
+.gestes-bilan li{display:flex;gap:10px;align-items:flex-start}
+.gestes-bilan .marque{flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-weight:900}
+.gestes-bilan li.fait .marque{background:var(--ok-bg);color:var(--ok-ink)}
+.gestes-bilan li.manque .marque{background:var(--warn-bg);color:var(--warn-ink)}
+.gestes-bilan li.inutile{color:var(--text-muted)}
+.gestes-bilan small{display:block;margin-top:2px}
+.avatar .nom{font-size:16px}
+/* Contrastes et zones tactiles (audit, mineurs relevés au passage) */
+.mf-btn{min-height:44px}
+.mf-btn--pri{background:#087A4E;border-color:#087A4E}
+.bulle.client .txt{font-size:17px}
+
+
+/* RÈGLE — JAMAIS DEUX BOUTONS À MOINS DE 12 PX (demande de Daniel, 24 septembre
+   2026 : « Un autre client » et « Mes phrases » se touchaient au bilan du
+   magasin). L'écart des rangées de boutons n'était défini que DANS un exercice
+   (.jeu .ecoute) ; hors exercice, il tombait à zéro. Il vaut maintenant
+   partout, pour tout conteneur de boutons, et `ESPACE_MIN` le vérifie à
+   l'écran (voir window.__francoeur.espaces). */
+.ecoute,.choisir3,.gestes,.nav,.saisie,.code,.tete-boutons{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.ecoute{margin:6px 0 14px}
+.choix,.planche,.rayons,.langues,.clients,.accueil,.exos{gap:12px}
+
 /* Le test */
 .intro{max-width:620px}
 .intro p{margin:0 0 10px}
@@ -374,7 +497,7 @@ body{margin:0;background:var(--surface-page);color:var(--text-body);font-family:
 .parts div{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}
 .jauge{grid-column:1/-1;height:8px;border-radius:4px;background:var(--line-200);overflow:hidden}
 .jauge i{display:block;height:100%;background:var(--mf-teinte)}
-.choisir3{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.choisir3{display:flex;flex-wrap:wrap;gap:12px;margin-top:8px}
 .choisir3 button[aria-pressed=true]{background:var(--ok-bg);border-color:var(--ok-line)}
 .bloc.formateur{border-style:dashed}
 
@@ -452,15 +575,18 @@ const FR = {choisir:"Choisissez votre langue", choisir_sous:"Les mots restent en
   lire:"Lire", parler:"Parler", envoyer:"Envoyer", ecrire:"Ou écrivez votre réponse…",
   fini:"J'ai fini", attente_client:"Le client réfléchit…", vous:"Vous",
   bilan_titre:"Le bilan", client_part:"Le client est parti", vos_phrases:"Vos phrases, corrigées",
-  gestes_titre:"Les gestes du vendeur — lesquels avez-vous faits ?", autre_client:"Un autre client",
-  code_refuse:"Ce code n'est pas reconnu.", voix_indispo:"La voix n'est pas disponible pour le moment. Lisez la réplique.", erreur_reseau:"Impossible de joindre le serveur."};
+  gestes_titre:"Les gestes du vendeur, dans cette visite", autre_client:"Un autre client",
+  code_refuse:"Ce code n'est pas reconnu.", voix_indispo:"La voix n'est pas disponible pour le moment. Lisez la réplique.", erreur_reseau:"Impossible de joindre le serveur.",
+  chemin:"Votre chemin", prochaine:"Prochaine étape", fait:"fait", etape_test:"Mon niveau", etape_mots:"Apprendre les mots", etape_exos:"Je m'exerce", etape_gestes:"Les gestes du vendeur", etape_magasin:"Le magasin", tache_titre:"Un client entre", tache:"Un client vous parle. Touchez ce qu'il demande.", tache_ok:"Oui : « une tuque ». Voici par où continuer.", tache_non:"Écoutez encore : il demande une tuque.", fiche_poche:"Ma fiche de poche", fiche_sous:"Six phrases à dire au plancher.", rappel:"Une série de rappel vous attend.", rappel_sous:"Vous avez pratiqué il y a %n jours. Huit mots, dont ceux à revoir.", rappel_go:"Faire la série", gestes:"Les gestes du vendeur", gestes_sous:"Écoutez un vendeur faire chaque geste.", ecouter_dialogue:"Écouter le dialogue", a_vous:"À vous : ce que je réponds", vendeur:"Le vendeur", client:"Le client", ex_gerante:"Ce que la gérante demande", ex_gerante_c:"Écoutez la gérante, puis touchez la réponse.", ex_reponse:"Ce que je réponds", ex_reponse_c:"Écoutez le client. Choisissez ce que dit le vendeur.", pieges:"Les pièges", ca_cest:"Ça, c'est :", bon_article:"Bon article", mauvais_article:"Pas le bon article", bonne_couleur:"bonne couleur", mauvaise_couleur:"pas la bonne couleur", bonne_taille:"bonne taille", mauvaise_taille:"pas la bonne taille", objectif:"Objectif", atteint:"Objectif atteint", pas_encore:"Pas encore : refaites une série.", pas_encore_court:"pas encore", a_revoir_liste:"À revoir", suite:"Ensuite", aller_magasin:"Aller au magasin à ce niveau", mots_a_revoir:"Mes mots à revoir", mes_phrases:"Mes phrases", avant_entrer:"Avant d'entrer : écoutez les gestes du vendeur, et gardez vos phrases sous la main.", humeur_neutre:"écoute.", humeur_contente:"est content.", humeur_contente_f:"est contente.", humeur_hesitante:"hésite.", humeur_impatiente:"s'impatiente.", parti_content:"est reparti content.", parti_content_f:"est repartie contente.", parti_pas:"est reparti sans être satisfait.", parti_pas_f:"est repartie sans être satisfaite.", geste_fait:"fait", geste_manque:"à faire la prochaine fois", geste_inutile:"pas nécessaire ici", bilan_attente:"Relecture de la visite…", reussis_sur:"réussis sur", geste_attendu:"Geste attendu", exemple:"Exemple", forme:"forme"};
 const T = k => dit(k, FR[k]);
 const app = document.getElementById('app');
 let audio = null;
 function joue(src) { if (!src) return; if (audio) audio.pause(); audio = new Audio(src); audio.play().catch(()=>{}); }
 
-function image(m, grand) {
-  if (m.img) return '<img src="' + m.img + '" alt="' + esc(m.mot) + '"' + (grand ? '' : ' loading="lazy"') + '>';
+// `muet` : l'image EST la question — son texte alternatif donnerait la réponse
+// à un lecteur d'écran avant le choix (audit, G1).
+function image(m, grand, muet) {
+  if (m.img) return '<img src="' + m.img + '" alt="' + (muet ? '' : esc(m.mot)) + '"' + (grand ? '' : ' loading="lazy"') + '>';
   if (m.pastille) return '<span class="past" style="' + m.pastille + '" aria-hidden="true"></span>';
   return '<span class="sans" aria-hidden="true">' + esc(m.mot.replace(/^(un |une |des |le |la |les |l')/, '').slice(0, 2).toUpperCase()) + '</span>';
 }
@@ -480,25 +606,12 @@ function ecranLangue() {
   });
 }
 
-function ecranAccueil() {
-  app.innerHTML = tete('Bienvenue', '', false)
-    + '<div class="accueil">'
-    + '<button type="button" class="porte" id="aRayons"><b>' + T('apprendre') + '</b><span>' + T('apprendre_sous') + '</span></button>'
-    + '<button type="button" class="porte" id="aExos"><b>' + T('exercer') + '</b><span>' + T('exercer_sous') + '</span></button>'
-    + '<button type="button" class="porte" id="aTest"><b>' + T('test') + '</b><span>' + T('test_sous') + '</span></button>'
-    + '<button type="button" class="porte" id="aMag"><b>' + T('magasin') + '</b><span>' + T('magasin_sous') + '</span></button></div>';
-  document.getElementById('aRayons').onclick = ecranRayons;
-  document.getElementById('aExos').onclick = ecranExercices;
-  document.getElementById('aTest').onclick = ecranTest;
-  document.getElementById('aMag').onclick = ecranMagasin;
-  document.getElementById('chLangue').onclick = ecranLangue;
-  window.scrollTo(0, 0);
-}
+
 
 
 function tete(titre, sous, retour, cleRetour) {
   return '<div class="mf-tete"><div><p class="mf-enseigne">Maison Francœur</p><h1>' + titre + '</h1>'
-    + (sous ? '<p style="margin:6px 0 0">' + sous + '</p>' : '') + '</div><div style="display:flex;gap:8px;flex-wrap:wrap">'
+    + (sous ? '<p style="margin:6px 0 0">' + sous + '</p>' : '') + '</div><div class="tete-boutons">'
     + (retour ? '<button type="button" class="mf-btn mf-btn--pile" id="retour">' + T(cleRetour || 'retour') + '</button>' : '')
     + '<button type="button" class="mf-btn mf-btn--pile" id="chLangue">' + T('langue') + '</button></div></div>';
 }
@@ -522,6 +635,7 @@ function ecranRayons() {
 
 let courante = [];
 function ecranPlanche(k) {
+  marquer('planche');
   const p = D.planches.find(x => x.k === k), l = L(), tr = l && l.ui['planche_' + k];
   courante = D.mots.filter(m => m.p === k);
   app.innerHTML = tete(esc(p.t) + (tr ? '<span class="appui" dir="' + (l.rtl ? 'rtl' : 'ltr') + '">' + esc(tr) + '</span>' : ''), T('toucher'), true)
@@ -542,7 +656,11 @@ function ouvrir(i) {
   carte.innerHTML = '<button type="button" class="mf-btn ferme" id="ferme" aria-label="Fermer">' + ICO.ferme + '</button>'
     + '<div class="grand">' + image(m, true) + '</div>'
     + '<h2 id="ficheMot">' + esc(m.mot) + '</h2>'
-    + (m.autre ? '<p class="autre">' + esc(FR.aussi) + ' : <b>' + esc(m.autre) + '</b></p>' : '')
+    + (m.autre ? '<p class="autre">' + esc(FR.aussi) + ' : <b>' + esc(m.autre) + '</b>'
+        + (m.autre_son ? ' <button type="button" class="mf-btn mini" id="ecouteAutre" aria-label="' + esc(FR.ecouter) + ' : ' + esc(m.autre) + '">' + ICO.son + '</button>' : '') + '</p>' : '')
+    // Le piège se lit TOUJOURS, en français, même quand une langue d'appui est
+    // choisie : il ne se cache plus derrière « Voir dans ma langue » (audit C3).
+    + notePiege(m)
     + '<div class="gestes">'
     + (m.son ? '<button type="button" class="mf-btn mf-btn--pri" id="ecoute">' + ICO.son + '<span>' + T('ecouter') + '</span></button>' : '')
     + (t ? '<button type="button" class="mf-btn" id="voir" aria-expanded="false">' + ICO.oeil + '<span>' + T('voir') + '</span></button>' : '')
@@ -551,12 +669,12 @@ function ouvrir(i) {
         + (t[1] ? '<small>' + esc(t[1]) + '</small>' : '')
         + (l.relu ? '' : '<span class="relu" dir="ltr" lang="fr">' + esc(FR.non_relu) + (l.ui.non_relu ? ' · <span dir="' + (l.rtl ? 'rtl' : 'ltr') + '">' + esc(l.ui.non_relu) + '</span>' : '') + '</span>')
         + '</div>' : '')
-    + (m.piege && !(t && t[1]) ? '<p class="piege">' + esc(m.note.replace(/^PIÈGE\s*:\s*/, '')) + '</p>' : '')
     + '<div class="nav"><button type="button" class="mf-btn" id="prec"' + (i ? '' : ' disabled') + '>' + ICO.retour + FR.precedent + '</button>'
     + '<button type="button" class="mf-btn" id="suiv"' + (i < courante.length - 1 ? '' : ' disabled') + '>' + FR.suivant + ICO.suiv + '</button></div>';
   fiche.hidden = false;
   document.getElementById('ferme').onclick = fermer;
   const e = document.getElementById('ecoute'); if (e) e.onclick = () => joue(m.son);
+  const ea = document.getElementById('ecouteAutre'); if (ea) ea.onclick = () => joue(m.autre_son);
   const v = document.getElementById('voir');
   if (v) v.onclick = () => { const tr = document.getElementById('trad'); tr.hidden = !tr.hidden; v.setAttribute('aria-expanded', String(!tr.hidden)); };
   document.getElementById('prec').onclick = () => ouvrir(i - 1);
@@ -575,12 +693,17 @@ document.addEventListener('keydown', ev => {
 
 
 /* ── Les exercices ─────────────────────────────────────────────────────
-   Cinq, du mot isolé à la phrase du client. Une série = 8 questions.
+   Sept, du mot isolé à la réponse du vendeur. Une série = 8 questions.
    Deux essais, puis la bonne réponse se montre (règle du dépôt : jamais la
-   réponse au premier envoi). Les mots ratés vont dans « à revoir » et
-   repassent devant à la série suivante. Tout reste sur l'appareil. */
+   réponse au premier envoi). La rétroaction DIT ce qu'on a choisi, rappelle le
+   piège, ou nomme le trait qui était faux (audit de la boucle didactique,
+   24 septembre 2026, E1). Les mots ratés vont dans « à revoir ». Le bilan se
+   lit contre le seuil de l'objectif (A1, F1). Tout reste sur l'appareil. */
 const EXOS = [
-  {k:'ecoute', n:1}, {k:'image', n:2}, {k:'rappel', n:3}, {k:'rayon', n:4}, {k:'client', n:5, pont:true}];
+  {k:'ecoute', n:1, o:'O1'}, {k:'image', n:2, o:'O1'}, {k:'rappel', n:3, o:'O1'}, {k:'rayon', n:4, o:'O1'},
+  {k:'client', n:5, o:'O2', pont:true}, {k:'gerante', n:6, o:'O5'}, {k:'reponse', n:7, o:'O3'}];
+// Le seuil de chaque objectif, rapporté à une série de 8 (cadrage O1-O5).
+const SEUIL = {O1: 7, O2: 6, O5: 6, O3: 6};
 const RAYONS = ['hauts','bas','robes','exterieur','dessous','chaussures','accessoires'];
 const SERIE = 8;
 const CLE_REVOIR = 'francoeur-revoir';
@@ -590,16 +713,33 @@ const garderRevoir = () => { try { localStorage.setItem(CLE_REVOIR, JSON.stringi
 let filtre = '';
 const melange = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 const visuel = m => m.img || m.pastille;
+const mot = id => D.mots.find(x => x.id === id);
 function tirage(pool) {
   // Les mots « à revoir » d'abord, puis le reste au hasard.
   const a = melange(pool.filter(m => revoir.has(m.id))), b = melange(pool.filter(m => !revoir.has(m.id)));
   return a.concat(b).slice(0, SERIE);
 }
+// Une note de piège, sans son préfixe, en français ; sa traduction dessous.
+function notePiege(m) {
+  if (!m || !m.piege) return '';
+  const l = L(), t = l && l.mots[m.id];
+  return '<p class="piege">' + esc(m.note.replace(/^PIÈGE\s*:\s*/, ''))
+    + (t && t[1] ? '<span class="appui" dir="' + (l.rtl ? 'rtl' : 'ltr') + '" lang="' + l.c + '">' + esc(t[1].replace(/^[^:]{1,12}:\s*/, '')) + '</span>' : '') + '</p>';
+}
+// Une carte « article · couleur · taille » : la couleur est dite EN MOTS sous
+// la pastille — une pastille seule ne suffit pas à un daltonien (audit G1).
+function carteHTML(v, attrs) {
+  return '<button type="button" class="opt gris" ' + attrs + '><img src="' + v.img + '" alt="" loading="lazy">'
+    + '<span class="attrs"><span class="chip" style="background:' + v.hex + '" aria-hidden="true"></span>'
+    + (v.t ? '<span class="tag">' + v.t + '</span>' : '') + '</span>'
+    + '<span class="cmot">' + esc(v.cmot) + (v.t ? ' · ' + v.t : '') + '</span></button>';
+}
 
 function ecranExercices() {
   app.innerHTML = tete(T('exercices'), '', true, 'accueil')
     + '<div class="filtre"><select id="filtre" aria-label="' + esc(FR.tous_rayons) + '"><option value="">' + esc(FR.tous_rayons) + '</option>'
-    + D.planches.filter(p => RAYONS.includes(p.k) || p.k === 'couleurs').map(p => '<option value="' + p.k + '"' + (filtre === p.k ? ' selected' : '') + '>' + esc(p.t) + '</option>').join('')
+    + '<option value="pieges"' + (filtre === 'pieges' ? ' selected' : '') + '>' + esc(FR.pieges) + '</option>'
+    + D.planches.map(p => '<option value="' + p.k + '"' + (filtre === p.k ? ' selected' : '') + '>' + esc(p.t) + '</option>').join('')
     + '</select></div><div class="exos">'
     + EXOS.map(x => '<button type="button" class="exo-porte' + (x.pont ? ' pont' : '') + '" data-x="' + x.k + '"><span class="rang">' + x.n + '</span><span><b>'
       + T('ex_' + x.k) + '</b><span style="display:block;margin-top:4px">' + T('ex_' + x.k + '_c') + '</span></span></button>').join('') + '</div>';
@@ -611,20 +751,33 @@ function ecranExercices() {
 }
 
 let J = null;   // la série en cours
-function lancer(k) {
-  const dansFiltre = m => !filtre || m.p === filtre;
+function lancer(k, rappel) {
+  const dansFiltre = m => !filtre || filtre === 'pieges' || m.p === filtre;
   let items;
   if (k === 'client') items = melange(D.demandes).slice(0, SERIE);
+  else if (k === 'gerante') items = melange(D.gerante).slice(0, SERIE);
+  else if (k === 'reponse') items = melange(D.reponses).slice(0, SERIE);
+  else if (k === 'ecoute' && filtre === 'pieges') {
+    // Les pièges côte à côte avec ce qu'on confond, entrelacés avec des mots
+    // ordinaires : une série faite QUE de pièges apprendrait à tout soupçonner.
+    const p = melange(D.pieges.p).slice(0, 5).map(x => Object.assign({}, mot(x.id), {contrastes: x.o}));
+    const o = melange(D.pieges.ordinaires).slice(0, 3).map(mot);
+    items = melange(p.concat(o));
+  }
   else if (k === 'rayon') items = tirage(D.mots.filter(m => m.img && RAYONS.includes(m.p) && dansFiltre(m)));
+  // « Je l'entends » accepte AUSSI les mots sans image (tailles, service :
+  // échange, remboursement, en arrière…) — ils se choisissent écrits (audit A3).
+  else if (k === 'ecoute') items = tirage(D.mots.filter(m => m.son && dansFiltre(m) && m.p !== 'couleurs' || (m.p === 'couleurs' && visuel(m) && dansFiltre(m))));
   else items = tirage(D.mots.filter(m => visuel(m) && m.son && dansFiltre(m)));
-  J = {k, items, i: 0, essais: 0, premier: 0, fini: false};
+  J = {k, items, i: 0, essais: 0, premier: 0, fini: false, rates: [], rappel: !!rappel};
+  marquer('exo');
   question();
 }
 
 function cadreJeu(corps) {
   app.innerHTML = tete(T('ex_' + J.k), T('ex_' + J.k + '_c'), true, 'exercices')
     + '<div class="jeu"><div class="barre"><i style="width:' + Math.round(100 * J.i / J.items.length) + '%"></i></div>' + corps
-    + '<p class="retro" id="retro" aria-live="polite"></p><div class="suite" id="suite"></div></div>';
+    + '<div class="retro" id="retro" aria-live="polite"></div><div class="suite" id="suite"></div></div>';
   document.getElementById('retour').onclick = () => { if (audio) audio.pause(); ecranExercices(); };
   document.getElementById('chLangue').onclick = ecranLangue;
 }
@@ -634,20 +787,24 @@ function brancherEcoute(src) {
   document.getElementById('reec').onclick = () => joue(src);
   document.getElementById('lent').onclick = () => { joue(src); if (audio) { audio.preservesPitch = true; audio.playbackRate = 0.75; } };
 }
+const optMot = m => '<button type="button" class="opt" data-o="' + m.id + '">' + (visuel(m) ? image(m) : '<span class="motseul">' + esc(m.mot) + '</span>') + '</button>';
 
 function question() {
   if (J.i >= J.items.length) return bilan();
   J.essais = 0;
   const it = J.items[J.i];
   if (J.k === 'ecoute') {
-    const autres = melange(D.mots.filter(m => m.p === it.p && m.id !== it.id && visuel(m))).slice(0, 5);
+    let autres;
+    if (it.contrastes) autres = it.contrastes.slice(1).map(mot);
+    else if (visuel(it)) autres = melange(D.mots.filter(m => m.p === it.p && m.id !== it.id && visuel(m))).slice(0, 5);
+    else autres = melange(D.mots.filter(m => m.p === it.p && m.id !== it.id)).slice(0, 3);
     J.bonne = it.id; J.options = melange([it].concat(autres));
-    cadreJeu(boutonsEcoute() + '<div class="choix">' + J.options.map(m => '<button type="button" class="opt" data-o="' + m.id + '">' + image(m) + '</button>').join('') + '</div>');
+    cadreJeu(boutonsEcoute() + '<div class="choix' + (visuel(it) ? '' : ' mots') + '">' + J.options.map(optMot).join('') + '</div>');
     brancherEcoute(it.son); joue(it.son);
   } else if (J.k === 'image') {
     const autres = melange(D.mots.filter(m => m.p === it.p && m.id !== it.id)).slice(0, 2);
     J.bonne = it.id; J.options = melange([it].concat(autres));
-    cadreJeu('<div class="sujet">' + image(it, true) + '</div><div class="choix mots">'
+    cadreJeu('<div class="sujet">' + image(it, true, true) + '</div><div class="choix mots">'
       + J.options.map(m => '<button type="button" class="opt" data-o="' + m.id + '">' + esc(m.mot) + '</button>').join('') + '</div>');
   } else if (J.k === 'rayon') {
     const autres = melange(RAYONS.filter(r => r !== it.p)).slice(0, 3);
@@ -659,82 +816,258 @@ function question() {
             + (tr ? '<span class="appui" dir="' + (l.rtl ? 'rtl' : 'ltr') + '">' + esc(tr) + '</span>' : '') + '</span></button>'; }).join('') + '</div>');
     joue(it.son);
   } else if (J.k === 'rappel') {
-    cadreJeu('<div class="sujet">' + image(it, true) + '</div><div class="revele" id="revele"><button type="button" class="mf-btn mf-btn--pri" id="voirMot">' + ICO.oeil + '<span>' + T('voir_mot') + '</span></button></div>');
+    cadreJeu('<div class="sujet">' + image(it, true, true) + '</div><div class="revele" id="revele"><button type="button" class="mf-btn mf-btn--pri" id="voirMot">' + ICO.oeil + '<span>' + T('voir_mot') + '</span></button></div>');
     document.getElementById('voirMot').onclick = () => {
       joue(it.son);
-      document.getElementById('revele').innerHTML = '<p class="gros">' + esc(it.mot) + '</p>'
+      document.getElementById('revele').innerHTML = '<p class="gros">' + esc(it.mot) + '</p>' + notePiege(it)
         + '<div class="ecoute"><button type="button" class="mf-btn mf-btn--pri" id="savais"><span>' + T('savais') + '</span></button>'
         + '<button type="button" class="mf-btn" id="arevoir"><span>' + T('a_revoir') + '</span></button></div>';
       const auto = ok => rapporter({zone: 'ex-rappel-' + it.id, exo: 'ex-rappel', exoNum: 'Exercice 3', exoTitre: FR.ex_rappel,
         section: 'exercices', type: 'rappel', enonce: it.mot, bonne: '', reponse: '', ok, essais: 1});
       document.getElementById('savais').onclick = () => { auto(true); J.premier++; revoir.delete(it.id); garderRevoir(); J.i++; question(); };
-      document.getElementById('arevoir').onclick = () => { auto(false); revoir.add(it.id); garderRevoir(); J.i++; question(); };
+      document.getElementById('arevoir').onclick = () => { auto(false); J.rates.push(it.mot); revoir.add(it.id); garderRevoir(); J.i++; question(); };
     };
     return;
   } else if (J.k === 'client') {
     J.bonne = 0; J.options = melange(it.v.map((v, n) => Object.assign({n}, v)));
-    cadreJeu(boutonsEcoute() + '<div class="choix">' + J.options.map(v =>
-      '<button type="button" class="opt gris" data-o="' + v.n + '"><img src="' + v.img + '" alt="' + esc(v.mot) + '" loading="lazy">'
-      + '<span class="attrs"><span class="chip" style="background:' + v.hex + '" role="img" aria-label="' + esc(v.cmot) + '"></span>'
-      + (v.t ? '<span class="tag">' + v.t + '</span>' : '') + '</span></button>').join('') + '</div>');
+    cadreJeu(boutonsEcoute() + '<div class="choix">' + J.options.map(v => carteHTML(v, 'data-o="' + v.n + '"')).join('') + '</div>');
+    brancherEcoute(it.son); joue(it.son);
+  } else if (J.k === 'gerante') {
+    J.bonne = it.o[0]; J.options = melange(it.o);
+    cadreJeu(boutonsEcoute() + '<p class="question">' + dit('gq_' + it.id, it.q) + '</p><div class="choix">'
+      + J.options.map(id => { const m = mot(id); return '<button type="button" class="opt" data-o="' + id + '">' + image(m) + '<span style="font-weight:800">' + esc(m.mot) + '</span></button>'; }).join('') + '</div>');
+    brancherEcoute(it.son); joue(it.son);
+  } else if (J.k === 'reponse') {
+    const opts = [{n: 0, t: it.bonne}].concat(it.mauvaises.map((x, k) => ({n: k + 1, t: x.t})));
+    J.bonne = 0; J.options = melange(opts);
+    cadreJeu(boutonsEcoute() + '<div class="choix mots">'
+      + J.options.map(o => '<button type="button" class="opt phrase" data-o="' + o.n + '">« ' + esc(o.t) + ' »</button>').join('') + '</div>');
     brancherEcoute(it.son); joue(it.son);
   }
   app.querySelectorAll('[data-o]').forEach(b => b.onclick = () => repondre(b));
 }
 
+// Ce que la rétroaction dit, par exercice, après un choix faux.
+function pourquoiFaux(it, o) {
+  const l = L();
+  if (J.k === 'client') {
+    const v = J.options.find(x => String(x.n) === String(o)), b = it.v[0], ecarts = [];
+    ecarts.push(v.a === b.a ? FR.bon_article : FR.mauvais_article);
+    ecarts.push(v.c === b.c ? FR.bonne_couleur : FR.mauvaise_couleur);
+    if (b.t) ecarts.push(v.t === b.t ? FR.bonne_taille : FR.mauvaise_taille);
+    return '<p>' + esc(ecarts.join(' · ')) + '</p>';
+  }
+  if (J.k === 'reponse') {
+    const x = it.mauvaises[Number(o) - 1];
+    const tr = l && l.ui['rm_' + it.id + '_' + o];
+    return '<p>' + esc(x.x) + (tr ? '<span class="appui" dir="' + (l.rtl ? 'rtl' : 'ltr') + '">' + esc(tr) + '</span>' : '') + '</p>';
+  }
+  if (J.k === 'rayon') return '';
+  const m = mot(o);
+  if (!m) return '';
+  if (m.son) joue(m.son);
+  return '<p>' + esc(FR.ca_cest) + ' <b>' + esc(m.mot) + '</b></p>' + notePiege(m) + notePiege(J.k === 'gerante' ? null : it);
+}
+// La phrase entendue, avec les mots qui décident mis en évidence.
+function phraseMarquee(it) {
+  let p = esc(it.phrase);
+  if (J.k === 'client') {
+    const b = it.v[0], marques = [b.cmot.replace(/^(le |la |l'|un |une |des )/, '').slice(0, 4)];
+    if (b.tid) marques.push(D.tailles[b.tid]);
+    marques.forEach(w => { if (w) p = p.replace(new RegExp('(' + w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '[a-zé]*)', 'gi'), '<mark>$1</mark>'); });
+  }
+  return '<p class="transcrit">« ' + p + ' »</p>';
+}
+
 function repondre(b) {
   const it = J.items[J.i], retro = document.getElementById('retro');
   const juste = String(b.dataset.o) === String(J.bonne);
-  const idMot = J.k === 'client' ? null : it.id;
+  const idMot = ['client', 'gerante', 'reponse', 'rayon'].includes(J.k) ? (J.k === 'rayon' ? it.id : null) : it.id;
   if (juste) {
     b.classList.add('juste');
     if (J.essais === 0) { J.premier++; if (idMot) { revoir.delete(idMot); garderRevoir(); } }
-    retro.className = 'retro ok'; retro.innerHTML = T('bravo');
-    if (J.k !== 'ecoute' && J.k !== 'client') joue(it.son);
+    retro.className = 'retro ok';
+    let plus = '';
+    if (J.k === 'reponse') { plus = '<p>' + esc(it.expl) + '</p>'; joue(it.bonne_son); }
+    else if (J.k === 'ecoute' || J.k === 'image') { plus = notePiege(it); if (J.k === 'image') joue(it.son); }
+    else if (J.k === 'rayon') joue(it.son);
+    retro.innerHTML = '<p><b>' + T('bravo') + '</b></p>' + plus;
     finQuestion();
   } else {
     J.essais++; b.classList.add('faux'); b.disabled = true;
     if (idMot) { revoir.add(idMot); garderRevoir(); }
     if (J.essais >= 2) {
       const bon = app.querySelector('[data-o="' + J.bonne + '"]'); if (bon) bon.classList.add('juste');
-      retro.className = 'retro non'; retro.innerHTML = T('reponse');
-      if (J.k === 'client') retro.innerHTML += '<span class="appui" style="font-style:italic" lang="fr">« ' + esc(it.phrase) + ' »</span>';
-      else joue(it.son);
+      retro.className = 'retro non';
+      let plus = '';
+      if (J.k === 'client' || J.k === 'gerante') { plus = phraseMarquee(it); joue(it.son); }
+      else if (J.k === 'reponse') { plus = '<p>« ' + esc(it.bonne) + ' » — ' + esc(it.expl) + '</p>'; joue(it.bonne_son); }
+      else { plus = '<p><b>' + esc(it.mot) + '</b></p>' + notePiege(it); joue(it.son); }
+      retro.innerHTML = '<p><b>' + T('reponse') + '</b></p>' + plus;
+      J.rates.push(it.mot || it.phrase);
       finQuestion();
-    } else { retro.className = 'retro non'; retro.innerHTML = T('essaie'); }
+    } else { retro.className = 'retro non'; retro.innerHTML = '<p><b>' + T('essaie') + '</b></p>' + pourquoiFaux(it, b.dataset.o); }
   }
 }
 function finQuestion() {
   const it = J.items[J.i], juste = !!app.querySelector('.opt.juste:not(.faux)') && J.essais < 2;
   const fautif = app.querySelector('.opt.faux');
   const libelle = o => J.k === 'client' ? carteTexte(J.options.find(v => String(v.n) === String(o)))
-    : J.k === 'rayon' ? (D.planches.find(p => p.k === o) || {}).t : etiquette(o);
+    : J.k === 'rayon' ? (D.planches.find(p => p.k === o) || {}).t
+    : J.k === 'reponse' ? (J.options.find(v => String(v.n) === String(o)) || {}).t : etiquette(o);
   rapporter({zone: 'ex-' + J.k + '-' + it.id, exo: 'ex-' + J.k, exoNum: 'Exercice ' + (EXOS.find(x => x.k === J.k).n),
     exoTitre: FR['ex_' + J.k], section: 'exercices', type: J.k,
-    enonce: J.k === 'client' ? it.phrase : it.mot, bonne: libelle(J.bonne),
+    enonce: it.phrase || it.mot, bonne: libelle(J.bonne),
     reponse: juste ? libelle(J.bonne) : (fautif ? libelle(fautif.dataset.o) : ''), ok: juste, essais: J.essais + 1});
   app.querySelectorAll('[data-o]').forEach(x => x.disabled = true);
   const s = document.getElementById('suite');
   s.innerHTML = '<button type="button" class="mf-btn mf-btn--pri" id="apres"><span>' + T('suivant') + '</span>' + ICO.suiv + '</button>';
   const a = document.getElementById('apres'); a.onclick = () => { J.i++; question(); }; a.focus();
 }
+// La suite logique d'un exercice : où aller ensuite (audit F2).
+const SUITE_EXO = {ecoute: 'image', image: 'rappel', rappel: 'rayon', rayon: 'client', client: 'gerante', gerante: 'gestes', reponse: 'magasin'};
 function bilan() {
   J.fini = true;
   rapporterSerie(J.items.length, J.premier);
+  const x = EXOS.find(e => e.k === J.k), seuil = Math.min(SEUIL[x.o], J.items.length), ok = J.premier >= seuil;
+  const suite = SUITE_EXO[J.k];
+  const libSuite = suite === 'gestes' ? T('gestes') : suite === 'magasin' ? T('magasin') : T('ex_' + suite);
   app.innerHTML = tete(T('ex_' + J.k), '', true, 'exercices')
     + '<div class="bilan"><p style="font-weight:800;margin:0">' + T('fin') + '</p><p class="score">' + J.premier + ' / ' + J.items.length + '</p>'
-    + '<p style="margin:0 0 16px">' + T('premier_coup') + '</p>'
-    + '<button type="button" class="mf-btn mf-btn--pri" id="encore"><span>' + T('recommencer') + '</span></button></div>';
+    + '<p style="margin:0 0 6px">' + T('premier_coup') + '</p>'
+    + '<p class="seuil ' + (ok ? 'ok' : 'non') + '">' + esc(FR.objectif) + ' : ' + seuil + ' / ' + J.items.length + ' — ' + (ok ? T('atteint') : T('pas_encore')) + '</p>'
+    + (J.rates.length ? '<div class="bloc" style="text-align:start"><b>' + T('a_revoir_liste') + '</b><ul>' + J.rates.map(r => '<li>' + esc(r) + '</li>').join('') + '</ul></div>' : '')
+    + '<div class="ecoute"><button type="button" class="mf-btn" id="encore"><span>' + T('recommencer') + '</span></button>'
+    + '<button type="button" class="mf-btn mf-btn--pri" id="ensuite"><span>' + esc(FR.suite) + ' : ' + '</span>' + libSuite + '</button></div></div>';
   document.getElementById('encore').onclick = () => lancer(J.k);
+  document.getElementById('ensuite').onclick = () => suite === 'gestes' ? ecranGestes() : suite === 'magasin' ? ecranMagasin() : lancer(suite);
   document.getElementById('retour').onclick = ecranExercices;
   document.getElementById('chLangue').onclick = ecranLangue;
 }
 window.__francoeur = { etat: () => J, D };
+
+/* ── Le suivi du chemin, sur l'appareil ────────────────────────────────
+   Ce qui a été fait (test, rayons vus, séries, gestes, visites) et les jours
+   de pratique : l'accueil en tire la prochaine étape et le rappel (audit B1,
+   F3). Rien ne sort de l'appareil par ce chemin-ci. */
+const CLE_SUIVI = 'francoeur-suivi';
+function suivi() { try { return JSON.parse(localStorage.getItem(CLE_SUIVI) || '{}'); } catch(e) { return {}; } }
+function marquer(quoi) {
+  const s = suivi(), auj = new Date().toISOString().slice(0, 10);
+  s[quoi] = (s[quoi] || 0) + 1;
+  s.jours = Array.from(new Set((s.jours || []).concat([auj]))).slice(-60);
+  try { localStorage.setItem(CLE_SUIVI, JSON.stringify(s)); } catch(e) {}
+}
+// Les rappels espacés : J+2, J+7, J+30 après la dernière pratique (Cepeda).
+function rappelDu() {
+  const s = suivi(), j = s.jours || [];
+  if (!j.length) return null;
+  const der = j[j.length - 1], n = Math.round((Date.now() - Date.parse(der + 'T12:00:00')) / 86400000);
+  return n >= 2 ? n : null;
+}
+const ETAPES = [
+  {k: 'test',    fait: s => histo().length > 0,  ouvre: () => ecranTest()},
+  {k: 'mots',    fait: s => (s.planche || 0) >= 3, ouvre: () => ecranRayons()},
+  {k: 'exos',    fait: s => (s.exo || 0) >= 3,   ouvre: () => ecranExercices()},
+  {k: 'gestes',  fait: s => (s.gestes || 0) >= 1, ouvre: () => ecranGestes()},
+  {k: 'magasin', fait: s => (s.visite || 0) >= 1, ouvre: () => ecranMagasin()}];
+
+function ecranAccueil() {
+  const s = suivi(), prochaine = ETAPES.find(e => !e.fait(s)) || ETAPES[4], n = rappelDu();
+  const tache = !s.tache;
+  app.innerHTML = tete(tache ? T('tache_titre') : T('chemin'), '', false)
+    // La première fois : une tâche, pas un menu (audit B1). Un client parle,
+    // l'employé touche ce qu'il demande — avant toute explication.
+    + (tache ? '<div class="bloc tache"><p style="margin:0 0 8px"><b>' + T('tache') + '</b></p>'
+        + '<div class="ecoute"><button type="button" class="mf-btn mf-btn--pri" id="tEcoute">' + ICO.son + '<span>' + T('reecouter') + '</span></button></div>'
+        + '<div class="choix">' + melange(['tuque', 'casquette', 'foulard', 'mitaines']).map(id => '<button type="button" class="opt" data-t="' + id + '">' + image(mot(id), false, true) + '</button>').join('')
+        + '</div><div class="retro" id="tRetro" aria-live="polite"></div></div>' : '')
+    + (n ? '<div class="bloc rappel"><b>' + T('rappel') + '</b><p style="margin:4px 0 8px">' + esc(FR.rappel_sous.replace('%n', n)) + '</p>'
+        + '<button type="button" class="mf-btn mf-btn--pri" id="aRappel"><span>' + T('rappel_go') + '</span></button></div>' : '')
+    + '<ol class="chemin">' + ETAPES.map((e, i) => {
+        const f = e.fait(s), p = e === prochaine;
+        return '<li class="' + (f ? 'fait' : '') + (p ? ' prochaine' : '') + '"><button type="button" class="porte" data-e="' + i + '">'
+          + '<span class="rang">' + (f ? '✓' : i + 1) + '</span><span><b>' + T('etape_' + e.k) + '</b>'
+          + (p ? '<span class="pastille-p">' + esc(FR.prochaine) + '</span>' : f ? '<span class="etat-f">' + esc(FR.fait) + '</span>' : '')
+          + '</span></button></li>'; }).join('') + '</ol>'
+    + '<div class="accueil"><button type="button" class="porte" id="aFiche"><b>' + T('fiche_poche') + '</b><span>' + T('fiche_sous') + '</span></button></div>';
+  if (tache) {
+    const src = D.accueil;
+    document.getElementById('tEcoute').onclick = () => joue(src);
+    joue(src);
+    app.querySelectorAll('[data-t]').forEach(b => b.onclick = () => {
+      const r = document.getElementById('tRetro');
+      if (b.dataset.t === 'tuque') {
+        b.classList.add('juste'); r.className = 'retro ok'; r.innerHTML = '<p><b>' + T('tache_ok') + '</b></p>';
+        joue(mot('tuque').son);
+        const x = suivi(); x.tache = 1; try { localStorage.setItem(CLE_SUIVI, JSON.stringify(x)); } catch(e) {}
+        setTimeout(ecranAccueil, 2200);
+      } else { b.classList.add('faux'); r.className = 'retro non'; r.innerHTML = '<p>' + T('tache_non') + '</p>'; joue(src); }
+    });
+  }
+  if (n) document.getElementById('aRappel').onclick = () => { filtre = ''; lancer('ecoute', true); };
+  app.querySelectorAll('[data-e]').forEach(b => b.onclick = () => ETAPES[+b.dataset.e].ouvre());
+  document.getElementById('aFiche').onclick = ecranFichePoche;
+  document.getElementById('chLangue').onclick = ecranLangue;
+  window.scrollTo(0, 0);
+}
+
+/* ── Ma fiche de poche, à l'écran (audit F2) ───────────────────────────
+   Les six phrases du vendeur, dans l'ordre d'une vente, avec leur voix (le
+   vendeur modèle) et « quand s'en servir » dans la langue d'appui. */
+function phrasesHTML() {
+  const l = L();
+  return '<ol class="mes-phrases">' + D.phrases.map(p => {
+    const q = l && l.fiche && l.fiche['quand_' + p.id];
+    return '<li><button type="button" class="mf-btn mf-btn--pri ph" data-s="' + p.son + '" aria-label="' + esc(FR.ecouter) + '">' + ICO.son + '</button>'
+      + '<span><b>' + esc(p.texte) + '</b><small>' + esc(p.quand) + '</small>'
+      + (q ? '<small class="appui" dir="' + (l.rtl ? 'rtl' : 'ltr') + '">' + esc(q) + '</small>' : '') + '</span></li>'; }).join('') + '</ol>';
+}
+function brancherPhrases(racine) { (racine || app).querySelectorAll('[data-s]').forEach(b => b.onclick = () => joue(b.dataset.s)); }
+function ecranFichePoche() {
+  app.innerHTML = tete(T('fiche_poche'), T('fiche_sous'), true, 'accueil') + phrasesHTML();
+  brancherPhrases();
+  document.getElementById('retour').onclick = ecranAccueil;
+  document.getElementById('chLangue').onclick = ecranLangue;
+  window.scrollTo(0, 0);
+}
+
+/* ── Les gestes du vendeur : l'exemple travaillé (audit C4) ────────────
+   Cinq dialogues très courts, un par geste : on ENTEND un vendeur faire le
+   geste, la phrase clé est mise en évidence. Puis « À vous » : l'exercice
+   « Ce que je réponds », où l'on choisit la réponse. Puis le magasin. */
+function ecranGestes() {
+  marquer('gestes');
+  const l = L();
+  app.innerHTML = tete(T('gestes'), T('gestes_sous'), true, 'accueil')
+    + D.modeles.map(m => {
+        const g = l && l.ui['mg_' + m.id];
+        return '<div class="bloc modele"><h2 style="margin:0 0 6px;font-size:19px">' + esc(m.geste)
+          + (g ? '<span class="appui" dir="' + (l.rtl ? 'rtl' : 'ltr') + '">' + esc(g) + '</span>' : '') + '</h2>'
+          + '<div class="dialogue">' + m.lignes.map(x => '<p class="' + (x.qui === 'vendeur' ? 'vend' : 'cli') + '"><span class="qui">'
+              + esc(x.qui === 'vendeur' ? FR.vendeur : FR.client) + '</span>'
+              + (x.qui === 'vendeur' ? esc(x.texte).replace(esc(m.cle.split(' … ')[0]), '<mark>' + esc(m.cle.split(' … ')[0]) + '</mark>') : esc(x.texte)) + '</p>').join('') + '</div>'
+          + '<button type="button" class="mf-btn mf-btn--pri" data-m="' + m.id + '">' + ICO.son + '<span>' + T('ecouter_dialogue') + '</span></button></div>'; }).join('')
+    + '<div class="ecoute"><button type="button" class="mf-btn mf-btn--pri" id="aVous"><span>' + T('a_vous') + '</span>' + ICO.suiv + '</button></div>';
+  app.querySelectorAll('[data-m]').forEach(b => b.onclick = () => {
+    const m = D.modeles.find(x => x.id === b.dataset.m);
+    let k = 0;
+    const suivant = () => { if (k >= m.lignes.length) return; const a = joue(m.lignes[k++].son); if (audio) audio.onended = suivant; };
+    suivant();
+  });
+  document.getElementById('aVous').onclick = () => lancer('reponse');
+  document.getElementById('retour').onclick = ecranAccueil;
+  document.getElementById('chLangue').onclick = ecranLangue;
+  window.scrollTo(0, 0);
+}
 /* ── Le test de positionnement (étape 3) ───────────────────────────────
    A (mots), B (client), C (gérante) : adaptatif. À un cran, 3 bonnes le
    valident et font monter ; 2 erreurs arrêtent la partie. Aucune rétroaction.
-   D (oral) : enregistré sur l'appareil, jamais envoyé, noté par le formateur.
-   Le palier se PROPOSE ; le formateur le confirme. Historique sur l'appareil. */
+   DEUX FORMES : la première passation prend la forme 1, la suivante la
+   forme 2, puis on alterne (audit F1 — le test repassé reprenait les mêmes
+   items). D (oral) : quatre situations qui exigent chacune UN geste ;
+   enregistré sur l'appareil, jamais envoyé, noté par le formateur contre le
+   geste attendu. Le résultat se lit contre les SEUILS des objectifs. */
 const CLE_TEST = 'francoeur-test';
 const histo = () => { try { return JSON.parse(localStorage.getItem(CLE_TEST) || '[]'); } catch(e) { return []; } };
 const garderHisto = h => { try { localStorage.setItem(CLE_TEST, JSON.stringify(h)); } catch(e) {} };
@@ -751,6 +1084,7 @@ function ecranTest() {
   const h = histo(), der = h[h.length - 1];
   app.innerHTML = tete(T('test'), '', true, 'accueil')
     + '<div class="intro"><p>' + T('t_intro') + '</p><p>' + T('t_intro2') + '</p>'
+    + '<ul class="simple">' + Object.values(D.test.seuils).map(x => '<li>' + esc(x.t) + '</li>').join('') + '</ul>'
     + (der ? '<p class="bloc">' + esc(FR.derniere) + ' : <b>' + esc(nomPalier(der.confirme || der.palier).t) + '</b> · ' + der.date + '</p>' : '')
     + '<button type="button" class="mf-btn mf-btn--pri" id="go"><span>' + T('commencer') + '</span>' + ICO.suiv + '</button></div>';
   document.getElementById('go').onclick = debuterTest;
@@ -759,12 +1093,13 @@ function ecranTest() {
   window.scrollTo(0, 0);
 }
 function debuterTest() {
-  X = {parties: ['A', 'B', 'C'], p: 0, cran: 1, bons: 0, faux: 0, niveau: {A: 0, B: 0, C: 0},
+  const f = histo().length % 2;   // 0 → forme 1, 1 → forme 2, puis on alterne
+  X = {f, F: D.test.formes[f], parties: ['A', 'B', 'C'], p: 0, cran: 1, bons: 0, faux: 0, niveau: {A: 0, B: 0, C: 0},
        vus: new Set(), reponses: [], oral: [], blobs: [], fini: false};
   questionTest();
 }
 function itemSuivant() {
-  const P = X.parties[X.p], pool = D.test[P][X.cran].filter(it => !X.vus.has(it.id));
+  const P = X.parties[X.p], pool = X.F[P][X.cran].filter(it => !X.vus.has(it.id));
   return pool.length ? melange(pool)[0] : null;
 }
 function questionTest() {
@@ -777,16 +1112,13 @@ function questionTest() {
   const ecoute = '<div class="ecoute"><button type="button" class="mf-btn mf-btn--pri" id="reec">' + ICO.son + '<span>' + T('reecouter') + '</span></button></div>';
   if (P === 'A') {
     X.options = melange(it.o); X.bonne = it.id;
-    corps = ecoute + '<div class="choix">' + X.options.map(id => { const m = D.mots.find(x => x.id === id);
-      return '<button type="button" class="opt" data-o="' + id + '">' + image(m) + '</button>'; }).join('') + '</div>';
+    corps = ecoute + '<div class="choix">' + X.options.map(id => '<button type="button" class="opt" data-o="' + id + '">' + image(mot(id), false, true) + '</button>').join('') + '</div>';
   } else if (P === 'B') {
     X.options = melange(it.v.map((v, n) => Object.assign({n}, v))); X.bonne = 0;
-    corps = ecoute + '<div class="choix">' + X.options.map(v => '<button type="button" class="opt gris" data-o="' + v.n + '"><img src="' + v.img + '" alt="' + esc(v.mot) + '">'
-      + '<span class="attrs"><span class="chip" style="background:' + v.hex + '" role="img" aria-label="' + esc(v.cmot) + '"></span>'
-      + (v.t ? '<span class="tag">' + v.t + '</span>' : '') + '</span></button>').join('') + '</div>';
+    corps = ecoute + '<div class="choix">' + X.options.map(v => carteHTML(v, 'data-o="' + v.n + '"')).join('') + '</div>';
   } else {
     X.options = melange(it.o); X.bonne = it.o[0];
-    corps = ecoute + '<p class="question">' + dit('tq_' + it.id, it.q) + '</p><div class="choix">' + X.options.map(id => { const m = D.mots.find(x => x.id === id);
+    corps = ecoute + '<p class="question">' + dit('tq_' + it.id, it.q) + '</p><div class="choix">' + X.options.map(id => { const m = mot(id);
       return '<button type="button" class="opt" data-o="' + id + '">' + image(m) + '<span style="font-weight:800">' + esc(m.mot) + '</span></button>'; }).join('') + '</div>';
   }
   app.innerHTML = tete(T('test'), T('c' + P.toLowerCase()), false)
@@ -802,7 +1134,8 @@ function repondreTest(juste) {
   if (audio) audio.pause();
   X.reponses.push({p: X.parties[X.p], cran: X.cran, id: X.item.id, juste});
   { const P = X.parties[X.p], it = X.item;
-    rapporter({zone: 'test-' + P + '-' + it.id, exo: 'test-' + P, exoNum: 'Test · cran ' + X.cran,
+    if (P === 'A' && !juste) { revoir.add(it.id); garderRevoir(); }
+    rapporter({zone: 'test' + (X.f + 1) + '-' + P + '-' + it.id, exo: 'test-' + P, exoNum: 'Test · forme ' + (X.f + 1) + ' · cran ' + X.cran,
       exoTitre: FR['partie_' + P.toLowerCase()], section: 'test', type: 'test',
       enonce: P === 'A' ? etiquette(it.id) : P === 'B' ? it.phrase : it.phrase + ' — ' + it.q,
       bonne: P === 'B' ? carteTexte(it.v[0]) : etiquette(P === 'A' ? it.id : it.o[0]), reponse: '', ok: juste, essais: 1}); }
@@ -857,21 +1190,33 @@ function partieOrale(i) {
 
 function resultatTest() {
   X.fini = true;
+  marquer('test');
   const n = X.niveau, pal = calculPalier(n.A, n.B, n.C);
   const h = histo();
-  const entree = {date: new Date().toISOString().slice(0, 10), a: n.A, b: n.B, c: n.C, palier: pal, confirme: null, oral: [null, null]};
+  // Les taux par partie, contre le seuil de l'objectif (audit F1, A1).
+  const taux = {};
+  ['A', 'B', 'C'].forEach(P => { const r = X.reponses.filter(x => x.p === P); taux[P] = {j: r.filter(x => x.juste).length, n: r.length}; });
+  const entree = {date: new Date().toISOString().slice(0, 10), forme: X.f + 1, a: n.A, b: n.B, c: n.C, taux, palier: pal, confirme: null,
+                  oral: D.test.D.map(() => null)};
   h.push(entree); garderHisto(h);
   const premiere = h.length > 1 ? h[0] : null;
-  const jauge = (k, v) => '<div><span>' + esc(FR['partie_' + k]) + '</span><b>' + v + ' / 3</b><span class="jauge"><i style="width:' + Math.round(v / 3 * 100) + '%"></i></span></div>';
+  const ligne = (k, v) => {
+    const t = taux[k.toUpperCase()], s = D.test.seuils[k.toUpperCase()], ok = t.n && t.j / t.n >= s.s;
+    return '<div><span>' + esc(FR['partie_' + k]) + ' — ' + t.j + ' ' + esc(FR.reussis_sur) + ' ' + t.n + '</span><b>' + v + ' / 3</b>'
+      + '<span class="jauge"><i style="width:' + Math.round(v / 3 * 100) + '%"></i></span>'
+      + '<small class="seuil ' + (ok ? 'ok' : 'non') + '">' + esc(s.t) + ' — ' + (ok ? esc(FR.atteint) : esc(FR.pas_encore_court)) + '</small></div>'; };
   app.innerHTML = tete(T('resultat'), '', true, 'accueil')
     + '<div class="resultat"><div class="bloc"><p style="margin:0">' + T('palier_propose') + '</p>'
     + '<p class="gros-palier">' + esc(nomPalier(pal).t) + '</p><p style="margin:0;color:var(--text-muted)">' + esc(nomPalier(pal).n) + ' · ' + T('pas_examen') + '</p>'
-    + '<div class="parts">' + jauge('a', n.A) + jauge('b', n.B) + jauge('c', n.C) + '</div></div>'
+    + '<div class="parts">' + ligne('a', n.A) + ligne('b', n.B) + ligne('c', n.C) + '</div>'
+    + '<div class="ecoute" style="justify-content:flex-start;margin-top:14px"><button type="button" class="mf-btn mf-btn--pri" id="versMag"><span>' + T('aller_magasin') + '</span>' + ICO.suiv + '</button>'
+    + '<button type="button" class="mf-btn" id="versMots"><span>' + T('mots_a_revoir') + '</span></button></div></div>'
     + (premiere ? '<div class="bloc"><b>' + esc(FR.premiere) + '</b> (' + premiere.date + ') : ' + esc(nomPalier(premiere.confirme || premiere.palier).t)
-        + ' — A ' + premiere.a + ' · B ' + premiere.b + ' · C ' + premiere.c + '<br><b>' + esc(FR.aujourdhui) + '</b> : ' + esc(nomPalier(pal).t)
+        + ' — A ' + premiere.a + ' · B ' + premiere.b + ' · C ' + premiere.c + '<br><b>' + esc(FR.aujourdhui) + '</b> (' + esc(FR.forme) + ' ' + (X.f + 1) + ') : ' + esc(nomPalier(pal).t)
         + ' — A ' + n.A + ' · B ' + n.B + ' · C ' + n.C + '</div>' : '')
     + '<div class="bloc formateur"><b>' + esc(FR.pour_formateur) + '</b>'
-    + D.test.D.map((d, i) => '<p style="margin:12px 0 4px">« ' + esc(d.phrase) + ' »</p>'
+    + D.test.D.map((d, i) => '<p style="margin:14px 0 2px">« ' + esc(d.phrase) + ' »</p>'
+        + '<p style="margin:0 0 4px;font-size:15px"><b>' + esc(FR.geste_attendu) + ' :</b> ' + esc(d.geste) + ' — ' + esc(FR.exemple) + ' : ' + esc(d.attendu) + '</p>'
         + (X.blobs[i] ? '<audio controls src="' + X.blobs[i] + '"></audio>' : '<p style="margin:0;color:var(--text-muted)">—</p>')
         + '<div class="choisir3" data-oral="' + i + '">' + D.test.oral.map((o, k) => '<button type="button" class="mf-btn" data-v="' + k + '" aria-pressed="false">' + esc(o) + '</button>').join('') + '</div>').join('')
     + '<p style="margin:16px 0 4px">' + esc(FR.confirmer_palier) + '</p><div class="choisir3" data-conf="1">'
@@ -880,10 +1225,15 @@ function resultatTest() {
   const maj = () => { const hh = histo(); hh[hh.length - 1] = entree; garderHisto(hh); };
   app.querySelectorAll('[data-oral] button').forEach(b => b.onclick = () => {
     const i = +b.parentNode.dataset.oral; entree.oral[i] = +b.dataset.v; maj();
-    b.parentNode.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', String(x === b))); });
+    b.parentNode.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+    // Le geste noté par le formateur remonte au direct (O3, O4 évalués).
+    rapporter({zone: 'test-D-' + D.test.D[i].id, exo: 'test-D', exoNum: 'Test · oral', exoTitre: FR.partie_d, section: 'test',
+      type: 'oral', enonce: D.test.D[i].geste, bonne: '', reponse: '', ok: +b.dataset.v === 0, essais: 1}); });
   app.querySelectorAll('[data-conf] button').forEach(b => b.onclick = () => {
     entree.confirme = b.dataset.v; maj();
     b.parentNode.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', String(x === b))); });
+  document.getElementById('versMag').onclick = () => { niveauJeu = entree.confirme || pal; ecranMagasin(); };
+  document.getElementById('versMots').onclick = () => { filtre = ''; lancer('ecoute'); };
   document.getElementById('refaire').onclick = ecranTest;
   document.getElementById('retour').onclick = ecranAccueil;
   document.getElementById('chLangue').onclick = ecranLangue;
@@ -916,11 +1266,20 @@ function ecranMagasin() {
       ecranMagasin();
     };
   } else {
+    const l = L();
     const dispo = M.clients.filter(c => !niveauJeu || c.paliers.includes(niveauJeu));
     app.innerHTML = tete(T('magasin'), T('choisir_client'), true, 'accueil')
+      // Avant d'entrer : l'exemple travaillé et les phrases (audit C4).
+      + '<div class="bloc avant"><p style="margin:0 0 8px">' + T('avant_entrer') + '</p>'
+      + '<div class="ecoute" style="justify-content:flex-start;margin:0"><button type="button" class="mf-btn" id="versGestes"><span>' + T('gestes') + '</span></button>'
+      + '<button type="button" class="mf-btn" id="versFiche"><span>' + T('mes_phrases') + '</span></button></div></div>'
       + '<p style="margin:10px 0 4px"><b>' + T('niveau_jeu') + '</b>' + (niveauJeu ? '' : ' — ' + T('faire_test')) + '</p>'
       + '<div class="choisir3" id="niv">' + D.test.paliers.map(p => '<button type="button" class="mf-btn" data-v="' + p.k + '" aria-pressed="' + (p.k === niveauJeu) + '">' + esc(p.t) + '</button>').join('') + '</div>'
-      + '<div class="clients">' + dispo.map(c => '<button type="button" class="client" data-c="' + c.id + '"><img src="' + c.p.neutre + '" alt=""><b>' + esc(c.nom) + '</b><span>' + esc(c.carte) + '</span></button>').join('') + '</div>';
+      + '<div class="clients">' + dispo.map(c => { const tr = l && l.ui['carte_' + c.id];
+          return '<button type="button" class="client" data-c="' + c.id + '"><img src="' + c.p.neutre + '" alt=""><b>' + esc(c.nom) + '</b><span>' + esc(c.carte) + '</span>'
+            + (tr ? '<span class="appui" dir="' + (l.rtl ? 'rtl' : 'ltr') + '">' + esc(tr) + '</span>' : '') + '</button>'; }).join('') + '</div>';
+    document.getElementById('versGestes').onclick = ecranGestes;
+    document.getElementById('versFiche').onclick = ecranFichePoche;
     app.querySelectorAll('#niv button').forEach(b => b.onclick = () => { niveauJeu = b.dataset.v; ecranMagasin(); });
     app.querySelectorAll('[data-c]').forEach(b => b.onclick = () => { if (!niveauJeu) niveauJeu = 'debutant'; scene(b.dataset.c); });
   }
@@ -932,15 +1291,18 @@ function ecranMagasin() {
 let S = null;   // la visite en cours
 function scene(id) {
   const c = M.clients.find(x => x.id === id);
-  S = {c, hist: [], humeur: 'neutre', fini: false, sansLire: false};
+  S = {c, hist: [], humeur: 'neutre', fini: false, sansLire: false, fem: c.voix === 'jr_feminin'};
   app.innerHTML = tete(esc(c.nom), esc(c.carte), true, 'magasin')
-    + '<div class="scene"><div class="avatar"><img id="av" src="' + c.p.neutre + '" alt="' + esc(c.nom) + '"><p class="nom" id="hum"></p></div>'
+    + '<div class="scene"><div class="avatar"><img id="av" src="' + c.p.neutre + '" alt="' + esc(c.nom) + '"><p class="nom" id="hum" aria-live="polite"></p></div>'
     + '<div><div class="choisir3"><button type="button" class="mf-btn" id="sansLire" aria-pressed="false"><span>' + T('ecouter_sans_lire') + '</span></button></div>'
+    // Les phrases du vendeur, repliables, sous la main pendant la visite (audit C4).
+    + '<details class="bloc phrases-scene"><summary><b>' + T('mes_phrases') + '</b></summary>' + phrasesHTML() + '</details>'
     + '<div class="fil" id="fil" aria-live="polite"></div>'
     + '<div class="saisie"><button type="button" class="mf-btn rec" id="micro"><span>' + T('parler') + '</span></button>'
     + '<input id="txt" placeholder="' + esc(FR.ecrire) + '"><button type="button" class="mf-btn mf-btn--pri" id="env"><span>' + T('envoyer') + '</span></button></div>'
     + '<div class="suite"><button type="button" class="mf-btn" id="fin"><span>' + T('fini') + '</span></button></div>'
     + '<p class="retro non" id="err"></p></div></div>';
+  brancherPhrases(app.querySelector('.phrases-scene'));
   document.getElementById('retour').onclick = () => { arreterTout(); ecranMagasin(); };
   document.getElementById('chLangue').remove();
   document.getElementById('sansLire').onclick = e => { S.sansLire = !S.sansLire; e.currentTarget.setAttribute('aria-pressed', String(S.sansLire)); document.getElementById('fil').classList.toggle('cache', S.sansLire); };
@@ -948,6 +1310,7 @@ function scene(id) {
   document.getElementById('txt').onkeydown = e => { if (e.key === 'Enter') envoyer(e.target.value); };
   document.getElementById('micro').onclick = micro;
   document.getElementById('fin').onclick = bilanMagasin;
+  montrerHumeur('neutre');
   window.scrollTo(0, 0);
   tour();   // le client parle le premier, après l'accueil
 }
@@ -966,7 +1329,18 @@ function lireHumeur(t) {
   if (/\bFIN\.?\s*$/.test(t)) { fin = true; t = t.replace(/\s*\bFIN\.?\s*$/, '').trim(); }
   return {h, t, fin};
 }
-function montrerHumeur(h) { S.humeur = h; const av = document.getElementById('av'); if (av) av.src = S.c.p[h]; }
+// L'humeur DITE, pas seulement dessinée (audit E2) : sous le visage, et pour
+// un lecteur d'écran.
+function humeurTexte(h) {
+  const f = S.fem, n = S.c.nom;
+  return n + ' ' + ({neutre: FR.humeur_neutre, contente: f ? FR.humeur_contente_f : FR.humeur_contente,
+    hesitante: FR.humeur_hesitante, impatiente: FR.humeur_impatiente})[h];
+}
+function montrerHumeur(h) {
+  S.humeur = h;
+  const av = document.getElementById('av'); if (av) { av.src = S.c.p[h]; av.alt = humeurTexte(h); }
+  const hum = document.getElementById('hum'); if (hum) hum.textContent = humeurTexte(h);
+}
 async function tour() {
   const err = document.getElementById('err'); err.textContent = '';
   const attente = document.createElement('p'); attente.className = 'attente'; attente.textContent = FR.attente_client;
@@ -1031,23 +1405,46 @@ function micro() {
 }
 async function bilanMagasin() {
   arreterTout();
-  rapporter({zone: 'mag-' + S.c.id + '-' + niveauJeu, exo: 'magasin', exoNum: 'Magasin · ' + niveauJeu,
-    exoTitre: 'Le magasin', section: 'magasin', type: 'magasin', enonce: 'Visite : ' + S.c.nom,
-    bonne: '', reponse: '', ok: S.humeur === 'contente', essais: S.hist.filter(m => m.role === 'user').length});
+  marquer('visite');
   const mes = S.hist.filter(m => m.role === 'user').map(m => m.contenu).slice(1);   // l'accueil n'est pas de l'employé
-  const partiContent = S.humeur === 'contente';
+  const content = S.humeur === 'contente', f = S.fem;
+  const issue = S.c.nom + ' ' + (content ? (f ? FR.parti_content_f : FR.parti_content) : (f ? FR.parti_pas_f : FR.parti_pas));
   app.innerHTML = tete(T('bilan_titre'), '', true, 'magasin')
-    + '<div class="resultat"><div class="bloc" style="display:flex;gap:14px;align-items:center"><img src="' + S.c.p[S.humeur] + '" alt="" style="width:110px;border-radius:10px;background:#fff">'
-    + '<p style="margin:0">' + esc(FR.client_part) + ' : <b>' + esc(S.c.nom) + '</b></p></div>'
-    + '<div class="bloc"><b>' + T('vos_phrases') + '</b><div id="corr"><p class="attente">…</p></div></div>'
-    + '<div class="bloc bilan-gestes"><b>' + T('gestes_titre') + '</b>'
-    + M.gestes.map((g, i) => '<label><input type="checkbox"> <span>' + esc(g) + '</span></label>').join('') + '</div>'
-    + '<div><button type="button" class="mf-btn mf-btn--pri" id="autre"><span>' + T('autre_client') + '</span></button></div></div>';
+    + '<div class="resultat"><div class="bloc" style="display:flex;gap:14px;align-items:center"><img src="' + S.c.p[S.humeur] + '" alt="' + esc(humeurTexte(S.humeur)) + '" style="width:110px;border-radius:10px;background:#fff">'
+    + '<p style="margin:0;font-weight:800">' + esc(issue) + '</p></div>'
+    // Le bilan PAR GESTE, produit par le serveur à partir de la visite (audit
+    // E1) — la grammaire passe au second plan.
+    + '<div class="bloc"><b>' + T('gestes_titre') + '</b><div id="gestesBilan"><p class="attente">' + esc(FR.bilan_attente) + '</p></div></div>'
+    + '<details class="bloc"><summary><b>' + T('vos_phrases') + '</b></summary><div id="corr"><p class="attente">…</p></div></details>'
+    + '<div class="ecoute" style="justify-content:flex-start"><button type="button" class="mf-btn mf-btn--pri" id="autre"><span>' + T('autre_client') + '</span></button>'
+    + '<button type="button" class="mf-btn" id="versFiche"><span>' + T('mes_phrases') + '</span></button></div></div>';
   document.getElementById('autre').onclick = ecranMagasin;
+  document.getElementById('versFiche').onclick = ecranFichePoche;
   document.getElementById('retour').onclick = ecranMagasin;
   document.getElementById('chLangue').onclick = ecranLangue;
+  const zone = document.getElementById('gestesBilan');
+  if (!mes.length) { zone.innerHTML = '<p>—</p>'; document.getElementById('corr').innerHTML = '<p>—</p>'; return; }
+  const nomGeste = id => (M.gestes.find(g => g.id === id) || {nom: id}).nom;
+  try {
+    const r = await fetch('/api/jeu-de-role', {method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({code: codeAcces, scenario: 'magasin', cas: S.c.id, role: 'vendeur', niveau: niveauJeu, bilan: true, historique: S.hist})});
+    const d = await r.json().catch(() => ({}));
+    if (!r.ok || !d.bilan) { zone.innerHTML = '<p>' + esc(d.error || FR.erreur_reseau) + '</p>'; }
+    else {
+      const G = (d.bilan.gestes || []).filter(g => g.necessaire).concat((d.bilan.gestes || []).filter(g => !g.necessaire));
+      zone.innerHTML = (d.bilan.resume ? '<p>' + esc(d.bilan.resume) + '</p>' : '') + '<ul class="gestes-bilan">' + G.map(g => {
+        const etat = !g.necessaire ? 'inutile' : g.fait ? 'fait' : 'manque';
+        return '<li class="' + etat + '"><span class="marque">' + (etat === 'fait' ? '✓' : etat === 'manque' ? '→' : '·') + '</span><span><b>' + esc(nomGeste(g.id)) + '</b> — '
+          + esc(etat === 'fait' ? FR.geste_fait : etat === 'manque' ? FR.geste_manque : FR.geste_inutile)
+          + (g.citation ? '<small>« ' + esc(g.citation) + ' »</small>' : '') + (etat === 'manque' && g.conseil ? '<small>' + esc(g.conseil) + '</small>' : '') + '</span></li>'; }).join('') + '</ul>';
+      G.filter(g => g.necessaire).forEach(g => rapporter({zone: 'mag-' + S.c.id + '-' + g.id, exo: 'magasin', exoNum: 'Magasin · ' + niveauJeu,
+        exoTitre: 'Le magasin', section: 'magasin', type: 'geste', enonce: nomGeste(g.id) + ' — ' + S.c.nom, bonne: '', reponse: '', ok: !!g.fait, essais: 1}));
+    }
+  } catch(e) { zone.innerHTML = '<p>' + esc(FR.erreur_reseau) + '</p>'; }
+  rapporter({zone: 'mag-' + S.c.id + '-' + niveauJeu, exo: 'magasin', exoNum: 'Magasin · ' + niveauJeu,
+    exoTitre: 'Le magasin', section: 'magasin', type: 'magasin', enonce: 'Visite : ' + S.c.nom,
+    bonne: '', reponse: '', ok: content, essais: S.hist.filter(m => m.role === 'user').length});
   const corr = document.getElementById('corr');
-  if (!mes.length) { corr.innerHTML = '<p>—</p>'; return; }
   try {
     const r = await fetch('/api/correct-french', {method: 'POST', headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({code: codeAcces, text: mes.join(' '),
@@ -1058,6 +1455,7 @@ async function bilanMagasin() {
       + (d.erreurs || []).map(e => '<p style="margin:4px 0">· ' + esc(e.explication) + '</p>').join('');
   } catch(e) { corr.innerHTML = '<p>' + esc(FR.erreur_reseau) + '</p>'; }
 }
+
 window.__francoeur.magasin = () => S;
 /* ── Le rapport au portail (étape 5, le pilote) ────────────────────────
    Ouverte depuis le portail ou une séance sans compte, la page connaît le code
@@ -1097,6 +1495,29 @@ const carteTexte = v => v ? (v.mot + ' · ' + v.cmot + (v.t ? ' · ' + v.t : '')
 window.__francoeur.ctx = () => CTX;
 
 window.__francoeur.lireHumeur = lireHumeur;
+// Le contrôle de la règle des 12 px : pour chaque paire de boutons visibles qui
+// se chevauchent verticalement (même rangée), la distance horizontale entre
+// eux ; et pour ceux d'une même colonne, la distance verticale. Rend les paires
+// sous le seuil. Sert aux vérifications, jamais à l'élève.
+const ESPACE_MIN = 12;
+window.__francoeur.espaces = () => {
+  // Une fenêtre ouverte (la fiche d'un article) cache ce qui est dessous : on
+  // ne mesure alors que ses propres boutons.
+  const racine = !document.getElementById('fiche').hidden ? document.getElementById('fiche') : document;
+  const b = [...racine.querySelectorAll('button, .mf-btn, a.mf-btn')].filter(x => x.offsetParent && x.getBoundingClientRect().width > 0)
+    .map(x => ({x, r: x.getBoundingClientRect()}));
+  const fautes = [];
+  for (let i = 0; i < b.length; i++) for (let j = i + 1; j < b.length; j++) {
+    const A = b[i].r, B = b[j].r;
+    if (b[i].x.contains(b[j].x) || b[j].x.contains(b[i].x)) continue;
+    const vChev = Math.min(A.bottom, B.bottom) - Math.max(A.top, B.top), hChev = Math.min(A.right, B.right) - Math.max(A.left, B.left);
+    let d = null;
+    if (vChev > 4) d = Math.max(B.left - A.right, A.left - B.right);
+    else if (hChev > 4) d = Math.max(B.top - A.bottom, A.top - B.bottom);
+    if (d !== null && d < ESPACE_MIN - 0.5) fautes.push({d: Math.round(d), a: (b[i].x.innerText || b[i].x.id).trim().slice(0, 24), b: (b[j].x.innerText || b[j].x.id).trim().slice(0, 24)});
+  }
+  return fautes;
+};
 
 
 
@@ -1117,6 +1538,8 @@ function ouvrirParAdresse() {
     if (i >= 0) { ouvrir(i); if (audio) audio.pause(); if (q.get('voir')) document.getElementById('voir')?.click(); }
   }
   else if (e === 'exercices') ecranExercices();
+  else if (e === 'gestes') ecranGestes();
+  else if (e === 'fiche') ecranFichePoche();
   else if (e === 'exercice') { lancer(q.get('x') || 'client'); if (audio) audio.pause(); }
   else if (e === 'test') ecranTest();
   else if (e === 'magasin') {

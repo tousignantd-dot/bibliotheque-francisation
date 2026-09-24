@@ -5,23 +5,32 @@ question du client dite vite, avec l'article, la couleur et la taille dans la
 même phrase. L'employé entend la demande et choisit, parmi quatre variantes du
 même article, celle que le client veut.
 
-CHAQUE DEMANDE : (id, voix, phrase, article, couleur, taille)
+CHAQUE DEMANDE : (id, voix, phrase, article, couleur, taille[, ecartes])
 - `article` : un id du lexique qui a un croquis (montré en GRIS dans
   l'exercice : c'est la pastille qui porte la couleur, pas le dessin) ;
 - `couleur` : un id de couleur du lexique (pastille) ;
 - `taille`  : tp · p · m · g · tg, ou None pour ce qui n'a pas de taille
   (tuque, foulard, casquette, mitaines).
 
-Les distracteurs ne s'écrivent pas : ils se DÉDUISENT — une autre couleur,
-une taille voisine, un article voisin du même rayon. Chacun ne diffère de la
-bonne réponse que par UN attribut, sans quoi l'exercice se réussit sans
-écouter la phrase entière.
+Les autres cartes ne s'écrivent pas : elles se DÉDUISENT — une autre couleur,
+une taille voisine, un article voisin du même rayon — et se disposent en CARRÉ
+LATIN (chaque valeur deux fois). L'ancienne règle, un seul trait changé par
+distracteur, rendait la bonne carte majoritaire : on la trouvait sans écouter
+(audit de la boucle didactique, 24 septembre 2026, bloquant).
 
 LES VOIX sont celles des clients, au débit NORMAL d'Azure — c'est-à-dire vite.
 C'est la leçon, reprise de Chaussures Rivard : on ne dit pas que le client
 parle vite, on le fait entendre. L'écran offre « Plus lentement » (le
 navigateur étire, sans changer la hauteur). Trois voix de clients, jamais celle
 de l'enseignante, qui dit les mots des planches.
+
+LES DEMANDES QUI SE REPRENNENT (d21 à d28, audit de la boucle didactique,
+24 septembre 2026) : le cran 3 du test mesure la reprise (« non, pas un
+chandail »), la négation (« pas en rouge ») et le comparatif (« une taille plus
+grande ») — l'exercice ne les faisait jamais entendre. Le 7e champ, `ecartes`,
+nomme ce que la phrase ÉCARTE (article′, couleur′, taille′) ; les quatre cartes
+se disposent en carré latin autour, comme partout. Phrases différentes de
+celles du test.
 
 Le français est celui du plancher : « vous l'auriez-tu », « c'est pour ma
 femme ». Contenu inventé, aucun texte recopié.
@@ -48,6 +57,23 @@ DEMANDES = [
     ("d18", "feminin_2",  "Je cherche une blouse mauve, en petit.",                         "blouse",      "mauve",  "p"),
     ("d19", "masculin_1", "Le t-shirt, vous l'avez-tu en rouge ? En moyen.",                "t-shirt",     "rouge",  "m"),
     ("d20", "feminin_2",  "Des mitaines bleues pour mon garçon, s'il vous plaît.",          "mitaines",    "bleu",   None),
+    # ── Qui se reprennent, nient ou comparent ──────────────────────────────
+    ("d21", "feminin_2",  "Je cherche un chandail gris… non, pas gris : noir. En moyen.", "chandail", "noir", "m",
+     ("col-roule", "gris", "g")),
+    ("d22", "masculin_1", "Le polo en petit, c'est trop serré. Vous l'avez-tu une taille plus grande ? En bleu.",
+     "polo", "bleu", "m", ("t-shirt", "rouge", "p")),
+    ("d23", "narrateur",  "Pas la jupe : la robe. En noir, en grand, s'il vous plaît.", "robe", "noir", "g",
+     ("jupe", "beige", "m")),
+    ("d24", "feminin_2",  "Je voudrais la même tuque, mais pas en rouge : en bleu.", "tuque", "bleu", None,
+     ("casquette", "rouge", None)),
+    ("d25", "masculin_1", "J'ai pris un grand, c'est trop long. Le même pantalon en moyen, en gris.",
+     "pantalon", "gris", "m", ("jogging", "noir", "g")),
+    ("d26", "feminin_2",  "Une veste de laine, là… beige. Pas en petit : en moyen.", "cardigan", "beige", "m",
+     ("chandail", "gris", "p")),
+    ("d27", "narrateur",  "Des mitaines, pas des gants. Noires, pour mon garçon.", "mitaines", "noir", None,
+     ("gants", "bleu", None)),
+    ("d28", "masculin_1", "Le manteau marine, je le prendrais une taille plus petite. En moyen.",
+     "manteau", "marine", "m", ("parka", "noir", "g")),
 ]
 
 # Les couleurs qu'on peut mettre en face d'une autre sans ambiguïté à l'œil :
