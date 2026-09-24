@@ -31,6 +31,8 @@ sys.path.insert(0, str(CONTENU))
 sys.path.insert(0, str(RACINE / "build"))
 from lexique import LEXIQUE, PLANCHES, verifier  # noqa: E402
 from francoeur_etape0 import TEINTES, MOTIFS  # noqa: E402
+from demandes import DEMANDES, COULEURS_DISTRACTRICES, TAILLES  # noqa: E402
+import random  # noqa: E402
 
 CROQUIS = RACINE / "assets" / "interactive" / "francoeur" / "croquis"
 SONS = RACINE / "assets" / "interactive" / "francoeur" / "sons"
@@ -59,7 +61,41 @@ def donnees():
                 "mots": {k: [t["mot"], t["note"]] for k, t in v["mots"].items()}}
                for c, v in trad.items()]
     return {"planches": [{"k": k, "t": t} for k, t in PLANCHES], "mots": mots,
-            "langues": langues}
+            "langues": langues, "demandes": demandes(mots)}
+
+
+ETIQUETTE = {"tp": "TP", "p": "P", "m": "M", "g": "G", "tg": "TG"}
+
+
+def demandes(mots):
+    """Les quatre variantes de chaque demande, DÉDUITES et non écrites : chaque
+    distracteur ne diffère de la bonne réponse que par UN attribut. Tirage semé
+    sur l'id, pour que deux constructions rendent la même page."""
+    par_id = {m["id"]: m for m in mots}
+    planche = {e[0]: e[1] for e in LEXIQUE}
+    sortie = []
+    for ident, _voix, phrase, art, coul, taille in DEMANDES:
+        assert art in par_id and "img" in par_id[art], f"{ident} : {art} sans croquis"
+        assert coul in TEINTES, f"{ident} : couleur {coul} inconnue"
+        r = random.Random(ident)
+        autres_c = [c for c in COULEURS_DISTRACTRICES if c != coul]
+        voisins = [e[0] for e in LEXIQUE if e[1] == planche[art] and e[0] != art
+                   and "img" in par_id[e[0]]]
+        v = [(art, coul, taille)]
+        v.append((art, r.choice(autres_c), taille))                 # la couleur change
+        if taille:
+            i = TAILLES.index(taille)
+            proches = [TAILLES[j] for j in (i - 1, i + 1) if 0 <= j < len(TAILLES)]
+            v.append((art, coul, r.choice(proches)))                # la taille change
+        else:
+            v.append((art, r.choice([c for c in autres_c if c != v[1][1]]), None))
+        v.append((r.choice(voisins), coul, taille))                 # l'article change
+        sortie.append({"id": ident, "phrase": phrase,
+                       "son": f"/assets/interactive/francoeur/sons/demandes/{ident}.mp3?v={MEDIA_V}",
+                       "v": [{"a": a, "img": par_id[a]["img"], "mot": par_id[a]["mot"],
+                              "c": c, "cmot": par_id[c]["mot"], "hex": TEINTES[c],
+                              "t": ETIQUETTE.get(t) if t else None} for a, c, t in v]})
+    return sortie
 
 
 def main():
@@ -153,8 +189,57 @@ body{margin:0;background:var(--surface-page);color:var(--text-body);font-family:
   color:var(--warn-ink);font-size:15px;font-weight:700}
 .carte .nav{display:flex;justify-content:space-between;gap:8px;margin-top:14px}
 .ferme{float:inline-end}
+/* Accueil et exercices */
+.accueil{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:18px}
+.porte{font:inherit;cursor:pointer;text-align:start;border:1px solid var(--line-200);background:var(--surface-card);
+  border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:6px}
+.porte:hover{border-color:var(--mf-teinte)}
+.porte b{font-size:22px;color:var(--text-strong)}
+.exos{display:grid;gap:10px;margin-top:14px}
+.exo-porte{font:inherit;cursor:pointer;text-align:start;border:1px solid var(--line-200);background:var(--surface-card);
+  border-radius:14px;padding:14px 16px;display:flex;gap:14px;align-items:center}
+.exo-porte:hover{border-color:var(--mf-teinte)}
+.exo-porte .rang{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--mf-fond);color:var(--mf-teinte);font-weight:900}
+.exo-porte b{font-size:18px;color:var(--text-strong)}
+.exo-porte.pont{border-color:var(--mf-teinte);box-shadow:inset 4px 0 0 var(--mf-teinte)}
+.filtre{margin-top:14px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.filtre select{font:inherit;font-size:16px;padding:8px 10px;border-radius:10px;border:1px solid var(--line-300);background:var(--surface-card);color:var(--text-strong)}
+.jeu{margin-top:12px}
+.jeu .barre{height:6px;border-radius:3px;background:var(--line-200);overflow:hidden;margin-bottom:12px}
+.jeu .barre i{display:block;height:100%;background:var(--accent)}
+.jeu .consigne{font-weight:700;margin:0 0 10px}
+.jeu .sujet{background:#fff;border-radius:14px;border:1px solid var(--line-200);display:grid;place-items:center;padding:8px;max-width:320px;margin:0 auto 12px}
+.jeu .sujet img{width:100%;max-width:260px;aspect-ratio:1/1;object-fit:contain}
+.jeu .sujet .past{width:100%;aspect-ratio:3/2;border-radius:10px}
+.jeu .ecoute{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:6px 0 14px}
+.choix{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+.choix.mots{grid-template-columns:1fr}
+.opt{font:inherit;cursor:pointer;border:2px solid var(--line-200);background:#fff;border-radius:12px;padding:8px;color:#17181A;
+  display:flex;flex-direction:column;align-items:center;gap:6px;position:relative}
+.opt:hover{border-color:var(--mf-teinte)}
+.opt img{width:100%;aspect-ratio:1/1;object-fit:contain}
+.opt .past{width:100%;aspect-ratio:3/2;border-radius:8px;border:1px solid var(--line-200)}
+.choix.mots .opt{flex-direction:row;justify-content:center;font-size:20px;font-weight:800;padding:14px}
+.opt.gris img{filter:grayscale(1) contrast(.9) opacity(.75)}
+.opt .attrs{display:flex;gap:8px;align-items:center;justify-content:center}
+.opt .chip{width:34px;height:34px;border-radius:50%;border:2px solid #17181A33}
+.opt .tag{font-weight:900;font-size:16px;border:2px solid #17181A;border-radius:6px;padding:2px 7px;background:#fff}
+.opt.faux{border-color:var(--no-line);background:var(--no-bg);animation:non .3s}
+.opt.juste{border-color:var(--ok-line);background:var(--ok-bg)}
+.opt[disabled]{cursor:default}
+@keyframes non{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+@media (prefers-reduced-motion:reduce){.opt.faux{animation:none}}
+.retro{margin:12px 0 0;font-weight:800;min-height:1.4em}
+.retro.ok{color:var(--ok-ink)} .retro.non{color:var(--no-ink)}
+.suite{display:flex;justify-content:flex-end;margin-top:12px}
+.revele{text-align:center;margin:10px 0}
+.revele .gros{font-size:30px;font-weight:900;color:var(--text-strong)}
+.bilan{text-align:center;padding:20px 0}
+.bilan .score{font-size:44px;font-weight:900;color:var(--text-strong)}
+
 @media (max-width:640px){
   .mf h1{font-size:23px}
+  .choix{grid-template-columns:repeat(2,minmax(0,1fr))}
   .planche{grid-template-columns:repeat(2,minmax(0,1fr))}
   .rayons{grid-template-columns:repeat(2,minmax(0,1fr))}
   .langues{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -193,7 +278,19 @@ const FR = {choisir:"Choisissez votre langue", choisir_sous:"Les mots restent en
   francais_seul:"Français seulement", rayons:"Les rayons du magasin", toucher:"Touchez un vêtement pour l'entendre.",
   ecouter:"Écouter", voir:"Voir dans ma langue", cacher:"Cacher", retour:"Retour aux rayons", langue:"Changer de langue",
   non_relu:"Traduction pas encore vérifiée par une personne.", piege:"Attention", aussi:"On entend aussi",
-  suivant:"Suivant", precedent:"Précédent", mots:"mots"};
+  suivant:"Suivant", precedent:"Précédent", mots:"mots",
+  accueil:"Accueil", apprendre:"Apprendre les mots", apprendre_sous:"Les onze rayons, mot par mot.",
+  exercer:"Je m'exerce", exercer_sous:"Cinq exercices, du mot au client.", exercices:"Les exercices",
+  tous_rayons:"Tous les rayons",
+  ex_ecoute:"Je l'entends, je le trouve", ex_ecoute_c:"Écoutez, puis touchez le bon vêtement.",
+  ex_image:"Le mot et son image", ex_image_c:"Touchez le bon mot.",
+  ex_rappel:"Je me souviens", ex_rappel_c:"Dites le mot à voix haute, puis vérifiez.",
+  ex_rayon:"Range le rayon", ex_rayon_c:"Dans quel rayon va cet article ?",
+  ex_client:"Ce que le client veut", ex_client_c:"Écoutez le client. Touchez ce qu'il demande.",
+  reecouter:"Réécouter", lentement:"Plus lentement", voir_mot:"Voir le mot",
+  savais:"Je le savais", a_revoir:"À revoir", bravo:"Bien joué !",
+  essaie:"Pas tout à fait. Essayez encore.", reponse:"Voici la bonne réponse.",
+  fin:"Série terminée", premier_coup:"du premier coup", recommencer:"Une autre série"};
 const T = k => dit(k, FR[k]);
 const app = document.getElementById('app');
 let audio = null;
@@ -213,20 +310,32 @@ function ecranLangue() {
     + '<button type="button" data-l="fr">Français<small>Français seulement</small></button></div>';
   app.querySelectorAll('[data-l]').forEach(b => b.onclick = () => {
     langue = b.dataset.l; try { localStorage.setItem(CLE, langue); } catch(e) {}
-    ecranRayons();
+    ecranAccueil();
   });
 }
 
-function tete(titre, sous, retour) {
+function ecranAccueil() {
+  app.innerHTML = tete('Bienvenue', '', false)
+    + '<div class="accueil">'
+    + '<button type="button" class="porte" id="aRayons"><b>' + T('apprendre') + '</b><span>' + T('apprendre_sous') + '</span></button>'
+    + '<button type="button" class="porte" id="aExos"><b>' + T('exercer') + '</b><span>' + T('exercer_sous') + '</span></button></div>';
+  document.getElementById('aRayons').onclick = ecranRayons;
+  document.getElementById('aExos').onclick = ecranExercices;
+  document.getElementById('chLangue').onclick = ecranLangue;
+  window.scrollTo(0, 0);
+}
+
+
+function tete(titre, sous, retour, cleRetour) {
   return '<div class="mf-tete"><div><p class="mf-enseigne">Maison Francœur</p><h1>' + titre + '</h1>'
     + (sous ? '<p style="margin:6px 0 0">' + sous + '</p>' : '') + '</div><div style="display:flex;gap:8px;flex-wrap:wrap">'
-    + (retour ? '<button type="button" class="mf-btn mf-btn--pile" id="retour">' + T('retour') + '</button>' : '')
+    + (retour ? '<button type="button" class="mf-btn mf-btn--pile" id="retour">' + T(cleRetour || 'retour') + '</button>' : '')
     + '<button type="button" class="mf-btn mf-btn--pile" id="chLangue">' + T('langue') + '</button></div></div>';
 }
 
 function ecranRayons() {
   const l = L();
-  app.innerHTML = tete(T('rayons'), T('toucher'))
+  app.innerHTML = tete(T('rayons'), T('toucher'), true, 'accueil')
     + '<div class="rayons">' + D.planches.map(p => {
         const ms = D.mots.filter(m => m.p === p.k), v = ms.filter(m => m.img || m.pastille).slice(0, 3);
         const tr = l && l.ui['planche_' + p.k];
@@ -236,6 +345,7 @@ function ecranRayons() {
           + '<span class="n">' + ms.length + ' ' + FR.mots + '</span></button>';
       }).join('') + '</div>';
   app.querySelectorAll('[data-p]').forEach(b => b.onclick = () => ecranPlanche(b.dataset.p));
+  document.getElementById('retour').onclick = ecranAccueil;
   document.getElementById('chLangue').onclick = ecranLangue;
   window.scrollTo(0, 0);
 }
@@ -293,7 +403,154 @@ document.addEventListener('keydown', ev => {
   if (ev.key === 'ArrowLeft' && ouvert > 0) ouvrir(ouvert - 1);
 });
 
-if (langue) ecranRayons(); else ecranLangue();
+
+/* ── Les exercices ─────────────────────────────────────────────────────
+   Cinq, du mot isolé à la phrase du client. Une série = 8 questions.
+   Deux essais, puis la bonne réponse se montre (règle du dépôt : jamais la
+   réponse au premier envoi). Les mots ratés vont dans « à revoir » et
+   repassent devant à la série suivante. Tout reste sur l'appareil. */
+const EXOS = [
+  {k:'ecoute', n:1}, {k:'image', n:2}, {k:'rappel', n:3}, {k:'rayon', n:4}, {k:'client', n:5, pont:true}];
+const RAYONS = ['hauts','bas','robes','exterieur','dessous','chaussures','accessoires'];
+const SERIE = 8;
+const CLE_REVOIR = 'francoeur-revoir';
+let revoir = new Set();
+try { revoir = new Set(JSON.parse(localStorage.getItem(CLE_REVOIR) || '[]')); } catch(e) {}
+const garderRevoir = () => { try { localStorage.setItem(CLE_REVOIR, JSON.stringify([...revoir])); } catch(e) {} };
+let filtre = '';
+const melange = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const visuel = m => m.img || m.pastille;
+function tirage(pool) {
+  // Les mots « à revoir » d'abord, puis le reste au hasard.
+  const a = melange(pool.filter(m => revoir.has(m.id))), b = melange(pool.filter(m => !revoir.has(m.id)));
+  return a.concat(b).slice(0, SERIE);
+}
+
+function ecranExercices() {
+  app.innerHTML = tete(T('exercices'), '', true, 'accueil')
+    + '<div class="filtre"><select id="filtre" aria-label="' + esc(FR.tous_rayons) + '"><option value="">' + esc(FR.tous_rayons) + '</option>'
+    + D.planches.filter(p => RAYONS.includes(p.k) || p.k === 'couleurs').map(p => '<option value="' + p.k + '"' + (filtre === p.k ? ' selected' : '') + '>' + esc(p.t) + '</option>').join('')
+    + '</select></div><div class="exos">'
+    + EXOS.map(x => '<button type="button" class="exo-porte' + (x.pont ? ' pont' : '') + '" data-x="' + x.k + '"><span class="rang">' + x.n + '</span><span><b>'
+      + T('ex_' + x.k) + '</b><span style="display:block;margin-top:4px">' + T('ex_' + x.k + '_c') + '</span></span></button>').join('') + '</div>';
+  document.getElementById('filtre').onchange = e => { filtre = e.target.value; };
+  app.querySelectorAll('[data-x]').forEach(b => b.onclick = () => lancer(b.dataset.x));
+  document.getElementById('retour').onclick = ecranAccueil;
+  document.getElementById('chLangue').onclick = ecranLangue;
+  window.scrollTo(0, 0);
+}
+
+let J = null;   // la série en cours
+function lancer(k) {
+  const dansFiltre = m => !filtre || m.p === filtre;
+  let items;
+  if (k === 'client') items = melange(D.demandes).slice(0, SERIE);
+  else if (k === 'rayon') items = tirage(D.mots.filter(m => m.img && RAYONS.includes(m.p) && dansFiltre(m)));
+  else items = tirage(D.mots.filter(m => visuel(m) && m.son && dansFiltre(m)));
+  J = {k, items, i: 0, essais: 0, premier: 0, fini: false};
+  question();
+}
+
+function cadreJeu(corps) {
+  app.innerHTML = tete(T('ex_' + J.k), T('ex_' + J.k + '_c'), true, 'exercices')
+    + '<div class="jeu"><div class="barre"><i style="width:' + Math.round(100 * J.i / J.items.length) + '%"></i></div>' + corps
+    + '<p class="retro" id="retro" aria-live="polite"></p><div class="suite" id="suite"></div></div>';
+  document.getElementById('retour').onclick = () => { if (audio) audio.pause(); ecranExercices(); };
+  document.getElementById('chLangue').onclick = ecranLangue;
+}
+const boutonsEcoute = () => '<div class="ecoute"><button type="button" class="mf-btn mf-btn--pri" id="reec">' + ICO.son + '<span>' + T('reecouter') + '</span></button>'
+  + '<button type="button" class="mf-btn" id="lent"><span>' + T('lentement') + '</span></button></div>';
+function brancherEcoute(src) {
+  document.getElementById('reec').onclick = () => joue(src);
+  document.getElementById('lent').onclick = () => { joue(src); if (audio) { audio.preservesPitch = true; audio.playbackRate = 0.75; } };
+}
+
+function question() {
+  if (J.i >= J.items.length) return bilan();
+  J.essais = 0;
+  const it = J.items[J.i];
+  if (J.k === 'ecoute') {
+    const autres = melange(D.mots.filter(m => m.p === it.p && m.id !== it.id && visuel(m))).slice(0, 5);
+    J.bonne = it.id; J.options = melange([it].concat(autres));
+    cadreJeu(boutonsEcoute() + '<div class="choix">' + J.options.map(m => '<button type="button" class="opt" data-o="' + m.id + '">' + image(m) + '</button>').join('') + '</div>');
+    brancherEcoute(it.son); joue(it.son);
+  } else if (J.k === 'image') {
+    const autres = melange(D.mots.filter(m => m.p === it.p && m.id !== it.id)).slice(0, 2);
+    J.bonne = it.id; J.options = melange([it].concat(autres));
+    cadreJeu('<div class="sujet">' + image(it, true) + '</div><div class="choix mots">'
+      + J.options.map(m => '<button type="button" class="opt" data-o="' + m.id + '">' + esc(m.mot) + '</button>').join('') + '</div>');
+  } else if (J.k === 'rayon') {
+    const autres = melange(RAYONS.filter(r => r !== it.p)).slice(0, 3);
+    J.bonne = it.p; J.options = melange([it.p].concat(autres));
+    const l = L();
+    cadreJeu('<div class="sujet">' + image(it, true) + '</div><p style="text-align:center;font-weight:800;font-size:20px;margin:0 0 10px">' + esc(it.mot) + '</p><div class="choix mots">'
+      + J.options.map(k => { const tr = l && l.ui['planche_' + k];
+          return '<button type="button" class="opt" data-o="' + k + '"><span>' + esc(D.planches.find(p => p.k === k).t)
+            + (tr ? '<span class="appui" dir="' + (l.rtl ? 'rtl' : 'ltr') + '">' + esc(tr) + '</span>' : '') + '</span></button>'; }).join('') + '</div>');
+    joue(it.son);
+  } else if (J.k === 'rappel') {
+    cadreJeu('<div class="sujet">' + image(it, true) + '</div><div class="revele" id="revele"><button type="button" class="mf-btn mf-btn--pri" id="voirMot">' + ICO.oeil + '<span>' + T('voir_mot') + '</span></button></div>');
+    document.getElementById('voirMot').onclick = () => {
+      joue(it.son);
+      document.getElementById('revele').innerHTML = '<p class="gros">' + esc(it.mot) + '</p>'
+        + '<div class="ecoute"><button type="button" class="mf-btn mf-btn--pri" id="savais"><span>' + T('savais') + '</span></button>'
+        + '<button type="button" class="mf-btn" id="arevoir"><span>' + T('a_revoir') + '</span></button></div>';
+      document.getElementById('savais').onclick = () => { J.premier++; revoir.delete(it.id); garderRevoir(); J.i++; question(); };
+      document.getElementById('arevoir').onclick = () => { revoir.add(it.id); garderRevoir(); J.i++; question(); };
+    };
+    return;
+  } else if (J.k === 'client') {
+    J.bonne = 0; J.options = melange(it.v.map((v, n) => Object.assign({n}, v)));
+    cadreJeu(boutonsEcoute() + '<div class="choix">' + J.options.map(v =>
+      '<button type="button" class="opt gris" data-o="' + v.n + '"><img src="' + v.img + '" alt="' + esc(v.mot) + '" loading="lazy">'
+      + '<span class="attrs"><span class="chip" style="background:' + v.hex + '" role="img" aria-label="' + esc(v.cmot) + '"></span>'
+      + (v.t ? '<span class="tag">' + v.t + '</span>' : '') + '</span></button>').join('') + '</div>');
+    brancherEcoute(it.son); joue(it.son);
+  }
+  app.querySelectorAll('[data-o]').forEach(b => b.onclick = () => repondre(b));
+}
+
+function repondre(b) {
+  const it = J.items[J.i], retro = document.getElementById('retro');
+  const juste = String(b.dataset.o) === String(J.bonne);
+  const idMot = J.k === 'client' ? null : it.id;
+  if (juste) {
+    b.classList.add('juste');
+    if (J.essais === 0) { J.premier++; if (idMot) { revoir.delete(idMot); garderRevoir(); } }
+    retro.className = 'retro ok'; retro.innerHTML = T('bravo');
+    if (J.k !== 'ecoute' && J.k !== 'client') joue(it.son);
+    finQuestion();
+  } else {
+    J.essais++; b.classList.add('faux'); b.disabled = true;
+    if (idMot) { revoir.add(idMot); garderRevoir(); }
+    if (J.essais >= 2) {
+      const bon = app.querySelector('[data-o="' + J.bonne + '"]'); if (bon) bon.classList.add('juste');
+      retro.className = 'retro non'; retro.innerHTML = T('reponse');
+      if (J.k === 'client') retro.innerHTML += '<span class="appui" style="font-style:italic" lang="fr">« ' + esc(it.phrase) + ' »</span>';
+      else joue(it.son);
+      finQuestion();
+    } else { retro.className = 'retro non'; retro.innerHTML = T('essaie'); }
+  }
+}
+function finQuestion() {
+  app.querySelectorAll('[data-o]').forEach(x => x.disabled = true);
+  const s = document.getElementById('suite');
+  s.innerHTML = '<button type="button" class="mf-btn mf-btn--pri" id="apres"><span>' + T('suivant') + '</span>' + ICO.suiv + '</button>';
+  const a = document.getElementById('apres'); a.onclick = () => { J.i++; question(); }; a.focus();
+}
+function bilan() {
+  J.fini = true;
+  app.innerHTML = tete(T('ex_' + J.k), '', true, 'exercices')
+    + '<div class="bilan"><p style="font-weight:800;margin:0">' + T('fin') + '</p><p class="score">' + J.premier + ' / ' + J.items.length + '</p>'
+    + '<p style="margin:0 0 16px">' + T('premier_coup') + '</p>'
+    + '<button type="button" class="mf-btn mf-btn--pri" id="encore"><span>' + T('recommencer') + '</span></button></div>';
+  document.getElementById('encore').onclick = () => lancer(J.k);
+  document.getElementById('retour').onclick = ecranExercices;
+  document.getElementById('chLangue').onclick = ecranLangue;
+}
+window.__francoeur = { etat: () => J, D };
+
+if (langue) ecranAccueil(); else ecranLangue();
 </script>
 </body>
 </html>
