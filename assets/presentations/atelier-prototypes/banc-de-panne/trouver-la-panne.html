@@ -442,6 +442,18 @@ h1{font-family:var(--titre);font-weight:400;color:var(--acide);margin:0;font-siz
 .coupe .cafeDessus{fill:url(#t-cafeDessus);stroke:#6b4a33;stroke-width:.8}
 .coupe .couvercle{fill:url(#t-couvercle);stroke:#2b2825;stroke-width:1.8;stroke-linejoin:round}
 
+/* Les commandes d'une animation, posées dans la fiche (la pompe) : la fiche
+   laisse passer la molette, seuls les boutons prennent le clic. */
+.f-commandes{display:flex;align-items:center;flex-wrap:wrap;gap:.4rem;margin-top:.8rem;
+  padding-top:.7rem;border-top:1px solid var(--f-trait)}
+.f-commandes span{font:500 .66rem/1 var(--f-mono);letter-spacing:.18em;text-transform:uppercase;color:var(--f-doux);margin-right:.2rem}
+.f-commandes em{flex-basis:100%;font:500 .62rem/1.3 var(--f-mono);font-style:normal;color:var(--f-doux)}
+.f-cmd{pointer-events:auto;appearance:none;cursor:pointer;font:700 .95rem/1 var(--f-cond);letter-spacing:.02em;
+  color:var(--f-encre);background:var(--f-puce);border:1px solid var(--f-trait);border-radius:99px;padding:.42rem .8rem}
+.f-cmd:hover{border-color:var(--f-encre)}
+.f-cmd[aria-pressed="true"]{background:var(--f-encre);color:var(--f-fond);border-color:var(--f-encre)}
+.f-cmd:focus-visible{outline:2px solid var(--f-vert);outline-offset:2px}
+
 .coupe #grains{fill:var(--cafe);opacity:.75}
 .coupe .chif.g{text-anchor:start}
 .coupe .chif.d{text-anchor:end}
@@ -1632,6 +1644,8 @@ const PANNES = [];
   /* La chasse se compte en COURSES DE PISTON, jamais en millisecondes. */
   const CHASSE_COURSES = 6.5;
   let etat = null, phase = 0, courses = 0, xPrec = null, parIn = 0, parOut = 0, ts = 0, trace = [], montee = 0;
+  // Les commandes de pompe-animee.html : arrêter, avancer d'UN coup, ralentir encore.
+  let pause = false, unCoup = 0, ralenti = RALENTI;
 
   // hachures du bobinage, graduations du cadran
   const angP = bar => -135 + (bar / 12) * 270;
@@ -1676,15 +1690,41 @@ const PANNES = [];
                ["Porte-filtre", "pourtour sec", true], ["Mouture", "normale", true]] },
   });
 
+  // Posées dans la fiche, sous les chiffres : on regarde le piston au rythme qu'on veut.
+  {
+    const f = document.querySelector('.bloc[data-panne="pompe"] .f-haut');
+    const c = document.createElement("div"); c.className = "f-commandes";
+    c.innerHTML = `<span>Le piston</span>
+      <button type="button" class="f-cmd" data-cmd="pause" aria-pressed="false">Arrêter</button>
+      <button type="button" class="f-cmd" data-cmd="coup">Un coup</button>
+      <button type="button" class="f-cmd" data-cmd="ralenti" aria-pressed="false">Ralenti</button>
+      <em data-r="vitesse"></em>`;
+    f.after(c);
+    const bt = k => c.querySelector(`[data-cmd="${k}"]`);
+    const dire = () => {
+      bt("pause").setAttribute("aria-pressed", pause); bt("pause").textContent = pause ? "Reprendre" : "Arrêter";
+      bt("ralenti").setAttribute("aria-pressed", ralenti !== RALENTI);
+      c.querySelector('[data-r="vitesse"]').textContent = `${HZ_REEL} coups/s, montrés ${ralenti} fois plus lent`;
+    };
+    bt("pause").addEventListener("click", () => { pause = !pause; dire(); });
+    bt("ralenti").addEventListener("click", () => { ralenti = ralenti === RALENTI ? RALENTI * 4 : RALENTI; dire(); });
+    bt("coup").addEventListener("click", () => { pause = true; xPrec = null; unCoup = 1; dire(); });
+    dire();
+  }
+
   function remettre(e) {
-    etat = e; ts = 0; trace = []; montee = 0; xPrec = null;
+    etat = e; ts = 0; trace = []; montee = 0; xPrec = null; unCoup = 0;
     if (!etat) return;
     fiche.etat(etat);
   }
 
   function avancer(dt) {
-    const d = dt * (HZ_REEL / RALENTI);
-    phase = (phase + d) % 1; courses += d; ts += dt;
+    if (!pause || unCoup > 0) {
+      let d = dt * (HZ_REEL / ralenti);
+      if (unCoup > 0) { d = Math.min(d, unCoup); unCoup -= d; }
+      phase = (phase + d) % 1; courses += d;
+    }
+    ts += dt;
     montee = Math.min(1, montee + dt / .8);        // la mise en route
     const bar = BAR_PLEIN * amplitude() * montee;
     if (!trace.length || ts - trace[trace.length-1][0] > .15) trace.push([ts, bar]);

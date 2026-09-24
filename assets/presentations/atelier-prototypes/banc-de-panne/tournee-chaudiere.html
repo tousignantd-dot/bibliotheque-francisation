@@ -82,13 +82,19 @@ body{overflow-x:hidden}
 .pas.titre .carte{border:0;background:transparent;box-shadow:none;padding:0}
 h1{font-family:var(--titre);font-weight:400;color:var(--acide);margin:0;
   font-size:clamp(2.6rem,6.2vw,4.6rem);line-height:.92;text-transform:uppercase;
-  transform:skewX(-8deg);text-shadow:0 3px 0 var(--vert),0 0 28px var(--encre)}
+  transform:skewX(-8deg);text-shadow:0 3px 0 var(--vert)}
 .sous{font-family:var(--titre);font-size:1.05rem;color:var(--papier);margin:.9rem 0 0;
   text-transform:uppercase;letter-spacing:.02em}
 .sous::before{content:"";display:inline-block;width:2.2rem;height:3px;background:var(--acide);
   vertical-align:middle;margin-right:.6rem}
-.defilez{margin-top:1.4rem;font-size:.85rem;color:var(--tendre)}
-.pas.titre .sous,.pas.titre .sur,.pas.titre .defilez{text-shadow:0 0 14px var(--encre),0 0 4px var(--encre)}
+/* Pas de halo : il faisait un flou autour du titre. « Faites défiler » devient
+   une pastille pleine — nette sur n'importe quel fond. */
+.defilez{display:inline-flex;align-items:center;gap:.55rem;margin-top:1.5rem;
+  font:600 1.08rem/1 var(--police);color:var(--encre);background:var(--papier);
+  padding:.7rem 1.1rem;border-radius:999px}
+.defilez::after{content:"↓";font-weight:700;animation:descend 1.6s ease-in-out infinite}
+@keyframes descend{50%{transform:translateY(4px)}}
+@media (prefers-reduced-motion:reduce){ .defilez::after{animation:none} }
 /* Pas de défilement au-delà de la dernière étape : la carte de fin, et son
    bouton « Trouver la panne », restent à l'écran. */
 .queue{height:0}
@@ -281,6 +287,18 @@ nav.autres a[aria-current]{color:var(--papier);text-decoration:none;font-weight:
 .coupe .eauDessus{fill:url(#t-eauDessus);stroke:#9fb4b9;stroke-width:.8}
 .coupe .cafeDessus{fill:url(#t-cafeDessus);stroke:#6b4a33;stroke-width:.8}
 .coupe .couvercle{fill:url(#t-couvercle);stroke:#2b2825;stroke-width:1.8;stroke-linejoin:round}
+
+/* Les commandes d'une animation, posées dans la fiche (la pompe) : la fiche
+   laisse passer la molette, seuls les boutons prennent le clic. */
+.f-commandes{display:flex;align-items:center;flex-wrap:wrap;gap:.4rem;margin-top:.8rem;
+  padding-top:.7rem;border-top:1px solid var(--f-trait)}
+.f-commandes span{font:500 .66rem/1 var(--f-mono);letter-spacing:.18em;text-transform:uppercase;color:var(--f-doux);margin-right:.2rem}
+.f-commandes em{flex-basis:100%;font:500 .62rem/1.3 var(--f-mono);font-style:normal;color:var(--f-doux)}
+.f-cmd{pointer-events:auto;appearance:none;cursor:pointer;font:700 .95rem/1 var(--f-cond);letter-spacing:.02em;
+  color:var(--f-encre);background:var(--f-puce);border:1px solid var(--f-trait);border-radius:99px;padding:.42rem .8rem}
+.f-cmd:hover{border-color:var(--f-encre)}
+.f-cmd[aria-pressed="true"]{background:var(--f-encre);color:var(--f-fond);border-color:var(--f-encre)}
+.f-cmd:focus-visible{outline:2px solid var(--f-vert);outline-offset:2px}
 
 .coupe .merc{fill:var(--retard)}
 .coupe .merc.bon{fill:var(--acide)}
