@@ -760,6 +760,160 @@
 
 </style>
 <style>
+/* ============================================================
+   CALQUE · CARNET — l'identité de « À la main d'abord »
+   ------------------------------------------------------------
+   Une COUCHE posée sur calque.css et atelier.css, comme « Pont » :
+   mêmes composants, même contenu, mêmes photos. Le cahier de
+   l'apprenti :
+   · papier crème ligné, encre brune, orange brûlé ;
+   · titres à empattements (Zilla Slab), mesures à la machine à
+     écrire (Courier Prime) ;
+   · photos épinglées de travers, boutons à ombre portée, tampons.
+   Les règles de Calque tiennent : le bleu calque reste à la couche
+   de révision ; chaque décision garde forme ET couleur ; la version
+   zéro reste une diapo par défaut.
+   Le thème est clair dans les deux préférences : c'est son identité.
+   Contrastes mesurés sur --cq-feuille (#F4EDE0) : encre 13,5:1 ·
+   sourdine 5,7:1 · orange 4,8:1 · blanc sur orange 5,6:1 · décisions
+   sur leur fond 5,4 à 5,9:1 · filet (contour des boutons) 3,5:1.
+   ============================================================ */
+
+@import url("https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=Courier+Prime:wght@400;700&display=swap");
+
+:root:not(#carnet) {
+  color-scheme: light;
+  --cq-papier:   #E6DCCB;
+  --cq-feuille:  #F4EDE0;
+  --cq-retrait:  #FFFBF3;
+  --cq-filet:    #8C7B69;
+  --cq-sourdine: #6B5A4B;
+  --cq-encre:    #2B211A;
+  --cq-action:   #B4441A;
+  --cq-action-ink: #FFFFFF;
+  --cq-focus:    #B4441A;
+  --cq-lien:     #B4441A;
+
+  --cq-sur:    #1F6B4A;  --cq-sur-fond:    #E3EFE6;
+  --cq-doute:  #8A5200;  --cq-doute-fond:  #F9EBCF;
+  --cq-fraude: #A61B1B;  --cq-fraude-fond: #F7DEDA;
+
+  /* Couche de révision : le bleu calque, version claire */
+  --cq-calque: #4C9BD6;
+  --cq-calque-ink: #0B4A7A;
+  --cq-calque-voile: rgba(76, 155, 214, 0.08);
+  --cq-calque-trame: rgba(76, 155, 214, 0.18);
+  --cq-grav-bloquant: #0B4A7A;
+  --cq-grav-majeur:   #2F7EBB;
+  --cq-grav-mineur:   #9CC7E8;
+
+  --cq-police-titre: "Zilla Slab", Rockwell, "Courier New", serif;
+  --cq-police-texte: "Source Sans 3", "Segoe UI", Arial, sans-serif;
+  --cq-police-mono:  "Courier Prime", "Courier New", monospace;
+
+  --cq-rayon:   3px;
+  --cq-rayon-l: 4px;
+  --cq-ombre:   0 2px 0 #D2C4AE, 0 10px 26px rgba(60, 40, 20, .14);
+}
+
+/* ---------- La scène : une page du carnet ---------- */
+.scene:has(> .plateau > .diapo) {
+  background-color: var(--cq-feuille);
+  background-image:
+    linear-gradient(90deg, transparent 3.2cqw, rgba(180, 68, 26, .28) 3.2cqw, rgba(180, 68, 26, .28) calc(3.2cqw + 1px), transparent calc(3.2cqw + 1px)),
+    linear-gradient(#E3D8C4 1px, transparent 1px);
+  background-size: 100% 100%, 100% 2.1cqw;
+}
+.diapo__entete {
+  font-family: var(--cq-police-texte); font-weight: 700; letter-spacing: .12em; color: var(--cq-action);
+}
+.diapo__entete > span:last-child:not(:empty) {
+  font-family: var(--cq-police-titre); color: var(--cq-action); border: 2px solid var(--cq-action);
+  padding: .1em .6em; transform: rotate(3deg); letter-spacing: .14em;
+}
+.diapo__titre { font-weight: 700; letter-spacing: -.01em; line-height: 1.05; }
+.diapo__mega { font-weight: 700; }
+.diapo--ouverture { background: var(--cq-encre); color: var(--cq-feuille); }
+
+/* ---------- Les photos, épinglées de travers ---------- */
+.planche--photo {
+  background: #fff; padding: 6px; border: 0; border-radius: 2px;
+  box-shadow: 0 4px 12px rgba(60, 40, 20, .25); transform: rotate(-1deg);
+}
+.planche--photo svg { border-radius: 0; }
+.diapo__col > .planche--photo:nth-of-type(2n) { transform: rotate(1.2deg); }
+.planche__agrandir { background: var(--cq-encre); color: #fff; border-radius: 2px; }
+.fiche { background: transparent; border: 0; padding: 0; }
+.fiche__bon { padding: .4cqw .2cqw 0; }
+.fiche__titre { font-family: var(--cq-police-titre); font-weight: 700; }
+.fiche__mesure { background: var(--cq-retrait); border: 1px dashed var(--cq-filet); color: var(--cq-encre); font-family: var(--cq-police-mono); }
+
+/* ---------- Les choix : étiquettes à ombre portée ---------- */
+.tri__choix, .options__choix {
+  background: var(--cq-retrait); color: var(--cq-encre);
+  border: 1.5px solid var(--cq-encre); border-radius: var(--cq-rayon);
+  box-shadow: 3px 3px 0 var(--cq-encre); font-weight: 600;
+  transition: transform .08s, box-shadow .08s;
+}
+.tri__choix:hover, .options__choix:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--cq-encre); border-color: var(--cq-encre); }
+.tri__choix[aria-pressed="true"], .options__choix[aria-pressed="true"] {
+  background: var(--cq-action); color: var(--cq-action-ink); border-color: var(--cq-encre);
+  box-shadow: 1px 1px 0 var(--cq-encre); transform: translate(2px, 2px);
+}
+.tri__choix:disabled:not([aria-pressed="true"]) { opacity: .5; box-shadow: none; }
+.tri__choix--plein { background: var(--cq-encre); color: var(--cq-feuille); border-color: var(--cq-encre); font-family: var(--cq-police-titre); font-weight: 700; }
+.tri__choix--plein:hover { border-color: var(--cq-encre); }
+
+/* ---------- Rétroaction : note au crayon, en pointillé ---------- */
+.retro { background: var(--cq-retrait); border: 1.5px dashed currentColor; border-left-width: 1.5px; border-radius: var(--cq-rayon); }
+.retro--juste  { color: var(--cq-sur); }
+.retro--rate   { color: var(--cq-fraude); }
+.retro--neutre { color: var(--cq-encre); }
+.retro__titre { font-family: var(--cq-police-titre); font-weight: 700; font-size: 1.08em; }
+
+.verdict { border-radius: 2px; }
+.consigne::before { background: var(--cq-action); color: #fff; border-radius: 2px; font-family: var(--cq-police-titre); }
+
+/* ---------- Listes : numéros cerclés à l'encre ---------- */
+.verif__item::before { border-width: .18cqw; font-family: var(--cq-police-titre); background: var(--cq-retrait); }
+.verif__q { font-family: var(--cq-police-titre); font-weight: 700; }
+
+/* ---------- Fiche du poste : une fiche bristol ---------- */
+.memo {
+  background: #FFFDF8; border: 0; border-radius: 2px; box-shadow: 0 3px 10px rgba(60, 40, 20, .18);
+  background-image: linear-gradient(90deg, transparent 2.4cqw, rgba(166, 27, 27, .35) 2.4cqw, rgba(166, 27, 27, .35) calc(2.4cqw + 1px), transparent calc(2.4cqw + 1px));
+}
+.memo__titre { color: var(--cq-action); }
+
+/* ---------- Bilans, ordre, liens ---------- */
+.bilan__cas { background: var(--cq-retrait); border: 1px dashed var(--cq-filet); }
+.score__n, .score__elimine { font-family: var(--cq-police-titre); }
+.ordre__suite li::before { color: var(--cq-action); font-family: var(--cq-police-titre); }
+.ordre__vide { border-color: var(--cq-filet); background: var(--cq-retrait); }
+.lien-externe { color: var(--cq-action); }
+
+/* ---------- Autour de la scène : les onglets du carnet ---------- */
+.tete__titre { font-family: var(--cq-police-titre); font-weight: 700; }
+.app--carnet .onglets { border-radius: var(--cq-rayon); background: var(--cq-retrait); }
+.app--carnet .onglets button { border-radius: 2px; }
+.app--carnet .onglets button[aria-selected="true"]:not([data-vue="comparer"]):not([data-vue="boucle"]) { background: var(--cq-action); color: #fff; }
+.app--carnet .nav__module { border-radius: 0 var(--cq-rayon) var(--cq-rayon) 0; }
+.app--carnet .nav__module--actif { background: var(--cq-feuille); box-shadow: inset 4px 0 0 var(--cq-action), 0 1px 0 #D2C4AE; }
+.app--carnet .nav__num { font-family: var(--cq-police-titre); font-weight: 700; color: var(--cq-action); }
+.barre__btn { background: var(--cq-retrait); border-color: var(--cq-filet); }
+
+/* ---------- La loupe ---------- */
+.loupe { background: #2B211A; }
+.loupe__fermer { background: var(--cq-action); color: #fff; }
+
+/* Téléphone : on redresse les photos, la place est comptée */
+@container (max-width: 760px) {
+  .planche--photo { transform: none; padding: 4px; }
+  .tri__choix, .options__choix { box-shadow: 2px 2px 0 var(--cq-encre); }
+}
+
+</style>
+<style>
   html, body { background: var(--cq-papier); }
   body { margin: 0; }
   .app { min-height: 100vh; display: grid; grid-template-rows: auto 1fr; padding-inline: 16px; }
@@ -864,7 +1018,7 @@
   }
 </style>
 
-<div class="app cq">
+<div class="app cq app--carnet">
   <header class="tete">
     <div class="tete__nom">
       <h1 class="tete__titre">À la main d'abord</h1>
