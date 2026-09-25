@@ -260,6 +260,12 @@ def main():
     tete = SOURCE.read_text(encoding="utf-8")
     tete = tete[:tete.index("<body")]
     tete = re.sub(r"<title>.*?</title>", "<title>La réception d'hôtel — le plan</title>", tete)
+    # L'en-tête de Francœur pose table{min-width:640px} : à 375 px, les tableaux
+    # débordaient de la page. Ils défilent maintenant dans leur propre cadre.
+    tete = tete.replace("</head>", "<style>table.cmp{display:block;max-width:100%;min-width:0;"
+                        "overflow-x:auto}@media (max-width:640px){table.cmp{font-size:14px}"
+                        "table.cmp th,table.cmp td{padding:10px}table.cmp td{min-width:9em}}"
+                        "</style>\n</head>")
     SORTIE.write_text(tete + CORPS, encoding="utf-8")
     print(f"{SORTIE.relative_to(RACINE)}")
 
