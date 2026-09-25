@@ -157,7 +157,7 @@ CORPS = r"""<body>
 <h1>En route vers Compostelle &mdash; le plan</h1>
 <p class="chapeau">Pour les <strong>pèlerins francophones</strong> qui partent sur le Camino francés et
 veulent se débrouiller en espagnol : trouver un lit, manger, se soigner une ampoule, demander son
-chemin, et parler un peu avec les gens du pays et les autres marcheurs. Même châssis que la trousse
+chemin, visiter ce qu'il y a à voir d'une étape à l'autre, et parler avec les gens du pays et avec les autres marcheurs. Même châssis que la trousse
 de la réception d'hôtel &mdash; planches de mots, exercices, test, jeu de rôle &mdash; mais
 l'apprenant change de côté du comptoir : <strong>c'est lui, le client</strong>. Et le jeu de rôle
 devient un voyage : dix situations, dix lieux du chemin, un tampon sur la credencial à chaque fois,
@@ -190,6 +190,33 @@ LIEUX
 </section>
 
 <section>
+  <h2>Le chemin, étape par étape : voir, dire, parler</h2>
+  <p>Le chemin n'est pas qu'une suite d'albergues. Chaque grand lieu apporte <b>ce qu'on y visite</b>
+  (et les mots pour le visiter), <b>une phrase du lieu</b>, et <b>le sujet dont parlent les pèlerins ce
+  soir-là</b> — car les conversations du chemin changent avec les kilomètres : les jambes au début, le
+  pourquoi sur la Meseta, l'après en arrivant.</p>
+  <table class="cmp"><thead><tr><th>Lieu</th><th>À voir</th><th>Ce qu'on y dit</th><th>Entre pèlerins, ce soir-là</th></tr></thead><tbody>
+    <tr><td>Saint-Jean-Pied-de-Port</td><td>la rue de la Citadelle, l'accueil des pèlerins</td><td><i>¡Buen Camino!</i> — la première fois</td><td>le sac trop lourd, la peur de la montagne</td></tr>
+    <tr><td>Roncesvalles</td><td>la collégiale, la messe des pèlerins ; Roncevaux, où tomba Roland</td><td><i>¿Hay misa del peregrino?</i></td><td>la montée, les jambes, d'où l'on vient</td></tr>
+    <tr><td>Pamplona</td><td>la place du Château, le parcours des San Fermín, les <i>pintxos</i> du vieux quartier</td><td><i>Uno de estos, por favor</i></td><td>la nourriture, ce qu'on n'ose pas goûter</td></tr>
+    <tr><td>Puente la Reina · Estella</td><td>le pont roman ; la fontaine à vin du monastère d'Irache</td><td><i>¿Es gratis?</i></td><td>le vin, les habitudes de chez soi</td></tr>
+    <tr><td>Logroño</td><td>la rue Laurel et ses bars à tapas, le vin de la Rioja</td><td><i>¿Qué me recomienda?</i></td><td>le métier qu'on a laissé, la famille</td></tr>
+    <tr><td>Santo Domingo de la Calzada</td><td>le coq et la poule vivants dans la cathédrale, et leur légende</td><td><i>¿Cuál es la historia?</i></td><td>les légendes, les croyances, la foi ou pas</td></tr>
+    <tr><td>Burgos</td><td>la cathédrale gothique, le tombeau du Cid</td><td><i>Una entrada, ¿hay descuento para peregrinos?</i></td><td>prendre un jour de repos ou non</td></tr>
+    <tr><td>La Meseta</td><td>Castrojeriz, l'église romane de Frómista, le ciel</td><td><i>¡Qué calor!</i></td><td><b>pourquoi on marche</b> ; le silence, la solitude</td></tr>
+    <tr><td>León</td><td>les vitraux de la cathédrale, San Isidoro, la maison de Gaudí</td><td><i>¿A qué hora abre la catedral?</i></td><td>les blessures, les tendinites, continuer ou pas</td></tr>
+    <tr><td>Astorga</td><td>le palais épiscopal de Gaudí, le chocolat, le <i>cocido maragato</i></td><td><i>¿Qué es el cocido?</i></td><td>la cuisine de chez soi</td></tr>
+    <tr><td>Cruz de Ferro</td><td>la croix sur son mât, la pierre qu'on a apportée de chez soi</td><td>—</td><td>ce qu'on laisse derrière soi (le sujet le plus intime du chemin)</td></tr>
+    <tr><td>Ponferrada</td><td>le château des Templiers</td><td><i>¿Se puede visitar?</i></td><td>l'histoire, les Templiers</td></tr>
+    <tr><td>O Cebreiro</td><td>les <i>pallozas</i>, l'entrée en Galice, la brume</td><td><i>¿Cómo se dice en gallego?</i></td><td>la météo, les langues qu'on parle</td></tr>
+    <tr><td>Sarria · Melide</td><td>le départ des « cent kilomètres » ; le poulpe de Melide (<i>pulpo a feira</i>)</td><td><i>Una ración de pulpo para compartir</i></td><td>les nouveaux arrivés, le rythme de chacun</td></tr>
+    <tr><td>Santiago</td><td>l'Obradoiro, le Portique de la Gloire, l'étreinte de l'apôtre, le <i>botafumeiro</i> quand il vole ; puis Finisterre</td><td><i>¡Lo hemos conseguido!</i></td><td><b>et après ?</b> Le retour, ce qu'on a appris, se dire au revoir</td></tr>
+  </tbody></table>
+  <p>Les faits de ce tableau (heures, tarifs, jours du <i>botafumeiro</i>) se <b>vérifient et se datent au
+  cadrage</b> : ils changent, et un pèlerin qui se fie à la trousse ne doit pas trouver porte close.</p>
+</section>
+
+<section>
   <h2>Ce qui change par rapport à la réception d'hôtel</h2>
   <table class="cmp"><thead><tr><th></th><th>La réception</th><th>En route vers Compostelle</th></tr></thead><tbody>
     <tr><td>Qui apprend</td><td>Un employé, au travail, payé par l'hôtel</td><td>Un voyageur, souvent 50-70 ans, <b>débutant complet</b>, qui a une date de départ : il apprend chez lui, avant, puis sur le chemin</td></tr>
@@ -212,7 +239,7 @@ LIEUX
 </section>
 
 <section>
-  <h2>Volet 1 &mdash; les mots (≈ 150, en neuf planches)</h2>
+  <h2>Volet 1 &mdash; les mots (≈ 190, en onze planches)</h2>
   <table class="cmp"><thead><tr><th>Planche</th><th>Ce qu'on y trouve</th></tr></thead><tbody>
     <tr><td>Le chemin</td><td>la flèche jaune, la coquille, la borne, la credencial, le tampon, l'étape, le bâton, le sac, la montée, la fontaine (eau potable ou non), à gauche, à droite, tout droit</td></tr>
     <tr><td>L'albergue</td><td>albergue municipal ou privé, l'hospitalero, le lit superposé, en haut ou en bas (<i>litera</i>), le sac de couchage, la douche, le casier, la laveuse et la sécheuse, l'étendoir, l'heure de fermeture, <i>completo</i>, la pension, l'hostal</td></tr>
@@ -222,7 +249,9 @@ LIEUX
     <tr><td>Le corps et la pharmacie</td><td>l'ampoule, le pansement, le genou, la cheville, la tendinite, la douleur, la crème, l'ibuprofène, la pharmacie de garde, le centre de santé, le 112</td></tr>
     <tr><td>Le temps qu'il fait</td><td>la pluie, la chaleur, la boue, le brouillard, l'imperméable, le poncho</td></tr>
     <tr><td>Se déplacer</td><td>l'autobus, le taxi, le transport des sacs, la gare, le billet</td></tr>
-    <tr><td>Les gens</td><td>« ¡Buen Camino! », se présenter, d'où tu viens, pourquoi tu marches, remercier, s'excuser, demander de l'aide, faire répéter, « más despacio, por favor »</td></tr>
+    <tr><td>Les gens</td><td>« ¡Buen Camino! », se présenter, remercier, s'excuser, demander de l'aide, faire répéter, « más despacio, por favor »</td></tr>
+    <tr><td>Visiter</td><td>la cathédrale, le cloître, le musée, le château, le pont, la place principale, l'entrée, le tarif réduit, la visite guidée, l'horaire, la messe, la fête, le marché, la cave à vin</td></tr>
+    <tr><td>Entre pèlerins</td><td>d'où tu viens, pourquoi tu marches, depuis quand, jusqu'où, ton métier, ta famille, les ampoules et les genoux, l'étape de demain, où tu dors ce soir, ce que tu as vu, la foi, le retour — au <i>tú</i>, avec les questions qui relancent (<i>¿y tú?</i>)</td></tr>
   </tbody></table>
   <p><b>Les pièges d'un Québécois</b> y ont leur série : <i>la comida</i> est le repas de midi (notre
   dîner), <i>la cena</i> le souper ; <i>constipado</i> veut dire enrhumé ; <i>embarazada</i>, enceinte ;
@@ -264,6 +293,12 @@ LIEUX
     <tr><td><span class="coq">9</span> Sarria</td><td>Les cent derniers kilomètres</td><td>les deux tampons par jour, l'épicerie pour le pique-nique, les prix au poids</td></tr>
     <tr><td><span class="coq">10</span> Santiago</td><td>Le bureau du pèlerin</td><td>répondre aux questions pour la Compostela : son nom, d'où l'on est parti, pourquoi</td></tr>
   </tbody></table>
+  <p><b>Un compagnon de route.</b> Entre les situations, une même pèlerine, rencontrée à Roncesvalles,
+  revient d'étape en étape — au souper de l'albergue, sur un banc, à la fontaine. Chaque fois, deux
+  minutes de conversation sur <b>le sujet du lieu</b> (colonne « Entre pèlerins » plus haut) : les
+  jambes, la nourriture, pourquoi on marche, ce qu'on laisse à la Cruz de Ferro, et, à Santiago, se dire
+  au revoir. Elle se souvient de ce qu'on lui a dit la fois d'avant. Et à chaque ville, une petite
+  question de visite (une entrée, un horaire) s'ajoute à la situation du jour.</p>
   <p>Trois paliers de gens du pays, réglés par le test : <b>lent et patient</b> (une autre pèlerine,
   étrangère elle aussi), <b>normal</b>, et <b>rapide, avec l'accent</b> (le vieil homme du village).
   Une erreur y est éliminatoire, et le dira d'avance : <b>l'allergie</b> non dite, ou la réponse du
@@ -284,11 +319,11 @@ LIEUX
     <thead><tr><th>Étape</th><th>Ce qui sort</th><th>Séances</th></tr></thead>
     <tbody>
       <tr class="d"><td><b>0. Cadrage</b></td><td>Vos décisions (plus bas), les objectifs mesurables, le lexique arrêté, les voix d'Espagne auditionnées, trois croquis témoins, les faits du chemin vérifiés.</td><td class="num">1</td></tr>
-      <tr><td><b>1. Les mots</b></td><td>≈ 150 croquis, neuf planches, voix, traduction.</td><td class="num">3</td></tr>
+      <tr><td><b>1. Les mots</b></td><td>≈ 190 croquis, onze planches, voix, traduction.</td><td class="num">3</td></tr>
       <tr><td><b>2. Les décors</b></td><td>Six décors du chemin, les gens du pays (cinq visages, quatre expressions), la frise et la credencial.</td><td class="num">2</td></tr>
       <tr><td><b>3. Les exercices</b></td><td>Les huit familles. <b>Point d'arrêt : jouable par un pèlerin.</b></td><td class="num">2</td></tr>
       <tr><td><b>4. Le test</b></td><td>Deux formes nivelées.</td><td class="num">1</td></tr>
-      <tr><td><b>5. Le chemin joué</b></td><td>Dix situations en trois paliers, le client en espagnol d'Espagne, le bilan en français.</td><td class="num">3</td></tr>
+      <tr><td><b>5. Le chemin joué</b></td><td>Dix situations en trois paliers, les conversations du compagnon de route, le bilan en français.</td><td class="num">3</td></tr>
       <tr><td><b>6. La poche</b></td><td>Le mode hors ligne, la frise à cocher.</td><td class="num">1</td></tr>
       <tr class="f"><td><b>7. Audit et pilote</b></td><td>La boucle didactique (au moins trois tours), puis quelques pèlerins qui partent pour vrai.</td><td class="num">2</td></tr>
       <tr><td><b>8. L'emballage</b></td><td>Le carnet de poche à imprimer, la page de présentation, la fiche au classeur.</td><td class="num">1</td></tr>
@@ -296,8 +331,8 @@ LIEUX
   </table>
   <div class="chiffres">
     <div class="ch"><span class="n">16</span><span class="q">séances de travail</span></div>
-    <div class="ch"><span class="n">≈&nbsp;190</span><span class="q">images : 150 objets, 6 décors, les gens, les 9 vignettes ≈ 13&nbsp;$</span></div>
-    <div class="ch"><span class="n">≈&nbsp;900</span><span class="q">extraits de voix d'Espagne chez Azure, quelques dollars</span></div>
+    <div class="ch"><span class="n">≈&nbsp;240</span><span class="q">images : 190 objets et lieux, 6 décors, les gens, les vignettes ≈ 16&nbsp;$</span></div>
+    <div class="ch"><span class="n">≈&nbsp;1&nbsp;100</span><span class="q">extraits de voix d'Espagne chez Azure, quelques dollars</span></div>
     <div class="ch"><span class="n">≈&nbsp;8&nbsp;¢</span><span class="q">par situation jouée, mesure de Francœur</span></div>
   </div>
   <div class="reserve"><p><strong>Trois limites à dire tout de suite :</strong> l'espagnol doit être
@@ -357,9 +392,14 @@ LIEUX
      o:[['oui','Oui : phrases et sons gardés dans le téléphone, la frise à cocher',true],
         ['non','Non : tout se fait avant le départ',false]],
      w:"Sur la Meseta ou en Galice, le réseau manque ; c'est au moment de parler qu'on en a besoin."},
+    {k:'compagnon', q:'Le compagnon de route',
+     o:[['oui','Une même pèlerine revient d\'étape en étape, avec le sujet de conversation du lieu, et se souvient de la fois d\'avant',true],
+        ['divers','Un pèlerin différent à chaque étape',false],
+        ['non','Pas de conversation entre pèlerins hors de la situation 6',false]],
+     w:"C'est ce que racontent les pèlerins au retour : les gens qu'on retrouve. Et la conversation qui revient est la meilleure pratique orale de la trousse."},
     {k:'voix', q:'Les voix',
      o:[['azure','Azure HD, voix d\'Espagne (es-ES), auditionnées au cadrage',true],['autre','Un autre fournisseur',false]],
-     w:"La même chaîne que l'hôtel, avec la vérification par retranscription ; il faut votre feu vert pour les ≈ 900 extraits."},
+     w:"La même chaîne que l'hôtel, avec la vérification par retranscription ; il faut votre feu vert pour les ≈ 1 100 extraits."},
     {k:'couleurs', q:'Les couleurs',
      o:[['francis-jaune','Le thème francis, avec le jaune de la flèche comme seul accent (coquilles, tampons)',true],
         ['francis','Le thème francis tel quel',false],
