@@ -1,0 +1,620 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>En route vers Compostelle — le plan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap">
+<style>
+/* ═══════════════════════════════════════════════════════════
+   UN MODULE POUR LA VENTE DE CHAUSSURES — LE CADRAGE
+   Chantier « formation en entreprise », second secteur :
+   le commerce de détail. Écrite à la main, comme
+   analyse-marche.html — ses chiffres viennent d'ailleurs et
+   doivent vieillir visiblement.
+
+   Vert : ce que le tour de main actuel produit déjà.
+   Ambre : ce qui attend votre décision.
+   Rouge : l'argument de vente qui tient à une obligation légale.
+   L'acier ne fait que la structure.
+   ═══════════════════════════════════════════════════════════ */
+
+:root{
+  --ground:#F7F7F5; --card:#FFFFFF; --sunken:#FBFBFA;
+  --ink:#17181A; --body:#3A3D40; --muted:#6E7175;
+  --line:#E4E4E0; --line-fort:#D2D2CD;
+
+  --fait:#0A8F5B;    --fait-bg:#E6F5EE;
+  --decid:#C07A08;   --decid-bg:#FBF2E2;
+  --loi:#C7302B;     --loi-bg:#FBEDEC;
+  --acier:#1D6B8F;   --acier-bg:#E7F0F6;
+
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#151618; --card:#1D1F22; --sunken:#212326;
+    --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+    --line:#2E3135; --line-fort:#3D4146;
+    --fait:#4BC48D; --fait-bg:#12291F;
+    --decid:#E0A63F; --decid-bg:#2C2213;
+    --loi:#EE7A73; --loi-bg:#2E1917;
+    --acier:#6DAFD2; --acier-bg:#14242C;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#151618; --card:#1D1F22; --sunken:#212326;
+  --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+  --line:#2E3135; --line-fort:#3D4146;
+  --fait:#4BC48D; --fait-bg:#12291F;
+  --decid:#E0A63F; --decid-bg:#2C2213;
+  --loi:#EE7A73; --loi-bg:#2E1917;
+  --acier:#6DAFD2; --acier-bg:#14242C;
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--body);
+  font-family:Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased}
+.doc{max-width:880px;margin:0 auto;padding:56px 24px 96px}
+
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--acier);margin:0 0 14px}
+h1{font-family:Newsreader,Georgia,serif;font-size:clamp(38px,6.4vw,58px);line-height:1.04;
+  font-weight:500;letter-spacing:-.02em;color:var(--ink);margin:0 0 20px;text-wrap:balance}
+.chapeau{font-size:19px;line-height:1.6;color:var(--body);margin:0;max-width:62ch}
+.chapeau strong{color:var(--ink);font-weight:700}
+h2{font-family:Newsreader,Georgia,serif;font-size:29px;line-height:1.2;font-weight:600;
+  letter-spacing:-.01em;color:var(--ink);margin:0 0 4px;text-wrap:balance}
+h3{font-size:15px;font-weight:800;color:var(--ink);margin:0 0 6px}
+p{margin:0;max-width:68ch}
+section{display:flex;flex-direction:column;gap:16px;padding:44px 0 0;margin:44px 0 0;
+  border-top:1px solid var(--line)}
+section.premier{border-top:none;margin-top:0;padding-top:40px}
+code{font-family:var(--mono);font-size:.86em;background:var(--sunken);
+  border:1px solid var(--line);border-radius:4px;padding:1px 5px;color:var(--ink)}
+ul.simple{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px}
+ul.simple li{max-width:66ch} ul.simple li strong{color:var(--ink)}
+em.art{font-style:normal;font-family:var(--mono);font-size:.82em;color:var(--muted);
+  white-space:nowrap}
+
+.these{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--acier);
+  border-radius:3px;padding:26px 28px;display:flex;flex-direction:column;gap:12px}
+.these p{font-size:18px}
+.these .cle{font-family:Newsreader,Georgia,serif;font-size:23px;line-height:1.3;
+  font-weight:500;color:var(--ink);font-style:italic}
+
+/* ── Les décisions ─────────────────────────────────────── */
+.decisions{display:flex;flex-direction:column;gap:2px;counter-reset:d}
+.dec{counter-increment:d;background:var(--card);border:1px solid var(--line);
+  border-left:5px solid var(--decid);border-radius:3px;padding:19px 22px 19px 60px;
+  position:relative;display:flex;flex-direction:column;gap:8px}
+.dec.ok{border-left-color:var(--fait)}
+.dec::before{content:counter(d);position:absolute;left:24px;top:18px;
+  font-family:var(--mono);font-size:14px;color:var(--muted)}
+.dec .ligne{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;
+  justify-content:space-between}
+.dec p{font-size:15.5px}
+.dec .defaut{font-size:13.5px;color:var(--muted);font-style:italic}
+
+.badge{display:inline-block;font-size:11.5px;font-weight:800;letter-spacing:.05em;
+  text-transform:uppercase;padding:3px 9px;border-radius:2px;white-space:nowrap}
+.b-fait{background:var(--fait-bg);color:var(--fait)}
+.b-dec{background:var(--decid-bg);color:var(--decid)}
+.b-loi{background:var(--loi-bg);color:var(--loi)}
+.b-n{background:var(--sunken);color:var(--muted);border:1px solid var(--line)}
+
+/* ── Tableaux ──────────────────────────────────────────── */
+.defile{overflow-x:auto;border:1px solid var(--line);border-radius:3px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:15px;min-width:640px}
+caption{caption-side:top;text-align:left;padding:0 0 10px;font-size:13.5px;color:var(--muted)}
+th,td{padding:12px 15px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{font-size:11.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--muted);background:var(--sunken);white-space:nowrap}
+tbody tr:last-child td{border-bottom:none}
+td.q{font-weight:700;color:var(--ink)}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+td small{display:block;color:var(--muted);font-size:13px;line-height:1.45;margin-top:3px}
+tbody tr td:first-child{border-left:4px solid transparent}
+tr.l td:first-child{border-left-color:var(--loi)}
+tr.d td:first-child{border-left-color:var(--decid)}
+tr.f td:first-child{border-left-color:var(--fait)}
+
+/* ── Chiffres ──────────────────────────────────────────── */
+.chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.ch{background:var(--card);border:1px solid var(--line);border-radius:3px;
+  border-top:3px solid var(--acier);padding:15px 16px}
+.ch .n{font-family:Newsreader,Georgia,serif;font-size:30px;line-height:1;font-weight:500;
+  color:var(--ink);display:block;font-variant-numeric:tabular-nums}
+.ch .q{font-size:12.5px;font-weight:700;color:var(--muted);line-height:1.35;display:block;margin-top:7px}
+
+/* ── Marche à suivre ───────────────────────────────────── */
+ol.actions{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;
+  counter-reset:a}
+ol.actions li{counter-increment:a;background:var(--card);border:1px solid var(--line);
+  border-radius:3px;padding:18px 22px 18px 62px;position:relative;display:flex;
+  flex-direction:column;gap:6px}
+ol.actions li::before{content:counter(a);position:absolute;left:22px;top:17px;
+  font-family:var(--mono);font-size:14px;color:var(--muted)}
+ol.actions li p{font-size:15.5px}
+.qui{font-size:13px;color:var(--muted);font-style:italic}
+
+.reserve{border:1px dashed var(--line-fort);border-radius:3px;padding:20px 24px;
+  font-size:15px;color:var(--muted);display:flex;flex-direction:column;gap:9px}
+.reserve strong{color:var(--body)}
+.avert{background:var(--loi-bg);border:1px solid var(--loi);border-radius:3px;
+  padding:20px 24px;display:flex;flex-direction:column;gap:9px}
+.avert strong{color:var(--ink)}
+.avert p{font-size:15.5px;color:var(--body)}
+.pied{margin-top:52px;padding-top:22px;border-top:1px solid var(--line);font-size:13.5px;
+  color:var(--muted);display:flex;flex-direction:column;gap:5px}
+@media (max-width:620px){ .doc{padding:36px 18px 72px} }
+
+/* ── décisions à boutons (plan magasin de vêtements) ── */
+.dec2{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:12px 0}
+.dq{margin:0 0 10px;font-weight:700;color:var(--ink)}
+.dn{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--decid-bg);color:var(--decid);font-size:13px;margin-right:8px}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opt{font:inherit;font-size:15px;text-align:left;cursor:pointer;background:var(--sunken);color:var(--body);border:1px solid var(--line-fort);border-radius:10px;padding:8px 12px}
+.opt:hover{border-color:var(--acier)}
+.opt[aria-pressed="true"]{background:var(--fait-bg);border-color:var(--fait);color:var(--ink);font-weight:700}
+.opt .tag{font-size:12px;color:var(--decid);font-weight:700;margin-left:4px}
+.dw{margin:10px 0 0;font-size:15px;color:var(--muted)}
+.btn-export{font:inherit;font-weight:700;cursor:pointer;background:var(--acier);color:#fff;border:0;border-radius:10px;padding:10px 16px}
+.etat{margin-left:12px;color:var(--muted);font-size:15px}
+table{display:block;overflow-x:auto}
+</style>
+<style>
+  .doc{padding-top:26px}
+  .retour{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;
+    color:var(--muted);text-decoration:none;margin-bottom:34px}
+  .retour:hover{color:var(--acier)}
+  table.cmp{width:100%;border-collapse:collapse;font-size:15px;background:var(--card);
+    border:1px solid var(--line);border-radius:3px;overflow:hidden}
+  table.cmp th,table.cmp td{padding:13px 15px;text-align:left;vertical-align:top;
+    border-bottom:1px solid var(--line)}
+  table.cmp thead th{background:var(--sunken);font-size:12px;font-weight:800;
+    letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+  table.cmp tbody tr:last-child td{border-bottom:0}
+  table.cmp td:first-child{font-weight:700;color:var(--ink)}
+  .roule{overflow-x:auto}
+  .voie{background:var(--card);border:1px solid var(--line);border-radius:3px;
+    padding:24px 26px;display:flex;flex-direction:column;gap:11px}
+  .voie.oui{border-color:var(--fait);border-width:2px;padding:23px 25px}
+  .voie.non{border-left:5px solid var(--loi)}
+  .voie h3{font-size:19px;font-family:Newsreader,Georgia,serif;font-weight:600;margin:0}
+  .voie .cout{font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+  .verdict{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+    padding:3px 10px;border-radius:99px;align-self:flex-start}
+  .v-oui{background:var(--fait-bg);color:var(--fait)}
+  .v-peut{background:var(--decid-bg);color:var(--decid)}
+  .v-non{background:var(--loi-bg);color:var(--loi)}
+  .mes{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:2px;
+    background:var(--line);border:1px solid var(--line);border-radius:3px;overflow:hidden}
+  .mes div{background:var(--card);padding:16px 18px}
+  .mes b{display:block;font-family:Newsreader,Georgia,serif;font-size:27px;font-weight:500;
+    color:var(--ink);line-height:1.1}
+  .mes span{font-size:13px;color:var(--muted)}
+  .planche{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+  .planche figure{margin:0;background:var(--card);border:1px solid var(--line);
+    border-radius:3px;overflow:hidden;display:flex;flex-direction:column}
+  .planche figure.large{grid-column:1 / -1}
+  .planche img{display:block;width:100%;height:auto;background:var(--sunken)}
+  .planche figcaption{padding:13px 16px 15px;font-size:14px;line-height:1.5;color:var(--muted);
+    border-top:1px solid var(--line)}
+  .planche figcaption b{display:block;color:var(--ink);font-size:14.5px;margin-bottom:2px}
+  @media (max-width:620px){ .planche{grid-template-columns:1fr} }
+  .doc p a,.doc li a,.doc td a{color:var(--acier);text-decoration:underline;
+    text-underline-offset:2px;text-decoration-thickness:1px}
+  ul.src{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:7px;font-size:14.5px}
+  ul.src li{color:var(--muted)} ul.src .d{font-family:var(--mono);font-size:12.5px}
+  h3.sous{font-family:Newsreader,Georgia,serif;font-size:21px;font-weight:600;
+    letter-spacing:-.01em;color:var(--ink);margin:14px 0 0}
+  @media (max-width:640px){ .doc{padding-left:18px;padding-right:18px} }
+</style>
+<style>
+.frise{width:100%;height:auto;display:block;margin:6px 0 4px}
+.frise .route{stroke:#8a6d1f;stroke-width:3;stroke-dasharray:1 7;stroke-linecap:round}
+.frise .pt{fill:var(--body,#222)}
+.frise .tir{stroke:var(--line-fort,#bbb);stroke-width:1}
+.frise .lieu{font:700 13px Nunito,system-ui,sans-serif;fill:var(--body,#222)}
+.frise .km{font:600 11px Nunito,system-ui,sans-serif;fill:var(--muted,#666)}
+.frise .reg{font:italic 12px Newsreader,Georgia,serif;fill:var(--muted,#666);text-anchor:middle}
+.frise .leg{font:600 12.5px Nunito,system-ui,sans-serif;fill:var(--muted,#666)}
+.frise .tampon circle{fill:#f2c230;stroke:#8a6d1f;stroke-width:1.5}
+.frise .tampon text{font:800 11px Nunito,system-ui,sans-serif;fill:#3b2e06;text-anchor:middle}
+.defile{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.defile .frise{min-width:720px}
+.galerie{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px;margin-top:14px}
+.galerie figure{margin:0;background:var(--card,#fff);border:1px solid var(--line,#ddd);border-radius:3px;overflow:hidden}
+.galerie img{display:block;width:100%;aspect-ratio:3/2;object-fit:cover;background:#fff}
+.galerie figcaption{padding:10px 12px 12px;font-size:14px;line-height:1.4;color:var(--muted,#555)}
+.galerie figcaption b{display:block;color:var(--body,#222);font-size:15px}
+ol.lieux{columns:3 200px;column-gap:24px;padding:0;margin:12px 0 0;list-style:none;font-size:14.5px}
+ol.lieux li{break-inside:avoid;padding:3px 0;border-bottom:1px dotted var(--line,#ddd)}
+ol.lieux .k{display:inline-block;min-width:3.2em;font-variant-numeric:tabular-nums;color:var(--muted,#666);font-weight:700}
+table.cmp{display:block;max-width:100%;min-width:0;overflow-x:auto}
+@media (max-width:640px){table.cmp{font-size:14px}table.cmp th,table.cmp td{padding:10px 10px}
+  table.cmp td{min-width:9em}}
+.coq{display:inline-block;min-width:20px;height:20px;line-height:20px;border-radius:50%;background:#f2c230;
+  color:#3b2e06;font-size:11px;font-weight:800;text-align:center;margin-left:4px}
+</style>
+</head>
+<body>
+<div class="doc">
+
+<a class="retour" href="/presentations.html"><span aria-hidden="true">&#8592;</span> Le classeur</a>
+
+<p class="eyebrow">Voyage &middot; grand public &middot; chemin de Saint-Jacques</p>
+<h1>En route vers Compostelle &mdash; le plan</h1>
+<p class="chapeau">Pour les <strong>pèlerins francophones</strong> qui partent sur le Camino francés et
+veulent se débrouiller en espagnol : trouver un lit, manger, se soigner une ampoule, demander son
+chemin, et parler un peu avec les gens du pays et les autres marcheurs. Même châssis que la trousse
+de la réception d'hôtel &mdash; planches de mots, exercices, test, jeu de rôle &mdash; mais
+l'apprenant change de côté du comptoir : <strong>c'est lui, le client</strong>. Et le jeu de rôle
+devient un voyage : dix situations, dix lieux du chemin, un tampon sur la credencial à chaque fois,
+jusqu'à Santiago.</p>
+
+<section class="premier">
+  <h2>L'idée, en une ligne</h2>
+  <div class="these"><p class="cle"><b>Je parle</b> français &nbsp;→&nbsp; <b>j'apprends</b>
+  l'espagnol du Chemin. Une direction, un voyage, une credencial à remplir.</p></div>
+  <p>L'écran parle français (consignes, explications, rétroactions) ; tout ce qu'on <b>entend</b>
+  et qu'on <b>dit</b> est en espagnol. La marque reste francis, le descripteur suit la langue apprise :
+  <i>francis &middot; Aide à l'apprentissage de l'espagnol</i>, avec l'étiquette « En route vers Compostelle ».</p>
+</section>
+
+<section>
+  <h2>Le Camino francés, de Saint-Jean-Pied-de-Port à Santiago</h2>
+  <p>Le fil de toute la trousse. Le chemin part de France, au pied des Pyrénées, et passe presque
+  tout entier en Espagne : Navarre, La Rioja, Castille-et-León, Galice. Les coquilles jaunes marquent
+  les dix situations du jeu de rôle.</p>
+  <div class="defile">
+<svg class="frise" viewBox="0 0 1000 330" role="img" aria-label="Le Camino francés, de Saint-Jean-Pied-de-Port à Santiago, environ 775 km">
+<rect x="30.0" y="118" width="24.3" height="64" fill="#e8eef6"/>
+<text x="42.1" y="196" class="reg">France</text>
+<rect x="54.3" y="118" width="157.7" height="64" fill="#f6ecdc"/>
+<text x="133.1" y="196" class="reg">Navarra</text>
+<rect x="211.9" y="118" width="91.0" height="64" fill="#f3e2e2"/>
+<text x="257.4" y="196" class="reg">La Rioja</text>
+<rect x="302.9" y="118" width="469.4" height="64" fill="#f5efd2"/>
+<text x="537.6" y="196" class="reg">Castilla y León</text>
+<rect x="772.3" y="118" width="197.7" height="64" fill="#e2f0e6"/>
+<text x="871.1" y="196" class="reg">Galicia</text>
+<line x1="30.0" y1="150" x2="970.0" y2="150" class="route"/>
+<circle cx="30.0" cy="150" r="4.5" class="pt"/>
+<line x1="30.0" y1="112" x2="30.0" y2="139" class="tir"/>
+<text x="30.0" y="104" text-anchor="start" class="lieu">St-Jean-Pied-de-Port</text>
+<text x="30.0" y="88" text-anchor="start" class="km">km 0</text>
+<g class="tampon"><circle cx="60.3" cy="150" r="11"/><text x="60.3" y="154.5">1</text></g>
+<line x1="60.3" y1="188" x2="60.3" y2="161" class="tir"/>
+<text x="60.3" y="222" text-anchor="middle" class="lieu">Roncesvalles</text>
+<text x="60.3" y="238" text-anchor="middle" class="km">km 25</text>
+<circle cx="87.0" cy="150" r="3" class="pt"/>
+<g class="tampon"><circle cx="112.5" cy="150" r="11"/><text x="112.5" y="154.5">2</text></g>
+<line x1="112.5" y1="72" x2="112.5" y2="139" class="tir"/>
+<text x="112.5" y="64" text-anchor="middle" class="lieu">Pamplona</text>
+<text x="112.5" y="48" text-anchor="middle" class="km">km 68</text>
+<g class="tampon"><circle cx="141.6" cy="150" r="11"/><text x="141.6" y="154.5">3</text></g>
+<line x1="141.6" y1="248" x2="141.6" y2="161" class="tir"/>
+<text x="141.6" y="262" text-anchor="middle" class="lieu">Puente la Reina</text>
+<text x="141.6" y="278" text-anchor="middle" class="km">km 92</text>
+<circle cx="168.3" cy="150" r="3" class="pt"/>
+<circle cx="193.7" cy="150" r="3" class="pt"/>
+<g class="tampon"><circle cx="227.7" cy="150" r="11"/><text x="227.7" y="154.5">4</text></g>
+<line x1="227.7" y1="112" x2="227.7" y2="139" class="tir"/>
+<text x="227.7" y="104" text-anchor="middle" class="lieu">Logroño</text>
+<text x="227.7" y="88" text-anchor="middle" class="km">km 163</text>
+<circle cx="262.9" cy="150" r="3" class="pt"/>
+<circle cx="288.3" cy="150" r="3" class="pt"/>
+<circle cx="316.2" cy="150" r="3" class="pt"/>
+<g class="tampon"><circle cx="375.7" cy="150" r="11"/><text x="375.7" y="154.5">5</text></g>
+<line x1="375.7" y1="188" x2="375.7" y2="161" class="tir"/>
+<text x="375.7" y="222" text-anchor="middle" class="lieu">Burgos</text>
+<text x="375.7" y="238" text-anchor="middle" class="km">km 285</text>
+<circle cx="424.2" cy="150" r="3" class="pt"/>
+<circle cx="454.5" cy="150" r="3" class="pt"/>
+<g class="tampon"><circle cx="477.6" cy="150" r="11"/><text x="477.6" y="154.5">6</text></g>
+<circle cx="526.1" cy="150" r="3" class="pt"/>
+<g class="tampon"><circle cx="591.6" cy="150" r="11"/><text x="591.6" y="154.5">7</text></g>
+<line x1="591.6" y1="72" x2="591.6" y2="139" class="tir"/>
+<text x="591.6" y="64" text-anchor="middle" class="lieu">León</text>
+<text x="591.6" y="48" text-anchor="middle" class="km">km 463</text>
+<circle cx="653.4" cy="150" r="4.5" class="pt"/>
+<line x1="653.4" y1="248" x2="653.4" y2="161" class="tir"/>
+<text x="653.4" y="262" text-anchor="middle" class="lieu">Astorga</text>
+<text x="653.4" y="278" text-anchor="middle" class="km">km 514</text>
+<circle cx="685.0" cy="150" r="4.5" class="pt"/>
+<line x1="685.0" y1="112" x2="685.0" y2="139" class="tir"/>
+<text x="685.0" y="104" text-anchor="middle" class="lieu">Cruz de Ferro</text>
+<text x="685.0" y="88" text-anchor="middle" class="km">km 540</text>
+<circle cx="715.3" cy="150" r="3" class="pt"/>
+<circle cx="744.4" cy="150" r="3" class="pt"/>
+<g class="tampon"><circle cx="778.4" cy="150" r="11"/><text x="778.4" y="154.5">8</text></g>
+<line x1="778.4" y1="188" x2="778.4" y2="161" class="tir"/>
+<text x="778.4" y="222" text-anchor="middle" class="lieu">O Cebreiro</text>
+<text x="778.4" y="238" text-anchor="middle" class="km">km 617</text>
+<g class="tampon"><circle cx="829.3" cy="150" r="11"/><text x="829.3" y="154.5">9</text></g>
+<line x1="829.3" y1="72" x2="829.3" y2="139" class="tir"/>
+<text x="829.3" y="64" text-anchor="middle" class="lieu">Sarria</text>
+<text x="829.3" y="48" text-anchor="middle" class="km">km 659</text>
+<circle cx="856.0" cy="150" r="3" class="pt"/>
+<circle cx="886.3" cy="150" r="3" class="pt"/>
+<circle cx="921.5" cy="150" r="3" class="pt"/>
+<g class="tampon"><circle cx="970.0" cy="150" r="11"/><text x="970.0" y="154.5">10</text></g>
+<line x1="970.0" y1="248" x2="970.0" y2="161" class="tir"/>
+<text x="970.0" y="262" text-anchor="end" class="lieu">Santiago</text>
+<text x="970.0" y="278" text-anchor="end" class="km">km 775</text>
+<text x="30.0" y="22" class="leg">→ vers l'ouest, ≈ 775 km, une trentaine d'étapes à pied</text>
+<g class="tampon"><circle cx="38.0" cy="312" r="9"/><text x="38.0" y="316">n</text></g><text x="54.0" y="317" class="leg">une situation du jeu de rôle — un tampon sur la credencial</text>
+</svg>
+  </div>
+  <div class="galerie">
+<figure><img src="../interactive/compostelle/etapes/sjpp.jpg" alt="Saint-Jean-Pied-de-Port" loading="lazy"><figcaption><b>Saint-Jean-Pied-de-Port</b> Le départ, côté français. On y reçoit sa credencial.</figcaption></figure>
+<figure><img src="../interactive/compostelle/etapes/roncesvalles.jpg" alt="Les Pyrénées" loading="lazy"><figcaption><b>Les Pyrénées</b> La première journée, la plus dure : plus de 1&nbsp;200&nbsp;m de montée.</figcaption></figure>
+<figure><img src="../interactive/compostelle/etapes/puente-la-reina.jpg" alt="Puente la Reina" loading="lazy"><figcaption><b>Puente la Reina</b> Le pont roman qui a donné son nom à la ville.</figcaption></figure>
+<figure><img src="../interactive/compostelle/etapes/rioja.jpg" alt="La Rioja" loading="lazy"><figcaption><b>La Rioja</b> Les vignes : le vin du menú del peregrino vient de là.</figcaption></figure>
+<figure><img src="../interactive/compostelle/etapes/burgos.jpg" alt="Burgos" loading="lazy"><figcaption><b>Burgos</b> La cathédrale gothique, et le premier grand albergue complet.</figcaption></figure>
+<figure><img src="../interactive/compostelle/etapes/meseta.jpg" alt="La Meseta" loading="lazy"><figcaption><b>La Meseta</b> Le blé jusqu'à l'horizon, et la flèche jaune.</figcaption></figure>
+<figure><img src="../interactive/compostelle/etapes/cruz-de-ferro.jpg" alt="La Cruz de Ferro" loading="lazy"><figcaption><b>La Cruz de Ferro</b> On y dépose une pierre apportée de chez soi.</figcaption></figure>
+<figure><img src="../interactive/compostelle/etapes/o-cebreiro.jpg" alt="O Cebreiro" loading="lazy"><figcaption><b>O Cebreiro</b> L'entrée en Galice : les panneaux changent de langue.</figcaption></figure>
+<figure><img src="../interactive/compostelle/etapes/santiago.jpg" alt="Santiago" loading="lazy"><figcaption><b>Santiago</b> La place de l'Obradoiro, et la Compostela.</figcaption></figure>
+  </div>
+  <details style="margin-top:16px"><summary><b>Les lieux d'étape, kilomètre par kilomètre</b> (≈, selon les guides)</summary>
+  <ol class="lieux">
+<li><span class="k">0</span>Saint-Jean-Pied-de-Port</li>
+<li><span class="k">25</span>Roncesvalles <span class="coq">1</span></li>
+<li><span class="k">47</span>Zubiri</li>
+<li><span class="k">68</span>Pamplona <span class="coq">2</span></li>
+<li><span class="k">92</span>Puente la Reina <span class="coq">3</span></li>
+<li><span class="k">114</span>Estella</li>
+<li><span class="k">135</span>Los Arcos</li>
+<li><span class="k">163</span>Logroño <span class="coq">4</span></li>
+<li><span class="k">192</span>Nájera</li>
+<li><span class="k">213</span>Santo Domingo de la Calzada</li>
+<li><span class="k">236</span>Belorado</li>
+<li><span class="k">285</span>Burgos <span class="coq">5</span></li>
+<li><span class="k">325</span>Castrojeriz</li>
+<li><span class="k">350</span>Frómista</li>
+<li><span class="k">369</span>Carrión de los Condes <span class="coq">6</span></li>
+<li><span class="k">409</span>Sahagún</li>
+<li><span class="k">463</span>León <span class="coq">7</span></li>
+<li><span class="k">514</span>Astorga</li>
+<li><span class="k">540</span>Cruz de Ferro</li>
+<li><span class="k">565</span>Ponferrada</li>
+<li><span class="k">589</span>Villafranca del Bierzo</li>
+<li><span class="k">617</span>O Cebreiro <span class="coq">8</span></li>
+<li><span class="k">659</span>Sarria <span class="coq">9</span></li>
+<li><span class="k">681</span>Portomarín</li>
+<li><span class="k">706</span>Palas de Rei</li>
+<li><span class="k">735</span>Arzúa</li>
+<li><span class="k">775</span>Santiago de Compostela <span class="coq">10</span></li>
+  </ol></details>
+</section>
+
+<section>
+  <h2>Ce qui change par rapport à la réception d'hôtel</h2>
+  <table class="cmp"><thead><tr><th></th><th>La réception</th><th>En route vers Compostelle</th></tr></thead><tbody>
+    <tr><td>Qui apprend</td><td>Un employé, au travail, payé par l'hôtel</td><td>Un voyageur, souvent 50-70 ans, <b>débutant complet</b>, qui a une date de départ : il apprend chez lui, avant, puis sur le chemin</td></tr>
+    <tr><td>Son rôle</td><td>Il sert : il accueille, il explique</td><td>Il demande : ce qui compte le plus, c'est de <b>comprendre la réponse</b>, dite vite, avec l'accent du pays</td></tr>
+    <tr><td>Langues</td><td>Trois à égalité, six directions</td><td>Une seule direction : français → espagnol d'Espagne. Quelques mots de galicien et de basque à <b>reconnaître</b> sur les panneaux, sans les apprendre</td></tr>
+    <tr><td>Le lieu</td><td>Un comptoir, décor fixe</td><td>Une <b>route</b> : cinq ou six décors (l'albergue, le bar, la pharmacie, le sentier, le restaurant, le bureau du pèlerin), et la frise pour avancer</td></tr>
+    <tr><td>Où ça sert</td><td>Au poste, avec du réseau</td><td>Sur le chemin, souvent <b>sans réseau</b> : une « poche » hors ligne (phrases et sons dans le téléphone)</td></tr>
+    <tr><td>Ce qu'on réutilise</td><td>—</td><td>La mécanique entière ; l'espagnol de l'hôtel est du <b>Mexique</b> (<i>cuarto, boleto, celular, jugo</i>) : le lexique s'écrit à neuf en espagnol d'Espagne (<i>habitación, billete, móvil, zumo</i>)</td></tr>
+  </tbody></table>
+</section>
+
+<section>
+  <h2>Le parcours du pèlerin</h2>
+  <ol class="simple">
+    <li><b>Avant le départ</b>, à la maison, 20 minutes par jour pendant quelques semaines :</li>
+    <li style="list-style:none;margin-left:1rem"><b>les mots</b> en planches de croquis, avec la voix et la traduction ; <b>les exercices</b> ; un <b>test</b> « Suis-je prêt ? » ;</li>
+    <li style="list-style:none;margin-left:1rem"><b>le chemin joué</b> : dix situations, de Roncesvalles à Santiago, un tampon chaque fois ; une situation manquée se rejoue.</li>
+    <li><b>Sur le chemin</b>, dans la poche : les phrases de chaque lieu, avec leur son, sans réseau ; la frise où l'on coche l'étape du jour.</li>
+  </ol>
+</section>
+
+<section>
+  <h2>Volet 1 &mdash; les mots (≈ 150, en neuf planches)</h2>
+  <table class="cmp"><thead><tr><th>Planche</th><th>Ce qu'on y trouve</th></tr></thead><tbody>
+    <tr><td>Le chemin</td><td>la flèche jaune, la coquille, la borne, la credencial, le tampon, l'étape, le bâton, le sac, la montée, la fontaine (eau potable ou non), à gauche, à droite, tout droit</td></tr>
+    <tr><td>L'albergue</td><td>albergue municipal ou privé, l'hospitalero, le lit superposé, en haut ou en bas (<i>litera</i>), le sac de couchage, la douche, le casier, la laveuse et la sécheuse, l'étendoir, l'heure de fermeture, <i>completo</i>, la pension, l'hostal</td></tr>
+    <tr><td>Manger et boire</td><td>le déjeuner, le <i>menú del peregrino</i>, le <i>menú del día</i> (entrée, plat, dessert), le pain, le vin, l'eau, la bière, le café au lait, le <i>bocadillo</i>, la tortilla, la <i>ración</i>, le <i>pincho</i>, l'addition</td></tr>
+    <tr><td>Les heures d'Espagne</td><td>le dîner à 14 h, le souper à 21 h, la sieste, ouvert, fermé, les jours, « ¿a qué hora…? »</td></tr>
+    <tr><td>Acheter</td><td>l'épicerie, la boulangerie, le supermarché, combien, les euros, comptant, la carte, le guichet automatique</td></tr>
+    <tr><td>Le corps et la pharmacie</td><td>l'ampoule, le pansement, le genou, la cheville, la tendinite, la douleur, la crème, l'ibuprofène, la pharmacie de garde, le centre de santé, le 112</td></tr>
+    <tr><td>Le temps qu'il fait</td><td>la pluie, la chaleur, la boue, le brouillard, l'imperméable, le poncho</td></tr>
+    <tr><td>Se déplacer</td><td>l'autobus, le taxi, le transport des sacs, la gare, le billet</td></tr>
+    <tr><td>Les gens</td><td>« ¡Buen Camino! », se présenter, d'où tu viens, pourquoi tu marches, remercier, s'excuser, demander de l'aide, faire répéter, « más despacio, por favor »</td></tr>
+  </tbody></table>
+  <p><b>Les pièges d'un Québécois</b> y ont leur série : <i>la comida</i> est le repas de midi (notre
+  dîner), <i>la cena</i> le souper ; <i>constipado</i> veut dire enrhumé ; <i>embarazada</i>, enceinte ;
+  <i>largo</i>, long ; <i>la carta</i>, le menu, alors que <i>el menú</i> est le menu du jour ;
+  <i>el vaso</i>, un verre ; <i>la propina</i>, le pourboire.</p>
+</section>
+
+<section>
+  <h2>Volet 2 &mdash; les exercices</h2>
+  <ul class="simple">
+    <li><b>Je l'entends, je le trouve</b> · <b>Le mot et son image</b> · <b>Je me souviens</b> · <b>La série des pièges</b> — repris de la réception</li>
+    <li><b>Ce qu'on me répond</b> — la famille maîtresse : une vraie réponse, dite vite (« Está completo, pero hay una pensión a la vuelta »), et l'on choisit ce qu'elle veut dire</li>
+    <li><b>Les nombres, les prix, les heures</b> — « son doce con cincuenta », « cerramos a las diez » ; les leurres construits sur les vraies erreurs d'oreille de l'espagnol (<i>doce</i> / <i>dos</i>, <i>seis</i> / <i>siete</i>)</li>
+    <li><b>Où je vais</b> — des indications de chemin, et une petite carte où l'on suit le trajet dit</li>
+    <li><b>Je le dis</b> — la situation en français, on la dit en espagnol, puis on écoute le modèle</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Volet 3 &mdash; le test « Suis-je prêt ? »</h2>
+  <p>Deux formes parallèles, comme à l'hôtel, la première tirée au hasard. Il ne note pas : il règle
+  <b>la vitesse et l'accent</b> des gens du pays au jeu de rôle, et dit ce qu'il reste à travailler avant le départ.</p>
+</section>
+
+<section>
+  <h2>Volet 4 &mdash; le chemin joué</h2>
+  <p>Dix situations, dix lieux, dans l'ordre du chemin. L'IA joue la personne du pays en espagnol ; le
+  décor dessiné ne bouge pas, les gens changent devant ; le bilan, en français, dit ce qui a été fait.
+  Chaque situation réussie met un <b>tampon sur la credencial</b> ; à Santiago, la Compostela.</p>
+  <table class="cmp"><thead><tr><th>Lieu</th><th>Situation</th><th>Le geste qui compte</th></tr></thead><tbody>
+    <tr><td><span class="coq">1</span> Roncesvalles</td><td>L'albergue du premier soir</td><td>présenter sa credencial, obtenir une <i>litera</i>, comprendre le prix et l'heure de fermeture</td></tr>
+    <tr><td><span class="coq">2</span> Pamplona</td><td>Le bar du matin</td><td>commander le déjeuner, comprendre le total, payer</td></tr>
+    <tr><td><span class="coq">3</span> Puente la Reina</td><td>Perdu à la sortie du village</td><td>demander son chemin à un vieil homme qui répond vite, et le suivre</td></tr>
+    <tr><td><span class="coq">4</span> Logroño</td><td>La pharmacie</td><td>décrire une ampoule et un genou qui fait mal, comprendre la posologie</td></tr>
+    <tr><td><span class="coq">5</span> Burgos</td><td>« Completo »</td><td>l'albergue est plein : comprendre la solution proposée, puis <b>téléphoner</b> à une pension, sans visage</td></tr>
+    <tr><td><span class="coq">6</span> Carrión de los Condes</td><td>Une pèlerine sur la Meseta</td><td>tenir deux minutes de conversation : se présenter, d'où, pourquoi, au <i>tú</i></td></tr>
+    <tr><td><span class="coq">7</span> León</td><td>Le menú del peregrino</td><td>choisir entrée, plat, dessert ; <b>dire une allergie</b> et comprendre la réponse ; l'addition</td></tr>
+    <tr><td><span class="coq">8</span> O Cebreiro</td><td>La pluie et le sac</td><td>comprendre la météo annoncée, faire transporter son sac à l'étape suivante</td></tr>
+    <tr><td><span class="coq">9</span> Sarria</td><td>Les cent derniers kilomètres</td><td>les deux tampons par jour, l'épicerie pour le pique-nique, les prix au poids</td></tr>
+    <tr><td><span class="coq">10</span> Santiago</td><td>Le bureau du pèlerin</td><td>répondre aux questions pour la Compostela : son nom, d'où l'on est parti, pourquoi</td></tr>
+  </tbody></table>
+  <p>Trois paliers de gens du pays, réglés par le test : <b>lent et patient</b> (une autre pèlerine,
+  étrangère elle aussi), <b>normal</b>, et <b>rapide, avec l'accent</b> (le vieil homme du village).
+  Une erreur y est éliminatoire, et le dira d'avance : <b>l'allergie</b> non dite, ou la réponse du
+  serveur mal comprise.</p>
+</section>
+
+<section>
+  <h2>Volet 5 &mdash; la poche, sans réseau</h2>
+  <p>Sur le chemin, le réseau manque souvent. Le site s'installe déjà sur le téléphone (il est
+  installable) ; la poche y ajoute, gardés en mémoire : les phrases de chaque lieu avec leur son, la
+  frise où l'on coche l'étape du jour, et un bouton « Dites-le plus lentement » en espagnol à montrer
+  à l'écran. Le jeu de rôle, lui, a besoin du réseau : il se fait avant le départ.</p>
+</section>
+
+<section>
+  <h2>Le planning</h2>
+  <table class="cmp">
+    <thead><tr><th>Étape</th><th>Ce qui sort</th><th>Séances</th></tr></thead>
+    <tbody>
+      <tr class="d"><td><b>0. Cadrage</b></td><td>Vos décisions (plus bas), les objectifs mesurables, le lexique arrêté, les voix d'Espagne auditionnées, trois croquis témoins, les faits du chemin vérifiés.</td><td class="num">1</td></tr>
+      <tr><td><b>1. Les mots</b></td><td>≈ 150 croquis, neuf planches, voix, traduction.</td><td class="num">3</td></tr>
+      <tr><td><b>2. Les décors</b></td><td>Six décors du chemin, les gens du pays (cinq visages, quatre expressions), la frise et la credencial.</td><td class="num">2</td></tr>
+      <tr><td><b>3. Les exercices</b></td><td>Les huit familles. <b>Point d'arrêt : jouable par un pèlerin.</b></td><td class="num">2</td></tr>
+      <tr><td><b>4. Le test</b></td><td>Deux formes nivelées.</td><td class="num">1</td></tr>
+      <tr><td><b>5. Le chemin joué</b></td><td>Dix situations en trois paliers, le client en espagnol d'Espagne, le bilan en français.</td><td class="num">3</td></tr>
+      <tr><td><b>6. La poche</b></td><td>Le mode hors ligne, la frise à cocher.</td><td class="num">1</td></tr>
+      <tr class="f"><td><b>7. Audit et pilote</b></td><td>La boucle didactique (au moins trois tours), puis quelques pèlerins qui partent pour vrai.</td><td class="num">2</td></tr>
+      <tr><td><b>8. L'emballage</b></td><td>Le carnet de poche à imprimer, la page de présentation, la fiche au classeur.</td><td class="num">1</td></tr>
+    </tbody>
+  </table>
+  <div class="chiffres">
+    <div class="ch"><span class="n">16</span><span class="q">séances de travail</span></div>
+    <div class="ch"><span class="n">≈&nbsp;190</span><span class="q">images : 150 objets, 6 décors, les gens, les 9 vignettes ≈ 13&nbsp;$</span></div>
+    <div class="ch"><span class="n">≈&nbsp;900</span><span class="q">extraits de voix d'Espagne chez Azure, quelques dollars</span></div>
+    <div class="ch"><span class="n">≈&nbsp;8&nbsp;¢</span><span class="q">par situation jouée, mesure de Francœur</span></div>
+  </div>
+  <div class="reserve"><p><strong>Trois limites à dire tout de suite :</strong> l'espagnol doit être
+  <b>relu par une personne d'Espagne</b> avant d'être offert. Les faits du chemin (heures, règles du
+  bureau du pèlerin, les deux tampons par jour des cent derniers kilomètres) se vérifient au cadrage
+  et se datent : ils changent. Et c'est la première trousse <b>grand public</b> : elle ne se vend pas
+  comme une formation en entreprise &mdash; la question de sa diffusion est la dernière décision.</p></div>
+</section>
+
+<section>
+  <h2>Les décisions</h2>
+  <p>Chacune a une recommandation ; un clic la retient. Le bouton du bas rend un texte à recoller dans
+  la conversation : c'est lui qui pilote la suite.</p>
+  <div id="decisions"></div>
+  <p style="margin-top:1.4rem"><button type="button" class="btn-export" id="exporter">Exporter mes décisions</button>
+  <span id="etat" class="etat"></span></p>
+</section>
+
+<div class="pied">
+  <p>Plan du 25 septembre 2026 · « En route vers Compostelle ».</p>
+  <p>Produit par <code>build/compostelle_plan.py</code> — ne pas l'éditer.</p>
+</div>
+
+</div>
+<script>
+(function(){
+  var D = [
+    {k:'variete', q:"L'espagnol enseigné",
+     o:[['espagne',"L'espagnol d'Espagne (castillan) : habitación, móvil, zumo ; les voix d'Espagne",true],
+        ['neutre','Un espagnol « neutre », compris partout',false],
+        ['hotel',"Reprendre l'espagnol du Mexique de la trousse d'hôtel",false]],
+     w:"C'est celui qu'on entend sur le chemin. Le lexique de l'hôtel ne se reprend pas tel quel : ses mots et ses voix sont mexicains."},
+    {k:'registre', q:'Tú, usted, vosotros',
+     o:[['tu-usted','Le tú entre pèlerins, l\'usted avec les aînés et au comptoir ; le vosotros reconnu à l\'oreille, pas exercé',true],
+        ['usted','Tout à l\'usted, pour simplifier',false],
+        ['tout','Les trois, exercés',false]],
+     w:"En Espagne, le tú est partout ; l'hospitalero dira « ¿Vosotros dos venís juntos? » : il faut le comprendre, pas le produire."},
+    {k:'galicien', q:'Le galicien et le basque',
+     o:[['reconnaitre','Reconnaître une vingtaine de mots sur les panneaux (rúa, igrexa, praza…), sans les apprendre',true],
+        ['ignorer','Les ignorer',false]],
+     w:"Les cent derniers kilomètres sont en Galice, où les panneaux sont d'abord en galicien ; en Navarre, on croise le basque."},
+    {k:'chemin', q:'Le chemin',
+     o:[['frances','Le Camino francés seul, de Saint-Jean-Pied-de-Port à Santiago',true],
+        ['plusieurs','Aussi le chemin portugais et le chemin du Nord',false]],
+     w:"Le plus fréquenté, et celui des départs du Québec. Les situations servent sur les autres chemins espagnols ; seul le décor changerait."},
+    {k:'progression', q:'Le fil ludique',
+     o:[['credencial','La credencial : un tampon dessiné par situation réussie, la Compostela à la fin',true],
+        ['frise','La frise seule, cochée étape par étape',false],
+        ['aucun','Une liste simple',false]],
+     w:"C'est l'objet que tout pèlerin connaît et collectionne ; il donne au jeu de rôle un but qui a du sens hors de l'écran."},
+    {k:'decors', q:'Les décors du jeu de rôle',
+     o:[['six','Six décors dessinés (albergue, bar, pharmacie, sentier, restaurant, bureau du pèlerin), les gens changent devant',true],
+        ['un','Un seul décor pour tout',false],
+        ['voix','Sans décor, la voix seule',false]],
+     w:"Chaque lieu a sa façon de parler ; six scènes à la croquis-sequence coûtent peu (≈ 0,40 $) et tiennent d'un plan à l'autre."},
+    {k:'poche', q:'La poche hors ligne',
+     o:[['oui','Oui : phrases et sons gardés dans le téléphone, la frise à cocher',true],
+        ['non','Non : tout se fait avant le départ',false]],
+     w:"Sur la Meseta ou en Galice, le réseau manque ; c'est au moment de parler qu'on en a besoin."},
+    {k:'voix', q:'Les voix',
+     o:[['azure','Azure HD, voix d\'Espagne (es-ES), auditionnées au cadrage',true],['autre','Un autre fournisseur',false]],
+     w:"La même chaîne que l'hôtel, avec la vérification par retranscription ; il faut votre feu vert pour les ≈ 900 extraits."},
+    {k:'couleurs', q:'Les couleurs',
+     o:[['francis-jaune','Le thème francis, avec le jaune de la flèche comme seul accent (coquilles, tampons)',true],
+        ['francis','Le thème francis tel quel',false],
+        ['propre','Une palette propre au chemin, à proposer comme pour l\'hôtel',false]],
+     w:"Le jaune de la flèche est le signe du chemin ; réservé à la progression, il ne se confond avec rien d'autre."},
+    {k:'diffusion', q:'Pour qui, et comment',
+     o:[['pilote','D\'abord un pilote gratuit avec quelques pèlerins qui partent ce printemps ; le modèle d\'affaires ensuite',true],
+        ['vente','Une vente directe au public dès la sortie',false],
+        ['associations','Une offre aux associations de pèlerins, qui la donnent à leurs membres',false]],
+     w:"Première trousse grand public : on apprend ce qui sert vraiment avant de fixer un prix. Les associations viennent naturellement après le pilote."}
+  ];
+  var CLE='plan-compostelle', choix={};
+  try{ choix=JSON.parse(localStorage.getItem(CLE)||'{}'); }catch(e){}
+  var zone=document.getElementById('decisions');
+  D.forEach(function(d,i){
+    var div=document.createElement('div'); div.className='dec2';
+    var h='<p class="dq"><span class="dn">'+(i+1)+'</span>'+d.q+'</p><div class="opts">';
+    d.o.forEach(function(o){
+      h+='<button type="button" class="opt'+(o[2]?' reco':'')+'" data-k="'+d.k+'" data-v="'+o[0]+'" aria-pressed="false">'
+        +o[1]+(o[2]?' <span class="tag">recommandé</span>':'')+'</button>';
+    });
+    div.innerHTML=h+'</div><p class="dw">'+d.w+'</p>';
+    zone.appendChild(div);
+  });
+  function peindre(){
+    zone.querySelectorAll('.opt').forEach(function(b){
+      b.setAttribute('aria-pressed', choix[b.dataset.k]===b.dataset.v ? 'true':'false');
+    });
+    var n=Object.keys(choix).length;
+    document.getElementById('etat').textContent = n+' décision'+(n>1?'s':'')+' sur '+D.length;
+  }
+  zone.addEventListener('click',function(e){
+    var b=e.target.closest('.opt'); if(!b) return;
+    if(choix[b.dataset.k]===b.dataset.v) delete choix[b.dataset.k]; else choix[b.dataset.k]=b.dataset.v;
+    try{ localStorage.setItem(CLE,JSON.stringify(choix)); }catch(e){}
+    peindre();
+  });
+  document.getElementById('exporter').addEventListener('click',function(){
+    var out={plan:'compostelle', date:new Date().toISOString().slice(0,10), decisions:{}};
+    D.forEach(function(d){
+      var v=choix[d.k]; var o=d.o.filter(function(x){return x[0]===v;})[0];
+      out.decisions[d.k]= o ? o[1] : null;
+    });
+    var t=JSON.stringify(out,null,2);
+    var fin=function(){ document.getElementById('etat').textContent='Copié — à recoller dans la conversation.'; };
+    if(navigator.clipboard) navigator.clipboard.writeText(t).then(fin,function(){prompt('Copiez :',t);});
+    else prompt('Copiez :',t);
+  });
+  peindre();
+})();
+</script>
+</body>
+</html>
