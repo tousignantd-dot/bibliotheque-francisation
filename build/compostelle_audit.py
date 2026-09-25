@@ -104,6 +104,29 @@ TOURS = [
    ("A3", "mineur", "Journées 8 à 10", "En partie hors des cinq objectifs (météo, achat au poids, bureau du pèlerin).",
     "Conservé : le parcours jusqu'à Santiago est la demande ; ces journées reprennent aussi O1, O2 et O5.", "conservé"),
   ]},
+ {"tour": 3, "date": "25 septembre 2026", "compte": (0, 4, 8),
+  "note": "Réaudit complet (D.v = 4 vérifié), León joué avec l'allergie au lait, Roncesvalles, le test deux fois, la poche ; 621 sons relevés pour les 8 allergènes et les 2 genres, aucun manquant. "
+          "Les quatre majeurs venaient de la révision 2 : la personnalisation de l'allergie s'arrêtait en chemin.",
+  "constats": [
+   ("F1/A3", "majeur", "Test, compréhension éliminatoire", "La réponse à comprendre parlait toujours de noix, alors que l'écran promettait « votre allergie ».",
+    "« El pollo no lleva… pero la salsa sí » / « el bocadillo vegetal no lleva… pero el pincho sí » : sur l'allergie choisie, un son par allergène.", "corrigé"),
+   ("A3/F1", "majeur", "Je le dis, test oral", "Une phrase d'allergie comptait dès qu'on avait essayé, même avec le mauvais allergène ; l'oral du test n'était pas éliminatoire.",
+    "Les phrases d'allergie ne comptent que dites justes (reconnues, ou redites après le modèle sans micro) ; l'oral vérifié est éliminatoire, et un « no » en trop le fait échouer.", "corrigé"),
+   ("D2/A3", "majeur", "Pamplona, Sarria", "Les seules bonnes réponses faisaient commander café au lait, beurre, fromage — à une personne allergique au lait.",
+    "Commandes sûres pour tous (un café, tomate et huile, des pommes) ; à Pamplona, si une allergie est déclarée, on demande « ¿La tostada lleva…? » et Ainhoa répond selon l'allergène.", "corrigé"),
+   ("D3/D4", "majeur", "León", "Le bouillon toujours sûr, la salade toujours à éviter : la reprise se réussissait de mémoire.",
+    "Deux variantes (la salade, ou le bouillon, contient l'allergène), tirées à la première partie, échangées à chaque reprise ; un « no lleva » alterne avec « lleva » dans les rappels.", "corrigé"),
+   ("C6", "mineur", "León, les mots", "Noix, sans gluten et végétarien figés.", "Le mot de l'allergie choisie, et « lleva ».", "corrigé"),
+   ("G2", "mineur", "Tampon", "Impasse si « Je le dis » se faisait après le soir.", "Le tampon est offert dès que les quatre temps sont faits, où qu'on soit.", "corrigé"),
+   ("E1/D4", "mineur", "León, 2e choix", "« Lo que usted me recomiende » puni alors que c'est raisonnable.", "Remplacé par « un poco de las dos cosas ».", "corrigé"),
+   ("C5", "mineur", "Marques d'allergène", "« ne contient pas du lait » ; parenthèse dans la parenthèse.", "Formes négatives (« de lait ») et étiquettes courtes.", "corrigé"),
+   ("F2", "mineur", "Poche, « Me présenter »", "Les exemples au lieu de vos choix, et la consigne au lieu d'une traduction.", "Vos choix, avec leur son et leur traduction.", "corrigé"),
+   ("A1/F1", "mineur", "Test", "Règle « deux questions » fausse pour O2 ; promesse « jamais entendues » excessive ; seule la compréhension évaluée pour O1, O3, O4.",
+    "Règle réécrite ; « nouvelles pour la plupart » ; un item « que dites-vous ? » pour O1, O3 et O4 dans chaque forme.", "corrigé"),
+   ("B3", "mineur", "Sans allergie déclarée", "« C'est celle de votre allergie » alors qu'aucune n'est choisie ; conseil hors de propos.",
+    "« Exercice : les noix » ; le conseil ne paraît que s'il s'applique.", "corrigé"),
+   ("E1", "mineur", "Bilan de la scène", "Compteur d'erreurs remis à zéro à chaque reprise.", "Cumulé sur les reprises.", "corrigé"),
+  ]},
 ]
 
 

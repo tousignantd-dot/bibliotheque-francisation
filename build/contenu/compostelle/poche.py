@@ -58,14 +58,33 @@ ALERGENOS = [
 # poche) : « des noix » en français, et ce que la salade contient, dit de
 # façon à ce qu'on y reconnaisse l'allergène.
 FORMES_ALG = {
-    "frutos_secos": {"frde": "des noix", "ens": "nueces"},
-    "cacahuetes": {"frde": "des arachides", "ens": "cacahuetes"},
-    "marisco": {"frde": "des fruits de mer", "ens": "gambas, que son marisco"},
-    "pescado": {"frde": "du poisson", "ens": "atún, que es pescado"},
-    "huevo": {"frde": "des œufs", "ens": "huevo duro"},
-    "leche": {"frde": "du lait", "ens": "queso, que es de leche"},
-    "gluten": {"frde": "du gluten", "ens": "picatostes, que llevan gluten"},
-    "sesamo": {"frde": "du sésame", "ens": "semillas de sésamo"},
+    # frde : « contient des noix » ; frneg : « ne contient pas de noix » ; court : l'étiquette ;
+    # ens : ce que la salade contient ; caldo : le bouillon qui en contient (León, variante B) ;
+    # tostada / tostadafr : la réponse d'Ainhoa à Pamplona.
+    "frutos_secos": {"caldofr": "une soupe aux amandes (des fruits à coque)", "frde": "des noix", "frneg": "de noix", "court": "noix", "ens": "nueces",
+                     "caldo": "sopa de almendras, que son frutos secos",
+                     "tostada": "No, no lleva frutos secos: es pan con tomate.", "tostadafr": "Non, elle ne contient pas de noix : c'est du pain avec de la tomate."},
+    "cacahuetes": {"caldofr": "un bouillon à la sauce d'arachide", "frde": "des arachides", "frneg": "d'arachides", "court": "arachides", "ens": "cacahuetes",
+                   "caldo": "caldo con salsa de cacahuete",
+                   "tostada": "No, no lleva cacahuetes: es pan con tomate.", "tostadafr": "Non, elle ne contient pas d'arachides : c'est du pain avec de la tomate."},
+    "marisco": {"caldofr": "un bouillon de fruits de mer", "frde": "des fruits de mer", "frneg": "de fruits de mer", "court": "fruits de mer", "ens": "gambas, que son marisco",
+                "caldo": "caldo de marisco",
+                "tostada": "No, no lleva marisco: es pan con tomate.", "tostadafr": "Non, elle ne contient pas de fruits de mer : c'est du pain avec de la tomate."},
+    "pescado": {"caldofr": "un bouillon de poisson", "frde": "du poisson", "frneg": "de poisson", "court": "poisson", "ens": "atún, que es pescado",
+                "caldo": "caldo de pescado",
+                "tostada": "No, no lleva pescado: es pan con tomate.", "tostadafr": "Non, elle ne contient pas de poisson : c'est du pain avec de la tomate."},
+    "huevo": {"caldofr": "un bouillon à l'œuf", "frde": "des œufs", "frneg": "d'œufs", "court": "œufs", "ens": "huevo duro",
+              "caldo": "caldo con huevo",
+              "tostada": "No, no lleva huevo: es pan con tomate.", "tostadafr": "Non, elle ne contient pas d'œufs : c'est du pain avec de la tomate."},
+    "leche": {"caldofr": "une crème de légumes, à la crème (du lait)", "frde": "du lait", "frneg": "de lait", "court": "lait", "ens": "queso, que es de leche",
+              "caldo": "crema de verduras, con nata, que es leche",
+              "tostada": "Con mantequilla, sí lleva leche. Con tomate y aceite, no.", "tostadafr": "Avec du beurre, oui, elle contient du lait. Avec tomate et huile, non."},
+    "gluten": {"caldofr": "un bouillon aux nouilles (du gluten)", "frde": "du gluten", "frneg": "de gluten", "court": "gluten", "ens": "picatostes, que llevan gluten",
+               "caldo": "caldo con fideos, que llevan gluten",
+               "tostada": "El pan normal sí lleva gluten, pero tengo pan sin gluten.", "tostadafr": "Le pain ordinaire contient du gluten, mais j'ai du pain sans gluten."},
+    "sesamo": {"caldofr": "un bouillon au sésame", "frde": "du sésame", "frneg": "de sésame", "court": "sésame", "ens": "semillas de sésamo",
+               "caldo": "caldo con sésamo",
+               "tostada": "El pan de semillas sí lleva sésamo; el pan normal, no.", "tostadafr": "Le pain aux graines contient du sésame ; le pain ordinaire, non."},
 }
 
 
