@@ -27,7 +27,7 @@ RACINE = pathlib.Path(__file__).resolve().parent.parent
 CONTENU = RACINE / "build" / "contenu" / "entreprise-hotel"
 CROQUIS = RACINE / "assets" / "interactive" / "hotel" / "croquis"
 SORTIE = RACINE / "modules-autonomes" / "hotel-reception" / "index.html"
-MEDIA_V = "2"   # 2 : exercices (étape 2), 25 sept. 2026
+MEDIA_V = "3"   # 3 : révision du tour 1 (épellation assemblée, pièges en contexte), 25 sept. 2026
 
 
 def _charger(nom):
@@ -54,14 +54,25 @@ def donnees():
     ids = {m["id"] for m in mots}
     for z in CP.ZONES:
         assert z[0] in ids, f"zone {z[0]} absente du lexique"
-    for i, faux in EX.PIEGES_FAUX.items():
+    for i, par_ui in EX.PIEGES.items():
         m = next(x for x in mots if x["id"] == i)
-        assert m["paire"], f"{i} : fausse lecture sur un mot sans piège"
-        assert set(faux) <= set(m["paire"].split("·")), f"{i} : fausse lecture hors de la paire"
+        assert m["paire"], f"{i} : item de piège sur un mot sans piège"
+        assert set(par_ui) <= set(m["paire"].split("·")), f"{i} : interface hors de la paire"
+        for ui, t in par_ui.items():
+            # Tour 1 (D4 bloquant) : jamais un faux ami montré sans sa phrase.
+            assert len(t) == 3 and all(t), f"{i}/{ui} : phrase, fausse lecture et explication obligatoires"
     for r in EX.REPONSES:
-        assert r[3][0][1] is None and all(fb for _, fb in r[3][1:]), f"{r[0]} : la bonne d'abord, une rétroaction par mauvaise"
-    ex = {"faux": EX.PIEGES_FAUX, "noms": EX.NOMS, "nombres": EX.NOMBRES, "lits": EX.LITS,
-          "demandes": EX.DEMANDES, "nuits": EX.NUITS, "reponses": EX.REPONSES}
+        reps = r["reps"]
+        assert reps[0][1] is None and all(fb for _, fb, _ in reps[1:]), f"{r['id']} : la bonne d'abord, une rétroaction par mauvaise"
+        for l in ("fr", "en", "es"):
+            b = len(reps[0][0][l])
+            assert all(abs(len(t[l]) - b) / b <= 0.2 for t, _, _ in reps[1:]), f"{r['id']}/{l} : longueurs à ±20 %"
+    import unicodedata
+    slug = lambda n: "".join(c for c in unicodedata.normalize("NFD", n.lower()) if (c.isalpha() and c.isascii()) or c in " -").replace(" ", "-")
+    ex = {"pieges": EX.PIEGES, "noms": [[n, slug(n)] for n in EX.NOMS], "nombres": EX.NOMBRES,
+          "erreurs": EX.ERREURS_NOMBRES, "lits": EX.LITS, "demandes": EX.DEMANDES, "nuits": EX.NUITS,
+          "reponses": EX.REPONSES, "regle": EX.REGLE_RELAIS, "promesse": EX.PROMESSE,
+          "jamais": [sorted(g) for g in EX.JAMAIS_ENSEMBLE]}
     return {"hotel": IF.HOTEL, "ui": {**IF.UI, **EX.UI}, "ex": ex, "langues": IF.NOM_LANGUE, "desc": IF.DESCRIPTEUR,
             "planches": [[k, IF.PLANCHES[k]] for k, _ in LX.PLANCHES],
             "mots": mots, "zones": CP.ZONES, "v": MEDIA_V}
@@ -146,7 +157,8 @@ body{margin:0;background:var(--surface-page);color:var(--text-body);font-family:
 .mot .note{margin:0;font-size:14px;line-height:1.45;color:var(--text-body)}
 .mot.piege .note{background:var(--warn-bg);color:var(--warn-ink);border-radius:8px;padding:8px 10px;font-weight:700}
 @media (max-width:480px){.grille{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.mot .appris{font-size:17px}
-  .mot .actions .btn{padding:8px 10px;font-size:14px}}
+  .mot .actions{flex-direction:column}
+  .mot .actions .btn{padding:8px 10px;font-size:14px;width:100%;justify-content:flex-start;white-space:normal;text-align:start}}
 
 /* Le comptoir */
 .scene{position:relative;background:#fff;border-radius:14px;overflow:hidden;border:1px solid var(--line-200)}
@@ -196,6 +208,12 @@ body{margin:0;background:var(--surface-page);color:var(--text-body);font-family:
   border:2px solid var(--line-300);border-radius:10px;flex:1 1 220px;min-width:0;background:var(--surface-card);color:var(--text-strong)}
 .suite{margin-top:18px}
 .bilan{font-size:22px;font-weight:900;color:var(--text-strong)}
+.regle{background:var(--surface-sunken);border-left:4px solid var(--accent);border-radius:8px;padding:10px 12px;margin:0 0 14px;max-width:640px}
+.regle b{display:block;margin-bottom:2px;color:var(--text-strong)}
+.phrase{font-size:20px;font-weight:700;color:var(--text-strong);margin:0 0 6px;max-width:640px}
+.mot-vise{font-size:15px;color:var(--text-muted);margin:0 0 12px}
+.mot-vise b{color:var(--text-strong);font-size:18px}
+.dite{margin:10px 0 0;font-size:16px;color:var(--text-muted)}
 @media (max-width:480px){.choix{gap:10px}.choix button{font-size:16px;padding:10px}.cible{font-size:22px}}
 </style>
 </head>
@@ -324,7 +342,7 @@ function ecranComptoir(){
 
 
 // ── Les exercices ────────────────────────────────────────────────────────
-const FAMILLES = ['entends','image','souviens','pieges','epeler','nombres','client','reponds'];
+const FAMILLES = ['entends','image','souviens','dire','pieges','epeler','nombres','client','reponds'];
 const melange = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 // La bonne réponse TOURNE d'un item à l'autre (leçon de la boucle : « toujours
 // la deuxième » réussissait l'épreuve). Graine tirée au début de la série.
@@ -348,10 +366,19 @@ let X = null;
 function serie(fam){
   const A = L.apprend, P = L.parle;
   const avecImg = D.mots.filter(m => m.img);
+  // Jamais ensemble : les images indiscernables ou qui se contiennent (tour 1, D4).
+  const exclu = m => new Set([m.id, ...(D.ex.jamais.find(g => g.includes(m.id)) || [])]);
   const voisins = (m, n, filtre) => {
-    let v = D.mots.filter(x => x.id !== m.id && x.p === m.p && filtre(x));
-    if (v.length < n) v = v.concat(D.mots.filter(x => x.id !== m.id && x.p !== m.p && filtre(x)));
-    return melange(v).slice(0, n);
+    const ex = exclu(m);
+    let v = D.mots.filter(x => !ex.has(x.id) && x.p === m.p && filtre(x));
+    if (v.length < n) v = v.concat(D.mots.filter(x => !ex.has(x.id) && x.p !== m.p && filtre(x)));
+    const out = [];
+    for (const x of melange(v)) {
+      if (out.length >= n) break;
+      if (out.some(y => exclu(y).has(x.id))) continue;
+      out.push(x);
+    }
+    return out;
   };
   let items = [];
   if (fam === 'entends' || fam === 'image') places(4, 8);
@@ -363,29 +390,35 @@ function serie(fam){
   if (fam === 'souviens') items = melange(D.mots).slice(0, 10).map(m => ({m}));
   if (fam === 'pieges') {
     const pr = PAIRE_ORDRE[paire()];
-    const lot = melange(D.mots.filter(m => m.paire === pr && D.ex.faux[m.id] && D.ex.faux[m.id][P]));
+    const lot = melange(D.mots.filter(m => m.paire === pr && D.ex.pieges[m.id] && D.ex.pieges[m.id][P]));
     places(3, lot.length);
-    items = lot.map((m, i) => ({m, choix: placer({t: m[P], ok: true}, [{t: D.ex.faux[m.id][P]}, {t: voisins(m, 1, x => !x.paire)[0][P]}], i)}));
+    items = lot.map((m, i) => { const [phrase, faux, expl] = D.ex.pieges[m.id][P];
+      return {m, phrase, expl, choix: placer({t: m[P], ok: true}, [{t: faux}, {t: voisins(m, 1, x => !x.paire)[0][P]}], i)}; });
   }
-  if (fam === 'epeler') items = melange(D.ex.noms).map(nom => ({nom}));
-  if (fam === 'nombres') items = melange(D.ex.nombres).map(([id, , ch], i) => ({id, choix: placer(ch[0], ch.slice(1), i), bonne: ch[0]}));
+  if (fam === 'epeler') items = melange(D.ex.noms).slice(0, 8).map(([nom, slug]) => ({nom, slug}));
+  if (fam === 'nombres') items = melange(D.ex.nombres).map(([id, dit, bonne, vs], i) => ({id, dit, bonne, vs, choix: placer(bonne, vs.map(v => v[0]), i)}));
   if (fam === 'client') items = melange(D.ex.demandes).map(([id, lit, n], i) => {
     const autreLit = melange(D.ex.lits.filter(l => l !== lit)), autreN = melange([1,2,3,4,5].filter(k => k !== n));
     return {id, lit, n, choix: placer({lit, n}, [{lit, n: autreN[0]}, {lit: autreLit[0], n}, {lit: autreLit[1], n: autreN[1]}], i)};
   });
-  if (fam === 'reponds') items = melange(D.ex.reponses).map((r, i) => ({r, choix: placer({k: 0}, [{k: 1}, {k: 2}], i)}));
-  X = {fam, items, n0: items.length, i: 0, premier: 0, essais: 0, resolu: false, sus: 0, file: []};
+  if (fam === 'reponds') items = melange(D.ex.reponses).slice(0, 8).map((r, i) => ({r, choix: placer({k: 0}, [{k: 1}, {k: 2}], i)}));
+  // « Je le dis » (tour 1, D1) : produire vers la langue apprise, de mémoire.
+  if (fam === 'dire') items = melange([
+    ...melange(D.mots.filter(m => m.p === 'politesse')).slice(0, 6).map(m => ({m})),
+    ...melange(D.ex.reponses).slice(0, 6).map(r => ({r}))]);
+  X = {fam, items, n0: items.length, promesses: 0, i: 0, premier: 0, essais: 0, resolu: false, sus: 0, file: []};
 }
 
 function nuits(n){ const [un, pl] = D.ex.nuits[L.parle]; return `${n} ${n > 1 ? pl : un}`; }
 function jouerItem(lent){
   const it = X.items[X.i], A = L.apprend;
   if (!it) return;
-  if (X.fam === 'entends' || X.fam === 'souviens' || X.fam === 'pieges') jouer(`${A}/${it.m.id}.mp3`, lent);
-  if (X.fam === 'epeler') jouer(`x/epeler/${A}/${it.nom.toLowerCase()}.mp3`, lent);
+  if (X.fam === 'entends' || X.fam === 'souviens') jouer(`${A}/${it.m.id}.mp3`, lent);
+  if (X.fam === 'pieges') jouer(`x/pieges/${A}/${it.m.id}.mp3`, lent);
+  if (X.fam === 'epeler') jouer(`x/epeler/${A}/${it.slug}.mp3`, lent);
   if (X.fam === 'nombres') jouer(`x/nombres/${A}/${it.id}.mp3`, lent);
   if (X.fam === 'client') jouer(`x/client/${A}/${it.id}.mp3`, lent);
-  if (X.fam === 'reponds') jouer(`x/reponds/${A}/${it.r[0]}.mp3`, lent);
+  if (X.fam === 'reponds') jouer(`x/reponds/${A}/${it.r.id}.mp3`, lent);
 }
 
 function ecranExercice(fam){
@@ -396,33 +429,46 @@ function ecranExercice(fam){
     <p class="enseigne">${E(D.hotel)}</p><h1>${E(T('x_' + fam))}</h1>`;
   if (!N) return tete + `<p class="consigne">${E(T('aucun_piege'))}</p>`;
   if (X.i >= N) return tete + `<p class="bilan">${E(T('fini'))}</p>
-    <p class="consigne">${fam === 'souviens' ? `${X.premier} / ${X.n0} ${E(T('je_savais').toLowerCase())}` : `${X.premier} ${E(T('sur'))} ${X.n0} ${E(T('premier_coup'))}`}</p>
+    ${X.promesses ? `<p class="alerte">${E(D.ex.promesse[P])} (${X.promesses})</p>` : ''}
+    <p class="consigne">${fam === 'souviens' || fam === 'dire' ? `${X.premier} / ${X.n0} ${E(T('je_savais').toLowerCase())}` : `${X.premier} ${E(T('sur'))} ${X.n0} ${E(T('premier_coup'))}`}</p>
     <div class="ecoute"><button type="button" class="btn btn--pri" data-refaire="${fam}">${E(T('recommencer'))}</button>
     <button type="button" class="btn" data-aller="accueil">${E(T('autres_ex'))}</button></div>`;
   const it = X.items[X.i];
   const boutonsSon = `<div class="ecoute"><button type="button" class="btn btn--son" data-rejouer="0">${ICO.son}${E(T('reecouter'))}</button>
     ${['epeler','client','nombres','reponds'].includes(fam) ? `<button type="button" class="btn" data-rejouer="1">${E(T('lent'))}</button>` : ''}</div>`;
   let corps = `<p class="consigne">${E(T('x_' + fam + '_c'))}</p>`;
+  // Le texte des images : le SENS, dans la langue de l'employé (tour 1, G1) — il
+  // ne donne pas le mot entendu, il dit ce que l'image montre à qui la voit.
   if (fam === 'entends') corps += boutonsSon + `<div class="choix">${it.choix.map(m =>
-      `<button type="button" data-rep="${m.id}"><img src="${imgUrl(m.id)}" alt=""></button>`).join('')}</div>`;
-  if (fam === 'image') corps += `<img class="cible-img" src="${imgUrl(it.m.id)}" alt=""><div class="choix large">${it.choix.map(m =>
+      `<button type="button" data-rep="${m.id}"><img src="${imgUrl(m.id)}" alt="${E(m[P])}"></button>`).join('')}</div>`;
+  if (fam === 'image') corps += `<img class="cible-img" src="${imgUrl(it.m.id)}" alt="${E(it.m[P])}"><div class="choix large">${it.choix.map(m =>
       `<button type="button" data-rep="${m.id}" lang="${A}">${E(m[A])}</button>`).join('')}</div>`;
   if (fam === 'souviens') corps += `<p class="cible" lang="${A}">${E(it.m[A])}</p>` + boutonsSon
       + `<p class="trad" id="sens" hidden style="font-size:20px;font-weight:800">${E(it.m[P])}</p>
       <div class="ecoute"><button type="button" class="btn" id="voirSens">${ICO.oeil}${E(T('voir_sens'))}</button></div>
       <div class="ecoute" id="auto" hidden><button type="button" class="btn btn--pri" data-auto="1">${E(T('je_savais'))}</button>
       <button type="button" class="btn" data-auto="0">${E(T('pas_encore'))}</button></div>`;
-  if (fam === 'pieges') corps += `<p class="cible" lang="${A}">${E(it.m[A])}</p>` + boutonsSon + `<div class="choix large">${it.choix.map((c, k) =>
+  if (fam === 'dire') {
+    const txtP = it.m ? it.m[P] : it.r.client[P], modele = it.m ? it.m[A] : it.r.reps[0][0][A];
+    corps += `<p class="mot-vise">${E(it.m ? T('vous_dites') : T('le_client_dit'))}</p><p class="phrase" lang="${P}">${E(txtP)}</p>
+      <div class="ecoute"><button type="button" class="btn btn--son" id="modele" data-m="${it.m ? `${A}/${it.m.id}.mp3` : `x/modele/${A}/${it.r.id}.mp3`}">${ICO.son}${E(T('ecouter_modele'))}</button></div>
+      <p class="phrase" id="sens" lang="${A}" hidden>${E(modele)}</p>
+      <div class="ecoute" id="auto" hidden><button type="button" class="btn btn--pri" data-auto="1">${E(T('dit_pareil'))}</button>
+      <button type="button" class="btn" data-auto="0">${E(T('pas_encore'))}</button></div>`;
+  }
+  if (fam === 'pieges') corps += `<p class="phrase" lang="${A}">${E(it.phrase)}</p><p class="mot-vise"><b lang="${A}">« ${E(it.m[A])} »</b></p>` + boutonsSon + `<div class="choix large">${it.choix.map((c, k) =>
       `<button type="button" data-rep="${k}">${E(c.t)}</button>`).join('')}</div>`;
   if (fam === 'epeler') corps += boutonsSon + `<form class="saisie" id="formNom"><input id="nom" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="${E(T('votre_reponse'))}">
       <button type="submit" class="btn btn--pri">${E(T('verifier'))}</button></form>`;
-  if (fam === 'nombres') corps += boutonsSon + `<div class="choix">${it.choix.map(c =>
+  if (fam === 'nombres') corps += boutonsSon + `<p class="dite" id="dite" lang="${A}" hidden>${E(T('phrase_dite'))} « ${E(it.dit[A])} »</p><div class="choix">${it.choix.map(c =>
       `<button type="button" data-rep="${E(c)}" style="font-size:24px">${E(c)}</button>`).join('')}</div>`;
   if (fam === 'client') corps += boutonsSon + `<div class="choix">${it.choix.map((c, k) =>
       `<button type="button" data-rep="${k}"><img src="${imgUrl(c.lit)}" alt=""><small>${E(PAR_ID[c.lit][P])} · ${E(nuits(c.n))}</small></button>`).join('')}</div>`;
   if (fam === 'reponds') {
-    const [, ctx, client, reps, hors] = it.r;
-    corps += (ctx ? `<p class="contexte">${E(ctx[P])}</p>` : '') + (hors ? `<p class="alerte">${E(T('hors_regle'))}</p>` : '')
+    const {ctx, client, reps} = it.r;
+    // La règle est dite AVANT, toujours et pareil (O4) ; aucun avertissement propre à l'item.
+    corps += `<div class="regle"><b>${E(T('regle_tit'))}</b>${E(D.ex.regle[P])}</div>`
+      + (ctx ? `<p class="contexte">${E(ctx[P])}</p>` : '')
       + `<p class="cible" lang="${A}" style="font-size:20px">« ${E(client[A])} »</p>` + boutonsSon
       + `<div class="choix large">${it.choix.map(c => `<button type="button" data-rep="${c.k}" lang="${A}">${E(reps[c.k][0][A])}</button>`).join('')}</div>`;
   }
@@ -439,17 +485,30 @@ function repondre(b){
     if (!ok) { const m = PAR_ID[b.dataset.rep]; msg = `${T('non_cest')} « ${X.fam === 'entends' ? m[A] : m[P]} ».`;
       if (X.fam === 'entends') jouer(`${A}/${m.id}.mp3`); }
   }
-  if (X.fam === 'pieges') {
-    const c = it.choix[+b.dataset.rep]; ok = !!c.ok;
-    const note = (it.m.notes[P] || '').replace(/^(PIÈGE|TRAP|TRAMPA)\s*(\([^)]*\))?\s*:\s*/, '');
-    msg = ok ? note : `${T('encore')} ${note}`;
+  if (X.fam === 'pieges') { const c = it.choix[+b.dataset.rep]; ok = !!c.ok; msg = ok ? it.expl : `${T('encore')} ${it.expl}`; }
+  if (X.fam === 'nombres') {
+    ok = b.dataset.rep === it.bonne;
+    if (!ok) {
+      const v = it.vs.find(x => x[0] === b.dataset.rep);
+      msg = D.ex.erreurs[v[1]][P];
+      // Après deux erreurs, on montre ce qui a été dit (tour 1, E1).
+      if (X.essais >= 1) document.getElementById('dite').hidden = false;
+    }
   }
-  if (X.fam === 'nombres') { ok = b.dataset.rep === it.bonne; if (!ok) { msg = T('encore'); } }
   if (X.fam === 'client') {
     const c = it.choix[+b.dataset.rep]; ok = c.lit === it.lit && c.n === it.n;
     if (!ok) msg = c.lit === it.lit ? T('lit_ok') : c.n === it.n ? T('nuits_ok') : T('rien_ok');
   }
-  if (X.fam === 'reponds') { const k = +b.dataset.rep; ok = k === 0; msg = ok ? '' : it.r[3][k][1][P]; }
+  if (X.fam === 'reponds') {
+    const k = +b.dataset.rep, [, fb, promesse] = it.r.reps[k]; ok = k === 0;
+    if (!ok) msg = fb[P];
+    if (promesse) {
+      // La promesse hors règle a une CONSÉQUENCE : l'item compte comme échoué
+      // et le bilan le dit (tour 1, E2) — ce n'est pas une erreur comme une autre.
+      X.promesses++;
+      msg = `${fb[P]} ${D.ex.promesse[P]}`;
+    }
+  }
   noter(ok, msg, b);
 }
 
@@ -470,15 +529,19 @@ function noter(ok, msg, b){
   }
 }
 
+// La saisie accepte les accents ; un nom juste sans ses accents ou ses traits
+// d'union passe, avec un rappel. On signale la PREMIÈRE lettre fausse, pas un
+// compte position par position (une lettre oubliée faussait tout le reste).
+const nu = t => t.normalize('NFD').replace(/[̀-ͯ]/g, '').toUpperCase().replace(/[^A-Z]/g, '');
 function verifierNom(){
-  const it = X.items[X.i], v = document.getElementById('nom').value.toUpperCase().replace(/[^A-Z]/g, '');
+  const it = X.items[X.i], brut = document.getElementById('nom').value.trim().toUpperCase(), v = nu(brut), att = nu(it.nom);
   if (!v || X.resolu) return;
-  if (v === it.nom) return noter(true, it.nom, null);
-  const justes = [...it.nom].filter((c, k) => v[k] === c).length;
+  if (v === att) return noter(true, brut === it.nom ? it.nom : `${T('accent_oublie')} ${it.nom}`, null);
+  let k = 0; while (k < v.length && v[k] === att[k]) k++;
   if (X.essais >= 1) {
-    noter(false, `${T('la_bonne')} ${it.nom.split('').join(' ')}`, null);
+    noter(false, `${T('la_bonne')} ${it.nom}`, null);
     X.resolu = true; document.getElementById('suite').hidden = false;
-  } else noter(false, `${T('encore')} ${justes} / ${it.nom.length} ${T('lettre_juste')}.`, null);
+  } else noter(false, `${T('encore')} ${T('premiere_fausse')} ${k + 1}.`, null);
 }
 
 function suivant(){ X.i++; X.essais = 0; X.resolu = false; rendre(); setTimeout(() => jouerItem(false), 150); }
@@ -509,6 +572,7 @@ document.addEventListener('click', e => {
   if (b.dataset.rejouer !== undefined) { jouerItem(b.dataset.rejouer === '1'); return; }
   if (b.dataset.suivant) { suivant(); return; }
   if (b.dataset.refaire) { serie(b.dataset.refaire); rendre(); setTimeout(() => jouerItem(false), 150); return; }
+  if (b.id === 'modele') { jouer(b.dataset.m); document.getElementById('sens').hidden = false; document.getElementById('auto').hidden = false; return; }
   if (b.id === 'voirSens') { document.getElementById('sens').hidden = false; document.getElementById('auto').hidden = false; b.hidden = true; return; }
   if (b.dataset.auto !== undefined) {
     // « Je me souviens » n'est pas jugé : « pas encore » remet la carte une fois en fin de série.

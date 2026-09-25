@@ -72,7 +72,7 @@ PLANCHES = {
 # chacun n'a besoin que des deux langues qui le voient.
 PIEGES = {
     # fr·en — la note anglaise
-    "lit-double":    {"en": "TRAP: « une chambre double » is a room for two — not necessarily a full bed. Ask: « un lit double ou deux lits? »"},
+    "lit-double":    {"en": "TRAP: « une chambre double » is a room for two — one big bed or two beds. Ask: « un grand lit ou deux lits? »"},
     "etage":         {"en": "TRAP: « le premier étage » can mean the ground floor (Québec) or the floor above it (France). « Le rez-de-chaussée » is always the ground floor."},
     "dejeuner":      {"en": "TRAP: in Québec, « le déjeuner » is BREAKFAST. Lunch is « le dîner »; dinner is « le souper »."},
     "souper":        {"en": "TRAP: « le souper » is the evening meal. In Québec, « le dîner » is lunch."},
@@ -82,7 +82,7 @@ PIEGES = {
     "monnaie":       {"en": "TRAP: French « la monnaie » is CHANGE (the coins you give back). Money is « l'argent »."},
     "billet":        {"en": "TRAP: « un billet » is a ticket (or a banknote). A bill to pay is « la facture »."},
     # fr·es — la nota en español
-    "stylo":      {"es": "TRAMPA: en francés el bolígrafo es « un stylo ». « Une plume » es una pluma de ave."},
+    "stylo":      {"es": "TRAMPA: en francés, la pluma para firmar es « un stylo »; « une plume » es solo la pluma de ave."},
     "prenom":     {"es": "TRAMPA: en francés « le nom » es el APELLIDO. El nombre de pila es « le prénom »."},
     "serviettes": {"es": "TRAMPA: « des serviettes » son TOALLAS. La servilleta de mesa es « une serviette de table »."},
     "diner":      {"es": "TRAMPA: en Quebec « le dîner » es la comida del mediodía, y « le déjeuner » es el desayuno."},

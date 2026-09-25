@@ -55,24 +55,117 @@ _x = importlib.util.spec_from_file_location("hotel_exercices", RACINE / "build/c
 EX = importlib.util.module_from_spec(_x); _x.loader.exec_module(EX)
 
 
-def epellation(langue, nom):
-    """Le nom épelé : le nom écrit de chaque lettre, une pause entre elles."""
-    lettres = '<break time="350ms"/>'.join(html.escape(EX.LETTRES[langue][c]) for c in nom)
-    return f'{html.escape(EX.EPELER_INTRO[langue])}<break time="400ms"/>{lettres}'
+import unicodedata as _ud
+
+# Le choix des lettres à l'oreille (build/hotel_lettres.py, page hotel-lettres) :
+# « a » (nom écrit) par défaut ; l'export de Daniel se recopie ici.
+CHOIX_LETTRES = {}   # ex. {"fr:E": "b"}
+GARDE_LETTRE, GARDE_GROUPE = 0.12, 0.35   # secondes : débit d'un client, pas d'une dictée
+
+
+def slug_nom(nom):
+    return re.sub(r"[^a-z]+", "-", _ud.normalize("NFD", nom.lower()).encode("ascii", "ignore").decode()).strip("-")
+
+
+def jetons(langue, nom):
+    """Ce qu'on dit, jeton par jeton : lettres (avec « be grande »), doubles,
+    accents, trait d'union, « en deux mots ». Chaque jeton = un fichier."""
+    out, i, n = [], 0, len(nom)
+    while i < n:
+        c = nom[i]
+        if c == " ":
+            out.append(("sig", "espace")); i += 1; continue
+        if c == "-":
+            out.append(("sig", "trait")); i += 1; continue
+        base = _ud.normalize("NFD", c)[0]
+        accent = {"\u0301": "accent_aigu", "\u0300": "accent_grave"}.get(_ud.normalize("NFD", c)[1:2])
+        if i + 1 < n and nom[i + 1] == c and not accent:
+            out.append(("double", base)); i += 2; continue
+        out.append(("lettre", base))
+        if accent:
+            out.append(("sig", accent))
+        i += 1
+    return out
+
+
+def texte_jeton(langue, j):
+    kind, v = j
+    nom_l = EX.ANCRES.get(langue, {}).get(v) or EX.LETTRES[langue][v] if kind != "sig" else None
+    if kind == "sig":
+        return EX.SIGNES[langue][v]
+    if kind == "double":
+        return EX.SIGNES[langue]["double"].format(l=EX.LETTRES[langue][v])
+    return nom_l
+
+
+def fichier_jeton(langue, j):
+    kind, v = j
+    if kind == "lettre" and not EX.ANCRES.get(langue, {}).get(v):
+        return SONS / "x" / "lettres" / langue / f"{v}-{CHOIX_LETTRES.get(f'{langue}:{v}', 'a')}.mp3"
+    return SONS / "x" / "lettres" / langue / f"tok-{kind}-{slug_nom(v) or v.lower()}.mp3"
+
+
+def assembler(langue, nom, cle, region):
+    """Le nom épelé = l'intro, puis les jetons, collés avec de courts silences.
+    Au téléphone : bande passante 300-3400 Hz."""
+    js = jetons(langue, nom)
+    intro = SONS / "x" / "lettres" / langue / "tok-intro.mp3"
+    if not intro.exists():
+        synth(langue, EX.EPELER_INTRO[langue], intro, cle, region, VOIX_CLIENTS[langue], "0%")
+    for j in js:
+        f = fichier_jeton(langue, j)
+        if not f.exists():
+            t = texte_jeton(langue, j)
+            if j[0] == "lettre" and not EX.ANCRES.get(langue, {}).get(j[1]):
+                t = html.escape(t)
+            synth(langue, t, f, cle, region, VOIX_CLIENTS[langue], "0%")
+    entrees, filtres, k = [], [], 0
+    morceaux = [intro] + [fichier_jeton(langue, j) for j in js]
+    for m in morceaux:
+        entrees += ["-i", str(m)]
+    # silences : après l'intro et autour des signes, un peu plus long
+    parties = []
+    for idx in range(len(morceaux)):
+        gap = GARDE_GROUPE if idx == 0 or (idx < len(js) + 1 and js[idx - 1][0] == "sig") else GARDE_LETTRE
+        parties.append(f"[{idx}:a]silenceremove=start_periods=1:start_threshold=-45dB,areverse,"
+                       f"silenceremove=start_periods=1:start_threshold=-45dB,areverse,apad=pad_dur={gap}[a{idx}]")
+    chaine = ";".join(parties) + ";" + "".join(f"[a{idx}]" for idx in range(len(morceaux))) + \
+        f"concat=n={len(morceaux)}:v=0:a=1[c]"
+    if nom in EX.TELEPHONE:
+        chaine += ";[c]highpass=f=300,lowpass=f=3400,acompressor=threshold=-18dB:ratio=3[o]"
+        sortie = "[o]"
+    else:
+        sortie = "[c]"
+    dest = SONS / "x" / "epeler" / langue / f"{slug_nom(nom)}.mp3"
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    subprocess.run(["ffmpeg", "-loglevel", "error", "-y", *entrees, "-filter_complex", chaine,
+                    "-map", sortie, "-ar", "24000", "-ac", "1", "-b:a", "96k", str(dest)], check=True)
+    return dest
+
+
+def pieges_extraits():
+    """(langue apprise, id, phrase) : une phrase de contexte par item de la série."""
+    for i, par_ui in EX.PIEGES.items():
+        for ui, (phrase, _, _) in par_ui.items():
+            paire = next(e[6] for e in LX.LEXIQUE if e[0] == i)
+            a, b = paire[len("PIÈGE ("):paire.index(")")].split("·")
+            yield (b if ui == a else a), i, phrase
 
 
 def extraits_exercices():
     """(langue, chemin relatif, texte, voix, débit, brut, à retranscrire)."""
     for l in ("fr", "en", "es"):
-        for nom in EX.NOMS:
-            yield l, f"x/epeler/{l}/{nom.lower()}.mp3", epellation(l, nom), VOIX_CLIENTS[l], "-15%", True, False
-        for i, dit, _ in EX.NOMBRES:
+        for i, dit, _, _ in EX.NOMBRES:
             yield l, f"x/nombres/{l}/{i}.mp3", dit[l], VOIX_MOTS[l], "0%", False, True
         # Le client parle vite : c'est la leçon (« Plus lentement » étire dans le navigateur).
         for i, _, _, dit in EX.DEMANDES:
             yield l, f"x/client/{l}/{i}.mp3", dit[l], VOIX_CLIENTS[l], "+10%", False, True
         for r in EX.REPONSES:
-            yield l, f"x/reponds/{l}/{r[0]}.mp3", r[2][l], VOIX_CLIENTS[l], "0%", False, True
+            yield l, f"x/reponds/{l}/{r['id']}.mp3", r["client"][l], VOIX_CLIENTS[l], "0%", False, True
+            # le modèle à imiter (« Je le dis ») : la voix du réceptionniste
+            yield l, f"x/modele/{l}/{r['id']}.mp3", r["reps"][0][0][l], VOIX_MOTS[l], "0%", False, True
+    for l, i, phrase in pieges_extraits():
+        yield l, f"x/pieges/{l}/{i}.mp3", phrase, VOIX_MOTS[l], "0%", False, True
 
 
 def extraits():
@@ -204,5 +297,9 @@ if __name__ == "__main__":
         with ThreadPoolExecutor(6) as pool:
             list(pool.map(lambda x: synth(x[0], x[2], SONS / x[1], cle, region, x[3], x[4], x[5]), xs))
         print(f"{len(xs)} extraits d'exercices produits")
+        for l in ("fr", "en", "es"):
+            for nom in EX.NOMS:
+                assembler(l, nom, cle, region)
+        print(f"{3 * len(EX.NOMS)} noms épelés assemblés")
         controle_exercices(cle, region)
     controle(cle, region)
