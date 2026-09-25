@@ -829,6 +829,13 @@ async function preparer(){
   D.etapes.forEach(e => e.vignette && urls.push(BASE + 'etapes/' + e.img + '.jpg?v=' + D.v));
   Object.keys(D.perso).forEach(k => D.perso[k].portrait && urls.push(BASE + 'portraits/' + k + '.jpg?v=' + D.v));
   urls.push(BASE + 'etapes/meseta.jpg?v=' + D.v, location.pathname);
+  // Ce que la page a chargé AVANT que le service worker ne la contrôle
+  // (feuilles du système de design, polices, icône) : sans eux, la page
+  // hors ligne s'affiche sans ses styles. Vu en ligne le 25 sept. 2026.
+  performance.getEntriesByType('resource').forEach(r => { try { const u = new URL(r.name);
+    if (u.origin === location.origin && !u.pathname.startsWith('/api/') && !urls.includes(u.pathname + u.search)) urls.push(u.pathname + u.search); } catch(e) {} });
+  ['/assets/design-system/styles.css', '/assets/design-system/marque-francis.css', '/assets/design-system/marque-francis-favicon.svg']
+    .forEach(u => urls.includes(u) || urls.push(u));
   let fait = 0, echec = 0;
   const lot = async u => { try { const r = await fetch(u, {cache:'reload'}); if (!r.ok) echec++; } catch(e) { echec++; } fait++; txt.textContent = `${fait} / ${urls.length} fichiers…`; };
   for (let i = 0; i < urls.length; i += 6) await Promise.all(urls.slice(i, i + 6).map(lot));
