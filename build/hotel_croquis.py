@@ -32,6 +32,10 @@ def consigne(ident):
     if ident == "comptoir":
         return SUJ.COMPTOIR
     famille, quoi = SUJ.SUJETS[ident]
+    if famille == "personne":
+        # Le seul croquis avec une personne : le préambule « objet » sans la
+        # phrase qui les exclut.
+        return FC.PREAMBULES["objet"].replace("no person, no hand, ", "no other person, no hand in close-up, ").replace("THE OBJECT: ", "THE PERSON: ") + quoi
     return FC.PREAMBULES[famille] + quoi
 
 
@@ -92,6 +96,9 @@ if __name__ == "__main__":
     cibles = [a for a in args if not a.startswith("--")]
     if "--temoins" in args:
         cibles = SUJ.TEMOINS + ["comptoir"]
+    if "--tous" in args:
+        # Ce qui est déjà sur le disque ne se repaie pas.
+        cibles = [e[0] for e in LEX.LEXIQUE if e[5] == "croquis" and not (DEST / f"{e[0]}.png").exists()]
     if "--comptoir" in args:
         cibles = ["comptoir"]
     for c in cibles:
