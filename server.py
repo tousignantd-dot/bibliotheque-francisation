@@ -16366,6 +16366,19 @@ try:
 except Exception as _e:  # pragma: no cover
     print(f"[WARN] scénarios « comptoir » non chargés : {_e}", flush=True)
 
+# Le chemin de Compostelle (trousse grand public, 25 septembre 2026) : la
+# conversation libre avec les gens du chemin et Marta. Même forme que le
+# comptoir : la source est build/contenu/compostelle/jeu_de_role.py.
+try:
+    _spec = _ilu.spec_from_file_location(
+        "compostelle_jeu_de_role",
+        os.path.join(BASE_DIR, "build", "contenu", "compostelle", "jeu_de_role.py"))
+    _camino = _ilu.module_from_spec(_spec)
+    _spec.loader.exec_module(_camino)
+    JEU_DE_ROLE_SCENARIOS.update(_camino.scenarios_serveur())
+except Exception as _e:  # pragma: no cover
+    print(f"[WARN] scénario « camino » non chargé : {_e}", flush=True)
+
 # Les voix qu'un scénario peut demander par `personnage` sur /api/voix. Liste
 # blanche : les deux voix du jeu de rôle, plus celles que déclare un scénario.
 VOIX_PERSONNAGES = {"jr_feminin", "jr_masculin"} | {
