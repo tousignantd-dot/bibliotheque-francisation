@@ -1,0 +1,655 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Daniel Tousignant — CV</title>
+<meta name="description" content="Daniel Tousignant, concepteur pédagogique : plus de 30 ans en éducation des adultes, M. Sc. en didactique. L'IA livre le prototype ; mon travail, c'est d'en faire une vraie formation.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ─────────────────────────────────────────────────────────────
+   JETONS — relevés sur spade.com (palette exacte, typo substituée :
+   NaN Super X → Geist, FT Polar → Geist, FT Polar Mono → Geist Mono)
+   ───────────────────────────────────────────────────────────── */
+:root{
+  --black:#090f05; --forest:#18280e; --moss:#3f7308; --lemongrass:#b2eb76;
+  --sage-1:#f4faed; --sage-2:#f0fae6; --sage-3:#d8e5ca; --sage-4:#b3c5a0; --sage-5:#4a5b38;
+  --gold:#333109; --earth:#331b09; --sea:#093328; --clay:#c9753d; --sand:#f2dfac; --sky:#baebc2;
+  --white:#fff;
+  --display:"Geist",ui-sans-serif,system-ui,sans-serif;
+  --body:"Geist",ui-sans-serif,system-ui,sans-serif;
+  --mono:"Geist Mono",ui-monospace,monospace;
+  --ease-out:cubic-bezier(.16,1,.3,1);      /* entrées : rapide puis se pose */
+  --ease-std:cubic-bezier(.4,0,.2,1);       /* survols : 250 ms */
+  --corner:17px;
+  --header-h:71px;
+  --gutter:clamp(20px,2.5vw,32px);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:auto}
+body{margin:0;background:var(--white);color:var(--black);font-family:var(--body);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:clip}
+a{color:inherit;text-decoration:none}
+
+/* Échelle typographique (fluide, comme leurs .text-NNpx-*) */
+.t-hero{font-family:var(--display);font-weight:560;font-size:clamp(44px,6.6vw,84px);line-height:1.05;letter-spacing:-.01em}
+.t-48{font-family:var(--display);font-weight:500;font-size:clamp(30px,3.6vw,48px);line-height:1.12;letter-spacing:-.01em}
+.t-40{font-family:var(--display);font-weight:400;font-size:clamp(28px,3vw,40px);line-height:1.12;letter-spacing:-.01em}
+.t-20{font-family:var(--display);font-weight:500;font-size:20px;line-height:1.25}
+.t-body{font-size:clamp(16px,1.35vw,19px);line-height:1.45}
+.eyebrow{font-family:var(--mono);font-weight:500;font-size:11px;letter-spacing:.12em;text-transform:uppercase;opacity:.8}
+.mono{font-family:var(--mono)}
+.muted{opacity:.8}
+
+/* ─── Jauge : règle graduée qui défile, flèche fixe au milieu de l'écran ─── */
+.page{position:relative}
+.gauge{position:absolute;top:calc(var(--header-h) + 8px);bottom:0;width:18px;pointer-events:none;z-index:5}
+.gauge.l{left:0}.gauge.r{right:0;transform:scaleX(-1)}
+.gauge .ticks{position:absolute;inset:0;
+  background:
+    repeating-linear-gradient(to bottom,var(--black) 0 1px,transparent 1px 140px) 0 0/18px 100% no-repeat,
+    repeating-linear-gradient(to bottom,var(--black) 0 1px,transparent 1px 28px) 0 0/10px 100% no-repeat}
+.gauge .arrow{position:sticky;top:calc(50% - 8px);width:22px;margin-left:-4px;color:var(--black)}
+@media (max-width:1023px){.gauge{display:none}}
+
+/* ─── Coins coupés à 45° ─── */
+.cut{--c:var(--corner);clip-path:polygon(var(--c) 0,calc(100% - var(--c)) 0,100% var(--c),100% calc(100% - var(--c)),calc(100% - var(--c)) 100%,var(--c) 100%,0 calc(100% - var(--c)),0 var(--c))}
+.cut-sm{--c:9px}.cut-md{--c:13px}
+
+/* ─── En-tête ─── */
+header{position:sticky;top:0;z-index:50;height:var(--header-h);background:var(--white);display:flex;align-items:center;justify-content:space-between;padding:0 clamp(20px,8vw,104px);transition:box-shadow .25s var(--ease-std)}
+header.scrolled{box-shadow:0 1px 0 rgba(9,15,5,.06),0 8px 24px rgba(9,15,5,.05)}
+.logo{font-family:var(--display);font-weight:800;font-size:26px;letter-spacing:-.02em}
+.logo sup{font-size:.7em;vertical-align:.45em;margin-left:1px}
+nav.top{display:flex;gap:40px;font-family:var(--mono);font-size:15px}
+nav.top a{position:relative}
+nav.top a::after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:1px;background:currentColor;transform:scaleX(0);transform-origin:left;transition:transform .3s var(--ease-out)}
+nav.top a:hover::after{transform:scaleX(1)}
+@media (max-width:760px){nav.top{display:none}}
+
+/* ─── Boutons et liens fléchés ─── */
+.btn{position:relative;display:inline-flex;align-items:center;min-height:43px;padding:0 18px;font-family:var(--mono);font-size:15px;cursor:pointer;border:0;background:none;color:var(--black)}
+.btn>i{position:absolute;inset:0;border-radius:6px;background:var(--white);border:1px solid rgba(9,15,5,.15);transition:background-color .25s var(--ease-std),border-color .25s var(--ease-std),scale .25s var(--ease-std)}
+.btn>span{position:relative}
+.btn:hover>i{scale:.98;background:var(--lemongrass);border-color:var(--lemongrass)}
+.btn.dark{color:var(--lemongrass)}
+.btn.dark>i{background:var(--black);border-color:var(--black)}
+.btn.dark:hover>i{background:var(--forest)}
+.link{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:15px}
+.link .ar{position:relative;display:inline-block;width:8px;height:6px;overflow:hidden;margin-top:2px}
+.link .ar svg{position:absolute;inset:0;transition:transform .3s var(--ease-out),opacity .3s}
+.link .ar svg+svg{transform:translateY(-200%);opacity:0}
+.link:hover .ar svg:first-child{transform:translateY(200%);opacity:0}
+.link:hover .ar svg+svg{transform:none;opacity:1}
+
+/* ─── Révélations au défilement ─── */
+.lines>span{display:block;overflow:hidden;padding-bottom:.06em;margin-bottom:-.06em}
+.lines>span>span{display:block;transform:translateY(105%);transition:transform 1s var(--ease-out)}
+.in .lines>span>span,.lines.in>span>span{transform:none}
+.rise{opacity:0;transform:translateY(24px);transition:opacity .8s var(--ease-out),transform .8s var(--ease-out)}
+.rise.in{opacity:1;transform:none}
+
+/* ─── Section 1 : ouverture ─── */
+.wrap{padding:0 var(--gutter)}
+@media (min-width:1024px){.wrap{padding:0 32px 0 33px}}
+.hero{position:relative;min-height:calc(100vh - var(--header-h));background:var(--sage-2);display:flex;flex-direction:column;align-items:center;padding:clamp(64px,10vh,110px) 24px 72px;overflow:hidden}
+.hero h1{margin:0;text-align:center;max-width:15ch}
+.hero .stage{position:relative;width:min(900px,100%);height:clamp(300px,48vh,440px);margin-top:-10px}
+.hero .stage svg.topo{position:absolute;left:50%;top:0;height:100%;transform:translateX(-50%)}
+.hero p{max-width:30rem;text-align:center;margin:18px 0 28px}
+.tag{position:absolute;background:var(--sage-2);border:1px solid var(--black);padding:10px 16px 12px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;line-height:1.5;text-transform:uppercase;min-width:230px}
+.tag::before,.tag::after{content:"";position:absolute;width:3px;height:3px;background:var(--black)}
+.tag::before{left:-2px;top:-2px}.tag::after{right:-2px;bottom:-2px}
+.tag b{font-weight:500;display:block;margin-bottom:4px}
+.tag.soft{border-color:rgba(9,15,5,.25)}
+.card{position:absolute;background:var(--white);padding:14px 20px 16px;min-width:300px;display:flex;align-items:flex-end;gap:28px}
+.card .ico{width:40px;height:40px;background:var(--sea);border-radius:4px;display:grid;place-items:center;color:var(--lemongrass);font-family:var(--mono);font-size:11px;margin-bottom:8px}
+.card .who{font-size:13px}.card .when{font-family:var(--mono);font-size:12px}
+.card .val{font-family:var(--display);font-weight:600;font-size:24px;letter-spacing:-.01em;margin-left:auto}
+@media (max-width:760px){.tag,.card{display:none}.hero{padding-top:48px}.hero h1{font-size:40px;max-width:none}.hero .stage{height:240px;margin-top:0}}
+
+/* ─── Bande logos / outils ─── */
+.band{padding:clamp(48px,7vw,80px) 0;text-align:center}
+.band .eyebrow{text-transform:none;letter-spacing:.01em;font-size:14px;font-weight:400}
+.marquee{overflow:hidden;margin-top:36px;mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.marquee .track{display:flex;width:max-content;animation:marquee 38s linear infinite}
+.marquee .track span{font-family:var(--display);font-weight:600;font-size:26px;letter-spacing:-.02em;padding:0 44px;white-space:nowrap}
+.marquee:hover .track{animation-play-state:paused}
+@keyframes marquee{to{transform:translateX(-50%)}}
+
+/* ─── Scène collante n° 1 (380vh) : énoncé → retournement ─── */
+.scene{position:relative}
+.scene .pin{position:sticky;top:0;height:100vh;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.tour{height:640vh}
+.tour .panel{position:absolute;inset:calc(var(--header-h) + 12px) 0 16px;background:var(--forest)}
+.tour .cap{position:absolute;left:50%;top:calc(var(--header-h) + 5vh);transform:translateX(-50%);color:var(--lemongrass);font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;border:1px solid rgba(178,235,118,.4);padding:8px 14px;z-index:2}
+.tour .layer{position:absolute;inset:calc(var(--header-h) + 12px) 0 16px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 clamp(20px,5vw,72px);text-align:center;will-change:opacity;pointer-events:none}
+.tour .h{max-width:46rem}
+.tour em{font-style:normal}
+.tour .lab{color:var(--white);gap:clamp(40px,8vh,80px)}
+.tour .lab em{color:var(--lemongrass)}
+.tour .heads{display:grid}.tour .heads>*{grid-area:1/1}
+.tour .tl{width:min(1000px,100%)}
+.tour .bar{display:flex;height:64px;gap:3px}
+.tour .bar s{text-decoration:none;flex:0 0 auto;overflow:hidden;white-space:nowrap;display:flex;align-items:flex-end;padding:0 8px 8px;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;text-align:left;min-width:0}
+.tour .k-an{background:var(--sage-5);color:var(--sage-2)}
+.tour .k-to{background:repeating-linear-gradient(-45deg,rgba(216,229,202,.55) 0 1.2px,transparent 1.2px 6px);border:1px solid rgba(216,229,202,.55);color:var(--sage-2)}
+.tour .k-ia{background:var(--sand);color:var(--black)}
+.tour .k-co{background:var(--lemongrass);color:var(--black);font-weight:500}
+.tour .scale{display:flex;justify-content:space-between;margin-top:10px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--sage-4)}
+.tour .legend{display:none;gap:14px;justify-content:center;margin-top:14px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--sage-3)}
+.tour .legend i{display:inline-block;width:10px;height:10px;margin-right:6px;vertical-align:-1px}
+.tour .lc{justify-content:flex-start;padding-top:10vh;z-index:3}
+.tour .lc .h{background:var(--white);padding:4px 14px}
+.tour .count{margin-top:14px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;background:var(--black);color:var(--lemongrass);padding:6px 12px}
+.tour .pile{position:absolute;inset:calc(var(--header-h) + 12px) 0 16px;overflow:hidden;pointer-events:none;z-index:2}
+.tour .pile .ic{position:absolute;width:150px;padding:10px 12px 12px;background:var(--white);border:1px solid rgba(9,15,5,.18);font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;text-align:left;box-shadow:0 6px 18px rgba(9,15,5,.06);opacity:0}
+.tour .pile .ic i{display:block;height:5px;background:rgba(9,15,5,.1);margin-top:6px}
+.tour .pile .ic i+i{width:70%}
+.tour .pile .ic b{font-weight:500;display:block;margin-bottom:4px;color:var(--moss)}
+.tour .ld{z-index:4;gap:40px}
+.tour .ld .q em{background:var(--lemongrass);padding:0 .15em}
+.tour .keep{display:flex;gap:16px;flex-wrap:wrap;justify-content:center}
+.tour .keep>div{background:var(--forest);color:var(--lemongrass);font-family:var(--mono);font-size:13px;letter-spacing:.06em;text-transform:uppercase;padding:18px 24px;opacity:0;transform:translateY(24px)}
+.tour .le{z-index:5;gap:44px}
+.tour .le em{color:var(--moss)}
+.tour .vs{display:grid;grid-template-columns:1fr 1fr;gap:20px;width:min(820px,100%);text-align:left}
+.tour .vs .col{padding:26px 28px}
+.tour .vs .col p{margin:10px 0 0;font-size:17px}
+.tour .vs .off{border:1px dashed rgba(9,15,5,.3);color:rgba(9,15,5,.55)}
+.tour .vs .off p{text-decoration:line-through;text-decoration-color:rgba(9,15,5,.35)}
+.tour .vs .on{background:var(--forest);color:var(--white)}
+.tour .vs .on .eyebrow{color:var(--lemongrass);opacity:1}
+@media (max-width:760px){.tour .legend{display:flex}.tour .scale span+span{text-align:right;max-width:60%}.tour .bar{height:48px}.tour .bar s{font-size:0;padding:0}.tour .vs{grid-template-columns:1fr}.tour .pile .ic{width:120px}}
+
+/* ─── Blocs deux colonnes + stat qui roule ─── */
+.feature{display:flex;gap:40px;align-items:flex-end;justify-content:space-between;max-width:1180px;margin:0 auto;padding:clamp(80px,12vw,164px) var(--gutter) 0}
+.feature:nth-of-type(even){flex-direction:row-reverse}
+.feature .txt{flex:0 0 min(28rem,50%)}
+.feature h2{margin:12px 0 10px}
+.feature .viz{flex:1;min-height:360px;position:relative;background:var(--sage-1);display:grid;place-items:center}
+.eyehead{display:flex;align-items:center;gap:14px}
+.eyehead .pic{width:28px;height:28px;border:1px solid var(--black);display:grid;place-items:center;font-family:var(--mono);font-size:10px}
+.stat{display:inline-flex;align-items:center;gap:12px;background:var(--sage-1);padding:14px 16px 14px 12px;margin-top:56px;max-width:22rem}
+.stat .n{font-family:var(--display);font-weight:500;font-size:20px;display:inline-flex}
+.stat .d{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;font-weight:500}
+@media (max-width:860px){.feature,.feature:nth-of-type(even){flex-direction:column;align-items:stretch}.feature .txt{flex:none}}
+
+/* Compteur à rouleaux (équivalent NumberFlow) */
+.roll{display:inline-flex;overflow:hidden;font-variant-numeric:tabular-nums;letter-spacing:-.02em;height:1.15em;line-height:1.15em}
+.roll .col{display:flex;flex-direction:column;transition:transform 1.4s var(--ease-out)}
+.roll .col span{height:1.15em}
+
+/* Petits graphiques en hachures dans .viz */
+.bars{display:flex;align-items:flex-end;gap:14px;height:220px}
+.bars i{display:block;width:34px;height:0;background:repeating-linear-gradient(-45deg,var(--forest) 0 1.2px,transparent 1.2px 6px);border:1px solid var(--forest);transition:height 1.2s var(--ease-out)}
+.bars i:nth-child(odd){background:var(--forest)}
+
+/* ─── Scène collante n° 2 (400vh) : trois volets autour d'un objet ─── */
+.fond{height:980vh}
+.fond .pin{flex-direction:column;justify-content:flex-start;padding:calc(var(--header-h) + 3vh) clamp(20px,4vw,56px) 4vh;gap:3.5vh}
+.fond .rail{position:relative;display:grid;grid-template-columns:repeat(5,1fr);gap:3px;width:min(1180px,100%);padding-bottom:34px}
+.fond .rail span{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:9px 10px;background:var(--sage-1);color:var(--sage-5);transition:background-color .4s var(--ease-std),color .4s var(--ease-std)}
+.fond .rail span.on{background:var(--forest);color:var(--lemongrass)}
+.fond .rail .loop{position:absolute;left:0;right:0;top:30px;width:100%;height:28px;overflow:visible;fill:none;stroke:var(--moss);stroke-width:1.5;vector-effect:non-scaling-stroke}
+.fond .rail .loop path{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.2s var(--ease-out)}
+.fond .rail .loop .head{stroke-dasharray:none;opacity:0;transition:opacity .3s 1s}
+.fond .rail em{position:absolute;left:50%;bottom:-6px;transform:translateX(-50%);font-style:normal;font-size:10px;letter-spacing:.12em;text-transform:uppercase;background:var(--white);padding:0 10px;color:var(--moss);opacity:0;transition:opacity .4s .6s}
+.fond .rail.loopon .loop path{stroke-dashoffset:0}.fond .rail.loopon .loop .head,.fond .rail.loopon em{opacity:1}
+.fond .grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(24px,4vw,64px);width:min(1180px,100%);flex:1;min-height:0;align-items:center}
+.fond .cards{display:grid;align-self:center}
+.fond .fc{grid-area:1/1;opacity:0;transform:translateY(24px);transition:opacity .5s var(--ease-out),transform .6s var(--ease-out);pointer-events:none}
+.fond .fc.on{opacity:1;transform:none}
+.fond .fc .who{font-size:13px;margin:14px 0 6px;color:var(--moss)}
+.fond .fc h3{margin:8px 0 10px}
+.fond .fc h3 em{font-style:normal;color:var(--moss)}
+.fond .fc p{margin:0;max-width:30rem}
+.fond .chg{margin-top:22px;border-left:2px solid var(--lemongrass);padding:4px 0 4px 14px;font-size:15px}
+.fond .chg span{display:block;font-size:10px;letter-spacing:.12em;text-transform:uppercase;opacity:.7;margin-bottom:2px}
+.fond .crit{display:flex;flex-wrap:wrap;gap:6px}
+.fond .crit b{font-family:var(--mono);font-weight:500;font-size:11px;letter-spacing:.06em;text-transform:uppercase;border:1px solid rgba(9,15,5,.2);padding:5px 8px;opacity:.35;transition:opacity .3s,background-color .3s}
+.fond .fc.on .crit b{opacity:1;background:var(--lemongrass);border-color:var(--lemongrass)}
+.fond .fc.on .crit b:nth-child(2){transition-delay:.25s}.fond .fc.on .crit b:nth-child(3){transition-delay:.5s}.fond .fc.on .crit b:nth-child(4){transition-delay:.75s}.fond .fc.on .crit b:nth-child(5){transition-delay:1s}
+.fond .steps{display:flex;gap:6px}
+.fond .steps i{width:26px;height:3px;background:rgba(9,15,5,.1);position:relative;overflow:hidden}
+.fond .steps i b{position:absolute;inset:0;background:var(--black);transform:scaleX(0);transform-origin:left}
+
+/* L'écran du module : il part gris et plat, et gagne en finition à chaque étape */
+.scr{--g:1;background:var(--white);border:1px solid rgba(9,15,5,.15);box-shadow:0 20px 60px rgba(9,15,5,.08);padding:18px 22px 16px;display:flex;flex-direction:column;gap:12px;filter:grayscale(var(--g));transition:filter .8s;font-size:14px;min-width:0;transform-origin:50% 50%}
+.scr>*{flex-shrink:0;min-width:0}
+.scr>*{transition:opacity .5s var(--ease-out),max-height .6s var(--ease-out),margin .6s var(--ease-out),transform .6s var(--ease-out)}
+.s-bar{display:flex;white-space:nowrap;justify-content:space-between;gap:10px;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:rgba(9,15,5,.5)}
+.s-obj{overflow:hidden;text-overflow:ellipsis;min-width:0;background:var(--forest);color:var(--lemongrass);padding:3px 8px;opacity:0;transform:translateX(12px);transition:opacity .5s,transform .5s var(--ease-out)}
+.s-sit,.s-merrill,.s-img,.s-foot .s-score{opacity:0;max-height:0;overflow:hidden}
+.s-sit{white-space:normal;background:var(--sand);font-family:var(--mono);font-size:12px;padding:0 12px;margin:-6px 0}
+.s-title{margin:0;font-family:var(--display);font-weight:600;font-size:22px;line-height:1.2;display:grid}
+.s-title span{grid-area:1/1;transition:opacity .5s,transform .5s var(--ease-out)}
+.s-title .t1{opacity:0;transform:translateY(10px)}
+.s-merrill{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;margin:-6px 0}
+.s-merrill span{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;text-align:center;padding:8px 4px;background:var(--sage-2);border-bottom:2px solid var(--moss)}
+.s-body{display:flex;gap:14px;align-items:center}
+.s-img{flex:0 0 0;background:var(--sage-2);display:grid;place-items:center;transition:flex-basis .6s var(--ease-out),opacity .5s,max-height .6s}
+.s-img svg{width:auto;height:118px;max-width:100%}
+.s-para{flex:1;display:flex;flex-direction:column;gap:7px}
+.s-para i{display:block;height:7px;background:rgba(9,15,5,.12);transition:opacity .4s,height .4s,margin .4s}
+.s-para i:nth-child(3n){width:84%}.s-para i:last-child{width:52%}
+.s-quiz{border-top:1px solid rgba(9,15,5,.1);padding-top:12px;display:grid}
+.s-quiz>div{grid-area:1/1;transition:opacity .5s,transform .5s var(--ease-out)}
+.qa span{display:inline-block;margin:8px 16px 0 0;font-family:var(--mono);font-size:12px}
+.qb{opacity:0;transform:translateY(10px);display:flex;flex-direction:column;gap:6px}
+.qb .ch{border:1px solid rgba(9,15,5,.18);padding:5px 10px;font-size:13px}
+.qb .ch.pick{border-color:var(--moss);background:var(--sage-2)}
+.qb .fb{background:var(--forest);color:var(--lemongrass);font-family:var(--mono);font-size:11.5px;padding:8px 10px}
+.s-foot{display:flex;align-items:center;gap:12px;font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+.s-gagne{flex:1;display:flex;align-items:center;gap:10px;opacity:0;transition:opacity .5s}
+.dots9{display:flex;gap:4px}.dots9 i{width:9px;height:9px;border:1px solid var(--moss);transition:background-color .3s}
+.dots9 i.on{background:var(--moss)}
+#gLbl{font-size:9.5px;color:var(--moss);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.s-gagne{min-width:0}
+.s-score{background:var(--lemongrass);padding:4px 8px;white-space:nowrap}
+.s-next{margin-left:auto;white-space:nowrap;background:var(--black);color:var(--white);padding:6px 12px}
+
+/* États cumulatifs : chaque étape ajoute sa transformation */
+.scr[data-step="0"]{font-family:Arial,sans-serif}
+.scr.k1 .s-sit{opacity:1;max-height:60px;padding:8px 12px;margin:0}
+.scr.k1 .t0{opacity:0;transform:translateY(-10px)}.scr.k1 .t1{opacity:1;transform:none}
+.scr.k2 .s-obj{opacity:1;transform:none}
+.scr.k3 .s-merrill{opacity:1;max-height:50px;margin:0}
+.scr.k4 .s-gagne{opacity:1}
+.scr.k5 .s-img{opacity:1;max-height:130px;flex-basis:38%;padding:6px 0}
+.scr.k5 .s-para i:nth-child(n+3){opacity:0;height:0;margin-top:-7px}
+.scr.k6 .s-score{opacity:1;max-height:30px}
+.scr.k7 .qa{opacity:0;transform:translateY(-10px)}.scr.k7 .qb{opacity:1;transform:none}
+@media (max-width:900px){.fond .pin{padding-top:calc(var(--header-h) + 14px);gap:14px}.fond .grid{grid-template-columns:1fr;align-items:start;align-content:start;gap:16px}.scr{transform-origin:50% 0}.fond .fc p{display:none}.fond .fc[data-i="0"] p,.fond .fc[data-i="7"] p{display:block}.fond .chg{margin-top:12px}.fond .rail{padding-bottom:28px}.fond .rail em{white-space:nowrap;font-size:9px}.fond .fc h3{font-size:24px}.fond .fc p,.fond .chg{font-size:14px}.fond .rail span{font-size:0;padding:4px}.scr{font-size:12px;padding:12px 14px}.s-title{font-size:17px}.fond .fc .who{margin-top:6px}}
+@media (max-height:760px){.fond .fc p{display:none}.fond .fc.on[data-i="0"] p,.fond .fc.on[data-i="7"] p{display:block}}
+
+/* ─── Parcours : carrousel à barres de progression ─── */
+.cases{background:var(--sage-1);padding:clamp(56px,9vw,128px) 0}
+.cases .in-w{max-width:1180px;margin:0 auto;padding:0 var(--gutter)}
+.cases .row{display:flex;gap:24px;margin-top:clamp(48px,6vw,92px)}
+.cases nav{flex:0 0 46px;display:flex;flex-direction:column;gap:0}
+.cases nav button{all:unset;cursor:pointer;display:block;padding:5px 0;width:26px;transition:width .4s var(--ease-out);position:relative}
+.cases nav button[aria-current]{width:46px}
+.cases nav button i{display:block;height:3px;background:rgba(9,15,5,.1);position:relative;overflow:hidden}
+.cases nav button i b{position:absolute;inset:0;background:var(--black);transform:scaleX(0);transform-origin:left}
+.cases nav button[aria-current] i b{animation:fill var(--dur,7s) linear forwards}
+.cases:hover nav button[aria-current] i b{animation-play-state:paused}
+@keyframes fill{to{transform:scaleX(1)}}
+.viewport{flex:1;overflow:hidden}
+.strip{display:flex;transition:transform .8s var(--ease-out)}
+.slide-c{flex:0 0 100%;display:flex;gap:24px}
+.slide-c .c{flex:1;min-height:380px;padding:36px 40px;display:flex;flex-direction:column;gap:40px}
+.c.gold{background:var(--gold);color:var(--white)}
+.c.earth{background:var(--earth);color:var(--white)}
+.c.forest{background:var(--forest);color:var(--white)}
+.c.sea{background:var(--sea);color:var(--white)}
+.c.light{background:var(--white)}
+.c .q{font-family:var(--display);font-size:clamp(20px,2vw,26px);line-height:1.25;letter-spacing:-.01em}
+.c .big{font-family:var(--display);font-weight:500;font-size:clamp(48px,6vw,80px);line-height:1;letter-spacing:-.02em;margin-top:auto}
+@media (max-width:860px){.cases nav{display:none}.slide-c{flex-direction:column;gap:16px}.slide-c .c{min-height:0;padding:26px 24px;gap:24px}.c .big{margin-top:0}}
+
+/* ─── Clôture ─── */
+.dev{padding:clamp(80px,12vw,164px) var(--gutter);display:grid;grid-template-columns:1fr 1fr;gap:48px;max-width:1180px;margin:0 auto;align-items:center}
+.term{background:var(--black);color:var(--sage-3);font-family:var(--mono);font-size:13px;line-height:1.7;padding:28px 30px;min-height:260px;white-space:pre-wrap;overflow-wrap:anywhere}
+@media (max-width:480px){.term{font-size:11.5px;padding:22px 20px}}
+.term .k{color:var(--lemongrass)}.term .s{color:var(--sand)}.term .caret{display:inline-block;width:8px;height:1em;background:var(--lemongrass);vertical-align:-2px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+@media (max-width:860px){.dev{grid-template-columns:1fr}}
+footer{padding:40px var(--gutter);font-family:var(--mono);font-size:12px;display:flex;justify-content:space-between;border-top:1px solid rgba(9,15,5,.1)}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition-duration:.01ms!important;animation-duration:.01ms!important}
+  .lines>span>span,.rise{transform:none;opacity:1}
+}
+</style>
+</head>
+<body>
+<header id="hdr">
+  <a class="logo" href="#">TOUSIGNANT<sup>'</sup></a>
+  <nav class="top"><a href="#parcours">Parcours</a><a href="#competences">Compétences</a><a href="#contact">Contact</a></nav>
+</header>
+
+<div class="page">
+  <!-- Jauges gauche et droite : la règle défile, la flèche reste au centre -->
+  <div class="gauge l" aria-hidden="true"><div class="ticks"></div><div class="arrow"><svg viewBox="0 0 22 16"><path d="M2 15.6 0 13.6V2.1L2 0l19.5 7.3v1.1z" fill="currentColor"/></svg></div></div>
+  <div class="gauge r" aria-hidden="true"><div class="ticks"></div><div class="arrow"><svg viewBox="0 0 22 16"><path d="M2 15.6 0 13.6V2.1L2 0l19.5 7.3v1.1z" fill="currentColor"/></svg></div></div>
+
+  <!-- 1. OUVERTURE -->
+  <section class="wrap">
+    <div class="hero cut" id="hero">
+      <h1 class="t-hero lines"><span><span>Former des adultes,</span></span><span><span>pas les informer</span></span></h1>
+      <div class="stage">
+        <svg class="topo" id="topoHero" viewBox="0 0 400 400" aria-hidden="true"></svg>
+        <div class="tag" data-speed="-0.12" style="left:2%;top:34%"><b>► Formation</b>M. Sc. en didactique<br>UQAM, 1994</div>
+        <div class="tag soft" data-speed="-0.2" style="left:2%;top:62%"><b>► Terrain</b>Éducation des adultes, Montréal<br>1992 → aujourd'hui</div>
+        <div class="card cut-md" data-speed="0.1" style="right:0;top:14%">
+          <div><div class="ico">DT</div><div class="who">Enseignant · conseiller · directeur</div><div class="when" id="clock">2026-09-24 09:23:16</div></div>
+          <div class="val">+30 ans</div>
+        </div>
+      </div>
+      <p class="t-body muted rise">Plus de 30 ans en éducation des adultes. Aujourd'hui, l'IA livre le prototype&nbsp;; mon travail, c'est d'en faire une vraie formation.</p>
+      <a class="btn dark rise" href="#contact"><i></i><span>Me joindre</span></a>
+    </div>
+  </section>
+
+  <!-- 2. BANDE OUTILS -->
+  <section class="band">
+    <div class="eyebrow mono">Ce que j'apporte à une formation, bien avant le logiciel</div>
+    <div class="marquee"><div class="track" id="track">
+      <span>Andragogie</span><span>Didactique</span><span>Boucle didactique</span><span>Gestion d'équipe</span><span>Formation à distance</span><span>Francisation</span><span>Capsules vidéo</span><span>Prototypage par IA</span><span>Évaluation</span>
+    </div></div>
+  </section>
+
+  <!-- 3. LE TOURNANT : semaines de logiciel → prototype IA → surabondance → filtre → former -->
+  <section class="scene tour wrap" id="tour">
+    <div class="pin">
+      <div class="panel cut"></div>
+      <div class="cap">► Le tournant</div>
+
+      <!-- A–B : la barre de temps se comprime -->
+      <div class="layer lab">
+        <div class="heads">
+          <div class="t-48 h ha">Pendant 30 ans, concevoir une formation, c'était surtout <em>des semaines de logiciel.</em></div>
+          <div class="t-48 h hb">L'IA livre maintenant le prototype en une heure. <em>Tout le reste devient de la conception.</em></div>
+        </div>
+        <div class="tl">
+          <div class="bar" id="bar">
+            <s data-a="8"  data-b="8"  class="k-an">Analyse</s>
+            <s data-a="0"  data-b="6"  class="k-ia">Prototype IA · 1 h</s>
+            <s data-a="22" data-b="0"  class="k-to">Maquettes</s>
+            <s data-a="26" data-b="0"  class="k-to">Diapositives</s>
+            <s data-a="28" data-b="0"  class="k-to">Montage logiciel</s>
+            <s data-a="12" data-b="0"  class="k-to">Révisions</s>
+            <s data-a="4"  data-b="86" class="k-co">Conception : pratique · rétroaction · transfert</s>
+          </div>
+          <div class="scale"><span>Jour 1</span><span id="barEnd">6 semaines</span></div>
+          <div class="legend"><span><i class="k-to"></i>Logiciel</span><span><i class="k-ia"></i>Prototype IA</span><span><i class="k-co"></i>Conception</span></div>
+        </div>
+      </div>
+
+      <!-- C–D : surabondance, puis le filtre -->
+      <div class="layer lc">
+        <div class="t-48 h">Bientôt, du contenu partout.</div>
+        <div class="count mono">Modules générés&nbsp;: <b id="genCount">00000</b></div>
+      </div>
+      <div class="pile" id="pile" aria-hidden="true"></div>
+      <div class="layer ld">
+        <div class="t-48 h q">Qu'est-ce que l'apprenant saura <em>faire</em> de plus&nbsp;?</div>
+        <div class="keep">
+          <div class="cut-md">Pratique en situation</div>
+          <div class="cut-md">Rétroaction</div>
+          <div class="cut-md">Résolution de problèmes</div>
+        </div>
+      </div>
+
+      <!-- E : la distinction -->
+      <div class="layer le">
+        <div class="t-48 h">Informer, l'IA le fait très bien. <em>Former</em>, c'est encore un métier.</div>
+        <div class="vs">
+          <div class="col off"><span class="eyebrow">[Informer]</span><p>Fournir des données</p><p>Réussir un test à chaud</p><p>Cocher une case</p></div>
+          <div class="col on cut-md"><span class="eyebrow">[Former]</span><p>Transformer des capacités, durablement</p><p>Pratiquer, réfléchir, résoudre</p><p>Maîtriser la tâche sur le terrain</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. LES FONDEMENTS : un module brut se transforme, théorie par théorie -->
+  <section class="scene fond wrap" id="fond">
+    <div class="pin">
+      <div class="rail" id="rail">
+        <span>Analyse</span><span>Design</span><span>Développement</span><span>Implémentation</span><span>Évaluation</span>
+        <svg class="loop" viewBox="0 0 1000 60" preserveAspectRatio="none" aria-hidden="true"><path d="M990 4 C990 50 960 56 900 56 L100 56 C40 56 10 50 10 8" pathLength="1"/><path class="head" d="M2 16 L10 4 L18 16"/></svg>
+        <em class="mono">SAM · prototyper → essayer → réviser</em>
+      </div>
+      <div class="grid">
+        <div class="cards">
+          <article class="fc on" data-i="0"><span class="eyebrow">► Les fondements</span><h3 class="t-40">Le prototype, l'IA le fait. <em>La théorie, c'est ce qui le transforme.</em></h3><p class="muted">Voici un module tel qu'une IA le livre en quelques minutes. Défilez&nbsp;: il se transforme, une théorie à la fois.</p></article>
+          <article class="fc" data-i="1"><span class="eyebrow">[Analyse] · 01 / 08</span><div class="who mono">Knowles · l'andragogie</div><h3 class="t-40">L'adulte apprend ce qui lui sert, maintenant.</h3><p class="muted">On part d'une situation qu'il reconnaît, pas d'un chapitre. Mon terrain depuis 1992.</p><div class="chg"><span class="mono">Sur le prototype</span>Le titre devient un problème de travail.</div></article>
+          <article class="fc" data-i="2"><span class="eyebrow">[Analyse → Évaluation] · 02 / 08</span><div class="who mono">Kirkpatrick · quatre niveaux</div><h3 class="t-40">Décider dès le départ ce qu'on mesurera à la fin.</h3><p class="muted">Pas la satisfaction&nbsp;: le comportement en poste.</p><div class="chg"><span class="mono">Sur le prototype</span>Un objectif de niveau 3 s'affiche.</div></article>
+          <article class="fc" data-i="3"><span class="eyebrow">[Design] · 03 / 08</span><div class="who mono">Merrill · principes premiers</div><h3 class="t-40">Centrer sur une tâche réelle.</h3><p class="muted">Activer ce qu'on sait, voir faire, faire soi-même, l'intégrer à son travail.</p><div class="chg"><span class="mono">Sur le prototype</span>La lecture devient une tâche en quatre temps.</div></article>
+          <article class="fc" data-i="4"><span class="eyebrow">[Design] · 04 / 08</span><div class="who mono">Gagné · neuf événements</div><h3 class="t-40">Une séance efficace a une anatomie.</h3><p class="muted">De capter l'attention jusqu'à favoriser le transfert, chaque moment a sa fonction.</p><div class="chg"><span class="mono">Sur le prototype</span>Le déroulement suit les neuf événements.</div></article>
+          <article class="fc" data-i="5"><span class="eyebrow">[Développement] · 05 / 08</span><div class="who mono">Mayer · principes multimédias</div><h3 class="t-40">Ne pas surcharger la mémoire de travail.</h3><p class="muted">Moins de texte à l'écran, une image qui explique, rien de décoratif.</p><div class="chg"><span class="mono">Sur le prototype</span>Le mur de texte fond&nbsp;; l'image prend le relais.</div></article>
+          <article class="fc" data-i="6"><span class="eyebrow">[Développement] · 06 / 08</span><div class="who mono">Ludification</div><h3 class="t-40">Récompenser la décision, pas le clic.</h3><p class="muted">Des points, oui, s'ils comptent ce que l'apprenant sait faire.</p><div class="chg"><span class="mono">Sur le prototype</span>Le pointage compte les bonnes décisions.</div></article>
+          <article class="fc" data-i="7"><span class="eyebrow">[Implémentation → Évaluation] · 07 / 08</span><div class="who mono">La boucle didactique · ma méthode</div><h3 class="t-40">Auditer la version, critère par critère, puis réviser.</h3><p class="muted"><span class='crit'><b>Alignement</b><b>Charge cognitive</b><b>Pratique</b><b>Rétroaction</b><b>Transfert</b></span></p><div class="chg"><span class="mono">Sur le prototype</span>Le vrai-ou-faux devient une décision en situation, avec sa conséquence.</div></article>
+          <article class="fc" data-i="8"><span class="eyebrow">[Itération] · 08 / 08</span><div class="who mono">SAM · approximations successives</div><h3 class="t-40">Prototyper, essayer, réviser, en boucles courtes.</h3><p class="muted">Longtemps trop coûteux. L'IA le rend enfin rapide&nbsp;: c'est là que se joue le métier.</p><div class="chg"><span class="mono">Sur le prototype</span>ADDIE se referme en boucle.</div></article>
+        </div>
+        <div class="scr cut-md" id="scr" data-step="0">
+          <div class="s-bar"><span>Module 3 / 12</span><span class="s-obj">Objectif · niveau 3&nbsp;: repérer un courriel frauduleux au travail</span></div>
+          <div class="s-sit">► 8 h 12 — « Votre compte sera suspendu. Confirmez votre mot de passe ici. »</div>
+          <h4 class="s-title"><span class="t0">Module 3 — Les courriels frauduleux</span><span class="t1">Ce courriel vient-il vraiment de votre banque&nbsp;?</span></h4>
+          <div class="s-merrill"><span>Activer</span><span>Démontrer</span><span>Appliquer</span><span>Intégrer</span></div>
+          <div class="s-body"><div class="s-img"><svg id="topoScr" viewBox="0 0 400 400"></svg></div><div class="s-para"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+          <div class="s-quiz">
+            <div class="qa">Q1. Vrai ou faux&nbsp;: l'hameçonnage est une forme de fraude.<span>○ Vrai</span><span>○ Faux</span></div>
+            <div class="qb"><div class="ch">Cliquer pour vérifier</div><div class="ch pick">Examiner l'adresse de l'expéditeur</div><div class="ch">Répondre au courriel</div>
+              <div class="fb">✓ Bon réflexe&nbsp;: l'adresse est « banque-securite.co ». Vous venez d'éviter la fraude.</div></div>
+          </div>
+          <div class="s-foot"><div class="s-gagne"><div class="dots9"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><span class="mono" id="gLbl"></span></div><span class="s-score mono">Décisions justes · 2 / 3</span><span class="s-next mono">Suivant ›</span></div>
+        </div>
+      </div>
+      <div class="steps" aria-hidden="true"><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i></div>
+    </div>
+  </section>
+
+  <!-- 5. COMPÉTENCES -->
+  <div id="competences"></div>
+  <section class="feature">
+    <div class="txt rise">
+      <div class="eyehead"><span class="pic">01</span><span class="eyebrow">Andragogie</span></div>
+      <h2 class="t-40">Trente ans devant des adultes</h2>
+      <p class="muted">Enseignant, conseiller pédagogique, suppléant en formation générale&nbsp;: je sais ce qui retient un adulte en classe, et ce qui le fait décrocher. Aucun logiciel ne remplace ça.</p>
+      <a class="link" href="#fond"><span class="ar"><svg viewBox="0 0 7 5"><path d="M0 0h7L3.5 5z" fill="currentColor"/></svg><svg viewBox="0 0 7 5"><path d="M0 0h7L3.5 5z" fill="currentColor"/></svg></span>Voir la démonstration</a>
+      <div class="stat cut-sm"><span class="n"><span class="roll" data-to="22"></span></span><span class="d">critères dans la grille de ma boucle didactique</span></div>
+    </div>
+    <div class="viz cut rise"><div class="bars" data-bars="40,65,52,88,74,96"><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+  </section>
+  <section class="feature">
+    <div class="txt rise">
+      <div class="eyehead"><span class="pic">02</span><span class="eyebrow">Gestion</span></div>
+      <h2 class="t-40">Mener une équipe et un projet</h2>
+      <p class="muted">Treize ans à diriger des centres&nbsp;: des équipes enseignantes, des budgets, des programmes, des échéances. Un projet de formation, c'est aussi ça.</p>
+      <a class="link" href="#parcours"><span class="ar"><svg viewBox="0 0 7 5"><path d="M0 0h7L3.5 5z" fill="currentColor"/></svg><svg viewBox="0 0 7 5"><path d="M0 0h7L3.5 5z" fill="currentColor"/></svg></span>Voir le parcours</a>
+      <div class="stat cut-sm"><span class="n"><span class="roll" data-to="3"></span></span><span class="d">centres d'éducation des adultes dirigés</span></div>
+    </div>
+    <div class="viz cut rise"><svg id="topoF2" viewBox="0 0 400 400" style="width:70%;height:auto" aria-hidden="true"></svg></div>
+  </section>
+
+  <!-- 6. PARCOURS -->
+  <section class="cases" id="parcours">
+    <div class="in-w">
+      <h2 class="t-40 lines" style="max-width:30rem"><span><span>Trente ans sur le terrain</span></span><span><span>de l'éducation des adultes</span></span></h2>
+      <div class="row">
+        <nav aria-label="Expériences" id="casesNav"></nav>
+        <div class="viewport"><div class="strip" id="strip">
+          <div class="slide-c">
+            <div class="c forest cut-md"><span class="eyebrow">2008 — 2021</span><div class="q">Treize ans à diriger des centres d'éducation des adultes&nbsp;: des équipes, des programmes, et le virage numérique.</div><span class="eyebrow">Directeur · Centre Tétreaultville · CSDM</span></div>
+            <div class="c light cut-md"><span class="eyebrow">Gestion</span><div class="big"><span class="roll" data-to="13"></span> ans</div><span class="eyebrow">directeur adjoint, par intérim, puis directeur — trois centres</span></div>
+          </div>
+          <div class="slide-c">
+            <div class="c gold cut-md"><span class="eyebrow">1999 — 2008</span><div class="q">Conseiller pédagogique en mathématique, sciences et informatique pour tout le réseau de l'éducation des adultes.</div><span class="eyebrow">Conseiller pédagogique · Réseau éducation des adultes · CSDM</span></div>
+            <div class="c light cut-md"><span class="eyebrow">Précurseur</span><div class="big"><span class="roll" data-to="2003"></span></div><span class="eyebrow">premières capsules vidéo d'apprentissage, présentées à l'AQUOPS</span></div>
+          </div>
+          <div class="slide-c">
+            <div class="c sea cut-md"><span class="eyebrow">1992 — 1999 · 2023 —</span><div class="q">En classe avec des adultes&nbsp;: sciences, mathématique, informatique. De retour en classe depuis 2023, pendant que le métier bascule.</div><span class="eyebrow">Enseignant · Formation générale des adultes · CSSDM</span></div>
+            <div class="c light cut-md"><span class="eyebrow">Fondement</span><div class="big">M.&nbsp;Sc.</div><span class="eyebrow">didactique — UQAM, 1994</span></div>
+          </div>
+        </div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. CONTACT -->
+  <section class="dev" id="contact">
+    <div class="rise">
+      <span class="eyebrow">[Contact]</span>
+      <h2 class="t-48" style="margin:14px 0 12px">On en parle ?</h2>
+      <p class="muted t-body">Disponible pour des mandats de conception pédagogique, à contrat ou en emploi. Vous avez un prototype, ou seulement une idée&nbsp;? Faisons-en une vraie formation.</p>
+      <div style="display:flex;gap:16px;margin-top:28px;flex-wrap:wrap"><a class="btn dark" href="mailto:tousignantd@gmail.com"><i></i><span>Écrire un courriel</span></a><a class="btn" href="https://www.linkedin.com/in/daniel-tousignant-885ba232" target="_blank" rel="noopener"><i></i><span>LinkedIn</span></a></div>
+    </div>
+    <div class="term cut rise" id="term"></div>
+  </section>
+  <footer><span>© 2026 Daniel Tousignant</span><span id="pct">000%</span></footer>
+</div>
+
+<script>
+(() => {
+const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v));
+const range=(p,a,b)=>clamp((p-a)/(b-a));           // remappe p de [a,b] vers [0,1]
+const ease=t=>1-Math.pow(1-t,3);
+
+/* ── Illustration « topographique hachurée » : anneaux ondulés + cœur hachuré ──
+   Remplace les fichiers Rive de Spade par un SVG généré. */
+function topo(svg,{rings=14,seed=1,fill='var(--forest)',bg='var(--sage-2)'}={}){
+  const NS='http://www.w3.org/2000/svg',cx=200,cy=200,id='h'+Math.random().toString(36).slice(2,7);
+  const ph=[seed*1.7,seed*2.9,seed*4.1,seed*0.6];
+  const pathFor=(R,j)=>{let d='';for(let i=0;i<=160;i++){const t=i/160*Math.PI*2;
+    const r=R*(1+.14*Math.sin(2*t+ph[0]+j*.05)+.08*Math.sin(3*t+ph[1]-j*.07)+.05*Math.sin(5*t+ph[2]+j*.11)+.025*Math.sin(9*t+ph[3]));
+    d+=(i?'L':'M')+(cx+r*Math.cos(t)).toFixed(1)+' '+(cy+r*Math.sin(t)*1.08).toFixed(1);}return d+'Z';};
+  svg.innerHTML=`<defs><pattern id="${id}" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" stroke="${fill}" stroke-width="1.3"/></pattern><clipPath id="${id}c"><path d="${pathFor(62,0)}"/></clipPath></defs>`;
+  const g=document.createElementNS(NS,'g');svg.appendChild(g);
+  const core=document.createElementNS(NS,'rect');
+  Object.entries({x:0,y:0,width:400,height:400,fill:`url(#${id})`,'clip-path':`url(#${id}c)`}).forEach(([k,v])=>core.setAttribute(k,v));
+  core.classList.add('core');g.appendChild(core);
+  const paths=[];
+  for(let j=0;j<rings;j++){const p=document.createElementNS(NS,'path');
+    p.setAttribute('d',pathFor(62+j*9.5,j));p.setAttribute('fill','none');p.setAttribute('stroke',fill);
+    p.setAttribute('stroke-width',j%4===0?1.4:.9);p.setAttribute('pathLength','1');
+    p.style.strokeDasharray='1';p.style.strokeDashoffset='1';g.appendChild(p);paths.push(p);}
+  return {paths,core,
+    set(t){ // t ∈ [0,1] : tracé progressif, de l'intérieur vers l'extérieur
+      paths.forEach((p,j)=>{const s=j/rings*.6;p.style.strokeDashoffset=1-ease(range(t,s,s+.4));});
+      core.style.opacity=ease(range(t,0,.35));}};
+}
+const heroT=topo(document.getElementById('topoHero'),{seed:1});
+const f2T=topo(document.getElementById('topoF2'),{seed:3.1,rings:12});
+
+/* ── Entrée d'ouverture : tracé animé dans le temps ── */
+function playTimed(T,dur=2200){if(RM){T.set(1);return;}const t0=performance.now();
+  const step=n=>{const t=clamp((n-t0)/dur);T.set(t);if(t<1)requestAnimationFrame(step);};requestAnimationFrame(step);}
+requestAnimationFrame(()=>{document.getElementById('hero').classList.add('in');document.querySelectorAll('.hero .rise').forEach((e,i)=>setTimeout(()=>e.classList.add('in'),500+i*120));});
+setTimeout(()=>playTimed(heroT),250);
+
+/* ── Horloge en direct dans la carte ── */
+const clock=document.getElementById('clock');
+const tick=()=>{const d=new Date(),z=n=>String(n).padStart(2,'0');clock.textContent=`${d.getFullYear()}-${z(d.getMonth()+1)}-${z(d.getDate())} ${z(d.getHours())}:${z(d.getMinutes())}:${z(d.getSeconds())}`;};
+tick();setInterval(tick,1000);
+
+/* ── Bande défilante : on double le contenu pour boucler sans raccord ── */
+const track=document.getElementById('track');track.innerHTML+=track.innerHTML;
+
+/* ── Compteurs à rouleaux ── */
+document.querySelectorAll('.roll').forEach(r=>{
+  const s=String(r.dataset.to);r.innerHTML=[...s].map(()=>`<span class="col">${[...'0123456789'].map(d=>`<span>${d}</span>`).join('')}</span>`).join('');
+  r._play=()=>[...r.children].forEach((c,i)=>{c.style.transitionDelay=(i*.08)+'s';c.style.transform=`translateY(${-s[i]*1.15}em)`;});
+});
+
+/* ── Révélations déclenchées à l'entrée dans l'écran ── */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;const el=e.target;
+  el.classList.add('in');el.querySelectorAll?.('.roll').forEach(r=>r._play());
+  if(el.matches('.roll'))el._play();
+  el.querySelectorAll?.('.bars').forEach(b=>{const v=b.dataset.bars.split(',');[...b.children].forEach((i,k)=>{i.style.transitionDelay=k*.07+'s';i.style.height=v[k]+'%';});});
+  if(el.querySelector?.('#topoF2'))playTimed(f2T,1800);
+  if(el.id==='term')typeTerm();
+  io.unobserve(el);}),{threshold:.25});
+document.querySelectorAll('.rise:not(.hero .rise),.lines:not(.hero .lines),.slide-c .roll').forEach(e=>io.observe(e));
+
+/* ── Moteur de défilement : une seule boucle rAF, chaque scène lit sa progression ── */
+const hdr=document.getElementById('hdr'),pct=document.getElementById('pct');
+const progress=el=>{const r=el.getBoundingClientRect();return clamp(-r.top/(r.height-innerHeight));};
+const tour=document.getElementById('tour'),T=q=>tour.querySelector(q);
+const tPanel=T('.panel'),tCap=T('.cap'),tLab=T('.lab'),tHa=T('.ha'),tHb=T('.hb'),tLc=T('.lc'),tLd=T('.ld'),tLe=T('.le'),
+      segs=[...T('#bar').children],keep=[...T('.keep').children],genCount=T('#genCount'),barEnd=T('#barEnd');
+// Surabondance : cartes de « produits d'information » semées au hasard (graine fixe → même disposition à chaque visite)
+const INFO=[['Module 4','Politique interne'],['Vidéo','4 min 12 s'],['Quiz','10/10 ✓'],['Fiche PDF','À lire'],['Diapositives','1 à 38'],['Test à chaud','Réussi ✓'],['Microcapsule','90 s'],['Glossaire','42 termes'],['Conformité','Case cochée ✓'],['Module 7','Procédures'],['Infographie','Résumé'],['Balado','12 min']];
+let seed=7;const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;
+const pile=T('#pile'),cards=[];
+const NCARDS=matchMedia('(max-width:760px)').matches?36:72;
+for(let k=0;k<NCARDS;k++){const [a,b]=INFO[k%INFO.length],el=document.createElement('div');el.className='ic';
+  el.innerHTML=`<b>${a}</b>${b}<i></i><i></i>`;el.style.left=(rnd()*88)+'%';el.style.top=(8+rnd()*80)+'%';pile.appendChild(el);
+  cards.push({el,t:.42+rnd()*.17,rot:(rnd()-.5)*14,fall:rnd(),dir:rnd()<.5?-1:1});}
+const fond=document.getElementById('fond'),scr=document.getElementById('scr'),fcs=[...fond.querySelectorAll('.fc')],
+      railS=[...fond.querySelectorAll('.rail span')],rail=document.getElementById('rail'),stepBars=[...fond.querySelectorAll('.steps b')],
+      g9=[...fond.querySelectorAll('.dots9 i')],gLbl=document.getElementById('gLbl');
+const scrT=topo(document.getElementById('topoScr'),{seed:5.2,rings:9});scrT.set(1);
+// Phase(s) ADDIE éclairée(s) à chaque étape — Kirkpatrick touche le début ET la fin
+const PH=[[],[0],[0,4],[1],[1],[2],[2],[3,4],[0,1,2,3,4]];
+const GAGNE=['Capter l\'attention','Annoncer l\'objectif','Rappeler les acquis','Présenter le contenu','Guider','Faire pratiquer','Rétroagir','Évaluer','Favoriser le transfert'];
+let lastStep=-1;
+const fgrid=fond.querySelector('.grid');
+const fcards=fond.querySelector('.cards'),narrow=matchMedia('(max-width:900px)');
+const fitScr=()=>{const avail=narrow.matches?fgrid.clientHeight-fcards.offsetHeight-16:fgrid.clientHeight-8;const s=Math.min(1,avail/scr.offsetHeight);scr.style.transform=s<1?`scale(${s.toFixed(3)})`:'';};
+scr.addEventListener('transitionend',fitScr);addEventListener('resize',fitScr);
+const parallax=[...document.querySelectorAll('[data-speed]')];
+let ticking=false;
+function frame(){ticking=false;const y=scrollY;
+  hdr.classList.toggle('scrolled',y>4);
+  pct.textContent=String(Math.round(y/(document.documentElement.scrollHeight-innerHeight)*100)).padStart(3,'0')+'%';
+  parallax.forEach(e=>e.style.transform=`translateY(${y*+e.dataset.speed}px)`);
+
+  // Le tournant — A (0→.10) semaines de logiciel · B (.10→.32) la barre se comprime ·
+  //   C (.42→.60) surabondance · D (.62→.80) le filtre, les cartes tombent · E (.84→1) informer / former
+  const p=progress(tour);
+  const m=ease(range(p,.10,.30));
+  segs.forEach(sg=>{const a=+sg.dataset.a,b=+sg.dataset.b;sg.style.flexBasis=`calc(${a+(b-a)*m}% - 3px)`;sg.style.display=(a+(b-a)*m)<.3?'none':'flex';});
+  barEnd.textContent=m<.5||innerWidth<=760?'6 semaines':'6 semaines · 1 h de prototype, le reste en conception';
+  tHa.style.opacity=1-range(p,.12,.19);tHa.style.transform=`translateY(${-20*range(p,.12,.19)}px)`;
+  tHb.style.opacity=range(p,.19,.26);tHb.style.transform=`translateY(${20*(1-range(p,.19,.26))}px)`;
+  const out=range(p,.36,.43);
+  tLab.style.opacity=1-out;tPanel.style.opacity=1-range(p,.38,.46);tCap.style.opacity=1-range(p,.38,.44);
+  tLc.style.opacity=range(p,.42,.46)*(1-range(p,.60,.64));
+  genCount.textContent=String(Math.round(Math.pow(range(p,.42,.62),2)*48250)).padStart(5,'0');
+  cards.forEach(c=>{const sh=range(p,c.t,c.t+.02),f=ease(range(p,.61+c.fall*.08,.65+c.fall*.08));
+    c.el.style.opacity=sh;c.el.style.transform=`translateY(${f*110}vh) rotate(${c.rot+f*50*c.dir}deg) scale(${.9+.1*sh})`;});
+  tLd.style.opacity=range(p,.62,.66)*(1-range(p,.80,.84));
+  keep.forEach((k,i)=>{const t=ease(range(p,.69+i*.025,.73+i*.025));k.style.opacity=t;k.style.transform=`translateY(${24*(1-t)}px)`;});
+  tLe.style.opacity=range(p,.84,.90);tLe.style.transform=`translateY(${24*(1-range(p,.84,.90))}px)`;
+
+
+  // Les fondements — intro, puis 8 étapes égales ; chaque étape est cumulative
+  const f=progress(fond),START=.07,LEN=.108;
+  const step=f<START?0:Math.min(8,Math.floor((f-START)/LEN)+1),local=f<START?0:clamp((f-START-(step-1)*LEN)/LEN);
+  if(step!==lastStep){lastStep=step;
+    fcs.forEach((c,i)=>c.classList.toggle('on',i===step));
+    for(let k=1;k<=8;k++)scr.classList.toggle('k'+k,step>=k);
+    scr.dataset.step=step;scr.style.setProperty('--g',Math.max(0,1-step/5));
+    railS.forEach((r,i)=>r.classList.toggle('on',PH[step].includes(i)));
+    rail.classList.toggle('loopon',step>=8);}
+  fitScr();
+  stepBars.forEach((b,i)=>b.style.transform=`scaleX(${i+1<step?1:i+1===step?local:0})`);
+  const gOn=step<4?0:step===4?Math.ceil(local*9):9;
+  g9.forEach((d,i)=>d.classList.toggle('on',i<gOn));
+  gLbl.textContent=gOn?`${gOn} / 9 · ${GAGNE[gOn-1]}`:'';
+}
+const onScroll=()=>{if(!ticking){ticking=true;requestAnimationFrame(frame);}};
+addEventListener('scroll',onScroll,{passive:true});addEventListener('resize',onScroll);frame();
+
+/* ── Carrousel du parcours : barres qui se remplissent, avance automatique ── */
+const strip=document.getElementById('strip'),nav=document.getElementById('casesNav'),n=strip.children.length;let cur=0;
+nav.innerHTML=Array.from({length:n},(_,i)=>`<button aria-label="Expérience ${i+1} sur ${n}"><i><b></b></i></button>`).join('');
+const btns=[...nav.children];
+function go(i){cur=(i+n)%n;strip.style.transform=`translateX(${-cur*100}%)`;
+  btns.forEach((b,k)=>{b.toggleAttribute('aria-current',k===cur);const bar=b.querySelector('b');bar.style.animation='none';bar.offsetWidth;bar.style.animation='';});
+  strip.children[cur].querySelectorAll('.roll').forEach(r=>r._play());}
+btns.forEach((b,i)=>{b.onclick=()=>go(i);b.querySelector('b').addEventListener('animationend',()=>go(cur+1));});
+go(0);
+// Glisser du doigt sur téléphone
+let tx=null;
+strip.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+strip.addEventListener('touchend',e=>{if(tx===null)return;const dx=e.changedTouches[0].clientX-tx;tx=null;if(Math.abs(dx)>40)go(cur+(dx<0?1:-1));},{passive:true});
+
+/* ── Terminal : frappe caractère par caractère ── */
+const lines=[['k','$ '],['','contact --format json'],['br'],['','{'],['br'],['','  "courriel": '],['s','"tousignantd@gmail.com"'],['',','],['br'],['','  "linkedin": '],['s','"in/daniel-tousignant-885ba232"'],['',','],['br'],['','  "ville": '],['s','"Montréal"'],['',','],['br'],['','  "statut": '],['s','"disponible · contrat ou emploi"'],['br'],['','}']];
+let typed=false;
+function typeTerm(){if(typed)return;typed=true;const t=document.getElementById('term');let li=0,ci=0,span=null;
+  const caret=document.createElement('span');caret.className='caret';t.appendChild(caret);
+  (function step(){if(li>=lines.length)return;const [cls,txt]=lines[li];
+    if(cls==='br'){t.insertBefore(document.createElement('br'),caret);li++;return setTimeout(step,60);}
+    if(ci===0){span=document.createElement('span');if(cls)span.className=cls;t.insertBefore(span,caret);}
+    span.textContent+=txt[ci++];if(ci>=txt.length){li++;ci=0;}
+    setTimeout(step,RM?0:18+Math.random()*30);})();}
+})();
+</script>
+</body>
+</html>
