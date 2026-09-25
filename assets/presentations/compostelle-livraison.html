@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Compostelle — l'application</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap">
+<style>
+/* ═══════════════════════════════════════════════════════════
+   UN MODULE POUR LA VENTE DE CHAUSSURES — LE CADRAGE
+   Chantier « formation en entreprise », second secteur :
+   le commerce de détail. Écrite à la main, comme
+   analyse-marche.html — ses chiffres viennent d'ailleurs et
+   doivent vieillir visiblement.
+
+   Vert : ce que le tour de main actuel produit déjà.
+   Ambre : ce qui attend votre décision.
+   Rouge : l'argument de vente qui tient à une obligation légale.
+   L'acier ne fait que la structure.
+   ═══════════════════════════════════════════════════════════ */
+
+:root{
+  --ground:#F7F7F5; --card:#FFFFFF; --sunken:#FBFBFA;
+  --ink:#17181A; --body:#3A3D40; --muted:#6E7175;
+  --line:#E4E4E0; --line-fort:#D2D2CD;
+
+  --fait:#0A8F5B;    --fait-bg:#E6F5EE;
+  --decid:#C07A08;   --decid-bg:#FBF2E2;
+  --loi:#C7302B;     --loi-bg:#FBEDEC;
+  --acier:#1D6B8F;   --acier-bg:#E7F0F6;
+
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#151618; --card:#1D1F22; --sunken:#212326;
+    --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+    --line:#2E3135; --line-fort:#3D4146;
+    --fait:#4BC48D; --fait-bg:#12291F;
+    --decid:#E0A63F; --decid-bg:#2C2213;
+    --loi:#EE7A73; --loi-bg:#2E1917;
+    --acier:#6DAFD2; --acier-bg:#14242C;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#151618; --card:#1D1F22; --sunken:#212326;
+  --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+  --line:#2E3135; --line-fort:#3D4146;
+  --fait:#4BC48D; --fait-bg:#12291F;
+  --decid:#E0A63F; --decid-bg:#2C2213;
+  --loi:#EE7A73; --loi-bg:#2E1917;
+  --acier:#6DAFD2; --acier-bg:#14242C;
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--body);
+  font-family:Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased}
+.doc{max-width:880px;margin:0 auto;padding:56px 24px 96px}
+
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--acier);margin:0 0 14px}
+h1{font-family:Newsreader,Georgia,serif;font-size:clamp(38px,6.4vw,58px);line-height:1.04;
+  font-weight:500;letter-spacing:-.02em;color:var(--ink);margin:0 0 20px;text-wrap:balance}
+.chapeau{font-size:19px;line-height:1.6;color:var(--body);margin:0;max-width:62ch}
+.chapeau strong{color:var(--ink);font-weight:700}
+h2{font-family:Newsreader,Georgia,serif;font-size:29px;line-height:1.2;font-weight:600;
+  letter-spacing:-.01em;color:var(--ink);margin:0 0 4px;text-wrap:balance}
+h3{font-size:15px;font-weight:800;color:var(--ink);margin:0 0 6px}
+p{margin:0;max-width:68ch}
+section{display:flex;flex-direction:column;gap:16px;padding:44px 0 0;margin:44px 0 0;
+  border-top:1px solid var(--line)}
+section.premier{border-top:none;margin-top:0;padding-top:40px}
+code{font-family:var(--mono);font-size:.86em;background:var(--sunken);
+  border:1px solid var(--line);border-radius:4px;padding:1px 5px;color:var(--ink)}
+ul.simple{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px}
+ul.simple li{max-width:66ch} ul.simple li strong{color:var(--ink)}
+em.art{font-style:normal;font-family:var(--mono);font-size:.82em;color:var(--muted);
+  white-space:nowrap}
+
+.these{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--acier);
+  border-radius:3px;padding:26px 28px;display:flex;flex-direction:column;gap:12px}
+.these p{font-size:18px}
+.these .cle{font-family:Newsreader,Georgia,serif;font-size:23px;line-height:1.3;
+  font-weight:500;color:var(--ink);font-style:italic}
+
+/* ── Les décisions ─────────────────────────────────────── */
+.decisions{display:flex;flex-direction:column;gap:2px;counter-reset:d}
+.dec{counter-increment:d;background:var(--card);border:1px solid var(--line);
+  border-left:5px solid var(--decid);border-radius:3px;padding:19px 22px 19px 60px;
+  position:relative;display:flex;flex-direction:column;gap:8px}
+.dec.ok{border-left-color:var(--fait)}
+.dec::before{content:counter(d);position:absolute;left:24px;top:18px;
+  font-family:var(--mono);font-size:14px;color:var(--muted)}
+.dec .ligne{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;
+  justify-content:space-between}
+.dec p{font-size:15.5px}
+.dec .defaut{font-size:13.5px;color:var(--muted);font-style:italic}
+
+.badge{display:inline-block;font-size:11.5px;font-weight:800;letter-spacing:.05em;
+  text-transform:uppercase;padding:3px 9px;border-radius:2px;white-space:nowrap}
+.b-fait{background:var(--fait-bg);color:var(--fait)}
+.b-dec{background:var(--decid-bg);color:var(--decid)}
+.b-loi{background:var(--loi-bg);color:var(--loi)}
+.b-n{background:var(--sunken);color:var(--muted);border:1px solid var(--line)}
+
+/* ── Tableaux ──────────────────────────────────────────── */
+.defile{overflow-x:auto;border:1px solid var(--line);border-radius:3px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:15px;min-width:640px}
+caption{caption-side:top;text-align:left;padding:0 0 10px;font-size:13.5px;color:var(--muted)}
+th,td{padding:12px 15px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{font-size:11.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--muted);background:var(--sunken);white-space:nowrap}
+tbody tr:last-child td{border-bottom:none}
+td.q{font-weight:700;color:var(--ink)}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+td small{display:block;color:var(--muted);font-size:13px;line-height:1.45;margin-top:3px}
+tbody tr td:first-child{border-left:4px solid transparent}
+tr.l td:first-child{border-left-color:var(--loi)}
+tr.d td:first-child{border-left-color:var(--decid)}
+tr.f td:first-child{border-left-color:var(--fait)}
+
+/* ── Chiffres ──────────────────────────────────────────── */
+.chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.ch{background:var(--card);border:1px solid var(--line);border-radius:3px;
+  border-top:3px solid var(--acier);padding:15px 16px}
+.ch .n{font-family:Newsreader,Georgia,serif;font-size:30px;line-height:1;font-weight:500;
+  color:var(--ink);display:block;font-variant-numeric:tabular-nums}
+.ch .q{font-size:12.5px;font-weight:700;color:var(--muted);line-height:1.35;display:block;margin-top:7px}
+
+/* ── Marche à suivre ───────────────────────────────────── */
+ol.actions{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;
+  counter-reset:a}
+ol.actions li{counter-increment:a;background:var(--card);border:1px solid var(--line);
+  border-radius:3px;padding:18px 22px 18px 62px;position:relative;display:flex;
+  flex-direction:column;gap:6px}
+ol.actions li::before{content:counter(a);position:absolute;left:22px;top:17px;
+  font-family:var(--mono);font-size:14px;color:var(--muted)}
+ol.actions li p{font-size:15.5px}
+.qui{font-size:13px;color:var(--muted);font-style:italic}
+
+.reserve{border:1px dashed var(--line-fort);border-radius:3px;padding:20px 24px;
+  font-size:15px;color:var(--muted);display:flex;flex-direction:column;gap:9px}
+.reserve strong{color:var(--body)}
+.avert{background:var(--loi-bg);border:1px solid var(--loi);border-radius:3px;
+  padding:20px 24px;display:flex;flex-direction:column;gap:9px}
+.avert strong{color:var(--ink)}
+.avert p{font-size:15.5px;color:var(--body)}
+.pied{margin-top:52px;padding-top:22px;border-top:1px solid var(--line);font-size:13.5px;
+  color:var(--muted);display:flex;flex-direction:column;gap:5px}
+@media (max-width:620px){ .doc{padding:36px 18px 72px} }
+
+/* ── décisions à boutons (plan magasin de vêtements) ── */
+.dec2{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:12px 0}
+.dq{margin:0 0 10px;font-weight:700;color:var(--ink)}
+.dn{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--decid-bg);color:var(--decid);font-size:13px;margin-right:8px}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opt{font:inherit;font-size:15px;text-align:left;cursor:pointer;background:var(--sunken);color:var(--body);border:1px solid var(--line-fort);border-radius:10px;padding:8px 12px}
+.opt:hover{border-color:var(--acier)}
+.opt[aria-pressed="true"]{background:var(--fait-bg);border-color:var(--fait);color:var(--ink);font-weight:700}
+.opt .tag{font-size:12px;color:var(--decid);font-weight:700;margin-left:4px}
+.dw{margin:10px 0 0;font-size:15px;color:var(--muted)}
+.btn-export{font:inherit;font-weight:700;cursor:pointer;background:var(--acier);color:#fff;border:0;border-radius:10px;padding:10px 16px}
+.etat{margin-left:12px;color:var(--muted);font-size:15px}
+table{display:block;overflow-x:auto}
+</style>
+<style>
+  .doc{padding-top:26px}
+  .retour{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;
+    color:var(--muted);text-decoration:none;margin-bottom:34px}
+  .retour:hover{color:var(--acier)}
+  table.cmp{width:100%;border-collapse:collapse;font-size:15px;background:var(--card);
+    border:1px solid var(--line);border-radius:3px;overflow:hidden}
+  table.cmp th,table.cmp td{padding:13px 15px;text-align:left;vertical-align:top;
+    border-bottom:1px solid var(--line)}
+  table.cmp thead th{background:var(--sunken);font-size:12px;font-weight:800;
+    letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+  table.cmp tbody tr:last-child td{border-bottom:0}
+  table.cmp td:first-child{font-weight:700;color:var(--ink)}
+  .roule{overflow-x:auto}
+  .voie{background:var(--card);border:1px solid var(--line);border-radius:3px;
+    padding:24px 26px;display:flex;flex-direction:column;gap:11px}
+  .voie.oui{border-color:var(--fait);border-width:2px;padding:23px 25px}
+  .voie.non{border-left:5px solid var(--loi)}
+  .voie h3{font-size:19px;font-family:Newsreader,Georgia,serif;font-weight:600;margin:0}
+  .voie .cout{font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+  .verdict{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+    padding:3px 10px;border-radius:99px;align-self:flex-start}
+  .v-oui{background:var(--fait-bg);color:var(--fait)}
+  .v-peut{background:var(--decid-bg);color:var(--decid)}
+  .v-non{background:var(--loi-bg);color:var(--loi)}
+  .mes{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:2px;
+    background:var(--line);border:1px solid var(--line);border-radius:3px;overflow:hidden}
+  .mes div{background:var(--card);padding:16px 18px}
+  .mes b{display:block;font-family:Newsreader,Georgia,serif;font-size:27px;font-weight:500;
+    color:var(--ink);line-height:1.1}
+  .mes span{font-size:13px;color:var(--muted)}
+  .planche{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+  .planche figure{margin:0;background:var(--card);border:1px solid var(--line);
+    border-radius:3px;overflow:hidden;display:flex;flex-direction:column}
+  .planche figure.large{grid-column:1 / -1}
+  .planche img{display:block;width:100%;height:auto;background:var(--sunken)}
+  .planche figcaption{padding:13px 16px 15px;font-size:14px;line-height:1.5;color:var(--muted);
+    border-top:1px solid var(--line)}
+  .planche figcaption b{display:block;color:var(--ink);font-size:14.5px;margin-bottom:2px}
+  @media (max-width:620px){ .planche{grid-template-columns:1fr} }
+  .doc p a,.doc li a,.doc td a{color:var(--acier);text-decoration:underline;
+    text-underline-offset:2px;text-decoration-thickness:1px}
+  ul.src{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:7px;font-size:14.5px}
+  ul.src li{color:var(--muted)} ul.src .d{font-family:var(--mono);font-size:12.5px}
+  h3.sous{font-family:Newsreader,Georgia,serif;font-size:21px;font-weight:600;
+    letter-spacing:-.01em;color:var(--ink);margin:14px 0 0}
+  @media (max-width:640px){ .doc{padding-left:18px;padding-right:18px} }
+</style>
+<style>
+table.cmp{display:block;max-width:100%;min-width:0;overflow-x:auto}
+.qr{display:grid;grid-template-columns:200px minmax(0,1fr);gap:22px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:3px;padding:20px}
+.qr svg{width:100%;height:auto}
+@media (max-width:640px){.qr{grid-template-columns:1fr}.qr svg{max-width:220px}}
+.portraits{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:12px}
+.portraits figure{margin:0;text-align:center}
+.portraits img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:50%;background:#fff;border:1px solid var(--line)}
+.portraits figcaption{font-size:13px;line-height:1.3;color:var(--muted);margin-top:6px}
+.portraits b{display:block;color:var(--body)}
+.ecoute{display:flex;flex-direction:column;gap:10px}
+.ecoute div{background:var(--card);border:1px solid var(--line);border-radius:3px;padding:12px 14px}
+.ecoute audio{width:100%;margin-top:6px}
+.ecoute small{color:var(--muted)}
+.btn-app{display:inline-block;background:#0A8F5B;color:#fff;font-weight:800;text-decoration:none;padding:12px 18px;border-radius:10px}
+</style>
+</head>
+<body>
+<div class="doc">
+<a class="retour" href="/presentations.html"><span aria-hidden="true">&#8592;</span> Le classeur</a>
+<p class="eyebrow">Voyage &middot; grand public &middot; chemin de Saint-Jacques</p>
+<h1>En route vers Compostelle &mdash; l'application</h1>
+<p class="chapeau">Construite pendant votre absence, le 25 septembre 2026, à partir du plan. Une application pour
+<strong>téléphone</strong> : dix journées, une par étape du Camino francés, de Roncesvalles à Santiago ; une credencial
+qui se remplit de tampons ; des voix d'Espagne ; et Marta, une pèlerine de Valladolid, qu'on retrouve chaque soir.</p>
+
+<section class="premier">
+  <h2>L'ouvrir sur votre téléphone</h2>
+  <div class="qr"><svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 45 45" shape-rendering="crispEdges" role="img" aria-label="Code QR de la séance"><rect width="45" height="45" fill="#FFFFFF"/><path fill="#17181A" d="M4 4h7v1h-7zM13 4h1v1h-1zM15 4h1v1h-1zM18 4h1v1h-1zM20 4h1v1h-1zM22 4h1v1h-1zM24 4h1v1h-1zM27 4h1v1h-1zM29 4h4v1h-4zM34 4h7v1h-7zM4 5h1v1h-1zM10 5h1v1h-1zM14 5h1v1h-1zM16 5h1v1h-1zM19 5h3v1h-3zM23 5h1v1h-1zM26 5h1v1h-1zM28 5h1v1h-1zM30 5h1v1h-1zM32 5h1v1h-1zM34 5h1v1h-1zM40 5h1v1h-1zM4 6h1v1h-1zM6 6h3v1h-3zM10 6h1v1h-1zM12 6h1v1h-1zM14 6h1v1h-1zM18 6h5v1h-5zM24 6h5v1h-5zM30 6h3v1h-3zM34 6h1v1h-1zM36 6h3v1h-3zM40 6h1v1h-1zM4 7h1v1h-1zM6 7h3v1h-3zM10 7h1v1h-1zM13 7h1v1h-1zM15 7h1v1h-1zM17 7h3v1h-3zM24 7h1v1h-1zM29 7h1v1h-1zM31 7h2v1h-2zM34 7h1v1h-1zM36 7h3v1h-3zM40 7h1v1h-1zM4 8h1v1h-1zM6 8h3v1h-3zM10 8h1v1h-1zM12 8h1v1h-1zM15 8h1v1h-1zM18 8h2v1h-2zM21 8h1v1h-1zM25 8h1v1h-1zM27 8h1v1h-1zM30 8h2v1h-2zM34 8h1v1h-1zM36 8h3v1h-3zM40 8h1v1h-1zM4 9h1v1h-1zM10 9h1v1h-1zM12 9h4v1h-4zM18 9h1v1h-1zM21 9h1v1h-1zM23 9h1v1h-1zM25 9h2v1h-2zM28 9h1v1h-1zM32 9h1v1h-1zM34 9h1v1h-1zM40 9h1v1h-1zM4 10h7v1h-7zM12 10h1v1h-1zM14 10h1v1h-1zM16 10h1v1h-1zM18 10h1v1h-1zM20 10h1v1h-1zM22 10h1v1h-1zM24 10h1v1h-1zM26 10h1v1h-1zM28 10h1v1h-1zM30 10h1v1h-1zM32 10h1v1h-1zM34 10h7v1h-7zM13 11h2v1h-2zM22 11h7v1h-7zM30 11h1v1h-1zM5 12h1v1h-1zM8 12h1v1h-1zM10 12h1v1h-1zM12 12h1v1h-1zM15 12h2v1h-2zM18 12h1v1h-1zM20 12h1v1h-1zM22 12h1v1h-1zM24 12h3v1h-3zM28 12h1v1h-1zM31 12h1v1h-1zM33 12h1v1h-1zM35 12h2v1h-2zM38 12h1v1h-1zM6 13h3v1h-3zM11 13h2v1h-2zM14 13h2v1h-2zM19 13h1v1h-1zM23 13h1v1h-1zM25 13h1v1h-1zM27 13h2v1h-2zM31 13h2v1h-2zM36 13h2v1h-2zM5 14h1v1h-1zM7 14h1v1h-1zM10 14h1v1h-1zM13 14h1v1h-1zM15 14h5v1h-5zM23 14h1v1h-1zM27 14h7v1h-7zM35 14h2v1h-2zM38 14h1v1h-1zM4 15h1v1h-1zM7 15h3v1h-3zM12 15h3v1h-3zM17 15h2v1h-2zM20 15h3v1h-3zM25 15h1v1h-1zM30 15h4v1h-4zM38 15h1v1h-1zM40 15h1v1h-1zM5 16h1v1h-1zM7 16h1v1h-1zM10 16h1v1h-1zM13 16h3v1h-3zM17 16h1v1h-1zM19 16h2v1h-2zM22 16h1v1h-1zM25 16h2v1h-2zM32 16h3v1h-3zM37 16h3v1h-3zM6 17h1v1h-1zM8 17h2v1h-2zM11 17h1v1h-1zM13 17h2v1h-2zM18 17h4v1h-4zM24 17h2v1h-2zM27 17h1v1h-1zM31 17h3v1h-3zM36 17h1v1h-1zM38 17h1v1h-1zM5 18h2v1h-2zM8 18h4v1h-4zM14 18h1v1h-1zM21 18h1v1h-1zM25 18h1v1h-1zM27 18h1v1h-1zM29 18h3v1h-3zM37 18h3v1h-3zM4 19h1v1h-1zM8 19h1v1h-1zM12 19h4v1h-4zM17 19h1v1h-1zM19 19h1v1h-1zM21 19h1v1h-1zM25 19h2v1h-2zM31 19h1v1h-1zM35 19h1v1h-1zM38 19h2v1h-2zM5 20h3v1h-3zM10 20h2v1h-2zM16 20h4v1h-4zM21 20h2v1h-2zM24 20h3v1h-3zM28 20h1v1h-1zM33 20h2v1h-2zM37 20h3v1h-3zM13 21h3v1h-3zM18 21h1v1h-1zM20 21h1v1h-1zM23 21h1v1h-1zM27 21h1v1h-1zM30 21h3v1h-3zM36 21h3v1h-3zM4 22h1v1h-1zM6 22h1v1h-1zM9 22h5v1h-5zM15 22h1v1h-1zM19 22h1v1h-1zM21 22h1v1h-1zM24 22h5v1h-5zM30 22h3v1h-3zM37 22h1v1h-1zM6 23h3v1h-3zM12 23h1v1h-1zM15 23h1v1h-1zM17 23h2v1h-2zM21 23h2v1h-2zM24 23h2v1h-2zM27 23h2v1h-2zM30 23h1v1h-1zM32 23h1v1h-1zM35 23h1v1h-1zM38 23h2v1h-2zM5 24h1v1h-1zM8 24h3v1h-3zM14 24h3v1h-3zM20 24h1v1h-1zM23 24h1v1h-1zM25 24h2v1h-2zM33 24h2v1h-2zM38 24h2v1h-2zM4 25h1v1h-1zM7 25h1v1h-1zM12 25h1v1h-1zM16 25h1v1h-1zM19 25h2v1h-2zM23 25h2v1h-2zM27 25h1v1h-1zM29 25h3v1h-3zM36 25h3v1h-3zM5 26h1v1h-1zM9 26h2v1h-2zM12 26h2v1h-2zM15 26h1v1h-1zM18 26h2v1h-2zM21 26h2v1h-2zM24 26h1v1h-1zM26 26h4v1h-4zM31 26h2v1h-2zM34 26h1v1h-1zM38 26h1v1h-1zM4 27h1v1h-1zM6 27h1v1h-1zM9 27h1v1h-1zM12 27h1v1h-1zM14 27h1v1h-1zM16 27h1v1h-1zM18 27h3v1h-3zM22 27h4v1h-4zM27 27h2v1h-2zM30 27h1v1h-1zM32 27h1v1h-1zM34 27h2v1h-2zM38 27h1v1h-1zM4 28h1v1h-1zM6 28h1v1h-1zM8 28h3v1h-3zM13 28h9v1h-9zM23 28h4v1h-4zM31 28h5v1h-5zM38 28h2v1h-2zM4 29h2v1h-2zM8 29h1v1h-1zM11 29h1v1h-1zM16 29h4v1h-4zM22 29h1v1h-1zM24 29h2v1h-2zM27 29h1v1h-1zM29 29h1v1h-1zM31 29h2v1h-2zM36 29h1v1h-1zM7 30h2v1h-2zM10 30h1v1h-1zM14 30h2v1h-2zM17 30h2v1h-2zM20 30h1v1h-1zM22 30h1v1h-1zM24 30h1v1h-1zM27 30h2v1h-2zM31 30h1v1h-1zM33 30h1v1h-1zM35 30h2v1h-2zM39 30h1v1h-1zM7 31h1v1h-1zM12 31h2v1h-2zM16 31h2v1h-2zM19 31h4v1h-4zM25 31h3v1h-3zM31 31h1v1h-1zM34 31h5v1h-5zM4 32h2v1h-2zM8 32h1v1h-1zM10 32h2v1h-2zM13 32h1v1h-1zM17 32h2v1h-2zM22 32h6v1h-6zM31 32h6v1h-6zM38 32h1v1h-1zM40 32h1v1h-1zM12 33h1v1h-1zM14 33h1v1h-1zM16 33h4v1h-4zM27 33h1v1h-1zM29 33h2v1h-2zM32 33h1v1h-1zM36 33h2v1h-2zM4 34h7v1h-7zM13 34h1v1h-1zM18 34h4v1h-4zM23 34h3v1h-3zM27 34h3v1h-3zM32 34h1v1h-1zM34 34h1v1h-1zM36 34h3v1h-3zM4 35h1v1h-1zM10 35h1v1h-1zM14 35h2v1h-2zM17 35h6v1h-6zM24 35h2v1h-2zM28 35h1v1h-1zM30 35h1v1h-1zM32 35h1v1h-1zM36 35h1v1h-1zM38 35h1v1h-1zM4 36h1v1h-1zM6 36h3v1h-3zM10 36h1v1h-1zM12 36h1v1h-1zM14 36h2v1h-2zM17 36h2v1h-2zM23 36h3v1h-3zM27 36h2v1h-2zM32 36h7v1h-7zM4 37h1v1h-1zM6 37h3v1h-3zM10 37h1v1h-1zM14 37h1v1h-1zM17 37h2v1h-2zM20 37h2v1h-2zM23 37h3v1h-3zM27 37h1v1h-1zM29 37h2v1h-2zM34 37h2v1h-2zM37 37h1v1h-1zM39 37h1v1h-1zM4 38h1v1h-1zM6 38h3v1h-3zM10 38h1v1h-1zM13 38h4v1h-4zM19 38h3v1h-3zM24 38h1v1h-1zM27 38h1v1h-1zM34 38h2v1h-2zM38 38h2v1h-2zM4 39h1v1h-1zM10 39h1v1h-1zM12 39h2v1h-2zM17 39h1v1h-1zM20 39h1v1h-1zM23 39h3v1h-3zM27 39h2v1h-2zM30 39h1v1h-1zM35 39h2v1h-2zM38 39h2v1h-2zM4 40h7v1h-7zM13 40h1v1h-1zM16 40h1v1h-1zM18 40h3v1h-3zM24 40h3v1h-3zM31 40h1v1h-1zM38 40h3v1h-3z"/></svg>
+   <div><p>Visez le code avec l'appareil photo du téléphone, ou ouvrez :</p>
+   <p><a class="btn-app" href="/modules-autonomes/compostelle/">Ouvrir l'application</a></p>
+   <p style="font-size:14px;color:var(--muted)">https://portail.edufrancis.ca/modules-autonomes/compostelle/ — aucune connexion, aucun code : tout reste dans le téléphone.
+   La première fois, on choisit « pèlerin » ou « pèlerine » (l'espagnol accorde : <i>cansado</i>, <i>cansada</i>).</p></div></div>
+</section>
+
+<section>
+  <h2>Ce qui est fait</h2>
+  <div class="chiffres">
+    <div class="ch"><span class="n">10</span><span class="q">journées, sept temps chacune</span></div>
+    <div class="ch"><span class="n">162</span><span class="q">mots en onze planches, 82 dessinés</span></div>
+    <div class="ch"><span class="n">519</span><span class="q">sons, douze voix d'Espagne</span></div>
+    <div class="ch"><span class="n">10</span><span class="q">faux amis, chacun dans sa phrase</span></div>
+  </div>
+  <table class="cmp"><thead><tr><th>Temps de la journée</th><th>Ce qu'on y fait</th></tr></thead><tbody>
+    <tr><td>1. Le lieu</td><td>La vignette, trois paragraphes pour situer (histoire, tourisme), ce qu'on y visite — avec le mot espagnol et sa voix.</td></tr>
+    <tr><td>2. Les mots du jour</td><td>Des cartes dessinées ; on touche, on entend, la traduction apparaît. Elle reste cachée d'abord.</td></tr>
+    <tr><td>3. J'entends, je trouve</td><td>Un mot entendu, quatre images.</td></tr>
+    <tr><td>4. Ce qu'on me répond</td><td>La famille maîtresse : la personne du lieu répond, à sa vitesse ; que veut-elle dire ? Chaque mauvais choix a sa rétroaction.</td></tr>
+    <tr><td>5. Je le dis</td><td>La situation en français, on la dit au micro (reconnaissance es-ES du navigateur), puis le modèle.</td></tr>
+    <tr><td>6. La scène</td><td>La situation jouée avec la personne du lieu : ses répliques en voix, nos choix, la rétroaction. À León, l'allergie est <b>éliminatoire</b> et le dit d'avance.</td></tr>
+    <tr><td>7. Le soir, avec Marta</td><td>La conversation du lieu (les jambes, la nourriture, pourquoi on marche, la pierre de la Cruz de Ferro, l'au revoir). Sa voix porte une intention par réplique. Elle se souvient : la raison choisie sur la Meseta revient à Santiago.</td></tr>
+  </tbody></table>
+  <p style="margin-top:14px">Et autour : <b>la poche</b> (onze rubriques, les urgences, « Montrer » en grand, et « Préparer pour le chemin » qui met
+  tout dans le téléphone pour marcher sans réseau), <b>tous les mots</b>, <b>les faux amis</b>, <b>le test « Suis-je prêt ? »</b> (deux formes,
+  il situe sans noter), et une <b>Compostela</b> à imprimer à la fin — présentée clairement comme un souvenir, pas comme la vraie.</p>
+</section>
+
+<section>
+  <h2>Les gens du chemin</h2>
+  <div class="portraits"><figure><img src="../interactive/compostelle/portraits/marta.jpg" alt="" loading="lazy"><figcaption><b>Marta</b>pèlerine de Valladolid, 58 ans, professeure de musique à la retraite</figcaption></figure><figure><img src="../interactive/compostelle/portraits/javier.jpg" alt="" loading="lazy"><figcaption><b>Javier</b>hospitalier bénévole, Roncesvalles</figcaption></figure><figure><img src="../interactive/compostelle/portraits/ainhoa.jpg" alt="" loading="lazy"><figcaption><b>Ainhoa</b>serveuse au comptoir d&#x27;un bar, Pamplona</figcaption></figure><figure><img src="../interactive/compostelle/portraits/fermin.jpg" alt="" loading="lazy"><figcaption><b>Don Fermín</b>vieil homme du village, Puente la Reina</figcaption></figure><figure><img src="../interactive/compostelle/portraits/pilar.jpg" alt="" loading="lazy"><figcaption><b>Pilar</b>pharmacienne, Logroño</figcaption></figure><figure><img src="../interactive/compostelle/portraits/rocio.jpg" alt="" loading="lazy"><figcaption><b>Rocío</b>hospitalière de l&#x27;albergue municipal, Burgos</figcaption></figure><figure><img src="../interactive/compostelle/portraits/alex.jpg" alt="" loading="lazy"><figcaption><b>Álex</b>serveur de restaurant, León</figcaption></figure><figure><img src="../interactive/compostelle/portraits/uxia.jpg" alt="" loading="lazy"><figcaption><b>Uxía</b>hospitalière galicienne, O Cebreiro</figcaption></figure><figure><img src="../interactive/compostelle/portraits/manolo.jpg" alt="" loading="lazy"><figcaption><b>Manolo</b>épicier, Sarria</figcaption></figure><figure><img src="../interactive/compostelle/portraits/carmen.jpg" alt="" loading="lazy"><figcaption><b>Carmen</b>employée du bureau du pèlerin, Santiago</figcaption></figure></div>
+</section>
+
+<section>
+  <h2>Décidé à votre place</h2>
+  <p>Vous n'aviez pas exporté les décisions du plan : j'ai pris <b>les onze recommandations</b>. Chacune se renverse.</p>
+  <ul class="simple">
+    <li>Espagnol d'Espagne ; <i>tú</i> entre pèlerins, <i>usted</i> au comptoir, <i>vosotros</i> reconnu seulement ; galicien reconnu.</li>
+    <li>Le Camino francés seul ; la credencial à tampons comme fil ; les vignettes d'étape comme décors.</li>
+    <li>La poche hors ligne ; voix Azure es-ES (production faite : environ 1 $ de voix) ; Marta, compagne de route récurrente.</li>
+    <li>Le thème francis, le jaune de la flèche réservé à la progression.</li>
+    <li>La diffusion : rien n'est promis au public ; l'application est en ligne mais n'est reliée qu'au classeur.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Ce qui reste, et qui vous revient</h2>
+  <ol class="simple">
+    <li><b>Le jeu de rôle libre avec l'assistant.</b> Les scènes écrites marchent sans IA et sans réseau. La suite « avec assistance »
+    (la même personne, qui répond à ce qu'on dit vraiment) est écrite : <code>build/contenu/compostelle/jeu_de_role.py</code>, vingt situations,
+    trois paliers, un bilan en français. Elle n'est <b>pas branchée</b> : <code>server.py</code> était tenu ce soir-là par la session de l'hôtel.
+    Et elle pose une question qui vous revient : un public sans compte n'a pas de code, or le jeu de rôle en exige un. Des codes de pilote ?</li>
+    <li><b>La relecture par une personne d'Espagne</b> : 519 répliques et phrases, écrites par moi.</li>
+    <li><b>Les faits du chemin</b> (heures, prix, 2 tampons par jour depuis Sarria, questions du bureau du pèlerin) : vraisemblables, à vérifier et dater.</li>
+    <li><b>Les onze extraits que le contrôle signale</b>, ci-dessous : tous s'expliquent (mots basques ou galiciens, un nom français dans une bouche espagnole,
+    des chiffres écrits en chiffres par la reconnaissance), mais c'est votre oreille qui tranche.</li>
+  </ol>
+</section>
+
+<section>
+  <h2>À écouter : les 11 extraits signalés</h2>
+  <div class="ecoute"><div><b>o-cebreiro/scene-8.mp3</b> — Uxía<br><small>attendu « ¡Grazas! Se dice «grazas». ¡Y bo Camiño! » · entendu par la reconnaissance « De Asas.Se dice, gracias.Ivo Camiño. » (0.43)</small><audio controls preload="none" src="../interactive/compostelle/sons/o-cebreiro/scene-8.mp3"></audio></div><div><b>mots/pintxo.mp3</b> — Ximena<br><small>attendu « un pintxo » · entendu par la reconnaissance « Un pincho. » (0.5)</small><audio controls preload="none" src="../interactive/compostelle/sons/mots/pintxo.mp3"></audio></div><div><b>mots/kilo.mp3</b> — Ximena<br><small>attendu « un kilo, medio kilo » · entendu par la reconnaissance « 1 kg, medio kilo. » (0.5)</small><audio controls preload="none" src="../interactive/compostelle/sons/mots/kilo.mp3"></audio></div><div><b>voir/pamplona-3.mp3</b> — Ximena<br><small>attendu « los pintxos » · entendu par la reconnaissance « Los pinchos. » (0.5)</small><audio controls preload="none" src="../interactive/compostelle/sons/voir/pamplona-3.mp3"></audio></div><div><b>santiago/dire-0.mp3</b> — Ximena<br><small>attendu « Empecé en Saint-Jean-Pied-de-Port. » · entendu par la reconnaissance « Empecé en Ssangyong Pied Deport. » (0.5)</small><audio controls preload="none" src="../interactive/compostelle/sons/santiago/dire-0.mp3"></audio></div><div><b>mots/hora_ocho_media.mp3</b> — Ximena<br><small>attendu « a las ocho y media » · entendu par la reconnaissance « A las 8:30 H. » (0.6)</small><audio controls preload="none" src="../interactive/compostelle/sons/mots/hora_ocho_media.mp3"></audio></div><div><b>burgos/scene-9-c0.mp3</b> — Ximena<br><small>attendu « A nombre de Tremblay. Se escribe con te, erre, e… » · entendu par la reconnaissance « A nombre de Dreamble.Se escribe con telé. » (0.67)</small><audio controls preload="none" src="../interactive/compostelle/sons/burgos/scene-9-c0.mp3"></audio></div><div><b>o-cebreiro/ecoute-3.mp3</b> — Uxía<br><small>attendu « En gallego, «rúa» es «calle» e «igrexa» es «iglesia». » · entendu par la reconnaissance « En gallego, lua es calle ei migxa es iglesia. » (0.67)</small><audio controls preload="none" src="../interactive/compostelle/sons/o-cebreiro/ecoute-3.mp3"></audio></div><div><b>santiago/scene-3-c0.mp3</b> — Ximena<br><small>attendu « Desde Saint-Jean-Pied-de-Port, en Francia. » · entendu par la reconnaissance « Desde Sant Jean pierde Port en Francia. » (0.67)</small><audio controls preload="none" src="../interactive/compostelle/sons/santiago/scene-3-c0.mp3"></audio></div><div><b>o-cebreiro/dire-2.mp3</b> — Ximena<br><small>attendu « Mi mochila va hasta Triacastela. » · entendu par la reconnaissance « Mi mochila va hasta tria castela. » (0.73)</small><audio controls preload="none" src="../interactive/compostelle/sons/o-cebreiro/dire-2.mp3"></audio></div><div><b>pamplona/soir-4.mp3</b> — Marta<br><small>attendu « Txis-to-rra. Oye, ¿y mañana hasta dónde vas? » · entendu par la reconnaissance « Tistorra.¿Oye, y mañana hasta dónde vas? » (0.75)</small><audio controls preload="none" src="../interactive/compostelle/sons/pamplona/soir-4.mp3"></audio></div></div>
+</section>
+
+<section>
+  <h2>Ce que ça a coûté</h2>
+  <div class="chiffres">
+    <div class="ch"><span class="n">≈&nbsp;8&nbsp;$</span><span class="q">d'images : 82 mots, 10 portraits, 12 vignettes, et les reprises</span></div>
+    <div class="ch"><span class="n">≈&nbsp;1&nbsp;$</span><span class="q">de voix chez Azure, retentatives comprises</span></div>
+    <div class="ch"><span class="n">0</span><span class="q">par usage : aucune IA à l'exécution tant que le jeu de rôle libre n'est pas branché</span></div>
+  </div>
+</section>
+
+<div class="pied">
+  <p>Livraison du 25 septembre 2026 · « En route vers Compostelle ».</p>
+  <p>Produit par <code>build/compostelle_livraison.py</code> — ne pas l'éditer. L'application : <code>build/compostelle_app.py</code>.</p>
+</div>
+</div>
+</body>
+</html>
