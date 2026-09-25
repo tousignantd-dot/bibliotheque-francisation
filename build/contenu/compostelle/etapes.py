@@ -31,7 +31,7 @@ inventée ; les heures réelles changent et se vérifient au cadrage.
 ETAPES = [
 # ─────────────────────────────────────────────────────────────── 1 ─────
 {
- "id": "roncesvalles", "n": 1, "lieu": "Roncesvalles", "km": 25, "region": "Navarra",
+ "id": "roncesvalles", "objectif": "Obtenir un lit à l'albergue, et comprendre le prix, l'heure du souper et celle de la porte.", "n": 1, "lieu": "Roncesvalles", "km": 25, "region": "Navarra",
  "img": "roncesvalles", "titre": "Le premier soir",
  "intro": [
    "Après 25 km et plus de 1 200 m de montée dans les Pyrénées, on arrive à Roncesvalles : une collégiale, un ancien hôpital de pèlerins devenu un grand albergue, et presque rien d'autre.",
@@ -64,6 +64,7 @@ ETAPES = [
    ("Vous demandez s'il reste des lits.", "¿Quedan camas?", ["quedan", "camas|cama"]),
    ("Vous tendez votre credencial et demandez le tampon.", "Aquí tiene mi credencial. ¿Me pone el sello?", ["credencial", "sello"]),
    ("Vous demandez où sont les douches.", "¿Dónde están las duchas?", ["dónde|donde", "duchas|ducha"]),
+   ("À votre tour de vous présenter : dites d'où vous venez.", "Soy de Quebec, de Canadá.", ["soy de|soy del|vengo de"]),
  ],
  "scene": {"titre": "À l'accueil de l'albergue", "qui": "javier", "tours": [
    {"dit": "javier", "es": "¡Hola, buenas tardes! ¿Peregrin{o|a}? Bienvenid{o|a} a Roncesvalles.",
@@ -108,8 +109,8 @@ ETAPES = [
    {"choix": [["¡Claro! Encantad{o|a}. Yo soy de Quebec.", "Bien sûr ! Enchanté. Moi, je suis du Québec.", None],
               ["¡Claro! Encantad{o|a}. Yo estoy de Quebec.", "Bien sûr ! Enchanté. Je suis (en ce moment) de Québec.",
                "L'origine se dit avec ser : soy de Quebec. Estar dit un état ou un lieu où l'on se trouve."],
-              ["¡Claro! Encantad{o|a}. Me llamo Quebec.", "Bien sûr ! Enchanté. Je m'appelle Québec.",
-               "« Me llamo » : je m'appelle. D'où vous venez : soy de…"]]},
+              ["¡Claro! Encantad{o|a}. Yo soy en Quebec.", "Bien sûr ! Enchanté. Je suis au Québec.",
+               "D'où l'on vient se dit avec de : soy de Quebec."]]},
    {"dit": "marta", "emo": "curious", "es": "¿De Quebec? ¡Qué lejos! ¿Y hablas español?",
     "fr": "Du Québec ? C'est loin ! Et tu parles espagnol ?"},
    {"choix": [["Un poco. Estoy aprendiendo.", "Un peu. J'apprends.", None],
@@ -128,8 +129,8 @@ ETAPES = [
    {"choix": [["Yo también. Me duelen mucho los pies.", "Moi aussi. J'ai très mal aux pieds.", None],
               ["Yo tampoco. Me duelen mucho los pies.", "Moi non plus. J'ai très mal aux pieds.",
                "Tampoco = non plus : il répond à une phrase négative. Marta dit qu'elle a mal : yo también."],
-              ["Yo también. Me duelen mucho las botas.", "Moi aussi. Mes bottes ont très mal.",
-               "Les bottes n'ont pas mal… Ce sont vos pieds : me duelen los pies."]]},
+              ["Yo también. Me duele mucho los pies.", "Moi aussi. J'ai très mal (sing.) aux pieds.",
+               "Los pies est au pluriel : me duelen los pies."]]},
    {"dit": "marta", "emo": "friendlycheerful", "es": "Bueno, a dormir. Mañana más. ¡Buenas noches!",
     "fr": "Bon, au lit. Demain, on remet ça. Bonne nuit !"},
    {"choix": [["¡Buenas noches, Marta! Hasta mañana.", "Bonne nuit, Marta ! À demain.", None],
@@ -141,7 +142,7 @@ ETAPES = [
 },
 # ─────────────────────────────────────────────────────────────── 2 ─────
 {
- "id": "pamplona", "n": 2, "lieu": "Pamplona", "km": 68, "region": "Navarra",
+ "id": "pamplona", "objectif": "Commander au comptoir, comprendre le prix, et savoir si un plat contient ce qu'on ne peut pas manger.", "n": 2, "lieu": "Pamplona", "km": 68, "region": "Navarra",
  "img": "pamplona", "titre": "Le bar du matin",
  "intro": [
    "Pamplona, capitale de la Navarre, on y entre par les remparts, en passant la porte de France.",
@@ -168,6 +169,10 @@ ETAPES = [
     [("Le café, avec du lait froid ou chaud ?", None),
      ("Le café, avec ou sans sucre ?", "Leche = lait. Le sucre, c'est el azúcar."),
      ("Le café, petit ou grand ?", "Fría = froide ; caliente = chaude. Grand se dirait grande.")]),
+   ("Este bocadillo es de jamón, no lleva frutos secos.",
+    [("Ce sandwich est au jambon ; il ne contient pas de noix.", None),
+     ("Ce sandwich est au jambon ; il contient des noix.", "« No lleva » : il n'en contient pas. Si vous êtes allergique aux noix, vous pouvez le manger."),
+     ("Ce sandwich est au fromage ; il ne contient pas de noix.", "Jamón = jambon. Le fromage : queso.")]),
  ],
  "dire": [
    ("Vous commandez un café au lait et une rôtie.", "Un café con leche y una tostada, por favor.", ["café", "leche", "tostada"]),
@@ -223,8 +228,8 @@ ETAPES = [
    {"choix": [["¡Qué rico! ¿Cómo se llama otra vez?", "Que c'est bon ! Comment ça s'appelle, déjà ?", None],
               ["¡Qué rico! ¿Cuánto se llama otra vez?", "Que c'est bon ! Combien ça s'appelle, déjà ?",
                "Cómo = comment. Cuánto = combien."],
-              ["¡Qué rica estás! ¿Cómo se llama?", "Que tu es appétissante ! Comment ça s'appelle ?",
-               "« Rico » se dit d'un plat. Dit à une personne, ça devient un compliment… très personnel."]]},
+              ["¡Qué rico! ¿Cómo te llamas otra vez?", "Que c'est bon ! Comment tu t'appelles, déjà ?",
+               "Te llamas, c'est Marta elle-même ! Pour le plat : ¿cómo se llama?"]]},
    {"dit": "marta", "emo": "curious", "es": "Txis-to-rra. Oye, ¿y mañana hasta dónde vas?",
     "fr": "Txis-to-rra. Dis donc, et demain, tu vas jusqu'où ?"},
    {"choix": [["Hasta Puente la Reina, creo.", "Jusqu'à Puente la Reina, je crois.", None],
@@ -243,7 +248,7 @@ ETAPES = [
 },
 # ─────────────────────────────────────────────────────────────── 3 ─────
 {
- "id": "puente-la-reina", "n": 3, "lieu": "Puente la Reina", "km": 92, "region": "Navarra",
+ "id": "puente-la-reina", "objectif": "Demander son chemin, faire ralentir, et suivre l'indication même dite vite.", "n": 3, "lieu": "Puente la Reina", "km": 92, "region": "Navarra",
  "img": "puente-la-reina", "titre": "Perdu à la sortie du village",
  "intro": [
    "Puente la Reina doit son nom à son pont roman, bâti pour les pèlerins il y a près de mille ans : six arches sur la rivière Arga.",
@@ -341,7 +346,7 @@ ETAPES = [
 },
 # ─────────────────────────────────────────────────────────────── 4 ─────
 {
- "id": "logrono", "n": 4, "lieu": "Logroño", "km": 163, "region": "La Rioja",
+ "id": "logrono", "objectif": "Dire où l'on a mal, et comprendre comment prendre le médicament.", "n": 4, "lieu": "Logroño", "km": 163, "region": "La Rioja",
  "img": "rioja", "titre": "La pharmacie",
  "intro": [
    "On quitte la Navarre pour La Rioja, le pays du vin : des vignes jusqu'à l'horizon, sur une terre rouge.",
@@ -374,6 +379,7 @@ ETAPES = [
    ("Vous dites que vous avez mal au genou.", "Me duele la rodilla.", ["duele", "rodilla"]),
    ("Vous demandez quelque chose contre la douleur.", "¿Tiene algo para el dolor?", ["algo", "dolor"]),
    ("Vous demandez combien de fois par jour.", "¿Cuántas veces al día?", ["cuántas|cuantas", "veces", "día|dia"]),
+   ("On vous demande ce que vous faites dans la vie : répondez pour vous.", "Estoy jubilad{o|a}.", ["soy|estoy|trabajo"]),
  ],
  "scene": {"titre": "Derrière la croix verte", "qui": "pilar", "tours": [
    {"dit": "pilar", "es": "Buenas tardes. ¿Qué le pasa?", "fr": "Bonjour. Qu'est-ce qui vous arrive ?"},
@@ -442,7 +448,7 @@ ETAPES = [
 },
 # ─────────────────────────────────────────────────────────────── 5 ─────
 {
- "id": "burgos", "n": 5, "lieu": "Burgos", "km": 285, "region": "Castilla y León",
+ "id": "burgos", "objectif": "Comprendre « complet » et la solution proposée ; réserver une chambre au téléphone ; retrouver l'adresse.", "n": 5, "lieu": "Burgos", "km": 285, "region": "Castilla y León",
  "img": "burgos", "titre": "« Completo »",
  "intro": [
    "Burgos arrive après une longue entrée par la banlieue industrielle — puis, d'un coup, la cathédrale : l'une des plus grandes cathédrales gothiques d'Espagne, inscrite au patrimoine mondial.",
@@ -469,6 +475,10 @@ ETAPES = [
     [("Appelez et dites que c'est moi qui vous envoie.", None),
      ("Appelez et dites que vous partez demain.", "« De mi parte » : de ma part."),
      ("Allez-y et dites que vous êtes pèlerin.", "Llame = appelez (au téléphone).")]),
+   ("Salga por esta puerta, gire a la derecha y es el segundo portal.",
+    [("Sortez par cette porte, tournez à droite : c'est la deuxième porte d'entrée.", None),
+     ("Sortez par cette porte, tournez à gauche : c'est la deuxième porte d'entrée.", "Derecha = droite. Gauche : izquierda."),
+     ("Sortez par cette porte, tournez à droite : c'est la douzième porte d'entrée.", "Segundo = deuxième.")]),
  ],
  "dire": [
    ("Au téléphone, vous demandez s'il reste une chambre pour ce soir.", "¿Tiene una habitación para esta noche?", ["habitación|habitacion", "noche"]),
@@ -541,7 +551,7 @@ ETAPES = [
 },
 # ─────────────────────────────────────────────────────────────── 6 ─────
 {
- "id": "carrion", "n": 6, "lieu": "Carrión de los Condes", "km": 369, "region": "Castilla y León",
+ "id": "carrion", "objectif": "Dire d'où l'on vient et pourquoi l'on marche ; écouter l'autre et réagir.", "n": 6, "lieu": "Carrión de los Condes", "km": 369, "region": "Castilla y León",
  "img": "meseta", "titre": "Sur la Meseta",
  "intro": [
    "Entre Burgos et León, la Meseta : un haut plateau de blé, plat jusqu'à l'horizon, presque sans arbres. Certains la craignent, d'autres disent que c'est là que le Chemin commence vraiment.",
@@ -574,6 +584,7 @@ ETAPES = [
    ("Vous demandez à Marta si elle va bien.", "¿Estás bien, Marta?", ["estás|estas", "bien"]),
    ("Vous demandez pourquoi elle fait le Chemin.", "¿Por qué haces el Camino?", ["por qué|porque|por que", "camino"]),
    ("Vous dites que vous êtes fatigué, fatiguée.", "Estoy cansad{o|a}.", ["cansado|cansada"]),
+   ("Dites pourquoi, vous, vous faites le Chemin.", "Hago el Camino para pensar.", ["camino|hago|para|por"]),
  ],
  "scene": {"titre": "Des kilomètres sans village", "qui": "marta", "tours": [
    {"dit": "marta", "emo": "reflective", "es": "Kilómetros y kilómetros sin un pueblo… Aquí solo hay trigo y cielo. ¿Te gusta la Meseta?",
@@ -636,7 +647,7 @@ ETAPES = [
 },
 # ─────────────────────────────────────────────────────────────── 7 ─────
 {
- "id": "leon", "n": 7, "lieu": "León", "km": 463, "region": "Castilla y León",
+ "id": "leon", "objectif": "Dire votre allergie, et comprendre si le plat en contient. C'est l'erreur éliminatoire du chemin.", "n": 7, "lieu": "León", "km": 463, "region": "Castilla y León",
  "img": "leon", "titre": "Le menu du pèlerin",
  "intro": [
    "León, la grande ville de la fin de la Meseta. Sa cathédrale gothique est surnommée « la maison de lumière » : près de 1 800 m² de vitraux.",
@@ -730,7 +741,7 @@ ETAPES = [
 },
 # ─────────────────────────────────────────────────────────────── 8 ─────
 {
- "id": "o-cebreiro", "n": 8, "lieu": "O Cebreiro", "km": 617, "region": "Galicia",
+ "id": "o-cebreiro", "objectif": 'Comprendre la météo annoncée, faire porter son sac, et trouver la pharmacie.', "n": 8, "lieu": "O Cebreiro", "km": 617, "region": "Galicia",
  "img": "o-cebreiro", "titre": "La pluie et le sac",
  "intro": [
    "Avant O Cebreiro, il y a eu la Cruz de Ferro : une croix de fer sur un mât, au sommet des monts de León, où chacun dépose une pierre apportée de chez soi.",
@@ -757,6 +768,14 @@ ETAPES = [
     [("En galicien, « rúa », c'est la rue, et « igrexa », l'église.", None),
      ("En galicien, « rúa », c'est la route, et « igrexa », la gare.", "Calle = rue ; iglesia = église."),
      ("En basque, « rúa », c'est la rue, et « igrexa », l'église.", "Gallego = galicien. Le basque : euskera.")]),
+   ("La farmacia está bajando la calle, al lado de la iglesia.",
+    [("La pharmacie est en descendant la rue, à côté de l'église.", None),
+     ("La pharmacie est en montant la rue, à côté de l'église.", "Bajando = en descendant. En montant : subiendo."),
+     ("La pharmacie est en descendant la rue, en face de l'église.", "Al lado de = à côté de. En face : enfrente de.")]),
+   ("Para las ampollas, póngase vaselina en los pies cada mañana, antes de caminar.",
+    [("Pour les ampoules : de la vaseline sur les pieds chaque matin, avant de marcher.", None),
+     ("Pour les ampoules : de la vaseline sur les pieds chaque soir, après avoir marché.", "Cada mañana = chaque matin ; antes = avant."),
+     ("Pour les ampoules : un pansement sur les pieds chaque matin, avant de marcher.", "La vaselina, c'est la vaseline. Le pansement : la tirita.")]),
  ],
  "dire": [
    ("Vous demandez quel temps il fera demain.", "¿Qué tiempo va a hacer mañana?", ["tiempo", "mañana|manana"]),
@@ -791,8 +810,8 @@ ETAPES = [
    {"choix": [["Vale. ¿Y cómo se dice «gracias» en gallego?", "D'accord. Et comment on dit « merci » en galicien ?", None],
               ["Vale. ¿Y cómo se llama «gracias» en gallego?", "D'accord. Et comment s'appelle « merci » en galicien ?",
                "Pour demander un mot : ¿cómo se dice…?"],
-              ["Vale. ¿Y cómo se dice «gracias» en gallina?", "D'accord. Et comment on dit « merci » en poule ?",
-               "Gallina = poule ! La langue : el gallego."]]},
+              ["Vale. ¿Y cómo se dice «gracias» en gallega?", "D'accord. Et comment on dit « merci » en galicienne ?",
+               "La langue se dit au masculin : el gallego, en gallego."]]},
    {"dit": "uxia", "es": "¡Grazas! Se dice «grazas». ¡Y bo Camiño!", "fr": "Grazas ! On dit « grazas ». Et bon chemin (en galicien) !"},
  ]},
  "soir": {"titre": "Ce qu'on a laissé à la Cruz de Ferro", "tours": [
@@ -820,7 +839,7 @@ ETAPES = [
 },
 # ─────────────────────────────────────────────────────────────── 9 ─────
 {
- "id": "sarria", "n": 9, "lieu": "Sarria", "km": 659, "region": "Galicia",
+ "id": "sarria", "objectif": "Acheter au poids, comprendre le prix, vérifier ce qu'un aliment contient, faire tamponner la credencial.", "n": 9, "lieu": "Sarria", "km": 659, "region": "Galicia",
  "img": "sarria", "titre": "Les cent derniers kilomètres",
  "intro": [
    "Sarria est à un peu plus de cent kilomètres de Santiago — le minimum à pied pour recevoir la Compostela. Beaucoup de pèlerins partent d'ici : le chemin se remplit d'un coup.",
@@ -847,6 +866,10 @@ ETAPES = [
     [("C'est 6,80 €. Vous avez de la monnaie ?", None),
      ("C'est 7,80 €. Vous avez de la monnaie ?", "Seis = 6. Siete = 7."),
      ("C'est 6,80 €. Vous avez un sac ?", "Suelto : de la petite monnaie.")]),
+   ("Cuidado, este queso lleva nueces por dentro.",
+    [("Attention, ce fromage contient des noix à l'intérieur.", None),
+     ("Attention, ce fromage ne contient pas de noix.", "« Lleva » : il en contient. Il n'en contient pas : no lleva."),
+     ("Attention, ce fromage est très cher.", "Nueces = noix. Cuidado = attention.")]),
  ],
  "dire": [
    ("Vous demandez le prix des bananes.", "¿Cuánto cuestan los plátanos?", ["cuánto|cuanto", "plátanos|platanos"]),
@@ -878,8 +901,8 @@ ETAPES = [
    {"choix": [["Aquí tiene. Nada más, gracias.", "Voici. Ce sera tout, merci.", None],
               ["Aquí tiene. Nada menos, gracias.", "Voici. Rien de moins, merci.",
                "Pour dire que c'est tout : nada más."],
-              ["Aquí tiene. Nadar más, gracias.", "Voici. Nager plus, merci.",
-               "Nadar = nager ! Nada más : rien d'autre."]]},
+              ["Aquí tiene. Nada mucho, gracias.", "Voici. Rien beaucoup, merci.",
+               "Pour dire que c'est tout : nada más."]]},
    {"dit": "manolo", "es": "Gracias a usted. ¡Buen Camino, y ya queda poco!", "fr": "Merci à vous. Bon chemin, et il ne reste plus grand-chose !"},
  ]},
  "soir": {"titre": "Les nouveaux arrivés", "tours": [
@@ -907,7 +930,7 @@ ETAPES = [
 },
 # ─────────────────────────────────────────────────────────────── 10 ────
 {
- "id": "santiago", "n": 10, "lieu": "Santiago de Compostela", "km": 775, "region": "Galicia",
+ "id": "santiago", "objectif": 'Répondre aux questions du bureau du pèlerin, et se dire au revoir.', "n": 10, "lieu": "Santiago de Compostela", "km": 775, "region": "Galicia",
  "img": "santiago", "titre": "La Compostela",
  "intro": [
    "On entre dans Santiago par la vieille ville, on passe sous une arche où joue souvent un joueur de cornemuse, et l'on débouche sur la place de l'Obradoiro : la façade baroque de la cathédrale, et des pèlerins assis par terre, qui pleurent ou qui rient.",

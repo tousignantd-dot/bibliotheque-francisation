@@ -48,8 +48,18 @@ def extraits():
         yield from _pour(f"mots/{e[0]}", a_dire(e[2]), "narratrice")
     for i, t in LX.PIEGES.items():
         yield from _pour(f"pieges/{i}", t[0], "narratrice")
-    for i, es, _ in charger("poche").URGENCES:
+    PO = charger("poche")
+    for i, es, _ in PO.URGENCES:
         yield from _pour(f"poche/{i}", es, "narratrice")
+    for code, *_ in PO.ALERGENOS:
+        yield from _pour(f"poche/alergia-{code}", PO.phrase_alergia(code), "narratrice")
+    TS = charger("test"); TS.verifier()
+    for f, forme in enumerate(TS.FORMES):
+        for n, it in enumerate(forme):
+            if it["type"] in ("rep", "repondre"):
+                yield from _pour(f"test/{f}-{n}", it["es"], it["qui"])
+            if it["type"] in ("dire", "repondre"):
+                yield from _pour(f"test/{f}-{n}-c0", it["choix"][0][0], "narratrice")
     for et in ET.ETAPES:
         d = et["id"]
         for i, (es, _) in enumerate(et["voir"]):

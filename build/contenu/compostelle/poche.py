@@ -38,3 +38,23 @@ RUBRIQUES = [
     ("pelerins", "Entre pèlerins", "planche:peregrinos"),
     ("santiago", "À Santiago", "etape:santiago"),
 ]
+
+# « Mon allergie » (audit tour 1, bloquant A3/F2 : on ne pouvait dire que les
+# noix). Le pèlerin choisit la sienne dans les réglages ; elle alimente sa
+# carte « Montrer », le « Je le dis » de León et le test.
+# (code, « a + article », « sans article », fr)
+ALERGENOS = [
+    ("frutos_secos", "a los frutos secos", "frutos secos", "aux noix (fruits à coque)"),
+    ("cacahuetes", "a los cacahuetes", "cacahuetes", "aux arachides"),
+    ("marisco", "al marisco", "marisco", "aux fruits de mer"),
+    ("pescado", "al pescado", "pescado", "au poisson"),
+    ("huevo", "al huevo", "huevo", "aux œufs"),
+    ("leche", "a la leche", "leche", "au lait"),
+    ("gluten", "al gluten", "gluten", "au gluten"),
+    ("sesamo", "al sésamo", "sésamo", "au sésame"),
+]
+
+
+def phrase_alergia(code):
+    _, a, sans, _ = next(x for x in ALERGENOS if x[0] == code)
+    return f"Tengo alergia grave {a}. ¿Este plato lleva {sans}?"
