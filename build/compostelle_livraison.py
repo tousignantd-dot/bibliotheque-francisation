@@ -102,6 +102,16 @@ qui se remplit de tampons ; des voix d'Espagne ; et Marta, une pèlerine de Vall
 </section>
 
 <section>
+  <h2>Passée à la boucle didactique</h2>
+  <p>Un auditeur qui ne l'avait pas écrite l'a passée à la grille de 23 critères, page servie et jouée au téléphone.
+  Tour 1 : <b>2 bloquants, 8 majeurs, 6 mineurs</b>, tous traités sauf deux (le texte touristique, que vous aviez demandé ; une
+  réplique de conséquence après une erreur, reportée). Les deux bloquants : le test ne vérifiait pas l'allergie, et l'on ne pouvait
+  dire que l'allergie aux noix. Désormais : un test sur des phrases jamais entendues, l'allergie éliminatoire ; « Mon allergie » parmi
+  huit, avec sa carte à montrer ; les scènes s'écoutent avant de se lire ; « Je le dis » exige qu'on essaie.
+  <a href="compostelle-audit.html">Le journal de la boucle</a>.</p>
+</section>
+
+<section>
   <h2>Les gens du chemin</h2>
   <div class="portraits">{gal}</div>
 </section>
