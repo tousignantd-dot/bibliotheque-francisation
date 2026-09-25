@@ -74,7 +74,7 @@ PIEGES = {
     },
     "stylo": {
         "fr": ('Firme aquí, por favor. Aquí tiene una pluma.',
-               "une plume d'oiseau", 'un crayon',
+               "une plume d'oiseau", 'un formulaire',
                "Pour signer : au Mexique, « una pluma » est d'abord un stylo."),
     },
     "prenom": {
@@ -92,7 +92,7 @@ PIEGES = {
     },
     "diner": {
         "fr": ('La comida se sirve de una a cuatro de la tarde.',
-               'le souper', 'le déjeuner',
+               'le souper', 'la collation',
                'De une heure à quatre heures : au Mexique, « la comida » est le repas du midi.'),
         "es": ('Le dîner est servi de midi à quatorze heures.',
                'la cena', 'el desayuno',
@@ -195,7 +195,9 @@ NOMBRES = [
     ("n2", {"fr": "La chambre douze cent huit, au douzième étage.",
             "en": "Room twelve-oh-eight, on the twelfth floor.",
             "es": "La habitación mil doscientos ocho, en el piso doce."}, "1208",
-     {l: _n(("1280", "inv"), ("2108", "inv"), ("1218", "voisin")) for l in ("fr", "en", "es")}),
+     {"fr": _n(("1280", "inv"), ("2108", "inv"), ("1218", "voisin")),
+      "en": _n(("1280", "voisin"), ("2108", "inv"), ("1218", "voisin")),
+      "es": _n(("1280", "voisin"), ("2108", "inv"), ("1218", "voisin"))}),
     ("n3", {"fr": "C'est cent quatre-vingt-neuf dollars la nuit.",
             "en": "It's a hundred and eighty-nine dollars a night.",
             "es": "Son ciento ochenta y nueve dólares la noche."}, "189 $",
@@ -230,6 +232,19 @@ NOMBRES = [
      {"fr": _n(("20:45", "voisin"), ("22:40", "voisin"), ("12:45", "voisin")),
       "en": _n(("23:15", "fraction"), ("22:15", "fraction"), ("10:45", "ampm")),
       "es": _n(("23:15", "fraction"), ("22:15", "fraction"), ("10:45", "ampm"))}),
+    # Tour 3 (A2) : au comptoir, le français se DIT aussi sur 12 heures.
+    ("n9", {"fr": "Je vais arriver vers onze heures du soir.",
+            "en": "I'll be arriving around eleven p.m.",
+            "es": "Voy a llegar como a las once de la noche."}, "23:00",
+     {"fr": _n(("11:00", "soir"), ("21:00", "heure"), ("12:00", "heure")),
+      "en": _n(("11:00", "ampm"), ("7:00", "heure"), ("21:00", "heure")),
+      "es": _n(("11:00", "ampm"), ("12:00", "heure"), ("21:00", "heure"))}),
+    ("n10", {"fr": "Pouvez-vous me réveiller à six heures et demie du matin?",
+             "en": "Could you wake me up at six thirty a.m.?",
+             "es": "¿Me puede despertar a las seis y media de la mañana?"}, "6:30",
+     {"fr": _n(("18:30", "soir"), ("6:15", "fraction"), ("7:30", "heure")),
+      "en": _n(("18:30", "ampm"), ("6:13", "teen"), ("7:30", "heure")),
+      "es": _n(("18:30", "ampm"), ("6:15", "fraction"), ("7:30", "heure"))}),
 ]
 # La rétroaction, dans la langue de l'INTERFACE. Pour les erreurs qui tiennent à
 # la langue entendue (ampm, h24, fraction, teen), une version PAR LANGUE APPRISE.
@@ -255,9 +270,13 @@ ERREURS_NOMBRES = {
              "es": {"fr": "Matin ou après-midi? « de la tarde », « de la noche », c'est l'après-midi ou le soir : las tres de la tarde = 15:00.",
                     "en": "Morning or afternoon? « de la tarde », « de la noche » mean afternoon or evening: las tres de la tarde = 15:00.",
                     "es": "¿Mañana o tarde? « de la tarde », « de la noche »: las tres de la tarde son las 15:00. Se anota en formato de 24 horas."}},
-    "h24": {"fr": {"fr": "Le français compte sur 24 heures : « quinze heures » = 15:00, « vingt-trois heures » = 23:00.",
-                   "en": "French counts on the 24-hour clock: « quinze heures » = 15:00, « vingt-trois heures » = 23:00.",
-                   "es": "El francés cuenta en 24 horas: « quinze heures » = 15:00, « vingt-trois heures » = 23:00."}},
+    # La NOTATION est sur 24 h ; la parole, elle, dit aussi « du matin », « du soir ».
+    "h24": {"fr": {"fr": "« Quinze heures », c'est 15:00 : on note l'heure sur 24 heures. Au comptoir, on entend aussi « trois heures de l'après-midi ».",
+                   "en": "« Quinze heures » is 15:00: times are written on the 24-hour clock. At the desk you'll also hear « trois heures de l'après-midi ».",
+                   "es": "« Quinze heures » son las 15:00: la hora se anota en 24 horas. En el mostrador también se oye « trois heures de l'après-midi »."}},
+    "soir": {"fr": {"fr": "Matin ou soir? « Du soir » : onze heures du soir = 23:00 ; « du matin » : six heures et demie du matin = 6:30. On note sur 24 heures.",
+                    "en": "Morning or evening? « Du soir » means evening: onze heures du soir = 23:00; « du matin »: six heures et demie du matin = 6:30.",
+                    "es": "¿Mañana o noche? « Du soir » es de la noche: onze heures du soir = 23:00; « du matin »: six heures et demie du matin = 6:30."}},
     "fraction": {"fr": {"fr": "Écoutez la fin : « et demie » = 30, « et quart » = 15, « moins le quart » = 45.",
                         "en": "Listen to the end: « et demie » = 30, « et quart » = 15, « moins le quart » = 45.",
                         "es": "Escuche el final: « et demie » = 30, « et quart » = 15, « moins le quart » = 45."},
@@ -370,7 +389,7 @@ REPONSES = [
          (R("Désolé, c'est complet ce soir. Je peux appeler un hôtel voisin?",
             "Sorry, we're full tonight. Can I call a nearby hotel for you?",
             "Lo siento, estamos llenos. ¿Le llamo a un hotel cercano?"), None, False),
-         (R("Non, c'est plein ce soir. Essayez ailleurs, peut-être en ville.",
+         (R("Non, c'est plein ce soir. Essayez ailleurs, peut-être au centre-ville.",
             "Nope, we're full tonight. Try somewhere else downtown, maybe.",
             "No, está lleno hoy. Busque en otro lado, a lo mejor en el centro."),
           R("C'est vrai, mais sec : on s'excuse et on offre une solution.",
@@ -425,16 +444,16 @@ REPONSES = [
                  "Can I change my reservation to Friday?",
                  "¿Puedo cambiar mi reservación para el viernes?"),
      "reps": [
-         (R("Bien sûr. Quel est votre numéro de confirmation?",
-            "Of course. Could I have your confirmation number, please?",
-            "Claro. ¿Me da su número de confirmación, por favor?"), None, False),
+         (R("Je vais vérifier. Quel est votre numéro de confirmation?",
+            "Let me check. Could I have your confirmation number, please?",
+            "Permítame revisar. ¿Me da su número de confirmación?"), None, False),
          (R("Bien sûr, c'est changé pour vendredi, pas de problème.",
             "Of course, it's changed to Friday, no problem at all.",
             "Claro, ya quedó para el viernes, no hay problema."),
           R("On vérifie la réservation et les chambres libres avant de confirmer.",
             "Check the booking and availability before you confirm.",
             "Primero se revisa la reservación y la disponibilidad."), False),
-         (R("Ouin, OK. C'est quoi, ton numéro de confirmation, déjà?",
+         (R("Ouin, OK. C'est quoi, ton numéro de confirmation, déjà, toi?",
             "Yeah, okay. So what's your confirmation number, then, buddy?",
             "Sí, órale. ¿Y cuál es tu número de confirmación?"),
           R("Même geste, mais trop familier : au téléphone aussi, on reste poli et formel.",
@@ -466,10 +485,10 @@ REPONSES = [
                  "What's this three-dollar line on my bill?",
                  "¿Qué es este cargo de tres dólares en mi cuenta?"),
      "reps": [
-         (R("C'est la taxe sur l'hébergement; elle compte pour chaque nuit.",
+         (R("C'est la taxe sur l'hébergement; elle s'applique à chaque nuit.",
             "That's the lodging tax. It applies to every night.",
             "Es el impuesto al hospedaje. Se cobra por cada noche de estancia."), None, False),
-         (R("Je ne sais pas trop, c'est l'ordinateur qui l'ajoute tout seul.",
+         (R("Je ne sais pas trop, c'est l'ordinateur qui l'ajoute tout seul, je pense.",
             "I'm not really sure, the computer just adds it by itself.",
             "No sé bien, la computadora lo agrega sola a la cuenta."),
           R("On explique les frais : c'est la taxe sur l'hébergement, par nuit.",
@@ -486,7 +505,7 @@ REPONSES = [
      "client": R("Le stationnement, ce n'est pas gratuit?", "Isn't the parking free?",
                  "¿El estacionamiento no es gratis?"),
      "reps": [
-         (R("Vingt dollars par nuit, et vous pouvez entrer et sortir.",
+         (R("Non, c'est vingt dollars par nuit, mais vous pouvez entrer et sortir.",
             "It's twenty dollars a night, and you're free to come and go.",
             "Cuesta veinte dólares por noche, y puede entrar y salir."), None, False),
          (R("Pour vous, je le laisse gratuit cette fois-ci, sans problème.",
@@ -495,12 +514,12 @@ REPONSES = [
           R("Un service gratuit est une exception : elle revient au gérant.",
             "A free service is an exception: that's the manager's call.",
             "Un servicio gratis es una excepción: le toca al gerente."), True),
-         (R("Oui, il est gratuit, mais seulement la fin de semaine.",
+         (R("Oui, il est gratuit, mais seulement la fin de semaine, pas en semaine.",
             "Yes, it's free, but only on weekends, not during the week.",
             "Sí, es gratis, pero solo el fin de semana, entre semana no."),
           R("Ce n'est pas le tarif : le stationnement coûte vingt dollars par nuit.",
             "That's not the rate: parking is twenty dollars a night.",
-            "Esa no es la tarifa: el estacionamiento cuesta veinte dólares por noche."), False)]},
+            "Esa no es la tarifa: el estacionamiento cuesta veinte dólares por noche."), True)]},
     # Ce qui revient au gérant (O4)
     {"id": "r10", "ctx": R("Départ tardif : 30 $ jusqu'à 14 h ; plus tard, c'est le gérant qui décide.",
                            "Late check-out: $30 until 2 p.m.; later than that, the manager decides.",
@@ -566,6 +585,24 @@ REPONSES = [
             "No se rechaza de entrada: se felicita y se pregunta al gerente."), False)]},
 ]
 
+REPONSES.append(
+    {"id": "r13", "ctx": R("Au téléphone.", "On the phone.", "Por teléfono."),
+     "client": R("Je vais arriver vers huit heures.", "I'll be arriving around eight.",
+                 "Voy a llegar como a las ocho."),
+     "reps": [
+         (R("Très bien. Huit heures du matin ou du soir?", "Great. Is that eight in the morning or evening?",
+            "Muy bien. ¿A las ocho de la mañana o de la noche?"), None, False),
+         (R("Très bien, je note votre arrivée à vingt heures.", "Great, I'll note your arrival for eight p.m.",
+            "Muy bien, anoto su llegada a las ocho de la noche."),
+          R("« Huit heures » peut être le matin ou le soir : on fait préciser avant de noter.",
+            "« Eight » can be morning or evening: ask before you write it down.",
+            "« Las ocho » puede ser de la mañana o de la noche: se pregunta antes de anotar."), False),
+         (R("Très bien, je note votre arrivée à huit heures.", "Great, I'll note your arrival for eight a.m.",
+            "Muy bien, anoto su llegada a las ocho de la mañana."),
+          R("« Huit heures » peut être le matin ou le soir : on fait préciser avant de noter.",
+            "« Eight » can be morning or evening: ask before you write it down.",
+            "« Las ocho » puede ser de la mañana o de la noche: se pregunta antes de anotar."), False)]})
+
 # La règle du relais, écrite UNE fois et citée partout (leçon de Francœur : dite
 # trois fois, elle se contredisait).
 REGLE_RELAIS = R(
@@ -579,9 +616,9 @@ REGLE_RELAIS = R(
     "El gerente decide: un reembolso, un cargo que se quita, algo gratis, cualquier excepción. "
     "Y nadie promete lo que el hotel no puede dar: un impuesto nunca se quita, una habitación que no hay no se promete.")
 PROMESSE = R(
-    "Vous venez d'engager l'hôtel : c'est au gérant de décider. Au comptoir, cette erreur fait échouer.",
-    "You just committed the hotel: that's for the manager to decide. At the desk, this mistake fails you.",
-    "Acaba de comprometer al hotel: eso lo decide el gerente. En el mostrador, este error es eliminatorio.")
+    "Vous venez d'engager l'hôtel sans en avoir le pouvoir. Au comptoir, cette erreur fait échouer.",
+    "You just committed the hotel without the authority to do so. At the desk, this mistake fails you.",
+    "Acaba de comprometer al hotel sin tener autoridad para hacerlo. En el mostrador, este error es eliminatorio.")
 
 # Les images qui ne vont JAMAIS ensemble dans une même série (tour 1, D4) :
 # indiscernables, ou l'une contient l'autre.

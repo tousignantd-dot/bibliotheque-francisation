@@ -229,7 +229,8 @@ body{margin:0;background:var(--surface-page);color:var(--text-body);font-family:
 .suite{margin-top:18px}
 .bilan{font-size:22px;font-weight:900;color:var(--text-strong)}
 .regle{background:var(--surface-sunken);border-left:4px solid var(--accent);border-radius:8px;padding:10px 12px;margin:0 0 14px;max-width:640px}
-.regle b{display:block;margin-bottom:2px;color:var(--text-strong)}
+.regle summary{cursor:pointer;min-height:32px}
+.regle b{color:var(--text-strong)}
 .phrase{font-size:20px;font-weight:700;color:var(--text-strong);margin:0 0 6px;max-width:640px}
 .mot-vise{font-size:15px;color:var(--text-muted);margin:0 0 12px}
 .mot-vise b{color:var(--text-strong);font-size:18px}
@@ -371,8 +372,10 @@ const melange = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { c
 let PLACES = [];
 function places(n, N){
   // Une série plus courte que deux tours de places ne peut pas les équilibrer :
-  // on tire alors chaque place, sans jamais répéter la précédente (tour 2).
-  if (N < 2 * n) { PLACES = []; for (let k = 0; k < N; k++) { let p; do { p = Math.floor(Math.random() * n); } while (k && p === PLACES[k - 1]); PLACES.push(p); } return; }
+  // on tire alors chaque place au hasard, SANS autre règle. Interdire de répéter
+  // la place précédente (tour 2) en faisait un indice : jamais deux fois de
+  // suite au même endroit (tour 3, 0 cas sur 1 200).
+  if (N < 2 * n) { PLACES = Array.from({length: N}, () => Math.floor(Math.random() * n)); return; }
   PLACES = melange(Array.from({length: N}, (_, k) => k % n));
 }
 function placer(bonne, autres, i){
@@ -507,7 +510,9 @@ function ecranExercice(fam){
   if (fam === 'reponds') {
     const {ctx, client, reps} = it.r;
     // La règle est dite AVANT, toujours et pareil (O4) ; aucun avertissement propre à l'item.
-    corps += `<div class="regle"><b>${E(T('regle_tit'))}</b>${E(D.ex.regle[P])}</div>`
+    // En entier au premier item, repliée ensuite : relue huit fois, elle
+    // finissait par désigner les réponses en mots-clés (tour 3).
+    corps += `<details class="regle"${X.i === 0 ? ' open' : ''}><summary><b>${E(T('regle_tit'))}</b></summary>${E(D.ex.regle[P])}</details>`
       + (ctx ? `<p class="contexte">${E(ctx[P])}</p>` : '')
       + `<p class="cible" lang="${A}" style="font-size:20px">« ${E(client[A])} »</p>` + boutonsSon
       + `<div class="choix large">${it.choix.map(c => `<button type="button" data-rep="${c.k}" lang="${A}">${E(reps[c.k][0][A])}</button>`).join('')}</div>`;
