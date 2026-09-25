@@ -27,7 +27,7 @@ RACINE = pathlib.Path(__file__).resolve().parent.parent
 CONTENU = RACINE / "build" / "contenu" / "entreprise-hotel"
 CROQUIS = RACINE / "assets" / "interactive" / "hotel" / "croquis"
 SORTIE = RACINE / "modules-autonomes" / "hotel-reception" / "index.html"
-MEDIA_V = "7"   # 7 : révision du test (tour 1 de son audit), 25 sept. 2026
+MEDIA_V = "8"   # 8 : révision du test (tour 2 de son audit), 25 sept. 2026
 
 
 def _charger(nom):
@@ -79,38 +79,32 @@ def donnees():
           "erreurs": EX.ERREURS_NOMBRES, "lits": EX.LITS, "demandes": EX.DEMANDES, "nuits": EX.NUITS,
           "reponses": EX.REPONSES, "regle": EX.REGLE_RELAIS, "promesse": EX.PROMESSE,
           "jamais": [sorted(g) for g in EX.JAMAIS_ENSEMBLE]}
-    # Le test (révisé au tour 1 de son audit) : A adaptatif à 4 items par cran,
-    # carré latin, nuits′ tantôt −1 tantôt +1 ; B en trois sous-parties dont les
-    # choix sont construits autour d'un LEURRE — le vote majoritaire ne doit
-    # JAMAIS désigner la bonne réponse.
+    # Le test (révisé aux tours 1 et 2 de son audit) : A adaptatif à 4 items par
+    # cran, carré latin, nuits′ tantôt −1 tantôt +1 ; B entièrement TAPÉ ; C à
+    # deux « personne » par forme et du contexte hors des seuls « personne ».
     lex = {m["id"] for m in mots}
-    bx = {}
     for forme in (1, 2):
         for cran in (1, 2, 3):
             assert sum(x[1] == cran for x in TS.A[forme]) == 4, f"A{forme} cran {cran} : quatre items"
         ecarts = []
         for i, cran, dit, lit, n, lit2, n2 in TS.A[forme]:
             assert lit in lex and set(dit) == {"fr", "en", "es"}, i
-            if cran > 1:
+            if cran == 1:
+                assert lit in TS.LITS_C1[forme], f"{i} : cible hors des cartes du cran 1"
+            else:
                 assert lit2 in TS.LITS and lit2 != lit and n2 != n and n2 >= 1, f"{i} : carré latin"
                 ecarts.append(n2 - n)
         assert ecarts.count(-1) >= 3 and ecarts.count(1) >= 3, f"A{forme} : nuits′ déséquilibrées {ecarts}"
-        bx[forme] = []
-        for it in TS.B[forme]:
-            if it[1] == "nom":
-                bx[forme].append(list(it)); continue
-            i, sous, dit, bonne, leurre = it
-            ch = {l: TS.choix_b(bonne, leurre[l], i + l) for l in ("fr", "en", "es")}
-            for l, c in ch.items():
-                assert len(set(c)) == 4 and len({len(x) for x in c}) == 1, f"{i}/{l} : {c}"
-                assert TS.vote_majoritaire(c) != bonne, f"{i}/{l} : la majorité désigne la bonne"
-            bx[forme].append([i, sous, bonne, ch])
+        assert all(len(x) == 3 if x[1] == "nom" else len(x) == 4 for x in TS.B[forme]), f"B{forme} : format"
         assert len(TS.C[forme]) == 6 and sum(x[3] == "personne" for x in TS.C[forme]) == 2
+        assert any(x[1] and x[3] != "personne" for x in TS.C[forme]), f"C{forme} : un contexte = « personne »"
         assert len(TS.D[forme]) == 5
     assert [len(x[2]) for x in TS.B[1] if x[1] == "nom"] == [len(x[2]) for x in TS.B[2] if x[1] == "nom"], "noms nivelés"
+    bx = TS.B
     test = {"A": TS.A, "B": bx, "C": TS.C, "D": TS.D, "lits": TS.LITS, "lits_c1": TS.LITS_C1,
             "sous_b": TS.SOUS_B, "choix_c": TS.CHOIX_C, "gestes": TS.GESTES, "code": TS.CODE_FORMATEUR,
             "oral_geste": TS.ORAL_GESTE, "oral_langue": TS.ORAL_LANGUE, "c_seuil": TS.C_SEUIL,
+            "oral_incomp": TS.ORAL_INCOMPREHENSIBLE_MAX,
             "debutant_max": TS.DEBUTANT_MAX, "aise_min": TS.AISE_MIN, "oral_aise": TS.ORAL_AISE,
             "paliers": TS.PALIERS, "cadrage": TS.CADRAGE, "ui": TS.UI}
     return {"hotel": IF.HOTEL, "ui": {**IF.UI, **EX.UI}, "ex": ex, "test": test, "langues": IF.NOM_LANGUE, "desc": IF.DESCRIPTEUR,
@@ -659,18 +653,29 @@ let TX = null, micro = null;
 function idb(){ return new Promise((ok, ko) => { try { const r = indexedDB.open('hotel-test', 1);
   r.onupgradeneeded = () => r.result.createObjectStore('oral'); r.onsuccess = () => ok(r.result); r.onerror = () => ko(r.error); } catch (e) { ko(e); } }); }
 async function oralPut(k, blob){ try { const db = await idb(); db.transaction('oral', 'readwrite').objectStore('oral').put(blob, k); } catch (e) {} }
+async function oralDel(k){ try { const db = await idb(); db.transaction('oral', 'readwrite').objectStore('oral').delete(k); } catch (e) {} }
 async function oralGet(k){ try { const db = await idb(); return await new Promise(ok => { const r = db.transaction('oral').objectStore('oral').get(k); r.onsuccess = () => ok(r.result); r.onerror = () => ok(null); }); } catch (e) { return null; } }
 const cleOral = (n, id) => `${CLE_TEST()}:${n}:${id}`;
 
+// Une passation EN COURS se garde à chaque pas (tour 2 : un rechargement la
+// faisait repartir de zéro, parfois dans l'autre forme).
+const CLE_ENCOURS = () => CLE_TEST() + ':encours';
+function garderEnCours(){ if (!TX || TX.part === 'fin') return;
+  const c = Object.assign({}, TX, {d: {i: TX.d.i, enreg: {}}}); try { localStorage.setItem(CLE_ENCOURS(), JSON.stringify(c)); } catch (e) {} }
+function purgerOral(n){ D.test.D[1].concat(D.test.D[2]).forEach(([id]) => oralDel(cleOral(n, id))); }
 function nouveauTest(){
   const h = histo();
   // Contrebalancement : la première forme au hasard, puis on alterne (tour 1).
   const forme = h.length ? 3 - h[h.length - 1].forme : (Math.random() < .5 ? 1 : 2);
   TX = {n: h.length + 1, forme, part: 'intro', cran: 1, bons: 0, err: 0, idx: 0, ordre: null, ecoutes: 0, rejoue: false,
         niv: {A: 0}, b: {i: 0, numero: 0, prix: 0, nom: 0}, c: {i: -1, ok: 0, promesse: false}, d: {i: 0, enreg: {}},
-        oral: {}, formateur: false, codeFaux: false};
+        oral: {}, formateur: false, codeFaux: false, codeOk: !h.length};
+  // Les voix d'une passation abandonnée ne se mêlent pas à celle-ci.
+  purgerOral(TX.n);
 }
 function reprendre(){
+  try { const c = JSON.parse(localStorage.getItem(CLE_ENCOURS()) || 'null');
+    if (c) { TX = c; TX.repriseEnCours = TX.part !== 'intro'; return true; } } catch (e) {}
   // Au rechargement, une passation non confirmée rouvre SES résultats.
   const h = histo(), e = h[h.length - 1];
   if (!e || e.confirme) return false;
@@ -683,10 +688,10 @@ const cranItems = () => D.test.A[TX.forme].filter(x => x[1] === TX.cran);
 function allerA(p){ Object.assign(TX, {part: p, cran: 1, bons: 0, err: 0, idx: 0, ordre: null, ecoutes: 0, rejoue: false}); }
 function finPartie(){
   const suite = {A: 'B', B: 'Cintro', C: 'D', D: 'fin'}[TX.part];
-  if (suite === 'fin') finTest(); else allerA(suite);
+  if (suite === 'fin') finTest(); else { allerA(suite); garderEnCours(); }
   rendre(); setTimeout(jouerTest, 150);
 }
-function suivantItem(){ TX.ordre = null; TX.ecoutes = 0; TX.rejoue = false; rendre(); setTimeout(jouerTest, 150); }
+function suivantItem(){ TX.ordre = null; TX.ecoutes = 0; TX.rejoue = false; garderEnCours(); rendre(); setTimeout(jouerTest, 150); }
 function repA(ok){
   if (ok) TX.bons++; else TX.err++;
   TX.idx++;
@@ -709,7 +714,9 @@ function palierDe(e){
   const cOk = !e.promesse && e.C >= D.test.c_seuil;
   const notes = Object.values(e.oral || {}).filter(o => o.g !== undefined);
   const gestes = notes.filter(o => o.g <= 1).length, promesseOrale = notes.some(o => o.g === 2);
-  const oralOk = !notes.length || (gestes >= D.test.oral_aise && !promesseOrale);
+  // La langue compte aussi (tour 2) : « geste fait, incompréhensible » n'est pas « à l'aise ».
+  const incomp = Object.values(e.oral || {}).filter(o => o.l === 2).length;
+  const oralOk = !notes.length || (gestes >= D.test.oral_aise && !promesseOrale && incomp <= D.test.oral_incomp);
   if (s <= D.test.debutant_max || e.A === 0) return 'debutant';
   if (s >= D.test.aise_min && cOk && oralOk) return 'aise';
   return 'fonctionnel';
@@ -720,6 +727,7 @@ function finTest(){
              B: {numero: TX.b.numero, prix: TX.b.prix, nom: TX.b.nom}, C: TX.c.ok, promesse: TX.c.promesse,
              oral: {}, confirme: null};
   e.palier = palierDe(e); h.push(e); garderHisto(h);
+  try { localStorage.removeItem(CLE_ENCOURS()); } catch (x) {}
   TX.n = h.length; TX.part = 'fin';
   Object.entries(TX.d.enreg).forEach(([id, u]) => { if (u) fetch(u).then(r => r.blob()).then(b => oralPut(cleOral(TX.n, id), b)); });
 }
@@ -746,7 +754,9 @@ function ecranTest(){
   if (TX.part === 'intro') return tete + `<h1>${E(TT('test_tit'))}</h1><p class="chapeau">${E(TT('test_intro'))}</p>
       <p class="alerte">${E(TT('regle_c'))}</p>
       <p class="consigne">${E(TT('passation'))} ${TX.n} · ${E(TT('forme'))} ${TX.forme}</p>
-      <div class="ecoute"><button type="button" class="btn btn--pri" data-t="debut">${E(TT('commencer_test'))}</button></div>`;
+      ${TX.codeOk ? `<div class="ecoute"><button type="button" class="btn btn--pri" data-t="debut">${E(TT('commencer_test'))}</button></div>`
+        : `<p class="dite">${E(TT('nouvelle_passation'))}</p><form class="saisie" id="formCodeDebut"><input id="codeD" inputmode="numeric" autocomplete="off" aria-label="${E(TT('code'))}" placeholder="${E(TT('code'))}">
+           <button type="submit" class="btn btn--pri">${E(TT('commencer_test'))}</button></form>${TX.codeFaux ? `<p class="ko-txt">${E(TT('code_faux'))}</p>` : ''}`}`;
   if (TX.part === 'Cintro') return tete + `<h1>C · ${E(TT('pC'))}</h1>
       <div class="regle"><b>${E(T('regle_tit'))}</b>${E(D.ex.regle[P])}</div>
       <p class="alerte">${E(TT('regle_c'))}</p>
@@ -761,19 +771,16 @@ function ecranTest(){
   if (TX.part === 'A') {
     const [id, cran, , lit, n, lit2, n2] = it;
     if (!TX.ordre) TX.ordre = melange(cran === 1
-      ? [lit, ...melange(D.test.lits_c1.filter(l => l !== lit)).slice(0, 3)].map(l => ({lit: l, n: null}))
+      ? [lit, ...melange(D.test.lits_c1[TX.forme].filter(l => l !== lit)).slice(0, 3)].map(l => ({lit: l, n: null}))
       : [{lit, n}, {lit, n: n2}, {lit: lit2, n}, {lit: lit2, n: n2}]);
     corps += `<p class="consigne">${E(TT('pA_c'))}</p>` + son + `<div class="choix">${TX.ordre.map((c, k) =>
       `<button type="button" data-t="rep" data-k="${k}"><img src="${imgUrl(c.lit)}" alt="${E(PAR_ID[c.lit][P])}"><small>${E(PAR_ID[c.lit][P])}${c.n ? ' · ' + E(nuitsT(c.n)) : ''}</small></button>`).join('')}</div>`;
   }
   if (TX.part === 'B') {
-    corps += `<p class="mot-vise"><b>${E(TT('b_' + it[1]))}</b></p>`;
-    if (it[1] !== 'nom') {
-      if (!TX.ordre) TX.ordre = melange(it[3][A]);
-      corps += `<p class="consigne">${E(TT('pB_c'))}</p>` + son + `<div class="choix">${TX.ordre.map((c, k) =>
-        `<button type="button" data-t="rep" data-k="${k}" style="font-size:24px">${E(c)}</button>`).join('')}</div>`;
-    } else corps += `<p class="consigne">${E(TT('pB_nom'))}</p>` + son
-      + `<form class="saisie" id="formTestNom"><input id="nomTest" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="${E(T('votre_reponse'))}">
+    // Tout se TAPE (tour 2) : un choix de nombres se déjoue toujours.
+    const nom = it[1] === 'nom';
+    corps += `<p class="mot-vise"><b>${E(TT('b_' + it[1]))}</b></p><p class="consigne">${E(TT(nom ? 'pB_nom' : 'pB_c'))}</p>` + son
+      + `<form class="saisie" id="formTestB"><input id="saisieB" autocomplete="off" spellcheck="false" ${nom ? 'autocapitalize="characters"' : 'inputmode="text"'} aria-label="${E(TT('saisie_b'))}" placeholder="${E(TT('saisie_b'))}">
          <button type="submit" class="btn btn--pri">${E(TT('valider'))}</button></form>`;
   }
   if (TX.part === 'C') corps += `<p class="consigne">${E(TT('pC_c'))}</p>` + (it[1] ? `<p class="contexte">${E(it[1][P])}</p>` : '') + son
@@ -839,11 +846,10 @@ async function enregistrer(){
 
 function clicTest(b){
   const t = b.dataset.t, it = itemTest();
-  if (t === 'debut') { allerA('A'); rendre(); setTimeout(jouerTest, 150); return; }
+  if (t === 'debut') { allerA('A'); garderEnCours(); rendre(); setTimeout(jouerTest, 150); return; }
   if (t === 'cdebut') { TX.part = 'C'; TX.c.i = 0; suivantItem(); return; }
   if (t === 'ecouter') { if ((TX.part === 'A' || TX.part === 'B') && TX.rejoue) return; TX.rejoue = true; jouerTest(); rendre(); return; }
   if (t === 'rep' && TX.part === 'A') { const c = TX.ordre[+b.dataset.k]; return repA(c.lit === it[3] && (it[1] === 1 || c.n === it[4])); }
-  if (t === 'rep' && TX.part === 'B') return repB(TX.ordre[+b.dataset.k] === it[2]);
   if (t === 'c') {
     const k = b.dataset.k, bonne = it[3];
     if (k === bonne) TX.c.ok++;
@@ -859,12 +865,20 @@ function clicTest(b){
   if (t === 'dsuite') { TX.d.i++; if (TX.d.i >= D.test.D[TX.forme].length) return finPartie(); suivantItem(); return; }
   if (t === 'oral') { const id = b.dataset.id, l = b.dataset.l, k = +b.dataset.k;
     majEntree(e => { e.oral = e.oral || {}; e.oral[id] = Object.assign(e.oral[id] || {}, {[l]: k}); }); rendre(); return; }
-  if (t === 'palier') { majEntree(e => { e.confirme = b.dataset.p; }); rendre(); return; }
-  if (t === 'refaire') { nouveauTest(); rendre(); return; }
+  if (t === 'palier') { majEntree(e => { e.confirme = b.dataset.p; });
+    // Confirmé : les voix de l'employé quittent l'appareil (Loi 25 ; tour 2).
+    purgerOral(TX.n); TX.d.enreg = {}; rendre(); return; }
+  if (t === 'refaire') { nouveauTest(); TX.codeOk = true; rendre(); return; }
 }
+const chiffres = t => String(t).replace(/\D/g, '');
 document.addEventListener('submit', e => {
-  if (e.target.id === 'formTestNom') { e.preventDefault(); const v = document.getElementById('nomTest').value;
-    if (!nu(v)) return; repB(nu(v) === nu(itemTest()[2])); }
+  if (e.target.id === 'formTestB') { e.preventDefault(); const v = document.getElementById('saisieB').value, it = itemTest();
+    if (it[1] === 'nom') { if (!nu(v)) return; return repB(nu(v) === nu(it[2])); }
+    // Chiffres seuls : 17:15, 17h15, 1715 ; 175,40 ou 175.40.
+    if (!chiffres(v)) return; repB(chiffres(v) === chiffres(it[3])); }
+  if (e.target.id === 'formCodeDebut') { e.preventDefault();
+    if (document.getElementById('codeD').value.trim() === D.test.code) { TX.codeOk = true; TX.codeFaux = false; allerA('A'); garderEnCours(); rendre(); setTimeout(jouerTest, 150); }
+    else { TX.codeFaux = true; rendre(); } return; }
   if (e.target.id === 'formCode') { e.preventDefault();
     if (document.getElementById('codeF').value.trim() === D.test.code) { TX.formateur = true; TX.codeFaux = false; } else TX.codeFaux = true;
     rendre(); }
