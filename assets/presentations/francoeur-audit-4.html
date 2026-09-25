@@ -209,7 +209,7 @@ textarea{width:100%;font:inherit;font-size:15px;padding:10px;border-radius:10px;
 
 .doc.large{max-width:1100px}
 .obj li{margin:6px 0}
-.filtres{position:sticky;top:0;z-index:2;background:var(--ground);display:flex;flex-wrap:wrap;gap:6px;padding:10px 0;border-bottom:1px solid var(--line);margin:18px 0 8px}
+.filtres{position:sticky;top:0;z-index:2;background:var(--ground);display:flex;flex-wrap:wrap;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);margin:18px 0 8px}
 .filtres button,.choix button{font:inherit;font-size:14px;cursor:pointer;background:var(--sunken);color:var(--body);border:1px solid var(--line-fort);border-radius:9px;padding:6px 10px}
 .filtres button[aria-pressed=true]{background:var(--ink);color:var(--card);border-color:var(--ink)}
 .constat{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--line-fort);border-radius:12px;padding:12px 14px;margin:10px 0}
@@ -225,7 +225,7 @@ textarea{width:100%;font:inherit;font-size:15px;padding:10px;border-radius:10px;
 .lieu{margin:4px 0 0;font-size:14px;color:var(--muted)}
 .cst{margin:6px 0 0}
 .cor{margin:6px 0 0;font-size:15px}
-.choix{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.choix{display:flex;flex-wrap:wrap;gap:12px;margin-top:8px}
 .choix button[aria-pressed=true][data-v=corriger]{background:var(--loi-bg);border-color:var(--loi);color:var(--ink);font-weight:700}
 .choix button[aria-pressed=true][data-v=garder]{background:var(--fait-bg);border-color:var(--fait);color:var(--ink);font-weight:700}
 .choix button[aria-pressed=true][data-v=discuter]{background:var(--decid-bg);border-color:var(--decid);color:var(--ink);font-weight:700}
@@ -342,7 +342,7 @@ valider), l'essai auprès de vrais employés (le pilote), l'effet au travail (de
     peindre();
   });
   document.getElementById('exporter').onclick=function(){
-    var out={audit:'francoeur', tour:4, decisions:v};
+    var out={audit:'francoeur-audit', tour:4, decisions:v};
     var t=JSON.stringify(out,null,2);
     if(navigator.clipboard) navigator.clipboard.writeText(t).then(function(){ document.getElementById('etat').textContent='Copié — à recoller dans la séance suivante.'; },function(){prompt('Copiez :',t);}); else prompt('Copiez :',t);
   };

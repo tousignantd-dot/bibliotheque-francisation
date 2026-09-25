@@ -60,7 +60,7 @@ LETTRES = {
     "es": dict(zip("ABCDEFGHIJKLMNOPQRSTUVWXYZ",
                ["a", "be", "ce", "de", "e", "efe", "ge", "hache", "i", "jota", "ka", "ele", "eme",
                 "ene", "o", "pe", "cu", "erre", "ese", "te", "u", "ve", "doble u", "equis",
-                "ye", "zeta"])),
+                "i griega", "zeta"])),
     "en": {c: c for c in "ABCDEFGHIJKLMNOPQRSTUVWXYZ"},
 }
 EPELER_INTRO = {"fr": "Ça s'écrit :", "en": "That's spelled", "es": "Se escribe:"}

@@ -17,7 +17,17 @@ Sortie : assets/presentations/francoeur-audit-<tour>.html
 import html, json, pathlib, re, sys
 
 RACINE = pathlib.Path(__file__).resolve().parent.parent
-BOUCLE = RACINE / "build" / "contenu" / "entreprise-francoeur" / "boucle"
+# Deux trousses passent par cette page ; --trousse hotel choisit l'autre.
+TROUSSES = {
+    "francoeur": {"boucle": "entreprise-francoeur", "nom": "Maison Francœur", "tete": "francoeur-etape0.html",
+                  "sortie": "francoeur-audit", "ancre": "francoeur", "note_obj":
+                  "La trousse n'avait pas d'objectifs observables écrits : ils ont été posés pour l'audit, dans"},
+    "hotel": {"boucle": "entreprise-hotel", "nom": "Hôtel Rive-Claire", "tete": "hotellerie-etape0.html",
+              "sortie": "hotellerie-audit", "ancre": "hotellerie", "note_obj":
+              "Les objectifs du cadrage (étape 0), repris dans"},
+}
+TR = TROUSSES["hotel" if "--trousse" in sys.argv and sys.argv[sys.argv.index("--trousse") + 1] == "hotel" else "francoeur"]
+BOUCLE = RACINE / "build" / "contenu" / TR["boucle"] / "boucle"
 E = html.escape
 
 FAMILLES = {"A": "Alignement", "B": "Entrée en matière", "C": "Charge cognitive",
@@ -36,8 +46,14 @@ RANG = {"bloquant": 0, "majeur": 1, "mineur": 2}
 def lire(tour):
     constats = []
     for f in sorted(BOUCLE.glob(f"audit{tour}-*.json")):
-        for c in json.loads(f.read_text(encoding="utf-8")):
+        d = json.loads(f.read_text(encoding="utf-8"))
+        # Deux formats d'auditeur : une liste de constats, ou {"constats": [...]}.
+        for c in (d["constats"] if isinstance(d, dict) else d):
             c.setdefault("source", f.stem.split("-", 1)[1])
+            c.setdefault("lieu", c.get("ou", ""))
+            if c.get("mesure"):
+                c["constat"] = f'{c["constat"]} (Mesure : {c["mesure"]})'
+
             constats.append(c)
     for n, c in enumerate(sorted(constats, key=lambda c: (RANG.get(c["gravite"], 3), c["code"])), 1):
         c["id"] = f"t{tour}-{n:02d}"
@@ -50,9 +66,9 @@ def page(tour, constats):
     for c in constats:
         par_code[c["code"]] = par_code.get(c["code"], 0) + 1
     plus = sorted(par_code.items(), key=lambda x: -x[1])[:5]
-    t = (RACINE / "assets" / "presentations" / "francoeur-etape0.html").read_text(encoding="utf-8")
+    t = (RACINE / "assets" / "presentations" / TR["tete"]).read_text(encoding="utf-8")
     t = t[:t.index("<body")]
-    t = re.sub(r"<title>.*?</title>", f"<title>Maison Francœur — audit, tour {tour}</title>", t)
+    t = re.sub(r"<title>.*?</title>", f"<title>{TR['nom']} — audit, tour {tour}</title>", t)
     t = t.replace("</style>", CSS + "</style>", 1)
     cadrage = (BOUCLE / "cadrage.md").read_text(encoding="utf-8")
     objectifs = re.findall(r"- \*\*(O\d) — (.*?)\*\* (.*?)(?=\n- \*\*O|\n\n)", cadrage, re.S)
@@ -77,8 +93,8 @@ def page(tour, constats):
     net = lambda d: re.sub(r"\*\*", "", d).strip()
     obj = "".join(f"<li><b>{E(o)} — {E(n)}.</b> {E(net(d))}</li>" for o, n, d in objectifs)
     corps = f"""<body><div class="doc large">
-<a class="retour" href="/presentations.html#francoeur"><span aria-hidden="true">&#8592;</span> Le classeur</a>
-<p class="eyebrow">Maison Francœur &middot; boucle didactique &middot; tour {tour}</p>
+<a class="retour" href="/presentations.html#{TR['ancre']}"><span aria-hidden="true">&#8592;</span> Le classeur</a>
+<p class="eyebrow">{TR['nom']} &middot; boucle didactique &middot; tour {tour}</p>
 <h1>L'audit de la trousse</h1>
 <p class="chapeau">La trousse passée à la grille de la boucle didactique — 22 critères, sept familles — par deux
 regards qui n'avaient pas les intentions de l'auteur : l'un a lu le <b>contenu</b>, l'autre a <b>servi et joué
@@ -94,8 +110,8 @@ Sortie de boucle : zéro bloquant, zéro majeur. Tranchez chaque constat, puis e
 </div>
 
 <section class="premier"><h2>Les objectifs contre lesquels on juge</h2>
-<p>La trousse n'avait pas d'objectifs observables écrits : ils ont été posés pour l'audit, dans
-<code>build/contenu/entreprise-francoeur/boucle/cadrage.md</code>.</p><ul class="obj">{obj}</ul></section>
+<p>{TR['note_obj']}
+<code>build/contenu/{TR['boucle']}/boucle/cadrage.md</code>.</p><ul class="obj">{obj}</ul></section>
 
 <nav class="filtres" aria-label="Filtrer les constats">{filtres}</nav>
 <section class="liste-c">{cartes}</section>
@@ -108,7 +124,7 @@ valider), l'essai auprès de vrais employés (le pilote), l'effet au travail (de
 </div>
 <script>
 (function(){{
-  var CLE='francoeur-audit-{tour}', v={{}}, fg='tout', ff=null;
+  var CLE='{TR['sortie']}-{tour}', v={{}}, fg='tout', ff=null;
   try{{ v=JSON.parse(localStorage.getItem(CLE)||'{{}}'); }}catch(e){{}}
   function peindre(){{
     document.querySelectorAll('.constat').forEach(function(c){{
@@ -129,14 +145,14 @@ valider), l'essai auprès de vrais employés (le pilote), l'effet au travail (de
     peindre();
   }});
   document.getElementById('exporter').onclick=function(){{
-    var out={{audit:'francoeur', tour:{tour}, decisions:v}};
+    var out={{audit:'{TR['sortie']}', tour:{tour}, decisions:v}};
     var t=JSON.stringify(out,null,2);
     if(navigator.clipboard) navigator.clipboard.writeText(t).then(function(){{ document.getElementById('etat').textContent='Copié — à recoller dans la séance suivante.'; }},function(){{prompt('Copiez :',t);}}); else prompt('Copiez :',t);
   }};
   peindre();
 }})();
 </script></body></html>"""
-    sortie = RACINE / "assets" / "presentations" / f"francoeur-audit-{tour}.html"
+    sortie = RACINE / "assets" / "presentations" / f"{TR['sortie']}-{tour}.html"
     sortie.write_text(t + corps, encoding="utf-8")
     return sortie, compte
 
@@ -144,7 +160,7 @@ valider), l'essai auprès de vrais employés (le pilote), l'effet au travail (de
 CSS = """
 .doc.large{max-width:1100px}
 .obj li{margin:6px 0}
-.filtres{position:sticky;top:0;z-index:2;background:var(--ground);display:flex;flex-wrap:wrap;gap:6px;padding:10px 0;border-bottom:1px solid var(--line);margin:18px 0 8px}
+.filtres{position:sticky;top:0;z-index:2;background:var(--ground);display:flex;flex-wrap:wrap;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);margin:18px 0 8px}
 .filtres button,.choix button{font:inherit;font-size:14px;cursor:pointer;background:var(--sunken);color:var(--body);border:1px solid var(--line-fort);border-radius:9px;padding:6px 10px}
 .filtres button[aria-pressed=true]{background:var(--ink);color:var(--card);border-color:var(--ink)}
 .constat{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--line-fort);border-radius:12px;padding:12px 14px;margin:10px 0}
@@ -160,7 +176,7 @@ CSS = """
 .lieu{margin:4px 0 0;font-size:14px;color:var(--muted)}
 .cst{margin:6px 0 0}
 .cor{margin:6px 0 0;font-size:15px}
-.choix{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.choix{display:flex;flex-wrap:wrap;gap:12px;margin-top:8px}
 .choix button[aria-pressed=true][data-v=corriger]{background:var(--loi-bg);border-color:var(--loi);color:var(--ink);font-weight:700}
 .choix button[aria-pressed=true][data-v=garder]{background:var(--fait-bg);border-color:var(--fait);color:var(--ink);font-weight:700}
 .choix button[aria-pressed=true][data-v=discuter]{background:var(--decid-bg);border-color:var(--decid);color:var(--ink);font-weight:700}

@@ -1,0 +1,166 @@
+{
+ "auditeur": "contenu",
+ "tour": 1,
+ "date": "2026-09-25",
+ "compte": {
+  "bloquant": 1,
+  "majeur": 9,
+  "mineur": 12
+ },
+ "constats": [
+  {
+   "code": "D4",
+   "gravite": "bloquant",
+   "ou": "exercices.py PIEGES_FAUX (billet, etage, monnaie, depot, serviettes, facture, stylo, autobus) + hotel_planches.py serie('pieges')",
+   "constat": "La « fausse lecture » est souvent un VRAI sens du mot isolé, et le moteur montre le mot seul, sans phrase : une réponse juste est marquée fausse. Direction pilote fr→en : 3 items sur 5 — « a ticket » = une contravention (vrai en anglais : a speeding ticket), « the floor » = le plancher (sens premier), « change » = un changement (sens premier). en→fr : « le dépôt » = a warehouse/depot (vrai en français). es→fr : « des serviettes » = servilletas (au Québec, « serviette » seule désigne couramment la serviette de table), « la facture » ≈ factura (une facture d'hôtel québécoise est bien une pièce fiscale avec numéros TPS/TVQ). fr→es : « una pluma » = une plume (aussi le sens d'oiseau au Mexique), « el camión » = un camion (aussi le camion de marchandises au Mexique), « la cuenta » = le compte en banque (vrai : cuenta bancaria). Les notes du lexique aggravent : « pas une plume », « pas un camion » sont fausses. On enseigne une fausse croyance lexicale.",
+   "correctif": "Présenter le mot DANS une réplique de comptoir qui fixe le sens (« Your room is on the twelfth floor. », « Here's your change. », « Le camión 12 va al centro. ») et demander le sens dans cette phrase ; ou garder le mot seul et choisir une fausse lecture réellement fausse. Corriger les notes : « au Mexique, pluma = stylo (et aussi plume d'oiseau) ; à l'hôtel, c'est le stylo ». Ajouter au build une assertion : toute entrée de PIEGES_FAUX porte une phrase de contexte."
+  },
+  {
+   "code": "A3",
+   "gravite": "majeur",
+   "ou": "exercices.py DEMANDES c1–c8 ; lexique.py date",
+   "constat": "O1 vise « type de chambre, nuits, DATES » : aucune demande ne contient de date, et les huit disent le nombre de nuits en toutes lettres (« pour deux nuits », « quatre nuits »). Le mot-clé suffit ; jamais on ne calcule des nuits à partir de dates (« du 12 au 15 », « jusqu'à dimanche », « this Friday through Sunday »), ce qui est la forme la plus fréquente au téléphone. Le type de chambre se réduit au lit (rien sur deux lits, non-fumeur, vue). Le piège de la date (04/05) n'a aucun item. Enfin l'exercice fait reconnaître parmi quatre cartes étiquetées, alors que l'objectif dit « saisir » : le test, qui n'existe pas encore, ne sera pas préparé à une saisie libre.",
+   "correctif": "Ajouter 4-6 demandes avec dates et nuits à déduire (« du jeudi 12 au dimanche 15 » → 3 nuits), une avec deux lits, une avec mois en chiffres ambigu ; varier la forme du nombre de nuits. Prévoir une variante « fiche de réservation » à remplir (lit, arrivée, départ, nuits) pour préparer l'étape 3."
+  },
+  {
+   "code": "A3",
+   "gravite": "majeur",
+   "ou": "exercices.py REPONSES r1–r6",
+   "constat": "O3 nomme quatre gestes : accueillir (r1), confirmer (r6, en partie), refuser poliment (r3), EXPLIQUER UN FRAIS : aucun item. Le lexique a pourtant tout ce qu'il faut (frais, dépôt, taxes et taxe d'hébergement, stationnement, départ tardif, annulation, carte refusée). Six items en tout pour un objectif qui se mesurera sur 8 situations.",
+   "correctif": "Écrire 3 items « frais » : le dépôt retenu sur la carte (« a hold for incidentals »), la taxe d'hébergement sur la facture, le stationnement facturé à la nuit. Distracteurs : l'explication fausse, celle qui s'excuse sans expliquer, celle qui annule le frais (→ relais au gérant, voir O4)."
+  },
+  {
+   "code": "A3",
+   "gravite": "majeur",
+   "ou": "exercices.py REPONSES r4 (seul hors_regle=True) ; hotel_planches.py ecranExercice('reponds')",
+   "constat": "O4 est éliminatoire, et il n'a qu'un item (remboursement). Aucune « exception » : départ tardif gratuit, frais d'annulation effacés, surclassement offert, stationnement offert — les mots sont au lexique, les situations absentes. Pire : le bandeau hors_regle s'affiche AVANT le choix, sur r4 seulement ; il désigne la bonne réponse (celle qui passe au gérant). Et la promesse fautive reçoit le même traitement que les autres erreurs (« essayez encore ») : l'erreur éliminatoire n'a aucune conséquence visible (E2).",
+   "correctif": "Porter O4 à au moins 4 items (remboursement, départ tardif gratuit, frais d'annulation, surclassement) mélangés à des items où l'employé DOIT agir seul (comme r5, la clé) pour qu'on discrimine au lieu de tout renvoyer. Retirer le bandeau avant le choix ; l'afficher APRÈS une promesse, comme conséquence (« Vous venez d'engager l'hôtel à 450 $ : c'est le gérant qui décide »), et compter l'item comme échoué même si on se reprend."
+  },
+  {
+   "code": "D4",
+   "gravite": "majeur",
+   "ou": "exercices.py REPONSES r1–r6 (distracteurs)",
+   "constat": "Les mauvais choix se rejettent sans comprendre la langue : hors sujet (« L'ascenseur est à gauche », « Le départ est à onze heures », le déjeuner en r6) ou grossiers (« Non. », « Ce n'est pas mon problème. », « Je ne sais pas. »). Et la bonne réplique est la PLUS LONGUE dans les 18 cas (6 items × 3 langues, mesuré : ex. r3 fr 97 caractères contre 4 et 44). O3 porte sur les FORMULES de la langue apprise ; ce sont elles qu'il faut départager.",
+   "correctif": "Distracteurs de même intention, mauvaise formule : registre familier (« Tu veux quoi? », « What do you want? », « ¿Qué quiere? » sans usted), calques (« I am desolated », « Je m'excuse pour le trouble », « Lo siento por el ruido » au lieu de « Lamento el ruido »), promesse hors règle. Niveler les longueurs à ±20 %."
+  },
+  {
+   "code": "D1",
+   "gravite": "majeur",
+   "ou": "hotel_planches.py FAMILLES (les 8 séries)",
+   "constat": "Aucune série ne fait PRODUIRE dans le sens langue parlée → langue apprise. « Je l'entends », « Le mot et son image », « Ce que je réponds » sont de la reconnaissance ; « Je me souviens » et « La série des pièges » vont de la langue apprise vers la langue parlée. Le jeu de rôle (O3, étape 4) exigera de dire « Could you spell your last name? » ou « ¿En qué le puedo ayudar? » de mémoire : rien ne l'y prépare.",
+   "correctif": "Ajouter le sens inverse à « Je me souviens » pour la planche Politesse et les répliques justes de REPONSES : on voit la situation dans sa langue, on DIT la formule, puis on écoute le modèle et on s'auto-évalue. Dans « Ce que je réponds », une variante « dites-la avant de voir les choix »."
+  },
+  {
+   "code": "D2",
+   "gravite": "majeur",
+   "ou": "exercices.py NOMS, LETTRES ; hotel_audio.py epellation() (-15 %, pause 350 ms)",
+   "constat": "L'épellation est dite plus lentement que la normale, une lettre toutes les 350 ms, voix nette : aucun client n'épelle ainsi, encore moins au téléphone (O2 le dit). Les huit noms n'ont ni accent (Côté, Bélanger), ni trait d'union, ni lettre doublée (« deux L », « double T »), ni double apellido — que le lexique annonce pourtant (nom-famille). Aucun alphabet d'épellation : « N comme Nicole », « B as in boy », et surtout « be grande / ve chica », indispensable en espagnol du Mexique où b et v se prononcent pareil. La saisie retire tout ce qui n'est pas A-Z : un accent ne peut même pas être vérifié. La rétroaction « 5 / 8 lettres justes » compte par position : une lettre omise rend fausses toutes les suivantes.",
+   "correctif": "Débit 0 % à +10 %, lettres groupées comme on les dit, filtre téléphonique sur la moitié des items ; ajouter 4 noms : un accentué, un composé, un avec lettre doublée, un double apellido (« García López »), et des épellations avec « comme / as in / de ». Accepter les lettres accentuées à la saisie. Signaler la première lettre fausse plutôt qu'un compte positionnel."
+  },
+  {
+   "code": "E1",
+   "gravite": "majeur",
+   "ou": "exercices.py NOMBRES n1–n8 ; hotel_planches.py repondre() fam 'nombres'",
+   "constat": "Chaque mauvais choix reçoit « Essayez encore. », rien d'autre, et le bon reçoit « Juste! ». Or les distracteurs sont justement les confusions à enseigner : 3 h / 15 h, fifty / fifteen (149,15), inversion 189/198, quarter to / quarter past. L'explication n'est jamais donnée. Pour l'apprenant de l'anglais, « 3:00 » (n5) et « 10:45 » (n8) sont défendables en notation 12 h tant que la règle « on note en 24 h » n'est dite nulle part.",
+   "correctif": "Rétroaction par choix, dans la langue de l'employé : « Three p.m. = 15 h : l'anglais dit a.m./p.m., la fiche se remplit sur 24 h. » ; « fifty (50) et fifteen (15) : l'accent tombe sur la fin de fifteen ». Écrire la règle de notation dans la consigne de la série."
+  },
+  {
+   "code": "A2",
+   "gravite": "majeur",
+   "ou": "lexique.py lit-double (en « a full bed ») ; exercices.py DEMANDES c4, c8 ; PIEGES_FAUX lit-double",
+   "constat": "En anglais nord-américain d'hôtel, on dit « a double bed », « a double », « two doubles » ; « full » est le mot du magasin de matelas. La direction pilote fr→en entraîne donc à entendre « full » (c4, c8) et présente « double » comme un piège, alors que le client réel dira « double ».",
+   "correctif": "en : « a double bed » (note : « full » s'entend aussi, surtout en magasin). Réécrire c4/c8 en « A double bed, please. » Recentrer le piège sur « a double room » (une chambre pour deux, un grand lit ou deux lits) — et en faire un item où l'employé doit demander « one bed or two? »."
+  },
+  {
+   "code": "D4",
+   "gravite": "majeur",
+   "ou": "hotel_planches.py serie('entends'|'image') voisins() ; croquis lit-simple/double/queen/king, piece-identite/permis/passeport, bagages/valise, carte-cle/pochette",
+   "constat": "Les distracteurs viennent de la même planche, sans filtre. Or les croquis lit double, queen et king sont indiscernables (même dessin, aucune échelle) : entendre « a queen bed » devant ces trois images, c'est deviner. « A photo ID » contre le croquis du permis ou du passeport : le permis EST une pièce d'identité avec photo, la réponse fausse est juste. Même chose pour « des bagages » / « une valise » (le croquis des bagages contient la valise) et la carte-clé dessinée dans sa pochette.",
+   "correctif": "Table « jamais ensemble » dans exercices.py (hyperonymes et images indiscernables) lue par voisins() ; ou retirer les lits des séries image (ils sont travaillés avec étiquettes dans « Ce que le client veut »)."
+  },
+  {
+   "code": "E1",
+   "gravite": "mineur",
+   "ou": "exercices.py REPONSES r2 (rétroactions) ; structure {interface: texte}",
+   "constat": "Les rétroactions ne dépendent que de la langue parlée, alors que l'erreur dépend de la paire. r2 : un francophone qui apprend l'anglais et choisit « Lunch is served at noon » lit « au Québec, c'est le déjeuner » — vrai, mais sans rapport avec son erreur. En espagnol, « la comida de la mañana » contredit le lexique (comida = repas du midi) et rate le vrai piège de es→fr (le dîner québécois = la comida).",
+   "correctif": "Permettre une clé par direction (« es>fr »: « En Quebec, le dîner es la comida del mediodía; el desayuno es le déjeuner. ») en repli sur la clé d'interface."
+  },
+  {
+   "code": "C3",
+   "gravite": "mineur",
+   "ou": "lexique.py notes de billet, etage, depot, lit-double, maintenant, malade ; PIEGES_FAUX prenom, lit-double",
+   "constat": "La note affichée après le choix explique une autre confusion que celle du distracteur : billet (note sur « a bill », distracteur « contravention »), etage (note sur le first floor américain et le Mexique, distracteur « plancher »), depot (note sur « caution », distracteur « warehouse »), lit-double (note sur « double room », distracteur « lit occupé »). Pour maintenant et malade, le mot piégé (actually/actualmente, constipado) n'est même pas le mot de l'entrée. Deux fausses lectures sont peu plausibles : « full bed » lu « lit occupé » ; « le prénom » lu « el apellido » (le vrai réflexe hispanophone porte sur « le nom » → nombre).",
+   "correctif": "Une note par fausse lecture, qui nomme ce que l'employé vient de choisir. Pour prenom, montrer « le nom » (fausse lecture : el nombre). Créer des entrées propres pour actually/actuellement et constipado, ou retirer ces pièges des notes."
+  },
+  {
+   "code": "F2",
+   "gravite": "mineur",
+   "ou": "exercices.py UI hors_regle ; lexique.py gerant (note) ; REPONSES r4 rétroaction",
+   "constat": "La règle du relais est dite en trois morceaux qui ne concordent pas : note du lexique « ce que la réception ne décide pas seule » (en français seulement : noteDe() ne l'affiche jamais à un employé anglophone ou hispanophone, donc pas en es→fr) ; bandeau fr/en « fait échouer / fails you » contre es « es un error grave » ; r4 « on ne le promet jamais seul » (es « nunca se promete solo », ambigu : solo = seul / seulement). Nulle part la liste de ce qui revient au gérant (remboursement, exception : laquelle ?). Le ton « fait échouer » menace plus qu'il n'outille (B3).",
+   "correctif": "Une phrase-règle unique, traduite trois fois, affichée sur la planche Problèmes et dans l'aide-mémoire : « Remboursement, gratuité, exception à un tarif ou à une heure : je ne promets pas, je dis : je vérifie avec le gérant. » Liste fermée des exceptions. es : « nunca lo prometa usted »."
+  },
+  {
+   "code": "D3",
+   "gravite": "mineur",
+   "ou": "exercices.py PIEGES_FAUX ; lexique.py pièges es·en",
+   "constat": "Séries des pièges : es→en 2 items, en→es 2 items (maintenant et malade n'ont pas de fausse lecture), fr→en 5 sur 9 pièges de la paire, en→fr 5, es→fr 6, fr→es 7. Pièges classiques absents des directions pilotes : fr→en « actually / actuellement » (étiqueté es·en seulement), « to charge (a card) » = facturer — au cœur de O3 « expliquer un frais » ; es→fr « embarrassée / embarazada » (étiqueté es·en seulement), « carte / carta » (carte-clé, carte de crédit), « chemise » (le dossier) = camisa.",
+   "correctif": "Viser 6-8 items par direction ; ajouter les pièges nommés ; donner une fausse lecture à maintenant, malade, date ; le moteur signale une série < 5."
+  },
+  {
+   "code": "A2",
+   "gravite": "mineur",
+   "ou": "lexique.py etage (PIÈGE (fr·en))",
+   "constat": "Le piège de l'étage est rangé dans la mauvaise paire. En usage courant, le « premier étage » québécois et le « first floor » canadien désignent tous deux souvent le rez-de-chaussée ; l'écart réel est mexicain : « primer piso » = un étage au-dessus de la planta baja. Le hispanophone qui apprend le français (direction pilote) ne voit donc jamais ce piège.",
+   "correctif": "Étiqueter fr·es et es·en, avec l'item « Su habitación está en el primer piso » ↔ « premier étage » ; garder pour fr·en une note simple (rez-de-chaussée = ground floor / lobby level)."
+  },
+  {
+   "code": "A2",
+   "gravite": "mineur",
+   "ou": "lexique.py / interface.py (retouches de variété et d'exactitude)",
+   "constat": "Petites inexactitudes : note frais « est un frais porté à la note » — frais (dépense) ne s'emploie qu'au pluriel (des frais) ; le cadrage O3 fait la même faute (« expliquer un frais »). Note date « 04/05 est le 4 mai ici » : au Québec les deux ordres coexistent et la norme est AAAA-MM-JJ. « actualmente » = actuellement/de nos jours, pas « right now ». bonjour → « Good morning! » faux après midi (« Hello! »). surreservation « an overbooking » (on dit « we're overbooked »). « cama queen » contre « cama king size » (MX : queen size / king size). reveil es « una llamada para despertar » (MX hôtel : « llamada de despertador »). metro en « the subway » : à Montréal on dit « the metro », et Québec (ville) n'a pas de métro. r5 en « re-encode » (au comptoir : « I'll reprogram it »). LETTRES es Y = « ye » (au Mexique on épelle « i griega »).",
+   "correctif": "Appliquer ces retouches ; faire relire en et es par un locuteur de la variété (l'écran l'annonce déjà dans non_relu)."
+  },
+  {
+   "code": "E1",
+   "gravite": "mineur",
+   "ou": "exercices.py REPONSES r5 (es juste, en rétroaction)",
+   "constat": "r5 es : la bonne réplique commence par « ¡Disculpe! », alors que la note du lexique (desole) enseigne « disculpe » pour interrompre et « lo siento » pour un tort — l'exercice contredit la planche. La rétroaction anglaise dit « she / her », mais toutes les voix de client sont masculines (VOIX_CLIENTS : Thierry, Andrew, Jorge).",
+   "correctif": "es : « ¡Lo siento! ¿Me la permite? Se la vuelvo a programar. » (ou « Una disculpa »). Accorder les rétroactions à la voix, ou donner une voix féminine à ce client."
+  },
+  {
+   "code": "E1",
+   "gravite": "mineur",
+   "ou": "exercices.py REPONSES r6 (réplique juste)",
+   "constat": "La bonne réplique commence par « Bien sûr / Of course / Claro » avant de savoir si l'hôtel a une chambre vendredi : c'est la promesse que r3 reproche (« on ne promet pas une chambre qu'on n'a pas »).",
+   "correctif": "« Je vérifie tout de suite. Pouvez-vous me donner votre numéro de confirmation? » / « Let me check. Could I have… » / « Permítame verificar. ¿Me da…? »"
+  },
+  {
+   "code": "C2",
+   "gravite": "mineur",
+   "ou": "lexique.py notes ordinaires ; hotel_planches.py noteDe()",
+   "constat": "Les notes ordinaires, écrites pour la validation par Daniel (docstring), sont montrées aux employés francophones quelle que soit la langue apprise : le fr→en lit « Au Mexique : frigobar, regadera, alberca… » et « sèche-cheveux en France ». Les anglophones et hispanophones n'en voient aucune.",
+   "correctif": "Étiqueter chaque note par la langue qu'elle concerne et n'afficher que celles de la langue apprise ; traduire les notes utiles (luggage sans s, crib/cot, 3 p.m.)."
+  },
+  {
+   "code": "D2",
+   "gravite": "mineur",
+   "ou": "exercices.py NOMBRES n1, n5, n6, n7, n8 ; hotel_audio.py (voix VOIX_MOTS, 0 %)",
+   "constat": "Cinq phrases sur huit sont des répliques du réceptionniste (« Vous êtes à la chambre… », « L'arrivée est à quinze heures ») dites par la voix des mots, au débit neutre. O2 demande de NOTER ce que dit le client.",
+   "correctif": "Réécrire en paroles de client, voix de client : « I'm in four-twelve, the key doesn't work », « Mon vol arrive à vingt-deux heures quarante-cinq », « ¿Cuánto es por noche? — ¿Ciento ochenta y nueve? »."
+  },
+  {
+   "code": "E1",
+   "gravite": "mineur",
+   "ou": "exercices.py REPONSES r1 ; hotel_planches.py noter()",
+   "constat": "r1 : « Quel est votre prénom? » n'est pas une faute franche (plusieurs Moreno possibles). Rétroactions maladroites : es « La reservación está a nombre del apellido », en « that's the one to have spelled ». Une bonne réponse ne reçoit que « Juste! », sans dire pourquoi elle l'est.",
+   "correctif": "Remplacer ce distracteur par une vraie faute de formule ; es « La reservación se busca por el apellido: es el que se pide deletrear. » ; en « Bookings are under the last name: that's the one to ask them to spell. » Une ligne d'explication aussi pour la bonne réponse."
+  },
+  {
+   "code": "G1",
+   "gravite": "mineur",
+   "ou": "hotel_planches.py ecranExercice('entends') ; ecranComptoir()",
+   "constat": "Les choix de « Je l'entends, je le trouve » sont des boutons-images sans nom accessible (alt vide) ; les zones du comptoir ne portent que leur numéro.",
+   "correctif": "aria-label neutre par position (« Choix 1 ») pour ne pas trahir la réponse ; au comptoir, aria-label = le mot appris."
+  }
+ ]
+}
