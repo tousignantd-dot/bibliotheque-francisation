@@ -108,7 +108,39 @@ def donnees():
             "etapes": etapes, "poche": poche, "sons": sons}, manque, len(tous)
 
 
+def icones():
+    """L'icône de l'écran d'accueil : la coquille du lexique, sur blanc (any) et
+    sur le sable de la credencial (maskable, la coquille dans la zone sûre)."""
+    from PIL import Image
+    src = MEDIA / "croquis" / "concha.png"
+    src = src if src.exists() else MEDIA / "croquis" / "concha.jpg"
+    coq = Image.open(src).convert("RGB")
+    dest = SORTIE.parent / "icones"; dest.mkdir(parents=True, exist_ok=True)
+    for nom, cote, fond, part in (("icone-192.png", 192, "#FFFFFF", .86), ("icone-512.png", 512, "#FFFFFF", .86),
+                                  ("icone-maskable-512.png", 512, "#FBF6E9", .62), ("icone-180.png", 180, "#FFFFFF", .86)):
+        im = Image.new("RGB", (cote, cote), fond)
+        c = coq.resize((round(cote * part),) * 2, Image.LANCZOS)
+        if fond != "#FFFFFF":   # le blanc du croquis devient le sable du fond
+            import numpy as np
+            a = np.asarray(c).copy(); a[(a >= 245).all(axis=2)] = (0xFB, 0xF6, 0xE9); c = Image.fromarray(a)
+        im.paste(c, ((cote - c.width) // 2, (cote - c.height) // 2))
+        im.save(dest / nom, optimize=True)
+    base = "/modules-autonomes/compostelle/"
+    (SORTIE.parent / "manifest.webmanifest").write_text(json.dumps({
+        "name": "En route vers Compostelle — francis",
+        "short_name": "Compostelle",
+        "description": "L'espagnol du pèlerin, étape par étape sur le Camino francés.",
+        "lang": "fr-CA", "dir": "ltr", "start_url": base, "scope": base,
+        "display": "standalone", "orientation": "portrait",
+        "background_color": "#F7F7F5", "theme_color": "#FFFFFF",
+        "icons": [{"src": base + "icones/icone-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+                  {"src": base + "icones/icone-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+                  {"src": base + "icones/icone-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}],
+    }, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
 def main():
+    icones()
     D, manque, total = donnees()
     page = GABARIT.replace("%%DONNEES%%", json.dumps(D, ensure_ascii=False, separators=(",", ":")))
     SORTIE.parent.mkdir(parents=True, exist_ok=True)
@@ -126,8 +158,9 @@ GABARIT = r"""<!DOCTYPE html>
 <link rel="stylesheet" href="/assets/design-system/styles.css">
 <link rel="stylesheet" href="/assets/design-system/marque-francis.css">
 <link rel="icon" href="/assets/design-system/marque-francis-favicon.svg">
-<link rel="manifest" href="/manifest.webmanifest">
-<link rel="apple-touch-icon" href="/assets/design-system/icones/icone-180.png">
+<link rel="manifest" href="/modules-autonomes/compostelle/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/modules-autonomes/compostelle/icones/icone-180.png">
+<meta name="apple-mobile-web-app-title" content="Compostelle">
 <meta name="theme-color" content="#FFFFFF">
 <style>
 /* Page produite par build/compostelle_app.py — ne pas l'éditer. */
@@ -369,7 +402,7 @@ function imageMot(m, id){
 
 /* ---------- l'état, dans ce téléphone seulement ---------- */
 const CLE = 'compostelle:v1';
-let S = {genre:null, nom:'', aide:false, jours:{}, vars:{}};
+let S = {genre:null, nom:'', aide:false, lent:false, jours:{}, vars:{}};
 try { Object.assign(S, JSON.parse(localStorage.getItem(CLE) || '{}')); } catch(e) {}
 function sauver(){ try { localStorage.setItem(CLE, JSON.stringify(S)); } catch(e) {} }
 function jour(id){ return S.jours[id] || (S.jours[id] = {faits:{}, tampon:null}); }
@@ -385,6 +418,9 @@ function jouer(fichier){
     arreterMicro();
     lecteur.pause();
     lecteur.src = BASE + 'sons/' + fichier + '?v=' + D.v;
+    // Le ralenti étire dans le navigateur, sans changer la hauteur (mémoire
+    // bouton-vitesse-voix) : les fichiers restent ceux du débit naturel.
+    lecteur.playbackRate = S.lent ? 0.8 : 1; lecteur.preservesPitch = true;
     lecteur.onended = () => res(true); lecteur.onerror = () => res(false);
     const p = lecteur.play(); if (p && p.catch) p.catch(() => res(false));
   });
@@ -724,7 +760,9 @@ function vueScene(et, bloc){
       <div><b>${E(sc.titre)}</b><div class="muted" style="font-size:14px">${E(p.nom)} — ${E(p.qui)}</div></div></div>
     ${et.eliminatoire && bloc === 'scene' ? `<div class="regle"><b>Règle de cette scène.</b> ${E(et.eliminatoire)}</div>` : ''}
     <label class="aide-bascule"><input type="checkbox" id="aide" ${aide ? 'checked' : ''}> Montrer le français sous chaque réplique</label>
+    <label class="aide-bascule"><input type="checkbox" id="lent" ${S.lent ? 'checked' : ''}> Voix plus lentes</label>
     <div class="fil" id="fil"></div><div id="zone"></div>`;
+  $('#lent').onchange = e => { S.lent = e.target.checked; sauver(); };
   $('#aide').onchange = e => { aide = e.target.checked; app.querySelectorAll('.bulle .fr, .choix small').forEach(x => x.hidden = !aide); };
   const fil = $('#fil'), zone = $('#zone');
   function bulle(qui2, es, fr, fichier, tel){
@@ -760,8 +798,26 @@ function vueScene(et, bloc){
     }
     const n = tour.choix.length, o = tour.libre ? [...Array(n).keys()] : ordre(n, k + et.n * 3 + (bloc === 'soir' ? 1 : 0));
     zone.innerHTML = `<p class="consigne" style="margin-top:12px">${tour.libre ? 'Toutes les réponses sont justes : choisissez <b>la vôtre</b>.' : 'Que répondez-vous ?'}</p>
-      <div class="choix">${o.map(i => `<button data-i="${i}">${E(g(tour.choix[i][0]))}<small ${aide ? '' : 'hidden'}>${E(tour.choix[i][1])}</small></button>`).join('')}</div><div id="r"></div>`;
+      <div class="choix">${o.map(i => `<button data-i="${i}">${E(g(tour.choix[i][0]))}<small ${aide ? '' : 'hidden'}>${E(tour.choix[i][1])}</small></button>`).join('')}</div>
+      ${Reco ? `<div class="micro" style="margin:4px 0"><button class="btn" id="dire">${ICO.micro} Le dire au lieu de toucher</button><div class="entendu" id="entendu"></div></div>` : ''}
+      <div id="r"></div>`;
     zone.scrollIntoView({behavior:'smooth', block:'end'});
+    if (Reco) $('#dire').onclick = () => {
+      const bt = $('#dire');
+      if (recoActive) { arreterMicro(); return; }
+      bt.innerHTML = ICO.stop + ' Arrêter'; bt.classList.add('btn--son');
+      ecouterMicro(t => { $('#entendu').textContent = '« ' + t + ' »'; }, final => {
+        bt.innerHTML = ICO.micro + ' Le dire au lieu de toucher'; bt.classList.remove('btn--son');
+        if (!final) { $('#r').innerHTML = `<div class="retro info">Je n'ai rien entendu. Réessayez, ou touchez votre réponse.</div>`; return; }
+        // La phrase dite rejoint le choix dont elle partage le plus de mots.
+        const dits = new Set(plat(final).split(' '));
+        const score = i => { const m = plat(g(tour.choix[i][0])).split(' ').filter(Boolean); return m.filter(w => dits.has(w)).length / Math.max(m.length, 1); };
+        const libres = [...zone.querySelectorAll('.choix button')].filter(b => !b.classList.contains('faux')).map(b => +b.dataset.i);
+        const best = libres.sort((a, b) => score(b) - score(a))[0];
+        if (best == null || score(best) < 0.5) { $('#r').innerHTML = `<div class="retro info">J'ai entendu « ${E(final)} », sans reconnaître une des réponses. Réessayez, ou touchez-la.</div>`; return; }
+        zone.querySelector(`.choix button[data-i="${best}"]`).click();
+      });
+    };
     zone.querySelectorAll('.choix button').forEach(b => b.onclick = () => {
       const i = +b.dataset.i, c = tour.choix[i];
       if (i === 0 || tour.libre) {
@@ -981,6 +1037,8 @@ function vueReglages(){
   <div class="carte"><h3 style="margin-top:0">Vous êtes</h3>
    <div class="rangee"><button class="btn ${S.genre === 'm' ? 'btn--pri' : ''}" onclick="S.genre='m';sauver();vueReglages()">Un pèlerin</button>
    <button class="btn ${S.genre === 'f' ? 'btn--pri' : ''}" onclick="S.genre='f';sauver();vueReglages()">Une pèlerine</button></div>
+   <h3>Les voix</h3>
+   <label class="aide-bascule"><input type="checkbox" ${S.lent ? 'checked' : ''} onchange="S.lent=this.checked;sauver()"> Voix plus lentes (partout)</label>
    <h3>Les traductions</h3>
    <label class="aide-bascule"><input type="checkbox" ${S.aide ? 'checked' : ''} onchange="S.aide=this.checked;sauver()"> Toujours montrer le français sous l'espagnol</label>
    <p class="avis-local">Par défaut, le français reste caché : on essaie d'abord de comprendre, on vérifie ensuite.</p>
