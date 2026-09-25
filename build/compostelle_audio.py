@@ -172,13 +172,48 @@ def retenter(cle, region, douteux, par_fichier):
         print(f"  {x['fichier']:34} {r['similitude']:.2f} → {score:.2f}")
 
 
+TEXTES = C.SONS / "textes.json"
+
+
+def signature(x):
+    """Ce qui, s'il change, rend le son périmé : le texte, la voix, le débit, l'intention."""
+    _, _, _, _, voix, taux, _ = PS[x["perso"]]
+    return f"{voix}|{taux}|{x.get('emo') or ''}|{int(bool(x.get('tel')))}|{x['texte']}"
+
+
+def lire_textes():
+    try:
+        return json.loads(TEXTES.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+
+
+def ecrire_textes(xs):
+    t = lire_textes()
+    for x in xs:
+        if (C.SONS / x["fichier"]).exists():
+            t[x["fichier"]] = signature(x)
+    TEXTES.write_text(json.dumps(t, ensure_ascii=False, indent=0, sort_keys=True), encoding="utf-8")
+
+
+def perimes(xs):
+    """Les sons absents, ET ceux dont le texte a changé depuis leur synthèse.
+    Sans ce relevé, une réplique corrigée gardait son ancien son en silence :
+    le générateur ne produisait que ce qui manquait sur le disque."""
+    t = lire_textes()
+    return [x for x in xs if not (C.SONS / x["fichier"]).exists() or t.get(x["fichier"]) not in (None, signature(x))]
+
+
 def main():
     args = sys.argv[1:]
     xs = list(C.extraits())
     par_fichier = {x["fichier"]: x for x in xs}
+    if "--amorcer" in args:
+        # Une fois : noter la signature des sons déjà produits, avant de toucher au texte.
+        ecrire_textes(xs); print(f"{len(lire_textes())} signatures notées"); return
     if "--compter" in args:
-        manque = [x for x in xs if not (C.SONS / x["fichier"]).exists()]
-        print(f"{len(xs)} extraits, {len(manque)} à produire, "
+        manque = perimes(xs)
+        print(f"{len(xs)} extraits, {len(manque)} à produire (absents ou texte changé), "
               f"{sum(len(x['texte']) for x in manque)} caractères")
         return
     cle, region = cle_region()
@@ -194,11 +229,12 @@ def main():
         cibles = [par_fichier[f] for f in args if f in par_fichier]
         for x in cibles:
             synth(x, cle, region); print("  refait", x["fichier"])
+        ecrire_textes(cibles)
         controle(cibles, cle, region)
         return
     if "--controle" not in args and "--retenter" not in args:
-        manque = [x for x in xs if not (C.SONS / x["fichier"]).exists()]
-        print(f"{len(manque)} extraits à produire")
+        manque = perimes(xs)
+        print(f"{len(manque)} extraits à produire (absents ou texte changé)")
         echecs = []
         def un(x):
             try:
@@ -208,6 +244,7 @@ def main():
         with ThreadPoolExecutor(6) as pool:
             list(pool.map(un, manque))
         print(f"produits : {len(manque) - len(echecs)}, échecs : {echecs}")
+        ecrire_textes([x for x in manque if x["fichier"] not in echecs])
     douteux = controle(xs, cle, region)
     if "--retenter" in args and douteux:
         retenter(cle, region, douteux, par_fichier)

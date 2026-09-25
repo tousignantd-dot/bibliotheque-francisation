@@ -95,6 +95,10 @@ qui se remplit de tampons ; des voix d'Espagne ; et Marta, une pèlerine de Vall
   <p style="margin-top:14px">Et autour : <b>la poche</b> (onze rubriques, les urgences, « Montrer » en grand, et « Préparer pour le chemin » qui met
   tout dans le téléphone pour marcher sans réseau), <b>tous les mots</b>, <b>les faux amis</b>, <b>le test « Suis-je prêt ? »</b> (deux formes,
   il situe sans noter), et une <b>Compostela</b> à imprimer à la fin — présentée clairement comme un souvenir, pas comme la vraie.</p>
+  <p>Dans la scène et le soir, on peut <b>répondre à voix haute</b> au lieu de toucher : la phrase entendue rejoint le choix le plus proche,
+  et reçoit la même rétroaction. Les voix peuvent être <b>ralenties</b>. Et « Ajouter à l'écran d'accueil » installe l'application
+  sous le nom <b>Compostelle</b>, avec la coquille pour icône ; une fois « préparée », elle marche sans réseau (éprouvé sur le site en ligne :
+  622 fichiers gardés).</p>
 </section>
 
 <section>
@@ -121,9 +125,13 @@ qui se remplit de tampons ; des voix d'Espagne ; et Marta, une pèlerine de Vall
     (la même personne, qui répond à ce qu'on dit vraiment) est écrite : <code>build/contenu/compostelle/jeu_de_role.py</code>, vingt situations,
     trois paliers, un bilan en français. Elle n'est <b>pas branchée</b> : <code>server.py</code> était tenu ce soir-là par la session de l'hôtel.
     Et elle pose une question qui vous revient : un public sans compte n'a pas de code, or le jeu de rôle en exige un. Des codes de pilote ?</li>
-    <li><b>La relecture par une personne d'Espagne</b> : 519 répliques et phrases, écrites par moi.</li>
+    <li><b>La relecture par une personne d'Espagne</b> : 519 répliques et phrases, écrites par moi. Un second regard les a déjà
+    passées au crible (un agent relecteur, distinct de celui qui a écrit) : 25 remarques, toutes appliquées — deux vraies fautes
+    (« nosotros » que Marta doit dire au féminin, un don Fermín qui passait au tutoiement), des temps d'Espagne (<i>te he visto</i>
+    plutôt que <i>te vi</i> pour aujourd'hui), et surtout des invraisemblances de parcours : la fontaine d'Irache est au lendemain de
+    Puente la Reina, la Cruz de Ferro trois jours avant O Cebreiro, Melide trois étapes après Sarria. Une oreille d'Espagne reste nécessaire.</li>
     <li><b>Les faits du chemin</b> (heures, prix, 2 tampons par jour depuis Sarria, questions du bureau du pèlerin) : vraisemblables, à vérifier et dater.</li>
-    <li><b>Les onze extraits que le contrôle signale</b>, ci-dessous : tous s'expliquent (mots basques ou galiciens, un nom français dans une bouche espagnole,
+    <li><b>Les {len(douteux)} extraits que le contrôle signale</b>, ci-dessous : tous s'expliquent (mots basques ou galiciens, un nom français dans une bouche espagnole,
     des chiffres écrits en chiffres par la reconnaissance), mais c'est votre oreille qui tranche.</li>
   </ol>
 </section>

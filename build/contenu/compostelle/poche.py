@@ -9,16 +9,16 @@ pour ça qu'il faut les avoir sous la main.
 """
 
 URGENCES = [
-    ("ayuda", "¡Ayuda, por favor!", "À l'aide, s'il vous plaît !"),
+    ("ayuda", "¡Socorro! ¡Ayuda, por favor!", "Au secours ! À l'aide, s'il vous plaît !"),
     ("ambulancia", "Llame a una ambulancia, por favor.", "Appelez une ambulance, s'il vous plaît."),
     ("perdido", "Me he perdido. ¿Dónde está el Camino?", "Je me suis perdu. Où est le chemin ?"),
-    ("pasaporte", "He perdido mi pasaporte.", "J'ai perdu mon passeport."),
+    ("pasaporte", "He perdido el pasaporte.", "J'ai perdu mon passeport."),
     ("hospital", "¿Dónde está el hospital más cercano?", "Où est l'hôpital le plus proche ?"),
     ("caido", "Me he caído y me duele mucho el tobillo.", "Je suis tombé et j'ai très mal à la cheville."),
     ("medicamento", "Tomo este medicamento todos los días.", "Je prends ce médicament tous les jours."),
     ("alergia_grave", "Tengo una alergia grave. Es urgente.", "J'ai une allergie grave. C'est urgent."),
     ("robo", "Me han robado la cartera.", "On m'a volé mon portefeuille."),
-    ("policia", "¿Dónde está la policía?", "Où est la police ?"),
+    ("policia", "¿Dónde está la comisaría?", "Où est le poste de police ?"),
 ]
 
 # L'ordre des rubriques de la poche : (clé, titre, source)

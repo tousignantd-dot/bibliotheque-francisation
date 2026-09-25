@@ -37,7 +37,7 @@ import compostelle_commun as C  # noqa: E402
 
 SORTIE = RACINE / "modules-autonomes" / "compostelle" / "index.html"
 MEDIA = RACINE / "assets" / "interactive" / "compostelle"
-MEDIA_V = "2"  # 2 : sons réencodés à 48 kbit/s (27 → 9 Mo), 25 sept. 2026
+MEDIA_V = "3"  # 2 : sons à 48 kbit/s (27 → 9 Mo) ; 3 : 25 répliques corrigées après relecture, 25 sept. 2026
 
 
 def verifier(ET):
@@ -829,11 +829,11 @@ function vueScene(et, bloc){
       } else if (!b.classList.contains('faux')) {
         erreurs++; b.classList.add('faux');
         if (tour.critique) {
-          zone.innerHTML = `<div class="eliminatoire"><b>Arrêt : c'est l'erreur qui coûte cher.</b><p style="margin:6px 0 0">${E(c[2])}</p>
+          zone.innerHTML = `<div class="eliminatoire"><b>Arrêt : c'est l'erreur qui coûte cher.</b><p style="margin:6px 0 0">${E(g(c[2]))}</p>
             <button class="btn btn--pri btn--large" style="margin-top:10px" onclick="rendre()">Recommencer la scène</button></div>`;
           return;
         }
-        $('#r').innerHTML = `<div class="retro no">${E(c[2])}</div>`;
+        $('#r').innerHTML = `<div class="retro no">${E(g(c[2]))}</div>`;
       }
     });
   }
