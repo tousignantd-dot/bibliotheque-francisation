@@ -50,3 +50,23 @@ premier essai.
 La justesse linguistique finale (un locuteur de l'anglais et un de l'espagnol
 doivent relire), l'essai auprès de vrais réceptionnistes (le pilote), l'effet
 au comptoir.
+
+## Test — révision après le tour 3 de son audit (0/3/6)
+
+| Constat | Avant | Après | Code |
+|---|---|---|---|
+| B refuse des réponses justes | chiffres tapés comparés tels quels (« 239.00 », « 175.4 », « 5:15 pm » refusés) | la VALEUR : prix numérique (cents facultatifs, virgule ou point, « 175 40 ») ; heure 24 h, ou 12 h avec pm, ou 12 h seule quand la voix apprise compte sur 12 (en, es) ; « am » refusé | F1 |
+| Saisie ignorée en silence | aucune lettre ou aucun chiffre → rien | « Tapez le nombre en chiffres » / « le nom en lettres » | E1 |
+| Code contourné | historique par paire parle-apprend : changer l'interface ouvrait un historique vide | historique par langue APPRISE ; trois essais, puis une minute d'attente | F3 |
+| Voix cachées au rechargement en D | chargées seulement pour une passation finie | rechargées aussi en reprenant une passation en cours | G3 |
+| Note de langue seule ignorée | `palierDe` ne comptait que les gestes | toute note compte : un oral noté en partie n'est plus « non noté » | F1 |
+| Confirmer sans noter l'oral efface les voix | un clic | avertissement, puis second clic | G3 |
+| Voix des passations jamais confirmées | gardées sans fin | purgées à la passation suivante et après 30 jours (Loi 25) | G3 |
+| Réécoute unique rendue au rechargement | non gardée | gardée avec la passation en cours | F1 |
+| Passation précédente invisible | — | affichée sous les résultats, pour comparer entrée et sortie | F2 |
+| es forme 2 : heure plus dure | « un cuarto para las siete de la tarde » | « las seis cuarenta y cinco de la tarde » (voix refaite) | F2 |
+
+**Limite assumée** : un code écrit dans la page se lit dans sa source. C'est un
+frein contre l'employé pressé, pas une serrure. La serrure viendra du serveur,
+à l'étape 4. Idem : l'historique vit sur l'appareil ; une tablette partagée
+mêle les employés (le guide du formateur le dira).

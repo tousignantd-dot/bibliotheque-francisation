@@ -27,7 +27,7 @@ RACINE = pathlib.Path(__file__).resolve().parent.parent
 CONTENU = RACINE / "build" / "contenu" / "entreprise-hotel"
 CROQUIS = RACINE / "assets" / "interactive" / "hotel" / "croquis"
 SORTIE = RACINE / "modules-autonomes" / "hotel-reception" / "index.html"
-MEDIA_V = "8"   # 8 : révision du test (tour 2 de son audit), 25 sept. 2026
+MEDIA_V = "9"   # 9 : tour 3 de l'audit du test (es b52 refait), 25 sept. 2026
 
 
 def _charger(nom):
@@ -642,7 +642,16 @@ function suivant(){ X.i++; X.essais = 0; X.resolu = false; rendre(); setTimeout(
 // passées par tous ; C éliminatoire, règle entière affichée avant ; D noté par
 // le formateur sur deux lignes. Aucune rétroaction. La règle du palier vit dans
 // test.py, en données ; appliquée ICI seulement (palierDe).
-const CLE_TEST = () => `hotel-test-${L.parle}-${L.apprend}`;
+// L'historique suit la langue APPRISE, pas celle de l'interface (tour 3 : changer
+// de langue d'interface ouvrait un historique vide, donc une passation sans code).
+// Un code dans la page est un FREIN, pas une serrure : il se lit dans la source.
+// Limite assumée (journal, tour 3) ; la vraie serrure viendra du serveur.
+const CLE_TEST = () => `hotel-test-${L.apprend}`;
+const CLE_ESSAIS = 'hotel-test-code-essais';
+function codeBloque(){ try { const c = JSON.parse(localStorage.getItem(CLE_ESSAIS) || '{}'); return c.n >= 3 && Date.now() - c.t < 60000; } catch (e) { return false; } }
+function codeEssai(ok){ try { const c = ok ? {n: 0} : JSON.parse(localStorage.getItem(CLE_ESSAIS) || '{"n":0}');
+  if (!ok) { c.n = (Date.now() - (c.t || 0) > 60000 && c.n >= 3) ? 1 : c.n + 1; c.t = Date.now(); } localStorage.setItem(CLE_ESSAIS, JSON.stringify(c)); } catch (e) {} }
+function verifierCode(v){ if (codeBloque()) return 'bloque'; const ok = v.trim() === D.test.code; codeEssai(ok); return ok ? 'ok' : (codeBloque() ? 'bloque' : 'faux'); }
 const histo = () => { try { return JSON.parse(localStorage.getItem(CLE_TEST()) || '[]'); } catch (e) { return []; } };
 const garderHisto = h => { try { localStorage.setItem(CLE_TEST(), JSON.stringify(h)); } catch (e) {} };
 const TT = k => D.test.ui[k][L.parle];
@@ -663,6 +672,11 @@ const CLE_ENCOURS = () => CLE_TEST() + ':encours';
 function garderEnCours(){ if (!TX || TX.part === 'fin') return;
   const c = Object.assign({}, TX, {d: {i: TX.d.i, enreg: {}}}); try { localStorage.setItem(CLE_ENCOURS(), JSON.stringify(c)); } catch (e) {} }
 function purgerOral(n){ D.test.D[1].concat(D.test.D[2]).forEach(([id]) => oralDel(cleOral(n, id))); }
+// Tour 3 : les voix se rechargent AUSSI en reprenant une passation en cours.
+function chargerOral(){ const n = TX.n; D.test.D[TX.forme].forEach(async ([id]) => { const b = await oralGet(cleOral(n, id)); if (b && TX && TX.n === n && !TX.d.enreg[id]) { TX.d.enreg[id] = URL.createObjectURL(b); rendre(); } }); }
+// Loi 25 : une passation jamais confirmée ne garde pas ses voix plus de 30 jours.
+function purgerVieux(){ const h = histo(), lim = new Date(Date.now() - 30 * 864e5).toISOString().slice(0, 10);
+  h.forEach((e, k) => { if (!e.confirme && e.date < lim) purgerOral(k + 1); }); }
 function nouveauTest(){
   const h = histo();
   // Contrebalancement : la première forme au hasard, puis on alterne (tour 1).
@@ -670,18 +684,19 @@ function nouveauTest(){
   TX = {n: h.length + 1, forme, part: 'intro', cran: 1, bons: 0, err: 0, idx: 0, ordre: null, ecoutes: 0, rejoue: false,
         niv: {A: 0}, b: {i: 0, numero: 0, prix: 0, nom: 0}, c: {i: -1, ok: 0, promesse: false}, d: {i: 0, enreg: {}},
         oral: {}, formateur: false, codeFaux: false, codeOk: !h.length};
-  // Les voix d'une passation abandonnée ne se mêlent pas à celle-ci.
-  purgerOral(TX.n);
+  // Les voix d'une passation abandonnée ne se mêlent pas à celle-ci ; celles des
+  // passations précédentes quittent l'appareil : le formateur est passé à la suite.
+  for (let k = 1; k <= TX.n; k++) purgerOral(k);
 }
 function reprendre(){
   try { const c = JSON.parse(localStorage.getItem(CLE_ENCOURS()) || 'null');
-    if (c) { TX = c; TX.repriseEnCours = TX.part !== 'intro'; return true; } } catch (e) {}
+    if (c) { TX = c; TX.repriseEnCours = TX.part !== 'intro'; chargerOral(); return true; } } catch (e) {}
   // Au rechargement, une passation non confirmée rouvre SES résultats.
   const h = histo(), e = h[h.length - 1];
   if (!e || e.confirme) return false;
   TX = {n: h.length, forme: e.forme, part: 'fin', niv: {A: e.A}, b: e.B, c: {ok: e.C, promesse: e.promesse},
         d: {enreg: {}}, oral: e.oral || {}, formateur: false, codeFaux: false, repris: true};
-  D.test.D[e.forme].forEach(async ([id]) => { const b = await oralGet(cleOral(TX.n, id)); if (b && TX) { TX.d.enreg[id] = URL.createObjectURL(b); rendre(); } });
+  chargerOral();
   return true;
 }
 const cranItems = () => D.test.A[TX.forme].filter(x => x[1] === TX.cran);
@@ -691,7 +706,7 @@ function finPartie(){
   if (suite === 'fin') finTest(); else { allerA(suite); garderEnCours(); }
   rendre(); setTimeout(jouerTest, 150);
 }
-function suivantItem(){ TX.ordre = null; TX.ecoutes = 0; TX.rejoue = false; garderEnCours(); rendre(); setTimeout(jouerTest, 150); }
+function suivantItem(){ TX.bVide = null; TX.ordre = null; TX.ecoutes = 0; TX.rejoue = false; garderEnCours(); rendre(); setTimeout(jouerTest, 150); }
 function repA(ok){
   if (ok) TX.bons++; else TX.err++;
   TX.idx++;
@@ -712,11 +727,12 @@ function repB(ok){
 function palierDe(e){
   const s = e.A + D.test.sous_b.filter(k => e.B[k] >= 2).length;
   const cOk = !e.promesse && e.C >= D.test.c_seuil;
-  const notes = Object.values(e.oral || {}).filter(o => o.g !== undefined);
+  const notees = Object.values(e.oral || {}).filter(o => o.g !== undefined || o.l !== undefined);
+  const notes = notees.filter(o => o.g !== undefined);
   const gestes = notes.filter(o => o.g <= 1).length, promesseOrale = notes.some(o => o.g === 2);
   // La langue compte aussi (tour 2) : « geste fait, incompréhensible » n'est pas « à l'aise ».
   const incomp = Object.values(e.oral || {}).filter(o => o.l === 2).length;
-  const oralOk = !notes.length || (gestes >= D.test.oral_aise && !promesseOrale && incomp <= D.test.oral_incomp);
+  const oralOk = !notees.length || (gestes >= D.test.oral_aise && !promesseOrale && incomp <= D.test.oral_incomp);
   if (s <= D.test.debutant_max || e.A === 0) return 'debutant';
   if (s >= D.test.aise_min && cOk && oralOk) return 'aise';
   return 'fonctionnel';
@@ -746,7 +762,7 @@ function jouerTest(){
 function nuitsT(n){ const [un, pl] = TT('nuits').split('|'); return `${n} ${n > 1 ? pl : un}`; }
 
 function ecranTest(){
-  if (!TX && !reprendre()) nouveauTest();
+  if (!TX) { purgerVieux(); if (!reprendre()) nouveauTest(); }
   const A = L.apprend, P = L.parle, h = histo();
   const tete = `<div class="barre-haut"><button type="button" class="btn" data-aller="accueil">${ICO.retour}${E(T('retour'))}</button>
     ${['A','B','C','D'].includes(TX.part) ? `<span class="progres">${E(TT('partie'))} ${TX.part} / D</span>` : ''}</div>
@@ -756,7 +772,7 @@ function ecranTest(){
       <p class="consigne">${E(TT('passation'))} ${TX.n} · ${E(TT('forme'))} ${TX.forme}</p>
       ${TX.codeOk ? `<div class="ecoute"><button type="button" class="btn btn--pri" data-t="debut">${E(TT('commencer_test'))}</button></div>`
         : `<p class="dite">${E(TT('nouvelle_passation'))}</p><form class="saisie" id="formCodeDebut"><input id="codeD" inputmode="numeric" autocomplete="off" aria-label="${E(TT('code'))}" placeholder="${E(TT('code'))}">
-           <button type="submit" class="btn btn--pri">${E(TT('commencer_test'))}</button></form>${TX.codeFaux ? `<p class="ko-txt">${E(TT('code_faux'))}</p>` : ''}`}`;
+           <button type="submit" class="btn btn--pri">${E(TT('commencer_test'))}</button></form>${TX.codeFaux ? `<p class="ko-txt">${E(TT(TX.codeFaux === 'bloque' ? 'code_attente' : 'code_faux'))}</p>` : ''}`}`;
   if (TX.part === 'Cintro') return tete + `<h1>C · ${E(TT('pC'))}</h1>
       <div class="regle"><b>${E(T('regle_tit'))}</b>${E(D.ex.regle[P])}</div>
       <p class="alerte">${E(TT('regle_c'))}</p>
@@ -781,7 +797,8 @@ function ecranTest(){
     const nom = it[1] === 'nom';
     corps += `<p class="mot-vise"><b>${E(TT('b_' + it[1]))}</b></p><p class="consigne">${E(TT(nom ? 'pB_nom' : 'pB_c'))}</p>` + son
       + `<form class="saisie" id="formTestB"><input id="saisieB" autocomplete="off" spellcheck="false" ${nom ? 'autocapitalize="characters"' : 'inputmode="text"'} aria-label="${E(TT('saisie_b'))}" placeholder="${E(TT('saisie_b'))}">
-         <button type="submit" class="btn btn--pri">${E(TT('valider'))}</button></form>`;
+         <button type="submit" class="btn btn--pri">${E(TT('valider'))}</button></form>`
+      + (TX.bVide ? `<p class="ko-txt" role="alert">${E(TT(TX.bVide))}</p>` : '');
   }
   if (TX.part === 'C') corps += `<p class="consigne">${E(TT('pC_c'))}</p>` + (it[1] ? `<p class="contexte">${E(it[1][P])}</p>` : '') + son
     + `<div class="choix large">${['moi', 'gerant', 'personne'].map(k =>
@@ -809,10 +826,11 @@ function ecranResultats(){
     + ligne('C · ' + TT('pC'), `${e.C} ${E(TT('bonnes'))} 6 (${E(TT('c_vise'))})`) + `</ul>`
     + (e.promesse ? `<p class="alerte">${E(TT('promesse_c'))}</p>` : '')
     + `<p class="dite">${E(D.test.cadrage[P])}</p>`
+    + (h.length > 1 ? (p => `<p class="dite"><b>${E(TT('precedent'))}</b> (${E(p.date)}) — A ${p.A}/3 · B ${D.test.sous_b.map(k => p.B[k]).join('-')} · C ${p.C}/6 · ${E(TT(p.confirme || p.palier))}</p>`)(h[h.length - 2]) : '')
     + `<p class="palier"><span>${E(TT('palier_propose'))}</span><b>${E(TT(e.confirme || e.palier))}</b><small>${E(TT('palier_oral'))}</small></p>`;
   f += `<details class="formateur"${TX.formateur ? ' open' : ''}><summary>${E(TT('formateur'))}</summary>`;
   if (!TX.formateur) f += `<form class="saisie" id="formCode"><input id="codeF" inputmode="numeric" autocomplete="off" aria-label="${E(TT('code'))}" placeholder="${E(TT('code'))}">
-      <button type="submit" class="btn">${E(TT('ouvrir'))}</button></form>${TX.codeFaux ? `<p class="ko-txt">${E(TT('code_faux'))}</p>` : ''}`;
+      <button type="submit" class="btn">${E(TT('ouvrir'))}</button></form>${TX.codeFaux ? `<p class="ko-txt">${E(TT(TX.codeFaux === 'bloque' ? 'code_attente' : 'code_faux'))}</p>` : ''}`;
   else {
     const gg = D.test.oral_geste[P].split('|'), gl = D.test.oral_langue[P].split('|');
     f += D.test.D[e.forme].map(([id, ctx, client, geste, ex]) => { const o = (e.oral || {})[id] || {};
@@ -823,6 +841,7 @@ function ecranResultats(){
         <p class="dite">${E(TT('ligne_langue'))}</p><div class="choix-oral">${gl.map((g, k) => `<button type="button" class="btn" data-t="oral" data-l="l" data-id="${id}" data-k="${k}" aria-pressed="${o.l === k}">${E(g)}</button>`).join('')}</div></div>`; }).join('')
       + `<p><b>${E(TT('confirmer'))}</b></p><div class="ecoute">${D.test.paliers.map(p =>
         `<button type="button" class="btn" data-t="palier" data-p="${p}" aria-pressed="${e.confirme === p}">${E(TT(p))}</button>`).join('')}</div>`
+      + (TX.avertir ? `<p class="alerte">${E(TT('oral_incomplet'))}</p>` : '')
       + (e.confirme ? `<p class="ok-txt">${E(TT('confirme'))} ${E(TT(e.confirme))}</p>` : '')
       // « Refaire » derrière le code : il consommerait l'autre forme (tour 1).
       + `<div class="ecoute" style="margin-top:14px"><button type="button" class="btn" data-t="refaire">${E(TT('refaire_test'))}</button></div>`;
@@ -848,7 +867,7 @@ function clicTest(b){
   const t = b.dataset.t, it = itemTest();
   if (t === 'debut') { allerA('A'); garderEnCours(); rendre(); setTimeout(jouerTest, 150); return; }
   if (t === 'cdebut') { TX.part = 'C'; TX.c.i = 0; suivantItem(); return; }
-  if (t === 'ecouter') { if ((TX.part === 'A' || TX.part === 'B') && TX.rejoue) return; TX.rejoue = true; jouerTest(); rendre(); return; }
+  if (t === 'ecouter') { if ((TX.part === 'A' || TX.part === 'B') && TX.rejoue) return; TX.rejoue = true; garderEnCours(); jouerTest(); rendre(); return; }
   if (t === 'rep' && TX.part === 'A') { const c = TX.ordre[+b.dataset.k]; return repA(c.lit === it[3] && (it[1] === 1 || c.n === it[4])); }
   if (t === 'c') {
     const k = b.dataset.k, bonne = it[3];
@@ -865,22 +884,38 @@ function clicTest(b){
   if (t === 'dsuite') { TX.d.i++; if (TX.d.i >= D.test.D[TX.forme].length) return finPartie(); suivantItem(); return; }
   if (t === 'oral') { const id = b.dataset.id, l = b.dataset.l, k = +b.dataset.k;
     majEntree(e => { e.oral = e.oral || {}; e.oral[id] = Object.assign(e.oral[id] || {}, {[l]: k}); }); rendre(); return; }
-  if (t === 'palier') { majEntree(e => { e.confirme = b.dataset.p; });
+  if (t === 'palier') {
+    const e0 = histo().slice(-1)[0], notees = Object.values(e0.oral || {}).filter(o => o.g !== undefined && o.l !== undefined).length;
+    if (Object.keys(TX.d.enreg).length && notees < D.test.D[e0.forme].length && TX.avertir !== b.dataset.p) { TX.avertir = b.dataset.p; rendre(); return; }
+    TX.avertir = null; majEntree(e => { e.confirme = b.dataset.p; });
     // Confirmé : les voix de l'employé quittent l'appareil (Loi 25 ; tour 2).
     purgerOral(TX.n); TX.d.enreg = {}; rendre(); return; }
   if (t === 'refaire') { nouveauTest(); TX.codeOk = true; rendre(); return; }
 }
+// Tour 3 : la saisie compare une VALEUR. Un prix : 239 = 239.00 = 239,00 $ ;
+// 175,40 = 175.4. Une heure : 17:15 = 17h15 = 1715 = 5:15 pm ; quand la voix
+// apprise dit l'heure sur 12 (en, es), « 5:15 » seul est juste aussi.
 const chiffres = t => String(t).replace(/\D/g, '');
+function heure(t){ const x = String(t).toLowerCase(), pm = /p\.?\s*m|tarde|noche|soir/.test(x), am = /a\.?\s*m|ma[ñn]ana|matin/.test(x);
+  let m = x.match(/(\d{1,2})\s*[:h.]\s*(\d{2})/) || x.replace(/\D/g, '').match(/^(\d{1,2})(\d{2})$/);
+  if (!m) return null; let h = +m[1]; if (pm && h < 12) h += 12; return {h, m: +m[2], pm, am}; }
+function prix(t){ const x = String(t).replace('$', '').trim().replace(/^(\d+)\s+(\d{2})$/, '$1.$2').replace(/\s/g, '').replace(',', '.'); return /^\d+(\.\d{1,2})?$/.test(x) ? +x : null; }
+function valeurJuste(v, att){
+  if (att.includes(':')) { const a = heure(att), r = heure(v); if (!r) return false;
+    return r.m === a.m && (r.h === a.h || (L.apprend !== 'fr' && !r.pm && !r.am && r.h + 12 === a.h)); }
+  if (att.includes('$')) { const a = prix(att), r = prix(v); return r !== null && Math.abs(r - a) < 0.001; }
+  return chiffres(v) === chiffres(att); }
 document.addEventListener('submit', e => {
   if (e.target.id === 'formTestB') { e.preventDefault(); const v = document.getElementById('saisieB').value, it = itemTest();
-    if (it[1] === 'nom') { if (!nu(v)) return; return repB(nu(v) === nu(it[2])); }
-    // Chiffres seuls : 17:15, 17h15, 1715 ; 175,40 ou 175.40.
-    if (!chiffres(v)) return; repB(chiffres(v) === chiffres(it[3])); }
-  if (e.target.id === 'formCodeDebut') { e.preventDefault();
-    if (document.getElementById('codeD').value.trim() === D.test.code) { TX.codeOk = true; TX.codeFaux = false; allerA('A'); garderEnCours(); rendre(); setTimeout(jouerTest, 150); }
-    else { TX.codeFaux = true; rendre(); } return; }
-  if (e.target.id === 'formCode') { e.preventDefault();
-    if (document.getElementById('codeF').value.trim() === D.test.code) { TX.formateur = true; TX.codeFaux = false; } else TX.codeFaux = true;
+    const nom = it[1] === 'nom', vide = nom ? !nu(v) : !chiffres(v);
+    TX.bVide = vide ? (nom ? 'que_lettres' : 'que_chiffres') : null;
+    if (vide) { rendre(); const i = document.getElementById('saisieB'); if (i) { i.value = v; i.focus(); } return; }
+    return nom ? repB(nu(v) === nu(it[2])) : repB(valeurJuste(v, it[3])); }
+  if (e.target.id === 'formCodeDebut') { e.preventDefault(); const r = verifierCode(document.getElementById('codeD').value);
+    if (r === 'ok') { TX.codeOk = true; TX.codeFaux = false; allerA('A'); garderEnCours(); rendre(); setTimeout(jouerTest, 150); }
+    else { TX.codeFaux = r; rendre(); } return; }
+  if (e.target.id === 'formCode') { e.preventDefault(); const r = verifierCode(document.getElementById('codeF').value);
+    if (r === 'ok') { TX.formateur = true; TX.codeFaux = false; } else TX.codeFaux = r;
     rendre(); }
 });
 

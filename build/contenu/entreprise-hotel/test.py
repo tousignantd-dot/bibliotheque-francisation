@@ -108,7 +108,7 @@ B = {
         ("b42", "numero", R("C'est la chambre quatre cent neuf.", "It's room four-oh-nine.", "Es la habitación cuatrocientos nueve."), "409"),
         ("b43", "numero", R("Votre chambre, c'est la sept cent quinze.", "Your room is seven-fifteen.", "Su habitación es la setecientos quince."), "715"),
         ("b51", "prix", R("Le total est de trois cent quarante-huit dollars.", "Your total is three hundred forty-eight dollars.", "El total es de trescientos cuarenta y ocho dólares."), "348 $"),
-        ("b52", "prix", R("Le souper est servi à dix-huit heures quarante-cinq.", "Dinner is served at six forty-five p.m.", "La cena se sirve a un cuarto para las siete de la tarde."), "18:45"),
+        ("b52", "prix", R("Le souper est servi à dix-huit heures quarante-cinq.", "Dinner is served at six forty-five p.m.", "La cena se sirve a las seis cuarenta y cinco de la tarde."), "18:45"),
         ("b53", "prix", R("Ça fait cent vingt-six dollars soixante.", "That's one twenty-six sixty.", "Son ciento veintiséis dólares con sesenta."), "126,60 $"),
         ("b61", "nom", "MEHTA"),
         ("b62", "nom", "BENNETT"),
@@ -309,4 +309,11 @@ UI = {
     "refaire_test": R("Refaire le test", "Take the test again", "Repetir la prueba"),
     "retour_accueil": R("Retour à l'accueil", "Back to home", "Volver al inicio"),
     "precedent": R("Passation précédente", "Previous attempt", "Intento anterior"),
+    # Tour 3 du test : une saisie sans chiffre n'est plus ignorée en silence.
+    "que_chiffres": R("Tapez le nombre en chiffres.", "Type the number in digits.", "Escriba el número en cifras."),
+    "que_lettres": R("Tapez le nom en lettres.", "Type the name in letters.", "Escriba el nombre en letras."),
+    "code_attente": R("Trop d'essais. Attendez une minute.", "Too many tries. Wait one minute.", "Demasiados intentos. Espere un minuto."),
+    "oral_incomplet": R("L'oral n'est pas entièrement noté. En confirmant, les enregistrements seront effacés. Cliquez de nouveau pour confirmer.",
+                        "The speaking part is not fully rated. Confirming will erase the recordings. Click again to confirm.",
+                        "La parte oral no está calificada por completo. Al confirmar, se borrarán las grabaciones. Haga clic de nuevo para confirmar."),
 }
