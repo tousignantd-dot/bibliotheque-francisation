@@ -127,6 +127,22 @@ TOURS = [
     "« Exercice : les noix » ; le conseil ne paraît que s'il s'applique.", "corrigé"),
    ("E1", "mineur", "Bilan de la scène", "Compteur d'erreurs remis à zéro à chaque reprise.", "Cumulé sur les reprises.", "corrigé"),
   ]},
+ {"tour": 4, "date": "26 septembre 2026", "compte": (0, 1, 10),
+  "note": "Réaudit complet (D.v = 5), León joué avec quatre allergies dans les deux variantes, Pamplona avec et sans allergie, le test entier. La révision 3 est conforme ; un seul majeur, à un seul endroit.",
+  "constats": [
+   ("F1/G2", "majeur", "Test, oral de l'allergie", "Micro muet ou refusé : le test restait bloqué. Entendu : une seule prise décidait du verdict éliminatoire.",
+    "Trois prises, la meilleure compte ; rien entendu → message ; repli « je l'ai dit » (non vérifié, ne compte pas). Vérifié : muet, raté, puis juste.", "corrigé"),
+   ("D2/E1", "mineur", "Pamplona", "La réponse d'Ainhoa n'était suivie d'aucun choix (pain sans gluten, sans beurre…).", "Un choix de commande selon l'allergène, avec sa voix.", "corrigé"),
+   ("D4/E1", "mineur", "León, variante B", "Le distracteur disait « el caldo » quand le plat offert était une crème ou une soupe.", "Il nomme le plat offert.", "corrigé"),
+   ("D3/F3", "mineur", "Rappels d'O Cebreiro", "Deux fois le même item.", "La veille de León prend un autre item.", "corrigé"),
+   ("A3/F1", "mineur", "Test, O5", "Jamais produit à l'oral.", "Un item oral non éliminatoire par forme.", "corrigé"),
+   ("E1", "mineur", "Test, modèle de l'oral", "Le modèle n'était pas la formule enseignée.", "« Soy alérgico, alérgica… ¿lleva…? », propre à chaque forme.", "corrigé"),
+   ("A1", "mineur", "Sarria", "L'objectif promettait « vérifier ce qu'un aliment contient ».", "Objectif allégé.", "corrigé"),
+   ("D2", "mineur", "Sarria, soir", "« Me encanta » (le poulpe) offert malgré une allergie aux fruits de mer.", "Retiré dans ce cas.", "corrigé"),
+   ("A2", "mineur", "Allergie", "Une seule allergie déclarable.", "Une mention dans la poche : changer le choix pour montrer chacune, et les dire toutes.", "corrigé"),
+   ("G1", "mineur", "Bascules", "Cibles de 26 px.", "44 px.", "corrigé"),
+   ("C5", "mineur", "Textes", "10 minutes contre un quart d'heure ; « choisissez-la » après l'avoir choisie ; accords au masculin (croyant, ému…).", "Harmonisés ; accords au féminin pour une pèlerine.", "corrigé"),
+  ]},
 ]
 
 

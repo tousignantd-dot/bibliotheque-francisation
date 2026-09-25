@@ -42,7 +42,7 @@ MEDIA = RACINE / "assets" / "interactive" / "compostelle"
 # Tant que server.py ne le charge pas, le temps n'est pas offert : un bouton
 # qui mène à « Scénario inconnu » serait pire qu'un temps absent.
 JEU_LIBRE = False
-MEDIA_V = "5"  # 5 : révision 3 (allergie à Pamplona, variantes de León, test) ; 4 : 4 : allergie choisie dans la scène de León et le test ; 2 : sons à 48 kbit/s (27 → 9 Mo) ; 3 : 25 répliques corrigées après relecture, 25 sept. 2026
+MEDIA_V = "6"  # 6 : révision 4 ; 5 : 5 : révision 3 (allergie à Pamplona, variantes de León, test) ; 4 : 4 : allergie choisie dans la scène de León et le test ; 2 : sons à 48 kbit/s (27 → 9 Mo) ; 3 : 25 répliques corrigées après relecture, 25 sept. 2026
 
 
 def verifier(ET):
@@ -336,7 +336,7 @@ button{font:inherit}
 .bulle .perso-mini{width:28px;height:28px;border-radius:50%;object-fit:cover}
 .eliminatoire{border:2px solid var(--no-line);background:var(--no-bg);border-radius:14px;padding:14px;margin:12px 0}
 .regle{border:1px dashed var(--warn-line);background:var(--warn-bg);color:var(--warn-ink);border-radius:12px;padding:10px 12px;font-size:15px;margin:8px 0}
-.aide-bascule{display:flex;align-items:center;gap:8px;font-size:14.5px;font-weight:800;color:var(--text-muted);margin:6px 0;cursor:pointer}
+.aide-bascule{display:flex;align-items:center;gap:8px;min-height:44px;font-size:14.5px;font-weight:800;color:var(--text-muted);margin:6px 0;cursor:pointer}
 .aide-bascule input{width:20px;height:20px}
 
 /* Poche */
@@ -594,13 +594,13 @@ function vueAccueil(){
     <li>obtenir un lit, et comprendre le prix et les heures ;</li><li>commander, et <b>dire votre allergie</b> puis comprendre la réponse ;</li>
     <li>dire où vous avez mal et comprendre la posologie ;</li><li>demander votre chemin et le suivre ;</li><li>parler avec un autre pèlerin.</li></ul>
     <p style="margin:0">Une erreur ne pardonne pas : <b>l'allergie</b>. À León comme au test « Suis-je prêt ? », la rater fait recommencer.
-    Choisissez la vôtre dans les réglages.</p></div></details>
+    ${S.alergia ? 'La vôtre : ' + E(allergie().fr) + '.' : 'Choisissez la vôtre dans les réglages.'}</p></div></details>
   <h2>Pour la route</h2>
   <div class="outils">
    <button class="outil" onclick="aller('poche')">${ICO.poche}<div><b>La poche</b><span>Les phrases du chemin, et les urgences — sans réseau</span></div></button>
    <button class="outil" onclick="aller('mots')">${ICO.livre}<div><b>Tous les mots</b><span>${Object.keys(D.mots).length} mots, onze planches</span></div></button>
    <button class="outil" onclick="aller('pieges')">${ICO.piege}<div><b>Les faux amis</b><span>constipado, embarazada, la carta…</span></div></button>
-   <button class="outil" onclick="aller('test')">${ICO.test}<div><b>Suis-je prêt${S.genre === 'f' ? 'e' : ''} ?</b><span>Un test de 10 minutes, avant de partir</span></div></button>
+   <button class="outil" onclick="aller('test')">${ICO.test}<div><b>Suis-je prêt${S.genre === 'f' ? 'e' : ''} ?</b><span>Un quart d'heure, avant de partir</span></div></button>
    <button class="outil" onclick="aller('reglages')">${ICO.reglage}<div><b>Réglages</b><span>Pèlerin ou pèlerine, traductions, recommencer</span></div></button>
   </div>`;
 }
@@ -720,8 +720,8 @@ function vueEntends(et){
 function rappels(et){
   const i = D.etapes.indexOf(et), out = [];
   const prendre = (src, k) => { if (src && src.ecoute[k]) out.push({src, k}); };
-  if (i >= 1) prendre(D.etapes[i - 1], et.n % D.etapes[i - 1].ecoute.length);
   const leon = D.etapes.find(e => e.id === 'leon');
+  if (i >= 1) prendre(D.etapes[i - 1], D.etapes[i - 1] === leon ? 0 : et.n % D.etapes[i - 1].ecoute.length);
   if (i > D.etapes.indexOf(leon)) prendre(leon, et.n % 2 ? 2 : 3);
   else if (i >= 2) { const src = D.etapes[(et.n * 7) % (i - 1)]; prendre(src, (et.n * 3) % src.ecoute.length); }
   return out;
@@ -1097,7 +1097,8 @@ function vuePoche(){
      <option value="">— aucune —</option>${D.alergenos.map(a => `<option value="${a.code}" ${S.alergia === a.code ? 'selected' : ''}>${E(a.fr)}</option>`).join('')}</select></div>
    ${allergie() ? `<div class="ph"><button class="btn btn--son" aria-label="Écouter" onclick="jouer('poche/alergia-${allergie().code}.mp3')">${ICO.son}</button>
      <div class="t"><b lang="es">${E(allergie().phrase)}</b><span>J'ai une allergie grave ${E(allergie().fr)}. Ce plat en contient-il ?</span></div>
-     <button class="btn btn--petit" onclick="montrerAllergie()">Montrer</button></div>` : ''}</details>
+     <button class="btn btn--petit" onclick="montrerAllergie()">Montrer</button></div>
+     <p class="avis-local" style="padding:0 14px 10px;margin:0">Plusieurs allergies ? Changez le choix ci-dessus pour montrer chacune ; au restaurant, dites-les toutes.</p>` : ''}</details>
   ${D.poche.map((r, ri) => `<details class="rub"${ri === 0 ? ' open' : ''}><summary>${E(r.titre)} <span>${r.items.length}</span></summary>
     ${r.items.map(itemPoche).map((x, xi) => `<div class="ph"><button class="btn btn--son" aria-label="Écouter" onclick="jouer('${x.fichier}')">${ICO.son}</button>
      <div class="t"><b>${E(g(x.es))}</b><span>${E(g(x.fr))}</span></div>
@@ -1245,22 +1246,34 @@ function vueTest(){
         <div class="gros-son"><button class="btn btn--son" aria-label="Écouter" onclick="jouer('${fichier}')">${ICO.son}</button></div>${html}`;
       brancher(); setTimeout(() => jouer(fichier), 250);
     } else if (it.type === 'oral') {
-      const a = D.alergenos.find(x => x.code === algCode());
+      // Audit tour 4 (F1/G2, majeur) : trois prises, la meilleure compte ; rien
+      // entendu ou micro refusé → un message et le repli « non vérifié ».
+      // Seul l'oral d'ALLERGIE (O2) est éliminatoire, et seulement vérifié.
+      let prises = 0;
       app.innerHTML = `${tete2}<h1>Dites-le</h1><div class="carte"><p style="font-size:18px;font-weight:800;margin:0">${E(g(it.fr))}</p></div>
-        ${Reco ? `<div class="micro"><button class="btn-micro" id="mic" aria-label="Parler">${ICO.micro}</button><div class="entendu" id="entendu"></div></div>`
-          : `<div class="regle">Ce navigateur ne reconnaît pas la voix : cette question ne peut pas être vérifiée ici. Dites-la à voix haute, puis écoutez le modèle.</div><button class="btn btn--large" id="sansmic">Je l'ai dit</button>`}<div id="r"></div>`;
-      const fin = (ok, verifie) => { if (verifie) { it.elim = true; noter(ok); } else tentee = true;
-        $('#r').innerHTML = `<div class="retro ${!verifie ? 'info' : ok ? 'ok' : 'no'}">${!verifie ? 'Non vérifié.' : ok ? '✓ On vous a compris.' : 'Il manque votre allergie, ou « ¿lleva…? ».'}</div>
-          <div class="retro info"><span class="surtitre">Le modèle</span><div class="phrase-es">${E(a.phrase)}</div></div>`;
-        jouer(`poche/alergia-${a.code}.mp3`); suite(); };
-      if (!Reco) $('#sansmic').onclick = () => fin(false, false);
-      else $('#mic').onclick = () => { const mic = $('#mic'); if (recoActive) { arreterMicro(); return; }
+        ${Reco ? `<div class="micro"><button class="btn-micro" id="mic" aria-label="Parler">${ICO.micro}</button><div class="muted" id="micEtat" style="font-size:14px">Trois essais ; le meilleur compte.</div><div class="entendu" id="entendu"></div></div>` : ''}
+        <div id="r"></div><button class="btn btn--large" id="sansmic" style="margin-top:8px">${Reco ? 'Le micro ne marche pas : je l’ai dit' : 'Je l’ai dit à voix haute'}</button>
+        ${Reco ? '' : '<p class="avis-local">Ce navigateur ne reconnaît pas la voix : cette question ne sera pas vérifiée.</p>'}`;
+      const modele = () => `<div class="retro info"><span class="surtitre">Le modèle</span><div class="phrase-es">${E(g(it.modele || ''))}</div></div>`;
+      const fin = (ok, verifie) => {
+        if (verifie) { if (it.obj === 'O2') it.elim = true; noter(ok); } else tentee = true;
+        $('#sansmic').remove(); if ($('#mic')) $('#mic').disabled = true;
+        $('#r').innerHTML = `<div class="retro ${!verifie ? 'info' : ok ? 'ok' : 'no'}">${!verifie ? 'Non vérifié : cette question ne compte pas.' : ok ? '✓ On vous a compris.' : 'Trois essais sans qu’on vous comprenne.'}</div>${modele()}`;
+        if (it.obj === 'O2') jouer(sonDe('leon/dire-0', 'Soy alérgic{o|a} {alg:a}.'));
+        suite(); };
+      $('#sansmic').onclick = () => fin(false, false);
+      if (Reco) $('#mic').onclick = () => { const mic = $('#mic'); if (recoActive) { arreterMicro(); return; }
         mic.classList.add('ecoute'); mic.innerHTML = ICO.stop;
         ecouterMicro(t => { $('#entendu').textContent = '« ' + t + ' »'; }, final => {
-          mic.classList.remove('ecoute'); mic.innerHTML = ICO.micro; if (!final) return;
-          const t = ' ' + plat(final) + ' ';
-          const non = / no /.test(t);
-          fin(!non && it.cles.every(c => g(c).split('|').some(x => t.includes(plat(x)))), true); }); };
+          mic.classList.remove('ecoute'); mic.innerHTML = ICO.micro;
+          if (!final) { $('#r').innerHTML = `<div class="retro info">Je n'ai rien entendu. Vérifiez que le micro est permis et réessayez — ou touchez « je l'ai dit ».</div>`; return; }
+          const t = ' ' + plat(final) + ' ', non = it.obj === 'O2' && / no /.test(t);
+          const ok = !non && it.cles.every(c => g(c).split('|').some(x => t.includes(plat(x))));
+          prises++;
+          if (ok) return fin(true, true);
+          if (prises >= 3) return fin(false, true);
+          $('#r').innerHTML = `<div class="retro no">J'ai entendu « ${E(final)} ». ${non ? 'Attention au « no ». ' : ''}Réessayez (${prises} sur 3).</div>`;
+        }); };
     } else if (it.type === 'dire') {
       const [html, brancher] = qcm(it.choix.map(c => c[0]), it.choix.map(c => c[1]), 'C’est bien ce qu’il faut dire.');
       app.innerHTML = `${tete2}<h1>Que dites-vous ?</h1><div class="carte"><p style="font-size:18px;font-weight:800;margin:0">${E(g(it.fr))}</p></div>${html}`;

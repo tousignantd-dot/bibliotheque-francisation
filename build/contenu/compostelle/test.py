@@ -42,7 +42,7 @@ FORMES = [
                ("Soy alérgic{o|a} {alg:a}. ¿Este plato es muy grande?", "Vous avez dit votre allergie, sans demander si le plat en contient : ¿lleva…?")]},
     {"obj": "O2", "type": "oral",
      "fr": "Au micro : dites au serveur votre allergie, et demandez si le plat en contient.",
-     "cles": ["alergia|alérgico|alérgica|alergico|alergica", "{alg:sans}", "lleva"]},
+     "cles": ["alergia|alérgico|alérgica|alergico|alergica", "{alg:sans}", "lleva"], "modele": "Soy alérgic{o|a} {alg:a}. ¿Este plato lleva {alg:sans}?"},
     {"obj": "O3", "type": "rep", "qui": "pilar",
      "es": "Tómese dos pastillas al día: una por la mañana y otra por la noche.",
      "choix": [("Deux comprimés par jour : un le matin, un le soir.", None),
@@ -90,6 +90,9 @@ FORMES = [
      "choix": [("Perdone, ¿dónde está el Camino?", None),
                ("Perdone, ¿cuándo está el Camino?", "Cuándo = quand. Où : dónde."),
                ("Perdone, ¿de dónde es el Camino?", "« ¿De dónde es? » demande l'origine. Pour le lieu : ¿dónde está?")]},
+    {"obj": "O5", "type": "oral",
+     "fr": "Au micro : Marta vous demande d'où vous venez. Répondez-lui.",
+     "cles": ["soy de|soy del|vengo de"], "modele": "Soy de Quebec, de Canadá."},
   ],
   [
     {"obj": "O1", "type": "rep", "qui": "rocio",
@@ -109,7 +112,7 @@ FORMES = [
                ("Perdone, soy alérgic{o|a} {alg:a}. ¿Cuánto cuesta el bocadillo?", "Le prix ne vous protège pas : demandez s'il en contient — ¿lleva…?")]},
     {"obj": "O2", "type": "oral",
      "fr": "Au micro : dites à la serveuse votre allergie, et demandez si le sandwich en contient.",
-     "cles": ["alergia|alérgico|alérgica|alergico|alergica", "{alg:sans}", "lleva"]},
+     "cles": ["alergia|alérgico|alérgica|alergico|alergica", "{alg:sans}", "lleva"], "modele": "Soy alérgic{o|a} {alg:a}. ¿El bocadillo lleva {alg:sans}?"},
     {"obj": "O3", "type": "rep", "qui": "pilar",
      "es": "Tómese una pastilla cada doce horas, siempre con comida.",
      "choix": [("Un comprimé toutes les douze heures, toujours en mangeant.", None),
@@ -157,6 +160,9 @@ FORMES = [
      "choix": [("Perdone, más despacio, por favor.", None),
                ("Perdone, más deprisa, por favor.", "Deprisa = vite. Lentement : despacio."),
                ("Perdone, más despacito, gracias, adiós.", "Vous partez sans avoir compris : demandez de ralentir, puis écoutez.")]},
+    {"obj": "O5", "type": "oral",
+     "fr": "Au micro : un pèlerin vous demande pourquoi vous marchez. Répondez-lui.",
+     "cles": ["camino|para|por|porque"], "modele": "Hago el Camino para pensar."},
   ],
 ]
 
