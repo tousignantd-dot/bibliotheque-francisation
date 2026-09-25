@@ -53,6 +53,26 @@ ALERGENOS = [
     ("gluten", "al gluten", "gluten", "au gluten"),
     ("sesamo", "al sésamo", "sésamo", "au sésame"),
 ]
+# Pour les phrases de la scène de León et du test (audit tour 2, A3/D2 :
+# l'allergie choisie doit traverser la scène éliminatoire, pas seulement la
+# poche) : « des noix » en français, et ce que la salade contient, dit de
+# façon à ce qu'on y reconnaisse l'allergène.
+FORMES_ALG = {
+    "frutos_secos": {"frde": "des noix", "ens": "nueces"},
+    "cacahuetes": {"frde": "des arachides", "ens": "cacahuetes"},
+    "marisco": {"frde": "des fruits de mer", "ens": "gambas, que son marisco"},
+    "pescado": {"frde": "du poisson", "ens": "atún, que es pescado"},
+    "huevo": {"frde": "des œufs", "ens": "huevo duro"},
+    "leche": {"frde": "du lait", "ens": "queso, que es de leche"},
+    "gluten": {"frde": "du gluten", "ens": "picatostes, que llevan gluten"},
+    "sesamo": {"frde": "du sésame", "ens": "semillas de sésamo"},
+}
+
+
+def formes(code):
+    """Les remplacements de {alg:…} pour un allergène."""
+    c, a, sans, fr = next(x for x in ALERGENOS if x[0] == code)
+    return {"a": a, "sans": sans, "fr": fr, **FORMES_ALG[code]}
 
 
 def phrase_alergia(code):

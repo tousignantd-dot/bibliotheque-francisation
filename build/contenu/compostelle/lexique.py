@@ -114,6 +114,13 @@ LEXIQUE = [
     ("sin_gluten", "comer", "sin gluten", "sans gluten", "", ""),
     ("vegetariano", "comer", "vegetariano, vegetariana", "végétarien, végétarienne", "", ""),
     ("frutos_secos", "comer", "los frutos secos", "les noix (les fruits à coque)", "croquis", ""),
+    ("marisco", "comer", "el marisco", "les fruits de mer", "", ""),
+    ("pescado", "comer", "el pescado", "le poisson", "", ""),
+    ("huevo", "comer", "el huevo", "l'œuf", "", ""),
+    ("leche", "comer", "la leche", "le lait", "", ""),
+    ("cacahuetes", "comer", "los cacahuetes", "les arachides", "", ""),
+    ("sesamo", "comer", "el sésamo", "le sésame", "", ""),
+    ("lleva", "comer", "¿Lleva…? — lleva, no lleva", "Ça contient… ? — ça en contient, ça n'en contient pas", "", ""),
 
     # --- Les heures d'Espagne ------------------------------------------------
     ("a_que_hora", "horas", "¿A qué hora…?", "À quelle heure… ?", "", ""),

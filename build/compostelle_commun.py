@@ -15,6 +15,7 @@ RACINE = pathlib.Path(__file__).resolve().parent.parent
 CONTENU = RACINE / "build" / "contenu" / "compostelle"
 SONS = RACINE / "assets" / "interactive" / "compostelle" / "sons"
 GENRE = re.compile(r"\{([^{}|]*)\|([^{}|]*)\}")
+ALG = re.compile(r"\{alg:(\w+)\}")
 
 
 def charger(nom):
@@ -36,7 +37,22 @@ def a_dire(texte):
     return re.sub(r"\s*\([^)]*\)", "", texte).replace("…", "").strip()
 
 
+def allergenes(texte):
+    """[(suffixe, texte)] : une forme par allergène si le texte porte {alg:…}
+    (audit tour 2 : l'allergie choisie traverse la scène de León et le test).
+    Le suffixe `-a<code>` précède celui du genre."""
+    if not ALG.search(texte):
+        return [("", texte)]
+    PO = charger("poche")
+    return [(f"-a{c}", ALG.sub(lambda m: PO.formes(c)[m.group(1)], texte)) for c, *_ in PO.ALERGENOS]
+
+
 def _pour(fichier, texte, perso, emo=None, tel=False):
+    for sa, ta in allergenes(texte):
+        yield from _pour_genre(fichier + sa, ta, perso, emo, tel)
+
+
+def _pour_genre(fichier, texte, perso, emo=None, tel=False):
     for suf, t in genres(texte):
         yield {"fichier": f"{fichier}{suf}.mp3", "texte": t, "perso": perso,
                "emo": emo, "tel": tel}
@@ -58,7 +74,7 @@ def extraits():
         for n, it in enumerate(forme):
             if it["type"] in ("rep", "repondre"):
                 yield from _pour(f"test/{f}-{n}", it["es"], it["qui"])
-            if it["type"] in ("dire", "repondre"):
+            if it["type"] == "repondre":
                 yield from _pour(f"test/{f}-{n}-c0", it["choix"][0][0], "narratrice")
     for et in ET.ETAPES:
         d = et["id"]
@@ -66,8 +82,8 @@ def extraits():
             yield from _pour(f"voir/{d}-{i}", es, "narratrice")
         for i, (es, _) in enumerate(et["ecoute"]):
             yield from _pour(f"{d}/ecoute-{i}", es, et["local"])
-        for i, (_, es, _) in enumerate(et["dire"]):
-            yield from _pour(f"{d}/dire-{i}", es, "narratrice")
+        for i, dire in enumerate(et["dire"]):
+            yield from _pour(f"{d}/dire-{i}", dire[1], "narratrice")
         for bloc in ("scene", "soir"):
             for k, tour in enumerate(et[bloc]["tours"]):
                 base = f"{d}/{bloc}-{k}"
@@ -80,9 +96,9 @@ def extraits():
                     else:
                         yield from _pour(base, tour["es"], tour["dit"], tour.get("emo"), tour.get("tel", False))
                 else:
-                    for j, (es, _, fb) in enumerate(tour["choix"]):
+                    for j, c in enumerate(tour["choix"]):
                         if j == 0 or tour.get("libre"):
-                            yield from _pour(f"{base}-c{j}", es, "narratrice")
+                            yield from _pour(f"{base}-c{j}", c[0], "narratrice")
 
 
 if __name__ == "__main__":
