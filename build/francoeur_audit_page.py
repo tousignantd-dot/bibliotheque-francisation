@@ -28,10 +28,13 @@ TROUSSES = {
 }
 TR = TROUSSES["hotel" if "--trousse" in sys.argv and sys.argv[sys.argv.index("--trousse") + 1] == "hotel" else "francoeur"]
 BOUCLE = RACINE / "build" / "contenu" / TR["boucle"] / "boucle"
-# --objet test : l'audit du test (fichiers test-audit<tour>.json, page <sortie>-test-<tour>).
-OBJET_TEST = "--objet" in sys.argv and sys.argv[sys.argv.index("--objet") + 1] == "test"
-if OBJET_TEST:
-    TR = dict(TR, sortie=TR["sortie"].replace("-audit", "-test-audit"), nom=TR["nom"] + " — le test")
+# --objet test | jeu : l'audit d'une étape à part (fichiers <objet>-audit<tour>.json,
+# page <sortie>-<objet>-audit-<tour>). « jeu » : le comptoir joué (étape 4).
+OBJET = sys.argv[sys.argv.index("--objet") + 1] if "--objet" in sys.argv else None
+OBJET_TEST = bool(OBJET)
+NOMS_OBJET = {"test": "le test", "jeu": "le comptoir joué"}
+if OBJET:
+    TR = dict(TR, sortie=TR["sortie"].replace("-audit", f"-{OBJET}-audit"), nom=TR["nom"] + " — " + NOMS_OBJET.get(OBJET, OBJET))
 E = html.escape
 
 FAMILLES = {"A": "Alignement", "B": "Entrée en matière", "C": "Charge cognitive",
@@ -49,11 +52,11 @@ RANG = {"bloquant": 0, "majeur": 1, "mineur": 2}
 
 def lire(tour):
     constats = []
-    for f in sorted(BOUCLE.glob(f"test-audit{tour}.json" if OBJET_TEST else f"audit{tour}-*.json")):
+    for f in sorted(BOUCLE.glob(f"{OBJET}-audit{tour}.json" if OBJET else f"audit{tour}-*.json")):
         d = json.loads(f.read_text(encoding="utf-8"))
         # Deux formats d'auditeur : une liste de constats, ou {"constats": [...]}.
         for c in (d["constats"] if isinstance(d, dict) else d):
-            c.setdefault("source", "test" if OBJET_TEST else f.stem.split("-", 1)[1])
+            c.setdefault("source", OBJET if OBJET else f.stem.split("-", 1)[1])
             c.setdefault("lieu", c.get("ou", ""))
             if c.get("mesure"):
                 c["constat"] = f'{c["constat"]} (Mesure : {c["mesure"]})'
