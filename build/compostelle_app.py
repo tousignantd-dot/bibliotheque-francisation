@@ -37,6 +37,11 @@ import compostelle_commun as C  # noqa: E402
 
 SORTIE = RACINE / "modules-autonomes" / "compostelle" / "index.html"
 MEDIA = RACINE / "assets" / "interactive" / "compostelle"
+# La conversation libre avec l'assistant (build/contenu/compostelle/jeu_de_role.py)
+# passe par /api/jeu-de-role, qui doit connaître le scénario « camino-es-fr ».
+# Tant que server.py ne le charge pas, le temps n'est pas offert : un bouton
+# qui mène à « Scénario inconnu » serait pire qu'un temps absent.
+JEU_LIBRE = False
 MEDIA_V = "3"  # 2 : sons à 48 kbit/s (27 → 9 Mo) ; 3 : 25 répliques corrigées après relecture, 25 sept. 2026
 
 
@@ -104,7 +109,7 @@ def donnees():
         etapes.append(e)
     poids = sum((C.SONS / f).stat().st_size for f in sons) + sum(
         f.stat().st_size for d in ("croquis", "portraits", "etapes") for f in (MEDIA / d).glob("*.jpg") if ".orig" not in f.name)
-    return {"v": MEDIA_V, "poids": round(poids / 1e6), "planches": LX.PLANCHES, "mots": mots, "pieges": pieges, "perso": perso,
+    return {"v": MEDIA_V, "jeuLibre": JEU_LIBRE, "poids": round(poids / 1e6), "planches": LX.PLANCHES, "mots": mots, "pieges": pieges, "perso": perso,
             "etapes": etapes, "poche": poche, "sons": sons}, manque, len(tous)
 
 
@@ -499,7 +504,8 @@ function rendre(){
     const et = etapeParId(p[1]);
     if (!p[2]) return vueJour(et);
     const f = {lieu: vueLieu, mots: vueMotsJour, entends: vueEntends, repond: vueRepond, dire: vueDire,
-               scene: (e) => vueScene(e, 'scene'), soir: (e) => vueScene(e, 'soir')}[p[2]];
+               scene: (e) => vueScene(e, 'scene'), soir: (e) => vueScene(e, 'soir'),
+               libre: (e) => D.jeuLibre ? vueLibre(e) : vueJour(e)}[p[2]];
     if (f) return f(et);
   }
   if (p[0] === 'poche') return vuePoche();
@@ -573,13 +579,15 @@ function vueJour(et){
       <span><b>${t}</b><span class="d">${d}</span></span>${f ? '<span class="etat">✓ fait</span>' : ''}</button></li>`;
   }).join('');
   const suivant = TEMPS.find(([k]) => !j.faits[k]);
+  const libre = D.jeuLibre ? `<h2>Pour aller plus loin</h2><ul class="etapes-j"><li><button onclick="aller('jour/${et.id}/libre')"><span class="num">+</span>
+      <span><b>Parler librement, avec l'assistant</b><span class="d">${E(D.perso[et.local].nom)} ou Marta vous répondent vraiment. Il faut du réseau et un code.</span></span></button></li></ul>` : '';
   app.innerHTML = `${retour('accueil', 'La credencial')}
   <div class="bandeau">${et.vignette ? `<img src="${BASE}etapes/${et.img}.jpg?v=${D.v}" alt="">` : ''}</div>
   <p class="surtitre" style="margin-top:12px">Jour ${et.n} · ${E(et.region)} · km ${et.km}</p>
   <h1>${E(et.lieu)}</h1><p class="muted">${E(et.titre)}</p>
   ${j.tampon ? `<div class="retro ok">✓ Tamponné le ${E(j.tampon)}. Vous pouvez rejouer chaque temps.</div>` :
    `<button class="btn btn--pri btn--large" onclick="aller('jour/${et.id}/${suivant ? suivant[0] : 'lieu'}')">${suivant && suivant[0] !== 'lieu' ? 'Continuer : ' + suivant[1] : 'Commencer la journée'}</button>`}
-  <ul class="etapes-j">${liste}</ul>
+  <ul class="etapes-j">${liste}</ul>${libre}
   <p class="avis-local" style="margin-top:12px">Le tampon se gagne en jouant la scène et le soir avec Marta.</p>`;
 }
 function fini(et, k){
@@ -854,6 +862,98 @@ function poserTampon(et){
     <button class="btn btn--pri" id="ok">${et.n === 10 ? 'Ma Compostela' : 'Retour à la credencial'}</button>`;
   document.body.appendChild(v);
   $('#ok').onclick = () => { v.remove(); aller(et.n === 10 ? 'compostela' : 'accueil'); };
+}
+
+/* ---------- la conversation libre, avec l'assistant ----------
+   /api/jeu-de-role, scénario « camino-es-fr » : la personne du lieu, ou Marta.
+   La réponse est dite par la voix espagnole du téléphone (speechSynthesis
+   es-ES) : les voix Azure du serveur ne connaissent pas encore ces gens-là. */
+const CLE_CODE = 'compostelle:code';
+function voixEs(t){
+  try {
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(t); u.lang = 'es-ES'; u.rate = S.lent ? .8 : .95;
+    const v = speechSynthesis.getVoices().find(x => x.lang === 'es-ES') || speechSynthesis.getVoices().find(x => /^es/.test(x.lang));
+    if (v) u.voice = v;
+    speechSynthesis.speak(u);
+  } catch(e) {}
+}
+function vueLibre(et){
+  let code = ''; try { code = localStorage.getItem(CLE_CODE) || ''; } catch(e) {}
+  let qui = et.local, palier = 'lent';
+  const choixQui = () => [et.local, 'marta'].map(k => `<button class="btn ${qui === k ? 'btn--pri' : ''}" data-qui="${k}">${E(D.perso[k].nom)}</button>`).join('');
+  const choixPal = () => [['lent', 'Lentement'], ['normal', 'Normalement'], ['rapide', 'Comme en Espagne']].map(([k, t]) => `<button class="btn btn--petit ${palier === k ? 'btn--pri' : ''}" data-pal="${k}">${t}</button>`).join('');
+  function accueil(err){
+    app.innerHTML = `${retour('jour/' + et.id, 'Jour ' + et.n + ' · ' + et.lieu)}<p class="surtitre">Avec l'assistant</p><h1>Parler librement</h1>
+      <p class="muted">La même situation, mais la personne vous répond vraiment : dites ce que vous voulez, comme vous pouvez. Il faut du réseau.</p>
+      <h3>À qui parler</h3><div class="rangee" id="qui">${choixQui()}</div>
+      <h3>Comment on vous parle</h3><div class="rangee" id="pal">${choixPal()}</div>
+      <h3>Votre code</h3><input id="code" value="${E(code)}" autocomplete="off" autocapitalize="characters" style="font:inherit;font-size:20px;letter-spacing:.2em;padding:10px;border-radius:10px;border:1px solid var(--line-300);width:10em;text-transform:uppercase">
+      <p class="avis-local">Le code du pilote, donné avec l'application. Il ouvre l'assistant ; il ne dit pas qui vous êtes.</p>
+      ${err ? `<div class="retro no">${E(err)}</div>` : ''}
+      <button class="btn btn--pri btn--large" id="go" style="margin-top:10px">Commencer</button>`;
+    $('#qui').onclick = e => { const b = e.target.closest('[data-qui]'); if (b) { qui = b.dataset.qui; $('#qui').innerHTML = choixQui(); } };
+    $('#pal').onclick = e => { const b = e.target.closest('[data-pal]'); if (b) { palier = b.dataset.pal; $('#pal').innerHTML = choixPal(); } };
+    $('#go').onclick = () => { code = $('#code').value.trim().toUpperCase(); try { localStorage.setItem(CLE_CODE, code); } catch(e) {} conversation(); };
+  }
+  function conversation(){
+    const cas = qui === 'marta' ? 'marta-' + et.id : et.id, p = D.perso[qui], hist = [];
+    let fini = false;
+    app.innerHTML = `${retour('jour/' + et.id, 'Jour ' + et.n + ' · ' + et.lieu)}
+      <div class="scene-tete">${p.portrait ? `<img src="${BASE}portraits/${qui}.jpg?v=${D.v}" alt="">` : ''}<div><b>${E(p.nom)}</b><div class="muted" style="font-size:14px">${E(qui === 'marta' ? et.soir.titre : et.scene.titre)}</div></div></div>
+      <div class="fil" id="fil"></div>
+      <div id="saisie" style="margin-top:12px">
+        ${Reco ? `<div class="micro"><button class="btn-micro" id="mic" aria-label="Parler">${ICO.micro}</button><div class="entendu" id="entendu"></div></div>` : ''}
+        <div class="rangee"><input id="txt" placeholder="…ou écrivez en espagnol" style="flex:1;min-width:0;font:inherit;padding:10px;border-radius:10px;border:1px solid var(--line-300)">
+        <button class="btn btn--pri" id="env">Envoyer</button></div>
+        <button class="btn btn--large" id="fin" style="margin-top:10px">Terminer et voir le bilan</button></div><div id="r"></div>`;
+    const fil = $('#fil');
+    const bulle = (moi, t) => { const b = document.createElement('div'); b.className = 'bulle ' + (moi ? 'moi' : 'lui');
+      b.innerHTML = `<div class="qui">${moi ? 'Vous' : E(p.nom)}</div><div class="es">${E(t)}</div>`; fil.appendChild(b); b.scrollIntoView({behavior:'smooth', block:'end'}); };
+    async function tour(texte){
+      if (texte) { hist.push({role:'user', contenu:texte}); bulle(true, texte); }
+      const att = document.createElement('div'); att.className = 'muted'; att.textContent = p.nom + ' réfléchit…'; fil.appendChild(att);
+      try {
+        const r = await fetch('/api/jeu-de-role', {method:'POST', headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({code, scenario:'camino-es-fr', cas, role:'pelerin', niveau:palier, historique:hist})});
+        const d = await r.json().catch(() => ({})); att.remove();
+        if (!r.ok) { if (r.status === 401) return accueil('Ce code n’est pas accepté.'); $('#r').innerHTML = `<div class="retro no">${E(d.error || 'Erreur')}</div>`; return; }
+        if (d.ouverture) { hist.unshift({role:'user', contenu:d.ouverture}); bulle(true, d.ouverture); }
+        let t = String(d.reponse || ''); fini = /\bFIN\s*$/.test(t); t = t.replace(/\bFIN\s*$/, '').trim();
+        hist.push({role:'assistant', contenu:t}); bulle(false, t); voixEs(t);
+        if (fini) bilan();
+      } catch(e) { att.remove(); $('#r').innerHTML = `<div class="retro no">Pas de réseau ? L’assistant a besoin d’une connexion.</div>`; }
+    }
+    const envoyer = () => { const t = $('#txt').value.trim(); if (t && !fini) { $('#txt').value = ''; tour(t); } };
+    $('#env').onclick = envoyer; $('#txt').onkeydown = e => { if (e.key === 'Enter') envoyer(); };
+    $('#fin').onclick = () => bilan();
+    if (Reco) $('#mic').onclick = () => {
+      const mic = $('#mic'); if (recoActive) { arreterMicro(); return; }
+      try { speechSynthesis.cancel(); } catch(e) {}
+      mic.classList.add('ecoute'); mic.innerHTML = ICO.stop;
+      ecouterMicro(t => { $('#entendu').textContent = '« ' + t + ' »'; }, final => {
+        mic.classList.remove('ecoute'); mic.innerHTML = ICO.micro; $('#entendu').textContent = '';
+        if (final && !fini) tour(final);
+      });
+    };
+    async function bilan(){
+      fini = true; $('#saisie').innerHTML = `<div class="muted">Le bilan arrive…</div>`;
+      try {
+        const r = await fetch('/api/jeu-de-role', {method:'POST', headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({code, scenario:'camino-es-fr', cas, role:'pelerin', bilan:true, historique:hist.slice(1)})});
+        const d = await r.json().catch(() => ({})), b = d.bilan;
+        if (!r.ok || !b) { $('#saisie').innerHTML = `<div class="retro no">${E(d.error || 'Pas de bilan cette fois.')}</div>`; return; }
+        $('#saisie').innerHTML = `<h2>Le bilan</h2>
+          ${b.resume ? `<div class="retro ok">${E(b.resume)}</div>` : ''}
+          ${(b.compris || []).length ? `<h3>Ce que vous avez obtenu</h3><ul>${b.compris.map(x => `<li>${E(x)}</li>`).join('')}</ul>` : ''}
+          ${(b.phrases || []).length ? `<h3>À dire autrement</h3>${b.phrases.map(x => `<div class="carte" style="margin:6px 0"><div class="muted">${E(x.dit)}</div><div class="phrase-es" style="font-size:18px">${E(x.mieux)}</div></div>`).join('')}` : ''}
+          ${b.conseil ? `<div class="retro info">${E(b.conseil)}</div>` : ''}
+          <button class="btn btn--pri btn--large" onclick="aller('jour/${et.id}')">Retour à la journée</button>`;
+      } catch(e) { $('#saisie').innerHTML = `<div class="retro no">Pas de réseau pour le bilan.</div>`; }
+    }
+    tour('');
+  }
+  accueil();
 }
 
 /* ---------- la poche ---------- */
