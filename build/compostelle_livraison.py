@@ -104,10 +104,13 @@ qui se remplit de tampons ; des voix d'Espagne ; et Marta, une pèlerine de Vall
 <section>
   <h2>Passée à la boucle didactique</h2>
   <p>Un auditeur qui ne l'avait pas écrite l'a passée à la grille de 23 critères, page servie et jouée au téléphone.
-  Tour 1 : <b>2 bloquants, 8 majeurs, 6 mineurs</b>, tous traités sauf deux (le texte touristique, que vous aviez demandé ; une
-  réplique de conséquence après une erreur, reportée). Les deux bloquants : le test ne vérifiait pas l'allergie, et l'on ne pouvait
-  dire que l'allergie aux noix. Désormais : un test sur des phrases jamais entendues, l'allergie éliminatoire ; « Mon allergie » parmi
-  huit, avec sa carte à montrer ; les scènes s'écoutent avant de se lire ; « Je le dis » exige qu'on essaie.
+  <b>Cinq tours</b>, chacun par un auditeur neuf : 2/8/6 → 0/5/13 → 0/4/8 → 0/1/10 → <b>0/0/5</b> (bloquants/majeurs/mineurs).
+  La boucle est sortie au tour 5. Comme toujours, les majeurs de chaque tour venaient des corrections du précédent.
+  Ce que ça a changé : un test « Suis-je prêt ? » sur des phrases nouvelles, cinq objectifs, l'allergie éliminatoire et dite au micro ;
+  « Mon allergie » parmi huit, qui traverse tout (la scène de León, Pamplona, la poche, le test, un son par allergène) ; les scènes
+  s'écoutent avant de se lire ; « Je le dis » exige qu'on essaie, et la phrase d'allergie qu'on la dise juste. En la rejouant pour les
+  huit allergènes, on a trouvé une vraie faute de fond : la « bonne » entrée de León (soupe castillane) contenait œuf et pain.
+  Restent, laissés à dessein : le texte touristique (votre demande) et une réplique de conséquence après une erreur (reportée).
   <a href="compostelle-audit.html">Le journal de la boucle</a>.</p>
 </section>
 

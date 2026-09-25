@@ -731,7 +731,8 @@ function vueRepond(et){
   const items = [...rappels(et).map(r => ({src:r.src, k:r.k, rappel:true})), ...et.ecoute.map((_, k) => ({src:et, k}))];
   function tour(){
     if (n >= items.length) {
-      app.innerHTML = `${tete(et, 'repond')}<div class="retro ok">✓ ${items.length} réponses comprises, dont ${items.length - et.ecoute.length} rappels${erreurs ? ' (' + erreurs + ' erreur' + (erreurs > 1 ? 's' : '') + ')' : ', du premier coup'}.</div>
+      const nr = items.length - et.ecoute.length;
+      app.innerHTML = `${tete(et, 'repond')}<div class="retro ok">✓ ${items.length} réponses comprises${nr ? ', dont ' + nr + ' rappel' + (nr > 1 ? 's' : '') : ''}${erreurs ? ' (' + erreurs + ' erreur' + (erreurs > 1 ? 's' : '') + ')' : ', du premier coup'}.</div>
         <div style="margin-top:12px">${fini(et, 'repond')}</div>`; return;
     }
     const it = items[n], src = it.src, p = D.perso[src.local];
@@ -833,7 +834,7 @@ function vueDire(et){
         ecouterMicro(t => { $('#entendu').textContent = '« ' + t + ' »'; }, final => {
           mic.classList.remove('ecoute'); mic.innerHTML = ICO.micro; $('#micEtat').textContent = 'Touchez le micro pour réessayer.';
           if (!final) { $('#r').innerHTML = `<div class="retro info">Je n'ai rien entendu. Vérifiez que le micro est permis, ou dites-le et touchez « Je l'ai dit ».</div>`; return; }
-          const t = ' ' + plat(final) + ' ';
+          const t = ' ' + plat(final).replace(/ o no$/, '') + ' ';
           const manque = it.cles.map(c => g(c)).filter(c => !c.split('|').some(a => t.includes(' ' + plat(a) + ' ') || t.includes(plat(a))));
           // Audit tour 2 (E1) : « no quedan camas » passait pour « quedan camas ».
           const nonEnTrop = / no /.test(t) && !/ no /.test(' ' + plat(g(it.es)) + ' ');
@@ -867,7 +868,7 @@ function vueScene(et, bloc){
   // première partie, puis change à chaque reprise.
   const tirage = (jour(et.id).tirage != null) ? jour(et.id).tirage : (jour(et.id).tirage = Math.floor(Math.random() * 2));
   const groupe = ['A', 'B'][(tirage + ((S.essais || {})[cleS] || 0)) % 2];
-  const visible = t => t && !(t.siAlergia && !S.alergia) && !(t.groupe && t.groupe !== groupe);
+  const visible = t => t && !(t.siAlergia && !S.alergia) && !(t.sansAlergia && S.alergia) && !(t.groupe && t.groupe !== groupe);
   app.innerHTML = `${tete(et, bloc)}
     <div class="bandeau" style="max-height:170px">${et.vignette ? `<img src="${BASE}etapes/${et.img}.jpg?v=${D.v}" alt="" style="aspect-ratio:auto;height:170px">` : ''}</div>
     <div class="scene-tete" style="margin-top:10px">${p.portrait ? `<img src="${BASE}portraits/${qui}.jpg?v=${D.v}" alt="">` : ''}
@@ -1208,7 +1209,7 @@ function vueTest(){
   const pool = D.etapes.flatMap(e => e.mots).filter((x, i, a) => a.indexOf(x) === i && D.mots[x] && D.mots[x].img === 'croquis');
   pool.filter((_, i) => i % 2 === f).slice(0, 3).forEach(id => items.push({type:'mot', obj:'mots', id}));
   D.pieges.filter((_, i) => i % 2 === f).slice(0, 2).forEach(x => items.push({type:'piege', obj:'mots', x}));
-  let k = 0; const res = {}; let elimRate = false;
+  let k = 0; const res = {}; let elimRate = false, nonVerifie = false;
   const prete = S.genre === 'f' ? 'prête' : 'prêt';
   function intro(){
     app.innerHTML = `${retour('accueil', 'La credencial')}<p class="surtitre">Avant de partir</p><h1>Suis-je ${prete} ?</h1>
@@ -1224,7 +1225,7 @@ function vueTest(){
     if (k >= items.length) return bilan();
     const it = items[k]; let tentee = false;
     const tete2 = `${retour('accueil', 'La credencial')}<p class="surtitre">Question ${k + 1} sur ${items.length}</p><div class="progres"><i style="width:${100 * k / items.length}%"></i></div>
-      ${it.elim ? '<span class="rappel" style="background:var(--no-bg);border-color:var(--no-line);color:var(--no-ink)">Allergie — ne pardonne pas</span>' : ''}`;
+      ${(it.elim || (it.type === 'oral' && it.obj === 'O2')) ? '<span class="rappel" style="background:var(--no-bg);border-color:var(--no-line);color:var(--no-ink)">Allergie — ne pardonne pas</span>' : ''}`;
     const noter = ok => { if (tentee) return; tentee = true; const r = res[it.obj] || (res[it.obj] = [0, 0]); r[1]++; if (ok) r[0]++; if (!ok && it.elim) elimRate = true; };
     const suite = () => { const b = document.createElement('button'); b.className = 'btn btn--pri btn--large'; b.textContent = 'Suivant'; b.onclick = () => { k++; tour(); }; $('#r').appendChild(b); };
     const qcm = (textes, retros, bonneTxt) => {
@@ -1256,7 +1257,7 @@ function vueTest(){
         ${Reco ? '' : '<p class="avis-local">Ce navigateur ne reconnaît pas la voix : cette question ne sera pas vérifiée.</p>'}`;
       const modele = () => `<div class="retro info"><span class="surtitre">Le modèle</span><div class="phrase-es">${E(g(it.modele || ''))}</div></div>`;
       const fin = (ok, verifie) => {
-        if (verifie) { if (it.obj === 'O2') it.elim = true; noter(ok); } else tentee = true;
+        if (verifie) { if (it.obj === 'O2') it.elim = true; noter(ok); } else { tentee = true; if (it.obj === 'O2') nonVerifie = true; }
         $('#sansmic').remove(); if ($('#mic')) $('#mic').disabled = true;
         $('#r').innerHTML = `<div class="retro ${!verifie ? 'info' : ok ? 'ok' : 'no'}">${!verifie ? 'Non vérifié : cette question ne compte pas.' : ok ? '✓ On vous a compris.' : 'Trois essais sans qu’on vous comprenne.'}</div>${modele()}`;
         if (it.obj === 'O2') jouer(sonDe('leon/dire-0', 'Soy alérgic{o|a} {alg:a}.'));
@@ -1267,7 +1268,7 @@ function vueTest(){
         ecouterMicro(t => { $('#entendu').textContent = '« ' + t + ' »'; }, final => {
           mic.classList.remove('ecoute'); mic.innerHTML = ICO.micro;
           if (!final) { $('#r').innerHTML = `<div class="retro info">Je n'ai rien entendu. Vérifiez que le micro est permis et réessayez — ou touchez « je l'ai dit ».</div>`; return; }
-          const t = ' ' + plat(final) + ' ', non = it.obj === 'O2' && / no /.test(t);
+          const t = ' ' + plat(final).replace(/ o no$/, '') + ' ', non = it.obj === 'O2' && / no /.test(t);
           const ok = !non && it.cles.every(c => g(c).split('|').some(x => t.includes(plat(x))));
           prises++;
           if (ok) return fin(true, true);
@@ -1310,7 +1311,7 @@ function vueTest(){
     S.test.prochaine = 1 - f; S.test.passages = (S.test.passages || 0) + 1; S.test.dernier = aujourdhui() + (elimRate ? ' — allergie ratée' : ' — allergie réussie'); sauver();
     app.innerHTML = `${retour('accueil', 'La credencial')}<h1>Où vous en êtes</h1>
       ${elimRate ? `<div class="eliminatoire"><b>Pas encore ${prete} : l'allergie.</b><p style="margin:6px 0 0">Une question sur l'allergie a été ratée. C'est la seule erreur qui ne pardonne pas sur le chemin. Refaites León, puis repassez le test : ce seront d'autres phrases.</p></div>`
-        : `<div class="retro ok">✓ L'allergie : réussie. Le reste est un repère, pas une note.</div>`}
+        : `<div class="retro ok">✓ L'allergie : réussie${nonVerifie ? ' (dite à voix haute, mais non vérifiée par le micro)' : ''}. Le reste est un repère, pas une note.</div>`}
       ${lignes}
       <p class="muted">La vraie épreuve, ce sera le premier « ¿Qué te pongo? » à Pamplona.</p>
       <button class="btn btn--pri btn--large" onclick="aller('accueil')">Retour à la credencial</button>`;

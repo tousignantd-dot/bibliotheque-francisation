@@ -86,7 +86,7 @@ FORMES = [
      "choix": [("Buenos días. Me duele la rodilla.", None),
                ("Buenos días. Me duelo la rodilla.", "C'est le genou qui fait mal : me duele la rodilla."),
                ("Buenos días. Me gusta la rodilla.", "Me gusta = j'aime. Mal : me duele.")]},
-    {"obj": "O4", "type": "dire", "fr": "Vous êtes perdu : vous demandez le chemin à un passant. Que dites-vous ?",
+    {"obj": "O4", "type": "dire", "fr": "Vous êtes {perdu|perdue} : vous demandez le chemin à un passant. Que dites-vous ?",
      "choix": [("Perdone, ¿dónde está el Camino?", None),
                ("Perdone, ¿cuándo está el Camino?", "Cuándo = quand. Où : dónde."),
                ("Perdone, ¿de dónde es el Camino?", "« ¿De dónde es? » demande l'origine. Pour le lieu : ¿dónde está?")]},

@@ -143,6 +143,16 @@ TOURS = [
    ("G1", "mineur", "Bascules", "Cibles de 26 px.", "44 px.", "corrigé"),
    ("C5", "mineur", "Textes", "10 minutes contre un quart d'heure ; « choisissez-la » après l'avoir choisie ; accords au masculin (croyant, ému…).", "Harmonisés ; accords au féminin pour une pèlerine.", "corrigé"),
   ]},
+ {"tour": 5, "date": "26 septembre 2026", "compte": (0, 0, 5),
+  "note": "Contrôle de sortie. Le majeur du tour 4 est levé, vérifié en jouant cinq scénarios de micro (muet, faux, juste, trois échecs, repli) ; la révision 4 n'a rien cassé (Pamplona pour les 8 allergènes et sans allergie, León au lait dans les deux variantes, 117 sons de la poche). "
+          "SORTIE DE BOUCLE : zéro bloquant, zéro majeur. Les cinq mineurs nouveaux ont été traités dans la foulée.",
+  "constats": [
+   ("A1", "mineur", "Test, oral de l'allergie", "Pas d'étiquette « ne pardonne pas » sur l'item.", "Étiquette affichée.", "corrigé"),
+   ("F1", "mineur", "Bilan du test", "« Allergie réussie » sans dire que l'oral n'a pas été vérifié.", "« (dite à voix haute, mais non vérifiée par le micro) ».", "corrigé"),
+   ("E1/F1", "mineur", "Oral de l'allergie", "« ¿lleva leche o no? » rejeté à cause du « no ».", "Un « o no » final est toléré.", "corrigé"),
+   ("D2", "mineur", "Pamplona", "La garniture redemandée après que l'allergie l'eut fixée.", "La question ne revient plus quand une allergie est déclarée.", "corrigé"),
+   ("C5", "mineur", "Textes", "« dont 0 rappels » ; « perdu », « tombé » au masculin pour une pèlerine.", "Pluriel juste ; accords au féminin.", "corrigé"),
+  ]},
 ]
 
 
@@ -175,7 +185,7 @@ table.cmp{display:block;max-width:100%;min-width:0;overflow-x:auto}
 <p class="eyebrow">En route vers Compostelle &middot; qualité</p>
 <h1>La boucle didactique</h1>
 <p class="chapeau">L'application passée à la grille de 23 critères, par un regard qui ne l'a pas écrite : page servie, jouée,
-mesurée au téléphone. Sortie de boucle : zéro bloquant, zéro majeur. Ce que la boucle ne vérifie pas : l'exactitude de l'espagnol
+mesurée au téléphone. Sortie de boucle : zéro bloquant, zéro majeur — <b>atteinte au tour 5</b> (2/8/6 → 0/5/13 → 0/4/8 → 0/1/10 → 0/0/5). Ce que la boucle ne vérifie pas : l'exactitude de l'espagnol
 (relu à part), et l'essai auprès de vrais pèlerins — cinq personnes qui pensent à voix haute, avant toute diffusion.</p>
 {tours}
 <div class="pied"><p>Produit par <code>build/compostelle_audit.py</code> — ne pas l'éditer.</p></div>
