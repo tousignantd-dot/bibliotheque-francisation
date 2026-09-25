@@ -115,6 +115,7 @@ LEXIQUE = [
     ("carte-refusee", "paiement", "une carte refusée", "a declined card", "una tarjeta rechazada", N, ""),
     ("comptant",      "paiement", "l'argent comptant", "cash", "el efectivo", C, "Au Québec « payer comptant » ; « en espèces » en France."),
     ("debit",         "paiement", "la carte de débit", "a debit card", "una tarjeta de débito", N, "Au Québec on dit aussi « payer par Interac »."),
+    ("monnaie",       "paiement", "de la monnaie", "change", "el cambio", N, "PIÈGE (fr·en) : « la monnaie », ce sont les pièces qu'on rend (« change ») ; l'argent, c'est « money »."),
     ("pourboire",     "paiement", "le pourboire", "the tip", "la propina", N, ""),
     ("surclassement", "paiement", "un surclassement", "an upgrade", "un upgrade", N, "Au Mexique « un upgrade » ou « una mejora de habitación »."),
     ("nuitee",        "paiement", "le prix par nuit", "the nightly rate", "el precio por noche", N, ""),

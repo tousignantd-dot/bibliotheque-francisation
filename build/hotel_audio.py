@@ -48,17 +48,44 @@ def a_dire(texte):
     return re.sub(r"\s*\([^)]*\)", "", texte).strip()
 
 
+VOIX_CLIENTS = {"fr": "fr-CA-Thierry:DragonHDLatestNeural",
+                "en": "en-US-Andrew:DragonHDLatestNeural",
+                "es": "es-MX-Jorge:DragonHDLatestNeural"}
+_x = importlib.util.spec_from_file_location("hotel_exercices", RACINE / "build/contenu/entreprise-hotel/exercices.py")
+EX = importlib.util.module_from_spec(_x); _x.loader.exec_module(EX)
+
+
+def epellation(langue, nom):
+    """Le nom épelé : le nom écrit de chaque lettre, une pause entre elles."""
+    lettres = '<break time="350ms"/>'.join(html.escape(EX.LETTRES[langue][c]) for c in nom)
+    return f'{html.escape(EX.EPELER_INTRO[langue])}<break time="400ms"/>{lettres}'
+
+
+def extraits_exercices():
+    """(langue, chemin relatif, texte, voix, débit, brut, à retranscrire)."""
+    for l in ("fr", "en", "es"):
+        for nom in EX.NOMS:
+            yield l, f"x/epeler/{l}/{nom.lower()}.mp3", epellation(l, nom), VOIX_CLIENTS[l], "-15%", True, False
+        for i, dit, _ in EX.NOMBRES:
+            yield l, f"x/nombres/{l}/{i}.mp3", dit[l], VOIX_MOTS[l], "0%", False, True
+        # Le client parle vite : c'est la leçon (« Plus lentement » étire dans le navigateur).
+        for i, _, _, dit in EX.DEMANDES:
+            yield l, f"x/client/{l}/{i}.mp3", dit[l], VOIX_CLIENTS[l], "+10%", False, True
+        for r in EX.REPONSES:
+            yield l, f"x/reponds/{l}/{r[0]}.mp3", r[2][l], VOIX_CLIENTS[l], "0%", False, True
+
+
 def extraits():
     for e in LX.LEXIQUE:
         for l in ("fr", "en", "es"):
             yield l, e[0], a_dire(e[COL[l]])
 
 
-def synth(langue, texte, dest, cle, region):
+def synth(langue, texte, dest, cle, region, voix=None, taux=None, brut=False):
     loc = LOCALE[langue]
     doc = (f'<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="{loc}">'
-           f'<voice name="{VOIX_MOTS[langue]}"><lang xml:lang="{loc}"><prosody rate="{TAUX_SONS}">'
-           f'{html.escape(texte)}</prosody></lang></voice></speak>')
+           f'<voice name="{voix or VOIX_MOTS[langue]}"><lang xml:lang="{loc}"><prosody rate="{taux or TAUX_SONS}">'
+           f'{texte if brut else html.escape(texte)}</prosody></lang></voice></speak>')
     dest.parent.mkdir(parents=True, exist_ok=True)
     f = dest.with_suffix(".xml"); f.write_text(doc, encoding="utf-8")
     out = subprocess.run(
@@ -115,6 +142,23 @@ def controle(cle, region):
               f"({r['similitude']}, {r['confiance']})")
 
 
+def controle_exercices(cle, region):
+    """Nombres, demandes et répliques : retranscrits comme les mots. Les noms
+    épelés ne se contrôlent pas ainsi (la reconnaissance écrit des lettres au
+    hasard) : ils s'écoutent."""
+    def un(x):
+        l, chemin, texte = x[0], x[1], x[2]
+        entendu, conf = retranscrire(SONS / chemin, l, cle, region)
+        sim = difflib.SequenceMatcher(None, plat(texte), plat(entendu)).ratio()
+        return chemin, texte, entendu, round(sim, 2)
+    with ThreadPoolExecutor(6) as pool:
+        rel = list(pool.map(un, [x for x in extraits_exercices() if x[6]]))
+    faibles = sorted([r for r in rel if r[3] < 0.8], key=lambda r: r[3])
+    print(f"contrôle des exercices : {len(rel)} extraits, {len(faibles)} sous 0,8")
+    for c, t, e, sm in faibles:
+        print(f"  {c:28} {sm}  « {t} » → « {e} »")
+
+
 def retenter(cibles, cle, region, essais=3):
     """La HD n'est pas déterministe : un extrait suspect se retire jusqu'à trois
     fois, et on GARDE le tirage que la reconnaissance comprend le mieux."""
@@ -156,4 +200,9 @@ if __name__ == "__main__":
         with ThreadPoolExecutor(6) as pool:
             list(pool.map(lambda x: synth(x[0], x[2], SONS / x[0] / f"{x[1]}.mp3", cle, region), a_faire))
         print(f"{len(a_faire)} extraits produits")
+        xs = [x for x in extraits_exercices() if not (SONS / x[1]).exists()]
+        with ThreadPoolExecutor(6) as pool:
+            list(pool.map(lambda x: synth(x[0], x[2], SONS / x[1], cle, region, x[3], x[4], x[5]), xs))
+        print(f"{len(xs)} extraits d'exercices produits")
+        controle_exercices(cle, region)
     controle(cle, region)

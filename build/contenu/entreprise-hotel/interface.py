@@ -79,6 +79,7 @@ PIEGES = {
     "depot":         {"en": "TRAP: French « une caution » is a security deposit, not caution (« la prudence »)."},
     "date":          {"en": "TRAP: 04/05 is May 4 in Québec (day first), not April 5. Say the month in words."},
     "location-auto": {"en": "TRAP: French « la location » means RENTAL. A place is « un endroit »."},
+    "monnaie":       {"en": "TRAP: French « la monnaie » is CHANGE (the coins you give back). Money is « l'argent »."},
     "billet":        {"en": "TRAP: « un billet » is a ticket (or a banknote). A bill to pay is « la facture »."},
     # fr·es — la nota en español
     "stylo":      {"es": "TRAMPA: en francés el bolígrafo es « un stylo ». « Une plume » es una pluma de ave."},
