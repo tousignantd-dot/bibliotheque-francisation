@@ -28,6 +28,10 @@ TROUSSES = {
 }
 TR = TROUSSES["hotel" if "--trousse" in sys.argv and sys.argv[sys.argv.index("--trousse") + 1] == "hotel" else "francoeur"]
 BOUCLE = RACINE / "build" / "contenu" / TR["boucle"] / "boucle"
+# --objet test : l'audit du test (fichiers test-audit<tour>.json, page <sortie>-test-<tour>).
+OBJET_TEST = "--objet" in sys.argv and sys.argv[sys.argv.index("--objet") + 1] == "test"
+if OBJET_TEST:
+    TR = dict(TR, sortie=TR["sortie"].replace("-audit", "-test-audit"), nom=TR["nom"] + " — le test")
 E = html.escape
 
 FAMILLES = {"A": "Alignement", "B": "Entrée en matière", "C": "Charge cognitive",
@@ -45,11 +49,11 @@ RANG = {"bloquant": 0, "majeur": 1, "mineur": 2}
 
 def lire(tour):
     constats = []
-    for f in sorted(BOUCLE.glob(f"audit{tour}-*.json")):
+    for f in sorted(BOUCLE.glob(f"test-audit{tour}.json" if OBJET_TEST else f"audit{tour}-*.json")):
         d = json.loads(f.read_text(encoding="utf-8"))
         # Deux formats d'auditeur : une liste de constats, ou {"constats": [...]}.
         for c in (d["constats"] if isinstance(d, dict) else d):
-            c.setdefault("source", f.stem.split("-", 1)[1])
+            c.setdefault("source", "test" if OBJET_TEST else f.stem.split("-", 1)[1])
             c.setdefault("lieu", c.get("ou", ""))
             if c.get("mesure"):
                 c["constat"] = f'{c["constat"]} (Mesure : {c["mesure"]})'
