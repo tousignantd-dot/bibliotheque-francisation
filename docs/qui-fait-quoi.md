@@ -30,6 +30,7 @@ autre chose.
 
 | Session | Ouverte | Ce que je tiens | Jusqu'à |
 |---|---|---|---|
+| Hôtel Rive-Claire (étape 4) | 25 sept. 2026 | `server.py` (scénarios du comptoir, voix en/es du jeu de rôle), `build/azure_voix.py` (voix HD en/es) | fin de l'étape 4 |
 
 Le nom de session est celui que donne `ListAgents` (`claude-38`, `claude-71`…).
 Il ne survit pas à la fermeture, et c'est voulu : une ligne dont le nom ne
