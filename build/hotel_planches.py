@@ -27,7 +27,7 @@ RACINE = pathlib.Path(__file__).resolve().parent.parent
 CONTENU = RACINE / "build" / "contenu" / "entreprise-hotel"
 CROQUIS = RACINE / "assets" / "interactive" / "hotel" / "croquis"
 SORTIE = RACINE / "modules-autonomes" / "hotel-reception" / "index.html"
-MEDIA_V = "4"   # 4 : palette Rive-Claire, 25 sept. 2026
+MEDIA_V = "5"   # 5 : révision du tour 2, 25 sept. 2026
 
 
 def _charger(nom):
@@ -60,7 +60,13 @@ def donnees():
         assert set(par_ui) <= set(m["paire"].split("·")), f"{i} : interface hors de la paire"
         for ui, t in par_ui.items():
             # Tour 1 (D4 bloquant) : jamais un faux ami montré sans sa phrase.
-            assert len(t) == 3 and all(t), f"{i}/{ui} : phrase, fausse lecture et explication obligatoires"
+            assert len(t) == 4 and all(t), f"{i}/{ui} : phrase, fausse lecture, second distracteur et explication obligatoires"
+    for i, dit, bonne, vs in EX.NOMBRES:
+        for l in ("fr", "en", "es"):
+            assert len(vs[l]) == 3, f"{i}/{l} : trois voisines"
+            for v, code in vs[l]:
+                e = EX.ERREURS_NOMBRES[code]
+                assert l in e or ("fr" in e and isinstance(e["fr"], str)), f"{i}/{l} : l'erreur « {code} » n'existe pas quand on apprend {l}"
     for r in EX.REPONSES:
         reps = r["reps"]
         assert reps[0][1] is None and all(fb for _, fb, _ in reps[1:]), f"{r['id']} : la bonne d'abord, une rétroaction par mauvaise"
@@ -363,7 +369,12 @@ const melange = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { c
 // Les places sont ÉQUILIBRÉES (chacune revient autant de fois) puis MÉLANGÉES :
 // une rotation régulière (0, 1, 2, 3, 0…) se devine aussi bien qu'une place fixe.
 let PLACES = [];
-function places(n, N){ PLACES = melange(Array.from({length: N}, (_, k) => k % n)); }
+function places(n, N){
+  // Une série plus courte que deux tours de places ne peut pas les équilibrer :
+  // on tire alors chaque place, sans jamais répéter la précédente (tour 2).
+  if (N < 2 * n) { PLACES = []; for (let k = 0; k < N; k++) { let p; do { p = Math.floor(Math.random() * n); } while (k && p === PLACES[k - 1]); PLACES.push(p); } return; }
+  PLACES = melange(Array.from({length: N}, (_, k) => k % n));
+}
 function placer(bonne, autres, i){
   const out = melange(autres);
   out.splice(PLACES[i] % (autres.length + 1), 0, bonne); return out;
@@ -406,11 +417,11 @@ function serie(fam){
     const pr = PAIRE_ORDRE[paire()];
     const lot = melange(D.mots.filter(m => m.paire === pr && D.ex.pieges[m.id] && D.ex.pieges[m.id][P]));
     places(3, lot.length);
-    items = lot.map((m, i) => { const [phrase, faux, expl] = D.ex.pieges[m.id][P];
-      return {m, phrase, expl, choix: placer({t: m[P], ok: true}, [{t: faux}, {t: voisins(m, 1, x => !x.paire)[0][P]}], i)}; });
+    items = lot.map((m, i) => { const [phrase, faux, autre, expl] = D.ex.pieges[m.id][P];
+      return {m, phrase, expl, choix: placer({t: m[P], ok: true}, [{t: faux}, {t: autre}], i)}; });
   }
   if (fam === 'epeler') items = melange(D.ex.noms).slice(0, 8).map(([nom, slug]) => ({nom, slug}));
-  if (fam === 'nombres') items = melange(D.ex.nombres).map(([id, dit, bonne, vs], i) => ({id, dit, bonne, vs, choix: placer(bonne, vs.map(v => v[0]), i)}));
+  if (fam === 'nombres') items = melange(D.ex.nombres).map(([id, dit, bonne, parL], i) => ({id, dit, bonne, vs: parL[A], choix: placer(bonne, parL[A].map(v => v[0]), i)}));
   if (fam === 'client') items = melange(D.ex.demandes).map(([id, lit, n], i) => {
     const autreLit = melange(D.ex.lits.filter(l => l !== lit)), autreN = melange([1,2,3,4,5].filter(k => k !== n));
     return {id, lit, n, choix: placer({lit, n}, [{lit, n: autreN[0]}, {lit: autreLit[0], n}, {lit: autreLit[1], n: autreN[1]}], i)};
@@ -433,6 +444,8 @@ function jouerItem(lent){
   if (X.fam === 'nombres') jouer(`x/nombres/${A}/${it.id}.mp3`, lent);
   if (X.fam === 'client') jouer(`x/client/${A}/${it.id}.mp3`, lent);
   if (X.fam === 'reponds') jouer(`x/reponds/${A}/${it.r.id}.mp3`, lent);
+  // « Je le dis » : on entend le client ; le modèle, seulement après avoir dit.
+  if (X.fam === 'dire' && it.r) jouer(`x/reponds/${A}/${it.r.id}.mp3`, lent);
 }
 
 function ecranExercice(fam){
@@ -462,9 +475,22 @@ function ecranExercice(fam){
       <div class="ecoute"><button type="button" class="btn" id="voirSens">${ICO.oeil}${E(T('voir_sens'))}</button></div>
       <div class="ecoute" id="auto" hidden><button type="button" class="btn btn--pri" data-auto="1">${E(T('je_savais'))}</button>
       <button type="button" class="btn" data-auto="0">${E(T('pas_encore'))}</button></div>`;
+  if (fam === 'dire' && it.m) {
+    corps += `<p class="mot-vise">${E(T('vous_dites'))}</p><p class="phrase" lang="${P}">${E(it.m[P])}</p>`;
+  }
+  if (fam === 'dire' && it.r) {
+    // Tour 2 (D1) : le contexte s'affiche, et le client se fait ENTENDRE dans la
+    // langue apprise, comme au comptoir ; sa traduction reste cachée.
+    const ctx = it.r.ctx_dire || it.r.ctx;
+    corps += (ctx ? `<p class="contexte">${E(ctx[P])}</p>` : '')
+      + `<p class="mot-vise">${E(T('le_client_dit'))}</p>
+      <div class="ecoute"><button type="button" class="btn btn--son" data-rejouer="0">${ICO.son}${E(T('reecouter'))}</button>
+      <button type="button" class="btn" id="voirClient">${ICO.oeil}${E(T('voir'))}</button></div>
+      <p class="phrase" id="client" lang="${P}" hidden>« ${E(it.r.client[P])} »</p>`;
+  }
   if (fam === 'dire') {
-    const txtP = it.m ? it.m[P] : it.r.client[P], modele = it.m ? it.m[A] : it.r.reps[0][0][A];
-    corps += `<p class="mot-vise">${E(it.m ? T('vous_dites') : T('le_client_dit'))}</p><p class="phrase" lang="${P}">${E(txtP)}</p>
+    const modele = it.m ? it.m[A] : it.r.reps[0][0][A];
+    corps += `
       <div class="ecoute"><button type="button" class="btn btn--son" id="modele" data-m="${it.m ? `${A}/${it.m.id}.mp3` : `x/modele/${A}/${it.r.id}.mp3`}">${ICO.son}${E(T('ecouter_modele'))}</button></div>
       <p class="phrase" id="sens" lang="${A}" hidden>${E(modele)}</p>
       <div class="ecoute" id="auto" hidden><button type="button" class="btn btn--pri" data-auto="1">${E(T('dit_pareil'))}</button>
@@ -504,7 +530,9 @@ function repondre(b){
     ok = b.dataset.rep === it.bonne;
     if (!ok) {
       const v = it.vs.find(x => x[0] === b.dataset.rep);
-      msg = D.ex.erreurs[v[1]][P];
+      // L'erreur qui tient à la langue ENTENDUE a sa version par langue apprise.
+      let e = D.ex.erreurs[v[1]]; if (e[L.apprend] && typeof e[L.apprend] === 'object') e = e[L.apprend];
+      msg = e[P];
       // Après deux erreurs, on montre ce qui a été dit (tour 1, E1).
       if (X.essais >= 1) document.getElementById('dite').hidden = false;
     }
@@ -586,6 +614,7 @@ document.addEventListener('click', e => {
   if (b.dataset.rejouer !== undefined) { jouerItem(b.dataset.rejouer === '1'); return; }
   if (b.dataset.suivant) { suivant(); return; }
   if (b.dataset.refaire) { serie(b.dataset.refaire); rendre(); setTimeout(() => jouerItem(false), 150); return; }
+  if (b.id === 'voirClient') { document.getElementById('client').hidden = false; b.hidden = true; return; }
   if (b.id === 'modele') { jouer(b.dataset.m); document.getElementById('sens').hidden = false; document.getElementById('auto').hidden = false; return; }
   if (b.id === 'voirSens') { document.getElementById('sens').hidden = false; document.getElementById('auto').hidden = false; b.hidden = true; return; }
   if (b.dataset.auto !== undefined) {

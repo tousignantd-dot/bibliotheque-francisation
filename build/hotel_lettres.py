@@ -83,8 +83,27 @@ p();}})();
 if __name__ == "__main__":
     cle, region = HA.cle_region()
     a_faire = [t for t in taches() if not (DEST / t[0] / f"{t[1]}-{t[2]}.mp3").exists()]
+    import subprocess
+
+    def duree(f):
+        return float(subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration",
+                                     "-of", "csv=p=0", str(f)], capture_output=True, text=True).stdout or 0)
+
+    def une(t):
+        # La HD déraille parfois sur une lettre seule : 12 s, 31 s de bruit ou de
+        # répétition (K espagnol, K et I français, 25 sept. 2026). Une lettre
+        # dure moins d'une seconde et demie ; au-delà de 2,5 s, on la refait.
+        f = DEST / t[0] / f"{t[1]}-{t[2]}.mp3"
+        for _ in range(4):
+            HA.synth(t[0], t[3], f, cle, region, HA.VOIX_CLIENTS[t[0]], "0%", True)
+            if duree(f) <= 2.5:
+                return
+        print(f"  {f.name} ({t[0]}) reste à {duree(f):.1f} s après quatre tirages")
+
+    # Les lettres déjà sur le disque mais aberrantes repassent aussi.
+    a_faire += [t for t in taches() if (DEST / t[0] / f"{t[1]}-{t[2]}.mp3").exists()
+                and duree(DEST / t[0] / f"{t[1]}-{t[2]}.mp3") > 2.5]
     with ThreadPoolExecutor(6) as pool:
-        list(pool.map(lambda t: HA.synth(t[0], t[3], DEST / t[0] / f"{t[1]}-{t[2]}.mp3", cle, region,
-                                          HA.VOIX_CLIENTS[t[0]], "0%", True), a_faire))
+        list(pool.map(une, a_faire))
     page()
     print(f"{len(a_faire)} lettres produites ; {PAGE.relative_to(RACINE)}")

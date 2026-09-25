@@ -146,7 +146,7 @@ def assembler(langue, nom, cle, region):
 def pieges_extraits():
     """(langue apprise, id, phrase) : une phrase de contexte par item de la série."""
     for i, par_ui in EX.PIEGES.items():
-        for ui, (phrase, _, _) in par_ui.items():
+        for ui, (phrase, *_) in par_ui.items():
             paire = next(e[6] for e in LX.LEXIQUE if e[0] == i)
             a, b = paire[len("PIÈGE ("):paire.index(")")].split("·")
             yield (b if ui == a else a), i, phrase
