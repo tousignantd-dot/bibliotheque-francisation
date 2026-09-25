@@ -70,3 +70,12 @@ au comptoir.
 frein contre l'employé pressé, pas une serrure. La serrure viendra du serveur,
 à l'étape 4. Idem : l'historique vit sur l'appareil ; une tablette partagée
 mêle les employés (le guide du formateur le dira).
+
+## Test — sortie de boucle (tour 4 : 0/0/6), mineurs traités le 25 sept. 2026
+
+- Prix suivi d'un mot ou d'une ponctuation (« 239 dollars », « dlls », « 239. ») : accepté (F1). La consigne ne demande plus 24 h et virgule : « comme au comptoir ».
+- Compteur d'essais du code : oublié après une minute (G2).
+- REGLE_RELAIS : « un document faux (facture, date, mode de paiement) ne se fait jamais » — c5 et c11 sont désormais couverts par la règle affichée (D4).
+- « Refaire » avertit si la passation n'est pas confirmée ; la passation précédente affichée est la dernière confirmée, sinon marquée « non confirmé » ; « voix effacée » après 30 jours (F1).
+- Confirmation : l'avertissement paraît dès qu'une réponse n'a pas ses deux lignes, micro ou non ; une notation à moitié faite affiche « oral en cours de notation » (A3).
+- Changer la langue apprise remet la passation à zéro (F1).

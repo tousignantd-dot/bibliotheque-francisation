@@ -88,9 +88,10 @@ A = {
 # (id, sous-partie, {langue: phrase}, bonne). L'employé TAPE ce qu'il entend,
 # comme il le noterait au comptoir (audit du test, tour 2 : un QCM de nombres
 # se déjoue toujours — vote majoritaire au tour 1, « écarter le leurre du
-# centre » au tour 2). Se compare sur les chiffres seuls : 17:15, 17h15 et
-# 1715 valent pareil ; « 5:15 » ne vaut pas 17:15, la notation sur 24 h est
-# dite dans la consigne.
+# centre » au tour 2). Se compare par VALEUR (tours 3 et 4) : 17:15, 17h15, 1715
+# et 5:15 pm valent pareil ; « 5:15 » seul vaut 17:15 quand la langue apprise
+# dit l'heure sur 12 (en, es), pas en français. Un prix se lit avec ou sans
+# cents, suivi ou non d'un mot (« dollars », « dlls »).
 B = {
     1: [
         ("b11", "numero", R("Vous êtes à la chambre deux cent quatorze.", "You're in room two-fourteen.", "Está en la habitación doscientos catorce."), "214"),
@@ -251,9 +252,9 @@ UI = {
     "pA": R("Ce que le client demande", "What the guest asks for", "Lo que pide el cliente"),
     "pA_c": R("Écoutez le client. Touchez la chambre qu'il demande.", "Listen to the guest. Tap the room they ask for.", "Escuche al cliente. Toque la habitación que pide."),
     "pB": R("Au téléphone", "On the phone", "Por teléfono"),
-    "pB_c": R("Écoutez, puis tapez ce que vous devez noter. On note l'heure sur 24 heures (17:15) et le prix avec une virgule (175,40 $).",
-              "Listen, then type what you need to write down. Times go on the 24-hour clock (17:15), prices with a comma (175,40 $).",
-              "Escuche y escriba lo que debe anotar. La hora se anota en 24 horas (17:15) y el precio con coma (175,40 $)."),
+    "pB_c": R("Écoutez, puis tapez ce que vous devez noter, en chiffres, comme au comptoir (175,40 $ ; 17:15 ou 5:15 pm).",
+              "Listen, then type what you need to write down, in digits, as you would at the desk ($175.40; 5:15 pm or 17:15).",
+              "Escuche y escriba lo que debe anotar, en cifras, como en el mostrador ($175.40; 5:15 pm o 17:15)."),
     "b_numero": R("Numéros de chambre", "Room numbers", "Números de habitación"),
     "b_prix": R("Prix et heures", "Prices and times", "Precios y horas"),
     "b_nom": R("Noms épelés", "Spelled names", "Apellidos deletreados"),
@@ -309,6 +310,12 @@ UI = {
     "refaire_test": R("Refaire le test", "Take the test again", "Repetir la prueba"),
     "retour_accueil": R("Retour à l'accueil", "Back to home", "Volver al inicio"),
     "precedent": R("Passation précédente", "Previous attempt", "Intento anterior"),
+    "non_confirme": R("non confirmé", "not confirmed", "sin confirmar"),
+    "voix_effacee": R("voix effacée", "recording erased", "grabación borrada"),
+    "oral_en_cours": R("oral en cours de notation", "speaking part being rated", "parte oral en calificación"),
+    "refaire_avert": R("Cette passation n'est pas confirmée. En la refaisant, ses enregistrements seront effacés. Cliquez de nouveau pour refaire.",
+                       "This attempt is not confirmed. Retaking the test will erase its recordings. Click again to retake.",
+                       "Este intento no está confirmado. Al repetir la prueba se borrarán sus grabaciones. Haga clic de nuevo para repetir."),
     # Tour 3 du test : une saisie sans chiffre n'est plus ignorée en silence.
     "que_chiffres": R("Tapez le nombre en chiffres.", "Type the number in digits.", "Escriba el número en cifras."),
     "que_lettres": R("Tapez le nom en lettres.", "Type the name in letters.", "Escriba el nombre en letras."),

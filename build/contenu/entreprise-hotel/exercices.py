@@ -608,13 +608,13 @@ REPONSES.append(
 REGLE_RELAIS = R(
     "Vous décidez seul : chercher une réservation, réencoder une clé, expliquer des frais. "
     "Le gérant décide : un remboursement, des frais effacés, un service gratuit, toute exception. "
-    "Et personne ne promet ce que l'hôtel ne peut pas donner : une taxe ne s'enlève jamais, une chambre qu'on n'a pas ne se promet pas.",
+    "Et personne ne promet ce que l'hôtel ne peut pas donner : une taxe ne s'enlève jamais, une chambre qu'on n'a pas ne se promet pas, un document faux (facture, date, mode de paiement) ne se fait jamais.",
     "You decide alone: look up a booking, re-encode a key, explain a charge. "
     "The manager decides: a refund, a waived fee, anything free, any exception. "
-    "And no one promises what the hotel can't give: a tax is never removed, a room you don't have is never promised.",
+    "And no one promises what the hotel can't give: a tax is never removed, a room you don't have is never promised, a false document (bill, date, payment method) is never made.",
     "Usted decide solo: buscar una reservación, recodificar una llave, explicar un cargo. "
     "El gerente decide: un reembolso, un cargo que se quita, algo gratis, cualquier excepción. "
-    "Y nadie promete lo que el hotel no puede dar: un impuesto nunca se quita, una habitación que no hay no se promete.")
+    "Y nadie promete lo que el hotel no puede dar: un impuesto nunca se quita, una habitación que no hay no se promete, un documento falso (factura, fecha, forma de pago) nunca se hace.")
 PROMESSE = R(
     "Vous venez d'engager l'hôtel sans en avoir le pouvoir. Au comptoir, cette erreur fait échouer.",
     "You just committed the hotel without the authority to do so. At the desk, this mistake fails you.",
