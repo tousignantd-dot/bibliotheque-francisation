@@ -1,43 +1,41 @@
 """Le test de positionnement de la réception (étape 3) — dans la langue APPRISE.
 
 Il sert à UNE chose : régler le palier du jeu de rôle (étape 4). Ce n'est pas
-un examen et il ne s'annonce pas comme tel. Dix à douze minutes, repassé à la
-fin : l'écart entre les deux passations est la preuve d'apprentissage.
+un examen. Dix à douze minutes, repassé à la fin du parcours. Le test SITUE ;
+il ne certifie pas les seuils du cadrage (7 sur 8, 5 de suite, 6 situations
+sur 8), qui se vérifient au comptoir joué et au pilote — l'écran le dit.
 
 QUATRE PARTIES, alignées sur le cadrage (build/contenu/entreprise-hotel/boucle/cadrage.md) :
-  A · comprendre la demande (O1) — le lit ET les nuits, au débit d'un client ;
-                                    au cran 3, des dates, ou une phrase qui se reprend
-  B · noter au téléphone (O2)     — la voix passe par le filtre du téléphone :
-                                    numéro de chambre, puis prix et heure, puis
-                                    un nom épelé, tapé
-  C · qui décide? (O4)            — le client demande ; on choisit : je m'en occupe,
-                                    je transmets au gérant, ou personne ne peut le
-                                    promettre. Éliminatoire, et DIT AVANT : se
-                                    charger soi-même de ce qui revient au gérant
-                                    fait échouer la partie
-  D · répondre à voix haute (O3)  — enregistré sur l'appareil, écouté et noté par
-                                    le formateur, jamais envoyé
+  A · la demande (O1)      — ADAPTATIVE : le lit, puis le lit et les nuits, puis
+                              des dates ou une phrase qui se reprend
+  B · au téléphone (O2)    — TROIS SOUS-PARTIES passées par tous, sans arrêt
+                              (audit du test, tour 1 : ce sont trois compétences,
+                              pas trois crans) : numéros de chambre, prix et
+                              heures, noms épelés tapés — trois items chacune
+  C · qui décide? (O4)     — trois ACTES : je le fais moi-même, je transmets au
+                              gérant sans rien promettre, je refuse poliment.
+                              Accorder soi-même ce qui revient au gérant, ou ce
+                              que personne ne peut accorder, fait échouer la
+                              partie — et la règle entière est affichée AVANT
+  D · répondre à voix haute (O3) — cinq gestes, dont confirmer ; enregistré sur
+                              l'appareil (gardé jusqu'à la confirmation du
+                              formateur), noté sur deux lignes : le geste et la langue
 
-LA RÈGLE ADAPTATIVE, la même pour A et B (celle de Francœur) : on part au cran
-1 ; trois bonnes réponses valident le cran et font monter ; deux erreurs
-arrêtent la partie. Le niveau d'une partie est le dernier cran validé (0 à 3).
-Quatre items par cran suffisent (3 justes, ou 2 erreurs, en au plus 4).
+LA RÈGLE ADAPTATIVE (A seulement) : cran 1 au départ ; trois bonnes valident le
+cran et font monter ; deux erreurs arrêtent ; quatre items par cran.
 
-AUCUNE RÉTROACTION pendant le test : ni vert ni rouge.
+LES DISTRACTEURS NE SE DEVINENT PAS (audit du test, tour 1, bloquant) :
+  - A : cartes en carré latin (lit, nuits) (lit, nuits′) (lit′, nuits)
+    (lit′, nuits′), et nuits′ tantôt une de MOINS, tantôt une de PLUS ;
+  - B : les choix se construisent autour d'un LEURRE — une vraie erreur
+    d'oreille dans la langue apprise — et non autour de la bonne : le vote
+    majoritaire, position par position, désigne le leurre. Le build le vérifie.
 
-DES PHRASES NEUVES : aucune demande, aucun nom, aucun nombre des exercices.
+DES SITUATIONS NEUVES : ni les phrases, ni les situations de « Ce que je
+réponds » (tour 1 : d1 reprenait r1 mot pour mot).
 
-DEUX FORMES PARALLÈLES, mêmes crans, même difficulté : la première passation
-prend la forme 1, la suivante la forme 2, puis on alterne.
-
-LES CARTES DE A EN CARRÉ LATIN (leçon de Francœur) : (lit, nuits) (lit, nuits′)
-(lit′, nuits) (lit′, nuits′) — chaque valeur paraît deux fois, la bonne n'est
-majoritaire sur aucun trait. Au cran 3, lit′ et nuits′ sont ce que la phrase
-ÉCARTE (le lit qu'elle corrige, le compte de nuits qu'on obtient en comptant
-les jours au lieu des nuits).
-
-LE PALIER se PROPOSE ; le formateur le confirme. Rien de nominatif : le
-résultat vit sur l'appareil.
+DEUX FORMES PARALLÈLES, nivelées (mêmes longueurs de noms, mêmes difficultés),
+la première tirée AU HASARD (contrebalancement), l'autre à la passation suivante.
 """
 
 
@@ -46,159 +44,224 @@ def R(fr, en, es):
 
 
 LITS = ["lit-simple", "lit-double", "lit-queen", "lit-king"]
+# Au cran 1, les cartes : la cible et trois autres de ce groupe — un seul lit
+# « transparent » (queen, king) par forme (tour 1 : « queen » se comprend sans
+# la langue).
+LITS_C1 = ["lit-simple", "lit-double", "lit-appoint", "berceau"]
 
 # ── A · la demande ───────────────────────────────────────────────────────
-# (id, cran, {langue: phrase}, lit, nuits, lit′, nuits′). Au cran 1, les
-# cartes sont les quatre lits, sans nuits (nuits = None).
+# (id, cran, {langue: phrase}, lit, nuits, lit′, nuits′)
 A = {
     1: [
         ("a11", 1, R("Un lit simple, s'il vous plaît.", "A twin bed, please.", "Una cama individual, por favor."), "lit-simple", None, None, None),
-        ("a12", 1, R("Je voudrais un lit king.", "I'd like a king bed.", "Quisiera una cama king size."), "lit-king", None, None, None),
+        ("a12", 1, R("J'aurais besoin d'un lit d'appoint, s'il vous plaît.", "I'd need a rollaway bed, please.", "Necesitaría una cama extra, por favor."), "lit-appoint", None, None, None),
         ("a13", 1, R("Avez-vous une chambre avec un lit double?", "Do you have a room with a double bed?", "¿Tiene una habitación con cama matrimonial?"), "lit-double", None, None, None),
-        ("a14", 1, R("Un lit queen, ce serait parfait.", "A queen bed would be perfect.", "Una cama queen estaría perfecto."), "lit-queen", None, None, None),
-        ("a21", 2, R("Bonsoir, un lit queen pour trois nuits.", "Evening! A queen bed for three nights.", "Buenas noches, cama queen para tres noches."), "lit-queen", 3, "lit-king", 4),
+        ("a14", 1, R("Un lit queen, ce serait parfait.", "A queen bed would be perfect.", "Una cama queen sería perfecta."), "lit-queen", None, None, None),
+        ("a21", 2, R("Bonsoir, un lit queen pour trois nuits.", "Evening! A queen bed for three nights.", "Buenas noches, cama queen para tres noches."), "lit-queen", 3, "lit-king", 2),
         ("a22", 2, R("C'est pour deux nuits, dans un lit simple.", "It's for two nights, in a twin bed.", "Es para dos noches, en cama individual."), "lit-simple", 2, "lit-double", 3),
-        ("a23", 2, R("On reste quatre nuits; un lit king, si possible.", "We're staying four nights; a king bed if possible.", "Nos quedamos cuatro noches; cama king size, si se puede."), "lit-king", 4, "lit-simple", 5),
+        ("a23", 2, R("On reste quatre nuits; un lit king, si possible.", "We're staying four nights; a king bed if possible.", "Nos quedamos cuatro noches; cama king size, si se puede."), "lit-king", 4, "lit-simple", 3),
         ("a24", 2, R("Une nuit, un lit double, c'est tout.", "One night, a double bed, that's all.", "Una noche, cama matrimonial, nada más."), "lit-double", 1, "lit-queen", 2),
-        ("a31", 3, R("J'arrive mardi, je repars jeudi matin. Un lit king.", "I'm arriving Tuesday and leaving Thursday morning. A king bed.", "Llego el martes y me voy el jueves en la mañana. Cama king size."), "lit-king", 2, "lit-queen", 3),
+        ("a31", 3, R("J'arrive mardi, je repars jeudi matin. Un lit king.", "I'm arriving Tuesday and leaving Thursday morning. A king bed.", "Llego el martes y me voy el jueves en la mañana. Cama king size."), "lit-king", 2, "lit-queen", 1),
         ("a32", 3, R("Deux nuits… non, attendez, trois nuits. Avec un lit double.", "Two nights… no, wait, three nights. With a double bed.", "Dos noches… no, espere, tres noches. Con cama matrimonial."), "lit-double", 3, "lit-queen", 2),
-        ("a33", 3, R("Du dix au quinze juillet, un lit queen.", "From July tenth to July fifteenth, a queen bed.", "Del diez al quince de julio, cama queen."), "lit-queen", 5, "lit-king", 6),
+        ("a33", 3, R("Du dix au quinze juillet, un lit queen.", "From July tenth to the fifteenth, a queen bed.", "Del diez al quince de julio, cama queen."), "lit-queen", 5, "lit-king", 6),
         ("a34", 3, R("Un lit double… en fait non, un lit simple : c'est juste pour moi, pour ce soir.", "A double bed… actually no, a twin: it's just me, for tonight.", "Una cama matrimonial… bueno no, individual: es solo para mí, esta noche."), "lit-simple", 1, "lit-double", 2),
     ],
     2: [
         ("a41", 1, R("Un lit double, s'il vous plaît.", "A double bed, please.", "Una cama matrimonial, por favor."), "lit-double", None, None, None),
-        ("a42", 1, R("Je voudrais un lit queen.", "I'd like a queen bed.", "Quisiera una cama queen."), "lit-queen", None, None, None),
+        ("a42", 1, R("Avez-vous un lit de bébé pour la chambre?", "Do you have a crib for the room?", "¿Tiene una cuna para la habitación?"), "berceau", None, None, None),
         ("a43", 1, R("Avez-vous une chambre avec un lit simple?", "Do you have a room with a twin bed?", "¿Tiene una habitación con cama individual?"), "lit-simple", None, None, None),
-        ("a44", 1, R("Un lit king, ce serait parfait.", "A king bed would be perfect.", "Una cama king size estaría perfecto."), "lit-king", None, None, None),
-        ("a51", 2, R("Bonsoir, un lit double pour deux nuits.", "Evening! A double bed for two nights.", "Buenas noches, cama matrimonial para dos noches."), "lit-double", 2, "lit-simple", 3),
+        ("a44", 1, R("Un lit king, ce serait parfait.", "A king bed would be perfect.", "Una cama king size sería perfecta."), "lit-king", None, None, None),
+        ("a51", 2, R("Bonsoir, un lit double pour deux nuits.", "Evening! A double bed for two nights.", "Buenas noches, cama matrimonial para dos noches."), "lit-double", 2, "lit-simple", 1),
         ("a52", 2, R("C'est pour trois nuits, dans un lit king.", "It's for three nights, in a king bed.", "Es para tres noches, en cama king size."), "lit-king", 3, "lit-queen", 4),
         ("a53", 2, R("On reste une nuit; un lit queen, si possible.", "We're staying one night; a queen bed if possible.", "Nos quedamos una noche; cama queen, si se puede."), "lit-queen", 1, "lit-double", 2),
-        ("a54", 2, R("Quatre nuits, un lit simple, c'est tout.", "Four nights, a twin bed, that's all.", "Cuatro noches, cama individual, nada más."), "lit-simple", 4, "lit-king", 5),
-        ("a61", 3, R("J'arrive vendredi, je repars lundi matin. Un lit queen.", "I'm arriving Friday and leaving Monday morning. A queen bed.", "Llego el viernes y me voy el lunes en la mañana. Cama queen."), "lit-queen", 3, "lit-king", 4),
+        ("a54", 2, R("Quatre nuits, un lit simple, c'est tout.", "Four nights, a twin bed, that's all.", "Cuatro noches, cama individual, nada más."), "lit-simple", 4, "lit-king", 3),
+        ("a61", 3, R("J'arrive mercredi, je repars samedi matin. Un lit queen.", "I'm arriving Wednesday and leaving Saturday morning. A queen bed.", "Llego el miércoles y me voy el sábado en la mañana. Cama queen."), "lit-queen", 3, "lit-king", 2),
         ("a62", 3, R("Trois nuits… non, attendez, deux nuits. Avec un lit simple.", "Three nights… no, wait, two nights. With a twin bed.", "Tres noches… no, espere, dos noches. Con cama individual."), "lit-simple", 2, "lit-double", 3),
-        ("a63", 3, R("Du vingt au vingt-quatre août, un lit king.", "From August twentieth to August twenty-fourth, a king bed.", "Del veinte al veinticuatro de agosto, cama king size."), "lit-king", 4, "lit-queen", 5),
+        ("a63", 3, R("Du vingt au vingt-quatre août, un lit king.", "From August twentieth to the twenty-fourth, a king bed.", "Del veinte al veinticuatro de agosto, cama king size."), "lit-king", 4, "lit-queen", 5),
         ("a64", 3, R("Un lit king… en fait non, un lit double : c'est juste pour ce soir.", "A king bed… actually no, a double: it's just for tonight.", "Una cama king size… bueno no, matrimonial: es solo por esta noche."), "lit-double", 1, "lit-king", 2),
     ],
 }
 
-# ── B · au téléphone ─────────────────────────────────────────────────────
-# Crans 1 et 2 : (id, cran, {langue: phrase}, bonne, [voisines]) — choix écrits
-# en chiffres. Cran 3 : un nom épelé (assemblé lettre par lettre), tapé.
+# ── B · au téléphone : trois sous-parties ────────────────────────────────
+# Choix à cocher : (id, sous-partie, {langue: phrase}, bonne, {langue: leurre}).
+# Le leurre est une VRAIE erreur d'oreille dans la langue apprise ; les deux
+# autres choix se fabriquent autour de lui (choix_b), si bien que le vote
+# majoritaire désigne le leurre, jamais la bonne.
 B = {
     1: [
-        ("b11", 1, R("Vous êtes à la chambre deux cent quatorze.", "You're in room two-fourteen.", "Está en la habitación doscientos catorce."), "214", ["241", "204", "314"]),
-        ("b12", 1, R("C'est la chambre cinq cent sept.", "It's room five-oh-seven.", "Es la habitación quinientos siete."), "507", ["570", "705", "517"]),
-        ("b13", 1, R("Votre chambre est la onze cent deux.", "Your room is eleven-oh-two.", "Su habitación es la mil ciento dos."), "1102", ["1120", "2101", "1112"]),
-        ("b14", 1, R("La chambre trois cent dix-huit, au troisième.", "Room three-eighteen, on the third floor.", "La habitación trescientos dieciocho, en el tercer piso."), "318", ["381", "308", "813"]),
-        ("b21", 2, R("Le total est de deux cent trente-neuf dollars.", "Your total is two hundred thirty-nine dollars.", "El total es de doscientos treinta y nueve dólares."), "239 $", ["293 $", "229 $", "139 $"]),
-        ("b22", 2, R("Le déjeuner finit à dix heures et demie.", "Breakfast ends at ten thirty.", "El desayuno termina a las diez y media."), "10:30", ["10:15", "11:30", "22:30"]),
-        ("b23", 2, R("La navette part à dix-sept heures quinze.", "The shuttle leaves at five fifteen p.m.", "La camioneta sale a las cinco y cuarto de la tarde."), "17:15", ["17:50", "7:15", "16:15"]),
-        ("b24", 2, R("Ça fait cent soixante-quinze dollars et quarante.", "That's one seventy-five forty.", "Son ciento setenta y cinco dólares con cuarenta."), "175,40 $", ["175,14 $", "157,40 $", "165,40 $"]),
-        ("b31", 3, "DUMONT"),
-        ("b32", 3, "PATEL"),
-        ("b33", 3, "RODRÍGUEZ"),
-        ("b34", 3, "FORTIN"),
+        ("b11", "numero", R("Vous êtes à la chambre deux cent quatorze.", "You're in room two-fourteen.", "Está en la habitación doscientos catorce."),
+         "214", R("204", "240", "204")),
+        ("b12", "numero", R("C'est la chambre cinq cent sept.", "It's room five-oh-seven.", "Es la habitación quinientos siete."),
+         "507", R("517", "517", "517")),
+        ("b13", "numero", R("Votre chambre, c'est la trois cent dix-huit.", "Your room is three-eighteen.", "Su habitación es la trescientos dieciocho."),
+         "318", R("308", "380", "308")),
+        ("b21", "prix", R("Le total est de deux cent trente-neuf dollars.", "Your total is two hundred thirty-nine dollars.", "El total es de doscientos treinta y nueve dólares."),
+         "239 $", R("229 $", "229 $", "229 $")),
+        ("b22", "prix", R("La navette part à dix-sept heures quinze.", "The shuttle leaves at five fifteen p.m.", "La camioneta sale a las cinco y cuarto de la tarde."),
+         "17:15", R("07:15", "17:50", "05:15")),
+        ("b23", "prix", R("Ça fait cent soixante-quinze dollars quarante.", "That's one seventy-five forty.", "Son ciento setenta y cinco dólares con cuarenta."),
+         "175,40 $", R("175,14 $", "175,14 $", "175,14 $")),
+        ("b31", "nom", "PATEL"),
+        ("b32", "nom", "BARRETT"),
+        ("b33", "nom", "RODRÍGUEZ"),
     ],
     2: [
-        ("b41", 1, R("Vous êtes à la chambre deux cent seize.", "You're in room two-sixteen.", "Está en la habitación doscientos dieciséis."), "216", ["261", "206", "316"]),
-        ("b42", 1, R("C'est la chambre quatre cent neuf.", "It's room four-oh-nine.", "Es la habitación cuatrocientos nueve."), "409", ["490", "904", "419"]),
-        ("b43", 1, R("Votre chambre est la douze cent trois.", "Your room is twelve-oh-three.", "Su habitación es la mil doscientos tres."), "1203", ["1230", "3201", "1213"]),
-        ("b44", 1, R("La chambre sept cent quinze, au septième.", "Room seven-fifteen, on the seventh floor.", "La habitación setecientos quince, en el séptimo piso."), "715", ["751", "705", "515"]),
-        ("b51", 2, R("Le total est de trois cent quarante-huit dollars.", "Your total is three hundred forty-eight dollars.", "El total es de trescientos cuarenta y ocho dólares."), "348 $", ["384 $", "338 $", "248 $"]),
-        ("b52", 2, R("La piscine ouvre à neuf heures et demie.", "The pool opens at nine thirty.", "La alberca abre a las nueve y media."), "9:30", ["9:15", "10:30", "21:30"]),
-        ("b53", 2, R("Le souper est servi à dix-huit heures quarante-cinq.", "Dinner is served at six forty-five p.m.", "La cena se sirve a un cuarto para las siete de la tarde."), "18:45", ["18:15", "6:45", "17:45"]),
-        ("b54", 2, R("Ça fait cent vingt-six dollars et soixante.", "That's one twenty-six sixty.", "Son ciento veintiséis dólares con sesenta."), "126,60 $", ["126,16 $", "162,60 $", "136,60 $"]),
-        ("b61", 3, "LEBLANC"),
-        ("b62", 3, "NAKAMURA"),
-        ("b63", 3, "HERNÁNDEZ"),
-        ("b64", 3, "BOUCHARD"),
+        ("b41", "numero", R("Vous êtes à la chambre deux cent seize.", "You're in room two-sixteen.", "Está en la habitación doscientos dieciséis."),
+         "216", R("206", "260", "206")),
+        ("b42", "numero", R("C'est la chambre quatre cent neuf.", "It's room four-oh-nine.", "Es la habitación cuatrocientos nueve."),
+         "409", R("419", "419", "419")),
+        ("b43", "numero", R("Votre chambre, c'est la sept cent quinze.", "Your room is seven-fifteen.", "Su habitación es la setecientos quince."),
+         "715", R("705", "750", "705")),
+        ("b51", "prix", R("Le total est de trois cent quarante-huit dollars.", "Your total is three hundred forty-eight dollars.", "El total es de trescientos cuarenta y ocho dólares."),
+         "348 $", R("338 $", "338 $", "338 $")),
+        ("b52", "prix", R("Le souper est servi à dix-huit heures quarante-cinq.", "Dinner is served at six forty-five p.m.", "La cena se sirve a un cuarto para las siete de la tarde."),
+         "18:45", R("08:45", "06:45", "19:15")),
+        ("b53", "prix", R("Ça fait cent vingt-six dollars soixante.", "That's one twenty-six sixty.", "Son ciento veintiséis dólares con sesenta."),
+         "126,60 $", R("116,60 $", "126,16 $", "116,60 $")),
+        ("b61", "nom", "MEHTA"),
+        ("b62", "nom", "BENNETT"),
+        ("b63", "nom", "HERNÁNDEZ"),
     ],
 }
+SOUS_B = ["numero", "prix", "nom"]
+
+
+def choix_b(bonne, leurre, ident):
+    """Quatre choix : la bonne, le leurre, et deux variantes DU LEURRE qui
+    changent chacune un chiffre là où la bonne ne diffère pas du leurre. Le
+    leurre est le centre : c'est lui que désigne le vote majoritaire. Tirage
+    déterministe (sur l'identifiant), pour que les formes restent fixes ; une
+    heure produite doit rester une heure (HH < 24, MM < 60)."""
+    import random
+    rnd = random.Random(ident)
+    pos_b = [k for k, (x, y) in enumerate(zip(bonne, leurre)) if x != y]
+    chiffres = [k for k, c in enumerate(leurre) if c.isdigit() and k not in pos_b]
+
+    def valide(v):
+        if ":" in v:
+            h, m = v.split(":")
+            return int(h) < 24 and int(m) < 60
+        return not v.startswith("0")
+
+    out, essais = [], 0
+    while len(out) < 2 and essais < 500:
+        essais += 1
+        k = rnd.choice(chiffres)
+        v = list(leurre)
+        v[k] = rnd.choice([d for d in "0123456789" if d != leurre[k]])
+        v = "".join(v)
+        if v not in out and v not in (bonne, leurre) and valide(v):
+            out.append(v)
+    return [bonne, leurre] + out
+
+
+def vote_majoritaire(choix):
+    """La chaîne qu'on obtient en gardant, position par position, le caractère
+    le plus fréquent — la ruse que l'audit a jouée (16 sur 16)."""
+    from collections import Counter
+    L = max(len(c) for c in choix)
+    return "".join(Counter(c[k] for c in choix if k < len(c)).most_common(1)[0][0] for k in range(L))
+
 
 # ── C · qui décide? ──────────────────────────────────────────────────────
-# (id, {langue: demande du client}, réponse juste parmi CHOIX_C). Se charger
-# SOI-MÊME d'un item « gerant » ou « personne » est une promesse : la partie
-# échoue, quel que soit le compte (O4, éliminatoire, annoncé avant).
+# (id, {interface: contexte} ou None, {langue: demande}, réponse juste). Les
+# réponses « moi » sont de VRAIES décisions de l'employé ; deux « personne »
+# par forme.
 CHOIX_C = {
-    "moi": R("Je m'en occupe moi-même", "I handle it myself", "Me encargo yo mismo"),
-    "gerant": R("Je transmets au gérant", "I pass it to the manager", "Se lo paso al gerente"),
-    "personne": R("Personne ne peut le promettre : je l'explique poliment",
-                  "No one can promise that: I explain it politely",
-                  "Nadie puede prometerlo: lo explico con cortesía"),
+    "moi": R("Je le fais moi-même", "I do it myself", "Lo hago yo mismo"),
+    "gerant": R("Je transmets au gérant, sans rien promettre", "I pass it to the manager, promising nothing", "Se lo paso al gerente, sin prometer nada"),
+    "personne": R("Je refuse poliment : personne ne peut l'accorder", "I decline politely: no one can grant that", "Me niego con cortesía: nadie puede concederlo"),
 }
 C = {
     1: [
-        ("c1", R("Ma carte-clé ne marche plus.", "My key card stopped working.", "Mi tarjeta llave ya no funciona."), "moi"),
-        ("c2", R("Vous pouvez me faire un prix, pour trois nuits?", "Could you give me a better rate for three nights?", "¿Me puede hacer un descuento por tres noches?"), "gerant"),
-        ("c3", R("C'est quoi, le mot de passe du wifi?", "What's the Wi-Fi password?", "¿Cuál es la contraseña del wifi?"), "moi"),
-        ("c4", R("Le bruit m'a empêché de dormir; je veux un rabais sur ma facture.", "The noise kept me up; I want a discount on my bill.", "El ruido no me dejó dormir; quiero un descuento en mi cuenta."), "gerant"),
-        ("c5", R("Pouvez-vous enlever les taxes de ma facture?", "Can you take the taxes off my bill?", "¿Me puede quitar los impuestos de la cuenta?"), "personne"),
-        ("c6", R("Je peux garder la chambre jusqu'à dix-huit heures, sans frais?", "Can I keep the room until six p.m. at no charge?", "¿Puedo quedarme en la habitación hasta las seis de la tarde sin costo?"), "gerant"),
+        ("c1", None, R("Pouvez-vous m'expliquer les dix dollars de wifi sur ma facture?", "Can you explain the ten dollars for Wi-Fi on my bill?", "¿Me puede explicar los diez dólares de wifi en mi cuenta?"), "moi"),
+        ("c2", None, R("Mon souper au restaurant de l'hôtel était froid; je veux être remboursé.", "My dinner at the hotel restaurant was cold; I want a refund.", "Mi cena en el restaurante del hotel estaba fría; quiero un reembolso."), "gerant"),
+        ("c3", None, R("La réservation est au nom de mon mari, Tanguay. Pouvez-vous la trouver?", "The reservation is under my husband's name, Tanguay. Can you find it?", "La reservación está a nombre de mi esposo, Tanguay. ¿La puede encontrar?"), "moi"),
+        ("c4", None, R("On arrive à huit heures du matin. La chambre peut-elle être prête sans frais?", "We're arriving at eight a.m. Can the room be ready at no charge?", "Llegamos a las ocho de la mañana. ¿Puede estar lista la habitación sin costo?"), "gerant"),
+        ("c5", None, R("Faites-moi une facture au nom de ma compagnie, mais avec une autre date.", "Make me a receipt in my company's name, but with a different date.", "Hágame una factura a nombre de mi empresa, pero con otra fecha."), "personne"),
+        ("c6", R("L'hôtel est entièrement non-fumeur.", "The whole hotel is non-smoking.", "Todo el hotel es de no fumar."),
+         R("Je voudrais une chambre où je peux fumer.", "I'd like a room where I can smoke.", "Quisiera una habitación donde se pueda fumar."), "personne"),
     ],
     2: [
-        ("c7", R("Il n'y a plus de serviettes dans ma chambre.", "There are no more towels in my room.", "Ya no hay toallas en mi habitación."), "moi"),
-        ("c8", R("Vous pourriez nous offrir le déjeuner? C'est notre anniversaire.", "Could you give us free breakfast? It's our anniversary.", "¿Nos podría regalar el desayuno? Es nuestro aniversario."), "gerant"),
-        ("c9", R("À quelle heure est le départ?", "What time is check-out?", "¿A qué hora es la salida?"), "moi"),
-        ("c10", R("Je veux annuler sans payer les frais, même si c'est trop tard.", "I want to cancel without paying the fee, even if it's too late.", "Quiero cancelar sin pagar el cargo, aunque sea tarde."), "gerant"),
-        ("c11", R("Vous êtes complets? Donnez-moi une chambre quand même!", "You're full? Give me a room anyway!", "¿Están llenos? ¡Deme una habitación de todos modos!"), "personne"),
-        ("c12", R("Je voudrais un surclassement gratuit, s'il vous plaît.", "I'd like a free upgrade, please.", "Quisiera un upgrade sin costo, por favor."), "gerant"),
+        ("c7", None, R("Pouvez-vous m'expliquer les vingt dollars pour le chien?", "Can you explain the twenty dollars for the dog?", "¿Me puede explicar los veinte dólares por el perro?"), "moi"),
+        ("c8", None, R("Le lit d'appoint était brisé; je ne veux pas le payer.", "The rollaway bed was broken; I don't want to pay for it.", "La cama extra estaba rota; no la quiero pagar."), "gerant"),
+        ("c9", None, R("Je voudrais changer pour une chambre à deux lits. Il vous en reste?", "I'd like to switch to a room with two beds. Do you have any left?", "Quisiera cambiarme a una habitación con dos camas. ¿Le quedan?"), "moi"),
+        ("c10", None, R("On part un jour plus tôt. Pouvez-vous rembourser la dernière nuit?", "We're leaving a day early. Can you refund the last night?", "Nos vamos un día antes. ¿Me puede reembolsar la última noche?"), "gerant"),
+        ("c11", None, R("Pouvez-vous écrire sur la facture que j'ai payé comptant? J'ai payé par carte.", "Can you write on the bill that I paid cash? I paid by card.", "¿Puede poner en la cuenta que pagué en efectivo? Pagué con tarjeta."), "personne"),
+        ("c12", R("Le stationnement est complet ce soir.", "The parking lot is full tonight.", "El estacionamiento está lleno esta noche."),
+         R("Réservez-moi une place de stationnement quand même.", "Book me a parking spot anyway.", "Apárteme un lugar de estacionamiento de todos modos."), "personne"),
     ],
 }
 
-# ── D · répondre à voix haute ────────────────────────────────────────────
-# (id, {interface: contexte} ou None, {apprise: phrase du client}, geste
-# {interface}, {apprise: exemple de réponse}). La clé et l'exemple ne
-# s'affichent qu'au formateur (code).
+# ── D · répondre à voix haute : cinq gestes ──────────────────────────────
+# (id, {interface: contexte} ou None, {apprise: phrase du client}, geste,
+# {apprise: exemple de réponse}). L'exemple ne s'affiche qu'au formateur, et
+# n'est la réplique d'aucun exercice.
 GESTES = {
     "epeler": R("Accueillir et faire épeler le nom", "Greet and have the name spelled", "Recibir y pedir que deletree el apellido"),
     "refuser": R("Refuser poliment et proposer une solution", "Decline politely and offer a solution", "Rechazar con cortesía y ofrecer una solución"),
     "frais": R("Expliquer les frais", "Explain the charge", "Explicar el cargo"),
     "relais": R("Passer le relais au gérant, sans promettre", "Hand it to the manager, without promising", "Pasarlo al gerente, sin prometer"),
+    "confirmer": R("Confirmer en redisant la demande", "Confirm by restating the request", "Confirmar repitiendo la solicitud"),
 }
 D = {
     1: [
-        ("d1", None, R("Bonjour! J'ai réservé une chambre au nom de Vasquez.", "Hi! I booked a room under Vasquez.", "¡Hola! Reservé una habitación a nombre de Vásquez."), "epeler",
-         R("Bienvenue! Pouvez-vous m'épeler votre nom de famille?", "Welcome! Could you spell your last name, please?", "¡Bienvenido! ¿Me puede deletrear su apellido?")),
-        ("d2", R("L'hôtel est complet ce soir.", "The hotel is fully booked tonight.", "El hotel está lleno esta noche."),
-         R("Il vous reste une chambre pour ce soir?", "Do you have a room left for tonight?", "¿Le queda una habitación para esta noche?"), "refuser",
-         R("Je suis désolé, nous sommes complets. Je peux appeler un hôtel voisin pour vous.", "I'm sorry, we're fully booked. I can call a nearby hotel for you.", "Lo siento, estamos llenos. Le puedo llamar a un hotel cercano.")),
-        ("d3", R("Le client a pris deux consommations au minibar : 25 $.", "The guest took two items from the minibar: $25.", "El cliente tomó dos cosas del frigobar: 25 dólares."),
-         R("Pourquoi il y a vingt-cinq dollars de plus sur ma facture?", "Why is there an extra twenty-five dollars on my bill?", "¿Por qué hay veinticinco dólares más en mi cuenta?"), "frais",
-         R("Ce sont les deux consommations du minibar, vingt-cinq dollars en tout.", "Those are the two minibar items, twenty-five dollars in total.", "Son las dos cosas del frigobar, veinticinco dólares en total.")),
-        ("d4", None, R("Je veux partir sans payer la dernière nuit : la climatisation ne marchait pas.", "I want to leave without paying for the last night: the A/C didn't work.", "Me quiero ir sin pagar la última noche: el aire acondicionado no funcionaba."), "relais",
-         R("Je suis désolé. Je ne peux pas le décider moi-même : j'en parle au gérant tout de suite.", "I'm sorry. I can't decide that myself: I'll speak to the manager right away.", "Lo siento. No puedo decidirlo yo: lo hablo con el gerente ahora mismo.")),
+        ("d1", None, R("Bonsoir, j'ai une réservation; c'est Ouellette.", "Good evening, I have a reservation; it's Ouellette.", "Buenas noches, tengo una reservación; es Ouellette."), "epeler",
+         R("Bonsoir! Pouvez-vous me l'épeler, s'il vous plaît?", "Good evening! Could you spell that for me, please?", "¡Buenas noches! ¿Me lo puede deletrear, por favor?")),
+        ("d2", R("La navette va seulement à l'aéroport.", "The shuttle only goes to the airport.", "La camioneta solo va al aeropuerto."),
+         R("Est-ce que la navette peut nous amener au centre-ville?", "Can the shuttle take us downtown?", "¿La camioneta nos puede llevar al centro?"), "refuser",
+         R("Désolé, la navette va seulement à l'aéroport. Je peux vous appeler un taxi.", "Sorry, the shuttle only goes to the airport. I can call you a cab.", "Lo siento, la camioneta solo va al aeropuerto. Le puedo llamar un taxi.")),
+        ("d3", R("Lit d'appoint : 15 $ par nuit, pendant deux nuits.", "Rollaway bed: $15 a night, for two nights.", "Cama extra: 15 dólares por noche, por dos noches."),
+         R("C'est quoi, ces trente dollars?", "What's this thirty dollars?", "¿Qué son estos treinta dólares?"), "frais",
+         R("C'est le lit d'appoint : quinze dollars par nuit, pour deux nuits.", "That's the rollaway bed: fifteen dollars a night, for two nights.", "Es la cama extra: quince dólares por noche, por dos noches.")),
+        ("d4", None, R("Le déjeuner était froid; je veux être remboursé.", "Breakfast was cold; I want my money back.", "El desayuno estaba frío; quiero que me devuelvan el dinero."), "relais",
+         R("Désolé pour le déjeuner. Je ne peux pas décider d'un remboursement : j'en parle au gérant.", "Sorry about breakfast. I can't decide on a refund: I'll talk to the manager.", "Lamento lo del desayuno. No puedo decidir un reembolso: lo hablo con el gerente.")),
+        ("d5", None, R("Je voudrais une chambre pour trois nuits, à partir de jeudi.", "I'd like a room for three nights, starting Thursday.", "Quisiera una habitación por tres noches, a partir del jueves."), "confirmer",
+         R("Trois nuits, du jeudi au dimanche : c'est bien ça?", "Three nights, Thursday to Sunday: is that right?", "Tres noches, del jueves al domingo: ¿es correcto?")),
     ],
     2: [
-        ("d5", None, R("Bonsoir, la réservation est au nom de Kowalczyk.", "Good evening, the reservation is under Kowalczyk.", "Buenas noches, la reservación está a nombre de Kowalczyk."), "epeler",
-         R("Bonsoir, bienvenue! Pouvez-vous m'épeler ce nom, s'il vous plaît?", "Good evening, welcome! Could you spell that name for me, please?", "¡Buenas noches, bienvenido! ¿Me puede deletrear el apellido, por favor?")),
-        ("d6", R("L'hôtel est complet ce soir.", "The hotel is fully booked tonight.", "El hotel está lleno esta noche."),
-         R("On aurait besoin de deux chambres pour ce soir.", "We'd need two rooms for tonight.", "Necesitaríamos dos habitaciones para esta noche."), "refuser",
-         R("Je suis désolé, c'est complet ce soir. Voulez-vous que j'appelle un autre hôtel?", "I'm sorry, we're full tonight. Would you like me to call another hotel?", "Lo siento, estamos llenos esta noche. ¿Quiere que llame a otro hotel?")),
-        ("d7", R("Deux nuits de stationnement, à 20 $ la nuit.", "Two nights of parking, $20 a night.", "Dos noches de estacionamiento, a 20 dólares la noche."),
-         R("C'est quoi, ces quarante dollars?", "What's this forty dollars?", "¿Qué son estos cuarenta dólares?"), "frais",
-         R("C'est le stationnement : deux nuits à vingt dollars.", "That's the parking: two nights at twenty dollars.", "Es el estacionamiento: dos noches a veinte dólares.")),
-        ("d8", None, R("Je voudrais que vous enleviez les frais d'annulation, s'il vous plaît.", "I'd like you to waive the cancellation fee, please.", "Quisiera que me quitara el cargo de cancelación, por favor."), "relais",
-         R("Je comprends. Je ne peux pas le faire moi-même; je transmets votre demande au gérant.", "I understand. I can't do that myself; I'll pass your request to the manager.", "Entiendo. Yo no puedo hacerlo; le paso su solicitud al gerente.")),
+        ("d6", None, R("Bonjour, c'est au nom de Nkemelu.", "Hello, it's under Nkemelu.", "Buenos días, está a nombre de Nkemelu."), "epeler",
+         R("Bonjour! Pouvez-vous m'épeler le nom, s'il vous plaît?", "Hello! Could you spell the name for me, please?", "¡Buenos días! ¿Me deletrea el apellido, por favor?")),
+        ("d7", R("L'hôtel est entièrement non-fumeur.", "The whole hotel is non-smoking.", "Todo el hotel es de no fumar."),
+         R("On peut fumer sur le balcon de la chambre?", "Can we smoke on the room's balcony?", "¿Se puede fumar en el balcón de la habitación?"), "refuser",
+         R("Désolé, tout l'hôtel est non-fumeur, balcons compris. Il y a un espace à l'extérieur.", "Sorry, the whole hotel is non-smoking, balconies included. There's an area outside.", "Lo siento, todo el hotel es de no fumar, balcones incluidos. Hay un área afuera.")),
+        ("d8", R("Coffre-fort : 5 $ par nuit, pendant quatre nuits.", "In-room safe: $5 a night, for four nights.", "Caja fuerte: 5 dólares por noche, por cuatro noches."),
+         R("C'est quoi, ces vingt dollars?", "What's this twenty dollars?", "¿Qué son estos veinte dólares?"), "frais",
+         R("C'est le coffre-fort : cinq dollars par nuit, pour quatre nuits.", "That's the safe: five dollars a night, for four nights.", "Es la caja fuerte: cinco dólares por noche, por cuatro noches.")),
+        ("d9", None, R("On part un jour plus tôt; remboursez-moi la dernière nuit.", "We're leaving a day early; refund me the last night.", "Nos vamos un día antes; devuélvame la última noche."), "relais",
+         R("Je comprends. Je ne peux pas le décider moi-même; je transmets votre demande au gérant.", "I understand. I can't decide that myself; I'll pass your request to the manager.", "Entiendo. No puedo decidirlo yo; le paso su solicitud al gerente.")),
+        ("d10", None, R("Deux personnes, deux nuits, à partir du douze.", "Two people, two nights, starting on the twelfth.", "Dos personas, dos noches, a partir del doce."), "confirmer",
+         R("Deux personnes, deux nuits, du 12 au 14 : c'est exact?", "Two people, two nights, the 12th to the 14th: is that correct?", "Dos personas, dos noches, del 12 al 14: ¿es correcto?")),
     ],
 }
 
-# La clé du formateur : ni l'exemple ni le geste ne s'affichent à l'employé.
+# La grille du formateur, sur DEUX lignes par item (tour 1 : trois cases sans
+# critère de langue). Un geste « autre, acceptable » compte comme fait.
+ORAL_GESTE = R("Geste fait|Autre geste acceptable|Promesse|Rien",
+               "Gesture done|Other acceptable gesture|Promise|Nothing",
+               "Gesto hecho|Otro gesto aceptable|Promesa|Nada")
+ORAL_LANGUE = R("Formule attendue|Compréhensible|Incompréhensible",
+                "Expected phrasing|Understandable|Not understandable",
+                "Fórmula esperada|Comprensible|Incomprensible")
 CODE_FORMATEUR = "2413"
-ORAL = R("A fait le geste|A deviné ou promis|Pas de réponse",
-         "Did the gesture|Guessed or promised|No answer",
-         "Hizo el gesto|Adivinó o prometió|Sin respuesta")
 
-# ── Les seuils (objectif atteint) et le palier ───────────────────────────
-#   A · cran 3 — la demande, dates et reprises comprises (O1)
-#   B · cran 3 — le nom épelé au téléphone (O2)
-#   C · 5 sur 6, et aucune promesse (O4)
-SEUILS = {"A": 3, "B": 3, "C": 5}
-# Le palier, sur A + B (0 à 6), écrit ici en données, appliqué une seule fois :
-#   A + B <= DEBUTANT_MAX ou A == 0              → débutant
-#   A + B >= AISE_MIN et C réussie (sans promesse) → à l'aise
-#   sinon                                         → fonctionnel
-DEBUTANT_MAX, AISE_MIN = 2, 5
+# ── Le palier, en données, appliqué une seule fois ───────────────────────
+#   s = A (0-3) + B (sous-parties réussies, 2 sur 3 ou mieux : 0-3)
+#   s <= DEBUTANT_MAX ou A == 0                                → débutant
+#   s >= AISE_MIN et C réussie et (oral pas noté, ou ≥ ORAL_AISE gestes faits
+#                                   sans promesse)             → à l'aise
+#   sinon                                                       → fonctionnel
+# Le formateur note l'oral ; le palier se recalcule sous ses yeux.
+DEBUTANT_MAX, AISE_MIN, ORAL_AISE = 2, 5, 3
+C_SEUIL = 5
 PALIERS = ["debutant", "fonctionnel", "aise"]
+# Les seuils du cadrage, CITÉS à l'écran : le test ne les mesure pas.
+CADRAGE = R("Le test situe le niveau ; il ne vérifie pas les seuils du cadrage (7 demandes sur 8, 5 noms de suite, "
+            "6 situations sur 8), qui se vérifient au comptoir joué.",
+            "The test places your level; it doesn't check the course targets (7 requests out of 8, 5 names in a row, "
+            "6 situations out of 8), which are checked in the desk role-play.",
+            "La prueba ubica su nivel; no verifica las metas del curso (7 solicitudes de 8, 5 apellidos seguidos, "
+            "6 situaciones de 8), que se verifican en el mostrador simulado.")
 
 # ── Les textes de l'écran du test, trois fois ────────────────────────────
 UI = {
@@ -212,12 +275,12 @@ UI = {
                     "The questions adjust: if it gets too hard, the part stops by itself.",
                     "Cuatro partes, en el idioma que aprende. No hay verde ni rojo: no es un examen. "
                     "Las preguntas se ajustan: si es demasiado difícil, la parte se detiene sola."),
-    "regle_c": R("À savoir avant de commencer : dans la partie C, vous charger vous-même de ce qui revient au gérant "
-                 "(un rabais, une exception, un service gratuit) fait échouer la partie, comme au comptoir.",
-                 "Know this before you start: in part C, handling yourself what belongs to the manager "
-                 "(a discount, an exception, anything free) fails the part, just like at the desk.",
-                 "Antes de empezar: en la parte C, encargarse usted mismo de lo que le toca al gerente "
-                 "(un descuento, una excepción, algo gratis) hace fallar la parte, como en el mostrador."),
+    "regle_c": R("À savoir avant de commencer : dans la partie C, accorder vous-même ce qui revient au gérant, "
+                 "ou ce que personne ne peut accorder, fait échouer la partie — comme au comptoir.",
+                 "Know this before you start: in part C, granting yourself what belongs to the manager, "
+                 "or what no one can grant, fails the part — just like at the desk.",
+                 "Antes de empezar: en la parte C, conceder usted mismo lo que le toca al gerente, "
+                 "o lo que nadie puede conceder, hace fallar la parte, como en el mostrador."),
     "passation": R("Passation", "Attempt", "Intento"),
     "forme": R("forme", "form", "forma"),
     "commencer_test": R("Commencer le test", "Start the test", "Empezar la prueba"),
@@ -225,7 +288,19 @@ UI = {
     "pA": R("Ce que le client demande", "What the guest asks for", "Lo que pide el cliente"),
     "pA_c": R("Écoutez le client. Touchez la chambre qu'il demande.", "Listen to the guest. Tap the room they ask for.", "Escuche al cliente. Toque la habitación que pide."),
     "pB": R("Au téléphone", "On the phone", "Por teléfono"),
-    "pB_c": R("Écoutez, puis touchez ce que vous devez noter.", "Listen, then tap what you need to write down.", "Escuche y toque lo que debe anotar."),
+    "pB_c": R("Écoutez, puis touchez ce que vous devez noter. On note l'heure sur 24 heures (17:15) et le prix avec une virgule (175,40 $).",
+              "Listen, then tap what you need to write down. Times go on the 24-hour clock (17:15), prices with a comma (175,40 $).",
+              "Escuche y toque lo que debe anotar. La hora se anota en 24 horas (17:15) y el precio con coma (175,40 $)."),
+    "b_numero": R("Numéros de chambre", "Room numbers", "Números de habitación"),
+    "b_prix": R("Prix et heures", "Prices and times", "Precios y horas"),
+    "b_nom": R("Noms épelés", "Spelled names", "Apellidos deletreados"),
+    "une_reecoute": R("Une seule réécoute, comme au comptoir.", "Only one replay, like at the desk.", "Solo se puede volver a escuchar una vez, como en el mostrador."),
+    "bonnes": R("bonnes sur", "right out of", "correctas de"),
+    "c_vise": R("visé : 5, sans promesse", "target: 5, with no promise", "meta: 5, sin promesas"),
+    "ligne_geste": R("Le geste", "The gesture", "El gesto"),
+    "ligne_langue": R("La langue", "The language", "El idioma"),
+    "palier_oral": R("Le niveau tient compte de l'oral dès que le formateur l'a noté.", "The level includes the oral part once the trainer has rated it.", "El nivel toma en cuenta la parte oral en cuanto el formador la califica."),
+    "reprise": R("Résultats de la dernière passation, pas encore confirmés par le formateur.", "Results of the last attempt, not yet confirmed by the trainer.", "Resultados del último intento, aún sin confirmar por el formador."),
     "pB_nom": R("Le client épelle son nom. Tapez-le.", "The guest spells their name. Type it.", "El cliente deletrea su apellido. Escríbalo."),
     "pC": R("Qui décide?", "Who decides?", "¿Quién decide?"),
     "pC_c": R("Écoutez le client. Que faites-vous?", "Listen to the guest. What do you do?", "Escuche al cliente. ¿Qué hace?"),

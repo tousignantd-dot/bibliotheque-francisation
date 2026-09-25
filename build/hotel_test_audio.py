@@ -46,11 +46,11 @@ def taches():
             for l in L:
                 yield DEST / "a" / l / f"{i}.mp3", l, dit[l], voix(l, i), "+10%", False, True
         for item in T.B[forme]:
-            if item[1] < 3:
+            if item[1] != "nom":
                 i, _, dit = item[:3]
                 for l in L:
                     yield DEST / "b" / l / f"{i}.mp3", l, dit[l], voix(l, i), "0%", True, True
-        for i, dit, _ in T.C[forme]:
+        for i, _, dit, _ in T.C[forme]:
             for l in L:
                 yield DEST / "c" / l / f"{i}.mp3", l, dit[l], voix(l, i), "0%", False, True
         for i, _, dit, _, _ in T.D[forme]:
@@ -79,7 +79,7 @@ if __name__ == "__main__":
     # Les noms épelés du cran 3 de B : assemblés, puis filtrés (téléphone).
     for forme in (1, 2):
         for item in T.B[forme]:
-            if item[1] == 3:
+            if item[1] == "nom":
                 i, _, nom = item
                 for l in L:
                     dest = DEST / "b" / l / f"{i}.mp3"

@@ -27,7 +27,7 @@ RACINE = pathlib.Path(__file__).resolve().parent.parent
 CONTENU = RACINE / "build" / "contenu" / "entreprise-hotel"
 CROQUIS = RACINE / "assets" / "interactive" / "hotel" / "croquis"
 SORTIE = RACINE / "modules-autonomes" / "hotel-reception" / "index.html"
-MEDIA_V = "6"   # 6 : le test (étape 3), 25 sept. 2026
+MEDIA_V = "7"   # 7 : révision du test (tour 1 de son audit), 25 sept. 2026
 
 
 def _charger(nom):
@@ -79,20 +79,40 @@ def donnees():
           "erreurs": EX.ERREURS_NOMBRES, "lits": EX.LITS, "demandes": EX.DEMANDES, "nuits": EX.NUITS,
           "reponses": EX.REPONSES, "regle": EX.REGLE_RELAIS, "promesse": EX.PROMESSE,
           "jamais": [sorted(g) for g in EX.JAMAIS_ENSEMBLE]}
-    # Le test : quatre items par cran, cartes de A en carré latin (valeurs distinctes).
+    # Le test (révisé au tour 1 de son audit) : A adaptatif à 4 items par cran,
+    # carré latin, nuits′ tantôt −1 tantôt +1 ; B en trois sous-parties dont les
+    # choix sont construits autour d'un LEURRE — le vote majoritaire ne doit
+    # JAMAIS désigner la bonne réponse.
+    lex = {m["id"] for m in mots}
+    bx = {}
     for forme in (1, 2):
-        for part in ("A", "B"):
-            src = getattr(TS, part)[forme]
-            for cran in (1, 2, 3):
-                assert sum(x[1] == cran for x in src) == 4, f"{part}{forme} cran {cran} : quatre items"
+        for cran in (1, 2, 3):
+            assert sum(x[1] == cran for x in TS.A[forme]) == 4, f"A{forme} cran {cran} : quatre items"
+        ecarts = []
         for i, cran, dit, lit, n, lit2, n2 in TS.A[forme]:
-            assert lit in TS.LITS and set(dit) == {"fr", "en", "es"}
+            assert lit in lex and set(dit) == {"fr", "en", "es"}, i
             if cran > 1:
-                assert lit2 in TS.LITS and lit2 != lit and n2 != n, f"{i} : carré latin"
-        assert len(TS.C[forme]) == 6 and len(TS.D[forme]) == 4
-    test = {"A": TS.A, "B": TS.B, "C": TS.C, "D": TS.D, "lits": TS.LITS, "choix_c": TS.CHOIX_C,
-            "gestes": TS.GESTES, "code": TS.CODE_FORMATEUR, "oral": TS.ORAL, "seuils": TS.SEUILS,
-            "debutant_max": TS.DEBUTANT_MAX, "aise_min": TS.AISE_MIN, "paliers": TS.PALIERS, "ui": TS.UI}
+                assert lit2 in TS.LITS and lit2 != lit and n2 != n and n2 >= 1, f"{i} : carré latin"
+                ecarts.append(n2 - n)
+        assert ecarts.count(-1) >= 3 and ecarts.count(1) >= 3, f"A{forme} : nuits′ déséquilibrées {ecarts}"
+        bx[forme] = []
+        for it in TS.B[forme]:
+            if it[1] == "nom":
+                bx[forme].append(list(it)); continue
+            i, sous, dit, bonne, leurre = it
+            ch = {l: TS.choix_b(bonne, leurre[l], i + l) for l in ("fr", "en", "es")}
+            for l, c in ch.items():
+                assert len(set(c)) == 4 and len({len(x) for x in c}) == 1, f"{i}/{l} : {c}"
+                assert TS.vote_majoritaire(c) != bonne, f"{i}/{l} : la majorité désigne la bonne"
+            bx[forme].append([i, sous, bonne, ch])
+        assert len(TS.C[forme]) == 6 and sum(x[3] == "personne" for x in TS.C[forme]) == 2
+        assert len(TS.D[forme]) == 5
+    assert [len(x[2]) for x in TS.B[1] if x[1] == "nom"] == [len(x[2]) for x in TS.B[2] if x[1] == "nom"], "noms nivelés"
+    test = {"A": TS.A, "B": bx, "C": TS.C, "D": TS.D, "lits": TS.LITS, "lits_c1": TS.LITS_C1,
+            "sous_b": TS.SOUS_B, "choix_c": TS.CHOIX_C, "gestes": TS.GESTES, "code": TS.CODE_FORMATEUR,
+            "oral_geste": TS.ORAL_GESTE, "oral_langue": TS.ORAL_LANGUE, "c_seuil": TS.C_SEUIL,
+            "debutant_max": TS.DEBUTANT_MAX, "aise_min": TS.AISE_MIN, "oral_aise": TS.ORAL_AISE,
+            "paliers": TS.PALIERS, "cadrage": TS.CADRAGE, "ui": TS.UI}
     return {"hotel": IF.HOTEL, "ui": {**IF.UI, **EX.UI}, "ex": ex, "test": test, "langues": IF.NOM_LANGUE, "desc": IF.DESCRIPTEUR,
             "planches": [[k, IF.PLANCHES[k]] for k, _ in LX.PLANCHES],
             "mots": mots, "zones": CP.ZONES, "v": MEDIA_V}
@@ -247,6 +267,7 @@ body{margin:0;background:var(--surface-page);color:var(--text-body);font-family:
 .ok-txt{color:var(--ok-ink);font-weight:800}.ko-txt{color:var(--warn-ink);font-weight:800}
 .palier{display:flex;flex-direction:column;gap:2px;background:var(--accent-soft);border-radius:12px;padding:12px 14px;max-width:640px}
 .palier b{font-size:24px;color:var(--text-strong)}
+.palier small{color:var(--text-muted)}
 .formateur{margin-top:18px;max-width:720px;border:1px solid var(--line-300);border-radius:12px;padding:10px 14px;background:var(--surface-card)}
 .formateur summary{cursor:pointer;font-weight:800;min-height:32px}
 .oral{border-top:1px solid var(--line-200);padding:10px 0}
@@ -623,90 +644,140 @@ function verifierNom(){
 function suivant(){ X.i++; X.essais = 0; X.resolu = false; rendre(); setTimeout(() => jouerItem(false), 150); }
 
 // ── Le test de positionnement (étape 3) ──────────────────────────────────
-// Adaptatif pour A et B (3 justes montent d'un cran, 2 erreurs arrêtent),
-// aucune rétroaction, deux formes qui alternent d'une passation à l'autre.
-// La règle du palier est dans test.py, en données ; appliquée ICI seulement.
+// A adaptatif (3 justes montent, 2 erreurs arrêtent) ; B en trois sous-parties
+// passées par tous ; C éliminatoire, règle entière affichée avant ; D noté par
+// le formateur sur deux lignes. Aucune rétroaction. La règle du palier vit dans
+// test.py, en données ; appliquée ICI seulement (palierDe).
 const CLE_TEST = () => `hotel-test-${L.parle}-${L.apprend}`;
 const histo = () => { try { return JSON.parse(localStorage.getItem(CLE_TEST()) || '[]'); } catch (e) { return []; } };
 const garderHisto = h => { try { localStorage.setItem(CLE_TEST(), JSON.stringify(h)); } catch (e) {} };
 const TT = k => D.test.ui[k][L.parle];
 let TX = null, micro = null;
+
+// L'oral se garde dans IndexedDB jusqu'à la confirmation du formateur (tour 1 :
+// il ne vivait qu'en mémoire et se perdait au rechargement).
+function idb(){ return new Promise((ok, ko) => { try { const r = indexedDB.open('hotel-test', 1);
+  r.onupgradeneeded = () => r.result.createObjectStore('oral'); r.onsuccess = () => ok(r.result); r.onerror = () => ko(r.error); } catch (e) { ko(e); } }); }
+async function oralPut(k, blob){ try { const db = await idb(); db.transaction('oral', 'readwrite').objectStore('oral').put(blob, k); } catch (e) {} }
+async function oralGet(k){ try { const db = await idb(); return await new Promise(ok => { const r = db.transaction('oral').objectStore('oral').get(k); r.onsuccess = () => ok(r.result); r.onerror = () => ok(null); }); } catch (e) { return null; } }
+const cleOral = (n, id) => `${CLE_TEST()}:${n}:${id}`;
+
 function nouveauTest(){
-  TX = {forme: histo().length % 2 + 1, part: 'intro', cran: 1, bons: 0, err: 0, idx: 0, ordre: null,
-        niv: {A: 0, B: 0}, c: {i: 0, ok: 0, promesse: false}, d: {i: 0, enreg: {}},
+  const h = histo();
+  // Contrebalancement : la première forme au hasard, puis on alterne (tour 1).
+  const forme = h.length ? 3 - h[h.length - 1].forme : (Math.random() < .5 ? 1 : 2);
+  TX = {n: h.length + 1, forme, part: 'intro', cran: 1, bons: 0, err: 0, idx: 0, ordre: null, ecoutes: 0, rejoue: false,
+        niv: {A: 0}, b: {i: 0, numero: 0, prix: 0, nom: 0}, c: {i: -1, ok: 0, promesse: false}, d: {i: 0, enreg: {}},
         oral: {}, formateur: false, codeFaux: false};
 }
-const cranItems = p => (p === 'A' ? D.test.A : D.test.B)[TX.forme].filter(x => x[1] === TX.cran);
-function debutPartie(p){ Object.assign(TX, {part: p, cran: 1, bons: 0, err: 0, idx: 0, ordre: null}); }
+function reprendre(){
+  // Au rechargement, une passation non confirmée rouvre SES résultats.
+  const h = histo(), e = h[h.length - 1];
+  if (!e || e.confirme) return false;
+  TX = {n: h.length, forme: e.forme, part: 'fin', niv: {A: e.A}, b: e.B, c: {ok: e.C, promesse: e.promesse},
+        d: {enreg: {}}, oral: e.oral || {}, formateur: false, codeFaux: false, repris: true};
+  D.test.D[e.forme].forEach(async ([id]) => { const b = await oralGet(cleOral(TX.n, id)); if (b && TX) { TX.d.enreg[id] = URL.createObjectURL(b); rendre(); } });
+  return true;
+}
+const cranItems = () => D.test.A[TX.forme].filter(x => x[1] === TX.cran);
+function allerA(p){ Object.assign(TX, {part: p, cran: 1, bons: 0, err: 0, idx: 0, ordre: null, ecoutes: 0, rejoue: false}); }
 function finPartie(){
-  const suite = {A: 'B', B: 'C', C: 'D', D: 'fin'}[TX.part];
-  if (suite === 'fin') finTest(); else debutPartie(suite);
+  const suite = {A: 'B', B: 'Cintro', C: 'D', D: 'fin'}[TX.part];
+  if (suite === 'fin') finTest(); else allerA(suite);
   rendre(); setTimeout(jouerTest, 150);
 }
-function repAdaptative(ok){
+function suivantItem(){ TX.ordre = null; TX.ecoutes = 0; TX.rejoue = false; rendre(); setTimeout(jouerTest, 150); }
+function repA(ok){
   if (ok) TX.bons++; else TX.err++;
-  TX.idx++; TX.ordre = null;
+  TX.idx++;
   if (TX.bons === 3) {
-    TX.niv[TX.part] = TX.cran;
+    TX.niv.A = TX.cran;
     if (TX.cran === 3) return finPartie();
     Object.assign(TX, {cran: TX.cran + 1, bons: 0, err: 0, idx: 0});
-  } else if (TX.err === 2 || TX.idx >= cranItems(TX.part).length) return finPartie();
-  rendre(); setTimeout(jouerTest, 150);
+  } else if (TX.err === 2 || TX.idx >= cranItems().length) return finPartie();
+  suivantItem();
+}
+function repB(ok){
+  const it = D.test.B[TX.forme][TX.b.i];
+  if (ok) TX.b[it[1]]++;
+  TX.b.i++;
+  if (TX.b.i >= D.test.B[TX.forme].length) return finPartie();
+  suivantItem();
+}
+function palierDe(e){
+  const s = e.A + D.test.sous_b.filter(k => e.B[k] >= 2).length;
+  const cOk = !e.promesse && e.C >= D.test.c_seuil;
+  const notes = Object.values(e.oral || {}).filter(o => o.g !== undefined);
+  const gestes = notes.filter(o => o.g <= 1).length, promesseOrale = notes.some(o => o.g === 2);
+  const oralOk = !notes.length || (gestes >= D.test.oral_aise && !promesseOrale);
+  if (s <= D.test.debutant_max || e.A === 0) return 'debutant';
+  if (s >= D.test.aise_min && cOk && oralOk) return 'aise';
+  return 'fonctionnel';
 }
 function finTest(){
-  const s = TX.niv.A + TX.niv.B, cOk = !TX.c.promesse && TX.c.ok >= D.test.seuils.C;
-  TX.palier = (s <= D.test.debutant_max || TX.niv.A === 0) ? 'debutant' : (s >= D.test.aise_min && cOk) ? 'aise' : 'fonctionnel';
-  TX.cOk = cOk; TX.part = 'fin';
   const h = histo();
-  h.push({date: new Date().toISOString().slice(0, 10), forme: TX.forme, A: TX.niv.A, B: TX.niv.B,
-          C: TX.c.ok, promesse: TX.c.promesse, palier: TX.palier, confirme: null});
-  garderHisto(h);
+  const e = {date: new Date().toISOString().slice(0, 10), forme: TX.forme, A: TX.niv.A,
+             B: {numero: TX.b.numero, prix: TX.b.prix, nom: TX.b.nom}, C: TX.c.ok, promesse: TX.c.promesse,
+             oral: {}, confirme: null};
+  e.palier = palierDe(e); h.push(e); garderHisto(h);
+  TX.n = h.length; TX.part = 'fin';
+  Object.entries(TX.d.enreg).forEach(([id, u]) => { if (u) fetch(u).then(r => r.blob()).then(b => oralPut(cleOral(TX.n, id), b)); });
 }
+function majEntree(f){ const h = histo(); const e = h[h.length - 1]; f(e); e.palier = palierDe(e); garderHisto(h); }
 function itemTest(){
-  if (TX.part === 'A' || TX.part === 'B') return cranItems(TX.part)[TX.idx];
+  if (TX.part === 'A') return cranItems()[TX.idx];
+  if (TX.part === 'B') return D.test.B[TX.forme][TX.b.i];
   if (TX.part === 'C') return D.test.C[TX.forme][TX.c.i];
   if (TX.part === 'D') return D.test.D[TX.forme][TX.d.i];
 }
 function jouerTest(){
   const it = itemTest(); if (!it || location.hash !== '#test') return;
+  TX.ecoutes = (TX.ecoutes || 0) + 1;
   jouer(`test/${TX.part.toLowerCase()}/${L.apprend}/${it[0]}.mp3`);
 }
 function nuitsT(n){ const [un, pl] = TT('nuits').split('|'); return `${n} ${n > 1 ? pl : un}`; }
 
 function ecranTest(){
-  if (!TX) nouveauTest();
+  if (!TX && !reprendre()) nouveauTest();
   const A = L.apprend, P = L.parle, h = histo();
   const tete = `<div class="barre-haut"><button type="button" class="btn" data-aller="accueil">${ICO.retour}${E(T('retour'))}</button>
     ${['A','B','C','D'].includes(TX.part) ? `<span class="progres">${E(TT('partie'))} ${TX.part} / D</span>` : ''}</div>
     <p class="enseigne">${E(D.hotel)}</p>`;
-  if (TX.part === 'intro') {
-    const prec = h.length ? h[h.length - 1] : null;
-    return tete + `<h1>${E(TT('test_tit'))}</h1><p class="chapeau">${E(TT('test_intro'))}</p>
+  if (TX.part === 'intro') return tete + `<h1>${E(TT('test_tit'))}</h1><p class="chapeau">${E(TT('test_intro'))}</p>
       <p class="alerte">${E(TT('regle_c'))}</p>
-      <p class="consigne">${E(TT('passation'))} ${h.length + 1} · ${E(TT('forme'))} ${TX.forme}</p>
-      ${prec ? `<p class="dite">${E(TT('precedent'))} (${prec.date}) : A ${prec.A}/3 · B ${prec.B}/3 · C ${prec.C}/6 — ${E(TT(prec.confirme || prec.palier))}</p>` : ''}
+      <p class="consigne">${E(TT('passation'))} ${TX.n} · ${E(TT('forme'))} ${TX.forme}</p>
       <div class="ecoute"><button type="button" class="btn btn--pri" data-t="debut">${E(TT('commencer_test'))}</button></div>`;
-  }
+  if (TX.part === 'Cintro') return tete + `<h1>C · ${E(TT('pC'))}</h1>
+      <div class="regle"><b>${E(T('regle_tit'))}</b>${E(D.ex.regle[P])}</div>
+      <p class="alerte">${E(TT('regle_c'))}</p>
+      <div class="ecoute"><button type="button" class="btn btn--pri" data-t="cdebut">${E(TT('suivant'))}</button></div>`;
   if (TX.part === 'fin') return tete + ecranResultats();
   const it = itemTest();
-  const son = `<div class="ecoute"><button type="button" class="btn btn--son" data-t="ecouter">${ICO.son}${E(T('reecouter'))}</button></div>`;
-  let corps = `<h1>${E(TT('p' + TX.part))}</h1>`;
+  // Une seule réécoute, comme « Pardon? » au comptoir (tour 1, D2).
+  const limite = TX.part === 'A' || TX.part === 'B';
+  const son = `<div class="ecoute"><button type="button" class="btn btn--son" data-t="ecouter" ${limite && TX.rejoue ? 'disabled' : ''}>${ICO.son}${E(T('reecouter'))}</button></div>`
+    + (limite ? `<p class="dite">${E(TT('une_reecoute'))}</p>` : '');
+  let corps = `<h1>${TX.part} · ${E(TT('p' + TX.part))}</h1>`;
   if (TX.part === 'A') {
     const [id, cran, , lit, n, lit2, n2] = it;
-    if (!TX.ordre) TX.ordre = melange(cran === 1 ? D.test.lits.map(l => ({lit: l, n: null}))
+    if (!TX.ordre) TX.ordre = melange(cran === 1
+      ? [lit, ...melange(D.test.lits_c1.filter(l => l !== lit)).slice(0, 3)].map(l => ({lit: l, n: null}))
       : [{lit, n}, {lit, n: n2}, {lit: lit2, n}, {lit: lit2, n: n2}]);
     corps += `<p class="consigne">${E(TT('pA_c'))}</p>` + son + `<div class="choix">${TX.ordre.map((c, k) =>
       `<button type="button" data-t="rep" data-k="${k}"><img src="${imgUrl(c.lit)}" alt="${E(PAR_ID[c.lit][P])}"><small>${E(PAR_ID[c.lit][P])}${c.n ? ' · ' + E(nuitsT(c.n)) : ''}</small></button>`).join('')}</div>`;
   }
-  if (TX.part === 'B' && it[1] < 3) {
-    if (!TX.ordre) TX.ordre = melange([it[3], ...it[4]]);
-    corps += `<p class="consigne">${E(TT('pB_c'))}</p>` + son + `<div class="choix">${TX.ordre.map((c, k) =>
-      `<button type="button" data-t="rep" data-k="${k}" style="font-size:24px">${E(c)}</button>`).join('')}</div>`;
+  if (TX.part === 'B') {
+    corps += `<p class="mot-vise"><b>${E(TT('b_' + it[1]))}</b></p>`;
+    if (it[1] !== 'nom') {
+      if (!TX.ordre) TX.ordre = melange(it[3][A]);
+      corps += `<p class="consigne">${E(TT('pB_c'))}</p>` + son + `<div class="choix">${TX.ordre.map((c, k) =>
+        `<button type="button" data-t="rep" data-k="${k}" style="font-size:24px">${E(c)}</button>`).join('')}</div>`;
+    } else corps += `<p class="consigne">${E(TT('pB_nom'))}</p>` + son
+      + `<form class="saisie" id="formTestNom"><input id="nomTest" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="${E(T('votre_reponse'))}">
+         <button type="submit" class="btn btn--pri">${E(TT('valider'))}</button></form>`;
   }
-  if (TX.part === 'B' && it[1] === 3) corps += `<p class="consigne">${E(TT('pB_nom'))}</p>` + son
-    + `<form class="saisie" id="formTestNom"><input id="nomTest" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="${E(T('votre_reponse'))}">
-       <button type="submit" class="btn btn--pri">${E(TT('valider'))}</button></form>`;
-  if (TX.part === 'C') corps += `<p class="consigne">${E(TT('pC_c'))}</p>` + son + `<div class="choix large">${['moi', 'gerant', 'personne'].map(k =>
+  if (TX.part === 'C') corps += `<p class="consigne">${E(TT('pC_c'))}</p>` + (it[1] ? `<p class="contexte">${E(it[1][P])}</p>` : '') + son
+    + `<div class="choix large">${['moi', 'gerant', 'personne'].map(k =>
       `<button type="button" data-t="c" data-k="${k}">${E(D.test.choix_c[k][P])}</button>`).join('')}</div>`;
   if (TX.part === 'D') {
     const [id, ctx] = it, enr = TX.d.enreg[id];
@@ -721,35 +792,35 @@ function ecranTest(){
   return tete + corps;
 }
 
-function ligneRes(nom, v, max, seuil){
-  const ok = v >= seuil;
-  return `<li><b>${E(nom)}</b> — ${E(TT('niveau'))} ${v} / ${max} (${E(TT('visé'))} ${seuil}) :
-    <span class="${ok ? 'ok-txt' : 'ko-txt'}">${ok ? '✓ ' + E(TT('atteint')) : '→ ' + E(TT('pas_encore'))}</span></li>`;
-}
 function ecranResultats(){
-  const A = L.apprend, P = L.parle, h = histo(), der = h[h.length - 1];
-  let f = `<h1>${E(TT('fini_tit'))}</h1><p class="chapeau">${E(TT('fini_c'))}</p><ul class="resultats">`
-    + ligneRes('A · ' + TT('pA'), TX.niv.A, 3, D.test.seuils.A)
-    + ligneRes('B · ' + TT('pB'), TX.niv.B, 3, D.test.seuils.B)
-    + ligneRes('C · ' + TT('pC'), TX.c.promesse ? 0 : TX.c.ok, 6, D.test.seuils.C) + `</ul>`
-    + (TX.c.promesse ? `<p class="alerte">${E(TT('promesse_c'))}</p>` : '')
-    + `<p class="palier"><span>${E(TT('palier_propose'))}</span><b>${E(TT(der.confirme || TX.palier))}</b></p>`;
+  const A = L.apprend, P = L.parle, h = histo(), e = h[h.length - 1];
+  const ligne = (t, v) => `<li><b>${E(t)}</b> — ${v}</li>`;
+  let f = `<h1>${E(TT('fini_tit'))}</h1>` + (TX.repris ? `<p class="alerte">${E(TT('reprise'))}</p>` : '')
+    + `<p class="chapeau">${E(TT('fini_c'))}</p><ul class="resultats">`
+    + ligne('A · ' + TT('pA'), `${E(TT('niveau'))} ${e.A} / 3`)
+    + D.test.sous_b.map(k => ligne('B · ' + TT('b_' + k), `${e.B[k]} ${E(TT('bonnes'))} 3`)).join('')
+    + ligne('C · ' + TT('pC'), `${e.C} ${E(TT('bonnes'))} 6 (${E(TT('c_vise'))})`) + `</ul>`
+    + (e.promesse ? `<p class="alerte">${E(TT('promesse_c'))}</p>` : '')
+    + `<p class="dite">${E(D.test.cadrage[P])}</p>`
+    + `<p class="palier"><span>${E(TT('palier_propose'))}</span><b>${E(TT(e.confirme || e.palier))}</b><small>${E(TT('palier_oral'))}</small></p>`;
   f += `<details class="formateur"${TX.formateur ? ' open' : ''}><summary>${E(TT('formateur'))}</summary>`;
   if (!TX.formateur) f += `<form class="saisie" id="formCode"><input id="codeF" inputmode="numeric" autocomplete="off" aria-label="${E(TT('code'))}" placeholder="${E(TT('code'))}">
       <button type="submit" class="btn">${E(TT('ouvrir'))}</button></form>${TX.codeFaux ? `<p class="ko-txt">${E(TT('code_faux'))}</p>` : ''}`;
   else {
-    const grille = D.test.oral[P].split('|');
-    f += D.test.D[TX.forme].map(([id, ctx, client, geste, ex]) => `<div class="oral">
-        <p><b>« ${E(client[A])} »</b></p><p>${E(TT('geste'))} : ${E(D.test.gestes[geste][P])}</p>
+    const gg = D.test.oral_geste[P].split('|'), gl = D.test.oral_langue[P].split('|');
+    f += D.test.D[e.forme].map(([id, ctx, client, geste, ex]) => { const o = (e.oral || {})[id] || {};
+      return `<div class="oral"><p><b>« ${E(client[A])} »</b></p><p>${E(TT('geste'))} : ${E(D.test.gestes[geste][P])}</p>
         <p class="dite">${E(TT('exemple'))} : <span lang="${A}">${E(ex[A])}</span></p>
         ${TX.d.enreg[id] ? `<button type="button" class="btn" data-t="playrec" data-id="${id}">${ICO.son}${E(TT('reecouter_moi'))}</button>` : `<p class="dite">—</p>`}
-        <div class="choix-oral">${grille.map((g, k) => `<button type="button" class="btn" data-t="oral" data-id="${id}" data-k="${k}" aria-pressed="${TX.oral[id] === k}">${E(g)}</button>`).join('')}</div></div>`).join('')
+        <p class="dite">${E(TT('ligne_geste'))}</p><div class="choix-oral">${gg.map((g, k) => `<button type="button" class="btn" data-t="oral" data-l="g" data-id="${id}" data-k="${k}" aria-pressed="${o.g === k}">${E(g)}</button>`).join('')}</div>
+        <p class="dite">${E(TT('ligne_langue'))}</p><div class="choix-oral">${gl.map((g, k) => `<button type="button" class="btn" data-t="oral" data-l="l" data-id="${id}" data-k="${k}" aria-pressed="${o.l === k}">${E(g)}</button>`).join('')}</div></div>`; }).join('')
       + `<p><b>${E(TT('confirmer'))}</b></p><div class="ecoute">${D.test.paliers.map(p =>
-        `<button type="button" class="btn" data-t="palier" data-p="${p}" aria-pressed="${der.confirme === p}">${E(TT(p))}</button>`).join('')}</div>`
-      + (der.confirme ? `<p class="ok-txt">${E(TT('confirme'))} ${E(TT(der.confirme))}</p>` : '');
+        `<button type="button" class="btn" data-t="palier" data-p="${p}" aria-pressed="${e.confirme === p}">${E(TT(p))}</button>`).join('')}</div>`
+      + (e.confirme ? `<p class="ok-txt">${E(TT('confirme'))} ${E(TT(e.confirme))}</p>` : '')
+      // « Refaire » derrière le code : il consommerait l'autre forme (tour 1).
+      + `<div class="ecoute" style="margin-top:14px"><button type="button" class="btn" data-t="refaire">${E(TT('refaire_test'))}</button></div>`;
   }
-  f += `</details><div class="ecoute" style="margin-top:18px"><button type="button" class="btn" data-t="refaire">${E(TT('refaire_test'))}</button>
-    <button type="button" class="btn" data-aller="accueil">${E(TT('retour_accueil'))}</button></div>`;
+  f += `</details><div class="ecoute" style="margin-top:18px"><button type="button" class="btn" data-aller="accueil">${E(TT('retour_accueil'))}</button></div>`;
   return f;
 }
 
@@ -759,37 +830,41 @@ async function enregistrer(){
     const flux = await navigator.mediaDevices.getUserMedia({audio: true});
     const rec = new MediaRecorder(flux), morceaux = [], id = itemTest()[0];
     rec.ondataavailable = e => morceaux.push(e.data);
-    rec.onstop = () => { flux.getTracks().forEach(t => t.stop()); TX.d.enreg[id] = URL.createObjectURL(new Blob(morceaux, {type: rec.mimeType})); micro = null; rendre(); };
+    rec.onstop = () => { flux.getTracks().forEach(t => t.stop());
+      const blob = new Blob(morceaux, {type: rec.mimeType}); TX.d.enreg[id] = URL.createObjectURL(blob);
+      oralPut(cleOral(TX.n, id), blob); micro = null; rendre(); };
     rec.start(); micro = rec; rendre();
-  } catch (e) { micro = null; TX.d.enreg[itemTest()[0]] = null; alert(TT('sans_micro')); }
+  } catch (e) { micro = null; alert(TT('sans_micro')); }
 }
 
 function clicTest(b){
   const t = b.dataset.t, it = itemTest();
-  if (t === 'debut') { debutPartie('A'); rendre(); setTimeout(jouerTest, 150); return; }
-  if (t === 'ecouter') { jouerTest(); return; }
-  if (t === 'rep' && TX.part === 'A') { const c = TX.ordre[+b.dataset.k]; return repAdaptative(c.lit === it[3] && (it[1] === 1 || c.n === it[4])); }
-  if (t === 'rep' && TX.part === 'B') return repAdaptative(TX.ordre[+b.dataset.k] === it[3]);
+  if (t === 'debut') { allerA('A'); rendre(); setTimeout(jouerTest, 150); return; }
+  if (t === 'cdebut') { TX.part = 'C'; TX.c.i = 0; suivantItem(); return; }
+  if (t === 'ecouter') { if ((TX.part === 'A' || TX.part === 'B') && TX.rejoue) return; TX.rejoue = true; jouerTest(); rendre(); return; }
+  if (t === 'rep' && TX.part === 'A') { const c = TX.ordre[+b.dataset.k]; return repA(c.lit === it[3] && (it[1] === 1 || c.n === it[4])); }
+  if (t === 'rep' && TX.part === 'B') return repB(TX.ordre[+b.dataset.k] === it[2]);
   if (t === 'c') {
-    const k = b.dataset.k, bonne = it[2];
+    const k = b.dataset.k, bonne = it[3];
     if (k === bonne) TX.c.ok++;
-    // Se charger soi-même de ce qui revient au gérant, ou de l'impossible : une promesse.
+    // Accorder soi-même ce qui revient au gérant, ou ce que personne ne peut accorder.
     if (k === 'moi' && bonne !== 'moi') TX.c.promesse = true;
     TX.c.i++;
     if (TX.c.i >= D.test.C[TX.forme].length) return finPartie();
-    rendre(); setTimeout(jouerTest, 150); return;
+    suivantItem(); return;
   }
   if (t === 'rec') { enregistrer(); return; }
   if (t === 'stop') { if (micro) micro.stop(); return; }
   if (t === 'playrec') { const u = TX.d.enreg[b.dataset.id]; if (u) { if (son) son.pause(); son = new Audio(u); son.play(); } return; }
-  if (t === 'dsuite') { TX.d.i++; if (TX.d.i >= D.test.D[TX.forme].length) return finPartie(); rendre(); setTimeout(jouerTest, 150); return; }
-  if (t === 'oral') { TX.oral[b.dataset.id] = +b.dataset.k; rendre(); return; }
-  if (t === 'palier') { const h = histo(); h[h.length - 1].confirme = b.dataset.p; garderHisto(h); rendre(); return; }
+  if (t === 'dsuite') { TX.d.i++; if (TX.d.i >= D.test.D[TX.forme].length) return finPartie(); suivantItem(); return; }
+  if (t === 'oral') { const id = b.dataset.id, l = b.dataset.l, k = +b.dataset.k;
+    majEntree(e => { e.oral = e.oral || {}; e.oral[id] = Object.assign(e.oral[id] || {}, {[l]: k}); }); rendre(); return; }
+  if (t === 'palier') { majEntree(e => { e.confirme = b.dataset.p; }); rendre(); return; }
   if (t === 'refaire') { nouveauTest(); rendre(); return; }
 }
 document.addEventListener('submit', e => {
   if (e.target.id === 'formTestNom') { e.preventDefault(); const v = document.getElementById('nomTest').value;
-    if (!nu(v)) return; repAdaptative(nu(v) === nu(itemTest()[2])); }
+    if (!nu(v)) return; repB(nu(v) === nu(itemTest()[2])); }
   if (e.target.id === 'formCode') { e.preventDefault();
     if (document.getElementById('codeF').value.trim() === D.test.code) { TX.formateur = true; TX.codeFaux = false; } else TX.codeFaux = true;
     rendre(); }
@@ -847,7 +922,8 @@ window.addEventListener('hashchange', () => {
   else { X = null; rendre(); }
 });
 // Pour les contrôles joués par programme (build/controles) : l'état de la série.
-window.HR = {familles: FAMILLES, etat: () => X, test: () => TX, donnees: D};
+window.HR = {familles: FAMILLES, etat: () => X, test: () => TX,
+  donnees: /[?&]controle=1/.test(location.search) ? D : undefined};
 rendre();
 </script>
 </body>
