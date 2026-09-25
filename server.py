@@ -16350,6 +16350,27 @@ try:
 except Exception as _e:  # pragma: no cover
     print(f"[WARN] scénario « magasin » non chargé : {_e}", flush=True)
 
+# Le comptoir de l'Hôtel Rive-Claire (trousse trilingue, 25 septembre 2026) :
+# six scénarios, un par direction (« comptoir-en-fr » : l'employé apprend
+# l'anglais et lit l'interface en français). Même règle que le magasin : la
+# source est build/contenu/entreprise-hotel/clients.py, jamais recopiée ici.
+# Ces scénarios portent leur propre consigne (`systeme`), parce que le gabarit
+# ci-dessous est écrit pour la francisation et en français.
+try:
+    _spec = _ilu.spec_from_file_location(
+        "hotel_clients",
+        os.path.join(BASE_DIR, "build", "contenu", "entreprise-hotel", "clients.py"))
+    _hotel = _ilu.module_from_spec(_spec)
+    _spec.loader.exec_module(_hotel)
+    JEU_DE_ROLE_SCENARIOS.update(_hotel.scenarios_serveur())
+except Exception as _e:  # pragma: no cover
+    print(f"[WARN] scénarios « comptoir » non chargés : {_e}", flush=True)
+
+# Les voix qu'un scénario peut demander par `personnage` sur /api/voix. Liste
+# blanche : les deux voix du jeu de rôle, plus celles que déclare un scénario.
+VOIX_PERSONNAGES = {"jr_feminin", "jr_masculin"} | {
+    v for _sc in JEU_DE_ROLE_SCENARIOS.values() for v in _sc.get("voix", ())}
+
 
 def jeu_de_role_system(scenario_id, cas_id, role_eleve, palier=None):
     """Consigne système du personnage joué par l'assistant.
@@ -16359,6 +16380,10 @@ def jeu_de_role_system(scenario_id, cas_id, role_eleve, palier=None):
     cache, donc la moindre variation (heure, prénom) coûterait le bénéfice.
     """
     scenario = JEU_DE_ROLE_SCENARIOS[scenario_id]
+    # Un scénario qui porte sa propre consigne (le comptoir trilingue) la
+    # construit lui-même : le gabarit ci-dessous suppose la francisation.
+    if callable(scenario.get("systeme")):
+        return scenario["systeme"](cas_id, role_eleve, palier)
     cas = scenario["cas"][cas_id]
     # Chaque scénario nomme ses deux rôles ; l'assistant prend celui que
     # l'élève ne joue pas. La paire locataire/propriétaire était écrite en dur
@@ -21024,9 +21049,10 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 json_response(self, {"error": "Pas de bilan pour ce scénario"}, 400)
                 return
             lignes = []
+            ia_nom, eleve_nom = JEU_DE_ROLE_SCENARIOS[scenario].get("etiquettes", ("CLIENT", "VENDEUR"))
             for m in (recu or [])[-40:]:
                 if isinstance(m, dict) and str(m.get("contenu", "")).strip():
-                    qui = "CLIENT" if m.get("role") == "assistant" else "VENDEUR"
+                    qui = ia_nom if m.get("role") == "assistant" else eleve_nom
                     lignes.append(f"{qui} : {str(m['contenu']).strip()[:600]}")
             if not lignes:
                 json_response(self, {"error": "Visite vide"}, 400)
@@ -21118,8 +21144,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                     else VOIX_JEU_DE_ROLE["locataire"])
             # Un scénario à plusieurs personnages (le magasin : huit clients,
             # femmes et hommes) nomme la voix du personnage. Liste blanche :
-            # seules les deux voix du jeu de rôle sont acceptées.
-            if body.get("personnage") in ("jr_feminin", "jr_masculin"):
+            # les deux voix du jeu de rôle, et celles que déclare un scénario
+            # (le comptoir trilingue : une voix par langue et par genre).
+            if body.get("personnage") in VOIX_PERSONNAGES:
                 voix = body["personnage"]
 
         # Le cache passe avant la clé d'API : une classe garde la voix des

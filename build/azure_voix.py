@@ -81,6 +81,18 @@ VOIX = {
 
     "jr_feminin":  {"azure": "fr-CA-Sylvie:DragonHDLatestNeural", "reference": ""},
     "jr_masculin": {"azure": "fr-CA-Thierry:DragonHDLatestNeural", "reference": ""},
+
+    # Le comptoir de l'Hôtel Rive-Claire (trousse de métier trilingue, 25 sept.
+    # 2026) : les clients parlent la langue APPRISE. Mêmes six voix HD que les
+    # MP3 de la trousse (build/hotel_audio.py), auditionnées et choisies par
+    # Daniel. `lang` règle le <lang> qui enveloppe le corps et coupe les
+    # substitutions françaises de prononce(), faites pour le français seul.
+    "hotel_fr_f": {"azure": "fr-CA-Sylvie:DragonHDLatestNeural", "reference": ""},
+    "hotel_fr_m": {"azure": "fr-CA-Thierry:DragonHDLatestNeural", "reference": ""},
+    "hotel_en_f": {"azure": "en-US-Emma:DragonHDLatestNeural", "reference": "", "lang": "en-US"},
+    "hotel_en_m": {"azure": "en-US-Andrew:DragonHDLatestNeural", "reference": "", "lang": "en-US"},
+    "hotel_es_f": {"azure": "es-MX-Dalia:DragonHDLatestNeural", "reference": "", "lang": "es-MX"},
+    "hotel_es_m": {"azure": "es-MX-Jorge:DragonHDLatestNeural", "reference": "", "lang": "es-MX"},
 }
 
 # Les identifiants ElevenLabs rencontrés dans les 110 générateurs, et le rôle
@@ -443,6 +455,8 @@ def ssml(texte, role, palier=None, epeler=None, pause_lettres="280ms",
         lettres = ('<break time="%s"/>' % pause_lettres).join(epeler.upper())
         corps = '%s<break time="400ms"/>%s' % (lettres,
                                                html.escape(epeler.capitalize()))
+    elif v.get("lang", "fr-CA") != "fr-CA":
+        corps = html.escape(texte)
     else:
         corps = prononce(texte, chemin)
 
@@ -462,7 +476,7 @@ def ssml(texte, role, palier=None, epeler=None, pause_lettres="280ms",
     # un rôle HD ajouté plus tard hériterait du problème sans que personne y
     # pense.
     if "DragonHD" in v["azure"] or "Multilingual" in v["azure"]:
-        corps = '<lang xml:lang="fr-CA">%s</lang>' % corps
+        corps = '<lang xml:lang="%s">%s</lang>' % (v.get("lang", "fr-CA"), corps)
 
     # `rate` du palier et `rate` du rôle se cumulent : on les pose sur deux
     # balises imbriquées plutôt que d'additionner des pourcentages, qui ne
@@ -487,7 +501,8 @@ def ssml(texte, role, palier=None, epeler=None, pause_lettres="280ms",
         reference = v.get("reference", TAUX_GLOBAL)
     if reference:
         corps = '<prosody rate="%s">%s</prosody>' % (reference, corps)
-    return '%s<voice name="%s">%s</voice></speak>' % (EN_TETE, v["azure"], corps)
+    tete = EN_TETE.replace('"fr-CA"', '"%s"' % v["lang"]) if v.get("lang") else EN_TETE
+    return '%s<voice name="%s">%s</voice></speak>' % (tete, v["azure"], corps)
 
 
 def parle(texte, role, dest, palier=None, epeler=None, cle=None, region=None,

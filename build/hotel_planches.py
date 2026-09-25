@@ -27,7 +27,7 @@ RACINE = pathlib.Path(__file__).resolve().parent.parent
 CONTENU = RACINE / "build" / "contenu" / "entreprise-hotel"
 CROQUIS = RACINE / "assets" / "interactive" / "hotel" / "croquis"
 SORTIE = RACINE / "modules-autonomes" / "hotel-reception" / "index.html"
-MEDIA_V = "9"   # 9 : tour 3 de l'audit du test (es b52 refait), 25 sept. 2026
+MEDIA_V = "10"  # 10 : le comptoir joué (étape 4), portraits des clients, 25 sept. 2026
 
 
 def _charger(nom):
@@ -37,8 +37,9 @@ def _charger(nom):
 
 
 def donnees():
-    LX, IF, CP, EX, TS = (_charger("lexique"), _charger("interface"), _charger("comptoir"),
-                          _charger("exercices"), _charger("test"))
+    LX, IF, CP, EX, TS, CL = (_charger("lexique"), _charger("interface"), _charger("comptoir"),
+                              _charger("exercices"), _charger("test"), _charger("clients"))
+    CL.verifier()
     LX.verifier()
     mots = []
     for i, pl, fr, en, es, dessin, note in LX.LEXIQUE:
@@ -107,7 +108,15 @@ def donnees():
             "oral_incomp": TS.ORAL_INCOMPREHENSIBLE_MAX,
             "debutant_max": TS.DEBUTANT_MAX, "aise_min": TS.AISE_MIN, "oral_aise": TS.ORAL_AISE,
             "paliers": TS.PALIERS, "cadrage": TS.CADRAGE, "ui": TS.UI}
-    return {"hotel": IF.HOTEL, "ui": {**IF.UI, **EX.UI}, "ex": ex, "test": test, "langues": IF.NOM_LANGUE, "desc": IF.DESCRIPTEUR,
+    # Le comptoir joué (étape 4) : la source est clients.py ; le serveur lit la même.
+    portraits = RACINE / "assets" / "interactive" / "hotel" / "clients"
+    jeu = {"clients": [{"id": i, "g": g, "nom": {l: f"{CL.TITRE[g][l]} {nom}" for l in CL.LANGUES},
+                        "paliers": pal, "tel": lieu == "telephone", "gestes": ge, "carte": carte, "ecran": ecran,
+                        "voix": CL.VOIX[g], "p": bool(portrait) and (portraits / f"{i}-neutre.webp").exists()}
+                       for i, g, nom, pal, lieu, ge, carte, ecran, portrait, _f in CL.CLIENTS],
+           "gestes": CL.GESTES, "debit": CL.DEBIT_JEU, "humeurs": CL.HUMEURS,
+           "ouverture": CL.OUVERTURE, "ui": CL.UI_JEU}
+    return {"hotel": IF.HOTEL, "ui": {**IF.UI, **EX.UI}, "ex": ex, "test": test, "jeu": jeu, "langues": IF.NOM_LANGUE, "desc": IF.DESCRIPTEUR,
             "planches": [[k, IF.PLANCHES[k]] for k, _ in LX.PLANCHES],
             "mots": mots, "zones": CP.ZONES, "v": MEDIA_V}
 
@@ -278,6 +287,53 @@ body{margin:0;background:var(--surface-page);color:var(--text-body);font-family:
 .mot-vise b{color:var(--text-strong);font-size:18px}
 .dite{margin:10px 0 0;font-size:16px;color:var(--text-muted)}
 @media (max-width:480px){.choix{gap:10px}.choix button{font-size:16px;padding:10px}.cible{font-size:22px}}
+
+/* Le comptoir joué (étape 4). Le décor est le dessin fixe de l'étape 1 ; le
+   client détouré se pose derrière le rebord, et une seconde copie du décor,
+   coupée sous le rebord, repasse DEVANT lui (le plan, la sonnette, l'écran). */
+.clients{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.client-c{font:inherit;cursor:pointer;text-align:start;border:1px solid var(--line-200);background:var(--surface-card);
+  border-radius:14px;padding:10px;display:flex;gap:10px;align-items:flex-start}
+.client-c:hover{border-color:var(--accent)}
+.client-c .buste{width:64px;height:64px;flex:none;border-radius:10px;background:var(--surface-sunken);object-fit:cover;object-position:top}
+.client-c .tel{width:64px;height:64px;flex:none;border-radius:10px;background:var(--surface-sunken);display:grid;place-items:center;color:var(--text-accent)}
+.client-c .tel svg{width:30px;height:30px}
+.client-c b{display:block;font-size:17px;color:var(--text-strong)}
+.client-c span{font-size:14px;color:var(--text-muted)}
+.niv{display:flex;flex-wrap:wrap;gap:12px;margin:6px 0 14px}
+.decor{position:relative;border-radius:14px;overflow:hidden;border:1px solid var(--line-200);background:#fff}
+.decor img{display:block;width:100%}
+.decor .personne{position:absolute;left:50%;bottom:40%;height:47%;width:auto;transform:translateX(-50%)}
+.decor .devant{position:absolute;inset:0;clip-path:inset(59.6% 0 0 0)}
+.decor.tel-decor{display:grid;place-items:center;aspect-ratio:3/2;background:var(--surface-sunken)}
+.decor.tel-decor svg{width:30%;height:auto;color:var(--text-accent)}
+.humeur-txt{margin:6px 0 0;font-weight:800;color:var(--text-muted);min-height:24px}
+.ecran-f{background:#132A2C;color:#DDEDEC;border-radius:10px;padding:10px 12px;font-family:ui-monospace,Menlo,monospace;font-size:14px;line-height:1.5;margin:10px 0}
+.ecran-f b{display:block;font-family:Nunito,system-ui,sans-serif;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#9FC9C6;margin-bottom:2px}
+.jeu{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:760px){.jeu{grid-template-columns:1fr}}
+.fil{display:flex;flex-direction:column;gap:8px;margin:10px 0;max-height:46vh;overflow:auto}
+.fil.cache .txt{filter:blur(6px)}
+.bulle{background:var(--surface-card);border:1px solid var(--line-200);border-radius:12px;padding:8px 12px;max-width:92%}
+.bulle.vous{align-self:flex-end;background:var(--accent-soft);border-color:var(--accent)}
+.bulle .qui{display:block;font-size:12px;font-weight:800;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em}
+.bulle .txt{font-size:17px}
+.attente{color:var(--text-muted);font-style:italic;margin:4px 0}
+.parole{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.parole input{font:inherit;font-size:17px;padding:10px 12px;border:2px solid var(--line-300);border-radius:10px;flex:1 1 200px;min-width:0;background:var(--surface-card);color:var(--text-strong)}
+.phrases-j{margin:10px 0;border:1px solid var(--line-200);border-radius:12px;padding:8px 12px;background:var(--surface-card)}
+.phrases-j summary{cursor:pointer;font-weight:800;min-height:32px}
+.phrases-j li{margin:6px 0}
+.gestes-bilan{list-style:none;padding:0;margin:8px 0;display:grid;gap:8px}
+.gestes-bilan li{display:flex;gap:10px;background:var(--surface-card);border:1px solid var(--line-200);border-radius:10px;padding:8px 10px}
+.gestes-bilan li.manque{border-color:var(--warn-line)}
+.gestes-bilan .m{font-weight:900;width:18px;flex:none}
+.gestes-bilan small{display:block;color:var(--text-muted);margin-top:2px}
+.carte-jeu{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:16px;align-items:center;cursor:pointer;
+  background:var(--surface-card);border:2px solid var(--accent);border-radius:16px;padding:12px;text-align:start;font:inherit;width:100%}
+.carte-jeu b{font-size:20px;color:var(--text-strong);display:block}
+.carte-jeu span{color:var(--text-muted)}
+@media (max-width:640px){.carte-jeu{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -361,6 +417,9 @@ function ecranAccueil(){
     <div class="planches">${cartes}</div>
     <h2>${E(D.test.ui.test_tit[L.parle])}</h2>
     <button type="button" class="carte-test" data-aller="test"><b>${E(D.test.ui.test_tit[L.parle])}</b><span>${E(D.test.ui.test_carte[L.parle])}</span></button>
+    <h2>${E(TJ('jeu_tit'))}</h2>
+    <button type="button" class="carte-jeu" data-aller="jeu"><img src="/assets/interactive/hotel/croquis/comptoir.jpg?v=${D.v}" alt="" style="width:100%;border-radius:10px">
+      <span><b>${E(TJ('jeu_tit'))}</b><span>${E(TJ('jeu_carte'))}</span></span></button>
     <h2>${E(T('exercices'))}</h2>
     <div class="exos">${FAMILLES.map(f => `<button type="button" class="exo-c" data-aller="x-${f}"><b>${E(T('x_'+f))}</b><span>${E(T('x_'+f+'_c'))}</span></button>`).join('')}</div>
     <p class="avis">${E(T('non_relu'))}</p>`;
@@ -923,6 +982,238 @@ document.addEventListener('submit', e => {
     rendre(); }
 });
 
+// ── Le comptoir joué (étape 4) ───────────────────────────────────────────
+// L'employé est le réceptionniste ; l'IA joue le client, dans la langue APPRISE
+// (scénario « comptoir-<apprend>-<parle> », source clients.py). Il faut un code
+// d'élève ou de séance. Le client ouvre chaque réplique par son humeur entre
+// crochets ; l'écran la retire et change le visage. « FIN » clôt. Micro et voix
+// ne tournent jamais ensemble (Chrome dégrade la sortie quand le micro est ouvert).
+const TJ = k => D.jeu.ui[k][L.parle || 'fr'];
+const ICO_TEL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>';
+let codeJeu = new URLSearchParams(location.search).get('code') || '';
+try { codeJeu = codeJeu || localStorage.getItem('hotel-code') || ''; } catch (e) {}
+let J = null, niveauJeu = null, audioJ = null, recoJ = null, recoFiniJ = true, recoMinJ = null, ctxTel = null;
+const imgClient = (c, h) => `/assets/interactive/hotel/clients/${c.id}-${h}.webp?v=${D.v}`;
+function niveauDuTest(){ const h = histo(); const e = h[h.length - 1]; return e ? (e.confirme || e.palier) : null; }
+const scenarioJeu = () => `comptoir-${L.apprend}-${L.parle}`;
+
+function ecranJeu(){
+  if (J && J.vue === 'scene') return sceneJeu();
+  if (J && J.vue === 'bilan') return bilanJeuHTML();
+  const tete = `<div class="barre-haut"><button type="button" class="btn" data-aller="accueil">${ICO.retour}${E(T('retour'))}</button></div>
+    <p class="enseigne">${E(D.hotel)}</p><h1>${E(TJ('jeu_tit'))}</h1>`;
+  if (!codeJeu) return tete + `<p class="chapeau">${E(TJ('code_aide'))}</p>
+    <form class="saisie" id="formCodeJeu"><input id="codeJ" maxlength="17" autocomplete="off" aria-label="${E(TJ('code'))}" placeholder="${E(TJ('code'))}">
+    <button type="submit" class="btn btn--pri">${E(TJ('entrer'))}</button></form>${J && J.err ? `<p class="ko-txt">${E(J.err)}</p>` : ''}`;
+  const duTest = niveauDuTest();
+  niveauJeu = niveauJeu || duTest;
+  const dispo = D.jeu.clients.filter(c => !niveauJeu || c.paliers.includes(niveauJeu));
+  return tete + `<p class="chapeau">${E(TJ('jeu_carte'))}</p>
+    <details class="regle"><summary><b>${E(TJ('regle_tit'))}</b></summary><p>${E(D.ex.regle[L.parle])}</p></details>
+    <p style="margin:12px 0 0"><b>${E(TJ('niveau'))}</b> — ${E(duTest ? TJ('niveau_test') : TJ('niveau_sans'))}</p>
+    <div class="niv">${D.test.paliers.map(p => `<button type="button" class="btn" data-jniv="${p}" aria-pressed="${p === niveauJeu}">${E(D.test.ui[p][L.parle])}</button>`).join('')}</div>
+    <h2>${E(TJ('choisir'))}</h2>
+    <div class="clients">${dispo.map(c => `<button type="button" class="client-c" data-jclient="${c.id}">`
+      + (c.tel ? `<span class="tel">${ICO_TEL}</span>` : `<img class="buste" src="${imgClient(c, 'neutre')}" alt="">`)
+      + `<span><b lang="${L.apprend}">${E(c.nom[L.apprend])}</b>${c.tel ? `<span>${E(TJ('au_tel'))} · </span>` : ''}<span>${E(c.carte[L.parle])}</span></span></button>`).join('')}</div>`;
+}
+
+function sceneJeu(){
+  const c = J.c, A = L.apprend;
+  const decor = c.tel ? `<div class="decor tel-decor">${ICO_TEL}</div>`
+    : `<div class="decor"><img src="/assets/interactive/hotel/croquis/comptoir.jpg?v=${D.v}" alt="">
+        <img class="personne" id="jperso" src="${imgClient(c, J.humeur)}" alt="">
+        <img class="devant" src="/assets/interactive/hotel/croquis/comptoir.jpg?v=${D.v}" alt=""></div>`;
+  const phrases = D.jeu.gestes.filter(g => c.gestes.includes(g.id)).concat(D.jeu.gestes.filter(g => !c.gestes.includes(g.id)))
+    .map(g => `<li><b>${E(g.nom[L.parle])}</b><br><span lang="${A}">« ${E(g.phrase[A])} »</span></li>`).join('');
+  return `<div class="barre-haut"><button type="button" class="btn" data-jquitter="1">${ICO.retour}${E(T('retour'))}</button></div>
+    <p class="enseigne">${E(D.hotel)}${c.tel ? ' · ' + E(TJ('au_tel')) : ''}</p><h1 lang="${A}">${E(c.nom[A])}</h1>
+    <p class="consigne">${E(c.carte[L.parle])}</p>
+    <div class="jeu"><div>${decor}<p class="humeur-txt" id="jhum" aria-live="polite">${E(humeurJ(J.humeur))}</p>
+      <div class="ecran-f" lang="${A}"><b>${E(TJ('ecran'))}</b>${E(c.ecran[A])}</div></div>
+    <div><div class="ecoute"><button type="button" class="btn" data-jsanslire="1" aria-pressed="${J.sansLire}">${E(TJ('sans_lire'))}</button>
+      <button type="button" class="btn btn--son" data-jreecouter="1">${ICO.son}${E(TJ('reecouter'))}</button></div>
+      <details class="phrases-j"><summary>${E(TJ('gestes_tit'))}</summary><ul>${phrases}</ul>
+        <p><b>${E(TJ('regle_tit'))}</b> — ${E(D.ex.regle[L.parle])}</p></details>
+      <div class="fil${J.sansLire ? ' cache' : ''}" id="jfil" aria-live="polite">${J.fil.map(bulleHTML).join('')}</div>
+      <div class="parole"><button type="button" class="btn btn--son" id="jmicro" ${J.fini ? 'disabled' : ''}>${E(TJ('parler'))}</button>
+        <input id="jtxt" lang="${A}" placeholder="${E(TJ('ecrire'))}" ${J.fini ? 'disabled' : ''}>
+        <button type="button" class="btn btn--pri" id="jenv" ${J.fini ? 'disabled' : ''}>${E(TJ('envoyer'))}</button></div>
+      <div class="suite"><button type="button" class="btn ${J.fini ? 'btn--pri' : ''}" data-jbilan="1">${E(J.fini ? TJ('voir_bilan') : TJ('terminer'))}</button></div>
+      <p class="ko-txt" id="jerr">${E(J.err || '')}</p></div></div>`;
+}
+function bulleHTML(b){ return `<div class="bulle ${b.qui}"><span class="qui">${E(b.qui === 'vous' ? TJ('vous') : J.c.nom[L.apprend])}</span><span class="txt" lang="${L.apprend}">${E(b.t)}</span></div>`; }
+function humeurJ(h){ return J.c.nom[L.apprend] + ' ' + TJ(`hum_${h}_${J.c.g}`); }
+function ajouterBulle(qui, t){
+  J.fil.push({qui, t});
+  const fil = document.getElementById('jfil'); if (!fil) return;
+  fil.insertAdjacentHTML('beforeend', bulleHTML({qui, t})); fil.scrollTop = fil.scrollHeight;
+}
+function lireHumeur(t){
+  let h = 'neutre', fin = false;
+  const m = t.match(/^\s*\[(neutre|contente?|hesitante?|hésitante?|impatiente?)\]\s*/i);
+  if (m) { h = m[1].toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/e?$/, 'e'); t = t.slice(m[0].length); }
+  if (!D.jeu.humeurs.includes(h)) h = 'neutre';
+  t = t.replace(/\[[^\]]*\]/g, '').replace(/\*[^*]*\*/g, '').trim();
+  if (/\bFIN\.?\s*$/.test(t)) { fin = true; t = t.replace(/\s*\bFIN\.?\s*$/, '').trim(); }
+  return {h, t, fin};
+}
+function montrerHumeur(h){
+  J.humeur = h;
+  const im = document.getElementById('jperso'); if (im) im.src = imgClient(J.c, h);
+  const t = document.getElementById('jhum'); if (t) t.textContent = humeurJ(h);
+}
+function commencerJeu(id){
+  const c = D.jeu.clients.find(x => x.id === id);
+  if (!niveauJeu) niveauJeu = 'debutant';
+  // L'accueil est celui du réceptionniste, écrit par la page dans la langue
+  // apprise ; le bilan ne le lui attribue pas.
+  const ouverture = D.jeu.ouverture[c.tel ? 'telephone' : 'comptoir'][L.apprend];
+  J = {vue: 'scene', c, hist: [{role: 'user', contenu: ouverture}], fil: [{qui: 'vous', t: ouverture}],
+       humeur: 'neutre', fini: false, sansLire: false, err: '', dernier: ''};
+  rendre(); window.scrollTo(0, 0); tourJeu();
+}
+async function tourJeu(){
+  J.err = ''; const err = document.getElementById('jerr'); if (err) err.textContent = '';
+  const fil = document.getElementById('jfil'), att = document.createElement('p');
+  att.className = 'attente'; att.textContent = TJ('attente'); if (fil) fil.appendChild(att);
+  try {
+    const r = await fetch('/api/jeu-de-role', {method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({code: codeJeu, scenario: scenarioJeu(), cas: J.c.id, role: 'receptionniste', niveau: niveauJeu, historique: J.hist})});
+    const d = await r.json().catch(() => ({}));
+    att.remove();
+    if (!r.ok) {
+      if (r.status === 401) { codeJeu = ''; try { localStorage.removeItem('hotel-code'); } catch (e) {} J = {err: TJ('code_refuse')}; rendre(); return; }
+      J.err = d.error || TJ('erreur'); if (err) err.textContent = J.err; return;
+    }
+    J.hist.push({role: 'assistant', contenu: d.reponse});
+    const {h, t, fin} = lireHumeur(d.reponse);
+    montrerHumeur(h); ajouterBulle('client', t); J.dernier = t; direJeu(t);
+    if (fin) { J.fini = true; rendre(); }
+  } catch (e) { att.remove(); J.err = TJ('erreur'); if (err) err.textContent = J.err; }
+}
+function envoyerJeu(texte){
+  texte = (texte || '').trim(); if (!texte || !J || J.fini) return;
+  arreterJeu();
+  const i = document.getElementById('jtxt'); if (i) i.value = '';
+  J.hist.push({role: 'user', contenu: texte}); ajouterBulle('vous', texte);
+  tourJeu();
+}
+async function direJeu(t){
+  if (!t) return;
+  try {
+    const palier = D.jeu.debit[niveauJeu] || null;
+    const r = await fetch('/api/voix', {method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({code: codeJeu, texte: t, role: 'receptionniste', personnage: J.c.voix[L.apprend], palier})});
+    if (!r.ok) throw new Error();
+    const url = URL.createObjectURL(await r.blob());
+    if (audioJ) audioJ.pause();
+    audioJ = new Audio(url);
+    if (palier && !r.headers.get('X-Palier')) { audioJ.preservesPitch = true; audioJ.playbackRate = 0.8; }
+    // Au téléphone, la voix passe par le même filtre que les MP3 de la trousse
+    // (300-3400 Hz) : c'est ce qui rend la situation dure à l'oreille.
+    if (J.c.tel) try {
+      ctxTel = ctxTel || new (window.AudioContext || window.webkitAudioContext)();
+      const src = ctxTel.createMediaElementSource(audioJ), hp = ctxTel.createBiquadFilter(), lp = ctxTel.createBiquadFilter();
+      hp.type = 'highpass'; hp.frequency.value = 300; lp.type = 'lowpass'; lp.frequency.value = 3400;
+      src.connect(hp); hp.connect(lp); lp.connect(ctxTel.destination);
+    } catch (e) {}
+    audioJ.play().catch(() => {});
+  } catch (e) {
+    // Aucun repli sur la voix du navigateur : toutes les voix de la trousse sont d'Azure.
+    const err = document.getElementById('jerr'); if (err) err.textContent = TJ('voix_indispo');
+  }
+}
+function arreterJeu(){
+  if (audioJ) audioJ.pause(); recoFiniJ = true; clearTimeout(recoMinJ);
+  if (recoJ) { const r = recoJ; recoJ = null; r.onend = null; try { r.abort(); } catch (e) {} }
+}
+// Le micro continu de Francœur : il accumule, se relance si le navigateur le
+// coupe, et s'arrête sur « Arrêter » ou après 4 s de silence (9 s au départ).
+const RECO_LANG = {fr: 'fr-CA', en: 'en-US', es: 'es-MX'};
+function microJeu(){
+  const R = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const b = document.getElementById('jmicro'), txt = document.getElementById('jtxt');
+  if (!R) { document.getElementById('jerr').textContent = TJ('micro_refuse'); return; }
+  if (recoJ) { recoFiniJ = true; recoJ.stop(); return; }
+  if (audioJ) audioJ.pause();
+  let acquis = ''; recoFiniJ = false;
+  const attendre = ms => { clearTimeout(recoMinJ); recoMinJ = setTimeout(() => { recoFiniJ = true; if (recoJ) recoJ.stop(); }, ms); };
+  const terminer = () => { clearTimeout(recoMinJ); recoJ = null; b.textContent = TJ('parler'); const dit = txt.value.trim(); if (dit) envoyerJeu(dit); };
+  const demarrer = () => {
+    recoJ = new R(); recoJ.lang = RECO_LANG[L.apprend]; recoJ.interimResults = true; recoJ.continuous = true;
+    recoJ.onresult = e => {
+      let prov = '';
+      for (let i = e.resultIndex; i < e.results.length; i++) {
+        const t = e.results[i][0].transcript.trim();
+        if (e.results[i].isFinal) acquis = (acquis + ' ' + t).trim(); else prov += ' ' + t;
+      }
+      txt.value = (acquis + prov).trim(); attendre(4000);
+    };
+    recoJ.onend = () => { if (!recoFiniJ) { try { demarrer(); return; } catch (e) {} } terminer(); };
+    recoJ.onerror = ev => { if (ev.error === 'no-speech' || ev.error === 'aborted') return;
+      recoFiniJ = true; document.getElementById('jerr').textContent = TJ('micro_refuse'); };
+    recoJ.start();
+  };
+  txt.value = ''; demarrer(); attendre(9000); b.textContent = TJ('arreter');
+}
+
+function bilanJeuHTML(){
+  const c = J.c, ok = J.humeur === 'contente', B = J.bilan;
+  let corps;
+  if (J.bilanEtat === 'vide') corps = `<p>${E(TJ('rien_dit'))}</p>`;
+  else if (!B) corps = `<p class="attente">${E(J.bilanEtat === 'erreur' ? (J.err || TJ('erreur')) : TJ('bilan_attente'))}</p>`;
+  else {
+    const nomG = id => ((D.jeu.gestes.find(g => g.id === id) || {}).nom || {})[L.parle] || id;
+    const G = (B.gestes || []).filter(g => g.necessaire).concat((B.gestes || []).filter(g => !g.necessaire));
+    corps = (B.resume ? `<p>${E(B.resume)}</p>` : '')
+      + (B.promesse && B.promesse.faite ? `<p class="alerte"><b>${E(TJ('promesse_tit'))}</b>${B.promesse.citation ? ` — « <span lang="${L.apprend}">${E(B.promesse.citation)}</span> »` : ''}<br>${E(D.ex.promesse[L.parle])}</p>`
+         : `<p class="ok-txt">✓ ${E(TJ('sans_promesse'))}</p>`)
+      + `<ul class="gestes-bilan">${G.map(g => { const e = !g.necessaire ? 'inutile' : g.fait ? 'fait' : 'manque';
+          return `<li class="${e}"><span class="m">${e === 'fait' ? '✓' : e === 'manque' ? '→' : '·'}</span><span><b>${E(nomG(g.id))}</b> — ${E(TJ(e))}`
+            + (g.citation ? `<small lang="${L.apprend}">« ${E(g.citation)} »</small>` : '')
+            + (e === 'manque' && g.conseil ? `<small>${E(g.conseil)}</small>` : '')
+            // Le modèle rend parfois la phrase à dire dans un champ à part.
+            + (e === 'manque' && g.phrase && !(g.conseil || '').includes(String(g.phrase).replace(/^["«\s]+|["»\s]+$/g, '')) ? `<small lang="${L.apprend}">${E(g.phrase)}</small>` : '') + `</span></li>`; }).join('')}</ul>`
+      + ((B.phrases || []).length ? `<h2>${E(TJ('phrases_tit'))}</h2><ul class="gestes-bilan">${B.phrases.map(p =>
+          `<li><span class="m">→</span><span lang="${L.apprend}"><small>« ${E(p.dit)} »</small><b>« ${E(p.mieux)} »</b></span></li>`).join('')}</ul>` : '');
+  }
+  return `<div class="barre-haut"><button type="button" class="btn" data-jquitter="1">${ICO.retour}${E(T('retour'))}</button></div>
+    <p class="enseigne">${E(D.hotel)}</p><h1>${E(TJ('bilan_tit'))}</h1>
+    <div style="display:flex;gap:14px;align-items:center;margin:0 0 12px">`
+    + (c.tel ? `<span class="client-c" style="border:0;padding:0"><span class="tel">${ICO_TEL}</span></span>` : `<img src="${imgClient(c, J.humeur)}" alt="" style="height:110px;background:#fff;border-radius:10px">`)
+    + `<p style="margin:0;font-weight:800;font-size:18px"><span lang="${L.apprend}">${E(c.nom[L.apprend])}</span> ${E(TJ((ok ? 'fin_ok_' : 'fin_ko_') + c.g))}</p></div>
+    <h2>${E(TJ('gestes_tit'))}</h2><div id="jbilan">${corps}</div>
+    <div class="ecoute" style="margin-top:16px"><button type="button" class="btn btn--pri" data-jquitter="1">${E(TJ('autre'))}</button></div>`;
+}
+async function bilanJeu(){
+  arreterJeu();
+  J.vue = 'bilan'; J.bilan = null; J.bilanEtat = 'attente';
+  const mes = J.hist.slice(1).filter(m => m.role === 'user');
+  if (!mes.length) { J.bilanEtat = 'vide'; rendre(); return; }
+  rendre(); window.scrollTo(0, 0);
+  try {
+    const r = await fetch('/api/jeu-de-role', {method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({code: codeJeu, scenario: scenarioJeu(), cas: J.c.id, role: 'receptionniste', niveau: niveauJeu, bilan: true,
+        historique: J.hist.slice(1)})});
+    const d = await r.json().catch(() => ({}));
+    if (!r.ok || !d.bilan) { J.bilanEtat = 'erreur'; J.err = d.error || TJ('erreur'); }
+    else { J.bilan = d.bilan; J.bilanEtat = 'ok'; }
+  } catch (e) { J.bilanEtat = 'erreur'; J.err = TJ('erreur'); }
+  if (J && J.vue === 'bilan') rendre();
+}
+function clicJeu(b){
+  if (b.dataset.jniv) { niveauJeu = b.dataset.jniv; rendre(); return true; }
+  if (b.dataset.jclient) { commencerJeu(b.dataset.jclient); return true; }
+  if (b.dataset.jquitter) { arreterJeu(); J = null; rendre(); window.scrollTo(0, 0); return true; }
+  if (b.dataset.jbilan) { bilanJeu(); return true; }
+  if (b.dataset.jsanslire) { J.sansLire = !J.sansLire; b.setAttribute('aria-pressed', J.sansLire); document.getElementById('jfil').classList.toggle('cache', J.sansLire); return true; }
+  if (b.dataset.jreecouter) { if (J && J.dernier) direJeu(J.dernier); return true; }
+  if (b.id === 'jmicro') { microJeu(); return true; }
+  if (b.id === 'jenv') { envoyerJeu(document.getElementById('jtxt').value); return true; }
+  return false;
+}
+
 function rendre(){
   marque();
   const h = location.hash.slice(1);
@@ -933,6 +1224,7 @@ function rendre(){
   else if (h.startsWith('p-') && D.planches.some(p => 'p-'+p[0] === h)) html = ecranPlanche(h.slice(2));
   else if (h.startsWith('x-') && FAMILLES.includes(h.slice(2))) html = ecranExercice(h.slice(2));
   else if (h === 'test') html = ecranTest();
+  else if (h === 'jeu') html = ecranJeu();
   else html = ecranAccueil();
   document.getElementById('app').innerHTML = html;
 }
@@ -942,6 +1234,7 @@ document.addEventListener('click', e => {
   // On reste sur le choix des langues jusqu'à « Commencer » : sans l'ancre,
   // le second choix faisait sauter à l'accueil.
   if (b.dataset.t && location.hash === '#test') { clicTest(b); return; }
+  if (location.hash === '#jeu' && clicJeu(b)) return;
   if (b.dataset.g) { if (b.dataset.g === 'apprend' && L.apprend !== b.dataset.l) TX = null; L[b.dataset.g] = b.dataset.l; if (L.apprend === L.parle) L.apprend = null; sauver();
     if (location.hash !== '#langue') history.replaceState(null, '', '#langue'); rendre(); return; }
   if (b.id === 'go') { location.hash = 'accueil'; return; }
@@ -968,14 +1261,18 @@ document.addEventListener('click', e => {
     document.querySelector('.panneau').scrollIntoView({block:'nearest'}); return; }
 });
 document.addEventListener('submit', e => { if (e.target.id === 'formNom') { e.preventDefault(); verifierNom(); } });
+document.addEventListener('submit', e => { if (e.target.id !== 'formCodeJeu') return; e.preventDefault();
+  const v = document.getElementById('codeJ').value.trim().toUpperCase(); if (!v) return;
+  codeJeu = v; try { localStorage.setItem('hotel-code', v); } catch (x) {} J = null; rendre(); });
+document.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.id === 'jtxt') envoyerJeu(e.target.value); });
 window.addEventListener('hashchange', () => {
   objet = null;
   const h = location.hash.slice(1);
   if (h.startsWith('x-')) { serie(h.slice(2)); rendre(); setTimeout(() => jouerItem(false), 150); }
-  else { X = null; rendre(); }
+  else { X = null; if (h !== 'jeu' && J) { arreterJeu(); J = null; } rendre(); }
 });
 // Pour les contrôles joués par programme (build/controles) : l'état de la série.
-window.HR = {familles: FAMILLES, etat: () => X, test: () => TX,
+window.HR = {familles: FAMILLES, etat: () => X, test: () => TX, jeu: () => J,
   donnees: /[?&]controle=1/.test(location.search) ? D : undefined};
 rendre();
 </script>
