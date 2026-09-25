@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hôtel Rive-Claire — le test — audit, tour 3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap">
+<style>
+/* ═══════════════════════════════════════════════════════════
+   UN MODULE POUR LA VENTE DE CHAUSSURES — LE CADRAGE
+   Chantier « formation en entreprise », second secteur :
+   le commerce de détail. Écrite à la main, comme
+   analyse-marche.html — ses chiffres viennent d'ailleurs et
+   doivent vieillir visiblement.
+
+   Vert : ce que le tour de main actuel produit déjà.
+   Ambre : ce qui attend votre décision.
+   Rouge : l'argument de vente qui tient à une obligation légale.
+   L'acier ne fait que la structure.
+   ═══════════════════════════════════════════════════════════ */
+
+:root{
+  --ground:#F7F7F5; --card:#FFFFFF; --sunken:#FBFBFA;
+  --ink:#17181A; --body:#3A3D40; --muted:#6E7175;
+  --line:#E4E4E0; --line-fort:#D2D2CD;
+
+  --fait:#0A8F5B;    --fait-bg:#E6F5EE;
+  --decid:#C07A08;   --decid-bg:#FBF2E2;
+  --loi:#C7302B;     --loi-bg:#FBEDEC;
+  --acier:#1D6B8F;   --acier-bg:#E7F0F6;
+
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#151618; --card:#1D1F22; --sunken:#212326;
+    --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+    --line:#2E3135; --line-fort:#3D4146;
+    --fait:#4BC48D; --fait-bg:#12291F;
+    --decid:#E0A63F; --decid-bg:#2C2213;
+    --loi:#EE7A73; --loi-bg:#2E1917;
+    --acier:#6DAFD2; --acier-bg:#14242C;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#151618; --card:#1D1F22; --sunken:#212326;
+  --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+  --line:#2E3135; --line-fort:#3D4146;
+  --fait:#4BC48D; --fait-bg:#12291F;
+  --decid:#E0A63F; --decid-bg:#2C2213;
+  --loi:#EE7A73; --loi-bg:#2E1917;
+  --acier:#6DAFD2; --acier-bg:#14242C;
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--body);
+  font-family:Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased}
+.doc{max-width:880px;margin:0 auto;padding:56px 24px 96px}
+
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--acier);margin:0 0 14px}
+h1{font-family:Newsreader,Georgia,serif;font-size:clamp(38px,6.4vw,58px);line-height:1.04;
+  font-weight:500;letter-spacing:-.02em;color:var(--ink);margin:0 0 20px;text-wrap:balance}
+.chapeau{font-size:19px;line-height:1.6;color:var(--body);margin:0;max-width:62ch}
+.chapeau strong{color:var(--ink);font-weight:700}
+h2{font-family:Newsreader,Georgia,serif;font-size:29px;line-height:1.2;font-weight:600;
+  letter-spacing:-.01em;color:var(--ink);margin:0 0 4px;text-wrap:balance}
+h3{font-size:15px;font-weight:800;color:var(--ink);margin:0 0 6px}
+p{margin:0;max-width:68ch}
+section{display:flex;flex-direction:column;gap:16px;padding:44px 0 0;margin:44px 0 0;
+  border-top:1px solid var(--line)}
+section.premier{border-top:none;margin-top:0;padding-top:40px}
+code{font-family:var(--mono);font-size:.86em;background:var(--sunken);
+  border:1px solid var(--line);border-radius:4px;padding:1px 5px;color:var(--ink)}
+ul.simple{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px}
+ul.simple li{max-width:66ch} ul.simple li strong{color:var(--ink)}
+em.art{font-style:normal;font-family:var(--mono);font-size:.82em;color:var(--muted);
+  white-space:nowrap}
+
+.these{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--acier);
+  border-radius:3px;padding:26px 28px;display:flex;flex-direction:column;gap:12px}
+.these p{font-size:18px}
+.these .cle{font-family:Newsreader,Georgia,serif;font-size:23px;line-height:1.3;
+  font-weight:500;color:var(--ink);font-style:italic}
+
+/* ── Les décisions ─────────────────────────────────────── */
+.decisions{display:flex;flex-direction:column;gap:2px;counter-reset:d}
+.dec{counter-increment:d;background:var(--card);border:1px solid var(--line);
+  border-left:5px solid var(--decid);border-radius:3px;padding:19px 22px 19px 60px;
+  position:relative;display:flex;flex-direction:column;gap:8px}
+.dec.ok{border-left-color:var(--fait)}
+.dec::before{content:counter(d);position:absolute;left:24px;top:18px;
+  font-family:var(--mono);font-size:14px;color:var(--muted)}
+.dec .ligne{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;
+  justify-content:space-between}
+.dec p{font-size:15.5px}
+.dec .defaut{font-size:13.5px;color:var(--muted);font-style:italic}
+
+.badge{display:inline-block;font-size:11.5px;font-weight:800;letter-spacing:.05em;
+  text-transform:uppercase;padding:3px 9px;border-radius:2px;white-space:nowrap}
+.b-fait{background:var(--fait-bg);color:var(--fait)}
+.b-dec{background:var(--decid-bg);color:var(--decid)}
+.b-loi{background:var(--loi-bg);color:var(--loi)}
+.b-n{background:var(--sunken);color:var(--muted);border:1px solid var(--line)}
+
+/* ── Tableaux ──────────────────────────────────────────── */
+.defile{overflow-x:auto;border:1px solid var(--line);border-radius:3px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:15px;min-width:640px}
+caption{caption-side:top;text-align:left;padding:0 0 10px;font-size:13.5px;color:var(--muted)}
+th,td{padding:12px 15px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{font-size:11.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--muted);background:var(--sunken);white-space:nowrap}
+tbody tr:last-child td{border-bottom:none}
+td.q{font-weight:700;color:var(--ink)}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+td small{display:block;color:var(--muted);font-size:13px;line-height:1.45;margin-top:3px}
+tbody tr td:first-child{border-left:4px solid transparent}
+tr.l td:first-child{border-left-color:var(--loi)}
+tr.d td:first-child{border-left-color:var(--decid)}
+tr.f td:first-child{border-left-color:var(--fait)}
+
+/* ── Chiffres ──────────────────────────────────────────── */
+.chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.ch{background:var(--card);border:1px solid var(--line);border-radius:3px;
+  border-top:3px solid var(--acier);padding:15px 16px}
+.ch .n{font-family:Newsreader,Georgia,serif;font-size:30px;line-height:1;font-weight:500;
+  color:var(--ink);display:block;font-variant-numeric:tabular-nums}
+.ch .q{font-size:12.5px;font-weight:700;color:var(--muted);line-height:1.35;display:block;margin-top:7px}
+
+/* ── Marche à suivre ───────────────────────────────────── */
+ol.actions{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;
+  counter-reset:a}
+ol.actions li{counter-increment:a;background:var(--card);border:1px solid var(--line);
+  border-radius:3px;padding:18px 22px 18px 62px;position:relative;display:flex;
+  flex-direction:column;gap:6px}
+ol.actions li::before{content:counter(a);position:absolute;left:22px;top:17px;
+  font-family:var(--mono);font-size:14px;color:var(--muted)}
+ol.actions li p{font-size:15.5px}
+.qui{font-size:13px;color:var(--muted);font-style:italic}
+
+.reserve{border:1px dashed var(--line-fort);border-radius:3px;padding:20px 24px;
+  font-size:15px;color:var(--muted);display:flex;flex-direction:column;gap:9px}
+.reserve strong{color:var(--body)}
+.avert{background:var(--loi-bg);border:1px solid var(--loi);border-radius:3px;
+  padding:20px 24px;display:flex;flex-direction:column;gap:9px}
+.avert strong{color:var(--ink)}
+.avert p{font-size:15.5px;color:var(--body)}
+.pied{margin-top:52px;padding-top:22px;border-top:1px solid var(--line);font-size:13.5px;
+  color:var(--muted);display:flex;flex-direction:column;gap:5px}
+@media (max-width:620px){ .doc{padding:36px 18px 72px} }
+
+/* ── décisions à boutons (plan magasin de vêtements) ── */
+.dec2{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:12px 0}
+.dq{margin:0 0 10px;font-weight:700;color:var(--ink)}
+.dn{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--decid-bg);color:var(--decid);font-size:13px;margin-right:8px}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opt{font:inherit;font-size:15px;text-align:left;cursor:pointer;background:var(--sunken);color:var(--body);border:1px solid var(--line-fort);border-radius:10px;padding:8px 12px}
+.opt:hover{border-color:var(--acier)}
+.opt[aria-pressed="true"]{background:var(--fait-bg);border-color:var(--fait);color:var(--ink);font-weight:700}
+.opt .tag{font-size:12px;color:var(--decid);font-weight:700;margin-left:4px}
+.dw{margin:10px 0 0;font-size:15px;color:var(--muted)}
+.btn-export{font:inherit;font-weight:700;cursor:pointer;background:var(--acier);color:#fff;border:0;border-radius:10px;padding:10px 16px}
+.etat{margin-left:12px;color:var(--muted);font-size:15px}
+table{display:block;overflow-x:auto}
+
+/* ── étape 0 de la réception ── */
+.doc.large{max-width:1180px}
+.chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.temoins{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:16px 0}
+.temoins figure,.comptoir{margin:0;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px}
+.temoins img,.comptoir img{width:100%;display:block}
+.temoins figcaption{text-align:center;font-weight:700;color:#17181A;margin-top:6px}
+.comptoir{margin:14px 0}
+.verdict,.choix{display:flex;flex-wrap:wrap;gap:12px;margin:12px 0}
+.verdict button,.choix button{font:inherit;cursor:pointer;background:var(--sunken);color:var(--body);
+  border:1px solid var(--line-fort);border-radius:10px;padding:8px 12px;min-height:40px}
+.choix{gap:12px}
+.choix button{font-size:13px;padding:5px 8px;border-radius:8px}
+button[aria-pressed="true"][data-v="ok"],button[aria-pressed="true"][data-v="garder"]{background:var(--fait-bg);border-color:var(--fait);color:var(--ink);font-weight:700}
+button[aria-pressed="true"][data-v="retirer"]{background:var(--loi-bg);border-color:var(--loi);color:var(--ink);font-weight:700}
+button[aria-pressed="true"][data-v="douteux"],button[aria-pressed="true"][data-v="revoir"]{background:var(--decid-bg);border-color:var(--decid);color:var(--ink);font-weight:700}
+.opts,.noms{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin:12px 0}
+.opt{font:inherit;text-align:left;cursor:pointer;background:var(--card);color:var(--body);border:1px solid var(--line-fort);
+  border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:4px;width:100%}
+.opt b{color:var(--ink)}
+.opt span{font-size:14px;color:var(--muted)}
+.opt .reco{display:inline;font-size:12px;font-weight:700;color:var(--acier);margin-left:6px}
+.opt[aria-pressed="true"]{border-color:var(--acier);box-shadow:inset 0 0 0 2px var(--acier);background:var(--acier-bg)}
+.opt.petit{display:inline-flex;width:auto;padding:8px 12px;min-height:40px}
+.nom{display:flex;flex-direction:column;gap:6px}
+.nom p{margin:0;font-size:14px;line-height:1.45}
+.aide{color:var(--muted);font-size:15px}
+.bloc-voix{margin:18px 0}
+.vgrille{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+.vx{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:8px}
+.vx audio{width:100%;height:36px}
+.vn{margin:0;font-weight:800;color:var(--ink)}
+.vn span{font-weight:600;color:var(--muted);font-size:14px;margin-left:6px}
+.verdict.mini{margin:0}
+.sommaire{position:sticky;top:0;z-index:2;background:var(--ground);display:flex;flex-wrap:wrap;gap:6px 14px;
+  padding:10px 0;border-bottom:1px solid var(--line);margin:16px 0 8px;font-size:15px}
+.sommaire a{color:var(--acier);text-decoration:none;font-weight:700}
+.planche h2 .compte{font-size:15px;color:var(--muted);font-weight:600;margin-left:6px}
+.grille{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px}
+.mot{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:3px}
+.mot.piege{border-color:var(--decid);box-shadow:inset 0 3px 0 var(--decid)}
+.mot[data-etat="retirer"]{opacity:.45}
+body.pieges-seuls .mot:not(.piege),body.pieges-seuls .planche:not(:has(.piege)){display:none}
+.mot .img{width:100%;aspect-ratio:1/1;object-fit:contain;background:#fff;border-radius:8px}
+.mot .attente,.mot .rien{display:grid;place-items:center;text-align:center;font-size:13px;color:var(--muted);
+  background:var(--sunken);border:1px dashed var(--line-fort);aspect-ratio:3/2}
+.mot .l{margin:0;font-size:15px;line-height:1.3;color:var(--ink)}
+.mot .l:first-of-type{font-weight:800;font-size:16px;margin-top:4px}
+.mot .dr{display:inline-block;min-width:24px;font-size:11px;font-weight:800;color:var(--muted);letter-spacing:.04em}
+.mot .note{margin:4px 0 2px;font-size:13px;line-height:1.4;color:var(--body)}
+.mot.piege .note{color:var(--decid);font-weight:700}
+.mot .choix{margin-top:auto;padding-top:6px}
+@media (max-width:640px){
+  .grille{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .sommaire{flex-wrap:nowrap;overflow-x:auto;white-space:nowrap}
+  .mot .l{font-size:14px}
+  .cmp{font-size:14px}
+}
+textarea{width:100%;font:inherit;font-size:15px;padding:10px;border-radius:10px;border:1px solid var(--line-fort);
+  background:var(--card);color:var(--ink)}
+
+.doc.large{max-width:1100px}
+.obj li{margin:6px 0}
+.filtres{position:sticky;top:0;z-index:2;background:var(--ground);display:flex;flex-wrap:wrap;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);margin:18px 0 8px}
+.filtres button,.choix button{font:inherit;font-size:14px;cursor:pointer;background:var(--sunken);color:var(--body);border:1px solid var(--line-fort);border-radius:9px;padding:6px 10px}
+.filtres button[aria-pressed=true]{background:var(--ink);color:var(--card);border-color:var(--ink)}
+.constat{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--line-fort);border-radius:12px;padding:12px 14px;margin:10px 0}
+.constat.bloquant{border-left-color:var(--loi)}
+.constat.majeur{border-left-color:var(--decid)}
+.constat.mineur{border-left-color:var(--acier)}
+.tete-c{display:flex;flex-wrap:wrap;gap:8px;align-items:baseline}
+.code{font-weight:900;font-size:16px;color:var(--ink)}
+.nomc{font-weight:700;color:var(--ink)}
+.grav{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.08em}
+.constat.bloquant .grav{color:var(--loi)} .constat.majeur .grav{color:var(--decid)} .constat.mineur .grav{color:var(--acier)}
+.src{font-size:12px;color:var(--muted);margin-left:auto}
+.lieu{margin:4px 0 0;font-size:14px;color:var(--muted)}
+.cst{margin:6px 0 0}
+.cor{margin:6px 0 0;font-size:15px}
+.choix{display:flex;flex-wrap:wrap;gap:12px;margin-top:8px}
+.choix button[aria-pressed=true][data-v=corriger]{background:var(--loi-bg);border-color:var(--loi);color:var(--ink);font-weight:700}
+.choix button[aria-pressed=true][data-v=garder]{background:var(--fait-bg);border-color:var(--fait);color:var(--ink);font-weight:700}
+.choix button[aria-pressed=true][data-v=discuter]{background:var(--decid-bg);border-color:var(--decid);color:var(--ink);font-weight:700}
+</style>
+<style>
+  .doc{padding-top:26px}
+  .retour{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;
+    color:var(--muted);text-decoration:none;margin-bottom:34px}
+  .retour:hover{color:var(--acier)}
+  table.cmp{width:100%;border-collapse:collapse;font-size:15px;background:var(--card);
+    border:1px solid var(--line);border-radius:3px;overflow:hidden}
+  table.cmp th,table.cmp td{padding:13px 15px;text-align:left;vertical-align:top;
+    border-bottom:1px solid var(--line)}
+  table.cmp thead th{background:var(--sunken);font-size:12px;font-weight:800;
+    letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+  table.cmp tbody tr:last-child td{border-bottom:0}
+  table.cmp td:first-child{font-weight:700;color:var(--ink)}
+  .roule{overflow-x:auto}
+  .voie{background:var(--card);border:1px solid var(--line);border-radius:3px;
+    padding:24px 26px;display:flex;flex-direction:column;gap:11px}
+  .voie.oui{border-color:var(--fait);border-width:2px;padding:23px 25px}
+  .voie.non{border-left:5px solid var(--loi)}
+  .voie h3{font-size:19px;font-family:Newsreader,Georgia,serif;font-weight:600;margin:0}
+  .voie .cout{font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+  .verdict{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+    padding:3px 10px;border-radius:99px;align-self:flex-start}
+  .v-oui{background:var(--fait-bg);color:var(--fait)}
+  .v-peut{background:var(--decid-bg);color:var(--decid)}
+  .v-non{background:var(--loi-bg);color:var(--loi)}
+  .mes{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:2px;
+    background:var(--line);border:1px solid var(--line);border-radius:3px;overflow:hidden}
+  .mes div{background:var(--card);padding:16px 18px}
+  .mes b{display:block;font-family:Newsreader,Georgia,serif;font-size:27px;font-weight:500;
+    color:var(--ink);line-height:1.1}
+  .mes span{font-size:13px;color:var(--muted)}
+  .planche{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+  .planche figure{margin:0;background:var(--card);border:1px solid var(--line);
+    border-radius:3px;overflow:hidden;display:flex;flex-direction:column}
+  .planche figure.large{grid-column:1 / -1}
+  .planche img{display:block;width:100%;height:auto;background:var(--sunken)}
+  .planche figcaption{padding:13px 16px 15px;font-size:14px;line-height:1.5;color:var(--muted);
+    border-top:1px solid var(--line)}
+  .planche figcaption b{display:block;color:var(--ink);font-size:14.5px;margin-bottom:2px}
+  @media (max-width:620px){ .planche{grid-template-columns:1fr} }
+  .doc p a,.doc li a,.doc td a{color:var(--acier);text-decoration:underline;
+    text-underline-offset:2px;text-decoration-thickness:1px}
+  ul.src{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:7px;font-size:14.5px}
+  ul.src li{color:var(--muted)} ul.src .d{font-family:var(--mono);font-size:12.5px}
+  h3.sous{font-family:Newsreader,Georgia,serif;font-size:21px;font-weight:600;
+    letter-spacing:-.01em;color:var(--ink);margin:14px 0 0}
+  @media (max-width:640px){ .doc{padding-left:18px;padding-right:18px} }
+</style>
+</head>
+<body><div class="doc large">
+<a class="retour" href="/presentations.html#hotellerie"><span aria-hidden="true">&#8592;</span> Le classeur</a>
+<p class="eyebrow">Hôtel Rive-Claire — le test &middot; boucle didactique &middot; tour 3</p>
+<h1>L'audit de la trousse</h1>
+<p class="chapeau">La trousse passée à la grille de la boucle didactique — 22 critères, sept familles — par deux
+regards qui n'avaient pas les intentions de l'auteur : l'un a lu le <b>contenu</b>, l'autre a <b>servi et joué
+la page</b> à 375 et à 1280 px. <strong>0 bloquant,
+3 majeurs, 6 mineurs.</strong>
+Sortie de boucle : zéro bloquant, zéro majeur. Tranchez chaque constat, puis exportez : l'export pilote la révision.</p>
+
+<div class="chiffres">
+  <div class="ch"><span class="n">0</span><span class="q">bloquants — l'objectif ne peut pas être atteint, ou on enseigne le mauvais geste</span></div>
+  <div class="ch"><span class="n">3</span><span class="q">majeurs — atteint par une minorité, ou ne tiendra pas une semaine</span></div>
+  <div class="ch"><span class="n">6</span><span class="q">mineurs — friction, consignés</span></div>
+  <div class="ch"><span class="n">F1</span><span class="q">le critère le plus touché — F1 (6), A3 (1), D2 (1), D4 (1)</span></div>
+</div>
+
+<section class="premier"><h2>Les objectifs contre lesquels on juge</h2>
+<p>Les objectifs du cadrage (étape 0), repris dans
+<code>build/contenu/entreprise-hotel/boucle/cadrage.md</code>.</p><ul class="obj"><li><b>O1 — Entendre la demande..</b> Entendre une demande dite au débit d&#x27;un client (type de chambre, nuits, dates) et la saisir juste : 7 sur 8 en série.</li><li><b>O2 — Épeler et noter..</b> Faire épeler et noter un nom, un numéro de chambre, un prix, une heure, au téléphone compris : 5 de suite sans erreur.</li><li><b>O3 — Les gestes du comptoir..</b> Accueillir, confirmer, refuser poliment et expliquer des frais avec les formules de la langue apprise : 6 situations sur 8 au comptoir.</li><li><b>O4 — Le relais au gérant..</b> Garder pour le gérant ce qui lui revient : aucune promesse hors règle, éliminatoire, et dit avant.</li></ul></section>
+
+<nav class="filtres" aria-label="Filtrer les constats"><button type="button" data-fg="tout" aria-pressed="true">Tout</button><button type="button" data-fg="bloquant" aria-pressed="false">Bloquants · 0</button><button type="button" data-fg="majeur" aria-pressed="false">Majeurs · 3</button><button type="button" data-fg="mineur" aria-pressed="false">Mineurs · 6</button><button type="button" data-ff="A" aria-pressed="false">A · Alignement</button><button type="button" data-ff="D" aria-pressed="false">D · Pratique</button><button type="button" data-ff="F" aria-pressed="false">F · Transfert</button></nav>
+<section class="liste-c"><article class="constat majeur" data-id="t3-01" data-g="majeur" data-f="F"><div class="tete-c"><span class="code">F1</span><span class="nomc">Évaluation alignée</span><span class="grav">majeur</span><span class="src">test</span></div><p class="lieu">hotel_planches.py, écouteur submit formTestB (chiffres(v) === chiffres(bonne)) ; test.py B, b21-b23 / b51-b53, UI pB_c</p><p class="cst">La saisie tapée ferme la ruse, mais la comparaison « chiffres seuls » rejette des notations justes. Joué : « 239.00 » pour 239 $ → faux ; « 348,00 $ » pour 348 $ → faux ; « 175.4 » pour 175,40 $ → faux ; « 126,6 » pour 126,60 $ → faux ; « 5:15 pm » pour 17:15 → faux (« 2 14 », « 4 09 », « 18 h 45 », « 175.40 », « mehta » passent bien). Écrire les cents à zéro est le réflexe d&#x27;un caissier. Et dans le pilote fr→en, la voix dit « five fifteen p.m. » / « six forty-five p.m. » : l&#x27;employé qui a tout entendu et note « 5:15 PM », comme on le fait en Amérique du Nord, échoue l&#x27;item. La consigne rappelle le 24 h, mais cet item mesure alors la conversion d&#x27;heure, pas l&#x27;écoute (O2). Comme la sous-partie « prix et heures » exige 2 sur 3, deux de ces faux négatifs la font échouer, et le palier perd un point (s = A + sous-parties B) : l&#x27;employé à la limite passe d&#x27;« à l&#x27;aise » à « fonctionnel », ou de « fonctionnel » à « débutant ». Enfin, une réponse tapée en lettres (« three eighteen ») est ignorée sans aucun message : l&#x27;employé croit que le bouton ne marche pas.</p><p class="cor"><b>Correctif :</b> Comparer des VALEURS, pas des suites de chiffres. Pour un prix, lire la saisie comme un nombre (virgule ou point décimal ; « 239 », « 239,00 », « 239.00 $ » égaux ; « 175,4 » = 175,40). Pour une heure : accepter hh:mm et, quand la phrase dit p.m. ou « de la tarde », accepter aussi h+12 (« 5:15 », « 5:15 pm » = 17:15). Ajouter à donnees() un tableau de saisies équivalentes et de saisies fausses, joué par le contrôle. Quand la saisie ne contient aucun chiffre, afficher « Tapez des chiffres » au lieu de ne rien faire.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat majeur" data-id="t3-02" data-g="majeur" data-f="F"><div class="tete-c"><span class="code">F1</span><span class="nomc">Évaluation alignée</span><span class="grav">majeur</span><span class="src">test</span></div><p class="lieu">hotel_planches.py CLE_TEST (hotel-test-&lt;parle&gt;-&lt;apprend&gt;), nouveauTest (codeOk: !h.length) ; test.py CODE_FORMATEUR</p><p class="cst">Le code ne ferme que la voie du rechargement. L&#x27;historique, la forme et le droit de passer sans code tiennent à la paire de langues sur un appareil, pas à la personne. Joué : après une passation confirmée en fr→en, il suffit de passer l&#x27;interface en espagnol (même langue apprise, mêmes sons, mêmes items) pour ouvrir « Intento 1 · forma 2 » sans code. Même chose dans une fenêtre privée, sur un autre appareil, ou en vidant le stockage du site. L&#x27;employé curieux voit ainsi les deux formes avant le test de fin de parcours. À l&#x27;inverse, sur une tablette partagée à la réception, deux employés de la même paire partagent un seul historique : le 2e reçoit « Passation 2 », l&#x27;alternance des formes suit l&#x27;autre, et le 1er peut repasser à la fin la forme qu&#x27;il a déjà vue. Le parallélisme et le contrebalancement soignés aux tours 1 et 2 ne tiennent donc pas. Aggravant : le code 2413 est en clair dans la source de la page (&quot;code&quot;: &quot;2413&quot;, même sans controle=1), et les essais sont illimités (4 chiffres).</p><p class="cor"><b>Correctif :</b> Indexer l&#x27;historique sur la LANGUE APPRISE et un pseudo saisi par le formateur à la première passation (hotel-test-&lt;apprend&gt;-&lt;pseudo&gt;), jamais sur la langue d&#x27;interface. Exiger le code du formateur pour TOUTE première passation qui n&#x27;est pas déjà en cours. Ne plus écrire le code en clair : le comparer à un condensé, par exemple SHA-256 de code + sel, et bloquer 5 minutes après 5 essais.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat majeur" data-id="t3-03" data-g="majeur" data-f="F"><div class="tete-c"><span class="code">F1</span><span class="nomc">Évaluation alignée</span><span class="grav">majeur</span><span class="src">test</span></div><p class="lieu">hotel_planches.py garderEnCours (d: {i, enreg: {}}), finTest, ecranResultats (TX.d.enreg[id] ? … : « — »)</p><p class="cst">La reprise perd, à l&#x27;écran, les réponses orales enregistrées avant un rechargement. Joué deux fois, en fr→en puis en es→fr : on enregistre d6 à d8, on recharge au milieu de D, puis on finit. Dans la même séance, le panneau du formateur montre « — » pour d6, d7 et d8, alors que les trois fichiers sont bien dans IndexedDB. Ils ne réapparaissent qu&#x27;après un nouveau rechargement de l&#x27;écran des résultats, geste que rien n&#x27;indique. Le formateur voit « — », croit que l&#x27;employé n&#x27;a rien dit et note « Rien » : le palier descend (moins de 3 gestes, donc jamais « à l&#x27;aise »). De plus, l&#x27;item repris après le rechargement ne propose plus « Réécouter ma réponse », même s&#x27;il avait déjà été enregistré. Or ces interruptions sont celles que la reprise voulait couvrir : onglet tué sur téléphone, permission du micro qui recharge la page.</p><p class="cor"><b>Correctif :</b> Dans finTest, et à la reprise d&#x27;une passation en D, relire IndexedDB pour toutes les clés (n, id) de la forme, comme le fait déjà reprendre() pour une passation finie, avant d&#x27;afficher le panneau. Au panneau, distinguer « pas d&#x27;enregistrement » de « chargement… ».</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t3-04" data-g="mineur" data-f="A"><div class="tete-c"><span class="code">A3</span><span class="nomc">Alignement constructif</span><span class="grav">mineur</span><span class="src">test</span></div><p class="lieu">hotel_planches.py palierDe (oralOk = !notes.length || …) ; test.py ORAL_LANGUE</p><p class="cst">La langue ne compte que si au moins un GESTE est noté. Joué : les cinq réponses notées « Incompréhensible » sur la seule ligne Langue → le palier reste « À l&#x27;aise », puisque notes ne retient que les réponses qui ont un g. Il tombe à « fonctionnel » au premier geste noté. Le formateur qui commence par la ligne Langue voit un palier faux. Par ailleurs, « Formule attendue » et « Compréhensible » n&#x27;ont aucun effet sur le palier, et les cases n&#x27;ont toujours pas leur descripteur d&#x27;une ligne demandé au tour 2.</p><p class="cor"><b>Correctif :</b> Compter comme notée toute réponse dont g OU l est posé ; ou n&#x27;afficher de palier qu&#x27;une fois les 5 réponses notées sur les deux lignes. Donner un descripteur d&#x27;une ligne à chaque case, ou fusionner « Formule attendue » et « Compréhensible » si la distinction ne sert à rien.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t3-05" data-g="mineur" data-f="D"><div class="tete-c"><span class="code">D2</span><span class="nomc">Fidélité à la situation</span><span class="grav">mineur</span><span class="src">test</span></div><p class="lieu">hotel_planches.py garderEnCours (appelé avant le rendu de l&#x27;item ; rejoue n&#x27;est pas sauvé au clic &#x27;ecouter&#x27;)</p><p class="cst">La reprise rouvre la limite d&#x27;une seule réécoute. Joué : réécouter (le bouton se grise), recharger → rejoue: false, le bouton revient. Chaque rechargement donne une écoute de plus, en A, B et C. Aucun item déjà répondu ne se rejoue : la réponse est écrite avant le rendu du suivant, ce qui est bien.</p><p class="cor"><b>Correctif :</b> Enregistrer rejoue et le nombre d&#x27;écoutes dans la passation en cours à chaque écoute. Au rechargement, ne pas rejouer l&#x27;item de lui-même si la réécoute est déjà prise.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t3-06" data-g="mineur" data-f="D"><div class="tete-c"><span class="code">D4</span><span class="nomc">Distracteurs plausibles</span><span class="grav">mineur</span><span class="src">test</span></div><p class="lieu">test.py b22 / b52 (es)</p><p class="cst">Hors pilote, pour l&#x27;apprenant de l&#x27;espagnol, les deux formes ne sont pas équivalentes. La forme 1 dit « a las cinco y cuarto de la tarde » (on ajoute 15). La forme 2 dit « a un cuarto para las siete de la tarde » : il faut retrancher, et savoir que ça donne 18:45. La tournure est juste au Mexique et bien plus exigeante, donc la forme 2 est plus difficile d&#x27;un item dans la sous-partie « prix et heures ». En fr et en en, les deux formes sont équivalentes.</p><p class="cor"><b>Correctif :</b> Même tournure dans les deux formes (« a las seis cuarenta y cinco » contre « a las cinco y cuarto », ou « un cuarto para » des deux côtés).</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t3-07" data-g="mineur" data-f="F"><div class="tete-c"><span class="code">F1</span><span class="nomc">Évaluation alignée</span><span class="grav">mineur</span><span class="src">test</span></div><p class="lieu">hotel_planches.py clicTest &#x27;palier&#x27; (purgerOral dès le clic), ecranResultats</p><p class="cst">Le formateur peut confirmer un palier sans avoir noté une seule réponse orale. Le palier alors proposé ignore l&#x27;oral, et peut donc être « À l&#x27;aise ». Le même clic efface sans avertissement les voix de l&#x27;employé. Les boutons de palier se comportent comme des bascules (aria-pressed, on peut changer d&#x27;avis), mais l&#x27;effacement ne se défait pas : un premier clic hésitant empêche de réécouter pour corriger.</p><p class="cor"><b>Correctif :</b> Griser « Confirmer » tant que les 5 réponses ne sont pas notées (ou demander « Confirmer sans l&#x27;oral? »). Effacer les voix à la sortie du panneau ou après 24 h, pas au clic sur un palier.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t3-08" data-g="mineur" data-f="F"><div class="tete-c"><span class="code">F1</span><span class="nomc">Évaluation alignée</span><span class="grav">mineur</span><span class="src">test</span></div><p class="lieu">hotel_planches.py clicTest &#x27;refaire&#x27; → nouveauTest → purgerOral(h.length + 1)</p><p class="cst">Une passation qui n&#x27;est jamais confirmée garde ses voix sans limite. « Refaire le test » avant la confirmation laisse la passation n dans l&#x27;historique, avec confirme: null, et ses cinq enregistrements dans IndexedDB. purgerOral ne vise que le numéro de la nouvelle passation, et la confirmation, que le sien. Sur un appareil de réception, c&#x27;est l&#x27;enjeu Loi 25 signalé au tour 2, rouvert par ce chemin.</p><p class="cor"><b>Correctif :</b> Au lancement d&#x27;une nouvelle passation, effacer les voix de toutes les passations précédentes (passer sur toutes les clés « CLE_TEST:* » d&#x27;IndexedDB), et marquer l&#x27;entrée abandonnée (« abandonnée », sans palier).</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t3-09" data-g="mineur" data-f="F"><div class="tete-c"><span class="code">F1</span><span class="nomc">Évaluation alignée</span><span class="grav">mineur</span><span class="src">test</span></div><p class="lieu">hotel_planches.py ecranResultats ; test.py UI &#x27;precedent&#x27;, &#x27;reprendre_passation&#x27;, &#x27;atteint&#x27;, &#x27;pas_encore&#x27;, &#x27;visé&#x27; (jamais utilisés)</p><p class="cst">Le test « se repasse à la fin », mais l&#x27;écran des résultats ne montre que la dernière passation. « Passation précédente » est traduit et jamais affiché. Le formateur ne voit donc pas l&#x27;écart entre l&#x27;entrée et la sortie, alors que l&#x27;historique le contient, notes orales comprises. Après une confirmation, l&#x27;employé ne revoit plus son palier non plus : #test ouvre directement l&#x27;introduction de la passation suivante.</p><p class="cor"><b>Correctif :</b> Au panneau du formateur, une ligne par passation précédente de la même personne (A, B par sous-partie, C, oral, palier confirmé). Après la confirmation, #test montre le palier confirmé au-dessus du bouton de nouvelle passation. Retirer les textes orphelins.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article></section>
+
+<p style="margin-top:1.4rem"><button type="button" class="btn-export" id="exporter">Exporter mes décisions</button>
+<span id="etat" class="etat"></span></p>
+<div class="pied"><p>Ce que la boucle ne vérifie pas : l'exactitude du contenu (un locuteur et un commerçant doivent
+valider), l'essai auprès de vrais employés (le pilote), l'effet au travail (des semaines après). Page produite par
+<code>build/francoeur_audit_page.py</code> — ne pas l'éditer.</p></div>
+</div>
+<script>
+(function(){
+  var CLE='hotellerie-test-audit-3', v={}, fg='tout', ff=null;
+  try{ v=JSON.parse(localStorage.getItem(CLE)||'{}'); }catch(e){}
+  function peindre(){
+    document.querySelectorAll('.constat').forEach(function(c){
+      c.querySelectorAll('.choix button').forEach(function(b){ b.setAttribute('aria-pressed', v[c.dataset.id]===b.dataset.v?'true':'false'); });
+      c.hidden = !((fg==='tout'||c.dataset.g===fg) && (!ff||c.dataset.f===ff));
+    });
+    var n=Object.keys(v).length, t=document.querySelectorAll('.constat').length;
+    document.getElementById('etat').textContent=n+' constats tranchés sur '+t;
+  }
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('.choix button');
+    if(b){ var id=b.closest('.constat').dataset.id; if(v[id]===b.dataset.v) delete v[id]; else v[id]=b.dataset.v;
+      try{ localStorage.setItem(CLE,JSON.stringify(v)); }catch(x){} peindre(); return; }
+    var f=e.target.closest('.filtres button'); if(!f) return;
+    if(f.dataset.fg){ fg=f.dataset.fg; ff=null; } else { ff = ff===f.dataset.ff ? null : f.dataset.ff; }
+    document.querySelectorAll('.filtres button').forEach(function(x){
+      x.setAttribute('aria-pressed', String((x.dataset.fg&&x.dataset.fg===fg&&!ff) || (x.dataset.ff&&x.dataset.ff===ff))); });
+    peindre();
+  });
+  document.getElementById('exporter').onclick=function(){
+    var out={audit:'hotellerie-test-audit', tour:3, decisions:v};
+    var t=JSON.stringify(out,null,2);
+    if(navigator.clipboard) navigator.clipboard.writeText(t).then(function(){ document.getElementById('etat').textContent='Copié — à recoller dans la séance suivante.'; },function(){prompt('Copiez :',t);}); else prompt('Copiez :',t);
+  };
+  peindre();
+})();
+</script></body></html>
