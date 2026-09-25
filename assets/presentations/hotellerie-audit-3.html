@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hôtel Rive-Claire — audit, tour 3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap">
+<style>
+/* ═══════════════════════════════════════════════════════════
+   UN MODULE POUR LA VENTE DE CHAUSSURES — LE CADRAGE
+   Chantier « formation en entreprise », second secteur :
+   le commerce de détail. Écrite à la main, comme
+   analyse-marche.html — ses chiffres viennent d'ailleurs et
+   doivent vieillir visiblement.
+
+   Vert : ce que le tour de main actuel produit déjà.
+   Ambre : ce qui attend votre décision.
+   Rouge : l'argument de vente qui tient à une obligation légale.
+   L'acier ne fait que la structure.
+   ═══════════════════════════════════════════════════════════ */
+
+:root{
+  --ground:#F7F7F5; --card:#FFFFFF; --sunken:#FBFBFA;
+  --ink:#17181A; --body:#3A3D40; --muted:#6E7175;
+  --line:#E4E4E0; --line-fort:#D2D2CD;
+
+  --fait:#0A8F5B;    --fait-bg:#E6F5EE;
+  --decid:#C07A08;   --decid-bg:#FBF2E2;
+  --loi:#C7302B;     --loi-bg:#FBEDEC;
+  --acier:#1D6B8F;   --acier-bg:#E7F0F6;
+
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#151618; --card:#1D1F22; --sunken:#212326;
+    --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+    --line:#2E3135; --line-fort:#3D4146;
+    --fait:#4BC48D; --fait-bg:#12291F;
+    --decid:#E0A63F; --decid-bg:#2C2213;
+    --loi:#EE7A73; --loi-bg:#2E1917;
+    --acier:#6DAFD2; --acier-bg:#14242C;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#151618; --card:#1D1F22; --sunken:#212326;
+  --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+  --line:#2E3135; --line-fort:#3D4146;
+  --fait:#4BC48D; --fait-bg:#12291F;
+  --decid:#E0A63F; --decid-bg:#2C2213;
+  --loi:#EE7A73; --loi-bg:#2E1917;
+  --acier:#6DAFD2; --acier-bg:#14242C;
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--body);
+  font-family:Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased}
+.doc{max-width:880px;margin:0 auto;padding:56px 24px 96px}
+
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--acier);margin:0 0 14px}
+h1{font-family:Newsreader,Georgia,serif;font-size:clamp(38px,6.4vw,58px);line-height:1.04;
+  font-weight:500;letter-spacing:-.02em;color:var(--ink);margin:0 0 20px;text-wrap:balance}
+.chapeau{font-size:19px;line-height:1.6;color:var(--body);margin:0;max-width:62ch}
+.chapeau strong{color:var(--ink);font-weight:700}
+h2{font-family:Newsreader,Georgia,serif;font-size:29px;line-height:1.2;font-weight:600;
+  letter-spacing:-.01em;color:var(--ink);margin:0 0 4px;text-wrap:balance}
+h3{font-size:15px;font-weight:800;color:var(--ink);margin:0 0 6px}
+p{margin:0;max-width:68ch}
+section{display:flex;flex-direction:column;gap:16px;padding:44px 0 0;margin:44px 0 0;
+  border-top:1px solid var(--line)}
+section.premier{border-top:none;margin-top:0;padding-top:40px}
+code{font-family:var(--mono);font-size:.86em;background:var(--sunken);
+  border:1px solid var(--line);border-radius:4px;padding:1px 5px;color:var(--ink)}
+ul.simple{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px}
+ul.simple li{max-width:66ch} ul.simple li strong{color:var(--ink)}
+em.art{font-style:normal;font-family:var(--mono);font-size:.82em;color:var(--muted);
+  white-space:nowrap}
+
+.these{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--acier);
+  border-radius:3px;padding:26px 28px;display:flex;flex-direction:column;gap:12px}
+.these p{font-size:18px}
+.these .cle{font-family:Newsreader,Georgia,serif;font-size:23px;line-height:1.3;
+  font-weight:500;color:var(--ink);font-style:italic}
+
+/* ── Les décisions ─────────────────────────────────────── */
+.decisions{display:flex;flex-direction:column;gap:2px;counter-reset:d}
+.dec{counter-increment:d;background:var(--card);border:1px solid var(--line);
+  border-left:5px solid var(--decid);border-radius:3px;padding:19px 22px 19px 60px;
+  position:relative;display:flex;flex-direction:column;gap:8px}
+.dec.ok{border-left-color:var(--fait)}
+.dec::before{content:counter(d);position:absolute;left:24px;top:18px;
+  font-family:var(--mono);font-size:14px;color:var(--muted)}
+.dec .ligne{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;
+  justify-content:space-between}
+.dec p{font-size:15.5px}
+.dec .defaut{font-size:13.5px;color:var(--muted);font-style:italic}
+
+.badge{display:inline-block;font-size:11.5px;font-weight:800;letter-spacing:.05em;
+  text-transform:uppercase;padding:3px 9px;border-radius:2px;white-space:nowrap}
+.b-fait{background:var(--fait-bg);color:var(--fait)}
+.b-dec{background:var(--decid-bg);color:var(--decid)}
+.b-loi{background:var(--loi-bg);color:var(--loi)}
+.b-n{background:var(--sunken);color:var(--muted);border:1px solid var(--line)}
+
+/* ── Tableaux ──────────────────────────────────────────── */
+.defile{overflow-x:auto;border:1px solid var(--line);border-radius:3px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:15px;min-width:640px}
+caption{caption-side:top;text-align:left;padding:0 0 10px;font-size:13.5px;color:var(--muted)}
+th,td{padding:12px 15px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{font-size:11.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--muted);background:var(--sunken);white-space:nowrap}
+tbody tr:last-child td{border-bottom:none}
+td.q{font-weight:700;color:var(--ink)}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+td small{display:block;color:var(--muted);font-size:13px;line-height:1.45;margin-top:3px}
+tbody tr td:first-child{border-left:4px solid transparent}
+tr.l td:first-child{border-left-color:var(--loi)}
+tr.d td:first-child{border-left-color:var(--decid)}
+tr.f td:first-child{border-left-color:var(--fait)}
+
+/* ── Chiffres ──────────────────────────────────────────── */
+.chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.ch{background:var(--card);border:1px solid var(--line);border-radius:3px;
+  border-top:3px solid var(--acier);padding:15px 16px}
+.ch .n{font-family:Newsreader,Georgia,serif;font-size:30px;line-height:1;font-weight:500;
+  color:var(--ink);display:block;font-variant-numeric:tabular-nums}
+.ch .q{font-size:12.5px;font-weight:700;color:var(--muted);line-height:1.35;display:block;margin-top:7px}
+
+/* ── Marche à suivre ───────────────────────────────────── */
+ol.actions{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;
+  counter-reset:a}
+ol.actions li{counter-increment:a;background:var(--card);border:1px solid var(--line);
+  border-radius:3px;padding:18px 22px 18px 62px;position:relative;display:flex;
+  flex-direction:column;gap:6px}
+ol.actions li::before{content:counter(a);position:absolute;left:22px;top:17px;
+  font-family:var(--mono);font-size:14px;color:var(--muted)}
+ol.actions li p{font-size:15.5px}
+.qui{font-size:13px;color:var(--muted);font-style:italic}
+
+.reserve{border:1px dashed var(--line-fort);border-radius:3px;padding:20px 24px;
+  font-size:15px;color:var(--muted);display:flex;flex-direction:column;gap:9px}
+.reserve strong{color:var(--body)}
+.avert{background:var(--loi-bg);border:1px solid var(--loi);border-radius:3px;
+  padding:20px 24px;display:flex;flex-direction:column;gap:9px}
+.avert strong{color:var(--ink)}
+.avert p{font-size:15.5px;color:var(--body)}
+.pied{margin-top:52px;padding-top:22px;border-top:1px solid var(--line);font-size:13.5px;
+  color:var(--muted);display:flex;flex-direction:column;gap:5px}
+@media (max-width:620px){ .doc{padding:36px 18px 72px} }
+
+/* ── décisions à boutons (plan magasin de vêtements) ── */
+.dec2{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:12px 0}
+.dq{margin:0 0 10px;font-weight:700;color:var(--ink)}
+.dn{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--decid-bg);color:var(--decid);font-size:13px;margin-right:8px}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opt{font:inherit;font-size:15px;text-align:left;cursor:pointer;background:var(--sunken);color:var(--body);border:1px solid var(--line-fort);border-radius:10px;padding:8px 12px}
+.opt:hover{border-color:var(--acier)}
+.opt[aria-pressed="true"]{background:var(--fait-bg);border-color:var(--fait);color:var(--ink);font-weight:700}
+.opt .tag{font-size:12px;color:var(--decid);font-weight:700;margin-left:4px}
+.dw{margin:10px 0 0;font-size:15px;color:var(--muted)}
+.btn-export{font:inherit;font-weight:700;cursor:pointer;background:var(--acier);color:#fff;border:0;border-radius:10px;padding:10px 16px}
+.etat{margin-left:12px;color:var(--muted);font-size:15px}
+table{display:block;overflow-x:auto}
+
+/* ── étape 0 de la réception ── */
+.doc.large{max-width:1180px}
+.chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.temoins{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:16px 0}
+.temoins figure,.comptoir{margin:0;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px}
+.temoins img,.comptoir img{width:100%;display:block}
+.temoins figcaption{text-align:center;font-weight:700;color:#17181A;margin-top:6px}
+.comptoir{margin:14px 0}
+.verdict,.choix{display:flex;flex-wrap:wrap;gap:12px;margin:12px 0}
+.verdict button,.choix button{font:inherit;cursor:pointer;background:var(--sunken);color:var(--body);
+  border:1px solid var(--line-fort);border-radius:10px;padding:8px 12px;min-height:40px}
+.choix{gap:12px}
+.choix button{font-size:13px;padding:5px 8px;border-radius:8px}
+button[aria-pressed="true"][data-v="ok"],button[aria-pressed="true"][data-v="garder"]{background:var(--fait-bg);border-color:var(--fait);color:var(--ink);font-weight:700}
+button[aria-pressed="true"][data-v="retirer"]{background:var(--loi-bg);border-color:var(--loi);color:var(--ink);font-weight:700}
+button[aria-pressed="true"][data-v="douteux"],button[aria-pressed="true"][data-v="revoir"]{background:var(--decid-bg);border-color:var(--decid);color:var(--ink);font-weight:700}
+.opts,.noms{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin:12px 0}
+.opt{font:inherit;text-align:left;cursor:pointer;background:var(--card);color:var(--body);border:1px solid var(--line-fort);
+  border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:4px;width:100%}
+.opt b{color:var(--ink)}
+.opt span{font-size:14px;color:var(--muted)}
+.opt .reco{display:inline;font-size:12px;font-weight:700;color:var(--acier);margin-left:6px}
+.opt[aria-pressed="true"]{border-color:var(--acier);box-shadow:inset 0 0 0 2px var(--acier);background:var(--acier-bg)}
+.opt.petit{display:inline-flex;width:auto;padding:8px 12px;min-height:40px}
+.nom{display:flex;flex-direction:column;gap:6px}
+.nom p{margin:0;font-size:14px;line-height:1.45}
+.aide{color:var(--muted);font-size:15px}
+.bloc-voix{margin:18px 0}
+.vgrille{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+.vx{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:8px}
+.vx audio{width:100%;height:36px}
+.vn{margin:0;font-weight:800;color:var(--ink)}
+.vn span{font-weight:600;color:var(--muted);font-size:14px;margin-left:6px}
+.verdict.mini{margin:0}
+.sommaire{position:sticky;top:0;z-index:2;background:var(--ground);display:flex;flex-wrap:wrap;gap:6px 14px;
+  padding:10px 0;border-bottom:1px solid var(--line);margin:16px 0 8px;font-size:15px}
+.sommaire a{color:var(--acier);text-decoration:none;font-weight:700}
+.planche h2 .compte{font-size:15px;color:var(--muted);font-weight:600;margin-left:6px}
+.grille{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px}
+.mot{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:3px}
+.mot.piege{border-color:var(--decid);box-shadow:inset 0 3px 0 var(--decid)}
+.mot[data-etat="retirer"]{opacity:.45}
+body.pieges-seuls .mot:not(.piege),body.pieges-seuls .planche:not(:has(.piege)){display:none}
+.mot .img{width:100%;aspect-ratio:1/1;object-fit:contain;background:#fff;border-radius:8px}
+.mot .attente,.mot .rien{display:grid;place-items:center;text-align:center;font-size:13px;color:var(--muted);
+  background:var(--sunken);border:1px dashed var(--line-fort);aspect-ratio:3/2}
+.mot .l{margin:0;font-size:15px;line-height:1.3;color:var(--ink)}
+.mot .l:first-of-type{font-weight:800;font-size:16px;margin-top:4px}
+.mot .dr{display:inline-block;min-width:24px;font-size:11px;font-weight:800;color:var(--muted);letter-spacing:.04em}
+.mot .note{margin:4px 0 2px;font-size:13px;line-height:1.4;color:var(--body)}
+.mot.piege .note{color:var(--decid);font-weight:700}
+.mot .choix{margin-top:auto;padding-top:6px}
+@media (max-width:640px){
+  .grille{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .sommaire{flex-wrap:nowrap;overflow-x:auto;white-space:nowrap}
+  .mot .l{font-size:14px}
+  .cmp{font-size:14px}
+}
+textarea{width:100%;font:inherit;font-size:15px;padding:10px;border-radius:10px;border:1px solid var(--line-fort);
+  background:var(--card);color:var(--ink)}
+
+.doc.large{max-width:1100px}
+.obj li{margin:6px 0}
+.filtres{position:sticky;top:0;z-index:2;background:var(--ground);display:flex;flex-wrap:wrap;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);margin:18px 0 8px}
+.filtres button,.choix button{font:inherit;font-size:14px;cursor:pointer;background:var(--sunken);color:var(--body);border:1px solid var(--line-fort);border-radius:9px;padding:6px 10px}
+.filtres button[aria-pressed=true]{background:var(--ink);color:var(--card);border-color:var(--ink)}
+.constat{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--line-fort);border-radius:12px;padding:12px 14px;margin:10px 0}
+.constat.bloquant{border-left-color:var(--loi)}
+.constat.majeur{border-left-color:var(--decid)}
+.constat.mineur{border-left-color:var(--acier)}
+.tete-c{display:flex;flex-wrap:wrap;gap:8px;align-items:baseline}
+.code{font-weight:900;font-size:16px;color:var(--ink)}
+.nomc{font-weight:700;color:var(--ink)}
+.grav{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.08em}
+.constat.bloquant .grav{color:var(--loi)} .constat.majeur .grav{color:var(--decid)} .constat.mineur .grav{color:var(--acier)}
+.src{font-size:12px;color:var(--muted);margin-left:auto}
+.lieu{margin:4px 0 0;font-size:14px;color:var(--muted)}
+.cst{margin:6px 0 0}
+.cor{margin:6px 0 0;font-size:15px}
+.choix{display:flex;flex-wrap:wrap;gap:12px;margin-top:8px}
+.choix button[aria-pressed=true][data-v=corriger]{background:var(--loi-bg);border-color:var(--loi);color:var(--ink);font-weight:700}
+.choix button[aria-pressed=true][data-v=garder]{background:var(--fait-bg);border-color:var(--fait);color:var(--ink);font-weight:700}
+.choix button[aria-pressed=true][data-v=discuter]{background:var(--decid-bg);border-color:var(--decid);color:var(--ink);font-weight:700}
+</style>
+<style>
+  .doc{padding-top:26px}
+  .retour{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;
+    color:var(--muted);text-decoration:none;margin-bottom:34px}
+  .retour:hover{color:var(--acier)}
+  table.cmp{width:100%;border-collapse:collapse;font-size:15px;background:var(--card);
+    border:1px solid var(--line);border-radius:3px;overflow:hidden}
+  table.cmp th,table.cmp td{padding:13px 15px;text-align:left;vertical-align:top;
+    border-bottom:1px solid var(--line)}
+  table.cmp thead th{background:var(--sunken);font-size:12px;font-weight:800;
+    letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+  table.cmp tbody tr:last-child td{border-bottom:0}
+  table.cmp td:first-child{font-weight:700;color:var(--ink)}
+  .roule{overflow-x:auto}
+  .voie{background:var(--card);border:1px solid var(--line);border-radius:3px;
+    padding:24px 26px;display:flex;flex-direction:column;gap:11px}
+  .voie.oui{border-color:var(--fait);border-width:2px;padding:23px 25px}
+  .voie.non{border-left:5px solid var(--loi)}
+  .voie h3{font-size:19px;font-family:Newsreader,Georgia,serif;font-weight:600;margin:0}
+  .voie .cout{font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+  .verdict{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+    padding:3px 10px;border-radius:99px;align-self:flex-start}
+  .v-oui{background:var(--fait-bg);color:var(--fait)}
+  .v-peut{background:var(--decid-bg);color:var(--decid)}
+  .v-non{background:var(--loi-bg);color:var(--loi)}
+  .mes{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:2px;
+    background:var(--line);border:1px solid var(--line);border-radius:3px;overflow:hidden}
+  .mes div{background:var(--card);padding:16px 18px}
+  .mes b{display:block;font-family:Newsreader,Georgia,serif;font-size:27px;font-weight:500;
+    color:var(--ink);line-height:1.1}
+  .mes span{font-size:13px;color:var(--muted)}
+  .planche{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+  .planche figure{margin:0;background:var(--card);border:1px solid var(--line);
+    border-radius:3px;overflow:hidden;display:flex;flex-direction:column}
+  .planche figure.large{grid-column:1 / -1}
+  .planche img{display:block;width:100%;height:auto;background:var(--sunken)}
+  .planche figcaption{padding:13px 16px 15px;font-size:14px;line-height:1.5;color:var(--muted);
+    border-top:1px solid var(--line)}
+  .planche figcaption b{display:block;color:var(--ink);font-size:14.5px;margin-bottom:2px}
+  @media (max-width:620px){ .planche{grid-template-columns:1fr} }
+  .doc p a,.doc li a,.doc td a{color:var(--acier);text-decoration:underline;
+    text-underline-offset:2px;text-decoration-thickness:1px}
+  ul.src{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:7px;font-size:14.5px}
+  ul.src li{color:var(--muted)} ul.src .d{font-family:var(--mono);font-size:12.5px}
+  h3.sous{font-family:Newsreader,Georgia,serif;font-size:21px;font-weight:600;
+    letter-spacing:-.01em;color:var(--ink);margin:14px 0 0}
+  @media (max-width:640px){ .doc{padding-left:18px;padding-right:18px} }
+</style>
+</head>
+<body><div class="doc large">
+<a class="retour" href="/presentations.html#hotellerie"><span aria-hidden="true">&#8592;</span> Le classeur</a>
+<p class="eyebrow">Hôtel Rive-Claire &middot; boucle didactique &middot; tour 3</p>
+<h1>L'audit de la trousse</h1>
+<p class="chapeau">La trousse passée à la grille de la boucle didactique — 22 critères, sept familles — par deux
+regards qui n'avaient pas les intentions de l'auteur : l'un a lu le <b>contenu</b>, l'autre a <b>servi et joué
+la page</b> à 375 et à 1280 px. <strong>0 bloquant,
+2 majeurs, 23 mineurs.</strong>
+Sortie de boucle : zéro bloquant, zéro majeur. Tranchez chaque constat, puis exportez : l'export pilote la révision.</p>
+
+<div class="chiffres">
+  <div class="ch"><span class="n">0</span><span class="q">bloquants — l'objectif ne peut pas être atteint, ou on enseigne le mauvais geste</span></div>
+  <div class="ch"><span class="n">2</span><span class="q">majeurs — atteint par une minorité, ou ne tiendra pas une semaine</span></div>
+  <div class="ch"><span class="n">23</span><span class="q">mineurs — friction, consignés</span></div>
+  <div class="ch"><span class="n">E1</span><span class="q">le critère le plus touché — E1 (5), D4 (4), G1 (4), A2 (2), A3 (2)</span></div>
+</div>
+
+<section class="premier"><h2>Les objectifs contre lesquels on juge</h2>
+<p>Les objectifs du cadrage (étape 0), repris dans
+<code>build/contenu/entreprise-hotel/boucle/cadrage.md</code>.</p><ul class="obj"><li><b>O1 — Entendre la demande..</b> Entendre une demande dite au débit d&#x27;un client (type de chambre, nuits, dates) et la saisir juste : 7 sur 8 en série.</li><li><b>O2 — Épeler et noter..</b> Faire épeler et noter un nom, un numéro de chambre, un prix, une heure, au téléphone compris : 5 de suite sans erreur.</li><li><b>O3 — Les gestes du comptoir..</b> Accueillir, confirmer, refuser poliment et expliquer des frais avec les formules de la langue apprise : 6 situations sur 8 au comptoir.</li><li><b>O4 — Le relais au gérant..</b> Garder pour le gérant ce qui lui revient : aucune promesse hors règle, éliminatoire, et dit avant.</li></ul></section>
+
+<nav class="filtres" aria-label="Filtrer les constats"><button type="button" data-fg="tout" aria-pressed="true">Tout</button><button type="button" data-fg="bloquant" aria-pressed="false">Bloquants · 0</button><button type="button" data-fg="majeur" aria-pressed="false">Majeurs · 2</button><button type="button" data-fg="mineur" aria-pressed="false">Mineurs · 23</button><button type="button" data-ff="A" aria-pressed="false">A · Alignement</button><button type="button" data-ff="C" aria-pressed="false">C · Charge cognitive</button><button type="button" data-ff="D" aria-pressed="false">D · Pratique</button><button type="button" data-ff="E" aria-pressed="false">E · Rétroaction</button><button type="button" data-ff="F" aria-pressed="false">F · Transfert</button><button type="button" data-ff="G" aria-pressed="false">G · Accès</button></nav>
+<section class="liste-c"><article class="constat majeur" data-id="t3-01" data-g="majeur" data-f="A"><div class="tete-c"><span class="code">A2</span><span class="nomc">Écart de performance réel</span><span class="grav">majeur</span><span class="src">contenu</span></div><p class="lieu">exercices.py ERREURS_NOMBRES[&#x27;h24&#x27;][&#x27;fr&#x27;] et [&#x27;fraction&#x27;][&#x27;fr&#x27;] ; NOMBRES n5–n8 côté fr (direction pilote es→fr)</p><p class="cst">Les voisines sont maintenant écrites par langue apprise, mais la branche française enseigne une règle fausse sur la langue. La rétroaction h24 dit « Le français compte sur 24 heures » (en : « French counts on the 24-hour clock », es : « El francés cuenta en 24 horas »). C&#x27;est vrai de l&#x27;écrit et de l&#x27;horaire affiché, pas de la parole : au Québec, au téléphone, un client dit « vers huit heures ce soir », « sept heures et demie du soir », « onze heures », bien plus souvent que « vingt-trois heures ». La rétroaction fraction de la même branche le contredit d&#x27;ailleurs : « moins le quart » n&#x27;existe que sur 12 heures. Et aucun des quatre items d&#x27;heure en français ne contient la forme orale dominante (12 h + « du matin / de l&#x27;après-midi / du soir ») ni l&#x27;heure ambiguë qu&#x27;il faut faire préciser. L&#x27;hispanophone qui apprend le français repart donc avec « onze heures = 11:00, toujours ». Cette idée ne tiendra pas une semaine au comptoir, et c&#x27;est précisément O2 (noter une heure au téléphone).</p><p class="cor"><b>Correctif :</b> Réécrire h24 en règle de NOTATION, pas de langue : fr « À l&#x27;hôtel, on note sur 24 heures. Le client dit « quinze heures » ou « trois heures de l&#x27;après-midi » : les deux font 15:00. Sans précision, demandez : « Du matin ou du soir? » » (et en/es de même). Ajouter pour fr un code ampm (« du soir », « de l&#x27;après-midi » = +12) et un ou deux items oraux : « On va arriver vers onze heures du soir » → 23:00, voisines 11:00 (ampm), 21:00, 23:15 ; « à sept heures et quart ce soir » → 19:15. Compléter la fraction fr : « onze heures moins le quart = 10:45 (l&#x27;heure d&#x27;avant) ».</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat majeur" data-id="t3-02" data-g="majeur" data-f="D"><div class="tete-c"><span class="code">D4</span><span class="nomc">Distracteurs plausibles</span><span class="grav">majeur</span><span class="src">contenu</span></div><p class="lieu">exercices.py PIEGES stylo[&#x27;fr&#x27;] (2e distracteur), diner[&#x27;fr&#x27;] (2e distracteur) ; marginalement monnaie[&#x27;en&#x27;], facture[&#x27;fr&#x27;]</p><p class="cst">Le défaut du tour 2 (une fausse lecture vraie dans une variété de la langue de l&#x27;employé) est corrigé sur la fausse lecture, mais il a glissé sur les seconds distracteurs écrits à la main. (1) stylo : « Aquí tiene una pluma » → « un crayon ». Au Québec, « crayon » désigne couramment tout instrument pour écrire, stylo compris (« un crayon à l&#x27;encre », « passe-moi un crayon »). Le réceptionniste québécois qui le choisit a compris et il est marqué faux. Pire, la fausse lecture est devenue « une plume d&#x27;oiseau », que personne ne choisira pour signer : l&#x27;item se joue entre la bonne réponse et une autre bonne réponse. (2) diner : « La comida se sirve de una a cuatro de la tarde » → « le déjeuner ». En France, en Belgique, en Suisse et en Afrique francophone, « le déjeuner » EST le repas du midi. Une bonne part des francophones qui travaillent dans un hôtel de Québec sont immigrés : pour eux, c&#x27;est la bonne réponse. Le commentaire de tête (« le dîner = le souper en France ») montre que ce risque était connu. Plus faibles : monnaie en, « money » pour « Voici votre monnaie : deux dollars cinquante » (le sens global est compris, seule la nuance manque) ; facture fr, « le reçu » pour « la cuenta de su estancia » remise au départ, souvent appelée reçu une fois payée. Hors directions pilotes (fr→es surtout), mais c&#x27;est la classe du bloquant du tour 1.</p><p class="cor"><b>Correctif :</b> stylo : second distracteur « un feutre » ou « un trombone » (faux au Québec comme au Mexique). diner : second distracteur « le goûter » ou « la collation » ; si l&#x27;on tient à « déjeuner », l&#x27;accepter comme juste avec la mise en garde « au Québec, le déjeuner est le repas du matin ». monnaie en : « the currency » à la place de « money ». facture : « le devis ». Passer chaque second distracteur au même crible que la fausse lecture : Québec, France, Afrique ; États-Unis, Canada ; Mexique.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t3-03" data-g="mineur" data-f="A"><div class="tete-c"><span class="code">A2</span><span class="nomc">Écart de performance réel</span><span class="grav">mineur</span><span class="src">contenu</span></div><p class="lieu">exercices.py REPONSES r8 (bonne réponse fr), r9 (bonne réponse fr) ; sons x/modele/fr/r8.mp3, r9.mp3</p><p class="cst">Le nivellement des longueurs a dégradé deux modèles français, que la direction pilote es→fr entend et imite dans « Je le dis ». r8 : « elle s&#x27;applique à chaque nuit » (correct) est devenu « elle compte pour chaque nuit ». C&#x27;est un calque de « counts for », au sens flou (« elle compte » = elle importe ?). r9 : « Il coûte vingt dollars par nuit » est devenu « Vingt dollars par nuit, et vous pouvez entrer et sortir. » Ce n&#x27;est pas faux, mais le client a posé une question fermée (« ce n&#x27;est pas gratuit? ») et la réponse modèle n&#x27;a ni « Non », ni formule. C&#x27;est la seule bonne réponse sèche des douze, alors que r3-2 est rejeté pour être « vrai, mais sec ». Les longueurs, elles, sont désormais bien nivelées : la bonne réponse n&#x27;est strictement la plus longue que 2 fois sur 12 en fr et en en, 4 fois sur 12 en es.</p><p class="cor"><b>Correctif :</b> r8 fr : « C&#x27;est la taxe sur l&#x27;hébergement; elle s&#x27;applique à chaque nuit. » (63 caractères, dans la bande). r9 fr : « Non, c&#x27;est vingt dollars par nuit; vous pouvez entrer et sortir. » (±20 % respecté contre 61 et 54). Régénérer les deux x/modele/fr.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t3-04" data-g="mineur" data-f="A"><div class="tete-c"><span class="code">A3</span><span class="nomc">Alignement constructif</span><span class="grav">mineur</span><span class="src">contenu</span></div><p class="lieu">exercices.py REPONSES r9 (3e choix), r6 (bonne réponse et 2e choix) ; REGLE_RELAIS</p><p class="cst">J&#x27;ai repassé les 12 items contre REGLE_RELAIS. Les neuf drapeaux True (r2-3, r3-3, r4-2, r7-2, r8-3, r9-2, r10-2, r11-2, r12-2) sont cohérents, et aucun choix de relais au gérant n&#x27;est une promesse. Il reste deux écarts. (1) r9-3 « Oui, il est gratuit, mais seulement la fin de semaine » accorde une gratuité (le stationnement du week-end) que REGLE_RELAIS range sous « un service gratuit : le gérant décide ». Il est pourtant traité en erreur ordinaire, alors que r9-2 (« je le laisse gratuit cette fois-ci ») est éliminatoire : deux façons de donner la même chose, deux sanctions. (2) r6 : la bonne réponse commence encore par « Bien sûr. » (« Of course. », « Claro. ») à « puis-je changer pour vendredi? », avant toute vérification. Le choix 2 est corrigé justement pour avoir confirmé sans vérifier, et la règle dit qu&#x27;on ne promet pas une chambre qu&#x27;on n&#x27;a pas. C&#x27;est le troisième tour que r6 est signalé ; la raison nouvelle est que la frontière est maintenant écrite, et que la bonne réponse la franchit à moitié. C&#x27;est aussi le modèle qu&#x27;on imite dans « Je le dis ».</p><p class="cor"><b>Correctif :</b> r9-3 : réécrire en tarif faux sans gratuité (« C&#x27;est quinze dollars pour tout le séjour, pas par nuit. »), erreur ordinaire. Ou le laisser tel quel avec promesse True. r6 : « Je vérifie tout de suite. Quel est votre numéro de confirmation? » / « Let me check. Could I have your confirmation number? » / « Permítame verificar. ¿Me da su número de confirmación? » (longueurs dans la bande), puis régénérer x/modele/*/r6.mp3.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t3-05" data-g="mineur" data-f="A"><div class="tete-c"><span class="code">A3</span><span class="nomc">Alignement constructif</span><span class="grav">mineur</span><span class="src">page</span></div><p class="lieu">#x-pieges contre #p-* (planches)</p><p class="cst">Les planches signalent des pièges que l&#x27;exercice ne fait pas pratiquer, et une série se compose toujours des mêmes items, dans un autre ordre : à la deuxième série on retient les réponses au lieu de lire la phrase. Persiste du tour 2. (Mesure : fr→en : 4 items pratiqués pour 9 pièges sur les planches (pas lit-double, dejeuner, depot, date, location-auto) ; 24 séries distinctes sur 400 (les 24 ordres des mêmes 4 items). es→fr : 5 items pour 8 pièges (pas stylo, facture, autobus) ; 48 séries distinctes sur 400.)</p><p class="cor"><b>Correctif :</b> Écrire l&#x27;item manquant pour chaque piège de la planche de la paire (phrase, faux, autre, explication), et en tirer 5 au hasard par série.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t3-06" data-g="mineur" data-f="C"><div class="tete-c"><span class="code">C1</span><span class="nomc">Segmentation</span><span class="grav">mineur</span><span class="src">contenu</span></div><p class="lieu">exercices.py REGLE_RELAIS ; hotel_planches.py ecranExercice(&#x27;reponds&#x27;)</p><p class="cst">La règle a pris une troisième phrase au tour 2 : 52 mots en français, 49 en anglais. Elle s&#x27;affiche en entier, en un seul bloc, au-dessus de chacun des 8 items, et elle ne s&#x27;estompe jamais. Elle nomme dans la langue de l&#x27;employé la réponse de plusieurs items : « réencoder une clé » (r5), « un service gratuit, toute exception » (r9, r10, r12), « des frais effacés » (r11). Le choix se fait alors par repérage de mots-clés dans sa propre langue, au lieu d&#x27;appliquer la règle de mémoire. Or ni le test ni le jeu de rôle ne l&#x27;afficheront. Le premier constat du tour 1 (bandeau qui désignait la réponse) revient en plus doux.</p><p class="cor"><b>Correctif :</b> Découper en trois lignes courtes (Vous décidez · Le gérant décide · Personne ne promet). L&#x27;afficher en entier aux deux premiers items, puis replié (« La règle du comptoir ▸ », à déplier), et le retirer aux deux derniers : c&#x27;est l&#x27;estompage du C4.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t3-07" data-g="mineur" data-f="C"><div class="tete-c"><span class="code">C1</span><span class="nomc">Segmentation</span><span class="grav">mineur</span><span class="src">page</span></div><p class="lieu">#x-reponds, 375 px</p><p class="cst">L&#x27;encadré de la règle (58 mots) revient intégralement avant chacun des 8 items. Au téléphone, il occupe environ 290 px et repousse la parole du client sous le milieu de l&#x27;écran. Dire la règle avant est une décision juste (O4), mais la répéter en entier à chaque item alourdit la lecture. (Mesure : Capture à 375 px : l&#x27;encadré va de y ≈ 255 à y ≈ 545, et la phrase du client est à y ≈ 625, sur un écran de 812 px.)</p><p class="cor"><b>Correctif :</b> Afficher l&#x27;encadré ouvert au premier item seulement, puis replié (&lt;details&gt; « La règle du comptoir ») aux items suivants, et le rouvrir à la suite d&#x27;une promesse.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t3-08" data-g="mineur" data-f="C"><div class="tete-c"><span class="code">C2</span><span class="nomc">Cohérence</span><span class="grav">mineur</span><span class="src">page</span></div><p class="lieu">#p-* (planches), paire fr→en</p><p class="cst">Les notes ordinaires ne suivent toujours pas la paire : l&#x27;employé francophone qui apprend l&#x27;anglais lit des notes sur l&#x27;espagnol du Mexique, et l&#x27;employé hispanophone qui apprend le français n&#x27;a que les notes de pièges. Persiste depuis le tour 1. (Mesure : fr→en : 19 des 53 notes ordinaires affichées parlent du Mexique ou de l&#x27;espagnol (reservation, ascenseur, minibar, douche, piscine, chambre « cuarto »…). es→fr : 0 note ordinaire (aucune n&#x27;existe en es), 8 notes de pièges en tout.)</p><p class="cor"><b>Correctif :</b> Donner aux notes une paire cible (comme les pièges) ou les rédiger par langue apprise ; masquer une note dont la paire ne correspond pas.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t3-09" data-g="mineur" data-f="D"><div class="tete-c"><span class="code">D1</span><span class="nomc">Récupération</span><span class="grav">mineur</span><span class="src">contenu</span></div><p class="lieu">hotel_planches.py ecranExercice(&#x27;dire&#x27;) pour les items r ; exercices.py REPONSES r1, r4, r7, r8</p><p class="cst">Le correctif du tour 2 est en place : le contexte s&#x27;affiche, le client se fait entendre dans la langue apprise, sa traduction est cachée. Deux choses restent. (1) Pour les répliques de client, l&#x27;employé ne sait pas quel geste on attend de lui, alors que les formules de politesse ont leur « Vous voulez dire : ». Devant « I have a reservation under Moreno », « One moment, please » ou « Welcome, let me look it up » sont justes, mais le modèle est « Could you spell your last name? ». Le bouton « Je l&#x27;ai dit » demande de se comparer à une seule phrase parmi plusieurs bonnes, et le bon employé coche « Pas encore ». (2) r7 et r8 n&#x27;ont pas de contexte, alors que leur modèle repose sur un fait absent de l&#x27;écran : les 100 $ sont un dépôt pour les imprévus, la ligne de 3 $ est la taxe sur l&#x27;hébergement. C&#x27;est le reste du D1 majeur du tour 2 : quatre items ont été traités (r2, r3, r9, r10), pas ces deux-là.</p><p class="cor"><b>Correctif :</b> Ajouter un champ `but` (langue parlée) aux 12 items et l&#x27;afficher comme « Vous voulez : » (r1 « lui faire épeler son nom de famille », r4 « vous excuser et passer au gérant », etc.). Donner un ctx_dire à r7 (« 100 $ retenus sur la carte pour les imprévus, annulés au départ ») et à r8 (« La ligne de 3 $ : la taxe sur l&#x27;hébergement »). Libellé du bouton : « J&#x27;ai dit l&#x27;essentiel ».</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t3-10" data-g="mineur" data-f="D"><div class="tete-c"><span class="code">D1</span><span class="nomc">Récupération</span><span class="grav">mineur</span><span class="src">page</span></div><p class="lieu">bilan des neuf familles</p><p class="cst">Le bilan ne montre toujours pas les items manqués, et « Recommencer » tire une série neuve au hasard : les mots ratés ont peu de chances de revenir. Persiste depuis le tour 1. (Mesure : Bilans relevés : « 5 sur 8 du premier coup », puis Recommencer et Les autres exercices ; aucune liste des items manqués.)</p><p class="cor"><b>Correctif :</b> Garder les items ratés (X.essais &gt; 0) ; les lister au bilan (mot dans la langue apprise, avec son bouton Écouter) ; ajouter « Reprendre mes erreurs », qui refait la série avec eux seulement.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t3-11" data-g="mineur" data-f="D"><div class="tete-c"><span class="code">D2</span><span class="nomc">Fidélité à la situation</span><span class="grav">mineur</span><span class="src">page</span></div><p class="lieu">#x-image</p><p class="cst">C&#x27;est toujours la seule famille muette : on choisit le mot écrit sans jamais l&#x27;entendre, ni avant ni après la réponse, alors qu&#x27;au comptoir le mot se dit. Persiste depuis le tour 1. (Mesure : Série complète jouée dans les deux directions : 0 requête .mp3 (contre 11 pour #x-entends).)</p><p class="cor"><b>Correctif :</b> Après la bonne réponse, faire entendre le mot (jouer(`${A}/${id}.mp3`)), comme #x-entends le fait pour une réponse fausse.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t3-12" data-g="mineur" data-f="D"><div class="tete-c"><span class="code">D4</span><span class="nomc">Distracteurs plausibles</span><span class="grav">mineur</span><span class="src">contenu</span></div><p class="lieu">exercices.py PIEGES (directions pilotes : fr→en souper, billet, etage, monnaie ; es→fr prenom, serviettes, diner, frais, tout-droit)</p><p class="cst">La phrase de contexte (correctif du tour 1) règle bien le sens, mais elle rend souvent la fausse lecture intenable dans la scène. L&#x27;item se réussit alors par élimination, sans connaître le mot. Direction pilote es→fr : « des frais de vingt dollars pour le stationnement » contre « algo fresco » ; « le dîner est servi de midi à quatorze heures » contre « la cena » (l&#x27;heure donne la réponse) ; « Votre prénom? J&#x27;ai déjà votre nom de famille » contre « el apellido » (déjà signalé). Seul tout-droit (« a la derecha ») garde un vrai piège. Même effet ailleurs : « a warehouse » pour un dépôt sur la carte, « un navire de charge » pour un stationnement, « une plume d&#x27;oiseau » pour signer, « the carpet » pour une confirmation. La série sensibilise, grâce à l&#x27;explication, mais elle n&#x27;exerce plus la discrimination.</p><p class="cor"><b>Correctif :</b> Garder la phrase, mais choisir des fausses lectures cohérentes avec la scène et fausses pour le mot : frais es « un depósito » / « un descuento » ; depot en « a fee » en fausse lecture et « a charge » en second ; diner es : phrase sans heure (« Le dîner est servi à la terrasse. ») et la plage horaire dans l&#x27;explication (serviettes reste tel quel : sans « pour la douche », « servilletas » deviendrait défendable, puisqu&#x27;au Québec « serviette » désigne aussi la serviette de table).</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t3-13" data-g="mineur" data-f="D"><div class="tete-c"><span class="code">D4</span><span class="nomc">Distracteurs plausibles</span><span class="grav">mineur</span><span class="src">page</span></div><p class="lieu">#x-pieges, fr→en et es→fr</p><p class="cst">La troisième option est maintenant écrite à la main et plausible (le défaut du tour 2 est réglé), mais la bonne réponse se devine encore par deux indices : elle n&#x27;est jamais l&#x27;option la plus longue, et, depuis la règle du tour 2 (« ne jamais répéter la place précédente » pour les séries courtes), elle ne revient jamais à la place de l&#x27;item d&#x27;avant. (Mesure : 400 séries jouées par programme par direction : bonne à la même place que la précédente 0/1200 (fr→en) et 0/1600 (es→fr), contre 33 % attendus ; bonne = option la plus longue 0/1600 et 0/2000. Stratégie « écarter la plus longue et la place d&#x27;avant » : 56 % de réussite en fr→en, 76 % en es→fr, contre 33 % au hasard.)</p><p class="cor"><b>Correctif :</b> Pour 3 options et une série de 4-5 items, tirer les places au hasard sans interdire la répétition (ou équilibrer sur deux séries) ; allonger une option juste dans au moins un item sur trois (« de la monnaie qu&#x27;on rend », etc.) ou raccourcir un distracteur, pour que la plus longue soit la bonne environ une fois sur trois.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t3-14" data-g="mineur" data-f="D"><div class="tete-c"><span class="code">D4</span><span class="nomc">Distracteurs plausibles</span><span class="grav">mineur</span><span class="src">page</span></div><p class="lieu">#x-reponds, surtout fr→en (répliques en anglais)</p><p class="cst">La place de la bonne réplique est équilibrée, et la plus longue n&#x27;est plus un indice (défaut du tour 1 réglé). Il reste un biais de longueur : en anglais, la bonne réplique est celle de longueur moyenne dans 7 items sur 12. (Mesure : Positions sur 3200 items : 1056 / 1054 / 1090 (fr→en), 1074 / 1074 / 1052 (es→fr). Stratégie « prendre la réplique de longueur moyenne » : 64 % en fr→en, 42 % en es→fr (33 % au hasard). En français, bonne = la plus courte 5 fois sur 12.)</p><p class="cor"><b>Correctif :</b> Retoucher 3 ou 4 répliques anglaises (r1, r2, r4, r6, r7, r10, r11) pour que la bonne soit tantôt la plus longue, tantôt la plus courte ; même contrôle sur le français.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t3-15" data-g="mineur" data-f="E"><div class="tete-c"><span class="code">E1</span><span class="nomc">Rétroaction explicative</span><span class="grav">mineur</span><span class="src">contenu</span></div><p class="lieu">exercices.py NOMBRES n2, n3 (voisines communes aux trois langues), n5, n6, n7 ; ERREURS_NOMBRES</p><p class="cst">Le principe « une voisine = une erreur d&#x27;oreille dans CETTE langue » n&#x27;est pas appliqué partout. n2 et n3 gardent une liste commune ({l: … for l in …}). n2 : 1280 est codé « inv » (« les chiffres sont inversés »), mais en anglais (« twelve-oh-eight » / « twelve-eighty ») et en espagnol (« ocho » / « ochenta »), c&#x27;est une vraie erreur d&#x27;oreille, huit contre quatre-vingts. La rétroaction envoie réécouter l&#x27;ordre, ce qui est faux. En français, ni 1280 (« quatre-vingts ») ni 2108 ne viennent de l&#x27;oreille ; l&#x27;erreur française plausible est 208 (douze / deux). n5 en et es : 13:00 est codé « heure » (« ce n&#x27;est pas l&#x27;heure dite, réécoutez »), alors que l&#x27;employé a bien entendu « three p.m. » : il a mal converti (+10 au lieu de +12). La bonne rétroaction est ampm. Plusieurs voisines « heure » n&#x27;ont aucune parenté sonore : n5 16:00 en et es (three / four, tres / cuatro), n6 7:00 fr (sept / onze), n6 10:00 en et es. Elles s&#x27;écartent sans écouter. n7 en et es : 17:30 reçoit la rétroaction ampm, qui cite « p.m. » ou « de la tarde », mots absents de la phrase (« Breakfast starts at seven thirty »).</p><p class="cor"><b>Correctif :</b> Écrire n2 et n3 par langue : fr 1208 → 208 (voisin), 1218, 1280 retiré ; en → 1280 (teen/ty : nouveau code « dizaine », « eight / eighty »), 1218, 128 ; es → 1280 (« ocho / ochenta »), 1218, 208 (« doce / dos »). n5 en et es : recoder 13:00 en ampm. Remplacer les voisines sans parenté sonore (n5 en 16:00 → 3:30 « three / thirty » ; n6 fr 7:00 → 1:00 « onze / un » ou 21:00). n7 : rétroaction propre, « le petit déjeuner, c&#x27;est le matin : 7:30 », ou retirer 17:30 en et es.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t3-16" data-g="mineur" data-f="E"><div class="tete-c"><span class="code">E1</span><span class="nomc">Rétroaction explicative</span><span class="grav">mineur</span><span class="src">contenu</span></div><p class="lieu">exercices.py PROMESSE ; REPONSES r3 (3e choix), r8 (3e choix) ; hotel_planches.py repondre()</p><p class="cst">Le tour 2 a mis r3-3 et r8-3 à promesse: True, comme demandé, mais le message commun PROMESSE ne connaît qu&#x27;une des trois branches de REGLE_RELAIS : « Vous venez d&#x27;engager l&#x27;hôtel : c&#x27;est au gérant de décider. » repondre() l&#x27;accole à la rétroaction de l&#x27;item. Sur r8-3, l&#x27;employé lit donc à la suite « Une taxe ne s&#x27;enlève pas : c&#x27;est la loi, ni vous ni le gérant ne l&#x27;effacez. » puis « c&#x27;est au gérant de décider. » Sur r3-3 : « on ne promet pas une chambre qu&#x27;on n&#x27;a pas » puis « c&#x27;est au gérant de décider », alors que le gérant n&#x27;a pas davantage de chambre. Le message de l&#x27;erreur éliminatoire (O4) se contredit au moment où il doit être le plus net.</p><p class="cor"><b>Correctif :</b> Rendre le drapeau à deux valeurs : promesse = &#x27;gerant&#x27; (remboursement, gratuité, exception) ou &#x27;impossible&#x27; (taxe, chambre inexistante). Deux messages : PROMESSE_GERANT (l&#x27;actuel) et PROMESSE_IMPOSSIBLE (« Vous venez de promettre ce que l&#x27;hôtel ne peut pas donner. Au comptoir, cette erreur fait échouer. »). Même compte au bilan.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t3-17" data-g="mineur" data-f="E"><div class="tete-c"><span class="code">E1</span><span class="nomc">Rétroaction explicative</span><span class="grav">mineur</span><span class="src">page</span></div><p class="lieu">#x-reponds, r3 et r8 (promesse hors règle)</p><p class="cst">Pour r3 (la chambre qu&#x27;on n&#x27;a pas) et r8 (la taxe), la rétroaction propre à l&#x27;item dit que personne ne peut le promettre, « ni vous ni le gérant », puis le message de promesse ajouté à toutes les promesses enchaîne « c&#x27;est au gérant de décider ». Les deux phrases se contredisent, et la seconde enseigne à renvoyer une taxe au gérant, ce que la règle interdit. (Mesure : Joué en fr→en, item r8 (promesse) : « Une taxe ne s&#x27;enlève pas : c&#x27;est la loi, ni vous ni le gérant ne l&#x27;effacez. Vous venez d&#x27;engager l&#x27;hôtel : c&#x27;est au gérant de décider. Au comptoir, cette erreur fait échouer. » Même contradiction dans le texte de r3, et dans les versions es et en.)</p><p class="cor"><b>Correctif :</b> Deux messages de promesse : « …c&#x27;est au gérant de décider » pour les exceptions (r2, r4, r7, r9-r12) et « Vous venez de promettre ce que l&#x27;hôtel ne peut pas donner » pour r3 et r8 (un drapeau par réplique).</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t3-18" data-g="mineur" data-f="E"><div class="tete-c"><span class="code">E1</span><span class="nomc">Rétroaction explicative</span><span class="grav">mineur</span><span class="src">page</span></div><p class="lieu">#x-reponds, bonne réponse</p><p class="cst">Une bonne réponse ne reçoit toujours que « Juste! » / « ¡Correcto! » : l&#x27;employé ne sait pas ce qui en faisait la meilleure (s&#x27;excuser, proposer, passer au gérant). C&#x27;est la seule famille où la raison compte autant que le choix. Persiste depuis le tour 1. (Mesure : 8 items joués par direction : 8 fois le texte seul « Juste! » / « ¡Correcto! ».)</p><p class="cor"><b>Correctif :</b> Ajouter à reps[0] une ligne « pourquoi » (ex. r10 : « Vous dites ce que vous pouvez faire seul, et vous gardez l&#x27;exception pour le gérant ») affichée après « Juste! ».</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t3-19" data-g="mineur" data-f="E"><div class="tete-c"><span class="code">E1</span><span class="nomc">Rétroaction explicative</span><span class="grav">mineur</span><span class="src">page</span></div><p class="lieu">#x-epeler</p><p class="cst">Le rang de la première lettre fausse se compte sur le nom sans trait d&#x27;union ni espace, alors que l&#x27;employé compte sur ce qu&#x27;il a tapé. Pour SAINT-PIERRE et GARCÍA LÓPEZ, le rang annoncé tombe une case trop loin. Persiste du tour 2. Le reste fonctionne : une lettre oubliée au début est signalée au rang 1, un nom tapé sans ses accents passe avec un rappel, et la réponse s&#x27;affiche après deux essais. (Mesure : Joué : « AINT-PIERRE » donne n° 1 ; lecture du code verifierNom : « SAINT-PIERE » donne n° 10, alors que la 10e lettre tapée (R) est juste et que la fausse est la 11e.)</p><p class="cor"><b>Correctif :</b> Compter le rang sur la saisie brute (en sautant les séparateurs à la fois dans la saisie et dans la réponse), ou montrer la saisie avec la lettre fausse soulignée.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t3-20" data-g="mineur" data-f="F"><div class="tete-c"><span class="code">F1</span><span class="nomc">Évaluation alignée</span><span class="grav">mineur</span><span class="src">page</span></div><p class="lieu">bilans de #x-client, #x-epeler, #x-nombres, #x-reponds</p><p class="cst">Les seuils du cadrage (O1 7 sur 8, O2 5 de suite, O3 6 sur 8) ne sont dits nulle part : le bilan donne un compte sans dire si l&#x27;objectif est atteint. O2 (« 5 de suite sans erreur ») n&#x27;est pas suivi. Pour O4, le bilan de #x-reponds signale bien la promesse (« … fait échouer. (1) »), mais affiche à côté « 6 sur 8 du premier coup » sans dire que la série est échouée. Persiste du tour 2. (Mesure : Bilan fr→en de #x-reponds avec 1 promesse : alerte + « 6 sur 8 du premier coup ». Bilan de #x-epeler : « 6 sur 8 du premier coup », sans rapport avec « 5 de suite ».)</p><p class="cor"><b>Correctif :</b> Afficher sous le compte : « Objectif : 7 sur 8 — atteint / pas encore » ; compter la plus longue suite sans erreur en #x-epeler et #x-nombres ; en #x-reponds, écrire « Série non réussie : une promesse hors règle » quand X.promesses &gt; 0.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t3-21" data-g="mineur" data-f="G"><div class="tete-c"><span class="code">G1</span><span class="nomc">Accessibilité</span><span class="grav">mineur</span><span class="src">page</span></div><p class="lieu">#comptoir, 375 et 1280 px</p><p class="cst">Les zones du dessin n&#x27;ont pas changé : 30 px et collées sous 640 px, et deux zones à 5 px l&#x27;une de l&#x27;autre en grand écran. La consigne dit toujours « Touchez chaque objet ». La liste de repli reste conforme. Persiste depuis le tour 1. (Mesure : 375 px : 15 zones de 30 × 30 ; écarts de 0 à 1 px entre les zones 2-3 et 3-4 (11 paires sous 12 px). 1280 px : zones 4 et 8 à 5 px.)</p><p class="cor"><b>Correctif :</b> Garder 44 px et agrandir l&#x27;image au téléphone (défilement horizontal de la scène), ou ne montrer que des numéros et renvoyer le toucher à la liste ; ajuster la consigne (« Touchez un numéro ou un mot de la liste »).</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t3-22" data-g="mineur" data-f="G"><div class="tete-c"><span class="code">G1</span><span class="nomc">Accessibilité</span><span class="grav">mineur</span><span class="src">page</span></div><p class="lieu">toutes les familles (clavier, lecteur d&#x27;écran)</p><p class="cst">Le focus retombe sur &lt;body&gt; après chaque nouvel item (« Suivant »), au bilan, et désormais après une réponse fausse : le bouton choisi se désactive et perd le focus. L&#x27;utilisateur au clavier doit repartir du haut de la page à chaque erreur. Seule la bonne réponse envoie le focus sur « Suivant ». (Mesure : Joué au clavier (Tab puis Entrée sur une réponse fausse de #x-image, 375 px) : activeElement = BODY. Relevé programmé des neuf familles : focusApresFaux = BODY, focusApresSuivant = BODY, bilan = BODY. Après deux erreurs en #x-epeler, la réponse s&#x27;affiche et le focus reste sur BODY. L&#x27;anneau de focus est visible partout (3 px, contraste de 3,6:1 sur le fond sable).)</p><p class="cor"><b>Correctif :</b> Après une réponse fausse, placer le focus sur la première option encore active ou sur #fb (tabindex=-1) ; après rendre(), placer le focus sur le h1 (tabindex=-1) ou sur « Réécouter ».</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t3-23" data-g="mineur" data-f="G"><div class="tete-c"><span class="code">G1</span><span class="nomc">Accessibilité</span><span class="grav">mineur</span><span class="src">page</span></div><p class="lieu">#langue, rétroactions de #x-pieges, #x-nombres (#dite)</p><p class="cst">Des passages dans une autre langue que celle de la page n&#x27;ont toujours pas d&#x27;attribut lang : les noms de langue sur les boutons, les mots de la langue apprise cités entre guillemets dans les explications, et le #dite marqué lang=apprise alors qu&#x27;il commence dans la langue de l&#x27;employé. Persiste depuis le tour 1. (Mesure : Page lang=fr : « English », « español » sans lang ; explication fr→en « « floor », c&#x27;est ici l&#x27;étage » sans &lt;span lang=en&gt; ; #dite lang=en, qui contient « On a dit : « You&#x27;re in room four-twelve. » ».)</p><p class="cor"><b>Correctif :</b> Poser lang sur le nom de chaque langue (&lt;span lang=en&gt;English&lt;/span&gt;) ; entourer les guillemets cités d&#x27;un &lt;span lang=A&gt; au montage ; mettre le lang sur la citation seule dans #dite.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t3-24" data-g="mineur" data-f="G"><div class="tete-c"><span class="code">G1</span><span class="nomc">Accessibilité</span><span class="grav">mineur</span><span class="src">page</span></div><p class="lieu">.choix de #x-entends, #x-image, #x-pieges, #x-nombres, #x-client, #x-reponds (≤ 480 px)</p><p class="cst">L&#x27;écart entre les boutons de réponse tombe à 10 px sous 480 px, sous les 12 px visés. Les cibles font 56 px et plus : aucun risque au sens de WCAG 2.5.8. Persiste du tour 2. (Mesure : 375 px : gap=10 entre toutes les paires de .choix, dans les deux directions.)</p><p class="cor"><b>Correctif :</b> @media (max-width:480px){.choix{gap:12px}}</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t3-25" data-g="mineur" data-f="G"><div class="tete-c"><span class="code">G2</span><span class="nomc">Durée et contrôle</span><span class="grav">mineur</span><span class="src">page</span></div><p class="lieu">#x-souviens et #x-dire</p><p class="cst">Le total du compteur grandit pendant la série à chaque « Pas encore », puis le bilan revient au nombre de départ. Dans « Je le dis », le bilan compte en « je le savais » alors que le bouton dit « Je l&#x27;ai dit » et que la consigne annonce « Rien n&#x27;est noté ». Persiste du tour 2. (Mesure : #x-souviens : 1/10, 2/11, 4/12 … 15/15, puis bilan « 7 / 10 je le savais ». #x-dire : 1/12 … 16/16, puis bilan « 10 / 12 je le savais » (es : « lo sabía »).)</p><p class="cor"><b>Correctif :</b> Afficher « carte 4 · 3 à revoir » (ou garder N fixe et compter les reprises à part) ; au bilan de #x-dire, dire « 10 phrases dites du premier coup sur 12 » (T(&#x27;dit_pareil&#x27;)).</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article></section>
+
+<p style="margin-top:1.4rem"><button type="button" class="btn-export" id="exporter">Exporter mes décisions</button>
+<span id="etat" class="etat"></span></p>
+<div class="pied"><p>Ce que la boucle ne vérifie pas : l'exactitude du contenu (un locuteur et un commerçant doivent
+valider), l'essai auprès de vrais employés (le pilote), l'effet au travail (des semaines après). Page produite par
+<code>build/francoeur_audit_page.py</code> — ne pas l'éditer.</p></div>
+</div>
+<script>
+(function(){
+  var CLE='hotellerie-audit-3', v={}, fg='tout', ff=null;
+  try{ v=JSON.parse(localStorage.getItem(CLE)||'{}'); }catch(e){}
+  function peindre(){
+    document.querySelectorAll('.constat').forEach(function(c){
+      c.querySelectorAll('.choix button').forEach(function(b){ b.setAttribute('aria-pressed', v[c.dataset.id]===b.dataset.v?'true':'false'); });
+      c.hidden = !((fg==='tout'||c.dataset.g===fg) && (!ff||c.dataset.f===ff));
+    });
+    var n=Object.keys(v).length, t=document.querySelectorAll('.constat').length;
+    document.getElementById('etat').textContent=n+' constats tranchés sur '+t;
+  }
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('.choix button');
+    if(b){ var id=b.closest('.constat').dataset.id; if(v[id]===b.dataset.v) delete v[id]; else v[id]=b.dataset.v;
+      try{ localStorage.setItem(CLE,JSON.stringify(v)); }catch(x){} peindre(); return; }
+    var f=e.target.closest('.filtres button'); if(!f) return;
+    if(f.dataset.fg){ fg=f.dataset.fg; ff=null; } else { ff = ff===f.dataset.ff ? null : f.dataset.ff; }
+    document.querySelectorAll('.filtres button').forEach(function(x){
+      x.setAttribute('aria-pressed', String((x.dataset.fg&&x.dataset.fg===fg&&!ff) || (x.dataset.ff&&x.dataset.ff===ff))); });
+    peindre();
+  });
+  document.getElementById('exporter').onclick=function(){
+    var out={audit:'hotellerie-audit', tour:3, decisions:v};
+    var t=JSON.stringify(out,null,2);
+    if(navigator.clipboard) navigator.clipboard.writeText(t).then(function(){ document.getElementById('etat').textContent='Copié — à recoller dans la séance suivante.'; },function(){prompt('Copiez :',t);}); else prompt('Copiez :',t);
+  };
+  peindre();
+})();
+</script></body></html>

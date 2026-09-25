@@ -1,0 +1,75 @@
+{
+ "auditeur": "contenu",
+ "tour": 3,
+ "date": "2026-09-25",
+ "compte": {
+  "bloquant": 0,
+  "majeur": 2,
+  "mineur": 7
+ },
+ "constats": [
+  {
+   "code": "A2",
+   "gravite": "majeur",
+   "ou": "exercices.py ERREURS_NOMBRES['h24']['fr'] et ['fraction']['fr'] ; NOMBRES n5–n8 côté fr (direction pilote es→fr)",
+   "constat": "Les voisines sont maintenant écrites par langue apprise, mais la branche française enseigne une règle fausse sur la langue. La rétroaction h24 dit « Le français compte sur 24 heures » (en : « French counts on the 24-hour clock », es : « El francés cuenta en 24 horas »). C'est vrai de l'écrit et de l'horaire affiché, pas de la parole : au Québec, au téléphone, un client dit « vers huit heures ce soir », « sept heures et demie du soir », « onze heures », bien plus souvent que « vingt-trois heures ». La rétroaction fraction de la même branche le contredit d'ailleurs : « moins le quart » n'existe que sur 12 heures. Et aucun des quatre items d'heure en français ne contient la forme orale dominante (12 h + « du matin / de l'après-midi / du soir ») ni l'heure ambiguë qu'il faut faire préciser. L'hispanophone qui apprend le français repart donc avec « onze heures = 11:00, toujours ». Cette idée ne tiendra pas une semaine au comptoir, et c'est précisément O2 (noter une heure au téléphone).",
+   "correctif": "Réécrire h24 en règle de NOTATION, pas de langue : fr « À l'hôtel, on note sur 24 heures. Le client dit « quinze heures » ou « trois heures de l'après-midi » : les deux font 15:00. Sans précision, demandez : « Du matin ou du soir? » » (et en/es de même). Ajouter pour fr un code ampm (« du soir », « de l'après-midi » = +12) et un ou deux items oraux : « On va arriver vers onze heures du soir » → 23:00, voisines 11:00 (ampm), 21:00, 23:15 ; « à sept heures et quart ce soir » → 19:15. Compléter la fraction fr : « onze heures moins le quart = 10:45 (l'heure d'avant) »."
+  },
+  {
+   "code": "D4",
+   "gravite": "majeur",
+   "ou": "exercices.py PIEGES stylo['fr'] (2e distracteur), diner['fr'] (2e distracteur) ; marginalement monnaie['en'], facture['fr']",
+   "constat": "Le défaut du tour 2 (une fausse lecture vraie dans une variété de la langue de l'employé) est corrigé sur la fausse lecture, mais il a glissé sur les seconds distracteurs écrits à la main. (1) stylo : « Aquí tiene una pluma » → « un crayon ». Au Québec, « crayon » désigne couramment tout instrument pour écrire, stylo compris (« un crayon à l'encre », « passe-moi un crayon »). Le réceptionniste québécois qui le choisit a compris et il est marqué faux. Pire, la fausse lecture est devenue « une plume d'oiseau », que personne ne choisira pour signer : l'item se joue entre la bonne réponse et une autre bonne réponse. (2) diner : « La comida se sirve de una a cuatro de la tarde » → « le déjeuner ». En France, en Belgique, en Suisse et en Afrique francophone, « le déjeuner » EST le repas du midi. Une bonne part des francophones qui travaillent dans un hôtel de Québec sont immigrés : pour eux, c'est la bonne réponse. Le commentaire de tête (« le dîner = le souper en France ») montre que ce risque était connu. Plus faibles : monnaie en, « money » pour « Voici votre monnaie : deux dollars cinquante » (le sens global est compris, seule la nuance manque) ; facture fr, « le reçu » pour « la cuenta de su estancia » remise au départ, souvent appelée reçu une fois payée. Hors directions pilotes (fr→es surtout), mais c'est la classe du bloquant du tour 1.",
+   "correctif": "stylo : second distracteur « un feutre » ou « un trombone » (faux au Québec comme au Mexique). diner : second distracteur « le goûter » ou « la collation » ; si l'on tient à « déjeuner », l'accepter comme juste avec la mise en garde « au Québec, le déjeuner est le repas du matin ». monnaie en : « the currency » à la place de « money ». facture : « le devis ». Passer chaque second distracteur au même crible que la fausse lecture : Québec, France, Afrique ; États-Unis, Canada ; Mexique."
+  },
+  {
+   "code": "E1",
+   "gravite": "mineur",
+   "ou": "exercices.py NOMBRES n2, n3 (voisines communes aux trois langues), n5, n6, n7 ; ERREURS_NOMBRES",
+   "constat": "Le principe « une voisine = une erreur d'oreille dans CETTE langue » n'est pas appliqué partout. n2 et n3 gardent une liste commune ({l: … for l in …}). n2 : 1280 est codé « inv » (« les chiffres sont inversés »), mais en anglais (« twelve-oh-eight » / « twelve-eighty ») et en espagnol (« ocho » / « ochenta »), c'est une vraie erreur d'oreille, huit contre quatre-vingts. La rétroaction envoie réécouter l'ordre, ce qui est faux. En français, ni 1280 (« quatre-vingts ») ni 2108 ne viennent de l'oreille ; l'erreur française plausible est 208 (douze / deux). n5 en et es : 13:00 est codé « heure » (« ce n'est pas l'heure dite, réécoutez »), alors que l'employé a bien entendu « three p.m. » : il a mal converti (+10 au lieu de +12). La bonne rétroaction est ampm. Plusieurs voisines « heure » n'ont aucune parenté sonore : n5 16:00 en et es (three / four, tres / cuatro), n6 7:00 fr (sept / onze), n6 10:00 en et es. Elles s'écartent sans écouter. n7 en et es : 17:30 reçoit la rétroaction ampm, qui cite « p.m. » ou « de la tarde », mots absents de la phrase (« Breakfast starts at seven thirty »).",
+   "correctif": "Écrire n2 et n3 par langue : fr 1208 → 208 (voisin), 1218, 1280 retiré ; en → 1280 (teen/ty : nouveau code « dizaine », « eight / eighty »), 1218, 128 ; es → 1280 (« ocho / ochenta »), 1218, 208 (« doce / dos »). n5 en et es : recoder 13:00 en ampm. Remplacer les voisines sans parenté sonore (n5 en 16:00 → 3:30 « three / thirty » ; n6 fr 7:00 → 1:00 « onze / un » ou 21:00). n7 : rétroaction propre, « le petit déjeuner, c'est le matin : 7:30 », ou retirer 17:30 en et es."
+  },
+  {
+   "code": "E1",
+   "gravite": "mineur",
+   "ou": "exercices.py PROMESSE ; REPONSES r3 (3e choix), r8 (3e choix) ; hotel_planches.py repondre()",
+   "constat": "Le tour 2 a mis r3-3 et r8-3 à promesse: True, comme demandé, mais le message commun PROMESSE ne connaît qu'une des trois branches de REGLE_RELAIS : « Vous venez d'engager l'hôtel : c'est au gérant de décider. » repondre() l'accole à la rétroaction de l'item. Sur r8-3, l'employé lit donc à la suite « Une taxe ne s'enlève pas : c'est la loi, ni vous ni le gérant ne l'effacez. » puis « c'est au gérant de décider. » Sur r3-3 : « on ne promet pas une chambre qu'on n'a pas » puis « c'est au gérant de décider », alors que le gérant n'a pas davantage de chambre. Le message de l'erreur éliminatoire (O4) se contredit au moment où il doit être le plus net.",
+   "correctif": "Rendre le drapeau à deux valeurs : promesse = 'gerant' (remboursement, gratuité, exception) ou 'impossible' (taxe, chambre inexistante). Deux messages : PROMESSE_GERANT (l'actuel) et PROMESSE_IMPOSSIBLE (« Vous venez de promettre ce que l'hôtel ne peut pas donner. Au comptoir, cette erreur fait échouer. »). Même compte au bilan."
+  },
+  {
+   "code": "A3",
+   "gravite": "mineur",
+   "ou": "exercices.py REPONSES r9 (3e choix), r6 (bonne réponse et 2e choix) ; REGLE_RELAIS",
+   "constat": "J'ai repassé les 12 items contre REGLE_RELAIS. Les neuf drapeaux True (r2-3, r3-3, r4-2, r7-2, r8-3, r9-2, r10-2, r11-2, r12-2) sont cohérents, et aucun choix de relais au gérant n'est une promesse. Il reste deux écarts. (1) r9-3 « Oui, il est gratuit, mais seulement la fin de semaine » accorde une gratuité (le stationnement du week-end) que REGLE_RELAIS range sous « un service gratuit : le gérant décide ». Il est pourtant traité en erreur ordinaire, alors que r9-2 (« je le laisse gratuit cette fois-ci ») est éliminatoire : deux façons de donner la même chose, deux sanctions. (2) r6 : la bonne réponse commence encore par « Bien sûr. » (« Of course. », « Claro. ») à « puis-je changer pour vendredi? », avant toute vérification. Le choix 2 est corrigé justement pour avoir confirmé sans vérifier, et la règle dit qu'on ne promet pas une chambre qu'on n'a pas. C'est le troisième tour que r6 est signalé ; la raison nouvelle est que la frontière est maintenant écrite, et que la bonne réponse la franchit à moitié. C'est aussi le modèle qu'on imite dans « Je le dis ».",
+   "correctif": "r9-3 : réécrire en tarif faux sans gratuité (« C'est quinze dollars pour tout le séjour, pas par nuit. »), erreur ordinaire. Ou le laisser tel quel avec promesse True. r6 : « Je vérifie tout de suite. Quel est votre numéro de confirmation? » / « Let me check. Could I have your confirmation number? » / « Permítame verificar. ¿Me da su número de confirmación? » (longueurs dans la bande), puis régénérer x/modele/*/r6.mp3."
+  },
+  {
+   "code": "A2",
+   "gravite": "mineur",
+   "ou": "exercices.py REPONSES r8 (bonne réponse fr), r9 (bonne réponse fr) ; sons x/modele/fr/r8.mp3, r9.mp3",
+   "constat": "Le nivellement des longueurs a dégradé deux modèles français, que la direction pilote es→fr entend et imite dans « Je le dis ». r8 : « elle s'applique à chaque nuit » (correct) est devenu « elle compte pour chaque nuit ». C'est un calque de « counts for », au sens flou (« elle compte » = elle importe ?). r9 : « Il coûte vingt dollars par nuit » est devenu « Vingt dollars par nuit, et vous pouvez entrer et sortir. » Ce n'est pas faux, mais le client a posé une question fermée (« ce n'est pas gratuit? ») et la réponse modèle n'a ni « Non », ni formule. C'est la seule bonne réponse sèche des douze, alors que r3-2 est rejeté pour être « vrai, mais sec ». Les longueurs, elles, sont désormais bien nivelées : la bonne réponse n'est strictement la plus longue que 2 fois sur 12 en fr et en en, 4 fois sur 12 en es.",
+   "correctif": "r8 fr : « C'est la taxe sur l'hébergement; elle s'applique à chaque nuit. » (63 caractères, dans la bande). r9 fr : « Non, c'est vingt dollars par nuit; vous pouvez entrer et sortir. » (±20 % respecté contre 61 et 54). Régénérer les deux x/modele/fr."
+  },
+  {
+   "code": "D1",
+   "gravite": "mineur",
+   "ou": "hotel_planches.py ecranExercice('dire') pour les items r ; exercices.py REPONSES r1, r4, r7, r8",
+   "constat": "Le correctif du tour 2 est en place : le contexte s'affiche, le client se fait entendre dans la langue apprise, sa traduction est cachée. Deux choses restent. (1) Pour les répliques de client, l'employé ne sait pas quel geste on attend de lui, alors que les formules de politesse ont leur « Vous voulez dire : ». Devant « I have a reservation under Moreno », « One moment, please » ou « Welcome, let me look it up » sont justes, mais le modèle est « Could you spell your last name? ». Le bouton « Je l'ai dit » demande de se comparer à une seule phrase parmi plusieurs bonnes, et le bon employé coche « Pas encore ». (2) r7 et r8 n'ont pas de contexte, alors que leur modèle repose sur un fait absent de l'écran : les 100 $ sont un dépôt pour les imprévus, la ligne de 3 $ est la taxe sur l'hébergement. C'est le reste du D1 majeur du tour 2 : quatre items ont été traités (r2, r3, r9, r10), pas ces deux-là.",
+   "correctif": "Ajouter un champ `but` (langue parlée) aux 12 items et l'afficher comme « Vous voulez : » (r1 « lui faire épeler son nom de famille », r4 « vous excuser et passer au gérant », etc.). Donner un ctx_dire à r7 (« 100 $ retenus sur la carte pour les imprévus, annulés au départ ») et à r8 (« La ligne de 3 $ : la taxe sur l'hébergement »). Libellé du bouton : « J'ai dit l'essentiel »."
+  },
+  {
+   "code": "C1",
+   "gravite": "mineur",
+   "ou": "exercices.py REGLE_RELAIS ; hotel_planches.py ecranExercice('reponds')",
+   "constat": "La règle a pris une troisième phrase au tour 2 : 52 mots en français, 49 en anglais. Elle s'affiche en entier, en un seul bloc, au-dessus de chacun des 8 items, et elle ne s'estompe jamais. Elle nomme dans la langue de l'employé la réponse de plusieurs items : « réencoder une clé » (r5), « un service gratuit, toute exception » (r9, r10, r12), « des frais effacés » (r11). Le choix se fait alors par repérage de mots-clés dans sa propre langue, au lieu d'appliquer la règle de mémoire. Or ni le test ni le jeu de rôle ne l'afficheront. Le premier constat du tour 1 (bandeau qui désignait la réponse) revient en plus doux.",
+   "correctif": "Découper en trois lignes courtes (Vous décidez · Le gérant décide · Personne ne promet). L'afficher en entier aux deux premiers items, puis replié (« La règle du comptoir ▸ », à déplier), et le retirer aux deux derniers : c'est l'estompage du C4."
+  },
+  {
+   "code": "D4",
+   "gravite": "mineur",
+   "ou": "exercices.py PIEGES (directions pilotes : fr→en souper, billet, etage, monnaie ; es→fr prenom, serviettes, diner, frais, tout-droit)",
+   "constat": "La phrase de contexte (correctif du tour 1) règle bien le sens, mais elle rend souvent la fausse lecture intenable dans la scène. L'item se réussit alors par élimination, sans connaître le mot. Direction pilote es→fr : « des frais de vingt dollars pour le stationnement » contre « algo fresco » ; « le dîner est servi de midi à quatorze heures » contre « la cena » (l'heure donne la réponse) ; « Votre prénom? J'ai déjà votre nom de famille » contre « el apellido » (déjà signalé). Seul tout-droit (« a la derecha ») garde un vrai piège. Même effet ailleurs : « a warehouse » pour un dépôt sur la carte, « un navire de charge » pour un stationnement, « une plume d'oiseau » pour signer, « the carpet » pour une confirmation. La série sensibilise, grâce à l'explication, mais elle n'exerce plus la discrimination.",
+   "correctif": "Garder la phrase, mais choisir des fausses lectures cohérentes avec la scène et fausses pour le mot : frais es « un depósito » / « un descuento » ; depot en « a fee » en fausse lecture et « a charge » en second ; diner es : phrase sans heure (« Le dîner est servi à la terrasse. ») et la plage horaire dans l'explication (serviettes reste tel quel : sans « pour la douche », « servilletas » deviendrait défendable, puisqu'au Québec « serviette » désigne aussi la serviette de table)."
+  }
+ ]
+}
