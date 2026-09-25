@@ -27,7 +27,7 @@ RACINE = pathlib.Path(__file__).resolve().parent.parent
 CONTENU = RACINE / "build" / "contenu" / "entreprise-hotel"
 CROQUIS = RACINE / "assets" / "interactive" / "hotel" / "croquis"
 SORTIE = RACINE / "modules-autonomes" / "hotel-reception" / "index.html"
-MEDIA_V = "3"   # 3 : révision du tour 1 (épellation assemblée, pièges en contexte), 25 sept. 2026
+MEDIA_V = "4"   # 4 : palette Rive-Claire, 25 sept. 2026
 
 
 def _charger(nom):
@@ -97,7 +97,21 @@ GABARIT = r"""<!DOCTYPE html>
 <link rel="icon" href="/assets/design-system/marque-francis-favicon.svg">
 <style>
 /* Page produite par build/hotel_planches.py — ne pas l'éditer.
-   Thème francis tel quel : seulement les jetons du système de design. */
+   La palette RIVE-CLAIRE (Daniel, 25 septembre 2026, parmi six propositions :
+   assets/presentations/hotellerie-couleurs.html) : l'eau et le sable. Sarcelle
+   pour l'action et l'enseigne, corail pour la marque et les pièges, fond sable.
+   On redéfinit les jetons du système de design, rien d'autre ; le vert et le
+   rouge de la rétroaction restent. Contrastes mesurés ≥ 4,5:1 (le point du
+   « i » ≥ 3:1). */
+:root{
+  --surface-page:#F3EFE6;--surface-card:#FFFFFF;--surface-sunken:#ECE6DA;
+  --text-strong:#132A2C;--text-body:#132A2C;--text-muted:#4D5E5F;--text-accent:#0F5E63;
+  --line-200:#DFD8C9;--line-300:#C9C0AE;
+  --accent:#0F5E63;--accent-soft:#DDEDEC;
+  --marque-600:#C4613A;
+  --warn-bg:#F8E3D8;--warn-line:#C4613A;--warn-ink:#8A3A1C;
+  --ok-bg:#E3F1E9;--ok-line:#1F7A4D;--ok-ink:#1F7A4D}
+.fr-barre .fr-desc{color:var(--text-accent)}
 body{margin:0;background:var(--surface-page);color:var(--text-body);font-family:Nunito,system-ui,sans-serif}
 .hr{max-width:1080px;margin:0 auto;padding:18px 16px 60px}
 .fr-barre .fr-barre__in{max-width:1080px;padding-left:16px;padding-right:16px}
