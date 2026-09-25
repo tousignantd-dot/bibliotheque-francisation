@@ -1,0 +1,47 @@
+{
+ "auditeur": "contenu",
+ "tour": 4,
+ "date": "2026-09-25",
+ "compte": {
+  "bloquant": 0,
+  "majeur": 0,
+  "mineur": 5
+ },
+ "constats": [
+  {
+   "code": "E1",
+   "gravite": "mineur",
+   "ou": "exercices.py ERREURS_NOMBRES['h24']['fr'] et ['fraction']['fr'] ; NOMBRES n6 fr (23:00), n7 fr (17:30) ; REPONSES r13",
+   "constat": "Défaut nouveau, créé par la révision. Le majeur A2 du tour 3 est levé pour l'essentiel : n9 et n10 font entendre « onze heures du soir » et « six heures et demie du matin », et r13 enseigne à faire préciser une heure ambiguë. Mais le nouveau texte h24 parle maintenant d'un seul cas (« « Quinze heures », c'est 15:00 […] on entend aussi « trois heures de l'après-midi » »). Il reste pourtant branché sur deux autres voisines de la direction pilote es→fr, où il tombe à côté. n6 : « Le départ est à onze heures. » L'employé qui choisit 23:00 lit une phrase sur « quinze heures ». Et r13 vient de lui apprendre qu'une heure dite sans « du matin » ni « du soir » peut être l'une ou l'autre. Ce qui tranche ici, c'est le contexte (un départ se fait le matin), et aucune rétroaction ne le dit. n7 : « Le déjeuner commence à sept heures et demie », voisine 17:30. La raison est la même (le déjeuner, c'est le matin), et la rétroaction parle encore de quinze heures. L'ancien texte (« vingt-trois heures = 23:00 ») collait au moins à n6 : sur ces deux items, la révision a aggravé la rétroaction. Au passage, la fraction française n'a pas reçu le complément demandé au tour 3 : « « moins le quart » = 45 » sans « de l'heure d'avant ». La version anglaise, elle, le dit. Un hispanophone peut donc noter 11:45 pour « midi moins le quart ». Rien ne le pratique encore, mais la règle est écrite fausse par omission.",
+   "correctif": "Un code « contexte » pour n6 fr (23:00) et n7 fr (17:30) : « Un départ se fait le matin : onze heures, c'est 11:00. Quand rien ne le dit (un client au téléphone), demandez : du matin ou du soir? » et « Le déjeuner, c'est le matin : 7:30. » (en et es de même). Ce texte relie les items à r13 au lieu de les contredire. Réserver h24 à n5. Fraction fr : « « moins le quart » = 45 de l'heure d'avant : onze heures moins le quart = 10:45 »."
+  },
+  {
+   "code": "E1",
+   "gravite": "mineur",
+   "ou": "exercices.py NOMBRES n9, n10 ; ERREURS_NOMBRES['soir']['fr'] et ['ampm']['en']",
+   "constat": "Les deux items neufs reprennent trois défauts de rétroaction. (1) La rétroaction « soir » donne la réponse des DEUX items : « onze heures du soir = 23:00 ; six heures et demie du matin = 6:30 ». L'employé qui se trompe sur n9 reçoit donc la réponse de n10 avant d'y arriver, et l'inverse. Ce sont les deux seuls items oraux sur 12 heures de la série : l'un des deux devient gratuit. (2) n9 : 21:00 est codé « heure » dans les trois langues (« Ce n'est pas l'heure dite : réécoutez »). Or « onze » donne 21:00 par une erreur de conversion (+10 au lieu de +12), pas par une erreur d'oreille. C'est la famille d'erreur que le tour 3 relevait pour n5 13:00, et elle reparaît dans un item neuf. (3) Direction pilote fr→en : n10 (« six thirty a.m. », voisine 18:30) et n6 (« eleven a.m. », voisine 23:00) reçoivent la rétroaction ampm. Elle n'explique que « p.m. » (« 3 p.m. = 15:00 ») et ne nomme jamais « a.m. », le mot qu'il fallait entendre.",
+   "correctif": "« soir » : des exemples hors série (« sept heures du soir = 19:00 ; neuf heures du matin = 9:00 »). n9 21:00 : un code de conversion (« du soir : on ajoute 12 ; onze heures du soir = 23:00, pas 21:00 »), ou remplacer par 22:00 (« onze » / « dix », à l'oreille). ampm en : « « a.m. », c'est le matin, « p.m. », l'après-midi ou le soir : 6:30 a.m. = 6:30, 3 p.m. = 15:00 »."
+  },
+  {
+   "code": "E2",
+   "gravite": "mineur",
+   "ou": "exercices.py PROMESSE ; hotel_planches.py repondre() et bilan de ecranExercice('reponds') ; REPONSES r9",
+   "constat": "Le nouveau message règle la contradiction du tour 3 : « sans en avoir le pouvoir » vaut pour r3-3, pour r8-3 et pour les exceptions. Les 13 items sont cohérents avec REGLE_RELAIS : dix choix portent `promesse` (r2-3, r3-3, r4-2, r7-2, r8-3, r9-2, r9-3, r10-2, r11-2, r12-2), aucun autre choix n'engage l'hôtel, et aucun relais au gérant n'est une promesse. Trois restes, dont deux créés par la révision. (1) La conséquence affichée est une conséquence de note (« cette erreur fait échouer »), pas une conséquence de comptoir. Surtout, aucune réparation n'est proposée, alors que le cas arrivera au travail : que dire au client quand on a déjà promis ? (« Je me suis avancé : je dois le faire confirmer par le gérant. ») (2) Depuis que r9-3 porte le drapeau, r9 a deux choix éliminatoires. Un employé qui les touche tous deux fait monter X.promesses à 2 sur un seul item, et le bilan affiche « (2) ». (3) Au bilan, le message est au passé immédiat (« Vous venez d'engager l'hôtel ») et se lit mal en récapitulatif. En anglais, « this mistake fails you » est maladroit.",
+   "correctif": "Ajouter la réparation au message : « … Si c'est déjà dit : « Je me suis avancé; je dois le faire confirmer par le gérant. » » (en : « I spoke too soon — I need the manager to confirm that. » ; es : « Me adelanté; necesito que el gerente lo confirme. »). Compter au plus une promesse par item. Au bilan, un texte propre : « Promesses hors règle : N. Au test, une seule fait échouer. » (en : « …is an automatic fail »)."
+  },
+  {
+   "code": "A1",
+   "gravite": "mineur",
+   "ou": "exercices.py UI x_reponds_c, REGLE_RELAIS ; hotel_planches.py ecranExercice('reponds') (<details> ouvert au seul premier item)",
+   "constat": "Le repli fonctionne : la règle est entière au premier item, puis une ligne à déplier, ce qui règle le C1 du tour 3 sans retirer la règle. Mais le cadrage d'O4 dit « éliminatoire, et dit avant », et ni la consigne (« Choisissez la meilleure réponse du réceptionniste ») ni REGLE_RELAIS ne disent qu'une promesse fait échouer. L'employé l'apprend à sa première promesse, par le message PROMESSE. C'est le signe d'échec d'A1 : une erreur éliminatoire découverte à l'évaluation. Le repli rend le cas plus probable, puisqu'à partir du 2ᵉ item la règle n'est plus sous les yeux.",
+   "correctif": "Une phrase de plus à la consigne x_reponds_c, visible à chaque item : « Une promesse que vous n'avez pas le droit de faire fait échouer la série. » (en : « A promise you're not allowed to make fails the series. » ; es : « Una promesa que usted no puede hacer reprueba la serie. »)."
+  },
+  {
+   "code": "D4",
+   "gravite": "mineur",
+   "ou": "exercices.py PIEGES diner['fr'] (bonne réponse affichée) ; relecture de toutes les fausses lectures et de tous les seconds choix",
+   "constat": "J'ai repassé les 50 options fausses des 25 items de PIEGES au crible demandé : seraient-elles vraies dans une variété de la langue de l'employé (Québec, France, Afrique ; États-Unis, Canada ; Mexique) ? « un formulaire » (stylo) et « la collation » (diner) passent, comme toutes les autres, en dehors des cas déjà consignés (monnaie en « money », facture fr « le reçu »). Le retrait de « le déjeuner » fait pourtant apparaître le défaut inverse sur diner fr (direction fr→es, hors pilote) : c'est maintenant la BONNE réponse qui ne vaut qu'au Québec. En France et en Afrique francophone, « le dîner » est le repas du soir. L'employé qui vient de là doit donc choisir le mot qu'il comprend comme « le souper » pour « la comida » servie de 13 h à 16 h, et aucune des trois options ne veut dire « repas de midi » dans sa variété.",
+   "correctif": "Afficher la bonne option avec son sens : « le dîner (le repas du midi) », sur le modèle de « l'arrivée (l'enregistrement) » au lexique. Même traitement possible pour souper fr, que la variété de France comprend autrement (le repas tardif)."
+  }
+ ]
+}

@@ -1,0 +1,81 @@
+{
+ "auditeur": "page",
+ "tour": 4,
+ "date": "2026-09-25",
+ "compte": {
+  "bloquant": 0,
+  "majeur": 0,
+  "mineur": 6
+ },
+ "constats": [
+  {
+   "code": "D4",
+   "gravite": "mineur",
+   "ou": "#x-reponds, surtout fr→en (répliques en anglais), et r13 (nouvel item)",
+   "constat": "La plus longue n'est plus un indice et la longueur moyenne seule baisse en fr→en (64 % au tour 3, 56 % maintenant), mais elle monte en es→fr (42 %, maintenant 51 %). Et il y a un NOUVEL indice qui s'y ajoute : dans r3, r5 et r13, la bonne réplique est la seule qui pose une question. Pour r13 (nouveau), c'est encore plus net : les deux distracteurs sont jumeaux (« Great, I'll note your arrival for eight a.m. » / « … p.m. » ; « … à vingt heures » / « … à huit heures »), et ils portent la même rétroaction mot pour mot. On élimine la paire et il ne reste que la bonne. Enfin, la place 1 revient plus souvent (38 %), parce que 13 places sont équilibrées mais seulement les 8 premières servent. Le garde-fou tient : la promesse, qui fait échouer d'office, fait tomber presque toutes les séries jouées à l'indice.",
+   "mesure": "1000 séries de 8 par direction, jouées par programme. Stratégie « la seule question, sinon la longueur moyenne » : 75,1 % des items réussis du premier coup en fr→en, 63,8 % en es→fr, contre 33 % au hasard. Longueur moyenne seule : 56,2 % et 51,1 %. Bonne en place 1 : 3074/8000 et 3072/8000. Par item, en fr→en : r13, r3, r5 réussis à 100 % par cet indice. Seuil 6 sur 8 sans promesse atteint par cette stratégie : 9,8 % (fr→en) et 17,9 % (es→fr) des séries, contre 0,8 % et 1,1 % au hasard. Elle choisit une promesse dans 90 % et 70 % des séries.",
+   "correctif": "Pour r13, briser la paire : garder une seule des deux réponses qui notent sans demander, et la remplacer l'autre par une erreur d'une autre nature, par exemple une question qui ne lève pas l'ambiguïté (« Très bien. Vous venez en voiture? »). Pour r3, r5 et r13, donner une forme de question à au moins un distracteur. En anglais, faire de la bonne réplique la plus courte ou la plus longue dans 4 ou 5 items. Pour les places, les tirer une à une au hasard (voir le constat suivant)."
+  },
+  {
+   "code": "D4",
+   "gravite": "mineur",
+   "ou": "#x-entends, #x-image, #x-client, #x-nombres (et #x-reponds), les deux directions",
+   "constat": "NOUVEAU. Depuis le tour 1, les places sont ÉQUILIBRÉES dans chaque série : chacune revient exactement 2 fois sur 8 (#x-entends, #x-image) ou 3 fois sur 12 (#x-client). Un apprenant qui compte les places déjà servies peut exclure celles qui ont fait leur quota. Pour le dernier item, la place est même connue d'avance. Dans #x-nombres (10 items, 4 places), les places 1 et 2 reviennent 3 fois et les places 3 et 4 seulement 2 fois. Depuis ce tour, #x-pieges tire ses places au hasard et n'a plus ce défaut.",
+   "mesure": "1000 séries par famille et par direction. Stratégie « choisir parmi les places les moins servies jusqu'ici » : 46,8 % (#x-entends), 46,5 % (#x-image), 44,3 % (#x-client), 40 % (#x-nombres), contre 25 % au hasard. Dernier item : 100 % pour #x-entends, #x-image et #x-client. #x-nombres : places 3000/3000/2000/2000 sur 10 000 items. #x-pieges : bonne à la même place que l'item d'avant 33,5 % (fr→en) et 32,4 % (es→fr), soit le hasard.",
+   "correctif": "Tirer chaque place au hasard, indépendamment, comme #x-pieges depuis ce tour : Math.floor(Math.random()*n) dans places(), quelle que soit la longueur de la série. L'équilibre se vérifie sur plusieurs séries, jamais à l'intérieur d'une seule."
+  },
+  {
+   "code": "D4",
+   "gravite": "mineur",
+   "ou": "#x-pieges, fr→en et es→fr",
+   "constat": "Le défaut de place du tour 3 est réglé (tirage au hasard). Le défaut de longueur reste : la bonne réponse n'est jamais l'option la plus longue, sauf en cas d'égalité. Prendre l'option de longueur moyenne, ou écarter la plus longue, réussit encore six items sur dix environ.",
+   "mesure": "1000 séries par direction. Bonne = la plus longue : 12,1 % en fr→en (uniquement l'égalité 13/13 de « de la monnaie »), 0 sur 5000 en es→fr. Stratégie « longueur moyenne » : 58,4 % (fr→en), 58,8 % (es→fr). Stratégie « pas la plus longue » en es→fr : 59,5 %. Le hasard est à 33 %. Au tour 3, avec la place en plus : 56 % et 76 %. Ajouter la place n'apporte plus rien (58,6 % et 60 %).",
+   "correctif": "Dans chaque direction, faire en sorte que la bonne soit la plus longue dans au moins un item sur trois, en raccourcissant un distracteur. Exemples : « un navire de charge » → « un navire », « algo fresco » → « fresco », « el apellido » → « el apodo ». Refaire la mesure après."
+  },
+  {
+   "code": "E1",
+   "gravite": "mineur",
+   "ou": "#x-nombres, rétroactions sur l'heure (n5, n6, n9, n10), les deux directions",
+   "constat": "NOUVEAU. Les messages sur l'heure citent les valeurs mêmes des items. Le message « soir » donne la réponse de n9 (23:00) ET celle de n10 (6:30) dès la première erreur. Or n9 et n10 sont dans toutes les séries : l'erreur sur le premier des deux donne donc la réponse du second avant qu'on l'entende, et gonfle le compte « du premier coup ». Le message « h24 » donne la réponse de n5 (15:00). En es→fr, le même message s'affiche aussi pour n6 (« Le départ est à onze heures », 23:00 choisi) : il parle de « quinze heures », sans rapport avec l'erreur. Et n6 compte 23:00 comme faux pour « onze heures » dit seul, alors que r13, ajouté à ce tour, enseigne qu'« huit heures » dit seul peut être le matin ou le soir et qu'il faut le faire préciser. Seul le contexte tranche (un départ à 23 h est invraisemblable), et le message ne le dit pas. En fr→en, pour les deux items « a.m. » (n6 « eleven a.m. », n10 « six thirty a.m. »), le message n'explique que « p.m. » (« 3 p.m. = 15:00 »).",
+   "mesure": "Joué en es→fr : n9, 11:00 choisi → « ¿Mañana o noche? … onze heures du soir = 23:00; … six heures et demie du matin = 6:30. ». n10, 18:30 choisi : même texte. n6, 23:00 choisi → « « Quinze heures » son las 15:00 … ». Joué en fr→en : n10, 18:30 choisi → « Matin ou après-midi? « p.m. », c'est l'après-midi ou le soir : 3 p.m. = 15:00. ». Même texte pour n6, 23:00 choisi. n9 et n10 sont présents dans 1000 séries sur 1000.",
+   "correctif": "Donner des exemples qui ne sont pas dans la série : « dix heures du soir = 22:00 ; sept heures du matin = 7:00 », « 4 p.m. = 16:00 ; 9 a.m. = 9:00 ». Faire un message « a.m. » distinct du message « p.m. ». Pour n6 en français, donner au distracteur 23:00 son propre type : « Un départ à 23:00? Dit seul, « onze heures » se comprend par le contexte : le départ, c'est le matin. »"
+  },
+  {
+   "code": "E1",
+   "gravite": "mineur",
+   "ou": "#x-pieges, les deux directions",
+   "constat": "NOUVEAU. Dès la première erreur, la rétroaction affiche l'explication complète, qui nomme la bonne option (« « floor », c'est ici l'étage, pas le plancher »). Le second essai devient une lecture. La règle du projet, la réponse seulement après deux essais, n'est pas appliquée à cette famille, alors que #x-nombres (#dite) et #x-epeler la respectent.",
+   "mesure": "Joué : fr→en, etage, faux choisi → « Essayez encore. Une chambre au douzième : « floor », c'est ici l'étage, pas le plancher. ». es→fr, serviettes → « Intente otra vez. … « des serviettes » son toallas, no servilletas. ». Relevé des données : l'explication contient le texte de la bonne option dans 4 items sur 4 (fr→en) et 5 sur 5 (es→fr), et dans 23 sur 25 en tout.",
+   "correctif": "Après la première erreur, un indice sans la réponse, tiré de la phrase (« Relisez : une chambre au douzième… ») ou la seule partie « pas le plancher ». L'explication entière vient avec la bonne réponse ou après le deuxième essai."
+  },
+  {
+   "code": "C5",
+   "gravite": "mineur",
+   "ou": "#x-pieges, paire fr→es (hors directions pilotes), item frais",
+   "constat": "L'explication montrée à l'employé francophone contient une faute de français : « « un cargo » est un frais ». « Frais », au sens de somme à payer, s'emploie au pluriel.",
+   "mesure": "Relevé dans D.ex.pieges.frais.fr : « Vingt dollars pour le stationnement : « un cargo » est un frais. ».",
+   "correctif": "« … : « un cargo », ce sont des frais. »"
+  }
+ ],
+ "verifie_sans_constat": [
+  "Règle de #x-reponds : ouverte au premier item, repliée ensuite. Le résumé fait 315 × 32 px, se focalise au clavier (2e arrêt de Tab), s'ouvre et se ferme à Entrée, et l'anneau de focus fait 3 px. Repliée, la phrase du client monte de y ≈ 564 à y ≈ 321 à 375 px : le constat C1 du tour 3 est réglé.",
+  "Promesses : le message commun ne contredit plus celui de l'item (r3, r4, r10 en fr ; r2, r4, r7, r11 en es). Le bilan compte les promesses (3 en fr→en, 4 en es→fr) : le constat E1 du tour 3 est réglé.",
+  "n9, n10 et r13 : présents, sons 200. Durées : n9 2,06 à 2,74 s ; n10 2,16 à 3,00 s ; r13 client 1,32 à 1,66 s ; r13 modèle 2,33 à 2,66 s. Rien d'aberrant.",
+  "Sons : 693 URL que la page peut demander. Aucune ne manque parmi les 25 sons de pièges réellement atteignables et les 639 autres (tous 200). Les 29 réponses 404 d'un premier relevé visaient des sons de pièges qui n'existent que pour l'autre paire de langues : la page ne les demande jamais. 839 fichiers passés à ffprobe : aucune durée aberrante. Les écarts de débit relevés sont ceux des mots d'une syllabe, plus « l'arrivée (l'enregistrement) » (0,89 s) et « la chemise (le dossier) » (1,03 s), dont un seul des deux termes est dit. Les épellations croissent avec le nombre de lettres (fr : 4,2 à 12,8 s).",
+  "Affichage à 375 et 1280 px, deux directions, 22 écrans et l'état après une réponse fausse : aucun défilement horizontal, aucun contraste sous le seuil, aucun bouton sans nom, aucune image sans attribut alt, aucune cible sous 24 px hors #comptoir."
+ ],
+ "persistants_non_repetes": [
+  "E1 #x-reponds : bonne réponse = « Juste! » seul",
+  "E1 #x-epeler : rang décalé pour SAINT-PIERRE et GARCÍA LÓPEZ (GARCÍA LÓPEQ → n° 11 au lieu de 12)",
+  "D2 #x-image muette (0 requête .mp3)",
+  "D1 bilan sans les items manqués",
+  "F1 seuils absents des bilans (#x-reponds : alerte (3) + « 3 sur 8 » sans verdict)",
+  "G2 compteur qui grandit (#x-dire 1/12 → 18/18, bilan 9/12)",
+  "C2 notes selon la paire",
+  "A3 #x-pieges : 24 et 120 séries distinctes",
+  "G1 zones du #comptoir de 30 px",
+  "G1 focus sur BODY après une réponse fausse, après « Suivant » et au bilan (18 familles jouées)",
+  "G1 attributs lang",
+  "G1 écart de 10 px entre les .choix"
+ ]
+}
