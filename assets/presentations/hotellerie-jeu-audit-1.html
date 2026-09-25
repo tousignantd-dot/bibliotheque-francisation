@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hôtel Rive-Claire — le comptoir joué — audit, tour 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap">
+<style>
+/* ═══════════════════════════════════════════════════════════
+   UN MODULE POUR LA VENTE DE CHAUSSURES — LE CADRAGE
+   Chantier « formation en entreprise », second secteur :
+   le commerce de détail. Écrite à la main, comme
+   analyse-marche.html — ses chiffres viennent d'ailleurs et
+   doivent vieillir visiblement.
+
+   Vert : ce que le tour de main actuel produit déjà.
+   Ambre : ce qui attend votre décision.
+   Rouge : l'argument de vente qui tient à une obligation légale.
+   L'acier ne fait que la structure.
+   ═══════════════════════════════════════════════════════════ */
+
+:root{
+  --ground:#F7F7F5; --card:#FFFFFF; --sunken:#FBFBFA;
+  --ink:#17181A; --body:#3A3D40; --muted:#6E7175;
+  --line:#E4E4E0; --line-fort:#D2D2CD;
+
+  --fait:#0A8F5B;    --fait-bg:#E6F5EE;
+  --decid:#C07A08;   --decid-bg:#FBF2E2;
+  --loi:#C7302B;     --loi-bg:#FBEDEC;
+  --acier:#1D6B8F;   --acier-bg:#E7F0F6;
+
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#151618; --card:#1D1F22; --sunken:#212326;
+    --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+    --line:#2E3135; --line-fort:#3D4146;
+    --fait:#4BC48D; --fait-bg:#12291F;
+    --decid:#E0A63F; --decid-bg:#2C2213;
+    --loi:#EE7A73; --loi-bg:#2E1917;
+    --acier:#6DAFD2; --acier-bg:#14242C;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#151618; --card:#1D1F22; --sunken:#212326;
+  --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+  --line:#2E3135; --line-fort:#3D4146;
+  --fait:#4BC48D; --fait-bg:#12291F;
+  --decid:#E0A63F; --decid-bg:#2C2213;
+  --loi:#EE7A73; --loi-bg:#2E1917;
+  --acier:#6DAFD2; --acier-bg:#14242C;
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--body);
+  font-family:Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased}
+.doc{max-width:880px;margin:0 auto;padding:56px 24px 96px}
+
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--acier);margin:0 0 14px}
+h1{font-family:Newsreader,Georgia,serif;font-size:clamp(38px,6.4vw,58px);line-height:1.04;
+  font-weight:500;letter-spacing:-.02em;color:var(--ink);margin:0 0 20px;text-wrap:balance}
+.chapeau{font-size:19px;line-height:1.6;color:var(--body);margin:0;max-width:62ch}
+.chapeau strong{color:var(--ink);font-weight:700}
+h2{font-family:Newsreader,Georgia,serif;font-size:29px;line-height:1.2;font-weight:600;
+  letter-spacing:-.01em;color:var(--ink);margin:0 0 4px;text-wrap:balance}
+h3{font-size:15px;font-weight:800;color:var(--ink);margin:0 0 6px}
+p{margin:0;max-width:68ch}
+section{display:flex;flex-direction:column;gap:16px;padding:44px 0 0;margin:44px 0 0;
+  border-top:1px solid var(--line)}
+section.premier{border-top:none;margin-top:0;padding-top:40px}
+code{font-family:var(--mono);font-size:.86em;background:var(--sunken);
+  border:1px solid var(--line);border-radius:4px;padding:1px 5px;color:var(--ink)}
+ul.simple{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px}
+ul.simple li{max-width:66ch} ul.simple li strong{color:var(--ink)}
+em.art{font-style:normal;font-family:var(--mono);font-size:.82em;color:var(--muted);
+  white-space:nowrap}
+
+.these{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--acier);
+  border-radius:3px;padding:26px 28px;display:flex;flex-direction:column;gap:12px}
+.these p{font-size:18px}
+.these .cle{font-family:Newsreader,Georgia,serif;font-size:23px;line-height:1.3;
+  font-weight:500;color:var(--ink);font-style:italic}
+
+/* ── Les décisions ─────────────────────────────────────── */
+.decisions{display:flex;flex-direction:column;gap:2px;counter-reset:d}
+.dec{counter-increment:d;background:var(--card);border:1px solid var(--line);
+  border-left:5px solid var(--decid);border-radius:3px;padding:19px 22px 19px 60px;
+  position:relative;display:flex;flex-direction:column;gap:8px}
+.dec.ok{border-left-color:var(--fait)}
+.dec::before{content:counter(d);position:absolute;left:24px;top:18px;
+  font-family:var(--mono);font-size:14px;color:var(--muted)}
+.dec .ligne{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;
+  justify-content:space-between}
+.dec p{font-size:15.5px}
+.dec .defaut{font-size:13.5px;color:var(--muted);font-style:italic}
+
+.badge{display:inline-block;font-size:11.5px;font-weight:800;letter-spacing:.05em;
+  text-transform:uppercase;padding:3px 9px;border-radius:2px;white-space:nowrap}
+.b-fait{background:var(--fait-bg);color:var(--fait)}
+.b-dec{background:var(--decid-bg);color:var(--decid)}
+.b-loi{background:var(--loi-bg);color:var(--loi)}
+.b-n{background:var(--sunken);color:var(--muted);border:1px solid var(--line)}
+
+/* ── Tableaux ──────────────────────────────────────────── */
+.defile{overflow-x:auto;border:1px solid var(--line);border-radius:3px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:15px;min-width:640px}
+caption{caption-side:top;text-align:left;padding:0 0 10px;font-size:13.5px;color:var(--muted)}
+th,td{padding:12px 15px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{font-size:11.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--muted);background:var(--sunken);white-space:nowrap}
+tbody tr:last-child td{border-bottom:none}
+td.q{font-weight:700;color:var(--ink)}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+td small{display:block;color:var(--muted);font-size:13px;line-height:1.45;margin-top:3px}
+tbody tr td:first-child{border-left:4px solid transparent}
+tr.l td:first-child{border-left-color:var(--loi)}
+tr.d td:first-child{border-left-color:var(--decid)}
+tr.f td:first-child{border-left-color:var(--fait)}
+
+/* ── Chiffres ──────────────────────────────────────────── */
+.chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.ch{background:var(--card);border:1px solid var(--line);border-radius:3px;
+  border-top:3px solid var(--acier);padding:15px 16px}
+.ch .n{font-family:Newsreader,Georgia,serif;font-size:30px;line-height:1;font-weight:500;
+  color:var(--ink);display:block;font-variant-numeric:tabular-nums}
+.ch .q{font-size:12.5px;font-weight:700;color:var(--muted);line-height:1.35;display:block;margin-top:7px}
+
+/* ── Marche à suivre ───────────────────────────────────── */
+ol.actions{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;
+  counter-reset:a}
+ol.actions li{counter-increment:a;background:var(--card);border:1px solid var(--line);
+  border-radius:3px;padding:18px 22px 18px 62px;position:relative;display:flex;
+  flex-direction:column;gap:6px}
+ol.actions li::before{content:counter(a);position:absolute;left:22px;top:17px;
+  font-family:var(--mono);font-size:14px;color:var(--muted)}
+ol.actions li p{font-size:15.5px}
+.qui{font-size:13px;color:var(--muted);font-style:italic}
+
+.reserve{border:1px dashed var(--line-fort);border-radius:3px;padding:20px 24px;
+  font-size:15px;color:var(--muted);display:flex;flex-direction:column;gap:9px}
+.reserve strong{color:var(--body)}
+.avert{background:var(--loi-bg);border:1px solid var(--loi);border-radius:3px;
+  padding:20px 24px;display:flex;flex-direction:column;gap:9px}
+.avert strong{color:var(--ink)}
+.avert p{font-size:15.5px;color:var(--body)}
+.pied{margin-top:52px;padding-top:22px;border-top:1px solid var(--line);font-size:13.5px;
+  color:var(--muted);display:flex;flex-direction:column;gap:5px}
+@media (max-width:620px){ .doc{padding:36px 18px 72px} }
+
+/* ── décisions à boutons (plan magasin de vêtements) ── */
+.dec2{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:12px 0}
+.dq{margin:0 0 10px;font-weight:700;color:var(--ink)}
+.dn{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--decid-bg);color:var(--decid);font-size:13px;margin-right:8px}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opt{font:inherit;font-size:15px;text-align:left;cursor:pointer;background:var(--sunken);color:var(--body);border:1px solid var(--line-fort);border-radius:10px;padding:8px 12px}
+.opt:hover{border-color:var(--acier)}
+.opt[aria-pressed="true"]{background:var(--fait-bg);border-color:var(--fait);color:var(--ink);font-weight:700}
+.opt .tag{font-size:12px;color:var(--decid);font-weight:700;margin-left:4px}
+.dw{margin:10px 0 0;font-size:15px;color:var(--muted)}
+.btn-export{font:inherit;font-weight:700;cursor:pointer;background:var(--acier);color:#fff;border:0;border-radius:10px;padding:10px 16px}
+.etat{margin-left:12px;color:var(--muted);font-size:15px}
+table{display:block;overflow-x:auto}
+
+/* ── étape 0 de la réception ── */
+.doc.large{max-width:1180px}
+.chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.temoins{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:16px 0}
+.temoins figure,.comptoir{margin:0;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px}
+.temoins img,.comptoir img{width:100%;display:block}
+.temoins figcaption{text-align:center;font-weight:700;color:#17181A;margin-top:6px}
+.comptoir{margin:14px 0}
+.verdict,.choix{display:flex;flex-wrap:wrap;gap:12px;margin:12px 0}
+.verdict button,.choix button{font:inherit;cursor:pointer;background:var(--sunken);color:var(--body);
+  border:1px solid var(--line-fort);border-radius:10px;padding:8px 12px;min-height:40px}
+.choix{gap:12px}
+.choix button{font-size:13px;padding:5px 8px;border-radius:8px}
+button[aria-pressed="true"][data-v="ok"],button[aria-pressed="true"][data-v="garder"]{background:var(--fait-bg);border-color:var(--fait);color:var(--ink);font-weight:700}
+button[aria-pressed="true"][data-v="retirer"]{background:var(--loi-bg);border-color:var(--loi);color:var(--ink);font-weight:700}
+button[aria-pressed="true"][data-v="douteux"],button[aria-pressed="true"][data-v="revoir"]{background:var(--decid-bg);border-color:var(--decid);color:var(--ink);font-weight:700}
+.opts,.noms{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin:12px 0}
+.opt{font:inherit;text-align:left;cursor:pointer;background:var(--card);color:var(--body);border:1px solid var(--line-fort);
+  border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:4px;width:100%}
+.opt b{color:var(--ink)}
+.opt span{font-size:14px;color:var(--muted)}
+.opt .reco{display:inline;font-size:12px;font-weight:700;color:var(--acier);margin-left:6px}
+.opt[aria-pressed="true"]{border-color:var(--acier);box-shadow:inset 0 0 0 2px var(--acier);background:var(--acier-bg)}
+.opt.petit{display:inline-flex;width:auto;padding:8px 12px;min-height:40px}
+.nom{display:flex;flex-direction:column;gap:6px}
+.nom p{margin:0;font-size:14px;line-height:1.45}
+.aide{color:var(--muted);font-size:15px}
+.bloc-voix{margin:18px 0}
+.vgrille{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+.vx{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:8px}
+.vx audio{width:100%;height:36px}
+.vn{margin:0;font-weight:800;color:var(--ink)}
+.vn span{font-weight:600;color:var(--muted);font-size:14px;margin-left:6px}
+.verdict.mini{margin:0}
+.sommaire{position:sticky;top:0;z-index:2;background:var(--ground);display:flex;flex-wrap:wrap;gap:6px 14px;
+  padding:10px 0;border-bottom:1px solid var(--line);margin:16px 0 8px;font-size:15px}
+.sommaire a{color:var(--acier);text-decoration:none;font-weight:700}
+.planche h2 .compte{font-size:15px;color:var(--muted);font-weight:600;margin-left:6px}
+.grille{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px}
+.mot{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:3px}
+.mot.piege{border-color:var(--decid);box-shadow:inset 0 3px 0 var(--decid)}
+.mot[data-etat="retirer"]{opacity:.45}
+body.pieges-seuls .mot:not(.piege),body.pieges-seuls .planche:not(:has(.piege)){display:none}
+.mot .img{width:100%;aspect-ratio:1/1;object-fit:contain;background:#fff;border-radius:8px}
+.mot .attente,.mot .rien{display:grid;place-items:center;text-align:center;font-size:13px;color:var(--muted);
+  background:var(--sunken);border:1px dashed var(--line-fort);aspect-ratio:3/2}
+.mot .l{margin:0;font-size:15px;line-height:1.3;color:var(--ink)}
+.mot .l:first-of-type{font-weight:800;font-size:16px;margin-top:4px}
+.mot .dr{display:inline-block;min-width:24px;font-size:11px;font-weight:800;color:var(--muted);letter-spacing:.04em}
+.mot .note{margin:4px 0 2px;font-size:13px;line-height:1.4;color:var(--body)}
+.mot.piege .note{color:var(--decid);font-weight:700}
+.mot .choix{margin-top:auto;padding-top:6px}
+@media (max-width:640px){
+  .grille{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .sommaire{flex-wrap:nowrap;overflow-x:auto;white-space:nowrap}
+  .mot .l{font-size:14px}
+  .cmp{font-size:14px}
+}
+textarea{width:100%;font:inherit;font-size:15px;padding:10px;border-radius:10px;border:1px solid var(--line-fort);
+  background:var(--card);color:var(--ink)}
+
+.doc.large{max-width:1100px}
+.obj li{margin:6px 0}
+.filtres{position:sticky;top:0;z-index:2;background:var(--ground);display:flex;flex-wrap:wrap;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);margin:18px 0 8px}
+.filtres button,.choix button{font:inherit;font-size:14px;cursor:pointer;background:var(--sunken);color:var(--body);border:1px solid var(--line-fort);border-radius:9px;padding:6px 10px}
+.filtres button[aria-pressed=true]{background:var(--ink);color:var(--card);border-color:var(--ink)}
+.constat{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--line-fort);border-radius:12px;padding:12px 14px;margin:10px 0}
+.constat.bloquant{border-left-color:var(--loi)}
+.constat.majeur{border-left-color:var(--decid)}
+.constat.mineur{border-left-color:var(--acier)}
+.tete-c{display:flex;flex-wrap:wrap;gap:8px;align-items:baseline}
+.code{font-weight:900;font-size:16px;color:var(--ink)}
+.nomc{font-weight:700;color:var(--ink)}
+.grav{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.08em}
+.constat.bloquant .grav{color:var(--loi)} .constat.majeur .grav{color:var(--decid)} .constat.mineur .grav{color:var(--acier)}
+.src{font-size:12px;color:var(--muted);margin-left:auto}
+.lieu{margin:4px 0 0;font-size:14px;color:var(--muted)}
+.cst{margin:6px 0 0}
+.cor{margin:6px 0 0;font-size:15px}
+.choix{display:flex;flex-wrap:wrap;gap:12px;margin-top:8px}
+.choix button[aria-pressed=true][data-v=corriger]{background:var(--loi-bg);border-color:var(--loi);color:var(--ink);font-weight:700}
+.choix button[aria-pressed=true][data-v=garder]{background:var(--fait-bg);border-color:var(--fait);color:var(--ink);font-weight:700}
+.choix button[aria-pressed=true][data-v=discuter]{background:var(--decid-bg);border-color:var(--decid);color:var(--ink);font-weight:700}
+</style>
+<style>
+  .doc{padding-top:26px}
+  .retour{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;
+    color:var(--muted);text-decoration:none;margin-bottom:34px}
+  .retour:hover{color:var(--acier)}
+  table.cmp{width:100%;border-collapse:collapse;font-size:15px;background:var(--card);
+    border:1px solid var(--line);border-radius:3px;overflow:hidden}
+  table.cmp th,table.cmp td{padding:13px 15px;text-align:left;vertical-align:top;
+    border-bottom:1px solid var(--line)}
+  table.cmp thead th{background:var(--sunken);font-size:12px;font-weight:800;
+    letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+  table.cmp tbody tr:last-child td{border-bottom:0}
+  table.cmp td:first-child{font-weight:700;color:var(--ink)}
+  .roule{overflow-x:auto}
+  .voie{background:var(--card);border:1px solid var(--line);border-radius:3px;
+    padding:24px 26px;display:flex;flex-direction:column;gap:11px}
+  .voie.oui{border-color:var(--fait);border-width:2px;padding:23px 25px}
+  .voie.non{border-left:5px solid var(--loi)}
+  .voie h3{font-size:19px;font-family:Newsreader,Georgia,serif;font-weight:600;margin:0}
+  .voie .cout{font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+  .verdict{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+    padding:3px 10px;border-radius:99px;align-self:flex-start}
+  .v-oui{background:var(--fait-bg);color:var(--fait)}
+  .v-peut{background:var(--decid-bg);color:var(--decid)}
+  .v-non{background:var(--loi-bg);color:var(--loi)}
+  .mes{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:2px;
+    background:var(--line);border:1px solid var(--line);border-radius:3px;overflow:hidden}
+  .mes div{background:var(--card);padding:16px 18px}
+  .mes b{display:block;font-family:Newsreader,Georgia,serif;font-size:27px;font-weight:500;
+    color:var(--ink);line-height:1.1}
+  .mes span{font-size:13px;color:var(--muted)}
+  .planche{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+  .planche figure{margin:0;background:var(--card);border:1px solid var(--line);
+    border-radius:3px;overflow:hidden;display:flex;flex-direction:column}
+  .planche figure.large{grid-column:1 / -1}
+  .planche img{display:block;width:100%;height:auto;background:var(--sunken)}
+  .planche figcaption{padding:13px 16px 15px;font-size:14px;line-height:1.5;color:var(--muted);
+    border-top:1px solid var(--line)}
+  .planche figcaption b{display:block;color:var(--ink);font-size:14.5px;margin-bottom:2px}
+  @media (max-width:620px){ .planche{grid-template-columns:1fr} }
+  .doc p a,.doc li a,.doc td a{color:var(--acier);text-decoration:underline;
+    text-underline-offset:2px;text-decoration-thickness:1px}
+  ul.src{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:7px;font-size:14.5px}
+  ul.src li{color:var(--muted)} ul.src .d{font-family:var(--mono);font-size:12.5px}
+  h3.sous{font-family:Newsreader,Georgia,serif;font-size:21px;font-weight:600;
+    letter-spacing:-.01em;color:var(--ink);margin:14px 0 0}
+  @media (max-width:640px){ .doc{padding-left:18px;padding-right:18px} }
+</style>
+</head>
+<body><div class="doc large">
+<a class="retour" href="/presentations.html#hotellerie"><span aria-hidden="true">&#8592;</span> Le classeur</a>
+<p class="eyebrow">Hôtel Rive-Claire — le comptoir joué &middot; boucle didactique &middot; tour 1</p>
+<h1>L'audit de la trousse</h1>
+<p class="chapeau">La trousse passée à la grille de la boucle didactique — 22 critères, sept familles — par deux
+regards qui n'avaient pas les intentions de l'auteur : l'un a lu le <b>contenu</b>, l'autre a <b>servi et joué
+la page</b> à 375 et à 1280 px. <strong>0 bloquant,
+8 majeurs, 14 mineurs.</strong>
+Sortie de boucle : zéro bloquant, zéro majeur. Tranchez chaque constat, puis exportez : l'export pilote la révision.</p>
+
+<div class="chiffres">
+  <div class="ch"><span class="n">0</span><span class="q">bloquants — l'objectif ne peut pas être atteint, ou on enseigne le mauvais geste</span></div>
+  <div class="ch"><span class="n">8</span><span class="q">majeurs — atteint par une minorité, ou ne tiendra pas une semaine</span></div>
+  <div class="ch"><span class="n">14</span><span class="q">mineurs — friction, consignés</span></div>
+  <div class="ch"><span class="n">D2</span><span class="q">le critère le plus touché — D2 (5), E1 (4), C2 (3), G1 (2), G2 (2)</span></div>
+</div>
+
+<section class="premier"><h2>Les objectifs contre lesquels on juge</h2>
+<p>Les objectifs du cadrage (étape 0), repris dans
+<code>build/contenu/entreprise-hotel/boucle/cadrage.md</code>.</p><ul class="obj"><li><b>O1 — Entendre la demande..</b> Entendre une demande dite au débit d&#x27;un client (type de chambre, nuits, dates) et la saisir juste : 7 sur 8 en série.</li><li><b>O2 — Épeler et noter..</b> Faire épeler et noter un nom, un numéro de chambre, un prix, une heure, au téléphone compris : 5 de suite sans erreur.</li><li><b>O3 — Les gestes du comptoir..</b> Accueillir, confirmer, refuser poliment et expliquer des frais avec les formules de la langue apprise : 6 situations sur 8 au comptoir.</li><li><b>O4 — Le relais au gérant..</b> Garder pour le gérant ce qui lui revient : aucune promesse hors règle, éliminatoire, et dit avant.</li></ul></section>
+
+<nav class="filtres" aria-label="Filtrer les constats"><button type="button" data-fg="tout" aria-pressed="true">Tout</button><button type="button" data-fg="bloquant" aria-pressed="false">Bloquants · 0</button><button type="button" data-fg="majeur" aria-pressed="false">Majeurs · 8</button><button type="button" data-fg="mineur" aria-pressed="false">Mineurs · 14</button><button type="button" data-ff="A" aria-pressed="false">A · Alignement</button><button type="button" data-ff="C" aria-pressed="false">C · Charge cognitive</button><button type="button" data-ff="D" aria-pressed="false">D · Pratique</button><button type="button" data-ff="E" aria-pressed="false">E · Rétroaction</button><button type="button" data-ff="F" aria-pressed="false">F · Transfert</button><button type="button" data-ff="G" aria-pressed="false">G · Accès</button></nav>
+<section class="liste-c"><article class="constat majeur" data-id="t1-01" data-g="majeur" data-f="A"><div class="tete-c"><span class="code">A1</span><span class="nomc">Objectif observable</span><span class="grav">majeur</span><span class="src">jeu</span></div><p class="lieu">hotel_planches.py ecranJeu() ; clients.py UI_JEU jeu_carte</p><p class="cst">O4 exige que l&#x27;éliminatoire soit « dit avant ». Avant d&#x27;entrer, l&#x27;écran ne dit que « le bilan dit ce que vous avez fait » ; la règle est repliée dans un &lt;details&gt; fermé, et le mot « éliminatoire » n&#x27;apparaît qu&#x27;au bilan (promesse_tit). L&#x27;employé découvre après coup qu&#x27;une promesse fait échouer.</p><p class="cor"><b>Correctif :</b> Sur l&#x27;écran de choix, une ligne visible (non repliée) : « Une promesse hors règle fait échouer la situation » + la règle en trois lignes ; la répéter en tête de la scène, à côté de la consigne.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat majeur" data-id="t1-02" data-g="majeur" data-f="A"><div class="tete-c"><span class="code">A3</span><span class="nomc">Alignement constructif</span><span class="grav">majeur</span><span class="src">jeu</span></div><p class="lieu">hotel_planches.py commencerJeu() + bilanJeu() (hist.slice(1)) ; clients.py GESTES accueil</p><p class="cst">La page écrit elle-même l&#x27;accueil (« Hello, welcome… ») dans la bulle « Vous », puis le retire du bilan. Le geste « Accueillir » (O3) n&#x27;est donc jamais pratiqué, et le bilan le juge au hasard : sur 8 parties réelles, « fait » 3 fois en citant une réplique qui n&#x27;est pas un accueil (« Yes. Your name... sorry, again please? »), « à faire » 5 fois avec le conseil de saluer — ce que l&#x27;employé ne pouvait pas faire.</p><p class="cor"><b>Correctif :</b> Laisser l&#x27;employé ouvrir (au comptoir, le client attend en silence avec [neutre] ; au téléphone, la sonnerie puis l&#x27;employé décroche) ; sinon retirer « accueil » des gestes jugés et le dire.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat majeur" data-id="t1-03" data-g="majeur" data-f="D"><div class="tete-c"><span class="code">D2</span><span class="nomc">Fidélité à la situation</span><span class="grav">majeur</span><span class="src">jeu</span></div><p class="lieu">clients.py CLIENTS écran (arrivee, plainte, facture, hors-regle) ; PALIERS_JEU</p><p class="cst">O2 se pratique mal : (1) l&#x27;écran affiche d&#x27;avance le nom et le numéro (« Réservation : BÉLANGER », « Chambre 412 · TREMBLAY ») — rien à faire épeler ni à retrouver ; (2) le client épelle sans qu&#x27;on le lui demande dans 3 des 4 parties où le nom était demandé (Bélanger sur « again please? », Vuković et Okafor dès la première mention), malgré « tu ne l&#x27;épelles QUE si… ».</p><p class="cor"><b>Correctif :</b> Écran « à chercher » : liste des arrivées du jour avec des noms proches (Bélanger, Boulanger, Béland) ou chambres voisines (412, 421, 214), la fiche ne s&#x27;ouvrant qu&#x27;une fois la bonne choisie ; dans la consigne, une règle explicite en tête : « Tu donnes ton nom SANS l&#x27;épeler. Tu n&#x27;épelles que si on emploie le mot épeler/spell/deletrear. »</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat majeur" data-id="t1-04" data-g="majeur" data-f="E"><div class="tete-c"><span class="code">E1</span><span class="nomc">Rétroaction explicative</span><span class="grav">majeur</span><span class="src">jeu</span></div><p class="lieu">clients.py bilan() ; hotel_planches.py bilanJeuHTML()</p><p class="cst">La consigne du bilan ne reçoit ni les faits du client, ni l&#x27;écran, ni la liste des gestes en jeu : le juge ne sait pas si l&#x27;employé a saisi juste (O1) ni quels gestes étaient attendus. Vu en parties réelles : « épeler : fait » alors que le client a épelé de lui-même (Okafor) ou en citant la réplique du CLIENT (« Four... one... two. ») ; « frais : pas nécessaire » chez Okafor alors que le déjeuner à 18 $ était le frais à expliquer ; « proposer » jugé non nécessaire chez Leblanc qui le déclare ; « confirmer : Excellent » après des dates et un lit faux (Bélanger 15→17 king). Et l&#x27;écran n&#x27;affiche le conseil que pour « à faire » : la remarque sur l&#x27;erreur de numéro (Vuković) est cachée derrière un ✓.</p><p class="cor"><b>Correctif :</b> Passer au bilan les faits, l&#x27;écran et c.gestes ; fixer « necessaire » par c.gestes côté page ; ajouter un jugement « saisie juste » (dates, nombre de nuits, prix, nom, numéro comparés aux faits) ; exiger que la citation soit une réplique du RÉCEPTIONNISTE ; afficher le conseil aussi sous un geste fait quand il signale une erreur.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat majeur" data-id="t1-05" data-g="majeur" data-f="E"><div class="tete-c"><span class="code">E1</span><span class="nomc">Rétroaction explicative</span><span class="grav">majeur</span><span class="src">jeu</span></div><p class="lieu">clients.py bilan() (LANGUE_BILAN) ; server.py _call_anthropic_json (Haiku)</p><p class="cst">Dans la direction pilote es→fr, un bilan sur trois (Okafor, débutant) a rendu tous ses conseils en FRANÇAIS — la langue que l&#x27;employé ne lit pas encore — seul le résumé était en espagnol. Les deux autres ont de l&#x27;espagnol fautif ou hybride : « Saludez », « Rediga », « el frais », « late checkout ».</p><p class="cor"><b>Correctif :</b> Nommer la langue du conseil par un exemple dans la consigne, vérifier côté serveur (détection simple : mots-outils de la langue parlée) et redemander une fois ; envisager le modèle de conversation pour le bilan des directions es.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat majeur" data-id="t1-06" data-g="majeur" data-f="E"><div class="tete-c"><span class="code">E1</span><span class="nomc">Rétroaction explicative</span><span class="grav">majeur</span><span class="src">jeu</span></div><p class="lieu">server.py _handle_jeu_de_role, bilan : max_tokens=900</p><p class="cst">Les huit bilans réels ont consommé 634 à 813 jetons de sortie pour des échanges de 4 à 7 tours. Un échange plus long ou plus riche en espagnol dépassera 900 : le JSON est coupé, json.loads échoue, l&#x27;écran affiche « Réponse inattendue du service de correction » (en français) et le bilan est perdu, sans reprise.</p><p class="cor"><b>Correctif :</b> Monter à 1600-2000 ; borner la consigne (conseil ≤ 20 mots, citation ≤ 15 mots, conseil vide quand le geste n&#x27;est pas nécessaire) ; offrir « Réessayer » sur l&#x27;écran du bilan.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat majeur" data-id="t1-07" data-g="majeur" data-f="E"><div class="tete-c"><span class="code">E2</span><span class="nomc">Conséquence visible</span><span class="grav">majeur</span><span class="src">jeu</span></div><p class="lieu">clients.py faits (plainte, facture, hors-regle, sans-resa) ; hotel_planches.py bilanJeuHTML() ok = humeur &#x27;contente&#x27;</p><p class="cst">La suite visible récompense la faute et punit le bon geste : après une promesse, le client est « chaleureux / ravi » → [contente] → « Mr. Tremblay repart satisfait » au-dessus du bandeau « éliminatoire » (vu : Tremblay 20 %, Okafor déjeuner gratuit). Après un relais correct, le client « un peu déçu » finit [neutre] → « Madame Leblanc repart sans être satisfaite ».</p><p class="cor"><b>Correctif :</b> Ne pas dériver la fin de l&#x27;humeur : « repart satisfait » seulement si aucune promesse ET humeur ≥ neutre ; un relais correct se dit « repart en attendant la réponse du gérant ». Sur promesse, montrer la conséquence plausible (le gérant refuse le lendemain, le client revient fâché).</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat majeur" data-id="t1-08" data-g="majeur" data-f="F"><div class="tete-c"><span class="code">F1</span><span class="nomc">Évaluation alignée</span><span class="grav">majeur</span><span class="src">jeu</span></div><p class="lieu">hotel_planches.py (J jamais gardé) ; cadrage O3</p><p class="cst">Le critère d&#x27;O3 est « 6 situations sur 8 au comptoir », mais rien n&#x27;est gardé : ni localStorage, ni envoi au serveur ; la liste ne marque pas les clients déjà reçus ni leur résultat. Le débutant ne voit que 5 clients sur 8. On ne peut ni atteindre ni mesurer le seuil, et le formateur ne voit rien.</p><p class="cor"><b>Correctif :</b> Garder par appareil (clé par langue apprise) le résultat de chaque client : gestes faits/attendus, promesse oui/non ; marquer la carte (✓ / → / ✕ éliminatoire) et afficher « n situations réussies sur 8 » ; prévoir la remontée au portail comme les autres traces.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t1-09" data-g="mineur" data-f="C"><div class="tete-c"><span class="code">C2</span><span class="nomc">Cohérence</span><span class="grav">mineur</span><span class="src">jeu</span></div><p class="lieu">assets/interactive/hotel/clients/sans-resa-*.webp</p><p class="cst">Portrait de M. Okafor : visage non teinté (blanc papier) alors que les six autres ont une carnation ; l&#x27;écart se voit sur le décor.</p><p class="cor"><b>Correctif :</b> Refaire les quatre humeurs avec la même consigne de remplissage (voir croquis-sequence, invariance).</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t1-10" data-g="mineur" data-f="C"><div class="tete-c"><span class="code">C2</span><span class="nomc">Cohérence</span><span class="grav">mineur</span><span class="src">jeu</span></div><p class="lieu">assets/interactive/hotel/clients/complet-*.webp</p><p class="cst">Mme Hoang : restes blancs du détourage entre les cheveux et le manteau, aux deux épaules, sur les quatre humeurs.</p><p class="cor"><b>Correctif :</b> Reprendre le masque alpha (seuil sur le blanc) de complet-*.webp.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t1-11" data-g="mineur" data-f="C"><div class="tete-c"><span class="code">C2</span><span class="nomc">Cohérence</span><span class="grav">mineur</span><span class="src">jeu</span></div><p class="lieu">CSS .decor .personne (bottom:40%) ; bas des portraits</p><p class="cst">Chaque buste se termine par un trait noir horizontal qui déborde du corps (très visible chez Tremblay) et flotte au-dessus du rebord du comptoir, avec du sol visible entre les deux : le client paraît coupé en l&#x27;air.</p><p class="cor"><b>Correctif :</b> Rogner la ligne de sol des portraits et descendre le buste pour que son bas passe sous la copie « devant » (bottom ≈ 38 %).</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t1-12" data-g="mineur" data-f="C"><div class="tete-c"><span class="code">C4</span><span class="nomc">Exemple travaillé</span><span class="grav">mineur</span><span class="src">jeu</span></div><p class="lieu">hotel_planches.py sceneJeu() phrases-j</p><p class="cst">Aucun exemple travaillé d&#x27;un échange complet avant d&#x27;entrer ; les phrases des gestes sont repliées dans « Les gestes du comptoir ».</p><p class="cor"><b>Correctif :</b> Un court échange modèle (4 répliques, en audio) sur la carte de Bélanger, puis les gestes dépliés à la première partie.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t1-13" data-g="mineur" data-f="C"><div class="tete-c"><span class="code">C5</span><span class="nomc">Langage clair</span><span class="grav">mineur</span><span class="src">jeu</span></div><p class="lieu">hotel_planches.py ecranJeu() carte de Vuković</p><p class="cst">La carte affiche « Au téléphone · Au téléphone : il veut réserver… » (doublon).</p><p class="cor"><b>Correctif :</b> Retirer « Au téléphone : » de la carte, ou ne pas ajouter TJ(&#x27;au_tel&#x27;).</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t1-14" data-g="mineur" data-f="D"><div class="tete-c"><span class="code">D2</span><span class="nomc">Fidélité à la situation</span><span class="grav">mineur</span><span class="src">jeu</span></div><p class="lieu">hotel_planches.py sceneJeu() « Écouter sans lire » ; paliers</p><p class="cst">O1 (entendre au débit d&#x27;un client) : le texte est lisible par défaut, y compris au téléphone et au palier « à l&#x27;aise » ; l&#x27;écoute sans lire est un choix que rien n&#x27;encourage. Le débutant n&#x27;a aucun appel téléphonique (O2 dit « au téléphone compris »).</p><p class="cor"><b>Correctif :</b> « Sans lire » par défaut au téléphone et au palier à l&#x27;aise (réversible) ; ouvrir Vuković au débutant avec le débit lent.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t1-15" data-g="mineur" data-f="D"><div class="tete-c"><span class="code">D2</span><span class="nomc">Fidélité à la situation</span><span class="grav">mineur</span><span class="src">jeu</span></div><p class="lieu">clients.py écran facture</p><p class="cst">Le total 422,28 $ applique 14,75 % de taxes ; TPS+TVQ font 14,975 % (423,11 $), sans compter la taxe sur l&#x27;hébergement de 3,5 % sur la chambre. Chiffre faux montré comme contenu.</p><p class="cor"><b>Correctif :</b> Recalculer (338 × 3,5 % + (338+30+11,83) × 14,975 %) ou écrire « taxes : 55,11 $ » avec le total juste.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t1-16" data-g="mineur" data-f="D"><div class="tete-c"><span class="code">D2</span><span class="nomc">Fidélité à la situation</span><span class="grav">mineur</span><span class="src">jeu</span></div><p class="lieu">clients.py arrivee (faits vs écran)</p><p class="cst">Mme Bélanger demande l&#x27;heure du déjeuner, mais son écran ne la donne pas (seul celui de Nakamura la porte) : l&#x27;employé doit inventer.</p><p class="cor"><b>Correctif :</b> Ajouter « Déjeuner : 6 h 30 à 10 h » à l&#x27;écran de Bélanger.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t1-17" data-g="mineur" data-f="D"><div class="tete-c"><span class="code">D2</span><span class="nomc">Fidélité à la situation</span><span class="grav">mineur</span><span class="src">jeu</span></div><p class="lieu">clients.py faits hors-regle, plainte</p><p class="cst">Le client débutant reformule parfois de lui-même (Leblanc réordonne sa demande au lieu de la redire telle quelle) ; au palier à l&#x27;aise Vuković livre dates et lit dès la première réplique — réaliste, mais la demande n&#x27;a plus à être construite.</p><p class="cor"><b>Correctif :</b> Au palier à l&#x27;aise, garder « deux demandes par phrase » mais jamais le nom ni le numéro sans qu&#x27;on les demande.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t1-18" data-g="mineur" data-f="E"><div class="tete-c"><span class="code">E1</span><span class="nomc">Rétroaction explicative</span><span class="grav">mineur</span><span class="src">jeu</span></div><p class="lieu">clients.py bilan() « mieux » et « resume »</p><p class="cst">Les reformulations inventent des faits (« just downstairs », « You have plenty of time from 7:30 onwards ») et le résumé français dit « petit-déjeuner » contre le parler québécois décidé ; les conseils oublient souvent la phrase à dire entre guillemets (Hoang).</p><p class="cor"><b>Correctif :</b> Consigne : « mieux » ne contient aucune information absente de la phrase de l&#x27;employé ; en français, « déjeuner » ; phrase à dire obligatoire, reprise de GESTES[x].phrase si besoin.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t1-19" data-g="mineur" data-f="G"><div class="tete-c"><span class="code">G1</span><span class="nomc">Accessibilité</span><span class="grav">mineur</span><span class="src">jeu</span></div><p class="lieu">hotel_planches.py tourJeu() branche 401 ; server.py messages d&#x27;erreur</p><p class="cst">Un 401 en cours de partie efface la conversation sans bilan. Les erreurs du serveur (« Non autorisé », « L&#x27;assistant est momentanément indisponible », « Réponse inattendue du service de correction ») s&#x27;affichent en français quelle que soit la langue de l&#x27;employé.</p><p class="cor"><b>Correctif :</b> Garder J et proposer de ressaisir le code ; afficher TJ(&#x27;erreur&#x27;) plutôt que d.error, ou traduire les messages par code d&#x27;état.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t1-20" data-g="mineur" data-f="G"><div class="tete-c"><span class="code">G1</span><span class="nomc">Accessibilité</span><span class="grav">mineur</span><span class="src">jeu</span></div><p class="lieu">CSS .jeu à 375 px</p><p class="cst">Au téléphone intelligent (375 px), la zone de saisie commence à 954 px et le message d&#x27;erreur à 1120 px : pour répondre on fait défiler hors du visage et de l&#x27;écran de l&#x27;hôtel ; « La voix ne répond pas » est invisible sans défiler.</p><p class="cor"><b>Correctif :</b> Sous 760 px : visage réduit et écran de l&#x27;hôtel repliable au-dessus du fil, ou barre de saisie collante en bas ; message d&#x27;erreur près du bouton Parler.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t1-21" data-g="mineur" data-f="G"><div class="tete-c"><span class="code">G2</span><span class="nomc">Durée et contrôle</span><span class="grav">mineur</span><span class="src">jeu</span></div><p class="lieu">hotel_planches.py tourJeu()/direJeu()</p><p class="cst">Course : quitter pendant la réponse puis choisir un autre client fait tomber la réplique de l&#x27;ancien dans la nouvelle partie (vu : « My key card does not work. Room 412. » dans la conversation d&#x27;Okafor), historique et bilan compris.</p><p class="cor"><b>Correctif :</b> Jeton de partie : mémoriser J au départ du fetch et ignorer la réponse (et la voix) si J a changé.</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article><article class="constat mineur" data-id="t1-22" data-g="mineur" data-f="G"><div class="tete-c"><span class="code">G2</span><span class="nomc">Durée et contrôle</span><span class="grav">mineur</span><span class="src">jeu</span></div><p class="lieu">hotel_planches.py ecranJeu() / commencerJeu()</p><p class="cst">Sans test fait, aucun niveau n&#x27;est choisi, les 8 clients s&#x27;affichent, puis la partie part en silence au palier débutant (même Hoang, Castillo et Vuković, non prévus à ce palier). Aucune durée annoncée.</p><p class="cor"><b>Correctif :</b> Présélectionner et marquer « Débutant » quand rien n&#x27;est choisi ; annoncer « 3 à 5 minutes par client ».</p><div class="choix"><button type="button" data-v="corriger" aria-pressed="false">À corriger</button><button type="button" data-v="garder" aria-pressed="false">Garder tel quel</button><button type="button" data-v="discuter" aria-pressed="false">À discuter</button></div></article></section>
+
+<p style="margin-top:1.4rem"><button type="button" class="btn-export" id="exporter">Exporter mes décisions</button>
+<span id="etat" class="etat"></span></p>
+<div class="pied"><p>Ce que la boucle ne vérifie pas : l'exactitude du contenu (un locuteur et un commerçant doivent
+valider), l'essai auprès de vrais employés (le pilote), l'effet au travail (des semaines après). Page produite par
+<code>build/francoeur_audit_page.py</code> — ne pas l'éditer.</p></div>
+</div>
+<script>
+(function(){
+  var CLE='hotellerie-jeu-audit-1', v={}, fg='tout', ff=null;
+  try{ v=JSON.parse(localStorage.getItem(CLE)||'{}'); }catch(e){}
+  function peindre(){
+    document.querySelectorAll('.constat').forEach(function(c){
+      c.querySelectorAll('.choix button').forEach(function(b){ b.setAttribute('aria-pressed', v[c.dataset.id]===b.dataset.v?'true':'false'); });
+      c.hidden = !((fg==='tout'||c.dataset.g===fg) && (!ff||c.dataset.f===ff));
+    });
+    var n=Object.keys(v).length, t=document.querySelectorAll('.constat').length;
+    document.getElementById('etat').textContent=n+' constats tranchés sur '+t;
+  }
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('.choix button');
+    if(b){ var id=b.closest('.constat').dataset.id; if(v[id]===b.dataset.v) delete v[id]; else v[id]=b.dataset.v;
+      try{ localStorage.setItem(CLE,JSON.stringify(v)); }catch(x){} peindre(); return; }
+    var f=e.target.closest('.filtres button'); if(!f) return;
+    if(f.dataset.fg){ fg=f.dataset.fg; ff=null; } else { ff = ff===f.dataset.ff ? null : f.dataset.ff; }
+    document.querySelectorAll('.filtres button').forEach(function(x){
+      x.setAttribute('aria-pressed', String((x.dataset.fg&&x.dataset.fg===fg&&!ff) || (x.dataset.ff&&x.dataset.ff===ff))); });
+    peindre();
+  });
+  document.getElementById('exporter').onclick=function(){
+    var out={audit:'hotellerie-jeu-audit', tour:1, decisions:v};
+    var t=JSON.stringify(out,null,2);
+    if(navigator.clipboard) navigator.clipboard.writeText(t).then(function(){ document.getElementById('etat').textContent='Copié — à recoller dans la séance suivante.'; },function(){prompt('Copiez :',t);}); else prompt('Copiez :',t);
+  };
+  peindre();
+})();
+</script></body></html>
