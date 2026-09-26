@@ -38,10 +38,11 @@ import compostelle_commun as C  # noqa: E402
 SORTIE = RACINE / "modules-autonomes" / "compostelle" / "index.html"
 MEDIA = RACINE / "assets" / "interactive" / "compostelle"
 # La conversation libre avec l'assistant (build/contenu/compostelle/jeu_de_role.py)
-# passe par /api/jeu-de-role, qui doit connaître le scénario « camino-es-fr ».
-# Tant que server.py ne le charge pas, le temps n'est pas offert : un bouton
-# qui mène à « Scénario inconnu » serait pire qu'un temps absent.
-JEU_LIBRE = False
+# passe par /api/jeu-de-role, qui charge le scénario « camino-es-fr » depuis le
+# 26 sept. 2026 (Daniel : « d'accord pour le groupe Pilote Compostelle, branche
+# le jeu de rôle »). L'accès : un code d'élève du groupe « Pilote Compostelle ».
+# Remettre False retire le temps sans toucher au serveur.
+JEU_LIBRE = True
 MEDIA_V = "6"  # 6 : révision 4 ; 5 : 5 : révision 3 (allergie à Pamplona, variantes de León, test) ; 4 : 4 : allergie choisie dans la scène de León et le test ; 2 : sons à 48 kbit/s (27 → 9 Mo) ; 3 : 25 répliques corrigées après relecture, 25 sept. 2026
 
 

@@ -37,6 +37,7 @@ FAITS = {
     "pamplona": ["Il y a café au lait, cortado, jus d'orange pressé, rôties (tomate, ou beurre et confiture), tortilla.",
                  "La tortilla vient d'être finie ; il y en aura d'autre dans vingt minutes.",
                  "Un café au lait et une rôtie : 4,50 €. On peut payer par carte.",
+                 "Le pain ordinaire contient du gluten, mais il y a du pain sans gluten. Le beurre contient du lait ; la tomate et l'huile, non. Le pain aux graines contient du sésame. Aucune rôtie ne contient de noix, d'arachides, d'œufs, de poisson ni de fruits de mer.",
                  "Les toilettes sont au fond, à droite."],
     "puente-la-reina": ["Le chemin : tout droit jusqu'à l'église, à gauche, traverser le pont roman, puis la flèche jaune à droite.",
                         "La fontaine à vin d'Irache est à environ 20 km, après Estella.",
