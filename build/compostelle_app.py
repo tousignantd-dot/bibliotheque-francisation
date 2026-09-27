@@ -246,6 +246,7 @@ button{font:inherit}
 .case svg.tampon{width:100%;height:100%}
 svg.tampon{opacity:.9}
 #app a{color:var(--text-accent)}
+.code-achat{font-size:34px;font-weight:900;letter-spacing:.18em;text-align:center;background:#fff;border:2px dashed var(--tampon);color:var(--tampon);border-radius:14px;padding:14px;margin:12px 0}
 .lien-guide{margin-top:10px;background:transparent;border-color:var(--borne-trait);color:var(--text-accent)}
 .g-phase{background:#fff;border:1px solid var(--line-200);border-left:4px solid var(--borne);border-radius:12px;padding:10px 14px;margin:8px 0}
 .g-phase .surtitre span{text-transform:none;letter-spacing:0;font-weight:700}
@@ -543,6 +544,8 @@ function rendre(){
   const p = (location.hash.slice(1) || 'accueil').split('/');
   window.scrollTo(0, 0);
   if (p[0] === 'guide') return vueGuide();
+  if (p[0] === 'achat') return vueAchat(p[1]);
+  if (p[0] === 'achat-annule') return vueAchatAnnule();
   if (!S.genre && p[0] !== 'reglages') return vueBienvenue();
   if (p[0] === 'jour' && etapeParId(p[1])) {
     const et = etapeParId(p[1]);
@@ -591,7 +594,7 @@ function vueGuide(){
   <ol class="g-jours">${jours}</ol>
   <h2>Et aussi</h2>
   <ul class="g-liste">
-   <li><b>Parler librement</b> — au bas de chaque journée${D.jeuLibre ? '' : ' (bientôt)'} : la même personne vous répond vraiment, à votre vitesse, puis un bilan en français. Il faut un code, remis par votre groupe.</li>
+   <li><b>Parler librement</b> — au bas de chaque journée${D.jeuLibre ? '' : ' (bientôt)'} : la même personne vous répond vraiment, à votre vitesse, puis un bilan en français. Il faut un code : il s'obtient là, en quelques secondes, ou vient de votre groupe. Les journées, elles, restent gratuites.</li>
    <li><b>La poche</b> — les phrases du chemin, les urgences (112) et votre carte d'allergie en grand, à montrer. « Préparer pour le chemin » les garde dans le téléphone : elles marchent sans réseau.</li>
    <li><b>Tous les mots</b> et <b>les faux amis</b> — pour revoir, quand vous voulez.</li>
    <li><b>Suis-je prêt ?</b> — un quart d'heure de situations nouvelles avant le départ. Il vous situe (Solide · En route · À reprendre), il ne vous note pas.</li>
@@ -1085,9 +1088,12 @@ function vueLibre(et){
       <h3>À qui parler</h3><div class="rangee" id="qui">${choixQui()}</div>
       <h3>Comment on vous parle</h3><div class="rangee" id="pal">${choixPal()}</div>
       <h3>Votre code</h3><input id="code" value="${E(code)}" autocomplete="off" autocapitalize="characters" style="font:inherit;font-size:20px;letter-spacing:.2em;padding:10px;border-radius:10px;border:1px solid var(--line-300);width:10em;text-transform:uppercase">
-      <p class="avis-local">Le code du pilote, donné avec l'application. Il ouvre l'assistant ; il ne dit pas qui vous êtes.</p>
+      <div id="compte"></div>
+      <p class="avis-local">Le code de votre achat, ou celui de votre groupe. Il ouvre l'assistant ; il ne dit pas qui vous êtes.</p>
       ${err ? `<div class="retro no">${E(err)}</div>` : ''}
-      <button class="btn btn--pri btn--large" id="go" style="margin-top:10px">Commencer</button>`;
+      <button class="btn btn--pri btn--large" id="go" style="margin-top:10px">Commencer</button>
+      <div id="offre"></div>`;
+    afficherCompte(code); afficherOffre(!code);
     $('#qui').onclick = e => { const b = e.target.closest('[data-qui]'); if (b) { qui = b.dataset.qui; $('#qui').innerHTML = choixQui(); } };
     $('#pal').onclick = e => { const b = e.target.closest('[data-pal]'); if (b) { palier = b.dataset.pal; $('#pal').innerHTML = choixPal(); } };
     $('#go').onclick = () => { code = $('#code').value.trim().toUpperCase(); try { localStorage.setItem(CLE_CODE, code); } catch(e) {} conversation(); };
@@ -1113,7 +1119,11 @@ function vueLibre(et){
         const r = await fetch('/api/jeu-de-role', {method:'POST', headers:{'Content-Type':'application/json'},
           body: JSON.stringify({code, scenario:'camino-es-fr', cas, role:'pelerin', niveau:palier, historique:hist})});
         const d = await r.json().catch(() => ({})); att.remove();
-        if (!r.ok) { if (r.status === 401) return accueil('Ce code n’est pas accepté.'); $('#r').innerHTML = `<div class="retro no">${E(d.error || 'Erreur')}</div>`; return; }
+        if (!r.ok) {
+          if (r.status === 401) return accueil('Ce code n’est pas accepté.');
+          if (d.pelerin && (r.status === 402 || r.status === 429)) { att.remove(); return accueil(d.error); }
+          $('#r').innerHTML = `<div class="retro no">${E(d.error || 'Erreur')}</div>`; return; }
+        if (d.pelerin) memoCompte(d.pelerin);
         if (d.ouverture) { hist.unshift({role:'user', contenu:d.ouverture}); bulle(true, d.ouverture); }
         let t = String(d.reponse || ''); fini = /\bFIN\s*$/.test(t); t = t.replace(/\bFIN\s*$/, '').trim();
         hist.push({role:'assistant', contenu:t}); bulle(false, t); voixEs(t);
@@ -1150,6 +1160,95 @@ function vueLibre(et){
     tour('');
   }
   accueil();
+}
+
+/* ---------- l'accès payant à « Parler librement » ---------- */
+/* Formule B de assets/presentations/compostelle-prix.html, décidée le 26 sept.
+   2026 : le chemin est gratuit, seul l'assistant se paie. Le serveur fait foi
+   sur le prix et les limites (/api/pelerins/offre) ; la page ne les écrit pas. */
+const estPelerin = c => /^PC[A-Z2-9]{6}$/.test(c || '');
+const dollars = c => (c / 100).toLocaleString('fr-CA', {style:'currency', currency:'CAD'});
+const dateFr = iso => { const [a, m, j] = String(iso).split('-').map(Number); return a ? new Date(a, m - 1, j).toLocaleDateString('fr-CA', {day:'numeric', month:'long', year:'numeric'}) : ''; };
+let OFFRE = null;
+async function offreServeur(){
+  if (OFFRE) return OFFRE;
+  try { const r = await fetch('/api/pelerins/offre'); if (r.ok) OFFRE = await r.json(); } catch(e) {}
+  return OFFRE;
+}
+function memoCompte(etat){ try { localStorage.setItem('compostelle:compte', JSON.stringify(etat)); } catch(e) {} }
+async function afficherCompte(code){
+  const z = $('#compte'); if (!z || !estPelerin(code)) return;
+  let e = null;
+  try { const r = await fetch('/api/pelerins/etat?code=' + encodeURIComponent(code)); if (r.ok) e = await r.json(); } catch(x) {}
+  if (!e) { try { e = JSON.parse(localStorage.getItem('compostelle:compte') || 'null'); } catch(x) {} }
+  if (!e || !$('#compte')) return;
+  memoCompte(e);
+  const expire = e.expire && e.expire < new Date().toISOString().slice(0, 10);
+  $('#compte').innerHTML = `<div class="retro ${e.restant && !expire ? 'info' : 'no'}" style="margin-top:8px">${
+    expire ? `Votre accès a pris fin le ${dateFr(e.expire)}.` :
+    `Il vous reste <b>${e.restant} conversation${e.restant > 1 ? 's' : ''}</b>, jusqu'au ${dateFr(e.expire)}.`}</div>`;
+  const o = await offreServeur();
+  if (o && o.ouverte && !expire && e.restant <= 10)
+    $('#compte').insertAdjacentHTML('beforeend', `<button class="btn btn--large" id="recharger" style="margin-top:6px">Ajouter ${o.rechargeConversations} conversations — ${dollars(o.recharge)}</button>`);
+  if (o && o.ouverte && expire) afficherOffre(true);
+  const b = $('#recharger'); if (b) b.onclick = () => acheter(code);
+}
+async function afficherOffre(ouvrir){
+  const o = await offreServeur(), z = $('#offre');
+  if (!z || !o || !o.ouverte) return;
+  z.innerHTML = `<details class="rub" style="margin-top:16px"${ouvrir ? ' open' : ''}><summary>Pas encore de code ? <span>${dollars(o.prix)}</span></summary>
+    <div style="padding:0 14px 14px;font-size:15.5px">
+     <p style="margin:0 0 8px"><b>${o.conversations} conversations</b> avec les gens du chemin, pendant <b>${Math.round(o.jours / 30.4)} mois</b> :
+     la même personne qu'à l'étape, qui vous répond vraiment, puis un bilan en français.</p>
+     <p class="muted" style="font-size:14px;margin:0 0 10px">Les dix journées, la poche et le test restent gratuits. Paiement par carte chez Stripe ;
+     nous ne recevons ni votre nom ni votre carte. Le code s'affiche ici tout de suite, et il est aussi écrit sur votre reçu.</p>
+     <button class="btn btn--pri btn--large" id="acheter">Obtenir mon code — ${dollars(o.prix)}</button></div></details>`;
+  $('#acheter').onclick = () => acheter(null);
+}
+async function acheter(recharge){
+  const b = document.activeElement; if (b && b.tagName === 'BUTTON') { b.disabled = true; b.textContent = 'Vers le paiement…'; }
+  try {
+    const r = await fetch('/api/pelerins/achat', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(recharge ? {recharge} : {})});
+    const d = await r.json().catch(() => ({}));
+    if (r.ok && d.url) {
+      try { sessionStorage.setItem('compostelle:retour', location.hash); } catch(e) {}
+      location.href = d.url; return;
+    }
+    alert(d.error || 'Le paiement ne s’ouvre pas. Réessayez dans un moment.');
+  } catch(e) { alert('Pas de réseau : le paiement demande une connexion.'); }
+  if (b && b.tagName === 'BUTTON') { b.disabled = false; b.textContent = 'Réessayer'; }
+}
+function suiteApresAchat(){
+  let h = ''; try { h = sessionStorage.getItem('compostelle:retour') || ''; } catch(e) {}
+  if (/^#jour\/[^/]+\/libre$/.test(h)) return h.slice(1);
+  const et = prochaine() || D.etapes[0]; return 'jour/' + et.id + '/libre';
+}
+async function vueAchat(sid){
+  app.innerHTML = `<p class="surtitre">Merci !</p><h1>Votre accès</h1><div class="muted" id="att">Nous vérifions le paiement auprès de Stripe…</div><div id="z"></div>`;
+  let d = null, err = '';
+  for (let essai = 0; essai < 6 && !d; essai++) {
+    try {
+      const r = await fetch('/api/pelerins/session?id=' + encodeURIComponent(sid || ''));
+      const j = await r.json().catch(() => ({}));
+      if (r.ok) d = j; else if (r.status === 409) await new Promise(ok => setTimeout(ok, 2000)); else { err = j.error || 'Paiement introuvable.'; break; }
+    } catch(e) { err = 'Pas de réseau.'; await new Promise(ok => setTimeout(ok, 2000)); }
+  }
+  $('#att').remove();
+  if (!d) { $('#z').innerHTML = `<div class="retro no">${E(err || 'Le paiement n’est pas encore confirmé.')} Si vous avez payé, votre code est écrit sur le reçu reçu par courriel ; entrez-le dans « Parler librement ».</div>
+    <button class="btn btn--large" onclick="location.reload()">Vérifier de nouveau</button>`; return; }
+  try { localStorage.setItem(CLE_CODE, d.code); } catch(e) {}
+  memoCompte(d);
+  $('#z').innerHTML = `<p>Voici votre code. Il est gardé dans ce téléphone ; notez-le quand même, pour un autre appareil (il est aussi sur votre reçu).</p>
+    <div class="code-achat" id="lecode">${E(d.code)}</div>
+    <div class="rangee" style="justify-content:center"><button class="btn" id="copier">Copier le code</button></div>
+    <div class="retro ok" style="margin-top:12px">✓ ${d.restant} conversations, jusqu'au ${dateFr(d.expire)}.</div>
+    <button class="btn btn--pri btn--large" style="margin-top:10px" onclick="aller('${suiteApresAchat()}')">Parler librement</button>`;
+  $('#copier').onclick = async () => { try { await navigator.clipboard.writeText(d.code); $('#copier').textContent = 'Copié'; } catch(e) {} };
+}
+function vueAchatAnnule(){
+  app.innerHTML = `${retour('accueil', 'La credencial')}<h1>Paiement annulé</h1>
+    <div class="retro info">Rien n'a été facturé. Le chemin reste ouvert : les dix journées, la poche et le test ne demandent aucun code.</div>
+    <button class="btn btn--pri btn--large" onclick="aller('${suiteApresAchat()}')">Revenir à « Parler librement »</button>`;
 }
 
 /* ---------- la poche ---------- */

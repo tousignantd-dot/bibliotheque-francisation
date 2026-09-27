@@ -3357,3 +3357,32 @@ module à l'autre, pour qu'un personnage sonne pareil partout.
 ## Langue
 
 Répondre en français à l'utilisateur.
+
+## La vente de Compostelle (`pelerins.py`)
+
+Décidée le 26 septembre 2026 (formule B de
+`assets/presentations/compostelle-prix.html`) : le chemin reste gratuit et sans
+code ; seul « Parler librement » se paie — 19,99 $ pour 12 mois et 100
+conversations, recharge de 50 à 4,99 $. Stripe Checkout, sans dépendance.
+
+- **Un code de pèlerin n'est pas un code d'élève.** « PC » + six caractères :
+  `validate_student_code` ne le connaît pas, donc les autres routes d'IA le
+  refusent (401). Il n'ouvre que le scénario `camino-es-fr` de
+  `/api/jeu-de-role`, dont le bloc d'entrée laisse passer tout le reste comme
+  avant (comptoir, élèves, séances).
+- **Tiré avant le paiement, actif après.** Il est mis dans la description du
+  paiement : le reçu de Stripe le porte. Deux chemins le créditent — le webhook
+  signé (`/api/pelerins/stripe`) et le retour du pèlerin
+  (`/api/pelerins/session?id=`, qui interroge Stripe) — et le crédit est
+  idempotent par identifiant de session.
+- **Une conversation se décompte après la première réponse réussie**, jamais
+  avant : une panne ne se paie pas. Bornes : 16 tours, 30 conversations par
+  jour. Tout se règle par variables (`COMPOSTELLE_*`), sans déployer.
+- **Rien de la personne n'est gardé** : `data/pelerins.json` (volume) porte le
+  code, ses dates, son compteur et les identifiants de session. Stripe tient le
+  courriel et la carte.
+- **Variables Railway** : `STRIPE_SECRET_KEY` (sans elle, la vente est fermée
+  et l'application n'offre pas d'acheter) et `STRIPE_WEBHOOK_SECRET`.
+  `STRIPE_API` n'existe que pour les essais contre un faux Stripe local.
+
+    python3 build/controles/pelerins.py   # 34 vérifications, sans réseau

@@ -87,6 +87,13 @@ except ImportError:
     print("[WARN] recherche.py absent : la recherche dans le contenu est "
           "désactivée", flush=True)
 
+# Les accès payants de Compostelle (« Parler librement »). Même filet que la
+# forge : sans le module, la vente est fermée, rien d'autre ne tombe.
+try:
+    import pelerins as _pelerins
+except ImportError:
+    _pelerins = None
+
 try:
     import journal_api
 except ImportError:
@@ -235,6 +242,9 @@ TEACHERS_FILE  = STORAGE_DIR / "data" / "teachers.json"
 GROUPS_FILE    = STORAGE_DIR / "data" / "groups.json"
 SCHEDULE_FILE  = STORAGE_DIR / "data" / "schedule.json"
 SESSIONS_FILE  = STORAGE_DIR / "data" / "prof_sessions.json"
+# Les codes de pèlerins de Compostelle (pelerins.py) : volume, non versionné.
+# Aucune donnée de la personne n'y entre — Stripe tient le courriel et la carte.
+PELERINS_FILE  = STORAGE_DIR / "data" / "pelerins.json"
 # Réseau multi-centres — étape 1. L'arbre des organisations (réseau · CSS ·
 # centre) et la table des accès. Une permission est un rôle posé sur un nœud
 # et vaut sur tout le sous-arbre ; c'est une **table**, jamais une colonne sur
@@ -5022,6 +5032,20 @@ def activite_de_la_seance(identite, activity_id):
         return int(activity_id) == int(identite.get("activityId"))
     except (TypeError, ValueError):
         return False
+
+
+_REGISTRE_PELERINS = None
+
+
+def _registre_pelerins():
+    """Le registre des codes de Compostelle, sur la couche de stockage du serveur."""
+    global _REGISTRE_PELERINS
+    if _REGISTRE_PELERINS is None:
+        _REGISTRE_PELERINS = _pelerins.Registre(
+            lambda: _load_json_list(PELERINS_FILE),
+            lambda l: _save_json(PELERINS_FILE, l),
+            donnees_verrouillees())
+    return _REGISTRE_PELERINS
 
 
 def validate_student_code(code):
@@ -16666,6 +16690,11 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self.end_headers()
             return
 
+        # Compostelle : l'offre, le code rendu au retour de Stripe, l'état d'un code.
+        if path.startswith("/api/pelerins/"):
+            self._handle_pelerins_get(path, params)
+            return
+
         # Sonde de santé Railway : doit rester publique et sans effet de bord.
         if path == "/api/health":
             # Le nom du stockage, jamais l'adresse ni les identifiants.
@@ -17026,6 +17055,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self._handle_check_written()
         elif path == "/api/jeu-de-role":
             self._handle_jeu_de_role()
+        elif path in ("/api/pelerins/achat", "/api/pelerins/stripe"):
+            self._handle_pelerins_post(path)
         elif path == "/api/voix":
             self._handle_voix()
         elif path == "/api/outils/traduire":
@@ -20583,6 +20614,56 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 
         json_response(self, {"correct": bool(parsed.get("correct", False))})
 
+    def _handle_pelerins_get(self, path, params):
+        """Compostelle : /offre (les conditions, et si la vente est ouverte),
+        /session?id= (le code, au retour de Stripe), /etat?code= (ce qui reste)."""
+        if not _pelerins:
+            json_response(self, {"error": "Vente indisponible"}, 503)
+            return
+        reg = _registre_pelerins()
+        if path == "/api/pelerins/offre":
+            json_response(self, dict(_pelerins.offre(), ouverte=_pelerins.disponible()))
+        elif path == "/api/pelerins/session":
+            etat, err = reg.depuis_retour(params.get("id", [""])[0])
+            if err:
+                json_response(self, {"error": err[0]}, err[1])
+            else:
+                json_response(self, etat)
+        elif path == "/api/pelerins/etat":
+            p = reg.trouver(params.get("code", [""])[0].strip().upper())
+            if p:
+                json_response(self, reg.etat(p))
+            else:
+                json_response(self, {"error": "Code inconnu"}, 404)
+        else:
+            json_response(self, {"error": "Introuvable"}, 404)
+
+    def _handle_pelerins_post(self, path):
+        """Compostelle : /achat (ouvre le paiement Stripe) et /stripe (l'avis signé
+        de Stripe ; le corps doit rester en octets pour vérifier la signature)."""
+        length = int(self.headers.get("Content-Length", 0))
+        brut = self.rfile.read(length) if length else b""
+        if not _pelerins:
+            json_response(self, {"error": "Vente indisponible"}, 503)
+            return
+        reg = _registre_pelerins()
+        if path == "/api/pelerins/stripe":
+            statut, msg = reg.webhook(brut, self.headers.get("Stripe-Signature", ""))
+            json_response(self, {"recu": msg}, statut)
+            return
+        try:
+            body = json.loads(brut) if brut else {}
+        except json.JSONDecodeError:
+            body = {}
+        if not isinstance(body, dict):
+            body = {}
+        recharge = str(body.get("recharge") or "").strip().upper() or None
+        res, err = reg.commencer_achat(self._adresse_du_site(), recharge=recharge)
+        if err:
+            json_response(self, {"error": err[0]}, err[1])
+        else:
+            json_response(self, res)
+
     def _ia_refusee(self, eleve_ou_code):
         """Répond 403 et rend True quand l'IA n'est pas ouverte à cet élève.
 
@@ -21033,10 +21114,23 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             return
 
         code = body.get("code", "").strip().upper()
-        if not validate_student_code(code):
+        # Un code de pèlerin (« PC… », payé) n'est pas un code d'élève : il
+        # n'ouvre que le scénario camino-es-fr, dans les limites qu'il a payées.
+        # Tout le reste — élèves, séances, comptoir — passe comme avant.
+        pelerin = _registre_pelerins().trouver(code) if _pelerins else None
+        if pelerin:
+            recu_brut = body.get("historique") or []
+            nb_tours = sum(1 for m in recu_brut if isinstance(m, dict) and m.get("role") == "user")
+            refus = _registre_pelerins().refus(
+                pelerin, body.get("scenario"), nb_tours,
+                premier_tour=not recu_brut and not body.get("bilan"))
+            if refus:
+                json_response(self, {"error": refus[0], "pelerin": _registre_pelerins().etat(pelerin)}, refus[1])
+                return
+        elif not validate_student_code(code):
             json_response(self, {"error": "Non autorisé"}, 401)
             return
-        if self._ia_refusee(code):
+        elif self._ia_refusee(code):
             return
 
         scenario = body.get("scenario") or "louer"
@@ -21101,6 +21195,11 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             return
 
         out = {"reponse": texte}
+        if pelerin and premier_tour:
+            # Décomptée après la réponse, jamais avant : une panne ne se paie pas.
+            fait = _registre_pelerins().consommer(code)
+            if fait:
+                out["pelerin"] = _registre_pelerins().etat(fait)
         if premier_tour:
             # La salutation qu'on a écrite pour l'élève : le client l'affiche
             # et la range dans son historique, sinon elle serait perdue au
