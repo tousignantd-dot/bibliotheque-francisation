@@ -30,7 +30,7 @@ def main():
     tete = re.sub(r"<title>.*?</title>", "<title>Compostelle — les nouveaux dessins</title>", tete)
     tete = tete.replace("</head>", """<style>
 .gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px}
-.gal button{all:unset;cursor:pointer;display:block;background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.gal button{all:unset;cursor:pointer;display:block;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden}
 .gal button:focus-visible{outline:3px solid #0A8F5B;outline-offset:2px}
 .gal img{display:block;width:100%;aspect-ratio:1/1;object-fit:contain;background:#fff}
 .gal .leg{padding:8px 10px 10px;border-top:1px solid var(--line)}
@@ -38,7 +38,8 @@ def main():
 .gal .fr{display:block;font-size:13px;color:var(--muted);line-height:1.3;margin-top:2px}
 .gal .fam{display:inline-block;margin-top:6px;font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:#6b5a2a;background:#fbf3dc;border-radius:99px;padding:2px 8px}
 @media (max-width:420px){.gal{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}}
-dialog{border:0;border-radius:12px;padding:0;max-width:min(92vw,720px);width:100%;background:#fff}
+dialog{border:0;border-radius:12px;padding:0;max-width:min(92vw,720px);width:100%;background:var(--card);color:var(--body)}
+dialog img{background:#fff}
 dialog::backdrop{background:rgba(20,20,20,.72)}
 dialog img{display:block;width:100%;height:auto}
 dialog .leg{padding:12px 16px 16px}
