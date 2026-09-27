@@ -81,7 +81,7 @@ sans réseau. La vraie question est donc : <strong>que gagnerait-on à passer pa
     <tr><td>Coût fixe</td><td>0 $</td><td>99 $ US par an (Apple) + 25 $ US une fois (Google)</td><td>Idem, plus le développement</td></tr>
     <tr><td>Mises à jour</td><td>En ligne en quelques minutes</td><td>Le contenu peut rester chargé du site ; le programme passe par l'examen des magasins</td><td>Tout passe par l'examen</td></tr>
     <tr><td>On la trouve…</td><td>si on reçoit l'adresse</td><td>en cherchant dans le magasin</td><td>en cherchant dans le magasin</td></tr>
-    <tr><td>Le générateur</td><td>Intact</td><td>Intact : la coquille affiche ce qu'il produit</td><td><b>Jeté</b> — or c'est lui qui a produit les 10 journées, les sons, les dessins</td></tr>
+    <tr><td>Le générateur</td><td>Intact</td><td>Intact : la coquille affiche ce qu'il produit</td><td><b>Jeté</b> — or c'est lui qui a produit les 10 étapes, les sons, les dessins</td></tr>
   </tbody></table>
   <p style="margin-top:10px">La voie 3 est à écarter : elle jetterait ce qui fait la valeur du projet. Le vrai choix est entre 1 et 2.</p>
 </section>

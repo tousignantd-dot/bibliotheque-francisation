@@ -140,7 +140,7 @@ section.bloc>h2{display:flex;align-items:center}
             marque = '<span class="rappel">+ rappels des jours passés</span>'
         li.append(
             f'<li><img class="img" src="{MEDIA}etapes/{E(e["img"])}.jpg" alt="" loading="lazy">'
-            f'<div><span class="jour">Halte {e["n"]} · km {e["km"]} · {j} jour{"s" if j > 1 else ""} de marche</span>'
+            f'<div><span class="jour">Étape {e["n"]} · km {e["km"]} · {j} jour{"s" if j > 1 else ""} de marche</span>'
             f'<h3>{E(e["lieu"])} <small>· {E(e["scene"]["titre"])}</small></h3>'
             f'<p>{E(e["objectif"])}</p>{marque}</div></li>')
 
@@ -157,8 +157,8 @@ section.bloc>h2{display:flex;align-items:center}
 <a class="retour" href="/presentations.html"><span aria-hidden="true">&#8592;</span> Le classeur</a>
 <p class="eyebrow">Voyage &middot; grand public &middot; chemin de Saint-Jacques</p>
 <h1>En route vers Compostelle &mdash; comment on apprend</h1>
-<p class="chapeau">L'application suit le Camino francés : <strong>{len(etapes)} haltes</strong>, de Roncesvalles à Santiago
-({km} km, environ {total_jours} jours de marche). Chaque halte est une situation dont le pèlerin aura besoin ce soir-là, et chacune se déroule de la même façon,
+<p class="chapeau">L'application suit le Camino francés : <strong>{len(etapes)} étapes choisies</strong> sur une trentaine, de Roncesvalles à Santiago
+({km} km, environ {total_jours} jours de marche). Une tous les trois jours de marche environ : chaque étape est une situation nouvelle, dont le pèlerin aura besoin ce soir-là, et chacune se déroule de la même façon,
 en sept temps. Le pèlerin avance de lieu en lieu ; ce qui a été appris revient plus loin, sans prévenir.</p>
 <p class="devise"><span>Comprendre avant de dire. Dire avant de jouer. Jouer avant d'y aller seul.</span></p>
 
@@ -174,18 +174,20 @@ en sept temps. Le pèlerin avance de lieu en lieu ; ce qui a été appris revien
 </section>
 
 <section class="bloc">
-  <h2><span class="etape-num">1b</span>À la maison : « Avant de partir »</h2>
-  <p>Huit séances de quinze minutes, dans les semaines qui précèdent le départ — conseillées, jamais obligatoires. On y apprend
-  <b>les outils</b> qu'on emploiera ensuite en situation :</p>
+  <h2><span class="etape-num">1b</span>À la maison : « Avant de partir » — préparer son sac</h2>
+  <p>Huit entraînements de quinze minutes, dans les semaines qui précèdent le départ — conseillés, jamais obligatoires. Chacun met
+  un objet dans le sac (les chaussures, la coquille, le porte-monnaie…) et apprend <b>les outils</b> qu'on emploiera ensuite en situation :</p>
   <div class="duo">{prep_cartes}</div>
-  <p style="font-size:14.5px;color:var(--muted);margin-top:8px">Chaque séance : j'écoute (les phrases et les mots, avec leur voix), je
-  reconnais (on entend, on choisit, chaque erreur dit pourquoi), je le dis (au micro, puis le modèle). Un encadré « la mécanique » donne
-  la seule forme qui sert — jamais la conjugaison entière. À la fin, le test « Prêt à partir ? » situe, deux formes de dix questions.</p>
+  <p style="font-size:14.5px;color:var(--muted);margin-top:8px">Chaque entraînement suit un fil d'Ariane, dans l'ordre — un temps s'ouvre
+  quand le précédent est fait : la leçon (une guide l'explique à voix haute, la voix d'Espagne dit les exemples), j'écoute (les phrases
+  et les mots), je reconnais (on entend, on choisit, chaque erreur dit pourquoi), je le dis (au micro, puis le modèle). Un aide-mémoire
+  donne la seule forme qui sert — jamais la conjugaison entière. À la fin, la marche d'essai « Prêt à partir ? » situe, deux formes équivalentes.</p>
 </section>
 
 <section class="bloc">
-  <h2><span class="etape-num">2</span>Une halte : trois mouvements, sept temps</h2>
-  <p>On reçoit, on reconnaît, puis on agit. L'ordre ne change jamais : le pèlerin sait toujours où il en est.</p>
+  <h2><span class="etape-num">2</span>Une étape : trois mouvements, sept temps</h2>
+  <p>On reçoit, on reconnaît, puis on agit. L'ordre ne change jamais, et il est tenu : un fil d'Ariane en tête de l'écran, chaque temps
+  s'ouvre quand le précédent est fait ; une étape tamponnée se rejoue librement.</p>
   <div class="phases">{phases}</div>
   <div class="apres">
     <div class="tampon">
@@ -200,7 +202,7 @@ en sept temps. Le pèlerin avance de lieu en lieu ; ce qui a été appris revien
 </section>
 
 <section class="bloc">
-  <h2><span class="etape-num">3</span>Le chemin : dix haltes, du plus urgent au plus riche</h2>
+  <h2><span class="etape-num">3</span>Le chemin : dix étapes choisies, du plus urgent au plus riche</h2>
   <div class="progression">
     <div><b>D'abord survivre</b>un lit, un repas, son chemin, une pharmacie (jours 1 à 4)</div>
     <div><b>Puis se débrouiller</b>« complet », le téléphone, l'allergie qui ne pardonne pas (jours 5 à 7)</div>
@@ -208,14 +210,14 @@ en sept temps. Le pèlerin avance de lieu en lieu ; ce qui a été appris revien
   </div>
   <ol class="chemin">{"".join(li)}</ol>
   <p style="font-size:14.5px;color:var(--muted);margin-top:8px">Les rappels : dans « Ce qu'on me répond », une ou deux
-  réponses d'une halte passée reviennent, mêlées aux nouvelles. Après León, c'est l'allergie qui revient chaque jour —
+  réponses d'une étape passée reviennent, mêlées aux nouvelles. Après León, c'est l'allergie qui revient chaque jour —
   l'erreur qui coûte le plus est aussi celle qu'on revoit le plus.</p>
 </section>
 
 <section class="bloc">
   <h2><span class="etape-num">4</span>L'arrivée : « Suis-je prêt ? »</h2>
   <div class="carte">
-    <p>Un quart d'heure, <b>{n_items} situations nouvelles</b> — jamais celles des haltes. {n_formes} formes équivalentes, tirées au hasard, pour qu'une reprise ne soit pas une récitation. Cinq objectifs :</p>
+    <p>Un quart d'heure, <b>{n_items} situations nouvelles</b> — jamais celles des étapes. {n_formes} formes équivalentes, tirées au hasard, pour qu'une reprise ne soit pas une récitation. Cinq objectifs :</p>
     <ul class="objectifs">{objectifs}</ul>
     <p style="margin-top:12px">L'allergie y est <b>éliminatoire</b>, et le test le dit avant de commencer. Il situe, il ne note pas :</p>
     <div class="verdicts">
@@ -256,7 +258,7 @@ en sept temps. Le pèlerin avance de lieu en lieu ; ce qui a été appris revien
 </html>
 """
     SORTIE.write_text(tete + corps, encoding="utf-8")
-    print(f"{SORTIE.relative_to(RACINE)} — {len(etapes)} haltes")
+    print(f"{SORTIE.relative_to(RACINE)} — {len(etapes)} étapes")
 
 
 if __name__ == "__main__":

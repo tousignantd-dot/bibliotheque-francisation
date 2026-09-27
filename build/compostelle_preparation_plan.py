@@ -91,12 +91,13 @@ OBJECTIFS = [
 
 DECISIONS = [
     ("nom", "Comment appeler les dix étapes de l'application ?",
-     [("haltes", "« Halte 4 · Logroño »", True), ("etapes", "« Étape 4 · Logroño »", False), ("jours", "Garder « Jour 4 »", False)],
+     [("haltes", "« Halte 4 · Logroño »", False), ("etapes", "« Étape 4 · Logroño »", True), ("jours", "Garder « Jour 4 »", False)],
      "Halte dit juste : un lieu où l'on s'arrête, pas un jour de marche. « Étape » prête à la même confusion que « jour » : "
-     "sur le Camino, une étape, c'est une journée de marche."),
-    ("marche", "Afficher les jours de marche entre deux haltes ?",
+     "sur le Camino, une étape, c'est une journée de marche. — Révisé le 27 sept. 2026 : « étape », à la demande de Daniel ; "
+     "l'ambiguïté se lève en disant « dix étapes choisies » sur une trentaine."),
+    ("marche", "Afficher les jours de marche entre deux étapes ?",
      [("oui", "Oui : « 3 jours de marche jusqu'à Logroño »", True), ("non", "Non", False)],
-     "C'est ce qui rend les 775 km lisibles : 10 haltes, mais environ {jours} jours de marche."),
+     "C'est ce qui rend les 775 km lisibles : 10 étapes, mais environ {jours} jours de marche."),
     ("verrou", "La préparation doit-elle être faite avant d'ouvrir le chemin ?",
      [("conseillee", "Conseillée, jamais verrouillée", True), ("obligatoire", "Obligatoire", False)],
      "Un pèlerin qui parle déjà un peu l'espagnol ne doit pas être retenu à la maison. L'accueil propose d'abord la préparation ; "
@@ -191,7 +192,7 @@ pre.json{white-space:pre-wrap;background:var(--sunken);border-radius:10px;paddin
     objectifs = "".join(f"<tr><td><b>{k}</b></td><td>{E(v)}</td><td>{E(c)}</td><td>{E(cr)}</td>"
                         f"<td>{', '.join(str(s[0]) for s in SEANCES if s[2] == k)}</td></tr>" for k, v, c, cr in OBJECTIFS)
     frise = "".join(
-        f'<li><div><b>Halte {e["n"]}</b> · {E(e["lieu"])}<div class="jm">km {e["km"]} · {j} jour{"s" if j > 1 else ""} de marche depuis '
+        f'<li><div><b>Étape {e["n"]}</b> · {E(e["lieu"])}<div class="jm">km {e["km"]} · {j} jour{"s" if j > 1 else ""} de marche depuis '
         f'{"Saint-Jean" if i == 0 else E(lignes[i - 1][0]["lieu"])}</div></div>'
         f'<div class="barre" style="width:{min(100, 100 * j / 7):.0f}%" aria-hidden="true"></div></li>'
         for i, (e, j, km) in enumerate(lignes))
@@ -210,16 +211,21 @@ pre.json{white-space:pre-wrap;background:var(--sunken);border-radius:10px;paddin
 Roncesvalles sans lui avoir appris à prononcer, à entendre un prix, ni les quelques tournures qui servent partout. Et <strong>dix
 « journées » pour 775 km, ce n'est pas crédible</strong> : à {KM_PAR_JOUR} km par jour, le Camino francés prend environ {total} jours.
 Ce plan propose deux temps — la maison, puis le chemin — et rebaptise les journées en haltes. Rien n'est encore écrit : les choix sont au bas de la page.</p>
+<div class="maj" style="background:#FBEFC4;border:1px solid #E7C75A;border-radius:12px;padding:12px 16px;margin:14px 0;font-size:15px">
+<b>Mise à jour du 27 septembre 2026 — ce plan est réalisé, avec trois changements de vocabulaire.</b>
+Les séances s'appellent <b>entraînements</b> (on prépare son sac, chacun y met un objet) ; les haltes s'appellent <b>étapes</b>
+(« dix étapes choisies » sur une trentaine, une tous les trois jours de marche) ; chaque entraînement commence par une <b>leçon narrée</b>.
+Plus bas, le texte suit ce vocabulaire ; la décision sur le nom est gardée telle qu'elle a été prise, avec sa révision.</div>
 
 <section class="premier">
   <h2>Deux temps</h2>
   <div class="deux-temps">
     <div class="temps avant"><h3>Avant de partir</h3><p class="q">À la maison · deux à quatre semaines · gratuit</p>
-      <p>Huit séances de quinze minutes : les sons, la politesse, les nombres, l'heure, quatre verbes, les questions, se présenter,
+      <p>Huit entraînements de quinze minutes : les sons, la politesse, les nombres, l'heure, quatre verbes, les questions, se présenter,
       comprendre la réponse. Un test « Prêt à partir ? » pour finir.</p>
       <p style="font-size:14px;color:var(--muted);margin:0">On y apprend <b>les outils</b> ; on ne s'en sert pas encore en situation.</p></div>
-    <div class="temps chemin"><h3>Sur le chemin</h3><p class="q">Les dix haltes · les scènes · Marta · « Parler librement »</p>
-      <p>Ce qui existe aujourd'hui : chaque halte met les outils en situation (un lit, un comptoir, la pharmacie, l'allergie…), puis la
+    <div class="temps chemin"><h3>Sur le chemin</h3><p class="q">Les dix étapes · les scènes · Marta · « Parler librement »</p>
+      <p>Ce qui existe aujourd'hui : chaque étape met les outils en situation (un lit, un comptoir, la pharmacie, l'allergie…), puis la
       conversation libre les exerce avec quelqu'un qui répond vraiment.</p>
       <p style="font-size:14px;color:var(--muted);margin:0">On y <b>réemploie</b> ; la trousse reste l'outil de secours.</p></div>
   </div>
@@ -228,20 +234,20 @@ Ce plan propose deux temps — la maison, puis le chemin — et rebaptise les jo
 <section>
   <h2>Ce que le pèlerin saura faire avant de partir</h2>
   <p>Cinq objectifs, chacun avec sa condition et son critère — c'est ce que le test « Prêt à partir ? » vérifiera.</p>
-  <table class="cmp"><thead><tr><th></th><th>Objectif</th><th>Condition</th><th>Critère</th><th>Séances</th></tr></thead><tbody>{objectifs}</tbody></table>
+  <table class="cmp"><thead><tr><th></th><th>Objectif</th><th>Condition</th><th>Critère</th><th>Entraînements</th></tr></thead><tbody>{objectifs}</tbody></table>
 </section>
 
 <section>
-  <h2>Les huit séances</h2>
-  <p>Chaque séance suit le même ordre que les journées : j'écoute, je reconnais, je le dis. Un encadré « la mécanique » par séance
+  <h2>Les huit entraînements</h2>
+  <p>Chaque entraînement suit le même ordre que les étapes : la leçon, j'écoute, je reconnais, je le dis. Un encadré « la mécanique » par entraînement
   explique la seule forme qui sert (décision 5). Les mots viennent du lexique existant : <b>{reemplois} mots déjà dessinés et
   enregistrés</b> sont réemployés.</p>
   {seances}
 </section>
 
 <section>
-  <h2>Le chemin : dix haltes, environ {total} jours de marche</h2>
-  <p>Les dix étapes de l'application ne sont pas des jours : ce sont les <b>haltes</b> où se joue une situation. Entre deux haltes,
+  <h2>Le chemin : dix étapes choisies, environ {total} jours de marche</h2>
+  <p>Les dix étapes de l'application ne sont pas des jours : ce sont les <b>étapes choisies</b> où se joue une situation. Entre deux étapes,
   on marche — calculé ici à {KM_PAR_JOUR} km par jour, à partir des kilomètres de l'application.</p>
   <ol class="frise-marche">{frise}</ol>
   <p style="font-size:14.5px;color:var(--muted)">Faire les {total} étapes une à une n'apprendrait rien de plus : les situations se
@@ -251,7 +257,7 @@ Ce plan propose deux temps — la maison, puis le chemin — et rebaptise les jo
 <section>
   <h2>Ce que ça demande</h2>
   <table class="cmp"><thead><tr><th>Poste</th><th>Estimation</th></tr></thead><tbody>
-    <tr><td>Écriture (huit séances, le test, le renommage)</td><td>deux à trois séances de travail</td></tr>
+    <tr><td>Écriture (huit entraînements, le test, le renommage)</td><td>deux à trois séances de travail</td></tr>
     <tr><td>Sons neufs (Azure, voix d'Espagne)</td><td>environ {sons}, soit moins de 1 $</td></tr>
     <tr><td>Dessins neufs</td><td>presque aucun : les mots sont déjà illustrés ; quelques pictogrammes composés en HTML (horloges, prix)</td></tr>
     <tr><td>Boucle didactique</td><td>au moins trois tours, comme pour le chemin</td></tr>
@@ -263,7 +269,7 @@ Ce plan propose deux temps — la maison, puis le chemin — et rebaptise les jo
   <h2>Vos décisions</h2>
   <p>Les recommandations sont cochées d'avance. Changez ce que vous voulez, ajoutez une note, puis exportez et collez le texte dans la conversation.</p>
   {decisions}
-  <textarea class="note" id="note" placeholder="Ce qui manque, ce qui est de trop, une séance à changer…"></textarea>
+  <textarea class="note" id="note" placeholder="Ce qui manque, ce qui est de trop, un entraînement à changer…"></textarea>
   <button class="exporter" id="exp" type="button">Exporter mes décisions</button>
   <pre class="json" id="sortie" hidden></pre>
 </section>

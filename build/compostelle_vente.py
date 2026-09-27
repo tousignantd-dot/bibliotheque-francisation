@@ -55,7 +55,7 @@ ol.etapes>li::before{content:counter(e);position:absolute;left:14px;top:12px;wid
     <a class="lien" href="{APP}#guide" target="_blank" rel="noopener"><b>Le mode d'emploi, pour le pèlerin</b>
       <span>« Comment ça marche ? » : le bouton est sous « Reprendre la route », sur l'accueil, et sur l'écran de bienvenue.</span><br><code>{APP}#guide</code></a>
     <a class="lien" href="{APP}#jour/pamplona/libre" target="_blank" rel="noopener"><b>« Parler librement », où se vend l'accès</b>
-      <span>Au bas de chaque journée. Tant que la vente est fermée, on n'y voit que le champ du code ; ouverte, la rubrique
+      <span>Au bas de chaque étape. Tant que la vente est fermée, on n'y voit que le champ du code ; ouverte, la rubrique
       « Pas encore de code ? » s'ajoute.</span><br><code>{APP}#jour/pamplona/libre</code></a>
     <a class="lien" href="compostelle-parcours.html"><b>L'infographie du parcours</b><span>La même route que le mode d'emploi, pour vous et vos partenaires.</span></a>
     <a class="lien" href="compostelle-prix.html"><b>La proposition de prix</b><span>Les coûts mesurés, les trois formules, le calculateur.</span></a>
@@ -65,7 +65,7 @@ ol.etapes>li::before{content:counter(e);position:absolute;left:14px;top:12px;wid
 <section>
   <h2>Ce que vit le pèlerin, une fois la vente ouverte</h2>
   <ol class="etapes">
-    <li>Dans « Parler librement », « Pas encore de code ? » : {o["conversations"]} conversations pendant {o["jours"] // 30} mois, {d(o["prix"])}. Les journées restent gratuites.</li>
+    <li>Dans « Parler librement », « Pas encore de code ? » : {o["conversations"]} conversations pendant {o["jours"] // 30} mois, {d(o["prix"])}. Les étapes restent gratuites.</li>
     <li>« Obtenir mon code » ouvre la page de paiement de Stripe (carte). Nous ne recevons ni son nom ni sa carte.</li>
     <li>Au retour, son code en gros (« PC » + six caractères), à copier. Il est gardé dans le téléphone et écrit sur le reçu de Stripe.</li>
     <li>« Il vous reste 97 conversations, jusqu'au … ». Sous dix, un bouton « Ajouter {o["rechargeConversations"]} conversations — {d(o["recharge"])} ».</li>
