@@ -445,7 +445,7 @@ const ICO = {
   micro:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3"/></svg>',
   stop:'<svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>',
   tel:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>',
-  poche:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2.5"/><path d="M9 6h6M9 10h6M9 14h4"/></svg>',
+  poche:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="14" rx="2.5"/><path d="M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M12 11v6M9 14h6"/></svg>',
   livre:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/></svg>',
   piege:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg>',
   test:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>',
@@ -550,7 +550,9 @@ const enLettres = t => String(t)
   .replace(/\d+/g, n => ' ' + nombreEs(n) + ' ');
 const plat = t => enLettres(t).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9ñ ]+/g, ' ').replace(/\s+/g, ' ').trim();
 
-const trouve = (t, cle) => cle.split('|').some(a => new RegExp('(^| )' + plat(a).replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(s|es)?( |$)').test(plat(t)));
+// Une clé qui commence par « ~ » est une expression régulière sur le texte aplati
+// (audit tour 3 : « no lo entiendo », « porque », « no tengo alergias »…).
+const trouve = (t, cle) => cle.startsWith('~') ? new RegExp(cle.slice(1)).test(' ' + plat(t) + ' ') : cle.split('|').some(a => new RegExp('(^| )' + plat(a).replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(s|es)?( |$)').test(plat(t)));
 /* ---------- ordre des choix : jamais la bonne toujours au même rang ---------- */
 function ordre(n, graine){ const o = [...Array(n).keys()]; const d = graine % n; return o.slice(d).concat(o.slice(0, d)); }
 
@@ -620,7 +622,7 @@ function rendre(){
     if (f) return f(et);
   }
   if (p[0] === 'prep') return p[1] === 'test' ? vuePrepTest() : p[1] ? vueSeance(p[1], p[2]) : vuePrep();
-  if (p[0] === 'poche') return vuePoche();
+  if (p[0] === 'trousse' || p[0] === 'poche') return vuePoche();
   if (p[0] === 'mots') return vueMots(p[1]);
   if (p[0] === 'pieges') return vuePieges();
   if (p[0] === 'reglages') return vueReglages();
@@ -661,7 +663,7 @@ function vueGuide(){
   <h2>Et aussi</h2>
   <ul class="g-liste">
    <li><b>Parler librement</b> — au bas de chaque halte${D.jeuLibre ? '' : ' (bientôt)'} : la même personne vous répond vraiment, à votre vitesse, puis un bilan en français. Il faut un code : il s'obtient là, en quelques secondes, ou vient de votre groupe. Les haltes, elles, restent gratuites.</li>
-   <li><b>La poche</b> — les phrases du chemin, les urgences (112) et votre carte d'allergie en grand, à montrer. « Préparer pour le chemin » les garde dans le téléphone : elles marchent sans réseau.</li>
+   <li><b>Ma trousse</b> — la trousse de secours pour se débrouiller : les phrases du chemin, les urgences (112) et votre carte d'allergie en grand, à montrer. « Préparer pour le chemin » les garde dans le téléphone : elles marchent sans réseau.</li>
    <li><b>Tous les mots</b> et <b>les faux amis</b> — pour revoir, quand vous voulez.</li>
    <li><b>Suis-je prêt ?</b> — un quart d'heure de situations nouvelles avant le départ. Il vous situe (Solide · En route · À reprendre), il ne vous note pas.</li>
    <li><b>La Compostela</b> — au dixième tampon, un souvenir à imprimer.</li>
@@ -745,7 +747,7 @@ function vueAccueil(){
   <h2>Pour la route</h2>
   <div class="outils">
    <button class="outil" onclick="aller('prep')">${ICO.guide}<div><b>Avant de partir</b><span>${prepFaites()} séance${prepFaites() > 1 ? 's' : ''} sur ${D.prep.seances.length}, à la maison</span></div></button>
-   <button class="outil" onclick="aller('poche')">${ICO.poche}<div><b>La poche</b><span>Les phrases du chemin, et les urgences — sans réseau</span></div></button>
+   <button class="outil" onclick="aller('trousse')">${ICO.poche}<div><b>Ma trousse</b><span>La trousse de secours pour se débrouiller : les phrases du chemin, les urgences — sans réseau</span></div></button>
    <button class="outil" onclick="aller('mots')">${ICO.livre}<div><b>Tous les mots</b><span>${Object.keys(D.mots).length} mots, onze planches</span></div></button>
    <button class="outil" onclick="aller('pieges')">${ICO.piege}<div><b>Les faux amis</b><span>constipado, embarazada, la carta…</span></div></button>
    <button class="outil" onclick="aller('test')">${ICO.test}<div><b>Suis-je prêt${S.genre === 'f' ? 'e' : ''} ?</b><span>Le test du chemin, après les haltes</span></div></button>
@@ -1281,7 +1283,7 @@ async function afficherOffre(ouvrir){
     <div style="padding:0 14px 14px;font-size:15.5px">
      <p style="margin:0 0 8px"><b>${o.conversations} conversations</b> avec les gens du chemin, pendant <b>${Math.round(o.jours / 30.4)} mois</b> :
      la même personne qu'à l'étape, qui vous répond vraiment, puis un bilan en français.</p>
-     <p class="muted" style="font-size:14px;margin:0 0 10px">Les dix haltes, la poche et le test restent gratuits. Paiement par carte chez Stripe ;
+     <p class="muted" style="font-size:14px;margin:0 0 10px">Les dix haltes, la trousse et le test restent gratuits. Paiement par carte chez Stripe ;
      nous ne recevons ni votre nom ni votre carte. Le code s'affiche ici tout de suite, et il est aussi écrit sur votre reçu.</p>
      <button class="btn btn--pri btn--large" id="acheter">Obtenir mon code — ${dollars(o.prix)}</button></div></details>`;
   $('#acheter').onclick = () => acheter(null);
@@ -1328,7 +1330,7 @@ async function vueAchat(sid){
 }
 function vueAchatAnnule(){
   app.innerHTML = `${retour('accueil', 'La credencial')}<h1>Paiement annulé</h1>
-    <div class="retro info">Rien n'a été facturé. Le chemin reste ouvert : les dix haltes, la poche et le test ne demandent aucun code.</div>
+    <div class="retro info">Rien n'a été facturé. Le chemin reste ouvert : les dix haltes, la trousse et le test ne demandent aucun code.</div>
     <button class="btn btn--pri btn--large" onclick="aller('${suiteApresAchat()}')">Revenir à « Parler librement »</button>`;
 }
 
@@ -1473,9 +1475,11 @@ function seanceQuiz(x){
 }
 // Les mots du modèle qui correspondent à une clé manquante, écrits comme dans le modèle (audit tour 1, E1).
 function motDuModele(es, cle){
-  const mots = g(es).replace(/[¿?¡!.,]/g, ' ').split(/\s+/).filter(Boolean), n = cle.split('|')[0].split(' ').length;
-  for (let i = 0; i + n <= mots.length; i++) { const bout = mots.slice(i, i + n).join(' '); if (trouve(bout, cle)) return bout; }
-  return cle.split('|')[0];
+  const mots = g(es).replace(/[¿?¡!.,]/g, ' ').split(/\s+/).filter(Boolean);
+  const tailles = cle.startsWith('~') ? [1, 2, 3, 4] : [cle.split('|')[0].split(' ').length];
+  for (const n of tailles)
+    for (let i = 0; i + n <= mots.length; i++) { const bout = mots.slice(i, i + n).join(' '); if (trouve(bout, cle)) return bout; }
+  return cle.startsWith('~') ? g(es) : cle.split('|')[0];
 }
 function seanceDire(x){
   let n = 0, comprises = 0, dites = 0;
@@ -1625,7 +1629,7 @@ function vuePrepTest(){
 
 /* ---------- la poche ---------- */
 function vuePoche(){
-  app.innerHTML = `${retour('accueil', 'La credencial')}<p class="surtitre">Pour la route</p><h1>La poche</h1>
+  app.innerHTML = `${retour('accueil', 'La credencial')}<p class="surtitre">Trousse de secours · pour se débrouiller</p><h1>Ma trousse</h1>
   <p class="muted">Les phrases du chemin, avec leur voix. « Montrer » affiche la phrase en grand, pour la tendre à quelqu'un.</p>
   <div class="carte" style="margin:12px 0"><b>Sans réseau sur la Meseta ?</b>
    <p class="muted" style="font-size:15px;margin:4px 0 10px">Une fois, avec du wifi : mettez tous les sons et les images dans ce téléphone (environ ${D.poids} Mo).</p>
@@ -1866,7 +1870,7 @@ function vueReglages(){
    <h3>Mon allergie</h3>
    <select onchange="S.alergia=this.value;sauver()" style="font:inherit;padding:8px;border-radius:10px;border:1px solid var(--line-300);min-height:44px;width:100%">
     <option value="">— aucune —</option>${D.alergenos.map(a => `<option value="${a.code}" ${S.alergia === a.code ? 'selected' : ''}>${E(a.fr)}</option>`).join('')}</select>
-   <p class="avis-local">Elle sert à votre carte « Montrer » de la poche, et à la phrase que vous direz à León.</p>
+   <p class="avis-local">Elle sert à votre carte « Montrer » de la trousse, et à la phrase que vous direz à León.</p>
    <h3>Les voix</h3>
    <label class="aide-bascule"><input type="checkbox" ${S.lent ? 'checked' : ''} onchange="S.lent=this.checked;sauver()"> Voix plus lentes (partout)</label>
    <h3>Les traductions</h3>

@@ -84,7 +84,7 @@ trois formules, dont une recommandée. Un calculateur au bas de la page refait l
 <section class="premier">
   <h2>Ce qui coûte, et ce qui ne coûte rien</h2>
   <div class="chiffres">
-    <div class="ch"><span class="n">0 $</span><span class="q">les dix journées, la poche, le test : tout se joue dans le téléphone</span></div>
+    <div class="ch"><span class="n">0 $</span><span class="q">les dix journées, la trousse, le test : tout se joue dans le téléphone</span></div>
     <div class="ch"><span class="n">≈ {c10 * 100:.1f} ¢</span><span class="q">US, une conversation « Parler librement » de 10 tours, bilan compris</span></div>
     <div class="ch"><span class="n">≈ 0,2 ¢</span><span class="q">le téléchargement complet (38 Mo à 0,05 $ US le Go)</span></div>
   </div>
@@ -124,16 +124,16 @@ trois formules, dont une recommandée. Un calculateur au bas de la page refait l
   <h2>Trois formules</h2>
   <div class="formules">
     <div class="formule"><h3>A · Tout payant</h3><div class="prix">24,99 $ <small>12 mois</small></div>
-      <ul><li>les dix journées, la poche, le test</li><li>100 conversations</li><li>recharge : 50 conversations, 4,99 $</li></ul>
+      <ul><li>les dix journées, la trousse, le test</li><li>100 conversations</li><li>recharge : 50 conversations, 4,99 $</li></ul>
       <p style="font-size:13.5px;color:var(--muted);margin:4px 0 0">Il faut alors fermer l'application derrière un code : aujourd'hui, elle est ouverte à tous.</p></div>
     <div class="formule reco"><span class="badge">Recommandée</span><h3>B · Le chemin libre, la conversation payante</h3>
       <div class="prix">19,99 $ <small>12 mois</small></div>
-      <ul><li>gratuit : les dix journées, la poche, le test — tel quel</li><li>payant : « Parler librement », 100 conversations</li>
+      <ul><li>gratuit : les dix journées, la trousse, le test — tel quel</li><li>payant : « Parler librement », 100 conversations</li>
       <li>recharge : 50 conversations, 4,99 $</li></ul>
       <p style="font-size:13.5px;color:var(--muted);margin:4px 0 0">Rien à fermer : le code sert déjà à « Parler librement ».
       Le gratuit fait connaître, et ne coûte rien.</p></div>
     <div class="formule"><h3>C · À la conversation</h3><div class="prix">9,99 $ <small>40 conversations</small></div>
-      <ul><li>gratuit : les dix journées, la poche, le test</li><li>40 conversations, sans date limite</li><li>recharge au même prix</li></ul>
+      <ul><li>gratuit : les dix journées, la trousse, le test</li><li>40 conversations, sans date limite</li><li>recharge au même prix</li></ul>
       <p style="font-size:13.5px;color:var(--muted);margin:4px 0 0">La plus simple à comprendre ; la moins rentable par vente, à cause des frais fixes du paiement.</p></div>
   </div>
   <p style="margin-top:12px"><b>Pourquoi B.</b> Elle vend la seule chose qui coûte et qui ne s'obtient nulle part ailleurs : parler

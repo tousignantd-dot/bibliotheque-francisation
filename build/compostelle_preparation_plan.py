@@ -67,7 +67,7 @@ SEANCES = [
      "Se présenter en trois phrases : d'où l'on vient, pourquoi l'on marche, son allergie. Pèlerin ou pèlerine : l'accord se fait tout seul.",
      ["Soy de Quebec, en Canadá.", "Hago el Camino por…", "Soy alérgico / alérgica a…"],
      ["soy_de", "de_donde", "por_que", "desde_donde", "encantado", "alergico", "cansado", "peregrino"],
-     "Composer sa présentation (elle rejoint la poche, « Me présenter ») ; la dire ; répondre à « ¿De dónde eres? ».", 18),
+     "Composer sa présentation (elle rejoint la trousse, « Me présenter ») ; la dire ; répondre à « ¿De dónde eres? ».", 18),
     (8, "Comprendre la réponse", "P5",
      "Le plus dur n'est pas de demander, c'est d'entendre la réponse : <i>sí / no, hay / no hay, está completo, a la derecha, todo recto, "
      "lleva / no lleva</i>.",
@@ -221,7 +221,7 @@ Ce plan propose deux temps — la maison, puis le chemin — et rebaptise les jo
     <div class="temps chemin"><h3>Sur le chemin</h3><p class="q">Les dix haltes · les scènes · Marta · « Parler librement »</p>
       <p>Ce qui existe aujourd'hui : chaque halte met les outils en situation (un lit, un comptoir, la pharmacie, l'allergie…), puis la
       conversation libre les exerce avec quelqu'un qui répond vraiment.</p>
-      <p style="font-size:14px;color:var(--muted);margin:0">On y <b>réemploie</b> ; la poche reste l'outil de secours.</p></div>
+      <p style="font-size:14px;color:var(--muted);margin:0">On y <b>réemploie</b> ; la trousse reste l'outil de secours.</p></div>
   </div>
 </section>
 
