@@ -344,7 +344,7 @@ button{font:inherit}
 details.rub{background:#fff;border:1px solid var(--line-200);border-radius:14px;margin:8px 0}
 details.rub summary{padding:14px;font-weight:900;color:var(--text-strong);cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;min-height:52px}
 details.rub summary::-webkit-details-marker{display:none}
-details.rub summary span{font-size:13px;color:var(--text-muted);font-weight:700}
+details.rub summary span{font-size:13px;color:var(--text-muted);font-weight:700;white-space:nowrap;flex:none;margin-left:12px}
 .ph{display:flex;gap:10px;align-items:center;padding:10px 14px;border-top:1px solid var(--line-200)}
 .ph .t{flex:1;min-width:0}
 .ph .t b{display:block;color:var(--text-strong);font-size:16.5px;line-height:1.25}
